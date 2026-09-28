@@ -1,17 +1,16 @@
 'use strict';
 
-// Core game: state, flight physics, AI, combat, jumping, and rendering.
+// Core game: state, flight physics, AI, combat, burns between locations, and rendering.
 
 const HUD_W = 220;
-const JUMP_DIST = 800;      // must be this far from system center to jump
-const JUMP_FUEL = 100;
+const BURN_DIST = 800;      // must be this far out from local traffic to start a long burn
 const LAND_SPEED = 140;
-const FUEL_PRICE = 2;       // credits per fuel unit
+const FUEL_PRICE = 2;       // credits per unit of reaction mass
 const REPAIR_PRICE = 15;    // credits per armor point
 const SHOT_SPEED = 750;
 const SHOT_LIFE = 0.9;
 const SHOT_DMG = 8;
-const SAVE_KEY = 'maxGravity.save.v1';
+const SAVE_KEY = 'maxGravity.save.v2';  // v1 was the pre-solar-system galaxy
 
 const canvas = document.getElementById('game');
 const ctx = canvas.getContext('2d');
@@ -21,14 +20,14 @@ const G = {
   player: null,       // flight physics for the player ship
   npcs: [], shots: [], particles: [], messages: [],
   offers: [],         // mission offers at the current planet
-  mode: 'landed',     // landed | flight | jumping | hyperspace | map | dead
+  mode: 'landed',     // landed | flight | departing | transit | map | dead
   mapReturn: null,
   keys: {},
   navPlanet: null,
   target: null,
-  jumpAngle: 0, jumpTimer: 0,
-  hyper: null,        // hyperspace transit in progress, see hyperspace.js
-  tunnel: null,
+  burnAngle: 0, departTimer: 0,
+  transit: null,      // burn in progress, see transit.js
+  transitStars: null,
   flash: 0, time: 0, spawnTimer: 0,
   stars: [], W: 0, H: 0, mapPos: null,
 };
@@ -56,25 +55,17 @@ function hash(str) {
   return h;
 }
 
-function findRoute(from, to) {
-  if (from === to) return [];
-  const prev = { [from]: null };
-  const queue = [from];
-  while (queue.length) {
-    const cur = queue.shift();
-    for (const n of SYSTEMS[cur].links) {
-      if (n in prev) continue;
-      prev[n] = cur;
-      if (n === to) {
-        const path = [];
-        for (let c = to; c !== from; c = prev[c]) path.unshift(c);
-        return path;
-      }
-      queue.push(n);
-    }
-  }
-  return null;
+function orbitPos(id) {
+  const s = SYSTEMS[id], a = s.angle * Math.PI / 180;
+  return { x: Math.cos(a) * s.au, y: Math.sin(a) * s.au };
 }
+
+// Travel time and reaction mass grow with distance, but less than linearly,
+// so the outer planets stay reachable.
+const distAU = (a, b) => dist(orbitPos(a), orbitPos(b));
+const travelDays = (a, b) => Math.round(2 + 3 * Math.pow(distAU(a, b), 0.7));
+const burnFuel = (a, b) => Math.round(30 + 60 * Math.sqrt(distAU(a, b)));
+const inRange = (a, b) => a === b || burnFuel(a, b) <= ship().fuel;
 
 function cargoUsed() {
   let t = 0;
@@ -93,19 +84,20 @@ function price(planet, cid) {
   return Math.round(c.base * PRICE_MULT[level] * wobble * (rumor ? rumor.mult : 1));
 }
 
-// Most profitable place within 3 jumps to sell a commodity bought here, at today's prices.
+// Most profitable place within one full tank to sell a commodity bought here, at today's
+// prices, weighing profit against travel days.
 function bestSale(planet, cid) {
-  const buy = price(planet, cid);
+  const buy = price(planet, cid), here = G.state.systemId;
   if (buy === null) return null;
   let best = null;
   for (const [sid, sys] of Object.entries(SYSTEMS)) {
-    const jumps = findRoute(G.state.systemId, sid).length;
-    if (jumps > 3) continue;
+    if (!inRange(here, sid)) continue;
+    const days = sid === here ? 0 : travelDays(here, sid);
     for (const pl of sys.planets) {
       const sell = price(pl, cid);
       if (pl === planet || sell === null || sell <= buy) continue;
-      const score = (sell - buy) / Math.max(1, jumps);
-      if (!best || score > best.score) best = { planet: pl, jumps, profit: sell - buy, score };
+      const score = (sell - buy) / Math.max(1, days);
+      if (!best || score > best.score) best = { planet: pl, days, profit: sell - buy, score };
     }
   }
   return best;
@@ -115,9 +107,9 @@ function bestSale(planet, cid) {
 
 function newState() {
   return {
-    credits: 12000, day: 1, systemId: 'sol', planet: 'Earth', shipId: 'shuttle',
+    credits: 12000, day: 1, systemId: 'earth', planet: 'Earth', shipId: 'shuttle',
     fuel: SHIPS.shuttle.fuel, armor: SHIPS.shuttle.armor,
-    cargo: {}, paid: {}, rumors: [], missions: [], route: [], nextId: 1,
+    cargo: {}, paid: {}, rumors: [], missions: [], dest: null, nextId: 1,
   };
 }
 
@@ -130,9 +122,9 @@ function loadSave() {
 }
 
 const INTRO = [
-  'You have 12,000 credits, a battered Shuttle, and a galaxy full of opportunity.',
-  'Buy low, sell high. The Commodity Exchange shows the best nearby market for each good.',
-  'Tip: Earth sells Equipment cheap, and New Kent in Alpha Centauri, one jump away, pays well for it.',
+  'You have 12,000 credits, a patched-up Rock Hopper, and a solar system full of opportunity.',
+  'Buy low, sell high. The Commodity Exchange shows the best market in range for each good.',
+  'Tip: Earth sells Electronics cheap, and Mars, a five-day burn away, pays well for them. Mars sells Refined Metals cheap for the trip back.',
 ];
 
 function newGame() {
@@ -144,8 +136,6 @@ function newGame() {
 
 function loadGame() {
   G.state = loadSave() || newState();
-  G.state.paid = G.state.paid || {};      // saves from before cost tracking
-  G.state.rumors = G.state.rumors || [];  // saves from before market rumors
   resetWorld();
   landAt(currentPlanet(), ['Save loaded. Welcome back, captain.']);
 }
@@ -294,7 +284,7 @@ function populateSystem() {
   for (const m of G.state.missions) {
     if (m.type === 'bounty' && m.targetSystem === G.state.systemId) {
       spawnBountyTarget(m);
-      msg(`Sensors detect ${m.targetName} in this system.`);
+      msg(`Sensors detect ${m.targetName} in local space.`);
     }
   }
   G.spawnTimer = 15;
@@ -404,45 +394,46 @@ function cycleTarget() {
   G.target = sorted[(sorted.indexOf(G.target) + 1) % sorted.length];
 }
 
-function tryJump() {
+function tryBurn() {
   const st = G.state;
-  if (!st.route.length) return msg('No destination. Press M to open the galaxy map.');
-  if (st.fuel < JUMP_FUEL) return msg('Not enough fuel to jump.');
-  if (Math.hypot(G.player.x, G.player.y) < JUMP_DIST) return msg('Too close to the system center. Fly farther out to jump.');
-  const from = system(), to = SYSTEMS[st.route[0]];
-  G.jumpAngle = Math.atan2(to.y - from.y, to.x - from.x);
-  G.jumpTimer = 1.2;
-  G.mode = 'jumping';
-  msg(`Engaging hyperdrive: ${to.name}.`);
+  if (!st.dest) return msg('No destination. Press M to open the system map.');
+  const need = burnFuel(st.systemId, st.dest);
+  if (st.fuel < need) return msg(`Not enough reaction mass (need ${need}). Refuel or pick a closer destination.`);
+  if (Math.hypot(G.player.x, G.player.y) < BURN_DIST) return msg('Traffic control: clear local space before starting a long burn.');
+  const from = orbitPos(st.systemId), to = orbitPos(st.dest);
+  G.burnAngle = Math.atan2(to.y - from.y, to.x - from.x);
+  G.departTimer = 1.2;
+  G.mode = 'departing';
+  msg(`Burning for ${SYSTEMS[st.dest].name}.`);
 }
 
-function updateJump(dt) {
+function updateDeparture(dt) {
   const p = G.player;
-  const off = turnToward(p, G.jumpAngle, dt);
+  const off = turnToward(p, G.burnAngle, dt);
   p.thrusting = off < 0.05;
   if (p.thrusting) {
     p.vx += Math.cos(p.angle) * 4000 * dt;
     p.vy += Math.sin(p.angle) * 4000 * dt;
-    G.jumpTimer -= dt;
+    G.departTimer -= dt;
   }
   p.x += p.vx * dt;
   p.y += p.vy * dt;
-  if (G.jumpTimer <= 0) enterHyperspace();
+  if (G.departTimer <= 0) enterTransit();
 }
 
 function arrive() {
-  const st = G.state, p = G.player, s = ship(), a = G.jumpAngle;
-  st.systemId = G.hyper.to;
-  st.day += 1;
+  const st = G.state, p = G.player, s = ship(), a = G.burnAngle;
+  st.systemId = G.transit.to;
+  st.day += G.transit.days;
   st.rumors = st.rumors.filter(r => r.until >= st.day);
-  G.hyper = null;
+  G.transit = null;
   p.x = -Math.cos(a) * 1100; p.y = -Math.sin(a) * 1100;
   p.vx = Math.cos(a) * s.maxSpeed; p.vy = Math.sin(a) * s.maxSpeed;
   G.mode = 'flight';
   G.flash = 1;
   G.navPlanet = null;
   const sys = system();
-  msg(`Arrived in ${sys.name} (${sys.gov}). Day ${st.day}.`);
+  msg(`Arrived at ${sys.name} (${sys.gov}). Day ${st.day}.`);
   expireMissions();
   populateSystem();
 }
@@ -463,31 +454,31 @@ function closeMap() {
 function generateMissions(planet) {
   if (!planet.services.includes('missions')) return [];
   const here = G.state.systemId, day = G.state.day, offers = [];
-  const ids = Object.keys(SYSTEMS);
+  const reachable = Object.keys(SYSTEMS).filter(id => inRange(here, id));
+  const daysTo = id => (id === here ? 1 : travelDays(here, id));
   for (let i = 0; i < 4; i++) {
     if (Math.random() < 0.7) {
-      const destSystem = pick(ids);
+      const destSystem = pick(reachable);
       const dest = pick(SYSTEMS[destSystem].planets);
-      const jumps = findRoute(here, destSystem).length;
-      if (dest === planet || jumps > 4) continue;
-      const tons = randInt(3, 15), good = pick(MISSION_GOODS);
+      if (dest === planet) continue;
+      const days = daysTo(destSystem), tons = randInt(3, 15), good = pick(MISSION_GOODS);
       offers.push({
         type: 'delivery', good, tons, destSystem, destPlanet: dest.name,
         title: `Deliver ${tons}t of ${good} to ${dest.name}`,
-        pay: 1000 + jumps * 1500 + tons * 100,
-        deadline: day + jumps * 2 + randInt(2, 5),
+        pay: 1000 + days * 350 + tons * 100,
+        deadline: day + Math.ceil(days * 1.5) + randInt(2, 6),
       });
     } else {
-      const options = ids.filter(id => SYSTEMS[id].pirates > 0 && findRoute(here, id).length <= 3);
+      const options = reachable.filter(id => SYSTEMS[id].pirates > 0);
       const taken = [...offers, ...G.state.missions].map(m => m.targetName);
       const names = PIRATE_NAMES.filter(n => !taken.includes(n));
-      if (!names.length) continue;
+      if (!names.length || !options.length) continue;
       const targetSystem = pick(options), targetName = pick(names);
       offers.push({
         type: 'bounty', targetSystem, targetName,
-        title: `Bounty: destroy ${targetName} in ${SYSTEMS[targetSystem].name}`,
+        title: `Bounty: destroy ${targetName} near ${SYSTEMS[targetSystem].name}`,
         pay: randInt(8, 16) * 1000,
-        deadline: day + 10,
+        deadline: day + daysTo(targetSystem) * 2 + 10,
       });
     }
   }
@@ -530,8 +521,8 @@ function updateShots(dt) {
 function update(dt) {
   G.time += dt;
   if (G.mode === 'flight') updatePlayer(dt);
-  else if (G.mode === 'jumping') updateJump(dt);
-  else if (G.mode === 'hyperspace') return updateHyperspace(dt);
+  else if (G.mode === 'departing') updateDeparture(dt);
+  else if (G.mode === 'transit') return updateTransit(dt);
 
   for (const n of G.npcs) updateNpc(n, dt);
   updateShots(dt);
@@ -728,7 +719,7 @@ function drawBar(x, y, w, label, val, max, color) {
 
 function drawHud(W, H) {
   const x0 = W - HUD_W, p = G.player, st = G.state, s = ship(), sys = system();
-  const inHyper = G.mode === 'hyperspace';
+  const inTransit = G.mode === 'transit';
   ctx.fillStyle = '#081018';
   ctx.fillRect(x0, 0, HUD_W, H);
   ctx.fillStyle = '#23405f';
@@ -747,7 +738,7 @@ function drawHud(W, H) {
     ctx.fillStyle = color;
     ctx.fillRect(rx + dx - sz / 2, ry + dy - sz / 2, sz, sz);
   };
-  if (!inHyper) {
+  if (!inTransit) {
     for (const pl of sys.planets) blip(pl, '#4a7a4a', 6, true);
     for (const n of G.npcs) blip(n, npcColor(n), 3, false);
     if (p) blip(p, '#fff', 3, false);
@@ -757,19 +748,20 @@ function drawHud(W, H) {
   ctx.textAlign = 'left';
   const x = x0 + 14, w = HUD_W - 28;
   let y = 228;
-  ctx.fillStyle = inHyper ? '#7fb4ff' : GOV_COLORS[sys.gov];
+  ctx.fillStyle = inTransit ? '#7fb4ff' : GOV_COLORS[sys.gov];
   ctx.font = 'bold 14px monospace';
-  ctx.fillText(inHyper ? 'Hyperspace' : sys.name, x, y);
+  ctx.fillText(inTransit ? 'In transit' : sys.name, x, y);
   ctx.font = '12px monospace';
   ctx.fillStyle = '#9ab';
-  ctx.fillText(`${inHyper ? `To ${SYSTEMS[G.hyper.to].name}` : sys.gov} - Day ${st.day}`, x, y += 18);
+  ctx.fillText(inTransit ? `To ${SYSTEMS[G.transit.to].name}` : `${sys.gov}`, x, y += 16);
+  ctx.fillText(`Day ${st.day}`, x, y += 16);
 
   y += 26;
   if (p) {
     drawBar(x, y, w, 'Shields', p.shields, s.shields, '#4aa3ff');
     drawBar(x, y += 30, w, 'Armor', p.armor, p.maxArmor, '#ff9a3c');
   }
-  drawBar(x, y += 30, w, `Fuel (${Math.floor(st.fuel / JUMP_FUEL)} jumps)`, st.fuel, s.fuel, '#5fd35f');
+  drawBar(x, y += 30, w, 'Reaction mass', st.fuel, s.fuel, '#5fd35f');
 
   y += 36;
   ctx.fillStyle = '#cfe3ff';
@@ -782,8 +774,13 @@ function drawHud(W, H) {
   ctx.fillStyle = '#cfe3ff';
   const nav = G.navPlanet !== null && p ? system().planets[G.navPlanet] : null;
   ctx.fillText(nav ? `${nav.name} (${Math.round(dist(nav, p))})` : 'none (L)', x, y += 16);
-  const route = st.route;
-  ctx.fillText(route.length ? `Jump: ${SYSTEMS[route[0]].name}${route.length > 1 ? ` +${route.length - 1}` : ''}` : 'Jump: none (M)', x, y += 16);
+  const from = G.transit ? G.transit.to : st.systemId;
+  ctx.fillText(st.dest ? `Burn: ${SYSTEMS[st.dest].name}` : 'Burn: none (M)', x, y += 16);
+  if (st.dest) {
+    const need = burnFuel(from, st.dest);
+    ctx.fillStyle = need > st.fuel ? '#ff7f7f' : '#9ab';
+    ctx.fillText(`${travelDays(from, st.dest)} days, ${need} mass`, x, y += 16);
+  }
 
   y += 28;
   ctx.fillStyle = '#9ab';
@@ -805,7 +802,7 @@ function drawHud(W, H) {
 
   ctx.fillStyle = '#56687a';
   ctx.font = '11px monospace';
-  const help = ['Arrows/WASD fly', 'S/Down  reverse', 'Space   fire', 'Tab     target', 'L  select / land', 'M  galaxy map', 'J  hyperjump'];
+  const help = ['Arrows/WASD fly', 'S/Down  reverse', 'Space   fire', 'Tab     target', 'L  select / land', 'M  system map', 'J  burn'];
   help.forEach((h, i) => ctx.fillText(h, x, H - 14 - (help.length - 1 - i) * 14));
 }
 
@@ -813,38 +810,57 @@ function drawMap(W, H) {
   ctx.fillStyle = '#050a12';
   ctx.fillRect(0, 0, W, H);
   const ids = Object.keys(SYSTEMS), st = G.state;
-  const xs = ids.map(i => SYSTEMS[i].x), ys = ids.map(i => SYSTEMS[i].y);
-  const minX = Math.min(...xs), maxX = Math.max(...xs), minY = Math.min(...ys), maxY = Math.max(...ys);
-  const pad = 90;
-  const sc = Math.min((W - 2 * pad) / (maxX - minX), (H - 2 * pad - 60) / (maxY - minY));
-  const ox = (W - (maxX - minX) * sc) / 2 - minX * sc, oy = (H - (maxY - minY) * sc) / 2 - minY * sc + 20;
-  const P = id => [SYSTEMS[id].x * sc + ox, SYSTEMS[id].y * sc + oy];
+  const from = G.transit ? G.transit.to : st.systemId;
+
+  // Square-root radial scale, so the inner planets are not a smudge next to Neptune.
+  const maxR = Math.sqrt(Math.max(...ids.map(id => SYSTEMS[id].au)));
+  const cx = W / 2, cy = H / 2 + 10, sc = (Math.min(W, H) / 2 - 70) / maxR;
+  const P = id => {
+    const s = SYSTEMS[id], a = s.angle * Math.PI / 180, r = Math.sqrt(s.au) * sc;
+    return [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
+  };
   G.mapPos = P;
 
-  const line = (a, b) => { const [x1, y1] = P(a), [x2, y2] = P(b); ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); };
-  ctx.strokeStyle = '#1f3550';
-  ctx.lineWidth = 1.5;
-  for (const id of ids) for (const l of SYSTEMS[id].links) if (id < l) line(id, l);
-  let prev = st.systemId;
-  if (G.hyper) {
-    ctx.strokeStyle = '#7fb4ff';
-    ctx.lineWidth = 3;
-    ctx.setLineDash([6, 5]);
-    line(prev, G.hyper.to);
-    ctx.setLineDash([]);
-    prev = G.hyper.to;
+  ctx.strokeStyle = 'rgba(232,209,122,0.07)';
+  ctx.lineWidth = (Math.sqrt(3.3) - Math.sqrt(2.2)) * sc;
+  ctx.beginPath(); ctx.arc(cx, cy, (Math.sqrt(2.2) + Math.sqrt(3.3)) / 2 * sc, 0, Math.PI * 2); ctx.stroke();
+  ctx.strokeStyle = '#14243a';
+  ctx.lineWidth = 1;
+  for (const au of new Set(ids.map(id => SYSTEMS[id].au))) {
+    ctx.beginPath(); ctx.arc(cx, cy, Math.sqrt(au) * sc, 0, Math.PI * 2); ctx.stroke();
   }
-  ctx.strokeStyle = '#5fd35f';
+  const sun = ctx.createRadialGradient(cx, cy, 2, cx, cy, 22);
+  sun.addColorStop(0, '#fff6d0');
+  sun.addColorStop(0.4, '#ffc44a');
+  sun.addColorStop(1, 'rgba(255,150,40,0)');
+  ctx.fillStyle = sun;
+  ctx.beginPath(); ctx.arc(cx, cy, 22, 0, Math.PI * 2); ctx.fill();
+
+  const line = (a, b) => { const [x1, y1] = P(a), [x2, y2] = P(b); ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); };
   ctx.lineWidth = 3;
-  for (const r of st.route) { line(prev, r); prev = r; }
+  if (G.transit) {
+    ctx.strokeStyle = '#7fb4ff';
+    ctx.setLineDash([6, 5]);
+    line(st.systemId, G.transit.to);
+    ctx.setLineDash([]);
+  }
+  if (st.dest) {
+    ctx.strokeStyle = '#5fd35f';
+    line(from, st.dest);
+  }
 
   const missionSystems = new Set(st.missions.map(m => m.destSystem || m.targetSystem));
   ctx.textAlign = 'center';
   for (const id of ids) {
     const [x, y] = P(id), sys = SYSTEMS[id];
+    ctx.globalAlpha = inRange(from, id) ? 1 : 0.35;
     ctx.fillStyle = GOV_COLORS[sys.gov];
     ctx.beginPath(); ctx.arc(x, y, 7, 0, Math.PI * 2); ctx.fill();
-    if (id === st.systemId) {
+    ctx.fillStyle = '#cfe3ff';
+    ctx.font = '13px monospace';
+    ctx.fillText(sys.name, x, y + 26);
+    ctx.globalAlpha = 1;
+    if (id === from) {
       ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.arc(x, y, 13, 0, Math.PI * 2); ctx.stroke();
     }
@@ -854,21 +870,24 @@ function drawMap(W, H) {
       ctx.beginPath(); ctx.arc(x, y, 18, 0, Math.PI * 2); ctx.stroke();
       ctx.setLineDash([]);
     }
-    ctx.fillStyle = '#cfe3ff';
-    ctx.font = '13px monospace';
-    ctx.fillText(sys.name, x, y + 32);
   }
 
   ctx.textAlign = 'left';
   ctx.fillStyle = '#cfe3ff';
   ctx.font = 'bold 18px monospace';
-  ctx.fillText('GALAXY MAP', 24, 36);
+  ctx.fillText('SYSTEM MAP', 24, 36);
   ctx.font = '13px monospace';
   ctx.fillStyle = '#9ab';
-  ctx.fillText('Click a system to plot a course. M or Esc to close.  White ring: you.  Orange: mission.', 24, 58);
-  const jumps = st.route.length, canJump = Math.floor(st.fuel / JUMP_FUEL);
-  ctx.fillStyle = jumps > canJump ? '#ff7f7f' : '#5fd35f';
-  ctx.fillText(jumps ? `Route: ${st.route.map(r => SYSTEMS[r].name).join(' > ')}  (${jumps} jumps, fuel for ${canJump})` : 'No route plotted.', 24, H - 24);
+  ctx.fillText('Click a destination to plot a burn. M or Esc to close.', 24, 58);
+  ctx.fillText('White ring: you. Orange: mission. Dim: beyond a full tank.', 24, 76);
+  if (st.dest) {
+    const need = burnFuel(from, st.dest);
+    ctx.fillStyle = need > st.fuel ? '#ff7f7f' : '#5fd35f';
+    ctx.fillText(`Burn to ${SYSTEMS[st.dest].name}: ${travelDays(from, st.dest)} days, ${need} reaction mass (you have ${st.fuel})`, 24, H - 24);
+  } else {
+    ctx.fillStyle = '#9ab';
+    ctx.fillText('No burn plotted.', 24, H - 24);
+  }
 }
 
 function render() {
@@ -876,7 +895,7 @@ function render() {
   ctx.fillStyle = '#000';
   ctx.fillRect(0, 0, W, H);
   if (G.mode === 'map') return drawMap(W, H);
-  if (G.mode === 'hyperspace') drawHyperspace(W, H); else drawWorld(W, H);
+  if (G.mode === 'transit') drawTransit(W, H); else drawWorld(W, H);
   drawHud(W, H);
 }
 
@@ -892,11 +911,11 @@ window.addEventListener('keydown', e => {
   if (e.repeat) return;
   if (G.mode === 'flight') {
     if (e.code === 'KeyL') tryLand();
-    else if (e.code === 'KeyJ') tryJump();
+    else if (e.code === 'KeyJ') tryBurn();
     else if (e.code === 'KeyM') openMap();
     else if (e.code === 'Tab') { e.preventDefault(); cycleTarget(); }
-  } else if (G.mode === 'hyperspace') {
-    if (e.code === 'KeyM' && !G.hyper.event) openMap();
+  } else if (G.mode === 'transit') {
+    if (e.code === 'KeyM' && !G.transit.event) openMap();
   } else if (G.mode === 'map') {
     if (e.code === 'KeyM' || e.code === 'Escape') closeMap();
   } else if (G.mode === 'landed') {
@@ -911,7 +930,7 @@ canvas.addEventListener('click', e => {
   for (const id of Object.keys(SYSTEMS)) {
     const [x, y] = G.mapPos(id);
     if (Math.hypot(e.clientX - x, e.clientY - y) < 16) {
-      G.state.route = findRoute(G.hyper ? G.hyper.to : G.state.systemId, id);
+      G.state.dest = id === (G.transit ? G.transit.to : G.state.systemId) ? null : id;
       return;
     }
   }
@@ -930,7 +949,7 @@ let last = performance.now();
 function frame(now) {
   const dt = Math.min(0.05, (now - last) / 1000);
   last = now;
-  if (['flight', 'jumping', 'hyperspace', 'dead'].includes(G.mode)) update(dt);
+  if (['flight', 'departing', 'transit', 'dead'].includes(G.mode)) update(dt);
   render();
   requestAnimationFrame(frame);
 }

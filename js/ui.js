@@ -71,18 +71,18 @@ const UI = {
       <div class="hdr">
         <div>
           <h1>${p.name}</h1>
-          <div class="sub" style="color:${GOV_COLORS[sys.gov]}">${sys.name} system &middot; ${sys.gov}</div>
+          <div class="sub" style="color:${GOV_COLORS[sys.gov]}">${sys.name} &middot; ${sys.gov}</div>
         </div>
         <div class="stats">
           Day ${st.day} &middot; ${s.name}<br>
           <b>${fmt(st.credits)} cr</b><br>
-          Cargo ${cargoUsed()}/${s.cargo}t &middot; Fuel ${st.fuel}/${s.fuel}
+          Cargo ${cargoUsed()}/${s.cargo}t &middot; Mass ${st.fuel}/${s.fuel}
         </div>
       </div>
       <div class="tabs">
         ${tabs.map(([id, label, ok]) => `<button data-action="tab" data-arg="${id}" class="${this.tab === id ? 'active' : ''}" ${ok ? '' : 'disabled'}>${label}</button>`).join('')}
         <span class="spacer"></span>
-        <button data-action="map">Galaxy Map</button>
+        <button data-action="map">System Map</button>
         <button data-action="takeoff" class="primary">Take Off (T)</button>
       </div>
       <div class="body">${this.views[this.tab].call(this)}</div>`;
@@ -98,13 +98,13 @@ const UI = {
         ${this.notes.map(n => `<div class="note">${n}</div>`).join('')}
         ${canService ? `
         <div class="row">
-          <button data-action="refuel" ${fuelNeed > 0 ? '' : 'disabled'}>Refuel (${fmt(fuelNeed * FUEL_PRICE)} cr)</button>
+          <button data-action="refuel" ${fuelNeed > 0 ? '' : 'disabled'}>Refill reaction mass (${fmt(fuelNeed * FUEL_PRICE)} cr)</button>
           <button data-action="repair" ${armorNeed > 0 ? '' : 'disabled'}>Repair hull (${fmt(armorNeed * REPAIR_PRICE)} cr)</button>
         </div>` : ''}
         <h3>Active missions</h3>
         ${this.missionList(st.missions, 'abort', 'Abandon')}
         <h3>Market news</h3>
-        ${st.rumors.length ? st.rumors.map(r => `<div class="hint">${r.text} Until day ${r.until}.</div>`).join('') : '<p class="hint">Nothing new. Listen to the comms in hyperspace.</p>'}
+        ${st.rumors.length ? st.rumors.map(r => `<div class="hint">${r.text} Until day ${r.until}.</div>`).join('') : '<p class="hint">Nothing new. Listen to the comms in transit.</p>'}
         <div class="foot"><button class="link" data-action="newgame">Start a new game</button></div>`;
     },
 
@@ -119,7 +119,7 @@ const UI = {
           <td>${c.name}</td>
           <td class="num">${pr === null ? '--' : fmt(pr)} <span class="tag ${tag}">${tag}</span></td>
           <td class="num">${held}${held ? ` <span class="hint">@${fmt(avg)}</span>` : ''}</td>
-          <td>${best ? `${best.planet.name} <span class="tag low">+${fmt(best.profit)}/t</span> <span class="hint">${best.jumps ? `${best.jumps}j` : 'in system'}</span>` : '<span class="hint">--</span>'}</td>
+          <td>${best ? `${best.planet.name} <span class="tag low">+${fmt(best.profit)}/t</span> <span class="hint">${best.days ? `${best.days}d` : 'local'}</span>` : '<span class="hint">--</span>'}</td>
           <td class="act">
             <button data-action="buy" data-arg="${c.id}" ${pr === null ? 'disabled' : ''}>Buy 1</button>
             <button data-action="buymax" data-arg="${c.id}" ${pr === null ? 'disabled' : ''}>Max</button>
@@ -131,7 +131,7 @@ const UI = {
       return `
         ${this.tradeNote ? `<div class="note">${this.tradeNote}</div>` : ''}
         <table>
-          <tr><th>Commodity</th><th class="num">Price/t</th><th class="num">Held</th><th>Best market (3 jumps)</th><th></th></tr>
+          <tr><th>Commodity</th><th class="num">Price/t</th><th class="num">Held</th><th>Best market (in range)</th><th></th></tr>
           ${rows}
         </table>
         <p class="hint">Free cargo space: ${cargoFree()}t. Best market is based on today's prices, which drift a little each day.</p>`;
@@ -154,6 +154,7 @@ const UI = {
           <td><b>${s.name}</b><div class="hint">${s.desc}</div></td>
           <td class="num">${s.cargo}t</td>
           <td class="num">${s.shields}/${s.armor}</td>
+          <td class="num">${s.fuel}</td>
           <td class="num">${s.maxSpeed}</td>
           <td class="num">${s.guns}</td>
           <td class="num">${fmt(s.price)}</td>
@@ -162,7 +163,7 @@ const UI = {
       }).join('');
       return `
         <table>
-          <tr><th>Ship</th><th class="num">Cargo</th><th class="num">Shd/Arm</th><th class="num">Speed</th><th class="num">Guns</th><th class="num">Price</th><th></th></tr>
+          <tr><th>Ship</th><th class="num">Cargo</th><th class="num">Shd/Arm</th><th class="num">Mass</th><th class="num">Speed</th><th class="num">Guns</th><th class="num">Price</th><th></th></tr>
           ${rows}
         </table>
         <p class="hint">Your ${ship().name} is worth ${fmt(tradeIn)} cr as a trade-in.</p>`;
@@ -172,7 +173,8 @@ const UI = {
   missionList(list, action, label) {
     if (!list.length) return '<p class="hint">None.</p>';
     return list.map((m, i) => {
-      const where = m.type === 'delivery' ? `${SYSTEMS[m.destSystem].name} system` : `${SYSTEMS[m.targetSystem].name} system`;
+      const sid = m.destSystem || m.targetSystem;
+      const where = sid === G.state.systemId ? 'Local' : `${SYSTEMS[sid].name}, ${travelDays(G.state.systemId, sid)} days away`;
       const blocked = action === 'accept' && m.type === 'delivery' && cargoFree() < m.tons;
       return `<div class="mission">
         <div><b>${m.title}</b><div class="hint">${where} &middot; pays ${fmt(m.pay)} cr &middot; due by day ${m.deadline}${m.tons ? ` &middot; ${m.tons}t cargo` : ''}</div></div>
@@ -185,7 +187,7 @@ const UI = {
     const st = G.state, p = this.planet, s = ship();
     switch (action) {
       case 'tab': this.tab = arg; this.tradeNote = null; break;
-      case 'choose': this.showEventResult(G.hyper.event.title, chooseEvent(Number(arg))); return;
+      case 'choose': this.showEventResult(G.transit.event.title, chooseEvent(Number(arg))); return;
       case 'continue': finishEvent(); return;
       case 'takeoff': takeOff(); return;
       case 'map': openMap(); return;
