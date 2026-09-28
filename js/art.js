@@ -154,6 +154,17 @@ function drawShip(o, accent, toScreen) {
     ctx.beginPath(); ctx.arc(0.75, side * (widthAt(hull.outline, 0.75) + 0.12), 0.1, 0, Math.PI * 2); ctx.fill();
   }
   ctx.restore();
+
+  // Shield flash: an arc of the shield bubble lights up on the side that was hit.
+  const since = G.time - (o.shieldFlash || -9);
+  if (since < 0.25 && o.hitAngle !== undefined) {
+    ctx.save();
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.strokeStyle = `rgba(140,200,255,${0.9 * (1 - since / 0.25)})`;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath(); ctx.arc(sx, sy, L * 1.15, o.hitAngle - 0.9, o.hitAngle + 0.9); ctx.stroke();
+    ctx.restore();
+  }
 }
 
 // Half width of a hull outline at position x (linear between outline points).
@@ -503,4 +514,87 @@ function drawBackdrop(cam, viewW, H) {
     ctx.fillStyle = 'rgba(2,4,10,0.35)';  // distance haze, so the giant stays in the background
     ctx.beginPath(); ctx.arc(x, y, b.r * 1.02, 0, Math.PI * 2); ctx.fill();
   }
+}
+
+// ==================== Combat effects ====================
+
+const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const TRACER = { player: [200, 255, 255], hostile: [255, 140, 70], ally: [140, 190, 255] };
+
+function shake(amount) {
+  if (!REDUCED_MOTION) G.shake = Math.min(12, G.shake + amount);
+}
+
+// A tracer round: a hot head and a fading tail along its path.
+function drawShot(sh, x, y) {
+  const [r, g, b] = TRACER[sh.team] || TRACER.hostile;
+  const tx = x - sh.vx * 0.03, ty = y - sh.vy * 0.03;
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  const tail = ctx.createLinearGradient(x, y, tx, ty);
+  tail.addColorStop(0, `rgba(${r},${g},${b},0.9)`);
+  tail.addColorStop(1, `rgba(${r},${g},${b},0)`);
+  ctx.strokeStyle = tail;
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(tx, ty); ctx.stroke();
+  ctx.fillStyle = `rgba(${r},${g},${b},0.35)`;
+  ctx.beginPath(); ctx.arc(x, y, 3.5, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#ffffff';
+  ctx.fillRect(x - 1, y - 1, 2, 2);
+  ctx.restore();
+}
+
+function drawParticle(pt, x, y) {
+  const f = Math.max(0, pt.life / pt.max);
+  ctx.save();
+  if (pt.type === 'flash' || pt.type === 'fire') {
+    ctx.globalCompositeOperation = 'lighter';
+    const g = ctx.createRadialGradient(x, y, 0, x, y, pt.size);
+    g.addColorStop(0, pt.type === 'flash' ? `rgba(255,255,240,${f})` : `rgba(255,220,140,${0.8 * f})`);
+    g.addColorStop(0.4, pt.type === 'flash' ? `rgba(255,220,160,${0.6 * f})` : `rgba(255,120,40,${0.5 * f})`);
+    g.addColorStop(1, 'rgba(255,80,20,0)');
+    ctx.fillStyle = g;
+    ctx.beginPath(); ctx.arc(x, y, pt.size, 0, Math.PI * 2); ctx.fill();
+  } else if (pt.type === 'ring') {
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.strokeStyle = `rgba(255,230,190,${0.7 * f})`;
+    ctx.lineWidth = 2 + 3 * f;
+    ctx.beginPath(); ctx.arc(x, y, pt.size * (1 - f) + 4, 0, Math.PI * 2); ctx.stroke();
+  } else if (pt.type === 'debris') {
+    ctx.globalAlpha = Math.min(1, f * 3);
+    ctx.translate(x, y);
+    ctx.rotate(pt.rot);
+    ctx.fillStyle = pt.color;
+    ctx.fillRect(-pt.size / 2, -pt.size / 4, pt.size, pt.size / 2);
+    ctx.fillStyle = `rgba(255,120,40,${f * 0.8})`;  // still glowing hot
+    ctx.fillRect(-pt.size / 2, -pt.size / 4, pt.size * 0.3, pt.size / 2);
+  } else if (pt.type === 'smoke') {
+    ctx.fillStyle = `rgba(120,120,125,${0.3 * f})`;
+    ctx.beginPath(); ctx.arc(x, y, pt.size, 0, Math.PI * 2); ctx.fill();
+  } else {
+    // Sparks: short hot streaks along their motion.
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.globalAlpha = f;
+    ctx.strokeStyle = pt.color;
+    ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - pt.vx * 0.03, y - pt.vy * 0.03); ctx.stroke();
+  }
+  ctx.restore();
+}
+
+// A ship breaking apart: flash, shockwave, fireball, sparks, and tumbling hull debris.
+function explode(o) {
+  const size = SHIPS[o.shipId].size * 1.9, paint = hullPaint(o), v = [o.vx || 0, o.vy || 0];
+  const add = pt => G.particles.push(pt);
+  add({ type: 'flash', x: o.x, y: o.y, vx: v[0], vy: v[1], life: 0.3, max: 0.3, size: size * 4 });
+  add({ type: 'ring', x: o.x, y: o.y, vx: v[0] * 0.5, vy: v[1] * 0.5, life: 0.7, max: 0.7, size: size * 5 });
+  for (let i = 0; i < 8; i++) {
+    const a = rand(0, Math.PI * 2), s = rand(20, 90), life = rand(0.6, 1.2);
+    add({ type: 'fire', x: o.x, y: o.y, vx: v[0] + Math.cos(a) * s, vy: v[1] + Math.sin(a) * s, life, max: life, size: size * rand(0.4, 0.8), grow: size * 0.8 });
+  }
+  for (let i = 0; i < 6 + size / 3; i++) {
+    const a = rand(0, Math.PI * 2), s = rand(50, 200), life = rand(1.5, 3);
+    add({ type: 'debris', x: o.x, y: o.y, vx: v[0] + Math.cos(a) * s, vy: v[1] + Math.sin(a) * s, life, max: life, size: size * rand(0.15, 0.35), rot: rand(0, 6), spin: rand(-6, 6), color: paint });
+  }
+  burst(o.x, o.y, 24, ['#fff', '#ffd27f', '#ff8c3a'], 280);
 }

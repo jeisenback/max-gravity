@@ -31,7 +31,7 @@ const G = {
   burnAngle: 0, departTimer: 0,
   transit: null,      // burn in progress, see transit.js
   transitStars: null,
-  flash: 0, time: 0, spawnTimer: 0,
+  flash: 0, shake: 0, time: 0, spawnTimer: 0,
   stars: [], W: 0, H: 0, hudW: HUD_W, mapPos: null,
 };
 
@@ -213,8 +213,11 @@ function fire(o, hits = 'player') {
       x: o.x + Math.cos(a) * s.size, y: o.y + Math.sin(a) * s.size,
       vx: o.vx + Math.cos(a) * SHOT_SPEED, vy: o.vy + Math.sin(a) * SHOT_SPEED,
       life: SHOT_LIFE, fromPlayer: isPlayer, hits: isPlayer ? 'npcs' : hits, dmg,
+      team: isPlayer ? 'player' : hits === 'player' ? 'hostile' : 'ally',
     });
   }
+  const m = s.size * 1.9;  // muzzle flash at the nose
+  G.particles.push({ type: 'flash', x: o.x + Math.cos(o.angle) * m, y: o.y + Math.sin(o.angle) * m, vx: o.vx, vy: o.vy, life: 0.06, max: 0.06, size: 7 });
 }
 
 function burst(x, y, count, colors, speed) {
@@ -228,13 +231,16 @@ function damage(o, d, byPlayer = false) {
   const absorbed = Math.min(o.shields, d);
   o.shields -= absorbed;
   o.armor -= d - absorbed;
-  burst(o.x, o.y, 3, absorbed ? ['#8cf', '#fff'] : ['#fc6', '#f80'], 120);
+  if (absorbed) o.shieldFlash = G.time;
+  burst(o.x, o.y, absorbed ? 3 : 6, absorbed ? ['#8cf', '#fff'] : ['#fc6', '#f80', '#fff'], absorbed ? 120 : 180);
+  if (o === G.player && d > absorbed) shake(3);
   if (o.armor <= 0) destroy(o, byPlayer);
 }
 
 // Rewards, standing, and memory only follow kills the player made.
 function destroy(o, byPlayer = false) {
-  burst(o.x, o.y, 40, ['#fff', '#ffd27f', '#ff8c3a', '#ff4b1f'], 260);
+  explode(o);
+  if (G.player) shake(Math.max(0, 10 - dist(o, G.player) / 60));
   if (o === G.player) {
     o.dead = true;
     G.mode = 'dead';
@@ -662,6 +668,7 @@ function updateShots(dt) {
     sh.x += sh.vx * dt; sh.y += sh.vy * dt; sh.life -= dt;
     if (sh.hits === 'player') {
       if (p && !p.dead && dist(sh, p) < SHIPS[p.shipId].size + 2) {
+        p.hitAngle = Math.atan2(sh.y - p.y, sh.x - p.x);
         damage(p, sh.dmg);
         sh.life = 0;
       }
@@ -678,6 +685,7 @@ function updateShots(dt) {
           else if (n.kind === 'trader') changeRep(localGov(), -3);
         }
       }
+      n.hitAngle = Math.atan2(sh.y - n.y, sh.x - n.x);
       damage(n, sh.dmg, sh.hits === 'npcs');
       sh.life = 0;
       break;
@@ -694,7 +702,18 @@ function update(dt) {
 
   for (const n of G.npcs) updateNpc(n, dt);
   updateShots(dt);
-  for (const pt of G.particles) { pt.x += pt.vx * dt; pt.y += pt.vy * dt; pt.life -= dt; }
+  for (const pt of G.particles) {
+    pt.x += pt.vx * dt; pt.y += pt.vy * dt; pt.life -= dt;
+    if (pt.spin) pt.rot += pt.spin * dt;
+    if (pt.grow) pt.size += pt.grow * dt;
+  }
+  // Badly damaged ships trail smoke.
+  for (const o of [...G.npcs, G.player]) {
+    if (o && !o.dead && o.armor < o.maxArmor * 0.35 && Math.random() < dt * 14) {
+      G.particles.push({ type: 'smoke', x: o.x + rand(-4, 4), y: o.y + rand(-4, 4), vx: o.vx * 0.3 + rand(-15, 15), vy: o.vy * 0.3 + rand(-15, 15), life: 1.2, max: 1.2, size: 3, grow: 10 });
+    }
+  }
+  G.shake = Math.max(0, G.shake - dt * 25);
   G.particles = G.particles.filter(pt => pt.life > 0);
   G.npcs = G.npcs.filter(n => !n.dead);
   if (G.target && G.target.dead) G.target = null;
@@ -768,6 +787,7 @@ function drawWorld(W, H) {
   ctx.beginPath();
   ctx.rect(0, 0, viewW, H);
   ctx.clip();
+  if (G.shake) ctx.translate(rand(-G.shake, G.shake), rand(-G.shake, G.shake));
 
   drawStars(cam, viewW, H, p ? { x: p.vx, y: p.vy } : { x: 0, y: 0 });
   drawBackdrop(cam, viewW, H);
@@ -785,23 +805,8 @@ function drawWorld(W, H) {
   for (const n of G.npcs) drawShip(n, npcColor(n), toScreen);
   if (p && !p.dead) drawShip(p, '#9fe0ff', toScreen);
 
-  ctx.lineWidth = 2;
-  for (const sh of G.shots) {
-    const [x, y] = toScreen(sh);
-    ctx.strokeStyle = sh.fromPlayer ? '#7fff7f' : '#ff6060';
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-    ctx.lineTo(x - sh.vx * 0.012, y - sh.vy * 0.012);
-    ctx.stroke();
-  }
-
-  for (const pt of G.particles) {
-    const [x, y] = toScreen(pt);
-    ctx.globalAlpha = Math.max(0, pt.life / pt.max);
-    ctx.fillStyle = pt.color;
-    ctx.fillRect(x - 1.5, y - 1.5, 3, 3);
-  }
-  ctx.globalAlpha = 1;
+  for (const pt of G.particles) drawParticle(pt, ...toScreen(pt));
+  for (const sh of G.shots) drawShot(sh, ...toScreen(sh));
 
   if (G.target) {
     const [x, y] = toScreen(G.target);
