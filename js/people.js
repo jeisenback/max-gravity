@@ -59,7 +59,7 @@ const ROLE_PERKS = {
 const SHIP_WORDS = {
   a: ['Patient', 'Lucky', 'Stubborn', 'Quiet', 'Wandering', 'Iron', 'Honest', 'Restless', 'Silver', 'Distant', 'Second', 'Brave'],
   n: ['Promise', 'Horizon', 'Tortoise', 'Heron', 'Bargain', 'Anvil', 'Lantern', 'Wager', 'Pilgrim', 'Ember', 'Mule', 'Comet'],
-  pa: ['Crimson', 'Hungry', 'Grinning', 'Black', 'Bitter', 'Rusted'],
+  pa: ['Crimson', 'Hungry', 'Silent', 'Black', 'Bitter', 'Rusted'],
   pn: ['Knife', 'Grin', 'Debt', 'Tooth', 'Widow', 'Vulture', 'Hook'],
 };
 
@@ -144,11 +144,6 @@ function makeCrewCandidate(systemId) {
 
 function shipName(pirate) {
   return pirate ? `${pick(SHIP_WORDS.pa)} ${pick(SHIP_WORDS.pn)}` : `${pick(SHIP_WORDS.a)} ${pick(SHIP_WORDS.n)}`;
-}
-
-function captainName(systemId) {
-  const pool = NAMES[cultureOf(systemId)];
-  return `${pick(pool.first)} ${pick(pool.last)}`;
 }
 
 // ---------- passengers aboard ----------

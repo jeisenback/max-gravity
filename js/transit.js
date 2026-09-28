@@ -293,22 +293,26 @@ function startHappening() {
   addRumor();
 }
 
+// The choice dialog, shared by transit events and hails (hail.js).
 // Choices tagged with a crew role only appear when someone aboard fills it, and
 // {crew} in their text becomes that crew member's name.
 function openEvent(ev) {
-  G.transit.event = ev;
-  G.transit.choices = ev.choices.filter(c => !c.role || roleSkill(c.role))
+  const choices = ev.choices.filter(c => !c.role || roleSkill(c.role))
     .map(c => (c.role ? { ...c, label: c.label.replace(/\{crew\}/g, roleHolder(c.role).first) } : c));
-  UI.showEvent(ev, G.transit.choices);
+  G.dialog = { event: ev, choices };
+  if (G.transit) G.transit.event = ev;  // pauses the transit timer
+  UI.showEvent(ev, choices);
 }
 
 function chooseEvent(i) {
-  const c = G.transit.choices[i], result = c.run();
+  const c = G.dialog.choices[i], result = c.run();
   return c.role ? result.replace(/\{crew\}/g, roleHolder(c.role).first) : result;
 }
 
 function finishEvent() {
-  G.transit.event = null;
+  G.dialog = null;
+  if (G.mode === 'hail') G.mode = 'flight';
+  else if (G.transit) G.transit.event = null;
   UI.hide();
 }
 

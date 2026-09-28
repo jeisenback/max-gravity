@@ -22,7 +22,8 @@ const G = {
   offers: [],         // mission offers at the current planet
   bar: [],            // procedural crew looking for work at the current planet
   revenge: null,      // someone who hates you has hired a gun, see people.js
-  mode: 'landed',     // landed | flight | departing | transit | map | dead
+  mode: 'landed',     // landed | flight | departing | transit | hail | map | dead
+  dialog: null,       // open choice dialog (transit event or hail), see transit.js
   mapReturn: null,
   keys: {},
   navPlanet: null,
@@ -264,7 +265,8 @@ function spawnNpc(kind, atPlanet) {
   n.kind = kind;
   n.hostile = kind === 'pirate' && !(G.state.flags.ghost && Math.random() < 0.5);  // Wren's ghost transponder
   n.name = `${kind === 'pirate' ? 'Pirate ' : ''}"${shipName(kind === 'pirate')}"`;
-  n.captain = captainName(G.state.systemId);
+  n.persona = makePerson(cultureOf(G.state.systemId));  // the captain, for hails
+  n.captain = `${n.persona.first} ${n.persona.last}`;
   n.goal = pickGoal(sys, from);
   if (!atPlanet) {
     n.angle = Math.atan2(n.goal.y - y, n.goal.x - x);
@@ -294,7 +296,7 @@ function populateSystem() {
   }
   if (G.revenge) {
     const p = G.revenge, n = spawnNpc('pirate', false);
-    Object.assign(n, { shipId: 'corsair', hostile: true, name: `Hired gun (paid by ${p.first} ${p.last})` });
+    Object.assign(n, { shipId: 'corsair', hostile: true, name: 'Hired gun', payer: `${p.first} ${p.last}` });
     n.shields = SHIPS.corsair.shields;
     n.armor = n.maxArmor = SHIPS.corsair.armor;
     msg(`A ship is closing fast. The captain says ${p.first} ${p.last} sends regards.`);
@@ -315,6 +317,7 @@ function updateNpc(n, dt) {
   let tx, ty, attacking = false;
 
   if (n.hostile && pd < 1600) {
+    if (n.kind === 'pirate' && pd < 1400) pirateDemand(n);
     if (n.armor < n.maxArmor * 0.25 && !n.bountyId) {
       tx = n.x * 2 - p.x; ty = n.y * 2 - p.y;   // flee directly away
     } else {
@@ -862,7 +865,7 @@ function drawHud(W, H) {
 
   ctx.fillStyle = '#56687a';
   ctx.font = '11px monospace';
-  const help = ['Arrows/WASD fly', 'S/Down  reverse', 'Space   fire', 'Tab     target', 'L  select / land', 'M  system map', 'J  burn'];
+  const help = ['Arrows/WASD fly', 'S/Down  reverse', 'Space   fire', 'Tab     target', 'H  hail target', 'L  select / land', 'M  system map', 'J  burn'];
   help.forEach((h, i) => ctx.fillText(h, x, H - 14 - (help.length - 1 - i) * 14));
 }
 
@@ -973,9 +976,12 @@ window.addEventListener('keydown', e => {
     if (e.code === 'KeyL') tryLand();
     else if (e.code === 'KeyJ') tryBurn();
     else if (e.code === 'KeyM') openMap();
+    else if (e.code === 'KeyH') tryHail();
     else if (e.code === 'Tab') { e.preventDefault(); cycleTarget(); }
   } else if (G.mode === 'transit') {
     if (e.code === 'KeyM' && !G.transit.event) openMap();
+  } else if (G.mode === 'hail') {
+    if (e.code === 'Escape') finishEvent();
   } else if (G.mode === 'map') {
     if (e.code === 'KeyM' || e.code === 'Escape') closeMap();
   } else if (G.mode === 'landed') {

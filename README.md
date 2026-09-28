@@ -13,6 +13,8 @@ People remember you. Everyone you carry or hire keeps an opinion of you and a me
 
 Crew fill six roles (engineer, pilot, gunner, quartermaster, slicer, medic) with skill 1-3; perks scale with skill, and role-tagged options appear in transit events when someone aboard fills that role. Five handcrafted crew (Rosa at Ceres Station, Dima at Mars, Kit on Luna, Josef on Ganymede, Wren at The Rook) have personal storylines, and five handcrafted passenger groups still turn up occasionally. Crew and passengers share the ship's berths.
 
+Every ship in flight has a named captain with a personality. Hail them to talk: traders share news, sell reaction mass, and buy cargo mid-flight; pirates announce their demands as they close in, and can be paid off, threatened, fooled by a slicer, or made to give up their own cargo when beaten; hired guns can be outbid; a badly damaged bounty target may surrender.
+
 ## Running
 
 No build step and no dependencies. Open `index.html` in a browser.
@@ -28,6 +30,7 @@ Progress is saved automatically in your browser's localStorage whenever you land
 | Down / S | Turn to face opposite your direction of travel (for braking) |
 | Space | Fire |
 | Tab | Cycle target |
+| H | Hail your target (or the nearest ship): trade, ask for news or reaction mass, pay off or threaten pirates |
 | L | Select nearest body; press again when close and slow to land |
 | M | System map (click a destination to plot a burn; also works in transit) |
 | J | Start the plotted burn (must be clear of local space) |
@@ -40,4 +43,5 @@ Progress is saved automatically in your browser's localStorage whenever you land
 - `js/ui.js` - landed screens: spaceport, commodity exchange, mission board, shipyard
 - `js/crew.js` - handcrafted crew and passenger groups, role perks, and wages
 - `js/people.js` - procedural people: generation, passenger and crew events, memory, and reunions
+- `js/hail.js` - hailing ships in flight
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)

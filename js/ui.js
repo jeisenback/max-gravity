@@ -230,7 +230,7 @@ const UI = {
     const st = G.state, p = this.planet, s = ship();
     switch (action) {
       case 'tab': this.tab = arg; this.tradeNote = null; break;
-      case 'choose': this.showEventResult(G.transit.event.title, chooseEvent(Number(arg))); return;
+      case 'choose': this.showEventResult(G.dialog.event.title, chooseEvent(Number(arg))); return;
       case 'continue': finishEvent(); return;
       case 'takeoff': takeOff(); return;
       case 'map': openMap(); return;
