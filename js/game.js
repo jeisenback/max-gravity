@@ -321,6 +321,7 @@ function destroy(o, byPlayer = false) {
       const m = st.missions[i];
       st.credits += m.pay;
       st.missions.splice(i, 1);
+      Mods.emit('missionDone', m);
       msg(`Bounty complete: ${m.targetName} destroyed. +${fmt(m.pay)} cr`);
       changeRep(m.issuer, 5);
       changeRep('Pirate', -3);

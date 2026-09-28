@@ -31,6 +31,13 @@ You have a standing (-100 to 100) with the Earth Coalition, Mars Republic, Belt 
 
 Outfitters (in the Shipyard tab at shipyards and The Rook) sell guns, heavy rounds, armor, deflectors, reaction mass tanks, cargo pods, drive tuning, passenger berths, and a pirate-only transponder spoofer. Outfits use cargo space and move with you when you change ships.
 
+## Storylines
+
+Besides Cold Water, two shorter storylines are written as storylets (see Writing storylets):
+
+- **The Ice Haulers' Strike.** A Belt haulers' strike, starting with a Guild broadcast on a burn into Belt space after day 12. Smuggle medicine past Coalition customs; how it ends depends on the Belt when you reach Pallas.
+- **Reserve Commission.** Once you are Trusted by the Mars Republic, a Navy officer on Mars or Phobos offers a reserve commission: a raider hunt, a distress call, a war-time call-up or a peacetime run to Ganymede, an order that tests your loyalty to the Belt, and a promotion that remembers what you did.
+
 ## Shipping company
 
 At any shipyard you can buy a ship for your company instead of flying it. It comes with a hired captain on a daily wage. On the Company tab, pick a route from the best round trips from its port (with estimated profit per day). Each game day the ship moves along its route; at each end it sells what it carries and buys what pays at the other end, through the same markets you use, so company trade moves prices too. Raids along the route can cost cargo or repairs, or rarely the ship; skilled captains get through more often. Company ships trade with your credits but never touch the last 5,000 cr, and you get a report each time you dock.
@@ -84,7 +91,7 @@ On a keyboard:
 - `js/company.js` - your shipping company: company ships, captains, trade routes, and the Company tab
 - `js/shiplife.js` - life aboard during a burn: the ship cutaway, crew movement and comms lines, and downtime activities
 - `js/storylets.js` - the storylet engine: story written as data (see Writing storylets below)
-- `js/stories/` - storylines written as storylets; `ice-strike.js` is the Ice Haulers' Strike
+- `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike) and `mars-navy.js` (Reserve Commission, a Mars Navy career)
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
 - `js/audio.js` - sound effects synthesized with Web Audio (no audio files): guns, hits, explosions, engine rumble, docking, burns, comms
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)
@@ -219,6 +226,7 @@ A storylet plays once unless you set `once: false`. A choice whose `when` fails 
 | `unrest` | `{ locationId: n }` changes pirate unrest |
 | `mission` | `{ to, tons, good, pay, days, title, onDone, onFail }` gives a delivery mission; `onDone` and `onFail` are effects |
 | `cancelMission` | drops missions carrying this good, applying their `onFail` |
+| `bounty` | `{ at, name, pay, days, issuer, onDone, onFail }` gives a hunt: the named ship appears when you reach `at` |
 
 Text can use `{planet}`, `{system}`, and `{crew:role}`. Mistakes (unknown conditions or effects, a missing field) are reported in the console, and the storylet is skipped.
 

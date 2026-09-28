@@ -71,6 +71,15 @@ const EFFECTS = {
     for (const m of st.missions.filter(x => x.good === good)) applyEffects(m.onFail);
     st.missions = st.missions.filter(x => x.good !== good);
   },
+  // A bounty: hunt a named ship that appears when you reach `at`. onDone / onFail as for missions.
+  bounty: b => {
+    const st = G.state;
+    st.missions.push({
+      id: st.nextId++, type: 'bounty', targetSystem: b.at, targetName: fill(b.name), issuer: b.issuer || localGov(),
+      title: fill(b.title || `Bounty: destroy ${b.name} near ${SYSTEMS[b.at].name}`), pay: b.pay || 0, deadline: st.day + (b.days || 40),
+      onDone: b.onDone, onFail: b.onFail,
+    });
+  },
   // A delivery mission; onDone / onFail are effects applied when it completes or expires.
   mission: m => {
     const st = G.state, dest = Object.entries(SYSTEMS).find(([, s]) => s.planets.some(p => p.name === m.to));
