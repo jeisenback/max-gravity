@@ -740,31 +740,6 @@ function drawStars(cam, viewW, H, vel) {
   }
 }
 
-function drawShip(o, color, toScreen) {
-  const s = SHIPS[o.shipId], z = s.size;
-  const [sx, sy] = toScreen(o);
-  ctx.save();
-  ctx.translate(sx, sy);
-  ctx.rotate(o.angle);
-  if (o.thrusting) {
-    ctx.fillStyle = Math.random() < 0.5 ? '#ffb347' : '#ff6a00';
-    ctx.beginPath();
-    ctx.moveTo(-0.55 * z, 0.3 * z);
-    ctx.lineTo(-(1.1 + Math.random() * 0.5) * z, 0);
-    ctx.lineTo(-0.55 * z, -0.3 * z);
-    ctx.fill();
-  }
-  ctx.fillStyle = color;
-  ctx.beginPath();
-  ctx.moveTo(z, 0);
-  ctx.lineTo(-0.8 * z, 0.7 * z);
-  ctx.lineTo(-0.5 * z, 0);
-  ctx.lineTo(-0.8 * z, -0.7 * z);
-  ctx.closePath();
-  ctx.fill();
-  ctx.restore();
-}
-
 function npcColor(n) {
   if (n.bountyId) return '#ff2d6f';
   if (n.hostile) return '#ff5f5f';

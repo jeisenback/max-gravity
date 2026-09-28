@@ -63,4 +63,5 @@ On a keyboard:
 - `js/hail.js` - hailing ships in flight
 - `js/story.js` - the Cold Water plot
 - `js/touch.js` - touch controls (joystick, hold and tap buttons)
+- `js/art.js` - ship art: hull silhouettes, sunlight, drive plumes, markings
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)

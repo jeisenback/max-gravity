@@ -367,7 +367,7 @@ function drawTransit(W, H) {
     ctx.fill();
   }
   ctx.restore();
-  drawShip({ shipId: st.shipId, x: cx, y: cy, angle: t.angle, thrusting: false }, '#9fe0ff', o => [o.x, o.y]);
+  drawShip(G.transitShip = Object.assign(G.transitShip || {}, { shipId: st.shipId, x: cx, y: cy, angle: t.angle, thrusting: false, isPlayer: true }), '#9fe0ff', o => [o.x, o.y]);
 
   // Progress
   const barW = Math.min(420, viewW - 40), bx = cx - barW / 2;
