@@ -63,8 +63,8 @@ const UI = {
     const st = G.state, p = this.planet, sys = system(), s = ship();
     const tabs = [
       ['port', 'Spaceport', true],
-      ['trade', 'Commodity Exchange', p.services.includes('trade')],
-      ['missions', 'Mission BBS', p.services.includes('missions')],
+      ['trade', 'Exchange', p.services.includes('trade')],
+      ['missions', 'Missions', p.services.includes('missions')],
       ['shipyard', 'Shipyard', p.services.includes('shipyard')],
       ['crew', 'Crew', true],
     ];
@@ -82,11 +82,12 @@ const UI = {
       </div>
       <div class="tabs">
         ${tabs.map(([id, label, ok]) => `<button data-action="tab" data-arg="${id}" class="${this.tab === id ? 'active' : ''}" ${ok ? '' : 'disabled'}>${label}</button>`).join('')}
-        <span class="spacer"></span>
-        <button data-action="map">System Map</button>
-        <button data-action="takeoff" class="primary">Take Off (T)</button>
       </div>
-      <div class="body">${this.views[this.tab].call(this)}</div>`;
+      <div class="body">${this.views[this.tab].call(this)}</div>
+      <div class="dock">
+        <button data-action="map">System map</button>
+        <button data-action="takeoff" class="primary">Take off${Touch.on ? '' : ' (T)'}</button>
+      </div>`;
   },
 
   views: {
@@ -118,25 +119,24 @@ const UI = {
         const tag = { L: 'low', M: 'med', H: 'high' }[p.prices[c.id]] || '';
         const best = bestSale(p, c.id);
         const avg = held ? Math.round(st.paid[c.id] / held) : 0;
-        return `<tr>
-          <td>${c.name}</td>
-          <td class="num">${pr === null ? '--' : fmt(pr)} <span class="tag ${tag}">${tag}</span></td>
-          <td class="num">${held}${held ? ` <span class="hint">@${fmt(avg)}</span>` : ''}</td>
-          <td>${best ? `${best.planet.name} <span class="tag low">+${fmt(best.profit)}/t</span> <span class="hint">${best.days ? `${best.days}d` : 'local'}</span>` : '<span class="hint">--</span>'}</td>
-          <td class="act">
-            <button data-action="buy" data-arg="${c.id}" ${pr === null ? 'disabled' : ''}>Buy 1</button>
-            <button data-action="buymax" data-arg="${c.id}" ${pr === null ? 'disabled' : ''}>Max</button>
-            <button data-action="sell" data-arg="${c.id}" ${pr === null || !held ? 'disabled' : ''}>Sell 1</button>
-            <button data-action="sellall" data-arg="${c.id}" ${pr === null || !held ? 'disabled' : ''}>All</button>
-          </td>
-        </tr>`;
+        const off = pr === null ? 'disabled' : '', none = pr === null || !held ? 'disabled' : '';
+        return `<div class="trow">
+          <div class="tname">${c.name}</div>
+          <div class="tprice">${pr === null ? '--' : `${fmt(pr)}<span class="mlabel"> cr/t</span>`} <span class="tag ${tag}">${tag}</span></div>
+          <div class="theld"><span class="mlabel">Held </span>${held}${held ? ` <span class="hint">@${fmt(avg)}</span>` : ''}</div>
+          <div class="tbest">${best ? `<span class="mlabel">Sell at </span>${best.planet.name} <span class="tag low">+${fmt(best.profit)}/t</span> <span class="hint">${best.days ? `${best.days}d` : 'local'}</span>` : '<span class="hint">--</span>'}</div>
+          <div class="tact">
+            <button data-action="buy" data-arg="${c.id}" ${off}>Buy 1</button>
+            <button data-action="buymax" data-arg="${c.id}" ${off}>Max</button>
+            <button data-action="sell" data-arg="${c.id}" ${none}>Sell 1</button>
+            <button data-action="sellall" data-arg="${c.id}" ${none}>All</button>
+          </div>
+        </div>`;
       }).join('');
       return `
         ${this.tradeNote ? `<div class="note">${this.tradeNote}</div>` : ''}
-        <table>
-          <tr><th>Commodity</th><th class="num">Price/t</th><th class="num">Held</th><th>Best market (in range)</th><th></th></tr>
-          ${rows}
-        </table>
+        <div class="trow thead"><div class="tname">Commodity</div><div class="tprice">Price/t</div><div class="theld">Held</div><div class="tbest">Best market (in range)</div><div class="tact"></div></div>
+        ${rows}
         <p class="hint">Free cargo space: ${cargoFree()}t. Best market is based on today's prices, which drift a little each day.</p>`;
     },
 
@@ -205,10 +205,10 @@ const UI = {
         </tr>`;
       }).join('');
       return `
-        <table>
+        <div class="scroll"><table>
           <tr><th>Ship</th><th class="num">Cargo</th><th class="num">Berths</th><th class="num">Shd/Arm</th><th class="num">Mass</th><th class="num">Speed</th><th class="num">Guns</th><th class="num">Price</th><th></th></tr>
           ${rows}
-        </table>
+        </table></div>
         <p class="hint">Your ${ship().name} is worth ${fmt(tradeIn)} cr as a trade-in.</p>`;
     },
   },

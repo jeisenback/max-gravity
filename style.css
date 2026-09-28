@@ -1,3 +1,5 @@
+/* Mobile first: phone layout is the default; wider screens get a centered window. */
+
 * { box-sizing: border-box; }
 
 html, body {
@@ -7,58 +9,104 @@ html, body {
   background: #000;
   color: #cfe3ff;
   font-family: ui-monospace, "Courier New", monospace;
+  -webkit-tap-highlight-color: transparent;
 }
 
-canvas { display: block; }
+canvas { display: block; touch-action: none; }
+
+/* ---------- landed screens and dialogs ---------- */
 
 #panel {
   position: absolute;
   inset: 0;
-  margin: auto;
-  width: min(820px, 96vw);
-  height: min(600px, 94vh);
   display: flex;
   flex-direction: column;
   background: #0d1420;
-  border: 2px solid #3a5a80;
-  box-shadow: 0 0 60px #000;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 #panel.hidden { display: none; }
-#panel.event { width: min(560px, 94vw); height: fit-content; }
+#panel.event {
+  inset: auto 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  max-height: 90%;
+  overflow-y: auto;
+  border: 2px solid #3a5a80;
+  box-shadow: 0 0 60px #000;
+  padding: 0;
+}
 
-.event-body { padding: 22px 26px; }
-.event-body h1 { margin: 0 0 12px; font-size: 20px; color: #ffcf7f; }
+@media (min-width: 700px) {
+  #panel {
+    margin: auto;
+    width: min(820px, 96vw);
+    height: min(600px, 94vh);
+    border: 2px solid #3a5a80;
+    box-shadow: 0 0 60px #000;
+    padding: 0;
+  }
+  #panel.event { inset: 0; margin: auto; width: min(560px, 94vw); height: fit-content; top: 0; transform: none; }
+}
+
+.event-body { padding: 18px 16px; }
+.event-body h1 { margin: 0 0 12px; font-size: 19px; color: #ffcf7f; text-wrap: balance; }
 .event-body p { line-height: 1.5; }
 .choices { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
-.choices button { text-align: left; padding: 8px 12px; }
+.choices button { text-align: left; padding: 10px 12px; }
+@media (min-width: 700px) { .event-body { padding: 22px 26px; } }
 
 .hdr {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
-  padding: 14px 18px;
+  gap: 6px 16px;
+  padding: 12px 16px;
   border-bottom: 1px solid #23405f;
   background: linear-gradient(#16233a, #0d1420);
 }
-.hdr h1 { margin: 0; font-size: 22px; }
+.hdr h1 { margin: 0; font-size: 20px; }
 .sub { font-size: 13px; margin-top: 4px; }
-.stats { text-align: right; font-size: 13px; line-height: 1.5; }
+.stats { font-size: 12px; line-height: 1.5; font-variant-numeric: tabular-nums; }
+@media (min-width: 700px) {
+  .hdr { padding: 14px 18px; }
+  .hdr h1 { font-size: 22px; }
+  .stats { text-align: right; font-size: 13px; }
+}
 
+/* Tabs scroll sideways on phones instead of wrapping into a wall of buttons. */
 .tabs {
   display: flex;
   gap: 6px;
   padding: 8px 12px;
   border-bottom: 1px solid #23405f;
-  flex-wrap: wrap;
+  overflow-x: auto;
+  flex-shrink: 0;
 }
-.spacer { flex: 1; }
+.tabs { gap: 4px; padding-inline: 8px; }
+.tabs button { white-space: nowrap; flex: 1 0 auto; padding: 5px 5px; font-size: 12px; }
+@media (min-width: 700px) { .tabs { gap: 6px; padding-inline: 12px; } .tabs button { flex: 0 0 auto; padding: 5px 10px; font-size: 13px; } }
 
-.body { flex: 1; overflow-y: auto; padding: 14px 18px; }
+/* Map and Take off stay in reach at the bottom of the landed screen. */
+.dock {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 8px 12px;
+  border-top: 1px solid #23405f;
+  flex-shrink: 0;
+}
+.dock button { flex: 1 1 0; }
+@media (min-width: 700px) { .dock button { flex: 0 0 auto; } }
+
+.body { flex: 1; overflow-y: auto; padding: 14px 16px; }
 .desc { line-height: 1.5; margin-top: 0; }
 .note { background: #1c2f1c; border-left: 3px solid #5fd35f; padding: 6px 10px; margin: 6px 0; }
 .hint { color: #7d93aa; font-size: 12px; }
 h3 { color: #9ab; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; margin: 18px 0 8px; }
-.row { display: flex; gap: 8px; margin: 12px 0; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0; }
 .foot { margin-top: 24px; text-align: right; }
+@media (min-width: 700px) { .body { padding: 14px 18px; } }
 
 button {
   font: inherit;
@@ -68,18 +116,23 @@ button {
   border: 1px solid #3a5a80;
   padding: 5px 10px;
   cursor: pointer;
+  touch-action: manipulation;
 }
 button:hover:not(:disabled) { background: #264066; }
+button:focus-visible { outline: 2px solid #7fb4ff; outline-offset: 1px; }
 button:disabled { opacity: 0.35; cursor: default; }
 button.active { background: #3a5a80; }
 button.primary { background: #2c5a2c; border-color: #5fd35f; }
 button.primary:hover { background: #3a7a3a; }
 button.link { background: none; border: none; color: #7d93aa; text-decoration: underline; }
+@media (pointer: coarse) { button { min-height: 40px; } }
 
+/* Wide tables (shipyard) scroll inside their own box. */
+.scroll { overflow-x: auto; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
 th { text-align: left; color: #9ab; font-weight: normal; border-bottom: 1px solid #23405f; padding: 6px; }
 td { padding: 6px; border-bottom: 1px solid #16233a; vertical-align: top; }
-.num { text-align: right; }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
 .act { text-align: right; white-space: nowrap; }
 .act button { padding: 3px 7px; }
 .tag { font-size: 10px; padding: 1px 4px; }
@@ -87,18 +140,142 @@ td { padding: 6px; border-bottom: 1px solid #16233a; vertical-align: top; }
 .tag.high { color: #ff9a3c; }
 .tag.med { color: #7d93aa; }
 
+/* Commodity exchange: stacked rows on phones, one line per good on wider screens. */
+.trow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "name price" "held best" "act act";
+  gap: 4px 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid #16233a;
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+.trow.thead { display: none; }
+.tname { grid-area: name; }
+.tprice { grid-area: price; text-align: right; }
+.theld { grid-area: held; color: #9ab; }
+.tbest { grid-area: best; text-align: right; }
+.mlabel { color: #7d93aa; }
+.tact { grid-area: act; display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+@media (min-width: 700px) {
+  .trow {
+    grid-template-columns: 9.5rem 6.5rem 5rem 1fr auto;
+    grid-template-areas: "name price held best act";
+    align-items: center;
+    padding: 6px 0;
+  }
+  .trow.thead { display: grid; color: #9ab; border-bottom-color: #23405f; }
+  .tprice, .theld { text-align: right; }
+  .theld { color: inherit; }
+  .tbest { text-align: left; }
+  .tact { display: flex; gap: 4px; }
+  .mlabel { display: none; }
+  .tact button { padding: 3px 7px; }
+}
+
 .mission button { white-space: nowrap; }
 .mission {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
+  gap: 8px 12px;
   padding: 8px 10px;
   margin-bottom: 6px;
   background: #121c2c;
   border: 1px solid #1f3550;
 }
+.mission > div { flex: 1 1 16rem; }
 
-.dead { margin: auto; text-align: center; padding: 40px; }
+.dead { margin: auto; text-align: center; padding: 40px 16px; }
 .dead h1 { color: #ff6a4a; }
 .dead p { line-height: 1.5; max-width: 480px; margin: 16px auto 24px; }
+
+/* ---------- touch controls ---------- */
+
+#touch {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 210px;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  pointer-events: none;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+#touch[hidden], .tfloat[hidden] { display: none; }
+#touch > * { pointer-events: auto; }
+
+#stick {
+  position: absolute;
+  left: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  border: 2px solid rgba(127, 180, 255, 0.35);
+  background: rgba(20, 40, 70, 0.35);
+  touch-action: none;
+}
+#knob {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 54px;
+  height: 54px;
+  margin: -27px 0 0 -27px;
+  border-radius: 50%;
+  background: rgba(127, 180, 255, 0.45);
+  border: 2px solid rgba(200, 225, 255, 0.7);
+}
+
+.tbtns {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+}
+.tbtns button, .thold, .tfloat {
+  background: rgba(26, 42, 66, 0.8);
+  border: 1px solid rgba(127, 180, 255, 0.5);
+  color: #cfe3ff;
+  font-size: 12px;
+  min-height: 40px;
+  padding: 0 10px;
+  touch-action: none;
+}
+.thold {
+  position: absolute;
+  border-radius: 50%;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+.thold.on { background: rgba(127, 180, 255, 0.45); }
+#fire {
+  right: 16px;
+  bottom: calc(24px + env(safe-area-inset-bottom, 0px));
+  width: 88px;
+  height: 88px;
+  border-color: rgba(255, 110, 90, 0.8);
+}
+#brake {
+  right: 116px;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  width: 62px;
+  height: 62px;
+}
+
+/* Map and Close buttons over the transit screen and the system map. */
+.tfloat {
+  position: absolute;
+  right: 16px;
+  z-index: 2;
+}
+#tmap { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+#tclose { top: calc(16px + env(safe-area-inset-top, 0px)); }

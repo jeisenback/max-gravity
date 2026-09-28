@@ -2,7 +2,7 @@
 
 // Core game: state, flight physics, AI, combat, burns between locations, and rendering.
 
-const HUD_W = 220;
+const HUD_W = 220;          // sidebar width on wide screens; phones get a top strip
 const BURN_DIST = 800;      // must be this far out from local traffic to start a long burn
 const LAND_SPEED = 140;
 const FUEL_PRICE = 2;       // credits per unit of reaction mass
@@ -32,7 +32,7 @@ const G = {
   transit: null,      // burn in progress, see transit.js
   transitStars: null,
   flash: 0, time: 0, spawnTimer: 0,
-  stars: [], W: 0, H: 0, mapPos: null,
+  stars: [], W: 0, H: 0, hudW: HUD_W, mapPos: null,
 };
 
 // ---------- helpers ----------
@@ -567,6 +567,7 @@ function updatePlayer(dt) {
   if (k.right) p.angle += s.turn * dt;
   if (k.reverse && Math.hypot(p.vx, p.vy) > 5) turnToward(p, Math.atan2(-p.vy, -p.vx), dt);
   p.thrusting = !!k.thrust;
+  Touch.steer(p, dt);
   if (k.fire) fire(p);
   physics(p, dt);
 }
@@ -693,7 +694,7 @@ function drawBrackets(x, y, r, color) {
 }
 
 function drawWorld(W, H) {
-  const viewW = W - HUD_W, p = G.player;
+  const viewW = W - G.hudW, p = G.player;
   const cam = p || currentPlanet();
   const toScreen = o => [o.x - cam.x + viewW / 2, o.y - cam.y + H / 2];
 
@@ -765,14 +766,16 @@ function drawWorld(W, H) {
     }
   }
 
-  // Message log, bottom-left.
+  // Message log, bottom-left, above the touch controls when they are showing.
   ctx.font = '13px monospace';
   ctx.textAlign = 'left';
-  const recent = G.messages.filter(m => G.time - m.t < 10).slice(-6);
-  recent.forEach((m, i) => {
+  const bottom = H - 16 - (Touch.on && G.mode === 'flight' ? 220 : 0);
+  const lines = G.messages.filter(m => G.time - m.t < 10).slice(-6)
+    .flatMap(m => wrapText(m.text, viewW - 28).map(l => ({ l, m }))).slice(-8);
+  lines.forEach(({ l, m }, i) => {
     ctx.globalAlpha = Math.min(1, (10 - (G.time - m.t)) / 2);
     ctx.fillStyle = '#cfe3ff';
-    ctx.fillText(m.text, 14, H - 16 - (recent.length - 1 - i) * 18);
+    ctx.fillText(l, 14, bottom - (lines.length - 1 - i) * 17);
   });
   ctx.globalAlpha = 1;
 
@@ -795,17 +798,8 @@ function drawBar(x, y, w, label, val, max, color) {
   ctx.fillRect(x, y + 5, w * Math.max(0, Math.min(1, val / max)), 6);
 }
 
-function drawHud(W, H) {
-  const x0 = W - HUD_W, p = G.player, st = G.state, s = ship(), sys = system();
-  const inTransit = G.mode === 'transit';
-  ctx.fillStyle = '#081018';
-  ctx.fillRect(x0, 0, HUD_W, H);
-  ctx.fillStyle = '#23405f';
-  ctx.fillRect(x0, 0, 2, H);
-
-  // Radar
-  const rx = x0 + HUD_W / 2, ry = 110, R = 95, scale = R / 2500;
-  const center = p || currentPlanet();
+function drawRadar(rx, ry, R) {
+  const p = G.player, scale = R / 2500, center = p || currentPlanet();
   ctx.fillStyle = '#02070c';
   ctx.strokeStyle = '#23405f';
   ctx.beginPath(); ctx.arc(rx, ry, R, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
@@ -816,10 +810,63 @@ function drawHud(W, H) {
     ctx.fillStyle = color;
     ctx.fillRect(rx + dx - sz / 2, ry + dy - sz / 2, sz, sz);
   };
-  if (!inTransit) {
-    for (const pl of sys.planets) blip(pl, '#4a7a4a', 6, true);
-    for (const n of G.npcs) blip(n, npcColor(n), 3, false);
-    if (p) blip(p, '#fff', 3, false);
+  for (const pl of system().planets) blip(pl, '#4a7a4a', R > 50 ? 6 : 4, true);
+  for (const n of G.npcs) blip(n, npcColor(n), 3, false);
+  if (p) blip(p, '#fff', 3, false);
+}
+
+// Phones: a compact strip across the top instead of the sidebar.
+function drawHudCompact(W) {
+  const p = G.player, st = G.state, s = ship(), sys = system(), inTransit = G.mode === 'transit';
+  const h = 78, R = 32, rx = W - R - 12;
+  ctx.fillStyle = 'rgba(8,16,24,0.88)';
+  ctx.fillRect(0, 0, W, h);
+  ctx.fillStyle = '#23405f';
+  ctx.fillRect(0, h, W, 1);
+  if (!inTransit) drawRadar(rx, h / 2, R);
+  const x = 12, w = (inTransit ? W - 12 : rx - R - 14) - x;
+  ctx.textAlign = 'left';
+  ctx.font = 'bold 13px monospace';
+  ctx.fillStyle = inTransit ? '#7fb4ff' : GOV_COLORS[sys.gov];
+  ctx.fillText(inTransit ? `To ${SYSTEMS[G.transit.to].name}` : sys.name, x, 17);
+  ctx.font = '11px monospace';
+  ctx.fillStyle = '#9ab';
+  ctx.textAlign = 'right';
+  ctx.fillText(`Day ${st.day}  ${fmt(st.credits)} cr`, x + w, 17);
+  ctx.textAlign = 'left';
+  const bars = [['SHD', p ? p.shields : s.shields, s.shields, '#4aa3ff'], ['ARM', p ? p.armor : st.armor, p ? p.maxArmor : s.armor, '#ff9a3c'], ['RM', st.fuel, s.fuel, '#5fd35f']];
+  bars.forEach(([label, v, max, color], i) => {
+    const y = 26 + i * 12;
+    ctx.fillStyle = '#9ab';
+    ctx.fillText(label, x, y + 7);
+    ctx.fillStyle = '#1a2533';
+    ctx.fillRect(x + 30, y, w - 30, 7);
+    ctx.fillStyle = color;
+    ctx.fillRect(x + 30, y, (w - 30) * Math.max(0, Math.min(1, v / max)), 7);
+  });
+  ctx.fillStyle = '#cfe3ff';
+  const from = G.transit ? G.transit.to : st.systemId;
+  const burn = st.dest ? ` · Burn ${SYSTEMS[st.dest].name} ${travelDays(from, st.dest)}d/${burnFuel(from, st.dest)}rm` : '';
+  ctx.fillText(wrapText(`Cargo ${cargoUsed()}/${s.cargo}t${burn}`, w)[0], x, 72);
+  if (G.target && p && !inTransit) {
+    ctx.fillStyle = npcColor(G.target);
+    ctx.fillText(wrapText(`Target: ${G.target.name}, ${Math.round(dist(G.target, p))} out`, W - 24)[0], x, h + 16);
+  }
+}
+
+function drawHud(W, H) {
+  if (!G.hudW) return drawHudCompact(W);
+  const x0 = W - HUD_W, p = G.player, st = G.state, s = ship(), sys = system();
+  const inTransit = G.mode === 'transit';
+  ctx.fillStyle = '#081018';
+  ctx.fillRect(x0, 0, HUD_W, H);
+  ctx.fillStyle = '#23405f';
+  ctx.fillRect(x0, 0, 2, H);
+  if (!inTransit) drawRadar(x0 + HUD_W / 2, 110, 95);
+  else {
+    ctx.fillStyle = '#02070c';
+    ctx.strokeStyle = '#23405f';
+    ctx.beginPath(); ctx.arc(x0 + HUD_W / 2, 110, 95, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
   }
 
   ctx.font = '12px monospace';
@@ -879,6 +926,7 @@ function drawHud(W, H) {
     ctx.fillText('none (Tab)', x, y += 16);
   }
 
+  if (Touch.on) return;
   ctx.fillStyle = '#56687a';
   ctx.font = '11px monospace';
   const help = ['Arrows/WASD fly', 'S/Down  reverse', 'Space   fire', 'Tab     target', 'H  hail target', 'L  select / land', 'M  system map', 'J  burn'];
@@ -891,22 +939,25 @@ function drawMap(W, H) {
   const ids = Object.keys(SYSTEMS), st = G.state;
   const from = G.transit ? G.transit.to : st.systemId;
 
-  // Square-root radial scale, so the inner planets are not a smudge next to Neptune.
-  const maxR = Math.sqrt(Math.max(...ids.map(id => SYSTEMS[id].au)));
-  const cx = W / 2, cy = H / 2 + 10, sc = (Math.min(W, H) / 2 - 70) / maxR;
+  // Logarithmic radial scale, so the inner planets are not a smudge next to Neptune,
+  // even on a phone.
+  const mr = au => Math.log(1 + au * 1.5);
+  const maxR = mr(Math.max(...ids.map(id => SYSTEMS[id].au)));
+  const narrow = W < 700;
+  const cx = W / 2, cy = H / 2 + (narrow ? 20 : 10), sc = (Math.min(W, H) / 2 - (narrow ? 44 : 70)) / maxR;
   const P = id => {
-    const s = SYSTEMS[id], a = s.angle * Math.PI / 180, r = Math.sqrt(s.au) * sc;
+    const s = SYSTEMS[id], a = s.angle * Math.PI / 180, r = mr(s.au) * sc;
     return [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
   };
   G.mapPos = P;
 
   ctx.strokeStyle = 'rgba(232,209,122,0.07)';
-  ctx.lineWidth = (Math.sqrt(3.3) - Math.sqrt(2.2)) * sc;
-  ctx.beginPath(); ctx.arc(cx, cy, (Math.sqrt(2.2) + Math.sqrt(3.3)) / 2 * sc, 0, Math.PI * 2); ctx.stroke();
+  ctx.lineWidth = (mr(3.3) - mr(2.2)) * sc;
+  ctx.beginPath(); ctx.arc(cx, cy, (mr(2.2) + mr(3.3)) / 2 * sc, 0, Math.PI * 2); ctx.stroke();
   ctx.strokeStyle = '#14243a';
   ctx.lineWidth = 1;
   for (const au of new Set(ids.map(id => SYSTEMS[id].au))) {
-    ctx.beginPath(); ctx.arc(cx, cy, Math.sqrt(au) * sc, 0, Math.PI * 2); ctx.stroke();
+    ctx.beginPath(); ctx.arc(cx, cy, mr(au) * sc, 0, Math.PI * 2); ctx.stroke();
   }
   const sun = ctx.createRadialGradient(cx, cy, 2, cx, cy, 22);
   sun.addColorStop(0, '#fff6d0');
@@ -936,8 +987,16 @@ function drawMap(W, H) {
     ctx.fillStyle = GOV_COLORS[sys.gov];
     ctx.beginPath(); ctx.arc(x, y, 7, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#cfe3ff';
-    ctx.font = '13px monospace';
-    ctx.fillText(sys.name, x, y + 26);
+    ctx.font = narrow ? '12px monospace' : '13px monospace';
+    if (narrow) {
+      // Beside the dot, pointing away from the Sun, so crowded inner planets stay readable.
+      const right = x >= cx;
+      ctx.textAlign = right ? 'left' : 'right';
+      ctx.fillText(sys.name, x + (right ? 16 : -16), y + 4);
+      ctx.textAlign = 'center';
+    } else {
+      ctx.fillText(sys.name, x, y + 26);
+    }
     ctx.globalAlpha = 1;
     if (id === from) {
       ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
@@ -954,19 +1013,21 @@ function drawMap(W, H) {
   ctx.textAlign = 'left';
   ctx.fillStyle = '#cfe3ff';
   ctx.font = 'bold 18px monospace';
-  ctx.fillText('SYSTEM MAP', 24, 36);
-  ctx.font = '13px monospace';
+  ctx.fillText('SYSTEM MAP', 16, 36);
+  ctx.font = narrow ? '12px monospace' : '13px monospace';
   ctx.fillStyle = '#9ab';
-  ctx.fillText('Click a destination to plot a burn. M or Esc to close.', 24, 58);
-  ctx.fillText('White ring: you. Orange: mission. Dim: beyond a full tank.', 24, 76);
+  const help = `${Touch.on ? 'Tap' : 'Click'} a destination to plot a burn.${Touch.on ? '' : ' M or Esc to close.'} White ring: you. Orange: mission. Dim: beyond a full tank.`;
+  let y = 42;
+  for (const l of wrapText(help, W - (narrow ? 150 : 48))) ctx.fillText(l, 16, y += 16);
+  let status = 'No burn plotted.';
+  ctx.fillStyle = '#9ab';
   if (st.dest) {
     const need = burnFuel(from, st.dest);
     ctx.fillStyle = need > st.fuel ? '#ff7f7f' : '#5fd35f';
-    ctx.fillText(`Burn to ${SYSTEMS[st.dest].name}: ${travelDays(from, st.dest)} days, ${need} reaction mass (you have ${st.fuel})`, 24, H - 24);
-  } else {
-    ctx.fillStyle = '#9ab';
-    ctx.fillText('No burn plotted.', 24, H - 24);
+    status = `Burn to ${SYSTEMS[st.dest].name}: ${travelDays(from, st.dest)} days, ${need} reaction mass (you have ${st.fuel})`;
   }
+  const lines = wrapText(status, W - 32);
+  lines.forEach((l, i) => ctx.fillText(l, 16, H - 20 - (lines.length - 1 - i) * 16));
 }
 
 function render() {
@@ -1008,10 +1069,19 @@ window.addEventListener('keyup', e => { if (KEYMAP[e.code]) G.keys[KEYMAP[e.code
 window.addEventListener('blur', () => { G.keys = {}; });
 
 canvas.addEventListener('click', e => {
+  // In flight, tap or click a ship to target it, or a planet to set it as the nav target.
+  if (G.mode === 'flight') {
+    const p = G.player, at = { x: e.clientX - (G.W - G.hudW) / 2 + p.x, y: e.clientY - G.H / 2 + p.y };
+    const hit = G.npcs.find(n => dist(n, at) < SHIPS[n.shipId].size + 18);
+    if (hit) { G.target = hit; return; }
+    const i = system().planets.findIndex(pl => dist(pl, at) < pl.r + 10);
+    if (i >= 0) { G.navPlanet = i; msg(`Nav target: ${system().planets[i].name}.`); }
+    return;
+  }
   if (G.mode !== 'map' || !G.mapPos) return;
   for (const id of Object.keys(SYSTEMS)) {
     const [x, y] = G.mapPos(id);
-    if (Math.hypot(e.clientX - x, e.clientY - y) < 16) {
+    if (Math.hypot(e.clientX - x, e.clientY - y) < (Touch.on ? 26 : 16)) {
       G.state.dest = id === (G.transit ? G.transit.to : G.state.systemId) ? null : id;
       return;
     }
@@ -1021,6 +1091,7 @@ canvas.addEventListener('click', e => {
 function resize() {
   const dpr = window.devicePixelRatio || 1;
   G.W = window.innerWidth; G.H = window.innerHeight;
+  G.hudW = G.W >= 700 ? HUD_W : 0;
   canvas.width = G.W * dpr; canvas.height = G.H * dpr;
   canvas.style.width = G.W + 'px'; canvas.style.height = G.H + 'px';
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -1033,10 +1104,12 @@ function frame(now) {
   last = now;
   if (['flight', 'departing', 'transit', 'dead'].includes(G.mode)) update(dt);
   render();
+  Touch.sync();
   requestAnimationFrame(frame);
 }
 
 resize();
 initStars();
+Touch.build();
 if (loadSave()) loadGame(); else newGame();
 requestAnimationFrame(frame);

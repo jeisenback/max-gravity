@@ -330,7 +330,8 @@ function wrapText(text, maxW) {
 }
 
 function drawTransit(W, H) {
-  const viewW = W - HUD_W, cx = viewW / 2, cy = H / 2, t = G.transit, st = G.state;
+  const viewW = W - G.hudW, cx = viewW / 2, cy = H / 2, t = G.transit, st = G.state;
+  const narrow = !G.hudW, top = narrow ? 84 : 0;  // clear the phone HUD strip
   ctx.fillStyle = '#02040a';
   ctx.fillRect(0, 0, viewW, H);
 
@@ -364,29 +365,29 @@ function drawTransit(W, H) {
   ctx.textAlign = 'center';
   ctx.fillStyle = '#cfe3ff';
   ctx.font = 'bold 16px monospace';
-  ctx.fillText(`IN TRANSIT  ${system().name} > ${SYSTEMS[t.to].name}`, cx, 34);
+  ctx.fillText(`IN TRANSIT  ${system().name} > ${SYSTEMS[t.to].name}`, cx, top + 34);
   ctx.fillStyle = '#1a2533';
-  ctx.fillRect(bx, 46, barW, 8);
+  ctx.fillRect(bx, top + 46, barW, 8);
   ctx.fillStyle = '#7fb4ff';
-  ctx.fillRect(bx, 46, barW * progress, 8);
+  ctx.fillRect(bx, top + 46, barW * progress, 8);
   ctx.fillStyle = '#56687a';
-  ctx.fillRect(cx - 1, 42, 2, 16);  // flip point
+  ctx.fillRect(cx - 1, top + 42, 2, 16);  // flip point
   const secs = Math.max(0, Math.ceil(t.left));
   ctx.font = '12px monospace';
   ctx.fillStyle = '#9ab';
-  ctx.fillText(`Day ${Math.floor(progress * t.days)} of ${t.days}  -  ${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')} remaining${t.event ? '  (paused)' : ''}`, cx, 72);
+  ctx.fillText(`Day ${Math.floor(progress * t.days)} of ${t.days}  -  ${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')} remaining${t.event ? '  (paused)' : ''}`, cx, top + 72);
 
   // Comms log, top-left
   ctx.textAlign = 'left';
-  const colW = Math.min(360, viewW / 2 - 60);
-  let y = 110;
+  const colW = narrow ? viewW - 40 : Math.min(360, viewW / 2 - 60), maxLines = narrow ? 9 : 16;
+  let y = top + 110;
   ctx.fillStyle = '#9ab';
   ctx.fillText('COMMS', 20, y);
   // Show whole messages, newest last, as many as fit in 16 lines.
   let lines = [];
   for (let i = t.comms.length - 1; i >= 0; i--) {
     const c = t.comms[i], wrapped = wrapText(c, colW);
-    if (lines.length + wrapped.length > 16) break;
+    if (lines.length + wrapped.length > maxLines) break;
     lines = wrapped.map(l => ({ l, recent: i === t.comms.length - 1, market: c.startsWith('[Market]') })).concat(lines);
   }
   for (const { l, recent, market } of lines) {
@@ -401,7 +402,7 @@ function drawTransit(W, H) {
   if (st.crew.length) log.push(`Crew: ${crewMembers().map(c => `${fullName(c)} (${ROLE_NAMES[c.role]})`).join(', ')}`);
   const held = COMMODITIES.filter(c => st.cargo[c.id] > 0).map(c => `${st.cargo[c.id]}t ${c.name}`);
   log.push(`Cargo: ${held.length ? held.join(', ') : 'empty'}`);
-  const logLines = log.flatMap(l => wrapText(l, viewW - 40));
+  const logLines = log.flatMap(l => wrapText(l, viewW - (narrow ? 150 : 40)));  // clear the Map button on phones
   y = H - 20 - logLines.length * 16;
   ctx.fillStyle = '#9ab';
   ctx.fillText("SHIP'S LOG", 20, y);

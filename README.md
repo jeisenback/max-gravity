@@ -25,6 +25,10 @@ Progress is saved automatically in your browser's localStorage whenever you land
 
 ## Controls
 
+On phones and tablets: drag the joystick (bottom left) toward where you want to fly; push it far out to thrust. Hold FIRE and BRAKE on the right. The button row gives Target, Hail, Land, Map, and Burn. Tap a ship to target it, or a planet to set it as your nav target. Landed screens keep System map and Take off at the bottom.
+
+On a keyboard:
+
 | Key | Action |
 | --- | --- |
 | Up / W | Thrust |
@@ -46,4 +50,5 @@ Progress is saved automatically in your browser's localStorage whenever you land
 - `js/crew.js` - handcrafted crew and passenger groups, role perks, and wages
 - `js/people.js` - procedural people: generation, passenger and crew events, memory, and reunions
 - `js/hail.js` - hailing ships in flight
+- `js/touch.js` - touch controls (joystick, hold and tap buttons)
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)
