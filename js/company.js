@@ -214,6 +214,78 @@ function escortLost(n) {
   companyLog(`The ${n.name} was destroyed flying escort near ${system().name}.`);
 }
 
+// ---------- stakes in stations ----------
+// Buy into a port's business, 10% at a time up to MAX_STAKE. A stake pays a daily
+// dividend that follows local conditions: the owning faction's prosperity, raids
+// nearby, and war. Its value moves with the same conditions, so buying in a slump
+// and selling in a boom pays. Selling costs a broker's fee. State is st.stakes.
+
+const STAKE_STEP = 0.1, MAX_STAKE = 0.3, DIVIDEND_RATE = 0.0045, BROKER_FEE = 0.1;
+
+function stakes() {
+  G.state.stakes = G.state.stakes || {};
+  return G.state.stakes;
+}
+
+const stakeSid = pl => Object.keys(SYSTEMS).find(id => SYSTEMS[id].planets.includes(pl));
+// What a 10% share costs in normal times: bigger ports are worth more.
+const stakeBase = pl => 20000 + 10000 * pl.services.length;
+
+// How well the port is doing right now, around 1.0 in normal times.
+function stakeHealth(pl) {
+  const sid = stakeSid(pl), gov = SYSTEMS[sid].gov, p = factionState().prosperity[gov];
+  let h = p === undefined ? 1 : 0.4 + 1.2 * p;
+  h *= 1 - Math.min(0.6, 2 * excessUnrest(sid));
+  if (atWar(gov)) h *= 0.8;
+  return h;
+}
+
+const stakeValue = pl => Math.round(stakeBase(pl) * (0.6 + 0.4 * stakeHealth(pl)));  // per 10% share
+const stakeDividend = (pl, share) => Math.round(stakeBase(pl) * (share / STAKE_STEP) * DIVIDEND_RATE * stakeHealth(pl));
+
+function stakeTick() {
+  const st = G.state;
+  for (const [name, s] of Object.entries(stakes())) {
+    const where = planetNamed(name);
+    if (!where) continue;
+    const d = stakeDividend(where.pl, s.share);
+    st.credits += d; s.dividends += d;
+    st.companyWeek = (st.companyWeek || 0) + d;
+  }
+}
+
+function buyStake() {
+  const st = G.state, pl = currentPlanet(), s = stakes()[pl.name] || { share: 0, paid: 0, dividends: 0 };
+  const cost = stakeValue(pl);
+  st.credits -= cost;
+  s.share = Math.round((s.share + STAKE_STEP) * 10) / 10;
+  s.paid += cost;
+  stakes()[pl.name] = s;
+  companyLog(`Bought a 10% stake in ${pl.name} for ${fmt(cost)} cr (now ${Math.round(s.share * 100)}%).`);
+}
+
+function sellStake(name) {
+  const st = G.state, s = stakes()[name], pl = planetNamed(name).pl;
+  const value = Math.round(stakeValue(pl) * (s.share / STAKE_STEP) * (1 - BROKER_FEE));
+  st.credits += value;
+  delete stakes()[name];
+  companyLog(`Sold your ${Math.round(s.share * 100)}% stake in ${name} for ${fmt(value)} cr after the broker's fee (paid ${fmt(s.paid)}, dividends ${fmt(s.dividends)}).`);
+}
+
+// The offer on the Port tab.
+function stakeOffer() {
+  const st = G.state, pl = currentPlanet();
+  if (!pl || !pl.services.includes('trade')) return '';
+  const s = stakes()[pl.name], share = s ? s.share : 0, cost = stakeValue(pl);
+  const can = share < MAX_STAKE && st.credits >= cost;
+  return `<h3>Invest</h3>
+    <div class="mission"><div>${share ? `You hold a ${Math.round(share * 100)}% stake in ${pl.name}. ` : ''}${share < MAX_STAKE
+      ? `A 10% stake in ${pl.name}'s business costs ${fmt(cost)} cr and pays about ${fmt(stakeDividend(pl, STAKE_STEP))} cr a day in today's conditions.`
+      : `That is as much as the port will sell.`}
+      <div class="hint">Dividends rise in a boom and fall with slumps, raids, and war. Manage stakes on the Company tab.</div></div>
+      <button data-action="sbuy" ${can ? '' : 'disabled'}>Buy 10%</button></div>`;
+}
+
 function sellCompanyShip(i) {
   const st = G.state, ship = fleet()[i], c = st.people[ship.captain.pid];
   st.credits += Math.round(SHIPS[ship.shipId].price * 0.6);
@@ -250,6 +322,13 @@ function companyView() {
     <h3>Your company</h3>
     ${cards || '<p class="hint">No ships yet. At any shipyard, buy a ship for the company: it comes with a captain and runs a trade route while you fly.</p>'}
     <p class="hint">Company ships trade with your credits but never touch the last ${fmt(COMPANY_RESERVE)} cr. Captains are paid daily. Raids on a route can cost cargo or repairs; skilled captains get through more often. Up to ${MAX_ESCORTS} ships docked where you are can fly with you as escorts instead; you pay their reaction mass and repairs.</p>
+    <h3>Stakes</h3>
+    ${Object.keys(stakes()).length ? Object.entries(stakes()).map(([name, s]) => {
+      const pl = planetNamed(name).pl, value = Math.round(stakeValue(pl) * (s.share / STAKE_STEP) * (1 - BROKER_FEE));
+      return `<div class="mission"><div><b>${Math.round(s.share * 100)}% stake in ${name}</b>
+        <div class="hint">Paying about ${fmt(stakeDividend(pl, s.share))} cr/day. Paid ${fmt(s.paid)} cr; dividends so far ${fmt(s.dividends)} cr; sells for ${fmt(value)} cr now.</div></div>
+        <button data-action="ssell" data-arg="${name}">Sell</button></div>`;
+    }).join('') : '<p class="hint">None. Buy a stake from the Port tab of any market.</p>'}
     <h3>Company log</h3>
     ${st.companyLog.length ? st.companyLog.map(l => `<div class="hint">Day ${l.day}: ${l.text}</div>`).join('') : '<p class="hint">Nothing yet.</p>'}`;
 }
@@ -258,10 +337,11 @@ Mods.register({
   id: 'company', name: 'Shipping company', builtin: true,
   init(M) {
     M.on('newDay', companyTick);
+    M.on('newDay', stakeTick);
     // A report on landing: what the company made since you last docked.
     M.on('landed', () => {
       const st = G.state;
-      if (!fleet().length || !st.companyWeek) return;
+      if (!st.companyWeek) return;
       M.note(`Company report: ${st.companyWeek >= 0 ? '+' : ''}${fmt(st.companyWeek)} cr since you last docked, after wages.`);
       st.companyWeek = 0;
     });
@@ -288,5 +368,7 @@ Mods.register({
     M.on('landed', escortsDock);
     M.on('destroyed', n => { if (n.kind === 'escort') escortLost(n); });
     M.action('csell', i => sellCompanyShip(Number(i)));
+    M.action('sbuy', buyStake);
+    M.action('ssell', sellStake);
   },
 });

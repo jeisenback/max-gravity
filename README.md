@@ -35,6 +35,8 @@ At any shipyard you can buy a ship for your company instead of flying it. It com
 
 Up to two company ships docked where you are can fly with you as escorts instead (Company tab). They hold formation, fight anything hostile to you (their kills count as yours), follow you through burns their tanks can make, and improve your odds in transit fights. You pay their reaction mass, and they are repaired at your cost when you dock somewhere with repairs. A destroyed escort is lost, though its captain gets out. Agile ships like the Corvette hold gun range; freighters make strafing passes.
 
+At any market you can also buy a stake in the port's business from the Port tab, 10% at a time up to 30%. Stakes pay a daily dividend that rises in a boom and falls with slumps, raids nearby, and war, and their value moves with the same conditions; sell them from the Company tab (less a 10% broker's fee). In normal times a stake pays for itself in about 230 days: slower than a company ship, but nothing to lose to pirates.
+
 ## Running
 
 No build step and no dependencies. Open `index.html` in a browser.
