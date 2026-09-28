@@ -65,6 +65,89 @@ On a keyboard:
 - `js/story.js` - the Cold Water plot
 - `js/touch.js` - touch controls (joystick, hold and tap buttons)
 - `js/art.js` - art drawn in code: ship hulls, planets, moons, stations, gas giants, and the Sun (all lit from the Sun's real direction), plus tracers, shield flashes, explosions, smoke, and the HUD gauges and labels
+- `js/mods.js` - the mod API (see Modding below)
+- `mods/` - mods; `example-vesta.js` is a working example to copy
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
 - `js/audio.js` - sound effects synthesized with Web Audio (no audio files): guns, hits, explosions, engine rumble, docking, burns, comms
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)
+
+## Modding
+
+Mods are plain script files. A mod can add locations, ships, outfits, trade goods, and transit events, react to what happens in the game, and adjust a few values the game uses. The built-in sound, tutorial, and Cold Water story use the same API (`js/audio.js`, `js/tutorial.js`, and the end of `js/story.js`), so they are worked examples too.
+
+### Installing a mod
+
+Put the file in `mods/` and add a script tag for it in `index.html`, in the marked spot after the built-in systems and before `js/game.js`:
+
+```html
+<script src="mods/example-vesta.js"></script>
+```
+
+Loaded mods are listed at the bottom of the Spaceport screen. To try the example, uncomment its tag: it adds Vesta, a mining rock in the Belt with its own trade good, an outfit, a transit event, and a pirate bounty.
+
+### Writing a mod
+
+```js
+Mods.register({
+  id: 'my-mod',            // unique; also the key for the mod's saved data
+  name: 'My Mod',          // shown in the Spaceport
+  version: '1.0',
+  init(M) {
+    M.addOutfit('scoop', { name: 'Ice scoop', price: 4000, space: 2, max: 1,
+      desc: '+60 reaction mass capacity.', mod: s => { s.fuel += 60; } });
+    M.on('landed', planet => M.note(`Welcome to ${planet.name}.`));
+  },
+});
+```
+
+`init` runs once, when the script loads. Everything it registers applies from then on.
+
+**Content.** Each adder checks for the fields the game needs and logs a console error naming anything missing. Look at the built-in entries in `js/data.js` and `js/transit.js` for full examples.
+
+| Call | Required fields | Notes |
+| --- | --- | --- |
+| `M.addSystem(id, def)` | `name, au, angle, gov, planets` | Each planet needs `name, x, y, r, color, services`. Services: `trade`, `missions`, `shipyard`, `outfitter`, `refuel`. `prices` maps commodity ids to `'L'`, `'M'`, or `'H'`; goods without a level are not traded there. `au` and `angle` place it on the map. A new `gov` name gets a gray color unless you pass `govColor`. |
+| `M.addShip(id, def)` | `name, price, cargo, fuel, shields, armor, accel, maxSpeed, turn, guns, size` | For sale in shipyards unless `forSale: false`. `req` sets the standing needed. Unknown hulls are drawn with the Rock Hopper's art. |
+| `M.addOutfit(id, def)` | `name, price, space, max, desc, mod` | `mod(s)` changes the ship's stats (`guns, shields, armor, fuel, cargo, berths, accel, maxSpeed, dmgMult`). |
+| `M.addCommodity(def)` | `id, name, base` | `base` is the medium price. Add it to planets' `prices` (including built-in ones, as the example does) so it can be traded. |
+| `M.addEvent(def)` | `title, text, choices` | A transit event. Each choice has a `label` and a `run()` that returns the result text; an optional `can()` disables it when false. |
+
+**Events.** `M.on(name, fn)`:
+
+| Event | Arguments |
+| --- | --- |
+| `frame` | `dt` (seconds), every frame |
+| `drawOverlay` | `viewW`, after the world, HUD, or map is drawn; draw on the global `ctx` |
+| `key` | `code` (e.g. `'KeyN'`) |
+| `uiClick` | `action, arg` of a port-screen button |
+| `fire` | `ship` (`ship === G.player` for the player) |
+| `damage` | `ship, shieldHit` |
+| `destroyed` | `ship, byPlayer` |
+| `enterSystem` | `systemId`, after local space is populated |
+| `landed` | `planet` |
+| `takeoff` | `planet` |
+| `burnStart` | `destSystemId` |
+| `arrive` | `systemId` |
+| `eventOpened` | `event`, any choice dialog |
+
+**Filters.** `M.filter(name, fn)`: `fn` gets the current value and returns the new one.
+
+| Filter | Arguments |
+| --- | --- |
+| `price` | `credits, planet, commodityId`: price per ton |
+| `canDock` | `allowed, planet`: `false` when your standing there is Hostile |
+| `portBanner` | `html` shown under the port tabs |
+| `dockButtons` | `html` for buttons left of System map and Take off |
+
+**Other helpers.**
+- `M.state()` returns an object saved with the game, private to your mod.
+- `M.note(text)` shows a note on the port screen when docked, or a line in the flight log otherwise.
+- `M.action(name, fn)` handles a button with `data-action="name"` that your mod put on the port screen. The screen re-renders afterward.
+
+Game state is in the global `G` (`G.state` is the saved part: credits, cargo, day, location). Helpers like `msg`, `openEvent`, `changeRep`, and `rand` are globals you can call.
+
+### When something goes wrong
+
+A mod that throws is switched off, with a console error and a note in the flight log; the game keeps running. If a player removes a mod, saves fall back to built-in content: a ship docked at a removed location moves to Earth, and cargo, outfits, and missions from the mod are dropped.
+
+The API does not cover the story's internals, hails, or new port-screen tabs yet. If you need a hook that isn't here, open an issue describing what you want to build.

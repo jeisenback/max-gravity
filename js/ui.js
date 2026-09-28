@@ -95,13 +95,18 @@ const UI = {
       <div class="tabs">
         ${tabs.map(([id, label, ok]) => `<button data-action="tab" data-arg="${id}" class="${this.tab === id ? 'active' : ''}" ${ok ? '' : 'disabled'}>${label}</button>`).join('')}
       </div>
-      ${tutorialHtml()}
+      ${Mods.filter('portBanner', '')}
       <div class="body">${this.views[this.tab].call(this)}</div>
       <div class="dock">
-        <button data-action="sound">Sound: ${Sfx.on ? 'on' : 'off'}</button>
+        ${Mods.filter('dockButtons', '')}
         <button data-action="map">System map</button>
         <button data-action="takeoff" class="primary">Take off${Touch.on ? '' : ' (T)'}</button>
       </div>`;
+  },
+
+  modList() {
+    const mods = Mods.list.filter(m => !m.builtin);
+    return mods.length ? `<h3>Mods</h3>${mods.map(m => `<div class="hint">${m.name}${m.version ? ` ${m.version}` : ''}${m.failed ? ' (switched off after an error)' : ''}</div>`).join('')}` : '';
   },
 
   views: {
@@ -124,6 +129,7 @@ const UI = {
         <div class="standing">${FACTIONS.map(g => `<div><span style="color:${GOV_COLORS[g]}">${g === 'Pirate' ? 'Pirates' : g}</span> <b>${standingWord(repOf(g))}</b> <span class="hint">${repOf(g) > 0 ? '+' : ''}${repOf(g)}</span></div>`).join('')}</div>
         <h3>Market news</h3>
         ${st.rumors.length ? st.rumors.map(r => `<div class="hint">${r.text} Until day ${r.until}.</div>`).join('') : '<p class="hint">Nothing new. Listen to the comms in transit.</p>'}
+        ${this.modList()}
         <div class="foot">${this.confirmNew
           ? 'Start over? Your current progress will be lost. <button data-action="newgame" data-arg="force">Start over</button> <button data-action="newgame" data-arg="cancel">Keep playing</button>'
           : '<button class="link" data-action="newgame">Start a new game</button>'}</div>`;
@@ -281,8 +287,6 @@ const UI = {
       case 'epilogue': openEvent(epilogueEvent()); return;
       case 'takeoff': takeOff(); return;
       case 'map': openMap(); return;
-      case 'sound': Sfx.toggle(); break;
-      case 'tutorial': endTutorial(); break;
       case 'load': loadGame(); return;
       case 'newgame':
         // Confirmed in the page itself; browser confirm() dialogs are blocked in some embeds.
@@ -393,5 +397,8 @@ const UI = {
 
 UI.el.addEventListener('click', e => {
   const b = e.target.closest('[data-action]');
-  if (b && !b.disabled) { Sfx.click(); UI.act(b.dataset.action, b.dataset.arg); }
+  if (b && !b.disabled) {
+    Mods.emit('uiClick', b.dataset.action, b.dataset.arg);
+    if (Mods.act(b.dataset.action, b.dataset.arg)) { save(); if (G.mode === 'landed' && !G.dialog) UI.render(); } else UI.act(b.dataset.action, b.dataset.arg);
+  }
 });

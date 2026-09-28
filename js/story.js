@@ -716,3 +716,14 @@ function storyPriceMult(planet, cid) {
   if (!e || cid !== 'water' || (planet.name !== 'Ceres Station' && planet.name !== 'Pallas Refinery')) return 1;
   return { belt: 0.8, truth: 0.8, mars: 1, earth: 1.2, aquilon: 1.5 }[e];
 }
+
+Mods.register({
+  id: 'cold-water', name: 'Cold Water', builtin: true,
+  init(M) {
+    M.on('enterSystem', storyInSystem);
+    M.on('landed', storyOnLanding);
+    M.on('takeoff', storyOnTakeoff);
+    M.filter('price', (v, planet, cid) => v * storyPriceMult(planet, cid));
+    M.filter('canDock', (ok, planet) => ok || storyDockingOverride(planet));
+  },
+});

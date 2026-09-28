@@ -88,7 +88,7 @@ function price(planet, cid) {
   const c = COMMODITIES.find(c => c.id === cid);
   const wobble = 1 + 0.08 * Math.sin(G.state.day * 0.9 + hash(planet.name + cid));
   const rumor = G.state.rumors.find(r => r.planet === planet.name && r.cid === cid && r.until >= G.state.day);
-  return Math.round(c.base * PRICE_MULT[level] * wobble * (rumor ? rumor.mult : 1) * storyPriceMult(planet, cid));
+  return Math.round(Mods.filter('price', c.base * PRICE_MULT[level] * wobble * (rumor ? rumor.mult : 1), planet, cid));
 }
 
 // Most profitable place within one full tank to sell a commodity bought here, at today's
@@ -152,8 +152,20 @@ function loadGame() {
   G.state.rep = G.state.rep || {};        // saves from before factions and outfitting
   G.state.outfits = G.state.outfits || {};
   G.state.story = G.state.story || { stage: 0, next: STORY_START_DAY, log: [] };  // saves from before the story
+  dropMissingModContent(G.state);
   resetWorld();
   landAt(currentPlanet(), ['Save loaded. Welcome back, captain.']);
+}
+
+// A save can name content from a mod that has since been removed. Fall back to
+// built-in content rather than crash.
+function dropMissingModContent(st) {
+  if (!SYSTEMS[st.systemId] || !currentPlanet()) Object.assign(st, { systemId: 'earth', planet: 'Earth' });
+  if (st.dest && !SYSTEMS[st.dest]) st.dest = null;
+  if (!SHIPS[st.shipId]) st.shipId = 'shuttle';
+  for (const id of Object.keys(st.outfits)) if (!OUTFITS[id]) delete st.outfits[id];
+  for (const id of Object.keys(st.cargo)) if (!COMMODITIES.some(c => c.id === id)) delete st.cargo[id];
+  st.missions = st.missions.filter(m => SYSTEMS[m.destSystem || m.targetSystem || st.systemId]);
 }
 
 function resetWorld() {
@@ -216,7 +228,7 @@ function fire(o, hits = 'player') {
       team: isPlayer ? 'player' : hits === 'player' ? 'hostile' : 'ally',
     });
   }
-  Sfx.laser(o);
+  Mods.emit('fire', o);
   const m = s.size * 1.9;  // muzzle flash at the nose
   G.particles.push({ type: 'flash', x: o.x + Math.cos(o.angle) * m, y: o.y + Math.sin(o.angle) * m, vx: o.vx, vy: o.vy, life: 0.06, max: 0.06, size: 7 });
 }
@@ -233,7 +245,7 @@ function damage(o, d, byPlayer = false) {
   o.shields -= absorbed;
   o.armor -= d - absorbed;
   if (absorbed) o.shieldFlash = G.time;
-  Sfx.hit(o, absorbed > 0);
+  Mods.emit('damage', o, absorbed > 0);
   burst(o.x, o.y, absorbed ? 3 : 6, absorbed ? ['#8cf', '#fff'] : ['#fc6', '#f80', '#fff'], absorbed ? 120 : 180);
   if (o === G.player && d > absorbed) shake(3);
   if (o.armor <= 0) destroy(o, byPlayer);
@@ -242,7 +254,7 @@ function damage(o, d, byPlayer = false) {
 // Rewards, standing, and memory only follow kills the player made.
 function destroy(o, byPlayer = false) {
   explode(o);
-  Sfx.boom(o);
+  Mods.emit('destroyed', o, byPlayer);
   if (G.player) shake(Math.max(0, 10 - dist(o, G.player) / 60));
   if (o === G.player) {
     o.dead = true;
@@ -375,7 +387,7 @@ function populateSystem() {
       msg(`Sensors detect ${m.targetName} in local space.`);
     }
   }
-  storyInSystem();
+  Mods.emit('enterSystem', G.state.systemId);
   G.spawnTimer = 15;
 }
 
@@ -454,7 +466,7 @@ function tryLand() {
     msg('Moving too fast to land. Slow down (S / Down turns you around).');
     return;
   }
-  if (repOf(localGov()) <= -50 && !storyDockingOverride(n.pl)) {
+  if (!Mods.filter('canDock', repOf(localGov()) > -50, n.pl)) {
     msg(`Docking denied. The ${localGov() === 'Pirate' ? 'pirates here' : localGov()} will not let your ship land.`);
     return;
   }
@@ -503,9 +515,8 @@ function landAt(planet, notes) {
     ? Array.from({ length: randInt(1, 3) }, () => makeCrewCandidate(G.state.systemId)) : [];
   notes = notes.concat(meetContacts(planet));
   save();
-  Sfx.dock();
   UI.openLanded(planet, notes);
-  storyOnLanding(planet);
+  Mods.emit('landed', planet);
 }
 
 function takeOff() {
@@ -517,8 +528,7 @@ function takeOff() {
   G.mode = 'flight';
   G.navPlanet = null;
   populateSystem();
-  storyOnTakeoff();
-  Sfx.launch();
+  Mods.emit('takeoff', pl);
   UI.hide();
 }
 
@@ -551,7 +561,7 @@ function tryBurn() {
   G.burnAngle = Math.atan2(to.y - from.y, to.x - from.x);
   G.departTimer = 1.2;
   G.mode = 'departing';
-  Sfx.burn();
+  Mods.emit('burnStart', st.dest);
   msg(`Burning for ${SYSTEMS[st.dest].name}.`);
 }
 
@@ -580,7 +590,7 @@ function arrive() {
   p.vx = Math.cos(a) * s.maxSpeed; p.vy = Math.sin(a) * s.maxSpeed;
   G.mode = 'flight';
   G.flash = 1;
-  Sfx.arrive();
+  Mods.emit('arrive', st.systemId);
   G.navPlanet = null;
   const sys = system();
   msg(`Arrived at ${sys.name} (${sys.gov}). Day ${st.day}.`);
@@ -1112,7 +1122,7 @@ function render() {
     if (G.mode === 'transit') drawTransit(W, H); else drawWorld(W, H);
     drawHud(W, H);
   }
-  drawTutorial(G.mode === 'map' ? W : W - G.hudW);
+  Mods.emit('drawOverlay', G.mode === 'map' ? W : W - G.hudW);
 }
 
 // ---------- input & boot ----------
@@ -1125,7 +1135,7 @@ const KEYMAP = {
 window.addEventListener('keydown', e => {
   if (KEYMAP[e.code]) { G.keys[KEYMAP[e.code]] = true; e.preventDefault(); }
   if (e.repeat) return;
-  if (e.code === 'KeyN') { Sfx.toggle(); if (G.mode === 'landed' && !G.dialog) UI.render(); }
+  Mods.emit('key', e.code);
   if (G.mode === 'flight') {
     if (e.code === 'KeyL') tryLand();
     else if (e.code === 'KeyJ') tryBurn();
@@ -1182,8 +1192,7 @@ function frame(now) {
   if (['flight', 'departing', 'transit', 'dead'].includes(G.mode)) update(dt);
   render();
   Touch.sync();
-  Sfx.engine();
-  tutorialTick(dt);
+  Mods.emit('frame', dt);
   requestAnimationFrame(frame);
 }
 

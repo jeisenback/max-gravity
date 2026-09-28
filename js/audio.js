@@ -114,3 +114,26 @@ document.addEventListener('visibilitychange', () => {
   if (!Sfx.ctx) return;
   if (document.hidden) Sfx.ctx.suspend(); else Sfx.ctx.resume();
 });
+
+Mods.register({
+  id: 'sound', name: 'Sound', builtin: true,
+  init(M) {
+    M.on('fire', o => Sfx.laser(o));
+    M.on('damage', (o, shield) => Sfx.hit(o, shield));
+    M.on('destroyed', o => Sfx.boom(o));
+    M.on('landed', () => Sfx.dock());
+    M.on('takeoff', () => Sfx.launch());
+    M.on('burnStart', () => Sfx.burn());
+    M.on('arrive', () => Sfx.arrive());
+    M.on('eventOpened', () => Sfx.comms());
+    M.on('uiClick', () => Sfx.click());
+    M.on('frame', () => Sfx.engine());
+    M.on('key', code => {
+      if (code !== 'KeyN') return;
+      Sfx.toggle();
+      if (G.mode === 'landed' && !G.dialog) UI.render();
+    });
+    M.filter('dockButtons', html => `${html}<button data-action="sound">Sound: ${Sfx.on ? 'on' : 'off'}</button>`);
+    M.action('sound', () => Sfx.toggle());
+  },
+});

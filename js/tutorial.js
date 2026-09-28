@@ -67,7 +67,8 @@ function drawTutorial(viewW) {
   if (!tutorialOn() || !['flight', 'departing', 'transit', 'map'].includes(G.mode)) return;
   const i = G.state.tutorial, step = TUTORIAL[i];
   if (step.last) return;
-  const w = Math.min(viewW - 24, 440), x = (viewW - w) / 2;
+  const w = Math.min(viewW - 24, 440);
+  const x = G.mode === 'map' && G.hudW ? viewW - w - 16 : (viewW - w) / 2;  // desktop map: clear of the orbits
   ctx.font = '13px "IBM Plex Mono", monospace';
   const lines = wrapText(step.text(), w - 28), h = 34 + lines.length * 17;
   // Clear of the map legend, the transit title, and the compact phone HUD.
@@ -82,3 +83,13 @@ function drawTutorial(viewW) {
   ctx.fillStyle = '#d4e4f5';
   lines.forEach((l, n) => ctx.fillText(l, x + 14, y + 38 + n * 17));
 }
+
+Mods.register({
+  id: 'tutorial', name: 'Tutorial', builtin: true,
+  init(M) {
+    M.on('frame', tutorialTick);
+    M.on('drawOverlay', drawTutorial);
+    M.filter('portBanner', html => html + tutorialHtml());
+    M.action('tutorial', endTutorial);
+  },
+});
