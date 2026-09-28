@@ -63,5 +63,5 @@ On a keyboard:
 - `js/hail.js` - hailing ships in flight
 - `js/story.js` - the Cold Water plot
 - `js/touch.js` - touch controls (joystick, hold and tap buttons)
-- `js/art.js` - art drawn in code: ship hulls, planets, moons, stations, gas giants, and the Sun (all lit from the Sun's real direction), plus tracers, shield flashes, explosions, and smoke
+- `js/art.js` - art drawn in code: ship hulls, planets, moons, stations, gas giants, and the Sun (all lit from the Sun's real direction), plus tracers, shield flashes, explosions, smoke, and the HUD gauges and labels
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)

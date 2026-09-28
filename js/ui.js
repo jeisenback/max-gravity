@@ -22,9 +22,17 @@ const UI = {
     this.el.classList.remove('hidden', 'event');
   },
 
+  // Accent color for the panel: the local faction's, or a neutral blue.
+  setAccent(color) {
+    this.el.style.setProperty('--accent', color || '#6fb0ff');
+  },
+
   showEvent(ev, choices) {
+    const where = G.mode === 'hail' ? 'Comms channel' : G.mode === 'transit' ? 'In transit' : G.state.planet;
+    this.setAccent(G.mode === 'hail' ? '#6fb0ff' : G.mode === 'transit' ? '#9fb4ff' : GOV_COLORS[system().gov]);
     this.el.innerHTML = `
       <div class="event-body">
+        <div class="eyebrow">${where}</div>
         <h1>${ev.title}</h1>
         <p>${ev.text}</p>
         <div class="choices">
@@ -38,6 +46,7 @@ const UI = {
   showEventResult(title, text) {
     this.el.innerHTML = `
       <div class="event-body">
+        <div class="eyebrow">${G.mode === 'hail' ? 'Comms channel' : G.mode === 'transit' ? 'In transit' : G.state.planet}</div>
         <h1>${title}</h1>
         <p>${text}</p>
         <div class="choices"><button data-action="continue" class="primary">Continue</button></div>
@@ -51,6 +60,7 @@ const UI = {
   showDead() {
     this.el.innerHTML = `
       <div class="dead">
+        <div class="eyebrow">Transponder lost</div>
         <h1>Ship Destroyed</h1>
         <p>Your ${ship().name} breaks apart in a silent bloom of fire. The insurance company is not returning your calls.</p>
         <button data-action="load" class="primary">Load last save</button>
@@ -68,11 +78,13 @@ const UI = {
       ['shipyard', 'Shipyard', p.services.includes('shipyard') || p.services.includes('outfitter')],
       ['crew', 'Crew', true],
     ];
+    this.setAccent(GOV_COLORS[sys.gov]);
     this.el.innerHTML = `
       <div class="hdr">
         <div>
+          <div class="eyebrow">Docked &middot; ${sys.name}</div>
           <h1>${p.name}</h1>
-          <div class="sub" style="color:${GOV_COLORS[sys.gov]}">${sys.name} &middot; ${sys.gov}</div>
+          <div class="sub" style="color:${GOV_COLORS[sys.gov]}">${sys.gov}</div>
         </div>
         <div class="stats">
           Day ${st.day} &middot; ${s.name}<br>

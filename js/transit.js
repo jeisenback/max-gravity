@@ -374,7 +374,7 @@ function drawTransit(W, H) {
   const progress = Math.min(1, 1 - t.left / t.total);
   ctx.textAlign = 'center';
   ctx.fillStyle = '#cfe3ff';
-  ctx.font = 'bold 16px monospace';
+  ctx.font = `600 18px ${LABEL_FONT}`;
   ctx.fillText(`IN TRANSIT  ${system().name} > ${SYSTEMS[t.to].name}`, cx, top + 34);
   ctx.fillStyle = '#1a2533';
   ctx.fillRect(bx, top + 46, barW, 8);
@@ -383,7 +383,7 @@ function drawTransit(W, H) {
   ctx.fillStyle = '#56687a';
   ctx.fillRect(cx - 1, top + 42, 2, 16);  // flip point
   const secs = Math.max(0, Math.ceil(t.left));
-  ctx.font = '12px monospace';
+  ctx.font = '12px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
   ctx.fillText(`Day ${Math.floor(progress * t.days)} of ${t.days}  -  ${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')} remaining${t.event ? '  (paused)' : ''}`, cx, top + 72);
 

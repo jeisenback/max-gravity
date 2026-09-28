@@ -796,7 +796,7 @@ function drawWorld(W, H) {
     const [x, y] = toScreen(pl);
     drawBody(pl, x, y);
     ctx.fillStyle = '#9ab';
-    ctx.font = '12px monospace';
+    ctx.font = '12px "IBM Plex Mono", monospace';
     ctx.textAlign = 'center';
     ctx.fillText(pl.name, x, y + pl.r + 16);
     if (G.navPlanet === i) drawBrackets(x, y, pl.r + 10, '#5fd35f');
@@ -833,7 +833,7 @@ function drawWorld(W, H) {
   }
 
   // Message log, bottom-left, above the touch controls when they are showing.
-  ctx.font = '13px monospace';
+  ctx.font = '13px "IBM Plex Mono", monospace';
   ctx.textAlign = 'left';
   const bottom = H - 16 - (Touch.on && G.mode === 'flight' ? 220 : 0);
   const lines = G.messages.filter(m => G.time - m.t < 10).slice(-6)
@@ -853,22 +853,25 @@ function drawWorld(W, H) {
 }
 
 function drawBar(x, y, w, label, val, max, color) {
-  ctx.fillStyle = '#9ab';
-  ctx.fillText(label, x, y);
+  hudLabel(label, x, y);
+  ctx.font = '12px "IBM Plex Mono", monospace';
+  ctx.fillStyle = '#d4e4f5';
   ctx.textAlign = 'right';
   ctx.fillText(`${Math.max(0, Math.round(val))}/${Math.round(max)}`, x + w, y);
   ctx.textAlign = 'left';
-  ctx.fillStyle = '#1a2533';
-  ctx.fillRect(x, y + 5, w, 6);
-  ctx.fillStyle = color;
-  ctx.fillRect(x, y + 5, w * Math.max(0, Math.min(1, val / max)), 6);
+  gauge(x, y + 5, w, 7, val / max, color);
 }
 
 function drawRadar(rx, ry, R) {
   const p = G.player, scale = R / 2500, center = p || currentPlanet();
   ctx.fillStyle = '#02070c';
-  ctx.strokeStyle = '#23405f';
+  ctx.strokeStyle = GOV_COLORS[system().gov] || '#23405f';
+  ctx.lineWidth = 1;
   ctx.beginPath(); ctx.arc(rx, ry, R, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
+  // Range rings and crosshair.
+  ctx.strokeStyle = '#14263a';
+  for (const f of [1 / 3, 2 / 3]) { ctx.beginPath(); ctx.arc(rx, ry, R * f, 0, Math.PI * 2); ctx.stroke(); }
+  ctx.beginPath(); ctx.moveTo(rx - R, ry); ctx.lineTo(rx + R, ry); ctx.moveTo(rx, ry - R); ctx.lineTo(rx, ry + R); ctx.stroke();
   const blip = (o, color, sz, clamp) => {
     let dx = (o.x - center.x) * scale, dy = (o.y - center.y) * scale;
     const d = Math.hypot(dx, dy);
@@ -892,10 +895,10 @@ function drawHudCompact(W) {
   if (!inTransit) drawRadar(rx, h / 2, R);
   const x = 12, w = (inTransit ? W - 12 : rx - R - 14) - x;
   ctx.textAlign = 'left';
-  ctx.font = 'bold 13px monospace';
+  ctx.font = `600 15px ${LABEL_FONT}`;
   ctx.fillStyle = inTransit ? '#7fb4ff' : GOV_COLORS[sys.gov];
   ctx.fillText(inTransit ? `To ${SYSTEMS[G.transit.to].name}` : sys.name, x, 17);
-  ctx.font = '11px monospace';
+  ctx.font = '11px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
   ctx.textAlign = 'right';
   ctx.fillText(`Day ${st.day}  ${fmt(st.credits)} cr`, x + w, 17);
@@ -903,13 +906,10 @@ function drawHudCompact(W) {
   const bars = [['SHD', p ? p.shields : s.shields, s.shields, '#4aa3ff'], ['ARM', p ? p.armor : st.armor, p ? p.maxArmor : s.armor, '#ff9a3c'], ['RM', st.fuel, s.fuel, '#5fd35f']];
   bars.forEach(([label, v, max, color], i) => {
     const y = 26 + i * 12;
-    ctx.fillStyle = '#9ab';
-    ctx.fillText(label, x, y + 7);
-    ctx.fillStyle = '#1a2533';
-    ctx.fillRect(x + 30, y, w - 30, 7);
-    ctx.fillStyle = color;
-    ctx.fillRect(x + 30, y, (w - 30) * Math.max(0, Math.min(1, v / max)), 7);
+    hudLabel(label, x, y + 7);
+    gauge(x + 34, y, w - 34, 7, v / max, color);
   });
+  ctx.font = '11px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#cfe3ff';
   const from = G.transit ? G.transit.to : st.systemId;
   const burn = st.dest ? ` · Burn ${SYSTEMS[st.dest].name} ${travelDays(from, st.dest)}d/${burnFuel(from, st.dest)}rm` : '';
@@ -935,14 +935,14 @@ function drawHud(W, H) {
     ctx.beginPath(); ctx.arc(x0 + HUD_W / 2, 110, 95, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
   }
 
-  ctx.font = '12px monospace';
+  ctx.font = '12px "IBM Plex Mono", monospace';
   ctx.textAlign = 'left';
   const x = x0 + 14, w = HUD_W - 28;
   let y = 228;
   ctx.fillStyle = inTransit ? '#7fb4ff' : GOV_COLORS[sys.gov];
-  ctx.font = 'bold 14px monospace';
+  ctx.font = `600 17px ${LABEL_FONT}`;
   ctx.fillText(inTransit ? 'In transit' : sys.name, x, y);
-  ctx.font = '12px monospace';
+  ctx.font = '12px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
   ctx.fillText(inTransit ? `To ${SYSTEMS[G.transit.to].name}` : `${sys.gov}`, x, y += 16);
   ctx.fillText(`Day ${st.day}`, x, y += 16);
@@ -960,8 +960,8 @@ function drawHud(W, H) {
   ctx.fillText(`Cargo:   ${cargoUsed()}/${s.cargo}t`, x, y += 18);
 
   y += 28;
-  ctx.fillStyle = '#9ab';
-  ctx.fillText('NAV', x, y);
+  hudLabel('Nav', x, y);
+  ctx.font = '12px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#cfe3ff';
   const nav = G.navPlanet !== null && p ? system().planets[G.navPlanet] : null;
   ctx.fillText(nav ? `${nav.name} (${Math.round(dist(nav, p))})` : 'none (L)', x, y += 16);
@@ -974,8 +974,8 @@ function drawHud(W, H) {
   }
 
   y += 28;
-  ctx.fillStyle = '#9ab';
-  ctx.fillText('TARGET', x, y);
+  hudLabel('Target', x, y);
+  ctx.font = '12px "IBM Plex Mono", monospace';
   if (G.target && p) {
     const t = G.target;
     ctx.fillStyle = npcColor(t);
@@ -994,7 +994,7 @@ function drawHud(W, H) {
 
   if (Touch.on) return;
   ctx.fillStyle = '#56687a';
-  ctx.font = '11px monospace';
+  ctx.font = '11px "IBM Plex Mono", monospace';
   const help = ['Arrows/WASD fly', 'S/Down  reverse', 'Space   fire', 'Tab     target', 'H  hail target', 'L  select / land', 'M  system map', 'J  burn'];
   help.forEach((h, i) => ctx.fillText(h, x, H - 14 - (help.length - 1 - i) * 14));
 }
@@ -1053,7 +1053,7 @@ function drawMap(W, H) {
     ctx.fillStyle = GOV_COLORS[sys.gov];
     ctx.beginPath(); ctx.arc(x, y, 7, 0, Math.PI * 2); ctx.fill();
     ctx.fillStyle = '#cfe3ff';
-    ctx.font = narrow ? '12px monospace' : '13px monospace';
+    ctx.font = narrow ? '12px "IBM Plex Mono", monospace' : '13px "IBM Plex Mono", monospace';
     if (narrow) {
       // Beside the dot, pointing away from the Sun, so crowded inner planets stay readable.
       const right = x >= cx;
@@ -1078,9 +1078,9 @@ function drawMap(W, H) {
 
   ctx.textAlign = 'left';
   ctx.fillStyle = '#cfe3ff';
-  ctx.font = 'bold 18px monospace';
+  ctx.font = `600 20px ${LABEL_FONT}`;
   ctx.fillText('SYSTEM MAP', 16, 36);
-  ctx.font = narrow ? '12px monospace' : '13px monospace';
+  ctx.font = narrow ? '12px "IBM Plex Mono", monospace' : '13px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
   const help = `${Touch.on ? 'Tap' : 'Click'} a destination to plot a burn.${Touch.on ? '' : ' M or Esc to close.'} White ring: you. Orange: mission. Dim: beyond a full tank.`;
   let y = 42;

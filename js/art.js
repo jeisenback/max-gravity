@@ -598,3 +598,26 @@ function explode(o) {
   }
   burst(o.x, o.y, 24, ['#fff', '#ffd27f', '#ff8c3a'], 280);
 }
+
+// ==================== HUD pieces ====================
+
+const LABEL_FONT = '"Chakra Petch", ui-sans-serif, sans-serif';
+
+// A small spaced-out uppercase label, like a console legend.
+function hudLabel(text, x, y, color = '#7f95ab') {
+  ctx.font = `600 11px ${LABEL_FONT}`;
+  ctx.fillStyle = color;
+  ctx.letterSpacing = '2px';
+  ctx.fillText(text.toUpperCase(), x, y);
+  ctx.letterSpacing = '0px';
+}
+
+// A segmented gauge: lit segments for the filled fraction.
+function gauge(x, y, w, h, frac, color) {
+  const n = Math.max(8, Math.round(w / 8)), gap = 2, seg = (w - gap * (n - 1)) / n;
+  const lit = Math.round(Math.max(0, Math.min(1, frac)) * n);
+  for (let i = 0; i < n; i++) {
+    ctx.fillStyle = i < lit ? color : '#16243a';
+    ctx.fillRect(x + i * (seg + gap), y, seg, h);
+  }
+}
