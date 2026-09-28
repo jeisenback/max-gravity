@@ -16,7 +16,8 @@ const paxAboard = () => G.state.missions.filter(m => m.type === 'passenger');
 const berthsUsed = () => G.state.crew.length + paxAboard().reduce((t, m) => t + m.pax, 0);
 const berthsFree = () => ship().berths - berthsUsed();
 const playerGuns = () => ship().guns + (roleSkill('gunner') ? 1 : 0);
-const fightOdds = () => 0.3 + playerGuns() * 0.15 + roleSkill('gunner') * 0.03 + (G.state.flags.kitSharp ? 0.1 : 0);
+const fightOdds = () => 0.3 + playerGuns() * 0.15 + roleSkill('gunner') * 0.03 + (G.state.flags.kitSharp ? 0.1 : 0)
+  + (G.state.fleet || []).filter(s => s.escort).length * 0.1;  // escorts fly with you
 const slicerOdds = () => 0.6 + roleSkill('slicer') * 0.1;
 const wage = id => person(id).wage * (id === 'rosa' && G.state.flags.rosaHalfWage ? 0.5 : 1);
 

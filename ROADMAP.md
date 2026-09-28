@@ -10,7 +10,7 @@ Long-term milestones, in order. Each builds on the ones before it.
 - The Cold Water story becomes one case of this general system.
 
 ## 2. Your own shipping company
-- Escorts that fly with you in combat.
+- **Escorts that fly with you in combat** (done).
 - **Extra ships crewed by hired captains that run trade routes on their own** (done).
 - Stakes in stations (a Ceres water depot, a Phobos yard) that pay out based on the region's economy.
 

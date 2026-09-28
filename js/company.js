@@ -140,6 +140,80 @@ function companyTick() {
   }
 }
 
+// ---------- escorts ----------
+// A company ship docked where you are can fly with you instead of trading (up to
+// MAX_ESCORTS). Escorts hold formation, fight whatever is hostile to you, follow you
+// through burns their tanks can make (you pay their reaction mass), and are repaired
+// at your cost when you dock somewhere with repairs. Damage carries over between fights.
+
+const MAX_ESCORTS = 2;
+const escorts = () => fleet().filter(s => s.escort);
+
+function spawnEscorts() {
+  const p = G.player;
+  if (!p) return;
+  escorts().forEach((s, i) => {
+    const st = SHIPS[s.shipId], c = G.state.people[s.captain.pid];
+    const n = makeShip(s.shipId, p.x - 80, p.y + (i ? 70 : -70), p.angle);
+    Object.assign(n, {
+      kind: 'escort', hunts: 'hostiles', fleetId: s.id, name: `${st.name} "${s.name}"`, slotX: -90, slotY: i ? 80 : -80,
+      armor: s.armor === undefined ? st.armor : s.armor, maxArmor: st.armor,
+      persona: c || makePerson(), captain: c ? `${c.first} ${c.last}` : 'unknown', vx: p.vx, vy: p.vy,
+    });
+    G.npcs.push(n);
+  });
+}
+
+// Keep each escort's damage on its company record, so it survives landing and burns.
+function trackEscorts() {
+  for (const n of G.npcs) {
+    if (n.kind !== 'escort' || n.dead) continue;
+    const s = fleet().find(f => f.id === n.fleetId);
+    if (s) s.armor = Math.max(0, Math.round(n.armor));
+  }
+}
+
+function escortBurn(dest) {
+  const st = G.state;
+  for (const s of escorts()) {
+    const need = burnFuel(st.systemId, dest);
+    if (need > SHIPS[s.shipId].fuel) {
+      s.escort = false;
+      s.at = system().planets.find(pl => pl.services.includes('refuel')).name;
+      msg(`The "${s.name}" can't make that burn on one tank; it will wait for you at ${s.at}.`);
+      continue;
+    }
+    st.credits -= need * FUEL_PRICE;
+  }
+}
+
+function escortsDock(planet) {
+  const st = G.state;
+  let cost = 0;
+  for (const s of escorts()) {
+    s.at = planet.name;
+    const hurt = SHIPS[s.shipId].armor - (s.armor === undefined ? SHIPS[s.shipId].armor : s.armor);
+    if (hurt > 0 && planet.services.includes('refuel')) {
+      const pay = Math.min(hurt, Math.floor(st.credits / REPAIR_PRICE));
+      st.credits -= pay * REPAIR_PRICE; cost += pay * REPAIR_PRICE;
+      s.armor = SHIPS[s.shipId].armor - hurt + pay;
+    }
+  }
+  if (!cost) return;
+  UI.notes.push(`Escort repairs: ${fmt(cost)} cr.`);
+  if (!G.dialog) UI.render();
+}
+
+function escortLost(n) {
+  const s = fleet().find(f => f.id === n.fleetId);
+  if (!s) return;
+  const c = G.state.people[s.captain.pid];
+  if (c) c.location = G.state.planet;
+  fleet().splice(fleet().indexOf(s), 1);
+  msg(`Your escort ${n.name} is destroyed. Capt. ${c ? `${c.first} ${c.last}` : 'the captain'} ejects safely.`);
+  companyLog(`The ${n.name} was destroyed flying escort near ${system().name}.`);
+}
+
 function sellCompanyShip(i) {
   const st = G.state, ship = fleet()[i], c = st.people[ship.captain.pid];
   st.credits += Math.round(SHIPS[ship.shipId].price * 0.6);
@@ -152,6 +226,7 @@ function companyView() {
   const st = G.state, ships = fleet();
   const status = (s) => {
     const load = Object.entries(s.cargo).map(([cid, q]) => `${q}t ${COMMODITIES.find(c => c.id === cid).name}`).join(', ');
+    if (s.escort) return `Flying escort with you (hull ${s.armor === undefined ? SHIPS[s.shipId].armor : s.armor}/${SHIPS[s.shipId].armor}).`;
     if (s.dest) return `En route ${s.at} to ${s.dest}, ${s.daysLeft} day${s.daysLeft > 1 ? 's' : ''} out${load ? `, carrying ${load}` : ', empty'}.`;
     return `Docked at ${s.at}${s.route ? '' : ', parked'}.`;
   };
@@ -164,7 +239,8 @@ function companyView() {
         <div class="hint">Last trip: ${s.lastTrip ? `${s.lastTrip.from} to ${s.lastTrip.to}, ${s.lastTrip.profit >= 0 ? '+' : ''}${fmt(s.lastTrip.profit)} cr` : 'none yet'}. Total: ${s.earned >= 0 ? '+' : ''}${fmt(s.earned)} cr.</div>
         ${picking ? `<div class="row">${s.dest ? '<span class="hint">Routes can be set once the ship is docked; it finishes this leg first.</span>' : options || '<span class="hint">No profitable route in range.</span>'}</div>` : ''}</div>
       <div class="row" style="margin:0">
-        <button data-action="cpick" data-arg="${s.id}">${picking ? 'Close' : 'Route'}</button>
+        <button data-action="cescort" data-arg="${i}" ${s.escort || (!s.dest && s.at === st.planet && escorts().length < MAX_ESCORTS) ? '' : 'disabled'}>${s.escort ? 'Release' : 'Escort'}</button>
+        <button data-action="cpick" data-arg="${s.id}" ${s.escort ? 'disabled' : ''}>${picking ? 'Close' : 'Route'}</button>
         <button data-action="cpark" data-arg="${i}" ${s.route ? '' : 'disabled'}>Park</button>
         <button data-action="csell" data-arg="${i}" ${s.dest ? 'disabled' : ''}>Sell (${fmt(SHIPS[s.shipId].price * 0.6)})</button>
       </div>
@@ -173,7 +249,7 @@ function companyView() {
   return `
     <h3>Your company</h3>
     ${cards || '<p class="hint">No ships yet. At any shipyard, buy a ship for the company: it comes with a captain and runs a trade route while you fly.</p>'}
-    <p class="hint">Company ships trade with your credits but never touch the last ${fmt(COMPANY_RESERVE)} cr. Captains are paid daily. Raids on a route can cost cargo or repairs; skilled captains get through more often.</p>
+    <p class="hint">Company ships trade with your credits but never touch the last ${fmt(COMPANY_RESERVE)} cr. Captains are paid daily. Raids on a route can cost cargo or repairs; skilled captains get through more often. Up to ${MAX_ESCORTS} ships docked where you are can fly with you as escorts instead; you pay their reaction mass and repairs.</p>
     <h3>Company log</h3>
     ${st.companyLog.length ? st.companyLog.map(l => `<div class="hint">Day ${l.day}: ${l.text}</div>`).join('') : '<p class="hint">Nothing yet.</p>'}`;
 }
@@ -198,6 +274,19 @@ Mods.register({
       companyLog(`The "${s.name}" now runs ${s.at} and ${to}.`);
     });
     M.action('cpark', i => { fleet()[Number(i)].route = null; });
+    M.action('cescort', i => {
+      const s = fleet()[Number(i)];
+      s.escort = !s.escort;
+      s.route = null;
+      s.at = G.state.planet;
+      UI.companyPick = null;
+      companyLog(s.escort ? `The "${s.name}" joins you as an escort.` : `The "${s.name}" stays at ${s.at}.`);
+    });
+    M.on('enterSystem', spawnEscorts);
+    M.on('frame', trackEscorts);
+    M.on('burnStart', escortBurn);
+    M.on('landed', escortsDock);
+    M.on('destroyed', n => { if (n.kind === 'escort') escortLost(n); });
     M.action('csell', i => sellCompanyShip(Number(i)));
   },
 });

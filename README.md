@@ -33,6 +33,8 @@ Outfitters (in the Shipyard tab at shipyards and The Rook) sell guns, heavy roun
 
 At any shipyard you can buy a ship for your company instead of flying it. It comes with a hired captain on a daily wage. On the Company tab, pick a route from the best round trips from its port (with estimated profit per day). Each game day the ship moves along its route; at each end it sells what it carries and buys what pays at the other end, through the same markets you use, so company trade moves prices too. Raids along the route can cost cargo or repairs, or rarely the ship; skilled captains get through more often. Company ships trade with your credits but never touch the last 5,000 cr, and you get a report each time you dock.
 
+Up to two company ships docked where you are can fly with you as escorts instead (Company tab). They hold formation, fight anything hostile to you (their kills count as yours), follow you through burns their tanks can make, and improve your odds in transit fights. You pay their reaction mass, and they are repaired at your cost when you dock somewhere with repairs. A destroyed escort is lost, though its captain gets out. Agile ships like the Corvette hold gun range; freighters make strafing passes.
+
 ## Running
 
 No build step and no dependencies. Open `index.html` in a browser.
