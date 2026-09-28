@@ -95,6 +95,7 @@ const UI = {
       <div class="tabs">
         ${tabs.map(([id, label, ok]) => `<button data-action="tab" data-arg="${id}" class="${this.tab === id ? 'active' : ''}" ${ok ? '' : 'disabled'}>${label}</button>`).join('')}
       </div>
+      ${tutorialHtml()}
       <div class="body">${this.views[this.tab].call(this)}</div>
       <div class="dock">
         <button data-action="sound">Sound: ${Sfx.on ? 'on' : 'off'}</button>
@@ -281,6 +282,7 @@ const UI = {
       case 'takeoff': takeOff(); return;
       case 'map': openMap(); return;
       case 'sound': Sfx.toggle(); break;
+      case 'tutorial': endTutorial(); break;
       case 'load': loadGame(); return;
       case 'newgame':
         // Confirmed in the page itself; browser confirm() dialogs are blocked in some embeds.

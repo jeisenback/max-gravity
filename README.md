@@ -65,5 +65,6 @@ On a keyboard:
 - `js/story.js` - the Cold Water plot
 - `js/touch.js` - touch controls (joystick, hold and tap buttons)
 - `js/art.js` - art drawn in code: ship hulls, planets, moons, stations, gas giants, and the Sun (all lit from the Sun's real direction), plus tracers, shield flashes, explosions, smoke, and the HUD gauges and labels
+- `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
 - `js/audio.js` - sound effects synthesized with Web Audio (no audio files): guns, hits, explosions, engine rumble, docking, burns, comms
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)

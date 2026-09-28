@@ -118,7 +118,7 @@ function newState() {
     fuel: SHIPS.shuttle.fuel, armor: SHIPS.shuttle.armor,
     cargo: {}, paid: {}, rumors: [], missions: [], dest: null, nextId: 1,
     crew: [], flags: {}, people: {}, nextPid: 1, rep: {}, outfits: {},
-    story: { stage: 0, next: STORY_START_DAY, log: [] },
+    story: { stage: 0, next: STORY_START_DAY, log: [] }, tutorial: 0,
   };
 }
 
@@ -1003,7 +1003,7 @@ function drawHud(W, H) {
   ctx.fillStyle = '#56687a';
   ctx.font = '11px "IBM Plex Mono", monospace';
   const help = ['Arrows/WASD fly', 'S/Down  reverse', 'Space   fire', 'Tab     target', 'H  hail target', 'L  select / land', 'M  system map', 'J  burn', 'N  sound'];
-  help.forEach((h, i) => ctx.fillText(h, x, H - 14 - (help.length - 1 - i) * 14));
+  if (!inTransit) help.forEach((h, i) => ctx.fillText(h, x, H - 14 - (help.length - 1 - i) * 14));
 }
 
 function drawMap(W, H) {
@@ -1107,9 +1107,12 @@ function render() {
   const { W, H } = G;
   ctx.fillStyle = '#000';
   ctx.fillRect(0, 0, W, H);
-  if (G.mode === 'map') return drawMap(W, H);
-  if (G.mode === 'transit') drawTransit(W, H); else drawWorld(W, H);
-  drawHud(W, H);
+  if (G.mode === 'map') drawMap(W, H);
+  else {
+    if (G.mode === 'transit') drawTransit(W, H); else drawWorld(W, H);
+    drawHud(W, H);
+  }
+  drawTutorial(G.mode === 'map' ? W : W - G.hudW);
 }
 
 // ---------- input & boot ----------
@@ -1180,6 +1183,7 @@ function frame(now) {
   render();
   Touch.sync();
   Sfx.engine();
+  tutorialTick(dt);
   requestAnimationFrame(frame);
 }
 

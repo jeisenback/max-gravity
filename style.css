@@ -172,6 +172,19 @@ canvas { display: block; touch-action: none; }
 .dock button { flex: 1 1 0; }
 @media (min-width: 700px) { .dock button { flex: 0 0 auto; } }
 
+.tutorial {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-shrink: 0;
+  margin: 10px 16px 0;
+  padding: 9px 12px;
+  border-left: 3px solid #6fb0ff;
+  background: color-mix(in srgb, #6fb0ff 12%, var(--panel));
+}
+.tutorial .eyebrow { color: #6fb0ff; }
+.tutorial p { margin: 3px 0 0; font-size: 13px; line-height: 1.5; }
+.tutorial button { flex-shrink: 0; }
 .body { flex: 1; overflow-y: auto; padding: 14px 16px; }
 .desc { line-height: 1.6; margin-top: 0; font-size: 14px; }
 .note { background: color-mix(in srgb, var(--good) 10%, var(--panel)); border-left: 3px solid var(--good); padding: 7px 10px; margin: 6px 0; font-size: 13px; line-height: 1.5; }
