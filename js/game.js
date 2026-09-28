@@ -90,13 +90,31 @@ function price(planet, cid) {
   return Math.round(c.base * PRICE_MULT[level] * wobble);
 }
 
+// Most profitable place within 3 jumps to sell a commodity bought here, at today's prices.
+function bestSale(planet, cid) {
+  const buy = price(planet, cid);
+  if (buy === null) return null;
+  let best = null;
+  for (const [sid, sys] of Object.entries(SYSTEMS)) {
+    const jumps = findRoute(G.state.systemId, sid).length;
+    if (jumps > 3) continue;
+    for (const pl of sys.planets) {
+      const sell = price(pl, cid);
+      if (pl === planet || sell === null || sell <= buy) continue;
+      const score = (sell - buy) / Math.max(1, jumps);
+      if (!best || score > best.score) best = { planet: pl, jumps, profit: sell - buy, score };
+    }
+  }
+  return best;
+}
+
 // ---------- persistence ----------
 
 function newState() {
   return {
     credits: 12000, day: 1, systemId: 'sol', planet: 'Earth', shipId: 'shuttle',
     fuel: SHIPS.shuttle.fuel, armor: SHIPS.shuttle.armor,
-    cargo: {}, missions: [], route: [], nextId: 1,
+    cargo: {}, paid: {}, missions: [], route: [], nextId: 1,
   };
 }
 
@@ -110,7 +128,8 @@ function loadSave() {
 
 const INTRO = [
   'You have 12,000 credits, a battered Shuttle, and a galaxy full of opportunity.',
-  'Buy low, sell high. The Mission BBS has paying work. Press M in flight to plot a course.',
+  'Buy low, sell high. The Commodity Exchange shows the best nearby market for each good.',
+  'Tip: Earth sells Equipment cheap, and New Kent in Alpha Centauri, one jump away, pays well for it.',
 ];
 
 function newGame() {
@@ -122,6 +141,7 @@ function newGame() {
 
 function loadGame() {
   G.state = loadSave() || newState();
+  G.state.paid = G.state.paid || {};  // saves from before cost tracking
   resetWorld();
   landAt(currentPlanet(), ['Save loaded. Welcome back, captain.']);
 }
@@ -348,6 +368,7 @@ function land(planet) {
 function landAt(planet, notes) {
   G.mode = 'landed';
   G.shots = [];
+  G.flash = 0;
   G.offers = generateMissions(planet);
   save();
   UI.openLanded(planet, notes);

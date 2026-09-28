@@ -17,6 +17,8 @@ const PRICE_MULT = { L: 0.75, M: 1.0, H: 1.3 };
 const SHIPS = {
   shuttle:   { name: 'Shuttle',        price: 10000,  cargo: 20,  fuel: 300, shields: 60,  armor: 50,  accel: 170, maxSpeed: 260, turn: 3.0, guns: 1, size: 10, forSale: true,
                desc: 'A dependable little ship. Every captain starts somewhere.' },
+  lightfreighter: { name: 'Light Freighter', price: 28000, cargo: 50, fuel: 300, shields: 90, armor: 100, accel: 150, maxSpeed: 250, turn: 2.6, guns: 1, size: 13, forSale: true,
+               desc: 'The first real step up for an independent trader. Two and a half times the hold of a Shuttle.' },
   courier:   { name: 'Courier',        price: 45000,  cargo: 35,  fuel: 500, shields: 110, armor: 80,  accel: 260, maxSpeed: 380, turn: 3.8, guns: 1, size: 11, forSale: true,
                desc: 'Fast and long-legged. Popular with mail runners and smugglers.' },
   freighter: { name: 'Bulk Freighter', price: 90000,  cargo: 120, fuel: 400, shields: 180, armor: 260, accel: 100, maxSpeed: 200, turn: 1.8, guns: 1, size: 18, forSale: true,

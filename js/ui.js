@@ -13,6 +13,7 @@ const UI = {
     this.planet = planet;
     this.notes = notes || [];
     this.tab = 'port';
+    this.tradeNote = null;
     this.show();
   },
 
@@ -88,10 +89,13 @@ const UI = {
       const rows = COMMODITIES.map(c => {
         const pr = price(p, c.id), held = st.cargo[c.id] || 0;
         const tag = { L: 'low', M: 'med', H: 'high' }[p.prices[c.id]] || '';
+        const best = bestSale(p, c.id);
+        const avg = held ? Math.round(st.paid[c.id] / held) : 0;
         return `<tr>
           <td>${c.name}</td>
           <td class="num">${pr === null ? '--' : fmt(pr)} <span class="tag ${tag}">${tag}</span></td>
-          <td class="num">${held}</td>
+          <td class="num">${held}${held ? ` <span class="hint">@${fmt(avg)}</span>` : ''}</td>
+          <td>${best ? `${best.planet.name} <span class="tag low">+${fmt(best.profit)}/t</span> <span class="hint">${best.jumps ? `${best.jumps}j` : 'in system'}</span>` : '<span class="hint">--</span>'}</td>
           <td class="act">
             <button data-action="buy" data-arg="${c.id}" ${pr === null ? 'disabled' : ''}>Buy 1</button>
             <button data-action="buymax" data-arg="${c.id}" ${pr === null ? 'disabled' : ''}>Max</button>
@@ -101,11 +105,12 @@ const UI = {
         </tr>`;
       }).join('');
       return `
+        ${this.tradeNote ? `<div class="note">${this.tradeNote}</div>` : ''}
         <table>
-          <tr><th>Commodity</th><th class="num">Price/t</th><th class="num">Held</th><th></th></tr>
+          <tr><th>Commodity</th><th class="num">Price/t</th><th class="num">Held</th><th>Best market (3 jumps)</th><th></th></tr>
           ${rows}
         </table>
-        <p class="hint">Free cargo space: ${cargoFree()}t. Buy where the price is low, sell where it is high.</p>`;
+        <p class="hint">Free cargo space: ${cargoFree()}t. Best market is based on today's prices, which drift a little each day.</p>`;
     },
 
     missions() {
@@ -155,7 +160,7 @@ const UI = {
   act(action, arg) {
     const st = G.state, p = this.planet, s = ship();
     switch (action) {
-      case 'tab': this.tab = arg; break;
+      case 'tab': this.tab = arg; this.tradeNote = null; break;
       case 'takeoff': takeOff(); return;
       case 'map': openMap(); return;
       case 'load': loadGame(); return;
@@ -178,14 +183,21 @@ const UI = {
         const max = Math.min(cargoFree(), Math.floor(st.credits / pr));
         const qty = action === 'buy' ? Math.min(1, max) : max;
         st.cargo[arg] = (st.cargo[arg] || 0) + qty;
+        st.paid[arg] = (st.paid[arg] || 0) + qty * pr;
         st.credits -= qty * pr;
+        this.tradeNote = null;
         break;
       }
       case 'sell':
       case 'sellall': {
-        const qty = action === 'sell' ? 1 : st.cargo[arg];
+        const held = st.cargo[arg], qty = action === 'sell' ? 1 : held;
+        const income = qty * price(p, arg), cost = (st.paid[arg] || 0) * qty / held;
+        const profit = income - cost;
         st.cargo[arg] -= qty;
-        st.credits += qty * price(p, arg);
+        st.paid[arg] -= cost;
+        st.credits += income;
+        const name = COMMODITIES.find(c => c.id === arg).name;
+        this.tradeNote = `Sold ${qty}t of ${name} for ${fmt(income)} cr (${profit >= 0 ? `profit +${fmt(profit)}` : `loss ${fmt(-profit)}`} cr).`;
         break;
       }
       case 'accept': {
