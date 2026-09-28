@@ -457,7 +457,7 @@ function land(planet) {
       }
       const fare = Math.max(0, m.pay + m.bonus);
       st.credits += fare;
-      msg(`${m.who[0].toUpperCase()}${m.who.slice(1)} ${m.pax > 1 ? 'disembark' : 'disembarks'}. Fare received: ${fmt(fare)} cr${m.bonus ? ` (${m.bonus > 0 ? '+' : '-'}${fmt(Math.abs(m.bonus))} for the trip)` : ''}.`);
+      msg(`${m.who[0].toUpperCase()}${m.who.slice(1)} ${m.pax > 1 ? 'disembark' : 'disembarks'}.${fare ? ` Fare received: ${fmt(fare)} cr${m.bonus ? ` (${m.bonus > 0 ? '+' : '-'}${fmt(Math.abs(m.bonus))} for the trip)` : ''}.` : ''}`);
     }
     return false;
   });

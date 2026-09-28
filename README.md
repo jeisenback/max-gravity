@@ -19,7 +19,7 @@ Captains you deal with (hail, trade, pay off, rob, or shoot at) are remembered, 
 
 ## Story: Cold Water
 
-A grounded political plot about who controls the Belt's water. Act 1 starts in transit once you have a little experience (day 10 or later): a derelict ice hauler, a data core someone badly wants back, a company recovery agent, and a fired Ceres water engineer, Mira Castellane, who needs passage to Europa to read it. Once the story starts, some market rumors are really news of the sabotage. Your current objective and a log are on the Spaceport tab. Act 2 (choosing who gets the proof) is next.
+A grounded political plot about who controls the Belt's water. Act 1 starts in transit once you have a little experience (day 10 or later): a derelict ice hauler, a data core someone badly wants back, a company recovery agent, and a fired Ceres water engineer, Mira Castellane, who needs passage to Europa to read it. Once the story starts, some market rumors are really news of the sabotage. In Act 2 you decide who gets the proof: the Belt Collective (Ceres Station), Mars Republic Navy intelligence (Mars, needs Trusted standing), Coalition intelligence (Luna), or Aquilon itself (Hermes Foundry). Each path is a short chain of missions with its own ending, and some choices switch you to another side. Your current objective and a log are on the Spaceport tab. Act 3, the blockade of Ceres, is next.
 
 ## Factions and outfitting
 

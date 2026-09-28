@@ -283,7 +283,7 @@ function startHappening() {
   const pax = paxAboard().find(m => !m.eventDone && (m.story || m.pid || PASSENGERS[m.passenger]));
   if (pax && (pax.story || Math.random() < 0.5)) {
     pax.eventDone = true;
-    return openEvent(pax.story ? miraTransitEvent(pax) : pax.pid ? passengerEvent(pax) : PASSENGERS[pax.passenger].event(pax));
+    return openEvent(pax.story ? storyPaxEvent(pax) : pax.pid ? passengerEvent(pax) : PASSENGERS[pax.passenger].event(pax));
   }
   const arcs = G.state.crew.filter(id => CREW[id] && CREW[id].events[flags[`${id}Arc`] || 0]);
   if (arcs.length && Math.random() < 0.4) {
