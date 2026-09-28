@@ -35,7 +35,7 @@ Progress is saved automatically in your browser's localStorage whenever you land
 
 ## Controls
 
-On phones and tablets: drag the joystick (bottom left) toward where you want to fly; push it far out to thrust. Hold FIRE and BRAKE on the right. The button row gives Target, Hail, Land, Map, and Burn. Tap a ship to target it, or a planet to set it as your nav target. Landed screens keep System map and Take off at the bottom.
+On phones and tablets: drag the joystick (bottom left) toward where you want to fly; push it far out to thrust. Hold FIRE and BRAKE on the right. The button row gives Target, Hail, Land, Map, and Burn. Tap a ship to target it, or a planet to set it as your nav target. Landed screens keep Sound, System map, and Take off at the bottom.
 
 On a keyboard:
 
@@ -51,6 +51,7 @@ On a keyboard:
 | M | System map (click a destination to plot a burn; also works in transit) |
 | J | Start the plotted burn (must be clear of local space) |
 | T | Take off (while landed) |
+| N | Sound on/off |
 
 ## Layout
 
@@ -64,4 +65,5 @@ On a keyboard:
 - `js/story.js` - the Cold Water plot
 - `js/touch.js` - touch controls (joystick, hold and tap buttons)
 - `js/art.js` - art drawn in code: ship hulls, planets, moons, stations, gas giants, and the Sun (all lit from the Sun's real direction), plus tracers, shield flashes, explosions, smoke, and the HUD gauges and labels
+- `js/audio.js` - sound effects synthesized with Web Audio (no audio files): guns, hits, explosions, engine rumble, docking, burns, comms
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)

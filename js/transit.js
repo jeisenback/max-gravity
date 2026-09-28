@@ -309,6 +309,7 @@ function openEvent(ev) {
   const choices = ev.choices.filter(c => !c.role || roleSkill(c.role))
     .map(c => (c.role ? { ...c, label: c.label.replace(/\{crew\}/g, roleName(c.role)) } : c));
   G.dialog = { event: ev, choices };
+  Sfx.comms();
   if (G.transit) G.transit.event = ev;  // pauses the transit timer
   UI.showEvent(ev, choices);
 }

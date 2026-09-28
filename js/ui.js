@@ -97,6 +97,7 @@ const UI = {
       </div>
       <div class="body">${this.views[this.tab].call(this)}</div>
       <div class="dock">
+        <button data-action="sound">Sound: ${Sfx.on ? 'on' : 'off'}</button>
         <button data-action="map">System map</button>
         <button data-action="takeoff" class="primary">Take off${Touch.on ? '' : ' (T)'}</button>
       </div>`;
@@ -279,6 +280,7 @@ const UI = {
       case 'epilogue': openEvent(epilogueEvent()); return;
       case 'takeoff': takeOff(); return;
       case 'map': openMap(); return;
+      case 'sound': Sfx.toggle(); break;
       case 'load': loadGame(); return;
       case 'newgame':
         // Confirmed in the page itself; browser confirm() dialogs are blocked in some embeds.
@@ -389,5 +391,5 @@ const UI = {
 
 UI.el.addEventListener('click', e => {
   const b = e.target.closest('[data-action]');
-  if (b && !b.disabled) UI.act(b.dataset.action, b.dataset.arg);
+  if (b && !b.disabled) { Sfx.click(); UI.act(b.dataset.action, b.dataset.arg); }
 });

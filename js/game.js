@@ -216,6 +216,7 @@ function fire(o, hits = 'player') {
       team: isPlayer ? 'player' : hits === 'player' ? 'hostile' : 'ally',
     });
   }
+  Sfx.laser(o);
   const m = s.size * 1.9;  // muzzle flash at the nose
   G.particles.push({ type: 'flash', x: o.x + Math.cos(o.angle) * m, y: o.y + Math.sin(o.angle) * m, vx: o.vx, vy: o.vy, life: 0.06, max: 0.06, size: 7 });
 }
@@ -232,6 +233,7 @@ function damage(o, d, byPlayer = false) {
   o.shields -= absorbed;
   o.armor -= d - absorbed;
   if (absorbed) o.shieldFlash = G.time;
+  Sfx.hit(o, absorbed > 0);
   burst(o.x, o.y, absorbed ? 3 : 6, absorbed ? ['#8cf', '#fff'] : ['#fc6', '#f80', '#fff'], absorbed ? 120 : 180);
   if (o === G.player && d > absorbed) shake(3);
   if (o.armor <= 0) destroy(o, byPlayer);
@@ -240,6 +242,7 @@ function damage(o, d, byPlayer = false) {
 // Rewards, standing, and memory only follow kills the player made.
 function destroy(o, byPlayer = false) {
   explode(o);
+  Sfx.boom(o);
   if (G.player) shake(Math.max(0, 10 - dist(o, G.player) / 60));
   if (o === G.player) {
     o.dead = true;
@@ -500,6 +503,7 @@ function landAt(planet, notes) {
     ? Array.from({ length: randInt(1, 3) }, () => makeCrewCandidate(G.state.systemId)) : [];
   notes = notes.concat(meetContacts(planet));
   save();
+  Sfx.dock();
   UI.openLanded(planet, notes);
   storyOnLanding(planet);
 }
@@ -514,6 +518,7 @@ function takeOff() {
   G.navPlanet = null;
   populateSystem();
   storyOnTakeoff();
+  Sfx.launch();
   UI.hide();
 }
 
@@ -546,6 +551,7 @@ function tryBurn() {
   G.burnAngle = Math.atan2(to.y - from.y, to.x - from.x);
   G.departTimer = 1.2;
   G.mode = 'departing';
+  Sfx.burn();
   msg(`Burning for ${SYSTEMS[st.dest].name}.`);
 }
 
@@ -574,6 +580,7 @@ function arrive() {
   p.vx = Math.cos(a) * s.maxSpeed; p.vy = Math.sin(a) * s.maxSpeed;
   G.mode = 'flight';
   G.flash = 1;
+  Sfx.arrive();
   G.navPlanet = null;
   const sys = system();
   msg(`Arrived at ${sys.name} (${sys.gov}). Day ${st.day}.`);
@@ -995,7 +1002,7 @@ function drawHud(W, H) {
   if (Touch.on) return;
   ctx.fillStyle = '#56687a';
   ctx.font = '11px "IBM Plex Mono", monospace';
-  const help = ['Arrows/WASD fly', 'S/Down  reverse', 'Space   fire', 'Tab     target', 'H  hail target', 'L  select / land', 'M  system map', 'J  burn'];
+  const help = ['Arrows/WASD fly', 'S/Down  reverse', 'Space   fire', 'Tab     target', 'H  hail target', 'L  select / land', 'M  system map', 'J  burn', 'N  sound'];
   help.forEach((h, i) => ctx.fillText(h, x, H - 14 - (help.length - 1 - i) * 14));
 }
 
@@ -1115,6 +1122,7 @@ const KEYMAP = {
 window.addEventListener('keydown', e => {
   if (KEYMAP[e.code]) { G.keys[KEYMAP[e.code]] = true; e.preventDefault(); }
   if (e.repeat) return;
+  if (e.code === 'KeyN') { Sfx.toggle(); if (G.mode === 'landed' && !G.dialog) UI.render(); }
   if (G.mode === 'flight') {
     if (e.code === 'KeyL') tryLand();
     else if (e.code === 'KeyJ') tryBurn();
@@ -1171,6 +1179,7 @@ function frame(now) {
   if (['flight', 'departing', 'transit', 'dead'].includes(G.mode)) update(dt);
   render();
   Touch.sync();
+  Sfx.engine();
   requestAnimationFrame(frame);
 }
 
