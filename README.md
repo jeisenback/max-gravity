@@ -7,6 +7,8 @@ Markets react to you: buying a good raises its local price and selling lowers it
 
 There is no faster-than-light travel. You plot a direct burn to any destination in range. Travel time (days) and reaction mass scale with real orbital distance, and everything orbits at its real period, so routes open and close over the months: Earth to Mars runs 4 to 8 days, Saturn about 15 to 18, and Triton more than a month out. The system map shows the best upcoming window for a plotted burn. Each burn takes 1-2 minutes of real time. You accelerate, flip at the midpoint, and decelerate. In transit you get random events with choices (distress calls, pirates, derelicts, and more), market rumors that shift prices for weeks, and comms chatter. Events pause the transit timer.
 
+During a burn you see your ship in cutaway: engine, hold (with your cargo), berths, galley, and bridge, with you, your crew, and your passengers moving between rooms by what they do aboard. Everyone straps in for the hard burns at each end and floats at the flip, when the ship turns end over end. Crew sometimes mention on comms what they're up to. Once before the flip and once after, pick a downtime activity: share a meal (crew and passengers like you more), run drills (better odds in a fight this burn), do maintenance (patch hull damage, more with an engineer aboard), or check on passengers.
+
 ## People
 
 Passengers, hireable crew, and ship captains are procedurally generated. Each has a culture-appropriate name (Earth, Mars, or the Belt), a home, a job, two personality traits, a reason for traveling, and sometimes a secret (contraband, wanted, ill, a spy, or in debt). Transit events come from who they are: a smuggler triggers a customs inspection, a wanted fugitive attracts a bounty hunter, a nervous traveler panics at the flip.
@@ -80,6 +82,7 @@ On a keyboard:
 - `mods/` - mods; `example-vesta.js` is a working example to copy
 - `js/world.js` - the living solar system: pirate unrest, raids, and NPC shipping that drives shortages and gluts
 - `js/company.js` - your shipping company: company ships, captains, trade routes, and the Company tab
+- `js/shiplife.js` - life aboard during a burn: the ship cutaway, crew movement and comms lines, and downtime activities
 - `js/storylets.js` - the storylet engine: story written as data (see Writing storylets below)
 - `js/stories/` - storylines written as storylets; `ice-strike.js` is the Ice Haulers' Strike
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
