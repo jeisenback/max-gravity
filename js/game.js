@@ -770,16 +770,11 @@ function drawWorld(W, H) {
   ctx.clip();
 
   drawStars(cam, viewW, H, p ? { x: p.vx, y: p.vy } : { x: 0, y: 0 });
+  drawBackdrop(cam, viewW, H);
 
   system().planets.forEach((pl, i) => {
     const [x, y] = toScreen(pl);
-    const g = ctx.createRadialGradient(x - pl.r * 0.4, y - pl.r * 0.4, pl.r * 0.1, x, y, pl.r);
-    g.addColorStop(0, pl.color);
-    g.addColorStop(1, '#05080c');
-    ctx.fillStyle = g;
-    ctx.beginPath();
-    ctx.arc(x, y, pl.r, 0, Math.PI * 2);
-    ctx.fill();
+    drawBody(pl, x, y);
     ctx.fillStyle = '#9ab';
     ctx.font = '12px monospace';
     ctx.textAlign = 'center';

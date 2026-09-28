@@ -168,3 +168,339 @@ function widthAt(outline, x) {
 function widest(outline) {
   return outline.reduce((best, p) => (p[1] > best[1] ? p : best), outline[0]);
 }
+
+// ==================== Planets, moons, and stations ====================
+
+// How each body looks. Anything not listed is drawn as a plain cratered moon in its
+// data color. Giants are backdrops, not landable.
+const BODY_ART = {
+  Earth: { type: 'planet', base: ['#3a86d4', '#0f2f5c'], land: ['#4c8a3f', '#8f7f4c', '#6b8f45'], clouds: 12, caps: '#f2f6ff', atmo: '#8cc8ff' },
+  Mars: { type: 'planet', base: ['#d0683a', '#5e2410'], maria: 5, craters: 8, caps: '#f5ece6', atmo: '#ffb08a' },
+  Luna: { type: 'moon', base: ['#c8c8c4', '#5a5a58'], maria: 5, craters: 16 },
+  Ganymede: { type: 'moon', base: ['#a8927a', '#463a30'], craters: 8, grooves: 12, lights: 'domes' },
+  Europa: { type: 'moon', base: ['#efe6d6', '#8a7e6c'], cracks: 20, crack: '#9a5a3a' },
+  Titan: { type: 'moon', base: ['#e8aa48', '#6e4212'], bands: 7, atmo: '#ffc070' },
+  Enceladus: { type: 'moon', base: ['#ffffff', '#95a3b3'], cracks: 7, crack: '#6ea8d8', geysers: true },
+  'Triton Outpost': { type: 'moon', base: ['#dcbcc8', '#665060'], craters: 6, caps: '#fff4f8', lights: 'domes' },
+  'Hermes Foundry': { type: 'station', style: 'foundry' },
+  'Phobos Yards': { type: 'asteroid', base: ['#927e6c', '#3a2e26'], craters: 7, lights: 'yard' },
+  'Ceres Station': { type: 'asteroid', base: ['#a3a39b', '#43433e'], craters: 12, lights: 'port' },
+  'Pallas Refinery': { type: 'asteroid', base: ['#86909a', '#30353b'], craters: 6, lights: 'smelter' },
+  'The Rook': { type: 'asteroid', base: ['#56626a', '#1a1f23'], craters: 5, lights: 'rook' },
+  Jupiter: { type: 'giant', base: ['#e6cfa8', '#7a5634'], bands: 16, bandColors: ['#c49a6c', '#efe0c4', '#a8784e', '#dcc098', '#b58a60'], spot: true },
+  Saturn: { type: 'giant', base: ['#efdcae', '#8e7648'], bands: 12, bandColors: ['#e3cc98', '#f3e6c2', '#c9ae76'], rings: true },
+  Neptune: { type: 'giant', base: ['#5b8cec', '#18347e'], bands: 8, bandColors: ['#6f9af0', '#3c62c4', '#8fb2f6'], atmo: '#9fc4ff' },
+};
+
+// Gas giants hang behind the moons that orbit them, drifting slowly (parallax).
+const BACKDROPS = {
+  jupiter: { name: 'Jupiter', r: 300, x: -1400, y: 1100 },
+  saturn: { name: 'Saturn', r: 220, x: 1450, y: 1150 },
+  neptune: { name: 'Neptune', r: 220, x: -1300, y: -1000 },
+};
+
+const BODY_CACHE = {};
+
+function seeded(str) {
+  let a = hash(str) >>> 0;
+  return () => {
+    a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function hexA(hex, alpha) {
+  const n = parseInt(hex.slice(1), 16);
+  return `rgba(${n >> 16},${(n >> 8) & 255},${n & 255},${alpha})`;
+}
+
+// A lumpy asteroid outline around radius r.
+function lumpy(rnd, r) {
+  return Array.from({ length: 18 }, (_, i) => {
+    const a = (i / 18) * Math.PI * 2, d = r * (0.82 + rnd() * 0.2);
+    return [Math.cos(a) * d, Math.sin(a) * d];
+  });
+}
+
+function bodyPath(g, r, shape) {
+  g.beginPath();
+  if (shape) {
+    shape.forEach(([x, y], i) => (i ? g.lineTo(x, y) : g.moveTo(x, y)));
+    g.closePath();
+  } else g.arc(0, 0, r, 0, Math.PI * 2);
+}
+
+// Draw a body's surface once into an offscreen canvas; lighting is added live.
+function bodySprite(pl) {
+  if (BODY_CACHE[pl.name]) return BODY_CACHE[pl.name];
+  const art = BODY_ART[pl.name] || { type: 'moon', base: [pl.color, '#1a1d22'], craters: 8 };
+  const r = pl.r, k = art.type === 'giant' ? 1 : Math.min(2, window.devicePixelRatio || 1);
+  const span = r * 2 * (art.type === 'station' ? 1.4 : art.rings ? 2.4 : 1.4);
+  const c = document.createElement('canvas');
+  c.width = c.height = Math.ceil(span * k);
+  const g = c.getContext('2d');
+  g.scale(k, k);
+  g.translate(span / 2, span / 2);
+  const rnd = seeded(pl.name), inDisc = f => { const a = rnd() * Math.PI * 2, d = Math.sqrt(rnd()) * r * f; return [Math.cos(a) * d, Math.sin(a) * d]; };
+  const shape = art.type === 'asteroid' ? lumpy(rnd, r) : null;
+  const lights = [];
+
+  if (art.type === 'station') {
+    drawFoundry(g, r, lights);
+    return (BODY_CACHE[pl.name] = { c, span, art, shape, lights });
+  }
+
+  bodyPath(g, r, shape);
+  const base = g.createRadialGradient(-r * 0.3, -r * 0.3, r * 0.1, 0, 0, r * 1.05);
+  base.addColorStop(0, art.base[0]);
+  base.addColorStop(1, art.base[1]);
+  g.fillStyle = base;
+  g.fill();
+
+  g.save();
+  bodyPath(g, r, shape);
+  g.clip();
+  if (art.bands) {
+    for (let i = 0; i < art.bands; i++) {
+      const y = -r + (i + rnd() * 0.5) * (2 * r / art.bands), h = (2 * r / art.bands) * (0.4 + rnd() * 0.8);
+      g.fillStyle = art.bandColors ? hexA(pick2(rnd, art.bandColors), 0.55) : (i % 2 ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.12)');
+      g.beginPath();
+      g.ellipse(0, y, r * 1.1, h / 2, (rnd() - 0.5) * 0.04, 0, Math.PI * 2);
+      g.fill();
+    }
+  }
+  if (art.spot) {
+    g.fillStyle = 'rgba(180,80,50,0.75)';
+    g.beginPath(); g.ellipse(r * 0.3, r * 0.35, r * 0.2, r * 0.1, 0, 0, Math.PI * 2); g.fill();
+  }
+  for (let i = 0; i < (art.maria || 0); i++) {
+    const [x, y] = inDisc(0.8);
+    g.fillStyle = 'rgba(0,0,0,0.17)';
+    for (let j = 0; j < 4; j++) { g.beginPath(); g.arc(x + (rnd() - 0.5) * r * 0.3, y + (rnd() - 0.5) * r * 0.3, r * (0.1 + rnd() * 0.15), 0, Math.PI * 2); g.fill(); }
+  }
+  if (art.land) {
+    for (let i = 0; i < 7; i++) {
+      const [x, y] = inDisc(0.85);
+      g.fillStyle = pick2(rnd, art.land);
+      for (let j = 0; j < 5; j++) { g.beginPath(); g.arc(x + (rnd() - 0.5) * r * 0.35, y + (rnd() - 0.5) * r * 0.25, r * (0.06 + rnd() * 0.12), 0, Math.PI * 2); g.fill(); }
+    }
+  }
+  for (let i = 0; i < (art.craters || 0); i++) {
+    const [x, y] = inDisc(0.9), cr = r * (0.03 + rnd() * 0.1);
+    g.fillStyle = 'rgba(0,0,0,0.22)';
+    g.beginPath(); g.arc(x, y, cr, 0, Math.PI * 2); g.fill();
+    g.strokeStyle = 'rgba(255,255,255,0.14)';
+    g.lineWidth = Math.max(0.6, cr * 0.2);
+    g.beginPath(); g.arc(x, y, cr, Math.PI * 0.9, Math.PI * 1.7); g.stroke();
+  }
+  for (let i = 0; i < (art.grooves || 0); i++) {
+    const [x, y] = inDisc(0.9), a = rnd() * Math.PI;
+    g.strokeStyle = 'rgba(255,255,255,0.13)';
+    g.lineWidth = r * 0.03;
+    g.beginPath(); g.moveTo(x - Math.cos(a) * r * 0.3, y - Math.sin(a) * r * 0.3); g.lineTo(x + Math.cos(a) * r * 0.3, y + Math.sin(a) * r * 0.3); g.stroke();
+  }
+  for (let i = 0; i < (art.cracks || 0); i++) {
+    let [x, y] = inDisc(0.9), a = rnd() * Math.PI * 2;
+    g.strokeStyle = hexA(art.crack, 0.55);
+    g.lineWidth = Math.max(0.7, r * 0.012);
+    g.beginPath(); g.moveTo(x, y);
+    for (let j = 0; j < 7; j++) { a += (rnd() - 0.5) * 0.9; x += Math.cos(a) * r * 0.14; y += Math.sin(a) * r * 0.14; g.lineTo(x, y); }
+    g.stroke();
+  }
+  if (art.caps) {
+    g.fillStyle = art.caps;
+    g.beginPath(); g.ellipse(0, -r * 0.97, r * 0.5, r * 0.2, 0, 0, Math.PI * 2); g.fill();
+    g.beginPath(); g.ellipse(0, r * 0.98, r * 0.35, r * 0.13, 0, 0, Math.PI * 2); g.fill();
+  }
+  for (let i = 0; i < (art.clouds || 0); i++) {
+    const [x, y] = inDisc(0.95);
+    g.fillStyle = `rgba(255,255,255,${0.3 + rnd() * 0.3})`;
+    g.beginPath(); g.ellipse(x, y, r * (0.15 + rnd() * 0.3), r * (0.03 + rnd() * 0.05), (rnd() - 0.5) * 0.6, 0, Math.PI * 2); g.fill();
+  }
+  if (art.lights === 'domes') {
+    for (let i = 0; i < 5; i++) {
+      const [x, y] = inDisc(0.7);
+      g.fillStyle = '#c9d2da';
+      g.beginPath(); g.arc(x, y, r * 0.05, Math.PI, 0); g.fill();
+      lights.push({ x, y: y - r * 0.02, color: '#ffd48a', blink: false });
+    }
+  }
+  g.restore();
+
+  // Structures that stick out past the surface, and their lights.
+  if (art.lights === 'port') {
+    g.fillStyle = '#6d747c';
+    g.fillRect(r * 0.5, -r * 0.08, r * 0.85, r * 0.16);
+    g.fillStyle = '#9aa2aa';
+    g.fillRect(r * 1.2, -r * 0.2, r * 0.1, r * 0.4);
+    for (let i = 0; i < 12; i++) { const a = (i / 12) * Math.PI * 2; lights.push({ x: Math.cos(a) * r * 0.78, y: Math.sin(a) * r * 0.78, color: '#bfe4ff', blink: true, phase: i }); }
+    lights.push({ x: r * 1.3, y: 0, color: '#ff5050', blink: true, phase: 0 });
+  } else if (art.lights === 'yard') {
+    g.strokeStyle = '#7a848e';
+    g.lineWidth = Math.max(1, r * 0.04);
+    for (const dy of [-0.35, 0.35]) { g.beginPath(); g.moveTo(r * 0.6, r * dy); g.lineTo(r * 1.5, r * dy); g.stroke(); }
+    for (let x = 0.7; x <= 1.5; x += 0.2) { g.beginPath(); g.moveTo(r * x, -r * 0.35); g.lineTo(r * x, r * 0.35); g.stroke(); }
+    g.fillStyle = '#5a646e';
+    g.fillRect(r * 0.75, -r * 0.18, r * 0.6, r * 0.36);
+    for (let x = 0.7; x <= 1.5; x += 0.2) lights.push({ x: r * x, y: -r * 0.35, color: '#ffd060', blink: true, phase: x * 5 });
+  } else if (art.lights === 'smelter') {
+    for (let i = 0; i < 5; i++) { const [x, y] = inDisc(0.6); lights.push({ x, y, color: '#ff8a2a', glow: true, phase: i }); }
+  } else if (art.lights === 'rook') {
+    for (let i = 0; i < 4; i++) { const [x, y] = inDisc(0.7); lights.push({ x, y, color: '#ff3a3a', blink: true, phase: i * 1.7 }); }
+  }
+  if (art.geysers) {
+    g.globalCompositeOperation = 'lighter';
+    for (const dx of [-0.25, 0, 0.2]) {
+      const gr = g.createLinearGradient(0, r * 0.9, 0, r * 1.6);
+      gr.addColorStop(0, 'rgba(220,240,255,0.5)');
+      gr.addColorStop(1, 'rgba(220,240,255,0)');
+      g.fillStyle = gr;
+      g.beginPath(); g.moveTo(r * (dx - 0.04), r * 0.95); g.lineTo(r * (dx - 0.12), r * 1.6); g.lineTo(r * (dx + 0.12), r * 1.6); g.lineTo(r * (dx + 0.04), r * 0.95); g.fill();
+    }
+    g.globalCompositeOperation = 'source-over';
+  }
+  return (BODY_CACHE[pl.name] = { c, span, art, shape, lights });
+}
+
+function pick2(rnd, arr) {
+  return arr[Math.floor(rnd() * arr.length)];
+}
+
+// Hermes Foundry: a hub with four solar-furnace mirrors and radiator fins.
+function drawFoundry(g, r, lights) {
+  g.strokeStyle = '#6a727a';
+  g.lineWidth = Math.max(1, r * 0.05);
+  for (let i = 0; i < 4; i++) {
+    const a = i * Math.PI / 2 + Math.PI / 4;
+    g.save();
+    g.rotate(a);
+    g.beginPath(); g.moveTo(r * 0.25, 0); g.lineTo(r * 0.45, 0); g.stroke();
+    const m = g.createLinearGradient(r * 0.45, -r * 0.2, r * 1.2, r * 0.2);
+    m.addColorStop(0, '#f6e7b0');
+    m.addColorStop(0.5, '#fff8de');
+    m.addColorStop(1, '#c9a860');
+    g.fillStyle = m;
+    g.fillRect(r * 0.45, -r * 0.22, r * 0.8, r * 0.44);
+    g.strokeStyle = 'rgba(90,70,30,0.5)';
+    g.lineWidth = 1;
+    for (let x = 0.65; x < 1.25; x += 0.2) { g.beginPath(); g.moveTo(r * x, -r * 0.22); g.lineTo(r * x, r * 0.22); g.stroke(); }
+    g.restore();
+    g.strokeStyle = '#6a727a';
+    g.lineWidth = Math.max(1, r * 0.05);
+  }
+  g.fillStyle = '#2c3137';
+  for (let i = 0; i < 4; i++) { g.save(); g.rotate(i * Math.PI / 2); g.fillRect(r * 0.2, -r * 0.03, r * 0.35, r * 0.06); g.restore(); }
+  const hub = g.createRadialGradient(-r * 0.08, -r * 0.08, 1, 0, 0, r * 0.3);
+  hub.addColorStop(0, '#c4ccd4');
+  hub.addColorStop(1, '#4a525a');
+  g.fillStyle = hub;
+  g.beginPath(); g.arc(0, 0, r * 0.3, 0, Math.PI * 2); g.fill();
+  for (let i = 0; i < 6; i++) { const a = (i / 6) * Math.PI * 2; lights.push({ x: Math.cos(a) * r * 0.28, y: Math.sin(a) * r * 0.28, color: i % 3 ? '#ffffff' : '#ff5050', blink: true, phase: i }); }
+}
+
+// Day and night sides, from the Sun's direction, clipped to the body's outline.
+function shadeBody(x, y, r, shape, sun) {
+  const a = sun.angle, s = sun.strength, ox = Math.cos(a) * r * 0.8, oy = Math.sin(a) * r * 0.8;
+  ctx.save();
+  ctx.translate(x, y);
+  bodyPath(ctx, r, shape);
+  const g = ctx.createRadialGradient(ox, oy, r * 0.1, ox, oy, r * 2);
+  g.addColorStop(0, `rgba(255,250,235,${0.14 * s})`);
+  g.addColorStop(0.42, 'rgba(0,0,8,0)');
+  g.addColorStop(0.6, `rgba(0,0,8,${0.78 + 0.12 * (1.2 - s)})`);
+  g.addColorStop(0.85, 'rgba(0,0,8,0.96)');
+  ctx.fillStyle = g;
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawAtmosphere(color, x, y, r, sun) {
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  // Transparent inside the disc: a gradient's first stop would otherwise tint the whole planet.
+  const g = ctx.createRadialGradient(x, y, r * 0.85, x, y, r * 1.14);
+  g.addColorStop(0, hexA(color, 0));
+  g.addColorStop(0.45, hexA(color, 0.3 * sun.strength));
+  g.addColorStop(1, hexA(color, 0));
+  ctx.fillStyle = g;
+  ctx.beginPath(); ctx.arc(x, y, r * 1.14, 0, Math.PI * 2); ctx.fill();
+  ctx.strokeStyle = hexA(color, 0.35 * sun.strength);
+  ctx.lineWidth = r * 0.05;
+  ctx.beginPath(); ctx.arc(x, y, r * 1.01, sun.angle - 1.2, sun.angle + 1.2); ctx.stroke();
+  ctx.restore();
+}
+
+function drawBodyLights(sp, x, y) {
+  for (const l of sp.lights) {
+    if (l.glow) {
+      const pulse = 0.6 + 0.4 * Math.sin(G.time * 3 + l.phase);
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      const g = ctx.createRadialGradient(x + l.x, y + l.y, 0, x + l.x, y + l.y, 7);
+      g.addColorStop(0, hexA(l.color, 0.9 * pulse));
+      g.addColorStop(1, hexA(l.color, 0));
+      ctx.fillStyle = g;
+      ctx.fillRect(x + l.x - 7, y + l.y - 7, 14, 14);
+      ctx.restore();
+    } else if (!l.blink || Math.sin(G.time * 3 + l.phase) > 0) {
+      ctx.fillStyle = l.color;
+      ctx.fillRect(x + l.x - 1, y + l.y - 1, 2, 2);
+    }
+  }
+}
+
+function drawBody(pl, x, y) {
+  const sp = bodySprite(pl), sun = sunLight();
+  if (sp.art.rings) drawRings(x, y, pl.r, true);
+  ctx.drawImage(sp.c, x - sp.span / 2, y - sp.span / 2, sp.span, sp.span);
+  if (sp.art.type !== 'station') shadeBody(x, y, pl.r, sp.shape, sun);
+  if (sp.art.atmo) drawAtmosphere(sp.art.atmo, x, y, pl.r, sun);
+  if (sp.art.rings) drawRings(x, y, pl.r, false);
+  drawBodyLights(sp, x, y);
+}
+
+// Saturn's rings: the far half behind the planet, the near half in front.
+function drawRings(x, y, r, back) {
+  const tilt = -0.35, s = sunLight().strength;
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.rotate(tilt);
+  for (const [f, w, a] of [[1.35, 0.1, 0.35], [1.55, 0.18, 0.55], [1.8, 0.12, 0.4], [2.05, 0.06, 0.25]]) {
+    ctx.strokeStyle = `rgba(226,210,170,${a * Math.max(0.5, s)})`;
+    ctx.lineWidth = r * w;
+    ctx.beginPath();
+    ctx.ellipse(0, 0, r * f, r * f * 0.22, 0, back ? Math.PI : 0, back ? Math.PI * 2 : Math.PI);
+    ctx.stroke();
+  }
+  ctx.restore();
+}
+
+// The Sun (sized by your real distance from it) and any gas giant behind the moons.
+// The Sun is effectively infinitely far away, so it sits fixed in its real direction.
+function drawBackdrop(cam, viewW, H) {
+  const sun = sunLight(), pos = orbitPos(G.state.systemId), au = Math.hypot(pos.x, pos.y);
+  const edge = Math.min(viewW, H) * 0.42;
+  const sx = viewW / 2 + Math.cos(sun.angle) * edge, sy = H / 2 + Math.sin(sun.angle) * edge;
+  const sr = Math.max(2, 9 / au);
+  ctx.save();
+  ctx.globalCompositeOperation = 'lighter';
+  const glow = ctx.createRadialGradient(sx, sy, 0, sx, sy, sr * 8);
+  glow.addColorStop(0, 'rgba(255,245,220,0.8)');
+  glow.addColorStop(0.15, 'rgba(255,220,150,0.25)');
+  glow.addColorStop(1, 'rgba(255,180,90,0)');
+  ctx.fillStyle = glow;
+  ctx.beginPath(); ctx.arc(sx, sy, sr * 8, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#fffaf0';
+  ctx.beginPath(); ctx.arc(sx, sy, sr, 0, Math.PI * 2); ctx.fill();
+  ctx.restore();
+
+  const b = BACKDROPS[G.state.systemId];
+  if (b) {
+    const x = viewW / 2 + (b.x - cam.x) * 0.3, y = H / 2 + (b.y - cam.y) * 0.3;
+    drawBody({ name: b.name, r: b.r }, x, y);
+    ctx.fillStyle = 'rgba(2,4,10,0.35)';  // distance haze, so the giant stays in the background
+    ctx.beginPath(); ctx.arc(x, y, b.r * 1.02, 0, Math.PI * 2); ctx.fill();
+  }
+}
