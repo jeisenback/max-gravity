@@ -11,7 +11,7 @@ Long-term milestones, in order. Each builds on the ones before it.
 
 ## 2. Your own shipping company
 - Escorts that fly with you in combat.
-- Extra ships crewed by hired captains that run trade routes on their own.
+- **Extra ships crewed by hired captains that run trade routes on their own** (done).
 - Stakes in stations (a Ceres water depot, a Phobos yard) that pay out based on the region's economy.
 
 ## 3. A storylet narrative engine

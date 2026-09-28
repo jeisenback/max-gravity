@@ -201,7 +201,8 @@ Mods.register({
       else if (ship.kind === 'trader') u.unrest = Math.min(1, u.unrest + 0.05);
     });
     M.on('trade', (planet, cid, tons, dir) => {
-      const gov = localGov(), fs = factionState();
+      const sid = Object.keys(SYSTEMS).find(id => SYSTEMS[id].planets.includes(planet));
+      const gov = SYSTEMS[sid].gov, fs = factionState();  // where the market is, not where you are
       if (dir !== -1 || fs.prosperity[gov] === undefined) return;
       fs.prosperity[gov] = Math.min(1, fs.prosperity[gov] + tons * 0.0008);
       const w = atWar(gov);

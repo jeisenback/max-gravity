@@ -239,7 +239,7 @@ th { text-align: left; color: var(--muted); font-family: var(--font-label); font
 td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: top; }
 .num { text-align: right; font-variant-numeric: tabular-nums; }
 .act { text-align: right; white-space: nowrap; }
-.act button { padding: 3px 8px; }
+.act button { padding: 3px 8px; display: block; margin: 0 0 4px auto; }
 .tag { font-size: 10px; padding: 1px 4px; font-family: var(--font-label); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
 .tag.low { color: var(--good); }
 .tag.high { color: var(--warn); }

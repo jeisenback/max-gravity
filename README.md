@@ -3,7 +3,7 @@
 A small space trading and combat game set in our own solar system. It's an homage to Ambrosia Software's *Escape Velocity*, flavored by *The Expanse*.
 Fly between planets, moons, and Belt stations. Trade commodities, take delivery and bounty missions, fight pirates, and trade up to a better ship.
 
-Markets react to you: buying a good raises its local price and selling lowers it (about 0.2% per ton, up to 40%), and NPC shipping brings prices back over a couple of weeks. Pirate raids flare up around the system from time to time; while they last, NPC haulers stay away, so the local imports run short and exports pile up. Kill pirates there to clear the lanes, or haul the goods in yourself for a fat margin. The Earth Coalition, Mars Republic, and Belt Collective each have an economy that booms with steady trade (contracts pay 25% more) and slumps under raids and war. Incidents build tension between them until two go to war for a month or two: their navies fight in each other's space, their markets want medical supplies, machine parts, and metal, and the side with more victories (your kills and war-goods sales count) comes out ahead. The Spaceport shows local conditions and news from elsewhere, and the map marks raids in red. A small hold barely moves a market; a big one has to spread its trade across routes. Pirates fly heavier ships in rougher space, so the Belt and Hygiea call for a gun upgrade.
+Markets react to you: buying a good raises its local price and selling lowers it (about 0.2% per ton, up to 40%), and NPC shipping brings prices back over a couple of weeks. Pirate raids flare up around the system from time to time; while they last, NPC haulers stay away, so the local imports run short and exports pile up. Kill pirates there to clear the lanes, or haul the goods in yourself for a fat margin. The Earth Coalition, Mars Republic, and Belt Collective each have an economy that booms with steady trade (contracts pay 25% more) and slumps under raids and war. Incidents build tension between them until two go to war for a month or two: their navies fight in each other's space, their markets want medical supplies, machine parts, and metal, and the side with more victories (your kills and war-goods sales count) comes out ahead. The Port tab shows local conditions and news from elsewhere, and the map marks raids in red. A small hold barely moves a market; a big one has to spread its trade across routes. Pirates fly heavier ships in rougher space, so the Belt and Hygiea call for a gun upgrade.
 
 There is no faster-than-light travel. You plot a direct burn to any destination in range. Travel time (days) and reaction mass scale with real orbital distance, and everything orbits at its real period, so routes open and close over the months: Earth to Mars runs 4 to 8 days, Saturn about 15 to 18, and Triton more than a month out. The system map shows the best upcoming window for a plotted burn. Each burn takes 1-2 minutes of real time. You accelerate, flip at the midpoint, and decelerate. In transit you get random events with choices (distress calls, pirates, derelicts, and more), market rumors that shift prices for weeks, and comms chatter. Events pause the transit timer.
 
@@ -21,13 +21,17 @@ Captains you deal with (hail, trade, pay off, rob, or shoot at) are remembered, 
 
 ## Story: Cold Water
 
-A grounded political plot about who controls the Belt's water. Act 1 starts in transit once you have a little experience (day 10 or later): a derelict ice hauler, a data core someone badly wants back, a company recovery agent, and a fired Ceres water engineer, Mira Castellane, who needs passage to Europa to read it. Once the story starts, some market rumors are really news of the sabotage. In Act 2 you decide who gets the proof: the Belt Collective (Ceres Station), Mars Republic Navy intelligence (Mars, needs Trusted standing), Coalition intelligence (Luna), or Aquilon itself (Hermes Foundry). Each path is a short chain of missions with its own ending, and some choices switch you to another side. In Act 3, fleets blockade Ceres and you must run 20 tons of water to Ceres Station, with your side's ships, friends you have made, and hired guns paid by people you wronged all joining the fight. A last choice at the station decides one of five endings (Belt, Mars, Earth, Aquilon, or the truth), followed by an epilogue about Ceres, Mira, your crew, and your record. The endings change water prices in the Belt for good, and the game carries on afterward. Your current objective, a story log, and the epilogue are on the Spaceport tab.
+A grounded political plot about who controls the Belt's water. Act 1 starts in transit once you have a little experience (day 10 or later): a derelict ice hauler, a data core someone badly wants back, a company recovery agent, and a fired Ceres water engineer, Mira Castellane, who needs passage to Europa to read it. Once the story starts, some market rumors are really news of the sabotage. In Act 2 you decide who gets the proof: the Belt Collective (Ceres Station), Mars Republic Navy intelligence (Mars, needs Trusted standing), Coalition intelligence (Luna), or Aquilon itself (Hermes Foundry). Each path is a short chain of missions with its own ending, and some choices switch you to another side. In Act 3, fleets blockade Ceres and you must run 20 tons of water to Ceres Station, with your side's ships, friends you have made, and hired guns paid by people you wronged all joining the fight. A last choice at the station decides one of five endings (Belt, Mars, Earth, Aquilon, or the truth), followed by an epilogue about Ceres, Mira, your crew, and your record. The endings change water prices in the Belt for good, and the game carries on afterward. Your current objective, a story log, and the epilogue are on the Port tab.
 
 ## Factions and outfitting
 
-You have a standing (-100 to 100) with the Earth Coalition, Mars Republic, Belt Collective, and the pirates: Hostile, Distrusted, Neutral, Trusted, or Honored (Spaceport tab). Missions and bounties for a faction raise it; killing pirates helps the local government and angers pirates; shooting traders or patrols costs you. Faction patrols fight pirates and hunt you once you are Distrusted (hail them to pay your fine); Hostile ports refuse to let you land. Trusted captains get better-paid contracts, military gear, and the Corvette. Pirates who trust you often leave you alone.
+You have a standing (-100 to 100) with the Earth Coalition, Mars Republic, Belt Collective, and the pirates: Hostile, Distrusted, Neutral, Trusted, or Honored (Port tab). Missions and bounties for a faction raise it; killing pirates helps the local government and angers pirates; shooting traders or patrols costs you. Faction patrols fight pirates and hunt you once you are Distrusted (hail them to pay your fine); Hostile ports refuse to let you land. Trusted captains get better-paid contracts, military gear, and the Corvette. Pirates who trust you often leave you alone.
 
 Outfitters (in the Shipyard tab at shipyards and The Rook) sell guns, heavy rounds, armor, deflectors, reaction mass tanks, cargo pods, drive tuning, passenger berths, and a pirate-only transponder spoofer. Outfits use cargo space and move with you when you change ships.
+
+## Shipping company
+
+At any shipyard you can buy a ship for your company instead of flying it. It comes with a hired captain on a daily wage. On the Company tab, pick a route from the best round trips from its port (with estimated profit per day). Each game day the ship moves along its route; at each end it sells what it carries and buys what pays at the other end, through the same markets you use, so company trade moves prices too. Raids along the route can cost cargo or repairs, or rarely the ship; skilled captains get through more often. Company ships trade with your credits but never touch the last 5,000 cr, and you get a report each time you dock.
 
 ## Running
 
@@ -71,6 +75,7 @@ On a keyboard:
 - `js/mods.js` - the mod API (see Modding below)
 - `mods/` - mods; `example-vesta.js` is a working example to copy
 - `js/world.js` - the living solar system: pirate unrest, raids, and NPC shipping that drives shortages and gluts
+- `js/company.js` - your shipping company: company ships, captains, trade routes, and the Company tab
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
 - `js/audio.js` - sound effects synthesized with Web Audio (no audio files): guns, hits, explosions, engine rumble, docking, burns, comms
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)
@@ -91,14 +96,14 @@ Put the file in `mods/` and add a script tag for it in `index.html`, in the mark
 <script src="mods/example-vesta.js"></script>
 ```
 
-Loaded mods are listed at the bottom of the Spaceport screen. To try the example, uncomment its tag: it adds Vesta, a mining rock in the Belt with its own trade good, an outfit, a transit event, and a pirate bounty.
+Loaded mods are listed at the bottom of the Port tab. To try the example, uncomment its tag: it adds Vesta, a mining rock in the Belt with its own trade good, an outfit, a transit event, and a pirate bounty.
 
 ### Writing a mod
 
 ```js
 Mods.register({
   id: 'my-mod',            // unique; also the key for the mod's saved data
-  name: 'My Mod',          // shown in the Spaceport
+  name: 'My Mod',          // shown in the Port tab
   version: '1.0',
   init(M) {
     M.addOutfit('scoop', { name: 'Ice scoop', price: 4000, space: 2, max: 1,
