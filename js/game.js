@@ -59,19 +59,33 @@ function hash(str) {
   return h;
 }
 
-function orbitPos(id) {
-  const s = SYSTEMS[id], a = s.angle * Math.PI / 180;
+// Everything orbits the Sun at its real period (Kepler: years = au^1.5), so the
+// distance between two places, and the burn, changes over the months. `angle` is
+// where a location sits on day 0.
+const orbitPeriod = id => 365.25 * Math.pow(SYSTEMS[id].au, 1.5);
+function orbitPos(id, day = G.state.day) {
+  const s = SYSTEMS[id], a = (s.angle + 360 * day / orbitPeriod(id)) * Math.PI / 180;
   return { x: Math.cos(a) * s.au, y: Math.sin(a) * s.au };
 }
 
-// Travel time and reaction mass grow with distance, but less than linearly,
-// so the outer planets stay reachable.
-const distAU = (a, b) => dist(orbitPos(a), orbitPos(b));
+// Travel time and reaction mass grow with distance at departure, but less than
+// linearly, so the outer planets stay reachable.
+const distAU = (a, b, day) => dist(orbitPos(a, day), orbitPos(b, day));
 // Crew perks: a pilot shortens burns, an engineer (and Rosa's drive tuning) saves mass.
-const baseDays = (a, b) => Math.round(2 + 3 * Math.pow(distAU(a, b), 0.7));
-const travelDays = (a, b) => Math.max(1, Math.round(baseDays(a, b) * (1 - 0.07 * roleSkill('pilot'))));
-const burnFuel = (a, b) => Math.round((30 + 60 * Math.sqrt(distAU(a, b)))
+const baseDays = (a, b, day) => Math.round(2 + 3 * Math.pow(distAU(a, b, day), 0.7));
+const travelDays = (a, b, day) => Math.max(1, Math.round(baseDays(a, b, day) * (1 - 0.07 * roleSkill('pilot'))));
+const burnFuel = (a, b, day) => Math.round((30 + 60 * Math.sqrt(distAU(a, b, day)))
   * (1 - 0.05 * roleSkill('engineer')) * (G.state.flags.rosaTuned ? 0.9 : 1));
+
+// The shortest this burn gets over the next two years, and when.
+function bestWindow(a, b) {
+  let best = { days: travelDays(a, b), wait: 0 };
+  for (let d = 5; d <= 730; d += 5) {
+    const days = travelDays(a, b, G.state.day + d);
+    if (days < best.days) best = { days, wait: d };
+  }
+  return best;
+}
 const inRange = (a, b) => a === b || burnFuel(a, b) <= ship().fuel;
 
 function cargoUsed() {
@@ -157,7 +171,7 @@ function loadSave() {
 const INTRO = [
   'You have 12,000 credits, a patched-up Rock Hopper, and a solar system full of opportunity.',
   'Buy low, sell high. The Commodity Exchange shows the best market in range for each good.',
-  'Tip: Earth sells Electronics cheap, and Mars, a five-day burn away, pays well for them. Mars sells Refined Metals cheap for the trip back.',
+  'Tip: Earth sells Electronics cheap, and Mars, a short burn away, pays well for them. Mars sells Refined Metals cheap for the trip back.',
 ];
 
 function newGame() {
@@ -1054,7 +1068,7 @@ function drawMap(W, H) {
   const narrow = W < 700;
   const cx = W / 2, cy = H / 2 + (narrow ? 20 : 10), sc = (Math.min(W, H) / 2 - (narrow ? 44 : 70)) / maxR;
   const P = id => {
-    const s = SYSTEMS[id], a = s.angle * Math.PI / 180, r = mr(s.au) * sc;
+    const s = SYSTEMS[id], o = orbitPos(id), a = Math.atan2(o.y, o.x), r = mr(s.au) * sc;
     return [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
   };
   G.mapPos = P;
@@ -1132,7 +1146,9 @@ function drawMap(W, H) {
   if (st.dest) {
     const need = burnFuel(from, st.dest);
     ctx.fillStyle = need > st.fuel ? '#ff7f7f' : '#5fd35f';
-    status = `Burn to ${SYSTEMS[st.dest].name}: ${travelDays(from, st.dest)} days, ${need} reaction mass (you have ${st.fuel})`;
+    const now = travelDays(from, st.dest), w = bestWindow(from, st.dest);
+    status = `Burn to ${SYSTEMS[st.dest].name}: ${now} days, ${need} reaction mass (you have ${st.fuel}). `
+      + (w.wait ? `Best window: ${w.days} days, in ${w.wait} days.` : 'Near the best window for this route.');
   }
   const lines = wrapText(status, W - 32);
   lines.forEach((l, i) => ctx.fillText(l, 16, H - 20 - (lines.length - 1 - i) * 16));
