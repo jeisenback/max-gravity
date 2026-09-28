@@ -114,8 +114,8 @@ const TRANSIT_EVENTS = [
         }
         return `They outgun you. You limp away with ${hurt(0.5)} points of armor damage.`;
       } },
-      { label: '[Wren] Spoof a pirate transponder', crew: 'wren', run() {
-        if (Math.random() < 0.8) return 'Wren\'s fake transponder reads as one of their own. They wave you through with a rude gesture.';
+      { label: '[{crew}] Spoof a pirate transponder', role: 'slicer', run() {
+        if (Math.random() < slicerOdds()) return '{crew}\'s fake transponder reads as one of their own. They wave you through with a rude gesture.';
         return `They see through it and open fire. ${hurt(0.2)} points of armor damage before you get clear.`;
       } },
       { label: 'Hard burn to outrun them (50 reaction mass)', can: () => G.state.fuel >= 50, run() {
@@ -170,7 +170,7 @@ const TRANSIT_EVENTS = [
     title: 'Coolant Leak',
     text: 'Alarms. The reactor coolant loop has sprung a leak and the drive is running hot.',
     choices: [
-      { label: '[Rosa] Let Rosa handle it', crew: 'rosa', run: () => 'Rosa is in the coolant loop before the alarm finishes. "Go back to sleep, captain."' },
+      { label: '[{crew}] Handle it', role: 'engineer', run: () => '{crew} is in the coolant loop before the alarm finishes. "Go back to sleep, captain."' },
       { label: 'Suit up and patch it', run() {
         if (Math.random() < 0.5) return 'An hour in a vac suit with a sealant gun and some creative swearing. Good as new.';
         const lost = Math.min(G.state.fuel, 50);
@@ -200,6 +200,7 @@ const TRANSIT_EVENTS = [
 // ---------- transit ----------
 
 function comm(text) {
+  if (!G.transit) return;  // rumors can also arrive while docked
   G.transit.comms.push(text);
   if (G.transit.comms.length > 10) G.transit.comms.shift();
 }
@@ -223,8 +224,9 @@ function enterTransit() {
   G.npcs = []; G.shots = []; G.target = null;
   if (!G.transitStars) G.transitStars = Array.from({ length: 150 }, () => ({ x: Math.random(), y: Math.random(), z: rand(0.2, 1) }));
   comm(`Burn plotted for ${SYSTEMS[to].name}: ${days} days. Crash couches ready.`);
-  if (hasCrew('josef')) {
-    comm('Josef: "Heard something at the last port."');
+  const qm = roleHolder('quartermaster');
+  if (qm) {
+    comm(`${qm.first}: "Heard something at the last port."`);
     addRumor();
   }
 }
@@ -251,8 +253,12 @@ function updateTransit(dt) {
   }
   if ((t.chatter -= dt) <= 0) {
     t.chatter = rand(12, 20);
-    const crewLines = G.state.crew.flatMap(id => CREW[id].chatter);
-    comm(pick(crewLines.length && Math.random() < 0.5 ? crewLines : CHATTER));
+    const fill = (line, c) => line.replace('{first}', c.first).replace('{home}', c.home);
+    const aboard = [
+      ...crewMembers().flatMap(c => c.chatter || c.traits.map(t => fill(TRAITS[t].chatter, c))),
+      ...paxAboard().filter(m => m.pid).map(m => G.state.people[m.pid]).flatMap(p => p.traits.map(t => `(passenger) ${fill(TRAITS[t].chatter, p)}`)),
+    ];
+    comm(pick(aboard.length && Math.random() < 0.6 ? aboard : CHATTER));
   }
   if (t.times.length && t.total - t.left >= t.times[0]) {
     t.times.shift();
@@ -268,14 +274,16 @@ function startHappening() {
   const pax = paxAboard().find(m => !m.eventDone);
   if (pax && Math.random() < 0.5) {
     pax.eventDone = true;
-    return openEvent(PASSENGERS[pax.passenger].event(pax));
+    return openEvent(pax.pid ? passengerEvent(pax) : PASSENGERS[pax.passenger].event(pax));
   }
-  const arcs = G.state.crew.filter(id => CREW[id].events[flags[`${id}Arc`] || 0]);
+  const arcs = G.state.crew.filter(id => CREW[id] && CREW[id].events[flags[`${id}Arc`] || 0]);
   if (arcs.length && Math.random() < 0.4) {
     const id = pick(arcs), step = flags[`${id}Arc`] || 0;
     flags[`${id}Arc`] = step + 1;
     return openEvent(CREW[id].events[step]);
   }
+  const crewEvent = Math.random() < 0.3 && crewTraitEvent();
+  if (crewEvent) return openEvent(crewEvent);
   const fresh = TRANSIT_EVENTS.filter(e => !t.seen.includes(e));
   if (Math.random() < 0.55 && fresh.length) {
     const ev = pick(fresh);
@@ -285,15 +293,18 @@ function startHappening() {
   addRumor();
 }
 
-// Choices tagged with a crew id only appear when that crew member is aboard.
+// Choices tagged with a crew role only appear when someone aboard fills it, and
+// {crew} in their text becomes that crew member's name.
 function openEvent(ev) {
   G.transit.event = ev;
-  G.transit.choices = ev.choices.filter(c => !c.crew || hasCrew(c.crew));
+  G.transit.choices = ev.choices.filter(c => !c.role || roleSkill(c.role))
+    .map(c => (c.role ? { ...c, label: c.label.replace(/\{crew\}/g, roleHolder(c.role).first) } : c));
   UI.showEvent(ev, G.transit.choices);
 }
 
 function chooseEvent(i) {
-  return G.transit.choices[i].run();
+  const c = G.transit.choices[i], result = c.run();
+  return c.role ? result.replace(/\{crew\}/g, roleHolder(c.role).first) : result;
 }
 
 function finishEvent() {
@@ -383,7 +394,7 @@ function drawTransit(W, H) {
   const log = [];
   for (const m of st.missions) log.push(`${m.title} (due day ${m.deadline})`);
   if (!st.missions.length) log.push('No active missions.');
-  if (st.crew.length) log.push(`Crew: ${st.crew.map(id => `${CREW[id].name} (${CREW[id].role})`).join(', ')}`);
+  if (st.crew.length) log.push(`Crew: ${crewMembers().map(c => `${fullName(c)} (${ROLE_NAMES[c.role]})`).join(', ')}`);
   const held = COMMODITIES.filter(c => st.cargo[c.id] > 0).map(c => `${st.cargo[c.id]}t ${c.name}`);
   log.push(`Cargo: ${held.length ? held.join(', ') : 'empty'}`);
   const logLines = log.flatMap(l => wrapText(l, viewW - 40));

@@ -1,15 +1,22 @@
 'use strict';
 
-// Unique crew members and passenger groups, with the transit events they bring.
+// Crew and passengers: the five handcrafted crew and passenger groups, and the
+// role-based perks that handcrafted and procedural crew (people.js) share.
 // Loaded before game.js; only calls into it at runtime.
 
-const hasCrew = id => G.state.crew.includes(id);
+// Crew ids are either keys of CREW (handcrafted) or procedural person ids.
+const person = id => CREW[id] || G.state.people[id];
+const fullName = c => c.name || `${c.first} ${c.last}`;
+const crewMembers = () => G.state.crew.map(person);
+const roleHolder = role => crewMembers().filter(c => c.role === role).sort((a, b) => b.skill - a.skill)[0];
+const roleSkill = role => (roleHolder(role) || { skill: 0 }).skill;
 const paxAboard = () => G.state.missions.filter(m => m.type === 'passenger');
 const berthsUsed = () => G.state.crew.length + paxAboard().reduce((t, m) => t + m.pax, 0);
 const berthsFree = () => ship().berths - berthsUsed();
-const playerGuns = () => ship().guns + (hasCrew('kit') ? 1 : 0);
-const fightOdds = () => 0.3 + playerGuns() * 0.15 + (G.state.flags.kitSharp ? 0.1 : 0);
-const wage = id => CREW[id].wage * (id === 'rosa' && G.state.flags.rosaHalfWage ? 0.5 : 1);
+const playerGuns = () => ship().guns + (roleSkill('gunner') ? 1 : 0);
+const fightOdds = () => 0.3 + playerGuns() * 0.15 + roleSkill('gunner') * 0.03 + (G.state.flags.kitSharp ? 0.1 : 0);
+const slicerOdds = () => 0.6 + roleSkill('slicer') * 0.1;
+const wage = id => person(id).wage * (id === 'rosa' && G.state.flags.rosaHalfWage ? 0.5 : 1);
 
 function payCrew(days) {
   const st = G.state;
@@ -19,8 +26,9 @@ function payCrew(days) {
   msg(`Crew wages for ${days} days: ${fmt(total)} cr.`);
   if (st.credits < 0) {
     st.credits = 0;
-    const id = st.crew.pop();
-    msg(`${CREW[id].name} quits over unpaid wages and heads home to ${CREW[id].home}.`);
+    const id = st.crew.pop(), c = person(id);
+    if (!CREW[id]) c.location = system().planets[0].name;
+    msg(`${fullName(c)} quits over unpaid wages.`);
   }
 }
 
@@ -32,7 +40,7 @@ function leaveCrew(id) {
 // and a two-part personal storyline that plays out during transits.
 const CREW = {
   rosa: {
-    name: 'Rosa Okafor', role: 'Engineer', home: 'Ceres Station', fee: 3000, wage: 60,
+    name: 'Rosa Okafor', first: 'Rosa', role: 'engineer', skill: 3, home: 'Ceres Station', fee: 3000, wage: 60,
     perk: 'Burns use 15% less reaction mass. Handles reactor trouble.',
     bio: 'Ceres-born drive tech who can fix anything with sealant, a spanner, and enough swearing. Left Ceres in a hurry and does not talk about why.',
     chatter: ['Rosa: "If you hear a clank, that is normal. If you hear two clanks, wake me."', 'Rosa is humming in the engine room again.'],
@@ -60,7 +68,7 @@ const CREW = {
     ],
   },
   dima: {
-    name: 'Dmitri "Dima" Sokolov', role: 'Pilot', home: 'Mars', fee: 4000, wage: 80,
+    name: 'Dmitri "Dima" Sokolov', first: 'Dima', role: 'pilot', skill: 3, home: 'Mars', fee: 4000, wage: 80,
     perk: 'Burns take 20% fewer days.',
     bio: 'Ex-Mars Republic Navy pilot, discharged for "creative interpretation of orders". Flies like he is still being shot at.',
     chatter: ['Dima: "Smooth as glass. You are welcome."', 'Dima is arguing with the nav computer again. He is winning.'],
@@ -91,7 +99,7 @@ const CREW = {
     ],
   },
   kit: {
-    name: 'Kit Halloran', role: 'Gunner', home: 'Luna', fee: 3500, wage: 70,
+    name: 'Kit Halloran', first: 'Kit', role: 'gunner', skill: 3, home: 'Luna', fee: 3500, wage: 70,
     perk: 'Adds one gun in combat. Better odds when fighting in transit.',
     bio: 'Earth Coalition Navy gunnery sergeant, retired early. Talks to her guns. They seem to listen.',
     chatter: ['Kit: "Guns are clean. Guns are always clean."', 'Kit is running targeting drills against passing ice.'],
@@ -120,7 +128,7 @@ const CREW = {
     ],
   },
   josef: {
-    name: 'Josef Brandt', role: 'Quartermaster', home: 'Ganymede', fee: 2500, wage: 50,
+    name: 'Josef Brandt', first: 'Josef', role: 'quartermaster', skill: 3, home: 'Ganymede', fee: 2500, wage: 50,
     perk: 'Hears things: one extra market rumor on every burn.',
     bio: 'Has worked every market from Mercury to Titan. Remembers every price he has ever seen and everyone who ever cheated him.',
     chatter: ['Josef: "The price of water on Ceres tells you everything about the Belt."', 'Josef is reorganizing the cargo manifest. Again.'],
@@ -144,7 +152,7 @@ const CREW = {
     ],
   },
   wren: {
-    name: 'Wren', role: 'Slicer', home: 'The Rook', fee: 5000, wage: 100,
+    name: 'Wren', first: 'Wren', role: 'slicer', skill: 3, home: 'The Rook', fee: 5000, wage: 100,
     perk: 'Can spoof transponders when pirates come calling.',
     bio: 'Belter slicer who talks mostly to machines. Nobody knows her real name, possibly including Wren.',
     chatter: ['Wren: "Your ship\'s firmware is a crime. I am fixing it."', 'Wren is listening to pirate channels. She laughs at something.'],
@@ -218,9 +226,9 @@ const PASSENGERS = {
         m.bonus += Math.round(m.pay * 0.4);
         return 'Hale spends the burn pinned to his couch, too crushed to complain. He tips generously.';
       } },
-      { label: '[Dima] Let Dima find a faster line', crew: 'dima', run() {
+      { label: '[{crew}] Find a faster line', role: 'pilot', run() {
         m.bonus += Math.round(m.pay * 0.4);
-        return 'Dima finds a gravity assist nobody else would try. Hale is impressed despite himself.';
+        return '{crew} finds a gravity assist nobody else would try. Hale is impressed despite himself.';
       } },
       { label: 'Tell him physics does not negotiate', run() {
         m.bonus -= Math.round(m.pay * 0.2);
@@ -236,13 +244,13 @@ const PASSENGERS = {
         G.state.missions = G.state.missions.filter(x => x !== m);
         return 'The airlock cycles. You try not to think about it.';
       } },
-      { label: '[Wren] Have Wren spoof a Navy transponder', crew: 'wren', run() {
+      { label: '[{crew}] Spoof a Navy transponder', role: 'slicer', run() {
         m.bonus += 1000;
         return 'Suddenly you are a Coalition Navy frigate. They scatter. Mira laughs for the first time since she came aboard.';
       } },
-      { label: '[Kit] Let Kit answer them', crew: 'kit', run() {
+      { label: '[{crew}] Answer them with the guns', role: 'gunner', run() {
         m.bonus += 3000;
-        return `Kit answers with the guns. They do not ask again. You take ${hurt(0.1)} points of armor damage, and Mira quietly doubles her fare.`;
+        return `{crew} answers with the guns. They do not ask again. You take ${hurt(0.1)} points of armor damage, and Mira quietly doubles her fare.`;
       } },
       { label: 'Refuse, and fight if you have to', run() {
         if (Math.random() < fightOdds()) {

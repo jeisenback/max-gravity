@@ -20,6 +20,8 @@ const G = {
   player: null,       // flight physics for the player ship
   npcs: [], shots: [], particles: [], messages: [],
   offers: [],         // mission offers at the current planet
+  bar: [],            // procedural crew looking for work at the current planet
+  revenge: null,      // someone who hates you has hired a gun, see people.js
   mode: 'landed',     // landed | flight | departing | transit | map | dead
   mapReturn: null,
   keys: {},
@@ -63,11 +65,11 @@ function orbitPos(id) {
 // Travel time and reaction mass grow with distance, but less than linearly,
 // so the outer planets stay reachable.
 const distAU = (a, b) => dist(orbitPos(a), orbitPos(b));
-// Crew perks: a pilot shortens burns, an engineer (and her drive tuning) saves mass.
+// Crew perks: a pilot shortens burns, an engineer (and Rosa's drive tuning) saves mass.
 const baseDays = (a, b) => Math.round(2 + 3 * Math.pow(distAU(a, b), 0.7));
-const travelDays = (a, b) => Math.max(1, Math.round(baseDays(a, b) * (hasCrew('dima') ? 0.8 : 1)));
+const travelDays = (a, b) => Math.max(1, Math.round(baseDays(a, b) * (1 - 0.07 * roleSkill('pilot'))));
 const burnFuel = (a, b) => Math.round((30 + 60 * Math.sqrt(distAU(a, b)))
-  * (hasCrew('rosa') ? 0.85 : 1) * (G.state.flags.rosaTuned ? 0.9 : 1));
+  * (1 - 0.05 * roleSkill('engineer')) * (G.state.flags.rosaTuned ? 0.9 : 1));
 const inRange = (a, b) => a === b || burnFuel(a, b) <= ship().fuel;
 
 function cargoUsed() {
@@ -113,7 +115,7 @@ function newState() {
     credits: 12000, day: 1, systemId: 'earth', planet: 'Earth', shipId: 'shuttle',
     fuel: SHIPS.shuttle.fuel, armor: SHIPS.shuttle.armor,
     cargo: {}, paid: {}, rumors: [], missions: [], dest: null, nextId: 1,
-    crew: [], flags: {},
+    crew: [], flags: {}, people: {}, nextPid: 1,
   };
 }
 
@@ -142,6 +144,8 @@ function loadGame() {
   G.state = loadSave() || newState();
   G.state.crew = G.state.crew || [];    // saves from before crew
   G.state.flags = G.state.flags || {};
+  G.state.people = G.state.people || {};  // saves from before procedural people
+  G.state.nextPid = G.state.nextPid || 1;
   resetWorld();
   landAt(currentPlanet(), ['Save loaded. Welcome back, captain.']);
 }
@@ -259,7 +263,8 @@ function spawnNpc(kind, atPlanet) {
   const n = makeShip(shipId, x, y, rand(0, Math.PI * 2));
   n.kind = kind;
   n.hostile = kind === 'pirate' && !(G.state.flags.ghost && Math.random() < 0.5);  // Wren's ghost transponder
-  n.name = `${kind === 'pirate' ? 'Pirate' : 'Trader'} ${SHIPS[shipId].name}`;
+  n.name = `${kind === 'pirate' ? 'Pirate ' : ''}"${shipName(kind === 'pirate')}"`;
+  n.captain = captainName(G.state.systemId);
   n.goal = pickGoal(sys, from);
   if (!atPlanet) {
     n.angle = Math.atan2(n.goal.y - y, n.goal.x - x);
@@ -286,6 +291,14 @@ function populateSystem() {
   if (Math.random() < sys.pirates) {
     const pirates = randInt(1, 2);
     for (let i = 0; i < pirates; i++) spawnNpc('pirate', false);
+  }
+  if (G.revenge) {
+    const p = G.revenge, n = spawnNpc('pirate', false);
+    Object.assign(n, { shipId: 'corsair', hostile: true, name: `Hired gun (paid by ${p.first} ${p.last})` });
+    n.shields = SHIPS.corsair.shields;
+    n.armor = n.maxArmor = SHIPS.corsair.armor;
+    msg(`A ship is closing fast. The captain says ${p.first} ${p.last} sends regards.`);
+    G.revenge = null;
   }
   for (const m of G.state.missions) {
     if (m.type === 'bounty' && m.targetSystem === G.state.systemId) {
@@ -361,6 +374,11 @@ function land(planet) {
       st.credits += m.pay;
       msg(`Delivered ${m.tons}t of ${m.good}. Payment received: ${fmt(m.pay)} cr.`);
     } else {
+      if (m.pid) {
+        const p = st.people[m.pid];
+        p.location = planet.name;
+        like(p, 1, `You got me to ${planet.name}.`);
+      }
       const fare = Math.max(0, m.pay + m.bonus);
       st.credits += fare;
       msg(`${m.who[0].toUpperCase()}${m.who.slice(1)} ${m.pax > 1 ? 'disembark' : 'disembarks'}. Fare received: ${fmt(fare)} cr${m.bonus ? ` (${m.bonus > 0 ? '+' : '-'}${fmt(Math.abs(m.bonus))} for the trip)` : ''}.`);
@@ -368,6 +386,11 @@ function land(planet) {
     return false;
   });
   expireMissions();
+  for (const c of crewMembers().filter(c => c.id && c.opinion <= -4)) {
+    leaveCrew(c.id);
+    c.location = planet.name;
+    msg(`${fullName(c)} has had enough of you and your ship, and walks off at ${planet.name}.`);
+  }
   landAt(planet, G.messages.slice(before).map(m => m.text));
 }
 
@@ -376,6 +399,9 @@ function landAt(planet, notes) {
   G.shots = [];
   G.flash = 0;
   G.offers = generateMissions(planet);
+  G.bar = planet.services.includes('missions') || planet.services.includes('shipyard')
+    ? Array.from({ length: randInt(1, 3) }, () => makeCrewCandidate(G.state.systemId)) : [];
+  notes = notes.concat(meetContacts(planet));
   save();
   UI.openLanded(planet, notes);
 }
@@ -396,6 +422,10 @@ function expireMissions() {
   st.missions = st.missions.filter(m => {
     if (st.day <= m.deadline) return true;
     msg(`Mission failed (deadline passed): ${m.title}`);
+    if (m.pid) {
+      like(st.people[m.pid], -3, 'You never got me where I was going.');
+      st.people[m.pid].location = st.planet;
+    }
     return false;
   });
 }
@@ -473,14 +503,19 @@ function generateMissions(planet) {
     const roll = Math.random();
     if (roll >= 0.45 && roll < 0.75) {
       const destSystem = pick(reachable), dest = pick(SYSTEMS[destSystem].planets);
-      const pid = pick(Object.keys(PASSENGERS)), P = PASSENGERS[pid], days = daysTo(destSystem);
-      if (dest === planet || [...offers, ...G.state.missions].some(m => m.passenger === pid)) continue;
-      offers.push({
-        type: 'passenger', passenger: pid, who: P.name, pax: P.pax, bonus: 0, destSystem, destPlanet: dest.name,
-        title: `Carry ${P.name} (${P.pax}) to ${dest.name}`,
-        pay: Math.round((1500 + days * 400) * P.fare),
-        deadline: day + Math.ceil(days * 1.5) + randInt(2, 6),
-      });
+      const days = daysTo(destSystem), deadline = day + Math.ceil(days * 1.5) + randInt(2, 6);
+      if (dest === planet) continue;
+      // Mostly procedural travelers, occasionally one of the handcrafted groups.
+      const pid = pick(Object.keys(PASSENGERS)), P = PASSENGERS[pid];
+      if (Math.random() < 0.2 && ![...offers, ...G.state.missions].some(m => m.passenger === pid)) {
+        offers.push({
+          type: 'passenger', passenger: pid, who: P.name, pax: P.pax, bonus: 0, destSystem, destPlanet: dest.name,
+          title: `Carry ${P.name} (${P.pax}) to ${dest.name}`,
+          pay: Math.round((1500 + days * 400) * P.fare), deadline,
+        });
+      } else {
+        offers.push(makePassengerOffer(here, destSystem, dest, days, deadline));
+      }
     } else if (roll < 0.45) {
       const destSystem = pick(reachable);
       const dest = pick(SYSTEMS[destSystem].planets);
@@ -812,8 +847,9 @@ function drawHud(W, H) {
   if (G.target && p) {
     const t = G.target;
     ctx.fillStyle = npcColor(t);
-    ctx.fillText(t.name, x, y += 16);
+    for (const l of wrapText(t.name, w)) ctx.fillText(l, x, y += 16);
     ctx.fillStyle = '#9ab';
+    for (const l of wrapText(`${SHIPS[t.shipId].name}${t.captain ? `, Capt. ${t.captain}` : ''}`, w)) ctx.fillText(l, x, y += 16);
     ctx.fillText(`Dist ${Math.round(dist(t, p))}`, x, y += 16);
     y += 14;
     ctx.fillStyle = '#1a2533'; ctx.fillRect(x, y, w, 5); ctx.fillRect(x, y + 8, w, 5);

@@ -148,29 +148,41 @@ const UI = {
 
     crew() {
       const st = G.state, here = this.planet.name;
+      const traits = c => (c.traits ? ` &middot; ${c.traits.map(t => TRAITS[t].adj).join(', ')}` : '');
+      const skill = c => `${ROLE_NAMES[c.role]}, skill ${c.skill}/3`;
       const mine = st.crew.map((id, i) => {
-        const c = CREW[id];
+        const c = person(id);
+        const mood = CREW[id] ? '' : ` &middot; ${opinionWord(c.opinion)}`;
         return `<div class="mission">
-          <div><b>${c.name}</b> &middot; ${c.role}<div class="hint">${c.perk} Wage ${fmt(wage(id))} cr/day.</div></div>
+          <div><b>${fullName(c)}</b> &middot; ${skill(c)}${traits(c)}${mood}
+            <div class="hint">${CREW[id] ? c.perk : ROLE_PERKS[c.role](c.skill)} Wage ${fmt(wage(id))} cr/day.</div></div>
           <button data-action="dismiss" data-arg="${i}">Dismiss</button>
         </div>`;
       }).join('');
-      const forHire = Object.entries(CREW).filter(([id, c]) => c.home === here && !st.crew.includes(id)).map(([id, c]) => {
+      const unique = Object.entries(CREW).filter(([id, c]) => c.home === here && !st.crew.includes(id))
+        .map(([id, c]) => ({ c, arg: id, bio: c.bio, perk: c.perk }));
+      const locals = G.bar.map((c, i) => ({ c, arg: `bar:${i}`, bio: describe(c).replace(GOALS[c.goal], 'looking for a ship'), perk: ROLE_PERKS[c.role](c.skill) }));
+      const forHire = [...unique, ...locals].map(({ c, arg, bio, perk }) => {
         const ok = berthsFree() > 0 && st.credits >= c.fee;
         return `<div class="mission">
-          <div><b>${c.name}</b> &middot; ${c.role}<div class="hint">${c.bio}</div><div class="hint">${c.perk} Wage ${fmt(c.wage)} cr/day.</div></div>
-          <button data-action="hire" data-arg="${id}" ${ok ? '' : 'disabled'}>Hire (${fmt(c.fee)} cr)</button>
+          <div><b>${fullName(c)}</b> &middot; ${skill(c)}<div class="hint">${bio}</div><div class="hint">${perk} Wage ${fmt(c.wage)} cr/day.</div></div>
+          <button data-action="hire" data-arg="${arg}" ${ok ? '' : 'disabled'}>Hire (${fmt(c.fee)} cr)</button>
         </div>`;
       }).join('');
-      const elsewhere = Object.values(CREW).filter(c => c.home !== here).map(c => `${c.name} (${c.role}) at ${c.home}`);
+      const known = Object.values(st.people).filter(p => p.opinion !== 0 && !st.crew.includes(p.id))
+        .sort((a, b) => Math.abs(b.opinion) - Math.abs(a.opinion)).slice(0, 12)
+        .map(p => `<div class="hint"><b>${p.first} ${p.last}</b> (${opinionWord(p.opinion)}, ${p.location ? `last seen at ${p.location}` : 'whereabouts unknown'})${p.location === here ? ' <b>- here now</b>' : ''}: ${p.memories.length ? p.memories[p.memories.length - 1] : ''}</div>`).join('');
+      const elsewhere = Object.values(CREW).filter(c => c.home !== here).map(c => `${c.name} (${ROLE_NAMES[c.role]}) at ${c.home}`);
       return `
         <h3>Your crew</h3>
         ${mine || '<p class="hint">Just you. Crew take a berth each and are paid daily wages in transit.</p>'}
-        <p class="hint">Berths: ${berthsUsed()}/${ship().berths} used by crew and passengers.</p>
+        <p class="hint">Berths: ${berthsUsed()}/${ship().berths} used by crew and passengers. Unhappy crew will walk off the ship.</p>
         <h3>Looking for work here</h3>
         ${forHire || '<p class="hint">Nobody in the bar is looking for a ship right now.</p>'}
-        <h3>Word around the system</h3>
-        <p class="hint">Spacers worth knowing: ${elsewhere.join('; ')}.</p>`;
+        <h3>People you know</h3>
+        ${known || '<p class="hint">Nobody yet. Passengers and crew remember how you treated them.</p>'}
+        <h3>Legends of the spaceways</h3>
+        <p class="hint">${elsewhere.join('; ')}.</p>`;
     },
 
     shipyard() {
@@ -208,7 +220,7 @@ const UI = {
       const blocked = action === 'accept' && (noCargo || noBerths);
       const need = m.tons ? ` &middot; ${m.tons}t cargo` : m.pax ? ` &middot; ${m.pax} berth${m.pax > 1 ? 's' : ''}` : '';
       return `<div class="mission">
-        <div><b>${m.title}</b><div class="hint">${where} &middot; pays ${fmt(m.pay)} cr &middot; due by day ${m.deadline}${need}</div></div>
+        <div><b>${m.title}</b>${m.blurb ? `<div class="hint">${m.blurb}</div>` : ''}<div class="hint">${where} &middot; pays ${fmt(m.pay)} cr &middot; due by day ${m.deadline}${need}</div></div>
         <button data-action="${action}" data-arg="${i}" ${blocked ? `disabled title="Not enough ${noCargo ? 'cargo space' : 'berths'}"` : ''}>${label}</button>
       </div>`;
     }).join('');
@@ -262,19 +274,35 @@ const UI = {
       case 'accept': {
         const m = G.offers.splice(Number(arg), 1)[0];
         m.id = st.nextId++;
+        if (m.person) {
+          m.pid = registerPerson(m.person).id;
+          delete m.person;
+        }
         st.missions.push(m);
         break;
       }
-      case 'hire':
-        st.credits -= CREW[arg].fee;
-        st.crew.push(arg);
+      case 'hire': {
+        const c = arg.startsWith('bar:') ? registerPerson(G.bar.splice(Number(arg.slice(4)), 1)[0]) : CREW[arg];
+        st.credits -= c.fee;
+        st.crew.push(c.id || arg);
         break;
-      case 'dismiss':
-        st.crew.splice(Number(arg), 1);
+      }
+      case 'dismiss': {
+        const [id] = st.crew.splice(Number(arg), 1);
+        if (!CREW[id]) {
+          st.people[id].location = p.name;
+          like(st.people[id], -1, `You let me go at ${p.name}.`);
+        }
         break;
-      case 'abort':
-        st.missions.splice(Number(arg), 1);
+      }
+      case 'abort': {
+        const [m] = st.missions.splice(Number(arg), 1);
+        if (m.pid) {
+          st.people[m.pid].location = p.name;
+          like(st.people[m.pid], -3, `You dumped me at ${p.name}.`);
+        }
         break;
+      }
       case 'buyship': {
         const cost = SHIPS[arg].price - Math.round(s.price * 0.6);
         st.credits -= cost;
