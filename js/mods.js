@@ -16,6 +16,7 @@
 const MOD_EVENTS = [
   'frame',        // (dt) every frame, in every mode
   'drawOverlay',  // (viewW) after the world, HUD, or map is drawn; draw with ctx
+  'drawWorld',    // (toScreen) in flight, after ships and shots; toScreen(o) gives [x, y] on screen
   'key',          // (code) a key was pressed (not repeats)
   'uiClick',      // (action, arg) a port-screen button was clicked
   'fire',         // (ship) a ship fired its guns; ship === G.player for the player

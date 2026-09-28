@@ -352,6 +352,11 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
   justify-content: flex-end;
   gap: 6px;
 }
+/* Six buttons (with Torp) on a phone: tighter spacing so the row fits. */
+@media (max-width: 420px) {
+  .tbtns { left: 8px; right: 8px; gap: 4px; }
+  .tbtns button { padding: 0 6px; font-size: 12px; letter-spacing: 0.02em; }
+}
 .tbtns button, .thold, .tfloat {
   background: rgba(16, 26, 40, 0.82);
   border: 1px solid rgba(111, 176, 255, 0.5);

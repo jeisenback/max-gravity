@@ -21,7 +21,7 @@ Long-term milestones, in order. Each builds on the ones before it.
 - **Mods can write whole storylines without code** (done: `M.addStorylet`).
 
 ## 4. Expanse-grade combat
-- **4a**, in the current flight model: torpedoes, point-defense as an automatic turret, escorts, boarding and capture, and a medic who matters.
+- **4a**, in the current flight model: **torpedoes and point-defense turrets** (done), escorts (done in milestone 2), then boarding and capture, and a medic who matters.
 - **4b**, a prototype first: momentum flight with no speed cap, long-range torpedo duels, and high-g burn stress. Built as a switchable mode or a mod, then judged by playing it.
 
 ## 5. Frontier and legacy

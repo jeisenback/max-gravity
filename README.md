@@ -31,6 +31,8 @@ You have a standing (-100 to 100) with the Earth Coalition, Mars Republic, Belt 
 
 Outfitters (in the Shipyard tab at shipyards and The Rook) sell guns, heavy rounds, armor, deflectors, reaction mass tanks, cargo pods, drive tuning, passenger berths, and a pirate-only transponder spoofer. Outfits use cargo space and move with you when you change ships.
 
+The Torpedo launcher fires homing torpedoes at your target: slow off the rail, then faster than any ship, for heavy damage. Buy torpedoes (up to 6) at any outfitter. Each Point-defense cannon is also an automatic turret that shoots down incoming torpedoes (one stops about three in five), and heavier ships carry point defense of their own. Corsairs, cutters, and destroyers fire torpedoes back; gunfire can hit torpedoes too.
+
 ## Storylines
 
 Besides Cold Water, four shorter storylines are written as storylets (see Writing storylets):
@@ -68,6 +70,7 @@ On a keyboard:
 | Left, Right / A, D | Rotate |
 | Down / S | Turn to face opposite your direction of travel (for braking) |
 | Space | Fire |
+| F | Fire a torpedo at your target (needs a Torpedo launcher) |
 | Tab | Cycle target |
 | H | Hail your target (or the nearest ship): trade, ask for news or reaction mass, pay off or threaten pirates |
 | L | Select nearest body; press again when close and slow to land |
@@ -94,6 +97,7 @@ On a keyboard:
 - `js/world.js` - the living solar system: pirate unrest, raids, and NPC shipping that drives shortages and gluts
 - `js/company.js` - your shipping company: company ships, captains, trade routes, and the Company tab
 - `js/shiplife.js` - life aboard during a burn: the ship cutaway, crew movement and comms lines, and downtime activities
+- `js/torpedoes.js` - torpedoes, the launcher and ammunition, and point-defense turrets
 - `js/storylets.js` - the storylet engine: story written as data (see Writing storylets below)
 - `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike), `mars-navy.js` (Reserve Commission, a Mars Navy career), `rook-crown.js` (The Rook's Crown, a pirate lord's rise), and `tethys.js` (The Partner's Chair, a corporate climb)
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
@@ -151,6 +155,7 @@ Mods.register({
 | --- | --- |
 | `frame` | `dt` (seconds), every frame |
 | `drawOverlay` | `viewW`, after the world, HUD, or map is drawn; draw on the global `ctx` |
+| `drawWorld` | `toScreen`, in flight after ships and shots; `toScreen(o)` gives `[x, y]` on screen |
 | `key` | `code` (e.g. `'KeyN'`) |
 | `uiClick` | `action, arg` of a port-screen button |
 | `fire` | `ship` (`ship === G.player` for the player) |

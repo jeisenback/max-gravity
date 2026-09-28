@@ -141,7 +141,8 @@ const PATROL_NAMES = { 'Earth Coalition': 'Coalition cutter', 'Mars Republic': '
 // `req` needs that much standing with the faction running the shop; `pirate` gear is
 // only sold in pirate ports. Outfits move with you when you change ships.
 const OUTFITS = {
-  pdc:     { name: 'Point-defense cannon', price: 6000, space: 3, max: 2, desc: 'An extra forward gun.', mod: s => { s.guns += 1; } },
+  pdc:     { name: 'Point-defense cannon', price: 6000, space: 3, max: 2, desc: 'An extra forward gun that also shoots down incoming torpedoes on its own.', mod: s => { s.guns += 1; } },
+  launcher: { name: 'Torpedo launcher', price: 12000, space: 3, max: 1, desc: 'Fires homing torpedoes at your target (F). Slow off the rail, fast and hard-hitting after. Buy torpedoes at any outfitter.', mod: s => { s.launcher = true; } },
   heavy:   { name: 'Heavy rounds', price: 12000, space: 2, max: 1, req: 15, desc: 'Tungsten-cored ammunition. Your guns hit 40% harder.', mod: s => { s.dmgMult *= 1.4; } },
   armor:   { name: 'Armor plating', price: 4000, space: 4, max: 3, desc: '+40 armor.', mod: s => { s.armor += 40; } },
   shield:  { name: 'Deflector capacitor', price: 5000, space: 2, max: 3, desc: '+50 shields.', mod: s => { s.shields += 50; } },

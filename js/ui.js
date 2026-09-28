@@ -276,6 +276,7 @@ const UI = {
           <h3>Outfitter</h3>
           ${this.tradeNote ? `<div class="note">${this.tradeNote}</div>` : ''}
           ${items}
+          ${torpedoShopHtml()}
           <p class="hint">Free cargo space: ${cargoFree()}t. Outfits sell back for half price.</p>`;
       }
       return html;

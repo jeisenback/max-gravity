@@ -911,6 +911,7 @@ function drawWorld(W, H) {
 
   for (const pt of G.particles) drawParticle(pt, ...toScreen(pt));
   for (const sh of G.shots) drawShot(sh, ...toScreen(sh));
+  Mods.emit('drawWorld', toScreen);
 
   if (G.target) {
     const [x, y] = toScreen(G.target);
@@ -1017,7 +1018,7 @@ function drawHudCompact(W) {
   ctx.fillStyle = '#cfe3ff';
   const from = G.transit ? G.transit.to : st.systemId;
   const burn = st.dest ? ` · Burn ${SYSTEMS[st.dest].name} ${travelDays(from, st.dest)}d/${burnFuel(from, st.dest)}rm` : '';
-  ctx.fillText(wrapText(`Cargo ${cargoUsed()}/${s.cargo}t${burn}`, w)[0], x, 72);
+  ctx.fillText(wrapText(`Cargo ${cargoUsed()}/${s.cargo}t${s.launcher ? ` · Torp ${st.torpedoes || 0}` : ''}${burn}`, w)[0], x, 72);
   if (G.target && p && !inTransit) {
     ctx.fillStyle = npcColor(G.target);
     ctx.fillText(wrapText(`Target: ${G.target.name}, ${Math.round(dist(G.target, p))} out`, W - 24)[0], x, h + 16);
@@ -1062,6 +1063,7 @@ function drawHud(W, H) {
   ctx.fillStyle = '#cfe3ff';
   ctx.fillText(`Credits: ${fmt(st.credits)}`, x, y);
   ctx.fillText(`Cargo:   ${cargoUsed()}/${s.cargo}t`, x, y += 18);
+  if (s.launcher) ctx.fillText(`Torps:   ${st.torpedoes || 0}/${TORP_MAX} (F)`, x, y += 18);
 
   y += 28;
   hudLabel('Nav', x, y);
