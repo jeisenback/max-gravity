@@ -51,6 +51,7 @@ On a keyboard:
 | H | Hail your target (or the nearest ship): trade, ask for news or reaction mass, pay off or threaten pirates |
 | L | Select nearest body; press again when close and slow to land |
 | M | System map (click a destination to plot a burn; also works in transit) |
+| + / - or scroll | Zoom the system map (true scale; places beyond the edge show as pointers on the rim) |
 | J | Start the plotted burn (must be clear of local space) |
 | T | Take off (while landed) |
 | N | Sound on/off |

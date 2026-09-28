@@ -391,3 +391,6 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 }
 #tmap { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
 #tclose { top: calc(16px + env(safe-area-inset-top, 0px)); }
+#tzoomin, #tzoomout { width: 44px; font-size: 20px; }
+#tzoomin { top: calc(68px + env(safe-area-inset-top, 0px)); }
+#tzoomout { top: calc(116px + env(safe-area-inset-top, 0px)); }

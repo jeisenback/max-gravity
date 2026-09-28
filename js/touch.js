@@ -28,7 +28,11 @@ const Touch = {
     document.body.appendChild(root);
     const map = Object.assign(document.createElement('button'), { id: 'tmap', className: 'tfloat', textContent: 'System map', hidden: true });
     const close = Object.assign(document.createElement('button'), { id: 'tclose', className: 'tfloat', textContent: 'Close map', hidden: true });
-    document.body.append(map, close);
+    const zin = Object.assign(document.createElement('button'), { id: 'tzoomin', className: 'tfloat', textContent: '+', hidden: true });
+    const zout = Object.assign(document.createElement('button'), { id: 'tzoomout', className: 'tfloat', textContent: '-', hidden: true });
+    document.body.append(map, close, zin, zout);
+    zin.addEventListener('click', () => zoomMap(-1));
+    zout.addEventListener('click', () => zoomMap(1));
     map.addEventListener('click', () => { if (G.mode === 'transit' && !G.transit.event) openMap(); });
     close.addEventListener('click', () => { if (G.mode === 'map') closeMap(); });
 
@@ -70,7 +74,7 @@ const Touch = {
     this.shown = key;
     document.getElementById('touch').hidden = !(this.on && G.mode === 'flight');
     document.getElementById('tmap').hidden = !(G.mode === 'transit' && !eventOpen);
-    document.getElementById('tclose').hidden = G.mode !== 'map';
+    for (const id of ['tclose', 'tzoomin', 'tzoomout']) document.getElementById(id).hidden = G.mode !== 'map';
     if (G.mode !== 'flight') {
       this.stick = null;
       G.keys.fire = G.keys.reverse = false;

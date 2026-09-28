@@ -24,7 +24,7 @@ const G = {
   revenge: null,      // someone who hates you has hired a gun, see people.js
   mode: 'landed',     // landed | flight | departing | transit | hail | map | dead
   dialog: null,       // open choice dialog (transit event or hail), see transit.js
-  mapReturn: null,
+  mapReturn: null, mapZoom: 0,
   keys: {},
   navPlanet: null,
   target: null,
@@ -637,10 +637,23 @@ function arrive() {
   populateSystem();
 }
 
+// How many AU the map's radius spans at each zoom level: inner planets, the Belt,
+// Jupiter, Saturn, everything.
+const MAP_ZOOMS = [1.8, 3.6, 6, 11, 32];
+
 function openMap() {
   G.mapReturn = G.mode;
   G.mode = 'map';
+  // Start zoomed to fit where you are and where you are headed.
+  const st = G.state, here = G.transit ? G.transit.to : st.systemId;
+  const far = Math.max(SYSTEMS[here].au, st.dest ? SYSTEMS[st.dest].au : 0) * 1.1;
+  G.mapZoom = MAP_ZOOMS.findIndex(z => z >= far);
+  if (G.mapZoom < 0) G.mapZoom = MAP_ZOOMS.length - 1;
   UI.hide();
+}
+
+function zoomMap(step) {
+  G.mapZoom = Math.max(0, Math.min(MAP_ZOOMS.length - 1, G.mapZoom + step));
 }
 
 function closeMap() {
@@ -1061,32 +1074,35 @@ function drawMap(W, H) {
   const ids = Object.keys(SYSTEMS), st = G.state;
   const from = G.transit ? G.transit.to : st.systemId;
 
-  // Logarithmic radial scale, so the inner planets are not a smudge next to Neptune,
-  // even on a phone.
-  const mr = au => Math.log(1 + au * 1.5);
-  const maxR = mr(Math.max(...ids.map(id => SYSTEMS[id].au)));
-  const narrow = W < 700;
-  const cx = W / 2, cy = H / 2 + (narrow ? 20 : 10), sc = (Math.min(W, H) / 2 - (narrow ? 44 : 70)) / maxR;
+  // True scale. The zoom level sets how many AU the map's radius spans; places
+  // beyond it sit on the rim, pointing the way.
+  const narrow = W < 700, span = MAP_ZOOMS[G.mapZoom];
+  const cx = W / 2, cy = H / 2 + (narrow ? 20 : 10), R = Math.min(W, H) / 2 - (narrow ? 44 : 70), sc = R / span;
   const P = id => {
-    const s = SYSTEMS[id], o = orbitPos(id), a = Math.atan2(o.y, o.x), r = mr(s.au) * sc;
+    const o = orbitPos(id), a = Math.atan2(o.y, o.x), r = Math.min(R, SYSTEMS[id].au * sc);
     return [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
   };
   G.mapPos = P;
 
   ctx.strokeStyle = 'rgba(232,209,122,0.07)';
-  ctx.lineWidth = (mr(3.3) - mr(2.2)) * sc;
-  ctx.beginPath(); ctx.arc(cx, cy, (mr(2.2) + mr(3.3)) / 2 * sc, 0, Math.PI * 2); ctx.stroke();
+  ctx.lineWidth = Math.max(0, Math.min(R, 3.3 * sc) - Math.min(R, 2.2 * sc));
+  ctx.beginPath(); ctx.arc(cx, cy, (Math.min(R, 2.2 * sc) + Math.min(R, 3.3 * sc)) / 2, 0, Math.PI * 2); ctx.stroke();
   ctx.strokeStyle = '#14243a';
   ctx.lineWidth = 1;
   for (const au of new Set(ids.map(id => SYSTEMS[id].au))) {
-    ctx.beginPath(); ctx.arc(cx, cy, mr(au) * sc, 0, Math.PI * 2); ctx.stroke();
+    if (au > span) continue;
+    ctx.beginPath(); ctx.arc(cx, cy, au * sc, 0, Math.PI * 2); ctx.stroke();
   }
-  const sun = ctx.createRadialGradient(cx, cy, 2, cx, cy, 22);
+  ctx.strokeStyle = '#23405f';
+  ctx.setLineDash([2, 6]);
+  ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.stroke();
+  ctx.setLineDash([]);
+  const sun = ctx.createRadialGradient(cx, cy, 2, cx, cy, 16);
   sun.addColorStop(0, '#fff6d0');
   sun.addColorStop(0.4, '#ffc44a');
   sun.addColorStop(1, 'rgba(255,150,40,0)');
   ctx.fillStyle = sun;
-  ctx.beginPath(); ctx.arc(cx, cy, 22, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(cx, cy, 16, 0, Math.PI * 2); ctx.fill();
 
   const line = (a, b) => { const [x1, y1] = P(a), [x2, y2] = P(b); ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); };
   ctx.lineWidth = 3;
@@ -1103,21 +1119,36 @@ function drawMap(W, H) {
 
   const missionSystems = new Set(st.missions.map(m => m.destSystem || m.targetSystem));
   ctx.textAlign = 'center';
-  for (const id of ids) {
-    const [x, y] = P(id), sys = SYSTEMS[id];
+  // Boxes labels must avoid: every dot, then each label as it is placed.
+  const placed = ids.map(id => { const [x, y] = P(id); return { x: x - 8, y: y - 8, w: 16, h: 16 }; });
+  const free = (x, y, w, h) => x > 4 && x + w < W - 4 && !placed.some(b => x < b.x + b.w && x + w > b.x && y < b.y + b.h && y + h > b.y);
+  const order = [from, st.dest, ...ids].filter((id, i, a) => id && a.indexOf(id) === i);
+  for (const id of order) {
+    const [x, y] = P(id), sys = SYSTEMS[id], rim = sys.au > span;
     ctx.globalAlpha = inRange(from, id) ? 1 : 0.35;
     ctx.fillStyle = GOV_COLORS[sys.gov];
-    ctx.beginPath(); ctx.arc(x, y, 7, 0, Math.PI * 2); ctx.fill();
+    if (rim) {
+      // Off the edge of this zoom: a pointer on the rim.
+      const a = Math.atan2(y - cy, x - cx);
+      ctx.beginPath();
+      ctx.moveTo(x + Math.cos(a) * 9, y + Math.sin(a) * 9);
+      ctx.lineTo(x + Math.cos(a + 2.4) * 7, y + Math.sin(a + 2.4) * 7);
+      ctx.lineTo(x + Math.cos(a - 2.4) * 7, y + Math.sin(a - 2.4) * 7);
+      ctx.fill();
+    } else {
+      ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fill();
+    }
     ctx.fillStyle = '#cfe3ff';
     ctx.font = narrow ? '12px "IBM Plex Mono", monospace' : '13px "IBM Plex Mono", monospace';
-    if (narrow) {
-      // Beside the dot, pointing away from the Sun, so crowded inner planets stay readable.
-      const right = x >= cx;
-      ctx.textAlign = right ? 'left' : 'right';
-      ctx.fillText(sys.name, x + (right ? 16 : -16), y + 4);
+    // Beside the dot away from the Sun, else the other side, below, or above; skipped if nothing fits.
+    const label = rim ? `${sys.name} ${Math.round(sys.au)} AU` : sys.name, tw = ctx.measureText(label).width;
+    const out = x >= cx ? x + 12 : x - 12 - tw, back = x >= cx ? x - 12 - tw : x + 12;
+    const spot = [[out, y - 9], [back, y - 9], [x - tw / 2, y + 10], [x - tw / 2, y - 26]].find(([sx, sy]) => free(sx, sy, tw, 14));
+    if (spot) {
+      placed.push({ x: spot[0], y: spot[1], w: tw, h: 14 });
+      ctx.textAlign = 'left';
+      ctx.fillText(label, spot[0], spot[1] + 13);
       ctx.textAlign = 'center';
-    } else {
-      ctx.fillText(sys.name, x, y + 26);
     }
     ctx.globalAlpha = 1;
     if (id === from) {
@@ -1138,9 +1169,9 @@ function drawMap(W, H) {
   ctx.fillText('SYSTEM MAP', 16, 36);
   ctx.font = narrow ? '12px "IBM Plex Mono", monospace' : '13px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
-  const help = `${Touch.on ? 'Tap' : 'Click'} a destination to plot a burn.${Touch.on ? '' : ' M or Esc to close.'} White ring: you. Orange: mission. Dim: beyond a full tank.`;
+  const help = `True scale, ${span} AU to the rim${Touch.on ? '' : ' (scroll or +/- to zoom)'}. ${Touch.on ? 'Tap' : 'Click'} a destination to plot a burn.${Touch.on ? '' : ' M or Esc to close.'} White ring: you. Orange: mission. Dim: beyond a full tank.`;
   let y = 42;
-  for (const l of wrapText(help, W - (narrow ? 150 : 48))) ctx.fillText(l, 16, y += 16);
+  for (const l of wrapText(help, W - 150)) ctx.fillText(l, 16, y += 16);  // clear of the Close and zoom buttons
   let status = 'No burn plotted.';
   ctx.fillStyle = '#9ab';
   if (st.dest) {
@@ -1189,12 +1220,20 @@ window.addEventListener('keydown', e => {
     if (e.code === 'Escape') finishEvent();
   } else if (G.mode === 'map') {
     if (e.code === 'KeyM' || e.code === 'Escape') closeMap();
+    else if (e.code === 'Equal' || e.code === 'NumpadAdd') zoomMap(-1);
+    else if (e.code === 'Minus' || e.code === 'NumpadSubtract') zoomMap(1);
   } else if (G.mode === 'landed') {
     if (e.code === 'KeyT' && !G.dialog) takeOff();
   }
 });
 window.addEventListener('keyup', e => { if (KEYMAP[e.code]) G.keys[KEYMAP[e.code]] = false; });
 window.addEventListener('blur', () => { G.keys = {}; });
+
+canvas.addEventListener('wheel', e => {
+  if (G.mode !== 'map') return;
+  e.preventDefault();
+  zoomMap(e.deltaY > 0 ? 1 : -1);
+}, { passive: false });
 
 canvas.addEventListener('click', e => {
   // In flight, tap or click a ship to target it, or a planet to set it as the nav target.
