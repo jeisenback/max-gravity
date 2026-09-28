@@ -21,12 +21,14 @@ const G = {
   player: null,       // flight physics for the player ship
   npcs: [], shots: [], particles: [], messages: [],
   offers: [],         // mission offers at the current planet
-  mode: 'landed',     // landed | flight | jumping | map | dead
+  mode: 'landed',     // landed | flight | jumping | hyperspace | map | dead
   mapReturn: null,
   keys: {},
   navPlanet: null,
   target: null,
   jumpAngle: 0, jumpTimer: 0,
+  hyper: null,        // hyperspace transit in progress, see hyperspace.js
+  tunnel: null,
   flash: 0, time: 0, spawnTimer: 0,
   stars: [], W: 0, H: 0, mapPos: null,
 };
@@ -87,7 +89,8 @@ function price(planet, cid) {
   if (!level) return null;
   const c = COMMODITIES.find(c => c.id === cid);
   const wobble = 1 + 0.08 * Math.sin(G.state.day * 0.9 + hash(planet.name + cid));
-  return Math.round(c.base * PRICE_MULT[level] * wobble);
+  const rumor = G.state.rumors.find(r => r.planet === planet.name && r.cid === cid && r.until >= G.state.day);
+  return Math.round(c.base * PRICE_MULT[level] * wobble * (rumor ? rumor.mult : 1));
 }
 
 // Most profitable place within 3 jumps to sell a commodity bought here, at today's prices.
@@ -114,7 +117,7 @@ function newState() {
   return {
     credits: 12000, day: 1, systemId: 'sol', planet: 'Earth', shipId: 'shuttle',
     fuel: SHIPS.shuttle.fuel, armor: SHIPS.shuttle.armor,
-    cargo: {}, paid: {}, missions: [], route: [], nextId: 1,
+    cargo: {}, paid: {}, rumors: [], missions: [], route: [], nextId: 1,
   };
 }
 
@@ -141,7 +144,8 @@ function newGame() {
 
 function loadGame() {
   G.state = loadSave() || newState();
-  G.state.paid = G.state.paid || {};  // saves from before cost tracking
+  G.state.paid = G.state.paid || {};      // saves from before cost tracking
+  G.state.rumors = G.state.rumors || [];  // saves from before market rumors
   resetWorld();
   landAt(currentPlanet(), ['Save loaded. Welcome back, captain.']);
 }
@@ -423,14 +427,15 @@ function updateJump(dt) {
   }
   p.x += p.vx * dt;
   p.y += p.vy * dt;
-  if (G.jumpTimer <= 0) arrive();
+  if (G.jumpTimer <= 0) enterHyperspace();
 }
 
 function arrive() {
   const st = G.state, p = G.player, s = ship(), a = G.jumpAngle;
-  st.systemId = st.route.shift();
+  st.systemId = G.hyper.to;
   st.day += 1;
-  st.fuel -= JUMP_FUEL;
+  st.rumors = st.rumors.filter(r => r.until >= st.day);
+  G.hyper = null;
   p.x = -Math.cos(a) * 1100; p.y = -Math.sin(a) * 1100;
   p.vx = Math.cos(a) * s.maxSpeed; p.vy = Math.sin(a) * s.maxSpeed;
   G.mode = 'flight';
@@ -526,6 +531,7 @@ function update(dt) {
   G.time += dt;
   if (G.mode === 'flight') updatePlayer(dt);
   else if (G.mode === 'jumping') updateJump(dt);
+  else if (G.mode === 'hyperspace') return updateHyperspace(dt);
 
   for (const n of G.npcs) updateNpc(n, dt);
   updateShots(dt);
@@ -722,6 +728,7 @@ function drawBar(x, y, w, label, val, max, color) {
 
 function drawHud(W, H) {
   const x0 = W - HUD_W, p = G.player, st = G.state, s = ship(), sys = system();
+  const inHyper = G.mode === 'hyperspace';
   ctx.fillStyle = '#081018';
   ctx.fillRect(x0, 0, HUD_W, H);
   ctx.fillStyle = '#23405f';
@@ -740,20 +747,22 @@ function drawHud(W, H) {
     ctx.fillStyle = color;
     ctx.fillRect(rx + dx - sz / 2, ry + dy - sz / 2, sz, sz);
   };
-  for (const pl of sys.planets) blip(pl, '#4a7a4a', 6, true);
-  for (const n of G.npcs) blip(n, npcColor(n), 3, false);
-  if (p) blip(p, '#fff', 3, false);
+  if (!inHyper) {
+    for (const pl of sys.planets) blip(pl, '#4a7a4a', 6, true);
+    for (const n of G.npcs) blip(n, npcColor(n), 3, false);
+    if (p) blip(p, '#fff', 3, false);
+  }
 
   ctx.font = '12px monospace';
   ctx.textAlign = 'left';
   const x = x0 + 14, w = HUD_W - 28;
   let y = 228;
-  ctx.fillStyle = GOV_COLORS[sys.gov];
+  ctx.fillStyle = inHyper ? '#7fb4ff' : GOV_COLORS[sys.gov];
   ctx.font = 'bold 14px monospace';
-  ctx.fillText(sys.name, x, y);
+  ctx.fillText(inHyper ? 'Hyperspace' : sys.name, x, y);
   ctx.font = '12px monospace';
   ctx.fillStyle = '#9ab';
-  ctx.fillText(`${sys.gov} - Day ${st.day}`, x, y += 18);
+  ctx.fillText(`${inHyper ? `To ${SYSTEMS[G.hyper.to].name}` : sys.gov} - Day ${st.day}`, x, y += 18);
 
   y += 26;
   if (p) {
@@ -816,9 +825,17 @@ function drawMap(W, H) {
   ctx.strokeStyle = '#1f3550';
   ctx.lineWidth = 1.5;
   for (const id of ids) for (const l of SYSTEMS[id].links) if (id < l) line(id, l);
+  let prev = st.systemId;
+  if (G.hyper) {
+    ctx.strokeStyle = '#7fb4ff';
+    ctx.lineWidth = 3;
+    ctx.setLineDash([6, 5]);
+    line(prev, G.hyper.to);
+    ctx.setLineDash([]);
+    prev = G.hyper.to;
+  }
   ctx.strokeStyle = '#5fd35f';
   ctx.lineWidth = 3;
-  let prev = st.systemId;
   for (const r of st.route) { line(prev, r); prev = r; }
 
   const missionSystems = new Set(st.missions.map(m => m.destSystem || m.targetSystem));
@@ -859,7 +876,7 @@ function render() {
   ctx.fillStyle = '#000';
   ctx.fillRect(0, 0, W, H);
   if (G.mode === 'map') return drawMap(W, H);
-  drawWorld(W, H);
+  if (G.mode === 'hyperspace') drawHyperspace(W, H); else drawWorld(W, H);
   drawHud(W, H);
 }
 
@@ -878,6 +895,8 @@ window.addEventListener('keydown', e => {
     else if (e.code === 'KeyJ') tryJump();
     else if (e.code === 'KeyM') openMap();
     else if (e.code === 'Tab') { e.preventDefault(); cycleTarget(); }
+  } else if (G.mode === 'hyperspace') {
+    if (e.code === 'KeyM' && !G.hyper.event) openMap();
   } else if (G.mode === 'map') {
     if (e.code === 'KeyM' || e.code === 'Escape') closeMap();
   } else if (G.mode === 'landed') {
@@ -892,7 +911,7 @@ canvas.addEventListener('click', e => {
   for (const id of Object.keys(SYSTEMS)) {
     const [x, y] = G.mapPos(id);
     if (Math.hypot(e.clientX - x, e.clientY - y) < 16) {
-      G.state.route = findRoute(G.state.systemId, id);
+      G.state.route = findRoute(G.hyper ? G.hyper.to : G.state.systemId, id);
       return;
     }
   }
@@ -911,7 +930,7 @@ let last = performance.now();
 function frame(now) {
   const dt = Math.min(0.05, (now - last) / 1000);
   last = now;
-  if (G.mode === 'flight' || G.mode === 'jumping' || G.mode === 'dead') update(dt);
+  if (['flight', 'jumping', 'hyperspace', 'dead'].includes(G.mode)) update(dt);
   render();
   requestAnimationFrame(frame);
 }

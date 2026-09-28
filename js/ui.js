@@ -19,7 +19,29 @@ const UI = {
 
   show() {
     this.render();
+    this.el.classList.remove('hidden', 'event');
+  },
+
+  showEvent(ev) {
+    this.el.innerHTML = `
+      <div class="event-body">
+        <h1>${ev.title}</h1>
+        <p>${ev.text}</p>
+        <div class="choices">
+          ${ev.choices.map((c, i) => `<button data-action="choose" data-arg="${i}" ${c.can && !c.can() ? 'disabled' : ''}>${c.label}</button>`).join('')}
+        </div>
+      </div>`;
     this.el.classList.remove('hidden');
+    this.el.classList.add('event');
+  },
+
+  showEventResult(title, text) {
+    this.el.innerHTML = `
+      <div class="event-body">
+        <h1>${title}</h1>
+        <p>${text}</p>
+        <div class="choices"><button data-action="continue" class="primary">Continue</button></div>
+      </div>`;
   },
 
   hide() {
@@ -34,7 +56,7 @@ const UI = {
         <button data-action="load" class="primary">Load last save</button>
         <button data-action="newgame" data-arg="force">New game</button>
       </div>`;
-    this.el.classList.remove('hidden');
+    this.el.classList.remove('hidden', 'event');
   },
 
   render() {
@@ -81,6 +103,8 @@ const UI = {
         </div>` : ''}
         <h3>Active missions</h3>
         ${this.missionList(st.missions, 'abort', 'Abandon')}
+        <h3>Market news</h3>
+        ${st.rumors.length ? st.rumors.map(r => `<div class="hint">${r.text} Until day ${r.until}.</div>`).join('') : '<p class="hint">Nothing new. Listen to the comms in hyperspace.</p>'}
         <div class="foot"><button class="link" data-action="newgame">Start a new game</button></div>`;
     },
 
@@ -161,6 +185,8 @@ const UI = {
     const st = G.state, p = this.planet, s = ship();
     switch (action) {
       case 'tab': this.tab = arg; this.tradeNote = null; break;
+      case 'choose': this.showEventResult(G.hyper.event.title, chooseEvent(Number(arg))); return;
+      case 'continue': finishEvent(); return;
       case 'takeoff': takeOff(); return;
       case 'map': openMap(); return;
       case 'load': loadGame(); return;

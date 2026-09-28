@@ -24,6 +24,13 @@ canvas { display: block; }
   box-shadow: 0 0 60px #000;
 }
 #panel.hidden { display: none; }
+#panel.event { width: min(560px, 94vw); height: fit-content; }
+
+.event-body { padding: 22px 26px; }
+.event-body h1 { margin: 0 0 12px; font-size: 20px; color: #ffcf7f; }
+.event-body p { line-height: 1.5; }
+.choices { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
+.choices button { text-align: left; padding: 8px 12px; }
 
 .hdr {
   display: flex;
