@@ -62,15 +62,21 @@ function delay(seconds) {
 }
 
 function addRumor() {
-  const st = G.state;
-  const markets = Object.entries(SYSTEMS).flatMap(([sid, s]) => s.planets.filter(p => p.services.includes('trade')).map(p => ({ sid, p })));
-  const { sid, p } = pick(markets);
-  const cid = pick(Object.keys(p.prices));
-  const up = Math.random() < 0.6;
-  const days = randInt(12, 30);
-  const text = pick(RUMORS[up ? 'up' : 'down'])
-    .replace('{p}', p.name)
-    .replace('{c}', COMMODITIES.find(c => c.id === cid).name);
+  const st = G.state, days = randInt(12, 30);
+  let sid, p, cid, up, text;
+  const plot = storyRumor();  // once the story starts, some shortages are sabotage
+  if (plot) {
+    ({ sid, cid, up, text } = plot);
+    p = SYSTEMS[sid].planets.find(b => b.name === plot.planet);
+  } else {
+    const markets = Object.entries(SYSTEMS).flatMap(([id, s]) => s.planets.filter(b => b.services.includes('trade')).map(b => ({ sid: id, p: b })));
+    ({ sid, p } = pick(markets));
+    cid = pick(Object.keys(p.prices));
+    up = Math.random() < 0.6;
+    text = pick(RUMORS[up ? 'up' : 'down'])
+      .replace('{p}', p.name)
+      .replace('{c}', COMMODITIES.find(c => c.id === cid).name);
+  }
   st.rumors = st.rumors.filter(r => !(r.planet === p.name && r.cid === cid));
   st.rumors.push({ planet: p.name, cid, mult: up ? rand(1.35, 1.6) : rand(0.55, 0.7), until: st.day + days, text: `${text} (${SYSTEMS[sid].name})` });
   comm(`[Market] ${text} (${SYSTEMS[sid].name}, for about ${days} days)`);
@@ -271,10 +277,13 @@ function updateTransit(dt) {
 // events, then market rumors.
 function startHappening() {
   const t = G.transit, flags = G.state.flags;
-  const pax = paxAboard().find(m => !m.eventDone);
-  if (pax && Math.random() < 0.5) {
+  const beat = storyTransitBeat();
+  if (beat) return openEvent(beat);
+  // (A handcrafted group renamed since the save was made has no event.)
+  const pax = paxAboard().find(m => !m.eventDone && (m.story || m.pid || PASSENGERS[m.passenger]));
+  if (pax && (pax.story || Math.random() < 0.5)) {
     pax.eventDone = true;
-    return openEvent(pax.pid ? passengerEvent(pax) : PASSENGERS[pax.passenger].event(pax));
+    return openEvent(pax.story ? miraTransitEvent(pax) : pax.pid ? passengerEvent(pax) : PASSENGERS[pax.passenger].event(pax));
   }
   const arcs = G.state.crew.filter(id => CREW[id] && CREW[id].events[flags[`${id}Arc`] || 0]);
   if (arcs.length && Math.random() < 0.4) {
@@ -311,6 +320,7 @@ function chooseEvent(i) {
 
 function finishEvent() {
   G.dialog = null;
+  if (G.mode === 'landed') return UI.show();  // back to the spaceport after a story scene
   if (G.mode === 'hail') G.mode = 'flight';
   else if (G.transit) G.transit.event = null;
   UI.hide();

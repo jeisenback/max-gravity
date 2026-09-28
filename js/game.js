@@ -118,6 +118,7 @@ function newState() {
     fuel: SHIPS.shuttle.fuel, armor: SHIPS.shuttle.armor,
     cargo: {}, paid: {}, rumors: [], missions: [], dest: null, nextId: 1,
     crew: [], flags: {}, people: {}, nextPid: 1, rep: {}, outfits: {},
+    story: { stage: 0, next: STORY_START_DAY, log: [] },
   };
 }
 
@@ -150,6 +151,7 @@ function loadGame() {
   G.state.nextPid = G.state.nextPid || 1;
   G.state.rep = G.state.rep || {};        // saves from before factions and outfitting
   G.state.outfits = G.state.outfits || {};
+  G.state.story = G.state.story || { stage: 0, next: STORY_START_DAY, log: [] };  // saves from before the story
   resetWorld();
   landAt(currentPlanet(), ['Save loaded. Welcome back, captain.']);
 }
@@ -244,6 +246,10 @@ function destroy(o, byPlayer = false) {
   if (o.persona && o.persona.id) delete st.people[o.persona.id];  // a known captain, gone for good
   if (!byPlayer) {
     if (o.kind === 'pirate') msg(`${o.name} destroyed by a patrol.`);
+    return;
+  }
+  if (o.story) {
+    msg(`${o.name} destroyed. Aquilon will not be happy.`);
     return;
   }
   if (o.bountyId) {
@@ -379,6 +385,7 @@ function updateNpc(n, dt) {
   if (foe) {
     if (foe === p && n.kind === 'pirate' && pd < 1400) pirateDemand(n);
     if (foe === p && n.kind === 'patrol' && pd < 1400) patrolWarning(n);
+    if (foe === p && n.kind === 'agent' && pd < 1400) agentWarning(n);
     if (n.armor < n.maxArmor * 0.25 && !n.bountyId && n.kind !== 'patrol') {
       tx = n.x * 2 - foe.x; ty = n.y * 2 - foe.y;   // flee directly away
     } else {
@@ -473,6 +480,7 @@ function landAt(planet, notes) {
   notes = notes.concat(meetContacts(planet));
   save();
   UI.openLanded(planet, notes);
+  storyOnLanding(planet);
 }
 
 function takeOff() {
@@ -484,6 +492,7 @@ function takeOff() {
   G.mode = 'flight';
   G.navPlanet = null;
   populateSystem();
+  storyOnTakeoff();
   UI.hide();
 }
 
@@ -1129,7 +1138,7 @@ window.addEventListener('keydown', e => {
   } else if (G.mode === 'map') {
     if (e.code === 'KeyM' || e.code === 'Escape') closeMap();
   } else if (G.mode === 'landed') {
-    if (e.code === 'KeyT') takeOff();
+    if (e.code === 'KeyT' && !G.dialog) takeOff();
   }
 });
 window.addEventListener('keyup', e => { if (KEYMAP[e.code]) G.keys[KEYMAP[e.code]] = false; });

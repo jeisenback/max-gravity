@@ -88,7 +88,7 @@ function bigCargo() {
 // Captains are saved once you deal with them, so they can turn up again in their
 // home system. Bounty targets and hired guns are one-offs.
 function registerCaptain(n) {
-  if (n.bountyId || n.payer) return;
+  if (n.bountyId || n.payer || n.story) return;
   const p = n.persona;
   if (!p.id) registerPerson(p);
   p.ship = { name: n.name, shipId: n.shipId, kind: n.kind };
@@ -114,6 +114,7 @@ function hailEvent(n) {
   const title = `${n.name}${c.id ? ` (${opinionWord(c.opinion)})` : ''}`;
   const signOff = { label: 'Cut the channel', run: () => 'You cut the channel.' };
   if (n.kind === 'patrol') return patrolHail(n);
+  if (n.kind === 'agent') return agentHail(n);
 
   if (n.bountyId) {
     const m = st.missions.find(x => x.id === n.bountyId);

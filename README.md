@@ -17,6 +17,10 @@ Every ship in flight has a named captain with a personality. Hail them to talk: 
 
 Captains you deal with (hail, trade, pay off, rob, or shoot at) are remembered, with their ship and home system, and turn up again there. Friendly traders give better terms; captains with a grudge refuse to deal or come looking for you; pirates you have paid raise their price each time. Killed captains are gone for good.
 
+## Story: Cold Water
+
+A grounded political plot about who controls the Belt's water. Act 1 starts in transit once you have a little experience (day 10 or later): a derelict ice hauler, a data core someone badly wants back, a company recovery agent, and a fired Ceres water engineer, Mira Castellane, who needs passage to Europa to read it. Once the story starts, some market rumors are really news of the sabotage. Your current objective and a log are on the Spaceport tab. Act 2 (choosing who gets the proof) is next.
+
 ## Factions and outfitting
 
 You have a standing (-100 to 100) with the Earth Coalition, Mars Republic, Belt Collective, and the pirates: Hostile, Distrusted, Neutral, Trusted, or Honored (Spaceport tab). Missions and bounties for a faction raise it; killing pirates helps the local government and angers pirates; shooting traders or patrols costs you. Faction patrols fight pirates and hunt you once you are Distrusted (hail them to pay your fine); Hostile ports refuse to let you land. Trusted captains get better-paid contracts, military gear, and the Corvette. Pirates who trust you often leave you alone.
@@ -57,5 +61,6 @@ On a keyboard:
 - `js/people.js` - procedural people: generation, passenger and crew events, memory, and reunions
 - `js/factions.js` - faction standing, patrols, and fines
 - `js/hail.js` - hailing ships in flight
+- `js/story.js` - the Cold Water plot
 - `js/touch.js` - touch controls (joystick, hold and tap buttons)
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)

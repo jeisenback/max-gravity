@@ -237,9 +237,9 @@ const PASSENGERS = {
         return 'He files a formal complaint with somebody. It will come out of your fare.';
       } },
     ] }) },
-  mira: { name: 'a woman who calls herself Mira', pax: 1, fare: 2.0, event: m => ({
+  sable: { name: 'a woman who calls herself Sable', pax: 1, fare: 2.0, event: m => ({
     title: 'Someone Wants Her',
-    text: 'A ship with no transponder matches your burn. "You have a passenger named Mira. Hand her over and there is 2,000 credits in it. Refuse and we take her anyway." Mira watches you from the galley, very still.',
+    text: 'A ship with no transponder matches your burn. "You have a passenger named Sable. Hand her over and there is 2,000 credits in it. Refuse and we take her anyway." Sable watches you from the galley, very still.',
     choices: [
       { label: 'Hand her over (+2,000 cr)', run() {
         G.state.credits += 2000;
@@ -248,18 +248,18 @@ const PASSENGERS = {
       } },
       { label: '[{crew}] Spoof a Navy transponder', role: 'slicer', run() {
         m.bonus += 1000;
-        return 'Suddenly you are a Coalition Navy frigate. They scatter. Mira laughs for the first time since she came aboard.';
+        return 'Suddenly you are a Coalition Navy frigate. They scatter. Sable laughs for the first time since she came aboard.';
       } },
       { label: '[{crew}] Answer them with the guns', role: 'gunner', run() {
         m.bonus += 3000;
-        return `{crew} answers with the guns. They do not ask again. You take ${hurt(0.1)} points of armor damage, and Mira quietly doubles her fare.`;
+        return `{crew} answers with the guns. They do not ask again. You take ${hurt(0.1)} points of armor damage, and Sable quietly doubles her fare.`;
       } },
       { label: 'Refuse, and fight if you have to', run() {
         if (Math.random() < fightOdds()) {
           m.bonus += 3000;
-          return `You drive them off with ${hurt(0.2)} points of armor damage. Mira presses a credit chip into your hand. "For your trouble."`;
+          return `You drive them off with ${hurt(0.2)} points of armor damage. Sable presses a credit chip into your hand. "For your trouble."`;
         }
-        return `They pound your hull for ${hurt(0.4)} points of armor damage before breaking off. Mira squeezes your hand. "Thank you for not selling me."`;
+        return `They pound your hull for ${hurt(0.4)} points of armor damage before breaking off. Sable squeezes your hand. "Thank you for not selling me."`;
       } },
     ] }) },
   pilgrims: { name: 'pilgrims of the Long Walk', pax: 4, fare: 0.9, event: m => ({
