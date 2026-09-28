@@ -548,6 +548,7 @@ function land(planet) {
   st.missions = st.missions.filter(m => {
     if (m.type === 'bounty' || m.destSystem !== st.systemId || m.destPlanet !== planet.name) return true;
     changeRep(localGov(), m.contract ? 4 : 2);
+    Mods.emit('missionDone', m);
     if (m.type === 'delivery') {
       st.credits += m.pay;
       msg(`Delivered ${m.tons}t of ${m.good}. Payment received: ${fmt(m.pay)} cr.`);
@@ -603,6 +604,7 @@ function expireMissions() {
   st.missions = st.missions.filter(m => {
     if (st.day <= m.deadline) return true;
     msg(`Mission failed (deadline passed): ${m.title}`);
+    Mods.emit('missionFailed', m);
     if (m.pid) {
       like(st.people[m.pid], -3, 'You never got me where I was going.');
       st.people[m.pid].location = st.planet;

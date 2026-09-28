@@ -285,6 +285,8 @@ function startHappening() {
     pax.eventDone = true;
     return openEvent(pax.story ? storyPaxEvent(pax) : pax.pid ? passengerEvent(pax) : PASSENGERS[pax.passenger].event(pax));
   }
+  const modEvent = Mods.filter('transitEvent', null);  // storylets, and mods
+  if (modEvent) return openEvent(modEvent);
   const arcs = G.state.crew.filter(id => CREW[id] && CREW[id].events[flags[`${id}Arc`] || 0]);
   if (arcs.length && Math.random() < 0.4) {
     const id = pick(arcs), step = flags[`${id}Arc`] || 0;
@@ -321,6 +323,11 @@ function chooseEvent(i) {
 
 function finishEvent() {
   G.dialog = null;
+  if (G.nextEvent) {  // a scene that leads straight into another
+    const ev = G.nextEvent;
+    G.nextEvent = null;
+    return openEvent(ev);
+  }
   if (G.mode === 'landed') return storyNextScene() || UI.show();  // back to the spaceport after a story scene
   if (G.mode === 'hail') G.mode = 'flight';
   else if (G.transit) G.transit.event = null;

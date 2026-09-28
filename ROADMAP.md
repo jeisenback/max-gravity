@@ -15,9 +15,10 @@ Long-term milestones, in order. Each builds on the ones before it.
 - **Stakes in stations that pay out based on the region's economy** (done).
 
 ## 3. A storylet narrative engine
-- Story and events as data: small scenes unlocked by standing, crew, cargo, flags, and location (as in Sunless Sea).
+- **Story and events as data** (done): storylets unlocked by location, day, standing, cargo, crew, qualities, and the living world, with the Ice Haulers' Strike as the first storyline.
+- Move Cold Water's scenes onto storylets, keeping its special machinery (agent ships, the blockade) as code they call into.
 - Competing campaign arcs, as in Escape Velocity Nova (a Mars Navy career, a pirate lord's rise, an Aquilon corporate climb).
-- Mods can write whole campaigns without code.
+- **Mods can write whole storylines without code** (done: `M.addStorylet`).
 
 ## 4. Expanse-grade combat
 - **4a**, in the current flight model: torpedoes, point-defense as an automatic turret, escorts, boarding and capture, and a medic who matters.

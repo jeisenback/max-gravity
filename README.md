@@ -80,6 +80,8 @@ On a keyboard:
 - `mods/` - mods; `example-vesta.js` is a working example to copy
 - `js/world.js` - the living solar system: pirate unrest, raids, and NPC shipping that drives shortages and gluts
 - `js/company.js` - your shipping company: company ships, captains, trade routes, and the Company tab
+- `js/storylets.js` - the storylet engine: story written as data (see Writing storylets below)
+- `js/stories/` - storylines written as storylets; `ice-strike.js` is the Ice Haulers' Strike
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
 - `js/audio.js` - sound effects synthesized with Web Audio (no audio files): guns, hits, explosions, engine rumble, docking, burns, comms
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)
@@ -146,6 +148,8 @@ Mods.register({
 | `burnStart` | `destSystemId` |
 | `arrive` | `systemId` |
 | `eventOpened` | `event`, any choice dialog |
+| `missionDone` | `mission`, delivered or passenger dropped off |
+| `missionFailed` | `mission`, deadline passed |
 | `newDay` | `day`, once per game day passed (ticked on arrival) |
 | `trade` | `planet, commodityId, tons, dir`: the player bought (`1`) or sold (`-1`) |
 
@@ -158,6 +162,7 @@ Mods.register({
 | `portBanner` | `html` shown under the port tabs |
 | `dockButtons` | `html` for buttons left of System map and Take off |
 | `missionPay` | `credits, offer, planet`: pay for a mission offered at this port |
+| `transitEvent` | `event` or `null`: the next transit happening; return an event to play it |
 
 **Other helpers.**
 - `M.state()` returns an object saved with the game, private to your mod.
@@ -165,6 +170,54 @@ Mods.register({
 - `M.action(name, fn)` handles a button with `data-action="name"` that your mod put on the port screen. The screen re-renders afterward.
 
 Game state is in the global `G` (`G.state` is the saved part: credits, cargo, day, location). Helpers like `msg`, `openEvent`, `changeRep`, and `rand` are globals you can call.
+
+### Writing storylets
+
+The easiest way to add story is with storylets: scenes written as data, no code. Each one becomes available when its conditions hold, and choosing an option applies effects. Storylines are sets of storylets that read and write the same *qualities* (numbers your story keeps, all starting at 0). `js/stories/ice-strike.js` is a complete example.
+
+```js
+M.addStorylet({
+  id: 'my-scene', where: 'port',          // 'port' (plays on landing) or 'transit' (plays during a burn)
+  when: { planet: 'Ceres Station', q: { myArc: 1 } },
+  priority: 2,                             // higher wins when several are eligible (default 0)
+  title: 'A Stranger', text: 'Someone is waiting at your airlock...',
+  choices: [
+    { label: 'Hear them out', effects: { q: { myArc: 1 }, log: 'Met a stranger on Ceres.' }, result: 'They talk for an hour.', next: 'my-next-scene' },
+    { label: '{crew} checks their story', when: { crew: 'slicer' }, result: 'It checks out.' },
+  ],
+});
+```
+
+A storylet plays once unless you set `once: false`. A choice whose `when` fails shows disabled; one that needs a crew role is hidden when nobody aboard has it, and `{crew}` in its label becomes their name. `next` leads straight into another storylet.
+
+| Condition | Holds when |
+| --- | --- |
+| `day`, `before` | the day is at least / before this |
+| `at` | at this location id (or list); in transit, your destination |
+| `planet` | docked at this planet (or list) |
+| `gov` | the local government is this (or list) |
+| `standing`, `standingBelow` | `{ gov: n }`: your standing is at least / below n |
+| `credits`, `space` | you have at least this many credits / tons of free cargo space |
+| `cargo` | `{ commodityId: tons }` held |
+| `crew` | a role (`'medic'`) or crew id (`'rosa'`) is aboard |
+| `q`, `qBelow` | `{ quality: n }`: a quality is at least / below n |
+| `war`, `peace` | `true` for any war, or a faction name |
+| `boom`, `bust` | a faction's economy is booming / in a slump |
+| `raid` | pirate raids at a location id, or `true` for here |
+| `chance` | a random roll under this (0 to 1) |
+
+| Effect | Does |
+| --- | --- |
+| `credits` | adds (or with a negative number, takes) credits |
+| `rep` | `{ gov: n }` changes standing |
+| `cargo` | `{ commodityId: tons }` adds or removes cargo |
+| `q`, `set` | `{ quality: n }` adds to / sets qualities |
+| `log`, `news` | adds a line to the player's journal / the news |
+| `unrest` | `{ locationId: n }` changes pirate unrest |
+| `mission` | `{ to, tons, good, pay, days, title, onDone, onFail }` gives a delivery mission; `onDone` and `onFail` are effects |
+| `cancelMission` | drops missions carrying this good, applying their `onFail` |
+
+Text can use `{planet}`, `{system}`, and `{crew:role}`. Mistakes (unknown conditions or effects, a missing field) are reported in the console, and the storylet is skipped.
 
 ### When something goes wrong
 
