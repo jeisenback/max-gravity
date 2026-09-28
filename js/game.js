@@ -63,8 +63,11 @@ function orbitPos(id) {
 // Travel time and reaction mass grow with distance, but less than linearly,
 // so the outer planets stay reachable.
 const distAU = (a, b) => dist(orbitPos(a), orbitPos(b));
-const travelDays = (a, b) => Math.round(2 + 3 * Math.pow(distAU(a, b), 0.7));
-const burnFuel = (a, b) => Math.round(30 + 60 * Math.sqrt(distAU(a, b)));
+// Crew perks: a pilot shortens burns, an engineer (and her drive tuning) saves mass.
+const baseDays = (a, b) => Math.round(2 + 3 * Math.pow(distAU(a, b), 0.7));
+const travelDays = (a, b) => Math.max(1, Math.round(baseDays(a, b) * (hasCrew('dima') ? 0.8 : 1)));
+const burnFuel = (a, b) => Math.round((30 + 60 * Math.sqrt(distAU(a, b)))
+  * (hasCrew('rosa') ? 0.85 : 1) * (G.state.flags.rosaTuned ? 0.9 : 1));
 const inRange = (a, b) => a === b || burnFuel(a, b) <= ship().fuel;
 
 function cargoUsed() {
@@ -110,6 +113,7 @@ function newState() {
     credits: 12000, day: 1, systemId: 'earth', planet: 'Earth', shipId: 'shuttle',
     fuel: SHIPS.shuttle.fuel, armor: SHIPS.shuttle.armor,
     cargo: {}, paid: {}, rumors: [], missions: [], dest: null, nextId: 1,
+    crew: [], flags: {},
   };
 }
 
@@ -136,6 +140,8 @@ function newGame() {
 
 function loadGame() {
   G.state = loadSave() || newState();
+  G.state.crew = G.state.crew || [];    // saves from before crew
+  G.state.flags = G.state.flags || {};
   resetWorld();
   landAt(currentPlanet(), ['Save loaded. Welcome back, captain.']);
 }
@@ -175,9 +181,9 @@ function fire(o) {
   if (o.cooldown > 0) return;
   const isPlayer = o === G.player;
   o.cooldown = isPlayer ? 0.22 : 0.35;
-  const s = SHIPS[o.shipId];
-  for (let i = 0; i < s.guns; i++) {
-    const a = o.angle + (i - (s.guns - 1) / 2) * 0.08;
+  const s = SHIPS[o.shipId], guns = isPlayer ? playerGuns() : s.guns;
+  for (let i = 0; i < guns; i++) {
+    const a = o.angle + (i - (guns - 1) / 2) * 0.08;
     G.shots.push({
       x: o.x + Math.cos(a) * s.size, y: o.y + Math.sin(a) * s.size,
       vx: o.vx + Math.cos(a) * SHOT_SPEED, vy: o.vy + Math.sin(a) * SHOT_SPEED,
@@ -252,7 +258,7 @@ function spawnNpc(kind, atPlanet) {
   const shipId = kind === 'pirate' ? (Math.random() < 0.7 ? 'raider' : 'corsair') : pick(['shuttle', 'courier', 'freighter']);
   const n = makeShip(shipId, x, y, rand(0, Math.PI * 2));
   n.kind = kind;
-  n.hostile = kind === 'pirate';
+  n.hostile = kind === 'pirate' && !(G.state.flags.ghost && Math.random() < 0.5);  // Wren's ghost transponder
   n.name = `${kind === 'pirate' ? 'Pirate' : 'Trader'} ${SHIPS[shipId].name}`;
   n.goal = pickGoal(sys, from);
   if (!atPlanet) {
@@ -350,9 +356,15 @@ function land(planet) {
   const before = G.messages.length;
   // deliveries
   st.missions = st.missions.filter(m => {
-    if (m.type !== 'delivery' || m.destSystem !== st.systemId || m.destPlanet !== planet.name) return true;
-    st.credits += m.pay;
-    msg(`Delivered ${m.tons}t of ${m.good}. Payment received: ${fmt(m.pay)} cr.`);
+    if (m.type === 'bounty' || m.destSystem !== st.systemId || m.destPlanet !== planet.name) return true;
+    if (m.type === 'delivery') {
+      st.credits += m.pay;
+      msg(`Delivered ${m.tons}t of ${m.good}. Payment received: ${fmt(m.pay)} cr.`);
+    } else {
+      const fare = Math.max(0, m.pay + m.bonus);
+      st.credits += fare;
+      msg(`${m.who[0].toUpperCase()}${m.who.slice(1)} ${m.pax > 1 ? 'disembark' : 'disembarks'}. Fare received: ${fmt(fare)} cr${m.bonus ? ` (${m.bonus > 0 ? '+' : '-'}${fmt(Math.abs(m.bonus))} for the trip)` : ''}.`);
+    }
     return false;
   });
   expireMissions();
@@ -425,6 +437,7 @@ function arrive() {
   const st = G.state, p = G.player, s = ship(), a = G.burnAngle;
   st.systemId = G.transit.to;
   st.day += G.transit.days;
+  payCrew(G.transit.days);
   st.rumors = st.rumors.filter(r => r.until >= st.day);
   G.transit = null;
   p.x = -Math.cos(a) * 1100; p.y = -Math.sin(a) * 1100;
@@ -455,9 +468,20 @@ function generateMissions(planet) {
   if (!planet.services.includes('missions')) return [];
   const here = G.state.systemId, day = G.state.day, offers = [];
   const reachable = Object.keys(SYSTEMS).filter(id => inRange(here, id));
-  const daysTo = id => (id === here ? 1 : travelDays(here, id));
+  const daysTo = id => (id === here ? 1 : baseDays(here, id));
   for (let i = 0; i < 4; i++) {
-    if (Math.random() < 0.7) {
+    const roll = Math.random();
+    if (roll >= 0.45 && roll < 0.75) {
+      const destSystem = pick(reachable), dest = pick(SYSTEMS[destSystem].planets);
+      const pid = pick(Object.keys(PASSENGERS)), P = PASSENGERS[pid], days = daysTo(destSystem);
+      if (dest === planet || [...offers, ...G.state.missions].some(m => m.passenger === pid)) continue;
+      offers.push({
+        type: 'passenger', passenger: pid, who: P.name, pax: P.pax, bonus: 0, destSystem, destPlanet: dest.name,
+        title: `Carry ${P.name} (${P.pax}) to ${dest.name}`,
+        pay: Math.round((1500 + days * 400) * P.fare),
+        deadline: day + Math.ceil(days * 1.5) + randInt(2, 6),
+      });
+    } else if (roll < 0.45) {
       const destSystem = pick(reachable);
       const dest = pick(SYSTEMS[destSystem].planets);
       if (dest === planet) continue;

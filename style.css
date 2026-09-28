@@ -87,6 +87,7 @@ td { padding: 6px; border-bottom: 1px solid #16233a; vertical-align: top; }
 .tag.high { color: #ff9a3c; }
 .tag.med { color: #7d93aa; }
 
+.mission button { white-space: nowrap; }
 .mission {
   display: flex;
   justify-content: space-between;

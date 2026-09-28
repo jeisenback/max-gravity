@@ -27,7 +27,7 @@ const RUMORS = {
     'Dockworkers on {p} have gone on strike. {c} is suddenly scarce there.',
     'A disease scare on {p} has everyone hoarding {c}.',
     'Customs on {p} seized a shipment of {c}. Buyers there are desperate.',
-    'A cistern failure on {p} has the whole station scrambling for {c}.',
+    'A corporate buying spree on {p} has cleared the shelves of {c}.',
   ],
   down: [
     'Three haulers just unloaded {c} on {p}. Prices there are collapsing.',
@@ -56,6 +56,7 @@ function loseCargo(frac) {
 }
 
 function delay(seconds) {
+  seconds = Math.max(seconds, 1 - G.transit.left);  // shortening can never skip past arrival
   G.transit.left += seconds;
   G.transit.total += seconds;
 }
@@ -106,12 +107,16 @@ const TRANSIT_EVENTS = [
       } },
       { label: 'Dump half your biggest cargo', can: hasTradeCargo, run: () => `${loseCargo(0.5)} The pirates chase it down while you burn on.` },
       { label: 'Fight', run() {
-        if (Math.random() < 0.3 + ship().guns * 0.15) {
+        if (Math.random() < fightOdds()) {
           const b = randInt(10, 25) * 100;
           G.state.credits += b;
           return `You hole their reactor shielding and they go dark. Salvage nets ${fmt(b)} cr, and you take ${hurt(0.2)} points of armor damage.`;
         }
         return `They outgun you. You limp away with ${hurt(0.5)} points of armor damage.`;
+      } },
+      { label: '[Wren] Spoof a pirate transponder', crew: 'wren', run() {
+        if (Math.random() < 0.8) return 'Wren\'s fake transponder reads as one of their own. They wave you through with a rude gesture.';
+        return `They see through it and open fire. ${hurt(0.2)} points of armor damage before you get clear.`;
       } },
       { label: 'Hard burn to outrun them (50 reaction mass)', can: () => G.state.fuel >= 50, run() {
         G.state.fuel -= 50;
@@ -165,6 +170,7 @@ const TRANSIT_EVENTS = [
     title: 'Coolant Leak',
     text: 'Alarms. The reactor coolant loop has sprung a leak and the drive is running hot.',
     choices: [
+      { label: '[Rosa] Let Rosa handle it', crew: 'rosa', run: () => 'Rosa is in the coolant loop before the alarm finishes. "Go back to sleep, captain."' },
       { label: 'Suit up and patch it', run() {
         if (Math.random() < 0.5) return 'An hour in a vac suit with a sealant gun and some creative swearing. Good as new.';
         const lost = Math.min(G.state.fuel, 50);
@@ -217,6 +223,10 @@ function enterTransit() {
   G.npcs = []; G.shots = []; G.target = null;
   if (!G.transitStars) G.transitStars = Array.from({ length: 150 }, () => ({ x: Math.random(), y: Math.random(), z: rand(0.2, 1) }));
   comm(`Burn plotted for ${SYSTEMS[to].name}: ${days} days. Crash couches ready.`);
+  if (hasCrew('josef')) {
+    comm('Josef: "Heard something at the last port."');
+    addRumor();
+  }
 }
 
 function updateTransit(dt) {
@@ -241,24 +251,49 @@ function updateTransit(dt) {
   }
   if ((t.chatter -= dt) <= 0) {
     t.chatter = rand(12, 20);
-    comm(pick(CHATTER));
+    const crewLines = G.state.crew.flatMap(id => CREW[id].chatter);
+    comm(pick(crewLines.length && Math.random() < 0.5 ? crewLines : CHATTER));
   }
   if (t.times.length && t.total - t.left >= t.times[0]) {
     t.times.shift();
-    const fresh = TRANSIT_EVENTS.filter(e => !t.seen.includes(e));
-    if (Math.random() < 0.55 && fresh.length) {
-      t.event = pick(fresh);
-      t.seen.push(t.event);
-      UI.showEvent(t.event);
-    } else {
-      addRumor();
-    }
+    startHappening();
   }
   if (t.left <= 0) arrive();
 }
 
+// Passengers and crew storylines get first claim on a happening, then general
+// events, then market rumors.
+function startHappening() {
+  const t = G.transit, flags = G.state.flags;
+  const pax = paxAboard().find(m => !m.eventDone);
+  if (pax && Math.random() < 0.5) {
+    pax.eventDone = true;
+    return openEvent(PASSENGERS[pax.passenger].event(pax));
+  }
+  const arcs = G.state.crew.filter(id => CREW[id].events[flags[`${id}Arc`] || 0]);
+  if (arcs.length && Math.random() < 0.4) {
+    const id = pick(arcs), step = flags[`${id}Arc`] || 0;
+    flags[`${id}Arc`] = step + 1;
+    return openEvent(CREW[id].events[step]);
+  }
+  const fresh = TRANSIT_EVENTS.filter(e => !t.seen.includes(e));
+  if (Math.random() < 0.55 && fresh.length) {
+    const ev = pick(fresh);
+    t.seen.push(ev);
+    return openEvent(ev);
+  }
+  addRumor();
+}
+
+// Choices tagged with a crew id only appear when that crew member is aboard.
+function openEvent(ev) {
+  G.transit.event = ev;
+  G.transit.choices = ev.choices.filter(c => !c.crew || hasCrew(c.crew));
+  UI.showEvent(ev, G.transit.choices);
+}
+
 function chooseEvent(i) {
-  return G.transit.event.choices[i].run();
+  return G.transit.choices[i].run();
 }
 
 function finishEvent() {
@@ -332,8 +367,14 @@ function drawTransit(W, H) {
   let y = 110;
   ctx.fillStyle = '#9ab';
   ctx.fillText('COMMS', 20, y);
-  const lines = t.comms.flatMap((c, i) => wrapText(c, colW).map(l => ({ l, recent: i === t.comms.length - 1, market: c.startsWith('[Market]') })));
-  for (const { l, recent, market } of lines.slice(-16)) {
+  // Show whole messages, newest last, as many as fit in 16 lines.
+  let lines = [];
+  for (let i = t.comms.length - 1; i >= 0; i--) {
+    const c = t.comms[i], wrapped = wrapText(c, colW);
+    if (lines.length + wrapped.length > 16) break;
+    lines = wrapped.map(l => ({ l, recent: i === t.comms.length - 1, market: c.startsWith('[Market]') })).concat(lines);
+  }
+  for (const { l, recent, market } of lines) {
     ctx.fillStyle = market ? '#ffcf7f' : recent ? '#cfe3ff' : '#7d93aa';
     ctx.fillText(l, 20, y += 16);
   }
@@ -342,6 +383,7 @@ function drawTransit(W, H) {
   const log = [];
   for (const m of st.missions) log.push(`${m.title} (due day ${m.deadline})`);
   if (!st.missions.length) log.push('No active missions.');
+  if (st.crew.length) log.push(`Crew: ${st.crew.map(id => `${CREW[id].name} (${CREW[id].role})`).join(', ')}`);
   const held = COMMODITIES.filter(c => st.cargo[c.id] > 0).map(c => `${st.cargo[c.id]}t ${c.name}`);
   log.push(`Cargo: ${held.length ? held.join(', ') : 'empty'}`);
   const logLines = log.flatMap(l => wrapText(l, viewW - 40));

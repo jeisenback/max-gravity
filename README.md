@@ -5,6 +5,10 @@ Fly between planets, moons, and Belt stations. Trade commodities, take delivery 
 
 There is no faster-than-light travel. You plot a direct burn to any destination in range. Travel time (days) and reaction mass scale with real orbital distance: Earth to Mars is 5 days, Saturn is 15, and Triton is more than a month out. Each burn takes 1-2 minutes of real time. You accelerate, flip at the midpoint, and decelerate. In transit you get random events with choices (distress calls, pirates, derelicts, and more), market rumors that shift prices for weeks, and comms chatter. Events pause the transit timer.
 
+## Crew and passengers
+
+Five unique crew members can be hired at their home spaceports (Crew tab): Rosa at Ceres Station, Dima at Mars, Kit on Luna, Josef on Ganymede, and Wren at The Rook. Each has a perk, a daily wage, their own comms chatter, a two-part personal storyline that plays out during transits, and special options in general transit events. Passenger missions carry unique groups, each with its own transit event that can raise or lower the fare. Crew and passengers share the ship's berths.
+
 ## Running
 
 No build step and no dependencies. Open `index.html` in a browser.
@@ -30,4 +34,5 @@ Progress is saved automatically in your browser's localStorage whenever you land
 - `js/data.js` - commodities, ships, locations, and bodies (factions and names are original stand-ins; rename freely)
 - `js/game.js` - game state, flight physics, AI, combat, burns, rendering, and input
 - `js/ui.js` - landed screens: spaceport, commodity exchange, mission board, shipyard
+- `js/crew.js` - crew members, passenger groups, perks, and wages
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)

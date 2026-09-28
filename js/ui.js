@@ -22,13 +22,13 @@ const UI = {
     this.el.classList.remove('hidden', 'event');
   },
 
-  showEvent(ev) {
+  showEvent(ev, choices) {
     this.el.innerHTML = `
       <div class="event-body">
         <h1>${ev.title}</h1>
         <p>${ev.text}</p>
         <div class="choices">
-          ${ev.choices.map((c, i) => `<button data-action="choose" data-arg="${i}" ${c.can && !c.can() ? 'disabled' : ''}>${c.label}</button>`).join('')}
+          ${choices.map((c, i) => `<button data-action="choose" data-arg="${i}" ${c.can && !c.can() ? 'disabled' : ''}>${c.label}</button>`).join('')}
         </div>
       </div>`;
     this.el.classList.remove('hidden');
@@ -66,6 +66,7 @@ const UI = {
       ['trade', 'Commodity Exchange', p.services.includes('trade')],
       ['missions', 'Mission BBS', p.services.includes('missions')],
       ['shipyard', 'Shipyard', p.services.includes('shipyard')],
+      ['crew', 'Crew', true],
     ];
     this.el.innerHTML = `
       <div class="hdr">
@@ -76,7 +77,7 @@ const UI = {
         <div class="stats">
           Day ${st.day} &middot; ${s.name}<br>
           <b>${fmt(st.credits)} cr</b><br>
-          Cargo ${cargoUsed()}/${s.cargo}t &middot; Mass ${st.fuel}/${s.fuel}
+          Cargo ${cargoUsed()}/${s.cargo}t &middot; Berths ${berthsUsed()}/${s.berths} &middot; Mass ${st.fuel}/${s.fuel}
         </div>
       </div>
       <div class="tabs">
@@ -145,14 +146,42 @@ const UI = {
         ${this.missionList(G.state.missions, 'abort', 'Abandon')}`;
     },
 
+    crew() {
+      const st = G.state, here = this.planet.name;
+      const mine = st.crew.map((id, i) => {
+        const c = CREW[id];
+        return `<div class="mission">
+          <div><b>${c.name}</b> &middot; ${c.role}<div class="hint">${c.perk} Wage ${fmt(wage(id))} cr/day.</div></div>
+          <button data-action="dismiss" data-arg="${i}">Dismiss</button>
+        </div>`;
+      }).join('');
+      const forHire = Object.entries(CREW).filter(([id, c]) => c.home === here && !st.crew.includes(id)).map(([id, c]) => {
+        const ok = berthsFree() > 0 && st.credits >= c.fee;
+        return `<div class="mission">
+          <div><b>${c.name}</b> &middot; ${c.role}<div class="hint">${c.bio}</div><div class="hint">${c.perk} Wage ${fmt(c.wage)} cr/day.</div></div>
+          <button data-action="hire" data-arg="${id}" ${ok ? '' : 'disabled'}>Hire (${fmt(c.fee)} cr)</button>
+        </div>`;
+      }).join('');
+      const elsewhere = Object.values(CREW).filter(c => c.home !== here).map(c => `${c.name} (${c.role}) at ${c.home}`);
+      return `
+        <h3>Your crew</h3>
+        ${mine || '<p class="hint">Just you. Crew take a berth each and are paid daily wages in transit.</p>'}
+        <p class="hint">Berths: ${berthsUsed()}/${ship().berths} used by crew and passengers.</p>
+        <h3>Looking for work here</h3>
+        ${forHire || '<p class="hint">Nobody in the bar is looking for a ship right now.</p>'}
+        <h3>Word around the system</h3>
+        <p class="hint">Spacers worth knowing: ${elsewhere.join('; ')}.</p>`;
+    },
+
     shipyard() {
       const st = G.state, tradeIn = Math.round(ship().price * 0.6);
       const rows = Object.entries(SHIPS).filter(([, s]) => s.forSale).map(([id, s]) => {
         const cost = s.price - tradeIn, owned = id === st.shipId;
-        const ok = !owned && st.credits >= cost && cargoUsed() <= s.cargo;
+        const ok = !owned && st.credits >= cost && cargoUsed() <= s.cargo && berthsUsed() <= s.berths;
         return `<tr>
           <td><b>${s.name}</b><div class="hint">${s.desc}</div></td>
           <td class="num">${s.cargo}t</td>
+          <td class="num">${s.berths}</td>
           <td class="num">${s.shields}/${s.armor}</td>
           <td class="num">${s.fuel}</td>
           <td class="num">${s.maxSpeed}</td>
@@ -163,7 +192,7 @@ const UI = {
       }).join('');
       return `
         <table>
-          <tr><th>Ship</th><th class="num">Cargo</th><th class="num">Shd/Arm</th><th class="num">Mass</th><th class="num">Speed</th><th class="num">Guns</th><th class="num">Price</th><th></th></tr>
+          <tr><th>Ship</th><th class="num">Cargo</th><th class="num">Berths</th><th class="num">Shd/Arm</th><th class="num">Mass</th><th class="num">Speed</th><th class="num">Guns</th><th class="num">Price</th><th></th></tr>
           ${rows}
         </table>
         <p class="hint">Your ${ship().name} is worth ${fmt(tradeIn)} cr as a trade-in.</p>`;
@@ -175,10 +204,12 @@ const UI = {
     return list.map((m, i) => {
       const sid = m.destSystem || m.targetSystem;
       const where = sid === G.state.systemId ? 'Local' : `${SYSTEMS[sid].name}, ${travelDays(G.state.systemId, sid)} days away`;
-      const blocked = action === 'accept' && m.type === 'delivery' && cargoFree() < m.tons;
+      const noCargo = m.type === 'delivery' && cargoFree() < m.tons, noBerths = m.type === 'passenger' && berthsFree() < m.pax;
+      const blocked = action === 'accept' && (noCargo || noBerths);
+      const need = m.tons ? ` &middot; ${m.tons}t cargo` : m.pax ? ` &middot; ${m.pax} berth${m.pax > 1 ? 's' : ''}` : '';
       return `<div class="mission">
-        <div><b>${m.title}</b><div class="hint">${where} &middot; pays ${fmt(m.pay)} cr &middot; due by day ${m.deadline}${m.tons ? ` &middot; ${m.tons}t cargo` : ''}</div></div>
-        <button data-action="${action}" data-arg="${i}" ${blocked ? 'disabled title="Not enough cargo space"' : ''}>${label}</button>
+        <div><b>${m.title}</b><div class="hint">${where} &middot; pays ${fmt(m.pay)} cr &middot; due by day ${m.deadline}${need}</div></div>
+        <button data-action="${action}" data-arg="${i}" ${blocked ? `disabled title="Not enough ${noCargo ? 'cargo space' : 'berths'}"` : ''}>${label}</button>
       </div>`;
     }).join('');
   },
@@ -234,6 +265,13 @@ const UI = {
         st.missions.push(m);
         break;
       }
+      case 'hire':
+        st.credits -= CREW[arg].fee;
+        st.crew.push(arg);
+        break;
+      case 'dismiss':
+        st.crew.splice(Number(arg), 1);
+        break;
       case 'abort':
         st.missions.splice(Number(arg), 1);
         break;
