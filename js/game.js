@@ -266,6 +266,7 @@ function fire(o, hits = 'player') {
       x: o.x + Math.cos(a) * s.size, y: o.y + Math.sin(a) * s.size,
       vx: o.vx + Math.cos(a) * SHOT_SPEED, vy: o.vy + Math.sin(a) * SHOT_SPEED,
       life: SHOT_LIFE, fromPlayer: isPlayer, hits: isPlayer ? 'npcs' : hits, dmg,
+      byPlayer: isPlayer || o.kind === 'escort',  // your escorts' kills count as yours
       team: isPlayer ? 'player' : hits === 'player' ? 'hostile' : 'ally',
     });
   }
@@ -433,13 +434,17 @@ function populateSystem() {
 }
 
 // What a ship hunts besides the player: 'pirates', at the Ceres blockade 'enemy'
-// (for the player's allies) and 'ally' (for the enemy fleet), or in a war 'war:<gov>'
-// (that government's patrols; see world.js).
-const huntsFor = n => n.hunts || (n.enemy ? 'ally' : n.kind === 'patrol' && !n.blockade ? 'pirates' : null);
+// (for the player's allies) and 'ally' (for the enemy fleet), in a war 'war:<gov>'
+// (that government's patrols; see world.js), 'hostiles' for your escorts, and
+// 'escorts' for ships hostile to you while escorts fly with you (see company.js).
+const huntsFor = n => n.hunts || (n.enemy ? 'ally' : n.kind === 'patrol' && !n.blockade ? 'pirates'
+  : n.hostile && G.npcs.some(o => o.kind === 'escort') ? 'escorts' : null);
 function preyOf(hunts, o) {
   if (o.dead) return false;
   if (hunts === 'pirates') return o.kind === 'pirate' && o.hostile;
   if (hunts === 'enemy') return !!o.enemy;
+  if (hunts === 'hostiles') return !!o.hostile && o.kind !== 'escort';
+  if (hunts === 'escorts') return o.kind === 'escort';
   if (hunts.startsWith('war:')) return o.kind === 'patrol' && o.gov === hunts.slice(4);
   return hunts === 'ally' && o.kind === 'ally';
 }
@@ -472,6 +477,14 @@ function updateNpc(n, dt) {
       tx = foe.x + (foe.vx - n.vx) * lead; ty = foe.y + (foe.vy - n.vy) * lead;
       attacking = true;
     }
+  } else if (n.kind === 'escort') {
+    // Hold formation off the player's flank; once there, match the player's velocity.
+    if (!p || p.dead) return physics(n, dt);
+    tx = p.x + n.slotX; ty = p.y + n.slotY;
+    if (Math.hypot(n.x - tx, n.y - ty) < 90) {
+      tx = n.x + p.vx; ty = n.y + p.vy;
+      n.formed = Math.hypot(n.vx, n.vy) >= Math.hypot(p.vx, p.vy) - 5;
+    } else n.formed = false;
   } else {
     tx = n.goal.x; ty = n.goal.y;
     if (Math.hypot(n.x - tx, n.y - ty) < n.goal.r) {
@@ -480,11 +493,21 @@ function updateNpc(n, dt) {
     }
   }
 
+  // Agile escorts fight with discipline: closing too fast, they burn against their
+  // relative velocity so they settle at gun range instead of jousting past the target.
+  // Clumsy freighters do better making strafing passes, so they don't.
+  let brake = false;
+  if (n.kind === 'escort' && attacking && statsOf(n).turn >= 3.5) {
+    const rvx = n.vx - foe.vx, rvy = n.vy - foe.vy;
+    const closing = (rvx * (foe.x - n.x) + rvy * (foe.y - n.y)) / Math.max(1, fd);
+    if (closing > Math.max(200, (fd - 280) * 0.6 + 60)) { tx = n.x - rvx; ty = n.y - rvy; brake = true; }
+  }
+
   const off = turnToward(n, Math.atan2(ty - n.y, tx - n.x), dt);
-  n.thrusting = off < 0.6 && (!attacking || fd > 250);
-  if (attacking && off < 0.2 && fd < 650) fire(n, foe === p ? 'player' : hunts);
+  n.thrusting = brake ? off < 0.6 : off < 0.6 && (!attacking || fd > 250) && !(n.kind === 'escort' && !foe && n.formed);
+  if (attacking && !brake && off < 0.2 && fd < 650) fire(n, foe === p ? 'player' : hunts);
   physics(n, dt);
-  if (Math.hypot(n.x, n.y) > 4000) n.dead = true;
+  if (n.kind !== 'escort' && Math.hypot(n.x, n.y) > 4000) n.dead = true;
 }
 
 // ---------- player actions ----------
@@ -752,7 +775,7 @@ function updateShots(dt) {
       continue;
     }
     for (const n of G.npcs) {
-      if (n.dead || (sh.hits !== 'npcs' && !preyOf(sh.hits, n)) || dist(sh, n) >= SHIPS[n.shipId].size + 2) continue;
+      if (n.dead || (sh.hits === 'npcs' ? n.kind === 'escort' : !preyOf(sh.hits, n)) || dist(sh, n) >= SHIPS[n.shipId].size + 2) continue;
       if (sh.hits === 'npcs') {
         n.hostile = true;
         if (!n.wasShot) {
@@ -763,7 +786,7 @@ function updateShots(dt) {
         }
       }
       n.hitAngle = Math.atan2(sh.y - n.y, sh.x - n.x);
-      damage(n, sh.dmg, sh.hits === 'npcs');
+      damage(n, sh.dmg, sh.byPlayer);
       sh.life = 0;
       break;
     }
@@ -837,6 +860,7 @@ function drawStars(cam, viewW, H, vel) {
 }
 
 function npcColor(n) {
+  if (n.kind === 'escort') return '#7fe0a0';
   if (n.bountyId) return '#ff2d6f';
   if (n.hostile) return '#ff5f5f';
   return n.kind === 'patrol' ? '#7fb4ff' : '#e8d17a';

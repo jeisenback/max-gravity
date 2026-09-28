@@ -195,7 +195,7 @@ function europaReveal() {
       { label: '"What happens now?"', run() {
         s.stage = 5;
         storyLog('On Europa, Mira decrypted the core: Aquilon Hydrologics and Hermes Foundry are sabotaging Ceres\'s water supply.');
-        return 'Mira looks at you for a long moment. "Now you decide who gets this. The Collective will fight. Mars will use it against Earth. Earth will bury it. And Aquilon will pay anything to make it disappear." She keeps a copy and stays on Europa. "Whatever you choose, I will be here." (Act 1 complete. Your choice is on the Spaceport tab.)';
+        return 'Mira looks at you for a long moment. "Now you decide who gets this. The Collective will fight. Mars will use it against Earth. Earth will bury it. And Aquilon will pay anything to make it disappear." She keeps a copy and stays on Europa. "Whatever you choose, I will be here." (Act 1 complete. Your choice is on the Port tab.)';
       } },
     ],
   };
@@ -706,7 +706,7 @@ function epilogueEvent() {
   return {
     title: 'Epilogue: Cold Water',
     text: parts.join('<br><br>'),
-    choices: [{ label: 'Keep flying', run: () => 'The solar system carries on. So do you. (You can reread the epilogue from the Spaceport tab.)' }],
+    choices: [{ label: 'Keep flying', run: () => 'The solar system carries on. So do you. (You can reread the epilogue from the Port tab.)' }],
   };
 }
 

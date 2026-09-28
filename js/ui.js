@@ -72,11 +72,12 @@ const UI = {
   render() {
     const st = G.state, p = this.planet, sys = system(), s = ship();
     const tabs = [
-      ['port', 'Spaceport', true],
+      ['port', 'Port', true],
       ['trade', 'Exchange', p.services.includes('trade')],
       ['missions', 'Missions', p.services.includes('missions')],
       ['shipyard', 'Shipyard', p.services.includes('shipyard') || p.services.includes('outfitter')],
       ['crew', 'Crew', true],
+      ['company', 'Company', true],
     ];
     this.setAccent(GOV_COLORS[sys.gov]);
     this.el.innerHTML = `
@@ -115,6 +116,8 @@ const UI = {
   },
 
   views: {
+    company: () => companyView(),
+
     port() {
       const st = G.state, s = ship(), p = this.planet;
       const fuelNeed = s.fuel - st.fuel, armorNeed = s.armor - st.armor;
@@ -130,6 +133,7 @@ const UI = {
         <h3>Active missions</h3>
         ${this.missionList(st.missions, 'abort', 'Abandon')}
         ${story().stage !== 0 ? `<h3>Story: Cold Water</h3><p class="desc">${storyObjective()}</p>${story().stage === 'end' ? '<div class="row"><button data-action="epilogue">Read the epilogue</button></div>' : ''}` : ''}
+        ${stakeOffer()}
         <h3>Standing</h3>
         <div class="standing">${FACTIONS.map(g => `<div><span style="color:${GOV_COLORS[g]}">${g === 'Pirate' ? 'Pirates' : g}</span> <b>${standingWord(repOf(g))}</b> <span class="hint">${repOf(g) > 0 ? '+' : ''}${repOf(g)}</span></div>`).join('')}</div>
         <h3>Local conditions</h3>
@@ -242,7 +246,8 @@ const UI = {
             <td class="num">${s.maxSpeed}</td>
             <td class="num">${s.guns}</td>
             <td class="num">${fmt(s.price)}</td>
-            <td class="act">${owned ? '<i>Owned</i>' : `<button data-action="buyship" data-arg="${id}" ${ok ? '' : 'disabled'}>Buy (${fmt(cost)})</button>`}</td>
+            <td class="act">${owned ? '<i>Flying it</i>' : `<button data-action="buyship" data-arg="${id}" ${ok ? '' : 'disabled'}>Fly it (${fmt(cost)})</button>`}
+              <button data-action="cbuy" data-arg="${id}" ${!locked && st.credits >= s.price ? '' : 'disabled'}>For company (${fmt(s.price)})</button></td>
           </tr>`;
         }).join('');
         html += `
@@ -251,7 +256,7 @@ const UI = {
             <tr><th>Ship</th><th class="num">Cargo</th><th class="num">Berths</th><th class="num">Shd/Arm</th><th class="num">Mass</th><th class="num">Speed</th><th class="num">Guns</th><th class="num">Price</th><th></th></tr>
             ${rows}
           </table></div>
-          <p class="hint">Your ${SHIPS[st.shipId].name} is worth ${fmt(tradeIn)} cr as a trade-in. Your outfits move to the new ship. Hull stats shown without outfits.</p>`;
+          <p class="hint">Fly it: your ${SHIPS[st.shipId].name} is worth ${fmt(tradeIn)} cr as a trade-in, and your outfits move to the new ship. For company: the ship comes with a captain and runs a trade route for you (Company tab). Hull stats shown without outfits.</p>`;
       }
       if (p.services.includes('outfitter')) {
         const items = Object.entries(OUTFITS).filter(([, o]) => !o.pirate || gov === 'Pirate').map(([id, o]) => {

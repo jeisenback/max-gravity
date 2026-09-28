@@ -55,9 +55,10 @@ function pirateDemand(n) {
 function tryHail() {
   const p = G.player;
   if (!G.target || G.target.dead) {
-    G.target = G.npcs.filter(n => dist(n, p) < HAIL_RANGE).sort((a, b) => dist(a, p) - dist(b, p))[0] || null;
+    G.target = G.npcs.filter(n => n.kind !== 'escort' && dist(n, p) < HAIL_RANGE).sort((a, b) => dist(a, p) - dist(b, p))[0] || null;
   }
   if (!G.target) return msg('No ships in comms range.');
+  if (G.target.kind === 'escort') return msg(`${G.target.name}: "Holding formation, captain."`);
   if (dist(G.target, p) > HAIL_RANGE) return msg(`${G.target.name} is out of comms range.`);
   G.mode = 'hail';
   openEvent(hailEvent(G.target));
