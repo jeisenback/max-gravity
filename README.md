@@ -15,6 +15,8 @@ Crew fill six roles (engineer, pilot, gunner, quartermaster, slicer, medic) with
 
 Every ship in flight has a named captain with a personality. Hail them to talk: traders share news, sell reaction mass, and buy cargo mid-flight; pirates announce their demands as they close in, and can be paid off, threatened, fooled by a slicer, or made to give up their own cargo when beaten; hired guns can be outbid; a badly damaged bounty target may surrender.
 
+Captains you deal with (hail, trade, pay off, rob, or shoot at) are remembered, with their ship and home system, and turn up again there. Friendly traders give better terms; captains with a grudge refuse to deal or come looking for you; pirates you have paid raise their price each time. Killed captains are gone for good.
+
 ## Running
 
 No build step and no dependencies. Open `index.html` in a browser.

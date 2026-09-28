@@ -222,6 +222,7 @@ function destroy(o) {
   }
   o.dead = true;
   const st = G.state;
+  if (o.persona && o.persona.id) delete st.people[o.persona.id];  // a known captain, gone for good
   if (o.bountyId) {
     const i = st.missions.findIndex(m => m.id === o.bountyId);
     if (i >= 0) {
@@ -250,7 +251,8 @@ function pickGoal(sys, exclude) {
   return pick(opts);
 }
 
-function spawnNpc(kind, atPlanet) {
+// `fresh` skips known captains, for one-off ships like bounty targets and hired guns.
+function spawnNpc(kind, atPlanet, fresh = false) {
   const sys = system();
   let x, y, from = null;
   if (atPlanet) {
@@ -260,12 +262,22 @@ function spawnNpc(kind, atPlanet) {
     const a = rand(0, Math.PI * 2);
     x = Math.cos(a) * 1800; y = Math.sin(a) * 1800;
   }
-  const shipId = kind === 'pirate' ? (Math.random() < 0.7 ? 'raider' : 'corsair') : pick(['shuttle', 'courier', 'freighter']);
+  const known = !fresh && pickKnownCaptain(kind);
+  const shipId = known ? known.ship.shipId
+    : kind === 'pirate' ? (Math.random() < 0.7 ? 'raider' : 'corsair') : pick(['shuttle', 'courier', 'freighter']);
   const n = makeShip(shipId, x, y, rand(0, Math.PI * 2));
   n.kind = kind;
-  n.hostile = kind === 'pirate' && !(G.state.flags.ghost && Math.random() < 0.5);  // Wren's ghost transponder
-  n.name = `${kind === 'pirate' ? 'Pirate ' : ''}"${shipName(kind === 'pirate')}"`;
-  n.persona = makePerson(cultureOf(G.state.systemId));  // the captain, for hails
+  if (known) {
+    // A captain you have met before, who remembers you.
+    n.persona = known;
+    n.name = known.ship.name;
+    n.hostile = kind === 'pirate' ? known.opinion < 3 : known.opinion <= -4;
+    if (Math.abs(known.opinion) >= 2) msg(`Sensors: the ${n.name} (Capt. ${known.first} ${known.last}, ${opinionWord(known.opinion)}) is in local space.`);
+  } else {
+    n.hostile = kind === 'pirate' && !(G.state.flags.ghost && Math.random() < 0.5);  // Wren's ghost transponder
+    n.name = `${kind === 'pirate' ? 'Pirate ' : ''}"${shipName(kind === 'pirate')}"`;
+    n.persona = makePerson(cultureOf(G.state.systemId));  // the captain, for hails
+  }
   n.captain = `${n.persona.first} ${n.persona.last}`;
   n.goal = pickGoal(sys, from);
   if (!atPlanet) {
@@ -277,7 +289,7 @@ function spawnNpc(kind, atPlanet) {
 }
 
 function spawnBountyTarget(m) {
-  const n = spawnNpc('pirate', false);
+  const n = spawnNpc('pirate', false, true);
   n.shipId = 'corsair';
   n.name = m.targetName;
   n.bountyId = m.id;
@@ -295,7 +307,7 @@ function populateSystem() {
     for (let i = 0; i < pirates; i++) spawnNpc('pirate', false);
   }
   if (G.revenge) {
-    const p = G.revenge, n = spawnNpc('pirate', false);
+    const p = G.revenge, n = spawnNpc('pirate', false, true);
     Object.assign(n, { shipId: 'corsair', hostile: true, name: 'Hired gun', payer: `${p.first} ${p.last}` });
     n.shields = SHIPS.corsair.shields;
     n.armor = n.maxArmor = SHIPS.corsair.armor;
@@ -567,6 +579,10 @@ function updateShots(dt) {
       for (const n of G.npcs) {
         if (!n.dead && dist(sh, n) < SHIPS[n.shipId].size + 2) {
           n.hostile = true;
+          if (!n.wasShot) {
+            n.wasShot = true;
+            feel(n, -2, 'You shot at my ship.');
+          }
           damage(n, SHOT_DMG);
           sh.life = 0;
           break;

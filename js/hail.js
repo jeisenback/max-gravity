@@ -1,7 +1,9 @@
 'use strict';
 
 // Hailing ships in flight. Every NPC ship has a procedural captain (`n.persona`) whose
-// first trait sets the tone. Hails pause the game and use the shared choice dialog.
+// first trait sets the tone. Captains you deal with are saved and can turn up again
+// in their home system, remembering you. Hails pause the game and use the shared
+// choice dialog.
 // Loaded before game.js; only calls into it at runtime.
 
 const HAIL_RANGE = 3000;
@@ -37,7 +39,11 @@ function voice(n, table, fallback) {
 
 // Pirates announce themselves when they first close in.
 function demandLine(n) {
-  return n.payer ? `Nothing personal, captain. ${n.payer} paid good money for your ship.` : voice(n, PIRATE_DEMANDS, PIRATE_DEMAND);
+  const c = n.persona;
+  if (n.payer) return `Nothing personal, captain. ${n.payer} paid good money for your ship.`;
+  if (c.id && c.opinion <= -3) return 'You again. No deals this time. This is personal.';
+  if (c.tributes) return 'You again! Same deal as last time, only the price has gone up.';
+  return voice(n, PIRATE_DEMANDS, PIRATE_DEMAND);
 }
 
 function pirateDemand(n) {
@@ -77,9 +83,35 @@ function bigCargo() {
   return Object.keys(st.cargo).filter(c => st.cargo[c] > 0).sort((a, b) => st.cargo[b] - st.cargo[a])[0];
 }
 
+// ---------- recurring captains ----------
+
+// Captains are saved once you deal with them, so they can turn up again in their
+// home system. Bounty targets and hired guns are one-offs.
+function registerCaptain(n) {
+  if (n.bountyId || n.payer) return;
+  const p = n.persona;
+  if (!p.id) registerPerson(p);
+  p.ship = { name: n.name, shipId: n.shipId, kind: n.kind };
+  p.haunt = G.state.systemId;
+}
+
+function feel(n, amount, memory) {
+  registerCaptain(n);
+  like(n.persona, amount, memory);
+}
+
+// Captains with strong feelings about you are the ones most likely to show up.
+function pickKnownCaptain(kind) {
+  const known = Object.values(G.state.people).filter(p => p.ship && p.ship.kind === kind
+    && p.haunt === G.state.systemId && !G.npcs.some(n => n.persona === p));
+  if (!known.length) return null;
+  const keen = known.filter(p => Math.abs(p.opinion) >= 3);
+  return Math.random() < (keen.length ? 0.6 : 0.35) ? pick(keen.length ? keen : known) : null;
+}
+
 function hailEvent(n) {
   const c = n.persona, captain = `Capt. ${c.first} ${c.last}`, st = G.state;
-  const title = `${n.name}`;
+  const title = `${n.name}${c.id ? ` (${opinionWord(c.opinion)})` : ''}`;
   const signOff = { label: 'Cut the channel', run: () => 'You cut the channel.' };
 
   if (n.bountyId) {
@@ -102,10 +134,18 @@ function hailEvent(n) {
   }
 
   if (n.kind === 'pirate' && n.hostile) {
-    const hired = !!n.payer;
-    const tribute = Math.max(500, Math.round(st.credits * 0.08));
+    const hired = !!n.payer, grudge = c.id && c.opinion <= -3;
+    const tribute = Math.round(Math.max(500, st.credits * 0.08) * (1 + 0.5 * (c.tributes || 0)));
     const choices = [];
-    if (hired) {
+    if (grudge) {
+      const price = 2000 + 500 * -c.opinion;
+      choices.push({ label: `Offer compensation (${fmt(price)} cr)`, can: () => st.credits >= price, run() {
+        st.credits -= price;
+        feel(n, 4, 'You paid to settle things between us.');
+        leave(n);
+        return `A long silence. "...Fine. We are square." ${n.name} breaks off.`;
+      } });
+    } else if (hired) {
       choices.push({ label: 'Outbid whoever paid you (3,000 cr)', can: () => st.credits >= 3000, run() {
         st.credits -= 3000;
         leave(n);
@@ -114,11 +154,14 @@ function hailEvent(n) {
     } else {
       choices.push({ label: `Pay tribute (${fmt(tribute)} cr)`, can: () => st.credits >= tribute, run() {
         st.credits -= tribute;
+        c.tributes = (c.tributes || 0) + 1;
+        feel(n, 1, 'You paid me off.');
         leave(n);
         return `The credits clear. "Pleasure doing business." ${n.name} peels away.`;
       } });
       choices.push({ label: 'Dump half your biggest cargo', can: hasTradeCargo, run() {
         const text = loseCargo(0.5);
+        feel(n, 1, 'You dumped cargo for me.');
         leave(n);
         return `${text} ${n.name} goes after it, and you are forgotten.`;
       } });
@@ -126,6 +169,7 @@ function hailEvent(n) {
     if (damaged(n) && !hired) {
       choices.push({ label: 'Demand their cargo instead', run() {
         const free = cargoFree();
+        feel(n, -3, 'You robbed my ship.');
         leave(n);
         if (free <= 0) return `They offer their hold, but you have no room. You let them limp away.`;
         const good = pick(COMMODITIES), tons = Math.min(free, randInt(4, 10));
@@ -134,7 +178,8 @@ function hailEvent(n) {
       } });
     }
     choices.push({ label: 'Threaten them', run() {
-      if (Math.random() < threatOdds(n)) {
+      if (Math.random() < threatOdds(n) - (grudge ? 0.2 : 0)) {
+        feel(n, -1, 'You scared me off.');
         leave(n);
         return `${captain} looks at your guns, then at theirs. "Not worth it." They break off.`;
       }
@@ -153,11 +198,12 @@ function hailEvent(n) {
 
   if (n.kind === 'pirate') {
     return {
-      title, text: `${captain} reads your transponder and relaxes. "One of ours. What do you need?"`,
+      title, text: `${captain} ${c.id && c.opinion >= 3 ? 'recognizes you. "Our favorite customer.' : 'reads your transponder and relaxes. "One of ours.'} What do you need?"`,
       choices: [
         { label: 'Any news?', can: () => !n.gossiped, run() { n.gossiped = true; return `"${addRumor()}"`; } },
         { label: 'Buy stolen luxury goods (5t at 250 cr/t)', can: () => !n.fenced && cargoFree() >= 5 && st.credits >= 1250, run() {
           n.fenced = true;
+          feel(n, 1, 'You bought our goods.');
           st.credits -= 1250;
           st.cargo.luxury = (st.cargo.luxury || 0) + 5;
           st.paid.luxury = (st.paid.luxury || 0) + 1250;
@@ -168,13 +214,16 @@ function hailEvent(n) {
     };
   }
 
-  if (n.hostile) {
+  // A trader you shot at, just now or on an earlier meeting.
+  if (n.hostile || (c.id && c.opinion <= -3)) {
+    const price = n.hostile && !(c.id && c.opinion <= -3) ? 500 : 1500;
     return {
-      title, text: `${captain}: "You shot at us! What kind of lunatic are you?"`,
+      title, text: n.hostile && !n.wasShot ? `${captain}: "You! I remember you. Keep your distance."` : n.hostile ? `${captain}: "You shot at us! What kind of lunatic are you?"` : `${captain}: "Oh. It's you. We have nothing to say to you."`,
       choices: [
-        { label: 'Apologize and pay for the damage (500 cr)', can: () => st.credits >= 500, run() {
-          st.credits -= 500;
+        { label: `Apologize and pay for the damage (${fmt(price)} cr)`, can: () => st.credits >= price, run() {
+          st.credits -= price;
           n.hostile = false;
+          feel(n, 3, 'You apologized and paid for the damage.');
           return `${captain} grumbles, but takes the money and stands down.`;
         } },
         signOff,
@@ -184,12 +233,13 @@ function hailEvent(n) {
 
   // A peaceful trader.
   const cid = bigCargo(), good = cid && COMMODITIES.find(x => x.id === cid);
-  const offer = good && Math.round(good.base * rand(0.95, 1.25));
+  const friend = c.id && c.opinion >= 3;
+  const offer = good && Math.round(good.base * rand(0.95, 1.25) * (friend ? 1.1 : 1));
   const qty = cid && Math.min(10, st.cargo[cid]);
   const s = ship(), spare = Math.min(40, s.fuel - st.fuel);
-  const free = c.traits.includes('kind') || c.traits.includes('generous');
+  const free = friend || c.traits.includes('kind') || c.traits.includes('generous');
   return {
-    title, text: `${captain}: "${voice(n, GREETINGS, 'This is {ship}. Go ahead.')}"`,
+    title, text: `${captain}: "${friend ? 'Captain! Good to see you again. ' : ''}${voice(n, GREETINGS, 'This is {ship}. Go ahead.')}"`,
     choices: [
       { label: 'Any news?', can: () => !n.gossiped, run() {
         n.gossiped = true;
@@ -199,12 +249,14 @@ function hailEvent(n) {
         can: () => !n.soldFuel && (free || st.credits >= spare * 4), run() {
           n.soldFuel = true;
           st.fuel += spare;
+          feel(n, 1, free ? 'We helped you out with reaction mass.' : 'You bought reaction mass from us.');
           if (free) return `"Of course. We all need help out here." They pass it over on a hose, free.`;
           st.credits -= spare * 4;
           return 'You match velocity and they pump it across. Not cheap, but you are not stuck.';
         } }] : []),
       ...(good ? [{ label: `Sell them ${qty}t of ${good.name} (${fmt(offer)} cr/t)`, can: () => !n.bought, run() {
         n.bought = true;
+        feel(n, 1, 'We did business.');
         const held = st.cargo[cid];
         st.paid[cid] -= st.paid[cid] * qty / held;
         st.cargo[cid] -= qty;
