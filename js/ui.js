@@ -106,7 +106,9 @@ const UI = {
         ${this.missionList(st.missions, 'abort', 'Abandon')}
         <h3>Market news</h3>
         ${st.rumors.length ? st.rumors.map(r => `<div class="hint">${r.text} Until day ${r.until}.</div>`).join('') : '<p class="hint">Nothing new. Listen to the comms in transit.</p>'}
-        <div class="foot"><button class="link" data-action="newgame">Start a new game</button></div>`;
+        <div class="foot">${this.confirmNew
+          ? 'Start over? Your current progress will be lost. <button data-action="newgame" data-arg="force">Start over</button> <button data-action="newgame" data-arg="cancel">Keep playing</button>'
+          : '<button class="link" data-action="newgame">Start a new game</button>'}</div>`;
     },
 
     trade() {
@@ -236,7 +238,10 @@ const UI = {
       case 'map': openMap(); return;
       case 'load': loadGame(); return;
       case 'newgame':
-        if (arg === 'force' || confirm('Start a new game? Your current progress will be lost.')) newGame();
+        // Confirmed in the page itself; browser confirm() dialogs are blocked in some embeds.
+        this.confirmNew = !arg;
+        if (arg === 'force') newGame();
+        else this.render();
         return;
       case 'refuel': {
         const amt = Math.min(s.fuel - st.fuel, Math.floor(st.credits / FUEL_PRICE));
