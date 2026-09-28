@@ -27,12 +27,14 @@ const MOD_EVENTS = [
   'arrive',       // (systemId)
   'eventOpened',  // (event) a choice dialog opened (transit event, hail, story scene)
   'newDay',       // (day) a game day passed (days pass in transit and are ticked on arrival)
+  'trade',        // (planet, commodityId, tons, dir) the player bought (dir 1) or sold (dir -1)
 ];
 const MOD_FILTERS = [
   'price',        // (credits, planet, commodityId) buy/sell price per ton
   'canDock',      // (allowed, planet) false when your standing is Hostile
   'portBanner',   // (html) shown under the port tabs
   'dockButtons',  // (html) buttons left of System map / Take off
+  'missionPay',   // (credits, offer, planet) pay for a mission offered at this port
 ];
 
 const Mods = {

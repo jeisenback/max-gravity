@@ -135,7 +135,8 @@ const UI = {
         <h3>Local conditions</h3>
         ${this.conditionList(conditions(st.systemId), 'Nothing unusual. Trade is flowing normally.')}
         <h3>News</h3>
-        ${this.conditionList(Object.keys(SYSTEMS).filter(id => id !== st.systemId).flatMap(conditions), '')}
+        ${this.conditionList(Object.keys(SYSTEMS).filter(id => id !== st.systemId).flatMap(conditions)
+          .filter((c, i, all) => all.findIndex(d => d.text === c.text) === i && !conditions(st.systemId).some(d => d.text === c.text)), '')}
         ${(st.news || []).map(n => `<div class="hint">Day ${n.day}: ${n.text}</div>`).join('')}
         ${st.rumors.map(r => `<div class="hint">${r.text} Until day ${r.until}.</div>`).join('')}
         ${!(st.news || []).length && !st.rumors.length ? '<p class="hint">Listen to the comms in transit for more.</p>' : ''}

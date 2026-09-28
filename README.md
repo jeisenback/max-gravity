@@ -3,7 +3,7 @@
 A small space trading and combat game set in our own solar system. It's an homage to Ambrosia Software's *Escape Velocity*, flavored by *The Expanse*.
 Fly between planets, moons, and Belt stations. Trade commodities, take delivery and bounty missions, fight pirates, and trade up to a better ship.
 
-Markets react to you: buying a good raises its local price and selling lowers it (about 0.2% per ton, up to 40%), and NPC shipping brings prices back over a couple of weeks. Pirate raids flare up around the system from time to time; while they last, NPC haulers stay away, so the local imports run short and exports pile up. Kill pirates there to clear the lanes, or haul the goods in yourself for a fat margin. The Spaceport shows local conditions and news from elsewhere, and the map marks raids in red. A small hold barely moves a market; a big one has to spread its trade across routes. Pirates fly heavier ships in rougher space, so the Belt and Hygiea call for a gun upgrade.
+Markets react to you: buying a good raises its local price and selling lowers it (about 0.2% per ton, up to 40%), and NPC shipping brings prices back over a couple of weeks. Pirate raids flare up around the system from time to time; while they last, NPC haulers stay away, so the local imports run short and exports pile up. Kill pirates there to clear the lanes, or haul the goods in yourself for a fat margin. The Earth Coalition, Mars Republic, and Belt Collective each have an economy that booms with steady trade (contracts pay 25% more) and slumps under raids and war. Incidents build tension between them until two go to war for a month or two: their navies fight in each other's space, their markets want medical supplies, machine parts, and metal, and the side with more victories (your kills and war-goods sales count) comes out ahead. The Spaceport shows local conditions and news from elsewhere, and the map marks raids in red. A small hold barely moves a market; a big one has to spread its trade across routes. Pirates fly heavier ships in rougher space, so the Belt and Hygiea call for a gun upgrade.
 
 There is no faster-than-light travel. You plot a direct burn to any destination in range. Travel time (days) and reaction mass scale with real orbital distance, and everything orbits at its real period, so routes open and close over the months: Earth to Mars runs 4 to 8 days, Saturn about 15 to 18, and Triton more than a month out. The system map shows the best upcoming window for a plotted burn. Each burn takes 1-2 minutes of real time. You accelerate, flip at the midpoint, and decelerate. In transit you get random events with choices (distress calls, pirates, derelicts, and more), market rumors that shift prices for weeks, and comms chatter. Events pause the transit timer.
 
@@ -138,6 +138,7 @@ Mods.register({
 | `arrive` | `systemId` |
 | `eventOpened` | `event`, any choice dialog |
 | `newDay` | `day`, once per game day passed (ticked on arrival) |
+| `trade` | `planet, commodityId, tons, dir`: the player bought (`1`) or sold (`-1`) |
 
 **Filters.** `M.filter(name, fn)`: `fn` gets the current value and returns the new one.
 
@@ -147,6 +148,7 @@ Mods.register({
 | `canDock` | `allowed, planet`: `false` when your standing there is Hostile |
 | `portBanner` | `html` shown under the port tabs |
 | `dockButtons` | `html` for buttons left of System map and Take off |
+| `missionPay` | `credits, offer, planet`: pay for a mission offered at this port |
 
 **Other helpers.**
 - `M.state()` returns an object saved with the game, private to your mod.

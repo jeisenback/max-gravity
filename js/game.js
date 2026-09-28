@@ -128,6 +128,7 @@ function tradeTotal(planet, cid, qty, dir) {
 
 function recordTrade(planet, cid, qty, dir) {
   G.state.market[`${planet.name}|${cid}`] = { p: pushed(pressure(planet, cid), qty * dir), day: G.state.day };
+  Mods.emit('trade', planet, cid, qty, dir);
 }
 
 // Most profitable place within one full tank to sell a commodity bought here, at today's
@@ -431,13 +432,15 @@ function populateSystem() {
   G.spawnTimer = 15;
 }
 
-// What a ship hunts besides the player: 'pirates', or at the Ceres blockade 'enemy'
-// (for the player's allies) and 'ally' (for the enemy fleet).
+// What a ship hunts besides the player: 'pirates', at the Ceres blockade 'enemy'
+// (for the player's allies) and 'ally' (for the enemy fleet), or in a war 'war:<gov>'
+// (that government's patrols; see world.js).
 const huntsFor = n => n.hunts || (n.enemy ? 'ally' : n.kind === 'patrol' && !n.blockade ? 'pirates' : null);
 function preyOf(hunts, o) {
   if (o.dead) return false;
   if (hunts === 'pirates') return o.kind === 'pirate' && o.hostile;
   if (hunts === 'enemy') return !!o.enemy;
+  if (hunts.startsWith('war:')) return o.kind === 'patrol' && o.gov === hunts.slice(4);
   return hunts === 'ally' && o.kind === 'ally';
 }
 
@@ -719,6 +722,7 @@ function generateMissions(planet) {
   if (job && gov !== 'Pirate' && repOf(gov) >= 15) {
     Object.assign(job, { contract: true, pay: Math.round(job.pay * 1.6), title: `${gov} contract: ${job.title.toLowerCase()}` });
   }
+  for (const o of offers) o.pay = Math.round(Mods.filter('missionPay', o.pay, o, planet));
   return offers;
 }
 
