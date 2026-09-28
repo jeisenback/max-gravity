@@ -17,7 +17,7 @@ Mods.register({
 
     M.addStorylet({
       id: 'navy-recruit', where: 'port', priority: 1, once: false,
-      when: { planet: home, day: 15, standing: { 'Mars Republic': 15 }, qBelow: { mcrn: 1, mcrnDone: 1, pirateSworn: 1 }, chance: 0.4 },  // not for the Rook's sworn (rook-crown.js)
+      when: { planet: home, day: 15, standing: { 'Mars Republic': 15 }, qBelow: { mcrn: 1, mcrnDone: 1, pirateSworn: 1, corpSworn: 1 }, chance: 0.4 },  // not for the Rook's or the Consortium's
       title: 'Lt. Commander Osei',
       text: 'A naval officer in dress grays buys you a drink you did not ask for: Lieutenant Commander Amara Osei, Mars Republic Navy Reserve. "The Navy is short of hulls and long on enemies. We commission independent captains with good standing: reserve pay, the odd tasking, and a call-up if it comes to war. You would still be your own captain. Mostly."',
       choices: [

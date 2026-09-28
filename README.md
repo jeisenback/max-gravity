@@ -33,13 +33,14 @@ Outfitters (in the Shipyard tab at shipyards and The Rook) sell guns, heavy roun
 
 ## Storylines
 
-Besides Cold Water, three shorter storylines are written as storylets (see Writing storylets):
+Besides Cold Water, four shorter storylines are written as storylets (see Writing storylets):
 
 - **The Ice Haulers' Strike.** A Belt haulers' strike, starting with a Guild broadcast on a burn into Belt space after day 12. Smuggle medicine past Coalition customs; how it ends depends on the Belt when you reach Pallas.
 - **Reserve Commission.** Once you are Trusted by the Mars Republic, a Navy officer on Mars or Phobos offers a reserve commission: a raider hunt, a distress call, a war-time call-up or a peacetime run to Ganymede, an order that tests your loyalty to the Belt, and a promotion that remembers what you did.
 - **The Rook's Crown.** Dock at The Rook on Hygiea after day 20 and Hollis Mbeki asks whether you will fly under the Rook's colors: a smuggling run past Collective customs, a rival to kill or buy off, and a raid on Martian or Coalition shipping that sets off real raids and shortages there, then a seat on the Rook's council.
+- **The Partner's Chair.** Once you own a company ship, the Tethys Shipping Consortium on Titan offers a partnership: a rush contract against the clock, a rival's bribe for your access codes, and a 20% stake in Ceres Station to vote their way. Loyal partners get a seat and a crewed Ice Hauler; captains who sold the codes get found out.
 
-Reserve Commission and The Rook's Crown compete: swear to the Rook and the Navy will never commission you; take the commission and the Rook will never ask.
+Reserve Commission, The Rook's Crown, and The Partner's Chair compete: whichever you join first closes the other two.
 
 ## Shipping company
 
@@ -94,7 +95,7 @@ On a keyboard:
 - `js/company.js` - your shipping company: company ships, captains, trade routes, and the Company tab
 - `js/shiplife.js` - life aboard during a burn: the ship cutaway, crew movement and comms lines, and downtime activities
 - `js/storylets.js` - the storylet engine: story written as data (see Writing storylets below)
-- `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike), `mars-navy.js` (Reserve Commission, a Mars Navy career), and `rook-crown.js` (The Rook's Crown, a pirate lord's rise)
+- `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike), `mars-navy.js` (Reserve Commission, a Mars Navy career), `rook-crown.js` (The Rook's Crown, a pirate lord's rise), and `tethys.js` (The Partner's Chair, a corporate climb)
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
 - `js/audio.js` - sound effects synthesized with Web Audio (no audio files): guns, hits, explosions, engine rumble, docking, burns, comms
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)
@@ -211,6 +212,8 @@ A storylet plays once unless you set `once: false`. A choice whose `when` fails 
 | `gov` | the local government is this (or list) |
 | `standing`, `standingBelow` | `{ gov: n }`: your standing is at least / below n |
 | `credits`, `space` | you have at least this many credits / tons of free cargo space |
+| `fleet` | you own at least this many company ships |
+| `stake` | `{ planet: share }`: you hold at least this share (0.1 to 0.3) of a port |
 | `cargo` | `{ commodityId: tons }` held |
 | `crew` | a role (`'medic'`) or crew id (`'rosa'`) is aboard |
 | `q`, `qBelow` | `{ quality: n }`: a quality is at least / below n |
@@ -230,6 +233,7 @@ A storylet plays once unless you set `once: false`. A choice whose `when` fails 
 | `mission` | `{ to, tons, good, pay, days, title, onDone, onFail }` gives a delivery mission; `onDone` and `onFail` are effects |
 | `cancelMission` | drops missions carrying this good, applying their `onFail` |
 | `bounty` | `{ at, name, pay, days, issuer, onDone, onFail }` gives a hunt: the named ship appears when you reach `at` |
+| `companyShip` | gives a crewed company ship of this type, docked where you are |
 
 Text can use `{planet}`, `{system}`, and `{crew:role}`. Mistakes (unknown conditions or effects, a missing field) are reported in the console, and the storylet is skipped.
 

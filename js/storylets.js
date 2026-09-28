@@ -25,6 +25,8 @@ const CONDITIONS = {
   standingBelow: v => all(v, (g, n) => repOf(g) < n),
   credits: v => G.state.credits >= v,
   space: v => cargoFree() >= v,
+  fleet: v => (G.state.fleet || []).length >= v,  // company ships owned (company.js)
+  stake: v => all(v, (pl, share) => ((G.state.stakes || {})[pl] || { share: 0 }).share >= share - 1e-9),
   cargo: v => all(v, (c, n) => (G.state.cargo[c] || 0) >= n),
   crew: v => (ROLE_NAMES[v] ? roleSkill(v) > 0 : G.state.crew.includes(v)),
   q: v => all(v, (k, n) => quality(k) >= n),
@@ -79,6 +81,13 @@ const EFFECTS = {
       title: fill(b.title || `Bounty: destroy ${b.name} near ${SYSTEMS[b.at].name}`), pay: b.pay || 0, deadline: st.day + (b.days || 40),
       onDone: b.onDone, onFail: b.onFail,
     });
+  },
+  // A company ship with a captain, docked where you are (company.js).
+  companyShip: shipId => {
+    const credits = G.state.credits;
+    buyCompanyShip(shipId);
+    G.state.credits = credits;  // a gift, not a purchase
+    G.state.companyLog[0].text = G.state.companyLog[0].text.replace(/^Bought/, 'Received');
   },
   // A delivery mission; onDone / onFail are effects applied when it completes or expires.
   mission: m => {

@@ -17,7 +17,7 @@ Mods.register({
 
     M.addStorylet({
       id: 'rook-invite', where: 'port', priority: 1, once: false,
-      when: { planet: rook, day: 20, qBelow: { crown: 1, crownDone: 1, mcrn: 1 }, chance: 0.5 },
+      when: { planet: rook, day: 20, qBelow: { crown: 1, crownDone: 1, mcrn: 1, corpSworn: 1 }, chance: 0.5 },
       title: 'Hollis Mbeki',
       text: 'Nobody rules the Rook, which is why everyone on it answers to Hollis Mbeki. He finds you at the refuel collar, an old man in a flight suit older than you. "Captains who dock here more than twice get asked the question. Do you want to fly under the Rook\'s colors? The Coalition and Mars will hate you for it. We will not."',
       choices: [
