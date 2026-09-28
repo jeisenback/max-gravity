@@ -298,7 +298,7 @@ function startHappening() {
 // {crew} in their text becomes that crew member's name.
 function openEvent(ev) {
   const choices = ev.choices.filter(c => !c.role || roleSkill(c.role))
-    .map(c => (c.role ? { ...c, label: c.label.replace(/\{crew\}/g, roleHolder(c.role).first) } : c));
+    .map(c => (c.role ? { ...c, label: c.label.replace(/\{crew\}/g, roleName(c.role)) } : c));
   G.dialog = { event: ev, choices };
   if (G.transit) G.transit.event = ev;  // pauses the transit timer
   UI.showEvent(ev, choices);
@@ -306,7 +306,7 @@ function openEvent(ev) {
 
 function chooseEvent(i) {
   const c = G.dialog.choices[i], result = c.run();
-  return c.role ? result.replace(/\{crew\}/g, roleHolder(c.role).first) : result;
+  return c.role ? result.replace(/\{crew\}/g, roleName(c.role)) : result;
 }
 
 function finishEvent() {

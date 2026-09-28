@@ -27,8 +27,9 @@ const SHIPS = {
   freighter: { name: 'Ice Hauler',   price: 90000,  cargo: 120, fuel: 450, berths: 6, shields: 180, armor: 260, accel: 100, maxSpeed: 200, turn: 1.8, guns: 1, size: 18, forSale: true,
                desc: 'A water tank the size of a city block with a drive bolted on. Slow, sturdy, and long-legged enough to reach Triton.' },
   gunship:   { name: 'Corvette',     price: 160000, cargo: 15,  fuel: 380, berths: 5, shields: 300, armor: 220, accel: 300, maxSpeed: 400, turn: 4.4, guns: 3, size: 12, forSale: true,
-               desc: 'Decommissioned fast-attack ship with three forward gun mounts. Pirates give it a wide berth.' },
+               req: 15, desc: 'Decommissioned fast-attack ship with three forward gun mounts. Pirates give it a wide berth. Sold only to captains the local government trusts.' },
   raider:    { name: 'Raider',  price: 0, cargo: 10, fuel: 300, shields: 70,  armor: 60,  accel: 230, maxSpeed: 330, turn: 3.6, guns: 1, size: 10 },
+  cutter:    { name: 'Patrol Cutter', price: 0, cargo: 10, fuel: 300, shields: 150, armor: 140, accel: 260, maxSpeed: 350, turn: 3.8, guns: 2, size: 12 },
   corsair:   { name: 'Corsair', price: 0, cargo: 20, fuel: 300, shields: 140, armor: 120, accel: 250, maxSpeed: 340, turn: 3.6, guns: 2, size: 13 },
 };
 
@@ -56,10 +57,10 @@ const SYSTEMS = {
   earth: {
     name: 'Earth', au: 1.0, angle: 100, gov: 'Earth Coalition', pirates: 0,
     planets: [
-      { name: 'Earth', x: -150, y: 80, r: 95, color: '#3a7bd5', services: ['trade', 'missions', 'shipyard', 'refuel'],
+      { name: 'Earth', x: -150, y: 80, r: 95, color: '#3a7bd5', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
         prices: { water: 'M', food: 'M', industrial: 'L', medical: 'L', luxury: 'H', metal: 'H', equipment: 'L' },
         desc: 'Thirty billion people, most of them on basic assistance. The orbital elevator ports never sleep.' },
-      { name: 'Luna', x: 380, y: -260, r: 40, color: '#b8b8b8', services: ['missions', 'shipyard', 'refuel'],
+      { name: 'Luna', x: 380, y: -260, r: 40, color: '#b8b8b8', services: ['missions', 'shipyard', 'outfitter', 'refuel'],
         prices: {},
         desc: 'Coalition shipyards and navy drydocks under a black sky. Everyone here has an opinion about Mars.' },
     ],
@@ -70,7 +71,7 @@ const SYSTEMS = {
       { name: 'Mars', x: 100, y: -120, r: 70, color: '#c1440e', services: ['trade', 'missions', 'refuel'],
         prices: { equipment: 'H', food: 'H', water: 'H', medical: 'M', industrial: 'M', metal: 'L', luxury: 'M' },
         desc: 'Domed cities in the Mariner Valley, and a people who have spent generations fighting to make a dead world breathe.' },
-      { name: 'Phobos Yards', x: -300, y: 220, r: 30, color: '#8d6e63', services: ['shipyard', 'refuel'],
+      { name: 'Phobos Yards', x: -300, y: 220, r: 30, color: '#8d6e63', services: ['shipyard', 'outfitter', 'refuel'],
         prices: {},
         desc: 'Military-grade shipwrights on a potato-shaped moon. Martian engineering is precise, and the price shows it.' },
     ],
@@ -78,7 +79,7 @@ const SYSTEMS = {
   ceres: {
     name: 'Ceres', au: 2.77, angle: 130, gov: 'Belt Collective', pirates: 0.2,
     planets: [
-      { name: 'Ceres Station', x: -60, y: -40, r: 60, color: '#90a4ae', services: ['trade', 'missions', 'shipyard', 'refuel'],
+      { name: 'Ceres Station', x: -60, y: -40, r: 60, color: '#90a4ae', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
         prices: { water: 'H', food: 'H', medical: 'H', metal: 'L', luxury: 'M', equipment: 'M', industrial: 'M' },
         desc: 'Six million people spun up inside a dwarf planet. Belters with long limbs and short tempers, and water rationing on every wall.' },
     ],
@@ -94,7 +95,7 @@ const SYSTEMS = {
   hygiea: {
     name: 'Hygiea', au: 3.14, angle: 230, gov: 'Pirate', pirates: 0.8,
     planets: [
-      { name: 'The Rook', x: -120, y: -60, r: 45, color: '#455a64', services: ['trade', 'missions', 'refuel'],
+      { name: 'The Rook', x: -120, y: -60, r: 45, color: '#455a64', services: ['trade', 'missions', 'outfitter', 'refuel'],
         prices: { luxury: 'L', equipment: 'H', medical: 'H', food: 'H', water: 'M' },
         desc: 'A hollowed-out rock nobody officially admits exists. Stolen luxury goods go cheap here, if you can get them out alive.' },
     ],
@@ -113,7 +114,7 @@ const SYSTEMS = {
   saturn: {
     name: 'Saturn', au: 9.54, angle: 110, gov: 'Belt Collective', pirates: 0.35,
     planets: [
-      { name: 'Titan', x: -80, y: 160, r: 75, color: '#e0a040', services: ['trade', 'missions', 'shipyard', 'refuel'],
+      { name: 'Titan', x: -80, y: 160, r: 75, color: '#e0a040', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
         prices: { medical: 'L', luxury: 'M', equipment: 'H', industrial: 'H' },
         desc: 'Orange haze and methane rain over the research domes. Titan\'s biolabs make the best pharmaceuticals this side of Earth.' },
       { name: 'Enceladus', x: 350, y: -250, r: 35, color: '#eceff1', services: ['trade', 'refuel'],
@@ -129,6 +130,25 @@ const SYSTEMS = {
         desc: 'The edge of human space, weeks from anywhere. Settlers here trade ore and ice for anything that keeps them alive another season.' },
     ],
   },
+};
+
+// Factions that track your standing. Independent ports do not.
+const FACTIONS = ['Earth Coalition', 'Mars Republic', 'Belt Collective', 'Pirate'];
+const PATROL_NAMES = { 'Earth Coalition': 'Coalition cutter', 'Mars Republic': 'MRN frigate', 'Belt Collective': 'Collective militia' };
+
+// Outfits take cargo space (`space`, tons) and modify the ship's stats; `max` per ship.
+// `req` needs that much standing with the faction running the shop; `pirate` gear is
+// only sold in pirate ports. Outfits move with you when you change ships.
+const OUTFITS = {
+  pdc:     { name: 'Point-defense cannon', price: 6000, space: 3, max: 2, desc: 'An extra forward gun.', mod: s => { s.guns += 1; } },
+  heavy:   { name: 'Heavy rounds', price: 12000, space: 2, max: 1, req: 15, desc: 'Tungsten-cored ammunition. Your guns hit 40% harder.', mod: s => { s.dmgMult *= 1.4; } },
+  armor:   { name: 'Armor plating', price: 4000, space: 4, max: 3, desc: '+40 armor.', mod: s => { s.armor += 40; } },
+  shield:  { name: 'Deflector capacitor', price: 5000, space: 2, max: 3, desc: '+50 shields.', mod: s => { s.shields += 50; } },
+  tank:    { name: 'Reaction mass tank', price: 3000, space: 5, max: 3, desc: '+100 reaction mass capacity.', mod: s => { s.fuel += 100; } },
+  pod:     { name: 'Cargo pod', price: 2500, space: 0, max: 2, desc: '+15t cargo, at 5% less top speed.', mod: s => { s.cargo += 15; s.maxSpeed *= 0.95; } },
+  drive:   { name: 'Drive tuning', price: 8000, space: 1, max: 1, desc: '+15% acceleration and top speed.', mod: s => { s.accel *= 1.15; s.maxSpeed *= 1.15; } },
+  berth:   { name: 'Passenger berth', price: 3000, space: 3, max: 2, desc: '+1 berth for crew or passengers.', mod: s => { s.berths += 1; } },
+  spoofer: { name: 'Transponder spoofer', price: 9000, space: 1, max: 1, req: 15, pirate: true, desc: 'Fakes transponders like a skill-1 slicer when you have none aboard.', mod: s => { s.spoofer = true; } },
 };
 
 const MISSION_GOODS = ['medical crates', 'reactor parts', 'sealed diplomatic pouches', 'hydroponics kits', 'prefab habitat panels', 'scientific samples'];

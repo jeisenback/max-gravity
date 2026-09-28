@@ -17,6 +17,12 @@ Every ship in flight has a named captain with a personality. Hail them to talk: 
 
 Captains you deal with (hail, trade, pay off, rob, or shoot at) are remembered, with their ship and home system, and turn up again there. Friendly traders give better terms; captains with a grudge refuse to deal or come looking for you; pirates you have paid raise their price each time. Killed captains are gone for good.
 
+## Factions and outfitting
+
+You have a standing (-100 to 100) with the Earth Coalition, Mars Republic, Belt Collective, and the pirates: Hostile, Distrusted, Neutral, Trusted, or Honored (Spaceport tab). Missions and bounties for a faction raise it; killing pirates helps the local government and angers pirates; shooting traders or patrols costs you. Faction patrols fight pirates and hunt you once you are Distrusted (hail them to pay your fine); Hostile ports refuse to let you land. Trusted captains get better-paid contracts, military gear, and the Corvette. Pirates who trust you often leave you alone.
+
+Outfitters (in the Shipyard tab at shipyards and The Rook) sell guns, heavy rounds, armor, deflectors, reaction mass tanks, cargo pods, drive tuning, passenger berths, and a pirate-only transponder spoofer. Outfits use cargo space and move with you when you change ships.
+
 ## Running
 
 No build step and no dependencies. Open `index.html` in a browser.
@@ -44,11 +50,12 @@ On a keyboard:
 
 ## Layout
 
-- `js/data.js` - commodities, ships, locations, and bodies (factions and names are original stand-ins; rename freely)
+- `js/data.js` - commodities, ships, outfits, locations, and bodies (factions and names are original stand-ins; rename freely)
 - `js/game.js` - game state, flight physics, AI, combat, burns, rendering, and input
 - `js/ui.js` - landed screens: spaceport, commodity exchange, mission board, shipyard
 - `js/crew.js` - handcrafted crew and passenger groups, role perks, and wages
 - `js/people.js` - procedural people: generation, passenger and crew events, memory, and reunions
+- `js/factions.js` - faction standing, patrols, and fines
 - `js/hail.js` - hailing ships in flight
 - `js/touch.js` - touch controls (joystick, hold and tap buttons)
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)

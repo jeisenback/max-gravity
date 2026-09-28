@@ -113,6 +113,7 @@ function hailEvent(n) {
   const c = n.persona, captain = `Capt. ${c.first} ${c.last}`, st = G.state;
   const title = `${n.name}${c.id ? ` (${opinionWord(c.opinion)})` : ''}`;
   const signOff = { label: 'Cut the channel', run: () => 'You cut the channel.' };
+  if (n.kind === 'patrol') return patrolHail(n);
 
   if (n.bountyId) {
     const m = st.missions.find(x => x.id === n.bountyId);
@@ -156,6 +157,7 @@ function hailEvent(n) {
         st.credits -= tribute;
         c.tributes = (c.tributes || 0) + 1;
         feel(n, 1, 'You paid me off.');
+        changeRep('Pirate', 1);
         leave(n);
         return `The credits clear. "Pleasure doing business." ${n.name} peels away.`;
       } });
@@ -170,6 +172,7 @@ function hailEvent(n) {
       choices.push({ label: 'Demand their cargo instead', run() {
         const free = cargoFree();
         feel(n, -3, 'You robbed my ship.');
+        changeRep('Pirate', -2);
         leave(n);
         if (free <= 0) return `They offer their hold, but you have no room. You let them limp away.`;
         const good = pick(COMMODITIES), tons = Math.min(free, randInt(4, 10));
@@ -204,6 +207,7 @@ function hailEvent(n) {
         { label: 'Buy stolen luxury goods (5t at 250 cr/t)', can: () => !n.fenced && cargoFree() >= 5 && st.credits >= 1250, run() {
           n.fenced = true;
           feel(n, 1, 'You bought our goods.');
+          changeRep('Pirate', 2);
           st.credits -= 1250;
           st.cargo.luxury = (st.cargo.luxury || 0) + 5;
           st.paid.luxury = (st.paid.luxury || 0) + 1250;

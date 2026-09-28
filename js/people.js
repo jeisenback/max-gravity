@@ -167,6 +167,7 @@ const PAX_EVENTS = [
           return `You bury the customs officer in paperwork until their intercept window closes. Later, ${p.first} slips you a very generous tip.`;
         }
         G.state.credits = Math.max(0, G.state.credits - 2000);
+        changeRep(localGov(), -5);
         like(p, 1, 'You tried to cover for me with customs.');
         return `They find ${p.first}'s stash anyway. You pay a 2,000 cr fine for "negligent inspection".`;
       } },
@@ -182,6 +183,7 @@ const PAX_EVENTS = [
       { label: `Turn ${p.first} in (+1,500 cr reward)`, run() {
         G.state.credits += 1500;
         dropPassenger(m, null);
+        changeRep(localGov(), 3);
         like(p, -6, 'You turned me in to customs.');
         return `Customs takes ${p.first} away in cuffs. They do not look back at you.`;
       } },

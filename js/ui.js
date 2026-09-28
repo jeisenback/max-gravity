@@ -65,7 +65,7 @@ const UI = {
       ['port', 'Spaceport', true],
       ['trade', 'Exchange', p.services.includes('trade')],
       ['missions', 'Missions', p.services.includes('missions')],
-      ['shipyard', 'Shipyard', p.services.includes('shipyard')],
+      ['shipyard', 'Shipyard', p.services.includes('shipyard') || p.services.includes('outfitter')],
       ['crew', 'Crew', true],
     ];
     this.el.innerHTML = `
@@ -105,6 +105,8 @@ const UI = {
         </div>` : ''}
         <h3>Active missions</h3>
         ${this.missionList(st.missions, 'abort', 'Abandon')}
+        <h3>Standing</h3>
+        <div class="standing">${FACTIONS.map(g => `<div><span style="color:${GOV_COLORS[g]}">${g === 'Pirate' ? 'Pirates' : g}</span> <b>${standingWord(repOf(g))}</b> <span class="hint">${repOf(g) > 0 ? '+' : ''}${repOf(g)}</span></div>`).join('')}</div>
         <h3>Market news</h3>
         ${st.rumors.length ? st.rumors.map(r => `<div class="hint">${r.text} Until day ${r.until}.</div>`).join('') : '<p class="hint">Nothing new. Listen to the comms in transit.</p>'}
         <div class="foot">${this.confirmNew
@@ -188,28 +190,55 @@ const UI = {
     },
 
     shipyard() {
-      const st = G.state, tradeIn = Math.round(ship().price * 0.6);
-      const rows = Object.entries(SHIPS).filter(([, s]) => s.forSale).map(([id, s]) => {
-        const cost = s.price - tradeIn, owned = id === st.shipId;
-        const ok = !owned && st.credits >= cost && cargoUsed() <= s.cargo && berthsUsed() <= s.berths;
-        return `<tr>
-          <td><b>${s.name}</b><div class="hint">${s.desc}</div></td>
-          <td class="num">${s.cargo}t</td>
-          <td class="num">${s.berths}</td>
-          <td class="num">${s.shields}/${s.armor}</td>
-          <td class="num">${s.fuel}</td>
-          <td class="num">${s.maxSpeed}</td>
-          <td class="num">${s.guns}</td>
-          <td class="num">${fmt(s.price)}</td>
-          <td class="act">${owned ? '<i>Owned</i>' : `<button data-action="buyship" data-arg="${id}" ${ok ? '' : 'disabled'}>Buy (${fmt(cost)})</button>`}</td>
-        </tr>`;
-      }).join('');
-      return `
-        <div class="scroll"><table>
-          <tr><th>Ship</th><th class="num">Cargo</th><th class="num">Berths</th><th class="num">Shd/Arm</th><th class="num">Mass</th><th class="num">Speed</th><th class="num">Guns</th><th class="num">Price</th><th></th></tr>
-          ${rows}
-        </table></div>
-        <p class="hint">Your ${ship().name} is worth ${fmt(tradeIn)} cr as a trade-in.</p>`;
+      const st = G.state, p = this.planet, gov = localGov(), standing = repOf(gov);
+      const tradeIn = Math.round(SHIPS[st.shipId].price * 0.6);
+      const govName = gov === 'Pirate' ? 'the pirates' : `the ${gov}`;
+      let html = '';
+      if (p.services.includes('shipyard')) {
+        const rows = Object.entries(SHIPS).filter(([, s]) => s.forSale).map(([id, s]) => {
+          const cost = s.price - tradeIn, owned = id === st.shipId, eff = shipStats(id);
+          const locked = s.req && standing < s.req;
+          const ok = !owned && !locked && st.credits >= cost && cargoUsed() <= eff.cargo && berthsUsed() <= eff.berths;
+          return `<tr>
+            <td><b>${s.name}</b><div class="hint">${s.desc}</div>${locked ? `<div class="hint">Needs Trusted standing with ${govName}.</div>` : ''}</td>
+            <td class="num">${s.cargo}t</td>
+            <td class="num">${s.berths}</td>
+            <td class="num">${s.shields}/${s.armor}</td>
+            <td class="num">${s.fuel}</td>
+            <td class="num">${s.maxSpeed}</td>
+            <td class="num">${s.guns}</td>
+            <td class="num">${fmt(s.price)}</td>
+            <td class="act">${owned ? '<i>Owned</i>' : `<button data-action="buyship" data-arg="${id}" ${ok ? '' : 'disabled'}>Buy (${fmt(cost)})</button>`}</td>
+          </tr>`;
+        }).join('');
+        html += `
+          <h3>Ships</h3>
+          <div class="scroll"><table>
+            <tr><th>Ship</th><th class="num">Cargo</th><th class="num">Berths</th><th class="num">Shd/Arm</th><th class="num">Mass</th><th class="num">Speed</th><th class="num">Guns</th><th class="num">Price</th><th></th></tr>
+            ${rows}
+          </table></div>
+          <p class="hint">Your ${SHIPS[st.shipId].name} is worth ${fmt(tradeIn)} cr as a trade-in. Your outfits move to the new ship. Hull stats shown without outfits.</p>`;
+      }
+      if (p.services.includes('outfitter')) {
+        const items = Object.entries(OUTFITS).filter(([, o]) => !o.pirate || gov === 'Pirate').map(([id, o]) => {
+          const have = st.outfits[id] || 0, locked = o.req && standing < o.req;
+          const ok = !locked && have < o.max && st.credits >= o.price && cargoFree() >= o.space;
+          return `<div class="mission">
+            <div><b>${o.name}</b> <span class="hint">${have}/${o.max} fitted</span>
+              <div class="hint">${o.desc} ${o.space ? `Uses ${o.space}t of cargo space.` : ''} ${fmt(o.price)} cr.${locked ? ` Needs Trusted standing with ${govName}.` : ''}</div></div>
+            <div class="row" style="margin:0">
+              <button data-action="sellout" data-arg="${id}" ${have ? '' : 'disabled'}>Sell (${fmt(o.price / 2)})</button>
+              <button data-action="buyout" data-arg="${id}" ${ok ? '' : 'disabled'}>Buy</button>
+            </div>
+          </div>`;
+        }).join('');
+        html += `
+          <h3>Outfitter</h3>
+          ${this.tradeNote ? `<div class="note">${this.tradeNote}</div>` : ''}
+          ${items}
+          <p class="hint">Free cargo space: ${cargoFree()}t. Outfits sell back for half price.</p>`;
+      }
+      return html;
     },
   },
 
@@ -312,8 +341,30 @@ const UI = {
         const cost = SHIPS[arg].price - Math.round(s.price * 0.6);
         st.credits -= cost;
         st.shipId = arg;
-        st.fuel = SHIPS[arg].fuel;
-        st.armor = SHIPS[arg].armor;
+        st.fuel = ship().fuel;
+        st.armor = ship().armor;
+        break;
+      }
+      case 'buyout': {
+        const armor = ship().armor;
+        st.credits -= OUTFITS[arg].price;
+        st.outfits[arg] = (st.outfits[arg] || 0) + 1;
+        st.armor += ship().armor - armor;  // new plating arrives intact
+        this.tradeNote = `Fitted: ${OUTFITS[arg].name}.`;
+        break;
+      }
+      case 'sellout': {
+        st.outfits[arg] -= 1;
+        const s2 = ship();
+        if (cargoUsed() > s2.cargo || berthsUsed() > s2.berths) {
+          st.outfits[arg] += 1;
+          this.tradeNote = `Cannot remove the ${OUTFITS[arg].name}: clear some cargo or berths first.`;
+          break;
+        }
+        st.credits += OUTFITS[arg].price / 2;
+        st.armor = Math.min(st.armor, s2.armor);
+        st.fuel = Math.min(st.fuel, s2.fuel);
+        this.tradeNote = `Removed: ${OUTFITS[arg].name}.`;
         break;
       }
     }

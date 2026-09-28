@@ -44,7 +44,8 @@ const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
 const fmt = n => Math.round(n).toLocaleString('en-US');
 const wrapAngle = a => Math.atan2(Math.sin(a), Math.cos(a));
 const system = (id = G.state.systemId) => SYSTEMS[id];
-const ship = (id = G.state.shipId) => SHIPS[id];
+const ship = () => shipStats(G.state.shipId);  // the player's ship, outfits included
+const statsOf = o => (o === G.player ? ship() : SHIPS[o.shipId]);
 const currentPlanet = () => system().planets.find(p => p.name === G.state.planet);
 
 function msg(text) {
@@ -116,7 +117,7 @@ function newState() {
     credits: 12000, day: 1, systemId: 'earth', planet: 'Earth', shipId: 'shuttle',
     fuel: SHIPS.shuttle.fuel, armor: SHIPS.shuttle.armor,
     cargo: {}, paid: {}, rumors: [], missions: [], dest: null, nextId: 1,
-    crew: [], flags: {}, people: {}, nextPid: 1,
+    crew: [], flags: {}, people: {}, nextPid: 1, rep: {}, outfits: {},
   };
 }
 
@@ -147,6 +148,8 @@ function loadGame() {
   G.state.flags = G.state.flags || {};
   G.state.people = G.state.people || {};  // saves from before procedural people
   G.state.nextPid = G.state.nextPid || 1;
+  G.state.rep = G.state.rep || {};        // saves from before factions and outfitting
+  G.state.outfits = G.state.outfits || {};
   resetWorld();
   landAt(currentPlanet(), ['Save loaded. Welcome back, captain.']);
 }
@@ -156,6 +159,18 @@ function resetWorld() {
 }
 
 // ---------- ships ----------
+
+// A hull's stats with the player's outfits applied. Outfits use up cargo space.
+function shipStats(shipId) {
+  const s = { ...SHIPS[shipId], dmgMult: 1, spoofer: false };
+  for (const [id, count] of Object.entries(G.state.outfits)) {
+    for (let i = 0; i < count; i++) {
+      OUTFITS[id].mod(s);
+      s.cargo -= OUTFITS[id].space;
+    }
+  }
+  return s;
+}
 
 function makeShip(shipId, x, y, angle) {
   const s = SHIPS[shipId];
@@ -169,7 +184,7 @@ function turnToward(o, desired, dt) {
 }
 
 function physics(o, dt) {
-  const s = SHIPS[o.shipId];
+  const s = statsOf(o);
   if (o.thrusting) {
     o.vx += Math.cos(o.angle) * s.accel * dt;
     o.vy += Math.sin(o.angle) * s.accel * dt;
@@ -182,17 +197,20 @@ function physics(o, dt) {
   o.cooldown -= dt;
 }
 
-function fire(o) {
+// `hits` says who a shot can hit: 'npcs' for the player's shots, 'player' for ships
+// attacking the player, 'pirates' for patrols fighting pirates.
+function fire(o, hits = 'player') {
   if (o.cooldown > 0) return;
   const isPlayer = o === G.player;
   o.cooldown = isPlayer ? 0.22 : 0.35;
   const s = SHIPS[o.shipId], guns = isPlayer ? playerGuns() : s.guns;
+  const dmg = isPlayer ? SHOT_DMG * ship().dmgMult : SHOT_DMG;
   for (let i = 0; i < guns; i++) {
     const a = o.angle + (i - (guns - 1) / 2) * 0.08;
     G.shots.push({
       x: o.x + Math.cos(a) * s.size, y: o.y + Math.sin(a) * s.size,
       vx: o.vx + Math.cos(a) * SHOT_SPEED, vy: o.vy + Math.sin(a) * SHOT_SPEED,
-      life: SHOT_LIFE, fromPlayer: isPlayer,
+      life: SHOT_LIFE, fromPlayer: isPlayer, hits: isPlayer ? 'npcs' : hits, dmg,
     });
   }
 }
@@ -204,15 +222,16 @@ function burst(x, y, count, colors, speed) {
   }
 }
 
-function damage(o, d) {
+function damage(o, d, byPlayer = false) {
   const absorbed = Math.min(o.shields, d);
   o.shields -= absorbed;
   o.armor -= d - absorbed;
   burst(o.x, o.y, 3, absorbed ? ['#8cf', '#fff'] : ['#fc6', '#f80'], 120);
-  if (o.armor <= 0) destroy(o);
+  if (o.armor <= 0) destroy(o, byPlayer);
 }
 
-function destroy(o) {
+// Rewards, standing, and memory only follow kills the player made.
+function destroy(o, byPlayer = false) {
   burst(o.x, o.y, 40, ['#fff', '#ffd27f', '#ff8c3a', '#ff4b1f'], 260);
   if (o === G.player) {
     o.dead = true;
@@ -223,6 +242,10 @@ function destroy(o) {
   o.dead = true;
   const st = G.state;
   if (o.persona && o.persona.id) delete st.people[o.persona.id];  // a known captain, gone for good
+  if (!byPlayer) {
+    if (o.kind === 'pirate') msg(`${o.name} destroyed by a patrol.`);
+    return;
+  }
   if (o.bountyId) {
     const i = st.missions.findIndex(m => m.id === o.bountyId);
     if (i >= 0) {
@@ -230,13 +253,21 @@ function destroy(o) {
       st.credits += m.pay;
       st.missions.splice(i, 1);
       msg(`Bounty complete: ${m.targetName} destroyed. +${fmt(m.pay)} cr`);
+      changeRep(m.issuer, 5);
+      changeRep('Pirate', -3);
     }
   } else if (o.kind === 'pirate') {
     const b = randInt(2, 6) * 100;
     st.credits += b;
     msg(`Pirate destroyed. Bounty +${b} cr`);
+    if (localGov() !== 'Pirate') changeRep(localGov(), 1);
+    changeRep('Pirate', -2);
+  } else if (o.kind === 'patrol') {
+    msg(`${o.name} destroyed.`);
+    changeRep(o.gov, -25);
   } else {
     msg(`${o.name} destroyed.`);
+    changeRep(localGov(), -10);
   }
 }
 
@@ -264,7 +295,8 @@ function spawnNpc(kind, atPlanet, fresh = false) {
   }
   const known = !fresh && pickKnownCaptain(kind);
   const shipId = known ? known.ship.shipId
-    : kind === 'pirate' ? (Math.random() < 0.7 ? 'raider' : 'corsair') : pick(['shuttle', 'courier', 'freighter']);
+    : kind === 'pirate' ? (Math.random() < 0.7 ? 'raider' : 'corsair')
+    : kind === 'patrol' ? 'cutter' : pick(['shuttle', 'courier', 'freighter']);
   const n = makeShip(shipId, x, y, rand(0, Math.PI * 2));
   n.kind = kind;
   if (known) {
@@ -274,11 +306,18 @@ function spawnNpc(kind, atPlanet, fresh = false) {
     n.hostile = kind === 'pirate' ? known.opinion < 3 : known.opinion <= -4;
     if (Math.abs(known.opinion) >= 2) msg(`Sensors: the ${n.name} (Capt. ${known.first} ${known.last}, ${opinionWord(known.opinion)}) is in local space.`);
   } else {
-    n.hostile = kind === 'pirate' && !(G.state.flags.ghost && Math.random() < 0.5);  // Wren's ghost transponder
-    n.name = `${kind === 'pirate' ? 'Pirate ' : ''}"${shipName(kind === 'pirate')}"`;
+    // Wren's ghost transponder, or trust among pirates, can keep a pirate off your back.
+    n.hostile = kind === 'pirate' && !(G.state.flags.ghost && Math.random() < 0.5)
+      && !(repOf('Pirate') >= 15 && Math.random() < 0.6);
+    n.name = kind === 'patrol' ? `${PATROL_NAMES[sys.gov]} "${shipName(false)}"`
+      : `${kind === 'pirate' ? 'Pirate ' : ''}"${shipName(kind === 'pirate')}"`;
     n.persona = makePerson(cultureOf(G.state.systemId));  // the captain, for hails
   }
   n.captain = `${n.persona.first} ${n.persona.last}`;
+  if (kind === 'patrol') {
+    n.gov = sys.gov;
+    n.hostile = repOf(sys.gov) <= -15;
+  }
   n.goal = pickGoal(sys, from);
   if (!atPlanet) {
     n.angle = Math.atan2(n.goal.y - y, n.goal.x - x);
@@ -302,6 +341,7 @@ function populateSystem() {
   G.npcs = []; G.shots = []; G.target = null;
   const traders = randInt(1, 3);
   for (let i = 0; i < traders; i++) spawnNpc('trader', Math.random() < 0.5);
+  if (PATROL_NAMES[sys.gov] && Math.random() < 0.7) spawnNpc('patrol', Math.random() < 0.5);
   if (Math.random() < sys.pirates) {
     const pirates = randInt(1, 2);
     for (let i = 0; i < pirates; i++) spawnNpc('pirate', false);
@@ -324,17 +364,26 @@ function populateSystem() {
 }
 
 function updateNpc(n, dt) {
-  const s = SHIPS[n.shipId], p = G.player;
+  const p = G.player;
   const pd = p && !p.dead && G.mode === 'flight' ? dist(n, p) : Infinity;
   let tx, ty, attacking = false;
 
-  if (n.hostile && pd < 1600) {
-    if (n.kind === 'pirate' && pd < 1400) pirateDemand(n);
-    if (n.armor < n.maxArmor * 0.25 && !n.bountyId) {
-      tx = n.x * 2 - p.x; ty = n.y * 2 - p.y;   // flee directly away
+  // Who this ship is fighting: the player if hostile and close; a patrol also hunts pirates.
+  let foe = n.hostile && pd < 1600 ? p : null;
+  if (!foe && n.kind === 'patrol') {
+    foe = G.npcs.filter(o => o.kind === 'pirate' && o.hostile && !o.dead && dist(o, n) < 1500)
+      .sort((a, b) => dist(a, n) - dist(b, n))[0] || null;
+  }
+  const fd = foe ? dist(n, foe) : Infinity;
+
+  if (foe) {
+    if (foe === p && n.kind === 'pirate' && pd < 1400) pirateDemand(n);
+    if (foe === p && n.kind === 'patrol' && pd < 1400) patrolWarning(n);
+    if (n.armor < n.maxArmor * 0.25 && !n.bountyId && n.kind !== 'patrol') {
+      tx = n.x * 2 - foe.x; ty = n.y * 2 - foe.y;   // flee directly away
     } else {
-      const lead = pd / SHOT_SPEED;
-      tx = p.x + (p.vx - n.vx) * lead; ty = p.y + (p.vy - n.vy) * lead;
+      const lead = fd / SHOT_SPEED;
+      tx = foe.x + (foe.vx - n.vx) * lead; ty = foe.y + (foe.vy - n.vy) * lead;
       attacking = true;
     }
   } else {
@@ -346,8 +395,8 @@ function updateNpc(n, dt) {
   }
 
   const off = turnToward(n, Math.atan2(ty - n.y, tx - n.x), dt);
-  n.thrusting = off < 0.6 && (!attacking || pd > 250);
-  if (attacking && off < 0.2 && pd < 650) fire(n);
+  n.thrusting = off < 0.6 && (!attacking || fd > 250);
+  if (attacking && off < 0.2 && fd < 650) fire(n, foe === p ? 'player' : 'pirates');
   physics(n, dt);
   if (Math.hypot(n.x, n.y) > 4000) n.dead = true;
 }
@@ -374,6 +423,10 @@ function tryLand() {
     msg('Moving too fast to land. Slow down (S / Down turns you around).');
     return;
   }
+  if (repOf(localGov()) <= -50) {
+    msg(`Docking denied. The ${localGov() === 'Pirate' ? 'pirates here' : localGov()} will not let your ship land.`);
+    return;
+  }
   land(n.pl);
 }
 
@@ -385,6 +438,7 @@ function land(planet) {
   // deliveries
   st.missions = st.missions.filter(m => {
     if (m.type === 'bounty' || m.destSystem !== st.systemId || m.destPlanet !== planet.name) return true;
+    changeRep(localGov(), m.contract ? 4 : 2);
     if (m.type === 'delivery') {
       st.credits += m.pay;
       msg(`Delivered ${m.tons}t of ${m.good}. Payment received: ${fmt(m.pay)} cr.`);
@@ -425,7 +479,8 @@ function takeOff() {
   const pl = currentPlanet();
   const a = rand(0, Math.PI * 2);
   G.player = makeShip(G.state.shipId, pl.x + Math.cos(a) * pl.r * 0.5, pl.y + Math.sin(a) * pl.r * 0.5, a);
-  G.player.armor = G.state.armor;
+  const s = ship();
+  Object.assign(G.player, { armor: G.state.armor, maxArmor: s.armor, shields: s.shields });
   G.mode = 'flight';
   G.navPlanet = null;
   populateSystem();
@@ -549,12 +604,17 @@ function generateMissions(planet) {
       if (!names.length || !options.length) continue;
       const targetSystem = pick(options), targetName = pick(names);
       offers.push({
-        type: 'bounty', targetSystem, targetName,
+        type: 'bounty', targetSystem, targetName, issuer: localGov(),
         title: `Bounty: destroy ${targetName} near ${SYSTEMS[targetSystem].name}`,
         pay: randInt(8, 16) * 1000,
         deadline: day + daysTo(targetSystem) * 2 + 10,
       });
     }
+  }
+  // Captains the local government trusts are offered a better-paid contract.
+  const gov = localGov(), job = offers.find(o => o.type === 'delivery');
+  if (job && gov !== 'Pirate' && repOf(gov) >= 15) {
+    Object.assign(job, { contract: true, pay: Math.round(job.pay * 1.6), title: `${gov} contract: ${job.title.toLowerCase()}` });
   }
   return offers;
 }
@@ -576,22 +636,27 @@ function updateShots(dt) {
   const p = G.player;
   for (const sh of G.shots) {
     sh.x += sh.vx * dt; sh.y += sh.vy * dt; sh.life -= dt;
-    if (sh.fromPlayer) {
-      for (const n of G.npcs) {
-        if (!n.dead && dist(sh, n) < SHIPS[n.shipId].size + 2) {
-          n.hostile = true;
-          if (!n.wasShot) {
-            n.wasShot = true;
-            feel(n, -2, 'You shot at my ship.');
-          }
-          damage(n, SHOT_DMG);
-          sh.life = 0;
-          break;
+    if (sh.hits === 'player') {
+      if (p && !p.dead && dist(sh, p) < SHIPS[p.shipId].size + 2) {
+        damage(p, sh.dmg);
+        sh.life = 0;
+      }
+      continue;
+    }
+    for (const n of G.npcs) {
+      if (n.dead || (sh.hits === 'pirates' && n.kind !== 'pirate') || dist(sh, n) >= SHIPS[n.shipId].size + 2) continue;
+      if (sh.hits === 'npcs') {
+        n.hostile = true;
+        if (!n.wasShot) {
+          n.wasShot = true;
+          feel(n, -2, 'You shot at my ship.');
+          if (n.kind === 'patrol') changeRep(n.gov, -8);
+          else if (n.kind === 'trader') changeRep(localGov(), -3);
         }
       }
-    } else if (p && !p.dead && dist(sh, p) < ship().size + 2) {
-      damage(p, SHOT_DMG);
+      damage(n, sh.dmg, sh.hits === 'npcs');
       sh.life = 0;
+      break;
     }
   }
   G.shots = G.shots.filter(s => s.life > 0);
@@ -615,6 +680,7 @@ function update(dt) {
     G.spawnTimer = rand(10, 20);
     if (G.npcs.length < 6) {
       if (Math.random() < system().pirates * 0.5) spawnNpc('pirate', false);
+      else if (PATROL_NAMES[localGov()] && Math.random() < 0.25) spawnNpc('patrol', Math.random() < 0.5);
       else if (Math.random() < 0.7) spawnNpc('trader', Math.random() < 0.5);
     }
   }
@@ -677,7 +743,8 @@ function drawShip(o, color, toScreen) {
 
 function npcColor(n) {
   if (n.bountyId) return '#ff2d6f';
-  return n.hostile ? '#ff5f5f' : '#e8d17a';
+  if (n.hostile) return '#ff5f5f';
+  return n.kind === 'patrol' ? '#7fb4ff' : '#e8d17a';
 }
 
 function drawBrackets(x, y, r, color) {

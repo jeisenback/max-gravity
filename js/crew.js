@@ -9,7 +9,9 @@ const person = id => CREW[id] || G.state.people[id];
 const fullName = c => c.name || `${c.first} ${c.last}`;
 const crewMembers = () => G.state.crew.map(person);
 const roleHolder = role => crewMembers().filter(c => c.role === role).sort((a, b) => b.skill - a.skill)[0];
-const roleSkill = role => (roleHolder(role) || { skill: 0 }).skill;
+// A transponder spoofer outfit stands in for a skill-1 slicer.
+const roleSkill = role => Math.max((roleHolder(role) || { skill: 0 }).skill, role === 'slicer' && ship().spoofer ? 1 : 0);
+const roleName = role => (roleHolder(role) || { first: 'Your spoofer' }).first;
 const paxAboard = () => G.state.missions.filter(m => m.type === 'passenger');
 const berthsUsed = () => G.state.crew.length + paxAboard().reduce((t, m) => t + m.pax, 0);
 const berthsFree = () => ship().berths - berthsUsed();
