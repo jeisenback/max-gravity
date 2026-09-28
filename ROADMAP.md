@@ -1,0 +1,32 @@
+# Roadmap
+
+Long-term milestones, in order. Each builds on the ones before it.
+
+## 1. A living solar system
+- **Orbits and launch windows** (started): every location orbits at its real period, so travel time and reaction mass change over the months. The system map shows the best upcoming window for a plotted burn.
+- **Pirate unrest and NPC shipping** (done): raids flare up, NPC haulers avoid dangerous lanes, and shortages and gluts follow; killing pirates clears the lanes.
+- **Faction states** (done): economies boom and slump; incidents build tension until two factions go to war, with navies fighting in each other's space and wartime demand in their markets.
+- Markets with real stockpiles: a station runs short because nobody hauled the goods, and NPC traders actually carry cargo.
+- The Cold Water story becomes one case of this general system.
+
+## 2. Your own shipping company
+- Escorts that fly with you in combat.
+- Extra ships crewed by hired captains that run trade routes on their own.
+- Stakes in stations (a Ceres water depot, a Phobos yard) that pay out based on the region's economy.
+
+## 3. A storylet narrative engine
+- Story and events as data: small scenes unlocked by standing, crew, cargo, flags, and location (as in Sunless Sea).
+- Competing campaign arcs, as in Escape Velocity Nova (a Mars Navy career, a pirate lord's rise, an Aquilon corporate climb).
+- Mods can write whole campaigns without code.
+
+## 4. Expanse-grade combat
+- **4a**, in the current flight model: torpedoes, point-defense as an automatic turret, escorts, boarding and capture, and a medic who matters.
+- **4b**, a prototype first: momentum flight with no speed cap, long-range torpedo duels, and high-g burn stress. Built as a switchable mode or a mod, then judged by playing it.
+
+## 5. Frontier and legacy
+- Found and grow an outpost on a Jovian moon or at Triton, supplied through the living economy.
+- Legacy: when a captain retires or dies, the next inherits part of the company, contacts, and standing.
+
+## 6. Community platform (alongside the others)
+- An in-game mod browser that loads mods by link, and shareable scenarios.
+- Shared news: other players' deeds show up as rumors in your game.

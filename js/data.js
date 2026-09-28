@@ -1,123 +1,156 @@
 'use strict';
 
-// Static game content: commodities, ships, and the galaxy.
+// Static game content: commodities, ships, and the solar system.
 
 const COMMODITIES = [
+  { id: 'water', name: 'Water', base: 80 },
   { id: 'food', name: 'Food', base: 100 },
-  { id: 'industrial', name: 'Industrial', base: 200 },
+  { id: 'industrial', name: 'Machine Parts', base: 200 },
   { id: 'medical', name: 'Medical Supplies', base: 300 },
   { id: 'luxury', name: 'Luxury Goods', base: 450 },
-  { id: 'metal', name: 'Metal', base: 150 },
-  { id: 'equipment', name: 'Equipment', base: 350 },
+  { id: 'metal', name: 'Refined Metals', base: 150 },
+  { id: 'equipment', name: 'Electronics', base: 350 },
 ];
 
-// Price levels a planet can have for a commodity: Low, Medium, High.
+// Price levels a market can have for a commodity: Low, Medium, High.
 const PRICE_MULT = { L: 0.75, M: 1.0, H: 1.3 };
 
+// `fuel` is reaction mass. Burn costs scale with distance (see burnFuel in game.js).
+// `berths` are shared by crew and passengers.
 const SHIPS = {
-  shuttle:   { name: 'Shuttle',        price: 10000,  cargo: 20,  fuel: 300, shields: 60,  armor: 50,  accel: 170, maxSpeed: 260, turn: 3.0, guns: 1, size: 10, forSale: true,
-               desc: 'A dependable little ship. Every captain starts somewhere.' },
-  courier:   { name: 'Courier',        price: 45000,  cargo: 35,  fuel: 500, shields: 110, armor: 80,  accel: 260, maxSpeed: 380, turn: 3.8, guns: 1, size: 11, forSale: true,
-               desc: 'Fast and long-legged. Popular with mail runners and smugglers.' },
-  freighter: { name: 'Bulk Freighter', price: 90000,  cargo: 120, fuel: 400, shields: 180, armor: 260, accel: 100, maxSpeed: 200, turn: 1.8, guns: 1, size: 18, forSale: true,
-               desc: 'A flying warehouse. Slow, sturdy, and very profitable.' },
-  gunship:   { name: 'Viper Gunship',  price: 160000, cargo: 15,  fuel: 400, shields: 300, armor: 220, accel: 300, maxSpeed: 400, turn: 4.4, guns: 3, size: 12, forSale: true,
-               desc: 'Three forward cannons and an attitude. Pirates hate it.' },
+  shuttle:   { name: 'Rock Hopper',  price: 10000,  cargo: 20,  fuel: 300, berths: 3, shields: 60,  armor: 50,  accel: 170, maxSpeed: 260, turn: 3.0, guns: 1, size: 10, forSale: true,
+               desc: 'A patched-up Belter skiff held together with sealant and optimism. Every captain starts somewhere.' },
+  lightfreighter: { name: 'Ore Runner', price: 28000, cargo: 50, fuel: 300, berths: 3, shields: 90, armor: 100, accel: 150, maxSpeed: 250, turn: 2.6, guns: 1, size: 13, forSale: true,
+               desc: 'The first real step up for an independent hauler. Two and a half times the hold of a Rock Hopper.' },
+  courier:   { name: 'Torch Courier', price: 45000, cargo: 35,  fuel: 380, berths: 5, shields: 110, armor: 80,  accel: 260, maxSpeed: 380, turn: 3.8, guns: 1, size: 11, forSale: true,
+               desc: 'All drive and very little else. Mail runners and smugglers swear by them.' },
+  freighter: { name: 'Ice Hauler',   price: 90000,  cargo: 120, fuel: 450, berths: 6, shields: 180, armor: 260, accel: 100, maxSpeed: 200, turn: 1.8, guns: 1, size: 18, forSale: true,
+               desc: 'A water tank the size of a city block with a drive bolted on. Slow, sturdy, and long-legged enough to reach Triton.' },
+  gunship:   { name: 'Corvette',     price: 160000, cargo: 15,  fuel: 380, berths: 5, shields: 300, armor: 220, accel: 300, maxSpeed: 400, turn: 4.4, guns: 3, size: 12, forSale: true,
+               req: 15, desc: 'Decommissioned fast-attack ship with three forward gun mounts. Pirates give it a wide berth. Sold only to captains the local government trusts.' },
   raider:    { name: 'Raider',  price: 0, cargo: 10, fuel: 300, shields: 70,  armor: 60,  accel: 230, maxSpeed: 330, turn: 3.6, guns: 1, size: 10 },
+  destroyer: { name: 'Destroyer', price: 0, cargo: 40, fuel: 600, shields: 320, armor: 480, accel: 150, maxSpeed: 230, turn: 2.2, guns: 3, size: 22 },
+  cutter:    { name: 'Patrol Cutter', price: 0, cargo: 10, fuel: 300, shields: 150, armor: 140, accel: 260, maxSpeed: 350, turn: 3.8, guns: 2, size: 12 },
   corsair:   { name: 'Corsair', price: 0, cargo: 20, fuel: 300, shields: 140, armor: 120, accel: 250, maxSpeed: 340, turn: 3.6, guns: 2, size: 13 },
 };
 
-const GOV_COLORS = { Federation: '#5fa8ff', Independent: '#d0d0d0', Pirate: '#ff5f5f' };
+const GOV_COLORS = {
+  'Earth Coalition': '#5fa8ff',
+  'Mars Republic': '#ff8a4a',
+  'Belt Collective': '#e8d17a',
+  'Independent': '#d0d0d0',
+  'Pirate': '#d05fff',
+};
 
-// Map coordinates (x, y) are for the galaxy map. Planet coordinates are in-system.
+// Bodies at the same location must not trade a commodity at different price levels,
+// or players could hop between them for free profit.
+// Each location sits on an orbit (`au` from the Sun, at `angle` degrees) for travel
+// distances and the system map. Body coordinates (x, y) are local, for flight.
 const SYSTEMS = {
-  sol: {
-    name: 'Sol', x: 400, y: 260, gov: 'Federation', pirates: 0, links: ['centauri', 'sirius', 'vega'],
+  mercury: {
+    name: 'Mercury', au: 0.39, angle: 200, gov: 'Independent', pirates: 0,
     planets: [
-      { name: 'Earth', x: -150, y: 80, r: 90, color: '#3a7bd5', services: ['trade', 'missions', 'shipyard', 'refuel'],
-        prices: { food: 'M', industrial: 'L', medical: 'L', luxury: 'H', metal: 'H', equipment: 'L' },
-        desc: 'The cradle of humanity and seat of the Federation. The spaceport sprawls across what used to be the Atlantic seaboard.' },
-      { name: 'Mars', x: 380, y: -260, r: 55, color: '#c1440e', services: ['trade', 'missions', 'refuel'],
-        prices: { food: 'H', industrial: 'M', metal: 'L', equipment: 'M' },
-        desc: 'Terraforming is three centuries behind schedule. The domes of Olympus City glitter against the rust.' },
+      { name: 'Hermes Foundry', x: 60, y: -40, r: 50, color: '#b0a090', services: ['trade', 'missions', 'refuel'],
+        prices: { industrial: 'L', equipment: 'L', metal: 'M', food: 'H', water: 'H', luxury: 'M' },
+        desc: 'Solar furnaces the size of cities, running day and night in the glare. The foundry workers are well paid and badly homesick.' },
     ],
   },
-  centauri: {
-    name: 'Alpha Centauri', x: 300, y: 330, gov: 'Federation', pirates: 0.1, links: ['sol', 'tauceti', 'procyon'],
+  earth: {
+    name: 'Earth', au: 1.0, angle: 100, gov: 'Earth Coalition', pirates: 0,
     planets: [
-      { name: 'New Kent', x: 100, y: -120, r: 80, color: '#4caf50', services: ['trade', 'missions', 'refuel'],
-        prices: { food: 'L', medical: 'H', luxury: 'M', equipment: 'H' },
-        desc: 'Endless golden wheat fields feed half the Federation. The locals are friendly, if a little slow to haggle.' },
+      { name: 'Earth', x: -150, y: 80, r: 95, color: '#3a7bd5', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
+        prices: { water: 'M', food: 'M', industrial: 'L', medical: 'L', luxury: 'H', metal: 'H', equipment: 'L' },
+        desc: 'Thirty billion people, most of them on basic assistance. The orbital elevator ports never sleep.' },
+      { name: 'Luna', x: 380, y: -260, r: 40, color: '#b8b8b8', services: ['missions', 'shipyard', 'outfitter', 'refuel'],
+        prices: {},
+        desc: 'Coalition shipyards and navy drydocks under a black sky. Everyone here has an opinion about Mars.' },
     ],
   },
-  sirius: {
-    name: 'Sirius', x: 500, y: 190, gov: 'Federation', pirates: 0.1, links: ['sol', 'altair', 'rigel'],
+  mars: {
+    name: 'Mars', au: 1.52, angle: 60, gov: 'Mars Republic', pirates: 0.05,
     planets: [
-      { name: 'Sirius Anchorage', x: -60, y: -40, r: 45, color: '#b0bec5', services: ['trade', 'missions', 'shipyard', 'refuel'],
-        prices: { industrial: 'M', medical: 'M', luxury: 'M', equipment: 'M', food: 'H' },
-        desc: 'A vast orbital station and the Federation navy\'s forward base. Shipwrights here build to military spec.' },
+      { name: 'Mars', x: 100, y: -120, r: 70, color: '#c1440e', services: ['trade', 'missions', 'refuel'],
+        prices: { equipment: 'H', food: 'H', water: 'H', medical: 'M', industrial: 'M', metal: 'L', luxury: 'M' },
+        desc: 'Domed cities in the Mariner Valley, and a people who have spent generations fighting to make a dead world breathe.' },
+      { name: 'Phobos Yards', x: -300, y: 220, r: 30, color: '#8d6e63', services: ['shipyard', 'outfitter', 'refuel'],
+        prices: {},
+        desc: 'Military-grade shipwrights on a potato-shaped moon. Martian engineering is precise, and the price shows it.' },
     ],
   },
-  vega: {
-    name: 'Vega', x: 470, y: 350, gov: 'Federation', pirates: 0.15, links: ['sol', 'altair', 'deneb'],
+  ceres: {
+    name: 'Ceres', au: 2.77, angle: 130, gov: 'Belt Collective', pirates: 0.2,
     planets: [
-      { name: 'Vega Prime', x: 200, y: 150, r: 85, color: '#8d6e63', services: ['trade', 'missions', 'refuel'],
-        prices: { industrial: 'L', equipment: 'L', metal: 'H', food: 'H' },
-        desc: 'Factory smog hides the surface from orbit. If it has moving parts, it was probably made on Vega Prime.' },
-      { name: 'Lyra Station', x: -330, y: -200, r: 35, color: '#90a4ae', services: ['trade', 'refuel'],
-        prices: { luxury: 'M', medical: 'M', food: 'M' },
-        desc: 'A cramped waystation. The bar serves something called "coolant punch". Nobody asks what is in it.' },
+      { name: 'Ceres Station', x: -60, y: -40, r: 60, color: '#90a4ae', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
+        prices: { water: 'H', food: 'H', medical: 'H', metal: 'L', luxury: 'M', equipment: 'M', industrial: 'M' },
+        desc: 'Six million people spun up inside a dwarf planet. Belters with long limbs and short tempers, and water rationing on every wall.' },
     ],
   },
-  tauceti: {
-    name: 'Tau Ceti', x: 180, y: 400, gov: 'Independent', pirates: 0.3, links: ['centauri', 'procyon'],
+  pallas: {
+    name: 'Pallas', au: 2.77, angle: 20, gov: 'Belt Collective', pirates: 0.3,
     planets: [
-      { name: 'Haven', x: -80, y: 160, r: 70, color: '#26a69a', services: ['trade', 'missions', 'refuel'],
-        prices: { medical: 'L', food: 'L', luxury: 'H', industrial: 'H' },
-        desc: 'A hospital world run by a medical cooperative. Their pharmaceuticals are the best and cheapest in the sector.' },
+      { name: 'Pallas Refinery', x: 200, y: 150, r: 45, color: '#78909c', services: ['trade', 'missions', 'refuel'],
+        prices: { metal: 'L', industrial: 'H', food: 'H', water: 'H', equipment: 'H' },
+        desc: 'Smelters glowing along the asteroid\'s spine. The refinery crews pay well for anything that is not rock.' },
     ],
   },
-  procyon: {
-    name: 'Procyon', x: 170, y: 260, gov: 'Independent', pirates: 0.35, links: ['centauri', 'tauceti', 'kestrel'],
+  hygiea: {
+    name: 'Hygiea', au: 3.14, angle: 230, gov: 'Pirate', pirates: 0.8,
     planets: [
-      { name: 'Procyon Dock', x: 150, y: 50, r: 50, color: '#a1887f', services: ['trade', 'missions', 'shipyard', 'refuel'],
-        prices: { metal: 'M', equipment: 'H', food: 'M', industrial: 'M' },
-        desc: 'Independent shipyards and no questions asked. Half the hulls here have had their registry numbers filed off.' },
+      { name: 'The Rook', x: -120, y: -60, r: 45, color: '#455a64', services: ['trade', 'missions', 'outfitter', 'refuel'],
+        prices: { luxury: 'L', equipment: 'H', medical: 'H', food: 'H', water: 'M' },
+        desc: 'A hollowed-out rock nobody officially admits exists. Stolen luxury goods go cheap here, if you can get them out alive.' },
     ],
   },
-  altair: {
-    name: 'Altair', x: 620, y: 260, gov: 'Independent', pirates: 0.25, links: ['sirius', 'vega', 'deneb'],
+  jupiter: {
+    name: 'Jupiter', au: 5.2, angle: 160, gov: 'Independent', pirates: 0.2,
     planets: [
-      { name: 'Altair Bazaar', x: -200, y: -100, r: 75, color: '#ffb74d', services: ['trade', 'missions', 'refuel'],
-        prices: { luxury: 'L', food: 'H', medical: 'H' },
-        desc: 'Silk, spice, and synthetic gemstones. The bazaar never closes and the merchants never stop talking.' },
+      { name: 'Ganymede', x: 150, y: 50, r: 70, color: '#a1887f', services: ['trade', 'missions', 'refuel'],
+        prices: { food: 'L', medical: 'M', luxury: 'H', equipment: 'H' },
+        desc: 'The breadbasket of the outer planets. Mirror arrays feed sunlight to agri-domes that grow food for half the Belt.' },
+      { name: 'Europa', x: -350, y: -200, r: 55, color: '#d7ccc8', services: ['trade', 'refuel'],
+        prices: { water: 'L', industrial: 'H' },
+        desc: 'An ice shell over a hidden ocean. Europa\'s ice haulers fill the Belt\'s cisterns.' },
     ],
   },
-  rigel: {
-    name: 'Rigel', x: 600, y: 100, gov: 'Independent', pirates: 0.4, links: ['sirius', 'kestrel'],
+  saturn: {
+    name: 'Saturn', au: 9.54, angle: 110, gov: 'Belt Collective', pirates: 0.35,
     planets: [
-      { name: 'Rigel IV', x: 250, y: -150, r: 65, color: '#78909c', services: ['trade', 'missions', 'refuel'],
-        prices: { metal: 'L', industrial: 'H', food: 'H', equipment: 'H' },
-        desc: 'A mining colony strip-mined down to the mantle. The miners pay well for anything that is not rock.' },
+      { name: 'Titan', x: -80, y: 160, r: 75, color: '#e0a040', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
+        prices: { medical: 'L', luxury: 'M', equipment: 'H', industrial: 'H' },
+        desc: 'Orange haze and methane rain over the research domes. Titan\'s biolabs make the best pharmaceuticals this side of Earth.' },
+      { name: 'Enceladus', x: 350, y: -250, r: 35, color: '#eceff1', services: ['trade', 'refuel'],
+        prices: { water: 'L', food: 'H', metal: 'H' },
+        desc: 'Ice geysers blasting into space. Haulers queue for hours to scoop the purest water in the system.' },
     ],
   },
-  deneb: {
-    name: 'Deneb', x: 680, y: 410, gov: 'Independent', pirates: 0.45, links: ['vega', 'altair'],
+  neptune: {
+    name: 'Neptune', au: 30.1, angle: 70, gov: 'Independent', pirates: 0.45,
     planets: [
-      { name: 'Deneb Outpost', x: 60, y: 200, r: 40, color: '#9575cd', services: ['trade', 'missions', 'refuel'],
-        prices: { medical: 'H', equipment: 'H', metal: 'L', food: 'M' },
-        desc: 'The edge of charted space. Frontier settlers trade ore for anything that keeps them alive another season.' },
-    ],
-  },
-  kestrel: {
-    name: "Kestrel's Reach", x: 340, y: 90, gov: 'Pirate', pirates: 0.8, links: ['rigel', 'procyon'],
-    planets: [
-      { name: 'Blackrock', x: -120, y: -60, r: 60, color: '#455a64', services: ['trade', 'missions', 'refuel'],
-        prices: { luxury: 'L', equipment: 'H', medical: 'H', food: 'H' },
-        desc: 'A hollowed-out asteroid and pirate haven. Stolen luxury goods go cheap here, if you can get them out alive.' },
+      { name: 'Triton Outpost', x: 60, y: 200, r: 45, color: '#9575cd', services: ['trade', 'missions', 'refuel'],
+        prices: { medical: 'H', equipment: 'H', luxury: 'H', metal: 'L', water: 'L', food: 'M' },
+        desc: 'The edge of human space, weeks from anywhere. Settlers here trade ore and ice for anything that keeps them alive another season.' },
     ],
   },
 };
 
-const MISSION_GOODS = ['medical crates', 'machine parts', 'sealed diplomatic pouches', 'agricultural drones', 'prefab habitat panels', 'scientific samples'];
+// Factions that track your standing. Independent ports do not.
+const FACTIONS = ['Earth Coalition', 'Mars Republic', 'Belt Collective', 'Pirate'];
+const PATROL_NAMES = { 'Earth Coalition': 'Coalition cutter', 'Mars Republic': 'MRN frigate', 'Belt Collective': 'Collective militia' };
+
+// Outfits take cargo space (`space`, tons) and modify the ship's stats; `max` per ship.
+// `req` needs that much standing with the faction running the shop; `pirate` gear is
+// only sold in pirate ports. Outfits move with you when you change ships.
+const OUTFITS = {
+  pdc:     { name: 'Point-defense cannon', price: 6000, space: 3, max: 2, desc: 'An extra forward gun.', mod: s => { s.guns += 1; } },
+  heavy:   { name: 'Heavy rounds', price: 12000, space: 2, max: 1, req: 15, desc: 'Tungsten-cored ammunition. Your guns hit 40% harder.', mod: s => { s.dmgMult *= 1.4; } },
+  armor:   { name: 'Armor plating', price: 4000, space: 4, max: 3, desc: '+40 armor.', mod: s => { s.armor += 40; } },
+  shield:  { name: 'Deflector capacitor', price: 5000, space: 2, max: 3, desc: '+50 shields.', mod: s => { s.shields += 50; } },
+  tank:    { name: 'Reaction mass tank', price: 3000, space: 5, max: 3, desc: '+100 reaction mass capacity.', mod: s => { s.fuel += 100; } },
+  pod:     { name: 'Cargo pod', price: 2500, space: 0, max: 2, desc: '+15t cargo, at 5% less top speed.', mod: s => { s.cargo += 15; s.maxSpeed *= 0.95; } },
+  drive:   { name: 'Drive tuning', price: 8000, space: 1, max: 1, desc: '+15% acceleration and top speed.', mod: s => { s.accel *= 1.15; s.maxSpeed *= 1.15; } },
+  berth:   { name: 'Passenger berth', price: 3000, space: 3, max: 2, desc: '+1 berth for crew or passengers.', mod: s => { s.berths += 1; } },
+  spoofer: { name: 'Transponder spoofer', price: 9000, space: 1, max: 1, req: 15, pirate: true, desc: 'Fakes transponders like a skill-1 slicer when you have none aboard.', mod: s => { s.spoofer = true; } },
+};
+
+const MISSION_GOODS = ['medical crates', 'reactor parts', 'sealed diplomatic pouches', 'hydroponics kits', 'prefab habitat panels', 'scientific samples'];
 const PIRATE_NAMES = ['Red Mag Varga', 'Silas Thorn', 'The Widow Kade', 'Jax Morrow', 'Captain Ruin', 'Old Iron Tess'];
