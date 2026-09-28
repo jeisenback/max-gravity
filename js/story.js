@@ -12,6 +12,8 @@
 // Act 2 stages, one chain per side: 'belt1', 'belt2' (Belt Collective); 'mars1',
 // 'mars2' (Mars Republic); 'earth1', 'earth2' (Earth Coalition); 'aq1' (Aquilon).
 // 'act2' is Act 2 complete, with `side` recording who got the proof.
+// Act 3: 'act3' run 20t of water through the blockade to Ceres Station; 'end' is the
+// epilogue, with `ending` one of belt, mars, earth, aquilon, or truth.
 
 const STORY_START_DAY = 10;
 
@@ -39,6 +41,8 @@ function storyObjective() {
     earth1: 'Pick up Mira Castellane on Europa and bring her to Director Achebe on Luna.',
     earth2: 'Take Mira Castellane to Luna.',
     aq1: 'Carry Aquilon\'s maintenance technicians to Ceres Station.',
+    act3: `Ceres is under blockade. Bring at least 20t of Water and land at Ceres Station, whatever it takes. ${{ belt: 'The Collective is counting on you.', mars: 'Mars wants its colors on that water.', earth: 'Coalition relief is waiting on you.', aquilon: 'Voight has paid the blockade to let you through.' }[s.side] || ''}`,
+    end: 'The story of Cold Water is over. The solar system carries on, and so do you.',
     act2: {
       belt: 'The Belt is on strike and the Collective has voided Aquilon\'s ice claims. A Coalition fleet is on its way to "secure" Ceres. (Act 3, the blockade of Ceres, arrives in a later update.)',
       mars: 'Mars holds the proof as leverage over Earth. Both navies are moving toward Ceres. (Act 3, the blockade of Ceres, arrives in a later update.)',
@@ -114,6 +118,8 @@ function storyOnLanding(planet) {
   if (s.stage === 2 && s.agentDay && G.state.day > s.agentDay) s.stage = 3;
   if (s.stage === 3) return openEvent(miraContact());
   if (s.stage === 4 && at === 'Europa') return openEvent(europaReveal());
+  if (s.stage === 'act2' && G.state.day >= (s.act2Day || 0) + 5) return openEvent(act3Briefing());
+  if (s.stage === 'act3' && at === 'Ceres Station') return openEvent((G.state.cargo.water || 0) >= 20 ? finalScene() : emptyHanded());
   const scene = {
     5: CONTACTS[at] && (() => CONTACTS[at]()),
     sold: at === 'Hermes Foundry' && (() => aquilonJob(false)),
@@ -273,6 +279,7 @@ function endAct2(side, text) {
   const s = story();
   s.stage = 'act2';
   s.side = side;
+  s.act2Day = G.state.day;
   storyLog(text);
 }
 
@@ -520,4 +527,192 @@ function techsReveal() {
       } },
     ],
   };
+}
+
+// ==================== Act 3: the blockade of Ceres ====================
+
+function act3Briefing() {
+  const s = story();
+  return {
+    title: 'The Fleets Arrive',
+    text: {
+      belt: 'Councillor Tembo, on a tight-beam channel: "The Coalition has blockaded Ceres. Nothing gets in, not even water. Bring us twenty tons and break it. Every station in the Belt will be watching."',
+      mars: 'Commander Ueda, on an encrypted channel: "The Coalition has closed Ceres. If a Mars-friendly captain breaks that blockade with water, Earth loses the Belt. Twenty tons, captain. Under our colors."',
+      earth: 'Director Achebe: "Ceres is rioting, and Collective hardliners are attacking anything that approaches. Our blockade holds the station. Bring twenty tons of water through for Coalition relief and we can end this."',
+      aquilon: 'Anselm Voight: "The blockade has made water on Ceres very valuable. Bring twenty tons. The Coalition will let you through; I have seen to it. The Collective hardliners, less so."',
+    }[s.side],
+    choices: [{ label: 'Understood', run() {
+      s.stage = 'act3';
+      storyLog('Ceres was blockaded. Set out to run water through.');
+      return 'You check the market prices for water, and your guns. (Water is cheapest on Europa, Enceladus, and Triton.)';
+    } }],
+  };
+}
+
+function emptyHanded() {
+  return {
+    title: 'Empty-Handed',
+    text: 'You made it through the blockade, but your hold has no water in it. The people crowding the docking ring watch your cargo lock open on nothing. Come back with at least 20 tons.',
+    choices: [{ label: 'Understood', run: () => 'You will be back.' }],
+  };
+}
+
+function storyDockingOverride(planet) {
+  return story().stage === 'act3' && planet.name === 'Ceres Station';
+}
+
+// Ships at the blockade. Enemies attack the player; allies hunt enemies.
+function spawnFleetShip(shipId, gov, name, enemy) {
+  const s = SHIPS[shipId], station = SYSTEMS.ceres.planets[0], a = rand(0, Math.PI * 2);
+  const n = spawnNpc(enemy ? 'patrol' : 'ally', false, true);
+  Object.assign(n, {
+    shipId, gov, name, blockade: true, enemy, hostile: enemy, hunts: enemy ? null : 'enemy',
+    x: station.x + Math.cos(a) * rand(450, 750), y: station.y + Math.sin(a) * rand(450, 750), vx: 0, vy: 0,
+    shields: s.shields, armor: s.armor, maxArmor: s.armor,
+  });
+  n.goal = station;
+  return n;
+}
+
+function storyInSystem() {
+  const s = story();
+  if (s.stage !== 'act3' || G.state.systemId !== 'ceres') return;
+  const coalitionBlocks = s.side === 'belt' || s.side === 'mars';
+  const foeGov = coalitionBlocks ? 'Earth Coalition' : 'Belt Collective';
+  spawnFleetShip(coalitionBlocks ? 'destroyer' : 'corsair', foeGov, coalitionBlocks ? 'Coalition destroyer "Resolute"' : 'Collective militia "Last Drop"', true);
+  spawnFleetShip('cutter', foeGov, `${PATROL_NAMES[foeGov]} "${shipName(false)}"`, true);
+  // Your side's ships.
+  if (!coalitionBlocks) for (let i = 0; i < 2; i++) spawnFleetShip('cutter', 'Earth Coalition', `Coalition cutter "${shipName(false)}"`, false);
+  const allies = { belt: ['Belt Collective', 'Collective militia', 3], mars: ['Mars Republic', 'MRN frigate', 3], aquilon: [null, 'Aquilon security', 1] }[s.side];
+  if (allies) for (let i = 0; i < allies[2]; i++) spawnFleetShip('cutter', allies[0], `${allies[1]} "${shipName(false)}"`, false);
+  // People who love you come to help. People who hate you pay someone to make it worse.
+  const people = Object.values(G.state.people).filter(p => !G.state.crew.includes(p.id));
+  for (const p of people.filter(p => p.opinion >= 5).slice(0, 2)) {
+    const n = spawnFleetShip('corsair', null, p.ship ? p.ship.name : `"${shipName(false)}"`, false);
+    n.persona = p;
+    n.captain = `${p.first} ${p.last}`;
+    msg(`${n.name}: "${p.first} ${p.last} here. We heard you might need a hand."`);
+  }
+  for (const p of people.filter(p => p.opinion <= -5).slice(0, 2)) {
+    const n = spawnFleetShip('corsair', null, 'Hired gun', true);
+    Object.assign(n, { kind: 'pirate', blockade: false, payer: `${p.first} ${p.last}` });
+    msg(`A hired gun paid by ${p.first} ${p.last} has joined the blockade.`);
+  }
+  msg(coalitionBlocks ? 'The Coalition blockade holds the approach to Ceres Station.' : 'Collective hardliners are attacking ships near Ceres Station.');
+}
+
+function blockadeHail(n) {
+  const c = n.persona;
+  return {
+    title: n.name,
+    text: n.enemy
+      ? `Capt. ${c.first} ${c.last}: "Ceres is closed. Turn back now, or we will open fire."`
+      : `Capt. ${c.first} ${c.last}: "We have your back, captain. Get that water to the station."`,
+    choices: [{ label: 'Cut the channel', run: () => 'You cut the channel.' }],
+  };
+}
+
+// ---------- the last choice ----------
+
+const ENDINGS = {
+  belt: { credits: 10000, rep: { 'Belt Collective': 20, 'Earth Coalition': -15 },
+    text: 'Twenty tons of water roll off your ship under Collective banners while the blockade burns behind you. Within a month Earth withdraws its fleet, the strike ends on the Belt\'s terms, and Aquilon Hydrologics files for bankruptcy. Water flows on Ceres again.' },
+  mars: { credits: 20000, rep: { 'Mars Republic': 15, 'Earth Coalition': -10 },
+    text: 'Your water comes ashore under Mars Republic colors, and the Martian parliament gets its pictures. Earth backs down and concedes water rights to Mars-friendly Belt stations. Nobody ever answers for the Ceres pumps.' },
+  earth: { credits: 25000, rep: { 'Earth Coalition': 15, 'Belt Collective': -20 },
+    text: 'Coalition relief comes ashore, the riots end, and the proof stays buried. Aquilon quietly sells its claims to an Earth consortium. Ceres has water again, rationed under Coalition supervision.' },
+  aquilon: { credits: 20000, rep: { 'Belt Collective': -30 },
+    text: 'You sell twenty tons of water at a thousand credits a ton to people who have been thirsty for months. Aquilon\'s share price doubles. Ceres survives, barely, and the Belt never forgets the name of your ship.' },
+  truth: { credits: 5000, rep: { 'Belt Collective': 20, 'Earth Coalition': -10, 'Mars Republic': -10 },
+    text: 'You tell them everything: the pumps, the ice claims, the water futures, and everyone who looked away. The broadcast reaches every station in a day. Aquilon\'s executives are arrested on Mercury, three Coalition officials resign, and even Mars has questions to answer. Ceres drinks.' },
+};
+
+function finish(ending) {
+  const s = story(), st = G.state, e = ENDINGS[ending];
+  st.paid.water = (st.paid.water || 0) * (1 - 20 / st.cargo.water);
+  st.cargo.water -= 20;
+  st.credits += e.credits;
+  for (const [gov, amount] of Object.entries(e.rep)) changeRep(gov, amount);
+  s.stage = 'end';
+  s.ending = ending;
+  s.showEpilogue = true;
+  storyLog(`Ran the blockade to Ceres Station. Ending: ${{ belt: 'the Belt Collective', mars: 'the Mars Republic', earth: 'the Earth Coalition', aquilon: 'Aquilon', truth: 'the truth' }[ending]}.`);
+  return `${e.text} (+${fmt(e.credits)} cr)`;
+}
+
+function finalScene() {
+  const side = story().side;
+  const choices = {
+    belt: [{ label: 'Unload the water for the Collective', run: () => finish('belt') }],
+    mars: [
+      { label: 'Deliver it under Mars colors', run: () => finish('mars') },
+      { label: 'Publish everything, Mars\'s dealings included', run: () => finish('truth') },
+    ],
+    earth: [
+      { label: 'Hand the water to Coalition relief', run: () => finish('earth') },
+      { label: 'Tell the crowd the truth', run: () => finish('truth') },
+    ],
+    aquilon: [
+      { label: 'Sell it at blockade prices (1,000 cr/t)', run: () => finish('aquilon') },
+      { label: 'Give it away, and tell them who poisoned their wells', run: () => finish('truth') },
+    ],
+  }[side];
+  return {
+    title: 'Ceres Station',
+    text: 'You made it. The docking ring is packed wall to wall, and the crowd goes silent as your cargo lock cycles open. Twenty tons of water. Every camera on Ceres is on your ship. What happens next is up to you.',
+    choices,
+  };
+}
+
+// Shows the epilogue after the final scene closes. Returns true if it opened one.
+function storyNextScene() {
+  const s = story();
+  if (!s.showEpilogue) return false;
+  s.showEpilogue = false;
+  openEvent(epilogueEvent());
+  return true;
+}
+
+function epilogueEvent() {
+  const s = story(), st = G.state, e = s.ending;
+  const mira = {
+    belt: 'Mira Castellane runs the Ceres Water Authority now. She keeps a picture of your ship on her office wall.',
+    truth: s.side === 'earth'
+      ? 'Mira Castellane walked out of Coalition custody the day your broadcast went out. She runs the Ceres Water Authority now.'
+      : 'Mira Castellane runs the Ceres Water Authority now. She keeps a picture of your ship on her office wall.',
+    mars: 'Mira Castellane testified before the Martian parliament, then went home to Ceres to fix pumps.',
+    earth: 'Nobody has heard from Mira Castellane since Luna.',
+    aquilon: 'Mira Castellane vanished from Europa. Some say she is still out there, gathering proof. Some say Aquilon found her first.',
+  }[e];
+  const fates = {
+    rosa: ['belt', 'truth'].includes(e) ? 'Rosa Okafor went home to Ceres a hero, then came right back. "Somebody has to keep your drive alive."' : 'Rosa Okafor keeps the drive alive and does not talk about Ceres.',
+    dima: 'Dima Sokolov still flies like someone is shooting at him. Lately, someone usually is.',
+    kit: 'Kit Halloran sleeps through the night now, most nights.',
+    josef: 'Josef Brandt has started a ledger of everything Aquilon owes. It is a long ledger.',
+    wren: 'Wren says she has been inside the Aquilon servers. She says nothing else.',
+  };
+  const crew = st.crew.map(id => (CREW[id] ? fates[id]
+    : person(id).opinion >= 2 ? `${fullName(person(id))} stays aboard, loyal as ever.` : `${fullName(person(id))} signs off at Ceres to find a quieter ship.`));
+  const known = Object.values(st.people);
+  const friends = known.filter(p => p.opinion >= 2).length, enemies = known.filter(p => p.opinion <= -2).length;
+  const standing = FACTIONS.map(g => `${g === 'Pirate' ? 'Pirates' : g}: ${standingWord(repOf(g))}`).join(', ');
+  const parts = [
+    ENDINGS[e].text,
+    mira,
+    crew.length ? crew.join(' ') : 'You fly alone, the way you started.',
+    `Across the solar system, ${friends} ${friends === 1 ? 'person' : 'people'} would cross a burn for you, and ${enemies} would not.`,
+    `Day ${st.day}. ${fmt(st.credits)} cr. Your ship: the ${ship().name}. ${standing}.`,
+  ];
+  return {
+    title: 'Epilogue: Cold Water',
+    text: parts.join('<br><br>'),
+    choices: [{ label: 'Keep flying', run: () => 'The solar system carries on. So do you. (You can reread the epilogue from the Spaceport tab.)' }],
+  };
+}
+
+// The endings leave their mark on the price of water in the Belt.
+function storyPriceMult(planet, cid) {
+  const e = story().ending;
+  if (!e || cid !== 'water' || (planet.name !== 'Ceres Station' && planet.name !== 'Pallas Refinery')) return 1;
+  return { belt: 0.8, truth: 0.8, mars: 1, earth: 1.2, aquilon: 1.5 }[e];
 }

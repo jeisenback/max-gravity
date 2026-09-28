@@ -320,7 +320,7 @@ function chooseEvent(i) {
 
 function finishEvent() {
   G.dialog = null;
-  if (G.mode === 'landed') return UI.show();  // back to the spaceport after a story scene
+  if (G.mode === 'landed') return storyNextScene() || UI.show();  // back to the spaceport after a story scene
   if (G.mode === 'hail') G.mode = 'flight';
   else if (G.transit) G.transit.event = null;
   UI.hide();

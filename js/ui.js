@@ -105,7 +105,7 @@ const UI = {
         </div>` : ''}
         <h3>Active missions</h3>
         ${this.missionList(st.missions, 'abort', 'Abandon')}
-        ${story().stage !== 0 ? `<h3>Story: Cold Water</h3><p class="desc">${storyObjective()}</p>` : ''}
+        ${story().stage !== 0 ? `<h3>Story: Cold Water</h3><p class="desc">${storyObjective()}</p>${story().stage === 'end' ? '<div class="row"><button data-action="epilogue">Read the epilogue</button></div>' : ''}` : ''}
         <h3>Standing</h3>
         <div class="standing">${FACTIONS.map(g => `<div><span style="color:${GOV_COLORS[g]}">${g === 'Pirate' ? 'Pirates' : g}</span> <b>${standingWord(repOf(g))}</b> <span class="hint">${repOf(g) > 0 ? '+' : ''}${repOf(g)}</span></div>`).join('')}</div>
         <h3>Market news</h3>
@@ -264,6 +264,7 @@ const UI = {
       case 'tab': this.tab = arg; this.tradeNote = null; break;
       case 'choose': this.showEventResult(G.dialog.event.title, chooseEvent(Number(arg))); return;
       case 'continue': finishEvent(); return;
+      case 'epilogue': openEvent(epilogueEvent()); return;
       case 'takeoff': takeOff(); return;
       case 'map': openMap(); return;
       case 'load': loadGame(); return;

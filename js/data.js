@@ -29,6 +29,7 @@ const SHIPS = {
   gunship:   { name: 'Corvette',     price: 160000, cargo: 15,  fuel: 380, berths: 5, shields: 300, armor: 220, accel: 300, maxSpeed: 400, turn: 4.4, guns: 3, size: 12, forSale: true,
                req: 15, desc: 'Decommissioned fast-attack ship with three forward gun mounts. Pirates give it a wide berth. Sold only to captains the local government trusts.' },
   raider:    { name: 'Raider',  price: 0, cargo: 10, fuel: 300, shields: 70,  armor: 60,  accel: 230, maxSpeed: 330, turn: 3.6, guns: 1, size: 10 },
+  destroyer: { name: 'Destroyer', price: 0, cargo: 40, fuel: 600, shields: 320, armor: 480, accel: 150, maxSpeed: 230, turn: 2.2, guns: 3, size: 22 },
   cutter:    { name: 'Patrol Cutter', price: 0, cargo: 10, fuel: 300, shields: 150, armor: 140, accel: 260, maxSpeed: 350, turn: 3.8, guns: 2, size: 12 },
   corsair:   { name: 'Corsair', price: 0, cargo: 20, fuel: 300, shields: 140, armor: 120, accel: 250, maxSpeed: 340, turn: 3.6, guns: 2, size: 13 },
 };

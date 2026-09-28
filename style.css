@@ -46,7 +46,7 @@ canvas { display: block; touch-action: none; }
     box-shadow: 0 0 60px #000;
     padding: 0;
   }
-  #panel.event { inset: 0; margin: auto; width: min(560px, 94vw); height: fit-content; top: 0; transform: none; }
+  #panel.event { inset: 0; margin: auto; width: min(560px, 94vw); height: fit-content; max-height: 92vh; top: 0; transform: none; }
 }
 
 .event-body { padding: 18px 16px; }

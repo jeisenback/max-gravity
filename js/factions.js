@@ -28,6 +28,12 @@ function fineFor(gov) {
   return 1000 * Math.ceil(-repOf(gov) / 10);
 }
 
+function blockadeWarning(n) {
+  if (n.hailed) return;
+  n.hailed = true;
+  msg(`${n.name}: "Ceres is closed by order of the blockade. Turn back or be fired upon." (H to answer)`);
+}
+
 function patrolWarning(n) {
   if (n.hailed) return;
   n.hailed = true;

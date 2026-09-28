@@ -88,7 +88,7 @@ function price(planet, cid) {
   const c = COMMODITIES.find(c => c.id === cid);
   const wobble = 1 + 0.08 * Math.sin(G.state.day * 0.9 + hash(planet.name + cid));
   const rumor = G.state.rumors.find(r => r.planet === planet.name && r.cid === cid && r.until >= G.state.day);
-  return Math.round(c.base * PRICE_MULT[level] * wobble * (rumor ? rumor.mult : 1));
+  return Math.round(c.base * PRICE_MULT[level] * wobble * (rumor ? rumor.mult : 1) * storyPriceMult(planet, cid));
 }
 
 // Most profitable place within one full tank to sell a commodity bought here, at today's
@@ -245,7 +245,7 @@ function destroy(o, byPlayer = false) {
   const st = G.state;
   if (o.persona && o.persona.id) delete st.people[o.persona.id];  // a known captain, gone for good
   if (!byPlayer) {
-    if (o.kind === 'pirate') msg(`${o.name} destroyed by a patrol.`);
+    if (o.kind === 'pirate' || o.enemy) msg(`${o.name} destroyed.`);
     return;
   }
   if (o.story) {
@@ -366,7 +366,18 @@ function populateSystem() {
       msg(`Sensors detect ${m.targetName} in local space.`);
     }
   }
+  storyInSystem();
   G.spawnTimer = 15;
+}
+
+// What a ship hunts besides the player: 'pirates', or at the Ceres blockade 'enemy'
+// (for the player's allies) and 'ally' (for the enemy fleet).
+const huntsFor = n => n.hunts || (n.enemy ? 'ally' : n.kind === 'patrol' && !n.blockade ? 'pirates' : null);
+function preyOf(hunts, o) {
+  if (o.dead) return false;
+  if (hunts === 'pirates') return o.kind === 'pirate' && o.hostile;
+  if (hunts === 'enemy') return !!o.enemy;
+  return hunts === 'ally' && o.kind === 'ally';
 }
 
 function updateNpc(n, dt) {
@@ -374,17 +385,21 @@ function updateNpc(n, dt) {
   const pd = p && !p.dead && G.mode === 'flight' ? dist(n, p) : Infinity;
   let tx, ty, attacking = false;
 
-  // Who this ship is fighting: the player if hostile and close; a patrol also hunts pirates.
+  // Who this ship is fighting: the nearer of the player (if hostile and close) and the
+  // nearest ship it hunts (patrols hunt pirates; at Ceres, the two fleets hunt each other).
   let foe = n.hostile && pd < 1600 ? p : null;
-  if (!foe && n.kind === 'patrol') {
-    foe = G.npcs.filter(o => o.kind === 'pirate' && o.hostile && !o.dead && dist(o, n) < 1500)
-      .sort((a, b) => dist(a, n) - dist(b, n))[0] || null;
+  const hunts = huntsFor(n);
+  if (hunts) {
+    const prey = G.npcs.filter(o => preyOf(hunts, o) && dist(o, n) < 1500)
+      .sort((a, b) => dist(a, n) - dist(b, n))[0];
+    if (prey && (!foe || dist(prey, n) < pd)) foe = prey;
   }
   const fd = foe ? dist(n, foe) : Infinity;
 
   if (foe) {
     if (foe === p && n.kind === 'pirate' && pd < 1400) pirateDemand(n);
-    if (foe === p && n.kind === 'patrol' && pd < 1400) patrolWarning(n);
+    if (foe === p && n.blockade && pd < 1400) blockadeWarning(n);
+    else if (foe === p && n.kind === 'patrol' && pd < 1400) patrolWarning(n);
     if (foe === p && n.kind === 'agent' && pd < 1400) agentWarning(n);
     if (n.armor < n.maxArmor * 0.25 && !n.bountyId && n.kind !== 'patrol') {
       tx = n.x * 2 - foe.x; ty = n.y * 2 - foe.y;   // flee directly away
@@ -403,7 +418,7 @@ function updateNpc(n, dt) {
 
   const off = turnToward(n, Math.atan2(ty - n.y, tx - n.x), dt);
   n.thrusting = off < 0.6 && (!attacking || fd > 250);
-  if (attacking && off < 0.2 && fd < 650) fire(n, foe === p ? 'player' : 'pirates');
+  if (attacking && off < 0.2 && fd < 650) fire(n, foe === p ? 'player' : hunts);
   physics(n, dt);
   if (Math.hypot(n.x, n.y) > 4000) n.dead = true;
 }
@@ -430,7 +445,7 @@ function tryLand() {
     msg('Moving too fast to land. Slow down (S / Down turns you around).');
     return;
   }
-  if (repOf(localGov()) <= -50) {
+  if (repOf(localGov()) <= -50 && !storyDockingOverride(n.pl)) {
     msg(`Docking denied. The ${localGov() === 'Pirate' ? 'pirates here' : localGov()} will not let your ship land.`);
     return;
   }
@@ -653,7 +668,7 @@ function updateShots(dt) {
       continue;
     }
     for (const n of G.npcs) {
-      if (n.dead || (sh.hits === 'pirates' && n.kind !== 'pirate') || dist(sh, n) >= SHIPS[n.shipId].size + 2) continue;
+      if (n.dead || (sh.hits !== 'npcs' && !preyOf(sh.hits, n)) || dist(sh, n) >= SHIPS[n.shipId].size + 2) continue;
       if (sh.hits === 'npcs') {
         n.hostile = true;
         if (!n.wasShot) {
