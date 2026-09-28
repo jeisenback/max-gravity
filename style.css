@@ -188,6 +188,9 @@ canvas { display: block; touch-action: none; }
 .body { flex: 1; overflow-y: auto; padding: 14px 16px; }
 .desc { line-height: 1.6; margin-top: 0; font-size: 14px; }
 .note { background: color-mix(in srgb, var(--good) 10%, var(--panel)); border-left: 3px solid var(--good); padding: 7px 10px; margin: 6px 0; font-size: 13px; line-height: 1.5; }
+.cond { font-size: 13px; line-height: 1.5; padding-left: 10px; border-left: 2px solid var(--muted); margin: 3px 0; }
+.cond.bad { border-color: var(--warn); }
+.cond.good { border-color: var(--good); }
 .hint { color: var(--muted); font-size: 12px; line-height: 1.5; }
 h3 {
   display: flex;

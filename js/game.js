@@ -97,13 +97,14 @@ function cargoUsed() {
 const cargoFree = () => ship().cargo - cargoUsed();
 
 // Trading moves markets: each ton bought raises the local price and each ton sold
-// lowers it, up to MARKET_CAP either way, recovering with a MARKET_HALF_LIFE in days.
+// lowers it, up to MARKET_CAP either way. NPC shipping pulls prices back with a
+// MARKET_HALF_LIFE in days, more slowly when pirates scare it off (world.js).
 // A Rock Hopper barely dents a market; an Ice Hauler has to spread its trade around.
 const MARKET_PER_TON = 0.002, MARKET_CAP = 0.4, MARKET_HALF_LIFE = 8;
 
 function pressure(planet, cid) {
   const m = G.state.market[`${planet.name}|${cid}`];
-  return m ? m.p * Math.pow(0.5, (G.state.day - m.day) / MARKET_HALF_LIFE) : 0;
+  return m ? m.p : 0;
 }
 
 const pushed = (p, tons) => Math.max(-MARKET_CAP, Math.min(MARKET_CAP, p + tons * MARKET_PER_TON));
@@ -361,7 +362,7 @@ function spawnNpc(kind, atPlanet, fresh = false) {
   }
   const known = !fresh && pickKnownCaptain(kind);
   const shipId = known ? known.ship.shipId
-    : kind === 'pirate' ? (Math.random() < Math.min(0.5, sys.pirates) ? 'corsair' : 'raider')  // heavier pirates in rougher space
+    : kind === 'pirate' ? (Math.random() < Math.min(0.5, danger(G.state.systemId)) ? 'corsair' : 'raider')  // heavier pirates in rougher space
     : kind === 'patrol' ? 'cutter' : pick(['shuttle', 'courier', 'freighter']);
   const n = makeShip(shipId, x, y, rand(0, Math.PI * 2));
   n.kind = kind;
@@ -408,7 +409,7 @@ function populateSystem() {
   const traders = randInt(1, 3);
   for (let i = 0; i < traders; i++) spawnNpc('trader', Math.random() < 0.5);
   if (PATROL_NAMES[sys.gov] && Math.random() < 0.7) spawnNpc('patrol', Math.random() < 0.5);
-  if (Math.random() < sys.pirates) {
+  if (Math.random() < danger(G.state.systemId)) {
     const pirates = randInt(1, 2);
     for (let i = 0; i < pirates; i++) spawnNpc('pirate', false);
   }
@@ -621,7 +622,10 @@ function updateDeparture(dt) {
 function arrive() {
   const st = G.state, p = G.player, s = ship(), a = G.burnAngle;
   st.systemId = G.transit.to;
-  st.day += G.transit.days;
+  for (let i = 0; i < G.transit.days; i++) {
+    st.day++;
+    Mods.emit('newDay', st.day);
+  }
   payCrew(G.transit.days);
   st.rumors = st.rumors.filter(r => r.until >= st.day);
   G.transit = null;
@@ -791,7 +795,7 @@ function update(dt) {
   if (G.mode === 'flight' && (G.spawnTimer -= dt) <= 0) {
     G.spawnTimer = rand(10, 20);
     if (G.npcs.length < 6) {
-      if (Math.random() < system().pirates * 0.5) spawnNpc('pirate', false);
+      if (Math.random() < danger(G.state.systemId) * 0.5) spawnNpc('pirate', false);
       else if (PATROL_NAMES[localGov()] && Math.random() < 0.25) spawnNpc('patrol', Math.random() < 0.5);
       else if (Math.random() < 0.7) spawnNpc('trader', Math.random() < 0.5);
     }
@@ -1120,7 +1124,7 @@ function drawMap(W, H) {
   const missionSystems = new Set(st.missions.map(m => m.destSystem || m.targetSystem));
   ctx.textAlign = 'center';
   // Boxes labels must avoid: every dot, then each label as it is placed.
-  const placed = ids.map(id => { const [x, y] = P(id); return { x: x - 8, y: y - 8, w: 16, h: 16 }; });
+  const placed = ids.map(id => { const [x, y] = P(id); return { x: x - 12, y: y - 12, w: 24, h: 24 }; });
   const free = (x, y, w, h) => x > 4 && x + w < W - 4 && !placed.some(b => x < b.x + b.w && x + w > b.x && y < b.y + b.h && y + h > b.y);
   const order = [from, st.dest, ...ids].filter((id, i, a) => id && a.indexOf(id) === i);
   for (const id of order) {
@@ -1142,8 +1146,8 @@ function drawMap(W, H) {
     ctx.font = narrow ? '12px "IBM Plex Mono", monospace' : '13px "IBM Plex Mono", monospace';
     // Beside the dot away from the Sun, else the other side, below, or above; skipped if nothing fits.
     const label = rim ? `${sys.name} ${Math.round(sys.au)} AU` : sys.name, tw = ctx.measureText(label).width;
-    const out = x >= cx ? x + 12 : x - 12 - tw, back = x >= cx ? x - 12 - tw : x + 12;
-    const spot = [[out, y - 9], [back, y - 9], [x - tw / 2, y + 10], [x - tw / 2, y - 26]].find(([sx, sy]) => free(sx, sy, tw, 14));
+    const out = x >= cx ? x + 15 : x - 15 - tw, back = x >= cx ? x - 15 - tw : x + 15;
+    const spot = [[out, y - 9], [back, y - 9], [x - tw / 2, y + 13], [x - tw / 2, y - 28]].find(([sx, sy]) => free(sx, sy, tw, 14));
     if (spot) {
       placed.push({ x: spot[0], y: spot[1], w: tw, h: 14 });
       ctx.textAlign = 'left';
@@ -1154,6 +1158,10 @@ function drawMap(W, H) {
     if (id === from) {
       ctx.strokeStyle = '#fff'; ctx.lineWidth = 2;
       ctx.beginPath(); ctx.arc(x, y, 13, 0, Math.PI * 2); ctx.stroke();
+    }
+    if (excessUnrest(id) > 0.05) {  // pirate raids
+      ctx.strokeStyle = '#ff6b5a'; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(x, y, 11, 0, Math.PI * 2); ctx.stroke();
     }
     if (missionSystems.has(id)) {
       ctx.strokeStyle = '#ffa53a'; ctx.lineWidth = 1.5;
@@ -1169,7 +1177,7 @@ function drawMap(W, H) {
   ctx.fillText('SYSTEM MAP', 16, 36);
   ctx.font = narrow ? '12px "IBM Plex Mono", monospace' : '13px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
-  const help = `True scale, ${span} AU to the rim${Touch.on ? '' : ' (scroll or +/- to zoom)'}. ${Touch.on ? 'Tap' : 'Click'} a destination to plot a burn.${Touch.on ? '' : ' M or Esc to close.'} White ring: you. Orange: mission. Dim: beyond a full tank.`;
+  const help = `True scale, ${span} AU to the rim${Touch.on ? '' : ' (scroll or +/- to zoom)'}. ${Touch.on ? 'Tap' : 'Click'} a destination to plot a burn.${Touch.on ? '' : ' M or Esc to close.'} White ring: you. Orange: mission. Red: pirate raids. Dim: beyond a full tank.`;
   let y = 42;
   for (const l of wrapText(help, W - 150)) ctx.fillText(l, 16, y += 16);  // clear of the Close and zoom buttons
   let status = 'No burn plotted.';

@@ -104,6 +104,11 @@ const UI = {
       </div>`;
   },
 
+  conditionList(list, none) {
+    if (!list.length) return none ? `<p class="hint">${none}</p>` : '';
+    return list.map(c => `<div class="cond ${c.bad ? 'bad' : 'good'}">${c.text}</div>`).join('');
+  },
+
   modList() {
     const mods = Mods.list.filter(m => !m.builtin);
     return mods.length ? `<h3>Mods</h3>${mods.map(m => `<div class="hint">${m.name}${m.version ? ` ${m.version}` : ''}${m.failed ? ' (switched off after an error)' : ''}</div>`).join('')}` : '';
@@ -127,8 +132,13 @@ const UI = {
         ${story().stage !== 0 ? `<h3>Story: Cold Water</h3><p class="desc">${storyObjective()}</p>${story().stage === 'end' ? '<div class="row"><button data-action="epilogue">Read the epilogue</button></div>' : ''}` : ''}
         <h3>Standing</h3>
         <div class="standing">${FACTIONS.map(g => `<div><span style="color:${GOV_COLORS[g]}">${g === 'Pirate' ? 'Pirates' : g}</span> <b>${standingWord(repOf(g))}</b> <span class="hint">${repOf(g) > 0 ? '+' : ''}${repOf(g)}</span></div>`).join('')}</div>
-        <h3>Market news</h3>
-        ${st.rumors.length ? st.rumors.map(r => `<div class="hint">${r.text} Until day ${r.until}.</div>`).join('') : '<p class="hint">Nothing new. Listen to the comms in transit.</p>'}
+        <h3>Local conditions</h3>
+        ${this.conditionList(conditions(st.systemId), 'Nothing unusual. Trade is flowing normally.')}
+        <h3>News</h3>
+        ${this.conditionList(Object.keys(SYSTEMS).filter(id => id !== st.systemId).flatMap(conditions), '')}
+        ${(st.news || []).map(n => `<div class="hint">Day ${n.day}: ${n.text}</div>`).join('')}
+        ${st.rumors.map(r => `<div class="hint">${r.text} Until day ${r.until}.</div>`).join('')}
+        ${!(st.news || []).length && !st.rumors.length ? '<p class="hint">Listen to the comms in transit for more.</p>' : ''}
         ${this.modList()}
         <div class="foot">${this.confirmNew
           ? 'Start over? Your current progress will be lost. <button data-action="newgame" data-arg="force">Start over</button> <button data-action="newgame" data-arg="cancel">Keep playing</button>'
@@ -143,7 +153,7 @@ const UI = {
         const best = bestSale(p, c.id);
         const avg = held ? Math.round(st.paid[c.id] / held) : 0;
         const mp = pr === null ? 0 : Math.round(pressure(p, c.id) * 100);
-        const moved = Math.abs(mp) >= 3 ? ` <span class="hint">${mp > 0 ? `bought up ${mp}%` : `sold down ${-mp}%`}</span>` : '';
+        const moved = Math.abs(mp) >= 3 ? ` <span class="hint">${mp > 0 ? `scarce +${mp}%` : `surplus ${mp}%`}</span>` : '';
         const off = pr === null ? 'disabled' : '', none = pr === null || !held ? 'disabled' : '';
         return `<div class="trow">
           <div class="tname">${c.name}</div>

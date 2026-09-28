@@ -3,7 +3,7 @@
 A small space trading and combat game set in our own solar system. It's an homage to Ambrosia Software's *Escape Velocity*, flavored by *The Expanse*.
 Fly between planets, moons, and Belt stations. Trade commodities, take delivery and bounty missions, fight pirates, and trade up to a better ship.
 
-Markets react to you: buying a good raises its local price and selling lowers it (about 0.2% per ton, up to 40%), recovering over a couple of weeks. A small hold barely moves a market; a big one has to spread its trade across routes. Pirates fly heavier ships in rougher space, so the Belt and Hygiea call for a gun upgrade.
+Markets react to you: buying a good raises its local price and selling lowers it (about 0.2% per ton, up to 40%), and NPC shipping brings prices back over a couple of weeks. Pirate raids flare up around the system from time to time; while they last, NPC haulers stay away, so the local imports run short and exports pile up. Kill pirates there to clear the lanes, or haul the goods in yourself for a fat margin. The Spaceport shows local conditions and news from elsewhere, and the map marks raids in red. A small hold barely moves a market; a big one has to spread its trade across routes. Pirates fly heavier ships in rougher space, so the Belt and Hygiea call for a gun upgrade.
 
 There is no faster-than-light travel. You plot a direct burn to any destination in range. Travel time (days) and reaction mass scale with real orbital distance, and everything orbits at its real period, so routes open and close over the months: Earth to Mars runs 4 to 8 days, Saturn about 15 to 18, and Triton more than a month out. The system map shows the best upcoming window for a plotted burn. Each burn takes 1-2 minutes of real time. You accelerate, flip at the midpoint, and decelerate. In transit you get random events with choices (distress calls, pirates, derelicts, and more), market rumors that shift prices for weeks, and comms chatter. Events pause the transit timer.
 
@@ -70,6 +70,7 @@ On a keyboard:
 - `js/art.js` - art drawn in code: ship hulls, planets, moons, stations, gas giants, and the Sun (all lit from the Sun's real direction), plus tracers, shield flashes, explosions, smoke, and the HUD gauges and labels
 - `js/mods.js` - the mod API (see Modding below)
 - `mods/` - mods; `example-vesta.js` is a working example to copy
+- `js/world.js` - the living solar system: pirate unrest, raids, and NPC shipping that drives shortages and gluts
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
 - `js/audio.js` - sound effects synthesized with Web Audio (no audio files): guns, hits, explosions, engine rumble, docking, burns, comms
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)
@@ -136,6 +137,7 @@ Mods.register({
 | `burnStart` | `destSystemId` |
 | `arrive` | `systemId` |
 | `eventOpened` | `event`, any choice dialog |
+| `newDay` | `day`, once per game day passed (ticked on arrival) |
 
 **Filters.** `M.filter(name, fn)`: `fn` gets the current value and returns the new one.
 

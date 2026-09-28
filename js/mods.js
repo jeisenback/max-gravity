@@ -26,6 +26,7 @@ const MOD_EVENTS = [
   'burnStart',    // (destSystemId)
   'arrive',       // (systemId)
   'eventOpened',  // (event) a choice dialog opened (transit event, hail, story scene)
+  'newDay',       // (day) a game day passed (days pass in transit and are ticked on arrival)
 ];
 const MOD_FILTERS = [
   'price',        // (credits, planet, commodityId) buy/sell price per ton

@@ -4,7 +4,8 @@ Long-term milestones, in order. Each builds on the ones before it.
 
 ## 1. A living solar system
 - **Orbits and launch windows** (started): every location orbits at its real period, so travel time and reaction mass change over the months. The system map shows the best upcoming window for a plotted burn.
-- Faction and market states driven by what players and NPCs do (boom, shortage, unrest, war, blockade), in the spirit of Elite Dangerous's background simulation.
+- **Pirate unrest and NPC shipping** (done): raids flare up, NPC haulers avoid dangerous lanes, and shortages and gluts follow; killing pirates clears the lanes.
+- Faction states on top of this (boom, war, blockade), in the spirit of Elite Dangerous's background simulation.
 - Markets with real stockpiles: a station runs short because nobody hauled the goods, and NPC traders actually carry cargo.
 - The Cold Water story becomes one case of this general system.
 
