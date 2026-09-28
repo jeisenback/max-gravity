@@ -17,7 +17,7 @@ Long-term milestones, in order. Each builds on the ones before it.
 ## 3. A storylet narrative engine
 - **Story and events as data** (done): storylets unlocked by location, day, standing, cargo, crew, qualities, and the living world, with the Ice Haulers' Strike as the first storyline.
 - Move Cold Water's scenes onto storylets, keeping its special machinery (agent ships, the blockade) as code they call into.
-- Competing campaign arcs, as in Escape Velocity Nova: **a Mars Navy career** (done: Reserve Commission); next, a pirate lord's rise and an Aquilon corporate climb.
+- Competing campaign arcs, as in Escape Velocity Nova: **a Mars Navy career** (done: Reserve Commission) and **a pirate lord's rise** (done: The Rook's Crown), which exclude each other; next, an Aquilon corporate climb.
 - **Mods can write whole storylines without code** (done: `M.addStorylet`).
 
 ## 4. Expanse-grade combat

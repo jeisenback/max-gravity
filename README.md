@@ -33,10 +33,13 @@ Outfitters (in the Shipyard tab at shipyards and The Rook) sell guns, heavy roun
 
 ## Storylines
 
-Besides Cold Water, two shorter storylines are written as storylets (see Writing storylets):
+Besides Cold Water, three shorter storylines are written as storylets (see Writing storylets):
 
 - **The Ice Haulers' Strike.** A Belt haulers' strike, starting with a Guild broadcast on a burn into Belt space after day 12. Smuggle medicine past Coalition customs; how it ends depends on the Belt when you reach Pallas.
 - **Reserve Commission.** Once you are Trusted by the Mars Republic, a Navy officer on Mars or Phobos offers a reserve commission: a raider hunt, a distress call, a war-time call-up or a peacetime run to Ganymede, an order that tests your loyalty to the Belt, and a promotion that remembers what you did.
+- **The Rook's Crown.** Dock at The Rook on Hygiea after day 20 and Hollis Mbeki asks whether you will fly under the Rook's colors: a smuggling run past Collective customs, a rival to kill or buy off, and a raid on Martian or Coalition shipping that sets off real raids and shortages there, then a seat on the Rook's council.
+
+Reserve Commission and The Rook's Crown compete: swear to the Rook and the Navy will never commission you; take the commission and the Rook will never ask.
 
 ## Shipping company
 
@@ -91,7 +94,7 @@ On a keyboard:
 - `js/company.js` - your shipping company: company ships, captains, trade routes, and the Company tab
 - `js/shiplife.js` - life aboard during a burn: the ship cutaway, crew movement and comms lines, and downtime activities
 - `js/storylets.js` - the storylet engine: story written as data (see Writing storylets below)
-- `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike) and `mars-navy.js` (Reserve Commission, a Mars Navy career)
+- `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike), `mars-navy.js` (Reserve Commission, a Mars Navy career), and `rook-crown.js` (The Rook's Crown, a pirate lord's rise)
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
 - `js/audio.js` - sound effects synthesized with Web Audio (no audio files): guns, hits, explosions, engine rumble, docking, burns, comms
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)

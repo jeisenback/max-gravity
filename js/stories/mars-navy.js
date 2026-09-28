@@ -4,7 +4,9 @@
 // `mcrn` is your standing in the Navy (promotion at 4); `navyTask` is set while you
 // have Navy work in hand; `mcrnRefused` remembers the order you would not follow;
 // `mcrnDone` ends the storyline. Which assignment comes third depends on whether Mars
-// is at war when you are ready for it.
+// is at war when you are ready for it. It competes with The Rook's Crown: captains
+// sworn to the Rook are never offered a commission, and commissioned ones are never
+// asked to swear.
 
 Mods.register({
   id: 'mars-navy', name: 'Reserve Commission', builtin: true,
@@ -15,7 +17,7 @@ Mods.register({
 
     M.addStorylet({
       id: 'navy-recruit', where: 'port', priority: 1, once: false,
-      when: { planet: home, day: 15, standing: { 'Mars Republic': 15 }, qBelow: { mcrn: 1, mcrnDone: 1 }, chance: 0.4 },
+      when: { planet: home, day: 15, standing: { 'Mars Republic': 15 }, qBelow: { mcrn: 1, mcrnDone: 1, pirateSworn: 1 }, chance: 0.4 },  // not for the Rook's sworn (rook-crown.js)
       title: 'Lt. Commander Osei',
       text: 'A naval officer in dress grays buys you a drink you did not ask for: Lieutenant Commander Amara Osei, Mars Republic Navy Reserve. "The Navy is short of hulls and long on enemies. We commission independent captains with good standing: reserve pay, the odd tasking, and a call-up if it comes to war. You would still be your own captain. Mostly."',
       choices: [
