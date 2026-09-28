@@ -7,6 +7,7 @@
 //   M.filter(name, fn)      change a value the game is about to use (FILTERS below)
 //   M.action(name, fn)      handle a port-screen button with data-action="name"
 //   M.addSystem / addShip / addOutfit / addCommodity / addEvent   add content
+//   M.addStorylet(def)      add a storylet (see js/storylets.js)
 //   M.state()               an object saved with the game, private to this mod
 //   M.note(text)            tell the player: a port-screen note when docked, else the flight log
 // A mod that throws is switched off with a console error; the game keeps running.
@@ -28,6 +29,8 @@ const MOD_EVENTS = [
   'eventOpened',  // (event) a choice dialog opened (transit event, hail, story scene)
   'newDay',       // (day) a game day passed (days pass in transit and are ticked on arrival)
   'trade',        // (planet, commodityId, tons, dir) the player bought (dir 1) or sold (dir -1)
+  'missionDone',  // (mission) delivered or passenger dropped off
+  'missionFailed', // (mission) deadline passed
 ];
 const MOD_FILTERS = [
   'price',        // (credits, planet, commodityId) buy/sell price per ton
@@ -35,6 +38,7 @@ const MOD_FILTERS = [
   'portBanner',   // (html) shown under the port tabs
   'dockButtons',  // (html) buttons left of System map / Take off
   'missionPay',   // (credits, offer, planet) pay for a mission offered at this port
+  'transitEvent', // (event or null) the next transit happening; return an event to play it
 ];
 
 const Mods = {
@@ -75,6 +79,7 @@ const Mods = {
       addOutfit: (id, def) => this.add(mod, 'outfit', OUTFITS, id, def),
       addCommodity: def => this.add(mod, 'commodity', null, def && def.id, def),
       addEvent: def => this.add(mod, 'event', null, def && def.title, def),
+      addStorylet: def => addStorylet(def, mod.id),
     };
   },
 

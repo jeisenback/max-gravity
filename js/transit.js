@@ -244,8 +244,8 @@ function updateTransit(dt) {
   // Stars stream past faster toward the midpoint, then slow as we decelerate.
   const speed = 0.05 + Math.sin(Math.PI * Math.min(1, progress)) * 0.6;
   for (const s of G.transitStars) {
-    s.y += speed * s.z * dt;
-    if (s.y > 1) { s.y -= 1; s.x = Math.random(); }
+    s.x -= speed * s.z * dt;  // streaming past the cutaway, bow to the right
+    if (s.x < 0) { s.x += 1; s.y = Math.random(); }
   }
   const want = t.flipped ? Math.PI / 2 : -Math.PI / 2;
   t.angle += Math.sign(want - t.angle) * Math.min(Math.abs(want - t.angle), 1.5 * dt);
@@ -285,6 +285,8 @@ function startHappening() {
     pax.eventDone = true;
     return openEvent(pax.story ? storyPaxEvent(pax) : pax.pid ? passengerEvent(pax) : PASSENGERS[pax.passenger].event(pax));
   }
+  const modEvent = Mods.filter('transitEvent', null);  // storylets, and mods
+  if (modEvent) return openEvent(modEvent);
   const arcs = G.state.crew.filter(id => CREW[id] && CREW[id].events[flags[`${id}Arc`] || 0]);
   if (arcs.length && Math.random() < 0.4) {
     const id = pick(arcs), step = flags[`${id}Arc`] || 0;
@@ -321,6 +323,11 @@ function chooseEvent(i) {
 
 function finishEvent() {
   G.dialog = null;
+  if (G.nextEvent) {  // a scene that leads straight into another
+    const ev = G.nextEvent;
+    G.nextEvent = null;
+    return openEvent(ev);
+  }
   if (G.mode === 'landed') return storyNextScene() || UI.show();  // back to the spaceport after a story scene
   if (G.mode === 'hail') G.mode = 'flight';
   else if (G.transit) G.transit.event = null;
@@ -351,24 +358,10 @@ function drawTransit(W, H) {
     ctx.fillRect(s.x * viewW, s.y * H, s.z * 2, s.z * 2);
   }
 
-  // Our ship, with a long drive plume while burning. It flips at the midpoint.
-  const burning = !t.event && Math.abs(t.angle - (t.flipped ? Math.PI / 2 : -Math.PI / 2)) < 0.05;
-  ctx.save();
-  ctx.translate(cx, cy);
-  ctx.rotate(t.angle);
-  if (burning) {
-    const len = 140 + Math.random() * 20;
-    const g = ctx.createLinearGradient(0, 0, -len, 0);
-    g.addColorStop(0, 'rgba(255,255,255,0.95)');
-    g.addColorStop(0.15, 'rgba(140,190,255,0.8)');
-    g.addColorStop(1, 'rgba(60,90,255,0)');
-    ctx.fillStyle = g;
-    ctx.beginPath();
-    ctx.moveTo(-8, 5); ctx.lineTo(-len, 0); ctx.lineTo(-8, -5);
-    ctx.fill();
-  }
-  ctx.restore();
-  drawShip(G.transitShip = Object.assign(G.transitShip || {}, { shipId: st.shipId, x: cx, y: cy, angle: t.angle, thrusting: false, isPlayer: true }), '#9fe0ff', o => [o.x, o.y]);
+  // Our ship in cutaway, with everyone aboard (shiplife.js). It turns at the midpoint.
+  const L = Math.min(viewW - 60, 640), shipY = cy + 70;
+  drawCutaway(cx, shipY, L);
+  G.lifeY = shipY + L * 0.085 + 34;  // downtime buttons sit below it
 
   // Progress
   const barW = Math.min(420, viewW - 40), bx = cx - barW / 2;
