@@ -114,6 +114,7 @@ function hailEvent(n) {
   const c = n.persona, captain = `Capt. ${c.first} ${c.last}`, st = G.state;
   const title = `${n.name}${c.id ? ` (${opinionWord(c.opinion)})` : ''}`;
   const signOff = { label: 'Cut the channel', run: () => 'You cut the channel.' };
+  if (n.disabled) return boardingEvent(n);  // boarding.js
   if (n.blockade || n.kind === 'ally') return blockadeHail(n);
   if (n.kind === 'patrol') return patrolHail(n);
   if (n.kind === 'agent') return agentHail(n);

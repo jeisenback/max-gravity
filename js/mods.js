@@ -20,7 +20,7 @@ const MOD_EVENTS = [
   'key',          // (code) a key was pressed (not repeats)
   'uiClick',      // (action, arg) a port-screen button was clicked
   'fire',         // (ship) a ship fired its guns; ship === G.player for the player
-  'damage',       // (ship, shieldHit)
+  'damage',       // (ship, shieldHit, byPlayer, hullDamage)
   'destroyed',    // (ship, byPlayer)
   'enterSystem',  // (systemId) the local space was populated, after takeoff or arrival
   'landed',       // (planet)

@@ -44,7 +44,7 @@ function npcLaunches(dt) {
   const friends = [G.player, ...G.npcs.filter(n => n.kind === 'escort')].filter(o => o && !o.dead);
   for (const n of G.npcs) {
     if (n.torps === undefined) { n.torps = NPC_TORPS[n.shipId] || 0; n.torpCd = rand(3, 7); }
-    if (!n.hostile || n.torps <= 0 || (n.torpCd -= dt) > 0) continue;
+    if (!n.hostile || n.disabled || n.torps <= 0 || (n.torpCd -= dt) > 0) continue;
     const t = friends.filter(f => dist(f, n) < 900 && dist(f, n) > 250).sort((a, b) => dist(a, n) - dist(b, n))[0];
     if (!t) continue;
     n.torps--;
@@ -58,7 +58,7 @@ function npcLaunches(dt) {
 function pointDefense(dt) {
   const shooters = [];
   if (G.player && !G.player.dead && G.state.outfits.pdc) shooters.push([G.player, G.state.outfits.pdc]);
-  for (const n of G.npcs) if (!n.dead && SHIPS[n.shipId].guns >= 2) shooters.push([n, 1]);
+  for (const n of G.npcs) if (!n.dead && !n.disabled && SHIPS[n.shipId].guns >= 2) shooters.push([n, 1]);
   for (const [o, turrets] of shooters) {
     if ((o.pdCd = (o.pdCd || 0) - dt) > 0) continue;
     // Your turret and your escorts' cover anything coming at your side; other ships only defend themselves.

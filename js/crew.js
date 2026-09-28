@@ -8,7 +8,9 @@
 const person = id => CREW[id] || G.state.people[id];
 const fullName = c => c.name || `${c.first} ${c.last}`;
 const crewMembers = () => G.state.crew.map(person);
-const roleHolder = role => crewMembers().filter(c => c.role === role).sort((a, b) => b.skill - a.skill)[0];
+// Injured crew (boarding.js) can't do their jobs until they are treated.
+const roleHolder = role => G.state.crew.filter(id => !(G.state.injured || {})[id]).map(person)
+  .filter(c => c.role === role).sort((a, b) => b.skill - a.skill)[0];
 // A transponder spoofer outfit stands in for a skill-1 slicer.
 const roleSkill = role => Math.max((roleHolder(role) || { skill: 0 }).skill, role === 'slicer' && ship().spoofer ? 1 : 0);
 const roleName = role => (roleHolder(role) || { first: 'Your spoofer' }).first;

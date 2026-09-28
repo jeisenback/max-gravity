@@ -197,7 +197,7 @@ const UI = {
         const c = person(id);
         const mood = CREW[id] ? '' : ` &middot; ${opinionWord(c.opinion)}`;
         return `<div class="mission">
-          <div><b>${fullName(c)}</b> &middot; ${skill(c)}${traits(c)}${mood}
+          <div><b>${fullName(c)}</b>${(st.injured || {})[id] ? ' <span class="tag high">injured</span>' : ''} &middot; ${skill(c)}${traits(c)}${mood}
             <div class="hint">${CREW[id] ? c.perk : ROLE_PERKS[c.role](c.skill)} Wage ${fmt(wage(id))} cr/day.</div></div>
           <button data-action="dismiss" data-arg="${i}">Dismiss</button>
         </div>`;

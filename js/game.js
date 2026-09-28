@@ -287,7 +287,7 @@ function damage(o, d, byPlayer = false) {
   o.shields -= absorbed;
   o.armor -= d - absorbed;
   if (absorbed) o.shieldFlash = G.time;
-  Mods.emit('damage', o, absorbed > 0);
+  Mods.emit('damage', o, absorbed > 0, byPlayer, d - absorbed);
   burst(o.x, o.y, absorbed ? 3 : 6, absorbed ? ['#8cf', '#fff'] : ['#fc6', '#f80', '#fff'], absorbed ? 120 : 180);
   if (o === G.player && d > absorbed) shake(3);
   if (o.armor <= 0) destroy(o, byPlayer);
@@ -441,7 +441,7 @@ function populateSystem() {
 const huntsFor = n => n.hunts || (n.enemy ? 'ally' : n.kind === 'patrol' && !n.blockade ? 'pirates'
   : n.hostile && G.npcs.some(o => o.kind === 'escort') ? 'escorts' : null);
 function preyOf(hunts, o) {
-  if (o.dead) return false;
+  if (o.dead || o.disabled) return false;  // nobody finishes off a drifting ship you might board
   if (hunts === 'pirates') return o.kind === 'pirate' && o.hostile;
   if (hunts === 'enemy') return !!o.enemy;
   if (hunts === 'hostiles') return !!o.hostile && o.kind !== 'escort';
@@ -451,6 +451,12 @@ function preyOf(hunts, o) {
 }
 
 function updateNpc(n, dt) {
+  if (n.disabled) {  // drifting, out of the fight (boarding.js)
+    n.thrusting = false;
+    n.vx *= 1 - 0.3 * dt; n.vy *= 1 - 0.3 * dt;
+    n.x += n.vx * dt; n.y += n.vy * dt;
+    return;
+  }
   const p = G.player;
   const pd = p && !p.dead && G.mode === 'flight' ? dist(n, p) : Infinity;
   let tx, ty, attacking = false;
@@ -864,6 +870,7 @@ function drawStars(cam, viewW, H, vel) {
 
 function npcColor(n) {
   if (n.kind === 'escort') return '#7fe0a0';
+  if (n.disabled) return '#8a96a3';
   if (n.bountyId) return '#ff2d6f';
   if (n.hostile) return '#ff5f5f';
   return n.kind === 'patrol' ? '#7fb4ff' : '#e8d17a';

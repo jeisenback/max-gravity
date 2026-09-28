@@ -33,6 +33,8 @@ Outfitters (in the Shipyard tab at shipyards and The Rook) sell guns, heavy roun
 
 The Torpedo launcher fires homing torpedoes at your target: slow off the rail, then faster than any ship, for heavy damage. Buy torpedoes (up to 6) at any outfitter. Each Point-defense cannon is also an automatic turret that shoots down incoming torpedoes (one stops about three in five), and heavier ships carry point defense of their own. Corsairs, cutters, and destroyers fire torpedoes back; gunfire can hit torpedoes too.
 
+Knock a ship's hull below 20% and it is disabled: it stops fighting and drifts. Close in, match its velocity, and hail it to board. Strip its cargo (pirates carry credits and torpedoes instead), take it as a prize for your company fleet (you pay a prize crew), or let it go. Boarding traders or patrols is piracy, with the standing hit to match; pirates fight back aboard, and a gunner and more crew improve your odds. Crew can be injured when your hull takes hits or a boarding goes wrong; an injured crew member's perk stops working until they are treated, free if you have a medic aboard, otherwise at the next port's clinic for 1,000 cr each.
+
 ## Storylines
 
 Besides Cold Water, four shorter storylines are written as storylets (see Writing storylets):
@@ -98,6 +100,7 @@ On a keyboard:
 - `js/company.js` - your shipping company: company ships, captains, trade routes, and the Company tab
 - `js/shiplife.js` - life aboard during a burn: the ship cutaway, crew movement and comms lines, and downtime activities
 - `js/torpedoes.js` - torpedoes, the launcher and ammunition, and point-defense turrets
+- `js/boarding.js` - disabled ships, boarding and prizes, and crew injuries
 - `js/storylets.js` - the storylet engine: story written as data (see Writing storylets below)
 - `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike), `mars-navy.js` (Reserve Commission, a Mars Navy career), `rook-crown.js` (The Rook's Crown, a pirate lord's rise), and `tethys.js` (The Partner's Chair, a corporate climb)
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
@@ -159,7 +162,7 @@ Mods.register({
 | `key` | `code` (e.g. `'KeyN'`) |
 | `uiClick` | `action, arg` of a port-screen button |
 | `fire` | `ship` (`ship === G.player` for the player) |
-| `damage` | `ship, shieldHit` |
+| `damage` | `ship, shieldHit, byPlayer, hullDamage` |
 | `destroyed` | `ship, byPlayer` |
 | `enterSystem` | `systemId`, after local space is populated |
 | `landed` | `planet` |
