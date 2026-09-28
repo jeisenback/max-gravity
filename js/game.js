@@ -82,13 +82,37 @@ function cargoUsed() {
 }
 const cargoFree = () => ship().cargo - cargoUsed();
 
-function price(planet, cid) {
+// Trading moves markets: each ton bought raises the local price and each ton sold
+// lowers it, up to MARKET_CAP either way, recovering with a MARKET_HALF_LIFE in days.
+// A Rock Hopper barely dents a market; an Ice Hauler has to spread its trade around.
+const MARKET_PER_TON = 0.002, MARKET_CAP = 0.4, MARKET_HALF_LIFE = 8;
+
+function pressure(planet, cid) {
+  const m = G.state.market[`${planet.name}|${cid}`];
+  return m ? m.p * Math.pow(0.5, (G.state.day - m.day) / MARKET_HALF_LIFE) : 0;
+}
+
+const pushed = (p, tons) => Math.max(-MARKET_CAP, Math.min(MARKET_CAP, p + tons * MARKET_PER_TON));
+
+// Price per ton; `p` overrides the market pressure (see tradeTotal).
+function price(planet, cid, p = pressure(planet, cid)) {
   const level = planet.prices[cid];
   if (!level) return null;
   const c = COMMODITIES.find(c => c.id === cid);
   const wobble = 1 + 0.08 * Math.sin(G.state.day * 0.9 + hash(planet.name + cid));
   const rumor = G.state.rumors.find(r => r.planet === planet.name && r.cid === cid && r.until >= G.state.day);
-  return Math.round(Mods.filter('price', c.base * PRICE_MULT[level] * wobble * (rumor ? rumor.mult : 1), planet, cid));
+  return Math.round(Mods.filter('price', c.base * PRICE_MULT[level] * wobble * (rumor ? rumor.mult : 1) * (1 + p), planet, cid));
+}
+
+// What `qty` tons cost to buy (dir 1) or fetch when sold (dir -1): the price moves as
+// you trade, so the whole lot goes at the average of the before and after prices.
+function tradeTotal(planet, cid, qty, dir) {
+  const p0 = pressure(planet, cid);
+  return qty * price(planet, cid, (p0 + pushed(p0, qty * dir)) / 2);
+}
+
+function recordTrade(planet, cid, qty, dir) {
+  G.state.market[`${planet.name}|${cid}`] = { p: pushed(pressure(planet, cid), qty * dir), day: G.state.day };
 }
 
 // Most profitable place within one full tank to sell a commodity bought here, at today's
@@ -116,7 +140,7 @@ function newState() {
   return {
     credits: 12000, day: 1, systemId: 'earth', planet: 'Earth', shipId: 'shuttle',
     fuel: SHIPS.shuttle.fuel, armor: SHIPS.shuttle.armor,
-    cargo: {}, paid: {}, rumors: [], missions: [], dest: null, nextId: 1,
+    cargo: {}, paid: {}, market: {}, rumors: [], missions: [], dest: null, nextId: 1,
     crew: [], flags: {}, people: {}, nextPid: 1, rep: {}, outfits: {},
     story: { stage: 0, next: STORY_START_DAY, log: [] }, tutorial: 0,
   };
@@ -152,6 +176,7 @@ function loadGame() {
   G.state.rep = G.state.rep || {};        // saves from before factions and outfitting
   G.state.outfits = G.state.outfits || {};
   G.state.story = G.state.story || { stage: 0, next: STORY_START_DAY, log: [] };  // saves from before the story
+  G.state.market = G.state.market || {};  // saves from before market saturation
   dropMissingModContent(G.state);
   resetWorld();
   landAt(currentPlanet(), ['Save loaded. Welcome back, captain.']);
@@ -322,7 +347,7 @@ function spawnNpc(kind, atPlanet, fresh = false) {
   }
   const known = !fresh && pickKnownCaptain(kind);
   const shipId = known ? known.ship.shipId
-    : kind === 'pirate' ? (Math.random() < 0.7 ? 'raider' : 'corsair')
+    : kind === 'pirate' ? (Math.random() < Math.min(0.5, sys.pirates) ? 'corsair' : 'raider')  // heavier pirates in rougher space
     : kind === 'patrol' ? 'cutter' : pick(['shuttle', 'courier', 'freighter']);
   const n = makeShip(shipId, x, y, rand(0, Math.PI * 2));
   n.kind = kind;

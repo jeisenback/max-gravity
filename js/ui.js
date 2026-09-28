@@ -142,10 +142,12 @@ const UI = {
         const tag = { L: 'low', M: 'med', H: 'high' }[p.prices[c.id]] || '';
         const best = bestSale(p, c.id);
         const avg = held ? Math.round(st.paid[c.id] / held) : 0;
+        const mp = pr === null ? 0 : Math.round(pressure(p, c.id) * 100);
+        const moved = Math.abs(mp) >= 3 ? ` <span class="hint">${mp > 0 ? `bought up ${mp}%` : `sold down ${-mp}%`}</span>` : '';
         const off = pr === null ? 'disabled' : '', none = pr === null || !held ? 'disabled' : '';
         return `<div class="trow">
           <div class="tname">${c.name}</div>
-          <div class="tprice">${pr === null ? '--' : `${fmt(pr)}<span class="mlabel"> cr/t</span>`} <span class="tag ${tag}">${tag}</span></div>
+          <div class="tprice">${pr === null ? '--' : `${fmt(pr)}<span class="mlabel"> cr/t</span>`} <span class="tag ${tag}">${tag}</span>${moved}</div>
           <div class="theld"><span class="mlabel">Held </span>${held}${held ? ` <span class="hint">@${fmt(avg)}</span>` : ''}</div>
           <div class="tbest">${best ? `<span class="mlabel">Sell at </span>${best.planet.name} <span class="tag low">+${fmt(best.profit)}/t</span> <span class="hint">${best.days ? `${best.days}d` : 'local'}</span>` : '<span class="hint">--</span>'}</div>
           <div class="tact">
@@ -160,7 +162,7 @@ const UI = {
         ${this.tradeNote ? `<div class="note">${this.tradeNote}</div>` : ''}
         <div class="trow thead"><div class="tname">Commodity</div><div class="tprice">Price/t</div><div class="theld">Held</div><div class="tbest">Best market (in range)</div><div class="tact"></div></div>
         ${rows}
-        <p class="hint">Free cargo space: ${cargoFree()}t. Best market is based on today's prices, which drift a little each day.</p>`;
+        <p class="hint">Free cargo space: ${cargoFree()}t. Buying raises a market's price and selling lowers it; prices recover over a couple of weeks. Best market is based on today's prices.</p>`;
     },
 
     missions() {
@@ -306,19 +308,22 @@ const UI = {
       }
       case 'buy':
       case 'buymax': {
-        const pr = price(p, arg);
-        const max = Math.min(cargoFree(), Math.floor(st.credits / pr));
-        const qty = action === 'buy' ? Math.min(1, max) : max;
+        let qty = action === 'buy' ? 1 : cargoFree();
+        while (qty > 0 && tradeTotal(p, arg, qty, 1) > st.credits) qty--;
+        qty = Math.min(qty, cargoFree());
+        const cost = tradeTotal(p, arg, qty, 1);
+        recordTrade(p, arg, qty, 1);
         st.cargo[arg] = (st.cargo[arg] || 0) + qty;
-        st.paid[arg] = (st.paid[arg] || 0) + qty * pr;
-        st.credits -= qty * pr;
+        st.paid[arg] = (st.paid[arg] || 0) + cost;
+        st.credits -= cost;
         this.tradeNote = null;
         break;
       }
       case 'sell':
       case 'sellall': {
         const held = st.cargo[arg], qty = action === 'sell' ? 1 : held;
-        const income = qty * price(p, arg), cost = (st.paid[arg] || 0) * qty / held;
+        const income = tradeTotal(p, arg, qty, -1), cost = (st.paid[arg] || 0) * qty / held;
+        recordTrade(p, arg, qty, -1);
         const profit = income - cost;
         st.cargo[arg] -= qty;
         st.paid[arg] -= cost;

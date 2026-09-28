@@ -3,6 +3,8 @@
 A small space trading and combat game set in our own solar system. It's an homage to Ambrosia Software's *Escape Velocity*, flavored by *The Expanse*.
 Fly between planets, moons, and Belt stations. Trade commodities, take delivery and bounty missions, fight pirates, and trade up to a better ship.
 
+Markets react to you: buying a good raises its local price and selling lowers it (about 0.2% per ton, up to 40%), recovering over a couple of weeks. A small hold barely moves a market; a big one has to spread its trade across routes. Pirates fly heavier ships in rougher space, so the Belt and Hygiea call for a gun upgrade.
+
 There is no faster-than-light travel. You plot a direct burn to any destination in range. Travel time (days) and reaction mass scale with real orbital distance: Earth to Mars is 5 days, Saturn is 15, and Triton is more than a month out. Each burn takes 1-2 minutes of real time. You accelerate, flip at the midpoint, and decelerate. In transit you get random events with choices (distress calls, pirates, derelicts, and more), market rumors that shift prices for weeks, and comms chatter. Events pause the transit timer.
 
 ## People
