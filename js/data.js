@@ -28,10 +28,10 @@ const SHIPS = {
                desc: 'A water tank the size of a city block with a drive bolted on. Slow, sturdy, and long-legged enough to reach Triton.' },
   gunship:   { name: 'Corvette',     price: 160000, cargo: 15,  fuel: 380, berths: 5, shields: 300, armor: 220, accel: 300, maxSpeed: 400, turn: 4.4, guns: 3, size: 12, forSale: true,
                req: 15, desc: 'Decommissioned fast-attack ship with three forward gun mounts. Pirates give it a wide berth. Sold only to captains the local government trusts.' },
-  raider:    { name: 'Raider',  price: 0, cargo: 10, fuel: 300, shields: 70,  armor: 60,  accel: 230, maxSpeed: 330, turn: 3.6, guns: 1, size: 10 },
-  destroyer: { name: 'Destroyer', price: 0, cargo: 40, fuel: 600, shields: 320, armor: 480, accel: 150, maxSpeed: 230, turn: 2.2, guns: 3, size: 22 },
-  cutter:    { name: 'Patrol Cutter', price: 0, cargo: 10, fuel: 300, shields: 150, armor: 140, accel: 260, maxSpeed: 350, turn: 3.8, guns: 2, size: 12 },
-  corsair:   { name: 'Corsair', price: 0, cargo: 20, fuel: 300, shields: 140, armor: 120, accel: 250, maxSpeed: 340, turn: 3.6, guns: 2, size: 13 },
+  raider:    { name: 'Raider',  price: 22000, cargo: 10, fuel: 300, shields: 70,  armor: 60,  accel: 230, maxSpeed: 330, turn: 3.6, guns: 1, size: 10 },
+  destroyer: { name: 'Destroyer', price: 240000, cargo: 40, fuel: 600, shields: 320, armor: 480, accel: 150, maxSpeed: 230, turn: 2.2, guns: 3, size: 22 },
+  cutter:    { name: 'Patrol Cutter', price: 60000, cargo: 10, fuel: 300, shields: 150, armor: 140, accel: 260, maxSpeed: 350, turn: 3.8, guns: 2, size: 12 },
+  corsair:   { name: 'Corsair', price: 55000, cargo: 20, fuel: 300, shields: 140, armor: 120, accel: 250, maxSpeed: 340, turn: 3.6, guns: 2, size: 13 },
 };
 
 const GOV_COLORS = {
@@ -83,6 +83,9 @@ const SYSTEMS = {
       { name: 'Ceres Station', x: -60, y: -40, r: 60, color: '#90a4ae', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
         prices: { water: 'H', food: 'H', medical: 'H', metal: 'L', luxury: 'M', equipment: 'M', industrial: 'M' },
         desc: 'Six million people spun up inside a dwarf planet. Belters with long limbs and short tempers, and water rationing on every wall.' },
+      { name: 'Ring Nine', x: 260, y: 190, r: 22, color: '#8a8f86', services: ['trade', 'refuel'],
+        prices: { water: 'H', food: 'H', medical: 'H' },
+        desc: 'A squatter habitat bolted to a gutted ore carrier in Ceres\'s shadow. Four thousand people who could not make Ceres rent, and the best noodles in the Belt.' },
     ],
   },
   pallas: {
@@ -91,6 +94,9 @@ const SYSTEMS = {
       { name: 'Pallas Refinery', x: 200, y: 150, r: 45, color: '#78909c', services: ['trade', 'missions', 'refuel'],
         prices: { metal: 'L', industrial: 'H', food: 'H', water: 'H', equipment: 'H' },
         desc: 'Smelters glowing along the asteroid\'s spine. The refinery crews pay well for anything that is not rock.' },
+      { name: 'The Hollows', x: -170, y: -130, r: 24, color: '#7d8a80', services: ['trade', 'refuel'],
+        prices: { food: 'H', water: 'H' },
+        desc: 'The refinery families live here, in worked-out tunnels a short hop from the smelters. Kids play ring-ball in the old ore chutes.' },
     ],
   },
   hygiea: {
@@ -99,6 +105,33 @@ const SYSTEMS = {
       { name: 'The Rook', x: -120, y: -60, r: 45, color: '#455a64', services: ['trade', 'missions', 'outfitter', 'refuel'],
         prices: { luxury: 'L', equipment: 'H', medical: 'H', food: 'H', water: 'M' },
         desc: 'A hollowed-out rock nobody officially admits exists. Stolen luxury goods go cheap here, if you can get them out alive.' },
+      { name: 'Boneyard', x: 230, y: 170, r: 28, color: '#6b6152', services: ['trade', 'outfitter', 'refuel'],
+        prices: { medical: 'H', food: 'H' },
+        desc: 'Three hundred dead ships lashed together into a town. The salvagers who live here will sell you anything that came off a wreck, and never ask where your ship came from.' },
+    ],
+  },
+  psyche: {
+    name: 'Psyche', au: 2.92, angle: 320, gov: 'Independent', pirates: 0.25,
+    planets: [
+      { name: 'Ironheart', x: 40, y: -30, r: 40, color: '#8b8378', services: ['trade', 'missions', 'refuel'],
+        prices: { metal: 'L', industrial: 'L', food: 'H', water: 'H', luxury: 'H', medical: 'M' },
+        desc: 'The bare iron core of a dead protoplanet. The prospectors\' co-op votes on everything, including, once, whether to let you dock.' },
+    ],
+  },
+  juno: {
+    name: 'Juno', au: 2.67, angle: 75, gov: 'Belt Collective', pirates: 0.15,
+    planets: [
+      { name: 'Juno Commons', x: -40, y: 50, r: 38, color: '#8f9c7a', services: ['trade', 'missions', 'refuel'],
+        prices: { food: 'L', luxury: 'H', equipment: 'H', medical: 'H', water: 'M' },
+        desc: 'Three thousand families and their greenhouses in a spun-up rock. Everyone knows everyone, and by the end of your shore leave they will know you.' },
+    ],
+  },
+  eros: {
+    name: 'Eros', au: 1.46, angle: 250, gov: 'Independent', pirates: 0.1,
+    planets: [
+      { name: 'Eros Old Town', x: 30, y: 40, r: 32, color: '#a08a70', services: ['trade', 'missions', 'refuel'],
+        prices: { metal: 'M', water: 'H', industrial: 'H', luxury: 'L', equipment: 'M' },
+        desc: 'The first great mining boomtown, from when the Belt was a gold rush. Half the town is sealed off now. The half that is left drinks to the old days, and sells off the family silver.' },
     ],
   },
   jupiter: {
@@ -141,7 +174,8 @@ const PATROL_NAMES = { 'Earth Coalition': 'Coalition cutter', 'Mars Republic': '
 // `req` needs that much standing with the faction running the shop; `pirate` gear is
 // only sold in pirate ports. Outfits move with you when you change ships.
 const OUTFITS = {
-  pdc:     { name: 'Point-defense cannon', price: 6000, space: 3, max: 2, desc: 'An extra forward gun.', mod: s => { s.guns += 1; } },
+  pdc:     { name: 'Point-defense cannon', price: 6000, space: 3, max: 2, desc: 'An extra forward gun that also shoots down incoming torpedoes on its own.', mod: s => { s.guns += 1; } },
+  launcher: { name: 'Torpedo launcher', price: 12000, space: 3, max: 1, desc: 'Fires homing torpedoes at your target (F). Slow off the rail, fast and hard-hitting after. Buy torpedoes at any outfitter.', mod: s => { s.launcher = true; } },
   heavy:   { name: 'Heavy rounds', price: 12000, space: 2, max: 1, req: 15, desc: 'Tungsten-cored ammunition. Your guns hit 40% harder.', mod: s => { s.dmgMult *= 1.4; } },
   armor:   { name: 'Armor plating', price: 4000, space: 4, max: 3, desc: '+40 armor.', mod: s => { s.armor += 40; } },
   shield:  { name: 'Deflector capacitor', price: 5000, space: 2, max: 3, desc: '+50 shields.', mod: s => { s.shields += 50; } },

@@ -114,6 +114,7 @@ function hailEvent(n) {
   const c = n.persona, captain = `Capt. ${c.first} ${c.last}`, st = G.state;
   const title = `${n.name}${c.id ? ` (${opinionWord(c.opinion)})` : ''}`;
   const signOff = { label: 'Cut the channel', run: () => 'You cut the channel.' };
+  if (n.disabled) return boardingEvent(n);  // boarding.js
   if (n.blockade || n.kind === 'ally') return blockadeHail(n);
   if (n.kind === 'patrol') return patrolHail(n);
   if (n.kind === 'agent') return agentHail(n);
@@ -245,8 +246,9 @@ function hailEvent(n) {
   const qty = cid && Math.min(10, st.cargo[cid]);
   const s = ship(), spare = Math.min(40, s.fuel - st.fuel);
   const free = friend || c.traits.includes('kind') || c.traits.includes('generous');
+  const v = voyageOf(n), hauling = v ? ` Hauling ${v.tons}t of ${COMMODITIES.find(x => x.id === v.cid).name} from ${v.from} to ${v.to}.` : '';
   return {
-    title, text: `${captain}: "${friend ? 'Captain! Good to see you again. ' : ''}${voice(n, GREETINGS, 'This is {ship}. Go ahead.')}"`,
+    title, text: `${captain}: "${friend ? 'Captain! Good to see you again. ' : ''}${voice(n, GREETINGS, 'This is {ship}. Go ahead.')}${hauling}"`,
     choices: [
       { label: 'Any news?', can: () => !n.gossiped, run() {
         n.gossiped = true;

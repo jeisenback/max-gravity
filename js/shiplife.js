@@ -128,13 +128,19 @@ function drawCutaway(cx, cy, maxL) {
     g.addColorStop(0, 'rgba(255,255,255,0.95)');
     g.addColorStop(0.15, 'rgba(140,190,255,0.8)');
     g.addColorStop(1, 'rgba(60,90,255,0)');
+    const halo = ctx.createRadialGradient(sx, cy, 0, sx, cy, H * 0.7);
+    halo.addColorStop(0, 'rgba(140,190,255,0.3)'); halo.addColorStop(1, 'rgba(60,90,255,0)');
+    ctx.fillStyle = halo;
+    ctx.fillRect(sx - H * 0.7, cy - H * 0.7, H * 1.4, H * 1.4);
     ctx.fillStyle = g;
     ctx.beginPath(); ctx.moveTo(sx, cy - H * 0.22); ctx.lineTo(sx + dir * len, cy); ctx.lineTo(sx, cy + H * 0.22); ctx.fill();
   }
   if (Math.abs(turn) < 0.05) return;  // edge-on mid-turn
 
-  // Hull, with a rounded nose.
-  ctx.fillStyle = '#0c1826';
+  // Hull, with a rounded nose, lit from above.
+  const shade = ctx.createLinearGradient(0, top, 0, top + H);
+  shade.addColorStop(0, '#132338'); shade.addColorStop(1, '#08111c');
+  ctx.fillStyle = shade;
   ctx.strokeStyle = '#3d5f82';
   ctx.lineWidth = 2;
   ctx.beginPath();
@@ -142,6 +148,32 @@ function drawCutaway(cx, cy, maxL) {
   ctx.quadraticCurveTo(X(1.02), cy, X(0.9), top + H);
   ctx.lineTo(X(0), top + H - 6); ctx.closePath();
   ctx.fill(); ctx.stroke();
+  ctx.save();
+  ctx.clip();
+
+  // A pool of light under each room's ceiling lamp: warm in the galley and berths.
+  for (const r of ROOMS) {
+    const lx = X(r.mid), warm = r.id === 'galley' || r.id === 'berths';
+    const lamp = ctx.createRadialGradient(lx, top + 4, 0, lx, top + 4, H * 0.9);
+    lamp.addColorStop(0, warm ? 'rgba(255,200,130,0.22)' : 'rgba(150,200,255,0.15)');
+    lamp.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = lamp;
+    ctx.fillRect(lx - H * 0.9, top + 2, H * 1.8, H - 4);
+    ctx.fillStyle = warm ? '#ffcf8f' : '#bfe0ff';
+    ctx.fillRect(lx - 4, top + 3, 8, 1.5);
+  }
+  // Bridge window in the nose.
+  ctx.strokeStyle = 'rgba(160,215,255,0.8)';
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  ctx.moveTo(X(0.915), top + H * 0.2); ctx.quadraticCurveTo(X(0.955), top + H * 0.3, X(0.96), cy - H * 0.05);
+  ctx.stroke();
+  ctx.restore();
+  // Running lights, blinking.
+  if (G.time % 1.6 < 0.2) {
+    ctx.fillStyle = '#ff5a5a'; ctx.fillRect(X(0.45) - 1.5, top - 3, 3, 3);
+    ctx.fillStyle = '#5aff8a'; ctx.fillRect(X(0.45) - 1.5, top + H, 3, 3);
+  }
 
   // Rooms, bulkheads, and what's in them.
   ctx.lineWidth = 1;
@@ -156,10 +188,17 @@ function drawCutaway(cx, cy, maxL) {
   ctx.beginPath(); ctx.moveTo(X(0.01), floor + 1); ctx.lineTo(X(0.9), floor + 1); ctx.stroke();
 
   // Engine: the reactor, brighter under thrust.
-  const eng = roomAt('engine'), glow = burning ? 0.9 : 0.35;
-  ctx.fillStyle = `rgba(120,180,255,${glow})`;
-  ctx.beginPath(); ctx.arc(X(eng.mid), cy + 2, H * 0.18, 0, Math.PI * 2); ctx.fill();
-  ctx.strokeStyle = '#5d7fa3'; ctx.stroke();
+  const eng = roomAt('engine'), glow = (burning ? 0.9 : 0.35) * (0.9 + 0.1 * Math.sin(G.time * 6));
+  const ex = X(eng.mid), ey = cy + 2, er = H * 0.18;
+  const core = ctx.createRadialGradient(ex, ey, 0, ex, ey, er * 1.6);
+  core.addColorStop(0, `rgba(230,245,255,${glow})`);
+  core.addColorStop(0.4, `rgba(120,180,255,${glow * 0.8})`);
+  core.addColorStop(1, 'rgba(60,110,255,0)');
+  ctx.fillStyle = core;
+  ctx.beginPath(); ctx.arc(ex, ey, er * 1.6, 0, Math.PI * 2); ctx.fill();
+  ctx.lineWidth = 1;
+  ctx.strokeStyle = '#5d7fa3';
+  ctx.beginPath(); ctx.arc(ex, ey, er, 0, Math.PI * 2); ctx.stroke();
 
   // Hold: crates for the cargo you carry.
   const hold = roomAt('hold'), cap = ship().cargo, used = Math.min(cap, cargoUsed());
@@ -249,8 +288,28 @@ const ACTIVITIES = {
 // One activity before the flip and one after.
 const lifeHalf = () => (G.transit.flipped ? 'after' : 'before');
 
-function lifeButtonsHtml() {
-  return Object.entries(ACTIVITIES).map(([id, a]) => `<button data-life="${id}">${a.label}</button>`).join('');
+const activityLabel = a => (typeof a.label === 'function' ? a.label() : a.label);
+
+// Downtime is a menu: one activity before the flip and one after.
+function downtimeEvent() {
+  const t = G.transit;
+  return {
+    title: 'Downtime',
+    text: `A long burn and nowhere to go. What does the ship do with ${t.flipped ? 'the rest of the trip' : 'the time before the flip'}?`,
+    choices: [
+      ...Object.values(ACTIVITIES).map(a => ({
+        label: activityLabel(a), can: a.can,
+        run() {
+          t.lifeUsed = t.lifeUsed || {};
+          t.lifeUsed[lifeHalf()] = true;
+          const text = a.run();
+          comm(`[Ship] ${text}`);
+          return text;
+        },
+      })),
+      { label: 'Not now', run: () => 'Everyone goes back to their own business.' },
+    ],
+  };
 }
 
 function syncLifeButtons() {
@@ -262,21 +321,19 @@ function syncLifeButtons() {
   el.style.top = `${G.lifeY}px`;
   el.style.left = `${(G.W - G.hudW) / 2}px`;
   const used = (t.lifeUsed || {})[lifeHalf()];
-  el.querySelectorAll('button').forEach(b => { b.disabled = !!used || !ACTIVITIES[b.dataset.life].can(); });
+  el.querySelector('button').disabled = !!used;
   el.dataset.note = used ? (t.flipped ? 'Done for this burn' : 'Next after the flip') : 'Downtime';
 }
 
 function buildLifeButtons() {
   const el = Object.assign(document.createElement('div'), { id: 'tlife', hidden: true });
-  el.innerHTML = lifeButtonsHtml();
+  el.innerHTML = '<button data-life="menu">Spend some downtime</button>';
   document.body.appendChild(el);
   el.addEventListener('click', e => {
     const b = e.target.closest('[data-life]'), t = G.transit;
     if (!b || b.disabled || !t || t.event) return;
-    t.lifeUsed = t.lifeUsed || {};
-    t.lifeUsed[lifeHalf()] = true;
-    comm(`[Ship] ${ACTIVITIES[b.dataset.life].run()}`);
     Sfx.click();
+    openEvent(downtimeEvent());
   });
 }
 

@@ -8,6 +8,7 @@
 //   M.action(name, fn)      handle a port-screen button with data-action="name"
 //   M.addSystem / addShip / addOutfit / addCommodity / addEvent   add content
 //   M.addStorylet(def)      add a storylet (see js/storylets.js)
+//   M.addAction(name, fn)   code a storylet can run with the `do` effect
 //   M.state()               an object saved with the game, private to this mod
 //   M.note(text)            tell the player: a port-screen note when docked, else the flight log
 // A mod that throws is switched off with a console error; the game keeps running.
@@ -16,10 +17,11 @@
 const MOD_EVENTS = [
   'frame',        // (dt) every frame, in every mode
   'drawOverlay',  // (viewW) after the world, HUD, or map is drawn; draw with ctx
+  'drawWorld',    // (toScreen) in flight, after ships and shots; toScreen(o) gives [x, y] on screen
   'key',          // (code) a key was pressed (not repeats)
   'uiClick',      // (action, arg) a port-screen button was clicked
   'fire',         // (ship) a ship fired its guns; ship === G.player for the player
-  'damage',       // (ship, shieldHit)
+  'damage',       // (ship, shieldHit, byPlayer, hullDamage)
   'destroyed',    // (ship, byPlayer)
   'enterSystem',  // (systemId) the local space was populated, after takeoff or arrival
   'landed',       // (planet)
@@ -39,12 +41,14 @@ const MOD_FILTERS = [
   'dockButtons',  // (html) buttons left of System map / Take off
   'missionPay',   // (credits, offer, planet) pay for a mission offered at this port
   'transitEvent', // (event or null) the next transit happening; return an event to play it
+  'chatter',      // (lines) the pool the next line of comms chatter in transit is picked from
 ];
 
 const Mods = {
   list: [],
   hooks: {},     // event or filter name -> [{ mod, fn }]
   actions: {},
+  storyActions: {},  // named code actions storylets can run (M.addAction, the `do` effect)
 
   register(def) {
     if (!def || !def.id || typeof def.init !== 'function') return console.error('Mods.register needs { id, init(M) }', def);
@@ -80,6 +84,7 @@ const Mods = {
       addCommodity: def => this.add(mod, 'commodity', null, def && def.id, def),
       addEvent: def => this.add(mod, 'event', null, def && def.title, def),
       addStorylet: def => addStorylet(def, mod.id),
+      addAction: (name, fn) => { this.storyActions[name] = fn; },
     };
   },
 

@@ -76,6 +76,7 @@ const UI = {
       ['trade', 'Exchange', p.services.includes('trade')],
       ['missions', 'Missions', p.services.includes('missions')],
       ['shipyard', 'Shipyard', p.services.includes('shipyard') || p.services.includes('outfitter')],
+      ['bar', 'Bar', true],
       ['crew', 'Crew', true],
       ['company', 'Company', true],
     ];
@@ -88,7 +89,7 @@ const UI = {
           <div class="sub" style="color:${GOV_COLORS[sys.gov]}">${sys.gov}</div>
         </div>
         <div class="stats">
-          Day ${st.day} &middot; ${s.name}<br>
+          ${dateOf()} &middot; ${s.name}<br>
           <b>${fmt(st.credits)} cr</b><br>
           Cargo ${cargoUsed()}/${s.cargo}t &middot; Berths ${berthsUsed()}/${s.berths} &middot; Mass ${st.fuel}/${s.fuel}
         </div>
@@ -139,11 +140,13 @@ const UI = {
         <div class="standing">${FACTIONS.map(g => `<div><span style="color:${GOV_COLORS[g]}">${g === 'Pirate' ? 'Pirates' : g}</span> <b>${standingWord(repOf(g))}</b> <span class="hint">${repOf(g) > 0 ? '+' : ''}${repOf(g)}</span></div>`).join('')}</div>
         <h3>Local conditions</h3>
         ${this.conditionList(conditions(st.systemId), 'Nothing unusual. Trade is flowing normally.')}
+        <h3>On the feeds</h3>
+        ${feedHeadlines().map(l => `<div class="hint">${l}</div>`).join('')}
         <h3>News</h3>
         ${this.conditionList(Object.keys(SYSTEMS).filter(id => id !== st.systemId).flatMap(conditions)
           .filter((c, i, all) => all.findIndex(d => d.text === c.text) === i && !conditions(st.systemId).some(d => d.text === c.text)), '')}
-        ${(st.news || []).map(n => `<div class="hint">Day ${n.day}: ${n.text}</div>`).join('')}
-        ${st.rumors.map(r => `<div class="hint">${r.text} Until day ${r.until}.</div>`).join('')}
+        ${(st.news || []).map(n => `<div class="hint">${dateOf(n.day)}: ${n.text}</div>`).join('')}
+        ${st.rumors.map(r => `<div class="hint">${r.text} Until ${dateOf(r.until)}.</div>`).join('')}
         ${!(st.news || []).length && !st.rumors.length ? '<p class="hint">Listen to the comms in transit for more.</p>' : ''}
         ${this.modList()}
         <div class="foot">${this.confirmNew
@@ -178,7 +181,7 @@ const UI = {
         ${this.tradeNote ? `<div class="note">${this.tradeNote}</div>` : ''}
         <div class="trow thead"><div class="tname">Commodity</div><div class="tprice">Price/t</div><div class="theld">Held</div><div class="tbest">Best market (in range)</div><div class="tact"></div></div>
         ${rows}
-        <p class="hint">Free cargo space: ${cargoFree()}t. Buying raises a market's price and selling lowers it; prices recover over a couple of weeks. Best market is based on today's prices.</p>`;
+        <p class="hint">Free cargo space: ${cargoFree()}t. Buying raises a market's price and selling lowers it; NPC haulers bring prices back as their deliveries arrive. Best market is based on today's prices.</p>`;
     },
 
     missions() {
@@ -197,7 +200,7 @@ const UI = {
         const c = person(id);
         const mood = CREW[id] ? '' : ` &middot; ${opinionWord(c.opinion)}`;
         return `<div class="mission">
-          <div><b>${fullName(c)}</b> &middot; ${skill(c)}${traits(c)}${mood}
+          <div><b>${fullName(c)}</b>${(st.injured || {})[id] ? ' <span class="tag high">injured</span>' : ''} &middot; ${skill(c)}${traits(c)}${mood}
             <div class="hint">${CREW[id] ? c.perk : ROLE_PERKS[c.role](c.skill)} Wage ${fmt(wage(id))} cr/day.</div></div>
           <button data-action="dismiss" data-arg="${i}">Dismiss</button>
         </div>`;
@@ -220,6 +223,7 @@ const UI = {
         <h3>Your crew</h3>
         ${mine || '<p class="hint">Just you. Crew take a berth each and are paid daily wages in transit.</p>'}
         <p class="hint">Berths: ${berthsUsed()}/${ship().berths} used by crew and passengers. Unhappy crew will walk off the ship.</p>
+        ${bondsHtml()}
         <h3>Looking for work here</h3>
         ${forHire || '<p class="hint">Nobody in the bar is looking for a ship right now.</p>'}
         <h3>People you know</h3>
@@ -276,6 +280,7 @@ const UI = {
           <h3>Outfitter</h3>
           ${this.tradeNote ? `<div class="note">${this.tradeNote}</div>` : ''}
           ${items}
+          ${torpedoShopHtml()}
           <p class="hint">Free cargo space: ${cargoFree()}t. Outfits sell back for half price.</p>`;
       }
       return html;
@@ -291,7 +296,7 @@ const UI = {
       const blocked = action === 'accept' && (noCargo || noBerths);
       const need = m.tons ? ` &middot; ${m.tons}t cargo` : m.pax ? ` &middot; ${m.pax} berth${m.pax > 1 ? 's' : ''}` : '';
       return `<div class="mission">
-        <div><b>${m.title}</b>${m.blurb ? `<div class="hint">${m.blurb}</div>` : ''}<div class="hint">${where} &middot; pays ${fmt(m.pay)} cr &middot; due by day ${m.deadline}${need}</div></div>
+        <div><b>${m.title}</b>${m.blurb ? `<div class="hint">${m.blurb}</div>` : ''}<div class="hint">${where} &middot; pays ${fmt(m.pay)} cr &middot; due by ${dateOf(m.deadline)}${need}</div></div>
         <button data-action="${action}" data-arg="${i}" ${blocked || m.story ? `disabled title="${m.story ? 'Story passenger' : `Not enough ${noCargo ? 'cargo space' : 'berths'}`}"` : ''}>${label}</button>
       </div>`;
     }).join('');

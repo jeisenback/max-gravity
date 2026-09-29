@@ -1,17 +1,29 @@
 'use strict';
 
-// The living solar system: a daily tick for pirate unrest and NPC shipping.
+// The living solar system: a daily tick for pirate unrest and the goods economy.
 // Each location's unrest drifts back toward its normal pirate level, flares up now
-// and then, and drops when you kill pirates there. Market pressure (see price() in
-// game.js) recovers each day as NPC traders restock; when unrest runs above normal,
-// they stay away, so imports run short and exports pile up until the lanes are safe
-// or someone hauls the goods in. State lives in st.world. Loaded before game.js;
-// only calls into it at runtime.
+// and then, and drops when you kill pirates there.
+//
+// Markets have real stock. Every day, markets that import a good (H) use some up and
+// its price creeps up; markets that export it (L) pile it up and its price sags. NPC
+// haulers even this out: each voyage buys a real load where a good is cheap and
+// delivers it days later where it is dear, moving both prices. Haulers stay off
+// lanes where raids are running, so a raided station runs short of what it imports
+// and drowns in what it exports until the lanes are safe or someone hauls the goods
+// in. The traders you meet in flight are these voyages: rob one and its cargo is
+// yours, destroy one and the delivery never arrives. Voyages live in st.haul.
+// Loaded before game.js; only calls into it at runtime.
 
 const UNREST_DRIFT = 0.035;    // share of the gap to normal closed each day (~20-day half-life)
 const FLARE_CHANCE = 0.005;    // per location per day, where pirates operate at all
 const FLARE_SIZE = 0.35;
-const SHORTAGE_RATE = 0.15;    // daily price push per unit of excess unrest
+const USE_RATE = 0.005;        // daily price push from local use where a good is imported (H), 2.5t
+const MAKE_RATE = 0.009;       // and from output where it is exported (L): fewer exporters, so each makes more
+const SETTLE = 0.9;            // markets that neither import nor export settle locally
+const SHORTAGE_RATE = 0.05;     // extra daily push per unit of excess unrest: raided stations run down fast
+const VOYAGES_PER_DAY = 12;       // at most; haulers only sail when a run is worth it
+const HAUL_GAP = 0.05;           // how much scarcer (in price pressure) the far end must be
+const HAUL_TONS = [20, 40];
 
 function worldOf(sid) {
   const st = G.state;
@@ -31,8 +43,14 @@ function worldNews(text) {
   st.news.length = Math.min(st.news.length, 8);
 }
 
+const haul = () => (G.state.haul = G.state.haul || []);
+const nudge = (pl, cid, dp) => {
+  const key = `${pl.name}|${cid}`, p = Math.max(-MARKET_CAP, Math.min(MARKET_CAP, pressure(pl, cid) + dp));
+  if (Math.abs(p) < 0.005) delete G.state.market[key];
+  else G.state.market[key] = { p, day: G.state.day };
+};
+
 function worldTick() {
-  const st = G.state;
   for (const [sid, sys] of Object.entries(SYSTEMS)) {
     const w = worldOf(sid);
     if (sys.pirates > 0 && Math.random() < FLARE_CHANCE) {
@@ -40,21 +58,79 @@ function worldTick() {
       worldNews(`Pirate raids reported around ${sys.name}. Shipping there is thinning out.`);
     }
     w.unrest += (sys.pirates - w.unrest) * UNREST_DRIFT;
-    const excess = excessUnrest(sid);
-    const e = economy(sys.gov), pace = e === 'boom' ? 0.6 : e === 'bust' ? 1.5 : 1;  // booming economies ship more
-    const recover = Math.pow(0.5, 1 / (MARKET_HALF_LIFE * pace * (1 + 4 * excess)));
+    const raid = excessUnrest(sid) * SHORTAGE_RATE;
     for (const pl of sys.planets) {
       for (const [cid, level] of Object.entries(pl.prices)) {
-        const key = `${pl.name}|${cid}`;
-        let p = (st.market[key] ? st.market[key].p : 0) * recover;
-        if (excess) p += (level === 'H' ? 1 : level === 'L' ? -1 : 0) * SHORTAGE_RATE * excess;
-        p = Math.max(-MARKET_CAP, Math.min(MARKET_CAP, p));
-        if (Math.abs(p) < 0.005) delete st.market[key];
-        else st.market[key] = { p, day: st.day };
+        if (level === 'M') nudge(pl, cid, pressure(pl, cid) * (SETTLE - 1));
+        else nudge(pl, cid, level === 'H' ? USE_RATE + raid : -MAKE_RATE - raid);
       }
     }
   }
+  haulTick();
 }
+
+// ---------- NPC haulers ----------
+const voyageDays = (a, b) => (a === b ? 1 : baseDays(a, b));
+
+// Deliveries due today land; new voyages set out on the best spreads they can safely run.
+function haulTick() {
+  const st = G.state;
+  for (const v of haul().filter(v => v.arrive <= st.day)) nudge(planetNamed(v.to).pl, v.cid, -v.tons * MARKET_PER_TON);
+  st.haul = haul().filter(v => v.arrive > st.day);
+  const markets = Object.entries(SYSTEMS).flatMap(([sid, sys]) => sys.planets.map(pl => ({ sid, pl })));
+  const safe = sid => Math.random() > excessUnrest(sid) * 10;  // raids above 0.1 close a lane
+  const open = markets.filter(m => safe(m.sid));
+  for (let i = 0; i < VOYAGES_PER_DAY; i++) {
+    // Haulers go where a good will be scarcer than usual when they arrive, counting what is
+    // used up on the way and what is already inbound, so they don't all chase one shortage.
+    let best = null;
+    for (const b of open) {
+      for (const cid of Object.keys(b.pl.prices)) {
+        const due = inbound(b.pl, cid).reduce((t, v) => t + v.tons, 0) * MARKET_PER_TON;
+        const use = b.pl.prices[cid] === 'H' ? USE_RATE : 0, now = pressure(b.pl, cid) - due;
+        for (const a of open) {
+          if (a === b || !a.pl.prices[cid] || price(b.pl, cid) <= price(a.pl, cid)) continue;
+          const gap = now + use * voyageDays(a.sid, b.sid) - pressure(a.pl, cid);
+          if (gap > HAUL_GAP && (!best || gap > best.gap)) best = { a, b, cid, gap };
+        }
+      }
+    }
+    if (!best) break;
+    const e = economy(SYSTEMS[best.b.sid].gov), boost = e === 'boom' ? 1.3 : e === 'bust' ? 0.7 : 1;
+    const tons = Math.round(randInt(...HAUL_TONS) * boost);
+    nudge(best.a.pl, best.cid, tons * MARKET_PER_TON);
+    haul().push({
+      ship: `"${shipName(false)}"`, cid: best.cid, tons, from: best.a.pl.name, to: best.b.pl.name, fromSid: best.a.sid, toSid: best.b.sid,
+      arrive: st.day + voyageDays(best.a.sid, best.b.sid),
+    });
+  }
+}
+
+// Ships in local space aren't saved, so a trader's voyage is always one in st.haul now.
+const voyageOf = n => (n && haul().includes(n.voyage) ? n.voyage : null);
+
+// A trader appearing in local space takes on a voyage passing through here (called
+// from spawnNpc; captains you have met keep their own ships).
+function boardVoyage(n) {
+  if (n.kind !== 'trader') return;
+  const here = G.state.systemId, taken = G.npcs.map(o => o.voyage);
+  const v = pick(haul().filter(v => (v.fromSid === here || v.toSid === here) && !taken.includes(v)).concat([null]));
+  if (!v) return;
+  n.voyage = v;
+  n.name = v.ship;
+  if (v.toSid === here) n.goal = planetNamed(v.to).pl;  // bound for a planet here
+}
+
+// A voyage whose ship is destroyed or taken never delivers.
+function loseVoyage(n) {
+  const v = voyageOf(n);
+  if (!v) return;
+  G.state.haul = haul().filter(x => x !== v);
+  if (v.tons > 0) worldNews(`The hauler ${v.ship}, carrying ${v.tons}t of ${COMMODITIES.find(c => c.id === v.cid).name} to ${v.to}, never arrived.`);
+}
+
+// Deliveries on their way to a planet, for the Port's conditions.
+const inbound = (pl, cid) => haul().filter(v => v.to === pl.name && v.cid === cid);
 
 // What a captain would hear about a location: raids, quiet lanes, shortages, gluts.
 function conditions(sid) {
@@ -65,7 +141,11 @@ function conditions(sid) {
   for (const pl of sys.planets) {
     for (const cid of Object.keys(pl.prices)) {
       const p = pressure(pl, cid), name = COMMODITIES.find(c => c.id === cid).name;
-      if (p > 0.2) out.push({ bad: true, text: `Shortage of ${name} at ${pl.name} (+${Math.round(p * 100)}%)` });
+      if (p > 0.2) {
+        const due = inbound(pl, cid), tons = due.reduce((t, v) => t + v.tons, 0);
+        const eta = due.length ? `${tons}t inbound, first due ${dateOf(Math.min(...due.map(v => v.arrive)))}` : 'no haulers inbound';
+        out.push({ bad: true, text: `Shortage of ${name} at ${pl.name} (+${Math.round(p * 100)}%, ${eta})` });
+      }
       else if (p < -0.2) out.push({ bad: false, text: `Glut of ${name} at ${pl.name} (${Math.round(p * 100)}%)` });
     }
   }
@@ -176,7 +256,7 @@ function warSkirmish() {
 
 function factionConditions(gov) {
   const out = [], w = atWar(gov), e = economy(gov);
-  if (w) out.push({ bad: true, text: `The ${gov} is at war with the ${warFoe(gov)} (day ${G.state.day - w.start + 1}). Its markets want medical supplies, machine parts, and metal.` });
+  if (w) out.push({ bad: true, text: `The ${gov} is at war with the ${warFoe(gov)} (since ${dateOf(w.start)}). Its markets want medical supplies, machine parts, and metal.` });
   if (e === 'boom') out.push({ bad: false, text: `The ${gov} economy is booming: contracts pay 25% more.` });
   if (e === 'bust') out.push({ bad: true, text: `The ${gov} economy is in a slump: contracts pay 25% less.` });
   return out;
@@ -195,6 +275,7 @@ Mods.register({
         w.score[other] += byPlayer ? 2 : 1;
         if (byPlayer && ship.war) changeRep(other, 4);
       }
+      loseVoyage(ship);
       if (!byPlayer) return;
       const u = worldOf(G.state.systemId);
       if (ship.kind === 'pirate') u.unrest = Math.max(0, u.unrest - 0.06);

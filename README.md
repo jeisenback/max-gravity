@@ -3,11 +3,15 @@
 A small space trading and combat game set in our own solar system. It's an homage to Ambrosia Software's *Escape Velocity*, flavored by *The Expanse*.
 Fly between planets, moons, and Belt stations. Trade commodities, take delivery and bounty missions, fight pirates, and trade up to a better ship.
 
-Markets react to you: buying a good raises its local price and selling lowers it (about 0.2% per ton, up to 40%), and NPC shipping brings prices back over a couple of weeks. Pirate raids flare up around the system from time to time; while they last, NPC haulers stay away, so the local imports run short and exports pile up. Kill pirates there to clear the lanes, or haul the goods in yourself for a fat margin. The Earth Coalition, Mars Republic, and Belt Collective each have an economy that booms with steady trade (contracts pay 25% more) and slumps under raids and war. Incidents build tension between them until two go to war for a month or two: their navies fight in each other's space, their markets want medical supplies, machine parts, and metal, and the side with more victories (your kills and war-goods sales count) comes out ahead. The Port tab shows local conditions and news from elsewhere, and the map marks raids in red. A small hold barely moves a market; a big one has to spread its trade across routes. Pirates fly heavier ships in rougher space, so the Belt and Hygiea call for a gun upgrade.
+The Belt is more than its big stations. Beside Ceres Station, Pallas Refinery, and The Rook sit small communities: Ring Nine (a squatter habitat with the best noodles in the Belt), The Hollows (refinery families in old tunnels), and the Boneyard (salvagers living in three hundred lashed-together wrecks). Further out are Ironheart on Psyche (a prospectors' co-op that votes on everything), Juno Commons (three thousand families and their greenhouses), and Eros Old Town (the first boomtown, half sealed off now). Every port has a bar with its own name and mood, on the Bar tab: see what the room is talking about, buy a round for the house, and talk to the people there. Buy someone a drink, hear their rumors, play them at cards, offer them passage, or pick a fight with the rude one; strangers you deal with become people you know. Crew looking for a ship drink there too. Now and then something is going on at the dock when you land: a customs shakedown, a crowd wanting your water, a wedding, a funeral, a stowaway, a pickpocket, a salvage auction, a medical emergency your medic can handle. What happens depends on where you are, what you carry, who is aboard, and the state of the system.
+
+Markets react to you: buying a good raises its local price and selling lowers it (about 0.2% per ton, up to 40%). They have real stock: stations use up what they import and pile up what they export, and NPC haulers carry real loads from where a good is plentiful to where it is scarce, counting what is already on its way. The traders you meet in flight are those haulers; hail one to hear what it carries. Rob one and the cargo is yours; destroy one and its delivery never arrives. A shortage in the Port tab's conditions says how much is inbound and when. Pirate raids flare up around the system from time to time; while they last, NPC haulers stay away, so the local imports run short and exports pile up. Kill pirates there to clear the lanes, or haul the goods in yourself for a fat margin. The Earth Coalition, Mars Republic, and Belt Collective each have an economy that booms with steady trade (contracts pay 25% more) and slumps under raids and war. Incidents build tension between them until two go to war for a month or two: their navies fight in each other's space, their markets want medical supplies, machine parts, and metal, and the side with more victories (your kills and war-goods sales count) comes out ahead. The Port tab shows local conditions and news from elsewhere, and the map marks raids in red. A small hold barely moves a market; a big one has to spread its trade across routes. Pirates fly heavier ships in rougher space, so the Belt and Hygiea call for a gun upgrade.
 
 There is no faster-than-light travel. You plot a direct burn to any destination in range. Travel time (days) and reaction mass scale with real orbital distance, and everything orbits at its real period, so routes open and close over the months: Earth to Mars runs 4 to 8 days, Saturn about 15 to 18, and Triton more than a month out. The system map shows the best upcoming window for a plotted burn. Each burn takes 1-2 minutes of real time. You accelerate, flip at the midpoint, and decelerate. In transit you get random events with choices (distress calls, pirates, derelicts, and more), market rumors that shift prices for weeks, and comms chatter. Events pause the transit timer.
 
-During a burn you see your ship in cutaway: engine, hold (with your cargo), berths, galley, and bridge, with you, your crew, and your passengers moving between rooms by what they do aboard. Everyone straps in for the hard burns at each end and floats at the flip, when the ship turns end over end. Crew sometimes mention on comms what they're up to. Once before the flip and once after, pick a downtime activity: share a meal (crew and passengers like you more), run drills (better odds in a fight this burn), do maintenance (patch hull damage, more with an engineer aboard), or check on passengers.
+During a burn you see your ship in cutaway: engine, hold (with your cargo), berths, galley, and bridge, with you, your crew, and your passengers moving between rooms by what they do aboard. Everyone straps in for the hard burns at each end and floats at the flip, when the ship turns end over end. Crew sometimes mention on comms what they're up to. Once before the flip and once after, pick a downtime activity: share a meal (crew and passengers like you more), run drills (better odds in a fight this burn), do maintenance (patch hull damage, more with an engineer aboard), check on passengers, watch the season's hit vid together, pass the bestseller around, stream a ring-ball match, or hold a card night.
+
+People aboard have feelings about each other, not just about you. Everyone has tastes (a favorite kind of vid or book, and a ring-ball team from home); over a burn, shared tastes draw people together and clashing habits (a rude engineer and a nervous passenger, say) pull them apart. Scenes in transit follow from it: two crew growing close and asking whether the ship has rules about that, a feud in the galley you can settle or make worse, two people discovering they grew up on the same station, a bet on tonight's match. The Crew tab shows who is friends, close, or rivals. The solar system has a culture too: every season (40 days) brings a hit vid series, a bestseller, a song everyone is humming, stars for the gossip feeds, and a ring-ball league with a champion. It comes through as [Feed] chatter in transit, crew cheering or sulking over their team's results, and "On the feeds" at port. Passengers who liked the trip may turn up at a later port asking for your ship by name; when they come back aboard, the crew who befriended them remember.
 
 ## People
 
@@ -30,6 +34,23 @@ A grounded political plot about who controls the Belt's water. Act 1 starts in t
 You have a standing (-100 to 100) with the Earth Coalition, Mars Republic, Belt Collective, and the pirates: Hostile, Distrusted, Neutral, Trusted, or Honored (Port tab). Missions and bounties for a faction raise it; killing pirates helps the local government and angers pirates; shooting traders or patrols costs you. Faction patrols fight pirates and hunt you once you are Distrusted (hail them to pay your fine); Hostile ports refuse to let you land. Trusted captains get better-paid contracts, military gear, and the Corvette. Pirates who trust you often leave you alone.
 
 Outfitters (in the Shipyard tab at shipyards and The Rook) sell guns, heavy rounds, armor, deflectors, reaction mass tanks, cargo pods, drive tuning, passenger berths, and a pirate-only transponder spoofer. Outfits use cargo space and move with you when you change ships.
+
+The Torpedo launcher fires homing torpedoes at your target: slow off the rail, then faster than any ship, for heavy damage. Buy torpedoes (up to 6) at any outfitter. Each Point-defense cannon is also an automatic turret that shoots down incoming torpedoes (one stops about three in five), and heavier ships carry point defense of their own. Corsairs, cutters, and destroyers fire torpedoes back; gunfire can hit torpedoes too.
+
+Knock a ship's hull below 20% and it is disabled: it stops fighting and drifts. Close in, match its velocity, and hail it to board. Strip its cargo (pirates carry credits and torpedoes instead), take it as a prize for your company fleet (you pay a prize crew), or let it go. Boarding traders or patrols is piracy, with the standing hit to match; pirates fight back aboard, and a gunner and more crew improve your odds. Crew can be injured when your hull takes hits or a boarding goes wrong; an injured crew member's perk stops working until they are treated, free if you have a medic aboard, otherwise at the next port's clinic for 1,000 cr each.
+
+By default, fights happen during burns, not in local space (milestone 4b, a prototype). Pirates, navy patrols that want you, bounty targets, and hired guns pick you up mid-burn, more often on dangerous lanes (about one burn in ten between Earth and Mars, one in two near Hygiea). At contact you can go to battle stations, burn hard to outrun them, or pay them off. The fight is momentum flight with no speed cap: W burns at your chosen thrust (Q/E, up to your ship's rating in g), A/D turn, S points you retrograde against their motion, Space fires slugs that carry your own velocity, F launches a torpedo, and H hails or boards. A dashed line shows their drift and where you will pass closest. Every ship has point defense against torpedoes, and more cannons give you more turrets. Burning above about 2.5g builds crew strain; past the limit everyone blacks out for a moment, and someone can get hurt, so sprint and coast. Disable a ship, match its velocity, and hail to board it. Get more than 7,000 km apart and the fight is over. Local space is safe from random pirates in this mode, but Aquilon's recovery ship and the Ceres blockade still come for you there. The Combat button at any port switches back to classic local-space combat.
+
+## Storylines
+
+Besides Cold Water, whose scenes are storylets too, four shorter storylines are written as storylets (see Writing storylets):
+
+- **The Ice Haulers' Strike.** A Belt haulers' strike, starting with a Guild broadcast on a burn into Belt space after day 12. Smuggle medicine past Coalition customs; how it ends depends on the Belt when you reach Pallas.
+- **Reserve Commission.** Once you are Trusted by the Mars Republic, a Navy officer on Mars or Phobos offers a reserve commission: a raider hunt, a distress call, a war-time call-up or a peacetime run to Ganymede, an order that tests your loyalty to the Belt, and a promotion that remembers what you did.
+- **The Rook's Crown.** Dock at The Rook on Hygiea after day 20 and Hollis Mbeki asks whether you will fly under the Rook's colors: a smuggling run past Collective customs, a rival to kill or buy off, and a raid on Martian or Coalition shipping that sets off real raids and shortages there, then a seat on the Rook's council.
+- **The Partner's Chair.** Once you own a company ship, the Tethys Shipping Consortium on Titan offers a partnership: a rush contract against the clock, a rival's bribe for your access codes, and a 20% stake in Ceres Station to vote their way. Loyal partners get a seat and a crewed Ice Hauler; captains who sold the codes get found out.
+
+Reserve Commission, The Rook's Crown, and The Partner's Chair compete: whichever you join first closes the other two.
 
 ## Shipping company
 
@@ -57,6 +78,7 @@ On a keyboard:
 | Left, Right / A, D | Rotate |
 | Down / S | Turn to face opposite your direction of travel (for braking) |
 | Space | Fire |
+| F | Fire a torpedo at your target (needs a Torpedo launcher) |
 | Tab | Cycle target |
 | H | Hail your target (or the nearest ship): trade, ask for news or reaction mass, pay off or threaten pirates |
 | L | Select nearest body; press again when close and slow to land |
@@ -75,16 +97,22 @@ On a keyboard:
 - `js/people.js` - procedural people: generation, passenger and crew events, memory, and reunions
 - `js/factions.js` - faction standing, patrols, and fines
 - `js/hail.js` - hailing ships in flight
-- `js/story.js` - the Cold Water plot
+- `js/story.js` - the Cold Water plot's machinery: story state, the recovery ship, the blockade, the endings and epilogue
 - `js/touch.js` - touch controls (joystick, hold and tap buttons)
 - `js/art.js` - art drawn in code: ship hulls, planets, moons, stations, gas giants, and the Sun (all lit from the Sun's real direction), plus tracers, shield flashes, explosions, smoke, and the HUD gauges and labels
 - `js/mods.js` - the mod API (see Modding below)
 - `mods/` - mods; `example-vesta.js` is a working example to copy
-- `js/world.js` - the living solar system: pirate unrest, raids, and NPC shipping that drives shortages and gluts
+- `js/world.js` - the living solar system: pirate unrest, raids, markets that use and make goods, and NPC haulers whose voyages move them (`st.haul`)
 - `js/company.js` - your shipping company: company ships, captains, trade routes, and the Company tab
-- `js/shiplife.js` - life aboard during a burn: the ship cutaway, crew movement and comms lines, and downtime activities
+- `js/shiplife.js` - life aboard during a burn: the ship cutaway, crew movement and comms lines, and the downtime menu
+- `js/social.js` - bonds between people aboard, tastes, relationship scenes, the season's culture and feeds, shared downtime, and returning passengers
+- `js/bar.js` - the Bar tab: each port's bar, the room's mood, patrons to talk to, and crew for hire
+- `js/stories/landings.js` - small scenes at the dock on landing, written as storylets
+- `js/torpedoes.js` - torpedoes, the launcher and ammunition, and point-defense turrets
+- `js/boarding.js` - disabled ships, boarding and prizes, and crew injuries
+- `js/engage.js` - combat during burns (4b prototype): intercepts, momentum flight, torpedo duels, point defense, and crew strain
 - `js/storylets.js` - the storylet engine: story written as data (see Writing storylets below)
-- `js/stories/` - storylines written as storylets; `ice-strike.js` is the Ice Haulers' Strike
+- `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike), `mars-navy.js` (Reserve Commission, a Mars Navy career), `rook-crown.js` (The Rook's Crown, a pirate lord's rise), `tethys.js` (The Partner's Chair, a corporate climb), and `cold-water.js` (the scenes of Cold Water)
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
 - `js/audio.js` - sound effects synthesized with Web Audio (no audio files): guns, hits, explosions, engine rumble, docking, burns, comms
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)
@@ -140,10 +168,11 @@ Mods.register({
 | --- | --- |
 | `frame` | `dt` (seconds), every frame |
 | `drawOverlay` | `viewW`, after the world, HUD, or map is drawn; draw on the global `ctx` |
+| `drawWorld` | `toScreen`, in flight after ships and shots; `toScreen(o)` gives `[x, y]` on screen |
 | `key` | `code` (e.g. `'KeyN'`) |
 | `uiClick` | `action, arg` of a port-screen button |
 | `fire` | `ship` (`ship === G.player` for the player) |
-| `damage` | `ship, shieldHit` |
+| `damage` | `ship, shieldHit, byPlayer, hullDamage` |
 | `destroyed` | `ship, byPlayer` |
 | `enterSystem` | `systemId`, after local space is populated |
 | `landed` | `planet` |
@@ -166,6 +195,7 @@ Mods.register({
 | `dockButtons` | `html` for buttons left of System map and Take off |
 | `missionPay` | `credits, offer, planet`: pay for a mission offered at this port |
 | `transitEvent` | `event` or `null`: the next transit happening; return an event to play it |
+| `chatter` | `lines`: the pool the next line of transit comms chatter is picked from; return your own lines to be heard |
 
 **Other helpers.**
 - `M.state()` returns an object saved with the game, private to your mod.
@@ -201,6 +231,8 @@ A storylet plays once unless you set `once: false`. A choice whose `when` fails 
 | `gov` | the local government is this (or list) |
 | `standing`, `standingBelow` | `{ gov: n }`: your standing is at least / below n |
 | `credits`, `space` | you have at least this many credits / tons of free cargo space |
+| `fleet` | you own at least this many company ships |
+| `stake` | `{ planet: share }`: you hold at least this share (0.1 to 0.3) of a port |
 | `cargo` | `{ commodityId: tons }` held |
 | `crew` | a role (`'medic'`) or crew id (`'rosa'`) is aboard |
 | `q`, `qBelow` | `{ quality: n }`: a quality is at least / below n |
@@ -219,8 +251,12 @@ A storylet plays once unless you set `once: false`. A choice whose `when` fails 
 | `unrest` | `{ locationId: n }` changes pirate unrest |
 | `mission` | `{ to, tons, good, pay, days, title, onDone, onFail }` gives a delivery mission; `onDone` and `onFail` are effects |
 | `cancelMission` | drops missions carrying this good, applying their `onFail` |
+| `bounty` | `{ at, name, pay, days, issuer, onDone, onFail }` gives a hunt: the named ship appears when you reach `at` |
+| `companyShip` | gives a crewed company ship of this type, docked where you are |
+| `delay` | adds seconds to the current burn (transit only) |
+| `do` | `'name'` or `['name', ...args]`: runs code your mod registered with `M.addAction(name, fn)`; text it returns is added to the result |
 
-Text can use `{planet}`, `{system}`, and `{crew:role}`. Mistakes (unknown conditions or effects, a missing field) are reported in the console, and the storylet is skipped.
+Text can use `{planet}`, `{system}`, and `{crew:role}`. A title, text, label, or result can also be a list of parts, each a string or `{ when, text, else }`; parts whose conditions fail show their `else` (or nothing). Cold Water keeps its own state outside qualities and has conditions and effects for it (`story`, `storyDay`, `aboard`, `storyLog`, and a few more; see `js/storylets.js`). Mistakes (unknown conditions or effects, a missing field) are reported in the console, and the storylet is skipped.
 
 ### When something goes wrong
 

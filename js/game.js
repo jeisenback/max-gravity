@@ -53,6 +53,13 @@ function msg(text) {
   if (G.messages.length > 30) G.messages.shift();
 }
 
+// Day 1 is 9 June 2214.
+const START_DATE = Date.UTC(2214, 5, 9), MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+function dateOf(day = G.state.day) {
+  const d = new Date(START_DATE + (day - 1) * 864e5);
+  return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+}
+
 function hash(str) {
   let h = 0;
   for (const c of str) h = (h * 31 + c.charCodeAt(0)) | 0;
@@ -97,10 +104,10 @@ function cargoUsed() {
 const cargoFree = () => ship().cargo - cargoUsed();
 
 // Trading moves markets: each ton bought raises the local price and each ton sold
-// lowers it, up to MARKET_CAP either way. NPC shipping pulls prices back with a
-// MARKET_HALF_LIFE in days, more slowly when pirates scare it off (world.js).
-// A Rock Hopper barely dents a market; an Ice Hauler has to spread its trade around.
-const MARKET_PER_TON = 0.002, MARKET_CAP = 0.4, MARKET_HALF_LIFE = 8;
+// lowers it, up to MARKET_CAP either way. Local use and NPC haulers move them too
+// (world.js). A Rock Hopper barely dents a market; an Ice Hauler has to spread its
+// trade around.
+const MARKET_PER_TON = 0.002, MARKET_CAP = 0.4;
 
 function pressure(planet, cid) {
   const m = G.state.market[`${planet.name}|${cid}`];
@@ -287,7 +294,7 @@ function damage(o, d, byPlayer = false) {
   o.shields -= absorbed;
   o.armor -= d - absorbed;
   if (absorbed) o.shieldFlash = G.time;
-  Mods.emit('damage', o, absorbed > 0);
+  Mods.emit('damage', o, absorbed > 0, byPlayer, d - absorbed);
   burst(o.x, o.y, absorbed ? 3 : 6, absorbed ? ['#8cf', '#fff'] : ['#fc6', '#f80', '#fff'], absorbed ? 120 : 180);
   if (o === G.player && d > absorbed) shake(3);
   if (o.armor <= 0) destroy(o, byPlayer);
@@ -321,6 +328,7 @@ function destroy(o, byPlayer = false) {
       const m = st.missions[i];
       st.credits += m.pay;
       st.missions.splice(i, 1);
+      Mods.emit('missionDone', m);
       msg(`Bounty complete: ${m.targetName} destroyed. +${fmt(m.pay)} cr`);
       changeRep(m.issuer, 5);
       changeRep('Pirate', -3);
@@ -385,13 +393,14 @@ function spawnNpc(kind, atPlanet, fresh = false) {
   n.captain = `${n.persona.first} ${n.persona.last}`;
   if (kind === 'patrol') {
     n.gov = sys.gov;
-    n.hostile = repOf(sys.gov) <= -15;
+    n.hostile = repOf(sys.gov) <= -15 && !burnCombat();  // in burn combat, they intercept you mid-burn instead
   }
   n.goal = pickGoal(sys, from);
   if (!atPlanet) {
     n.angle = Math.atan2(n.goal.y - y, n.goal.x - x);
     n.vx = Math.cos(n.angle) * 150; n.vy = Math.sin(n.angle) * 150;
   }
+  if (!known) boardVoyage(n);
   G.npcs.push(n);
   return n;
 }
@@ -411,11 +420,11 @@ function populateSystem() {
   const traders = randInt(1, 3);
   for (let i = 0; i < traders; i++) spawnNpc('trader', Math.random() < 0.5);
   if (PATROL_NAMES[sys.gov] && Math.random() < 0.7) spawnNpc('patrol', Math.random() < 0.5);
-  if (Math.random() < danger(G.state.systemId)) {
+  if (!burnCombat() && Math.random() < danger(G.state.systemId)) {  // with combat in burns, pirates come for you there
     const pirates = randInt(1, 2);
     for (let i = 0; i < pirates; i++) spawnNpc('pirate', false);
   }
-  if (G.revenge) {
+  if (G.revenge && !burnCombat()) {
     const p = G.revenge, n = spawnNpc('pirate', false, true);
     Object.assign(n, { shipId: 'corsair', hostile: true, name: 'Hired gun', payer: `${p.first} ${p.last}` });
     n.shields = SHIPS.corsair.shields;
@@ -424,7 +433,7 @@ function populateSystem() {
     G.revenge = null;
   }
   for (const m of G.state.missions) {
-    if (m.type === 'bounty' && m.targetSystem === G.state.systemId) {
+    if (m.type === 'bounty' && m.targetSystem === G.state.systemId && !burnCombat()) {
       spawnBountyTarget(m);
       msg(`Sensors detect ${m.targetName} in local space.`);
     }
@@ -440,7 +449,7 @@ function populateSystem() {
 const huntsFor = n => n.hunts || (n.enemy ? 'ally' : n.kind === 'patrol' && !n.blockade ? 'pirates'
   : n.hostile && G.npcs.some(o => o.kind === 'escort') ? 'escorts' : null);
 function preyOf(hunts, o) {
-  if (o.dead) return false;
+  if (o.dead || o.disabled) return false;  // nobody finishes off a drifting ship you might board
   if (hunts === 'pirates') return o.kind === 'pirate' && o.hostile;
   if (hunts === 'enemy') return !!o.enemy;
   if (hunts === 'hostiles') return !!o.hostile && o.kind !== 'escort';
@@ -450,6 +459,12 @@ function preyOf(hunts, o) {
 }
 
 function updateNpc(n, dt) {
+  if (n.disabled) {  // drifting, out of the fight (boarding.js)
+    n.thrusting = false;
+    n.vx *= 1 - 0.3 * dt; n.vy *= 1 - 0.3 * dt;
+    n.x += n.vx * dt; n.y += n.vy * dt;
+    return;
+  }
   const p = G.player;
   const pd = p && !p.dead && G.mode === 'flight' ? dist(n, p) : Infinity;
   let tx, ty, attacking = false;
@@ -664,7 +679,7 @@ function arrive() {
   Mods.emit('arrive', st.systemId);
   G.navPlanet = null;
   const sys = system();
-  msg(`Arrived at ${sys.name} (${sys.gov}). Day ${st.day}.`);
+  msg(`Arrived at ${sys.name} (${sys.gov}). ${dateOf()}.`);
   expireMissions();
   populateSystem();
 }
@@ -824,7 +839,7 @@ function update(dt) {
   if (G.mode === 'flight' && (G.spawnTimer -= dt) <= 0) {
     G.spawnTimer = rand(10, 20);
     if (G.npcs.length < 6) {
-      if (Math.random() < danger(G.state.systemId) * 0.5) spawnNpc('pirate', false);
+      if (!burnCombat() && Math.random() < danger(G.state.systemId) * 0.5) spawnNpc('pirate', false);
       else if (PATROL_NAMES[localGov()] && Math.random() < 0.25) spawnNpc('patrol', Math.random() < 0.5);
       else if (Math.random() < 0.7) spawnNpc('trader', Math.random() < 0.5);
     }
@@ -863,6 +878,7 @@ function drawStars(cam, viewW, H, vel) {
 
 function npcColor(n) {
   if (n.kind === 'escort') return '#7fe0a0';
+  if (n.disabled) return '#8a96a3';
   if (n.bountyId) return '#ff2d6f';
   if (n.hostile) return '#ff5f5f';
   return n.kind === 'patrol' ? '#7fb4ff' : '#e8d17a';
@@ -910,6 +926,7 @@ function drawWorld(W, H) {
 
   for (const pt of G.particles) drawParticle(pt, ...toScreen(pt));
   for (const sh of G.shots) drawShot(sh, ...toScreen(sh));
+  Mods.emit('drawWorld', toScreen);
 
   if (G.target) {
     const [x, y] = toScreen(G.target);
@@ -989,7 +1006,7 @@ function drawRadar(rx, ry, R) {
 
 // Phones: a compact strip across the top instead of the sidebar.
 function drawHudCompact(W) {
-  const p = G.player, st = G.state, s = ship(), sys = system(), inTransit = G.mode === 'transit';
+  const p = G.player, st = G.state, s = ship(), sys = system(), inTransit = G.mode === 'transit' || G.mode === 'engage';
   const h = 78, R = 32, rx = W - R - 12;
   ctx.fillStyle = 'rgba(8,16,24,0.88)';
   ctx.fillRect(0, 0, W, h);
@@ -1004,7 +1021,7 @@ function drawHudCompact(W) {
   ctx.font = '11px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
   ctx.textAlign = 'right';
-  ctx.fillText(`Day ${st.day}  ${fmt(st.credits)} cr`, x + w, 17);
+  ctx.fillText(`${dateOf()}  ${fmt(st.credits)} cr`, x + w, 17);
   ctx.textAlign = 'left';
   const bars = [['SHD', p ? p.shields : s.shields, s.shields, '#4aa3ff'], ['ARM', p ? p.armor : st.armor, p ? p.maxArmor : s.armor, '#ff9a3c'], ['RM', st.fuel, s.fuel, '#5fd35f']];
   bars.forEach(([label, v, max, color], i) => {
@@ -1016,7 +1033,7 @@ function drawHudCompact(W) {
   ctx.fillStyle = '#cfe3ff';
   const from = G.transit ? G.transit.to : st.systemId;
   const burn = st.dest ? ` · Burn ${SYSTEMS[st.dest].name} ${travelDays(from, st.dest)}d/${burnFuel(from, st.dest)}rm` : '';
-  ctx.fillText(wrapText(`Cargo ${cargoUsed()}/${s.cargo}t${burn}`, w)[0], x, 72);
+  ctx.fillText(wrapText(`Cargo ${cargoUsed()}/${s.cargo}t${s.launcher ? ` · Torp ${st.torpedoes || 0}` : ''}${burn}`, w)[0], x, 72);
   if (G.target && p && !inTransit) {
     ctx.fillStyle = npcColor(G.target);
     ctx.fillText(wrapText(`Target: ${G.target.name}, ${Math.round(dist(G.target, p))} out`, W - 24)[0], x, h + 16);
@@ -1026,7 +1043,7 @@ function drawHudCompact(W) {
 function drawHud(W, H) {
   if (!G.hudW) return drawHudCompact(W);
   const x0 = W - HUD_W, p = G.player, st = G.state, s = ship(), sys = system();
-  const inTransit = G.mode === 'transit';
+  const inTransit = G.mode === 'transit' || G.mode === 'engage';
   ctx.fillStyle = '#081018';
   ctx.fillRect(x0, 0, HUD_W, H);
   ctx.fillStyle = '#23405f';
@@ -1048,7 +1065,7 @@ function drawHud(W, H) {
   ctx.font = '12px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
   ctx.fillText(inTransit ? `To ${SYSTEMS[G.transit.to].name}` : `${sys.gov}`, x, y += 16);
-  ctx.fillText(`Day ${st.day}`, x, y += 16);
+  ctx.fillText(dateOf(), x, y += 16);
 
   y += 26;
   if (p) {
@@ -1061,6 +1078,7 @@ function drawHud(W, H) {
   ctx.fillStyle = '#cfe3ff';
   ctx.fillText(`Credits: ${fmt(st.credits)}`, x, y);
   ctx.fillText(`Cargo:   ${cargoUsed()}/${s.cargo}t`, x, y += 18);
+  if (s.launcher) ctx.fillText(`Torps:   ${st.torpedoes || 0}/${TORP_MAX} (F)`, x, y += 18);
 
   y += 28;
   hudLabel('Nav', x, y);
@@ -1229,7 +1247,9 @@ function render() {
   ctx.fillRect(0, 0, W, H);
   if (G.mode === 'map') drawMap(W, H);
   else {
-    if (G.mode === 'transit') drawTransit(W, H); else drawWorld(W, H);
+    if (G.mode === 'transit') drawTransit(W, H);
+    else if (G.engage) drawEngage(W, H);  // a fight during a burn (engage.js), and its aftermath if you die
+    else drawWorld(W, H);
     drawHud(W, H);
   }
   Mods.emit('drawOverlay', G.mode === 'map' ? W : W - G.hudW);

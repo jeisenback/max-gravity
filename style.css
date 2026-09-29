@@ -157,6 +157,7 @@ canvas { display: block; touch-action: none; }
 }
 .tabs button:hover:not(:disabled) { background: var(--panel-2); color: var(--text); }
 .tabs button.active { background: transparent; color: var(--text); border-bottom-color: var(--accent); }
+@media (max-width: 420px) { .tabs { gap: 0; padding-inline: 4px; } .tabs button { font-size: 11px; letter-spacing: 0; padding-inline: 2px; } }
 @media (min-width: 700px) { .tabs { gap: 6px; padding-inline: 12px; } .tabs button { flex: 0 0 auto; padding: 7px 12px; font-size: 14px; } }
 
 /* Map and Take off stay in reach at the bottom of the landed screen. */
@@ -351,6 +352,11 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
   display: flex;
   justify-content: flex-end;
   gap: 6px;
+}
+/* Six buttons (with Torp) on a phone: tighter spacing so the row fits. */
+@media (max-width: 420px) {
+  .tbtns { left: 8px; right: 8px; gap: 4px; }
+  .tbtns button { padding: 0 6px; font-size: 12px; letter-spacing: 0.02em; }
 }
 .tbtns button, .thold, .tfloat {
   background: rgba(16, 26, 40, 0.82);

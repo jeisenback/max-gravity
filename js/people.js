@@ -109,7 +109,7 @@ function registerPerson(p) {
 
 function like(p, n, memory) {
   p.opinion += n;
-  if (memory) p.memories.push(`Day ${G.state.day}: ${memory}`);
+  if (memory) p.memories.push(`${dateOf()}: ${memory}`);
 }
 
 function opinionWord(n) {
