@@ -179,7 +179,7 @@ Mods.register({
         const row = document.querySelector('#touch .tbtns');
         if (!row) return;
         b = Object.assign(document.createElement('button'), { textContent: 'Torp', hidden: true });
-        b.addEventListener('pointerdown', e => { e.preventDefault(); if (G.mode === 'flight') fireTorpedo(); });
+        b.addEventListener('pointerdown', e => { e.preventDefault(); if (G.mode === 'flight') fireTorpedo(); else if (G.mode === 'engage') playerTorpedo(); });
         row.appendChild(b);
       }
       const hide = !ship().launcher;

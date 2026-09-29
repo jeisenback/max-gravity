@@ -39,6 +39,8 @@ The Torpedo launcher fires homing torpedoes at your target: slow off the rail, t
 
 Knock a ship's hull below 20% and it is disabled: it stops fighting and drifts. Close in, match its velocity, and hail it to board. Strip its cargo (pirates carry credits and torpedoes instead), take it as a prize for your company fleet (you pay a prize crew), or let it go. Boarding traders or patrols is piracy, with the standing hit to match; pirates fight back aboard, and a gunner and more crew improve your odds. Crew can be injured when your hull takes hits or a boarding goes wrong; an injured crew member's perk stops working until they are treated, free if you have a medic aboard, otherwise at the next port's clinic for 1,000 cr each.
 
+By default, fights happen during burns, not in local space (milestone 4b, a prototype). Pirates, navy patrols that want you, bounty targets, and hired guns pick you up mid-burn, more often on dangerous lanes (about one burn in ten between Earth and Mars, one in two near Hygiea). At contact you can go to battle stations, burn hard to outrun them, or pay them off. The fight is momentum flight with no speed cap: W burns at your chosen thrust (Q/E, up to your ship's rating in g), A/D turn, S points you retrograde against their motion, Space fires slugs that carry your own velocity, F launches a torpedo, and H hails or boards. A dashed line shows their drift and where you will pass closest. Every ship has point defense against torpedoes, and more cannons give you more turrets. Burning above about 2.5g builds crew strain; past the limit everyone blacks out for a moment, and someone can get hurt, so sprint and coast. Disable a ship, match its velocity, and hail to board it. Get more than 7,000 km apart and the fight is over. Local space is safe from random pirates in this mode, but Aquilon's recovery ship and the Ceres blockade still come for you there. The Combat button at any port switches back to classic local-space combat.
+
 ## Storylines
 
 Besides Cold Water, whose scenes are storylets too, four shorter storylines are written as storylets (see Writing storylets):
@@ -108,6 +110,7 @@ On a keyboard:
 - `js/stories/landings.js` - small scenes at the dock on landing, written as storylets
 - `js/torpedoes.js` - torpedoes, the launcher and ammunition, and point-defense turrets
 - `js/boarding.js` - disabled ships, boarding and prizes, and crew injuries
+- `js/engage.js` - combat during burns (4b prototype): intercepts, momentum flight, torpedo duels, point defense, and crew strain
 - `js/storylets.js` - the storylet engine: story written as data (see Writing storylets below)
 - `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike), `mars-navy.js` (Reserve Commission, a Mars Navy career), `rook-crown.js` (The Rook's Crown, a pirate lord's rise), `tethys.js` (The Partner's Chair, a corporate climb), and `cold-water.js` (the scenes of Cold Water)
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)

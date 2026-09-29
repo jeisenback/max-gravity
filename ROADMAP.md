@@ -22,7 +22,7 @@ Long-term milestones, in order. Each builds on the ones before it.
 
 ## 4. Expanse-grade combat
 - **4a**, in the current flight model: **torpedoes and point-defense turrets** (done), escorts (done in milestone 2), **boarding and capture, and a medic who matters** (done).
-- **4b**, a prototype first: momentum flight with no speed cap, long-range torpedo duels, and high-g burn stress. Built as a switchable mode or a mod, then judged by playing it.
+- **4b**, a prototype first: momentum flight with no speed cap, long-range torpedo duels, and high-g burn stress. Built as a switchable mode or a mod, then judged by playing it. **Prototype built** (`js/engage.js`, on by default, switchable at any port): fights happen during burns. Still to decide after playing: moving the Ceres blockade and Aquilon's recovery ship into burns, escorts joining burn fights, and tuning.
 
 ## 5. Frontier and legacy
 - Found and grow an outpost on a Jovian moon or at Triton, supplied through the living economy.

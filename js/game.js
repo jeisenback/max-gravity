@@ -386,7 +386,7 @@ function spawnNpc(kind, atPlanet, fresh = false) {
   n.captain = `${n.persona.first} ${n.persona.last}`;
   if (kind === 'patrol') {
     n.gov = sys.gov;
-    n.hostile = repOf(sys.gov) <= -15;
+    n.hostile = repOf(sys.gov) <= -15 && !burnCombat();  // in burn combat, they intercept you mid-burn instead
   }
   n.goal = pickGoal(sys, from);
   if (!atPlanet) {
@@ -413,11 +413,11 @@ function populateSystem() {
   const traders = randInt(1, 3);
   for (let i = 0; i < traders; i++) spawnNpc('trader', Math.random() < 0.5);
   if (PATROL_NAMES[sys.gov] && Math.random() < 0.7) spawnNpc('patrol', Math.random() < 0.5);
-  if (Math.random() < danger(G.state.systemId)) {
+  if (!burnCombat() && Math.random() < danger(G.state.systemId)) {  // with combat in burns, pirates come for you there
     const pirates = randInt(1, 2);
     for (let i = 0; i < pirates; i++) spawnNpc('pirate', false);
   }
-  if (G.revenge) {
+  if (G.revenge && !burnCombat()) {
     const p = G.revenge, n = spawnNpc('pirate', false, true);
     Object.assign(n, { shipId: 'corsair', hostile: true, name: 'Hired gun', payer: `${p.first} ${p.last}` });
     n.shields = SHIPS.corsair.shields;
@@ -426,7 +426,7 @@ function populateSystem() {
     G.revenge = null;
   }
   for (const m of G.state.missions) {
-    if (m.type === 'bounty' && m.targetSystem === G.state.systemId) {
+    if (m.type === 'bounty' && m.targetSystem === G.state.systemId && !burnCombat()) {
       spawnBountyTarget(m);
       msg(`Sensors detect ${m.targetName} in local space.`);
     }
@@ -832,7 +832,7 @@ function update(dt) {
   if (G.mode === 'flight' && (G.spawnTimer -= dt) <= 0) {
     G.spawnTimer = rand(10, 20);
     if (G.npcs.length < 6) {
-      if (Math.random() < danger(G.state.systemId) * 0.5) spawnNpc('pirate', false);
+      if (!burnCombat() && Math.random() < danger(G.state.systemId) * 0.5) spawnNpc('pirate', false);
       else if (PATROL_NAMES[localGov()] && Math.random() < 0.25) spawnNpc('patrol', Math.random() < 0.5);
       else if (Math.random() < 0.7) spawnNpc('trader', Math.random() < 0.5);
     }
@@ -999,7 +999,7 @@ function drawRadar(rx, ry, R) {
 
 // Phones: a compact strip across the top instead of the sidebar.
 function drawHudCompact(W) {
-  const p = G.player, st = G.state, s = ship(), sys = system(), inTransit = G.mode === 'transit';
+  const p = G.player, st = G.state, s = ship(), sys = system(), inTransit = G.mode === 'transit' || G.mode === 'engage';
   const h = 78, R = 32, rx = W - R - 12;
   ctx.fillStyle = 'rgba(8,16,24,0.88)';
   ctx.fillRect(0, 0, W, h);
@@ -1036,7 +1036,7 @@ function drawHudCompact(W) {
 function drawHud(W, H) {
   if (!G.hudW) return drawHudCompact(W);
   const x0 = W - HUD_W, p = G.player, st = G.state, s = ship(), sys = system();
-  const inTransit = G.mode === 'transit';
+  const inTransit = G.mode === 'transit' || G.mode === 'engage';
   ctx.fillStyle = '#081018';
   ctx.fillRect(x0, 0, HUD_W, H);
   ctx.fillStyle = '#23405f';
@@ -1240,7 +1240,9 @@ function render() {
   ctx.fillRect(0, 0, W, H);
   if (G.mode === 'map') drawMap(W, H);
   else {
-    if (G.mode === 'transit') drawTransit(W, H); else drawWorld(W, H);
+    if (G.mode === 'transit') drawTransit(W, H);
+    else if (G.engage) drawEngage(W, H);  // a fight during a burn (engage.js), and its aftermath if you die
+    else drawWorld(W, H);
     drawHud(W, H);
   }
   Mods.emit('drawOverlay', G.mode === 'map' ? W : W - G.hudW);
