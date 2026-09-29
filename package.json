@@ -1,0 +1,11 @@
+{
+  "name": "max-gravity",
+  "private": true,
+  "description": "Tests for Max Gravity. The game itself needs no build: open index.html.",
+  "scripts": {
+    "test": "node --test --test-concurrency=4 \"tests/*.test.js\""
+  },
+  "devDependencies": {
+    "playwright": "^1.63.0"
+  }
+}
