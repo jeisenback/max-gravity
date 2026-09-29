@@ -3,6 +3,14 @@
 // DOM panels shown while landed on a planet, plus the game-over screen.
 // Loaded before game.js; only calls into it at runtime.
 
+// Names the player types (captain, ship, outpost, heir) are shown as HTML, so
+// they lose the characters that could make markup. Imported saves lose < and >
+// in every string (Saves.import in menu.js).
+const cleanName = s => String(s || '').replace(/[<>"`]/g, '').replace(/\s+/g, ' ').trim().slice(0, 30);
+const stripTags = v => (typeof v === 'string' ? v.replace(/[<>]/g, '')
+  : Array.isArray(v) ? v.map(stripTags)
+  : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, stripTags(x)])) : v);
+
 const UI = {
   el: document.getElementById('panel'),
   tab: 'port',

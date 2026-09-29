@@ -154,3 +154,44 @@ test('the UAT panel sets up every scene and restores the real game', async () =>
   assert.deepEqual(await ev(() => [G.state.credits, G.state.day]), [777, 33]);
   await done();
 });
+
+test('names the player types never become markup', async () => {
+  const evil = '<img src=x onerror="window.pwned=1">Kay';
+  const { page, ev, done } = await open({ title: true });
+  await page.click('[data-action=menuView][data-arg=new]');
+  await page.fill('#ngCaptain', evil);
+  await page.fill('#ngShip', evil);
+  await page.click('[data-action=menuStart]');
+  await ev(() => { G.state.tutorial = null; G.state.credits = 200000; G.state.shipId = 'freighter'; while (G.dialog) finishEvent(); UI.render(); });
+  await page.click('[data-action=tab][data-arg=crew]');
+  await page.fill('#shipName', evil);
+  await page.click('[data-action=renameShip]');
+  await page.click('[data-action=tab][data-arg=company]');
+  await page.fill('#capName', evil);
+  await page.click('[data-action=renameCaptain]');
+  await page.click('[data-action=retire]');
+  await page.fill('#heirName', evil);
+  await page.click('[data-action=retire][data-arg=yes]');
+  await ev(() => {
+    const st = G.state; while (G.dialog) finishEvent();
+    st.cargo = { industrial: 40, equipment: 20, metal: 40 };
+    st.systemId = 'jupiter'; st.planet = 'Ganymede'; landAt(SYSTEMS.jupiter.planets[0], []);
+    while (G.dialog) { chooseEvent(G.dialog.choices.length - 1); finishEvent(); }
+  });
+  await page.fill('#opName', evil);
+  await page.click('[data-action=opFound]');
+  const names = await ev(() => [captain().name, home().name, G.state.outpost.name, ...G.state.captains.map(c => c.name)]);
+  for (const n of names) assert.doesNotMatch(n, /[<>"]/, `cleaned: ${n}`);
+  for (const tab of ['port', 'crew', 'company']) await ev(t => { UI.tab = t; UI.render(); }, tab);
+  // A shared save code with markup in it is cleaned on import.
+  const code = await ev(() => btoa(JSON.stringify({ ...G.state, captain: { name: '<img src=x onerror="window.pwned=1">', since: 1 }, journal: [{ day: 1, text: '<img src=x onerror="window.pwned=1">' }] })));
+  await ev(() => { save(); Menu.pause(); Menu.view = 'load'; Menu.render(); });
+  await page.fill('#importCode', code);
+  await page.click('[data-action=menuImport]');
+  await page.click('[data-action=menuSlotLoad][data-arg="2"]');
+  await ev(() => { while (G.dialog) finishEvent(); UI.tab = 'port'; UI.render(); });
+  assert.doesNotMatch(await ev(() => captain().name + JSON.stringify(G.state.journal)), /[<>]/);
+  await page.waitForTimeout(200);
+  assert.equal(await ev(() => !!window.pwned), false);
+  await done();
+});
