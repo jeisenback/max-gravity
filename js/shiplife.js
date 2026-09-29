@@ -288,8 +288,28 @@ const ACTIVITIES = {
 // One activity before the flip and one after.
 const lifeHalf = () => (G.transit.flipped ? 'after' : 'before');
 
-function lifeButtonsHtml() {
-  return Object.entries(ACTIVITIES).map(([id, a]) => `<button data-life="${id}">${a.label}</button>`).join('');
+const activityLabel = a => (typeof a.label === 'function' ? a.label() : a.label);
+
+// Downtime is a menu: one activity before the flip and one after.
+function downtimeEvent() {
+  const t = G.transit;
+  return {
+    title: 'Downtime',
+    text: `A long burn and nowhere to go. What does the ship do with ${t.flipped ? 'the rest of the trip' : 'the time before the flip'}?`,
+    choices: [
+      ...Object.values(ACTIVITIES).map(a => ({
+        label: activityLabel(a), can: a.can,
+        run() {
+          t.lifeUsed = t.lifeUsed || {};
+          t.lifeUsed[lifeHalf()] = true;
+          const text = a.run();
+          comm(`[Ship] ${text}`);
+          return text;
+        },
+      })),
+      { label: 'Not now', run: () => 'Everyone goes back to their own business.' },
+    ],
+  };
 }
 
 function syncLifeButtons() {
@@ -301,21 +321,19 @@ function syncLifeButtons() {
   el.style.top = `${G.lifeY}px`;
   el.style.left = `${(G.W - G.hudW) / 2}px`;
   const used = (t.lifeUsed || {})[lifeHalf()];
-  el.querySelectorAll('button').forEach(b => { b.disabled = !!used || !ACTIVITIES[b.dataset.life].can(); });
+  el.querySelector('button').disabled = !!used;
   el.dataset.note = used ? (t.flipped ? 'Done for this burn' : 'Next after the flip') : 'Downtime';
 }
 
 function buildLifeButtons() {
   const el = Object.assign(document.createElement('div'), { id: 'tlife', hidden: true });
-  el.innerHTML = lifeButtonsHtml();
+  el.innerHTML = '<button data-life="menu">Spend some downtime</button>';
   document.body.appendChild(el);
   el.addEventListener('click', e => {
     const b = e.target.closest('[data-life]'), t = G.transit;
     if (!b || b.disabled || !t || t.event) return;
-    t.lifeUsed = t.lifeUsed || {};
-    t.lifeUsed[lifeHalf()] = true;
-    comm(`[Ship] ${ACTIVITIES[b.dataset.life].run()}`);
     Sfx.click();
+    openEvent(downtimeEvent());
   });
 }
 

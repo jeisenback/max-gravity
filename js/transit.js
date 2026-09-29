@@ -264,7 +264,7 @@ function updateTransit(dt) {
       ...crewMembers().flatMap(c => c.chatter || c.traits.map(t => fill(TRAITS[t].chatter, c))),
       ...paxAboard().filter(m => m.pid).map(m => G.state.people[m.pid]).flatMap(p => p.traits.map(t => `(passenger) ${fill(TRAITS[t].chatter, p)}`)),
     ];
-    comm(pick(aboard.length && Math.random() < 0.6 ? aboard : CHATTER));
+    comm(pick(Mods.filter('chatter', aboard.length && Math.random() < 0.6 ? aboard : CHATTER)));
   }
   if (t.times.length && t.total - t.left >= t.times[0]) {
     t.times.shift();

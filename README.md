@@ -7,7 +7,9 @@ Markets react to you: buying a good raises its local price and selling lowers it
 
 There is no faster-than-light travel. You plot a direct burn to any destination in range. Travel time (days) and reaction mass scale with real orbital distance, and everything orbits at its real period, so routes open and close over the months: Earth to Mars runs 4 to 8 days, Saturn about 15 to 18, and Triton more than a month out. The system map shows the best upcoming window for a plotted burn. Each burn takes 1-2 minutes of real time. You accelerate, flip at the midpoint, and decelerate. In transit you get random events with choices (distress calls, pirates, derelicts, and more), market rumors that shift prices for weeks, and comms chatter. Events pause the transit timer.
 
-During a burn you see your ship in cutaway: engine, hold (with your cargo), berths, galley, and bridge, with you, your crew, and your passengers moving between rooms by what they do aboard. Everyone straps in for the hard burns at each end and floats at the flip, when the ship turns end over end. Crew sometimes mention on comms what they're up to. Once before the flip and once after, pick a downtime activity: share a meal (crew and passengers like you more), run drills (better odds in a fight this burn), do maintenance (patch hull damage, more with an engineer aboard), or check on passengers.
+During a burn you see your ship in cutaway: engine, hold (with your cargo), berths, galley, and bridge, with you, your crew, and your passengers moving between rooms by what they do aboard. Everyone straps in for the hard burns at each end and floats at the flip, when the ship turns end over end. Crew sometimes mention on comms what they're up to. Once before the flip and once after, pick a downtime activity: share a meal (crew and passengers like you more), run drills (better odds in a fight this burn), do maintenance (patch hull damage, more with an engineer aboard), check on passengers, watch the season's hit vid together, pass the bestseller around, stream a ring-ball match, or hold a card night.
+
+People aboard have feelings about each other, not just about you. Everyone has tastes (a favorite kind of vid or book, and a ring-ball team from home); over a burn, shared tastes draw people together and clashing habits (a rude engineer and a nervous passenger, say) pull them apart. Scenes in transit follow from it: two crew growing close and asking whether the ship has rules about that, a feud in the galley you can settle or make worse, two people discovering they grew up on the same station, a bet on tonight's match. The Crew tab shows who is friends, close, or rivals. The solar system has a culture too: every season (40 days) brings a hit vid series, a bestseller, a song everyone is humming, stars for the gossip feeds, and a ring-ball league with a champion. It comes through as [Feed] chatter in transit, crew cheering or sulking over their team's results, and "On the feeds" at port. Passengers who liked the trip may turn up at a later port asking for your ship by name; when they come back aboard, the crew who befriended them remember.
 
 ## People
 
@@ -98,7 +100,8 @@ On a keyboard:
 - `mods/` - mods; `example-vesta.js` is a working example to copy
 - `js/world.js` - the living solar system: pirate unrest, raids, markets that use and make goods, and NPC haulers whose voyages move them (`st.haul`)
 - `js/company.js` - your shipping company: company ships, captains, trade routes, and the Company tab
-- `js/shiplife.js` - life aboard during a burn: the ship cutaway, crew movement and comms lines, and downtime activities
+- `js/shiplife.js` - life aboard during a burn: the ship cutaway, crew movement and comms lines, and the downtime menu
+- `js/social.js` - bonds between people aboard, tastes, relationship scenes, the season's culture and feeds, shared downtime, and returning passengers
 - `js/torpedoes.js` - torpedoes, the launcher and ammunition, and point-defense turrets
 - `js/boarding.js` - disabled ships, boarding and prizes, and crew injuries
 - `js/storylets.js` - the storylet engine: story written as data (see Writing storylets below)
@@ -185,6 +188,7 @@ Mods.register({
 | `dockButtons` | `html` for buttons left of System map and Take off |
 | `missionPay` | `credits, offer, planet`: pay for a mission offered at this port |
 | `transitEvent` | `event` or `null`: the next transit happening; return an event to play it |
+| `chatter` | `lines`: the pool the next line of transit comms chatter is picked from; return your own lines to be heard |
 
 **Other helpers.**
 - `M.state()` returns an object saved with the game, private to your mod.

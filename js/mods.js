@@ -41,6 +41,7 @@ const MOD_FILTERS = [
   'dockButtons',  // (html) buttons left of System map / Take off
   'missionPay',   // (credits, offer, planet) pay for a mission offered at this port
   'transitEvent', // (event or null) the next transit happening; return an event to play it
+  'chatter',      // (lines) the pool the next line of comms chatter in transit is picked from
 ];
 
 const Mods = {

@@ -139,6 +139,8 @@ const UI = {
         <div class="standing">${FACTIONS.map(g => `<div><span style="color:${GOV_COLORS[g]}">${g === 'Pirate' ? 'Pirates' : g}</span> <b>${standingWord(repOf(g))}</b> <span class="hint">${repOf(g) > 0 ? '+' : ''}${repOf(g)}</span></div>`).join('')}</div>
         <h3>Local conditions</h3>
         ${this.conditionList(conditions(st.systemId), 'Nothing unusual. Trade is flowing normally.')}
+        <h3>On the feeds</h3>
+        ${feedHeadlines().map(l => `<div class="hint">${l}</div>`).join('')}
         <h3>News</h3>
         ${this.conditionList(Object.keys(SYSTEMS).filter(id => id !== st.systemId).flatMap(conditions)
           .filter((c, i, all) => all.findIndex(d => d.text === c.text) === i && !conditions(st.systemId).some(d => d.text === c.text)), '')}
@@ -220,6 +222,7 @@ const UI = {
         <h3>Your crew</h3>
         ${mine || '<p class="hint">Just you. Crew take a berth each and are paid daily wages in transit.</p>'}
         <p class="hint">Berths: ${berthsUsed()}/${ship().berths} used by crew and passengers. Unhappy crew will walk off the ship.</p>
+        ${bondsHtml()}
         <h3>Looking for work here</h3>
         ${forHire || '<p class="hint">Nobody in the bar is looking for a ship right now.</p>'}
         <h3>People you know</h3>
