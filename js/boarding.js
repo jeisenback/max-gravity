@@ -58,6 +58,8 @@ const boardOdds = () => Math.min(0.9, 0.45 + roleSkill('gunner') * 0.1 + Math.mi
 
 // What a captured or boarded ship is carrying.
 function lootFor(n) {
+  const v = voyageOf(n);
+  if (v) return { cid: v.cid, tons: v.tons, voyage: v };
   if (n.kind === 'pirate') return { credits: randInt(10, 30) * 100, torps: ship().launcher ? randInt(0, 2) : 0 };
   return { cid: pick(COMMODITIES).id, tons: randInt(6, 18) };
 }
@@ -106,6 +108,7 @@ function boardingEvent(n) {
           }
           const q = Math.min(cargoFree(), loot.tons), name = COMMODITIES.find(c => c.id === loot.cid).name;
           st.cargo[loot.cid] = (st.cargo[loot.cid] || 0) + q;
+          if (loot.voyage && (loot.voyage.tons -= q) <= 0) loseVoyage(n);  // what's left still gets delivered
           return `You haul ${q}t of ${name} across. The crew watch you do it. Somebody will report this.`;
         } },
       { label: `Take the ship as a prize (prize crew: ${fmt(prizeFee)} cr)`,
@@ -124,6 +127,7 @@ function boardingEvent(n) {
           const s = fleet()[fleet().length - 1];
           s.armor = Math.round(n.armor);
           st.companyLog[0].text = `Took the ${prize.name} "${n.name.replace(/^.*"(.*)"$/, '$1')}" as a prize near ${system().name}; it waits at ${at.name}.`;
+          loseVoyage(n);
           n.dead = true;
           if (G.target === n) G.target = null;
           return `Your prize crew takes the helm and limps the ${prize.name} toward ${at.name}. It's on your Company tab now, with its hull as you left it.`;

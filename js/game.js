@@ -97,10 +97,10 @@ function cargoUsed() {
 const cargoFree = () => ship().cargo - cargoUsed();
 
 // Trading moves markets: each ton bought raises the local price and each ton sold
-// lowers it, up to MARKET_CAP either way. NPC shipping pulls prices back with a
-// MARKET_HALF_LIFE in days, more slowly when pirates scare it off (world.js).
-// A Rock Hopper barely dents a market; an Ice Hauler has to spread its trade around.
-const MARKET_PER_TON = 0.002, MARKET_CAP = 0.4, MARKET_HALF_LIFE = 8;
+// lowers it, up to MARKET_CAP either way. Local use and NPC haulers move them too
+// (world.js). A Rock Hopper barely dents a market; an Ice Hauler has to spread its
+// trade around.
+const MARKET_PER_TON = 0.002, MARKET_CAP = 0.4;
 
 function pressure(planet, cid) {
   const m = G.state.market[`${planet.name}|${cid}`];
@@ -393,6 +393,7 @@ function spawnNpc(kind, atPlanet, fresh = false) {
     n.angle = Math.atan2(n.goal.y - y, n.goal.x - x);
     n.vx = Math.cos(n.angle) * 150; n.vy = Math.sin(n.angle) * 150;
   }
+  if (!known) boardVoyage(n);
   G.npcs.push(n);
   return n;
 }

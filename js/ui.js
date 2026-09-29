@@ -178,7 +178,7 @@ const UI = {
         ${this.tradeNote ? `<div class="note">${this.tradeNote}</div>` : ''}
         <div class="trow thead"><div class="tname">Commodity</div><div class="tprice">Price/t</div><div class="theld">Held</div><div class="tbest">Best market (in range)</div><div class="tact"></div></div>
         ${rows}
-        <p class="hint">Free cargo space: ${cargoFree()}t. Buying raises a market's price and selling lowers it; prices recover over a couple of weeks. Best market is based on today's prices.</p>`;
+        <p class="hint">Free cargo space: ${cargoFree()}t. Buying raises a market's price and selling lowers it; NPC haulers bring prices back as their deliveries arrive. Best market is based on today's prices.</p>`;
     },
 
     missions() {

@@ -6,7 +6,7 @@ Long-term milestones, in order. Each builds on the ones before it.
 - **Orbits and launch windows** (started): every location orbits at its real period, so travel time and reaction mass change over the months. The system map shows the best upcoming window for a plotted burn.
 - **Pirate unrest and NPC shipping** (done): raids flare up, NPC haulers avoid dangerous lanes, and shortages and gluts follow; killing pirates clears the lanes.
 - **Faction states** (done): economies boom and slump; incidents build tension until two factions go to war, with navies fighting in each other's space and wartime demand in their markets.
-- Markets with real stockpiles: a station runs short because nobody hauled the goods, and NPC traders actually carry cargo.
+- **Markets with real stockpiles** (done): a station runs short because nobody hauled the goods, and NPC traders actually carry cargo.
 - The Cold Water story becomes one case of this general system.
 
 ## 2. Your own shipping company
