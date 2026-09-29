@@ -1340,5 +1340,8 @@ function frame(now) {
 resize();
 initStars();
 Touch.build();
-if (loadSave()) loadGame(); else newGame();
-requestAnimationFrame(frame);
+// Mods loaded by link (community.js) register before the game starts.
+Community.loadMods().then(() => {
+  if (loadSave()) loadGame(); else newGame();
+  requestAnimationFrame(frame);
+});

@@ -29,5 +29,5 @@ Long-term milestones, in order. Each builds on the ones before it.
 - **Legacy** (done): when a captain retires or dies, the next inherits part of the company, contacts, and standing.
 
 ## 6. Community platform (alongside the others)
-- An in-game mod browser that loads mods by link, and shareable scenarios.
-- Shared news: other players' deeds show up as rumors in your game.
+- **An in-game mod browser that loads mods by link, and shareable scenarios** (done: the Port tab's Mods and Scenarios sections).
+- **Shared news** (done, on claude.ai): other players' deeds show up as news and chatter in your game, for captains who opt in.

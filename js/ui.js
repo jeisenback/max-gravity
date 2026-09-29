@@ -113,11 +113,6 @@ const UI = {
     return list.map(c => `<div class="cond ${c.bad ? 'bad' : 'good'}">${c.text}</div>`).join('');
   },
 
-  modList() {
-    const mods = Mods.list.filter(m => !m.builtin);
-    return mods.length ? `<h3>Mods</h3>${mods.map(m => `<div class="hint">${m.name}${m.version ? ` ${m.version}` : ''}${m.failed ? ' (switched off after an error)' : ''}</div>`).join('')}` : '';
-  },
-
   views: {
     company: () => companyView(),
 
@@ -150,7 +145,8 @@ const UI = {
         ${(st.news || []).map(n => `<div class="hint">${dateOf(n.day)}: ${n.text}</div>`).join('')}
         ${st.rumors.map(r => `<div class="hint">${r.text} Until ${dateOf(r.until)}.</div>`).join('')}
         ${!(st.news || []).length && !st.rumors.length ? '<p class="hint">Listen to the comms in transit for more.</p>' : ''}
-        ${this.modList()}
+        ${othersNewsHtml()}
+        ${communityHtml()}
         <div class="foot">${this.confirmNew
           ? 'Start over? Your current progress will be lost. <button data-action="newgame" data-arg="force">Start over</button> <button data-action="newgame" data-arg="cancel">Keep playing</button>'
           : '<button class="link" data-action="newgame">Start a new game</button>'}</div>`;

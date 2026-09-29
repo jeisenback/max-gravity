@@ -113,6 +113,7 @@ On a keyboard:
 - `js/shiplife.js` - life aboard during a burn: the ship cutaway, crew movement and comms lines, and the downtime menu
 - `js/outpost.js` - your outpost on Callisto or Nereid: supplies, growth, buildings, and settler moments
 - `js/legacy.js` - your name, heirs and retirement, and the list of captains
+- `js/community.js` - mods by link, shareable scenarios, and shared news between players
 - `js/family.js` - the ship as home: its name and history, personal stories and favors, birthdays and holidays, letters and moods, traditions, touches, the cat, and passengers who join the crew
 - `js/social.js` - bonds between people aboard, tastes, relationship scenes, the season's culture and feeds, shared downtime, and returning passengers
 - `js/bar.js` - the Bar tab: each port's bar, the room's mood, patrons to talk to, and crew for hire
@@ -143,6 +144,29 @@ Put the file in `mods/` and add a script tag for it in `index.html`, in the mark
 ```
 
 Loaded mods are listed at the bottom of the Port tab. To try the example, uncomment its tag: it adds Vesta, a mining rock in the Belt with its own trade good, an outfit, a transit event, and a pirate bounty.
+
+Or load a mod by link, no file editing needed: the Mods section at the bottom of the Port tab has a small catalog (the Vesta example is there) and a field for any `https://` link to a `.js` file. Links are remembered in your browser and load before the game starts on every visit. A mod runs code in the page, so only load mods from people you trust. On claude.ai, the page can only load scripts from a few hosts; a file on GitHub loads through `https://cdn.jsdelivr.net/gh/<user>/<repo>@<branch>/<path>.js`.
+
+### Scenarios
+
+A scenario is a starting setup, plus optional storylets, written as data. Play the built-in ones (Broke on Ceres, Ice Rush, Rook's Favorite) from the Scenarios section of the Port tab; Share link gives a link that opens the game and offers the scenario (it never replaces a game without asking). To make your own, encode a JSON object like this one as URL-safe base64 and put it after `#scenario=` in the game's address, or paste the code into the Scenarios section:
+
+```json
+{
+  "title": "Broke on Ceres",
+  "text": "You lost your last ship in a card game.",
+  "start": { "credits": 800, "shipId": "shuttle", "systemId": "ceres", "planet": "Ceres Station", "day": 40,
+             "cargo": { "water": 10 }, "rep": { "Pirate": 10 } },
+  "storylets": [ { "id": "pax-debt", "where": "port", "when": { "planet": "Ceres Station" }, "title": "Pax",
+                   "text": "Pax wants his money back.", "choices": [ { "label": "Pay him", "effects": { "credits": -2000 } } ] } ]
+}
+```
+
+Every field is optional except `title`. Storylets use the format under Writing storylets. Scenario text is shown as plain text, never as markup, and a start that names an unknown ship or place is ignored.
+
+### Shared news
+
+When the game runs as a claude.ai artifact, captains can share their notable deeds with everyone else playing the same page: storyline milestones, bounties, founding an outpost, new crew, succession. It is off until you turn on Share deeds at a port; the button only appears where sharing works. Other captains' deeds turn up as news at port and as `[Word]` chatter in transit. Each player writes one document of their own (`deeds/<their id>`, their last twelve deeds, their captain's name, and their ship's name), and anyone playing can read it. Only the page's owner and people with Contributor access or above can post; visitors by public link can read but not post.
 
 ### Writing a mod
 
