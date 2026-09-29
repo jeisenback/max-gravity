@@ -25,8 +25,8 @@ Long-term milestones, in order. Each builds on the ones before it.
 - **4b**, a prototype first: momentum flight with no speed cap, long-range torpedo duels, and high-g burn stress. Built as a switchable mode or a mod, then judged by playing it. **Prototype built** (`js/engage.js`, on by default, switchable at any port): fights happen during burns. Still to decide after playing: moving the Ceres blockade and Aquilon's recovery ship into burns, escorts joining burn fights, and tuning.
 
 ## 5. Frontier and legacy
-- Found and grow an outpost on a Jovian moon or at Triton, supplied through the living economy.
-- Legacy: when a captain retires or dies, the next inherits part of the company, contacts, and standing.
+- **Found and grow an outpost** (done: Callisto or Nereid, supplied from your hold, with buildings and settler moments).
+- **Legacy** (done): when a captain retires or dies, the next inherits part of the company, contacts, and standing.
 
 ## 6. Community platform (alongside the others)
 - An in-game mod browser that loads mods by link, and shareable scenarios.

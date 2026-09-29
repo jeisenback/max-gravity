@@ -317,7 +317,7 @@ function homeHtml() {
     return bits.length ? `<div class="hint">${p.first}: ${bits.join(', ')}</div>` : '';
   }).join('');
   return `<h3>${h.name[0].toUpperCase()}${h.name.slice(1)}</h3>
-    <div class="row"><button data-action="renameShip">Rename the ship</button></div>
+    <div class="row"><input type="text" id="shipName" maxlength="30" placeholder="A new name for the ship"><button data-action="renameShip">Rename the ship</button></div>
     ${crew}
     ${h.traditions.length ? `<p class="hint">Traditions: ${h.traditions.map(id => TRADITIONS[id].name).join(', ')}.</p>` : ''}
     ${h.cat ? `<p class="hint">${h.cat} the cat lives aboard.</p>` : ''}
@@ -394,7 +394,8 @@ Mods.register({
       else if (!home().cat && st.day >= 5 && ['Ring Nine', 'Boneyard', 'The Hollows', 'Juno Commons', 'Ceres Station', 'Eros Old Town'].includes(planet.name) && Math.random() < 0.1) queue(catEvent());
     });
     M.action('renameShip', () => {
-      const name = (window.prompt('What do you call your ship?', home().name) || '').trim().slice(0, 30);
+      // An in-page field: browser prompt() dialogs are blocked in some embeds.
+      const el = document.getElementById('shipName'), name = el ? el.value.trim().slice(0, 30) : '';
       if (!name || name === home().name) return;
       home().name = name.replace(/^the /i, '');
       home().named = G.state.day;

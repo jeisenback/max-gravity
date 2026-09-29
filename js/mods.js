@@ -29,6 +29,7 @@ const MOD_EVENTS = [
   'burnStart',    // (destSystemId)
   'arrive',       // (systemId)
   'eventOpened',  // (event) a choice dialog opened (transit event, hail, story scene)
+  'stateReady',   // () a game was started or loaded; restore anything kept outside the save (the outpost's planet)
   'newDay',       // (day) a game day passed (days pass in transit and are ticked on arrival)
   'trade',        // (planet, commodityId, tons, dir) the player bought (dir 1) or sold (dir -1)
   'missionDone',  // (mission) delivered or passenger dropped off

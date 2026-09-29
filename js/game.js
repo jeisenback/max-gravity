@@ -185,6 +185,7 @@ const INTRO = [
 
 function newGame() {
   G.state = newState();
+  Mods.emit('stateReady');
   save();
   resetWorld();
   landAt(currentPlanet(), INTRO);
@@ -200,6 +201,7 @@ function loadGame() {
   G.state.outfits = G.state.outfits || {};
   G.state.story = G.state.story || { stage: 0, next: STORY_START_DAY, log: [] };  // saves from before the story
   G.state.market = G.state.market || {};  // saves from before market saturation
+  Mods.emit('stateReady');
   dropMissingModContent(G.state);
   resetWorld();
   landAt(currentPlanet(), ['Save loaded. Welcome back, captain.']);

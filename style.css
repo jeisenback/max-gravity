@@ -427,3 +427,5 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 #tzoomin, #tzoomout { width: 44px; font-size: 20px; }
 #tzoomin { top: calc(68px + env(safe-area-inset-top, 0px)); }
 #tzoomout { top: calc(116px + env(safe-area-inset-top, 0px)); }
+
+.body input[type=text] { background: var(--panel-2); border: 1px solid var(--line); color: var(--text); font: inherit; padding: 6px 8px; min-height: 36px; min-width: 0; flex: 1 1 160px; }

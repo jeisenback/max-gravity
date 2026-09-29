@@ -62,8 +62,10 @@ const UI = {
       <div class="dead">
         <div class="eyebrow">Transponder lost</div>
         <h1>Ship Destroyed</h1>
-        <p>Your ${ship().name} breaks apart in a silent bloom of fire. The insurance company is not returning your calls.</p>
-        <button data-action="load" class="primary">Load last save</button>
+        <p>Captain ${captain().name}'s ${ship().name} breaks apart in a silent bloom of fire. The insurance company is not returning your calls.</p>
+        <p class="hint">Your heir inherits the company, its ships, stakes, and outpost, and half of everything else.</p>
+        <button data-action="heir" class="primary">Go on as your heir</button>
+        <button data-action="load">Load last save</button>
         <button data-action="newgame" data-arg="force">New game</button>
       </div>`;
     this.el.classList.remove('hidden', 'event');
