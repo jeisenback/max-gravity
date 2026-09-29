@@ -345,15 +345,80 @@ function wrapText(text, maxW) {
   return lines;
 }
 
+// A translucent panel with a clipped corner, like the port screen's buttons.
+function transitPanel(x, y, w, h, title) {
+  const c = 10;
+  ctx.fillStyle = 'rgba(8,16,28,0.86)';
+  ctx.strokeStyle = '#1f3349';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(x, y); ctx.lineTo(x + w - c, y); ctx.lineTo(x + w, y + c); ctx.lineTo(x + w, y + h); ctx.lineTo(x, y + h); ctx.closePath();
+  ctx.fill(); ctx.stroke();
+  ctx.fillStyle = '#7fb4ff';
+  ctx.fillRect(x, y, 3, h);
+  ctx.font = `600 11px ${LABEL_FONT}`;
+  ctx.fillStyle = '#8fb0d0';
+  ctx.textAlign = 'left';
+  ctx.fillText(title, x + 12, y + 16);
+  ctx.font = '12px "IBM Plex Mono", monospace';
+}
+
+// The route strip: origin, destination, the flip, and where we are.
+function drawRoute(cx, y, barW, progress) {
+  const t = G.transit, bx = cx - barW / 2;
+  const dot = (x, sid) => {
+    ctx.fillStyle = SYSTEMS[sid].planets[0].color;
+    ctx.beginPath(); ctx.arc(x, y, 5, 0, Math.PI * 2); ctx.fill();
+    ctx.strokeStyle = 'rgba(207,227,255,0.5)'; ctx.stroke();
+  };
+  ctx.lineCap = 'round';
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = '#1a2533';
+  ctx.beginPath(); ctx.moveTo(bx, y); ctx.lineTo(bx + barW, y); ctx.stroke();
+  const g = ctx.createLinearGradient(bx, 0, bx + barW, 0);
+  g.addColorStop(0, '#3d6fb8'); g.addColorStop(1, '#9fd0ff');
+  ctx.strokeStyle = g;
+  ctx.beginPath(); ctx.moveTo(bx, y); ctx.lineTo(bx + barW * progress, y); ctx.stroke();
+  ctx.lineCap = 'butt';
+  ctx.lineWidth = 1;
+  // The flip point.
+  ctx.fillStyle = '#56687a';
+  ctx.fillRect(cx - 1, y - 8, 2, 16);
+  ctx.font = `600 9px ${LABEL_FONT}`;
+  ctx.textAlign = 'center';
+  ctx.fillText('FLIP', cx, y + 20);
+  dot(bx, G.state.systemId);
+  dot(bx + barW, t.to);
+  // Our ship: a chevron pointing the way the drive faces.
+  const sx = bx + barW * progress, dir = t.flipped ? -1 : 1;
+  ctx.fillStyle = '#fff';
+  ctx.beginPath(); ctx.moveTo(sx + 6 * dir, y); ctx.lineTo(sx - 4 * dir, y - 5); ctx.lineTo(sx - 4 * dir, y + 5); ctx.closePath(); ctx.fill();
+}
+
 function drawTransit(W, H) {
   const viewW = W - G.hudW, cx = viewW / 2, cy = H / 2, t = G.transit, st = G.state;
   const narrow = !G.hudW, top = narrow ? 84 : 0;  // clear the phone HUD strip
-  ctx.fillStyle = '#02040a';
+  const progress = Math.min(1, 1 - t.left / t.total);
+  const bg = ctx.createLinearGradient(0, 0, 0, H);
+  bg.addColorStop(0, '#03060f'); bg.addColorStop(1, '#070b18');
+  ctx.fillStyle = bg;
   ctx.fillRect(0, 0, viewW, H);
+  // Faint glow of the destination ahead of us, and the sun behind.
+  const glow = (x, y, r, color) => {
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, color); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g;
+    ctx.fillRect(x - r, y - r, r * 2, r * 2);
+  };
+  glow(viewW * 0.92, cy - H * 0.2, H * 0.55, 'rgba(60,90,160,0.16)');
+  glow(viewW * 0.05, cy + H * 0.3, H * 0.45, 'rgba(160,110,60,0.08)');
 
+  // Stars streak with our speed: longest at the midpoint.
+  const speed = 0.05 + Math.sin(Math.PI * progress) * 0.6;
   for (const s of G.transitStars) {
-    ctx.fillStyle = `rgba(200,215,255,${s.z})`;
-    ctx.fillRect(s.x * viewW, s.y * H, s.z * 2, s.z * 2);
+    const x = s.x * viewW, y = s.y * H, len = Math.max(s.z * 2, speed * s.z * s.z * 40);
+    ctx.fillStyle = `rgba(200,215,255,${s.z * 0.8})`;
+    ctx.fillRect(x, y, len, s.z > 0.7 ? 2 : 1);
   }
 
   // Our ship in cutaway, with everyone aboard (shiplife.js). It turns at the midpoint.
@@ -361,40 +426,38 @@ function drawTransit(W, H) {
   drawCutaway(cx, shipY, L);
   G.lifeY = shipY + L * 0.085 + 34;  // downtime buttons sit below it
 
-  // Progress
-  const barW = Math.min(420, viewW - 40), bx = cx - barW / 2;
-  const progress = Math.min(1, 1 - t.left / t.total);
+  // Route
+  const barW = Math.min(420, viewW - 60);
   ctx.textAlign = 'center';
-  ctx.fillStyle = '#cfe3ff';
-  ctx.font = `600 18px ${LABEL_FONT}`;
-  ctx.fillText(`IN TRANSIT  ${system().name} > ${SYSTEMS[t.to].name}`, cx, top + 34);
-  ctx.fillStyle = '#1a2533';
-  ctx.fillRect(bx, top + 46, barW, 8);
+  ctx.font = `600 11px ${LABEL_FONT}`;
   ctx.fillStyle = '#7fb4ff';
-  ctx.fillRect(bx, top + 46, barW * progress, 8);
-  ctx.fillStyle = '#56687a';
-  ctx.fillRect(cx - 1, top + 42, 2, 16);  // flip point
+  ctx.fillText('IN TRANSIT', cx, top + 22);
+  ctx.fillStyle = '#e6f0ff';
+  ctx.font = `600 20px ${LABEL_FONT}`;
+  ctx.fillText(`${system().name}  >  ${SYSTEMS[t.to].name}`, cx, top + 44);
+  drawRoute(cx, top + 62, barW, progress);
   const secs = Math.max(0, Math.ceil(t.left));
+  ctx.textAlign = 'center';
   ctx.font = '12px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
-  ctx.fillText(`Day ${Math.floor(progress * t.days)} of ${t.days}  -  ${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')} remaining${t.event ? '  (paused)' : ''}`, cx, top + 72);
+  ctx.fillText(`Day ${Math.floor(progress * t.days)} of ${t.days}  -  ${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')} remaining${t.event ? '  (paused)' : ''}`, cx, top + 98);
 
   // Comms log, top-left
-  ctx.textAlign = 'left';
-  const colW = narrow ? viewW - 40 : Math.min(360, viewW / 2 - 60), maxLines = narrow ? 9 : 16;
-  let y = top + 110;
-  ctx.fillStyle = '#9ab';
-  ctx.fillText('COMMS', 20, y);
-  // Show whole messages, newest last, as many as fit in 16 lines.
+  const colW = narrow ? viewW - 56 : Math.min(360, viewW / 2 - 76), maxLines = narrow ? 9 : 16;
+  ctx.font = '12px "IBM Plex Mono", monospace';
+  // Show whole messages, newest last, as many as fit.
   let lines = [];
   for (let i = t.comms.length - 1; i >= 0; i--) {
     const c = t.comms[i], wrapped = wrapText(c, colW);
     if (lines.length + wrapped.length > maxLines) break;
     lines = wrapped.map(l => ({ l, recent: i === t.comms.length - 1, market: c.startsWith('[Market]') })).concat(lines);
   }
+  let y = top + 116;
+  transitPanel(16, y, colW + 24, 30 + lines.length * 16, 'COMMS');
+  y += 18;
   for (const { l, recent, market } of lines) {
     ctx.fillStyle = market ? '#ffcf7f' : recent ? '#cfe3ff' : '#7d93aa';
-    ctx.fillText(l, 20, y += 16);
+    ctx.fillText(l, 28, y += 16);
   }
 
   // Ship's log, bottom-left
@@ -404,10 +467,10 @@ function drawTransit(W, H) {
   if (st.crew.length) log.push(`Crew: ${crewMembers().map(c => `${fullName(c)} (${ROLE_NAMES[c.role]})`).join(', ')}`);
   const held = COMMODITIES.filter(c => st.cargo[c.id] > 0).map(c => `${st.cargo[c.id]}t ${c.name}`);
   log.push(`Cargo: ${held.length ? held.join(', ') : 'empty'}`);
-  const logLines = log.flatMap(l => wrapText(l, viewW - (narrow ? 150 : 40)));  // clear the Map button on phones
-  y = H - 20 - logLines.length * 16;
-  ctx.fillStyle = '#9ab';
-  ctx.fillText("SHIP'S LOG", 20, y);
+  const logW = narrow ? viewW - 170 : Math.min(460, viewW - 56);  // clear the Map button on phones
+  const logLines = log.flatMap(l => wrapText(l, logW));
+  y = H - 30 - logLines.length * 16;
+  transitPanel(16, y - 18, logW + 24, 30 + logLines.length * 16, "SHIP'S LOG");
   ctx.fillStyle = '#cfe3ff';
-  for (const l of logLines) ctx.fillText(l, 20, y += 16);
+  for (const l of logLines) ctx.fillText(l, 28, y += 16);
 }
