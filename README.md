@@ -113,6 +113,7 @@ On a keyboard:
 - `js/shiplife.js` - life aboard during a burn: the ship cutaway, crew movement and comms lines, and the downtime menu
 - `js/outpost.js` - your outpost on Callisto or Nereid: supplies, growth, buildings, and settler moments
 - `js/legacy.js` - your name, heirs and retirement, and the list of captains
+- `js/uat.js` - tester tools: a checklist of set-ups for every feature, general tools, and a pass/fail report
 - `js/community.js` - mods by link, shareable scenarios, and shared news between players
 - `js/family.js` - the ship as home: its name and history, personal stories and favors, birthdays and holidays, letters and moods, traditions, touches, the cat, and passengers who join the crew
 - `js/social.js` - bonds between people aboard, tastes, relationship scenes, the season's culture and feeds, shared downtime, and returning passengers
@@ -128,6 +129,10 @@ On a keyboard:
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)
 
 ## Roadmap
+
+## Testing without playing a full game
+
+Tester tools jump straight into any feature. Open them with Shift+U, by tapping the date in the port header five times (phones), or by adding `#uat` to the address; after that a small UAT button stays in the corner. The panel has a checklist grouped by area (basics, life aboard, ports, combat, the frontier, Cold Water, the campaigns, community): Set up starts a fresh game in exactly the right situation (mid-burn with crew, a burn fight, a disabled ship to board, a grown outpost, the Cold Water finale, each campaign's first scene) and says what to check. Mark each Pass or Fail with a note; the Report box gathers everything to copy. General tools add credits, refuel, skip ten days, fill the hold, switch combat modes, land anywhere, switch ship, start a transit happening or pirate contact, arrive at once, or play any scene by id. Opening the panel from your own game backs it up, and Restore my game brings it back.
 
 See [ROADMAP.md](ROADMAP.md) for the long-term milestones.
 

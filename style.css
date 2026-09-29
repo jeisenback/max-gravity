@@ -429,3 +429,19 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 #tzoomout { top: calc(116px + env(safe-area-inset-top, 0px)); }
 
 .body input[type=text] { background: var(--panel-2); border: 1px solid var(--line); color: var(--text); font: inherit; padding: 6px 8px; min-height: 36px; min-width: 0; flex: 1 1 160px; }
+
+/* Tester tools (js/uat.js) */
+#uat { position: fixed; top: 8px; right: 8px; z-index: 1000; width: min(440px, calc(100vw - 16px)); max-height: calc(100vh - 16px); overflow: auto;
+  background: var(--panel); border: 1px solid var(--line); padding: 10px 12px; font-size: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.6); }
+#uat h4 { margin: 12px 0 4px; font-family: var(--font-label); color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; font-size: 11px; }
+#uat .uat-head { display: flex; gap: 8px; align-items: center; justify-content: space-between; }
+#uat .uat-row { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0; }
+#uat button, #uat select { font-size: 11px; min-height: 28px; padding: 3px 8px; }
+#uat select, #uat input, #uat textarea { background: var(--panel-2); border: 1px solid var(--line); color: var(--text); font: inherit; }
+#uat input { width: 100%; padding: 4px 6px; }
+#uat textarea { width: 100%; font-size: 11px; }
+#uat .uat-item { border-left: 3px solid var(--line); padding: 4px 0 6px 8px; margin: 6px 0; }
+#uat .uat-item.pass { border-left-color: #5fd35f; }
+#uat .uat-item.fail { border-left-color: #ff5a5a; }
+#uat button.on { background: var(--panel-2); color: var(--text); outline: 1px solid var(--accent, #6fb0ff); }
+#uatBtn { position: fixed; left: 8px; bottom: 8px; z-index: 999; font-size: 11px; min-height: 28px; padding: 3px 10px; opacity: 0.8; }
