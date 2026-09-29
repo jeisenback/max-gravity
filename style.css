@@ -170,7 +170,8 @@ canvas { display: block; touch-action: none; }
   background: var(--panel-2);
   flex-shrink: 0;
 }
-.dock button { flex: 1 1 0; }
+.dock { flex-wrap: wrap; }  /* phones: the buttons take two rows rather than run off the screen */
+.dock button { flex: 1 1 30%; min-width: 0; }
 @media (min-width: 700px) { .dock button { flex: 0 0 auto; } }
 
 .tutorial {

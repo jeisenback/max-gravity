@@ -113,6 +113,8 @@ On a keyboard:
 - `js/shiplife.js` - life aboard during a burn: the ship cutaway, crew movement and comms lines, and the downtime menu
 - `js/outpost.js` - your outpost on Callisto or Nereid: supplies, growth, buildings, and settler moments
 - `js/legacy.js` - your name, heirs and retirement, and the list of captains
+- `js/music.js` - the generated soundtrack
+- `js/help.js` - the Help topics and one-time tips
 - `js/menu.js` - the title screen, new-game setup, save slots, the pause menu, and settings
 - `js/build.js` - the version number and the release switch for tester tools
 - `js/uat.js` - tester tools: a checklist of set-ups for every feature, general tools, and a pass/fail report
@@ -134,7 +136,9 @@ On a keyboard:
 
 ## Menus and saves
 
-The game opens on a title screen: Continue, New game, Load game, Settings, Controls, and Credits. A new game asks for your name, your ship's name, and where you start (Earth with the tutorial, Mars, or the Belt, each with its own money and friends), and which of five save slots to use. The game saves itself every time you dock; the Menu (a button at port, Esc or the Menu button in flight) pauses the game and offers Save, Load, Settings, Controls, and Quit to title. Saved games can be exported as a file or a code and imported again, for backups or another device. Settings (sound volume, text size, reduced motion) are kept in your browser. Saves carry a version number, and older saves are upgraded when they load. For a public release, set `dev: false` in `js/build.js` to keep the tester tools hidden.
+The game opens on a title screen: Continue, New game, Load game, Settings, Controls, and Credits. A new game asks for your name, your ship's name, and where you start (Earth with the tutorial, Mars, or the Belt, each with its own money and friends), and which of five save slots to use. The game saves itself every time you dock; the Menu (a button at port, Esc or the Menu button in flight) pauses the game and offers Save, Load, Settings, Controls, and Quit to title. Saved games can be exported as a file or a code and imported again, for backups or another device. Settings (music volume, sound effects volume, text size, reduced motion) are kept in your browser. The music is generated as you play, with no audio files: calm pads at the title screen and in port, a slower drift during burns, and a low pulse in a fight. Help in the menu explains every system, and a few one-time tips point newcomers to it.
+
+Hosted on its own web address (GitHub Pages, itch.io, or any static host), the game can be installed like an app and plays offline after one visit (`manifest.webmanifest`, `sw.js`, and `icons/`). Inside claude.ai's frame this part is simply skipped. Saves carry a version number, and older saves are upgraded when they load. For a public release, set `dev: false` in `js/build.js` to keep the tester tools hidden.
 
 ## Testing without playing a full game
 

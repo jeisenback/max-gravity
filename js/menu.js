@@ -16,9 +16,9 @@ const store = {
 };
 
 // ---------- settings ----------
-const Settings = Object.assign({ volume: 1, textScale: 1, reduceMotion: false }, store.get('maxGravity.settings', {}));
+const Settings = Object.assign({ volume: 1, music: 0.6, textScale: 1, reduceMotion: false }, store.get('maxGravity.settings', {}));
 function applySettings() {
-  store.set('maxGravity.settings', { volume: Settings.volume, textScale: Settings.textScale, reduceMotion: Settings.reduceMotion });
+  store.set('maxGravity.settings', { volume: Settings.volume, music: Settings.music, textScale: Settings.textScale, reduceMotion: Settings.reduceMotion });
   UI.el.style.zoom = Settings.textScale;
   if (Sfx.out) Sfx.out.gain.value = Sfx.on ? 0.5 * Settings.volume : 0;
 }
@@ -163,6 +163,7 @@ const Menu = {
           <button ${last ? '' : 'class="primary"'} data-action="menuView" data-arg="new">New game</button>
           <button data-action="menuView" data-arg="load">Load game</button>
           <button data-action="menuView" data-arg="settings">Settings</button>
+          <button data-action="menuView" data-arg="help">Help</button>
           <button data-action="menuView" data-arg="controls">Controls</button>
           <button data-action="menuView" data-arg="credits">Credits</button>
         </div>`;
@@ -195,13 +196,21 @@ const Menu = {
     settings() {
       return `<h2>Settings</h2>
         <div class="menu-form">
-          <label>Sound volume <input type="range" id="setVolume" min="0" max="1" step="0.1" value="${Settings.volume}"></label>
+          <label>Music volume <input type="range" id="setMusic" min="0" max="1" step="0.1" value="${Settings.music}"></label>
+          <label>Sound effects volume <input type="range" id="setVolume" min="0" max="1" step="0.1" value="${Settings.volume}"></label>
           <label class="check"><input type="checkbox" id="setSound" ${Sfx.on ? 'checked' : ''}> Sound on</label>
           <h3>Text size</h3>
           <div class="row">${[[0.9, 'Small'], [1, 'Normal'], [1.15, 'Large'], [1.3, 'Largest']].map(([v, l]) => `<button class="${Settings.textScale === v ? 'on' : ''}" data-action="menuText" data-arg="${v}">${l}</button>`).join('')}</div>
           <label class="check"><input type="checkbox" id="setMotion" ${Settings.reduceMotion ? 'checked' : ''}> Reduce motion (no screen shake, calmer stars)</label>
           ${G.state && this.pausedFrom ? `<h3>This game</h3><div class="row"><button data-action="menuCombat">Combat: ${G.state.flags.classicCombat ? 'classic (in local space)' : 'in burns'}</button></div>` : ''}
         </div>
+        <div class="menu-buttons row"><button data-action="menuBack">Back</button></div>`;
+    },
+    help() {
+      const topic = HELP.find(h => h.id === this.topic);
+      if (topic) return `<h2>${topic.title}</h2>${topic.text.map(p => `<p class="desc">${p}</p>`).join('')}
+        <div class="menu-buttons row"><button data-action="menuTopic" data-arg="">All topics</button><button data-action="menuBack">Back</button></div>`;
+      return `<h2>Help</h2><div class="menu-buttons">${HELP.map(h => `<button data-action="menuTopic" data-arg="${h.id}">${h.title}</button>`).join('')}</div>
         <div class="menu-buttons row"><button data-action="menuBack">Back</button></div>`;
     },
     controls() {
@@ -228,6 +237,7 @@ const Menu = {
           <button data-action="menuSave" ${docked ? '' : 'disabled'}>Save now${docked ? '' : '<span class="hint">You can save when docked. The game saves itself every time you dock.</span>'}</button>
           <button data-action="menuView" data-arg="load">Load game</button>
           <button data-action="menuView" data-arg="settings">Settings</button>
+          <button data-action="menuView" data-arg="help">Help</button>
           <button data-action="menuView" data-arg="controls">Controls</button>
           <button data-action="menuQuit">Quit to title${docked ? '' : '<span class="hint">Progress since you last docked is lost.</span>'}</button>
         </div>`;
@@ -266,6 +276,8 @@ function menuButton() {
 Mods.register({
   id: 'menu', name: 'Menus and saves', builtin: true,
   init(M) {
+    // Installable and playable offline where the game is hosted on its own (not inside claude.ai's frame).
+    if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol) && window.top === window) navigator.serviceWorker.register('sw.js').catch(() => {});
     M.on('frame', dt => {
       menuButton();
       if (G.state && !G.paused && G.mode !== 'title') G.state.played = (G.state.played || 0) + dt;
@@ -278,6 +290,7 @@ Mods.register({
     document.addEventListener('change', e => {
       const t = e.target;
       if (t.id === 'setVolume') { Settings.volume = Number(t.value); applySettings(); }
+      else if (t.id === 'setMusic') { Settings.music = Number(t.value); applySettings(); }
       else if (t.id === 'setSound') { if (Sfx.on !== t.checked) Sfx.toggle(); applySettings(); }
       else if (t.id === 'setMotion') { Settings.reduceMotion = t.checked; applySettings(); }
       else if (t.id === 'ngTutorial') Menu.form.tutorial = t.checked;
@@ -295,7 +308,8 @@ Mods.register({
     const back = () => { Menu.exported = null; Menu.confirm = null; Menu.view = Menu.pausedFrom ? 'pause' : 'main'; };
     const act = (name, fn) => M.action(name, arg => { fn(arg); if (G.mode === 'title' || G.paused) Menu.render(); });
     act('menuView', v => { keepForm(); Menu.view = v; });
-    act('menuBack', back);
+    act('menuBack', () => { Menu.topic = null; back(); });
+    act('menuTopic', id => { Menu.topic = id || null; });
     act('menuContinue', () => loadSlot(Saves.latest()));
     act('menuBackground', id => { keepForm(); Menu.form.background = id; });
     act('menuSlotPick', n => { keepForm(); Menu.form.slot = Number(n); });
