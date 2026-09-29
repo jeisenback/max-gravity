@@ -36,6 +36,14 @@ const CONDITIONS = {
   boom: v => economy(v) === 'boom',
   bust: v => economy(v) === 'bust',
   raid: v => excessUnrest(v === true ? sidNow() : v) > 0.05,
+  berths: v => berthsFree() >= v,
+  // Cold Water's state (story.js): `stage` and `side` match a value or list; any other
+  // key is a story flag that must be set (true) or unset (false).
+  story: v => all(v, (k, want) => (k === 'stage' || k === 'side' ? [].concat(want).includes(story()[k]) : !!story()[k] === !!want)),
+  // Days since a day the story recorded: { next: 0 } holds once the day reaches story().next.
+  storyDay: v => all(v, (k, n) => G.state.day >= (story()[k] || 0) + n),
+  // A story passenger aboard, by role in the story (older saves' Mira has none).
+  aboard: v => paxAboard().some(m => m.story && (m.storyWho || 'mira-europa') === v),
   chance: v => Math.random() < v,
 };
 
@@ -54,6 +62,27 @@ function journal(text) {
 
 const EFFECTS = {
   credits: n => { G.state.credits = Math.max(0, G.state.credits + n); },
+  // Cold Water's state and log (story.js).
+  story: v => { Object.assign(story(), v); },
+  storyLog: text => storyLog(fill(text)),
+  storyAdd: v => { for (const [k, n] of Object.entries(v)) story()[k] = (story()[k] || 0) + n; },
+  // Days from today into a story field: { next: 10 } sets story().next to day + 10.
+  storyDays: v => { for (const [k, n] of Object.entries(v)) story()[k] = G.state.day + n; },
+  // Seconds added to the current burn (transit only).
+  delay: s => { if (G.transit) delay(s); },
+  // Change the story passenger aboard with this role: { who, bonus, set: { fields } }.
+  passenger: v => {
+    const m = paxAboard().find(x => x.story && (x.storyWho || 'mira-europa') === v.who);
+    if (!m) return;
+    m.bonus += v.bonus || 0;
+    Object.assign(m, v.set || {});
+  },
+  // Run a named action a storyline registered in code (M.addAction). An action can
+  // return text, which is added to the choice's result.
+  do: spec => {
+    const [name, ...args] = [].concat(spec);
+    return Mods.storyActions[name](...args);
+  },
   rep: v => { for (const [g, n] of Object.entries(v)) changeRep(g, n); },
   cargo: v => {
     for (const [c, n] of Object.entries(v)) {
@@ -99,12 +128,23 @@ const EFFECTS = {
   },
 };
 
+// Applies effects; returns any text they produced (from `do` actions).
 function applyEffects(effects = {}) {
-  for (const [k, v] of Object.entries(effects)) EFFECTS[k](v);
+  const said = [];
+  for (const [k, v] of Object.entries(effects)) {
+    const r = EFFECTS[k](v);
+    if (typeof r === 'string' && r) said.push(r);
+  }
+  return said;
 }
 
 // {planet}, {system}, and {crew:role} (the crew member in that role) in any text.
+// Text can also be a list of parts, each a string or { when, text, else }: parts
+// whose conditions fail show their `else` (or nothing). Parts are joined by spaces.
 function fill(text = '') {
+  if (Array.isArray(text)) {
+    text = text.map(p => (typeof p === 'string' ? p : meets(p.when) ? p.text : p.else || '')).filter(Boolean).join(' ');
+  }
   return text.replace(/\{planet\}/g, G.state.planet).replace(/\{system\}/g, SYSTEMS[sidNow()].name)
     .replace(/\{crew:(\w+)\}/g, (_, role) => roleName(role));
 }
@@ -129,17 +169,19 @@ function addStorylet(def, source = 'core') {
 function storyletEvent(s) {
   const qs = G.state.qualities = G.state.qualities || {};
   if (s.once) qs[`seen:${s.id}`] = 1;
+  // A choice that needs a particular crew member (not just a role) is hidden without them.
+  const present = c => !(c.when && c.when.crew && !ROLE_NAMES[c.when.crew] && !G.state.crew.includes(c.when.crew));
   return {
     title: fill(s.title), text: fill(s.text),
-    choices: s.choices.map(c => ({
+    choices: s.choices.filter(present).map(c => ({
       label: fill(c.label),
       role: c.when && ROLE_NAMES[c.when.crew] ? c.when.crew : undefined,
       can: c.when ? () => meets(c.when) : undefined,
       run() {
-        applyEffects(c.effects);
+        const said = applyEffects(c.effects);
         const next = c.next && STORYLETS.find(x => x.id === c.next);
         if (next) G.nextEvent = storyletEvent(next);
-        return fill(c.result || '');
+        return [fill(c.result || ''), ...said].filter(Boolean).join(' ');
       },
     })),
   };

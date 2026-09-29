@@ -8,6 +8,7 @@
 //   M.action(name, fn)      handle a port-screen button with data-action="name"
 //   M.addSystem / addShip / addOutfit / addCommodity / addEvent   add content
 //   M.addStorylet(def)      add a storylet (see js/storylets.js)
+//   M.addAction(name, fn)   code a storylet can run with the `do` effect
 //   M.state()               an object saved with the game, private to this mod
 //   M.note(text)            tell the player: a port-screen note when docked, else the flight log
 // A mod that throws is switched off with a console error; the game keeps running.
@@ -46,6 +47,7 @@ const Mods = {
   list: [],
   hooks: {},     // event or filter name -> [{ mod, fn }]
   actions: {},
+  storyActions: {},  // named code actions storylets can run (M.addAction, the `do` effect)
 
   register(def) {
     if (!def || !def.id || typeof def.init !== 'function') return console.error('Mods.register needs { id, init(M) }', def);
@@ -81,6 +83,7 @@ const Mods = {
       addCommodity: def => this.add(mod, 'commodity', null, def && def.id, def),
       addEvent: def => this.add(mod, 'event', null, def && def.title, def),
       addStorylet: def => addStorylet(def, mod.id),
+      addAction: (name, fn) => { this.storyActions[name] = fn; },
     };
   },
 

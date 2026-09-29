@@ -273,17 +273,15 @@ function updateTransit(dt) {
   if (t.left <= 0) arrive();
 }
 
-// Passengers and crew storylines get first claim on a happening, then general
-// events, then market rumors.
+// Passengers, storylets (Cold Water's beats among them), and crew storylines get
+// first claim on a happening, then general events, then market rumors.
 function startHappening() {
   const t = G.transit, flags = G.state.flags;
-  const beat = storyTransitBeat();
-  if (beat) return openEvent(beat);
-  // (A handcrafted group renamed since the save was made has no event.)
-  const pax = paxAboard().find(m => !m.eventDone && (m.story || m.pid || PASSENGERS[m.passenger]));
-  if (pax && (pax.story || Math.random() < 0.5)) {
+  // Story passengers' scenes are storylets. (A handcrafted group renamed since the save was made has no event.)
+  const pax = paxAboard().find(m => !m.story && !m.eventDone && (m.pid || PASSENGERS[m.passenger]));
+  if (pax && Math.random() < 0.5) {
     pax.eventDone = true;
-    return openEvent(pax.story ? storyPaxEvent(pax) : pax.pid ? passengerEvent(pax) : PASSENGERS[pax.passenger].event(pax));
+    return openEvent(pax.pid ? passengerEvent(pax) : PASSENGERS[pax.passenger].event(pax));
   }
   const modEvent = Mods.filter('transitEvent', null);  // storylets, and mods
   if (modEvent) return openEvent(modEvent);

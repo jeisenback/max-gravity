@@ -37,7 +37,7 @@ Knock a ship's hull below 20% and it is disabled: it stops fighting and drifts. 
 
 ## Storylines
 
-Besides Cold Water, four shorter storylines are written as storylets (see Writing storylets):
+Besides Cold Water, whose scenes are storylets too, four shorter storylines are written as storylets (see Writing storylets):
 
 - **The Ice Haulers' Strike.** A Belt haulers' strike, starting with a Guild broadcast on a burn into Belt space after day 12. Smuggle medicine past Coalition customs; how it ends depends on the Belt when you reach Pallas.
 - **Reserve Commission.** Once you are Trusted by the Mars Republic, a Navy officer on Mars or Phobos offers a reserve commission: a raider hunt, a distress call, a war-time call-up or a peacetime run to Ganymede, an order that tests your loyalty to the Belt, and a promotion that remembers what you did.
@@ -91,7 +91,7 @@ On a keyboard:
 - `js/people.js` - procedural people: generation, passenger and crew events, memory, and reunions
 - `js/factions.js` - faction standing, patrols, and fines
 - `js/hail.js` - hailing ships in flight
-- `js/story.js` - the Cold Water plot
+- `js/story.js` - the Cold Water plot's machinery: story state, the recovery ship, the blockade, the endings and epilogue
 - `js/touch.js` - touch controls (joystick, hold and tap buttons)
 - `js/art.js` - art drawn in code: ship hulls, planets, moons, stations, gas giants, and the Sun (all lit from the Sun's real direction), plus tracers, shield flashes, explosions, smoke, and the HUD gauges and labels
 - `js/mods.js` - the mod API (see Modding below)
@@ -102,7 +102,7 @@ On a keyboard:
 - `js/torpedoes.js` - torpedoes, the launcher and ammunition, and point-defense turrets
 - `js/boarding.js` - disabled ships, boarding and prizes, and crew injuries
 - `js/storylets.js` - the storylet engine: story written as data (see Writing storylets below)
-- `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike), `mars-navy.js` (Reserve Commission, a Mars Navy career), `rook-crown.js` (The Rook's Crown, a pirate lord's rise), and `tethys.js` (The Partner's Chair, a corporate climb)
+- `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike), `mars-navy.js` (Reserve Commission, a Mars Navy career), `rook-crown.js` (The Rook's Crown, a pirate lord's rise), `tethys.js` (The Partner's Chair, a corporate climb), and `cold-water.js` (the scenes of Cold Water)
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
 - `js/audio.js` - sound effects synthesized with Web Audio (no audio files): guns, hits, explosions, engine rumble, docking, burns, comms
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)
@@ -242,8 +242,10 @@ A storylet plays once unless you set `once: false`. A choice whose `when` fails 
 | `cancelMission` | drops missions carrying this good, applying their `onFail` |
 | `bounty` | `{ at, name, pay, days, issuer, onDone, onFail }` gives a hunt: the named ship appears when you reach `at` |
 | `companyShip` | gives a crewed company ship of this type, docked where you are |
+| `delay` | adds seconds to the current burn (transit only) |
+| `do` | `'name'` or `['name', ...args]`: runs code your mod registered with `M.addAction(name, fn)`; text it returns is added to the result |
 
-Text can use `{planet}`, `{system}`, and `{crew:role}`. Mistakes (unknown conditions or effects, a missing field) are reported in the console, and the storylet is skipped.
+Text can use `{planet}`, `{system}`, and `{crew:role}`. A title, text, label, or result can also be a list of parts, each a string or `{ when, text, else }`; parts whose conditions fail show their `else` (or nothing). Cold Water keeps its own state outside qualities and has conditions and effects for it (`story`, `storyDay`, `aboard`, `storyLog`, and a few more; see `js/storylets.js`). Mistakes (unknown conditions or effects, a missing field) are reported in the console, and the storylet is skipped.
 
 ### When something goes wrong
 
