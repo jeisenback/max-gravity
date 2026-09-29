@@ -562,6 +562,7 @@ function land(planet) {
   // deliveries
   st.missions = st.missions.filter(m => {
     if (m.type === 'bounty' || m.destSystem !== st.systemId || m.destPlanet !== planet.name) return true;
+    if (m.type === 'favor') { Mods.emit('missionDone', m); return false; }  // a promise kept (family.js)
     changeRep(localGov(), m.contract ? 4 : 2);
     Mods.emit('missionDone', m);
     if (m.type === 'delivery') {
@@ -580,7 +581,7 @@ function land(planet) {
     return false;
   });
   expireMissions();
-  for (const c of crewMembers().filter(c => c.id && c.opinion <= -4)) {
+  for (const c of crewMembers().filter(c => c.id && c.opinion <= -4 && !c.loyal)) {
     leaveCrew(c.id);
     c.location = planet.name;
     msg(`${fullName(c)} has had enough of you and your ship, and walks off at ${planet.name}.`);

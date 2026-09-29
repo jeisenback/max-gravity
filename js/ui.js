@@ -89,7 +89,7 @@ const UI = {
           <div class="sub" style="color:${GOV_COLORS[sys.gov]}">${sys.gov}</div>
         </div>
         <div class="stats">
-          ${dateOf()} &middot; ${s.name}<br>
+          ${dateOf()} &middot; ${shipTitle()}, ${s.name}<br>
           <b>${fmt(st.credits)} cr</b><br>
           Cargo ${cargoUsed()}/${s.cargo}t &middot; Berths ${berthsUsed()}/${s.berths} &middot; Mass ${st.fuel}/${s.fuel}
         </div>
@@ -223,6 +223,7 @@ const UI = {
         <h3>Your crew</h3>
         ${mine || '<p class="hint">Just you. Crew take a berth each and are paid daily wages in transit.</p>'}
         <p class="hint">Berths: ${berthsUsed()}/${ship().berths} used by crew and passengers. Unhappy crew will walk off the ship.</p>
+        ${homeHtml()}
         ${bondsHtml()}
         <h3>Looking for work here</h3>
         ${forHire || '<p class="hint">Nobody in the bar is looking for a ship right now.</p>'}

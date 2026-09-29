@@ -18,15 +18,15 @@ const PRICE_MULT = { L: 0.75, M: 1.0, H: 1.3 };
 // `fuel` is reaction mass. Burn costs scale with distance (see burnFuel in game.js).
 // `berths` are shared by crew and passengers.
 const SHIPS = {
-  shuttle:   { name: 'Rock Hopper',  price: 10000,  cargo: 20,  fuel: 300, berths: 3, shields: 60,  armor: 50,  accel: 170, maxSpeed: 260, turn: 3.0, guns: 1, size: 10, forSale: true,
+  shuttle:   { name: 'Rock Hopper',  price: 10000,  cargo: 20,  fuel: 300, berths: 4, shields: 60,  armor: 50,  accel: 170, maxSpeed: 260, turn: 3.0, guns: 1, size: 10, forSale: true,
                desc: 'A patched-up Belter skiff held together with sealant and optimism. Every captain starts somewhere.' },
-  lightfreighter: { name: 'Ore Runner', price: 28000, cargo: 50, fuel: 300, berths: 3, shields: 90, armor: 100, accel: 150, maxSpeed: 250, turn: 2.6, guns: 1, size: 13, forSale: true,
+  lightfreighter: { name: 'Ore Runner', price: 28000, cargo: 50, fuel: 300, berths: 5, shields: 90, armor: 100, accel: 150, maxSpeed: 250, turn: 2.6, guns: 1, size: 13, forSale: true,
                desc: 'The first real step up for an independent hauler. Two and a half times the hold of a Rock Hopper.' },
-  courier:   { name: 'Torch Courier', price: 45000, cargo: 35,  fuel: 380, berths: 5, shields: 110, armor: 80,  accel: 260, maxSpeed: 380, turn: 3.8, guns: 1, size: 11, forSale: true,
+  courier:   { name: 'Torch Courier', price: 45000, cargo: 35,  fuel: 380, berths: 7, shields: 110, armor: 80,  accel: 260, maxSpeed: 380, turn: 3.8, guns: 1, size: 11, forSale: true,
                desc: 'All drive and very little else. Mail runners and smugglers swear by them.' },
-  freighter: { name: 'Ice Hauler',   price: 90000,  cargo: 120, fuel: 450, berths: 6, shields: 180, armor: 260, accel: 100, maxSpeed: 200, turn: 1.8, guns: 1, size: 18, forSale: true,
+  freighter: { name: 'Ice Hauler',   price: 90000,  cargo: 120, fuel: 450, berths: 10, shields: 180, armor: 260, accel: 100, maxSpeed: 200, turn: 1.8, guns: 1, size: 18, forSale: true,
                desc: 'A water tank the size of a city block with a drive bolted on. Slow, sturdy, and long-legged enough to reach Triton.' },
-  gunship:   { name: 'Corvette',     price: 160000, cargo: 15,  fuel: 380, berths: 5, shields: 300, armor: 220, accel: 300, maxSpeed: 400, turn: 4.4, guns: 3, size: 12, forSale: true,
+  gunship:   { name: 'Corvette',     price: 160000, cargo: 15,  fuel: 380, berths: 6, shields: 300, armor: 220, accel: 300, maxSpeed: 400, turn: 4.4, guns: 3, size: 12, forSale: true,
                req: 15, desc: 'Decommissioned fast-attack ship with three forward gun mounts. Pirates give it a wide berth. Sold only to captains the local government trusts.' },
   raider:    { name: 'Raider',  price: 22000, cargo: 10, fuel: 300, shields: 70,  armor: 60,  accel: 230, maxSpeed: 330, turn: 3.6, guns: 1, size: 10 },
   destroyer: { name: 'Destroyer', price: 240000, cargo: 40, fuel: 600, shields: 320, armor: 480, accel: 150, maxSpeed: 230, turn: 2.2, guns: 3, size: 22 },

@@ -431,7 +431,7 @@ function drawTransit(W, H) {
   ctx.textAlign = 'center';
   ctx.font = `600 11px ${LABEL_FONT}`;
   ctx.fillStyle = '#7fb4ff';
-  ctx.fillText('IN TRANSIT', cx, top + 22);
+  ctx.fillText(`${shipTitle().toUpperCase()} IN TRANSIT`, cx, top + 22);
   ctx.fillStyle = '#e6f0ff';
   ctx.font = `600 20px ${LABEL_FONT}`;
   ctx.fillText(`${system().name}  >  ${SYSTEMS[t.to].name}`, cx, top + 44);
