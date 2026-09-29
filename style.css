@@ -157,6 +157,7 @@ canvas { display: block; touch-action: none; }
 }
 .tabs button:hover:not(:disabled) { background: var(--panel-2); color: var(--text); }
 .tabs button.active { background: transparent; color: var(--text); border-bottom-color: var(--accent); }
+@media (max-width: 420px) { .tabs { gap: 0; padding-inline: 4px; } .tabs button { font-size: 11px; letter-spacing: 0; padding-inline: 2px; } }
 @media (min-width: 700px) { .tabs { gap: 6px; padding-inline: 12px; } .tabs button { flex: 0 0 auto; padding: 7px 12px; font-size: 14px; } }
 
 /* Map and Take off stay in reach at the bottom of the landed screen. */

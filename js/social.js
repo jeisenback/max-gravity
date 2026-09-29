@@ -31,7 +31,7 @@ const HOME_CULTURE = { 'Ceres Station': 'belt', 'The Rook': 'belt', Mars: 'mars'
 
 const title = () => pick([
   () => `The ${pick(TITLE_A)} ${pick(TITLE_N)}`, () => `${pick(TITLE_N)} of ${pick(PLACES)}`,
-  () => `${pick(TITLE_A)} ${pick(TITLE_N)}`, () => `Beyond ${pick(PLACES)}`, () => `A ${pick(TITLE_N)} for ${pick(PLACES)}`,
+  () => `${pick(TITLE_A)} ${pick(TITLE_N)}`, () => `Beyond ${pick(PLACES)}`, () => `${pick(TITLE_N)} Over ${pick(PLACES)}`,
 ])();
 const who = () => { const p = makePerson(); return `${p.first} ${p.last}`; };
 

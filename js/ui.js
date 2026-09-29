@@ -76,6 +76,7 @@ const UI = {
       ['trade', 'Exchange', p.services.includes('trade')],
       ['missions', 'Missions', p.services.includes('missions')],
       ['shipyard', 'Shipyard', p.services.includes('shipyard') || p.services.includes('outfitter')],
+      ['bar', 'Bar', true],
       ['crew', 'Crew', true],
       ['company', 'Company', true],
     ];
