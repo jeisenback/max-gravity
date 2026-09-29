@@ -147,9 +147,7 @@ const UI = {
         ${!(st.news || []).length && !st.rumors.length ? '<p class="hint">Listen to the comms in transit for more.</p>' : ''}
         ${othersNewsHtml()}
         ${communityHtml()}
-        <div class="foot">${this.confirmNew
-          ? 'Start over? Your current progress will be lost. <button data-action="newgame" data-arg="force">Start over</button> <button data-action="newgame" data-arg="cancel">Keep playing</button>'
-          : '<button class="link" data-action="newgame">Start a new game</button>'}</div>`;
+        <p class="hint">New games, saves, and settings are in the Menu (below, or Esc in flight).</p>`;
     },
 
     trade() {
@@ -311,11 +309,8 @@ const UI = {
       case 'takeoff': takeOff(); return;
       case 'map': openMap(); return;
       case 'load': loadGame(); return;
-      case 'newgame':
-        // Confirmed in the page itself; browser confirm() dialogs are blocked in some embeds.
-        this.confirmNew = !arg;
-        if (arg === 'force') newGame();
-        else this.render();
+      case 'newgame':  // from the death screen: the New game page of the title screen
+        Menu.showTitle(); Menu.view = 'new'; Menu.render();
         return;
       case 'refuel': {
         const amt = Math.min(s.fuel - st.fuel, Math.floor(st.credits / FUEL_PRICE));
@@ -425,6 +420,6 @@ UI.el.addEventListener('click', e => {
   const b = e.target.closest('[data-action]');
   if (b && !b.disabled) {
     Mods.emit('uiClick', b.dataset.action, b.dataset.arg);
-    if (Mods.act(b.dataset.action, b.dataset.arg)) { save(); if (G.mode === 'landed' && !G.dialog) UI.render(); } else UI.act(b.dataset.action, b.dataset.arg);
+    if (Mods.act(b.dataset.action, b.dataset.arg)) { save(); if (G.mode === 'landed' && !G.dialog && !G.paused) UI.render(); } else UI.act(b.dataset.action, b.dataset.arg);
   }
 });

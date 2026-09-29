@@ -113,6 +113,8 @@ On a keyboard:
 - `js/shiplife.js` - life aboard during a burn: the ship cutaway, crew movement and comms lines, and the downtime menu
 - `js/outpost.js` - your outpost on Callisto or Nereid: supplies, growth, buildings, and settler moments
 - `js/legacy.js` - your name, heirs and retirement, and the list of captains
+- `js/menu.js` - the title screen, new-game setup, save slots, the pause menu, and settings
+- `js/build.js` - the version number and the release switch for tester tools
 - `js/uat.js` - tester tools: a checklist of set-ups for every feature, general tools, and a pass/fail report
 - `js/community.js` - mods by link, shareable scenarios, and shared news between players
 - `js/family.js` - the ship as home: its name and history, personal stories and favors, birthdays and holidays, letters and moods, traditions, touches, the cat, and passengers who join the crew
@@ -129,6 +131,10 @@ On a keyboard:
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)
 
 ## Roadmap
+
+## Menus and saves
+
+The game opens on a title screen: Continue, New game, Load game, Settings, Controls, and Credits. A new game asks for your name, your ship's name, and where you start (Earth with the tutorial, Mars, or the Belt, each with its own money and friends), and which of five save slots to use. The game saves itself every time you dock; the Menu (a button at port, Esc or the Menu button in flight) pauses the game and offers Save, Load, Settings, Controls, and Quit to title. Saved games can be exported as a file or a code and imported again, for backups or another device. Settings (sound volume, text size, reduced motion) are kept in your browser. Saves carry a version number, and older saves are upgraded when they load. For a public release, set `dev: false` in `js/build.js` to keep the tester tools hidden.
 
 ## Testing without playing a full game
 

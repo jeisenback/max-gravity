@@ -416,7 +416,7 @@ function drawTransit(W, H) {
   // Stars streak with our speed: longest at the midpoint.
   const speed = 0.05 + Math.sin(Math.PI * progress) * 0.6;
   for (const s of G.transitStars) {
-    const x = s.x * viewW, y = s.y * H, len = Math.max(s.z * 2, speed * s.z * s.z * 40);
+    const x = s.x * viewW, y = s.y * H, len = Math.max(s.z * 2, speed * s.z * s.z * (Settings.reduceMotion ? 6 : 40));
     ctx.fillStyle = `rgba(200,215,255,${s.z * 0.8})`;
     ctx.fillRect(x, y, len, s.z > 0.7 ? 2 : 1);
   }

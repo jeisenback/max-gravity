@@ -149,7 +149,7 @@ const UAT_TOOLS = {
   intercept: () => { if (G.mode === 'transit' && !G.transit.event) openEvent(contactEvent({ kind: 'pirate' })); },
   arrive: () => { if (G.mode === 'transit') { G.transit.left = 0.05; G.transit.times = []; } },
   restore: () => {
-    try { const s = localStorage.getItem(UAT_BACKUP); if (s) { localStorage.setItem(SAVE_KEY, s); G.dialog = null; G.transit = null; G.engage = null; loadGame(); } } catch (e) { /* storage blocked */ }
+    try { const s = localStorage.getItem(UAT_BACKUP); if (s) { localStorage.setItem(Saves.key(Saves.current), s); G.dialog = null; G.transit = null; G.engage = null; G.paused = false; loadGame(); } } catch (e) { /* storage blocked */ }
   },
 };
 
@@ -162,7 +162,7 @@ const Uat = {
     this.open = !this.open;
     if (this.open) {
       // Back up the real game each time the panel opens from it (never a test game).
-      try { if (G.state && !G.state.uat) { save(); localStorage.setItem(UAT_BACKUP, localStorage.getItem(SAVE_KEY)); } } catch (e) { /* storage blocked */ }
+      try { if (G.state && !G.state.uat) { save(); localStorage.setItem(UAT_BACKUP, localStorage.getItem(Saves.key(Saves.current))); } } catch (e) { /* storage blocked */ }
     }
     this.render();
   },
@@ -239,7 +239,7 @@ const Uat = {
 const alertNote = text => { if (typeof msg === 'function') msg(text); };
 
 // A small UAT button once tester tools are on, so phones can reopen the panel.
-let uatOn = (() => { try { return localStorage.getItem('maxGravity.uat.on') === '1'; } catch (e) { return false; } })();
+let uatOn = BUILD.dev && (() => { try { return localStorage.getItem('maxGravity.uat.on') === '1'; } catch (e) { return false; } })();
 function uatButton() {
   let b = document.getElementById('uatBtn');
   if (!uatOn) { if (b) b.remove(); return; }
@@ -250,6 +250,7 @@ function uatButton() {
   }
 }
 function uatEnable() {
+  if (!BUILD.dev) return;  // release builds keep the tester tools hidden
   uatOn = true;
   try { localStorage.setItem('maxGravity.uat.on', '1'); } catch (e) { /* session only */ }
   uatButton();
