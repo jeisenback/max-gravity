@@ -197,7 +197,7 @@ function pickStorylet(where) {
 
 function journalHtml() {
   const j = G.state.journal || [];
-  return j.length ? `<h3>Journal</h3>${j.slice(0, 6).map(e => `<div class="hint">Day ${e.day}: ${e.text}</div>`).join('')}` : '';
+  return j.length ? `<h3>Journal</h3>${j.slice(0, 6).map(e => `<div class="hint">${dateOf(e.day)}: ${e.text}</div>`).join('')}` : '';
 }
 
 Mods.register({

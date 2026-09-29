@@ -142,7 +142,7 @@ function feedLine() {
   // Dock gossip about people you know.
   const known = Object.values(st.people).filter(p => p.location && p.memories.length && Math.abs(p.opinion) >= 2);
   if (known.length) {
-    const p = pick(known), mem = p.memories[p.memories.length - 1].replace(/^Day \d+: /, '');
+    const p = pick(known), mem = p.memories[p.memories.length - 1].replace(/^(Day \d+|\d+ \w+ \d+): /, '');
     lines.push(`Dock gossip from ${p.location}: ${p.first} ${p.last} is still telling anyone who listens, "${mem}"`);
   }
   return `[Feed] ${pick(lines)}`;
@@ -350,7 +350,7 @@ function welcomeBack() {
   m.welcomed = true;
   const p = G.state.people[m.pid], me = { id: m.pid, p };
   const friends = folk().filter(f => f.crew && bond(f, me) >= 2);
-  const mem = p.memories.length ? p.memories[p.memories.length - 1].replace(/^Day \d+: /, '') : null;
+  const mem = p.memories.length ? p.memories[p.memories.length - 1].replace(/^(Day \d+|\d+ \w+ \d+): /, '') : null;
   return {
     title: 'Welcome Back', text: `${p.first} ${p.last} settles into the same berth as last time.${mem ? ` "Last time, ${mem.charAt(0).toLowerCase()}${mem.slice(1)}"` : ''}${friends.length ? ` ${names(friends)} ${friends.length > 1 ? 'have' : 'has'} saved them the good mug.` : ''}`,
     choices: [

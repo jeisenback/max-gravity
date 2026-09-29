@@ -440,7 +440,7 @@ function drawTransit(W, H) {
   ctx.textAlign = 'center';
   ctx.font = '12px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
-  ctx.fillText(`Day ${Math.floor(progress * t.days)} of ${t.days}  -  ${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')} remaining${t.event ? '  (paused)' : ''}`, cx, top + 98);
+  ctx.fillText(`${dateOf(st.day + Math.floor(progress * t.days))}, arriving ${dateOf(st.day + t.days)}  -  ${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')} remaining${t.event ? '  (paused)' : ''}`, cx, top + 98);
 
   // Comms log, top-left
   const colW = narrow ? viewW - 56 : Math.min(360, viewW / 2 - 76), maxLines = narrow ? 9 : 16;
@@ -462,7 +462,7 @@ function drawTransit(W, H) {
 
   // Ship's log, bottom-left
   const log = [];
-  for (const m of st.missions) log.push(`${m.title} (due day ${m.deadline})`);
+  for (const m of st.missions) log.push(`${m.title} (due ${dateOf(m.deadline)})`);
   if (!st.missions.length) log.push('No active missions.');
   if (st.crew.length) log.push(`Crew: ${crewMembers().map(c => `${fullName(c)} (${ROLE_NAMES[c.role]})`).join(', ')}`);
   const held = COMMODITIES.filter(c => st.cargo[c.id] > 0).map(c => `${st.cargo[c.id]}t ${c.name}`);

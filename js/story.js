@@ -24,7 +24,7 @@ function story() {
 }
 
 function storyLog(text) {
-  story().log.push(`Day ${G.state.day}: ${text}`);
+  story().log.push(`${dateOf()}: ${text}`);
 }
 
 function storyObjective() {
@@ -267,7 +267,7 @@ function epilogueEvent() {
     mira,
     crew.length ? crew.join(' ') : 'You fly alone, the way you started.',
     `Across the solar system, ${friends} ${friends === 1 ? 'person' : 'people'} would cross a burn for you, and ${enemies} would not.`,
-    `Day ${st.day}. ${fmt(st.credits)} cr. Your ship: the ${ship().name}. ${standing}.`,
+    `${dateOf(st.day)}. ${fmt(st.credits)} cr. Your ship: the ${ship().name}. ${standing}.`,
   ];
   return {
     title: 'Epilogue: Cold Water',

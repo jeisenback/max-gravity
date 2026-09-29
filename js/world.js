@@ -143,7 +143,7 @@ function conditions(sid) {
       const p = pressure(pl, cid), name = COMMODITIES.find(c => c.id === cid).name;
       if (p > 0.2) {
         const due = inbound(pl, cid), tons = due.reduce((t, v) => t + v.tons, 0);
-        const eta = due.length ? `${tons}t inbound, first due day ${Math.min(...due.map(v => v.arrive))}` : 'no haulers inbound';
+        const eta = due.length ? `${tons}t inbound, first due ${dateOf(Math.min(...due.map(v => v.arrive)))}` : 'no haulers inbound';
         out.push({ bad: true, text: `Shortage of ${name} at ${pl.name} (+${Math.round(p * 100)}%, ${eta})` });
       }
       else if (p < -0.2) out.push({ bad: false, text: `Glut of ${name} at ${pl.name} (${Math.round(p * 100)}%)` });
@@ -256,7 +256,7 @@ function warSkirmish() {
 
 function factionConditions(gov) {
   const out = [], w = atWar(gov), e = economy(gov);
-  if (w) out.push({ bad: true, text: `The ${gov} is at war with the ${warFoe(gov)} (day ${G.state.day - w.start + 1}). Its markets want medical supplies, machine parts, and metal.` });
+  if (w) out.push({ bad: true, text: `The ${gov} is at war with the ${warFoe(gov)} (since ${dateOf(w.start)}). Its markets want medical supplies, machine parts, and metal.` });
   if (e === 'boom') out.push({ bad: false, text: `The ${gov} economy is booming: contracts pay 25% more.` });
   if (e === 'bust') out.push({ bad: true, text: `The ${gov} economy is in a slump: contracts pay 25% less.` });
   return out;

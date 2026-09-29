@@ -89,7 +89,7 @@ const UI = {
           <div class="sub" style="color:${GOV_COLORS[sys.gov]}">${sys.gov}</div>
         </div>
         <div class="stats">
-          Day ${st.day} &middot; ${s.name}<br>
+          ${dateOf()} &middot; ${s.name}<br>
           <b>${fmt(st.credits)} cr</b><br>
           Cargo ${cargoUsed()}/${s.cargo}t &middot; Berths ${berthsUsed()}/${s.berths} &middot; Mass ${st.fuel}/${s.fuel}
         </div>
@@ -145,8 +145,8 @@ const UI = {
         <h3>News</h3>
         ${this.conditionList(Object.keys(SYSTEMS).filter(id => id !== st.systemId).flatMap(conditions)
           .filter((c, i, all) => all.findIndex(d => d.text === c.text) === i && !conditions(st.systemId).some(d => d.text === c.text)), '')}
-        ${(st.news || []).map(n => `<div class="hint">Day ${n.day}: ${n.text}</div>`).join('')}
-        ${st.rumors.map(r => `<div class="hint">${r.text} Until day ${r.until}.</div>`).join('')}
+        ${(st.news || []).map(n => `<div class="hint">${dateOf(n.day)}: ${n.text}</div>`).join('')}
+        ${st.rumors.map(r => `<div class="hint">${r.text} Until ${dateOf(r.until)}.</div>`).join('')}
         ${!(st.news || []).length && !st.rumors.length ? '<p class="hint">Listen to the comms in transit for more.</p>' : ''}
         ${this.modList()}
         <div class="foot">${this.confirmNew
@@ -296,7 +296,7 @@ const UI = {
       const blocked = action === 'accept' && (noCargo || noBerths);
       const need = m.tons ? ` &middot; ${m.tons}t cargo` : m.pax ? ` &middot; ${m.pax} berth${m.pax > 1 ? 's' : ''}` : '';
       return `<div class="mission">
-        <div><b>${m.title}</b>${m.blurb ? `<div class="hint">${m.blurb}</div>` : ''}<div class="hint">${where} &middot; pays ${fmt(m.pay)} cr &middot; due by day ${m.deadline}${need}</div></div>
+        <div><b>${m.title}</b>${m.blurb ? `<div class="hint">${m.blurb}</div>` : ''}<div class="hint">${where} &middot; pays ${fmt(m.pay)} cr &middot; due by ${dateOf(m.deadline)}${need}</div></div>
         <button data-action="${action}" data-arg="${i}" ${blocked || m.story ? `disabled title="${m.story ? 'Story passenger' : `Not enough ${noCargo ? 'cargo space' : 'berths'}`}"` : ''}>${label}</button>
       </div>`;
     }).join('');

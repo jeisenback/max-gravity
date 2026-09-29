@@ -117,7 +117,7 @@ function travelOffer(p) {
 
 function talkEvent(pat) {
   const p = pat.p, st = G.state, bar = G.barState.name, t0 = p.traits[0];
-  const mem = p.memories.length ? p.memories[p.memories.length - 1].replace(/^Day \d+: /, '') : null;
+  const mem = p.memories.length ? p.memories[p.memories.length - 1].replace(/^(Day \d+|\d+ \w+ \d+): /, '') : null;
   const text = pat.known
     ? `${p.first} ${p.last} ${p.opinion >= 2 ? 'waves you over' : p.opinion <= -2 ? 'sees you and scowls into their drink' : 'nods at you'}.${mem ? ` Last time: "${mem}"` : ''}`
     : `${p.first} ${p.last}: a ${TRAITS[p.traits[0]].adj}, ${TRAITS[p.traits[1]].adj} ${p.job} from ${p.home}, ${GOALS[p.goal]}. ${OPENERS[t0]}`;

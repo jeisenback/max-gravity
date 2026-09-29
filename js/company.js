@@ -330,7 +330,7 @@ function companyView() {
         <button data-action="ssell" data-arg="${name}">Sell</button></div>`;
     }).join('') : '<p class="hint">None. Buy a stake from the Port tab of any market.</p>'}
     <h3>Company log</h3>
-    ${st.companyLog.length ? st.companyLog.map(l => `<div class="hint">Day ${l.day}: ${l.text}</div>`).join('') : '<p class="hint">Nothing yet.</p>'}`;
+    ${st.companyLog.length ? st.companyLog.map(l => `<div class="hint">${dateOf(l.day)}: ${l.text}</div>`).join('') : '<p class="hint">Nothing yet.</p>'}`;
 }
 
 Mods.register({

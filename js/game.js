@@ -53,6 +53,13 @@ function msg(text) {
   if (G.messages.length > 30) G.messages.shift();
 }
 
+// Day 1 is 9 June 2214.
+const START_DATE = Date.UTC(2214, 5, 9), MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+function dateOf(day = G.state.day) {
+  const d = new Date(START_DATE + (day - 1) * 864e5);
+  return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+}
+
 function hash(str) {
   let h = 0;
   for (const c of str) h = (h * 31 + c.charCodeAt(0)) | 0;
@@ -672,7 +679,7 @@ function arrive() {
   Mods.emit('arrive', st.systemId);
   G.navPlanet = null;
   const sys = system();
-  msg(`Arrived at ${sys.name} (${sys.gov}). Day ${st.day}.`);
+  msg(`Arrived at ${sys.name} (${sys.gov}). ${dateOf()}.`);
   expireMissions();
   populateSystem();
 }
@@ -1014,7 +1021,7 @@ function drawHudCompact(W) {
   ctx.font = '11px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
   ctx.textAlign = 'right';
-  ctx.fillText(`Day ${st.day}  ${fmt(st.credits)} cr`, x + w, 17);
+  ctx.fillText(`${dateOf()}  ${fmt(st.credits)} cr`, x + w, 17);
   ctx.textAlign = 'left';
   const bars = [['SHD', p ? p.shields : s.shields, s.shields, '#4aa3ff'], ['ARM', p ? p.armor : st.armor, p ? p.maxArmor : s.armor, '#ff9a3c'], ['RM', st.fuel, s.fuel, '#5fd35f']];
   bars.forEach(([label, v, max, color], i) => {
@@ -1058,7 +1065,7 @@ function drawHud(W, H) {
   ctx.font = '12px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
   ctx.fillText(inTransit ? `To ${SYSTEMS[G.transit.to].name}` : `${sys.gov}`, x, y += 16);
-  ctx.fillText(`Day ${st.day}`, x, y += 16);
+  ctx.fillText(dateOf(), x, y += 16);
 
   y += 26;
   if (p) {
