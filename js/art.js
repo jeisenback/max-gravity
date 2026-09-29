@@ -528,7 +528,7 @@ const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').mat
 const TRACER = { player: [200, 255, 255], hostile: [255, 140, 70], ally: [140, 190, 255] };
 
 function shake(amount) {
-  if (!REDUCED_MOTION) G.shake = Math.min(12, G.shake + amount);
+  if (!REDUCED_MOTION && !Settings.reduceMotion) G.shake = Math.min(12, G.shake + amount);
 }
 
 // A tracer round: a hot head and a fading tail along its path.

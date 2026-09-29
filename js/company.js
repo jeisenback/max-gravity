@@ -329,6 +329,8 @@ function companyView() {
         <div class="hint">Paying about ${fmt(stakeDividend(pl, s.share))} cr/day. Paid ${fmt(s.paid)} cr; dividends so far ${fmt(s.dividends)} cr; sells for ${fmt(value)} cr now.</div></div>
         <button data-action="ssell" data-arg="${name}">Sell</button></div>`;
     }).join('') : '<p class="hint">None. Buy a stake from the Port tab of any market.</p>'}
+    ${outpostCompanyHtml()}
+    ${legacyHtml()}
     <h3>Company log</h3>
     ${st.companyLog.length ? st.companyLog.map(l => `<div class="hint">${dateOf(l.day)}: ${l.text}</div>`).join('') : '<p class="hint">Nothing yet.</p>'}`;
 }

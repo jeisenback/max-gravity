@@ -62,8 +62,10 @@ const UI = {
       <div class="dead">
         <div class="eyebrow">Transponder lost</div>
         <h1>Ship Destroyed</h1>
-        <p>Your ${ship().name} breaks apart in a silent bloom of fire. The insurance company is not returning your calls.</p>
-        <button data-action="load" class="primary">Load last save</button>
+        <p>Captain ${captain().name}'s ${ship().name} breaks apart in a silent bloom of fire. The insurance company is not returning your calls.</p>
+        <p class="hint">Your heir inherits the company, its ships, stakes, and outpost, and half of everything else.</p>
+        <button data-action="heir" class="primary">Go on as your heir</button>
+        <button data-action="load">Load last save</button>
         <button data-action="newgame" data-arg="force">New game</button>
       </div>`;
     this.el.classList.remove('hidden', 'event');
@@ -89,7 +91,7 @@ const UI = {
           <div class="sub" style="color:${GOV_COLORS[sys.gov]}">${sys.gov}</div>
         </div>
         <div class="stats">
-          ${dateOf()} &middot; ${s.name}<br>
+          ${dateOf()} &middot; ${shipTitle()}, ${s.name}<br>
           <b>${fmt(st.credits)} cr</b><br>
           Cargo ${cargoUsed()}/${s.cargo}t &middot; Berths ${berthsUsed()}/${s.berths} &middot; Mass ${st.fuel}/${s.fuel}
         </div>
@@ -109,11 +111,6 @@ const UI = {
   conditionList(list, none) {
     if (!list.length) return none ? `<p class="hint">${none}</p>` : '';
     return list.map(c => `<div class="cond ${c.bad ? 'bad' : 'good'}">${c.text}</div>`).join('');
-  },
-
-  modList() {
-    const mods = Mods.list.filter(m => !m.builtin);
-    return mods.length ? `<h3>Mods</h3>${mods.map(m => `<div class="hint">${m.name}${m.version ? ` ${m.version}` : ''}${m.failed ? ' (switched off after an error)' : ''}</div>`).join('')}` : '';
   },
 
   views: {
@@ -148,10 +145,9 @@ const UI = {
         ${(st.news || []).map(n => `<div class="hint">${dateOf(n.day)}: ${n.text}</div>`).join('')}
         ${st.rumors.map(r => `<div class="hint">${r.text} Until ${dateOf(r.until)}.</div>`).join('')}
         ${!(st.news || []).length && !st.rumors.length ? '<p class="hint">Listen to the comms in transit for more.</p>' : ''}
-        ${this.modList()}
-        <div class="foot">${this.confirmNew
-          ? 'Start over? Your current progress will be lost. <button data-action="newgame" data-arg="force">Start over</button> <button data-action="newgame" data-arg="cancel">Keep playing</button>'
-          : '<button class="link" data-action="newgame">Start a new game</button>'}</div>`;
+        ${othersNewsHtml()}
+        ${communityHtml()}
+        <p class="hint">New games, saves, and settings are in the Menu (below, or Esc in flight).</p>`;
     },
 
     trade() {
@@ -223,6 +219,7 @@ const UI = {
         <h3>Your crew</h3>
         ${mine || '<p class="hint">Just you. Crew take a berth each and are paid daily wages in transit.</p>'}
         <p class="hint">Berths: ${berthsUsed()}/${ship().berths} used by crew and passengers. Unhappy crew will walk off the ship.</p>
+        ${homeHtml()}
         ${bondsHtml()}
         <h3>Looking for work here</h3>
         ${forHire || '<p class="hint">Nobody in the bar is looking for a ship right now.</p>'}
@@ -312,11 +309,8 @@ const UI = {
       case 'takeoff': takeOff(); return;
       case 'map': openMap(); return;
       case 'load': loadGame(); return;
-      case 'newgame':
-        // Confirmed in the page itself; browser confirm() dialogs are blocked in some embeds.
-        this.confirmNew = !arg;
-        if (arg === 'force') newGame();
-        else this.render();
+      case 'newgame':  // from the death screen: the New game page of the title screen
+        Menu.showTitle(); Menu.view = 'new'; Menu.render();
         return;
       case 'refuel': {
         const amt = Math.min(s.fuel - st.fuel, Math.floor(st.credits / FUEL_PRICE));
@@ -426,6 +420,6 @@ UI.el.addEventListener('click', e => {
   const b = e.target.closest('[data-action]');
   if (b && !b.disabled) {
     Mods.emit('uiClick', b.dataset.action, b.dataset.arg);
-    if (Mods.act(b.dataset.action, b.dataset.arg)) { save(); if (G.mode === 'landed' && !G.dialog) UI.render(); } else UI.act(b.dataset.action, b.dataset.arg);
+    if (Mods.act(b.dataset.action, b.dataset.arg)) { save(); if (G.mode === 'landed' && !G.dialog && !G.paused) UI.render(); } else UI.act(b.dataset.action, b.dataset.arg);
   }
 });

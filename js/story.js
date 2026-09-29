@@ -264,6 +264,7 @@ function epilogueEvent() {
   const standing = FACTIONS.map(g => `${g === 'Pirate' ? 'Pirates' : g}: ${standingWord(repOf(g))}`).join(', ');
   const parts = [
     ENDINGS[e].text,
+    homeLine(),
     mira,
     crew.length ? crew.join(' ') : 'You fly alone, the way you started.',
     `Across the solar system, ${friends} ${friends === 1 ? 'person' : 'people'} would cross a burn for you, and ${enemies} would not.`,

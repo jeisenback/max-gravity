@@ -169,12 +169,14 @@ function newState() {
   };
 }
 
+// Saves go to the current slot (menu.js), and only while docked: a burn in progress
+// can't be restored, so the last port is the save.
 function save() {
-  try { localStorage.setItem(SAVE_KEY, JSON.stringify(G.state)); } catch (e) { /* storage unavailable */ }
+  if (G.state && G.mode === 'landed') Saves.write(G.state);
 }
 
 function loadSave() {
-  try { const s = localStorage.getItem(SAVE_KEY); return s ? JSON.parse(s) : null; } catch (e) { return null; }
+  return Saves.read(Saves.current);
 }
 
 const INTRO = [
@@ -185,21 +187,15 @@ const INTRO = [
 
 function newGame() {
   G.state = newState();
+  Mods.emit('stateReady');
   save();
   resetWorld();
   landAt(currentPlanet(), INTRO);
 }
 
 function loadGame() {
-  G.state = loadSave() || newState();
-  G.state.crew = G.state.crew || [];    // saves from before crew
-  G.state.flags = G.state.flags || {};
-  G.state.people = G.state.people || {};  // saves from before procedural people
-  G.state.nextPid = G.state.nextPid || 1;
-  G.state.rep = G.state.rep || {};        // saves from before factions and outfitting
-  G.state.outfits = G.state.outfits || {};
-  G.state.story = G.state.story || { stage: 0, next: STORY_START_DAY, log: [] };  // saves from before the story
-  G.state.market = G.state.market || {};  // saves from before market saturation
+  G.state = migrate(loadSave() || newState());  // older saves get the fields newer versions expect (menu.js)
+  Mods.emit('stateReady');
   dropMissingModContent(G.state);
   resetWorld();
   landAt(currentPlanet(), ['Save loaded. Welcome back, captain.']);
@@ -562,6 +558,7 @@ function land(planet) {
   // deliveries
   st.missions = st.missions.filter(m => {
     if (m.type === 'bounty' || m.destSystem !== st.systemId || m.destPlanet !== planet.name) return true;
+    if (m.type === 'favor') { Mods.emit('missionDone', m); return false; }  // a promise kept (family.js)
     changeRep(localGov(), m.contract ? 4 : 2);
     Mods.emit('missionDone', m);
     if (m.type === 'delivery') {
@@ -580,7 +577,7 @@ function land(planet) {
     return false;
   });
   expireMissions();
-  for (const c of crewMembers().filter(c => c.id && c.opinion <= -4)) {
+  for (const c of crewMembers().filter(c => c.id && c.opinion <= -4 && !c.loyal)) {
     leaveCrew(c.id);
     c.location = planet.name;
     msg(`${fullName(c)} has had enough of you and your ship, and walks off at ${planet.name}.`);
@@ -1245,6 +1242,7 @@ function render() {
   const { W, H } = G;
   ctx.fillStyle = '#000';
   ctx.fillRect(0, 0, W, H);
+  if (G.mode === 'title') return drawTitle(W, H);  // menu.js
   if (G.mode === 'map') drawMap(W, H);
   else {
     if (G.mode === 'transit') drawTransit(W, H);
@@ -1263,6 +1261,7 @@ const KEYMAP = {
 };
 
 window.addEventListener('keydown', e => {
+  if (G.paused || G.mode === 'title') return;  // the menus take no flight keys
   if (KEYMAP[e.code]) { G.keys[KEYMAP[e.code]] = true; e.preventDefault(); }
   if (e.repeat) return;
   Mods.emit('key', e.code);
@@ -1327,15 +1326,21 @@ let last = performance.now();
 function frame(now) {
   const dt = Math.min(0.05, (now - last) / 1000);
   last = now;
-  if (['flight', 'departing', 'transit', 'dead'].includes(G.mode)) update(dt);
+  if (!G.paused && ['flight', 'departing', 'transit', 'dead'].includes(G.mode)) update(dt);
   render();
   Touch.sync();
-  Mods.emit('frame', dt);
+  if (G.mode !== 'title') Mods.emit('frame', G.paused ? 0 : dt);  // paused: time stands still
   requestAnimationFrame(frame);
 }
 
 resize();
 initStars();
 Touch.build();
-if (loadSave()) loadGame(); else newGame();
-requestAnimationFrame(frame);
+// Mods loaded by link (community.js) register before the game starts.
+// Players start at the title screen; automated test runs go straight into the last game.
+Community.loadMods().then(() => {
+  applySettings();
+  if (!navigator.webdriver) Menu.showTitle();
+  else if (loadSave()) loadGame(); else newGame();
+  requestAnimationFrame(frame);
+});

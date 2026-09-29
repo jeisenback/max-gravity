@@ -29,22 +29,23 @@ const HAUNTS = {
   slicer: { bridge: 3, berths: 2, galley: 2 },
   medic: { berths: 3, galley: 2, hold: 1 },
   passenger: { berths: 4, galley: 3 },
+  cat: { engine: 4, galley: 3, berths: 2, bridge: 1, hold: 1 },
 };
-const ROLE_COLORS = { you: '#ffffff', engineer: '#ffa24a', pilot: '#6fb0ff', gunner: '#ff6b5a', quartermaster: '#f0d060', slicer: '#c08cff', medic: '#6fd08c', passenger: '#9aa7b5' };
+const ROLE_COLORS = { you: '#ffffff', engineer: '#ffa24a', pilot: '#6fb0ff', gunner: '#ff6b5a', quartermaster: '#f0d060', slicer: '#c08cff', medic: '#6fd08c', passenger: '#9aa7b5', cat: '#b8aca0' };
 
 // What someone is seen doing, by room and (optionally) role. {n} is their name, {m} someone else here.
 const LIFE_LINES = {
-  engine: { engineer: ['{n} is elbow-deep in the reactor housing again.', '{n} is rerunning the injector timing. It was fine. It is finer now.'], any: ['{n} is watching the reactor telltales like they owe money.'] },
-  hold: { quartermaster: ['{n} re-straps the cargo and counts it twice.', '{n} is arguing with the manifest.'], gunner: ['{n} is dry-firing at shadows in the hold.'], any: ['{n} is checking the cargo straps.'] },
-  berths: { medic: ['{n} is restocking the med bay, one ampoule at a time.'], passenger: ['{n} is writing letters in their bunk.', '{n} is asleep, or pretending to be.'], any: ['{n} is catching a few hours in their bunk.'] },
-  galley: { any: ['{n} is making coffee that could strip paint.', '{n} and {m} are playing cards in the galley, badly.', '{n} is telling {m} a story that is only partly true.'] },
-  bridge: { pilot: ['{n} is double-checking the flip solution.'], slicer: ['{n} is combing through the comms traffic.'], any: ['{n} is staring out the forward window.'] },
+  engine: { cat: ['{n} is asleep on the reactor housing, where it is warm.'], engineer: ['{n} is elbow-deep in the reactor housing again.', '{n} is rerunning the injector timing. It was fine. It is finer now.'], any: ['{n} is watching the reactor telltales like they owe money.'] },
+  hold: { cat: ['{n} is stalking something between the crates that nobody else can see.'], quartermaster: ['{n} re-straps the cargo and counts it twice.', '{n} is arguing with the manifest.'], gunner: ['{n} is dry-firing at shadows in the hold.'], any: ['{n} is checking the cargo straps.'] },
+  berths: { cat: ['{n} has claimed somebody\'s pillow, and nobody has the heart to move it.'], medic: ['{n} is restocking the med bay, one ampoule at a time.'], passenger: ['{n} is writing letters in their bunk.', '{n} is asleep, or pretending to be.'], any: ['{n} is catching a few hours in their bunk.'] },
+  galley: { cat: ['{n} is sitting by the food locker, staring at it.'], any: ['{n} is making coffee that could strip paint.', '{n} and {m} are playing cards in the galley, badly.', '{n} is telling {m} a story that is only partly true.'] },
+  bridge: { cat: ['{n} is sitting on the nav console again.'], pilot: ['{n} is double-checking the flip solution.'], slicer: ['{n} is combing through the comms traffic.'], any: ['{n} is staring out the forward window.'] },
 };
 
 function lifeLine(p, crowd) {
   const room = LIFE_LINES[p.room], pool = room[p.role] || room.any;
   if (!pool) return null;
-  const others = crowd.filter(o => o !== p && o.room === p.room && o.role !== 'you');
+  const others = crowd.filter(o => o !== p && o.room === p.room && o.role !== 'you' && o.role !== 'cat');
   const line = pick(pool.filter(l => !l.includes('{m}') || others.length));
   return line && line.replace('{n}', p.name).replace('{m}', others.length ? pick(others).name : '');
 }
@@ -59,6 +60,7 @@ function shipPeople() {
     const p = m.pid && G.state.people[m.pid];
     people.push({ name: p ? p.first : m.who.split(' ').slice(-1)[0], role: 'passenger', pid: m.pid });
   }
+  if (G.state.home && G.state.home.cat) people.push({ name: G.state.home.cat, role: 'cat' });  // family.js
   // Everyone starts strapped in for the burn out.
   people.forEach((p, i) => Object.assign(p, { room: 'berths', x: couchX(i, people.length), tx: null, wait: rand(1, 4), seat: couchX(i, people.length) }));
   return (t.aboard = people);
@@ -231,8 +233,14 @@ function drawCutaway(cx, cy, maxL) {
     const x = X(p.x), bob = ph === 'float' ? Math.sin(G.time * 2 + i) * H * 0.18 - H * 0.12 : 0;
     const y = floor + bob, seated = ph === 'couch';
     ctx.fillStyle = ROLE_COLORS[p.role];
-    ctx.fillRect(x - 2, y - (seated ? 7 : 11), 4, seated ? 7 : 11);
-    ctx.beginPath(); ctx.arc(x, y - (seated ? 10 : 14), 3, 0, Math.PI * 2); ctx.fill();
+    if (p.role === 'cat') {  // low to the deck, with ears and a tail
+      ctx.fillRect(x - 3, y - 3, 6, 3);
+      ctx.fillRect(x + 2, y - 5, 2, 2);
+      ctx.fillRect(x - 4, y - 5, 1, 3);
+    } else {
+      ctx.fillRect(x - 2, y - (seated ? 7 : 11), 4, seated ? 7 : 11);
+      ctx.beginPath(); ctx.arc(x, y - (seated ? 10 : 14), 3, 0, Math.PI * 2); ctx.fill();
+    }
     if (p.role !== 'passenger' || p.pid) {
       const w = ctx.measureText(p.name).width + 4;
       const row = [0, 1, 2].find(r => !labels.some(b => b.row === r && Math.abs(b.x - x) < (b.w + w) / 2));

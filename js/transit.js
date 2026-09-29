@@ -416,7 +416,7 @@ function drawTransit(W, H) {
   // Stars streak with our speed: longest at the midpoint.
   const speed = 0.05 + Math.sin(Math.PI * progress) * 0.6;
   for (const s of G.transitStars) {
-    const x = s.x * viewW, y = s.y * H, len = Math.max(s.z * 2, speed * s.z * s.z * 40);
+    const x = s.x * viewW, y = s.y * H, len = Math.max(s.z * 2, speed * s.z * s.z * (Settings.reduceMotion ? 6 : 40));
     ctx.fillStyle = `rgba(200,215,255,${s.z * 0.8})`;
     ctx.fillRect(x, y, len, s.z > 0.7 ? 2 : 1);
   }
@@ -431,7 +431,7 @@ function drawTransit(W, H) {
   ctx.textAlign = 'center';
   ctx.font = `600 11px ${LABEL_FONT}`;
   ctx.fillStyle = '#7fb4ff';
-  ctx.fillText('IN TRANSIT', cx, top + 22);
+  ctx.fillText(`${shipTitle().toUpperCase()} IN TRANSIT`, cx, top + 22);
   ctx.fillStyle = '#e6f0ff';
   ctx.font = `600 20px ${LABEL_FONT}`;
   ctx.fillText(`${system().name}  >  ${SYSTEMS[t.to].name}`, cx, top + 44);

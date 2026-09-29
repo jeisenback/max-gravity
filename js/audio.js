@@ -14,7 +14,7 @@ const Sfx = {
     if (!AC) return;
     const c = this.ctx = new AC();
     this.out = c.createGain();
-    this.out.gain.value = this.on ? 0.5 : 0;
+    this.out.gain.value = this.on ? 0.5 * Settings.volume : 0;
     this.out.connect(c.destination);
     this.noiseBuf = c.createBuffer(1, c.sampleRate, c.sampleRate);
     const d = this.noiseBuf.getChannelData(0);
@@ -30,7 +30,7 @@ const Sfx = {
   toggle() {
     this.on = !this.on;
     try { localStorage.setItem('maxGravity.sound', this.on ? 'on' : 'off'); } catch {}
-    if (this.out) this.out.gain.value = this.on ? 0.5 : 0;
+    if (this.out) this.out.gain.value = this.on ? 0.5 * Settings.volume : 0;
   },
 
   noise() {

@@ -11,6 +11,12 @@ There is no faster-than-light travel. You plot a direct burn to any destination 
 
 During a burn you see your ship in cutaway: engine, hold (with your cargo), berths, galley, and bridge, with you, your crew, and your passengers moving between rooms by what they do aboard. Everyone straps in for the hard burns at each end and floats at the flip, when the ship turns end over end. Crew sometimes mention on comms what they're up to. Once before the flip and once after, pick a downtime activity: share a meal (crew and passengers like you more), run drills (better odds in a fight this burn), do maintenance (patch hull damage, more with an engineer aboard), check on passengers, watch the season's hit vid together, pass the bestseller around, stream a ring-ball match, or hold a card night.
 
+Found an outpost of your own. At Ganymede you can claim Callisto, and at Triton Outpost you can claim Nereid (lonelier, but it pays half again as much): 40,000 cr and 20 tons of Machine Parts build a habitat ring for forty settlers. They use food, water, medical supplies, and electronics every day, which you deliver from your hold at a fair price (the outpost stores up to 30 days of each). Kept supplied, it grows up to its housing and pays you a share every day; short of anything, settlers leave. Build a hydroponics bay and an ice mine to make it self-sufficient, a clinic, a dock that opens a mission board and an outfitter, and a second ring. As it grows, the settlers have a first child, a dispute, a Founders' Day, and finally a council of their own. The Company tab tracks it.
+
+You have a name (set it on the Company tab), and the company outlives you. When your ship is destroyed you can go on as your heir instead of reloading: the heir inherits the company's ships, stakes, and outpost, half the money, and half your standing and friendships, starting in a new Rock Hopper; the crew aboard are lost. Or retire from the Company tab and hand your successor the ship and crew. Every captain is listed on the Company tab.
+
+The ship is home, and the crew become family. Name your ship from the Crew tab. Sit with someone during downtime and, over several quiet talks, learn where they are from, who they miss, and what they hope for; a crew member may end by asking a favor (take them home to see family, or pay off an old debt), and keeping it makes them loyal: they never walk off. Birthdays and holidays from home (Landing Day on Mars, Tranquility Night on Earth, First Water in the Belt, Year's End) fall on real dates during burns. Letters from home reach crew at ports: good news lifts them, bad news brings them down, and a crew member who is struggling works one skill level lower until they are feeling better or someone helps. The crew propose traditions (a toast at the flip, first-night noodles, naming the burn, a docking song) that repeat every burn once adopted, add their own touches to the ship, and may take in a stray cat, who wanders the cutaway. A passenger who loved the trip may ask to stay aboard and sign on as crew. Every ship has more berths than before. The Crew tab keeps the ship's history, and the Cold Water epilogue remembers it.
+
 People aboard have feelings about each other, not just about you. Everyone has tastes (a favorite kind of vid or book, and a ring-ball team from home); over a burn, shared tastes draw people together and clashing habits (a rude engineer and a nervous passenger, say) pull them apart. Scenes in transit follow from it: two crew growing close and asking whether the ship has rules about that, a feud in the galley you can settle or make worse, two people discovering they grew up on the same station, a bet on tonight's match. The Crew tab shows who is friends, close, or rivals. The solar system has a culture too: every season (40 days) brings a hit vid series, a bestseller, a song everyone is humming, stars for the gossip feeds, and a ring-ball league with a champion. It comes through as [Feed] chatter in transit, crew cheering or sulking over their team's results, and "On the feeds" at port. Passengers who liked the trip may turn up at a later port asking for your ship by name; when they come back aboard, the crew who befriended them remember.
 
 ## People
@@ -105,6 +111,15 @@ On a keyboard:
 - `js/world.js` - the living solar system: pirate unrest, raids, markets that use and make goods, and NPC haulers whose voyages move them (`st.haul`)
 - `js/company.js` - your shipping company: company ships, captains, trade routes, and the Company tab
 - `js/shiplife.js` - life aboard during a burn: the ship cutaway, crew movement and comms lines, and the downtime menu
+- `js/outpost.js` - your outpost on Callisto or Nereid: supplies, growth, buildings, and settler moments
+- `js/legacy.js` - your name, heirs and retirement, and the list of captains
+- `js/music.js` - the generated soundtrack
+- `js/help.js` - the Help topics and one-time tips
+- `js/menu.js` - the title screen, new-game setup, save slots, the pause menu, and settings
+- `js/build.js` - the version number and the release switch for tester tools
+- `js/uat.js` - tester tools: a checklist of set-ups for every feature, general tools, and a pass/fail report
+- `js/community.js` - mods by link, shareable scenarios, and shared news between players
+- `js/family.js` - the ship as home: its name and history, personal stories and favors, birthdays and holidays, letters and moods, traditions, touches, the cat, and passengers who join the crew
 - `js/social.js` - bonds between people aboard, tastes, relationship scenes, the season's culture and feeds, shared downtime, and returning passengers
 - `js/bar.js` - the Bar tab: each port's bar, the room's mood, patrons to talk to, and crew for hire
 - `js/stories/landings.js` - small scenes at the dock on landing, written as storylets
@@ -118,6 +133,16 @@ On a keyboard:
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)
 
 ## Roadmap
+
+## Menus and saves
+
+The game opens on a title screen: Continue, New game, Load game, Settings, Controls, and Credits. A new game asks for your name, your ship's name, and where you start (Earth with the tutorial, Mars, or the Belt, each with its own money and friends), and which of five save slots to use. The game saves itself every time you dock; the Menu (a button at port, Esc or the Menu button in flight) pauses the game and offers Save, Load, Settings, Controls, and Quit to title. Saved games can be exported as a file or a code and imported again, for backups or another device. Settings (music volume, sound effects volume, text size, reduced motion) are kept in your browser. The music is generated as you play, with no audio files: calm pads at the title screen and in port, a slower drift during burns, and a low pulse in a fight. Help in the menu explains every system, and a few one-time tips point newcomers to it.
+
+Hosted on its own web address (GitHub Pages, itch.io, or any static host), the game can be installed like an app and plays offline after one visit (`manifest.webmanifest`, `sw.js`, and `icons/`). Inside claude.ai's frame this part is simply skipped. Saves carry a version number, and older saves are upgraded when they load. For a public release, set `dev: false` in `js/build.js` to keep the tester tools hidden.
+
+## Testing without playing a full game
+
+Tester tools jump straight into any feature. Open them with Shift+U, by tapping the date in the port header five times (phones), or by adding `#uat` to the address; after that a small UAT button stays in the corner. The panel has a checklist grouped by area (basics, life aboard, ports, combat, the frontier, Cold Water, the campaigns, community): Set up starts a fresh game in exactly the right situation (mid-burn with crew, a burn fight, a disabled ship to board, a grown outpost, the Cold Water finale, each campaign's first scene) and says what to check. Mark each Pass or Fail with a note; the Report box gathers everything to copy. General tools add credits, refuel, skip ten days, fill the hold, switch combat modes, land anywhere, switch ship, start a transit happening or pirate contact, arrive at once, or play any scene by id. Opening the panel from your own game backs it up, and Restore my game brings it back.
 
 See [ROADMAP.md](ROADMAP.md) for the long-term milestones.
 
@@ -134,6 +159,29 @@ Put the file in `mods/` and add a script tag for it in `index.html`, in the mark
 ```
 
 Loaded mods are listed at the bottom of the Port tab. To try the example, uncomment its tag: it adds Vesta, a mining rock in the Belt with its own trade good, an outfit, a transit event, and a pirate bounty.
+
+Or load a mod by link, no file editing needed: the Mods section at the bottom of the Port tab has a small catalog (the Vesta example is there) and a field for any `https://` link to a `.js` file. Links are remembered in your browser and load before the game starts on every visit. A mod runs code in the page, so only load mods from people you trust. On claude.ai, the page can only load scripts from a few hosts; a file on GitHub loads through `https://cdn.jsdelivr.net/gh/<user>/<repo>@<branch>/<path>.js`.
+
+### Scenarios
+
+A scenario is a starting setup, plus optional storylets, written as data. Play the built-in ones (Broke on Ceres, Ice Rush, Rook's Favorite) from the Scenarios section of the Port tab; Share link gives a link that opens the game and offers the scenario (it never replaces a game without asking). To make your own, encode a JSON object like this one as URL-safe base64 and put it after `#scenario=` in the game's address, or paste the code into the Scenarios section:
+
+```json
+{
+  "title": "Broke on Ceres",
+  "text": "You lost your last ship in a card game.",
+  "start": { "credits": 800, "shipId": "shuttle", "systemId": "ceres", "planet": "Ceres Station", "day": 40,
+             "cargo": { "water": 10 }, "rep": { "Pirate": 10 } },
+  "storylets": [ { "id": "pax-debt", "where": "port", "when": { "planet": "Ceres Station" }, "title": "Pax",
+                   "text": "Pax wants his money back.", "choices": [ { "label": "Pay him", "effects": { "credits": -2000 } } ] } ]
+}
+```
+
+Every field is optional except `title`. Storylets use the format under Writing storylets. Scenario text is shown as plain text, never as markup, and a start that names an unknown ship or place is ignored.
+
+### Shared news
+
+When the game runs as a claude.ai artifact, captains can share their notable deeds with everyone else playing the same page: storyline milestones, bounties, founding an outpost, new crew, succession. It is off until you turn on Share deeds at a port; the button only appears where sharing works. Other captains' deeds turn up as news at port and as `[Word]` chatter in transit. Each player writes one document of their own (`deeds/<their id>`, their last twelve deeds, their captain's name, and their ship's name), and anyone playing can read it. Only the page's owner and people with Contributor access or above can post; visitors by public link can read but not post.
 
 ### Writing a mod
 
