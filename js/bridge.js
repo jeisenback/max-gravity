@@ -62,7 +62,7 @@ UI.views.port = function () { return (hired() ? runHtml() : '') + portView.call(
 
 // The shipyard is Engineering's page at port; the engineer's post leads it.
 const shipyardView = UI.views.shipyard;
-UI.views.shipyard = function () { return engineerPanel() + (hired() ? '<p class="hint">The yard deals with the captain, not with you.</p>' : shipyardView.call(this)); };
+UI.views.shipyard = function () { return engineerPanel() + (hired() ? buyInHtml() : shipyardView.call(this)); };
 
 // ---------- the viewscreen at port ----------
 
