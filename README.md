@@ -131,7 +131,7 @@ On a keyboard:
 - `js/bridge.js` - the ship's stations: keys across the landed screen and a key bar with status sheets in a burn
 - `js/stations.js` - posts (pilot, gunner, engineer, comms): crewed or manual, taking the controls, and orders
 - `js/autopilot.js` - the crewed pilot: departs, brings the ship in and lands; any flight key takes the controls
-- `js/duel.js` - the crewed gunner: a contact is settled in rounds of rock, paper, scissors on the console; a manual gunner gets the real-time fight (`engage.js`)
+- `js/duel.js` - the crewed gunner: a contact is settled on the console in exchanges of threat and answer, with decks built from your fit (see `COMBAT.md`); a manual gunner gets the real-time fight (`engage.js`)
 - `js/engineering.js` - the engineer's post: power shares (drive, weapons, shields), reactor heat and scrams, power orders, and what drive power does to a burn (speed, reaction mass, how easily pirates spot you)
 - `js/comms.js` - the comms station: how each happening reaches the ship, the inbox, listening for market tips, and a crewed officer who takes routine hails
 - `js/wear.js` - ship condition: slow wear on the drive, fire control, shields, life support and sensors, breakdown scenes, servicing and overhaul (the Wear setting in the menu)

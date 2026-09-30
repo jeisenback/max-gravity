@@ -6,8 +6,9 @@
 // takes a knock. A crewed engineer keeps the heat down on their own (a better one lets it
 // run hotter first) and takes orders: favor the drive, the guns, or the shields.
 // Drive power also sets the burn's speed, its reaction mass use, and how easily pirates spot
-// you. Weapons power sharpens "run guns", drive power "run dark", shields soften the hits
-// the console fights deal out (duel.js). Loaded before game.js; only calls into it at runtime.
+// you. In a console fight (duel.js) weapons power adds gun runs to the deck, drive power adds
+// evasive burns, and shields of 40% or more give a deflector that soaks the first half hit.
+// Loaded before game.js; only calls into it at runtime.
 
 const POWER_MIN = 10, POWER_MAX = 80;
 const POWER_PRESETS = {
@@ -99,7 +100,7 @@ function engineerPanel() {
     ${['drive', 'weapons', 'shields'].map(row).join('')}
     <div class="slider"><span>Heat</span><span class="pbar" data-heat-bar><i></i></span><span class="mono" data-heat></span></div>
     <p class="hint" data-effects>${powerEffects()}</p>
-    <p class="hint">Drive power also sharpens running dark. Weapons power sharpens running guns. Shields soften the hits you take in a console fight.</p>
+    <p class="hint">In a console fight, weapons power adds gun runs, drive power adds evasive burns, and shields of 40% or more soak the first half hit.</p>
   </div>${wearHtml()}${projectsHtml('engineer')}${postHtml('engineer')}`;
 }
 

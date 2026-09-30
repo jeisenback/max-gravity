@@ -10,7 +10,7 @@ const PARTS_ID = 'industrial';  // the Machine Parts commodity
 const PROJECTS = {
   patch: { name: 'Patch a system', post: 'engineer', parts: 1, secs: 20, desc: 'Rebuild the system in the worst shape: +35 condition. A quick job.' },
   tune: { name: 'Tune the drive', post: 'engineer', parts: 1, secs: 25, desc: 'Burn 10% faster, until the next port. Can run the reactor hot if it goes wrong.' },
-  refit: { name: 'Refit the fire control', post: 'gunner', parts: 3, secs: 60, desc: 'Permanently sharper guns and a fresh fire control. Can go wrong.' },
+  refit: { name: 'Refit the fire control', post: 'gunner', parts: 3, secs: 60, desc: 'A fresh fire control, and one more gun run in every fight, for good. Can go wrong.' },
 };
 
 const partsHeld = () => G.state.cargo[PARTS_ID] || 0;
@@ -45,7 +45,7 @@ function finishProject(id) {
     if (ok) { st.tuned = { drive: true }; text = `${who} tuned the drive. It will burn 10% faster until you next dock.`; }
     else { st.heat = Math.min(99, heat() + 30); text = `The tune goes wrong and the reactor runs hot for a while. ${who} shut it down before it scrammed.`; }
   } else {
-    if (ok) { refits().fire = (refits().fire || 0) + 1; condition().fire = 100; text = `${who} refit the fire control. The guns hold their solutions better, for good.`; }
+    if (ok) { refits().fire = (refits().fire || 0) + 1; condition().fire = 100; text = `${who} refit the fire control: a fresh unit, and one more gun run in every fight, for good.`; }
     else { condition().fire = Math.max(0, condition().fire - 25); text = `The refit goes badly: ${who} fried a card, and the fire control is worse than when ${doer ? 'they' : 'you'} started. The parts are gone.`; }
   }
   comm(`[Engineering] ${text}`);
