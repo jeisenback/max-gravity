@@ -157,7 +157,10 @@ function addStorylet(def, source = 'core') {
   const check = (obj, table, what) => Object.keys(obj || {}).forEach(k => { if (!table[k]) bad.push(`unknown ${what} "${k}"`); });
   if (def) {
     check(def.when, CONDITIONS, 'condition');
-    for (const c of def.choices || []) { check(c.when, CONDITIONS, 'condition'); check(c.effects, EFFECTS, 'effect'); }
+    for (const c of def.choices || []) {
+      check(c.when, CONDITIONS, 'condition'); check(c.effects, EFFECTS, 'effect');
+      for (const v of Object.values(c.effects || {})) if (v && v.onDone) check(v.onDone, EFFECTS, 'effect');  // a mission's effects on delivery
+    }
   }
   if (STORYLETS.some(s => s.id === (def && def.id))) bad.push('duplicate id');
   if (bad.length) return console.error(`Storylet "${def && def.id}" (${source}): ${bad.join('; ')}`);

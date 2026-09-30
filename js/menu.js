@@ -53,6 +53,7 @@ const Saves = {
     const t = String(text || '').trim();
     try { st = JSON.parse(t.startsWith('{') ? t : decodeURIComponent(escape(atob(t.replace(/-/g, '+').replace(/_/g, '/'))))); } catch (e) { return 'That is not a save this game can read.'; }
     if (!st || typeof st !== 'object' || typeof st.credits !== 'number' || typeof st.systemId !== 'string') return 'That is not a save this game can read.';
+    st = migrate(stripTags(st));  // a save code can come from anyone
     const prev = this.current;
     this.use(n); this.write(st); this.use(prev);
     return null;
@@ -68,6 +69,10 @@ function migrate(st) {
   st.crew = st.crew || []; st.flags = st.flags || {}; st.people = st.people || {}; st.nextPid = st.nextPid || 1;
   st.rep = st.rep || {}; st.outfits = st.outfits || {}; st.market = st.market || {};
   st.story = st.story || { stage: 0, next: STORY_START_DAY, log: [] };
+  if (st.captain) st.captain.name = cleanName(st.captain.name);
+  for (const c of st.captains || []) { c.name = cleanName(c.name); c.fate = stripTags(c.fate); }
+  if (st.home) st.home.name = cleanName(st.home.name) || 'Second Chance';
+  if (st.outpost) st.outpost.name = cleanName(st.outpost.name);
   st.v = SAVE_VERSION;
   return st;
 }
@@ -92,8 +97,8 @@ function startGame(o) {
   st.tutorial = o.background === 'earth' && o.tutorial ? 0 : null;
   st.v = SAVE_VERSION;
   Mods.emit('stateReady');
-  if (o.captain) captain().name = o.captain;
-  if (o.ship) home().name = o.ship.replace(/^the /i, '');
+  if (cleanName(o.captain)) captain().name = cleanName(o.captain);
+  if (cleanName(o.ship)) home().name = cleanName(o.ship).replace(/^the /i, '');
   resetWorld();
   landAt(currentPlanet(), o.background === 'earth' ? INTRO : b.intro());
 }
@@ -144,7 +149,8 @@ const Menu = {
     const m = Saves.metas();
     return Array.from({ length: SLOTS }, (_, i) => i + 1).map(n => {
       const s = m[n];
-      const del = this.confirm === `del${n}`
+      // The game in play saves itself again at once, so its slot can only be deleted from the title screen.
+      const del = n === Saves.current && this.pausedFrom ? '' : this.confirm === `del${n}`
         ? `<button data-action="menuSlotDelete" data-arg="${n}:yes">Really delete</button><button data-action="menuSlotDelete" data-arg="${n}:no">Keep it</button>`
         : `<button data-action="menuSlotDelete" data-arg="${n}">Delete</button>`;
       return `<div class="mission"><div><b>Slot ${n}${n === Saves.current ? ' (current)' : ''}</b>
@@ -302,8 +308,8 @@ Mods.register({
     });
     const keepForm = () => {
       const c = document.getElementById('ngCaptain'), s = document.getElementById('ngShip');
-      if (c) Menu.form.captain = c.value.trim().slice(0, 30);
-      if (s) Menu.form.ship = s.value.trim().slice(0, 30);
+      if (c) Menu.form.captain = cleanName(c.value);
+      if (s) Menu.form.ship = cleanName(s.value);
     };
     const back = () => { Menu.exported = null; Menu.confirm = null; Menu.view = Menu.pausedFrom ? 'pause' : 'main'; };
     const act = (name, fn) => M.action(name, arg => { fn(arg); if (G.mode === 'title' || G.paused) Menu.render(); });

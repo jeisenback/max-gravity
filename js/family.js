@@ -395,7 +395,7 @@ Mods.register({
     });
     M.action('renameShip', () => {
       // An in-page field: browser prompt() dialogs are blocked in some embeds.
-      const el = document.getElementById('shipName'), name = el ? el.value.trim().slice(0, 30) : '';
+      const el = document.getElementById('shipName'), name = cleanName(el && el.value);
       if (!name || name === home().name) return;
       home().name = name.replace(/^the /i, '');
       home().named = G.state.day;

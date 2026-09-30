@@ -176,14 +176,14 @@ function trackEscorts() {
 function escortBurn(dest) {
   const st = G.state;
   for (const s of escorts()) {
-    const need = burnFuel(st.systemId, dest);
-    if (need > SHIPS[s.shipId].fuel) {
+    const need = burnFuel(st.systemId, dest), cost = need * FUEL_PRICE;
+    if (need > SHIPS[s.shipId].fuel || cost > st.credits) {
       s.escort = false;
       s.at = system().planets.find(pl => pl.services.includes('refuel')).name;
-      msg(`The "${s.name}" can't make that burn on one tank; it will wait for you at ${s.at}.`);
+      msg(`The "${s.name}" can't ${cost > st.credits ? 'fuel up for' : 'make'} that burn${cost > st.credits ? '' : ' on one tank'}; it will wait for you at ${s.at}.`);
       continue;
     }
-    st.credits -= need * FUEL_PRICE;
+    st.credits -= cost;
   }
 }
 

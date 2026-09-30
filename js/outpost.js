@@ -158,7 +158,7 @@ Mods.register({
     const port = UI.views.port;
     UI.views.port = function () { return (atOutpost() ? outpostHtml() : claimHtml()) + port.call(this); };
     M.action('opFound', site => {
-      const el = document.getElementById('opName'), name = el && el.value.trim().slice(0, 30);
+      const el = document.getElementById('opName'), name = cleanName(el && el.value);
       found(site, name);
       UI.notes.push(`You file the claim. ${outpost().name} is on your map at ${OUTPOST_SITES[site].sid === 'jupiter' ? 'Jupiter' : 'Neptune'}: fly there to see it, and bring supplies.`);
     });

@@ -69,14 +69,14 @@ Mods.register({
     M.action('heir', () => succeed('died'));
     M.action('retire', arg => {
       if (arg === 'yes') {
-        const el = document.getElementById('heirName'), name = el && el.value.trim().slice(0, 30);
+        const el = document.getElementById('heirName'), name = cleanName(el && el.value);
         G.retireAsk = false;
         return succeed('retired', name);
       }
       G.retireAsk = !arg;
     });
     M.action('renameCaptain', () => {
-      const el = document.getElementById('capName'), name = el && el.value.trim().slice(0, 30);
+      const el = document.getElementById('capName'), name = cleanName(el && el.value);
       if (name) captain().name = name;
     });
   },

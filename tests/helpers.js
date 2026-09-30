@@ -1,0 +1,65 @@
+'use strict';
+
+// Shared set-up for the browser tests: a fresh page per test (its own empty
+// localStorage), a seeded Math.random so runs repeat, and a list of page errors
+// that every test checks at the end.
+//
+// CHROMIUM_PATH points at a browser binary when Playwright's own download is not
+// installed (npx playwright install chromium).
+
+const { chromium } = require('playwright');
+const assert = require('node:assert/strict');
+const path = require('node:path');
+
+const URL = 'file://' + path.resolve(__dirname, '..', 'index.html');
+let browser = null;
+
+// Runs in the page before any game script. mulberry32: small, fast, good enough.
+function seedScript(seed) {
+  window.__seed = s => {
+    let a = s >>> 0;
+    Math.random = () => {
+      a = (a + 0x6d2b79f5) >>> 0;
+      let t = a;
+      t = Math.imul(t ^ (t >>> 15), t | 1);
+      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+    };
+  };
+  window.__seed(seed);
+}
+
+// Opens the game. Options:
+//   title: true to see the title screen (otherwise automated runs start straight in a game)
+//   viewport, mobile: page size and touch
+//   init: a function to run in the page before the game loads
+//   seed: the random seed
+async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '' } = {}) {
+  browser = browser || await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
+  const ctx = await browser.newContext({ viewport, isMobile: mobile, hasTouch: mobile });
+  await ctx.addInitScript(seedScript, seed);
+  if (title) await ctx.addInitScript(() => Object.defineProperty(navigator, 'webdriver', { get: () => false }));
+  if (init) await ctx.addInitScript(init);
+  const page = await ctx.newPage();
+  const errors = [];
+  watch(page, errors);
+  await page.goto(URL + hash);
+  await page.waitForFunction(() => typeof G !== 'undefined' && (G.state || G.mode === 'title'));
+  // Runs a function in the page with the random seed reset first, so a block of
+  // game logic plays out the same way whatever the frame loop did before it.
+  const ev = (fn, arg) => page.evaluate(([src, a, s]) => { __seed(s); return (0, eval)(`(${src})`)(a); }, [fn.toString(), arg, seed]);
+  const done = async () => { await ctx.close(); assert.deepEqual(errors, [], 'page errors'); };
+  return { page, ctx, ev, errors, done, url: URL };
+}
+
+function watch(page, errors) {
+  page.on('pageerror', e => errors.push(e.message));
+  page.on('console', m => { if (m.type() === 'error' && !/ERR_CERT|font/i.test(m.text())) errors.push('console: ' + m.text()); });
+}
+
+async function closeBrowser() {
+  if (browser) await browser.close();
+  browser = null;
+}
+
+module.exports = { open, watch, closeBrowser, URL };
