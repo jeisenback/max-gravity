@@ -192,9 +192,9 @@ function storyletEvent(s) {
 }
 
 // The storylet to play here and now: eligible ones of the highest priority, one at random.
-function pickStorylet(where) {
+function pickStorylet(where, keep = () => true) {
   const waiting = s => s.every && quality(`last:${s.id}`) && G.state.day - quality(`last:${s.id}`) < s.every;  // `every: days` lets a scene come round again
-  const ok = STORYLETS.filter(s => s.where === where && !(s.once && quality(`seen:${s.id}`)) && !waiting(s) && meets(s.when));
+  const ok = STORYLETS.filter(s => s.where === where && keep(s) && !(s.once && quality(`seen:${s.id}`)) && !waiting(s) && meets(s.when));
   if (!ok.length) return null;
   const top = Math.max(...ok.map(s => s.priority));
   return pick(ok.filter(s => s.priority === top));
@@ -208,19 +208,6 @@ function journalHtml() {
 Mods.register({
   id: 'storylets', name: 'Storylets', builtin: true,
   init(M) {
-    M.filter('transitEvent', ev => {
-      if (ev) return ev;
-      const s = pickStorylet('transit');
-      return s && storyletEvent(s);
-    });
-    M.on('landed', () => {
-      const s = pickStorylet('port');
-      if (!s) return;
-      // Something else is already playing (a family moment, say): a story scene follows it
-      // rather than being lost; small dock scenes just wait for another landing.
-      if (G.dialog) { if (s.priority > 0 && !G.nextEvent) G.nextEvent = storyletEvent(s); return; }
-      openEvent(storyletEvent(s));
-    });
     M.on('missionDone', m => applyEffects(m.onDone));
     M.on('missionFailed', m => applyEffects(m.onFail));
   },

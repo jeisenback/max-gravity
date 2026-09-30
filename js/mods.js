@@ -41,7 +41,8 @@ const MOD_FILTERS = [
   'portBanner',   // (html) shown under the port tabs
   'dockButtons',  // (html) buttons left of System map / Take off
   'missionPay',   // (credits, offer, planet) pay for a mission offered at this port
-  'transitEvent', // (event or null) the next transit happening; return an event to play it
+  'happenings',   // (list, where, planet) candidates for a burn ('transit') or landing ('port'): { tier, weight, make() }
+  'transitEvent', // (event or null) an event to play on a burn; ranks with the things due now
   'chatter',      // (lines) the pool the next line of comms chatter in transit is picked from
 ];
 

@@ -80,7 +80,7 @@ test('Cold Water act 1: derelict, Voight, the agent, Mira, Europa', async () => 
     S.reset(1); o.sold = S.land('earth', 'Earth'); S.choose('Sell it'); o.soldStage = story().stage;
     return o;
   });
-  assert.equal(r.early, null, 'no derelict before day 10');
+  assert.notEqual(r.early, "The Persephone's Due", 'no derelict before day 10');
   assert.equal(r.derelict, "The Persephone's Due");
   assert.equal(r.s1, 1);
   assert.equal(r.voight, 'A Man From Aquilon');
@@ -289,23 +289,43 @@ test('every storylet opens and every choice plays, with no unfilled text', async
   await done();
 });
 
-test('a story scene is not lost behind a family moment on the same landing', async () => {
+test('a story scene comes before anything else at a landing, and the cat waits', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
     S.reset(); const st = G.state; st.day = 12; st.story.next = 1e9; st.shipId = 'shuttle';
     st.qualities = { strike: 1 };  // the Ceres strike scene is ready
     home().cat = null;             // and the cat is about to come aboard
-    let order = null;
-    for (let i = 0; i < 200 && !order; i++) {
+    const first = [];
+    for (let i = 0; i < 100; i++) {
       while (G.dialog) finishEvent(); G.nextEvent = null; delete st.qualities['seen:strike-ceres'];
       S.land('ceres', 'Ceres Station');
-      if (G.dialog && G.dialog.event.title === 'Stowaway') { const first = G.dialog.event.title; finishEvent(); order = [first, G.dialog && G.dialog.event.title]; }
+      first.push(G.dialog && G.dialog.event.title);
     }
-    return order;
+    return { first, cat: !!home().cat };
   });
-  assert.ok(r, 'the cat came aboard within 200 tries');
-  assert.equal(r[0], 'Stowaway');
-  assert.notEqual(r[1], null, 'the strike scene followed the cat');
+  assert.ok(r.first.every(t => t && t !== 'Stowaway'), `the strike scene always came first (${[...new Set(r.first)]})`);
+  assert.equal(r.cat, false, 'the cat did not squeeze in');
+  await done();
+});
+
+test('a story scene on a burn beats a relationship scene', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    S.reset(); const st = G.state; st.day = 12; st.story.next = 1e9;
+    uatCrew(3, 2);
+    st.qualities = {};
+    STORYLETS.push({ id: 'test-story', where: 'transit', priority: 1, when: {}, title: 'Test story', text: 'x', choices: [{ label: 'Ok', effects: {} }] });
+    const seen = new Set();
+    for (let i = 0; i < 60; i++) {
+      while (G.dialog) finishEvent();
+      S.burn('ceres'); startHappening();
+      seen.add(G.dialog && G.dialog.event.title);
+    }
+    STORYLETS.pop();
+    return [...seen];
+  });
+  assert.ok(r.includes('Test story') && r.every(t => ['Test story', 'Picket Line on the Band'].includes(t)), `only story scenes play (${r})`);
   await done();
 });

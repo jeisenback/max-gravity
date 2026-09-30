@@ -127,6 +127,7 @@ On a keyboard:
 - `js/boarding.js` - disabled ships, boarding and prizes, and crew injuries
 - `js/engage.js` - combat during burns (4b prototype): intercepts, momentum flight, torpedo duels, point defense, and crew strain
 - `js/storylets.js` - the storylet engine: story written as data (see Writing storylets below)
+- `js/happenings.js` - what happens on a burn or at a landing, and in what order (story first)
 - `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike), `mars-navy.js` (Reserve Commission, a Mars Navy career), `rook-crown.js` (The Rook's Crown, a pirate lord's rise), `tethys.js` (The Partner's Chair, a corporate climb), and `cold-water.js` (the scenes of Cold Water)
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
 - `js/audio.js` - sound effects synthesized with Web Audio (no audio files): guns, hits, explosions, engine rumble, docking, burns, comms
@@ -255,7 +256,8 @@ Mods.register({
 | `portBanner` | `html` shown under the port tabs |
 | `dockButtons` | `html` for buttons left of System map and Take off |
 | `missionPay` | `credits, offer, planet`: pay for a mission offered at this port |
-| `transitEvent` | `event` or `null`: the next transit happening; return an event to play it |
+| `happenings` | `list, where, planet`: candidates for what happens on a burn (`'transit'`) or at a landing (`'port'`); return the list with yours added, each `{ tier, weight, make() }` (tier 0 story, 1 due now, 2 the rest by weight; `make()` returns an event or `null`) |
+| `transitEvent` | `event` or `null`: an event to play on a burn, ranked with the things due now |
 | `chatter` | `lines`: the pool the next line of transit comms chatter is picked from; return your own lines to be heard |
 
 **Other helpers.**
