@@ -34,6 +34,8 @@ const FOE_LEAN = { pirate: 'board', patrol: 'gun', bounty: 'burn', hunter: 'torp
 // A crewed gunner fights the duel. With nobody on the post, or the post taken over, you do,
 // without a gunner's skill.
 const duelGunner = () => (postMode('gunner') === 'crewed' ? roleHolder('gunner') : null);
+// Who fights, for a choice's label.
+const gunnerLabel = () => (duelGunner() ? `${roleName('gunner')} fights` : 'you take the guns');
 const helmName = () => (roleHolder('pilot') ? roleName('pilot') : 'The helm');
 
 const hitPoints = (threat, outcome) => (outcome === 'full' ? DUEL_HIT[threat] : outcome === 'half' ? DUEL_HIT[threat] / 2 : 0);

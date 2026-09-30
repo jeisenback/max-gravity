@@ -530,6 +530,7 @@ function tryLand() {
     msg('Moving too fast to land. Slow down (S / Down turns you around).');
     return;
   }
+  if (storyBlockadeGate(n.pl)) return;  // the blockade of Ceres, on the console
   if (!Mods.filter('canDock', repOf(localGov()) > -50, n.pl)) {
     msg(`Docking denied. The ${localGov() === 'Pirate' ? 'pirates here' : localGov()} will not let your ship land.`);
     return;

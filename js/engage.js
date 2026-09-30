@@ -8,6 +8,9 @@ const ENEMY_TORPS = { raider: 1, corsair: 3, cutter: 2, destroyer: 5 };
 
 // "The Pirate ...", but not "The The Weeping Saint".
 const theShip = n => (/^the /i.test(n.name) ? n.name : `The ${n.name}`);
+// Whether the story's set pieces (story.js) are settled on the console. Every fight is,
+// crewed gunner or not (#52); the local-space versions go in #56.
+const consoleFights = () => true;
 
 // ---------- who intercepts you ----------
 function planIntercept() {
@@ -25,8 +28,8 @@ function planIntercept() {
 
 function makeEnemy(spec) {
   const sid = G.state.systemId, persona = makePerson(cultureOf(sid));
-  const shipId = spec.kind === 'patrol' ? (Math.random() < 0.3 ? 'destroyer' : 'cutter')
-    : spec.kind === 'pirate' ? (Math.random() < Math.min(0.6, danger(sid) + 0.2) ? 'corsair' : 'raider') : 'corsair';
+  const shipId = spec.shipId || (spec.kind === 'patrol' ? (Math.random() < 0.3 ? 'destroyer' : 'cutter')
+    : spec.kind === 'pirate' ? (Math.random() < Math.min(0.6, danger(sid) + 0.2) ? 'corsair' : 'raider') : 'corsair');
   const n = makeShip(shipId, 0, 0, 0);
   Object.assign(n, { kind: spec.kind === 'patrol' ? 'patrol' : 'pirate', hostile: true, persona, captain: `${persona.first} ${persona.last}`, torps: ENEMY_TORPS[shipId] || 0, torpCd: rand(2, 4) });
   if (spec.kind === 'patrol') Object.assign(n, { gov: spec.gov, name: `${PATROL_NAMES[spec.gov]} "${shipName(false)}"` });
@@ -34,6 +37,10 @@ function makeEnemy(spec) {
   else if (spec.kind === 'hunter') Object.assign(n, { name: 'Hired gun', payer: `${spec.person.first} ${spec.person.last}` });
   else n.name = `Pirate "${shipName(true)}"`;
   if (spec.kind === 'bounty' || spec.kind === 'hunter') n.armor = n.maxArmor = SHIPS.corsair.armor * 1.4;
+  // A story fight (story.js) names its ship and can make it tougher.
+  if (spec.name) n.name = spec.name;
+  if (spec.armorMult) n.armor = n.maxArmor = n.maxArmor * spec.armorMult;
+  if (spec.story) n.story = true;
   return n;
 }
 
@@ -44,7 +51,7 @@ function contactEvent(spec) {
     hunter: `A hired gun. The captain says ${spec.person && `${spec.person.first} ${spec.person.last}`} sends regards.` }[spec.kind];
   // A crewed gunner fights it; with none, you take the guns yourself.
   const choices = [
-    { label: postMode('gunner') === 'crewed' ? `Battle stations (${roleName('gunner')} fights)` : 'Battle stations (you take the guns)', run: () => startDuel(spec, false) },
+    { label: `Battle stations (${gunnerLabel()})`, run: () => startDuel(spec, false) },
     { label: 'Burn hard to outrun them', run: () => startDuel(spec, true) },
   ];
   if (spec.kind === 'pirate') {

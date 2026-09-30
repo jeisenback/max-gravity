@@ -665,3 +665,91 @@ test('projects: the station lists them, starts one, and shows its progress', asy
   assert.equal(await page.$eval('#bsheet [data-action=project][data-arg=refit]', b => b.disabled), true, 'not enough parts for a refit');
   await done();
 });
+
+test('programs: a slicer writes a rule over a burn, slots are limited, and a full table blocks new ones', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = G.state; st.tutorial = null; st.crew = []; st.programs = undefined; Settings.wear = 'off'; while (G.dialog) finishEvent();
+    const out = {};
+    hire('engineer', 2); hire('slicer', 3);
+    out.bad = [writeProgram('nonsense', 'engineer', 'balance'), writeProgram('heat', 'engineer', 'no-such-order')];
+    out.started = writeProgram('heat', 'engineer', 'balance'); out.secondWhileWriting = writeProgram('armor', 'engineer', 'favor-shields');
+    const total = programs().writing.total;
+    Mods.emit('frame', 5); out.idleAtPort = programs().writing.left === total;  // nothing moves at port
+    uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
+    const real = Math.random; Math.random = () => 0;  // a sure success
+    burnFrames(70); Math.random = real;
+    out.rules = programs().rules.map(r => `${r.cond}:${r.post}.${r.order}`);
+    out.full = writeProgram('armor', 'engineer', 'favor-shields');  // the one slot is taken
+    out.slot = extendPrograms(); Math.random = () => 0; burnFrames(100); Math.random = real;
+    out.slots = programs().slots; out.second = writeProgram('armor', 'engineer', 'favor-shields');
+    Math.random = () => 0; burnFrames(70); Math.random = real;
+    out.two = programs().rules.length;
+    removeProgram(0); out.removed = programs().rules.length;
+    // A failed roll writes nothing, and the slot stays free.
+    Math.random = () => 0.99; writeProgram('fuel', 'engineer', 'balance'); burnFrames(70); Math.random = real;
+    out.failed = programs().rules.length;
+    return out;
+  });
+  assert.deepEqual(r.bad, [false, false]); assert.equal(r.started, true); assert.equal(r.secondWhileWriting, false);
+  assert.ok(r.idleAtPort);
+  assert.deepEqual(r.rules, ['heat:engineer.balance']); assert.equal(r.full, false, 'one slot, one rule');
+  assert.equal(r.slot, true); assert.equal(r.slots, 2); assert.equal(r.second, true); assert.equal(r.two, 2); assert.equal(r.removed, 1);
+  assert.equal(r.failed, 1, 'a bad roll scraps the program');
+  await done();
+});
+
+test('programs: a rule runs a crewed post on the rising edge of its condition, and only a crewed one', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = G.state; st.tutorial = null; st.crew = []; st.programs = undefined; Settings.wear = 'off'; while (G.dialog) finishEvent();
+    uatBurn('Ceres Station', 'pallas'); G.transit.times = []; const t = G.transit;
+    programs().slots = 3;
+    programs().rules.push({ cond: 'heat', post: 'engineer', order: 'balance', on: false }, { cond: 'armor', post: 'engineer', order: 'favor-shields', on: false }, { cond: 'contact', post: 'engineer', order: 'favor-guns', on: false }, { cond: 'wear', post: 'comms', order: 'listen', on: false });
+    const power0 = () => Object.assign(power(), { drive: 70, weapons: 15, shields: 15 });
+    const progs = () => t.comms.filter(c => /\[Program\]/.test(c)).length;
+    // Nobody crewed: nothing fires.
+    power0(); st.heat = 80; burnFrames(2); const solo = { progs: progs(), drive: power().drive };
+    // A crewed engineer: heat comes true, and the load is balanced once.
+    hire('engineer', 2); t.comms = []; st.heat = 60; burnFrames(1); power0(); st.heat = 78; burnFrames(1);
+    const fired = { drive: power().drive, progs: progs() };
+    power0(); st.heat = 78; burnFrames(1); const again = progs();  // still true: no second firing
+    st.heat = 10; burnFrames(1); power0(); st.heat = 78; burnFrames(1); const edge = progs();  // false then true again: fires again
+    // Hull below half: favor the shields.
+    Object.assign(power(), { drive: 40, weapons: 30, shields: 30 }); st.armor = Math.floor(ship().armor * 0.4); burnFrames(1);
+    const hull = power().shields;
+    // A contact appearing: favor the guns.
+    Object.assign(power(), { drive: 40, weapons: 30, shields: 30 }); openEvent(contactEvent({ kind: 'pirate' }));
+    const contact = power().weapons;
+    return { solo, fired, again, edge, hull, contact };
+  });
+  assert.deepEqual(r.solo, { progs: 0, drive: 70 });
+  assert.equal(r.fired.drive, 40); assert.equal(r.fired.progs, 1);
+  assert.equal(r.again, 1, 'it fires on the rising edge only');
+  assert.equal(r.edge, 2, 'and again when the condition comes back');
+  assert.equal(r.hull, 50, 'hull below half: shields first');
+  assert.equal(r.contact, 50, 'a contact: guns first');
+  await done();
+});
+
+test('programs: the Comms station lists them, takes a rule, and shows the writing', async () => {
+  const { page, ev, done } = await open();
+  await ev(helpers);
+  await ev(() => { const st = G.state; st.tutorial = null; st.crew = []; st.programs = undefined; while (G.dialog) finishEvent(); hire('engineer', 2); hire('slicer', 2); UI.render(); });
+  await page.click('[data-action=station][data-arg=comms]');
+  assert.match(await page.innerText('#panel'), /Programs/i);
+  assert.equal(await page.$eval('#panel [data-action=programWrite]', b => b.disabled), true, 'nothing picked yet');
+  await page.click('#panel [data-action=programPick][data-arg="cond:heat"]');
+  await page.click('#panel [data-action=programPick][data-arg="order:engineer.balance"]');
+  assert.equal(await page.$eval('#panel [data-action=programWrite]', b => b.disabled), false);
+  await page.click('#panel [data-action=programWrite]');
+  assert.ok(await ev(() => !!programs().writing));
+  await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; burnFrames(10); });
+  await page.waitForSelector('#bkeys', { state: 'visible' });
+  await page.click('[data-bst=comms]');
+  await page.waitForFunction(() => /\d+%/.test(document.querySelector('#bsheet [data-program]').textContent));
+  assert.ok(await page.$('#bsheet [data-program-bar]'));
+  await done();
+});

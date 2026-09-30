@@ -44,7 +44,7 @@ function commsPanel() {
   const st = G.state, inbox = (st.inbox || []).slice(0, 10), live = st.rumors.length;
   return `<h3>Comms</h3>
     <p class="desc">${live ? `${live} market tip${live > 1 ? 's' : ''} in force.` : 'No market tips in force.'}</p>
-    ${postHtml('comms')}
+    ${postHtml('comms')}${programsHtml()}
     <div class="post"><div class="eyebrow">Inbox</div>
       ${inbox.length ? inbox.map(m => `<div class="hint"><span class="tag">${VIA_TAG[m.via] || m.via}</span> ${dateOf(m.day)}: ${m.text}</div>`).join('') : '<p class="hint">Nothing yet. Word arrives as you fly and dock.</p>'}
     </div>`;

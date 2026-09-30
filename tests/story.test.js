@@ -69,9 +69,11 @@ test('Cold Water act 1: derelict, Voight, the agent, Mira, Europa', async () => 
     G.state.day = 12; S.burn('earth'); startHappening(); o.derelict = G.dialog && G.dialog.event.title;
     S.choose(G.dialog.choices[0].label); o.s1 = story().stage;
     o.voight = S.arrive('Earth'); S.choose('"It is not for sale'); o.s2 = story().stage;
-    takeOff(); o.agents = G.npcs.filter(n => n.kind === 'agent').length;
+    takeOff(); Mods.emit('frame', 0.1); o.recovery = G.dialog && G.dialog.event.title;
     const rep = JSON.stringify(G.state.rep);
-    const a = G.npcs.find(n => n.kind === 'agent'); a.shields = 0; damage(a, 9999, true);
+    S.choose('Battle stations');
+    for (let i = 0; i < 80 && (G.dialog || G.nextEvent); i++) { if (!G.dialog) { finishEvent(); continue; } chooseEvent(0); finishEvent(); }
+    Mods.emit('frame', 0.1);
     o.repKept = rep === JSON.stringify(G.state.rep);
     o.sameDay = S.land('earth', 'Earth');  // a landing scene may play, but not Mira
     S.burn('mars'); o.mira = S.arrive('Mars'); S.choose(G.dialog.choices[0].label);
@@ -87,8 +89,8 @@ test('Cold Water act 1: derelict, Voight, the agent, Mira, Europa', async () => 
   assert.equal(r.s1, 1);
   assert.equal(r.voight, 'A Man From Aquilon');
   assert.equal(r.s2, 2);
-  assert.equal(r.agents, 1, 'Aquilon sends a recovery ship');
-  assert.ok(r.repKept, 'killing the agent costs no standing');
+  assert.equal(r.recovery, 'Aquilon Recovery Ship', 'Aquilon sends a recovery ship');
+  assert.ok(r.repKept, 'fighting the recovery ship costs no standing');
   assert.notEqual(r.sameDay, 'Mira Castellane', 'Mira does not appear the same day');
   assert.equal(r.mira, 'Mira Castellane');
   assert.ok(r.storyMission);
@@ -141,9 +143,9 @@ test('Cold Water act 3: each side reaches its ending at Ceres', async () => {
       S.reset('act2', { side, act2Day: 20 }); G.state.shipId = 'gunship'; G.state.day = 22;
       o.early = S.land('earth', 'Earth');
       G.state.day = 26; o.briefing = S.land('earth', 'Earth'); S.choose('Understood');
-      S.at('ceres', 'Ceres Station'); takeOff();
-      o.blockade = G.npcs.filter(n => n.blockade).length;
-      G.npcs = [];
+      S.at('ceres', 'Ceres Station'); takeOff(); Mods.emit('frame', 0.1);
+      o.blockade = G.dialog && G.dialog.event.title;
+      G.dialog = null; G.pendingScene = null; story().blockadeCleared = true; G.npcs = [];  // the fights have their own test
       G.state.cargo.water = 30; G.state.paid.water = 3000; G.state.crew = ['rosa', 'kit'];
       S.land('ceres', 'Ceres Station'); S.choose(pick);
       o.epilogue = G.dialog && G.dialog.event.title;
@@ -153,7 +155,7 @@ test('Cold Water act 3: each side reaches its ending at Ceres', async () => {
     }, [side, pick]);
     assert.equal(r.early, null, `${side}: nothing before the briefing day`);
     assert.ok(r.briefing, `${side}: briefing`);
-    assert.ok(r.blockade > 0, `${side}: the blockade is waiting`);
+    assert.ok(r.blockade, `${side}: the blockade is waiting`);
     assert.ok(r.epilogue, `${side}: epilogue`);
     assert.ok(r.ending, `${side}: an ending is recorded`);
   }
@@ -328,5 +330,89 @@ test('a story scene on a burn beats a relationship scene', async () => {
     return [...seen];
   });
   assert.ok(r.includes('Test story') && r.every(t => ['Test story', 'Picket Line on the Band'].includes(t)), `only story scenes play (${r})`);
+  await done();
+});
+
+// The set pieces on the console: with a crewed gunner, the recovery ship and the blockade are scenes
+// and duels; without one they are ships in local space, as before.
+const consoleHelpers = () => {
+  window.hireGunner = () => { const c = makeCrewCandidate('belt'); c.role = 'gunner'; c.skill = 2; c.mood = null; registerPerson(c); G.state.crew.push(c.id); };
+  window.playOut = () => { for (let i = 0; i < 80 && (G.dialog || G.nextEvent); i++) { if (!G.dialog) { finishEvent(); continue; } chooseEvent(0); finishEvent(); } Mods.emit('frame', 0.1); };
+};
+
+test('the recovery ship on the console: a scene with a way out, and a fight settled there', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(consoleHelpers);
+  const r = await ev(() => {
+    S.reset(2); const st = G.state, out = {};
+    // Solo: the same scene, and you take the guns.
+    S.land('earth', 'Earth'); takeOff(); G.npcs = []; Mods.emit('frame', 0.1);
+    out.solo = { agents: G.npcs.filter(n => n.kind === 'agent').length, title: G.dialog && G.dialog.event.title, fight: G.dialog.choices.find(c => /^Battle/.test(c.label)).label };
+    G.dialog = null; G.pendingScene = null;
+    // Crewed gunner: a scene, and no ship.
+    S.reset(2); hireGunner();
+    S.land('earth', 'Earth'); takeOff(); G.npcs = []; Mods.emit('frame', 0.1);
+    out.scene = { title: G.dialog && G.dialog.event.title, mode: G.mode, agents: G.npcs.filter(n => n.kind === 'agent').length, labels: G.dialog.choices.map(c => c.label), via: G.dialog.event.via };
+    // Hand over the core: the story moves on, and there is no fight.
+    S.choose('Hand over the core'); Mods.emit('frame', 0.1);
+    out.sold = { stage: story().stage, fight: !!G.storyFight, mode: G.mode };
+    // The other way: fight it out, on the console, and be back in flight after.
+    S.reset(2); hireGunner(); st.credits = 50000; st.armor = ship().armor;
+    S.land('earth', 'Earth'); takeOff(); G.npcs = []; Mods.emit('frame', 0.1);
+    S.choose('Battle stations');
+    out.fighting = { duel: !!G.duel, name: G.duel && G.duel.foe.name, story: G.duel && G.duel.foe.story };
+    playOut();
+    out.after = { duel: G.duel, fight: G.storyFight, mode: G.mode, dialog: !!G.dialog, armor: st.armor >= 1 };
+    return out;
+  });
+  assert.equal(r.solo.agents, 0, 'no ship in local space, gunner or not'); assert.equal(r.solo.title, 'Aquilon Recovery Ship');
+  assert.match(r.solo.fight, /you take the guns/);
+  assert.equal(r.scene.title, 'Aquilon Recovery Ship'); assert.equal(r.scene.mode, 'hail'); assert.equal(r.scene.agents, 0); assert.equal(r.scene.via, 'ship');
+  assert.ok(r.scene.labels.some(l => /Hand over the core/.test(l)) && r.scene.labels.some(l => /outrun/.test(l)));
+  assert.deepEqual(r.sold, { stage: 'sold', fight: false, mode: 'flight' });
+  assert.match(r.fighting.name, /Quiet Ledger/); assert.ok(r.fighting.story);
+  assert.deepEqual(r.after, { duel: null, fight: null, mode: 'flight', dialog: false, armor: true }, 'the fight ends and the ship flies on');
+  await done();
+});
+
+test('the blockade on the console: a scene at arrival, a gate at the dock, two fights, or a cold approach', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(consoleHelpers);
+  const r = await ev(() => {
+    S.reset('act3', { side: 'belt' }); const st = G.state, out = {}; hireGunner();
+    st.cargo.water = 20; st.systemId = 'ceres'; G.transit = null; G.mode = 'flight';
+    const station = system().planets[0]; G.player = makeShip(st.shipId, station.x + 300, station.y, 0); G.npcs = [];
+    populateSystem(); Mods.emit('frame', 0.1);
+    out.arrival = { title: G.dialog && G.dialog.event.title, ships: G.npcs.filter(n => n.blockade).length, mode: G.mode, labels: G.dialog.choices.map(c => c.label) };
+    S.choose('Stay clear'); Mods.emit('frame', 0.1);
+    out.clear0 = { cleared: !!story().blockadeCleared, mode: G.mode };
+    // Docking is gated until the blockade is broken.
+    Object.assign(G.player, { x: station.x + station.r * 0.5, y: station.y, vx: 0, vy: 0 });
+    tryLand(); out.gate = { title: G.dialog && G.dialog.event.title, mode: G.mode };
+    S.choose('Stay clear');
+    // The gauntlet: two fights, in turn. Win each (the duel itself is covered elsewhere), and it is clear.
+    populateSystem(); Mods.emit('frame', 0.1); S.choose('Run the blockade');
+    const first = G.duel && G.duel.foe.name; G.dialog = null; G.nextEvent = null; G.duel.foeHp = 0;
+    Mods.emit('frame', 0.1);  // fight one is won: the second opens
+    const second = G.duel && G.duel.foe.name; out.chain = { first, second, cleared: !!story().blockadeCleared, dialog: !!G.dialog };
+    G.dialog = null; G.nextEvent = null; G.duel.foeHp = 0; Mods.emit('frame', 0.1);
+    out.won = { cleared: !!story().blockadeCleared, title: G.dialog && G.dialog.event.title };
+    while (G.dialog) finishEvent();
+    tryLand(); out.docked = { mode: G.mode, planet: st.planet };
+    // Another run at it: a cold approach, which can work, without a fight.
+    G.duel = null; G.storyFight = null; S.reset('act3', { side: 'mars' }); hireGunner(); const st2 = G.state; st2.cargo.water = 20; st2.systemId = 'ceres'; G.mode = 'flight'; G.npcs = [];
+    G.player = makeShip(st2.shipId, station.x + 300, station.y, 0); populateSystem(); Mods.emit('frame', 0.1);
+    const real = Math.random; Math.random = () => 0; S.choose('Slip in'); Math.random = real;
+    out.cold = { cleared: !!story().blockadeCleared, duel: !!G.duel };
+    return out;
+  });
+  assert.equal(r.arrival.title, 'The Blockade of Ceres'); assert.equal(r.arrival.ships, 0, 'no ships in local space'); assert.equal(r.arrival.mode, 'hail');
+  assert.ok(r.arrival.labels.some(l => /Run the blockade/.test(l)) && r.arrival.labels.some(l => /Slip in/.test(l)));
+  assert.deepEqual(r.clear0, { cleared: false, mode: 'flight' });
+  assert.deepEqual(r.gate, { title: 'The Blockade of Ceres', mode: 'hail' }, 'trying to dock reopens the blockade');
+  assert.notEqual(r.chain.first, r.chain.second, 'two different ships, one after the other'); assert.equal(r.chain.cleared, false);
+  assert.ok(r.won.cleared && r.won.title === 'The Blockade Breaks');
+  assert.deepEqual(r.docked, { mode: 'landed', planet: 'Ceres Station' }, 'and then the dock is open');
+  assert.deepEqual(r.cold, { cleared: true, duel: false });
   await done();
 });
