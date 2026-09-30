@@ -75,6 +75,9 @@ test('title, new game, pause, autosave, continue, slots, settings', async () => 
   await page.click('[data-action=menuSlotDelete][data-arg="3:yes"]');
   assert.deepEqual(await ev(() => Object.keys(Saves.metas())), ['1', '2']);
 
+  // The slot in play has no Delete while the game is open.
+  assert.equal(await page.$(`[data-action=menuSlotDelete][data-arg="${await ev(() => Saves.current)}"]`), null);
+
   // Load the old save: migrated to the current version.
   await page.click('[data-action=menuSlotLoad][data-arg="1"]');
   assert.deepEqual(await ev(() => [G.state.planet, G.state.credits, G.state.v === SAVE_VERSION, Array.isArray(G.state.crew), Saves.current]), ['Mars', 4321, true, true, 1]);

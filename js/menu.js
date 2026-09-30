@@ -149,7 +149,8 @@ const Menu = {
     const m = Saves.metas();
     return Array.from({ length: SLOTS }, (_, i) => i + 1).map(n => {
       const s = m[n];
-      const del = this.confirm === `del${n}`
+      // The game in play saves itself again at once, so its slot can only be deleted from the title screen.
+      const del = n === Saves.current && this.pausedFrom ? '' : this.confirm === `del${n}`
         ? `<button data-action="menuSlotDelete" data-arg="${n}:yes">Really delete</button><button data-action="menuSlotDelete" data-arg="${n}:no">Keep it</button>`
         : `<button data-action="menuSlotDelete" data-arg="${n}">Delete</button>`;
       return `<div class="mission"><div><b>Slot ${n}${n === Saves.current ? ' (current)' : ''}</b>
