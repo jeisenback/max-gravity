@@ -39,7 +39,7 @@ function planIntercept() {
   if (bounty) spec = { kind: 'bounty', mission: bounty };
   else if (G.revenge) { spec = { kind: 'hunter', person: G.revenge }; G.revenge = null; }
   else if (hostileGov && Math.random() < 0.6) spec = { kind: 'patrol', gov: hostileGov };
-  else if (Math.random() < Math.min(0.55, 0.05 + 0.6 * Math.max(danger(from), danger(to)))) spec = { kind: 'pirate' };
+  else if (Math.random() < Math.min(0.55, 0.05 + 0.6 * Math.max(danger(from), danger(to))) * SCAN_MAX) spec = { kind: 'pirate' };  // they get a second look when the drive runs cool (below)
   if (spec) t.intercept = { spec, at: t.total * rand(0.25, 0.7) };
 }
 
@@ -443,7 +443,9 @@ Mods.register({
       if (t.intercept && !t.event && !G.dialog && t.total - t.left >= t.intercept.at) {
         const { spec } = t.intercept;
         t.intercept = null;
-        openEvent(contactEvent(spec));
+        // Pirates only find a ship they can see: a hot drive is easy to spot, a cool one is not.
+        if (spec.kind === 'pirate' && Math.random() > scanVisibility() / SCAN_MAX) comm('[Scan] A drive plume sweeps past far off the bow, and does not turn.');
+        else openEvent(contactEvent(spec));
       }
     });
     M.on('key', code => {

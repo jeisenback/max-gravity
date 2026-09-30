@@ -92,7 +92,7 @@ function transitSheet(id) {
   const st = G.state, t = G.transit, s = ship(), progress = Math.min(1, 1 - t.left / t.total);
   const list = items => items.map(x => `<div class="hint">${x}</div>`).join('');
   switch (id) {
-    case 'nav': return `<h3>Navigation</h3><p class="desc">${system().name} to ${SYSTEMS[t.to].name}, ${Math.round(progress * 100)}% of the way. ${t.flipped ? 'Braking' : 'Accelerating'}. Arriving ${dateOf(st.day + t.days)}.</p>${routeHtml()}${postHtml('pilot')}`;
+    case 'nav': return `<h3>Navigation</h3><p class="desc">${system().name} to ${SYSTEMS[t.to].name}, ${Math.round(progress * 100)}% of the way. ${t.flipped ? 'Braking' : 'Accelerating'}. Arriving ${dateOf(transitEta(t))}.</p>${routeHtml()}${postHtml('pilot')}`;
     case 'weapons': return `<h3>Weapons</h3>${armament()}${postHtml('gunner')}`;
     case 'eng': return `<h3>Engineering</h3><p class="desc">Reaction mass ${st.fuel}/${s.fuel}. Armor ${st.armor}/${s.armor}. Shields ${s.shields}.</p><p class="hint">Full repairs and outfits are done at a shipyard.</p>${engineerPanel()}`;
     case 'interior': {

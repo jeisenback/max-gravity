@@ -5,7 +5,8 @@
 // watches the heat: past 100 the reactor scrams, the drive drops to a crawl, and the hull
 // takes a knock. A crewed engineer keeps the heat down on their own (a better one lets it
 // run hotter first) and takes orders: favor the drive, the guns, or the shields.
-// Weapons power sharpens "run guns", drive power "run dark", shields soften the hits
+// Drive power also sets the burn's speed, its reaction mass use, and how easily pirates spot
+// you. Weapons power sharpens "run guns", drive power "run dark", shields soften the hits
 // the console fights deal out (duel.js). Loaded before game.js; only calls into it at runtime.
 
 const POWER_MIN = 10, POWER_MAX = 80;
@@ -40,6 +41,16 @@ for (const [id, pre] of Object.entries(POWER_PRESETS)) {
   });
 }
 
+// What the drive's share does to a burn. 40% is the usual: speed 1, fuel as plotted, seen as usual.
+const SCAN_MAX = 1 + (POWER_MAX - 40) * 0.012;  // how visible the hottest drive is
+const burnSpeed = () => 1 + (power().drive - 40) * 0.008;
+const scanVisibility = () => 1 + (power().drive - 40) * 0.012;
+
+// Days a burn took, and the date it will end: a faster burn ends sooner.
+const transitDays = t => Math.max(1, Math.round(t.days * (t.elapsed || t.total) / t.total));
+const transitNow = t => G.state.day + Math.floor(t.days * (t.elapsed || 0) / t.total);
+const transitEta = t => G.state.day + Math.max(1, Math.round(t.days * ((t.elapsed || 0) + Math.max(0, t.left) / burnSpeed()) / t.total));
+
 const heat = () => G.state.heat || 0;
 const heatLimit = () => 75 + 5 * roleSkill('engineer');
 
@@ -63,6 +74,17 @@ function engineeringTick(dt) {
     comm(`[Engineering] ${roleName('engineer')} eases the drive back to ${p.drive}% to let the reactor cool.`);
   }
   if (st.heat >= 100) overload();
+  // A hot drive burns more reaction mass per distance, a cool one less. Dry tanks throttle it back.
+  if (t.fuelCost) {
+    t.fuelOwed = (t.fuelOwed || 0) + t.fuelCost * (p.drive - 40) / 100 * dt * burnSpeed() / t.total;  // settled in whole units
+    const whole = Math.trunc(t.fuelOwed);
+    t.fuelOwed -= whole;
+    st.fuel = Math.max(0, Math.min(ship().fuel, st.fuel - whole));
+    if (st.fuel <= 0 && p.drive > 40) {
+      setPower('drive', 40);
+      comm('[Engineering] Reaction mass is nearly gone. The drive is throttled back to an even load.');
+    }
+  }
 }
 
 // The Engineering station: power (sliders for a manual engineer), heat, and the post.
@@ -76,9 +98,15 @@ function engineerPanel() {
     <div class="eyebrow">Power &middot; ${manual ? 'you set it' : `${roleName('engineer')} runs it`}</div>
     ${['drive', 'weapons', 'shields'].map(row).join('')}
     <div class="slider"><span>Heat</span><span class="pbar" data-heat-bar><i></i></span><span class="mono" data-heat></span></div>
-    <p class="hint">Drive power heats the reactor on a burn and sharpens running dark. Weapons power sharpens running guns. Shields soften the hits you take in a console fight.</p>
+    <p class="hint" data-effects>${powerEffects()}</p>
+    <p class="hint">Drive power also sharpens running dark. Weapons power sharpens running guns. Shields soften the hits you take in a console fight.</p>
   </div>${postHtml('engineer')}`;
 }
+
+const powerEffects = () => {
+  const d = power().drive - 40, v = scanVisibility();
+  return `Burn speed ${burnSpeed().toFixed(2)}x. Reaction mass use ${d >= 0 ? '+' : ''}${d}%. Heat ${d > 5 ? 'builds' : d < -5 ? 'drains' : 'holds'}. Pirates spot you ${v < 0.85 ? 'rarely' : v < 1.15 ? 'as usual' : 'easily'}.`;
+};
 
 // Live numbers, filled in without rebuilding the panel so a slider can be dragged.
 function engineeringReadouts() {
@@ -94,6 +122,7 @@ function powerInput(e) {
   const p = power();
   for (const el of document.querySelectorAll('[data-power]')) el.value = p[el.dataset.power];
   for (const el of document.querySelectorAll('[data-power-val]')) el.textContent = `${p[el.dataset.powerVal]}%`;
+  for (const el of document.querySelectorAll('[data-effects]')) el.textContent = powerEffects();
 }
 
 Mods.register({

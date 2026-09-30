@@ -132,7 +132,7 @@ On a keyboard:
 - `js/stations.js` - posts (pilot, gunner, engineer, comms): crewed or manual, taking the controls, and orders
 - `js/autopilot.js` - the crewed pilot: departs, brings the ship in and lands; any flight key takes the controls
 - `js/duel.js` - the crewed gunner: a contact is settled in rounds of rock, paper, scissors on the console; a manual gunner gets the real-time fight (`engage.js`)
-- `js/engineering.js` - the engineer's post: power shares (drive, weapons, shields), reactor heat and scrams, and power orders
+- `js/engineering.js` - the engineer's post: power shares (drive, weapons, shields), reactor heat and scrams, power orders, and what drive power does to a burn (speed, reaction mass, how easily pirates spot you)
 - `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike), `mars-navy.js` (Reserve Commission, a Mars Navy career), `rook-crown.js` (The Rook's Crown, a pirate lord's rise), `tethys.js` (The Partner's Chair, a corporate climb), and `cold-water.js` (the scenes of Cold Water)
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
 - `js/audio.js` - sound effects synthesized with Web Audio (no audio files): guns, hits, explosions, engine rumble, docking, burns, comms

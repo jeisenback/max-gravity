@@ -254,12 +254,12 @@ function transitSeconds(days) {
 
 function enterTransit() {
   const st = G.state, to = st.dest;
-  const days = travelDays(st.systemId, to), total = transitSeconds(days);
-  st.fuel -= burnFuel(st.systemId, to);
+  const days = travelDays(st.systemId, to), total = transitSeconds(days), fuelCost = burnFuel(st.systemId, to);
+  st.fuel -= fuelCost;
   st.dest = null;
   const count = 1 + Math.floor(total / 40);  // 2 to 4 happenings per burn
   G.transit = {
-    to, days, total, left: total, event: null, comms: [], seen: [], flipped: false, angle: -Math.PI / 2,
+    to, days, total, fuelCost, left: total, event: null, comms: [], seen: [], flipped: false, angle: -Math.PI / 2,
     times: Array.from({ length: count }, (_, i) => total * (i + rand(0.3, 0.8)) / count),
     chatter: rand(5, 10),
   };
@@ -289,7 +289,8 @@ function updateTransit(dt) {
 
   if (t.event) return;  // timer waits for the player's decision
 
-  t.left -= dt;
+  t.left -= dt * burnSpeed();  // the drive's power sets how fast the burn goes (engineering.js)
+  t.elapsed = (t.elapsed || 0) + dt;
   if (!t.flipped && progress >= 0.5) {
     t.flipped = true;
     comm('Midpoint. Flip and burn: cutting the drive, rotating, and decelerating.');
@@ -456,7 +457,7 @@ function drawTransit(W, H) {
   ctx.textAlign = 'center';
   ctx.font = '12px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
-  ctx.fillText(`${dateOf(st.day + Math.floor(progress * t.days))}, arriving ${dateOf(st.day + t.days)}  -  ${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')} remaining${t.event ? '  (paused)' : ''}`, cx, top + 98);
+  ctx.fillText(`${dateOf(transitNow(t))}, arriving ${dateOf(transitEta(t))}  -  ${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')} remaining${t.event ? '  (paused)' : ''}`, cx, top + 98);
 
   // Comms log, top-left
   const colW = narrow ? viewW - 56 : Math.min(360, viewW / 2 - 76), maxLines = narrow ? 9 : 16;
