@@ -52,7 +52,7 @@ const SYSTEMS = {
     planets: [
       { name: 'Hermes Foundry', x: 60, y: -40, r: 50, color: '#b0a090', services: ['trade', 'missions', 'refuel'],
         prices: { industrial: 'L', equipment: 'L', metal: 'M', food: 'H', water: 'H', luxury: 'M' },
-        desc: 'Solar furnaces the size of cities, running day and night in the glare. The foundry workers are well paid and badly homesick.' },
+        desc: 'Solar furnaces the size of cities, running day and night in the glare, and a skyline of radiator fins that glow cherry-red at the edges. The foundry workers are well paid and badly homesick: they earn hazard rates for every shift out under the Sun, and they spend it on long calls home and on food that tastes like somewhere else. Nobody stays a whole career. Everybody says they are only here for two more years.' },
     ],
   },
   earth: {
@@ -60,10 +60,10 @@ const SYSTEMS = {
     planets: [
       { name: 'Earth', x: -150, y: 80, r: 95, color: '#3a7bd5', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
         prices: { water: 'M', food: 'M', industrial: 'L', medical: 'L', luxury: 'H', metal: 'H', equipment: 'L' },
-        desc: 'Thirty billion people, most of them on basic assistance. The orbital elevator ports never sleep.' },
+        desc: 'Thirty billion people, most of them on basic assistance, and the orbital elevator ports never sleep. From the dock you can see the ribbon of lit cable dropping into a cloud deck the color of old pearls, and the freight climbing it in an endless string. Down there are oceans, and forests, and lines around the block for a job. Up here it is all customs queues, noodle stalls, and men in good suits looking for someone to blame.' },
       { name: 'Luna', x: 380, y: -260, r: 40, color: '#b8b8b8', services: ['missions', 'shipyard', 'outfitter', 'refuel'],
         prices: {},
-        desc: 'Coalition shipyards and navy drydocks under a black sky. Everyone here has an opinion about Mars.' },
+        desc: 'Coalition shipyards and navy drydocks under a black sky, spread across the grey plain in long, hard-lit rows. The dust here gets into everything and never quite leaves, and every dockhand has a story about the one time they saw it float. Officers in pressed uniforms move through crowds of civilian riggers who resent them. Everyone on Luna has an opinion about Mars, and most of them would like to share it.' },
     ],
   },
   mars: {
@@ -71,10 +71,10 @@ const SYSTEMS = {
     planets: [
       { name: 'Mars', x: 100, y: -120, r: 70, color: '#c1440e', services: ['trade', 'missions', 'refuel'],
         prices: { equipment: 'H', food: 'H', water: 'H', medical: 'M', industrial: 'M', metal: 'L', luxury: 'M' },
-        desc: 'Domed cities in the Mariner Valley, and a people who have spent generations fighting to make a dead world breathe.' },
+        desc: 'Domed cities in the Mariner Valley, under a butterscotch sky, and a people who have spent generations fighting to make a dead world breathe. The air outside is still deadly, but the air inside the domes smells of green things and hot metal, and every tenth building has a mural of the day the first lake filled. Martians are precise, proud, and slightly too willing to explain why their way is the right one. They also make excellent coffee.' },
       { name: 'Phobos Yards', x: -300, y: 220, r: 30, color: '#8d6e63', services: ['shipyard', 'outfitter', 'refuel'],
         prices: {},
-        desc: 'Military-grade shipwrights on a potato-shaped moon. Martian engineering is precise, and the price shows it.' },
+        desc: 'Military-grade shipwrights on a potato-shaped moon, so small that a good jump would put you into orbit. The yards are all clean lines and quiet efficiency: the same twenty engineers have been rebuilding the same class of hull since before you were born, and they will tell you, without emotion, exactly what is wrong with yours. Martian engineering is precise, and the price shows it. Nobody haggles here. It would be insulting to both sides.' },
     ],
   },
   ceres: {
@@ -82,10 +82,10 @@ const SYSTEMS = {
     planets: [
       { name: 'Ceres Station', x: -60, y: -40, r: 60, color: '#90a4ae', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
         prices: { water: 'H', food: 'H', medical: 'H', metal: 'L', luxury: 'M', equipment: 'M', industrial: 'M' },
-        desc: 'Six million people spun up inside a dwarf planet. Belters with long limbs and short tempers, and water rationing on every wall.' },
+        desc: 'Six million people spun up inside a dwarf planet, Belters with long limbs and short tempers, and water rationing on every wall. The corridors curve upward in both directions, lined with hydroponic troughs and hand-lettered notices about the day\'s allotment. Children play in the low gravity with the easy grace of people who have never known any other. Everyone knows the price of a liter of water to the credit, and everyone will tell you when it changes.' },
       { name: 'Ring Nine', x: 260, y: 190, r: 22, color: '#8a8f86', services: ['trade', 'refuel'],
         prices: { water: 'H', food: 'H', medical: 'H' },
-        desc: 'A squatter habitat bolted to a gutted ore carrier in Ceres\'s shadow. Four thousand people who could not make Ceres rent, and the best noodles in the Belt.' },
+        desc: 'A squatter habitat bolted to a gutted ore carrier in Ceres\'s shadow: four thousand people who could not make Ceres rent, and the best noodles in the Belt. The corridors are the old cargo bays, hung with laundry and string lights, and the whole place smells of ginger and hot oil. There is no police force, but there is a rota, and nobody has ever been able to explain how it works. Strangers are fed before they are asked their business.' },
     ],
   },
   pallas: {
@@ -93,10 +93,10 @@ const SYSTEMS = {
     planets: [
       { name: 'Pallas Refinery', x: 200, y: 150, r: 45, color: '#78909c', services: ['trade', 'missions', 'refuel'],
         prices: { metal: 'L', industrial: 'H', food: 'H', water: 'H', equipment: 'H' },
-        desc: 'Smelters glowing along the asteroid\'s spine. The refinery crews pay well for anything that is not rock.' },
+        desc: 'Smelters glowing along the asteroid\'s spine in the black, feeding a river of slag into casting bays where the shifts change on the hour. The refinery crews pay well for anything that is not rock: fresh food, real coffee, a book with actual paper pages. Everyone here works hard and sleeps badly, and the company store on the main deck sells the only luxuries within a week\'s burn, at prices that are almost fair.' },
       { name: 'The Hollows', x: -170, y: -130, r: 24, color: '#7d8a80', services: ['trade', 'refuel'],
         prices: { food: 'H', water: 'H' },
-        desc: 'The refinery families live here, in worked-out tunnels a short hop from the smelters. Kids play ring-ball in the old ore chutes.' },
+        desc: 'The refinery families live here, in worked-out tunnels a short hop from the smelters, warm and dim and hung with quilts against the rock. Kids play ring-ball in the old ore chutes, their shouts carrying for a hundred meters, and every corner has a shrine to somebody\'s grandmother. It is a small place, and proud of it. Strangers get a cup of hot tea before a single question, and a great many questions after.' },
     ],
   },
   hygiea: {
@@ -104,10 +104,10 @@ const SYSTEMS = {
     planets: [
       { name: 'The Rook', x: -120, y: -60, r: 45, color: '#455a64', services: ['trade', 'missions', 'outfitter', 'refuel'],
         prices: { luxury: 'L', equipment: 'H', medical: 'H', food: 'H', water: 'M' },
-        desc: 'A hollowed-out rock nobody officially admits exists. Stolen luxury goods go cheap here, if you can get them out alive.' },
+        desc: 'A hollowed-out rock nobody officially admits exists, with a dock authority that answers to no flag and a great many signs in a dozen languages that say the same thing: no weapons, no trouble. Stolen luxury goods go cheap here, if you can get them out alive. The bartenders are more polite than any you have ever met, and the polite ones are the ones you watch.' },
       { name: 'Boneyard', x: 230, y: 170, r: 28, color: '#6b6152', services: ['trade', 'outfitter', 'refuel'],
         prices: { medical: 'H', food: 'H' },
-        desc: 'Three hundred dead ships lashed together into a town. The salvagers who live here will sell you anything that came off a wreck, and never ask where your ship came from.' },
+        desc: 'Three hundred dead ships lashed together into a town, their hulls welded into streets, their cargo bays turned into shops and homes. The salvagers who live here will sell you anything that came off a wreck, from a hull plate to a wedding ring, and never ask where your ship came from. At night the old running lights are turned on in patterns, and it looks like a fleet that never quite left port.' },
     ],
   },
   psyche: {
@@ -115,7 +115,7 @@ const SYSTEMS = {
     planets: [
       { name: 'Ironheart', x: 40, y: -30, r: 40, color: '#8b8378', services: ['trade', 'missions', 'refuel'],
         prices: { metal: 'L', industrial: 'L', food: 'H', water: 'H', luxury: 'H', medical: 'M' },
-        desc: 'The bare iron core of a dead protoplanet. The prospectors\' co-op votes on everything, including, once, whether to let you dock.' },
+        desc: 'The bare iron core of a dead protoplanet, riddled with the shafts of a hundred generations of prospectors, and a co-op meeting hall so worn from use that the floor has a groove in it. The prospectors vote on everything, including, once, whether to let you dock. They argue in long, cheerful, endlessly patient sessions, and the decisions somehow come out better than most governments manage. It is best not to be in a hurry.' },
     ],
   },
   juno: {
@@ -123,7 +123,7 @@ const SYSTEMS = {
     planets: [
       { name: 'Juno Commons', x: -40, y: 50, r: 38, color: '#8f9c7a', services: ['trade', 'missions', 'refuel'],
         prices: { food: 'L', luxury: 'H', equipment: 'H', medical: 'H', water: 'M' },
-        desc: 'Three thousand families and their greenhouses in a spun-up rock. Everyone knows everyone, and by the end of your shore leave they will know you.' },
+        desc: 'Three thousand families and their greenhouses in a spun-up rock, every cabin with a window box and every corridor with a herb garden. Everyone knows everyone, and by the end of your shore leave they will know you: your name, your ship, and how you take your tea. The children hold the doors for strangers. The elders hold court in the shade of the lemon trees, and remember every ship that ever put in here and what it brought.' },
     ],
   },
   eros: {
@@ -131,7 +131,7 @@ const SYSTEMS = {
     planets: [
       { name: 'Eros Old Town', x: 30, y: 40, r: 32, color: '#a08a70', services: ['trade', 'missions', 'refuel'],
         prices: { metal: 'M', water: 'H', industrial: 'H', luxury: 'L', equipment: 'M' },
-        desc: 'The first great mining boomtown, from when the Belt was a gold rush. Half the town is sealed off now. The half that is left drinks to the old days, and sells off the family silver.' },
+        desc: 'The first great mining boomtown, from when the Belt was a gold rush. Half the town is sealed off now, its corridors dark and cold, the signs still advertising assayers and dance halls. The half that is left drinks to the old days, and sells off the family silver a piece at a time. The barkeeps tell stories about fortunes that were made and lost in a single night, and about a vein of platinum that nobody ever found.' },
     ],
   },
   jupiter: {
@@ -139,10 +139,10 @@ const SYSTEMS = {
     planets: [
       { name: 'Ganymede', x: 150, y: 50, r: 70, color: '#a1887f', services: ['trade', 'missions', 'refuel'],
         prices: { food: 'L', medical: 'M', luxury: 'H', equipment: 'H' },
-        desc: 'The breadbasket of the outer planets. Mirror arrays feed sunlight to agri-domes that grow food for half the Belt.' },
+        desc: 'The breadbasket of the outer planets: mirror arrays turning slowly overhead, feeding sunlight to agri-domes that grow food for half the Belt. From the dock it looks like a small green sea under glass, with crop rows running to the horizon and irrigation booms tracing their slow arcs. The farmers are practical, sunburned, and wary of anyone who talks like an investor. They will feed you very well, and they will watch how you pay.' },
       { name: 'Europa', x: -350, y: -200, r: 55, color: '#d7ccc8', services: ['trade', 'refuel'],
         prices: { water: 'L', industrial: 'H' },
-        desc: 'An ice shell over a hidden ocean. Europa\'s ice haulers fill the Belt\'s cisterns.' },
+        desc: 'An ice shell over a hidden ocean, and the pumping stations that drink from it. The haulers here fill the Belt\'s cisterns, and the docks are a forest of long white hoses, each frozen to a glittering fringe. Beneath your feet the ice hums. The Water Authority runs everything with polite, unblinking efficiency, and every worker wears a small pin with a drop of blue enamel, which they touch when they talk about the crisis at Ceres.' },
     ],
   },
   saturn: {
@@ -150,10 +150,10 @@ const SYSTEMS = {
     planets: [
       { name: 'Titan', x: -80, y: 160, r: 75, color: '#e0a040', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
         prices: { medical: 'L', luxury: 'M', equipment: 'H', industrial: 'H' },
-        desc: 'Orange haze and methane rain over the research domes. Titan\'s biolabs make the best pharmaceuticals this side of Earth.' },
+        desc: 'Orange haze and methane rain over the research domes, and a sky so thick that the light always seems to be late afternoon. Titan\'s biolabs make the best pharmaceuticals this side of Earth, and the scientists who run them are a tightly knit, slightly odd community who work in shifts and eat at the same long tables. They love visitors, and they love even more the news, the gossip, and the odd fresh vegetable that you bring.' },
       { name: 'Enceladus', x: 350, y: -250, r: 35, color: '#eceff1', services: ['trade', 'refuel'],
         prices: { water: 'L', food: 'H', metal: 'H' },
-        desc: 'Ice geysers blasting into space. Haulers queue for hours to scoop the purest water in the system.' },
+        desc: 'Ice geysers blasting into space in tall white plumes that catch the light of a distant Sun. Haulers queue for hours to scoop the purest water in the system, drifting in loose orbit while their crews watch the glittering fountain and swap news over the radio. There is a small dock crew, a smaller shop, and a great deal of quiet. Nobody who works here talks much, and everybody who visits leaves a little calmer.' },
     ],
   },
   neptune: {
@@ -161,7 +161,7 @@ const SYSTEMS = {
     planets: [
       { name: 'Triton Outpost', x: 60, y: 200, r: 45, color: '#9575cd', services: ['trade', 'missions', 'refuel'],
         prices: { medical: 'H', equipment: 'H', luxury: 'H', metal: 'L', water: 'L', food: 'M' },
-        desc: 'The edge of human space, weeks from anywhere. Settlers here trade ore and ice for anything that keeps them alive another season.' },
+        desc: 'The edge of human space, weeks from anywhere, a handful of pressurized domes on a frozen world with a retrograde orbit. Settlers here trade ore and ice for anything that keeps them alive another season, and they measure time by supply ships. It is cold, and silent, and the sky is very dark, but the community is so tight-knit that nobody is ever lonely for long. They will remember your name for years.' },
     ],
   },
 };

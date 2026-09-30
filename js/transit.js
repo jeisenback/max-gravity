@@ -88,117 +88,117 @@ function addRumor() {
 const TRANSIT_EVENTS = [
   {
     title: 'Distress Call',
-    text: 'A faint signal cuts through the static: "...reactor scram... life support failing... anyone..." A private yacht is drifting ballistic just off your trajectory.',
+    text: 'A faint signal cuts through the static: "...reactor scram... life support failing... anyone..." The voice is thin and cracked, the voice of someone who has said the same words a hundred times to an empty sky. A private yacht is drifting ballistic just off your trajectory, small and sleek and dark, with a single tumbling running light. There is no other traffic within a day\'s burn. Whoever is aboard has, very likely, not much air left.',
     choices: [
       { label: 'Kill your burn and help (costs time)', run() {
         delay(15);
         if (Math.random() < 0.65) {
           const c = randInt(15, 40) * 100;
           G.state.credits += c;
-          return `You patch their air recyclers and share some rations. The grateful owner transfers ${fmt(c)} cr.`;
+          return `You match velocity, and cross in suits, and find three people in the yacht\'s galley, gray-faced, wrapped in blankets, breathing in shallow sips. You patch their air recyclers with a borrowed part, and share some rations, and stay until the color returns to their cheeks. The grateful owner, a rich man in a torn silk shirt, transfers ${fmt(c)} cr, and, before you go, grips your hand so hard it hurts. "I will not forget this," he says. He does not.`;
         }
-        return `It was bait. Two raiders light their drives the moment you match velocity. You break away with ${hurt(0.3)} points of armor damage.`;
+        return `It was bait. Two raiders light their drives the moment you match velocity, dark shapes swinging out from behind the yacht\'s hull, guns already hot. The "life support failure" was a recording, looping on a dead panel. You break away, hard, with ${hurt(0.3)} points of armor damage and a long, ringing anger, at yourself, at them, at a universe in which this works.`;
       } },
-      { label: 'Stay on course', run: () => 'You tune out the signal. It fades behind you, then stops.' },
+      { label: 'Stay on course', run: () => 'You tune out the signal, and tell yourself it is probably a trap, and it probably is. It fades behind you, thinner and thinner, until it is just a whisper in the static, and then it stops. You do not sleep well, that night, and you do not know whether it is because of the voice or because of the silence that followed.' },
     ],
   },
   {
     title: 'Pirates Matching Course',
-    text: 'A dark ship with no transponder matches your burn and paints you with targeting lidar. A voice crackles: "Cargo or credits, hoser. Your choice."',
+    text: 'A dark ship with no transponder slides in off your quarter and matches your burn, close enough that you can see the scars on her hull, and paints you with targeting lidar, a cold, red, insistent pulse across your instruments. A voice crackles on the open band, amused, unhurried, and very young: "Cargo or credits, hoser. Your choice." Behind it, in the noise, someone is laughing, and somebody else is very, very quietly counting.',
     choices: [
       { label: 'Pay them off (10% of your credits)', run() {
         const c = Math.min(G.state.credits, Math.max(500, Math.round(G.state.credits * 0.1)));
         G.state.credits -= c;
-        return `You transfer ${fmt(c)} cr. They peel off with a mocking flash of their running lights.`;
+        return `You transfer ${fmt(c)} cr, with a small, tight, humiliated feeling in your chest. They peel off with a mocking flash of their running lights, three long, one short, and, on the open band, a last, cheerful "Safe burn, hoser." You sit for a moment in the quiet, with your hand still on the transfer key.`;
       } },
-      { label: 'Dump half your biggest cargo', can: hasTradeCargo, run: () => `${loseCargo(0.5)} The pirates chase it down while you burn on.` },
+      { label: 'Dump half your biggest cargo', can: hasTradeCargo, run: () => `${loseCargo(0.5)} The crates tumble away into the dark, spinning, glinting, in a slow, expensive constellation. The pirates chase it down, whooping on the channel, while you burn on, and, as they fall behind, you watch their running lights dwindle, and try not to do the arithmetic.` },
       { label: 'Fight', run() {
         if (Math.random() < fightOdds()) {
           const b = randInt(10, 25) * 100;
           G.state.credits += b;
-          return `You hole their reactor shielding and they go dark. Salvage nets ${fmt(b)} cr, and you take ${hurt(0.2)} points of armor damage.`;
+          return `It is a short, ugly fight, a flurry of tracers in the dark, and, at the last, a lucky shot: you hole their reactor shielding and they go dark, tumbling, silent, with a single flare of venting gas. Salvage nets ${fmt(b)} cr, and you take ${hurt(0.2)} points of armor damage. Nobody cheers. You count the crew, twice, and find them all, and, in the small hours, you count them again.`;
         }
-        return `They outgun you. You limp away with ${hurt(0.5)} points of armor damage.`;
+        return `They outgun you, decisively, and the hull rings like a struck bell under the hits. You limp away with ${hurt(0.5)} points of armor damage and a very hollow, very ringing quiet in the cockpit. On the channel, as you go, a voice says, gently, almost kindly: "Next time, pay."`;
       } },
       { label: '[{crew}] Spoof a pirate transponder', role: 'slicer', run() {
-        if (Math.random() < slicerOdds()) return '{crew}\'s fake transponder reads as one of their own. They wave you through with a rude gesture.';
-        return `They see through it and open fire. ${hurt(0.2)} points of armor damage before you get clear.`;
+        if (Math.random() < slicerOdds()) return '{crew}\'s fake transponder reads as one of their own, a perfect, ugly, insolent forgery, complete with a scrawled skull. They wave you through with a rude gesture, and one of them, over the channel, calls you "brother". You do not answer. Your hands, on the controls, are a very long way from steady.';
+        return `They see through it, in seconds, with the easy contempt of professionals, and open fire. ${hurt(0.2)} points of armor damage before you get clear, and {crew} sits very still afterward, mouthing a numbered list of what went wrong.`;
       } },
       { label: 'Hard burn to outrun them (50 reaction mass)', can: () => G.state.fuel >= 50, run() {
         G.state.fuel -= 50;
-        if (Math.random() < 0.7) return 'Eight g. The juice keeps you conscious, barely. When you can see again, they are gone.';
-        return `You pull away, but not before they rake your hull for ${hurt(0.25)} points of armor damage.`;
+        if (Math.random() < 0.7) return 'Eight g. The juice floods your veins and keeps you conscious, barely, in a grey, roaring tunnel of sound, with the whole ship groaning around you and the stars streaking to threads. When you can see again, they are gone, small and dwindling behind, and someone, in the galley, is laughing, high and shaky, and cannot seem to stop.';
+        return `You pull away, in a long, thundering rush, but not before they rake your hull for ${hurt(0.25)} points of armor damage, a line of hits like a fist dragged along a wall. They do not follow. The silence, afterward, is deafening, and full of the small clicks and pings of a ship settling.`;
       } },
     ],
   },
   {
     title: 'Drifting Cargo Container',
-    text: 'Sensors flag an unmarked cargo container tumbling along your trajectory. No owner beacon.',
+    text: 'Sensors flag an unmarked cargo container tumbling along your trajectory, a battered grey box the size of a small house, spinning lazily, catching the sunlight at each turn. No owner beacon, no transponder, no markings but a faded serial number and a long white scar down one side. It could have fallen off a freighter last week, or last decade. Everyone in the cockpit is looking at it, and nobody is quite saying what they are thinking.',
     choices: [
       { label: 'Grab it', can: () => cargoFree() > 0, run() {
-        if (Math.random() < 0.2) return `Booby-trapped. The container detonates against your hull for ${hurt(0.2)} points of armor damage.`;
+        if (Math.random() < 0.2) return `Booby-trapped. The container detonates against your hull, a flat white flash and a slam that throws everything in the cockpit to the deck, for ${hurt(0.2)} points of armor damage. When the ringing stops, someone says, very calmly, "Well. That is why they call it free."`;
         const c = pick(COMMODITIES), tons = Math.min(cargoFree(), randInt(2, 8));
         G.state.cargo[c.id] = (G.state.cargo[c.id] || 0) + tons;
-        return `Finders keepers: ${tons}t of ${c.name}, free.`;
+        return `You nudge alongside, and cut the seal with a torch, and, for a long moment, nothing happens. Then the door swings open, and, inside, neatly strapped, shining in the work lights: ${tons}t of ${c.name}, free. Finders keepers. You haul it aboard, in a slow, careful, disbelieving line, and, that night, at dinner, somebody raises a glass to whoever lost it.`;
       } },
-      { label: 'Leave it', run: () => 'Nothing out here is ever really free. You let it tumble past.' },
+      { label: 'Leave it', run: () => 'Nothing out here is ever really free. You let it tumble past, turning and turning, a small grey moon on its way to nowhere, and watch it until it is a dot, and then not even that. Somebody, quietly, in the galley, says they would have liked to know what was inside. Nobody answers.' },
     ],
   },
   {
     title: 'Stowaway',
-    text: 'A skinny Belter kid unfolds from behind the cargo netting, blinking. "I just need to get off that rock. I can pay a little. Or I know things."',
+    text: 'A skinny Belter kid unfolds from behind the cargo netting, blinking, cramped and stiff and bright-eyed, with a smudge of grease along one cheek and a tattered rucksack clutched to their chest. They have been in there, you realize, for two days, living on packets of ration paste. They look at you with the wide, fierce, terrified courage of a stray dog that has decided to bite first. "I just need to get off that rock," they say. "I can pay a little. Or I know things. I know a lot of things."',
     choices: [
       { label: 'Charge them passage', run() {
         const c = randInt(3, 8) * 100;
         G.state.credits += c;
-        return `They hand over ${fmt(c)} cr in crumpled scrip and curl up in the galley.`;
+        return `They hand over ${fmt(c)} cr in crumpled scrip, counted out on the galley table in small, sticky bills, and, when the last one is down, let out a long, shaky breath. They curl up on the bench, still in their jacket, and are asleep in minutes, with one hand still closed around the rucksack. Someone, without a word, puts a blanket over them.`;
       } },
-      { label: '"What do you know?"', run: () => `The kid grins. "${addRumor()}" You file that away.` },
+      { label: '"What do you know?"', run: () => `The kid grins, a quick, lopsided, delighted grin, and drops their voice to a conspiratorial whisper. "I sweep floors at the port office," they say. "You would be amazed what people say around a broom." And then, with great importance: "${addRumor()}" You file that away, and give the kid a bunk, and a meal, and, in the morning, find that they have very quietly cleaned the entire galley.` },
     ],
   },
   {
     title: 'Derelict Ship',
-    text: 'Your sensors pick up a derelict drifting dark, hull breached, no life signs. Salvage rights go to whoever gets there first.',
+    text: 'Your sensors pick up a derelict drifting dark, an old ore hauler with her hull breached, her running lights out, and a long black scorch mark down one side, like the track of a great claw. No transponder, no life signs, no heat signature. She has been dead a long time. Salvage rights go to whoever gets there first, and the cockpit has gone very quiet, in the way it does when everybody is calculating the same number.',
     choices: [
       { label: 'Match velocity and strip it', run() {
         delay(10);
         if (Math.random() < 0.6) {
           const c = randInt(10, 30) * 100;
           G.state.credits += c;
-          return `You cut out the nav core and a crate of spare parts, worth ${fmt(c)} cr to the right buyer.`;
+          return `You go aboard in suits, through a tangle of cold, dark passages, past frozen coffee bulbs and a child\'s drawing pinned to a bulkhead, and cut out the nav core and a crate of spare parts, worth ${fmt(c)} cr to the right buyer. On the way out, you do not look at the drawing. You almost make it.`;
         }
-        return `Something in the reactor section was still live. The blast costs you ${hurt(0.15)} points of armor.`;
+        return `Something in the reactor section was still live. A blue-white flash, a slam like a hammer, and the blast, as you scramble for the airlock, costs you ${hurt(0.15)} points of armor, and leaves your ears ringing for an hour. You do not go back for the parts. Nobody suggests it.`;
       } },
-      { label: 'Log it and keep burning', run: () => 'Whatever happened to them, it is not your business. You log the position and move on.' },
+      { label: 'Log it and keep burning', run: () => 'Whatever happened to them, it is not your business. You log the position, and the ship\'s name, and the time, in the careful, formal voice you use for such things, and move on. Behind you, the dead ship dwindles, and, for a long time, someone in the galley keeps watching the screen, and nobody says why.' },
     ],
   },
   {
     title: 'Coolant Leak',
-    text: 'Alarms. The reactor coolant loop has sprung a leak and the drive is running hot.',
+    text: 'Alarms. A shrill, insistent wail that goes through the whole ship, and, on the reactor panel, a line of lights, one after another, going from green to amber to red. The coolant loop has sprung a leak, somewhere back in the tangle of pipes behind the drive housing, and the drive is running hot, hotter every minute, with a faint, ominous, metallic ticking. The air in the corridor smells of burnt glycol. Everyone is looking at you.',
     choices: [
-      { label: '[{crew}] Handle it', role: 'engineer', run: () => '{crew} is in the coolant loop before the alarm finishes. "Go back to sleep, captain."' },
+      { label: '[{crew}] Handle it', role: 'engineer', run: () => '{crew} is in the coolant loop before the alarm finishes, sleeves rolled, one hand already on the valve, and, for twenty long minutes, there is only the sound of tools, and the hiss of venting steam, and a low, steady, cheerful muttering. Then the lights, one by one, go back to green. "Go back to sleep, captain," {crew} says, wiping their hands, and grins, black to the elbows.' },
       { label: 'Suit up and patch it', run() {
-        if (Math.random() < 0.5) return 'An hour in a vac suit with a sealant gun and some creative swearing. Good as new.';
+        if (Math.random() < 0.5) return 'An hour in a vac suit with a sealant gun and some creative swearing, wedged into a space the size of a coffin, with a flashlight in your teeth and a small, hot, hissing jet at your elbow. Somewhere near the end of the hour, the hiss stops. Good as new. You crawl out, drenched, and someone hands you a cup of tea without a word, and it is the best tea of your life.';
         const lost = Math.min(G.state.fuel, 50);
         G.state.fuel -= lost;
-        return `The patch fails and you vent ${lost} units of reaction mass before you get it sealed.`;
+        return `The patch fails, in a spray of hot white vapor, and you vent ${lost} units of reaction mass before you get it sealed, on the second try, with a great deal of swearing and a scorched sleeve. When it holds, at last, you slide down the wall and sit on the deck, laughing, because it is that or something else.`;
       } },
       { label: 'Throttle back and burn extra mass to cool it', run() {
         const lost = Math.min(G.state.fuel, 25);
         G.state.fuel -= lost;
-        return `You spend ${lost} units of reaction mass and the temperature settles.`;
+        return `You throttle back, slowly, watching the needles, and burn ${lost} units of reaction mass through the leak in a long, controlled, expensive sigh, and the temperature settles, degree by degree, like a fever breaking. It is not elegant, and it is not cheap. But the drive is quiet again, and, in the corridor, the smell of glycol begins, slowly, to fade.`;
       } },
     ],
   },
   {
     title: 'Merchant Hail',
-    text: 'A freighter on a parallel trajectory hails you. "Market tip, friend? Five hundred credits and it is yours."',
+    text: 'A freighter on a parallel trajectory hails you, close enough that you can see her crew in the cockpit windows, and a cheerful, weathered face, and a cup raised in greeting. "Market tip, friend?" the captain says, in a voice like a well-worn saddle. "I have been up and down these lanes forty years, and I hear things. Five hundred credits and it is yours. I promise you will not regret it. Usually."',
     choices: [
       { label: 'Buy the tip (500 cr)', can: () => G.state.credits >= 500, run() {
         G.state.credits -= 500;
-        return `"${addRumor()}" The captain signs off with a wink.`;
+        return `The captain clears their throat, and, very solemnly, as if delivering a sacred text, says: "${addRumor()}" There is a pause. "That is the good stuff," they add. "I would not sell it to just anyone." They sign off with a wink, and a two-fingered salute, and, in a few minutes, their lights are a distant spark.`;
       } },
-      { label: 'No thanks', run: () => '"Your loss," they laugh, and drop off the channel.' },
+      { label: 'No thanks', run: () => '"Your loss," they laugh, not unkindly, and, with a click, drop off the channel. Their running lights, a few minutes later, wink twice, in what may be a farewell or a joke, and dwindle away. You are left with an odd, small sense of having turned down something, and no real idea what.' },
     ],
   },
 ];
@@ -293,10 +293,13 @@ function startHappening() {
   }
   const crewEvent = Math.random() < 0.3 && crewTraitEvent();
   if (crewEvent) return openEvent(crewEvent);
-  const fresh = TRANSIT_EVENTS.filter(e => !t.seen.includes(e));
+  // Not one seen in the last 45 days, on this burn or an earlier one.
+  const met = G.state.eventSeen = G.state.eventSeen || {};
+  const fresh = TRANSIT_EVENTS.filter(e => !t.seen.includes(e) && !(met[e.title] > G.state.day - 45));
   if (Math.random() < 0.55 && fresh.length) {
     const ev = pick(fresh);
     t.seen.push(ev);
+    met[ev.title] = G.state.day;
     return openEvent(ev);
   }
   addRumor();

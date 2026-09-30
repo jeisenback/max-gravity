@@ -39,7 +39,7 @@ const UI = {
     const where = G.mode === 'hail' ? 'Comms channel' : G.mode === 'transit' ? 'In transit' : G.state.planet;
     this.setAccent(G.mode === 'hail' ? '#6fb0ff' : G.mode === 'transit' ? '#9fb4ff' : GOV_COLORS[system().gov]);
     this.el.innerHTML = `
-      <div class="event-body">
+      <div class="event-body" role="dialog" aria-label="${ev.title}">
         <div class="eyebrow">${where}</div>
         <h1>${ev.title}</h1>
         <p>${ev.text}</p>
@@ -105,7 +105,7 @@ const UI = {
         </div>
       </div>
       <div class="tabs">
-        ${tabs.map(([id, label, ok]) => `<button data-action="tab" data-arg="${id}" class="${this.tab === id ? 'active' : ''}" ${ok ? '' : 'disabled'}>${label}</button>`).join('')}
+        ${tabs.map(([id, label, ok]) => `<button data-action="tab" data-arg="${id}" class="${this.tab === id ? 'active' : ''}" ${this.tab === id ? 'aria-current="page"' : ''} ${ok ? '' : 'disabled'}>${label}</button>`).join('')}
       </div>
       ${Mods.filter('portBanner', '')}
       <div class="body">${this.views[this.tab].call(this)}</div>
@@ -164,7 +164,7 @@ const UI = {
         const pr = price(p, c.id), held = st.cargo[c.id] || 0;
         const tag = { L: 'low', M: 'med', H: 'high' }[p.prices[c.id]] || '';
         const best = bestSale(p, c.id);
-        const avg = held ? Math.round(st.paid[c.id] / held) : 0;
+        const avg = held ? Math.round((st.paid[c.id] || 0) / held) : 0;
         const mp = pr === null ? 0 : Math.round(pressure(p, c.id) * 100);
         const moved = Math.abs(mp) >= 3 ? ` <span class="hint">${mp > 0 ? `scarce +${mp}%` : `surplus ${mp}%`}</span>` : '';
         const off = pr === null ? 'disabled' : '', none = pr === null || !held ? 'disabled' : '';
@@ -432,3 +432,23 @@ UI.el.addEventListener('click', e => {
     if (Mods.act(b.dataset.action, b.dataset.arg)) { save(); if (G.mode === 'landed' && !G.dialog && !G.paused) UI.render(); } else UI.act(b.dataset.action, b.dataset.arg);
   }
 });
+
+// The panel is rebuilt with innerHTML, which drops keyboard focus to the page. Put it
+// back on the button that was used (or the nearest useful one) so Tab and Enter keep
+// working. Not while flying: Space fires the guns and would press a focused button.
+{
+  let last = null;
+  UI.el.addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (b) last = { at: performance.now(), action: b.dataset.action, arg: b.dataset.arg, id: b.id };
+  }, true);
+  new MutationObserver(() => {
+    const a = document.activeElement;
+    if (!last || performance.now() - last.at > 300 || (a && a !== document.body)) return;
+    if (!G.paused && ['flight', 'departing', 'engage'].includes(G.mode)) return;
+    const buttons = [...UI.el.querySelectorAll('button:not(:disabled)')];
+    const same = buttons.find(b => (last.id && b.id === last.id) || (last.action && b.dataset.action === last.action && b.dataset.arg === last.arg));
+    const target = same || UI.el.querySelector('.tabs button.active') || buttons[0];
+    if (target) target.focus({ preventScroll: true });
+  }).observe(UI.el, { childList: true });
+}
