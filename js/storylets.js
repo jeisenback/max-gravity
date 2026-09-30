@@ -172,6 +172,7 @@ function addStorylet(def, source = 'core') {
 function storyletEvent(s) {
   const qs = G.state.qualities = G.state.qualities || {};
   if (s.once) qs[`seen:${s.id}`] = 1;
+  if (s.every) qs[`last:${s.id}`] = G.state.day;
   // A choice that needs a particular crew member (not just a role) is hidden without them.
   const present = c => !(c.when && c.when.crew && !ROLE_NAMES[c.when.crew] && !G.state.crew.includes(c.when.crew));
   return {
@@ -192,7 +193,8 @@ function storyletEvent(s) {
 
 // The storylet to play here and now: eligible ones of the highest priority, one at random.
 function pickStorylet(where) {
-  const ok = STORYLETS.filter(s => s.where === where && !(s.once && quality(`seen:${s.id}`)) && meets(s.when));
+  const waiting = s => s.every && quality(`last:${s.id}`) && G.state.day - quality(`last:${s.id}`) < s.every;  // `every: days` lets a scene come round again
+  const ok = STORYLETS.filter(s => s.where === where && !(s.once && quality(`seen:${s.id}`)) && !waiting(s) && meets(s.when));
   if (!ok.length) return null;
   const top = Math.max(...ok.map(s => s.priority));
   return pick(ok.filter(s => s.priority === top));
@@ -212,9 +214,12 @@ Mods.register({
       return s && storyletEvent(s);
     });
     M.on('landed', () => {
-      if (G.dialog) return;  // a story scene is already playing
       const s = pickStorylet('port');
-      if (s) openEvent(storyletEvent(s));
+      if (!s) return;
+      // Something else is already playing (a family moment, say): a story scene follows it
+      // rather than being lost; small dock scenes just wait for another landing.
+      if (G.dialog) { if (s.priority > 0 && !G.nextEvent) G.nextEvent = storyletEvent(s); return; }
+      openEvent(storyletEvent(s));
     });
     M.on('missionDone', m => applyEffects(m.onDone));
     M.on('missionFailed', m => applyEffects(m.onFail));

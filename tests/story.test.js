@@ -18,6 +18,7 @@ const helpers = () => {
       localStorage.clear(); newGame(); while (G.dialog) finishEvent();
       const st = G.state; st.tutorial = null; st.flags.classicCombat = true; st.shipId = 'freighter'; st.credits = 50000;
       if (stage !== undefined) Object.assign(st.story, { stage }, extra || {});
+      home().cat = 'Rivet';  // no stray-cat scene in front of the story scene under test
     },
     // Lands and returns the scene title, or null.
     land(sys, body) { while (G.dialog) finishEvent(); G.transit = null; G.state.systemId = sys; G.state.planet = body; G.mode = 'landed'; landAt(currentPlanet(), []); return G.dialog ? G.dialog.event.title : null; },
@@ -254,5 +255,57 @@ test('the Tethys Consortium, loyal and leaking', async () => {
     assert.match(String(r.noShip), /no "Sign"|^null$/, 'needs a company ship first');
     assert.ok(r.done, `${loyal ? 'loyal' : 'leak'}: finished (${r.steps.join(', ')})`);
   }
+  await done();
+});
+
+test('every storylet opens and every choice plays, with no unfilled text', async () => {
+  const { ev, done } = await open();
+  const bad = await ev(() => {
+    const bad = [], odd = t => /undefined|NaN|\[object|\{[a-z]+\}/.test(t);
+    const fresh = () => {
+      localStorage.clear(); newGame(); while (G.dialog) finishEvent();
+      const st = G.state; st.tutorial = null; st.flags.classicCombat = true; st.credits = 100000; st.shipId = 'freighter'; st.day = 60;
+      st.cargo = { water: 20, medical: 10, luxury: 10, food: 10, equipment: 10 };
+      st.crew.push('rosa', 'kit');
+      for (const role of ['slicer', 'medic', 'pilot']) { const c = makeCrewCandidate('belt'); c.role = role; c.skill = 2; registerPerson(c); st.crew.push(c.id); }
+    };
+    for (const s of STORYLETS) {
+      fresh();
+      const n = storyletEvent(s).choices.length;
+      for (let i = 0; i < n; i++) {
+        fresh();
+        const ev = storyletEvent(s), c = ev.choices[i];
+        if (odd((ev.title + ' ' + ev.text + ' ' + c.label).replace(/\{crew\}/g, 'X'))) bad.push(`${s.id}: ${(ev.text + ' | ' + c.label).slice(0, 100)}`);
+        try {
+          const r = String(c.run()); if (odd(r.replace(/\{crew\}/g, 'X'))) bad.push(`${s.id}#${i}: ${r.slice(0, 100)}`);
+          if (G.nextEvent) G.nextEvent = null;
+        } catch (e) { bad.push(`${s.id}#${i} threw: ${e.message}`); }
+        if (!Number.isFinite(G.state.credits) || !Number.isFinite(G.state.fuel)) bad.push(`${s.id}#${i}: credits or fuel not a number`);
+      }
+    }
+    return bad;
+  });
+  assert.deepEqual(bad, []);
+  await done();
+});
+
+test('a story scene is not lost behind a family moment on the same landing', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    S.reset(); const st = G.state; st.day = 12; st.story.next = 1e9; st.shipId = 'shuttle';
+    st.qualities = { strike: 1 };  // the Ceres strike scene is ready
+    home().cat = null;             // and the cat is about to come aboard
+    let order = null;
+    for (let i = 0; i < 200 && !order; i++) {
+      while (G.dialog) finishEvent(); G.nextEvent = null; delete st.qualities['seen:strike-ceres'];
+      S.land('ceres', 'Ceres Station');
+      if (G.dialog && G.dialog.event.title === 'Stowaway') { const first = G.dialog.event.title; finishEvent(); order = [first, G.dialog && G.dialog.event.title]; }
+    }
+    return order;
+  });
+  assert.ok(r, 'the cat came aboard within 200 tries');
+  assert.equal(r[0], 'Stowaway');
+  assert.notEqual(r[1], null, 'the strike scene followed the cat');
   await done();
 });

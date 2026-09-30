@@ -293,10 +293,13 @@ function startHappening() {
   }
   const crewEvent = Math.random() < 0.3 && crewTraitEvent();
   if (crewEvent) return openEvent(crewEvent);
-  const fresh = TRANSIT_EVENTS.filter(e => !t.seen.includes(e));
+  // Not one seen in the last 45 days, on this burn or an earlier one.
+  const met = G.state.eventSeen = G.state.eventSeen || {};
+  const fresh = TRANSIT_EVENTS.filter(e => !t.seen.includes(e) && !(met[e.title] > G.state.day - 45));
   if (Math.random() < 0.55 && fresh.length) {
     const ev = pick(fresh);
     t.seen.push(ev);
+    met[ev.title] = G.state.day;
     return openEvent(ev);
   }
   addRumor();

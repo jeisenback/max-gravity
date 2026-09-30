@@ -244,6 +244,10 @@ const SOCIAL_ACTIVITIES = {
 
 // ---------- relationship scenes in transit ----------
 const CAUSES = ['the last of the coffee', 'music in the berths at all hours', 'a ring-ball bet', 'whose turn it is to scrub the recycler', 'a borrowed jacket that came back torn', 'the thermostat'];
+// A repeatable scene waits its turn per pair, so the same two people do not have the
+// same talk every burn: isCooled asks, cool starts the wait.
+const isCooled = (a, b, what, days) => { const d = (G.state.qualities || {})[`social:cool:${what}:${bondKey(a, b)}`]; return d !== undefined && G.state.day - d < days; };
+const cool = (a, b, what) => { (G.state.qualities = G.state.qualities || {})[`social:cool:${what}:${bondKey(a, b)}`] = G.state.day; };
 const stamped = (a, b, what) => {
   const st = G.state.qualities = G.state.qualities || {}, k = `social:${what}:${bondKey(a, b)}`;
   if (st[k]) return true;
@@ -264,13 +268,14 @@ function relationshipScene() {
         { label: '"Keep it off the bridge."', run() { like(a.p, 1, null); like(b.p, 1, null); return '"Deal." They both grin.'; } },
         { label: '"It stays professional."', run() { addBond(a, b, -2); like(a.p, -2, `You told ${B} and me to keep it professional.`); like(b.p, -2, `You told ${A} and me to keep it professional.`); return 'They nod stiffly. The ship gets a lot quieter.'; } },
       ] });
-    else if (n >= 3) scenes.push(() => ({
+    else if (n >= 3 && !isCooled(a, b, 'close', 40)) scenes.push(() => cool(a, b, 'close') || ({
       title: 'Close Quarters', text: `${A} and ${B} keep finding reasons to share the same watch.`,
       choices: [
         { label: 'Put them on the same rotation', run() { addBond(a, b, 2); like(a.p, 1, null); like(b.p, 1, null); return `${A} pretends not to be pleased. ${B} doesn't bother pretending.`; } },
         { label: 'Leave the rotation alone', run: () => 'Some things find their own way.' },
       ] }));
-    if (n <= -2 || clash(a, b)) scenes.push(() => {
+    if ((n <= -2 || clash(a, b)) && !isCooled(a, b, 'feud', 20)) scenes.push(() => {
+      cool(a, b, 'feud');
       const cause = pick(CAUSES);
       return {
         title: 'A Small Ship', text: `${A} and ${B} are shouting at each other in the galley about ${cause}. It is not really about ${cause}.`,
@@ -307,7 +312,7 @@ function relationshipScene() {
   const crew = list.filter(f => f.crew);
   if (crew.length >= 2) {
     const [a, b] = pick(pairs(crew)), n = bond(a, b);
-    if (Math.abs(n) >= 1) scenes.push(() => ({
+    if (Math.abs(n) >= 1 && !isCooled(a, b, 'word', 30)) scenes.push(() => cool(a, b, 'word') || ({
       title: 'A Word, Captain', text: `${a.p.first} catches you alone. "Can I ask you something about ${b.p.first}?" ${n > 0 ? 'They are trying hard to sound casual.' : 'They are trying hard to sound calm.'}`,
       choices: [
         { label: `"Talk to ${b.p.first}, not me."`, run() { addBond(a, b, n > 0 ? 2 : 1.5); return n > 0 ? 'Later you see the two of them in the galley, talking quietly. Good.' : 'They do. It is loud for a while, and then it is better.'; } },
@@ -316,9 +321,10 @@ function relationshipScene() {
       ] }));
   }
   // Two fans of different teams, and a match coming up.
-  const fans = all.find(([a, b]) => tastes(a).team !== tastes(b).team);
+  const fans = all.find(([a, b]) => tastes(a).team !== tastes(b).team && !isCooled(a, b, 'match', 25));
   if (fans) scenes.push(() => {
     const [a, b] = fans, ta = tastes(a).team, tb = tastes(b).team;
+    cool(a, b, 'match');
     return {
       title: 'Galley Duty', text: `${a.p.first} (${ta}) and ${b.p.first} (${tb}) have bet a week of galley duty on tonight's match.`,
       choices: [
