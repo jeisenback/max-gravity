@@ -55,7 +55,7 @@ function worldTick() {
     const w = worldOf(sid);
     if (sys.pirates > 0 && Math.random() < FLARE_CHANCE) {
       w.unrest = Math.min(1, w.unrest + FLARE_SIZE);
-      worldNews(`Pirate raids reported around ${sys.name}. Shipping there is thinning out.`);
+      worldNews(pick([`Pirate raids reported around ${sys.name}. Shipping there is thinning out.`, `A string of pirate attacks near ${sys.name} has haulers taking the long way round.`, `Insurance rates around ${sys.name} have doubled after a run of raids, and some captains are refusing the lane.`, `Pirate raiders are reported at ${sys.name}: two freighters missing, and the navy is "looking into it".`]));
     }
     w.unrest += (sys.pirates - w.unrest) * UNREST_DRIFT;
     const raid = excessUnrest(sid) * SHORTAGE_RATE;
@@ -167,6 +167,12 @@ const INCIDENTS = [
   'The {b} impounds a freighter flagged to the {a}. Diplomats are recalled.',
   'The {b} accuses the {a} of arming pirates. The {a} denies it.',
   'Shots fired between {a} and {b} patrols near {s}. Nobody admits to firing first.',
+  'The {a} closes a lane near {s} to {b} shipping, citing "security concerns". The {b} calls it an act of hostility.',
+  'A {a} survey ship is turned away from {s} by {b} patrols. Both sides release very different accounts.',
+  'The {b} expels three {a} traders from {s} on charges of smuggling. The {a} calls it a fabrication.',
+  'An {a} envoy walks out of talks with the {b} at {s}, and refuses to say why.',
+  'A {b} cutter is found drifting near {s}, its crew unharmed and very quiet. The {a} says it knows nothing.',
+  'Feeds in both the {a} and the {b} are running clips of the standoff near {s}, and each is, of course, shot from a different angle.',
 ];
 
 function factionState() {
