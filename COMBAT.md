@@ -99,12 +99,12 @@ crew runs thin.
 
 - **An ordinary loss** loses ground. Nobody is hurt.
 - **A bad loss** is losing the exchange to a fighter at least 2 stronger than yours.
-  Your fighter is injured (the existing `st.injured`). If they were already injured,
-  there's a rare chance they die: 15% to start with, halved with a healthy medic
-  aboard.
+  Your fighter is injured (the existing `st.injured`). In hardcore mode only, if they
+  were already injured, there's a rare chance they die: 15% to start with, halved with
+  a healthy medic aboard. In normal mode a bad loss never kills.
 - As now, a medic treats injuries for free after the fight. Otherwise the next port's
   clinic treats them.
-- A crew death is permanent in every mode. It's rare by design.
+- A crew death is permanent. It only happens in hardcore mode, and it's rare by design.
 
 ### Losing the ship
 
@@ -119,7 +119,8 @@ If boarders take your Bridge:
 ## Hardcore mode
 
 This is a new-game option, stored on the save and shown in the status bar. For now it
-only changes what losing your bridge costs. Anything more waits until this has been
+changes two things: a crew member can die in a boarding duel, and losing your bridge
+costs the ship and the captain. Anything more waits until this has been
 played.
 
 ## Build order
@@ -134,5 +135,4 @@ played.
 
 ## Open questions
 
-- Should a crew death stay possible in normal mode, or only in hardcore?
 - Should escorts add cards to your decks (for example extra PDC screens)?
