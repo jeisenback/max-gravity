@@ -42,7 +42,7 @@ UI.views.nav = function () {
   return `
     <p class="desc">${d ? `Course set for ${d.name}: ${travelDays(st.systemId, st.dest)} days, ${burnFuel(st.systemId, st.dest)} reaction mass (you have ${st.fuel}).` : 'No course set. Open the system map and pick a destination.'}</p>
     <div class="row"><button data-action="map">System map</button></div>
-    <p class="hint">Take off from the bar below, fly clear of the planet, and start the burn.</p>${postHtml('pilot')}`;
+    <p class="hint">Take off from the bar below, fly clear of the planet, and start the burn.</p>${routeHtml()}${postHtml('pilot')}`;
 };
 
 const armament = () => {
@@ -92,7 +92,7 @@ function transitSheet(id) {
   const st = G.state, t = G.transit, s = ship(), progress = Math.min(1, 1 - t.left / t.total);
   const list = items => items.map(x => `<div class="hint">${x}</div>`).join('');
   switch (id) {
-    case 'nav': return `<h3>Navigation</h3><p class="desc">${system().name} to ${SYSTEMS[t.to].name}, ${Math.round(progress * 100)}% of the way. ${t.flipped ? 'Braking' : 'Accelerating'}. Arriving ${dateOf(st.day + t.days)}.</p>${postHtml('pilot')}`;
+    case 'nav': return `<h3>Navigation</h3><p class="desc">${system().name} to ${SYSTEMS[t.to].name}, ${Math.round(progress * 100)}% of the way. ${t.flipped ? 'Braking' : 'Accelerating'}. Arriving ${dateOf(st.day + t.days)}.</p>${routeHtml()}${postHtml('pilot')}`;
     case 'weapons': return `<h3>Weapons</h3>${armament()}${postHtml('gunner')}`;
     case 'eng': return `<h3>Engineering</h3><p class="desc">Reaction mass ${st.fuel}/${s.fuel}. Armor ${st.armor}/${s.armor}. Shields ${s.shields}.</p><p class="hint">Full repairs and outfits are done at a shipyard.</p>${postHtml('engineer')}`;
     case 'interior': {
