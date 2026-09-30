@@ -31,7 +31,7 @@ const clampEdge = x => Math.max(0.1, Math.min(0.9, x));
 const duelEdges = () => {
   const g = roleSkill('gunner'), p = roleSkill('pilot');
   return {
-    guns: clampEdge((0.25 + 0.1 * playerGuns() + 0.08 * g + (power().weapons - 30) * 0.004) * perf('fire')),
+    guns: clampEdge((0.25 + 0.1 * playerGuns() + 0.08 * g + (power().weapons - 30) * 0.004 + 0.06 * (refits().fire || 0)) * perf('fire')),
     dark: clampEdge(0.25 + 0.1 * p + ship().accel / 1000 + (power().drive - 40) * 0.004),
     board: clampEdge(0.2 + 0.05 * G.state.crew.length + 0.05 * g),
   };

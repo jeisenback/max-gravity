@@ -55,7 +55,7 @@ const armament = () => {
 };
 
 UI.views.weapons = function () {
-  return `<h3>Armament</h3>${armament()}<div class="row"><button data-action="combatMode">Change combat mode</button></div>${postHtml('gunner')}`;
+  return `<h3>Armament</h3>${armament()}<div class="row"><button data-action="combatMode">Change combat mode</button></div>${projectsHtml('gunner')}${postHtml('gunner')}`;
 };
 
 // The shipyard is Engineering's page at port; the engineer's post leads it.
@@ -94,7 +94,7 @@ function transitSheet(id) {
   const list = items => items.map(x => `<div class="hint">${x}</div>`).join('');
   switch (id) {
     case 'nav': return `<h3>Navigation</h3><p class="desc">${system().name} to ${SYSTEMS[t.to].name}, ${Math.round(progress * 100)}% of the way. ${t.flipped ? 'Braking' : 'Accelerating'}. Arriving ${dateOf(transitEta(t))}.</p>${routeHtml()}${postHtml('pilot')}`;
-    case 'weapons': return `<h3>Weapons</h3>${armament()}${postHtml('gunner')}`;
+    case 'weapons': return `<h3>Weapons</h3>${armament()}${projectsHtml('gunner')}${postHtml('gunner')}`;
     case 'eng': return `<h3>Engineering</h3><p class="desc">Reaction mass ${st.fuel}/${s.fuel}. Armor ${st.armor}/${s.armor}. Shields ${s.shields}.</p><p class="hint">Full repairs and outfits are done at a shipyard.</p>${engineerPanel()}`;
     case 'interior': {
       const crew = crewMembers(), free = phase() === 'move' && !(t.lifeUsed || {})[lifeHalf()];

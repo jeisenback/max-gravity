@@ -43,7 +43,7 @@ for (const [id, pre] of Object.entries(POWER_PRESETS)) {
 
 // What the drive's share does to a burn. 40% is the usual: speed 1, fuel as plotted, seen as usual.
 const SCAN_MAX = 1 + (POWER_MAX - 40) * 0.012;  // how visible the hottest drive is
-const burnSpeed = () => (1 + (power().drive - 40) * 0.008) * perf('drive');  // a worn drive is slower (wear.js)
+const burnSpeed = () => (1 + (power().drive - 40) * 0.008) * perf('drive') * (G.state.tuned ? 1.1 : 1);  // a worn drive is slower (wear.js)
 const scanVisibility = () => 1 + (power().drive - 40) * 0.012;
 
 // Days a burn took, and the date it will end: a faster burn ends sooner.
@@ -100,7 +100,7 @@ function engineerPanel() {
     <div class="slider"><span>Heat</span><span class="pbar" data-heat-bar><i></i></span><span class="mono" data-heat></span></div>
     <p class="hint" data-effects>${powerEffects()}</p>
     <p class="hint">Drive power also sharpens running dark. Weapons power sharpens running guns. Shields soften the hits you take in a console fight.</p>
-  </div>${wearHtml()}${postHtml('engineer')}`;
+  </div>${wearHtml()}${projectsHtml('engineer')}${postHtml('engineer')}`;
 }
 
 const powerEffects = () => {
