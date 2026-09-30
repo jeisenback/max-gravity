@@ -53,6 +53,48 @@ a used card's deck reshuffles when it runs out.
 Buying torpedoes and fitting PDCs now matter at the console as well as in the real-time
 fight.
 
+### Hull, outfit and escort cards
+
+These come after the base duel. Each deck is built in three layers: the hull, what's
+fitted, and who's flying with you.
+
+**Hull.** Each hull adds the standard cards above plus one signature card. Every hull
+gets exactly one, big or small.
+
+| Hull | Signature card | Type | Effect |
+|---|---|---|---|
+| Rock Hopper | Sealant patch | Answer | Halves any threat. Never stops one. |
+| Ore Runner | Jettison cargo | Answer | Stops any threat and costs cargo. |
+| Torch Courier | Outrun | Answer | Stops a gun run or a torpedo, then leaves the fight. |
+| Ice Hauler | Water-tank armor | Answer | Takes 1 less from any threat. |
+| Corvette | Broadside | Threat | A gun run for 2. |
+| Raider | Grapple dash | Threat | A boarding run that a PDC screen can't blunt. |
+| Corsair | Paired launch | Threat | Two torpedoes: a PDC screen stops one and the other lands for half. |
+| Patrol Cutter | Inspection party | Threat | A boarding run whose duel starts at the Corridor. |
+| Destroyer | Full salvo | Threat | A torpedo that a PDC screen only halves. |
+
+**Outfits.** These change whole families, the way weapons do in Wind in the Rushes.
+
+| Outfit | Deck impact |
+|---|---|
+| Point-defense cannon | +2 PDC screens (above). |
+| Torpedo launcher | Needed to carry any Torpedo cards. |
+| Heavy rounds | Gun runs do +1 on a full hit. |
+| Armor plating | +1 Brace per plate. Brace is an answer that halves any threat. |
+| Deflector capacitor | Passive, not a card: the first half hit each fight does nothing. |
+| Drive tuning | One Evasive burn becomes a Hard burn, which also stops torpedoes. |
+| Cargo pod | -1 Evasive burn, because it's mass. |
+| Transponder spoofer | False ping: an answer that reveals one card in the enemy hand. |
+| Tank, berth | None. |
+
+Armor is a card because a plate is a choice you make in the fight. Shields are passive
+because nobody decides when to use a capacitor, and it keeps the deck smaller.
+
+**Escorts.** Each escort adds +1 PDC screen, one Gun run and its hull's signature card.
+Those cards are marked as the escort's. If a threat lands fully against an escort's
+answer card, the damage goes on that escort's company record (`js/company.js`), so
+leaning on escorts can cost them.
+
 ### Ending
 
 This stays close to the current duel. The enemy hull track is 3 to 7 from its armor.
@@ -129,10 +171,11 @@ played.
    Update `tests/stations.test.js`.
 2. The boarding duel: a new module, called from boarding runs and from `boardingFight()`
    in `js/boarding.js`.
-3. The hardcore flag and the ship-loss outcome.
-4. A headless simulation, like Wind's `tools/simulate.js`, to tune card counts, damage
+3. Hull, outfit and escort cards.
+4. The hardcore flag and the ship-loss outcome.
+5. A headless simulation, like Wind's `tools/simulate.js`, to tune card counts, damage
    and death odds before release.
 
 ## Open questions
 
-- Should escorts add cards to your decks (for example extra PDC screens)?
+None right now.
