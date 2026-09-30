@@ -549,7 +549,11 @@ function land(planet) {
     if (m.type === 'favor') { Mods.emit('missionDone', m); return false; }  // a promise kept (family.js)
     changeRep(localGov(), m.contract ? 4 : 2);
     Mods.emit('missionDone', m);
-    if (m.type === 'delivery') {
+    if (m.type === 'errand') {
+      st.credits += m.pay;
+      if (st.hired) st.hired.fund += m.cut || 0;
+      msg(`Errand done: ${m.title.replace(/^Errand: carry /, '').replace(/ to .*/, '')} handed over. Fee ${fmt(m.pay)} cr.`);
+    } else if (m.type === 'delivery') {
       st.credits += m.pay;
       msg(`Delivered ${m.tons}t of ${m.good}. Payment received: ${fmt(m.pay)} cr.`);
     } else {

@@ -44,9 +44,9 @@ test('hired: the captain\'s business is not yours', async () => {
   await page.click('[data-action=menuMode][data-arg=hired]');
   await page.click('[data-action=menuStart]');
   await ev(() => { while (G.dialog) finishEvent(); G.state.tutorial = null; UI.render(); });
-  // Ops tabs: the port, the bar; not the exchange, contracts or the company.
+  // Ops tabs: the port, errands, the bar; not the exchange or the company.
   const tabs = await page.$$eval('.tabs.sub button', bs => bs.map(b => [b.dataset.arg, b.disabled]));
-  for (const [id, off] of tabs) assert.equal(off, ['trade', 'missions', 'company'].includes(id), `${id} ${off ? 'is off' : 'is on'}`);
+  for (const [id, off] of tabs) assert.equal(off, ['trade', 'company'].includes(id), `${id} ${off ? 'is off' : 'is on'}`);
   // No refuel button, no yard table, no hiring.
   assert.equal(await page.$('[data-action=refuel]'), null);
   await page.click('[data-action=station][data-arg=eng]');
@@ -166,5 +166,55 @@ test('the captain sails again from where she landed, and a manual pilot flies he
   assert.equal(r.manual, 'manual');
   assert.deepEqual(r.flight, { mode: 'flight', auto: null, dest: true });
   assert.ok(r.again.loaded && r.again.tons > 0 && r.again.good, 'cargo still aboard is sold before any new one is bought');
+  await done();
+});
+
+test('errands: small jobs for where she is going, paid less, with a cut to the captain', async () => {
+  const { page, ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    startHired('engineer'); const st = G.state, plan = currentPlan(); Mods.emit('landed', currentPlanet());
+    const offers = G.offers.map(o => ({ type: o.type, dest: o.destPlanet, sys: o.destSystem, pay: o.pay, cut: o.cut, tons: o.tons || 0, pax: o.pax || 0 }));
+    // Owner games keep their contracts.
+    return { plan: { planet: plan.planet, sid: plan.sid }, offers };
+  });
+  assert.ok(r.offers.length >= 1 && r.offers.length <= 3);
+  for (const o of r.offers) {
+    assert.equal(o.type, 'errand'); assert.equal(o.dest, r.plan.planet); assert.equal(o.sys, r.plan.sid);
+    assert.equal(o.tons + o.pax, 0, 'no cargo space, no berth');
+    assert.equal(Math.round(o.cut / (o.pay + o.cut) * 100), 20, 'the captain keeps a fifth');
+  }
+  await ev(() => UI.render());
+  await page.click('[data-action=station][data-arg=ops]');
+  await page.click('[data-action=tab][data-arg=missions]');
+  assert.match(await page.innerText('#panel'), /Errand: carry/);
+  await page.click('[data-action=accept][data-arg="0"]');
+  assert.equal(await ev(() => G.state.missions.length), 1, 'taken');
+  const owner = await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Ines' }); while (G.dialog) finishEvent(); return G.offers.every(o => o.type !== 'errand'); });
+  assert.ok(owner, 'an owner sees contracts, not errands');
+  await done();
+});
+
+test('errands: delivered when she docks, the fee to you and the cut to the ship', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    startHired('engineer'); const st = G.state, h = st.hired, plan = currentPlan();
+    Mods.emit('landed', currentPlanet());
+    const errand = G.offers.splice(0, 1)[0]; errand.id = st.nextId++; st.missions.push(errand);
+    const credits0 = st.credits; sail();
+    let steps = 0;
+    while (G.mode !== 'landed' && steps++ < 20000) {
+      if (G.mode === 'transit' && G.transit && !G.transit.interceptPlanned) { G.transit.times = []; G.transit.interceptPlanned = true; }
+      while (G.dialog) finishEvent();
+      G.npcs = []; G.spawnTimer = 99;
+      update(G.mode === 'transit' ? 1 : 1 / 30); Mods.emit('frame', G.mode === 'transit' ? 1 : 1 / 30);
+    }
+    const e = h.ledger[0];
+    return { planet: st.planet === plan.planet, left: st.missions.length, earned: st.credits - credits0, runPay: e.wage + e.share, fee: errand.pay, cut: errand.cut, fund: h.fund, expectFund: 5000 - e.cost + e.revenue + errand.cut };
+  });
+  assert.ok(r.planet); assert.equal(r.left, 0, 'the errand is done');
+  assert.equal(r.earned, r.runPay + r.fee, 'you got your pay for the run and the errand fee');
+  assert.equal(r.fund, r.expectFund, 'and the captain got the cut');
   await done();
 });

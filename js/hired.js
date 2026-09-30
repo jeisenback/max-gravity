@@ -6,7 +6,7 @@
 // st.hired; an owner game has none and plays as it always has. The captain plans each run
 // (the best cargo and port within reach, bought from the ship's funds), you press Sail, and on
 // arrival the cargo is sold and you are paid a wage and a share of the profit. Side jobs come
-// with #59, swapping posts with #60, buying in with #61.
+// with errands you can take on your own time (the captain keeps a cut), swapping posts with #60, buying in with #61.
 // Loaded before game.js; only calls into it at runtime.
 
 const HIRED_POSTS = ['pilot', 'gunner', 'engineer', 'comms'];  // the posts you can sign on to
@@ -14,8 +14,8 @@ const HIRED_SAVINGS = 300;
 const HIRED_FUND = 5000;  // the ship's money, which buys the cargo
 const hired = () => (G.state && G.state.hired) || null;
 // What stays the captain's to do: the cargo, the contracts, the ship itself, the company.
-const OWNER_TABS = ['trade', 'missions', 'company'];
-const OWNER_ACTIONS = ['takeoff', 'buy', 'buymax', 'sell', 'sellall', 'accept', 'buyship', 'cbuy', 'refuel', 'repair', 'overhaul', 'buyout', 'sellout', 'torpbuy', 'hire', 'dismiss'];
+const OWNER_TABS = ['trade', 'company'];  // contracts are the captain's too, but the board still has errands
+const OWNER_ACTIONS = ['takeoff', 'buy', 'buymax', 'sell', 'sellall', 'buyship', 'cbuy', 'refuel', 'repair', 'overhaul', 'buyout', 'sellout', 'torpbuy', 'hire', 'dismiss'];
 
 function setupHired(o) {
   const st = G.state, post = HIRED_POSTS.includes(o.post) ? o.post : 'pilot';
@@ -118,6 +118,31 @@ function settleRun(planet) {
   return `${name ? `The captain sold ${sold}t of ${name} for ${fmt(revenue)} cr (${profit >= 0 ? `profit ${fmt(profit)}` : `loss ${fmt(-profit)}`} cr). ` : 'A run with no cargo. '}Your pay: ${fmt(wage)} cr wage${share ? ` and ${fmt(share)} cr share` : ''}.`;
 }
 
+// ---------- errands ----------
+// Small jobs for the port she is sailing to: a parcel that takes no cargo space, paid less than
+// a contract, and the captain keeps a fifth. They are delivered when she docks there.
+const ERRAND_CUT = 0.2;
+const ERRANDS = [
+  ['a sealed parcel', 'A courier bag with a wax seal, and a receipt to bring back signed. It weighs about as much as a lunch.'],
+  ['a message on a chip', 'A hand-written note on a data chip: somebody does not trust the public bands with it.'],
+  ['a set of spare keys', 'A ring of keys for a flat somebody has not seen in years. They want them back before the lease runs out.'],
+  ['a box of medicine', 'A small insulated box with a cold-chain tag. The label says to keep it upright and out of the sun.'],
+  ['a crate of seedlings', 'A tray of green shoots under a grow light that has to stay on. You carry it in your bunk.'],
+];
+
+function errandsFor(planet) {
+  const st = G.state, plan = currentPlan();
+  if (!planet.services.includes('missions') || !plan) return [];
+  const dest = SYSTEMS[plan.sid].planets.find(p => p.name === plan.planet);
+  return Array.from({ length: randInt(1, 3) }, () => {
+    const [what, blurb] = pick(ERRANDS), gross = randInt(10, 30) * 10 * Math.max(1, plan.days), cut = Math.round(gross * ERRAND_CUT);
+    return {
+      type: 'errand', title: `Errand: carry ${what} to ${dest.name}`, blurb: `${blurb} The captain keeps ${fmt(cut)} cr of the fee.`,
+      destSystem: plan.sid, destPlanet: dest.name, pay: gross - cut, cut, deadline: st.day + plan.days * 2 + randInt(6, 12),
+    };
+  });
+}
+
 const runHtml = () => {
   const h = G.state.hired, plan = currentPlan(), led = h.ledger.slice(0, 5), name = id => COMMODITIES.find(c => c.id === id).name;
   return `<div class="post"><div class="eyebrow">The captain's run &middot; ship's funds ${fmt(h.fund)} cr &middot; your savings ${fmt(G.state.credits)} cr</div>
@@ -138,6 +163,7 @@ Mods.register({
       G.state.fuel = ship().fuel; G.state.armor = ship().armor;
     });
     M.on('landed', planet => { const text = hired() && settleRun(planet); if (text) M.note(text); });
+    M.on('landed', planet => { if (hired()) G.offers = errandsFor(planet); });  // the board has errands, not contracts
     M.action('sail', () => { if (hired()) sail(); });
   },
 });
