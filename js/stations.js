@@ -15,7 +15,8 @@ const POSTS = {
   comms: { role: 'slicer', name: 'Comms' },
 };
 
-// An order: { id, name, desc, can() (optional), run(ok, doer, skill) -> text }.
+// An order: { id, name, desc, can() (optional), sure (optional: a command that cannot fail and
+// does not use up the day), run(ok, doer, skill) -> text }.
 // `ok` is the roll against orderOdds; `doer` is the crew member, or null when you do it yourself.
 const ORDERS = {
   engineer: [{
@@ -58,10 +59,10 @@ function handBack(id) { postState(id).manual = false; }
 
 function giveOrder(id, orderId) {
   const o = postOrders(id).find(x => x.id === orderId), ps = postState(id);
-  if (!o || ps.busy || (o.can && !o.can())) return null;
+  if (!o || (ps.busy && !o.sure) || (o.can && !o.can())) return null;
   const doer = postMode(id) === 'crewed' ? postHolder(id) : null;
-  ps.busy = true;
-  ps.note = o.run(Math.random() < orderOdds(id), doer, doer ? roleSkill(POSTS[id].role) : 0);
+  if (!o.sure) ps.busy = true;  // a sure order (a command, not a task) does not use up the day
+  ps.note = o.run(o.sure || Math.random() < orderOdds(id), doer, doer ? roleSkill(POSTS[id].role) : 0);
   return ps.note;
 }
 

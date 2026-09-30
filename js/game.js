@@ -308,6 +308,12 @@ function destroy(o, byPlayer = false) {
     return;
   }
   o.dead = true;
+  settleKill(o, byPlayer);
+}
+
+// What a dead ship is worth: bounty, standing, and the news of it. Also used by fights
+// the gunner settles on the console (duel.js), where nothing is drawn exploding.
+function settleKill(o, byPlayer) {
   const st = G.state;
   if (o.persona && o.persona.id) delete st.people[o.persona.id];  // a known captain, gone for good
   if (!byPlayer) {
@@ -810,7 +816,7 @@ function updateShots(dt) {
 
 function update(dt) {
   G.time += dt;
-  if (G.mode === 'flight') updatePlayer(dt);
+  if (G.mode === 'flight') { if (G.auto) updateAutopilot(dt); else updatePlayer(dt); }
   else if (G.mode === 'departing') updateDeparture(dt);
   else if (G.mode === 'transit') return updateTransit(dt);
 
