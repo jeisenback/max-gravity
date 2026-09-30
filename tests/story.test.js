@@ -16,7 +16,7 @@ const helpers = () => {
   window.S = {
     reset(stage, extra) {
       localStorage.clear(); newGame(); while (G.dialog) finishEvent();
-      const st = G.state; st.tutorial = null; st.flags.classicCombat = true; st.shipId = 'freighter'; st.credits = 50000;
+      const st = G.state; st.tutorial = null; st.shipId = 'freighter'; st.credits = 50000;
       if (stage !== undefined) Object.assign(st.story, { stage }, extra || {});
       home().cat = 'Rivet';  // no stray-cat scene in front of the story scene under test
     },
@@ -52,6 +52,8 @@ const helpers = () => {
       return s.id;
     },
     at(sid, planet) { G.state.systemId = sid; G.state.planet = planet; G.mode = 'landed'; G.transit = null; },
+    // A bounty target beaten in a burn duel: the kill settles like any other.
+    killBounty(sid) { const m = G.state.missions.find(x => x.type === 'bounty' && x.targetSystem === sid); settleKill(makeEnemy({ kind: 'bounty', mission: m }), true); },
     done(good) { const m = G.state.missions.find(x => x.good === good || x.targetName === good); Mods.emit('missionDone', m); G.state.missions = G.state.missions.filter(x => x !== m); },
     slicer(culture) { const c = makeCrewCandidate(culture); c.role = 'slicer'; c.skill = 2; registerPerson(c); G.state.crew.push(c.id); },
   };
@@ -189,8 +191,7 @@ test('the Mars Navy commission runs start to finish', async () => {
     S.reset(); const st = G.state; st.story.next = 1e9; st.day = 20; st.rep['Mars Republic'] = 20; S.slicer('mars');
     S.at('mars', 'Mars');
     const steps = [S.play('port', 'Accept'), S.play('port', 'Take the hunt')];
-    S.at('pallas', 'Pallas Refinery'); G.player = makeShip('shuttle', 0, 0, 0); G.mode = 'flight'; populateSystem();
-    const target = G.npcs.find(n => n.bountyId); damage(target, 99999, true);
+    S.at('pallas', 'Pallas Refinery'); const target = G.state.missions.some(m => m.type === 'bounty' && m.targetSystem === 'pallas'); S.killBounty('pallas');
     G.mode = 'landed'; G.transit = { to: 'mars', total: 60, left: 30, flipped: true, event: null, comms: [] };
     steps.push(S.play('transit', 'Fatima'));
     S.at('mars', 'Mars'); steps.push(S.play('port', 'Carry the pouch'));
@@ -198,7 +199,7 @@ test('the Mars Navy commission runs start to finish', async () => {
     steps.push(S.play('port', 'Refuse'), S.play('port', ''));
     return { steps, target: !!target, done: quality('mcrnDone') };
   });
-  assert.ok(r.target, 'the hunt target spawns');
+  assert.ok(r.target, 'the hunt is posted');
   assert.ok(r.done, `commission complete (${r.steps.join(', ')})`);
   await done();
 });
@@ -216,7 +217,7 @@ test("the Rook's Crown by blood and by coin; Navy officers are never invited", a
       steps.push(S.play('transit', path === 'blood' ? 'Fatima' : 'Bribe'));
       G.transit = null; S.done('unmarked crates');
       S.at('hygiea', 'The Rook'); steps.push(S.play('port', path === 'blood' ? 'Hunt' : 'Buy her off'));
-      if (path === 'blood') { st.systemId = 'saturn'; G.player = makeShip('shuttle', 0, 0, 0); G.mode = 'flight'; populateSystem(); damage(G.npcs.find(n => n.bountyId), 99999, true); }
+      if (path === 'blood') { st.systemId = 'saturn'; S.killBounty('saturn'); }
       S.at('hygiea', 'The Rook');
       const mars = danger('mars');
       steps.push(S.play('port', 'Raid the Martian'));
@@ -264,7 +265,7 @@ test('every storylet opens and every choice plays, with no unfilled text', async
     const bad = [], odd = t => /undefined|NaN|\[object|\{[a-z]+\}/.test(t);
     const fresh = () => {
       localStorage.clear(); newGame(); while (G.dialog) finishEvent();
-      const st = G.state; st.tutorial = null; st.flags.classicCombat = true; st.credits = 100000; st.shipId = 'freighter'; st.day = 60;
+      const st = G.state; st.tutorial = null; st.credits = 100000; st.shipId = 'freighter'; st.day = 60;
       st.cargo = { water: 20, medical: 10, luxury: 10, food: 10, equipment: 10 };
       st.crew.push('rosa', 'kit');
       for (const role of ['slicer', 'medic', 'pilot']) { const c = makeCrewCandidate('belt'); c.role = role; c.skill = 2; registerPerson(c); st.crew.push(c.id); }

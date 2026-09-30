@@ -13,7 +13,7 @@ after(closeBrowser);
 test('found an outpost, supply it, build, save and reload', async () => {
   const { page, ev, done } = await open();
   await ev(() => {
-    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.flags.classicCombat = true; st.credits = 120000; st.shipId = 'freighter';
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 120000; st.shipId = 'freighter';
     while (G.dialog) finishEvent();
     st.cargo = { industrial: 40, equipment: 20, metal: 40, food: 20, water: 20, medical: 5 };
     st.systemId = 'jupiter'; st.planet = 'Ganymede'; landAt(SYSTEMS.jupiter.planets[0], []);
@@ -144,7 +144,7 @@ test('the UAT panel sets up every scene and restores the real game', async () =>
     for (const item of UAT_ITEMS) {
       try { item.setup(); } catch (e) { bad.push(`${item.id}: ${e.message}`); }
       await new Promise(r => setTimeout(r, 50));
-      G.dialog = null; G.engage = null;
+      G.dialog = null;
     }
     return bad;
   });

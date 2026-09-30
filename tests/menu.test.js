@@ -112,11 +112,11 @@ test('music mood follows the game', async () => {
     const out = {};
     G.mode = 'landed'; out.landed = Music.pickMood();
     G.state.tutorial = null; takeOff(); G.npcs = []; out.flight = Music.pickMood();
-    G.mode = 'engage'; out.engage = Music.pickMood();
+    G.duel = {}; out.duel = Music.pickMood(); G.duel = null;
     G.mode = 'title'; out.title = Music.pickMood();
     G.mode = 'flight';
     return out;
   });
-  assert.deepEqual(moods, { landed: 'port', flight: 'burn', engage: 'tense', title: 'title' });
+  assert.deepEqual(moods, { landed: 'port', flight: 'burn', duel: 'tense', title: 'title' });
   await done();
 });

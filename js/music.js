@@ -19,7 +19,7 @@ const Music = {
 
   pickMood() {
     if (G.mode === 'title') return 'title';
-    if (G.mode === 'engage' || (G.mode === 'flight' && G.npcs.some(n => n.hostile && !n.dead && G.player && dist(n, G.player) < 1500))) return 'tense';
+    if (G.duel || (G.mode === 'flight' && G.npcs.some(n => n.hostile && !n.dead && G.player && dist(n, G.player) < 1500))) return 'tense';
     if (G.mode === 'landed') return 'port';
     if (['transit', 'flight', 'departing', 'map'].includes(G.mode)) return 'burn';
     return null;

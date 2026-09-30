@@ -83,7 +83,7 @@ const BACKGROUNDS = {
 function startGame(o) {
   Saves.use(o.slot);
   G.paused = false;
-  G.dialog = null; G.transit = null; G.engage = null;
+  G.dialog = null; G.transit = null;
   G.state = newState();
   const st = G.state, b = BACKGROUNDS[o.background] || BACKGROUNDS.earth;
   st.systemId = b.at[0]; st.planet = b.at[1]; st.credits = b.credits;
@@ -99,7 +99,7 @@ function startGame(o) {
 
 function loadSlot(n) {
   Saves.use(n);
-  G.paused = false; G.dialog = null; G.transit = null; G.engage = null;
+  G.paused = false; G.dialog = null; G.transit = null;
   loadGame();
 }
 
@@ -117,7 +117,7 @@ const Menu = {
   },
 
   pause() {
-    if (G.paused || !['flight', 'transit', 'engage', 'landed'].includes(G.mode) || G.dialog) return;
+    if (G.paused || !['flight', 'transit', 'landed'].includes(G.mode) || G.dialog) return;
     G.paused = true;
     G.keys = {};
     this.pausedFrom = G.mode;
@@ -205,7 +205,6 @@ const Menu = {
           <div class="row">${[['off', 'Off'], ['slow', 'Slow'], ['normal', 'Normal']].map(([v, l]) => `<button class="${Settings.wear === v ? 'on' : ''}" data-action="menuWear" data-arg="${v}">${l}</button>`).join('')}</div>
           <div class="hint">How fast the ship's systems wear with use. Off means they never do.</div>
           <label class="check"><input type="checkbox" id="setMotion" ${Settings.reduceMotion ? 'checked' : ''}> Reduce motion (no screen shake, calmer stars)</label>
-          ${G.state && this.pausedFrom ? `<h3>This game</h3><div class="row"><button data-action="menuCombat">Combat: ${G.state.flags.classicCombat ? 'classic (in local space)' : 'in burns'}</button></div>` : ''}
         </div>
         <div class="menu-buttons row"><button data-action="menuBack">Back</button></div>`;
     },
@@ -272,7 +271,7 @@ function menuButton() {
     b.addEventListener('click', () => Menu.pause());
     document.body.appendChild(b);
   }
-  const show = ['flight', 'transit', 'engage'].includes(G.mode) && !G.paused && !G.dialog;
+  const show = ['flight', 'transit'].includes(G.mode) && !G.paused && !G.dialog;
   if (b.hidden === show) b.hidden = !show;
 }
 
@@ -338,10 +337,9 @@ Mods.register({
     });
     act('menuText', v => { Settings.textScale = Number(v); applySettings(); });
     act('menuWear', v => { Settings.wear = v; applySettings(); });
-    act('menuCombat', () => { G.state.flags.classicCombat = !G.state.flags.classicCombat; });
     act('menuPause', () => Menu.pause());
     act('menuResume', () => Menu.resume());
     act('menuSave', () => { if (Menu.pausedFrom === 'landed') { Saves.write(G.state); Menu.note = `Saved to slot ${Saves.current}.`; } });
-    act('menuQuit', () => { if (Menu.pausedFrom === 'landed') Saves.write(G.state); G.transit = null; G.engage = null; resetWorld(); Menu.showTitle(); });
+    act('menuQuit', () => { if (Menu.pausedFrom === 'landed') Saves.write(G.state); G.transit = null; resetWorld(); Menu.showTitle(); });
   },
 });

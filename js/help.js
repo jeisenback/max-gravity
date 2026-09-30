@@ -14,9 +14,8 @@ const HELP = [
     'A burn accelerates to the midpoint, flips, and decelerates. Things happen along the way: distress calls, rumors, crew moments, passengers\' stories. Time stops while you decide.' ] },
   { id: 'combat', title: 'Fights during burns', text: [
     'Pirates, navy patrols that want you, bounty targets, and hired guns can intercept you mid-burn, more often on dangerous lanes. You can fight, burn hard to run, or pay them off.',
-    'There is no speed cap: W burns at your set thrust (Q/E), A/D turn, and S points you backward against the enemy\'s drift so you can match speed. Space fires guns that carry your velocity; F launches a homing torpedo. Every ship has point defense against torpedoes.',
-    'Burning above about 2.5g strains the crew. Push past the limit and everyone blacks out for a moment. Sprint, then coast. Disable a ship, match its speed, and press H to board it. More than 7,000 km apart and the fight is over.',
-    'Prefer the old way? The Combat button at any port switches to classic fights in local space.' ] },
+    'The fight is a card duel on the console. The ship with the initiative plays a threat, the other an answer. PDCs stop torpedoes, evasive burns stop gun runs, and crew at the locks stop boarders. A stopped threat passes the initiative.',
+    'Your cards come from your ship: torpedoes, point-defense cannons, guns, pilot, power, and crew. A beaten pirate drifts, disabled, and can be boarded.' ] },
   { id: 'crew', title: 'Crew and relationships', text: [
     'Hire crew in the Bar or the Crew tab. Each role has a perk: engineers save reaction mass, pilots shorten burns, gunners add a gun, quartermasters hear rumors, slicers spoof transponders, medics heal.',
     'People aboard have feelings about you and about each other. Shared tastes (a favorite kind of vid or book, a ring-ball team) bring them together; clashing habits pull them apart. Downtime activities build bonds.',
@@ -42,7 +41,6 @@ const HELP = [
 // One-time tips: a key, a condition checked each frame, and how to show it.
 const TIPS = [
   { id: 'burn', when: () => G.mode === 'transit', show: () => comm('[Tip] During a burn, press Spend some downtime to cook, drill, watch the hit vid, or sit with someone. Esc pauses. (Help is in the menu.)') },
-  { id: 'fight', when: () => G.mode === 'engage', show: () => msg('Tip: W burns, Q/E set thrust, S points you backward to match speed, F launches a torpedo. Watch the crew strain bar. (Menu, then Help, then Fights during burns.)') },
   { id: 'claim', when: () => G.mode === 'landed' && ['Ganymede', 'Triton Outpost'].includes(G.state.planet) && !G.state.outpost, show: () => UI.notes.push('Tip: you can found your own outpost from here. See the claim at the top of this page, and the Help in the menu.') },
   { id: 'bar', when: () => G.mode === 'landed' && G.state.day >= 3, show: () => UI.notes.push('Tip: every port has a Bar. Talk to people there for rumors, passengers, and crew.') },
 ];

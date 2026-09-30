@@ -447,7 +447,7 @@ UI.el.addEventListener('click', e => {
   new MutationObserver(() => {
     const a = document.activeElement;
     if (!last || performance.now() - last.at > 300 || (a && a !== document.body)) return;
-    if (!G.paused && ['flight', 'departing', 'engage'].includes(G.mode)) return;
+    if (!G.paused && ['flight', 'departing'].includes(G.mode)) return;
     const buttons = [...UI.el.querySelectorAll('button:not(:disabled)')];
     const same = buttons.find(b => (last.id && b.id === last.id) || (last.action && b.dataset.action === last.action && b.dataset.arg === last.arg));
     const target = same || UI.el.querySelector('.tabs button.active') || buttons[0];

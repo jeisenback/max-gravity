@@ -23,7 +23,7 @@ const everyChoice = (make) => {
 
 test('hiring crew, their perks, and every crew and passenger scene', async () => {
   const { page, ev, done } = await open();
-  await ev(() => { const st = G.state; st.tutorial = null; st.story.next = 1e9; st.flags.classicCombat = true; st.credits = 200000; while (G.dialog) finishEvent(); st.systemId = 'ceres'; st.planet = 'Ceres Station'; landAt(currentPlanet(), []); while (G.dialog) finishEvent(); });
+  await ev(() => { const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 200000; while (G.dialog) finishEvent(); st.systemId = 'ceres'; st.planet = 'Ceres Station'; landAt(currentPlanet(), []); while (G.dialog) finishEvent(); });
   const massBefore = await ev(() => burnFuel('ceres', 'jupiter'));
   await page.click('[data-action=station][data-arg=interior]');
   await page.click('[data-action=hire][data-arg=rosa]');
@@ -56,7 +56,7 @@ test('hiring crew, their perks, and every crew and passenger scene', async () =>
 test('downtime from the transit screen', async () => {
   const { page, ev, done } = await open();
   await ev(() => {
-    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000; st.shipId = 'lightfreighter'; st.flags.classicCombat = true;
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000; st.shipId = 'lightfreighter';
     while (G.dialog) finishEvent();
     st.crew.push('kit');
     const c = makeCrewCandidate('earth'); c.role = 'engineer'; c.skill = 2; registerPerson(c); st.crew.push(c.id);
@@ -80,7 +80,7 @@ test('downtime from the transit screen', async () => {
 test('relationships, feeds, seasons, and passengers who come back', async () => {
   const { ev, done } = await open();
   const r = await ev(() => {
-    const st = G.state, out = {}; st.tutorial = null; st.story.next = 1e9; st.credits = 50000; st.shipId = 'lightfreighter'; st.flags.classicCombat = true;
+    const st = G.state, out = {}; st.tutorial = null; st.story.next = 1e9; st.credits = 50000; st.shipId = 'lightfreighter';
     while (G.dialog) finishEvent();
     st.crew.push('kit');
     const c = makeCrewCandidate('ceres'); c.role = 'engineer'; c.skill = 2; c.traits = ['rude', 'talkative']; registerPerson(c); st.crew.push(c.id);
@@ -123,7 +123,7 @@ test('relationships, feeds, seasons, and passengers who come back', async () => 
 test('the bar in every port, and every landing scene', async () => {
   const { page, ev, done } = await open();
   await ev(() => {
-    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000; st.shipId = 'lightfreighter'; st.flags.classicCombat = true;
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000; st.shipId = 'lightfreighter';
     while (G.dialog) finishEvent();
     st.systemId = 'juno'; st.planet = 'Juno Commons'; landAt(SYSTEMS.juno.planets[0], []);
     while (G.dialog) { chooseEvent(G.dialog.choices.length - 1); finishEvent(); }
@@ -165,7 +165,7 @@ test('family: a personal story to loyalty, letters and moods, occasions, traditi
   const { page, ev, done } = await open();
   const r = await ev(() => {
     const st = G.state, out = {};
-    st.tutorial = null; st.story.next = 1e9; st.credits = 60000; st.flags.classicCombat = true; st.shipId = 'lightfreighter';
+    st.tutorial = null; st.story.next = 1e9; st.credits = 60000; st.shipId = 'lightfreighter';
     while (G.dialog) finishEvent();
     const a = makeCrewCandidate('ceres'); a.role = 'engineer'; a.skill = 2; a.home = 'Ceres Station'; a.culture = 'belt'; registerPerson(a); st.crew.push(a.id);
     const b = makeCrewCandidate('mars'); b.role = 'pilot'; b.skill = 2; registerPerson(b); st.crew.push(b.id);
@@ -231,7 +231,7 @@ test('a long career with random answers: no errors, no broken text, no overfull 
       }
       while (G.dialog) finishEvent();
     };
-    st.tutorial = null; st.flags.classicCombat = true; st.credits = 80000; st.shipId = 'freighter';
+    st.tutorial = null; st.credits = 80000; st.shipId = 'freighter';
     answer();
     for (let leg = 0; leg < 40; leg++) {
       UI.tab = 'bar'; UI.render();
@@ -269,7 +269,7 @@ test('a long career with random answers: no errors, no broken text, no overfull 
 test('what people are seen doing on the ship: every room and role has lines that fill in', async () => {
   const { ev, done } = await open();
   const r = await ev(() => {
-    const st = G.state; st.tutorial = null; st.flags.classicCombat = true; while (G.dialog) finishEvent();
+    const st = G.state; st.tutorial = null; while (G.dialog) finishEvent();
     st.crew.push('rosa', 'kit', 'dima'); home().cat = 'Rivet'; st.shipId = 'freighter';
     takeOff(); st.dest = 'mars'; G.player.x = 6000; tryBurn(); enterTransit(); G.transit.times = [];
     const people = shipPeople(), bad = [];

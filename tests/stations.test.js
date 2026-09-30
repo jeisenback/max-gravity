@@ -15,7 +15,7 @@ const helpers = () => {
   };
   // A burn with a contact on it, and the contact event open.
   window.contact = (kind = 'pirate') => {
-    const st = G.state; st.tutorial = null; st.flags.classicCombat = false; st.story.next = 1e9; while (G.dialog) finishEvent();
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; while (G.dialog) finishEvent();
     st.credits = 5000; st.armor = ship().armor;
     uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
     openEvent(contactEvent({ kind }));
@@ -115,7 +115,7 @@ test('autopilot: a crewed pilot takes the ship out, brings it in and lands on th
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
-    const st = G.state; st.tutorial = null; st.flags.classicCombat = true; st.story.next = 1e9; st.crew = []; while (G.dialog) finishEvent();
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.crew = []; while (G.dialog) finishEvent();
     st.dest = 'mars'; st.fuel = ship().fuel;
     const solo = giveOrder('pilot', 'depart');  // nobody to fly it
     hire('pilot', 2);
@@ -146,7 +146,7 @@ test('autopilot: a flight key, a hostile ship, or a hand-back gives the controls
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
-    const st = G.state; st.tutorial = null; st.flags.classicCombat = true; st.story.next = 1e9; st.crew = []; while (G.dialog) finishEvent();
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.crew = []; while (G.dialog) finishEvent();
     st.dest = 'mars'; st.fuel = ship().fuel; hire('pilot', 2);
     const go = () => { takeOff(); G.npcs = []; G.spawnTimer = 99; G.auto = { kind: 'out', t: 0, care: 0.8 }; };
     const out = {};
@@ -179,33 +179,37 @@ test('autopilot: the Navigation station offers it to a crewed pilot, and the doc
   await done();
 });
 
-test('gunner: a manual gunner fights in real time, a crewed one settles it on the console', async () => {
+test('gunner: a crewed gunner fights the duel; with none, or the post taken, you do', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
     G.state.crew = [];
     contact();
     const labels = G.dialog.choices.map(c => c.label);
-    chooseEvent(0); finishEvent();
-    const solo = { pending: !!G.engagePending, duel: !!G.duel };
-    G.engagePending = null;
-    hire('gunner', 2); contact();
-    const crewedLabels = G.dialog.choices.map(c => c.label);
     chooseEvent(0);
-    const after = { pending: !!G.engagePending, duel: !!G.duel, next: G.nextEvent && G.nextEvent.title };
-    // "take the guns yourself" is the real-time fight again, and is an override.
-    finishEvent(); while (G.dialog) finishEvent(); G.duel = null; G.nextEvent = null;
-    contact(); chooseEvent(1);
-    const taken = { pending: !!G.engagePending, mode: postMode('gunner') };
-    return { labels, solo, crewedLabels, after, taken };
+    const solo = { duel: !!G.duel, next: G.nextEvent && G.nextEvent.title, board: G.duel.me.counts.board };
+    G.dialog = null; G.duel = null; G.nextEvent = null;
+    hire('gunner', 2); hire('pilot', 1); contact();
+    const crewedLabels = G.dialog.choices.map(c => c.label);
+    const text = chooseEvent(0);
+    const crewed = { duel: !!G.duel, board: G.duel.me.counts.board, text };
+    G.dialog = null; G.duel = null; G.nextEvent = null;
+    // Taking over the post means you fight it, without the gunner's skill.
+    takeControl('gunner'); contact();
+    const takenLabel = G.dialog.choices[0].label, takenText = chooseEvent(0);
+    return { labels, solo, crewedLabels, crewed, takenLabel, takenText, taken: G.duel.me.counts.board };
   });
-  assert.equal(r.labels[0], 'Battle stations');
-  assert.deepEqual(r.solo, { pending: true, duel: false });
+  assert.match(r.labels[0], /you take the guns/);
+  assert.ok(!r.labels.some(l => /take the guns yourself/.test(l)), 'no separate real-time option');
+  assert.equal(r.solo.duel, true);
+  assert.match(r.solo.next, /exchange 1 of 8/);
   assert.match(r.crewedLabels[0], /fights/);
-  assert.match(r.crewedLabels[1], /take the guns yourself/);
-  assert.equal(r.after.pending, false); assert.equal(r.after.duel, true);
-  assert.match(r.after.next, /exchange 1 of 8/);
-  assert.deepEqual(r.taken, { pending: true, mode: 'manual' });
+  assert.equal(r.crewedLabels.length, r.labels.length, 'the same choices, crewed or not');
+  assert.match(r.crewed.text, /takes the guns/);
+  assert.equal(r.crewed.board, 2, 'a crewed gunner adds a boarding run');
+  assert.match(r.takenLabel, /you take the guns/);
+  assert.match(r.takenText, /You take the guns yourself/);
+  assert.equal(r.taken, 1, 'and without them, you do not');
   await done();
 });
 
@@ -250,6 +254,7 @@ test('gunner: exchanges follow threat and answer, end in eight, and never kill y
       while (G.dialog || G.nextEvent) {
         if (G.nextEvent && !G.dialog) finishEvent();
         if (!G.dialog) break;
+        if (/\(disabled\)$/.test(G.dialog.event.title)) { chooseEvent(1); finishEvent(); continue; }  // finish her off
         if (!/^Contact: exchange/.test(G.dialog.event.title)) { finishEvent(); continue; }
         const d = G.duel, attacking = d.init === 'me', theirs = foePlay();
         const mine = best(d.me[attacking ? 'threat' : 'answer'].hand, theirs, attacking);
@@ -394,7 +399,7 @@ test('drive power sets the burn: speed, days, reaction mass, and how easily pira
   const { page, ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
-    const st = G.state; st.tutorial = null; st.flags.classicCombat = false; st.crew = []; while (G.dialog) finishEvent();
+    const st = G.state; st.tutorial = null; st.crew = []; while (G.dialog) finishEvent();
     const burn = drive => {
       uatBurn('Ceres Station', 'pallas'); const t = G.transit; t.times = []; t.interceptPlanned = true;
       Object.assign(power(), { drive: 40, weapons: 30, shields: 30 }); setPower('drive', drive);
