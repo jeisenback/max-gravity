@@ -10,9 +10,9 @@
 const SLOTS = 5, SAVE_VERSION = 3;
 
 // ---------- settings ----------
-const Settings = Object.assign({ volume: 1, music: 0.6, textScale: 1, reduceMotion: false }, store.get('maxGravity.settings', {}));
+const Settings = Object.assign({ volume: 1, music: 0.6, textScale: 1, reduceMotion: false, wear: 'slow' }, store.get('maxGravity.settings', {}));
 function applySettings() {
-  store.set('maxGravity.settings', { volume: Settings.volume, music: Settings.music, textScale: Settings.textScale, reduceMotion: Settings.reduceMotion });
+  store.set('maxGravity.settings', { volume: Settings.volume, music: Settings.music, textScale: Settings.textScale, reduceMotion: Settings.reduceMotion, wear: Settings.wear });
   UI.el.style.zoom = Settings.textScale;
   if (Sfx.out) Sfx.out.gain.value = Sfx.on ? 0.5 * Settings.volume : 0;
 }
@@ -201,6 +201,9 @@ const Menu = {
           <label class="check"><input type="checkbox" id="setSound" ${Sfx.on ? 'checked' : ''}> Sound on</label>
           <h3>Text size</h3>
           <div class="row">${[[0.9, 'Small'], [1, 'Normal'], [1.15, 'Large'], [1.3, 'Largest']].map(([v, l]) => `<button class="${Settings.textScale === v ? 'on' : ''}" data-action="menuText" data-arg="${v}">${l}</button>`).join('')}</div>
+          <h3>Wear and tear</h3>
+          <div class="row">${[['off', 'Off'], ['slow', 'Slow'], ['normal', 'Normal']].map(([v, l]) => `<button class="${Settings.wear === v ? 'on' : ''}" data-action="menuWear" data-arg="${v}">${l}</button>`).join('')}</div>
+          <div class="hint">How fast the ship's systems wear with use. Off means they never do.</div>
           <label class="check"><input type="checkbox" id="setMotion" ${Settings.reduceMotion ? 'checked' : ''}> Reduce motion (no screen shake, calmer stars)</label>
           ${G.state && this.pausedFrom ? `<h3>This game</h3><div class="row"><button data-action="menuCombat">Combat: ${G.state.flags.classicCombat ? 'classic (in local space)' : 'in burns'}</button></div>` : ''}
         </div>
@@ -334,6 +337,7 @@ Mods.register({
       Menu.note = n ? (Saves.import(code, n) || `Imported into slot ${n}.`) : 'Every slot is full: delete one first.';
     });
     act('menuText', v => { Settings.textScale = Number(v); applySettings(); });
+    act('menuWear', v => { Settings.wear = v; applySettings(); });
     act('menuCombat', () => { G.state.flags.classicCombat = !G.state.flags.classicCombat; });
     act('menuPause', () => Menu.pause());
     act('menuResume', () => Menu.resume());

@@ -54,6 +54,8 @@ Mods.register({
         const o = (t.occasions || []).find(x => !x.done && x.at <= progress);
         if (o) out.push({ tier: 1, weight: 1, via: 'crew', make() { o.done = true; return occasionEvent(o); } });
         out.push({ tier: 1, weight: 1, via: 'crew', make: welcomeBack });
+        const weak = worstPart();
+        if (condition()[weak] < BREAKDOWN_BELOW) out.push({ tier: 1, weight: 1, via: 'crew', make: () => Math.random() < 0.5 ? breakdownEvent(weak) : null });
         if ((Mods.hooks.transitEvent || []).length) out.push({ tier: 1, weight: 1, via: 'ship', make: () => Mods.filter('transitEvent', null) });
         const pax = paxAboard().find(m => !m.story && !m.eventDone && (m.pid || PASSENGERS[m.passenger]));
         if (pax) out.push({ tier: 2, weight: 4, via: 'crew', make() { pax.eventDone = true; return pax.pid ? passengerEvent(pax) : PASSENGERS[pax.passenger].event(pax); } });
