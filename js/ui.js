@@ -345,7 +345,8 @@ const UI = {
       }
       case 'sell':
       case 'sellall': {
-        const held = st.cargo[arg], qty = action === 'sell' ? 1 : held;
+        const held = st.cargo[arg] || 0, qty = action === 'sell' ? 1 : held;
+        if (!held || price(p, arg) === null) break;  // a double tap after the last ton went
         const income = tradeTotal(p, arg, qty, -1), cost = (st.paid[arg] || 0) * qty / held;
         recordTrade(p, arg, qty, -1);
         const profit = income - cost;

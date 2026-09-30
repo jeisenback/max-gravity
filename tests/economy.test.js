@@ -190,3 +190,21 @@ test('a greedy trader from a new game gets rich and upgrades', async () => {
   assert.ok(r.credits > 50000, `made money (${r.credits})`);
   await done();
 });
+
+test('money never goes negative or NaN: broke escorts stay behind, empty sells do nothing', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    const st = G.state; st.tutorial = null; st.flags.classicCombat = true; while (G.dialog) finishEvent();
+    st.credits = 300000; buyCompanyShip('gunship'); Mods.act('cescort', '0');
+    st.credits = 10;
+    takeOff(); st.dest = 'mars'; G.player.x = 6000; G.player.y = 0; tryBurn();
+    const afterBurn = st.credits, stayed = !fleet()[0].escort;
+    G.mode = 'landed'; G.transit = null; landAt(currentPlanet(), []); while (G.dialog) finishEvent();
+    UI.act('sellall', 'food'); UI.act('sell', 'food');
+    return { afterBurn, stayed, credits: st.credits };
+  });
+  assert.equal(r.afterBurn, 10);
+  assert.ok(r.stayed, 'the escort waits at port');
+  assert.equal(r.credits, 10);
+  await done();
+});
