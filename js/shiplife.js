@@ -35,20 +35,24 @@ const ROLE_COLORS = { you: '#ffffff', engineer: '#ffa24a', pilot: '#6fb0ff', gun
 
 // What someone is seen doing, by room and (optionally) role. {n} is their name, {m} someone else here.
 const LIFE_LINES = {
-  engine: { cat: ['{n} is asleep on the reactor housing, where it is warm.'], engineer: ['{n} is elbow-deep in the reactor housing again.', '{n} is rerunning the injector timing. It was fine. It is finer now.'], any: ['{n} is watching the reactor telltales like they owe money.'] },
-  hold: { cat: ['{n} is stalking something between the crates that nobody else can see.'], quartermaster: ['{n} re-straps the cargo and counts it twice.', '{n} is arguing with the manifest.'], gunner: ['{n} is dry-firing at shadows in the hold.'], any: ['{n} is checking the cargo straps.'] },
-  berths: { cat: ['{n} has claimed somebody\'s pillow, and nobody has the heart to move it.'], medic: ['{n} is restocking the med bay, one ampoule at a time.'], passenger: ['{n} is writing letters in their bunk.', '{n} is asleep, or pretending to be.'], any: ['{n} is catching a few hours in their bunk.'] },
-  galley: { cat: ['{n} is sitting by the food locker, staring at it.'], any: ['{n} is making coffee that could strip paint.', '{n} and {m} are playing cards in the galley, badly.', '{n} is telling {m} a story that is only partly true.'] },
-  bridge: { cat: ['{n} is sitting on the nav console again.'], pilot: ['{n} is double-checking the flip solution.'], slicer: ['{n} is combing through the comms traffic.'], any: ['{n} is staring out the forward window.'] },
+  engine: { cat: ['{n} is asleep on the reactor housing, where it is warm.', '{n} is stretched full length along a warm pipe, purring in a key that matches the drive.', '{n} is watching a dripping valve with a look of tremendous, murderous focus.'],
+    engineer: ['{n} is elbow-deep in the reactor housing again.', '{n} is rerunning the injector timing. It was fine. It is finer now.', '{n} is lying on their back under the coolant manifold, telling a small, private joke to a gasket.', '{n} is tapping a pipe with a wrench, listening to the note it makes, and frowning.'],
+    any: ['{n} is watching the reactor telltales like they owe money.', '{n} is leaning on the engine room hatch, feeling the drive hum through the deck.', '{n} is warming their hands on the coolant housing, and pretending it is for a reason.'] },
+  hold: { cat: ['{n} is stalking something between the crates that nobody else can see.', '{n} has found a box, and has decided, definitively, that it is a bed.', '{n} sits on the highest crate in the hold, very upright, surveying its kingdom.'],
+    quartermaster: ['{n} re-straps the cargo and counts it twice.', '{n} is arguing with the manifest.', '{n} is walking the rows with a clipboard, tapping each crate in turn, like a priest with a rosary.', '{n} is sniffing a crate of food, thoughtfully, and writing something down.'],
+    gunner: ['{n} is dry-firing at shadows in the hold.', '{n} is cleaning a gun, by feel, in the half-dark, with a small satisfied sigh.', '{n} has set up a small target on a crate, and is very politely losing to it.'],
+    any: ['{n} is checking the cargo straps.', '{n} is standing among the crates with a look of quiet thought, and a hand on a lashing.', '{n} is reading the labels on the cargo, one by one, as though the whole hold were a poem.'] },
+  berths: { cat: ['{n} has claimed somebody\'s pillow, and nobody has the heart to move it.', '{n} is curled in the exact center of a freshly made bunk, and gives a look of warning to anyone who approaches.', '{n} is asleep on a pair of boots, in a shaft of dim light, and twitching slightly in a dream.'],
+    medic: ['{n} is restocking the med bay, one ampoule at a time.', '{n} is labeling small vials in tiny, exact handwriting, and humming.', '{n} is checking, with a quiet, private frown, the sleeping faces of the berths.'],
+    passenger: ['{n} is writing letters in their bunk.', '{n} is asleep, or pretending to be.', '{n} is looking through a small pile of photographs, and putting them back, one at a time.', '{n} is sitting on the edge of their bunk, looking at the wall, in the way people do on long trips.'],
+    any: ['{n} is catching a few hours in their bunk.', '{n} is asleep with an arm thrown over their eyes and a small book open on their chest.', '{n} is reading, by the light of a small lamp, with their lips moving very slightly.'] },
+  galley: { cat: ['{n} is sitting by the food locker, staring at it.', '{n} is licking a stray drop of milk from the galley floor with an air of great, weary dignity.', '{n} has taken the seat of honor at the table, and dares anyone to move it.'],
+    any: ['{n} is making coffee that could strip paint.', '{n} and {m} are playing cards in the galley, badly.', '{n} is telling {m} a story that is only partly true.', '{n} and {m} are washing up together, in a companionable silence, and passing each other cups.', '{n} is trying to teach {m} a card trick, and, so far, has failed with great dignity.', '{n} is cooking something unlabelled in a pan, with a small, hopeful look.', '{n} is leaning on the counter with a mug, watching {m} argue, cheerfully, with the recycler.'] },
+  bridge: { cat: ['{n} is sitting on the nav console again.', '{n} has settled directly on the flight controls, and looks at you as if to say: what now?', '{n} is watching the stars through the forward window, ears up, with the air of a small, furry navigator.'],
+    pilot: ['{n} is double-checking the flip solution.', '{n} is tracing a line on the nav chart with one finger, and nodding, slowly, at something they alone can see.', '{n} is flying, with their hands off the controls, for the sheer bravado of it, and their eyes on every readout.'],
+    slicer: ['{n} is combing through the comms traffic.', '{n} is reading a long, tangled stream of code, and smiling, faintly, at something in it.', '{n} is listening to a dozen channels at once, with their eyes closed, and their fingers, faintly, moving.'],
+    any: ['{n} is staring out the forward window.', '{n} is standing very still at the viewport, watching the plume, and the dark, and the long, slow pull of the stars.', '{n} is leaning on the nav console, chin on their hands, watching the little green line crawl.'] },
 };
-
-function lifeLine(p, crowd) {
-  const room = LIFE_LINES[p.room], pool = room[p.role] || room.any;
-  if (!pool) return null;
-  const others = crowd.filter(o => o !== p && o.room === p.room && o.role !== 'you' && o.role !== 'cat');
-  const line = pick(pool.filter(l => !l.includes('{m}') || others.length));
-  return line && line.replace('{n}', p.name).replace('{m}', others.length ? pick(others).name : '');
-}
 
 // ---------- the people aboard ----------
 function shipPeople() {
@@ -263,7 +267,7 @@ const ACTIVITIES = {
       goTo(shipPeople()[0], 'galley');
       for (const id of G.state.crew) if (G.state.people[id]) like(G.state.people[id], 1, 'We shared a meal on a long burn.');
       for (const m of paxAboard()) if (m.pid) like(G.state.people[m.pid], 1, 'The captain shared a meal with us.');
-      return 'You cook something real for once and everyone crowds into the galley. For an hour the ship feels small in the good way.';
+      return pick(['You cook something real for once, out of the good stores, with garlic and a little stolen butter, and everyone crowds into the galley, elbow to elbow, passing bowls. Somebody produces a bottle. Somebody else tells a story. For an hour the ship feels small in the good way, and, when the last bowl is scraped clean, nobody wants to be the first to leave.', 'You cook, badly but with feeling, and, to your amazement, it works. The whole ship crowds around the table, and, in the steam and the warm light, the long dark outside the hull seems very far away. There is a toast, and a second, and a small, unplanned song. For an hour the ship feels small in the good way.']);
     },
   },
   drills: {
@@ -271,7 +275,7 @@ const ACTIVITIES = {
     run() {
       G.transit.drilled = true;
       for (const p of shipPeople()) goTo(p, p.role === 'you' ? 'bridge' : pick(['hold', 'bridge', 'engine']));
-      return 'Damage control, then gunnery, then damage control again. Nobody enjoys it. Everyone is sharper for it. (Better odds in a fight for the rest of this burn.)';
+      return 'You call it, and the klaxon sounds, and the whole ship jumps. Damage control, then gunnery, then damage control again, with a stopwatch, and a great deal of muttering, and one very spirited argument about whose fault the fire in the galley was. Nobody enjoys it. Everyone is sharper for it, and, when it is done, the crew sits on the deck, breathing hard, exchanging tired, grudging, satisfied looks. (Better odds in a fight for the rest of this burn.)';
     },
   },
   repair: {
@@ -280,7 +284,7 @@ const ACTIVITIES = {
       const max = ship().armor, amount = Math.round(max * (roleSkill('engineer') ? 0.4 : 0.2)), before = G.state.armor;
       G.state.armor = Math.min(max, before + amount);
       for (const p of shipPeople()) goTo(p, p.role === 'passenger' ? 'galley' : pick(['engine', 'hold']));
-      return `You spend a watch patching and sealing. Hull ${before} to ${G.state.armor} of ${max}.${roleSkill('engineer') ? ` ${roleName('engineer')} does the hard parts.` : ''}`;
+      return `You spend a watch patching and sealing, with a heat gun, a tin of compound, and a great deal of swearing, crawling along the frame with a flashlight in your teeth, filling the scars of old fights. Hull ${before} to ${G.state.armor} of ${max}.${roleSkill('engineer') ? ` ${roleName('engineer')} does the hard parts, quietly, with a kind of tender, patient skill, and, when it is done, pats the bulkhead, once, like a horse.` : ' It is not elegant, and it is slow, but it is honest work, and, at the end, you sit against the wall with your hands black to the wrist, and look at what you have done.'}`;
     },
   },
   visit: {
@@ -288,7 +292,7 @@ const ACTIVITIES = {
     run() {
       goTo(shipPeople()[0], 'berths');
       for (const m of paxAboard()) if (m.pid) like(G.state.people[m.pid], 1, 'The captain came to check on us.');
-      return 'You make the rounds of the berths, hear out a complaint about the air recycler, and promise to look into it.';
+      return pick(['You make the rounds of the berths, with a small, tired smile, knocking on each door in turn. You hear out a complaint about the air recycler, a story about a cousin, a request for an extra blanket, and, from one quiet passenger, a long, hesitant question about whether it is normal to feel this far from everything. You promise to look into the recycler. You tell them, honestly, that it is.', 'You go from bunk to bunk, and sit, in each, for a few minutes, on the edge of the mattress. You hear out a complaint about the air recycler, and another about the coffee, and a much longer, more careful one about the silence. You promise to look into it. You mean it, and it helps, a little, to have been asked.']);
     },
   },
 };
