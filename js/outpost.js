@@ -180,11 +180,5 @@ Mods.register({
       placeOutpost();
       outpostLog(`Built the ${b.name.toLowerCase()}.`);
     });
-    M.on('landed', planet => {
-      const o = outpost();
-      if (!o || planet.name !== o.site || G.dialog) return;
-      const m = MOMENTS.find((x, i) => o.pop >= x.at && !o.moments.includes(i));
-      if (m) { o.moments.push(MOMENTS.indexOf(m)); openEvent(m.make(o)); }
-    });
   },
 });

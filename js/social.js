@@ -439,7 +439,6 @@ Mods.register({
       if (r < 0.55) { const s = socialLines(); if (s.length) return s; }
       return pool;
     });
-    M.filter('transitEvent', ev => ev || welcomeBack() || (Math.random() < 0.45 ? relationshipScene() : null));
     M.on('missionDone', m => { if (m.pid && G.state.people[m.pid]) G.state.people[m.pid].trips = (G.state.people[m.pid].trips || 0) + 1; });
     M.on('landed', planet => { const note = regularsAt(planet); if (note) M.note(note); });
   },

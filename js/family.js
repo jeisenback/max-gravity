@@ -362,19 +362,6 @@ Mods.register({
       label: 'Sit with someone', can: () => procedural().length > 0 || paxAboard().some(m => m.pid),
       run() { G.nextEvent = sitPicker(); return 'You make two mugs of coffee.'; },
     };
-    // Happenings: the news from home first, then the calendar, then a new tradition.
-    M.filter('transitEvent', ev => {
-      if (ev) return ev;
-      // Main story scenes (storylets with priority) go first; family moments can wait.
-      if (STORYLETS.some(s => s.where === 'transit' && s.priority > 0 && !(s.once && quality(`seen:${s.id}`)) && meets(s.when))) return null;
-      const t = G.transit, progress = 1 - t.left / t.total;
-      const told = procedural().find(f => f.p.news);
-      if (told) return newsEvent(told.p);
-      const o = (t.occasions || []).find(x => !x.done && x.at <= progress);
-      if (o) { o.done = true; return occasionEvent(o); }
-      if (home().burns >= 2 && Math.random() < 0.3) return traditionEvent();
-      return null;
-    });
     M.on('frame', () => {
       const t = G.transit;
       if (G.mode !== 'transit' || !t) return;
@@ -408,13 +395,7 @@ Mods.register({
       }
       if (p && m.type === 'passenger' && p.opinion >= 4 && !st.crew.includes(p.id) && Math.random() < 0.6) G.joinOffer = p;
     });
-    M.on('landed', planet => {
-      const st = G.state, notes = letters(planet);
-      for (const n of notes) M.note(n);
-      const queue = ev => { if (G.dialog) { if (!G.nextEvent) G.nextEvent = ev; } else openEvent(ev); };
-      if (G.joinOffer) { const p = G.joinOffer; G.joinOffer = null; queue(joinEvent(p)); }
-      else if (!home().cat && st.day >= 5 && ['Ring Nine', 'Boneyard', 'The Hollows', 'Juno Commons', 'Ceres Station', 'Eros Old Town'].includes(planet.name) && Math.random() < 0.1) queue(catEvent());
-    });
+    M.on('landed', planet => { for (const n of letters(planet)) M.note(n); });
     M.action('renameShip', () => {
       // An in-page field: browser prompt() dialogs are blocked in some embeds.
       const el = document.getElementById('shipName'), name = cleanName(el && el.value);

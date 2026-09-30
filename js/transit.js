@@ -310,35 +310,11 @@ function updateTransit(dt) {
   if (t.left <= 0) arrive();
 }
 
-// Passengers, storylets (Cold Water's beats among them), and crew storylines get
-// first claim on a happening, then general events, then market rumors.
+// What happens on this burn is decided by pickHappening (happenings.js); a quiet
+// burn gets a line of market rumor on the comms.
 function startHappening() {
-  const t = G.transit, flags = G.state.flags;
-  // Story passengers' scenes are storylets. (A handcrafted group renamed since the save was made has no event.)
-  const pax = paxAboard().find(m => !m.story && !m.eventDone && (m.pid || PASSENGERS[m.passenger]));
-  if (pax && Math.random() < 0.5) {
-    pax.eventDone = true;
-    return openEvent(pax.pid ? passengerEvent(pax) : PASSENGERS[pax.passenger].event(pax));
-  }
-  const modEvent = Mods.filter('transitEvent', null);  // storylets, and mods
-  if (modEvent) return openEvent(modEvent);
-  const arcs = G.state.crew.filter(id => CREW[id] && CREW[id].events[flags[`${id}Arc`] || 0]);
-  if (arcs.length && Math.random() < 0.4) {
-    const id = pick(arcs), step = flags[`${id}Arc`] || 0;
-    flags[`${id}Arc`] = step + 1;
-    return openEvent(CREW[id].events[step]);
-  }
-  const crewEvent = Math.random() < 0.3 && crewTraitEvent();
-  if (crewEvent) return openEvent(crewEvent);
-  // Not one seen in the last 45 days, on this burn or an earlier one.
-  const met = G.state.eventSeen = G.state.eventSeen || {};
-  const fresh = TRANSIT_EVENTS.filter(e => !t.seen.includes(e) && !(met[e.title] > G.state.day - 45));
-  if (Math.random() < 0.55 && fresh.length) {
-    const ev = pick(fresh);
-    t.seen.push(ev);
-    met[ev.title] = G.state.day;
-    return openEvent(ev);
-  }
+  const ev = pickHappening('transit');
+  if (ev) return openEvent(ev);
   addRumor();
 }
 
