@@ -198,10 +198,10 @@ test('every tab at every port reads cleanly, broke or rich, empty or full', asyn
 test('the bridge: station keys at port, and a key bar with status sheets in a burn', async () => {
   const { page, ev, done } = await open();
   await ev(() => { G.state.tutorial = null; while (G.dialog) finishEvent(); UI.render(); });
-  const names = await page.$$eval('.stations button', bs => bs.map(b => b.textContent));
-  assert.deepEqual(names, ['Navigation', 'Weapons', 'Engineering', 'Interior', 'Operations']);
+  const names = await page.$$eval('.stations button .full', bs => bs.map(b => b.textContent));
+  assert.deepEqual(names, ['Navigation', 'Weapons', 'Engineering', 'Interior', 'Comms', 'Operations']);
   assert.ok(await page.isVisible('#vs'), 'the viewscreen is above the stations');
-  for (const [station, marker] of [['nav', 'System map'], ['weapons', 'Armament'], ['eng', 'Outfits'], ['interior', 'Crew'], ['ops', 'Exchange']]) {
+  for (const [station, marker] of [['nav', 'System map'], ['weapons', 'Armament'], ['eng', 'Outfits'], ['interior', 'Crew'], ['comms', 'Inbox'], ['ops', 'Exchange']]) {
     await page.click(`[data-action=station][data-arg=${station}]`);
     assert.match(await page.innerText('#panel'), new RegExp(marker, 'i'), `${station} shows ${marker}`);
   }

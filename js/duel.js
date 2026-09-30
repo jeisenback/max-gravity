@@ -39,10 +39,11 @@ function playerCounts() {
   const st = G.state, s = ship(), crew = st.crew.length;
   return {
     torp: s.launcher ? Math.min(TORP_MAX, st.torpedoes || 0) : 0,
-    gun: 2 + s.guns,
+    // The engineer's power shares, the fire control's wear and any refit all change the deck (#32, #33, #34).
+    gun: Math.max(1, 2 + s.guns + Math.round((power().weapons - 30) / 20) - Math.round((1 - perf('fire')) * 4) + (refits().fire || 0)),
     board: crew >= 2 ? 1 + (roleSkill('gunner') ? 1 : 0) : 0,
     pdc: 1 + 2 * ((st.outfits || {}).pdc || 0),
-    burn: 2 + roleSkill('pilot'),
+    burn: Math.max(1, 2 + roleSkill('pilot') + Math.round((power().drive - 40) / 20)),
     locks: 1 + Math.floor(crew / 2),
   };
 }
@@ -105,7 +106,11 @@ function foePlay() {
 function startDuel(spec, flee) {
   const st = G.state, foe = makeEnemy(spec);
   const foeHp = Math.max(4, Math.min(10, Math.round(foe.maxArmor / 30)));
-  G.duel = { spec, foe, foeHp, foeMax: foeHp, round: 0, init: 'foe', me: makeSide(playerCounts()), them: makeSide(foeCounts(foe)) };
+  // Shields: with a healthy 40% or more of the reactor behind them, the first half hit does nothing.
+  // Worn sensors blur what you can tell of her cards, by a card either way.
+  G.duel = { spec, foe, foeHp, foeMax: foeHp, round: 0, init: 'foe', me: makeSide(playerCounts()), them: makeSide(foeCounts(foe)),
+    deflector: power().shields >= 40 && perf('shields') >= 0.9,
+    blur: Object.fromEntries(Object.keys(DUEL_CARDS).map(t => [t, perf('sensors') < 0.8 ? randInt(-1, 1) : 0])) };
   let text = `Battle stations. ${roleName('gunner')} takes the guns. ${theShip(foe)} made the intercept, and she has the initiative.`;
   if (flee) {
     if (Math.random() < 0.4 + 0.12 * roleSkill('pilot')) { G.duel = null; return `${roleName('pilot')} winds the drive past the redline and opens the range. Their plume fades.`; }
@@ -119,7 +124,7 @@ function startDuel(spec, flee) {
 function duelEvent() {
   const d = G.duel, st = G.state, foe = theShip(d.foe), attacking = d.init === 'me';
   const hand = d.me[attacking ? 'threat' : 'answer'].hand, types = [...new Set(hand)];
-  const list = ts => ts.map(t => [t, unseen(d.them, t)]).filter(([, n]) => n > 0).map(([t, n]) => `${DUEL_CARDS[t].low} x${n}`).join(', ') || 'nothing';
+  const list = ts => ts.map(t => [t, Math.max(0, unseen(d.them, t) + d.blur[t])]).filter(([, n]) => n > 0).map(([t, n]) => `${DUEL_CARDS[t].low} x${n}`).join(', ') || 'nothing';
   const read = attacking
     ? `You have the initiative: pick a threat. She could still answer with ${list(DUEL_ANSWERS)}.`
     : `${foe} has the initiative: pick an answer. She could still throw ${list(DUEL_THREATS)}.`;
@@ -147,16 +152,21 @@ const DUEL_LINES = {
 function duelExchange(mine, theirs) {
   const d = G.duel, st = G.state, max = ship().armor, foe = theShip(d.foe), attacker = d.init;
   const threat = attacker === 'me' ? mine : theirs, answer = attacker === 'me' ? theirs : mine;
-  const out = DUEL_OUTCOME[threat][answer], pts = hitPoints(threat, out), before = st.armor;
+  let out = DUEL_OUTCOME[threat][answer], pts = hitPoints(threat, out);
+  const before = st.armor;
+  let soaked = false;
+  if (attacker === 'foe' && out === 'half' && d.deflector) { pts = 0; d.deflector = false; soaked = true; }  // the capacitor takes it
   playCard(d.me, mine); playCard(d.them, theirs);
   if (mine === 'torp') st.torpedoes = Math.max(0, (st.torpedoes || 0) - 1);
   if (attacker === 'me') d.foeHp = Math.max(0, d.foeHp - pts);
   else st.armor = Math.max(1, st.armor - Math.round(max * ARMOR_PER_POINT * pts));
   if (out === 'stop') d.init = attacker === 'me' ? 'foe' : 'me';
   d.round++;
+  if (mine === 'gun' || mine === 'torp') wear('fire', mine === 'gun' ? 1.5 : 0.5);  // wear, from use (wear.js)
+  if (attacker === 'foe' && pts) wear('shields', 1.5);
   let text = DUEL_LINES[attacker][threat][['stop', 'half', 'full'].indexOf(out)].replace(/\{gunner\}/g, roleName('gunner')).replace(/\{pilot\}/g, roleHolder('pilot') ? roleName('pilot') : 'The helm')
     + ` She played ${DUEL_CARDS[theirs].low}.${attacker === 'me' && pts ? ` ${foe} takes ${pts >= 4 ? 'a heavy hit' : 'a hit'}.` : ''}${before > st.armor ? ` Armor -${before - st.armor}.` : ''}`
-    + (out === 'stop' ? ` ${d.init === 'me' ? 'You have' : 'She has'} the initiative.` : '');
+    + (soaked ? ' The deflector capacitor soaks it.' : '') + (out === 'stop' ? ` ${d.init === 'me' ? 'You have' : 'She has'} the initiative.` : '');
   if (d.foeHp <= 0) {
     const pre = st.credits;
     settleKill(d.foe, true);

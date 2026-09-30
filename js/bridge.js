@@ -7,16 +7,17 @@
 // Loaded before game.js; only calls into it at runtime.
 
 const STATIONS = [
-  { id: 'nav', name: 'Navigation', tabs: ['nav'] },
-  { id: 'weapons', name: 'Weapons', tabs: ['weapons'] },
-  { id: 'eng', name: 'Engineering', tabs: ['shipyard'] },
-  { id: 'interior', name: 'Interior', tabs: ['crew'] },
-  { id: 'ops', name: 'Operations', tabs: ['port', 'trade', 'missions', 'bar', 'company'] },
+  { id: 'nav', name: 'Navigation', short: 'Nav', tabs: ['nav'] },
+  { id: 'weapons', name: 'Weapons', short: 'Guns', tabs: ['weapons'] },
+  { id: 'eng', name: 'Engineering', short: 'Eng', tabs: ['shipyard'] },
+  { id: 'interior', name: 'Interior', short: 'Deck', tabs: ['crew'] },
+  { id: 'comms', name: 'Comms', short: 'Comms', tabs: ['comms'] },
+  { id: 'ops', name: 'Operations', short: 'Ops', tabs: ['port', 'trade', 'missions', 'bar', 'company'] },
 ];
 const TAB_NAMES = { port: 'Port', trade: 'Exchange', missions: 'Missions', bar: 'Bar', company: 'Company' };
 const BRIDGE_KEYS_H = 52;  // the key bar's height in a burn; the transit view leaves room for it
 
-const stationOf = tab => STATIONS.find(s => s.tabs.includes(tab)) || STATIONS[4];
+const stationOf = tab => STATIONS.find(s => s.tabs.includes(tab)) || STATIONS.find(s => s.id === 'ops');
 const tabReady = (p, id) => id === 'trade' ? p.services.includes('trade')
   : id === 'missions' ? p.services.includes('missions')
   : id === 'shipyard' ? p.services.includes('shipyard') || p.services.includes('outfitter')
@@ -25,7 +26,7 @@ const tabReady = (p, id) => id === 'trade' ? p.services.includes('trade')
 // The station keys, and under them the tabs of a station that has several.
 function bridgeKeys(p, tab) {
   const here = stationOf(tab);
-  const keys = STATIONS.map(s => `<button data-action="station" data-arg="${s.id}" class="${s.id === here.id ? 'active' : ''}" ${s.id === here.id ? 'aria-current="true"' : ''} ${s.tabs.some(id => tabReady(p, id)) ? '' : 'disabled'}>${s.name}</button>`).join('');
+  const keys = STATIONS.map(s => `<button data-action="station" data-arg="${s.id}" class="${s.id === here.id ? 'active' : ''}" ${s.id === here.id ? 'aria-current="true"' : ''} ${s.tabs.some(id => tabReady(p, id)) ? '' : 'disabled'} aria-label="${s.name}"><span class="full">${s.name}</span><span class="short" aria-hidden="true">${s.short}</span></button>`).join('');
   const sub = here.tabs.length > 1 ? `<div class="tabs sub">${here.tabs.map(id => `<button data-action="tab" data-arg="${id}" class="${tab === id ? 'active' : ''}" ${tab === id ? 'aria-current="page"' : ''} ${tabReady(p, id) ? '' : 'disabled'}>${TAB_NAMES[id]}</button>`).join('')}</div>` : '';
   return `<div class="tabs stations" role="navigation" aria-label="Stations">${keys}</div>${sub}`;
 }
@@ -54,12 +55,12 @@ const armament = () => {
 };
 
 UI.views.weapons = function () {
-  return `<h3>Armament</h3>${armament()}<div class="row"><button data-action="combatMode">Change combat mode</button></div>${postHtml('gunner')}`;
+  return `<h3>Armament</h3>${armament()}<div class="row"><button data-action="combatMode">Change combat mode</button></div>${projectsHtml('gunner')}${postHtml('gunner')}`;
 };
 
 // The shipyard is Engineering's page at port; the engineer's post leads it.
 const shipyardView = UI.views.shipyard;
-UI.views.shipyard = function () { return postHtml('engineer') + shipyardView.call(this); };
+UI.views.shipyard = function () { return engineerPanel() + shipyardView.call(this); };
 
 // ---------- the viewscreen at port ----------
 
@@ -92,14 +93,15 @@ function transitSheet(id) {
   const st = G.state, t = G.transit, s = ship(), progress = Math.min(1, 1 - t.left / t.total);
   const list = items => items.map(x => `<div class="hint">${x}</div>`).join('');
   switch (id) {
-    case 'nav': return `<h3>Navigation</h3><p class="desc">${system().name} to ${SYSTEMS[t.to].name}, ${Math.round(progress * 100)}% of the way. ${t.flipped ? 'Braking' : 'Accelerating'}. Arriving ${dateOf(st.day + t.days)}.</p>${routeHtml()}${postHtml('pilot')}`;
-    case 'weapons': return `<h3>Weapons</h3>${armament()}${postHtml('gunner')}`;
-    case 'eng': return `<h3>Engineering</h3><p class="desc">Reaction mass ${st.fuel}/${s.fuel}. Armor ${st.armor}/${s.armor}. Shields ${s.shields}.</p><p class="hint">Full repairs and outfits are done at a shipyard.</p>${postHtml('engineer')}`;
+    case 'nav': return `<h3>Navigation</h3><p class="desc">${system().name} to ${SYSTEMS[t.to].name}, ${Math.round(progress * 100)}% of the way. ${t.flipped ? 'Braking' : 'Accelerating'}. Arriving ${dateOf(transitEta(t))}.</p>${routeHtml()}${postHtml('pilot')}`;
+    case 'weapons': return `<h3>Weapons</h3>${armament()}${projectsHtml('gunner')}${postHtml('gunner')}`;
+    case 'eng': return `<h3>Engineering</h3><p class="desc">Reaction mass ${st.fuel}/${s.fuel}. Armor ${st.armor}/${s.armor}. Shields ${s.shields}.</p><p class="hint">Full repairs and outfits are done at a shipyard.</p>${engineerPanel()}`;
     case 'interior': {
       const crew = crewMembers(), free = phase() === 'move' && !(t.lifeUsed || {})[lifeHalf()];
       return `<h3>Interior</h3>${crew.length ? list(crew.map(c => `${fullName(c)}, ${ROLE_NAMES[c.role]}`)) : '<p class="hint">You are flying alone.</p>'}
         <div class="row"><button data-bdown ${free ? '' : 'disabled'}>Spend some downtime</button></div>`;
     }
+    case 'comms': return `<h3>Comms</h3>${(G.state.inbox || []).slice(0, 5).map(m => `<div class="hint">${dateOf(m.day)}: ${m.text}</div>`).join('') || '<p class="hint">Nothing in the inbox yet.</p>'}${postHtml('comms')}`;
     default: {
       const held = COMMODITIES.filter(c => st.cargo[c.id] > 0).map(c => `${st.cargo[c.id]}t ${c.name}`);
       return `<h3>Operations</h3><p class="desc">Trade, contracts, and the bar open when you dock.</p>${list([`Cargo: ${held.length ? held.join(', ') : 'empty'}`, ...st.missions.map(m => `${m.title} (due ${dateOf(m.deadline)})`)])}`;
@@ -120,6 +122,7 @@ function buildBridgeKeys() {
   };
   keys.addEventListener('click', click);
   sheet.addEventListener('click', click);
+  sheet.addEventListener('input', powerInput);
 }
 
 function syncBridge(force) {

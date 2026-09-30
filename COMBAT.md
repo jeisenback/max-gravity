@@ -55,6 +55,20 @@ a used card's deck reshuffles when it runs out.
 Buying torpedoes and fitting PDCs now matter at the console as well as in the real-time
 fight.
 
+### What the ship's systems do to the deck
+
+Power, wear and refits from the engineer's station (#32, #33, #34) feed the decks. These
+are built.
+
+| Source | Effect |
+|---|---|
+| Weapons power (30% is even) | Gun runs: +1 per 20 points above 30, -1 per 20 below. |
+| Drive power (40% is even) | Evasive burns: +1 per 20 points above 40, -1 per 20 below. |
+| Shields power | At 40% or more, with shields in good order, a deflector soaks the first half hit of the fight. Hits that land also wear the shields. |
+| Fire control wear | Up to 2 fewer gun runs as the fire control wears; shots fired wear it. |
+| Sensors wear | Below 80%, each count you read of her hand can be off by one card. |
+| Fire control refit (project) | +1 gun run per refit, for good. |
+
 ### Hull, outfit and escort cards
 
 These come after the base duel. Each deck is built in three layers: the hull, what's

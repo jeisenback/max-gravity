@@ -132,6 +132,10 @@ On a keyboard:
 - `js/stations.js` - posts (pilot, gunner, engineer, comms): crewed or manual, taking the controls, and orders
 - `js/autopilot.js` - the crewed pilot: departs, brings the ship in and lands; any flight key takes the controls
 - `js/duel.js` - the crewed gunner: a contact is settled on the console in exchanges of threat and answer, with decks built from your fit (see `COMBAT.md`); a manual gunner gets the real-time fight (`engage.js`)
+- `js/engineering.js` - the engineer's post: power shares (drive, weapons, shields), reactor heat and scrams, power orders, and what drive power does to a burn (speed, reaction mass, how easily pirates spot you)
+- `js/comms.js` - the comms station: how each happening reaches the ship, the inbox, listening for market tips, and a crewed officer who takes routine hails
+- `js/wear.js` - ship condition: slow wear on the drive, fire control, shields, life support and sensors, breakdown scenes, servicing and overhaul (the Wear setting in the menu)
+- `js/projects.js` - repairs, tuning and refits that run across the days of a burn, using machine parts from the hold
 - `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike), `mars-navy.js` (Reserve Commission, a Mars Navy career), `rook-crown.js` (The Rook's Crown, a pirate lord's rise), `tethys.js` (The Partner's Chair, a corporate climb), and `cold-water.js` (the scenes of Cold Water)
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
 - `js/audio.js` - sound effects synthesized with Web Audio (no audio files): guns, hits, explosions, engine rumble, docking, burns, comms
@@ -279,6 +283,7 @@ The easiest way to add story is with storylets: scenes written as data, no code.
 ```js
 M.addStorylet({
   id: 'my-scene', where: 'port',          // 'port' (plays on landing) or 'transit' (plays during a burn)
+  via: 'message',                        // optional: how it reaches the ship: 'station', 'ship', 'message' or 'crew'
   when: { planet: 'Ceres Station', q: { myArc: 1 } },
   priority: 2,                             // higher wins when several are eligible (default 0)
   title: 'A Stranger', text: 'Someone is waiting at your airlock...',

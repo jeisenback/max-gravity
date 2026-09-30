@@ -51,7 +51,7 @@ const UI = {
     this.setAccent(G.mode === 'hail' ? '#6fb0ff' : G.mode === 'transit' ? '#9fb4ff' : GOV_COLORS[system().gov]);
     this.el.innerHTML = `
       <div class="event-body" role="dialog" aria-label="${ev.title}">
-        <div class="eyebrow">${where}</div>
+        <div class="eyebrow">${ev.via ? `${VIA_LABELS[ev.via]} &middot; ` : ''}${where}</div>
         <h1>${ev.title}</h1>
         <p>${ev.text}</p>
         <div class="choices">
