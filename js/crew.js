@@ -27,6 +27,7 @@ const wage = id => person(id).wage * (id === 'rosa' && G.state.flags.rosaHalfWag
 
 function payCrew(days) {
   const st = G.state;
+  if (st.hired) return;  // the captain pays the crew
   const total = Math.round(st.crew.reduce((t, id) => t + wage(id), 0) * days);
   if (!total) return;
   st.credits -= total;

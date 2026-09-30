@@ -43,7 +43,7 @@ const overhaulCost = part => Math.round((100 - condition()[part]) * 8);
 
 // The Engineering station's list of systems, and (docked) the yard's price to overhaul each.
 function wearHtml() {
-  const c = condition(), docked = G.mode === 'landed';
+  const c = condition(), docked = G.mode === 'landed' && !hired();  // the captain pays for a yard overhaul
   return `<div class="power"><div class="eyebrow">Condition${wearRate() ? '' : ' &middot; wear is off'}</div>
     ${Object.entries(SHIP_PARTS).map(([k, p]) => `<div class="slider"><span>${p.name}</span><span class="pbar ${c[k] < 40 ? 'hot' : ''}"><i style="width:${Math.round(c[k])}%"></i></span><span class="mono">${Math.round(c[k])}%</span></div>
       ${docked && c[k] < 99 ? `<div class="row"><span class="hint">Yard overhaul</span><button data-action="overhaul" data-arg="${k}" ${G.state.credits >= overhaulCost(k) ? '' : 'disabled'}>${fmt(overhaulCost(k))} cr</button></div>` : ''}`).join('')}
@@ -92,7 +92,7 @@ Mods.register({
     M.on('damage', (o, shieldHit) => { if (o === G.player && shieldHit) wear('shields', 0.3); });
     M.action('overhaul', part => {
       const cost = overhaulCost(part);
-      if (G.mode !== 'landed' || G.state.credits < cost) return;
+      if (G.mode !== 'landed' || hired() || G.state.credits < cost) return;
       G.state.credits -= cost;
       condition()[part] = 100;
     });

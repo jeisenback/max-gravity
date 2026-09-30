@@ -18,7 +18,7 @@ const TAB_NAMES = { port: 'Port', trade: 'Exchange', missions: 'Missions', bar: 
 const BRIDGE_KEYS_H = 52;  // the key bar's height in a burn; the transit view leaves room for it
 
 const stationOf = tab => STATIONS.find(s => s.tabs.includes(tab)) || STATIONS.find(s => s.id === 'ops');
-const tabReady = (p, id) => id === 'trade' ? p.services.includes('trade')
+const tabReady = (p, id) => (hired() && OWNER_TABS.includes(id)) ? false : id === 'trade' ? p.services.includes('trade')
   : id === 'missions' ? p.services.includes('missions')
   : id === 'shipyard' ? p.services.includes('shipyard') || p.services.includes('outfitter')
   : true;
@@ -59,7 +59,7 @@ UI.views.weapons = function () {
 
 // The shipyard is Engineering's page at port; the engineer's post leads it.
 const shipyardView = UI.views.shipyard;
-UI.views.shipyard = function () { return engineerPanel() + shipyardView.call(this); };
+UI.views.shipyard = function () { return engineerPanel() + (hired() ? '<p class="hint">The yard deals with the captain, not with you.</p>' : shipyardView.call(this)); };
 
 // ---------- the viewscreen at port ----------
 
