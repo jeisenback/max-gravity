@@ -113,7 +113,7 @@ function transitSheet(id) {
 
 function buildBridgeKeys() {
   const keys = Object.assign(document.createElement('div'), { id: 'bkeys', className: 'scroll', hidden: true });
-  keys.innerHTML = STATIONS.map(s => `<button data-bst="${s.id}">${s.name}</button>`).join('');
+  keys.innerHTML = STATIONS.map(s => `<button data-bst="${s.id}" aria-label="${s.name}"><span class="full">${s.name}</span><span class="short" aria-hidden="true">${s.short}</span></button>`).join('');
   const sheet = Object.assign(document.createElement('div'), { id: 'bsheet', hidden: true });
   document.body.append(sheet, keys);
   const click = e => {
@@ -135,8 +135,12 @@ function syncBridge(force) {
   keys.hidden = !show;
   sheet.hidden = !show || !G.bridgeOpen;
   if (!show) return;
+  const view = G.W - G.hudW;  // the part of the screen not taken by the HUD sidebar
   keys.style.right = `${G.hudW}px`;
+  keys.classList.toggle('compact', view < 700);  // short names when the keys would not fit
   sheet.style.right = `${G.hudW}px`;
+  sheet.style.left = `${view / 2}px`;
+  sheet.style.width = `${Math.min(520, view - 24)}px`;
   keys.querySelectorAll('[data-bst]').forEach(b => b.classList.toggle('active', b.dataset.bst === G.bridgeOpen));
   if (G.bridgeOpen) {
     const html = transitSheet(G.bridgeOpen);

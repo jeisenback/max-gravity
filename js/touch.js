@@ -75,6 +75,7 @@ const Touch = {
     const flying = G.mode === 'flight';
     document.getElementById('touch').hidden = !(this.on && flying);
     document.getElementById('tmap').hidden = !(G.mode === 'transit' && !eventOpen);
+    document.getElementById('tmap').style.right = `${16 + G.hudW}px`;  // clear the HUD sidebar in landscape
     for (const id of ['tclose', 'tzoomin', 'tzoomout']) document.getElementById(id).hidden = G.mode !== 'map';
     if (!flying) {
       this.stick = null;
