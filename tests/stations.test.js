@@ -389,3 +389,64 @@ test('drive power sets the burn: speed, days, reaction mass, and how easily pira
   assert.match(await page.innerText('#bsheet'), /Burn speed 1\.24x\. Reaction mass use \+30%/);
   await done();
 });
+
+test('comms: a scene says how it arrived, the inbox keeps it, and the comms post listens', async () => {
+  const { page, ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = G.state; st.tutorial = null; st.crew = []; st.inbox = []; while (G.dialog) finishEvent();
+    uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
+    // A storylet can say how it reaches you; a bad value is refused.
+    const bad = (() => { const real = console.error; let msg = ''; console.error = m => { msg = m; }; addStorylet({ id: 'via-bad', where: 'transit', via: 'pigeon', title: 'T', text: 'x', choices: [{ label: 'a' }] }); console.error = real; return msg; })();
+    addStorylet({ id: 'via-ok', where: 'transit', via: 'message', priority: 1, title: 'A letter', text: 'x', choices: [{ label: 'a' }] });
+    const ev1 = storyletEvent(STORYLETS.find(s => s.id === 'via-ok'));
+    STORYLETS.pop();
+    // Happenings carry the source onto the scene and into the inbox.
+    const seen = {};
+    for (let i = 0; i < 80; i++) { G.transit.event = null; G.dialog = null; const e = pickHappening('transit'); if (e) seen[e.via] = (seen[e.via] || 0) + 1; }
+    const inboxVias = [...new Set(st.inbox.map(m => m.via))];
+    // The comms post: solo you listen (may fail), a crewed officer does it better, once a day.
+    const before = st.rumors.length;
+    let got = 0; for (let i = 0; i < 12; i++) { postState('comms').busy = false; const n = st.rumors.length; giveOrder('comms', 'listen'); got += st.rumors.length > n ? 1 : 0; }
+    hire('slicer', 3); postState('comms').busy = false;
+    const note = giveOrder('comms', 'listen'), second = giveOrder('comms', 'listen');
+    return { bad, via: ev1.via, seen, inboxVias, got, note, second, tips: st.rumors.length > before };
+  });
+  assert.match(r.bad, /via must be/);
+  assert.equal(r.via, 'message');
+  assert.ok(Object.keys(r.seen).length >= 2 && Object.keys(r.seen).every(v => ['station', 'ship', 'message', 'crew'].includes(v)), `scenes carry a source (${JSON.stringify(r.seen)})`);
+  assert.ok(r.inboxVias.length >= 1);
+  assert.ok(r.got > 0 && r.tips, 'listening finds tips');
+  assert.match(r.note, /tip|static/); assert.equal(r.second, null, 'once a day');
+  // The station at port and the sheet in a burn.
+  await ev(() => { G.transit = null; G.mode = 'landed'; landAt(currentPlanet(), []); while (G.dialog) finishEvent(); UI.render(); });
+  await page.click('[data-action=station][data-arg=comms]');
+  assert.match(await page.innerText('#panel'), /Inbox/i);
+  assert.ok(await page.$('#panel [data-action=postOrder][data-arg="comms:listen"]'));
+  await done();
+});
+
+test('comms: a crewed officer takes the merchant hail themselves, a solo captain answers it', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = G.state; st.tutorial = null; st.crew = []; st.inbox = []; while (G.dialog) finishEvent();
+    const hail = TRANSIT_EVENTS.find(e => e.title === 'Merchant Hail');
+    const only = { tier: 2, weight: 1, via: 'ship', make: () => hail };
+    Mods.register({ id: 'only-hail', name: 'x', init(M) { M.filter('happenings', (list, where) => where === 'transit' ? [only] : list); } });
+    const go = (credits) => {
+      uatBurn('Ceres Station', 'pallas'); const t = G.transit; t.times = []; st.credits = credits; t.seen = []; G.dialog = null; G.handled = false;
+      const e = pickHappening('transit');
+      return { e: e && e.title, handled: G.handled, credits: st.credits, comms: t.comms.filter(c => /\[Comms\]/.test(c)).length };
+    };
+    const solo = go(5000);
+    hire('slicer', 2);
+    const rich = go(5000), poor = go(800);
+    return { solo, rich, poor, inbox: st.inbox.length };
+  });
+  assert.equal(r.solo.e, 'Merchant Hail', 'a solo captain gets the hail to answer');
+  assert.equal(r.rich.e, null); assert.ok(r.rich.handled && r.rich.comms === 1 && r.rich.credits === 4500, 'the officer buys the tip when there is money to spare');
+  assert.ok(r.poor.handled && r.poor.credits === 800, 'and declines it when there is not');
+  assert.ok(r.inbox >= 2);
+  await done();
+});

@@ -117,6 +117,7 @@ function addRumor() {
   st.rumors = st.rumors.filter(r => !(r.planet === p.name && r.cid === cid));
   st.rumors.push({ planet: p.name, cid, mult: up ? rand(1.35, 1.6) : rand(0.55, 0.7), until: st.day + days, text: `${text} (${SYSTEMS[sid].name})` });
   comm(`[Market] ${text} (${SYSTEMS[sid].name}, for about ${days} days)`);
+  noteInbox('station', `${text} (${SYSTEMS[sid].name})`);
   return text;
 }
 
@@ -125,6 +126,7 @@ function addRumor() {
 const TRANSIT_EVENTS = [
   {
     title: 'Distress Call',
+    via: 'ship',
     text: 'A faint signal cuts through the static: "...reactor scram... life support failing... anyone..." The voice is thin and cracked, the voice of someone who has said the same words a hundred times to an empty sky. A private yacht is drifting ballistic just off your trajectory, small and sleek and dark, with a single tumbling running light. There is no other traffic within a day\'s burn. Whoever is aboard has, very likely, not much air left.',
     choices: [
       { label: 'Kill your burn and help (costs time)', run() {
@@ -141,6 +143,7 @@ const TRANSIT_EVENTS = [
   },
   {
     title: 'Pirates Matching Course',
+    via: 'ship',
     text: 'A dark ship with no transponder slides in off your quarter and matches your burn, close enough that you can see the scars on her hull, and paints you with targeting lidar, a cold, red, insistent pulse across your instruments. A voice crackles on the open band, amused, unhurried, and very young: "Cargo or credits, hoser. Your choice." Behind it, in the noise, someone is laughing, and somebody else is very, very quietly counting.',
     choices: [
       { label: 'Pay them off (10% of your credits)', run() {
@@ -170,6 +173,7 @@ const TRANSIT_EVENTS = [
   },
   {
     title: 'Drifting Cargo Container',
+    via: 'ship',
     text: 'Sensors flag an unmarked cargo container tumbling along your trajectory, a battered grey box the size of a small house, spinning lazily, catching the sunlight at each turn. No owner beacon, no transponder, no markings but a faded serial number and a long white scar down one side. It could have fallen off a freighter last week, or last decade. Everyone in the cockpit is looking at it, and nobody is quite saying what they are thinking.',
     choices: [
       { label: 'Grab it', can: () => cargoFree() > 0, run() {
@@ -183,6 +187,7 @@ const TRANSIT_EVENTS = [
   },
   {
     title: 'Stowaway',
+    via: 'crew',
     text: 'A skinny Belter kid unfolds from behind the cargo netting, blinking, cramped and stiff and bright-eyed, with a smudge of grease along one cheek and a tattered rucksack clutched to their chest. They have been in there, you realize, for two days, living on packets of ration paste. They look at you with the wide, fierce, terrified courage of a stray dog that has decided to bite first. "I just need to get off that rock," they say. "I can pay a little. Or I know things. I know a lot of things."',
     choices: [
       { label: 'Charge them passage', run() {
@@ -195,6 +200,7 @@ const TRANSIT_EVENTS = [
   },
   {
     title: 'Derelict Ship',
+    via: 'ship',
     text: 'Your sensors pick up a derelict drifting dark, an old ore hauler with her hull breached, her running lights out, and a long black scorch mark down one side, like the track of a great claw. No transponder, no life signs, no heat signature. She has been dead a long time. Salvage rights go to whoever gets there first, and the cockpit has gone very quiet, in the way it does when everybody is calculating the same number.',
     choices: [
       { label: 'Match velocity and strip it', run() {
@@ -211,6 +217,7 @@ const TRANSIT_EVENTS = [
   },
   {
     title: 'Coolant Leak',
+    via: 'crew',
     text: 'Alarms. A shrill, insistent wail that goes through the whole ship, and, on the reactor panel, a line of lights, one after another, going from green to amber to red. The coolant loop has sprung a leak, somewhere back in the tangle of pipes behind the drive housing, and the drive is running hot, hotter every minute, with a faint, ominous, metallic ticking. The air in the corridor smells of burnt glycol. Everyone is looking at you.',
     choices: [
       { label: '[{crew}] Handle it', role: 'engineer', run: () => '{crew} is in the coolant loop before the alarm finishes, sleeves rolled, one hand already on the valve, and, for twenty long minutes, there is only the sound of tools, and the hiss of venting steam, and a low, steady, cheerful muttering. Then the lights, one by one, go back to green. "Go back to sleep, captain," {crew} says, wiping their hands, and grins, black to the elbows.' },
@@ -229,6 +236,7 @@ const TRANSIT_EVENTS = [
   },
   {
     title: 'Merchant Hail',
+    via: 'ship',
     text: 'A freighter on a parallel trajectory hails you, close enough that you can see her crew in the cockpit windows, and a cheerful, weathered face, and a cup raised in greeting. "Market tip, friend?" the captain says, in a voice like a well-worn saddle. "I have been up and down these lanes forty years, and I hear things. Five hundred credits and it is yours. I promise you will not regret it. Usually."',
     choices: [
       { label: 'Buy the tip (500 cr)', can: () => G.state.credits >= 500, run() {
@@ -316,6 +324,7 @@ function updateTransit(dt) {
 function startHappening() {
   const ev = pickHappening('transit');
   if (ev) return openEvent(ev);
+  if (G.handled) { G.handled = false; return; }  // the comms officer took it (happenings.js)
   addRumor();
 }
 

@@ -154,6 +154,7 @@ function addStorylet(def, source = 'core') {
   const bad = [];
   if (!def || !def.id || !def.title || !def.text || !Array.isArray(def.choices) || !def.choices.length) bad.push('needs id, title, text, and choices');
   if (def && !['port', 'transit'].includes(def.where)) bad.push('where must be "port" or "transit"');
+  if (def && def.via && !VIA_LABELS[def.via]) bad.push('via must be "station", "ship", "message" or "crew"');
   const check = (obj, table, what) => Object.keys(obj || {}).forEach(k => { if (!table[k]) bad.push(`unknown ${what} "${k}"`); });
   if (def) {
     check(def.when, CONDITIONS, 'condition');
@@ -176,7 +177,7 @@ function storyletEvent(s) {
   // A choice that needs a particular crew member (not just a role) is hidden without them.
   const present = c => !(c.when && c.when.crew && !ROLE_NAMES[c.when.crew] && !G.state.crew.includes(c.when.crew));
   return {
-    title: fill(s.title), text: fill(s.text),
+    title: fill(s.title), text: fill(s.text), via: s.via,
     choices: s.choices.filter(present).map(c => ({
       label: fill(c.label),
       role: c.when && ROLE_NAMES[c.when.crew] ? c.when.crew : undefined,
