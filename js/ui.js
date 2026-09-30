@@ -128,7 +128,7 @@ const UI = {
     port() {
       const st = G.state, s = ship(), p = this.planet;
       const fuelNeed = s.fuel - st.fuel, armorNeed = s.armor - st.armor;
-      const canService = p.services.includes('refuel');
+      const canService = p.services.includes('refuel') && !hired();  // a hired ship is topped up by the captain
       return `
         <p class="desc">${p.desc}</p>
         ${this.notes.map(n => `<div class="note">${n}</div>`).join('')}
@@ -207,13 +207,13 @@ const UI = {
         return `<div class="mission">
           <div><b>${fullName(c)}</b>${(st.injured || {})[id] ? ' <span class="tag high">injured</span>' : ''} &middot; ${skill(c)}${traits(c)}${mood}
             <div class="hint">${CREW[id] ? c.perk : ROLE_PERKS[c.role](c.skill)} Wage ${fmt(wage(id))} cr/day.</div></div>
-          <button data-action="dismiss" data-arg="${i}">Dismiss</button>
+          ${hired() ? '' : `<button data-action="dismiss" data-arg="${i}">Dismiss</button>`}
         </div>`;
       }).join('');
       const unique = Object.entries(CREW).filter(([id, c]) => c.home === here && !st.crew.includes(id))
         .map(([id, c]) => ({ c, arg: id, bio: c.bio, perk: c.perk }));
       const locals = G.bar.map((c, i) => ({ c, arg: `bar:${i}`, bio: describe(c).replace(GOALS[c.goal], 'looking for a ship'), perk: ROLE_PERKS[c.role](c.skill) }));
-      const forHire = [...unique, ...locals].map(({ c, arg, bio, perk }) => {
+      const forHire = hired() ? '' : [...unique, ...locals].map(({ c, arg, bio, perk }) => {
         const ok = berthsFree() > 0 && st.credits >= c.fee;
         return `<div class="mission">
           <div><b>${fullName(c)}</b> &middot; ${skill(c)}<div class="hint">${bio}</div><div class="hint">${perk} Wage ${fmt(c.wage)} cr/day.</div></div>
@@ -230,8 +230,8 @@ const UI = {
         <p class="hint">Berths: ${berthsUsed()}/${ship().berths} used by crew and passengers. Unhappy crew will walk off the ship.</p>
         ${homeHtml()}
         ${bondsHtml()}
-        <h3>Looking for work here</h3>
-        ${forHire || '<p class="hint">Nobody in the bar is looking for a ship right now.</p>'}
+        ${hired() ? '' : `<h3>Looking for work here</h3>
+        ${forHire || '<p class="hint">Nobody in the bar is looking for a ship right now.</p>'}`}
         <h3>People you know</h3>
         ${known || '<p class="hint">Nobody yet. Passengers and crew remember how you treated them.</p>'}
         <h3>Legends of the spaceways</h3>
@@ -309,6 +309,7 @@ const UI = {
   },
 
   act(action, arg) {
+    if (hired() && OWNER_ACTIONS.includes(action)) return;  // not yours to do on the captain's ship
     const st = G.state, p = this.planet, s = ship();
     switch (action) {
       case 'tab': this.tab = arg; this.tradeNote = null; break;

@@ -94,6 +94,7 @@ function startGame(o) {
   if (cleanName(o.captain)) captain().name = cleanName(o.captain);
   if (cleanName(o.ship)) home().name = cleanName(o.ship).replace(/^the /i, '');
   resetWorld();
+  if (o.mode === 'hired') return landAt(currentPlanet(), setupHired(o));
   landAt(currentPlanet(), o.background === 'earth' ? INTRO : b.intro());
 }
 
@@ -174,10 +175,14 @@ const Menu = {
       return `<h2>New game</h2>
         <div class="menu-form">
           <label>Your name <input type="text" id="ngCaptain" maxlength="30" placeholder="Captain's name" value="${esc(f.captain || '')}"></label>
-          <label>Your ship <input type="text" id="ngShip" maxlength="30" placeholder="Second Chance" value="${esc(f.ship || '')}"></label>
+          <h3>How you start</h3>
+          <div class="row">${[['owner', 'Owner'], ['hired', 'Hired hand']].map(([id, l]) => `<button class="${(f.mode || 'owner') === id ? 'on' : ''}" data-action="menuMode" data-arg="${id}">${l}</button>`).join('')}</div>
+          ${f.mode === 'hired' ? `<p class="hint">You sign on to a captain's ship and work one post. The captain picks where she goes; you save toward a ship of your own.</p>
+          <div class="row">${HIRED_POSTS.map(p => `<button class="${(f.post || 'pilot') === p ? 'on' : ''}" data-action="menuPost" data-arg="${p}">${POSTS[p].name}</button>`).join('')}</div>`
+            : `<label>Your ship <input type="text" id="ngShip" maxlength="30" placeholder="Second Chance" value="${esc(f.ship || '')}"></label>`}
           <h3>Where you start</h3>
           ${Object.entries(BACKGROUNDS).map(([id, b]) => `<button class="choice ${f.background === id ? 'on' : ''}" data-action="menuBackground" data-arg="${id}"><b>${b.name}</b><span class="hint">${b.text}</span></button>`).join('')}
-          ${f.background === 'earth' ? `<label class="check"><input type="checkbox" id="ngTutorial" ${f.tutorial ? 'checked' : ''}> Play the tutorial</label>` : ''}
+          ${f.background === 'earth' && f.mode !== 'hired' ? `<label class="check"><input type="checkbox" id="ngTutorial" ${f.tutorial ? 'checked' : ''}> Play the tutorial</label>` : ''}
           <h3>Save slot</h3>
           <div class="row">${Array.from({ length: SLOTS }, (_, i) => i + 1).map(n => `<button class="${f.slot === n ? 'on' : ''}" data-action="menuSlotPick" data-arg="${n}">${n}: ${m[n] ? esc(m[n].captain) : 'empty'}</button>`).join('')}</div>
           ${m[f.slot] ? `<p class="hint">Slot ${f.slot} holds Captain ${esc(m[f.slot].captain)}'s game. Starting here replaces it.</p>` : ''}
@@ -315,6 +320,8 @@ Mods.register({
     act('menuTopic', id => { Menu.topic = id || null; });
     act('menuContinue', () => loadSlot(Saves.latest()));
     act('menuBackground', id => { keepForm(); Menu.form.background = id; });
+    act('menuMode', id => { keepForm(); Menu.form.mode = id; });
+    act('menuPost', id => { keepForm(); Menu.form.post = id; });
     act('menuSlotPick', n => { keepForm(); Menu.form.slot = Number(n); });
     act('menuStart', () => { keepForm(); const f = Menu.form; startGame({ ...f, tutorial: f.tutorial }); Menu.form = { background: 'earth', tutorial: true }; });
     act('menuSlotLoad', n => loadSlot(Number(n)));

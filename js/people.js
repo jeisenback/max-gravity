@@ -100,7 +100,7 @@ function registerPerson(p) {
   // Forget strangers first once the registry grows large.
   const ids = Object.keys(st.people);
   if (ids.length > 80) {
-    const busy = new Set([p.id, ...st.crew, ...st.missions.map(m => m.pid), ...(st.fleet || []).map(f => f.captain.pid)]);
+    const busy = new Set([p.id, ...(st.hired ? [st.hired.captain] : []), ...st.crew, ...st.missions.map(m => m.pid), ...(st.fleet || []).map(f => f.captain.pid)]);
     const forget = ids.filter(id => !busy.has(id)).sort((a, b) => Math.abs(st.people[a].opinion) - Math.abs(st.people[b].opinion));
     for (const id of forget.slice(0, ids.length - 80)) delete st.people[id];
   }
