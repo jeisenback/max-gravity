@@ -3,7 +3,7 @@
 // The main plot, "Cold Water": someone is sabotaging Ceres cisterns to drive up the
 // price of water. Act 1 runs from finding a derelict's data core to decrypting it on
 // Europa; Act 2 is deciding who gets the proof; Act 3 is running water through the
-// blockade. The scenes are storylets in js/stories/cold-water.js. This file keeps the
+// blockade (local space, or scenes and console duels with a crewed gunner). The scenes are storylets in js/stories/cold-water.js. This file keeps the
 // machinery they lean on: story state, the objective text, the recovery ship, the
 // blockade fleets, the endings and epilogue, and the named actions scenes run with
 // `do`. Loaded before game.js; only calls into it at runtime.
@@ -76,10 +76,12 @@ function storyOnTakeoff() {
   const s = story();
   if (s.stage === 2 && !s.agentDay) {
     s.agentDay = G.state.day;
+    if (consoleFights()) { G.pendingScene = agentConsoleEvent(false); return; }
     spawnAgent('Aquilon recovery ship "Quiet Ledger"');
     msg('A ship with an Aquilon Hydrologics transponder is closing fast.');
   } else if (s.stage === 'belt2' && !s.ambushed) {
     s.ambushed = true;
+    if (consoleFights()) { G.pendingScene = agentConsoleEvent(true); return; }
     spawnAgent('Aquilon security "Due Diligence"');
     spawnAgent('Aquilon security "Hostile Takeover"');
     msg('Two Aquilon security ships are closing fast. Voight is done talking.');
@@ -151,6 +153,112 @@ function storyDockingOverride(planet) {
   return story().stage === 'act3' && planet.name === 'Ceres Station';
 }
 
+// ---------- the set pieces on the console ----------
+// With console fights (see consoleFights in engage.js) the recovery ship and the blockade are
+// scenes and duels instead of ships in local space. A story fight runs through startDuel;
+// when it is over (nothing left to show), onEnd hears how it went: 'won' or 'escaped'.
+
+function storyFight(spec, { flee = false, allies = 0, onEnd }) {
+  const text = startDuel(spec, flee);
+  if (G.duel && allies) G.duel.foeHp = Math.max(2, G.duel.foeHp - allies);  // friends thin the other side
+  G.storyFight = { duel: G.duel, onEnd };
+  return text;
+}
+
+// From the frame hook: the scene waiting to open (it cannot open during a takeoff), and a fight that has ended.
+function storyConsoleTick() {
+  if (G.pendingScene && !G.dialog && G.mode === 'flight') {
+    const ev = G.pendingScene;
+    G.pendingScene = null;
+    G.mode = 'hail';  // the game waits, and returns to flight when the scene closes
+    openEvent(ev);
+  }
+  const f = G.storyFight;
+  if (f && !G.dialog && !G.nextEvent) {
+    G.storyFight = null;
+    f.onEnd(f.duel && f.duel.foeHp === 0 ? 'won' : 'escaped');
+  }
+}
+
+// A fight opened from the frame hook, where no scene is open to carry its first round.
+function openStoryFight(title, spec, opts) {
+  const text = storyFight(spec, opts);
+  G.mode = 'hail';
+  openEvent({ title, text, choices: [{ label: 'Continue', run: () => '' }] });
+}
+
+function agentConsoleEvent(ambush) {
+  const s = story(), c = makePerson(cultureOf(G.state.systemId));
+  const spec = ambush
+    ? { kind: 'pirate', story: true, shipId: 'corsair', armorMult: 1.8, name: 'Aquilon security "Due Diligence" and "Hostile Takeover"' }
+    : { kind: 'pirate', story: true, shipId: 'corsair', armorMult: 1.3, name: 'Aquilon recovery ship "Quiet Ledger"' };
+  const fight = flee => () => storyFight(spec, { flee, onEnd: r => msg(r === 'won' ? `${spec.name} breaks up. Aquilon will not be happy.` : `${spec.name} breaks off, for now.`) });
+  const choices = [];
+  if (!ambush) choices.push({ label: s.copied ? 'Hand over the copy' : 'Hand over the core', run() {
+    s.stage = 'sold';
+    storyLog('Surrendered the Persephone\'s core to an Aquilon recovery ship.');
+    return '"Smart choice." They take it and break off. Somewhere on Ceres, another pump fails.';
+  } });
+  choices.push({ label: `Battle stations (${roleName('gunner')} fights)`, run: fight(false) }, { label: 'Burn hard to outrun them', run: fight(true) });
+  return {
+    title: ambush ? 'Aquilon Security' : 'Aquilon Recovery Ship', via: 'ship',
+    text: ambush ? `Two Aquilon security ships come around the planet together, closing fast. Capt. ${c.first} ${c.last}: "Nothing personal, captain. Mr. Voight would like a word with your hull."`
+      : `A ship with an Aquilon Hydrologics transponder is closing fast. Capt. ${c.first} ${c.last}: "${s.copied ? 'We know about the copy. Transmit it to us and wipe your systems, and you walk away.' : 'You have something that belongs to Aquilon. Hand it over and nobody gets hurt.'}"`,
+    choices,
+  };
+}
+
+// Ceres is under blockade: two ships of the other side, and whoever is on yours.
+function blockadeForces() {
+  const s = story(), coalitionBlocks = s.side === 'belt' || s.side === 'mars';
+  const gov = coalitionBlocks ? 'Earth Coalition' : 'Belt Collective';
+  const foes = [
+    { kind: 'patrol', gov, story: false, shipId: coalitionBlocks ? 'destroyer' : 'corsair', name: coalitionBlocks ? 'Coalition destroyer "Resolute"' : 'Collective militia "Last Drop"' },
+    { kind: 'patrol', gov, story: false, shipId: 'cutter', name: `${PATROL_NAMES[gov]} "${shipName(false)}"` },
+  ];
+  const side = { belt: 3, mars: 3, earth: 2, aquilon: 1 }[s.side] || 0;  // ships of your side
+  const loved = Object.values(G.state.people).filter(p => !G.state.crew.includes(p.id) && p.opinion >= 5).slice(0, 2).length;
+  return { foes, allies: side + loved, coalitionBlocks };
+}
+
+function blockadeScene() {
+  const { foes, allies, coalitionBlocks } = blockadeForces(), s = story();
+  const clear = how => { s.blockadeCleared = true; msg('The blockade breaks. Ceres Station clears you to dock.'); return how; };
+  // The first fight starts from a choice (its first round follows the result); the second from the frame hook.
+  const gauntlet = (i, fromChoice) => {
+    const spec = foes[i], assist = Math.max(0, Math.round(allies / 2)), open = fromChoice ? storyFight : (...a) => openStoryFight('The Blockade', ...a);
+    return open(spec, { allies: assist, onEnd: r => {
+      if (r !== 'won') { msg('The blockade holds. Fall back, or try again when you are ready.'); return; }
+      if (i + 1 < foes.length) return gauntlet(i + 1, false);
+      clear();
+      G.mode = 'hail';
+      openEvent({ title: 'The Blockade Breaks', text: `${allies ? `Your side's ships close in behind you, and the ` : 'The '}${foes[0].gov} line comes apart. Ceres Station clears you to dock.`, choices: [{ label: 'Continue', run: () => 'The approach to Ceres Station is open.' }] });
+    } });
+  };
+  return {
+    title: 'The Blockade of Ceres', via: 'station',
+    text: `${coalitionBlocks ? 'The Coalition blockade holds the approach to Ceres Station' : 'Collective hardliners are attacking ships near Ceres Station'}: ${foes.map(f => f.name).join(' and ')}. ${allies ? `${allies} ship${allies > 1 ? 's' : ''} on your side are already moving to meet them.` : 'Nobody is on your side out here.'} Twenty tons of water are in your hold, and Ceres is thirsty.`,
+    choices: [
+      { label: `Run the blockade (${roleName('gunner')} fights)`, run() { return gauntlet(0, true); } },
+      { label: 'Slip in on a cold drive', can: () => true, run() {
+        const odds = Math.min(0.85, 0.25 + 0.12 * roleSkill('pilot') + (power().drive <= 25 ? 0.2 : 0));
+        if (Math.random() < odds) return clear(`${roleName('pilot')} kills the drive glow and threads the picket on thrusters, and the blockade never sees you. Ceres Station clears you to dock.`);
+        return `A picket ship lights you up as you coast in. So much for the cold approach. ${gauntlet(0, true)}`;
+      } },
+      { label: 'Stay clear for now', run: () => 'You hold off, and watch the blockade from a safe distance.' },
+    ],
+  };
+}
+
+// Docking at Ceres Station while it is blockaded (on the console) reopens the blockade scene.
+function storyBlockadeGate(planet) {
+  const s = story();
+  if (!consoleFights() || s.stage !== 'act3' || planet.name !== 'Ceres Station' || s.blockadeCleared) return false;
+  G.mode = 'hail';
+  openEvent(blockadeScene());
+  return true;
+}
+
 // Ships at the blockade. Enemies attack the player; allies hunt enemies.
 function spawnFleetShip(shipId, gov, name, enemy) {
   const s = SHIPS[shipId], station = SYSTEMS.ceres.planets[0], a = rand(0, Math.PI * 2);
@@ -169,6 +277,7 @@ function storyInSystem() {
   if (s.stage !== 'act3' || G.state.systemId !== 'ceres') return;
   const coalitionBlocks = s.side === 'belt' || s.side === 'mars';
   const foeGov = coalitionBlocks ? 'Earth Coalition' : 'Belt Collective';
+  if (consoleFights()) { if (!s.blockadeCleared) G.pendingScene = blockadeScene(); return; }  // the console version, below
   spawnFleetShip(coalitionBlocks ? 'destroyer' : 'corsair', foeGov, coalitionBlocks ? 'Coalition destroyer "Resolute"' : 'Collective militia "Last Drop"', true);
   spawnFleetShip('cutter', foeGov, `${PATROL_NAMES[foeGov]} "${shipName(false)}"`, true);
   // Your side's ships.
@@ -288,6 +397,7 @@ Mods.register({
   id: 'cold-water', name: 'Cold Water', builtin: true,
   init(M) {
     M.on('enterSystem', storyInSystem);
+    M.on('frame', storyConsoleTick);
     M.on('landed', storyOnLanding);
     M.on('takeoff', storyOnTakeoff);
     M.filter('price', (v, planet, cid) => v * storyPriceMult(planet, cid));
