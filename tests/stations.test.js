@@ -22,6 +22,8 @@ const helpers = () => {
   };
   // One burn's worth of frames, at the current power and wear setting.
   window.wearBurn = () => { const t = G.transit; for (let i = 0; i < 90; i++) { t.event = null; G.dialog = null; Mods.emit('frame', 1); } };
+  // Frames of a burn that can see projects.
+  window.burnFrames = n => { const t = G.transit; for (let i = 0; i < n; i++) { t.event = null; G.dialog = null; Mods.emit('frame', 1); } };
   // Runs the game a frame at a time, with nobody else in the sky.
   window.fly = (until, max = 6000) => { let i = 0; while (!until() && i++ < max) { G.npcs = []; G.spawnTimer = 99; update(1 / 30); } return i; };
 };
@@ -546,4 +548,72 @@ test('wear: port overhaul, servicing in flight, and the setting in the menu', as
   assert.equal(await m.ev(() => Settings.wear), 'off');
   assert.equal(await m.ev(() => JSON.parse(localStorage.getItem('maxGravity.settings')).wear), 'off', 'and it is remembered');
   await m.done();
+});
+
+test('projects: they take parts, run only on a burn, and finish with a result', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = G.state; st.tutorial = null; st.crew = []; Settings.wear = 'slow'; while (G.dialog) finishEvent();
+    st.cargo = {}; st.paid = {}; st.condition = undefined; condition().shields = 30;
+    const none = startProject('patch');  // no parts in the hold
+    st.cargo.industrial = 4; st.paid.industrial = 800;
+    const started = startProject('patch'), again = startProject('patch'), tune = startProject('tune');  // one job per post
+    const out = { none, started, again, tune, parts: st.cargo.industrial, paid: st.paid.industrial, secs: projectsOf().patch.total };
+    Mods.emit('frame', 5); out.idleAtPort = projectsOf().patch.left;  // nothing moves at port (not in transit)
+    uatBurn('Ceres Station', 'pallas'); G.transit.times = []; st.condition = undefined; condition().shields = 30;
+    return out;
+  });
+  assert.equal(r.none, false); assert.equal(r.started, true); assert.equal(r.again, false); assert.equal(r.tune, false);
+  assert.equal(r.parts, 3); assert.equal(r.paid, 600, 'what you paid for the parts goes with them');
+  assert.equal(r.secs, 30, 'alone it takes half as long again');
+  assert.equal(r.idleAtPort, 30);
+  await done();
+});
+
+test('projects: a crewed engineer does better; patch, tune and refit each have their effect', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = G.state; st.tutorial = null; st.crew = []; Settings.wear = 'slow'; while (G.dialog) finishEvent();
+    const tries = (id, n) => { let ok = 0; for (let i = 0; i < n; i++) { st.condition = undefined; condition().shields = 30; delete projectsOf()[id]; st.cargo.industrial = 9; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; st.cargo.industrial = 9; startProject(id); burnFrames(80); if (condition().shields > 30) ok++; } return ok; };
+    const solo = tries('patch', 40);
+    hire('engineer', 3); const crew = tries('patch', 40);
+    // Tune: faster until you next dock.
+    uatBurn('Ceres Station', 'pallas'); G.transit.times = []; st.tuned = null; const base = burnSpeed(); st.tuned = { drive: true }; const tuned = burnSpeed();
+    Mods.emit('landed', currentPlanet()); const cleared = burnSpeed();
+    // Refit: a permanent edge, and a fresh fire control; a failure hurts it.
+    hire('gunner', 3); st.condition = undefined; condition().fire = 40; const edge0 = duelEdges().guns;
+    refits().fire = 1; condition().fire = 100; const edge1 = duelEdges().guns;
+    delete st.refits;
+    let worse = 0; for (let i = 0; i < 60; i++) { condition().fire = 100; st.cargo.industrial = 9; delete projectsOf().refit; startProject('refit'); uatBurn('Ceres Station', 'pallas'); G.transit.times = []; burnFrames(70); if (condition().fire < 100 && !refits().fire) worse++; else if (refits().fire) delete st.refits; }
+    return { solo, crew, base, tuned, cleared, edge0, edge1, worse, left: Object.keys(projectsOf()) };
+  });
+  assert.ok(r.crew > r.solo, `a crewed engineer succeeds more often (${r.crew} vs ${r.solo} of 40)`);
+  assert.ok(r.solo > 0 && r.crew < 40, 'and nobody is certain');
+  assert.ok(Math.abs(r.tuned / r.base - 1.1) < 1e-9 && r.cleared === r.base, 'a tune is 10% faster and wears off at the next port');
+  assert.ok(r.edge1 > r.edge0, 'a refit sharpens the guns');
+  assert.ok(r.worse > 0, 'a refit can go wrong');
+  assert.deepEqual(r.left, []);
+  await done();
+});
+
+test('projects: the station lists them, starts one, and shows its progress', async () => {
+  const { page, ev, done } = await open();
+  await ev(helpers);
+  await ev(() => { const st = G.state; st.tutorial = null; st.crew = []; st.cargo = { industrial: 2 }; st.paid = { industrial: 400 }; while (G.dialog) finishEvent(); UI.render(); });
+  await page.click('[data-action=station][data-arg=eng]');
+  assert.match(await page.innerText('#panel'), /Projects/i);
+  assert.ok(await page.$('#panel [data-action=project][data-arg=patch]:not([disabled])'));
+  await page.click('[data-action=project][data-arg=patch]');
+  assert.ok(await ev(() => !!projectsOf().patch), 'started');
+  await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; burnFrames(10); });
+  await page.waitForSelector('#bkeys', { state: 'visible' });
+  await page.click('[data-bst=eng]');
+  await page.waitForFunction(() => /\d+%/.test(document.querySelector('#bsheet [data-project=patch]').textContent));
+  assert.ok(await page.$('#bsheet [data-project-bar=patch]'));
+  await page.click('[data-bst=weapons]');
+  assert.match(await page.innerText('#bsheet'), /Refit the fire control/);
+  assert.equal(await page.$eval('#bsheet [data-action=project][data-arg=refit]', b => b.disabled), true, 'not enough parts for a refit');
+  await done();
 });
