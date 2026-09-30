@@ -20,6 +20,30 @@ const CHATTER = [
   'Mars Republic Navy: all vessels, maintain transponders in Martian space.',
   'Belt pirate radio: static, then a laugh, then static again.',
   'Reactor: output steady. Drive plume stable.',
+  'Freighter "Second Wind" to nobody in particular: "Forty days out and I have run out of things to say to the cat."',
+  'A very old recorded voice, on a very old beacon: "This lane is maintained by the Ceres Water Authority. Please burn responsibly."',
+  'Hauler "Long Odds": "Anybody running to Titan? I have got a spare berth and a very bad sense of direction."',
+  'Coalition traffic control: reminder that lane fees are due on the first, and that "I forgot" is not a payment method.',
+  'A child, on an open band, very seriously: "This is Captain Pip of the good ship Blanket Fort. Do you copy?"',
+  'Ceres Water Authority relay: "Reminder to all vessels, water is not a right, but it is a courtesy. Thank you for your understanding."',
+  'Belt trader on the band: "Fresh onions! Real onions! Meet me at the flip, and bring your own bags!"',
+  'Tug "Old Bess": "Anybody know a good doctor on Ganymede? Asking for a friend. The friend is my knee."',
+  'Static, then, very faintly, somebody singing an old work song, and the ragged, cheerful tail of a chorus.',
+  'Mars traffic: "All ships in the Phobos approach corridor, welcome, and please note that, yes, the coffee really is that good."',
+  'Someone on the emergency band, in a small, hopeful voice: "Testing. Testing. Is this thing on? Mom, it is on."',
+  'Drive plume harmonics: a low, steady, contented hum. All quiet.',
+  'A distant hauler broadcasts, at length, a recipe for fried dough, and, in the middle, apologizes, and carries on.',
+  'Luna control: "Please remember that the Copernicus Lounge is not, in fact, an official navigation aid."',
+  'Ring-ball commentary, faint and crackling, from a ship somewhere in the dark: "...and he SHOOTS, and he SCORES..."',
+  'Nav: micrometeoroid flux low. Hull integrity nominal. Optimism, unofficially, high.',
+  'A salvager on the band, cheerfully: "Anybody lose a left boot? Somebody lost a left boot. I have a hundred of them."',
+  'Enceladus relay: "All ships, geyser activity is up today. Please enjoy responsibly, and do not fly through the plume."',
+  'A young voice, on an open channel, awed: "I can see the whole ring from here. Is it always like this?"',
+  'The ship\'s hull creaks, once, softly, as it cools in the long shadow. Nothing follows.',
+  'A hauler crew, in unison, on the open band, singing "Happy Birthday" to a captain who is, from the sound of it, deeply embarrassed.',
+  'Eros beacon: "Welcome to the Old Town. Half of us are still here, and the other half will be, shortly."',
+  'Crew mess: somebody is arguing that soup counts as a beverage. The argument has been going for ninety minutes.',
+  'Static, followed by a woman\'s voice, low and warm, reading the names of every ship that has ever left Ceres, one by one.',
 ];
 
 const RUMORS = {
@@ -28,11 +52,24 @@ const RUMORS = {
     'A disease scare on {p} has everyone hoarding {c}.',
     'Customs on {p} seized a shipment of {c}. Buyers there are desperate.',
     'A corporate buying spree on {p} has cleared the shelves of {c}.',
+    'A fire in a warehouse on {p} took most of the local stock of {c}, and nobody is saying how it started.',
+    'A ceremonial feast on {p} has drained every last ounce of {c}, and the cooks are frantic.',
+    'A ship carrying {c} to {p} was hijacked two weeks ago, and the shelves are getting bare.',
+    'A new tax on {c} at {p} has, for reasons no one can explain, made it more valuable, not less.',
+    'A big contract on {p} has swallowed the whole local supply of {c}, and the bidding has gone wild.',
+    'A shipping delay has stranded a convoy of {c} on the way to {p}, and buyers are getting anxious.',
+    'A cold snap on {p} has made {c} the only thing anyone wants to talk about.',
+    'Word is that the governor of {p} is stockpiling {c} for a party, and will pay well over the odds.',
   ],
   down: [
     'Three haulers just unloaded {c} on {p}. Prices there are collapsing.',
     'Warehouses on {p} are overflowing with {c}. Sellers are dumping it cheap.',
     'A bumper output of {c} on {p} has the markets swamped.',
+    'A strike ended on {p}, and every dock in town is suddenly flooded with {c}.',
+    'A trade fair on {p} has brought in a great many merchants, and {c} is going for a song.',
+    'A warehouse on {p} has been cleared out in a hurry, and the {c} is going, quite literally, for whatever anyone will pay.',
+    'A rumor that {c} on {p} is contaminated has, for the moment, cratered the price, though everyone knows it is nonsense.',
+    'A company on {p} has folded, and its whole stock of {c} is being sold off at auction.',
   ],
 };
 
@@ -261,8 +298,8 @@ function updateTransit(dt) {
     t.chatter = rand(12, 20);
     const fill = (line, c) => line.replace('{first}', c.first).replace('{home}', c.home);
     const aboard = [
-      ...crewMembers().flatMap(c => c.chatter || c.traits.map(t => fill(TRAITS[t].chatter, c))),
-      ...paxAboard().filter(m => m.pid).map(m => G.state.people[m.pid]).flatMap(p => p.traits.map(t => `(passenger) ${fill(TRAITS[t].chatter, p)}`)),
+      ...crewMembers().flatMap(c => c.chatter || c.traits.map(t => fill(pick([].concat(TRAITS[t].chatter)), c))),
+      ...paxAboard().filter(m => m.pid).map(m => G.state.people[m.pid]).flatMap(p => p.traits.map(t => `(passenger) ${fill(pick([].concat(TRAITS[t].chatter)), p)}`)),
     ];
     comm(pick(Mods.filter('chatter', aboard.length && Math.random() < 0.6 ? aboard : CHATTER)));
   }

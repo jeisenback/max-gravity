@@ -19,9 +19,9 @@ Mods.register({
       title: 'Toll Beacon',
       text: 'An automated beacon hangs in the lane with a Mars Republic seal on its casing. It has been pinging you politely for an hour: lane maintenance, a hundred and fifty credits, receipt provided. It is a real toll. It has also been collected, by the look of the paint, by at least three different people.',
       choices: [
-        { label: 'Pay the toll (150 cr)', when: { credits: 150 }, effects: { credits: -150, rep: { 'Mars Republic': 1 } }, result: 'The beacon prints a receipt no one will ever read and wishes you a productive day. Dry. Efficient. Very Martian.' },
-        { label: '[{crew}] Have {crew} tell it you already paid', when: { crew: 'slicer' }, result: 'Nineteen seconds later the beacon has you down as a prepaid municipal vessel. It thanks you for your service.' },
-        { label: 'Ignore it', effects: { rep: { 'Mars Republic': -1 } }, result: 'It logs your transponder and asks you to reconsider. You do not. Somewhere in a Tharsis office, a small file gets a little thicker.' },
+        { label: 'Pay the toll (150 cr)', when: { credits: 150 }, effects: { credits: -150, rep: { 'Mars Republic': 1 } }, result: 'You tap the transfer, and the beacon takes a moment, humming, as if to admire the amount. It prints a receipt no one will ever read, on a thin strip of Martian paper, and wishes you a productive day, in a voice of flawless, dry courtesy. It even, at the last, thanks you for your patience. Dry. Efficient. Very Martian. You keep the receipt anyway, folded in the logbook, as a small proof that somebody, somewhere, is keeping the lanes.' },
+        { label: '[{crew}] Have {crew} tell it you already paid', when: { crew: 'slicer' }, result: 'Nineteen seconds later the beacon has you down as a prepaid municipal vessel, with a full year of lane rights, a courtesy waiver, and, for good measure, a small commendation for civic conduct. It thanks you for your service, in a voice that sounds, for the first time in its life, almost pleased. {crew} closes the console with a satisfied little tap and does not say a word about it, but you catch the corner of a very quiet smile.' },
+        { label: 'Ignore it', effects: { rep: { 'Mars Republic': -1 } }, result: 'It logs your transponder, and asks you, politely, to reconsider, twice, and then, in a slightly hurt tone, a third time. You do not. The beacon falls behind, still murmuring its small, patient reminders, until the signal fades. Somewhere in a Tharsis office, a small file gets a little thicker, and a clerk you will never meet adds a neat, discouraged tick.' },
       ],
     });
 
@@ -31,7 +31,7 @@ Mods.register({
       text: 'Six haulers are burning in a tight line ahead of you, nose to tail, sharing one long plume of heat. The lead ship hails. "Small ship. You can draft in our wake if you keep your distance and your hands to yourself. Costs nothing, saves your mass. We just like to know who is out here."',
       choices: [
         { label: 'Slip in behind them', effects: { do: ['mass', 30], rep: { 'Belt Collective': 1 } }, result: 'For a day you ride in their shadow, sipping at the drive. At the shift change the lead hauler sends a single line: "Safe water." It is not a greeting exactly. It is what Belters say instead.' },
-        { label: 'Thank them and keep your own line', result: 'They understand. Nobody drafts behind a stranger without checking the stranger out, and you both know it.' },
+        { label: 'Thank them and keep your own line', result: 'They understand, at once, and without any offense: nobody drafts behind a stranger without checking the stranger out, and you both know it. "Fair enough," says the lead hauler, and a moment later the convoy\'s running lights blink, all together, in a slow, friendly ripple, before the line pulls ahead. For a while you watch them go, six small lights in a row, and you feel, obscurely, that you have turned down a place at a very long table.' },
         { label: 'Ask what they are carrying', when: { standing: { 'Belt Collective': 10 } }, effects: { news: 'A convoy of ice haulers bound for the inner system is running short on medical stock.' }, result: 'A pause. "Ice. Mostly. And a lot of people who want their families to hear from them." The lead ship shares the channel for an hour. You listen to other people\'s good news, and it is a long time before you notice you are smiling.' },
       ],
     });
@@ -45,7 +45,7 @@ Mods.register({
       ],
       choices: [
         { label: 'Everyone into the shielded core', effects: { delay: 8 }, result: 'Four hours pressed together in the one compartment with the good lead lining. Someone hums. Someone else tells the story of the worst flare they ever lived through, and it gets worse each time it is corrected.' },
-        { label: 'Keep burning and trust the hull', effects: { do: ['hull', 0.1] }, result: 'The counter climbs. The hull takes it. Your hair stands on end in the galley and nobody says a word about it.' },
+        { label: 'Keep burning and trust the hull', effects: { do: ['hull', 0.1] }, result: 'The counter climbs, slowly, from green to yellow to something you do not want to think about, and the whole ship, for two long hours, listens to it tick. The hull takes it. Your hair stands on end in the galley, and a spoon, for no reason at all, rises an inch off the table and drops again, and nobody says a word about it. When the counter finally falls, someone, at last, lets out a long, shaky laugh, and the whole crew joins in.' },
         { label: '[{crew}] Have {crew} reroute power to the shielding', when: { crew: 'engineer' }, result: 'It costs {crew} an hour of swearing and a burnt thumb, and the counter never gets past yellow. "The trick," says {crew}, "is to be very annoyed at it."' },
       ],
     });
@@ -57,7 +57,7 @@ Mods.register({
       choices: [
         { label: 'Share reaction mass (40 units)', effects: { do: ['mass', -40], rep: { 'Belt Collective': 2 } }, result: 'They fill their tank from your line with the grave care of people handling something breakable. The oldest presses a lump of ore into your hand. "It is not much. It is what we have. Tell them at Ceres that Tamsin\'s crew is alive."' },
         { label: 'Take them aboard, tow the tug', effects: { delay: 14, rep: { 'Belt Collective': 3 } }, result: 'Slow going, and the tug\'s spin drags at your hull. But three miners eat hot food for the first time in a fortnight, and the youngest sleeps through the whole burn with a blanket up to their nose.' },
-        { label: 'Radio it in and keep going', result: 'You send the position to the nearest station. Someone will come. It is the right thing to do, and it feels a little like not doing anything at all.' },
+        { label: 'Radio it in and keep going', result: 'You send the position to the nearest station, and the exact time, and the tug\'s name, and a short, firm note about what the crew needs. The reply comes back within a minute: "Acknowledged. Someone will come." It is the right thing to do, and it feels a little like not doing anything at all. You keep the channel open for a long while after, and, at the edge of range, a small, tired voice says, very quietly, "Thank you. We heard."' },
       ],
     }, 0.5, 90);
 
@@ -67,7 +67,7 @@ Mods.register({
       text: 'An old habit of the Belt: when two people marry between ships, they do it on the open band, and anyone in range is a guest. You are in range. A small voice is reading vows off a paper that is clearly shaking, and the whole channel is quiet to listen.',
       choices: [
         { label: 'Answer with the ship\'s horn', result: 'Every ship in range answers. It sounds like nothing so much as a herd of enormous, delighted animals. The couple laughs on the band, unguarded and a little tearful, and the channel breaks into cheering.' },
-        { label: 'Listen quietly', result: 'You listen to the whole thing. You never learn their names. It sticks with you longer than it should.' },
+        { label: 'Listen quietly', result: 'You listen to the whole thing, through the vows, the shaky laughter, the long, small silence at the end, and the ragged cheer that follows. You never learn their names. You will never see them, or their ship, or the small lit corner of the Belt where they will live. It sticks with you longer than it should, a quiet, private warmth, and, days later, in a dull moment, you find yourself smiling at nothing.' },
         { label: 'Send a gift of water (5t)', when: { cargo: { water: 5 } }, effects: { cargo: { water: -5 }, rep: { 'Belt Collective': 3 }, log: 'Sent five tons of water to a wedding on the open band.' }, result: 'It is the right gift, and everyone knows it. The bride reads out your ship\'s name, so the band will remember. Somewhere out there, a hundred people now think well of you for reasons you will never quite see.' },
       ],
     }, 0.35, 120);
@@ -94,7 +94,7 @@ Mods.register({
           'When he finally signs off he says, to no one, "Good burning." You find you would like to have known him.',
         ] },
         { label: 'Tell him a joke', result: 'There is a pause on the channel so long you think he has gone. Then a dry wheeze, and: "Well. That is a terrible joke." He tells you a worse one back, and you trade them all the way to the flip.' },
-        { label: 'Mute the channel', result: 'You do. Some voices are for other days.' },
+        { label: 'Mute the channel', result: 'You do, gently, with a single tap. The old pilot\'s voice cuts off in the middle of a sentence, and the sudden quiet is almost a physical thing. Some voices are for other days. But, that night, in the dark, you turn it back on, very low, and listen for a little while to the gravel and the jokes, and, without quite meaning to, fall asleep to them.' },
       ],
     }, 0.3, 90);
 
@@ -105,7 +105,7 @@ Mods.register({
       choices: [
         { label: '[{crew}] Have {crew} track it down', when: { crew: 'engineer' }, result: 'It takes {crew} most of a shift with a stethoscope and a ridiculous amount of patience. A loose clamp on a coolant line. Thirty seconds to fix. {crew} comes out of the crawlspace looking at it like an old enemy defeated.' },
         { label: 'Put someone on watch and wait', effects: { do: ['hull', 0.05] }, result: 'The tick stops on its own, eventually, somewhere near the end of the burn. It leaves a fine scratch along the inside of a bulkhead. Nobody ever quite finds out what it was. Nobody likes that, either.' },
-        { label: 'Play something loud', result: 'You put the hit vid up full. Under it, the ship goes on ticking, and is only slightly less frightening for being ignored.' },
+        { label: 'Play something loud', result: 'You put the hit vid up full, with a great, loud, false cheerfulness, and everyone, in relief, pretends to watch. Under it, the ship goes on ticking, and is only slightly less frightening for being ignored. At the flip, when the whole ship shifts and groans, the tick, oddly, stops, and nobody, for a long moment, dares to say why.' },
       ],
     }, 0.35, 75);
 
@@ -114,8 +114,8 @@ Mods.register({
       title: 'The Prospector',
       text: 'A single ship on a lonely rock, hailing on every band it has. The voice is a man working hard at being cheerful. He has a claim. He has assay results that make his voice crack when he reads them. What he does not have is water or food to last until the survey ship arrives. "Half a share," he says. "Just get me through the month."',
       choices: [
-        { label: 'Leave him supplies (5t of water and 5t of food)', when: { cargo: { water: 5, food: 5 } }, effects: { cargo: { water: -5, food: -5 }, do: ['gamble', 0, 0.5, { credits: 4000, log: 'Backed a prospector who struck it.' }, 'Weeks later, at the next port, a bank transfer catches up with you: four thousand credits and a one-word note, "Told you."', 'You never hear from him again. The claim was good rock and bad luck, or the reverse, or he never existed at all.', {}] }, result: 'He thanks you four times and is still thanking you when you drop out of range.' },
-        { label: 'Give him what you can spare (2t of water)', when: { cargo: { water: 2 } }, effects: { cargo: { water: -2 }, rep: { 'Belt Collective': 1 } }, result: 'It is not half a share. It is a kindness, which is worth about what it costs.' },
+        { label: 'Leave him supplies (5t of water and 5t of food)', when: { cargo: { water: 5, food: 5 } }, effects: { cargo: { water: -5, food: -5 }, do: ['gamble', 0, 0.5, { credits: 4000, log: 'Backed a prospector who struck it.' }, 'Weeks later, at the next port, a bank transfer catches up with you: four thousand credits and a one-word note, "Told you."', 'You never hear from him again. The claim was good rock and bad luck, or the reverse, or he never existed at all.', {}] }, result: 'He thanks you four times, in a voice that breaks a little on the third, and is still thanking you when you drop out of range, a tiny, tinny, fading string of gratitude, on a channel that is already turning to static. You picture him, on his lonely rock, holding the supplies in both arms, and you find you are gripping the console harder than you need to.' },
+        { label: 'Give him what you can spare (2t of water)', when: { cargo: { water: 2 } }, effects: { cargo: { water: -2 }, rep: { 'Belt Collective': 1 } }, result: 'It is not half a share, and he knows it. You can hear it in the small, careful pause before he speaks. "That is very kind," he says, and you can hear him straighten, and put the cheerfulness back on, like a coat. It is a kindness, which is worth about what it costs, and, in a place like that, it might be worth a good deal more. "I will remember it," he says, and, this time, he sounds as if he means it.' },
         { label: 'Wish him luck', result: 'He wishes you the same in a voice that has stopped trying so hard. You keep the channel open a while after, just in case. He does not use it.' },
       ],
     }, 0.4, 90);
@@ -129,8 +129,8 @@ Mods.register({
           'You trade half an hour of prices, shortages, and gossip. It is more than either of you expected. When you break off, the other captain says, "Fair winds," and means it.',
           { when: { boom: 'Earth Coalition' }, text: 'They laugh at the news from Earth. "Boom times. Everybody\'s hiring."' },
         ] },
-        { label: 'Tell them the least you can', result: 'You get a little back, and you give a little back. It is a cold trade, but nobody was hurt by it.' },
-        { label: 'Decline and burn on', result: 'They wave it off easily. "Suit yourself." Somewhere behind you the channel closes, and the lane feels a little longer.' },
+        { label: 'Tell them the least you can', result: 'You get a little back, and you give a little back: a shortage here, a rumor there, a name or two you would rather not have shared. It is a cold trade, but nobody was hurt by it, and, when it is done, the other captain says, in a voice with no particular warmth, "Safe burns." You answer in kind. Somewhere behind you, the freighter\'s lights dim, one by one, and the lane, for a while, feels very long.' },
+        { label: 'Decline and burn on', result: 'They wave it off easily, with a light laugh, and no offense at all. "Suit yourself," they say, and their voice is friendly, and a little tired. Somewhere behind you the channel closes, with a soft click, and the lane feels a little longer, and a little emptier, than before. You are not sure, afterward, why you feel you have missed something.' },
       ],
     }, 0.4, 50);
 
@@ -144,7 +144,7 @@ Mods.register({
       choices: [
         { label: 'Walk the ship', result: 'You go compartment to compartment, slowly. A cup left half-full. A handwritten note taped to the coolant panel: "Please do not touch, ask Rosa." A pair of socks drying on a pipe. The ship is not just a machine. It is a house, and people are happy in it.' },
         { label: 'Sit with the stars', result: 'You take a mug of something hot to the observation blister and watch the black. A long time later you realize you have been thinking about nothing at all, and it was exactly what you needed.' },
-        { label: 'Check the books', result: 'You go through the accounts. They are what they are. Somehow, doing the arithmetic in the quiet makes the numbers feel a little smaller and more manageable.' },
+        { label: 'Check the books', result: 'You go through the accounts, line by line, with a cup of tea gone cold at your elbow, and a long, slow, quiet mood. They are what they are: a column of small hopes and larger bills. Somehow, doing the arithmetic in the quiet, with the stars going by, makes the numbers feel a little smaller and more manageable, and, when you finally close the book, you find that you are, unexpectedly, at peace with them.' },
       ],
     }, 0.2, 40);
   },
