@@ -51,7 +51,8 @@ test('hired: the captain\'s business is not yours', async () => {
   assert.equal(await page.$('[data-action=refuel]'), null);
   await page.click('[data-action=station][data-arg=eng]');
   assert.equal(await page.$('[data-action=buyship]'), null); assert.equal(await page.$('[data-action=overhaul]'), null);
-  assert.match(await page.innerText('#panel'), /yard deals with the captain/);
+  assert.match(await page.innerText('#panel'), /a ship of your own/i);
+  assert.equal(await page.$eval('[data-action=buyInAsk]', b => b.disabled), true, 'and you cannot afford one yet');
   await page.click('[data-action=station][data-arg=interior]');
   assert.equal(await page.$('[data-action=hire]'), null); assert.equal(await page.$('[data-action=dismiss]'), null);
   assert.equal(await page.$$eval('#panel h3', h => h.some(x => /Looking for work/.test(x.textContent))), false);
@@ -277,5 +278,64 @@ test('posts: you can ask the captain to move you, and they decide', async () => 
   assert.equal(r.yes.holderSkill, Math.max(1, r.yes.was - 1), 'and is a little rusty at it');
   assert.equal(r.yes.gunnerXp, 10, 'what you learned at the gun post stays with you');
   assert.ok(r.odds.more > r.odds.low, 'the captain is likelier to say yes once they trust you');
+  await done();
+});
+
+test('buying in: a ship of your own, one friend, and the captain as a contact', async () => {
+  const { page, ev, done } = await open();
+  await ev(hiredHelpers);
+  await ev(() => { startHired('pilot'); const st = G.state; st.tutorial = null; st.credits = 12000; st.cargo = { water: 5 }; st.paid = { water: 100 };
+    const crew = st.crew.map(person); crew[0].opinion = 4; crew[1].opinion = 1; crew[2].opinion = -2; window.friendId = crew[0].id; window.otherIds = [crew[1].id, crew[2].id];
+    UI.render(); });
+  await page.click('[data-action=station][data-arg=eng]');
+  const price = await ev(() => SHIPS.shuttle.price);
+  assert.equal(await page.$$eval('[data-action=buyInAsk]:not([disabled])', b => b.length), 1, 'only the ship you can afford');
+  await page.click('[data-action=buyInAsk]:not([disabled])');
+  assert.match(await page.innerText('#panel'), /would come with you/);
+  await page.click('[data-action=buyInNo]');
+  assert.ok(await ev(() => !!G.state.hired), 'not yet is not yet');
+  await page.click('[data-action=buyInAsk]:not([disabled])');
+  await page.click('[data-action=buyInGo]');
+  const r = await ev(() => {
+    const st = G.state, cap = Object.values(st.people).find(p => p.role === 'captain');
+    return {
+      hired: st.hired, ship: st.shipId, credits: st.credits, crew: st.crew, friend: window.friendId, cargo: Object.keys(st.cargo).length,
+      captain: { known: !!cap, ship: !!cap.ship, haunt: cap.haunt === st.systemId, liked: cap.opinion >= 2 }, left: window.otherIds.every(id => !st.crew.includes(id) && st.people[id].location === st.planet),
+      tradeTab: tabReady(currentPlanet(), 'trade'), offers: G.offers.every(o => o.type !== 'errand'), note: UI.notes.join(' '),
+      payCrew: (() => { const c0 = st.credits; payCrew(10); return c0 - st.credits; })(), posts: Object.keys(POSTS).map(p => postMode(p)),
+    };
+  });
+  assert.equal(r.hired, null); assert.equal(r.ship, 'shuttle'); assert.equal(r.credits, 12000 - price);
+  assert.deepEqual(r.crew, [r.friend], 'the friend comes, the others stay with the captain');
+  assert.ok(r.left); assert.equal(r.cargo, 0, 'the hold was the captain\'s');
+  assert.deepEqual(r.captain, { known: true, ship: true, haunt: true, liked: true });
+  assert.ok(r.tradeTab && r.offers, 'the owner\'s business is open again');
+  assert.ok(r.payCrew > 0, 'and the crew are your wages now');
+  assert.match(r.note, /You bought the .* and left the/); assert.match(r.note, /came with you/);
+  await done();
+});
+
+test('buying in: nobody comes if nobody likes you, and it needs the money and a yard', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    startHired('engineer'); const st = G.state, out = {};
+    st.crew.map(person).forEach(c => { c.opinion = 0; });
+    out.friend = buyInFriend();
+    out.poor = canBuyIn('shuttle', currentPlanet());
+    st.credits = 50000; out.rich = canBuyIn('shuttle', currentPlanet());
+    out.noYard = canBuyIn('shuttle', { services: ['trade'] });
+    out.blocked = (() => { hired().confirm = 'shuttle'; buyIn('freighter'); return !!hired(); })();
+    Mods.act('buyInAsk', 'shuttle'); Mods.act('buyInGo', 'shuttle');
+    out.alone = { hired: G.state.hired, crew: G.state.crew.length, note: UI.notes.join(' ') };
+    // An owner has nothing to buy in to.
+    startGame({ slot: 1, background: 'earth', captain: 'Ines' }); while (G.dialog) finishEvent();
+    G.state.credits = 99999; buyIn('courier'); out.owner = G.state.shipId;
+    return out;
+  });
+  assert.equal(r.friend, null); assert.equal(r.poor, false); assert.equal(r.rich, true); assert.equal(r.noYard, false);
+  assert.equal(r.blocked, true, 'a ship too dear for the standing, or not asked for, is not bought');
+  assert.equal(r.alone.hired, null); assert.equal(r.alone.crew, 0); assert.match(r.alone.note, /on your own/);
+  assert.equal(r.owner, 'shuttle', 'an owner is not affected');
   await done();
 });
