@@ -25,7 +25,7 @@ test('hiring crew, their perks, and every crew and passenger scene', async () =>
   const { page, ev, done } = await open();
   await ev(() => { const st = G.state; st.tutorial = null; st.story.next = 1e9; st.flags.classicCombat = true; st.credits = 200000; while (G.dialog) finishEvent(); st.systemId = 'ceres'; st.planet = 'Ceres Station'; landAt(currentPlanet(), []); while (G.dialog) finishEvent(); });
   const massBefore = await ev(() => burnFuel('ceres', 'jupiter'));
-  await page.click('[data-action=tab][data-arg=crew]');
+  await page.click('[data-action=station][data-arg=interior]');
   await page.click('[data-action=hire][data-arg=rosa]');
   assert.ok(await ev(() => G.state.crew.includes('rosa')));
   assert.ok(await ev(() => burnFuel('ceres', 'jupiter')) < massBefore, 'an engineer saves reaction mass');
@@ -128,6 +128,7 @@ test('the bar in every port, and every landing scene', async () => {
     st.systemId = 'juno'; st.planet = 'Juno Commons'; landAt(SYSTEMS.juno.planets[0], []);
     while (G.dialog) { chooseEvent(G.dialog.choices.length - 1); finishEvent(); }
   });
+  await page.click('[data-action=station][data-arg=ops]');
   await page.click('[data-action=tab][data-arg=bar]');
   await page.click('[data-action=barTalk][data-arg="0"]');
   await page.click('[data-action=choose][data-arg="0"]');
@@ -208,7 +209,7 @@ test('family: a personal story to loyalty, letters and moods, occasions, traditi
   assert.ok(r.log > 0, 'the home log records it');
   // Rename the ship from the Crew tab.
   await ev(() => { G.transit = null; G.state.systemId = 'ceres'; G.state.planet = 'Ceres Station'; landAt(SYSTEMS.ceres.planets[0], []); while (G.dialog) { chooseEvent(0); finishEvent(); } });
-  await page.click('[data-action=tab][data-arg=crew]');
+  await page.click('[data-action=station][data-arg=interior]');
   await page.fill('#shipName', 'Tuesday Forever');
   await page.click('[data-action=renameShip]');
   assert.equal(await ev(() => home().name), 'Tuesday Forever');

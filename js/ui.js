@@ -92,15 +92,6 @@ const UI = {
 
   render() {
     const st = G.state, p = this.planet, sys = system(), s = ship();
-    const tabs = [
-      ['port', 'Port', true],
-      ['trade', 'Exchange', p.services.includes('trade')],
-      ['missions', 'Missions', p.services.includes('missions')],
-      ['shipyard', 'Shipyard', p.services.includes('shipyard') || p.services.includes('outfitter')],
-      ['bar', 'Bar', true],
-      ['crew', 'Crew', true],
-      ['company', 'Company', true],
-    ];
     this.setAccent(GOV_COLORS[sys.gov]);
     this.el.innerHTML = `
       <div class="hdr">
@@ -115,9 +106,8 @@ const UI = {
           Cargo ${cargoUsed()}/${s.cargo}t &middot; Berths ${berthsUsed()}/${s.berths} &middot; Mass ${st.fuel}/${s.fuel}
         </div>
       </div>
-      <div class="tabs">
-        ${tabs.map(([id, label, ok]) => `<button data-action="tab" data-arg="${id}" class="${this.tab === id ? 'active' : ''}" ${this.tab === id ? 'aria-current="page"' : ''} ${ok ? '' : 'disabled'}>${label}</button>`).join('')}
-      </div>
+      <canvas id="vs" class="vs" aria-hidden="true"></canvas>
+      ${bridgeKeys(p, this.tab)}
       ${Mods.filter('portBanner', '')}
       <div class="body">${this.views[this.tab].call(this)}</div>
       <div class="dock">
@@ -322,6 +312,7 @@ const UI = {
     const st = G.state, p = this.planet, s = ship();
     switch (action) {
       case 'tab': this.tab = arg; this.tradeNote = null; break;
+      case 'station': this.tab = stationOf(this.tab).id === arg ? this.tab : bridgeStation(arg, p); this.tradeNote = null; break;
       case 'choose': this.showEventResult(G.dialog.event.title, chooseEvent(Number(arg))); return;
       case 'continue': finishEvent(); return;
       case 'epilogue': openEvent(epilogueEvent()); return;

@@ -93,7 +93,7 @@ test('a war sends warships into local space', async () => {
 test('outfits change the ship, standing unlocks ships, hostility closes ports', async () => {
   const { page, ev, done } = await open();
   await ev(() => { G.state.tutorial = null; G.state.flags.classicCombat = true; G.state.credits = 300000; while (G.dialog) finishEvent(); UI.render(); });
-  await page.click('[data-action=tab][data-arg=shipyard]');
+  await page.click('[data-action=station][data-arg=eng]');
   const base = await ev(() => ({ ...ship() }));
   for (const id of ['pdc', 'armor', 'tank', 'pod', 'drive']) await page.click(`[data-action=buyout][data-arg=${id}]`);
   const fitted = await ev(() => ({ ...ship() }));

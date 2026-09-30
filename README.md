@@ -128,6 +128,7 @@ On a keyboard:
 - `js/engage.js` - combat during burns (4b prototype): intercepts, momentum flight, torpedo duels, point defense, and crew strain
 - `js/storylets.js` - the storylet engine: story written as data (see Writing storylets below)
 - `js/happenings.js` - what happens on a burn or at a landing, and in what order (story first)
+- `js/bridge.js` - the ship's stations: keys across the landed screen and a key bar with status sheets in a burn
 - `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike), `mars-navy.js` (Reserve Commission, a Mars Navy career), `rook-crown.js` (The Rook's Crown, a pirate lord's rise), `tethys.js` (The Partner's Chair, a corporate climb), and `cold-water.js` (the scenes of Cold Water)
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
 - `js/audio.js` - sound effects synthesized with Web Audio (no audio files): guns, hits, explosions, engine rumble, docking, burns, comms
