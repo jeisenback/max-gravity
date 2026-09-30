@@ -31,8 +31,8 @@ const clampEdge = x => Math.max(0.1, Math.min(0.9, x));
 const duelEdges = () => {
   const g = roleSkill('gunner'), p = roleSkill('pilot');
   return {
-    guns: clampEdge(0.25 + 0.1 * playerGuns() + 0.08 * g),
-    dark: clampEdge(0.25 + 0.1 * p + ship().accel / 1000),
+    guns: clampEdge(0.25 + 0.1 * playerGuns() + 0.08 * g + (power().weapons - 30) * 0.004),
+    dark: clampEdge(0.25 + 0.1 * p + ship().accel / 1000 + (power().drive - 40) * 0.004),
     board: clampEdge(0.2 + 0.05 * G.state.crew.length + 0.05 * g),
   };
 };
@@ -78,7 +78,7 @@ function duelRound(mine, theirs) {
   const took = res < 0 ? (luck ? 0.06 : 0.12) : res === 0 && !luck ? 0.05 : 0;
   const before = st.armor, foe = theShip(d.foe);
   d.foeHp = Math.max(0, d.foeHp - hit);
-  st.armor = Math.max(1, st.armor - Math.round(max * took));
+  st.armor = Math.max(1, st.armor - Math.round(max * took * (1 - (power().shields - 30) * 0.01)));  // shields soften it
   d.round++;
   let text = DUEL_LINES[mine][res + 1].replace(/\{foe\}/g, foe).replace(/\{gunner\}/g, roleName('gunner'))
     + ` They played ${STANCES[theirs].name.toLowerCase()}.${hit ? ` ${foe} takes ${hit > 1 ? 'a heavy hit' : 'a hit'}.` : ''}${before > st.armor ? ` Armor -${before - st.armor}.` : ''}`;

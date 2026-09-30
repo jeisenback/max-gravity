@@ -59,7 +59,7 @@ UI.views.weapons = function () {
 
 // The shipyard is Engineering's page at port; the engineer's post leads it.
 const shipyardView = UI.views.shipyard;
-UI.views.shipyard = function () { return postHtml('engineer') + shipyardView.call(this); };
+UI.views.shipyard = function () { return engineerPanel() + shipyardView.call(this); };
 
 // ---------- the viewscreen at port ----------
 
@@ -94,7 +94,7 @@ function transitSheet(id) {
   switch (id) {
     case 'nav': return `<h3>Navigation</h3><p class="desc">${system().name} to ${SYSTEMS[t.to].name}, ${Math.round(progress * 100)}% of the way. ${t.flipped ? 'Braking' : 'Accelerating'}. Arriving ${dateOf(st.day + t.days)}.</p>${routeHtml()}${postHtml('pilot')}`;
     case 'weapons': return `<h3>Weapons</h3>${armament()}${postHtml('gunner')}`;
-    case 'eng': return `<h3>Engineering</h3><p class="desc">Reaction mass ${st.fuel}/${s.fuel}. Armor ${st.armor}/${s.armor}. Shields ${s.shields}.</p><p class="hint">Full repairs and outfits are done at a shipyard.</p>${postHtml('engineer')}`;
+    case 'eng': return `<h3>Engineering</h3><p class="desc">Reaction mass ${st.fuel}/${s.fuel}. Armor ${st.armor}/${s.armor}. Shields ${s.shields}.</p><p class="hint">Full repairs and outfits are done at a shipyard.</p>${engineerPanel()}`;
     case 'interior': {
       const crew = crewMembers(), free = phase() === 'move' && !(t.lifeUsed || {})[lifeHalf()];
       return `<h3>Interior</h3>${crew.length ? list(crew.map(c => `${fullName(c)}, ${ROLE_NAMES[c.role]}`)) : '<p class="hint">You are flying alone.</p>'}
@@ -120,6 +120,7 @@ function buildBridgeKeys() {
   };
   keys.addEventListener('click', click);
   sheet.addEventListener('click', click);
+  sheet.addEventListener('input', powerInput);
 }
 
 function syncBridge(force) {
