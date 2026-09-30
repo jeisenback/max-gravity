@@ -42,7 +42,7 @@ const postMode = id => (postHolder(id) && !postState(id).manual ? 'crewed' : 'ma
 const postOrders = id => Mods.filter('orders', ORDERS[id] || [], id);
 
 // Someone with the post does better than you doing it without the skill.
-const orderOdds = id => postMode(id) === 'crewed' ? 0.55 + 0.15 * roleSkill(POSTS[id].role) : 0.45;
+const orderOdds = id => postMode(id) === 'crewed' ? 0.55 + 0.15 * roleSkill(POSTS[id].role) : soloOdds(id);
 
 function takeControl(id) {
   const h = postHolder(id), ps = postState(id);
@@ -63,6 +63,7 @@ function giveOrder(id, orderId) {
   const doer = postMode(id) === 'crewed' ? postHolder(id) : null;
   if (!o.sure) ps.busy = true;  // a sure order (a command, not a task) does not use up the day
   ps.note = o.run(o.sure || Math.random() < orderOdds(id), doer, doer ? roleSkill(POSTS[id].role) : 0);
+  if (!doer) gainSkill(id, 1);  // your own work teaches you (hired.js)
   return ps.note;
 }
 

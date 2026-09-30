@@ -137,7 +137,7 @@ On a keyboard:
 - `js/wear.js` - ship condition: slow wear on the drive, fire control, shields, life support and sensors, breakdown scenes, servicing and overhaul (the Wear setting in the menu)
 - `js/projects.js` - repairs, tuning and refits that run across the days of a burn, using machine parts from the hold
 - `js/programs.js` - standing rules for crewed stations, written by a slicer over a burn (a fixed list of conditions and orders)
-- `js/hired.js` - the hired-hand start: sign on to an NPC captain's ship and work one post; the captain plans and sells each run, and you are paid a wage and a share
+- `js/hired.js` - the hired-hand start: sign on to an NPC captain's ship and work one post; the captain plans and sells each run, you are paid a wage and a share, and you can take errands for where she is going, and ask the captain to move you to another post
 - `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike), `mars-navy.js` (Reserve Commission, a Mars Navy career), `rook-crown.js` (The Rook's Crown, a pirate lord's rise), `tethys.js` (The Partner's Chair, a corporate climb), and `cold-water.js` (the scenes of Cold Water)
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
 - `js/audio.js` - sound effects synthesized with Web Audio (no audio files): guns, hits, explosions, engine rumble, docking, burns, comms
