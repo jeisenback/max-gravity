@@ -51,7 +51,8 @@ test('touch controls on a phone', async () => {
   await ev(() => { G.state.tutorial = null; G.state.flags.classicCombat = true; while (G.dialog) finishEvent(); UI.render(); });
   assert.ok(await ev(() => Touch.on));
   await page.tap('[data-action=takeoff]');
-  assert.ok(await page.isVisible('#stick') && await page.isVisible('#fire'));
+  await page.waitForSelector('#stick', { state: 'visible' });  // shown on the next frame
+  assert.ok(await page.isVisible('#fire'));
   // Drag the stick right: the ship turns that way and thrusts.
   const box = await page.locator('#stick').boundingBox();
   const cx = box.x + box.width / 2, cy = box.y + box.height / 2;
@@ -120,4 +121,73 @@ test('no screen overflows sideways at phone, landscape, and tablet sizes', async
     await done();
   }
   assert.deepEqual(problems, []);
+});
+
+test('keyboard focus survives the panel being rebuilt', async () => {
+  const { page, ev, done } = await open({ title: true });
+  const focused = () => page.evaluate(() => { const a = document.activeElement; return a && a.dataset ? `${a.dataset.action}:${a.dataset.arg || ''}` : null; });
+  await page.keyboard.press('Tab');
+  assert.equal(await focused(), 'menuView:new');
+  await page.keyboard.press('Enter');  // opens New game
+  assert.ok(await ev(() => Menu.view === 'new'));
+  assert.notEqual(await focused(), null, 'focus stays inside the menu after the page changes');
+  await page.click('[data-action=menuStart]');
+  await ev(() => { G.state.tutorial = null; while (G.dialog) finishEvent(); UI.render(); });
+  await page.focus('[data-action=tab][data-arg=trade]');
+  await page.keyboard.press('Enter');
+  assert.equal(await focused(), 'tab:trade', 'the tab you activated keeps focus');
+  assert.equal(await page.getAttribute('[data-action=tab][data-arg=trade]', 'aria-current'), 'page');
+  await ev(() => openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', run: () => 'a' }, { label: 'B', run: () => 'b' }] }));
+  await page.keyboard.press('Tab');
+  await page.keyboard.press('Enter');  // choose B
+  assert.equal(await focused(), 'continue:', 'Continue is ready for Enter');
+  await done();
+});
+
+test('the largest text size still fits a small phone', async () => {
+  const { page, ev, done } = await open({ title: true, viewport: { width: 360, height: 640 }, mobile: true });
+  await ev(() => { Settings.textScale = 1.3; applySettings(); startGame({ slot: 1, background: 'belt', captain: 'Ines Okafor-Achterberg', ship: 'Tuesday Forever and Always' }); G.state.tutorial = null; while (G.dialog) finishEvent(); });
+  const bad = [];
+  for (const tab of ['port', 'trade', 'missions', 'shipyard', 'bar', 'crew', 'company']) {
+    await ev(t => { UI.tab = t; UI.render(); }, tab);
+    const r = await page.evaluate(() => {
+      const out = [];
+      if (document.documentElement.scrollWidth > innerWidth + 1) out.push('page scrolls sideways');
+      for (const el of document.querySelectorAll('#panel button, #panel input')) {
+        if (!el.offsetParent || el.closest('.tabs') || el.closest('.scroll')) continue;
+        const b = el.getBoundingClientRect();
+        if (b.right > innerWidth + 1 || b.left < -1) out.push(`${el.tagName} "${(el.textContent || '').trim().slice(0, 20)}"`);
+      }
+      return out.slice(0, 3);
+    });
+    if (r.length) bad.push(`${tab}: ${r.join('; ')}`);
+  }
+  assert.deepEqual(bad, []);
+  await done();
+});
+
+test('every tab at every port reads cleanly, broke or rich, empty or full', async () => {
+  const { ev, done } = await open();
+  const bad = await ev(() => {
+    const st = G.state, out = [];
+    st.tutorial = null; st.story.next = 1e9; st.flags.classicCombat = true; while (G.dialog) finishEvent();
+    const states = {
+      broke: () => { st.credits = 0; st.cargo = {}; st.crew = []; st.shipId = 'shuttle'; },
+      full: () => { st.credits = 1e6; st.shipId = 'freighter'; st.cargo = { food: SHIPS.freighter.cargo }; st.crew = ['rosa', 'kit', 'dima']; st.fuel = 0; st.armor = 1; },
+    };
+    for (const [name, setup] of Object.entries(states)) {
+      for (const [sid, s] of Object.entries(SYSTEMS)) for (const pl of s.planets) {
+        setup(); st.systemId = sid; st.planet = pl.name; G.mode = 'landed';
+        landAt(pl, []); while (G.dialog) { chooseEvent(G.dialog.choices.length - 1); finishEvent(); }
+        for (const tab of ['port', 'trade', 'missions', 'shipyard', 'bar', 'crew', 'company']) {
+          UI.tab = tab; UI.render();
+          const t = UI.el.innerText;
+          if (/undefined|NaN|\[object|null\b/.test(t)) out.push(`${name} ${pl.name} ${tab}: ${(t.match(/.{0,30}(undefined|NaN|\[object|null\b).{0,20}/) || [''])[0].replace(/\s+/g, ' ')}`);
+        }
+      }
+    }
+    return out.slice(0, 12);
+  });
+  assert.deepEqual(bad, []);
+  await done();
 });
