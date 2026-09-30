@@ -1,57 +1,112 @@
 'use strict';
 
-// Combat the gunner settles on the console. When the gunner post is crewed, "Battle
-// stations" on a contact plays out as up to five rounds of rock, paper, scissors instead
-// of the real-time fight (engage.js, which a manual gunner still gets): run guns beats
-// boarders, run dark beats guns, and boarders catch a ship that runs. Crew and weapons
-// decide how good each stance is and how well you can read the other captain.
-// Loaded before game.js; only calls into it at runtime.
+// Combat the gunner settles on the console (design: COMBAT.md). When the gunner post
+// is crewed, "Battle stations" on a contact plays out as up to eight exchanges of threat
+// and answer instead of the real-time fight (engage.js, which a manual gunner still
+// gets). The ship with the initiative plays a threat, the other an answer, both face
+// down. A threat that lands keeps the initiative; one that is stopped passes it. Each
+// ship's decks are built from its fit, so torpedoes, PDCs, pilot and crew all count.
+// Fits and discards are public; hands are not. Loaded before game.js; only calls into
+// it at runtime.
 
-const STANCES = {
-  guns: { name: 'Run guns', beats: 'board' },
-  dark: { name: 'Run dark', beats: 'guns' },
-  board: { name: 'Ready boarders', beats: 'dark' },
+const DUEL_CARDS = {
+  torp: { name: 'Torpedo', low: 'torpedo', threat: true },
+  gun: { name: 'Gun run', low: 'gun run', threat: true },
+  board: { name: 'Boarding run', low: 'boarding run', threat: true },
+  pdc: { name: 'PDC screen', low: 'PDC screen' },
+  burn: { name: 'Evasive burn', low: 'evasive burn' },
+  locks: { name: 'Crew to the locks', low: 'crew to the locks' },
 };
-const DUEL_ROUNDS = 5;
-// How each kind of captain tends to play, in percent.
-const FOE_PLAY = {
-  pirate: { guns: 50, board: 30, dark: 20 },
-  patrol: { guns: 60, board: 10, dark: 30 },
-  bounty: { guns: 35, board: 15, dark: 50 },
-  hunter: { guns: 55, board: 35, dark: 10 },
+const DUEL_THREATS = ['torp', 'gun', 'board'], DUEL_ANSWERS = ['pdc', 'burn', 'locks'];
+// DUEL_OUTCOME[threat][answer]
+const DUEL_OUTCOME = {
+  torp: { pdc: 'stop', burn: 'half', locks: 'full' },
+  gun: { pdc: 'half', burn: 'stop', locks: 'full' },
+  board: { pdc: 'half', burn: 'full', locks: 'stop' },
 };
-// One line for each stance and how it went: lost, level, won.
-const DUEL_LINES = {
-  guns: ['{foe} closes inside your guns, and the boarding lines are out before {gunner} can get the mounts around.', 'Both ships trade fire and nobody gets the better of it.', '{foe} sends her boarders across, and {gunner} cuts the lines and the plating under them with a long, patient burst.'],
-  dark: ['You cut the drive glow and turn away, and {foe} is already there, guns out, waiting for exactly that.', 'You both go dark. For a long minute nobody knows where anybody is.', '{foe} opens fire on the place you were. You are somewhere else, and the burst goes wide.'],
-  board: ['Your boarders are in their couches, ready, and {foe} never gives them a hull to grab. She opens the range instead.', 'The two ships tangle for a minute, and neither crew gets across.', '{foe} runs, and runs into the grapples. Your boarders are over the rail before she can spool her drive.'],
-};
+// Hull points a threat does when it lands in full; half is half. Until the boarding
+// duel exists, boarders who get across sabotage what they can and pull back.
+const DUEL_HIT = { torp: 4, gun: 2, board: 2 };
+const DUEL_ROUNDS = 8, DUEL_HAND = 3, ARMOR_PER_POINT = 0.07;
+const FOE_CREW = { raider: 2, corsair: 3, cutter: 4, destroyer: 6 };
+// Each kind of captain leans toward a card, on top of the odds.
+const FOE_LEAN = { pirate: 'board', patrol: 'gun', bounty: 'burn', hunter: 'torp' };
 
-const clampEdge = x => Math.max(0.1, Math.min(0.9, x));
-const duelEdges = () => {
-  const g = roleSkill('gunner'), p = roleSkill('pilot');
+const hitPoints = (threat, outcome) => (outcome === 'full' ? DUEL_HIT[threat] : outcome === 'half' ? DUEL_HIT[threat] / 2 : 0);
+
+// The two decks, from the fit.
+function playerCounts() {
+  const st = G.state, s = ship(), crew = st.crew.length;
   return {
-    guns: clampEdge(0.25 + 0.1 * playerGuns() + 0.08 * g),
-    dark: clampEdge(0.25 + 0.1 * p + ship().accel / 1000),
-    board: clampEdge(0.2 + 0.05 * G.state.crew.length + 0.05 * g),
+    torp: s.launcher ? Math.min(TORP_MAX, st.torpedoes || 0) : 0,
+    gun: 2 + s.guns,
+    board: crew >= 2 ? 1 + (roleSkill('gunner') ? 1 : 0) : 0,
+    pdc: 1 + 2 * ((st.outfits || {}).pdc || 0),
+    burn: 2 + roleSkill('pilot'),
+    locks: 1 + Math.floor(crew / 2),
   };
-};
-
-// What the crew make of the other captain: near the truth when the crew are good.
-function duelHints(kind) {
-  const amp = Math.max(3, 18 - 4 * (roleSkill('gunner') + roleSkill('pilot')));
-  return Object.fromEntries(Object.entries(FOE_PLAY[kind] || FOE_PLAY.pirate).map(([k, v]) => [k, Math.max(5, Math.round((v + rand(-amp, amp)) / 5) * 5)]));
 }
-const foeStance = kind => {
-  let r = Math.random() * 100;
-  for (const [k, v] of Object.entries(FOE_PLAY[kind] || FOE_PLAY.pirate)) { if ((r -= v) < 0) return k; }
-  return 'guns';
-};
+function foeCounts(foe) {
+  const s = SHIPS[foe.shipId], crew = FOE_CREW[foe.shipId] || 3, heavy = s.guns >= 2;
+  return {
+    torp: foe.torps || 0, gun: 2 + s.guns, board: crew >= 2 ? 1 + (heavy ? 1 : 0) : 0,
+    pdc: 1 + (heavy ? 2 : 0), burn: 3, locks: 1 + Math.floor(crew / 2),
+  };
+}
+
+function shuffleCards(a) {
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function makeSide(counts) {
+  const pile = types => ({ deck: shuffleCards(types.flatMap(t => Array(counts[t]).fill(t))), hand: [], discard: [] });
+  const side = { counts, spent: 0, threat: pile(DUEL_THREATS), answer: pile(DUEL_ANSWERS) };
+  drawHand(side.threat); drawHand(side.answer);
+  return side;
+}
+function drawHand(p) {
+  while (p.hand.length < DUEL_HAND) {
+    if (!p.deck.length) { if (!p.discard.length) return; p.deck = shuffleCards(p.discard); p.discard = []; }
+    p.hand.push(p.deck.pop());
+  }
+}
+// Plays a card from hand. A torpedo is spent for good; anything else is discarded.
+function playCard(side, t) {
+  const p = side[DUEL_CARDS[t].threat ? 'threat' : 'answer'];
+  const i = p.hand.indexOf(t);
+  if (i < 0) return;
+  p.hand.splice(i, 1);
+  if (t === 'torp') side.spent++; else p.discard.push(t);
+  drawHand(p);
+}
+// Cards of a type the other side can't account for: in the deck or the hand.
+const unseen = (side, t) => side.counts[t] - (t === 'torp' ? side.spent : side[DUEL_CARDS[t].threat ? 'threat' : 'answer'].discard.filter(x => x === t).length);
+
+// The enemy's play: expected value against the player's likely card, from public
+// information only (the player's fit and discards), picked with a softmax.
+function foePlay() {
+  const d = G.duel, attacking = d.init === 'foe', mine = attacking ? DUEL_THREATS : DUEL_ANSWERS, theirs = attacking ? DUEL_ANSWERS : DUEL_THREATS;
+  const hand = [...new Set(d.them[attacking ? 'threat' : 'answer'].hand)];
+  const odds = theirs.map(t => Math.max(0, unseen(d.me, t))), total = odds.reduce((a, b) => a + b, 0) || 1;
+  const scores = hand.map(t => {
+    let v = t === FOE_LEAN[d.spec.kind] ? 0.5 : 0;
+    theirs.forEach((o, i) => {
+      const out = attacking ? DUEL_OUTCOME[t][o] : DUEL_OUTCOME[o][t], pts = hitPoints(attacking ? t : o, out);
+      v += (odds[i] / total) * (attacking ? pts + (out === 'stop' ? -1 : 0.5) : -pts + (out === 'stop' ? 1 : -0.5));
+    });
+    return v - (t === 'torp' ? 0.3 : 0);
+  });
+  const w = scores.map(s => Math.exp(s)), sum = w.reduce((a, b) => a + b, 0);
+  let r = Math.random() * sum;
+  for (let i = 0; i < hand.length; i++) if ((r -= w[i]) < 0) return hand[i];
+  return hand[hand.length - 1] || mine[0];
+}
 
 function startDuel(spec, flee) {
   const st = G.state, foe = makeEnemy(spec);
-  G.duel = { spec, foe, foeHp: Math.max(3, Math.min(7, Math.round(foe.maxArmor / 40))), round: 0, hints: duelHints(spec.kind) };
-  let text = `Battle stations. ${roleName('gunner')} takes the guns.`;
+  const foeHp = Math.max(4, Math.min(10, Math.round(foe.maxArmor / 30)));
+  G.duel = { spec, foe, foeHp, foeMax: foeHp, round: 0, init: 'foe', me: makeSide(playerCounts()), them: makeSide(foeCounts(foe)) };
+  let text = `Battle stations. ${roleName('gunner')} takes the guns. ${theShip(foe)} made the intercept, and she has the initiative.`;
   if (flee) {
     if (Math.random() < 0.4 + 0.12 * roleSkill('pilot')) { G.duel = null; return `${roleName('pilot')} winds the drive past the redline and opens the range. Their plume fades.`; }
     st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.08));
@@ -62,26 +117,46 @@ function startDuel(spec, flee) {
 }
 
 function duelEvent() {
-  const d = G.duel, st = G.state, edges = duelEdges(), foe = theShip(d.foe);
-  const hint = k => `${STANCES[k].name.toLowerCase()} ~${d.hints[k]}%`;
+  const d = G.duel, st = G.state, foe = theShip(d.foe), attacking = d.init === 'me';
+  const hand = d.me[attacking ? 'threat' : 'answer'].hand, types = [...new Set(hand)];
+  const list = ts => ts.map(t => [t, unseen(d.them, t)]).filter(([, n]) => n > 0).map(([t, n]) => `${DUEL_CARDS[t].low} x${n}`).join(', ') || 'nothing';
+  const read = attacking
+    ? `You have the initiative: pick a threat. She could still answer with ${list(DUEL_ANSWERS)}.`
+    : `${foe} has the initiative: pick an answer. She could still throw ${list(DUEL_THREATS)}.`;
   return {
-    title: `Contact: round ${d.round + 1} of ${DUEL_ROUNDS}`,
-    text: `${foe}: ${'#'.repeat(d.foeHp)}${'-'.repeat(Math.max(0, 7 - d.foeHp))}. Your armor ${st.armor}/${ship().armor}. ${roleName('gunner')} and ${roleName('pilot')} read her as likely to ${hint('guns')}, ${hint('board')}, ${hint('dark')}.`,
-    choices: Object.keys(STANCES).map(k => ({ label: `${STANCES[k].name} (edge ${edges[k].toFixed(2)})`, run: () => duelRound(k, foeStance(d.spec.kind)) })),
+    title: `Contact: exchange ${d.round + 1} of ${DUEL_ROUNDS}`,
+    text: `${foe}: ${'#'.repeat(d.foeHp)}${'-'.repeat(Math.max(0, d.foeMax - d.foeHp))}. Your armor ${st.armor}/${ship().armor}. ${read} PDCs stop torpedoes, burns stop gun runs, crew at the locks stop boarders.`,
+    choices: types.map(t => ({ label: `${DUEL_CARDS[t].name}${hand.filter(x => x === t).length > 1 ? ` (${hand.filter(x => x === t).length})` : ''}`, run: () => duelExchange(t, foePlay()) })),
   };
 }
 
-function duelRound(mine, theirs) {
-  const d = G.duel, st = G.state, max = ship().armor, luck = Math.random() < duelEdges()[mine];
-  const res = mine === theirs ? 0 : STANCES[mine].beats === theirs ? 1 : -1;
-  const hit = res > 0 ? (luck ? 2 : 1) : res === 0 && luck ? 1 : 0;
-  const took = res < 0 ? (luck ? 0.06 : 0.12) : res === 0 && !luck ? 0.05 : 0;
-  const before = st.armor, foe = theShip(d.foe);
-  d.foeHp = Math.max(0, d.foeHp - hit);
-  st.armor = Math.max(1, st.armor - Math.round(max * took));
+// One line for each threat and how it went, from the attacker's side: stopped, half, full.
+const DUEL_LINES = {
+  me: {
+    torp: ['{gunner} sends a torpedo down the line, and her point defense shreds it short.', 'The torpedo chases her through a hard burn and bursts close. Not clean, but it hurts.', 'The torpedo walks straight in. She never turned a gun on it.'],
+    gun: ['{gunner} rakes the space where she was. She is already burning clear.', 'Her PDCs swing onto your rounds and trade fire. Some of yours get through.', '{gunner} walks a long burst down her flank.'],
+    board: ['Your boarders cross and find her crew waiting at the locks. They pull back.', 'Her PDCs chew up the boarding line, but a charge still goes off on her hull.', 'Your boarders get across while she is busy burning, cut what they can, and pull back.'],
+  },
+  foe: {
+    torp: ['Her torpedo comes in fast, and your PDCs catch it a kilometer out.', '{pilot} throws the ship sideways. The torpedo bursts close enough to shake the hull.', 'Her torpedo walks straight in while your crew wait at the locks.'],
+    gun: ['{pilot} burns hard, and her burst goes wide.', 'Your PDCs trade fire with her guns. Some of hers get through.', 'Her guns rake your hull while your crew wait at the locks.'],
+    board: ['Her boarders hit the lock and find your crew waiting. They go back the way they came.', 'Your PDCs chew up her boarding line, but a charge still goes off on your hull.', 'Her boarders get across while you are burning, cut what they can, and pull back.'],
+  },
+};
+
+function duelExchange(mine, theirs) {
+  const d = G.duel, st = G.state, max = ship().armor, foe = theShip(d.foe), attacker = d.init;
+  const threat = attacker === 'me' ? mine : theirs, answer = attacker === 'me' ? theirs : mine;
+  const out = DUEL_OUTCOME[threat][answer], pts = hitPoints(threat, out), before = st.armor;
+  playCard(d.me, mine); playCard(d.them, theirs);
+  if (mine === 'torp') st.torpedoes = Math.max(0, (st.torpedoes || 0) - 1);
+  if (attacker === 'me') d.foeHp = Math.max(0, d.foeHp - pts);
+  else st.armor = Math.max(1, st.armor - Math.round(max * ARMOR_PER_POINT * pts));
+  if (out === 'stop') d.init = attacker === 'me' ? 'foe' : 'me';
   d.round++;
-  let text = DUEL_LINES[mine][res + 1].replace(/\{foe\}/g, foe).replace(/\{gunner\}/g, roleName('gunner'))
-    + ` They played ${STANCES[theirs].name.toLowerCase()}.${hit ? ` ${foe} takes ${hit > 1 ? 'a heavy hit' : 'a hit'}.` : ''}${before > st.armor ? ` Armor -${before - st.armor}.` : ''}`;
+  let text = DUEL_LINES[attacker][threat][['stop', 'half', 'full'].indexOf(out)].replace(/\{gunner\}/g, roleName('gunner')).replace(/\{pilot\}/g, roleHolder('pilot') ? roleName('pilot') : 'The helm')
+    + ` She played ${DUEL_CARDS[theirs].low}.${attacker === 'me' && pts ? ` ${foe} takes ${pts >= 4 ? 'a heavy hit' : 'a hit'}.` : ''}${before > st.armor ? ` Armor -${before - st.armor}.` : ''}`
+    + (out === 'stop' ? ` ${d.init === 'me' ? 'You have' : 'She has'} the initiative.` : '');
   if (d.foeHp <= 0) {
     const pre = st.credits;
     settleKill(d.foe, true);

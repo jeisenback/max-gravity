@@ -200,57 +200,95 @@ test('gunner: a manual gunner fights in real time, a crewed one settles it on th
   assert.match(r.crewedLabels[0], /fights/);
   assert.match(r.crewedLabels[1], /take the guns yourself/);
   assert.equal(r.after.pending, false); assert.equal(r.after.duel, true);
-  assert.match(r.after.next, /round 1 of 5/);
+  assert.match(r.after.next, /exchange 1 of 8/);
   assert.deepEqual(r.taken, { pending: true, mode: 'manual' });
   await done();
 });
 
-test('gunner: rounds follow rock paper scissors, end in five, and never kill you', async () => {
+test('gunner: decks come from the fit, and torpedoes are spent for good', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = G.state;
+    st.crew = []; hire('gunner', 2); hire('pilot', 2); hire('engineer', 1);
+    st.outfits.pdc = 1; st.outfits.launcher = 1; st.torpedoes = 3;
+    const counts = playerCounts();
+    contact(); chooseEvent(0);
+    const d = G.duel;
+    // Put a torpedo in the threat hand and fire it.
+    d.init = 'me'; d.me.threat.hand[0] = 'torp';
+    const answer = d.them.answer.hand[0];
+    duelExchange('torp', answer);
+    return { counts, torps: st.torpedoes, spent: d.me.spent, inDiscard: d.me.threat.discard.includes('torp') };
+  });
+  assert.deepEqual(r.counts, { torp: 3, gun: 2 + 1 + 1, board: 2, pdc: 3, burn: 4, locks: 2 });
+  assert.equal(r.torps, 2, 'a fired torpedo leaves the magazine');
+  assert.equal(r.spent, 1);
+  assert.equal(r.inDiscard, false, 'torpedoes never go back into the deck');
+  await done();
+});
+
+test('gunner: exchanges follow threat and answer, end in eight, and never kill you', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
     G.state.crew = []; hire('gunner', 3); hire('pilot', 2);
-    const out = { wins: 0, rounds: [], armorOk: true, ended: 0, credits: [] };
-    // Always play the counter to what they play: they lose hit points every round.
+    const table = DUEL_THREATS.map(t => DUEL_ANSWERS.map(a => DUEL_OUTCOME[t][a]));
+    const out = { rounds: [], armorOk: true, ended: 0, credits: [], initOk: true };
+    // Always play the best card in hand against what they play.
+    const best = (hand, theirs, attacking) => {
+      const rank = { stop: 0, half: 1, full: 2 };
+      return [...hand].sort((a, b) => attacking ? rank[DUEL_OUTCOME[b][theirs]] - rank[DUEL_OUTCOME[a][theirs]] : rank[DUEL_OUTCOME[theirs][a]] - rank[DUEL_OUTCOME[theirs][b]])[0];
+    };
     for (let i = 0; i < 20; i++) {
       contact(); const pre = G.state.credits; chooseEvent(0);
       let n = 0;
       while (G.dialog || G.nextEvent) {
         if (G.nextEvent && !G.dialog) finishEvent();
         if (!G.dialog) break;
-        if (!/^Contact: round/.test(G.dialog.event.title)) { finishEvent(); continue; }
-        const theirs = foeStance(G.duel.spec.kind), mine = Object.keys(STANCES).find(k => STANCES[k].beats === theirs);
-        const text = duelRound(mine, theirs); n++;
+        if (!/^Contact: exchange/.test(G.dialog.event.title)) { finishEvent(); continue; }
+        const d = G.duel, attacking = d.init === 'me', theirs = foePlay();
+        const mine = best(d.me[attacking ? 'threat' : 'answer'].hand, theirs, attacking);
+        const res = attacking ? DUEL_OUTCOME[mine][theirs] : DUEL_OUTCOME[theirs][mine];
+        duelExchange(mine, theirs); n++;
+        if (G.duel) out.initOk = out.initOk && (res === 'stop' ? G.duel.init !== (attacking ? 'me' : 'foe') : G.duel.init === (attacking ? 'me' : 'foe'));
         G.dialog = null; if (!G.nextEvent) break; const nx = G.nextEvent; G.nextEvent = null; openEvent(nx);
         out.armorOk = out.armorOk && G.state.armor >= 1;
-        if (n > 7) break;
+        if (n > 10) break;
       }
       out.rounds.push(n); out.credits.push(G.state.credits - pre); out.ended += G.duel === null ? 1 : 0;
       G.duel = null; G.nextEvent = null; G.dialog = null;
     }
-    out.table = ['guns', 'dark', 'board'].map(m => STANCES[m].beats);
-    return out;
+    return { ...out, table };
   });
-  assert.deepEqual(r.table, ['board', 'guns', 'dark'], 'guns beat boarders, dark beats guns, boarders beat dark');
-  assert.ok(r.rounds.every(n => n >= 1 && n <= 5), `no fight runs past five rounds (${r.rounds})`);
+  assert.deepEqual(r.table, [['stop', 'half', 'full'], ['half', 'stop', 'full'], ['half', 'full', 'stop']],
+    'PDCs stop torpedoes, burns stop gun runs, crew at the locks stop boarders');
+  assert.ok(r.initOk, 'a landed threat keeps the initiative and a stopped one passes it');
+  assert.ok(r.rounds.every(n => n >= 1 && n <= 8), `no fight runs past eight exchanges (${r.rounds})`);
   assert.ok(r.armorOk, 'armor never drops below 1');
   assert.equal(r.ended, 20, 'every fight ends');
   assert.ok(r.credits.some(c => c > 0), 'beating a pirate pays a bounty');
   await done();
 });
 
-test('gunner: good crew read the other captain better, and better stances are stronger', async () => {
+test('gunner: the enemy counts cards from public information', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
-    const st = G.state; st.crew = [];
-    const spread = () => { let worst = 0; for (let i = 0; i < 200; i++) { const h = duelHints('pirate'); worst = Math.max(worst, Math.abs(h.guns - 50), Math.abs(h.dark - 20)); } return worst; };
-    const solo = { spread: spread(), edge: duelEdges().guns };
-    hire('gunner', 3); hire('pilot', 3);
-    return { solo, crew: { spread: spread(), edge: duelEdges().guns }, a: Object.values(duelEdges()) };
+    const st = G.state; st.crew = []; hire('gunner', 2); hire('pilot', 1);
+    contact(); chooseEvent(0);
+    const d = G.duel; d.init = 'me'; d.spec.kind = 'patrol';  // no lean toward any answer
+    d.them.answer.hand = ['pdc', 'burn', 'locks'];
+    const tally = () => { const n = { pdc: 0, burn: 0, locks: 0 }; for (let i = 0; i < 400; i++) n[foePlay()]++; return n; };
+    // All you have left is gun runs: evasive burns stop them.
+    d.me.counts = { ...d.me.counts, torp: 0, board: 0 };
+    const guns = tally();
+    // All you have left is torpedoes: the PDC screen stops them.
+    d.me.counts = { ...d.me.counts, torp: 4, gun: 0 }; d.me.threat.discard = [];
+    const torps = tally();
+    return { guns, torps };
   });
-  assert.ok(r.crew.spread < r.solo.spread, `crew read closer (${r.crew.spread} vs ${r.solo.spread})`);
-  assert.ok(r.crew.edge > r.solo.edge);
-  assert.ok(r.a.every(e => e >= 0.1 && e <= 0.9));
+  assert.ok(r.guns.burn > r.guns.pdc && r.guns.burn > r.guns.locks, `burns against guns (${JSON.stringify(r.guns)})`);
+  assert.ok(r.torps.pdc > r.torps.burn && r.torps.pdc > r.torps.locks, `PDCs against torpedoes (${JSON.stringify(r.torps)})`);
   await done();
 });

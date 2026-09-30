@@ -2,8 +2,9 @@
 
 Design notes for rebuilding the gunner console duel (`js/duel.js`) on the model of
 Wind in the Rushes: hidden plays, a deck built from what you carry, and an AI that
-counts cards from public information. Boarding becomes its own duel. Nothing here is
-built yet; numbers are starting values to be tuned by simulation.
+counts cards from public information. Boarding becomes its own duel. The base ship
+duel is built (#42); the rest isn't yet. Numbers are starting values to be tuned by
+simulation (#45).
 
 ## Ship duel
 
@@ -28,8 +29,9 @@ Both are played face down, then revealed.
 - The PDC screen is the safe answer, never worse than half.
 - Evasive burn beats guns but lets boarders across.
 - Crew to the locks is the gamble. It only stops boarders.
-- Torpedoes hit hardest (2 damage, half is 1). Gun runs do 1. A boarding run does no
-  hull damage; it opens the boarding duel.
+- Torpedoes hit hardest: 4 hull points, or 2 for half. Gun runs do 2, or 1 for half.
+  A boarding run opens the boarding duel. Until that exists, boarders who get across
+  do the same damage as a gun run.
 
 ### The deck is your fit
 
@@ -97,8 +99,9 @@ leaning on escorts can cost them.
 
 ### Ending
 
-This stays close to the current duel. The enemy hull track is 3 to 7 from its armor.
-The fight is capped at 6 exchanges. You yield at 25% armor and pay to be let go.
+This stays close to the old duel. The enemy hull track is 4 to 10 points, from its
+armor. Each point of damage to you costs 7% of your armor. The fight is capped at 8
+exchanges. You yield at 25% armor and pay to be let go.
 Finishing the enemy settles the kill and bounty as now.
 
 ### AI
