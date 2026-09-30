@@ -254,3 +254,138 @@ test('gunner: good crew read the other captain better, and better stances are st
   assert.ok(r.a.every(e => e >= 0.1 && e <= 0.9));
   await done();
 });
+
+test('engineer: power always adds to 100, within limits', async () => {
+  const { ev, done } = await open();
+  const bad = await ev(() => {
+    const out = [];
+    for (let i = 0; i < 300; i++) {
+      const k = pick(['drive', 'weapons', 'shields']); setPower(k, rand(-20, 120));
+      const p = power(), sum = p.drive + p.weapons + p.shields;
+      if (sum !== 100 || Object.values(p).some(v => v < POWER_MIN || v > POWER_MAX)) out.push(JSON.stringify(p));
+    }
+    return out.slice(0, 3);
+  });
+  assert.deepEqual(bad, []);
+  await done();
+});
+
+test('engineer: a manual engineer can scram the reactor; a crewed one keeps it cool', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = G.state, run = (secs) => { for (let i = 0; i < secs; i++) { G.transit.event = null; Mods.emit('frame', 1); } };
+    st.tutorial = null; st.crew = []; while (G.dialog) finishEvent();
+    const go = () => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; st.heat = 0; st.fuel = ship().fuel; st.armor = ship().armor; Object.assign(power(), { drive: 40, weapons: 30, shields: 30 }); setPower('drive', 80); G.transit.comms = []; };
+    go(); run(30); const warm = st.heat;
+    run(40); const scrammed = { drive: power().drive, heat: st.heat, armor: st.armor < ship().armor, comm: G.transit.comms.some(c => /Reactor scram/.test(c)) };
+    const cool = (skill) => { go(); st.crew = []; hire('engineer', skill); let peak = 0; for (let i = 0; i < 200; i++) { G.transit.event = null; Mods.emit('frame', 1); peak = Math.max(peak, st.heat); } return { peak, drive: power().drive, armor: st.armor === ship().armor, comm: G.transit.comms.some(c => /eases the drive/.test(c)) }; };
+    const c1 = cool(1), c3 = cool(3);
+    // Landing cools everything.
+    st.heat = 70; Mods.emit('landed', currentPlanet());
+    return { warm, scrammed, c1, c3, landed: st.heat };
+  });
+  assert.ok(r.warm > 20 && r.warm < 100, `heat builds (${r.warm})`);
+  assert.equal(r.scrammed.drive, 10); assert.ok(r.scrammed.armor && r.scrammed.comm, 'the scram costs hull and is on the comms');
+  assert.ok(r.c1.peak < 100 && r.c3.peak < 100, `crewed engineers never scram (${r.c1.peak}, ${r.c3.peak})`);
+  assert.ok(r.c1.armor && r.c1.comm && r.c1.drive < 80, "they ease the drive back and say so");
+  assert.ok(r.c3.peak > r.c1.peak, 'a better engineer lets it run hotter first');
+  assert.equal(r.landed, 0);
+  await done();
+});
+
+test('engineer: power orders, and power changes the console fight', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = G.state; st.crew = []; st.tutorial = null;
+    const a = giveOrder('engineer', 'favor-shields'), again = giveOrder('engineer', 'favor-shields');
+    const shields = power().shields;
+    hire('engineer', 2); giveOrder('engineer', 'balance');
+    const sure = postState('engineer').busy === false;  // power orders are commands, they do not use up the day
+    const gunsLow = (setPower('weapons', 10), duelEdges().guns), gunsHigh = (setPower('weapons', 80), duelEdges().guns);
+    const darkLow = (setPower('drive', 10), duelEdges().dark), darkHigh = (setPower('drive', 80), duelEdges().dark);
+    const loss = sh => {
+      let total = 0;
+      for (let i = 0; i < 60; i++) { Object.assign(power(), { drive: 10, weapons: 10, shields: 10 }); setPower('shields', sh); st.armor = ship().armor; G.duel = { spec: { kind: 'pirate' }, foe: makeEnemy({ kind: 'pirate' }), foeHp: 9, round: 0, hints: duelHints('pirate') }; duelRound('guns', 'dark'); total += ship().armor - st.armor; G.nextEvent = null; G.duel = null; }
+      return total;
+    };
+    return { a, again, shields, sure, gunsLow, gunsHigh, darkLow, darkHigh, soft: loss(80), hard: loss(10) };
+  });
+  assert.match(r.a, /behind the shields/); assert.equal(r.again, null, 'already there');
+  assert.equal(r.shields, 50); assert.ok(r.sure);
+  assert.ok(r.gunsHigh > r.gunsLow && r.darkHigh > r.darkLow, 'weapons power sharpens guns, drive power sharpens running dark');
+  assert.ok(r.soft < r.hard, `shields soften the hits (${r.soft} vs ${r.hard})`);
+  await done();
+});
+
+test('engineer: sliders for a manual engineer, bars for a crewed one, and a sheet you can drag', async () => {
+  const { page, ev, done } = await open();
+  await ev(helpers);
+  await ev(() => { G.state.tutorial = null; G.state.crew = []; while (G.dialog) finishEvent(); UI.render(); });
+  await page.click('[data-action=station][data-arg=eng]');
+  assert.equal(await page.$$eval('#panel input[data-power]', i => i.length), 3, 'a manual engineer gets sliders');
+  await page.$eval('#panel input[data-power=weapons]', el => { el.value = 60; el.dispatchEvent(new Event('input', { bubbles: true })); });
+  assert.equal(await ev(() => power().weapons), 60);
+  assert.equal(await ev(() => Object.values(power()).reduce((a, b) => a + b, 0)), 100);
+  assert.equal(await page.$eval('#panel [data-power-val=weapons]', el => el.textContent), '60%', 'the readout follows');
+  await ev(() => { hire('engineer', 2); UI.render(); });
+  assert.equal(await page.$$eval('#panel input[data-power]', i => i.length), 0, 'crewed: bars, not sliders');
+  assert.ok(await page.$('#panel [data-action=postOrder][data-arg="engineer:favor-drive"]'));
+  await ev(() => { takeControl('engineer'); uatBurn('Ceres Station', 'pallas'); G.transit.times = []; });
+  await page.waitForSelector('#bkeys', { state: 'visible' });
+  await page.click('[data-bst=eng]');
+  assert.equal(await page.$$eval('#bsheet input[data-power]', i => i.length), 3);
+  await page.$eval('#bsheet input[data-power=drive]', el => { el.focus(); el.value = 70; el.dispatchEvent(new Event('input', { bubbles: true })); });
+  await ev(() => { G.state.heat = 40; });
+  await page.waitForTimeout(700);  // the sheet refreshes a few times; the slider survives
+  assert.equal(await page.$eval('#bsheet input[data-power=drive]', el => el.value), '70');
+  assert.match(await page.innerText('#bsheet'), /Heat\s*\d+%/);
+  await done();
+});
+
+test('drive power sets the burn: speed, days, reaction mass, and how easily pirates spot you', async () => {
+  const { page, ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = G.state; st.tutorial = null; st.flags.classicCombat = false; st.crew = []; while (G.dialog) finishEvent();
+    const burn = drive => {
+      uatBurn('Ceres Station', 'pallas'); const t = G.transit; t.times = []; t.interceptPlanned = true;
+      Object.assign(power(), { drive: 40, weapons: 30, shields: 30 }); setPower('drive', drive);
+      st.fuel = Math.round(ship().fuel * 0.6); const fuel0 = st.fuel, day0 = st.day, cost = t.fuelCost;
+      let frames = 0;
+      while (G.mode === 'transit' && frames++ < 600) { t.event = null; G.dialog = null; st.heat = 0; update(1); if (G.mode === 'transit') Mods.emit('frame', 1); }
+      return { frames, days: st.day - day0, used: fuel0 - st.fuel, cost, base: t.days };
+    };
+    const slow = burn(10), even = burn(40), fast = burn(80);
+    // A pirate is planned for this burn; it only finds you if it can see you.
+    const spot = drive => {
+      uatBurn('Ceres Station', 'pallas'); const t = G.transit; t.times = [];
+      Object.assign(power(), { drive: 40, weapons: 30, shields: 30 }); setPower('drive', drive);
+      t.interceptPlanned = true; t.intercept = { spec: { kind: 'pirate' }, at: 0 };
+      const real = Math.random; Math.random = () => 0.6;  // in the middle: a cool drive is missed, a hot one is seen
+      G.dialog = null; t.event = null; t.comms = [];
+      Mods.emit('frame', 0.1); Math.random = real;
+      return { seen: !!G.dialog && G.dialog.event.title === 'Contact', scan: t.comms.some(c => /\[Scan\]/.test(c)) };
+    };
+    const cool = spot(10), hot = spot(80);
+    return { slow, even, fast, cool, hot, vis: [10, 40, 80].map(d => (setPower('drive', d), scanVisibility())), max: SCAN_MAX };
+  });
+  assert.ok(r.slow.frames > r.even.frames && r.even.frames > r.fast.frames, `a hot drive arrives sooner (${r.slow.frames}, ${r.even.frames}, ${r.fast.frames} frames)`);
+  assert.ok(r.slow.days > r.even.days && r.even.days > r.fast.days, `and in fewer days (${r.slow.days}, ${r.even.days}, ${r.fast.days})`);
+  assert.equal(r.even.days, r.even.base, 'an even load takes the plotted days');
+  assert.ok(Math.abs(r.even.used - r.even.cost) <= 1 || r.even.used === 0, `an even load uses no extra mass (${r.even.used})`);
+  assert.ok(r.fast.used > r.even.used && r.slow.used < r.even.used, `a hot drive burns more reaction mass per distance (${r.slow.used}, ${r.even.used}, ${r.fast.used})`);
+  assert.ok(r.cool.scan && !r.cool.seen, 'a cool drive slips past the pirate');
+  assert.ok(r.hot.seen, 'a hot drive is seen');
+  assert.ok(r.vis[0] < r.vis[1] && r.vis[1] === 1 && r.vis[2] === r.max, 'visibility is 1 at an even load and tops out at the maximum');
+  // Dry tanks throttle the drive, and the panel says what the sliders do.
+  await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; setPower('drive', 80); G.state.fuel = 0; G.transit.event = null; Mods.emit('frame', 1); });
+  assert.equal(await ev(() => power().drive), 40);
+  await ev(() => { G.state.tutorial = null; hire('pilot'); G.state.crew = []; });
+  await page.waitForSelector('#bkeys', { state: 'visible' });
+  await page.click('[data-bst=eng]');
+  await page.$eval('#bsheet input[data-power=drive]', el => { el.value = 70; el.dispatchEvent(new Event('input', { bubbles: true })); });
+  assert.match(await page.innerText('#bsheet'), /Burn speed 1\.24x\. Reaction mass use \+30%/);
+  await done();
+});

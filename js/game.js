@@ -668,11 +668,12 @@ function updateDeparture(dt) {
 function arrive() {
   const st = G.state, p = G.player, s = ship(), a = G.burnAngle;
   st.systemId = G.transit.to;
-  for (let i = 0; i < G.transit.days; i++) {
+  const days = transitDays(G.transit);
+  for (let i = 0; i < days; i++) {
     st.day++;
     Mods.emit('newDay', st.day);
   }
-  payCrew(G.transit.days);
+  payCrew(days);
   st.rumors = st.rumors.filter(r => r.until >= st.day);
   G.transit = null;
   p.x = -Math.cos(a) * 1100; p.y = -Math.sin(a) * 1100;
