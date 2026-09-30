@@ -54,6 +54,14 @@ const LIFE_LINES = {
     any: ['{n} is staring out the forward window.', '{n} is standing very still at the viewport, watching the plume, and the dark, and the long, slow pull of the stars.', '{n} is leaning on the nav console, chin on their hands, watching the little green line crawl.'] },
 };
 
+function lifeLine(p, crowd) {
+  const room = LIFE_LINES[p.room], pool = room[p.role] || room.any;
+  if (!pool) return null;
+  const others = crowd.filter(o => o !== p && o.room === p.room && o.role !== 'you' && o.role !== 'cat');
+  const line = pick(pool.filter(l => !l.includes('{m}') || others.length));
+  return line && line.replace('{n}', p.name).replace('{m}', others.length ? pick(others).name : '');
+}
+
 // ---------- the people aboard ----------
 function shipPeople() {
   const t = G.transit;

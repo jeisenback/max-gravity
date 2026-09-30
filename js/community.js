@@ -12,23 +12,17 @@
 //   escaped and length-capped.
 // Loaded before game.js; game.js waits for Community.loadMods() before starting.
 
-const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
-const local = {
-  get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
-  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) { /* storage blocked: session only */ } },
-};
-
 // ---------- mods by link ----------
 const MOD_CATALOG = [
   { name: 'Vesta Mining Concern', url: 'mods/example-vesta.js', desc: 'Adds Vesta, a Belt mining rock with its own trade good, an outfit, a transit event, and bounties. The example mod from the README.' },
 ];
 
 const Community = {
-  modLinks: local.get('max-gravity-mod-links', []),
+  modLinks: store.get('max-gravity-mod-links', []),
   modStatus: {},          // url -> 'loaded' | 'failed'
   news: [],               // other captains' deeds
   db: null, uid: null, mine: [], writing: false, dirty: false,
-  share: local.get('max-gravity-share-deeds', false),
+  share: store.get('max-gravity-share-deeds', false),
 
   // Load the remembered mods, one at a time, before the game starts.
   async loadMods() {
@@ -50,13 +44,13 @@ const Community = {
     if (!/^(https:\/\/|mods\/)[^\s"'<>]+\.js$/i.test(url)) return 'A mod link must start with https:// (or mods/) and end in .js.';
     if (this.modLinks.includes(url)) return 'That mod is already loaded.';
     this.modLinks.push(url);
-    local.set('max-gravity-mod-links', this.modLinks);
+    store.set('max-gravity-mod-links', this.modLinks);
     this.loadScript(url).then(() => { if (G.mode === 'landed' && !G.dialog) UI.render(); });
     return 'Loading. Mods that add places or ships are fully in place from the next start.';
   },
   removeMod(url) {
     this.modLinks = this.modLinks.filter(u => u !== url);
-    local.set('max-gravity-mod-links', this.modLinks);
+    store.set('max-gravity-mod-links', this.modLinks);
     return 'Removed. It stays active until the game restarts.';
   },
 
@@ -226,7 +220,7 @@ Mods.register({
     M.action('scenarioCancel', () => { UI.pendingScenario = null; });
     // Sharing your deeds is opt-in, remembered in this browser, and offered only where it can work.
     M.filter('dockButtons', html => (Community.db ? `${html}<button data-action="shareDeeds">Share deeds: ${Community.share ? 'on' : 'off'}</button>` : html));
-    M.action('shareDeeds', () => { Community.share = !Community.share; local.set('max-gravity-share-deeds', Community.share); });
+    M.action('shareDeeds', () => { Community.share = !Community.share; store.set('max-gravity-share-deeds', Community.share); });
     // What counts as a deed: storyline milestones, the ship's history, and bounties.
     const log = EFFECTS.log;
     EFFECTS.log = text => { log(text); Community.deed(fill(text)); };

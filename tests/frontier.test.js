@@ -123,6 +123,8 @@ test('scenarios: share a link, start it, and a hostile one is defanged', async (
   await p2.evaluate(() => { while (G.dialog) { chooseEvent(0); finishEvent(); } UI.tab = 'port'; UI.render(); });
   await p2.fill('#scenarioCode', evil);
   await p2.click('[data-action=scenarioPaste]');
+  // A dock scene can open over the panel at any moment: clear it so the Go button shows.
+  await p2.evaluate(() => { while (G.dialog) finishEvent(); UI.tab = 'port'; UI.render(); });
   await p2.click('[data-action=scenarioGo]');
   const r = await p2.evaluate(() => ({ pwned: !!window.pwned2, credits: G.state.credits, ship: G.state.shipId }));
   assert.equal(r.pwned, false);

@@ -3,6 +3,17 @@
 // DOM panels shown while landed on a planet, plus the game-over screen.
 // Loaded before game.js; only calls into it at runtime.
 
+// Shared helpers (loaded first, so every later script can use them): esc makes text safe
+// to show as HTML; store is localStorage that never throws (a blocked browser just
+// forgets, and the game runs on).
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },  // false: storage blocked, session only
+  raw(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  del(k) { try { localStorage.removeItem(k); } catch (e) { /* storage blocked */ } },
+};
+
 // Names the player types (captain, ship, outpost, heir) are shown as HTML, so
 // they lose the characters that could make markup. Imported saves lose < and >
 // in every string (Saves.import in menu.js).
