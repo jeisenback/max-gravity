@@ -62,11 +62,17 @@ function contactEvent(spec) {
   const who = { pirate: 'No transponder. The plume signature says pirate.', patrol: `Transponder: ${spec.gov} navy. You are wanted in their space.`,
     bounty: `Transponder spoofed, but the plume matches: ${spec.mission && spec.mission.targetName}, the ship you are hunting.`,
     hunter: `A hired gun. The captain says ${spec.person && `${spec.person.first} ${spec.person.last}`} sends regards.` }[spec.kind];
-  const go = flee => () => { G.engagePending = { spec, flee }; return flee ? 'You wind the drive up past the redline. Crash couches, everyone.' : 'Battle stations. Everyone into their couches.'; };
+  // With a crewed gunner the fight is settled on the console (duel.js); a manual one is the real-time fight.
+  const go = flee => () => {
+    if (postMode('gunner') === 'crewed') return startDuel(spec, flee);
+    G.engagePending = { spec, flee };
+    return flee ? 'You wind the drive up past the redline. Crash couches, everyone.' : 'Battle stations. Everyone into their couches.';
+  };
   const choices = [
-    { label: 'Battle stations', run: go(false) },
+    { label: postMode('gunner') === 'crewed' ? `Battle stations (${roleName('gunner')} fights)` : 'Battle stations', run: go(false) },
     { label: 'Burn hard to outrun them', run: go(true) },
   ];
+  if (postMode('gunner') === 'crewed') choices.splice(1, 0, { label: 'Battle stations (take the guns yourself)', run() { takeControl('gunner'); return go(false)(); } });
   if (spec.kind === 'pirate') {
     choices.push({ label: 'Pay them off (10% of your credits, at least 500)', can: () => st.credits >= 500, run() {
       const c = Math.max(500, Math.round(st.credits * 0.1));
@@ -457,6 +463,7 @@ Mods.register({
         const c = ev.choices.find(x => x.label.startsWith(label)), old = c.run;
         c.run = () => {
           if (!burnCombat()) return old();
+          if (postMode('gunner') === 'crewed') return startDuel({ kind: 'pirate' }, flee);
           G.engagePending = { spec: { kind: 'pirate' }, flee };
           return flee ? 'You wind the drive up past the redline. Crash couches, everyone.' : 'Battle stations.';
         };

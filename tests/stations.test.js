@@ -13,6 +13,13 @@ const helpers = () => {
   window.hire = (role, skill = 2) => {
     const c = makeCrewCandidate('belt'); c.role = role; c.skill = skill; c.mood = null; registerPerson(c); G.state.crew.push(c.id); return c;
   };
+  // A burn with a contact on it, and the contact event open.
+  window.contact = (kind = 'pirate') => {
+    const st = G.state; st.tutorial = null; st.flags.classicCombat = false; st.story.next = 1e9; while (G.dialog) finishEvent();
+    st.credits = 5000; st.armor = ship().armor;
+    uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
+    openEvent(contactEvent({ kind }));
+  };
   // Runs the game a frame at a time, with nobody else in the sky.
   window.fly = (until, max = 6000) => { let i = 0; while (!until() && i++ < max) { G.npcs = []; G.spawnTimer = 99; update(1 / 30); } return i; };
 };
@@ -165,5 +172,85 @@ test('autopilot: the Navigation station offers it to a crewed pilot, and the doc
   await page.click('[data-action=postOrder][data-arg="pilot:depart"]');
   assert.equal(await ev(() => G.mode), 'flight');
   assert.equal(await ev(() => G.auto && G.auto.kind), 'out');
+  await done();
+});
+
+test('gunner: a manual gunner fights in real time, a crewed one settles it on the console', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    G.state.crew = [];
+    contact();
+    const labels = G.dialog.choices.map(c => c.label);
+    chooseEvent(0); finishEvent();
+    const solo = { pending: !!G.engagePending, duel: !!G.duel };
+    G.engagePending = null;
+    hire('gunner', 2); contact();
+    const crewedLabels = G.dialog.choices.map(c => c.label);
+    chooseEvent(0);
+    const after = { pending: !!G.engagePending, duel: !!G.duel, next: G.nextEvent && G.nextEvent.title };
+    // "take the guns yourself" is the real-time fight again, and is an override.
+    finishEvent(); while (G.dialog) finishEvent(); G.duel = null; G.nextEvent = null;
+    contact(); chooseEvent(1);
+    const taken = { pending: !!G.engagePending, mode: postMode('gunner') };
+    return { labels, solo, crewedLabels, after, taken };
+  });
+  assert.equal(r.labels[0], 'Battle stations');
+  assert.deepEqual(r.solo, { pending: true, duel: false });
+  assert.match(r.crewedLabels[0], /fights/);
+  assert.match(r.crewedLabels[1], /take the guns yourself/);
+  assert.equal(r.after.pending, false); assert.equal(r.after.duel, true);
+  assert.match(r.after.next, /round 1 of 5/);
+  assert.deepEqual(r.taken, { pending: true, mode: 'manual' });
+  await done();
+});
+
+test('gunner: rounds follow rock paper scissors, end in five, and never kill you', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    G.state.crew = []; hire('gunner', 3); hire('pilot', 2);
+    const out = { wins: 0, rounds: [], armorOk: true, ended: 0, credits: [] };
+    // Always play the counter to what they play: they lose hit points every round.
+    for (let i = 0; i < 20; i++) {
+      contact(); const pre = G.state.credits; chooseEvent(0);
+      let n = 0;
+      while (G.dialog || G.nextEvent) {
+        if (G.nextEvent && !G.dialog) finishEvent();
+        if (!G.dialog) break;
+        if (!/^Contact: round/.test(G.dialog.event.title)) { finishEvent(); continue; }
+        const theirs = foeStance(G.duel.spec.kind), mine = Object.keys(STANCES).find(k => STANCES[k].beats === theirs);
+        const text = duelRound(mine, theirs); n++;
+        G.dialog = null; if (!G.nextEvent) break; const nx = G.nextEvent; G.nextEvent = null; openEvent(nx);
+        out.armorOk = out.armorOk && G.state.armor >= 1;
+        if (n > 7) break;
+      }
+      out.rounds.push(n); out.credits.push(G.state.credits - pre); out.ended += G.duel === null ? 1 : 0;
+      G.duel = null; G.nextEvent = null; G.dialog = null;
+    }
+    out.table = ['guns', 'dark', 'board'].map(m => STANCES[m].beats);
+    return out;
+  });
+  assert.deepEqual(r.table, ['board', 'guns', 'dark'], 'guns beat boarders, dark beats guns, boarders beat dark');
+  assert.ok(r.rounds.every(n => n >= 1 && n <= 5), `no fight runs past five rounds (${r.rounds})`);
+  assert.ok(r.armorOk, 'armor never drops below 1');
+  assert.equal(r.ended, 20, 'every fight ends');
+  assert.ok(r.credits.some(c => c > 0), 'beating a pirate pays a bounty');
+  await done();
+});
+
+test('gunner: good crew read the other captain better, and better stances are stronger', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = G.state; st.crew = [];
+    const spread = () => { let worst = 0; for (let i = 0; i < 200; i++) { const h = duelHints('pirate'); worst = Math.max(worst, Math.abs(h.guns - 50), Math.abs(h.dark - 20)); } return worst; };
+    const solo = { spread: spread(), edge: duelEdges().guns };
+    hire('gunner', 3); hire('pilot', 3);
+    return { solo, crew: { spread: spread(), edge: duelEdges().guns }, a: Object.values(duelEdges()) };
+  });
+  assert.ok(r.crew.spread < r.solo.spread, `crew read closer (${r.crew.spread} vs ${r.solo.spread})`);
+  assert.ok(r.crew.edge > r.solo.edge);
+  assert.ok(r.a.every(e => e >= 0.1 && e <= 0.9));
   await done();
 });
