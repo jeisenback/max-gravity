@@ -134,6 +134,7 @@ On a keyboard:
 - `js/duel.js` - the crewed gunner: a contact is settled in rounds of rock, paper, scissors on the console; a manual gunner gets the real-time fight (`engage.js`)
 - `js/engineering.js` - the engineer's post: power shares (drive, weapons, shields), reactor heat and scrams, power orders, and what drive power does to a burn (speed, reaction mass, how easily pirates spot you)
 - `js/comms.js` - the comms station: how each happening reaches the ship, the inbox, listening for market tips, and a crewed officer who takes routine hails
+- `js/wear.js` - ship condition: slow wear on the drive, fire control, shields, life support and sensors, breakdown scenes, servicing and overhaul (the Wear setting in the menu)
 - `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike), `mars-navy.js` (Reserve Commission, a Mars Navy career), `rook-crown.js` (The Rook's Crown, a pirate lord's rise), `tethys.js` (The Partner's Chair, a corporate climb), and `cold-water.js` (the scenes of Cold Water)
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
 - `js/audio.js` - sound effects synthesized with Web Audio (no audio files): guns, hits, explosions, engine rumble, docking, burns, comms
