@@ -102,7 +102,7 @@ test('relationships, feeds, seasons, and passengers who come back', async () => 
     // Deliver the passenger, then find them wanting another trip.
     G.transit = null; st.systemId = 'mars'; G.player = makeShip(st.shipId, 0, 0, 0); G.mode = 'flight';
     land(SYSTEMS.mars.planets[0]);
-    while (G.dialog) { chooseEvent(0); finishEvent(); }
+    while (G.dialog) { chooseEvent(G.dialog.choices.length - 1); finishEvent(); }  // the last choice is the one that keeps things as they are (not "Welcome aboard")
     out.trips = p.trips; out.loc = p.location;
     p.opinion = 4;
     let note = null; for (let i = 0; i < 10 && !note; i++) { p.nextAsk = 0; note = regularsAt(SYSTEMS.mars.planets[0]); }
