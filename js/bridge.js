@@ -57,6 +57,9 @@ UI.views.weapons = function () {
   return `<h3>Armament</h3>${armament()}<div class="row"><button data-action="combatMode">Change combat mode</button></div>${projectsHtml('gunner')}${postHtml('gunner')}`;
 };
 
+const portView = UI.views.port;
+UI.views.port = function () { return (hired() ? runHtml() : '') + portView.call(this); };
+
 // The shipyard is Engineering's page at port; the engineer's post leads it.
 const shipyardView = UI.views.shipyard;
 UI.views.shipyard = function () { return engineerPanel() + (hired() ? '<p class="hint">The yard deals with the captain, not with you.</p>' : shipyardView.call(this)); };

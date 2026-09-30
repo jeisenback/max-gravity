@@ -88,3 +88,83 @@ test('hired: a save keeps it, and an owner game is unchanged', async () => {
   assert.deepEqual(r.loaded, { post: 'engineer', captain: true, known: true, credits: 300 });
   await done();
 });
+
+// Installed in the page: a hired game at Earth, on a given post, with nothing in the way.
+const hiredHelpers = () => { window.startHired = (post = 'gunner') => { startGame({ slot: 1, background: 'earth', captain: 'Ines Okafor', mode: 'hired', post }); while (G.dialog) finishEvent(); G.state.flags.classicCombat = true; G.state.story.next = 1e9; }; };
+
+test('the captain plans a run: the best cargo within reach, paid for from the ship\'s funds', async () => {
+  const { page, ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    startHired(); const st = G.state, h = st.hired;
+    const plan = planRun(), here = currentPlanet();
+    const sell = plan && price(Object.values(SYSTEMS).find((_, i) => Object.keys(SYSTEMS)[i] === plan.sid).planets.find(p => p.name === plan.planet), plan.good);
+    // With no money there is no cargo; she runs light.
+    h.fund = 0; h.plan = null; const broke = planRun();
+    return { plan, fits: plan.tons <= ship().cargo && plan.cost <= HIRED_FUND, buy: plan.good && price(here, plan.good), sell, broke, days: plan.days, here: st.systemId };
+  });
+  assert.ok(r.plan.profit > 0 && !r.plan.ballast, 'a profitable cargo');
+  assert.ok(r.fits, 'that fits the hold and the purse');
+  assert.ok(r.sell > r.buy, 'and sells for more than it cost');
+  assert.notEqual(r.plan.sid, r.here);
+  assert.equal(r.broke.ballast, true, 'no money, no cargo: she runs light');
+  await ev(() => { startHired(); UI.render(); });
+  assert.match(await page.innerText('#panel'), /The captain will buy \d+t of .* here for/);
+  assert.match(await page.innerText('.dock'), /Sail with the captain/);
+  assert.equal(await page.$('[data-action=takeoff]'), null, 'she sails when the captain says');
+  await done();
+});
+
+test('a run, end to end: sail, burn, come in, sell, and be paid a wage and a share', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    startHired('engineer'); const st = G.state, h = st.hired, out = {};
+    const plan = currentPlan(), fund0 = h.fund, credits0 = st.credits;
+    out.sailed = sail();
+    out.loaded = { tons: st.cargo[plan.good], fund: fund0 - h.fund === plan.cost, dest: st.dest === plan.sid, auto: G.auto && G.auto.kind, mode: G.mode };
+    // Fly: out to clear space, then the burn, then the pilot brings her in to the planet the captain chose.
+    let steps = 0;
+    while (G.mode !== 'landed' && steps++ < 20000) {
+      if (G.mode === 'transit' && G.transit && !G.transit.interceptPlanned) { G.transit.times = []; G.transit.interceptPlanned = true; }
+      if (G.dialog) { while (G.dialog) finishEvent(); }
+      G.npcs = []; G.spawnTimer = 99;
+      update(G.mode === 'transit' ? 1 : 1 / 30); Mods.emit('frame', G.mode === 'transit' ? 1 : 1 / 30);
+    }
+    const e = h.ledger[0];
+    out.settled = { mode: G.mode, planet: st.planet, matches: st.planet === plan.planet, run: h.run, cargo: Object.keys(st.cargo).length, entry: e && { tons: e.tons, profit: e.profit, revenue: e.revenue - e.cost === e.profit, wage: e.wage > 0 } };
+    out.paid = { credits: st.credits - credits0, equals: e && st.credits - credits0 === e.wage + e.share, share: e && e.share === Math.round(Math.max(0, e.profit) * h.share), fund: e && h.fund === fund0 - e.cost + e.revenue };
+    out.note = UI.notes.join(' ');
+    return out;
+  });
+  assert.equal(r.sailed, true);
+  assert.ok(r.loaded.tons > 0 && r.loaded.fund && r.loaded.dest, 'the cargo is aboard and paid for');
+  assert.equal(r.loaded.auto, 'out', 'a crewed pilot flew her out'); assert.equal(r.loaded.mode, 'flight');
+  assert.deepEqual([r.settled.mode, r.settled.matches, r.settled.run, r.settled.cargo], ['landed', true, null, 0], 'she docked where the captain said and sold it all');
+  assert.ok(r.settled.entry.tons > 0 && r.settled.entry.wage);
+  assert.ok(r.paid.equals && r.paid.share && r.paid.fund, `the books add up (${JSON.stringify(r.paid)})`);
+  assert.match(r.note, /The captain sold \d+t of .* Your pay: [\d,]+ cr wage/);
+  await ev(() => UI.render());
+  await done();
+});
+
+test('the captain sails again from where she landed, and a manual pilot flies her out himself', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    startHired('pilot'); const st = G.state, h = st.hired, out = {};
+    const plan = currentPlan(); out.manual = postMode('pilot');
+    sail();  // you are the pilot: she takes off, and you fly
+    out.flight = { mode: G.mode, auto: G.auto, dest: st.dest === plan.sid };
+    // A run that ends somewhere else leaves cargo aboard; the next plan sells it.
+    G.mode = 'landed'; st.systemId = 'mars'; st.planet = 'Mars'; h.run = null; h.plan = null;
+    landAt(currentPlanet(), []); while (G.dialog) finishEvent();
+    const again = planRun();
+    out.again = { loaded: again.loaded, tons: again.tons, good: again.good === plan.good };
+    return out;
+  });
+  assert.equal(r.manual, 'manual');
+  assert.deepEqual(r.flight, { mode: 'flight', auto: null, dest: true });
+  assert.ok(r.again.loaded && r.again.tons > 0 && r.again.good, 'cargo still aboard is sold before any new one is bought');
+  await done();
+});

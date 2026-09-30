@@ -113,7 +113,7 @@ const UI = {
       <div class="dock">
         ${Mods.filter('dockButtons', '')}
         <button data-action="map">System map</button>
-        <button data-action="takeoff" class="primary">Take off${Touch.on ? '' : ' (T)'}</button>
+        ${hired() ? `<button data-action="sail" class="primary">Sail with the captain${Touch.on ? '' : ' (T)'}</button>` : `<button data-action="takeoff" class="primary">Take off${Touch.on ? '' : ' (T)'}</button>`}
       </div>`;
   },
 
