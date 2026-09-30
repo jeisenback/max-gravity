@@ -156,8 +156,8 @@ const UAT_TOOLS = {
 // ---------- the panel ----------
 const Uat = {
   open: false,
-  results: (() => { try { return JSON.parse(localStorage.getItem(UAT_KEY)) || {}; } catch (e) { return {}; } })(),
-  saveResults() { try { localStorage.setItem(UAT_KEY, JSON.stringify(this.results)); } catch (e) { /* session only */ } },
+  results: store.get(UAT_KEY, {}),
+  saveResults() { store.set(UAT_KEY, this.results); },
   toggle() {
     this.open = !this.open;
     if (this.open) {

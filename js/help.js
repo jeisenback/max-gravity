@@ -48,13 +48,13 @@ const TIPS = [
 ];
 
 const Help = {
-  seen: (() => { try { return JSON.parse(localStorage.getItem('maxGravity.tips')) || {}; } catch (e) { return {}; } })(),
+  seen: store.get('maxGravity.tips', {}),
   tipTick() {
     if (!G.state || G.paused || G.dialog) return;
     for (const t of TIPS) {
       if (this.seen[t.id] || !t.when()) continue;
       this.seen[t.id] = true;
-      try { localStorage.setItem('maxGravity.tips', JSON.stringify(this.seen)); } catch (e) { /* session only */ }
+      store.set('maxGravity.tips', this.seen);
       t.show();
       if (G.mode === 'landed') UI.render();
       return;

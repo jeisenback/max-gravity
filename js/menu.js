@@ -8,12 +8,6 @@
 // into the last game. Loaded before game.js; only calls into it at runtime.
 
 const SLOTS = 5, SAVE_VERSION = 3;
-const store = {
-  get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
-  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },
-  raw(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
-  del(k) { try { localStorage.removeItem(k); } catch (e) { /* storage blocked */ } },
-};
 
 // ---------- settings ----------
 const Settings = Object.assign({ volume: 1, music: 0.6, textScale: 1, reduceMotion: false }, store.get('maxGravity.settings', {}));
