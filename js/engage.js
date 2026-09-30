@@ -8,7 +8,8 @@
 // point defense shoots down incoming torpedoes. Burning hard builds strain; past the
 // limit your crew black out and can be hurt. Switch back to classic local-space
 // combat with the Combat button at any port. Story set pieces (Aquilon's recovery
-// ship, the Ceres blockade) still happen in local space.
+// ship, the Ceres blockade) are scenes and console duels when consoleFights() is true (story.js),
+// and ships in local space otherwise.
 //
 // Distances read as km and speeds as km/s. G.engage holds the fight; G.player is
 // the same ship object as in flight, moved into the engagement frame and back.
@@ -27,6 +28,9 @@ const ENEMY_TORPS = { raider: 1, corsair: 3, cutter: 2, destroyer: 5 };
 // "The Pirate ...", but not "The The Weeping Saint".
 const theShip = n => (/^the /i.test(n.name) ? n.name : `The ${n.name}`);
 const burnCombat = () => !(G.state && G.state.flags.classicCombat);
+// Whether contacts (and the story's set pieces) are settled on the console. For now that is when the
+// gunner post is crewed; #49 makes it the default.
+const consoleFights = () => postMode('gunner') === 'crewed';
 const maxG = o => Math.max(2, Math.round(statsOf(o).accel / 30));
 
 // ---------- who intercepts you ----------
@@ -45,8 +49,8 @@ function planIntercept() {
 
 function makeEnemy(spec) {
   const sid = G.state.systemId, persona = makePerson(cultureOf(sid));
-  const shipId = spec.kind === 'patrol' ? (Math.random() < 0.3 ? 'destroyer' : 'cutter')
-    : spec.kind === 'pirate' ? (Math.random() < Math.min(0.6, danger(sid) + 0.2) ? 'corsair' : 'raider') : 'corsair';
+  const shipId = spec.shipId || (spec.kind === 'patrol' ? (Math.random() < 0.3 ? 'destroyer' : 'cutter')
+    : spec.kind === 'pirate' ? (Math.random() < Math.min(0.6, danger(sid) + 0.2) ? 'corsair' : 'raider') : 'corsair');
   const n = makeShip(shipId, 0, 0, 0);
   Object.assign(n, { kind: spec.kind === 'patrol' ? 'patrol' : 'pirate', hostile: true, persona, captain: `${persona.first} ${persona.last}`, torps: ENEMY_TORPS[shipId] || 0, torpCd: rand(2, 4) });
   if (spec.kind === 'patrol') Object.assign(n, { gov: spec.gov, name: `${PATROL_NAMES[spec.gov]} "${shipName(false)}"` });
@@ -54,6 +58,10 @@ function makeEnemy(spec) {
   else if (spec.kind === 'hunter') Object.assign(n, { name: 'Hired gun', payer: `${spec.person.first} ${spec.person.last}` });
   else n.name = `Pirate "${shipName(true)}"`;
   if (spec.kind === 'bounty' || spec.kind === 'hunter') n.armor = n.maxArmor = SHIPS.corsair.armor * 1.4;
+  // A story fight (story.js) names its ship and can make it tougher.
+  if (spec.name) n.name = spec.name;
+  if (spec.armorMult) n.armor = n.maxArmor = n.maxArmor * spec.armorMult;
+  if (spec.story) n.story = true;
   return n;
 }
 
