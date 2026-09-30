@@ -218,3 +218,64 @@ test('errands: delivered when she docks, the fee to you and the cut to the ship'
   assert.equal(r.fund, r.expectFund, 'and the captain got the cut');
   await done();
 });
+
+test('posts: your own work teaches you, it is kept, and it improves your odds', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    startHired('engineer'); const st = G.state, h = st.hired, out = {};
+    out.start = { level: skillLevel('engineer'), xp: skillXp('engineer'), other: skillLevel('pilot'), odds: soloOdds('engineer'), otherOdds: soloOdds('pilot') };
+    gainSkill('engineer', 30); out.after = { level: skillLevel('engineer'), odds: soloOdds('engineer') };
+    // Orders, projects and programs you do yourself teach; a crew member's do not.
+    const x0 = skillXp('engineer'); Settings.wear = 'off'; st.armor = 1; st.crew = st.crew.filter(id => person(id).role !== 'engineer');
+    postState('engineer').busy = false; giveOrder('engineer', 'patch'); out.order = skillXp('engineer') - x0;
+    // A run worked: experience for your post, and the captain's regard.
+    const cap = st.people[h.captain], op0 = cap.opinion, x1 = skillXp('engineer');
+    h.run = { planet: currentPlanet().name, sid: st.systemId, good: null, tons: 0, cost: 0, day: st.day, from: 'Earth' };
+    st.day += 3; settleRun(currentPlanet());
+    out.run = { xp: skillXp('engineer') - x1, opinion: cap.opinion - op0 };
+    // An owner is unaffected.
+    startGame({ slot: 1, background: 'earth', captain: 'Ines' }); while (G.dialog) finishEvent();
+    out.owner = { odds: orderOdds('engineer'), skill: skillLevel('engineer') };
+    return out;
+  });
+  assert.deepEqual(r.start, { level: 1, xp: 10, other: -1 + 1, odds: 0.55, otherOdds: 0.45 });
+  assert.deepEqual(r.after, { level: 2, odds: 0.65 });
+  assert.equal(r.order, 1, 'your own order teaches you a little');
+  assert.equal(r.run.xp, 2, 'a burn worked teaches you more'); assert.equal(r.run.opinion, -1, 'a run that made nothing costs you the captain\'s regard');
+  assert.deepEqual(r.owner, { odds: 0.45, skill: -1 + 1 }, 'an owner\'s solo odds are the old ones');
+  await done();
+});
+
+test('posts: you can ask the captain to move you, and they decide', async () => {
+  const { page, ev, done } = await open();
+  await ev(hiredHelpers);
+  await ev(() => { startHired('gunner'); G.state.tutorial = null; UI.render(); });
+  await page.click('[data-action=station][data-arg=interior]');
+  assert.match(await page.innerText('#panel'), /your posts/i);
+  assert.equal(await page.$$eval('[data-action=swapPost]', b => b.length), 3, 'the three others');
+  const r = await ev(() => {
+    const st = G.state, h = st.hired, out = {};
+    const before = st.crew.map(id => [person(id).first, person(id).role]);
+    const holder = roleHolder('engineer'), holderSkill = holder.skill;
+    // They say no: nothing changes, and it cannot be asked again today.
+    const real = Math.random; Math.random = () => 0.99; askSwap('engineer'); Math.random = real;
+    out.no = { post: h.post, asked: h.asked === st.day, note: UI.notes.join(' ') };
+    askSwap('engineer'); out.again = h.post;
+    // The next day they say yes: the roles change places, and your experience stays.
+    h.asked = -1; gainSkill('engineer', 12);
+    Math.random = () => 0; askSwap('engineer'); Math.random = real;
+    out.yes = { post: h.post, modes: Object.keys(POSTS).map(p => postMode(p)), holderRole: holder.role, holderSkill: holder.skill, was: holderSkill, gunnerHeld: roleHolder('gunner') === holder, gunnerXp: skillXp('gunner') };
+    out.odds = { low: swapOdds('pilot'), more: (st.people[h.captain].opinion += 3, swapOdds('pilot')) };
+    return out;
+  });
+  assert.equal(r.no.post, 'gunner'); assert.ok(r.no.asked); assert.match(r.no.note, /Not yet/);
+  assert.equal(r.again, 'gunner', 'one request a day');
+  assert.equal(r.yes.post, 'engineer');
+  assert.deepEqual(r.yes.modes, ['crewed', 'crewed', 'manual', 'crewed'], 'pilot, gunner, engineer, comms: the engineer post is now yours');
+  assert.equal(r.yes.holderRole, 'gunner'); assert.ok(r.yes.gunnerHeld, 'the engineer took the gun post');
+  assert.equal(r.yes.holderSkill, Math.max(1, r.yes.was - 1), 'and is a little rusty at it');
+  assert.equal(r.yes.gunnerXp, 10, 'what you learned at the gun post stays with you');
+  assert.ok(r.odds.more > r.odds.low, 'the captain is likelier to say yes once they trust you');
+  await done();
+});

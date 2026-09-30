@@ -18,7 +18,7 @@ const projectsOf = () => { const st = G.state; return st.projects = st.projects 
 const refits = () => { const st = G.state; return st.refits = st.refits || {}; };
 const projectDoer = id => { const post = PROJECTS[id].post; return postMode(post) === 'crewed' ? postHolder(post) : null; };
 // Crew do it in the time set; you take half as long again, and the odds are worse.
-const projectOdds = id => { const d = projectDoer(id); return Math.min(0.95, d ? 0.6 + 0.12 * roleSkill(POSTS[PROJECTS[id].post].role) : 0.45); };
+const projectOdds = id => { const d = projectDoer(id); return Math.min(0.95, d ? 0.6 + 0.12 * roleSkill(POSTS[PROJECTS[id].post].role) : soloOdds(PROJECTS[id].post)); };
 
 function canStart(id) { return !projectsOf()[id] && !Object.values(projectsOf()).some(p => PROJECTS[p.id].post === PROJECTS[id].post) && partsHeld() >= PROJECTS[id].parts; }
 
@@ -36,6 +36,7 @@ function startProject(id) {
 function finishProject(id) {
   const st = G.state, P = PROJECTS[id], doer = projectDoer(id), who = doer ? doer.first || doer.name : 'You', ok = Math.random() < projectOdds(id);
   delete projectsOf()[id];
+  if (!doer) gainSkill(P.post, 1);
   let text;
   if (id === 'patch') {
     const part = worstPart();

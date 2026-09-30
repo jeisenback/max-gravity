@@ -27,7 +27,7 @@ const programs = () => {
 const programOrders = () => PROGRAM_POSTS.flatMap(post => postOrders(post).map(o => ({ post, ...o })));
 const programOrder = (post, id) => programOrders().find(o => o.post === post && o.id === id);
 const programDoer = () => postMode('comms') === 'crewed' ? postHolder('comms') : null;
-const programOdds = () => Math.min(0.95, programDoer() ? 0.6 + 0.12 * roleSkill('slicer') : 0.45);
+const programOdds = () => Math.min(0.95, programDoer() ? 0.6 + 0.12 * roleSkill('slicer') : soloOdds('comms'));
 const programDraft = { cond: null, order: null };  // the rule being picked on the station (not saved)
 
 function writeProgram(cond, post, order) {
@@ -51,6 +51,7 @@ function removeProgram(i) { programs().rules.splice(i, 1); }
 function finishWriting() {
   const p = programs(), w = p.writing, doer = programDoer(), who = doer ? doer.first || doer.name : 'You', ok = Math.random() < programOdds();
   p.writing = null;
+  if (!doer) gainSkill('comms', 1);
   let text;
   if (w.kind === 'slot') {
     if (ok) { p.slots++; text = `${who} cleaned up the rule table and made room for another program (${p.slots} in all).`; }

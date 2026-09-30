@@ -13,6 +13,20 @@ const HIRED_POSTS = ['pilot', 'gunner', 'engineer', 'comms'];  // the posts you 
 const HIRED_SAVINGS = 300;
 const HIRED_FUND = 5000;  // the ship's money, which buys the cargo
 const hired = () => (G.state && G.state.hired) || null;
+
+// ---------- skill at each post ----------
+// Experience points per post, kept when you swap. Levels come at 0, 10, 30 and 60 points.
+const SKILL_STEPS = [0, 10, 30, 60];
+const skillXp = post => (hired() && hired().skill && hired().skill[post]) || 0;
+const skillLevel = post => SKILL_STEPS.filter(n => skillXp(post) >= n).length - 1;
+function gainSkill(post, n) {
+  const h = hired();
+  if (!h) return;
+  h.skill = h.skill || {};
+  h.skill[post] = (h.skill[post] || 0) + n;
+}
+// Doing a job yourself: the odds are worse than a crew member's, and get better as you learn the post.
+const soloOdds = post => 0.45 + 0.1 * skillLevel(post);
 // What stays the captain's to do: the cargo, the contracts, the ship itself, the company.
 const OWNER_TABS = ['trade', 'company'];  // contracts are the captain's too, but the board still has errands
 const OWNER_ACTIONS = ['takeoff', 'buy', 'buymax', 'sell', 'sellall', 'buyship', 'cbuy', 'refuel', 'repair', 'overhaul', 'buyout', 'sellout', 'torpbuy', 'hire', 'dismiss'];
@@ -33,7 +47,7 @@ function setupHired(o) {
     registerPerson(c);
     st.crew.push(c.id);
   }
-  st.hired = { captain: cap.id, post, since: st.day, wage: 40, share: 0.1, fund: HIRED_FUND, run: null, ledger: [] };
+  st.hired = { captain: cap.id, post, since: st.day, wage: 40, share: 0.1, fund: HIRED_FUND, run: null, ledger: [], skill: { [post]: SKILL_STEPS[1] }, asked: 0 };
   return [
     `You signed on to the ${home().name}, a light freighter out of ${system().name}, under Captain ${cap.first} ${cap.last}. You are her ${POSTS[post].name.toLowerCase()}: the post is yours to work, and the captain picks where she goes.`,
     `You have ${HIRED_SAVINGS} credits to your name. Save toward a ship of your own.`,
@@ -114,6 +128,8 @@ function settleRun(planet) {
   h.ledger.unshift({ day: st.day, from: run.from, to: planet.name, good: run.good, tons: sold, cost: run.cost, revenue, profit, wage, share });
   h.ledger.length = Math.min(h.ledger.length, 20);
   h.run = null;
+  gainSkill(h.post, 2);  // a burn worked
+  like(st.people[h.captain], profit > 0 ? 1 : -1, profit > 0 ? 'Good run. You pull your weight.' : 'That run lost money.');
   const name = run.good ? COMMODITIES.find(c => c.id === run.good).name : null;
   return `${name ? `The captain sold ${sold}t of ${name} for ${fmt(revenue)} cr (${profit >= 0 ? `profit ${fmt(profit)}` : `loss ${fmt(-profit)}`} cr). ` : 'A run with no cargo. '}Your pay: ${fmt(wage)} cr wage${share ? ` and ${fmt(share)} cr share` : ''}.`;
 }
@@ -143,6 +159,43 @@ function errandsFor(planet) {
   });
 }
 
+// ---------- swapping posts ----------
+
+// How likely the captain is to say yes: how far they trust you, and what you know of the post.
+function swapOdds(post) {
+  const cap = G.state.people[hired().captain];
+  return Math.max(0.1, Math.min(0.95, 0.35 + 0.1 * cap.opinion + 0.1 * skillLevel(post)));
+}
+
+function askSwap(post) {
+  const st = G.state, h = hired();
+  if (!h || !POSTS[post] || post === h.post || G.mode !== 'landed' || h.asked === st.day) return;
+  h.asked = st.day;
+  const cap = st.people[h.captain], role = POSTS[post].role, mine = POSTS[h.post].role;
+  const holder = roleHolder(role) || st.crew.map(person).find(c => c.role === role);
+  const who = cap.first;
+  if (Math.random() >= swapOdds(post)) {
+    like(cap, 0, `You asked to move to ${POSTS[post].name.toLowerCase()} and I said not yet.`);
+    return M_NOTE(`${who}: "Not yet. Show me more on the ${POSTS[h.post].name.toLowerCase()} first, and ask me again after the next run."`);
+  }
+  if (holder) { holder.role = mine; holder.skill = Math.max(1, holder.skill - 1); holder.job = ROLE_NAMES[mine].toLowerCase(); }  // they take the post you leave
+  h.post = post;
+  M_NOTE(`${who}: "All right. You are the ${POSTS[post].name.toLowerCase()} from here.${holder ? ` ${holder.first} will take the ${POSTS[Object.keys(POSTS).find(k => POSTS[k].role === mine)].name.toLowerCase()}.` : ''}"`);
+}
+let M_NOTE = () => {};
+
+function swapHtml() {
+  const h = hired(), cap = G.state.people[h.captain], asked = h.asked === G.state.day;
+  return `<div class="post"><div class="eyebrow">Your posts &middot; Captain ${esc(cap.first)} ${esc(cap.last)}</div>
+    ${HIRED_POSTS.map(p => `<div class="row"><span><b>${POSTS[p].name}</b>${p === h.post ? ' <span class="tag good">yours</span>' : ''} <span class="hint">level ${skillLevel(p)} (${skillXp(p)} points)</span></span>
+      ${p === h.post ? '' : `<button data-action="swapPost" data-arg="${p}" ${asked ? 'disabled' : ''}>Ask to move (${Math.round(swapOdds(p) * 100)}%)</button>`}</div>`).join('')}
+    <p class="hint">Your work at a post teaches you, and what you learn stays with you. The captain decides, by how far they trust you and what you know. ${asked ? 'You have asked already; ask again after the next run.' : ''}</p>
+  </div>`;
+}
+
+const crewView = UI.views.crew;
+UI.views.crew = function () { return (hired() ? swapHtml() : '') + crewView.call(this); };
+
 const runHtml = () => {
   const h = G.state.hired, plan = currentPlan(), led = h.ledger.slice(0, 5), name = id => COMMODITIES.find(c => c.id === id).name;
   return `<div class="post"><div class="eyebrow">The captain's run &middot; ship's funds ${fmt(h.fund)} cr &middot; your savings ${fmt(G.state.credits)} cr</div>
@@ -164,6 +217,8 @@ Mods.register({
     });
     M.on('landed', planet => { const text = hired() && settleRun(planet); if (text) M.note(text); });
     M.on('landed', planet => { if (hired()) G.offers = errandsFor(planet); });  // the board has errands, not contracts
+    M_NOTE = text => M.note(text);
     M.action('sail', () => { if (hired()) sail(); });
+    M.action('swapPost', post => askSwap(post));
   },
 });
