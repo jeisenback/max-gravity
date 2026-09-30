@@ -43,6 +43,7 @@ const MOD_FILTERS = [
   'missionPay',   // (credits, offer, planet) pay for a mission offered at this port
   'happenings',   // (list, where, planet) candidates for a burn ('transit') or landing ('port'): { tier, weight, make() }
   'transitEvent', // (event or null) an event to play on a burn; ranks with the things due now
+  'orders',       // (list, post) the orders a post ('pilot', 'gunner', 'engineer', 'comms') offers: { id, name, desc, can(), run(ok, doer, skill) -> text }
   'chatter',      // (lines) the pool the next line of comms chatter in transit is picked from
 ];
 

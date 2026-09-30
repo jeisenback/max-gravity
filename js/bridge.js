@@ -42,7 +42,7 @@ UI.views.nav = function () {
   return `
     <p class="desc">${d ? `Course set for ${d.name}: ${travelDays(st.systemId, st.dest)} days, ${burnFuel(st.systemId, st.dest)} reaction mass (you have ${st.fuel}).` : 'No course set. Open the system map and pick a destination.'}</p>
     <div class="row"><button data-action="map">System map</button></div>
-    <p class="hint">Take off from the bar below, fly clear of the planet, and start the burn.</p>`;
+    <p class="hint">Take off from the bar below, fly clear of the planet, and start the burn.</p>${postHtml('pilot')}`;
 };
 
 const armament = () => {
@@ -54,8 +54,12 @@ const armament = () => {
 };
 
 UI.views.weapons = function () {
-  return `<h3>Armament</h3>${armament()}<div class="row"><button data-action="combatMode">Change combat mode</button></div>`;
+  return `<h3>Armament</h3>${armament()}<div class="row"><button data-action="combatMode">Change combat mode</button></div>${postHtml('gunner')}`;
 };
+
+// The shipyard is Engineering's page at port; the engineer's post leads it.
+const shipyardView = UI.views.shipyard;
+UI.views.shipyard = function () { return postHtml('engineer') + shipyardView.call(this); };
 
 // ---------- the viewscreen at port ----------
 
@@ -88,9 +92,9 @@ function transitSheet(id) {
   const st = G.state, t = G.transit, s = ship(), progress = Math.min(1, 1 - t.left / t.total);
   const list = items => items.map(x => `<div class="hint">${x}</div>`).join('');
   switch (id) {
-    case 'nav': return `<h3>Navigation</h3><p class="desc">${system().name} to ${SYSTEMS[t.to].name}, ${Math.round(progress * 100)}% of the way. ${t.flipped ? 'Braking' : 'Accelerating'}. Arriving ${dateOf(st.day + t.days)}.</p>`;
-    case 'weapons': return `<h3>Weapons</h3>${armament()}`;
-    case 'eng': return `<h3>Engineering</h3><p class="desc">Reaction mass ${st.fuel}/${s.fuel}. Armor ${st.armor}/${s.armor}. Shields ${s.shields}.</p><p class="hint">Repairs and outfits are done at a shipyard.</p>`;
+    case 'nav': return `<h3>Navigation</h3><p class="desc">${system().name} to ${SYSTEMS[t.to].name}, ${Math.round(progress * 100)}% of the way. ${t.flipped ? 'Braking' : 'Accelerating'}. Arriving ${dateOf(st.day + t.days)}.</p>${postHtml('pilot')}`;
+    case 'weapons': return `<h3>Weapons</h3>${armament()}${postHtml('gunner')}`;
+    case 'eng': return `<h3>Engineering</h3><p class="desc">Reaction mass ${st.fuel}/${s.fuel}. Armor ${st.armor}/${s.armor}. Shields ${s.shields}.</p><p class="hint">Full repairs and outfits are done at a shipyard.</p>${postHtml('engineer')}`;
     case 'interior': {
       const crew = crewMembers(), free = phase() === 'move' && !(t.lifeUsed || {})[lifeHalf()];
       return `<h3>Interior</h3>${crew.length ? list(crew.map(c => `${fullName(c)}, ${ROLE_NAMES[c.role]}`)) : '<p class="hint">You are flying alone.</p>'}
@@ -109,8 +113,9 @@ function buildBridgeKeys() {
   const sheet = Object.assign(document.createElement('div'), { id: 'bsheet', hidden: true });
   document.body.append(sheet, keys);
   const click = e => {
-    const k = e.target.closest('[data-bst]'), down = e.target.closest('[data-bdown]'), t = G.transit;
-    if (k) { G.bridgeOpen = G.bridgeOpen === k.dataset.bst ? null : k.dataset.bst; Sfx.click(); syncBridge(true); }
+    const k = e.target.closest('[data-bst]'), down = e.target.closest('[data-bdown]'), act = e.target.closest('[data-action]'), t = G.transit;
+    if (act && !act.disabled) { Sfx.click(); Mods.act(act.dataset.action, act.dataset.arg); syncBridge(true); }
+    else if (k) { G.bridgeOpen = G.bridgeOpen === k.dataset.bst ? null : k.dataset.bst; Sfx.click(); syncBridge(true); }
     else if (down && !down.disabled && t && !t.event) { Sfx.click(); G.bridgeOpen = null; openEvent(downtimeEvent()); }
   };
   keys.addEventListener('click', click);
