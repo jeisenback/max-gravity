@@ -62,12 +62,14 @@ function planRun() {
   const reach = Object.entries(SYSTEMS).filter(([sid]) => sid !== from && inRange(from, sid));
   const held = COMMODITIES.filter(c => (st.cargo[c.id] || 0) > 0).sort((a, b) => st.cargo[b.id] - st.cargo[a.id])[0];
   const options = [];
+  // Once your savings would buy a ship, she heads for a port with a yard when she can.
+  const wantYard = st.credits >= Math.min(...Object.values(SHIPS).filter(x => x.forSale).map(x => x.price));
   for (const [sid, sys] of reach) {
     const days = Math.max(1, travelDays(from, sid));
     for (const pl of sys.planets.filter(x => x.services.includes('trade'))) {
       if (held) {  // already loaded (a run that ended somewhere else): sell what we have
         const sell = price(pl, held.id);
-        if (sell !== null) options.push({ sid, planet: pl.name, good: held.id, tons: st.cargo[held.id], cost: Math.round(st.paid[held.id] || 0), loaded: true, profit: Math.round(sell * st.cargo[held.id] - (st.paid[held.id] || 0)), days });
+        if (sell !== null) options.push({ sid, planet: pl.name, yard: pl.services.includes('shipyard'), good: held.id, tons: st.cargo[held.id], cost: Math.round(st.paid[held.id] || 0), loaded: true, profit: Math.round(sell * st.cargo[held.id] - (st.paid[held.id] || 0)), days });
         continue;
       }
       if (!here.services.includes('trade')) continue;
@@ -76,19 +78,23 @@ function planRun() {
         if (buy === null || sell === null || sell <= buy) continue;
         let tons = Math.min(free, Math.floor(h.fund / buy));
         while (tons > 0 && tradeTotal(here, c.id, tons, 1) > h.fund) tons--;
-        if (tons > 0) options.push({ sid, planet: pl.name, good: c.id, tons, cost: Math.round(tradeTotal(here, c.id, tons, 1)), profit: Math.round((sell - buy) * tons), days });
+        if (tons > 0) options.push({ sid, planet: pl.name, yard: pl.services.includes('shipyard'), good: c.id, tons, cost: Math.round(tradeTotal(here, c.id, tons, 1)), profit: Math.round((sell - buy) * tons), days });
       }
     }
   }
-  const score = o => o.profit / o.days;
+  const score = o => (o.profit / o.days) * (wantYard && o.yard ? 4 : 1);
   const best = options.sort((a, b) => score(b) - score(a))[0];
   if (best && best.profit > 0) return { ...best, ballast: false };
   // Nothing worth carrying: run light to the nearest port that trades, and look for work there.
-  const dest = reach.flatMap(([sid, sys]) => sys.planets.filter(x => x.services.includes('trade')).map(pl => ({ sid, planet: pl.name, days: Math.max(1, travelDays(from, sid)) }))).sort((a, b) => a.days - b.days)[0];
+  const dest = reach.flatMap(([sid, sys]) => sys.planets.filter(x => x.services.includes('trade')).map(pl => ({ sid, planet: pl.name, yard: pl.services.includes('shipyard'), days: Math.max(1, travelDays(from, sid)) })))
+    .sort((a, b) => (wantYard ? (b.yard - a.yard) : 0) || a.days - b.days)[0];
   return dest ? { ...dest, good: null, tons: 0, cost: 0, profit: 0, ballast: true } : null;
 }
 
-const currentPlan = () => { const h = G.state.hired; if (!h.plan || h.plan.day !== G.state.day || h.plan.at !== G.state.planet) h.plan = { day: G.state.day, at: G.state.planet, run: planRun() }; return h.plan.run; };
+// The plan is made once per stop and kept, unless the hold has changed since (a plan to sell cargo that is gone).
+const planStale = h => !h.plan || h.plan.day !== G.state.day || h.plan.at !== G.state.planet
+  || h.plan.cargo !== JSON.stringify(G.state.cargo);
+const currentPlan = () => { const h = G.state.hired; if (planStale(h)) h.plan = { day: G.state.day, at: G.state.planet, cargo: JSON.stringify(G.state.cargo), run: planRun() }; return h.plan.run; };
 
 // Buys the cargo, sets the course, and sails: a crewed pilot flies her out, otherwise the pilot is you.
 function sail() {
@@ -128,6 +134,7 @@ function settleRun(planet) {
   h.ledger.unshift({ day: st.day, from: run.from, to: planet.name, good: run.good, tons: sold, cost: run.cost, revenue, profit, wage, share });
   h.ledger.length = Math.min(h.ledger.length, 20);
   h.run = null;
+  h.plan = null;
   gainSkill(h.post, 2);  // a burn worked
   like(st.people[h.captain], profit > 0 ? 1 : -1, profit > 0 ? 'Good run. You pull your weight.' : 'That run lost money.');
   const name = run.good ? COMMODITIES.find(c => c.id === run.good).name : null;
@@ -151,7 +158,7 @@ function errandsFor(planet) {
   if (!planet.services.includes('missions') || !plan) return [];
   const dest = SYSTEMS[plan.sid].planets.find(p => p.name === plan.planet);
   return Array.from({ length: randInt(1, 3) }, () => {
-    const [what, blurb] = pick(ERRANDS), gross = randInt(10, 30) * 10 * Math.max(1, plan.days), cut = Math.round(gross * ERRAND_CUT);
+    const [what, blurb] = pick(ERRANDS), gross = randInt(2, 6) * 10 * Math.max(1, plan.days), cut = Math.round(gross * ERRAND_CUT);
     return {
       type: 'errand', title: `Errand: carry ${what} to ${dest.name}`, blurb: `${blurb} The captain keeps ${fmt(cut)} cr of the fee.`,
       destSystem: plan.sid, destPlanet: dest.name, pay: gross - cut, cut, deadline: st.day + plan.days * 2 + randInt(6, 12),
@@ -245,7 +252,7 @@ function buyInHtml() {
 const runHtml = () => {
   const h = G.state.hired, plan = currentPlan(), led = h.ledger.slice(0, 5), name = id => COMMODITIES.find(c => c.id === id).name;
   return `<div class="post"><div class="eyebrow">The captain's run &middot; ship's funds ${fmt(h.fund)} cr &middot; your savings ${fmt(G.state.credits)} cr</div>
-    <p class="desc">${!plan ? 'The captain is waiting for a market worth the fuel.'
+    <p class="desc">${plan && plan.yard && G.state.credits >= Math.min(...Object.values(SHIPS).filter(x => x.forSale).map(x => x.price)) ? 'The captain knows you have the money for a ship, and is heading for a port with a yard. ' : ''}${!plan ? 'The captain is waiting for a market worth the fuel.'
       : plan.ballast ? `The captain has no cargo worth carrying and will run light to ${plan.planet}, ${SYSTEMS[plan.sid].name}, to look for work.`
       : plan.loaded ? `The captain will take the ${plan.tons}t of ${name(plan.good)} already aboard to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${plan.days} days.`
       : `The captain will buy ${plan.tons}t of ${name(plan.good)} here for ${fmt(plan.cost)} cr and take it to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${plan.days} days, about ${fmt(plan.profit)} cr profit, so about ${fmt(plan.profit * G.state.hired.share)} cr to you, plus ${fmt(h.wage * plan.days)} cr wage.`}</p>
