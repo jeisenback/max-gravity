@@ -6,6 +6,39 @@ counts cards from public information. Boarding becomes its own duel. The base sh
 duel is built (#42); the rest isn't yet. Numbers are starting values to be tuned by
 simulation (#45).
 
+## Future state
+
+Piloting and real-time combat are the least interesting part of the game. The captain
+decides, and the crew flies.
+
+- **One combat system.** The card duel is the only fight, in burns and in classic
+  flight. With no crewed gunner, the captain plays it with their own skill. The
+  real-time fight (`js/engage.js`) is retired (#52).
+- **Automated flight.** Departing, docking, landing and closing on a disabled ship are
+  choices, and the autopilot flies them. The flight screen stays as a backdrop but is
+  never steered (#53).
+- **The deck is the ship.** Every system feeds combat through one place: the function
+  that builds the decks. A new system never edits the duel's rules. It adds or changes
+  cards, or reads the aftermath.
+
+| Stage | What's in it |
+|---|---|
+| Ship state (lasts between trips) | Hull, outfits, magazine, crew, condition, refits, escorts |
+| Before contact (this burn) | Power routing, orders, how hot the drive runs |
+| The fight | Ship duel, then the boarding duel if boarders get across |
+| Aftermath | Wear, injuries, deaths (hardcore only), spent torpedoes, prizes, standing |
+
+**Posts are who plays which cards.**
+- Gunner: threats. Refits and fire-control condition count here.
+- Pilot: Evasive burns and escape cards. Drive power and drive condition count here.
+- Engineer: shields soaking damage, and later perhaps a mid-fight power reroute.
+- Comms: the read on the enemy. Sensor condition decides how exactly you see her
+  remaining cards.
+- A manual post means the captain does that job, at the captain's skill.
+
+**Burn time is management time:** projects, the comms inbox, crew moments, power and
+wear.
+
 ## Ship duel
 
 ### Initiative
@@ -184,14 +217,15 @@ played.
 
 ## Build order
 
-1. The ship duel: threat and answer with fit decks, replacing `STANCES` in `js/duel.js`.
-   Update `tests/stations.test.js`.
-2. The boarding duel: a new module, called from boarding runs and from `boardingFight()`
-   in `js/boarding.js`.
-3. Hull, outfit and escort cards.
-4. The hardcore flag and the ship-loss outcome.
-5. A headless simulation, like Wind's `tools/simulate.js`, to tune card counts, damage
-   and death odds before release.
+1. The ship duel (#42, PR #51): threat and answer with fit decks. Power, wear and refits
+   feed the deck.
+2. The duel becomes the only combat, and real-time fighting is retired (#52).
+3. Automated flight, with the flight screen as a backdrop (#53).
+4. The boarding duel (#43).
+5. Hull, outfit, escort and post cards (#47).
+6. Hardcore mode (#44).
+7. A headless simulation, like Wind's `tools/simulate.js`, to tune card counts, damage
+   and death odds before release (#45).
 
 ## Open questions
 
