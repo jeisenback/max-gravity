@@ -12,12 +12,11 @@ const UAT_KEY = 'maxGravity.uat.results', UAT_BACKUP = 'maxGravity.save.uatBacku
 
 // ---------- set-up helpers ----------
 function uatFresh(o = {}) {
-  G.dialog = null; G.nextEvent = null; G.engage = null; G.transit = null;
+  G.dialog = null; G.nextEvent = null; G.transit = null;
   newGame();
   const st = G.state;
   Object.assign(st, { tutorial: null, credits: o.credits || 50000, shipId: o.ship || 'lightfreighter', uat: true });  // a test game, never backed up
   st.story.next = 1e9;                       // keep the Cold Water derelict out of the way
-  st.flags.classicCombat = !!o.classic;
   st.fuel = SHIPS[st.shipId].fuel; st.armor = SHIPS[st.shipId].armor;
   if (o.cargo) Object.assign(st.cargo, o.cargo);
   if (o.launcher) { st.outfits.launcher = 1; st.torpedoes = 6; }
@@ -42,7 +41,7 @@ function uatPassenger(dest = 'mars', planet = 'Mars', opinion = 0) {
 function uatLand(name) {
   const at = planetNamed(name), st = G.state;
   st.systemId = at.sid; st.planet = at.pl.name;
-  G.transit = null; G.engage = null; G.dialog = null;
+  G.transit = null; G.dialog = null;
   resetWorld();
   landAt(at.pl, []);
   while (G.dialog) { G.dialog = null; }  // no landing scene on top of the test
@@ -95,17 +94,12 @@ const UAT_ITEMS = [
     setup() { uatFresh({ ship: 'courier' }); uatLand('Ceres Station'); openMap(); } },
   { group: 'Combat', id: 'contact', title: 'Pirate contact during a burn', check: 'The contact offers battle stations, a hard burn, and a payoff. Battle stations opens the fight.',
     setup() { uatFresh({ launcher: true, ship: 'courier' }); uatBurn('The Rook', 'ceres'); openEvent(contactEvent({ kind: 'pirate' })); } },
-  { group: 'Combat', id: 'fight', title: 'Burn fight', check: 'Momentum flight feels right: thrust, retrograde, guns, torpedoes, point defense, strain and blackout. The fight ends with a summary.',
-    setup() { uatFresh({ launcher: true, ship: 'courier' }); uatBurn('The Rook', 'ceres'); startEngage({ spec: { kind: 'pirate' }, flee: false }); } },
-  { group: 'Combat', id: 'board', title: 'Boarding in a burn', check: 'The enemy is disabled and matched with you: H (or Hail) boards it, and the choices work.',
-    setup() {
-      uatFresh({ launcher: true, ship: 'courier' }); uatBurn('The Rook', 'ceres'); startEngage({ spec: { kind: 'pirate' }, flee: false });
-      const n = G.engage.enemy, p = G.player;
-      damage(n, n.shields + n.maxArmor * 0.85, true);
-      Object.assign(p, { x: n.x - 120, y: n.y, vx: n.vx, vy: n.vy });
-    } },
-  { group: 'Combat', id: 'classic', title: 'Classic combat in local space', check: 'With combat set to classic, pirates attack in local space; torpedoes and point defense work.',
-    setup() { uatFresh({ launcher: true, classic: true, ship: 'gunship' }); uatLand('The Rook'); takeOff(); for (let i = 0; i < 2; i++) { const n = spawnNpc('pirate', false); n.hostile = true; } } },
+  { group: 'Combat', id: 'duel', title: 'Console duel', check: 'Threat and answer: your hand only offers cards you hold, a stopped threat passes the initiative, and the fight ends in eight exchanges or fewer. With no gunner aboard, you take the guns yourself.',
+    setup() { uatFresh({ launcher: true, ship: 'courier' }); G.state.torpedoes = 3; uatBurn('The Rook', 'ceres'); startDuel({ kind: 'pirate' }, false); finishEvent(); } },
+  { group: 'Combat', id: 'board', title: 'Boarding after a duel', check: 'A beaten pirate drifts, disabled: board her, finish her, or leave her. Boarding offers her strongbox or the ship as a prize.',
+    setup() { uatFresh({ launcher: true, ship: 'courier' }); uatBurn('The Rook', 'ceres'); startDuel({ kind: 'pirate' }, false); G.nextEvent = null; G.duel.foeHp = 1; G.duel.init = 'me'; G.duel.me.threat.hand[0] = 'torp'; G.duel.them.answer.hand = ['locks']; openEvent({ title: 'Last exchange', text: 'Fire the torpedo.', choices: [{ label: 'Torpedo', run: () => duelExchange('torp', 'locks') }] }); } },
+  { group: 'Combat', id: 'local', title: 'Combat in local space', check: 'Pirates attack in local space; torpedoes and point defense work.',
+    setup() { uatFresh({ launcher: true, ship: 'gunship' }); uatLand('The Rook'); takeOff(); for (let i = 0; i < 2; i++) { const n = spawnNpc('pirate', false); n.hostile = true; } } },
   { group: 'Frontier', id: 'claim', title: 'Found an outpost', check: 'Claim Callisto at Ganymede, fly there, deliver supplies (capped at 30 days), and build.',
     setup() { uatFresh({ credits: 150000, ship: 'freighter', cargo: { industrial: 40, equipment: 20, metal: 30, food: 15, water: 15 } }); uatLand('Ganymede'); } },
   { group: 'Frontier', id: 'outpost', title: 'A growing outpost', check: 'The First Born moment opens on landing; the outpost page shows supplies, income, and buildings.',
@@ -144,12 +138,11 @@ const UAT_TOOLS = {
   refuel: () => { const st = G.state; st.fuel = ship().fuel; st.armor = ship().armor; if (G.player) { G.player.armor = G.player.maxArmor; G.player.shields = ship().shields; } },
   days: () => { const st = G.state; for (let i = 0; i < 10; i++) { st.day++; Mods.emit('newDay', st.day); } },
   cargo: () => { const st = G.state; for (const c of COMMODITIES) { const q = Math.min(20, cargoFree()); if (q > 0) st.cargo[c.id] = (st.cargo[c.id] || 0) + q; } },
-  combat: () => { G.state.flags.classicCombat = !G.state.flags.classicCombat; },
   happen: () => { if (G.mode === 'transit' && !G.transit.event) startHappening(); },
   intercept: () => { if (G.mode === 'transit' && !G.transit.event) openEvent(contactEvent({ kind: 'pirate' })); },
   arrive: () => { if (G.mode === 'transit') { G.transit.left = 0.05; G.transit.times = []; } },
   restore: () => {
-    try { const s = localStorage.getItem(UAT_BACKUP); if (s) { localStorage.setItem(Saves.key(Saves.current), s); G.dialog = null; G.transit = null; G.engage = null; G.paused = false; loadGame(); } } catch (e) { /* storage blocked */ }
+    try { const s = localStorage.getItem(UAT_BACKUP); if (s) { localStorage.setItem(Saves.key(Saves.current), s); G.dialog = null; G.transit = null; G.paused = false; loadGame(); } } catch (e) { /* storage blocked */ }
   },
 };
 
@@ -194,7 +187,6 @@ const Uat = {
       <p class="hint">Each Set up starts a fresh game in the right spot. Your own game was backed up when this opened: <button data-uat="tool" data-id="restore">Restore my game</button></p>
       <div class="uat-row">
         <button data-uat="tool" data-id="cash">+50,000 cr</button><button data-uat="tool" data-id="refuel">Refuel and repair</button><button data-uat="tool" data-id="days">+10 days</button><button data-uat="tool" data-id="cargo">Fill hold</button>
-        <button data-uat="tool" data-id="combat">Combat: ${G.state && G.state.flags.classicCombat ? 'classic' : 'in burns'}</button>
         <button data-uat="tool" data-id="happen">Transit happening now</button><button data-uat="tool" data-id="intercept">Pirate contact now</button><button data-uat="tool" data-id="arrive">Arrive now</button>
       </div>
       <div class="uat-row"><select data-sel="place"><option value="">Land at...</option>${places.map(p => `<option>${esc(p)}</option>`).join('')}</select>

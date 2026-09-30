@@ -1,6 +1,6 @@
 'use strict';
 
-// Combat: fights during burns (the default), classic local-space fights, torpedoes,
+// Combat: duels during burns, local-space fights, torpedoes,
 // boarding, injuries, escorts, hails, and the captains you meet more than once.
 
 const { test, after } = require('node:test');
@@ -19,62 +19,33 @@ const burnSetup = () => {
   takeOff(); st.dest = 'ceres'; G.player.x = 6000; G.player.y = 0; tryBurn(); enterTransit();
 };
 
-test('a pirate intercepts a burn; a bot pilot fights it to an end', async () => {
+test('a pirate intercepts a burn, and the duel plays to an end and back to the burn', async () => {
   const { page, ev, done } = await open();
   await ev(burnSetup);
   await ev(() => { G.transit.times = []; G.transit.interceptPlanned = true; G.transit.intercept = { spec: { kind: 'pirate' }, at: 0 }; });
   await page.waitForFunction(() => G.dialog && G.dialog.event.title === 'Contact');
+  const label = await ev(() => G.dialog.choices[0].label);
   await page.click('[data-action=choose][data-arg="0"]');
   await page.click('[data-action=continue]');
-  await page.waitForFunction(() => G.mode === 'engage');
   const r = await ev(() => {
-    G.paused = true;  // the test drives the clock
-    const t0 = G.time;
-    while (G.mode === 'engage' && G.time - t0 < 240) {
-      const e = G.engage, p = G.player, n = e.enemy, dx = n.x - p.x, dy = n.y - p.y, d = Math.hypot(dx, dy);
-      const off = wrapAngle(Math.atan2(dy + (n.vy - p.vy) * d / 520, dx + (n.vx - p.vx) * d / 520) - p.angle);
-      G.keys = { left: off < -0.05, right: off > 0.05, thrust: Math.abs(off) < 0.3 && d > 700 && Math.hypot(n.vx - p.vx, n.vy - p.vy) < 120, fire: Math.abs(off) < 0.1 && d < 900 };
-      if (d < 2500 && d > 800 && Math.random() < 0.01) playerTorpedo();
-      engageTick(1 / 60);
-      if (G.player.dead) break;
+    let n = 0;
+    // Play the first card offered until the fight is over.
+    while (G.dialog && n < 20) {
+      if (/^Contact: exchange/.test(G.dialog.event.title)) n++;
+      const hand = G.duel && G.duel.me.threat.hand;
+      const i = hand && G.duel.init === 'me' && hand.includes('torp') ? G.dialog.choices.findIndex(c => /^Torpedo/.test(c.label)) : 0;
+      chooseEvent(Math.max(0, i)); finishEvent();
     }
-    G.keys = {}; G.paused = false;
-    return { mode: G.mode, dead: !!G.player.dead, summary: G.dialog && G.dialog.event.text, torps: G.state.torpedoes };
+    return { n, duel: !!G.duel, mode: G.mode };
   });
-  assert.ok(r.dead || r.mode !== 'engage', `the fight ends (${JSON.stringify(r)})`);
-  if (!r.dead) {
-    assert.ok(r.summary, 'a summary follows the fight');
-    await ev(() => { chooseEvent(0); finishEvent(); });
-    assert.equal(await ev(() => G.mode), 'transit', 'back to the burn');
-  }
-  assert.ok(r.torps < 6, 'torpedoes were fired');
+  assert.match(label, /you take the guns/, 'with no gunner aboard, the captain fights');
+  assert.ok(r.n >= 1 && r.n <= 8, `the duel runs one to eight exchanges (${r.n})`);
+  assert.equal(r.duel, false, 'the duel ends');
+  assert.equal(r.mode, 'transit', 'back to the burn');
   await done();
 });
 
-test('burning hard strains the crew to a blackout', async () => {
-  const { ev, done } = await open();
-  await ev(burnSetup);
-  const r = await ev(() => {
-    G.paused = true;
-    startEngage({ spec: { kind: 'pirate' }, flee: true });
-    G.engage.throttle = maxG(G.player);
-    let maxStrain = 0, blackout = false;
-    for (let i = 0; i < 60 * 30 && G.mode === 'engage'; i++) {
-      G.keys = { thrust: true };
-      engageTick(1 / 60);
-      maxStrain = Math.max(maxStrain, G.engage ? G.engage.strain : 0);
-      if (G.engage && G.engage.blackout > 0) blackout = true;
-      if (G.dialog) { chooseEvent(0); finishEvent(); }
-    }
-    G.keys = {}; G.paused = false;
-    return { maxStrain, blackout, g: maxG(G.player) };
-  });
-  assert.ok(r.g > 2.5, 'the shuttle can pull more than the strain limit');
-  assert.ok(r.maxStrain > 0 && r.blackout, `strain builds to a blackout (${JSON.stringify(r)})`);
-  await done();
-});
-
-test('bounties intercept and pay; disabled ships can be boarded; burn mode keeps local space quiet', async () => {
+test('bounties intercept and pay; beaten pirates can be boarded; local space stays quiet', async () => {
   const { ev, done } = await open();
   const r = await ev(() => {
     const st = G.state, out = {}; st.tutorial = null; st.story.next = 1e9; st.credits = 50000; st.shipId = 'freighter';
@@ -83,28 +54,28 @@ test('bounties intercept and pay; disabled ships can be boarded; burn mode keeps
       while (G.dialog) { chooseEvent(G.dialog.choices.length - 1); finishEvent(); }
       takeOff(); st.dest = to; G.player.x = 6000; G.player.y = 0; tryBurn(); enterTransit();
     };
+    // Wins the duel on the next exchange.
+    const winDuel = spec => {
+      startDuel(spec, false); G.nextEvent = null;
+      const d = G.duel; d.foeHp = 1; d.init = 'me'; d.me.threat.hand[0] = 'gun'; d.them.answer.hand = ['locks'];
+      return duelExchange('gun', 'locks');
+    };
     st.missions.push({ id: 777, type: 'bounty', targetSystem: 'ceres', targetName: 'The Weeping Saint', issuer: 'Belt Collective', title: 'Bounty', pay: 9000, deadline: 999 });
     burnTo('hygiea', 'The Rook', 'ceres');
     planIntercept();
     out.bountyKind = G.transit.intercept && G.transit.intercept.spec.kind;
-    startEngage({ spec: G.transit.intercept.spec, flee: false });
     const credits = st.credits;
-    damage(G.engage.enemy, 9999, true); engageTick(0.016);
+    out.summary = winDuel(G.transit.intercept.spec);
     out.paid = st.credits - credits;
     out.bountyLeft = st.missions.some(m => m.id === 777);
-    out.summary = G.dialog && G.dialog.event.text;
-    finishEvent();
+    out.bountyBoard = !!G.nextEvent;
 
-    startEngage({ spec: { kind: 'pirate' }, flee: false });
-    const m = G.engage.enemy, p = G.player;
-    damage(m, m.shields + m.maxArmor * 0.85, true);
-    out.disabled = !!m.disabled;
-    Object.assign(p, { x: m.x - 100, y: m.y, vx: m.vx + 20, vy: m.vy });
-    engageHail();
-    out.boardChoices = G.dialog.choices.map(c => c.label);
-    chooseEvent(0); finishEvent(); engageTick(0.016);
-    out.afterBoard = G.mode;
-    if (G.dialog) finishEvent();
+    out.pirateText = winDuel({ kind: 'pirate' });
+    const drift = G.nextEvent; G.nextEvent = null;
+    out.driftChoices = drift.choices.map(c => c.label);
+    drift.choices[0].run();
+    out.boardChoices = G.nextEvent.choices.map(c => c.label);
+    G.nextEvent = null;
 
     st.rep['Earth Coalition'] = -40;
     burnTo('mars', 'Mars', 'earth');
@@ -113,30 +84,28 @@ test('bounties intercept and pay; disabled ships can be boarded; burn mode keeps
     out.patrols = patrols;
 
     G.transit = null; st.systemId = 'hygiea'; st.planet = 'The Rook'; G.player = makeShip('shuttle', 0, 0, 0); G.mode = 'flight';
-    let burn = 0, classic = 0;
-    for (let i = 0; i < 20; i++) { populateSystem(); burn += G.npcs.filter(x => x.kind === 'pirate' && x.hostile).length; }
-    st.flags.classicCombat = true;
-    for (let i = 0; i < 20; i++) { populateSystem(); classic += G.npcs.filter(x => x.kind === 'pirate').length; }
-    out.burn = burn; out.classic = classic;
+    let pirates = 0;
+    for (let i = 0; i < 20; i++) { populateSystem(); pirates += G.npcs.filter(x => x.kind === 'pirate' && x.hostile).length; }
+    out.pirates = pirates;
     return out;
   });
   assert.equal(r.bountyKind, 'bounty');
   assert.equal(r.paid, 9000);
   assert.equal(r.bountyLeft, false);
+  assert.equal(r.bountyBoard, false, 'a bounty target is finished, not boarded');
   assert.doesNotMatch(r.summary, /The The/);
-  assert.ok(r.disabled);
+  assert.match(r.pirateText, /dead in space/);
+  assert.deepEqual(r.driftChoices, ['Close in and board', 'Finish her', 'Leave her drifting']);
   assert.ok(r.boardChoices.some(l => /^Board/.test(l)), `board offered (${r.boardChoices})`);
-  assert.equal(r.afterBoard, 'transit');
   assert.ok(r.patrols > 10, 'wanted captains meet patrols');
-  assert.equal(r.burn, 0, 'no hostile pirates in local space in burn mode');
-  assert.ok(r.classic > 0, 'classic mode keeps them');
+  assert.equal(r.pirates, 0, 'pirates come for you in burns, not in local space');
   await done();
 });
 
 test('classic fights: a corvette beats a corsair, torpedoes help a shuttle', async () => {
   const { ev, done } = await open();
   const r = await ev(() => {
-    G.state.tutorial = null; G.state.story.next = 1e9; G.state.flags.classicCombat = true;
+    G.state.tutorial = null; G.state.story.next = 1e9;
     while (G.dialog) finishEvent();
     G.paused = true;
     const fight = (shipId, outfits, foeId) => {
@@ -172,7 +141,7 @@ test('boarding, prizes, injuries and the medic', async () => {
   const { ev, done } = await open();
   const r = await ev(() => {
     const out = {};
-    const fresh = () => { const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000; st.flags.classicCombat = true; while (G.dialog) finishEvent(); G.mode = 'landed'; takeOff(); G.spawnTimer = 1e9; G.npcs = []; G.torps = []; };
+    const fresh = () => { const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000; while (G.dialog) finishEvent(); G.mode = 'landed'; takeOff(); G.spawnTimer = 1e9; G.npcs = []; G.torps = []; };
     const spawn = (kind, shipId, x) => { spawnNpc(kind, false, true); const n = G.npcs[G.npcs.length - 1], s = SHIPS[shipId]; Object.assign(n, { shipId, x: G.player.x + x, y: G.player.y, vx: 0, vy: 0, shields: s.shields, armor: s.armor, maxArmor: s.armor }); return n; };
     const beat = n => { let i = 0; while (!n.disabled && !n.dead && i++ < 200) damage(n, 6, true); };
     const choose = (ev, label) => ev.choices.find(x => x.label.startsWith(label)).run();
@@ -214,7 +183,7 @@ test('boarding, prizes, injuries and the medic', async () => {
 test('every hail answers without errors, and captains remember you', async () => {
   const { page, ev, done } = await open();
   const r = await ev(() => {
-    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.flags.classicCombat = true; st.credits = 50000; st.cargo.equipment = 15; st.paid.equipment = 4000;
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000; st.cargo.equipment = 15; st.paid.equipment = 4000;
     while (G.dialog) finishEvent();
     takeOff();
     const setups = {
@@ -261,7 +230,7 @@ test('every hail answers without errors, and captains remember you', async () =>
 test('escorts fly with you, cost reaction mass, and can be lost', async () => {
   const { ev, done } = await open();
   const r = await ev(() => {
-    const st = G.state; st.tutorial = null; st.credits = 200000; st.flags.classicCombat = true;
+    const st = G.state; st.tutorial = null; st.credits = 200000;
     while (G.dialog) finishEvent();
     buyCompanyShip('lightfreighter'); buyCompanyShip('gunship');
     Mods.act('cescort', '0'); Mods.act('cescort', '1');

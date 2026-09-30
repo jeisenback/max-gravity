@@ -48,7 +48,7 @@ test('the tutorial walks a first trade run', async () => {
 
 test('touch controls on a phone', async () => {
   const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
-  await ev(() => { G.state.tutorial = null; G.state.flags.classicCombat = true; while (G.dialog) finishEvent(); UI.render(); });
+  await ev(() => { G.state.tutorial = null; while (G.dialog) finishEvent(); UI.render(); });
   assert.ok(await ev(() => Touch.on));
   await page.tap('[data-action=takeoff]');
   await page.waitForSelector('#stick', { state: 'visible' });  // shown on the next frame
@@ -100,8 +100,8 @@ test('no screen overflows sideways at phone, landscape, and tablet sizes', async
     event: () => { Menu.resume(); openEvent(sitPicker()); },
     transit: () => { G.dialog = null; UI.hide(); uatBurn('Ceres Station', 'pallas'); },
     sheet: () => { G.bridgeOpen = 'interior'; syncBridge(true); },
-    fight: () => { startEngage({ spec: { kind: 'pirate' }, flee: false }); },
-    uat: () => { G.engage = null; G.mode = 'transit'; uatEnable(); },
+    fight: () => { startDuel({ kind: 'pirate' }, false); finishEvent(); },
+    uat: () => { G.dialog = null; G.duel = null; G.nextEvent = null; UI.hide(); uatEnable(); },
   };
   const problems = [];
   for (const [w, h] of sizes) {
@@ -173,7 +173,7 @@ test('every tab at every port reads cleanly, broke or rich, empty or full', asyn
   const { ev, done } = await open();
   const bad = await ev(() => {
     const st = G.state, out = [];
-    st.tutorial = null; st.story.next = 1e9; st.flags.classicCombat = true; while (G.dialog) finishEvent();
+    st.tutorial = null; st.story.next = 1e9; while (G.dialog) finishEvent();
     const states = {
       broke: () => { st.credits = 0; st.cargo = {}; st.crew = []; st.shipId = 'shuttle'; },
       full: () => { st.credits = 1e6; st.shipId = 'freighter'; st.cargo = { food: SHIPS.freighter.cargo }; st.crew = ['rosa', 'kit', 'dima']; st.fuel = 0; st.armor = 1; },

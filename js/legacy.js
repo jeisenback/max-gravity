@@ -45,7 +45,7 @@ function succeed(fate, heirName) {
   const o = st.outpost, docked = (st.fleet || []).find(s => !s.dest && !s.escort);
   const at = (o && planetNamed(o.site)) || (docked && planetNamed(docked.at)) || planetNamed(st.planet) || planetNamed('Earth');
   st.systemId = at.sid; st.planet = at.pl.name;
-  G.transit = null; G.engage = null; G.dialog = null; G.nextEvent = null;
+  G.transit = null; G.dialog = null; G.nextEvent = null;
   resetWorld();
   save();
   landAt(at.pl, notes);

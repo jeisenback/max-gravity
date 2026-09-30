@@ -40,7 +40,6 @@ const Touch = {
     root.querySelectorAll('[data-tap]').forEach(b => b.addEventListener('pointerdown', e => {
       e.preventDefault();
       if (G.mode === 'flight') taps[b.dataset.tap]();
-      else if (G.mode === 'engage' && b.dataset.tap === 'hail') engageHail();
     }));
     root.querySelectorAll('[data-hold]').forEach(b => {
       const set = v => e => { e.preventDefault(); G.keys[b.dataset.hold] = v; b.classList.toggle('on', v); };
@@ -73,10 +72,8 @@ const Touch = {
     const key = `${G.mode}|${this.on}|${!!eventOpen}`;
     if (key === this.shown) return;
     this.shown = key;
-    const flying = G.mode === 'flight' || G.mode === 'engage';
+    const flying = G.mode === 'flight';
     document.getElementById('touch').hidden = !(this.on && flying);
-    // Mid-fight in a burn, only Hail (and Torp) mean anything.
-    document.querySelectorAll('#touch [data-tap]').forEach(b => { b.hidden = G.mode === 'engage' && b.dataset.tap !== 'hail'; });
     document.getElementById('tmap').hidden = !(G.mode === 'transit' && !eventOpen);
     for (const id of ['tclose', 'tzoomin', 'tzoomout']) document.getElementById(id).hidden = G.mode !== 'map';
     if (!flying) {

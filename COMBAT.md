@@ -13,7 +13,8 @@ decides, and the crew flies.
 
 - **One combat system.** The card duel is the only fight, in burns and in classic
   flight. With no crewed gunner, the captain plays it with their own skill. The
-  real-time fight (`js/engage.js`) is retired (#52).
+  real-time fight is retired: in burns (#52, done), in local space (#55), and in the
+  story set pieces (#56).
 - **Automated flight.** Departing, docking, landing and closing on a disabled ship are
   choices, and the autopilot flies them. The flight screen stays as a backdrop but is
   never steered (#53).
@@ -219,7 +220,8 @@ played.
 
 1. The ship duel (#42, PR #51): threat and answer with fit decks. Power, wear and refits
    feed the deck.
-2. The duel becomes the only combat, and real-time fighting is retired (#52).
+2. The duel becomes the only combat, and real-time fighting is retired: in burns (#52),
+   in local space (#55), and in the story set pieces (#56).
 3. Automated flight, with the flight screen as a backdrop (#53).
 4. The boarding duel (#43).
 5. Hull, outfit, escort and post cards (#47).

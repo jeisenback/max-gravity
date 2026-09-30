@@ -16,7 +16,7 @@ const helpers = () => {
   window.S = {
     reset(stage, extra) {
       localStorage.clear(); newGame(); while (G.dialog) finishEvent();
-      const st = G.state; st.tutorial = null; st.flags.classicCombat = true; st.shipId = 'freighter'; st.credits = 50000;
+      const st = G.state; st.tutorial = null; st.shipId = 'freighter'; st.credits = 50000;
       if (stage !== undefined) Object.assign(st.story, { stage }, extra || {});
       home().cat = 'Rivet';  // no stray-cat scene in front of the story scene under test
     },
@@ -52,6 +52,8 @@ const helpers = () => {
       return s.id;
     },
     at(sid, planet) { G.state.systemId = sid; G.state.planet = planet; G.mode = 'landed'; G.transit = null; },
+    // A bounty target beaten in a burn duel: the kill settles like any other.
+    killBounty(sid) { const m = G.state.missions.find(x => x.type === 'bounty' && x.targetSystem === sid); settleKill(makeEnemy({ kind: 'bounty', mission: m }), true); },
     done(good) { const m = G.state.missions.find(x => x.good === good || x.targetName === good); Mods.emit('missionDone', m); G.state.missions = G.state.missions.filter(x => x !== m); },
     slicer(culture) { const c = makeCrewCandidate(culture); c.role = 'slicer'; c.skill = 2; registerPerson(c); G.state.crew.push(c.id); },
   };
@@ -67,9 +69,11 @@ test('Cold Water act 1: derelict, Voight, the agent, Mira, Europa', async () => 
     G.state.day = 12; S.burn('earth'); startHappening(); o.derelict = G.dialog && G.dialog.event.title;
     S.choose(G.dialog.choices[0].label); o.s1 = story().stage;
     o.voight = S.arrive('Earth'); S.choose('"It is not for sale'); o.s2 = story().stage;
-    takeOff(); o.agents = G.npcs.filter(n => n.kind === 'agent').length;
+    takeOff(); Mods.emit('frame', 0.1); o.recovery = G.dialog && G.dialog.event.title;
     const rep = JSON.stringify(G.state.rep);
-    const a = G.npcs.find(n => n.kind === 'agent'); a.shields = 0; damage(a, 9999, true);
+    S.choose('Battle stations');
+    for (let i = 0; i < 80 && (G.dialog || G.nextEvent); i++) { if (!G.dialog) { finishEvent(); continue; } chooseEvent(0); finishEvent(); }
+    Mods.emit('frame', 0.1);
     o.repKept = rep === JSON.stringify(G.state.rep);
     o.sameDay = S.land('earth', 'Earth');  // a landing scene may play, but not Mira
     S.burn('mars'); o.mira = S.arrive('Mars'); S.choose(G.dialog.choices[0].label);
@@ -85,8 +89,8 @@ test('Cold Water act 1: derelict, Voight, the agent, Mira, Europa', async () => 
   assert.equal(r.s1, 1);
   assert.equal(r.voight, 'A Man From Aquilon');
   assert.equal(r.s2, 2);
-  assert.equal(r.agents, 1, 'Aquilon sends a recovery ship');
-  assert.ok(r.repKept, 'killing the agent costs no standing');
+  assert.equal(r.recovery, 'Aquilon Recovery Ship', 'Aquilon sends a recovery ship');
+  assert.ok(r.repKept, 'fighting the recovery ship costs no standing');
   assert.notEqual(r.sameDay, 'Mira Castellane', 'Mira does not appear the same day');
   assert.equal(r.mira, 'Mira Castellane');
   assert.ok(r.storyMission);
@@ -139,9 +143,9 @@ test('Cold Water act 3: each side reaches its ending at Ceres', async () => {
       S.reset('act2', { side, act2Day: 20 }); G.state.shipId = 'gunship'; G.state.day = 22;
       o.early = S.land('earth', 'Earth');
       G.state.day = 26; o.briefing = S.land('earth', 'Earth'); S.choose('Understood');
-      S.at('ceres', 'Ceres Station'); takeOff();
-      o.blockade = G.npcs.filter(n => n.blockade).length;
-      G.npcs = [];
+      S.at('ceres', 'Ceres Station'); takeOff(); Mods.emit('frame', 0.1);
+      o.blockade = G.dialog && G.dialog.event.title;
+      G.dialog = null; G.pendingScene = null; story().blockadeCleared = true; G.npcs = [];  // the fights have their own test
       G.state.cargo.water = 30; G.state.paid.water = 3000; G.state.crew = ['rosa', 'kit'];
       S.land('ceres', 'Ceres Station'); S.choose(pick);
       o.epilogue = G.dialog && G.dialog.event.title;
@@ -151,7 +155,7 @@ test('Cold Water act 3: each side reaches its ending at Ceres', async () => {
     }, [side, pick]);
     assert.equal(r.early, null, `${side}: nothing before the briefing day`);
     assert.ok(r.briefing, `${side}: briefing`);
-    assert.ok(r.blockade > 0, `${side}: the blockade is waiting`);
+    assert.ok(r.blockade, `${side}: the blockade is waiting`);
     assert.ok(r.epilogue, `${side}: epilogue`);
     assert.ok(r.ending, `${side}: an ending is recorded`);
   }
@@ -189,8 +193,7 @@ test('the Mars Navy commission runs start to finish', async () => {
     S.reset(); const st = G.state; st.story.next = 1e9; st.day = 20; st.rep['Mars Republic'] = 20; S.slicer('mars');
     S.at('mars', 'Mars');
     const steps = [S.play('port', 'Accept'), S.play('port', 'Take the hunt')];
-    S.at('pallas', 'Pallas Refinery'); G.player = makeShip('shuttle', 0, 0, 0); G.mode = 'flight'; populateSystem();
-    const target = G.npcs.find(n => n.bountyId); damage(target, 99999, true);
+    S.at('pallas', 'Pallas Refinery'); const target = G.state.missions.some(m => m.type === 'bounty' && m.targetSystem === 'pallas'); S.killBounty('pallas');
     G.mode = 'landed'; G.transit = { to: 'mars', total: 60, left: 30, flipped: true, event: null, comms: [] };
     steps.push(S.play('transit', 'Fatima'));
     S.at('mars', 'Mars'); steps.push(S.play('port', 'Carry the pouch'));
@@ -198,7 +201,7 @@ test('the Mars Navy commission runs start to finish', async () => {
     steps.push(S.play('port', 'Refuse'), S.play('port', ''));
     return { steps, target: !!target, done: quality('mcrnDone') };
   });
-  assert.ok(r.target, 'the hunt target spawns');
+  assert.ok(r.target, 'the hunt is posted');
   assert.ok(r.done, `commission complete (${r.steps.join(', ')})`);
   await done();
 });
@@ -216,7 +219,7 @@ test("the Rook's Crown by blood and by coin; Navy officers are never invited", a
       steps.push(S.play('transit', path === 'blood' ? 'Fatima' : 'Bribe'));
       G.transit = null; S.done('unmarked crates');
       S.at('hygiea', 'The Rook'); steps.push(S.play('port', path === 'blood' ? 'Hunt' : 'Buy her off'));
-      if (path === 'blood') { st.systemId = 'saturn'; G.player = makeShip('shuttle', 0, 0, 0); G.mode = 'flight'; populateSystem(); damage(G.npcs.find(n => n.bountyId), 99999, true); }
+      if (path === 'blood') { st.systemId = 'saturn'; S.killBounty('saturn'); }
       S.at('hygiea', 'The Rook');
       const mars = danger('mars');
       steps.push(S.play('port', 'Raid the Martian'));
@@ -264,7 +267,7 @@ test('every storylet opens and every choice plays, with no unfilled text', async
     const bad = [], odd = t => /undefined|NaN|\[object|\{[a-z]+\}/.test(t);
     const fresh = () => {
       localStorage.clear(); newGame(); while (G.dialog) finishEvent();
-      const st = G.state; st.tutorial = null; st.flags.classicCombat = true; st.credits = 100000; st.shipId = 'freighter'; st.day = 60;
+      const st = G.state; st.tutorial = null; st.credits = 100000; st.shipId = 'freighter'; st.day = 60;
       st.cargo = { water: 20, medical: 10, luxury: 10, food: 10, equipment: 10 };
       st.crew.push('rosa', 'kit');
       for (const role of ['slicer', 'medic', 'pilot']) { const c = makeCrewCandidate('belt'); c.role = role; c.skill = 2; registerPerson(c); st.crew.push(c.id); }
@@ -337,14 +340,15 @@ const consoleHelpers = () => {
   window.playOut = () => { for (let i = 0; i < 80 && (G.dialog || G.nextEvent); i++) { if (!G.dialog) { finishEvent(); continue; } chooseEvent(0); finishEvent(); } Mods.emit('frame', 0.1); };
 };
 
-test('the recovery ship on the console: a scene with a way out, and a fight the crew settles', async () => {
+test('the recovery ship on the console: a scene with a way out, and a fight settled there', async () => {
   const { ev, done } = await open();
   await ev(helpers); await ev(consoleHelpers);
   const r = await ev(() => {
     S.reset(2); const st = G.state, out = {};
-    // Solo: still a ship in local space.
-    S.land('earth', 'Earth'); takeOff(); Mods.emit('frame', 0.1);
-    out.solo = { agents: G.npcs.filter(n => n.kind === 'agent').length, dialog: !!G.dialog, stage: story().stage };
+    // Solo: the same scene, and you take the guns.
+    S.land('earth', 'Earth'); takeOff(); G.npcs = []; Mods.emit('frame', 0.1);
+    out.solo = { agents: G.npcs.filter(n => n.kind === 'agent').length, title: G.dialog && G.dialog.event.title, fight: G.dialog.choices.find(c => /^Battle/.test(c.label)).label };
+    G.dialog = null; G.pendingScene = null;
     // Crewed gunner: a scene, and no ship.
     S.reset(2); hireGunner();
     S.land('earth', 'Earth'); takeOff(); G.npcs = []; Mods.emit('frame', 0.1);
@@ -361,7 +365,8 @@ test('the recovery ship on the console: a scene with a way out, and a fight the 
     out.after = { duel: G.duel, fight: G.storyFight, mode: G.mode, dialog: !!G.dialog, armor: st.armor >= 1 };
     return out;
   });
-  assert.equal(r.solo.agents, 1, 'without a gunner, Aquilon still sends a ship'); assert.equal(r.solo.dialog, false);
+  assert.equal(r.solo.agents, 0, 'no ship in local space, gunner or not'); assert.equal(r.solo.title, 'Aquilon Recovery Ship');
+  assert.match(r.solo.fight, /you take the guns/);
   assert.equal(r.scene.title, 'Aquilon Recovery Ship'); assert.equal(r.scene.mode, 'hail'); assert.equal(r.scene.agents, 0); assert.equal(r.scene.via, 'ship');
   assert.ok(r.scene.labels.some(l => /Hand over the core/.test(l)) && r.scene.labels.some(l => /outrun/.test(l)));
   assert.deepEqual(r.sold, { stage: 'sold', fight: false, mode: 'flight' });

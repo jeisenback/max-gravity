@@ -199,7 +199,7 @@ function agentConsoleEvent(ambush) {
     storyLog('Surrendered the Persephone\'s core to an Aquilon recovery ship.');
     return '"Smart choice." They take it and break off. Somewhere on Ceres, another pump fails.';
   } });
-  choices.push({ label: `Battle stations (${roleName('gunner')} fights)`, run: fight(false) }, { label: 'Burn hard to outrun them', run: fight(true) });
+  choices.push({ label: `Battle stations (${gunnerLabel()})`, run: fight(false) }, { label: 'Burn hard to outrun them', run: fight(true) });
   return {
     title: ambush ? 'Aquilon Security' : 'Aquilon Recovery Ship', via: 'ship',
     text: ambush ? `Two Aquilon security ships come around the planet together, closing fast. Capt. ${c.first} ${c.last}: "Nothing personal, captain. Mr. Voight would like a word with your hull."`
@@ -239,7 +239,7 @@ function blockadeScene() {
     title: 'The Blockade of Ceres', via: 'station',
     text: `${coalitionBlocks ? 'The Coalition blockade holds the approach to Ceres Station' : 'Collective hardliners are attacking ships near Ceres Station'}: ${foes.map(f => f.name).join(' and ')}. ${allies ? `${allies} ship${allies > 1 ? 's' : ''} on your side are already moving to meet them.` : 'Nobody is on your side out here.'} Twenty tons of water are in your hold, and Ceres is thirsty.`,
     choices: [
-      { label: `Run the blockade (${roleName('gunner')} fights)`, run() { return gauntlet(0, true); } },
+      { label: `Run the blockade (${gunnerLabel()})`, run() { return gauntlet(0, true); } },
       { label: 'Slip in on a cold drive', can: () => true, run() {
         const odds = Math.min(0.85, 0.25 + 0.12 * roleSkill('pilot') + (power().drive <= 25 ? 0.2 : 0));
         if (Math.random() < odds) return clear(`${roleName('pilot')} kills the drive glow and threads the picket on thrusters, and the blockade never sees you. Ceres Station clears you to dock.`);

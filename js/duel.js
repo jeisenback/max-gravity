@@ -1,9 +1,8 @@
 'use strict';
 
-// Combat the gunner settles on the console (design: COMBAT.md). When the gunner post
-// is crewed, "Battle stations" on a contact plays out as up to eight exchanges of threat
-// and answer instead of the real-time fight (engage.js, which a manual gunner still
-// gets). The ship with the initiative plays a threat, the other an answer, both face
+// Combat on the console (design: COMBAT.md). "Battle stations" on a contact plays out as
+// up to eight exchanges of threat and answer, fought by a crewed gunner or, with none,
+// by you. The ship with the initiative plays a threat, the other an answer, both face
 // down. A threat that lands keeps the initiative; one that is stopped passes it. Each
 // ship's decks are built from its fit, so torpedoes, PDCs, pilot and crew all count.
 // Fits and discards are public; hands are not. Loaded before game.js; only calls into
@@ -32,6 +31,13 @@ const FOE_CREW = { raider: 2, corsair: 3, cutter: 4, destroyer: 6 };
 // Each kind of captain leans toward a card, on top of the odds.
 const FOE_LEAN = { pirate: 'board', patrol: 'gun', bounty: 'burn', hunter: 'torp' };
 
+// A crewed gunner fights the duel. With nobody on the post, or the post taken over, you do,
+// without a gunner's skill.
+const duelGunner = () => (postMode('gunner') === 'crewed' ? roleHolder('gunner') : null);
+// Who fights, for a choice's label.
+const gunnerLabel = () => (duelGunner() ? `${roleName('gunner')} fights` : 'you take the guns');
+const helmName = () => (roleHolder('pilot') ? roleName('pilot') : 'The helm');
+
 const hitPoints = (threat, outcome) => (outcome === 'full' ? DUEL_HIT[threat] : outcome === 'half' ? DUEL_HIT[threat] / 2 : 0);
 
 // The two decks, from the fit.
@@ -41,7 +47,7 @@ function playerCounts() {
     torp: s.launcher ? Math.min(TORP_MAX, st.torpedoes || 0) : 0,
     // The engineer's power shares, the fire control's wear and any refit all change the deck (#32, #33, #34).
     gun: Math.max(1, 2 + s.guns + Math.round((power().weapons - 30) / 20) - Math.round((1 - perf('fire')) * 4) + (refits().fire || 0)),
-    board: crew >= 2 ? 1 + (roleSkill('gunner') ? 1 : 0) : 0,
+    board: crew >= 2 ? 1 + (duelGunner() ? 1 : 0) : 0,
     pdc: 1 + 2 * ((st.outfits || {}).pdc || 0),
     burn: Math.max(1, 2 + roleSkill('pilot') + Math.round((power().drive - 40) / 20)),
     locks: 1 + Math.floor(crew / 2),
@@ -111,11 +117,11 @@ function startDuel(spec, flee) {
   G.duel = { spec, foe, foeHp, foeMax: foeHp, round: 0, init: 'foe', me: makeSide(playerCounts()), them: makeSide(foeCounts(foe)),
     deflector: power().shields >= 40 && perf('shields') >= 0.9,
     blur: Object.fromEntries(Object.keys(DUEL_CARDS).map(t => [t, perf('sensors') < 0.8 ? randInt(-1, 1) : 0])) };
-  let text = `Battle stations. ${roleName('gunner')} takes the guns. ${theShip(foe)} made the intercept, and she has the initiative.`;
+  let text = `Battle stations. ${duelGunner() ? `${roleName('gunner')} takes the guns.` : 'You take the guns yourself.'} ${theShip(foe)} made the intercept, and she has the initiative.`;
   if (flee) {
-    if (Math.random() < 0.4 + 0.12 * roleSkill('pilot')) { G.duel = null; return `${roleName('pilot')} winds the drive past the redline and opens the range. Their plume fades.`; }
+    if (Math.random() < 0.4 + 0.12 * roleSkill('pilot')) { G.duel = null; return `${helmName()} winds the drive past the redline and opens the range. Their plume fades.`; }
     st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.08));
-    text = `${roleName('pilot')} runs, but ${theShip(foe).replace(/^The/, 'the')} gets a burst in first. Battle stations.`;
+    text = `${helmName()} runs, but ${theShip(foe).replace(/^The/, 'the')} gets a burst in first. Battle stations.`;
   }
   G.nextEvent = duelEvent();
   return text;
@@ -138,8 +144,8 @@ function duelEvent() {
 // One line for each threat and how it went, from the attacker's side: stopped, half, full.
 const DUEL_LINES = {
   me: {
-    torp: ['{gunner} sends a torpedo down the line, and her point defense shreds it short.', 'The torpedo chases her through a hard burn and bursts close. Not clean, but it hurts.', 'The torpedo walks straight in. She never turned a gun on it.'],
-    gun: ['{gunner} rakes the space where she was. She is already burning clear.', 'Her PDCs swing onto your rounds and trade fire. Some of yours get through.', '{gunner} walks a long burst down her flank.'],
+    torp: ['The torpedo goes down the line, and her point defense shreds it short.', 'The torpedo chases her through a hard burn and bursts close. Not clean, but it hurts.', 'The torpedo walks straight in. She never turned a gun on it.'],
+    gun: ['The guns rake the space where she was. She is already burning clear.', 'Her PDCs swing onto your rounds and trade fire. Some of yours get through.', 'The guns walk a long burst down her flank.'],
     board: ['Your boarders cross and find her crew waiting at the locks. They pull back.', 'Her PDCs chew up the boarding line, but a charge still goes off on her hull.', 'Your boarders get across while she is busy burning, cut what they can, and pull back.'],
   },
   foe: {
@@ -148,6 +154,28 @@ const DUEL_LINES = {
     board: ['Her boarders hit the lock and find your crew waiting. They go back the way they came.', 'Your PDCs chew up her boarding line, but a charge still goes off on your hull.', 'Her boarders get across while you are burning, cut what they can, and pull back.'],
   },
 };
+
+// Settles a kill, and says what it paid.
+function duelFinish(foe) {
+  const st = G.state, pre = st.credits;
+  settleKill(foe, true);
+  return st.credits > pre ? ` Bounty +${fmt(st.credits - pre)} cr.` : '';
+}
+
+// A beaten ship that can be boarded (boarding.js) drifts, disabled, beside you.
+function duelDisabledEvent(f) {
+  const p = G.player;
+  Object.assign(f, { disabled: true, armor: f.maxArmor * 0.15 }, p ? { x: p.x, y: p.y, vx: p.vx, vy: p.vy } : {});
+  return {
+    title: `${f.name} (disabled)`,
+    text: 'Her drive is dark and her guns are silent. You can board her, finish her, or leave her to drift.',
+    choices: [
+      { label: 'Close in and board', run: () => { G.nextEvent = boardingEvent(f); return 'You match her drift and put the grapples out.'; } },
+      { label: 'Finish her', run: () => `${theShip(f)} breaks up on your screens.${duelFinish(f)}` },
+      { label: 'Leave her drifting', run: () => 'You leave her drifting behind you. The burn goes on.' },
+    ],
+  };
+}
 
 function duelExchange(mine, theirs) {
   const d = G.duel, st = G.state, max = ship().armor, foe = theShip(d.foe), attacker = d.init;
@@ -164,17 +192,18 @@ function duelExchange(mine, theirs) {
   d.round++;
   if (mine === 'gun' || mine === 'torp') wear('fire', mine === 'gun' ? 1.5 : 0.5);  // wear, from use (wear.js)
   if (attacker === 'foe' && pts) wear('shields', 1.5);
-  let text = DUEL_LINES[attacker][threat][['stop', 'half', 'full'].indexOf(out)].replace(/\{gunner\}/g, roleName('gunner')).replace(/\{pilot\}/g, roleHolder('pilot') ? roleName('pilot') : 'The helm')
+  let text = DUEL_LINES[attacker][threat][['stop', 'half', 'full'].indexOf(out)].replace(/\{pilot\}/g, helmName())
     + ` She played ${DUEL_CARDS[theirs].low}.${attacker === 'me' && pts ? ` ${foe} takes ${pts >= 4 ? 'a heavy hit' : 'a hit'}.` : ''}${before > st.armor ? ` Armor -${before - st.armor}.` : ''}`
     + (soaked ? ' The deflector capacitor soaks it.' : '') + (out === 'stop' ? ` ${d.init === 'me' ? 'You have' : 'She has'} the initiative.` : '');
-  if (d.foeHp <= 0) {
-    const pre = st.credits;
-    settleKill(d.foe, true);
-    text += ` ${foe} is finished.${st.credits > pre ? ` Bounty +${fmt(st.credits - pre)} cr.` : ''}`;
+  if (d.foeHp <= 0 && canBeDisabled(d.foe)) {
+    text += ` ${foe} is dead in space, drifting.`;
+    G.nextEvent = duelDisabledEvent(d.foe);
+  } else if (d.foeHp <= 0) {
+    text += ` ${foe} is finished.${duelFinish(d.foe)}`;
   } else if (st.armor <= max * 0.25) {
     const c = Math.min(st.credits, Math.max(200, Math.round(st.credits * 0.1)));
     st.credits -= c;
-    text += ` The hull cannot take another round. ${roleName('pilot')} calls it, and you yield${c ? `, paying ${fmt(c)} cr to be let go` : ''}.`;
+    text += ` The hull cannot take another round. ${helmName()} calls it, and you yield${c ? `, paying ${fmt(c)} cr to be let go` : ''}.`;
     d.foeHp = -1;
   } else if (d.round >= DUEL_ROUNDS) {
     text += ` Neither of you can finish it, and ${foe} breaks off.`;
