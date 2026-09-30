@@ -510,7 +510,8 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
   border: 1px solid var(--line);
   z-index: 3;
 }
-@media (min-width: 700px) { #bsheet { left: 50%; right: auto !important; transform: translateX(-50%); width: min(520px, 90vw); } #bkeys { justify-content: safe center; } }
+#bsheet { right: auto !important; transform: translateX(-50%); margin: 0; }  /* centred in the view by bridge.js */
+@media (min-width: 700px) { #bkeys { justify-content: safe center; } }
 #bsheet h3 { margin: 0 0 6px; }
 @media (max-width: 420px) { .tabs.stations { padding-inline: 2px; } .tabs.stations button { flex: 1 1 0; min-width: 0; font-size: 9.5px; letter-spacing: 0; padding-inline: 0; } }
 /* A post's block on a station view (stations.js). */
@@ -525,3 +526,7 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 /* Station keys: full names, or short ones on a phone (bridge.js). */
 .tabs.stations .short { display: none; }
 @media (max-width: 480px) { .tabs.stations .full { display: none; } .tabs.stations .short { display: inline; } .tabs.stations button { font-size: 11px; letter-spacing: 0.04em; } }
+/* The burn key bar on a phone: short names, so all six keys show; and compact when the screen is short (landscape). */
+#bkeys .short { display: none; }
+#bkeys.compact .full { display: none; } #bkeys.compact .short { display: inline; } #bkeys.compact { gap: 4px; padding-inline: 6px; } #bkeys.compact button { padding-inline: 4px; letter-spacing: 0.04em; }
+@media (max-height: 480px) { #bkeys { padding-top: 4px; padding-bottom: calc(4px + env(safe-area-inset-bottom, 0px)); } #bkeys button { min-height: 30px; } #bsheet { max-height: 55vh; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); } }

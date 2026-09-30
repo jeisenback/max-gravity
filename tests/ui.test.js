@@ -222,3 +222,25 @@ test('the bridge: station keys at port, and a key bar with status sheets in a bu
   assert.equal(await page.isVisible('#bsheet'), false, 'a scene has the screen to itself');
   await done();
 });
+
+test('the burn key bar shows all six keys, and the sheet stays clear of the HUD, at phone sizes', async () => {
+  const problems = [];
+  for (const [w, h] of [[360, 640], [390, 844], [414, 896], [844, 390], [768, 1024]]) {
+    const { page, ev, done } = await open({ viewport: { width: w, height: h }, mobile: true });
+    await ev(() => { G.state.tutorial = null; while (G.dialog) finishEvent(); uatBurn('Ceres Station', 'pallas'); G.transit.times = []; });
+    await page.waitForSelector('#bkeys', { state: 'visible' });
+    await page.click('[data-bst=eng]');
+    const r = await page.evaluate(() => {
+      const hud = G.hudW, limit = innerWidth - hud;
+      const keys = [...document.querySelectorAll('#bkeys button')].map(b => { const r = b.getBoundingClientRect(); return { l: r.left, r: r.right, vis: !!b.offsetParent }; });
+      const s = document.getElementById('bsheet').getBoundingClientRect();
+      return { limit, keys, sheet: { l: s.left, r: s.right, t: s.top, b: s.bottom }, h: innerHeight, pageW: document.documentElement.scrollWidth };
+    });
+    const bad = r.keys.filter(k => k.l < -1 || k.r > r.limit + 1 || !k.vis);
+    if (r.keys.length !== 6 || bad.length) problems.push(`${w}x${h}: ${r.keys.length} keys, ${bad.length} outside the ${r.limit}px view`);
+    if (r.sheet.l < -1 || r.sheet.r > r.limit + 1) problems.push(`${w}x${h}: the sheet spans ${Math.round(r.sheet.l)} to ${Math.round(r.sheet.r)} in a ${r.limit}px view`);
+    if (r.pageW > w + 1) problems.push(`${w}x${h}: the page scrolls sideways`);
+    await done();
+  }
+  assert.deepEqual(problems, []);
+});

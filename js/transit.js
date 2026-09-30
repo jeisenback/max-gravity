@@ -466,10 +466,12 @@ function drawTransit(W, H) {
   ctx.textAlign = 'center';
   ctx.font = '12px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
-  ctx.fillText(`${dateOf(transitNow(t))}, arriving ${dateOf(transitEta(t))}  -  ${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')} remaining${t.event ? '  (paused)' : ''}`, cx, top + 98);
+  const clock = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')} remaining${t.event ? '  (paused)' : ''}`, dates = `${dateOf(transitNow(t))}, arriving ${dateOf(transitEta(t))}`;
+  if (narrow) { ctx.fillText(dates, cx, top + 98); ctx.fillText(clock, cx, top + 114); }  // two lines: one is wider than a phone
+  else ctx.fillText(`${dates}  -  ${clock}`, cx, top + 98);
 
   // Comms log, top-left
-  const colW = narrow ? viewW - 56 : Math.min(360, viewW / 2 - 76), maxLines = narrow ? 9 : 16;
+  const colW = narrow ? viewW - 56 : Math.min(360, viewW / 2 - 76), maxLines = narrow ? 8 : 16;
   ctx.font = '12px "IBM Plex Mono", monospace';
   // Show whole messages, newest last, as many as fit.
   let lines = [];
@@ -478,7 +480,7 @@ function drawTransit(W, H) {
     if (lines.length + wrapped.length > maxLines) break;
     lines = wrapped.map(l => ({ l, recent: i === t.comms.length - 1, market: c.startsWith('[Market]') })).concat(lines);
   }
-  let y = top + 116;
+  let y = top + (narrow ? 132 : 116);
   transitPanel(16, y, colW + 24, 30 + lines.length * 16, 'COMMS');
   y += 18;
   for (const { l, recent, market } of lines) {

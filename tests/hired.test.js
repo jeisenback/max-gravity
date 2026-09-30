@@ -339,3 +339,44 @@ test('buying in: nobody comes if nobody likes you, and it needs the money and a 
   assert.equal(r.owner, 'shuttle', 'an owner is not affected');
   await done();
 });
+
+test('a second run buys new cargo: a plan made before the last cargo was sold is not reused', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    startHired('engineer'); const st = G.state, h = st.hired;
+    const fly = () => { let steps = 0; while (G.mode !== 'landed' && steps++ < 30000) { while (G.dialog) { chooseEvent(0); finishEvent(); } G.npcs = []; update(G.mode === 'transit' ? 1 : 1 / 30); Mods.emit('frame', G.mode === 'transit' ? 1 : 1 / 30); } };
+    const out = {};
+    currentPlan(); sail(); fly();
+    // The port screen drew while the cargo was still aboard: the plan it made must not survive the sale.
+    out.stale = !!h.plan; out.cargo = Object.keys(st.cargo).length;
+    const plan = currentPlan(); out.loaded = !!plan.loaded;
+    G.offers = []; const fund0 = h.fund; sail(); out.bought = plan.ballast || (Object.values(st.cargo)[0] || 0) > 0;
+    out.paid = plan.ballast || fund0 - h.fund === h.run.cost;
+    fly(); out.second = h.ledger[0];
+    out.honest = plan.ballast || out.second.cost > 0;
+    return out;
+  });
+  assert.equal(r.cargo, 0); assert.equal(r.loaded, false);
+  assert.ok(r.bought && r.paid, 'the cargo was bought and paid for');
+  assert.ok(r.honest && r.second.revenue > 0, 'and sold, so the run is not a loss of cargo nobody carried');
+  await done();
+});
+
+test('once you can afford a ship, the captain heads for a port with a yard', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    startHired('engineer'); const st = G.state, h = st.hired, out = {};
+    out.yardsInReach = Object.entries(SYSTEMS).filter(([sid]) => sid !== st.systemId && inRange(st.systemId, sid)).some(([, s]) => s.planets.some(p => p.services.includes('shipyard') && p.services.includes('trade')));
+    st.credits = 20000; h.plan = null; const rich = currentPlan();
+    out.rich = { yard: rich.yard, planet: rich.planet };
+    st.credits = 300; h.plan = null; const poor = currentPlan();
+    out.poorIsNotForced = poor !== null;
+    return out;
+  });
+  assert.ok(r.yardsInReach, 'there is a yard to head for');
+  assert.ok(r.rich.yard, `she heads for a yard (${r.rich.planet})`);
+  assert.ok(r.poorIsNotForced);
+  await done();
+});
