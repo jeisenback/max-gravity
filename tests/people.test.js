@@ -214,3 +214,53 @@ test('family: a personal story to loyalty, letters and moods, occasions, traditi
   assert.equal(await ev(() => home().name), 'Tuesday Forever');
   await done();
 });
+
+test('a long career with random answers: no errors, no broken text, no overfull ship', async () => {
+  const { ev, done } = await open({ seed: 4 });
+  const bad = await ev(() => {
+    const st = G.state, bad = [];
+    const odd = t => /undefined|NaN|\[object|\{[a-z]+\}/.test(String(t));
+    const answer = () => {
+      for (let k = 0; k < 6 && G.dialog; k++) {
+        const d = G.dialog;
+        if (odd(d.event.title + d.event.text)) bad.push('text: ' + d.event.title);
+        const ok = d.choices.map((c, i) => i).filter(i => !d.choices[i].can || d.choices[i].can());
+        if (ok.length) { const r = chooseEvent(pick(ok)); if (odd(r)) bad.push('result: ' + String(r).slice(0, 80)); }
+        finishEvent();
+      }
+      while (G.dialog) finishEvent();
+    };
+    st.tutorial = null; st.flags.classicCombat = true; st.credits = 80000; st.shipId = 'freighter';
+    answer();
+    for (let leg = 0; leg < 40; leg++) {
+      UI.tab = 'bar'; UI.render();
+      if (G.patrons && G.patrons.length) { openEvent(talkEvent(pick(G.patrons))); answer(); }
+      if (berthsFree() > 0 && G.bar.length && st.crew.length < 5 && Math.random() < 0.3) UI.act('hire', 'bar:0');
+      const pi = G.offers.findIndex(o => o.type === 'passenger' && (o.pax || 1) <= berthsFree());
+      if (pi >= 0 && Math.random() < 0.5) UI.act('accept', String(pi));
+      st.credits = Math.max(st.credits, 20000); st.fuel = ship().fuel;
+      const dests = Object.keys(SYSTEMS).filter(id => id !== st.systemId && burnFuel(st.systemId, id) <= st.fuel);
+      const to = (st.missions.find(m => dests.includes(m.destSystem)) || {}).destSystem || pick(dests);
+      takeOff(); answer(); st.dest = to; G.player.x = 6000; G.player.y = 0; tryBurn(); enterTransit(); G.transit.times = [];
+      planOccasions();
+      for (const o of G.transit.occasions) { openEvent(occasionEvent(o)); answer(); }
+      for (let h = 0; h < 4; h++) { startHappening(); answer(); }
+      const acts = Object.values(ACTIVITIES).filter(a => a.can());
+      if (acts.length) pick(acts).run();
+      const rs = relationshipScene(); if (rs) { openEvent(rs); answer(); }
+      for (const c of G.transit.comms) if (odd(c)) bad.push('comm: ' + c.slice(0, 80));
+      const days = G.transit.days; G.transit = null;
+      for (let d = 0; d < days; d++) { st.day++; Mods.emit('newDay', st.day); }
+      st.systemId = to; G.player = makeShip(st.shipId, 0, 0, 0); G.mode = 'flight'; G.npcs = [];
+      const m = st.missions.find(x => x.destSystem === to);
+      land(system().planets.find(p => m && p.name === m.destPlanet) || pick(system().planets));
+      for (const n of UI.notes) if (odd(n)) bad.push('note: ' + n.slice(0, 80));
+      answer();
+      if (berthsUsed() > ship().berths) bad.push(`overfull ${berthsUsed()}/${ship().berths}`);
+      if (!Number.isFinite(st.credits)) bad.push('credits ' + st.credits);
+    }
+    return [...new Set(bad)];
+  });
+  assert.deepEqual(bad, []);
+  await done();
+});
