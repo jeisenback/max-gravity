@@ -513,3 +513,6 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 @media (min-width: 700px) { #bsheet { left: 50%; right: auto !important; transform: translateX(-50%); width: min(520px, 90vw); } #bkeys { justify-content: safe center; } }
 #bsheet h3 { margin: 0 0 6px; }
 @media (max-width: 420px) { .tabs.stations { padding-inline: 2px; } .tabs.stations button { flex: 1 1 0; min-width: 0; font-size: 9.5px; letter-spacing: 0; padding-inline: 0; } }
+/* A post's block on a station view (stations.js). */
+.post { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line); }
+.post .row { flex-wrap: wrap; gap: 6px; }
