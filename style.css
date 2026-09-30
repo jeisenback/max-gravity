@@ -522,3 +522,6 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 .pbar { display: block; height: 6px; background: var(--line); }
 .pbar i { display: block; height: 100%; background: var(--accent, #6fb0ff); }
 .pbar.hot i { background: #ff9a3c; }
+/* Station keys: full names, or short ones on a phone (bridge.js). */
+.tabs.stations .short { display: none; }
+@media (max-width: 480px) { .tabs.stations .full { display: none; } .tabs.stations .short { display: inline; } .tabs.stations button { font-size: 11px; letter-spacing: 0.04em; } }

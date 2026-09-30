@@ -40,6 +40,7 @@ function worldNews(text) {
   const st = G.state;
   st.news = st.news || [];
   st.news.unshift({ day: st.day, text });
+  noteInbox('message', text);
   st.news.length = Math.min(st.news.length, 8);
 }
 
