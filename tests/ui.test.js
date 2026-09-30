@@ -91,12 +91,15 @@ test('no screen overflows sideways at phone, landscape, and tablet sizes', async
     exchange: () => { UI.tab = 'trade'; UI.render(); },
     missions: () => { UI.tab = 'missions'; UI.render(); },
     shipyard: () => { UI.tab = 'shipyard'; UI.render(); },
+    navigation: () => { UI.tab = 'nav'; UI.render(); },
+    weapons: () => { UI.tab = 'weapons'; UI.render(); },
     bar: () => { UI.tab = 'bar'; UI.render(); },
     crew: () => { uatCrew(3, 2); UI.tab = 'crew'; UI.render(); },
     company: () => { UI.tab = 'company'; UI.render(); },
     pause: () => { UI.tab = 'port'; UI.render(); Menu.pause(); },
     event: () => { Menu.resume(); openEvent(sitPicker()); },
     transit: () => { G.dialog = null; UI.hide(); uatBurn('Ceres Station', 'pallas'); },
+    sheet: () => { G.bridgeOpen = 'interior'; syncBridge(true); },
     fight: () => { startEngage({ spec: { kind: 'pirate' }, flee: false }); },
     uat: () => { G.engage = null; G.mode = 'transit'; uatEnable(); },
   };
@@ -109,7 +112,7 @@ test('no screen overflows sideways at phone, landscape, and tablet sizes', async
       const bad = await page.evaluate(W => {
         const out = [];
         if (document.documentElement.scrollWidth > W + 1) out.push(`page ${document.documentElement.scrollWidth}px wide`);
-        for (const el of document.querySelectorAll('#panel *, #uat *, #touch *, #menuBtn, #tlife *')) {
+        for (const el of document.querySelectorAll('#panel *, #uat *, #touch *, #menuBtn, #tlife *, #bkeys *, #bsheet *')) {
           if (!el.offsetParent || el.closest('.tabs') || el.closest('.scroll')) continue;
           const r = el.getBoundingClientRect();
           if (r.width && (r.right > W + 1 || r.left < -1)) out.push(`${el.tagName.toLowerCase()} "${(el.textContent || '').trim().slice(0, 30)}"`);
@@ -189,5 +192,33 @@ test('every tab at every port reads cleanly, broke or rich, empty or full', asyn
     return out.slice(0, 12);
   });
   assert.deepEqual(bad, []);
+  await done();
+});
+
+test('the bridge: station keys at port, and a key bar with status sheets in a burn', async () => {
+  const { page, ev, done } = await open();
+  await ev(() => { G.state.tutorial = null; while (G.dialog) finishEvent(); UI.render(); });
+  const names = await page.$$eval('.stations button', bs => bs.map(b => b.textContent));
+  assert.deepEqual(names, ['Navigation', 'Weapons', 'Engineering', 'Interior', 'Operations']);
+  assert.ok(await page.isVisible('#vs'), 'the viewscreen is above the stations');
+  for (const [station, marker] of [['nav', 'System map'], ['weapons', 'Armament'], ['eng', 'Outfits'], ['interior', 'Crew'], ['ops', 'Exchange']]) {
+    await page.click(`[data-action=station][data-arg=${station}]`);
+    assert.match(await page.innerText('#panel'), new RegExp(marker, 'i'), `${station} shows ${marker}`);
+  }
+  assert.equal(await page.$$eval('.tabs.sub button', b => b.length), 5, 'Operations keeps the port tabs');
+  await page.click('[data-action=tab][data-arg=trade]');
+  await page.click('[data-action=station][data-arg=ops]');
+  assert.equal(await ev(() => UI.tab), 'trade', 'the key for the station you are in keeps your tab');
+  // Underway: the key bar shows, a sheet opens on a key, and it goes when a scene opens.
+  await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; });
+  await page.waitForSelector('#bkeys', { state: 'visible' });
+  assert.equal(await page.isVisible('#bsheet'), false);
+  await page.click('[data-bst=nav]');
+  assert.match(await page.innerText('#bsheet'), /Arriving/);
+  await page.click('[data-bst=ops]');
+  assert.match(await page.innerText('#bsheet'), /open when you dock/);
+  await ev(() => openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', run: () => 'a' }] }));
+  await page.waitForSelector('#bkeys', { state: 'hidden' });
+  assert.equal(await page.isVisible('#bsheet'), false, 'a scene has the screen to itself');
   await done();
 });

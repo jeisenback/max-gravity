@@ -485,7 +485,7 @@ function drawTransit(W, H) {
   log.push(`Cargo: ${held.length ? held.join(', ') : 'empty'}`);
   const logW = narrow ? viewW - 170 : Math.min(460, viewW - 56);  // clear the Map button on phones
   const logLines = log.flatMap(l => wrapText(l, logW));
-  y = H - 30 - logLines.length * 16;
+  y = H - BRIDGE_KEYS_H - 30 - logLines.length * 16;  // above the bridge key bar
   transitPanel(16, y - 18, logW + 24, 30 + logLines.length * 16, "SHIP'S LOG");
   ctx.fillStyle = '#cfe3ff';
   for (const l of logLines) ctx.fillText(l, 28, y += 16);

@@ -399,7 +399,7 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
   right: 16px;
   z-index: 2;
 }
-#tmap { bottom: calc(16px + env(safe-area-inset-bottom, 0px)); }
+#tmap { bottom: calc(68px + env(safe-area-inset-bottom, 0px)); }  /* above the bridge key bar */
 #tclose { top: calc(16px + env(safe-area-inset-top, 0px)); }
 /* Downtime activities under the transit cutaway (shiplife.js). */
 #tlife {
@@ -464,3 +464,52 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 .menu textarea { font-size: 11px; }
 #menuBtn { position: fixed; top: 10px; left: 10px; z-index: 50; font-size: 12px; min-height: 30px; padding: 3px 12px; opacity: 0.85; }
 @media (max-width: 699px) { #menuBtn { top: 86px; } }
+
+/* ---------- the bridge (bridge.js) ---------- */
+/* Viewscreen strip at the top of a landed screen, then the station keys. */
+.vs { display: block; width: 100%; height: 92px; flex-shrink: 0; background: #03070a; border-bottom: 1px solid var(--line); }
+@media (min-width: 700px) { .vs { height: 124px; } }
+.tabs.stations button { text-transform: uppercase; letter-spacing: 0.08em; font-size: 11px; }
+.tabs.stations button.active { color: var(--accent); }
+@media (min-width: 700px) { .tabs.stations button { font-size: 12px; } }
+.tabs.sub { padding-top: 4px; }
+.tabs.sub button { font-size: 12px; }
+/* In a burn: station keys along the bottom, and a status sheet above them. */
+#bkeys {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  gap: 6px;
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom, 0px));
+  background: rgba(3, 7, 15, 0.9);
+  border-top: 1px solid var(--line);
+  overflow-x: auto;
+  z-index: 3;
+}
+#bkeys[hidden], #bsheet[hidden] { display: none; }
+#bkeys button {
+  flex: 1 0 auto;
+  min-height: 36px;
+  font-family: var(--font-label);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+#bkeys button.active { color: var(--accent, #6fb0ff); outline: 1px solid var(--accent, #6fb0ff); }
+#bsheet {
+  position: fixed;
+  left: 0;
+  bottom: calc(52px + env(safe-area-inset-bottom, 0px));
+  max-height: 45vh;
+  overflow-y: auto;
+  margin: 0 auto;
+  padding: 12px 16px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  z-index: 3;
+}
+@media (min-width: 700px) { #bsheet { left: 50%; right: auto !important; transform: translateX(-50%); width: min(520px, 90vw); } #bkeys { justify-content: safe center; } }
+#bsheet h3 { margin: 0 0 6px; }
+@media (max-width: 420px) { .tabs.stations { padding-inline: 2px; } .tabs.stations button { flex: 1 1 0; min-width: 0; font-size: 9.5px; letter-spacing: 0; padding-inline: 0; } }

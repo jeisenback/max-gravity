@@ -56,6 +56,7 @@ test('death passes the company to an heir; a captain can retire', async () => {
   assert.equal(heir.crew, 0, 'the crew are lost');
   assert.equal(heir.past, 1);
   await ev(() => { while (G.dialog) finishEvent(); UI.render(); });
+  await page.click('[data-action=station][data-arg=ops]');
   await page.click('[data-action=tab][data-arg=company]');
   await page.fill('#capName', 'Ines Okafor');
   await page.click('[data-action=renameCaptain]');
@@ -165,9 +166,10 @@ test('names the player types never become markup', async () => {
   await page.fill('#ngShip', evil);
   await page.click('[data-action=menuStart]');
   await ev(() => { G.state.tutorial = null; G.state.credits = 200000; G.state.shipId = 'freighter'; while (G.dialog) finishEvent(); UI.render(); });
-  await page.click('[data-action=tab][data-arg=crew]');
+  await page.click('[data-action=station][data-arg=interior]');
   await page.fill('#shipName', evil);
   await page.click('[data-action=renameShip]');
+  await page.click('[data-action=station][data-arg=ops]');
   await page.click('[data-action=tab][data-arg=company]');
   await page.fill('#capName', evil);
   await page.click('[data-action=renameCaptain]');
