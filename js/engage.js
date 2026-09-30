@@ -68,8 +68,8 @@ function contactEvent(spec) {
     { label: 'Burn hard to outrun them', run: go(true) },
   ];
   if (spec.kind === 'pirate') {
-    choices.push({ label: 'Pay them off (10% of your credits)', run() {
-      const c = Math.min(st.credits, Math.max(500, Math.round(st.credits * 0.1)));
+    choices.push({ label: 'Pay them off (10% of your credits, at least 500)', can: () => st.credits >= 500, run() {
+      const c = Math.max(500, Math.round(st.credits * 0.1));
       st.credits -= c;
       return `You transfer ${fmt(c)} cr. Their plume swings away.`;
     } });

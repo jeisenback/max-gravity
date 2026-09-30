@@ -283,3 +283,20 @@ test('escorts fly with you, cost reaction mass, and can be lost', async () => {
   assert.equal(r.lost, 1, 'a destroyed escort leaves the fleet');
   await done();
 });
+
+test('paying off an intercept needs the money', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    const pay = kind => contactEvent(kind === 'pirate' ? { kind } : { kind, gov: 'Earth Coalition' }).choices.find(c => /^(Pay|Cut)/.test(c.label));
+    G.state.credits = 0;
+    const broke = [pay('pirate').can(), pay('patrol').can()];
+    G.state.credits = 50000;
+    const rich = [pay('pirate').can(), pay('patrol').can()];
+    pay('pirate').run();
+    return { broke, rich, left: G.state.credits };
+  });
+  assert.deepEqual(r.broke, [false, false]);
+  assert.deepEqual(r.rich, [true, true]);
+  assert.equal(r.left, 45000);
+  await done();
+});
