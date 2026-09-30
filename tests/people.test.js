@@ -264,3 +264,25 @@ test('a long career with random answers: no errors, no broken text, no overfull 
   assert.deepEqual(bad, []);
   await done();
 });
+
+test('what people are seen doing on the ship: every room and role has lines that fill in', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    const st = G.state; st.tutorial = null; st.flags.classicCombat = true; while (G.dialog) finishEvent();
+    st.crew.push('rosa', 'kit', 'dima'); home().cat = 'Rivet'; st.shipId = 'freighter';
+    takeOff(); st.dest = 'mars'; G.player.x = 6000; tryBurn(); enterTransit(); G.transit.times = [];
+    const people = shipPeople(), bad = [];
+    let seen = 0;
+    for (const room of ['engine', 'hold', 'berths', 'galley', 'bridge']) {
+      for (const p of people) {
+        if (p.role === 'you') continue;
+        p.room = room;
+        for (let i = 0; i < 20; i++) { const l = lifeLine(p, people); if (l) { seen++; if (/[{}]|undefined/.test(l)) bad.push(`${room}/${p.role}: ${l}`); } }
+      }
+    }
+    return { seen, bad, roles: people.map(p => p.role) };
+  });
+  assert.ok(r.seen > 50, `lines shown (${r.seen}, roles ${r.roles})`);
+  assert.deepEqual(r.bad, []);
+  await done();
+});
