@@ -20,9 +20,11 @@ Long-term milestones, in order. Each builds on the ones before it.
 - Competing campaign arcs, as in Escape Velocity Nova: **a Mars Navy career** (done: Reserve Commission) and **a pirate lord's rise** (done: The Rook's Crown), and **a corporate climb** (done: The Partner's Chair, with the Tethys Shipping Consortium rather than Aquilon, whose path already runs through Cold Water); the three exclude each other.
 - **Mods can write whole storylines without code** (done: `M.addStorylet`).
 
-## 4. Expanse-grade combat
-- **4a**, in the current flight model: **torpedoes and point-defense turrets** (done), escorts (done in milestone 2), **boarding and capture, and a medic who matters** (done).
-- **4b**, a prototype first: momentum flight with no speed cap, long-range torpedo duels, and high-g burn stress. Built as a switchable mode or a mod, then judged by playing it. **Prototype built** (`js/engage.js`, on by default, switchable at any port): fights happen during burns. Still to decide after playing: moving the Ceres blockade and Aquilon's recovery ship into burns, escorts joining burn fights, and tuning.
+## 4. Expanse-grade combat, on the console
+The captain decides and the crew flies: piloting and real-time fighting are the least interesting part of the game. Design: `COMBAT.md`.
+- **4a**, in the old flight model: **torpedoes and point-defense turrets** (done), escorts (done in milestone 2), **boarding and capture, and a medic who matters** (done).
+- **4b**, momentum flight and real-time burn fights (`js/engage.js`): built as a prototype, now **dropped**. It gets retired in favor of the card duel (#52).
+- **4c**, card combat: a threat-and-answer ship duel with decks built from the ship (#42), made the only combat (#52), with automated flight and the flight screen as a backdrop (#53), a boarding duel (#43), cards from every system and post (#47), hardcore mode (#44), and a balance simulation (#45).
 
 ## 5. Frontier and legacy
 - **Found and grow an outpost** (done: Callisto or Nereid, supplied from your hold, with buildings and settler moments).
