@@ -380,3 +380,40 @@ test('once you can afford a ship, the captain heads for a port with a yard', asy
   assert.ok(r.poorIsNotForced);
   await done();
 });
+
+test('a hired hand is offered only what is theirs: their own post, and no owner\'s business', async () => {
+  const { page, ev, done } = await open();
+  await ev(hiredHelpers);
+  const FORBIDDEN = ['sbuy', 'hire', 'dismiss', 'renameShip', 'handBack', 'programWrite', 'programSlot', 'programPick', 'programRemove', 'routeDock', 'takeoff', 'buy', 'sell'];
+  const problems = [];
+  for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
+    await ev(p => { startHired(p); G.state.tutorial = null; G.state.credits = 50000; UI.render(); }, post);
+    for (const station of ['nav', 'weapons', 'eng', 'interior', 'comms', 'ops']) {
+      for (const tab of station === 'ops' ? ['port', 'bar', 'missions'] : [null]) {
+        await ev(([s, t]) => { UI.tab = t || bridgeStation(s, currentPlanet()); UI.render(); }, [station, tab]);
+        const found = await page.evaluate(() => [...document.querySelectorAll('#panel .body button, #panel .post button')].filter(b => !b.disabled).map(b => [b.dataset.action, b.dataset.arg || '']));
+        for (const [a, arg] of found) {
+          if (FORBIDDEN.includes(a)) problems.push(`${post}/${station}${tab ? '/' + tab : ''}: ${a}`);
+          if (a === 'takeControl') problems.push(`${post}/${station}: take controls`);
+          if ((a === 'postOrder' || a === 'project') && !(arg.split(':')[0] === post || (a === 'project' && ({ patch: 'engineer', tune: 'engineer', refit: 'gunner' })[arg] === post))) problems.push(`${post}/${station}: ${a} ${arg} is not their post`);
+        }
+      }
+    }
+  }
+  assert.deepEqual(problems, []);
+  // The pilot's orders: none (departing is the captain's: she sails when you say), and the nav page shows the run, not a course.
+  await ev(() => { startHired('pilot'); G.state.tutorial = null; UI.tab = 'nav'; UI.render(); });
+  assert.match(await page.innerText('#panel'), /captain picks where she goes/i);
+  assert.equal(await page.$('[data-action=map]:not(.dock *)'), null, 'no course to plot');
+  // Commands on a post that is not yours do nothing, and the map does not set a course.
+  const r = await ev(() => {
+    startHired('pilot'); const st = G.state; st.crew.map(person).forEach(c => { c.opinion = 0; });
+    const before = JSON.stringify(postState('engineer'));
+    takeControl('engineer'); const note = giveOrder('engineer', 'patch'); const proj = (st.cargo.industrial = 5, startProject('patch')); const prog = writeProgram('heat', 'engineer', 'balance');
+    st.dest = null; G.mode = 'map'; G.mapPos = id => [100, 100]; const ev0 = { clientX: 100, clientY: 100 };
+    const out = { took: postMode('engineer'), note, proj, prog, before: before === JSON.stringify(postState('engineer')) };
+    return out;
+  });
+  assert.deepEqual(r, { took: 'crewed', note: null, proj: false, prog: false, before: true });
+  await done();
+});

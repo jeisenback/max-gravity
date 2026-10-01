@@ -339,7 +339,7 @@ function homeHtml() {
     return bits.length ? `<div class="hint">${p.first}: ${bits.join(', ')}</div>` : '';
   }).join('');
   return `<h3>${h.name[0].toUpperCase()}${h.name.slice(1)}</h3>
-    <div class="row"><input type="text" id="shipName" maxlength="30" placeholder="A new name for the ship"><button data-action="renameShip">Rename the ship</button></div>
+    ${hired() ? '' : '<div class="row"><input type="text" id="shipName" maxlength="30" placeholder="A new name for the ship"><button data-action="renameShip">Rename the ship</button></div>'}
     ${crew}
     ${h.traditions.length ? `<p class="hint">Traditions: ${h.traditions.map(id => TRADITIONS[id].name).join(', ')}.</p>` : ''}
     ${h.cat ? `<p class="hint">${h.cat} the cat lives aboard.</p>` : ''}
@@ -397,6 +397,7 @@ Mods.register({
     });
     M.on('landed', planet => { for (const n of letters(planet)) M.note(n); });
     M.action('renameShip', () => {
+      if (hired()) return;  // her name is the captain's
       // An in-page field: browser prompt() dialogs are blocked in some embeds.
       const el = document.getElementById('shipName'), name = cleanName(el && el.value);
       if (!name || name === home().name) return;

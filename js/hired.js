@@ -13,6 +13,8 @@ const HIRED_POSTS = ['pilot', 'gunner', 'engineer', 'comms'];  // the posts you 
 const HIRED_SAVINGS = 300;
 const HIRED_FUND = 5000;  // the ship's money, which buys the cargo
 const hired = () => (G.state && G.state.hired) || null;
+// A hired hand works one post. The others are the crew's, and the captain's to command.
+const notYours = post => !!hired() && hired().post !== post;
 
 // ---------- skill at each post ----------
 // Experience points per post, kept when you swap. Levels come at 0, 10, 30 and 60 points.
@@ -112,7 +114,8 @@ function sail() {
   h.plan = null;
   st.dest = plan.sid;
   st.route = { dock: plan.planet, go: true };
-  if (!giveOrder('pilot', 'depart')) takeOff();  // a manual pilot flies her out
+  // A crewed pilot flies her out and in; if you are the pilot, you do.
+  if (postMode('pilot') === 'crewed') ORDERS.pilot.find(o => o.id === 'depart').run(); else takeOff();
   return true;
 }
 

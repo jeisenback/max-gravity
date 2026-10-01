@@ -141,7 +141,7 @@ const UI = {
         ${this.missionList(st.missions, 'abort', 'Abandon')}
         ${story().stage !== 0 ? `<h3>Story: Cold Water</h3><p class="desc">${storyObjective()}</p>${story().stage === 'end' ? '<div class="row"><button data-action="epilogue">Read the epilogue</button></div>' : ''}` : ''}
         ${journalHtml()}
-        ${stakeOffer()}
+        ${hired() ? '' : stakeOffer()}
         <h3>Standing</h3>
         <div class="standing">${FACTIONS.map(g => `<div><span style="color:${GOV_COLORS[g]}">${g === 'Pirate' ? 'Pirates' : g}</span> <b>${standingWord(repOf(g))}</b> <span class="hint">${repOf(g) > 0 ? '+' : ''}${repOf(g)}</span></div>`).join('')}</div>
         <h3>Local conditions</h3>
@@ -225,9 +225,9 @@ const UI = {
         .map(p => `<div class="hint"><b>${p.first} ${p.last}</b> (${opinionWord(p.opinion)}, ${p.ship ? `captain of the ${p.ship.name}, flies around ${SYSTEMS[p.haunt].name}` : p.location ? `last seen at ${p.location}` : 'whereabouts unknown'})${p.location === here ? ' <b>- here now</b>' : ''}: ${p.memories.length ? p.memories[p.memories.length - 1] : ''}</div>`).join('');
       const elsewhere = Object.values(CREW).filter(c => c.home !== here).map(c => `${c.name} (${ROLE_NAMES[c.role]}) at ${c.home}`);
       return `
-        <h3>Your crew</h3>
+        <h3>${hired() ? 'The crew' : 'Your crew'}</h3>
         ${mine || '<p class="hint">Just you. Crew take a berth each and are paid daily wages in transit.</p>'}
-        <p class="hint">Berths: ${berthsUsed()}/${ship().berths} used by crew and passengers. Unhappy crew will walk off the ship.</p>
+        ${hired() ? '' : `<p class="hint">Berths: ${berthsUsed()}/${ship().berths} used by crew and passengers. Unhappy crew will walk off the ship.</p>`}
         ${homeHtml()}
         ${bondsHtml()}
         ${hired() ? '' : `<h3>Looking for work here</h3>

@@ -39,6 +39,7 @@ function bridgeStation(id, planet) {
 // ---------- station views at port ----------
 
 UI.views.nav = function () {
+  if (hired()) return `${runHtml()}<p class="hint">The captain picks where she goes, and sails when you are ready.</p>${postHtml('pilot')}`;
   const st = G.state, d = st.dest && st.dest !== st.systemId && SYSTEMS[st.dest];
   return `
     <p class="desc">${d ? `Course set for ${d.name}: ${travelDays(st.systemId, st.dest)} days, ${burnFuel(st.systemId, st.dest)} reaction mass (you have ${st.fuel}).` : 'No course set. Open the system map and pick a destination.'}</p>
