@@ -54,14 +54,14 @@ function characterPanel() {
   const xp = c.xp && c.role && c.xp[c.role] !== undefined ? c.xp[c.role] : null, next = xp === null ? null : SKILL_STEPS.find(s => s > xp);
   const chips = [...(c.traits || []).map(t => `<span class="char-chip">${TRAITS[t].adj}</span>`), moodLow(c) ? '<span class="char-chip warn">having a hard time</span>' : moodHigh(c) ? '<span class="char-chip good">in high spirits</span>' : ''].join('');
   const sub = [c.role && ROLE_NAMES[c.role] ? ROLE_NAMES[c.role] : c.you ? 'Captain' : c.job, c.age ? `${c.age}` : '', c.home ? `from ${c.home}` : ''].filter(Boolean).join(', ');
-  const cap = c.captain ? conCard('Captain', ['trade', 'nerve', 'thrift'].map(k => `<div class="con-part"><span>${k[0].toUpperCase() + k.slice(1)}</span>${conBar(c.captain[k] / 5 * 100, '#6fb0ff')}<b>${c.captain[k]} / 5</b></div>`).join('')) : '';
+  const cap = c.captain ? conCard('Captain', ['trade', 'nerve', 'thrift'].map(k => `<div class="con-part char-cap"><span>${k[0].toUpperCase() + k.slice(1)}</span>${conBar(c.captain[k] / 5 * 100, '#6fb0ff')}<b>${c.captain[k]} / 5</b></div>`).join('')) : '';
   const standing = c.memories ? conCard('Standing with you', `${conRead('Opinion', opinionWord(c.opinion))}${conBar(Math.max(0, Math.min(10, c.opinion + 5)) * 10, c.opinion >= 0 ? '#5fd35f' : '#ff6a4a')}
     ${c.memories.length ? `<div class="eyebrow" style="margin-top:8px">Remembers</div>${c.memories.slice(-3).reverse().map(m => `<div class="hint">${m}</div>`).join('')}` : ''}`) : '';
   const blurb = c.ambition ? `<div class="char-amb">${c.ambition}</div>` : c.bio ? `<div class="char-amb">${c.bio}</div>` : '';
   return consoleHtml({
     title: fullName(c), status: c.you ? 'Playing as' : whereIs(c),
     screen: `<div class="char-id">${portraitSvg(c)}<div><div class="char-name">${esc(fullName(c))}</div><div class="hint">${esc(sub)}</div><div class="char-chips">${chips}</div>${blurb}</div></div>`,
-    side: conCard('Post skills', `${rows}${xp !== null ? conRead(`${ROLE_NAMES[c.role] || 'Post'} experience`, next ? `${xp} / ${next}` : `${xp}, the most there is`) : ''}`) + cap
+    side: conCard('Post skills', `${rows}${xp !== null ? conRead('Experience', next ? `${xp} / ${next}` : `${xp} (most)`) : ''}`) + cap
       + (c.you ? '' : conCard('Where', `${conRead('Aboard', crewed ? shipTitle() : 'no')}${crewed && wage(c.id) ? conRead('Wage', `${fmt(wage(c.id))} cr/day`) : ''}${!crewed ? `<div class="hint">${whereIs(c)}</div>` : ''}`)) + standing,
     controls: '<div class="row"><button data-action="personBack">Back</button></div>',
   });

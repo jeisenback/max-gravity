@@ -40,10 +40,11 @@ function setupHired(o) {
   st.credits = HIRED_SAVINGS;
   st.tutorial = null;
   home().name = shipName(false);
-  // The captain, and a crew with every role but yours.
+  // The captain, and a crew with every role but yours. The main characters (cast.js) take their posts first.
   const cap = registerPerson(makePerson(cultureOf(st.systemId)));
   cap.role = 'captain'; cap.job = 'captain';
-  for (const role of ['pilot', 'gunner', 'engineer', 'slicer'].filter(r => r !== POSTS[post].role)) {
+  const free = ['pilot', 'gunner', 'engineer', 'slicer'].filter(r => r !== POSTS[post].role), placed = castCrew(st.background, free);
+  for (const role of free.filter(r => !placed.includes(r))) {
     const c = makeCrewCandidate(st.systemId);
     c.role = role; c.skill = 2; c.job = ROLE_NAMES[role].toLowerCase(); c.mood = null;
     registerPerson(c);
@@ -262,6 +263,15 @@ function buyInFriend() {
   const crew = G.state.crew.map(person).filter(c => c.opinion >= 1);
   return crew.sort((a, b) => b.opinion - a.opinion || b.skill - a.skill)[0] || null;
 }
+// Who leaves with you: the main characters aboard who like you, both if both think well of you, otherwise the one who
+// likes you most; and if none do, the crew member you are closest to.
+function buyInCompanions() {
+  const cast = G.state.crew.map(person).filter(c => c.cast && c.opinion >= 1).sort((a, b) => b.opinion - a.opinion);
+  if (cast.length) return cast.length > 1 && cast[1].opinion >= CAST_GOOD ? cast.slice(0, 2) : cast.slice(0, 1);
+  const friend = buyInFriend();
+  return friend ? [friend] : [];
+}
+const namesOf = list => list.map(c => `${c.first} ${c.last}`).join(' and ');
 const buyInPrice = id => SHIPS[id].price;  // nothing to trade in: the ship you fly is the captain's
 const canBuyIn = (id, planet) => !!hired() && G.mode === 'landed' && planet.services.includes('shipyard') && SHIPS[id] && SHIPS[id].forSale
   && G.state.credits >= buyInPrice(id) && !(SHIPS[id].req && repOf(localGov()) < SHIPS[id].req);
@@ -269,26 +279,26 @@ const canBuyIn = (id, planet) => !!hired() && G.mode === 'landed' && planet.serv
 function buyIn(id) {
   const st = G.state, h = hired(), planet = currentPlanet();
   if (!canBuyIn(id, planet)) return;
-  const cap = st.people[h.captain], friend = buyInFriend(), oldName = home().name;
+  const cap = st.people[h.captain], friends = buyInCompanions(), oldName = home().name;
   st.credits -= buyInPrice(id);
   st.shipId = id; st.fuel = ship().fuel; st.armor = ship().armor;
   st.cargo = {}; st.paid = {};  // what was in the hold was the captain's
   // The captain stays a contact, and a known captain on the lanes.
   Object.assign(cap, { ship: { name: oldName, shipId: 'lightfreighter', kind: 'trader' }, haunt: st.systemId, location: planet.name });
   like(cap, 2, 'You worked my ship, and then bought your own. Fair winds.');
-  for (const c of st.crew.map(person)) if (c !== friend) c.location = planet.name;  // the rest stay with her
-  st.crew = friend ? [friend.id] : [];
-  if (friend) like(friend, 2, `We left the ${oldName} together.`);
+  for (const c of st.crew.map(person)) if (!friends.includes(c)) c.location = planet.name;  // the rest stay with her
+  st.crew = friends.map(c => c.id);
+  for (const f of friends) like(f, 2, `We left the ${oldName} together.`);
   // A fresh ship: nothing of the old one's wear, refits or jobs comes with you.
   for (const k of ['condition', 'refits', 'projects', 'power', 'heat', 'tuned', 'route']) delete st[k];
   home().name = shipName(false);
   st.hired = null;
   G.offers = generateMissions(planet);
-  return `You bought the ${SHIPS[id].name} for ${fmt(SHIPS[id].price)} cr and left the ${oldName}. Captain ${cap.first} ${cap.last} shakes your hand on the dock and says they will keep an eye out for you on the lanes.${friend ? ` ${friend.first} ${friend.last} came with you.` : ' You are on your own.'} She is yours now: the exchange, the contracts and the yard are open to you, and the crew are your wages to pay.`;
+  return `You bought the ${SHIPS[id].name} for ${fmt(SHIPS[id].price)} cr and left the ${oldName}. Captain ${cap.first} ${cap.last} shakes your hand on the dock and says they will keep an eye out for you on the lanes.${friends.length ? ` ${namesOf(friends)} came with you.` : ' You are on your own.'} She is yours now: the exchange, the contracts and the yard are open to you, and the crew are your wages to pay.`;
 }
 
 function buyInHtml() {
-  const h = hired(), p = currentPlanet(), friend = buyInFriend(), cap = G.state.people[h.captain];
+  const h = hired(), p = currentPlanet(), friends = buyInCompanions(), cap = G.state.people[h.captain];
   if (!p.services.includes('shipyard')) return '<p class="hint">The yard deals with the captain, not with you. A ship of your own can be bought at a shipyard.</p>';
   const rows = Object.entries(SHIPS).filter(([, s]) => s.forSale).map(([id, s]) => {
     const locked = s.req && repOf(localGov()) < s.req;
@@ -298,7 +308,7 @@ function buyInHtml() {
   }).join('');
   return `<div class="post"><div class="eyebrow">A ship of your own &middot; your savings ${fmt(G.state.credits)} cr</div>
     ${rows}
-    <p class="hint">${h.confirm ? `Leaving means leaving Captain ${esc(cap.first)} ${esc(cap.last)} and the crew behind${friend ? `, but ${esc(friend.first)} ${esc(friend.last)} would come with you` : ', and nobody on the crew knows you well enough to come'}.` : `Buy a ship and go out on your own. ${friend ? `${esc(friend.first)} ${esc(friend.last)} would come with you.` : 'Nobody on the crew knows you well enough to come with you yet.'}`}</p></div>`;
+    <p class="hint">${h.confirm ? `Leaving means leaving Captain ${esc(cap.first)} ${esc(cap.last)} and the crew behind${friends.length ? `, but ${esc(namesOf(friends))} would come with you` : ', and nobody on the crew knows you well enough to come'}.` : `Buy a ship and go out on your own. ${friends.length ? `${esc(namesOf(friends))} would come with you.` : 'Nobody on the crew knows you well enough to come with you yet.'}`}</p></div>`;
 }
 
 const runHtml = () => {
@@ -327,6 +337,11 @@ Mods.register({
     M.action('swapPost', post => askSwap(post));
     M.action('buyInAsk', id => { if (hired() && canBuyIn(id, currentPlanet())) hired().confirm = id; });
     M.action('buyInNo', () => { if (hired()) hired().confirm = null; });
-    M.action('buyInGo', id => { if (hired() && hired().confirm === id) { const text = buyIn(id); if (text) M.note(text); } });
+    M.action('buyInGo', id => {
+      if (!hired() || hired().confirm !== id) return;
+      const scene = castLateAtBuyIn(), text = buyIn(id);  // the scene is read from the crew before they leave
+      if (text) M.note(text);
+      if (text && scene && !G.dialog) openEvent(scene);
+    });
   },
 });

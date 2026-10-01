@@ -90,6 +90,7 @@ function startGame(o) {
   Object.assign(st.rep, b.rep || {});
   st.tutorial = o.background === 'earth' && o.tutorial ? 0 : null;
   st.v = SAVE_VERSION;
+  st.background = BACKGROUNDS[o.background] ? o.background : 'earth';  // who the main characters are (cast.js)
   Mods.emit('stateReady');
   if (cleanName(o.captain)) captain().name = cleanName(o.captain);
   if (cleanName(o.ship)) home().name = cleanName(o.ship).replace(/^the /i, '');
