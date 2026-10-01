@@ -244,3 +244,35 @@ test('the burn key bar shows all six keys, and the sheet stays clear of the HUD,
   }
   assert.deepEqual(problems, []);
 });
+
+test('the menus scroll on a phone, and Start on the New game screen is always in reach', async () => {
+  const problems = [];
+  for (const [w, h] of [[360, 640], [390, 844], [844, 390]]) {
+    const { page, ev, done } = await open({ title: true, viewport: { width: w, height: h }, mobile: true });
+    await page.click('[data-action=menuView][data-arg=new]');
+    const start = await page.evaluate(() => {
+      const b = document.querySelector('[data-action=menuStart]'), r = b.getBoundingClientRect(), at = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+      return { inView: r.top >= 0 && r.bottom <= innerHeight, hit: at === b || b.contains(at) };
+    });
+    if (!start.inView || !start.hit) problems.push(`${w}x${h}: Start is ${start.inView ? 'covered' : 'off the screen'} before any scrolling`);
+    // The pages that are taller than the screen scroll inside the panel; their last button can be reached.
+    for (const view of ['new', 'load', 'settings', 'help', 'controls', 'credits']) {
+      await ev(v => { Menu.view = v; Menu.render(); }, view);
+      const r = await page.evaluate(() => {
+        const p = document.getElementById('panel'), cs = getComputedStyle(p), tall = p.scrollHeight > p.clientHeight + 1;
+        const last = [...p.querySelectorAll('button')].filter(b => b.offsetParent).pop();
+        if (last) last.scrollIntoView({ block: 'end' });
+        const b = last && last.getBoundingClientRect(), at = b && document.elementFromPoint(Math.min(innerWidth - 1, Math.max(0, b.left + b.width / 2)), Math.min(innerHeight - 1, Math.max(0, b.top + b.height / 2)));
+        return { tall, scrolls: /auto|scroll/.test(cs.overflowY), reach: !last || (b.bottom <= innerHeight + 1 && b.top >= -1 && (at === last || last.contains(at))) };
+      });
+      if (r.tall && !r.scrolls) problems.push(`${w}x${h} ${view}: taller than the screen and cannot scroll`);
+      if (!r.reach) problems.push(`${w}x${h} ${view}: the last button cannot be reached`);
+    }
+    // Tapping Start from the first screen works.
+    await ev(() => { Menu.view = 'new'; Menu.render(); });
+    await page.tap('[data-action=menuStart]');
+    if (await ev(() => G.mode) !== 'landed') problems.push(`${w}x${h}: tapping Start did not start a game`);
+    await done();
+  }
+  assert.deepEqual(problems, []);
+});

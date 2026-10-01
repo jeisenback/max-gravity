@@ -187,7 +187,7 @@ const Menu = {
           <div class="row">${Array.from({ length: SLOTS }, (_, i) => i + 1).map(n => `<button class="${f.slot === n ? 'on' : ''}" data-action="menuSlotPick" data-arg="${n}">${n}: ${m[n] ? esc(m[n].captain) : 'empty'}</button>`).join('')}</div>
           ${m[f.slot] ? `<p class="hint">Slot ${f.slot} holds Captain ${esc(m[f.slot].captain)}'s game. Starting here replaces it.</p>` : ''}
         </div>
-        <div class="menu-buttons row"><button class="primary" data-action="menuStart">Start</button><button data-action="menuBack">Back</button></div>`;
+        <div class="menu-buttons row sticky"><button class="primary" data-action="menuStart">Start</button><button data-action="menuBack">Back</button></div>`;
     },
     load() {
       return `<h2>Saved games</h2><p class="hint">The game saves itself every time you dock.</p>
