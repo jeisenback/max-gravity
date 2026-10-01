@@ -40,7 +40,7 @@ const HELP = [
 
 // One-time tips: a key, a condition checked each frame, and how to show it.
 const TIPS = [
-  { id: 'burn', when: () => G.mode === 'transit', show: () => comm('[Tip] During a burn, press Spend some downtime to cook, drill, watch the hit vid, or sit with someone. Esc pauses. (Help is in the menu.)') },
+  { id: 'burn', when: () => G.mode === 'transit', show: () => comm(`[Tip] During a burn, press Spend some downtime to ${hired() ? 'practise your post, share a meal, learn from a shipmate' : 'cook, drill'}, watch the hit vid, or sit with someone. Esc pauses. (Help is in the menu.)`) },
   { id: 'claim', when: () => G.mode === 'landed' && ['Ganymede', 'Triton Outpost'].includes(G.state.planet) && !G.state.outpost, show: () => UI.notes.push('Tip: you can found your own outpost from here. See the claim at the top of this page, and the Help in the menu.') },
   { id: 'bar', when: () => G.mode === 'landed' && G.state.day >= 3, show: () => UI.notes.push('Tip: every port has a Bar. Talk to people there for rumors, passengers, and crew.') },
 ];

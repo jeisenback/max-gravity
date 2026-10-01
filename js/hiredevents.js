@@ -174,6 +174,18 @@ const HAND_EVENTS = [
       { label: 'Take the tea and go', run() { castLike('ruben', 0, 'You took the tea and went.'); return 'You take the cup, and thank him, and go. "Another time," Ruben says, cheerfully, and returns to his piles, humming. He is not the kind to hold it against you.'; } },
     ]) },
 
+  { id: 'crew-bexa', group: 'crew', when: () => castKeys().includes('bexa'), make: c => handEvent('Bexa\'s List',
+    'Bexa has a small brass tag on a string above the helm, and a notebook she keeps open on the console and does not like being looked at. Tonight she catches you looking, and, instead of closing it, turns it round. "It is a list," she says. "Ask me properly."', [
+      { label: 'Ask about the first name', run() { castLike('bexa', 2, 'You asked about the list the right way, and listened.'); return `You ask about the first name, quietly, and she tells you: a ship, a year, a crew of six, and what was left. She talks for a long time. When she stops, she closes the book, gently, and nods at the helm. "Sit. I will show you how I would have brought them in."${learn(2)}`; } },
+      { label: 'Look away', run() { castLike('bexa', 0, 'You looked away from the list.'); return 'You look at the console, and she closes the book, with a small, courteous nod, as if you had passed some test that you were not told was being set.'; } },
+    ]) },
+
+  { id: 'crew-pax', group: 'crew', when: () => castKeys().includes('pax'), make: c => handEvent('Pax Checks the Coupling',
+    'Pax is checking the coupling on the gun mount for the fifth time this watch. It is perfect. Pax knows it is perfect, and checks it anyway, with a tight jaw, and glances at you when the check is done as if waiting to be told to stop.', [
+      { label: 'Check it with them', run() { castLike('pax', 1, 'You checked the coupling with me instead of telling me to stop.'); return `You take the other side and check it together, torque by torque, and, when you reach the end, you both say "good" at once. Pax almost smiles. You learn a good deal about mounts that you had not known you needed to.${learn(2)}`; } },
+      { label: 'Tell them it is fine', run() { castLike('pax', 0, 'You told me the coupling was fine.'); return '"I know it is fine," says Pax. "That is not the point." They go back to it, and you leave them to it, feeling that you have said the true thing in the wrong way.'; } },
+    ]) },
+
   { id: 'money-side', group: 'money', make: c => handEvent('Work on the Side',
     'A broker at the last port left word that there is a day of work going, nothing to do with the ship: loading, mostly, for a trading house that pays cash and asks nobody anything. It would be your own time. It would be, as they say, a few credits.', [
       { label: 'Take the work', run() { const n = randInt(8, 16) * 10; G.state.credits += n; return `You spend your time ashore hauling crates for a trading house, and sleep badly for it, and are ${fmt(n)} cr richer by the time the ship sails.`; } },
@@ -253,6 +265,8 @@ const HAND_DOWNTIME = [
   castDowntime('tomas', 'Learn the loop from Tomas', 'engineer', c => 'Tomas takes you down the coolant loop on a slow watch, valve by valve, talking to the pipes as he goes, and explains what each of them is for, and what each is telling him.'),
   castDowntime('yelena', 'Spar on the range with Yelena', 'gunner', c => 'Yelena runs the range sim and you take the second console, and she explains, between rounds and with great impatience, where a gun is going to be, and why you were looking at where it was.'),
   castDowntime('ruben', 'Sort intercepts with Ruben', 'comms', c => 'Ruben hands you a thermos and half a stack of intercepts, and the two of you work through them until the piles marked TRUE and FALSE and LOVELY are all neat, and you have learned how to tell them apart.'),
+  castDowntime('bexa', 'Fly a tug approach with Bexa', 'pilot', c => 'Bexa runs the sim as a salvage approach, slowly, on a ship with no power and no cooperation, and talks you through each thing she would check before she put a line across.'),
+  castDowntime('pax', 'Run the range with Pax', 'gunner', c => 'Pax sets up the range sim, and the two of you take it in turns, calling the numbers to each other, and Pax, to their evident surprise, relaxes about halfway through.'),
 ];
 
 function handDowntime() {

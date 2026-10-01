@@ -1076,7 +1076,7 @@ function drawHud(W, H) {
   const nav = G.navPlanet !== null && p ? system().planets[G.navPlanet] : null;
   ctx.fillText(nav ? `${nav.name} (${Math.round(dist(nav, p))})` : 'none (L)', x, y += 16);
   const from = G.transit ? G.transit.to : st.systemId;
-  ctx.fillText(st.dest ? `Burn: ${SYSTEMS[st.dest].name}` : 'Burn: none (M)', x, y += 16);
+  ctx.fillText(st.dest ? `Burn: ${SYSTEMS[st.dest].name}` : hired() ? 'Burn: the captain\'s call' : 'Burn: none (M)', x, y += 16);
   if (st.dest) {
     const need = burnFuel(from, st.dest);
     ctx.fillStyle = need > st.fuel ? '#ff7f7f' : '#9ab';
