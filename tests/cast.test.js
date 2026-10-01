@@ -40,18 +40,79 @@ test('a hired hand on Earth finds the pair aboard, on posts that never double up
   await done();
 });
 
-test('the other backgrounds have no pair yet', async () => {
+test('Mars has its own pair, the Belt has none yet, and the pairs do not cross', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
     const out = {};
-    for (const b of ['mars', 'belt']) { start({ background: b, mode: 'hired', post: 'pilot' }); out[b] = crewOf().filter(c => c.cast).length; }
-    start({ background: 'mars' });
-    out.owner = !!pickHappening('port', currentPlanet()) && 'something';
-    G.state.day = 40; out.later = castDue();
+    for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
+      start({ background: 'mars', mode: 'hired', post });
+      const crew = crewOf(); out[post] = { cast: crew.filter(c => c.cast).map(c => c.cast).sort(), roles: crew.map(c => c.role).sort(), mine: POSTS[post].role };
+    }
+    start({ background: 'belt', mode: 'hired', post: 'pilot' }); out.belt = crewOf().filter(c => c.cast).length;
+    start({ background: 'belt' }); out.beltOwner = !!pickHappening('port', currentPlanet()) && 'something'; G.state.day = 40; out.beltLater = castDue();
+    start({ background: 'mars' }); G.state.crew = []; G.state.day = 6; out.marsOwner = castDue();
+    start({ background: 'earth', mode: 'hired', post: 'pilot' }); out.earth = crewOf().filter(c => c.cast).map(c => c.cast).sort();
+    const y = person('c:yelena') || castPerson('yelena');
+    out.yelena = { role: y.role, nerve: y.captain.nerve, age: y.age, mars: y.culture };
     return out;
   });
-  assert.deepEqual(r, { mars: 0, belt: 0, owner: false, later: null });
+  for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
+    assert.deepEqual(r[post].cast, ['ruben', 'yelena'], `${post}: Mars gets its pair`);
+    assert.equal(new Set(r[post].roles).size, 3, `${post}: three distinct roles`);
+    assert.ok(!r[post].roles.includes(r[post].mine), `${post}: nobody on your post`);
+  }
+  assert.equal(r.belt, 0); assert.equal(r.beltOwner, false); assert.equal(r.beltLater, null);
+  assert.equal(r.marsOwner, 'yelena', 'an owner on Mars meets Yelena first');
+  assert.deepEqual(r.earth, ['ines', 'tomas'], 'Earth keeps its own');
+  assert.deepEqual(r.yelena, { role: 'gunner', nerve: 5, age: 29, mars: 'mars' });
+  await done();
+});
+
+test('every authored scene is complete: a title, text, two choices with results, and a day for the mid and late ones', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = [];
+    for (const [key, d] of Object.entries(CAST)) {
+      start({ background: d.culture === 'mars' ? 'mars' : 'earth', mode: 'hired', post: 'pilot' });
+      castPerson(key);
+      for (const [name, sc] of Object.entries(d.scenes)) {
+        const bad = [];
+        if (!sc.title || sc.text.length < 100) bad.push('text');
+        if (sc.choices.length !== 2 || !sc.choices.every(c => c.label)) bad.push('choices');
+        if (['mid1', 'mid2', 'late'].includes(name) && !(sc.days > 0)) bad.push('days');
+        if (/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/u.test(sc.text + sc.choices.map(c => c.label).join(''))) bad.push('emoji');
+        out.push({ key, name, bad });
+      }
+    }
+    return out;
+  });
+  assert.deepEqual(r.filter(x => x.bad.length), []);
+  assert.equal(r.length, 20, 'four characters, five scenes each');
+  await done();
+});
+
+test('every choice of every scene runs and says what happened', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = [];
+    for (const [key, d] of Object.entries(CAST)) {
+      for (const [name, sc] of Object.entries(d.scenes)) {
+        sc.choices.forEach((ch, i) => {
+          start({ background: d.culture === 'mars' ? 'mars' : 'earth', mode: 'hired', post: 'pilot' });
+          G.state.credits = 1000; castPerson(key);
+          let res = null, err = null;
+          try { res = ch.can && !ch.can() ? 'skipped' : ch.run(); } catch (e) { err = String(e); }
+          out.push({ at: `${key}.${name}.${i}`, ok: err === null && typeof res === 'string' && res.length > 40, err });
+        });
+      }
+    }
+    return out;
+  });
+  assert.deepEqual(r.filter(x => !x.ok), []);
+  assert.equal(r.length, 40, 'four characters, five scenes, two choices');
   await done();
 });
 
