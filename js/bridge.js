@@ -219,7 +219,7 @@ function transitSheet(id) {
     case 'weapons': return weaponsPanel();
     case 'eng': return `${engineerPanel()}<p class="hint">Full repairs and outfits are done at a shipyard.</p>`;
     case 'interior': return interiorPanel();
-    case 'comms': return `<h3>Comms</h3>${(G.state.inbox || []).slice(0, 5).map(m => `<div class="hint">${dateOf(m.day)}: ${m.text}</div>`).join('') || '<p class="hint">Nothing in the inbox yet.</p>'}${postHtml('comms')}${programsHtml()}`;
+    case 'comms': return commsPanel();
     default: {
       const held = COMMODITIES.filter(c => st.cargo[c.id] > 0).map(c => `${st.cargo[c.id]}t ${c.name}`);
       return `<h3>Operations</h3><p class="desc">Trade, contracts, and the bar open when you dock.</p>${list([`Cargo: ${held.length ? held.join(', ') : 'empty'}`, ...st.missions.map(m => `${m.title} (due ${dateOf(m.deadline)})`)])}`;
@@ -256,7 +256,7 @@ function syncBridge(force) {
   keys.classList.toggle('compact', view < 700);  // short names when the keys would not fit
   sheet.style.right = `${G.hudW}px`;
   sheet.style.left = `${view / 2}px`;
-  sheet.style.width = `${Math.min(['nav', 'eng', 'weapons'].includes(G.bridgeOpen) ? 720 : 520, view - 24)}px`  // a console is wide enough for its two columns;
+  sheet.style.width = `${Math.min(['nav', 'eng', 'weapons', 'comms'].includes(G.bridgeOpen) ? 720 : 520, view - 24)}px`  // a console is wide enough for its two columns;
   keys.querySelectorAll('[data-bst]').forEach(b => b.classList.toggle('active', b.dataset.bst === G.bridgeOpen));
   if (G.bridgeOpen) {
     const html = transitSheet(G.bridgeOpen);
