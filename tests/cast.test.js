@@ -40,32 +40,35 @@ test('a hired hand on Earth finds the pair aboard, on posts that never double up
   await done();
 });
 
-test('Mars has its own pair, the Belt has none yet, and the pairs do not cross', async () => {
+test('each background has its own pair, and the pairs do not cross', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
-    const out = {};
-    for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
-      start({ background: 'mars', mode: 'hired', post });
-      const crew = crewOf(); out[post] = { cast: crew.filter(c => c.cast).map(c => c.cast).sort(), roles: crew.map(c => c.role).sort(), mine: POSTS[post].role };
+    const out = {}, pairs = { earth: ['ines', 'tomas'], mars: ['ruben', 'yelena'], belt: ['bexa', 'pax'] };
+    for (const [bg, keys] of Object.entries(pairs)) {
+      out[bg] = {};
+      for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
+        start({ background: bg, mode: 'hired', post });
+        const crew = crewOf();
+        out[bg][post] = { cast: crew.filter(c => c.cast).map(c => c.cast).sort(), roles: crew.map(c => c.role).sort(), mine: POSTS[post].role, keys: keys.slice().sort() };
+      }
+      // An owner meets the first of the pair on its day, then the second, and never the other backgrounds'.
+      start({ background: bg }); G.state.crew = []; G.state.day = 6; out[bg].first = castDue();
     }
-    start({ background: 'belt', mode: 'hired', post: 'pilot' }); out.belt = crewOf().filter(c => c.cast).length;
-    start({ background: 'belt' }); out.beltOwner = !!pickHappening('port', currentPlanet()) && 'something'; G.state.day = 40; out.beltLater = castDue();
-    start({ background: 'mars' }); G.state.crew = []; G.state.day = 6; out.marsOwner = castDue();
-    start({ background: 'earth', mode: 'hired', post: 'pilot' }); out.earth = crewOf().filter(c => c.cast).map(c => c.cast).sort();
-    const y = person('c:yelena') || castPerson('yelena');
-    out.yelena = { role: y.role, nerve: y.captain.nerve, age: y.age, mars: y.culture };
+    const y = castPerson('yelena'), b = castPerson('bexa'), p = castPerson('pax');
+    out.stats = { yelena: [y.role, y.captain.nerve, y.age, y.culture], bexa: [b.role, b.captain.thrift, b.age, b.culture], pax: [p.role, p.captain.nerve, p.age, p.culture] };
     return out;
   });
-  for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
-    assert.deepEqual(r[post].cast, ['ruben', 'yelena'], `${post}: Mars gets its pair`);
-    assert.equal(new Set(r[post].roles).size, 3, `${post}: three distinct roles`);
-    assert.ok(!r[post].roles.includes(r[post].mine), `${post}: nobody on your post`);
+  for (const bg of ['earth', 'mars', 'belt']) {
+    for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
+      const x = r[bg][post];
+      assert.deepEqual(x.cast, x.keys, `${bg}/${post}: its own pair`);
+      assert.equal(new Set(x.roles).size, 3, `${bg}/${post}: three distinct roles`);
+      assert.ok(!x.roles.includes(x.mine), `${bg}/${post}: nobody on your post`);
+    }
   }
-  assert.equal(r.belt, 0); assert.equal(r.beltOwner, false); assert.equal(r.beltLater, null);
-  assert.equal(r.marsOwner, 'yelena', 'an owner on Mars meets Yelena first');
-  assert.deepEqual(r.earth, ['ines', 'tomas'], 'Earth keeps its own');
-  assert.deepEqual(r.yelena, { role: 'gunner', nerve: 5, age: 29, mars: 'mars' });
+  assert.deepEqual([r.earth.first, r.mars.first, r.belt.first], ['ines', 'yelena', 'bexa'], 'each owner meets their own first');
+  assert.deepEqual(r.stats, { yelena: ['gunner', 5, 29, 'mars'], bexa: ['pilot', 4, 41, 'belt'], pax: ['gunner', 2, 23, 'belt'] });
   await done();
 });
 
@@ -75,7 +78,7 @@ test('every authored scene is complete: a title, text, two choices with results,
   const r = await ev(() => {
     const out = [];
     for (const [key, d] of Object.entries(CAST)) {
-      start({ background: d.culture === 'mars' ? 'mars' : 'earth', mode: 'hired', post: 'pilot' });
+      start({ background: d.culture, mode: 'hired', post: 'pilot' });
       castPerson(key);
       for (const [name, sc] of Object.entries(d.scenes)) {
         const bad = [];
@@ -89,7 +92,7 @@ test('every authored scene is complete: a title, text, two choices with results,
     return out;
   });
   assert.deepEqual(r.filter(x => x.bad.length), []);
-  assert.equal(r.length, 20, 'four characters, five scenes each');
+  assert.equal(r.length, 30, 'six characters, five scenes each');
   await done();
 });
 
@@ -101,7 +104,7 @@ test('every choice of every scene runs and says what happened', async () => {
     for (const [key, d] of Object.entries(CAST)) {
       for (const [name, sc] of Object.entries(d.scenes)) {
         sc.choices.forEach((ch, i) => {
-          start({ background: d.culture === 'mars' ? 'mars' : 'earth', mode: 'hired', post: 'pilot' });
+          start({ background: d.culture, mode: 'hired', post: 'pilot' });
           G.state.credits = 1000; castPerson(key);
           let res = null, err = null;
           try { res = ch.can && !ch.can() ? 'skipped' : ch.run(); } catch (e) { err = String(e); }
@@ -112,7 +115,7 @@ test('every choice of every scene runs and says what happened', async () => {
     return out;
   });
   assert.deepEqual(r.filter(x => !x.ok), []);
-  assert.equal(r.length, 40, 'four characters, five scenes, two choices');
+  assert.equal(r.length, 60, 'six characters, five scenes, two choices');
   await done();
 });
 
