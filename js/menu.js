@@ -95,7 +95,12 @@ function startGame(o) {
   if (cleanName(o.captain)) captain().name = cleanName(o.captain);
   if (cleanName(o.ship)) home().name = cleanName(o.ship).replace(/^the /i, '');
   resetWorld();
-  if (o.mode === 'hired') return landAt(currentPlanet(), setupHired(o));
+  if (o.mode === 'hired') {
+    landAt(currentPlanet(), setupHired(o));
+    const opening = signOnEvent();  // signon.js: why you signed on
+    if (G.dialog) G.nextEvent = opening; else openEvent(opening);
+    return;
+  }
   landAt(currentPlanet(), o.background === 'earth' ? INTRO : b.intro());
 }
 
