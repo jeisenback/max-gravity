@@ -37,7 +37,8 @@ const skillsOf = c => c.skills || (c.role && c.skill !== undefined ? { [c.role]:
 const pips = n => `<span class="pips">${[1, 2, 3].map(i => `<u class="${i <= n ? 'on' : ''}"></u>`).join('')}</span>`;
 
 function whereIs(c) {
-  const st = G.state;
+  const st = G.state, ship = (st.fleet || []).find(s => s.captain.pid === c.id);
+  if (ship) return `captain of the ${ship.name}, ${ship.dest ? `en route to ${ship.dest}` : `docked at ${ship.at}`}`;
   if (c.you) return `aboard ${shipTitle()}${hired() ? `, ${POSTS[hired().post].name}` : ', in command'}`;
   if (st.crew.includes(c.id)) return `aboard ${shipTitle()}${c.role && ROLE_NAMES[c.role] ? `, ${ROLE_NAMES[c.role]}` : ''}`;
   return c.ship ? `captain of the ${c.ship.name}, around ${SYSTEMS[c.haunt] ? SYSTEMS[c.haunt].name : 'the system'}` : c.location ? `last seen at ${c.location}` : 'whereabouts unknown';
@@ -54,7 +55,8 @@ function characterPanel() {
   const xp = c.xp && c.role && c.xp[c.role] !== undefined ? c.xp[c.role] : null, next = xp === null ? null : SKILL_STEPS.find(s => s > xp);
   const chips = [...(c.traits || []).map(t => `<span class="char-chip">${TRAITS[t].adj}</span>`), moodLow(c) ? '<span class="char-chip warn">having a hard time</span>' : moodHigh(c) ? '<span class="char-chip good">in high spirits</span>' : ''].join('');
   const sub = [c.role && ROLE_NAMES[c.role] ? ROLE_NAMES[c.role] : c.you ? 'Captain' : c.job, c.age ? `${c.age}` : '', c.home ? `from ${c.home}` : ''].filter(Boolean).join(', ');
-  const cap = c.captain ? conCard('Captain', ['trade', 'nerve', 'thrift'].map(k => `<div class="con-part char-cap"><span>${k[0].toUpperCase() + k.slice(1)}</span>${conBar(c.captain[k] / 5 * 100, '#6fb0ff')}<b>${c.captain[k]} / 5</b></div>`).join('')) : '';
+  const grade = c.captain && c.cast ? captainGrade(c) : null;
+  const cap = c.captain ? conCard('Captain', ['trade', 'nerve', 'thrift'].map(k => `<div class="con-part char-cap"><span>${k[0].toUpperCase() + k.slice(1)}</span>${conBar(c.captain[k] / 5 * 100, '#6fb0ff')}<b>${c.captain[k]} / 5</b></div>`).join('') + (grade ? conRead('Ready to captain', grade.ready ? 'yes' : `skill ${grade.skill} of ${CAPTAIN_SKILL}, ${grade.days} of ${CAPTAIN_DAYS} days`) : '')) : '';
   const standing = c.memories ? conCard('Standing with you', `${conRead('Opinion', opinionWord(c.opinion))}${conBar(Math.max(0, Math.min(10, c.opinion + 5)) * 10, c.opinion >= 0 ? '#5fd35f' : '#ff6a4a')}
     ${c.memories.length ? `<div class="eyebrow" style="margin-top:8px">Remembers</div>${c.memories.slice(-3).reverse().map(m => `<div class="hint">${m}</div>`).join('')}` : ''}`) : '';
   const blurb = c.ambition ? `<div class="char-amb">${c.ambition}</div>` : c.bio ? `<div class="char-amb">${c.bio}</div>` : '';

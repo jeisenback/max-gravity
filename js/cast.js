@@ -174,6 +174,22 @@ function castXp(key, role, n) {
   if (p.skills[role] > before) comm(`[Crew] ${p.first} has grown at the ${POSTS[Object.keys(POSTS).find(k => POSTS[k].role === role)].name.toLowerCase()} post.`);
 }
 
+// ---------- command ----------
+// A main character can command a company ship (company.js). Until they have skill 2 at some post and have been with you
+// CAPTAIN_DAYS days they are green, and run it with every captain stat two lower.
+const CAPTAIN_SKILL = 2, CAPTAIN_DAYS = 60;
+const bestRole = p => Object.keys(p.skills).sort((a, b) => p.skills[b] - p.skills[a])[0];
+function captainGrade(p) {
+  const skill = p.skills[bestRole(p)], days = G.state.day - ((G.state.cast[p.cast] || {}).since || 0);
+  return { skill, days, ready: skill >= CAPTAIN_SKILL && days >= CAPTAIN_DAYS };
+}
+// Back with you, berth or no: a main character is not left stranded when their ship is sold or lost.
+function castReturn(p) {
+  const st = G.state;
+  if (!st.crew.includes(p.id)) st.crew.push(p.id);
+  p.location = null;
+}
+
 // ---------- coming aboard ----------
 
 function castJoin(key, text) {

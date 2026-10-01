@@ -17,6 +17,20 @@ function fleet() {
   return st.fleet;
 }
 
+// A main character in command (cast.js): their trade, nerve and thrift stand in for a hired captain's one skill.
+// Each is worth five percent of the income, ten percent of the raid risk, and a few percent of the costs, around 3.
+const castCaptain = ship => { const p = G.state.people[ship.captain.pid]; return p && p.cast ? p : null; };
+function captainEdge(ship) {
+  const p = castCaptain(ship);
+  if (!p) return null;
+  const g = captainGrade(p), cut = g.ready ? 0 : 2, s = k => Math.max(1, p.captain[k] - cut);
+  return { trade: s('trade'), nerve: s('nerve'), thrift: s('thrift'), ready: g.ready };
+}
+const shipWage = ship => { const e = captainEdge(ship); return Math.max(1, Math.round(ship.captain.wage * (e ? 1 - 0.06 * (e.thrift - 3) : 1))); };
+const fuelMult = ship => { const e = captainEdge(ship); return e ? 1 - 0.04 * (e.thrift - 3) : 1; };
+const tradeMult = ship => { const e = captainEdge(ship); return e ? 1 + 0.05 * (e.trade - 3) : 1; };
+const riskMult = ship => { const e = captainEdge(ship); return e ? 1 - 0.1 * (e.nerve - 1) : 1 - 0.2 * (ship.captain.skill - 1); };
+
 const planetNamed = name => {
   for (const [sid, s] of Object.entries(SYSTEMS)) {
     const pl = s.planets.find(p => p.name === name);
@@ -63,7 +77,7 @@ function routeOptions(ship) {
       if (!pl.services.includes('trade')) continue;
       const days = 2 * Math.max(1, baseDays(here.sid, sid));
       const out1 = bestLoad(here.pl, pl, s.cargo, Infinity), back = bestLoad(pl, here.pl, s.cargo, Infinity);
-      const net = out1.gain + back.gain - 2 * burnFuel(here.sid, sid) * FUEL_PRICE - days * ship.captain.wage;
+      const net = out1.gain + back.gain - 2 * burnFuel(here.sid, sid) * FUEL_PRICE * fuelMult(ship) - days * shipWage(ship);
       out.push({ to: pl.name, perDay: Math.round(net / days) });
     }
   }
@@ -85,7 +99,7 @@ function buyCompanyShip(shipId) {
 // Leave port: buy the best load for the other end of the route and pay for the burn.
 function startLeg(ship) {
   const st = G.state, from = planetNamed(ship.at), toName = ship.at === ship.route[0] ? ship.route[1] : ship.route[0], to = planetNamed(toName);
-  const fuelCost = burnFuel(from.sid, to.sid) * FUEL_PRICE;
+  const fuelCost = Math.round(burnFuel(from.sid, to.sid) * FUEL_PRICE * fuelMult(ship));
   const cash = Math.max(0, st.credits - COMPANY_RESERVE - fuelCost);
   const load = bestLoad(from.pl, to.pl, SHIPS[ship.shipId].cargo, cash);
   for (const [cid, q] of Object.entries(load.lot)) recordTrade(from.pl, cid, q, 1);
@@ -96,12 +110,12 @@ function startLeg(ship) {
 // Arrive: sell the load unless trouble on the way took it.
 function endLeg(ship) {
   const st = G.state, from = planetNamed(ship.at), to = planetNamed(ship.dest);
-  const risk = (danger(from.sid) + danger(to.sid)) / 2 * 0.3 * (1 - 0.2 * (ship.captain.skill - 1));
+  const risk = (danger(from.sid) + danger(to.sid)) / 2 * 0.3 * riskMult(ship);
   const label = `${SHIPS[ship.shipId].name} "${ship.name}"`;
   let income = 0, note = '';
   if (Math.random() < risk) {
     const roll = Math.random();
-    if (roll < 0.05 && risk > 0.12) {
+    if (roll < 0.05 && risk > 0.12 && !castCaptain(ship)) {  // a main character's ship is never lost: the hull takes the shot
       const c = st.people[ship.captain.pid];
       if (c) c.location = to.pl.name;
       fleet().splice(fleet().indexOf(ship), 1);
@@ -111,10 +125,12 @@ function endLeg(ship) {
     if (roll < 0.75) { ship.cargo = {}; note = ' Pirates seized the cargo.'; }
     else { income -= Math.round(SHIPS[ship.shipId].price * 0.05); note = ' Pirates shot up the hull; repairs were paid.'; }
   }
+  let sales = 0;
   for (const [cid, q] of Object.entries(ship.cargo)) {
-    income += tradeTotal(to.pl, cid, q, -1);
+    sales += tradeTotal(to.pl, cid, q, -1);
     recordTrade(to.pl, cid, q, -1);
   }
+  income += Math.round(sales * tradeMult(ship));
   st.credits += income;
   const profit = income - ship.paid;
   ship.earned += profit;
@@ -128,9 +144,11 @@ function companyTick() {
   const st = G.state;
   st.companyWeek = st.companyWeek || 0;
   for (const ship of [...fleet()]) {
-    if (st.credits >= ship.captain.wage) {
-      st.credits -= ship.captain.wage;
-      st.companyWeek = (st.companyWeek || 0) - ship.captain.wage;
+    const wage = shipWage(ship), cast = castCaptain(ship);
+    if (cast && ship.daysLeft > 0) castXp(cast.cast, bestRole(cast), 1);  // a day under way is a day at the job
+    if (st.credits >= wage) {
+      st.credits -= wage;
+      st.companyWeek = (st.companyWeek || 0) - wage;
     } else if (ship.route) {
       ship.route = null;  // unpaid: finish this leg, then stay in port
       companyLog(`The captain of the "${ship.name}" will park at the end of this leg until wages can be paid.`);
@@ -209,6 +227,7 @@ function escortLost(n) {
   if (!s) return;
   const c = G.state.people[s.captain.pid];
   if (c) c.location = G.state.planet;
+  if (c && c.cast) castReturn(c);
   fleet().splice(fleet().indexOf(s), 1);
   msg(`Your escort ${n.name} is destroyed. Capt. ${c ? `${c.first} ${c.last}` : 'the captain'} ejects safely.`);
   companyLog(`The ${n.name} was destroyed flying escort near ${system().name}.`);
@@ -286,10 +305,39 @@ function stakeOffer() {
       <button data-action="sbuy" ${can ? '' : 'disabled'}>Buy 10%</button></div>`;
 }
 
+// Put a main character in command of a ship docked where you are, or take them off it. The hired captain they replace
+// stays a contact at that port; a relieved ship gets a fresh one.
+const canPost = (ship, p) => !!p && !ship.dest && !ship.escort && ship.at === G.state.planet && G.state.crew.includes(p.id) && !castCaptain(ship);
+function postCaptain(i, key) {
+  const st = G.state, ship = fleet()[i], p = st.people[(st.cast[key] || {}).pid];
+  if (!ship || !canPost(ship, p)) return;
+  const old = st.people[ship.captain.pid];
+  if (old) old.location = ship.at;
+  st.crew = st.crew.filter(id => id !== p.id);
+  ship.captain = { pid: p.id, wage: p.wage, skill: captainGrade(p).skill };
+  like(p, st.cast[key].flags.promised ? 3 : 1, st.cast[key].flags.promised ? `You kept your promise: I have the ${ship.name}.` : `You gave me the ${ship.name}.`);
+  companyLog(`${p.first} ${p.last} takes command of the "${ship.name}" at ${ship.at}.`);
+}
+function relieveCaptain(i) {
+  const st = G.state, ship = fleet()[i], p = ship && castCaptain(ship);
+  if (!p || ship.dest || ship.escort || ship.at !== st.planet) return;
+  const hand = registerPerson(makeCrewCandidate(st.systemId));
+  hand.opinion = 1;
+  ship.captain = { pid: hand.id, wage: hand.wage, skill: hand.skill };
+  castReturn(p);
+  companyLog(`${p.first} ${p.last} hands the "${ship.name}" to Capt. ${hand.first} ${hand.last} and rejoins you.`);
+}
+function captainHtml(i, s) {
+  const p = castCaptain(s), here = !s.dest && !s.escort && s.at === G.state.planet, e = captainEdge(s);
+  if (p) return `<div class="hint">${personLink(p)} in command: trade ${e.trade}, nerve ${e.nerve}, thrift ${e.thrift}.${e.ready ? '' : ` Green: every stat two lower until skill ${CAPTAIN_SKILL} and ${CAPTAIN_DAYS} days with you.`} ${here ? `<button data-action="crelieve" data-arg="${i}">Relieve</button>` : ''}</div>`;
+  return here ? castAboard().map(c => `<button data-action="cpost" data-arg="${i}|${c.cast}">Put ${esc(c.first)} in command</button>`).join(' ') : '';
+}
+
 function sellCompanyShip(i) {
   const st = G.state, ship = fleet()[i], c = st.people[ship.captain.pid];
   st.credits += Math.round(SHIPS[ship.shipId].price * 0.6);
   if (c) c.location = ship.at;
+  if (c && c.cast) castReturn(c);
   fleet().splice(i, 1);
   companyLog(`Sold the ${SHIPS[ship.shipId].name} "${ship.name}" at ${ship.at}.`);
 }
@@ -306,8 +354,9 @@ function companyView() {
     const c = st.people[s.captain.pid], picking = UI.companyPick === s.id;
     const options = picking && !s.dest ? routeOptions(s).map(o => `<button data-action="croute" data-arg="${i}|${o.to}">${s.at} and ${o.to} &middot; about ${o.perDay >= 0 ? '' : '-'}${fmt(Math.abs(o.perDay))} cr/day</button>`).join('') : '';
     return `<div class="mission company">
-      <div><b>${SHIPS[s.shipId].name} "${s.name}"</b> &middot; Capt. ${c ? `${c.first} ${c.last}` : 'unknown'}, skill ${s.captain.skill}/3, ${fmt(s.captain.wage)} cr/day
+      <div><b>${SHIPS[s.shipId].name} "${s.name}"</b> &middot; Capt. ${c ? `${c.first} ${c.last}` : 'unknown'}, skill ${s.captain.skill}/3, ${fmt(shipWage(s))} cr/day
         <div class="hint">Route: ${s.route ? `${s.route[0]} and ${s.route[1]}` : 'none'}. ${status(s)}</div>
+        ${captainHtml(i, s)}
         <div class="hint">Last trip: ${s.lastTrip ? `${s.lastTrip.from} to ${s.lastTrip.to}, ${s.lastTrip.profit >= 0 ? '+' : ''}${fmt(s.lastTrip.profit)} cr` : 'none yet'}. Total: ${s.earned >= 0 ? '+' : ''}${fmt(s.earned)} cr.</div>
         ${picking ? `<div class="row">${s.dest ? '<span class="hint">Routes can be set once the ship is docked; it finishes this leg first.</span>' : options || '<span class="hint">No profitable route in range.</span>'}</div>` : ''}</div>
       <div class="row" style="margin:0">
@@ -370,6 +419,8 @@ Mods.register({
     M.on('landed', escortsDock);
     M.on('destroyed', n => { if (n.kind === 'escort') escortLost(n); });
     M.action('csell', i => sellCompanyShip(Number(i)));
+    M.action('cpost', arg => { const [i, key] = arg.split('|'); postCaptain(Number(i), key); });
+    M.action('crelieve', i => relieveCaptain(Number(i)));
     M.action('sbuy', buyStake);
     M.action('ssell', sellStake);
   },
