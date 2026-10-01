@@ -45,6 +45,8 @@ const CONDITIONS = {
   // A story passenger aboard, by role in the story (older saves' Mira has none).
   aboard: v => paxAboard().some(m => m.story && (m.storyWho || 'mira-europa') === v),
   chance: v => Math.random() < v,
+  // A follow-up that an earlier choice set going with `later`: holds once its days have passed.
+  due: v => [].concat(v).every(n => quality(`due:${n}`) > 0 && G.state.day >= quality(`due:${n}`)),
 };
 
 function meets(when = {}) {
@@ -92,6 +94,8 @@ const EFFECTS = {
     }
   },
   q: v => { const qs = G.state.qualities = G.state.qualities || {}; for (const [k, n] of Object.entries(v)) qs[k] = (qs[k] || 0) + n; },
+  // Start a follow-up: { name: days } makes the `due: name` condition hold that many days from now.
+  later: v => { const qs = G.state.qualities = G.state.qualities || {}; for (const [k, n] of Object.entries(v)) qs[`due:${k}`] = G.state.day + Math.max(1, n); },
   set: v => { const qs = G.state.qualities = G.state.qualities || {}; Object.assign(qs, v); },
   news: text => worldNews(fill(text)),
   log: text => journal(fill(text)),
@@ -174,6 +178,7 @@ function storyletEvent(s) {
   const qs = G.state.qualities = G.state.qualities || {};
   if (s.once) qs[`seen:${s.id}`] = 1;
   if (s.every) qs[`last:${s.id}`] = G.state.day;
+  if (s.consumes) qs[`due:${s.consumes}`] = 0;  // a follow-up plays once for each time it was set going
   // A choice that needs a particular crew member (not just a role) is hidden without them.
   const present = c => !(c.when && c.when.crew && !ROLE_NAMES[c.when.crew] && !G.state.crew.includes(c.when.crew));
   return {
@@ -192,10 +197,16 @@ function storyletEvent(s) {
   };
 }
 
+// Lead straight into a scene that only exists as a second beat (`chained: true`), from code.
+function chainTo(id) {
+  const next = STORYLETS.find(x => x.id === id);
+  if (next) G.nextEvent = storyletEvent(next);
+}
+
 // The storylet to play here and now: eligible ones of the highest priority, one at random.
 function pickStorylet(where, keep = () => true) {
   const waiting = s => s.every && quality(`last:${s.id}`) && G.state.day - quality(`last:${s.id}`) < s.every;  // `every: days` lets a scene come round again
-  const ok = STORYLETS.filter(s => s.where === where && keep(s) && !(s.once && quality(`seen:${s.id}`)) && !waiting(s) && meets(s.when));
+  const ok = STORYLETS.filter(s => s.where === where && !s.chained && keep(s) && !(s.once && quality(`seen:${s.id}`)) && !waiting(s) && meets(s.when));
   if (!ok.length) return null;
   const top = Math.max(...ok.map(s => s.priority));
   return pick(ok.filter(s => s.priority === top));

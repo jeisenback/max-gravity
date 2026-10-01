@@ -143,6 +143,7 @@ On a keyboard:
 - `js/cast.js` - the main characters: authored people (a pair for each start background) who come with you, with a skill at each post, captain stats, an ambition and scenes of their own; a hired hand finds them aboard, an owner meets them at a port over the first weeks
 - `js/signon.js` - the hired hand's opening scene, "Signing On": a story for each start background, a paragraph for the post you chose, the captain and the two main characters by name, and one choice about why you signed on (the money, the work, or to be somewhere else)
 - `js/hired.js` - the hired-hand start: sign on to an NPC captain's ship and work one post; the captain plans and sells each run, you are paid a wage and a share, and you can take errands for where she is going, ask the captain to move you to another post, and buy a ship of your own (taking one friend) when you can afford it. On a burn the captain takes the ship-to-ship calls from the ship's purse, you spend downtime practising your post, and in a duel the gunner plays the cards unless you are the gunner
+- `js/stories/aftermath.js` - what comes of the hand-written burn events: second beats and follow-ups that arrive days later
 - `js/hiredevents.js` - what is written for a hired hand: burn events in five groups (work at your post, the captain, the crew with the main characters where aboard, money, and the road), twelve downtime additions (up to four offered at a time, the main characters first), the weights in one table, and the owner-only events hidden
 - `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike), `mars-navy.js` (Reserve Commission, a Mars Navy career), `rook-crown.js` (The Rook's Crown, a pirate lord's rise), `tethys.js` (The Partner's Chair, a corporate climb), and `cold-water.js` (the scenes of Cold Water)
 - `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
@@ -302,7 +303,7 @@ M.addStorylet({
 });
 ```
 
-A storylet plays once unless you set `once: false`. A choice whose `when` fails shows disabled; one that needs a crew role is hidden when nobody aboard has it, and `{crew}` in its label becomes their name. `next` leads straight into another storylet.
+A storylet plays once unless you set `once: false`. A scene can be a second beat that is only reached from another (`chained: true`, led to by `next`, or by `chainTo('id')` from code), and a follow-up that comes some days after a choice (`later` sets it going; give the follow-up `when: { due: 'name' }` and `consumes: 'name'`, so it plays once for each time it was set going). `js/stories/aftermath.js` has the burn events' second beats and follow-ups as a model. A choice whose `when` fails shows disabled; one that needs a crew role is hidden when nobody aboard has it, and `{crew}` in its label becomes their name. `next` leads straight into another storylet.
 
 | Condition | Holds when |
 | --- | --- |
@@ -321,6 +322,7 @@ A storylet plays once unless you set `once: false`. A choice whose `when` fails 
 | `boom`, `bust` | a faction's economy is booming / in a slump |
 | `raid` | pirate raids at a location id, or `true` for here |
 | `chance` | a random roll under this (0 to 1) |
+| `due` | a follow-up (or list) that a `later` effect set going has come due |
 
 | Effect | Does |
 | --- | --- |
@@ -334,6 +336,7 @@ A storylet plays once unless you set `once: false`. A choice whose `when` fails 
 | `cancelMission` | drops missions carrying this good, applying their `onFail` |
 | `bounty` | `{ at, name, pay, days, issuer, onDone, onFail }` gives a hunt: the named ship appears when you reach `at` |
 | `companyShip` | gives a crewed company ship of this type, docked where you are |
+| `later` | `{ name: days }` starts a follow-up: the `due: name` condition holds that many days from now |
 | `delay` | adds seconds to the current burn (transit only) |
 | `do` | `'name'` or `['name', ...args]`: runs code your mod registered with `M.addAction(name, fn)`; text it returns is added to the result |
 
