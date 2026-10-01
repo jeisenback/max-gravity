@@ -209,7 +209,7 @@ function barHtml() {
     <div class="row"><button data-action="barRound" ${st.credits >= round && !G.barState.round ? '' : 'disabled'}>${G.barState.round ? 'You bought a round' : `Buy a round for the house (${fmt(round)} cr)`}</button></div>
     <h3>Tonight</h3>
     ${rows || '<p class="hint">Just you and the bartender.</p>'}
-    ${hire ? `<h3>Looking for a ship</h3>${hire}` : ''}`;
+    ${hire && !hired() ? `<h3>Looking for a ship</h3>${hire}` : ''}`;
 }
 
 Mods.register({

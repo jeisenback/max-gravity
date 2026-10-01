@@ -380,3 +380,121 @@ test('once you can afford a ship, the captain heads for a port with a yard', asy
   assert.ok(r.poorIsNotForced);
   await done();
 });
+
+test('a hired hand is offered only what is theirs: their own post, and no owner\'s business', async () => {
+  const { page, ev, done } = await open();
+  await ev(hiredHelpers);
+  const FORBIDDEN = ['sbuy', 'hire', 'dismiss', 'renameShip', 'handBack', 'programWrite', 'programSlot', 'programPick', 'programRemove', 'routeDock', 'takeoff', 'buy', 'sell'];
+  const problems = [];
+  for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
+    await ev(p => { startHired(p); G.state.tutorial = null; G.state.credits = 50000; UI.render(); }, post);
+    for (const station of ['nav', 'weapons', 'eng', 'interior', 'comms', 'ops']) {
+      for (const tab of station === 'ops' ? ['port', 'bar', 'missions'] : [null]) {
+        await ev(([s, t]) => { UI.tab = t || bridgeStation(s, currentPlanet()); UI.render(); }, [station, tab]);
+        const found = await page.evaluate(() => [...document.querySelectorAll('#panel .body button, #panel .post button')].filter(b => !b.disabled).map(b => [b.dataset.action, b.dataset.arg || '']));
+        for (const [a, arg] of found) {
+          if (FORBIDDEN.includes(a)) problems.push(`${post}/${station}${tab ? '/' + tab : ''}: ${a}`);
+          if (a === 'takeControl') problems.push(`${post}/${station}: take controls`);
+          if ((a === 'postOrder' || a === 'project') && !(arg.split(':')[0] === post || (a === 'project' && ({ patch: 'engineer', tune: 'engineer', refit: 'gunner' })[arg] === post))) problems.push(`${post}/${station}: ${a} ${arg} is not their post`);
+        }
+      }
+    }
+  }
+  assert.deepEqual(problems, []);
+  // The pilot's orders: none (departing is the captain's: she sails when you say), and the nav page shows the run, not a course.
+  await ev(() => { startHired('pilot'); G.state.tutorial = null; UI.tab = 'nav'; UI.render(); });
+  assert.match(await page.innerText('#panel'), /captain picks where she goes/i);
+  assert.equal(await page.$('[data-action=map]:not(.dock *)'), null, 'no course to plot');
+  // Commands on a post that is not yours do nothing, and the map does not set a course.
+  const r = await ev(() => {
+    startHired('pilot'); const st = G.state; st.crew.map(person).forEach(c => { c.opinion = 0; });
+    const before = JSON.stringify(postState('engineer'));
+    takeControl('engineer'); const note = giveOrder('engineer', 'patch'); const proj = (st.cargo.industrial = 5, startProject('patch')); const prog = writeProgram('heat', 'engineer', 'balance');
+    st.dest = null; G.mode = 'map'; G.mapPos = id => [100, 100]; const ev0 = { clientX: 100, clientY: 100 };
+    const out = { took: postMode('engineer'), note, proj, prog, before: before === JSON.stringify(postState('engineer')) };
+    return out;
+  });
+  assert.deepEqual(r, { took: 'crewed', note: null, proj: false, prog: false, before: true });
+  await done();
+});
+
+test('downtime for a hired hand: not the captain\'s drills, and a chance to practise your post', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    const labels = () => { G.transit.lifeUsed = {}; return downtimeEvent().choices.map(c => c.label); };
+    startHired('engineer'); const st = G.state; st.tutorial = null; st.armor = 10;
+    uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
+    const eng = labels(), engText = downtimeEvent().text;
+    const x0 = skillXp('engineer'); const prac = downtimeEvent().choices.find(c => c.label === 'Practise at your post'); const said = prac.run(); const gained = skillXp('engineer') - x0;
+    startHired('pilot'); G.state.armor = 10; uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
+    const pilot = labels();
+    startGame({ slot: 1, background: 'earth', captain: 'Ines' }); while (G.dialog) finishEvent(); G.state.armor = 10; uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
+    const owner = labels(), ownerText = downtimeEvent().text;
+    return { eng, engText, gained, said, pilot, owner, ownerText };
+  });
+  assert.ok(!r.eng.includes('Run drills') && !r.eng.includes('Check on passengers'), 'the drills and the rounds of the berths are the captain\'s');
+  assert.ok(r.eng.includes('Practise at your post') && r.eng.includes('Maintenance'), 'an engineer keeps the hull');
+  assert.ok(!r.pilot.includes('Maintenance') && r.pilot.includes('Practise at your post'), 'a pilot does not');
+  assert.match(r.engText, /What do you do/); assert.equal(r.gained, 3); assert.match(r.said, /engineer post/);
+  assert.ok(r.owner.includes('Run drills') && !r.owner.includes('Practise at your post'), 'an owner is unchanged');
+  assert.match(r.ownerText, /What does the ship do/);
+  await done();
+});
+
+test('burn events for a hired hand: the captain takes the ship\'s calls, with the ship\'s money', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    startHired('pilot'); const st = G.state; st.tutorial = null; st.flags.classicCombat = false; st.armor = ship().armor;
+    uatBurn('Ceres Station', 'pallas'); G.transit.times = []; const t = G.transit, h = st.hired;
+    const distress = TRANSIT_EVENTS.find(e => e.title === 'Distress Call'), coolant = TRANSIT_EVENTS.find(e => e.title === 'Coolant Leak');
+    const out = { shown: null, mine: [], yours: null };
+    h.fund = 20000;
+    let fundMoved = false, minePaid = 0;
+    for (let i = 0; i < 60; i++) {
+      G.dialog = null; t.event = null; G.nextEvent = null; const f0 = h.fund, c0 = st.credits;
+      openEvent(distress);
+      if (i === 0) out.shown = { labels: G.dialog.choices.map(c => c.label), text: G.dialog.event.text.slice(-120), decided: !!G.dialog.event.decided };
+      chooseEvent(0); finishEvent();
+      minePaid += st.credits - c0; fundMoved = fundMoved || h.fund !== f0;
+    }
+    out.mine = { minePaid, fundMoved };
+    // The contact: the captain answers, and pays from the ship's purse.
+    h.fund = 20000; let contactMine = 0;
+    for (let i = 0; i < 40; i++) { G.dialog = null; t.event = null; G.nextEvent = null; G.duel = null; const c0 = st.credits; st.armor = ship().armor; openEvent(contactEvent({ kind: 'pirate' })); const e = G.dialog.event; chooseEvent(0); finishEvent(); for (let n = 0; G.dialog && n < 30; n++) { chooseEvent(0); finishEvent(); } contactMine += st.credits - c0; if (i === 0) out.contact = { decided: e.decided, labels: e.choices.map(c => c.label) }; }
+    out.contactMine = contactMine; out.contactFund = h.fund !== 20000;
+    // Your own post's event is yours; another post's is the captain's.
+    G.dialog = null; t.event = null; openEvent(coolant); out.coolantPilot = { decided: !!G.dialog.event.decided, n: G.dialog.choices.length };
+    st.hired.post = 'engineer'; G.dialog = null; t.event = null; openEvent(coolant); out.coolantEngineer = { decided: !!G.dialog.event.decided, n: G.dialog.choices.length };
+    return out;
+  });
+  assert.deepEqual(r.shown.labels, ['See how it goes']); assert.match(r.shown.text, /takes the call/); assert.ok(r.shown.decided);
+  assert.equal(r.mine.minePaid, 0, 'none of it came out of, or went into, your savings'); assert.ok(r.mine.fundMoved, 'it was the ship\'s money');
+  assert.ok(r.contact.decided); assert.equal(r.contactMine, 0); assert.ok(r.contactFund, 'a fight and a bounty or a fine, in the ship\'s purse');
+  assert.deepEqual(r.coolantPilot, { decided: true, n: 1 }, 'the engineer\'s leak is not the pilot\'s to decide');
+  assert.equal(r.coolantEngineer.decided, false, 'but it is yours when you are the engineer'); assert.ok(r.coolantEngineer.n >= 2);
+  await done();
+});
+
+test('a hired hand who is not the gunner watches the duel; the gunner picks the cards', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    const run = post => {
+      startHired(post); const st = G.state; st.tutorial = null; st.flags.classicCombat = false; st.armor = ship().armor;
+      uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.dialog = null; G.transit.event = null; G.nextEvent = null; G.duel = null;
+      const c0 = st.credits; startDuel({ kind: 'pirate' }, false); finishEvent2();
+      const first = G.nextEvent; const labels = first.choices.map(c => c.label); let rounds = 0;
+      openEvent(first);
+      while ((G.dialog || G.nextEvent) && rounds++ < 20) { if (!G.dialog) { finishEvent(); continue; } chooseEvent(0); finishEvent(); }
+      return { labels, ended: G.duel === null, credits: st.credits === c0 };
+    };
+    window.finishEvent2 = () => {};
+    return { pilot: run('pilot'), gunner: run('gunner') };
+  });
+  assert.deepEqual(r.pilot.labels, ['Hold on'], 'the gunner plays it for you');
+  assert.ok(r.gunner.labels.length >= 1 && !r.gunner.labels.includes('Hold on'), 'as the gunner you pick the card');
+  assert.ok(r.pilot.ended && r.gunner.ended); assert.ok(r.pilot.credits && r.gunner.credits, 'and your savings are not in it');
+  await done();
+});

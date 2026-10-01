@@ -46,7 +46,7 @@ const orderOdds = id => postMode(id) === 'crewed' ? 0.55 + 0.15 * roleSkill(POST
 
 function takeControl(id) {
   const h = postHolder(id), ps = postState(id);
-  if (!h || ps.manual) return;
+  if (!h || ps.manual || notYours(id)) return;
   ps.manual = true;
   ps.strain += 1;
   if (ps.strain >= 3) {  // overruled once too often
@@ -59,7 +59,7 @@ function handBack(id) { postState(id).manual = false; }
 
 function giveOrder(id, orderId) {
   const o = postOrders(id).find(x => x.id === orderId), ps = postState(id);
-  if (!o || (ps.busy && !o.sure) || (o.can && !o.can())) return null;
+  if (!o || notYours(id) || (ps.busy && !o.sure) || (o.can && !o.can())) return null;
   const doer = postMode(id) === 'crewed' ? postHolder(id) : null;
   if (!o.sure) ps.busy = true;  // a sure order (a command, not a task) does not use up the day
   ps.note = o.run(o.sure || Math.random() < orderOdds(id), doer, doer ? roleSkill(POSTS[id].role) : 0);
@@ -70,6 +70,7 @@ function giveOrder(id, orderId) {
 // The post's block on a station view: who has it, the take/hand-back button, and its orders.
 function postHtml(id) {
   const P = POSTS[id], h = postHolder(id), ps = postState(id), mode = postMode(id);
+  if (notYours(id)) return `<div class="post"><div class="eyebrow">${P.name} post &middot; crewed</div><p class="desc">${h ? `${fullName(h)} has the ${P.name.toLowerCase()} post.` : `Nobody has the ${P.name.toLowerCase()} post.`} It is the captain's to command, not yours.</p></div>`;
   const name = h ? fullName(h) : '';
   const line = mode === 'crewed' ? `${name} has the ${P.name.toLowerCase()} post.`
     : h ? `You have taken the ${P.name.toLowerCase()} controls from ${name}.`

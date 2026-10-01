@@ -49,7 +49,7 @@ function updateAutopilot(dt) {
 
 const canDepart = () => {
   const st = G.state;
-  return G.mode === 'landed' && !G.dialog && postMode('pilot') === 'crewed' && !!st.dest && st.dest !== st.systemId && st.fuel >= burnFuel(st.systemId, st.dest);
+  return !hired() && G.mode === 'landed' && !G.dialog && postMode('pilot') === 'crewed' && !!st.dest && st.dest !== st.systemId && st.fuel >= burnFuel(st.systemId, st.dest);
 };
 
 ORDERS.pilot = [{
@@ -68,7 +68,7 @@ ORDERS.pilot = [{
 // Where to dock on arrival, for the Navigation station and the pilot's burn sheet.
 function routeHtml() {
   const st = G.state, sid = st.dest && st.dest !== st.systemId ? st.dest : null;
-  if (!sid || postMode('pilot') !== 'crewed') return '';
+  if (!sid || hired() || postMode('pilot') !== 'crewed') return '';
   const here = dockTarget(sid).name;
   return `<div class="post"><div class="eyebrow">Dock at, on arrival</div><div class="row">${SYSTEMS[sid].planets.map(pl => `<button data-action="routeDock" data-arg="${esc(pl.name)}" class="${pl.name === here ? 'primary' : ''}">${pl.name}</button>`).join('')}</div></div>`;
 }

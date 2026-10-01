@@ -13,6 +13,8 @@ const HIRED_POSTS = ['pilot', 'gunner', 'engineer', 'comms'];  // the posts you 
 const HIRED_SAVINGS = 300;
 const HIRED_FUND = 5000;  // the ship's money, which buys the cargo
 const hired = () => (G.state && G.state.hired) || null;
+// A hired hand works one post. The others are the crew's, and the captain's to command.
+const notYours = post => !!hired() && hired().post !== post;
 
 // ---------- skill at each post ----------
 // Experience points per post, kept when you swap. Levels come at 0, 10, 30 and 60 points.
@@ -53,6 +55,55 @@ function setupHired(o) {
     `You have ${HIRED_SAVINGS} credits to your name. Save toward a ship of your own.`,
   ];
 }
+
+// ---------- burn events ----------
+// On the captain's ship the calls on the road are the captain's, and the money is the ship's.
+
+// A hired hand's burn events spend and earn the ship's funds, not their savings.
+function hiredFunds(fn) {
+  const h = hired();
+  if (!h || !G.transit) return fn();
+  const st = G.state, mine = st.credits;
+  st.credits = h.fund;
+  try { return fn(); } finally { h.fund = st.credits; st.credits = mine; }
+}
+
+// The captain leans cautious: the last way out is likelier, a fight is likelier when it comes to that,
+// and nothing costly is chosen unless the ship can afford it.
+function captainPick(choices) {
+  const fund = hired().fund;
+  const weights = choices.map((c, i) => (/pay|fine|buy/i.test(c.label) && fund < 4000 ? 0.2 : 1 + (i === choices.length - 1 ? 1 : 0) + (/battle stations/i.test(c.label) ? 2 : 0)));
+  let r = Math.random() * weights.reduce((a, b) => a + b, 0);
+  for (let i = 0; i < choices.length; i++) if ((r -= weights[i]) < 0) return choices[i];
+  return choices[choices.length - 1];
+}
+
+// Who decides an event: a ship-to-ship matter is the captain's; some are a post's (the engineer's coolant
+// leak); the rest (the crew, your own affairs) are yours. Not yours: the captain takes the call.
+function hiredCall(ev) {
+  const h = hired();
+  if (!h || !G.transit || ev.decided || !ev.choices) return ev;
+  const owner = ev.owner || (ev.via === 'ship' ? 'captain' : 'you');
+  if (owner === 'you' || owner === h.post) return ev;
+  const cap = G.state.people[h.captain];
+  const usable = ev.choices.filter(c => hiredFunds(() => !c.can || c.can()) && (!c.role || roleSkill(c.role)) && !/yourself/i.test(c.label));
+  if (!usable.length) return ev;
+  const c = captainPick(usable);
+  const said = c.label.replace(/\s*\(.*?\)/g, '').replace(/\[\{crew\}\]\s*/, '').replace(/\{crew\}/g, 'the crew').replace(/\s+/g, ' ').trim();
+  return { ...ev, decided: true, text: `${ev.text} Captain ${cap.first} ${cap.last} takes the call: "${said}."`,
+    choices: [{ label: 'See how it goes', run: () => { const r = c.run(); return c.role ? r.replace(/\{crew\}/g, roleName(c.role)) : r; } }] };
+}
+
+// ---------- downtime ----------
+const PRACTICE = {
+  pilot: 'You take the helm through the drills the old hands swear by: a flip on the sim, a docking by the numbers, a dead-stick approach with the lights out.',
+  gunner: 'You spend a watch on the range sim, tracking and leading targets, until the fire control stops fighting you and starts finishing your sentences.',
+  engineer: 'You go through the plant one system at a time, with the manual open and a meter in your teeth, and find three things nobody had written down.',
+  comms: 'You sit on the bands for a watch, learning the rhythm of a dozen stations, and which of them are lying about their transponders.',
+};
+ACTIVITIES.practise = { hiredOnly: true, label: 'Practise at your post', can: () => !!hired(), run() { if (!hired()) return 'There is nothing to practise.'; gainSkill(hired().post, 3); return `${PRACTICE[hired().post]} (Experience at the ${POSTS[hired().post].name.toLowerCase()} post.)`; } };
+// What a hired hand can do with downtime: not the captain's drills or rounds of the berths, and the hull is the engineer's.
+const hiredMay = (id, a) => a.hiredOnly ? !!hired() : !hired() || (!['drills', 'visit'].includes(id) && (id !== 'repair' || hired().post === 'engineer'));
 
 // ---------- the captain's runs ----------
 
@@ -112,7 +163,8 @@ function sail() {
   h.plan = null;
   st.dest = plan.sid;
   st.route = { dock: plan.planet, go: true };
-  if (!giveOrder('pilot', 'depart')) takeOff();  // a manual pilot flies her out
+  // A crewed pilot flies her out and in; if you are the pilot, you do.
+  if (postMode('pilot') === 'crewed') ORDERS.pilot.find(o => o.id === 'depart').run(); else takeOff();
   return true;
 }
 

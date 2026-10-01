@@ -20,7 +20,7 @@ const projectDoer = id => { const post = PROJECTS[id].post; return postMode(post
 // Crew do it in the time set; you take half as long again, and the odds are worse.
 const projectOdds = id => { const d = projectDoer(id); return Math.min(0.95, d ? 0.6 + 0.12 * roleSkill(POSTS[PROJECTS[id].post].role) : soloOdds(PROJECTS[id].post)); };
 
-function canStart(id) { return !projectsOf()[id] && !Object.values(projectsOf()).some(p => PROJECTS[p.id].post === PROJECTS[id].post) && partsHeld() >= PROJECTS[id].parts; }
+function canStart(id) { return !notYours(PROJECTS[id].post) && !projectsOf()[id] && !Object.values(projectsOf()).some(p => PROJECTS[p.id].post === PROJECTS[id].post) && partsHeld() >= PROJECTS[id].parts; }
 
 function startProject(id) {
   const P = PROJECTS[id], st = G.state;
@@ -62,6 +62,7 @@ function projectsTick(dt) {
 
 // The projects a post can run: what is running, and what can be started.
 function projectsHtml(post) {
+  if (notYours(post)) return '';
   const running = Object.values(projectsOf()).find(p => PROJECTS[p.id].post === post);
   const list = Object.entries(PROJECTS).filter(([, P]) => P.post === post);
   return `<div class="post"><div class="eyebrow">Projects &middot; parts ${partsHeld()}t</div>

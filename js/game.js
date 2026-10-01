@@ -1297,6 +1297,7 @@ canvas.addEventListener('click', e => {
   for (const id of Object.keys(SYSTEMS)) {
     const [x, y] = G.mapPos(id);
     if (Math.hypot(e.clientX - x, e.clientY - y) < (Touch.on ? 26 : 16)) {
+      if (hired()) { msg('The captain picks where she goes.'); return; }  // the map is for looking, to a hired hand
       G.state.dest = id === (G.transit ? G.transit.to : G.state.systemId) ? null : id;
       return;
     }

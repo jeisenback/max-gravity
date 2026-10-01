@@ -32,7 +32,7 @@ const programDraft = { cond: null, order: null };  // the rule being picked on t
 
 function writeProgram(cond, post, order) {
   const p = programs();
-  if (p.writing || !PROGRAM_CONDITIONS[cond] || !programOrder(post, order) || p.rules.length >= p.slots) return false;
+  if (hired() || p.writing || !PROGRAM_CONDITIONS[cond] || !programOrder(post, order) || p.rules.length >= p.slots) return false;
   const secs = PROGRAM_SECS * (programDoer() ? 1 : 1.5);
   p.writing = { kind: 'rule', cond, post, order, left: secs, total: secs };
   return true;
@@ -40,7 +40,7 @@ function writeProgram(cond, post, order) {
 
 function extendPrograms() {
   const p = programs();
-  if (p.writing || p.slots >= SLOTS_MAX) return false;
+  if (hired() || p.writing || p.slots >= SLOTS_MAX) return false;
   const secs = SLOT_SECS * (programDoer() ? 1 : 1.5);
   p.writing = { kind: 'slot', left: secs, total: secs };
   return true;
@@ -85,6 +85,7 @@ function programsTick(dt) {
 }
 
 function programsHtml() {
+  if (hired()) return '';  // standing rules for a crew are the captain's business
   const p = programs(), w = p.writing, conds = Object.entries(PROGRAM_CONDITIONS), orders = programOrders();
   const pick = (kind, id, label, on) => `<button data-action="programPick" data-arg="${kind}:${id}" class="${on ? 'primary' : ''}">${label}</button>`;
   return `<div class="post"><div class="eyebrow">Programs &middot; ${p.rules.length} of ${p.slots} slot${p.slots > 1 ? 's' : ''}</div>

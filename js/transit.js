@@ -187,7 +187,7 @@ const TRANSIT_EVENTS = [
   },
   {
     title: 'Stowaway',
-    via: 'crew',
+    via: 'crew', owner: 'captain',
     text: 'A skinny Belter kid unfolds from behind the cargo netting, blinking, cramped and stiff and bright-eyed, with a smudge of grease along one cheek and a tattered rucksack clutched to their chest. They have been in there, you realize, for two days, living on packets of ration paste. They look at you with the wide, fierce, terrified courage of a stray dog that has decided to bite first. "I just need to get off that rock," they say. "I can pay a little. Or I know things. I know a lot of things."',
     choices: [
       { label: 'Charge them passage', run() {
@@ -217,7 +217,7 @@ const TRANSIT_EVENTS = [
   },
   {
     title: 'Coolant Leak',
-    via: 'crew',
+    via: 'crew', owner: 'engineer',
     text: 'Alarms. A shrill, insistent wail that goes through the whole ship, and, on the reactor panel, a line of lights, one after another, going from green to amber to red. The coolant loop has sprung a leak, somewhere back in the tangle of pipes behind the drive housing, and the drive is running hot, hotter every minute, with a faint, ominous, metallic ticking. The air in the corridor smells of burnt glycol. Everyone is looking at you.',
     choices: [
       { label: '[{crew}] Handle it', role: 'engineer', run: () => '{crew} is in the coolant loop before the alarm finishes, sleeves rolled, one hand already on the valve, and, for twenty long minutes, there is only the sound of tools, and the hiss of venting steam, and a low, steady, cheerful muttering. Then the lights, one by one, go back to green. "Go back to sleep, captain," {crew} says, wiping their hands, and grins, black to the elbows.' },
@@ -332,6 +332,7 @@ function startHappening() {
 // Choices tagged with a crew role only appear when someone aboard fills it, and
 // {crew} in their text becomes that crew member's name.
 function openEvent(ev) {
+  ev = hiredCall(ev);  // on the captain's ship, the captain's calls are the captain's (hired.js)
   const choices = ev.choices.filter(c => !c.role || roleSkill(c.role))
     .map(c => (c.role ? { ...c, label: c.label.replace(/\{crew\}/g, roleName(c.role)) } : c));
   G.dialog = { event: ev, choices };
@@ -341,7 +342,7 @@ function openEvent(ev) {
 }
 
 function chooseEvent(i) {
-  const c = G.dialog.choices[i], result = c.run();
+  const c = G.dialog.choices[i], result = hiredFunds(() => c.run());  // a hired hand's burn events spend the ship's money, not theirs
   return c.role ? result.replace(/\{crew\}/g, roleName(c.role)) : result;
 }
 

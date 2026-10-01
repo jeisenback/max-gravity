@@ -315,9 +315,9 @@ function downtimeEvent() {
   const t = G.transit;
   return {
     title: 'Downtime',
-    text: `A long burn and nowhere to go. What does the ship do with ${t.flipped ? 'the rest of the trip' : 'the time before the flip'}?`,
+    text: hired() ? `A long burn and nowhere to go. What do you do with ${t.flipped ? 'the rest of the trip' : 'the time before the flip'}?` : `A long burn and nowhere to go. What does the ship do with ${t.flipped ? 'the rest of the trip' : 'the time before the flip'}?`,
     choices: [
-      ...Object.values(ACTIVITIES).map(a => ({
+      ...Object.entries(ACTIVITIES).filter(([id, a]) => hiredMay(id, a)).map(([, a]) => ({
         label: activityLabel(a), can: a.can,
         run() {
           t.lifeUsed = t.lifeUsed || {};
