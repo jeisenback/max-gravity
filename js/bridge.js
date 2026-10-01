@@ -134,16 +134,16 @@ function postOccupant(id) {
 
 // A deck plan: the posts along the ship from the engine room to the helm, the crew at them, and the bunks aft of the guns.
 // A ring shows how someone is doing: blue is well, amber is having a hard time (an injured hand holds no post).
-const DECK_ROOMS = [['engineer', 'ENGINEERING', 70, 100], ['_bunks', 'QUARTERS', 170, 160], ['gunner', 'GUNNERY', 330, 90], ['comms', 'COMMS', 420, 80], ['pilot', 'HELM', 500, 80]];
+const DECK_ROOMS = [['engineer', 'ENGINEERING', 60, 95], ['_bunks', 'QUARTERS', 155, 140], ['gunner', 'GUNNERY', 295, 85], ['comms', 'COMMS', 380, 75], ['_captain', 'CAPTAIN', 455, 70], ['pilot', 'HELM', 525, 75]];
 function deckSvg() {
   const ring = c => moodLow(c) ? '#ff9a3c' : '#6fb0ff';
   const rooms = DECK_ROOMS.map(([post, name, x, w]) => {
     const box = `<rect x="${x}" y="100" width="${w}" height="100" rx="4" fill="#0a1320" stroke="#34506e"/><text class="lbl" x="${x + 6}" y="116" fill="#7f95ab" font-size="10" letter-spacing="1">${name}</text>`;
     if (post === '_bunks') {
       const n = Math.min(8, ship().berths), used = berthsUsed();
-      return box + Array.from({ length: n }, (_, i) => `<rect x="${x + 10 + (i % 4) * 36}" y="${130 + Math.floor(i / 4) * 34}" width="28" height="22" rx="3" fill="${i < used ? '#1d3a5c' : 'none'}" stroke="#34506e"/>`).join('');
+      return box + Array.from({ length: n }, (_, i) => `<rect x="${x + 10 + (i % 4) * 32}" y="${130 + Math.floor(i / 4) * 34}" width="28" height="22" rx="3" fill="${i < used ? '#1d3a5c' : 'none'}" stroke="#34506e"/>`).join('');
     }
-    const o = postOccupant(post), cx = x + w / 2, cy = 158;
+    const o = post === '_captain' ? (hired() ? { who: hiredCaptain() } : { you: true }) : postOccupant(post), cx = x + w / 2, cy = 158;  // the captain's cabin is the captain's, or yours
     if (!o) return box + `<rect x="${x + 10}" y="130" width="${w - 20}" height="56" rx="4" fill="none" stroke="#4b617a" stroke-dasharray="4 4"/>`;
     if (o.you) return box + `<circle cx="${cx}" cy="${cy}" r="16" fill="#12202f" stroke="#5fd35f" stroke-width="3"/><text x="${cx}" y="${cy + 5}" fill="#d4e4f5" font-size="13" text-anchor="middle">YOU</text>`;
     const c = o.who;
@@ -157,7 +157,8 @@ function deckSvg() {
 // The Interior station as a console: the deck plan, who has which post, and the downtime button along the bottom (in a burn).
 function interiorPanel() {
   const st = G.state, t = G.transit, crew = crewMembers();
-  const posts = Object.keys(POSTS).map(id => {
+  const captainRow = conRead('Captain', hired() ? personLink(hiredCaptain()) : `${youLink()}, in command`);
+  const posts = captainRow + Object.keys(POSTS).map(id => {
     const o = postOccupant(id), h = postHolder(id);
     const mood = h && ((st.injured || {})[h.id] ? ', injured' : moodLow(h) ? ', having a hard time' : '');
     return conRead(POSTS[id].name, o ? (o.you ? youLink() : `${personLink(o.who)}${mood}`) : 'Nobody');
@@ -196,7 +197,7 @@ function operationsPanel() {
   const manifest = COMMODITIES.map((c, i) => st.cargo[c.id] > 0 ? `<div class="con-read"><span><i class="con-swatch" style="background:${CARGO_COLORS[i % CARGO_COLORS.length]}"></i>${c.name}</span><b>${st.cargo[c.id]}t</b></div>` : '').join('');
   const jobs = st.missions.map(m => `<div class="hint">${m.title} (due ${dateOf(m.deadline)})</div>`).join('');
   return consoleHtml({
-    title: 'Operations', status: hired() ? `The captain's hold: ${cargoUsed()}/${s.cargo}t` : `Hold ${cargoUsed()}/${s.cargo}t`,
+    title: 'Operations', status: hired() ? `The captain's hold: ${cargoUsed()}/${s.cargo}t, Capt. ${hiredCaptain().first} ${hiredCaptain().last}` : `Hold ${cargoUsed()}/${s.cargo}t`,
     screen: bay.svg,
     side: conCard('Manifest', manifest || '<p class="hint">The hold is empty.</p>') + conCard('Contracts', jobs || '<p class="hint">No active contracts.</p>'),
     controls: G.transit ? '<p class="hint">Trade, contracts, and the bar open when you dock.</p>' : '',
