@@ -38,14 +38,50 @@ function bridgeStation(id, planet) {
 
 // ---------- station views at port ----------
 
-UI.views.nav = function () {
-  if (hired()) return `${runHtml()}<p class="hint">The captain picks where she goes, and sails when you are ready.</p>${postHtml('pilot')}`;
-  const st = G.state, d = st.dest && st.dest !== st.systemId && SYSTEMS[st.dest];
-  return `
-    <p class="desc">${d ? `Course set for ${d.name}: ${travelDays(st.systemId, st.dest)} days, ${burnFuel(st.systemId, st.dest)} reaction mass (you have ${st.fuel}).` : 'No course set. Open the system map and pick a destination.'}</p>
-    <div class="row"><button data-action="map">System map</button></div>
-    <p class="hint">Take off from the bar below, fly clear of the planet, and start the burn.</p>${routeHtml()}${postHtml('pilot')}`;
-};
+// The route on a top-down plot of the system, zoomed to what the route spans (and a little more), radii on a square-root scale.
+// The ship's mark moves along the line by the burn's progress, rounded so the sheet is not rebuilt every frame.
+function routeSvg(from, to, progress, flipped) {
+  const reach = Math.max(2, 1.3 * Math.max(SYSTEMS[from].au, to ? SYSTEMS[to].au : 0)), ids = Object.keys(SYSTEMS).filter(id => SYSTEMS[id].au <= reach), K = 135 / Math.sqrt(reach);
+  const P = id => { const o = orbitPos(id), a = Math.atan2(o.y, o.x), r = Math.sqrt(SYSTEMS[id].au) * K; return [320 + Math.cos(a) * r, 150 + Math.sin(a) * r]; };
+  const rings = [...new Set(ids.map(id => SYSTEMS[id].au))].map(au => `<circle cx="320" cy="150" r="${(Math.sqrt(au) * K).toFixed(1)}" fill="none" stroke="#14243a"/>`).join('');
+  const dots = ids.map(id => { const [x, y] = P(id); return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="#7f95ab"/>${id === from || id === to ? '' : `<text class="lbl" x="${(x + 6).toFixed(1)}" y="${(y + 3).toFixed(1)}" fill="#4b617a" font-size="13">${SYSTEMS[id].name}</text>`}`; }).join('');
+  let course = '';
+  const [fx, fy] = P(from);
+  course += `<circle cx="${fx.toFixed(1)}" cy="${fy.toFixed(1)}" r="6" fill="none" stroke="#5fd35f" stroke-width="2"/><text x="${(fx + 9).toFixed(1)}" y="${(fy - 8).toFixed(1)}" fill="#d4e4f5" font-size="16">${SYSTEMS[from].name}</text>`;
+  if (to && to !== from) {
+    const [tx, ty] = P(to), sx = fx + (tx - fx) * progress, sy = fy + (ty - fy) * progress, mx = (fx + tx) / 2, my = (fy + ty) / 2;
+    course += `<line x1="${fx.toFixed(1)}" y1="${fy.toFixed(1)}" x2="${tx.toFixed(1)}" y2="${ty.toFixed(1)}" stroke="#6fb0ff" stroke-dasharray="5 5" opacity=".6"/>
+      ${progress > 0 ? `<line x1="${fx.toFixed(1)}" y1="${fy.toFixed(1)}" x2="${sx.toFixed(1)}" y2="${sy.toFixed(1)}" stroke="#6fb0ff" stroke-width="2"/>` : ''}
+      <circle cx="${mx.toFixed(1)}" cy="${my.toFixed(1)}" r="2.5" fill="${flipped ? '#ff9a3c' : '#4b617a'}"/>
+      <circle cx="${tx.toFixed(1)}" cy="${ty.toFixed(1)}" r="8" fill="none" stroke="#6fb0ff" stroke-width="2"/><text x="${(tx + 11).toFixed(1)}" y="${(ty - 9).toFixed(1)}" fill="#d4e4f5" font-size="16">${SYSTEMS[to].name}</text>
+      ${progress > 0 ? `<circle cx="${sx.toFixed(1)}" cy="${sy.toFixed(1)}" r="4" fill="#d4e4f5"/>` : ''}`;
+  }
+  return `<rect width="640" height="300" fill="#050a11"/>${rings}<circle cx="320" cy="150" r="5" fill="#e8d17a"/>${dots}${course}
+    <text x="14" y="24" fill="#7f95ab" font-size="11" letter-spacing="2">ROUTE</text>`;
+}
+
+// The Navigation station as a console: the route on the display, the course beside it, and the helm along the bottom.
+function navigationPanel() {
+  const st = G.state, t = G.transit, plan = hired() && !t ? currentPlan() : null;
+  const to = t ? t.to : hired() ? (plan && plan.sid) : (st.dest && st.dest !== st.systemId ? st.dest : null);
+  const progress = t ? Math.round(Math.min(1, 1 - t.left / t.total) * 100) / 100 : 0;
+  const helm = notYours('pilot') ? `${roleHolder('pilot') ? roleName('pilot') : 'The helm'} has the helm`
+    : postMode('pilot') === 'manual' ? 'You have the helm' : `${roleName('pilot')} has the helm`;
+  const course = t
+    ? conRead('Destination', SYSTEMS[t.to].name) + conRead('Burn', `${Math.round(progress * 100)}%, ${t.flipped ? 'braking' : 'accelerating'}`) + conRead('Arrival', dateOf(transitEta(t))) + conRead('Reaction mass', `${st.fuel}/${ship().fuel}`)
+    : to ? conRead('Destination', SYSTEMS[to].name) + conRead('Distance', `${distAU(st.systemId, to).toFixed(2)} AU`) + conRead('Burn', `${travelDays(st.systemId, to)} days`)
+        + (hired() ? '' : conRead('Reaction mass', `${burnFuel(st.systemId, to)} of ${st.fuel}`))
+    : '<p class="hint">No course set.</p>';
+  return consoleHtml({
+    title: 'Navigation', status: helm,
+    screen: `<svg class="con-plant" viewBox="0 0 640 300" role="img" aria-label="Route plot">${routeSvg(st.systemId, to, progress, t && t.flipped)}</svg>`,
+    side: conCard('Course', course),
+    controls: hired() ? `${runHtml()}${t ? '' : '<p class="hint">The captain picks where she goes, and sails when you are ready.</p>'}${postHtml('pilot')}`
+      : `${t ? '' : `<div class="row"><button data-action="map">System map</button></div><p class="hint">${to ? '' : 'Open the system map and pick a destination. '}Take off from the bar below, fly clear of the planet, and start the burn.</p>`}${routeHtml()}${postHtml('pilot')}`,
+  });
+}
+
+UI.views.nav = navigationPanel;
 
 const armament = () => {
   const st = G.state, s = ship();
@@ -124,10 +160,10 @@ function drawViewscreen(time) {
 // ---------- the key bar and status sheets during a burn ----------
 
 function transitSheet(id) {
-  const st = G.state, t = G.transit, s = ship(), progress = Math.min(1, 1 - t.left / t.total);
+  const st = G.state, t = G.transit, s = ship();
   const list = items => items.map(x => `<div class="hint">${x}</div>`).join('');
   switch (id) {
-    case 'nav': return `<h3>Navigation</h3><p class="desc">${system().name} to ${SYSTEMS[t.to].name}, ${Math.round(progress * 100)}% of the way. ${t.flipped ? 'Braking' : 'Accelerating'}. Arriving ${dateOf(transitEta(t))}.</p>${routeHtml()}${postHtml('pilot')}`;
+    case 'nav': return navigationPanel();
     case 'weapons': return weaponsPanel();
     case 'eng': return `${engineerPanel()}<p class="hint">Full repairs and outfits are done at a shipyard.</p>`;
     case 'interior': {
@@ -172,7 +208,7 @@ function syncBridge(force) {
   keys.classList.toggle('compact', view < 700);  // short names when the keys would not fit
   sheet.style.right = `${G.hudW}px`;
   sheet.style.left = `${view / 2}px`;
-  sheet.style.width = `${Math.min(['eng', 'weapons'].includes(G.bridgeOpen) ? 720 : 520, view - 24)}px`  // a console is wide enough for its two columns;
+  sheet.style.width = `${Math.min(['nav', 'eng', 'weapons'].includes(G.bridgeOpen) ? 720 : 520, view - 24)}px`  // a console is wide enough for its two columns;
   keys.querySelectorAll('[data-bst]').forEach(b => b.classList.toggle('active', b.dataset.bst === G.bridgeOpen));
   if (G.bridgeOpen) {
     const html = transitSheet(G.bridgeOpen);
