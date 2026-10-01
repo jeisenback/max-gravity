@@ -506,6 +506,30 @@ test('the comms console shows the inbox as a feed and the tips in force, at port
   await done();
 });
 
+test('the operations console shows the cargo bay and the manifest, at port and in a burn', async () => {
+  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
+  await ev(helpers);
+  const want = await ev(() => {
+    const st = G.state; st.tutorial = null; st.crew = []; while (G.dialog) finishEvent();
+    st.cargo = { water: 5, metal: 3 }; UI.render();
+    return { cap: ship().cargo, used: cargoUsed() };
+  });
+  await page.click('[data-action=station][data-arg=ops]');
+  assert.equal(await page.$$eval('#panel .con-plant rect', n => n.length), want.cap, 'a cell for each ton the hold takes');
+  assert.equal(await page.$$eval('#panel .con-plant rect[data-bay]', n => n.length), want.used, 'filled for each ton aboard');
+  assert.equal(await page.$$eval('#panel .con-plant rect[data-bay=water]', n => n.length), 5);
+  assert.match(await page.innerText('#panel .con'), /Water\s*5t/);
+  assert.match(await page.innerText('#panel .con'), /Refined Metals\s*3t/);
+  assert.equal(await page.$$eval('.tabs.sub button', b => b.length), 5, 'the port tabs are still there');
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
+  await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; });
+  await page.waitForSelector('#bkeys', { state: 'visible' });
+  await page.click('[data-bst=ops]');
+  assert.equal(await page.$$eval('#bsheet .con-plant rect[data-bay]', n => n.length), want.used, 'the bay is in the burn sheet too');
+  assert.match(await page.innerText('#bsheet'), /open when you dock/);
+  await done();
+});
+
 test('drive power sets the burn: speed, days, reaction mass, and how easily pirates spot you', async () => {
   const { page, ev, done } = await open();
   await ev(helpers);

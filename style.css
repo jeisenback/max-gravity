@@ -557,6 +557,7 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 .con-msg.via-ship { border-color: #ff9a3c; }
 .con-msg.via-message { border-color: #5fd35f; }
 .con-msg.via-aboard { border-color: #b08fff; }
+.con-swatch { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 6px; }
 .con-plant .lbl { display: block; }
 @container (max-width: 560px) { .con-plant .lbl { display: none; } }
 @container (min-width: 640px) {
