@@ -98,7 +98,7 @@ function transitSheet(id) {
   switch (id) {
     case 'nav': return `<h3>Navigation</h3><p class="desc">${system().name} to ${SYSTEMS[t.to].name}, ${Math.round(progress * 100)}% of the way. ${t.flipped ? 'Braking' : 'Accelerating'}. Arriving ${dateOf(transitEta(t))}.</p>${routeHtml()}${postHtml('pilot')}`;
     case 'weapons': return `<h3>Weapons</h3>${armament()}${projectsHtml('gunner')}${postHtml('gunner')}`;
-    case 'eng': return `<h3>Engineering</h3><p class="desc">Reaction mass ${st.fuel}/${s.fuel}. Armor ${st.armor}/${s.armor}. Shields ${s.shields}.</p><p class="hint">Full repairs and outfits are done at a shipyard.</p>${engineerPanel()}`;
+    case 'eng': return `${engineerPanel()}<p class="hint">Full repairs and outfits are done at a shipyard.</p>`;
     case 'interior': {
       const crew = crewMembers(), free = phase() === 'move' && !(t.lifeUsed || {})[lifeHalf()];
       return `<h3>Interior</h3>${crew.length ? list(crew.map(c => `${fullName(c)}, ${ROLE_NAMES[c.role]}`)) : '<p class="hint">You are flying alone.</p>'}
@@ -141,11 +141,13 @@ function syncBridge(force) {
   keys.classList.toggle('compact', view < 700);  // short names when the keys would not fit
   sheet.style.right = `${G.hudW}px`;
   sheet.style.left = `${view / 2}px`;
-  sheet.style.width = `${Math.min(520, view - 24)}px`;
+  sheet.style.width = `${Math.min(G.bridgeOpen === 'eng' ? 720 : 520, view - 24)}px`  // a console is wide enough for its two columns;
   keys.querySelectorAll('[data-bst]').forEach(b => b.classList.toggle('active', b.dataset.bst === G.bridgeOpen));
   if (G.bridgeOpen) {
     const html = transitSheet(G.bridgeOpen);
-    if (force || sheet.dataset.html !== html) { sheet.dataset.html = html; sheet.innerHTML = html; }
+    if (force || !sheet.dataset.html || (G.bridgeOpen !== 'eng' && sheet.dataset.html !== html)) {  // the engineering console updates itself, so a slider is not rebuilt mid-drag
+      sheet.dataset.html = html; sheet.innerHTML = html;
+    }
   }
 }
 

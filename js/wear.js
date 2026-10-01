@@ -44,9 +44,9 @@ const overhaulCost = part => Math.round((100 - condition()[part]) * 8);
 // The Engineering station's list of systems, and (docked) the yard's price to overhaul each.
 function wearHtml() {
   const c = condition(), docked = G.mode === 'landed' && !hired();  // the captain pays for a yard overhaul
-  return `<div class="power"><div class="eyebrow">Condition${wearRate() ? '' : ' &middot; wear is off'}</div>
-    ${Object.entries(SHIP_PARTS).map(([k, p]) => `<div class="slider"><span>${p.name}</span><span class="pbar ${c[k] < 40 ? 'hot' : ''}"><i style="width:${Math.round(c[k])}%"></i></span><span class="mono">${Math.round(c[k])}%</span></div>
-      ${docked && c[k] < 99 ? `<div class="row"><span class="hint">Yard overhaul</span><button data-action="overhaul" data-arg="${k}" ${G.state.credits >= overhaulCost(k) ? '' : 'disabled'}>${fmt(overhaulCost(k))} cr</button></div>` : ''}`).join('')}
+  return `${wearRate() ? '' : '<p class="hint">Wear is off.</p>'}<div class="con-parts">
+    ${Object.entries(SHIP_PARTS).map(([k, p]) => `<div class="con-part"><span>${p.name}</span>${conBar(c[k], condColor(c[k]))}<b>${Math.round(c[k])}</b></div>
+      ${docked && c[k] < 99 ? `<div class="con-yard"><span class="hint">Yard overhaul</span><button data-action="overhaul" data-arg="${k}" ${G.state.credits >= overhaulCost(k) ? '' : 'disabled'}>${fmt(overhaulCost(k))} cr</button></div>` : ''}`).join('')}
   </div>`;
 }
 
