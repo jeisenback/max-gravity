@@ -1,6 +1,6 @@
 'use strict';
 
-// The main characters: authored people who come with you. Each start background has a pair (Earth and Mars so far).
+// The main characters: authored people who come with you. Each start background has a pair.
 // A hired hand finds them already aboard the captain's ship; an owner meets them at a port over the first
 // weeks and offers them a berth. They are ordinary people in the registry (st.people) with more on them:
 // a skill at each of the four posts, captain stats (trade, nerve, thrift, used when they command a ship),
@@ -214,10 +214,110 @@ const CAST = {
       },
     },
   },
+  bexa: {
+    first: 'Bexa', last: 'Oyelaran', culture: 'belt', home: 'Ceres Station', job: 'salvage tug pilot', age: 41, role: 'pilot',
+    traits: ['secretive', 'kind'], wage: 70,
+    skills: { pilot: 3, engineer: 1, slicer: 1, gunner: 0 }, captain: { trade: 3, nerve: 3, thrift: 4 },
+    ambition: 'Wants to bring one ship home that everybody else had given up on, and see her fly again.',
+    bio: 'She pulled dead ships into Ceres on a tug for twenty years. She keeps a list of every crew she found aboard them, the living and the others, and she does not talk about the list unless you ask the right way.',
+    chatter: ['Bexa: "A derelict is not dead. It is waiting. You just have to be patient enough to find out what for."', 'Bexa is flying with the grip of someone who has pulled many things out of the dark and is not about to lose this one.', 'Bexa has a small brass tag on a string above the console. She will not say whose it was.', 'Bexa: "In the Belt we do not leave a ship. Not for money. Not for orders. You tow her home."', 'Bexa is humming a tug-pilot lullaby, very low, to the transponder.'],
+    scenes: {
+      meet: {
+        title: 'The Tug Pilot',
+        text: 'Down on the Ceres docks, a woman in a patched tug jacket is signing a salvage chit with a pen on a chain, with the unhurried air of someone who has done this many more times than anyone has thanked her. "Bexa Oyelaran," she says, when you ask. "Twenty years towing dead ships home. You learn what a ship wants. Mostly, to be found." She caps the pen. "The blockade killed the work. Nobody sells a wreck any more, they keep them. I would like a ship I can fly instead of tow."',
+        choices: [
+          { label: 'Offer her the helm', can: () => berthsFree() > 0, run: () => castJoin('bexa', 'She looks at you for a long moment with the careful, level gaze of a person judging a hull. Then she hangs the pen on its chain from her belt and picks up her bag. "I will take your helm," she says. "I will tell you now that I talk to the transponder. It is not a problem. It listens better than most people."') },
+          { label: '"Not this time."', run: () => castLater('bexa', '"That is all right," she says. "I know where the docks are. There is always another wreck." She says it kindly, and means it, and you suspect there are not as many wrecks as she is saying.') },
+        ],
+      },
+      intro: {
+        title: 'The List',
+        text: 'Bexa Oyelaran has the helm, and, taped inside the console cover where only the pilot can see it, a list. It is written in small, even handwriting, in a dozen colours of ink: names, and beside each name a date and a hull number. She sees you looking. "The crews," she says, evenly. "The ones I found. All of them. Living, and otherwise." She does not close the cover. "Most people ask me not to say."',
+        choices: [
+          { label: 'Ask about the living ones', run: () => { castLike('bexa', 2, 'You asked about the ones who lived.'); castXp('bexa', 'pilot', 2); return 'Her face changes completely. "Oh," she says, and for the first time, smiles. "Eleven. Eleven of them lived. There is a boy on Pallas who sends me a card every year with the same drawing of a tug, and a woman at Hygiea who runs a water shop and gives me a free flask every time I dock." She runs a finger down the list, stopping at the names, one at a time. "That is the part I put the list here for."'; } },
+          { label: 'Ask about the others', run: () => { castLike('bexa', 1, 'You asked about the others, and listened.'); return 'She is silent for a long time. "Thirty-one," she says. "I make sure I say their names once a year, out loud, on the day I found them. Somebody should." She closes the cover, finally, gently, as you would a door on someone sleeping. "Thank you for asking. It is not what most people ask."'; } },
+        ],
+      },
+      mid1: {
+        days: 10, title: 'A Wreck on the Scope',
+        text: 'A transponder is repeating a ship\'s name every four seconds, faint and old, a few hours off the lane. Bexa has her hand flat on the console like a person with her hand on a sleeping animal. "It is a derelict," she says. "She has been calling a long time. A few hours, no more. It is not my ship to ask for. But I would like to look." She keeps her eyes on the scope. "I will not do it if you say no."',
+        choices: [
+          { label: 'Take the detour', run() { castLike('bexa', 2, 'You took the detour to look at the wreck.'); castXp('bexa', 'pilot', 3); if (G.transit) delay(6); return 'She brings the ship in slow and gentle, the way you approach a frightened animal. The wreck is a small hauler, dark and cold, her hatches sealed, her beacon the only living thing on her. Nobody aboard. Bexa stays on the scope until the beacon is a speck, and then, quietly, writes a name on a list you cannot see. "She was called the Patient Wren," she says. "I will tell the registry. She will be towed home." She flies the rest of the shift with a lighter touch.'; } },
+          { label: 'Stay on course', run() { castLike('bexa', -1, 'You would not let me look at the wreck.'); return '"No," she says. "Of course. It is not my ship." She takes her hand off the console very slowly, and the transponder\'s faint call fades behind you, four seconds at a time, until you cannot hear it. She flies on, correct and silent, and later you see her write something small on the inside of the console cover.'; } },
+        ],
+      },
+      mid2: {
+        days: 25, title: 'The Ghost on the Scope',
+        text: 'The scope paints a ship at forty thousand kilometres, closing. Bexa looks at it for exactly four seconds. "Ghost," she says. Then, because you have not moved: "In the Belt, a ghost is mostly a real ship. But this one has a ghost\'s manners: it is too tidy, the heading is a very slightly wrong shade of straight. Sensor echo off the ice. I have seen it forty times." She waits. "I would like to ignore it."',
+        choices: [
+          { label: 'Trust her', run() { castLike('bexa', 2, 'You trusted me about the ghost on the scope.'); castXp('bexa', 'pilot', 2); return 'You tell her to carry on. She nods once, and she does, and for the next twenty minutes the whole ship waits with her, listening to the thing she is certain is not there. At the end, the contact goes pale, and thins, and is gone, like breath on a pane. Bexa lets out a long, slow exhale. "Echo," she says. "Forty-one." She does not say thank you. She puts a small tick on the inside of the console cover.'; } },
+          { label: 'Raise the alarm anyway', run() { castLike('bexa', -1, 'You raised the alarm about a ghost I had called.'); return 'The alarm goes, and the crew goes to stations, and in twenty minutes the contact fades to nothing, as she said it would. Bexa takes the ship off alert herself, calmly, without a word, and flies on. "Better safe," she says at last, and means it, almost. She is quiet for a day, and a little more careful, afterward, about telling you what she sees.'; } },
+        ],
+      },
+      late: {
+        days: 45, title: 'The Ship Nobody Wanted',
+        text: 'Bexa is at the helm with the lights low and the console cover open, and she is not looking at the list. "I have a thing to say, and I would like to say it once." She turns. "I want a ship. Not to tow. A wreck that everyone else has given up on, that I bring home, and put right, and fly. A ship nobody wanted, and that wants to go." She looks at her hands. "If you ever have ships, I would like to be asked."',
+        choices: [
+          { label: 'Promise her a ship, someday', run() { castLike('bexa', 2, 'I told you about the ship nobody wanted, and you promised.'); castFlag('bexa', 'promised'); return '"Someday," you say, "and you will be asked." She does not answer for a moment. Then she takes a small brass tag from above the console, on its string, and holds it in her palm. "He would have liked you," she says, to nobody in particular, and puts it carefully back.'; } },
+          { label: 'Make no promises', run() { castLike('bexa', 1, 'You would not promise, but you listened.'); return '"I cannot promise that," you say, "but I heard you." She nods slowly, and her mouth does something small and crooked. "That is the right answer," she says. "A promise is a tow rope. Do not put one on a ship you have not looked at."'; } },
+        ],
+      },
+    },
+  },
+  pax: {
+    first: 'Pax', last: 'Iwu', culture: 'belt', home: 'Ceres Spin', job: 'ice-drill operator', age: 23, role: 'gunner',
+    traits: ['nervous', 'curious'], wage: 60,
+    skills: { gunner: 3, engineer: 2, pilot: 0, slicer: 0 }, captain: { trade: 4, nerve: 2, thrift: 2 },
+    ambition: 'Wants to stop flinching, and run a ship where nobody gets hurt on their watch.',
+    bio: 'Pax ran a drill laser on a Ceres ice crew from sixteen, cutting blocks to the gram, until a coupling failed and the crew\'s foreman was hurt with Pax at the controls. It was nobody\'s fault, and nobody has been able to convince Pax of that.',
+    chatter: ['Pax is on the range, again, with a perfect score and a tight jaw.', 'Pax: "I know the numbers. The numbers are fine. It is the part after the numbers I am bad at."', 'Pax checks the coupling on the gun mount for the fifth time this watch, and says nothing, and checks again.', 'Pax is reading the manual for a fire control system that Pax has already memorised, for comfort.', 'Pax: "It is funny. I am not nervous when it is only me and the target. It is when there is somebody beside me."'],
+    scenes: {
+      meet: {
+        title: 'The Kid at the Range',
+        text: 'In the dock bar there is a dart-laser board, and a young person at it with a perfect, unnerving score, who flinches at every cheer. Nobody is cheering for long. "Pax Iwu," says the kid, when you sit. "Ice-drill operator. Was." The hand with the dart goes very still. "I am good with a laser. I am the best on the Spin. I want a job where nobody is standing next to the thing when it fires." They look up. "That is a bad thing to say, I know."',
+        choices: [
+          { label: 'Offer them the guns', can: () => berthsFree() > 0, run: () => castJoin('pax', 'The dart goes down, carefully, as if it might do something on its own. "Really?" Pax says, and then, because that sounded like asking for too much: "I mean, thanks. Yes. I mean, I will try not to flinch." You tell them the flinching can come, too. Pax looks as though nobody has ever told them that before, and picks up a very small bag.') },
+          { label: '"Not this time."', run: () => castLater('pax', '"Right," Pax says, to the board, and puts a dart in the centre, and then another beside it. "Sure. I am around. I am always around. I am here every evening." They say it lightly. It is an effort, and it shows.') },
+        ],
+      },
+      intro: {
+        title: 'The Range Record',
+        text: 'Pax Iwu is in the weapons bay with a handheld and a record of range scores, a long column of perfect hits, and an expression like someone who has been given a fire drill and is not sure it is a drill. "I have never missed on the range," Pax says, to the screen. "Not one in three years. But the range is not real, is it?" They glance up, quickly, away. "Is it different? When it is real?"',
+        choices: [
+          { label: 'Tell them honestly that it is different', run: () => { castLike('pax', 2, 'You told me the truth about what it is like when it is real.'); castXp('pax', 'gunner', 2); return '"Yes," you say. "It is different. It is louder, and everything you do matters, and your hands shake. Everybody\'s do. You do it anyway, and it gets quieter." Pax lets out a breath, very slowly. "Thank you," they say. "Everybody else says it is the same. It is a relief to be told it is not." They go back to the scores, and, for the first time, the column looks a little less like a wall.'; } },
+          { label: 'Say it is the same: aim, breathe', run: () => { castLike('pax', 1, 'You told me to aim and breathe.'); return '"Aim, breathe," Pax repeats, and writes it, in very small letters, on the inside of the handheld case. "Aim. Breathe." They say it over, as you would a short prayer. It is not a lie, exactly, and it will not be enough, but it is something to hold onto when the hands start.'; } },
+        ],
+      },
+      mid1: {
+        days: 10, title: 'The Coupling',
+        text: 'The gun mount needs its coupling checked, a ten-minute job that Pax has done many times, and which they are standing very still in front of. The wrench is in their hand. They have not moved it. "I can do it," Pax says, quietly, to the coupling. "I know I can do it. It is only a coupling." They stand there, and their knuckles are pale around the tool.',
+        choices: [
+          { label: 'Check it together', run() { castLike('pax', 2, 'You checked the coupling with me.'); castXp('pax', 'gunner', 3); return 'You stand beside them, not helping, just present, and, after a minute, Pax puts the wrench to the coupling. It takes twelve minutes, not ten. When it is done, Pax breathes out for what must be the first time in a quarter hour, and tests it, twice, and nods. "Good," they say. "It is good." They do not say anything else for a while, and it is a peaceful kind of silence.'; } },
+          { label: 'Do it for them', run() { castLike('pax', 0, 'You did the coupling for me.'); return 'You take the wrench, and do it in nine minutes. Pax says "Thank you," in a small voice and watches your hands the whole time, which is how you know you have taken something from them as well. Pax tests the coupling after you, quietly, when they think no one is looking, and finds it perfect, and does not look any happier about it.'; } },
+        ],
+      },
+      mid2: {
+        days: 25, title: 'The Foreman\'s Message',
+        text: 'A message from Ceres has been sitting unopened in Pax\'s queue for three days, with a sender name Pax will not say aloud. You know what it is when you see their face. "It is from Foreman Dagny," Pax says, finally. "I do not know what it says. I know what I think it says. I have thought it so many times that I do not need to read it." They are holding the handheld at arm\'s length, like something hot.',
+        choices: [
+          { label: 'Offer to sit with them while they read it', run() { castLike('pax', 3, 'You sat with me while I read the foreman\'s message.'); castXp('pax', 'gunner', 2); castFlag('pax', 'foreman'); return 'You sit on the deck beside them, with your back to the bulkhead, saying nothing, and Pax opens it. It is short. The foreman is walking again, with a stick, and does not blame anybody, and would like very much to see the kid some day. Pax reads it twice, and puts the handheld face-down on their knee, and cries, quite quietly, for about a minute. Then Pax wipes their face on a sleeve and says, "He says to practise. He says I have the best hands on the Spin." They laugh, a damp, astonished sound.'; } },
+          { label: 'Tell them to read it when they are ready', run() { castLike('pax', 0, 'You told me to read it when I was ready.'); return '"Yes," Pax says. "When I am ready." It sounds like the right thing, and they put the handheld away. It stays unopened for the rest of the burn, and you notice, when you pass the weapons bay, that Pax has taken it out, and is holding it, and looking at the sender\'s name, and putting it back.'; } },
+        ],
+      },
+      late: {
+        days: 45, title: 'Without Flinching',
+        text: 'Pax finds you outside the weapons bay, with hands that have stopped shaking, and a slightly alarmed look, like someone who has just noticed. "I have not flinched in nine days," they say. "I counted." They take a breath. "I want to run a ship one day. A ship where nobody gets hurt on my watch. I know that is not a thing you can promise, that is exactly why I want it." They look at the deck. "If you ever have ships, I would like to be asked."',
+        choices: [
+          { label: 'Promise them a ship, someday', run() { castLike('pax', 2, 'I told you about the ship where nobody got hurt, and you promised.'); castFlag('pax', 'promised'); return '"Someday," you say, "and you will be asked." Pax\'s face does something complicated, and then settles into a wide, helpless grin. "Nine days," they say. "Nine days, and a ship. If I tell the foreman he will not believe me." They go away down the corridor, walking very straight, with their hands in plain view, like someone proving a point.'; } },
+          { label: 'Make no promises', run() { castLike('pax', 1, 'You would not promise a ship, but you listened.'); return '"I cannot promise that," you say, "but I heard you." Pax nods. "That is fair," they say. "It would be strange to be promised. I am not used to it." They smile, a small crooked one, and then, to your surprise, they say, "Nine days is already a good thing, though. I will take that."'; } },
+        ],
+      },
+    },
+  },
 };
 
-// Who you meet, by start background. The Belt has none until its pair is written.
-const CAST_PAIRS = { earth: ['ines', 'tomas'], mars: ['yelena', 'ruben'] };
+// Who you meet, by start background.
+const CAST_PAIRS = { earth: ['ines', 'tomas'], mars: ['yelena', 'ruben'], belt: ['bexa', 'pax'] };
 const POST_ROLES = ['pilot', 'gunner', 'engineer', 'slicer'];
 
 // ---------- people ----------
