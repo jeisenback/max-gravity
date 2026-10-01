@@ -42,14 +42,18 @@ const helpers = () => {
       return G.dialog ? G.dialog.event.title : null;
     },
     // Plays whatever storylet comes up here, picking the choice starting with `label`.
+    // Keeps drawing until one has that choice, so the result does not hang on which storylet the dice favor.
     play(where, label) {
-      let s = null;
-      for (let i = 0; i < 30 && !s; i++) { s = pickStorylet(where); if (s && s.id.startsWith('land-')) s = null; }
-      if (!s) return null;
-      const ch = storyletEvent(s).choices.filter(x => !x.role || roleSkill(x.role)).find(x => x.label.startsWith(label));
-      if (!ch || (ch.can && !ch.can())) return `${s.id}: no "${label}"`;
-      ch.run(); G.nextEvent = null;
-      return s.id;
+      let miss = null;
+      for (let i = 0; i < 30; i++) {
+        const s = pickStorylet(where);
+        if (!s || s.id.startsWith('land-')) continue;
+        const ch = storyletEvent(s).choices.filter(x => !x.role || roleSkill(x.role)).find(x => x.label.startsWith(label));
+        if (!ch || (ch.can && !ch.can())) { miss = `${s.id}: no "${label}"`; continue; }
+        ch.run(); G.nextEvent = null;
+        return s.id;
+      }
+      return miss;
     },
     at(sid, planet) { G.state.systemId = sid; G.state.planet = planet; G.mode = 'landed'; G.transit = null; },
     // A bounty target beaten in a burn duel: the kill settles like any other.

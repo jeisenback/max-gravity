@@ -96,9 +96,8 @@ test('relationships, feeds, seasons, and passengers who come back', async () => 
     out.scenes = scenes.size;
     out.feed = feedLine();
     out.bonds = Object.keys(st.bonds || {}).length;
-    const season = culture().season;
     for (let d = 0; d < 45; d++) { st.day++; Mods.emit('newDay', st.day); }
-    out.seasonMoved = culture().season !== season;
+    out.matches = Object.values(culture().lg).filter(s => s.last).length;
     // Deliver the passenger, then find them wanting another trip.
     G.transit = null; st.systemId = 'mars'; G.player = makeShip(st.shipId, 0, 0, 0); G.mode = 'flight';
     land(SYSTEMS.mars.planets[0]);
@@ -113,7 +112,7 @@ test('relationships, feeds, seasons, and passengers who come back', async () => 
   assert.ok(r.scenes >= 3, `relationship scenes (${r.scenes})`);
   assert.ok(r.feed, 'the feed has something on');
   assert.ok(r.bonds > 0, 'bonds form');
-  assert.ok(r.seasonMoved, 'seasons roll over');
+  assert.ok(r.matches > 0, 'leagues play on as days pass');
   assert.equal(r.trips, 1);
   assert.equal(r.loc, 'Mars');
   assert.ok(r.regular, 'a regular asks for another trip');
