@@ -125,6 +125,58 @@ function weaponsPanel() {
 
 UI.views.weapons = weaponsPanel;
 
+// Who is at a post: the crew member who has it, or you when you do it yourself. A post nobody holds and you do not run is empty.
+function postOccupant(id) {
+  const h = postHolder(id);
+  if (notYours(id)) return h ? { who: h } : null;
+  return postMode(id) === 'crewed' ? { who: h } : { you: true };
+}
+
+// A deck plan: the posts along the ship from the engine room to the helm, the crew at them, and the bunks aft of the guns.
+// A ring shows how someone is doing: blue is well, amber is having a hard time (an injured hand holds no post).
+const DECK_ROOMS = [['engineer', 'ENGINEERING', 70, 100], ['_bunks', 'QUARTERS', 170, 160], ['gunner', 'GUNNERY', 330, 90], ['comms', 'COMMS', 420, 80], ['pilot', 'HELM', 500, 80]];
+function deckSvg() {
+  const ring = c => moodLow(c) ? '#ff9a3c' : '#6fb0ff';
+  const rooms = DECK_ROOMS.map(([post, name, x, w]) => {
+    const box = `<rect x="${x}" y="100" width="${w}" height="100" rx="4" fill="#0a1320" stroke="#34506e"/><text class="lbl" x="${x + 6}" y="116" fill="#7f95ab" font-size="10" letter-spacing="1">${name}</text>`;
+    if (post === '_bunks') {
+      const n = Math.min(8, ship().berths), used = berthsUsed();
+      return box + Array.from({ length: n }, (_, i) => `<rect x="${x + 10 + (i % 4) * 36}" y="${130 + Math.floor(i / 4) * 34}" width="28" height="22" rx="3" fill="${i < used ? '#1d3a5c' : 'none'}" stroke="#34506e"/>`).join('');
+    }
+    const o = postOccupant(post), cx = x + w / 2, cy = 158;
+    if (!o) return box + `<rect x="${x + 10}" y="130" width="${w - 20}" height="56" rx="4" fill="none" stroke="#4b617a" stroke-dasharray="4 4"/>`;
+    if (o.you) return box + `<circle cx="${cx}" cy="${cy}" r="16" fill="#12202f" stroke="#5fd35f" stroke-width="3"/><text x="${cx}" y="${cy + 5}" fill="#d4e4f5" font-size="13" text-anchor="middle">YOU</text>`;
+    const c = o.who;
+    return box + `<circle cx="${cx}" cy="${cy}" r="16" fill="#12202f" stroke="${ring(c)}" stroke-width="3"/><text x="${cx}" y="${cy + 5}" fill="#d4e4f5" font-size="14" text-anchor="middle">${(c.first || c.name || '?')[0]}</text>`;
+  }).join('');
+  return `<rect x="30" y="64" width="590" height="170" fill="#050a11"/>
+    <path d="M40 150 Q40 80 90 82 L520 82 Q610 90 610 150 Q610 210 520 218 L90 218 Q40 220 40 150 Z" fill="#0e1826" stroke="#34506e" stroke-width="2"/>${rooms}
+    <text x="42" y="80" fill="#7f95ab" font-size="11" letter-spacing="2">DECK PLAN</text>`;
+}
+
+// The Interior station as a console: the deck plan, who has which post, and the downtime button along the bottom (in a burn).
+function interiorPanel() {
+  const st = G.state, t = G.transit, crew = crewMembers();
+  const posts = Object.keys(POSTS).map(id => {
+    const o = postOccupant(id), h = postHolder(id);
+    const mood = h && ((st.injured || {})[h.id] ? ', injured' : moodLow(h) ? ', having a hard time' : '');
+    return conRead(POSTS[id].name, o ? (o.you ? 'You' : `${fullName(o.who)}${mood}`) : 'Nobody');
+  }).join('');
+  // Crew who hold no post: the roles without one, a second hand, or someone too hurt to work.
+  const holders = new Set(Object.keys(POSTS).map(postHolder).filter(Boolean));
+  const off = crew.filter(c => !holders.has(c)).map(c => conRead(fullName(c), `${ROLE_NAMES[c.role]}${(st.injured || {})[c.id] ? ', injured' : moodLow(c) ? ', having a hard time' : ''}`)).join('');
+  const free = t && phase() === 'move' && !(t.lifeUsed || {})[lifeHalf()];
+  return consoleHtml({
+    title: 'Interior', status: `${crew.length} crew, ${berthsUsed()}/${ship().berths} berths`,
+    screen: `<svg class="con-plant" viewBox="30 64 590 170" role="img" aria-label="Deck plan">${deckSvg()}</svg>`,
+    side: conCard('Posts', posts) + (off ? conCard('Off post', off) : ''),
+    controls: t ? `<div class="row"><button data-bdown ${free ? '' : 'disabled'}>Spend some downtime</button></div>` : '',
+  });
+}
+
+const crewViewBase = UI.views.crew;
+UI.views.crew = function () { return interiorPanel() + crewViewBase.call(this); };
+
 const portView = UI.views.port;
 UI.views.port = function () { return (hired() ? runHtml() : '') + portView.call(this); };
 
@@ -166,11 +218,7 @@ function transitSheet(id) {
     case 'nav': return navigationPanel();
     case 'weapons': return weaponsPanel();
     case 'eng': return `${engineerPanel()}<p class="hint">Full repairs and outfits are done at a shipyard.</p>`;
-    case 'interior': {
-      const crew = crewMembers(), free = phase() === 'move' && !(t.lifeUsed || {})[lifeHalf()];
-      return `<h3>Interior</h3>${crew.length ? list(crew.map(c => `${fullName(c)}, ${ROLE_NAMES[c.role]}`)) : '<p class="hint">You are flying alone.</p>'}
-        <div class="row"><button data-bdown ${free ? '' : 'disabled'}>Spend some downtime</button></div>`;
-    }
+    case 'interior': return interiorPanel();
     case 'comms': return `<h3>Comms</h3>${(G.state.inbox || []).slice(0, 5).map(m => `<div class="hint">${dateOf(m.day)}: ${m.text}</div>`).join('') || '<p class="hint">Nothing in the inbox yet.</p>'}${postHtml('comms')}${programsHtml()}`;
     default: {
       const held = COMMODITIES.filter(c => st.cargo[c.id] > 0).map(c => `${st.cargo[c.id]}t ${c.name}`);

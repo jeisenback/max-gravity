@@ -452,6 +452,37 @@ test('the navigation console plots the course at port and the burn in flight', a
   await done();
 });
 
+test('the interior console puts the crew at their posts, with how they are doing, and the downtime button in a burn', async () => {
+  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
+  await ev(helpers);
+  const want = await ev(() => {
+    const st = G.state; st.tutorial = null; st.crew = []; while (G.dialog) finishEvent();
+    const pilot = hire('pilot', 2), eng = hire('engineer', 2), gun = hire('gunner', 2);
+    st.injured = { [eng.id]: true };  // the engineer is hurt, and off post
+    person(gun.id).mood = { kind: 'low', until: st.day + 20 };  // the gunner is having a hard time
+    UI.render();
+    return { used: berthsUsed(), berths: Math.min(8, ship().berths), pilot: pilot.first, eng: fullName(eng) };
+  });
+  await page.click('[data-action=station][data-arg=interior]');
+  const row = (root, label) => page.$$eval(`${root} .con-read`, (rows, l) => { const r = rows.find(x => x.firstElementChild.textContent === l); return r && r.lastElementChild.textContent; }, label);
+  assert.match(await row('#panel', 'Pilot'), new RegExp(`^${want.pilot}`), 'the pilot post names its holder');
+  assert.equal(await row('#panel', 'Engineer'), 'You', 'a hurt engineer cannot hold the post, so you do');
+  assert.equal(await row('#panel', want.eng), 'Engineer, injured', 'and they are listed off post');
+  assert.match(await row('#panel', 'Gunner'), /, having a hard time$/, 'a hard time shows beside the name');
+  assert.equal(await row('#panel', 'Comms'), 'You', 'a post you run yourself is you');
+  const rings = await page.$$eval('#panel .con-plant circle[r="16"]', n => n.map(c => c.getAttribute('stroke')));
+  assert.deepEqual(rings.sort(), ['#5fd35f', '#5fd35f', '#6fb0ff', '#ff9a3c'].sort(), 'you twice, the well pilot, the gunner with a hard time');
+  assert.equal(await page.$$eval('#panel .con-plant rect[width="28"][fill="#1d3a5c"]', n => n.length), want.used, 'a bunk filled for each berth used');
+  assert.ok(await page.$('#panel [data-action=dismiss]'), 'the crew list and its hiring controls follow the console');
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
+  await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; });
+  await page.waitForSelector('#bkeys', { state: 'visible' });
+  await page.click('[data-bst=interior]');
+  assert.ok(await page.$('#bsheet .con'), 'the console is in the burn sheet too');
+  assert.equal(await page.$$eval('#bsheet button[data-bdown]', b => b.length), 1, 'with the downtime button');
+  await done();
+});
+
 test('drive power sets the burn: speed, days, reaction mass, and how easily pirates spot you', async () => {
   const { page, ev, done } = await open();
   await ev(helpers);
