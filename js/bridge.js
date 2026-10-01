@@ -177,8 +177,34 @@ function interiorPanel() {
 const crewViewBase = UI.views.crew;
 UI.views.crew = function () { return interiorPanel() + crewViewBase.call(this); };
 
+// The cargo bay: a cell for each ton the hold takes, filled in a colour for each commodity aboard, in the order of the manifest.
+const CARGO_COLORS = ['#6fb0ff', '#5fd35f', '#ff9a3c', '#b08fff', '#e8d17a', '#9fb4c2', '#ff6a8a'];
+function bayGrid() {
+  const st = G.state, cap = ship().cargo, cols = cap > 60 ? 20 : 10, rows = Math.ceil(cap / cols), cell = Math.min(34, Math.floor(560 / cols));
+  const fill = COMMODITIES.flatMap((c, i) => Array(Math.max(0, Math.round(st.cargo[c.id] || 0))).fill(i));
+  const cells = Array.from({ length: cap }, (_, i) => {
+    const x = 40 + (i % cols) * (cell + 3), y = 50 + Math.floor(i / cols) * (cell + 3), c = fill[i];
+    return c === undefined ? `<rect x="${x}" y="${y}" width="${cell}" height="${cell}" rx="3" fill="none" stroke="#22384f"/>`
+      : `<rect x="${x}" y="${y}" width="${cell}" height="${cell}" rx="3" fill="${CARGO_COLORS[c % CARGO_COLORS.length]}" opacity=".85" data-bay="${COMMODITIES[c].id}"/>`;
+  }).join('');
+  return { svg: `<svg class="con-plant" viewBox="0 0 640 ${Math.max(150, 62 + rows * (cell + 3))}" role="img" aria-label="Cargo bay"><text x="40" y="30" fill="#7f95ab" font-size="11" letter-spacing="2">CARGO BAY</text>${cells}</svg>`, fill };
+}
+
+// The Operations station as a console: the cargo bay on the display, the manifest and the contracts beside it.
+function operationsPanel() {
+  const st = G.state, s = ship(), bay = bayGrid();
+  const manifest = COMMODITIES.map((c, i) => st.cargo[c.id] > 0 ? `<div class="con-read"><span><i class="con-swatch" style="background:${CARGO_COLORS[i % CARGO_COLORS.length]}"></i>${c.name}</span><b>${st.cargo[c.id]}t</b></div>` : '').join('');
+  const jobs = st.missions.map(m => `<div class="hint">${m.title} (due ${dateOf(m.deadline)})</div>`).join('');
+  return consoleHtml({
+    title: 'Operations', status: hired() ? `The captain's hold: ${cargoUsed()}/${s.cargo}t` : `Hold ${cargoUsed()}/${s.cargo}t`,
+    screen: bay.svg,
+    side: conCard('Manifest', manifest || '<p class="hint">The hold is empty.</p>') + conCard('Contracts', jobs || '<p class="hint">No active contracts.</p>'),
+    controls: G.transit ? '<p class="hint">Trade, contracts, and the bar open when you dock.</p>' : '',
+  });
+}
+
 const portView = UI.views.port;
-UI.views.port = function () { return (hired() ? runHtml() : '') + portView.call(this); };
+UI.views.port = function () { return operationsPanel() + (hired() ? runHtml() : '') + portView.call(this); };
 
 // The shipyard is Engineering's page at port; the engineer's post leads it.
 const shipyardView = UI.views.shipyard;
@@ -212,18 +238,13 @@ function drawViewscreen(time) {
 // ---------- the key bar and status sheets during a burn ----------
 
 function transitSheet(id) {
-  const st = G.state, t = G.transit, s = ship();
-  const list = items => items.map(x => `<div class="hint">${x}</div>`).join('');
   switch (id) {
     case 'nav': return navigationPanel();
     case 'weapons': return weaponsPanel();
     case 'eng': return `${engineerPanel()}<p class="hint">Full repairs and outfits are done at a shipyard.</p>`;
     case 'interior': return interiorPanel();
     case 'comms': return commsPanel();
-    default: {
-      const held = COMMODITIES.filter(c => st.cargo[c.id] > 0).map(c => `${st.cargo[c.id]}t ${c.name}`);
-      return `<h3>Operations</h3><p class="desc">Trade, contracts, and the bar open when you dock.</p>${list([`Cargo: ${held.length ? held.join(', ') : 'empty'}`, ...st.missions.map(m => `${m.title} (due ${dateOf(m.deadline)})`)])}`;
-    }
+    default: return operationsPanel();
   }
 }
 
@@ -256,7 +277,7 @@ function syncBridge(force) {
   keys.classList.toggle('compact', view < 700);  // short names when the keys would not fit
   sheet.style.right = `${G.hudW}px`;
   sheet.style.left = `${view / 2}px`;
-  sheet.style.width = `${Math.min(['nav', 'eng', 'weapons', 'comms'].includes(G.bridgeOpen) ? 720 : 520, view - 24)}px`  // a console is wide enough for its two columns;
+  sheet.style.width = `${Math.min(['nav', 'eng', 'weapons', 'comms', 'ops'].includes(G.bridgeOpen) ? 720 : 520, view - 24)}px`  // a console is wide enough for its two columns;
   keys.querySelectorAll('[data-bst]').forEach(b => b.classList.toggle('active', b.dataset.bst === G.bridgeOpen));
   if (G.bridgeOpen) {
     const html = transitSheet(G.bridgeOpen);
