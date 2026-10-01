@@ -342,7 +342,7 @@ function openEvent(ev) {
 }
 
 function chooseEvent(i) {
-  const c = G.dialog.choices[i], result = hiredFunds(() => c.run());  // a hired hand's burn events spend the ship's money, not theirs
+  const c = G.dialog.choices[i], result = G.dialog.event.personal ? c.run() : hiredFunds(() => c.run());  // a hired hand's burn events spend the ship's money, not theirs; their own affairs, their own
   return c.role ? result.replace(/\{crew\}/g, roleName(c.role)) : result;
 }
 
