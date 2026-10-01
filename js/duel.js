@@ -91,12 +91,16 @@ const unseen = (side, t) => side.counts[t] - (t === 'torp' ? side.spent : side[D
 
 // The enemy's play: expected value against the player's likely card, from public
 // information only (the player's fit and discards), picked with a softmax.
-function foePlay() {
-  const d = G.duel, attacking = d.init === 'foe', mine = attacking ? DUEL_THREATS : DUEL_ANSWERS, theirs = attacking ? DUEL_ANSWERS : DUEL_THREATS;
-  const hand = [...new Set(d.them[attacking ? 'threat' : 'answer'].hand)];
-  const odds = theirs.map(t => Math.max(0, unseen(d.me, t))), total = odds.reduce((a, b) => a + b, 0) || 1;
+// The play for one side: expected value against the other's likely card, from public information only
+// (their fit and discards), picked with a softmax. The enemy leans by captain kind; so does a crew
+// that plays for you, when you are not the one at the guns (a hired hand).
+function pickPlay(who) {
+  const d = G.duel, own = who === 'foe' ? d.them : d.me, other = who === 'foe' ? d.me : d.them;
+  const attacking = d.init === who, mine = attacking ? DUEL_THREATS : DUEL_ANSWERS, theirs = attacking ? DUEL_ANSWERS : DUEL_THREATS;
+  const hand = [...new Set(own[attacking ? 'threat' : 'answer'].hand)];
+  const odds = theirs.map(t => Math.max(0, unseen(other, t))), total = odds.reduce((a, b) => a + b, 0) || 1;
   const scores = hand.map(t => {
-    let v = t === FOE_LEAN[d.spec.kind] ? 0.5 : 0;
+    let v = who === 'foe' && t === FOE_LEAN[d.spec.kind] ? 0.5 : 0;
     theirs.forEach((o, i) => {
       const out = attacking ? DUEL_OUTCOME[t][o] : DUEL_OUTCOME[o][t], pts = hitPoints(attacking ? t : o, out);
       v += (odds[i] / total) * (attacking ? pts + (out === 'stop' ? -1 : 0.5) : -pts + (out === 'stop' ? 1 : -0.5));
@@ -108,6 +112,7 @@ function foePlay() {
   for (let i = 0; i < hand.length; i++) if ((r -= w[i]) < 0) return hand[i];
   return hand[hand.length - 1] || mine[0];
 }
+const foePlay = () => pickPlay('foe');
 
 function startDuel(spec, flee) {
   const st = G.state, foe = makeEnemy(spec);
@@ -129,6 +134,14 @@ function startDuel(spec, flee) {
 
 function duelEvent() {
   const d = G.duel, st = G.state, foe = theShip(d.foe), attacking = d.init === 'me';
+  if (notYours('gunner')) {  // the guns are somebody else's: the gunner plays the exchange, and you watch
+    const t = pickPlay('me'), who = roleHolder('gunner') ? roleName('gunner') : 'The gunner';
+    return {
+      title: `Contact: exchange ${d.round + 1} of ${DUEL_ROUNDS}`,
+      text: `${foe}: ${'#'.repeat(d.foeHp)}${'-'.repeat(Math.max(0, d.foeMax - d.foeHp))}. Armor ${st.armor}/${ship().armor}. ${who} has ${attacking ? 'the initiative and goes for' : `${foe} on the attack, and answers with`} ${DUEL_CARDS[t].low}.`,
+      choices: [{ label: 'Hold on', run: () => duelExchange(t, foePlay()) }],
+    };
+  }
   const hand = d.me[attacking ? 'threat' : 'answer'].hand, types = [...new Set(hand)];
   const list = ts => ts.map(t => [t, Math.max(0, unseen(d.them, t) + d.blur[t])]).filter(([, n]) => n > 0).map(([t, n]) => `${DUEL_CARDS[t].low} x${n}`).join(', ') || 'nothing';
   const read = attacking

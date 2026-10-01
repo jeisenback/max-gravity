@@ -70,7 +70,7 @@ function contactEvent(spec) {
     st.rep[spec.gov] = Math.max(repOf(spec.gov), -10);
     return 'They take your money and log your ship as settled. For now.';
   } });
-  return { title: 'Contact', text: `Sensors: a drive plume at ${d} km, on an intercept course. ${who}`, choices };
+  return { title: 'Contact', via: 'ship', text: `Sensors: a drive plume at ${d} km, on an intercept course. ${who}`, choices };
 }
 
 Mods.register({
