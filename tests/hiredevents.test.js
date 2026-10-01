@@ -168,17 +168,89 @@ test('the main characters appear in a hand\'s events only when they are aboard',
   const { ev, done } = await open();
   await ev(hiredHelpers);
   const seen = async background => ev(bg => {
-    startGame({ slot: 1, background: bg, captain: 'Ines Okafor', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent();
+    startGame({ slot: 1, background: bg, captain: 'Ines Okafor', mode: 'hired', post: 'pilot' }); while (G.dialog) finishEvent();
     const st = G.state; st.tutorial = null; st.story.next = 1e9; uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
     const out = { aboard: castKeys(), titles: new Set() };
     for (let i = 0; i < 300; i++) { st.eventSeen = {}; const e = hiredEvent('crew'); if (e) out.titles.add(e.title); }
     out.titles = [...out.titles]; return out;
   }, background);
-  const earth = await seen('earth'), mars = await seen('mars');
+  const CAST_TITLES = ['Ines Calls the Numbers', 'Tomas in the Engine Room', 'Yelena Wants a Sparring Partner', 'Ruben and the Thermos'];
+  const earth = await seen('earth'), mars = await seen('mars'), belt = await seen('belt');
   assert.deepEqual(earth.aboard.sort(), ['ines', 'tomas']);
-  assert.ok(earth.titles.includes('Ines Calls the Numbers') && earth.titles.includes('Tomas in the Engine Room'), 'the Earth pair are in the crew events');
-  assert.deepEqual(mars.aboard, []);
-  assert.ok(!mars.titles.includes('Ines Calls the Numbers') && !mars.titles.includes('Tomas in the Engine Room'), 'a start with no cast gets none of their events');
-  assert.ok(mars.titles.length >= 3, 'but still has crew events');
+  assert.deepEqual(earth.titles.filter(t => CAST_TITLES.includes(t)).sort(), ['Ines Calls the Numbers', 'Tomas in the Engine Room']);
+  assert.deepEqual(mars.aboard.sort(), ['ruben', 'yelena']);
+  assert.deepEqual(mars.titles.filter(t => CAST_TITLES.includes(t)).sort(), ['Ruben and the Thermos', 'Yelena Wants a Sparring Partner']);
+  assert.deepEqual(belt.aboard, []);
+  assert.deepEqual(belt.titles.filter(t => CAST_TITLES.includes(t)), [], 'a start with no cast gets none of their events');
+  assert.ok(belt.titles.length >= 3, 'but still has crew events');
+  await done();
+});
+
+test('downtime for a hired hand: ten additions, never for an owner, with the main characters when aboard', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    const out = {};
+    out.defined = HAND_DOWNTIME.length;
+    const menu = () => { G.transit.lifeUsed = {}; G.state.eventSeen = {}; return downtimeEvent().choices.map(c => c.label); };
+    const extras = labels => labels.filter(l => HAND_DOWNTIME.some(d => d.label === l));
+    startGame({ slot: 1, background: 'earth', captain: 'Ines Okafor', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent();
+    G.state.tutorial = null; uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
+    const days = new Set(); out.counts = [];
+    for (let d = 0; d < 12; d++) { G.state.day += 1; const e = extras(menu()); out.counts.push(e.length); e.forEach(l => days.add(l)); }
+    out.handSeen = [...days];
+    out.earthCast = HAND_DOWNTIME.filter(d => d.cast && d.can()).map(d => d.label);
+    startGame({ slot: 1, background: 'belt', captain: 'Ines Okafor', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent();
+    G.state.tutorial = null; uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
+    out.beltCast = HAND_DOWNTIME.filter(d => d.cast && d.can()).length;
+    startGame({ slot: 1, background: 'earth', captain: 'Ines' }); while (G.dialog) finishEvent();
+    G.state.tutorial = null; uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
+    out.owner = extras(menu()).length; out.ownerFn = handDowntime().length;
+    return out;
+  });
+  assert.equal(r.defined, 10);
+  assert.ok(r.counts.every(n => n >= 1 && n <= 4), `one to four at a time (${r.counts})`);
+  assert.ok(r.handSeen.length >= 6, `they come round in turn (${r.handSeen.length})`);
+  assert.deepEqual(r.earthCast.sort(), ['Fly a sim with Ines', 'Learn the loop from Tomas']);
+  assert.equal(r.beltCast, 0, 'no main character, no such choice');
+  assert.equal(r.owner, 0); assert.equal(r.ownerFn, 0);
+  await done();
+});
+
+test('hired downtime lands its effects, in savings and not the ship\'s purse', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    const out = {}, labels = HAND_DOWNTIME.map(d => d.label);
+    for (const bg of ['earth', 'mars']) {
+      for (const label of labels) {
+        startGame({ slot: 1, background: bg, captain: 'Ines Okafor', mode: 'hired', post: 'pilot' }); while (G.dialog) finishEvent();
+        const st = G.state, h = st.hired; st.tutorial = null; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; st.credits = 500;
+        const d = HAND_DOWNTIME.find(x => x.label === label);
+        if (!d.can()) continue;
+        const cap = person(h.captain), mates = crewPeople().map(f => f.p);
+        const before = { fund: h.fund, cash: st.credits, cap: cap.opinion, mates: mates.map(m => m.opinion), xp: Object.assign({}, h.skill) };
+        G.transit.lifeUsed = {};
+        const e = downtimeEvent(), i = e.choices.findIndex(c => c.label === label);
+        if (i < 0) {  // not on the menu today: run it directly
+          const text = d.run(); out[`${bg}:${label}`] = { text, cash: st.credits - before.cash, fund: h.fund - before.fund };
+          continue;
+        }
+        G.dialog = { event: e, choices: e.choices };
+        const text = String(chooseEvent(i));
+        out[`${bg}:${label}`] = { text, cash: st.credits - before.cash, fund: h.fund - before.fund, cap: cap.opinion - before.cap, mates: mates.map((m, j) => m.opinion - before.mates[j]), xp: Object.keys(h.skill).some(k => h.skill[k] !== (before.xp[k] || 0)) };
+      }
+    }
+    return out;
+  });
+  const keys = Object.keys(r);
+  assert.ok(keys.length >= 14, `ran them all (${keys.length})`);
+  for (const [k, v] of Object.entries(r)) {
+    assert.doesNotMatch(v.text, /undefined|NaN|\[object|\{[a-z]+\}/, k);
+    assert.equal(v.fund, 0, `${k}: never the ship's purse`);
+  }
+  assert.ok(r['earth:Stand a spare watch for the captain'].cash === 40, 'the fee reaches your savings');
+  const mend = r['earth:Mend a shipmate\'s gear for pay'];
+  assert.ok(mend.cash >= 30 && mend.cash <= 60 && mend.fund === 0);
   await done();
 });
