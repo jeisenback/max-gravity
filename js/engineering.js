@@ -88,32 +88,73 @@ function engineeringTick(dt) {
   }
 }
 
-// The Engineering station: power (sliders for a manual engineer), heat, and the post.
+// The Engineering station, as a console: the plant schematic on the display, heat and condition beside it,
+// and the power channels and the post's orders along the bottom.
 const POWER_NAMES = { drive: 'Drive', weapons: 'Weapons', shields: 'Shields' };
-function engineerPanel() {
-  const p = power(), manual = postMode('engineer') === 'manual';
-  const row = k => manual
-    ? `<label class="slider"><span>${POWER_NAMES[k]}</span><input type="range" min="${POWER_MIN}" max="${POWER_MAX}" value="${p[k]}" data-power="${k}"><span class="mono" data-power-val="${k}">${p[k]}%</span></label>`
-    : `<div class="slider"><span>${POWER_NAMES[k]}</span><span class="pbar"><i style="width:${p[k]}%"></i></span><span class="mono" data-power-val="${k}">${p[k]}%</span></div>`;
-  return `<div class="power">
-    <div class="eyebrow">Power &middot; ${manual ? 'you set it' : `${roleName('engineer')} runs it`}</div>
-    ${['drive', 'weapons', 'shields'].map(row).join('')}
-    <div class="slider"><span>Heat</span><span class="pbar" data-heat-bar><i></i></span><span class="mono" data-heat></span></div>
-    <p class="hint" data-effects>${powerEffects()}</p>
-    <p class="hint">In a console fight, weapons power adds gun runs, drive power adds evasive burns, and shields of 40% or more soak the first half hit.</p>
-  </div>${wearHtml()}${projectsHtml('engineer')}${postHtml('engineer')}`;
+
+// A side view of the ship. Each conduit's width is that power share; each system takes the colour of its condition.
+function plantSvg() {
+  const p = power(), c = condition(), w = s => 2 + s / 80 * 9, a = s => 0.35 + s / 80 * 0.65, col = k => condColor(c[k]);
+  const grid = Array.from({ length: 15 }, (_, i) => `<line x1="${i * 46}" y1="0" x2="${i * 46}" y2="300"/>`).join('') + Array.from({ length: 7 }, (_, i) => `<line x1="0" y1="${i * 46}" x2="640" y2="${i * 46}"/>`).join('');
+  return `<defs><linearGradient id="plant-hull" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b2a3d"/><stop offset="1" stop-color="#0e1826"/></linearGradient></defs>
+  <g stroke="#16243a" stroke-width="1">${grid}</g>
+  <path d="M70 150 L110 112 L470 100 L560 130 L600 150 L560 170 L470 200 L110 188 Z" fill="url(#plant-hull)" stroke="#34506e" stroke-width="2"/>
+  <rect x="150" y="128" width="170" height="44" rx="6" fill="#0a1320" stroke="#34506e"/>
+  <text class="lbl" x="235" y="154" fill="#7f95ab" font-size="11" text-anchor="middle" letter-spacing="2">REACTOR</text>
+  <path d="M150 140 L96 140" stroke="${col('drive')}" stroke-width="${w(p.drive)}" opacity="${a(p.drive)}" stroke-linecap="round"/>
+  <path d="M320 138 L380 120 L430 120" stroke="${col('fire')}" stroke-width="${w(p.weapons)}" opacity="${a(p.weapons)}" fill="none" stroke-linecap="round"/>
+  <path d="M320 164 L380 180 L440 180" stroke="${col('shields')}" stroke-width="${w(p.shields)}" opacity="${a(p.shields)}" fill="none" stroke-linecap="round"/>
+  <path d="M70 150 L34 128 L34 172 Z" fill="#0a1320" stroke="${col('drive')}" stroke-width="2"/>
+  <path d="M30 150 L${Math.max(6, 30 - p.drive * 0.3).toFixed(0)} 150" stroke="#6fb0ff" stroke-width="${(w(p.drive) + 2).toFixed(1)}" opacity="${a(p.drive).toFixed(2)}" stroke-linecap="round"/>
+  <rect x="400" y="100" width="44" height="22" rx="3" fill="#0a1320" stroke="${col('fire')}" stroke-width="2"/><line x1="444" y1="111" x2="486" y2="111" stroke="${col('fire')}" stroke-width="3"/>
+  <circle cx="440" cy="180" r="9" fill="#0a1320" stroke="${col('shields')}" stroke-width="2"/><circle cx="300" cy="190" r="6" fill="#0a1320" stroke="${col('shields')}" stroke-width="2"/><circle cx="200" cy="112" r="6" fill="#0a1320" stroke="${col('shields')}" stroke-width="2"/>
+  <ellipse cx="330" cy="150" rx="${(200 * (0.5 + p.shields / 160)).toFixed(0)}" ry="${(90 * (0.5 + p.shields / 160)).toFixed(0)}" fill="none" stroke="${col('shields')}" stroke-dasharray="4 7" opacity="${(a(p.shields) * 0.6).toFixed(2)}"/>
+  <circle cx="500" cy="150" r="22" fill="#0a1320" stroke="${col('life')}" stroke-width="2"/><circle cx="500" cy="150" r="10" fill="none" stroke="${col('life')}" stroke-dasharray="3 3"/>
+  <line x1="580" y1="140" x2="612" y2="108" stroke="${col('sensors')}" stroke-width="3"/><circle cx="614" cy="106" r="6" fill="#0a1320" stroke="${col('sensors')}" stroke-width="2"/>
+  <g class="lbl" font-size="11" fill="#7f95ab" letter-spacing="1"><text x="26" y="206">DRIVE</text><text x="420" y="92">FIRE CTRL</text><text x="410" y="214">SHIELDS</text><text x="476" y="190">LIFE</text><text x="520" y="70">SENSORS</text></g>
+  <text x="14" y="24" fill="#7f95ab" font-size="11" letter-spacing="2">PLANT SCHEMATIC</text>
+  <text class="lbl" x="14" y="282" fill="#4b617a" font-size="10">Conduit width is the power share. Colour is the system's condition.</text>`;
+}
+const plantSig = () => `${Object.values(power())}|${Object.values(condition()).map(x => condColor(x))}`;
+
+// The three effects of the drive's share: speed, reaction mass, and how easily pirates spot you.
+function effectRows() {
+  const d = power().drive - 40, v = scanVisibility();
+  return conRead('Burn speed', `${burnSpeed().toFixed(2)}x`, 'data-eff="speed"')
+    + conRead('Reaction mass use', `${d >= 0 ? '+' : ''}${d}%`, 'data-eff="fuel"')
+    + conRead('Pirates spot you', v < 0.85 ? 'rarely' : v < 1.15 ? 'as usual' : 'easily', 'data-eff="scan"');
 }
 
-const powerEffects = () => {
-  const d = power().drive - 40, v = scanVisibility();
-  return `Burn speed ${burnSpeed().toFixed(2)}x. Reaction mass use ${d >= 0 ? '+' : ''}${d}%. Heat ${d > 5 ? 'builds' : d < -5 ? 'drains' : 'holds'}. Pirates spot you ${v < 0.85 ? 'rarely' : v < 1.15 ? 'as usual' : 'easily'}.`;
-};
+function engineerPanel() {
+  const p = power(), manual = postMode('engineer') === 'manual' && !notYours('engineer');
+  const channel = k => `<div class="con-chan"><label><span>${POWER_NAMES[k]}</span><b data-power-val="${k}">${p[k]}%</b></label>${manual
+    ? `<input type="range" min="${POWER_MIN}" max="${POWER_MAX}" value="${p[k]}" data-power="${k}" aria-label="${POWER_NAMES[k]} power"><div class="con-ticks"><span>${POWER_MIN}</span><span>${POWER_MAX}</span></div>`
+    : `<span class="con-bar" data-power-bar="${k}"><i style="width:${p[k]}%"></i></span>`}</div>`;
+  const st = G.state, s = ship();
+  return consoleHtml({
+    title: 'Engineering',
+    status: manual ? 'You run the plant' : `${roleName('engineer')} runs the plant`,
+    screen: `<svg class="con-plant" data-plant data-sig="${plantSig()}" viewBox="0 0 640 300" role="img" aria-label="Ship systems diagram">${plantSvg()}</svg>`,
+    side: conCard('Reactor heat', `${gaugeSvg('heat', Math.round(Math.min(100, heat())), heatLimit())}${effectRows()}`)
+      + conCard('Systems', wearHtml()),
+    controls: `<div class="con-chans">${['drive', 'weapons', 'shields'].map(channel).join('')}</div>${postHtml('engineer')}${projectsHtml('engineer')}`,
+    note: `<p class="con-note">Reaction mass ${st.fuel}/${s.fuel}. Armor ${st.armor}/${s.armor}. In a console fight, weapons power adds gun runs, drive power adds evasive burns, and shields of 40% or more soak the first half hit.</p>`,
+  });
+}
 
-// Live numbers, filled in without rebuilding the panel so a slider can be dragged.
+// Live numbers, filled in without rebuilding the page so a slider can be dragged.
 function engineeringReadouts() {
-  const h = Math.round(Math.min(100, heat()));
-  for (const el of document.querySelectorAll('[data-heat]')) el.textContent = `${h}%`;
-  for (const el of document.querySelectorAll('[data-heat-bar]')) { el.firstElementChild.style.width = `${h}%`; el.classList.toggle('hot', h >= heatLimit()); }
+  refreshGauges('heat', Math.round(Math.min(100, heat())), heatLimit());
+  const p = power(), rows = document.querySelector('[data-eff]') ? effectRows() : null;
+  for (const el of document.querySelectorAll('[data-power]')) if (document.activeElement !== el) el.value = p[el.dataset.power];
+  for (const el of document.querySelectorAll('[data-power-val]')) el.textContent = `${p[el.dataset.powerVal]}%`;
+  for (const el of document.querySelectorAll('[data-power-bar] i')) el.style.width = `${p[el.parentNode.dataset.powerBar]}%`;
+  if (rows) {
+    const t = document.createElement('div'); t.innerHTML = rows;
+    for (const b of t.querySelectorAll('[data-eff]')) for (const el of document.querySelectorAll(`[data-eff="${b.dataset.eff}"]`)) el.textContent = b.textContent;
+  }
+  const sig = plantSig();
+  for (const el of document.querySelectorAll('[data-plant]')) if (el.dataset.sig !== sig) { el.dataset.sig = sig; el.innerHTML = plantSvg(); }
 }
 
 function powerInput(e) {
@@ -122,8 +163,7 @@ function powerInput(e) {
   setPower(k, Number(e.target.value));
   const p = power();
   for (const el of document.querySelectorAll('[data-power]')) el.value = p[el.dataset.power];
-  for (const el of document.querySelectorAll('[data-power-val]')) el.textContent = `${p[el.dataset.powerVal]}%`;
-  for (const el of document.querySelectorAll('[data-effects]')) el.textContent = powerEffects();
+  engineeringReadouts();
 }
 
 Mods.register({

@@ -517,16 +517,50 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 #bsheet { right: auto !important; transform: translateX(-50%); margin: 0; }  /* centred in the view by bridge.js */
 @media (min-width: 700px) { #bkeys { justify-content: safe center; } }
 #bsheet h3 { margin: 0 0 6px; }
+#bsheet:has(.con) { max-height: 70vh; }  /* a console needs room for its controls */
 @media (max-width: 420px) { .tabs.stations { padding-inline: 2px; } .tabs.stations button { flex: 1 1 0; min-width: 0; font-size: 9.5px; letter-spacing: 0; padding-inline: 0; } }
 /* A post's block on a station view (stations.js). */
 .post { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line); }
 .post .row { flex-wrap: wrap; gap: 6px; }
-/* Engineering: power shares and heat (engineering.js). */
+/* The console: a station as a view from a workstation (console.js). It lays out by its own width. */
+.con { container-type: inline-size; }
+.con-bezel { border: 1px solid var(--line); border-radius: 10px; background: linear-gradient(#0d1624, #080d16); padding: 10px; box-shadow: inset 0 0 0 3px #060a12, inset 0 0 0 4px var(--line-soft); }
+.con-head { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; margin: 0 4px 8px; color: var(--muted); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+.con-head b { color: var(--text); font-weight: 600; }
+.con-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.con-screen { display: flex; align-items: center; background: #050a11; border: 1px solid var(--line-soft); border-radius: 6px; overflow: hidden; }
+.con-screen svg { display: block; width: 100%; height: auto; }
+.con-side { display: flex; flex-direction: column; gap: 10px; }
+.con-card { background: #050a11; border: 1px solid var(--line-soft); border-radius: 6px; padding: 10px; }
+.con-gauge { display: block; width: 100%; max-width: 230px; margin: 0 auto; }
+.con-read { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin: 2px 0; }
+.con-read b { color: var(--text); font-weight: 500; }
+.con-bar { display: block; height: 7px; background: #12202f; border-radius: 2px; overflow: hidden; }
+.con-bar i { display: block; height: 100%; background: var(--accent); }
+.con-parts { display: grid; gap: 5px; }
+.con-part { display: grid; grid-template-columns: 96px 1fr 30px; gap: 6px; align-items: center; font-size: 12px; }
+.con-part b { text-align: right; font-weight: 500; }
+.con-yard { display: flex; justify-content: space-between; align-items: center; }
+.con-ctl { margin-top: 10px; }
+.con-chans { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.con-chan { background: #050a11; border: 1px solid var(--line-soft); border-radius: 6px; padding: 8px 10px; }
+.con-chan label { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.con-chan label b { color: var(--text); }
+.con-chan input[type=range] { width: 100%; margin: 8px 0 2px; accent-color: var(--accent); }
+.con-chan .con-bar { margin-top: 10px; }
+.con-ticks { display: flex; justify-content: space-between; font-size: 10px; color: #4b617a; }
+.con-note { margin: 8px 4px 0; font-size: 12px; color: var(--muted); }
+.con-ctl .post { margin-top: 10px; }
+.con-plant .lbl { display: block; }
+@container (max-width: 560px) { .con-plant .lbl { display: none; } }
+@container (min-width: 640px) {
+  .con-grid { grid-template-columns: 1fr 240px; }
+  .con-chans { grid-template-columns: repeat(3, 1fr); }
+}
+/* Progress rows for projects and programs (projects.js, programs.js). */
 .slider { display: grid; grid-template-columns: 74px 1fr 44px; gap: 8px; align-items: center; padding: 4px 0; font-size: 13px; }
-.slider input[type=range] { width: 100%; accent-color: var(--accent, #6fb0ff); }
 .pbar { display: block; height: 6px; background: var(--line); }
 .pbar i { display: block; height: 100%; background: var(--accent, #6fb0ff); }
-.pbar.hot i { background: #ff9a3c; }
 /* Station keys: full names, or short ones on a phone (bridge.js). */
 .tabs.stations .short { display: none; }
 @media (max-width: 480px) { .tabs.stations .full { display: none; } .tabs.stations .short { display: inline; } .tabs.stations button { font-size: 11px; letter-spacing: 0.04em; } }

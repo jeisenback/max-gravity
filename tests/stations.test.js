@@ -391,7 +391,20 @@ test('engineer: sliders for a manual engineer, bars for a crewed one, and a shee
   await ev(() => { G.state.heat = 40; });
   await page.waitForTimeout(700);  // the sheet refreshes a few times; the slider survives
   assert.equal(await page.$eval('#bsheet input[data-power=drive]', el => el.value), '70');
-  assert.match(await page.innerText('#bsheet'), /Heat\s*\d+%/);
+  assert.match(await page.innerText('#bsheet'), /Reactor heat\s*\d+%/i);
+  await done();
+});
+
+test('the engineering console shows wear in its colours, and fits a phone without scrolling sideways', async () => {
+  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
+  await ev(helpers);
+  await ev(() => { G.state.tutorial = null; G.state.crew = []; G.state.condition = { drive: 95, fire: 20, shields: 55, life: 100, sensors: 100 }; while (G.dialog) finishEvent(); UI.render(); });
+  await page.click('[data-action=station][data-arg=eng]');
+  const colours = await page.$$eval('#panel .con-part', rows => rows.map(r => r.querySelector('.con-bar i').style.backgroundColor));
+  assert.deepEqual(colours, ['rgb(95, 211, 95)', 'rgb(255, 106, 74)', 'rgb(255, 154, 60)', 'rgb(95, 211, 95)', 'rgb(95, 211, 95)'], 'good, failing, worn, good, good');
+  assert.ok(await page.$('#panel [data-gauge=heat]') && await page.$('#panel [data-plant]'), 'the heat gauge and the plant schematic are on the display');
+  assert.equal(await page.$eval('#panel .con-plant .lbl', el => getComputedStyle(el).display), 'none', 'the diagram drops its labels when narrow');
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
   await done();
 });
 
@@ -433,11 +446,11 @@ test('drive power sets the burn: speed, days, reaction mass, and how easily pira
   // Dry tanks throttle the drive, and the panel says what the sliders do.
   await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; setPower('drive', 80); G.state.fuel = 0; G.transit.event = null; Mods.emit('frame', 1); });
   assert.equal(await ev(() => power().drive), 40);
-  await ev(() => { G.state.tutorial = null; hire('pilot'); G.state.crew = []; });
+  await ev(() => { G.state.tutorial = null; hire('pilot'); G.state.crew = []; G.state.fuel = ship().fuel; });  // dry tanks would throttle the drive back under the readout
   await page.waitForSelector('#bkeys', { state: 'visible' });
   await page.click('[data-bst=eng]');
   await page.$eval('#bsheet input[data-power=drive]', el => { el.value = 70; el.dispatchEvent(new Event('input', { bubbles: true })); });
-  assert.match(await page.innerText('#bsheet'), /Burn speed 1\.24x\. Reaction mass use \+30%/);
+  assert.match(await page.innerText('#bsheet'), /Burn speed\s*1\.24x\s*Reaction mass use\s*\+30%/);
   await done();
 });
 
