@@ -214,7 +214,7 @@ test('the bridge: station keys at port, and a key bar with status sheets in a bu
   await page.waitForSelector('#bkeys', { state: 'visible' });
   assert.equal(await page.isVisible('#bsheet'), false);
   await page.click('[data-bst=nav]');
-  assert.match(await page.innerText('#bsheet'), /Arriving/);
+  assert.match(await page.innerText('#bsheet'), /Arrival/);
   await page.click('[data-bst=ops]');
   assert.match(await page.innerText('#bsheet'), /open when you dock/);
   await ev(() => openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', run: () => 'a' }] }));

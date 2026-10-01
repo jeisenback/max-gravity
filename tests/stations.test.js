@@ -430,6 +430,28 @@ test('the weapons console shows the armament and the fire deck from the ship, at
   await done();
 });
 
+test('the navigation console plots the course at port and the burn in flight', async () => {
+  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
+  await ev(helpers);
+  await ev(() => { G.state.tutorial = null; G.state.crew = []; while (G.dialog) finishEvent(); G.state.dest = 'mars'; UI.render(); });
+  await page.click('[data-action=station][data-arg=nav]');
+  const want = await ev(() => ({ days: travelDays(G.state.systemId, 'mars'), fuel: burnFuel(G.state.systemId, 'mars'), n: Object.values(SYSTEMS).filter(x => x.au <= Math.max(2, 1.3 * Math.max(SYSTEMS[G.state.systemId].au, SYSTEMS.mars.au))).length }));
+  const row = (root, label) => page.$$eval(`${root} .con-read`, (rows, l) => { const r = rows.find(x => x.firstElementChild.textContent === l); return r && r.lastElementChild.textContent; }, label);
+  assert.equal(await row('#panel', 'Burn'), `${want.days} days`, 'the course card has the burn');
+  assert.match(await row('#panel', 'Reaction mass'), new RegExp(`^${want.fuel} of `));
+  assert.equal(await page.$$eval('#panel .con-plant circle[r="3"]', n => n.length), want.n, 'a dot for every place the plot spans');
+  assert.equal(await page.$$eval('#panel .con-plant line[stroke-dasharray]', n => n.length), 1, 'the planned course is a dashed line');
+  assert.ok(await page.$('#panel [data-action=map]'), 'the system map is a control');
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
+  await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.left = G.transit.total * 0.6; });
+  await page.waitForSelector('#bkeys', { state: 'visible' });
+  await page.click('[data-bst=nav]');
+  assert.equal(await row('#bsheet', 'Destination'), 'Pallas');
+  assert.match(await row('#bsheet', 'Burn'), /^40%, accelerating$/);
+  assert.equal(await page.$$eval('#bsheet .con-plant circle[fill="#d4e4f5"]', n => n.length), 1, 'the ship is marked on the line');
+  await done();
+});
+
 test('drive power sets the burn: speed, days, reaction mass, and how easily pirates spot you', async () => {
   const { page, ev, done } = await open();
   await ev(helpers);
