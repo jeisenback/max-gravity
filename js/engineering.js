@@ -95,10 +95,7 @@ const POWER_NAMES = { drive: 'Drive', weapons: 'Weapons', shields: 'Shields' };
 // A side view of the ship. Each conduit's width is that power share; each system takes the colour of its condition.
 function plantSvg() {
   const p = power(), c = condition(), w = s => 2 + s / 80 * 9, a = s => 0.35 + s / 80 * 0.65, col = k => condColor(c[k]);
-  const grid = Array.from({ length: 15 }, (_, i) => `<line x1="${i * 46}" y1="0" x2="${i * 46}" y2="300"/>`).join('') + Array.from({ length: 7 }, (_, i) => `<line x1="0" y1="${i * 46}" x2="640" y2="${i * 46}"/>`).join('');
-  return `<defs><linearGradient id="plant-hull" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b2a3d"/><stop offset="1" stop-color="#0e1826"/></linearGradient></defs>
-  <g stroke="#16243a" stroke-width="1">${grid}</g>
-  <path d="M70 150 L110 112 L470 100 L560 130 L600 150 L560 170 L470 200 L110 188 Z" fill="url(#plant-hull)" stroke="#34506e" stroke-width="2"/>
+  return `${hullSvg()}
   <rect x="150" y="128" width="170" height="44" rx="6" fill="#0a1320" stroke="#34506e"/>
   <text class="lbl" x="235" y="154" fill="#7f95ab" font-size="11" text-anchor="middle" letter-spacing="2">REACTOR</text>
   <path d="M150 140 L96 140" stroke="${col('drive')}" stroke-width="${w(p.drive)}" opacity="${a(p.drive)}" stroke-linecap="round"/>

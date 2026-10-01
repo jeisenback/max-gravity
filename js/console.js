@@ -42,3 +42,11 @@ function refreshGauges(name, v, limit) {
     el.innerHTML = gaugeInner(v, limit);
   }
 }
+
+// The ship's side profile on a faint grid, the ground a station draws its systems on (Engineering, Weapons).
+function hullSvg() {
+  const grid = Array.from({ length: 15 }, (_, i) => `<line x1="${i * 46}" y1="0" x2="${i * 46}" y2="300"/>`).join('') + Array.from({ length: 7 }, (_, i) => `<line x1="0" y1="${i * 46}" x2="640" y2="${i * 46}"/>`).join('');
+  return `<defs><linearGradient id="con-hull" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1b2a3d"/><stop offset="1" stop-color="#0e1826"/></linearGradient></defs>
+  <g stroke="#16243a" stroke-width="1">${grid}</g>
+  <path d="M70 150 L110 112 L470 100 L560 130 L600 150 L560 170 L470 200 L110 188 Z" fill="url(#con-hull)" stroke="#34506e" stroke-width="2"/>`;
+}

@@ -54,9 +54,40 @@ const armament = () => {
     <p class="hint">${fitted.length ? `Fitted: ${fitted.join(', ')}.` : 'No outfits fitted.'}</p>`;
 };
 
-UI.views.weapons = function () {
-  return `<h3>Armament</h3>${armament()}<div class="row"><button data-action="combatMode">Change combat mode</button></div>${projectsHtml('gunner')}${postHtml('gunner')}`;
-};
+// What the ship carries to a fight, on the hull: the guns along the spine (coloured by the fire control's condition),
+// the point-defense turrets underneath, and the torpedo tubes in the bow, filled for each torpedo held.
+function gunnerySvg() {
+  const st = G.state, s = ship(), fire = condColor(condition().fire), pdc = Math.min(2, (st.outfits || {}).pdc || 0);
+  const guns = Math.min(6, s.guns), spineY = x => 112 - (x - 110) * 12 / 360, keelY = x => 188 + (x - 110) * 12 / 360;
+  const mounts = Array.from({ length: guns }, (_, i) => { const x = 180 + i * 48; return `<rect x="${x}" y="${(spineY(x) - 16).toFixed(1)}" width="22" height="14" rx="3" fill="#0a1320" stroke="${fire}" stroke-width="2"/><line x1="${x + 22}" y1="${(spineY(x) - 9).toFixed(1)}" x2="${x + 44}" y2="${(spineY(x + 22) - 9).toFixed(1)}" stroke="${fire}" stroke-width="3"/>`; }).join('');
+  const turrets = Array.from({ length: pdc }, (_, i) => { const x = 210 + i * 80; return `<circle cx="${x}" cy="${(keelY(x) + 9).toFixed(1)}" r="8" fill="#0a1320" stroke="#5fd35f" stroke-width="2"/><line x1="${x - 5}" y1="${(keelY(x) + 9).toFixed(1)}" x2="${x + 5}" y2="${(keelY(x) + 9).toFixed(1)}" stroke="#5fd35f"/><line x1="${x}" y1="${(keelY(x) + 4).toFixed(1)}" x2="${x}" y2="${(keelY(x) + 14).toFixed(1)}" stroke="#5fd35f"/>`; }).join('');
+  const held = Math.min(TORP_MAX, st.torpedoes || 0);
+  const tubes = s.launcher ? `<rect x="494" y="139" width="${TORP_MAX * 11 + 8}" height="22" rx="3" fill="#0a1320" stroke="#34506e"/>${Array.from({ length: TORP_MAX }, (_, i) => `<circle cx="${503 + i * 11}" cy="150" r="4" fill="${i < held ? '#6fb0ff' : 'none'}" stroke="#6fb0ff"/>`).join('')}` : '';
+  return `${hullSvg()}${mounts}${turrets}${tubes}
+  <text x="14" y="24" fill="#7f95ab" font-size="11" letter-spacing="2">ARMAMENT</text>
+  <g class="lbl" font-size="11" fill="#7f95ab" letter-spacing="1">
+    <text x="180" y="${(spineY(180) - 26).toFixed(0)}">${guns} GUN${guns === 1 ? '' : 'S'}</text>
+    ${pdc ? `<text x="180" y="${(keelY(180) + 34).toFixed(0)}">${pdc} POINT DEFENSE</text>` : ''}
+    ${s.launcher ? `<text x="494" y="178">TORPEDOES ${held}/${TORP_MAX}</text>` : '<text x="494" y="150">NO LAUNCHER</text>'}
+  </g>`;
+}
+
+// The Weapons station as a console: the armament on the display, the fire deck beside it, and the gunner's post along the bottom.
+function weaponsPanel() {
+  const st = G.state, c = condition(), deck = playerCounts();
+  const status = notYours('gunner') ? `${roleHolder('gunner') ? roleName('gunner') : 'The gunner'} has the guns`
+    : postMode('gunner') === 'manual' ? 'You have the guns' : `${roleName('gunner')} has the guns`;
+  const cards = ts => ts.map(t => conRead(DUEL_CARDS[t].name, deck[t])).join('');
+  return consoleHtml({
+    title: 'Weapons', status,
+    screen: `<svg class="con-plant" viewBox="0 0 640 300" role="img" aria-label="Armament diagram">${gunnerySvg()}</svg>`,
+    side: conCard('Fire deck', `<div class="hint">Threats</div>${cards(DUEL_THREATS)}<div class="hint">Answers</div>${cards(DUEL_ANSWERS)}`)
+      + conCard('Gun systems', `${conRead('Weapons power', `${power().weapons}%`)}${conRead('Fire control', `${Math.round(c.fire)}%`)}${armament()}`),
+    controls: `<div class="row"><button data-action="combatMode">Change combat mode</button></div>${projectsHtml('gunner')}${postHtml('gunner')}`,
+  });
+}
+
+UI.views.weapons = weaponsPanel;
 
 const portView = UI.views.port;
 UI.views.port = function () { return (hired() ? runHtml() : '') + portView.call(this); };
@@ -97,7 +128,7 @@ function transitSheet(id) {
   const list = items => items.map(x => `<div class="hint">${x}</div>`).join('');
   switch (id) {
     case 'nav': return `<h3>Navigation</h3><p class="desc">${system().name} to ${SYSTEMS[t.to].name}, ${Math.round(progress * 100)}% of the way. ${t.flipped ? 'Braking' : 'Accelerating'}. Arriving ${dateOf(transitEta(t))}.</p>${routeHtml()}${postHtml('pilot')}`;
-    case 'weapons': return `<h3>Weapons</h3>${armament()}${projectsHtml('gunner')}${postHtml('gunner')}`;
+    case 'weapons': return weaponsPanel();
     case 'eng': return `${engineerPanel()}<p class="hint">Full repairs and outfits are done at a shipyard.</p>`;
     case 'interior': {
       const crew = crewMembers(), free = phase() === 'move' && !(t.lifeUsed || {})[lifeHalf()];
@@ -141,7 +172,7 @@ function syncBridge(force) {
   keys.classList.toggle('compact', view < 700);  // short names when the keys would not fit
   sheet.style.right = `${G.hudW}px`;
   sheet.style.left = `${view / 2}px`;
-  sheet.style.width = `${Math.min(G.bridgeOpen === 'eng' ? 720 : 520, view - 24)}px`  // a console is wide enough for its two columns;
+  sheet.style.width = `${Math.min(['eng', 'weapons'].includes(G.bridgeOpen) ? 720 : 520, view - 24)}px`  // a console is wide enough for its two columns;
   keys.querySelectorAll('[data-bst]').forEach(b => b.classList.toggle('active', b.dataset.bst === G.bridgeOpen));
   if (G.bridgeOpen) {
     const html = transitSheet(G.bridgeOpen);
