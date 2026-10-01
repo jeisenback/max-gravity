@@ -162,6 +162,30 @@ const HAND_EVENTS = [
       { label: 'Say you have work to do', run() { castLike('tomas', 0, 'You had work to do and did not stay.'); return '"Of course," he says, and caps the flask, and turns back to the loop. He is not offended. He is just a little more alone with it than he was a minute ago.'; } },
     ]) },
 
+  { id: 'crew-yelena', group: 'crew', when: () => castKeys().includes('yelena'), make: c => handEvent('Yelena Wants a Sparring Partner',
+    'Yelena has set up the range sim on its hardest setting, and has the look of someone who has decided that you are the one to try it with. "No benches," she says. "Everybody plays. Come on."', [
+      { label: 'Take the other console', run() { castLike('yelena', 1, 'You took the other console on the range and did not sulk about losing.'); return `You take the other console, and she beats you soundly, and then, to your surprise, shows you how: where to look, and when. You lose four rounds in a row and are, by the fifth, noticeably less bad.${learn(3)}`; } },
+      { label: 'Say your knee is bad too', run() { castLike('yelena', 0, 'You said you would sit out the range.'); return '"You do not have a bad knee," Yelena says. "You have a bench." But she lets it go, with a snort, and sets the sim back to something kinder for whoever comes next.'; } },
+    ]) },
+
+  { id: 'crew-ruben', group: 'crew', when: () => castKeys().includes('ruben'), make: c => handEvent('Ruben and the Thermos',
+    'Ruben has a thermos of something hot and a stack of intercepts in piles, and he offers you a cup, as he offers everyone, and a pile, as he does not. "Help me sort," he says. "Slowly. I will tell you what is true and what is only lovely."', [
+      { label: 'Help him sort', run() { castLike('ruben', 1, 'You helped me sort the intercepts and did not mind the stories.'); return `You sort, and he talks, and by the end of the stack you have learned which dome is short of what, who is lying about it, and a good deal about how to listen to a lane. It is the best hour of the burn.${learn(2)}`; } },
+      { label: 'Take the tea and go', run() { castLike('ruben', 0, 'You took the tea and went.'); return 'You take the cup, and thank him, and go. "Another time," Ruben says, cheerfully, and returns to his piles, humming. He is not the kind to hold it against you.'; } },
+    ]) },
+
+  { id: 'crew-bexa', group: 'crew', when: () => castKeys().includes('bexa'), make: c => handEvent('Bexa\'s List',
+    'Bexa has a small brass tag on a string above the helm, and a notebook she keeps open on the console and does not like being looked at. Tonight she catches you looking, and, instead of closing it, turns it round. "It is a list," she says. "Ask me properly."', [
+      { label: 'Ask about the first name', run() { castLike('bexa', 2, 'You asked about the list the right way, and listened.'); return `You ask about the first name, quietly, and she tells you: a ship, a year, a crew of six, and what was left. She talks for a long time. When she stops, she closes the book, gently, and nods at the helm. "Sit. I will show you how I would have brought them in."${learn(2)}`; } },
+      { label: 'Look away', run() { castLike('bexa', 0, 'You looked away from the list.'); return 'You look at the console, and she closes the book, with a small, courteous nod, as if you had passed some test that you were not told was being set.'; } },
+    ]) },
+
+  { id: 'crew-pax', group: 'crew', when: () => castKeys().includes('pax'), make: c => handEvent('Pax Checks the Coupling',
+    'Pax is checking the coupling on the gun mount for the fifth time this watch. It is perfect. Pax knows it is perfect, and checks it anyway, with a tight jaw, and glances at you when the check is done as if waiting to be told to stop.', [
+      { label: 'Check it with them', run() { castLike('pax', 1, 'You checked the coupling with me instead of telling me to stop.'); return `You take the other side and check it together, torque by torque, and, when you reach the end, you both say "good" at once. Pax almost smiles. You learn a good deal about mounts that you had not known you needed to.${learn(2)}`; } },
+      { label: 'Tell them it is fine', run() { castLike('pax', 0, 'You told me the coupling was fine.'); return '"I know it is fine," says Pax. "That is not the point." They go back to it, and you leave them to it, feeling that you have said the true thing in the wrong way.'; } },
+    ]) },
+
   { id: 'money-side', group: 'money', make: c => handEvent('Work on the Side',
     'A broker at the last port left word that there is a day of work going, nothing to do with the ship: loading, mostly, for a trading house that pays cash and asks nobody anything. It would be your own time. It would be, as they say, a few credits.', [
       { label: 'Take the work', run() { const n = randInt(8, 16) * 10; G.state.credits += n; return `You spend your time ashore hauling crates for a trading house, and sleep badly for it, and are ${fmt(n)} cr richer by the time the ship sails.`; } },
@@ -209,4 +233,45 @@ function hiredEvent(group) {
   const d = pick(fresh);
   seen[d.id] = st.day;
   return d.make(c);
+}
+
+// ---------- downtime ----------
+// What a hired hand can add to the downtime menu (shiplife.js): at most four are offered at a time, the
+// main characters first, the rest in turn with the date. Effects are the same as the events': experience,
+// savings and opinion. A hand's savings are their own, so the menu is a personal event.
+const mates = () => procedural().map(f => f.p);
+const postOfRole = role => Object.keys(POSTS).find(k => POSTS[k].role === role);
+const shadowable = () => mates().filter(m => postOfRole(m.role) && postOfRole(m.role) !== hired().post);
+const learnAt = (post, n) => { gainSkill(post, n); return ` (+${n} experience at the ${POSTS[post].name.toLowerCase()} post.)`; };
+const castDowntime = (key, label, post, text) => ({
+  cast: true, label, can: () => castKeys().includes(key),
+  run() { castLike(key, 1, 'We spent some downtime together.'); return text(castPerson(key)) + learnAt(post, 3); },
+});
+
+const HAND_DOWNTIME = [
+  { label: 'Ask the captain for advice', can: () => !!hired(),
+    run() { const cap = person(hired().captain); like(cap, 1, 'You asked me for advice.'); return `You find Captain ${cap.last} in the galley, and ask how they would do your job, and they tell you, at length and with surprising warmth, what they got wrong at your age.${learnAt(hired().post, 2)}`; } },
+  { label: 'Shadow a shipmate at their post', can: () => !!hired() && shadowable().length > 0,
+    run() { const m = pick(shadowable()), post = postOfRole(m.role); like(m, 1, 'You spent a watch at my post to learn it.'); return `You spend a watch at ${m.first}'s elbow, at the ${POSTS[post].name.toLowerCase()}, asking the questions a beginner asks, and ${m.first} answers every one.${learnAt(post, 3)}`; } },
+  { label: 'Mend a shipmate\'s gear for pay', can: () => !!hired() && mates().length > 0,
+    run() { const m = pick(mates()), n = randInt(3, 6) * 10; G.state.credits += n; like(m, 1, 'You mended my gear and would not take too much.'); return `You spend the watch re-seating ${m.first}'s suit seals and re-soldering a handlamp, and ${m.first} pays you ${fmt(n)} cr and says it is the best job anyone has done on the ship.`; } },
+  { label: 'Stand a spare watch for the captain', can: () => !!hired(),
+    run() { const cap = person(hired().captain); G.state.credits += 40; like(cap, 1, 'You stood a spare watch for me.'); return `You stand a watch the captain would otherwise have stood, and ${fmt(40)} cr arrives in your account with no note attached. The captain's door is, for the first time, a little open when you pass.${learnAt(hired().post, 1)}`; } },
+  { label: 'Teach a shipmate what you know', can: () => !!hired() && mates().length > 0,
+    run() { const m = pick(mates()); like(m, 2, 'You spent a watch teaching me your post.'); return `You spend a watch showing ${m.first} the ${POSTS[hired().post].name.toLowerCase()}, from the bottom, and teaching it turns out to be the best way to find the gaps in your own understanding.${learnAt(hired().post, 1)}`; } },
+  { label: 'Swap stories in the galley', can: () => !!hired() && mates().length > 0,
+    run() { for (const m of mates()) like(m, 1, 'We swapped stories in the galley.'); return 'You sit in the galley until the small hours, and everybody has a story, and somebody has a better one. By the end, nobody is a stranger.'; } },
+  castDowntime('ines', 'Fly a sim with Ines', 'pilot', c => `Ines puts you on the second seat of the sim and runs you through a bad approach until it is a good one, correcting without being asked, in the voice of a woman who has waited a long time to be asked.`),
+  castDowntime('tomas', 'Learn the loop from Tomas', 'engineer', c => 'Tomas takes you down the coolant loop on a slow watch, valve by valve, talking to the pipes as he goes, and explains what each of them is for, and what each is telling him.'),
+  castDowntime('yelena', 'Spar on the range with Yelena', 'gunner', c => 'Yelena runs the range sim and you take the second console, and she explains, between rounds and with great impatience, where a gun is going to be, and why you were looking at where it was.'),
+  castDowntime('ruben', 'Sort intercepts with Ruben', 'comms', c => 'Ruben hands you a thermos and half a stack of intercepts, and the two of you work through them until the piles marked TRUE and FALSE and LOVELY are all neat, and you have learned how to tell them apart.'),
+  castDowntime('bexa', 'Fly a tug approach with Bexa', 'pilot', c => 'Bexa runs the sim as a salvage approach, slowly, on a ship with no power and no cooperation, and talks you through each thing she would check before she put a line across.'),
+  castDowntime('pax', 'Run the range with Pax', 'gunner', c => 'Pax sets up the range sim, and the two of you take it in turns, calling the numbers to each other, and Pax, to their evident surprise, relaxes about halfway through.'),
+];
+
+function handDowntime() {
+  if (!hired()) return [];
+  const ok = HAND_DOWNTIME.filter(d => d.can()), turn = G.state.day % Math.max(1, ok.filter(d => !d.cast).length);
+  const rest = ok.filter(d => !d.cast), spun = rest.slice(turn).concat(rest.slice(0, turn));
+  return [...ok.filter(d => d.cast).slice(0, 2), ...spun].slice(0, 4);
 }
