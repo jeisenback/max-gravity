@@ -471,7 +471,7 @@ test('the interior console puts the crew at their posts, with how they are doing
   assert.match(await row('#panel', 'Gunner'), /, having a hard time$/, 'a hard time shows beside the name');
   assert.equal(await row('#panel', 'Comms'), 'You', 'a post you run yourself is you');
   const rings = await page.$$eval('#panel .con-plant circle[r="16"]', n => n.map(c => c.getAttribute('stroke')));
-  assert.deepEqual(rings.sort(), ['#5fd35f', '#5fd35f', '#6fb0ff', '#ff9a3c'].sort(), 'you twice, the well pilot, the gunner with a hard time');
+  assert.deepEqual(rings.sort(), ['#5fd35f', '#5fd35f', '#5fd35f', '#6fb0ff', '#ff9a3c'].sort(), 'you at two posts and in the captain\'s cabin, the well pilot, the gunner with a hard time');
   assert.equal(await page.$$eval('#panel .con-plant rect[width="28"][fill="#1d3a5c"]', n => n.length), want.used, 'a bunk filled for each berth used');
   assert.ok(await page.$('#panel [data-action=dismiss]'), 'the crew list and its hiring controls follow the console');
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');

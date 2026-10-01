@@ -14,6 +14,7 @@ const HIRED_SAVINGS = 300;
 const HIRED_FUND = 5000;  // the ship's money, which buys the cargo
 const hired = () => (G.state && G.state.hired) || null;
 // A hired hand works one post. The others are the crew's, and the captain's to command.
+const hiredCaptain = () => (hired() ? G.state.people[hired().captain] : null);
 const notYours = post => !!hired() && hired().post !== post;
 
 // ---------- skill at each post ----------
@@ -313,7 +314,7 @@ function buyInHtml() {
 
 const runHtml = () => {
   const h = G.state.hired, plan = currentPlan(), led = h.ledger.slice(0, 5), name = id => COMMODITIES.find(c => c.id === id).name;
-  return `<div class="post"><div class="eyebrow">The captain's run &middot; ship's funds ${fmt(h.fund)} cr &middot; your savings ${fmt(G.state.credits)} cr</div>
+  return `<div class="post"><div class="eyebrow">${hiredCaptain() ? `Captain ${personLink(hiredCaptain())}'s run` : 'The captain\'s run'} &middot; ship's funds ${fmt(h.fund)} cr &middot; your savings ${fmt(G.state.credits)} cr</div>
     <p class="desc">${plan && plan.yard && G.state.credits >= Math.min(...Object.values(SHIPS).filter(x => x.forSale).map(x => x.price)) ? 'The captain knows you have the money for a ship, and is heading for a port with a yard. ' : ''}${!plan ? 'The captain is waiting for a market worth the fuel.'
       : plan.ballast ? `The captain has no cargo worth carrying and will run light to ${plan.planet}, ${SYSTEMS[plan.sid].name}, to look for work.`
       : plan.loaded ? `The captain will take the ${plan.tons}t of ${name(plan.good)} already aboard to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${plan.days} days.`
@@ -322,9 +323,28 @@ const runHtml = () => {
   </div>`;
 };
 
+// The captain's own habits, now and then, among the crew's chatter. The captain is not crew, so the crew's lines never name them.
+const CAPTAIN_CHATTER = [
+  '{cap} is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch.',
+  '{cap} stops at the hatch of the {post}, looks in, and leaves without saying a word. It is somehow reassuring.',
+  '{cap} is in the galley with the ledger open, doing sums with their lips moving.',
+  '{cap}: "Fuel is money, and money is fuel. Remember that when somebody wants to go faster."',
+  '{cap} is checking the manifest against the hold, line by line, for the second time.',
+  '{cap}: "I was a hand once. I remember what it was like when the captain did not know my name."',
+  '{cap} is asleep in the captain\'s chair with the log open on their chest.',
+  '{cap}: "We make port on the day, or I owe somebody an explanation. I hate owing explanations."',
+];
+function captainChatter() {
+  const c = hiredCaptain(), name = `Captain ${c.last}`;
+  const lines = CAPTAIN_CHATTER.map(l => l.replace('{cap}', name).replace('{post}', POSTS[hired().post].name.toLowerCase()));
+  for (const t of c.traits) lines.push(pick([].concat(TRAITS[t].chatter)).replace('{first}', name).replace('{home}', c.home));
+  return lines;
+}
+
 Mods.register({
   id: 'hired', name: 'Hired hand', builtin: true,
   init(M) {
+    M.filter('chatter', pool => (hired() && hiredCaptain() && Math.random() < 0.2 ? captainChatter() : pool));
     // The captain pays for fuel and repairs: a hired ship is topped up whenever she docks somewhere that sells them.
     M.on('landed', planet => {
       if (!hired() || !planet.services.includes('refuel')) return;
