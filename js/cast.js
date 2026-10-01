@@ -1,6 +1,6 @@
 'use strict';
 
-// The main characters: authored people who come with you. Each start background has a pair (Earth so far).
+// The main characters: authored people who come with you. Each start background has a pair (Earth and Mars so far).
 // A hired hand finds them already aboard the captain's ship; an owner meets them at a port over the first
 // weeks and offers them a berth. They are ordinary people in the registry (st.people) with more on them:
 // a skill at each of the four posts, captain stats (trade, nerve, thrift, used when they command a ship),
@@ -114,10 +114,110 @@ const CAST = {
       },
     },
   },
+  yelena: {
+    first: 'Yelena', last: 'Quint', culture: 'mars', home: 'Olympus Dome', job: 'ring-ball striker', age: 29, role: 'gunner',
+    traits: ['brave', 'rude'], wage: 60,
+    skills: { gunner: 3, pilot: 1, engineer: 0, slicer: 1 }, captain: { trade: 2, nerve: 5, thrift: 2 },
+    ambition: 'Wants to captain a ship the way she captained her ring-ball side: loud, and nobody left on the bench.',
+    bio: 'Striker and captain of the Olympus Dome Ravens until a dislocated knee ended her ring-ball career at twenty-six. She took the only other job where you put something exactly where you meant to, and she is still in a bad mood about it.',
+    chatter: ['Yelena is arguing with the ring-ball feed. The feed is losing.', 'Yelena: "A gun is just a very serious ball. Same principle. You do not look at the thing, you look at where it is going to be."', 'Yelena is doing knee exercises in the corridor with the grim cheer of a woman who has been told to.', 'Yelena: "Every ship I have been on has had a bench. Somebody sitting out, waiting to be asked. I hate it."', 'Yelena has painted a small black raven on the fire control housing, and dares anyone to say it is not regulation.'],
+    scenes: {
+      meet: {
+        title: 'The Striker at the Rail',
+        text: 'At the dock bar rail, a woman is icing a knee brace and arguing with the screen over the counter, which is showing a ring-ball replay. "That was a foul," she tells it, without turning. "That was a foul, and the ref is a coward." She turns to you at last. "Yelena Quint. Olympus Dome Ravens, captain, striker. Retired, they say, like it is a sentence." She taps the knee. "Now I aim things for a living, dome defense mostly, and the pay is an insult. I can put a round through a washer at four kilometers. Does your ship have guns that want somebody who cares where they land?"',
+        choices: [
+          { label: 'Offer her the guns', can: () => berthsFree() > 0, run: () => castJoin('yelena', 'She puts the ice down and gets up so fast the stool falls over, and does not pick it up. "Do you know," she says, "you are the first person to ask me that as if it were a question." She is already walking. Over her shoulder, to the screen: "Do not think I have forgotten the foul."') },
+          { label: '"Not this time."', run: () => castLater('yelena', '"Sure," she says, and the stool, which she has set upright, rocks once. "I will be at the rail. I am usually at the rail."') },
+        ],
+      },
+      intro: {
+        title: 'The Gunner Who Argued with the Feed',
+        text: 'On the first burn you find the gunner in the galley with her bad leg up on a chair, shouting at a ring-ball replay. "Foul," Yelena Quint says, to the screen, to the room, to nobody. "Look at the elbow. Look at it." Nobody has looked at the elbow. She says it with the loyalty of someone who has said it, to many rooms, for years. The feed, which has the decency not to answer, shows the elbow again, slowly.',
+        choices: [
+          { label: 'Take the ref\'s side', run: () => { castLike('yelena', 2, 'You took the ref\'s side, and I enjoyed it very much.'); castXp('yelena', 'gunner', 2); return 'You say the elbow was clean, and for ten minutes she is the happiest you have seen her, taking you through the replay frame by frame with a fork for a pointer. By the end she has you pointing too. "You are wrong," she says, delighted, "and you know exactly where, and that is the whole game." She goes back to her post with a slight spring in the step, favouring the good knee.'; } },
+          { label: 'Ask about the knee', run: () => { castLike('yelena', 1, 'You asked about the knee, and I told you.'); return 'She looks at you for a moment, deciding. "Twenty-six," she says. "Final. A girl from Hellas came in low, and I heard it before I felt it." She taps the brace. "They say it was nobody\'s fault. That is the worst part. Nobody to be angry with." She turns the replay off, which is how you know it cost her something.'; } },
+        ],
+      },
+      mid1: {
+        days: 10, title: 'Pickup Game',
+        text: 'Yelena finds you with a ball under one arm. It is a proper ring-ball, scuffed grey, and it has clearly travelled a long way in the bottom of a bag. "The hold is empty," she says. "Twenty tonnes of empty. I am going to put a ring at each end and play, and every person aboard is going to play, and you are going to be on my side." She does not make it sound like a question, quite.',
+        choices: [
+          { label: 'Clear the hold and play', run() { castLike('yelena', 2, 'You played, and you were on my side.'); castXp('yelena', 'gunner', 3); return 'It is the worst ring-ball ever played. Low gravity, no lines, a ring made of tied cable. You are on her side, and she captains you the way she must once have captained the Ravens: loudly, unfairly and with her whole attention, and, in the end, with joy. You lose by two. She does not mention the score once, but at the evening meal she asks everybody, by name, how they feel about next week.'; } },
+          { label: 'Not in the hold', run() { castLike('yelena', -1, 'You said no to the game in the hold.'); return '"Sure," she says, and puts the ball back in her bag, carefully, as if it might notice. She is professional for the rest of the burn. It is the quietest the galley has been, and nobody can quite say why.'; } },
+        ],
+      },
+      mid2: {
+        days: 25, title: 'The Final',
+        text: 'It is the night of the ring-ball final, and the Ravens\' old rivals from Hellas are playing in it. Yelena has spent two days pretending she does not care. She has the watch. "It is nothing," she says, at the hatch, with the bright, flat voice of a person standing very still. "It is only a final. I will listen to the radio. Radio is fine."',
+        choices: [
+          { label: 'Take her watch', run() { castLike('yelena', 3, 'You took my watch on the night of the final.'); return 'You tell her to go. She does not argue, which is how you know. You hear the roar from the galley, through the deck, from the second quarter on: shouted refereeing, a long agonised groan, and, near the end, a silence so complete you think the feed has gone. In the morning there is a small black raven drawn on the back of your hand, in marker, and she does not mention it.'; } },
+          { label: '"It is your watch."', run() { castLike('yelena', -1, 'You said it was my watch on the night of the final.'); return '"Of course," she says. She stands the watch perfectly, to the minute, with the radio turned very low, and says nothing at all, then or after. When you come to relieve her she is at the guns with her chin up, and a very small, very tidy expression of someone who has decided not to be angry.'; } },
+        ],
+      },
+      late: {
+        days: 45, title: 'Nobody on the Bench',
+        text: 'Yelena is cleaning the fire control housing when you find her, with the careful patience of someone saying a thing slowly in order to say it at all. "I want to run a ship," she says. "Not now. Someday. A whole crew, and nobody on the bench, nobody who is only a name on a list. Every ship I have been on has a bench. I would put everyone on the pitch." She does not look up. "If you ever have ships, I would like to be asked."',
+        choices: [
+          { label: 'Promise her a ship, someday', run() { castLike('yelena', 2, 'I told you I wanted a ship with no bench, and you promised.'); castFlag('yelena', 'promised'); return '"Someday," you say, "and you will be asked." She puts the cloth down. She is not good at standing still, so she stands very still, and says "Good," to the fire control, in a small voice, and then, louder, to the whole housing, "Did you hear that?"'; } },
+          { label: 'Make no promises', run() { castLike('yelena', 1, 'You would not promise a ship, but you listened.'); return '"I cannot promise that," you say, "but I heard you." She nods, once, sharply, like a referee, and the cloth goes back to the housing. "Fair," she says. "I will take fair. Fair is more than most of the bench ever got."'; } },
+        ],
+      },
+    },
+  },
+  ruben: {
+    first: 'Ruben', last: 'Castellanos', culture: 'mars', home: 'Valles Dome', job: 'dome network administrator', age: 52, role: 'slicer',
+    traits: ['talkative', 'generous'], wage: 80,
+    skills: { slicer: 3, engineer: 1, gunner: 1, pilot: 0 }, captain: { trade: 5, nerve: 1, thrift: 3 },
+    ambition: 'Wants every dome on Mars on one open band before he retires.',
+    bio: 'He ran the Valles dome network for twenty-five years, and knows what every dome is short of this week, who is lying about it, and what they would pay. When the Republic closed the open band to break a strike, he kept a relay running in his own kitchen for eleven days, and was let go for it.',
+    chatter: ['Ruben: "Mars is not quiet. It is listening. There is a difference, and the difference is the whole business."', 'Ruben is sorting a stack of intercepts into piles marked TRUE, FALSE, and LOVELY.', 'Ruben has a thermos of something hot, and, as always, he offers it to everyone who passes.', 'Ruben: "The dome at Hellas is short of pumps, and it is telling everyone it is short of morale. Remember that."', 'Ruben is humming along with a dome council meeting, and has gone gently pink with indignation on behalf of the chair.'],
+    scenes: {
+      meet: {
+        title: 'The Man with the Relay',
+        text: 'At the edge of the yard, among the stalls, a man in a cardigan far too warm for the hall is sitting behind a tangle of antennae with a thermos. "Ruben Castellanos," he says, and pours you a cup before you have said yes. "I know what every dome on Mars is short of this week, who is lying about it, and what they will pay. Twenty-five years on the Valles network. They let me go for keeping a relay running in my kitchen." He beams. "Does your ship have an ear?"',
+        choices: [
+          { label: 'Take him on as comms', can: () => berthsFree() > 0, run: () => castJoin('ruben', 'He packs the whole stall into one battered case in what seems like a single motion, and presses the thermos into your hands. "Hold this," he says, "it is still hot, that is important." He talks the whole way to the ship: about the band, about your ship, about three domes you have never heard of, and about how glad he is. Nobody has the heart to interrupt.') },
+          { label: '"Not this time."', run: () => castLater('ruben', '"Of course," he says, and, because it is his nature, he pours you another cup. "Take it for the road. If you hear anything good on the bands, you know where my stall is. I will hear it first, mind."') },
+        ],
+      },
+      intro: {
+        title: 'The Quiet Band',
+        text: 'The comms post is crowded. Ruben Castellanos has turned the whole station to a single narrow band, and has the volume up so that the galley can hear: a dome council arguing about a pump, in the flat courteous voices of people who have each been awake for two days. "Listen," he says, softly, like a man at a concert. "Listen to what they are not saying. That is the real message."',
+        choices: [
+          { label: 'Listen with him', run: () => { castLike('ruben', 2, 'You sat and listened to the bands with me.'); castXp('ruben', 'slicer', 2); return 'You listen for most of an hour. It sounds, at first, like nothing: figures, polite interruptions. Then he nudges you, and you hear it: the same dome asking three times, in three different ways, whether the shipment is on time. "Frightened," Ruben says, beaming. "Of the answer. You see? You are very good at this. You have the ear."'; } },
+          { label: 'Ask what he is listening for', run: () => { castLike('ruben', 1, 'You asked what I was listening for.'); return '"Ah," he says, and holds up the thermos, as one raises a glass. "What they need. People never say it outright, but they tell you in ways they do not notice. A little too fast, a little too polite. That is when you know you are about to be useful." He turns the band down, gently, so as not to frighten them.'; } },
+        ],
+      },
+      mid1: {
+        days: 10, title: 'A Tip',
+        text: 'Ruben comes to you with the look of a man holding something that might burst. "Captain. I have been listening to a freight dispatcher who thinks his channel is private. He is quite wrong. I have something, and I will tell you, but I should say that it was heard, not, strictly, asked for." He lowers his voice. "It is worth money. But it is a little bit in the way that a favour is worth money."',
+        choices: [
+          { label: 'Act on the tip', run() { castLike('ruben', 2, 'You acted on what I heard.'); castXp('ruben', 'slicer', 2); const tip = addRumor(); return `He tells you, and he is right to be careful: ${tip} He watches your face while you take it in, fiddling with the lid of the thermos. "Not a word," he says, delighted, "about where you heard it. A good listener has no name."`; } },
+          { label: 'Leave it', run() { castLike('ruben', 1, 'You left the dispatcher\'s secret alone.'); return 'He deflates a little, and then rallies, which is what he does. "You are quite right," he says. "It is not mine to sell." He goes back to the post, and, for a day or so, is a little more careful about where he points the dish.'; } },
+        ],
+      },
+      mid2: {
+        days: 25, title: 'What the Bands Say',
+        text: 'Ruben has been hearing your ship\'s name on the bands. A trader at Phobos said something kind about the way you pay. A pirate on a short-range channel said something rather less kind. He plays them both for you, with the air of a man bringing news to a king, and then, because he cannot help it, plays them a second time, the kind one slightly louder.',
+        choices: [
+          { label: 'Ask him to keep an ear on it', run() { castLike('ruben', 2, 'You asked me to keep an ear on what is said about the ship.'); castXp('ruben', 'slicer', 2); return '"Of course. Of course." He is quite glowing. For the rest of the burn there is a small notebook next to the comms console, titled, in his careful hand, WHAT IS SAID, and each page is a name, a time, and a verdict. By the end, you could very nearly write the ship\'s biography from it.'; } },
+          { label: 'Tell him not to bother with gossip', run() { castLike('ruben', 0, 'You told me not to bother with gossip.'); return '"Gossip," he says, softly, with the slightly wounded dignity of a man hearing his religion described. "Yes. Of course." He turns the second recording off, very carefully, as one closes a door on someone sleeping.'; } },
+        ],
+      },
+      late: {
+        days: 45, title: 'One Band',
+        text: 'It is late, and Ruben is sitting alone at the comms post with the lights down and the thermos untouched, which is how you know it is serious. "Captain, I want to say something I have said to no one since the kitchen." He turns his chair. "I want every dome on Mars on one open band. Not for money. I want anyone, anywhere under the glass, to be able to ask for help and be heard. If you ever have a ship with room for a relay, I would like to be the one who carries it."',
+        choices: [
+          { label: 'Promise him a ship, someday', run() { castLike('ruben', 2, 'I told you about the open band, and you promised.'); castFlag('ruben', 'promised'); return '"Someday," you say, "and there will be room for a relay." He does not say anything for some time. Then he picks up the thermos, and, ceremonially, pours a cup, and sets it in front of you, and for once he does not tell you what is in it.'; } },
+          { label: 'Make no promises', run() { castLike('ruben', 1, 'You would not promise, but you listened.'); return '"I cannot promise that," you say, "but I heard you." He smiles, a little crookedly, and nods. "That is what the open band is for," he says. "Not promises. Being heard." He turns the volume up on the quiet band, and, together, for a while, you sit and listen.'; } },
+        ],
+      },
+    },
+  },
 };
 
-// Who you meet, by start background. The other backgrounds have none until their pair is written.
-const CAST_PAIRS = { earth: ['ines', 'tomas'] };
+// Who you meet, by start background. The Belt has none until its pair is written.
+const CAST_PAIRS = { earth: ['ines', 'tomas'], mars: ['yelena', 'ruben'] };
 const POST_ROLES = ['pilot', 'gunner', 'engineer', 'slicer'];
 
 // ---------- people ----------
