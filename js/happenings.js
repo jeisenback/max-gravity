@@ -68,7 +68,7 @@ Mods.register({
         // Not one seen in the last 45 days, on this burn or an earlier one.
         const met = st.eventSeen = st.eventSeen || {};
         const hand = hired(), fresh = TRANSIT_EVENTS.filter(e => !t.seen.includes(e) && !(met[e.title] > st.day - 45) && !(hand && OWNER_ONLY_EVENTS.includes(e.title)));
-        if (hand) out.push({ tier: 2, weight: HIRED_WEIGHTS.work, via: 'crew', make: hiredWorkEvent });
+        if (hand) for (const g of HIRED_GROUPS) out.push({ tier: 2, weight: HIRED_WEIGHTS[g], via: 'crew', make: () => hiredEvent(g) });
         if (fresh.length) out.push({ tier: 2, weight: hand ? HIRED_WEIGHTS.ship : 1, via: 'ship', make() { const ev = pick(fresh); t.seen.push(ev); met[ev.title] = st.day; return ev; } });
         out.push({ tier: 2, weight: 3, quiet: true });
       } else {
