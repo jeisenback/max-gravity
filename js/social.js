@@ -5,23 +5,18 @@
 // tastes and clashing traits over a burn, and moves with what happens aboard. Each
 // person has tastes (a favorite kind of vid or book, and a ring-ball team from home).
 //
-// The culture: every season brings a hit vid series, a bestseller, a song everyone is
-// humming, a couple of stars for the gossip feeds, and a ring-ball league with matches
-// every few days (st.culture). It reaches you as feed chatter in transit, crew
-// reactions, and headlines at port. Downtime activities (watching together, passing
+// The culture: what is on follows the yearly calendar in calendar.js (shows, books,
+// leagues, one-off broadcasts), with a song and a couple of stars for the gossip feeds
+// each year, and each league's table and results in st.culture. It reaches you as feed
+// chatter in transit, crew reactions, and headlines at port. Downtime activities (watching together, passing
 // a book around, streaming a match, card night) and relationship scenes in transit
 // build or break bonds. Passengers who liked the trip may be waiting at a later port
 // to book again. Loaded before game.js; only calls into it at runtime.
 
-const SEASON_DAYS = 40, MATCH_EVERY = 4;
+const MATCH_EVERY = 4;
 const GENRES = {
   noir: 'Belter noir', war: 'war drama', soap: 'station soap', romance: 'romance',
   comedy: 'comedy', horror: 'horror', doc: 'documentary', action: 'action serial',
-};
-const TEAMS = {
-  'Ceres Breakers': 'belt', 'Pallas Smelters': 'belt', 'Hygiea Ghosts': 'belt',
-  'Tharsis Red Tide': 'mars', 'Hellas Diggers': 'mars',
-  'Luna Grays': 'earth', 'Lagos Orbitals': 'earth', 'Titan Frost': 'earth',
 };
 const BANDS = ['The Pallas Smelt', 'Nine Sector', 'Dust Choir', 'Red Tide Brass', 'Luna Static', 'Hollow Moons', 'Vesna and the Welders', 'Low Orbit', 'The Ration Cards', 'Kez Ghosh Trio'];
 const TITLE_A = ['Cold', 'Silent', 'Last', 'Red', 'Hollow', 'Burning', 'Long', 'Bright', 'Broken', 'Iron', 'Quiet', 'Drifting', 'Borrowed', 'Salt'];
@@ -35,47 +30,70 @@ const title = () => pick([
 ])();
 const who = () => { const p = makePerson(); return `${p.first} ${p.last}`; };
 
-// ---------- the season ----------
+// ---------- the year ----------
+// The game date a downtime or a feed is about: mid-burn, the day the ship has reached.
+function cultureToday() {
+  const st = G.state, t = G.transit;
+  return t && t.total > 0 ? st.day + Math.floor((1 - t.left / t.total) * t.days) : st.day;
+}
+
 function culture() {
-  const st = G.state;
-  if (!st.culture || st.day >= st.culture.start + SEASON_DAYS) newSeason();
-  return st.culture;
-}
-
-function newSeason() {
-  const st = G.state, old = st.culture;
-  if (old) {
-    const champ = Object.entries(old.table).sort((a, b) => b[1] - a[1])[0][0];
-    worldNews(`The ${champ} win the ring-ball championship. Their fans will be unbearable for months.`);
+  const st = G.state, y = calOf(st.day).y;
+  // Saves from before the calendar (one hit show a season) start the calendar here.
+  if (!st.culture || st.culture.v !== 2) st.culture = { v: 2, lg: {}, last: null };
+  const c = st.culture;
+  if (c.year !== y) {
+    c.year = y;
+    c.song = { title: title(), band: pick(BANDS) };
+    c.stars = [who(), who()];
   }
-  st.culture = {
-    season: old ? old.season + 1 : 1, start: st.day, episode: 1,
-    vid: { title: title(), genre: pick(Object.keys(GENRES)) },
-    book: { title: title(), genre: pick(Object.keys(GENRES)), author: who() },
-    song: { title: title(), band: pick(BANDS) },
-    stars: [who(), who()],
-    table: Object.fromEntries(Object.keys(TEAMS).map(t => [t, 0])),
-    last: null, nextMatch: st.day + 1,
-  };
+  return c;
 }
 
-// A ring-ball match between two teams (random ones if not given). Returns the result.
-function playMatch(a, b) {
-  const c = culture();
-  if (!a) [a, b] = [pick(Object.keys(TEAMS)), null];
-  while (!b || b === a) b = pick(Object.keys(TEAMS));
+// A league's table and results for the season it is in, started fresh with each one.
+function season(l) {
+  const c = culture(), { key } = leagueSeason(l, G.state.day);
+  if (!c.lg[l.id] || c.lg[l.id].key !== key) c.lg[l.id] = { key, table: Object.fromEntries(l.teams.map(t => [t, 0])), next: G.state.day, champ: null, last: null };
+  return c.lg[l.id];
+}
+
+const leader = s => Object.entries(s.table).sort((a, b) => b[1] - a[1])[0];
+const topTwo = s => Object.entries(s.table).sort((a, b) => b[1] - a[1]).slice(0, 2).map(e => e[0]);
+const leagueOf = team => LEAGUES.find(l => l.teams.includes(team));
+
+// A match between two teams of a league (random ones if not given). Returns the result.
+function playMatch(l, a, b) {
+  const s = season(l), c = culture();
+  if (!a) a = pick(l.teams);
+  while (!b || b === a) b = pick(l.teams);
   let sa = randInt(0, 5), sb = randInt(0, 5);
-  if (sa === sb) (Math.random() < 0.5 ? sa++ : sb++);  // ring-ball has no draws
-  c.table[sa > sb ? a : b]++;
-  return (c.last = { a, b, sa, sb, winner: sa > sb ? a : b, loser: sa > sb ? b : a, day: G.state.day });
+  if (sa === sb) (Math.random() < 0.5 ? sa++ : sb++);  // no draws
+  s.table[sa > sb ? a : b]++;
+  return (s.last = c.last = { league: l.id, a, b, sa, sb, winner: sa > sb ? a : b, loser: sa > sb ? b : a, day: G.state.day });
+}
+
+function crown(l, s, team) {
+  s.champ = team;
+  worldNews(`The ${team} win the ${l.name}. Their fans will be unbearable for months.`);
+}
+
+// The final between the top two; it is only played once.
+function playFinal(l) {
+  const s = season(l);
+  if (s.champ) return s.last;
+  const [a, b] = topTwo(s), m = playMatch(l, a, b);
+  crown(l, s, m.winner);
+  return m;
 }
 
 function cultureDay() {
-  const c = culture();
-  if (G.state.day >= c.nextMatch) {
-    playMatch();
-    c.nextMatch = G.state.day + MATCH_EVERY;
-    c.episode++;
+  const day = G.state.day;
+  for (const l of LEAGUES) {
+    const s = season(l), ph = leaguePhase(l, day);
+    if (ph === 'regular' || ph === 'playoffs') {
+      if (day >= s.next) { ph === 'regular' ? playMatch(l) : playMatch(l, ...topTwo(s)); s.next = day + MATCH_EVERY; }
+    } else if (ph === 'final') playFinal(l);
+    else if (ph === 'off-season' && !s.champ && s.last) crown(l, s, leader(s)[0]);  // the final was missed
   }
 }
 
@@ -120,24 +138,24 @@ function bondDay() {
 
 // ---------- the feeds ----------
 function feedLine() {
-  const c = culture(), st = G.state, g = GENRES[c.vid.genre], [s1, s2] = c.stars;
+  const c = culture(), st = G.state, day = cultureToday(), show = pick(airing(day)), book = pick(newBooks(day)), g = GENRES[show.genre], [s1, s2] = c.stars;
   const lines = [
-    `"${c.vid.title}" is the most-watched ${g} on the Mars feeds this week.`,
-    `Critics on Luna call "${c.vid.title}" ${pick(['"a triumph"', '"two hours I want back"', '"overlong but gorgeous"', '"a crime against drama"', '"the best thing since the Belt Wars series"'])}.`,
-    `Episode ${c.episode} of "${c.vid.title}" ends on a cliffhanger. Half the Belt is furious.`,
-    `"${c.book.title}" by ${c.book.author} tops the reading lists again.`,
-    `${c.book.author} denies that "${c.book.title}" is about a real Coalition admiral.`,
+    `"${show.title}" is the most-watched ${g} on the Mars feeds this week.`,
+    `Critics on Luna call "${show.title}" ${pick(['"a triumph"', '"two hours I want back"', '"overlong but gorgeous"', '"a crime against drama"', '"the best thing since the Belt Wars series"'])}.`,
+    `Episode ${show.ep} of "${show.title}" ends on a cliffhanger. Half the Belt is furious.`,
+    `"${book.title}" by ${book.author} tops the reading lists again.`,
+    `${book.author} denies that "${book.title}" is about a real Coalition admiral.`,
     `"${c.song.title}" by ${c.song.band} is on every station playlist from Mercury to Titan.`,
     `${c.song.band} cancel their Ceres concert, citing "water ration reasons".`,
-    `${s1}, star of "${c.vid.title}", was spotted on ${pick(PLACES)} with ${s2}. Nobody is confirming anything.`,
-    `${s1} walked off the set of "${c.vid.title}" after a fight about the lighting.`,
+    `${s1}, star of "${show.title}", was spotted on ${pick(PLACES)} with ${s2}. Nobody is confirming anything.`,
+    `${s1} walked off the set of "${show.title}" after a fight about the lighting.`,
     `${s2} and ${s1} are feuding on the feeds again. It is the best thing on.`,
-    `A leaked script says ${s1}'s character dies in the "${c.vid.title}" finale.`,
-    `${s2} gives a two-hour interview about "${c.vid.title}" and does not mention ${s1} once. The comments are on fire.`,
-    `Fans of "${c.vid.title}" on Ceres have started a petition to bring back a character nobody remembers. It has four hundred thousand signatures.`,
-    `A bootleg cut of "${c.vid.title}" is doing the rounds on the Belt stations, with a much better ending and a much worse soundtrack.`,
-    `${c.book.author} announces a sequel to "${c.book.title}", and a small riot breaks out in a bookshop on Luna.`,
-    `Somebody on Mars has started a podcast that only discusses one chapter of "${c.book.title}", and it is somehow already on its ninth season.`,
+    `A leaked script says ${s1}'s character dies in the "${show.title}" finale.`,
+    `${s2} gives a two-hour interview about "${show.title}" and does not mention ${s1} once. The comments are on fire.`,
+    `Fans of "${show.title}" on Ceres have started a petition to bring back a character nobody remembers. It has four hundred thousand signatures.`,
+    `A bootleg cut of "${show.title}" is doing the rounds on the Belt stations, with a much better ending and a much worse soundtrack.`,
+    `${book.author} announces a sequel to "${book.title}", and a small riot breaks out in a bookshop on Luna.`,
+    `Somebody on Mars has started a podcast that only discusses one chapter of "${book.title}", and it is somehow already on its ninth season.`,
     `${c.song.band} play a surprise show at a smelter on Pallas, and the crowd sings every word back. The refinery has the footage.`,
     `A cover of "${c.song.title}" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original.`,
     `The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about.`,
@@ -148,9 +166,16 @@ function feedLine() {
     `Weather on Earth: rain for the ninth day running. The feeds, by popular demand, have started a rain channel, and it is astonishingly popular in the Belt.`,
     `A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway.`,
   ];
-  if (c.last) lines.push(`Ring-ball: ${c.last.a} ${c.last.sa}, ${c.last.b} ${c.last.sb}.`);
-  const top = Object.entries(c.table).sort((a, b) => b[1] - a[1])[0];
-  if (top[1] > 0) lines.push(`The ${top[0]} lead the ring-ball league with ${top[1]} wins.`);
+  if (show.premiere) lines.push(`"${show.title}" premieres this week, and the feeds are already calling it the show of the year.`);
+  if (show.finale) lines.push(`The finale of "${show.title}" is on this week. Half the system has cleared its schedule.`);
+  for (const b of broadcastsOn(day)) lines.push(`Tonight on every feed: "${b.title}". ${b.blurb}`);
+  const l = pick(LEAGUES), ls = season(l), ph = leaguePhase(l, day), top = leader(ls);
+  if (ph === 'preseason') lines.push(`The ${l.name} is back in a few weeks, and the ${pick(l.teams)} have signed a new striker, or so they say.`);
+  else if (ph === 'playoffs') lines.push(`${l.name} playoffs: the ${topTwo(ls).join(' and the ')} are through, and everyone else is pretending to be fine.`);
+  else if (ph === 'final') lines.push(`It is the ${l.name} final tonight, ${topTwo(ls).join(' against ')}. Every bar from here to Titan is full.`);
+  else if (ls.last && ph === 'regular') lines.push(`${l.sport[0].toUpperCase()}${l.sport.slice(1)}: ${ls.last.a} ${ls.last.sa}, ${ls.last.b} ${ls.last.sb}.`);
+  if (ph === 'regular' && top[1] > 0) lines.push(`The ${top[0]} lead the ${l.name} with ${top[1]} wins.`);
+  if (ph === 'off-season' && ls.champ) lines.push(`The ${ls.champ} are still celebrating their ${l.name} title, and the other fans are sick of it.`);
   const w = factionState().war;
   if (w) lines.push(`War dramas are all anyone in ${w.a} space watches now, and the ${w.b} feeds are no better.`);
   // Dock gossip about people you know.
@@ -164,7 +189,7 @@ function feedLine() {
 
 // What people aboard say about the culture and each other.
 function socialLines() {
-  const c = culture(), list = folk(), out = [];
+  const c = culture(), list = folk(), out = [], day = cultureToday(), on = airing(day), books = newBooks(day), show = pick(on), book = pick(books);
   for (const f of list) {
     const t = tastes(f), n = f.p.first;
     if (c.last && c.last.day >= G.state.day - 3 && (t.team === c.last.winner || t.team === c.last.loser)) {
@@ -173,13 +198,14 @@ function socialLines() {
         ? `${n}: "${t.team}, ${Math.max(c.last.sa, c.last.sb)} to ${Math.min(c.last.sa, c.last.sb)}!${rival ? ` Pay up, ${rival.p.first}.` : ''}"`
         : `${n} does not want to talk about the ${t.team} game.`);
     }
-    if (t.genre === c.vid.genre) out.push(`${n} is rewatching "${c.vid.title}" in their bunk. Again.`);
-    if (t.genre === c.book.genre) out.push(`${n} is halfway through "${c.book.title}" and keeps reading bits aloud.`);
+    const fav = on.find(x => x.genre === t.genre), read = books.find(x => x.genre === t.genre);
+    if (fav) out.push(`${n} is ${fav.finale ? 'dreading the finale of' : 'rewatching'} "${fav.title}" in their bunk${fav.finale ? '' : '. Again'}.`);
+    if (read) out.push(`${n} is halfway through "${read.title}" and keeps reading bits aloud.`);
   }
   out.push(`Someone has had "${c.song.title}" stuck in their head since the last port, and now so does everyone.`);
-  if (list.length) out.push(`${pick(list).p.first} is humming the theme from "${c.vid.title}" in the corridor, and does not know they are doing it.`,
+  if (list.length) out.push(`${pick(list).p.first} is humming the theme from "${show.title}" in the corridor, and does not know they are doing it.`,
     `The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling.`,
-    `There is a heated, low-voiced debate in the galley about whether "${c.book.title}" is better than the vid. It has been going on since breakfast.`,
+    `There is a heated, low-voiced debate in the galley about whether "${book.title}" is better than the vid. It has been going on since breakfast.`,
     `Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it.`);
   for (const [a, b] of pairs(list)) {
     const n = bond(a, b), A = a.p.first, B = b.p.first;
@@ -201,47 +227,75 @@ function shareActivity(genre, fanBonus) {
   return { list, fans, bored: list.filter(f => !fans.includes(f)) };
 }
 
+// What the ship can do with what is on: each takes the show, book or league and
+// returns a downtime choice. Tastes decide who enjoys it.
+const watchShow = show => ({
+  label: `Watch "${show.title}", ${show.premiere ? 'the premiere' : show.finale ? 'the finale' : `episode ${show.ep}`}`, can: () => folk().length > 0,
+  run() {
+    const { fans, bored, list } = shareActivity(show.genre, 1.5);
+    everyone();
+    const feud = pairs(list).find(([a, b]) => bond(a, b) <= -3);
+    return [`You crowd into the galley for ${show.premiere ? 'the premiere' : show.finale ? 'the finale' : `episode ${show.ep}`} of "${show.title}", a ${GENRES[show.genre]}.`,
+      fans.length ? `${names(fans)} ${fans.length > 1 ? 'know' : 'knows'} every line.` : 'Nobody is a fan, which somehow makes it funnier.',
+      bored.length ? `${pick(bored).p.first} falls asleep before the first act break.` : '',
+      feud ? `${feud[0].p.first} and ${feud[1].p.first} argue about the ending for an hour, which is almost friendly.` : ''].filter(Boolean).join(' ');
+  },
+});
+
+const readBook = book => ({
+  label: `Pass around "${book.title}"`, can: () => folk().length > 0,
+  run() {
+    const { fans, bored } = shareActivity(book.genre, 2);
+    return [`The ship's one printed copy of "${book.title}" by ${book.author} does the rounds.`,
+      fans.length ? `${names(fans)} ${fans.length > 1 ? 'fight over who reads it next' : 'reads it twice'}.` : '',
+      bored.length ? `${pick(bored).p.first} leaves pointed notes in the margins.` : '',
+      fans.length > 1 ? 'By the end of the burn there is a book club, and it has opinions.' : ''].filter(Boolean).join(' ');
+  },
+});
+
+const watchBroadcast = b => ({
+  label: `Watch "${b.title}", tonight only`, can: () => folk().length > 0,
+  run() {
+    const { fans, bored } = shareActivity(b.genre, 1.5);
+    everyone();
+    return [`Everyone crowds into the galley for "${b.title}". ${b.blurb}`,
+      fans.length ? `${names(fans)} ${fans.length > 1 ? 'were' : 'was'} not going to miss it for anything.` : 'Nobody aboard is a fan, but nobody leaves, either.',
+      bored.length ? `${pick(bored).p.first} complains the whole way through, and stays to the end.` : ''].filter(Boolean).join(' ');
+  },
+});
+
+const streamMatch = l => ({
+  label: `Stream the ${l.name} ${{ final: 'final', playoffs: 'playoffs' }[leaguePhase(l, cultureToday())] || 'match'}`, can: () => folk().length > 0,
+  run() {
+    const list = folk(), mine = [...new Set(list.map(f => tastes(f).team))].filter(t => l.teams.includes(t)), ph = leaguePhase(l, cultureToday());
+    const m = ph === 'final' ? playFinal(l) : playMatch(l, ...(ph === 'playoffs' ? topTwo(season(l)) : mine));
+    const won = list.filter(f => tastes(f).team === m.winner), lost = list.filter(f => tastes(f).team === m.loser);
+    for (const [a, b] of pairs(list)) {
+      const ta = tastes(a).team, tb = tastes(b).team;
+      addBond(a, b, ta === tb ? 1.5 : (won.includes(a) && lost.includes(b)) || (won.includes(b) && lost.includes(a)) ? (has(a, 'rude') || has(b, 'rude') ? -1 : 0.5) : 0.5);
+    }
+    for (const f of won) like(f.p, 1, null);
+    everyone();
+    return [`The lagged stream from ${pick(PLACES)} comes in: ${m.a} against ${m.b}, ${l.sport}. Final score ${m.sa} to ${m.sb}.`,
+      won.length ? `${names(won)} ${won.length > 1 ? 'are' : 'is'} unbearable for the rest of the day.` : '',
+      lost.length ? `${names(lost)} ${lost.length > 1 ? 'take' : 'takes'} it ${lost.some(f => has(f, 'rude')) ? 'badly' : 'with some grace'}.` : '',
+      !won.length && !lost.length ? 'Nobody aboard cares who wins, so everyone picks a side for the fun of it.' : ''].filter(Boolean).join(' ');
+  },
+});
+
+// Up to three things that are on now: a one-off if there is one, then shows, a live
+// league and a new book in turn, rotating with the date so it is not always the same.
+function onNow() {
+  const day = cultureToday(), spin = xs => (xs.length ? xs.slice(day % xs.length).concat(xs.slice(0, day % xs.length)) : xs);
+  const mine = new Set(folk().map(f => tastes(f).team));
+  const live = LEAGUES.filter(l => ['regular', 'playoffs', 'final'].includes(leaguePhase(l, day))).sort((a, b) => b.teams.filter(t => mine.has(t)).length - a.teams.filter(t => mine.has(t)).length);
+  const lanes = [spin(airing(day)).map(watchShow), live.map(streamMatch), spin(newBooks(day)).map(readBook)];
+  const out = broadcastsOn(day).slice(0, 1).map(watchBroadcast);
+  for (let i = 0; out.length < 3 && lanes.some(l => l.length > i); i++) for (const lane of lanes) if (lane[i] && out.length < 3) out.push(lane[i]);
+  return out;
+}
+
 const SOCIAL_ACTIVITIES = {
-  vids: {
-    label: () => `Watch "${culture().vid.title}" together`, can: () => folk().length > 0,
-    run() {
-      const c = culture(), { fans, bored, list } = shareActivity(c.vid.genre, 1.5);
-      everyone();
-      const feud = pairs(list).find(([a, b]) => bond(a, b) <= -3);
-      return [`You crowd into the galley for episode ${c.episode} of "${c.vid.title}", a ${GENRES[c.vid.genre]}.`,
-        fans.length ? `${names(fans)} ${fans.length > 1 ? 'know' : 'knows'} every line.` : 'Nobody is a fan, which somehow makes it funnier.',
-        bored.length ? `${pick(bored).p.first} falls asleep before the first act break.` : '',
-        feud ? `${feud[0].p.first} and ${feud[1].p.first} argue about the ending for an hour, which is almost friendly.` : ''].filter(Boolean).join(' ');
-    },
-  },
-  book: {
-    label: () => `Pass around "${culture().book.title}"`, can: () => folk().length > 0,
-    run() {
-      const c = culture(), { fans, bored } = shareActivity(c.book.genre, 2);
-      return [`The ship's one printed copy of "${c.book.title}" by ${c.book.author} does the rounds.`,
-        fans.length ? `${names(fans)} ${fans.length > 1 ? 'fight over who reads it next' : 'reads it twice'}.` : '',
-        bored.length ? `${pick(bored).p.first} leaves pointed notes in the margins.` : '',
-        fans.length > 1 ? 'By the end of the burn there is a book club, and it has opinions.' : ''].filter(Boolean).join(' ');
-    },
-  },
-  match: {
-    label: () => 'Stream the ring-ball match', can: () => folk().length > 0,
-    run() {
-      const list = folk(), teams = [...new Set(list.map(f => tastes(f).team))];
-      const m = playMatch(teams[0], teams[1]);
-      const won = list.filter(f => tastes(f).team === m.winner), lost = list.filter(f => tastes(f).team === m.loser);
-      for (const [a, b] of pairs(list)) {
-        const ta = tastes(a).team, tb = tastes(b).team;
-        addBond(a, b, ta === tb ? 1.5 : (won.includes(a) && lost.includes(b)) || (won.includes(b) && lost.includes(a)) ? (has(a, 'rude') || has(b, 'rude') ? -1 : 0.5) : 0.5);
-      }
-      for (const f of won) like(f.p, 1, null);
-      everyone();
-      return [`The lagged stream from ${pick(PLACES)} comes in: ${m.a} against ${m.b}. Final score ${m.sa} to ${m.sb}.`,
-        won.length ? `${names(won)} ${won.length > 1 ? 'are' : 'is'} unbearable for the rest of the day.` : '',
-        lost.length ? `${names(lost)} ${lost.length > 1 ? 'take' : 'takes'} it ${lost.some(f => has(f, 'rude')) ? 'badly' : 'with some grace'}.` : '',
-        !won.length && !lost.length ? 'Nobody aboard cares who wins, so everyone picks a side for the fun of it.' : ''].filter(Boolean).join(' ');
-    },
-  },
   cards: {
     label: () => 'Card night', can: () => folk().length > 0,
     run() {
@@ -339,7 +393,7 @@ function relationshipScene() {
       ] }));
   }
   // Two fans of different teams, and a match coming up.
-  const fans = all.find(([a, b]) => tastes(a).team !== tastes(b).team && !isCooled(a, b, 'match', 25));
+  const fans = all.find(([a, b]) => tastes(a).team !== tastes(b).team && leagueOf(tastes(a).team) === leagueOf(tastes(b).team) && !isCooled(a, b, 'match', 25));
   if (fans) scenes.push(() => {
     const [a, b] = fans, ta = tastes(a).team, tb = tastes(b).team;
     cool(a, b, 'match');
@@ -347,13 +401,13 @@ function relationshipScene() {
       title: 'Galley Duty', text: `${a.p.first} (${ta}) and ${b.p.first} (${tb}) have bet a week of galley duty on tonight's match.`,
       choices: [
         { label: 'Stream it for everyone', run() {
-          const m = playMatch(ta, tb), [w, l] = m.winner === ta ? [a, b] : [b, a];
+          const m = playMatch(leagueOf(ta), ta, tb), [w, l] = m.winner === ta ? [a, b] : [b, a];
           addBond(a, b, has(l, 'rude') ? -1 : 1);
           like(w.p, 1, null);
           return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${l.p.first} does a week of galley duty ${has(l, 'rude') ? 'and makes sure everyone suffers for it' : 'in a borrowed apron, with dignity'}.`;
         } },
         { label: `Put 300 cr on the ${ta} yourself`, can: () => st.credits >= 300, run() {
-          const m = playMatch(ta, tb), won = m.winner === ta;
+          const m = playMatch(leagueOf(ta), ta, tb), won = m.winner === ta;
           st.credits += won ? 300 : -300;
           like(a.p, won ? 1 : 0, null); like(b.p, won ? -1 : 1, null);
           return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${won ? `You collect 300 cr, and ${a.p.first} hugs you.` : `You lose 300 cr, and ${b.p.first} will be mentioning it for weeks.`}`;
@@ -408,14 +462,16 @@ function regularsAt(planet) {
 
 // ---------- port pages ----------
 function feedHeadlines() {
-  const c = culture();
-  const top = Object.entries(c.table).sort((a, b) => b[1] - a[1])[0];
-  return [
-    `Watching: "${c.vid.title}", a ${GENRES[c.vid.genre]}, episode ${c.episode}.`,
-    `Reading: "${c.book.title}" by ${c.book.author}.`,
-    `Listening: "${c.song.title}" by ${c.song.band}.`,
-    `Ring-ball: ${c.last ? `${c.last.a} ${c.last.sa}, ${c.last.b} ${c.last.sb}. ` : ''}${top[1] ? `The ${top[0]} lead with ${top[1]} wins.` : 'The season has just started.'}`,
-  ];
+  const day = cultureToday(), c = culture(), out = [];
+  for (const b of broadcastsOn(day)) out.push(`Tonight only: "${b.title}".`);
+  for (const x of airing(day).slice(0, 3)) out.push(`Watching: "${x.title}", a ${GENRES[x.genre]}, ${x.premiere ? 'the premiere' : x.finale ? 'the finale' : `episode ${x.ep} of ${x.eps}`}.`);
+  for (const x of newBooks(day).slice(0, 2)) out.push(`Reading: "${x.title}" by ${x.author}.`);
+  out.push(`Listening: "${c.song.title}" by ${c.song.band}.`);
+  for (const l of LEAGUES) {
+    const s = season(l), ph = leaguePhase(l, day), top = leader(s);
+    out.push(`${l.name}: ${ph === 'off-season' ? (s.champ ? `the ${s.champ} are champions.` : 'off-season.') : ph === 'preseason' ? 'preseason.' : `${s.last ? `${s.last.a} ${s.last.sa}, ${s.last.b} ${s.last.sb}. ` : ''}${ph === 'final' ? 'The final is tonight.' : ph === 'playoffs' ? `Playoffs: ${topTwo(s).join(' and ')}.` : top[1] ? `The ${top[0]} lead with ${top[1]} wins.` : 'The season has just started.'}`}`);
+  }
+  return out;
 }
 
 function bondsHtml() {
