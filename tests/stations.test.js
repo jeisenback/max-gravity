@@ -530,6 +530,45 @@ test('the operations console shows the cargo bay and the manifest, at port and i
   await done();
 });
 
+test('the character screen opens from the crew list and the posts, shows what we know, and goes back', async () => {
+  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
+  await ev(helpers);
+  const who = await ev(() => {
+    const st = G.state; st.tutorial = null; st.crew = []; while (G.dialog) finishEvent();
+    const pilot = hire('pilot', 3); pilot.opinion = 3; pilot.memories = ['9 Jun 2214: You stood up for me.', '2 Jun 2214: We left together.']; pilot.mood = { kind: 'low', until: st.day + 10 };
+    hire('gunner', 1); UI.render();
+    return { name: fullName(pilot), id: pilot.id };
+  });
+  await page.click('[data-action=station][data-arg=interior]');
+  await page.click(`#panel .con [data-action=person][data-arg="${who.id}"]`);
+  assert.equal(await ev(() => UI.tab), 'person');
+  assert.match(await page.innerText('#panel'), new RegExp(who.name));
+  assert.ok(await page.$('#panel svg.char-portrait'), 'a portrait');
+  const pilotRow = await page.$$eval('#panel .char-skill', rows => rows.find(r => /Pilot/.test(r.textContent)).textContent);
+  assert.match(pilotRow, /posted/, 'the post they hold is marked');
+  assert.equal(await page.$$eval('#panel .char-skill', rows => rows.find(r => /Pilot/.test(r.textContent)).querySelectorAll('u.on').length), 3, 'three pips at skill 3');
+  assert.match(await page.innerText('#panel'), /having a hard time/);
+  assert.match(await page.innerText('#panel'), /friendly/);
+  assert.match(await page.innerText('#panel'), /You stood up for me/, 'what they remember');
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
+  await page.click('#panel [data-action=personBack]');
+  assert.equal(await ev(() => UI.tab), 'crew', 'back to where you were');
+  // You are a person too: the posts you hold are links to your own screen.
+  await page.click('[data-action=station][data-arg=interior]');
+  await page.click('#panel .con [data-action=person][data-arg=you]');
+  assert.match(await page.innerText('#panel'), /playing as/i);
+  assert.ok(await page.$('#panel svg.char-portrait'));
+  // In a burn it is the Interior sheet.
+  await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; UI.tab = 'interior'; });
+  await page.waitForSelector('#bkeys', { state: 'visible' });
+  await page.click('[data-bst=interior]');
+  await page.click(`#bsheet [data-action=person][data-arg="${who.id}"]`);
+  assert.ok(await page.$('#bsheet svg.char-portrait'), 'the screen is in the burn sheet');
+  await page.click('#bsheet [data-action=personBack]');
+  assert.ok(await page.$('#bsheet .con [data-action=person]'), 'and back to Interior');
+  await done();
+});
+
 test('drive power sets the burn: speed, days, reaction mass, and how easily pirates spot you', async () => {
   const { page, ev, done } = await open();
   await ev(helpers);

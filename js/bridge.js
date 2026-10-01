@@ -17,7 +17,7 @@ const STATIONS = [
 const TAB_NAMES = { port: 'Port', trade: 'Exchange', missions: 'Missions', bar: 'Bar', company: 'Company' };
 const BRIDGE_KEYS_H = 52;  // the key bar's height in a burn; the transit view leaves room for it
 
-const stationOf = tab => STATIONS.find(s => s.tabs.includes(tab)) || STATIONS.find(s => s.id === 'ops');
+const stationOf = tab => STATIONS.find(s => s.tabs.includes(tab) || (tab === 'person' && s.id === 'interior')) || STATIONS.find(s => s.id === 'ops');  // the character screen sits under Interior
 const tabReady = (p, id) => (hired() && OWNER_TABS.includes(id)) ? false : id === 'trade' ? p.services.includes('trade')
   : id === 'missions' ? p.services.includes('missions')
   : id === 'shipyard' ? p.services.includes('shipyard') || p.services.includes('outfitter')
@@ -160,11 +160,11 @@ function interiorPanel() {
   const posts = Object.keys(POSTS).map(id => {
     const o = postOccupant(id), h = postHolder(id);
     const mood = h && ((st.injured || {})[h.id] ? ', injured' : moodLow(h) ? ', having a hard time' : '');
-    return conRead(POSTS[id].name, o ? (o.you ? 'You' : `${fullName(o.who)}${mood}`) : 'Nobody');
+    return conRead(POSTS[id].name, o ? (o.you ? youLink() : `${personLink(o.who)}${mood}`) : 'Nobody');
   }).join('');
   // Crew who hold no post: the roles without one, a second hand, or someone too hurt to work.
   const holders = new Set(Object.keys(POSTS).map(postHolder).filter(Boolean));
-  const off = crew.filter(c => !holders.has(c)).map(c => conRead(fullName(c), `${ROLE_NAMES[c.role]}${(st.injured || {})[c.id] ? ', injured' : moodLow(c) ? ', having a hard time' : ''}`)).join('');
+  const off = crew.filter(c => !holders.has(c)).map(c => conRead(personLink(c), `${ROLE_NAMES[c.role]}${(st.injured || {})[c.id] ? ', injured' : moodLow(c) ? ', having a hard time' : ''}`)).join('');
   const free = t && phase() === 'move' && !(t.lifeUsed || {})[lifeHalf()];
   return consoleHtml({
     title: 'Interior', status: `${crew.length} crew, ${berthsUsed()}/${ship().berths} berths`,
@@ -244,6 +244,7 @@ function transitSheet(id) {
     case 'eng': return `${engineerPanel()}<p class="hint">Full repairs and outfits are done at a shipyard.</p>`;
     case 'interior': return interiorPanel();
     case 'comms': return commsPanel();
+    case 'person': return characterPanel();
     default: return operationsPanel();
   }
 }
@@ -277,7 +278,7 @@ function syncBridge(force) {
   keys.classList.toggle('compact', view < 700);  // short names when the keys would not fit
   sheet.style.right = `${G.hudW}px`;
   sheet.style.left = `${view / 2}px`;
-  sheet.style.width = `${Math.min(['nav', 'eng', 'weapons', 'comms', 'ops'].includes(G.bridgeOpen) ? 720 : 520, view - 24)}px`  // a console is wide enough for its two columns;
+  sheet.style.width = `${Math.min(['nav', 'eng', 'weapons', 'comms', 'ops', 'person'].includes(G.bridgeOpen) ? 720 : 520, view - 24)}px`  // a console is wide enough for its two columns;
   keys.querySelectorAll('[data-bst]').forEach(b => b.classList.toggle('active', b.dataset.bst === G.bridgeOpen));
   if (G.bridgeOpen) {
     const html = transitSheet(G.bridgeOpen);

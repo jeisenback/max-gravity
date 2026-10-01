@@ -205,7 +205,7 @@ const UI = {
         const c = person(id);
         const mood = CREW[id] ? '' : ` &middot; ${opinionWord(c.opinion)}`;
         return `<div class="mission">
-          <div><b>${fullName(c)}</b>${(st.injured || {})[id] ? ' <span class="tag high">injured</span>' : ''} &middot; ${skill(c)}${traits(c)}${mood}
+          <div><b>${personLink(c)}</b>${(st.injured || {})[id] ? ' <span class="tag high">injured</span>' : ''} &middot; ${skill(c)}${traits(c)}${mood}
             <div class="hint">${CREW[id] ? c.perk : ROLE_PERKS[c.role](c.skill)} Wage ${fmt(wage(id))} cr/day.</div></div>
           ${hired() ? '' : `<button data-action="dismiss" data-arg="${i}">Dismiss</button>`}
         </div>`;
@@ -222,7 +222,7 @@ const UI = {
       }).join('');
       const known = Object.values(st.people).filter(p => p.opinion !== 0 && !st.crew.includes(p.id))
         .sort((a, b) => Math.abs(b.opinion) - Math.abs(a.opinion)).slice(0, 12)
-        .map(p => `<div class="hint"><b>${p.first} ${p.last}</b> (${opinionWord(p.opinion)}, ${p.ship ? `captain of the ${p.ship.name}, flies around ${SYSTEMS[p.haunt].name}` : p.location ? `last seen at ${p.location}` : 'whereabouts unknown'})${p.location === here ? ' <b>- here now</b>' : ''}: ${p.memories.length ? p.memories[p.memories.length - 1] : ''}</div>`).join('');
+        .map(p => `<div class="hint"><b>${personLink(p)}</b> (${opinionWord(p.opinion)}, ${p.ship ? `captain of the ${p.ship.name}, flies around ${SYSTEMS[p.haunt].name}` : p.location ? `last seen at ${p.location}` : 'whereabouts unknown'})${p.location === here ? ' <b>- here now</b>' : ''}: ${p.memories.length ? p.memories[p.memories.length - 1] : ''}</div>`).join('');
       const elsewhere = Object.values(CREW).filter(c => c.home !== here).map(c => `${c.name} (${ROLE_NAMES[c.role]}) at ${c.home}`);
       return `
         <h3>${hired() ? 'The crew' : 'Your crew'}</h3>
@@ -313,7 +313,7 @@ const UI = {
     const st = G.state, p = this.planet, s = ship();
     switch (action) {
       case 'tab': this.tab = arg; this.tradeNote = null; break;
-      case 'station': this.tab = stationOf(this.tab).id === arg ? this.tab : bridgeStation(arg, p); this.tradeNote = null; break;
+      case 'station': this.tab = stationOf(this.tab).id === arg && this.tab !== 'person' ? this.tab : bridgeStation(arg, p); this.tradeNote = null; break;
       case 'choose': this.showEventResult(G.dialog.event.title, chooseEvent(Number(arg))); return;
       case 'continue': finishEvent(); return;
       case 'epilogue': openEvent(epilogueEvent()); return;
