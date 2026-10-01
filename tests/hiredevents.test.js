@@ -177,8 +177,8 @@ test('the main characters appear in a hand\'s events only when they are aboard',
   const earth = await seen('earth'), mars = await seen('mars');
   assert.deepEqual(earth.aboard.sort(), ['ines', 'tomas']);
   assert.ok(earth.titles.includes('Ines Calls the Numbers') && earth.titles.includes('Tomas in the Engine Room'), 'the Earth pair are in the crew events');
-  assert.deepEqual(mars.aboard, []);
-  assert.ok(!mars.titles.includes('Ines Calls the Numbers') && !mars.titles.includes('Tomas in the Engine Room'), 'a start with no cast gets none of their events');
+  assert.deepEqual(mars.aboard.sort(), ['ruben', 'yelena']);
+  assert.ok(!mars.titles.includes('Ines Calls the Numbers') && !mars.titles.includes('Tomas in the Engine Room'), 'a start gets the events of its own pair, not another background\'s');
   assert.ok(mars.titles.length >= 3, 'but still has crew events');
   await done();
 });
