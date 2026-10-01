@@ -483,6 +483,29 @@ test('the interior console puts the crew at their posts, with how they are doing
   await done();
 });
 
+test('the comms console shows the inbox as a feed and the tips in force, at port and in a burn', async () => {
+  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
+  await ev(helpers);
+  const want = await ev(() => {
+    const st = G.state; st.tutorial = null; st.crew = []; st.inbox = []; st.rumors = []; while (G.dialog) finishEvent();
+    noteInbox('station', 'Hermes Foundry wants water.'); noteInbox('ship', 'A trader hails.'); noteInbox('crew', 'Sable is humming.');
+    addRumor(); G.nextEvent = null; while (G.dialog) finishEvent(); UI.render();
+    return { n: st.inbox.length, tips: st.rumors.length };
+  });
+  await page.click('[data-action=station][data-arg=comms]');
+  assert.equal(await page.$$eval('#panel .con-feed .con-msg', n => n.length), want.n, 'a line in the feed for each inbox entry');
+  assert.equal(await page.$$eval('#panel .con-feed .con-msg.via-ship', n => n.length), 1, 'coloured by how it arrived');
+  assert.match(await page.innerText('#panel .con-card'), /Market tips in force/i);
+  assert.equal(await page.$$eval('#panel .con-card .hint', n => n.length), want.tips, 'a line for each tip in force');
+  assert.ok(await page.$('#panel [data-action=postOrder][data-arg="comms:listen"], #panel .post'), 'the comms post is on the console');
+  assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
+  await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; });
+  await page.waitForSelector('#bkeys', { state: 'visible' });
+  await page.click('[data-bst=comms]');
+  assert.ok(await page.$('#bsheet .con .con-feed'), 'the console is in the burn sheet too');
+  await done();
+});
+
 test('drive power sets the burn: speed, days, reaction mass, and how easily pirates spot you', async () => {
   const { page, ev, done } = await open();
   await ev(helpers);
