@@ -15,8 +15,10 @@ const HIRED_SAVINGS = 300;
 const CHAPTER_CREW = [{ role: 'xo', skill: 2 }, { role: 'quartermaster', skill: 2 }, { role: 'medic', skill: 2 }, { role: 'cook', skill: 2 }, { role: 'icehand', skill: 1 }, { role: 'icehand', skill: 1 }];
 const HIRED_FUND = 12000;  // the ship's money, which buys the cargo for the 120 t hold
 const HIRED_WAGE = 40, HIRED_SHARE = 0.06;  // a day's wage and a share of each run's profit, tuned with tools/soak.js so about 20 runs reach the target
-const HIRED_TARGET = 19000;  // the used Ore Runner Tomas finds (the chapter's goal); the captain heads for a yard once you have it
-const wantsYard = () => G.state.credits >= HIRED_TARGET;
+const HIRED_TARGET = 19000;  // the used Ore Runner Tomas finds (the chapter's goal), at the price he asks a hand he thinks well enough of
+// The captain heads for a yard when the used Ore Runner can be had: at the offer's threshold until she is offered, then at
+// her price, and at the middle price again if the deal lapses.
+const wantsYard = () => { const h = hired(); return G.state.credits >= (!h.deal ? USED_OFFER_AT : dealOpen() ? h.deal.price : HIRED_TARGET); };
 const hired = () => (G.state && G.state.hired) || null;
 // A hired hand works one post. The others are the crew's, and the captain's to command.
 const hiredCaptain = () => (hired() ? G.state.people[hired().captain] : null);
@@ -284,16 +286,53 @@ function buyInCompanions() {
   return friend ? [friend] : [];
 }
 const namesOf = list => list.map(c => `${c.first} ${c.last}`).join(' and ');
-const buyInPrice = id => SHIPS[id].price;  // nothing to trade in: the ship you fly is the captain's
-const canBuyIn = (id, planet) => !!hired() && G.mode === 'landed' && planet.services.includes('shipyard') && SHIPS[id] && SHIPS[id].forSale
-  && G.state.credits >= buyInPrice(id) && !(SHIPS[id].req && repOf(localGov()) < SHIPS[id].req);
+
+// ---------- the used Ore Runner ----------
+// The hull Tomas rebuilt three times. Once your savings reach USED_OFFER_AT (55% of her middle price), at a port with a yard,
+// she is offered once (by Tomas, or by a broker if he is not aboard) for DEAL_DAYS, at a price that follows how Tomas
+// thinks of you. buyIn id USED_ID buys her; she comes worn. If the deal lapses she is gone, and the ordinary list is left.
+const USED_ID = 'used';
+const USED_PRICE = { good: 17000, mid: HIRED_TARGET, bad: 21000 };  // the broker's price is the bad one: no favour
+const USED_OFFER_AT = Math.round(0.55 * USED_PRICE.mid), DEAL_DAYS = 56;
+const USED_CONDITION = { drive: 70, life: 65, shields: 60, sensors: 70, fire: 45 };
+const buyShip = id => (id === USED_ID ? { ...SHIPS.lightfreighter, name: 'Ore Runner (used)', price: hired() && hired().deal ? hired().deal.price : USED_PRICE.mid, forSale: dealOpen() } : SHIPS[id]);
+const dealOpen = () => !!hired() && !!hired().deal && G.state.day <= hired().deal.until;
+const tomasAboard = () => castAboard().find(c => c.cast === 'tomas') || null;
+
+function dealScene(planet) {
+  const st = G.state, h = hired(), tomas = tomasAboard();
+  const price = tomas ? (tomas.opinion >= OPINION.FRIEND ? USED_PRICE.good : tomas.opinion < 0 ? USED_PRICE.bad : USED_PRICE.mid) : USED_PRICE.bad;
+  h.deal = { price, day: st.day, until: st.day + DEAL_DAYS, broker: !tomas };
+  const fault = 'Her drive is all right. Her life support I would watch. Her fire control is nearly done, and you should not trust it.';
+  const tell = price < USED_PRICE.mid ? `${fmt(price)} cr, and that is the price for you.` : price > USED_PRICE.mid && tomas ? `${fmt(price)} cr, and I am not going to pretend it is a favour.` : `${fmt(price)} cr.`;
+  return tomas ? {
+    title: 'A Hull on the Apron', personal: true,
+    text: `Tomas is waiting at the head of the ramp when you come back from the yard office, wiping his hands on a rag that has not been clean in years. "Come and see something," he says. He walks you the length of the apron to a long, tired Ore Runner with a mismatched hatch and primer on one flank. "I have rebuilt her three times," he says. "Three owners, and every one of them sold her out from under me. I fixed what the last one skipped, and the next one skipped it again. She is for sale once more, and cheap, because the last owner let her go." He lays a palm flat on her hull. "${fault} I know every fault she has. I would rather you had her than a stranger. ${tell} Give it a few weeks and she will be gone."`,
+    choices: [{ label: 'Walk her with him', run() { like(tomas, 1, 'The captain walked the Ore Runner with me, and listened.'); return `He shows you the drive housing, the patched coolant line and the place where the fire control cable has been spliced twice. He talks the whole way, and does not once sound like he is selling. The ship is on the yard list now, as the used Ore Runner, until about day ${h.deal.until}.`; } }],
+  } : {
+    title: 'A Used Ore Runner', personal: true,
+    text: `A broker at the yard office has been watching the board for someone with savings. "There is a used Ore Runner on the apron," the broker says. "Three owners, a lot of repairs, and the last one let her go. Her fire control is poor and her life support is tired. The yard will not warrant either. ${fmt(price)} cr, as she stands. Give it a few weeks and somebody else will have her."`,
+    choices: [{ label: 'Look her over', run: () => `You walk the apron with the broker and look her over. She is worn, and she is a ship. She is on the yard list now, as the used Ore Runner, until about day ${h.deal.until}.` }],
+  };
+}
+// Offered once, at a yard, when the savings are about 55% of her middle price. A lapsed deal is noted once.
+function dealCheck(planet) {
+  const st = G.state, h = hired();
+  if (!h) return;
+  if (h.deal && !dealOpen() && !h.deal.lapsed) { h.deal.lapsed = true; M_NOTE('The used Ore Runner is gone. Somebody else bought her.'); return; }
+  if (h.deal || !planet.services.includes('shipyard') || st.credits < USED_OFFER_AT || G.dialog) return;
+  openEvent(dealScene(planet));
+}
+const buyInPrice = id => buyShip(id).price;  // nothing to trade in: the ship you fly is the captain's
+const canBuyIn = (id, planet) => !!hired() && G.mode === 'landed' && planet.services.includes('shipyard') && buyShip(id) && buyShip(id).forSale
+  && G.state.credits >= buyInPrice(id) && !(buyShip(id).req && repOf(localGov()) < buyShip(id).req);
 
 function buyIn(id) {
   const st = G.state, h = hired(), planet = currentPlanet();
   if (!canBuyIn(id, planet)) return;
-  const cap = st.people[h.captain], friends = buyInCompanions(), oldName = home().name;
+  const cap = st.people[h.captain], friends = buyInCompanions(), oldName = home().name, bought = buyShip(id);
   st.credits -= buyInPrice(id);
-  st.shipId = id; st.fuel = ship().fuel; st.armor = ship().armor;
+  st.shipId = id === USED_ID ? 'lightfreighter' : id; st.fuel = ship().fuel; st.armor = ship().armor;
   st.cargo = {}; st.paid = {};  // what was in the hold was the captain's
   // The captain stays a contact, and a known captain on the lanes.
   Object.assign(cap, { ship: { name: oldName, shipId: 'freighter', kind: 'trader' }, haunt: st.systemId, location: planet.name });
@@ -303,10 +342,11 @@ function buyIn(id) {
   for (const f of friends) like(f, 2, `We left the ${oldName} together.`);
   // A fresh ship: nothing of the old one's wear, refits or jobs comes with you.
   for (const k of ['condition', 'refits', 'projects', 'power', 'heat', 'tuned', 'route']) delete st[k];
+  if (id === USED_ID) st.condition = { ...USED_CONDITION };  // but the used Ore Runner comes as she is
   home().name = shipName(false);
   st.hired = null;
   G.offers = generateMissions(planet);
-  return `You bought the ${SHIPS[id].name} for ${fmt(SHIPS[id].price)} cr and left the ${oldName}. Captain ${cap.first} ${cap.last} shakes your hand on the dock and says they will keep an eye out for you on the lanes.${friends.length ? ` ${namesOf(friends)} came with you.` : ' You are on your own.'} She is yours now: the exchange, the contracts and the yard are open to you, and the crew are your wages to pay.`;
+  return `You bought the ${bought.name} for ${fmt(bought.price)} cr and left the ${oldName}. Captain ${cap.first} ${cap.last} shakes your hand on the dock and says they will keep an eye out for you on the lanes.${friends.length ? ` ${namesOf(friends)} came with you.` : ' You are on your own.'} She is yours now: the exchange, the contracts and the yard are open to you, and the crew are your wages to pay.`;
 }
 
 // The close of the hired-hand chapter (scope 'earth-hired', js/build.js): one scene at the foot of the new ship's ramp.
@@ -316,7 +356,7 @@ function chapterEnd(id) {
   const st = G.state, h = hired(), cap = st.people[h.captain], friends = buyInCompanions(), oldName = home().name, days = st.day - h.since;
   return {
     title: 'Your Own Ship', personal: true,
-    text: `The ${SHIPS[id].name} is on the apron at ${currentPlanet().name} with her ramp down and the hold empty. The papers have your name on them. You came aboard the ${oldName} ${days} days ago with ${fmt(HIRED_SAVINGS)} cr and a post to learn. Captain ${cap.last} shook your hand at the foot of the ramp and went back up it. ${friends.length ? `${namesOf(friends)} ${friends.length > 1 ? 'are' : 'is'} already aboard, stowing a bag.` : 'Nobody came with you.'} The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.`,
+    text: `The ${buyShip(id).name} is on the apron at ${currentPlanet().name} with her ramp down and the hold empty. The papers have your name on them. You came aboard the ${oldName} ${days} days ago with ${fmt(HIRED_SAVINGS)} cr and a post to learn. Captain ${cap.last} shook your hand at the foot of the ramp and went back up it. ${friends.length ? `${namesOf(friends)} ${friends.length > 1 ? 'are' : 'is'} already aboard, stowing a bag.` : 'Nobody came with you.'} The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.`,
     choices: [{ label: 'Keep flying', run: () => 'You walk up the ramp and shut the hatch behind you.' }],
   };
 }
@@ -324,9 +364,9 @@ function chapterEnd(id) {
 function buyInHtml() {
   const h = hired(), p = currentPlanet(), friends = buyInCompanions(), cap = G.state.people[h.captain];
   if (!p.services.includes('shipyard')) return '<p class="hint">The yard deals with the captain, not with you. A ship of your own can be bought at a shipyard.</p>';
-  const rows = Object.entries(SHIPS).filter(([, s]) => s.forSale).map(([id, s]) => {
+  const rows = [...(dealOpen() ? [[USED_ID, buyShip(USED_ID)]] : []), ...Object.entries(SHIPS).filter(([, s]) => s.forSale)].map(([id, s]) => {
     const locked = s.req && repOf(localGov()) < s.req;
-    return `<div class="row"><div><b>${s.name}</b> <span class="hint">${s.cargo}t, ${s.berths} berths, ${s.guns} gun${s.guns > 1 ? 's' : ''}. ${fmt(s.price)} cr${locked ? ', needs better standing here' : ''}</span></div>
+    return `<div class="row"><div><b>${s.name}</b> <span class="hint">${s.cargo}t, ${s.berths} berths, ${s.guns} gun${s.guns > 1 ? 's' : ''}. ${fmt(s.price)} cr${locked ? ', needs better standing here' : ''}${id === USED_ID ? `. Worn, with her fire control close to failing. Until about day ${h.deal.until}` : ''}</span></div>
       ${h.confirm === id ? `<span><button data-action="buyInGo" data-arg="${id}" class="primary">Yes, buy and leave</button> <button data-action="buyInNo">Not yet</button></span>`
       : `<button data-action="buyInAsk" data-arg="${id}" ${canBuyIn(id, p) ? '' : 'disabled'}>Buy (${fmt(s.price)})</button>`}</div>`;
   }).join('');
@@ -374,6 +414,7 @@ Mods.register({
       G.state.fuel = ship().fuel; G.state.armor = ship().armor;
     });
     M.on('landed', planet => { const text = hired() && settleRun(planet); if (text) M.note(text); });
+    M.on('landed', planet => dealCheck(planet));
     M.on('landed', planet => { if (hired()) G.offers = errandsFor(planet); });  // the board has errands, not contracts
     M_NOTE = text => M.note(text);
     M.action('sail', () => { if (hired()) sail(); });

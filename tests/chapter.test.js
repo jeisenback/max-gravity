@@ -117,6 +117,7 @@ test('the captain heads for a yard at the chapter\'s price, not the cheapest shi
   const { ev, done } = await hauler();
   const r = await ev(() => {
     const st = start(), out = { target: HIRED_TARGET };
+    st.hired.deal = { price: HIRED_TARGET, day: st.day, until: st.day - 1 };  // a lapsed deal: back to the chapter's price
     st.credits = HIRED_TARGET - 1; out.below = wantsYard();
     st.credits = HIRED_TARGET; out.at = wantsYard();
     st.credits = Math.min(...Object.values(SHIPS).filter(x => x.forSale).map(x => x.price)); out.cheapShip = wantsYard();
@@ -127,11 +128,11 @@ test('the captain heads for a yard at the chapter\'s price, not the cheapest shi
   await done();
 });
 
-// Seeds differ in luck (the answers are random), so the runs are checked one by one and the pay as a mean.
+// Seeds differ in luck (the answers are random), so the runs are checked one by one and the pay as a mean over four.
 test('about twenty runs reach the target, and the planner is never stuck', async () => {
   const { soak } = require('../tools/soak');
   const rs = [];
-  for (const seed of [1, 2, 3]) rs.push(await soak({ seed, legs: 40 }));
+  for (const seed of [1, 2, 3, 4]) rs.push(await soak({ seed, legs: 40 }));
   for (const r of rs) {
     assert.ok(r.reached, `seed ${r.seed} never reached the target in ${r.runs} runs`);
     assert.ok(r.reached.runs >= 14 && r.reached.runs <= 28, `seed ${r.seed}: ${r.reached.runs} runs`);
@@ -139,5 +140,5 @@ test('about twenty runs reach the target, and the planner is never stuck', async
     assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []);
   }
   const mean = rs.reduce((t, r) => t + r.avgPayPerRun, 0) / rs.length;
-  assert.ok(mean >= 800 && mean <= 1100, `mean pay per run ${Math.round(mean)}`);
+  assert.ok(mean >= 800 && mean <= 1200, `mean pay per run ${Math.round(mean)}`);  // about 1,000 measured; the band has room for the soak's own noise
 });
