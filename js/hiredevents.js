@@ -94,46 +94,46 @@ const HAND_EVENTS = [
   ...WORK_EVENTS.map(d => ({ id: d.id, group: 'work', post: d.post, make: () => workEvent(d) })),
 
   { id: 'cap-order', group: 'captain', make: c => handEvent('An Order You Do Not Like',
-    `Captain ${c.cap.last} wants the drive run hotter than you would, to make a berth window at the next port, and has said so in the tone of someone who has already decided. You have a view, and so, you suspect, does everyone else aboard.`, [
-      { label: 'Do as ordered', run() { setLater(Math.random() < 0.5 ? 'h-hot-good' : 'h-hot-bad', 6, 'Ran the drive hot on {captain}\'s order.'); capLike(c, 1, 'You did as you were told on the hot burn.'); return `You run it the way you were told, and the window is made, with a minute to spare. The captain says nothing, which is, from them, a kind of thanks.${learn(1)}`; } },
+    captainSays('cap-order', 'text', `Captain ${c.cap.last} wants the drive run hotter than you would, to make a berth window at the next port, and has said so in the tone of someone who has already decided. You have a view, and so, you suspect, does everyone else aboard.`), [
+      { label: 'Do as ordered', run() { setLater(Math.random() < 0.5 ? 'h-hot-good' : 'h-hot-bad', 6, 'Ran the drive hot on {captain}\'s order.'); capLike(c, 1, 'You did as you were told on the hot burn.'); return `${captainSays('cap-order', 'ordered', 'You run it the way you were told, and the window is made, with a minute to spare. The captain says nothing, which is, from the captain, a kind of thanks.')}${learn(1)}`; } },
       { label: 'Say what you think', run() {
-        if (c.cap.opinion >= OPINION.HEARD) { setLater('h-ninety', 7, 'Told {captain} what I thought of the hot burn, and was heard.'); capLike(c, 2, 'You told me plainly what you thought, and you were right to.'); return `You say it plainly and without heat, and the captain listens, and, after a long pause, gives ground a little. "Noted," they say. "Run it at ninety." It is the first time anyone has been asked.${learn(2)}`; }
+        if (c.cap.opinion >= captainHears()) { setLater('h-ninety', 7, 'Told {captain} what I thought of the hot burn, and was heard.'); capLike(c, 2, 'You told me plainly what you thought, and you were right to.'); return `${captainSays('cap-order', 'heard', 'You say it plainly and without heat, and the captain listens, and, after a long pause, gives ground a little. "Noted," the captain says. "Run it at ninety." It is the first time anyone has been asked.')}${learn(2)}`; }
         setLater('h-hot-bad', 6, 'Argued the hot burn with {captain} and lost.'); capLike(c, -1, 'You argued the burn with me when I had decided.');
-        return 'You say it, and it lands badly. "I did not ask," the captain says, quite pleasantly, and the conversation is over. You run it hot, and it works, which is somehow worse.';
+        return captainSays('cap-order', 'notHeard', 'You say it, and it lands badly. "I did not ask," the captain says, quite pleasantly, and the conversation is over. You run it hot, and it works, which is somehow worse.');
       } },
     ]) },
 
   { id: 'cap-praise', group: 'captain', make: c => handEvent('A Word of Praise',
-    `Captain ${c.cap.last} catches you at the end of a watch and says, with the air of a person reading out a line item, that the ${POSTS[hired().post].name.toLowerCase()} has not given them a worry in a week. It is, from this captain, practically a speech.`, [
-      { label: 'Take it modestly', run() { setLater('h-praise-trust', 10, '{captain} said something kind and I did not make a thing of it.'); capLike(c, 1, 'You took my thanks without making a thing of it.'); return `"The crew make it easy," you say, and the captain gives a short, satisfied nod, and goes aft. You stand a little straighter for the rest of the watch.${learn(1)}`; } },
+    captainSays('cap-praise', 'text', `Captain ${c.cap.last} catches you at the end of a watch and says, with the air of a person reading out a line item, that the ${POSTS[hired().post].name.toLowerCase()} has not given the ship a worry in a week. It is, from this captain, practically a speech.`), [
+      { label: 'Take it modestly', run() { setLater('h-praise-trust', 10, '{captain} said something kind and I did not make a thing of it.'); capLike(c, 1, 'You took my thanks without making a thing of it.'); return `${captainSays('cap-praise', 'take', '"The crew make it easy," you say, and the captain gives a short, satisfied nod, and goes aft. You stand a little straighter for the rest of the watch.')}${learn(1)}`; } },
       { label: 'Ask if it is worth a bonus', run() {
-        if (c.cap.opinion >= OPINION.BONUS) { G.state.credits += 60; capLike(c, 0, 'You asked for a bonus and had earned it.'); return 'The captain raises an eyebrow, and then, to your surprise, laughs. "Fair," they say. "Sixty." It lands in your account before the end of the watch.'; }
+        if (c.cap.opinion >= captainBonus()) { G.state.credits += 60; capLike(c, 0, 'You asked for a bonus and had earned it.'); return captainSays('cap-praise', 'bonusYes', 'The captain raises an eyebrow, and then, to your surprise, laughs. "Fair," the captain says. "Sixty." It lands in your account before the end of the watch.'); }
         setLater('h-owed', 8, 'Asked {captain} for a bonus before I had earned one.'); capLike(c, -1, 'You asked for a bonus before you had earned one.');
-        return 'The captain looks at you for a moment. "When it is a speech, it is free," they say. "When it is a bonus, it is earned." You have the feeling of having spent something you did not have.';
+        return captainSays('cap-praise', 'bonusNo', 'The captain looks at you for a moment. "When it is a speech, it is free," the captain says. "When it is a bonus, it is earned." You have the feeling of having spent something you did not have.');
       } },
     ]) },
 
   { id: 'cap-dressing', group: 'captain', make: c => handEvent('A Dressing-Down',
-    `The log has a gap in it, a watch with no entry, and the captain has found it. Captain ${c.cap.last} does not shout. They put the log on the galley table, turn it round so it faces you, and wait, and the waiting is the worst of it.`, [
-      { label: 'Own it', run() { setLater('h-log-trust', 12, 'Owned a gap in the ship\'s log without being made to.'); capLike(c, 1, 'You owned a mistake in the log without being made to.'); return `"That was mine," you say. "I will fix it tonight." The captain looks at you a moment longer, and nods, and takes the log back. It is not forgiveness, quite, but it is the beginning of the end of the matter.${learn(2)}`; } },
+    captainSays('cap-dressing', 'text', `The log has a gap in it, a watch with no entry, and the captain has found it. Captain ${c.cap.last} does not shout. The log goes on the galley table, turned round so it faces you, and the captain waits, and the waiting is the worst of it.`), [
+      { label: 'Own it', run() { setLater('h-log-trust', 12, 'Owned a gap in the ship\'s log without being made to.'); capLike(c, 1, 'You owned a mistake in the log without being made to.'); return `${captainSays('cap-dressing', 'own', '"That was mine," you say. "I will fix it tonight." The captain looks at you a moment longer, and nods, and takes the log back. It is not forgiveness, quite, but it is the beginning of the end of the matter.')}${learn(2)}`; } },
       { label: 'Blame the old terminal', run() {
-        G.nextEvent = handEvent('The Terminal', `"Then we will see," Captain ${c.cap.last} says, and pulls the terminal across the table. The two of you watch the log for a long, silent minute while it does nothing at all.`, [
+        G.nextEvent = handEvent('The Terminal', captainSays('cap-dressing', 'terminal', `"Then we will see," Captain ${c.cap.last} says, and pulls the terminal across the table. The two of you watch the log for a long, silent minute while it does nothing at all.`), [
           { label: 'Show how it drops entries', run() {
-            if (Math.random() < 0.4) { capLike(c, 1, 'The terminal really did drop an entry, and you showed me.'); return `Just as you open your mouth, it does: a line blinks out, and back, and is gone. The captain looks at it for a long time. "I will have it replaced," they say. "And I owe you an apology, which I am not good at."${learn(1)}`; }
+            if (Math.random() < 0.4) { capLike(c, 1, 'The terminal really did drop an entry, and you showed me.'); return `${captainSays('cap-dressing', 'showWin', 'Just as you open your mouth, it does: a line blinks out, and back, and is gone. The captain looks at it for a long time. "I will have it replaced," the captain says. "And I owe you an apology, which I am not good at."')}${learn(1)}`; }
             capLike(c, -2, 'You blamed the terminal and the terminal was fine.');
-            return 'It does nothing. Not a flicker. The log sits there, clean and obedient, and the captain looks at it, and at you, and says, with great gentleness, "Well." There is no worse word.';
+            return captainSays('cap-dressing', 'showLose', 'It does nothing. Not a flicker. The log sits there, clean and obedient, and the captain looks at it, and at you, and says, with great gentleness, "Well." There is no worse word.');
           } },
-          { label: 'Admit it was you', run() { capLike(c, 0, 'You admitted the gap in the log after blaming the terminal.'); return 'You say it, late, and with your eyes on the table. The captain nods. "That is the second time you have told me the truth tonight," they say. "The first one cost you more." It is not forgiveness. It is arithmetic.'; } },
+          { label: 'Admit it was you', run() { capLike(c, 0, 'You admitted the gap in the log after blaming the terminal.'); return captainSays('cap-dressing', 'admit', 'You say it, late, and with your eyes on the table. The captain nods. "That is the second time you have told me the truth tonight," the captain says. "The first one cost you more." It is not forgiveness. It is arithmetic.'); } },
         ]);
-        return 'You mention the terminal, which does, in fairness, lose entries. "Then we will see," the captain says, quietly.';
+        return captainSays('cap-dressing', 'blame', 'You mention the terminal, which does, in fairness, lose entries. "Then we will see," the captain says, quietly.');
       } },
     ]) },
 
   { id: 'cap-favour', group: 'captain', make: c => handEvent('A Favour',
-    `Captain ${c.cap.last} asks, in the careful way of someone who does not ask, whether you would stand an extra watch so a crew member can sleep, and say nothing about it. It is not in the articles. It is the kind of thing that is remembered.`, [
-      { label: 'Stand the watch', run() { setLater('h-favour-back', 9, 'Stood an extra watch for {captain}.'); capLike(c, 2, 'You stood a watch for me without being paid for it.'); return `You take it, and the long dark hours go slowly, with a flask of the galley's worst coffee, and nobody ever mentions it. The captain mentions it once, at the next port, in a single sentence, and it is enough.${learn(2)}`; } },
-      { label: 'Stand it for forty credits', run() { G.state.credits += 40; capLike(c, 0, 'You stood a watch for me for a fee.'); return 'The captain pays it without comment, out of their own pocket, and files it, you can tell, under a heading of its own. The watch passes like any other.'; } },
-      { label: 'Beg off', run() { setLater('h-favour-cold', 5, 'Would not stand an extra watch for {captain}.'); capLike(c, -1, 'You would not stand an extra watch.'); return '"Of course," says the captain, evenly, and goes to find somebody else. It is the answer you were entitled to give, and you feel it on the back of your neck for the rest of the burn.'; } },
+    captainSays('cap-favour', 'text', `Captain ${c.cap.last} asks, in the careful way of someone who does not ask, whether you would stand an extra watch so a crew member can sleep, and say nothing about it. It is not in the articles. It is the kind of thing that is remembered.`), [
+      { label: 'Stand the watch', run() { setLater('h-favour-back', 9, 'Stood an extra watch for {captain}.'); capLike(c, 2, 'You stood a watch for me without being paid for it.'); return `${captainSays('cap-favour', 'stand', 'You take it, and the long dark hours go slowly, with a flask of the galley\'s worst coffee, and nobody ever mentions it. The captain mentions it once, at the next port, in a single sentence, and it is enough.')}${learn(2)}`; } },
+      { label: 'Stand it for forty credits', run() { G.state.credits += 40; capLike(c, 0, 'You stood a watch for me for a fee.'); return captainSays('cap-favour', 'fee', 'The captain pays it without comment, out of the ship\'s own pocket, and files it, you can tell, under a heading of its own. The watch passes like any other.'); } },
+      { label: 'Beg off', run() { setLater('h-favour-cold', 5, 'Would not stand an extra watch for {captain}.'); capLike(c, -1, 'You would not stand an extra watch.'); return captainSays('cap-favour', 'beg', '"Of course," says the captain, evenly, and goes to find somebody else. It is the answer you were entitled to give, and you feel it on the back of your neck for the rest of the burn.'); } },
     ]) },
 
   { id: 'crew-cover', mate: true, group: 'crew', make: c => handEvent('Cover for a Shipmate',
@@ -222,7 +222,7 @@ const HAND_EVENTS = [
 
   { id: 'money-short', group: 'money', make: c => handEvent('Short on the Pay',
     `The statement for the last run is a day short. You have counted it twice, and once more, in case. It is a small amount, ${fmt(hired().wage)} cr, and it is yours, and it would be easy to say nothing.`, [
-      { label: 'Raise it quietly with the captain', run() { setLater('h-short-audit', 10, 'Raised a short pay statement quietly with {captain}.'); G.state.credits += hired().wage; capLike(c, 0, 'You raised a short statement politely.'); return `You raise it at the end of a watch, with the statement in your hand, and the captain checks it, and winces. "My error," they say. "Fixed." It is fixed by morning, and you are ${fmt(hired().wage)} cr up.`; } },
+      { label: 'Raise it quietly with the captain', run() { setLater('h-short-audit', 10, 'Raised a short pay statement quietly with {captain}.'); G.state.credits += hired().wage; capLike(c, 0, 'You raised a short statement politely.'); return `You raise it at the end of a watch, with the statement in your hand, and the captain checks it, and winces. "My error," the captain says. "Fixed." It is fixed by morning, and you are ${fmt(hired().wage)} cr up.`; } },
       { label: 'Make a scene', run() { setLater('h-scene-fallout', 6, 'Made a scene about my pay statement.'); G.state.credits += hired().wage; capLike(c, -2, 'You made a scene about a short statement.'); return `You raise it, loudly, in the galley, and the captain pays it, with ice in the voice. You are ${fmt(hired().wage)} cr up, and, for a good while, a good deal colder.`; } },
       { label: 'Say nothing', run: () => 'You say nothing, and let it go, and the day passes. It was only a day, you tell yourself, and it was.' },
     ]) },
@@ -233,9 +233,9 @@ const HAND_EVENTS = [
       `${where} you pick up something that does not sit right: a transponder that does not match its hull, loitering just off the lane. It is not a threat, yet. It is the sort of thing a captain would want to know, and, equally, the sort of thing a hand is not asked about.`, [
         { label: 'Tell the captain at once', run() {
           capLike(c, 1, 'You brought me something off the lane when you saw it.');
-          G.nextEvent = handEvent('What Did You See?', `Captain ${c.cap.last} wants it exactly: what, where, and how sure. They have a chart out, and a pencil, and the patience of a person who has done this before.`, [
+          G.nextEvent = handEvent('What Did You See?', `Captain ${c.cap.last} wants it exactly: what, where, and how sure. A chart is out, and a pencil, and the patience of a person who has done this before.`, [
             { label: 'Describe it exactly', run() { setLater('h-lane-again', 9, 'Reported something off the lane, in detail.'); return `You give them the transponder, the bearing and the speed, and the captain draws it on the chart, and nods, and, when you are done, says only: "That is a report." It is, you realize, the best thing anyone has said to you this month.${learn(2)}`; } },
-            { label: 'Say you are not sure', run() { capLike(c, -1, 'You were not sure what you saw.'); setLater('h-lane-again', 9, 'Reported something off the lane, but was not sure of it.'); return `You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time they would rather you were, one way or the other.${learn(1)}`; } },
+            { label: 'Say you are not sure', run() { capLike(c, -1, 'You were not sure what you saw.'); setLater('h-lane-again', 9, 'Reported something off the lane, but was not sure of it.'); return `You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other.${learn(1)}`; } },
           ]);
           return `You report it, and Captain ${c.cap.last} nods, asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.`;
         } },
@@ -278,7 +278,7 @@ const castDowntime = (key, label, post, text) => ({
 
 const HAND_DOWNTIME = [
   { label: 'Ask the captain for advice', can: () => !!hired(),
-    run() { const cap = person(hired().captain); like(cap, 1, 'You asked me for advice.'); return `You find Captain ${cap.last} in the galley, and ask how they would do your job, and they tell you, at length and with surprising warmth, what they got wrong at your age.${learnAt(hired().post, 2)}`; } },
+    run() { const cap = person(hired().captain); like(cap, 1, 'You asked me for advice.'); return `You find Captain ${cap.last} in the galley, and ask how the captain would do your job, and the captain tells you, at length and with surprising warmth, what went wrong at your age.${learnAt(hired().post, 2)}`; } },
   { label: 'Shadow a shipmate at their post', can: () => !!hired() && shadowable().length > 0,
     run() { const m = pick(shadowable()), post = postOfRole(m.role); like(m, 1, 'You spent a watch at my post to learn it.'); return `You spend a watch at ${m.first}'s elbow, at the ${POSTS[post].name.toLowerCase()}, asking the questions a beginner asks, and ${m.first} answers every one.${learnAt(post, 3)}`; } },
   { label: 'Mend a shipmate\'s gear for pay', can: () => !!hired() && mates().length > 0,

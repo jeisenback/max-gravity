@@ -50,7 +50,7 @@ test('a hand hears of a real ship that is hiring, and the lead persists', async 
     out.real = !!cap && !!cap.ship && !!cap.captain && !!SYSTEMS[cap.haunt] && l.wage > 0 && l.share > 0 && !!l.treat && !!st.people[l.from];
     out.html = barHtml().includes(cap.ship.name);
     out.saved = JSON.parse(JSON.stringify(st)).leads.length;
-    const have = st.leads.length; st.day += 3; fillBar(currentPlanet()); out.cool = st.leads.length - have;   // the regulars have nothing more yet
+    st.day += 3; fillBar(currentPlanet()); out.cool = st.leads.filter(x => x.from === l.from).length - 1;   // that regular has nothing more yet (another may)
     for (let i = 0; i < 40; i++) { st.day += 13; fillBar(currentPlanet()); } out.cap = st.leads.length;
     start('owner'); for (let i = 0; i < 20; i++) { G.state.day += 13; fillBar(currentPlanet()); } out.ownerLeads = (G.state.leads || []).length;
     return out;

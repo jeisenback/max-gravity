@@ -524,7 +524,7 @@ Mods.register({
     });
     // A day's work at your post is experience: one point, while they hold it.
     M.on('newDay', () => {
-      for (const p of castAboard()) if (postHolder(Object.keys(POSTS).find(k => POSTS[k].role === p.role)) === p) castXp(p.cast, p.role, 1);
+      for (const p of castAboard()) { const post = Object.keys(POSTS).find(k => POSTS[k].role === p.role); if (post && postHolder(post) === p) castXp(p.cast, p.role, 1); }  // a first officer holds no post
     });
   },
 });
