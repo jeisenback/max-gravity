@@ -80,6 +80,7 @@ function fillBar(planet) {
     ...Array.from({ length: randInt(2, 4) }, () => ({ p: makePerson(Math.random() < 0.75 ? cultureOf(sid) : undefined), known: false })),
   ];
   G.barState = { round: false, name: barOf(planet).name, planet: planet.name };
+  barLeads(planet);
 }
 
 // A stranger you deal with becomes someone you know.
@@ -204,7 +205,7 @@ function barHtml() {
     </div>`).join('');
   const hire = G.bar.map((c, i) => `<div class="mission">
       <div><b>${fullName(c)}</b> &middot; ${ROLE_NAMES[c.role]}, skill ${c.skill}/3<div class="hint">${describe(c).replace(GOALS[c.goal], 'looking for a ship')}</div></div>
-      <button data-action="hire" data-arg="bar:${i}" ${berthsFree() > 0 && st.credits >= c.fee ? '' : 'disabled'}>Hire (${fmt(c.fee)} cr)</button>
+      ${interviewButton(i)}<button data-action="hire" data-arg="bar:${i}" ${berthsFree() > 0 && st.credits >= c.fee ? '' : 'disabled'}>Hire (${fmt(c.fee)} cr)</button>
     </div>`).join('');
   return `
     <h3>${b.name}</h3>
@@ -213,6 +214,7 @@ function barHtml() {
     ${(G.barState.lines = G.barState.lines || roomLines(planet)).map(l => `<div class="hint">${l}</div>`).join('')}
     ${G.barState.note ? `<p class="desc">${G.barState.note}</p>` : ''}
     <div class="row"><button data-action="barRound" ${st.credits >= round && !G.barState.round ? '' : 'disabled'}>${G.barState.round ? 'You bought a round' : `Buy a round for the house (${fmt(round)} cr)`}</button></div>
+    ${barWorkHtml()}
     <h3>Tonight</h3>
     ${rows || '<p class="hint">Just you and the bartender.</p>'}
     ${hire && !hired() ? `<h3>Looking for a ship</h3>${hire}` : ''}`;
