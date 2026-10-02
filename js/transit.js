@@ -501,8 +501,8 @@ function drawTransit(W, H) {
   // Ship's log, bottom-left
   const log = [];
   for (const m of st.missions) log.push(`${m.title} (due ${dateOf(m.deadline)})`);
-  if (!st.missions.length) log.push('No active missions.');
-  if (st.crew.length) log.push(`Crew: ${crewMembers().map(c => `${fullName(c)} (${ROLE_NAMES[c.role]})`).join(', ')}`);
+  if (!st.missions.length && !hired()) log.push('No active missions.');
+  if (st.crew.length && !hired()) log.push(`Crew: ${crewMembers().map(c => `${fullName(c)} (${ROLE_NAMES[c.role]})`).join(', ')}`);
   const held = COMMODITIES.filter(c => st.cargo[c.id] > 0).map(c => `${st.cargo[c.id]}t ${c.name}`);
   log.push(`Cargo: ${held.length ? held.join(', ') : 'empty'}`);
   const logW = narrow ? viewW - 170 : Math.min(460, viewW - 56);  // clear the Map button on phones
