@@ -8,19 +8,19 @@
 // The background's opening paragraph and what each reason says. ctx: { ship, cap, adj, sys }.
 const SIGN_ON = {
   earth: {
-    text: c => `Earth is crowded: thirty billion people, ten thousand applicants for every berth that flies, and the berths go to people with a cousin. You have no cousin. You have a trade, and a card you found pinned to the notice board at the arcology docks: HAND WANTED, LIGHT FREIGHTER, DEPARTS WHEN FULL. ${c.ship}, a light freighter out of ${c.sys}, took you for what you could do. ${c.cap}, whom the crew describe as ${c.adj}, signed the papers without looking up.`,
+    text: c => `Earth is crowded: thirty billion people, ten thousand applicants for every berth that flies, and the berths go to people with a cousin. You have no cousin. You have a trade, and a card you found pinned to the notice board at the arcology docks: HAND WANTED, ICE HAULER, DEPARTS WHEN FULL. ${c.ship}, an ice hauler out of ${c.sys}, took you for what you could do. ${c.cap}, whom the crew describe as ${c.adj}, signed the papers without looking up.`,
     money: 'You tell yourself it is the wage, and it mostly is. Ten thousand applicants, one berth, and a share of every run: that is better arithmetic than the arcology ever offered you.',
     learn: 'You tell yourself you are here for the work, and you are. A berth on a working ship teaches more in a month than an arcology course does in a year, and nobody asks you to pay for it.',
     away: 'You tell yourself you are only passing through, and the arcology shrinks behind you into one more bright speck among the habitat lights. You do not look back for long.',
   },
   mars: {
-    text: c => `You grew up under the domes of Tharsis, where everyone argues about the future, and the Republic's navy did not want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. ${c.ship}, a light freighter out of ${c.sys}, is yours to work, under ${c.cap}, whom the crew describe as ${c.adj}.`,
+    text: c => `You grew up under the domes of Tharsis, where everyone argues about the future, and the Republic's navy did not want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. ${c.ship}, an ice hauler out of ${c.sys}, is yours to work, under ${c.cap}, whom the crew describe as ${c.adj}.`,
     money: 'The Republic would not pay you what a dome-trained hand is worth, so the freighter will: a wage, and a share. The domes taught you to count, at least.',
     learn: 'The navy would not teach you, so you will teach yourself, aboard something that actually leaves the ground. You came for a trade, and you mean to get one.',
     away: 'The domes will argue about the future without you for a while. You find, to your surprise, that you can bear it, and a freighter, which does not care whose side you are on, is a relief.',
   },
   belt: {
-    text: c => `You were born in the Ceres spin, and you know what water is worth. A hand's share in a freighter that crosses to the inner system and back is not much, but it is a berth, and a berth is the one thing in the Belt that is truly yours. The Collective's dock office stamped the papers and wished you luck, in the tone of people who have wished a great many people luck. ${c.ship}, a light freighter out of ${c.sys}, sails under ${c.cap}, whom the crew describe as ${c.adj}.`,
+    text: c => `You were born in the Ceres spin, and you know what water is worth. A hand's share in a freighter that crosses to the inner system and back is not much, but it is a berth, and a berth is the one thing in the Belt that is truly yours. The Collective's dock office stamped the papers and wished you luck, in the tone of people who have wished a great many people luck. ${c.ship}, an ice hauler out of ${c.sys}, sails under ${c.cap}, whom the crew describe as ${c.adj}.`,
     money: 'A hand\'s share, a wage, and a Collective stamp on the papers: for a Belter that is real money, and you mean to keep every credit of it.',
     learn: 'Ceres taught you water and rock. The inner system is a different trade, and you mean to learn it from people who have crossed it a hundred times.',
     away: 'Ceres spins on behind you with its ice and its arguments. You wave to it, a little, like a person on a dock, and mean it.',

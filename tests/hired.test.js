@@ -29,8 +29,8 @@ test('new game offers a hired start, and the choice of post', async () => {
       tutorial: st.tutorial, mode: G.mode, intro: UI.notes.join(' '),
     };
   });
-  assert.equal(r.post, 'gunner'); assert.equal(r.credits, 300); assert.equal(r.ship, 'lightfreighter'); assert.ok(r.captain);
-  assert.deepEqual(r.roles, ['engineer', 'pilot', 'slicer'], 'the crew fill every role but yours');
+  assert.equal(r.post, 'gunner'); assert.equal(r.credits, 300); assert.equal(r.ship, 'freighter'); assert.ok(r.captain);
+  assert.deepEqual(r.roles, ['cook', 'engineer', 'icehand', 'icehand', 'medic', 'pilot', 'quartermaster', 'slicer', 'xo'], 'the crew fill every role but yours, and the chapter\'s wider crew');
   assert.deepEqual(r.modes, ['crewed', 'manual', 'crewed', 'crewed'], 'pilot, gunner, engineer, comms: your post is the manual one');
   assert.equal(r.tutorial, null); assert.equal(r.mode, 'landed');
   assert.match(r.intro, /signed on to the/);

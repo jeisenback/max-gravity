@@ -28,10 +28,13 @@ const HAUNTS = {
   quartermaster: { hold: 5, galley: 2, berths: 1 },
   slicer: { bridge: 3, berths: 2, galley: 2 },
   medic: { berths: 3, galley: 2, hold: 1 },
+  xo: { bridge: 4, hold: 2, galley: 2, engine: 1 },
+  cook: { galley: 6, hold: 1, berths: 1 },
+  icehand: { hold: 5, galley: 2, berths: 2 },
   passenger: { berths: 4, galley: 3 },
   cat: { engine: 4, galley: 3, berths: 2, bridge: 1, hold: 1 },
 };
-const ROLE_COLORS = { you: '#ffffff', engineer: '#ffa24a', pilot: '#6fb0ff', gunner: '#ff6b5a', quartermaster: '#f0d060', slicer: '#c08cff', medic: '#6fd08c', passenger: '#9aa7b5', cat: '#b8aca0' };
+const ROLE_COLORS = { you: '#ffffff', engineer: '#ffa24a', pilot: '#6fb0ff', gunner: '#ff6b5a', quartermaster: '#f0d060', slicer: '#c08cff', medic: '#6fd08c', xo: '#e8e8f0', cook: '#e8a0a0', icehand: '#8fd8e8', passenger: '#9aa7b5', cat: '#b8aca0' };
 
 // What someone is seen doing, by room and (optionally) role. {n} is their name, {m} someone else here.
 const LIFE_LINES = {

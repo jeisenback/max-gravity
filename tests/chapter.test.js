@@ -34,3 +34,72 @@ test('a passenger who joins the crew never takes a chapter role', async () => {
   assert.ok(roles.every(x => !CHAPTER_ROLES.includes(x)), roles.filter(x => CHAPTER_ROLES.includes(x)).join());
   await done();
 });
+
+const helpers = () => {
+  window.start = (o = {}) => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', ...o }); while (G.dialog) finishEvent(); const st = G.state; st.story.next = 1e9; return st; };
+  window.underway = () => { if (!sail()) throw new Error('no plan'); answerAll(); tryBurn(); enterTransit(); G.transit.times = []; };
+  window.answerAll = () => { for (let k = 0; k < 8 && G.dialog; k++) { const d = G.dialog, ok = d.choices.map((c, i) => i).filter(i => !d.choices[i].can || d.choices[i].can()); if (ok.length) chooseEvent(ok[0]); finishEvent(); } while (G.dialog) finishEvent(); };
+};
+const ROSTER = ['cook', 'engineer', 'icehand', 'icehand', 'medic', 'pilot', 'quartermaster', 'slicer', 'xo'];
+const hauler = async o => { const t = await open(o); await t.ev(helpers); return t; };
+
+test('a hired hand starts on an Ice Hauler', async () => {
+  const { ev, done } = await hauler();
+  const r = await ev(() => { const st = start(); return { ship: st.shipId, fuel: st.fuel === SHIPS.freighter.fuel, armor: st.armor === SHIPS.freighter.armor }; });
+  assert.equal(r.ship, 'freighter'); assert.ok(r.fuel); assert.ok(r.armor);
+  const intro = await ev(() => { startGame({ slot: 2, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' }); return (G.dialog ? G.dialog.event.text : '') + UI.notes.join(' '); });
+  assert.match(intro, /ice hauler/i); assert.doesNotMatch(intro, /light freighter/i);
+  await done();
+});
+
+test('the crew is nine, in the ten berths, whatever the background', async () => {
+  for (const background of ['earth', 'mars', 'belt']) {
+    const { ev, done } = await hauler();
+    const r = await ev(bg => { const st = start({ background: bg }); return { roles: crewMembers().map(c => c.role).sort(), used: berthsUsed(), free: berthsFree(), cast: crewMembers().filter(c => c.cast).length }; }, background);
+    assert.deepEqual(r.roles, ROSTER, background);
+    assert.equal(r.used, 9); assert.equal(r.free, 1); assert.equal(r.cast, 2, 'Ines and Tomas are aboard');
+    await done();
+  }
+});
+
+test('every post but yours is held once', async () => {
+  for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
+    const { ev, done } = await hauler();
+    const r = await ev(p => { start({ post: p }); const mine = POSTS[p].role; return Object.values(POSTS).map(x => x.role).map(role => [role, crewMembers().filter(c => c.role === role).length, role === mine]); }, post);
+    for (const [role, n, mine] of r) assert.equal(n, mine ? 0 : 1, `${post}: ${role}`);
+    await done();
+  }
+});
+
+test('an old hired save still plays', async () => {
+  const { ev, done } = await hauler();
+  const r = await ev(() => {
+    const st = start(); st.shipId = 'lightfreighter'; st.crew = st.crew.filter(id => ['pilot', 'engineer', 'slicer'].includes(person(id).role));
+    underway();
+    for (let i = 0; i < 20; i++) { startHappening(); answerAll(); }
+    for (let i = 0; i < 10; i++) { const e = hiredEvent('crew'); if (e) { openEvent(e); answerAll(); } }
+    return st.crew.length;
+  });
+  assert.equal(r, 3);
+  await done();
+});
+
+test('crew events cope with roles that have no post', async () => {
+  const { ev, done } = await hauler();
+  const bad = await ev(() => {
+    const st = start(), bad = [];
+    underway();
+    for (let i = 0; i < 30; i++) for (const g of ['crew', 'money']) { const e = hiredEvent(g); if (!e) continue; if (/undefined|NaN|\[object/.test(e.text)) bad.push(e.text.slice(0, 80)); openEvent(e); answerAll(); }
+    for (let i = 0; i < 20; i++) { startHappening(); answerAll(); }
+    return bad;
+  });
+  assert.deepEqual(bad, []);
+  await done();
+});
+
+test('after the buy-in the old captain\'s ship is an Ice Hauler', async () => {
+  const { ev, done } = await hauler();
+  const r = await ev(() => { const st = start(); st.credits = 100000; const cap = hiredCaptain(); buyIn('courier'); return cap.ship.shipId; });
+  assert.equal(r, 'freighter');
+  await done();
+});
