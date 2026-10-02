@@ -103,3 +103,26 @@ test('after the buy-in the old captain\'s ship is an Ice Hauler', async () => {
   assert.equal(r, 'freighter');
   await done();
 });
+
+test('the fund is big enough for the hold', async () => {
+  const { ev, done } = await hauler();
+  const r = await ev(() => { const st = start(); const plan = currentPlan(); return { fund: HIRED_FUND, have: st.hired.fund, cost: plan && plan.cost, free: cargoFree(), hold: SHIPS.freighter.cargo }; });
+  assert.ok(r.fund >= 12000); assert.equal(r.have, r.fund);
+  assert.equal(r.free, r.hold, 'the hold starts empty');
+  assert.ok(r.cost > 5000 && r.cost <= r.have, `the first run spends ${r.cost}, more than the old 5,000 fund allowed`);
+  await done();
+});
+
+test('the captain heads for a yard at the chapter\'s price, not the cheapest ship\'s', async () => {
+  const { ev, done } = await hauler();
+  const r = await ev(() => {
+    const st = start(), out = { target: HIRED_TARGET };
+    st.credits = HIRED_TARGET - 1; out.below = wantsYard();
+    st.credits = HIRED_TARGET; out.at = wantsYard();
+    st.credits = Math.min(...Object.values(SHIPS).filter(x => x.forSale).map(x => x.price)); out.cheapShip = wantsYard();
+    return out;
+  });
+  assert.equal(r.target, 19000); assert.equal(r.below, false); assert.equal(r.at, true);
+  assert.equal(r.cheapShip, false, 'the Rock Hopper price is not the signal');
+  await done();
+});

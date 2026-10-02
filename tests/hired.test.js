@@ -212,7 +212,7 @@ test('errands: delivered when she docks, the fee to you and the cut to the ship'
       update(G.mode === 'transit' ? 1 : 1 / 30); Mods.emit('frame', G.mode === 'transit' ? 1 : 1 / 30);
     }
     const e = h.ledger[0];
-    return { planet: st.planet === plan.planet, left: st.missions.length, earned: st.credits - credits0, runPay: e.wage + e.share, fee: errand.pay, cut: errand.cut, fund: h.fund, expectFund: 5000 - e.cost + e.revenue + errand.cut };
+    return { planet: st.planet === plan.planet, left: st.missions.length, earned: st.credits - credits0, runPay: e.wage + e.share, fee: errand.pay, cut: errand.cut, fund: h.fund, expectFund: HIRED_FUND - e.cost + e.revenue + errand.cut };
   });
   assert.ok(r.planet); assert.equal(r.left, 0, 'the errand is done');
   assert.equal(r.earned, r.runPay + r.fee, 'you got your pay for the run and the errand fee');
