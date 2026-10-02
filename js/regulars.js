@@ -2,7 +2,7 @@
 
 // Two regulars at each bar, and match night. A regular is a person in the registry who
 // is always at their bar, so you come to know them; what they have been doing changes
-// each time you are back after a few days (p.news), and they remember how you treated
+// each time you are back after a few days (p.gossip, not p.news, which is a crew member's letter from home in family.js), and they remember how you treated
 // them like anyone you know. Match night is a live league's match in the last day, shown
 // on the screens with the room's reaction. Loaded after bar.js; only calls into it at runtime.
 
@@ -32,7 +32,7 @@ function barRegulars(planet) {
   rec.seen = rec.seen === null || fresh ? st.day : rec.seen;
   return rec.ids.map(id => {
     const p = st.people[id];
-    if (fresh) p.news = pick(NEWS.filter(n => n !== p.news));
+    if (fresh) p.gossip = pick(NEWS.filter(n => n !== p.gossip));
     return { p, known: true, regular: true };
   });
 }
