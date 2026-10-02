@@ -181,7 +181,7 @@ UI.views.crew = function () { return interiorPanel() + crewViewBase.call(this); 
 // The cargo bay: a cell for each ton the hold takes, filled in a colour for each commodity aboard, in the order of the manifest.
 const CARGO_COLORS = ['#6fb0ff', '#5fd35f', '#ff9a3c', '#b08fff', '#e8d17a', '#9fb4c2', '#ff6a8a'];
 function bayGrid() {
-  const st = G.state, cap = ship().cargo, cols = cap > 60 ? 20 : 10, rows = Math.ceil(cap / cols), cell = Math.min(34, Math.floor(560 / cols));
+  const st = G.state, cap = ship().cargo, cols = cap > 60 ? 20 : 10, rows = Math.ceil(cap / cols), cell = Math.min(34, Math.floor(580 / cols) - 3);  // the last column ends inside the 640-wide plan
   const fill = COMMODITIES.flatMap((c, i) => Array(Math.max(0, Math.round(st.cargo[c.id] || 0))).fill(i));
   const cells = Array.from({ length: cap }, (_, i) => {
     const x = 40 + (i % cols) * (cell + 3), y = 50 + Math.floor(i / cols) * (cell + 3), c = fill[i];

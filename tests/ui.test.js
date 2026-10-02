@@ -284,3 +284,14 @@ test('the Sun drifts as the ship travels instead of sitting fixed on the screen'
   assert.equal(r.dy, 0);
   await done();
 });
+
+test('the cargo bay grid fits inside its plan, for a small and a large hold', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    const by = Object.keys(SHIPS).sort((a, b) => SHIPS[a].cargo - SHIPS[b].cargo), pick = [by[0], by[by.length - 1]];
+    return pick.map(id => { G.state.shipId = id; const d = document.createElement('div'); d.innerHTML = bayGrid().svg; return { cap: SHIPS[id].cargo, right: Math.max(...[...d.querySelectorAll('rect')].map(el => +el.getAttribute('x') + +el.getAttribute('width'))) }; });
+  });
+  assert.ok(r[0].cap <= 60 && r[1].cap > 60, 'one small and one large hold');
+  for (const x of r) assert.ok(x.right <= 640 - 20, `the last column of a ${x.cap}t hold ends at ${x.right}`);
+  await done();
+});
