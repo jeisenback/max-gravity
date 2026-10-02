@@ -92,7 +92,7 @@ const CREW = {
             }
             return `A shard of something too small to have been on the chart comes out of the dark. You clip it on the way around, and the hull rings like a bell. ${hurt(0.2)} points of armor damage. Dima is uncharacteristically quiet for the rest of the shift, and when he speaks again it is to say, very softly, "That was my fault."`;
           } },
-          { label: 'By the book, Dima', run: () => 'He sighs theatrically, gestures at the sky as though at a great injustice, and flies it by the book. It is textbook flying, perfect and dull. Halfway through, he mutters, "You know, in the Navy they gave me a medal for that. A little tin one." Then he laughs at himself and it clears the air.' },
+          { label: 'By the book, Dima', run: () => 'He sighs theatrically, gestures at the sky, and flies it by the book. It is textbook flying, perfect and dull. Halfway through, he mutters, "You know, in the Navy they gave me a medal for that. A little tin one." Then he laughs at himself and it clears the air.' },
         ] },
       { title: 'Mars Calling',
         text: 'A priority message comes in on a Navy band, sealed and formal, and Dima goes still when he reads it. The Mars Republic Navy is offering him his commission back: a cutter of his own, a squadron, an official apology. He does not say anything for a long time. Then he says, very carefully, not looking at you, "I did not think they would ever ask. What do you think, captain?"',
@@ -113,7 +113,7 @@ const CREW = {
     chatter: ['Kit: "Guns are clean. Guns are always clean."', 'Kit is running targeting drills against passing ice.', 'Kit: "Everybody thinks a gunner\'s job is to shoot. It is not. It is to know when not to, and then to be very good at the rest."', 'Kit is speaking softly to the port gun mount. You catch the words "good girl" and decide you did not hear them.', 'Kit: "The Navy taught me to count things: rounds, seconds, exits, and the number of people I would rather have beside me. It is a short list."', 'Kit has a battered tin of tea by the gun bay and has offered you a cup three times without ever once asking you to say yes.', 'Kit: "You do not get better at fighting. You get better at leaving. That is the whole skill."', 'Kit is oiling a firing pin and humming a Luna lullaby, which is faintly terrifying and utterly sweet.'],
     events: [
       { title: 'Target Practice',
-        text: 'Kit appears at the hatch with a shipping crate under one arm and the look of someone who has thought this through. "Captain. There is a rock coming up, a good big one, drifting slow. I would like to put a few hundred rounds into it. Keeps me sharp. Ammo is about 300 credits." She sets the crate down. "I am not asking for me. I am asking because the day I am not sharp, someone on this ship is going to get hurt."',
+        text: 'Kit appears at the hatch with a shipping crate under one arm. "Captain. There is a rock coming up, a good big one, drifting slow. I would like to put a few hundred rounds into it. Keeps me sharp. Ammo is about 300 credits." She sets the crate down. "I am not asking for me. I am asking because the day I am not sharp, someone on this ship is going to get hurt."',
         choices: [
           { label: 'Let her (300 cr)', can: () => G.state.credits >= 300, run() {
             G.state.credits -= 300;
@@ -129,7 +129,7 @@ const CREW = {
             const st = G.state;
             st.missions.push({ id: st.nextId++, type: 'bounty', targetSystem: 'hygiea', targetName: 'Harlan Voss',
               title: 'Bounty: destroy Harlan Voss near Hygiea', pay: 20000, deadline: st.day + 60 });
-            return 'Kit does not say thank you. She does not have to. She stands, and nods once, and goes to the gun bay, and cleans her guns all night with a kind of exact, tender attention that you feel in the walls. In the morning the tin of tea has two cups out. (New mission: destroy Harlan Voss near Hygiea, 20,000 cr.)';
+            return 'Kit does not say thank you. She does not have to. She stands, and nods once, and goes to the gun bay, and cleans her guns all night. In the morning the tin of tea has two cups out. (New mission: destroy Harlan Voss near Hygiea, 20,000 cr.)';
           } },
           { label: '"Revenge is not our business"', run: () => 'Kit does not argue. She folds the list and puts it away in her breast pocket. She does not talk much for the rest of the trip, and the guns stay very clean. It is not resentment. It is the quiet of someone deciding, privately, what she owes to people who are not in the room.' },
         ] },
@@ -155,7 +155,7 @@ const CREW = {
         text: 'Over a bulb of terrible coffee in the galley, Josef starts talking, in the low, comfortable voice of a man with nowhere to be. He talks about the old days, when Ceres was half its size, when there were no rules on the water price, and a good quartermaster could make a fortune before breakfast. Somewhere in there, he starts to talk about which markets are about to move.',
         choices: [
           { label: 'Listen', run: () => `He talks for an hour, and you learn more than in a week of trading. He mentions two things worth knowing. "${addRumor()}" And, with a wink: "${addRumor()}" When he is done, he pours you another bulb of the terrible coffee and says nothing, which is his way of saying you are good company.` },
-          { label: 'Another time', run: () => 'Josef nods, without offense, and finishes his coffee alone. He looks out at the stars for a while, and you realize you have missed something, though you could not say what. The galley feels smaller for a while.' },
+          { label: 'Another time', run: () => 'Josef nods, without offense, and finishes his coffee alone. He looks out at the stars for a while. The galley feels smaller.' },
         ] },
     ],
   },
@@ -176,7 +176,7 @@ const CREW = {
           { label: 'Too shady', run: () => 'Wren shrugs, without offense, and returns to her screens. "Your funeral," she says, with a small dry smile, and then, as an afterthought, "But it would have been a nice funeral." She does not mention it again. That night she fixes your cabin lock without being asked, and leaves no note.' },
         ] },
       { title: 'Old Crew',
-        text: 'A channel opens that Wren did not open. It is a voice she knows, and she goes utterly still. "Come home, Wren," it says, warm as a knife. "We miss you. We miss what you know. Come home, or we take your cargo as your exit fee." Around her the screens flicker, one after another, as though the ship itself were holding its breath. She does not look at you, but you can see her hands, and they are shaking.',
+        text: 'A channel opens that Wren did not open. It is a voice she knows, and she goes utterly still. "Come home, Wren," it says, warm as a knife. "We miss you. We miss what you know. Come home, or we take your cargo as your exit fee." Around her the screens flicker, one after another. She does not look at you, but you can see her hands, and they are shaking.',
         choices: [
           { label: 'Let Wren handle it', run() {
             if (Math.random() < 0.6) return 'Wren says three quiet words in Belter dialect, and her fingers move across the console with the speed of a card sharp. The channel goes dead. So do their running lights, one at a time, and you watch four ships go black in the distance. Wren lets out a long breath, and, very quietly, begins to laugh, in the shaky, helpless way of a person who has just survived something.';
@@ -211,7 +211,7 @@ const PASSENGERS = {
       } },
       { label: '"Keep them hydrated. There is nothing else to do."', run() {
         m.bonus -= 500;
-        return 'The child recovers, slowly, over three long days, and the family hovers over her bunk without ever looking up. Nobody says anything to you. The silence in the galley is worse than any complaint could be, and when they disembark, the little girl does not wave. You tell yourself you were being practical. It does not help.';
+        return 'The child recovers, slowly, over three long days, and the family hovers over her bunk without ever looking up. Nobody says anything to you. The galley is silent, and when they disembark, the little girl does not wave. You tell yourself you were being practical. It does not help.';
       } },
     ] }) },
   varn: { name: 'Dr. Ilse Varn', pax: 1, fare: 1.2, event: m => ({
@@ -221,13 +221,13 @@ const PASSENGERS = {
       { label: 'Match orbits and grab a sample (costs time)', run() {
         delay(20);
         m.bonus += 2500;
-        return 'She spends six hours in a vac suit on the comet\'s black surface, tethered to the hull, giggling into the suit radio like a child in a snowfield. When she comes back in, frosted, shaking, and beaming, she is holding a vial of dirty ice as if it were a newborn. "Ten thousand years," she keeps whispering. She promises to name something after you, and, though you would not have believed it, she means it.';
+        return 'She spends six hours in a vac suit on the comet\'s black surface, tethered to the hull, giggling into the suit radio like a child in a snowfield. When she comes back in, frosted, shaking, and beaming, she is holding a vial of dirty ice up to the light. "Ten thousand years," she keeps whispering. She promises to name something after you, and, though you would not have believed it, she means it.';
       } },
       { label: 'Stay on course', run: () => 'She watches it slide past the window, a long ghost of a tail in the black, and does not say a word. She stays at the glass until it is gone. Later you find she has drawn it in the margin of her notebook, very neatly, with the date, and the words "if only." She is polite for the rest of the trip, and very quiet.' },
     ] }) },
   hale: { name: 'Undersecretary Hale', pax: 1, fare: 1.5, event: m => ({
     title: 'An Important Man',
-    text: 'Undersecretary Hale of the Earth Coalition appears in the cockpit in a tailored coat and an expression of measured distaste. He informs you that his meeting cannot wait, that it concerns matters he is not at liberty to discuss, and that he had expected a faster ship. He glances at your control panel as though it were a plate of something regrettable, and lets the silence do the rest of the work.',
+    text: 'Undersecretary Hale of the Earth Coalition appears in the cockpit in a tailored coat, and does not take off his gloves. He informs you that his meeting cannot wait, that it concerns matters he is not at liberty to discuss, and that he had expected a faster ship. He glances at your control panel, and lets the silence do the rest of the work.',
     choices: [
       { label: 'Hard burn to shave a day (50 reaction mass)', can: () => G.state.fuel >= 50, run() {
         G.state.fuel -= 50;
@@ -250,7 +250,7 @@ const PASSENGERS = {
       { label: 'Hand her over (+2,000 cr)', run() {
         G.state.credits += 2000;
         G.state.missions = G.state.missions.filter(x => x !== m);
-        return 'Sable does not argue. She sets down her tea, gathers her one small bag, and walks into the airlock as though it were a hallway, with her chin up. The airlock cycles. You try not to think about it, and for a good long while you do not think about anything else, and the tea sits where she left it, going cold.';
+        return 'Sable does not argue. She sets down her tea, gathers her one small bag, and walks into the airlock with her chin up. The airlock cycles. You try not to think about it. The tea sits where she left it, going cold.';
       } },
       { label: '[{crew}] Spoof a Navy transponder', role: 'slicer', run() {
         m.bonus += 1000;
@@ -258,7 +258,7 @@ const PASSENGERS = {
       } },
       { label: '[{crew}] Answer them with the guns', role: 'gunner', run() {
         m.bonus += 3000;
-        return `{crew} answers with the guns, a single, exact burst that takes their antenna array off in a sheet of sparks. They do not ask again. You take ${hurt(0.1)} points of armor damage from a wild return shot, and Sable, watching from the galley, quietly doubles her fare and does not say why. When you look up, she is nodding, very slightly, in a way that feels like respect.`;
+        return `{crew} answers with the guns, a single, exact burst that takes their antenna array off in a sheet of sparks. They do not ask again. You take ${hurt(0.1)} points of armor damage from a wild return shot, and Sable, watching from the galley, quietly doubles her fare and does not say why. When you look up, she is nodding, once.`;
       } },
       { label: 'Refuse, and fight if you have to', run() {
         if (Math.random() < fightOdds()) {
