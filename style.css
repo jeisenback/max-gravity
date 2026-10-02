@@ -560,7 +560,8 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 .char-chip.good { border-color: var(--good); color: var(--good); }
 .char-amb { font-size: 13px; margin-top: 6px; }
 .char-tag { font-size: 10px; font-style: normal; color: var(--good); border: 1px solid var(--good); border-radius: 3px; padding: 0 4px; margin-left: 4px; }
-.char-skill { grid-template-columns: 110px 1fr 20px; }
+.char-skill { grid-template-columns: 96px 1fr 12px 50px; gap: 5px; }
+.char-xp { text-align: right; white-space: nowrap; }
 .char-cap { grid-template-columns: 70px 1fr 48px; }
 .con-screen:has(.char-id) { align-items: flex-start; }
 .pips { display: flex; gap: 3px; } .pips u { flex: 1; height: 7px; background: #12202f; border-radius: 2px; text-decoration: none; } .pips u.on { background: var(--accent); }

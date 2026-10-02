@@ -52,9 +52,9 @@ function characterPanel() {
   const skills = skillsOf(c), crewed = st.crew.includes(c.id);
   const rows = HIRED_POSTS.map(p => {
     const role = POSTS[p].role, n = skills[role] || 0, posted = c.you ? !!hired() && hired().post === p : crewed && postHolder(p) === c;
-    return `<div class="con-part char-skill"><span>${POSTS[p].name}${posted ? ' <i class="char-tag">posted</i>' : ''}</span>${pips(n)}<b>${n}</b></div>`;
+    const xp = c.xp && c.xp[role] !== undefined ? c.xp[role] : null, next = xp === null ? null : SKILL_STEPS.find(s => s > xp);
+    return `<div class="con-part char-skill"><span>${POSTS[p].name}${posted ? ' <i class="char-tag">posted</i>' : ''}</span>${pips(n)}<b>${n}</b><span class="hint char-xp">${xp === null ? '' : next ? `${xp} / ${next}` : xp}</span></div>`;
   }).join('');
-  const xp = c.xp && c.role && c.xp[c.role] !== undefined ? c.xp[c.role] : null, next = xp === null ? null : SKILL_STEPS.find(s => s > xp);
   const chips = [...(c.traits || []).map(t => `<span class="char-chip">${TRAITS[t].adj}</span>`), moodLow(c) ? '<span class="char-chip warn">having a hard time</span>' : moodHigh(c) ? '<span class="char-chip good">in high spirits</span>' : ''].join('');
   const isCaptain = c.role === 'captain', hand = hired();
   const sub = [isCaptain ? 'Captain' : c.role && ROLE_NAMES[c.role] ? ROLE_NAMES[c.role] : c.job, c.age ? `${c.age}` : '', c.home ? `from ${c.home}` : ''].filter(Boolean).join(', ');
@@ -71,7 +71,7 @@ function characterPanel() {
   return consoleHtml({
     title: fullName(c), status: c.you ? 'Playing as' : whereIs(c),
     screen: `<div class="char-id">${portraitSvg(c)}<div><div class="char-name">${esc(fullName(c))}</div><div class="hint">${esc(sub)}</div><div class="char-chips">${chips}</div>${blurb}</div></div>`,
-    side: isCaptain ? command + standing : conCard('Post skills', `${rows}${xp !== null ? conRead('Experience', next ? `${xp} / ${next}` : `${xp} (most)`) : ''}`) + cap + marked
+    side: isCaptain ? command + standing : conCard('Post skills', rows) + cap + marked
       + (c.you ? '' : conCard('Where', `${conRead('Aboard', crewed ? shipTitle() : 'no')}${crewed && wage(c.id) ? conRead('Wage', `${fmt(wage(c.id))} cr/day`) : ''}${!crewed ? `<div class="hint">${whereIs(c)}</div>` : ''}`)) + standing,
     controls: '<div class="row"><button data-action="personBack">Back</button></div>',
   });
