@@ -19,6 +19,7 @@ Long-term milestones, in order. Each builds on the ones before it.
 - **Move Cold Water's scenes onto storylets** (done), keeping its special machinery (agent ships, the blockade) as code they call into.
 - Competing campaign arcs, as in Escape Velocity Nova: **a Mars Navy career** (done: Reserve Commission) and **a pirate lord's rise** (done: The Rook's Crown), and **a corporate climb** (done: The Partner's Chair, with the Tethys Shipping Consortium rather than Aquilon, whose path already runs through Cold Water); the three exclude each other.
 - **Mods can write whole storylines without code** (done: `M.addStorylet`).
+- **Life and loss** (done: marks, death, a memorial record, and a two-survivor floor for the main characters, proved by Yelena's pivot, Over the Hull). Next: a third main character per background, pivots for the rest of the cast, then about ten endings that read the record. Design: `docs/superpowers/specs/2026-10-02-life-and-loss-foundation-design.md`.
 
 ## 4. Expanse-grade combat, on the console
 The captain decides and the crew flies: piloting and real-time fighting are the least interesting part of the game. Design: `COMBAT.md`.
