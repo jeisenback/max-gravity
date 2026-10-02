@@ -162,6 +162,24 @@ const CAST = {
           { label: 'Make no promises', run() { castLike('yelena', 1, 'You would not promise a ship, but you listened.'); return '"I cannot promise that," you say, "but I heard you." She nods, once, sharply, like a referee, and the cloth goes back to the housing. "Fair," she says. "I will take fair. Fair is more than most of the bench ever got."'; } },
         ],
       },
+      pivot: {
+        days: 60, title: 'Over the Hull',
+        get text() {
+          const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6;
+          return 'A ship is drifting across your path with her drive dark: disabled, and armed, going by the way she is not answering. Yelena is already at the hatch with her helmet under one arm. "I go first," she says. "I have always gone first. That is what a striker is for."'
+            + (low ? ' Your own hull has taken a beating, and a bad hull is a bad place to fall back to.' : ' Your hull is sound, which is something.')
+            + (medic ? ` ${medic.first} has the med kit open at the airlock, as though the question were already settled.` : ' There is nobody aboard who can do more than a field dressing, and she knows it.')
+            + ' She waits for you to say yes, and does not look like someone waiting for permission.';
+        },
+        choices: [
+          { label: 'Let her lead', run: () => overTheHull(false) },
+          { label: 'Send her with a second person', can: () => G.state.crew.length >= 2, run: () => overTheHull(true) },
+          { label: 'Call it off', run() {
+            castFlag('yelena', 'benched'); castLike('yelena', -3, 'You called off the boarding and put me on the bench.');
+            return 'You tell her no, and cut the channel, and the drifting ship goes on drifting. Yelena stands at the hatch for a while with her helmet in her hand. "Fine," she says. She sits down on the bench by the airlock, very straight, and does not say another word to you for the rest of the burn.';
+          } },
+        ],
+      },
     },
   },
   ruben: {
@@ -385,6 +403,7 @@ function captainGrade(p) {
 }
 // Back with you, berth or no: a main character is not left stranded when their ship is sold or lost.
 function castReturn(p) {
+  if (p.cast && castDead(p.cast)) return;
   const st = G.state;
   if (!st.crew.includes(p.id)) st.crew.push(p.id);
   p.location = null;
@@ -412,9 +431,10 @@ function castDue() {
   const st = G.state, keys = CAST_PAIRS[st.background] || [];
   if (hired() || st.tutorial != null || !keys.length) return null;
   for (const [i, key] of keys.entries()) {
+    if (castDead(key)) continue;
     const rec = castRec(key);
     if (st.crew.includes(rec.pid)) continue;
-    const prior = keys[i - 1] && castRec(keys[i - 1]);
+    const prior = keys[i - 1] && !castDead(keys[i - 1]) && castRec(keys[i - 1]);
     if (prior && !st.crew.includes(prior.pid) && !prior.offered) return null;  // in a set order
     return st.day >= 5 + 9 * i && st.day >= (rec.next || 0) ? key : null;
   }
@@ -423,10 +443,11 @@ function castDue() {
 
 // What fires next for someone aboard: their next scene, when it is due. Hired hands skip `meet`, owners skip `intro`.
 function castNext(key) {
-  const rec = castRec(key), order = ['intro', 'mid1', 'mid2', 'late'], seen = rec.arc || 0;
+  const rec = castRec(key), order = ['intro', 'mid1', 'mid2', 'late', 'pivot'], seen = rec.arc || 0;
   const name = order[seen];
   if (!name) return null;
   const sc = CAST[key].scenes[name];
+  if (!sc) return null;  // not everyone has a pivot yet
   if (name === 'intro' && !hired()) { rec.arc = 1; return castNext(key); }  // an owner met them at a port instead
   const days = sc.days || 0;
   return G.state.day - (rec.since || 0) >= days ? { name, sc } : null;
@@ -439,6 +460,26 @@ function castLateAtBuyIn() {
     if (rec.arc === 3) { rec.arc = 4; return castScene(p.cast, CAST[p.cast].scenes.late); }
   }
   return null;
+}
+
+// Yelena's pivot (fate.js decides who lives): a point each for a medic who is not hurt, a hull above 60 percent, her gunner
+// skill at 3 or more, and a second person with her. Three or more she lives, two she is marked, fewer she dies.
+const castHullPoints = backup => (roleHolder('medic') ? 1 : 0) + (G.state.armor > ship().armor * 0.6 ? 1 : 0)
+  + (person('c:yelena').skills.gunner >= 3 ? 1 : 0) + (backup ? 1 : 0);
+function overTheHull(backup) {
+  const points = castHullPoints(backup), promised = castRec('yelena').flags.promised;
+  const outcome = castFate('yelena', points >= 3 ? 'live' : points === 2 ? 'mark' : 'die', `Went over the hull first near ${system().name}.`, 'Left hand never closes properly.', 'gunner');
+  const lead = backup ? 'You send a second hand over with her. ' : '';
+  if (outcome === 'die') {
+    return lead + 'She goes over first, as she said she would. The channel carries the first shot, and then something that is not a voice, and then the party, shouting her name. You bring the ship alongside, and you are too late, and everyone knows it. When the others come back across the gap they carry the ring-ball from her bag, and nobody says anything about the foul.'
+      + (promised ? ' You remember the ship you promised her, and that nobody will ask for it now.' : '');
+  }
+  castLike('yelena', 2, outcome === 'mark' ? 'You let me go first, and I came back with a hand that does not close.' : 'You let me go first, and I came back.');
+  if (outcome === 'mark') {
+    return lead + 'She goes over first, and it goes wrong at the inner lock, and for a long minute the channel is nothing but breath and shouting. She comes back across the gap carried, and the hand she led with does not close the way it did. "Do not," she says, to your face, "say it was worth it. Just say I was there."';
+  }
+  return lead + 'She goes over the hull first, as she said she would, and the party follows. It is loud and fast and over before you have finished counting. She comes back across the gap with a split lip and a stranger\'s cap in her fist. "Nobody on the bench," she says.'
+    + (promised ? ' "You said someday," she adds, as if it were a thing she had been saving.' : '');
 }
 
 const castScene = (key, sc) => ({ title: sc.title, text: sc.text, personal: true, choices: sc.choices });

@@ -27,13 +27,17 @@ function succeed(fate, heirName) {
   st.injured = {};
   const notes = [];
   if (died) {
-    for (const id of st.crew) if (st.people[id]) delete st.people[id];
-    const lost = st.crew.length;
-    Object.assign(st, { crew: [], shipId: 'shuttle', outfits: {}, torpedoes: 0, cargo: {}, paid: {} });
+    const aboard = st.crew.length;
+    castShipLoss(`Lost with ${oldShip}.`);
+    const kept = st.crew.filter(id => st.people[id] && st.people[id].cast);  // main characters the floor spared
+    for (const id of st.crew) if (st.people[id] && !kept.includes(id)) delete st.people[id];
+    const lost = aboard - kept.length;
+    Object.assign(st, { crew: kept, shipId: 'shuttle', outfits: {}, torpedoes: 0, cargo: {}, paid: {} });
     st.missions = st.missions.filter(m => m.type === 'bounty');
     st.home = null;
     homeLog(`In memory of Captain ${old.name}${lost ? ` and the crew` : ''}, lost with ${oldShip}.`);
     notes.push(`Captain ${old.name} is gone${lost ? `, and ${lost === 1 ? 'the crew member' : `the ${lost} crew`} aboard with them` : ''}. The company passes to ${heir}, with half the money after the estate is settled, and a new Rock Hopper.`);
+    if (kept.length) notes.push(`${kept.map(id => person(id).first).join(' and ')} came out of the wreck alive, and changed.`);
   } else {
     notes.push(`Captain ${old.name} retires with 30% of the money and a berth on a quiet habitat. ${heir} takes command of ${shipTitle()}, the crew, and the company.`);
     homeLog(`Captain ${old.name} retired. ${heir} took command.`);
