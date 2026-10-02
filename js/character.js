@@ -66,11 +66,12 @@ function characterPanel() {
   const command = !isCaptain ? '' : c.you
     ? conCard('Command', `${conRead('Ship', `${shipTitle()}, ${ship().name}`)}${conRead('Crew', `${st.crew.length}, ${berthsUsed()}/${ship().berths} berths`)}${(st.fleet || []).length ? conRead('Company', `${st.fleet.length} ship${st.fleet.length > 1 ? 's' : ''}`) : ''}`)
     : hand && c.id === hand.captain ? conCard('Command', `${conRead('Your wage', `${fmt(hand.wage)} cr/day`)}${conRead('Your share', `${Math.round(hand.share * 100)}% of each run's profit`)}${conRead('Runs together', hand.ledger.length)}${conRead('You earned', `${fmt(hand.ledger.reduce((t, l) => t + l.wage + l.share, 0))} cr`)}${conRead('The ship\'s funds', `${fmt(hand.fund)} cr`)}`) : '';
+  const marked = marksOf(c).length ? conCard('Marks', marksOf(c).map(m => `<div class="hint">${esc(dateOf(m.day))}: ${esc(m.text)}</div>`).join('')) : '';
   const blurb = c.ambition ? `<div class="char-amb">${c.ambition}</div>` : c.bio ? `<div class="char-amb">${c.bio}</div>` : '';
   return consoleHtml({
     title: fullName(c), status: c.you ? 'Playing as' : whereIs(c),
     screen: `<div class="char-id">${portraitSvg(c)}<div><div class="char-name">${esc(fullName(c))}</div><div class="hint">${esc(sub)}</div><div class="char-chips">${chips}</div>${blurb}</div></div>`,
-    side: isCaptain ? command + standing : conCard('Post skills', `${rows}${xp !== null ? conRead('Experience', next ? `${xp} / ${next}` : `${xp} (most)`) : ''}`) + cap
+    side: isCaptain ? command + standing : conCard('Post skills', `${rows}${xp !== null ? conRead('Experience', next ? `${xp} / ${next}` : `${xp} (most)`) : ''}`) + cap + marked
       + (c.you ? '' : conCard('Where', `${conRead('Aboard', crewed ? shipTitle() : 'no')}${crewed && wage(c.id) ? conRead('Wage', `${fmt(wage(c.id))} cr/day`) : ''}${!crewed ? `<div class="hint">${whereIs(c)}</div>` : ''}`)) + standing,
     controls: '<div class="row"><button data-action="personBack">Back</button></div>',
   });
