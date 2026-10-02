@@ -85,3 +85,23 @@ test('the burn HUD names the captain, and the chatter gives the captain their ow
   assert.ok(!r.owner.some(l => /Captain /.test(l)), 'an owner has no captain to hear from');
   await done();
 });
+
+test('runs together and what you earned keep counting past the 20 runs the ledger holds', async () => {
+  const { ev, done } = await open();
+  await ev(`(${startHired})`);
+  const r = await ev(() => {
+    const h = hired(), st = G.state, planet = currentPlanet();
+    const settle = () => { h.run = { good: null, cost: 0, day: st.day - 1, from: 'Earth', planet: planet.name, sid: st.systemId, tons: 0 }; st.day += 1; settleRun(planet); };
+    const start = { runs: runTotals(h).runs, earned: runTotals(h).earned };
+    for (let i = 0; i < 25; i++) settle();
+    const after = runTotals(h);
+    // a save from before the totals were kept: they come from the ledger
+    const old = { ledger: [{ wage: 100, share: 10 }, { wage: 50, share: 0 }] };
+    return { start, after, held: h.ledger.length, wage: h.wage, oldSave: runTotals(old) };
+  });
+  assert.equal(r.held, 20, 'the ledger still holds only the last 20');
+  assert.equal(r.after.runs - r.start.runs, 25, 'but the count goes on');
+  assert.ok(r.after.earned - r.start.earned >= 25 * r.wage, 'and so does what you earned');
+  assert.deepEqual(r.oldSave, { runs: 2, earned: 160 }, 'an older save counts what its ledger holds');
+  await done();
+});
