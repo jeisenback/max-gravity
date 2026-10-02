@@ -223,10 +223,10 @@ const Menu = {
         <div class="menu-buttons row"><button data-action="menuBack">Back</button></div>`;
     },
     help() {
-      const topic = HELP.find(h => h.id === this.topic);
-      if (topic) return `<h2>${topic.title}</h2>${topic.text.map(p => `<p class="desc">${p}</p>`).join('')}
+      const topic = helpTopics().find(h => h.id === this.topic);
+      if (topic) return `<h2>${topic.title}</h2>${helpText(topic).map(p => `<p class="desc">${p}</p>`).join('')}
         <div class="menu-buttons row"><button data-action="menuTopic" data-arg="">All topics</button><button data-action="menuBack">Back</button></div>`;
-      return `<h2>Help</h2><div class="menu-buttons">${HELP.map(h => `<button data-action="menuTopic" data-arg="${h.id}">${h.title}</button>`).join('')}</div>
+      return `<h2>Help</h2><div class="menu-buttons">${helpTopics().map(h => `<button data-action="menuTopic" data-arg="${h.id}">${h.title}</button>`).join('')}</div>
         <div class="menu-buttons row"><button data-action="menuBack">Back</button></div>`;
     },
     controls() {
