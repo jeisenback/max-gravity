@@ -12,6 +12,18 @@ after(closeBrowser);
 const helpers = () => {
   window.start = (o = {}) => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', ...o }); while (G.dialog) finishEvent(); const st = G.state; st.tutorial = null; st.story.next = 1e9; st.flags.classicCombat = true; };
   window.crewOf = () => G.state.crew.map(person);
+  window.marsHired = () => start({ background: 'mars', mode: 'hired', post: 'pilot' });
+  // A third joined core character, which lifts the two-survivor floor.
+  window.addThird = () => { castRec('ines').since = G.state.day; };
+  // An owner at Earth with both of the pair aboard and a company ship docked in port with a hired captain.
+  window.ownerSetup = () => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.crew = []; st.credits = 200000;
+    for (const key of ['ines', 'tomas']) { const p = castPerson(key); p.role = CAST[key].role; p.skill = p.skills[p.role]; st.crew.push(p.id); castRec(key).since = st.day; }
+    buyCompanyShip('lightfreighter');
+    G.mode = 'landed';
+    return fleet()[0];
+  };
 };
 
 test('a hired hand on Earth finds the pair aboard, on posts that never double up', async () => {
@@ -216,5 +228,93 @@ test('a buy-in: both come if both think well of you, otherwise the one who does,
   assert.deepEqual(r.friend, [false], 'a generated friend, not one of the pair'); assert.deepEqual(r.nobody, []);
   assert.deepEqual(r.crew, ['c:ines', 'c:tomas']); assert.ok(r.owner);
   assert.equal(r.scene, 'Permission to Land', 'the last scene plays as they leave'); assert.equal(r.arc, 4);
+  await done();
+});
+
+// ---------- life and loss (fate.js) ----------
+
+test('a death with only the pair becomes a mark', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    marsHired();
+    const st = G.state, y = person('c:yelena'), out = {};
+    out.result = castFate('yelena', 'die', 'Cause.', 'Hand ruined.');
+    out.dead = castDead('yelena'); out.marks = castRec('yelena').marks; out.day = st.day;
+    out.skills = [y.skills.gunner, y.skill]; out.memorial = st.memorial || [];
+    castXp('yelena', 'gunner', 1); out.afterXp = y.skills.gunner;
+    return out;
+  });
+  assert.equal(r.result, 'mark'); assert.equal(r.dead, false);
+  assert.deepEqual(r.marks, [{ text: 'Hand ruined.', day: r.day }]);
+  assert.deepEqual(r.skills, [2, 2]); assert.deepEqual(r.memorial, []);
+  assert.equal(r.afterXp, 2, 'the next day of experience does not restore the lost point');
+  await done();
+});
+
+test('a death with a third core character kills, once', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    marsHired(); addThird();
+    const st = G.state, out = {};
+    st.injured = { 'c:yelena': true };
+    out.result = castFate('yelena', 'die', 'Cause.', 'x');
+    out.status = castRec('yelena').status; out.inCrew = st.crew.includes('c:yelena'); out.injured = st.injured['c:yelena'];
+    out.memorial = st.memorial; out.expect = [{ key: 'yelena', day: st.day, place: system().name, cause: 'Cause.' }];
+    out.again = castFate('yelena', 'die', 'Again.', 'x'); out.count = st.memorial.length; out.kept = !!st.people['c:yelena'];
+    return out;
+  });
+  assert.equal(r.result, 'die'); assert.equal(r.status, 'dead'); assert.equal(r.inCrew, false); assert.equal(r.injured, undefined);
+  assert.deepEqual(r.memorial, r.expect);
+  assert.equal(r.again, 'die'); assert.equal(r.count, 1); assert.ok(r.kept, 'the person record stays');
+  await done();
+});
+
+test('a mark never takes a skill below zero', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    marsHired();
+    for (let i = 0; i < 4; i++) castFate('yelena', 'mark', 'x', 'x');
+    return { gunner: person('c:yelena').skills.gunner, marks: castRec('yelena').marks.length };
+  });
+  assert.deepEqual(r, { gunner: 0, marks: 4 });
+  await done();
+});
+
+test('only core characters who have joined count as living', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => { marsHired(); return castLiving().sort(); });
+  assert.deepEqual(r, ['ruben', 'yelena']);
+  await done();
+});
+
+test('a captained company ship reverts when its captain dies', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const ship = ownerSetup();
+    castRec('yelena').since = G.state.day;
+    postCaptain(0, 'ines');
+    const out = { posted: !!castCaptain(ship) };
+    out.result = castFate('ines', 'die', 'x', 'x');
+    out.captain = !!castCaptain(fleet()[0]); out.pid = fleet()[0].captain.pid;
+    return out;
+  });
+  assert.ok(r.posted); assert.equal(r.result, 'die'); assert.equal(r.captain, false); assert.notEqual(r.pid, 'c:ines');
+  await done();
+});
+
+test('an old save without the new fields behaves as alive', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    marsHired();
+    delete castRec('yelena').status; delete castRec('yelena').marks; delete G.state.memorial;
+    return { dead: castDead('yelena'), living: castLiving().length, live: castFate('yelena', 'live', 'x', 'x') };
+  });
+  assert.deepEqual(r, { dead: false, living: 2, live: 'live' });
   await done();
 });
