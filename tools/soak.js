@@ -48,7 +48,8 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired' } = {}) {
         answer();
         runs++;
         paid.push(st.credits - creditsBefore);
-        if (st.credits >= target) reached = { runs, day: st.day, credits: st.credits };
+        const d = hired().deal, price = d && dealOpen() ? d.price : target;  // she is bought when the deal's price is in hand, or the chapter's if it lapsed
+        if (st.credits >= price) reached = { runs, day: st.day, credits: st.credits, deal: d ? { price: d.price, offered: d.day, lapsed: !dealOpen() } : null };
         for (const n of UI.notes) if (odd(n)) bad.push('note: ' + n.slice(0, 80));
       } catch (e) { bad.push('threw: ' + String(e).slice(0, 120)); break; }
     }
