@@ -166,7 +166,7 @@ const Menu = {
     main() {
       const last = Saves.latest(), m = Saves.metas()[last];
       return `<div class="menu-title">MAX GRAVITY</div>
-        <div class="hint menu-sub">A trader's life in a solar system on the edge of war. Version ${BUILD.version}.</div>
+        <div class="hint menu-sub">${scopeNarrow() ? 'Hire on at Earth, work an ice hauler, and save for a ship of your own.' : 'A trader\'s life in a solar system on the edge of war.'}<br>Version ${BUILD.version}.</div>
         <div class="menu-buttons">
           ${last ? `<button class="primary" data-action="menuContinue">Continue<span class="hint">Captain ${esc(m.captain)}, ${esc(m.date)}</span></button>` : ''}
           <button ${last ? '' : 'class="primary"'} data-action="menuView" data-arg="new">New game</button>
