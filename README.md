@@ -70,7 +70,7 @@ At any market you can also buy a stake in the port's business from the Port tab,
 
 No build step and no dependencies. Open `index.html` in a browser.
 
-This build is scoped to one chapter: an Earth hired hand, ending when they buy a ship and the crew who like them come along (`BUILD.scope` is `'earth-hired'` in `js/build.js`). Owner mode, the Mars and Belt starts, the tutorial, hired errands, bar side work and leads, the five storylines, the shipping company, stakes and outposts, and the community section are switched off. To play everything, set `maxGravity.scope` to `full` in the browser's localStorage; the tests do the same.
+This build is scoped to one chapter: an Earth hired hand, ending when they buy a ship and the crew who like them come along (`BUILD.scope` is `'earth-hired'` in `js/build.js`). Owner mode, the Mars and Belt starts, the tutorial, hired errands, bar side work and leads, the five storylines, the shipping company, stakes and outposts, and the community section are switched off. To play everything, open the game with `?scope=full` on the address; the tests do the same.
 
 Progress is saved automatically in your browser's localStorage whenever you land.
 
