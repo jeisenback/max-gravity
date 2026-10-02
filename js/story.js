@@ -217,7 +217,7 @@ function blockadeForces() {
     { kind: 'patrol', gov, story: false, shipId: 'cutter', name: `${PATROL_NAMES[gov]} "${shipName(false)}"` },
   ];
   const side = { belt: 3, mars: 3, earth: 2, aquilon: 1 }[s.side] || 0;  // ships of your side
-  const loved = Object.values(G.state.people).filter(p => !G.state.crew.includes(p.id) && p.opinion >= 5).slice(0, 2).length;
+  const loved = alivePeople().filter(p => !G.state.crew.includes(p.id) && p.opinion >= 5).slice(0, 2).length;
   return { foes, allies: side + loved, coalitionBlocks };
 }
 
@@ -285,7 +285,7 @@ function storyInSystem() {
   const allies = { belt: ['Belt Collective', 'Collective militia', 3], mars: ['Mars Republic', 'MRN frigate', 3], aquilon: [null, 'Aquilon security', 1] }[s.side];
   if (allies) for (let i = 0; i < allies[2]; i++) spawnFleetShip('cutter', allies[0], `${allies[1]} "${shipName(false)}"`, false);
   // People who love you come to help. People who hate you pay someone to make it worse.
-  const people = Object.values(G.state.people).filter(p => !G.state.crew.includes(p.id));
+  const people = alivePeople().filter(p => !G.state.crew.includes(p.id));
   for (const p of people.filter(p => p.opinion >= 5).slice(0, 2)) {
     const n = spawnFleetShip('corsair', null, p.ship ? p.ship.name : `"${shipName(false)}"`, false);
     n.persona = p;
@@ -368,7 +368,7 @@ function epilogueEvent() {
   };
   const crew = st.crew.map(id => (CREW[id] ? fates[id]
     : person(id).opinion >= 2 ? `${fullName(person(id))} stays aboard, loyal as ever.` : `${fullName(person(id))} signs off at Ceres to find a quieter ship.`));
-  const known = Object.values(st.people);
+  const known = alivePeople();
   const friends = known.filter(p => p.opinion >= 2).length, enemies = known.filter(p => p.opinion <= -2).length;
   const standing = FACTIONS.map(g => `${g === 'Pirate' ? 'Pirates' : g}: ${standingWord(repOf(g))}`).join(', ');
   const parts = [

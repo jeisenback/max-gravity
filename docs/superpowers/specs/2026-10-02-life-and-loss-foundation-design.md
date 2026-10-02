@@ -18,7 +18,7 @@ This spec covers only the first piece: the mechanism for a core character to be 
 1. Hybrid deaths: authored pivots for the core cast first, emergent injuries for temporary crew later.
 2. Pivots show a named risk with no numbers. The outcome follows from game state, with no dice.
 3. Any core character can die, but never all at once. A floor of two living core characters is enforced.
-4. When the floor stops a death, it becomes a lasting mark: a line of text and one lost skill point at their post.
+4. When the floor stops a death, it becomes a lasting mark: a line of text and one lost skill point, at the skill the scene names (their current post if it names none; the pivot names gunner, since the mark is her gun hand).
 5. Core characters stay authored and fixed. Loosening them (role-based pivots for generated crew) belongs to the emergent step.
 6. The proof pivot is Yelena Quint's ("Over the Hull").
 7. A third core character per background arrives in arc 2. Without one, the floor makes every death impossible, since `CAST_PAIRS` gives each background exactly two.
@@ -45,10 +45,10 @@ All new fields are optional, so existing saves load unchanged.
 
 A new classic script, linked in `index.html` after `cast.js`. It exports one function:
 
-`castFate(key, outcome, cause, markText)` where `outcome` is `'live'`, `'mark'` or `'die'`, `cause` is the memorial line, and `markText` is the mark line (used for a mark, and when the floor turns a death into one). It returns what actually happened (`'live'`, `'mark'` or `'die'`) so the calling scene can write matching text. Calling it on someone already dead does nothing and returns `'die'`.
+`castFate(key, outcome, cause, markText, role)` where `outcome` is `'live'`, `'mark'` or `'die'`, `cause` is the memorial line, `markText` is the mark line (used for a mark, and when the floor turns a death into one), and `role` is the optional skill a mark lowers. It returns what actually happened (`'live'`, `'mark'` or `'die'`) so the calling scene can write matching text. Calling it on someone already dead does nothing and returns `'die'`.
 
 - `'live'`: no change.
-- `'mark'`: append `{ text: markText, day }` to `marks`, reduce the skill at their current post by one (never below 0), and keep them alive. The experience at that post is also set to the threshold of the lowered level (`SKILL_STEPS`), otherwise the next day's experience would restore the lost point.
+- `'mark'`: append `{ text: markText, day }` to `marks`, reduce the named skill (default: their current post) by one (never below 0), and keep them alive. The experience at that post is also set to the threshold of the lowered level (`SKILL_STEPS`), otherwise the next day's experience would restore the lost point.
 - `'die'`: first run the floor. The floor counts core characters who have joined (a record with `since` set) and whose status is not `'dead'`, wherever they are posted, including as a company ship captain. If the death would leave fewer than two, the outcome becomes `'mark'`. Otherwise:
   - set status to `'dead'`,
   - remove them from `st.crew` and clear any `st.injured` entry,
@@ -63,6 +63,7 @@ A new classic script, linked in `index.html` after `cast.js`. It exports one fun
 - `castReturn` must not return a dead character to the crew.
 - The company command buttons must not list them. Reverting a captained ship is covered above.
 - Before implementation, grep every use of `castAboard`, `castRec`, `castPerson` and `st.cast` and confirm each handles a dead character.
+- Anything that reads the generic people registry by opinion (the crew screen's contacts, the blockade's allies, the epilogue's friend count) uses `alivePeople()` from `js/fate.js`, so a dead core character is not a contact, an ally or a friend.
 
 ### Yelena's pivot: "Over the Hull"
 

@@ -12,18 +12,22 @@ const castDead = key => ((G.state.cast || {})[key] || {}).status === 'dead';
 // Main characters who have joined you, wherever they are posted, and are not dead.
 const castLiving = () => Object.keys(G.state.cast || {}).filter(key => typeof G.state.cast[key].since === 'number' && !castDead(key));
 
+// Everyone in the people registry except main characters who have died, for anything that asks who still knows you.
+const alivePeople = () => Object.values(G.state.people).filter(p => !(p.cast && castDead(p.cast)));
+
 // outcome is 'live', 'mark' or 'die'. A death that would leave fewer than CAST_FLOOR alive becomes a mark. A mark is a
-// line of text and one lost point at their post, with the experience set back so it is not earned again the next day.
-// Returns what happened.
-function castFate(key, outcome, cause, markText) {
+// line of text and one lost point at the skill named by role (the post they hold, if none is given), with the experience
+// set back so it is not earned again the next day. Returns what happened.
+function castFate(key, outcome, cause, markText, role) {
   if (castDead(key)) return 'die';
   if (outcome === 'die' && castLiving().filter(k => k !== key).length < CAST_FLOOR) outcome = 'mark';
   const st = G.state, p = castPerson(key), rec = castRec(key);
   if (outcome === 'mark') {
     (rec.marks = rec.marks || []).push({ text: markText, day: st.day });
-    p.skills[p.role] = Math.max(0, p.skills[p.role] - 1);
-    p.xp[p.role] = SKILL_STEPS[p.skills[p.role]];
-    p.skill = p.skills[p.role];
+    const at = role || p.role;
+    p.skills[at] = Math.max(0, p.skills[at] - 1);
+    p.xp[at] = SKILL_STEPS[p.skills[at]];
+    if (at === p.role) p.skill = p.skills[at];
   } else if (outcome === 'die') {
     rec.status = 'dead';
     st.crew = st.crew.filter(id => id !== p.id);

@@ -468,7 +468,7 @@ const castHullPoints = backup => (roleHolder('medic') ? 1 : 0) + (G.state.armor 
   + (person('c:yelena').skills.gunner >= 3 ? 1 : 0) + (backup ? 1 : 0);
 function overTheHull(backup) {
   const points = castHullPoints(backup), promised = castRec('yelena').flags.promised;
-  const outcome = castFate('yelena', points >= 3 ? 'live' : points === 2 ? 'mark' : 'die', `Went over the hull first near ${system().name}.`, 'Left hand never closes properly.');
+  const outcome = castFate('yelena', points >= 3 ? 'live' : points === 2 ? 'mark' : 'die', `Went over the hull first near ${system().name}.`, 'Left hand never closes properly.', 'gunner');
   const lead = backup ? 'You send a second hand over with her. ' : '';
   if (outcome === 'die') {
     return lead + 'She goes over first, as she said she would. The channel carries the first shot, and then something that is not a voice, and then the party, shouting her name. You bring the ship alongside, and you are too late, and everyone knows it. When the others come back across the gap they carry the ring-ball from her bag, and nobody says anything about the foul.'

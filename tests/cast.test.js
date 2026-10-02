@@ -448,3 +448,39 @@ test('calling off the boarding costs her the bench', async () => {
   assert.deepEqual(r, { text: true, benched: true, delta: -3, dead: false, marks: 0, memorial: [] });
   await done();
 });
+
+test('a dead core character is not a contact, a blockade ally or a friend at the ending', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const run = opinion => {
+      marsHired(); addThird();
+      story().ending = Object.keys(ENDINGS)[0];
+      person('c:yelena').opinion = opinion;
+      castFate('yelena', 'die', 'x', 'x');
+      G.mode = 'landed'; UI.tab = 'crew'; UI.render();
+      return { listed: document.body.innerHTML.includes('Yelena'), allies: blockadeForces().allies, friends: +/Across the solar system, (\d+)/.exec(epilogueEvent().text)[1] };
+    };
+    return { loved: run(6), unloved: run(0) };
+  });
+  assert.equal(r.loved.listed, false, 'not in the crew screen contacts');
+  assert.equal(r.loved.allies, r.unloved.allies, 'does not answer the blockade call');
+  assert.equal(r.loved.friends, r.unloved.friends, 'is not counted among those who would cross a burn');
+  await done();
+});
+
+test('her mark takes a gunner point even when she is posted somewhere else', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    start({ background: 'mars', mode: 'hired', post: 'gunner' }); addThird();
+    const y = person('c:yelena'), st = G.state, before = { role: y.role, pilot: y.skills.pilot, skill: y.skill, gunner: y.skills.gunner };
+    st.armor = ship().armor;  // sound hull and a gunner at 3: two points, a mark
+    CAST.yelena.scenes.pivot.choices[0].run();
+    return { before, after: { pilot: y.skills.pilot, skill: y.skill, gunner: y.skills.gunner }, marks: (castRec('yelena').marks || []).length };
+  });
+  assert.notEqual(r.before.role, 'gunner'); assert.equal(r.before.gunner, 3);
+  assert.deepEqual(r.after, { pilot: r.before.pilot, skill: r.before.skill, gunner: 2 });
+  assert.equal(r.marks, 1);
+  await done();
+});
