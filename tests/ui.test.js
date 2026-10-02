@@ -360,3 +360,16 @@ test('the title screen describes the build, and sits in the middle of the panel'
   const { top, bottom } = out['earth-hired'];
   assert.ok(Math.abs(top - bottom) < 4, `centred: ${top} above, ${bottom} below`);
 });
+
+test('the landed panel uses a tall window, and keeps its old size in a short one', async () => {
+  const sizes = {};
+  for (const [name, viewport] of [['tall', { width: 1280, height: 900 }], ['short', { width: 1280, height: 600 }]]) {
+    const { ev, page, done } = await open({ viewport });
+    await ev(() => { while (G.dialog) finishEvent(); UI.tab = 'trade'; UI.render(); });
+    sizes[name] = await page.evaluate(() => ({ panel: document.querySelector('#panel').getBoundingClientRect().height, body: document.querySelector('#panel .body').getBoundingClientRect().height, win: innerHeight }));
+    await done();
+  }
+  assert.ok(sizes.tall.panel > 700 && sizes.tall.panel <= 780, `tall panel ${sizes.tall.panel}`);
+  assert.ok(sizes.tall.body >= 330, `tall content window ${sizes.tall.body}`);
+  assert.ok(sizes.short.panel <= sizes.short.win * 0.94 + 1, `short panel ${sizes.short.panel} fits ${sizes.short.win}`);
+});

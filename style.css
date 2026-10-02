@@ -73,7 +73,7 @@ canvas { display: block; touch-action: none; }
   #panel {
     margin: auto;
     width: min(820px, 96vw);
-    height: min(600px, 94vh);
+    height: min(780px, 94vh);  /* the header, scene, tabs and dock take about 345px of it; the rest is the content window */
     border: 1px solid var(--line);
     box-shadow: 0 0 60px #000;
     padding: 0;
