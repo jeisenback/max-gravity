@@ -499,3 +499,18 @@ test('a hired hand who is not the gunner watches the duel; the gunner picks the 
   assert.ok(r.pilot.ended && r.gunner.ended); assert.ok(r.pilot.credits && r.gunner.credits, 'and your savings are not in it');
   await done();
 });
+
+test('at the bar a hand cannot offer passage, because the berths are the captain\'s', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    const talk = () => { const p = makePerson('earth'); p.goal = 'home'; p.traits = ['pious', 'kind']; registerPerson(p); return talkEvent({ p, known: false }).choices.map(c => c.label); };
+    startHired(); const hand = talk();
+    startGame({ slot: 1, background: 'earth', captain: 'Ines Okafor' }); while (G.dialog) finishEvent(); G.state.tutorial = null;
+    return { hand, owner: talk() };
+  });
+  assert.ok(!r.hand.some(l => /passage/i.test(l)), `a hand has no passage to offer (${r.hand})`);
+  assert.ok(r.owner.some(l => /passage/i.test(l)), 'an owner still does');
+  assert.ok(r.hand.includes('Ask for a blessing on the ship') && r.owner.includes('Ask for a blessing on your ship'), 'and the ship is not theirs to bless as theirs');
+  await done();
+});

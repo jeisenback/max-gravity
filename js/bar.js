@@ -144,7 +144,8 @@ function talkEvent(pat) {
       return Math.random() < 0.6 ? `${p.first} thinks for a moment, tilting their head, and then, with the air of a person choosing the best pastry in a case, says: "${addRumor()}" They nod, once, as if closing a book.` : `${p.first} laughs, and leans back, delighted to be asked. "Did you hear? ${feedLine().replace('[Feed] ', '')}" And, with that, they are off, into twenty minutes of gossip that you will remember, at odd hours, for weeks.`;
     } },
   ];
-  if (!pat.known || p.opinion >= 0) choices.push({ label: `Offer ${p.first} passage`, can: () => !pat.offered && berthsFree() > 0 && p.goal !== 'fresh', run() {
+  // A berth is the captain's to give, so a hand has none to offer.
+  if (!hired() && (!pat.known || p.opinion >= 0)) choices.push({ label: `Offer ${p.first} passage`, can: () => !pat.offered && berthsFree() > 0 && p.goal !== 'fresh', run() {
     pat.offered = true;
     met(pat);
     const o = travelOffer(p);
@@ -176,7 +177,7 @@ function talkEvent(pat) {
     pat.home = true; met(pat); like(p, 2, `The captain let me talk about ${p.home}.`);
     return `${p.first} lights up, like a lamp coming on in a window. You hear about the view from the ring, where the light comes in at dusk, the smell of the market, the man who sold fried dough on the corner, and a sister who writes every week and always signs off the same way. They talk until the bar is nearly empty, and, when they finally stop, they buy the next round, and their eyes are very bright.`;
   } });
-  if (p.traits.includes('pious')) choices.push({ label: 'Ask for a blessing on your ship', can: () => !pat.blessed, run() {
+  if (p.traits.includes('pious')) choices.push({ label: hired() ? 'Ask for a blessing on the ship' : 'Ask for a blessing on your ship', can: () => !pat.blessed, run() {
     pat.blessed = true; met(pat); like(p, 1, 'I blessed the captain\'s ship.');
     return `${p.first} closes their eyes, and lays two fingers on the transponder, very gently, and says a few words over your ship's name, in a low, ancient cadence you do not know. The whole bar seems, for a moment, to lean in. When they are done, they open their eyes, and smile, and touch your hand. It can't hurt. It might, you think, even help.`;
   } });
