@@ -418,7 +418,7 @@ test('a hired hand is offered only what is theirs: their own post, and no owner\
   await done();
 });
 
-test('downtime for a hired hand: not the captain\'s drills, and a chance to practise your post', async () => {
+test('downtime for a hired hand: not the captain\'s drills, and a chance to practice your post', async () => {
   const { ev, done } = await open();
   await ev(hiredHelpers);
   const r = await ev(() => {
@@ -426,7 +426,7 @@ test('downtime for a hired hand: not the captain\'s drills, and a chance to prac
     startHired('engineer'); const st = G.state; st.tutorial = null; st.armor = 10;
     uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
     const eng = labels(), engText = downtimeEvent(true).text;
-    const x0 = skillXp('engineer'); const prac = downtimeEvent(true).choices.find(c => c.label === 'Practise at your post'); const said = prac.run(); const gained = skillXp('engineer') - x0;
+    const x0 = skillXp('engineer'); const prac = downtimeEvent(true).choices.find(c => c.label === 'Practice at your post'); const said = prac.run(); const gained = skillXp('engineer') - x0;
     startHired('pilot'); G.state.armor = 10; uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
     const pilot = labels();
     startGame({ slot: 1, background: 'earth', captain: 'Ines' }); while (G.dialog) finishEvent(); G.state.armor = 10; uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
@@ -434,10 +434,10 @@ test('downtime for a hired hand: not the captain\'s drills, and a chance to prac
     return { eng, engText, gained, said, pilot, owner, ownerText };
   });
   assert.ok(!r.eng.includes('Run drills') && !r.eng.includes('Check on passengers'), 'the drills and the rounds of the berths are the captain\'s');
-  assert.ok(r.eng.includes('Practise at your post') && r.eng.includes('Maintenance'), 'an engineer keeps the hull');
-  assert.ok(!r.pilot.includes('Maintenance') && r.pilot.includes('Practise at your post'), 'a pilot does not');
+  assert.ok(r.eng.includes('Practice at your post') && r.eng.includes('Maintenance'), 'an engineer keeps the hull');
+  assert.ok(!r.pilot.includes('Maintenance') && r.pilot.includes('Practice at your post'), 'a pilot does not');
   assert.match(r.engText, /What do you do/); assert.equal(r.gained, 3); assert.match(r.said, /engineer post/);
-  assert.ok(r.owner.includes('Run drills') && !r.owner.includes('Practise at your post'), 'an owner is unchanged');
+  assert.ok(r.owner.includes('Run drills') && !r.owner.includes('Practice at your post'), 'an owner is unchanged');
   assert.match(r.ownerText, /What does the ship do/);
   await done();
 });

@@ -92,7 +92,7 @@ function hiredFunds(fn) {
   try { return fn(); } finally { h.fund = st.credits; st.credits = mine; }
 }
 
-// How the captain's style (captains.js) shows in a run. A captain with no entry (an older save) keeps the old behaviour:
+// How the captain's style (captains.js) shows in a run. A captain with no entry (an older save) keeps the old behavior:
 // always the best run, no fear of a dangerous lane, listens at HEARD, gives a bonus at BONUS.
 const TRADE_PICKS = { 1: 4, 2: 3, 3: 2, 4: 1, 5: 1 };  // trade: how many of the best-scoring runs the captain may take one of
 const laneRisk = sid => { const d = captainEntry(); return d ? 1 - 0.6 * ((5 - d.captain.nerve) / 4) * danger(sid) : 1; };  // a cautious captain marks a dangerous lane down
@@ -140,7 +140,7 @@ const PRACTICE = {
   engineer: 'You go through the plant one system at a time, with the manual open and a meter in your teeth, and find three things nobody had written down.',
   comms: 'You sit on the bands for a watch, learning the rhythm of a dozen stations, and which of them are lying about their transponders.',
 };
-ACTIVITIES.practise = { hiredOnly: true, label: 'Practise at your post', can: () => !!hired(), run() { if (!hired()) return 'There is nothing to practise.'; gainSkill(hired().post, 3); return `${PRACTICE[hired().post]} (Experience at the ${POSTS[hired().post].name.toLowerCase()} post.)`; } };
+ACTIVITIES.practise = { hiredOnly: true, label: 'Practice at your post', can: () => !!hired(), run() { if (!hired()) return 'There is nothing to practice.'; gainSkill(hired().post, 3); return `${PRACTICE[hired().post]} (Experience at the ${POSTS[hired().post].name.toLowerCase()} post.)`; } };
 // What a hired hand can do with downtime: not the captain's drills or rounds of the berths, and the hull is the engineer's.
 const hiredMay = (id, a) => a.hiredOnly ? !!hired() : !hired() || (!['drills', 'visit'].includes(id) && (id !== 'repair' || hired().post === 'engineer'));
 
@@ -318,7 +318,7 @@ const namesOf = list => list.map(c => `${c.first} ${c.last}`).join(' and ');
 // she is offered once (by Tomas, or by a broker if he is not aboard) for DEAL_DAYS, at a price that follows how Tomas
 // thinks of you. buyIn id USED_ID buys her; she comes worn. If the deal lapses she is gone, and the ordinary list is left.
 const USED_ID = 'used';
-const USED_PRICE = { good: 17000, mid: HIRED_TARGET, bad: 21000 };  // the broker's price is the bad one: no favour
+const USED_PRICE = { good: 17000, mid: HIRED_TARGET, bad: 21000 };  // the broker's price is the bad one: no favor
 const USED_OFFER_AT = Math.round(0.55 * USED_PRICE.mid), DEAL_DAYS = 56;
 const USED_CONDITION = { drive: 70, life: 65, shields: 60, sensors: 70, fire: 45 };
 const buyShip = id => (id === USED_ID ? { ...SHIPS.lightfreighter, name: 'Ore Runner (used)', price: hired() && hired().deal ? hired().deal.price : USED_PRICE.mid, forSale: dealOpen() } : SHIPS[id]);
@@ -330,7 +330,7 @@ function dealScene(planet) {
   const price = tomas ? (tomas.opinion >= OPINION.FRIEND ? USED_PRICE.good : tomas.opinion < 0 ? USED_PRICE.bad : USED_PRICE.mid) : USED_PRICE.bad;
   h.deal = { price, day: st.day, until: st.day + DEAL_DAYS, broker: !tomas };
   const fault = 'Her drive is all right. Her life support I would watch. Her fire control is nearly done, and you should not trust it.';
-  const tell = price < USED_PRICE.mid ? `${fmt(price)} cr, and that is the price for you.` : price > USED_PRICE.mid && tomas ? `${fmt(price)} cr, and I am not going to pretend it is a favour.` : `${fmt(price)} cr.`;
+  const tell = price < USED_PRICE.mid ? `${fmt(price)} cr, and that is the price for you.` : price > USED_PRICE.mid && tomas ? `${fmt(price)} cr, and I am not going to pretend it is a favor.` : `${fmt(price)} cr.`;
   return tomas ? {
     title: 'A Hull on the Apron', personal: true,
     text: `Tomas is waiting at the head of the ramp when you come back from the yard office, wiping his hands on a rag that has not been clean in years. "Come and see something," he says. He walks you the length of the apron to a long, tired Ore Runner with a mismatched hatch and primer on one flank. "I have rebuilt her three times," he says. "Three owners, and every one of them sold her out from under me. I fixed what the last one skipped, and the next one skipped it again. She is for sale once more, and cheap, because the last owner let her go." He lays a palm flat on her hull. "${fault} I know every fault she has. I would rather you had her than a stranger. ${tell} Give it a few weeks and she will be gone."`,

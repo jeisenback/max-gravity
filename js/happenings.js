@@ -34,7 +34,7 @@ function pickHappening(where, planet) {
   return null;
 }
 
-// A storylet as a candidate; `story` picks the main-story ones, otherwise the colour ones.
+// A storylet as a candidate; `story` picks the main-story ones, otherwise the color ones.
 function storyletCandidate(where, story) {
   const keep = s => isStory(s) === story;
   if (!pickStorylet(where, keep)) return [];

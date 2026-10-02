@@ -21,12 +21,12 @@ const CAST = {
     bio: 'She flew the Lisbon to Luna ferry for nine years, until the night she put a failing shuttle down on an unlit pad instead of ditching it as the tower ordered. Forty-one people walked off. She lost her license for the way she did it, and she kept the logbook.',
     // The story you learn sitting with her (family.js uses it in place of an invented one): the same slots, her own life.
     story: {
-      left: 'a licence lost over one landing', rel: 'old ferry chief', name: 'Duarte',
-      hope: 'her licence back, with the Lisbon board\'s stamp on it',
-      homeDetail: 'the ferry pads at dawn, the harbour bell, and an ocean you could hear from the arcology at night',
+      left: 'a license lost over one landing', rel: 'old ferry chief', name: 'Duarte',
+      hope: 'her license back, with the Lisbon board\'s stamp on it',
+      homeDetail: 'the ferry pads at dawn, the harbor bell, and an ocean you could hear from the arcology at night',
       favor: null,  // her own asks are her scenes below
       news: {
-        good: ['{who} stood up for her at the licence board', '{who} sent the new ferry schedule with her old slot circled', '{who} has retired to a house with a garden and a view of the water'],
+        good: ['{who} stood up for her at the license board', '{who} sent the new ferry schedule with her old slot circled', '{who} has retired to a house with a garden and a view of the water'],
         bad: ['{who} is ill, and the old ferry crew are passing a hat', '{who} wrote that the board has put her appeal back another season', '{who} says the old ferry is being scrapped'],
       },
     },
@@ -50,7 +50,7 @@ const CAST = {
       },
       mid1: {
         days: 10, title: 'Dead Stick',
-        text: 'Ines catches you in the corridor, one hand on the bulkhead. "I want to run a dead-stick flip. Drive off, ten seconds, the whole turn on cold thrusters. It is the one thing I have never been allowed to practise, because it frightens the people who sign things." She waits. "I will not do it without somebody to say stop."',
+        text: 'Ines catches you in the corridor, one hand on the bulkhead. "I want to run a dead-stick flip. Drive off, ten seconds, the whole turn on cold thrusters. It is the one thing I have never been allowed to practice, because it frightens the people who sign things." She waits. "I will not do it without somebody to say stop."',
         choices: [
           { label: 'Stand by the cutoff while she does it', run() { castLike('ines', 2, 'You stood by the cutoff while I flew it dead.'); castXp('ines', 'pilot', 4); return 'You put your hand on the cutoff and she cuts the drive. The ship drifts in a silence you feel in your teeth. Ines turns her on cold thrusters, a long clean arc, and when she brings the drive back up she is grinning so widely that she has to look away. "Ten seconds," she says. "I did not touch the stop." You did not say it.'; } },
           { label: 'Not on a loaded burn', run() { castLike('ines', 1, 'You said not on a loaded burn, and you were right.'); return 'She nods once. "That is the correct answer," she says. "Ask me again when there is nothing aboard but air." She goes back to the helm, and flies the rest of the shift by the book.'; } },
@@ -111,7 +111,7 @@ const CAST = {
       },
       mid1: {
         days: 10, title: 'Money Home',
-        text: 'Tomas catches you in the galley with his jaw set. "I have a favour. Not a favour, a loan. My sister\'s transfer from the ring bounced, and I have not got the wage yet, and the rent on her flat is due." He says the number carefully, and does not meet your eye: two hundred credits. "I will pay it back from the first two pay days. I always pay it back."',
+        text: 'Tomas catches you in the galley with his jaw set. "I have a favor. Not a favor, a loan. My sister\'s transfer from the ring bounced, and I have not got the wage yet, and the rent on her flat is due." He says the number carefully, and does not meet your eye: two hundred credits. "I will pay it back from the first two pay days. I always pay it back."',
         personal: true,
         choices: [
           { label: 'Lend him 200 cr', can: () => G.state.credits >= 200, run() { G.state.credits -= 200; castLike('tomas', 3, 'You lent me two hundred credits for my sister\'s rent.'); castFlag('tomas', 'loan'); return 'He takes it with both hands. "Thank you," he says, and then, because it is not enough, he says it again in Igbo. By the second pay day the two hundred is in your account, with an extra: a ring of braided wire, on a note that says "for luck, from a man who understands machines".'; } },
@@ -156,13 +156,13 @@ const CAST = {
         title: 'The Gunner Who Argued with the Feed',
         text: 'On the first burn you find the gunner in the galley with her bad leg up on a chair, shouting at a ring-ball replay. "Foul," Yelena Quint says, to the screen, to the room, to nobody. "Look at the elbow. Look at it." Nobody has looked at the elbow. She says it with the loyalty of someone who has said it, to many rooms, for years. The feed, which has the decency not to answer, shows the elbow again, slowly.',
         choices: [
-          { label: 'Take the ref\'s side', run: () => { castLike('yelena', 2, 'You took the ref\'s side, and I enjoyed it very much.'); castXp('yelena', 'gunner', 2); return 'You say the elbow was clean, and for ten minutes she is the happiest you have seen her, taking you through the replay frame by frame with a fork for a pointer. By the end she has you pointing too. "You are wrong," she says, delighted, "and you know exactly where, and that is the whole game." She goes back to her post with a slight spring in the step, favouring the good knee.'; } },
+          { label: 'Take the ref\'s side', run: () => { castLike('yelena', 2, 'You took the ref\'s side, and I enjoyed it very much.'); castXp('yelena', 'gunner', 2); return 'You say the elbow was clean, and for ten minutes she is the happiest you have seen her, taking you through the replay frame by frame with a fork for a pointer. By the end she has you pointing too. "You are wrong," she says, delighted, "and you know exactly where, and that is the whole game." She goes back to her post with a slight spring in the step, favoring the good knee.'; } },
           { label: 'Ask about the knee', run: () => { castLike('yelena', 1, 'You asked about the knee, and I told you.'); return 'She looks at you for a moment, deciding. "Twenty-six," she says. "Final. A girl from Hellas came in low, and I heard it before I felt it." She taps the brace. "They say it was nobody\'s fault. That is the worst part. Nobody to be angry with." She turns the replay off, which is how you know it cost her something.'; } },
         ],
       },
       mid1: {
         days: 10, title: 'Pickup Game',
-        text: 'Yelena finds you with a ball under one arm. It is a proper ring-ball, scuffed grey, and it has clearly travelled a long way in the bottom of a bag. "The hold is empty," she says. "Twenty tonnes of empty. I am going to put a ring at each end and play, and every person aboard is going to play, and you are going to be on my side." She does not make it sound like a question, quite.',
+        text: 'Yelena finds you with a ball under one arm. It is a proper ring-ball, scuffed gray, and it has clearly traveled a long way in the bottom of a bag. "The hold is empty," she says. "Twenty tonnes of empty. I am going to put a ring at each end and play, and every person aboard is going to play, and you are going to be on my side." She does not make it sound like a question, quite.',
         choices: [
           { label: 'Clear the hold and play', run() { castLike('yelena', 2, 'You played, and you were on my side.'); castXp('yelena', 'gunner', 3); return 'It is the worst ring-ball ever played. Low gravity, no lines, a ring made of tied cable. You are on her side, and she captains you the way she must once have captained the Ravens: loudly, unfairly and with her whole attention, and, in the end, with joy. You lose by two. She does not mention the score once, but at the evening meal she asks everybody, by name, how they feel about next week.'; } },
           { label: 'Not in the hold', run() { castLike('yelena', -1, 'You said no to the game in the hold.'); return '"Sure," she says, and puts the ball back in her bag, carefully, as if it might notice. She is professional for the rest of the burn. It is the quietest the galley has been, and nobody can quite say why.'; } },
@@ -172,7 +172,7 @@ const CAST = {
         days: 25, title: 'The Final',
         text: 'It is the night of the ring-ball final, and the Ravens\' old rivals from Hellas are playing in it. Yelena has spent two days pretending she does not care. She has the watch. "It is nothing," she says, at the hatch, with the bright, flat voice of a person standing very still. "It is only a final. I will listen to the radio. Radio is fine."',
         choices: [
-          { label: 'Take her watch', run() { castLike('yelena', 3, 'You took my watch on the night of the final.'); return 'You tell her to go. She does not argue, which is how you know. You hear the roar from the galley, through the deck, from the second quarter on: shouted refereeing, a long agonised groan, and, near the end, a silence so complete you think the feed has gone. In the morning there is a small black raven drawn on the back of your hand, in marker, and she does not mention it.'; } },
+          { label: 'Take her watch', run() { castLike('yelena', 3, 'You took my watch on the night of the final.'); return 'You tell her to go. She does not argue, which is how you know. You hear the roar from the galley, through the deck, from the second quarter on: shouted refereeing, a long agonized groan, and, near the end, a silence so complete you think the feed has gone. In the morning there is a small black raven drawn on the back of your hand, in marker, and she does not mention it.'; } },
           { label: '"It is your watch."', run() { castLike('yelena', -1, 'You said it was my watch on the night of the final.'); return '"Of course," she says. She stands the watch perfectly, to the minute, with the radio turned very low, and says nothing at all, then or after. When you come to relieve her she is at the guns with her chin up, and a very small, very tidy expression of someone who has decided not to be angry.'; } },
         ],
       },
@@ -230,7 +230,7 @@ const CAST = {
       },
       mid1: {
         days: 10, title: 'A Tip',
-        text: 'Ruben comes to you with the look of a man holding something that might burst. "Captain. I have been listening to a freight dispatcher who thinks his channel is private. He is quite wrong. I have something, and I will tell you, but I should say that it was heard, not, strictly, asked for." He lowers his voice. "It is worth money. But it is a little bit in the way that a favour is worth money."',
+        text: 'Ruben comes to you with the look of a man holding something that might burst. "Captain. I have been listening to a freight dispatcher who thinks his channel is private. He is quite wrong. I have something, and I will tell you, but I should say that it was heard, not, strictly, asked for." He lowers his voice. "It is worth money. But it is a little bit in the way that a favor is worth money."',
         choices: [
           { label: 'Act on the tip', run() { castLike('ruben', 2, 'You acted on what I heard.'); castXp('ruben', 'slicer', 2); const tip = addRumor(); return `He tells you, and he is right to be careful: ${tip} He watches your face while you take it in, fiddling with the lid of the thermos. "Not a word," he says, delighted, "about where you heard it. A good listener has no name."`; } },
           { label: 'Leave it', run() { castLike('ruben', 1, 'You left the dispatcher\'s secret alone.'); return 'He deflates a little, and then rallies, which is what he does. "You are quite right," he says. "It is not mine to sell." He goes back to the post, and, for a day or so, is a little more careful about where he points the dish.'; } },
@@ -272,7 +272,7 @@ const CAST = {
       },
       intro: {
         title: 'The List',
-        text: 'Bexa Oyelaran has the helm, and, taped inside the console cover where only the pilot can see it, a list. It is written in small, even handwriting, in a dozen colours of ink: names, and beside each name a date and a hull number. She sees you looking. "The crews," she says, evenly. "The ones I found. All of them. Living, and otherwise." She does not close the cover. "Most people ask me not to say."',
+        text: 'Bexa Oyelaran has the helm, and, taped inside the console cover where only the pilot can see it, a list. It is written in small, even handwriting, in a dozen colors of ink: names, and beside each name a date and a hull number. She sees you looking. "The crews," she says, evenly. "The ones I found. All of them. Living, and otherwise." She does not close the cover. "Most people ask me not to say."',
         choices: [
           { label: 'Ask about the living ones', run: () => { castLike('bexa', 2, 'You asked about the ones who lived.'); castXp('bexa', 'pilot', 2); return 'Her face changes completely. "Oh," she says, and for the first time, smiles. "Eleven. Eleven of them lived. There is a boy on Pallas who sends me a card every year with the same drawing of a tug, and a woman at Hygiea who runs a water shop and gives me a free flask every time I dock." She runs a finger down the list, stopping at the names, one at a time. "That is the part I put the list here for."'; } },
           { label: 'Ask about the others', run: () => { castLike('bexa', 1, 'You asked about the others, and listened.'); return 'She is silent for a long time. "Thirty-one," she says. "I make sure I say their names once a year, out loud, on the day I found them. Somebody should." She closes the cover, finally, gently, as you would a door on someone sleeping. "Thank you for asking. It is not what most people ask."'; } },
@@ -288,7 +288,7 @@ const CAST = {
       },
       mid2: {
         days: 25, title: 'The Ghost on the Scope',
-        text: 'The scope paints a ship at forty thousand kilometres, closing. Bexa looks at it for exactly four seconds. "Ghost," she says. Then, because you have not moved: "In the Belt, a ghost is mostly a real ship. But this one has a ghost\'s manners: it is too tidy, the heading is a very slightly wrong shade of straight. Sensor echo off the ice. I have seen it forty times." She waits. "I would like to ignore it."',
+        text: 'The scope paints a ship at forty thousand kilometers, closing. Bexa looks at it for exactly four seconds. "Ghost," she says. Then, because you have not moved: "In the Belt, a ghost is mostly a real ship. But this one has a ghost\'s manners: it is too tidy, the heading is a very slightly wrong shade of straight. Sensor echo off the ice. I have seen it forty times." She waits. "I would like to ignore it."',
         choices: [
           { label: 'Trust her', run() { castLike('bexa', 2, 'You trusted me about the ghost on the scope.'); castXp('bexa', 'pilot', 2); return 'You tell her to carry on. She nods once, and she does, and for the next twenty minutes the whole ship waits with her, listening to the thing she is certain is not there. At the end, the contact goes pale, and thins, and is gone, like breath on a pane. Bexa lets out a long, slow exhale. "Echo," she says. "Forty-one." She does not say thank you. She puts a small tick on the inside of the console cover.'; } },
           { label: 'Raise the alarm anyway', run() { castLike('bexa', -1, 'You raised the alarm about a ghost I had called.'); return 'The alarm goes, and the crew goes to stations, and in twenty minutes the contact fades to nothing, as she said it would. Bexa takes the ship off alert herself, calmly, without a word, and flies on. "Better safe," she says at last, and means it, almost. She is quiet for a day, and a little more careful, afterward, about telling you what she sees.'; } },
@@ -310,14 +310,14 @@ const CAST = {
     skills: { gunner: 3, engineer: 2, pilot: 0, slicer: 0 }, captain: { trade: 4, nerve: 2, thrift: 2 },
     ambition: 'Wants to stop flinching, and run a ship where nobody gets hurt on their watch.',
     bio: 'Pax ran a drill laser on a Ceres ice crew from sixteen, cutting blocks to the gram, until a coupling failed and the crew\'s foreman was hurt with Pax at the controls. It was nobody\'s fault, and nobody has been able to convince Pax of that.',
-    chatter: ['Pax is on the range, again, with a perfect score and a tight jaw.', 'Pax: "I know the numbers. The numbers are fine. It is the part after the numbers I am bad at."', 'Pax checks the coupling on the gun mount for the fifth time this watch, and says nothing, and checks again.', 'Pax is reading the manual for a fire control system that Pax has already memorised, for comfort.', 'Pax: "It is funny. I am not nervous when it is only me and the target. It is when there is somebody beside me."'],
+    chatter: ['Pax is on the range, again, with a perfect score and a tight jaw.', 'Pax: "I know the numbers. The numbers are fine. It is the part after the numbers I am bad at."', 'Pax checks the coupling on the gun mount for the fifth time this watch, and says nothing, and checks again.', 'Pax is reading the manual for a fire control system that Pax has already memorized, for comfort.', 'Pax: "It is funny. I am not nervous when it is only me and the target. It is when there is somebody beside me."'],
     scenes: {
       meet: {
         title: 'The Kid at the Range',
         text: 'In the dock bar there is a dart-laser board, and a young person at it with a perfect, unnerving score, who flinches at every cheer. Nobody is cheering for long. "Pax Iwu," says the kid, when you sit. "Ice-drill operator. Was." The hand with the dart goes very still. "I am good with a laser. I am the best on the Spin. I want a job where nobody is standing next to the thing when it fires." They look up. "That is a bad thing to say, I know."',
         choices: [
           { label: 'Offer them the guns', can: () => berthsFree() > 0, run: () => castJoin('pax', 'The dart goes down, carefully, as if it might do something on its own. "Really?" Pax says, and then, because that sounded like asking for too much: "I mean, thanks. Yes. I mean, I will try not to flinch." You tell them the flinching can come, too. Pax looks as though nobody has ever told them that before, and picks up a very small bag.') },
-          { label: '"Not this time."', run: () => castLater('pax', '"Right," Pax says, to the board, and puts a dart in the centre, and then another beside it. "Sure. I am around. I am always around. I am here every evening." They say it lightly. It is an effort, and it shows.') },
+          { label: '"Not this time."', run: () => castLater('pax', '"Right," Pax says, to the board, and puts a dart in the center, and then another beside it. "Sure. I am around. I am always around. I am here every evening." They say it lightly. It is an effort, and it shows.') },
         ],
       },
       intro: {
@@ -340,7 +340,7 @@ const CAST = {
         days: 25, title: 'The Foreman\'s Message',
         text: 'A message from Ceres has been sitting unopened in Pax\'s queue for three days, with a sender name Pax will not say aloud. You know what it is when you see their face. "It is from Foreman Dagny," Pax says, finally. "I do not know what it says. I know what I think it says. I have thought it so many times that I do not need to read it." They are holding the handheld at arm\'s length, like something hot.',
         choices: [
-          { label: 'Offer to sit with them while they read it', run() { castLike('pax', 3, 'You sat with me while I read the foreman\'s message.'); castXp('pax', 'gunner', 2); castFlag('pax', 'foreman'); return 'You sit on the deck beside them, with your back to the bulkhead, saying nothing, and Pax opens it. It is short. The foreman is walking again, with a stick, and does not blame anybody, and would like very much to see the kid some day. Pax reads it twice, and puts the handheld face-down on their knee, and cries, quite quietly, for about a minute. Then Pax wipes their face on a sleeve and says, "He says to practise. He says I have the best hands on the Spin." They laugh, a damp, astonished sound.'; } },
+          { label: 'Offer to sit with them while they read it', run() { castLike('pax', 3, 'You sat with me while I read the foreman\'s message.'); castXp('pax', 'gunner', 2); castFlag('pax', 'foreman'); return 'You sit on the deck beside them, with your back to the bulkhead, saying nothing, and Pax opens it. It is short. The foreman is walking again, with a stick, and does not blame anybody, and would like very much to see the kid some day. Pax reads it twice, and puts the handheld face-down on their knee, and cries, quite quietly, for about a minute. Then Pax wipes their face on a sleeve and says, "He says to practice. He says I have the best hands on the Spin." They laugh, a damp, astonished sound.'; } },
           { label: 'Tell them to read it when they are ready', run() { castLike('pax', 0, 'You told me to read it when I was ready.'); return '"Yes," Pax says. "When I am ready." It sounds like the right thing, and they put the handheld away. It stays unopened for the rest of the burn, and you notice, when you pass the weapons bay, that Pax has taken it out, and is holding it, and looking at the sender\'s name, and putting it back.'; } },
         ],
       },

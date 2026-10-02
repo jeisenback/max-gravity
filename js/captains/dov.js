@@ -1,12 +1,12 @@
 'use strict';
 
-// Dov Adair and his first officer Ilsa Brandt (js/captains/ilsa.js). The warm talker: collects favours and passengers, tells
+// Dov Adair and his first officer Ilsa Brandt (js/captains/ilsa.js). The warm talker: collects favors and passengers, tells
 // the same three stories well, remembers your family's names. His fund does not balance, and has not for two years. Her
 // text is hers (js/captains/ilsa.js); his uses "he". {post} is the hand's post and {names} who left with them.
 
 CAPTAINS.dov = {
   first: 'Dov', last: 'Adair', pronouns: 'he', culture: 'earth', home: 'Marseille Arcology', age: 47, traits: ['talkative', 'generous'],
-  bio: 'Always has a passenger and a story. He gives out wages and favours with the same open hand, and keeps the books the way some people keep a drawer.',
+  bio: 'Always has a passenger and a story. He gives out wages and favors with the same open hand, and keeps the books the way some people keep a drawer.',
   wants: 'To be liked, and not to be alone on the bridge at night.', fears: 'Silence, and being found out.',
   captain: { trade: 2, nerve: 2, thrift: 1 }, wage: 50, share: 0.08, hears: -1, bonus: 0, talk: 1.5,
   xo: 'ilsa',
@@ -47,7 +47,7 @@ CAPTAINS.dov = {
       admit: 'You say it late. He puts a hand on your arm. "Thank you for saying so," he says. "I would rather be told. People think I would rather not." For a moment he does not talk, and you hear how quiet the galley is.',
     },
     'cap-favour': {
-      text: 'Captain Adair asks whether you would stand an extra watch so a passenger can sleep. He asks the way he asks everything, as if the favour were yours to give him and the hour a present he had been hoping for. It is not in the articles. "I will owe you one," he says. "I owe a lot of people one."',
+      text: 'Captain Adair asks whether you would stand an extra watch so a passenger can sleep. He asks the way he asks everything, as if the favor were yours to give him and the hour a present he had been hoping for. It is not in the articles. "I will owe you one," he says. "I owe a lot of people one."',
       stand: 'You take it. The hours go slowly, and the passenger sleeps, and in the morning the captain has told the whole galley what you did, and who for, and what the passenger\'s mother said when she heard.',
       fee: 'He pays it out of the cash box, forty, and adds ten on top for no reason he gives. The watch passes like any other.',
       beg: '"Of course," he says at once, brightly. "Of course. No, no." He goes to ask somebody else. It takes him a little longer than it should to find them.',
