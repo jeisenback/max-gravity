@@ -373,3 +373,17 @@ test('the landed panel uses a tall window, and keeps its old size in a short one
   assert.ok(sizes.tall.body >= 330, `tall content window ${sizes.tall.body}`);
   assert.ok(sizes.short.panel <= sizes.short.win * 0.94 + 1, `short panel ${sizes.short.panel} fits ${sizes.short.win}`);
 });
+
+test('the port scene banner is 96px on desktop and 92px on a phone, and still draws', async () => {
+  const out = {};
+  for (const [name, viewport, mobile] of [['desktop', { width: 1280, height: 800 }, false], ['phone', { width: 390, height: 844 }, true]]) {
+    const { ev, page, done } = await open({ viewport, mobile });
+    await ev(() => { while (G.dialog) finishEvent(); UI.render(); });
+    await page.waitForTimeout(200);
+    out[name] = await page.evaluate(() => { const c = document.getElementById('vs'), g = c.getContext('2d'), d = g.getImageData(0, 0, c.width, c.height).data; let lit = 0; for (let i = 0; i < d.length; i += 4) if (d[i] + d[i + 1] + d[i + 2] > 60) lit++; return { h: c.getBoundingClientRect().height, lit }; });
+    await done();
+  }
+  assert.equal(out.desktop.h, 96);
+  assert.equal(out.phone.h, 92);
+  assert.ok(out.desktop.lit > 50 && out.phone.lit > 50, `the scene has lit pixels: ${JSON.stringify(out)}`);
+});
