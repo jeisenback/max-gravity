@@ -126,3 +126,18 @@ test('the captain heads for a yard at the chapter\'s price, not the cheapest shi
   assert.equal(r.cheapShip, false, 'the Rock Hopper price is not the signal');
   await done();
 });
+
+// Seeds differ in luck (the answers are random), so the runs are checked one by one and the pay as a mean.
+test('about twenty runs reach the target, and the planner is never stuck', async () => {
+  const { soak } = require('../tools/soak');
+  const rs = [];
+  for (const seed of [1, 2, 3]) rs.push(await soak({ seed, legs: 40 }));
+  for (const r of rs) {
+    assert.ok(r.reached, `seed ${r.seed} never reached the target in ${r.runs} runs`);
+    assert.ok(r.reached.runs >= 14 && r.reached.runs <= 28, `seed ${r.seed}: ${r.reached.runs} runs`);
+    assert.equal(r.stuck, 0, `seed ${r.seed}: the captain had no plan`);
+    assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []);
+  }
+  const mean = rs.reduce((t, r) => t + r.avgPayPerRun, 0) / rs.length;
+  assert.ok(mean >= 800 && mean <= 1100, `mean pay per run ${Math.round(mean)}`);
+});

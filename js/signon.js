@@ -35,7 +35,7 @@ const SIGN_POSTS = {
   comms: () => 'You have the bands: tips, hails and the inbox are yours. You are the ship\'s ear.',
 };
 
-const SIGN_LEARN_XP = 8, SIGN_SHARE = 0.12;
+const SIGN_LEARN_XP = 8, SIGN_SHARE_UP = 1.2;  // signing on for the money asks for a fifth more of the share
 
 function signOnEvent() {
   const st = G.state, h = hired(), cap = st.people[h.captain], b = SIGN_ON[st.background] || SIGN_ON.earth;
@@ -49,7 +49,7 @@ function signOnEvent() {
     title: 'Signing On',
     text: [b.text(ctx), `${SIGN_POSTS[h.post](ctx.cap)}${beside}`, `${week} Why did you sign on?`].join('</p><p>'),
     choices: [
-      { label: 'For the money', run() { h.share = SIGN_SHARE; h.reason = 'money'; return b.money; } },
+      { label: 'For the money', run() { h.share = +(h.share * SIGN_SHARE_UP).toFixed(3); h.reason = 'money'; return b.money; } },
       { label: 'To learn the work', run() { gainSkill(h.post, SIGN_LEARN_XP); h.reason = 'learn'; return b.learn; } },
       { label: 'To be somewhere else', run() { like(cap, 1, 'You came aboard easy to get along with.'); for (const c of pair) like(c, 1, 'You came aboard easy to get along with.'); h.reason = 'away'; return b.away; } },
     ],

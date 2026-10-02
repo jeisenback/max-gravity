@@ -146,10 +146,9 @@ Each step gets its own plan when it starts.
 
 ## Open questions, settled at implementation
 
-- Whether the captain uses a crew berth, and the final roster count.
-- The XO's perk, if any, in `ROLE_PERKS` (the other roles have one).
+- Settled (#144): the captain is not in `st.crew` and takes no berth, so the roster is nine crew in ten berths. The XO's perk is flavour only (`ROLE_PERKS.xo`, no mechanics).
 - The deadline's exact length, the starting condition numbers, and the scene day thresholds.
-- The exact `HIRED_FUND` and the final wage and share numbers, from the soak.
+- Settled (#144): `HIRED_FUND` 12,000 cr, `HIRED_WAGE` 40, `HIRED_SHARE` 0.06 (0.072 for a hand who signed on for the money), `HIRED_TARGET` 19,000. The soak (`tools/soak.js`, seeds 1 to 6) reaches the target in 15 to 24 runs (about 90 to 160 days), at 800 to 1,300 cr per run to the hand.
 - Which events the cook and the ice hands take part in.
 
 ## Out of scope

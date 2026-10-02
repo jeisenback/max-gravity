@@ -40,7 +40,7 @@ test('the captain\'s screen has no post skills: what they pay you, and what you 
   const text = await page.innerText('#panel');
   assert.match(text, new RegExp(cap.name)); assert.match(text, /Captain, /);
   assert.doesNotMatch(text, /Post skills/i, 'a captain holds no post');
-  assert.match(text, /Your wage\s*40 cr\/day/); assert.match(text, /Your share\s*10% of each run/); assert.match(text, /Runs together\s*1/); assert.match(text, /You earned\s*170 cr/);
+  assert.match(text, /Your wage\s*40 cr\/day/); assert.match(text, /Your share\s*6% of each run/); assert.match(text, /Runs together\s*1/); assert.match(text, /You earned\s*170 cr/);
   assert.match(text, /captain of the .*, docked at/i);
   await done();
 });

@@ -128,7 +128,7 @@
 - [ ] **Step 4: Run to verify it passes,** then the full suite: `CHROMIUM_PATH=/opt/pw-browsers/chromium npm test`. Expected: `# fail 0`.
 - [ ] **Step 5: Commit** `js/hired.js`, `tests/chapter.test.js`, with the baseline and final soak numbers in the commit message. Fill the "Baseline" note below.
 
-**Baseline note (Task 1 step 5 and this task):** Ore Runner, 5,000 cr fund, wage 40, share 0.10: runs to 10,000 cr over seeds 1 to 6 were 8, 13, 13, 12, 13, 13 (average pay 712 to 1,222 cr per run, 5.4 days per run). Measured against the 19,000 target on the unchanged game (Ore Runner), seeds 1 to 6: runs to target 19, 24, 21, 21, 24, 22; average pay 804 to 1,004 cr per run; 5.6 to 7.1 days per run. Final values and the new soak results go here.
+**Baseline note (Task 1 step 5 and this task):** Ore Runner, 5,000 cr fund, wage 40, share 0.10: runs to 10,000 cr over seeds 1 to 6 were 8, 13, 13, 12, 13, 13 (average pay 712 to 1,222 cr per run, 5.4 days per run). Measured against the 19,000 target on the unchanged game (Ore Runner), seeds 1 to 6: runs to target 19, 24, 21, 21, 24, 22; average pay 804 to 1,004 cr per run; 5.6 to 7.1 days per run. Final: Ice Hauler, 12,000 cr fund, wage 40, share 0.06. Seeds 1 to 6 reach 19,000 cr in 24, 15, 21, 16, 23, 18 runs (85 to 162 days), average pay 808 to 1,322 cr per run (mean about 1,030), 4.9 to 6.8 days per run. The pacing test checks runs per seed and the mean pay over seeds 1 to 3, since the random answers make pay per seed noisy.
 
 ---
 

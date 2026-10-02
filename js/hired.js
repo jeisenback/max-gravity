@@ -14,6 +14,7 @@ const HIRED_SAVINGS = 300;
 // The rest of the crew, beside the four posts: a first officer, a quartermaster, a medic, a cook and two ice hands.
 const CHAPTER_CREW = [{ role: 'xo', skill: 2 }, { role: 'quartermaster', skill: 2 }, { role: 'medic', skill: 2 }, { role: 'cook', skill: 2 }, { role: 'icehand', skill: 1 }, { role: 'icehand', skill: 1 }];
 const HIRED_FUND = 12000;  // the ship's money, which buys the cargo for the 120 t hold
+const HIRED_WAGE = 40, HIRED_SHARE = 0.06;  // a day's wage and a share of each run's profit, tuned with tools/soak.js so about 20 runs reach the target
 const HIRED_TARGET = 19000;  // the used Ore Runner Tomas finds (the chapter's goal); the captain heads for a yard once you have it
 const wantsYard = () => G.state.credits >= HIRED_TARGET;
 const hired = () => (G.state && G.state.hired) || null;
@@ -61,7 +62,7 @@ function setupHired(o) {
     registerPerson(c);
     st.crew.push(c.id);
   }
-  st.hired = { captain: cap.id, post, since: st.day, wage: 40, share: 0.1, fund: HIRED_FUND, run: null, ledger: [], skill: { [post]: SKILL_STEPS[1] }, asked: 0 };
+  st.hired = { captain: cap.id, post, since: st.day, wage: HIRED_WAGE, share: HIRED_SHARE, fund: HIRED_FUND, run: null, ledger: [], skill: { [post]: SKILL_STEPS[1] }, asked: 0 };
   return [
     `You signed on to the ${home().name}, an ice hauler out of ${system().name}, under Captain ${cap.first} ${cap.last}. You are her ${POSTS[post].name.toLowerCase()}: the post is yours to work, and the captain picks where she goes.`,
     `You have ${HIRED_SAVINGS} credits to your name. Save toward a ship of your own.`,
