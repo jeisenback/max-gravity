@@ -196,7 +196,7 @@ test('downtime for a hired hand: a dozen additions, never for an owner, with the
   const r = await ev(() => {
     const out = {};
     out.defined = HAND_DOWNTIME.length;
-    const menu = () => { G.transit.lifeUsed = {}; G.state.eventSeen = {}; return downtimeEvent().choices.map(c => c.label); };
+    const menu = () => { G.transit.lifeUsed = {}; G.state.eventSeen = {}; return downtimeEvent(true).choices.map(c => c.label); };
     const extras = labels => labels.filter(l => HAND_DOWNTIME.some(d => d.label === l));
     startGame({ slot: 1, background: 'earth', captain: 'Ines Okafor', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent();
     G.state.tutorial = null; uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
@@ -240,7 +240,7 @@ test('hired downtime lands its effects, in savings and not the ship\'s purse', a
         const cap = person(h.captain), mates = crewPeople().map(f => f.p);
         const before = { fund: h.fund, cash: st.credits, cap: cap.opinion, mates: mates.map(m => m.opinion), xp: Object.assign({}, h.skill) };
         G.transit.lifeUsed = {};
-        const e = downtimeEvent(), i = e.choices.findIndex(c => c.label === label);
+        const e = downtimeEvent(true), i = e.choices.findIndex(c => c.label === label);
         if (i < 0) {  // not on the menu today: run it directly
           const text = d.run(); out[`${bg}:${label}`] = { text, cash: st.credits - before.cash, fund: h.fund - before.fund };
           continue;

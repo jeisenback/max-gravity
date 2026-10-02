@@ -310,14 +310,34 @@ const lifeHalf = () => (G.transit.flipped ? 'after' : 'before');
 
 const activityLabel = a => (typeof a.label === 'function' ? a.label() : a.label);
 
-// Downtime is a menu: one activity before the flip and one after.
-function downtimeEvent() {
+// Downtime is a menu: one activity before the flip and one after. There are many to choose from, so it shows five at a
+// time, mixed from the three kinds (the ship's own, a hand's, and what is on now) and turned on each time, so everything
+// comes round. The same five stay while that half of the burn is open.
+const DOWNTIME_SHOWN = 5;
+const baseActivities = () => Object.entries(ACTIVITIES).filter(([id, a]) => hiredMay(id, a)).map(([, a]) => a);
+function downtimeFive() {
+  const t = G.transit, st = G.state, half = lifeHalf(), ok = a => !a.can || a.can();
+  const lanes = [baseActivities().filter(ok), handDowntime().filter(ok), onNow().filter(ok)], every = lanes.flat();
+  if (every.length <= DOWNTIME_SHOWN) return every;
+  t.lifeShown = t.lifeShown || {};
+  const kept = (t.lifeShown[half] || []).map(l => every.find(a => activityLabel(a) === l)).filter(Boolean);
+  if (kept.length) return kept;
+  const turn = st.lifeTurn = (st.lifeTurn || 0) + 1;
+  const spun = lanes.map(l => (l.length ? l.slice(turn % l.length).concat(l.slice(0, turn % l.length)) : l));
+  const out = [];
+  for (let i = 0; out.length < DOWNTIME_SHOWN && spun.some(l => l.length > i); i++) for (const l of spun) if (l[i] && out.length < DOWNTIME_SHOWN) out.push(l[i]);
+  t.lifeShown[half] = out.map(activityLabel);
+  return out;
+}
+
+// `all` lists every option instead of five (for tests and the like).
+function downtimeEvent(all) {
   const t = G.transit;
   return {
     title: 'Downtime', personal: true,  // a hand's savings are their own, not the ship's purse
     text: hired() ? `A long burn and nowhere to go. What do you do with ${t.flipped ? 'the rest of the trip' : 'the time before the flip'}?` : `A long burn and nowhere to go. What does the ship do with ${t.flipped ? 'the rest of the trip' : 'the time before the flip'}?`,
     choices: [
-      ...[...Object.entries(ACTIVITIES).filter(([id, a]) => hiredMay(id, a)).map(([, a]) => a), ...handDowntime(), ...onNow()].map(a => ({
+      ...(all ? [...baseActivities(), ...handDowntime(), ...onNow()] : downtimeFive()).map(a => ({
         label: activityLabel(a), can: a.can,
         run() {
           t.lifeUsed = t.lifeUsed || {};

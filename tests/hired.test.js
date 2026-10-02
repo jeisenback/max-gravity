@@ -422,15 +422,15 @@ test('downtime for a hired hand: not the captain\'s drills, and a chance to prac
   const { ev, done } = await open();
   await ev(hiredHelpers);
   const r = await ev(() => {
-    const labels = () => { G.transit.lifeUsed = {}; return downtimeEvent().choices.map(c => c.label); };
+    const labels = () => { G.transit.lifeUsed = {}; return downtimeEvent(true).choices.map(c => c.label); };
     startHired('engineer'); const st = G.state; st.tutorial = null; st.armor = 10;
     uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
-    const eng = labels(), engText = downtimeEvent().text;
-    const x0 = skillXp('engineer'); const prac = downtimeEvent().choices.find(c => c.label === 'Practise at your post'); const said = prac.run(); const gained = skillXp('engineer') - x0;
+    const eng = labels(), engText = downtimeEvent(true).text;
+    const x0 = skillXp('engineer'); const prac = downtimeEvent(true).choices.find(c => c.label === 'Practise at your post'); const said = prac.run(); const gained = skillXp('engineer') - x0;
     startHired('pilot'); G.state.armor = 10; uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
     const pilot = labels();
     startGame({ slot: 1, background: 'earth', captain: 'Ines' }); while (G.dialog) finishEvent(); G.state.armor = 10; uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
-    const owner = labels(), ownerText = downtimeEvent().text;
+    const owner = labels(), ownerText = downtimeEvent(true).text;
     return { eng, engText, gained, said, pilot, owner, ownerText };
   });
   assert.ok(!r.eng.includes('Run drills') && !r.eng.includes('Check on passengers'), 'the drills and the rounds of the berths are the captain\'s');
