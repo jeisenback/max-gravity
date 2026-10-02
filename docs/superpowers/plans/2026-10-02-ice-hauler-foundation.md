@@ -128,7 +128,7 @@
 - [ ] **Step 4: Run to verify it passes,** then the full suite: `CHROMIUM_PATH=/opt/pw-browsers/chromium npm test`. Expected: `# fail 0`.
 - [ ] **Step 5: Commit** `js/hired.js`, `tests/chapter.test.js`, with the baseline and final soak numbers in the commit message. Fill the "Baseline" note below.
 
-**Baseline note (Task 1 step 5 and this task):** Ore Runner, 5,000 cr fund, wage 40, share 0.10: runs to 10,000 cr over seeds 1 to 6 were 8, 13, 13, 12, 13, 13 (average pay 712 to 1,222 cr per run, 5.4 days per run). Final values and the new soak results go here.
+**Baseline note (Task 1 step 5 and this task):** Ore Runner, 5,000 cr fund, wage 40, share 0.10: runs to 10,000 cr over seeds 1 to 6 were 8, 13, 13, 12, 13, 13 (average pay 712 to 1,222 cr per run, 5.4 days per run). Measured against the 19,000 target on the unchanged game (Ore Runner), seeds 1 to 6: runs to target 19, 24, 21, 21, 24, 22; average pay 804 to 1,004 cr per run; 5.6 to 7.1 days per run. Final values and the new soak results go here.
 
 ---
 
