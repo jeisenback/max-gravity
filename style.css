@@ -576,6 +576,10 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 .pips { display: flex; gap: 3px; } .pips u { flex: 1; height: 7px; background: #12202f; border-radius: 2px; text-decoration: none; } .pips u.on { background: var(--accent); }
 .con-read button.link, .con-part button.link { color: var(--text); padding: 0; }
 @container (min-width: 640px) { .char-id { grid-template-columns: 200px 1fr; } }
+/* The inbox filter chips: the active one is plain bold in the accent colour; the rest are links. */
+.con-filters { display: flex; flex-wrap: wrap; gap: 0 14px; margin: 4px 0 6px; }
+.con-filters button.link { min-height: 30px; padding: 0; }
+.con-filters button.link.on { color: var(--accent); text-decoration: none; font-weight: 600; }
 .con-feed { max-height: 300px; overflow-y: auto; padding: 8px 10px; display: grid; gap: 8px; align-content: start; }
 .con-msg { border-left: 2px solid var(--line); padding-left: 8px; font-size: 13px; }
 .con-msg.via-station { border-color: #6fb0ff; }

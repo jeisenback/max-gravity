@@ -45,6 +45,17 @@ function whereIs(c) {
   return c.ship ? `captain of the ${c.ship.name}, around ${SYSTEMS[c.haunt] ? SYSTEMS[c.haunt].name : 'the system'}` : c.location ? `last seen at ${c.location}` : 'whereabouts unknown';
 }
 
+// The last few runs with the captain: where, when, what was carried, and what it paid you (wage plus share).
+function captainRunsHtml() {
+  const ledger = (hired() && hired().ledger) || [];
+  if (!ledger.length) return conCard('Recent runs', '<p class="hint">No runs together yet. You are paid on arrival.</p>');
+  const rows = ledger.slice(0, 5).map(l => {
+    const good = (COMMODITIES.find(c => c.id === l.good) || {}).name || l.good || 'cargo';
+    return `<div class="con-read"><span>${esc(l.from)} to ${esc(l.to)}</span><b>+${fmt(l.wage + l.share)} cr</b></div><div class="hint">${dateOf(l.day)}, ${l.tons}t ${esc(good)}, profit ${fmt(l.profit)} cr</div>`;
+  }).join('');
+  return conCard('Recent runs', rows);
+}
+
 function characterPanel() {
   if (candidateOf(G.viewPerson)) return interviewPanel();
   const st = G.state, id = G.viewPerson, c = id === 'you' ? youPerson() : person(id);
@@ -65,7 +76,7 @@ function characterPanel() {
   // A captain holds no post: what they pay you and what you earn with them (a hired hand), or what you command (an owner).
   const command = !isCaptain ? '' : c.you
     ? conCard('Command', `${conRead('Ship', `${shipTitle()}, ${ship().name}`)}${conRead('Crew', `${st.crew.length}, ${berthsUsed()}/${ship().berths} berths`)}${(st.fleet || []).length ? conRead('Company', `${st.fleet.length} ship${st.fleet.length > 1 ? 's' : ''}`) : ''}`)
-    : hand && c.id === hand.captain ? conCard('Command', `${conRead('Your wage', `${fmt(hand.wage)} cr/day`)}${conRead('Your share', `${Math.round(hand.share * 100)}% of each run's profit`)}${conRead('Runs together', hand.ledger.length)}${conRead('You earned', `${fmt(hand.ledger.reduce((t, l) => t + l.wage + l.share, 0))} cr`)}${conRead('The ship\'s funds', `${fmt(hand.fund)} cr`)}`) : '';
+    : hand && c.id === hand.captain ? conCard('Command', `${conRead('Your wage', `${fmt(hand.wage)} cr/day`)}${conRead('Your share', `${Math.round(hand.share * 100)}% of each run's profit`)}${conRead('Runs together', hand.ledger.length)}${conRead('You earned', `${fmt(hand.ledger.reduce((t, l) => t + l.wage + l.share, 0))} cr`)}${conRead('The ship\'s funds', `${fmt(hand.fund)} cr`)}`) + captainRunsHtml() : '';
   const marked = marksOf(c).length ? conCard('Marks', marksOf(c).map(m => `<div class="hint">${esc(dateOf(m.day))}: ${esc(m.text)}</div>`).join('')) : '';
   const blurb = c.ambition ? `<div class="char-amb">${c.ambition}</div>` : c.bio ? `<div class="char-amb">${c.bio}</div>` : '';
   return consoleHtml({
