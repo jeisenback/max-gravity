@@ -114,6 +114,7 @@ CAPTAINS.hester = {
     cold: 'Captain Vance is at the foot of the ramp, and she has the papers ready. She does not offer her hand. "Your account is correct," she says. "Sign here, and here."',
     crew: '{names} will go with you. She looks at the crew list for a while. "That is a column I will have to fill again," she says, without heat.',
     secret: 'She does not mention the bank. She does not need to. "The first of the month," she says, "and the first after that. I will be there for them."',
+    repay: 410,
     repaid: 'She counts four hundred and ten onto the rail, the day you leave, as she said she would. You count it after her. It is correct.',
     xoDead: 'She does not look at the empty place on the watch bill. "I have taken Cato out of the book," she says. "I had to. It is the first time I did not want to."',
     xo: 'Cato is at the hatch, because the captain would not go and say it. "Take care of your people," he says. "They will take care of you. That is the whole job. I have been trying to tell her for years."',

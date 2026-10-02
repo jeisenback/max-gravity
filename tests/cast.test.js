@@ -107,7 +107,7 @@ test('every authored scene is complete: a title, text, two choices with results,
     return out;
   });
   assert.deepEqual(r.filter(x => x.bad.length), []);
-  assert.equal(r.length, 36, 'six characters, five scenes each, Yelena\'s pivot, and Cato\'s five');
+  assert.equal(r.length, 41, 'six characters, five scenes each, Yelena\'s pivot, and the first officers\' five each');
   await done();
 });
 
@@ -130,7 +130,7 @@ test('every choice of every scene runs and says what happened', async () => {
     return out;
   });
   assert.deepEqual(r.filter(x => !x.ok), []);
-  assert.equal(r.length, 74, 'six characters, five scenes, two choices, and the pivots\' three; and Cato\'s five scenes');
+  assert.equal(r.length, 85, 'six characters, five scenes, two choices, and the pivots\' three; and the first officers\' five scenes each');
   await done();
 });
 
@@ -578,7 +578,7 @@ test('every authored story is complete, and the Earth pair have one', async () =
     news: d.story.news && d.story.news.good.length >= 3 && d.story.news.bad.length >= 3,
     emoji: /[\u{1F300}-\u{1FAFF}☀-➿]/u.test(JSON.stringify(d.story)),
   }])));
-  assert.deepEqual(Object.keys(r).sort(), ['cato', 'ines', 'tomas'], 'the Earth pair and the first officer have stories');
+  assert.deepEqual(Object.keys(r).sort(), ['cato', 'ilsa', 'ines', 'tomas'], 'the Earth pair and the first officers have stories');
   for (const [k, v] of Object.entries(r)) assert.deepEqual(v, { fields: true, news: true, emoji: false }, k);
   await done();
 });

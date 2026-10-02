@@ -52,8 +52,7 @@ function captainScene(name) {
 
 // How you leave: read before the ship is yours, because the crew and the captain's record go with the hired game. The parts are the
 // entry's `goodbye`: an opening by how the captain feels about you, then a line for each of crew taken, the secret learned, the
-// first officer (dead or alive), a repaid loan, and a parting line. The choices set the captain's last opinion.
-const GOODBYE_LOAN = 410;
+// first officer (dead or alive), a repaid loan (`repaid` and `repay`, the credits), and a parting line. The choices set the captain's last opinion.
 function captainGoodbye() {
   const d = captainEntry(), g = d && d.goodbye;
   if (!g) return null;
@@ -62,12 +61,12 @@ function captainGoodbye() {
   const parts = [g[warmth]];
   if (friends.length) parts.push(g.crew.replace('{names}', namesOf(friends)));
   if (flags.secretKnown) parts.push(g.secret);
-  if (flags.lent) parts.push(g.repaid);
+  if (flags.lent && g.repaid) parts.push(g.repaid);
   if (castDead(d.xo)) parts.push(g.xoDead); else if (hiredXo() && g.xo) parts.push(g.xo);
   parts.push(g.parting);
   return {
     title: g.title, personal: true, text: parts.join('</p><p>'),
-    choices: g.choices.filter(c => !c.can || c.can(flags)).map(c => ({ label: c.label, run() { leavingCaptain = cap; try { if (flags.lent) G.state.credits += GOODBYE_LOAN; return c.run(); } finally { leavingCaptain = null; } } })),
+    choices: g.choices.filter(c => !c.can || c.can(flags)).map(c => ({ label: c.label, run() { leavingCaptain = cap; try { if (flags.lent) G.state.credits += g.repay || 0; return c.run(); } finally { leavingCaptain = null; } } })),
   };
 }
 // Each event hands on to the next: the last choice of one opens the one after.

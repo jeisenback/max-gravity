@@ -2,16 +2,16 @@
 
 // Sails the hired hand's captain for N runs with random answers and reports runs, days and pay: the tuning tool for the
 // chapter's economy (HIRED_FUND, HIRED_WAGE, HIRED_SHARE, HIRED_TARGET in js/hired.js).
-//   node tools/soak.js --seeds 1,2,3 --legs 40
+//   node tools/soak.js --seeds 1,2,3 --legs 40 [--captain hester]
 
 const { open, closeBrowser } = require('../tests/helpers');
 
-async function soak({ seed = 1, legs = 40, scope = 'earth-hired' } = {}) {
+async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = null } = {}) {
   const { ev, errors, ctx } = await open({ scope, seed });
-  const r = await ev(maxLegs => {
+  const r = await ev(([maxLegs, key]) => {
     const scenes = {}, bad = [], paid = [];
     const odd = t => /undefined|NaN|\[object|\{[a-z]+\}/.test(String(t));
-    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' });
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: key });
     const st = G.state;
     const target = typeof HIRED_TARGET === 'undefined' ? 19000 : HIRED_TARGET;
     const answer = () => {
@@ -56,7 +56,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired' } = {}) {
     const avg = (a, n) => Math.round(a / Math.max(1, n));
     return { runs, days: st.day, credits: st.credits, reached, stuck, scenes, bad,
       avgPayPerRun: avg(paid.reduce((a, b) => a + b, 0), paid.length), avgDaysPerRun: Math.round(10 * st.day / Math.max(1, runs)) / 10 };
-  }, legs);
+  }, [legs, captainKey]);
   await ctx.close();
   return { seed, ...r, errors };
 }
@@ -65,10 +65,10 @@ module.exports = { soak };
 
 if (require.main === module) {
   const arg = n => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : null; };
-  const seeds = (arg('seeds') || '1').split(',').map(Number), legs = Number(arg('legs') || 40);
+  const seeds = (arg('seeds') || '1').split(',').map(Number), legs = Number(arg('legs') || 40), captainKey = arg('captain');
   (async () => {
     for (const seed of seeds) {
-      const r = await soak({ seed, legs });
+      const r = await soak({ seed, legs, captainKey });
       console.log(`seed ${seed} runs ${r.runs} days ${r.days} credits ${r.credits} reached ${JSON.stringify(r.reached)} pay/run ${r.avgPayPerRun} days/run ${r.avgDaysPerRun} stuck ${r.stuck} bad ${r.bad.length} errors ${r.errors.length}`);
     }
     await closeBrowser();

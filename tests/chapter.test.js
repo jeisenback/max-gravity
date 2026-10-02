@@ -128,17 +128,24 @@ test('the captain heads for a yard at the chapter\'s price, not the cheapest shi
   await done();
 });
 
-// Seeds differ in luck (the answers are random), so the runs are checked one by one and the pay as a mean over four.
-test('about twenty runs reach the target, and the planner is never stuck', async () => {
+// Seeds differ in luck (the answers are random), so each captain's runs are checked seed by seed, and the pay as a mean per day.
+// The tuning aim is about 15 percent between captains; the test only guards against a captain who pays far more or less.
+test('about twenty runs reach the target with every captain, and the planner is never stuck', async () => {
   const { soak } = require('../tools/soak');
-  const rs = [];
-  for (const seed of [1, 2, 3, 4]) rs.push(await soak({ seed, legs: 40 }));
-  for (const r of rs) {
-    assert.ok(r.reached, `seed ${r.seed} never reached the target in ${r.runs} runs`);
-    assert.ok(r.reached.runs >= 14 && r.reached.runs <= 28, `seed ${r.seed}: ${r.reached.runs} runs`);
-    assert.equal(r.stuck, 0, `seed ${r.seed}: the captain had no plan`);
-    assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []);
+  const perDay = {};
+  for (const captainKey of ['hester', 'dov']) {
+    const rs = [];
+    for (const seed of [1, 2, 3, 4, 5]) rs.push(await soak({ seed, legs: 40, captainKey }));
+    for (const r of rs) {
+      assert.ok(r.reached, `${captainKey} seed ${r.seed} never reached the target in ${r.runs} runs`);
+      assert.ok(r.reached.runs >= 10 && r.reached.runs <= 30 && r.reached.day >= 60 && r.reached.day <= 170, `${captainKey} seed ${r.seed}: ${r.reached.runs} runs, day ${r.reached.day}`);
+      assert.equal(r.stuck, 0, `${captainKey} seed ${r.seed}: the captain had no plan`);
+      assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []);
+    }
+    const pay = rs.reduce((t, r) => t + r.avgPayPerRun, 0) / rs.length, days = rs.reduce((t, r) => t + r.avgDaysPerRun, 0) / rs.length;
+    assert.ok(pay >= 800 && pay <= 1400, `${captainKey}: mean pay per run ${Math.round(pay)}`);
+    perDay[captainKey] = pay / days;
   }
-  const mean = rs.reduce((t, r) => t + r.avgPayPerRun, 0) / rs.length;
-  assert.ok(mean >= 800 && mean <= 1200, `mean pay per run ${Math.round(mean)}`);  // about 1,000 measured; the band has room for the soak's own noise
+  const rates = Object.values(perDay), spread = Math.max(...rates) / Math.min(...rates);
+  assert.ok(spread <= 1.3, `pay per day across captains: ${JSON.stringify(perDay)}`);
 });
