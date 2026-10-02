@@ -65,6 +65,7 @@ function migrate(st) {
   st.story = st.story || { stage: 0, next: STORY_START_DAY, log: [] };
   if (st.captain) st.captain.name = cleanName(st.captain.name);
   for (const c of st.captains || []) { c.name = cleanName(c.name); c.fate = stripTags(c.fate); }
+  for (const m of st.memorial || []) m.cause = stripTags(m.cause);
   if (st.home) st.home.name = cleanName(st.home.name) || 'Second Chance';
   if (st.outpost) st.outpost.name = cleanName(st.outpost.name);
   st.v = SAVE_VERSION;
