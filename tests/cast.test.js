@@ -701,7 +701,7 @@ test('the memorial lists who, when, where and the cause, and escapes all of it',
   assert.equal(r.none, '');
   assert.match(r.html, /In memory/); assert.match(r.html, /Yelena/); assert.ok(r.html.includes(r.day)); assert.ok(r.html.includes(r.place));
   assert.match(r.html, /Lost with the &quot;Iron &amp; Ash&quot;/);
-  assert.doesNotMatch(r.html, /<script|<i>/, 'markup in the record is escaped');
+  assert.doesNotMatch(r.html, /<script|<i>/i, 'markup in the record is escaped');
   await done();
 });
 
