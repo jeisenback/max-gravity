@@ -50,7 +50,7 @@ function setupHired(o) {
   home().name = shipName(false);
   // The captain, and a crew with every role but yours. The main characters (cast.js) take their posts first.
   // An authored captain (captains.js) with their first officer; a game with none keeps a generated captain.
-  const captainKey = Object.keys(CAPTAINS).length ? pickCaptainKey() : null;
+  const captainKey = CAPTAINS[o.captainKey] ? o.captainKey : Object.keys(CAPTAINS).length ? pickCaptainKey() : null;  // o.captainKey: a test or a tester's choice
   const cap = captainKey ? captainPerson(captainKey) : registerPerson(makePerson(cultureOf(st.systemId)));
   cap.role = 'captain'; cap.job = 'captain';
   const free = ['pilot', 'gunner', 'engineer', 'slicer'].filter(r => r !== POSTS[post].role), placed = castCrew(st.background, free);
