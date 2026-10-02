@@ -382,7 +382,7 @@ function chapterEnd(id) {
   const st = G.state, h = hired(), cap = st.people[h.captain], friends = buyInCompanions(), oldName = home().name, days = st.day - h.since;
   return {
     title: 'Your Own Ship', personal: true,
-    text: `The ${buyShip(id).name} is on the apron at ${currentPlanet().name} with her ramp down and the hold empty. The papers have your name on them. You came aboard the ${oldName} ${days} days ago with ${fmt(HIRED_SAVINGS)} cr and a post to learn. ${captainEntry() ? '' : `Captain ${cap.last} shook your hand at the foot of the ramp and went back up it. `}${friends.length ? `${namesOf(friends)} ${friends.length > 1 ? 'are' : 'is'} already aboard, stowing a bag.` : 'Nobody came with you.'} The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.`,
+    text: `The ${buyShip(id).name} is on the apron at ${currentPlanet().name} with her ramp down and the hold empty. The papers have your name on them. You came aboard the ${oldName} ${days} days ago with ${fmt(HIRED_SAVINGS)} cr and a post to learn. ${captainEntry() ? '' : `Captain ${cap.last} shook your hand at the foot of the ramp and went back up it. `}${friends.length ? `${namesOf(friends)} ${friends.length > 1 ? 'are' : 'is'} already aboard, stowing a bag.` : 'Nobody came with you.'}${memorialNote()} The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.`,
     choices: [{ label: 'Keep flying', run: () => 'You walk up the ramp and shut the hatch behind you.' }],
   };
 }

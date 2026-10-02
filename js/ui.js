@@ -206,7 +206,7 @@ const UI = {
         const mood = CREW[id] ? '' : ` &middot; ${opinionWord(c.opinion)}`;
         return `<div class="mission">
           <div><b>${personLink(c)}</b>${(st.injured || {})[id] ? ' <span class="tag high">injured</span>' : ''} &middot; ${skill(c)}${traits(c)}${mood}
-            <div class="hint">${CREW[id] ? c.perk : ROLE_PERKS[c.role](c.skill)} Wage ${fmt(wage(id))} cr/day.</div></div>
+            <div class="hint">${CREW[id] ? c.perk : ROLE_PERKS[c.role](c.skill)} Wage ${fmt(wage(id))} cr/day.</div>${marksHtml(c)}</div>
           ${hired() ? '' : `<button data-action="dismiss" data-arg="${i}">Dismiss</button>`}
         </div>`;
       }).join('');
@@ -229,6 +229,7 @@ const UI = {
         ${mine || '<p class="hint">Just you. Crew take a berth each and are paid daily wages in transit.</p>'}
         ${hired() ? '' : `<p class="hint">Berths: ${berthsUsed()}/${ship().berths} used by crew and passengers. Unhappy crew will walk off the ship.</p>`}
         ${homeHtml()}
+        ${memorialHtml()}
         ${bondsHtml()}
         ${hired() ? '' : `<h3>Looking for work here</h3>
         ${forHire || '<p class="hint">Nobody in the bar is looking for a ship right now.</p>'}`}
