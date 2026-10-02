@@ -48,7 +48,7 @@ function voice(n, table, fallback) {
 function demandLine(n) {
   const c = n.persona;
   if (n.payer) return `Nothing personal, captain. ${n.payer} paid good money for your ship.`;
-  if (c.id && c.opinion <= -3) return 'You again. No deals this time. This is personal.';
+  if (c.id && c.opinion <= OPINION.GRUDGE) return 'You again. No deals this time. This is personal.';
   if (c.tributes) return 'You again! Same deal as last time, only the price has gone up.';
   return voice(n, PIRATE_DEMANDS, PIRATE_DEMAND);
 }
@@ -113,7 +113,7 @@ function pickKnownCaptain(kind) {
   const known = Object.values(G.state.people).filter(p => p.ship && p.ship.kind === kind
     && p.haunt === G.state.systemId && !G.npcs.some(n => n.persona === p));
   if (!known.length) return null;
-  const keen = known.filter(p => Math.abs(p.opinion) >= 3);
+  const keen = known.filter(p => Math.abs(p.opinion) >= OPINION.STRONG);
   return Math.random() < (keen.length ? 0.6 : 0.35) ? pick(keen.length ? keen : known) : null;
 }
 
@@ -146,7 +146,7 @@ function hailEvent(n) {
   }
 
   if (n.kind === 'pirate' && n.hostile) {
-    const hired = !!n.payer, grudge = c.id && c.opinion <= -3;
+    const hired = !!n.payer, grudge = c.id && c.opinion <= OPINION.GRUDGE;
     const tribute = Math.round(Math.max(500, st.credits * 0.08) * (1 + 0.5 * (c.tributes || 0)));
     const choices = [];
     if (grudge) {
@@ -212,7 +212,7 @@ function hailEvent(n) {
 
   if (n.kind === 'pirate') {
     return {
-      title, text: `${captain} ${c.id && c.opinion >= 3 ? 'recognizes you. "Our favorite customer.' : 'reads your transponder and relaxes. "One of ours.'} What do you need?"`,
+      title, text: `${captain} ${c.id && c.opinion >= OPINION.TRUSTED ? 'recognizes you. "Our favorite customer.' : 'reads your transponder and relaxes. "One of ours.'} What do you need?"`,
       choices: [
         { label: 'Any news?', can: () => !n.gossiped, run() { n.gossiped = true; return `"${addRumor()}"`; } },
         { label: 'Buy stolen luxury goods (5t at 250 cr/t)', can: () => !n.fenced && cargoFree() >= 5 && st.credits >= 1250, run() {
@@ -230,8 +230,8 @@ function hailEvent(n) {
   }
 
   // A trader you shot at, just now or on an earlier meeting.
-  if (n.hostile || (c.id && c.opinion <= -3)) {
-    const price = n.hostile && !(c.id && c.opinion <= -3) ? 500 : 1500;
+  if (n.hostile || (c.id && c.opinion <= OPINION.GRUDGE)) {
+    const price = n.hostile && !(c.id && c.opinion <= OPINION.GRUDGE) ? 500 : 1500;
     return {
       title, text: n.hostile && !n.wasShot ? `${captain}: "You! I remember you. Keep your distance."` : n.hostile ? `${captain}: "You shot at us! What kind of lunatic are you?"` : `${captain}: "Oh. It's you. We have nothing to say to you."`,
       choices: [
@@ -248,7 +248,7 @@ function hailEvent(n) {
 
   // A peaceful trader.
   const cid = bigCargo(), good = cid && COMMODITIES.find(x => x.id === cid);
-  const friend = c.id && c.opinion >= 3;
+  const friend = c.id && c.opinion >= OPINION.TRUSTED;
   const offer = good && Math.round(good.base * rand(0.95, 1.25) * (friend ? 1.1 : 1));
   const qty = cid && Math.min(10, st.cargo[cid]);
   const s = ship(), spare = Math.min(40, s.fuel - st.fuel);

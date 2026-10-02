@@ -217,7 +217,7 @@ function blockadeForces() {
     { kind: 'patrol', gov, story: false, shipId: 'cutter', name: `${PATROL_NAMES[gov]} "${shipName(false)}"` },
   ];
   const side = { belt: 3, mars: 3, earth: 2, aquilon: 1 }[s.side] || 0;  // ships of your side
-  const loved = alivePeople().filter(p => !G.state.crew.includes(p.id) && p.opinion >= 5).slice(0, 2).length;
+  const loved = alivePeople().filter(p => !G.state.crew.includes(p.id) && p.opinion >= OPINION.ALLY).slice(0, 2).length;
   return { foes, allies: side + loved, coalitionBlocks };
 }
 
@@ -286,13 +286,13 @@ function storyInSystem() {
   if (allies) for (let i = 0; i < allies[2]; i++) spawnFleetShip('cutter', allies[0], `${allies[1]} "${shipName(false)}"`, false);
   // People who love you come to help. People who hate you pay someone to make it worse.
   const people = alivePeople().filter(p => !G.state.crew.includes(p.id));
-  for (const p of people.filter(p => p.opinion >= 5).slice(0, 2)) {
+  for (const p of people.filter(p => p.opinion >= OPINION.ALLY).slice(0, 2)) {
     const n = spawnFleetShip('corsair', null, p.ship ? p.ship.name : `"${shipName(false)}"`, false);
     n.persona = p;
     n.captain = `${p.first} ${p.last}`;
     msg(`${n.name}: "${p.first} ${p.last} here. We heard you might need a hand."`);
   }
-  for (const p of people.filter(p => p.opinion <= -5).slice(0, 2)) {
+  for (const p of people.filter(p => p.opinion <= OPINION.HIRED_GUN).slice(0, 2)) {
     const n = spawnFleetShip('corsair', null, 'Hired gun', true);
     Object.assign(n, { kind: 'pirate', blockade: false, payer: `${p.first} ${p.last}` });
     msg(`A hired gun paid by ${p.first} ${p.last} has joined the blockade.`);
@@ -367,9 +367,9 @@ function epilogueEvent() {
     wren: 'Wren says she has been inside the Aquilon servers. She says nothing else.',
   };
   const crew = st.crew.map(id => (CREW[id] ? fates[id]
-    : person(id).opinion >= 2 ? `${fullName(person(id))} stays aboard, loyal as ever.` : `${fullName(person(id))} signs off at Ceres to find a quieter ship.`));
+    : person(id).opinion >= OPINION.FRIEND ? `${fullName(person(id))} stays aboard, loyal as ever.` : `${fullName(person(id))} signs off at Ceres to find a quieter ship.`));
   const known = alivePeople();
-  const friends = known.filter(p => p.opinion >= 2).length, enemies = known.filter(p => p.opinion <= -2).length;
+  const friends = known.filter(p => p.opinion >= OPINION.FRIEND).length, enemies = known.filter(p => p.opinion <= OPINION.ENEMY).length;
   const standing = FACTIONS.map(g => `${g === 'Pirate' ? 'Pirates' : g}: ${standingWord(repOf(g))}`).join(', ');
   const parts = [
     ENDINGS[e].text,

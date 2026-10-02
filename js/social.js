@@ -179,7 +179,7 @@ function feedLine() {
   const w = factionState().war;
   if (w) lines.push(`War dramas are all anyone in ${w.a} space watches now, and the ${w.b} feeds are no better.`);
   // Dock gossip about people you know.
-  const known = Object.values(st.people).filter(p => p.location && p.memories.length && Math.abs(p.opinion) >= 2);
+  const known = Object.values(st.people).filter(p => p.location && p.memories.length && Math.abs(p.opinion) >= OPINION.NOTABLE);
   if (known.length) {
     const p = pick(known), mem = p.memories[p.memories.length - 1].replace(/^(Day \d+|\d+ \w+ \d+): /, '');
     lines.push(`Dock gossip from ${p.location}: ${p.first} ${p.last} is still telling anyone who listens, "${mem}"`);
@@ -442,7 +442,7 @@ function welcomeBack() {
 function regularsAt(planet) {
   const st = G.state, aboard = new Set(paxAboard().map(m => m.pid));
   for (const p of Object.values(st.people)) {
-    if (!p.trips || p.location !== planet.name || p.opinion < 2 || st.crew.includes(p.id) || aboard.has(p.id) || (p.nextAsk || 0) > st.day || p.ship) continue;
+    if (!p.trips || p.location !== planet.name || p.opinion < OPINION.FRIEND || st.crew.includes(p.id) || aboard.has(p.id) || (p.nextAsk || 0) > st.day || p.ship) continue;
     p.nextAsk = st.day + 20;
     if (Math.random() > 0.6) continue;
     const reachable = Object.keys(SYSTEMS).filter(id => id !== st.systemId && inRange(st.systemId, id));
