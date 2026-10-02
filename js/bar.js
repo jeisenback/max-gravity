@@ -73,6 +73,7 @@ function fillBar(planet) {
   const known = Object.values(st.people).filter(p => p.location === planet.name && !st.crew.includes(p.id) && !aboard.has(p.id) && !p.ship)
     .sort((a, b) => Math.abs(b.opinion) - Math.abs(a.opinion)).slice(0, 2);
   G.patrons = [
+    ...castPatrons(),  // the main characters with a scene due (castbar.js)
     ...known.map(p => ({ p, known: true })),
     ...Array.from({ length: randInt(2, 4) }, () => ({ p: makePerson(Math.random() < 0.75 ? cultureOf(sid) : undefined), known: false })),
   ];
@@ -122,6 +123,7 @@ function travelOffer(p) {
 }
 
 function talkEvent(pat) {
+  if (pat.cast) return castBarEvent(pat);
   const p = pat.p, st = G.state, bar = G.barState.name, t0 = p.traits[0];
   const mem = p.memories.length ? p.memories[p.memories.length - 1].replace(/^(Day \d+|\d+ \w+ \d+): /, '') : null;
   const text = pat.known
@@ -192,10 +194,10 @@ function talkEvent(pat) {
 function barHtml() {
   const st = G.state, planet = currentPlanet();
   if (!G.patrons || G.barState.planet !== planet.name) fillBar(planet);
-  const b = barOf(planet), round = 25 * (4 + G.patrons.length);
-  const rows = G.patrons.map(({ p, known }, i) => `<div class="mission">
+  const b = barOf(planet), round = 25 * (4 + G.patrons.filter(x => !x.cast).length);
+  const rows = G.patrons.map(({ p, known, cast }, i) => `<div class="mission">
       <div><b>${p.first} ${p.last}</b>${known ? ` <span class="hint">(${opinionWord(p.opinion)})</span>` : ''}
-        <div class="hint">${known ? `Someone you know. ${p.memories.length ? p.memories[p.memories.length - 1] : ''}` : `${TRAITS[p.traits[0]].adj[0].toUpperCase()}${TRAITS[p.traits[0]].adj.slice(1)} ${p.job} from ${p.home}.`}</div></div>
+        <div class="hint">${cast ? 'Aboard with you, and at the bar tonight.' : known ? `Someone you know. ${p.memories.length ? p.memories[p.memories.length - 1] : ''}` : `${TRAITS[p.traits[0]].adj[0].toUpperCase()}${TRAITS[p.traits[0]].adj.slice(1)} ${p.job} from ${p.home}.`}</div></div>
       <button data-action="barTalk" data-arg="${i}">Talk</button>
     </div>`).join('');
   const hire = G.bar.map((c, i) => `<div class="mission">
@@ -220,11 +222,11 @@ Mods.register({
     M.on('landed', fillBar);
     M.action('barTalk', i => openEvent(talkEvent(G.patrons[Number(i)])));
     M.action('barRound', () => {
-      const st = G.state, cost = 25 * (4 + G.patrons.length);
+      const st = G.state, cost = 25 * (4 + G.patrons.filter(x => !x.cast).length);
       if (G.barState.round || st.credits < cost) return;
       G.barState.round = true;
       st.credits -= cost;
-      for (const pat of G.patrons) { met(pat); like(pat.p, 1, `The captain bought a round at ${G.barState.name}.`); }
+      for (const pat of G.patrons.filter(x => !x.cast)) { met(pat); like(pat.p, 1, `The captain bought a round at ${G.barState.name}.`); }
       if (isFaction(localGov())) changeRep(localGov(), 1);
       G.barState.note = (`You buy a round for the house. The room raises a glass to your ship, and someone at the bar tells you: "${addRumor()}"`);
     });
