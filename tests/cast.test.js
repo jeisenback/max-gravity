@@ -318,3 +318,31 @@ test('an old save without the new fields behaves as alive', async () => {
   assert.deepEqual(r, { dead: false, living: 2, live: 'live' });
   await done();
 });
+
+test('a dead character is never offered a meeting, and the next one is not stuck behind them', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    start(); const st = G.state, out = {};
+    st.crew = []; castRec('ines').status = 'dead';
+    st.day = 6; out.early = castDue();
+    st.day = 14; out.later = castDue();
+    return out;
+  });
+  assert.equal(r.early, null, 'Ines is not offered, and Tomas waits for his own day');
+  assert.equal(r.later, 'tomas');
+  await done();
+});
+
+test('a dead character is not returned to the crew', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    marsHired(); addThird();
+    castFate('yelena', 'die', 'x', 'x');
+    castReturn(person('c:yelena'));
+    return G.state.crew.includes('c:yelena');
+  });
+  assert.equal(r, false);
+  await done();
+});

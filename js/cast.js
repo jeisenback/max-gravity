@@ -385,6 +385,7 @@ function captainGrade(p) {
 }
 // Back with you, berth or no: a main character is not left stranded when their ship is sold or lost.
 function castReturn(p) {
+  if (p.cast && castDead(p.cast)) return;
   const st = G.state;
   if (!st.crew.includes(p.id)) st.crew.push(p.id);
   p.location = null;
@@ -412,9 +413,10 @@ function castDue() {
   const st = G.state, keys = CAST_PAIRS[st.background] || [];
   if (hired() || st.tutorial != null || !keys.length) return null;
   for (const [i, key] of keys.entries()) {
+    if (castDead(key)) continue;
     const rec = castRec(key);
     if (st.crew.includes(rec.pid)) continue;
-    const prior = keys[i - 1] && castRec(keys[i - 1]);
+    const prior = keys[i - 1] && !castDead(keys[i - 1]) && castRec(keys[i - 1]);
     if (prior && !st.crew.includes(prior.pid) && !prior.offered) return null;  // in a set order
     return st.day >= 5 + 9 * i && st.day >= (rec.next || 0) ? key : null;
   }
