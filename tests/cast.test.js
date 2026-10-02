@@ -95,8 +95,8 @@ test('every authored scene is complete: a title, text, two choices with results,
       for (const [name, sc] of Object.entries(d.scenes)) {
         const bad = [];
         if (!sc.title || sc.text.length < 100) bad.push('text');
-        if (sc.choices.length !== 2 || !sc.choices.every(c => c.label)) bad.push('choices');
-        if (['mid1', 'mid2', 'late'].includes(name) && !(sc.days > 0)) bad.push('days');
+        if (sc.choices.length !== (name === 'pivot' ? 3 : 2) || !sc.choices.every(c => c.label)) bad.push('choices');
+        if (['mid1', 'mid2', 'late', 'pivot'].includes(name) && !(sc.days > 0)) bad.push('days');
         if (/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/u.test(sc.text + sc.choices.map(c => c.label).join(''))) bad.push('emoji');
         out.push({ key, name, bad });
       }
@@ -104,7 +104,7 @@ test('every authored scene is complete: a title, text, two choices with results,
     return out;
   });
   assert.deepEqual(r.filter(x => x.bad.length), []);
-  assert.equal(r.length, 30, 'six characters, five scenes each');
+  assert.equal(r.length, 31, 'six characters, five scenes each, and Yelena\'s pivot');
   await done();
 });
 
@@ -127,7 +127,7 @@ test('every choice of every scene runs and says what happened', async () => {
     return out;
   });
   assert.deepEqual(r.filter(x => !x.ok), []);
-  assert.equal(r.length, 60, 'six characters, five scenes, two choices');
+  assert.equal(r.length, 63, 'six characters, five scenes, two choices, and the pivot\'s three');
   await done();
 });
 
@@ -386,5 +386,65 @@ test('a lost ship with no core characters aboard is unchanged', async () => {
     return { crew: G.state.crew, memorial: G.state.memorial || [] };
   });
   assert.deepEqual(r, { crew: [], memorial: [] });
+  await done();
+});
+
+test('the pivot comes after late, after sixty days, and only for Yelena', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    marsHired();
+    const st = G.state, rec = castRec('yelena'), out = {};
+    rec.arc = 4;
+    st.day = rec.since + 59; out.early = castNext('yelena');
+    st.day = rec.since + 60; out.on = (castNext('yelena') || {}).name;
+    start({ mode: 'hired' }); castRec('ines').arc = 4; out.ines = castNext('ines');
+    return out;
+  });
+  assert.equal(r.early, null); assert.equal(r.on, 'pivot'); assert.equal(r.ines, null, 'nobody else has a pivot yet');
+  await done();
+});
+
+test('the pivot outcome follows the state', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    const run = ({ medic = false, injured = false, hull = 'good', gunner = 3, third = true, backup = false }) => {
+      marsHired(); if (third) addThird();
+      const st = G.state; st.injured = {};
+      if (medic) { const m = makeCrewCandidate('earth'); m.role = 'medic'; m.skill = 1; registerPerson(m); st.crew.push(m.id); if (injured) st.injured[m.id] = true; }
+      st.armor = hull === 'good' ? ship().armor : hull === 'edge' ? ship().armor * 0.6 : Math.floor(ship().armor * 0.5);
+      person('c:yelena').skills.gunner = gunner;
+      const text = CAST.yelena.scenes.pivot.choices[backup ? 1 : 0].run();
+      const m = (st.memorial || [])[0];
+      return { text: typeof text === 'string' && text.length > 40, dead: castDead('yelena'), marks: (castRec('yelena').marks || []).length, cause: m ? m.cause : null };
+    };
+    return {
+      protected: run({ medic: true }), hullAndGun: run({}), bare: run({ hull: 'low' }), backup: run({ hull: 'low', backup: true }),
+      edge: run({ hull: 'edge' }), injuredMedic: run({ medic: true, injured: true, hull: 'low' }), rusty: run({ medic: true, gunner: 2 }),
+      pairOnly: run({ hull: 'low', third: false }),
+    };
+  });
+  assert.deepEqual(r.protected, { text: true, dead: false, marks: 0, cause: null }, 'three points: she lives');
+  assert.deepEqual(r.hullAndGun, { text: true, dead: false, marks: 1, cause: null }, 'two points: marked');
+  assert.equal(r.bare.dead, true, 'one point: dead'); assert.match(r.bare.cause, /^Went over the hull first near /);
+  assert.deepEqual(r.backup, { text: true, dead: false, marks: 1, cause: null }, 'backup is a point');
+  assert.equal(r.edge.dead, true, 'exactly 60 percent is not above it');
+  assert.equal(r.injuredMedic.dead, true, 'an injured medic does not count');
+  assert.equal(r.rusty.marks, 1, 'a gunner below 3 loses a point');
+  assert.deepEqual(r.pairOnly, { text: true, dead: false, marks: 1, cause: null }, 'with only the pair the floor turns it into a mark');
+  await done();
+});
+
+test('calling off the boarding costs her the bench', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    marsHired(); addThird();
+    const y = person('c:yelena'), before = y.opinion;
+    const text = CAST.yelena.scenes.pivot.choices[2].run();
+    return { text: typeof text === 'string' && text.length > 40, benched: !!castRec('yelena').flags.benched, delta: y.opinion - before, dead: castDead('yelena'), marks: (castRec('yelena').marks || []).length, memorial: G.state.memorial || [] };
+  });
+  assert.deepEqual(r, { text: true, benched: true, delta: -3, dead: false, marks: 0, memorial: [] });
   await done();
 });
