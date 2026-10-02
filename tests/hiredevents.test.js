@@ -294,7 +294,7 @@ test('a hand is not asked to rule on the crew, and the hints are for a hand', as
   });
   assert.deepEqual(r.hand, [], 'the captain\'s rulings are not a hand\'s to make');
   assert.ok(r.owner.length >= 2, `an owner still gets them (${r.owner})`);
-  assert.match(r.handTip, /practise your post/); assert.doesNotMatch(r.handTip, /drill/);
+  assert.match(r.handTip, /practice your post/); assert.doesNotMatch(r.handTip, /drill/);
   assert.match(r.ownerTip, /cook, drill/);
   assert.deepEqual(r.handHud, ['Burn: the captain\'s call']); assert.deepEqual(r.ownerHud, ['Burn: none (M)']);
   await done();

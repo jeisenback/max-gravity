@@ -10,7 +10,7 @@ const PORTRAIT_SKIN = ['#f1c9a5', '#d9a77a', '#b98156', '#8d5a3b', '#5e3b27'];
 const PORTRAIT_HAIR = ['#1a1210', '#2a1d18', '#5a3b22', '#8a6a3a', '#9aa3ab'];
 const ROLE_COLLAR = { pilot: '#1d3a5c', gunner: '#5c2a1d', engineer: '#5c4a1d', slicer: '#3a1d5c', quartermaster: '#1d5c3a', medic: '#1d5c5c', captain: '#34506e' };
 
-// A bust in the person's colours: skin, hair and its cut come from their id, the collar from their role.
+// A bust in the person's colors: skin, hair and its cut come from their id, the collar from their role.
 function portraitSvg(c) {
   const h = Math.abs(hash(String(c.id || c.name || 'x'))), skin = PORTRAIT_SKIN[h % 5], hair = PORTRAIT_HAIR[(h >> 3) % 5], cut = (h >> 6) % 3, collar = ROLE_COLLAR[c.role] || '#34506e';
   const cap = cut === 0 ? 'M58 88 Q60 40 100 38 Q142 40 142 88 Q130 62 100 62 Q70 62 58 88Z'

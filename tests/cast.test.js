@@ -566,7 +566,7 @@ test('letters from home are about their own people', async () => {
     return { good: run([0, 0, 0]), bad: run([0, 0.9, 0]) };  // each person draws: whether to write, good or bad, which
   });
   assert.match(r.good, /their sister Ngozi got the lease on the flat renewed/);
-  assert.match(r.good, /their old ferry chief Duarte stood up for her at the licence board/);
+  assert.match(r.good, /their old ferry chief Duarte stood up for her at the license board/);
   assert.match(r.bad, /their sister Ngozi says the rent on Lagos Ring has gone up again/);
   assert.match(r.bad, /their old ferry chief Duarte is ill, and the old ferry crew are passing a hat/);
   await done();

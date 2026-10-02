@@ -34,7 +34,7 @@ CAST.ilsa = {
   story: {
     left: 'a berth promised to her and given to someone with a cousin', rel: 'brother', name: 'Matthias',
     hope: 'a ship of her own, kept right, and an hour a day that is not somebody else\'s problem',
-    homeDetail: 'a tram that ran on time, a bakery on the corner that opened at four, and neighbours who left each other alone',
+    homeDetail: 'a tram that ran on time, a bakery on the corner that opened at four, and neighbors who left each other alone',
     favor: null,
     news: {
       good: ['{who} sent a photo of the bakery with a new awning', '{who} has been made foreman at the depot, and is insufferable about it', '{who} says the tram line is being extended past the old canal'],

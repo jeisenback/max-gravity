@@ -72,7 +72,7 @@ CAPTAINS.zoya = {
     secret: {
       confide: {
         title: 'The Hand of Cards',
-        text: 'Late in the watch, with the lights low, Captain Pell lays out a hand of cards that is not a game. Five cards, face up, and a name written on the back of each. "These are the people I owe," she says. "Dobrescu, you have met. The yard at Ceres. Two brothers who ran a fuel dock. A man I would not now ask a favour of. And my sister." She taps the last card. "It adds to a great deal more than the ship is worth. One good run clears it, or it would, if the market held, and I have been one run from it for six years." She is smiling. "Ansel knows. He keeps a sheet. It is the only document on this ship I am afraid of."',
+        text: 'Late in the watch, with the lights low, Captain Pell lays out a hand of cards that is not a game. Five cards, face up, and a name written on the back of each. "These are the people I owe," she says. "Dobrescu, you have met. The yard at Ceres. Two brothers who ran a fuel dock. A man I would not now ask a favor of. And my sister." She taps the last card. "It adds to a great deal more than the ship is worth. One good run clears it, or it would, if the market held, and I have been one run from it for six years." She is smiling. "Ansel knows. He keeps a sheet. It is the only document on this ship I am afraid of."',
         choices: [
           { label: 'Ask what one good run would have to be', run() {
             captainLike(1, 'You asked what the good run would have to be.'); captainFlag('secretKnown');

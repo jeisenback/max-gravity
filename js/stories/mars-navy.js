@@ -99,7 +99,7 @@ Mods.register({
       choices: [
         { label: 'Do it', effects: { q: { mcrn: 1 }, rep: { 'Mars Republic': 6, 'Belt Collective': -12 }, unrest: { ceres: 0.15 },
           log: 'Boarded and searched the Collective freighter Blue Ice for Naval intelligence.', news: 'A Martian reservist boards a Collective freighter at Ceres. The Collective protests.' },
-          result: 'The search takes four humiliating hours, with the whole crew of the Blue Ice lined up along the bulkhead, watching you paw through their bunks. It finds nothing. The captain, a lean, grey woman with a tattoo of a water drop on her neck, spits on your boots as you leave. Osei meets you on the dock afterward. "Good work," she says, and it sounds like an apology.' },
+          result: 'The search takes four humiliating hours, with the whole crew of the Blue Ice lined up along the bulkhead, watching you paw through their bunks. It finds nothing. The captain, a lean, gray woman with a tattoo of a water drop on her neck, spits on your boots as you leave. Osei meets you on the dock afterward. "Good work," she says, and it sounds like an apology.' },
         { label: '{crew} fakes the search records', when: { crew: 'slicer' },
           effects: { q: { mcrn: 1 }, rep: { 'Mars Republic': 2 }, log: 'Faked the search of the Blue Ice. Naval intelligence is satisfied, for now.' },
           result: '{crew:slicer} produces a flawless search log for a boarding that never happened, complete with photographs, a chain of custody, and a small comment about the quality of the coffee. Osei reads it twice, scrolling slowly, and looks at you for a long time over the top of the page. Then she closes the file. "I did not see this," she says, quietly, "and I am very glad I did not."' },
@@ -119,7 +119,7 @@ Mods.register({
     M.addStorylet({
       ...promotion, id: 'navy-promotion-refused',
       when: { planet: 'Mars', q: { mcrn: 4, mcrnRefused: 1, 'seen:navy-loyalty': 1 }, qBelow: { mcrnDone: 1, navyTask: 1 } },
-      text: 'No ceremony. Osei meets you on the docks, in the grey of an early shift change, with the bars in her pocket and the look of someone who has been arguing all night. "Intelligence wanted you out," she says, without preamble. "I told them a reservist who can say no is worth three who can\'t. It took a long time, and a great deal of shouting. You will never make commander. You are still ours."',
+      text: 'No ceremony. Osei meets you on the docks, in the gray of an early shift change, with the bars in her pocket and the look of someone who has been arguing all night. "Intelligence wanted you out," she says, without preamble. "I told them a reservist who can say no is worth three who can\'t. It took a long time, and a great deal of shouting. You will never make commander. You are still ours."',
       choices: [{ label: 'Take the bars', effects: { set: { mcrnDone: 1 }, credits: 8000, rep: { 'Mars Republic': 5 }, log: 'Promoted to Lieutenant in the MCRN Reserve, despite refusing an order.' },
         result: 'You pin them on yourself, and Osei watches with her arms folded, and, very slightly, nods. The bars come with an 8,000 cr bonus and a note in your file that Osei says she will deny writing. "Do not let it go to your head," she says. It is the kindest thing she has ever said to you, and you both know it.' }],
     });

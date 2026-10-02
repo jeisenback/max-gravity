@@ -95,7 +95,7 @@ CAST.cato = {
     },
     late: {
       days: 55, title: 'What Cato Knows',
-      text: 'Cato has the watch bill open on the galley table, and he is not looking at it. "I have to say something, and I do not want it to sound like a favour," he says. "The captain keeps the books where I can see them. I have known about the bank since the spring. If she loses the ship, the hold gang goes in three directions by the end of the month. I have seen that happen once. I will not see it twice." He rubs his face. "I am not asking you for anything. I am telling you where I stand. If it goes badly, I would rather you were somewhere I could find you."',
+      text: 'Cato has the watch bill open on the galley table, and he is not looking at it. "I have to say something, and I do not want it to sound like a favor," he says. "The captain keeps the books where I can see them. I have known about the bank since the spring. If she loses the ship, the hold gang goes in three directions by the end of the month. I have seen that happen once. I will not see it twice." He rubs his face. "I am not asking you for anything. I am telling you where I stand. If it goes badly, I would rather you were somewhere I could find you."',
       choices: [
         { label: 'Ask him to tell you if it goes badly', run() {
           castLike('cato', 2, 'You asked me to tell you if it went badly.'); castFlag('cato', 'told');

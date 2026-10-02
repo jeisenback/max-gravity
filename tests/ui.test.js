@@ -358,7 +358,7 @@ test('the title screen describes the build, and sits in the middle of the panel'
   assert.match(out.full.sub, /trader's life/);
   assert.match(out['earth-hired'].sub, /Version \d/);
   const { top, bottom } = out['earth-hired'];
-  assert.ok(Math.abs(top - bottom) < 4, `centred: ${top} above, ${bottom} below`);
+  assert.ok(Math.abs(top - bottom) < 4, `centered: ${top} above, ${bottom} below`);
 });
 
 test('the landed panel uses a tall window, and keeps its old size in a short one', async () => {

@@ -1,7 +1,7 @@
 'use strict';
 
 // The opinion cutoffs (OPINION in js/people.js): one named table, with every place that compares someone's opinion of you
-// using it. The behaviour tests pin the boundaries so the cutoffs stay where they were.
+// using it. The behavior tests pin the boundaries so the cutoffs stay where they were.
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');

@@ -37,7 +37,7 @@ Mods.register({
     scene({
       id: 'cw-voight', where: 'port', when: at(1),
       title: 'A Man From Aquilon',
-      text: 'A man in an immaculate grey suit is waiting at your berth, which should not be possible: it is a private dock, and the door was locked. He is tall, unhurried, and very clean, with a small silver pin of a water drop in his lapel. He holds out a hand, and, when you do not take it, lowers it without any sign of offense. "Anselm Voight, Aquilon Hydrologics, asset recovery. You have recovered some company property, captain: a data core from the Persephone\'s Due. We would like it back, and we are happy to pay a generous finder\'s fee. Eight thousand credits. No questions." His smile is a small precise thing. "I think you will find that I am a very reasonable man."',
+      text: 'A man in an immaculate gray suit is waiting at your berth, which should not be possible: it is a private dock, and the door was locked. He is tall, unhurried, and very clean, with a small silver pin of a water drop in his lapel. He holds out a hand, and, when you do not take it, lowers it without any sign of offense. "Anselm Voight, Aquilon Hydrologics, asset recovery. You have recovered some company property, captain: a data core from the Persephone\'s Due. We would like it back, and we are happy to pay a generous finder\'s fee. Eight thousand credits. No questions." His smile is a small precise thing. "I think you will find that I am a very reasonable man."',
       choices: [
         { label: 'Sell it (8,000 cr)', effects: { credits: 8000, story: { stage: 'sold' }, storyLog: 'Sold the Persephone\'s core to Anselm Voight of Aquilon Hydrologics for 8,000 cr.' },
           result: 'Voight smiles and pockets the core, neatly, in an inside pocket, the way a man pockets a folded handkerchief. The credits arrive before he has finished turning away. "A pleasure, captain. You will find Aquilon never forgets its friends." Something about the way he says it stays with you: not a threat, exactly, but the calm of a man who has never been wrong about anyone\'s price. You watch him walk the length of the dock, and not once does he look back.' },
@@ -90,7 +90,7 @@ Mods.register({
     scene({
       id: 'cw-contact-ceres', where: 'port', when: at(5, 'Ceres Station'),
       title: 'The Collective Council',
-      text: 'Councillor Ama Tembo meets you in a pump room, because it is the only room on Ceres the council trusts: every wall a dripping tangle of pipe, every surface cold and damp, and the low steady thrum of the pumps in the floor. She is a broad, weathered woman in a Collective jacket, with grey braids and a voice that carries. She reads the core in silence, one finger moving down the screen. When she reaches the end, she sits down heavily on a crate. "Three months of rationing," she says. "Children on half water. Old people who did not make it. And it was a business plan." She looks up, and her eyes are terrible. "Give this to the Collective and we will fight with it. But we need people to believe the ration is breaking first."',
+      text: 'Councillor Ama Tembo meets you in a pump room, because it is the only room on Ceres the council trusts: every wall a dripping tangle of pipe, every surface cold and damp, and the low steady thrum of the pumps in the floor. She is a broad, weathered woman in a Collective jacket, with gray braids and a voice that carries. She reads the core in silence, one finger moving down the screen. When she reaches the end, she sits down heavily on a crate. "Three months of rationing," she says. "Children on half water. Old people who did not make it. And it was a business plan." She looks up, and her eyes are terrible. "Give this to the Collective and we will fight with it. But we need people to believe the ration is breaking first."',
       choices: [
         { label: ['Give the proof to the Collective', { when: { standingBelow: { 'Belt Collective': -14 } }, text: '(the Collective does not trust you)' }],
           when: { standing: { 'Belt Collective': -14 } },
@@ -117,7 +117,7 @@ Mods.register({
     scene({
       id: 'cw-contact-luna', where: 'port', when: at(5, 'Luna'),
       title: 'Coalition Intelligence',
-      text: 'Director Samuel Achebe of Coalition intelligence receives you in an office overlooking the Luna shipyards, with the grey plain spread below in the harsh, clean light, and a slow parade of hulls in the drydocks. He is a tall, courtly man in his sixties, with a soft, warm baritone and a way of looking at you as though you were the only person in the room. He reads the core with evident distress. "You have done Earth a great service, captain," he says. "This needs careful handling. A panic on Ceres helps no one." He folds his hands. "We will also need Ms. Castellane. For her own protection, of course. You understand."',
+      text: 'Director Samuel Achebe of Coalition intelligence receives you in an office overlooking the Luna shipyards, with the gray plain spread below in the harsh, clean light, and a slow parade of hulls in the drydocks. He is a tall, courtly man in his sixties, with a soft, warm baritone and a way of looking at you as though you were the only person in the room. He reads the core with evident distress. "You have done Earth a great service, captain," he says. "This needs careful handling. A panic on Ceres helps no one." He folds his hands. "We will also need Ms. Castellane. For her own protection, of course. You understand."',
       choices: [
         { label: ['Give the proof to the Coalition', { when: { standingBelow: { 'Earth Coalition': -14 } }, text: '(the Coalition does not trust you)' }],
           when: { standing: { 'Earth Coalition': -14 } },
@@ -172,7 +172,7 @@ Mods.register({
     scene({
       id: 'cw-tracer', where: 'port', when: at('mars1', 'Hermes Foundry'),
       title: 'The Tracer',
-      text: 'Hermes Foundry\'s comm hub sits behind two security checkpoints and a very bored dock technician, who is eating noodles out of a foam cup and has, by the look of him, been on shift for eleven hours. The hub itself is a squat grey building at the base of a radiator fin, ringed with warning signs, its antennae glowing faintly in the furnace light. In your pocket, Ueda\'s tracer feels heavier than it should.',
+      text: 'Hermes Foundry\'s comm hub sits behind two security checkpoints and a very bored dock technician, who is eating noodles out of a foam cup and has, by the look of him, been on shift for eleven hours. The hub itself is a squat gray building at the base of a radiator fin, ringed with warning signs, its antennae glowing faintly in the furnace light. In your pocket, Ueda\'s tracer feels heavier than it should.',
       choices: [
         { label: '[{crew}] Have {crew} slip it in', when: { crew: 'slicer' },
           effects: { story: { stage: 'mars2' }, storyLog: 'Planted Commander Ueda\'s tracer in Hermes Foundry\'s comm net.' },
@@ -214,7 +214,7 @@ Mods.register({
     M.addStorylet({
       id: 'cw-second-thoughts', where: 'transit', priority: 10, when: { aboard: 'mira-luna' },
       title: 'Second Thoughts',
-      text: 'Mira watches Luna grow in the forward screen, grey and enormous, ringed with the pinpricks of a thousand drydock lights. She has not said a word in hours, and when she speaks, at last, her voice is dry and quiet. "You know what they will do with it. Achebe will lock the proof in a vault and me in a nice quiet room, and Ceres will keep running dry. I have seen it before, in a different coat." She turns to you, and, for the first time, she is pleading. "Drop me at Ceres Station instead. Let the Collective have it. Please."',
+      text: 'Mira watches Luna grow in the forward screen, gray and enormous, ringed with the pinpricks of a thousand drydock lights. She has not said a word in hours, and when she speaks, at last, her voice is dry and quiet. "You know what they will do with it. Achebe will lock the proof in a vault and me in a nice quiet room, and Ceres will keep running dry. I have seen it before, in a different coat." She turns to you, and, for the first time, she is pleading. "Drop me at Ceres Station instead. Let the Collective have it. Please."',
       choices: [
         { label: '"Trust me. Achebe gave his word."', effects: { storyAdd: { miraTrust: -1 } }, result: 'She says nothing for the rest of the burn. She sits at the viewport with her arms wrapped around herself, watching Luna grow, and every so often she touches the small metal capsule at her throat, as if to make sure it is still there. When you look at her, she does not look back.' },
         { label: '"All right. Ceres it is."',
@@ -227,7 +227,7 @@ Mods.register({
     scene({
       id: 'cw-custody', where: 'port', when: at('earth2', 'Luna'),
       title: 'Protective Custody',
-      text: ['Two quiet people in Coalition grey are waiting at the airlock, with soft shoes and flat, kind faces, and a wheelchair no one will need. "Ms. Castellane will be well looked after," Achebe says, warmly, at your shoulder. Mira steps out of the airlock with her duffel in her hand and does not look back. Not once. Her back is very straight, and the metal capsule is gone from her throat.',
+      text: ['Two quiet people in Coalition gray are waiting at the airlock, with soft shoes and flat, kind faces, and a wheelchair no one will need. "Ms. Castellane will be well looked after," Achebe says, warmly, at your shoulder. Mira steps out of the airlock with her duffel in her hand and does not look back. Not once. Her back is very straight, and the metal capsule is gone from her throat.',
         { when: { crew: 'kit' }, text: 'Kit watches them go, arms folded, jaw set. "Protective custody," she mutters. "I have seen that before. Nobody comes back from it."' }],
       choices: [{ label: 'Collect your reward',
         effects: { credits: 20000, rep: { 'Earth Coalition': 15 }, do: ['endAct2', 'earth', 'Handed the proof and Mira Castellane to Coalition intelligence.'] },
