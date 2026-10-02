@@ -34,7 +34,8 @@ function seedScript(seed) {
 //   viewport, mobile: page size and touch
 //   init: a function to run in the page before the game loads
 //   seed: the random seed
-async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '' } = {}) {
+//   scope: 'full' (the default here) or 'earth-hired', the narrow build the game ships with (js/build.js)
+async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '', scope = 'full' } = {}) {
   browser = browser || await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
   const ctx = await browser.newContext({ viewport, isMobile: mobile, hasTouch: mobile });
   await ctx.addInitScript(seedScript, seed);
@@ -43,7 +44,7 @@ async function open({ title = false, viewport = { width: 1280, height: 800 }, mo
   const page = await ctx.newPage();
   const errors = [];
   watch(page, errors);
-  await page.goto(URL + hash);
+  await page.goto(URL + (scope === 'full' ? '?scope=full' : '') + hash);  // the build's scope (js/build.js): tests run everything unless they ask for the narrow one
   await page.waitForFunction(() => typeof G !== 'undefined' && (G.state || G.mode === 'title'));
   // Runs a function in the page with the random seed reset first, so a block of
   // game logic plays out the same way whatever the frame loop did before it.

@@ -156,7 +156,7 @@ Mods.register({
     M.on('newDay', outpostDay);
     // At the top of the Port tab: the outpost's page, or the claim offer next door.
     const port = UI.views.port;
-    UI.views.port = function () { return (atOutpost() ? outpostHtml() : claimHtml()) + port.call(this); };
+    UI.views.port = function () { return (scopeOff('owner') ? '' : atOutpost() ? outpostHtml() : claimHtml()) + port.call(this); };
     M.action('opFound', site => {
       const el = document.getElementById('opName'), name = cleanName(el && el.value);
       found(site, name);

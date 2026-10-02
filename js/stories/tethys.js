@@ -11,6 +11,7 @@
 Mods.register({
   id: 'tethys', name: "The Partner's Chair", builtin: true,
   init(M) {
+    if (scopeOff('storylines')) return;  // not in this build (js/build.js)
     const titan = 'Titan';
     const free = { qBelow: { tscTask: 1, tscDone: 1 } };
     const taskOver = { tscTask: 0 };

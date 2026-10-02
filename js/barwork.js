@@ -83,6 +83,7 @@ function ownerLeads(regular) {
 // Once a visit (and at most once in a while per regular), one regular has something for you.
 function barLeads(planet) {
   const st = G.state, lines = [];
+  if (hired() && scopeOff('barwork')) { G.barState.leadLines = lines; return; }
   for (const { p } of G.patrons.filter(x => x.regular)) {
     if ((p.leadAt || -1e9) + LEAD_EVERY > st.day || Math.random() > 0.5) continue;
     p.leadAt = st.day;
@@ -99,6 +100,7 @@ function barLeads(planet) {
 
 function barWorkHtml() {
   const lines = (G.barState.leadLines || []).map(l => `<div class="hint">${l}</div>`).join('');
+  if (hired() && scopeOff('barwork')) return '';
   if (hired()) return `${lines}<h3>Work for yourself</h3>${Object.keys(SIDE_WORK).map(k => `<div class="row"><button data-action="sideWork" data-arg="${k}" ${SIDE_WORK[k].can() ? '' : 'disabled'}>${sideLabel(k)}</button></div>`).join('')}${leadsHtml()}`;
   const trouble = troubleAhead().slice(0, 2).map(t => `<div class="hint">Word on the lanes: ${t}.</div>`).join('');
   return lines + trouble;
@@ -109,7 +111,7 @@ Mods.register({
   init(M) {
     M.action('sideWork', k => {
       const w = SIDE_WORK[k];
-      if (!hired() || !w || !w.can()) return;
+      if (!hired() || scopeOff('barwork') || !w || !w.can()) return;
       G.barState.note = w.run();
     });
   },

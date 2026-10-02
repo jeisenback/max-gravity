@@ -10,6 +10,7 @@
 Mods.register({
   id: 'cold-water-scenes', name: 'Cold Water (scenes)', builtin: true,
   init(M) {
+    if (scopeOff('storylines')) return;  // not in this build (js/build.js)
     // Cold Water scenes outrank other storylines when both could play.
     const scene = (def) => M.addStorylet({ priority: 10, once: false, ...def });
     const at = (stage, planet, extra) => ({ story: { stage }, ...(planet ? { planet } : {}), ...(extra || {}) });

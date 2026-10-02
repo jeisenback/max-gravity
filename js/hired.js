@@ -209,7 +209,7 @@ const ERRANDS = [
 
 function errandsFor(planet) {
   const st = G.state, plan = currentPlan();
-  if (!planet.services.includes('missions') || !plan) return [];
+  if (scopeOff('errands') || !planet.services.includes('missions') || !plan) return [];
   const dest = SYSTEMS[plan.sid].planets.find(p => p.name === plan.planet);
   return Array.from({ length: randInt(1, 3) }, () => {
     const [what, blurb] = pick(ERRANDS), gross = randInt(2, 6) * 10 * Math.max(1, plan.days), cut = Math.round(gross * ERRAND_CUT);
@@ -298,6 +298,18 @@ function buyIn(id) {
   return `You bought the ${SHIPS[id].name} for ${fmt(SHIPS[id].price)} cr and left the ${oldName}. Captain ${cap.first} ${cap.last} shakes your hand on the dock and says they will keep an eye out for you on the lanes.${friends.length ? ` ${namesOf(friends)} came with you.` : ' You are on your own.'} She is yours now: the exchange, the contracts and the yard are open to you, and the crew are your wages to pay.`;
 }
 
+// The close of the hired-hand chapter (scope 'earth-hired', js/build.js): one scene at the foot of the new ship's ramp.
+// It is read before buyIn takes the captain and the crew apart.
+function chapterEnd(id) {
+  if (!scopeNarrow()) return null;
+  const st = G.state, h = hired(), cap = st.people[h.captain], friends = buyInCompanions(), oldName = home().name, days = st.day - h.since;
+  return {
+    title: 'Your Own Ship', personal: true,
+    text: `The ${SHIPS[id].name} is on the apron at ${currentPlanet().name} with her ramp down and the hold empty. The papers have your name on them. You came aboard the ${oldName} ${days} days ago with ${fmt(HIRED_SAVINGS)} cr and a post to learn. Captain ${cap.last} shook your hand at the foot of the ramp and went back up it. ${friends.length ? `${namesOf(friends)} ${friends.length > 1 ? 'are' : 'is'} already aboard, stowing a bag.` : 'Nobody came with you.'} The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.`,
+    choices: [{ label: 'Keep flying', run: () => 'You walk up the ramp and shut the hatch behind you.' }],
+  };
+}
+
 function buyInHtml() {
   const h = hired(), p = currentPlanet(), friends = buyInCompanions(), cap = G.state.people[h.captain];
   if (!p.services.includes('shipyard')) return '<p class="hint">The yard deals with the captain, not with you. A ship of your own can be bought at a shipyard.</p>';
@@ -359,9 +371,12 @@ Mods.register({
     M.action('buyInNo', () => { if (hired()) hired().confirm = null; });
     M.action('buyInGo', id => {
       if (!hired() || hired().confirm !== id) return;
-      const scene = castLateAtBuyIn(), text = buyIn(id);  // the scene is read from the crew before they leave
+      const scene = castLateAtBuyIn(), closing = chapterEnd(id), text = buyIn(id);  // both are read from the crew and the captain before they leave
       if (text) M.note(text);
-      if (text && scene && !G.dialog) openEvent(scene);
+      if (!text || G.dialog) return;
+      if (closing) G.state.flags.chapterOne = true;
+      if (scene && closing) G.nextEvent = closing;
+      if (scene || closing) openEvent(scene || closing);
     });
   },
 });

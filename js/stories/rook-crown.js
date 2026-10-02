@@ -11,6 +11,7 @@
 Mods.register({
   id: 'rook-crown', name: "The Rook's Crown", builtin: true,
   init(M) {
+    if (scopeOff('storylines')) return;  // not in this build (js/build.js)
     const rook = 'The Rook';
     const free = { qBelow: { rookTask: 1, crownDone: 1 } };
     const taskOver = { rookTask: 0 };
