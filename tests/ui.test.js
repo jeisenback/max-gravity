@@ -342,3 +342,21 @@ test('a long landed screen scrolls inside the panel and carries a scroll cue', a
   assert.equal(r.gradients, 4, 'two covers and two glows');
   await done();
 });
+
+test('the title screen describes the build, and sits in the middle of the panel', async () => {
+  const out = {};
+  for (const scope of ['earth-hired', 'full']) {
+    const { page, done } = await open({ scope, title: true });
+    out[scope] = await page.evaluate(() => {
+      const panel = document.querySelector('#panel').getBoundingClientRect(), menu = document.querySelector('#panel .menu').getBoundingClientRect();
+      return { sub: document.querySelector('.menu-sub').textContent, top: menu.top - panel.top, bottom: panel.bottom - menu.bottom };
+    });
+    await done();
+  }
+  assert.match(out['earth-hired'].sub, /ice hauler/);
+  assert.doesNotMatch(out['earth-hired'].sub, /trader's life/);
+  assert.match(out.full.sub, /trader's life/);
+  assert.match(out['earth-hired'].sub, /Version \d/);
+  const { top, bottom } = out['earth-hired'];
+  assert.ok(Math.abs(top - bottom) < 4, `centred: ${top} above, ${bottom} below`);
+});
