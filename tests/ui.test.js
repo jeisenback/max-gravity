@@ -328,3 +328,17 @@ test('a hired hand with no errand sees no empty Contracts card, and an owner sti
   assert.match(r.owner, /No active contracts/);
   await done();
 });
+
+test('a long landed screen scrolls inside the panel and carries a scroll cue', async () => {
+  const { ev, page, done } = await open();
+  await ev(() => { while (G.dialog) finishEvent(); UI.tab = 'trade'; UI.render(); });
+  const r = await page.evaluate(() => {
+    const b = document.querySelector('#panel .body'), cs = getComputedStyle(b);
+    const start = b.scrollTop; b.scrollTop = 40;
+    return { scrolls: b.scrollHeight > b.clientHeight, moved: b.scrollTop > start, overflowY: cs.overflowY, gradients: (cs.backgroundImage.match(/gradient/g) || []).length };
+  });
+  assert.ok(r.scrolls && r.moved, 'the body scrolls');
+  assert.equal(r.overflowY, 'auto');
+  assert.equal(r.gradients, 4, 'two covers and two glows');
+  await done();
+});

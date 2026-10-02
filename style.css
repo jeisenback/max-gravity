@@ -187,7 +187,15 @@ canvas { display: block; touch-action: none; }
 .tutorial .eyebrow { color: #6fb0ff; }
 .tutorial p { margin: 3px 0 0; font-size: 13px; line-height: 1.5; }
 .tutorial button { flex-shrink: 0; }
-.body { flex: 1; overflow-y: auto; padding: 14px 16px; }
+.body {
+  flex: 1; overflow-y: auto; padding: 14px 16px;
+  /* Scroll cue: a faint glow on an edge with more content past it. The "local" covers hide it once that end is reached. */
+  background:
+    linear-gradient(var(--panel) 30%, rgba(0,0,0,0)) center top / 100% 28px no-repeat local,
+    linear-gradient(rgba(0,0,0,0), var(--panel) 70%) center bottom / 100% 28px no-repeat local,
+    radial-gradient(farthest-side at 50% 0, rgba(111,176,255,.28), rgba(0,0,0,0)) center top / 100% 12px no-repeat scroll,
+    radial-gradient(farthest-side at 50% 100%, rgba(111,176,255,.28), rgba(0,0,0,0)) center bottom / 100% 12px no-repeat scroll;
+}
 .desc { line-height: 1.6; margin-top: 0; font-size: 14px; }
 .note { background: color-mix(in srgb, var(--good) 10%, var(--panel)); border-left: 3px solid var(--good); padding: 7px 10px; margin: 6px 0; font-size: 13px; line-height: 1.5; }
 .cond { font-size: 13px; line-height: 1.5; padding-left: 10px; border-left: 2px solid var(--muted); margin: 3px 0; }
