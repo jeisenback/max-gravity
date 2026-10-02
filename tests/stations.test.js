@@ -495,8 +495,8 @@ test('the comms console shows the inbox as a feed and the tips in force, at port
   await page.click('[data-action=station][data-arg=comms]');
   assert.equal(await page.$$eval('#panel .con-feed .con-msg', n => n.length), want.n, 'a line in the feed for each inbox entry');
   assert.equal(await page.$$eval('#panel .con-feed .con-msg.via-ship', n => n.length), 1, 'colored by how it arrived');
-  assert.match(await page.innerText('#panel .con-card'), /Market tips in force/i);
-  assert.equal(await page.$$eval('#panel .con-card .hint', n => n.length), want.tips, 'a line for each tip in force');
+  assert.match(await page.innerText('#panel'), /Market tips in force/i);
+  assert.equal(await page.$$eval('#panel .con-card', cards => cards.find(c => /Market tips in force/i.test(c.textContent)).querySelectorAll('.hint').length), want.tips, 'a line for each tip in force');
   assert.ok(await page.$('#panel [data-action=postOrder][data-arg="comms:listen"], #panel .post'), 'the comms post is on the console');
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
   await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; });

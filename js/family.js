@@ -197,7 +197,7 @@ function letters(planet) {
     const text = pick(pool).replace('{who}', `their ${missed(p)}`).replace('{home}', p.home);
     p.mood = { kind: good ? 'high' : 'low', until: st.day + (good ? 10 : 25), text };
     p.news = { good, text };
-    notes.push(`A message for ${p.first} at ${planet.name}: ${text}.`);
+    notes.push(noteFor(`A message for ${p.first} at ${planet.name}: ${text}.`, p.id));
   }
   return notes;
 }
