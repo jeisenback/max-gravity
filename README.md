@@ -140,6 +140,7 @@ On a keyboard:
 - `js/programs.js` - standing rules for crewed stations, written by a slicer over a burn (a fixed list of conditions and orders)
 - `js/console.js` - the shared look of a station's page, a view from a workstation: a bezel with a display drawn from real ship stats, side cards, and the controls along the bottom (all six stations use it)
 - `js/character.js` - the character screen: anyone in the game as a console panel (a portrait drawn from their data, skill at each post, what they think of you, where they are), opened by clicking a name on the crew list, the Interior posts, or the people you know; "You" is the character you play; a captain's screen shows what they pay you, and an owner's what you command
+- `js/barwork.js` - what the bar offers by who you are: a hired hand's side work, card game and leads on ships that are hiring; an owner's contract and bounty from a regular and word of trouble on the lanes
 - `js/interview.js` - the interview screen for owners: a bar candidate's skills and asking wage, three questions answered from their real goal, traits and secret, and hiring from the screen
 - `js/cast.js` - the main characters: authored people (a pair for each start background) who come with you, with a skill at each post, captain stats, an ambition and scenes of their own; a hired hand finds them aboard, an owner meets them at a port over the first weeks
 - `js/regulars.js` - two regulars at every bar (always there, with a line of news that changes between visits) and match night when a live league has played in the last day

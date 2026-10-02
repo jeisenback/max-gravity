@@ -80,6 +80,7 @@ function fillBar(planet) {
     ...Array.from({ length: randInt(2, 4) }, () => ({ p: makePerson(Math.random() < 0.75 ? cultureOf(sid) : undefined), known: false })),
   ];
   G.barState = { round: false, name: barOf(planet).name, planet: planet.name };
+  barLeads(planet);
 }
 
 // A stranger you deal with becomes someone you know.
@@ -213,6 +214,7 @@ function barHtml() {
     ${(G.barState.lines = G.barState.lines || roomLines(planet)).map(l => `<div class="hint">${l}</div>`).join('')}
     ${G.barState.note ? `<p class="desc">${G.barState.note}</p>` : ''}
     <div class="row"><button data-action="barRound" ${st.credits >= round && !G.barState.round ? '' : 'disabled'}>${G.barState.round ? 'You bought a round' : `Buy a round for the house (${fmt(round)} cr)`}</button></div>
+    ${barWorkHtml()}
     <h3>Tonight</h3>
     ${rows || '<p class="hint">Just you and the bartender.</p>'}
     ${hire && !hired() ? `<h3>Looking for a ship</h3>${hire}` : ''}`;
