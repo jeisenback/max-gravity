@@ -110,7 +110,7 @@ On a keyboard:
 - `mods/` - mods; `example-vesta.js` is a working example to copy
 - `js/world.js` - the living solar system: pirate unrest, raids, markets that use and make goods, and NPC haulers whose voyages move them (`st.haul`)
 - `js/company.js` - your shipping company: company ships, captains, trade routes, and the Company tab
-- `js/shiplife.js` - life aboard during a burn: the ship cutaway, crew movement and comms lines, and the downtime menu
+- `js/shiplife.js` - life aboard during a burn: the ship cutaway, crew movement and comms lines, and the downtime menu (five options at a time, mixed from the ship's own, a hand's and what is on now, turning each time)
 - `js/outpost.js` - your outpost on Callisto or Nereid: supplies, growth, buildings, and settler moments
 - `js/legacy.js` - your name, heirs and retirement, and the list of captains
 - `js/music.js` - the generated soundtrack

@@ -77,7 +77,7 @@ test('downtime offers what is on, and tastes decide who enjoys it', async () => 
     const out = {};
     // Mid-October, 9 Oct: the Dome Day Concert is on, with shows and a league.
     st.day = Math.round((Date.UTC(2214, 9, 9) - START_DATE) / 864e5) + 1;
-    const menu = downtimeEvent().choices.map(c => c.label), now = onNow();
+    const menu = downtimeEvent(true).choices.map(c => c.label), now = onNow();
     out.now = now.map(a => a.label); out.menu = menu;
     out.airing = airing(cultureToday()).map(s => s.title);
     out.books = newBooks(cultureToday()).map(b => b.title);
