@@ -25,17 +25,17 @@ const NAMES = {
 
 const TRAITS = {
   talkative:  { adj: 'talkative',   chatter: ['{first}: "Did I ever tell you about the time on {home}..."', '{first} is telling a long story in the galley, and, from the sound of it, has reached the good part for the third time.', '{first}: "And that, I always say, is the whole trouble with {home}. Oh, but that reminds me..."', '{first} has been talking for an hour, and the coffee maker, in a corner, has given up in sympathy.', '{first} is explaining, to nobody in particular, what they would do with a ship of their own.'] },
-  nervous:    { adj: 'nervous',     chatter: ['{first} keeps checking the hull pressure readouts.', '{first} jumps at a small clank from the engine room, and pretends they did not.', '{first} has, for the fifth time this watch, tested the seal on the nearest hatch.', '{first} is counting the emergency suits, quietly, under their breath, in a low, steady mutter.', '{first} sleeps with a hand on the bulkhead, as if to feel for anything wrong.'] },
+  nervous:    { adj: 'nervous',     chatter: ['{first} keeps checking the hull pressure readouts.', '{first} jumps at a small clank from the engine room, and pretends they did not.', '{first} has, for the fifth time this watch, tested the seal on the nearest hatch.', '{first} is counting the emergency suits, quietly, under their breath, in a low, steady mutter.', '{first} sleeps with a hand on the bulkhead.'] },
   generous:   { adj: 'generous',    chatter: ['{first} made coffee for everyone.', '{first} has left a small plate of something sweet outside the engine room, without a note.', '{first} is giving away, one piece at a time, the contents of their sock drawer.', '{first} covered someone\'s shift, and will not hear a word about it.', '{first} has a knack for turning up, unasked, with exactly what you need.'] },
-  greedy:     { adj: 'money-minded', chatter: ['{first} is doing sums on a hand terminal and muttering.', '{first} has worked out what every ton of cargo on the ship is worth, and tells you, twice.', '{first} is running the numbers on a trade route, and, from the muttering, it is not going to be enough.', '{first} watches the fuel gauge with a look like a small, private grief.', '{first} has started a small betting pool on the arrival date, and, somehow, holds all the odds.'] },
-  pious:      { adj: 'devout',      chatter: ['{first} is praying quietly in the cargo bay.', '{first} has tied a small ribbon to a bulkhead, for luck, and blessed it.', '{first} murmurs a short blessing over the drive before each flip, and the ship, somehow, always seems the better for it.', '{first} is reading, aloud and very softly, from a small worn book.', '{first} is lighting a very small, very safe candle in a jar, and guarding it like a treasure.'] },
-  rude:       { adj: 'abrasive',    chatter: ['{first}: "Who designed this galley, and were they drunk?"', '{first} is complaining about the coffee. The coffee, to be fair, deserves it.', '{first}: "In my last ship, we had a proper bunk. With a door."', '{first} has an opinion about the way you are flying, and shares it, generously, at every turn.', '{first} is glaring at the thermostat, as if it had personally insulted them.'] },
+  greedy:     { adj: 'money-minded', chatter: ['{first} is doing sums on a hand terminal and muttering.', '{first} has worked out what every ton of cargo on the ship is worth, and tells you, twice.', '{first} is running the numbers on a trade route, and, from the muttering, it is not going to be enough.', '{first} watches the fuel gauge, and does not blink.', '{first} has started a small betting pool on the arrival date, and holds all the odds.'] },
+  pious:      { adj: 'devout',      chatter: ['{first} is praying quietly in the cargo bay.', '{first} has tied a small ribbon to a bulkhead, for luck, and blessed it.', '{first} murmurs a short blessing over the drive before each flip.', '{first} is reading, aloud and very softly, from a small worn book.', '{first} is lighting a very small, very safe candle in a jar, and shielding it from the draught with a hand.'] },
+  rude:       { adj: 'abrasive',    chatter: ['{first}: "Who designed this galley, and were they drunk?"', '{first} is complaining about the coffee. The coffee, to be fair, deserves it.', '{first}: "In my last ship, we had a proper bunk. With a door."', '{first} has an opinion about the way you are flying, and shares it, generously, at every turn.', '{first} is glaring at the thermostat.'] },
   curious:    { adj: 'curious',     chatter: ['{first} is asking the nav computer far too many questions.', '{first} has taken the panel off the galley clock to see what makes it tick.', '{first} is following the plume readout with a small notebook, and a look of pure joy.', '{first}: "But why does it hum at that particular note? Has anybody ever asked?"', '{first} is pressing an ear to the bulkhead, listening to something nobody else can hear.'] },
   drunk:      { adj: 'hard-drinking', chatter: ['{first} is suspiciously cheerful for this hour.', '{first} is humming, loudly, an old song from {home}, and has forgotten the second verse.', '{first} is sitting very carefully upright, with a mug that smells like anything but coffee.', '{first} has made a small toast to the ship, and is now, tenderly, toasting the coffee maker.', '{first} is cheerfully explaining something to a coaster.'] },
-  secretive:  { adj: 'guarded',     chatter: ['{first} closes a message window whenever you walk past.', '{first} answers every question with a question, and does it very gracefully.', '{first} has a small locked case, and a way of standing between it and everyone else.', '{first} is very quiet, and very watchful, and, somehow, always knows where everyone is.', '{first} deletes a message, and looks up, and smiles at you, with nothing at all behind it.'] },
+  secretive:  { adj: 'guarded',     chatter: ['{first} closes a message window whenever you walk past.', '{first} answers every question with a question, and does it very gracefully.', '{first} has a small locked case, and a way of standing between it and everyone else.', '{first} is very quiet, and very watchful, and always knows where everyone is.', '{first} deletes a message, and looks up, and smiles at you.'] },
   kind:       { adj: 'kind',        chatter: ['{first} fixed the squeaky hatch without being asked.', '{first} noticed someone was tired, and quietly took the rest of their watch.', '{first} is sewing a torn sleeve, by a lamp, for someone who is not going to ask.', '{first} has left a note on the galley wall: "Ask me if you need anything. Anything at all."', '{first} is humming, softly, at the sink, while washing everyone else\'s cups.'] },
-  brave:      { adj: 'steady',      chatter: ['{first} volunteered for the next EVA before anyone asked.', '{first} is calmly checking the emergency hatches, one by one, as if it were a pleasant stroll.', '{first} has a small, plain scar, and a small, plain refusal to talk about it.', '{first}: "If anything goes wrong, I will be the one to go and look. That is what I am for."', '{first} is smiling, in the face of a very small, very real problem with the coolant.'] },
-  homesick:   { adj: 'homesick',    chatter: ['{first} is looking through old pictures of {home}.', '{first} has gone very quiet, and is watching the viewport as though a place might come up in it.', '{first} is making a dish from {home}, out of not-quite-right ingredients, and eating it with great seriousness.', '{first} is humming something from {home}, low and soft, and does not seem to know.', '{first} keeps a small stone from {home}, worn smooth, and turns it over, and over, and over.'] },
+  brave:      { adj: 'steady',      chatter: ['{first} volunteered for the next EVA before anyone asked.', '{first} is calmly checking the emergency hatches, one by one, whistling.', '{first} has a small, plain scar, and a small, plain refusal to talk about it.', '{first}: "If anything goes wrong, I will be the one to go and look. That is what I am for."', '{first} is smiling, in the face of a very small, very real problem with the coolant.'] },
+  homesick:   { adj: 'homesick',    chatter: ['{first} is looking through old pictures of {home}.', '{first} has gone very quiet, and is watching the viewport.', '{first} is making a dish from {home}, out of not-quite-right ingredients, and eating it with great seriousness.', '{first} is humming something from {home}, low and soft, and does not seem to know.', '{first} keeps a small stone from {home}, worn smooth, and turns it over, and over, and over.'] },
 };
 
 const GOALS = {
@@ -285,7 +285,7 @@ const PAX_EVENTS = [
       } },
       { label: 'Not your business', run() {
         like(p, 2, 'You respected my privacy.');
-        return `You let it go. The bursts continue, every night, at the same hour, faint and regular as a heartbeat, and you find you sleep a little better for not knowing. Once, in the corridor, ${p.first} meets your eye, and nods, very slightly, as if in thanks.`;
+        return `You let it go. The bursts continue, every night, at the same hour, faint and regular as a heartbeat, and you find you sleep a little better for not knowing. Once, in the corridor, ${p.first} meets your eye, and nods, once.`;
       } },
     ] }) },
   { weight: 3, when: p => p.secret === 'debt', make: (p, m) => ({
@@ -305,7 +305,7 @@ const PAX_EVENTS = [
     ] }) },
   { weight: 2, when: p => p.goal === 'job', make: (p, m) => ({
     title: 'Running Late',
-    text: `${p.first} has a job interview on ${m.destPlanet}, the kind that comes along once in a long while, and the schedule is tighter than they thought. They have ironed their good shirt three times in the galley, and rehearsed their answers to the mirror. Now they stand at the cockpit hatch, twisting their hands, with the look of someone who has run the numbers and does not like the result. "Captain, I hate to ask. Is there any way at all to go any faster?"`,
+    text: `${p.first} has a job interview on ${m.destPlanet}, the kind that comes along once in a long while, and the schedule is tighter than they thought. They have ironed their good shirt three times in the galley, and rehearsed their answers to the mirror. Now they stand at the cockpit hatch, twisting their hands. "Captain, I hate to ask. Is there any way at all to go any faster?"`,
     choices: [
       { role: 'pilot', label: '[{crew}] Find a faster line', run() {
         m.bonus += 800;
@@ -331,7 +331,7 @@ const PAX_EVENTS = [
         delay(20);
         m.bonus += 1000 * p.wealth;
         like(p, 3, 'You made a detour for my research.');
-        return `${p.first} spends six hours in a vac suit on the rock's pale surface, tethered to your hull, giggling into the radio like a child in a snowfield, chipping at the crust with a tiny hammer. When they come back in, frosted and shaking, they hold a small vial to the light, as though it were a newborn. They promise to name something after you, and, though you would not have believed it, they mean it.`;
+        return `${p.first} spends six hours in a vac suit on the rock's pale surface, tethered to your hull, giggling into the radio like a child in a snowfield, chipping at the crust with a tiny hammer. When they come back in, frosted and shaking, they hold a small vial to the light. They promise to name something after you, and, though you would not have believed it, they mean it.`;
       } },
       { label: 'Stay on course', run() {
         like(p, -1, 'You would not stop for my research.');
@@ -359,7 +359,7 @@ const PAX_EVENTS = [
     choices: [
       { label: 'Listen', run() {
         like(p, 1, 'You listened to my stories.');
-        return `You listen for an hour, and then another, and it is, oddly, a pleasure. ${p.first} has a way of making the small things sound like the whole world. Buried in the stories, near the end, is something useful: "${addRumor()}" They give you a small, shy smile, as though you had given them a gift, and you realize, with a shock, that you did.`;
+        return `You listen for an hour, and then another, ${p.first} makes the small things sound large. Buried in the stories, near the end, is something useful: "${addRumor()}" They give you a small, shy smile.`;
       } },
       { label: 'Excuse yourself to the cockpit', run() {
         like(p, -1, null);
@@ -382,7 +382,7 @@ const PAX_EVENTS = [
       { label: 'Tell them to pull themselves together', run() {
         m.bonus -= 300;
         like(p, -2, 'You mocked me when I was scared.');
-        return `${p.first} flinches as though struck, and goes very quiet, and does not say a word. They spend the rest of the trip in their bunk, with the curtain drawn, eating little, speaking to no one. You can hear them, sometimes, in the night, and it is not a sound you would wish on anyone.`;
+        return `${p.first} flinches, and goes quiet, and does not say a word. They spend the rest of the trip in their bunk, with the curtain drawn, eating little, speaking to no one. You can hear them, sometimes, in the night.`;
       } },
     ] }) },
   { weight: 1, when: p => p.traits.includes('curious'), make: (p, m) => ({
@@ -409,7 +409,7 @@ const PAX_EVENTS = [
       { label: 'Add it to their fare', run() {
         m.bonus += 400;
         like(p, -2, 'You charged me for the recycler.');
-        return `${p.first} grumbles, and looks at the floor, and mutters something about "unreasonable", but, when you arrive, they pay in full, in small folded notes, without another word. They will not touch whiskey for a good while, and, for the rest of the trip, they avoid the galley as though it were on fire.`;
+        return `${p.first} grumbles, and looks at the floor, and mutters something about "unreasonable", but, when you arrive, they pay in full, in small folded notes, without another word. They will not touch whiskey for a good while, and, for the rest of the trip, they avoid the galley.`;
       } },
       { label: 'Let it slide (400 cr)', run() {
         G.state.credits = Math.max(0, G.state.credits - 400);
@@ -495,7 +495,7 @@ const CREW_EVENTS = {
   secretive: c => ({ title: 'Locked Locker', text: `${c.first}'s locker is double-locked, with a lock you do not recognize and a second, cheap padlock over it, and they have been receiving messages with no sender ID, short ones, at odd hours, that they read, and delete, and read again. They flinch, very slightly, when you enter the room. It might be nothing. Every ship has its secrets. But you are the captain, and it is your ship.`,
     choices: [
       { label: 'Ask about it', run() { like(c, -2, 'You pried into my locker.'); return `${c.first} looks at you for a long moment, and, quietly, says: "Family business." That is all you get. It is said politely, and it closes the subject like a door, and, afterward, you notice they take their meals in their bunk, and lock the door when they sleep.`; } },
-      { label: 'Respect their privacy', run() { like(c, 2, 'You respected my privacy.'); return 'You say nothing, and turn to go, and, behind you, you feel their shoulders come down. Everyone out here has something. That evening, ' + c.first + ' brings you a small, unasked cup of tea, and stays, awkward, for a moment, in the doorway, as though about to say something, and, at last, does not.'; } },
+      { label: 'Respect their privacy', run() { like(c, 2, 'You respected my privacy.'); return 'You say nothing, and turn to go, and, behind you, you feel their shoulders come down. Everyone out here has something. That evening, ' + c.first + ' brings you a small, unasked cup of tea, and stays for a moment in the doorway, and, at last, goes.'; } },
     ] }),
   curious: c => ({ title: 'Tinkering', text: `${c.first} has been taking apart the reaction mass pumps "to see how they work", in the middle of the engine room, on a bed of newspaper, with every bolt in a neat little row. They have three manuals open, a cup of cold tea, and the calm, glowing look of a person entirely at home. Nobody has asked them to. Nobody, you suspect, could have stopped them.`,
     choices: [
@@ -507,7 +507,7 @@ const CREW_EVENTS = {
       } },
       { label: 'Put it back together. Now.', run() { like(c, -1, null); return 'They do, grumbling, in a low, injured mutter, and reassemble every last part, and the pumps, when they are done, run exactly as before. Their eyes, as they tighten the last bolt, have a faint, private sadness, and you have the feeling that a small, bright thing has gone out of the ship.'; } },
     ] }),
-  pious: c => ({ title: 'Quiet Prayer', text: `${c.first} finds you in the galley at the turn of the watch, hesitant, with a small worn charm in one hand, and invites you to join a short prayer for safe passage. They do this every burn, alone, in a quiet corner, but tonight, somehow, they wanted company. It will take only a few minutes. They will not mind if you stay silent. They ask so quietly that you almost do not hear.`,
+  pious: c => ({ title: 'Quiet Prayer', text: `${c.first} finds you in the galley at the turn of the watch, hesitant, with a small worn charm in one hand, and invites you to join a short prayer for safe passage. They do this every burn, alone, in a quiet corner, but tonight they wanted company. It will take only a few minutes. They will not mind if you stay silent. They ask so quietly that you almost do not hear.`,
     choices: [
       { label: 'Join them', run() { like(c, 2, 'You prayed with me.'); return 'You kneel beside them in the dim light, and, for a few minutes, nobody speaks. The drive hums. Somewhere, a pipe ticks. It is quiet, and oddly calming, in a way you had not expected, and, when it ends, you both sit for a moment, in a comfortable stillness. "Thank you," ' + c.first + ' whispers.'; } },
       { label: 'Politely decline', run() { like(c, 0, null); return `${c.first} nods, without offense, and goes to their corner, and, through the thin wall, you can hear the low murmur of their prayer, steady as a heartbeat. ${c.first} prays for you anyway. It is oddly comforting, and, for a while, you find yourself listening.`; } },

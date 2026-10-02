@@ -76,8 +76,8 @@ Mods.register({
       id: 'pi-gratitude', title: 'A Message from the Pod',
       text: 'A message arrives, a single line from a stranger: "I am out. I am clean. I am sorry. There is a cache on the rock at the coordinates below, my crew\'s, and nobody left to claim it. Take it." The coordinates are a day off your course. A second line, smaller: "You did not have to."',
       choices: [
-        { label: 'Detour for the cache (costs time)', effects: { delay: 8, credits: 1800, log: 'The pirate kid sent a cache. Took it. Did not feel good, quite.' }, result: 'It is where they said, under a tarp, and it is more than you expected, and you do not feel good about it, or bad, exactly. You feel like someone who was paid by a ghost.' },
-        { label: 'Let it lie', effects: { rep: { 'Belt Collective': 1 } }, result: 'You leave it where it is. The kid will hear about it, eventually, somehow, the way these things get around the Belt, and it will count for something.' },
+        { label: 'Detour for the cache (costs time)', effects: { delay: 8, credits: 1800, log: 'The pirate kid sent a cache. Took it. Did not feel good, quite.' }, result: 'It is where they said, under a tarp, and it is more than you expected. You feel like someone who was paid by a ghost.' },
+        { label: 'Let it lie', effects: { rep: { 'Belt Collective': 1 } }, result: 'You leave it where it is. The kid will hear about it, eventually, the way these things get around the Belt, and it will count for something.' },
       ],
     });
     after({
@@ -122,7 +122,7 @@ Mods.register({
       choices: [
         { label: 'Pay a facilitation fee (900 cr)', when: { credits: 900 }, effects: { credits: -900 }, result: 'You pay it, through a lawyer who bills like a surgeon, and the inquiry goes quiet. It costs half of what you made, and you do not discuss it.' },
         { label: 'Answer the questions', effects: { credits: -400, rep: { 'Earth Coalition': -2 }, log: 'Customs asked about the case. It cost me.' }, result: 'You answer them, all of them, and they are polite, and they take 400 cr and a good deal of your standing. When you leave, a junior officer holds the door and does not meet your eye.' },
-        { label: 'Ignore it', effects: { rep: { 'Earth Coalition': -1 } }, result: 'You ignore it, and it is ignored back, which is a kind of promise. It will be remembered at the next port with a customs office.' },
+        { label: 'Ignore it', effects: { rep: { 'Earth Coalition': -1 } }, result: 'You ignore it, and it is ignored back. It will be remembered at the next port with a customs office.' },
       ],
     });
     after({
@@ -160,7 +160,7 @@ Mods.register({
       text: 'On the way out, the child\'s drawing comes with you, pinned to your sleeve by a bit of tape. Under the crayon, in careful adult handwriting, there is a ship name and a registry number. Somebody once cared very much about this ship. Somebody, somewhere, might still.',
       choices: [
         { label: 'Look up the registry (costs time)', effects: { delay: 4, later: { 'de-family': 10 }, log: 'Looked up the registry of the derelict I stripped. Somebody should know.' }, result: 'It takes an afternoon of slow channels and a favor from a registry clerk, but the name resolves, in the end, to a home and a family. You put the drawing in a drawer, and the drawer stays slightly open.' },
-        { label: 'Put it in the log and say nothing', result: 'You tape it to the inside of a locker, and close the locker. It is not a decision, exactly. It is a kind of weather.' },
+        { label: 'Put it in the log and say nothing', result: 'You tape it to the inside of a locker, and close the locker.' },
       ],
     });
     after({

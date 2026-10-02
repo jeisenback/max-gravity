@@ -33,7 +33,7 @@ const WORK_EVENTS = [
     careful: ['Strip the feed and clear it by the book', 'You safe the rack, strip the feed, and find a bent follower worn thin. You straighten it, oil the rest, and cycle the rack twenty times until it runs like a clock.'],
     quick: ['Clear it with the manual override', 'You hit the override and the round slams home with a clang. It runs, and keeps running.', 'The override seats the round crooked, and you have to take the whole feed apart anyway, now with a bruise.'] },
   { id: 'gunner-drift', post: 'gunner', title: 'Sights Out of True',
-    text: 'The turret has been slewing a hair to the left for a week, and tonight you proved it on the range sim. Every shot lands wide by the same small amount, as if the gun had an opinion.',
+    text: 'The turret has been slewing a hair to the left for a week, and tonight you proved it on the range sim. Every shot lands wide by the same small amount.',
     careful: ['Boresight it against a fixed star', 'You boresight it against a fixed star, slowly, one click at a time, until the cross and the star sit together and stay there. You log the offset for next time.'],
     quick: ['Apply a correction in the fire control', 'You dial in a correction by eye, and the next ten shots on the sim cluster neatly. It is not perfect, but it is close.', 'You dial in the correction the wrong way and it doubles the error. It takes an hour to find and undo.'] },
   { id: 'gunner-range', post: 'gunner', title: 'Practice on the Range',
@@ -59,7 +59,7 @@ const WORK_EVENTS = [
   { id: 'comms-hail', post: 'comms', title: 'A Garbled Hail',
     text: 'A hail comes in, at the very edge of range, stuttering and thick with static. A name, a transponder number and what could be a warning, or could be a tender asking for a berth. The captain would like to know which.',
     careful: ['Clean it up and read it properly', 'You run the hail through every filter you have, a pass at a time, until a word comes out, and then a sentence. It is a tender asking for a berth. You log it and send the captain a note.'],
-    quick: ['Guess at the gaps and answer', 'You guess at the gaps and answer, and the voice on the other end relaxes at once. You guessed right, and feel, for a moment, very clever.', 'You guess wrong, and the voice on the other end goes cold and starts again, slower, as if to a child. It is a small, red-faced moment.'] },
+    quick: ['Guess at the gaps and answer', 'You guess at the gaps and answer, and the voice on the other end relaxes at once. You guessed right, and feel, for a moment, very clever.', 'You guess wrong, and the voice on the other end goes cold, and starts again, slower. Your face is hot.'] },
   { id: 'comms-log', post: 'comms', title: 'The Day\'s Traffic',
     text: 'The log has built up: forty unread messages, six unanswered hails, and a list of stations that have, since the last port, changed their transponder codes without telling anyone.',
     careful: ['Go through it all, in order', 'You work through it in order, and answer what needs answering, and file the rest. By the end you know the traffic in this part of the lane better than you did, and the log is clean.'],
@@ -94,12 +94,12 @@ const HAND_EVENTS = [
   ...WORK_EVENTS.map(d => ({ id: d.id, group: 'work', post: d.post, make: () => workEvent(d) })),
 
   { id: 'cap-order', group: 'captain', make: c => handEvent('An Order You Do Not Like',
-    captainSays('cap-order', 'text', `Captain ${c.cap.last} wants the drive run hotter than you would, to make a berth window at the next port, and has said so in the tone of someone who has already decided. You have a view, and so, you suspect, does everyone else aboard.`), [
-      { label: 'Do as ordered', run() { setLater(Math.random() < 0.5 ? 'h-hot-good' : 'h-hot-bad', 6, 'Ran the drive hot on {captain}\'s order.'); capLike(c, 1, 'You did as you were told on the hot burn.'); return `${captainSays('cap-order', 'ordered', 'You run it the way you were told, and the window is made, with a minute to spare. The captain says nothing, which is, from the captain, a kind of thanks.')}${learn(1)}`; } },
+    captainSays('cap-order', 'text', `Captain ${c.cap.last} wants the drive run hotter than you would, to make a berth window at the next port, and has said so once, without looking up from the board. You have a view, and so, you suspect, does everyone else aboard.`), [
+      { label: 'Do as ordered', run() { setLater(Math.random() < 0.5 ? 'h-hot-good' : 'h-hot-bad', 6, 'Ran the drive hot on {captain}\'s order.'); capLike(c, 1, 'You did as you were told on the hot burn.'); return `${captainSays('cap-order', 'ordered', 'You run it the way you were told, and the window is made, with a minute to spare. The captain says nothing, and initials the log.')}${learn(1)}`; } },
       { label: 'Say what you think', run() {
         if (c.cap.opinion >= captainHears()) { setLater('h-ninety', 7, 'Told {captain} what I thought of the hot burn, and was heard.'); capLike(c, 2, 'You told me plainly what you thought, and you were right to.'); return `${captainSays('cap-order', 'heard', 'You say it plainly and without heat, and the captain listens, and, after a long pause, gives ground a little. "Noted," the captain says. "Run it at ninety." It is the first time anyone has been asked.')}${learn(2)}`; }
         setLater('h-hot-bad', 6, 'Argued the hot burn with {captain} and lost.'); capLike(c, -1, 'You argued the burn with me when I had decided.');
-        return captainSays('cap-order', 'notHeard', 'You say it, and it lands badly. "I did not ask," the captain says, quite pleasantly, and the conversation is over. You run it hot, and it works, which is somehow worse.');
+        return captainSays('cap-order', 'notHeard', 'You say it, and it lands badly. "I did not ask," the captain says, quite pleasantly, and the conversation is over. You run it hot, and it works.');
       } },
     ]) },
 
@@ -130,7 +130,7 @@ const HAND_EVENTS = [
     ]) },
 
   { id: 'cap-favour', group: 'captain', make: c => handEvent('A Favour',
-    captainSays('cap-favour', 'text', `Captain ${c.cap.last} asks, in the careful way of someone who does not ask, whether you would stand an extra watch so a crew member can sleep, and say nothing about it. It is not in the articles. It is the kind of thing that is remembered.`), [
+    captainSays('cap-favour', 'text', `Captain ${c.cap.last} asks whether you would stand an extra watch so a crew member can sleep, and say nothing about it. It is not in the articles.`), [
       { label: 'Stand the watch', run() { setLater('h-favour-back', 9, 'Stood an extra watch for {captain}.'); capLike(c, 2, 'You stood a watch for me without being paid for it.'); return `${captainSays('cap-favour', 'stand', 'You take it, and the long dark hours go slowly, with a flask of the galley\'s worst coffee, and nobody ever mentions it. The captain mentions it once, at the next port, in a single sentence, and it is enough.')}${learn(2)}`; } },
       { label: 'Stand it for forty credits', run() { G.state.credits += 40; capLike(c, 0, 'You stood a watch for me for a fee.'); return captainSays('cap-favour', 'fee', 'The captain pays it without comment, out of the ship\'s own pocket, and files it, you can tell, under a heading of its own. The watch passes like any other.'); } },
       { label: 'Beg off', run() { setLater('h-favour-cold', 5, 'Would not stand an extra watch for {captain}.'); capLike(c, -1, 'You would not stand an extra watch.'); return captainSays('cap-favour', 'beg', '"Of course," says the captain, evenly, and goes to find somebody else. It is the answer you were entitled to give, and you feel it on the back of your neck for the rest of the burn.'); } },
@@ -143,7 +143,7 @@ const HAND_EVENTS = [
     ]) },
 
   { id: 'crew-needle', mate: true, group: 'crew', make: c => handEvent('Words in the Galley',
-    `${c.mate.first} has been needling you for a week about the ${POSTS[hired().post].name.toLowerCase()}, in the easy way of someone who thinks it is a soft job. Tonight, over the mess table, they say it where everyone can hear.`, [
+    `${c.mate.first} has been needling you for a week about the ${POSTS[hired().post].name.toLowerCase()}, calling it a soft job. Tonight, over the mess table, they say it where everyone can hear.`, [
       { label: 'Show them the work', run() {
         remember('needle', c.mate);
         if (Math.random() < soloOdds(hired().post)) { setLater('h-needle-ally', 8, 'Showed {thread:needle} my post, and they came round.'); like(c.mate, 1, 'You showed me what the post is really like.'); return `You take them through a watch at your post, slowly and without a word of argument, and by the end they are a good deal quieter. "All right," ${c.mate.first} says. "Fair." It is, you realize, respect.${learn(2)}`; }
@@ -166,7 +166,7 @@ const HAND_EVENTS = [
 
   { id: 'crew-ines', group: 'crew', when: () => castKeys().includes('ines'), make: c => handEvent('Ines Calls the Numbers',
     'Ines is flying a hard approach by hand, a tight, ugly one, and asks you over her shoulder, without looking round, whether you would read her the numbers. "Slowly," she says. "And do not be clever."', [
-      { label: 'Read her the numbers', run() { castLike('ines', 1, 'You read me the numbers on a hard approach and did not try to be clever.'); return `You read her the numbers one by one, plainly, and she flies them, and the ship settles onto the line as if she had always meant it to. "Good," says Ines, which from her is a great deal. You have learned more in ten minutes than in the last week.${learn(3)}`; } },
+      { label: 'Read her the numbers', run() { castLike('ines', 1, 'You read me the numbers on a hard approach and did not try to be clever.'); return `You read her the numbers one by one, plainly, and she flies them, and the ship settles onto the line. "Good," says Ines. You have learned more in ten minutes than in the last week.${learn(3)}`; } },
       { label: 'Say you would rather watch', run() { castLike('ines', 0, 'You watched from the back and let me fly.'); return 'You stand behind her and watch her hands, and she does not say a word, and the approach is flawless. You do not learn much, but you do not break anything.'; } },
     ]) },
 
@@ -177,7 +177,7 @@ const HAND_EVENTS = [
     ]) },
 
   { id: 'crew-yelena', group: 'crew', when: () => castKeys().includes('yelena'), make: c => handEvent('Yelena Wants a Sparring Partner',
-    'Yelena has set up the range sim on its hardest setting, and has the look of someone who has decided that you are the one to try it with. "No benches," she says. "Everybody plays. Come on."', [
+    'Yelena has set up the range sim on its hardest setting, and is holding the second controller out to you. "No benches," she says. "Everybody plays. Come on."', [
       { label: 'Take the other console', run() { castLike('yelena', 1, 'You took the other console on the range and did not sulk about losing.'); return `You take the other console, and she beats you soundly, and then, to your surprise, shows you how: where to look, and when. You lose four rounds in a row and are, by the fifth, noticeably less bad.${learn(3)}`; } },
       { label: 'Say your knee is bad too', run() { castLike('yelena', 0, 'You said you would sit out the range.'); return '"You do not have a bad knee," Yelena says. "You have a bench." But she lets it go, with a snort, and sets the sim back to something kinder for whoever comes next.'; } },
     ]) },
@@ -191,11 +191,11 @@ const HAND_EVENTS = [
   { id: 'crew-bexa', group: 'crew', when: () => castKeys().includes('bexa'), make: c => handEvent('Bexa\'s List',
     'Bexa has a small brass tag on a string above the helm, and a notebook she keeps open on the console and does not like being looked at. Tonight she catches you looking, and, instead of closing it, turns it round. "It is a list," she says. "Ask me properly."', [
       { label: 'Ask about the first name', run() { castLike('bexa', 2, 'You asked about the list the right way, and listened.'); return `You ask about the first name, quietly, and she tells you: a ship, a year, a crew of six, and what was left. She talks for a long time. When she stops, she closes the book, gently, and nods at the helm. "Sit. I will show you how I would have brought them in."${learn(2)}`; } },
-      { label: 'Look away', run() { castLike('bexa', 0, 'You looked away from the list.'); return 'You look at the console, and she closes the book, with a small, courteous nod, as if you had passed some test that you were not told was being set.'; } },
+      { label: 'Look away', run() { castLike('bexa', 0, 'You looked away from the list.'); return 'You look at the console, and she closes the book, with a nod, and puts it back in her pocket.'; } },
     ]) },
 
   { id: 'crew-pax', group: 'crew', when: () => castKeys().includes('pax'), make: c => handEvent('Pax Checks the Coupling',
-    'Pax is checking the coupling on the gun mount for the fifth time this watch. It is perfect. Pax knows it is perfect, and checks it anyway, with a tight jaw, and glances at you when the check is done as if waiting to be told to stop.', [
+    'Pax is checking the coupling on the gun mount for the fifth time this watch. It is perfect. Pax knows it is perfect, and checks it anyway, jaw tight, and glances at you when the check is done.', [
       { label: 'Check it with them', run() { castLike('pax', 1, 'You checked the coupling with me instead of telling me to stop.'); return `You take the other side and check it together, torque by torque, and, when you reach the end, you both say "good" at once. Pax almost smiles. You learn a good deal about mounts that you had not known you needed to.${learn(2)}`; } },
       { label: 'Tell them it is fine', run() { castLike('pax', 0, 'You told me the coupling was fine.'); return '"I know it is fine," says Pax. "That is not the point." They go back to it, and you leave them to it, feeling that you have said the true thing in the wrong way.'; } },
     ]) },
@@ -210,11 +210,11 @@ const HAND_EVENTS = [
         ]);
         return 'You say yes, and spend your time ashore in a warehouse that smells of cold iron and old packing straw.';
       } },
-      { label: 'Pass', run: () => 'You pass, and spend the time ashore as you like, which is its own kind of wealth. The broker nods and finds somebody else.' },
+      { label: 'Pass', run: () => 'You pass, and spend the time ashore as you like, The broker nods and finds somebody else.' },
     ]) },
 
   { id: 'money-loan', mate: true, group: 'money', make: c => handEvent('A Loan',
-    `${c.mate.first} asks to borrow a hundred credits, quietly, at the end of a watch, with the look of a person who has been practicing the sentence. There is a family matter, something about a debt at home, and it will, they say, be paid back.`, [
+    `${c.mate.first} asks to borrow a hundred credits, quietly, at the end of a watch, in one breath. There is a family matter, something about a debt at home, and it will, they say, be paid back.`, [
       { label: 'Lend a hundred', can: () => G.state.credits >= 100, run() { G.state.credits -= 100; remember('loan', c.mate); setLater(Math.random() < 0.7 ? 'h-loan-repaid' : 'h-loan-default', 12, 'Lent {thread:loan} a hundred credits.'); like(c.mate, 3, 'You lent me a hundred credits when I needed it.'); return `You lend it, no questions, and ${c.mate.first} takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again, and a good deal more than that in other ways.`; } },
       { label: 'Lend fifty', can: () => G.state.credits >= 50, run() { G.state.credits -= 50; remember('loan', c.mate); setLater('h-loan-small', 12, 'Lent {thread:loan} fifty credits.'); like(c.mate, 1, 'You lent me fifty credits, which was what you could spare.'); return `"It is what I can spare," you say, and ${c.mate.first} says that is fine, that it is more than anyone else offered, and means it, mostly.`; } },
       { label: 'Say no', run() { like(c.mate, -1, 'You would not lend me anything.'); return `You say you cannot, and it is true, or true enough. ${c.mate.first} nods and does not ask again, and the not asking is its own sort of silence.`; } },
@@ -234,7 +234,7 @@ const HAND_EVENTS = [
         { label: 'Tell the captain at once', run() {
           capLike(c, 1, 'You brought me something off the lane when you saw it.');
           G.nextEvent = handEvent('What Did You See?', `Captain ${c.cap.last} wants it exactly: what, where, and how sure. A chart is out, and a pencil, and the patience of a person who has done this before.`, [
-            { label: 'Describe it exactly', run() { setLater('h-lane-again', 9, 'Reported something off the lane, in detail.'); return `You give them the transponder, the bearing and the speed, and the captain draws it on the chart, and nods, and, when you are done, says only: "That is a report." It is, you realize, the best thing anyone has said to you this month.${learn(2)}`; } },
+            { label: 'Describe it exactly', run() { setLater('h-lane-again', 9, 'Reported something off the lane, in detail.'); return `You give them the transponder, the bearing and the speed, and the captain draws it on the chart, and nods, and, when you are done, says only: "That is a report."${learn(2)}`; } },
             { label: 'Say you are not sure', run() { capLike(c, -1, 'You were not sure what you saw.'); setLater('h-lane-again', 9, 'Reported something off the lane, but was not sure of it.'); return `You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other.${learn(1)}`; } },
           ]);
           return `You report it, and Captain ${c.cap.last} nods, asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.`;
