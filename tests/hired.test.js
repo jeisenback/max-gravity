@@ -457,6 +457,7 @@ test('burn events for a hired hand: the captain takes the ship\'s calls, with th
       openEvent(distress);
       if (i === 0) out.shown = { labels: G.dialog.choices.map(c => c.label), text: G.dialog.event.text.slice(-120), decided: !!G.dialog.event.decided };
       chooseEvent(0); finishEvent();
+      for (let n = 0; G.dialog && n < 4; n++) { chooseEvent(0); finishEvent(); }  // the owner's offer, or the raiders: the captain's call too
       minePaid += st.credits - c0; fundMoved = fundMoved || h.fund !== f0;
     }
     out.mine = { minePaid, fundMoved };
