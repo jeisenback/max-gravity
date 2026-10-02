@@ -382,8 +382,8 @@ function spawnNpc(kind, atPlanet, fresh = false) {
     // A captain you have met before, who remembers you.
     n.persona = known;
     n.name = known.ship.name;
-    n.hostile = kind === 'pirate' ? known.opinion < 3 : known.opinion <= -4;
-    if (Math.abs(known.opinion) >= 2) msg(`Sensors: the ${n.name} (Capt. ${known.first} ${known.last}, ${opinionWord(known.opinion)}) is in local space.`);
+    n.hostile = kind === 'pirate' ? known.opinion < OPINION.TRUSTED : known.opinion <= OPINION.BITTER;
+    if (Math.abs(known.opinion) >= OPINION.NOTABLE) msg(`Sensors: the ${n.name} (Capt. ${known.first} ${known.last}, ${opinionWord(known.opinion)}) is in local space.`);
   } else {
     // Wren's ghost transponder, or trust among pirates, can keep a pirate off your back.
     n.hostile = kind === 'pirate' && !(G.state.flags.ghost && Math.random() < 0.5)
@@ -569,7 +569,7 @@ function land(planet) {
     return false;
   });
   expireMissions();
-  for (const c of crewMembers().filter(c => c.id && c.opinion <= -4 && !c.loyal)) {
+  for (const c of crewMembers().filter(c => c.id && c.opinion <= OPINION.BITTER && !c.loyal)) {
     leaveCrew(c.id);
     c.location = planet.name;
     msg(`${fullName(c)} has had enough of you and your ship, and walks off at ${planet.name}.`);

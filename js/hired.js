@@ -261,13 +261,13 @@ UI.views.crew = function () { return (hired() ? swapHtml() : '') + crewView.call
 
 // The crew member you are closest to, if you are close to anyone at all.
 function buyInFriend() {
-  const crew = G.state.crew.map(person).filter(c => c.opinion >= 1);
+  const crew = G.state.crew.map(person).filter(c => c.opinion >= OPINION.CLOSE);
   return crew.sort((a, b) => b.opinion - a.opinion || b.skill - a.skill)[0] || null;
 }
 // Who leaves with you: the main characters aboard who like you, both if both think well of you, otherwise the one who
 // likes you most; and if none do, the crew member you are closest to.
 function buyInCompanions() {
-  const cast = G.state.crew.map(person).filter(c => c.cast && c.opinion >= 1).sort((a, b) => b.opinion - a.opinion);
+  const cast = G.state.crew.map(person).filter(c => c.cast && c.opinion >= OPINION.CLOSE).sort((a, b) => b.opinion - a.opinion);
   if (cast.length) return cast.length > 1 && cast[1].opinion >= CAST_GOOD ? cast.slice(0, 2) : cast.slice(0, 1);
   const friend = buyInFriend();
   return friend ? [friend] : [];
