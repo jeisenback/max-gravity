@@ -307,7 +307,7 @@ function jobRole(job) {
   if (/accountant|sales|assayer|adjuster|dockworker|lawyer/.test(j)) return 'quartermaster';
   if (/navy|miner|salvager/.test(j)) return 'gunner';
   if (/software|journalist|auditor|modeler/.test(j)) return 'slicer';
-  return pick(Object.keys(ROLE_NAMES));
+  return pick(HIREABLE_ROLES);
 }
 function joinEvent(p) {
   const role = p.role || jobRole(p.job), st = G.state;
