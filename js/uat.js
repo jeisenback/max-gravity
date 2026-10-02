@@ -132,6 +132,27 @@ const UAT_ITEMS = [
     setup() { uatFresh(); uatLand('Earth'); UI.tab = 'port'; UI.render(); } },
 ];
 
+// ---------- the hired chapter (one set per authored captain) ----------
+function uatHired(key) {
+  G.dialog = null; G.nextEvent = null; G.transit = null;
+  startGame({ slot: Saves.current, background: 'earth', captain: 'Tester', mode: 'hired', post: 'pilot', captainKey: key });
+  G.state.uat = true;
+  return G.state;
+}
+const uatFinish = () => { while (G.dialog) finishEvent(); };
+UAT_ITEMS.push(...Object.entries(CAPTAINS).flatMap(([key, d]) => [
+  { group: 'The hired chapter', id: `hired-${key}`, title: `Sign-on with ${d.first}`, check: 'The sign-on scene reads in the captain\'s voice and the first run is on the board. Help has a hand topic.',
+    setup() { uatHired(key); } },
+  { group: 'The hired chapter', id: `hired-${key}-xo`, title: `${d.first}'s first officer turns on you`, check: 'The first officer\'s pivot scene opens and its choices work; the crew screen shows their opinion of you.',
+    setup() { uatHired(key); uatFinish(); openEvent(castScene(d.xo, CAST[d.xo].scenes.pivot)); } },
+]));
+UAT_ITEMS.push(
+  { group: 'The hired chapter', id: 'hired-deal', title: 'The used Ore Runner', check: 'With enough savings at a yard port, the offer arrives and states the price; accepting or declining both work.',
+    setup() { uatHired('hester'); uatFinish(); G.state.credits = USED_OFFER_AT; Mods.emit('landed', currentPlanet()); } },
+  { group: 'The hired chapter', id: 'hired-goodbye', title: 'Buying in and the goodbye', check: 'Buying the ship runs the crew goodbyes and the captain\'s closing scene, then the ending.',
+    setup() { uatHired('hester'); uatFinish(); G.state.credits = 100000; hired().flags = { lent: true, secretKnown: true }; hired().confirm = 'courier'; Mods.act('buyInGo', 'courier'); } },
+);
+
 // ---------- general tools ----------
 const UAT_TOOLS = {
   cash: () => { G.state.credits += 50000; },

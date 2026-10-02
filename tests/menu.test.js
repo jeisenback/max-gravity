@@ -100,7 +100,7 @@ test('help topics open from the title screen', async () => {
   const { page, ev, done } = await open({ title: true });
   await page.click('[data-action=menuView][data-arg=help]');
   const topics = await page.$$eval('[data-action=menuTopic]', b => b.length);
-  assert.equal(topics, await ev(() => HELP.length));
+  assert.equal(topics, await ev(() => helpTopics().length));
   await page.click('[data-action=menuTopic][data-arg=combat]');
   assert.match(await page.textContent('.menu h2'), /Fights during burns/);
   await done();
