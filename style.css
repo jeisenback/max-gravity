@@ -533,7 +533,7 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 .con-side { display: flex; flex-direction: column; gap: 10px; }
 .con-card { background: #050a11; border: 1px solid var(--line-soft); border-radius: 6px; padding: 10px; }
 .con-gauge { display: block; width: 100%; max-width: 230px; margin: 0 auto; }
-.con-read { display: flex; justify-content: space-between; font-size: 12px; color: var(--muted); margin: 2px 0; }
+.con-read { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); margin: 2px 0; }
 .con-read b { color: var(--text); font-weight: 500; }
 .con-bar { display: block; height: 7px; background: #12202f; border-radius: 2px; overflow: hidden; }
 .con-bar i { display: block; height: 100%; background: var(--accent); }

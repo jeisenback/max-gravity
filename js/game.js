@@ -1057,7 +1057,7 @@ function drawHud(W, H) {
   ctx.fillText(dateOf(), x, y += 16);
   if (hired() && hiredCaptain()) ctx.fillText(`Capt. ${hiredCaptain().first} ${hiredCaptain().last}`, x, y += 16);
 
-  y += hired() ? 10 : 26;  // the captain's line takes the room of the gap
+  y += 26;
   if (p) {
     drawBar(x, y, w, 'Shields', p.shields, s.shields, '#4aa3ff');
     drawBar(x, y += 30, w, 'Armor', p.armor, p.maxArmor, '#ff9a3c');
