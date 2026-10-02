@@ -15,7 +15,7 @@ test('a follow-up waits for its days, plays once, and a second beat is only reac
   const r = await ev(burn => {
     (0, eval)(`(${burn})`)();
     const st = G.state, out = {};
-    const beats = STORYLETS.filter(s => s.chained).map(s => s.id), afters = STORYLETS.filter(s => s.consumes).map(s => s.id);
+    const beats = STORYLETS.filter(s => s.chained).map(s => s.id), afters = STORYLETS.filter(s => s.consumes && !s.id.startsWith('h-')).map(s => s.id);  // (the hired ones are in hiredaftermath.test.js)
     out.counts = [beats.length, afters.length];
     // A second beat is never picked as a scene of its own.
     let picked = false; for (let i = 0; i < 300; i++) { const s = pickStorylet('transit'); if (s && s.chained) picked = true; }

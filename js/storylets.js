@@ -45,6 +45,7 @@ const CONDITIONS = {
   // A story passenger aboard, by role in the story (older saves' Mira has none).
   aboard: v => paxAboard().some(m => m.story && (m.storyWho || 'mira-europa') === v),
   chance: v => Math.random() < v,
+  hired: v => !!hired() === !!v,  // follow-ups of a hired hand's choices stop when they buy a ship of their own
   // A follow-up that an earlier choice set going with `later`: holds once its days have passed.
   due: v => [].concat(v).every(n => quality(`due:${n}`) > 0 && G.state.day >= quality(`due:${n}`)),
 };
@@ -95,6 +96,16 @@ const EFFECTS = {
   },
   q: v => { const qs = G.state.qualities = G.state.qualities || {}; for (const [k, n] of Object.entries(v)) qs[k] = (qs[k] || 0) + n; },
   // Start a follow-up: { name: days } makes the `due: name` condition hold that many days from now.
+  // A hired hand's standing: { captain: n, crew: n, 'thread:key': n } changes opinion of the captain, everyone aboard,
+  // or the person a scene remembered under that key (see remember).
+  like: v => {
+    for (const [who, n] of Object.entries(v)) {
+      const list = who === 'captain' ? [hired() && person(hired().captain)] : who === 'crew' ? procedural().map(f => f.p) : [threadPerson(who.replace(/^thread:/, ''))];
+      for (const p of list.filter(Boolean)) like(p, n, null);
+    }
+  },
+  // Experience at a hired hand's own post.
+  learn: n => { if (hired()) gainSkill(hired().post, n); },
   later: v => { const qs = G.state.qualities = G.state.qualities || {}; for (const [k, n] of Object.entries(v)) qs[`due:${k}`] = G.state.day + Math.max(1, n); },
   set: v => { const qs = G.state.qualities = G.state.qualities || {}; Object.assign(qs, v); },
   news: text => worldNews(fill(text)),
@@ -142,7 +153,12 @@ function applyEffects(effects = {}) {
   return said;
 }
 
-// {planet}, {system}, and {crew:role} (the crew member in that role) in any text.
+// A scene can remember a person under a key, for a follow-up to name: {thread:key} in its text.
+const threads = () => (G.state.threads = G.state.threads || {});
+const remember = (key, p) => { threads()[key] = p.id; };
+const threadPerson = key => (threads()[key] ? G.state.people[threads()[key]] : null);
+
+// {planet}, {system}, {crew:role} (the crew member in that role), {captain} and {thread:key} in any text.
 // Text can also be a list of parts, each a string or { when, text, else }: parts
 // whose conditions fail show their `else` (or nothing). Parts are joined by spaces.
 function fill(text = '') {
@@ -150,7 +166,9 @@ function fill(text = '') {
     text = text.map(p => (typeof p === 'string' ? p : meets(p.when) ? p.text : p.else || '')).filter(Boolean).join(' ');
   }
   return text.replace(/\{planet\}/g, G.state.planet).replace(/\{system\}/g, SYSTEMS[sidNow()].name)
-    .replace(/\{crew:(\w+)\}/g, (_, role) => roleName(role));
+    .replace(/\{crew:(\w+)\}/g, (_, role) => roleName(role))
+    .replace(/\{captain\}/g, () => { const c = hired() && person(hired().captain); return c ? `Captain ${c.last}` : 'the captain'; })
+    .replace(/\{thread:(\w+)\}/g, (_, key) => { const p = threadPerson(key); return p ? p.first : 'a shipmate'; });
 }
 
 // ---------- the engine ----------
@@ -182,7 +200,7 @@ function storyletEvent(s) {
   // A choice that needs a particular crew member (not just a role) is hidden without them.
   const present = c => !(c.when && c.when.crew && !ROLE_NAMES[c.when.crew] && !G.state.crew.includes(c.when.crew));
   return {
-    title: fill(s.title), text: fill(s.text), via: s.via,
+    title: fill(s.title), text: fill(s.text), via: s.via, personal: s.personal,
     choices: s.choices.filter(present).map(c => ({
       label: fill(c.label),
       role: c.when && ROLE_NAMES[c.when.crew] ? c.when.crew : undefined,
