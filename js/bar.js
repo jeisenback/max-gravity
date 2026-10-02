@@ -130,7 +130,7 @@ function talkEvent(pat) {
   const p = pat.p, st = G.state, bar = G.barState.name, t0 = p.traits[0];
   const mem = p.memories.length ? p.memories[p.memories.length - 1].replace(/^(Day \d+|\d+ \w+ \d+): /, '') : null;
   const text = pat.known
-    ? `${p.first} ${p.last} ${p.opinion >= 2 ? 'waves you over' : p.opinion <= -2 ? 'sees you and scowls into their drink' : 'nods at you'}.${pat.regular && p.news ? ` Since you were last here, ${p.first} ${p.news}` : ''}${mem ? ` Last time: "${mem}"` : ''}`
+    ? `${p.first} ${p.last} ${p.opinion >= 2 ? 'waves you over' : p.opinion <= -2 ? 'sees you and scowls into their drink' : 'nods at you'}.${pat.regular && p.gossip ? ` Since you were last here, ${p.first} ${p.gossip}` : ''}${mem ? ` Last time: "${mem}"` : ''}`
     : `${p.first} ${p.last}: a ${TRAITS[p.traits[0]].adj}, ${TRAITS[p.traits[1]].adj} ${p.job} from ${p.home}, ${GOALS[p.goal]}. ${pick(OPENERS[t0])}`;
   const choices = [
     { label: `Buy ${p.first} a drink (${DRINK} cr)`, can: () => st.credits >= DRINK && !pat.drank, run() {
@@ -200,7 +200,7 @@ function barHtml() {
   const b = barOf(planet), round = 25 * (4 + G.patrons.filter(x => !x.cast).length);
   const rows = G.patrons.map(({ p, known, cast, regular }, i) => `<div class="mission">
       <div><b>${p.first} ${p.last}</b>${known ? ` <span class="hint">(${opinionWord(p.opinion)})</span>` : ''}
-        <div class="hint">${cast ? 'Aboard with you, and at the bar tonight.' : known ? `${regular ? 'A regular here.' : 'Someone you know.'} ${regular && p.news ? `${p.first} ${p.news} ` : ''}${p.memories.length ? p.memories[p.memories.length - 1] : ''}` : `${TRAITS[p.traits[0]].adj[0].toUpperCase()}${TRAITS[p.traits[0]].adj.slice(1)} ${p.job} from ${p.home}.`}</div></div>
+        <div class="hint">${cast ? 'Aboard with you, and at the bar tonight.' : known ? `${regular ? 'A regular here.' : 'Someone you know.'} ${regular && p.gossip ? `${p.first} ${p.gossip} ` : ''}${p.memories.length ? p.memories[p.memories.length - 1] : ''}` : `${TRAITS[p.traits[0]].adj[0].toUpperCase()}${TRAITS[p.traits[0]].adj.slice(1)} ${p.job} from ${p.home}.`}</div></div>
       <button data-action="barTalk" data-arg="${i}">Talk</button>
     </div>`).join('');
   const hire = G.bar.map((c, i) => `<div class="mission">
