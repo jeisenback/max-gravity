@@ -11,6 +11,7 @@
 Mods.register({
   id: 'mars-navy', name: 'Reserve Commission', builtin: true,
   init(M) {
+    if (scopeOff('storylines')) return;  // not in this build (js/build.js)
     const home = ['Mars', 'Phobos Yards'];
     const free = { qBelow: { navyTask: 1, mcrnDone: 1 } };
     const task = { set: { navyTask: 1 } }, taskOver = { navyTask: 0 };

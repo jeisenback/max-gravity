@@ -141,7 +141,7 @@ const UI = {
         ${this.missionList(st.missions, 'abort', 'Abandon')}
         ${story().stage !== 0 ? `<h3>Story: Cold Water</h3><p class="desc">${storyObjective()}</p>${story().stage === 'end' ? '<div class="row"><button data-action="epilogue">Read the epilogue</button></div>' : ''}` : ''}
         ${journalHtml()}
-        ${hired() ? '' : stakeOffer()}
+        ${hired() || scopeOff('owner') ? '' : stakeOffer()}
         <h3>Standing</h3>
         <div class="standing">${FACTIONS.map(g => `<div><span style="color:${GOV_COLORS[g]}">${g === 'Pirate' ? 'Pirates' : g}</span> <b>${standingWord(repOf(g))}</b> <span class="hint">${repOf(g) > 0 ? '+' : ''}${repOf(g)}</span></div>`).join('')}</div>
         <h3>Local conditions</h3>
@@ -155,7 +155,7 @@ const UI = {
         ${st.rumors.map(r => `<div class="hint">${r.text} Until ${dateOf(r.until)}.</div>`).join('')}
         ${!(st.news || []).length && !st.rumors.length ? '<p class="hint">Listen to the comms in transit for more.</p>' : ''}
         ${othersNewsHtml()}
-        ${communityHtml()}
+        ${scopeOff('community') ? '' : communityHtml()}
         <p class="hint">New games, saves, and settings are in the Menu (below, or Esc in flight).</p>`;
     },
 
@@ -258,7 +258,7 @@ const UI = {
             <td class="num">${s.guns}</td>
             <td class="num">${fmt(s.price)}</td>
             <td class="act">${owned ? '<i>Flying it</i>' : `<button data-action="buyship" data-arg="${id}" ${ok ? '' : 'disabled'}>Fly it (${fmt(cost)})</button>`}
-              <button data-action="cbuy" data-arg="${id}" ${!locked && st.credits >= s.price ? '' : 'disabled'}>For company (${fmt(s.price)})</button></td>
+              ${scopeOff('owner') ? '' : `<button data-action="cbuy" data-arg="${id}" ${!locked && st.credits >= s.price ? '' : 'disabled'}>For company (${fmt(s.price)})</button>`}</td>
           </tr>`;
         }).join('');
         html += `

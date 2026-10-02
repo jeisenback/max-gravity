@@ -70,6 +70,8 @@ At any market you can also buy a stake in the port's business from the Port tab,
 
 No build step and no dependencies. Open `index.html` in a browser.
 
+This build is scoped to one chapter: an Earth hired hand, ending when they buy a ship and the crew who like them come along (`BUILD.scope` is `'earth-hired'` in `js/build.js`). Owner mode, the Mars and Belt starts, the tutorial, hired errands, bar side work and leads, the five storylines, the shipping company, stakes and outposts, and the community section are switched off. To play everything, set `maxGravity.scope` to `full` in the browser's localStorage; the tests do the same.
+
 Progress is saved automatically in your browser's localStorage whenever you land.
 
 ## Controls
@@ -116,7 +118,7 @@ On a keyboard:
 - `js/music.js` - the generated soundtrack
 - `js/help.js` - the Help topics and one-time tips
 - `js/menu.js` - the title screen, new-game setup, save slots, the pause menu, and settings
-- `js/build.js` - the version number and the release switch for tester tools
+- `js/build.js` - the version number, the release switch for tester tools, and the scope switch (see Running)
 - `js/uat.js` - tester tools: a checklist of set-ups for every feature, general tools, and a pass/fail report
 - `js/community.js` - mods by link, shareable scenarios, and shared news between players
 - `js/family.js` - the ship as home: its name and history, personal stories and favors, birthdays and holidays, letters and moods, traditions, touches, the cat, and passengers who join the crew

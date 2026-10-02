@@ -9,6 +9,7 @@
 Mods.register({
   id: 'ice-strike', name: "The Ice Haulers' Strike", builtin: true,
   init(M) {
+    if (scopeOff('storylines')) return;  // not in this build (js/build.js)
     const crates = 'Guild medical crates';
 
     M.addStorylet({

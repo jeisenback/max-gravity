@@ -81,6 +81,7 @@ const BACKGROUNDS = {
 };
 
 function startGame(o) {
+  if (scopeOff('starts')) o = { ...o, mode: 'hired', background: 'earth', tutorial: false };  // the one start this build has
   Saves.use(o.slot);
   G.paused = false;
   G.dialog = null; G.transit = null;
@@ -176,19 +177,20 @@ const Menu = {
         </div>`;
     },
     new() {
-      const f = this.form, empty = Saves.firstEmpty(), m = Saves.metas();
+      const f = this.form, empty = Saves.firstEmpty(), m = Saves.metas(), narrow = scopeOff('starts');
+      if (narrow) { f.mode = 'hired'; f.background = 'earth'; }  // the one start this build has
       if (!f.slot) f.slot = empty || Saves.current;
       return `<h2>New game</h2>
         <div class="menu-form">
           <label>Your name <input type="text" id="ngCaptain" maxlength="30" placeholder="Captain's name" value="${esc(f.captain || '')}"></label>
-          <h3>How you start</h3>
-          <div class="row">${[['owner', 'Owner'], ['hired', 'Hired hand']].map(([id, l]) => `<button class="${(f.mode || 'owner') === id ? 'on' : ''}" data-action="menuMode" data-arg="${id}">${l}</button>`).join('')}</div>
+          <h3>${narrow ? 'Your post' : 'How you start'}</h3>
+          ${narrow ? '' : `<div class="row">${[['owner', 'Owner'], ['hired', 'Hired hand']].map(([id, l]) => `<button class="${(f.mode || 'owner') === id ? 'on' : ''}" data-action="menuMode" data-arg="${id}">${l}</button>`).join('')}</div>`}
           ${f.mode === 'hired' ? `<p class="hint">You sign on to a captain's ship and work one post. The captain picks where she goes; you save toward a ship of your own.</p>
           <div class="row">${HIRED_POSTS.map(p => `<button class="${(f.post || 'pilot') === p ? 'on' : ''}" data-action="menuPost" data-arg="${p}">${POSTS[p].name}</button>`).join('')}</div>`
             : `<label>Your ship <input type="text" id="ngShip" maxlength="30" placeholder="Second Chance" value="${esc(f.ship || '')}"></label>`}
-          <h3>Where you start</h3>
+          ${narrow ? '' : `<h3>Where you start</h3>
           ${Object.entries(BACKGROUNDS).map(([id, b]) => `<button class="choice ${f.background === id ? 'on' : ''}" data-action="menuBackground" data-arg="${id}"><b>${b.name}</b><span class="hint">${b.text}</span></button>`).join('')}
-          ${f.background === 'earth' && f.mode !== 'hired' ? `<label class="check"><input type="checkbox" id="ngTutorial" ${f.tutorial ? 'checked' : ''}> Play the tutorial</label>` : ''}
+          ${f.background === 'earth' && f.mode !== 'hired' ? `<label class="check"><input type="checkbox" id="ngTutorial" ${f.tutorial ? 'checked' : ''}> Play the tutorial</label>` : ''}`}
           <h3>Save slot</h3>
           <div class="row">${Array.from({ length: SLOTS }, (_, i) => i + 1).map(n => `<button class="${f.slot === n ? 'on' : ''}" data-action="menuSlotPick" data-arg="${n}">${n}: ${m[n] ? esc(m[n].captain) : 'empty'}</button>`).join('')}</div>
           ${m[f.slot] ? `<p class="hint">Slot ${f.slot} holds Captain ${esc(m[f.slot].captain)}'s game. Starting here replaces it.</p>` : ''}
