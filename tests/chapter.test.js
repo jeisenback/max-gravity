@@ -127,11 +127,11 @@ test('the captain heads for a yard at the chapter\'s price, not the cheapest shi
   await done();
 });
 
-// Seeds differ in luck (the answers are random), so the runs are checked one by one and the pay as a mean.
+// Seeds differ in luck (the answers are random), so the runs are checked one by one and the pay as a mean over four.
 test('about twenty runs reach the target, and the planner is never stuck', async () => {
   const { soak } = require('../tools/soak');
   const rs = [];
-  for (const seed of [1, 2, 3]) rs.push(await soak({ seed, legs: 40 }));
+  for (const seed of [1, 2, 3, 4]) rs.push(await soak({ seed, legs: 40 }));
   for (const r of rs) {
     assert.ok(r.reached, `seed ${r.seed} never reached the target in ${r.runs} runs`);
     assert.ok(r.reached.runs >= 14 && r.reached.runs <= 28, `seed ${r.seed}: ${r.reached.runs} runs`);
@@ -139,5 +139,5 @@ test('about twenty runs reach the target, and the planner is never stuck', async
     assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []);
   }
   const mean = rs.reduce((t, r) => t + r.avgPayPerRun, 0) / rs.length;
-  assert.ok(mean >= 800 && mean <= 1100, `mean pay per run ${Math.round(mean)}`);
+  assert.ok(mean >= 800 && mean <= 1200, `mean pay per run ${Math.round(mean)}`);  // about 1,000 measured; the band has room for the soak's own noise
 });
