@@ -462,7 +462,8 @@ test('a dead core character is not a contact, a blockade ally or a friend at the
       person('c:yelena').opinion = opinion;
       castFate('yelena', 'die', 'x', 'x');
       G.mode = 'landed'; UI.tab = 'crew'; UI.render();
-      return { listed: document.body.innerHTML.includes('Yelena'), allies: blockadeForces().allies, friends: +/Across the solar system, (\d+)/.exec(epilogueEvent().text)[1] };
+      // the memorial names her; the contacts do not
+      return { listed: document.body.innerHTML.replace(/<h3>In memory<\/h3>[\s\S]*?(?=<h3>)/, '').includes('Yelena'), allies: blockadeForces().allies, friends: +/Across the solar system, (\d+)/.exec(epilogueEvent().text)[1] };
     };
     return { loved: run(6), unloved: run(0) };
   });
@@ -666,5 +667,54 @@ test('the memorial cause carries no markup, when written or when a save is loade
     return { written, loaded };
   });
   assert.doesNotMatch(r.written, /[<>]/); assert.doesNotMatch(r.loaded, /[<>]/);
+  await done();
+});
+
+// ---------- marks and the memorial, shown (#131) ----------
+
+test('a mark is shown on the crew screen and on the character sheet', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    marsHired();
+    const crew = () => UI.views.crew.call(UI), sheet = () => { G.viewPerson = 'c:yelena'; return characterPanel(); };
+    const before = { crew: crew().includes('Hand ruined.'), sheet: sheet().includes('Hand ruined.') };
+    castFate('yelena', 'mark', 'x', 'Hand ruined, <b>badly</b>.');
+    return { before, crew: crew(), sheet: sheet() };
+  });
+  assert.deepEqual(r.before, { crew: false, sheet: false });
+  for (const html of [r.crew, r.sheet]) { assert.match(html, /Hand ruined, /); assert.doesNotMatch(html, /<b>badly<\/b>/, 'the text is escaped'); }
+  await done();
+});
+
+test('the memorial lists who, when, where and the cause, and escapes all of it', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    marsHired(); addThird();
+    const none = memorialHtml();
+    castFate('yelena', 'die', 'Lost with the "Iron & Ash".', 'x');
+    const st = G.state, e = st.memorial[0];
+    st.memorial.push({ key: 'ruben', day: 3, place: '<i>Ceres</i>', cause: '<script>alert(1)</script>' });  // an old or imported save
+    return { none, html: UI.views.crew.call(UI), day: dateOf(e.day), place: e.place };
+  });
+  assert.equal(r.none, '');
+  assert.match(r.html, /In memory/); assert.match(r.html, /Yelena/); assert.ok(r.html.includes(r.day)); assert.ok(r.html.includes(r.place));
+  assert.match(r.html, /Lost with the &quot;Iron &amp; Ash&quot;/);
+  assert.doesNotMatch(r.html, /<script|<i>/, 'markup in the record is escaped');
+  await done();
+});
+
+test('the chapter\'s closing scene remembers who did not make it', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers); await ev(fragileHelpers);
+  const r = await ev(() => {
+    start({ mode: 'hired', post: 'gunner' });
+    const xo = addFragile(); G.state.crew.push(xo.id);
+    const clean = chapterEnd('shuttle').text;
+    castFate('testxo', 'die', 'Lost on the ice.', 'x');
+    return { clean, text: chapterEnd('shuttle').text };
+  });
+  assert.doesNotMatch(r.clean, /Test Xo/); assert.match(r.text, /Test Xo/);
   await done();
 });
