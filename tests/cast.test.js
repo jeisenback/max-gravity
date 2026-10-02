@@ -582,3 +582,89 @@ test('every authored story is complete, and the Earth pair have one', async () =
   for (const [k, v] of Object.entries(r)) assert.deepEqual(v, { fields: true, news: true, emoji: false }, k);
   await done();
 });
+
+// ---------- fragile characters, and the fate follow-ups (#146) ----------
+
+const fragileHelpers = () => {
+  // An authored first officer stands in until the real ones exist: marked fragile, joined the way the cast joins.
+  window.addFragile = () => { CAST.testxo = { ...CAST.tomas, first: 'Test', last: 'Xo', fragile: true, role: 'gunner', skills: { gunner: 2 } }; castRec('testxo').since = G.state.day; return castPerson('testxo'); };
+};
+
+test('a fragile character dies even when only the pair would be left', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(fragileHelpers);
+  const r = await ev(() => {
+    marsHired(); const xo = addFragile(), st = G.state, out = {};
+    st.crew.push(xo.id);
+    out.living = castLiving().sort();
+    out.result = castFate('testxo', 'die', 'Lost on the ice.', 'x');
+    out.dead = castDead('testxo'); out.inCrew = st.crew.includes(xo.id); out.memorial = st.memorial;
+    out.pair = ['yelena', 'ruben'].map(k => castDead(k));
+    return out;
+  });
+  assert.deepEqual(r.living, ['ruben', 'yelena'], 'a fragile character does not count toward the floor');
+  assert.equal(r.result, 'die'); assert.equal(r.dead, true); assert.equal(r.inCrew, false);
+  assert.equal(r.memorial.length, 1); assert.equal(r.memorial[0].key, 'testxo'); assert.equal(r.memorial[0].cause, 'Lost on the ice.');
+  assert.deepEqual(r.pair, [false, false]);
+  await done();
+});
+
+test('a fragile character does not lift the floor for the pair', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(fragileHelpers);
+  const r = await ev(() => { marsHired(); addFragile(); return { result: castFate('yelena', 'die', 'x', 'x'), dead: castDead('yelena') }; });
+  assert.deepEqual(r, { result: 'mark', dead: false });
+  await done();
+});
+
+test('a ship lost takes a fragile character and leaves the pair marked', async () => {
+  const { ev, done } = await open();
+  await ev(helpers); await ev(fragileHelpers);
+  const r = await ev(() => {
+    marsHired(); const xo = addFragile(); G.state.crew.push(xo.id);
+    const out = castShipLoss('Lost with the ship.');
+    return { out, dead: castDead('testxo'), pair: ['yelena', 'ruben'].map(k => castDead(k)) };
+  });
+  assert.deepEqual(r.out.dead, ['testxo']); assert.deepEqual(r.out.saved.sort(), ['ruben', 'yelena']);
+  assert.deepEqual(r.pair, [false, false]);
+  await done();
+});
+
+test('a fate for a character who never joined is ignored', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    start(); const st = G.state;
+    const result = castFate('ines', 'die', 'x', 'x');
+    return { result, dead: castDead('ines'), memorial: st.memorial || [], marks: ((st.cast || {}).ines || {}).marks };
+  });
+  assert.deepEqual(r, { result: 'live', dead: false, memorial: [], marks: undefined });
+  await done();
+});
+
+test('a dead character\'s record survives registry pruning', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    marsHired(); addThird();
+    const st = G.state; person('c:yelena').opinion = 0; castFate('yelena', 'die', 'x', 'x');
+    for (let i = 0; i < 120; i++) registerPerson(makePerson());
+    return { kept: !!st.people['c:yelena'], same: castPerson('yelena') === st.people['c:yelena'], dead: castDead('yelena'), size: Object.keys(st.people).length };
+  });
+  assert.equal(r.kept, true); assert.equal(r.same, true); assert.equal(r.dead, true); assert.ok(r.size <= 82);
+  await done();
+});
+
+test('the memorial cause carries no markup, when written or when a save is loaded', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    marsHired(); addThird();
+    castFate('yelena', 'die', 'Lost with the <img src=x onerror=1> Ship.', 'x');
+    const written = G.state.memorial[0].cause;
+    const loaded = migrate({ memorial: [{ key: 'ruben', day: 3, place: 'Ceres', cause: '<b>bold</b>' }] }).memorial[0].cause;
+    return { written, loaded };
+  });
+  assert.doesNotMatch(r.written, /[<>]/); assert.doesNotMatch(r.loaded, /[<>]/);
+  await done();
+});
