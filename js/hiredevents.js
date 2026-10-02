@@ -97,7 +97,7 @@ const HAND_EVENTS = [
     `Captain ${c.cap.last} wants the drive run hotter than you would, to make a berth window at the next port, and has said so in the tone of someone who has already decided. You have a view, and so, you suspect, does everyone else aboard.`, [
       { label: 'Do as ordered', run() { setLater(Math.random() < 0.5 ? 'h-hot-good' : 'h-hot-bad', 6, 'Ran the drive hot on {captain}\'s order.'); capLike(c, 1, 'You did as you were told on the hot burn.'); return `You run it the way you were told, and the window is made, with a minute to spare. The captain says nothing, which is, from them, a kind of thanks.${learn(1)}`; } },
       { label: 'Say what you think', run() {
-        if (c.cap.opinion >= 1) { setLater('h-ninety', 7, 'Told {captain} what I thought of the hot burn, and was heard.'); capLike(c, 2, 'You told me plainly what you thought, and you were right to.'); return `You say it plainly and without heat, and the captain listens, and, after a long pause, gives ground a little. "Noted," they say. "Run it at ninety." It is the first time anyone has been asked.${learn(2)}`; }
+        if (c.cap.opinion >= OPINION.HEARD) { setLater('h-ninety', 7, 'Told {captain} what I thought of the hot burn, and was heard.'); capLike(c, 2, 'You told me plainly what you thought, and you were right to.'); return `You say it plainly and without heat, and the captain listens, and, after a long pause, gives ground a little. "Noted," they say. "Run it at ninety." It is the first time anyone has been asked.${learn(2)}`; }
         setLater('h-hot-bad', 6, 'Argued the hot burn with {captain} and lost.'); capLike(c, -1, 'You argued the burn with me when I had decided.');
         return 'You say it, and it lands badly. "I did not ask," the captain says, quite pleasantly, and the conversation is over. You run it hot, and it works, which is somehow worse.';
       } },
@@ -107,7 +107,7 @@ const HAND_EVENTS = [
     `Captain ${c.cap.last} catches you at the end of a watch and says, with the air of a person reading out a line item, that the ${POSTS[hired().post].name.toLowerCase()} has not given them a worry in a week. It is, from this captain, practically a speech.`, [
       { label: 'Take it modestly', run() { setLater('h-praise-trust', 10, '{captain} said something kind and I did not make a thing of it.'); capLike(c, 1, 'You took my thanks without making a thing of it.'); return `"The crew make it easy," you say, and the captain gives a short, satisfied nod, and goes aft. You stand a little straighter for the rest of the watch.${learn(1)}`; } },
       { label: 'Ask if it is worth a bonus', run() {
-        if (c.cap.opinion >= 2) { G.state.credits += 60; capLike(c, 0, 'You asked for a bonus and had earned it.'); return 'The captain raises an eyebrow, and then, to your surprise, laughs. "Fair," they say. "Sixty." It lands in your account before the end of the watch.'; }
+        if (c.cap.opinion >= OPINION.BONUS) { G.state.credits += 60; capLike(c, 0, 'You asked for a bonus and had earned it.'); return 'The captain raises an eyebrow, and then, to your surprise, laughs. "Fair," they say. "Sixty." It lands in your account before the end of the watch.'; }
         setLater('h-owed', 8, 'Asked {captain} for a bonus before I had earned one.'); capLike(c, -1, 'You asked for a bonus before you had earned one.');
         return 'The captain looks at you for a moment. "When it is a speech, it is free," they say. "When it is a bonus, it is earned." You have the feeling of having spent something you did not have.';
       } },

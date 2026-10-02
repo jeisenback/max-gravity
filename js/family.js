@@ -400,7 +400,7 @@ Mods.register({
         becomeLoyal(f, `The captain took me home to see my ${storyOf(f).rel}.`);
         msg(`${f.first} goes ashore to see their ${missed(f)}, and comes back the next morning with red eyes and a bag of home cooking for everyone.`);
       }
-      if (p && m.type === 'passenger' && p.opinion >= 4 && !st.crew.includes(p.id) && Math.random() < 0.6) G.joinOffer = p;
+      if (p && m.type === 'passenger' && p.opinion >= OPINION.WELCOME && !st.crew.includes(p.id) && Math.random() < 0.6) G.joinOffer = p;
     });
     M.on('landed', planet => { for (const n of letters(planet)) M.note(n); });
     M.action('renameShip', () => {

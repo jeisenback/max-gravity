@@ -130,7 +130,7 @@ function talkEvent(pat) {
   const p = pat.p, st = G.state, bar = G.barState.name, t0 = p.traits[0];
   const mem = p.memories.length ? p.memories[p.memories.length - 1].replace(/^(Day \d+|\d+ \w+ \d+): /, '') : null;
   const text = pat.known
-    ? `${p.first} ${p.last} ${p.opinion >= 2 ? 'waves you over' : p.opinion <= -2 ? 'sees you and scowls into their drink' : 'nods at you'}.${pat.regular && p.gossip ? ` Since you were last here, ${p.first} ${p.gossip}` : ''}${mem ? ` Last time: "${mem}"` : ''}`
+    ? `${p.first} ${p.last} ${p.opinion >= OPINION.FRIEND ? 'waves you over' : p.opinion <= OPINION.ENEMY ? 'sees you and scowls into their drink' : 'nods at you'}.${pat.regular && p.gossip ? ` Since you were last here, ${p.first} ${p.gossip}` : ''}${mem ? ` Last time: "${mem}"` : ''}`
     : `${p.first} ${p.last}: a ${TRAITS[p.traits[0]].adj}, ${TRAITS[p.traits[1]].adj} ${p.job} from ${p.home}, ${GOALS[p.goal]}. ${pick(OPENERS[t0])}`;
   const choices = [
     { label: `Buy ${p.first} a drink (${DRINK} cr)`, can: () => st.credits >= DRINK && !pat.drank, run() {
@@ -186,7 +186,7 @@ function talkEvent(pat) {
     pat.blessed = true; met(pat); like(p, 1, 'I blessed the captain\'s ship.');
     return `${p.first} closes their eyes, and lays two fingers on the transponder, very gently, and says a few words over your ship's name, in a low, ancient cadence you do not know. The whole bar seems, for a moment, to lean in. When they are done, they open their eyes, and smile, and touch your hand. It can't hurt. It might, you think, even help.`;
   } });
-  if (pat.known && p.opinion <= -3) choices.push({ label: 'Make peace (buy them a bottle, 300 cr)', can: () => st.credits >= 300 && !pat.peace, run() {
+  if (pat.known && p.opinion <= OPINION.GRUDGE) choices.push({ label: 'Make peace (buy them a bottle, 300 cr)', can: () => st.credits >= 300 && !pat.peace, run() {
     pat.peace = true; st.credits -= 300; like(p, 3, 'The captain bought me a bottle and apologized.');
     return `${p.first} looks at the bottle a long time before taking it, turning it in the light, reading the label, as though it might be a trap. Then they take it, and set it between you on the table, and pour two glasses. "It's a start," they say, gruffly. It is not forgiveness. But the tension, in the room, and in their shoulders, comes down, one small notch.`;
   } });

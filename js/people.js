@@ -113,8 +113,26 @@ function like(p, n, memory) {
   if (memory) p.memories.push(`${dateOf()}: ${memory}`);
 }
 
+// How much someone thinks of you (p.opinion, an integer that starts at 0), and the cutoffs where the game starts to treat them
+// differently. Every comparison uses this table. Two entries are the captain's, and become per captain (the hired-hand chapter).
+const OPINION = {
+  CLOSE: 1,       // close enough to leave the ship with you at a buy-in (hired.js)
+  HEARD: 1,       // the captain listens when you disagree with an order (hiredevents.js)
+  FRIEND: 2,      // a friend: stays aboard and counts at the epilogue (story.js), waves you over (bar.js), asks for your ship again (social.js)
+  NOTABLE: 2,     // worth a mention either way: a known captain in local space (game.js), someone you remember (social.js)
+  BONUS: 2,       // the captain gives a bonus when you ask (hiredevents.js)
+  TRUSTED: 3,     // friendly terms from a trader (hail.js), a pirate who knows you is not hostile (game.js), someone who thanks you (people.js)
+  STRONG: 3,      // strong feelings either way: a known captain is likelier to turn up on the lanes (hail.js)
+  WELCOME: 4,     // a passenger may ask to join the crew (family.js)
+  ALLY: 5,        // answers the blockade call (story.js)
+  ENEMY: -2,      // an enemy at the epilogue (story.js), a patron who scowls (bar.js)
+  GRUDGE: -3,     // no deals, a higher price to pay them off (hail.js), a patron you can make peace with (bar.js)
+  BITTER: -4,     // crew who are not loyal walk off, a known captain is hostile (game.js), someone who comes looking for revenge (people.js)
+  HIRED_GUN: -5,  // pays a hired gun to join the blockade (story.js)
+};
+
 function opinionWord(n) {
-  return n >= 5 ? 'devoted' : n >= 2 ? 'friendly' : n > -2 ? 'neutral' : n > -5 ? 'resentful' : 'hostile';
+  return n >= OPINION.ALLY ? 'devoted' : n >= OPINION.FRIEND ? 'friendly' : n > OPINION.ENEMY ? 'neutral' : n > OPINION.HIRED_GUN ? 'resentful' : 'hostile';
 }
 
 // A passenger offer: a solo traveler, a couple, a family, or a survey team.
@@ -520,7 +538,7 @@ function meetContacts(planet) {
       p.repaid = p.thanked = true;
       st.credits += p.owes * 2;
       notes.push(`${p.first} ${p.last} finds you at the dock and repays the ${fmt(p.owes)} cr you covered, with interest: ${fmt(p.owes * 2)} cr.`);
-    } else if (p.opinion >= 3 && !p.thanked) {
+    } else if (p.opinion >= OPINION.TRUSTED && !p.thanked) {
       p.thanked = true;
       const roll = Math.random();
       if (roll < 0.4) {
@@ -539,7 +557,7 @@ function meetContacts(planet) {
         });
         notes.push(`${p.first} ${p.last} has a job for someone they trust. It is on the mission board.`);
       }
-    } else if (p.opinion <= -4 && !p.avenged) {
+    } else if (p.opinion <= OPINION.BITTER && !p.avenged) {
       p.avenged = true;
       G.revenge = p;
       notes.push(`Word on the docks: ${p.first} ${p.last} has been asking around about your ship, and paying people to listen. Watch yourself out there.`);
