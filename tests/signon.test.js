@@ -66,6 +66,7 @@ test('it works with any captain, and an owner does not get it', async () => {
   const r = await ev(() => {
     startGame({ slot: 1, background: 'belt', captain: 'Sam Rowe', mode: 'hired', post: 'comms' }); while (G.dialog) finishEvent();
     const st = G.state, cap = st.people[st.hired.captain], bad = [];
+    delete st.hired.captainKey;  // a generated captain (an older save): the crew describe them by their traits
     for (const t of Object.keys(TRAITS)) { cap.traits[0] = t; const e = signOnEvent(); if (/undefined|NaN/.test(e.text) || !e.text.includes(TRAITS[t].adj)) bad.push(t); }
     startGame({ slot: 1, background: 'belt', captain: 'Sam Rowe' });
     return { bad, owner: !!(G.dialog && G.dialog.event && G.dialog.event.title === 'Signing On') };

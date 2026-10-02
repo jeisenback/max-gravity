@@ -68,14 +68,18 @@ test('the burn HUD names the captain, and the chatter gives the captain their ow
     try { drawHud(900, 700); } finally { ctx.fillText = real; }
     out.hud = spoken.some(t => t === `Capt. ${c.first} ${c.last}`);
     const r0 = Math.random;
-    Math.random = () => 0.1; out.lines = Mods.filter('chatter', ['the crew']);
+    Math.random = () => 0.1; out.authored = Mods.filter('chatter', ['the crew']);
+    out.entry = captainEntry().chatter.length;
+    delete hired().captainKey;  // a generated captain: eight habits and a line for each trait
+    out.lines = Mods.filter('chatter', ['the crew']);
     Math.random = () => 0.9; out.pool = Mods.filter('chatter', ['the crew']);
     Math.random = r0;
-    out.named = out.lines.every(l => l.includes(`Captain ${c.last}`)); out.clean = !out.lines.some(l => /\{|undefined/.test(l));
+    out.named = out.lines.every(l => l.includes(`Captain ${c.last}`)); out.clean = !out.lines.some(l => /\{|undefined/.test(l)) && !out.authored.some(l => /\{|undefined/.test(l));
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); Math.random = () => 0.1; out.owner = Mods.filter('chatter', ['the crew']); Math.random = r0;
     return out;
   });
   assert.ok(r.hud, 'the HUD has the captain\'s line');
+  assert.equal(r.authored.length, r.entry, 'an authored captain has their own lines'); assert.ok(r.authored.length >= 8);
   assert.ok(r.lines.length >= 8 && r.named && r.clean, 'eight habits and a line for each trait, all naming the captain');
   assert.deepEqual(r.pool, ['the crew'], 'most of the time the crew speak');
   assert.ok(!r.owner.some(l => /Captain /.test(l)), 'an owner has no captain to hear from');

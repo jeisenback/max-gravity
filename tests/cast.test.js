@@ -107,7 +107,7 @@ test('every authored scene is complete: a title, text, two choices with results,
     return out;
   });
   assert.deepEqual(r.filter(x => x.bad.length), []);
-  assert.equal(r.length, 31, 'six characters, five scenes each, and Yelena\'s pivot');
+  assert.equal(r.length, 36, 'six characters, five scenes each, Yelena\'s pivot, and Cato\'s five');
   await done();
 });
 
@@ -130,7 +130,7 @@ test('every choice of every scene runs and says what happened', async () => {
     return out;
   });
   assert.deepEqual(r.filter(x => !x.ok), []);
-  assert.equal(r.length, 63, 'six characters, five scenes, two choices, and the pivot\'s three');
+  assert.equal(r.length, 74, 'six characters, five scenes, two choices, and the pivots\' three; and Cato\'s five scenes');
   await done();
 });
 

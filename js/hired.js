@@ -382,7 +382,7 @@ function chapterEnd(id) {
   const st = G.state, h = hired(), cap = st.people[h.captain], friends = buyInCompanions(), oldName = home().name, days = st.day - h.since;
   return {
     title: 'Your Own Ship', personal: true,
-    text: `The ${buyShip(id).name} is on the apron at ${currentPlanet().name} with her ramp down and the hold empty. The papers have your name on them. You came aboard the ${oldName} ${days} days ago with ${fmt(HIRED_SAVINGS)} cr and a post to learn. Captain ${cap.last} shook your hand at the foot of the ramp and went back up it. ${friends.length ? `${namesOf(friends)} ${friends.length > 1 ? 'are' : 'is'} already aboard, stowing a bag.` : 'Nobody came with you.'} The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.`,
+    text: `The ${buyShip(id).name} is on the apron at ${currentPlanet().name} with her ramp down and the hold empty. The papers have your name on them. You came aboard the ${oldName} ${days} days ago with ${fmt(HIRED_SAVINGS)} cr and a post to learn. ${captainEntry() ? '' : `Captain ${cap.last} shook your hand at the foot of the ramp and went back up it. `}${friends.length ? `${namesOf(friends)} ${friends.length > 1 ? 'are' : 'is'} already aboard, stowing a bag.` : 'Nobody came with you.'} The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.`,
     choices: [{ label: 'Keep flying', run: () => 'You walk up the ramp and shut the hatch behind you.' }],
   };
 }
@@ -416,15 +416,16 @@ const runHtml = () => {
 const CAPTAIN_CHATTER = [
   '{cap} is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch.',
   '{cap} stops at the hatch of the {post}, looks in, and leaves without saying a word. It is somehow reassuring.',
-  '{cap} is in the galley with the ledger open, doing sums with their lips moving.',
+  '{cap} is in the galley with the ledger open, lips moving over the sums.',
   '{cap}: "Fuel is money, and money is fuel. Remember that when somebody wants to go faster."',
   '{cap} is checking the manifest against the hold, line by line, for the second time.',
   '{cap}: "I was a hand once. I remember what it was like when the captain did not know my name."',
-  '{cap} is asleep in the captain\'s chair with the log open on their chest.',
+  '{cap} is asleep in the captain\'s chair with the log open on the captain\'s chest.',
   '{cap}: "We make port on the day, or I owe somebody an explanation. I hate owing explanations."',
 ];
 function captainChatter() {
-  const c = hiredCaptain(), name = `Captain ${c.last}`;
+  const c = hiredCaptain(), name = `Captain ${c.last}`, d = captainEntry();
+  if (d && d.chatter) return d.chatter.map(l => l.replace(/\{post\}/g, POSTS[hired().post].name.toLowerCase()));  // their own lines, and no trait chatter
   const lines = CAPTAIN_CHATTER.map(l => l.replace('{cap}', name).replace('{post}', POSTS[hired().post].name.toLowerCase()));
   for (const t of c.traits) lines.push(pick([].concat(TRAITS[t].chatter)).replace('{first}', name).replace('{home}', c.home));
   return lines;
@@ -449,12 +450,12 @@ Mods.register({
     M.action('buyInNo', () => { if (hired()) hired().confirm = null; });
     M.action('buyInGo', id => {
       if (!hired() || hired().confirm !== id) return;
-      const scene = castLateAtBuyIn(), closing = chapterEnd(id), text = buyIn(id);  // both are read from the crew and the captain before they leave
+      const scene = castLateAtBuyIn(), goodbye = captainGoodbye(), closing = chapterEnd(id), text = buyIn(id);  // all read from the crew and the captain before they leave
       if (text) M.note(text);
       if (!text || G.dialog) return;
       if (closing) G.state.flags.chapterOne = true;
-      if (scene && closing) G.nextEvent = closing;
-      if (scene || closing) openEvent(scene || closing);
+      const scenes = [scene, goodbye, closing].filter(Boolean);  // a main character's last scene, the goodbye, then the close
+      if (scenes.length) openEvent(chainEvents(scenes));
     });
   },
 });

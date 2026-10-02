@@ -26,23 +26,23 @@ Mods.register({
       id: 'h-hot-bad', title: 'The Pump Trips',
       text: 'The coolant pump trips at the worst moment of the burn, a flat chirp and a line of amber, and the drive drops back to a crawl. The hot burn did not make the window, and {captain} has not said a word about it. You can feel what the silence is waiting for.',
       choices: [
-        { label: 'Help sort it quietly', effects: { learn: 3, like: { captain: 1 }, log: 'The hot burn tripped the pump. I helped sort it and said nothing.' }, result: 'You help sort it, which takes an hour and a good deal of language, and you say nothing about whose idea the burn was. The captain finds it out on their own, from the log, and is, for the rest of the run, noticeably gentle.' },
+        { label: 'Help sort it quietly', effects: { learn: 3, like: { captain: 1 }, log: 'The hot burn tripped the pump. I helped sort it and said nothing.' }, result: 'You help sort it, which takes an hour and a good deal of language, and you say nothing about whose idea the burn was. The captain finds it out from the log, and is, for the rest of the run, noticeably gentle.' },
         { label: 'Remind them you said so', effects: { like: { captain: -1 }, learn: 1, log: 'Told {captain} I had said so. It was true and it did not help.' }, result: '"I said so," you say. It is true, and, in the way of true things said at the wrong moment, it does not help at all. The pump is fixed, and nobody thanks you.' },
       ],
     });
     after({
       id: 'h-ninety', title: 'Ninety Percent',
-      text: 'The captain ran the drive at ninety, as you said, and made the window anyway, by a hair. At the next port, over a drink you did not ask for, {captain} tells the harbourmaster, in your hearing, that you are the only one aboard who will say a thing to their face.',
-      choices: [{ label: 'Take the compliment', effects: { like: { captain: 2 }, credits: 40, log: '{captain} told the harbourmaster I was the only one who would say a thing to their face.' }, result: 'You take it, with a nod, and a drink, and, later, an envelope with forty credits in it that someone has tried to make look accidental.' }],
+      text: 'The captain ran the drive at ninety, as you said, and made the window anyway, by a hair. At the next port, over a drink you did not ask for, {captain} tells the harbourmaster, in your hearing, that you are the only one aboard who will say a thing to a captain\'s face.',
+      choices: [{ label: 'Take the compliment', effects: { like: { captain: 2 }, credits: 40, log: '{captain} told the harbourmaster I was the only one who would say a thing to a captain\'s face.' }, result: 'You take it, with a nod, and a drink, and, later, an envelope with forty credits in it that someone has tried to make look accidental.' }],
     });
 
     // ---- A Word of Praise ----
     after({
       id: 'h-praise-trust', title: 'The Keys',
-      text: '{captain} has been watching you for a while. "I want you to look after something," they say, and put a small, heavy key on the galley table. It is the key to the ship\'s store, where the parts and the good tea and the petty cash live. "Not forever. For the run."',
+      text: '{captain} has been watching you for a while. "I want you to look after something," the captain says, and puts a small, heavy key on the galley table. It is the key to the ship\'s store, where the parts and the good tea and the petty cash live. "Not forever. For the run."',
       choices: [
         { label: 'Take responsibility', effects: { like: { captain: 1 }, learn: 2, log: '{captain} gave me the key to the ship\'s store for the run.' }, result: 'You take it. It is an ounce of metal and a good deal of weight, and you keep it in your pocket all run, and, at the end of it, hand it back with every part accounted for, and a small, careful tally.' },
-        { label: 'Decline', effects: { like: { captain: 0 } }, result: '"Not yet," you say. The captain nods slowly, and puts the key back in their own pocket, and there is something, in the way they do it, that is not disappointment, quite, but is close.' },
+        { label: 'Decline', effects: { like: { captain: 0 } }, result: '"Not yet," you say. The captain nods slowly, and puts the key back in a pocket, and there is something, in the way it is done, that is not disappointment, quite, but is close.' },
       ],
     });
     after({
@@ -50,21 +50,21 @@ Mods.register({
       text: 'The captain has remembered the bonus you asked for before you had earned one. "You wanted something for a speech," {captain} says. "Here is a job instead." It is the inventory: every part in the hold, counted, listed, and checked against the book, a day of dull work, which, in fairness, is what a bonus usually is.',
       choices: [
         { label: 'Do the inventory', effects: { like: { captain: 1 }, credits: 50, learn: 1, log: 'Earned the bonus I asked for, by counting every part in the hold.' }, result: 'It takes the day, and your back, and, at the end, fifty credits and a slightly sardonic nod. You find three parts nobody knew were missing. It is, perhaps, a better bonus than a speech.' },
-        { label: 'Say you are busy', effects: { like: { captain: -1 } }, result: '"Busy," says the captain, agreeably, and files you somewhere in their head under a heading you would rather not know.' },
+        { label: 'Say you are busy', effects: { like: { captain: -1 } }, result: '"Busy," says the captain, agreeably, and files you somewhere out of sight, under a heading you would rather not know.' },
       ],
     });
 
     // ---- A Dressing-Down ----
     after({
       id: 'h-log-trust', title: 'The Log Is Yours',
-      text: '{captain} has been reading your log entries, which you did not know. "They are clean," they say. "Short, true, and dated. I would like you to keep the ship\'s log for the run, not just your watch." There is a pause. "The last person who did the job did it for six years and I still have not found a gap."',
+      text: '{captain} has been reading your log entries, which you did not know. "They are clean," the captain says. "Short, true, and dated. I would like you to keep the ship\'s log for the run, not just your watch." There is a pause. "The last person who did the job did it for six years and I still have not found a gap."',
       choices: [{ label: 'Take the log', effects: { like: { captain: 1 }, learn: 2, log: '{captain} asked me to keep the ship\'s log for the run, after I owned the gap.' }, result: 'You take it, and keep it, and it is dull, and exact, and, in some way you did not expect, a pleasure. At the end of the run, the captain signs every page.' }],
     });
 
     // ---- A Favour ----
     after({
       id: 'h-favour-back', title: 'The Favour Returned',
-      text: 'A week ago you stood a watch for {captain} and said nothing. Today the captain comes to find you, in the careful way of someone who does not give. "I have signed you off the next port\'s duties," they say. "And, because it is customary, the docking fee for your berth."',
+      text: 'A week ago you stood a watch for {captain} and said nothing. Today the captain comes to find you, in the careful way of someone who does not give. "I have signed you off the next port\'s duties," the captain says. "And, because it is customary, the docking fee for your berth."',
       choices: [{ label: 'Take the free day', effects: { like: { captain: 1 }, credits: 80, log: '{captain} paid back the extra watch: no duties at the next port, and my berth fee.' }, result: 'It is a quiet day ashore, and a free one, and you walk the dock with your hands in your pockets, in a way you have not in months, and, for the first time in this job, you feel like somebody the ship is glad to have.' }],
     });
     after({
@@ -128,7 +128,7 @@ Mods.register({
     after({
       id: 'h-side-found', title: 'The Captain Knows',
       text: '{captain} has the whole story, and not from you. It came from the customs office, in a letter, in the dry paragraphs of an official who does not enjoy writing them. The captain says nothing for a long moment. Then: "I am not angry that you took the work. I am angry that you did not tell me."',
-      choices: [{ label: 'Take it', effects: { like: { captain: -2 }, log: '{captain} found out about the side work from customs, and not from me.' }, result: 'There is nothing to say, and you say it, and the captain accepts it with a nod that costs them more than it costs you. You will be working a long time to put this right.' }],
+      choices: [{ label: 'Take it', effects: { like: { captain: -2 }, log: '{captain} found out about the side work from customs, and not from me.' }, result: 'There is nothing to say, and you say it, and the captain accepts it with a nod that costs the captain more than it costs you. You will be working a long time to put this right.' }],
     });
 
     // ---- A Loan ----
