@@ -495,11 +495,16 @@ function drawRings(x, y, r, back) {
 }
 
 // The Sun (sized by your real distance from it) and any gas giant behind the moons.
-// The Sun is effectively infinitely far away, so it sits fixed in its real direction.
+// The Sun is far away, so it holds its real direction, but it drifts a little against the ship's travel (SUN_PARALLAX)
+// so it does not look pinned to the screen.
+const SUN_PARALLAX = 0.04;
+function sunScreen(cam, viewW, H) {
+  const sun = sunLight(), edge = Math.min(viewW, H) * 0.42;
+  return [viewW / 2 + Math.cos(sun.angle) * edge - cam.x * SUN_PARALLAX, H / 2 + Math.sin(sun.angle) * edge - cam.y * SUN_PARALLAX];
+}
 function drawBackdrop(cam, viewW, H) {
-  const sun = sunLight(), pos = orbitPos(G.state.systemId), au = Math.hypot(pos.x, pos.y);
-  const edge = Math.min(viewW, H) * 0.42;
-  const sx = viewW / 2 + Math.cos(sun.angle) * edge, sy = H / 2 + Math.sin(sun.angle) * edge;
+  const pos = orbitPos(G.state.systemId), au = Math.hypot(pos.x, pos.y);
+  const [sx, sy] = sunScreen(cam, viewW, H);
   const sr = Math.max(2, 9 / au);
   ctx.save();
   ctx.globalCompositeOperation = 'lighter';

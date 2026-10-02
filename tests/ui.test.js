@@ -292,3 +292,11 @@ test('the character sheet shows experience on every post row, not only the one h
   for (const x of r) assert.match(x.xp, /^\d+ (\/ \d+)?$/);
   await done();
 });
+
+test('the Sun drifts as the ship travels instead of sitting fixed on the screen', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => { const a = sunScreen({ x: 0, y: 0 }, 1000, 800), b = sunScreen({ x: 1000, y: 0 }, 1000, 800); return { dx: b[0] - a[0], dy: b[1] - a[1] }; });
+  assert.ok(r.dx < -10 && r.dx > -100, `moves against the ship's travel: ${r.dx}`);
+  assert.equal(r.dy, 0);
+  await done();
+});
