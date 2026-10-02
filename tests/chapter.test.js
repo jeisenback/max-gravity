@@ -117,6 +117,7 @@ test('the captain heads for a yard at the chapter\'s price, not the cheapest shi
   const { ev, done } = await hauler();
   const r = await ev(() => {
     const st = start(), out = { target: HIRED_TARGET };
+    st.hired.deal = { price: HIRED_TARGET, day: st.day, until: st.day - 1 };  // a lapsed deal: back to the chapter's price
     st.credits = HIRED_TARGET - 1; out.below = wantsYard();
     st.credits = HIRED_TARGET; out.at = wantsYard();
     st.credits = Math.min(...Object.values(SHIPS).filter(x => x.forSale).map(x => x.price)); out.cheapShip = wantsYard();

@@ -147,7 +147,7 @@ Each step gets its own plan when it starts.
 ## Open questions, settled at implementation
 
 - Settled (#144): the captain is not in `st.crew` and takes no berth, so the roster is nine crew in ten berths. The XO's perk is flavour only (`ROLE_PERKS.xo`, no mechanics).
-- The deadline's exact length, the starting condition numbers, and the scene day thresholds.
+- Settled (#145): the deal lasts `DEAL_DAYS` 56 (eight weeks), because from the 55% offer the hand needs about five to nine more runs; the soak (8 seeds) buys her in 15 to 21 runs, the slowest seed with a day to spare. The starting condition numbers are as above. Still open: the scene day thresholds.
 - Settled (#144): `HIRED_FUND` 12,000 cr, `HIRED_WAGE` 40, `HIRED_SHARE` 0.06 (0.072 for a hand who signed on for the money), `HIRED_TARGET` 19,000. The soak (`tools/soak.js`, seeds 1 to 6) reaches the target in 15 to 24 runs (about 90 to 160 days), at 800 to 1,300 cr per run to the hand.
 - Which events the cook and the ice hands take part in.
 
