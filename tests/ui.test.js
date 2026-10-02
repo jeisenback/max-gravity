@@ -311,3 +311,20 @@ test('the cargo bay grid fits inside its plan, for a small and a large hold', as
   for (const x of r) assert.ok(x.right <= 640 - 20, `the last column of a ${x.cap}t hold ends at ${x.right}`);
   await done();
 });
+
+test('a hired hand with no errand sees no empty Contracts card, and an owner still does', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'pilot' }); while (G.dialog) finishEvent();
+    const hand = operationsPanel();
+    G.state.missions.push({ id: 99, type: 'favor', title: 'Carry a letter to Mars', deadline: G.state.day + 20 });
+    const withErrand = operationsPanel();
+    G.state.hired = null; G.state.missions = [];
+    return { hand, withErrand, owner: operationsPanel() };
+  });
+  assert.doesNotMatch(r.hand, /Contracts/);
+  assert.match(r.hand, /Manifest/);
+  assert.match(r.withErrand, /Contracts[\s\S]*Carry a letter to Mars/);
+  assert.match(r.owner, /No active contracts/);
+  await done();
+});
