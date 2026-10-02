@@ -395,13 +395,13 @@ test('engineer: sliders for a manual engineer, bars for a crewed one, and a shee
   await done();
 });
 
-test('the engineering console shows wear in its colours, and fits a phone without scrolling sideways', async () => {
+test('the engineering console shows wear in its colors, and fits a phone without scrolling sideways', async () => {
   const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
   await ev(() => { G.state.tutorial = null; G.state.crew = []; G.state.condition = { drive: 95, fire: 20, shields: 55, life: 100, sensors: 100 }; while (G.dialog) finishEvent(); UI.render(); });
   await page.click('[data-action=station][data-arg=eng]');
-  const colours = await page.$$eval('#panel .con-part', rows => rows.map(r => r.querySelector('.con-bar i').style.backgroundColor));
-  assert.deepEqual(colours, ['rgb(95, 211, 95)', 'rgb(255, 106, 74)', 'rgb(255, 154, 60)', 'rgb(95, 211, 95)', 'rgb(95, 211, 95)'], 'good, failing, worn, good, good');
+  const colors = await page.$$eval('#panel .con-part', rows => rows.map(r => r.querySelector('.con-bar i').style.backgroundColor));
+  assert.deepEqual(colors, ['rgb(95, 211, 95)', 'rgb(255, 106, 74)', 'rgb(255, 154, 60)', 'rgb(95, 211, 95)', 'rgb(95, 211, 95)'], 'good, failing, worn, good, good');
   assert.ok(await page.$('#panel [data-gauge=heat]') && await page.$('#panel [data-plant]'), 'the heat gauge and the plant schematic are on the display');
   assert.equal(await page.$eval('#panel .con-plant .lbl', el => getComputedStyle(el).display), 'none', 'the diagram drops its labels when narrow');
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
@@ -494,7 +494,7 @@ test('the comms console shows the inbox as a feed and the tips in force, at port
   });
   await page.click('[data-action=station][data-arg=comms]');
   assert.equal(await page.$$eval('#panel .con-feed .con-msg', n => n.length), want.n, 'a line in the feed for each inbox entry');
-  assert.equal(await page.$$eval('#panel .con-feed .con-msg.via-ship', n => n.length), 1, 'coloured by how it arrived');
+  assert.equal(await page.$$eval('#panel .con-feed .con-msg.via-ship', n => n.length), 1, 'colored by how it arrived');
   assert.match(await page.innerText('#panel'), /Market tips in force/i);
   assert.equal(await page.$$eval('#panel .con-card', cards => cards.find(c => /Market tips in force/i.test(c.textContent)).querySelectorAll('.hint').length), want.tips, 'a line for each tip in force');
   assert.ok(await page.$('#panel [data-action=postOrder][data-arg="comms:listen"], #panel .post'), 'the comms post is on the console');

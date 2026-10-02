@@ -88,7 +88,7 @@ const CREW = {
             if (Math.random() < 0.7) {
               delay(-15);
               G.transit.days = Math.max(1, G.transit.days - 1);
-              return 'Dima threads the gravity well like a needle through cloth. For eleven seconds the whole ship sings, the walls hum, and the moon fills every viewport, grey and enormous and close enough to count the craters. Then the tug lets go and you are flung out the far side, a full day ahead of schedule. He does not stop grinning until the flip, and he will not let you forget it.';
+              return 'Dima threads the gravity well like a needle through cloth. For eleven seconds the whole ship sings, the walls hum, and the moon fills every viewport, gray and enormous and close enough to count the craters. Then the tug lets go and you are flung out the far side, a full day ahead of schedule. He does not stop grinning until the flip, and he will not let you forget it.';
             }
             return `A shard of something too small to have been on the chart comes out of the dark. You clip it on the way around, and the hull rings like a bell. ${hurt(0.2)} points of armor damage. Dima is uncharacteristically quiet for the rest of the shift, and when he speaks again it is to say, very softly, "That was my fault."`;
           } },
@@ -270,7 +270,7 @@ const PASSENGERS = {
     ] }) },
   pilgrims: { name: 'pilgrims of the Long Walk', pax: 4, fare: 0.9, event: m => ({
     title: 'A Request for Stillness',
-    text: 'The eldest of the pilgrims, a small woman in grey robes with a voice like paper, asks whether you might cut the drive for a few hours. It is not a demand. Her people are bound for the far edge of the system on a walk that will take the rest of their lives, and today is a holy day, and their float service must be held in zero g, for the old prayers say it is the only place a person is truly walked by the universe. The others wait behind her, hands folded, patient as stone.',
+    text: 'The eldest of the pilgrims, a small woman in gray robes with a voice like paper, asks whether you might cut the drive for a few hours. It is not a demand. Her people are bound for the far edge of the system on a walk that will take the rest of their lives, and today is a holy day, and their float service must be held in zero g, for the old prayers say it is the only place a person is truly walked by the universe. The others wait behind her, hands folded, patient as stone.',
     choices: [
       { label: 'Cut thrust for them (costs time)', run() {
         delay(12);

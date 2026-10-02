@@ -63,7 +63,7 @@ const SYSTEMS = {
         desc: 'Thirty billion people, most of them on basic assistance, and the orbital elevator ports never sleep. From the dock you can see the ribbon of lit cable dropping into a cloud deck the color of old pearls, and the freight climbing it in an endless string. Down there are oceans, and forests, and lines around the block for a job. Up here it is all customs queues, noodle stalls, and men in good suits looking for someone to blame.' },
       { name: 'Luna', x: 380, y: -260, r: 40, color: '#b8b8b8', services: ['missions', 'shipyard', 'outfitter', 'refuel'],
         prices: {},
-        desc: 'Coalition shipyards and navy drydocks under a black sky, spread across the grey plain in long, hard-lit rows. The dust here gets into everything and never quite leaves, and every dockhand has a story about the one time they saw it float. Officers in pressed uniforms move through crowds of civilian riggers who resent them. Everyone on Luna has an opinion about Mars, and most of them would like to share it.' },
+        desc: 'Coalition shipyards and navy drydocks under a black sky, spread across the gray plain in long, hard-lit rows. The dust here gets into everything and never quite leaves, and every dockhand has a story about the one time they saw it float. Officers in pressed uniforms move through crowds of civilian riggers who resent them. Everyone on Luna has an opinion about Mars, and most of them would like to share it.' },
     ],
   },
   mars: {

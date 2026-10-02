@@ -242,7 +242,7 @@ const PAX_EVENTS = [
     ] }) },
   { weight: 3, when: p => p.secret === 'ill' || p.goal === 'medical', make: (p, m) => ({
     title: 'Medical Emergency',
-    text: `${p.first} collapses in the galley, with a clatter of a dropped cup, grey and sweating, and slides to the deck with their back against a cabinet. Their breath is shallow. ${p.goal === 'medical' ? 'The condition they were traveling to get treated has taken a turn, and quickly.' : 'They admit, between gasps, that they have been hiding an illness for weeks, and did not want to be a burden.'} Everyone in the room has stopped moving. They look at you, the captain, the way people look at the only person who can decide.`,
+    text: `${p.first} collapses in the galley, with a clatter of a dropped cup, gray and sweating, and slides to the deck with their back against a cabinet. Their breath is shallow. ${p.goal === 'medical' ? 'The condition they were traveling to get treated has taken a turn, and quickly.' : 'They admit, between gasps, that they have been hiding an illness for weeks, and did not want to be a burden.'} Everyone in the room has stopped moving. They look at you, the captain, the way people look at the only person who can decide.`,
     choices: [
       { role: 'medic', label: '[{crew}] Treat them', run() {
         m.bonus += 1000;

@@ -129,7 +129,7 @@ const HAND_EVENTS = [
       } },
     ]) },
 
-  { id: 'cap-favour', group: 'captain', make: c => handEvent('A Favour',
+  { id: 'cap-favour', group: 'captain', make: c => handEvent('A Favor',
     captainSays('cap-favour', 'text', `Captain ${c.cap.last} asks whether you would stand an extra watch so a crew member can sleep, and say nothing about it. It is not in the articles.`), [
       { label: 'Stand the watch', run() { setLater('h-favour-back', 9, 'Stood an extra watch for {captain}.'); capLike(c, 2, 'You stood a watch for me without being paid for it.'); return `${captainSays('cap-favour', 'stand', 'You take it, and the long dark hours go slowly, with a flask of the galley\'s worst coffee, and nobody ever mentions it. The captain mentions it once, at the next port, in a single sentence, and it is enough.')}${learn(2)}`; } },
       { label: 'Stand it for forty credits', run() { G.state.credits += 40; capLike(c, 0, 'You stood a watch for me for a fee.'); return captainSays('cap-favour', 'fee', 'The captain pays it without comment, out of the ship\'s own pocket, and files it, you can tell, under a heading of its own. The watch passes like any other.'); } },

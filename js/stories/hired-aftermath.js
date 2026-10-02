@@ -61,9 +61,9 @@ Mods.register({
       choices: [{ label: 'Take the log', effects: { like: { captain: 1 }, learn: 2, log: '{captain} asked me to keep the ship\'s log for the run, after I owned the gap.' }, result: 'You take it, and keep it, and it is dull, and exact, and, in some way you did not expect, a pleasure. At the end of the run, the captain signs every page.' }],
     });
 
-    // ---- A Favour ----
+    // ---- A Favor ----
     after({
-      id: 'h-favour-back', title: 'The Favour Returned',
+      id: 'h-favour-back', title: 'The Favor Returned',
       text: 'A week ago you stood a watch for {captain} and said nothing. Today the captain comes to find you. "I have signed you off the next port\'s duties," the captain says. "And, because it is customary, the docking fee for your berth."',
       choices: [{ label: 'Take the free day', effects: { like: { captain: 1 }, credits: 80, log: '{captain} paid back the extra watch: no duties at the next port, and my berth fee.' }, result: 'It is a quiet day ashore, and a free one, and you walk the dock with your hands in your pockets, in a way you have not in months, and, for the first time in this job, you feel like somebody the ship is glad to have.' }],
     });
@@ -72,7 +72,7 @@ Mods.register({
       text: 'The captain has stopped asking you for things. It took you a few days to notice, because it happened gradually, like weather. A task that would have been yours goes to someone else. A word at the end of the watch goes unsaid. {captain} is perfectly polite, and perfectly distant, and the distance is the point.',
       choices: [
         { label: 'Ask why', effects: { like: { captain: 1 }, log: 'Asked {captain} why I was being passed over. It cleared some of the air.' }, result: '"I asked for one thing," the captain says, after a long moment, "and you said no. That is allowed. It is also information." It is not forgiveness. It is a door, and it is not locked.' },
-        { label: 'Let it be', result: 'You let it be, and it stays that way, a small grey fact in the corner of every watch, getting neither better nor worse.' },
+        { label: 'Let it be', result: 'You let it be, and it stays that way, a small gray fact in the corner of every watch, getting neither better nor worse.' },
       ],
     });
 
@@ -84,7 +84,7 @@ Mods.register({
     });
     after({
       id: 'h-cover-cold', title: 'Asked Again',
-      text: '{thread:cover} comes to find you again, and stands there a moment before saying it. It is the same favour as before, an hour of cover, a call that cannot wait. It is not going to be the last time they ask.',
+      text: '{thread:cover} comes to find you again, and stands there a moment before saying it. It is the same favor as before, an hour of cover, a call that cannot wait. It is not going to be the last time they ask.',
       choices: [
         { label: 'Cover for them', effects: { like: { 'thread:cover': 2 }, log: 'Covered for {thread:cover} after all.' }, result: 'You cover it, and it is a long hour, and, afterward, {thread:cover} says nothing at all, which you correctly take to mean a very great deal.' },
         { label: 'Still no', effects: { like: { 'thread:cover': -2 } }, result: '"I understand," {thread:cover} says, in a voice that has stopped being warm, and goes. You find, the next day, that your tea has been moved to a lower shelf.' },
@@ -101,7 +101,7 @@ Mods.register({
       id: 'h-needle-worse', title: 'The Tale Grows',
       text: '{thread:needle} has been telling the story of the night you tried to show them your post, and it has grown in the telling, as these things do. By now it involves a dropped tool, a raised voice, and a sentence you are quite sure you never said. The galley has started to wait for the next part.',
       choices: [
-        { label: 'Challenge them to swap watches', effects: { like: { 'thread:needle': 1 }, learn: 2, log: 'Challenged {thread:needle} to swap watches. They lasted an hour.' }, result: 'You swap, and they last an hour, and come out of it a shade greyer and a good deal quieter. The story, from that night on, ends differently.' },
+        { label: 'Challenge them to swap watches', effects: { like: { 'thread:needle': 1 }, learn: 2, log: 'Challenged {thread:needle} to swap watches. They lasted an hour.' }, result: 'You swap, and they last an hour, and come out of it a shade grayer and a good deal quieter. The story, from that night on, ends differently.' },
         { label: 'Ignore it', effects: { like: { 'thread:needle': -1, crew: -1 } }, result: 'You ignore it, and the story goes on without you, growing, and, by the next port, half the crew has begun to look at you with the particular pity people keep for the victims of a good joke.' },
       ],
     });
