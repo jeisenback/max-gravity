@@ -38,7 +38,13 @@ const HOME_DETAIL = {
 };
 const cultureOfPerson = p => p.culture || HOME_CULTURE[p.home] || 'earth';
 
+// An authored person (cast.js) has their own story in their entry. It replaces anything rolled before, and keeps the
+// progress made. Later authored people (the captains and XOs) add their lookup here.
+const authoredStory = p => (p.cast && CAST[p.cast] ? CAST[p.cast].story : null);
+
 function storyOf(p) {
+  const own = authoredStory(p);
+  if (own && !(p.story && p.story.authored)) p.story = { ...own, authored: true, beat: p.story ? p.story.beat : 0 };
   if (!p.story) {
     const rel = pick(RELATIONS), who = makePerson(cultureOfPerson(p));
     p.story = { left: pick(LEFT), rel, name: who.first, hope: pick(HOPES).replace('{home}', p.home), favor: planetNamed(p.home) ? 'visit' : 'debt', debt: randInt(8, 25) * 100, beat: 0 };
@@ -59,7 +65,7 @@ function sitBeat(p, isCrew) {
     return { title: `With ${n}`, text: `You sit with ${n} in the galley for a while, over two mugs going cold. They talk about the ship, the food, the noise the recycler makes at night, the next port. It is easy, polite, and entirely on the surface. Whenever the talk drifts toward anything real, ${n} finds a new subject, smoothly, like a person stepping around a hole in the floor. Not about themselves, not yet.`,
       choices: [{ label: 'That\'s all right', run() { like(p, 1, null); return `You let it be, and finish your coffee, and say nothing about the hole in the floor. Some people take longer, and that is all right too. When you get up to go, ${n} looks up, quickly, with something in their face that might be gratitude, and says, "Thanks for the company." It is more than they have said all week.`; } }] };
   }
-  if (s.beat === 0) return { title: `With ${n}`, text: `${n} tells you about ${p.home}, slowly, as if turning a stone over to look at the underside: ${HOME_DETAIL[cultureOfPerson(p)]}. They tell it with a small, fond smile that never quite settles. Then, unprompted, they say they left because of ${s.left}, and stop, and drink, and look at you to see what you will do with that.`,
+  if (s.beat === 0) return { title: `With ${n}`, text: `${n} tells you about ${p.home}, slowly, as if turning a stone over to look at the underside: ${s.homeDetail || HOME_DETAIL[cultureOfPerson(p)]}. They tell it with a small, fond smile that never quite settles. Then, unprompted, they say they left because of ${s.left}, and stop, and drink, and look at you to see what you will do with that.`,
     choices: [
       talk('Listen', 1, [`You say nothing, and let the silence hold, and ${n} goes on, a little at a time, about smaller things: a street, a smell, a name. It is a long while before either of you looks at the clock. ${n} smiles, a little, at the end, like someone who has set down a bag.`, `${n} talks for most of an hour, and you mostly listen, and, when they run down, they let out a breath they seem to have been keeping for years. "I never told anyone that," they say, quietly. "Not aloud."`]),
       talk('Tell them about where you came from', 2, `You tell them something true and small about where you came from, and ${n} listens with their whole face, and laughs in the right places, and, at one point, reaches over and steals a bite off your plate. "Everybody out here is from somewhere they left," they say. "It is a little bit of a comfort."`),
@@ -74,7 +80,7 @@ function sitBeat(p, isCrew) {
       talk('"It\'s not a stupid thing to want."', 1, `You tell them, plainly, that it is not, and ${n} lets out a long, slow breath. "Nobody has ever said that to me," they say. "They say it is nice, or it is late. They never say it is not stupid." They are quiet for a bit. "I think I needed someone to just say it."`),
       talk('"If I can help, I will."', 2, `You say it simply, without any flourish, and ${n} looks up, startled, as if you had handed them something heavy and precious. "You mean that," they say. It is not quite a question. Then, softly: "I am going to remember you said it." They do not say anything more, and they do not need to.`, () => { s.promised = true; }),
     ] };
-  if (s.beat === 3 && isCrew) {
+  if (s.beat === 3 && isCrew && s.favor) {
     if (s.favor === 'visit') {
       const where = planetNamed(p.home);
       return { title: `A Favor`, text: `${n} comes to find you in the cockpit, and stands in the hatch, twisting the hem of their sleeve, which is not like them. "Could we put in at ${p.home} sometime?" they ask. "I want to see my ${missed(p)} while I still can. It has been too long. I would work the whole trip for nothing, captain, I swear, I would work double, just to see them one time." They stop. Their voice has gone thin. "I have never asked for anything before."`,
@@ -187,7 +193,8 @@ function letters(planet) {
     if (Math.random() > 0.2 || (p.letterDay || -99) > st.day - 12) continue;
     p.letterDay = st.day;
     const good = Math.random() < 0.55;
-    const text = pick(good ? GOOD_NEWS : BAD_NEWS).replace('{who}', `their ${missed(p)}`).replace('{home}', p.home);
+    const news = storyOf(p).news, pool = news ? (good ? news.good : news.bad) : (good ? GOOD_NEWS : BAD_NEWS);  // an authored person's own news, or the generic
+    const text = pick(pool).replace('{who}', `their ${missed(p)}`).replace('{home}', p.home);
     p.mood = { kind: good ? 'high' : 'low', until: st.day + (good ? 10 : 25), text };
     p.news = { good, text };
     notes.push(`A message for ${p.first} at ${planet.name}: ${text}.`);
@@ -335,7 +342,7 @@ function homeHtml() {
     if (p.loyal) bits.push('loyal');
     if (moodLow(p)) bits.push('having a hard time');
     else if (moodHigh(p)) bits.push('in high spirits');
-    if (p.story && p.story.beat >= 3 && p.story.beat < 4) bits.push('has a favor to ask');
+    if (p.story && p.story.favor && p.story.beat >= 3 && p.story.beat < 4) bits.push('has a favor to ask');
     return bits.length ? `<div class="hint">${p.first}: ${bits.join(', ')}</div>` : '';
   }).join('');
   return `<h3>${h.name[0].toUpperCase()}${h.name.slice(1)}</h3>

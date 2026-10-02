@@ -19,6 +19,17 @@ const CAST = {
     skills: { pilot: 3, gunner: 1, engineer: 1, slicer: 0 }, captain: { trade: 3, nerve: 4, thrift: 2 },
     ambition: 'Wants a ship she does not have to ask permission to land.',
     bio: 'She flew the Lisbon to Luna ferry for nine years, until the night she put a failing shuttle down on an unlit pad instead of ditching it as the tower ordered. Forty-one people walked off. She lost her license for the way she did it, and she kept the logbook.',
+    // The story you learn sitting with her (family.js uses it in place of an invented one): the same slots, her own life.
+    story: {
+      left: 'a licence lost over one landing', rel: 'old ferry chief', name: 'Duarte',
+      hope: 'her licence back, with the Lisbon board\'s stamp on it',
+      homeDetail: 'the ferry pads at dawn, the harbour bell, and an ocean you could hear from the arcology at night',
+      favor: null,  // her own asks are her scenes below
+      news: {
+        good: ['{who} stood up for her at the licence board', '{who} sent the new ferry schedule with her old slot circled', '{who} has retired to a house with a garden and a view of the water'],
+        bad: ['{who} is ill, and the old ferry crew are passing a hat', '{who} wrote that the board has put her appeal back another season', '{who} says the old ferry is being scrapped'],
+      },
+    },
     chatter: ['Ines is flying with one hand and writing in a logbook that is not the ship\'s with the other.', 'Ines: "A good landing is boring. People forget that. I am very proud of my boring landings."', 'Ines has taped a card to the nav display with a single word on it: ASK.', 'Ines is running a dead-stick approach on the sim, humming, with her eyes shut.', 'Ines: "Everybody wants to tell the pilot where to put the ship down. Nobody wants to be aboard when it does not."'],
     scenes: {
       meet: {
@@ -69,6 +80,17 @@ const CAST = {
     skills: { engineer: 3, slicer: 1, pilot: 1, gunner: 0 }, captain: { trade: 2, nerve: 2, thrift: 5 },
     ambition: 'Wants one ship kept running properly for ten years, with the same crew on her at the end of it.',
     bio: 'A dockyard welder who has rebuilt the same hull three times for three owners who each sold her out from under him. He sends most of his wages to a sister on Lagos Ring, and talks to every machine he works on.',
+    // The story you learn sitting with him (family.js uses it in place of an invented one): the same slots, his own life.
+    story: {
+      left: 'three owners who each sold the same hull out from under him', rel: 'sister', name: 'Ngozi',
+      hope: 'to buy out his sister\'s flat on Lagos Ring, so the rent never has to cross the gap again',
+      homeDetail: 'ring gravity you could hang a bucket on, the weld shops going at shift change, and a market you could smell from the dock',
+      favor: null,  // his own asks are his scenes below
+      news: {
+        good: ['{who} got the lease on the flat renewed for five years', '{who} sent a photo of the new stall, with a hand-painted sign', '{who} is back on her feet after being ill'],
+        bad: ['{who} says the rent on {home} has gone up again', '{who} is ill, and the ring clinic wants money up front', '{who} lost the stall\'s permit and is looking for work'],
+      },
+    },
     chatter: ['Tomas is talking to the coolant loop, quietly, in Igbo, and it seems to be listening.', 'Tomas: "She is not noisy. She is telling you something. Stop and listen, and then be embarrassed that you did not before."', 'Tomas has left the engine room door open. He says she likes the air.', 'Tomas is sending a message home, and counting something on his fingers, and sending it again.', 'Tomas: "Ten years, one ship. That is the whole plan. People think I am being modest."'],
     scenes: {
       meet: {
