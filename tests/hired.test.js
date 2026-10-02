@@ -29,8 +29,8 @@ test('new game offers a hired start, and the choice of post', async () => {
       tutorial: st.tutorial, mode: G.mode, intro: UI.notes.join(' '),
     };
   });
-  assert.equal(r.post, 'gunner'); assert.equal(r.credits, 300); assert.equal(r.ship, 'lightfreighter'); assert.ok(r.captain);
-  assert.deepEqual(r.roles, ['engineer', 'pilot', 'slicer'], 'the crew fill every role but yours');
+  assert.equal(r.post, 'gunner'); assert.equal(r.credits, 300); assert.equal(r.ship, 'freighter'); assert.ok(r.captain);
+  assert.deepEqual(r.roles, ['cook', 'engineer', 'icehand', 'icehand', 'medic', 'pilot', 'quartermaster', 'slicer', 'xo'], 'the crew fill every role but yours, and the chapter\'s wider crew');
   assert.deepEqual(r.modes, ['crewed', 'manual', 'crewed', 'crewed'], 'pilot, gunner, engineer, comms: your post is the manual one');
   assert.equal(r.tutorial, null); assert.equal(r.mode, 'landed');
   assert.match(r.intro, /signed on to the/);
@@ -212,7 +212,7 @@ test('errands: delivered when she docks, the fee to you and the cut to the ship'
       update(G.mode === 'transit' ? 1 : 1 / 30); Mods.emit('frame', G.mode === 'transit' ? 1 : 1 / 30);
     }
     const e = h.ledger[0];
-    return { planet: st.planet === plan.planet, left: st.missions.length, earned: st.credits - credits0, runPay: e.wage + e.share, fee: errand.pay, cut: errand.cut, fund: h.fund, expectFund: 5000 - e.cost + e.revenue + errand.cut };
+    return { planet: st.planet === plan.planet, left: st.missions.length, earned: st.credits - credits0, runPay: e.wage + e.share, fee: errand.pay, cut: errand.cut, fund: h.fund, expectFund: HIRED_FUND - e.cost + e.revenue + errand.cut };
   });
   assert.ok(r.planet); assert.equal(r.left, 0, 'the errand is done');
   assert.equal(r.earned, r.runPay + r.fee, 'you got your pay for the run and the errand fee');

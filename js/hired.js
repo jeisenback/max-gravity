@@ -11,7 +11,12 @@
 
 const HIRED_POSTS = ['pilot', 'gunner', 'engineer', 'comms'];  // the posts you can sign on to
 const HIRED_SAVINGS = 300;
-const HIRED_FUND = 5000;  // the ship's money, which buys the cargo
+// The rest of the crew, beside the four posts: a first officer, a quartermaster, a medic, a cook and two ice hands.
+const CHAPTER_CREW = [{ role: 'xo', skill: 2 }, { role: 'quartermaster', skill: 2 }, { role: 'medic', skill: 2 }, { role: 'cook', skill: 2 }, { role: 'icehand', skill: 1 }, { role: 'icehand', skill: 1 }];
+const HIRED_FUND = 12000;  // the ship's money, which buys the cargo for the 120 t hold
+const HIRED_WAGE = 40, HIRED_SHARE = 0.06;  // a day's wage and a share of each run's profit, tuned with tools/soak.js so about 20 runs reach the target
+const HIRED_TARGET = 19000;  // the used Ore Runner Tomas finds (the chapter's goal); the captain heads for a yard once you have it
+const wantsYard = () => G.state.credits >= HIRED_TARGET;
 const hired = () => (G.state && G.state.hired) || null;
 // A hired hand works one post. The others are the crew's, and the captain's to command.
 const hiredCaptain = () => (hired() ? G.state.people[hired().captain] : null);
@@ -36,8 +41,8 @@ const OWNER_ACTIONS = ['takeoff', 'buy', 'buymax', 'sell', 'sellall', 'buyship',
 
 function setupHired(o) {
   const st = G.state, post = HIRED_POSTS.includes(o.post) ? o.post : 'pilot';
-  st.shipId = 'lightfreighter';
-  st.fuel = SHIPS.lightfreighter.fuel; st.armor = SHIPS.lightfreighter.armor;
+  st.shipId = 'freighter';
+  st.fuel = SHIPS.freighter.fuel; st.armor = SHIPS.freighter.armor;
   st.credits = HIRED_SAVINGS;
   st.tutorial = null;
   home().name = shipName(false);
@@ -51,9 +56,15 @@ function setupHired(o) {
     registerPerson(c);
     st.crew.push(c.id);
   }
-  st.hired = { captain: cap.id, post, since: st.day, wage: 40, share: 0.1, fund: HIRED_FUND, run: null, ledger: [], skill: { [post]: SKILL_STEPS[1] }, asked: 0 };
+  for (const { role, skill } of CHAPTER_CREW) {
+    const c = makeCrewCandidate(st.systemId);
+    c.role = role; c.skill = skill; c.job = ROLE_NAMES[role].toLowerCase(); c.mood = null;
+    registerPerson(c);
+    st.crew.push(c.id);
+  }
+  st.hired = { captain: cap.id, post, since: st.day, wage: HIRED_WAGE, share: HIRED_SHARE, fund: HIRED_FUND, run: null, ledger: [], skill: { [post]: SKILL_STEPS[1] }, asked: 0 };
   return [
-    `You signed on to the ${home().name}, a light freighter out of ${system().name}, under Captain ${cap.first} ${cap.last}. You are her ${POSTS[post].name.toLowerCase()}: the post is yours to work, and the captain picks where she goes.`,
+    `You signed on to the ${home().name}, an ice hauler out of ${system().name}, under Captain ${cap.first} ${cap.last}. You are her ${POSTS[post].name.toLowerCase()}: the post is yours to work, and the captain picks where she goes.`,
     `You have ${HIRED_SAVINGS} credits to your name. Save toward a ship of your own.`,
   ];
 }
@@ -115,8 +126,8 @@ function planRun() {
   const reach = Object.entries(SYSTEMS).filter(([sid]) => sid !== from && inRange(from, sid));
   const held = COMMODITIES.filter(c => (st.cargo[c.id] || 0) > 0).sort((a, b) => st.cargo[b.id] - st.cargo[a.id])[0];
   const options = [];
-  // Once your savings would buy a ship, she heads for a port with a yard when she can.
-  const wantYard = st.credits >= Math.min(...Object.values(SHIPS).filter(x => x.forSale).map(x => x.price));
+  // Once your savings would buy the chapter's ship, she heads for a port with a yard when she can.
+  const wantYard = wantsYard();
   for (const [sid, sys] of reach) {
     const days = Math.max(1, travelDays(from, sid));
     for (const pl of sys.planets.filter(x => x.services.includes('trade'))) {
@@ -285,7 +296,7 @@ function buyIn(id) {
   st.shipId = id; st.fuel = ship().fuel; st.armor = ship().armor;
   st.cargo = {}; st.paid = {};  // what was in the hold was the captain's
   // The captain stays a contact, and a known captain on the lanes.
-  Object.assign(cap, { ship: { name: oldName, shipId: 'lightfreighter', kind: 'trader' }, haunt: st.systemId, location: planet.name });
+  Object.assign(cap, { ship: { name: oldName, shipId: 'freighter', kind: 'trader' }, haunt: st.systemId, location: planet.name });
   like(cap, 2, 'You worked my ship, and then bought your own. Fair winds.');
   for (const c of st.crew.map(person)) if (!friends.includes(c)) c.location = planet.name;  // the rest stay with her
   st.crew = friends.map(c => c.id);
@@ -327,7 +338,7 @@ function buyInHtml() {
 const runHtml = () => {
   const h = G.state.hired, plan = currentPlan(), led = h.ledger.slice(0, 5), name = id => COMMODITIES.find(c => c.id === id).name;
   return `<div class="post"><div class="eyebrow">${hiredCaptain() ? `Captain ${personLink(hiredCaptain())}'s run` : 'The captain\'s run'} &middot; ship's funds ${fmt(h.fund)} cr &middot; your savings ${fmt(G.state.credits)} cr</div>
-    <p class="desc">${plan && plan.yard && G.state.credits >= Math.min(...Object.values(SHIPS).filter(x => x.forSale).map(x => x.price)) ? 'The captain knows you have the money for a ship, and is heading for a port with a yard. ' : ''}${!plan ? 'The captain is waiting for a market worth the fuel.'
+    <p class="desc">${plan && plan.yard && wantsYard() ? 'The captain knows you have the money for a ship, and is heading for a port with a yard. ' : ''}${!plan ? 'The captain is waiting for a market worth the fuel.'
       : plan.ballast ? `The captain has no cargo worth carrying and will run light to ${plan.planet}, ${SYSTEMS[plan.sid].name}, to look for work.`
       : plan.loaded ? `The captain will take the ${plan.tons}t of ${name(plan.good)} already aboard to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${plan.days} days.`
       : `The captain will buy ${plan.tons}t of ${name(plan.good)} here for ${fmt(plan.cost)} cr and take it to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${plan.days} days, about ${fmt(plan.profit)} cr profit, so about ${fmt(plan.profit * G.state.hired.share)} cr to you, plus ${fmt(h.wage * plan.days)} cr wage.`}</p>

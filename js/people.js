@@ -45,8 +45,10 @@ const GOALS = {
 const SECRETS = ['contraband', 'wanted', 'ill', 'spy', 'debt'];
 const CRIMES = ['fraud', 'smuggling', 'assaulting a dock boss', 'desertion', 'stealing a ship', 'selling forged water ration cards'];
 
-const ROLE_NAMES = { engineer: 'Engineer', pilot: 'Pilot', gunner: 'Gunner', quartermaster: 'Quartermaster', slicer: 'Slicer', medic: 'Medic' };
-const ROLE_WAGE = { engineer: 60, pilot: 70, gunner: 60, quartermaster: 45, slicer: 80, medic: 55 };
+const ROLE_NAMES = { engineer: 'Engineer', pilot: 'Pilot', gunner: 'Gunner', quartermaster: 'Quartermaster', slicer: 'Slicer', medic: 'Medic', xo: 'First officer', cook: 'Cook', icehand: 'Ice hand' };
+// The hired chapter's crew only: nobody offers to hire these, and a passenger never asks to join as one.
+const HIREABLE_ROLES = ['engineer', 'pilot', 'gunner', 'quartermaster', 'slicer', 'medic'];
+const ROLE_WAGE = { engineer: 60, pilot: 70, gunner: 60, quartermaster: 45, slicer: 80, medic: 55, xo: 65, cook: 40, icehand: 35 };
 const ROLE_PERKS = {
   engineer: s => `Burns use ${s * 5}% less reaction mass.`,
   pilot: s => `Burns take ${s * 7}% fewer days.`,
@@ -54,6 +56,9 @@ const ROLE_PERKS = {
   quartermaster: () => 'One extra market rumor on every burn.',
   slicer: s => `Can spoof transponders and manifests (${60 + s * 10}% reliable).`,
   medic: () => 'Can treat sick or injured passengers.',
+  xo: () => 'Runs the watch bill and speaks for the captain.',
+  cook: () => 'Keeps the galley and knows everyone\'s business.',
+  icehand: () => 'Handles the ice and the cargo.',
 };
 
 const SHIP_WORDS = {
@@ -153,7 +158,7 @@ function makePassengerOffer(here, destSystem, dest, days, deadline) {
 
 function makeCrewCandidate(systemId) {
   const p = makePerson(Math.random() < 0.6 ? cultureOf(systemId) : undefined);
-  p.role = pick(Object.keys(ROLE_NAMES));
+  p.role = pick(HIREABLE_ROLES);
   p.skill = Math.random() < 0.5 ? 1 : Math.random() < 0.7 ? 2 : 3;
   p.wage = Math.round(ROLE_WAGE[p.role] * (0.6 + 0.3 * p.skill));
   p.fee = p.wage * 30;

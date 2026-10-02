@@ -54,10 +54,10 @@ test('each reason has its own small, permanent effect', async () => {
     }
     return out;
   });
-  assert.equal(r.base, 0.1);
-  assert.deepEqual(r.money, { text: true, reason: 'money', share: 0.12, xp: 0, cap: 0, pair: [0, 0] });
-  assert.deepEqual(r.learn, { text: true, reason: 'learn', share: 0.1, xp: 8, cap: 0, pair: [0, 0] });
-  assert.deepEqual(r.away, { text: true, reason: 'away', share: 0.1, xp: 0, cap: 1, pair: [1, 1] });
+  assert.equal(r.base, 0.06);
+  assert.deepEqual(r.money, { text: true, reason: 'money', share: 0.072, xp: 0, cap: 0, pair: [0, 0] });
+  assert.deepEqual(r.learn, { text: true, reason: 'learn', share: 0.06, xp: 8, cap: 0, pair: [0, 0] });
+  assert.deepEqual(r.away, { text: true, reason: 'away', share: 0.06, xp: 0, cap: 1, pair: [1, 1] });
   await done();
 });
 

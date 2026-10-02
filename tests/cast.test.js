@@ -12,7 +12,10 @@ after(closeBrowser);
 const helpers = () => {
   window.start = (o = {}) => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', ...o }); while (G.dialog) finishEvent(); const st = G.state; st.tutorial = null; st.story.next = 1e9; st.flags.classicCombat = true; };
   window.crewOf = () => G.state.crew.map(person);
-  window.marsHired = () => start({ background: 'mars', mode: 'hired', post: 'pilot' });
+  // The pivot scenes count what is aboard (a medic is a point), so these tests start with the four posts only, not the chapter's wider crew.
+  window.POST_ROLES = ['pilot', 'gunner', 'engineer', 'slicer'];
+  window.postsOnly = () => { const st = G.state; st.crew = st.crew.filter(id => ['pilot', 'gunner', 'engineer', 'slicer'].includes(person(id).role)); };
+  window.marsHired = () => { start({ background: 'mars', mode: 'hired', post: 'pilot' }); postsOnly(); };
   // A third joined core character, which lifts the two-survivor floor.
   window.addThird = () => { castRec('ines').since = G.state.day; };
   // An owner at Earth with both of the pair aboard and a company ship docked in port with a hired captain.
@@ -33,7 +36,7 @@ test('a hired hand on Earth finds the pair aboard, on posts that never double up
     const out = {};
     for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
       start({ mode: 'hired', post });
-      const crew = crewOf(), roles = crew.map(c => c.role).sort();
+      const crew = crewOf(), roles = crew.map(c => c.role).filter(r => POST_ROLES.includes(r)).sort();
       out[post] = { roles, cast: crew.filter(c => c.cast).map(c => c.cast).sort(), mine: POSTS[post].role };
     }
     start({ mode: 'hired', post: 'gunner' });
@@ -43,7 +46,7 @@ test('a hired hand on Earth finds the pair aboard, on posts that never double up
   });
   for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
     assert.deepEqual(r[post].cast, ['ines', 'tomas'], `${post}: both come`);
-    assert.equal(new Set(r[post].roles).size, 3, `${post}: three distinct roles`);
+    assert.equal(new Set(r[post].roles).size, 3, `${post}: the three other posts held`);
     assert.ok(!r[post].roles.includes(r[post].mine), `${post}: nobody on your post`);
   }
   assert.equal(r.ines.role, 'pilot'); assert.equal(r.ines.skill, 3); assert.deepEqual(r.ines.captain, { trade: 3, nerve: 4, thrift: 2 });
@@ -62,7 +65,7 @@ test('each background has its own pair, and the pairs do not cross', async () =>
       for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
         start({ background: bg, mode: 'hired', post });
         const crew = crewOf();
-        out[bg][post] = { cast: crew.filter(c => c.cast).map(c => c.cast).sort(), roles: crew.map(c => c.role).sort(), mine: POSTS[post].role, keys: keys.slice().sort() };
+        out[bg][post] = { cast: crew.filter(c => c.cast).map(c => c.cast).sort(), roles: crew.map(c => c.role).filter(r => POST_ROLES.includes(r)).sort(), mine: POSTS[post].role, keys: keys.slice().sort() };
       }
       // An owner meets the first of the pair on its day, then the second, and never the other backgrounds'.
       start({ background: bg }); G.state.crew = []; G.state.day = 6; out[bg].first = castDue();
@@ -75,7 +78,7 @@ test('each background has its own pair, and the pairs do not cross', async () =>
     for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
       const x = r[bg][post];
       assert.deepEqual(x.cast, x.keys, `${bg}/${post}: its own pair`);
-      assert.equal(new Set(x.roles).size, 3, `${bg}/${post}: three distinct roles`);
+      assert.equal(new Set(x.roles).size, 3, `${bg}/${post}: the three other posts held`);
       assert.ok(!x.roles.includes(x.mine), `${bg}/${post}: nobody on your post`);
     }
   }
@@ -473,7 +476,7 @@ test('her mark takes a gunner point even when she is posted somewhere else', asy
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
-    start({ background: 'mars', mode: 'hired', post: 'gunner' }); addThird();
+    start({ background: 'mars', mode: 'hired', post: 'gunner' }); postsOnly(); addThird();
     const y = person('c:yelena'), st = G.state, before = { role: y.role, pilot: y.skills.pilot, skill: y.skill, gunner: y.skills.gunner };
     st.armor = ship().armor;  // sound hull and a gunner at 3: two points, a mark
     CAST.yelena.scenes.pivot.choices[0].run();
