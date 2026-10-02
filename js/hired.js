@@ -27,6 +27,11 @@ const notYours = post => !!hired() && hired().post !== post;
 // ---------- skill at each post ----------
 // Experience points per post, kept when you swap. Levels come at 0, 10, 30 and 60 points.
 const SKILL_STEPS = [0, 10, 30, 60];
+// Runs with the captain and what they paid you, over the whole chapter. A save from before these were kept counts what its ledger holds.
+const runTotals = h => ({
+  runs: h.runsDone !== undefined ? h.runsDone : h.ledger.length,
+  earned: h.earnedTotal !== undefined ? h.earnedTotal : h.ledger.reduce((t, l) => t + l.wage + l.share, 0),
+});
 const skillXp = post => (hired() && hired().skill && hired().skill[post]) || 0;
 const skillLevel = post => SKILL_STEPS.filter(n => skillXp(post) >= n).length - 1;
 function gainSkill(post, n) {
@@ -224,6 +229,8 @@ function settleRun(planet) {
   const profit = revenue - run.cost, days = Math.max(1, st.day - run.day);
   const wage = h.wage * days, share = profit > 0 ? Math.round(profit * h.share) : 0;
   st.credits += wage + share;
+  const total = runTotals(h);
+  h.runsDone = total.runs + 1; h.earnedTotal = total.earned + wage + share;  // the ledger keeps the last 20; these keep the whole chapter
   h.ledger.unshift({ day: st.day, from: run.from, to: planet.name, good: run.good, tons: sold, cost: run.cost, revenue, profit, wage, share });
   h.ledger.length = Math.min(h.ledger.length, 20);
   h.run = null;
