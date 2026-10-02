@@ -19,10 +19,10 @@ test('two regulars stay the same, their news changes after a few days, and they 
   await ev(helpers);
   const r = await ev(() => {
     start(); const st = G.state, out = {};
-    const a = regs(); out.n = a.length; out.ids = a.map(x => x.p.id); out.news0 = a.map(x => x.p.news);
-    st.day += 1; out.same = regs().map(x => x.p.id); out.news1 = regs().map(x => x.p.news);
+    const a = regs(); out.n = a.length; out.ids = a.map(x => x.p.id); out.news0 = a.map(x => x.p.gossip);
+    st.day += 1; out.same = regs().map(x => x.p.id); out.news1 = regs().map(x => x.p.gossip);
     like(a[0].p, 1, 'The captain bought me a drink at the bar.');
-    st.day += 5; const b = regs(); out.ids2 = b.map(x => x.p.id); out.news2 = b.map(x => x.p.news);
+    st.day += 5; const b = regs(); out.ids2 = b.map(x => x.p.id); out.news2 = b.map(x => x.p.gossip);
     const t = talkEvent(b[0]); out.text = t.text; out.html = barHtml();
     return out;
   });
@@ -52,5 +52,21 @@ test('match night shows only when a live league has played in the last day', asy
     return out;
   });
   assert.equal(r.none, null); assert.match(r.on, /^Match night\./); assert.match(r.html, /Match night/); assert.equal(r.old, null); assert.equal(r.off, null);
+  await done();
+});
+
+test('a regular who joins the crew does not have their bar gossip taken for a letter from home', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    start(); const st = G.state;
+    regs(); st.day += 7; const a = regs();  // a week on, the regulars have fresh gossip
+    const p = a[0].p; st.crew.push(p.id);
+    const told = procedural().find(f => f.p.news);
+    return { gossip: typeof p.gossip, told: !!told, news: p.news === undefined || p.news === null || typeof p.news === 'object' };
+  });
+  assert.equal(r.told, false, 'their gossip is not a letter the crew has to be told about');
+  assert.ok(r.news, 'p.news is only ever a letter from home');
+  assert.equal(r.gossip, 'string', 'the bar gossip is kept');
   await done();
 });
