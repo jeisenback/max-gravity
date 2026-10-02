@@ -346,3 +346,45 @@ test('a dead character is not returned to the crew', async () => {
   assert.equal(r, false);
   await done();
 });
+
+test('a lost ship with only the pair aboard spares both', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    marsHired();
+    succeed('died');
+    const st = G.state, out = {};
+    for (const key of ['yelena', 'ruben']) out[key] = { dead: castDead(key), marks: (castRec(key).marks || []).map(m => m.text), crew: st.crew.includes(`c:${key}`), person: !!st.people[`c:${key}`] };
+    out.memorial = st.memorial || [];
+    return out;
+  });
+  for (const key of ['yelena', 'ruben']) assert.deepEqual(r[key], { dead: false, marks: ['Pulled from the wreck.'], crew: true, person: true }, key);
+  assert.deepEqual(r.memorial, []);
+  await done();
+});
+
+test('a lost ship with three core characters aboard kills at most one', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    marsHired(); castJoin('ines', '');
+    succeed('died');
+    const st = G.state, keys = ['yelena', 'ruben', 'ines'];
+    return { dead: keys.filter(castDead), marked: keys.filter(k => !castDead(k) && (castRec(k).marks || []).length === 1), memorial: st.memorial };
+  });
+  assert.equal(r.dead.length, 1); assert.equal(r.marked.length, 2);
+  assert.equal(r.memorial.length, 1); assert.ok(r.memorial[0].cause.startsWith('Lost with'), r.memorial[0].cause);
+  await done();
+});
+
+test('a lost ship with no core characters aboard is unchanged', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    start({ mode: 'hired' }); G.state.crew = [];
+    succeed('died');
+    return { crew: G.state.crew, memorial: G.state.memorial || [] };
+  });
+  assert.deepEqual(r, { crew: [], memorial: [] });
+  await done();
+});

@@ -38,3 +38,11 @@ function castFate(key, outcome, cause, markText) {
   }
   return outcome;
 }
+
+// A lost ship takes its main characters through the same floor: all but CAST_FLOOR of them die, and the rest come out
+// of the wreck marked. Returns who died and who was spared.
+function castShipLoss(cause) {
+  const out = { dead: [], saved: [] };
+  for (const p of castAboard()) (castFate(p.cast, 'die', cause, 'Pulled from the wreck.') === 'die' ? out.dead : out.saved).push(p.cast);
+  return out;
+}
