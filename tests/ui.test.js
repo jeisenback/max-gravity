@@ -373,3 +373,50 @@ test('the landed panel uses a tall window, and keeps its old size in a short one
   assert.ok(sizes.tall.body >= 330, `tall content window ${sizes.tall.body}`);
   assert.ok(sizes.short.panel <= sizes.short.win * 0.94 + 1, `short panel ${sizes.short.panel} fits ${sizes.short.win}`);
 });
+
+test('on a phone, the choices of a long scene stay in view and the dialog clears the HUD', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
+  await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'pilot', captainKey: 'hester' }); });
+  await page.waitForTimeout(250);
+  const r = await page.evaluate(() => {
+    const p = document.querySelector('#panel').getBoundingClientRect(), btns = [...document.querySelectorAll('#panel .choices button')].map(b => b.getBoundingClientRect());
+    return { top: p.top, bottom: p.bottom, h: innerHeight, long: document.querySelector('#panel').scrollHeight > document.querySelector('#panel').clientHeight, choices: btns.map(b => [b.top, b.bottom]) };
+  });
+  assert.ok(r.long, 'the sign-on text is longer than the dialog');
+  assert.ok(r.top >= 80, `the dialog starts below the HUD strip: ${r.top}`);
+  assert.ok(r.choices.length >= 2);
+  for (const [t, b] of r.choices) assert.ok(t >= r.top && b <= r.bottom && b <= r.h, `a choice is in view: ${t}-${b} in ${r.top}-${r.bottom}`);
+  await done();
+});
+
+test('the transit Comms box leaves room for the ship on a short phone', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => ({
+    wide: transitCommsLines(false, 0, 400, 640),
+    tall: transitCommsLines(true, 84, 492, 330),
+    short: transitCommsLines(true, 84, 390, 300),
+    tiny: transitCommsLines(true, 84, 100, 300),
+  }));
+  assert.equal(r.wide, 16);
+  assert.equal(r.tall, 8, 'a tall phone keeps 8 lines');
+  assert.ok(r.short >= 2 && r.short < 8, `a short phone gets fewer: ${r.short}`);
+  assert.equal(r.tiny, 2, 'never fewer than 2');
+  await done();
+});
+
+test('the touch Burn button is hidden for a hired hand and shown for an owner', async () => {
+  const state = {};
+  for (const [name, hand] of [['hand', true], ['owner', false]]) {
+    const { ev, done } = await open();
+    state[name] = await ev(hand => {
+      while (G.dialog) finishEvent();
+      if (hand) { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'pilot' }); while (G.dialog) finishEvent(); }
+      takeOff(); Touch.on = true; Touch.sync();
+      return { burn: document.querySelector('#touch [data-tap=burn]').hidden, target: document.querySelector('#touch [data-tap=target]').hidden };
+    }, hand);
+    await done();
+  }
+  assert.equal(state.hand.burn, true);
+  assert.equal(state.owner.burn, false);
+  assert.equal(state.hand.target, false);
+});
