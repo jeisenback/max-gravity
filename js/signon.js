@@ -44,7 +44,7 @@ function signOnEvent() {
   const pair = st.crew.map(person).filter(c => c && c.cast);
   const postName = c => POSTS[Object.keys(POSTS).find(k => POSTS[k].role === c.role)].name.toLowerCase();
   const beside = pair.length ? ` Working beside you: ${pair.map(c => `${fullName(c)}, ${c.job} from ${c.home}, on the ${postName(c)} post`).join(', and ')}.` : '';
-  const week = `${ctx.cap} picks each run and buys the cargo from the ship's funds; when you are ready, press Sail. Errands for wherever she is going turn up on the Missions board, and the captain keeps a fifth. You are paid a wage and a share of the profit on arrival, and you have ${HIRED_SAVINGS} credits to your name. Save toward a ship of your own.`;
+  const week = `${ctx.cap} picks each run and buys the cargo from the ship's funds; when you are ready, press Sail. ${scopeOff('errands') ? '' : 'Errands for wherever she is going turn up on the Missions board, and the captain keeps a fifth. '}You are paid a wage and a share of the profit on arrival, and you have ${HIRED_SAVINGS} credits to your name. Save toward a ship of your own.`;
   return {
     title: 'Signing On',
     text: [b.text(ctx), `${SIGN_POSTS[h.post](ctx.cap)}${beside}`, `${week} Why did you sign on?`].join('</p><p>'),

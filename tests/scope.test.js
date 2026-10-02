@@ -108,3 +108,18 @@ test('the closing scene waits for a main character\'s own buy-in scene', async (
   assert.equal(r.first, 'Permission to Land'); assert.equal(r.second, 'Your Own Ship');
   await done();
 });
+
+test('the opening scene does not promise errands the narrow build does not have', async () => {
+  const { ev, done } = await open(NARROW);
+  await ev(helpers);
+  const r = await ev(() => {
+    start();
+    const narrow = signOnEvent().text;
+    BUILD.scope = 'full';
+    return { narrow, full: signOnEvent().text };
+  });
+  assert.doesNotMatch(r.narrow, /Errands|Missions board|keeps a fifth/);
+  assert.match(r.narrow, /press Sail\. You are paid a wage and a share/, 'the sentences either side still join up');
+  assert.match(r.full, /Errands for wherever she is going turn up on the Missions board/);
+  await done();
+});
