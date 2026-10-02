@@ -277,6 +277,22 @@ test('the menus scroll on a phone, and Start on the New game screen is always in
   assert.deepEqual(problems, []);
 });
 
+test('the character sheet shows experience on every post row, not only the one held', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'pilot' }); while (G.dialog) finishEvent();
+    gainSkill('gunner', 12);
+    G.viewPerson = 'you';
+    const d = document.createElement('div'); d.innerHTML = characterPanel();
+    return [...d.querySelectorAll('.char-skill')].map(row => ({ name: row.firstElementChild.textContent, xp: row.querySelector('.char-xp').textContent }));
+  });
+  assert.equal(r.length, 4);
+  assert.match(r.find(x => /Gunner/.test(x.name)).xp, /^12 \/ 30$/);
+  assert.match(r.find(x => /Pilot/.test(x.name)).name, /posted/);
+  for (const x of r) assert.match(x.xp, /^\d+ (\/ \d+)?$/);
+  await done();
+});
+
 test('the Sun drifts as the ship travels instead of sitting fixed on the screen', async () => {
   const { ev, done } = await open();
   const r = await ev(() => { const a = sunScreen({ x: 0, y: 0 }, 1000, 800), b = sunScreen({ x: 1000, y: 0 }, 1000, 800); return { dx: b[0] - a[0], dy: b[1] - a[1] }; });
