@@ -45,7 +45,7 @@ test('each reason has its own small, permanent effect', async () => {
   const r = await ev(() => {
     const out = {};
     for (const [i, reason] of ['money', 'learn', 'away'].entries()) {
-      startGame({ slot: 1, background: 'mars', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' });
+      startGame({ slot: 1, background: 'mars', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' });  // one captain, so one base share
       const st = G.state, h = st.hired, cap = st.people[h.captain], pair = st.crew.map(person).filter(c => c.cast);
       const before = { share: h.share, xp: skillXp('gunner'), cap: cap.opinion, pair: pair.map(c => c.opinion) };
       const text = chooseEvent(i);

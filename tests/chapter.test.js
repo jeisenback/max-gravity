@@ -133,7 +133,7 @@ test('the captain heads for a yard at the chapter\'s price, not the cheapest shi
 test('about twenty runs reach the target with every captain, and the planner is never stuck', async () => {
   const { soak } = require('../tools/soak');
   const perDay = {};
-  for (const captainKey of ['hester', 'dov', 'imre']) {
+  for (const captainKey of ['hester', 'dov', 'imre', 'zoya']) {
     const rs = [];
     for (const seed of [1, 2, 3, 4, 5]) rs.push(await soak({ seed, legs: 40, captainKey }));
     for (const r of rs) {
