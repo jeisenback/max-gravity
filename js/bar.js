@@ -70,10 +70,12 @@ function barOf(planet) {
 // Who is in tonight: people you know who are in town, and a few strangers.
 function fillBar(planet) {
   const st = G.state, sid = st.systemId, aboard = new Set(paxAboard().map(m => m.pid));
-  const known = Object.values(st.people).filter(p => p.location === planet.name && !st.crew.includes(p.id) && !aboard.has(p.id) && !p.ship)
+  const regulars = barRegulars(planet).filter(x => !aboard.has(x.p.id) && !st.crew.includes(x.p.id));
+  const known = Object.values(st.people).filter(p => p.location === planet.name && !p.regular && !st.crew.includes(p.id) && !aboard.has(p.id) && !p.ship)
     .sort((a, b) => Math.abs(b.opinion) - Math.abs(a.opinion)).slice(0, 2);
   G.patrons = [
     ...castPatrons(),  // the main characters with a scene due (castbar.js)
+    ...regulars,
     ...known.map(p => ({ p, known: true })),
     ...Array.from({ length: randInt(2, 4) }, () => ({ p: makePerson(Math.random() < 0.75 ? cultureOf(sid) : undefined), known: false })),
   ];
@@ -127,7 +129,7 @@ function talkEvent(pat) {
   const p = pat.p, st = G.state, bar = G.barState.name, t0 = p.traits[0];
   const mem = p.memories.length ? p.memories[p.memories.length - 1].replace(/^(Day \d+|\d+ \w+ \d+): /, '') : null;
   const text = pat.known
-    ? `${p.first} ${p.last} ${p.opinion >= 2 ? 'waves you over' : p.opinion <= -2 ? 'sees you and scowls into their drink' : 'nods at you'}.${mem ? ` Last time: "${mem}"` : ''}`
+    ? `${p.first} ${p.last} ${p.opinion >= 2 ? 'waves you over' : p.opinion <= -2 ? 'sees you and scowls into their drink' : 'nods at you'}.${pat.regular && p.news ? ` Since you were last here, ${p.first} ${p.news}` : ''}${mem ? ` Last time: "${mem}"` : ''}`
     : `${p.first} ${p.last}: a ${TRAITS[p.traits[0]].adj}, ${TRAITS[p.traits[1]].adj} ${p.job} from ${p.home}, ${GOALS[p.goal]}. ${pick(OPENERS[t0])}`;
   const choices = [
     { label: `Buy ${p.first} a drink (${DRINK} cr)`, can: () => st.credits >= DRINK && !pat.drank, run() {
@@ -195,9 +197,9 @@ function barHtml() {
   const st = G.state, planet = currentPlanet();
   if (!G.patrons || G.barState.planet !== planet.name) fillBar(planet);
   const b = barOf(planet), round = 25 * (4 + G.patrons.filter(x => !x.cast).length);
-  const rows = G.patrons.map(({ p, known, cast }, i) => `<div class="mission">
+  const rows = G.patrons.map(({ p, known, cast, regular }, i) => `<div class="mission">
       <div><b>${p.first} ${p.last}</b>${known ? ` <span class="hint">(${opinionWord(p.opinion)})</span>` : ''}
-        <div class="hint">${cast ? 'Aboard with you, and at the bar tonight.' : known ? `Someone you know. ${p.memories.length ? p.memories[p.memories.length - 1] : ''}` : `${TRAITS[p.traits[0]].adj[0].toUpperCase()}${TRAITS[p.traits[0]].adj.slice(1)} ${p.job} from ${p.home}.`}</div></div>
+        <div class="hint">${cast ? 'Aboard with you, and at the bar tonight.' : known ? `${regular ? 'A regular here.' : 'Someone you know.'} ${regular && p.news ? `${p.first} ${p.news} ` : ''}${p.memories.length ? p.memories[p.memories.length - 1] : ''}` : `${TRAITS[p.traits[0]].adj[0].toUpperCase()}${TRAITS[p.traits[0]].adj.slice(1)} ${p.job} from ${p.home}.`}</div></div>
       <button data-action="barTalk" data-arg="${i}">Talk</button>
     </div>`).join('');
   const hire = G.bar.map((c, i) => `<div class="mission">
@@ -207,6 +209,7 @@ function barHtml() {
   return `
     <h3>${b.name}</h3>
     <p class="desc">${b.vibe}</p>
+    ${matchNight() ? `<div class="hint">${matchNight().text}</div>` : ''}
     ${(G.barState.lines = G.barState.lines || roomLines(planet)).map(l => `<div class="hint">${l}</div>`).join('')}
     ${G.barState.note ? `<p class="desc">${G.barState.note}</p>` : ''}
     <div class="row"><button data-action="barRound" ${st.credits >= round && !G.barState.round ? '' : 'disabled'}>${G.barState.round ? 'You bought a round' : `Buy a round for the house (${fmt(round)} cr)`}</button></div>
