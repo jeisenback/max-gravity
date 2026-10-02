@@ -484,3 +484,98 @@ test('her mark takes a gunner point even when she is posted somewhere else', asy
   assert.equal(r.marks, 1);
   await done();
 });
+
+// ---------- authored personal stories (family.js reads them from cast.js) ----------
+
+test('an authored character plays their own story, not an invented one', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    start({ mode: 'hired', post: 'gunner' });
+    const t = person('c:tomas'), i = person('c:ines');
+    return { tomas: [storyOf(t).authored, storyOf(t).rel, storyOf(t).name, missed(t)], ines: [storyOf(i).authored, missed(i)] };
+  });
+  assert.deepEqual(r.tomas, [true, 'sister', 'Ngozi', 'sister Ngozi']);
+  assert.deepEqual(r.ines, [true, 'old ferry chief Duarte']);
+  await done();
+});
+
+test('a generated crew member still gets a rolled story', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    start({ mode: 'hired', post: 'gunner' });
+    const g = makeCrewCandidate('earth'); registerPerson(g);
+    const s = storyOf(g);
+    return { authored: !!s.authored, left: LEFT.includes(s.left), rel: RELATIONS.includes(s.rel) };
+  });
+  assert.deepEqual(r, { authored: false, left: true, rel: true });
+  await done();
+});
+
+test('a save with an invented story loses it and keeps the progress made', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    start({ mode: 'hired', post: 'gunner' });
+    const t = person('c:tomas');
+    t.story = { left: 'x', rel: 'son', name: 'Diego', hope: 'y', favor: 'debt', debt: 1000, beat: 2 };
+    const s = storyOf(t);
+    return [s.authored, s.rel, s.name, s.beat];
+  });
+  assert.deepEqual(r, [true, 'sister', 'Ngozi', 2]);
+  await done();
+});
+
+test('the sit-down beats are about their own life, and there is no invented favor', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    start({ mode: 'hired', post: 'gunner' });
+    const t = person('c:tomas'), s = storyOf(t), out = {};
+    t.opinion = 5;
+    s.beat = 0; out.b0 = sitBeat(t, true).text;
+    s.beat = 1; out.b1 = sitBeat(t, true).text;
+    s.beat = 2; out.b2 = sitBeat(t, true).text;
+    s.beat = 3; out.b3 = sitBeat(t, true).title; out.home = homeHtml();
+    return out;
+  });
+  assert.match(r.b0, /Lagos Ring/); assert.match(r.b0, /weld shops/); assert.match(r.b0, /three owners who each sold the same hull/);
+  assert.doesNotMatch(r.b0, /arcology/);
+  assert.match(r.b1, /sister Ngozi/); assert.match(r.b2, /his sister's flat/);
+  assert.equal(r.b3, 'With Tomas', 'no generic favor beat');
+  assert.doesNotMatch(r.home, /Tomas:[^<]*favor/);
+  await done();
+});
+
+test('letters from home are about their own people', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    start({ mode: 'hired', post: 'gunner' });
+    for (const f of procedural()) storyOf(f.p);  // roll everyone's story first: a fixed random number cannot make two different traits
+    const run = seq => {
+      let k = 0; const real = Math.random; Math.random = () => seq[k++ % seq.length];
+      for (const f of procedural()) delete f.p.letterDay;
+      try { return letters(currentPlanet()).join(' '); } finally { Math.random = real; }
+    };
+    return { good: run([0, 0, 0]), bad: run([0, 0.9, 0]) };  // each person draws: whether to write, good or bad, which
+  });
+  assert.match(r.good, /their sister Ngozi got the lease on the flat renewed/);
+  assert.match(r.good, /their old ferry chief Duarte stood up for her at the licence board/);
+  assert.match(r.bad, /their sister Ngozi says the rent on Lagos Ring has gone up again/);
+  assert.match(r.bad, /their old ferry chief Duarte is ill, and the old ferry crew are passing a hat/);
+  await done();
+});
+
+test('every authored story is complete, and the Earth pair have one', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => Object.fromEntries(Object.entries(CAST).filter(([, d]) => d.story).map(([k, d]) => [k, {
+    fields: ['left', 'rel', 'name', 'hope'].every(f => typeof d.story[f] === 'string' && d.story[f].length > 3),
+    news: d.story.news && d.story.news.good.length >= 3 && d.story.news.bad.length >= 3,
+    emoji: /[\u{1F300}-\u{1FAFF}☀-➿]/u.test(JSON.stringify(d.story)),
+  }])));
+  assert.deepEqual(Object.keys(r).sort(), ['ines', 'tomas'], 'the Earth pair have stories');
+  for (const [k, v] of Object.entries(r)) assert.deepEqual(v, { fields: true, news: true, emoji: false }, k);
+  await done();
+});
