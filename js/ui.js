@@ -217,7 +217,7 @@ const UI = {
         const ok = berthsFree() > 0 && st.credits >= c.fee;
         return `<div class="mission">
           <div><b>${fullName(c)}</b> &middot; ${skill(c)}<div class="hint">${bio}</div><div class="hint">${perk} Wage ${fmt(c.wage)} cr/day.</div></div>
-          <button data-action="hire" data-arg="${arg}" ${ok ? '' : 'disabled'}>Hire (${fmt(c.fee)} cr)</button>
+          ${arg.startsWith('bar:') ? interviewButton(arg.slice(4)) : ''}<button data-action="hire" data-arg="${arg}" ${ok ? '' : 'disabled'}>Hire (${fmt(c.fee)} cr)</button>
         </div>`;
       }).join('');
       const known = Object.values(st.people).filter(p => p.opinion !== 0 && !st.crew.includes(p.id))

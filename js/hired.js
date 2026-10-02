@@ -32,7 +32,7 @@ function gainSkill(post, n) {
 const soloOdds = post => 0.45 + 0.1 * skillLevel(post);
 // What stays the captain's to do: the cargo, the contracts, the ship itself, the company.
 const OWNER_TABS = ['trade', 'company'];  // contracts are the captain's too, but the board still has errands
-const OWNER_ACTIONS = ['takeoff', 'buy', 'buymax', 'sell', 'sellall', 'buyship', 'cbuy', 'refuel', 'repair', 'overhaul', 'buyout', 'sellout', 'torpbuy', 'hire', 'dismiss'];
+const OWNER_ACTIONS = ['takeoff', 'buy', 'buymax', 'sell', 'sellall', 'buyship', 'cbuy', 'refuel', 'repair', 'overhaul', 'buyout', 'sellout', 'torpbuy', 'hire', 'interviewHire', 'dismiss'];
 
 function setupHired(o) {
   const st = G.state, post = HIRED_POSTS.includes(o.post) ? o.post : 'pilot';

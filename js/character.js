@@ -46,6 +46,7 @@ function whereIs(c) {
 }
 
 function characterPanel() {
+  if (candidateOf(G.viewPerson)) return interviewPanel();
   const st = G.state, id = G.viewPerson, c = id === 'you' ? youPerson() : person(id);
   if (!c) return `<p class="hint">Nobody by that name is known to you.</p><div class="row"><button data-action="personBack">Back</button></div>`;
   const skills = skillsOf(c), crewed = st.crew.includes(c.id);
