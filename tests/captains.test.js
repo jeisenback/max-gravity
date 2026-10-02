@@ -29,7 +29,7 @@ test('every captain and first officer entry is complete and plain text', async (
     function bad(o, key, f) { o.bad.push(`${key}: ${f}`); }
     return out;
   });
-  assert.deepEqual(r.captains, ['dov', 'hester']); assert.deepEqual(r.bad, []);
+  assert.deepEqual(r.captains, ['dov', 'hester', 'imre']); assert.deepEqual(r.bad, []);
 });
 
 test('a hired game is run by an authored captain with their first officer aboard', async () => {
@@ -329,7 +329,7 @@ test('the ice hold follows the state: he lives, is marked or dies, and the capta
 // ---------- Dov and Ilsa ----------
 
 test('every captain\'s two scenes come once each, in order, and the goodbye plays for each', async () => {
-  for (const key of ['hester', 'dov']) {
+  for (const key of ['hester', 'dov', 'imre']) {
     const r = await run(k => {
       const st = start({ captainKey: k }), h = st.hired, cap = hiredCaptain(), d = captainEntry(), out = {};
       const at = n => { st.day = h.since + n; return captainBeat(); };
@@ -393,4 +393,57 @@ test('the reactor follows the state: she lives, is marked or dies, and the capta
   for (const k of ['four', 'three']) assert.deepEqual([r[k].dead, r[k].marks, r[k].mood], [false, 0, false], `${k} points: she lives`);
   assert.deepEqual([r.two.dead, r.two.marks, r.two.mood], [false, 1, true], 'two points: marked, and the captain is low');
   for (const k of ['one', 'none']) { assert.deepEqual([r[k].dead, r[k].mood], [true, true], `${k}: she dies`); assert.match(r[k].cause, /^Lost at the reactor near /); assert.equal(r[k].opinion, 1); }
+});
+
+// ---------- Imre and Pilar ----------
+
+test('Imre: their introduction, their wording, and their trouble and secret', async () => {
+  const r = await run(() => {
+    const st = start({ captainKey: 'imre' }), h = st.hired, cap = hiredCaptain(), pilar = person('c:pilar'), out = {};
+    out.intro = signOnEvent().text; out.wage = h.wage; out.share = Math.round(h.share * 100);
+    const make = id => HAND_EVENTS.find(e => e.id === id).make({ cap, mate: null });
+    out.order = make('cap-order').text;
+    cap.opinion = 1; out.notHeard = make('cap-order').choices[1].run();  // hears is 2
+    cap.opinion = 2; out.heard = make('cap-order').choices[1].run();
+    cap.opinion = 2; let credits = st.credits; make('cap-praise').choices[1].run(); out.noBonus = st.credits - credits;  // bonus is 3
+    cap.opinion = 3; credits = st.credits; make('cap-praise').choices[1].run(); out.bonus = st.credits - credits;
+    const sc = captainScene('trouble'); cap.opinion = 0; pilar.opinion = 0; sc.choices[0].run(); out.cover = [cap.opinion, pilar.opinion, !!h.flags.covered];
+    cap.opinion = 0; pilar.opinion = 0; sc.choices[1].run(); out.answer = [cap.opinion, pilar.opinion];
+    cap.opinion = 3; captainScene('secret').choices[1].run(); out.flag = !!h.flags.secretKnown;
+    return out;
+  });
+  assert.match(r.intro, /Captain Imre Sato reads your papers once/); assert.ok(r.intro.includes(`${r.wage} a day and ${r.share} percent`));
+  assert.match(r.order, /standing order eleven/i); assert.match(r.notHeard, /closing a file/); assert.match(r.heard, /Ninety/);
+  assert.equal(r.noBonus, 0); assert.ok(r.bonus > 0);
+  assert.ok(r.cover[0] < 0 && r.cover[1] > 0 && r.cover[2], `taking the blame: ${r.cover}`); assert.ok(r.answer[0] > 0 && r.answer[1] < 0, `letting the captain answer: ${r.answer}`);
+  assert.equal(r.flag, true);
+});
+
+test('Pilar\'s scenes come in order, and Two Orders moves the captain\'s and her opinion opposite ways', async () => {
+  const r = await run(() => {
+    const st = start({ captainKey: 'imre' }), rec = castRec('pilar'), cap = hiredCaptain(), pilar = person('c:pilar'), out = {};
+    const next = d => { st.day = rec.since + d; const n = castNext('pilar'); return n && n.name; };
+    out.order = [next(0), (rec.arc = 1, next(24)), next(25), (rec.arc = 2, next(39)), next(40), (rec.arc = 3, next(54)), next(55), (rec.arc = 4, next(69)), next(70)];
+    const sc = CAST.pilar.scenes.mid2, run = i => { cap.opinion = 0; pilar.opinion = 0; sc.choices[i].run(); return [cap.opinion, pilar.opinion]; };
+    out.posted = run(0); out.window = run(1);
+    return out;
+  });
+  assert.deepEqual(r.order, ['intro', null, 'mid1', null, 'mid2', null, 'late', null, 'pivot']);
+  assert.ok(r.posted[0] > 0 && r.posted[1] < 0, `posted rate: ${r.posted}`); assert.ok(r.window[0] < 0 && r.window[1] > 0, `window: ${r.window}`);
+});
+
+test('the docking emergency follows the state: she lives, is marked or dies, and the captain feels it', async () => {
+  const r = await run(() => {
+    const run = ({ medic = true, hull = 'good', drive = 100, backup = false }) => {
+      const st = start({ captainKey: 'imre' }), cap = hiredCaptain(); cap.opinion = 2;
+      st.crew = st.crew.filter(id => person(id).role !== 'medic' || medic);
+      st.armor = hull === 'good' ? ship().armor : Math.floor(ship().armor * 0.5); condition().drive = drive;
+      const text = CAST.pilar.scenes.pivot.choices[backup ? 1 : 0].run(), m = (st.memorial || [])[0];
+      return { text: typeof text === 'string' && text.length > 40, dead: castDead('pilar'), marks: (castRec('pilar').marks || []).length, mood: moodLow(cap), opinion: cap.opinion, cause: m ? m.cause : null };
+    };
+    return { four: run({ backup: true }), three: run({}), two: run({ hull: 'low' }), one: run({ hull: 'low', drive: 30 }), none: run({ medic: false, hull: 'low', drive: 30 }) };
+  });
+  for (const k of ['four', 'three']) assert.deepEqual([r[k].dead, r[k].marks, r[k].mood], [false, 0, false], `${k} points: she lives`);
+  assert.deepEqual([r.two.dead, r.two.marks, r.two.mood], [false, 1, true], 'two points: marked, and the captain is low');
+  for (const k of ['one', 'none']) { assert.deepEqual([r[k].dead, r[k].mood], [true, true], `${k}: she dies`); assert.match(r[k].cause, /^Lost at the helm near /); assert.equal(r[k].opinion, 1); }
 });
