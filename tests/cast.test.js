@@ -37,7 +37,7 @@ test('a hired hand on Earth finds the pair aboard, on posts that never double up
     for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
       start({ mode: 'hired', post });
       const crew = crewOf(), roles = crew.map(c => c.role).filter(r => POST_ROLES.includes(r)).sort();
-      out[post] = { roles, cast: crew.filter(c => c.cast).map(c => c.cast).sort(), mine: POSTS[post].role };
+      out[post] = { roles, cast: crew.filter(c => c.cast && !CAST[c.cast].xo).map(c => c.cast).sort(), mine: POSTS[post].role };
     }
     start({ mode: 'hired', post: 'gunner' });
     const ines = person('c:ines');
@@ -65,7 +65,7 @@ test('each background has its own pair, and the pairs do not cross', async () =>
       for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
         start({ background: bg, mode: 'hired', post });
         const crew = crewOf();
-        out[bg][post] = { cast: crew.filter(c => c.cast).map(c => c.cast).sort(), roles: crew.map(c => c.role).filter(r => POST_ROLES.includes(r)).sort(), mine: POSTS[post].role, keys: keys.slice().sort() };
+        out[bg][post] = { cast: crew.filter(c => c.cast && !CAST[c.cast].xo).map(c => c.cast).sort(), roles: crew.map(c => c.role).filter(r => POST_ROLES.includes(r)).sort(), mine: POSTS[post].role, keys: keys.slice().sort() };
       }
       // An owner meets the first of the pair on its day, then the second, and never the other backgrounds'.
       start({ background: bg }); G.state.crew = []; G.state.day = 6; out[bg].first = castDue();
@@ -578,7 +578,7 @@ test('every authored story is complete, and the Earth pair have one', async () =
     news: d.story.news && d.story.news.good.length >= 3 && d.story.news.bad.length >= 3,
     emoji: /[\u{1F300}-\u{1FAFF}☀-➿]/u.test(JSON.stringify(d.story)),
   }])));
-  assert.deepEqual(Object.keys(r).sort(), ['ines', 'tomas'], 'the Earth pair have stories');
+  assert.deepEqual(Object.keys(r).sort(), ['cato', 'ines', 'tomas'], 'the Earth pair and the first officer have stories');
   for (const [k, v] of Object.entries(r)) assert.deepEqual(v, { fields: true, news: true, emoji: false }, k);
   await done();
 });

@@ -170,7 +170,7 @@ test('the main characters appear in a hand\'s events only when they are aboard',
   const seen = async background => ev(bg => {
     startGame({ slot: 1, background: bg, captain: 'Ines Okafor', mode: 'hired', post: 'pilot' }); while (G.dialog) finishEvent();
     const st = G.state; st.tutorial = null; st.story.next = 1e9; uatBurn('Ceres Station', 'pallas'); G.transit.times = [];
-    const out = { aboard: castKeys(), titles: new Set() };
+    const out = { aboard: castKeys().filter(k => !CAST[k].xo), titles: new Set() };
     for (let i = 0; i < 300; i++) { st.eventSeen = {}; const e = hiredEvent('crew'); if (e) out.titles.add(e.title); }
     out.titles = [...out.titles]; return out;
   }, background);

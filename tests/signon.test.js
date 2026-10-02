@@ -21,7 +21,7 @@ test('every background and post opens with Signing On, naming the ship, the capt
         const text = e ? e.text : '';
         out.push({
           at: `${bg}/${post}`, title: e && e.title, choices: e && e.choices.map(c => c.label),
-          ship: text.includes(shipTitle().replace(/^./, ch => ch.toUpperCase())), cap: text.includes(`Captain ${cap.first} ${cap.last}`), pair: pair.length === 2 && pair.every(n => text.includes(n)),
+          ship: text.includes(shipTitle().replace(/^./, ch => ch.toUpperCase())), cap: text.includes(`Captain ${cap.first} ${cap.last}`), pair: pair.length === 3 && pair.every(n => text.includes(n)),  // the pair and the first officer
           bg: text.includes(marks[bg]), post: text.includes(lines[post]), savings: text.includes('300 credits'), paragraphs: text.split('</p><p>').length,
           emoji: /[\u{1F300}-\u{1FAFF}☀-➿]/u.test(text), undefinedText: /undefined|NaN/.test(text),
         });
@@ -54,10 +54,10 @@ test('each reason has its own small, permanent effect', async () => {
     }
     return out;
   });
-  assert.equal(r.base, 0.06);
-  assert.deepEqual(r.money, { text: true, reason: 'money', share: 0.072, xp: 0, cap: 0, pair: [0, 0] });
-  assert.deepEqual(r.learn, { text: true, reason: 'learn', share: 0.06, xp: 8, cap: 0, pair: [0, 0] });
-  assert.deepEqual(r.away, { text: true, reason: 'away', share: 0.06, xp: 0, cap: 1, pair: [1, 1] });
+  assert.ok(r.base > 0 && r.base < 0.2, 'the captain\'s own share');
+  assert.deepEqual(r.money, { text: true, reason: 'money', share: +(r.base + 0.02).toFixed(3), xp: 0, cap: 0, pair: [0, 0, 0] });
+  assert.deepEqual(r.learn, { text: true, reason: 'learn', share: r.base, xp: 8, cap: 0, pair: [0, 0, 0] });
+  assert.deepEqual(r.away, { text: true, reason: 'away', share: r.base, xp: 0, cap: 1, pair: [1, 1, 1] });
   await done();
 });
 

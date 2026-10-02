@@ -14,7 +14,7 @@ const startHired = (bg = 'earth', post = 'gunner') => { startGame({ slot: 1, bac
 test('a hired hand sees the captain on Interior, the header, Operations and Navigation', async () => {
   const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
   await ev(`(${startHired})`);
-  const cap = await ev(() => { const c = hiredCaptain(); return { id: c.id, name: `${c.first} ${c.last}` }; });
+  const cap = await ev(() => { const c = hiredCaptain(); return { id: c.id, name: `${c.first} ${c.last}`, wage: hired().wage, share: Math.round(hired().share * 100) }; });
   assert.match(await page.innerText('#panel .hdr, .hdr'), new RegExp(`Capt\\. ${cap.name}`), 'the port header says whose ship it is');
   await page.click('[data-action=station][data-arg=interior]');
   const row = await page.$$eval('#panel .con-read', rows => rows.map(r => [r.firstElementChild.textContent, r.lastElementChild.textContent]));
@@ -34,13 +34,13 @@ test('a hired hand sees the captain on Interior, the header, Operations and Navi
 test('the captain\'s screen has no post skills: what they pay you, and what you earn with them', async () => {
   const { page, ev, done } = await open();
   await ev(`(${startHired})`);
-  const cap = await ev(() => { const c = hiredCaptain(); hired().ledger.push({ day: 1, from: 'A', to: 'B', good: 'water', tons: 5, profit: 500, wage: 120, share: 50 }); return { id: c.id, name: `${c.first} ${c.last}` }; });
+  const cap = await ev(() => { const c = hiredCaptain(); hired().ledger.push({ day: 1, from: 'A', to: 'B', good: 'water', tons: 5, profit: 500, wage: 120, share: 50 }); return { id: c.id, name: `${c.first} ${c.last}`, wage: hired().wage, share: Math.round(hired().share * 100) }; });
   await page.click('[data-action=station][data-arg=interior]');
   await page.click(`#panel .con-read [data-action=person][data-arg="${cap.id}"]`);
   const text = await page.innerText('#panel');
   assert.match(text, new RegExp(cap.name)); assert.match(text, /Captain, /);
   assert.doesNotMatch(text, /Post skills/i, 'a captain holds no post');
-  assert.match(text, /Your wage\s*40 cr\/day/); assert.match(text, /Your share\s*6% of each run/); assert.match(text, /Runs together\s*1/); assert.match(text, /You earned\s*170 cr/);
+  assert.match(text, new RegExp(`Your wage\\s*${cap.wage} cr/day`)); assert.match(text, new RegExp(`Your share\\s*${cap.share}% of each run`)); assert.match(text, /Runs together\s*1/); assert.match(text, /You earned\s*170 cr/);
   assert.match(text, /captain of the .*, docked at/i);
   await done();
 });

@@ -267,7 +267,7 @@ test('posts: you can ask the captain to move you, and they decide', async () => 
     h.asked = -1; gainSkill('engineer', 12);
     Math.random = () => 0; askSwap('engineer'); Math.random = real;
     out.yes = { post: h.post, modes: Object.keys(POSTS).map(p => postMode(p)), holderRole: holder.role, holderSkill: holder.skill, was: holderSkill, gunnerHeld: roleHolder('gunner') === holder, gunnerXp: skillXp('gunner') };
-    out.odds = { low: swapOdds('pilot'), more: (st.people[h.captain].opinion += 3, swapOdds('pilot')) };
+    out.odds = { low: swapOdds('pilot'), more: (bossFor('swap').opinion += 3, swapOdds('pilot')) };
     return out;
   });
   assert.equal(r.no.post, 'gunner'); assert.ok(r.no.asked); assert.match(r.no.note, /Not yet/);
@@ -277,7 +277,7 @@ test('posts: you can ask the captain to move you, and they decide', async () => 
   assert.equal(r.yes.holderRole, 'gunner'); assert.ok(r.yes.gunnerHeld, 'the engineer took the gun post');
   assert.equal(r.yes.holderSkill, Math.max(1, r.yes.was - 1), 'and is a little rusty at it');
   assert.equal(r.yes.gunnerXp, 10, 'what you learned at the gun post stays with you');
-  assert.ok(r.odds.more > r.odds.low, 'the captain is likelier to say yes once they trust you');
+  assert.ok(r.odds.more > r.odds.low, 'whoever decides is likelier to say yes once they trust you');
   await done();
 });
 

@@ -49,7 +49,9 @@ function setupHired(o) {
   st.tutorial = null;
   home().name = shipName(false);
   // The captain, and a crew with every role but yours. The main characters (cast.js) take their posts first.
-  const cap = registerPerson(makePerson(cultureOf(st.systemId)));
+  // An authored captain (captains.js) with their first officer; a game with none keeps a generated captain.
+  const captainKey = Object.keys(CAPTAINS).length ? pickCaptainKey() : null;
+  const cap = captainKey ? captainPerson(captainKey) : registerPerson(makePerson(cultureOf(st.systemId)));
   cap.role = 'captain'; cap.job = 'captain';
   const free = ['pilot', 'gunner', 'engineer', 'slicer'].filter(r => r !== POSTS[post].role), placed = castCrew(st.background, free);
   for (const role of free.filter(r => !placed.includes(r))) {
@@ -59,12 +61,19 @@ function setupHired(o) {
     st.crew.push(c.id);
   }
   for (const { role, skill } of CHAPTER_CREW) {
+    if (role === 'xo' && captainKey) {  // the captain's own first officer
+      const xo = castPerson(CAPTAINS[captainKey].xo);
+      castRec(CAPTAINS[captainKey].xo).since = st.day;
+      st.crew.push(xo.id);
+      continue;
+    }
     const c = makeCrewCandidate(st.systemId);
     c.role = role; c.skill = skill; c.job = ROLE_NAMES[role].toLowerCase(); c.mood = null;
     registerPerson(c);
     st.crew.push(c.id);
   }
-  st.hired = { captain: cap.id, post, since: st.day, wage: HIRED_WAGE, share: HIRED_SHARE, fund: HIRED_FUND, run: null, ledger: [], skill: { [post]: SKILL_STEPS[1] }, asked: 0 };
+  const d = captainKey && CAPTAINS[captainKey];
+  st.hired = { captain: cap.id, captainKey, post, since: st.day, wage: d ? d.wage : HIRED_WAGE, share: d ? d.share : HIRED_SHARE, fund: HIRED_FUND, run: null, ledger: [], skill: { [post]: SKILL_STEPS[1] }, asked: 0 };
   return [
     `You signed on to the ${home().name}, an ice hauler out of ${system().name}, under Captain ${cap.first} ${cap.last}. You are her ${POSTS[post].name.toLowerCase()}: the post is yours to work, and the captain picks where she goes.`,
     `You have ${HIRED_SAVINGS} credits to your name. Save toward a ship of your own.`,
@@ -83,29 +92,44 @@ function hiredFunds(fn) {
   try { return fn(); } finally { h.fund = st.credits; st.credits = mine; }
 }
 
+// How the captain's style (captains.js) shows in a run. A captain with no entry (an older save) keeps the old behaviour:
+// always the best run, no fear of a dangerous lane, listens at HEARD, gives a bonus at BONUS.
+const TRADE_PICKS = { 1: 4, 2: 3, 3: 2, 4: 1, 5: 1 };  // trade: how many of the best-scoring runs the captain may take one of
+const laneRisk = sid => { const d = captainEntry(); return d ? 1 - 0.6 * ((5 - d.captain.nerve) / 4) * danger(sid) : 1; };  // a cautious captain marks a dangerous lane down
+const captainHears = () => (captainEntry() ? captainEntry().hears : OPINION.HEARD);
+const captainBonus = () => (captainEntry() ? captainEntry().bonus : OPINION.BONUS);
+const captainWeight = g => HIRED_WEIGHTS[g] * (g === 'captain' && captainEntry() ? captainEntry().talk : 1);  // how often they turn up
+
+// Who decides what: the first officer (the captain's own, if one is aboard) takes the crew-side calls and the post swaps, and
+// the captain keeps money and the ship. Without a first officer (an older save, or one who has died) the captain decides all.
+const hiredXo = () => { const d = captainEntry(); return (d && castAboard().find(c => c.cast === d.xo)) || null; };
+const bossFor = kind => (kind === 'swap' || kind === 'crew' ? hiredXo() : null) || hiredCaptain();
+const bossName = p => (p.role === 'xo' ? p.first : `Captain ${p.last}`);
+
 // The captain leans cautious: the last way out is likelier, a fight is likelier when it comes to that,
 // and nothing costly is chosen unless the ship can afford it.
 function captainPick(choices) {
-  const fund = hired().fund;
-  const weights = choices.map((c, i) => (/pay|fine|buy/i.test(c.label) && fund < 4000 ? 0.2 : 1 + (i === choices.length - 1 ? 1 : 0) + (/battle stations/i.test(c.label) ? 2 : 0)));
+  const fund = hired().fund, d = captainEntry();
+  const floor = 1000 * (d ? d.captain.thrift : 4), fight = d ? d.captain.nerve - 1 : 2;  // an older save's captain: 4,000 and a fight twice as likely
+  const weights = choices.map((c, i) => (/pay|fine|buy/i.test(c.label) && fund < floor ? 0.2 : 1 + (i === choices.length - 1 ? 1 : 0) + (/battle stations/i.test(c.label) ? fight : 0)));
   let r = Math.random() * weights.reduce((a, b) => a + b, 0);
   for (let i = 0; i < choices.length; i++) if ((r -= weights[i]) < 0) return choices[i];
   return choices[choices.length - 1];
 }
 
 // Who decides an event: a ship-to-ship matter is the captain's; some are a post's (the engineer's coolant
-// leak); the rest (the crew, your own affairs) are yours. Not yours: the captain takes the call.
+// leak); the rest (the crew, your own affairs) are yours. Not yours: the first officer takes a post's call (the crew side), the captain takes the rest.
 function hiredCall(ev) {
   const h = hired();
   if (!h || !G.transit || ev.decided || !ev.choices) return ev;
   const owner = ev.owner || (ev.via === 'ship' ? 'captain' : 'you');
   if (owner === 'you' || owner === h.post) return ev;
-  const cap = G.state.people[h.captain];
+  const cap = ev.via === 'ship' || owner === 'captain' ? hiredCaptain() : bossFor('crew');
   const usable = ev.choices.filter(c => hiredFunds(() => !c.can || c.can()) && (!c.role || roleSkill(c.role)) && !/yourself/i.test(c.label));
   if (!usable.length) return ev;
   const c = captainPick(usable);
   const said = c.label.replace(/\s*\(.*?\)/g, '').replace(/\[\{crew\}\]\s*/, '').replace(/\{crew\}/g, 'the crew').replace(/\s+/g, ' ').trim();
-  return { ...ev, decided: true, text: `${ev.text} Captain ${cap.first} ${cap.last} takes the call: "${said}."`,
+  return { ...ev, decided: true, text: `${ev.text} ${bossName(cap)} takes the call: "${said}."`,
     choices: [{ label: 'See how it goes', run: () => { const r = c.run(); return c.role ? r.replace(/\{crew\}/g, roleName(c.role)) : r; } }] };
 }
 
@@ -148,9 +172,11 @@ function planRun() {
       }
     }
   }
-  const score = o => (o.profit / o.days) * (wantYard && o.yard ? 4 : 1);
-  const best = options.sort((a, b) => score(b) - score(a))[0];
-  if (best && best.profit > 0) return { ...best, ballast: false };
+  const score = o => (o.profit / o.days) * (wantYard && o.yard ? 4 : 1) * laneRisk(o.sid);
+  const ranked = options.sort((a, b) => score(b) - score(a)).filter(o => o.profit > 0);
+  const top = ranked.slice(0, captainEntry() ? TRADE_PICKS[captainEntry().captain.trade] : 1);
+  const best = top.length > 1 ? pick(top) : top[0];
+  if (best) return { ...best, ballast: false };
   // Nothing worth carrying: run light to the nearest port that trades, and look for work there.
   const dest = reach.flatMap(([sid, sys]) => sys.planets.filter(x => x.services.includes('trade')).map(pl => ({ sid, planet: pl.name, yard: pl.services.includes('shipyard'), days: Math.max(1, travelDays(from, sid)) })))
     .sort((a, b) => (wantYard ? (b.yard - a.yard) : 0) || a.days - b.days)[0];
@@ -237,15 +263,15 @@ function errandsFor(planet) {
 
 // How likely the captain is to say yes: how far they trust you, and what you know of the post.
 function swapOdds(post) {
-  const cap = G.state.people[hired().captain];
-  return Math.max(0.1, Math.min(0.95, 0.35 + 0.1 * cap.opinion + 0.1 * skillLevel(post)));
+  const boss = bossFor('swap');
+  return Math.max(0.1, Math.min(0.95, 0.35 + 0.1 * boss.opinion + 0.1 * skillLevel(post)));
 }
 
 function askSwap(post) {
   const st = G.state, h = hired();
   if (!h || !POSTS[post] || post === h.post || G.mode !== 'landed' || h.asked === st.day) return;
   h.asked = st.day;
-  const cap = st.people[h.captain], role = POSTS[post].role, mine = POSTS[h.post].role;
+  const cap = bossFor('swap'), role = POSTS[post].role, mine = POSTS[h.post].role;
   const holder = roleHolder(role) || st.crew.map(person).find(c => c.role === role);
   const who = cap.first;
   if (Math.random() >= swapOdds(post)) {
@@ -259,11 +285,11 @@ function askSwap(post) {
 let M_NOTE = () => {};
 
 function swapHtml() {
-  const h = hired(), cap = G.state.people[h.captain], asked = h.asked === G.state.day;
-  return `<div class="post"><div class="eyebrow">Your posts &middot; Captain ${esc(cap.first)} ${esc(cap.last)}</div>
+  const h = hired(), cap = bossFor('swap'), asked = h.asked === G.state.day;
+  return `<div class="post"><div class="eyebrow">Your posts &middot; ${esc(bossName(cap))} decides</div>
     ${HIRED_POSTS.map(p => `<div class="row"><span><b>${POSTS[p].name}</b>${p === h.post ? ' <span class="tag good">yours</span>' : ''} <span class="hint">level ${skillLevel(p)} (${skillXp(p)} points)</span></span>
       ${p === h.post ? '' : `<button data-action="swapPost" data-arg="${p}" ${asked ? 'disabled' : ''}>Ask to move (${Math.round(swapOdds(p) * 100)}%)</button>`}</div>`).join('')}
-    <p class="hint">Your work at a post teaches you, and what you learn stays with you. The captain decides, by how far they trust you and what you know. ${asked ? 'You have asked already; ask again after the next run.' : ''}</p>
+    <p class="hint">Your work at a post teaches you, and what you learn stays with you. They decide, by how far they trust you and what you know. ${asked ? 'You have asked already; ask again after the next run.' : ''}</p>
   </div>`;
 }
 

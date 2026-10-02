@@ -55,7 +55,7 @@ test('a hired hand starts on an Ice Hauler', async () => {
 test('the crew is nine, in the ten berths, whatever the background', async () => {
   for (const background of ['earth', 'mars', 'belt']) {
     const { ev, done } = await hauler();
-    const r = await ev(bg => { const st = start({ background: bg }); return { roles: crewMembers().map(c => c.role).sort(), used: berthsUsed(), free: berthsFree(), cast: crewMembers().filter(c => c.cast).length }; }, background);
+    const r = await ev(bg => { const st = start({ background: bg }); return { roles: crewMembers().map(c => c.role).sort(), used: berthsUsed(), free: berthsFree(), cast: crewMembers().filter(c => c.cast && !CAST[c.cast].xo).length }; }, background);
     assert.deepEqual(r.roles, ROSTER, background);
     assert.equal(r.used, 9); assert.equal(r.free, 1); assert.equal(r.cast, 2, 'Ines and Tomas are aboard');
     await done();

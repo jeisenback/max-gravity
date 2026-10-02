@@ -35,21 +35,23 @@ const SIGN_POSTS = {
   comms: () => 'You have the bands: tips, hails and the inbox are yours. You are the ship\'s ear.',
 };
 
-const SIGN_LEARN_XP = 8, SIGN_SHARE_UP = 1.2;  // signing on for the money asks for a fifth more of the share
+const SIGN_LEARN_XP = 8, SIGN_SHARE_UP = 0.02;  // signing on for the money asks for two points more of the share
 
 function signOnEvent() {
   const st = G.state, h = hired(), cap = st.people[h.captain], b = SIGN_ON[st.background] || SIGN_ON.earth;
   const ctx = { ship: shipTitle().replace(/^./, ch => ch.toUpperCase()),  // it starts a sentence
     cap: `Captain ${cap.first} ${cap.last}`, adj: TRAITS[cap.traits[0]].adj, sys: system().name };
   const pair = st.crew.map(person).filter(c => c && c.cast);
-  const postName = c => POSTS[Object.keys(POSTS).find(k => POSTS[k].role === c.role)].name.toLowerCase();
-  const beside = pair.length ? ` Working beside you: ${pair.map(c => `${fullName(c)}, ${c.job} from ${c.home}, on the ${postName(c)} post`).join(', and ')}.` : '';
+  const postKey = c => Object.keys(POSTS).find(k => POSTS[k].role === c.role);
+  // A first officer holds no post.
+  const who = c => (postKey(c) ? `${fullName(c)}, ${c.job} from ${c.home}, on the ${POSTS[postKey(c)].name.toLowerCase()} post` : `${fullName(c)}, the ${ROLE_NAMES[c.role].toLowerCase()}, from ${c.home}`);
+  const beside = pair.length ? ` Working beside you: ${pair.map(who).join(', and ')}.` : '';
   const week = `${ctx.cap} picks each run and buys the cargo from the ship's funds; when you are ready, press Sail. ${scopeOff('errands') ? '' : 'Errands for wherever she is going turn up on the Missions board, and the captain keeps a fifth. '}You are paid a wage and a share of the profit on arrival, and you have ${HIRED_SAVINGS} credits to your name. Save toward a ship of your own.`;
   return {
     title: 'Signing On',
     text: [b.text(ctx), `${SIGN_POSTS[h.post](ctx.cap)}${beside}`, `${week} Why did you sign on?`].join('</p><p>'),
     choices: [
-      { label: 'For the money', run() { h.share = +(h.share * SIGN_SHARE_UP).toFixed(3); h.reason = 'money'; return b.money; } },
+      { label: 'For the money', run() { h.share = +(h.share + SIGN_SHARE_UP).toFixed(3); h.reason = 'money'; return b.money; } },
       { label: 'To learn the work', run() { gainSkill(h.post, SIGN_LEARN_XP); h.reason = 'learn'; return b.learn; } },
       { label: 'To be somewhere else', run() { like(cap, 1, 'You came aboard easy to get along with.'); for (const c of pair) like(c, 1, 'You came aboard easy to get along with.'); h.reason = 'away'; return b.away; } },
     ],

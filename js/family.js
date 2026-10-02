@@ -40,7 +40,7 @@ const cultureOfPerson = p => p.culture || HOME_CULTURE[p.home] || 'earth';
 
 // An authored person (cast.js) has their own story in their entry. It replaces anything rolled before, and keeps the
 // progress made. Later authored people (the captains and XOs) add their lookup here.
-const authoredStory = p => (p.cast && CAST[p.cast] ? CAST[p.cast].story : null);
+const authoredStory = p => { const d = p.cast ? CAST[p.cast] : p.captainKey ? CAPTAINS[p.captainKey] : null; return d ? d.story || null : null; };
 
 function storyOf(p) {
   const own = authoredStory(p);
