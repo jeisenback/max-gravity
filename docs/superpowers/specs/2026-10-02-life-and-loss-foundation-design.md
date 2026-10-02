@@ -45,10 +45,10 @@ All new fields are optional, so existing saves load unchanged.
 
 A new classic script, linked in `index.html` after `cast.js`. It exports one function:
 
-`castFate(key, outcome, cause)` where `outcome` is `'live'`, `'mark'` or `'die'`. It returns what actually happened (`'live'`, `'mark'` or `'die'`) so the calling scene can write matching text.
+`castFate(key, outcome, cause, markText)` where `outcome` is `'live'`, `'mark'` or `'die'`, `cause` is the memorial line, and `markText` is the mark line (used for a mark, and when the floor turns a death into one). It returns what actually happened (`'live'`, `'mark'` or `'die'`) so the calling scene can write matching text. Calling it on someone already dead does nothing and returns `'die'`.
 
 - `'live'`: no change.
-- `'mark'`: append to `marks` (the text comes from the caller), reduce the skill at their current post by one (never below 0), and keep them alive.
+- `'mark'`: append `{ text: markText, day }` to `marks`, reduce the skill at their current post by one (never below 0), and keep them alive. The experience at that post is also set to the threshold of the lowered level (`SKILL_STEPS`), otherwise the next day's experience would restore the lost point.
 - `'die'`: first run the floor. The floor counts core characters who have joined (a record with `since` set) and whose status is not `'dead'`, wherever they are posted, including as a company ship captain. If the death would leave fewer than two, the outcome becomes `'mark'`. Otherwise:
   - set status to `'dead'`,
   - remove them from `st.crew` and clear any `st.injured` entry,
