@@ -39,6 +39,19 @@ const HAUNTS = {
 };
 const ROLE_COLORS = { you: '#ffffff', engineer: '#ffa24a', pilot: '#6fb0ff', gunner: '#ff6b5a', quartermaster: '#f0d060', slicer: '#c08cff', medic: '#6fd08c', xo: '#e8e8f0', cook: '#e8a0a0', icehand: '#8fd8e8', passenger: '#9aa7b5', cat: '#b8aca0' };
 
+// The ship's day: every SHIP_DAY seconds of a burn the lights go down for a night, and everyone who is not on watch turns in.
+// 0 in the day, 1 at night, and a ramp at dusk and dawn. A burn starts in the morning.
+const SHIP_DAY = 40, NIGHT_WATCH = ['pilot', 'engineer'];
+function nightLevel() {
+  const t = G.transit;
+  if (!t) return 0;
+  const f = (((t.elapsed || 0) + 6) / SHIP_DAY) % 1;
+  return f < 0.55 ? 0 : f < 0.65 ? (f - 0.55) / 0.1 : f < 0.9 ? 1 : 1 - (f - 0.9) / 0.1;
+}
+const isDark = () => nightLevel() > 0.3;
+const nightHaunts = role => NIGHT_WATCH.includes(role) ? HAUNTS[role] : role === 'cat' ? { engine: 3, berths: 3 } : { berths: 9, galley: 1 };
+const isAsleep = p => isDark() && p.room === 'berths' && p.tx === null && p.dk === 0 && p.role !== 'cat' && !NIGHT_WATCH.includes(p.role) && phase() === 'move';
+
 // What someone is seen doing, by room and (optionally) role. {n} is their name, {m} someone else here.
 const LIFE_LINES = {
   engine: { cat: ['{n} is asleep on the reactor housing, where it is warm.', '{n} is stretched full length along a warm pipe, purring in a key that matches the drive.', '{n} is watching a dripping valve without blinking.'],
@@ -118,7 +131,12 @@ function phase() {
 function lifeTick(dt) {
   syncLifeButtons();
   if (G.mode !== 'transit' || !G.transit) return;
-  const people = shipPeople(), ph = phase();
+  const people = shipPeople(), ph = phase(), dark = isDark();
+  if (dark !== !!G.transit.dark) {  // dusk or dawn
+    G.transit.dark = dark;
+    comm(dark ? '[Ship] The lights go down for the night.' : '[Ship] The lights come up.');
+    for (const p of people) if (!NIGHT_WATCH.includes(p.role)) p.wait = Math.min(p.wait, rand(0.2, 3));
+  }
   for (const p of people) {
     if (ph !== 'move') { const k = Math.min(1, dt * 2); p.x += (p.seat - p.x) * k; p.dk += (0 - p.dk) * k; p.tx = null; p.tdk = 0; continue; }
     const step = 0.06 * dt;
@@ -135,7 +153,7 @@ function lifeTick(dt) {
         }
       }
     } else if ((p.wait -= dt) <= 0) {
-      goTo(p, weighted(HAUNTS[p.role]));
+      goTo(p, weighted(dark ? nightHaunts(p.role) : HAUNTS[p.role]));
     }
   }
 }
@@ -153,6 +171,7 @@ function drawCutaway(cx, cy, maxL) {
   const X = f => cx + (f - 0.5) * L * turn;
   const top = cy - H / 2, mid = top + H / 2, upper = mid - 3, lower = top + H - 6;  // the deck line and each deck's floor
   const dh = H / 2, ph_ = Math.max(9, Math.min(15, dh * 0.24));  // a deck's height, a person's
+  const night = nightLevel();
   const floorOf = dk => upper + (lower - upper) * dk;
   const span = (a, b) => Math.max(2, (b - a) * L * Math.abs(turn));  // a share of the length, in pixels
 
@@ -189,8 +208,9 @@ function drawCutaway(cx, cy, maxL) {
   // A pool of light under each room's ceiling lamp: warm in the galley and berths.
   for (const r of ROOMS) {
     const lx = X(r.mid), ly = r.deck === 0 || r.tall ? top + 4 : mid + 3, warm = r.id === 'galley' || r.id === 'berths';
+    const dim = 1 - (r.id === 'bridge' || r.id === 'engine' ? 0.4 : 0.8) * night;  // the watch keeps its lights
     const lamp = ctx.createRadialGradient(lx, ly, 0, lx, ly, dh * 1.1);
-    lamp.addColorStop(0, warm ? 'rgba(255,200,130,0.22)' : 'rgba(150,200,255,0.15)');
+    lamp.addColorStop(0, warm ? `rgba(255,200,130,${0.22 * dim})` : `rgba(150,200,255,${0.15 * dim})`);
     lamp.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = lamp;
     ctx.fillRect(lx - dh * 1.1, ly - 2, dh * 2.2, dh * 1.2);
@@ -329,12 +349,20 @@ function drawCutaway(cx, cy, maxL) {
   ctx.textAlign = 'center';
   ctx.font = `${L < 450 ? 8 : 9}px "IBM Plex Mono", monospace`;
   const labels = [];
+  // At night, whoever is turned in lies on a bunk.
+  const bunk = i => ({ x: X(berths.x0 + berths.w * (Math.floor(i / 2) + 0.5) / cols), y: i % 2 ? upper - 22 : upper - 9 });
+  const slots = new Map();
+  for (const p of people) if (slots.size < n && isAsleep(p)) slots.set(p, slots.size);
   people.forEach((p, i) => {
-    const x = X(p.x), floating = ph === 'float', bob = floating ? Math.sin(G.time * 2 + i) * dh * 0.18 - dh * 0.12 : 0;
+    const asleep = slots.has(p), x = asleep ? bunk(slots.get(p)).x : X(p.x), floating = ph === 'float', bob = floating ? Math.sin(G.time * 2 + i) * dh * 0.18 - dh * 0.12 : 0;
     const y = floorOf(p.dk) + bob, seated = ph === 'couch', walking = (p.tx !== null || p.dk !== p.tdk) && !floating && !seated;
     ctx.fillStyle = ROLE_COLORS[p.role];
     ctx.strokeStyle = ROLE_COLORS[p.role];
-    if (p.role === 'cat') {  // low to the deck, with ears and a tail
+    if (asleep) {
+      const b = bunk(slots.get(p));
+      ctx.fillRect(b.x - 7, b.y - 3, 14, 3);
+      ctx.beginPath(); ctx.arc(b.x - 10, b.y - 2, 2.6, 0, Math.PI * 2); ctx.fill();
+    } else if (p.role === 'cat') {  // low to the deck, with ears and a tail
       ctx.fillRect(x - 3, y - 3, 6, 3);
       ctx.fillRect(x + 2, y - 5, 2, 2);
       ctx.fillRect(x - 4, y - 5, 1, 3);
