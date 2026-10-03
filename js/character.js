@@ -44,7 +44,7 @@ function crewOpinionsCard() {
 // A hired hand's place on the ship: whose, which post, how long, what it pays.
 function onTheShipCard() {
   const h = hired(), cap = person(h.captain), days = G.state.day - h.since;
-  return conCard('On the ship', `${conRead('Captain', cap ? personLink(cap) : 'none')}${conRead('Post', POSTS[h.post].name)}${conRead('Aboard', `${days} day${days === 1 ? '' : 's'}`)}${conRead('Pay', `${fmt(h.wage)} cr/day, ${Math.round(h.share * 100)}% of profit`)}${conRead('Savings', `${fmt(G.state.credits)} cr`)}`);
+  return conCard('On the ship', `${conRead('Captain', cap ? personLink(cap) : 'none')}${conRead('Post', POSTS[h.post].name)}${conRead('Aboard', `${days} day${days === 1 ? '' : 's'}`)}${handHurt() ? conRead('Condition', `hurt, ${h.hurtUntil - G.state.day} days`) : ''}${conRead('Pay', `${fmt(h.wage)} cr/day, ${Math.round(h.share * 100)}% of profit`)}${conRead('Savings', `${fmt(G.state.credits)} cr`)}`);
 }
 
 const skillsOf = c => c.skills || (c.role && c.skill !== undefined ? { [c.role]: c.skill } : {});
