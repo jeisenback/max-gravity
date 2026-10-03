@@ -273,7 +273,7 @@ test('what people are seen doing on the ship: every room and role has lines that
     takeOff(); st.dest = 'mars'; G.player.x = 6000; tryBurn(); enterTransit(); G.transit.times = [];
     const people = shipPeople(), bad = [];
     let seen = 0;
-    for (const room of ['engine', 'hold', 'berths', 'galley', 'bridge']) {
+    for (const room of ROOMS.map(r => r.id)) {
       for (const p of people) {
         if (p.role === 'you') continue;
         p.room = room;

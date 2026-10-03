@@ -11,10 +11,12 @@
 // The engine room is the full height of the stern; a ladder joins the decks.
 const ROOMS = [
   { id: 'engine', name: 'Engine', x0: 0, x1: 0.17, deck: 1, tall: true },
-  { id: 'hold', name: 'Hold', x0: 0.17, x1: 0.6, deck: 1 },
+  { id: 'hold', name: 'Hold', x0: 0.17, x1: 0.4, deck: 1 },
+  { id: 'medbay', name: 'Medbay', x0: 0.4, x1: 0.6, deck: 1 },
   { id: 'berths', name: 'Berths', x0: 0.17, x1: 0.44, deck: 0 },
   { id: 'galley', name: 'Galley', x0: 0.44, x1: 0.66, deck: 0 },
-  { id: 'bridge', name: 'Bridge', x0: 0.66, x1: 0.92, deck: 0 },
+  { id: 'gunnery', name: 'Gunnery', x0: 0.66, x1: 0.78, deck: 0 },
+  { id: 'bridge', name: 'Bridge', x0: 0.78, x1: 0.92, deck: 0 },
 ];
 const LADDER = 0.62;
 for (const r of ROOMS) { r.w = r.x1 - r.x0; r.mid = (r.x0 + r.x1) / 2; }
@@ -22,17 +24,17 @@ const roomAt = id => ROOMS.find(r => r.id === id);
 
 // Where each kind of person likes to spend a burn.
 const HAUNTS = {
-  you: { bridge: 4, galley: 2, hold: 1, engine: 1, berths: 1 },
+  you: { bridge: 4, galley: 2, hold: 1, engine: 1, berths: 1, gunnery: 1, medbay: 1 },
   engineer: { engine: 5, galley: 2, berths: 1 },
   pilot: { bridge: 5, galley: 2, berths: 1 },
-  gunner: { hold: 2, bridge: 2, galley: 2, berths: 1 },
+  gunner: { gunnery: 5, hold: 1, galley: 2, berths: 1 },
   quartermaster: { hold: 5, galley: 2, berths: 1 },
   slicer: { bridge: 3, berths: 2, galley: 2 },
-  medic: { berths: 3, galley: 2, hold: 1 },
+  medic: { medbay: 5, berths: 2, galley: 2 },
   xo: { bridge: 4, hold: 2, galley: 2, engine: 1 },
   cook: { galley: 6, hold: 1, berths: 1 },
   icehand: { hold: 5, galley: 2, berths: 2 },
-  passenger: { berths: 4, galley: 3 },
+  passenger: { berths: 4, galley: 3, medbay: 1 },
   cat: { engine: 4, galley: 3, berths: 2, bridge: 1, hold: 1 },
 };
 const ROLE_COLORS = { you: '#ffffff', engineer: '#ffa24a', pilot: '#6fb0ff', gunner: '#ff6b5a', quartermaster: '#f0d060', slicer: '#c08cff', medic: '#6fd08c', xo: '#e8e8f0', cook: '#e8a0a0', icehand: '#8fd8e8', passenger: '#9aa7b5', cat: '#b8aca0' };
@@ -47,11 +49,17 @@ const LIFE_LINES = {
     gunner: ['{n} is dry-firing at shadows in the hold.', '{n} is cleaning a gun by feel in the half-dark.', '{n} has set up a target on a crate and is losing to it.'],
     any: ['{n} is checking the cargo straps.', '{n} is standing among the crates with a hand on a lashing.', '{n} is reading the labels on the cargo, one by one.'] },
   berths: { cat: ['{n} has claimed somebody\'s pillow. Nobody moves it.', '{n} is curled in the center of a freshly made bunk and watches whoever comes near.', '{n} is asleep on a pair of boots in a shaft of dim light, twitching.'],
-    medic: ['{n} is restocking the med bay, one ampoule at a time.', '{n} is labeling small vials in tiny, exact handwriting, and humming.', '{n} is checking the sleeping faces in the berths.'],
+    medic: ['{n} is checking the sleeping faces in the berths.', '{n} stops at each bunk and listens for breathing.'],
     passenger: ['{n} is writing letters in their bunk.', '{n} is asleep, or pretending to be.', '{n} is looking through a small pile of photographs, and putting them back, one at a time.', '{n} is sitting on the edge of their bunk, looking at the wall.'],
     any: ['{n} is catching a few hours in their bunk.', '{n} is asleep with an arm thrown over their eyes and a small book open on their chest.', '{n} is reading, by the light of a small lamp, with their lips moving.'] },
   galley: { cat: ['{n} is sitting by the food locker, staring at it.', '{n} is licking a drop of milk from the galley floor.', '{n} has taken a seat at the table. Nobody moves it.'],
     any: ['{n} is making coffee that could strip paint.', '{n} and {m} are playing cards in the galley, badly.', '{n} is telling {m} a story that is only partly true.', '{n} and {m} are washing up together without talking, passing each other cups.', '{n} is trying to teach {m} a card trick, and the deck is on the floor.', '{n} is cooking something unlabeled in a pan.', '{n} is leaning on the counter with a mug, watching {m} argue with the recycler.'] },
+  gunnery: { cat: ['{n} is asleep on the warm side of the fire-control cabinet.', '{n} is sitting in the gunner\'s seat with the harness hanging off it.'],
+    gunner: ['{n} is running the fire-control checks. Each one goes in the log.', '{n} is wiping down the feed tray of the point-defense cannon.', '{n} is counting rounds in the magazine rack and writing the number on the rack.', '{n} has a drill up on the targeting display and is tracking a dot across it.'],
+    any: ['{n} is reading the range tables taped above the console.', '{n} is checking the latch on the weapons locker.', '{n} is watching the tracking screen. It shows the sun and nothing else.'] },
+  medbay: { cat: ['{n} is asleep on the exam bed, on a folded blanket.', '{n} is sitting in front of the cabinet, looking at the lock.'],
+    medic: ['{n} is counting the ampoules in the cabinet and writing the count on the door.', '{n} is labeling vials in small, even handwriting.', '{n} is wiping down the exam bed in long strokes.', '{n} is reading the date stamped on each sterile pack.'],
+    any: ['{n} is sitting on the edge of the exam bed with a cup of tea.', '{n} is reading the dosage chart on the wall.', '{n} is standing at the sink, running the water over their hands.'] },
   bridge: { cat: ['{n} is sitting on the nav console again.', '{n} has settled directly on the flight controls, and looks at you.', '{n} is watching the stars through the forward window, ears up.'],
     pilot: ['{n} is double-checking the flip solution.', '{n} is tracing a line on the nav chart with one finger, and nodding.', '{n} is flying with their hands off the controls and their eyes on every readout.'],
     slicer: ['{n} is combing through the comms traffic.', '{n} is reading a long stream of code, and smiling.', '{n} is listening to a dozen channels at once with their eyes closed, fingers moving.'],
@@ -208,12 +216,13 @@ function drawCutaway(cx, cy, maxL) {
   ctx.beginPath();
   ctx.moveTo(X(0.17), mid); ctx.lineTo(X(LADDER - 0.012), mid);
   ctx.moveTo(X(LADDER + 0.012), mid); ctx.lineTo(X(0.9), mid);
-  for (const x of [0.17, 0.44, 0.66]) { ctx.moveTo(X(x), top + 4); ctx.lineTo(X(x), mid); }  // upper rooms
+  for (const x of [0.17, 0.44, 0.66, 0.78]) { ctx.moveTo(X(x), top + 4); ctx.lineTo(X(x), mid); }  // upper rooms
   ctx.moveTo(X(0.17), mid); ctx.lineTo(X(0.17), top + H - 4);  // the engine room's wall
+  ctx.moveTo(X(0.4), mid); ctx.lineTo(X(0.4), top + H - 4);  // the medbay begins
   ctx.moveTo(X(0.66), mid); ctx.lineTo(X(0.66), top + H - 4);  // the tanks begin
   ctx.stroke();
   ctx.fillStyle = '#0c1826';
-  for (const [x, f] of [[0.17, upper], [0.44, upper], [0.66, upper], [0.17, lower], [0.66, lower]]) {
+  for (const [x, f] of [[0.17, upper], [0.44, upper], [0.66, upper], [0.78, upper], [0.17, lower], [0.4, lower], [0.66, lower]]) {
     ctx.fillRect(X(x) - 2, f - ph_ - 3, 4, ph_ + 3);
     ctx.strokeRect(X(x) - 2, f - ph_ - 3, 4, ph_ + 3);
   }
@@ -228,7 +237,10 @@ function drawCutaway(cx, cy, maxL) {
   ctx.fillStyle = '#5b7896';
   ctx.font = `600 ${L < 450 ? 8 : 10}px ${LABEL_FONT}`;
   ctx.textAlign = 'center';
-  for (const r of ROOMS) ctx.fillText(r.name.toUpperCase(), X(r.mid), r.deck === 0 || r.tall ? top + 14 : mid + 13);
+  for (const r of ROOMS) {  // a name too long for a narrow room is cut to three letters
+    const name = r.name.toUpperCase();
+    ctx.fillText(ctx.measureText(name).width < span(r.x0, r.x1) - 4 ? name : name.slice(0, 3), X(r.mid), r.deck === 0 || r.tall ? top + 14 : mid + 13);
+  }
 
   // Engine: the reactor, brighter under thrust, with its coolant lines and a console.
   const eng = roomAt('engine'), glow = (burning ? 0.9 : 0.35) * (0.9 + 0.1 * Math.sin(G.time * 6));
@@ -288,14 +300,30 @@ function drawCutaway(cx, cy, maxL) {
   ctx.fillRect(gx - 1, upper - 7, 2, 7);
   ctx.fillRect(gx - 12, upper - 4, 4, 4); ctx.fillRect(gx + 8, upper - 4, 4, 4);
   ctx.fillStyle = '#e8c890'; ctx.fillRect(gx - 4, upper - 12, 3, 3);
+  // Gunnery: a fire-control console with a red screen, and the weapons locker.
+  const gun = roomAt('gunnery'), gcx = X(gun.x0 + 0.035);
+  ctx.fillStyle = '#35587d'; ctx.fillRect(gcx - 5, upper - 12, 10, 12);
+  ctx.fillStyle = `rgba(255,110,90,${0.5 + 0.25 * Math.sin(G.time * 2.5)})`; ctx.fillRect(gcx - 4, upper - 11, 8, 4);
+  const lock = X(gun.x0 + 0.095);
+  ctx.fillStyle = '#2a3f58'; ctx.fillRect(lock - 3, upper - 16, 6, 16);
+  ctx.fillStyle = '#0c1826'; for (let y = upper - 14; y < upper - 2; y += 4) ctx.fillRect(lock - 2, y, 4, 1);
   // Bridge: two consoles with live screens, and the helm chair.
   const br = roomAt('bridge');
-  for (const f of [0.07, 0.15]) {
+  for (const f of [0.03, 0.075]) {
     const bx = X(br.x0 + f);
-    ctx.fillStyle = '#35587d'; ctx.fillRect(bx - 5, upper - 12, 10, 12);
-    ctx.fillStyle = `rgba(120,200,255,${0.55 + 0.25 * Math.sin(G.time * 2 + f * 40)})`; ctx.fillRect(bx - 4, upper - 11, 8, 4);
+    ctx.fillStyle = '#35587d'; ctx.fillRect(bx - 4, upper - 12, 8, 12);
+    ctx.fillStyle = `rgba(120,200,255,${0.55 + 0.25 * Math.sin(G.time * 2 + f * 40)})`; ctx.fillRect(bx - 3, upper - 11, 6, 4);
   }
-  ctx.fillStyle = '#2a3f58'; ctx.fillRect(X(br.x0 + 0.23) - 3, upper - 8, 6, 8);
+  ctx.fillStyle = '#2a3f58'; ctx.fillRect(X(br.x0 + 0.115) - 3, upper - 8, 6, 8);
+  // Medbay: an exam bed, a drug cabinet with a green cross, and a drip stand.
+  const med = roomAt('medbay'), mb = X(med.x0 + med.w * 0.35);
+  ctx.fillStyle = '#2a3f58'; ctx.fillRect(mb - 12, lower - 7, 24, 3); ctx.fillRect(mb - 10, lower - 4, 2, 4); ctx.fillRect(mb + 8, lower - 4, 2, 4);
+  ctx.fillStyle = '#9fb4c9'; ctx.fillRect(mb - 12, lower - 9, 7, 2);
+  const cab = X(med.x0 + med.w * 0.8);
+  ctx.fillStyle = '#35587d'; ctx.fillRect(cab - 5, lower - 18, 10, 18);
+  ctx.fillStyle = '#6fd08c'; ctx.fillRect(cab - 1, lower - 15, 2, 8); ctx.fillRect(cab - 3, lower - 12, 6, 2);
+  ctx.strokeStyle = '#5b7896'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(mb + 14, lower); ctx.lineTo(mb + 14, lower - 18); ctx.lineTo(mb + 11, lower - 18); ctx.stroke();
 
   // People, with names below the hull where they fit.
   ctx.textAlign = 'center';
