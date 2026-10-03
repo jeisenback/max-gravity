@@ -33,7 +33,7 @@ const runTotals = h => ({
   earned: h.earnedTotal !== undefined ? h.earnedTotal : h.ledger.reduce((t, l) => t + l.wage + l.share, 0),
 });
 const skillXp = post => (hired() && hired().skill && hired().skill[post]) || 0;
-const skillLevel = post => SKILL_STEPS.filter(n => skillXp(post) >= n).length - 1;
+const skillLevel = post => Math.max(0, SKILL_STEPS.filter(n => skillXp(post) >= n).length - 1 - (handHurt() ? 1 : 0));  // a hurt hand works a level lower (boarders.js)
 function gainSkill(post, n) {
   const h = hired();
   if (!h) return;
