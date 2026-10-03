@@ -205,7 +205,7 @@ function operationsPanel() {
 }
 
 const portView = UI.views.port;
-UI.views.port = function () { return operationsPanel() + (hired() ? runHtml() : '') + portView.call(this); };
+UI.views.port = function () { return (hired() ? runHtml() : '') + operationsPanel() + portView.call(this); };  // a hand's first question is what the captain will do next, so the run leads
 
 // The shipyard is Engineering's page at port; the engineer's post leads it.
 const shipyardView = UI.views.shipyard;

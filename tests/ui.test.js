@@ -434,3 +434,32 @@ test('the port scene banner is 96px on desktop and 92px on a phone, and still dr
   assert.equal(out.phone.h, 92);
   assert.ok(out.desktop.lit > 50 && out.phone.lit > 50, `the scene has lit pixels: ${JSON.stringify(out)}`);
 });
+
+test('the sign-on dialog keeps its choices on screen at 1280x800, and a hand sees the captain\'s run before the hold', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
+  await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); });
+  const choices = await page.evaluate(() => [...document.querySelectorAll('#panel.event .choices button')].map(b => { const r = b.getBoundingClientRect(); return r.top >= 0 && r.bottom <= window.innerHeight; }));
+  assert.ok(choices.length >= 3 && choices.every(Boolean), `every sign-on choice is inside the window: ${JSON.stringify(choices)}`);
+  const order = await ev(() => { while (G.dialog) finishEvent(); UI.tab = 'port'; UI.render(); const h = document.getElementById('panel').innerHTML; return [h.indexOf("'s run"), h.indexOf('Cargo bay')]; });
+  assert.ok(order[0] > 0 && order[1] > 0 && order[0] < order[1], `the captain's run comes before the cargo bay: ${order}`);
+  await done();
+});
+
+test('a new person never takes a first name already on the register or in the authored cast', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired', seed: 6 });
+  const dupes = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' });
+    while (G.dialog) finishEvent();
+    const clash = [];
+    for (let i = 0; i < 60; i++) {
+      const taken = new Set([...Object.values(G.state.people).map(x => x.first), ...Object.values(CAST).map(c => c.first)]);
+      const p = registerPerson(makePerson('earth'));
+      if (taken.has(p.first) && taken.size < 20) clash.push(p.first);
+    }
+    const names = folk().map(f => f.p.first);
+    return { clash, names, dupe: names.length !== new Set(names).size };
+  });
+  assert.deepEqual(dupes.clash, [], 'while there are names left, none is repeated');
+  assert.equal(dupes.dupe, false, `no two shipmates share a first name: ${dupes.names}`);
+  await done();
+});
