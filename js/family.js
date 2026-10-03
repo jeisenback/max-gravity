@@ -190,7 +190,7 @@ function letters(planet) {
   const st = G.state, notes = [];
   for (const f of procedural()) {
     const p = f.p;
-    if (Math.random() > 0.2 || (p.letterDay || -99) > st.day - 12) continue;
+    if (Math.random() > 0.2 || (p.letterDay || -99) > st.day - 30) continue;
     p.letterDay = st.day;
     const good = Math.random() < 0.55;
     const news = storyOf(p).news, pool = news ? (good ? news.good : news.bad) : (good ? GOOD_NEWS : BAD_NEWS);  // an authored person's own news, or the generic
