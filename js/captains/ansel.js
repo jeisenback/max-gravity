@@ -14,7 +14,7 @@ function atTheLock(backup) {
   const lead = backup ? 'You send a second person to the lock with him. ' : '';
   if (outcome === 'die') {
     like(cap, -1, 'We lost Ansel at the lock.'); cap.mood = { kind: 'low', until: G.state.day + 30 };
-    return lead + 'He goes to the lock alone, with the sheet in his hand, and the lock cycles, and what the people on the other side do is not something the board can tell you. When the lock opens again, he is not what is in it. Captain Pell comes down from the guns slowly, with the grin gone, and stands at the lock for a very long time. "He told me," she says. "Every time. He told me."'
+    return lead + 'He goes to the lock alone, with the sheet in his hand, and the lock cycles, and what the people on the other side do is not something the board can tell you. When the lock opens again, he is not what is in it. Captain Pell comes down from the guns slowly, with the grin gone, and stands at the lock without moving. "He told me," she says. "Every time. He told me."'
       + (told ? ' You said you would stop her if you could. It was not in time.' : '');
   }
   castLike('ansel', 2, 'You let me go to the lock, and I came back.');
@@ -22,7 +22,7 @@ function atTheLock(backup) {
     cap.mood = { kind: 'low', until: G.state.day + 15 };
     return lead + 'He goes to the lock with the sheet, and it goes wrong at the second sentence, and for a minute the only sound is shouting through a hatch. He comes back carried, with a cut over one eye, and the hand that held the sheet is closed round it and will not open properly. "They have agreed to wait," he says. "I told them the odds."';
   }
-  return lead + 'He goes to the lock with the sheet in his hand, and talks for eleven minutes, in a level voice, about the odds. The long ship backs off. He comes back with his coat buttoned wrong and says, "They have agreed to wait," and sits down on the lock coaming and does not say anything else for a while. Captain Pell does not make a joke. She puts a hand on his shoulder, and takes it off again, as if it had not happened.';
+  return lead + 'He goes to the lock with the sheet in his hand, and talks for eleven minutes, in a level voice, about the odds. The long ship backs off. He comes back with his coat buttoned wrong and says, "They have agreed to wait," and sits down on the lock coaming and does not say anything else for a while. Captain Pell does not make a joke. She puts a hand on his shoulder, and takes it off again.';
 }
 
 CAST.ansel = {
@@ -30,7 +30,7 @@ CAST.ansel = {
   traits: ['nervous', 'kind'], wage: 65, xo: true, fragile: true,
   skills: { xo: 3, slicer: 2, engineer: 1, pilot: 0, gunner: 0 }, captain: { trade: 4, nerve: 1, thrift: 5 },
   ambition: 'Wants to retire safely, on an income nobody can touch.',
-  bio: 'An actuary once, and he plans for the worst, and writes it down in very small numbers. He is the brake on every one of the captain\'s schemes, and stays out of loyalty or habit; he has not decided which.',
+  bio: 'An actuary once, and he plans for the worst, and writes it down in small numbers. He is the brake on every one of the captain\'s schemes, and stays out of loyalty or habit; he has not decided which.',
   story: {
     left: 'a pension fund he was the actuary for, which was spent by the people he had warned', rel: 'wife', name: 'Margit',
     hope: 'a small house with a garden, and an annuity that nobody can touch',
@@ -52,7 +52,7 @@ CAST.ansel = {
   scenes: {
     intro: {
       title: 'The Sheet',
-      text: 'Ansel Whitcombe is at the galley table with a pencil, a ruled sheet, and a cup of tea he has forgotten. He is old for the work and neat for the ship, and he writes in very small numbers. "I am the first officer," he says, not looking up. "I am also, though nobody asked me to be, the person who tells the captain the probability. I tell her. She says, Good, and does it anyway." He turns the sheet round so you can see: columns, and a figure at the bottom. "I am not a pessimist. I was an actuary. It is the same thing, with better pay, and then it was not."',
+      text: 'Ansel Whitcombe is at the galley table with a pencil, a ruled sheet, and a cup of tea he has forgotten. He is old for the work and neat for the ship, and he writes in small numbers. "I am the first officer," he says, not looking up. "I am also, though nobody asked me to be, the person who tells the captain the probability. I tell her. She says, Good, and does it anyway." He turns the sheet round so you can see: columns, and a figure at the bottom. "I am not a pessimist. I was an actuary. It is the same thing, with better pay, and then it was not."',
       choices: [
         { label: 'Ask him what the figure means', run() {
           castLike('ansel', 2, 'You asked what the figure meant.');
@@ -80,7 +80,7 @@ CAST.ansel = {
     },
     mid2: {
       days: 40, title: 'Two Orders',
-      text: 'It is the loading dock, and you have two orders for the crates. Captain Pell\'s came with a grin: take the cargo from the man at the end of the dock, no manifest, triple the rate, and do not ask. Ansel\'s came in a very quiet voice, in the passage: refuse it, there is a manifest or there is no cargo, and the man is on a list he has seen. They have both told you, and neither has told the other.',
+      text: 'It is the loading dock, and you have two orders for the crates. Captain Pell\'s came with a grin: take the cargo from the man at the end of the dock, no manifest, triple the rate, and do not ask. Ansel\'s came in a quiet voice, in the passage: refuse it, there is a manifest or there is no cargo, and the man is on a list he has seen. They have both told you, and neither has told the other.',
       choices: [
         { label: 'Take the cargo, as the captain said', run() {
           castLike('ansel', -1, 'You took the cargo against my advice.'); captainLike(2, 'You took the cargo as I said.');
@@ -110,7 +110,7 @@ CAST.ansel = {
       days: 70, title: 'The Fight She Should Not Have Picked',
       get text() {
         const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6;
-        return 'A ship has come up on your stern, long and dark, and it is one of Dobrescu\'s. Captain Pell has seen it on the board and is already at the guns, laughing, with a figure in her head. "We can take her," she says. "We could take her." Ansel is at the boarding lock with his coat on and the sheet in one hand. "I would like to speak to them," he says. "Give me ten minutes, and the lock, and do not fire." He says it as if it were a request on a form.'
+        return 'A ship has come up on your stern, long and dark, and it is one of Dobrescu\'s. Captain Pell has seen it on the board and is already at the guns, laughing, with a figure in her head. "We can take her," she says. "We could take her." Ansel is at the boarding lock with his coat on and the sheet in one hand. "I would like to speak to them," he says. "Give me ten minutes, and the lock, and do not fire." He says it flat.'
           + (low ? ' Your hull has taken a beating, and a bad hull is a bad place to be, in either case.' : ' Your hull is sound, which is something.')
           + (medic ? ` ${medic.first} has the med kit open at the lock.` : ' There is nobody aboard who can do more than a field dressing, and he knows it.')
           + (roleHolder('gunner') ? ' The guns are manned, which, as he well knows, cuts both ways.' : ' Nobody else is on the guns.')

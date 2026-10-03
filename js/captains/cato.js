@@ -53,7 +53,7 @@ CAST.cato = {
   scenes: {
     intro: {
       title: 'The Watch Bill',
-      text: 'Cato Rahman finds you at the end of your first watch with a mug in each hand. He is a big man and he moves slowly, as if the ship might notice. "I do the watch bill," he says. "I know who has a child at home and who is waiting on a letter, and I try to put the bad hours where they hurt least. I will do the same for you, if you tell me what you need. The captain does not like it when I do. She is right to count it. I do it anyway." He holds out one of the mugs.',
+      text: 'Cato Rahman finds you at the end of your first watch with a mug in each hand. He is a big man, and he moves slowly in the passages. "I do the watch bill," he says. "I know who has a child at home and who is waiting on a letter, and I try to put the bad hours where they hurt least. I will do the same for you, if you tell me what you need. The captain does not like it when I do. She is right to count it. I do it anyway." He holds out one of the mugs.',
       choices: [
         { label: 'Tell him what you need', run() {
           castLike('cato', 2, 'You told me what you needed, and I put it on the bill.');
@@ -67,7 +67,7 @@ CAST.cato = {
     },
     mid1: {
       days: 25, title: 'A Share of a Ship',
-      text: 'Cato is sitting on a cargo lashing with a very small notebook, the kind that goes in a shirt pocket. It is not the captain\'s; it has no columns. "Twelve years," he says, "and a bit over nine thousand in the jar. A share of a ship costs more than that, a lot more. I do the sum when I cannot sleep." He turns it round so you can see: a ship\'s name crossed out, and another, and a third with a question mark. "I do not want to own her. I want a share, and a deck, and the same hold gang on it at the end. That is all." He puts the notebook away. "Do you think that is a stupid thing to want?"',
+      text: 'Cato is sitting on a cargo lashing with a small notebook, the kind that goes in a shirt pocket. It is not the captain\'s; it has no columns. "Twelve years," he says, "and a bit over nine thousand in the jar. A share of a ship costs more than that, a lot more. I do the sum when I cannot sleep." He turns it round so you can see: a ship\'s name crossed out, and another, and a third with a question mark. "I do not want to own her. I want a share, and a deck, and the same hold gang on it at the end. That is all." He puts the notebook away. "Do you think that is a stupid thing to want?"',
       choices: [
         { label: 'Ask which ship has the question mark', run() {
           castLike('cato', 2, 'You asked about the ship with the question mark.'); castFlag('cato', 'share');
@@ -75,7 +75,7 @@ CAST.cato = {
         } },
         { label: 'Say it is not stupid, but it is a long way off', run() {
           castLike('cato', 1, 'You said it was not stupid, but a long way off.');
-          return '"It is," he says. "It is a long way off every day, and then it is one day nearer. That is how I came up through the hold." He puts a hand on the lashing, as if to thank it.';
+          return '"It is," he says. "It is a long way off every day, and then it is one day nearer. That is how I came up through the hold." He puts a hand on the lashing.';
         } },
       ],
     },
@@ -113,7 +113,7 @@ CAST.cato = {
         const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6, hands = iceHands();
         return 'The alarm is a flat two-tone from the hold, and the board shows the number two ice pod with a seal gone and the load moving. Cato is already at the hatch with a lashing strap over one shoulder. "I know where the load goes," he says. "It is my hold. Give me ten minutes." Ice does not move quickly, but it does not stop, either, and the pod it is leaning on is not rated for it.'
           + (low ? ' The hull has taken a beating, and a bad hull is a bad place for a load to shift.' : ' The hull is sound, which is something.')
-          + (medic ? ` ${medic.first} has the med kit open at the hatch, as though the question were already settled.` : ' There is nobody aboard who can do more than a field dressing, and he knows it.')
+          + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There is nobody aboard who can do more than a field dressing, and he knows it.')
           + (hands >= 2 ? ' Both ice hands are suited and waiting.' : ' There are not enough hands on the ice for a load like this.')
           + ' He waits for your answer, and has already started on the strap.';
       },

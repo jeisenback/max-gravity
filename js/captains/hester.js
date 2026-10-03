@@ -36,13 +36,13 @@ CAPTAINS.hester = {
     },
     'cap-praise': {
       text: 'Captain Vance finds you at the end of a watch with the notebook open. She says the {post} has not cost her a repair or a worry in a week, and that she has written it down. It is, from her, a speech.',
-      take: '"The crew make it easy," you say. She nods once and turns a page. You stand a little straighter for the rest of the watch.',
+      take: '"The crew make it easy," you say. She nods once and turns a page. You stand straighter for the rest of the watch.',
       bonusYes: 'She looks at you, and then at the notebook, and then, to your surprise, laughs. "Sixty," she says. "It is in the column already." It reaches your account before the end of the watch.',
       bonusNo: '"When it is a word, it is free," she says. "When it is a bonus, it has to be earned. I have a column for each." You have the feeling of having spent something you did not have.',
     },
     'cap-dressing': {
       text: 'There is a watch with no entry in the log, and Captain Vance has found it. She does not shout. She puts the log on the galley table, turns it so it faces you, and lays a pencil across the gap. Then she waits.',
-      own: '"That was mine," you say. "I will fix it tonight." She looks at you a moment longer, and takes the pencil back. "Tonight," she says, and writes the word in the margin. It is not forgiveness. It is a date.',
+      own: '"That was mine," you say. "I will fix it tonight." She looks at you a moment longer, and takes the pencil back. "Tonight," she says, and writes the word in the margin.',
       blame: 'You mention the terminal, which does lose entries, now and then. "Then we will see," she says.',
       terminal: '"Then we will see," Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a long minute while it does nothing at all.',
       showWin: 'Just as you open your mouth, it does it: one line blinks out and back. She watches it for a while. "I will have it replaced," she says. "And I was wrong, which I will put in the book in the ink I keep for that."',
@@ -61,11 +61,11 @@ CAPTAINS.hester = {
   scenes: {
     trouble: {
       title: 'The First of the Month',
-      text: 'The bank\'s payment is due on the first, and the fund is four hundred short of it. Captain Vance tells you at the galley table, plainly, with the notebook open between you, as if it were a weather report. She is not asking. She has said she does not ask. "I am telling you," she says, "so that when the cargo is late, you know what it is for."',
+      text: 'The bank\'s payment is due on the first, and the fund is four hundred short of it. Captain Vance tells you at the galley table, plainly, with the notebook open between you. She is not asking. She has said she does not ask. "I am telling you," she says, "so that when the cargo is late, you know what it is for."',
       choices: [
         { label: 'Lend her four hundred', can: () => G.state.credits >= 400, run() {
           G.state.credits -= 400; captainLike(3, 'You lent me four hundred when the fund was short.'); captainFlag('lent');
-          return 'You push four hundred across the table. She looks at it for a long time, and then writes it in the notebook, with the date and a figure beside it. "Four hundred and ten," she says, "the day you leave this ship." It is not a kindness, exactly. It is better. It is a record.';
+          return 'You push four hundred across the table. She looks at it for a long time, and then writes it in the notebook, with the date and a figure beside it. "Four hundred and ten," she says, "the day you leave this ship."';
         } },
         { label: 'Tell her it is not your place', run() {
           captainLike(0, 'You said it was not your place to lend.');
@@ -80,11 +80,11 @@ CAPTAINS.hester = {
         choices: [
           { label: 'Say you will keep it to yourself', run() {
             captainLike(2, 'You said you would keep the bank to yourself.'); captainFlag('secretKnown');
-            return 'You say you will. She nods, and closes the notebook, and for a moment she looks like someone who has put down a heavy thing and is afraid to see what is left in her hands. "Thank you," she says. It is the first time you have heard her say it without a number after it.';
+            return 'You say you will. She nods, and closes the notebook, and holds it a moment with both hands. "Thank you," she says. It is the first time you have heard her say it without a number after it.';
           } },
           { label: 'Ask how much she still owes', run() {
             captainLike(1, 'You asked how much I owed, and did not flinch.'); captainFlag('secretKnown');
-            return '"Thirty-eight thousand, and some of it is interest," she says, and does not hesitate. It is, you understand, the first time she has said the figure aloud. "Eleven good runs, if the market holds. I have counted it a good many times."';
+            return '"Thirty-eight thousand, and some of it is interest," she says, and does not hesitate. "Eleven good runs, if the market holds. I have counted it a good many times."';
           } },
         ],
       },
@@ -98,7 +98,7 @@ CAPTAINS.hester = {
           } },
           { label: 'Say you read it, and will say nothing', run() {
             captainLike(0, 'You said you had read the bank\'s letter, and would say nothing.'); captainFlag('secretKnown'); captainFlag('secretAngry');
-            return 'She is angry, in the way of someone who has been seen, and she says so. "It was not for you," she says again. Then, more quietly: "But you told me. I will put that in the other column." She takes the letter, and goes.';
+            return 'She is angry, and she says so. "It was not for you," she says again. Then, more quietly: "But you told me. I will put that in the other column." She takes the letter, and goes.';
           } },
         ],
       },
@@ -120,8 +120,8 @@ CAPTAINS.hester = {
     xo: 'Cato is at the hatch, because the captain would not go and say it. "Take care of your people," he says. "They will take care of you. That is the whole job. I have been trying to tell her for years."',
     parting: 'She holds out her hand at last. It is dry and brief. "Fair winds," she says. "And keep your own books."',
     choices: [
-      { label: 'Thank her for the work', run: () => { captainLike(2, 'You thanked me for the work, and meant it.'); return 'You thank her. She nods once, and writes nothing down, which you understand to be the nearest she comes.'; } },
-      { label: 'Wish her the ship', can: flags => !!flags.secretKnown, run: () => { captainLike(2, 'You wished me the ship.'); return '"I will keep her," she says, as if it were a figure she had already entered. She almost smiles. It is a small, tired, accurate thing.'; } },
+      { label: 'Thank her for the work', run: () => { captainLike(2, 'You thanked me for the work, and meant it.'); return 'You thank her. She nods once, and writes nothing down.'; } },
+      { label: 'Wish her the ship', can: flags => !!flags.secretKnown, run: () => { captainLike(2, 'You wished me the ship.'); return '"I will keep her," she says. She almost smiles.'; } },
       { label: 'Take the papers and go', run: () => { captainLike(0, 'You took the papers and went.'); return 'You take the papers and go. She does not call after you. When you look back from the dock she has the notebook open again, and is writing.'; } },
     ],
   },

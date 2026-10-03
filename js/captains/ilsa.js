@@ -14,7 +14,7 @@ function atTheReactor(backup) {
   const lead = backup ? 'You send the engineer in with her. ' : '';
   if (outcome === 'die') {
     like(cap, -1, 'We lost Ilsa at the reactor.'); cap.mood = { kind: 'low', until: G.state.day + 30 };
-    return lead + 'She goes in first, as she said she would, and the door closes behind her. The reactor board drops to nothing, and then, for a moment, to everything. You wait at the door for a long time after it is quiet. Captain Adair is the first one there. He does not speak. He puts his hand on the shielded door as if it were a person.'
+    return lead + 'She goes in first, as she said she would, and the door closes behind her. The reactor board drops to nothing, and then, for a moment, to everything. You wait at the door for a long time after it is quiet. Captain Adair is the first one there. He does not speak. He puts his hand on the shielded door .'
       + (asked ? ' You asked her what she needed. She did not get to answer.' : '');
   }
   castLike('ilsa', 2, 'You let me go into the reactor, and I came out.');
@@ -30,7 +30,7 @@ CAST.ilsa = {
   traits: ['secretive', 'brave'], wage: 65, xo: true, fragile: true,
   skills: { xo: 3, engineer: 2, pilot: 1, gunner: 0, slicer: 1 }, captain: { trade: 4, nerve: 2, thrift: 4 },
   ambition: 'Wants command, but will not take it from him.',
-  bio: 'She keeps the maintenance board, the night watch and the fuel orders, and when the captain is in the galley, the rest. She is dry, exact and very tired, and she does not mind, and wants that on the record.',
+  bio: 'She keeps the maintenance board, the night watch and the fuel orders, and when the captain is in the galley, the rest. She is dry, exact and tired, and she does not mind, and wants that on the record.',
   story: {
     left: 'a berth promised to her and given to someone with a cousin', rel: 'brother', name: 'Matthias',
     hope: 'a ship of her own, kept right, and an hour a day that is not somebody else\'s problem',
@@ -60,7 +60,7 @@ CAST.ilsa = {
         } },
         { label: 'Offer to take an hour of it', run() {
           castLike('ilsa', 1, 'You offered to take an hour of the night watch.');
-          return '"No," she says, and then, at once, "Yes. The second hour. Do not touch the board." It is, you understand, a very large concession.';
+          return '"No," she says, and then, at once, "Yes. The second hour. Do not touch the board."';
         } },
       ],
     },
@@ -110,9 +110,9 @@ CAST.ilsa = {
       days: 70, title: 'At the Reactor',
       get text() {
         const medic = roleHolder('medic'), worn = condition().drive < 60;
-        return 'The reactor alarm is a rising note that you feel in the deck before you hear it. The coolant loop has lost pressure, and the board shows the pile heating faster than the pumps can carry it. Ilsa is already at the shielded door, pulling on gloves. "There is a manual scram at the back of the housing," she says. "I know where it is. Nobody else does. Give me three minutes." She says it to the bridge as though reading from a form.'
+        return 'The reactor alarm is a rising note that you feel in the deck before you hear it. The coolant loop has lost pressure, and the board shows the pile heating faster than the pumps can carry it. Ilsa is already at the shielded door, pulling on gloves. "There is a manual scram at the back of the housing," she says. "I know where it is. Nobody else does. Give me three minutes." She says it to the bridge, item by item.'
           + (worn ? ' The drive has been run hard, and a worn plant is a bad plant to go into.' : ' The plant is in good order, which is something.')
-          + (medic ? ` ${medic.first} has the med kit open at the door, as though the question were already settled.` : ' There is nobody aboard who can do more than a field dressing, and she knows it.')
+          + (medic ? ` ${medic.first} has the med kit open at the door.` : ' There is nobody aboard who can do more than a field dressing, and she knows it.')
           + (roleHolder('engineer') ? ' The engineer is suiting up behind her.' : ' There is nobody who knows the housing but her.')
           + ' She waits for your answer, and has already started on the second glove.';
       },
