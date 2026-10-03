@@ -86,12 +86,15 @@ test('buying a ship closes the chapter with one scene, then play goes on', async
     person('c:ines').opinion = 3; person('c:tomas').opinion = 2;
     hired().confirm = 'courier'; Mods.act('buyInGo', 'courier');
     const out = { goodbye: G.dialog && G.dialog.event.title };
-    chooseEvent(0); finishEvent();  // the captain's goodbye, then the close
+    chooseEvent(0); finishEvent();  // the captain's goodbye, then the look back
+    Object.assign(out, { look: G.dialog.event.title, lookText: G.dialog.event.text });
+    chooseEvent(0); finishEvent();  // the look back, then the close
     Object.assign(out, { title: G.dialog && G.dialog.event.title, text: G.dialog && G.dialog.event.text, flag: !!st.flags.chapterOne, owner: !hired() });
     chooseEvent(0); finishEvent(); out.after = G.dialog ? G.dialog.event.title : null; out.crew = st.crew.length;
     return out;
   });
-  assert.equal(r.goodbye, 'The Foot of the Ramp'); assert.equal(r.title, 'Your Own Ship'); assert.ok(r.flag && r.owner);
+  assert.equal(r.goodbye, 'The Foot of the Ramp'); assert.equal(r.look, 'Looking Back'); assert.equal(r.title, 'Your Own Ship'); assert.ok(r.flag && r.owner);
+  assert.match(r.lookText, /days aboard/); assert.match(r.lookText, /Closest to you: .*Ines/); assert.match(r.lookText, /reached level/);
   assert.match(r.text, /Courier/); assert.match(r.text, /Ines/); assert.match(r.text, /Tomas/);
   assert.equal(r.after, null, 'the scene is not repeated'); assert.equal(r.crew, 2);
   await done();
@@ -106,9 +109,10 @@ test('the closing scene waits for a main character\'s own buy-in scene', async (
     hired().confirm = 'courier'; Mods.act('buyInGo', 'courier');
     const first = G.dialog.event.title; chooseEvent(0); finishEvent();
     const second = G.dialog && G.dialog.event.title; chooseEvent(0); finishEvent();
-    return { first, second, third: G.dialog && G.dialog.event.title };
+    const third = G.dialog && G.dialog.event.title; chooseEvent(0); finishEvent();
+    return { first, second, third, fourth: G.dialog && G.dialog.event.title };
   });
-  assert.equal(r.first, 'Permission to Land'); assert.equal(r.second, 'The Foot of the Ramp'); assert.equal(r.third, 'Your Own Ship');
+  assert.equal(r.first, 'Permission to Land'); assert.equal(r.second, 'The Foot of the Ramp'); assert.equal(r.third, 'Looking Back'); assert.equal(r.fourth, 'Your Own Ship');
   await done();
 });
 

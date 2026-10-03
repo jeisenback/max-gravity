@@ -394,6 +394,26 @@ function chapterEnd(id) {
   };
 }
 
+// The chapter in the ledger, read before buyIn takes the captain and the crew apart: the work, who you got close to, what
+// they told you, and the marks left on the way. A line appears only if there is something to say.
+function chapterRecap() {
+  const st = G.state, h = hired(), cap = st.people[h.captain], crew = st.crew.map(person).filter(c => c && c.memories);
+  const list = names => names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0];
+  const t = runTotals(h), days = st.day - h.since;
+  const work = `${days} days aboard ${shipTitle()}. ${t.runs} run${t.runs === 1 ? '' : 's'} with Captain ${cap.last}, and ${fmt(t.earned)} cr earned in wage and share. You worked the ${POSTS[h.post].name.toLowerCase()} and reached level ${skillLevel(h.post)}.`;
+  const near = [...(cap && cap.memories ? [{ c: cap, name: `Captain ${cap.last}` }] : []), ...crew.map(c => ({ c, name: c.first }))]
+    .filter(x => x.c.opinion >= OPINION.FRIEND).sort((a, b) => b.c.opinion - a.c.opinion).slice(0, 3);
+  const told = crew.filter(c => c.story && c.story.beat >= 3).map(c => c.first), favor = crew.filter(c => c.story && c.story.beat >= 4).map(c => c.first), loyal = crew.filter(c => c.loyal).map(c => c.first);
+  const people = [near.length ? `Closest to you: ${near.map(x => `${x.name} (${opinionWord(x.c.opinion)})`).join(', ')}.` : 'Nobody aboard was a friend yet.',
+    told.length ? `Told you what they want: ${list(told)}.` : '', favor.length ? `You took on a favor for ${list(favor)}.` : '', loyal.length ? `Loyal to the ship: ${list(loyal)}.` : ''].filter(Boolean).join(' ');
+  const ties = webTies(folk()).slice(0, 2).map(x => `${x.a.p.first} and ${x.b.p.first}: ${bondWord(x.n)}.`).join(' ');
+  const marks = [cap, ...crew].flatMap(c => (c ? marksOf(c) : [])).sort((a, b) => b.day - a.day).slice(0, 3).map(m => `${dateOf(m.day)}: ${m.text}`).join(' ');
+  return {
+    title: 'Looking Back', personal: true, text: [work, people, ties, marks].filter(Boolean).join('</p><p>'),
+    choices: [{ label: 'Go on', run: () => 'You close the ledger.' }],
+  };
+}
+
 function buyInHtml() {
   const h = hired(), p = currentPlanet(), friends = buyInCompanions(), cap = G.state.people[h.captain];
   if (!p.services.includes('shipyard')) return '<p class="hint">The yard deals with the captain, not with you. A ship of your own can be bought at a shipyard.</p>';
@@ -457,11 +477,11 @@ Mods.register({
     M.action('buyInNo', () => { if (hired()) hired().confirm = null; });
     M.action('buyInGo', id => {
       if (!hired() || hired().confirm !== id) return;
-      const scene = castLateAtBuyIn(), goodbye = captainGoodbye(), closing = chapterEnd(id), text = buyIn(id);  // all read from the crew and the captain before they leave
+      const scene = castLateAtBuyIn(), goodbye = captainGoodbye(), closing = chapterEnd(id), recap = closing ? chapterRecap() : null, text = buyIn(id);  // all read from the crew and the captain before they leave
       if (text) M.note(text);
       if (!text || G.dialog) return;
       if (closing) G.state.flags.chapterOne = true;
-      const scenes = [scene, goodbye, closing].filter(Boolean);  // a main character's last scene, the goodbye, then the close
+      const scenes = [scene, goodbye, recap, closing].filter(Boolean);  // a main character's last scene, the goodbye, the look back, then the close
       if (scenes.length) openEvent(chainEvents(scenes));
     });
   },
