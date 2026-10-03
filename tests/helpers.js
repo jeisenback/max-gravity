@@ -41,6 +41,8 @@ async function open({ title = false, viewport = { width: 1280, height: 800 }, mo
   await ctx.addInitScript(seedScript, seed);
   if (title) await ctx.addInitScript(() => Object.defineProperty(navigator, 'webdriver', { get: () => false }));
   if (init) await ctx.addInitScript(init);
+  // The page links Google Fonts. A test should not depend on the network (a dropped tunnel is a page error), so answer those requests here.
+  await ctx.route(/fonts\.(googleapis|gstatic)\.com/, route => route.fulfill({ status: 200, contentType: 'text/css', body: '' }));
   const page = await ctx.newPage();
   const errors = [];
   watch(page, errors);
