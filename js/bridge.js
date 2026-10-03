@@ -132,26 +132,37 @@ function postOccupant(id) {
   return postMode(id) === 'crewed' ? { who: h } : { you: true };
 }
 
-// A deck plan: the posts along the ship from the engine room to the helm, the crew at them, and the bunks aft of the guns.
-// A ring shows how someone is doing: blue is well, amber is having a hard time (an injured hand holds no post).
-const DECK_ROOMS = [['engineer', 'ENGINEERING', 60, 95], ['_bunks', 'QUARTERS', 155, 140], ['gunner', 'GUNNERY', 295, 85], ['comms', 'COMMS', 380, 75], ['_captain', 'CAPTAIN', 455, 70], ['pilot', 'HELM', 525, 75]];
+// A deck plan of the cutaway's ship (shiplife.js): the same two decks and rooms, with each person in the room they spend
+// their time in, and the posts nobody holds left empty. A ring shows how someone is doing: blue is well, amber is having a
+// hard time or hurt (an injured hand holds no post).
 function deckSvg() {
-  const ring = c => moodLow(c) ? '#ff9a3c' : '#6fb0ff';
-  const rooms = DECK_ROOMS.map(([post, name, x, w]) => {
-    const box = `<rect x="${x}" y="100" width="${w}" height="100" rx="4" fill="#0a1320" stroke="#34506e"/><text class="lbl" x="${x + 6}" y="116" fill="#7f95ab" font-size="10" letter-spacing="1">${name}</text>`;
-    if (post === '_bunks') {
-      const n = Math.min(8, ship().berths), used = berthsUsed();
-      return box + Array.from({ length: n }, (_, i) => `<rect x="${x + 10 + (i % 4) * 32}" y="${130 + Math.floor(i / 4) * 34}" width="28" height="22" rx="3" fill="${i < used ? '#1d3a5c' : 'none'}" stroke="#34506e"/>`).join('');
+  const ring = c => moodLow(c) || (G.state.injured || {})[c.id] ? '#ff9a3c' : '#6fb0ff', X = f => 30 + f * 580, top = 40, mid = 130, bottom = 220;
+  const homeRoom = role => HAUNTS[role] ? Object.entries(HAUNTS[role]).sort((a, b) => b[1] - a[1])[0][0] : 'berths';
+  const placed = Object.keys(POSTS).map(id => ({ room: homeRoom(POSTS[id].role), o: postOccupant(id) }));
+  placed.push({ room: 'bridge', o: hired() ? { who: hiredCaptain() } : { you: true } });  // the captain's place is the bridge
+  const holders = new Set(Object.keys(POSTS).map(postHolder).filter(Boolean));
+  for (const c of crewMembers()) if (!holders.has(c)) placed.push({ room: homeRoom(c.role), o: { who: c } });
+  const rooms = ROOMS.map(r => {
+    const y0 = r.deck === 0 ? top + 4 : r.tall ? top + 4 : mid + 4, y1 = r.deck === 0 ? mid - 4 : bottom - 4, floor = r.deck === 0 ? mid - 12 : bottom - 12, w = (r.x1 - r.x0) * 580;
+    let out = `<rect x="${X(r.x0) + 1}" y="${y0}" width="${w - 2}" height="${y1 - y0}" rx="4" fill="#0a1320" stroke="#34506e"/><text class="lbl" x="${X(r.x0) + 6}" y="${y0 + 13}" fill="#7f95ab" font-size="9" letter-spacing="1">${r.name.toUpperCase()}</text>`;
+    if (r.id === 'berths') {
+      const n = Math.min(6, ship().berths), used = berthsUsed(), cols = Math.ceil(n / 2);
+      out += Array.from({ length: n }, (_, i) => `<rect x="${(X(r.x0) + (X(r.x1) - X(r.x0)) * (Math.floor(i / 2) + 0.5) / cols - 12).toFixed(1)}" y="${y0 + 22 + (i % 2) * 20}" width="24" height="12" rx="2" fill="${i < used ? '#1d3a5c' : 'none'}" stroke="#34506e"/>`).join('');
     }
-    const o = post === '_captain' ? (hired() ? { who: hiredCaptain() } : { you: true }) : postOccupant(post), cx = x + w / 2, cy = 158;  // the captain's cabin is the captain's, or yours
-    if (!o) return box + `<rect x="${x + 10}" y="130" width="${w - 20}" height="56" rx="4" fill="none" stroke="#4b617a" stroke-dasharray="4 4"/>`;
-    if (o.you) return box + `<circle cx="${cx}" cy="${cy}" r="16" fill="#12202f" stroke="#5fd35f" stroke-width="3"/><text x="${cx}" y="${cy + 5}" fill="#d4e4f5" font-size="13" text-anchor="middle">YOU</text>`;
-    const c = o.who;
-    return box + `<circle cx="${cx}" cy="${cy}" r="16" fill="#12202f" stroke="${ring(c)}" stroke-width="3"/><text x="${cx}" y="${cy + 5}" fill="#d4e4f5" font-size="14" text-anchor="middle">${(c.first || c.name || '?')[0]}</text>`;
+    const here = placed.filter(q => q.room === r.id), seen = new Set(), who = here.filter(q => { const k = q.o && q.o.you ? 'you' : null; return !k || !seen.has(k) && seen.add(k); });
+    const perRow = Math.max(1, Math.floor((w - 8) / 24));  // a crowded room stacks its people in rows
+    return out + who.map((q, i) => {
+      const row = Math.floor(i / perRow), inRow = Math.min(perRow, who.length - row * perRow), cx = (X(r.mid) + ((i % perRow) - (inRow - 1) / 2) * 24).toFixed(1), cy = floor - row * 24;
+      if (!q.o) return `<circle cx="${cx}" cy="${cy}" r="10" fill="none" stroke="#4b617a" stroke-dasharray="4 4"/>`;
+      if (q.o.you) return `<circle class="person" cx="${cx}" cy="${cy}" r="10" fill="#12202f" stroke="#5fd35f" stroke-width="3"/><text x="${cx}" y="${cy + 3}" fill="#d4e4f5" font-size="8" text-anchor="middle">YOU</text>`;
+      const c = q.o.who;
+      return `<circle class="person" cx="${cx}" cy="${cy}" r="10" fill="#12202f" stroke="${ring(c)}" stroke-width="3"/><text x="${cx}" y="${cy + 4}" fill="#d4e4f5" font-size="11" text-anchor="middle">${(c.first || c.name || '?')[0]}</text>`;
+    }).join('');
   }).join('');
-  return `<rect x="30" y="64" width="590" height="170" fill="#050a11"/>
-    <path d="M40 150 Q40 80 90 82 L520 82 Q610 90 610 150 Q610 210 520 218 L90 218 Q40 220 40 150 Z" fill="#0e1826" stroke="#34506e" stroke-width="2"/>${rooms}
-    <text x="42" y="80" fill="#7f95ab" font-size="11" letter-spacing="2">DECK PLAN</text>`;
+  const ladder = Array.from({ length: 8 }, (_, i) => `<line x1="${X(LADDER) - 5}" y1="${mid - 4 + i * 11}" x2="${X(LADDER) + 5}" y2="${mid - 4 + i * 11}" stroke="#4a6a8c"/>`).join('');
+  return `<rect x="0" y="0" width="640" height="250" fill="#050a11"/>
+    <path d="M${X(0)} ${top + 6} L${X(0.9)} ${top} Q${X(1.02)} ${mid} ${X(0.9)} ${bottom} L${X(0)} ${bottom - 6} Z" fill="#0e1826" stroke="#34506e" stroke-width="2"/>${rooms}${ladder}
+    <text x="30" y="26" fill="#7f95ab" font-size="11" letter-spacing="2">DECK PLAN</text>`;
 }
 
 // The Interior station as a console: the deck plan, who has which post, and the downtime button along the bottom (in a burn).
@@ -169,7 +180,7 @@ function interiorPanel() {
   const free = t && phase() === 'move' && !(t.lifeUsed || {})[lifeHalf()];
   return consoleHtml({
     title: 'Interior', status: `${crew.length} crew, ${berthsUsed()}/${ship().berths} berths`,
-    screen: `<svg class="con-plant" viewBox="30 64 590 170" role="img" aria-label="Deck plan">${deckSvg()}</svg>`,
+    screen: `<svg class="con-plant" viewBox="20 14 620 222" role="img" aria-label="Deck plan">${deckSvg()}</svg>`,
     side: conCard('Posts', posts) + (off ? conCard('Off post', off) : ''),
     controls: t ? `<div class="row"><button data-bdown ${free ? '' : 'disabled'}>Spend some downtime</button></div>` : '',
   });

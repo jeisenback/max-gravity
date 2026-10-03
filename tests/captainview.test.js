@@ -21,8 +21,8 @@ test('a hired hand sees the captain on Interior, the header, Operations and Navi
   assert.deepEqual(row[0], ['Captain', cap.name], 'the first row of the posts card');
   assert.ok(await page.$(`#panel .con-read [data-action=person][data-arg="${cap.id}"]`), 'and a link to their screen');
   const cabins = await page.$$eval('#panel .con-plant text.lbl', t => t.map(x => x.textContent));
-  assert.ok(cabins.includes('CAPTAIN'), 'the captain\'s cabin is on the deck plan');
-  assert.equal(await page.$$eval('#panel .con-plant circle[r="16"]', n => n.length), 5, 'three crew on the posts you do not hold, the captain, and you on yours');
+  assert.ok(cabins.includes('BRIDGE'), 'the deck plan is the cutaway\'s ship');
+  assert.equal(await page.$$eval('#panel .con-plant circle.person', n => n.length), await ev(() => crewMembers().length + 2), 'everyone aboard, the captain, and you, each in a room');
   await page.click('[data-action=station][data-arg=ops]');
   assert.match(await page.innerText('#panel .con-head'), new RegExp(`captain's hold.*Capt\\. ${cap.name}`, 'i'));
   await page.click('[data-action=station][data-arg=nav]');
@@ -51,7 +51,7 @@ test('an owner is in command in the same places', async () => {
   await page.click('[data-action=station][data-arg=interior]');
   const first = await page.$$eval('#panel .con-read', rows => [rows[0].firstElementChild.textContent, rows[0].lastElementChild.textContent]);
   assert.deepEqual(first, ['Captain', 'You, in command']);
-  assert.ok((await page.$$eval('#panel .con-plant text.lbl', t => t.map(x => x.textContent))).includes('CAPTAIN'));
+  assert.ok((await page.$$eval('#panel .con-plant text.lbl', t => t.map(x => x.textContent))).includes('BRIDGE'));
   assert.doesNotMatch(await page.innerText('.hdr'), /Capt\./, 'the header has no captain line: you are it');
   await page.click('#panel .con-read [data-action=person][data-arg=you]');
   const text = await page.innerText('#panel');
