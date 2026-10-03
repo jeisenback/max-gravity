@@ -19,7 +19,7 @@ CAPTAINS.zoya = {
     'Captain Pell has a bet going on the burn time with the whole galley. She is losing, cheerfully.',
     'Ansel is going through the manifest with a pencil, and looking, with some care, at the line that says "assorted".',
     'Captain Pell is whistling. It is the same four bars as yesterday, and the same four bars as the day she signed your papers.',
-    'Captain Pell has her boots on the nav console, and is reading a message with great attention and a very fixed smile.',
+    'Captain Pell has her boots on the nav console, and is reading a message with a fixed smile.',
     'Captain Pell: "If you ever meet a man called Dobrescu, I have not heard of him."',
     'Captain Pell is asleep in the pilot\'s chair with her cap over her eyes and a half-finished hand of cards fanned in her fingers.',
   ],
@@ -32,7 +32,7 @@ CAPTAINS.zoya = {
       notHeard: 'You say it. "I did not ask," she says, still smiling, and the smile does not move at all. You run it hot, and it works, and she does not look at you for the rest of the watch.',
     },
     'cap-praise': {
-      text: 'Captain Pell finds you at the end of a watch and tells you, loudly and to the whole galley, that the {post} is the best on the lanes. She says it about everything. It is still, somehow, nice to hear.',
+      text: 'Captain Pell finds you at the end of a watch and tells you, loudly and to the whole galley, that the {post} is the best on the lanes. She says it about everything. It is still nice to hear.',
       take: '"The crew make it easy," you say. "The crew make it a gamble," she says, "and you make it a sure thing. That is the whole trick. Keep it." She winks, and goes.',
       bonusYes: 'She does not even look in the cash box. "Sixty," she says. "Out of the next one, and I will make it a hundred if it comes good." It lands in your account before the end of the watch, which is a surprise.',
       bonusNo: '"Not this week," she says, and for a second the smile is not there. "Ask me on the day it comes good." The smile comes back. "It is always next week."',
@@ -41,13 +41,13 @@ CAPTAINS.zoya = {
       text: 'There is a watch with no entry in the log, and Captain Pell has found it. She holds the log up in one hand like a card she is deciding whether to play. "Somebody was supposed to write this," she says, quite cheerfully. "I have a good idea who. Do I?"',
       own: '"That was mine," you say. "Good," she says, and means it, and tosses the log onto the table. "Honest is cheaper. Do it again, but properly."',
       blame: 'You mention the terminal. She raises both eyebrows. "Does it?" she says. "I love a terminal that fails. Let us see."',
-      terminal: '"Let us see," Captain Pell says, and drags the terminal across with one boot. The two of you watch it for a long minute. She starts, very quietly, to whistle.',
+      terminal: '"Let us see," Captain Pell says, and drags the terminal across with one boot. The two of you watch it for a long minute. She starts to whistle, quietly.',
       showWin: 'It does it: a line blinks out and back. "There," she says. "There! I knew it. I have always said that thing was a card sharp." She is genuinely delighted, and you are, with some shame, saved.',
       showLose: 'It does nothing. She watches it for a long time. "That is the first time that terminal has ever played straight with me," she says, "and it did it to catch you. I am a little offended on its behalf."',
       admit: 'You say it late. She puts the log down. "Third time this week somebody has told me the truth," she says. "I ought to be worried." She is, briefly, not smiling. "Thank you."',
     },
     'cap-favour': {
-      text: 'Captain Pell asks whether you would stand an extra watch so a crew member can sleep. She asks fast, with a grin, as if it were a bet. It is not in the articles. "I will owe you," she says. "I owe everyone. You will be in good company."',
+      text: 'Captain Pell asks whether you would stand an extra watch so a crew member can sleep. She asks fast, with a grin. It is not in the articles. "I will owe you," she says. "I owe everyone. You will be in good company."',
       stand: 'You take it. The long hours go slowly. At the next port she turns up with a bag of something hot, and does not say what it is for.',
       fee: 'She pays it in notes, folded small, from a roll that has seen better days. "Forty," she says. "A good price for a good watch." The watch passes like any other.',
       beg: '"Fair," she says, easily, and spins a coin off her thumb. "Fair. I will find someone." She does, and it takes longer than it should, and she is whistling the whole time.',
@@ -61,7 +61,7 @@ CAPTAINS.zoya = {
       choices: [
         { label: 'Tell him the captain is out', run() {
           captainLike(1, 'You told Dobrescu I was out.');
-          return 'You go down, and tell him. He nods, politely, as if it were an answer he had expected, and leaves the folder with you. "Tell her Tuesday," he says. It is Thursday. When you come back up, Pell is whistling at the nav console and has not, you notice, turned a page of the thing she is reading in a long while.';
+          return 'You go down, and tell him. He nods, and leaves the folder with you. "Tell her Tuesday," he says. It is Thursday. When you come back up, Pell is whistling at the nav console and has not turned a page of the thing she is reading.';
         } },
         { label: 'Give him a hundred to wait a week', can: () => G.state.credits >= 100, run() {
           G.state.credits -= 100; captainLike(3, 'You paid Dobrescu a hundred to wait a week.'); captainFlag('lent');
@@ -103,7 +103,7 @@ CAPTAINS.zoya = {
 
   goodbye: {
     title: 'The Ramp',
-    warm: 'Captain Pell is on the ramp, not at the foot of it, leaning on the rail with her boots crossed as if she had been there all day. "I do not do goodbyes," she says. "I do wagers. I bet you do well. I bet you come back. I will take either side."',
+    warm: 'Captain Pell is on the ramp, not at the foot of it, leaning on the rail with her boots crossed. "I do not do goodbyes," she says. "I do wagers. I bet you do well. I bet you come back. I will take either side."',
     neutral: 'Captain Pell meets you at the foot of the ramp and counts your last pay into your hand, fast, in notes, and then counts it again, slower, because she is not sure she did it right the first time. She did.',
     cold: 'Captain Pell is at the foot of the ramp with your papers and a smile that has been put on. "Fair winds," she says, and it sounds like something said many times, to many people who were leaving.',
     crew: '{names} will go with you. She whistles, one low note. "I bet you will do better by them than I did," she says. "I am not even joking. That is not a bet. That is a fact."',

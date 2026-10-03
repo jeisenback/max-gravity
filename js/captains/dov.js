@@ -11,7 +11,7 @@ CAPTAINS.dov = {
   captain: { trade: 2, nerve: 2, thrift: 1 }, wage: 50, share: 0.08, hears: -1, bonus: 0, talk: 1.5,
   xo: 'ilsa',
 
-  intro: (wage, share) => `Captain Dov Adair is shaking your hand before you have finished coming up the ramp. He has read your papers, and your next of kin, and he says your sister's name as though he had known her. "${wage} a day and ${share} percent," he says, "and if the fund runs thin, which it does, we do not talk about it before supper. Sit. Have you eaten?"`,
+  intro: (wage, share) => `Captain Dov Adair is shaking your hand before you have finished coming up the ramp. He has read your papers, and your next of kin, and he says your sister\'s name correctly, the first time. "${wage} a day and ${share} percent," he says, "and if the fund runs thin, which it does, we do not talk about it before supper. Sit. Have you eaten?"`,
 
   chatter: [
     'Captain Adair is telling the story about the pump and the harbourmaster, for the third time this watch. It gets better each time.',
@@ -28,14 +28,14 @@ CAPTAINS.dov = {
     'cap-order': {
       text: 'Captain Adair wants the drive run hotter than you would. He promised a woman at the last port that her crates would be there by the fifth, and did not look at the berth window until this morning. He tells it against himself, and well. "I know," he says. "I know. Do it anyway, and I will make it up to everyone."',
       ordered: 'You run it hot. The window is made, just. He claps you on the shoulder, and tells the galley about it twice before the next watch, and by the second time you are the hero of it.',
-      heard: 'You say it plainly. He listens with his whole face, and it is a little painful to watch him decide. "You are right," he says. "Ninety. I will ring her and tell her the truth. She will forgive me. They always do."',
+      heard: 'You say it plainly. He listens with his whole face. You can watch him decide. "You are right," he says. "Ninety. I will ring her and tell her the truth. She will forgive me. They always do."',
       notHeard: 'You say it, and for the first time you see him go quiet. "I did not ask," he says. It is not loud, and it is worse than loud. You run it hot.',
     },
     'cap-praise': {
       text: 'Captain Adair catches you at the end of the watch and tells you, at length and with names, how well the {post} has been run. He has told two passengers already. You are, by now, widely known.',
-      take: '"The crew make it easy," you say. He laughs, and says that is just what he tells people, and you both know he does. You stand a little straighter.',
+      take: '"The crew make it easy," you say. He laughs, and says that is just what he tells people, and you both know he does. You stand straighter.',
       bonusYes: 'He does not even pause. "Sixty," he says, and is already counting it out of the cash box. "Do not tell Ilsa." You do not yet know what that means.',
-      bonusNo: 'For a moment he looks stricken, as if you had asked him for something he did not know he had run out of. "Not this week," he says. "Ask me when I have been to the bank." You leave it there.',
+      bonusNo: 'For a moment he looks stricken. "Not this week," he says. "Ask me when I have been to the bank." You leave it there.',
     },
     'cap-dressing': {
       text: 'There is a watch with no entry in the log, and Captain Adair has found it. He cannot bring himself to say so. He puts the log on the galley table and talks about the weather for a minute first, and then about your sister, and then he turns the log round.',
@@ -47,10 +47,10 @@ CAPTAINS.dov = {
       admit: 'You say it late. He puts a hand on your arm. "Thank you for saying so," he says. "I would rather be told. People think I would rather not." For a moment he does not talk, and you hear how quiet the galley is.',
     },
     'cap-favour': {
-      text: 'Captain Adair asks whether you would stand an extra watch so a passenger can sleep. He asks the way he asks everything, as if the favor were yours to give him and the hour a present he had been hoping for. It is not in the articles. "I will owe you one," he says. "I owe a lot of people one."',
+      text: 'Captain Adair asks whether you would stand an extra watch so a passenger can sleep. He asks as he asks everything, with his hands open. It is not in the articles. "I will owe you one," he says. "I owe a lot of people one."',
       stand: 'You take it. The hours go slowly, and the passenger sleeps, and in the morning the captain has told the whole galley what you did, and who for, and what the passenger\'s mother said when she heard.',
       fee: 'He pays it out of the cash box, forty, and adds ten on top for no reason he gives. The watch passes like any other.',
-      beg: '"Of course," he says at once, brightly. "Of course. No, no." He goes to ask somebody else. It takes him a little longer than it should to find them.',
+      beg: '"Of course," he says at once, brightly. "Of course. No, no." He goes to ask somebody else. It takes him longer than it should to find them.',
     },
   },
 
@@ -61,11 +61,11 @@ CAPTAINS.dov = {
       choices: [
         { label: 'Vouch for him', run() {
           captainLike(2, 'You told the harbourmaster we were good for it.');
-          return 'You say it. Your voice is steadier than you expected. She looks at the captain, and at the fund board, and at you, and puts the stamp on the form. "Once," she says. He is crying a little, and laughing at himself for it. He does not forget it.';
+          return 'You say it. Your voice is steadier than you expected. She looks at the captain, and at the fund board, and at you, and puts the stamp on the form. "Once," she says. He is crying, and laughing at himself for it. He does not forget it.';
         } },
         { label: 'Cover three hundred from your savings', can: () => G.state.credits >= 300, run() {
           G.state.credits -= 300; captainLike(3, 'You covered the fuel when the fund was short.'); captainFlag('lent');
-          return 'You pay it at the window, in your own cash. He stands very still beside you. "I will pay you back," he says, and for once does not tell a story about it. He writes the figure on the back of his hand.';
+          return 'You pay it at the window, in your own cash. He stands still beside you. "I will pay you back," he says, and for once does not tell a story about it. He writes the figure on the back of his hand.';
         } },
       ],
     },
@@ -76,7 +76,7 @@ CAPTAINS.dov = {
         choices: [
           { label: 'Tell him to ask Ilsa', run() {
             captainLike(2, 'You told me to ask Ilsa.'); captainFlag('secretKnown');
-            return 'He is quiet for a long moment. "I know," he says. "That is the trouble. I know exactly who it is."';
+            return 'He is quiet. "I know," he says. "That is the trouble. I know exactly who it is."';
           } },
           { label: 'Say you will say nothing', run() {
             captainLike(2, 'You said you would say nothing about the book.'); captainFlag('secretKnown');
@@ -90,7 +90,7 @@ CAPTAINS.dov = {
         choices: [
           { label: 'Close the book and say nothing', run() {
             captainLike(0, 'You closed the fund book and said nothing.'); captainFlag('secretKnown');
-            return 'You close it, and put it where you found it. He watches you do it. "Thank you," he says, very quietly, and goes out. You hear him in the galley a minute later, talking to someone, too brightly.';
+            return 'You close it, and put it where you found it. He watches you do it. "Thank you," he says, quietly, and goes out. You hear him in the galley a minute later, talking to someone, too brightly.';
           } },
           { label: 'Ask him what the initials are', run() {
             captainLike(-1, 'You asked me about the initials in the fund book.'); captainFlag('secretKnown');
@@ -105,7 +105,7 @@ CAPTAINS.dov = {
     title: 'The Foot of the Ramp',
     warm: 'Captain Adair is at the foot of the ramp with a paper bag that smells of bread. "I did not know what to give you," he says. "So it is food. It is always food."',
     neutral: 'Captain Adair meets you at the foot of the ramp and walks you to the end of the dock, talking, so that the goodbye takes a good deal longer than it should.',
-    cold: 'Captain Adair is at the foot of the ramp, and for once he has very little to say. He does not tell a story. He shakes your hand, which is warm, and holds it a moment too long, and lets go.',
+    cold: 'Captain Adair is at the foot of the ramp, and for once he has little to say. He does not tell a story. He shakes your hand, which is warm, and holds it a moment too long, and lets go.',
     crew: '{names} will go with you. He takes it harder than he wants to. "Good," he says. "That is good. They like you. Of course they do." He does not say anything else for a moment.',
     secret: 'He does not mention the book. He has put it away, and what is in it, somewhere you will not see it. "Look after your own fund," he says. "Not like mine."',
     repay: 330,

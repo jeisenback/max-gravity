@@ -95,11 +95,11 @@ CAST.pilar = {
     },
     late: {
       days: 55, title: 'The Rules Turned',
-      text: 'Pilar has a standing order in her hand, the one Captain Sato wrote last week, and a very flat look. "It says that a helm without a certificate may not take the approach unless the captain is on the bridge," she says. "It is a good rule. It is a fair rule. It is the rule I have been waiting for them to write. It is the day, you understand, that the rules get used against me." She folds it small. "I do not think they meant it so. That is the part I cannot say to them."',
+      text: 'Pilar has a standing order in her hand, the one Captain Sato wrote last week, and a flat look. "It says that a helm without a certificate may not take the approach unless the captain is on the bridge," she says. "It is a good rule. It is a fair rule. It is the rule I have been waiting for them to write. It is the day, you understand, that the rules get used against me." She folds it small. "I do not think they meant it so. That is the part I cannot say to them."',
       choices: [
         { label: 'Offer to speak to the captain', run() {
           castLike('pilar', 2, 'You offered to speak to the captain about the rule.'); castFlag('pilar', 'spoke');
-          return '"Do," she says. "Not about me. About the rule." She holds your eye. "They will hear it better from somebody with a certificate." She says the last word as if it were a coin she was not sure was good.';
+          return '"Do," she says. "Not about me. About the rule." She holds your eye. "They will hear it better from somebody with a certificate." She says the last word slowly.';
         } },
         { label: 'Tell her to keep flying, and let the rule wait', run() {
           castLike('pilar', 1, 'You told me to keep flying and let the rule wait.');
@@ -111,7 +111,7 @@ CAST.pilar = {
       days: 70, title: 'The Docking Emergency',
       get text() {
         const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6, worn = condition().drive < 60;
-        return 'The gate\'s tractor beam fails twenty seconds out, and the ship is carrying forty tonnes of ice at a closing speed the berth was never meant for. The nav display is lagging. Captain Sato, on the bridge, has the checklist open. Pilar has the stick. "I can bring her in by hand," she says, "if you let me, and if you do not put anything on the display." She says it as if reading a form she wrote herself.'
+        return 'The gate\'s tractor beam fails twenty seconds out, and the ship is carrying forty tonnes of ice at a closing speed the berth was never meant for. The nav display is lagging. Captain Sato, on the bridge, has the checklist open. Pilar has the stick. "I can bring her in by hand," she says, "if you let me, and if you do not put anything on the display." She says it item by item.'
           + (low ? ' The hull has taken a beating, and a bad hull is a bad thing to put against a berth wall.' : ' The hull is sound, which is something.')
           + (worn ? ' The drive has been run hard, and the thrusters take what it has left.' : ' The drive is in good order.')
           + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There is nobody aboard who can do more than a field dressing, and she knows it.')
