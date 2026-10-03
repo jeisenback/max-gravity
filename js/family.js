@@ -213,31 +213,31 @@ function newsEvent(p) {
   p.news = null;
   if (news.good) {
     return { title: 'Good News', text: pick([
-      `${n} comes into the galley at a near-run, holding their terminal out in front of them: ${news.text}. They start a sentence, and lose it, and start again. They are grinning, and they cannot stand still.`,
-      `${n} catches you at the hatch before you can say good morning. "Captain, listen to this." The message is open on their terminal: ${news.text}. They read it aloud twice, and the second time their voice cracks on the best part.`,
-      `You find ${n} in the corridor, leaning on the bulkhead with the terminal pressed to their chest, eyes shut. Then they hold it out to you: ${news.text}. "I had to tell somebody," they say, "and you were closest."`,
-      `${n} has been humming through the whole watch, and when you ask why, they go pink and hand you the terminal. ${news.text}, it says. They watch your face while you read, as if you might not believe it.`,
+      `${n} comes into the galley fast, holding the terminal out in front of them. "Listen," ${n} says. "Listen to this." The message reads: ${news.text}. ${n} reads it aloud, loses their place, and starts again.`,
+      `${n} stops you at the hatch. "Captain. Listen to this." The message is open on the terminal: ${news.text}. ${n} reads it aloud twice. The second time, ${n} has to stop partway through.`,
+      `You find ${n} in the corridor with the terminal pressed flat against their chest and their eyes shut. Then they hold it out to you: ${news.text}. "I had to tell somebody," ${n} says. "You were closest."`,
+      `${n} has been humming since the start of watch. You ask why, and ${n} hands you the terminal: ${news.text}. ${n} stands there while you read it.`,
     ]),
       choices: [
-        { label: 'Break out something to celebrate', run() { for (const [a, b] of pairs(folk())) addBond(a, b, 0.8); like(p, 1, null); return 'You break out the good stuff, and within minutes the whole ship is crowded into the galley. By the second round everyone has a toast, and somebody has dug out the old guitar. It goes well past midnight, and nobody mentions the schedule.'; } },
-        { label: '"That\'s wonderful."', run() { like(p, 1, null); return `${n} beams, and shows you the picture, and then, a minute later, shows you again. You say the right things, and mean them. "I keep wanting to tell someone," ${n} says, and laughs.`; } },
+        { label: 'Break out something to celebrate', run() { for (const [a, b] of pairs(folk())) addBond(a, b, 0.8); like(p, 1, null); return 'You break out the good bottle. Within the hour everyone who is not on watch is in the galley, and everyone has a toast. Someone finds the guitar, which has two strings. It goes past midnight. Nobody mentions the watch bill.'; } },
+        { label: '"That\'s wonderful."', run() { like(p, 1, null); return `${n} shows you the picture. A minute later ${n} shows you again. "I keep wanting to tell someone," ${n} says, and laughs.`; } },
       ] };
   }
   const others = procedural().filter(f => f.p !== p && bond(f, { id: p.id }) >= 1);
   const choices = [
-    { label: 'Sit with them', run() { like(p, 2, 'The captain sat with me when the news from home was bad.'); p.mood.until -= 10; return `You do not fix anything. You stay in the galley, with a pot of tea going cold, while ${n} looks at the wall. After a while ${n} starts talking, low, about the person and the place and the years. When they finally get up, they touch your shoulder on the way out.`; } },
-    { label: 'Advance them 500 cr to send home', can: () => st.credits >= 500, run() { st.credits -= 500; like(p, 3, 'The captain advanced me money to send home.'); p.mood.until = st.day; return `${n} sends it at the next relay, with a short message. For two days ${n} checks the terminal every few minutes. When the reply comes, ${n} reads it out loud in the galley, in a voice that shakes. "They are all right," ${n} says. "They are all right." They sit down.`; } },
+    { label: 'Sit with them', run() { like(p, 2, 'The captain sat with me when the news from home was bad.'); p.mood.until -= 10; return `You do not fix anything. You stay in the galley with a pot of tea going cold while ${n} looks at the wall. After a time ${n} starts talking, low, about the person and the place and the years. When they get up, they touch your shoulder on the way out.`; } },
+    { label: 'Advance them 500 cr to send home', can: () => st.credits >= 500, run() { st.credits -= 500; like(p, 3, 'The captain advanced me money to send home.'); p.mood.until = st.day; return `${n} sends it at the next relay with a short message. For two days ${n} checks the terminal every few minutes. When the reply comes, ${n} reads it aloud in the galley. "They are all right," ${n} says. "They are all right." They sit down.`; } },
   ];
   if (others.length) {
     const o = pick(others);
-    choices.push({ label: `Ask ${o.p.first} to look in on them`, run() { addBond(o, { id: p.id, p }, 2); like(p, 1, null); p.mood.until -= 5; return `${o.p.first} takes ${n} a mug of something hot, without a word, and sits down beside them on the crate by the galley wall. They are still there two hours later. Through the hatch you see two heads bent together, and, once, ${n}'s shoulders shaking.`; } });
+    choices.push({ label: `Ask ${o.p.first} to look in on them`, run() { addBond(o, { id: p.id, p }, 2); like(p, 1, null); p.mood.until -= 5; return `${o.p.first} takes ${n} a mug of something hot and sits down beside them on the crate by the galley wall. ${o.p.first} does not speak. They are still there two hours later. Through the hatch you see two heads close together. Once, ${n}'s shoulders shake.`; } });
   }
-  choices.push({ label: 'Give them space', run: () => `${n} nods, and keeps to their bunk. You hear their terminal, faintly, and later nothing. For a while their work suffers: a missed step here, a cold cup there. (Their skill counts one lower until they feel better.)` });
+  choices.push({ label: 'Give them space', run: () => `${n} goes to their bunk. You hear the terminal, faintly, and later nothing. Their work suffers for a time: a missed step, a cold cup. (Their skill counts one lower until they feel better.)` });
   return { title: 'Bad News', text: pick([
-      `${n} has been quiet since the last port. They stand the watch, and eat, and stop with the fork halfway up, more than once. The message was from their ${missed(p)}: ${news.text}. They have not told anyone. You only know because you saw the screen over their shoulder, in the corridor.`,
-      `${n} missed the start of the watch briefing, and when you go to find them, they are sitting on a crate in the cargo bay with the terminal dark in their lap. You do not need to ask. Their ${missed(p)} wrote: ${news.text}.`,
-      `Nobody at the galley table has said a word about it, but everyone has noticed that ${n} has not touched their plate. The message from their ${missed(p)} is still on the terminal by their elbow: ${news.text}.`,
-      `${n} does the whole shift with great care and no talk, the way people do when they are holding something heavy. Late, in the corridor, they finally say it: their ${missed(p)} wrote that ${news.text}. Then they say, "I am fine," and are not.`,
+      `${n} has been quiet since the last port. ${n} stands the watch and eats, and twice has stopped with the fork halfway up. A message came in at the last port: ${news.text}. ${n} has told no one. You saw the screen over their shoulder in the corridor.`,
+      `${n} missed the start of the watch briefing. You find ${n} on a crate in the cargo bay with the terminal dark in their lap. The last message on it reads: ${news.text}.`,
+      `${n} has not touched their plate. Nobody at the galley table has said anything. The message is on the terminal by ${n}'s elbow: ${news.text}.`,
+      `${n} does the whole shift without a word and checks every gauge twice. Late, in the corridor, ${n} tells you: ${news.text}. "I'm fine," ${n} says.`,
     ]), choices };
 }
 

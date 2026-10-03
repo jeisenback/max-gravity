@@ -31,26 +31,26 @@ const BARS = {
 };
 
 const OPENERS = {
-  talkative: ['They are already halfway through a story when you sit down.', 'They start talking before you have finished sitting, and do not, for some time, pause for breath.', 'They lean across and say, "You have a kind face. I have to tell you something," and then do.'],
-  nervous: ['They keep one eye on the door.', 'They jump when you sit down, and laugh at themselves a little too loudly, and apologize.', 'They have shredded a bar napkin into very fine strips, and are working on a second.'],
-  generous: ['They push a bowl of salted beans your way.', 'They have already ordered you a drink, and are pretending not to have.', 'They slide over on the bench without being asked, and press a warm roll into your hand.'],
-  greedy: ['They ask what a ship like yours clears in a month before they ask your name.', 'They are doing sums on a napkin, and, when they see you looking, do not stop.', 'They look at your boots, and your jacket, and your ship\'s transponder on the bar, and revise their price for you upward.'],
-  pious: ['There is a prayer cord around their wrist, worn smooth.', 'They murmur a short blessing over their cup before they drink, and, seeing you watch, look faintly apologetic.', 'A small charm hangs from a chain at their throat, and, once or twice, they touch it.'],
-  rude: ['"You\'re in my light."', '"Do you mind? I was here first, and I was enjoying the silence."', 'They look you up and down, slowly, and sigh.'],
-  curious: ['They want to know everything about your ship.', 'They ask what the drive is, and how many g, and whether it is true about the coolant loops, in a rapid, delighted stream.', 'They lean in, eyes bright, and say, "Tell me about your ship. All of it. Take your time."'],
-  drunk: ['They are several drinks ahead of you and pulling away.', 'They greet you like a long-lost cousin, and, in the same breath, lose their train of thought.', 'They are cheerfully explaining something to a coaster, and hold up a finger, to ask you to wait.'],
-  secretive: ['They angle their terminal away from you.', 'They give you a look that lasts exactly one second too long, and then a smile that means nothing.', 'They answer every question with a question, and they do it very well.'],
-  kind: ['They ask if you have eaten.', 'They notice you are tired, and gently push a glass of water toward you before anything else.', 'They smile at you, and make room without a word.'],
-  brave: ['They have a fresh scar and a good story about it.', 'They sit with their back to the door.', 'They roll up one sleeve to show a long, healing burn, and grin. "You should see the other guy," they say. "He is a wall."'],
-  homesick: ['They are showing the bartender pictures of home.', 'They hold a small, creased photograph with both hands, and set it down, very carefully, as you sit.', 'They say the name of a place twice, under their breath, and look to see if you heard.'],
+  talkative: ['They are already halfway through a story when you sit down.', 'They start talking before you have finished sitting. They do not stop for breath.', '"You have a kind face," they say. "I have to tell you something." They do.'],
+  nervous: ['They keep one eye on the door.', 'They jump when you sit down, laugh, and apologize.', 'They have shredded a bar napkin into strips and have started on a second.'],
+  generous: ['They push a bowl of salted beans toward you.', 'They have already ordered you a drink, and say the barman got it wrong.', 'They slide over on the bench and press a warm roll into your hand.'],
+  greedy: ['They ask what a ship like yours clears in a month before they ask your name.', 'They are doing sums on a napkin. When they see you looking, they keep going.', 'They look at your boots, your jacket, and the transponder on the bar, and name a higher price.'],
+  pious: ['There is a prayer cord around their wrist, worn smooth.', 'They murmur a short blessing over their cup before they drink. They see you watching and say sorry.', 'A small charm hangs from a chain at their throat. Twice they touch it.'],
+  rude: ['"You\'re in my light."', '"Do you mind? I was here first, and I was enjoying the silence."', 'They look you up and down and sigh.'],
+  curious: ['They want to know everything about your ship.', 'They ask what the drive is, how many g, and whether it is true about the coolant loops, all in one breath.', '"Tell me about your ship," they say. "All of it. Take your time."'],
+  drunk: ['They are several drinks ahead of you.', 'They greet you like a cousin and lose their train of thought in the same breath.', 'They are explaining something to a coaster. They hold up a finger for you to wait.'],
+  secretive: ['They angle their terminal away from you.', 'They look at you one second longer than is comfortable, and smile.', 'They answer every question with a question.'],
+  kind: ['They ask if you have eaten.', 'They push a glass of water toward you before they say anything.', 'They make room for you on the bench without a word.'],
+  brave: ['They have a fresh scar and a story about it.', 'They sit with their back to the door.', 'They roll up one sleeve to show a long healing burn. "You should see the other guy," they say. "He is a wall."'],
+  homesick: ['They are showing the bartender pictures of home.', 'They hold a creased photograph in both hands and set it down on the table as you sit.', 'They say the name of a place twice, under their breath, and check whether you heard.'],
 };
 
 const SECRET_TALK = {
-  contraband: ['lowers their voice: "If you ever need something moved and not looked at, I know people. I might be people."', 'leans in, all warmth and no eye contact: "There is a certain kind of cargo that does not appear on a certain kind of manifest. I can put you in touch with a certain kind of person."'],
-  wanted: ['gets quiet when a patrol officer comes in, and very interested in the drink until they leave.', 'watches the door the whole conversation, and, when it opens, goes still as a rabbit, and only relaxes when it is the barman\'s cousin.'],
-  ill: ['coughs into their sleeve and waves it off. "Nothing. Recyclers on my last ship. It\'ll pass."', 'coughs, hard, and hides the cloth, and says, in a very light voice, that it is the dust in here, and would you like another.'],
-  spy: ['asks a lot of questions about your routes, and answers none about theirs.', 'is pleasant, and interested, and asks small, precise things about ports and times, while giving you nothing at all.'],
-  debt: ['admits, three drinks in, that they owe the wrong people more than they will make in a year.', 'stares at the bottom of their cup, and says, quietly, that there are people who are looking for them, and that it is, honestly, mostly a question of time.'],
+  contraband: ['lowers their voice: "If you ever need something moved and not looked at, I know people. I might be people."', 'leans in and does not meet your eye: "There is a kind of cargo that does not appear on a kind of manifest. I can put you in touch with a kind of person."'],
+  wanted: ['goes quiet when a patrol officer comes in, and studies their drink until the officer leaves.', 'watches the door through the whole conversation. When it opens they stop moving. It is the barman\'s cousin, and they start again.'],
+  ill: ['coughs into their sleeve and waves it off. "Nothing. Recyclers on my last ship. It\'ll pass."', 'coughs hard and hides the cloth. It is the dust in here, they say, and would you like another.'],
+  spy: ['asks a lot of questions about your routes and answers none about theirs.', 'is pleasant and asks small, exact things about ports and times, and gives you nothing.'],
+  debt: ['says, three drinks in, that they owe the wrong people more than they will make in a year.', 'looks into the bottom of their cup and says there are people looking for them, and it is mostly a question of time.'],
 };
 
 const CREW_AT_BAR = {
@@ -139,14 +139,14 @@ function talkEvent(pat) {
       met(pat);
       like(p, 1, `The captain bought me a drink at ${bar}.`);
       if (p.secret && (p.traits.includes('talkative') || p.traits.includes('drunk') || Math.random() < 0.3)) return `${p.first} ${pick(SECRET_TALK[p.secret])}`;
-      if (Math.random() < 0.5) return `${p.first} warms up over the second sip, and looks around, and leans in. "Here's something you can use," they say, low and fast: "${addRumor()}" They straighten, and return to their drink, and, for a while, you sit together in silence.`;
-      return `${p.first} tells you about ${p.home}, at length, and, in a low, unhurried voice, about the streets, and the smell of the market, and why they left, and why they might go back. There is no rumor in it, and no secret, and no angle. It's a good hour, the kind that reminds you that most people are, mostly, good company.`;
+      if (Math.random() < 0.5) return `${p.first} looks around and leans in. "Here's something you can use," they say, low and fast: "${addRumor()}" Then they sit back and finish their drink. Neither of you speaks for the rest of the glass.`;
+      return `${p.first} tells you about ${p.home}: the streets, the smell of the market, why they left, and why they might go back. There is no rumor in it, and no secret, and no angle. It takes an hour.`;
     } },
     { label: 'Ask what they have heard', can: () => !pat.asked, run() {
       pat.asked = true;
       met(pat);
-      if (p.traits.includes('secretive')) return `"Nothing worth repeating," ${p.first} says, with a small polite smile that shuts like a door. They go back to their drink, and, for a long time, do not look up. You have the strong impression that they heard a great deal, and are choosing, very carefully, what to say.`;
-      return Math.random() < 0.6 ? `${p.first} thinks for a moment, tilting their head, and then says: "${addRumor()}" They nod, once.` : `${p.first} laughs, and leans back, delighted to be asked. "Did you hear? ${feedLine().replace('[Feed] ', '')}" And, with that, they are off, into twenty minutes of gossip that you will remember, at odd hours, for weeks.`;
+      if (p.traits.includes('secretive')) return `"Nothing worth repeating," ${p.first} says, and smiles, and goes back to their drink. They do not look up again while you are there.`;
+      return Math.random() < 0.6 ? `${p.first} thinks about it, then says: "${addRumor()}"` : `${p.first} laughs and leans back. "Did you hear? ${feedLine().replace('[Feed] ', '')}" They go on for twenty minutes.`;
     } },
   ];
   // A berth is the captain's to give, so a hand has none to offer.
@@ -154,9 +154,9 @@ function talkEvent(pat) {
     pat.offered = true;
     met(pat);
     const o = travelOffer(p);
-    if (!o) return `${p.first} thinks about it, seriously, counting on their fingers, and then shakes their head, with a rueful smile. "Nowhere you can reach from here, I'm afraid," they say. "I wish I could. Ask me again when you have a longer tank."`;
+    if (!o) return `${p.first} counts on their fingers, then shakes their head. "Nowhere you can reach from here," they say. "Ask me again when you have a longer tank."`;
     G.offers.unshift(o);
-    return `"${o.destPlanet}?" ${p.first} lights up. "That's where I need to be. That is exactly where I need to be." They name a fair fare, and shake on it with both hands. The job is on the mission board.`;
+    return `"${o.destPlanet}?" ${p.first} says. "That's where I need to be." They name a fair fare and shake on it with both hands. The job is on the mission board.`;
   } });
   choices.push({ label: `Play ${p.first} at cards (${CARDS} cr)`, can: () => st.credits >= CARDS && !pat.played, run() {
     pat.played = true;
@@ -164,33 +164,33 @@ function talkEvent(pat) {
     if (Math.random() < 0.5) {
       st.credits += CARDS;
       like(p, p.traits.includes('greedy') || p.traits.includes('rude') ? -1 : 0, 'The captain took my money at cards.');
-      return `The game is close, and slow, and tense, three hands, and a long stare across the table, and then, on the last card, you take ${fmt(CARDS)} cr off ${p.first}. ${p.traits.includes('rude') ? 'They accuse you of cheating, loudly, and at length, standing up, and the whole bar turns to watch. You leave them to it.' : 'They take it well, with a shrug and a good-natured groan, and buy you a drink with your own money, and, for a while, the two of you talk about nothing.'}`;
+      return `Three hands, slow and close. On the last card you take ${fmt(CARDS)} cr off ${p.first}. ${p.traits.includes('rude') ? `${p.first} stands up and says you cheated, loudly, and the whole bar turns to look. You leave them to it.` : `${p.first} shrugs, groans, and buys you a drink with your own money. You talk about nothing for an hour.`}`;
     }
     st.credits -= CARDS;
     like(p, 1, null);
-    return `It is a good game, and it goes the other way. ${p.first} takes ${fmt(CARDS)} cr off you, with a small, apologetic smile, and, to your surprise, buys you a drink with it, and sets it in front of you with a flourish. Fair's fair. You drink, and, by the end of the glass, you are laughing.`;
+    return `It goes the other way. ${p.first} takes ${fmt(CARDS)} cr off you, and buys you a drink with it, and sets it in front of you. Fair's fair. By the end of the glass you are laughing.`;
   } });
   if (p.traits.includes('rude') && !pat.known) choices.push({ label: 'Tell them what you think of their manners', can: () => !pat.fought, run() {
     pat.fought = true;
     met(pat);
     like(p, -2, 'The captain started a fight with me.');
-    if (roleSkill('gunner') || Math.random() < 0.4) return `It is short, and loud, and very bright. ${roleSkill('gunner') ? `${roleName('gunner')} steps in, unhurried, and ` : ''}${p.first} ends up on the floor, with a bewildered expression, and the whole bar cheers, and someone starts a chant. The bartender charges you for the stool anyway, with a very small, very private smile.`;
+    if (roleSkill('gunner') || Math.random() < 0.4) return `It is short and loud. ${roleSkill('gunner') ? `${roleName('gunner')} steps in and ` : ''}${p.first} ends up on the floor, and the whole bar cheers. Someone starts a chant. The bartender charges you for the stool anyway.`;
     st.credits = Math.max(0, st.credits - 150);
-    return `It is short, and it does not go your way. There is a very bright light, and a very loud noise, and then a long, dark, pleasant nothing. You wake up in the back with a black eye and a 150 cr bill for the mirror, and a bartender, standing over you, holding a wet cloth, who says, with real sympathy, "You were doing so well."`;
+    return `It is short, and it does not go your way. There is a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 150 cr bill for the mirror. The bartender is standing over you with a wet cloth. "You were doing so well," the bartender says.`;
   } });
   if (p.traits.includes('homesick')) choices.push({ label: `Ask about ${p.home}`, can: () => !pat.home, run() {
     pat.home = true; met(pat); like(p, 2, `The captain let me talk about ${p.home}.`);
-    return `${p.first} lights up, like a lamp coming on in a window. You hear about the view from the ring, where the light comes in at dusk, the smell of the market, the man who sold fried dough on the corner, and a sister who writes every week and always signs off the same way. They talk until the bar is nearly empty, and, when they finally stop, they buy the next round, and their eyes are very bright.`;
+    return `${p.first} talks about the view from the ring where the light comes in at dusk, the smell of the market, the man who sold fried dough on the corner, and a sister who writes every week and signs off the same way. They talk until the bar is nearly empty. Then they buy the next round.`;
   } });
   if (p.traits.includes('pious')) choices.push({ label: hired() ? 'Ask for a blessing on the ship' : 'Ask for a blessing on your ship', can: () => !pat.blessed, run() {
     pat.blessed = true; met(pat); like(p, 1, 'I blessed the captain\'s ship.');
-    return `${p.first} closes their eyes, and lays two fingers on the transponder, very gently, and says a few words over your ship's name, in a low, ancient cadence you do not know. The whole bar seems, for a moment, to lean in. When they are done, they open their eyes, and smile, and touch your hand. It can't hurt. It might, you think, even help.`;
+    return `${p.first} closes their eyes and lays two fingers on the transponder. They say a few words over your ship's name, in a cadence you do not know. The bar goes quiet. When they are done they open their eyes and touch your hand.`;
   } });
   if (pat.known && p.opinion <= OPINION.GRUDGE) choices.push({ label: 'Make peace (buy them a bottle, 300 cr)', can: () => st.credits >= 300 && !pat.peace, run() {
     pat.peace = true; st.credits -= 300; like(p, 3, 'The captain bought me a bottle and apologized.');
-    return `${p.first} looks at the bottle a long time before taking it, turning it in the light, reading the label. Then they take it, and set it between you on the table, and pour two glasses. "It's a start," they say, gruffly. It is not forgiveness. Their shoulders come down.`;
+    return `${p.first} looks at the bottle a long time before taking it, turning it in the light to read the label. Then they set it between you on the table and pour two glasses. "It's a start," they say.`;
   } });
-  choices.push({ label: 'Leave them to their drink', run: () => 'You nod, and get up, and leave them to their drink, and the little pool of quiet around their table closes behind you like water. You head back to the bar, and the noise of the room, and, for a while, do not think of them at all.' });
+  choices.push({ label: 'Leave them to their drink', run: () => 'You get up and leave them to their drink. You go back to the bar and the noise of the room.' });
   return { title: `${bar}: ${p.first} ${p.last}`, text, choices };
 }
 
