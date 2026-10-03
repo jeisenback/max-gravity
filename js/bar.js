@@ -92,23 +92,23 @@ function met(pat) {
 function roomLines(planet) {
   const out = [], sid = G.state.systemId, c = culture(), day = cultureToday(), show = pick(airing(day)), book = pick(newBooks(day)), ls = pick(LEAGUES), last = season(ls).last;
   for (const x of conditions(sid)) {
-    if (/Shortage of Water/.test(x.text)) out.push(`The beer is watered down, which on ${planet.name} is saying something.`);
+    if (/Shortage of Water/.test(x.text)) out.push(`The beer is watered down. A sign by the taps says the water ration on ${planet.name} is cut.`);
     else if (/at war/.test(x.text)) out.push('A navy recruiter is buying drinks for anyone who will sit still.');
-    else if (/pirate/i.test(x.text) && x.bad) out.push('Half the pilots in here are talking about the raids, and the other half are pretending not to be scared.');
+    else if (/pirate/i.test(x.text) && x.bad) out.push('Half the pilots in here are talking about the raids. The other half are not talking.');
     else if (/booming/.test(x.text)) out.push('Money is loose tonight. Somebody at the back is buying rounds for strangers.');
-    else if (/slump/.test(x.text)) out.push('The place is half empty. Everyone is nursing one drink as long as it will go.');
+    else if (/slump/.test(x.text)) out.push('The place is half empty. Everyone is nursing one drink.');
   }
   out.push(pick([
-    `The screens over the bar are showing "${show.title}". Someone shushes you during the good part.`,
-    last ? `${ls.sport[0].toUpperCase()}${ls.sport.slice(1)} on every screen: ${last.a} ${last.sa}, ${last.b} ${last.sb}. ${pick([`The ${last.winner} fans are buying.`, `Someone here lost money on the ${last.loser}.`])}` : `The ${ls.name} has no games on tonight, and everyone is an expert anyway.`,
+    `The screens over the bar are showing "${show.title}". Someone tells you to be quiet.`,
+    last ? `${ls.sport[0].toUpperCase()}${ls.sport.slice(1)} on every screen: ${last.a} ${last.sa}, ${last.b} ${last.sb}. ${pick([`The ${last.winner} fans are buying.`, `Someone here lost money on the ${last.loser}.`])}` : `The ${ls.name} has no games on tonight. Everyone has an opinion anyway.`,
     `"${c.song.title}" by ${c.song.band} comes on for the third time tonight. Nobody complains.`,
     `Two people at the bar are arguing about the ending of "${book.title}".`,
-    'A man at the end of the bar is telling the same joke he has told all evening, and, every time, somebody laughs, out of pity or habit.',
-    'Somebody has started a game of dominoes, and it has become, in the last hour, a serious matter.',
-    'The bartender polishes the same glass, slowly, in a pool of warm light, and hums something old.',
-    'A very old couple are dancing, very slowly, in the corner, to a song nobody else can hear.',
-    'The light over the bar flickers, twice, and everyone looks up, and, when it steadies, nobody says anything.',
-    'A child is asleep in a booth, with her head on a rolled-up coat, while her parents talk in low voices over a bottle.',
+    'A man at the end of the bar is telling the same joke he told an hour ago. Somebody laughs.',
+    'Somebody has started a game of dominoes. It has been going an hour, and two people have stopped speaking.',
+    'The bartender polishes the same glass under the light and hums something old.',
+    'An old couple are dancing in the corner. The song in the room is a different one.',
+    'The light over the bar flickers twice. Everyone looks up. It steadies, and they look down again.',
+    'A child is asleep in a booth with her head on a rolled-up coat. Her parents are talking in low voices over a bottle.',
   ]));
   for (const cm of crewMembers()) {
     const lines = CREW_AT_BAR[cm.role];
