@@ -350,16 +350,21 @@ function relationshipScene() {
       cool(a, b, 'feud');
       const cause = pick(CAUSES);
       return {
-        title: 'A Small Ship', text: `${A} and ${B} are shouting at each other in the galley about ${cause}. It started with a raised eyebrow and a pointed remark, and ten minutes later both of them are standing, and one of them is waving a spoon. It is not really about ${cause}. It never is. The rest of the crew has gone very quiet, and is looking at their food.`,
+        title: 'A Small Ship', text: pick([
+          `${A} and ${B} are on their feet in the galley. The galley is eleven feet across, and everyone who is not on watch is in it. They are arguing about ${cause}. "If you'd said something," ${B} says. "I said something," ${A} says. "Tuesday. Ask anyone." Nobody at the table answers.`,
+          `${A} has ${B} backed against the coffee dispenser. They are arguing about ${cause}. "Do not tell me it's the principle," ${B} says. "It is the principle," ${A} says. Someone at the table has a spoon halfway to their mouth and has not moved it.`,
+          `${A} and ${B} are arguing about ${cause}, standing, leaning across the table. "Say it again," ${B} says. "Every day until we dock," ${A} says. Someone at the end of the table says, to their plate, that it is a long way to dock.`,
+          `Third watch, the galley light on low. ${A} and ${B} are arguing about ${cause} in whispers. The berths are behind a thin bulkhead. "Outside," ${B} says. "No," ${A} says. "Here. I want it witnessed."`,
+        ]),
         choices: [
-          { label: `Side with ${A}`, run() { like(a.p, 1, null); like(b.p, -2, `You sided with ${A} against me.`); addBond(a, b, -1); return `${B} stares at you for a long moment, incredulous, and then storms off to their bunk, and the door slams with a noise like a small explosion. ${A} looks smug, which helps nobody, and, when nobody else is looking, a little bit ashamed.`; } },
-          { label: `Side with ${B}`, run() { like(b.p, 1, null); like(a.p, -2, `You sided with ${B} against me.`); addBond(a, b, -1); return `${A} stares at you for a long moment, incredulous, and then storms off to their bunk, and the door slams with a noise like a small explosion. ${B} looks smug, which helps nobody, and, when nobody else is looking, a little bit ashamed.`; } },
+          { label: `Side with ${A}`, run() { like(a.p, 1, null); like(b.p, -2, `You sided with ${A} against me.`); addBond(a, b, -1); return `"${A} has the right of it," you say. ${B} looks at you, then at ${A}, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. "Thanks, Captain," ${A} says to the table. Nobody answers.`; } },
+          { label: `Side with ${B}`, run() { like(b.p, 1, null); like(a.p, -2, `You sided with ${B} against me.`); addBond(a, b, -1); return `"${B} has the right of it," you say. ${A} looks at you, then at ${B}, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. "Thanks, Captain," ${B} says to the table. Nobody answers.`; } },
           { label: 'Lock them in the galley until they sort it out', run() {
-            if (Math.random() < 0.55) { addBond(a, b, 3); return `You shut the hatch on them, and stand outside it, listening to a muffled, escalating quarrel, and then a long, strange silence, and then, unexpectedly, a laugh. Two hours later they come out, red-faced and hoarse, laughing about something else entirely, with their arms just barely, cautiously, not touching. Grudging respect, at the very least.`; }
+            if (Math.random() < 0.55) { addBond(a, b, 3); return `You dog the hatch from the outside and sit on the deck with your back to it. There is shouting for twenty minutes. Then there is only the air handler. Then ${A} laughs, once. An hour and a half later you open the hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.`; }
             addBond(a, b, -1);
-            return `You shut the hatch on them, and, for a while, there is shouting, and then a crash, and then a long, cold silence. Two hours later they come out not speaking, without looking at each other, and the galley needs a new cupboard door (${hurt(0.01)} points of hull). Someone, at dinner, quietly sits between them, and nobody comments.`;
+            return `You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge (${hurt(0.01)} points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.`;
           } },
-          { label: 'Settle it over cards', run() { addBond(a, b, 1.5); return `You produce a deck, and deal three hands, and, for half an hour, there is no talking, only the click and slap of the cards, and the small intense noises of two people who both hate to lose. ${pick([A, B])} wins, the loser does the chores, and honor is satisfied. By the last hand, they are both, without noticing, grinning.`; } },
+          { label: 'Settle it over cards', run() { addBond(a, b, 1.5); const [w, l] = pick([[A, B], [B, A]]); return `The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. ${w} takes the last hand, and ${l} washes the dishes. Over the sink ${l} goes through what is wrong with the rules, the deck, the lighting and ${w}'s mother. ${w} drinks the last of the coffee.`; } },
         ],
       };
     });
@@ -399,25 +404,25 @@ function relationshipScene() {
     cool(a, b, 'match');
     return {
       title: 'Galley Duty', text: pick([
-        `${a.p.first} (${ta}) and ${b.p.first} (${tb}) have bet a week of galley duty on tonight's match.`,
-        `${a.p.first} backs ${ta}, ${b.p.first} backs ${tb}, and the loser has sworn to scrub the galley for a week. Tonight is the match.`,
-        `The dishes have been piling up, and ${a.p.first} (${ta}) and ${b.p.first} (${tb}) have settled who washes them the only way they know: tonight's match decides it.`,
-        `"Loser does galley duty," says ${b.p.first} (${tb}), and ${a.p.first} (${ta}) shakes on it before anyone can talk them out of it. The match starts soon.`,
+        `The galley rota is a sheet taped to the cabinet door. ${a.p.first} has written ${b.p.first}'s name on every day of next week, and ${b.p.first} has written ${a.p.first}'s name over it. ${a.p.first} backs ${ta}. ${b.p.first} backs ${tb}. Whoever's team loses tonight does the dishes. Both of them have initialed it.`,
+        `"A week," ${b.p.first} says. "Dishes, filters, the lot." "Done," ${a.p.first} says, and they shake on it across the table. ${a.p.first} has ${ta}. ${b.p.first} has ${tb}. The match is tonight.`,
+        `${a.p.first} (${ta}) and ${b.p.first} (${tb}) have put the galley rota on the match. The loser takes all of it for a week. It is written on the cabinet door in ${a.p.first}'s handwriting. ${b.p.first} has added "and no complaints" and underlined it twice.`,
+        `The ship's feed has ${ta} against ${tb} at the end of watch. ${a.p.first} and ${b.p.first} have turned the chairs to face the screen. A week of galley duty, loser's. They have not spoken since they agreed it.`,
       ]),
       choices: [
         { label: 'Stream it for everyone', run() {
           const m = playMatch(leagueOf(ta), ta, tb), [w, l] = m.winner === ta ? [a, b] : [b, a];
           addBond(a, b, has(l, 'rude') ? -1 : 1);
           like(w.p, 1, null);
-          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${l.p.first} does a week of galley duty ${has(l, 'rude') ? 'and makes sure everyone suffers for it' : 'in a borrowed apron, with dignity'}.`;
+          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${l.p.first} does the week of galley duty${has(l, 'rude') ? `. Every pan goes into the rack hard, and for four days ${l.p.first} goes through what the referee did.` : ' in an apron two sizes too small, and does not mention the score.'}`;
         } },
         { label: `Put 300 cr on the ${ta} yourself`, can: () => st.credits >= 300, run() {
           const m = playMatch(leagueOf(ta), ta, tb), won = m.winner === ta;
           st.credits += won ? 300 : -300;
           like(a.p, won ? 1 : 0, null); like(b.p, won ? -1 : 1, null);
-          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${won ? `You collect 300 cr, and ${a.p.first} hugs you.` : `You lose 300 cr, and ${b.p.first} will be mentioning it for weeks.`}`;
+          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${won ? `You collect 300 cr. ${a.p.first} wants to buy a round with it.` : `You lose 300 cr. ${b.p.first} brings it up at every meal until the next match.`}`;
         } },
-        { label: 'Stay out of it', run: () => 'You hear the result from the cheering, and the groaning.' },
+        { label: 'Stay out of it', run: () => 'You hear the result through the bulkhead: cheering, then a groan, then someone banging a pan.' },
       ],
     };
   });
