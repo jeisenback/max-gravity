@@ -758,3 +758,24 @@ test('the crew list shows a face for each crew member, ringed by how they are do
   assert.deepEqual(rings, [[true, false, true], [false, true, true], [false, false, true]]);
   await done();
 });
+
+test('the most common relationship scenes wait their turn crew-wide, and Small System has four openings', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    const st = G.state; st.tutorial = null; while (G.dialog) finishEvent();
+    const mk = (home, culture, traits) => { const p = makePerson('belt'); p.home = home; p.culture = culture; p.traits = traits; p.role = 'cook'; registerPerson(p); st.crew.push(p.id); return p; };
+    mk('Ceres Station', 'belt', ['rude']); mk('Ceres Station', 'belt', ['kind']); mk('Pallas', 'belt', ['nervous']); mk('Hellas', 'belt', ['talkative']);
+    const reset = () => { st.qualities = {}; delete st.relAt; };
+    const gap = {}; reset(); gap.fresh = relReady('feud'); relMark('feud'); gap.after = relReady('feud'); st.day += 19; gap.day19 = relReady('feud'); st.day += 1; gap.day20 = relReady('feud');
+    const heavy = ['A Small Ship', 'Galley Duty', 'Small System'], blocked = new Set();
+    for (let i = 0; i < 60; i++) { st.qualities = {}; st.relAt = { feud: st.day, match: st.day, roots: st.day }; const e = relationshipScene(); if (e && heavy.includes(e.title)) blocked.add(e.title); }
+    const open_ = new Set(), roots = new Set();
+    for (let i = 0; i < 200; i++) { reset(); const e = relationshipScene(); if (e && heavy.includes(e.title)) open_.add(e.title); if (e && e.title === 'Small System') roots.add(e.text.replace(/[A-Z][a-z]+/g, 'N')); }
+    return { gap, blocked: [...blocked], open: [...open_], roots: roots.size };
+  });
+  assert.deepEqual(r.gap, { fresh: true, after: false, day19: false, day20: true });
+  assert.deepEqual(r.blocked, [], 'none of the three while each is waiting');
+  assert.ok(r.open.includes('A Small Ship') && r.open.includes('Small System'), `and they come back when it is over (${r.open})`);
+  assert.ok(r.roots >= 3, `Small System opens in at least three ways (${r.roots})`);
+  await done();
+});

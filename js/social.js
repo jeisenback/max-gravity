@@ -328,6 +328,11 @@ const stamped = (a, b, what) => {
   return false;
 };
 
+// The scenes that came up most often: each kind waits this many days crew-wide, however many pairs could have one.
+const REL_GAP = { feud: 20, match: 20, roots: 25 };
+const relReady = kind => { const at = (G.state.relAt || {})[kind]; return at === undefined || G.state.day - at >= REL_GAP[kind]; };
+const relMark = kind => { (G.state.relAt = G.state.relAt || {})[kind] = G.state.day; };
+
 function relationshipScene() {
   const list = folk(), st = G.state;
   if (list.length < 2) return null;
@@ -347,8 +352,8 @@ function relationshipScene() {
         { label: 'Put them on the same rotation', run() { addBond(a, b, 2); like(a.p, 1, null); like(b.p, 1, null); return `You pencil them onto the same rotation, and hand over the new roster, without comment. ${A} pretends not to be pleased, and studies the paper with immense, fake seriousness. ${B} doesn't bother pretending, and beams, openly, and squeezes ${A}'s arm, and is immediately embarrassed. It is very sweet, and it is going to be a problem, and you feel, for the moment, quite good about it.`; } },
         { label: 'Leave the rotation alone', run: () => 'You leave the roster as it is, and say nothing, and, by the end of the week, they have found each other on the same watch anyway, by a route that involves three trades and a forged note. Some things find their own way. You pretend, at the next meal, not to notice, and everyone, magnificently, does the same.' },
       ] }));
-    if ((n <= -2 || clash(a, b)) && !isCooled(a, b, 'feud', 45)) scenes.push(() => {
-      cool(a, b, 'feud');
+    if ((n <= -2 || clash(a, b)) && !isCooled(a, b, 'feud', 45) && relReady('feud')) scenes.push(() => {
+      cool(a, b, 'feud'); relMark('feud');
       const cause = pick(CAUSES);
       return {
         title: 'A Small Ship', text: pick([
@@ -369,14 +374,20 @@ function relationshipScene() {
         ],
       };
     });
-    if ((a.p.home === b.p.home || (a.p.culture && a.p.culture === b.p.culture)) && n < 3) scenes.push(() => !stamped(a, b, 'roots') && {
+    if ((a.p.home === b.p.home || (a.p.culture && a.p.culture === b.p.culture)) && n < 3 && relReady('roots')) scenes.push(() => !stamped(a, b, 'roots') && (relMark('roots'), {
       title: 'Small System', text: a.p.home === b.p.home
-        ? `${A} and ${B} discover, halfway through an ordinary argument about coffee, that they grew up a few decks apart on ${a.p.home}. They stop, and stare, and begin to compare notes, and, within minutes, they are shouting in delighted recognition. They know the same bars, the same teachers, the same street with the bad smell, and the same terrible ${tastes(a).team} seasons. It is uncanny, and, for the rest of the shift, they are inseparable.`
-        : `${A} and ${B} have worked out that they share half a childhood's worth of songs and slang, and have spent the whole morning trading old rhymes and half-forgotten proverbs, in a fast, delighted, private shorthand. The rest of the ship understands one word in three, and looks on with polite, bewildered envy.`,
+        ? pick([
+          `${A} and ${B} are arguing about coffee at the galley table when ${B} says the name of a street on ${a.p.home}. ${A} stops with the cup halfway up. "Which end?" ${A} says. "The water end." "Then you know the baker." They were a few decks apart on ${a.p.home} for twelve years and never met. The coffee goes cold. They compare teachers, bars and the ${tastes(a).team} seasons.`,
+          `${A} hears ${B} humming in the corridor. It is a tune from ${a.p.home}, a bad one, from a bar ${A} knows. "That is a ${a.p.home} tune," ${A} says. ${B} puts the filter down. "Where were you?" By the end of the watch they have named three people they both know and one they both owe money.`,
+        ])
+        : pick([
+          `${A} and ${B} have spent the morning trading rhymes and sayings from home, fast and low, in the same slang. The rest of the crew understands one word in three. Someone asks what a word means. They both try to say, and both stop.`,
+          `${B} says something in the old slang at the galley table and ${A} answers without thinking, in the same words. They look at each other. "My grandmother used to say that," ${A} says. "So did mine," ${B} says. They are still going when the watch changes.`,
+        ]),
       choices: [
-        { label: `Break out something to toast ${a.p.home} (200 cr)`, can: () => st.credits >= 200, run() { st.credits -= 200; addBond(a, b, 3); like(a.p, 1, null); like(b.p, 1, null); return `You crack open something worth cracking, and, around the galley table, they toast ${a.p.home}, and the streets, and the old teachers, and the ones who did not make it out. The toasts get longer and the stories get less true, and, at some point, a chorus of an old ${a.p.home} song breaks out. It is a good night, and, when it is over, ${A} and ${B} walk back to their bunks together, arm in arm, not quite steady.`; } },
-        { label: 'Leave them to it', run() { addBond(a, b, 1.5); return 'You leave them the galley, and go up to the bridge, and shut the hatch. You can hear them laughing from the bridge, faint and warm through the deck, for a long time, in the peculiar rhythm of two people who have found, unexpectedly, someone who speaks their language.'; } },
-      ] });
+        { label: 'Break out something to toast with (200 cr)', can: () => st.credits >= 200, run() { st.credits -= 200; addBond(a, b, 3); like(a.p, 1, null); like(b.p, 1, null); return `You open a bottle from the locker. They toast ${a.p.home === b.p.home ? a.p.home : 'home'}, the old teachers, and the people who did not get out. Somebody starts a song, and the others know it. It is late when it ends. ${A} and ${B} go to their bunks together, not quite steady.`; } },
+        { label: 'Leave them to it', run() { addBond(a, b, 1.5); return 'You leave them the galley and go up to the bridge and shut the hatch. You can hear them through the deck for a long time.'; } },
+      ] }));
     if (a.crew !== b.crew) {
       const [c, p] = a.crew ? [a, b] : [b, a];
       scenes.push(() => !stamped(a, b, 'tour') && {
@@ -400,9 +411,9 @@ function relationshipScene() {
   }
   // Two fans of different teams, and a match coming up.
   const fans = all.find(([a, b]) => tastes(a).team !== tastes(b).team && leagueOf(tastes(a).team) === leagueOf(tastes(b).team) && !isCooled(a, b, 'match', 25));
-  if (fans) scenes.push(() => {
+  if (fans && relReady('match')) scenes.push(() => {
     const [a, b] = fans, ta = tastes(a).team, tb = tastes(b).team;
-    cool(a, b, 'match');
+    cool(a, b, 'match'); relMark('match');
     return {
       title: 'Galley Duty', text: pick([
         `The galley rota is a sheet taped to the cabinet door. ${a.p.first} has written ${b.p.first}'s name on every day of next week, and ${b.p.first} has written ${a.p.first}'s name over it. ${a.p.first} backs ${ta}. ${b.p.first} backs ${tb}. Whoever's team loses tonight does the dishes. Both of them have initialed it.`,
