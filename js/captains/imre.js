@@ -1,7 +1,7 @@
 'use strict';
 
 // Imre Sato and their first officer Pilar Quesada (js/captains/pilar.js). The by-the-book ex-navy: logs everything, wears the
-// same jacket, says "Noted." They want a clean record at last, and fear a dishonourable discharge coming out. Their text uses
+// same jacket, says "Noted." They want a clean record at last, and fear a dishonorable discharge coming out. Their text uses
 // "they" (plural verbs). {post} is the hand's post and {names} who left with them.
 
 CAPTAINS.imre = {
@@ -34,7 +34,7 @@ CAPTAINS.imre = {
     'cap-praise': {
       text: 'Captain Sato hands you a slip with your name on it and a line in their own handwriting: No faults, this run. That is the whole of it. It has been filed.',
       take: 'You thank them. "Noted," they say, and file it. You find, an hour later, that you are still holding the slip.',
-      bonusYes: '"Provision seven allows a discretionary award," they say. "Sixty." They fill in a form for it, and have you sign for it, and it is, you realise, the warmest thing that has happened to you all week.',
+      bonusYes: '"Provision seven allows a discretionary award," they say. "Sixty." They fill in a form for it, and have you sign for it, and it is, you realize, the warmest thing that has happened to you all week.',
       bonusNo: '"Provision seven requires that an award follow a standing," Captain Sato says. "You have not the standing yet. It is noted that you asked." It is not unkind. It is a ruling.',
     },
     'cap-dressing': {
@@ -86,7 +86,7 @@ CAPTAINS.imre = {
       },
       found: {
         title: 'The Stripe',
-        text: 'You are looking for a manual in the captain\'s locker and find a navy service record in a drawer, under a clean set of logs. It is stamped in red at the foot of the second page: OTHER THAN HONOURABLE. Captain Sato\'s name is on every line. You have read the stamp before you understand it is not yours to read. The locker door closes behind you. "That is not on the manifest," Captain Sato says.',
+        text: 'You are looking for a manual in the captain\'s locker and find a navy service record in a drawer, under a clean set of logs. It is stamped in red at the foot of the second page: OTHER THAN HONORABLE. Captain Sato\'s name is on every line. You have read the stamp before you understand it is not yours to read. The locker door closes behind you. "That is not on the manifest," Captain Sato says.',
         choices: [
           { label: 'Say you were looking for the manual', run() {
             captainLike(-1, 'You said you were looking for a manual, and you had read the record.'); captainFlag('secretKnown'); captainFlag('secretAngry');

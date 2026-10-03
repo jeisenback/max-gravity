@@ -15,13 +15,13 @@ function atTheHelm(backup) {
   const lead = backup ? 'You put a second hand on the console beside her. ' : '';
   if (outcome === 'die') {
     like(cap, -1, 'We lost Pilar at the helm.'); cap.mood = { kind: 'low', until: G.state.day + 30 };
-    return lead + 'She brings her in by hand. The crosswind takes the ship at the last moment, and for a long second the bridge is the sound of the stick in her hands. The gate crew say afterwards it was the cleanest approach they had seen, until the last four metres. Captain Sato enters it in the log, in the same hand as every other entry, and then sits for a long time with the pen over the next line.'
+    return lead + 'She brings her in by hand. The crosswind takes the ship at the last moment, and for a long second the bridge is the sound of the stick in her hands. The gate crew say afterwards it was the cleanest approach they had seen, until the last four meters. Captain Sato enters it in the log, in the same hand as every other entry, and then sits for a long time with the pen over the next line.'
       + (spoke ? ' You spoke to the captain about the rule. It was not in time.' : '');
   }
   castLike('pilar', 2, 'You let me fly the approach by hand, and I came out.');
   if (outcome === 'mark') {
     cap.mood = { kind: 'low', until: G.state.day + 15 };
-    return lead + 'She brings her in by hand, and the crosswind catches the ship at the last four metres, and the stick kicks. She lands her by main strength and nothing else, and the hand that held the stick does not close properly, and will not. "It is in the berth," she says. "Enter that."';
+    return lead + 'She brings her in by hand, and the crosswind catches the ship at the last four meters, and the stick kicks. She lands her by main strength and nothing else, and the hand that held the stick does not close properly, and will not. "It is in the berth," she says. "Enter that."';
   }
   return lead + 'She brings her in by hand, and the ship settles into the berth like a coin into a slot. Pilar lets go of the stick and flexes her fingers. "Four minutes," she says. "Enter that." Captain Sato enters it, word for word, and under it, in their own hand, writes: Correct.';
 }
@@ -35,10 +35,10 @@ CAST.pilar = {
   story: {
     left: 'ten years on hauler berths with no certificate to show for any of them', rel: 'daughter', name: 'Marisol',
     hope: 'a certificate with her name on it, signed by someone who has watched her fly',
-    homeDetail: 'a harbour wall you could sit on at dusk, and a dozen families arguing about football from their balconies',
+    homeDetail: 'a harbor wall you could sit on at dusk, and a dozen families arguing about football from their balconies',
     favor: null,
     news: {
-      good: ['{who} passed the pilot\'s theory exam at the first sitting', '{who} sent a photo of the harbour wall at dusk, with someone\'s feet in it', '{who} has a new job at the port authority, and a desk by a window'],
+      good: ['{who} passed the pilot\'s theory exam at the first sitting', '{who} sent a photo of the harbor wall at dusk, with someone\'s feet in it', '{who} has a new job at the port authority, and a desk by a window'],
       bad: ['{who} failed the practical by one point, and is not speaking about it', '{who} says the balcony upstairs has been condemned', '{who} is ill, and the port clinic has a month\'s queue'],
     },
   },
@@ -71,7 +71,7 @@ CAST.pilar = {
       choices: [
         { label: 'Offer to write a reference', run() {
           castLike('pilar', 2, 'You wrote me a reference.'); castFlag('pilar', 'reference');
-          return 'You write it that night, and it says what you have seen: the window, the approach, the four metres. She reads it standing up, twice. "Thirty-two," she says, and puts it at the front of the folder, where the best ones go.';
+          return 'You write it that night, and it says what you have seen: the window, the approach, the four meters. She reads it standing up, twice. "Thirty-two," she says, and puts it at the front of the folder, where the best ones go.';
         } },
         { label: 'Tell her the helm matters more than the paper', run() {
           castLike('pilar', 1, 'You said the helm mattered more than the paper.');

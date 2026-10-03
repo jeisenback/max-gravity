@@ -117,7 +117,7 @@ function addRumor() {
   st.rumors = st.rumors.filter(r => !(r.planet === p.name && r.cid === cid));
   st.rumors.push({ planet: p.name, cid, mult: up ? rand(1.35, 1.6) : rand(0.55, 0.7), until: st.day + days, text: `${text} (${SYSTEMS[sid].name})` });
   comm(`[Market] ${text} (${SYSTEMS[sid].name}, for about ${days} days)`);
-  noteInbox('station', `${text} (${SYSTEMS[sid].name})`);
+  noteInbox('station', `${text} (${SYSTEMS[sid].name})`, null, 'market');
   return text;
 }
 
@@ -169,7 +169,7 @@ const TRANSIT_EVENTS = [
       } },
       { label: 'Hard burn to outrun them (50 reaction mass)', can: () => G.state.fuel >= 50, run() {
         G.state.fuel -= 50;
-        if (Math.random() < 0.7) return 'Eight g. The juice floods your veins and keeps you conscious, barely, in a grey, roaring tunnel of sound, with the whole ship groaning around you and the stars streaking to threads. When you can see again, they are gone, small and dwindling behind, and someone, in the galley, is laughing, high and shaky, and cannot seem to stop.';
+        if (Math.random() < 0.7) return 'Eight g. The juice floods your veins and keeps you conscious, barely, in a gray, roaring tunnel of sound, with the whole ship groaning around you and the stars streaking to threads. When you can see again, they are gone, small and dwindling behind, and someone, in the galley, is laughing, high and shaky, and cannot seem to stop.';
         return `You pull away, in a long, thundering rush, but not before they rake your hull for ${hurt(0.25)} points of armor damage, a line of hits like a fist dragged along a wall. They do not follow. The silence, afterward, is deafening, and full of the small clicks and pings of a ship settling.`;
       } },
     ],
@@ -177,7 +177,7 @@ const TRANSIT_EVENTS = [
   {
     title: 'Drifting Cargo Container',
     via: 'ship',
-    text: 'Sensors flag an unmarked cargo container tumbling along your trajectory, a battered grey box the size of a small house, spinning lazily, catching the sunlight at each turn. No owner beacon, no transponder, no markings but a faded serial number and a long white scar down one side. It could have fallen off a freighter last week, or last decade. Everyone in the cockpit is looking at it, and nobody is quite saying what they are thinking.',
+    text: 'Sensors flag an unmarked cargo container tumbling along your trajectory, a battered gray box the size of a small house, spinning lazily, catching the sunlight at each turn. No owner beacon, no transponder, no markings but a faded serial number and a long white scar down one side. It could have fallen off a freighter last week, or last decade. Everyone in the cockpit is looking at it, and nobody is quite saying what they are thinking.',
     choices: [
       { label: 'Grab it', can: () => cargoFree() > 0, run() {
         if (Math.random() < 0.2) return `Booby-trapped. The container detonates against your hull, a flat white flash and a slam that throws everything in the cockpit to the deck, for ${hurt(0.2)} points of armor damage. When the ringing stops, someone says, very calmly, "Well. That is why they call it free."`;
@@ -186,7 +186,7 @@ const TRANSIT_EVENTS = [
         chainTo('co-contents');
         return `You nudge alongside, and cut the seal with a torch, and, for a long moment, nothing happens. Then the door swings open, and, inside, neatly strapped, shining in the work lights: ${tons}t of ${c.name}, free. Finders keepers. You haul it aboard, in a slow, careful, disbelieving line, and, that night, at dinner, somebody raises a glass to whoever lost it.`;
       } },
-      { label: 'Leave it', run: () => 'Nothing out here is ever really free. You let it tumble past, turning and turning, a small grey moon on its way to nowhere, and watch it until it is a dot, and then not even that. Somebody, quietly, in the galley, says they would have liked to know what was inside. Nobody answers.' },
+      { label: 'Leave it', run: () => 'Nothing out here is ever really free. You let it tumble past, turning and turning, a small gray moon on its way to nowhere, and watch it until it is a dot, and then not even that. Somebody, quietly, in the galley, says they would have liked to know what was inside. Nobody answers.' },
     ],
   },
   {
@@ -261,6 +261,7 @@ const TRANSIT_EVENTS = [
 
 function comm(text) {
   if (!G.transit) return;  // rumors can also arrive while docked
+  if (isQuiet(text)) return;  // muted on the Comms screen
   G.transit.comms.push(text);
   if (G.transit.comms.length > 10) G.transit.comms.shift();
 }
@@ -319,7 +320,8 @@ function updateTransit(dt) {
       ...crewMembers().flatMap(c => c.chatter || c.traits.map(t => fill(pick([].concat(TRAITS[t].chatter)), c))),
       ...paxAboard().filter(m => m.pid).map(m => G.state.people[m.pid]).flatMap(p => p.traits.map(t => `(passenger) ${fill(pick([].concat(TRAITS[t].chatter)), p)}`)),
     ];
-    comm(pick(Mods.filter('chatter', aboard.length && Math.random() < 0.6 ? aboard : CHATTER)));
+    const line = pick(Mods.filter('chatter', aboard.length && Math.random() < 0.6 ? aboard : CHATTER));
+    if (!Settings.quiet.chatter) comm(line);
   }
   if (t.times.length && t.total - t.left >= t.times[0]) {
     t.times.shift();

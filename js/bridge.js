@@ -10,11 +10,11 @@ const STATIONS = [
   { id: 'nav', name: 'Navigation', short: 'Nav', tabs: ['nav'] },
   { id: 'weapons', name: 'Weapons', short: 'Guns', tabs: ['weapons'] },
   { id: 'eng', name: 'Engineering', short: 'Eng', tabs: ['shipyard'] },
-  { id: 'interior', name: 'Interior', short: 'Deck', tabs: ['crew'] },
+  { id: 'interior', name: 'Interior', short: 'Deck', tabs: ['crew', 'web', 'journal'] },
   { id: 'comms', name: 'Comms', short: 'Comms', tabs: ['comms'] },
   { id: 'ops', name: 'Operations', short: 'Ops', tabs: ['port', 'trade', 'missions', 'bar', 'company'] },
 ];
-const TAB_NAMES = { port: 'Port', trade: 'Exchange', missions: 'Missions', bar: 'Bar', company: 'Company' };
+const TAB_NAMES = { crew: 'Crew', web: 'Bonds', journal: 'Journal', port: 'Port', trade: 'Exchange', missions: 'Missions', bar: 'Bar', company: 'Company' };
 const BRIDGE_KEYS_H = 52;  // the key bar's height in a burn; the transit view leaves room for it
 
 const stationOf = tab => STATIONS.find(s => s.tabs.includes(tab) || (tab === 'person' && s.id === 'interior')) || STATIONS.find(s => s.id === 'ops');  // the character screen sits under Interior
@@ -90,7 +90,7 @@ const armament = () => {
     <p class="hint">${fitted.length ? `Fitted: ${fitted.join(', ')}.` : 'No outfits fitted.'}</p>`;
 };
 
-// What the ship carries to a fight, on the hull: the guns along the spine (coloured by the fire control's condition),
+// What the ship carries to a fight, on the hull: the guns along the spine (colored by the fire control's condition),
 // the point-defense turrets underneath, and the torpedo tubes in the bow, filled for each torpedo held.
 function gunnerySvg() {
   const st = G.state, s = ship(), fire = condColor(condition().fire), pdc = Math.min(2, (st.outfits || {}).pdc || 0);
@@ -178,7 +178,7 @@ function interiorPanel() {
 const crewViewBase = UI.views.crew;
 UI.views.crew = function () { return interiorPanel() + crewViewBase.call(this); };
 
-// The cargo bay: a cell for each ton the hold takes, filled in a colour for each commodity aboard, in the order of the manifest.
+// The cargo bay: a cell for each ton the hold takes, filled in a color for each commodity aboard, in the order of the manifest.
 const CARGO_COLORS = ['#6fb0ff', '#5fd35f', '#ff9a3c', '#b08fff', '#e8d17a', '#9fb4c2', '#ff6a8a'];
 function bayGrid() {
   const st = G.state, cap = ship().cargo, cols = cap > 60 ? 20 : 10, rows = Math.ceil(cap / cols), cell = Math.min(34, Math.floor(580 / cols) - 3);  // the last column ends inside the 640-wide plan
@@ -224,7 +224,7 @@ function drawViewscreen(time) {
   const g = c.getContext('2d'), color = GOV_COLORS[system().gov] || '#6fb0ff';
   g.fillStyle = '#03070a'; g.fillRect(0, 0, w, h);
   for (const s of bridgeStars) { g.fillStyle = `rgba(215,229,233,${0.2 + s.z * 0.6})`; g.fillRect(s.x * w, s.y * h, Math.max(1, s.z * 1.6 * d), Math.max(1, s.z * 1.6 * d)); }
-  // The planet below, its rim in the local faction's colour, and the station ring turning ahead of it.
+  // The planet below, its rim in the local faction's color, and the station ring turning ahead of it.
   g.fillStyle = '#0f2233'; g.beginPath(); g.arc(w * 0.25, h * 2.1, h * 1.75, 0, 7); g.fill();
   g.strokeStyle = color; g.globalAlpha = 0.6; g.lineWidth = 2 * d; g.beginPath(); g.arc(w * 0.25, h * 2.1, h * 1.75, 3.9, 5.5); g.stroke(); g.globalAlpha = 1;
   const ox = w * 0.74, oy = h * 0.46, rx = Math.min(w * 0.14, h * 0.9), ry = rx * 0.32, tilt = -0.25, a = Settings.reduceMotion ? 0 : time / 6000;
