@@ -404,25 +404,25 @@ function relationshipScene() {
     cool(a, b, 'match');
     return {
       title: 'Galley Duty', text: pick([
-        `The galley rota is a sheet taped to the cabinet door, and ${a.p.first} and ${b.p.first} have each written the other's name on every day of next week. ${a.p.first} backs ${ta}. ${b.p.first} backs ${tb}. Whoever's team loses tonight does the dishes, and both of them have initialed it.`,
-        `"A week," ${b.p.first} says. "Dishes, filters, the lot." "Done," ${a.p.first} says, and they shake on it across the table before anyone can say anything sensible. ${a.p.first} has ${ta}. ${b.p.first} has ${tb}. The match is tonight.`,
-        `Nobody aboard likes the galley rota, so ${a.p.first} (${ta}) and ${b.p.first} (${tb}) have put it on the match: the loser takes the lot, for a week. It is on the cabinet door in ${a.p.first}'s handwriting. ${b.p.first} has added "and no complaints," underlined twice.`,
-        `The ship's feed has ${ta} against ${tb} at the end of watch, and ${a.p.first} and ${b.p.first} have already turned the chairs to face the screen. A week of galley duty, loser's. They have not spoken since they agreed it.`,
+        `The galley rota is a sheet taped to the cabinet door. ${a.p.first} has written ${b.p.first}'s name on every day of next week, and ${b.p.first} has written ${a.p.first}'s name over it. ${a.p.first} backs ${ta}. ${b.p.first} backs ${tb}. Whoever's team loses tonight does the dishes. Both of them have initialed it.`,
+        `"A week," ${b.p.first} says. "Dishes, filters, the lot." "Done," ${a.p.first} says, and they shake on it across the table. ${a.p.first} has ${ta}. ${b.p.first} has ${tb}. The match is tonight.`,
+        `${a.p.first} (${ta}) and ${b.p.first} (${tb}) have put the galley rota on the match. The loser takes all of it for a week. It is written on the cabinet door in ${a.p.first}'s handwriting. ${b.p.first} has added "and no complaints" and underlined it twice.`,
+        `The ship's feed has ${ta} against ${tb} at the end of watch. ${a.p.first} and ${b.p.first} have turned the chairs to face the screen. A week of galley duty, loser's. They have not spoken since they agreed it.`,
       ]),
       choices: [
         { label: 'Stream it for everyone', run() {
           const m = playMatch(leagueOf(ta), ta, tb), [w, l] = m.winner === ta ? [a, b] : [b, a];
           addBond(a, b, has(l, 'rude') ? -1 : 1);
           like(w.p, 1, null);
-          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${l.p.first} does the week of galley duty ${has(l, 'rude') ? 'loudly, every pan banged into the rack, and takes four days to get through what the referee did' : 'in an apron two sizes too small, and does not once mention the score'}.`;
+          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${l.p.first} does the week of galley duty${has(l, 'rude') ? `. Every pan goes into the rack hard, and for four days ${l.p.first} goes through what the referee did.` : ' in an apron two sizes too small, and does not mention the score.'}`;
         } },
         { label: `Put 300 cr on the ${ta} yourself`, can: () => st.credits >= 300, run() {
           const m = playMatch(leagueOf(ta), ta, tb), won = m.winner === ta;
           st.credits += won ? 300 : -300;
           like(a.p, won ? 1 : 0, null); like(b.p, won ? -1 : 1, null);
-          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${won ? `You collect 300 cr, and ${a.p.first} has to be talked out of buying a round with it.` : `You lose 300 cr. ${b.p.first} will bring it up at every meal until the next match.`}`;
+          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${won ? `You collect 300 cr. ${a.p.first} wants to buy a round with it.` : `You lose 300 cr. ${b.p.first} brings it up at every meal until the next match.`}`;
         } },
-        { label: 'Stay out of it', run: () => 'You hear the result through the bulkhead: cheering, then a long groan, then somebody banging a pan.' },
+        { label: 'Stay out of it', run: () => 'You hear the result through the bulkhead: cheering, then a groan, then someone banging a pan.' },
       ],
     };
   });
