@@ -61,4 +61,4 @@ And for "Side with Mara": the old door slams "with a noise like a small explosio
 
 ## Where to start
 
-Rewrite the text players see most. The 100-game sims show these dominate: the letters from home (`js/family.js`), A Small Ship and Galley Duty (`js/social.js`), the bar scenes and the generated crew scenes (`js/people.js`). Do a tic pass first, since it needs no new story.
+Rewrite the text players see most. The 100-game sims show these dominate: the letters from home (`js/family.js`), A Small Ship and Galley Duty (`js/social.js`), the bar scenes and the generated crew scenes (`js/people.js`). Do a tic pass first, since it needs no new story. A scene that shows up many times needs several versions of the same moment (A Small Ship has four openings), not one script with the names swapped.
