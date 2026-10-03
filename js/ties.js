@@ -46,9 +46,9 @@ function youTies() {
 function factionPull(a, b) {
   const ta = tiesOf(a), tb = tiesOf(b);
   let d = 0;
-  if (ta.aff && ta.aff === tb.aff) d += 0.06;
-  if (ta.aff && tb.aff && ta.aff !== tb.aff && (ta.regard[tb.aff] <= -2 || tb.regard[ta.aff] <= -2)) d -= 0.1;
-  if (ta.aff && tb.aff && ta.status[ta.aff] === 'exile' && tb.status[tb.aff] === 'exile') d += 0.04;  // two who left under a cloud
+  if (ta.aff && ta.aff === tb.aff) d += 0.04;
+  if (ta.aff && tb.aff && ta.aff !== tb.aff && (ta.regard[tb.aff] <= -2 || tb.regard[ta.aff] <= -2)) d -= 0.04;
+  if (ta.aff && tb.aff && ta.status[ta.aff] === 'exile' && tb.status[tb.aff] === 'exile') d += 0.02;  // two who left under a cloud
   return d;
 }
 // Why, for the person page.
