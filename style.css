@@ -544,6 +544,9 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 .con-gauge { display: block; width: 100%; max-width: 230px; margin: 0 auto; }
 .con-read { display: flex; justify-content: space-between; align-items: center; font-size: 12px; color: var(--muted); margin: 2px 0; }
 .con-read b { color: var(--text); font-weight: 500; }
+.con-read.contact { gap: 8px; }
+.con-read.contact span { white-space: nowrap; }
+.con-read.contact b { font-size: 11px; text-align: right; }
 .con-bar { display: block; height: 7px; background: #12202f; border-radius: 2px; overflow: hidden; }
 .con-bar i { display: block; height: 100%; background: var(--accent); }
 .con-parts { display: grid; gap: 5px; }

@@ -11,8 +11,9 @@ const SLOTS = 5, SAVE_VERSION = 3;
 
 // ---------- settings ----------
 const Settings = Object.assign({ volume: 1, music: 0.6, textScale: 1, reduceMotion: false, wear: 'slow' }, store.get('maxGravity.settings', {}));
+Settings.quiet = Object.assign({ market: false, chatter: false }, Settings.quiet);  // what the Comms screen has muted
 function applySettings() {
-  store.set('maxGravity.settings', { volume: Settings.volume, music: Settings.music, textScale: Settings.textScale, reduceMotion: Settings.reduceMotion, wear: Settings.wear });
+  store.set('maxGravity.settings', { volume: Settings.volume, music: Settings.music, textScale: Settings.textScale, reduceMotion: Settings.reduceMotion, wear: Settings.wear, quiet: Settings.quiet });
   UI.el.style.zoom = Settings.textScale;
   if (Sfx.out) Sfx.out.gain.value = Sfx.on ? 0.5 * Settings.volume : 0;
 }
