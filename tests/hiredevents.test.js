@@ -32,7 +32,7 @@ test('every post has work events of its own, all in one table of weights', async
     stray: WORK_EVENTS.filter(d => !HIRED_POSTS.includes(d.post)).length,
     weights: Object.keys(HIRED_WEIGHTS), ownerOnly: OWNER_ONLY_EVENTS.every(t => TRANSIT_EVENTS.some(e => e.title === t)),
   }));
-  assert.ok(r.perPost.every(n => n >= 3), `at least three at each post (${r.perPost})`);
+  assert.ok(r.perPost.every(n => n >= 5), `at least five at each post (${r.perPost})`);
   assert.equal(r.ids, r.total, 'ids are unique'); assert.equal(r.stray, 0);
   assert.deepEqual(r.weights, ['work', 'captain', 'crew', 'money', 'road', 'ship']);
   assert.ok(r.ownerOnly, 'the hidden events exist');
