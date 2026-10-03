@@ -346,7 +346,7 @@ function relationshipScene() {
         { label: 'Put them on the same rotation', run() { addBond(a, b, 2); like(a.p, 1, null); like(b.p, 1, null); return `You pencil them onto the same rotation, and hand over the new roster, without comment. ${A} pretends not to be pleased, and studies the paper with immense, fake seriousness. ${B} doesn't bother pretending, and beams, openly, and squeezes ${A}'s arm, and is immediately embarrassed. It is very sweet, and it is going to be a problem, and you feel, for the moment, quite good about it.`; } },
         { label: 'Leave the rotation alone', run: () => 'You leave the roster as it is, and say nothing, and, by the end of the week, they have found each other on the same watch anyway, by a route that involves three trades and a forged note. Some things find their own way. You pretend, at the next meal, not to notice, and everyone, magnificently, does the same.' },
       ] }));
-    if ((n <= -2 || clash(a, b)) && !isCooled(a, b, 'feud', 20)) scenes.push(() => {
+    if ((n <= -2 || clash(a, b)) && !isCooled(a, b, 'feud', 45)) scenes.push(() => {
       cool(a, b, 'feud');
       const cause = pick(CAUSES);
       return {
