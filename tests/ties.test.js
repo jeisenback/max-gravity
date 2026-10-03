@@ -71,10 +71,10 @@ test('a crew member the port\'s faction wants is a customs matter, and your own 
   const r = await ev(() => {
     const st = start(), h = hired(), planet = currentPlanet(), gov = system().gov, out = { gov };
     const p = find(t => t.status[gov] === 'wanted' || t.status['Earth Coalition'] === 'wanted'); 
-    out.offered = Mods.filter('happenings', [], 'port', planet).some(c => c.tier === 1);
+    st.day += 5; out.offered = Mods.filter('happenings', [], 'port', planet).some(c => c.tier === 1);
     const e = customsScene('Earth Coalition', planet);
     out.labels = e.choices.map(c => c.label); out.title = e.title;
-    out.again = customsScene('Earth Coalition', planet);  // not twice in sixty days
+    out.again = 'x'; for (let i = 0; i < 5 && out.again; i++) out.again = customsScene('Earth Coalition', planet);  // each person once in sixty days
     const op = p.opinion; G.dialog = { event: e, choices: e.choices };
     const i = e.choices.findIndex(c => /papers/.test(c.label)); const text = chooseEvent(i);
     out.papers = /stamps the manifest/.test(text); out.opinion = p.opinion - op; out.stays = st.crew.includes(p.id);

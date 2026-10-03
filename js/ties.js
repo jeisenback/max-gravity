@@ -126,7 +126,7 @@ Mods.register({
   id: 'ties', name: 'Faction ties', builtin: true,
   init(M) {
     M.filter('happenings', (list, where, planet) => {
-      if (!hired() || where !== 'port' || !planet) return list;
+      if (!hired() || where !== 'port' || !planet || G.state.day - hired().since < 3) return list;
       const gov = system().gov;
       if (!isFaction(gov) || gov === 'Pirate') return list;
       const out = [];
