@@ -10,11 +10,12 @@ const { open, closeBrowser } = require('./helpers');
 after(closeBrowser);
 
 const helpers = () => {
+  window.DUEL_SPEC = { kind: 'patrol', gov: 'Earth Coalition' };  // a pirate is a raid in beats (engagements.js); the card duel is for the rest
   window.fight = (post = 'gunner') => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post, captainKey: 'hester' }); while (G.dialog) finishEvent();
     const st = G.state; st.story.next = 1e9; st.day += 30;
     uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
-    startDuel({ kind: 'pirate' }, false); G.nextEvent = null;
+    startDuel(DUEL_SPEC, false); G.nextEvent = null;
     return st;
   };
   // Math.random answers from a list, then 0.99: 0.01 passes a chance, 0.99 fails it, and 0 picks the first of a list.
@@ -29,9 +30,9 @@ test('a boarding run that lands starts the fight at the lock or the corridor, an
     const st = fight(), out = {}, d = G.duel;
     const before = st.armor; d.init = 'foe'; duelExchange('burn', 'board');  // an evasive burn lets boarders across: full
     out.full = G.nextEvent.title; out.armor = st.armor === before;
-    G.duel = null; startDuel({ kind: 'pirate' }, false); G.nextEvent = null; G.duel.init = 'foe'; duelExchange('pdc', 'board');  // a PDC screen halves it: they are one short
+    G.duel = null; startDuel(DUEL_SPEC, false); G.nextEvent = null; G.duel.init = 'foe'; duelExchange('pdc', 'board');  // a PDC screen halves it: they are one short
     out.half = G.nextEvent.title;
-    G.duel = null; startDuel({ kind: 'pirate' }, false); G.nextEvent = null; G.duel.init = 'foe'; duelExchange('locks', 'board');  // crew at the locks stop it
+    G.duel = null; startDuel(DUEL_SPEC, false); G.nextEvent = null; G.duel.init = 'foe'; duelExchange('locks', 'board');  // crew at the locks stop it
     out.stopped = G.nextEvent && G.nextEvent.title;
     return out;
   });

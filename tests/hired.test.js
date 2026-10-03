@@ -485,7 +485,7 @@ test('a hired hand who is not the gunner watches the duel; the gunner picks the 
     const run = post => {
       startHired(post); const st = G.state; st.tutorial = null; st.flags.classicCombat = false; st.armor = ship().armor;
       uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.dialog = null; G.transit.event = null; G.nextEvent = null; G.duel = null;
-      const c0 = st.credits; startDuel({ kind: 'pirate' }, false); finishEvent2();
+      const c0 = st.credits; startDuel({ kind: 'patrol', gov: 'Earth Coalition' }, false); finishEvent2();  // a pirate is a raid in beats (engagements.js); a patrol is the card duel
       const first = G.nextEvent; const labels = first.choices.map(c => c.label); let rounds = 0;
       openEvent(first);
       while ((G.dialog || G.nextEvent) && rounds++ < 20) { if (!G.dialog) { finishEvent(); continue; } chooseEvent(0); finishEvent(); }
