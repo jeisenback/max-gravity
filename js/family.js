@@ -212,7 +212,12 @@ function newsEvent(p) {
   const n = p.first, st = G.state, news = p.news;
   p.news = null;
   if (news.good) {
-    return { title: 'Good News', text: `${n} comes into the galley at a near-run, holding their terminal out in front of them: ${news.text}. They start a sentence, and lose it, and start again. They are grinning, and they cannot stand still.`,
+    return { title: 'Good News', text: pick([
+      `${n} comes into the galley at a near-run, holding their terminal out in front of them: ${news.text}. They start a sentence, and lose it, and start again. They are grinning, and they cannot stand still.`,
+      `${n} catches you at the hatch before you can say good morning. "Captain, listen to this." The message is open on their terminal: ${news.text}. They read it aloud twice, and the second time their voice cracks on the best part.`,
+      `You find ${n} in the corridor, leaning on the bulkhead with the terminal pressed to their chest, eyes shut. Then they hold it out to you: ${news.text}. "I had to tell somebody," they say, "and you were closest."`,
+      `${n} has been humming through the whole watch, and when you ask why, they go pink and hand you the terminal. ${news.text}, it says. They watch your face while you read, as if you might not believe it.`,
+    ]),
       choices: [
         { label: 'Break out something to celebrate', run() { for (const [a, b] of pairs(folk())) addBond(a, b, 0.8); like(p, 1, null); return 'You break out the good stuff, and within minutes the whole ship is crowded into the galley. By the second round everyone has a toast, and somebody has dug out the old guitar. It goes well past midnight, and nobody mentions the schedule.'; } },
         { label: '"That\'s wonderful."', run() { like(p, 1, null); return `${n} beams, and shows you the picture, and then, a minute later, shows you again. You say the right things, and mean them. "I keep wanting to tell someone," ${n} says, and laughs.`; } },
@@ -228,7 +233,12 @@ function newsEvent(p) {
     choices.push({ label: `Ask ${o.p.first} to look in on them`, run() { addBond(o, { id: p.id, p }, 2); like(p, 1, null); p.mood.until -= 5; return `${o.p.first} takes ${n} a mug of something hot, without a word, and sits down beside them on the crate by the galley wall. They are still there two hours later. Through the hatch you see two heads bent together, and, once, ${n}'s shoulders shaking.`; } });
   }
   choices.push({ label: 'Give them space', run: () => `${n} nods, and keeps to their bunk. You hear their terminal, faintly, and later nothing. For a while their work suffers: a missed step here, a cold cup there. (Their skill counts one lower until they feel better.)` });
-  return { title: 'Bad News', text: `${n} has been quiet since the last port. They stand the watch, and eat, and stop with the fork halfway up, more than once. The message was from their ${missed(p)}: ${news.text}. They have not told anyone. You only know because you saw the screen over their shoulder, in the corridor.`, choices };
+  return { title: 'Bad News', text: pick([
+      `${n} has been quiet since the last port. They stand the watch, and eat, and stop with the fork halfway up, more than once. The message was from their ${missed(p)}: ${news.text}. They have not told anyone. You only know because you saw the screen over their shoulder, in the corridor.`,
+      `${n} missed the start of the watch briefing, and when you go to find them, they are sitting on a crate in the cargo bay with the terminal dark in their lap. You do not need to ask. Their ${missed(p)} wrote: ${news.text}.`,
+      `Nobody at the galley table has said a word about it, but everyone has noticed that ${n} has not touched their plate. The message from their ${missed(p)} is still on the terminal by their elbow: ${news.text}.`,
+      `${n} does the whole shift with great care and no talk, the way people do when they are holding something heavy. Late, in the corridor, they finally say it: their ${missed(p)} wrote that ${news.text}. Then they say, "I am fine," and are not.`,
+    ]), choices };
 }
 
 // ---------- traditions ----------
