@@ -54,12 +54,12 @@ const SECRET_TALK = {
 };
 
 const CREW_AT_BAR = {
-  engineer: ['{n} is sketching a drive modification on a napkin for anyone who will look.', '{n} found the one other engineer here and they are arguing about injectors.', '{n} is holding a fork up to the light and muttering about the tolerances.', '{n} is under a table with a flashlight, looking at the bar\'s wiring.', '{n} has been handed a wrench by the bartender, and is fixing the tap.', '{n} is explaining the coolant loop to a stranger with the aid of four salt shakers and a pool of gravy.'],
-  pilot: ['{n} is telling a story about a flip burn that gets better every time.', '{n} is losing at darts and claiming the gravity is off.', '{n} has drawn a lane map in spilled beer and is defending it against all comers.', '{n} is trading hand gestures with another pilot at the far end of the bar, in what is clearly a very serious argument about angles.', '{n} is sitting very straight, listening to a stranger\'s story about a bad landing, and wincing in all the right places.', '{n} is standing on a chair, demonstrating a docking maneuver with two glasses and a napkin.'],
-  gunner: ['{n} is arm-wrestling a dockworker, and winning.', '{n} sits with their back to the wall, watching the room.', '{n} is quietly, expertly, cleaning a cup with the hem of their shirt, and studying the door.', '{n} has won a very small, very serious bet on a dart throw, and is refusing, courteously, to take the money.', '{n} is sharing a corner table with an old navy veteran, and the two of them are not speaking, and seem to be having a wonderful time.', '{n} is telling a very quiet, very funny story about a jammed gun, and a captain who never found out.'],
-  quartermaster: ['{n} is working the room, buying no drinks and hearing everything.', '{n} is haggling with the bartender over the price of a bottle.', '{n} is making a small, neat list on the back of a receipt, and nodding to themselves.', '{n} has struck up a conversation with a grain merchant, and is very close to a deal.', '{n} is listening to a stranger\'s theory about the price of water, and taking notes.', '{n} has acquired a very large bag of dried figs, and is distributing them to the room.'],
-  slicer: ['{n} is at a corner table, doing something to the bar\'s jukebox.', '{n} is on their terminal, ignoring everyone, which is how they like it.', '{n} has taken over the bar\'s music, and the playlist is, everyone agrees, a great improvement.', '{n} is watching the bar\'s security feed on a very small screen.', '{n} is talking, in a low, amused voice, to a bartender who is clearly learning, in real time, how much {n} knows about his till.', '{n} has, in the last ten minutes, made three friends and one enemy, and is delighted with both.'],
-  medic: ['{n} is patching up someone who lost an argument with a bulkhead.', '{n} is nursing one drink and watching everyone else\'s.', '{n} has been cornered by a stranger with a rash, and is being remarkably patient about it.', '{n} is giving a small, calm lecture on hydration to a table of very unwell-looking dockers.', '{n} is sitting alone, quietly, with an empty glass in both hands.', '{n} is teaching a bartender the correct way to bandage a burn, with the help of a napkin and a great deal of patience.'],
+  engineer: ['{n} is sketching a drive modification on a napkin for anyone who will look.', '{n} has found the one other engineer here. They are arguing about injectors.', '{n} is holding a fork up to the light and saying "tolerances" under their breath.', '{n} is under a table with a flashlight, looking at the bar\'s wiring.', '{n} has been handed a wrench by the bartender and is fixing the tap.', '{n} is explaining the coolant loop to a stranger with four salt shakers and a pool of gravy.'],
+  pilot: ['The flip burn in {n}\'s story is two g harder than it was an hour ago.', '{n} is losing at darts and blaming the gravity.', '{n} has drawn a lane map in spilled beer and is arguing for it with anyone who comes by.', '{n} and another pilot at the far end of the bar are arguing about angles, in hand gestures.', '{n} is sitting straight, listening to a stranger\'s story about a bad landing. {n} winces at the landing.', '{n} is standing on a chair, demonstrating a docking maneuver with two glasses and a napkin.'],
+  gunner: ['{n} is arm-wrestling a dockworker, and winning.', '{n} sits with their back to the wall and watches the room.', '{n} is cleaning a cup with the hem of their shirt and watching the door.', '{n} has won a small bet on a dart throw and is refusing the money.', '{n} shares a corner table with an old navy veteran. Neither has spoken in an hour. Both have ordered a second round.', '{n} is telling a quiet story about a jammed gun and a captain who never found out.'],
+  quartermaster: ['{n} is working the room, buying no drinks.', '{n} is haggling with the bartender over the price of a bottle.', '{n} is making a list on the back of a receipt.', '{n} is talking with a grain merchant. A price has been mentioned twice.', '{n} is listening to a stranger\'s theory about the price of water and taking notes.', '{n} has a very large bag of dried figs and is handing them out to the room.'],
+  slicer: ['{n} is at a corner table, doing something to the bar\'s jukebox.', '{n} is on their terminal with their back to the room.', '{n} has taken over the bar\'s music. Nobody has complained.', '{n} is watching the bar\'s security feed on a very small screen.', '{n} is talking to the bartender, low, about the till. The bartender counts it twice.', '{n} has made three friends and one enemy in the last ten minutes.'],
+  medic: ['{n} is patching up someone who lost an argument with a bulkhead.', '{n} is nursing one drink and watching everyone else\'s.', '{n} has been cornered by a stranger with a rash.', '{n} is giving a short lecture on hydration to a table of dockers.', '{n} is sitting alone with an empty glass in both hands.', '{n} is showing the bartender how to bandage a burn, with a napkin.'],
 };
 
 function barOf(planet) {
@@ -92,27 +92,27 @@ function met(pat) {
 function roomLines(planet) {
   const out = [], sid = G.state.systemId, c = culture(), day = cultureToday(), show = pick(airing(day)), book = pick(newBooks(day)), ls = pick(LEAGUES), last = season(ls).last;
   for (const x of conditions(sid)) {
-    if (/Shortage of Water/.test(x.text)) out.push(`The beer is watered down, which on ${planet.name} is saying something.`);
+    if (/Shortage of Water/.test(x.text)) out.push(`The beer is watered down. A sign by the taps says the water ration on ${planet.name} is cut.`);
     else if (/at war/.test(x.text)) out.push('A navy recruiter is buying drinks for anyone who will sit still.');
-    else if (/pirate/i.test(x.text) && x.bad) out.push('Half the pilots in here are talking about the raids, and the other half are pretending not to be scared.');
+    else if (/pirate/i.test(x.text) && x.bad) out.push('Half the pilots in here are talking about the raids. The other half are not talking.');
     else if (/booming/.test(x.text)) out.push('Money is loose tonight. Somebody at the back is buying rounds for strangers.');
-    else if (/slump/.test(x.text)) out.push('The place is half empty. Everyone is nursing one drink as long as it will go.');
+    else if (/slump/.test(x.text)) out.push('The place is half empty. Everyone is nursing one drink.');
   }
   out.push(pick([
-    `The screens over the bar are showing "${show.title}". Someone shushes you during the good part.`,
-    last ? `${ls.sport[0].toUpperCase()}${ls.sport.slice(1)} on every screen: ${last.a} ${last.sa}, ${last.b} ${last.sb}. ${pick([`The ${last.winner} fans are buying.`, `Someone here lost money on the ${last.loser}.`])}` : `The ${ls.name} has no games on tonight, and everyone is an expert anyway.`,
+    `The screens over the bar are showing "${show.title}". Someone tells you to be quiet.`,
+    last ? `${ls.sport[0].toUpperCase()}${ls.sport.slice(1)} on every screen: ${last.a} ${last.sa}, ${last.b} ${last.sb}. ${pick([`The ${last.winner} fans are buying.`, `Someone here lost money on the ${last.loser}.`])}` : `The ${ls.name} has no games on tonight. Everyone has an opinion anyway.`,
     `"${c.song.title}" by ${c.song.band} comes on for the third time tonight. Nobody complains.`,
     `Two people at the bar are arguing about the ending of "${book.title}".`,
-    'A man at the end of the bar is telling the same joke he has told all evening, and, every time, somebody laughs, out of pity or habit.',
-    'Somebody has started a game of dominoes, and it has become, in the last hour, a serious matter.',
-    'The bartender polishes the same glass, slowly, in a pool of warm light, and hums something old.',
-    'A very old couple are dancing, very slowly, in the corner, to a song nobody else can hear.',
-    'The light over the bar flickers, twice, and everyone looks up, and, when it steadies, nobody says anything.',
-    'A child is asleep in a booth, with her head on a rolled-up coat, while her parents talk in low voices over a bottle.',
+    'A man at the end of the bar is telling the same joke he told an hour ago. Somebody laughs.',
+    'Somebody has started a game of dominoes. It has been going an hour, and two people have stopped speaking.',
+    'The bartender polishes the same glass under the light and hums something old.',
+    'An old couple are dancing in the corner. The song in the room is a different one.',
+    'The light over the bar flickers twice. Everyone looks up. It steadies, and they look down again.',
+    'A child is asleep in a booth with her head on a rolled-up coat. Her parents are talking in low voices over a bottle.',
   ]));
   for (const cm of crewMembers()) {
     const lines = CREW_AT_BAR[cm.role];
-    if (lines && Math.random() < 0.6) out.push(pick(lines).replace('{n}', cm.first));
+    if (lines && Math.random() < 0.6) out.push(pick(lines).replace(/\{n\}/g, cm.first));
   }
   return out;
 }
