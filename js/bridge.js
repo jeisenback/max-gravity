@@ -10,11 +10,11 @@ const STATIONS = [
   { id: 'nav', name: 'Navigation', short: 'Nav', tabs: ['nav'] },
   { id: 'weapons', name: 'Weapons', short: 'Guns', tabs: ['weapons'] },
   { id: 'eng', name: 'Engineering', short: 'Eng', tabs: ['shipyard'] },
-  { id: 'interior', name: 'Interior', short: 'Deck', tabs: ['crew', 'journal'] },
+  { id: 'interior', name: 'Interior', short: 'Deck', tabs: ['crew', 'web', 'journal'] },
   { id: 'comms', name: 'Comms', short: 'Comms', tabs: ['comms'] },
   { id: 'ops', name: 'Operations', short: 'Ops', tabs: ['port', 'trade', 'missions', 'bar', 'company'] },
 ];
-const TAB_NAMES = { crew: 'Crew', journal: 'Journal', port: 'Port', trade: 'Exchange', missions: 'Missions', bar: 'Bar', company: 'Company' };
+const TAB_NAMES = { crew: 'Crew', web: 'Bonds', journal: 'Journal', port: 'Port', trade: 'Exchange', missions: 'Missions', bar: 'Bar', company: 'Company' };
 const BRIDGE_KEYS_H = 52;  // the key bar's height in a burn; the transit view leaves room for it
 
 const stationOf = tab => STATIONS.find(s => s.tabs.includes(tab) || (tab === 'person' && s.id === 'interior')) || STATIONS.find(s => s.id === 'ops');  // the character screen sits under Interior
