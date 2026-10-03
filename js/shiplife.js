@@ -7,16 +7,17 @@
 // Once before the flip and once after, you can pick a downtime activity. Loaded
 // before game.js; only calls into it at runtime.
 
-// Rooms from stern to bow, as shares of the ship's length.
+// Two decks, stern to bow, as shares of the ship's length. Deck 0 is the upper deck, 1 the lower.
+// The engine room is the full height of the stern; a ladder joins the decks.
 const ROOMS = [
-  { id: 'engine', name: 'Engine', w: 0.17 },
-  { id: 'hold', name: 'Hold', w: 0.29 },
-  { id: 'berths', name: 'Berths', w: 0.21 },
-  { id: 'galley', name: 'Galley', w: 0.17 },
-  { id: 'bridge', name: 'Bridge', w: 0.16 },
+  { id: 'engine', name: 'Engine', x0: 0, x1: 0.17, deck: 1, tall: true },
+  { id: 'hold', name: 'Hold', x0: 0.17, x1: 0.6, deck: 1 },
+  { id: 'berths', name: 'Berths', x0: 0.17, x1: 0.44, deck: 0 },
+  { id: 'galley', name: 'Galley', x0: 0.44, x1: 0.66, deck: 0 },
+  { id: 'bridge', name: 'Bridge', x0: 0.66, x1: 0.92, deck: 0 },
 ];
-let acc = 0;
-for (const r of ROOMS) { r.x0 = acc; acc += r.w; r.x1 = acc; r.mid = (r.x0 + r.x1) / 2; }
+const LADDER = 0.62;
+for (const r of ROOMS) { r.w = r.x1 - r.x0; r.mid = (r.x0 + r.x1) / 2; }
 const roomAt = id => ROOMS.find(r => r.id === id);
 
 // Where each kind of person likes to spend a burn.
@@ -77,7 +78,7 @@ function shipPeople() {
   }
   if (G.state.home && G.state.home.cat) people.push({ name: G.state.home.cat, role: 'cat' });  // family.js
   // Everyone starts strapped in for the burn out.
-  people.forEach((p, i) => Object.assign(p, { room: 'berths', x: couchX(i, people.length), tx: null, wait: rand(1, 4), seat: couchX(i, people.length) }));
+  people.forEach((p, i) => Object.assign(p, { room: 'berths', x: couchX(i, people.length), dk: 0, tdk: 0, tx: null, wait: rand(1, 4), seat: couchX(i, people.length) }));
   return (t.aboard = people);
 }
 
@@ -87,6 +88,7 @@ const couchX = (i, n) => (i === 0 ? roomAt('bridge').mid : roomAt('berths').x0 +
 function goTo(p, roomId) {
   const r = roomAt(roomId);
   p.room = roomId;
+  p.tdk = r.deck;
   p.tx = r.x0 + r.w * rand(0.25, 0.75);
 }
 
@@ -110,9 +112,12 @@ function lifeTick(dt) {
   if (G.mode !== 'transit' || !G.transit) return;
   const people = shipPeople(), ph = phase();
   for (const p of people) {
-    if (ph !== 'move') { p.x += (p.seat - p.x) * Math.min(1, dt * 2); p.tx = null; continue; }
-    if (p.tx !== null) {
-      const step = 0.06 * dt;
+    if (ph !== 'move') { const k = Math.min(1, dt * 2); p.x += (p.seat - p.x) * k; p.dk += (0 - p.dk) * k; p.tx = null; p.tdk = 0; continue; }
+    const step = 0.06 * dt;
+    if (p.dk !== p.tdk) {  // to the ladder, then up or down it
+      if (Math.abs(LADDER - p.x) > 0.003) p.x += Math.max(-step, Math.min(step, LADDER - p.x));
+      else p.dk += Math.max(-dt * 1.5, Math.min(dt * 1.5, p.tdk - p.dk));
+    } else if (p.tx !== null) {
       p.x += Math.max(-step, Math.min(step, p.tx - p.x));
       if (Math.abs(p.tx - p.x) < 0.002) {
         p.tx = null; p.wait = rand(5, 12);
@@ -128,15 +133,20 @@ function lifeTick(dt) {
 }
 
 // ---------- the cutaway ----------
+const CUTAWAY_H = 0.24;  // hull height as a share of its length: two decks
+
 function drawCutaway(cx, cy, maxL) {
   // Longer hulls for bigger ships: a Rock Hopper is 60% of the space, an Ice Hauler all of it.
   const L = maxL * Math.min(1, 0.6 + 0.4 * (SHIPS[G.state.shipId].size - 10) / 8);
-  const t = G.transit, people = shipPeople(), ph = phase(), H = Math.round(maxL * 0.17);
+  const t = G.transit, people = shipPeople(), ph = phase(), H = Math.round(maxL * CUTAWAY_H);
   const burning = !t.event && Math.abs(t.angle - (t.flipped ? Math.PI / 2 : -Math.PI / 2)) < 0.05;
   // Nose to the right on the way out; at the flip the ship turns end over end.
   const turn = -Math.sin(t.angle);  // 1 before the flip, -1 after, 0 mid-turn
   const X = f => cx + (f - 0.5) * L * turn;
-  const top = cy - H / 2, floor = cy + H / 2 - 6;
+  const top = cy - H / 2, mid = top + H / 2, upper = mid - 3, lower = top + H - 6;  // the deck line and each deck's floor
+  const dh = H / 2, ph_ = Math.max(9, Math.min(15, dh * 0.24));  // a deck's height, a person's
+  const floorOf = dk => upper + (lower - upper) * dk;
+  const span = (a, b) => Math.max(2, (b - a) * L * Math.abs(turn));  // a share of the length, in pixels
 
   // Drive plume off the stern.
   if (burning) {
@@ -150,7 +160,7 @@ function drawCutaway(cx, cy, maxL) {
     ctx.fillStyle = halo;
     ctx.fillRect(sx - H * 0.7, cy - H * 0.7, H * 1.4, H * 1.4);
     ctx.fillStyle = g;
-    ctx.beginPath(); ctx.moveTo(sx, cy - H * 0.22); ctx.lineTo(sx + dir * len, cy); ctx.lineTo(sx, cy + H * 0.22); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(sx, cy - H * 0.16); ctx.lineTo(sx + dir * len, cy); ctx.lineTo(sx, cy + H * 0.16); ctx.fill();
   }
   if (Math.abs(turn) < 0.05) return;  // edge-on mid-turn
 
@@ -170,20 +180,20 @@ function drawCutaway(cx, cy, maxL) {
 
   // A pool of light under each room's ceiling lamp: warm in the galley and berths.
   for (const r of ROOMS) {
-    const lx = X(r.mid), warm = r.id === 'galley' || r.id === 'berths';
-    const lamp = ctx.createRadialGradient(lx, top + 4, 0, lx, top + 4, H * 0.9);
+    const lx = X(r.mid), ly = r.deck === 0 || r.tall ? top + 4 : mid + 3, warm = r.id === 'galley' || r.id === 'berths';
+    const lamp = ctx.createRadialGradient(lx, ly, 0, lx, ly, dh * 1.1);
     lamp.addColorStop(0, warm ? 'rgba(255,200,130,0.22)' : 'rgba(150,200,255,0.15)');
     lamp.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = lamp;
-    ctx.fillRect(lx - H * 0.9, top + 2, H * 1.8, H - 4);
+    ctx.fillRect(lx - dh * 1.1, ly - 2, dh * 2.2, dh * 1.2);
     ctx.fillStyle = warm ? '#ffcf8f' : '#bfe0ff';
-    ctx.fillRect(lx - 4, top + 3, 8, 1.5);
+    ctx.fillRect(lx - 4, ly - 1, 8, 1.5);
   }
   // Bridge window in the nose.
   ctx.strokeStyle = 'rgba(160,215,255,0.8)';
   ctx.lineWidth = 3;
   ctx.beginPath();
-  ctx.moveTo(X(0.915), top + H * 0.2); ctx.quadraticCurveTo(X(0.955), top + H * 0.3, X(0.96), cy - H * 0.05);
+  ctx.moveTo(X(0.915), top + dh * 0.3); ctx.quadraticCurveTo(X(0.955), top + dh * 0.5, X(0.96), mid - dh * 0.15);
   ctx.stroke();
   ctx.restore();
   // Running lights, blinking.
@@ -192,69 +202,122 @@ function drawCutaway(cx, cy, maxL) {
     ctx.fillStyle = '#5aff8a'; ctx.fillRect(X(0.45) - 1.5, top + H, 3, 3);
   }
 
-  // Rooms, bulkheads, and what's in them.
+  // Decks, bulkheads with a door at each floor, and the ladder.
   ctx.lineWidth = 1;
-  for (const r of ROOMS) {
-    if (r.x0 > 0) { ctx.strokeStyle = '#27405c'; ctx.beginPath(); ctx.moveTo(X(r.x0), top + 4); ctx.lineTo(X(r.x0), top + H - 4); ctx.stroke(); }
-    ctx.fillStyle = '#5b7896';
-    ctx.font = `600 ${L < 450 ? 8 : 10}px ${LABEL_FONT}`;
-    ctx.textAlign = 'center';
-    ctx.fillText(r.name.toUpperCase(), X(r.mid), top + 14);
+  ctx.strokeStyle = '#27405c';
+  ctx.beginPath();
+  ctx.moveTo(X(0.17), mid); ctx.lineTo(X(LADDER - 0.012), mid);
+  ctx.moveTo(X(LADDER + 0.012), mid); ctx.lineTo(X(0.9), mid);
+  for (const x of [0.17, 0.44, 0.66]) { ctx.moveTo(X(x), top + 4); ctx.lineTo(X(x), mid); }  // upper rooms
+  ctx.moveTo(X(0.17), mid); ctx.lineTo(X(0.17), top + H - 4);  // the engine room's wall
+  ctx.moveTo(X(0.66), mid); ctx.lineTo(X(0.66), top + H - 4);  // the tanks begin
+  ctx.stroke();
+  ctx.fillStyle = '#0c1826';
+  for (const [x, f] of [[0.17, upper], [0.44, upper], [0.66, upper], [0.17, lower], [0.66, lower]]) {
+    ctx.fillRect(X(x) - 2, f - ph_ - 3, 4, ph_ + 3);
+    ctx.strokeRect(X(x) - 2, f - ph_ - 3, 4, ph_ + 3);
   }
   ctx.strokeStyle = '#1f3349';
-  ctx.beginPath(); ctx.moveTo(X(0.01), floor + 1); ctx.lineTo(X(0.9), floor + 1); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(X(0.01), lower + 1); ctx.lineTo(X(0.9), lower + 1); ctx.stroke();
+  ctx.strokeStyle = '#4a6a8c';
+  ctx.beginPath();
+  ctx.moveTo(X(LADDER) - 4, mid); ctx.lineTo(X(LADDER) - 4, lower);
+  ctx.moveTo(X(LADDER) + 4, mid); ctx.lineTo(X(LADDER) + 4, lower);
+  for (let y = mid + 4; y < lower; y += 5) { ctx.moveTo(X(LADDER) - 4, y); ctx.lineTo(X(LADDER) + 4, y); }
+  ctx.stroke();
+  ctx.fillStyle = '#5b7896';
+  ctx.font = `600 ${L < 450 ? 8 : 10}px ${LABEL_FONT}`;
+  ctx.textAlign = 'center';
+  for (const r of ROOMS) ctx.fillText(r.name.toUpperCase(), X(r.mid), r.deck === 0 || r.tall ? top + 14 : mid + 13);
 
-  // Engine: the reactor, brighter under thrust.
+  // Engine: the reactor, brighter under thrust, with its coolant lines and a console.
   const eng = roomAt('engine'), glow = (burning ? 0.9 : 0.35) * (0.9 + 0.1 * Math.sin(G.time * 6));
-  const ex = X(eng.mid), ey = cy + 2, er = H * 0.18;
-  const core = ctx.createRadialGradient(ex, ey, 0, ex, ey, er * 1.6);
+  const ex = X(eng.mid), ey = cy + 2, er = Math.min(H * 0.14, span(0, 0.17) * 0.3);
+  const core = ctx.createRadialGradient(ex, ey, 0, ex, ey, er * 1.7);
   core.addColorStop(0, `rgba(230,245,255,${glow})`);
   core.addColorStop(0.4, `rgba(120,180,255,${glow * 0.8})`);
   core.addColorStop(1, 'rgba(60,110,255,0)');
   ctx.fillStyle = core;
-  ctx.beginPath(); ctx.arc(ex, ey, er * 1.6, 0, Math.PI * 2); ctx.fill();
-  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.arc(ex, ey, er * 1.7, 0, Math.PI * 2); ctx.fill();
   ctx.strokeStyle = '#5d7fa3';
   ctx.beginPath(); ctx.arc(ex, ey, er, 0, Math.PI * 2); ctx.stroke();
+  ctx.strokeStyle = '#2a4561';
+  ctx.beginPath();
+  ctx.moveTo(ex, ey - er); ctx.lineTo(ex, top + 20);
+  ctx.moveTo(ex, ey + er); ctx.lineTo(ex, lower);
+  ctx.moveTo(ex - er, ey); ctx.lineTo(X(0.01), ey);
+  ctx.stroke();
+  ctx.fillStyle = '#35587d';
+  ctx.fillRect(X(0.145) - 3, lower - 12, 6, 12);
+  ctx.fillStyle = `rgba(255,170,80,${0.5 + 0.4 * Math.sin(G.time * 3)})`;
+  ctx.fillRect(X(0.145) - 2, lower - 10, 4, 2);
 
-  // Hold: crates for the cargo you carry.
+  // Hold: crates for the cargo you carry, two rows on the deck.
   const hold = roomAt('hold'), cap = ship().cargo, used = Math.min(cap, cargoUsed());
-  const fillN = cap ? Math.round(12 * used / cap) : 0, cw = hold.w * L * Math.abs(turn) / 6 - 3, chh = Math.min(10, (floor - top - 22) / 2);
+  const fillN = cap ? Math.round(12 * used / cap) : 0, cw = span(hold.x0, hold.x1) / 6 - 3, chh = Math.min(10, (lower - mid - 22) / 2);
   const colors = ['#8a6d3b', '#6d7f3b', '#3b6d7f', '#7f3b5a'];
   for (let i = 0; i < fillN; i++) {
     const col = i % 6, row = Math.floor(i / 6);
     ctx.fillStyle = colors[i % colors.length];
-    ctx.fillRect(X(hold.x0 + hold.w * (col + 0.5) / 6) - cw / 2, floor - (row + 1) * (chh + 1), cw, chh);
+    ctx.fillRect(X(hold.x0 + hold.w * (col + 0.5) / 6) - cw / 2, lower - (row + 1) * (chh + 1), cw, chh);
   }
 
-  // Berths: a bunk for each berth on this ship (up to six drawn).
-  const berths = roomAt('berths'), n = Math.min(6, ship().berths);
+  // Reaction mass tanks in the lower nose, filled to what is left.
+  const fuelShare = Math.max(0, Math.min(1, G.state.fuel / ship().fuel)) || 0, th = lower - mid - 22;
+  for (const [a, b] of [[0.685, 0.775], [0.79, 0.88]]) {
+    const tx = X(Math.min(a, b)), tw = span(a, b), x0 = Math.min(X(a), X(b));
+    ctx.strokeStyle = '#4a6a8c';
+    ctx.strokeRect(x0, lower - th, tw, th);
+    ctx.fillStyle = '#2f7f4a';
+    ctx.fillRect(x0 + 1, lower - th * fuelShare, tw - 2, th * fuelShare - 1);
+  }
+
+  // Berths: bunks in two tiers for each berth on this ship (up to six drawn).
+  const berths = roomAt('berths'), n = Math.min(6, ship().berths), cols = Math.ceil(n / 2), bw = Math.min(26, span(berths.x0, berths.x1) / cols - 5);
   for (let i = 0; i < n; i++) {
-    const bx = X(berths.x0 + berths.w * (i + 0.5) / n);
-    ctx.fillStyle = '#1d2f45';
-    ctx.fillRect(bx - 6, i % 2 ? top + 22 : floor - 12, 12, 4);
+    const bx = X(berths.x0 + berths.w * (Math.floor(i / 2) + 0.5) / cols), by = i % 2 ? upper - 22 : upper - 9;
+    ctx.fillStyle = '#1d2f45'; ctx.fillRect(bx - bw / 2, by, bw, 5);
+    ctx.fillStyle = '#2c4766'; ctx.fillRect(bx - bw / 2 + 1, by, bw - 2, 3);
+    ctx.fillStyle = '#6f8aa8'; ctx.fillRect(bx - bw / 2 + 1, by, 4, 3);
   }
-  // Galley table and bridge consoles.
+  // Galley: a counter along the wall, and a table with stools.
+  const gal = roomAt('galley'), gx = X(gal.mid);
   ctx.fillStyle = '#2a3f58';
-  ctx.fillRect(X(roomAt('galley').mid) - 8, floor - 8, 16, 3);
-  ctx.fillStyle = '#35587d';
-  ctx.fillRect(X(roomAt('bridge').x0 + 0.03) - 5, floor - 12, 10, 12);
+  ctx.fillRect(Math.min(X(0.455), X(0.5)), upper - 9, span(0.455, 0.5), 9);
+  ctx.fillRect(gx - 10, upper - 9, 20, 2);
+  ctx.fillRect(gx - 1, upper - 7, 2, 7);
+  ctx.fillRect(gx - 12, upper - 4, 4, 4); ctx.fillRect(gx + 8, upper - 4, 4, 4);
+  ctx.fillStyle = '#e8c890'; ctx.fillRect(gx - 4, upper - 12, 3, 3);
+  // Bridge: two consoles with live screens, and the helm chair.
+  const br = roomAt('bridge');
+  for (const f of [0.07, 0.15]) {
+    const bx = X(br.x0 + f);
+    ctx.fillStyle = '#35587d'; ctx.fillRect(bx - 5, upper - 12, 10, 12);
+    ctx.fillStyle = `rgba(120,200,255,${0.55 + 0.25 * Math.sin(G.time * 2 + f * 40)})`; ctx.fillRect(bx - 4, upper - 11, 8, 4);
+  }
+  ctx.fillStyle = '#2a3f58'; ctx.fillRect(X(br.x0 + 0.23) - 3, upper - 8, 6, 8);
 
-  // People, with names below where they fit.
+  // People, with names below the hull where they fit.
   ctx.textAlign = 'center';
   ctx.font = `${L < 450 ? 8 : 9}px "IBM Plex Mono", monospace`;
   const labels = [];
   people.forEach((p, i) => {
-    const x = X(p.x), bob = ph === 'float' ? Math.sin(G.time * 2 + i) * H * 0.18 - H * 0.12 : 0;
-    const y = floor + bob, seated = ph === 'couch';
+    const x = X(p.x), floating = ph === 'float', bob = floating ? Math.sin(G.time * 2 + i) * dh * 0.18 - dh * 0.12 : 0;
+    const y = floorOf(p.dk) + bob, seated = ph === 'couch', walking = (p.tx !== null || p.dk !== p.tdk) && !floating && !seated;
     ctx.fillStyle = ROLE_COLORS[p.role];
+    ctx.strokeStyle = ROLE_COLORS[p.role];
     if (p.role === 'cat') {  // low to the deck, with ears and a tail
       ctx.fillRect(x - 3, y - 3, 6, 3);
       ctx.fillRect(x + 2, y - 5, 2, 2);
       ctx.fillRect(x - 4, y - 5, 1, 3);
     } else {
-      ctx.fillRect(x - 2, y - (seated ? 7 : 11), 4, seated ? 7 : 11);
-      ctx.beginPath(); ctx.arc(x, y - (seated ? 10 : 14), 3, 0, Math.PI * 2); ctx.fill();
+      const bodyH = seated ? ph_ * 0.5 : ph_ * 0.62, legH = seated ? 0 : ph_ - bodyH - 4;
+      const swing = walking ? Math.sin(G.time * 9 + i) * 2 : 0;
+      ctx.lineWidth = 1.5;
+      if (legH > 0) { ctx.beginPath(); ctx.moveTo(x - 1, y - legH); ctx.lineTo(x - 1 + swing, y); ctx.moveTo(x + 1, y - legH); ctx.lineTo(x + 1 - swing, y); ctx.stroke(); }
+      ctx.lineWidth = 1;
+      ctx.fillRect(x - 2.5, y - legH - bodyH, 5, bodyH);
+      ctx.beginPath(); ctx.arc(x, y - legH - bodyH - 2.5, 2.6, 0, Math.PI * 2); ctx.fill();
     }
     if (p.role !== 'passenger' || p.pid) {
       const w = ctx.measureText(p.name).width + 4;

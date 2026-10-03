@@ -463,9 +463,9 @@ function drawTransit(W, H) {
   }
 
   // Our ship in cutaway, with everyone aboard (shiplife.js). It turns at the midpoint.
-  const L = Math.min(viewW - 60, 640), shipY = cy + 70;
+  const L = Math.min(viewW - 60, 640), shipY = cy + (narrow ? 56 : 70);
   drawCutaway(cx, shipY, L);
-  G.lifeY = shipY + L * 0.085 + 34;  // downtime buttons sit below it
+  G.lifeY = shipY + L * CUTAWAY_H / 2 + 34;  // downtime buttons sit below it
 
   // Route
   const barW = Math.min(420, viewW - 60);
