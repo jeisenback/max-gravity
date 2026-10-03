@@ -1294,6 +1294,13 @@ canvas.addEventListener('click', e => {
     if (i >= 0) { G.navPlanet = i; msg(`Nav target: ${system().planets[i].name}.`); }
     return;
   }
+  // On a burn, tap or click someone in the cutaway to open their page.
+  if (G.mode === 'transit' && G.transit && !G.transit.event) {
+    const reach = Touch.on ? 24 : 14;
+    const near = (G.cutHits || []).map(h => ({ h, d: Math.hypot(e.clientX - h.x, e.clientY - h.y) })).filter(c => c.d < reach).sort((a, b) => a.d - b.d)[0];
+    if (near) Mods.act('person', near.h.id);
+    return;
+  }
   if (G.mode !== 'map' || !G.mapPos) return;
   for (const id of Object.keys(SYSTEMS)) {
     const [x, y] = G.mapPos(id);
