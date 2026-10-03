@@ -514,3 +514,20 @@ test('at the bar a hand cannot offer passage, because the berths are the captain
   assert.ok(r.hand.includes('Ask for a blessing on the ship') && r.owner.includes('Ask for a blessing on your ship'), 'and the ship is not theirs to bless as theirs');
   await done();
 });
+
+test('a hired hand\'s own page shows their place on the ship and how the crew see them', async () => {
+  const { page, ev, done } = await open({ scope: 'earth-hired' });
+  const cap = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' });
+    while (G.dialog) finishEvent();
+    G.state.day += 12; G.viewPerson = 'you'; UI.tab = 'person'; UI.render();
+    return G.state.hired.captain;
+  });
+  const text = await page.innerText('#panel');
+  assert.match(text, /ON THE SHIP/i);
+  assert.match(text, /Aboard\s+12 days/);
+  assert.match(text, /Post\s+Gunner/);
+  assert.match(text, /HOW THEY SEE YOU/i);
+  assert.ok(await page.$(`#panel [data-action=person][data-arg="${cap}"]`), 'the captain, linked, among those who see you');
+  await done();
+});
