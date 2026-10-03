@@ -286,3 +286,30 @@ test('what people are seen doing on the ship: every room and role has lines that
   assert.deepEqual(r.bad, []);
   await done();
 });
+
+test('Good News and Bad News open and resolve in many ways, and every one fills in', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    const st = G.state; st.tutorial = null; while (G.dialog) finishEvent();
+    const mk = role => { const p = makePerson('belt'); p.role = role; p.skill = 1; registerPerson(p); st.crew.push(p.id); return p; };
+    const a = mk('engineer'); mk('pilot'); mk('gunner');
+    storyOf(a);
+    const bad = [], opens = { good: new Set(), bad: new Set() }, results = { good: new Set(), bad: new Set() };
+    const fill = t => { if (/undefined|NaN|\[object|\{[a-z]+\}/.test(String(t))) bad.push(String(t).slice(0, 80)); return String(t).replace(/[A-Z][a-z]+/g, 'N'); };
+    for (const good of [true, false]) for (let i = 0; i < 300; i++) {
+      st.credits = 5000;
+      const pool = good ? GOOD_NEWS : BAD_NEWS;
+      const text = pick(pool).replace('{who}', `their ${missed(a)}`).replace('{home}', a.home);
+      a.news = { good, text }; a.mood = { kind: good ? 'high' : 'low', until: st.day + 10, text };
+      const e = newsEvent(a), k = good ? 'good' : 'bad';
+      opens[k].add(fill(e.text).replace(/their \w+ N/g, 'X').slice(0, 40));
+      for (const c of e.choices) { if (c.can && !c.can()) continue; results[k].add(fill(c.run()).slice(0, 60)); }
+    }
+    return { bad, pools: [GOOD_NEWS.length, BAD_NEWS.length], goodOpen: opens.good.size, badOpen: opens.bad.size, goodRes: results.good.size, badRes: results.bad.size };
+  });
+  assert.deepEqual(r.bad, [], 'no unfilled slot in any opening or result');
+  assert.ok(r.pools[0] >= 16 && r.pools[1] >= 16, `sixteen news items of each kind at least (${r.pools})`);
+  assert.ok(r.goodOpen >= 8 && r.badOpen >= 8, `eight openings of each (${r.goodOpen}, ${r.badOpen})`);
+  assert.ok(r.goodRes >= 5 && r.badRes >= 9, `and several results for each choice (${r.goodRes}, ${r.badRes})`);
+  await done();
+});
