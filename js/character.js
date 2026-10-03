@@ -145,3 +145,23 @@ Mods.register({
     M.action('personBack', () => { if (G.transit) G.bridgeOpen = 'interior'; else UI.tab = UI.tabBack && UI.tabBack !== 'person' ? UI.tabBack : 'crew'; });
   },
 });
+
+// Who a scene is about: the people it names, from those aboard, the captain, and the bar. An event can also list them in `people`
+// (ids). Three at most, in the order the text names them.
+function scenePeople(ev) {
+  if (!ev) return [];
+  if (ev.people) return ev.people.map(id => person(id)).filter(Boolean);
+  const st = G.state, text = `${ev.title} ${ev.text}`, h = hired();
+  const pool = [...st.crew.map(person), ...paxAboard().map(m => m.pid && st.people[m.pid]), ...(G.bar || []), ...(G.patrons || []).map(x => x.p), h && person(h.captain)].filter(c => c && c.first && c.first.length > 2);
+  const at = c => { const m = text.match(new RegExp(`\\b${c.first.replace(/[^\w]/g, '')}\\b`)); return m ? m.index : -1; };
+  const seen = new Set();
+  return pool.filter(c => !seen.has(c.first) && seen.add(c.first) && at(c) >= 0).sort((a, b) => at(a) - at(b)).slice(0, 3);
+}
+
+function sceneFacesHtml(ev) {
+  const people = scenePeople(ev);
+  return people.length ? `<div class="scene-faces">${people.map(c => {
+    const ring = moodLow(c) ? 'warn' : moodHigh(c) ? 'good' : '';
+    return `<div class="scene-face"><div class="face ${ring}">${portraitSvg(c)}</div><span>${esc(c.first)}</span></div>`;
+  }).join('')}</div>` : '';
+}

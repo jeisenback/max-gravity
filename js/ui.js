@@ -52,6 +52,7 @@ const UI = {
     this.el.innerHTML = `
       <div class="event-body" role="dialog" aria-label="${ev.title}">
         <div class="eyebrow">${ev.via ? `${VIA_LABELS[ev.via]} &middot; ` : ''}${where}</div>
+        ${sceneFacesHtml(ev)}
         <h1>${ev.title}</h1>
         <p>${ev.text}</p>
         <div class="choices">
@@ -66,6 +67,7 @@ const UI = {
     this.el.innerHTML = `
       <div class="event-body">
         <div class="eyebrow">${G.mode === 'hail' ? 'Comms channel' : G.mode === 'transit' ? 'In transit' : G.state.planet}</div>
+        ${sceneFacesHtml(G.dialog && G.dialog.event)}
         <h1>${title}</h1>
         <p>${text}</p>
         <div class="choices"><button data-action="continue" class="primary">Continue</button></div>
