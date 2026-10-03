@@ -78,13 +78,15 @@ function dockPeople(gov, status) {
   return st.crew.map(person).filter(p => p && tiesOf(p).status[gov] === status && !(seen[`${p.id}:${gov}:${status}`] > st.day - 60));
 }
 
-// The ship is stopped at most once in 120 days, whoever is aboard.
-function customsDue() { const st = G.state; return !((st.customs || {}).last > st.day - 120); }
+// The ship is stopped at most once in 120 days at a port, and once in 120 at sea, whoever is aboard.
+function customsDue(patrol) { const st = G.state; return !((st.customs || {})[patrol ? 'patrolLast' : 'last'] > st.day - 120); }
 
-function customsScene(gov, planet) {
-  const st = G.state, h = hired(), cap = person(h.captain), p = customsDue() ? dockPeople(gov, 'wanted')[0] || dockPeople(gov, 'exile')[0] : null;
+// The same stop in flight is a patrol cutter alongside, and `planet` is then only a name for where the crew member is left.
+function customsScene(gov, planet, patrol) {
+  const st = G.state, h = hired(), cap = person(h.captain), p = customsDue(patrol) ? dockPeople(gov, 'wanted')[0] || dockPeople(gov, 'exile')[0] : null;
   if (!p) return null;
-  st.customs.last = st.day;
+  st.customs[patrol ? 'patrolLast' : 'last'] = st.day;
+  const officer = patrol && st.crew.map(person).find(q => q && q !== p && tiesOf(q).status[gov] === 'officer');
   const status = tiesOf(p).status[gov], n = p.first, mine = youTies(), papers = mine.aff === gov && ['member', 'officer'].includes(mine.status[gov]);
   (st.customs[`${p.id}:${gov}:${status}`] = st.day);
   const weight = status === 'wanted' ? 0.55 : 0.8;  // an exile is turned back less often than a wanted one is held
@@ -95,7 +97,8 @@ function customsScene(gov, planet) {
     return ` ${rep.first} signs on for the berth.`;
   };
   const choices = [];
-  if (papers) choices.push({ label: `[${gov} papers] Vouch for ${n} as a member`, run() { like(p, 2, `You vouched for me at customs on ${planet.name}.`); return `You give the officer your papers and say ${n} is signed on the ship's articles. The officer reads the date, stamps the manifest, and does not look at ${n}.`; } });
+  if (officer) choices.push({ label: `[${officer.first}, a ${shortFaction(gov)} officer] Let ${officer.first} answer the hail`, run() { like(officer, 1, `You let me answer a ${shortFaction(gov)} patrol.`); return `${officer.first} takes the open band and gives a rank and a unit. The cutter's captain asks one question, gets the right answer, and does not ask for the crew list.`; } });
+  if (papers) choices.push({ label: `[${gov} papers] Vouch for ${n} as a member`, run() { like(p, 2, patrol ? `You vouched for me to a patrol.` : `You vouched for me at customs on ${planet.name}.`); return `You give the officer your papers and say ${n} is signed on the ship's articles. The officer reads the date, stamps the manifest, and does not look at ${n}.`; } });
   choices.push({ label: `Pay the officer (400 cr from the ship's fund)`, can: () => h.fund >= 400, run() { h.fund -= 400; like(cap, -1, `You paid a customs officer from the fund.`); return `The envelope goes across the counter. The officer takes the manifest into the back and brings it out stamped, and the number on it is not the number it was.`; } });
   choices.push({ label: `Say nothing and keep ${n} below`, run() {
     if (Math.random() < weight) return `The officer checks the crew list against the register for ten minutes. The ship is cleared, and ${n} is in the engine room the whole time.`;
@@ -103,10 +106,10 @@ function customsScene(gov, planet) {
     if (p.cast) return `They search the ship and find ${n}. The fine is ${fmt(fine)} cr from the ship's fund. ${n} is released at the foot of the ramp, and walks back up it.`;  // a main character does not leave
     return `They search the ship and find ${n}. The fine is ${fmt(fine)} cr from the ship's fund, and ${n} goes ashore under escort.${gone()}`;
   } });
-  if (!p.cast) choices.push({ label: `Put ${n} ashore`, run() { like(p, -3, `You put me ashore at customs on ${planet.name}.`); for (const id of st.crew) { const q = person(id); if (q && q !== p && q.memories && tiesOf(q).aff === tiesOf(p).aff) like(q, -1, `You put ${n} ashore at customs.`); } return `${n} takes a bag down the ramp. They do not say anything, and the officer clears the ship.${gone()}`; } });
+  if (!p.cast) choices.push({ label: patrol ? `Hand ${n} over to the cutter` : `Put ${n} ashore`, run() { like(p, -3, patrol ? `You handed me to a ${shortFaction(gov)} patrol.` : `You put me ashore at customs on ${planet.name}.`); for (const id of st.crew) { const q = person(id); if (q && q !== p && q.memories && tiesOf(q).aff === tiesOf(p).aff) like(q, -1, `You ${patrol ? 'handed' : 'put'} ${n} ${patrol ? 'over to a patrol' : 'ashore at customs'}.`); } return patrol ? `${n} goes across in the cutter's launch without a word. The cutter's captain thanks you for your cooperation and breaks off.${gone()}` : `${n} takes a bag down the ramp. They do not say anything, and the officer clears the ship.${gone()}`; } });
   return {
-    title: 'The Customs Officer', personal: true, via: 'crew', owner: 'you',
-    text: `The customs officer at ${planet.name} runs the crew list against the ${gov} register and stops at ${p.first} ${p.last}. "${status === 'wanted' ? `This one is wanted by ${shortFaction(gov)}` : `This one left ${shortFaction(gov)} with a mark against them`}," the officer says, and waits.`,
+    title: patrol ? 'A Patrol Cutter' : 'The Customs Officer', personal: true, via: patrol ? 'ship' : 'crew', owner: 'you',
+    text: patrol ? `A ${shortFaction(gov)} patrol cutter matches your course and asks for the crew list. Its captain reads it aloud, slowly, and stops at ${p.first} ${p.last}. "${status === 'wanted' ? `This one is wanted by ${shortFaction(gov)}` : `This one left ${shortFaction(gov)} with a mark against them`}," the captain says, and waits.` : `The customs officer at ${planet.name} runs the crew list against the ${gov} register and stops at ${p.first} ${p.last}. "${status === 'wanted' ? `This one is wanted by ${shortFaction(gov)}` : `This one left ${shortFaction(gov)} with a mark against them`}," the officer says, and waits.`,
     choices,
   };
 }
@@ -130,7 +133,13 @@ Mods.register({
   id: 'ties', name: 'Faction ties', builtin: true,
   init(M) {
     M.filter('happenings', (list, where, planet) => {
-      if (!hired() || where !== 'port' || !planet || G.state.day - hired().since < 3) return list;
+      if (!hired() || G.state.day - hired().since < 3) return list;
+      if (where === 'transit' && G.transit) {  // a patrol stops a burn in or out of a faction's space
+        const to = SYSTEMS[G.transit.to], gov = [to.gov, system().gov].find(g => isFaction(g) && g !== 'Pirate' && dockPeople(g, 'wanted').concat(dockPeople(g, 'exile')).length);
+        if (gov && customsDue(true)) list = list.concat({ tier: 1, weight: 3, via: 'ship', make: () => customsScene(gov, to, true) });
+        return list;
+      }
+      if (where !== 'port' || !planet) return list;
       const gov = system().gov;
       if (!isFaction(gov) || gov === 'Pirate') return list;
       const out = [];

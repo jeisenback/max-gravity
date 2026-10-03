@@ -145,3 +145,34 @@ test('the person page shows their ties, and yours shows what each faction thinks
   assert.match(text, /YOUR TIES/i); assert.match(text, /Affiliation\s+Earth Coalition \(member\)/); assert.match(text, /Belt Collective\s+regards you as distrusted/);
   await done();
 });
+
+test('a patrol stops a burn for the crew it wants, an officer of theirs can answer for you, and handing a person over costs them', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = start(), h = hired(), gov = system().gov, out = {};
+    G.transit = { to: st.systemId, seen: [] };
+    st.crew = st.crew.filter(id => { const t = tiesOf(person(id)).status[gov]; return t !== 'wanted' && t !== 'exile' && t !== 'officer'; });  // a clean ship to start with
+    const tier1 = () => Mods.filter('happenings', [], 'transit').filter(c => c.tier === 1).length, n0 = tier1();  // other mods add their own
+    const p = find(t => t.status[gov] === 'wanted' || t.status[gov] === 'exile'), o = find(t => t.status[gov] === 'officer');
+    out.offered = tier1() === n0 + 1;
+    const e = customsScene(gov, system(), true);
+    out.title = e.title; out.labels = e.choices.map(c => c.label);
+    out.portStillDue = customsDue(false); out.patrolSpent = !customsDue(true);
+    const before = o.opinion; G.dialog = { event: e, choices: e.choices };
+    const text = chooseEvent(e.choices.findIndex(c => /answer the hail/.test(c.label)));
+    out.answered = /rank and a unit/.test(text); out.liked = o.opinion - before; out.stays = st.crew.includes(p.id);
+    st.customs.patrolLast = -1000; st.customs[`${p.id}:${gov}:${tiesOf(p).status[gov]}`] = -1000;
+    const e2 = customsScene(gov, system(), true), n = st.crew.length;
+    G.dialog = { event: e2, choices: e2.choices };
+    const hand = e2.choices.findIndex(c => /Hand .* over/.test(c.label)); out.hand = hand;
+    if (hand >= 0 && !p.cast) { chooseEvent(hand); out.left = !st.crew.includes(p.id); out.sameCrew = st.crew.length === n; }
+    return out;
+  });
+  assert.ok(r.offered, 'a stop is offered in flight once someone wanted is aboard, and not before');
+  assert.equal(r.title, 'A Patrol Cutter'); assert.ok(r.labels.some(l => /answer the hail/.test(l)));
+  assert.ok(r.portStillDue && r.patrolSpent, 'the sea stop and the port stop are counted apart');
+  assert.ok(r.answered && r.liked === 1 && r.stays);
+  assert.ok(r.hand >= 0 && r.left && r.sameCrew, 'handed over: gone, and a replacement signs on');
+  await done();
+});
