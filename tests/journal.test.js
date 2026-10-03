@@ -16,7 +16,7 @@ test('Interior has a Crew tab and a Journal tab, and the Journal holds the journ
   await ev(helpers);
   await ev(() => { hand(); const st = G.state; st.journal = [{ day: st.day, text: 'You covered the watch.' }, { day: st.day - 3, text: 'The captain made the window.' }]; UI.tab = 'crew'; UI.render(); });
   const tabs = await page.$$eval('.tabs.sub button', b => b.map(x => x.textContent));
-  assert.deepEqual(tabs, ['Crew', 'Journal']);
+  assert.deepEqual(tabs, ['Crew', 'Bonds', 'Journal']);
   await page.click('.tabs.sub [data-arg=journal]');
   const text = await page.innerText('#panel .body');
   for (const part of [/Journal/i, /You covered the watch/, /The captain made the window/, /Standing/i, /On the feeds/i, /News/i]) assert.match(text, part);  // headings are upper-cased by the page
