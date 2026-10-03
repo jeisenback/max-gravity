@@ -134,9 +134,9 @@ function postOccupant(id) {
 
 // A deck plan of the cutaway's ship (shiplife.js): the same two decks and rooms, with each person in the room they spend
 // their time in, and the posts nobody holds left empty. A ring shows how someone is doing: blue is well, amber is having a
-// hard time (an injured hand holds no post).
+// hard time or hurt (an injured hand holds no post).
 function deckSvg() {
-  const ring = c => moodLow(c) ? '#ff9a3c' : '#6fb0ff', X = f => 30 + f * 580, top = 40, mid = 130, bottom = 220;
+  const ring = c => moodLow(c) || (G.state.injured || {})[c.id] ? '#ff9a3c' : '#6fb0ff', X = f => 30 + f * 580, top = 40, mid = 130, bottom = 220;
   const homeRoom = role => HAUNTS[role] ? Object.entries(HAUNTS[role]).sort((a, b) => b[1] - a[1])[0][0] : 'berths';
   const placed = Object.keys(POSTS).map(id => ({ room: homeRoom(POSTS[id].role), o: postOccupant(id) }));
   placed.push({ room: 'bridge', o: hired() ? { who: hiredCaptain() } : { you: true } });  // the captain's place is the bridge
