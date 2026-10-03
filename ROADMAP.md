@@ -34,3 +34,12 @@ The captain decides and the crew flies: piloting and real-time fighting are the 
 ## 6. Community platform (alongside the others)
 - **An in-game mod browser that loads mods by link, and shareable scenarios** (done: the Port tab's Mods and Scenarios sections).
 - **Shared news** (done, on claude.ai): other players' deeds show up as news and chatter in your game, for captains who opt in.
+
+## 7. The crew and the ship as a place
+The game leans toward role-playing: people, what they think of you, and a ship you live in. Built so far: the two-deck cutaway and the Interior deck plan drawn from it, a page for each crew member (what they have told you, their bonds, their mood), portrait cards, your own page, and faces in scenes. Next, in rough order:
+- **Consequence notes after a choice**: the result screen says what the choice did to how people feel ("Ines thinks better of you", "Mara and Ines are further apart"). It reports after the fact, since most outcomes are not known in advance.
+- **Click a person in the burn view**: tapping someone in the cutaway opens their page.
+- **A chapter recap at the buy-in**: runs and earnings, who you got close to, marks and memories, and favours done or left undone, from what the game already keeps.
+- **A ship that has a night**: lights dim in the ship's night, people sleep in their bunks, and rooms hold different people at different hours.
+- **Skill-gated choices for the hired hand**: your post level opens a choice in scenes that fit your trade. Check how many scenes already do this first.
+- **More road scenes**: five or six for transit variety, if the 100-game sims still show repeats.

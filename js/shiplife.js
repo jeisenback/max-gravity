@@ -91,11 +91,11 @@ function lifeLine(p, crowd) {
 function shipPeople() {
   const t = G.transit;
   if (t.aboard) return t.aboard;
-  const people = [{ name: 'You', role: 'you' }];
-  for (const c of crewMembers()) people.push({ name: c.first, role: c.role });
+  const people = [{ name: 'You', role: 'you', id: 'you' }];
+  for (const c of crewMembers()) people.push({ name: c.first, role: c.role, id: c.id });
   for (const m of paxAboard().slice(0, 4)) {
     const p = m.pid && G.state.people[m.pid];
-    people.push({ name: p ? p.first : m.who.split(' ').slice(-1)[0], role: 'passenger', pid: m.pid });
+    people.push({ name: p ? p.first : m.who.split(' ').slice(-1)[0], role: 'passenger', pid: m.pid, id: p ? m.pid : null });
   }
   if (G.state.home && G.state.home.cat) people.push({ name: G.state.home.cat, role: 'cat' });  // family.js
   // Everyone starts strapped in for the burn out.
@@ -353,9 +353,11 @@ function drawCutaway(cx, cy, maxL) {
   const bunk = i => ({ x: X(berths.x0 + berths.w * (Math.floor(i / 2) + 0.5) / cols), y: i % 2 ? upper - 22 : upper - 9 });
   const slots = new Map();
   for (const p of people) if (slots.size < n && isAsleep(p)) slots.set(p, slots.size);
+  G.cutHits = [];  // where each person is on screen, for a click (game.js)
   people.forEach((p, i) => {
     const asleep = slots.has(p), x = asleep ? bunk(slots.get(p)).x : X(p.x), floating = ph === 'float', bob = floating ? Math.sin(G.time * 2 + i) * dh * 0.18 - dh * 0.12 : 0;
     const y = floorOf(p.dk) + bob, seated = ph === 'couch', walking = (p.tx !== null || p.dk !== p.tdk) && !floating && !seated;
+    if (p.id) G.cutHits.push({ x, y: asleep ? bunk(slots.get(p)).y - 2 : y - ph_ / 2, id: p.id });
     ctx.fillStyle = ROLE_COLORS[p.role];
     ctx.strokeStyle = ROLE_COLORS[p.role];
     if (asleep) {

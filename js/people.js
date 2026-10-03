@@ -127,6 +127,7 @@ function registerPerson(p) {
 function like(p, n, memory) {
   if (!p.memories) return;  // handcrafted crew (crew.js) have arcs instead of opinions
   p.opinion += n;
+  if (G.shifts && n) G.shifts.push({ p, n });  // what a choice did, for its result screen (shiftLines, character.js)
   if (memory) p.memories.push(`${dateOf()}: ${memory}`);
 }
 
