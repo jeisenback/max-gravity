@@ -433,6 +433,9 @@ function drawRoute(cx, y, barW, progress) {
   ctx.beginPath(); ctx.moveTo(sx + 6 * dir, y); ctx.lineTo(sx - 4 * dir, y - 5); ctx.lineTo(sx - 4 * dir, y + 5); ctx.closePath(); ctx.fill();
 }
 
+// How many lines the Comms box may take: 16 on a wide screen; on a phone as many as fit between the clock and the ship, at most 8.
+const transitCommsLines = (narrow, top, shipY, L) => narrow ? Math.max(2, Math.min(8, Math.floor((shipY - L * 0.1 - (top + 132) - 38) / 16))) : 16;
+
 function drawTransit(W, H) {
   const viewW = W - G.hudW, cx = viewW / 2, cy = H / 2, t = G.transit, st = G.state;
   const narrow = !G.hudW, top = narrow ? 84 : 0;  // clear the phone HUD strip
@@ -483,7 +486,7 @@ function drawTransit(W, H) {
   else ctx.fillText(`${dates}  -  ${clock}`, cx, top + 98);
 
   // Comms log, top-left
-  const colW = narrow ? viewW - 56 : Math.min(360, viewW / 2 - 76), maxLines = narrow ? 8 : 16;
+  const colW = narrow ? viewW - 56 : Math.min(360, viewW / 2 - 76), maxLines = transitCommsLines(narrow, top, shipY, L);
   ctx.font = '12px "IBM Plex Mono", monospace';
   // Show whole messages, newest last, as many as fit.
   let lines = [];
@@ -492,6 +495,7 @@ function drawTransit(W, H) {
     if (lines.length + wrapped.length > maxLines) break;
     lines = wrapped.map(l => ({ l, recent: i === t.comms.length - 1, market: c.startsWith('[Market]') })).concat(lines);
   }
+  if (!lines.length && t.comms.length) lines = wrapText(t.comms[t.comms.length - 1], colW).slice(-maxLines).map(l => ({ l, recent: true, market: false }));  // the newest message alone is longer than the box: its end
   let y = top + (narrow ? 132 : 116);
   transitPanel(16, y, colW + 24, 30 + lines.length * 16, 'COMMS');
   y += 18;

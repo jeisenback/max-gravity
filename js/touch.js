@@ -69,11 +69,12 @@ const Touch = {
   // Show the controls that fit the current mode. Cheap to call every frame.
   sync() {
     const eventOpen = G.mode === 'transit' && G.transit.event;
-    const key = `${G.mode}|${this.on}|${!!eventOpen}`;
+    const key = `${G.mode}|${this.on}|${!!eventOpen}|${!!hired()}`;
     if (key === this.shown) return;
     this.shown = key;
     const flying = G.mode === 'flight';
     document.getElementById('touch').hidden = !(this.on && flying);
+    document.querySelector('#touch [data-tap=burn]').hidden = !!hired();  // a hand does not call the burn; the captain does
     document.getElementById('tmap').hidden = !(G.mode === 'transit' && !eventOpen);
     document.getElementById('tmap').style.right = `${16 + G.hudW}px`;  // clear the HUD sidebar in landscape
     for (const id of ['tclose', 'tzoomin', 'tzoomout']) document.getElementById(id).hidden = G.mode !== 'map';

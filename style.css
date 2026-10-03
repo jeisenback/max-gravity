@@ -49,9 +49,9 @@ canvas { display: block; touch-action: none; }
 #panel.hidden { display: none; }
 #panel.event {
   inset: auto 12px;
-  top: 50%;
+  top: calc(50% + 40px);  /* centred below the phone HUD (about 80px tall) */
   transform: translateY(-50%);
-  max-height: 90%;
+  max-height: calc(100% - 100px);
   overflow-y: auto;
   border: 1px solid var(--line);
   box-shadow: 0 0 60px #000, inset 0 0 0 1px rgba(0,0,0,0.6);
@@ -102,6 +102,10 @@ canvas { display: block; touch-action: none; }
 }
 .event-body p { line-height: 1.6; font-size: 14px; }
 .choices { display: flex; flex-direction: column; gap: 8px; margin-top: 18px; }
+/* On a phone a long scene scrolls, and the choices stay pinned to the bottom of the dialog so they are never below the fold. */
+@media (max-width: 699px) {
+  #panel.event .choices { position: sticky; bottom: 0; z-index: 1; max-height: 44vh; overflow-y: auto; margin: 14px -16px 0; padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); background: linear-gradient(transparent, var(--panel) 18%); }
+}
 .choices button { text-align: left; padding: 10px 12px; }
 @media (min-width: 700px) { .event-body { padding: 22px 26px; } }
 
