@@ -8,12 +8,12 @@
 
 const REGULARS = 2, NEWS_AFTER = 4;
 const NEWS = [
-  'has a new job, and is tired in a way that looks like pride.', 'lost a month\'s pay at cards, and is being brave about it.',
-  'has a sister visiting, and will tell you about nothing else.', 'is off the drink, and is making a point of it.',
-  'got engaged since you were last here, and the bar knows.', 'was in a fight, and has the eye to prove it.',
-  'is learning an instrument, and the bar is learning to be kind.', 'has been passed over for a promotion, and is not over it.',
+  'has a new job, and comes in straight off the shift in a work jacket.', 'lost a month\'s pay at cards, and is telling everyone.',
+  'has a sister visiting, and talks about nothing else.', 'is off the drink, and orders water loudly.',
+  'got engaged since you were last here. The bar has bought them four rounds.', 'was in a fight, and has the black eye to show for it.',
+  'is learning the fiddle, and has been asked twice to practice elsewhere.', 'was passed over for a promotion, and says so to anyone who asks.',
   'is saving for a passage out, and counting every coin aloud.', 'is minding a stray cat that has moved in under the bench.',
-  'is on a long streak of bad luck, and has started to find it funny.', 'has a cough that has been going round the whole port.',
+  'is on a long streak of bad luck, and laughs when it happens.', 'has a cough that has been going round the whole port.',
 ];
 
 // The regulars of this planet's bar, made on the first visit and given a new line of news
@@ -47,8 +47,8 @@ function matchNight() {
     if (!m || day - m.day > 1) continue;
     const mine = l.culture === cultureOf(G.state.systemId), close = Math.abs(m.sa - m.sb) <= 1;
     const room = mine
-      ? (close ? `The room is on its feet for every minute. The ${m.winner} fans are buying, and the ${m.loser} fans are not speaking.` : `It was never close, and the ${m.loser} fans are leaving early, quietly, while the ${m.winner} fans sing.`)
-      : (close ? 'Nobody here has a team in it, but money is on the table anyway, and it was close enough to be worth it.' : 'Nobody here has a team in it, and the screens go back to the weather after the second goal.');
+      ? (close ? `The room is on its feet for every minute. The ${m.winner} fans are buying, and the ${m.loser} fans are not speaking.` : `It was never close. The ${m.loser} fans are leaving early while the ${m.winner} fans sing.`)
+      : (close ? 'Nobody here has a team in it, but there is money on the table anyway.' : 'Nobody here has a team in it. The screens go back to the weather after the second goal.');
     return { league: l, match: m, text: `Match night. ${l.name}, ${l.sport}: ${m.a} ${m.sa}, ${m.b} ${m.sb}${ph === 'final' ? ', in the final' : ''}. ${room}` };
   }
   return null;
