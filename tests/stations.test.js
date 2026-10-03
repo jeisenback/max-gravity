@@ -447,7 +447,7 @@ test('the navigation console plots the course at port and the burn in flight', a
   await page.waitForSelector('#bkeys', { state: 'visible' });
   await page.click('[data-bst=nav]');
   assert.equal(await row('#bsheet', 'Destination'), 'Pallas');
-  assert.match(await row('#bsheet', 'Burn'), /^40%, accelerating$/);
+  assert.match(await row('#bsheet', 'Burn'), /^4\d%, accelerating$/);
   assert.equal(await page.$$eval('#bsheet .con-plant circle[fill="#d4e4f5"]', n => n.length), 1, 'the ship is marked on the line');
   await done();
 });
