@@ -743,3 +743,18 @@ test('letters from home come at most one landing in ten days, however many peopl
   assert.ok(r.later > 0, 'letters again after ten days');
   await done();
 });
+
+test('the crew list shows a face for each crew member, ringed by how they are doing', async () => {
+  const { page, ev, done } = await open();
+  await ev(() => {
+    const st = G.state; st.tutorial = null; while (G.dialog) finishEvent();
+    for (const role of ['engineer', 'pilot', 'gunner']) { const p = makePerson('earth'); p.role = role; p.skills = { [role]: 1 }; p.skill = 1; registerPerson(p); st.crew.push(p.id); }
+    const [a, b] = st.crew.map(person);
+    a.mood = { kind: 'low', until: st.day + 10, text: 'their sister is sick' };
+    b.mood = { kind: 'high', until: st.day + 10, text: 'their sister is well' };
+    UI.tab = 'crew'; UI.render();
+  });
+  const rings = await page.$$eval('#panel .crew-face', els => els.map(e => [e.classList.contains('warn'), e.classList.contains('good'), !!e.querySelector('svg')]));
+  assert.deepEqual(rings, [[true, false, true], [false, true, true], [false, false, true]]);
+  await done();
+});
