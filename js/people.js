@@ -79,12 +79,21 @@ function homeBody(culture) {
   return pick(SYSTEMS[pick(ids)].planets).name;
 }
 
+// A first name not already worn by anyone on the register or in the authored cast, so two shipmates are never both "Tomas".
+// The draw is the one random pick it always was; a taken name steps to the next free one in the pool, so the random stream is unchanged.
+function freshFirst(pool) {
+  const taken = new Set([...Object.values((G.state && G.state.people) || {}).map(x => x.first), ...Object.values(CAST).map(c => c.first)]);
+  const i = Math.floor(Math.random() * pool.first.length);
+  for (let k = 0; k < pool.first.length; k++) { const first = pool.first[(i + k) % pool.first.length]; if (!taken.has(first)) return first; }
+  return pool.first[i];
+}
+
 function makePerson(culture = pick(['earth', 'earth', 'mars', 'belt', 'belt'])) {
   const pool = NAMES[culture];
   const traits = [];
   while (traits.length < 2) { const t = pick(Object.keys(TRAITS)); if (!traits.includes(t)) traits.push(t); }
   const p = {
-    id: null, first: pick(pool.first), last: pick(pool.last), culture, home: homeBody(culture),
+    id: null, first: freshFirst(pool), last: pick(pool.last), culture, home: homeBody(culture),
     job: pick(pool.jobs), traits, goal: pick(Object.keys(GOALS)), wealth: randInt(1, 3),
     secret: Math.random() < 0.35 ? pick(SECRETS) : null,
     opinion: 0, memories: [], location: null,
