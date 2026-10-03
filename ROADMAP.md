@@ -41,5 +41,5 @@ The game leans toward role-playing: people, what they think of you, and a ship y
 - **Click a person in the burn view**: tapping someone in the cutaway opens their page.
 - **A chapter recap at the buy-in**: runs and earnings, who you got close to, marks and memories, and favours done or left undone, from what the game already keeps.
 - **A ship that has a night**: lights dim in the ship's night, people sleep in their bunks, and rooms hold different people at different hours.
-- **Skill-gated choices for the hired hand**: your post level opens a choice in scenes that fit your trade. Check how many scenes already do this first.
+- **Skill-gated choices for the hired hand** (started): a choice can need your post and your level there (`post`, `skill` on a choice). One for another post is hidden, and one you have not the level for is shown shut. Six scenes use it so far (the needling in the galley, and Ines, Tomas, Yelena, Ruben and Pax each in their trade, at level 2). Next: gate a choice in the captain and road scenes, and at level 3.
 - **More road scenes**: five or six for transit variety, if the 100-game sims still show repeats.

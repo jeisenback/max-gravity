@@ -182,6 +182,7 @@ const HAND_EVENTS = [
         setLater('h-needle-worse', 6, 'Tried to prove a point to {thread:needle} and it went badly.'); like(c.mate, -1, 'You tried to prove a point about your post and it went badly.');
         return `You try to show them, and it goes wrong at the worst moment, in front of an audience, and ${c.mate.first} is kind enough not to say anything, and that is the cruelest part.${learn(1)}`;
       } },
+      { label: `[${POSTS[hired().post].name} 2] Take them through the post, step by step`, skill: 2, run() { remember('needle', c.mate); like(c.mate, 2, 'You took me through your post, one step at a time.'); return `You take ${c.mate.first} through a full watch at your post and say each step before you do it. By the end they have stopped saying soft.${learn(1)}`; } },
       { label: 'Let it go', run() { like(c.mate, 0, 'You let a needling go.'); return `You let it go, and finish your tea, and the table moves on. ${c.mate.first} looks, for a moment, almost disappointed.`; } },
     ]) },
 
@@ -199,24 +200,28 @@ const HAND_EVENTS = [
   { id: 'crew-ines', group: 'crew', when: () => castKeys().includes('ines'), make: c => handEvent('Ines Calls the Numbers',
     'Ines is flying a hard approach by hand, a tight, ugly one, and asks you over her shoulder, without looking round, whether you would read her the numbers. "Slowly," she says. "And do not be clever."', [
       { label: 'Read her the numbers', run() { castLike('ines', 1, 'You read me the numbers on a hard approach and did not try to be clever.'); return `You read her the numbers one by one, plainly, and she flies them, and the ship settles onto the line. "Good," says Ines. You have learned more in ten minutes than in the last week.${learn(3)}`; } },
+      { label: '[Pilot 2] Check her numbers against your own', post: 'pilot', skill: 2, run() { castLike('ines', 2, 'You caught a wrong figure on my approach and said it plainly.'); return `You have the approach on your own plot, half a second behind hers. On the last leg one of your figures does not match. "Say again," Ines says. You say it again. She finds the transposed digit on her sheet, corrects it without a word, and flies the corrected line. Afterward she writes the figure in her notebook.${learn(2)}`; } },
       { label: 'Say you would rather watch', run() { castLike('ines', 0, 'You watched from the back and let me fly.'); return 'You stand behind her and watch her hands, and she does not say a word, and the approach is flawless. You do not learn much, but you do not break anything.'; } },
     ]) },
 
   { id: 'crew-tomas', group: 'crew', when: () => castKeys().includes('tomas'), make: c => handEvent('Tomas in the Engine Room',
     'Tomas has a flask, two tin cups and the whole of a quiet watch, and he pours you one without asking. "Sit," he says. "She is running well, and I would like to tell somebody why."', [
       { label: 'Sit and listen', run() { castLike('tomas', 1, 'You sat with me in the engine room and listened.'); return `He tells you about the loop, and the mounts, and the three hulls he has rebuilt, with unhurried pride, and you listen, and the flask goes round twice. By the end you know something about machines you did not before.${learn(2)}`; } },
+      { label: '[Engineer 2] Tell him what you hear in the loop', post: 'engineer', skill: 2, run() { castLike('tomas', 2, 'You heard a tick in the loop that I had stopped hearing.'); return `You say there is a tick on the third pump at the top of each cycle, a hair late. Tomas puts a hand flat on the housing and waits for it to come round. "Third pump," he says. He writes the number on the back of his hand and pours you a second cup.${learn(2)}`; } },
       { label: 'Say you have work to do', run() { castLike('tomas', 0, 'You had work to do and did not stay.'); return '"Of course," he says, and caps the flask, and turns back to the loop. He goes back to the loop.'; } },
     ]) },
 
   { id: 'crew-yelena', group: 'crew', when: () => castKeys().includes('yelena'), make: c => handEvent('Yelena Wants a Sparring Partner',
     'Yelena has set up the range sim on its hardest setting, and is holding the second controller out to you. "No benches," she says. "Everybody plays. Come on."', [
       { label: 'Take the other console', run() { castLike('yelena', 1, 'You took the other console on the range and did not sulk about losing.'); return `You take the other console, and she beats you soundly, and then shows you how: where to look, and when. You lose four rounds in a row. By the fifth you are less bad.${learn(3)}`; } },
+      { label: '[Gunner 2] Take the hard setting and hold the lead', post: 'gunner', skill: 2, run() { castLike('yelena', 2, 'You held the lead on the hard setting for ninety seconds.'); return `You take the other console on the hard setting and hold the lead for ninety seconds before she takes it back. She finishes ahead. She sets the controller down and tells you where you lost it: the third target, the late lead on the crossing. The next watch she asks you again.${learn(2)}`; } },
       { label: 'Say your knee is bad too', run() { castLike('yelena', 0, 'You said you would sit out the range.'); return '"You do not have a bad knee," Yelena says. "You have a bench." But she lets it go, with a snort, and sets the sim back to something kinder for whoever comes next.'; } },
     ]) },
 
   { id: 'crew-ruben', group: 'crew', when: () => castKeys().includes('ruben'), make: c => handEvent('Ruben and the Thermos',
     'Ruben has a thermos of something hot and a stack of intercepts in piles, and he offers you a cup, as he offers everyone, and a pile, as he does not. "Help me sort," he says. "Slowly. I will tell you what is true and what is only lovely."', [
       { label: 'Help him sort', run() { castLike('ruben', 1, 'You helped me sort the intercepts and did not mind the stories.'); return `You sort, and he talks, and by the end of the stack you have learned which dome is short of what, who is lying about it, and a good deal about how to listen to a lane. It is the best hour of the burn.${learn(2)}`; } },
+      { label: '[Comms 2] Tell him which pile is true', post: 'comms', skill: 2, run() { castLike('ruben', 2, 'You sorted my intercepts by the handshake tones, and you were right.'); return `You go through the stack and split it in two by the timing of the handshake tones. Ruben checks three of your picks against what he knows and finds all three right. He moves the thermos from his pile to yours.${learn(2)}`; } },
       { label: 'Take the tea and go', run() { castLike('ruben', 0, 'You took the tea and went.'); return 'You take the cup, and thank him, and go. "Another time," Ruben says, cheerfully, and returns to his piles, humming. He is not the kind to hold it against you.'; } },
     ]) },
 
@@ -229,6 +234,7 @@ const HAND_EVENTS = [
   { id: 'crew-pax', group: 'crew', when: () => castKeys().includes('pax'), make: c => handEvent('Pax Checks the Coupling',
     'Pax is checking the coupling on the gun mount for the fifth time this watch. It is perfect. Pax knows it is perfect, and checks it anyway, jaw tight, and glances at you when the check is done.', [
       { label: 'Check it with them', run() { castLike('pax', 1, 'You checked the coupling with me instead of telling me to stop.'); return `You take the other side and check it together, torque by torque, and when you reach the end you both say "good" at once. Pax almost smiles.${learn(2)}`; } },
+      { label: '[Gunner 2] Show them the torque log', post: 'gunner', skill: 2, run() { castLike('pax', 2, 'You showed me the torque log, and it was the same every time.'); return `You pull the mount's torque log for the last six watches and put it in front of Pax. The coupling has read the same figure every time. Pax reads the column down twice and closes the panel. They do not check it again that watch.${learn(2)}`; } },
       { label: 'Tell them it is fine', run() { castLike('pax', 0, 'You told me the coupling was fine.'); return '"I know it is fine," says Pax. "That is not the point." They go back to it, and you leave them to it, feeling that you have said the true thing in the wrong way.'; } },
     ]) },
 
