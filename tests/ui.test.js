@@ -463,3 +463,25 @@ test('a new person never takes a first name already on the register or in the au
   assert.equal(dupes.dupe, false, `no two shipmates share a first name: ${dupes.names}`);
   await done();
 });
+
+test('a crew member\'s page shows what they have told you, the news behind their mood, and who they get on with', async () => {
+  const { page, ev, done } = await open();
+  await ev(() => {
+    const st = G.state; st.tutorial = null; while (G.dialog) finishEvent();
+    for (const role of ['engineer', 'pilot']) { const p = makePerson('earth'); p.role = role; p.skills = { [role]: 1 }; p.skill = 1; registerPerson(p); st.crew.push(p.id); }
+    const [a, b] = st.crew.map(person);
+    storyOf(a).beat = 2; storyOf(b);
+    a.traits = ['rude']; b.traits = ['nervous'];
+    a.mood = { kind: 'low', until: st.day + 10, text: 'their sister is sick' };
+    const [fa, fb] = folk(); addBond(fa, fb, -4);
+    G.viewPerson = a.id; UI.tab = 'person'; UI.render();
+  });
+  const text = await page.innerText('#panel');
+  assert.match(text, /Left .* because of /, 'what they said about leaving');
+  assert.match(text, /Misses their /, 'who they miss');
+  assert.doesNotMatch(text, /Wants /, 'the hope is not told until the third talk');
+  assert.match(text, /News from home: their sister is sick/);
+  assert.match(text, /rivals/, 'the bond with the other crew member');
+  assert.match(text, /abrasive and nervous/, 'and the reason');
+  await done();
+});
