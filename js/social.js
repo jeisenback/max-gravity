@@ -354,6 +354,7 @@ function relationshipScene() {
       ] }));
     if ((n <= -2 || clash(a, b)) && !isCooled(a, b, 'feud', 45) && relReady('feud')) scenes.push(() => {
       cool(a, b, 'feud'); relMark('feud');
+      const fk = bondKey(a, b); (st.feuds = st.feuds || {})[fk] = (st.feuds[fk] || 0) + 1;  // a feud that is seen can split the ship (stakes.js)
       const cause = pick(CAUSES);
       return {
         title: 'A Small Ship', text: pick([

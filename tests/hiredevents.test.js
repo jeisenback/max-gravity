@@ -317,6 +317,29 @@ test('a choice can need your post and your level there: hidden for another post,
   await done();
 });
 
+test('the cast scenes have a level 3 choice that leaves a mark, and the look back names who let you do their work', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    const out = { shut: {}, open: {}, flagged: {} };
+    const cases = [['crew-ines', 'pilot', 'ines'], ['crew-tomas', 'engineer', 'tomas'], ['crew-yelena', 'gunner', 'yelena'], ['crew-ruben', 'comms', 'ruben'], ['crew-pax', 'gunner', 'pax']];
+    const level3 = (id, post, xp) => { startHired(post); gainSkill(post, xp); G.state.tutorial = null; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; const e = HAND_EVENTS.find(x => x.id === id).make(handContext()); G.dialog = null; G.transit.event = null; openEvent(e); return G.dialog.choices.find(c => c.skill === 3); };
+    for (const [id, post, key] of cases) {
+      const at2 = level3(id, post, 30), at3 = level3(id, post, 60);
+      out.shut[key] = !!at2 && !at2.can(); out.open[key] = !!at3 && at3.can();
+      const text = at3.run(); out.flagged[key] = !!castRec(key).flags.trusted && /undefined|NaN|\{[a-z]+\}/.test(text) === false;
+    }
+    out.recap = chapterRecap().text;
+    return out;
+  });
+  const keys = ['ines', 'tomas', 'yelena', 'ruben', 'pax'];
+  assert.deepEqual(Object.values(r.shut), keys.map(() => true), 'shut at level 2');
+  assert.deepEqual(Object.values(r.open), keys.map(() => true), 'open at level 3');
+  assert.deepEqual(Object.values(r.flagged), keys.map(() => true), 'and it sets the mark');
+  assert.match(r.recap, /Let you do their work: /);
+  await done();
+});
+
 test('each post gets its own choice in the lane scene, and the praise scene has a level 3 choice', async () => {
   const { ev, done } = await open();
   await ev(hiredHelpers);
