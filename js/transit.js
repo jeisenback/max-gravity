@@ -344,8 +344,12 @@ function startHappening() {
 // {crew} in their text becomes that crew member's name.
 function openEvent(ev) {
   ev = hiredCall(ev);  // on the captain's ship, the captain's calls are the captain's (hired.js)
-  const choices = ev.choices.filter(c => !c.role || roleSkill(c.role))
-    .map(c => (c.role ? { ...c, label: c.label.replace(/\{crew\}/g, roleName(c.role)) } : c));
+  // A choice can need your own trade: `post` is the post you must work, `skill` the level you must have reached there (a hired
+  // hand's: hired.js). One for a post you do not work is hidden; one you have not the level for is shown, and cannot be taken.
+  const hand = typeof hired === 'function' ? hired() : null, level = hand ? skillLevel(hand.post) : 0;
+  const choices = ev.choices.filter(c => (!c.role || roleSkill(c.role)) && (c.post === undefined || (hand && hand.post === c.post)) && (c.skill === undefined || hand))
+    .map(c => (c.role ? { ...c, label: c.label.replace(/\{crew\}/g, roleName(c.role)) } : c))
+    .map(c => (c.skill === undefined ? c : { ...c, can: () => level >= c.skill && (!c.can || c.can()) }));
   G.dialog = { event: ev, choices };
   Mods.emit('eventOpened', ev);
   if (G.transit) G.transit.event = ev;  // pauses the transit timer

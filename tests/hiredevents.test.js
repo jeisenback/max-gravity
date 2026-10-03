@@ -299,3 +299,20 @@ test('a hand is not asked to rule on the crew, and the hints are for a hand', as
   assert.deepEqual(r.handHud, ['Burn: the captain\'s call']); assert.deepEqual(r.ownerHud, ['Burn: none (M)']);
   await done();
 });
+
+test('a choice can need your post and your level there: hidden for another post, shown but shut below the level, open at it', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    const out = {}, scene = () => { const c = handContext(), d = HAND_EVENTS.find(x => x.id === 'crew-ines'); return d.make(c); };
+    const open_ = (post, xp = 0) => { startHired(post); if (xp) gainSkill(post, xp); G.state.tutorial = null; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.state.cast = G.state.cast || {}; const e = scene(); G.dialog = null; G.transit.event = null; openEvent(e); return G.dialog.choices.find(c => /Check her numbers/.test(c.label)); };
+    out.gunner = !!open_('gunner');
+    const low = open_('pilot'); out.low = low ? { label: low.label, open: low.can() } : null;
+    const high = open_('pilot', 30); out.high = high ? high.can() : null;
+    return out;
+  });
+  assert.equal(r.gunner, false, 'a gunner is not offered the pilot\'s choice');
+  assert.ok(r.low && /^\[Pilot 2\]/.test(r.low.label) && r.low.open === false, 'a pilot below level 2 sees it, shut');
+  assert.equal(r.high, true, 'and at level 2 it is open');
+  await done();
+});
