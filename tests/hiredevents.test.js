@@ -316,3 +316,21 @@ test('a choice can need your post and your level there: hidden for another post,
   assert.equal(r.high, true, 'and at level 2 it is open');
   await done();
 });
+
+test('each post gets its own choice in the lane scene, and the praise scene has a level 3 choice', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    const out = { lane: {}, praise: {}, order: {} };
+    const show = (id, post, xp) => { startHired(post); if (xp) gainSkill(post, xp); G.state.tutorial = null; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; const e = HAND_EVENTS.find(x => x.id === id).make(handContext()); G.dialog = null; G.transit.event = null; openEvent(e); return G.dialog.choices.filter(c => c.skill !== undefined); };
+    for (const post of HIRED_POSTS) { const g = show('road-scope', post, 30); out.lane[post] = g.map(c => [c.label.split(']')[0] + ']', c.can()]); }
+    for (const post of ['pilot', 'engineer', 'gunner']) out.order[post] = show('cap-order', post, 30).length;
+    out.praise.at2 = show('cap-praise', 'gunner', 30).map(c => c.can());
+    out.praise.at3 = show('cap-praise', 'gunner', 60).map(c => c.can());
+    return out;
+  });
+  assert.deepEqual(r.lane, { pilot: [['[Pilot 2]', true]], gunner: [['[Gunner 2]', true]], engineer: [['[Engineer 2]', true]], comms: [['[Comms 2]', true]] }, 'one trade choice at each post, open at level 2');
+  assert.deepEqual(r.order, { pilot: 1, engineer: 1, gunner: 0 }, 'the order scene has one for the pilot and the engineer, none for the gunner');
+  assert.deepEqual(r.praise, { at2: [false], at3: [true] }, 'the bonus with the figures is shut at level 2 and open at 3');
+  await done();
+});

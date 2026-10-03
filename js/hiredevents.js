@@ -133,6 +133,8 @@ const HAND_EVENTS = [
         setLater('h-hot-bad', 6, 'Argued the hot burn with {captain} and lost.'); capLike(c, -1, 'You argued the burn with me when I had decided.');
         return captainSays('cap-order', 'notHeard', 'You say it, and it lands badly. "I did not ask," the captain says, quite pleasantly, and the conversation is over. You run it hot, and it works.');
       } },
+      { label: '[Engineer 2] Put the heat figures in front of the captain', post: 'engineer', skill: 2, run() { setLater('h-ninety', 7, 'Showed {captain} the heat figures on a hot burn, and was heard.'); capLike(c, 2, 'You showed me the figures on the hot burn, and they were right.'); return `You put the coolant temperatures and the housing margin on the board and say how long the drive lasts at that setting. The captain reads the figures twice. "Ninety," the captain says. The window is made.${learn(2)}`; } },
+      { label: '[Pilot 2] Replot the approach to make the window cooler', post: 'pilot', skill: 2, run() { setLater('h-ninety', 7, 'Replotted the approach on a hot burn, and was heard.'); capLike(c, 2, 'You replotted the burn so the window was made without the hot drive.'); return `You rerun the approach with a later flip and a shallower brake and show the captain the arrival time. It is four minutes inside the window. "Run it at ninety, and fly that," the captain says.${learn(2)}`; } },
     ]) },
 
   { id: 'cap-praise', group: 'captain', make: c => handEvent('A Word of Praise',
@@ -143,6 +145,7 @@ const HAND_EVENTS = [
         setLater('h-owed', 8, 'Asked {captain} for a bonus before I had earned one.'); capLike(c, -1, 'You asked for a bonus before you had earned one.');
         return captainSays('cap-praise', 'bonusNo', 'The captain looks at you for a moment. "When it is a speech, it is free," the captain says. "When it is a bonus, it is earned." You have the feeling of having spent something you did not have.');
       } },
+      { label: `[${POSTS[hired().post].name} 3] Ask for the bonus, with the week's figures`, skill: 3, run() { G.state.credits += 60; capLike(c, 1, 'You asked for a bonus and brought the figures to show it.'); return `You bring the week's log from the post, with the figures marked. The captain reads down the column. "Sixty," the captain says. It is in your account before the end of the watch.${learn(1)}`; } },
     ]) },
 
   { id: 'cap-dressing', group: 'captain', make: c => handEvent('A Dressing-Down',
@@ -278,6 +281,10 @@ const HAND_EVENTS = [
           return `You report it, and Captain ${c.cap.last} nods, asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.`;
         } },
         { label: 'Log it and keep watching', run() { capLike(c, 0, 'You logged something off the lane.'); return `You log it and keep watching, and it turns out to be nothing, or at least nothing that comes to anything. The log has a new line in it, and you have a better feel for what a quiet lane looks like.${learn(1)}`; } },
+        { label: '[Pilot 2] Plot its track and give the captain a course round it', post: 'pilot', skill: 2, run() { setLater('h-lane-again', 9, 'Plotted something off the lane and gave a course round it.'); capLike(c, 2, 'You brought me a track and a course round it.'); return `You hold its bearing for twenty minutes and plot the drift. It is holding station. You give the captain a course that passes it at eight hundred kilometers. "Take it," the captain says.${learn(2)}`; } },
+        { label: '[Gunner 2] Put a passive lock on it and watch what it does', post: 'gunner', skill: 2, run() { setLater('h-lane-again', 9, 'Put a passive lock on something off the lane.'); capLike(c, 2, 'You watched something off the lane without it knowing.'); return `You paint it with the passive array, which it cannot feel, and log its heat and the angle of its antennas. It is a hauler with its drive cold, waiting for somebody. You give the captain the numbers.${learn(2)}`; } },
+        { label: '[Engineer 2] Read its drive signature off the stray return', post: 'engineer', skill: 2, run() { setLater('h-lane-again', 9, 'Read a drive signature off something on the lane.'); capLike(c, 2, 'You read a drive signature that did not match its hull.'); return `The return has a drive bloom that is wrong for the hull on its transponder: too small, and too clean. You write down the figure and give it to the captain. "A smaller ship using a bigger ship's name," the captain says, and changes the burn.${learn(2)}`; } },
+        { label: '[Comms 2] Listen to its transponder for a minute', post: 'comms', skill: 2, run() { setLater('h-lane-again', 9, 'Listened to the transponder of something off the lane.'); capLike(c, 2, 'You listened to a transponder and brought me what was wrong with it.'); return `You listen on the band for a minute. It repeats a hull number that was retired two years ago. You give the captain the number. The captain checks the register and changes the burn without a word.${learn(2)}`; } },
         { label: 'Say nothing', run() { setLater('h-lane-trouble', 7, 'Saw something off the lane and said nothing.'); return 'You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.'; } },
       ]);
   } },
