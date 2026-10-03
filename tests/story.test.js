@@ -420,3 +420,21 @@ test('the blockade on the console: a scene at arrival, a gate at the dock, two f
   assert.deepEqual(r.cold, { cleared: true, duel: false });
   await done();
 });
+
+test('a scene shows a face for each person it names, and none when it names nobody', async () => {
+  const { page, ev, done } = await open();
+  const names = await ev(() => {
+    const st = G.state; st.tutorial = null; while (G.dialog) finishEvent();
+    for (const role of ['engineer', 'pilot']) { const p = makePerson('earth'); p.role = role; registerPerson(p); st.crew.push(p.id); }
+    const [a, b] = st.crew.map(person);
+    openEvent({ title: 'Test', text: `${b.first} and then ${a.first} are in the galley.`, choices: [{ label: 'Ok', run: () => 'Done.' }] });
+    return [a.first, b.first];
+  });
+  const faces = await page.$$eval('#panel .scene-face span', els => els.map(e => e.textContent));
+  assert.deepEqual(faces, [names[1], names[0]], 'in the order the text names them');
+  await page.click('[data-action=choose]');
+  assert.equal(await page.$$eval('#panel .scene-face', els => els.length), 2, 'and on the result');
+  await ev(() => { finishEvent(); openEvent({ title: 'Quiet', text: 'The drive hums.', choices: [{ label: 'Ok', run: () => 'Done.' }] }); });
+  assert.equal(await page.$$eval('#panel .scene-face', els => els.length), 0);
+  await done();
+});
