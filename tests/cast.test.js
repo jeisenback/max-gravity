@@ -561,6 +561,7 @@ test('letters from home are about their own people', async () => {
     const run = seq => {
       let k = 0; const real = Math.random; Math.random = () => seq[k++ % seq.length];
       for (const f of procedural()) delete f.p.letterDay;
+      delete G.state.letterAt;
       try { return letters(currentPlanet()).join(' '); } finally { Math.random = real; }
     };
     return { good: run([0, 0, 0]), bad: run([0, 0.9, 0]) };  // each person draws: whether to write, good or bad, which
@@ -716,5 +717,29 @@ test('the chapter\'s closing scene remembers who did not make it', async () => {
     return { clean, text: chapterEnd('shuttle').text };
   });
   assert.doesNotMatch(r.clean, /Test Xo/); assert.match(r.text, /Test Xo/);
+  await done();
+});
+
+test('letters from home come at most one landing in ten days, however many people are aboard', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    start({ mode: 'hired', post: 'gunner' });
+    const st = G.state, real = Math.random;
+    for (const f of procedural()) storyOf(f.p);  // roll everyone's story first: a fixed random number cannot make two different traits
+    for (const f of procedural()) delete f.p.letterDay;
+    Math.random = () => 0;  // everyone would write
+    try {
+      st.day = 100; const first = letters(currentPlanet()).length;
+      for (const f of procedural()) delete f.p.letterDay;
+      st.day = 105; const soon = letters(currentPlanet()).length;
+      for (const f of procedural()) delete f.p.letterDay;
+      st.day = 110; const later = letters(currentPlanet()).length;
+      return { first, soon, later };
+    } finally { Math.random = real; }
+  });
+  assert.ok(r.first > 0, 'a landing can bring letters');
+  assert.equal(r.soon, 0, 'none five days later');
+  assert.ok(r.later > 0, 'letters again after ten days');
   await done();
 });

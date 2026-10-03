@@ -192,8 +192,11 @@ function occasionEvent(o) {
 const GOOD_NEWS = ['{who} got into the engineering academy on Ceres', '{who} had a baby, a girl, healthy and loud', '{who} finally paid off the family\'s water debt', '{who} sent a photo of the whole family at one table, laughing', '{who} was promoted, after nine years, to shift foreman', '{who} planted the first real tomatoes in the family\'s section, and they came up red', '{who} got a berth on a ship bound for the outer moons, and is thrilled', '{who} recovered from a long illness, and is walking again', '{who} won a little money on the ring-ball pool, and is buying everyone a round', '{who} sent a letter that said only "I am proud of you," and nothing else'];
 const BAD_NEWS = ['{who} is sick, and the clinic on {home} wants money up front', '{who} lost their job when the mine cut shifts', 'the section where {who} lives is on emergency rationing', '{who} has stopped answering messages, and nobody at home will say why', '{who} was hurt in an accident at work, and it is not clear how badly', 'the family\'s cabin was flooded when a pipe burst, and everything is gone', '{who} is being evicted, and has nowhere to go', '{who} has been arrested at a protest, and nobody knows for how long', 'an old friend of {who}\'s passed away, and the funeral is next week', '{who} says the recyclers on {home} are failing, and the water tastes wrong'];
 
+// Letters from home come at most one landing in LETTER_GAP days, so they are an occasional thing and not half of every burn.
+const LETTER_GAP = 10;
 function letters(planet) {
   const st = G.state, notes = [];
+  if (st.day - (st.letterAt === undefined ? -99 : st.letterAt) < LETTER_GAP) return notes;
   for (const f of procedural()) {
     const p = f.p;
     if (Math.random() > 0.2 || (p.letterDay || -99) > st.day - 30) continue;
@@ -205,6 +208,7 @@ function letters(planet) {
     p.news = { good, text };
     notes.push(noteFor(`A message for ${p.first} at ${planet.name}: ${text}.`, p.id));
   }
+  if (notes.length) st.letterAt = st.day;
   return notes;
 }
 

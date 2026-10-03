@@ -175,7 +175,7 @@ test('family: a personal story to loyalty, letters and moods, occasions, traditi
     land(SYSTEMS.ceres.planets[0]);
     while (G.dialog) { chooseEvent(0); finishEvent(); }
     out.loyal = !!a.loyal;
-    for (let i = 0; i < 40 && !a.news; i++) { a.letterDay = -99; letters(currentPlanet()); }
+    for (let i = 0; i < 40 && !a.news; i++) { a.letterDay = -99; st.letterAt = -99; letters(currentPlanet()); }
     out.letter = !!a.news;
     a.news = { good: false, text: 'their sister is sick' }; a.mood = { kind: 'low', until: st.day + 25 };
     out.lowSkill = roleSkill('engineer');
