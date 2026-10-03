@@ -398,7 +398,12 @@ function relationshipScene() {
     const [a, b] = fans, ta = tastes(a).team, tb = tastes(b).team;
     cool(a, b, 'match');
     return {
-      title: 'Galley Duty', text: `${a.p.first} (${ta}) and ${b.p.first} (${tb}) have bet a week of galley duty on tonight's match.`,
+      title: 'Galley Duty', text: pick([
+        `${a.p.first} (${ta}) and ${b.p.first} (${tb}) have bet a week of galley duty on tonight's match.`,
+        `${a.p.first} backs ${ta}, ${b.p.first} backs ${tb}, and the loser has sworn to scrub the galley for a week. Tonight is the match.`,
+        `The dishes have been piling up, and ${a.p.first} (${ta}) and ${b.p.first} (${tb}) have settled who washes them the only way they know: tonight's match decides it.`,
+        `"Loser does galley duty," says ${b.p.first} (${tb}), and ${a.p.first} (${ta}) shakes on it before anyone can talk them out of it. The match starts soon.`,
+      ]),
       choices: [
         { label: 'Stream it for everyone', run() {
           const m = playMatch(leagueOf(ta), ta, tb), [w, l] = m.winner === ta ? [a, b] : [b, a];

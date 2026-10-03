@@ -119,7 +119,13 @@ function becomeLoyal(p, memory) {
 function sitPicker() {
   const aboard = [...procedural(), ...paxAboard().filter(m => m.pid && G.state.people[m.pid]).map(m => ({ id: m.pid, p: G.state.people[m.pid], pax: true }))];
   return {
-    title: 'Sit With Someone', text: 'You make two mugs of coffee. Who could use the company?',
+    title: 'Sit With Someone', text: pick([
+      'You make two mugs of coffee. Who could use the company?',
+      'The galley is empty, and the kettle has just clicked off. Somebody aboard might like a cup.',
+      'Between watches, you find yourself with an hour and two mugs. Who gets the second one?',
+      'The ship is quiet tonight. You could use the company yourself, and so, maybe, could someone else.',
+      'You are carrying a plate of the good biscuits down the corridor. Who is it for?',
+    ]),
     choices: aboard.map(f => ({
       label: `${f.p.first} (${f.pax ? 'passenger' : ROLE_NAMES[f.p.role].toLowerCase()})${moodLow(f.p) ? ', having a hard time' : ''}`,
       run() { G.nextEvent = sitBeat(f.p, !f.pax); return `You find ${f.p.first} in the galley.`; },
