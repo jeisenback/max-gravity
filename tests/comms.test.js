@@ -119,3 +119,78 @@ test('the captain\'s sheet lists the last five runs, newest first, and says so w
   assert.match(r.some, /10t Water/);
   await done();
 });
+
+test('muting market tips hides them from the burn feed and the inbox, but they still move prices', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    hand();
+    const st = G.state, out = {};
+    uatBurn('Earth', 'mars'); G.transit.comms = []; st.inbox = []; st.rumors = [];
+    addRumor();                                                  // an unmuted tip: a feed line, an inbox entry, a rumor in force
+    out.loud = { feed: G.transit.comms.filter(c => c.startsWith('[Market]')).length, inbox: st.inbox.filter(m => m.tag === 'market').length, rumors: st.rumors.length };
+    Mods.act('commsQuiet', 'market');
+    out.muted = Settings.quiet.market;
+    G.transit.comms = []; addRumor();
+    out.quiet = { feed: G.transit.comms.length, rumors: st.rumors.length };
+    const d = document.createElement('div'); d.innerHTML = commsPanel();
+    out.inboxRows = d.querySelectorAll('.con-msg').length;
+    out.card = /Muted\. They still move prices/.test(d.innerHTML);
+    out.saved = JSON.parse(localStorage.getItem('maxGravity.settings')).quiet.market;
+    Mods.act('commsQuiet', 'market');                            // and back
+    out.back = Settings.quiet.market;
+    return out;
+  });
+  assert.deepEqual(r.loud, { feed: 1, inbox: 1, rumors: 1 });
+  assert.equal(r.muted, true);
+  assert.equal(r.quiet.feed, 0, 'no feed line while muted');
+  assert.equal(r.quiet.rumors, 2, 'but the tip is still in force');
+  assert.equal(r.inboxRows, 0, 'and the inbox hides the tagged entries');
+  assert.equal(r.card, true, 'the tips card says they are muted');
+  assert.equal(r.saved, true, 'the choice is saved with the settings');
+  assert.equal(r.back, false);
+  await done();
+});
+
+test('muting crew chatter hides the tagged and the plain chatter lines from the burn feed', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    hand(); uatBurn('Earth', 'mars'); const t = G.transit;
+    t.comms = []; comm('[Ship] Hana is growing basil.'); comm('[Feed] Tonight only: a show.'); comm('[Crew] Ines has grown.'); comm('[Market] A tip.');
+    const loud = t.comms.length;
+    Mods.act('commsQuiet', 'chatter');
+    t.comms = []; comm('[Ship] Hana is growing basil.'); comm('[Feed] Tonight only: a show.'); comm('[Crew] Ines has grown.'); comm('[Market] A tip.');
+    return { loud, quiet: t.comms.slice(), flag: Settings.quiet.chatter };
+  });
+  assert.equal(r.loud, 4); assert.equal(r.flag, true);
+  assert.deepEqual(r.quiet, ['[Crew] Ines has grown.', '[Market] A tip.'], 'ship and feed lines muted; crew news and tips are not chatter');
+  await done();
+});
+
+test('Chat on a contact starts the sit-with scene on the burn, uses the half-burn downtime, and is off at port', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    hand();
+    const html = () => { const d = document.createElement('div'); d.innerHTML = commsPanel(); return d; };
+    const id = crewMembers().find(c => c.role !== 'xo').id;
+    const port = [...html().querySelectorAll('button[data-action=chatWith]')];
+    uatBurn('Earth', 'mars'); G.transit.times = []; G.transit.left = G.transit.total * 0.6;  // under way, before the flip
+    const burn = [...html().querySelectorAll('button[data-action=chatWith]')];
+    Mods.act('chatWith', id);
+    const out = { port: { n: port.length, off: port.every(b => b.disabled) }, burn: { n: burn.length, on: burn.every(b => !b.disabled) }, scene: G.dialog && G.dialog.event.title, used: !!(G.transit.lifeUsed || {})[lifeHalf()] };
+    while (G.dialog) finishEvent();
+    const after = [...html().querySelectorAll('button[data-action=chatWith]')];
+    out.after = after.every(b => b.disabled);
+    out.again = (() => { Mods.act('chatWith', id); return !!G.dialog; })();
+    G.transit.flipped = true; out.nextHalf = [...html().querySelectorAll('button[data-action=chatWith]')].every(b => !b.disabled);
+    return out;
+  });
+  assert.ok(r.port.n >= 4 && r.port.off, 'buttons at port, all off');
+  assert.ok(r.burn.n >= 4 && r.burn.on, 'all on in a burn');
+  assert.ok(r.scene, 'a scene opened'); assert.equal(r.used, true, 'it took the downtime');
+  assert.equal(r.after, true, 'no more chats this half'); assert.equal(r.again, false);
+  assert.equal(r.nextHalf, true, 'after the flip there is another');
+  await done();
+});

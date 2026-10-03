@@ -117,7 +117,7 @@ function addRumor() {
   st.rumors = st.rumors.filter(r => !(r.planet === p.name && r.cid === cid));
   st.rumors.push({ planet: p.name, cid, mult: up ? rand(1.35, 1.6) : rand(0.55, 0.7), until: st.day + days, text: `${text} (${SYSTEMS[sid].name})` });
   comm(`[Market] ${text} (${SYSTEMS[sid].name}, for about ${days} days)`);
-  noteInbox('station', `${text} (${SYSTEMS[sid].name})`);
+  noteInbox('station', `${text} (${SYSTEMS[sid].name})`, null, 'market');
   return text;
 }
 
@@ -261,6 +261,7 @@ const TRANSIT_EVENTS = [
 
 function comm(text) {
   if (!G.transit) return;  // rumors can also arrive while docked
+  if (isQuiet(text)) return;  // muted on the Comms screen
   G.transit.comms.push(text);
   if (G.transit.comms.length > 10) G.transit.comms.shift();
 }
@@ -319,7 +320,8 @@ function updateTransit(dt) {
       ...crewMembers().flatMap(c => c.chatter || c.traits.map(t => fill(pick([].concat(TRAITS[t].chatter)), c))),
       ...paxAboard().filter(m => m.pid).map(m => G.state.people[m.pid]).flatMap(p => p.traits.map(t => `(passenger) ${fill(pick([].concat(TRAITS[t].chatter)), p)}`)),
     ];
-    comm(pick(Mods.filter('chatter', aboard.length && Math.random() < 0.6 ? aboard : CHATTER)));
+    const line = pick(Mods.filter('chatter', aboard.length && Math.random() < 0.6 ? aboard : CHATTER));
+    if (!Settings.quiet.chatter) comm(line);
   }
   if (t.times.length && t.total - t.left >= t.times[0]) {
     t.times.shift();
