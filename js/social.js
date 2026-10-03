@@ -404,25 +404,25 @@ function relationshipScene() {
     cool(a, b, 'match');
     return {
       title: 'Galley Duty', text: pick([
-        `${a.p.first} (${ta}) and ${b.p.first} (${tb}) have bet a week of galley duty on tonight's match.`,
-        `${a.p.first} backs ${ta}, ${b.p.first} backs ${tb}, and the loser has sworn to scrub the galley for a week. Tonight is the match.`,
-        `The dishes have been piling up, and ${a.p.first} (${ta}) and ${b.p.first} (${tb}) have settled who washes them the only way they know: tonight's match decides it.`,
-        `"Loser does galley duty," says ${b.p.first} (${tb}), and ${a.p.first} (${ta}) shakes on it before anyone can talk them out of it. The match starts soon.`,
+        `The galley rota is a sheet taped to the cabinet door. ${a.p.first} has written ${b.p.first}'s name on every day of next week, and ${b.p.first} has written ${a.p.first}'s name over it. ${a.p.first} backs ${ta}. ${b.p.first} backs ${tb}. Whoever's team loses tonight does the dishes. Both of them have initialed it.`,
+        `"A week," ${b.p.first} says. "Dishes, filters, the lot." "Done," ${a.p.first} says, and they shake on it across the table. ${a.p.first} has ${ta}. ${b.p.first} has ${tb}. The match is tonight.`,
+        `${a.p.first} (${ta}) and ${b.p.first} (${tb}) have put the galley rota on the match. The loser takes all of it for a week. It is written on the cabinet door in ${a.p.first}'s handwriting. ${b.p.first} has added "and no complaints" and underlined it twice.`,
+        `The ship's feed has ${ta} against ${tb} at the end of watch. ${a.p.first} and ${b.p.first} have turned the chairs to face the screen. A week of galley duty, loser's. They have not spoken since they agreed it.`,
       ]),
       choices: [
         { label: 'Stream it for everyone', run() {
           const m = playMatch(leagueOf(ta), ta, tb), [w, l] = m.winner === ta ? [a, b] : [b, a];
           addBond(a, b, has(l, 'rude') ? -1 : 1);
           like(w.p, 1, null);
-          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${l.p.first} does a week of galley duty ${has(l, 'rude') ? 'and makes sure everyone suffers for it' : 'in a borrowed apron, with dignity'}.`;
+          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${l.p.first} does the week of galley duty${has(l, 'rude') ? `. Every pan goes into the rack hard, and for four days ${l.p.first} goes through what the referee did.` : ' in an apron two sizes too small, and does not mention the score.'}`;
         } },
         { label: `Put 300 cr on the ${ta} yourself`, can: () => st.credits >= 300, run() {
           const m = playMatch(leagueOf(ta), ta, tb), won = m.winner === ta;
           st.credits += won ? 300 : -300;
           like(a.p, won ? 1 : 0, null); like(b.p, won ? -1 : 1, null);
-          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${won ? `You collect 300 cr, and ${a.p.first} hugs you.` : `You lose 300 cr, and ${b.p.first} will be mentioning it for weeks.`}`;
+          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${won ? `You collect 300 cr. ${a.p.first} wants to buy a round with it.` : `You lose 300 cr. ${b.p.first} brings it up at every meal until the next match.`}`;
         } },
-        { label: 'Stay out of it', run: () => 'You hear the result from the cheering, and the groaning.' },
+        { label: 'Stay out of it', run: () => 'You hear the result through the bulkhead: cheering, then a groan, then someone banging a pan.' },
       ],
     };
   });
