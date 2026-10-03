@@ -438,3 +438,27 @@ test('a scene shows a face for each person it names, and none when it names nobo
   assert.equal(await page.$$eval('#panel .scene-face', els => els.length), 0);
   await done();
 });
+
+test('the result of a choice says what it did to how people feel', async () => {
+  const { page, ev, done } = await open();
+  const names = await ev(() => {
+    const st = G.state; st.tutorial = null; while (G.dialog) finishEvent();
+    for (const role of ['engineer', 'pilot', 'gunner']) { const p = makePerson('earth'); p.role = role; registerPerson(p); st.crew.push(p.id); }
+    const [a, b, c] = st.crew.map(person), [fa, fb] = folk();
+    openEvent({ title: 'Test', text: `${a.first} and ${b.first} are arguing.`, choices: [
+      { label: 'Side with the first', run() { like(a, 2, 'x'); like(b, -1, 'y'); addBond(fa, fb, -2); like(c, 0, null); return 'Done.'; } },
+      { label: 'Say nothing', run: () => 'Done.' },
+    ] });
+    return [a.first, b.first];
+  });
+  await page.click('[data-action=choose][data-arg="0"]');
+  const lines = await page.$$eval('#panel .shifts div', els => els.map(e => e.textContent));
+  assert.ok(lines.includes(`${names[0]} thinks better of you.`));
+  assert.ok(lines.includes(`${names[1]} thinks less of you.`));
+  assert.ok(lines.includes(`${names[0]} and ${names[1]} are further apart.`));
+  assert.equal(lines.length, 3, 'and nothing for a change of zero');
+  await ev(() => { finishEvent(); openEvent({ title: 'Quiet', text: 'Nothing.', choices: [{ label: 'Ok', run: () => 'Done.' }] }); });
+  await page.click('[data-action=choose][data-arg="0"]');
+  assert.equal(await page.$$eval('#panel .shifts', els => els.length), 0, 'a choice that changes nothing shows nothing');
+  await done();
+});

@@ -165,3 +165,20 @@ function sceneFacesHtml(ev) {
     return `<div class="scene-face"><div class="face ${ring}">${portraitSvg(c)}</div><span>${esc(c.first)}</span></div>`;
   }).join('')}</div>` : '';
 }
+
+// What a choice did to how people feel, as lines under the result: the changes like() (people.js) and addBond() (social.js) logged.
+function shiftLines(log) {
+  const who = new Map(), byPair = new Map();
+  for (const s of log) {
+    if (s.p) who.set(s.p, (who.get(s.p) || 0) + s.n);
+    else { const k = [s.a.id, s.b.id].sort().join('|'), e = byPair.get(k) || { a: s.a, b: s.b, n: 0 }; e.n += s.n; byPair.set(k, e); }
+  }
+  const lines = [
+    ...[...who].filter(([, n]) => n).map(([p, n]) => ({ n, text: `${p.first} thinks ${Math.abs(n) >= 3 ? 'much ' : ''}${n > 0 ? 'better' : 'less'} of you` })),
+    ...[...byPair.values()].filter(e => e.n).map(e => ({ n: e.n, text: `${e.a.first} and ${e.b.first} are ${e.n > 0 ? 'closer' : 'further apart'}` })),
+  ].sort((a, b) => Math.abs(b.n) - Math.abs(a.n));
+  if (!lines.length) return '';
+  const shown = lines.slice(0, 4).map(l => `<div class="${l.n > 0 ? 'up' : 'down'}">${esc(l.text)}.</div>`);
+  if (lines.length > 4) shown.push(`<div>${lines.length - 4} more feel it too.</div>`);
+  return `<div class="shifts">${shown.join('')}</div>`;
+}

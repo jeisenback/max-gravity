@@ -63,13 +63,14 @@ const UI = {
     this.el.classList.add('event');
   },
 
-  showEventResult(title, text) {
+  showEventResult(title, text, shifts) {
     this.el.innerHTML = `
       <div class="event-body">
         <div class="eyebrow">${G.mode === 'hail' ? 'Comms channel' : G.mode === 'transit' ? 'In transit' : G.state.planet}</div>
         ${sceneFacesHtml(G.dialog && G.dialog.event)}
         <h1>${title}</h1>
         <p>${text}</p>
+        ${shiftLines(shifts || [])}
         <div class="choices"><button data-action="continue" class="primary">Continue</button></div>
       </div>`;
   },
@@ -307,7 +308,7 @@ const UI = {
     switch (action) {
       case 'tab': this.tab = arg; this.tradeNote = null; break;
       case 'station': this.tab = stationOf(this.tab).id === arg && this.tab !== 'person' ? this.tab : bridgeStation(arg, p); this.tradeNote = null; break;
-      case 'choose': this.showEventResult(G.dialog.event.title, chooseEvent(Number(arg))); return;
+      case 'choose': { const title = G.dialog.event.title; G.shifts = []; const text = chooseEvent(Number(arg)), shifts = G.shifts; G.shifts = null; this.showEventResult(title, text, shifts); return; }
       case 'continue': finishEvent(); return;
       case 'epilogue': openEvent(epilogueEvent()); return;
       case 'takeoff': takeOff(); return;
