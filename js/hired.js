@@ -50,7 +50,7 @@ function setupHired(o) {
   const st = G.state, post = HIRED_POSTS.includes(o.post) ? o.post : 'pilot';
   st.shipId = 'freighter';
   st.fuel = SHIPS.freighter.fuel; st.armor = SHIPS.freighter.armor;
-  st.credits = HIRED_SAVINGS;
+  st.credits = o.credits !== undefined ? o.credits : HIRED_SAVINGS;  // o.credits and o.skill: a hand put ashore (stakes.js) carries both to the next berth
   st.tutorial = null;
   home().name = shipName(false);
   // The captain, and a crew with every role but yours. The main characters (cast.js) take their posts first.
@@ -78,11 +78,11 @@ function setupHired(o) {
     st.crew.push(c.id);
   }
   const d = captainKey && CAPTAINS[captainKey];
-  st.hired = { captain: cap.id, captainKey, post, since: st.day, wage: d ? d.wage : HIRED_WAGE, share: d ? d.share : HIRED_SHARE, fund: HIRED_FUND, run: null, ledger: [], skill: { [post]: SKILL_STEPS[1] }, asked: 0 };
+  st.hired = { captain: cap.id, captainKey, post, since: st.day, wage: d ? d.wage : HIRED_WAGE, share: d ? d.share : HIRED_SHARE, fund: HIRED_FUND, run: null, ledger: [], skill: { ...(o.skill || {}), [post]: Math.max((o.skill || {})[post] || 0, SKILL_STEPS[1]) }, asked: 0 };
   return [
     `You signed on to the ${home().name}, an ice hauler out of ${system().name}, under Captain ${cap.first} ${cap.last}. You are her ${POSTS[post].name.toLowerCase()}: the post is yours to work, and the captain picks where she goes.`,
-    `You have ${HIRED_SAVINGS} credits to your name. Save toward a ship of your own.`,
-  ];
+    `You have ${fmt(st.credits)} credits to your name. Save toward a ship of your own.`,
+  ].concat(o.putOffBy ? [`${o.putOffBy} put you ashore. You carry your savings and what you learned.`] : []);
 }
 
 // ---------- burn events ----------

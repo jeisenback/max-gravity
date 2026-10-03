@@ -308,7 +308,7 @@ const UI = {
     switch (action) {
       case 'tab': this.tab = arg; this.tradeNote = null; break;
       case 'station': this.tab = stationOf(this.tab).id === arg && this.tab !== 'person' ? this.tab : bridgeStation(arg, p); this.tradeNote = null; break;
-      case 'choose': { const title = G.dialog.event.title; G.shifts = []; const text = chooseEvent(Number(arg)), shifts = G.shifts; G.shifts = null; this.showEventResult(title, text, shifts); return; }
+      case 'choose': { const title = G.dialog.event.title, before = G.state; G.shifts = []; const text = chooseEvent(Number(arg)), shifts = G.shifts; G.shifts = null; if (G.state !== before) return;  /* a new game began (stakes.js): its first scene is up */ this.showEventResult(title, text, shifts); return; }
       case 'continue': finishEvent(); return;
       case 'epilogue': openEvent(epilogueEvent()); return;
       case 'takeoff': takeOff(); return;
