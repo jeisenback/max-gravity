@@ -230,9 +230,9 @@ function pickStorylet(where, keep = () => true) {
   return pick(ok.filter(s => s.priority === top));
 }
 
-function journalHtml() {
+function journalHtml(limit = 6) {
   const j = G.state.journal || [];
-  return j.length ? `<h3>Journal</h3>${j.slice(0, 6).map(e => `<div class="hint">${dateOf(e.day)}: ${e.text}</div>`).join('')}` : '';
+  return j.length ? `<h3>Journal</h3>${j.slice(0, limit).map(e => `<div class="hint">${dateOf(e.day)}: ${e.text}</div>`).join('')}` : '<h3>Journal</h3><p class="hint">Nothing yet. What you do and what comes of it is kept here.</p>';
 }
 
 Mods.register({

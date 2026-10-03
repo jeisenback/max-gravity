@@ -140,21 +140,9 @@ const UI = {
         <h3>Active missions</h3>
         ${this.missionList(st.missions, 'abort', 'Abandon')}
         ${story().stage !== 0 ? `<h3>Story: Cold Water</h3><p class="desc">${storyObjective()}</p>${story().stage === 'end' ? '<div class="row"><button data-action="epilogue">Read the epilogue</button></div>' : ''}` : ''}
-        ${journalHtml()}
         ${hired() || scopeOff('owner') ? '' : stakeOffer()}
-        <h3>Standing</h3>
-        <div class="standing">${FACTIONS.map(g => `<div><span style="color:${GOV_COLORS[g]}">${g === 'Pirate' ? 'Pirates' : g}</span> <b>${standingWord(repOf(g))}</b> <span class="hint">${repOf(g) > 0 ? '+' : ''}${repOf(g)}</span></div>`).join('')}</div>
         <h3>Local conditions</h3>
         ${this.conditionList(conditions(st.systemId), 'Nothing unusual. Trade is flowing normally.')}
-        <h3>On the feeds</h3>
-        ${feedHeadlines().map(l => `<div class="hint">${l}</div>`).join('')}
-        <h3>News</h3>
-        ${this.conditionList(Object.keys(SYSTEMS).filter(id => id !== st.systemId).flatMap(conditions)
-          .filter((c, i, all) => all.findIndex(d => d.text === c.text) === i && !conditions(st.systemId).some(d => d.text === c.text)), '')}
-        ${(st.news || []).map(n => `<div class="hint">${dateOf(n.day)}: ${n.text}</div>`).join('')}
-        ${st.rumors.map(r => `<div class="hint">${r.text} Until ${dateOf(r.until)}.</div>`).join('')}
-        ${!(st.news || []).length && !st.rumors.length ? '<p class="hint">Listen to the comms in transit for more.</p>' : ''}
-        ${othersNewsHtml()}
         ${scopeOff('community') ? '' : communityHtml()}
         <p class="hint">New games, saves, and settings are in the Menu (below, or Esc in flight).</p>`;
     },

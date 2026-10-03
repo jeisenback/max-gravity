@@ -88,11 +88,12 @@ const fakeRuntime = () => {
 
 test('shared news is escaped; sharing my deeds; mods by link', async () => {
   const { page, ev, done } = await open({ init: fakeRuntime });
-  await ev(() => { G.state.tutorial = null; while (G.dialog) finishEvent(); UI.render(); });
+  await ev(() => { G.state.tutorial = null; while (G.dialog) finishEvent(); UI.tab = 'journal'; UI.render(); });  // shared news is on the Journal tab
   await page.waitForFunction(() => [...document.querySelectorAll('.hint')].some(e => /Captain Ama/.test(e.innerHTML)));
   const shown = await page.evaluate(() => [...document.querySelectorAll('.hint')].map(e => e.innerHTML).find(t => /Captain Ama/.test(t)));
   assert.doesNotMatch(shown, /<img|<b>/, 'markup shows as text');
   assert.equal(await ev(() => !!window.pwned), false);
+  await ev(() => { UI.tab = 'port'; UI.render(); });  // sharing is on the Port screen
   await page.click('[data-action=shareDeeds]');
   await ev(() => { homeLog('Named the ship the Test Pattern.'); Mods.emit('missionDone', { type: 'bounty', targetName: 'Harlan Voss' }); });
   await page.waitForFunction(() => window.__store['deeds/me-123'] && window.__store['deeds/me-123'].deeds.length >= 2);
