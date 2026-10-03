@@ -115,6 +115,7 @@ function pickPlay(who) {
 const foePlay = () => pickPlay('foe');
 
 function startDuel(spec, flee) {
+  if (hired() && spec.kind === 'pirate') return startRaid(spec, flee);  // a hired hand fights a raid in beats (engagements.js)
   const st = G.state, foe = makeEnemy(spec);
   const foeHp = Math.max(4, Math.min(10, Math.round(foe.maxArmor / 30)));
   // Shields: with a healthy 40% or more of the reactor behind them, the first half hit does nothing.

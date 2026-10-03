@@ -229,6 +229,16 @@ played.
 7. A headless simulation, like Wind's `tools/simulate.js`, to tune card counts, damage
    and death odds before release (#45).
 
+## A hired hand's engagements
+
+In the hired-hand chapter a pirate contact is not the card duel. It plays as an authored raid in beats
+(`js/engagements.js`): the closing, two passes, and the close. At each beat you choose how to meet her or do the
+job of your own post, and each choice is a chance of going your way (+1 or +2) or hers (-1 or -2) on a running
+position. At the close she breaks off, stands off and throws a last round, or comes alongside, and then the fight goes
+to the lock (`js/boarders.js`): hold, rush, go round, or your post's job, with casualties. Measured over random-choice
+play, about 40% of raids end with her breaking off, 40% stand off, and 15 to 25% go to the lock, for 7 to 10% of the hull.
+Other contacts (patrols, bounties, hunters) and an owner's fights are still the card duel above.
+
 ## Open questions
 
 None right now.
