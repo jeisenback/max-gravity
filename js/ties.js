@@ -78,9 +78,13 @@ function dockPeople(gov, status) {
   return st.crew.map(person).filter(p => p && tiesOf(p).status[gov] === status && !(seen[`${p.id}:${gov}:${status}`] > st.day - 60));
 }
 
+// The ship is stopped at most once in 120 days, whoever is aboard.
+function customsDue() { const st = G.state; return !((st.customs || {}).last > st.day - 120); }
+
 function customsScene(gov, planet) {
-  const st = G.state, h = hired(), cap = person(h.captain), p = dockPeople(gov, 'wanted')[0] || dockPeople(gov, 'exile')[0];
+  const st = G.state, h = hired(), cap = person(h.captain), p = customsDue() ? dockPeople(gov, 'wanted')[0] || dockPeople(gov, 'exile')[0] : null;
   if (!p) return null;
+  st.customs.last = st.day;
   const status = tiesOf(p).status[gov], n = p.first, mine = youTies(), papers = mine.aff === gov && ['member', 'officer'].includes(mine.status[gov]);
   (st.customs[`${p.id}:${gov}:${status}`] = st.day);
   const weight = status === 'wanted' ? 0.55 : 0.8;  // an exile is turned back less often than a wanted one is held
@@ -130,7 +134,7 @@ Mods.register({
       const gov = system().gov;
       if (!isFaction(gov) || gov === 'Pirate') return list;
       const out = [];
-      if (dockPeople(gov, 'wanted').length || dockPeople(gov, 'exile').length) out.push({ tier: 1, weight: 4, via: 'crew', make: () => customsScene(gov, planet) });
+      if (customsDue() && (dockPeople(gov, 'wanted').length || dockPeople(gov, 'exile').length)) out.push({ tier: 1, weight: 4, via: 'crew', make: () => customsScene(gov, planet) });
       if (dockPeople(gov, 'officer').length) out.push({ tier: 1, weight: 2, via: 'crew', make: () => dockFriendScene(gov, planet) });
       return list.concat(out);
     });

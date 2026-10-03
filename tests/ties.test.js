@@ -74,7 +74,8 @@ test('a crew member the port\'s faction wants is a customs matter, and your own 
     st.day += 5; out.offered = Mods.filter('happenings', [], 'port', planet).some(c => c.tier === 1);
     const e = customsScene('Earth Coalition', planet);
     out.labels = e.choices.map(c => c.label); out.title = e.title;
-    out.again = 'x'; for (let i = 0; i < 5 && out.again; i++) out.again = customsScene('Earth Coalition', planet);  // each person once in sixty days
+    out.again = customsScene('Earth Coalition', planet);  // the ship is stopped once in 120 days
+    st.day += 121; out.later = !!customsScene('Earth Coalition', planet); st.day -= 121;
     const op = p.opinion; G.dialog = { event: e, choices: e.choices };
     const i = e.choices.findIndex(c => /papers/.test(c.label)); const text = chooseEvent(i);
     out.papers = /stamps the manifest/.test(text); out.opinion = p.opinion - op; out.stays = st.crew.includes(p.id);
@@ -82,7 +83,7 @@ test('a crew member the port\'s faction wants is a customs matter, and your own 
   });
   assert.equal(r.gov, 'Earth Coalition'); assert.equal(r.title, 'The Customs Officer'); assert.ok(r.offered, 'offered at the port');
   assert.ok(r.labels.some(l => /^\[Earth Coalition papers\]/.test(l)), 'you are Coalition, so you have papers');
-  assert.ok(r.labels.length >= 4); assert.equal(r.again, null);
+  assert.ok(r.labels.length >= 4); assert.equal(r.again, null); assert.ok(r.later, 'and again after the cooldown');
   assert.ok(r.papers && r.opinion === 2 && r.stays);
   await done();
 });
