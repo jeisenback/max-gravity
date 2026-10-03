@@ -19,11 +19,11 @@ test('a captain who has had enough warns you once, then puts you ashore, and you
   const r = await ev(() => {
     const st = start(), h = hired(), cap = person(h.captainKey ? h.captain : h.captain), out = {};
     st.credits = 777; h.skill.gunner = 35;
-    cap.opinion = -2; out.calm = offered(warningScene) || offered(putAshoreScene);
-    cap.opinion = -3; out.warns = offered(warningScene); out.notYet = offered(putAshoreScene);
+    cap.opinion = -1; out.calm = offered(warningScene) || offered(putAshoreScene);
+    cap.opinion = -2; out.warns = offered(warningScene); out.notYet = offered(putAshoreScene);
     openEvent(warningScene()); chooseEvent(0); finishEvent();  // "I will do better"
     out.warned = h.warned; out.afterWarning = [offered(warningScene), offered(putAshoreScene)];
-    cap.opinion = -4; out.ashore = offered(putAshoreScene);
+    cap.opinion = -3; out.ashore = offered(putAshoreScene);
     const was = h.captainKey;
     openEvent(putAshoreScene()); chooseEvent(0);
     const st2 = G.state, h2 = hired();
@@ -31,11 +31,11 @@ test('a captain who has had enough warns you once, then puts you ashore, and you
     out.scene = G.dialog && G.dialog.event.title; out.warnedAgain = !!h2.warned; out.notes = UI.notes.join(' ');
     return out;
   });
-  assert.equal(r.calm, false, 'nothing at -2');
-  assert.ok(r.warns && !r.notYet, 'a warning at -3, and not the end yet');
+  assert.equal(r.calm, false, 'nothing at -1');
+  assert.ok(r.warns && !r.notYet, 'a warning at -2, and not the end yet');
   assert.equal(r.warned, true);
-  assert.deepEqual(r.afterWarning, [false, false], 'a captain who has warned does not warn again, and the end waits for -4');
-  assert.ok(r.ashore, 'put ashore at -4 once warned');
+  assert.deepEqual(r.afterWarning, [false, false], 'a captain who has warned does not warn again, and the end waits for -3');
+  assert.ok(r.ashore, 'put ashore at -3 once warned');
   assert.ok(r.fresh && r.other, 'a new game with another captain');
   assert.equal(r.credits, 777, 'with your savings'); assert.equal(r.skill, 35, 'and what you learned'); assert.equal(r.times, 1);
   assert.equal(r.scene, 'Signing On', 'and the sign-on is on screen');
@@ -48,8 +48,8 @@ test('a captain who has come round forgets the warning', async () => {
   await ev(helpers);
   const r = await ev(() => {
     const st = start(), h = hired(), cap = person(h.captain);
-    cap.opinion = -3; openEvent(warningScene()); chooseEvent(2); finishEvent();  // "unfair": -2 more
-    const out = { warned: h.warned, stillAshore: (cap.opinion = -5, offered(putAshoreScene)) };
+    cap.opinion = -2; openEvent(warningScene()); chooseEvent(2); finishEvent();  // "unfair": -2 more
+    const out = { warned: h.warned, stillAshore: (cap.opinion = -4, offered(putAshoreScene)) };
     cap.opinion = 1; offered(warningScene);  // the filter forgets it
     out.forgot = h.warned;
     return out;

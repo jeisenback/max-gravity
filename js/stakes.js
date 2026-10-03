@@ -1,12 +1,13 @@
 'use strict';
 
 // What a hired hand can lose. Two things, both scenes at a port (happenings.js), for a hired hand only:
-// - The captain's patience. A captain whose opinion of you stays low says so once. If it is still low at a later port,
+// - The captain's patience. A captain whose opinion of you falls to -2 says so once. If it has not recovered and falls to -3 at a later port,
 //   you are put ashore: the chapter starts again with another captain, and you keep your savings and what you learned.
 // - A feud that is not mended. Two of the crew who have had a feud scene (social.js) and have not made it up split the
 //   ship: one of them gets off at the next port, and someone from the dock takes the berth. Loaded after captains.js.
 
-const PATIENCE = { warn: OPINION.GRUDGE, end: OPINION.BITTER };
+// A random-choice player's lowest opinion of the captain in a game is 0 to 2 (measured over 20 chapters), so the bar is a hostile habit, not bad luck.
+const PATIENCE = { warn: OPINION.ENEMY, end: OPINION.GRUDGE };  // -2 and -3
 const SPLIT_BOND = -5, SPLIT_GAP = 30;  // a bond this low, and at most one split in this many days
 
 function warningScene() {
