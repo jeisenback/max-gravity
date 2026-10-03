@@ -41,17 +41,23 @@ function putAshore() {
   return null;
 }
 
-function splitScene() {
-  const st = G.state, h = hired(), cap = person(h.captain);
+// The pair that has split worst: a feud that has been seen, a bond at the floor, and one of them not a main character.
+function splitPair() {
+  const st = G.state;
   if (st.relAt && st.relAt.split !== undefined && st.day - st.relAt.split < SPLIT_GAP) return null;
   let worst = null;
   for (const [a, b] of pairs(folk().filter(f => f.crew))) {
     const n = bond(a, b), movable = [a, b].filter(x => !x.p.cast);  // a main character does not leave
     if (n <= SPLIT_BOND && ((st.feuds || {})[bondKey(a, b)] || 0) >= 1 && movable.length && (!worst || n < worst.n)) worst = { a, b, n, movable };
   }
+  return worst;
+}
+
+function splitScene() {
+  const st = G.state, h = hired(), cap = person(h.captain), worst = splitPair();
   if (!worst) return null;
-  const { a, b, movable } = worst, A = a.p.first, B = b.p.first, mark = () => { (st.relAt = st.relAt || {}).split = st.day; };
-  mark();
+  const { a, b, movable } = worst, A = a.p.first, B = b.p.first;
+  (st.relAt = st.relAt || {}).split = st.day;
   const choices = movable.map(x => ({ label: `Let ${x.p.first} go`, run: () => letGo(x, x === a ? b : a) }));
   choices.push({ label: 'Keep both', run() { addBond(a, b, -1); like(a.p, -1, 'You made me stay on a ship with ' + B + '.'); like(b.p, -1, 'You made me stay on a ship with ' + A + '.'); return '"Then we all sail," you say. Neither of them answers. At the next watch they take opposite ends of the galley.'; } });
   return {
@@ -87,7 +93,7 @@ Mods.register({
         if (cap.opinion <= PATIENCE.end && h.warned) out.push({ tier: 0, weight: 1, via: 'crew', make: putAshoreScene });
         else if (cap.opinion <= PATIENCE.warn && !h.warned) out.push({ tier: 0, weight: 1, via: 'crew', make: warningScene });
       }
-      out.push({ tier: 1, weight: 3, via: 'crew', make: splitScene });
+      if (splitPair()) out.push({ tier: 1, weight: 3, via: 'crew', make: splitScene });  // only when there is one, so a quiet port draws nothing extra
       return list.concat(out);
     });
   },
