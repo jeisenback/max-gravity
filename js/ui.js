@@ -192,8 +192,10 @@ const UI = {
       const mine = st.crew.map((id, i) => {
         const c = person(id);
         const mood = CREW[id] ? '' : ` &middot; ${opinionWord(c.opinion)}`;
+        const hurt = !!(st.injured || {})[id], ring = hurt || moodLow(c) ? 'warn' : moodHigh(c) ? 'good' : '';
         return `<div class="mission">
-          <div><b>${personLink(c)}</b>${(st.injured || {})[id] ? ' <span class="tag high">injured</span>' : ''} &middot; ${skill(c)}${traits(c)}${mood}
+          <div class="crew-face ${ring}">${portraitSvg(c)}</div>
+          <div><b>${personLink(c)}</b>${hurt ? ' <span class="tag high">injured</span>' : ''}${moodLow(c) ? ' <span class="char-chip warn">having a hard time</span>' : moodHigh(c) ? ' <span class="char-chip good">in high spirits</span>' : ''} &middot; ${skill(c)}${traits(c)}${mood}
             <div class="hint">${CREW[id] ? c.perk : ROLE_PERKS[c.role](c.skill)} Wage ${fmt(wage(id))} cr/day.</div>${marksHtml(c)}</div>
           ${hired() ? '' : `<button data-action="dismiss" data-arg="${i}">Dismiss</button>`}
         </div>`;
