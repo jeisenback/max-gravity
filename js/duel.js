@@ -115,6 +115,7 @@ function pickPlay(who) {
 const foePlay = () => pickPlay('foe');
 
 function startDuel(spec, flee) {
+  if (hired() && spec.kind === 'pirate') return startRaid(spec, flee);  // a hired hand fights a raid in beats (engagements.js)
   const st = G.state, foe = makeEnemy(spec);
   const foeHp = Math.max(4, Math.min(10, Math.round(foe.maxArmor / 30)));
   // Shields: with a healthy 40% or more of the reactor behind them, the first half hit does nothing.
@@ -194,6 +195,8 @@ function duelExchange(mine, theirs) {
   const d = G.duel, st = G.state, max = ship().armor, foe = theShip(d.foe), attacker = d.init;
   const threat = attacker === 'me' ? mine : theirs, answer = attacker === 'me' ? theirs : mine;
   let out = DUEL_OUTCOME[threat][answer], pts = hitPoints(threat, out);
+  const boarded = !!hired() && attacker === 'foe' && threat === 'board' && out !== 'stop';  // boarders across: a hired hand fights them (boarders.js)
+  if (boarded) pts = 0;
   const before = st.armor;
   let soaked = false;
   if (attacker === 'foe' && out === 'half' && d.deflector) { pts = 0; d.deflector = false; soaked = true; }  // the capacitor takes it
@@ -222,6 +225,6 @@ function duelExchange(mine, theirs) {
     text += ` Neither of you can finish it, and ${foe} breaks off.`;
     d.foeHp = -1;
   }
-  if (d.foeHp > 0) G.nextEvent = duelEvent(); else G.duel = null;
+  if (d.foeHp > 0) G.nextEvent = boarded ? repelEvent(d, out) : duelEvent(); else G.duel = null;
   return text;
 }
