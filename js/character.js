@@ -56,6 +56,39 @@ function captainRunsHtml() {
   return conCard('Recent runs', rows);
 }
 
+// What they have told you, a beat at a time, from the talks in family.js. Nothing is shown that has not been said.
+function toldCard(c) {
+  const s = c.story;
+  if (c.you || !s) return '';
+  const lines = [];
+  if (s.beat >= 1) lines.push(`Left ${c.home} because of ${s.left}.`);
+  if (s.beat >= 2) lines.push(`Misses their ${s.rel}, ${s.name}.`);
+  if (s.beat >= 3) lines.push(`Wants ${s.hope}.`);
+  if (s.beat === 3 && s.favor) lines.push('Has a favor to ask.');
+  if (s.beat >= 4) lines.push(s.favor === 'visit' ? 'You promised to take them home.' : 'You paid what they owed.');
+  if (c.loyal) lines.push('Loyal: they will follow the ship anywhere.');
+  return conCard('Told you', lines.length ? lines.map(l => `<div class="hint">${esc(l)}</div>`).join('') : '<div class="hint">Nothing yet. Sit with them during a burn.</div>');
+}
+
+// Why two people get on or do not: clashing habits, and tastes they share.
+function tieReason(a, b) {
+  const ta = tastes(a), tb = tastes(b), why = [];
+  const c = CLASHES.find(([x, y]) => (has(a, x) && has(b, y)) || (has(a, y) && has(b, x)));
+  if (c) why.push(`${TRAITS[c[0]].adj} and ${TRAITS[c[1]].adj}`);
+  if (ta.genre === tb.genre) why.push(`both like ${GENRES[ta.genre]}`);
+  if (ta.team === tb.team) why.push(`both follow the ${ta.team}`);
+  return why.join('; ');
+}
+
+// The strongest bonds with the others aboard (social.js keeps them).
+function tiesCard(c) {
+  const list = folk(), me = list.find(f => f.id === c.id);
+  if (c.you || !me) return '';
+  const rows = list.filter(f => f !== me).map(f => ({ f, n: bond(me, f) })).filter(t => bondWord(t.n)).sort((x, y) => Math.abs(y.n) - Math.abs(x.n)).slice(0, 4);
+  if (!rows.length) return '';
+  return conCard('Aboard', rows.map(({ f, n }) => { const why = tieReason(me, f); return `${conRead(personLink(f.p), bondWord(n))}${why ? `<div class="hint">${esc(why)}</div>` : ''}`; }).join(''));
+}
+
 function characterPanel() {
   if (candidateOf(G.viewPerson)) return interviewPanel();
   const st = G.state, id = G.viewPerson, c = id === 'you' ? youPerson() : person(id);
@@ -78,11 +111,12 @@ function characterPanel() {
     ? conCard('Command', `${conRead('Ship', `${shipTitle()}, ${ship().name}`)}${conRead('Crew', `${st.crew.length}, ${berthsUsed()}/${ship().berths} berths`)}${(st.fleet || []).length ? conRead('Company', `${st.fleet.length} ship${st.fleet.length > 1 ? 's' : ''}`) : ''}`)
     : hand && c.id === hand.captain ? conCard('Command', `${conRead('Your wage', `${fmt(hand.wage)} cr/day`)}${conRead('Your share', `${Math.round(hand.share * 100)}% of each run's profit`)}${conRead('Runs together', runTotals(hand).runs)}${conRead('You earned', `${fmt(runTotals(hand).earned)} cr`)}${conRead('The ship\'s funds', `${fmt(hand.fund)} cr`)}`) + captainRunsHtml() : '';
   const marked = marksOf(c).length ? conCard('Marks', marksOf(c).map(m => `<div class="hint">${esc(dateOf(m.day))}: ${esc(m.text)}</div>`).join('')) : '';
+  const news = (moodLow(c) || moodHigh(c)) && c.mood.text ? `<div class="hint">News from home: ${esc(c.mood.text)}.</div>` : '';
   const blurb = c.ambition ? `<div class="char-amb">${c.ambition}</div>` : c.bio ? `<div class="char-amb">${c.bio}</div>` : '';
   return consoleHtml({
     title: fullName(c), status: c.you ? 'Playing as' : whereIs(c),
-    screen: `<div class="char-id">${portraitSvg(c)}<div><div class="char-name">${esc(fullName(c))}</div><div class="hint">${esc(sub)}</div><div class="char-chips">${chips}</div>${blurb}</div></div>`,
-    side: isCaptain ? command + standing : conCard('Post skills', rows) + cap + marked
+    screen: `<div class="char-id">${portraitSvg(c)}<div><div class="char-name">${esc(fullName(c))}</div><div class="hint">${esc(sub)}</div><div class="char-chips">${chips}</div>${news}${blurb}</div></div>`,
+    side: isCaptain ? command + standing : conCard('Post skills', rows) + cap + marked + toldCard(c) + tiesCard(c)
       + (c.you ? '' : conCard('Where', `${conRead('Aboard', crewed ? shipTitle() : 'no')}${crewed && wage(c.id) ? conRead('Wage', `${fmt(wage(c.id))} cr/day`) : ''}${!crewed ? `<div class="hint">${whereIs(c)}</div>` : ''}`)) + standing,
     controls: '<div class="row"><button data-action="personBack">Back</button></div>',
   });
