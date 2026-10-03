@@ -116,6 +116,7 @@ const bond = (a, b) => bonds()[bondKey(a, b)] || 0;
 function addBond(a, b, n) {
   const k = bondKey(a, b);
   bonds()[k] = Math.max(-10, Math.min(10, (bonds()[k] || 0) + n));
+  if (G.shifts && n) G.shifts.push({ a: a.p, b: b.p, n });
 }
 function bondWord(n) {
   return n >= 6 ? 'close' : n >= 3 ? 'friends' : n >= 1 ? 'friendly' : n > -1 ? null : n > -3 ? 'prickly' : n > -6 ? 'rivals' : 'can\'t stand each other';
