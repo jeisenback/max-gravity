@@ -71,6 +71,31 @@ test('with five or fewer, all of them show', async () => {
   await done();
 });
 
+test('the ship has a night: the lights go down and whoever is off watch turns in', async () => {
+  const { ev, done } = await open();
+  await ev(helpers);
+  const r = await ev(() => {
+    setup();
+    const t = G.transit; t.left = t.total * 0.3;  // under way, not at the flip
+    const level = e => { t.elapsed = e; return nightLevel(); };
+    const levels = { morning: level(5), dusk: level(17), night: level(22), dawn: level(32) };
+    t.elapsed = 22;
+    lifeTick(0.5);
+    const noted = t.comms.some(c => /lights go down/.test(c));  // the comms keep only the last ten lines
+    for (let i = 0; i < 200; i++) lifeTick(0.5);
+    const off = shipPeople().filter(p => p.role !== 'cat' && !NIGHT_WATCH.includes(p.role)).map(p => p.room);
+    t.elapsed = 5;
+    lifeTick(0.5);
+    return { levels, off, noted, up: t.comms.some(c => /lights come up/.test(c)) };
+  });
+  assert.equal(r.levels.morning, 0); assert.equal(r.levels.night, 1);
+  assert.ok(r.levels.dusk > 0 && r.levels.dusk < 1, `dusk is part way (${r.levels.dusk})`);
+  assert.ok(r.levels.dawn > 0 && r.levels.dawn < 1, `and so is dawn (${r.levels.dawn})`);
+  assert.ok(r.off.length > 3 && r.off.every(room => room === 'berths' || room === 'galley'), `everyone off watch is in the berths or the galley (${r.off})`);
+  assert.ok(r.noted, 'dusk is on the comms'); assert.ok(r.up, 'and so is dawn');
+  await done();
+});
+
 test('clicking someone in the burn view opens their page', async () => {
   const { page, ev, done } = await open();
   await ev(helpers);
