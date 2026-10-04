@@ -144,8 +144,8 @@ function repelCasualty(s) {
   const st = G.state, pool = [...st.crew.filter(id => !(st.injured || {})[id] || s.hurt.has(id)), 'you'];
   let who = pick(pool), cover = '';
   if (who === 'you' && !s.covered) {  // a friend takes it for you, once in a fight
-    const friend = st.crew.map(person).find(c => c && c.opinion >= OPINION.FRIEND && !(st.injured || {})[c.id] && !s.hurt.has(c.id) && !(s.held || []).some(l => l.startsWith(c.first)));
-    if (friend) { who = friend.id; s.covered = true; cover = `${friend.first} pulls you down behind the closer and takes it. `; }
+    const friend = st.crew.map(person).find(c => c && (c.opinion >= OPINION.FRIEND || c.owes) && !(st.injured || {})[c.id] && !s.hurt.has(c.id) && !(s.held || []).some(l => l.startsWith(c.first)));
+    if (friend) { who = friend.id; s.covered = true; cover = `${friend.first} pulls you down behind the closer and takes it${friend.owes ? ` ("We are even," ${friend.first} says later)` : ''}. `; delete friend.owes; }
   }
   if (who === 'you') {
     const h = hired(), again = s.youHurt || handHurt();

@@ -253,7 +253,7 @@ its fund.
 Who stands with you depends on the crew. One who cannot stand you (their opinion of you at the enemy mark) keeps to their
 berth, and of two at each other's throats (the bond at which a split is on the cards) the one who thinks less of you will not
 stand in the same section, so the line is a person shorter each time. A friend takes the first hit meant for you, once a
-fight. The same goes for the repel fight and for boarding a crippled raider.
+fight (so does someone who owes you one, from a watch you covered for them). The same goes for the repel fight and for boarding a crippled raider.
 Bounties, hunters and an owner's fights are still the card duel above.
 
 ## Open questions
