@@ -84,7 +84,7 @@ function setupHired(o) {
   const d = captainKey && CAPTAINS[captainKey];
   st.hired = { captain: cap.id, captainKey, post, since: st.day, wage: d ? d.wage : HIRED_WAGE, share: d ? d.share : HIRED_SHARE, fund: HIRED_FUND, run: null, ledger: [], skill: { ...(o.skill || {}), [post]: Math.max((o.skill || {})[post] || 0, SKILL_STEPS[1]) }, asked: 0 };
   return [
-    `You signed on to the ${home().name}, an ice hauler out of ${system().name}, under Captain ${cap.first} ${cap.last}. You are her ${POSTS[post].name.toLowerCase()}: the post is yours to work, and the captain picks where she goes.`,
+    `You signed on to the ${esc(home().name)}, an ice hauler out of ${system().name}, under Captain ${cap.first} ${cap.last}. You are her ${POSTS[post].name.toLowerCase()}: the post is yours to work, and the captain picks where she goes.`,
     `You have ${fmt(st.credits)} credits to your name. Save toward a ship of your own.`,
   ].concat(o.putOffBy ? [`${o.putOffBy} put you ashore. You carry your savings and what you learned.`] : []);
 }
@@ -414,7 +414,7 @@ function chapterRecap() {
   const st = G.state, h = hired(), cap = st.people[h.captain], crew = st.crew.map(person).filter(c => c && c.memories);
   const list = names => names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0];
   const t = runTotals(h), days = st.day - h.since;
-  const work = `${days} days aboard ${shipTitle()}. ${t.runs} run${t.runs === 1 ? '' : 's'} with Captain ${cap.last}, and ${fmt(t.earned)} cr earned in wage and share. You worked the ${POSTS[h.post].name.toLowerCase()} and reached level ${skillLevel(h.post)}.`;
+  const work = `${days} days aboard ${esc(shipTitle())}. ${t.runs} run${t.runs === 1 ? '' : 's'} with Captain ${cap.last}, and ${fmt(t.earned)} cr earned in wage and share. You worked the ${POSTS[h.post].name.toLowerCase()} and reached level ${skillLevel(h.post)}.`;
   const near = [...(cap && cap.memories ? [{ c: cap, name: `Captain ${cap.last}` }] : []), ...crew.map(c => ({ c, name: c.first }))]
     .filter(x => x.c.opinion >= OPINION.FRIEND).sort((a, b) => b.c.opinion - a.c.opinion).slice(0, 3);
   const told = crew.filter(c => c.story && c.story.beat >= 3).map(c => c.first), trusted = Object.keys(CAST).filter(k => ((st.cast[k] || {}).flags || {}).trusted).map(k => castPerson(k).first), favor = crew.filter(c => c.story && c.story.beat >= 4).map(c => c.first), loyal = crew.filter(c => c.loyal).map(c => c.first);

@@ -57,13 +57,13 @@ function succeed(fate, heirName) {
 
 function legacyHtml() {
   const c = captain(), st = G.state;
-  return `<h3>Captain ${c.name}</h3>
+  return `<h3>Captain ${esc(c.name)}</h3>
     <p class="hint">In command since ${dateOf(c.since)}.</p>
     <div class="row"><input type="text" id="capName" maxlength="30" placeholder="Your name"><button data-action="renameCaptain">Change name</button></div>
-    ${G.retireAsk ? `<p class="desc">Retire, and hand ${shipTitle()} and the company to your successor? You keep 30% of the money.</p>
+    ${G.retireAsk ? `<p class="desc">Retire, and hand ${esc(shipTitle())} and the company to your successor? You keep 30% of the money.</p>
       <div class="row"><input type="text" id="heirName" maxlength="30" placeholder="Successor's name"><button data-action="retire" data-arg="yes">Retire</button><button data-action="retire" data-arg="no">Not yet</button></div>`
     : '<div class="row"><button data-action="retire">Retire...</button></div>'}
-    ${st.captains.length ? `<h3>Captains before you</h3>${st.captains.map(x => `<div class="hint">Captain ${x.name}, ${dateOf(x.from)} to ${dateOf(x.to)}: ${x.fate}.</div>`).join('')}` : ''}`;
+    ${st.captains.length ? `<h3>Captains before you</h3>${st.captains.map(x => `<div class="hint">Captain ${esc(x.name)}, ${dateOf(x.from)} to ${dateOf(x.to)}: ${esc(x.fate)}.</div>`).join('')}` : ''}`;
 }
 
 Mods.register({

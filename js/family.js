@@ -444,13 +444,13 @@ function homeHtml() {
     if (p.story && p.story.favor && p.story.beat >= 3 && p.story.beat < 4) bits.push('has a favor to ask');
     return bits.length ? `<div class="hint">${p.first}: ${bits.join(', ')}</div>` : '';
   }).join('');
-  return `<h3>${h.name[0].toUpperCase()}${h.name.slice(1)}</h3>
+  return `<h3>${esc(h.name[0].toUpperCase() + h.name.slice(1))}</h3>
     ${hired() ? '' : '<div class="row"><input type="text" id="shipName" maxlength="30" placeholder="A new name for the ship"><button data-action="renameShip">Rename the ship</button></div>'}
     ${crew}
     ${h.traditions.length ? `<p class="hint">Traditions: ${h.traditions.map(id => TRADITIONS[id].name).join(', ')}.</p>` : ''}
     ${h.cat ? `<p class="hint">${h.cat} the cat lives aboard.</p>` : ''}
-    ${h.touches.map(t => `<div class="hint">${t}.</div>`).join('')}
-    ${h.log.slice(0, 8).map(l => `<div class="hint">${dateOf(l.day)}: ${l.text}</div>`).join('')}`;
+    ${h.touches.map(t => `<div class="hint">${esc(t)}.</div>`).join('')}
+    ${h.log.slice(0, 8).map(l => `<div class="hint">${dateOf(l.day)}: ${esc(l.text)}</div>`).join('')}`;
 }
 
 // For the Cold Water epilogue.

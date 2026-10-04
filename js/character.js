@@ -53,9 +53,9 @@ const pips = n => `<span class="pips">${[1, 2, 3].map(i => `<u class="${i <= n ?
 function whereIs(c) {
   const st = G.state, ship = (st.fleet || []).find(s => s.captain.pid === c.id);
   if (ship) return `captain of the ${ship.name}, ${ship.dest ? `en route to ${ship.dest}` : `docked at ${ship.at}`}`;
-  if (hired() && c.id === hired().captain) return `captain of ${shipTitle()}, ${G.transit ? `en route to ${SYSTEMS[G.transit.to].name}` : `docked at ${st.planet}`}`;
-  if (c.you) return `aboard ${shipTitle()}${hired() ? `, ${POSTS[hired().post].name}` : ', in command'}`;
-  if (st.crew.includes(c.id)) return `aboard ${shipTitle()}${c.role && ROLE_NAMES[c.role] ? `, ${ROLE_NAMES[c.role]}` : ''}`;
+  if (hired() && c.id === hired().captain) return `captain of ${esc(shipTitle())}, ${G.transit ? `en route to ${SYSTEMS[G.transit.to].name}` : `docked at ${st.planet}`}`;
+  if (c.you) return `aboard ${esc(shipTitle())}${hired() ? `, ${POSTS[hired().post].name}` : ', in command'}`;
+  if (st.crew.includes(c.id)) return `aboard ${esc(shipTitle())}${c.role && ROLE_NAMES[c.role] ? `, ${ROLE_NAMES[c.role]}` : ''}`;
   return c.ship ? `captain of the ${c.ship.name}, around ${SYSTEMS[c.haunt] ? SYSTEMS[c.haunt].name : 'the system'}` : c.location ? `last seen at ${c.location}` : 'whereabouts unknown';
 }
 
@@ -134,7 +134,7 @@ function characterPanel() {
     ${c.memories.length ? `<div class="eyebrow" style="margin-top:8px">Remembers</div>${c.memories.slice(-3).reverse().map(m => `<div class="hint">${m}</div>`).join('')}` : ''}`) : '';
   // A captain holds no post: what they pay you and what you earn with them (a hired hand), or what you command (an owner).
   const command = !isCaptain ? '' : c.you
-    ? conCard('Command', `${conRead('Ship', `${shipTitle()}, ${ship().name}`)}${conRead('Crew', `${st.crew.length}, ${berthsUsed()}/${ship().berths} berths`)}${(st.fleet || []).length ? conRead('Company', `${st.fleet.length} ship${st.fleet.length > 1 ? 's' : ''}`) : ''}`) + crewOpinionsCard()
+    ? conCard('Command', `${conRead('Ship', `${esc(shipTitle())}, ${ship().name}`)}${conRead('Crew', `${st.crew.length}, ${berthsUsed()}/${ship().berths} berths`)}${(st.fleet || []).length ? conRead('Company', `${st.fleet.length} ship${st.fleet.length > 1 ? 's' : ''}`) : ''}`) + crewOpinionsCard()
     : hand && c.id === hand.captain ? conCard('Command', `${conRead('Your wage', `${fmt(hand.wage)} cr/day`)}${conRead('Your share', `${Math.round(hand.share * 100)}% of each run's profit`)}${conRead('Runs together', runTotals(hand).runs)}${conRead('You earned', `${fmt(runTotals(hand).earned)} cr`)}${conRead('The ship\'s funds', `${fmt(hand.fund)} cr`)}`) + captainRunsHtml() : '';
   const marked = marksOf(c).length ? conCard('Marks', marksOf(c).map(m => `<div class="hint">${esc(dateOf(m.day))}: ${esc(m.text)}</div>`).join('')) : '';
   const news = (moodLow(c) || moodHigh(c)) && c.mood.text ? `<div class="hint">News from home: ${esc(c.mood.text)}.</div>` : '';
@@ -143,7 +143,7 @@ function characterPanel() {
     title: fullName(c), status: c.you ? 'Playing as' : whereIs(c),
     screen: `<div class="char-id">${portraitSvg(c)}<div><div class="char-name">${esc(fullName(c))}</div><div class="hint">${esc(sub)}</div><div class="char-chips">${chips}</div>${news}${blurb}</div></div>`,
     side: isCaptain ? command + factionCard(c) + standing : conCard('Post skills', rows) + cap + marked + toldCard(c) + tiesCard(c) + factionCard(c)
-      + (c.you ? '' : conCard('Where', `${conRead('Aboard', crewed ? shipTitle() : 'no')}${crewed && wage(c.id) ? conRead('Wage', `${fmt(wage(c.id))} cr/day`) : ''}${!crewed ? `<div class="hint">${whereIs(c)}</div>` : ''}`)) + standing,
+      + (c.you ? '' : conCard('Where', `${conRead('Aboard', crewed ? esc(shipTitle()) : 'no')}${crewed && wage(c.id) ? conRead('Wage', `${fmt(wage(c.id))} cr/day`) : ''}${!crewed ? `<div class="hint">${whereIs(c)}</div>` : ''}`)) + standing,
     controls: '<div class="row"><button data-action="personBack">Back</button></div>',
   });
 }

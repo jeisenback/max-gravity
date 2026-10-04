@@ -84,7 +84,7 @@ const UI = {
       <div class="dead">
         <div class="eyebrow">Transponder lost</div>
         <h1>Ship Destroyed</h1>
-        <p>Captain ${captain().name}'s ${ship().name} breaks apart in a silent bloom of fire. The insurance company is not returning your calls.</p>
+        <p>Captain ${esc(captain().name)}'s ${ship().name} breaks apart in a silent bloom of fire. The insurance company is not returning your calls.</p>
         <p class="hint">Your heir inherits the company, its ships, stakes, and outpost, and half of everything else.</p>
         <button data-action="heir" class="primary">Go on as your heir</button>
         <button data-action="load">Load last save</button>
@@ -104,7 +104,7 @@ const UI = {
           <div class="sub" style="color:${GOV_COLORS[sys.gov]}">${sys.gov}</div>
         </div>
         <div class="stats">
-          ${dateOf()} &middot; ${shipTitle()}, ${s.name}${hired() ? ` &middot; Capt. ${esc(hiredCaptain().first)} ${esc(hiredCaptain().last)}` : ''}<br>
+          ${dateOf()} &middot; ${esc(shipTitle())}, ${s.name}${hired() ? ` &middot; Capt. ${esc(hiredCaptain().first)} ${esc(hiredCaptain().last)}` : ''}<br>
           <b>${fmt(st.credits)} cr</b><br>
           Cargo ${cargoUsed()}/${s.cargo}t &middot; Berths ${berthsUsed()}/${s.berths} &middot; Mass ${st.fuel}/${s.fuel}
         </div>
