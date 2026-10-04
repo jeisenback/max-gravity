@@ -15,6 +15,9 @@ const HIRED_SAVINGS = 300;
 const CHAPTER_CREW = [{ role: 'xo', skill: 2 }, { role: 'quartermaster', skill: 2 }, { role: 'medic', skill: 2 }, { role: 'cook', skill: 2 }, { role: 'icehand', skill: 1 }, { role: 'icehand', skill: 1 }];
 const HIRED_FUND = 12000;  // the ship's money, which buys the cargo for the 120 t hold
 const HIRED_WAGE = 40, HIRED_SHARE = 0.06;  // a day's wage and a share of each run's profit, tuned with tools/soak.js so about 20 runs reach the target
+const HAND_RAID = { base: 0.08, per: 1.4 };  // a hand's chance of a pirate contact on a run: this and the lane's danger (engage.js), in place of 0.05 and 0.6
+const HAND_LANE_WEIGHT = 8;  // and how much a dangerous lane weights the ship's own incidents (happenings.js)
+const LIGHT_DUTY = 0.6;  // a hurt hand's wage while they work light duty
 const HIRED_TARGET = 19000;  // the used Ore Runner Tomas finds (the chapter's goal), at the price he asks a hand he thinks well enough of
 // The captain heads for a yard when the used Ore Runner can be had: at the offer's threshold until she is offered, then at
 // her price, and at the middle price again if the deal lapses.
@@ -235,7 +238,7 @@ function settleRun(planet) {
     h.fund += revenue;
   }
   const profit = revenue - run.cost, days = Math.max(1, st.day - run.day);
-  const wage = Math.round(h.wage * days * (run.ice ? ICE_HAZARD : 1)), share = profit > 0 ? Math.round(profit * h.share) : 0;  // the long run pays double the wage
+  const wage = Math.round(h.wage * days * (run.ice ? ICE_HAZARD : 1) * (handHurt() ? LIGHT_DUTY : 1)), share = profit > 0 ? Math.round(profit * h.share) : 0;  // the long run pays double the wage
   st.credits += wage + share;
   const total = runTotals(h);
   h.runsDone = total.runs + 1; h.earnedTotal = total.earned + wage + share;  // the ledger keeps the last 20; these keep the whole chapter
