@@ -89,9 +89,21 @@ function tieReason(a, b) {
   const ta = tastes(a), tb = tastes(b), why = [];
   const c = CLASHES.find(([x, y]) => (has(a, x) && has(b, y)) || (has(a, y) && has(b, x)));
   if (c) why.push(`${TRAITS[c[0]].adj} and ${TRAITS[c[1]].adj}`);
+  const fr = factionReason(a.p, b.p); if (fr) why.push(fr);
   if (ta.genre === tb.genre) why.push(`both like ${GENRES[ta.genre]}`);
   if (ta.team === tb.team) why.push(`both follow the ${ta.team}`);
   return why.join('; ');
+}
+
+// Whom they belong to, their status there, and what they think of each faction (ties.js). For you, what each faction thinks of you.
+function factionCard(c) {
+  if (c.you) {
+    const t = youTies();
+    return conCard('Your ties', `${conRead('Affiliation', `${t.aff} (${t.status[t.aff]})`)}${FACTIONS.map(f => conRead(f === 'Pirate' ? 'Pirates' : f, `regards you as ${t.standing[f].toLowerCase()}`)).join('')}`);
+  }
+  if (!c.id) return '';
+  const t = tiesOf(c), held = Object.entries(t.status).filter(([f]) => f !== t.aff).map(([f, s]) => `${s} in ${shortFaction(f).replace('the ', '')}`);
+  return conCard('Ties', `${conRead('Affiliation', t.aff ? `${t.aff} (${t.status[t.aff]})` : 'none')}${held.length ? `<div class="hint">${esc(held.join('; '))}.</div>` : ''}${FACTIONS.map(f => conRead(f === 'Pirate' ? 'Pirates' : f.replace(/ .*/, ''), regardWord(t.regard[f]))).join('')}`);
 }
 
 // The strongest bonds with the others aboard (social.js keeps them).
@@ -130,7 +142,7 @@ function characterPanel() {
   return consoleHtml({
     title: fullName(c), status: c.you ? 'Playing as' : whereIs(c),
     screen: `<div class="char-id">${portraitSvg(c)}<div><div class="char-name">${esc(fullName(c))}</div><div class="hint">${esc(sub)}</div><div class="char-chips">${chips}</div>${news}${blurb}</div></div>`,
-    side: isCaptain ? command + standing : conCard('Post skills', rows) + cap + marked + toldCard(c) + tiesCard(c)
+    side: isCaptain ? command + factionCard(c) + standing : conCard('Post skills', rows) + cap + marked + toldCard(c) + tiesCard(c) + factionCard(c)
       + (c.you ? '' : conCard('Where', `${conRead('Aboard', crewed ? shipTitle() : 'no')}${crewed && wage(c.id) ? conRead('Wage', `${fmt(wage(c.id))} cr/day`) : ''}${!crewed ? `<div class="hint">${whereIs(c)}</div>` : ''}`)) + standing,
     controls: '<div class="row"><button data-action="personBack">Back</button></div>',
   });

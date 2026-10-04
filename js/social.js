@@ -131,7 +131,7 @@ function bondDay() {
   if (!G.transit) return;
   for (const [a, b] of pairs(folk())) {
     const ta = tastes(a), tb = tastes(b);
-    let d = (ta.genre === tb.genre ? 0.15 : 0) + (ta.team === tb.team ? 0.1 : 0) + (clash(a, b) ? -0.2 : 0.03);
+    let d = (ta.genre === tb.genre ? 0.15 : 0) + (ta.team === tb.team ? 0.1 : 0) + (clash(a, b) ? -0.2 : 0.03) + factionPull(a.p, b.p);
     if (bond(a, b) >= 6 && clash(a, b)) d += 0.2;  // love conquers some things
     addBond(a, b, d);
   }
