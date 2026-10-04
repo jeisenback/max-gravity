@@ -125,3 +125,52 @@ test('a hurt hand works a level lower until it passes, or a medic treats them', 
   assert.deepEqual(r.later, [false, r.level]); assert.ok(r.treated);
   await done();
 });
+
+test('a crew member who cannot stand you keeps to their berth, and the fight is a person shorter', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = fight(), [a, b, c] = generated(3), d = { foe: makeEnemy(DUEL_SPEC), foeHp: 4, init: 'foe' };
+    for (const x of [a, b, c]) x.opinion = 0;
+    const all = repelStart(d, 'full');
+    c.opinion = OPINION.ENEMY;
+    const s = repelStart(d, 'full');
+    return { all: all.base, held: s.base, line: s.held, text: repelScene(s).text, none: all.held.length };
+  });
+  assert.equal(r.held, r.all - 1); assert.equal(r.none, 0); assert.equal(r.line.length, 1); assert.match(r.line[0], /will not fight for you/); assert.match(r.text, /will not fight for you/);
+  await done();
+});
+
+test('of two crew at each other\'s throats, the one who thinks less of you will not stand in the same section', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = fight(), [a, b, c] = generated(3), d = { foe: makeEnemy(DUEL_SPEC), foeHp: 4, init: 'foe' }, f = x => ({ id: x.id, p: x });
+    for (const x of [a, b, c]) x.opinion = 0;
+    const before = repelStart(d, 'full').base;
+    st.bonds = {}; addBond(f(a), f(b), -6); a.opinion = 1; b.opinion = -1;
+    const s = repelStart(d, 'full'), asd = assaultStart(d.foe);
+    st.bonds = {}; addBond(f(a), f(b), -3);  // not that bad
+    const mild = repelStart(d, 'full');
+    return { before, base: s.base, line: s.held, assault: asd.base, mild: mild.base, who: b.first };
+  });
+  assert.equal(r.base, r.before - 1); assert.equal(r.assault, r.before - 1); assert.equal(r.line.length, 1); assert.ok(r.line[0].startsWith(r.who), 'the one who likes you less holds back'); assert.equal(r.mild, r.before);
+  await done();
+});
+
+test('a friend takes the first hit meant for you, once in a fight, and the rest fall on you', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = fight(), h = hired(), [a, b] = generated(2), d = { foe: makeEnemy(DUEL_SPEC), foeHp: 4, init: 'foe' };
+    a.opinion = OPINION.FRIEND; b.opinion = 0; delete h.hurtUntil;
+    const s = repelStart(d, 'full'), real = Math.random;
+    Math.random = () => 0.999;  // the last in the list, which is you
+    let first, second;
+    try { first = repelCasualty(s); second = repelCasualty(s); } finally { Math.random = real; }
+    return { first, second, aHurt: !!(st.injured || {})[a.id], youHurt: !!(h.hurtUntil > st.day), a: a.first };
+  });
+  assert.match(r.first, new RegExp(`${r.a} pulls you down behind the closer and takes it\\. ${r.a} is hurt`)); assert.ok(r.aHurt);
+  assert.match(r.second, /You are hurt/); assert.ok(r.youHurt);
+  await done();
+});

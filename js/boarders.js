@@ -72,10 +72,25 @@ const repelSet = s => (s.assault ? { titles: ASSAULT_TITLES, openings: ASSAULT_O
 
 const handHurt = () => !!(hired() && hired().hurtUntil > G.state.day);
 
+// Who stands with you. A crew member who cannot stand you keeps to their berth, and of two who are at each other's throats
+// (the bond at which a split is on the cards, stakes.js) the one who thinks less of you will not stand in the same section.
+// A crew member close to you covers you: the first hit that would have been yours is theirs.
+function repelCrew() {
+  const st = G.state, ids = st.crew.filter(id => !(st.injured || {})[id]), held = new Map(), fighters = ids.map(id => ({ id, p: person(id) })).filter(f => f.p);
+  for (const f of fighters) if (f.p.opinion <= OPINION.ENEMY) held.set(f.id, `${f.p.first} will not fight for you.`);
+  const live = fighters.filter(f => !held.has(f.id));
+  for (const [a, b] of pairs(live)) {
+    if (held.has(a.id) || held.has(b.id) || bond(a, b) > SPLIT_BOND) continue;
+    const [out, stays] = a.p.opinion <= b.p.opinion ? [a, b] : [b, a];
+    held.set(out.id, `${out.p.first} will not stand in the same section as ${stays.p.first}.`);
+  }
+  return { fight: fighters.filter(f => !held.has(f.id)).map(f => f.id), held: [...held.values()] };
+}
+
 // The fight: where they are (0 the lock, 1 the corridor, 2 the bridge), how many they are, who is hurt and who has fallen.
 function repelStart(d, outcome) {
-  const crew = FOE_CREW[d.foe.shipId] || 3, healthy = G.state.crew.filter(id => !(G.state.injured || {})[id]).length;
-  return { d, pos: outcome === 'full' ? 1 : 0, boarders: Math.max(1, crew + (outcome === 'full' ? 1 : -1)), base: Math.min(6, healthy + 1), hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0, lines: [] };
+  const crew = FOE_CREW[d.foe.shipId] || 3, w = repelCrew();
+  return { d, pos: outcome === 'full' ? 1 : 0, boarders: Math.max(1, crew + (outcome === 'full' ? 1 : -1)), base: Math.min(6, w.fight.length + 1), held: w.held, hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0, lines: [] };
 }
 const repelStanding = s => Math.max(1, s.base - s.hurt.size - s.dead.length);
 
@@ -83,8 +98,8 @@ function repelEvent(d, outcome) { return repelScene(repelStart(d, outcome)); }
 
 // Boarding a crippled ship: her people hold the middle, and you are a section in.
 function assaultStart(foe) {
-  const crew = FOE_CREW[foe.shipId] || 3, healthy = G.state.crew.filter(id => !(G.state.injured || {})[id]).length;
-  return { d: { foe, foeHp: 0 }, assault: true, pos: 1, boarders: crew + 1, base: Math.min(6, healthy + 1), hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0, lines: [] };
+  const crew = FOE_CREW[foe.shipId] || 3, w = repelCrew();
+  return { d: { foe, foeHp: 0 }, assault: true, pos: 1, boarders: crew + 1, base: Math.min(6, w.fight.length + 1), held: w.held, hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0, lines: [] };
 }
 
 function repelScene(s) {
@@ -93,7 +108,7 @@ function repelScene(s) {
   choices.push({ label: `[${POSTS[post].name}] ${spec.label}`, run: () => repelStep(s, 'post') });
   return {
     title: set.titles[s.pos], personal: true, via: 'crew',
-    text: `${set.openings[s.pos][s.round % 2]}</p><p>${s.assault ? 'Defenders' : 'Boarders'}: ${s.boarders}. With you: ${repelStanding(s) - 1}.`,
+    text: `${set.openings[s.pos][s.round % 2]}</p><p>${s.assault ? 'Defenders' : 'Boarders'}: ${s.boarders}. With you: ${repelStanding(s) - 1}.${(s.held || []).length ? ` ${s.held.join(' ')}` : ''}`,
     choices,
   };
 }
@@ -127,7 +142,11 @@ const pickWeighted = table => { let r = Math.random() * Object.values(table).red
 // Someone goes down. The hand can be hurt but not killed. A crew member hurt twice in one fight is dead, or marked if a main character.
 function repelCasualty(s) {
   const st = G.state, pool = [...st.crew.filter(id => !(st.injured || {})[id] || s.hurt.has(id)), 'you'];
-  const who = pick(pool);
+  let who = pick(pool), cover = '';
+  if (who === 'you' && !s.covered) {  // a friend takes it for you, once in a fight
+    const friend = st.crew.map(person).find(c => c && c.opinion >= OPINION.FRIEND && !(st.injured || {})[c.id] && !s.hurt.has(c.id) && !(s.held || []).some(l => l.startsWith(c.first)));
+    if (friend) { who = friend.id; s.covered = true; cover = `${friend.first} pulls you down behind the closer and takes it. `; }
+  }
   if (who === 'you') {
     const h = hired(), again = s.youHurt || handHurt();
     h.hurtUntil = st.day + (again ? 18 : 12);
@@ -147,7 +166,7 @@ function repelCasualty(s) {
   }
   (st.injured = st.injured || {})[who] = true;
   s.hurt.add(who);
-  return `${c.first} is hurt.`;
+  return `${cover}${c.first} is hurt.`;
 }
 
 // A generated crew member dies: off the crew, on the record, and the berth is offered at the next port.
