@@ -74,7 +74,7 @@ function deadInSpaceScene(s) {
     title: 'Dead in Space', personal: true, via: 'crew', owner: 'you',
     text: `${theShip(s.foe)} is still. Her drive is out and she is turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain ${cap.last} holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be ${repelStanding(assaultStart(s.foe)) - 1} of yours against ${assaultStart(s.foe).boarders} of hers.`,
     choices: [
-      { label: 'Board her', run() { G.nextEvent = repelScene(assaultStart(s.foe)); return `The cutter goes out of the lock. It is a short crossing.`; } },
+      { label: 'Board her', run() { G.nextEvent = repelScene(assaultStart(s.foe, s)); return `The cutter goes out of the lock. It is a short crossing.`; } },
       { label: 'Let her drift', run() { like(cap, 1, 'You stood us up to a raid and she broke off.'); changeRep('Pirate', -3); gainSkill(h.post, 3); return `You leave her turning in the dark. Captain ${cap.last} writes it in the log and nothing else. (+3 experience at the ${POSTS[h.post].name.toLowerCase()} post.)`; } },
     ],
   };
@@ -154,7 +154,7 @@ function raidClose(s) {
     st.armor = Math.max(1, st.armor - pts);
     return `${RAID_CLOSE.standoff} Armor -${pts}.`;
   }
-  const d = { foe: s.foe, foeHp: 0, init: 'foe' };
+  const d = { foe: s.foe, foeHp: 0, init: 'foe', grade: s.grade, pack: s.pack };
   G.nextEvent = repelScene(repelStart(d, s.style === 'grapple' ? 'full' : 'half'));
   return RAID_CLOSE.boarded[s.style];
 }

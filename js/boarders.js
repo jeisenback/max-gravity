@@ -90,16 +90,16 @@ function repelCrew() {
 // The fight: where they are (0 the lock, 1 the corridor, 2 the bridge), how many they are, who is hurt and who has fallen.
 function repelStart(d, outcome) {
   const crew = FOE_CREW[d.foe.shipId] || 3, w = repelCrew();
-  return { d, pos: outcome === 'full' ? 1 : 0, boarders: Math.max(1, crew + (outcome === 'full' ? 1 : -1)), base: Math.min(6, w.fight.length + 1), held: w.held, hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0, lines: [] };
+  return { d, pos: outcome === 'full' ? 1 : 0, boarders: boardersFor(d.foe, outcome, d), grade: d.grade || 0, base: Math.min(6, w.fight.length + 1), held: w.held, hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0, lines: [] };
 }
 const repelStanding = s => Math.max(1, s.base - s.hurt.size - s.dead.length);
 
 function repelEvent(d, outcome) { return repelScene(repelStart(d, outcome)); }
 
 // Boarding a crippled ship: her people hold the middle, and you are a section in.
-function assaultStart(foe) {
-  const crew = FOE_CREW[foe.shipId] || 3, w = repelCrew();
-  return { d: { foe, foeHp: 0 }, assault: true, pos: 1, boarders: crew + 1, base: Math.min(6, w.fight.length + 1), held: w.held, hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0, lines: [] };
+function assaultStart(foe, rate = {}) {
+  const w = repelCrew();
+  return { d: { foe, foeHp: 0 }, assault: true, pos: 1, boarders: boardersFor(foe, 'full', rate), grade: rate.grade || 0, base: Math.min(6, w.fight.length + 1), held: w.held, hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0, lines: [] };
 }
 
 function repelScene(s) {
@@ -108,14 +108,14 @@ function repelScene(s) {
   choices.push({ label: `[${POSTS[post].name}] ${spec.label}`, run: () => repelStep(s, 'post') });
   return {
     title: set.titles[s.pos], personal: true, via: 'crew',
-    text: `${set.openings[s.pos][s.round % 2]}</p><p>${s.assault ? 'Defenders' : 'Boarders'}: ${s.boarders}. With you: ${repelStanding(s) - 1}.${(s.held || []).length ? ` ${s.held.join(' ')}` : ''}`,
+    text: `${set.openings[s.pos][s.round % 2]}</p><p>${s.assault ? 'Defenders' : 'Boarders'}: ${s.boarders}. With you: ${repelStanding(s) - 1}.${(s.held || []).length ? ` ${s.held.join(' ')}` : ''} ${layoutHint()}`.trim(),
     choices,
   };
 }
 
 // One exchange. Returns what happened; sets the next scene, or settles the fight and goes back to the duel.
 function repelStep(s, kind) {
-  const h = hired(), post = h.post, set = repelSet(s), theirs = kind === 'post' ? null : pickWeighted(REPEL_LEAN[s.d.foe.kind] || { rush: 0.34, hold: 0.33, flank: 0.33 });
+  const h = hired(), post = h.post, set = repelSet(s), theirs = kind === 'post' ? null : (CUNNING * (s.grade || 0) > 0 && Math.random() < CUNNING * s.grade ? counterOf(set.tactics, kind) : pickWeighted(foeLean(s)));
   let result, text;  // 'win', 'lose' or 'tie'
   if (kind === 'post') {
     result = Math.random() < Math.min(0.85, 0.5 + 0.1 * skillLevel(post)) ? 'win' : 'lose';
@@ -128,10 +128,15 @@ function repelStep(s, kind) {
     result = set.tactics[kind].beats === theirs ? 'win' : 'lose';
     text = set.tactics[kind][result];
   }
+  const edge = kind === 'post' ? 0 : layoutEdge(kind);  // the ship you fight in (shipcombat.js)
+  if (edge && result !== 'tie' && Math.random() < Math.abs(edge)) {
+    const flipped = edge > 0 && result === 'lose' ? 'win' : edge < 0 && result === 'win' ? 'lose' : result;
+    if (flipped !== result) { result = flipped; text = set.tactics[kind][result]; }
+  }
   if (result === 'win') { s.pos--; if (kind === 'post' && post === 'gunner') s.boarders = Math.max(1, s.boarders - 1); }
   if (result === 'lose') s.pos++;
   s.round++;
-  if (result !== 'tie' && Math.random() < REPEL_HURT[result]) text += ` ${repelCasualty(s)}`;
+  if (result !== 'tie' && Math.random() < REPEL_HURT[result] * (1 + 0.15 * (s.grade || 0))) text += ` ${repelCasualty(s)}`;
   if (s.pos < 0 || s.pos > 2) return `${text} ${repelSettle(s)}`;
   G.nextEvent = repelScene(s);
   return text;
