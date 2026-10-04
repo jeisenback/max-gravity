@@ -1,6 +1,6 @@
 'use strict';
 
-// Authored engagements for a hired hand, in place of the card duel (duel.js) when pirates make contact: a raid, in beats.
+// Authored engagements for a hired hand, in place of the card duel (duel.js) when pirates make contact: a raid, in beats (and, when it goes all your way, boarding her).
 // The closing, two passes, and the close. At each beat you choose how to meet her, or do the job of your own post. Every
 // choice is a chance of going your way (+1 or +2) or hers (-1 or -2) on one running count, the position, and a lost one can
 // cost hull or hurt someone. How the position stands at the close decides it: she breaks off, she stands off and throws a
@@ -59,9 +59,23 @@ const RAID_POST = {
 };
 const RAID_CLOSE = {
   off: { grapple: 'She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not.', torpedo: 'She does not fire the third torpedo. The bay doors close and she turns away, and the range opens.' },
+  crippled: { grapple: 'Your last burst takes her drive, and the plume goes out. She turns over and drifts, with the grapple arms hanging.', torpedo: 'Your last burst reaches her torpedo bay and not the torpedoes, which is lucky for everyone. Her plume goes out.' },
   standoff: 'She breaks off at long range, out of ammunition or out of patience, and throws one last burst as she goes. It clips the hull aft.',
   boarded: { grapple: 'She is alongside. The grapples bang on the hull in four places and the lock alarm goes. They are coming aboard.', torpedo: 'A torpedo takes your drive housing and she closes while you are slow. The grapples bang on the hull, and the lock alarm goes.' },
 };
+
+// A crippled raider drifts beside you. Boarding her is the repel fight run the other way (boarders.js).
+function deadInSpaceScene(s) {
+  const h = hired(), cap = person(h.captain);
+  return {
+    title: 'Dead in Space', personal: true, via: 'crew', owner: 'you',
+    text: `${theShip(s.foe)} is still. Her drive is out and she is turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain ${cap.last} holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be ${repelStanding(assaultStart(s.foe)) - 1} of yours against ${assaultStart(s.foe).boarders} of hers.`,
+    choices: [
+      { label: 'Board her', run() { G.nextEvent = repelScene(assaultStart(s.foe)); return `The cutter goes out of the lock. It is a short crossing.`; } },
+      { label: 'Let her drift', run() { like(cap, 1, 'You stood us up to a raid and she broke off.'); changeRep('Pirate', -3); gainSkill(h.post, 3); return `You leave her turning in the dark. Captain ${cap.last} writes it in the log and nothing else. (+3 experience at the ${POSTS[h.post].name.toLowerCase()} post.)`; } },
+    ],
+  };
+}
 
 const raidPosition = s => (s.edge >= 1 ? 'ahead' : s.edge <= -1 ? 'behind' : 'even');
 
@@ -111,6 +125,10 @@ function raidStep(s, c, post) {
 // The close: broke off, stood off, or alongside.
 function raidClose(s) {
   const st = G.state, h = hired(), cap = person(h.captain), weak = st.armor <= ship().armor * 0.25;
+  if (s.edge >= 3 && !weak) {  // a clear win: her drive is gone and she drifts, and you can board her
+    G.nextEvent = deadInSpaceScene(s);
+    return RAID_CLOSE.crippled[s.style];
+  }
   if (s.edge >= 2 && !weak) {
     like(cap, 1, 'You stood us up to a raid and she broke off.');
     changeRep('Pirate', -3);
