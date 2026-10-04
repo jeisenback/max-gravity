@@ -82,6 +82,15 @@ function dockPeople(gov, status) {
 function customsDue(patrol) { const st = G.state; return !((st.customs || {})[patrol ? 'patrolLast' : 'last'] > st.day - 120); }
 
 // The same stop in flight is a patrol cutter alongside, and `planet` is then only a name for where the crew member is left.
+// A crew member leaves the ship, and someone from the dock signs on for the berth.
+function signReplacement(p, planet) {
+  const st = G.state;
+  st.crew = st.crew.filter(id => id !== p.id); p.location = planet.name;
+  const rep = makeCrewCandidate(st.systemId); rep.role = p.role; rep.skill = Math.max(1, (p.skill || 1) - 1); rep.job = ROLE_NAMES[p.role] ? ROLE_NAMES[p.role].toLowerCase() : 'hand'; rep.mood = null;
+  registerPerson(rep); st.crew.push(rep.id);
+  return ` ${rep.first} signs on for the berth.`;
+}
+
 function customsScene(gov, planet, patrol) {
   const st = G.state, h = hired(), cap = person(h.captain), p = customsDue(patrol) ? dockPeople(gov, 'wanted')[0] || dockPeople(gov, 'exile')[0] : null;
   if (!p) return null;
@@ -90,12 +99,7 @@ function customsScene(gov, planet, patrol) {
   const status = tiesOf(p).status[gov], n = p.first, mine = youTies(), papers = mine.aff === gov && ['member', 'officer'].includes(mine.status[gov]);
   (st.customs[`${p.id}:${gov}:${status}`] = st.day);
   const weight = status === 'wanted' ? 0.55 : 0.8;  // an exile is turned back less often than a wanted one is held
-  const gone = () => {
-    st.crew = st.crew.filter(id => id !== p.id); p.location = planet.name;
-    const rep = makeCrewCandidate(st.systemId); rep.role = p.role; rep.skill = Math.max(1, (p.skill || 1) - 1); rep.job = ROLE_NAMES[p.role] ? ROLE_NAMES[p.role].toLowerCase() : 'hand'; rep.mood = null;
-    registerPerson(rep); st.crew.push(rep.id);
-    return ` ${rep.first} signs on for the berth.`;
-  };
+  const gone = () => signReplacement(p, planet);
   const choices = [];
   if (officer) choices.push({ label: `[${officer.first}, a ${shortFaction(gov)} officer] Let ${officer.first} answer the hail`, run() { like(officer, 1, `You let me answer a ${shortFaction(gov)} patrol.`); return `${officer.first} takes the open band and gives a rank and a unit. The cutter's captain asks one question, gets the right answer, and does not ask for the crew list.`; } });
   if (papers) choices.push({ label: `[${gov} papers] Vouch for ${n} as a member`, run() { like(p, 2, patrol ? `You vouched for me to a patrol.` : `You vouched for me at customs on ${planet.name}.`); return `You give the officer your papers and say ${n} is signed on the ship's articles. The officer reads the date, stamps the manifest, and does not look at ${n}.`; } });
@@ -129,11 +133,59 @@ function dockFriendScene(gov, planet) {
   };
 }
 
+// A war between two of the states calls its people home. Crew of either side take it to heart, the two sides get on worse and
+// each side better, and a member who asks for leave, or an officer who is recalled, is a scene at the next port.
+const warSide = (p, w) => { const a = tiesOf(p).aff; return a === w.a || a === w.b ? a : null; };
+
+function warBonds() {
+  const st = G.state, w = factionState().war;
+  if (!w || st.warBond === w.start) return;
+  st.warBond = w.start;
+  for (const [a, b] of pairs(folk().filter(f => f.crew))) {
+    const sa = warSide(a.p, w), sb = warSide(b.p, w);
+    if (sa && sb) addBond(a, b, sa === sb ? 1 : -2);
+  }
+}
+
+// Crew who could go: a member or an officer of a side at war, who is not a main character, and not asked this war already.
+function warCallable() {
+  const st = G.state, w = factionState().war;
+  if (!w || (st.warCalled || {}).last > st.day - 15) return [];  // one at a time, and not back to back
+  return st.crew.map(person).filter(p => p && !p.cast && warSide(p, w) && ['member', 'officer'].includes(tiesOf(p).status[warSide(p, w)]) && (st.warCalled || {})[p.id] !== w.start);
+}
+
+function warCallScene(planet) {
+  const st = G.state, w = factionState().war, p = warCallable()[0];
+  if (!p) return null;
+  (st.warCalled = st.warCalled || {})[p.id] = w.start; st.warCalled.last = st.day;
+  const side = warSide(p, w), foe = side === w.a ? w.b : w.a, n = p.first, officer = tiesOf(p).status[side] === 'officer', cap = person(hired().captain);
+  const choices = [{ label: `Let ${n} go`, run() {
+    like(p, officer ? 1 : 2, `You let me go when ${shortFaction(side)} went to war.`); if (officer) changeRep(side, 3);
+    return `${n} shakes every hand aboard and takes a bag down the ramp. ${officer ? `A ${shortFaction(side)} liaison is waiting at the foot of it with orders. ` : ''}${signReplacement(p, planet).trim()}`;
+  } }];
+  if (officer) choices.push({ label: `Refuse to release ${n}`, run() {
+    like(p, -3, `You would not release me when I was recalled.`); changeRep(side, -4);
+    return `${n} reads the recall order twice and puts it away. ${n} does not leave. The liaison logs the ship as having obstructed a recall, and ${n} does not speak to you for the rest of the watch.`;
+  } });
+  else choices.push({ label: `Ask ${n} to stay`, run() {
+    if (p.opinion >= OPINION.CLOSE) { like(p, 1, `You asked me to stay and I did, because of you.`); return `${n} thinks about it for a long minute. "I would rather be here," ${n} says, and means it. It is not the same as being glad.`; }
+    like(p, -2, `You asked me to stay when my people were at war.`);
+    return `${n} hears you out and goes anyway, because it is not the sort of thing a person can be talked out of. ${signReplacement(p, planet).trim()}`;
+  } });
+  return {
+    title: 'Word From Home', personal: true, via: 'crew', owner: 'you',
+    text: officer ? `A courier from the ${shortFaction(side).replace('the ', '')} navy is waiting at the foot of the ramp on ${planet.name} with a recall for ${p.first} ${p.last}. The ${shortFaction(side).replace('the ', '')} are at war with the ${shortFaction(foe).replace('the ', '')}, and an officer's leave is over. Captain ${cap.last} says it is your call.` : `${p.first} has been at the news feed in the galley since the war began between the ${shortFaction(side).replace('the ', '')} and the ${shortFaction(foe).replace('the ', '')}. At ${planet.name} ${p.first} finds you. "My people are in it," ${p.first} says. "I would like to go home and see if I can help. I will understand if you say no."`,
+    choices,
+  };
+}
+
 Mods.register({
   id: 'ties', name: 'Faction ties', builtin: true,
   init(M) {
+    M.on('newDay', warBonds);
     M.filter('happenings', (list, where, planet) => {
       if (!hired() || G.state.day - hired().since < 3) return list;
+      if (where === 'port' && planet && warCallable().length) list = list.concat({ tier: 1, weight: 4, via: 'crew', make: () => warCallScene(planet) });
       if (where === 'transit' && G.transit) {  // a patrol stops a burn in or out of a faction's space
         const to = SYSTEMS[G.transit.to], gov = [to.gov, system().gov].find(g => isFaction(g) && g !== 'Pirate' && dockPeople(g, 'wanted').concat(dockPeople(g, 'exile')).length);
         if (gov && customsDue(true)) list = list.concat({ tier: 1, weight: 3, via: 'ship', make: () => customsScene(gov, to, true) });
