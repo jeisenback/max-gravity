@@ -308,7 +308,7 @@ test('a choice can need your post and your level there: hidden for another post,
     const open_ = (post, xp = 0) => { startHired(post); if (xp) gainSkill(post, xp); G.state.tutorial = null; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.state.cast = G.state.cast || {}; const e = scene(); G.dialog = null; G.transit.event = null; openEvent(e); return G.dialog.choices.find(c => /Check her numbers/.test(c.label)); };
     out.gunner = !!open_('gunner');
     const low = open_('pilot'); out.low = low ? { label: low.label, open: low.can() } : null;
-    const high = open_('pilot', 30); out.high = high ? high.can() : null;
+    const high = open_('pilot', SKILL_STEPS[2]); out.high = high ? high.can() : null;
     return out;
   });
   assert.equal(r.gunner, false, 'a gunner is not offered the pilot\'s choice');
@@ -325,7 +325,7 @@ test('the cast scenes have a level 3 choice that leaves a mark, and the look bac
     const cases = [['crew-ines', 'pilot', 'ines'], ['crew-tomas', 'engineer', 'tomas'], ['crew-yelena', 'gunner', 'yelena'], ['crew-ruben', 'comms', 'ruben'], ['crew-pax', 'gunner', 'pax']];
     const level3 = (id, post, xp) => { startHired(post); gainSkill(post, xp); G.state.tutorial = null; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; const e = HAND_EVENTS.find(x => x.id === id).make(handContext()); G.dialog = null; G.transit.event = null; openEvent(e); return G.dialog.choices.find(c => c.skill === 3); };
     for (const [id, post, key] of cases) {
-      const at2 = level3(id, post, 30), at3 = level3(id, post, 60);
+      const at2 = level3(id, post, SKILL_STEPS[2]), at3 = level3(id, post, SKILL_STEPS[3]);
       out.shut[key] = !!at2 && !at2.can(); out.open[key] = !!at3 && at3.can();
       const text = at3.run(); out.flagged[key] = !!castRec(key).flags.trusted && /undefined|NaN|\{[a-z]+\}/.test(text) === false;
     }
@@ -346,10 +346,10 @@ test('each post gets its own choice in the lane scene, and the praise scene has 
   const r = await ev(() => {
     const out = { lane: {}, praise: {}, order: {} };
     const show = (id, post, xp) => { startHired(post); if (xp) gainSkill(post, xp); G.state.tutorial = null; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; const e = HAND_EVENTS.find(x => x.id === id).make(handContext()); G.dialog = null; G.transit.event = null; openEvent(e); return G.dialog.choices.filter(c => c.skill !== undefined); };
-    for (const post of HIRED_POSTS) { const g = show('road-scope', post, 30); out.lane[post] = g.map(c => [c.label.split(']')[0] + ']', c.can()]); }
-    for (const post of ['pilot', 'engineer', 'gunner']) out.order[post] = show('cap-order', post, 30).length;
-    out.praise.at2 = show('cap-praise', 'gunner', 30).map(c => c.can());
-    out.praise.at3 = show('cap-praise', 'gunner', 60).map(c => c.can());
+    for (const post of HIRED_POSTS) { const g = show('road-scope', post, SKILL_STEPS[2]); out.lane[post] = g.map(c => [c.label.split(']')[0] + ']', c.can()]); }
+    for (const post of ['pilot', 'engineer', 'gunner']) out.order[post] = show('cap-order', post, SKILL_STEPS[2]).length;
+    out.praise.at2 = show('cap-praise', 'gunner', SKILL_STEPS[2]).map(c => c.can());
+    out.praise.at3 = show('cap-praise', 'gunner', SKILL_STEPS[3]).map(c => c.can());
     return out;
   });
   assert.deepEqual(r.lane, { pilot: [['[Pilot 2]', true]], gunner: [['[Gunner 2]', true]], engineer: [['[Engineer 2]', true]], comms: [['[Comms 2]', true]] }, 'one trade choice at each post, open at level 2');

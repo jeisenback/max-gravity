@@ -469,7 +469,7 @@ Mods.register({
     M.on('newDay', day => {  // a high opinion fades when you do nothing for them (people.js)
       for (const id of [...G.state.crew, (hired() || {}).captain].filter(Boolean)) {
         const p = person(id);
-        if (p && p.memories && !p.loyal && p.opinion > OPINION.FRIEND && day - (p.touched || 0) >= OPINION_FADE) { p.opinion--; p.touched = day; }
+        if (p && p.memories && !p.loyal && p.opinion > OPINION.FRIEND && day - (p.liftedAt || 0) >= OPINION_FADE) { p.opinion--; p.liftedAt = day; }
       }
     });
     M.on('frame', () => {

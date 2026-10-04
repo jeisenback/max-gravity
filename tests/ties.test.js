@@ -214,7 +214,7 @@ test('a member who asks for leave goes if you let them, or stays if they like yo
     out.go = { left: !st.crew.includes(m.id), same: st.crew.length === n, liked: m.opinion - op, text: /signs on/.test(t) };
     // a member who likes you, asked to stay
     st.crew = []; st.warCalled = {}; war();
-    m = find(t => t.aff === 'Earth Coalition' && t.status['Earth Coalition'] === 'member'); m.opinion = 3; op = m.opinion;
+    m = find(t => t.aff === 'Earth Coalition' && t.status['Earth Coalition'] === 'member'); m.opinion = OPINION.CLOSE; op = m.opinion;
     t = go(warCallScene(planet), /^Ask /);
     out.stay = { here: st.crew.includes(m.id), liked: m.opinion - op };
     // one who does not, asked to stay, goes anyway and minds

@@ -170,7 +170,8 @@ test('they grow by working their post, and the scenes come in order as days pass
     start({ mode: 'hired', post: 'engineer' });  // Tomas is left the comms post, at skill 1
     const st = G.state, tomas = person('c:tomas'), out = {};
     out.start = { role: tomas.role, skill: tomas.skill, xp: tomas.xp.slicer };
-    for (let i = 0; i < 20; i++) Mods.emit('newDay');
+    out.steps = SKILL_STEPS;
+    for (let i = 0; i < SKILL_STEPS[2] - SKILL_STEPS[1]; i++) Mods.emit('newDay');  // a day is a point, so the second level is this many days on
     out.after = { skill: tomas.skill, xp: tomas.xp.slicer };
     // The scenes: the intro at once, then by days aboard.
     const seen = [];
@@ -179,8 +180,8 @@ test('they grow by working their post, and the scenes come in order as days pass
     out.seen = seen; out.done = castNext('ines');
     return out;
   });
-  assert.deepEqual(r.start, { role: 'slicer', skill: 1, xp: 10 });
-  assert.equal(r.after.xp, 30); assert.equal(r.after.skill, 2, 'twenty days at the post is a level');
+  assert.deepEqual(r.start, { role: 'slicer', skill: 1, xp: r.steps[1] });
+  assert.equal(r.after.xp, r.steps[2]); assert.equal(r.after.skill, 2, 'a stretch of days at the post is a level');
   assert.equal(r.noMid, null, 'a day in, no mid scene yet'); assert.equal(r.noLate, null);
   assert.deepEqual(r.seen, ['intro', 'mid1', 'mid2', 'late']); assert.equal(r.done, null);
   await done();

@@ -134,7 +134,7 @@ const likeAmbient = (p, n, memory) => { if (p && p.opinion < OPINION.CLOSE) like
 function like(p, n, memory) {
   if (!p.memories) return;  // handcrafted crew (crew.js) have arcs instead of opinions
   if (n > 0) n = Math.max(0, n - Math.floor(Math.max(0, p.opinion) / OPINION_EASE));
-  if (n) p.touched = G.state.day;
+  if (n) p.liftedAt = G.state.day;
   p.opinion += n;
   if (G.shifts && n) G.shifts.push({ p, n });  // what a choice did, for its result screen (shiftLines, character.js)
   if (memory) p.memories.push(`${dateOf()}: ${memory}`);
