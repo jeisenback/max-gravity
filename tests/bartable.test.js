@@ -70,3 +70,32 @@ test('cards, a drink and a goodbye do not always end the same way', async () => 
   assert.ok(r.cards >= 6, `${r.cards} openings at cards`); assert.ok(r.leaves >= 3, `${r.leaves} goodbyes`); assert.ok(r.clean);
   await done();
 });
+
+test('what someone says at the table is theirs: their traits, their goal, and how they feel about you', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = setup(), real = Math.random, out = {};
+    const person2 = (traits, goal) => { const p = makePerson('earth'); p.traits = traits; p.goal = goal; p.secret = null; return p; };
+    const greedy = person2(['greedy', 'kind'], 'medical'), pious = person2(['pious', 'kind'], 'pilgrim'), friend = person2(['kind', 'brave'], 'home');
+    friend.opinion = OPINION.FRIEND;
+    try {
+      Math.random = () => 0.01;  // the person's own line, a win at cards, the first of anything picked
+      st.credits = 2000;
+      out.greedy = take(talkEvent({ p: greedy, known: false }), /cards/);
+      out.pious = take(talkEvent({ p: pious, known: false }), /Leave/);
+      out.medical = take(talkEvent({ p: greedy, known: false }), /heard/);
+      out.pilgrim = take(talkEvent({ p: pious, known: false }), /heard/);
+      out.friend = take(talkEvent({ p: friend, known: true }), /Leave/);
+      out.stranger = take(talkEvent({ p: friend, known: false }), /Leave/);
+      Math.random = () => 0.99;  // the shared pool instead
+      out.shared = take(talkEvent({ p: greedy, known: false }), /Leave/);
+    } finally { Math.random = real; }
+    return out;
+  });
+  assert.match(r.greedy, /counts the pot twice/); assert.match(r.pious, /Fair winds/);
+  assert.match(r.medical, /medic/); assert.match(r.pilgrim, /holy/);
+  assert.match(r.friend, /Same again, next port/); assert.doesNotMatch(r.stranger, /Same again/);
+  assert.doesNotMatch(r.shared, /bigger purse/, 'a shared goodbye some of the time');
+  await done();
+});

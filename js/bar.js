@@ -81,6 +81,39 @@ const BAR_BLESS = ['{n} closes their eyes and lays two fingers on the transponde
 const BAR_LEAVE = ['You get up and leave them to their drink. You go back to the bar and the noise of the room.', 'You nod, and {n} nods, and that is the whole goodbye. The room closes over the gap you left.', '"Safe burn," {n} says, to your back. You do not turn round, but you lift a hand.', 'You finish what is in your glass and stand. {n} has already gone back to their own business, which is a kind of courtesy.'];
 const BAR_DRINK_TALK = ['{n} tells you about {home}: the streets, the smell of the market, why they left, and why they might go back. There is no rumor in it, and no secret, and no angle. It takes an hour.', '{n} spends the whole drink on a long story about a boss they hated and a ship they loved, and how the two are the same person. It is very funny. It teaches you nothing.', '{n} asks about you, and listens, and says nothing useful, and the drink is gone before you notice. It is the most relaxing hour of the week.', '{n} complains for an hour about the price of everything, with such precision and love that you leave feeling you have been to a very good concert.', '{n} talks about the one trip that went right: the cargo that sold, the weather that held, the pilot who sang. It is a nice story. It has no use at all.'];
 
+// What the person is like colors what they say: a line for each of their first two traits (70% of the time, else the shared pool),
+// for the kinds of thing that used to be the same for everyone.
+const BAR_TRAIT = {
+  talkative: { win: '{n} talks the whole way through the hand and loses the thread of the bet. You take {cr} cr off them while they are explaining a cousin.', lose: '{n} talks, and you talk back, and somewhere in it {cr} cr leaves your pocket. You could not say which hand it was.', drink: '{n} starts a story, stops it for a better one, and starts the first again at the end. You learn the names of eleven people and the plot of none.', leave: '"Wait, one more thing," {n} says, and then three more things, and you are at the door before the last of them.', quiet: '{n} lasts nearly a minute in the silence, and then it comes out of them like water out of a pipe, and you let it.' },
+  nervous: { win: '{n} watches your hands the whole game and flinches at every card. You take {cr} cr off them, and they thank you for it, which is worse.', lose: '{n} plays carefully and with tiny, exact movements, and wins, and looks so relieved that you cannot be angry about the {cr} cr.', drink: '{n} holds the glass in both hands and talks to it. By the end they have said more in an hour than they meant to, and look at the door.', leave: '{n} half rises when you stand, and sits again, and says goodbye to the table.', quiet: '{n} lets out a breath you did not know they were holding. After ten minutes their hands stop moving.' },
+  generous: { win: '{n} insists on shuffling for you and refills your glass between hands. You take {cr} cr off them and they would not hear of giving it back, or of taking it back.', lose: '{n} wins {cr} cr and tries to press half of it back into your hand. You refuse. They put it in the tip jar in your name.', drink: '{n} will not let you pay for anything and tells you about the first person who was kind to them on a ship, and what they did with it.', leave: '{n} puts a roll in your pocket as you go and does not mention it.', quiet: '{n} pushes the bowl of beans across, and then the bread, and then a second glass of water, without a word.' },
+  greedy: { win: '{n} counts the pot twice, then counts your {cr} cr, and then counts it again as you take it. "Beginner\'s luck," {n} says. It is not a friendly phrase.', lose: '{n} takes the {cr} cr, checks it against a coin they keep for the purpose, and bites nothing. "A pleasure," {n} says, and means the money.', drink: '{n} has a price for everything: the drink, the stool, the gossip about the man two tables over. By the end you have heard a lot of figures and no stories.', leave: '"Next time, bring a bigger tank," {n} says, "and a bigger purse."', quiet: '{n} does sums on a napkin for twenty minutes, in silence, and at the end turns the napkin round for you to see. It is your ship\'s price, within a few percent.' },
+  pious: { win: '{n} says a short word over each card, and loses, and says one over the {cr} cr as it leaves. "What is lost is returned in another form," {n} says.', lose: '{n} plays as if each card were asked for. You lose {cr} cr, and {n} touches the charm at their throat and says it was not their doing.', drink: '{n} speaks of the long road, and the long wait, and the small kindness that is worth more than either. It is not a sermon. You are not sure what it is.', leave: '"Fair winds," {n} says, as if it were a vow.', quiet: '{n} bows their head, and you sit beside them, and for a while the bar sounds like the sea. When they lift it again they say it was good to have company.' },
+  rude: { win: '{n} slams down the last card and says it was a dishonest deck. You take {cr} cr off them anyway.', lose: '{n} wins {cr} cr, and says it was not even close. You do not argue, because they would only get louder.', drink: '{n} insults the drink, the bar, the bartender, and the city, in that order, with great energy. By the end you are fond of them against your will.', leave: '"Don\'t come back," {n} says. They are looking at the screen when they say it, so it is hard to know how they mean it.', quiet: '{n} says nothing for a long time, which for them is a sort of courtesy, and then says, "You are not as bad as I thought." It is a lot, from them.' },
+  curious: { win: '{n} asks how you knew, and what the odds were, and whether you count, and takes {cr} cr off the table in questions before you take it in coin.', lose: '{n} plays a hand and then spends ten minutes asking how you lost it, and you are never sure whether it is a joke. {cr} cr.', drink: '{n} asks about your ship, your home, your last port and the best thing you have eaten, and writes none of it down, and does not forget any of it.', leave: '"Where are you headed next?" {n} asks, at the door, and writes it on their hand.', quiet: '{n} watches you not talking with open interest, as if it were a skill, and then tries it. They last four minutes.' },
+  drunk: { win: '{n} deals you a hand and then forgets which they dealt to themselves. You take {cr} cr, and {n} cheers for you, sincerely, and orders another.', lose: '{n} wins {cr} cr and looks astonished, and wants it understood that it was skill, and then asks what game it was.', drink: '{n} tells you the same story three times, and each time it is about a different ship. You are not sure which one is true. You think none of them.', leave: '{n} waves, a little to the left of where you are, and says something warm that does not quite make a word.', quiet: '{n} falls asleep with their head on their arm, and you sit with them until the bartender comes over with a blanket.' },
+  secretive: { win: '{n} plays with an expression you cannot read and a hand you cannot guess. You take {cr} cr, and {n} gives nothing away, and the only change is that they do not look at the door.', lose: '{n} wins {cr} cr without a word, and counts it without looking, and the whole thing was a conversation you only half understood.', drink: '{n} answers every question with a question and gives you, as far as you can tell, nothing. On the way home you realize you told them a great deal.', leave: '"I never saw you," {n} says, without a smile, and you cannot tell whether that is a joke.', quiet: '{n} relaxes a little, in the silence, in the way of someone who has not been asked a question for some time.' },
+  kind: { win: '{n} loses gracefully, and as you take {cr} cr they ask if you are all right, because you looked tired. You were.', lose: '{n} wins {cr} cr and feels bad about it at once, and buys you a drink, and says it is nothing.', drink: '{n} asks about you, and means it. By the end of the glass you have said something true that you had not planned to say to anyone.', leave: '"Look after yourself," {n} says, and it is not a figure of speech.', quiet: '{n} makes room, and then nothing else, and the quiet is the kind that you can lean on.' },
+  brave: { win: '{n} bets everything on the last hand with a grin and loses {cr} cr to you, and offers a rematch, double or nothing, before the cards are down.', lose: '{n} wins {cr} cr on a bluff that should not have worked, and shows you the hand afterwards, with relish.', drink: '{n} tells you about a bad moment and what they did in it, and does not make it sound better than it was. You believe every word.', leave: '"Any time," {n} says, "and any place." It is an offer.', quiet: '{n} sits with their back to the door, as always, and for once does not watch it. You count that as a compliment.' },
+  homesick: { win: '{n} plays absent-mindedly, thinking of somewhere else, and loses {cr} cr to you without noticing. You almost feel bad.', lose: '{n} plays well, for someone whose mind is elsewhere. {cr} cr, and a small smile that is not about the game.', drink: '{n} talks about {home}, and then stops, and then talks about it again, and by the third time you could draw the street.', leave: '{n} looks at the door, and then at you, and says, "Say hello to somewhere nice for me."', quiet: '{n} takes out a creased photograph and sets it between you, and neither of you mentions it. You look at it for a while.' },
+};
+const BAR_GOAL = {
+  home: '{n} is going home, and keeps looking at the clock. "Three more ports," they say, to nobody in particular.',
+  family: '{n} is going to see family, and has brought the wrong present, and knows it. "What do you give a niece?" they ask.',
+  job: '{n} has an interview, and is rehearsing it under their breath, and stops when they see you looking.',
+  fresh: '{n} says, flatly, that they are starting again, and that they would rather not say from what.',
+  research: '{n} has a posting waiting at the end of the trip, and mentions the instruments for it before the name.',
+  pilgrim: '{n} touches the cord at their wrist and asks, quietly, whether your ship is bound anywhere holy.',
+  medical: '{n} presses a hand to their side and asks, quietly, whether your ship carries a medic.',
+  vague: '{n} says they are traveling for reasons, and leaves it there, and orders another.',
+};
+const barTrait = (kind, p, generic) => {
+  const own = p.traits.slice(0, 2).map(t => (BAR_TRAIT[t] || {})[kind]).filter(Boolean);
+  return own.length && Math.random() < 0.7 ? pick(own) : pick(generic);
+};
+// How they take you, for someone you know: a friend teases, an enemy keeps it stiff.
+const barTone = (pat, p) => (!pat.known ? '' : p.opinion >= OPINION.FRIEND ? ` ${p.first} grins. "Same again, next port."` : p.opinion <= OPINION.ENEMY ? ` ${p.first} keeps it short, and does not look up.` : '');
+
 const workGroup = job => (WORK_GROUP.find(([re]) => re.test(job || '')) || [null, 'other'])[1];
 const byName = (p, salt, n) => Math.abs(hash(`${p.first}${p.last}${salt}`)) % n;  // the person's own pick, the same every time
 const barSays = (line, p, extra = {}) => line.replace(/\{n\}/g, p.first).replace(/\{home\}/g, p.home).replace(/\{bar\}/g, (G.barState || {}).name || 'this place').replace(/\{cr\}/g, extra.cr || '');
@@ -167,13 +200,15 @@ function talkEvent(pat) {
       like(p, 1, `The captain bought me a drink at ${bar}.`);
       if (p.secret && (p.traits.includes('talkative') || p.traits.includes('drunk') || Math.random() < 0.3)) return `${p.first} ${pick(SECRET_TALK[p.secret])}`;
       if (Math.random() < 0.5) return `${p.first} looks around and leans in. "Here's something you can use," they say, low and fast: "${addRumor()}" Then they sit back and finish their drink. Neither of you speaks for the rest of the glass.`;
-      return barSays(pick(BAR_DRINK_TALK), p);
+      return barSays(barTrait('drink', p, BAR_DRINK_TALK), p);
     } },
     { label: 'Ask what they have heard', can: () => !pat.asked, run() {
       pat.asked = true;
       met(pat);
       if (p.traits.includes('secretive')) return `"Nothing worth repeating," ${p.first} says, and smiles, and goes back to their drink. They do not look up again while you are there.`;
-      return Math.random() < 0.6 ? `${p.first} thinks about it, then says: "${addRumor()}"` : `${p.first} laughs and leans back. "Did you hear? ${feedLine().replace('[Feed] ', '')}" They go on for twenty minutes.`;
+      const aside = barSays(BAR_GOAL[p.goal] || '', p);
+      const heard = Math.random() < 0.6 ? `${p.first} thinks about it, then says: "${addRumor()}"` : `${p.first} laughs and leans back. "Did you hear? ${feedLine().replace('[Feed] ', '')}" They go on for twenty minutes.`;
+      return aside ? `${aside} ${heard}` : heard;
     } },
   ];
   // A berth is the captain's to give, so a hand has none to offer.
@@ -191,11 +226,11 @@ function talkEvent(pat) {
     if (Math.random() < 0.5) {
       st.credits += CARDS;
       like(p, p.traits.includes('greedy') || p.traits.includes('rude') ? -1 : 0, 'The captain took my money at cards.');
-      return `${barSays(pick(BAR_CARD_WIN), p, { cr: fmt(CARDS) })} ${p.traits.includes('rude') ? `${p.first} stands up and says you cheated, loudly, and the whole bar turns to look. You leave them to it.` : pick([`${p.first} buys you a drink with your own money.`, `${p.first} shakes your hand and means it.`, `${p.first} tells the story of it to the next table, with you as the villain.`])}`;
+      return `${barSays(barTrait('win', p, BAR_CARD_WIN), p, { cr: fmt(CARDS) })} ${p.traits.includes('rude') ? `${p.first} stands up and says you cheated, loudly, and the whole bar turns to look. You leave them to it.` : pick([`${p.first} buys you a drink with your own money.`, `${p.first} shakes your hand and means it.`, `${p.first} tells the story of it to the next table, with you as the villain.`])}`;
     }
     st.credits -= CARDS;
     like(p, 1, null);
-    return `${barSays(pick(BAR_CARD_LOSE), p, { cr: fmt(CARDS) })} By the end of the glass you are laughing.`;
+    return `${barSays(barTrait('lose', p, BAR_CARD_LOSE), p, { cr: fmt(CARDS) })} By the end of the glass you are laughing.${barTone(pat, p)}`;
   } });
   if (p.traits.includes('rude') && !pat.known) choices.push({ label: 'Tell them what you think of their manners', can: () => !pat.fought, run() {
     pat.fought = true;
@@ -220,12 +255,12 @@ function talkEvent(pat) {
   // Two of three more things to do at a table, which two depends on the person, so the doors are not the same for everyone.
   const more = [
     { label: `Ask ${p.first} about their work`, can: () => !pat.work, run() { pat.work = true; met(pat); return barSays(pick(BAR_WORK[workGroup(p.job)]), p); } },
-    { label: `Sit with ${p.first} and say nothing`, can: () => !pat.quiet, run() { pat.quiet = true; met(pat); like(p, ['nervous', 'secretive', 'homesick', 'kind'].some(t => p.traits.includes(t)) ? 1 : 0, 'The captain sat with me and did not make me talk.'); return barSays(pick(BAR_SILENCE), p); } },
+    { label: `Sit with ${p.first} and say nothing`, can: () => !pat.quiet, run() { pat.quiet = true; met(pat); like(p, ['nervous', 'secretive', 'homesick', 'kind'].some(t => p.traits.includes(t)) ? 1 : 0, 'The captain sat with me and did not make me talk.'); return barSays(barTrait('quiet', p, BAR_SILENCE), p); } },
     { label: `Ask ${p.first} about this place`, can: () => !pat.place, run() { pat.place = true; met(pat); return barSays(pick(BAR_PLACE), p); } },
   ];
   const skip = byName(p, 'skip', 3);
   choices.push(...more.filter((_, i) => i !== skip));
-  choices.push({ label: 'Leave them to their drink', run: () => barSays(pick(BAR_LEAVE), p) });
+  choices.push({ label: 'Leave them to their drink', run: () => barSays(barTrait('leave', p, BAR_LEAVE), p) + barTone(pat, p) });
   return { title: `${bar}: ${p.first} ${p.last}`, text, choices };
 }
 
