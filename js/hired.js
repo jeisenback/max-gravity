@@ -178,6 +178,8 @@ function planRun() {
       }
     }
   }
+  const ice = !held && typeof iceOption === 'function' ? iceOption(here, from, reach, free) : null;  // the long run, when it is due (icerun.js)
+  if (ice) return ice;
   const score = o => (o.profit / o.days) * (wantYard && o.yard ? 4 : 1) * laneRisk(o.sid);
   const ranked = options.sort((a, b) => score(b) - score(a)).filter(o => o.profit > 0);
   const top = ranked.slice(0, captainEntry() ? TRADE_PICKS[captainEntry().captain.trade] : 1);
@@ -199,7 +201,7 @@ function sail() {
   const st = G.state, h = st.hired, plan = currentPlan(), here = currentPlanet();
   if (!plan || G.mode !== 'landed' || G.dialog) return false;
   let cost = plan.cost;
-  if (plan.good && !plan.loaded) {
+  if (plan.good && !plan.loaded && !plan.ice) {
     cost = Math.round(tradeTotal(here, plan.good, plan.tons, 1));
     recordTrade(here, plan.good, plan.tons, 1);
     st.cargo[plan.good] = (st.cargo[plan.good] || 0) + plan.tons;
@@ -207,6 +209,7 @@ function sail() {
     h.fund -= cost;
   }
   h.run = { ...plan, cost, day: st.day, from: st.planet };
+  if (plan.ice) { h.run.ice = { edge: 0 }; h.iceAt = st.day; }  // the ice is cut on the way, not bought
   h.plan = null;
   st.dest = plan.sid;
   st.route = { dock: plan.planet, go: true };
@@ -219,6 +222,7 @@ function sail() {
 function settleRun(planet) {
   const st = G.state, h = st.hired, run = h.run;
   if (!run || planet.name !== run.planet || st.systemId !== run.sid) return;
+  if (run.ice && typeof iceFinish === 'function') iceFinish();  // a burn that skipped the scenes comes home thin
   let revenue = 0, sold = 0;
   if (run.good && st.cargo[run.good] && price(planet, run.good) !== null) {
     sold = st.cargo[run.good];
@@ -228,7 +232,7 @@ function settleRun(planet) {
     h.fund += revenue;
   }
   const profit = revenue - run.cost, days = Math.max(1, st.day - run.day);
-  const wage = h.wage * days, share = profit > 0 ? Math.round(profit * h.share) : 0;
+  const wage = Math.round(h.wage * days * (run.ice ? ICE_HAZARD : 1)), share = profit > 0 ? Math.round(profit * h.share) : 0;  // the long run pays the wage and a half
   st.credits += wage + share;
   const total = runTotals(h);
   h.runsDone = total.runs + 1; h.earnedTotal = total.earned + wage + share;  // the ledger keeps the last 20; these keep the whole chapter

@@ -52,7 +52,7 @@ Mods.register({
         const told = procedural().find(f => f.p.news);
         if (told) out.push({ tier: 1, weight: 1, via: 'message', make: () => newsEvent(told.p) });
         const o = (t.occasions || []).find(x => !x.done && x.at <= progress);
-        if (o) out.push({ tier: 1, weight: 1, via: 'crew', make() { o.done = true; return occasionEvent(o); } });
+        if (o) out.push({ tier: 1, weight: o.kind === 'ice' ? 8 : 1, via: 'crew', make() { o.done = true; return occasionEvent(o); } });
         out.push({ tier: 1, weight: 1, via: 'crew', make: welcomeBack });
         const weak = worstPart();
         if (condition()[weak] < BREAKDOWN_BELOW) out.push({ tier: 1, weight: 1, via: 'crew', make: () => Math.random() < 0.5 ? breakdownEvent(weak) : null });
