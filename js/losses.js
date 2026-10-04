@@ -7,7 +7,7 @@
 // a scene where you choose how the ship marks it; each of the crew takes that choice by who they are (barReact, bartopics.js).
 // Loaded after boarders.js and fate.js; only called into at runtime.
 
-const LOSS_BASE = 0.15, LOSS_MEDIC = 0.5, LOSS_NO_MEDIC = 1.3, LOSS_HURT = 2.5, LOSS_MAX = 0.6, MILD_SHARE = 1 / 3;
+const LOSS_BASE = 0.35, LOSS_MEDIC = 0.5, LOSS_NO_MEDIC = 1.3, LOSS_HURT = 2.5, LOSS_MAX = 0.6, MILD_SHARE = 1 / 3;
 const lossOdds = (c, severe) => Math.min(LOSS_MAX, LOSS_BASE * (severe ? 1 : MILD_SHARE) * (roleHolder('medic') ? LOSS_MEDIC : LOSS_NO_MEDIC) * ((G.state.injured || {})[c.id] ? LOSS_HURT : 1));
 
 // Returns 'dead' or 'marked'. A generated crew member is killed (boarders.js killCrew) and a main character goes through the floor.
