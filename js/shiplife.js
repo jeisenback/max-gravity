@@ -177,7 +177,7 @@ function drawCutaway(cx, cy, maxL) {
 
   // Drive plume off the stern.
   if (burning) {
-    const len = L * 0.28 + Math.random() * 12, sx = X(0), dir = -Math.sign(turn || 1);
+    const pk = Math.sin(Math.PI * Math.min(1, 1 - t.left / t.total)), len = L * (0.28 + 0.32 * pk) + Math.random() * 14, sx = X(0), dir = -Math.sign(turn || 1);
     const g = ctx.createLinearGradient(sx, 0, sx + dir * len, 0);
     g.addColorStop(0, 'rgba(255,255,255,0.95)');
     g.addColorStop(0.15, 'rgba(140,190,255,0.8)');
@@ -223,7 +223,9 @@ function drawCutaway(cx, cy, maxL) {
   ctx.beginPath();
   ctx.moveTo(X(0.915), top + dh * 0.3); ctx.quadraticCurveTo(X(0.955), top + dh * 0.5, X(0.96), mid - dh * 0.15);
   ctx.stroke();
+  hullSeams(X, top, H, turn);  // plating, rivets and scars (hulldetail.js)
   ctx.restore();
+  hullFittings(X, top, H, L, turn, cy);  // mast, fins and turrets
   // Running lights, blinking.
   if (G.time % 1.6 < 0.2) {
     ctx.fillStyle = '#ff5a5a'; ctx.fillRect(X(0.45) - 1.5, top - 3, 3, 3);
@@ -304,8 +306,8 @@ function drawCutaway(cx, cy, maxL) {
     ctx.fillRect(x0 + 1, lower - th * fuelShare, tw - 2, th * fuelShare - 1);
   }
 
-  // Berths: bunks in two tiers for each berth on this ship (up to six drawn).
-  const berths = roomAt('berths'), n = Math.min(6, ship().berths), cols = Math.ceil(n / 2), bw = Math.min(26, span(berths.x0, berths.x1) / cols - 5);
+  // Berths: bunks in two tiers for each berth on this ship (up to twelve drawn).
+  const berths = roomAt('berths'), n = Math.min(12, ship().berths), cols = Math.ceil(n / 2), bw = Math.min(26, span(berths.x0, berths.x1) / cols - 5);
   for (let i = 0; i < n; i++) {
     const bx = X(berths.x0 + berths.w * (Math.floor(i / 2) + 0.5) / cols), by = i % 2 ? upper - 22 : upper - 9;
     ctx.fillStyle = '#1d2f45'; ctx.fillRect(bx - bw / 2, by, bw, 5);
@@ -364,10 +366,15 @@ function drawCutaway(cx, cy, maxL) {
       const b = bunk(slots.get(p));
       ctx.fillRect(b.x - 7, b.y - 3, 14, 3);
       ctx.beginPath(); ctx.arc(b.x - 10, b.y - 2, 2.6, 0, Math.PI * 2); ctx.fill();
-    } else if (p.role === 'cat') {  // low to the deck, with ears and a tail
-      ctx.fillRect(x - 3, y - 3, 6, 3);
-      ctx.fillRect(x + 2, y - 5, 2, 2);
-      ctx.fillRect(x - 4, y - 5, 1, 3);
+    } else if (p.role === 'cat') {  // low to the deck: a body, a head with ears and eyes, and a tail that sways
+      const walkingCat = p.tx !== null && !floating && !seated, sway = Math.sin(G.time * (walkingCat ? 6 : 2.2) + i) * 2;
+      ctx.fillRect(x - 4, y - 4, 8, 4);
+      ctx.fillRect(x + 3, y - 7, 4, 4);
+      ctx.fillRect(x + 3, y - 9, 1, 2); ctx.fillRect(x + 6, y - 9, 1, 2);
+      ctx.fillRect(x - 4, y - 1, 1.5, 1); ctx.fillRect(x + 2, y - 1, 1.5, 1);
+      ctx.lineWidth = 1.2; ctx.beginPath(); ctx.moveTo(x - 4, y - 3); ctx.quadraticCurveTo(x - 8, y - 6 + sway, x - 7, y - 9 + sway); ctx.stroke(); ctx.lineWidth = 1;
+      ctx.fillStyle = '#10213a'; ctx.fillRect(x + 4, y - 6, 1, 1); ctx.fillRect(x + 6, y - 6, 1, 1);
+      ctx.fillStyle = ROLE_COLORS[p.role];
     } else {
       const bodyH = seated ? ph_ * 0.5 : ph_ * 0.62, legH = seated ? 0 : ph_ - bodyH - 4;
       const swing = walking ? Math.sin(G.time * 9 + i) * 2 : 0;

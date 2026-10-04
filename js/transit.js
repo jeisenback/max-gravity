@@ -439,7 +439,7 @@ function drawRoute(cx, y, barW, progress) {
 }
 
 // How many lines the Comms box may take: 16 on a wide screen; on a phone as many as fit between the clock and the ship, at most 8.
-const transitCommsLines = (narrow, top, shipY, L) => narrow ? Math.max(2, Math.min(8, Math.floor((shipY - L * 0.1 - (top + 132) - 38) / 16))) : 16;
+const transitCommsLines = (narrow, top, shipY, L) => Math.max(narrow ? 2 : 4, Math.min(narrow ? 8 : 16, Math.floor((shipY - L * 0.13 - (top + (narrow ? 132 : 116)) - 38) / 16)));
 
 function drawTransit(W, H) {
   const viewW = W - G.hudW, cx = viewW / 2, cy = H / 2, t = G.transit, st = G.state;
@@ -459,18 +459,36 @@ function drawTransit(W, H) {
   glow(viewW * 0.92, cy - H * 0.2, H * 0.55, 'rgba(60,90,160,0.16)');
   glow(viewW * 0.05, cy + H * 0.3, H * 0.45, 'rgba(160,110,60,0.08)');
 
-  // Stars streak with our speed: longest at the midpoint.
-  const speed = 0.05 + Math.sin(Math.PI * progress) * 0.6;
+  // Stars streak with our speed: longest at the midpoint, with a fading tail, and a few long lines when we are really moving.
+  const speed = 0.05 + Math.sin(Math.PI * progress) * 0.6, still = Settings.reduceMotion;
   for (const s of G.transitStars) {
-    const x = s.x * viewW, y = s.y * H, len = Math.max(s.z * 2, speed * s.z * s.z * (Settings.reduceMotion ? 6 : 40));
-    ctx.fillStyle = `rgba(200,215,255,${s.z * 0.8})`;
-    ctx.fillRect(x, y, len, s.z > 0.7 ? 2 : 1);
+    const x = s.x * viewW, y = s.y * H, len = Math.max(s.z * 2, speed * s.z * s.z * (still ? 8 : 110)), w = s.z > 0.7 ? 2 : 1, hot = Math.min(1, speed * 1.4);
+    for (let i = 0; i < 3; i++) {  // head, body and a fainter tail
+      ctx.fillStyle = `rgba(${200 + 40 * hot * (1 - i / 3)},${215 + 30 * hot * (1 - i / 3)},255,${s.z * (0.85 - i * 0.28)})`;
+      ctx.fillRect(x + (len * i) / 3, y, len / 3 + 1, w);
+    }
+  }
+  if (!still && speed > 0.2) {
+    for (let i = 0; i < 26; i++) {
+      const lane = (i * 0.618033) % 1, rate = 0.5 + (i % 5) * 0.22, phase = (i * 0.37 + G.time * speed * 0.35 * rate) % 1, len = speed * (120 + (i % 4) * 70);
+      ctx.fillStyle = `rgba(150,195,255,${Math.min(0.3, (speed - 0.2) * 0.5)})`;
+      ctx.fillRect(viewW * (1 - phase), 120 + lane * (H - 240), len, 1);  // clear of the title and the bar of keys
+    }
   }
 
   // Our ship in cutaway, with everyone aboard (shiplife.js). It turns at the midpoint.
   const L = Math.min(viewW - 60, 640), shipY = cy + (narrow ? 56 : 70);
-  drawCutaway(cx, shipY, L);
-  G.lifeY = shipY + L * CUTAWAY_H / 2 + 34;  // downtime buttons sit below it
+  // On a wide screen the cutaway is drawn larger (up to half again), scaled so it still clears the panels.
+  const k = narrow ? 1 : Math.max(1, Math.min(1.35, (viewW - 120) / L, (H / 2 - 282) / (L * CUTAWAY_H / 2)));
+  const shake = !Settings.reduceMotion && !t.event && speed > 0.2 ? speed * 0.9 : 0;
+  ctx.save();
+  ctx.translate(cx + (narrow ? 0 : 40) + Math.sin(G.time * 53) * 0.5 * shake, shipY + Math.sin(G.time * 71 + 1) * 0.8 * shake);  // a shiver, not a random draw: the game's random is seeded in the tests
+  ctx.scale(k, k);
+  G.cutHits = [];  // (a mid-turn frame draws no one)
+  drawCutaway(0, 0, L);
+  ctx.restore();
+  for (const h of G.cutHits || []) { h.x = cx + h.x * k; h.y = shipY + h.y * k; }  // drawn at the origin, scaled: back to the screen for a click
+  G.lifeY = shipY + L * k * CUTAWAY_H / 2 + 14 + 32 * k;  // downtime buttons sit below it
 
   // Route
   const barW = Math.min(420, viewW - 60);
@@ -486,12 +504,15 @@ function drawTransit(W, H) {
   ctx.textAlign = 'center';
   ctx.font = '12px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
-  const clock = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')} remaining${t.event ? '  (paused)' : ''}`, dates = `${dateOf(transitNow(t))}, arriving ${dateOf(transitEta(t))}`;
+  const clock = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, '0')} remaining${t.event ? '  (paused)' : ''}${narrow ? `  ${fmtKms(burnState().v)}` : ''}`, dates = `${dateOf(transitNow(t))}, arriving ${dateOf(transitEta(t))}`;
   if (narrow) { ctx.fillText(dates, cx, top + 98); ctx.fillText(clock, cx, top + 114); }  // two lines: one is wider than a phone
   else ctx.fillText(`${dates}  -  ${clock}`, cx, top + 98);
 
+  // The burn instruments: a panel at the right on a wide screen, the figure on the clock line on a phone.
+  if (!narrow) drawBurnPanel(viewW - 316, 116, 300);
+
   // Comms log, top-left
-  const colW = narrow ? viewW - 56 : Math.min(360, viewW / 2 - 76), maxLines = transitCommsLines(narrow, top, shipY, L);
+  const colW = narrow ? viewW - 56 : Math.min(360, viewW / 2 - 76), maxLines = transitCommsLines(narrow, top, shipY, L * k);
   ctx.font = '12px "IBM Plex Mono", monospace';
   // Show whole messages, newest last, as many as fit.
   let lines = [];
