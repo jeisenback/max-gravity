@@ -24,8 +24,8 @@ Long-term milestones, in order. Each builds on the ones before it.
 ## 4. Expanse-grade combat, on the console
 The captain decides and the crew flies: piloting and real-time fighting are the least interesting part of the game. Design: `COMBAT.md`.
 - **4a**, in the old flight model: **torpedoes and point-defense turrets** (done), escorts (done in milestone 2), **boarding and capture, and a medic who matters** (done).
-- **4b**, momentum flight and real-time burn fights (`js/engage.js`): built as a prototype, now **dropped**. Retired in favor of the card duel (#52).
-- **4c**, card combat: a threat-and-answer ship duel with decks built from the ship (#42), made the only combat (#52 in burns, done; #55 in local space; #56 the story set pieces), with automated flight and the flight screen as a backdrop (#53), a boarding duel (#43), cards from every system and post (#47), hardcore mode (#44), and a balance simulation (#45).
+- **4b**, momentum flight and real-time burn fights: built as a prototype, now **dropped**. Retired in favor of the card duel (#52). `js/engage.js` stays, but only as the contact trigger during burns: it raises the contact and hands it to the duel (`js/duel.js`).
+- **4c**, card combat: a threat-and-answer ship duel with decks built from the ship (#42), made the only combat (#52 in burns, #55 in local space and #56 the story set pieces, all done), with automated flight and the flight screen as a backdrop (#53), a boarding duel (#43), cards from every system and post (#47), hardcore mode (#44), and a balance simulation (#45).
 
 ## 5. Frontier and legacy
 - **Found and grow an outpost** (done: Callisto or Nereid, supplied from your hold, with buildings and settler moments).
