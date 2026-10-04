@@ -1,8 +1,4 @@
 {
   "credits": 12000,
-  "day": 1,
-  "systemId": "earth",
-  "cargo": {},
-  "rumors": [],
-  "missions": []
+  "systemId": "earth"
 }

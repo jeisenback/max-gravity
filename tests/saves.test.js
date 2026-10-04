@@ -2,9 +2,8 @@
 
 // Old saves: the files in tests/fixtures/ are plain save data, loaded the way a player's would be (Import, then Load game, which
 // runs migrate()). Add a file here whenever the save's shape changes in a way an old save must survive.
-//   empty-save.json  the fewest fields the game loads today: credits, day, systemId, cargo, rumors, missions. Everything else is
-//                    filled in by migrate() or the game. (Credits and systemId alone pass Import and then throw on load, which is
-//                    what #252, the save shape written once, is for.)
+//   empty-save.json  the fewest fields Import accepts: credits and systemId. migrate() fills every other top-level field from
+//                    stateDefaults() (game.js). (Before #252 this passed Import and then threw on load.)
 //   v1-save.json     the first shape a save had (newState() in the first commit that has one): no v, no captain, no hired, no cast.
 
 const { test, after } = require('node:test');
@@ -29,7 +28,12 @@ for (const scope of ['earth-hired', 'full']) {
         UI.openLanded(currentPlanet(), []);
         for (const tab of ['port', 'trade', 'crew', 'bar']) { UI.tab = tab; UI.render(); }
         const st = G.state;
-        out[name] = { refused, mode: G.mode, v: st.v, current: SAVE_VERSION, filled: ['crew', 'flags', 'people', 'rep', 'outfits', 'market', 'story'].every(k => st[k] !== undefined) };
+        const want = stateDefaults(), own = migrate(JSON.parse(text));
+        out[name] = {
+          refused, mode: G.mode, v: st.v, current: SAVE_VERSION,
+          missing: Object.keys(want).filter(k => st[k] === undefined || own[k] === undefined),
+          wrongType: Object.keys(want).filter(k => want[k] !== null && (typeof st[k] !== typeof want[k] || Array.isArray(st[k]) !== Array.isArray(want[k]))),
+        };
       }
       return out;
     }, FIXTURES);
@@ -38,7 +42,8 @@ for (const scope of ['earth-hired', 'full']) {
       assert.equal(r.refused, null, `${name}: Import accepts it`);
       assert.equal(r.mode, 'landed', `${name}: it loads docked`);
       assert.equal(r.v, r.current, `${name}: migrate() brings it to the current version`);
-      assert.ok(r.filled, `${name}: migrate() fills the fields a newer game expects`);
+      assert.deepEqual(r.missing, [], `${name}: every field of stateDefaults() is there after migrate()`);
+      assert.deepEqual(r.wrongType, [], `${name}: and each is the kind of thing the default is`);
     }
     await done();
   });

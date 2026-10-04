@@ -60,12 +60,11 @@ const Saves = {
 const dateOfState = st => { const d = new Date(START_DATE + ((st.day || 1) - 1) * 864e5); return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`; };
 const played = s => `${Math.floor(s / 3600)}h ${String(Math.floor(s / 60) % 60).padStart(2, '0')}m`;
 
-// Older saves get the fields later versions expect; add a step here whenever a save's
-// shape changes.
+// Older saves get the fields later versions expect: every top-level field of stateDefaults() (game.js) that a save lacks. Add a
+// field there, not here; add a step here only when an old value has to be rewritten, not just filled in.
 function migrate(st) {
-  st.crew = st.crew || []; st.flags = st.flags || {}; st.people = st.people || {}; st.nextPid = st.nextPid || 1;
-  st.rep = st.rep || {}; st.outfits = st.outfits || {}; st.market = st.market || {};
-  st.story = st.story || { stage: 0, next: STORY_START_DAY, log: [] };
+  const defaults = stateDefaults(st.shipId);
+  for (const key of Object.keys(defaults)) if (st[key] == null) st[key] = defaults[key];
   if (st.captain) st.captain.name = cleanName(st.captain.name);
   for (const c of st.captains || []) { c.name = cleanName(c.name); c.fate = stripTags(c.fate); }
   for (const m of st.memorial || []) m.cause = stripTags(m.cause);

@@ -159,15 +159,21 @@ function bestSale(planet, cid) {
 
 // ---------- persistence ----------
 
-function newState() {
+// The save's shape, written once: every top-level field a game has from the start, with the value it starts with. newState() is
+// this, and migrate() (menu.js) gives any field a loaded or imported save lacks the same value, so a field added here reaches old
+// saves too. A fresh object each call. `shipId` is the save's own ship, so a save without a full tank gets that ship's. A save
+// without a `tutorial` has none (null); a new game starts it.
+function stateDefaults(shipId) {
+  const ship = SHIPS[shipId] || SHIPS.shuttle;
   return {
     credits: 12000, day: 1, systemId: 'earth', planet: 'Earth', shipId: 'shuttle',
-    fuel: SHIPS.shuttle.fuel, armor: SHIPS.shuttle.armor,
+    fuel: ship.fuel, armor: ship.armor,
     cargo: {}, paid: {}, market: {}, rumors: [], missions: [], dest: null, nextId: 1,
     crew: [], flags: {}, people: {}, nextPid: 1, rep: {}, outfits: {},
-    story: { stage: 0, next: STORY_START_DAY, log: [] }, tutorial: 0,
+    story: { stage: 0, next: STORY_START_DAY, log: [] }, tutorial: null,
   };
 }
+const newState = () => ({ ...stateDefaults(), tutorial: 0 });
 
 // Saves go to the current slot (menu.js), and only while docked: a burn in progress
 // can't be restored, so the last port is the save.
