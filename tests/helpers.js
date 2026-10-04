@@ -4,7 +4,8 @@
 // localStorage), a seeded Math.random so runs repeat, and a list of page errors
 // that every test checks at the end.
 //
-// CHROMIUM_PATH points at a browser binary when Playwright's own download is not
+// Opening a page is most of a test's cost (about 0.5 s on the headless shell, 0.8 s on full Chromium, with four files running), so
+// prefer the headless shell. CHROMIUM_PATH points at a browser binary when Playwright's own download is not
 // installed (npx playwright install chromium).
 
 const { chromium } = require('playwright');

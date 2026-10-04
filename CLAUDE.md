@@ -16,7 +16,7 @@ An Escape Velocity homage in vanilla JS and canvas. Static site, no build step. 
 
 ## Tests
 
-`CHROMIUM_PATH=/opt/pw-browsers/chromium npm test` (about a minute). Run the full suite before pushing.
+`CHROMIUM_PATH=$(ls /opt/pw-browsers/chromium_headless_shell-*/chrome-linux/headless_shell | tail -1) npm test` (about two minutes; the headless shell opens a page about a third faster than `/opt/pw-browsers/chromium`, which also works). Run the full suite before pushing.
 
 ## Git
 

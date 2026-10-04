@@ -117,17 +117,18 @@ test('scenarios: share a link, start it, and a hostile one is defanged', async (
   watch(p2, errors);
   await p2.goto(link);
   await p2.waitForFunction(() => typeof UI !== 'undefined' && UI.pendingScenario);
-  await p2.click('[data-action=scenarioGo]');
+  // A dock scene can open over the panel at any moment, and then the Go button is not on the page. So the scene is cleared and the
+  // button pressed in one step in the page, where nothing can open between them.
+  const go = () => p2.evaluate(() => { while (G.dialog) finishEvent(); UI.tab = 'port'; UI.render(); document.querySelector('[data-action=scenarioGo]').click(); });
+  await go();
   assert.ok(await p2.evaluate(() => STORYLETS.some(s => s.id.startsWith('scenario-'))), 'scenario storylets registered');
 
   const evil = await p2.evaluate(() => encode({ title: 'Evil <script>window.pwned2=1</script>', text: '<img src=x onerror="window.pwned2=1">', start: { shipId: 'nonsense', credits: 1e12, systemId: 'earth', planet: 'Nowhere' },
     storylets: [{ id: 'x', where: 'port', when: { day: 1 }, title: '<b>t</b>', text: '<img src=x onerror="window.pwned2=1">', choices: [{ label: 'ok', effects: { credits: 5 } }] }] }));
   await p2.evaluate(() => { while (G.dialog) { chooseEvent(0); finishEvent(); } UI.tab = 'port'; UI.render(); });
-  await p2.fill('#scenarioCode', evil);
-  await p2.click('[data-action=scenarioPaste]');
-  // A dock scene can open over the panel at any moment: clear it so the Go button shows.
-  await p2.evaluate(() => { while (G.dialog) finishEvent(); UI.tab = 'port'; UI.render(); });
-  await p2.click('[data-action=scenarioGo]');
+  // The panel can redraw between a fill and a click and empty the box, so the code is entered and sent in one step as well.
+  await p2.evaluate(code => { document.getElementById('scenarioCode').value = code; document.querySelector('[data-action=scenarioPaste]').click(); }, evil);
+  await go();
   const r = await p2.evaluate(() => ({ pwned: !!window.pwned2, credits: G.state.credits, ship: G.state.shipId }));
   assert.equal(r.pwned, false);
   assert.ok(r.credits < 1e12, 'absurd credits ignored');
