@@ -168,7 +168,7 @@ function warCallScene(planet) {
     return `${n} reads the recall order twice and puts it away. ${n} does not leave. The liaison logs the ship as having obstructed a recall, and ${n} does not speak to you for the rest of the watch.`;
   } });
   else choices.push({ label: `Ask ${n} to stay`, run() {
-    if (p.opinion >= 1) { like(p, 1, `You asked me to stay and I did, because of you.`); return `${n} thinks about it for a long minute. "I would rather be here," ${n} says, and means it. It is not the same as being glad.`; }
+    if (p.opinion >= OPINION.CLOSE) { like(p, 1, `You asked me to stay and I did, because of you.`); return `${n} thinks about it for a long minute. "I would rather be here," ${n} says, and means it. It is not the same as being glad.`; }
     like(p, -2, `You asked me to stay when my people were at war.`);
     return `${n} hears you out and goes anyway, because it is not the sort of thing a person can be talked out of. ${signReplacement(p, planet).trim()}`;
   } });
