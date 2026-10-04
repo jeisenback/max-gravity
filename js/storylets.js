@@ -45,6 +45,8 @@ const CONDITIONS = {
   // A story passenger aboard, by role in the story (older saves' Mira has none).
   aboard: v => paxAboard().some(m => m.story && (m.storyWho || 'mira-europa') === v),
   chance: v => Math.random() < v,
+  post: v => !!hired() && [].concat(v).includes(hired().post),  // a hired hand's own post
+  skill: v => !!hired() && skillLevel(hired().post) >= v,  // and the level they have there
   hired: v => !!hired() === !!v,  // follow-ups of a hired hand's choices stop when they buy a ship of their own
   // A follow-up that an earlier choice set going with `later`: holds once its days have passed.
   due: v => [].concat(v).every(n => quality(`due:${n}`) > 0 && G.state.day >= quality(`due:${n}`)),
@@ -198,7 +200,7 @@ function storyletEvent(s) {
   if (s.every) qs[`last:${s.id}`] = G.state.day;
   if (s.consumes) qs[`due:${s.consumes}`] = 0;  // a follow-up plays once for each time it was set going
   // A choice that needs a particular crew member (not just a role) is hidden without them.
-  const present = c => !(c.when && c.when.crew && !ROLE_NAMES[c.when.crew] && !G.state.crew.includes(c.when.crew));
+  const present = c => !(c.when && c.when.crew && !ROLE_NAMES[c.when.crew] && !G.state.crew.includes(c.when.crew)) && !(c.when && c.when.post && !CONDITIONS.post(c.when.post));  // and a choice for another post is not shown at all
   return {
     title: fill(s.title), text: fill(s.text), via: s.via, personal: s.personal,
     choices: s.choices.filter(present).map(c => ({
