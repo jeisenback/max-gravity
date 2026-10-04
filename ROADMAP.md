@@ -2,6 +2,17 @@
 
 Long-term milestones, in order. Each builds on the ones before it.
 
+## Current focus: one narrow path, tuned first
+
+Before the milestones below, the build gets narrower and is tuned until it is good: a gunner, an Earth start, the two fixed main characters, and one captain with their first officer (#289, using the scope flags in `js/build.js`). The other posts, captains and starts stay in the code and in the full build (`?scope=full`). In order:
+
+1. **The narrowing itself** (#289), and the save shape written once (#252), since later work adds save fields.
+2. **Beat pacing** (#256 remainder, #278), tuned against the one pair.
+3. **The new-player path**: the opening said once (#277, #257), the first run (#260), the first arrival (#279), a guided first task for the gunner (#270), and tips kept per save (#273).
+4. **Then the narrative layer**: opinion notes and gated choices (#281, #282, #283), recorded facts (#275), the hiring-hall debt (#280, re-run the soak when it lands), risk and reward (#274), and the prose passes (#255, #136).
+
+Parked until this plays well: anything that needs the other posts or captains, the balance simulation and authored boarding (#259, #258), the event tuning editor (#70 to #73), the bar leads (#115, #119 to #121), and the rest of the cast and endings (#128 to #134).
+
 ## 1. A living solar system
 - **Orbits and launch windows** (started): every location orbits at its real period, so travel time and reaction mass change over the months. The system map shows the best upcoming window for a plotted burn.
 - **Pirate unrest and NPC shipping** (done): raids flare up, NPC haulers avoid dangerous lanes, and shortages and gluts follow; killing pirates clears the lanes.
