@@ -561,8 +561,8 @@ test('letters from home are about their own people', async () => {
     const run = seq => {
       let k = 0; const real = Math.random; Math.random = () => seq[k++ % seq.length];
       for (const f of procedural()) delete f.p.letterDay;
-      delete G.state.letterAt;
-      try { return letters(currentPlanet()).join(' '); } finally { Math.random = real; }
+      const out = [];
+      try { for (let i = 0; i < 6; i++) { delete G.state.letterAt; const l = letters(currentPlanet()); if (!l.length) break; out.push(...l); } return out.join(' '); } finally { Math.random = real; }  // one letter a landing, so one landing for each of them
     };
     return { good: run([0, 0, 0]), bad: run([0, 0.9, 0]) };  // each person draws: whether to write, good or bad, which
   });
@@ -720,7 +720,7 @@ test('the chapter\'s closing scene remembers who did not make it', async () => {
   await done();
 });
 
-test('letters from home come at most one landing in ten days, however many people are aboard', async () => {
+test('letters from home come at most one landing in LETTER_GAP days, however many people are aboard', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
@@ -732,15 +732,15 @@ test('letters from home come at most one landing in ten days, however many peopl
     try {
       st.day = 100; const first = letters(currentPlanet()).length;
       for (const f of procedural()) delete f.p.letterDay;
-      st.day = 105; const soon = letters(currentPlanet()).length;
+      st.day = 100 + LETTER_GAP / 2; const soon = letters(currentPlanet()).length;
       for (const f of procedural()) delete f.p.letterDay;
-      st.day = 110; const later = letters(currentPlanet()).length;
+      st.day = 100 + LETTER_GAP; const later = letters(currentPlanet()).length;
       return { first, soon, later };
     } finally { Math.random = real; }
   });
   assert.ok(r.first > 0, 'a landing can bring letters');
-  assert.equal(r.soon, 0, 'none five days later');
-  assert.ok(r.later > 0, 'letters again after ten days');
+  assert.equal(r.soon, 0, 'none half a gap later');
+  assert.ok(r.later > 0, 'letters again after the gap');
   await done();
 });
 

@@ -193,7 +193,7 @@ const GOOD_NEWS = ['{who} got into the engineering academy on Ceres', '{who} had
 const BAD_NEWS = ['{who} is sick, and the clinic on {home} wants money up front', '{who} lost their job when the mine cut shifts', 'the section where {who} lives is on emergency rationing', '{who} has stopped answering messages, and nobody at home will say why', '{who} was hurt in an accident at work, and it is not clear how badly', 'the family\'s cabin was flooded when a pipe burst, and everything is gone', '{who} is being evicted, and has nowhere to go', '{who} has been arrested at a protest, and nobody knows for how long', 'an old friend of {who}\'s passed away, and the funeral is next week', '{who} says the recyclers on {home} are failing, and the water tastes wrong', 'the clinic on {home} is closing, and {who} has to travel two days for treatment', '{who} broke a leg in the market and cannot work for six weeks', 'there was a fire in the section where {who} lives, and they are in a shelter', '{who} has been laid off, and the severance has not come', 'the school where {who} teaches is closing at the end of the term', '{who} left a message that says only "call when you can," and the line does not connect'];
 
 // Letters from home come at most one landing in LETTER_GAP days, so they are an occasional thing and not half of every burn.
-const LETTER_GAP = 10;
+const LETTER_GAP = 18;
 function letters(planet) {
   const st = G.state, notes = [];
   if (st.day - (st.letterAt === undefined ? -99 : st.letterAt) < LETTER_GAP) return notes;
@@ -207,6 +207,7 @@ function letters(planet) {
     p.mood = { kind: good ? 'high' : 'low', until: st.day + (good ? 10 : 25), text };
     p.news = { good, text };
     notes.push(noteFor(`A message for ${p.first} at ${planet.name}: ${text}.`, p.id));
+    break;  // one letter a landing: each one is a scene on the next burn, so three would be three scenes in a row
   }
   if (notes.length) st.letterAt = st.day;
   return notes;
