@@ -1,0 +1,28 @@
+{
+  "credits": 12000,
+  "day": 1,
+  "systemId": "earth",
+  "planet": "Earth",
+  "shipId": "shuttle",
+  "fuel": 300,
+  "armor": 50,
+  "cargo": {},
+  "paid": {},
+  "market": {},
+  "rumors": [],
+  "missions": [],
+  "dest": null,
+  "nextId": 1,
+  "crew": [],
+  "flags": {},
+  "people": {},
+  "nextPid": 1,
+  "rep": {},
+  "outfits": {},
+  "story": {
+    "stage": 0,
+    "next": 10,
+    "log": []
+  },
+  "tutorial": 0
+}

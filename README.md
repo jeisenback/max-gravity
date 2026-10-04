@@ -178,7 +178,7 @@ npx playwright install chromium
 npm test
 ```
 
-`tests/` has one file per area (menus and saves, economy, combat, story, people, frontier, screens) plus `globals.test.js`, which needs no browser and fails if two scripts declare the same top-level name or `index.html` misses a script. Each test gets a fresh page with a seeded `Math.random`, and fails on any page error. Set `CHROMIUM_PATH` to use a browser you already have. GitHub Actions runs the suite on every push and pull request.
+`tests/` has one file per area (menus and saves, economy, combat, story, people, frontier, screens) plus `globals.test.js`, which needs no browser and fails if two scripts declare the same top-level name or `index.html` misses a script. Each test gets a fresh page with a seeded `Math.random`, and fails on any page error. Set `CHROMIUM_PATH` to use a browser you already have. GitHub Actions runs the suite on every push and pull request. Two kinds of check are kept apart: `npm test` holds pins (one rule, deterministic), and `npm run soak` runs the distribution checks in `tests/distribution/` (a spread over many seeds, each stating its sample size and tolerance), which move whenever a new random draw shifts the stream and so are not part of the gate. `tests/fixtures/` holds old saves as plain JSON, which `tests/saves.test.js` loads; add one whenever the save's shape changes.
 
 ## Testing without playing a full game
 
