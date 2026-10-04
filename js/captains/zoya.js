@@ -24,6 +24,9 @@ CAPTAINS.zoya = {
     'Captain Pell is asleep in the pilot\'s chair with her cap over her eyes and a half-finished hand of cards fanned in her fingers.',
   ],
 
+  // How they take a hand's suggestion of a different run (suggest.js): `ok` by their style, and a line for each answer.
+  sway: { ok: (o, cur) => o.days >= cur.days, yes: 'Captain Pell grins and slaps the chart. "A longer burn, a bigger bag. That is the kind of idea I hire for." She changes the course on the spot.', no: 'Captain Pell looks at your lane and winces, kindly. "Shorter? Safer? Love, we are never going to clear anything that way." You go her way.' },
+
   events: {
     'cap-order': {
       text: 'Captain Pell wants the drive run hotter than you would. There is a cargo at the next port that is worth more if it arrives a day early, and she has told three people it will. "We will not have another chance at this one," she says, cheerfully. "We never do."',

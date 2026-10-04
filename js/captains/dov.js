@@ -24,6 +24,9 @@ CAPTAINS.dov = {
     'Captain Adair has forty-one contacts on the board, and knows what each of them had for the last holiday.',
   ],
 
+  // How they take a hand's suggestion of a different run (suggest.js): `ok` by their style, and a line for each answer.
+  sway: { ok: () => true, yes: 'Captain Adair is delighted to be asked. "Now that is a thought," he says, and he means it, and tells three people before the hatch is shut. "Your way. I always say a ship should have opinions."', no: '' },
+
   events: {
     'cap-order': {
       text: 'Captain Adair wants the drive run hotter than you would. He promised a woman at the last port that her crates would be there by the fifth, and did not look at the berth window until this morning. He tells it against himself, and well. "I know," he says. "I know. Do it anyway, and I will make it up to everyone."',

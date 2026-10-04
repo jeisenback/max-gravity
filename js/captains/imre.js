@@ -24,6 +24,9 @@ CAPTAINS.imre = {
     'Captain Sato eats lunch at noon, and not a minute before, with a book that is a manual.',
   ],
 
+  // How they take a hand's suggestion of a different run (suggest.js): `ok` by their style, and a line for each answer.
+  sway: { ok: (o, cur) => danger(o.sid) <= danger(cur.sid), yes: 'Captain Sato reads the lane report twice, and finds nothing wrong with it. "It is as clean as ours," they say. "Log it. We go your way."', no: 'Captain Sato reads the lane report and puts it down. "That lane is worse than ours. We do not go there without a reason, and a better price is not a reason." The log is closed.' },
+
   events: {
     'cap-order': {
       text: 'Captain Sato has the berth window in the log: closing at 0600, with arrival at 0612 on the current burn. The log says to correct. "Standing order eleven," they say. "Burn to the window." They have written the burn figure on a card and set it on your console.',
