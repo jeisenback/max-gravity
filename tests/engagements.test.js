@@ -43,13 +43,14 @@ test('winning the beats makes her break off, and costs nothing but a log line an
   const r = await ev(() => {
     const st = raid('gunner'), cap = person(hired().captain), op = cap.opinion, xp = skillXp('gunner'), armor = st.armor;
     startDuel({ kind: 'pirate' }, false); begin();
-    rolls([0.01, 0.01]);  // the post choice works at the closing and the first pass: +2 each, and she is far enough behind to break off
-    const a = choose('Get a lock'); finishEvent();
-    const mid = /Position: ahead/.test(G.dialog.event.text);
-    const c = choose('Walk a burst');
+    rolls([0.01, 0.01]);  // the screen and the burn both work: +1 each, ahead by two at the close, so she breaks off
+    choose('Hold course'); finishEvent();
+    choose('Fire the point defense'); finishEvent();
+    const mid = /Position: ahead|Position: even/.test(G.dialog.event.text);
+    const c = choose('Burn evasive');
     return { mid, off: /breaks off/.test(c), opinion: cap.opinion - op, xp: skillXp('gunner') - xp, armor: st.armor === armor, next: !!G.nextEvent };
   });
-  assert.ok(r.mid, 'ahead after the first'); assert.ok(r.off); assert.equal(r.opinion, 1); assert.equal(r.xp, 3); assert.ok(r.armor); assert.equal(r.next, false);
+  assert.ok(r.mid); assert.ok(r.off); assert.equal(r.opinion, 1); assert.equal(r.xp, 3); assert.ok(r.armor); assert.equal(r.next, false);
   await done();
 });
 
@@ -115,5 +116,63 @@ test('other contacts for a hired hand are still the card duel', async () => {
   await ev(helpers);
   const r = await ev(() => { raid('gunner'); startDuel({ kind: 'patrol', gov: 'Earth Coalition' }, false); return { duel: !!G.duel, next: G.nextEvent && G.nextEvent.title }; });
   assert.ok(r.duel); assert.match(r.next, /Contact: exchange/);
+  await done();
+});
+
+test('winning every beat cripples her, and boarding her is the lock fight run the other way: a win takes her strongbox', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = raid('gunner'), h = hired(), cap = person(h.captain), op = cap.opinion, xp = skillXp('gunner'), fund = h.fund, out = {};
+    startDuel({ kind: 'pirate' }, false); begin();
+    rolls([0.01, 0.01]);  // the post choice works twice: +2 and +2
+    choose('Get a lock'); finishEvent();
+    const t = choose('Walk a burst');
+    out.crippled = /takes her drive|plume goes out/.test(t); out.title = G.nextEvent.title; out.labels = G.nextEvent.choices.map(c => c.label);
+    begin();  // Dead in Space
+    rolls([0.01, 0.99, 0.01, 0.99]);  // a post win and no one hurt, twice: to the corridor and to her bridge, and the bridge is taken
+    choose('Board her'); finishEvent();
+    out.first = G.dialog.event.title; out.defenders = /Defenders: \d+/.test(G.dialog.event.text);
+    out.mid = choose('Put fire down the corridor'); finishEvent();
+    out.second = G.dialog.event.title;
+    out.end = choose('Put fire down the corridor');
+    out.taken = /strongbox/.test(out.end); out.fund = h.fund - fund; out.opinion = cap.opinion - op; out.xp = skillXp('gunner') - xp; out.next = G.nextEvent;
+    return out;
+  });
+  assert.ok(r.crippled, 'a clear win cripples her'); assert.equal(r.title, 'Dead in Space'); assert.deepEqual(r.labels, ['Board her', 'Let her drift']);
+  assert.equal(r.first, 'Her Corridor'); assert.ok(r.defenders); assert.equal(r.second, 'Her Bridge');
+  assert.ok(r.taken, r.end); assert.ok(r.fund >= 1000 && r.fund <= 3000, `fund ${r.fund}`); assert.equal(r.opinion, 2); assert.equal(r.xp, 5);
+  assert.equal(r.next, null);
+  await done();
+});
+
+test('losing the boarding drives you back to your lock, and she drifts on', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = raid('gunner'), h = hired(), cap = person(h.captain), op = cap.opinion, fund = h.fund, armor = st.armor;
+    startDuel({ kind: 'pirate' }, false); begin();
+    rolls([0.01, 0.01]); choose('Get a lock'); finishEvent(); choose('Walk a burst'); begin();
+    rolls([0.99, 0.99, 0.99, 0.99]);  // every exchange fails
+    choose('Board her'); finishEvent();
+    choose('Put fire down the corridor'); finishEvent();
+    const end = choose('Put fire down the corridor');
+    return { end: /driven back/.test(end), fund: h.fund === fund, opinion: cap.opinion - op, armor: st.armor < armor, next: G.nextEvent };
+  });
+  assert.ok(r.end); assert.ok(r.fund); assert.equal(r.opinion, -1); assert.ok(r.armor); assert.equal(r.next, null);
+  await done();
+});
+
+test('she can be let drift instead: the same as breaking her off', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = raid('gunner'), h = hired(), cap = person(h.captain), op = cap.opinion, xp = skillXp('gunner');
+    startDuel({ kind: 'pirate' }, false); begin();
+    rolls([0.01, 0.01]); choose('Get a lock'); finishEvent(); choose('Walk a burst'); begin();
+    const t = choose('Let her drift');
+    return { t: /experience/.test(t), opinion: cap.opinion - op, xp: skillXp('gunner') - xp, next: G.nextEvent };
+  });
+  assert.ok(r.t); assert.equal(r.opinion, 1); assert.equal(r.xp, 3); assert.equal(r.next, null);
   await done();
 });

@@ -6,7 +6,8 @@
 // place and losing it lets them in a place; out of the lock and they are repelled, onto the bridge and they have the ship.
 // Casualties come with it: someone is hurt (an injured hand's perk stops until treated, and a hurt hand works a level
 // lower), and one who is hurt twice in a fight is dead if generated, or marked if a main character (fate.js). Loaded
-// after duel.js; only called into at runtime.
+// after duel.js; only called into at runtime. The same fight, run the other way, is boarding a ship you have crippled
+// (engagements.js): the choices are the same and a win carries her bridge instead of holding yours (assault, below).
 
 const REPEL_TITLES = ['The Lock', 'The Corridor', 'The Bridge'];
 const REPEL_OPENINGS = [
@@ -35,8 +36,39 @@ const REPEL_POST = {
   pilot: { label: 'Roll the ship', win: 'You roll the ship thirty degrees, hard. The boarders, in their suits, go into the corridor wall. The crew were braced, and go the other way.', lose: 'You roll, and your own people are not braced either. The boarders come up first.' },
   comms: { label: 'Lock the doors from the console', win: 'You lock every door between them and the bridge from the console, then open the one that leads back to the lock. They follow the open door.', lose: 'You lock the wrong door. It is the one behind you.' },
 };
+// Boarding her: the same three places from the other side, so a win here is a place gained. The post lines are the job of your
+// post in the assault.
+const ASSAULT_TITLES = ['Her Bridge', 'Her Corridor', 'Her Lock'];
+const ASSAULT_OPENINGS = [
+  [`The last hatch before her bridge has a wheel on it, and somebody on the other side is holding the wheel. Her pilot is a name on a transponder. Behind you the air handler is running, and the captain's voice on the intercom says to go.`,
+    `There is one door left. It is thin, and the light under it moves. Whatever is on her bridge has heard you coming for some time.`],
+  [`You are in through her lock. It is a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody is behind a crate at the far end, and somebody else is calling to them.`,
+    `Her corridor is dark and the deck is tilted a few degrees, because her gravity plates are out. They are at the galley hatch. You can hear a gun being checked.`],
+  [`The cutter has bitten through her outer lock and the inner door is open a hand's width. It is dark inside. A light comes on, and something small and metal skips across the deck toward you.`,
+    `Her lock is wide open and empty, and nobody has fired. That is the part that bothers you. Beyond the inner door there is a corridor, and in the corridor somebody is waiting.`],
+];
+const ASSAULT_TACTICS = {
+  hold: { label: 'Cover and advance', beats: 'flank',
+    win: 'You go along the wall in pairs, one covering and one moving. They cannot find a gap in it, and you are a section further in.',
+    lose: 'You go along the wall and they have it covered from two sides. You come back to where you started, with fewer than you went with.' },
+  rush: { label: 'Rush them', beats: 'hold',
+    win: 'You go in low and fast, all together. They are not set, and the first of them breaks and the rest follow.',
+    lose: 'You rush and they are set. A gun goes off in the corridor, too close, and you fall back a section.' },
+  flank: { label: 'Go round them', beats: 'rush',
+    win: 'You go through her cargo bay and come out behind them. They turn too late, and you take the section.',
+    lose: 'You go round and find a bulkhead where her plan said there was a door. When you come back they have moved up.' },
+};
+const ASSAULT_POST = {
+  gunner: { label: 'Put fire down the corridor', win: 'You put three rounds down the corridor at the crate, one at a time. The one behind it stops firing and the others pull back.', lose: 'You fire, and the rounds go into the deck. They use the noise to move up.' },
+  engineer: { label: 'Cut her power', win: 'You find her breaker panel by the lock and pull it. Every light in the section goes out, and you have your helmet lamps and they do not.', lose: 'You pull the wrong breaker and her emergency lights come on instead, all of them, in your eyes.' },
+  pilot: { label: 'Bring the ship round to her hatch', win: 'You take the cutter along her side to the hatch by the bridge. The crew go out of the second lock behind them and the corridor is a pincer.', lose: 'You bring her round and misjudge it by a meter. The hull scrapes and the crew in the lock go over like skittles.' },
+  comms: { label: 'Take her intercom', win: 'You find her intercom and put the captain on it, calmly, telling her people the ship is lost and the lock is open. Some of them go.', lose: 'You find her intercom and it is a recording, which says something unrepeatable about your mother.' },
+};
+
 const REPEL_LEAN = { pirate: { rush: 0.5, hold: 0.2, flank: 0.3 }, patrol: { hold: 0.5, rush: 0.2, flank: 0.3 } };
 const REPEL_HURT = { lose: 0.45, win: 0.15 };  // the chance someone is hurt in an exchange, by how it went
+
+const repelSet = s => (s.assault ? { titles: ASSAULT_TITLES, openings: ASSAULT_OPENINGS, tactics: ASSAULT_TACTICS, post: ASSAULT_POST } : { titles: REPEL_TITLES, openings: REPEL_OPENINGS, tactics: REPEL_TACTICS, post: REPEL_POST });
 
 const handHurt = () => !!(hired() && hired().hurtUntil > G.state.day);
 
@@ -49,31 +81,37 @@ const repelStanding = s => Math.max(1, s.base - s.hurt.size - s.dead.length);
 
 function repelEvent(d, outcome) { return repelScene(repelStart(d, outcome)); }
 
+// Boarding a crippled ship: her people hold the middle, and you are a section in.
+function assaultStart(foe) {
+  const crew = FOE_CREW[foe.shipId] || 3, healthy = G.state.crew.filter(id => !(G.state.injured || {})[id]).length;
+  return { d: { foe, foeHp: 0 }, assault: true, pos: 1, boarders: crew + 1, base: Math.min(6, healthy + 1), hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0, lines: [] };
+}
+
 function repelScene(s) {
-  const h = hired(), post = h.post, spec = REPEL_POST[post];
-  const choices = Object.entries(REPEL_TACTICS).map(([k, t]) => ({ label: t.label, run: () => repelStep(s, k) }));
+  const h = hired(), post = h.post, set = repelSet(s), spec = set.post[post];
+  const choices = Object.entries(set.tactics).map(([k, t]) => ({ label: t.label, run: () => repelStep(s, k) }));
   choices.push({ label: `[${POSTS[post].name}] ${spec.label}`, run: () => repelStep(s, 'post') });
   return {
-    title: REPEL_TITLES[s.pos], personal: true, via: 'crew',
-    text: `${REPEL_OPENINGS[s.pos][s.round % 2]}</p><p>Boarders: ${s.boarders}. With you: ${repelStanding(s) - 1}.`,
+    title: set.titles[s.pos], personal: true, via: 'crew',
+    text: `${set.openings[s.pos][s.round % 2]}</p><p>${s.assault ? 'Defenders' : 'Boarders'}: ${s.boarders}. With you: ${repelStanding(s) - 1}.`,
     choices,
   };
 }
 
 // One exchange. Returns what happened; sets the next scene, or settles the fight and goes back to the duel.
 function repelStep(s, kind) {
-  const h = hired(), post = h.post, theirs = kind === 'post' ? null : pickWeighted(REPEL_LEAN[s.d.foe.kind] || { rush: 0.34, hold: 0.33, flank: 0.33 });
+  const h = hired(), post = h.post, set = repelSet(s), theirs = kind === 'post' ? null : pickWeighted(REPEL_LEAN[s.d.foe.kind] || { rush: 0.34, hold: 0.33, flank: 0.33 });
   let result, text;  // 'win', 'lose' or 'tie'
   if (kind === 'post') {
     result = Math.random() < Math.min(0.85, 0.5 + 0.1 * skillLevel(post)) ? 'win' : 'lose';
-    text = REPEL_POST[post][result];
+    text = set.post[post][result];
   } else if (kind === theirs) {
     const mine = repelStanding(s);
     result = mine > s.boarders ? 'win' : mine < s.boarders ? 'lose' : 'tie';
-    text = result === 'tie' ? REPEL_TIE : REPEL_TACTICS[kind][result];
+    text = result === 'tie' ? REPEL_TIE : set.tactics[kind][result];
   } else {
-    result = REPEL_TACTICS[kind].beats === theirs ? 'win' : 'lose';
-    text = REPEL_TACTICS[kind][result];
+    result = set.tactics[kind].beats === theirs ? 'win' : 'lose';
+    text = set.tactics[kind][result];
   }
   if (result === 'win') { s.pos--; if (kind === 'post' && post === 'gunner') s.boarders = Math.max(1, s.boarders - 1); }
   if (result === 'lose') s.pos++;
@@ -127,6 +165,7 @@ function killCrew(c) {
 function repelSettle(s) {
   const st = G.state, h = hired(), cap = person(h.captain), d = s.d, repelled = s.pos < 0;
   const lost = s.dead.length ? ` ${listNames(s.dead.map(c => c.first))} ${s.dead.length > 1 ? 'are' : 'is'} dead.` : '';
+  if (s.assault) return assaultSettle(s, repelled, lost);
   if (repelled) {
     like(cap, 1, 'You held the ship when boarders came.');
     for (const id of st.crew) { const c = person(id); if (c && !s.hurt.has(id) && s.round >= 3) like(c, 1, 'We held the ship together.'); }
@@ -140,6 +179,24 @@ function repelSettle(s) {
   st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.1));
   d.foeHp = -1; G.duel = null; G.nextEvent = null;
   return `They are on the bridge. Captain ${cap.last} gives them the code to the strongbox because there is no choice, and they take ${fmt(taken)} cr of the ship's fund and go. The ship still flies.${lost}`;
+}
+
+// Boarding her ends with her bridge taken (her strongbox goes into the ship's fund) or you driven back to your own lock.
+function assaultSettle(s, won, lost) {
+  const st = G.state, h = hired(), cap = person(h.captain), foe = s.d.foe;
+  if (won) {
+    const take = lootFor(foe).credits || randInt(10, 30) * 100;
+    h.fund += take;
+    like(cap, 2, 'You took a ship for us.');
+    for (const id of st.crew) { const c = person(id); if (c && !s.hurt.has(id)) like(c, 1, 'We took her bridge together.'); }
+    gainSkill(h.post, 5);
+    changeRep('Pirate', -3);
+    foe.dead = true;
+    return `Her captain puts the weapon down. Her strongbox is under the plot table, and ${fmt(take)} cr of it goes into the ship's fund. Captain ${cap.last} has the cutter cast off while her people are still being counted. (+5 experience at the ${POSTS[h.post].name.toLowerCase()} post.)${lost}`;
+  }
+  like(cap, -1, 'You went onto a crippled ship and came back without it.');
+  st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.05));
+  return `You are driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she is still drifting. Armor -${Math.round(ship().armor * 0.05)}.${lost}`;
 }
 
 const listNames = names => (names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0]);
