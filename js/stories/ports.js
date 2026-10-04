@@ -3,7 +3,7 @@
 // Ports with something of their own: scenes that happen at one place and read like it. Each is a storylet at a landing
 // (landings.js has the shape), for a hired hand, with a small chance and a wait before it comes round again, so a hub that is
 // landed at a lot is not the same scene each time. A choice for your own post (`when: { post }`) is shown to that post only.
-// Mars, Ganymede and Hermes Foundry first: the ports the captain's runs go to most, and that had the least.
+// Mars, Ganymede, Hermes Foundry, Earth, Ceres Station and Juno Commons so far.
 
 Mods.register({
   id: 'ports', name: 'Port scenes', builtin: true,
@@ -99,6 +99,66 @@ Mods.register({
         { label: 'Buy one for the ship (20 cr)', when: { credits: 20 }, effects: { credits: -20, like: { crew: 1 } }, result: 'It goes on the sill of the galley hatch, where it catches the light on every burn. By the end of the month everyone has named it.' },
         { label: 'Ask the kid how it is made', effects: { learn: 1 }, result: 'He tells you, at length, with gestures: the pour, the cooling, the way the color is the metal that was in the slag. He knows more about a foundry than anyone you have met this month.' },
         { label: 'Give him a coin and take nothing (5 cr)', when: { credits: 5 }, effects: { credits: -5}, result: 'He looks at the coin, and at you, and puts a piece of glass in your pocket when you turn away. You find it later, and smile.' },
+      ],
+    }, 0.1);
+
+    // ---------- Earth: the busiest sky there is ----------
+    scene({
+      id: 'port-earth-queue', when: { planet: 'Earth' }, title: 'The Departure Queue',
+      text: 'Earth Control has you forty-third in the departure queue, and the board says two hours. Around you the pads are full of ships older than you are, all idling, and on the common channel a freighter captain has started telling the tower what he thinks of its sequencing. The tower is answering in a flat polite voice that is worse than shouting.',
+      choices: [
+        { label: '[Pilot] Study the queue, and offer the tower a swap', when: { post: 'pilot' }, effects: { learn: 4, rep: { 'Earth Coalition': 1 }, like: { captain: 1 } }, result: 'You work out that two ships ahead of you are bound for the same lane and could go as one pair. The tower takes the suggestion without a word, and you are off the pad in forty minutes. Captain says nothing, and then asks how you saw it.' },
+        { label: 'Wait it out, and read the board', effects: { learn: 1 }, result: 'You wait the two hours, and by the end you know every call sign on the pads and which captains are going to be trouble. The freighter captain is still on the channel when you lift.' },
+        { label: 'Go and find a meal', effects: { like: { crew: 1 } }, result: 'The noodle counters by the pads are never short of a queue of their own. You eat in the open air, under a sky that is mostly engine glow, and come back to find you have moved up eleven places.' },
+      ],
+    });
+    scene({
+      id: 'port-earth-yard', when: { planet: 'Earth' }, title: 'The Shipyard Row',
+      text: 'The shipyard row runs for a kilometer along the edge of the port, hulls on stocks in every stage from ribs to paint, and between them the welders and fitters on their breaks, eating on upturned crates. A young apprentice is explaining a hull to a visiting relative, with great confidence and a few mistakes.',
+      choices: [
+        { label: '[Engineer] Put in a word where he has it wrong', when: { post: 'engineer' }, effects: { learn: 4, like: { crew: 1 } }, result: 'You correct him on the frame spacing, kindly, and he writes it on his wrist. His relative looks at you as if you were an expert, and for the length of one conversation, you are.' },
+        { label: 'Walk the row', effects: { learn: 1 }, result: 'You walk the whole row, and you look at everything: the keels, the plating, a drive being lowered into a hull by a crane with a man on top shouting at it. It is the nearest this port has to a church.' },
+        { label: 'Go back to the ship', result: 'There is a ship to see to, and you see to it. Behind you the row goes on building the ships of other people.' },
+      ],
+    }, 0.1);
+
+    // ---------- Ceres Station: ice, rock and a very long dock ----------
+    scene({
+      id: 'port-ceres-dock', when: { planet: 'Ceres Station' }, title: 'The Long Dock',
+      text: 'The dock at Ceres runs the whole length of the station, ice haulers on one side and ore tugs on the other, and down the middle a lane of loaders that never seems to stop. A hauler has come in with a cracked coupling, and its crew is standing around it, looking at the ground, with a cargo of water that will not wait.',
+      choices: [
+        { label: '[Engineer] Fit a field splice to the coupling', when: { post: 'engineer' }, effects: { learn: 4, rep: { 'Belt Collective': 2 }, like: { captain: 1 } }, result: 'It is not pretty, and it holds. The hauler crew shake your hand until it hurts, and the dock boss writes a line in the log that you are not to be charged for the berth.' },
+        { label: 'Help them move the cargo by hand', effects: { rep: { 'Belt Collective': 1 }, like: { crew: 1 } }, result: 'It takes three hours and a long chain of people passing sealed drums down the dock. You are sore for a day, and on the next landing someone you do not know raises a hand to you across the pad.' },
+        { label: 'Keep out of it', result: 'It is not your cargo and not your coupling. The dock is long, and by the time you reach the far end you have mostly stopped thinking about it.' },
+      ],
+    });
+    scene({
+      id: 'port-ceres-gym', when: { planet: 'Ceres Station' }, title: 'The Spin Ring',
+      text: 'The Ceres spin ring is the only place on the station with something close to a full gravity, and the whole belt seems to queue for it. A woman on the next treadmill is on her first trip back after two years on a long run, and she is crying a little and trying to hide it.',
+      choices: [
+        { label: 'Talk to her', effects: { like: { crew: 1 }, learn: 1 }, result: 'You talk about nothing in particular: the food, the runs, the way a floor feels. She says it is the floor. After a while she laughs, and the crying stops, and you both finish your laps.' },
+        { label: 'Give her the space', result: 'You finish your laps without a word, and so does she. When you leave, she lifts a hand, which is enough.' },
+      ],
+    }, 0.1);
+
+    // ---------- Juno Commons: small, quiet, and everyone knows everyone ----------
+    scene({
+      id: 'port-juno-commons', when: { planet: 'Juno Commons' }, title: 'The Commons Table',
+      text: 'Juno Commons has one long table in its middle, and anyone who lands is expected to sit at it at the evening meal. Nobody explains the rule. A plate is simply put in front of you, and an old man on your left says, without looking up, that the bread is better than it looks.',
+      choices: [
+        { label: 'Sit and eat', effects: { like: { crew: 1 }, rep: { 'Belt Collective': 1 } }, result: 'The bread is better than it looks. You sit for two hours, and by the end of it you have been told the names of every child at the table and the history of each of their quarrels.' },
+        { label: '[Engineer] Offer to look at their air plant', when: { post: 'engineer' }, effects: { learn: 3, rep: { 'Belt Collective': 2 }, like: { captain: 1 } }, result: 'They have been putting off a scrubber that rattles. You find a loose mount and a worn bearing, and by the dessert it is quiet. The old man says it was the first time the table had been that quiet in a year.' },
+        { label: 'Take your plate back to the ship', result: 'You carry the plate aboard, and nobody at the table seems to take it badly. In the morning it is gone from the galley, and a loaf is in its place.' },
+      ],
+    });
+    scene({
+      id: 'port-juno-trade', when: { planet: 'Juno Commons' }, title: 'A Trader With Too Much',
+      personal: true,
+      text: 'A small trader by the pad has a hold of dried fruit that has to be gone before the next run, and a price that gets lower every time someone walks past. He is not a good liar about it. He says it is very good fruit, very good, and that he would not sell it if he did not need to.',
+      choices: [
+        { label: 'Buy a sack for the galley (40 cr)', when: { credits: 40 }, effects: { credits: -40, like: { crew: 1 } }, result: 'The fruit is good. It goes in the galley locker, and for a month somebody is always eating it, and nobody can say who bought it.' },
+        { label: 'Haggle him down', effects: { learn: 1 }, result: 'You haggle, and he gives way faster than a man with that much on his hands should. You come away with a sack for almost nothing, and a feeling you were allowed to win.' },
+        { label: 'Walk on', result: 'The price is still falling when you reach the gate, and you hear it fall again behind you.' },
       ],
     }, 0.1);
   },
