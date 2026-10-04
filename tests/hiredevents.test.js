@@ -357,3 +357,19 @@ test('each post gets its own choice in the lane scene, and the praise scene has 
   assert.deepEqual(r.praise, { at2: [false], at3: [true] }, 'the bonus with the figures is shut at level 2 and open at 3');
   await done();
 });
+
+test('a post\'s work problems are each shown once before any is shown twice', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    startHired('gunner'); const st = G.state, c = handContext();
+    const pool = HAND_EVENTS.filter(d => d.group === 'work' && d.post === 'gunner' && (!d.when || d.when(c))).length;
+    const seq = [];
+    for (let i = 0; i < pool * 2; i++) { st.day += 40; const e = hiredEvent('work'); seq.push(e ? e.title : null); }
+    const first = seq.slice(0, pool), second = seq.slice(pool);
+    return { pool, first: new Set(first).size, nulls: seq.filter(x => !x).length, secondDistinct: new Set(second).size, second: second.length };
+  });
+  assert.ok(r.pool >= 3, `a pool of ${r.pool}`); assert.equal(r.nulls, 0);
+  assert.equal(r.first, r.pool, 'all of them once before any twice'); assert.equal(r.secondDistinct, r.second, 'and then all of them again');
+  await done();
+});

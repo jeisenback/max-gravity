@@ -308,8 +308,12 @@ function hiredEvent(group) {
   const fresh = HAND_EVENTS.filter(d => d.group === group && (!d.post || d.post === h.post) && !(seen[d.id] > st.day - WORK_SEEN_DAYS)
     && (!d.when || d.when(c)) && (!d.mate || c.mate));
   if (!fresh.length) return null;
-  const d = pick(fresh);
+  // Everything fresh is shown once before anything is shown twice: a post has a handful of problems, and a game of a hundred
+  // days would otherwise come round to the same one after the thirty-day gap while others had not come up at all.
+  const shown = st.handShown = st.handShown || {}, least = Math.min(...fresh.map(d => shown[d.id] || 0));
+  const d = pick(fresh.filter(x => (shown[x.id] || 0) === least));
   seen[d.id] = st.day;
+  shown[d.id] = (shown[d.id] || 0) + 1;
   return d.make(c);
 }
 
