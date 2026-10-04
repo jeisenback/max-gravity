@@ -96,6 +96,8 @@ function startRaid(spec, flee, o = {}) {
     s.edge = -1;
     text = `${helmName()} runs, but ${theShip(foe).replace(/^The/, 'the')} gets a burst in first. Battle stations.`;
   }
+  rateFoe(s);
+  const flavor = foeFlavor(s); if (flavor) text += ` ${flavor}`;
   G.nextEvent = raidScene(s);
   return text;
 }
@@ -109,14 +111,14 @@ function raidScene(s) {
   choices.push({ label: `[${POSTS[post].name}] ${spec.label}`, run: () => raidStep(s, { id: 'post', odds: () => Math.min(0.85, 0.5 + 0.1 * level), win: spec.win, lose: spec.lose }, post) });
   return {
     title: closing ? 'The Closing' : s.beat === 1 ? 'First Pass' : 'Second Pass', personal: true, via: 'crew', owner: 'you',  // yours to decide, not the captain's (hired.js hiredCall)
-    text: `${text}</p><p>Position: ${raidPosition(s)}. Armor ${st.armor}/${ship().armor}.`,
+    text: `${text}</p><p>${raidRead(s)} Position: ${raidPosition(s)}. Armor ${st.armor}/${ship().armor}.`,
     choices,
   };
 }
 
 // One choice. Rolls it, applies the position and the hull, may hurt someone, and queues the next beat or the close.
 function raidStep(s, c, post) {
-  const st = G.state, odds = c.odds(s.style), won = odds >= 1 || Math.random() < odds;
+  const st = G.state, odds = shipOdds(s, c.id, post, c.odds(s.style)), won = odds >= 1 || Math.random() < odds;
   const line = won ? c.win : (c.lose || c.win);
   const [edge, hull, text] = Array.isArray(line) ? line : (line[s.style] || line.grapple);
   s.edge += edge;
@@ -127,7 +129,7 @@ function raidStep(s, c, post) {
     if (!won) like(cap, -1, 'You made a call in a raid and it went wrong.');
     else if (edge >= 2) like(cap, 1, 'You made the call that turned a raid.');
   }
-  if (hull) { const pts = Math.round(ship().armor * hull); st.armor = Math.max(1, st.armor - pts); out += ` Armor -${pts}.`; if (!won && Math.random() < CASUALTY_ODDS) out += ` ${repelCasualty(s)}`; }
+  if (hull) { const pts = Math.round(ship().armor * hull * foePunch(s)); st.armor = Math.max(1, st.armor - pts); out += ` Armor -${pts}.`; if (!won && Math.random() < CASUALTY_ODDS * (1 + 0.15 * s.grade + (s.pack ? 0.25 : 0))) out += ` ${repelCasualty(s)}`; }
   s.beat++;
   if (s.beat >= 3 || s.edge >= 3 || s.edge <= -3) return `${out} ${raidClose(s)}`;
   G.nextEvent = raidScene(s);
