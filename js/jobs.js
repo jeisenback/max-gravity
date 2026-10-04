@@ -102,15 +102,15 @@ function applyJob(o) {
   const hurt = o.hurt ? hurtHand({}) : '';
   return `${o.text}${bits.length ? ` (${bits.join(', ')})` : ''}${hurt ? ` ${hurt}` : ''}`;
 }
-function jobStage(job, i) {
-  const h = hired(), stage = job.stages[i];
-  return { title: job.title, text: stage.text, personal: true, via: 'station', owner: 'you',
+function jobStage(job, i, ctx = {}) {
+  const h = hired(), stage = job.stages[i], fill = t => t.replace(/\{(\w+)\}/g, (m, k) => (ctx[k] !== undefined ? ctx[k] : m));
+  return { title: fill(job.title), text: fill(stage.text), personal: true, via: 'station', owner: 'you',
     choices: stage.choices.filter(c => !c.when || h.post === c.when.post).map(c => {
       const odds = c.check ? jobOdds(c.check) : 1, tag = c.check ? ` [${POSTS[c.check.post].name}, ${jobOddsWord(odds)}]` : '';
-      return { label: `${c.label}${tag}`, run() {
+      return { label: fill(`${c.label}${tag}`), run() {
         const won = !c.check || Math.random() < odds, o = won ? c.win : (c.lose || c.win);
-        const text = applyJob(o);
-        if (won && o.next !== undefined && job.stages[o.next]) G.nextEvent = jobStage(job, o.next);
+        const text = fill(applyJob(o));
+        if (won && o.next !== undefined && job.stages[o.next]) G.nextEvent = jobStage(job, o.next, ctx);
         else { repairDays(JOB_DAYS); }
         return text;
       } };
