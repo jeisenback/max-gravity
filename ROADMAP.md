@@ -6,7 +6,7 @@ Long-term milestones, in order. Each builds on the ones before it.
 
 Before the milestones below, the build gets narrower and is tuned until it is good: a gunner, an Earth start, the two fixed main characters, and one captain with their first officer (#289, using the scope flags in `js/build.js`). The other posts, captains and starts stay in the code and in the full build (`?scope=full`). In order:
 
-1. **The narrowing itself** (#289), and the save shape written once (#252), since later work adds save fields.
+1. **The narrowing itself** (#289), and the save shape written once (#252), since later work adds save fields. Settled for #289: the build keeps two fixed main characters, the one post is the gunner, and the gunner's pay is meant to reach the used Ore Runner's price (about 19,000 cr), which the soak should confirm once it runs against the one captain.
 2. **Beat pacing** (#256, done in #284; re-run its soak against the one pair after #289), then #278.
 3. **The new-player path**: the opening said once (#277 done in #284; the opening's wording is #257), the first run (#260), the first arrival (#279), a guided first task for the gunner (#270), and tips kept per save (#273).
 4. **Then the narrative layer**: opinion notes and gated choices (#281, #282, #283), recorded facts (#275), the hiring-hall debt (#280, re-run the soak when it lands), risk and reward (#274, then the cost of each choice shown before it is picked, #293), and the prose passes (#255, #136).
