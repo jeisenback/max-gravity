@@ -329,7 +329,7 @@ const stamped = (a, b, what) => {
 };
 
 // The scenes that came up most often: each kind waits this many days crew-wide, however many pairs could have one.
-const REL_GAP = { feud: 20, match: 20, roots: 25, cover: 25 };
+const REL_GAP = { feud: 20, match: 20, roots: 25, cover: 30, word: 30 };
 const relReady = kind => { const at = (G.state.relAt || {})[kind]; return at === undefined || G.state.day - at >= REL_GAP[kind]; };
 const relMark = kind => { (G.state.relAt = G.state.relAt || {})[kind] = G.state.day; };
 
@@ -474,7 +474,7 @@ function relationshipScene() {
   const crew = list.filter(f => f.crew);
   if (crew.length >= 2) {
     const [a, b] = pick(pairs(crew)), n = bond(a, b);
-    if (Math.abs(n) >= 1 && !isCooled(a, b, 'word', 30)) scenes.push(() => cool(a, b, 'word') || ({
+    if (Math.abs(n) >= 1 && !isCooled(a, b, 'word', 30) && relReady('word')) scenes.push(() => (cool(a, b, 'word'), relMark('word'), {
       title: hired() ? 'A Word' : 'A Word, Captain', text: `${a.p.first} catches you alone, ${hired() ? 'by the lockers while you are stowing your kit, one shoulder against the bulkhead. "Hey. Can I ask you something about' : 'in the corridor outside the cockpit, one shoulder against the bulkhead. "Captain. Can I ask you something about'} ${b.p.first}?" ${n > 0 ? 'Their voice is casual, and their ears have gone pink.' : 'Their voice is level, and tight at the edges.'} They wait, and watch your face, and their hands, at their sides, are very still.`,
       choices: [
         { label: `"Talk to ${b.p.first}, not me."`, run() { addBond(a, b, n > 0 ? 2 : 1.5); return n > 0 ? `${a.p.first} takes a deep breath, and nods, and goes, and, later, you see the two of them in the galley, heads close together, talking quietly, over two untouched cups of tea. Good. When they notice you, they both look up, and neither looks away.` : `${a.p.first} takes a deep breath, and nods, and goes. They do. It is loud for a while, behind a closed door, and then it is quieter. When they come out, both are red-eyed, and neither is leaving.`; } },

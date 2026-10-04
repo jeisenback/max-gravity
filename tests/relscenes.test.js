@@ -98,7 +98,7 @@ test('a friend asks you to cover their watch: you learn their post for a night, 
     const op = p.opinion, xp = skillXp(out.post);
     const t = take(e, /Take /);
     out.liked = p.opinion - op; out.xp = skillXp(out.post) - xp; out.owes = p.owes === st.day; out.text = /learn more about the engineer post/.test(t);
-    out.again = (() => { for (let i = 0; i < 200; i++) { st.qualities = {}; const x = relationshipScene(); if (x && x.title === 'Cover My Watch') return true; } return false; })();  // not for twenty-five days
+    out.again = (() => { for (let i = 0; i < 200; i++) { st.qualities = {}; const x = relationshipScene(); if (x && x.title === 'Cover My Watch') return true; } return false; })();  // not again for thirty days
     // and they pay it: a hit meant for you is theirs, though they are not a friend
     p.opinion = 0; const d = { foe: makeEnemy({ kind: 'hunter', person: { first: 'Ana', last: 'Voss' } }), foeHp: 4, init: 'foe' }, s = repelStart(d, 'full'), real = Math.random;
     Math.random = () => 0.999;
