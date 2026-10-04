@@ -1,6 +1,6 @@
 'use strict';
 
-// The main characters: authored people who come with you. Each start background has a pair.
+// The main characters: authored people who come with you, a pool the way the captains are: each game draws two.
 // A hired hand finds them already aboard the captain's ship; an owner meets them at a port over the first
 // weeks and offers them a berth. They are ordinary people in the registry (st.people) with more on them:
 // a skill at each of the four posts, captain stats (trade, nerve, thrift, used when they command a ship),
@@ -356,8 +356,20 @@ const CAST = {
   },
 };
 
-// Who you meet, by start background.
+// Who you meet. Each game draws two from the pool (drawCastPair), of different posts where it can, and keeps them in st.castPair. CAST_PAIRS
+// is how the pairs used to be given, by start background: a game saved before the draw keeps the pair it had, and the tests use it
+// to start from a pair they know (tests/helpers.js).
 const CAST_PAIRS = { earth: ['ines', 'tomas'], mars: ['yelena', 'ruben'], belt: ['bexa', 'pax'] };
+const castPool = () => Object.keys(CAST).filter(k => !CAST[k].xo);
+function drawCastPair() {
+  const pool = castPool().sort(() => Math.random() - 0.5), first = pool[0], second = pool.slice(1).find(k => CAST[k].role !== CAST[first].role) || pool[1];
+  return [first, second].filter(Boolean);
+}
+function castPair() {
+  const st = G.state;
+  if (!st.castPair) st.castPair = Object.keys(st.cast || {}).some(k => CAST[k] && !CAST[k].xo) ? [...(CAST_PAIRS[st.background] || [])] : drawCastPair(st.background);
+  return st.castPair;
+}
 const POST_ROLES = ['pilot', 'gunner', 'engineer', 'slicer'];
 
 // ---------- people ----------
@@ -390,7 +402,7 @@ function castPost(key, role) {
 // A hired hand's crew: the pair come aboard first, on their own posts if you are not on them, and the roles they
 // do not fill are left to the generated crew. Returns the roles they took.
 function castCrew(background, free) {
-  const st = G.state, keys = CAST_PAIRS[background] || [], left = [...free], took = [];
+  const st = G.state, keys = (st.castPair = st.castPair || drawCastPair(background)), left = [...free], took = [];
   for (const key of keys) {
     const d = CAST[key], role = left.includes(d.role) ? d.role : [...left].sort((a, b) => (d.skills[b] || 0) - (d.skills[a] || 0))[0];
     if (!role) continue;
@@ -450,8 +462,10 @@ function castLater(key, text) {
 // The owner's meetings: the first after the tutorial and a few days out, the second a while after the first is
 // settled (joined, or put off once). A put-off meeting comes round again after a week.
 function castDue() {
-  const st = G.state, keys = CAST_PAIRS[st.background] || [];
-  if (hired() || st.tutorial != null || !keys.length) return null;
+  const st = G.state;
+  if (hired() || st.tutorial != null) return null;
+  const keys = castPair();
+  if (!keys.length) return null;
   for (const [i, key] of keys.entries()) {
     if (castDead(key)) continue;
     const rec = castRec(key);
