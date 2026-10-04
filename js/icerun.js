@@ -2,17 +2,18 @@
 
 // Ice runs: the long ones. When water is dear at a port in reach and the hold is empty, the captain takes the ship out past the
 // Belt to a rock of ice, cuts a hold of it, and brings it home to sell. It is a run like any other (a planned run, a wage, a share,
-// settled where she docks), but it takes a long time, pays the wage and a half for the hazard, and has three scenes on the way
+// settled where she docks), but it takes a long time, pays double the wage for the hazard and the water at a contract price, and has three scenes on the way
 // that are the hand's to play: the approach, the cutting, the haul home. Each is a choice of how to meet it, or the job of your
 // own post, and each is a chance of going your way (+1 or +2 on a running count) or not (-1 or -2). The count decides how much ice
 // comes aboard, and a bad one can cost hull or hurt someone. The scenes are occasions of the burn (family.js), so a hand's burn and
 // the sims play them like the birthdays. Loaded after engagements.js; only called into at runtime.
 
-const ICE_GAP = 30;          // days between ice runs
+const ICE_GAP = 60;          // days between ice runs
 const ICE_WATER_PRICE = 96;  // water at a port this dear makes an ice run worth the trip (80 is the base price)
-const ICE_HAZARD = 1.5;      // the wage, for the days it takes
+const ICE_HAZARD = 2;        // the wage, for the days it takes
+const ICE_PREMIUM = 2.5;     // what the domes pay for water on a contract, against the board price
 const ICE_AT = [0.3, 0.5, 0.78];  // how far into the burn each scene falls
-const iceDays = days => Math.max(10, 2 * days + 4);
+const iceDays = days => Math.max(8, Math.ceil(1.5 * days) + 3);
 
 // The run the planner takes when it is due: the port that pays most for water, the whole hold, no cost.
 function iceOption(here, from, reach, free) {
@@ -26,7 +27,7 @@ function iceOption(here, from, reach, free) {
     }
   }
   if (!best) return null;
-  return { sid: best.sid, planet: best.planet, yard: best.yard, good: 'water', tons: free, cost: 0, profit: Math.round(best.sell * free), days: best.days, ice: true, ballast: false };
+  return { sid: best.sid, planet: best.planet, yard: best.yard, good: 'water', tons: free, cost: 0, profit: Math.round(best.sell * free * ICE_PREMIUM), days: best.days, ice: true, ballast: false };
 }
 
 // ---------- the three scenes ----------

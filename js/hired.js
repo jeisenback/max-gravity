@@ -226,17 +226,17 @@ function settleRun(planet) {
   let revenue = 0, sold = 0;
   if (run.good && st.cargo[run.good] && price(planet, run.good) !== null) {
     sold = st.cargo[run.good];
-    revenue = Math.round(tradeTotal(planet, run.good, sold, -1));
+    revenue = Math.round(tradeTotal(planet, run.good, sold, -1) * (run.ice ? ICE_PREMIUM : 1));  // an ice run is sold on a contract (icerun.js)
     recordTrade(planet, run.good, sold, -1);
     delete st.cargo[run.good]; delete st.paid[run.good];
     h.fund += revenue;
   }
   const profit = revenue - run.cost, days = Math.max(1, st.day - run.day);
-  const wage = Math.round(h.wage * days * (run.ice ? ICE_HAZARD : 1)), share = profit > 0 ? Math.round(profit * h.share) : 0;  // the long run pays the wage and a half
+  const wage = Math.round(h.wage * days * (run.ice ? ICE_HAZARD : 1)), share = profit > 0 ? Math.round(profit * h.share) : 0;  // the long run pays double the wage
   st.credits += wage + share;
   const total = runTotals(h);
   h.runsDone = total.runs + 1; h.earnedTotal = total.earned + wage + share;  // the ledger keeps the last 20; these keep the whole chapter
-  h.ledger.unshift({ day: st.day, from: run.from, to: planet.name, good: run.good, tons: sold, cost: run.cost, revenue, profit, wage, share });
+  h.ledger.unshift({ day: st.day, from: run.from, to: planet.name, good: run.good, tons: sold, cost: run.cost, revenue, profit, wage, share, days, ice: !!run.ice });
   h.ledger.length = Math.min(h.ledger.length, 20);
   h.run = null;
   h.plan = null;

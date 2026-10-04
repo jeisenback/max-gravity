@@ -24,7 +24,7 @@ test('the planner takes an ice run when water is dear, the hold is free, and one
   const r = await ev(() => {
     const st = setup(), h = hired(), here = currentPlanet(), reach = [['mars', SYSTEMS.mars]], real = window.price, out = {};
     window.price = () => 120;
-    const o = iceOption(here, st.systemId, reach, 40); out.opt = o && { ice: o.ice, good: o.good, cost: o.cost, tons: o.tons, longRun: o.days >= 10, sid: o.sid };
+    const o = iceOption(here, st.systemId, reach, 40); out.opt = o && { ice: o.ice, good: o.good, cost: o.cost, tons: o.tons, longRun: o.days >= 8, sid: o.sid };
     window.price = () => 50; out.cheap = iceOption(here, st.systemId, reach, 40);
     window.price = () => 120; out.full = iceOption(here, st.systemId, reach, 5);
     h.iceAt = st.day - 10; out.soon = iceOption(here, st.systemId, reach, 40);
@@ -52,11 +52,11 @@ test('the burn is long, and the three scenes fall on it in order', async () => {
     out.title = occasionEvent(G.transit.occasions.find(o => o.kind === 'ice')).title;
     return out;
   });
-  assert.equal(r.days, Math.max(10, 2 * r.plain + 4)); assert.ok(r.happenings >= 5); assert.deepEqual(r.ice, [[0, 0.3], [1, 0.5], [2, 0.78]]); assert.equal(r.title, 'The Rock');
+  assert.equal(r.days, Math.max(8, Math.ceil(1.5 * r.plain) + 3)); assert.ok(r.happenings >= 5); assert.deepEqual(r.ice, [[0, 0.3], [1, 0.5], [2, 0.78]]); assert.equal(r.title, 'The Rock');
   await done();
 });
 
-test('each scene offers three ways and your post\'s own, a good run fills the hold and a bad one does not, and the wage is a half more', async () => {
+test('each scene offers three ways and your post\'s own, a good run fills the hold and a bad one does not, and the wage is doubled', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
@@ -80,7 +80,7 @@ test('each scene offers three ways and your post\'s own, a good run fills the ho
   });
   assert.equal(r.good.labels.length, 4); assert.ok(/^\[Engineer\]/.test(r.good.labels[3])); assert.deepEqual(r.good.titles, ['The Rock', 'Cutting Ice', 'Home With the Ice']);
   assert.ok(r.good.hold && r.bad.hold); assert.ok(r.good.tons > r.bad.tons, `a good run brings more ice (${r.good.tons} against ${r.bad.tons})`); assert.ok(r.good.tons <= 40 && r.bad.tons >= 8);
-  assert.ok(r.good.wage >= r.good.perDay * 12 * 1.5 - 1, `the long run pays the wage and a half (${r.good.wage})`);
+  assert.ok(r.good.wage >= r.good.perDay * 12 * 2 - 1, `the long run pays double the wage (${r.good.wage})`);
   await done();
 });
 
