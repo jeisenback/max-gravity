@@ -48,6 +48,8 @@ async function open({ title = false, viewport = { width: 1280, height: 800 }, mo
   watch(page, errors);
   await page.goto(URL + (scope === 'full' ? '?scope=full' : '') + hash);  // the build's scope (js/build.js): tests run everything unless they ask for the narrow one
   await page.waitForFunction(() => typeof G !== 'undefined' && (G.state || G.mode === 'title'));
+  // The main characters are drawn from a pool (js/cast.js). A test starts from the pair it knew (by background) unless it asks for the draw: realDrawCastPair.
+  await page.evaluate(() => { window.realDrawCastPair = drawCastPair; window.drawCastPair = bg => (CAST_PAIRS[bg] ? [...CAST_PAIRS[bg]] : []); });
   // Runs a function in the page with the random seed reset first, so a block of
   // game logic plays out the same way whatever the frame loop did before it.
   const ev = (fn, arg) => page.evaluate(([src, a, s]) => { __seed(s); return (0, eval)(`(${src})`)(a); }, [fn.toString(), arg, seed]);

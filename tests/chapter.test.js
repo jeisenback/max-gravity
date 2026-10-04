@@ -146,7 +146,8 @@ test('about twenty runs reach the target with every captain, and the planner is 
     const med = a => [...a].sort((x, y) => x - y)[Math.floor(a.length / 2)], mr = med(rs.map(r => r.reached.runs)), md = med(rs.map(r => r.reached.day));
     assert.ok(mr >= 10 && mr <= 30 && md >= 60 && md <= 190, `${captainKey}: median ${mr} runs, day ${md}`);  // about twenty runs, with a little room: any one seed moves when the random numbers shift
     const pay = rs.reduce((t, r) => t + r.avgPayPerRun, 0) / rs.length, days = rs.reduce((t, r) => t + r.avgDaysPerRun, 0) / rs.length;
-    assert.ok(pay >= 800 && pay <= 1500, `${captainKey}: mean pay per run ${Math.round(pay)}`);
+    // (an ice run, js/icerun.js, is long and pays about 2,800, so the mean a run is up; what the economy keeps is the pay a day)
+    assert.ok(pay >= 800 && pay <= 2000, `${captainKey}: mean pay per run ${Math.round(pay)}`);
     perDay[captainKey] = pay / days;
   }
   const rates = Object.values(perDay), spread = Math.max(...rates) / Math.min(...rates);
