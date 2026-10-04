@@ -329,7 +329,7 @@ const stamped = (a, b, what) => {
 };
 
 // The scenes that came up most often: each kind waits this many days crew-wide, however many pairs could have one.
-const REL_GAP = { feud: 20, match: 20, roots: 25 };
+const REL_GAP = { feud: 20, match: 20, roots: 25, cover: 25 };
 const relReady = kind => { const at = (G.state.relAt || {})[kind]; return at === undefined || G.state.day - at >= REL_GAP[kind]; };
 const relMark = kind => { (G.state.relAt = G.state.relAt || {})[kind] = G.state.day; };
 
@@ -386,6 +386,18 @@ function rootsRecipe(a, b, A, B) {
     choices: [
       { label: 'Pay for the missing ingredients (150 cr)', can: () => G.state.credits >= 150, run() { G.state.credits -= 150; addBond(a, b, 3); like(a.p, 1, null); like(b.p, 1, null); return `You find them at the next port stall for 150 cr. The dish takes two hours and the whole ship smells of it. ${A} and ${B} eat theirs standing up, without talking, and then wash up together.`; } },
       { label: 'Let them make do', run() { addBond(a, b, 1.5); return `They make do. It is not the dish. They eat it and say so, and then say what the real one tastes like, for the rest of the watch.`; } },
+    ],
+  };
+}
+
+function coverWatchScene(p) {
+  const post = postOfRole(p.role), n = p.first;
+  relMark('cover');
+  return {
+    title: 'Cover My Watch', text: `${n} catches you at the end of your shift, a little too casually. "I have got the ${POSTS[post].name.toLowerCase()} watch tonight," ${n} says, "and there is somebody I would like to talk to on the long link while it is still early where they are. Could you take it? I will show you what to do. It is not hard. I would owe you one."`,
+    choices: [
+      { label: `Take ${n}'s watch`, run() { like(p, 2, `You covered my watch so I could make a call.`); p.owes = G.state.day; return `${n} walks you through the board in ten minutes and goes off with a face you have not seen on them before. The watch is long, and quiet, and you learn more about the ${POSTS[post].name.toLowerCase()} post than you expected.${learnAt(post, 3)}`; } },
+      { label: 'Say you have your own watch to keep', run() { return `${n} nods and says it is no trouble. They find somebody else, and you can hear, from the corridor, the second person saying yes.`; } },
     ],
   };
 }
@@ -462,14 +474,17 @@ function relationshipScene() {
   const crew = list.filter(f => f.crew);
   if (crew.length >= 2) {
     const [a, b] = pick(pairs(crew)), n = bond(a, b);
-    if (!hired() && Math.abs(n) >= 1 && !isCooled(a, b, 'word', 30)) scenes.push(() => cool(a, b, 'word') || ({
-      title: 'A Word, Captain', text: `${a.p.first} catches you alone, in the corridor outside the cockpit, one shoulder against the bulkhead. "Captain. Can I ask you something about ${b.p.first}?" ${n > 0 ? 'Their voice is casual, and their ears have gone pink.' : 'Their voice is level, and tight at the edges.'} They wait, and watch your face, and their hands, at their sides, are very still.`,
+    if (Math.abs(n) >= 1 && !isCooled(a, b, 'word', 30)) scenes.push(() => cool(a, b, 'word') || ({
+      title: hired() ? 'A Word' : 'A Word, Captain', text: `${a.p.first} catches you alone, ${hired() ? 'by the lockers while you are stowing your kit, one shoulder against the bulkhead. "Hey. Can I ask you something about' : 'in the corridor outside the cockpit, one shoulder against the bulkhead. "Captain. Can I ask you something about'} ${b.p.first}?" ${n > 0 ? 'Their voice is casual, and their ears have gone pink.' : 'Their voice is level, and tight at the edges.'} They wait, and watch your face, and their hands, at their sides, are very still.`,
       choices: [
         { label: `"Talk to ${b.p.first}, not me."`, run() { addBond(a, b, n > 0 ? 2 : 1.5); return n > 0 ? `${a.p.first} takes a deep breath, and nods, and goes, and, later, you see the two of them in the galley, heads close together, talking quietly, over two untouched cups of tea. Good. When they notice you, they both look up, and neither looks away.` : `${a.p.first} takes a deep breath, and nods, and goes. They do. It is loud for a while, behind a closed door, and then it is quieter. When they come out, both are red-eyed, and neither is leaving.`; } },
-        { label: '"Keep your head down and do your job."', run() { like(a.p, -1, null); return `${a.p.first} nods, and says, "Aye, captain," and goes. For a while, ${a.p.first} is brisk and correct, and answers in single words.`; } },
+        hired() ? { label: '"That is between the two of you."', run() { like(a.p, -1, null); return `${a.p.first} nods, and says, "Right. Sorry," and goes. An hour later you hear them ask the cook the same question, in a lower voice.`; } }
+          : { label: '"Keep your head down and do your job."', run() { like(a.p, -1, null); return `${a.p.first} nods, and says, "Aye, captain," and goes. For a while, ${a.p.first} is brisk and correct, and answers in single words.`; } },
         { label: `"What's ${b.p.first} really like?"`, run() { like(a.p, 1, null); return `"${b.p.first}? ${(b.p.traits || []).length ? `${TRAITS[b.p.traits[0]].adj[0].toUpperCase()}${TRAITS[b.p.traits[0]].adj.slice(1)}, mostly. ` : ''}Watches too much ${GENRES[tastes(b).genre]}. Would go down with the ship for you, though." ${a.p.first} stops, and blinks, and seems surprised to have said it, and then, slowly, embarrassed, and then, oddly, proud, and looks at the deck. "Anyway," they say. "That is what ${b.p.first} is like." It is, you realize, the most honest thing anyone has said to you all week.`; } },
       ] }));
   }
+  // A friend asks you to cover their watch: you learn their post for a night, and they owe you one.
+  const askers = hired() && relReady('cover') ? crew.filter(f => f.p.opinion >= OPINION.CLOSE && postOfRole(f.p.role) && postOfRole(f.p.role) !== hired().post && !f.p.owes) : [];
   // Two fans of different teams, and a match coming up.
   const fans = all.find(([a, b]) => tastes(a).team !== tastes(b).team && leagueOf(tastes(a).team) === leagueOf(tastes(b).team) && !isCooled(a, b, 'match', 25));
   if (fans && relReady('match')) scenes.push(() => {
@@ -500,6 +515,7 @@ function relationshipScene() {
       ],
     };
   });
+  if (askers.length && Math.random() < 0.4) return coverWatchScene(pick(askers).p);  // a friend's ask is not one among a hundred pairs' scenes
   const options = scenes.map(f => f).sort(() => Math.random() - 0.5);
   for (const make of options) { const ev = make(); if (ev) return ev; }
   return null;
