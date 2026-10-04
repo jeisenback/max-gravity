@@ -80,10 +80,10 @@ function deadInSpaceScene(s) {
 const raidPosition = s => (s.edge >= 1 ? 'ahead' : s.edge <= -1 ? 'behind' : 'even');
 
 // The start. Returns what to show now and queues the first beat. A hard burn can get you clear before there is a fight.
-function startRaid(spec, flee) {
+function startRaid(spec, flee, o = {}) {
   const st = G.state, foe = makeEnemy(spec), style = RAID_STYLE[foe.shipId] || 'grapple';
-  const s = { spec, foe, style, edge: 0, beat: 0, hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0 };
-  let text = `Battle stations. ${theShip(foe)} made the intercept.`;
+  const s = { spec, foe, style, edge: o.edge || 0, open: o.open, beat: 0, hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0 };
+  let text = o.text || `Battle stations. ${theShip(foe)} made the intercept.`;
   if (flee) {
     if (Math.random() < 0.4 + 0.12 * roleSkill('pilot')) return `${helmName()} winds the drive past the redline and opens the range. Their plume fades.`;
     st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.08));
@@ -98,7 +98,7 @@ function raidScene(s) {
   const st = G.state, h = hired(), post = h.post, level = skillLevel(post);
   const closing = s.beat === 0, kind = closing ? 'closing' : 'exchange';
   const general = closing ? RAID_CLOSING : RAID_EXCHANGE, spec = RAID_POST[kind][post];
-  const text = closing ? RAID_OPEN[s.style][s.round % 2] : RAID_PASS[s.style][s.beat - 1];
+  const text = closing ? s.open || RAID_OPEN[s.style][s.round % 2] : RAID_PASS[s.style][s.beat - 1];
   const choices = general.map(c => ({ label: c.label, run: () => raidStep(s, c, null) }));
   choices.push({ label: `[${POSTS[post].name}] ${spec.label}`, run: () => raidStep(s, { odds: () => Math.min(0.85, 0.5 + 0.1 * level), win: spec.win, lose: spec.lose }, post) });
   return {
@@ -144,3 +144,60 @@ function raidClose(s) {
   G.nextEvent = repelScene(repelStart(d, s.style === 'grapple' ? 'full' : 'half'));
   return RAID_CLOSE.boarded[s.style];
 }
+
+// The ambush: a distress call, and the pirates waiting behind it (or, now and then, a real freighter). Each post has its own
+// way of reading the call, and a good read tells you which it is before you commit. A trap that springs on you starts the
+// raid two behind, and one you saw coming starts it one ahead. Offered for a burn through unsettled space (hired hand only).
+const AMBUSH_GAP = 60, AMBUSH_DANGER = 0.25, AMBUSH_TRAP = 0.7;
+const AMBUSH_READ = {
+  gunner: { label: 'Scan her hull for weapons', trap: 'You hold the fire control on her and watch the hull. There is a gun housing under the freighter plating, and the plating has been cut to let it traverse. She is not a freighter.', real: 'You hold the fire control on her and look for a gun housing, a torpedo bay, anything. There is a cargo door hanging open and nothing else. She is a freighter.' },
+  engineer: { label: 'Read her drive signature', trap: 'You put the drive plume on the analyzer. It is a freighter\'s hull with a corsair\'s drive, and a freighter that is dying does not burn like that. She is bait.', real: 'You put the drive plume on the analyzer. It is a freighter\'s drive and it is failing in the way that they fail, a coolant fault on the second bank. She is real.' },
+  pilot: { label: 'Match her tumble', trap: 'You match her tumble in your head and it is wrong. A hull with its drive out spins slower than that, and she is spinning on a clock. She is not dead in space, she is playing it.', real: 'You match her tumble and it fits: a hull with its drive out, spinning slow, the way an uncontrolled one does. She is real.' },
+  comms: { label: 'Check her call against the registry', trap: 'You check the transponder against the registry. The hull number belongs to a freighter that was scrapped two years ago. The call is a lie.', real: 'You check the transponder against the registry. The hull number is current, and her last port was two days ago. The call is genuine.' },
+};
+
+const ambushDue = () => {
+  const st = G.state, t = G.transit;
+  return !!(hired() && t && !(st.ambushAt > st.day - AMBUSH_GAP) && Math.max(danger(st.systemId), danger(t.to)) >= AMBUSH_DANGER);
+};
+
+function ambushScene() {
+  const st = G.state, h = hired(), post = h.post, cap = person(h.captain), trap = Math.random() < AMBUSH_TRAP, spec = AMBUSH_READ[post];
+  st.ambushAt = st.day;
+  return ambushChoice({ trap, read: false, tried: false }, cap, h, post, spec);
+}
+
+// The call, before and after a read. `known` is set once a read has told you which it is.
+function ambushChoice(a, cap, h, post, spec) {
+  const springs = (edge, text, open) => startRaid({ kind: 'pirate' }, false, { edge, text, open });
+  const sprung = () => springs(-2, `You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two more come off the rock behind her, and the call stops.`, `They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they are inside the range, and your position is already bad.`);
+  const real = () => { h.fund += 500; like(cap, 1, 'You stopped for a real distress call.'); return `She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund, which is more than you asked.`; };
+  const choices = [];
+  if (a.known) {
+    if (a.trap) {
+      choices.push({ label: 'Hit them before they are ready', run: () => springs(1, `You come in hot with the drive cold, and light it at three kilometers. They are not ready. Battle stations.`, `They are in position behind the freighter, with their drives cold, and they have not lit them. You have the range, and the first move.`) });
+      choices.push({ label: 'Turn away and leave it', run() { like(cap, 1, 'You saw a trap before it closed.'); gainSkill(post, 2); return `You turn away and burn for the lane. At four kilometers the freighter's drive lights, the real one, and she comes after you for twenty minutes before she gives it up. (+2 experience at the ${POSTS[post].name.toLowerCase()} post.)`; } });
+    } else {
+      choices.push({ label: 'Go to her', run: real });
+      choices.push({ label: 'Leave her', run() { like(cap, -1, 'You left a real distress call.'); return `You leave her to call for someone else. Captain ${cap.last} says nothing, and does not look up from the plot.`; } });
+    }
+  } else {
+    choices.push({ label: 'Go to her', run: () => (a.trap ? sprung() : real()) });
+    choices.push({ label: 'Leave it', run: () => (a.trap ? `You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.` : `You let the call play out and burn on. It might have been real.`) });
+    if (!a.tried) choices.push({ label: `[${POSTS[post].name}] ${spec.label}`, run() {
+      a.tried = true;
+      if (Math.random() < Math.min(0.85, 0.5 + 0.1 * skillLevel(post))) { a.known = true; G.nextEvent = ambushChoice(a, cap, h, post, spec); return a.trap ? spec.trap : spec.real; }
+      G.nextEvent = ambushChoice(a, cap, h, post, spec);
+      return `You try, and the readings will not settle. The call keeps repeating, and you are no wiser.`;
+    } });
+  }
+  const scene = { title: 'Distress Call', personal: true, via: 'ship', owner: 'you', text: a.known ? (a.trap ? `You know what is out there. They have not lit their drives, and they do not know you know.` : `The readings are clean. She is real, and she is asking again.`) : `A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain ${cap.last} looks at the plot, then at the crew.`, choices };
+  return scene;
+}
+
+Mods.register({
+  id: 'ambush', name: 'Distress call ambush', builtin: true,
+  init(M) {
+    M.filter('happenings', (list, where) => (where === 'transit' && ambushDue() ? list.concat({ tier: 2, weight: 1, via: 'ship', make: ambushScene }) : list));
+  },
+});

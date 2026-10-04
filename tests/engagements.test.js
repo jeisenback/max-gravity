@@ -176,3 +176,76 @@ test('she can be let drift instead: the same as breaking her off', async () => {
   assert.ok(r.t); assert.equal(r.opinion, 1); assert.equal(r.xp, 3); assert.equal(r.next, null);
   await done();
 });
+
+test('a distress call is offered on a burn through unsettled space, and not again for sixty days', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = raid('gunner'), t1 = () => Mods.filter('happenings', [], 'transit').filter(c => c.tier === 2).length;
+    worldOf(st.systemId).unrest = 0; worldOf(G.transit.to).unrest = 0;
+    const calm = ambushDue(), n0 = t1();
+    worldOf(G.transit.to).unrest = 0.4;
+    const unsettled = ambushDue(), n1 = t1();
+    rolls([0.01]); ambushScene();  // made, so the gap starts
+    return { calm, unsettled, extra: n1 - n0, again: ambushDue() };
+  });
+  assert.equal(r.calm, false); assert.equal(r.unsettled, true); assert.equal(r.extra, 1); assert.equal(r.again, false);
+  await done();
+});
+
+test('answering a trap blind springs it, and you start the raid two behind', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    raid('pilot'); rolls([0.01]);  // a trap
+    const e = ambushScene(); G.dialog = { event: e, choices: e.choices };
+    const labels = e.choices.map(c => c.label);
+    const t = chooseEvent(e.choices.findIndex(c => c.label === 'Go to her'));
+    return { title: e.title, labels, sprung: /lights a drive/.test(t), next: G.nextEvent && G.nextEvent.title, behind: G.nextEvent && /Position: behind/.test(G.nextEvent.text), waiting: G.nextEvent && /waiting on the far side/.test(G.nextEvent.text) };
+  });
+  assert.equal(r.title, 'Distress Call'); assert.deepEqual(r.labels, ['Go to her', 'Leave it', '[Pilot] Match her tumble']);
+  assert.ok(r.sprung); assert.equal(r.next, 'The Closing'); assert.ok(r.behind && r.waiting);
+  await done();
+});
+
+test('a good read shows you the trap, and you can hit them first or turn away', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = raid('gunner'), cap = person(hired().captain), op = cap.opinion, xp = skillXp('gunner'), out = {};
+    rolls([0.01, 0.01]);  // a trap, and the read works
+    const e = ambushScene(); G.dialog = { event: e, choices: e.choices };
+    const t = chooseEvent(e.choices.findIndex(c => /Scan her hull/.test(c.label)));
+    out.read = /gun housing/.test(t); finishEvent();
+    out.labels = G.dialog.event.choices.map(c => c.label);
+    const hit = chooseEvent(out.labels.indexOf('Hit them before they are ready')); out.hit = /not ready/.test(hit); finishEvent();
+    out.ahead = /Position: ahead/.test(G.dialog.event.text);
+    return out;
+  });
+  assert.ok(r.read); assert.deepEqual(r.labels, ['Hit them before they are ready', 'Turn away and leave it']); assert.ok(r.hit && r.ahead);
+  await done();
+});
+
+test('turning away from a trap you read earns the captain\'s regard and some experience; a real call pays, and leaving it costs', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = raid('gunner'), h = hired(), cap = person(h.captain), out = {};
+    let op = cap.opinion, xp = skillXp('gunner');
+    rolls([0.01, 0.01]);
+    let e = ambushScene(); G.dialog = { event: e, choices: e.choices }; chooseEvent(e.choices.findIndex(c => /Scan her hull/.test(c.label))); finishEvent();
+    const away = chooseEvent(G.dialog.choices.findIndex(c => /Turn away/.test(c.label)));
+    out.away = /burn for the lane/.test(away); out.awayOp = cap.opinion - op; out.xp = skillXp('gunner') - xp;
+    st.ambushAt = -1000; h.fund = 1000; op = cap.opinion;
+    rolls([0.99]);  // a real freighter, answered blind
+    e = ambushScene(); G.dialog = { event: e, choices: e.choices };
+    const real = chooseEvent(e.choices.findIndex(c => c.label === 'Go to her')); out.real = /She is real/.test(real); out.fund = h.fund; out.realOp = cap.opinion - op;
+    st.ambushAt = -1000; op = cap.opinion; rolls([0.99, 0.01]);  // real, and the read shows it
+    e = ambushScene(); G.dialog = { event: e, choices: e.choices }; chooseEvent(e.choices.findIndex(c => /Scan her hull/.test(c.label))); finishEvent();
+    chooseEvent(G.dialog.choices.findIndex(c => c.label === 'Leave her')); out.leftOp = cap.opinion - op;
+    return out;
+  });
+  assert.ok(r.away); assert.equal(r.awayOp, 1); assert.equal(r.xp, 2);
+  assert.ok(r.real); assert.equal(r.fund, 1500); assert.equal(r.realOp, 1); assert.equal(r.leftOp, -1);
+  await done();
+});

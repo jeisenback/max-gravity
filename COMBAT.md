@@ -241,6 +241,11 @@ A decisive win (ahead by four or more) cripples her instead: she drifts, and you
 lock fight run the other way (her lock, her corridor, her bridge, with the same tactics and your post's job), and a win
 takes her strongbox for the ship's fund. Or let her drift, which is the same as breaking her off. Over 500 random-choice
 raids, about 1 in 10 cripple her, and a boarding is carried about three times in four.
+A hired hand can also meet a distress call on a burn through unsettled space (pirates 0.25 or more at either end, at most once
+in 60 days): seven in ten are a trap, and the rest are a real freighter that pays the ship's fund 500 cr. Each post has its own
+way to read the call (scan her hull, read her drive, match her tumble, check her registry), which works at 50% plus a tenth
+a level. Answering a trap blind springs it and starts the raid two behind. A good read lets you hit them first (the raid
+starts one ahead) or turn away (the captain's regard and 2 experience), and shows a real call so you can help or leave it.
 Other contacts (patrols, bounties, hunters) and an owner's fights are still the card duel above.
 
 ## Open questions
