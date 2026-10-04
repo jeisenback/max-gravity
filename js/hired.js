@@ -153,7 +153,9 @@ const hiredMay = (id, a) => a.hiredOnly ? !!hired() : !hired() || (!['drills', '
 // ---------- the captain's runs ----------
 
 // Every port outside this system that buys something we can carry, scored by profit per day.
+let planAlts = [];  // the runs that came next, for the hand to suggest (suggest.js)
 function planRun() {
+  planAlts = [];
   const st = G.state, h = st.hired, here = currentPlanet(), free = cargoFree(), from = st.systemId;
   const reach = Object.entries(SYSTEMS).filter(([sid]) => sid !== from && inRange(from, sid));
   const held = COMMODITIES.filter(c => (st.cargo[c.id] || 0) > 0).sort((a, b) => st.cargo[b.id] - st.cargo[a.id])[0];
@@ -182,6 +184,7 @@ function planRun() {
   if (ice) return ice;
   const score = o => (o.profit / o.days) * (wantYard && o.yard ? 4 : 1) * laneRisk(o.sid);
   const ranked = options.sort((a, b) => score(b) - score(a)).filter(o => o.profit > 0);
+  planAlts = ranked.slice(0, 4);
   const top = ranked.slice(0, captainEntry() ? TRADE_PICKS[captainEntry().captain.trade] : 1);
   const best = top.length > 1 ? pick(top) : top[0];
   if (best) return { ...best, ballast: false };
@@ -194,7 +197,7 @@ function planRun() {
 // The plan is made once per stop and kept, unless the hold has changed since (a plan to sell cargo that is gone).
 const planStale = h => !h.plan || h.plan.day !== G.state.day || h.plan.at !== G.state.planet
   || h.plan.cargo !== JSON.stringify(G.state.cargo);
-const currentPlan = () => { const h = G.state.hired; if (planStale(h)) h.plan = { day: G.state.day, at: G.state.planet, cargo: JSON.stringify(G.state.cargo), run: planRun() }; return h.plan.run; };
+const currentPlan = () => { const h = G.state.hired; if (planStale(h)) { const run = planRun(); h.plan = { day: G.state.day, at: G.state.planet, cargo: JSON.stringify(G.state.cargo), run, alts: planAlts.filter(o => !run || o.sid !== run.sid || o.planet !== run.planet || o.good !== run.good).slice(0, 3) }; } return h.plan.run; };
 
 // Buys the cargo, sets the course, and sails: a crewed pilot flies her out, otherwise the pilot is you.
 function sail() {
@@ -440,6 +443,7 @@ const runHtml = () => {
       : plan.ballast ? `The captain has no cargo worth carrying and will run light to ${plan.planet}, ${SYSTEMS[plan.sid].name}, to look for work.`
       : plan.loaded ? `The captain will take the ${plan.tons}t of ${name(plan.good)} already aboard to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${plan.days} days.`
       : `The captain will buy ${plan.tons}t of ${name(plan.good)} here for ${fmt(plan.cost)} cr and take it to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${plan.days} days, about ${fmt(plan.profit)} cr profit, so about ${fmt(plan.profit * G.state.hired.share)} cr to you, plus ${fmt(h.wage * plan.days)} cr wage.`}</p>
+    ${swayHtml()}
     ${led.length ? `<div class="eyebrow">Recent runs</div>${led.map(l => `<div class="hint">${dateOf(l.day)}: ${l.from} to ${l.to}${l.good ? `, ${l.tons}t ${name(l.good)}, profit ${fmt(l.profit)} cr` : ', light'}. You earned ${fmt(l.wage + l.share)} cr.</div>`).join('')}` : ''}
   </div>`;
 };

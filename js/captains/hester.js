@@ -27,6 +27,9 @@ CAPTAINS.hester = {
 
   // Her wording for the four shared events (hiredevents.js). What the choices do stays there; a part left out falls back to the
   // generic text.
+  // How they take a hand's suggestion of a different run (suggest.js): `ok` by their style, and a line for each answer.
+  sway: { ok: (o, cur) => o.profit >= 0.9 * (cur.profit || 0), yes: 'Captain Vance looks at your figure, and then at hers. It is within a tenth, and she draws a line through hers. "Your way," she says. "Do not make me regret the notebook."', no: 'Captain Vance puts her figure beside yours without a word. It is better by more than a tenth, and she does not need to say so. "We go as planned," she says, and turns the page.' },
+
   events: {
     'cap-order': {
       text: 'Captain Vance wants the drive run hotter than you would. The berth window at the next port closes in six days, and arriving after it costs two days of fuel. She has done the sum on the back of the manifest and turned it so you can read it. "It is not an order I like either," she says. "It is the cheaper one."',
