@@ -125,7 +125,7 @@ function raidStep(s, c, post) {
 // The close: broke off, stood off, or alongside.
 function raidClose(s) {
   const st = G.state, h = hired(), cap = person(h.captain), weak = st.armor <= ship().armor * 0.25;
-  if (s.edge >= 3 && !weak) {  // a clear win: her drive is gone and she drifts, and you can board her
+  if (s.edge >= 4 && !weak) {  // a clear win: her drive is gone and she drifts, and you can board her
     G.nextEvent = deadInSpaceScene(s);
     return RAID_CLOSE.crippled[s.style];
   }

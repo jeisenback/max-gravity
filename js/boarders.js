@@ -84,7 +84,7 @@ function repelEvent(d, outcome) { return repelScene(repelStart(d, outcome)); }
 // Boarding a crippled ship: her people hold the middle, and you are a section in.
 function assaultStart(foe) {
   const crew = FOE_CREW[foe.shipId] || 3, healthy = G.state.crew.filter(id => !(G.state.injured || {})[id]).length;
-  return { d: { foe, foeHp: 0 }, assault: true, pos: 1, boarders: Math.max(1, crew - 1), base: Math.min(6, healthy + 1), hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0, lines: [] };
+  return { d: { foe, foeHp: 0 }, assault: true, pos: 1, boarders: crew + 1, base: Math.min(6, healthy + 1), hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0, lines: [] };
 }
 
 function repelScene(s) {
