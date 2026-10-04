@@ -5,7 +5,7 @@
 // or the market, and with none to be had, a wait for a shipment) and money (parts and labor from the ship's fund, which then
 // comes out of the next run's profit, so out of your share). How you spend the days is yours to choose. Loaded after hired.js.
 
-const REPAIR_AT = 0.15, REPAIR_PLATE = 25;  // hull lost, as a share of armor, that means yard time; points of armor a ton of metal mends
+const REPAIR_AT = 0.10, REPAIR_PLATE = 25;  // hull lost, as a share of armor, that means yard time; points of armor a ton of metal mends
 const REPAIR_LABOR = { yard: 100, field: 150 }, REPAIR_WAIT = 4, STANDBY_PAY = 0.5;  // a day's labor; days waiting for a shipment; the wage share paid while grounded
 
 function repairPlan(planet) {
