@@ -306,8 +306,8 @@ function drawCutaway(cx, cy, maxL) {
     ctx.fillRect(x0 + 1, lower - th * fuelShare, tw - 2, th * fuelShare - 1);
   }
 
-  // Berths: bunks in two tiers for each berth on this ship (up to six drawn).
-  const berths = roomAt('berths'), n = Math.min(6, ship().berths), cols = Math.ceil(n / 2), bw = Math.min(26, span(berths.x0, berths.x1) / cols - 5);
+  // Berths: bunks in two tiers for each berth on this ship (up to twelve drawn).
+  const berths = roomAt('berths'), n = Math.min(12, ship().berths), cols = Math.ceil(n / 2), bw = Math.min(26, span(berths.x0, berths.x1) / cols - 5);
   for (let i = 0; i < n; i++) {
     const bx = X(berths.x0 + berths.w * (Math.floor(i / 2) + 0.5) / cols), by = i % 2 ? upper - 22 : upper - 9;
     ctx.fillStyle = '#1d2f45'; ctx.fillRect(bx - bw / 2, by, bw, 5);
