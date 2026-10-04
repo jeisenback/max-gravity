@@ -247,6 +247,9 @@ test('turning away from a trap you read earns the captain\'s regard and some exp
   });
   assert.ok(r.away); assert.equal(r.awayOp, 1); assert.equal(r.xp, 2);
   assert.ok(r.real); assert.equal(r.fund, 1500); assert.equal(r.realOp, 1); assert.equal(r.leftOp, -1);
+  await done();
+});
+
 test('a hostile patrol is a navy stop for a hired hand: the same beats with guns, and firing on her costs your standing', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
