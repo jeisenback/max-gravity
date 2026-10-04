@@ -486,3 +486,59 @@ test('a crew member\'s page shows what they have told you, the news behind their
   assert.match(text, /abrasive and nervous/, 'and the reason');
   await done();
 });
+
+test('a hired hand docked or on a burn gets no radar, targeting or flight keys in the sidebar, but flies with them', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const out = { errors: [] }, W = innerWidth, H = innerHeight, at = m => { G.mode = m; try { drawHud(W, H); } catch (e) { out.errors.push(`${m}:${e.message}`); } return hudCalm(); };
+    out.landed = at('landed');
+    G.state.tutorial = null; sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.dialog = null;
+    out.transit = at('transit'); out.flight = at('flight');
+    return out;
+  });
+  assert.deepEqual(r.errors, []);
+  assert.ok(r.landed && r.transit, 'docked and on a burn'); assert.ok(!r.flight, 'a pilot-post hand takes the ship out by hand');
+  const owner = await open();
+  assert.ok(!await owner.ev(() => { G.mode = 'landed'; return hudCalm(); }), 'an owner keeps the sidebar');
+  await owner.done();
+  await done();
+});
+
+// Names are cleaned on the way in (cleanName, stripTags), but a screen must not trust that: these write markup straight into the
+// state, past the cleaning, and look for an element it would add to the page.
+
+test('markup in a captain, ship or earlier captain name does not reach the page on any port screen', async () => {
+  const { ev, done } = await open();
+  const leaks = await ev(() => {
+    const m = k => `<i data-xss="${k}">x</i>`, seen = {}, st = G.state;
+    st.tutorial = null; captain().name = m('cap'); home().name = m('ship');
+    st.captains = [{ name: m('old'), from: 1, to: 2, fate: m('fate') }];
+    home().log.push({ day: 1, text: m('log') }); home().touches.push(m('touch'));
+    const look = (where, root) => { for (const e of root.querySelectorAll('[data-xss]')) (seen[e.dataset.xss] = seen[e.dataset.xss] || new Set()).add(where); };
+    const html = (where, h) => { const d = document.createElement('div'); d.innerHTML = h; look(where, d); };
+    G.mode = 'landed'; UI.openLanded(currentPlanet(), []);
+    for (const tab of Object.keys(UI.views)) { if (tab === 'person' || tab === 'company') continue; UI.tab = tab; UI.render(); look(tab, document.body); }
+    html('legacy', legacyHtml()); html('home', homeHtml());
+    UI.showDead(); look('dead', document.body);
+    UI.openLanded(currentPlanet(), []);
+    for (const id of Object.keys(st.people).slice(0, 4)) { G.viewPerson = id; UI.tab = 'person'; UI.render(); look('person', document.body); }
+    return Object.fromEntries(Object.entries(seen).map(([k, v]) => [k, [...v]]));
+  });
+  assert.deepEqual(leaks, {});
+  await done();
+});
+
+test('markup in the ship name does not reach a hired hand\'s person pages', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const leaks = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state; st.tutorial = null; home().name = `<i data-xss="ship">x</i>`;
+    G.mode = 'landed'; UI.openLanded(currentPlanet(), []);
+    const found = [];
+    for (const id of [st.hired.captain, ...st.crew.slice(0, 4)]) { G.viewPerson = id; UI.tab = 'person'; UI.render(); if (document.querySelector('[data-xss]')) found.push(id); }
+    return found;
+  });
+  assert.deepEqual(leaks, []);
+  await done();
+});

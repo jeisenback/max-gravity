@@ -120,3 +120,20 @@ test('music mood follows the game', async () => {
   assert.deepEqual(moods, { landed: 'port', flight: 'burn', duel: 'tense', title: 'title' });
   await done();
 });
+
+// Reduce motion follows the system setting until the player chooses for themselves.
+const osReduces = () => { const mm = window.matchMedia.bind(window); window.matchMedia = q => (/prefers-reduced-motion/.test(q) ? { matches: true, media: q, addEventListener() {}, removeEventListener() {}, addListener() {}, removeListener() {} } : mm(q)); };
+
+test('Reduce motion starts on when the system asks for it, and a choice made in Settings wins afterwards', async () => {
+  const first = await open({ init: osReduces });
+  assert.equal(await first.ev(() => Settings.reduceMotion), true, 'no saved choice: follow the system');
+  await first.ev(() => { Settings.reduceMotion = false; Settings.motionChosen = true; applySettings(); });
+  const kept = await first.ev(() => store.get('maxGravity.settings', {}));
+  assert.deepEqual([kept.reduceMotion, kept.motionChosen], [false, true]);
+  await first.page.reload(); await first.page.waitForFunction(() => typeof G !== 'undefined' && (G.state || G.mode === 'title'));
+  assert.equal(await first.ev(() => Settings.reduceMotion), false, 'a saved choice beats the system');
+  await first.done();
+  const plain = await open();
+  assert.equal(await plain.ev(() => Settings.reduceMotion), false, 'no system request: off');
+  await plain.done();
+});

@@ -11,9 +11,11 @@ const SLOTS = 5, SAVE_VERSION = 3;
 
 // ---------- settings ----------
 const Settings = Object.assign({ volume: 1, music: 0.6, textScale: 1, reduceMotion: false, wear: 'slow' }, store.get('maxGravity.settings', {}));
+// Until the player ticks or unticks Reduce motion themselves, it follows the system setting (a stored false is only the default).
+if (!Settings.motionChosen) Settings.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 Settings.quiet = Object.assign({ market: false, chatter: false }, Settings.quiet);  // what the Comms screen has muted
 function applySettings() {
-  store.set('maxGravity.settings', { volume: Settings.volume, music: Settings.music, textScale: Settings.textScale, reduceMotion: Settings.reduceMotion, wear: Settings.wear, quiet: Settings.quiet });
+  store.set('maxGravity.settings', { volume: Settings.volume, music: Settings.music, textScale: Settings.textScale, reduceMotion: Settings.reduceMotion, motionChosen: !!Settings.motionChosen, wear: Settings.wear, quiet: Settings.quiet });
   UI.el.style.zoom = Settings.textScale;
   if (Sfx.out) Sfx.out.gain.value = Sfx.on ? 0.5 * Settings.volume : 0;
 }
@@ -309,7 +311,7 @@ Mods.register({
       if (t.id === 'setVolume') { Settings.volume = Number(t.value); applySettings(); }
       else if (t.id === 'setMusic') { Settings.music = Number(t.value); applySettings(); }
       else if (t.id === 'setSound') { if (Sfx.on !== t.checked) Sfx.toggle(); applySettings(); }
-      else if (t.id === 'setMotion') { Settings.reduceMotion = t.checked; applySettings(); }
+      else if (t.id === 'setMotion') { Settings.reduceMotion = t.checked; Settings.motionChosen = true; applySettings(); }
       else if (t.id === 'ngTutorial') Menu.form.tutorial = t.checked;
       else if (t.id === 'importFile' && t.files && t.files[0]) {
         const r = new FileReader();

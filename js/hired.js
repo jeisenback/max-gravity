@@ -21,7 +21,7 @@ const LIGHT_DUTY = 0.6;  // a hurt hand's wage while they work light duty
 const HIRED_TARGET = 19000;  // the used Ore Runner Tomas finds (the chapter's goal), at the price he asks a hand he thinks well enough of
 // The captain heads for a yard when the used Ore Runner can be had: at the offer's threshold until she is offered, then at
 // her price, and at the middle price again if the deal lapses.
-const wantsYard = () => { const h = hired(); return G.state.credits >= (!h.deal ? USED_OFFER_AT : dealOpen() ? h.deal.price : HIRED_TARGET); };
+const wantsYard = () => { const h = hired(); return G.state.credits >= (!h.deal ? (captainBeatsDone(h) ? USED_OFFER_AT : HIRED_TARGET) : dealOpen() ? h.deal.price : HIRED_TARGET); };
 const hired = () => (G.state && G.state.hired) || null;
 // A hired hand works one post. The others are the crew's, and the captain's to command.
 const hiredCaptain = () => (hired() ? G.state.people[hired().captain] : null);
@@ -84,7 +84,7 @@ function setupHired(o) {
   const d = captainKey && CAPTAINS[captainKey];
   st.hired = { captain: cap.id, captainKey, post, since: st.day, wage: d ? d.wage : HIRED_WAGE, share: d ? d.share : HIRED_SHARE, fund: HIRED_FUND, run: null, ledger: [], skill: { ...(o.skill || {}), [post]: Math.max((o.skill || {})[post] || 0, SKILL_STEPS[1]) }, asked: 0 };
   return [
-    `You signed on to the ${home().name}, an ice hauler out of ${system().name}, under Captain ${cap.first} ${cap.last}. You are her ${POSTS[post].name.toLowerCase()}: the post is yours to work, and the captain picks where she goes.`,
+    `You signed on to the ${esc(home().name)}, an ice hauler out of ${system().name}, under Captain ${cap.first} ${cap.last}. You are her ${POSTS[post].name.toLowerCase()}: the post is yours to work, and the captain picks where she goes.`,
     `You have ${fmt(st.credits)} credits to your name. Save toward a ship of your own.`,
   ].concat(o.putOffBy ? [`${o.putOffBy} put you ashore. You carry your savings and what you learned.`] : []);
 }
@@ -360,12 +360,12 @@ function dealScene(planet) {
     choices: [{ label: 'Look her over', run: () => `You walk the apron with the broker and look her over. She is worn, and she is a ship. She is on the yard list now, as the used Ore Runner, until about day ${h.deal.until}.` }],
   };
 }
-// Offered once, at a yard, when the savings are about 55% of her middle price. A lapsed deal is noted once.
+// Offered once, at a yard, when the savings are about 55% of her middle price and the captain's two scenes have played (captains.js). A lapsed deal is noted once.
 function dealCheck(planet) {
   const st = G.state, h = hired();
   if (!h) return;
   if (h.deal && !dealOpen() && !h.deal.lapsed) { h.deal.lapsed = true; M_NOTE('The used Ore Runner is gone. Somebody else bought her.'); return; }
-  if (h.deal || !planet.services.includes('shipyard') || st.credits < USED_OFFER_AT || G.dialog) return;
+  if (h.deal || !planet.services.includes('shipyard') || st.credits < USED_OFFER_AT || !captainBeatsDone(h) || G.dialog) return;
   openEvent(dealScene(planet));
 }
 const buyInPrice = id => buyShip(id).price - (hired() && hired().haggle && hired().haggle.id === id ? hired().haggle.off : 0);  // nothing to trade in: the ship you fly is the captain's
@@ -414,7 +414,7 @@ function chapterRecap() {
   const st = G.state, h = hired(), cap = st.people[h.captain], crew = st.crew.map(person).filter(c => c && c.memories);
   const list = names => names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0];
   const t = runTotals(h), days = st.day - h.since;
-  const work = `${days} days aboard ${shipTitle()}. ${t.runs} run${t.runs === 1 ? '' : 's'} with Captain ${cap.last}, and ${fmt(t.earned)} cr earned in wage and share. You worked the ${POSTS[h.post].name.toLowerCase()} and reached level ${skillLevel(h.post)}.`;
+  const work = `${days} days aboard ${esc(shipTitle())}. ${t.runs} run${t.runs === 1 ? '' : 's'} with Captain ${cap.last}, and ${fmt(t.earned)} cr earned in wage and share. You worked the ${POSTS[h.post].name.toLowerCase()} and reached level ${skillLevel(h.post)}.`;
   const near = [...(cap && cap.memories ? [{ c: cap, name: `Captain ${cap.last}` }] : []), ...crew.map(c => ({ c, name: c.first }))]
     .filter(x => x.c.opinion >= OPINION.FRIEND).sort((a, b) => b.c.opinion - a.c.opinion).slice(0, 3);
   const told = crew.filter(c => c.story && c.story.beat >= 3).map(c => c.first), trusted = Object.keys(CAST).filter(k => ((st.cast[k] || {}).flags || {}).trusted).map(k => castPerson(k).first), favor = crew.filter(c => c.story && c.story.beat >= 4).map(c => c.first), loyal = crew.filter(c => c.loyal).map(c => c.first);
