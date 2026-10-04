@@ -23,6 +23,7 @@ test('for every captain the trouble, then the secret, then the used-ship offer',
     const [trouble, secret] = r.beatDays;
     assert.ok(trouble !== undefined && secret !== undefined, `${captainKey}: both scenes play before the chapter ends`);
     assert.ok(trouble < secret, `${captainKey}: trouble ${trouble} before secret ${secret}`);
+    assert.ok(r.burns.length === 2 && r.burns.every(b => b <= 3), `${captainKey}: each scene plays within 3 burns of being due: ${r.burns}`);
     assert.ok(r.offerDay > secret, `${captainKey}: the offer (day ${r.offerDay}) comes after the secret (day ${secret})`);
   }
 });

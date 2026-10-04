@@ -49,7 +49,7 @@ function signOnEvent() {
   // A first officer holds no post.
   const who = c => (postKey(c) ? `${fullName(c)}, ${c.job} from ${c.home}, on the ${POSTS[postKey(c)].name.toLowerCase()} post` : `${fullName(c)}, the ${ROLE_NAMES[c.role].toLowerCase()}, from ${c.home}`);
   const beside = pair.length ? ` Working beside you: ${pair.map(who).join(', and ')}.` : '';
-  const week = `${ctx.cap} picks each run and buys the cargo from the ship's funds; when you are ready, press Sail. ${scopeOff('errands') ? '' : 'Errands for wherever she is going turn up on the Missions board, and the captain keeps a fifth. '}You are paid a wage and a share of the profit on arrival, and you have ${HIRED_SAVINGS} credits to your name. Save toward a ship of your own.`;
+  const week = `${ctx.cap} picks each run and buys the cargo from the ship's funds; when you are ready, press Sail. ${scopeOff('errands') ? '' : 'Errands for wherever she is going turn up on the Missions board, and the captain keeps a fifth. '}You are paid a wage and a share of the profit on arrival, and you have ${fmt(st.credits)} credits to your name. Save toward a ship of your own.`;
   return {
     title: 'Signing On',
     text: [b.text(ctx), `${SIGN_POSTS[h.post](ctx.cap)}${beside}`, `${week} Why did you sign on?`].join('</p><p>'),

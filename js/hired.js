@@ -83,10 +83,9 @@ function setupHired(o) {
   }
   const d = captainKey && CAPTAINS[captainKey];
   st.hired = { captain: cap.id, captainKey, post, since: st.day, wage: d ? d.wage : HIRED_WAGE, share: d ? d.share : HIRED_SHARE, fund: HIRED_FUND, run: null, ledger: [], skill: { ...(o.skill || {}), [post]: Math.max((o.skill || {})[post] || 0, SKILL_STEPS[1]) }, asked: 0 };
-  return [
-    `You signed on to the ${esc(home().name)}, an ice hauler out of ${system().name}, under Captain ${cap.first} ${cap.last}. You are her ${POSTS[post].name.toLowerCase()}: the post is yours to work, and the captain picks where she goes.`,
-    `You have ${fmt(st.credits)} credits to your name. Save toward a ship of your own.`,
-  ].concat(o.putOffBy ? [`${o.putOffBy} put you ashore. You carry your savings and what you learned.`] : []);
+  // The port screen says only what Signing On (signon.js) does not: who put a hand ashore. The ship, the captain, the post and
+  // the savings are said there, once.
+  return o.putOffBy ? [`${o.putOffBy} put you ashore. You carry your savings and what you learned.`] : [];
 }
 
 // ---------- burn events ----------

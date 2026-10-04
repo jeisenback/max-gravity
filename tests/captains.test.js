@@ -521,3 +521,23 @@ test('the used-ship offer waits for both of the captain\'s scenes and a run sail
   assert.equal(r.sailed, true); assert.equal(r.offer, true, 'a run after the secret, the offer comes');
   assert.equal(r.noCaptain, true, 'a hand with no captain entry is not held up');
 });
+
+test('a due captain scene gains weight for each draw it misses, and starts again once it plays', async () => {
+  const r = await run(() => {
+    const st = start({ captainKey: 'hester' }), h = st.hired, out = {};
+    underway();
+    const beat = () => Mods.filter('happenings', [], 'transit').find(c => String(c.make).includes('captainScene'));
+    st.day = h.since + CAPTAIN_BEAT_DAYS.trouble - 1; out.notDue = beat() === undefined;
+    st.day = h.since + CAPTAIN_BEAT_DAYS.trouble;
+    out.weights = [beat().weight, beat().weight, beat().weight];
+    out.tier = beat().tier;
+    const c = beat(); c.make(); out.afterPlay = [h.beats, h.beatWait];
+    st.day = h.since + CAPTAIN_BEAT_DAYS.secret; out.secretStarts = beat().weight;
+    return out;
+  });
+  assert.equal(r.notDue, true);
+  assert.deepEqual(r.weights, [2, 5, 8], 'a miss adds BEAT_RAMP to the weight');
+  assert.equal(r.tier, 1);
+  assert.deepEqual(r.afterPlay, [1, 0]);
+  assert.equal(r.secretStarts, 2, 'the next scene starts at the ordinary weight');
+});
