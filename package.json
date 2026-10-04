@@ -3,7 +3,8 @@
   "private": true,
   "description": "Tests for Max Gravity. The game itself needs no build: open index.html.",
   "scripts": {
-    "test": "node --test --test-concurrency=4 \"tests/*.test.js\""
+    "test": "node --test --test-concurrency=4 \"tests/*.test.js\"",
+    "soak": "node --test --test-concurrency=4 \"tests/distribution/*.test.js\""
   },
   "devDependencies": {
     "playwright": "^1.63.0"

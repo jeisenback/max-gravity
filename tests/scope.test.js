@@ -48,13 +48,14 @@ test('a test or a tester can still name another post or captain in the narrow bu
   await done();
 });
 
-test('the full build offers the four posts and draws a captain at random', async () => {
+test('the full build offers the four posts and draws a captain from all of them', async () => {
   const { page, ev, done } = await open({ title: true, scope: 'full' });
   await page.click('[data-action=menuView][data-arg=new]');
   await page.click('[data-action=menuMode][data-arg=hired]');
   assert.equal(await page.$$eval('[data-action=menuPost]', b => b.length), 4);
-  const keys = await ev(() => { const out = new Set(); for (let s = 1; s <= 12; s++) { __seed(s); out.add(pickCaptainKey()); } return [...out]; });
-  assert.ok(keys.length >= 3, `the draw varies: ${keys}`);
+  const ends = await ev(() => { const real = Math.random, keys = Object.keys(CAPTAINS); try { Math.random = () => 0; const first = pickCaptainKey(); Math.random = () => 0.999; return { first, last: pickCaptainKey(), keys }; } finally { Math.random = real; } });
+  assert.deepEqual([ends.first, ends.last], [ends.keys[0], ends.keys[ends.keys.length - 1]], 'the draw reaches the first and the last captain');
+  assert.ok(ends.keys.length >= 4);
   await done();
 });
 
