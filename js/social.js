@@ -333,6 +333,63 @@ const REL_GAP = { feud: 20, match: 20, roots: 25 };
 const relReady = kind => { const at = (G.state.relAt || {})[kind]; return at === undefined || G.state.day - at >= REL_GAP[kind]; };
 const relMark = kind => { (G.state.relAt = G.state.relAt || {})[kind] = G.state.day; };
 
+// More shapes for the scenes that came up most, so the same four titles do not carry most of the talk: a feud over the watch log
+// or in silence as well as in the galley, a match argued over after the fact, and a dish from home.
+function feudHandover(a, b, A, B) {
+  return {
+    title: 'The Handover', text: `${A} is at the engine room hatch with the watch log open, and ${B} is on the other side of the panel with their coat already on. "You wrote 'not done'," ${B} says. "It was not done," ${A} says. "It was done at four." Somebody coming off watch turns round in the corridor and goes the long way.`,
+    choices: [
+      { label: 'Read the log and rule on it', run() { const [w, l] = pick([[a, b], [b, a]]); like(w.p, 1, null); like(l.p, -1, `You ruled against me on the log.`); addBond(a, b, -0.5); return `You read the entries and the timestamps. ${w.p.first} is right, by eleven minutes. ${l.p.first} takes the log back, reads the line, and does not say anything that would go in it.`; } },
+      { label: 'Split their watches so they do not meet', run() { addBond(a, b, -0.5); return `You rewrite the rota so that ${A} and ${B} are never on the same changeover. It works. The handovers go quiet, and the log is a little cleaner, and neither of them thanks you.`; } },
+      { label: 'Make them do the handover together, standing up', run() {
+        if (Math.random() < 0.5) { addBond(a, b, 2); return `They go through it line by line, standing at the panel. Halfway down the page ${B} says the four o'clock entry was theirs, and ${A} says it was a close call. It is not warm, but it is a handover.`; }
+        addBond(a, b, -1); return `They do the handover standing, and they do not look at each other, and when it is finished each of them writes their own initials in a different ink.`;
+      } },
+    ],
+  };
+}
+
+function feudShoulders(a, b, A, B) {
+  const cook = G.state.crew.map(person).find(c => c && c.role === 'cook' && c !== a.p && c !== b.p);
+  return {
+    title: 'Cold Shoulders', text: `${A} and ${B} have not spoken in three days, and the ship has noticed. Messages go through ${cook ? cook.first : 'whoever is nearest'}: "tell them the filter is changed", "tell them I heard". At dinner they sit at opposite ends of the table and the talk goes quiet, and then starts again, a little too loud.`,
+    choices: [
+      { label: 'Put them on the same job', run() {
+        if (Math.random() < 0.55) { addBond(a, b, 2); return `You give them the cargo bay inventory, two of them, one list. For the first hour they count in silence. By the second hour one of them says a number out loud and the other repeats it back, and that is a start.`; }
+        addBond(a, b, -1); return `You give them the cargo bay inventory. They finish it in half the time, by splitting the bay down the middle and not crossing the line.`;
+      } },
+      { label: 'Talk to each of them alone', run() { addBond(a, b, 0.5); like(a.p, 1, null); like(b.p, 1, null); return `You hear ${A} out for twenty minutes over a cup of tea, then ${B} for the same. Both of them leave a little lighter, and neither agrees to go first.`; } },
+      { label: 'Let it run', run() { addBond(a, b, -1); return `You leave it. By the end of the week the messages have stopped going through ${cook ? cook.first : 'anyone'}, because it is quicker not to send them.`; } },
+    ],
+  };
+}
+
+function matchReplay(a, b, ta, tb) {
+  return {
+    title: 'The Replay', text: `${a.p.first} (${ta}) and ${b.p.first} (${tb}) have had the same argument for an hour: a famous fixture between their sides, a disputed call, a goal that stood or did not. ${a.p.first} has the date. ${b.p.first} has a cousin who was in the stand. The archive is one command away.`,
+    choices: [
+      { label: 'Play the old fixture from the archive', run() {
+        const m = playMatch(leagueOf(ta), ta, tb), [w, l] = m.winner === ta ? [a, b] : [b, a];
+        like(w.p, 1, null); addBond(a, b, has(l, 'rude') ? -1 : 0.5);
+        return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${w.p.first} says it is what they said all along. ${l.p.first} says the archive has the wrong referee.`;
+      } },
+      { label: 'Rule on the disputed call yourself', run() { const [w, l] = pick([[a, b], [b, a]]); like(w.p, 1, null); like(l.p, -1, `You ruled against my side on the old call.`); return `You rule that the goal stood. ${w.p.first} stands up and shakes your hand. ${l.p.first} says nobody asked you, and then asks you to say it again.`; } },
+      { label: 'Mute the feed', run() { addBond(a, b, 0.5); return `You turn the sound down on the galley screen. They go on arguing for another ten minutes, with their hands, and then they go quiet and put the sound back up to watch something else.`; } },
+    ],
+  };
+}
+
+function rootsRecipe(a, b, A, B) {
+  const home = a.p.home === b.p.home ? a.p.home : 'home';
+  return {
+    title: 'The Recipe', text: `${A} and ${B} are in the galley, working out a dish from ${home}. They disagree about the spice, the pan and the order, and agree entirely about how it should taste. There is a list on the cabinet door and a space after "chili" with a question mark.`,
+    choices: [
+      { label: 'Pay for the missing ingredients (150 cr)', can: () => G.state.credits >= 150, run() { G.state.credits -= 150; addBond(a, b, 3); like(a.p, 1, null); like(b.p, 1, null); return `You find them at the next port stall for 150 cr. The dish takes two hours and the whole ship smells of it. ${A} and ${B} eat theirs standing up, without talking, and then wash up together.`; } },
+      { label: 'Let them make do', run() { addBond(a, b, 1.5); return `They make do. It is not the dish. They eat it and say so, and then say what the real one tastes like, for the rest of the watch.`; } },
+    ],
+  };
+}
+
 function relationshipScene() {
   const list = folk(), st = G.state;
   if (list.length < 2) return null;
@@ -355,6 +412,9 @@ function relationshipScene() {
     if ((n <= -2 || clash(a, b)) && !isCooled(a, b, 'feud', 45) && relReady('feud')) scenes.push(() => {
       cool(a, b, 'feud'); relMark('feud');
       const fk = bondKey(a, b); (st.feuds = st.feuds || {})[fk] = (st.feuds[fk] || 0) + 1;  // a feud that is seen can split the ship (stakes.js)
+      const shape = pick(['galley', 'handover', 'shoulders']);
+      if (shape === 'handover') return feudHandover(a, b, A, B);
+      if (shape === 'shoulders') return feudShoulders(a, b, A, B);
       const cause = pick(CAUSES);
       return {
         title: 'A Small Ship', text: pick([
@@ -375,7 +435,7 @@ function relationshipScene() {
         ],
       };
     });
-    if ((a.p.home === b.p.home || (a.p.culture && a.p.culture === b.p.culture)) && n < 3 && relReady('roots')) scenes.push(() => !stamped(a, b, 'roots') && (relMark('roots'), {
+    if ((a.p.home === b.p.home || (a.p.culture && a.p.culture === b.p.culture)) && n < 3 && relReady('roots')) scenes.push(() => !stamped(a, b, 'roots') && (relMark('roots'), Math.random() < 0.4 ? rootsRecipe(a, b, A, B) : {
       title: 'Small System', text: a.p.home === b.p.home
         ? pick([
           `${A} and ${B} are arguing about coffee at the galley table when ${B} says the name of a street on ${a.p.home}. ${A} stops with the cup halfway up. "Which end?" ${A} says. "The water end." "Then you know the baker." They were a few decks apart on ${a.p.home} for twelve years and never met. The coffee goes cold. They compare teachers, bars and the ${tastes(a).team} seasons.`,
@@ -415,6 +475,7 @@ function relationshipScene() {
   if (fans && relReady('match')) scenes.push(() => {
     const [a, b] = fans, ta = tastes(a).team, tb = tastes(b).team;
     cool(a, b, 'match'); relMark('match');
+    if (Math.random() < 0.4) return matchReplay(a, b, ta, tb);
     return {
       title: 'Galley Duty', text: pick([
         `The galley rota is a sheet taped to the cabinet door. ${a.p.first} has written ${b.p.first}'s name on every day of next week, and ${b.p.first} has written ${a.p.first}'s name over it. ${a.p.first} backs ${ta}. ${b.p.first} backs ${tb}. Whoever's team loses tonight does the dishes. Both of them have initialed it.`,
