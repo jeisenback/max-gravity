@@ -10,7 +10,7 @@
 const CAPTAINS = {};
 
 const captainEntry = () => { const h = hired(); return (h && h.captainKey && CAPTAINS[h.captainKey]) || null; };
-const pickCaptainKey = () => pick(Object.keys(CAPTAINS));
+const pickCaptainKey = () => { const key = pick(Object.keys(CAPTAINS)); return scopeOff('captains') ? 'hester' : key; };  // still draws, so the random stream is the same in both builds
 
 // The captain's person record, built from the entry the way castPerson builds a main character's.
 function captainPerson(key) {

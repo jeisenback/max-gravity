@@ -189,8 +189,8 @@ const Menu = {
           <label>Your name <input type="text" id="ngCaptain" maxlength="30" placeholder="Captain's name" value="${esc(f.captain || '')}"></label>
           <h3>${narrow ? 'Your post' : 'How you start'}</h3>
           ${narrow ? '' : `<div class="row">${[['owner', 'Owner'], ['hired', 'Hired hand']].map(([id, l]) => `<button class="${(f.mode || 'owner') === id ? 'on' : ''}" data-action="menuMode" data-arg="${id}">${l}</button>`).join('')}</div>`}
-          ${f.mode === 'hired' ? `<p class="hint">You sign on to a captain's ship and work one post. The captain picks where she goes; you save toward a ship of your own.</p>
-          <div class="row">${HIRED_POSTS.map(p => `<button class="${(f.post || 'pilot') === p ? 'on' : ''}" data-action="menuPost" data-arg="${p}">${POSTS[p].name}</button>`).join('')}</div>`
+          ${f.mode === 'hired' ? `<p class="hint">You sign on to a captain's ship and work ${scopeOff('posts') ? 'the guns' : 'one post'}. The captain picks where she goes; you save toward a ship of your own.</p>
+          ${scopeOff('posts') ? '' : `<div class="row">${HIRED_POSTS.map(p => `<button class="${(f.post || 'pilot') === p ? 'on' : ''}" data-action="menuPost" data-arg="${p}">${POSTS[p].name}</button>`).join('')}</div>`}`
             : `<label>Your ship <input type="text" id="ngShip" maxlength="30" placeholder="Second Chance" value="${esc(f.ship || '')}"></label>`}
           ${narrow ? '' : `<h3>Where you start</h3>
           ${Object.entries(BACKGROUNDS).map(([id, b]) => `<button class="choice ${f.background === id ? 'on' : ''}" data-action="menuBackground" data-arg="${id}"><b>${b.name}</b><span class="hint">${b.text}</span></button>`).join('')}

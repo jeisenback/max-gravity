@@ -3,6 +3,7 @@
 // Sails the hired hand's captain for N runs with random answers and reports runs, days and pay: the tuning tool for the
 // chapter's economy (HIRED_FUND, HIRED_WAGE, HIRED_SHARE, HIRED_TARGET in js/hired.js).
 //   node tools/soak.js --seeds 1,2,3 --legs 40 [--captain hester]
+// With no captain named, the narrow build's captain (Hester, with Cato) sails every seed, as a gunner.
 
 const { open, closeBrowser } = require('../tests/helpers');
 
