@@ -22,7 +22,7 @@ function planIntercept() {
   if (bounty) spec = { kind: 'bounty', mission: bounty };
   else if (G.revenge) { spec = { kind: 'hunter', person: G.revenge }; G.revenge = null; }
   else if (hostileGov && Math.random() < 0.6) spec = { kind: 'patrol', gov: hostileGov };
-  else if (Math.random() < Math.min(0.55, 0.05 + 0.6 * Math.max(danger(from), danger(to))) * SCAN_MAX) spec = { kind: 'pirate' };  // they get a second look when the drive runs cool (below)
+  else if (Math.random() < Math.min(0.55, (hired() ? HAND_RAID.base : 0.05) + (hired() ? HAND_RAID.per : 0.6) * Math.max(danger(from), danger(to))) * SCAN_MAX) spec = { kind: 'pirate' };  // they get a second look when the drive runs cool (below)
   if (spec) t.intercept = { spec, at: t.total * rand(0.25, 0.7) };
 }
 
