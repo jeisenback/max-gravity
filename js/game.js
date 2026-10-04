@@ -37,12 +37,6 @@ const G = {
 
 // ---------- helpers ----------
 
-const rand = (a, b) => a + Math.random() * (b - a);
-const randInt = (a, b) => Math.floor(rand(a, b + 1));
-const pick = arr => arr[Math.floor(Math.random() * arr.length)];
-const dist = (a, b) => Math.hypot(a.x - b.x, a.y - b.y);
-const fmt = n => Math.round(n).toLocaleString('en-US');
-const wrapAngle = a => Math.atan2(Math.sin(a), Math.cos(a));
 const system = (id = G.state.systemId) => SYSTEMS[id];
 const ship = () => shipStats(G.state.shipId);  // the player's ship, outfits included
 const statsOf = o => (o === G.player ? ship() : SHIPS[o.shipId]);
@@ -60,41 +54,6 @@ function dateOf(day = G.state.day) {
   return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
 }
 
-function hash(str) {
-  let h = 0;
-  for (const c of str) h = (h * 31 + c.charCodeAt(0)) | 0;
-  return h;
-}
-
-// Everything orbits the Sun at its real period (Kepler: years = au^1.5), so the
-// distance between two places, and the burn, changes over the months. `angle` is
-// where a location sits on day 0.
-const orbitPeriod = id => 365.25 * Math.pow(SYSTEMS[id].au, 1.5);
-function orbitPos(id, day = G.state.day) {
-  const s = SYSTEMS[id], a = (s.angle + 360 * day / orbitPeriod(id)) * Math.PI / 180;
-  return { x: Math.cos(a) * s.au, y: Math.sin(a) * s.au };
-}
-
-// Travel time and reaction mass grow with distance at departure, but less than
-// linearly, so the outer planets stay reachable.
-const distAU = (a, b, day) => dist(orbitPos(a, day), orbitPos(b, day));
-// Crew perks: a pilot shortens burns, an engineer (and Rosa's drive tuning) saves mass.
-const baseDays = (a, b, day) => Math.round(2 + 3 * Math.pow(distAU(a, b, day), 0.7));
-const travelDays = (a, b, day) => Math.max(1, Math.round(baseDays(a, b, day) * (1 - 0.07 * roleSkill('pilot'))));
-const burnFuel = (a, b, day) => Math.round((30 + 60 * Math.sqrt(distAU(a, b, day)))
-  * (1 - 0.05 * roleSkill('engineer')) * (G.state.flags.rosaTuned ? 0.9 : 1));
-
-// The shortest this burn gets over the next two years, and when.
-function bestWindow(a, b) {
-  let best = { days: travelDays(a, b), wait: 0 };
-  for (let d = 5; d <= 730; d += 5) {
-    const days = travelDays(a, b, G.state.day + d);
-    if (days < best.days) best = { days, wait: d };
-  }
-  return best;
-}
-const inRange = (a, b) => a === b || burnFuel(a, b) <= ship().fuel;
-
 function cargoUsed() {
   let t = 0;
   for (const k in G.state.cargo) t += G.state.cargo[k];
@@ -102,60 +61,6 @@ function cargoUsed() {
   return t;
 }
 const cargoFree = () => ship().cargo - cargoUsed();
-
-// Trading moves markets: each ton bought raises the local price and each ton sold
-// lowers it, up to MARKET_CAP either way. Local use and NPC haulers move them too
-// (world.js). A Rock Hopper barely dents a market; an Ice Hauler has to spread its
-// trade around.
-const MARKET_PER_TON = 0.002, MARKET_CAP = 0.4;
-
-function pressure(planet, cid) {
-  const m = G.state.market[`${planet.name}|${cid}`];
-  return m ? m.p : 0;
-}
-
-const pushed = (p, tons) => Math.max(-MARKET_CAP, Math.min(MARKET_CAP, p + tons * MARKET_PER_TON));
-
-// Price per ton; `p` overrides the market pressure (see tradeTotal).
-function price(planet, cid, p = pressure(planet, cid)) {
-  const level = planet.prices[cid];
-  if (!level) return null;
-  const c = COMMODITIES.find(c => c.id === cid);
-  const wobble = 1 + 0.08 * Math.sin(G.state.day * 0.9 + hash(planet.name + cid));
-  const rumor = G.state.rumors.find(r => r.planet === planet.name && r.cid === cid && r.until >= G.state.day);
-  return Math.round(Mods.filter('price', c.base * PRICE_MULT[level] * wobble * (rumor ? rumor.mult : 1) * (1 + p), planet, cid));
-}
-
-// What `qty` tons cost to buy (dir 1) or fetch when sold (dir -1): the price moves as
-// you trade, so the whole lot goes at the average of the before and after prices.
-function tradeTotal(planet, cid, qty, dir) {
-  const p0 = pressure(planet, cid);
-  return qty * price(planet, cid, (p0 + pushed(p0, qty * dir)) / 2);
-}
-
-function recordTrade(planet, cid, qty, dir) {
-  G.state.market[`${planet.name}|${cid}`] = { p: pushed(pressure(planet, cid), qty * dir), day: G.state.day };
-  Mods.emit('trade', planet, cid, qty, dir);
-}
-
-// Most profitable place within one full tank to sell a commodity bought here, at today's
-// prices, weighing profit against travel days.
-function bestSale(planet, cid) {
-  const buy = price(planet, cid), here = G.state.systemId;
-  if (buy === null) return null;
-  let best = null;
-  for (const [sid, sys] of Object.entries(SYSTEMS)) {
-    if (!inRange(here, sid)) continue;
-    const days = sid === here ? 0 : travelDays(here, sid);
-    for (const pl of sys.planets) {
-      const sell = price(pl, cid);
-      if (pl === planet || sell === null || sell <= buy) continue;
-      const score = (sell - buy) / Math.max(1, days);
-      if (!best || score > best.score) best = { planet: pl, days, profit: sell - buy, score };
-    }
-  }
-  return best;
-}
 
 // ---------- persistence ----------
 
