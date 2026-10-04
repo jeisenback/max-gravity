@@ -272,10 +272,11 @@ function transitSeconds(days) {
 
 function enterTransit() {
   const st = G.state, to = st.dest;
-  const days = travelDays(st.systemId, to), total = transitSeconds(days), fuelCost = burnFuel(st.systemId, to);
+  const iceRun = !!(hired() && hired().run && hired().run.ice);  // the long run out to the ice and back (icerun.js)
+  const days = iceRun ? iceDays(travelDays(st.systemId, to)) : travelDays(st.systemId, to), total = transitSeconds(days), fuelCost = burnFuel(st.systemId, to);
   st.fuel -= fuelCost;
   st.dest = null;
-  const count = 1 + Math.floor(total / 40);  // 2 to 4 happenings per burn
+  const count = Math.max(iceRun ? 5 : 0, 1 + Math.floor(total / 40));  // 2 to 4 happenings per burn
   G.transit = {
     to, days, total, fuelCost, left: total, event: null, comms: [], seen: [], flipped: false, angle: -Math.PI / 2,
     times: Array.from({ length: count }, (_, i) => total * (i + rand(0.3, 0.8)) / count),

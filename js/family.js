@@ -226,9 +226,11 @@ function planOccasions() {
     }
   }
   t.occasions = out.map(o => ({ ...o, at: (o.day - st.day - 0.5) / t.days }));
+  if (hired() && hired().run && hired().run.ice) ICE_AT.forEach((at, stage) => t.occasions.push({ kind: 'ice', stage, at }));  // the ice run's three scenes (icerun.js)
 }
 
 function occasionEvent(o) {
+  if (o.kind === 'ice') return iceStageScene(o.stage);
   const p = person(o.id), n = p.first, st = G.state;
   const all = () => folk();
   const warm = (x, text) => () => { for (const [a, b] of pairs(all())) addBond(a, b, x); return text; };
