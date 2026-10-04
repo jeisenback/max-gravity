@@ -6,7 +6,7 @@
 // how far they trust you and what you know, and a roll. If they agree the run is set to that port (a light run if nothing there pays);
 // if not, the job waits. At the far end the job plays like a station job (jobs.js): checks, danger, and your own pay. Loaded after jobs.js.
 
-const AWAY_MAX = 2, AWAY_CHANCE = 0.5, PITCH_BASE = 0.35;
+const AWAY_MAX = 2, AWAY_CHANCE = 0.5, PITCH_BASE = 0.35, AWAY_NEAR_DAYS = 6;  // work is offered at ports a few days out, when there are any
 
 const AWAY = [
   { id: 'package', title: 'A Package for {dest}', blurb: '{who} has a sealed package for a contact on {dest}, and does not trust the post.',
@@ -23,7 +23,7 @@ const AWAY = [
         ] },
       { text: 'The woman at the grocery stall wraps the package in a cloth. "{who} said you would be careful," she says. "I would like to say thank you in a way that costs something."',
         choices: [
-          { label: 'Take the extra credits (220 cr)', win: { text: 'She counts it out into your palm from a tin of coins. You take it. It is a small, honest pleasure.', pay: 220 } },
+          { label: 'Take the extra credits ', win: { text: 'She counts it out into your palm from a tin of coins. You take it. It is a small, honest pleasure.', pay: 220 } },
           { label: 'Take a name for the next time', win: { text: 'She writes it on a scrap, and a street, and a time of day. "Tell them I sent you," she says. It is not cash, but you will not forget where it leads.', rep: 3 } },
         ] },
     ] },
@@ -41,7 +41,7 @@ const AWAY = [
         ] },
       { text: 'When the drive is running he walks you to the ramp. "I cannot pay you what it was worth," he says. "I can give you a berth on her any time you want one, if she is still flying. Or I can give you this."',
         choices: [
-          { label: 'Take the credits (330 cr)', win: { text: 'He puts it into your hand and closes your fingers over it. "It is what I have," he says. It is enough.', pay: 330 } },
+          { label: 'Take the credits ', win: { text: 'He puts it into your hand and closes your fingers over it. "It is what I have," he says. It is enough.', pay: 330 } },
           { label: 'Take the offer of a berth', win: { text: 'He shakes your hand on it. You cannot spend it, and you do not need to. A hauler\'s captain with a standing offer is worth more on the lanes than the credits would have been.', rep: 4 } },
         ] },
     ] },
@@ -71,11 +71,11 @@ const WHO = ['Mrs. Adeyemi', 'Old Tomas Reyes', 'Janek at the noodle counter', '
 function awayOffer() {
   const h = hired(), st = G.state, reach = Object.keys(SYSTEMS).filter(id => id !== st.systemId && inRange(st.systemId, id));
   if (!reach.length) return null;
-  const sid = pick(reach), dest = pick(SYSTEMS[sid].planets.filter(p => p.services.includes('trade') || p.services.includes('missions')) || SYSTEMS[sid].planets);
+  const near = reach.filter(id => travelDays(st.systemId, id) <= AWAY_NEAR_DAYS), sid = pick(near.length ? near : reach), dest = pick(SYSTEMS[sid].planets.filter(p => p.services.includes('trade') || p.services.includes('missions')) || SYSTEMS[sid].planets);
   const tpl = pick(AWAY.filter(t => !(h.away || []).some(a => a.tpl === t.id)) || AWAY);
   if (!tpl || !dest) return null;
   const days = Math.max(1, travelDays(st.systemId, sid));
-  return { tpl: tpl.id, ctx: { dest: dest.name, from: st.planet, who: pick(WHO), system: SYSTEMS[sid].name }, sid, planet: dest.name, days, until: st.day + days * 2 + 14, pitched: null, booked: false };
+  return { tpl: tpl.id, ctx: { dest: dest.name, from: st.planet, who: pick(WHO), system: SYSTEMS[sid].name, scale: Math.max(0.8, Math.min(1.6, days / 4)) }, sid, planet: dest.name, days, until: st.day + days * 2 + 14, pitched: null, booked: false };
 }
 const awayJob = a => AWAY.find(t => t.id === a.tpl);
 

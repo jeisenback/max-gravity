@@ -91,10 +91,10 @@ const jobBoard = () => {
 };
 
 // ---------- playing one ----------
-function applyJob(o) {
+function applyJob(o, scale = 1) {
   const st = G.state, h = hired(), cap = hiredCaptain();
   const bits = [];
-  if (o.pay) { st.credits += o.pay; bits.push(`+${fmt(o.pay)} cr`); }
+  if (o.pay) { const pay = Math.round(o.pay * scale / 10) * 10; st.credits += pay; bits.push(`+${fmt(pay)} cr`); }  // work further away pays more (ctx.scale)
   if (o.cost) { st.credits = Math.max(0, st.credits - o.cost); bits.push(`-${fmt(o.cost)} cr`); }
   if (o.xp) gainSkill(o.xp, 2);
   if (o.rep) changeRep(localGov(), o.rep);
@@ -109,7 +109,7 @@ function jobStage(job, i, ctx = {}) {
       const odds = c.check ? jobOdds(c.check) : 1, tag = c.check ? ` [${POSTS[c.check.post].name}, ${jobOddsWord(odds)}]` : '';
       return { label: fill(`${c.label}${tag}`), run() {
         const won = !c.check || Math.random() < odds, o = won ? c.win : (c.lose || c.win);
-        const text = fill(applyJob(o));
+        const text = fill(applyJob(o, ctx.scale || 1));
         if (won && o.next !== undefined && job.stages[o.next]) G.nextEvent = jobStage(job, o.next, ctx);
         else { repairDays(JOB_DAYS); }
         return text;
