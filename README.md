@@ -99,7 +99,7 @@ On a keyboard:
 ## Layout
 
 - `js/data.js` - commodities, ships, outfits, locations, and bodies (factions and names are original stand-ins; rename freely)
-- `js/util.js` - the small pure helpers every system uses: random picks, distance, number formatting, angles and a string hash
+- `js/util.js` - the small pure helpers every system uses: distance, number formatting, angles and a string hash (the random helpers stay in `js/game.js`)
 - `js/orbits.js` - where every place is on a day, and the days and reaction mass a burn costs; pure, so it is tested in plain Node (`tests/orbits.test.js`)
 - `js/market.js` - prices, market pressure, trades and the best place to sell; pure, so it is tested in plain Node (`tests/market.test.js`)
 - `js/game.js` - game state, flight physics, AI, combat, burns, rendering, and input

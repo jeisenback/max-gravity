@@ -37,6 +37,9 @@ const G = {
 
 // ---------- helpers ----------
 
+const rand = (a, b) => a + Math.random() * (b - a);
+const randInt = (a, b) => Math.floor(rand(a, b + 1));
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
 const system = (id = G.state.systemId) => SYSTEMS[id];
 const ship = () => shipStats(G.state.shipId);  // the player's ship, outfits included
 const statsOf = o => (o === G.player ? ship() : SHIPS[o.shipId]);
