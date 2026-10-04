@@ -507,7 +507,7 @@ test('at the bar a hand cannot offer passage, because the berths are the captain
   const { ev, done } = await open();
   await ev(hiredHelpers);
   const r = await ev(() => {
-    const talk = () => { const p = makePerson('earth'); p.goal = 'home'; p.traits = ['pious', 'kind']; registerPerson(p); return talkEvent({ p, known: false }).choices.map(c => c.label); };
+    const talk = () => { const p = makePerson('earth'); p.goal = 'home'; p.traits = ['pious', 'kind']; registerPerson(p); const seen = new Set(); for (let i = 0; i < 30; i++) talkEvent({ p, known: false }).choices.forEach(c => seen.add(c.label)); return [...seen]; };  // the menu rotates: look at several
     startHired(); const hand = talk();
     startGame({ slot: 1, background: 'earth', captain: 'Ines Okafor' }); while (G.dialog) finishEvent(); G.state.tutorial = null;
     return { hand, owner: talk() };
