@@ -150,14 +150,14 @@ function warBonds() {
 // Crew who could go: a member or an officer of a side at war, who is not a main character, and not asked this war already.
 function warCallable() {
   const st = G.state, w = factionState().war;
-  if (!w) return [];
+  if (!w || (st.warCalled || {}).last > st.day - 15) return [];  // one at a time, and not back to back
   return st.crew.map(person).filter(p => p && !p.cast && warSide(p, w) && ['member', 'officer'].includes(tiesOf(p).status[warSide(p, w)]) && (st.warCalled || {})[p.id] !== w.start);
 }
 
 function warCallScene(planet) {
   const st = G.state, w = factionState().war, p = warCallable()[0];
   if (!p) return null;
-  (st.warCalled = st.warCalled || {})[p.id] = w.start;
+  (st.warCalled = st.warCalled || {})[p.id] = w.start; st.warCalled.last = st.day;
   const side = warSide(p, w), foe = side === w.a ? w.b : w.a, n = p.first, officer = tiesOf(p).status[side] === 'officer', cap = person(hired().captain);
   const choices = [{ label: `Let ${n} go`, run() {
     like(p, officer ? 1 : 2, `You let me go when ${shortFaction(side)} went to war.`); if (officer) changeRep(side, 3);

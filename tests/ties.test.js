@@ -192,11 +192,11 @@ test('a war puts the two sides at odds and each side together, once, and the cal
     out.apart = bond(f(e1), f(m1)); out.together = bond(f(e1), f(e2));
     out.offered = port() === n0 + 1;
     const sc = warCallScene(planet);
-    out.title = sc.title; out.labels = sc.choices.map(c => c.label); out.once = warCallScene(planet) && true;
+    out.title = sc.title; out.labels = sc.choices.map(c => c.label); out.next = warCallScene(planet); st.day += 16; out.later = !!warCallScene(planet);
     return out;
   });
   assert.equal(r.apart, -2); assert.equal(r.together, 1); assert.ok(r.offered); assert.equal(r.title, 'Word From Home');
-  assert.ok(r.labels[0].startsWith('Let ') && r.labels[1].startsWith('Ask '));
+  assert.ok(r.labels[0].startsWith('Let ') && r.labels[1].startsWith('Ask ')); assert.equal(r.next, null, 'not back to back'); assert.ok(r.later, 'and the next person fifteen days on');
   await done();
 });
 
