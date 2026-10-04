@@ -176,3 +176,67 @@ test('a patrol stops a burn for the crew it wants, an officer of theirs can answ
   assert.ok(r.hand >= 0 && r.left && r.sameCrew, 'handed over: gone, and a replacement signs on');
   await done();
 });
+
+test('a war puts the two sides at odds and each side together, once, and the call home is a scene at the next port', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = start(), planet = currentPlanet(), out = {};
+    st.crew = []; st.bonds = {};
+    const e1 = find(t => t.aff === 'Earth Coalition' && t.status['Earth Coalition'] === 'member'), e2 = find(t => t.aff === 'Earth Coalition' && t.status['Earth Coalition'] === 'member'), m1 = find(t => t.aff === 'Mars Republic' && t.status['Mars Republic'] === 'member');
+    const port = () => Mods.filter('happenings', [], 'port', planet).filter(c => c.tier === 1).length;
+    const n0 = port();
+    factionState().war = { a: 'Earth Coalition', b: 'Mars Republic', start: st.day, until: st.day + 40, score: { 'Earth Coalition': 0, 'Mars Republic': 0 } };
+    warBonds(); warBonds();  // once
+    const f = x => ({ id: x.id, p: x });
+    out.apart = bond(f(e1), f(m1)); out.together = bond(f(e1), f(e2));
+    out.offered = port() === n0 + 1;
+    const sc = warCallScene(planet);
+    out.title = sc.title; out.labels = sc.choices.map(c => c.label); out.once = warCallScene(planet) && true;
+    return out;
+  });
+  assert.equal(r.apart, -2); assert.equal(r.together, 1); assert.ok(r.offered); assert.equal(r.title, 'Word From Home');
+  assert.ok(r.labels[0].startsWith('Let ') && r.labels[1].startsWith('Ask '));
+  await done();
+});
+
+test('a member who asks for leave goes if you let them, or stays if they like you, and an officer who is recalled is yours to release or refuse', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = start(), planet = currentPlanet(), out = {};
+    const war = () => { factionState().war = { a: 'Earth Coalition', b: 'Mars Republic', start: st.day, until: st.day + 40, score: { 'Earth Coalition': 0, 'Mars Republic': 0 } }; };
+    const go = (sc, re) => { G.dialog = { event: sc, choices: sc.choices }; return chooseEvent(sc.choices.findIndex(c => re.test(c.label))); };
+    // a member, let go
+    st.crew = []; war();
+    let m = find(t => t.aff === 'Earth Coalition' && t.status['Earth Coalition'] === 'member'), op = m.opinion, n = st.crew.length;
+    let t = go(warCallScene(planet), /^Let /);
+    out.go = { left: !st.crew.includes(m.id), same: st.crew.length === n, liked: m.opinion - op, text: /signs on/.test(t) };
+    // a member who likes you, asked to stay
+    st.crew = []; st.warCalled = {}; war();
+    m = find(t => t.aff === 'Earth Coalition' && t.status['Earth Coalition'] === 'member'); m.opinion = 3; op = m.opinion;
+    t = go(warCallScene(planet), /^Ask /);
+    out.stay = { here: st.crew.includes(m.id), liked: m.opinion - op };
+    // one who does not, asked to stay, goes anyway and minds
+    st.crew = []; st.warCalled = {}; war();
+    m = find(t => t.aff === 'Earth Coalition' && t.status['Earth Coalition'] === 'member'); m.opinion = -1; op = m.opinion;
+    t = go(warCallScene(planet), /^Ask /);
+    out.minds = { left: !st.crew.includes(m.id), liked: m.opinion - op };
+    // an officer, refused
+    st.crew = []; st.warCalled = {}; war(); const before = repOf('Earth Coalition');
+    m = find(t => t.aff === 'Earth Coalition' && t.status['Earth Coalition'] === 'officer'); op = m.opinion;
+    const sc = warCallScene(planet); out.officerLabels = sc.choices.map(c => c.label);
+    t = go(sc, /^Refuse /);
+    out.refused = { here: st.crew.includes(m.id), liked: m.opinion - op, rep: repOf('Earth Coalition') - before };
+    // an officer, released: the faction thanks you
+    st.crew = []; st.warCalled = {}; war(); const b2 = repOf('Earth Coalition');
+    m = find(t => t.aff === 'Earth Coalition' && t.status['Earth Coalition'] === 'officer');
+    go(warCallScene(planet), /^Let /); out.released = { left: !st.crew.includes(m.id), rep: repOf('Earth Coalition') - b2 };
+    return out;
+  });
+  assert.deepEqual(r.go, { left: true, same: true, liked: 2, text: true });
+  assert.deepEqual(r.stay, { here: true, liked: 1 }); assert.deepEqual(r.minds, { left: true, liked: -2 });
+  assert.deepEqual(r.officerLabels.map(l => l.split(' ')[0]), ['Let', 'Refuse']);
+  assert.deepEqual(r.refused, { here: true, liked: -4, rep: -4 });  // -3 for the refusal, and -1 more because they love the faction you have just set yourself against (crewReacts) assert.deepEqual(r.released, { left: true, rep: 3 });
+  await done();
+});
