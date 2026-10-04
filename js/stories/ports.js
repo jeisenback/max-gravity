@@ -8,7 +8,7 @@
 Mods.register({
   id: 'ports', name: 'Port scenes', builtin: true,
   init(M) {
-    const scene = (def, chance = 0.12) => M.addStorylet({ where: 'port', priority: -1, once: false, every: 40, via: 'station', ...def, when: { day: 3, hired: true, ...def.when, chance } });
+    const scene = (def, chance = 0.25) => M.addStorylet({ where: 'port', priority: -1, once: false, every: 25, via: 'station', ...def, when: { day: 3, hired: true, ...def.when, chance } });
 
     // ---------- Mars: domes, dust and a long argument about the sky ----------
     scene({
@@ -69,7 +69,7 @@ Mods.register({
         { label: 'Buy one tomato and eat it standing there (5 cr)', when: { credits: 5 }, effects: { credits: -5 }, result: 'It is warm from the sun, in a dome, under Jupiter, and it is the best thing you have eaten in a year. The woman nods as if you had passed.' },
         { label: 'Haggle', effects: { learn: 1 }, result: 'You haggle for twenty minutes, with a great deal of noise on both sides and no purchase at the end. The woman gives you a tomato anyway, for entertainment.' },
       ],
-    }, 0.1);
+    }, 0.2);
 
     // ---------- Hermes Foundry: heat, shifts and ice that costs more than the liquor ----------
     scene({
@@ -100,7 +100,7 @@ Mods.register({
         { label: 'Ask the kid how it is made', effects: { learn: 1 }, result: 'He tells you, at length, with gestures: the pour, the cooling, the way the color is the metal that was in the slag. He knows more about a foundry than anyone you have met this month.' },
         { label: 'Give him a coin and take nothing (5 cr)', when: { credits: 5 }, effects: { credits: -5}, result: 'He looks at the coin, and at you, and puts a piece of glass in your pocket when you turn away. You find it later, and smile.' },
       ],
-    }, 0.1);
+    }, 0.2);
 
     // ---------- Earth: the busiest sky there is ----------
     scene({
@@ -120,7 +120,7 @@ Mods.register({
         { label: 'Walk the row', effects: { learn: 1 }, result: 'You walk the whole row, and you look at everything: the keels, the plating, a drive being lowered into a hull by a crane with a man on top shouting at it. It is the nearest this port has to a church.' },
         { label: 'Go back to the ship', result: 'There is a ship to see to, and you see to it. Behind you the row goes on building the ships of other people.' },
       ],
-    }, 0.1);
+    }, 0.2);
 
     // ---------- Ceres Station: ice, rock and a very long dock ----------
     scene({
@@ -139,7 +139,7 @@ Mods.register({
         { label: 'Talk to her', effects: { like: { crew: 1 }, learn: 1 }, result: 'You talk about nothing in particular: the food, the runs, the way a floor feels. She says it is the floor. After a while she laughs, and the crying stops, and you both finish your laps.' },
         { label: 'Give her the space', result: 'You finish your laps without a word, and so does she. When you leave, she lifts a hand, which is enough.' },
       ],
-    }, 0.1);
+    }, 0.2);
 
     // ---------- Juno Commons: small, quiet, and everyone knows everyone ----------
     scene({
@@ -160,6 +160,6 @@ Mods.register({
         { label: 'Haggle him down', effects: { learn: 1 }, result: 'You haggle, and he gives way faster than a man with that much on his hands should. You come away with a sack for almost nothing, and a feeling you were allowed to win.' },
         { label: 'Walk on', result: 'The price is still falling when you reach the gate, and you hear it fall again behind you.' },
       ],
-    }, 0.1);
+    }, 0.2);
   },
 });
