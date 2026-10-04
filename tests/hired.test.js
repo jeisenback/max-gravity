@@ -292,10 +292,12 @@ test('buying in: a ship of your own, one friend, and the captain as a contact', 
   const price = await ev(() => SHIPS.shuttle.price);
   assert.equal(await page.$$eval('[data-action=buyInAsk]:not([disabled])', b => b.length), 1, 'only the ship you can afford');
   await page.click('[data-action=buyInAsk]:not([disabled])');
+  await ev(() => { chooseEvent(0); finishEvent(); UI.render(); });  // the yard office: pay the asking price
   assert.match(await page.innerText('#panel'), /would come with you/);
   await page.click('[data-action=buyInNo]');
   assert.ok(await ev(() => !!G.state.hired), 'not yet is not yet');
   await page.click('[data-action=buyInAsk]:not([disabled])');
+  await ev(() => { chooseEvent(0); finishEvent(); UI.render(); });
   await page.click('[data-action=buyInGo]');
   const r = await ev(() => {
     const st = G.state, cap = Object.values(st.people).find(p => p.role === 'captain');
