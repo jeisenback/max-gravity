@@ -238,7 +238,8 @@ function settleRun(planet) {
     h.fund += revenue;
   }
   const profit = revenue - run.cost, days = Math.max(1, st.day - run.day);
-  const wage = Math.round(h.wage * days * (run.ice ? ICE_HAZARD : 1) * (handHurt() ? LIGHT_DUTY : 1)), share = profit > 0 ? Math.round(profit * h.share) : 0;  // the long run pays double the wage
+  const wage = Math.round(h.wage * days * (run.ice ? ICE_HAZARD : 1) * (handHurt() ? LIGHT_DUTY : 1)), owed = Math.min(h.bill || 0, Math.max(0, profit)), share = profit > 0 ? Math.round((profit - owed) * h.share) : 0;  // the yard bill (repairs.js) comes out of the profit first
+  h.bill = Math.max(0, (h.bill || 0) - owed);  // (the long run pays double the wage, above)
   st.credits += wage + share;
   const total = runTotals(h);
   h.runsDone = total.runs + 1; h.earnedTotal = total.earned + wage + share;  // the ledger keeps the last 20; these keep the whole chapter
@@ -249,7 +250,7 @@ function settleRun(planet) {
   gainSkill(h.post, 2);  // a burn worked
   like(st.people[h.captain], profit > 0 ? 1 : -1, profit > 0 ? 'Good run. You pull your weight.' : 'That run lost money.');
   const name = run.good ? COMMODITIES.find(c => c.id === run.good).name : null;
-  return `${name ? `The captain sold ${sold}t of ${name} for ${fmt(revenue)} cr (${profit >= 0 ? `profit ${fmt(profit)}` : `loss ${fmt(-profit)}`} cr). ` : 'A run with no cargo. '}Your pay: ${fmt(wage)} cr wage${share ? ` and ${fmt(share)} cr share` : ''}.`;
+  return `${name ? `The captain sold ${sold}t of ${name} for ${fmt(revenue)} cr (${profit >= 0 ? `profit ${fmt(profit)}` : `loss ${fmt(-profit)}`} cr). ` : 'A run with no cargo. '}Your pay: ${fmt(wage)} cr wage${share ? ` and ${fmt(share)} cr share` : ''}.${owed ? ` The yard bill took ${fmt(owed)} cr of the profit first.` : ''}`;
 }
 
 // ---------- errands ----------
@@ -479,7 +480,8 @@ Mods.register({
     // The captain pays for fuel and repairs: a hired ship is topped up whenever she docks somewhere that sells them.
     M.on('landed', planet => {
       if (!hired() || !planet.services.includes('refuel')) return;
-      G.state.fuel = ship().fuel; G.state.armor = ship().armor;
+      G.state.fuel = ship().fuel;
+      if (G.state.armor >= ship().armor * (1 - REPAIR_AT)) G.state.armor = ship().armor;  // a scrape is patched on the way in; real damage is the yard's (repairs.js)
     });
     M.on('landed', planet => { const text = hired() && settleRun(planet); if (text) M.note(text); });
     M.on('landed', planet => dealCheck(planet));
