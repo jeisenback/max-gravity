@@ -18,7 +18,7 @@ const helpers = () => {
   window.take = (sc, re) => { G.dialog = { event: sc, choices: sc.choices }; return chooseEvent(sc.choices.findIndex(c => re.test(c.label))); };
 };
 
-test('the planner takes an ice run when water is dear, the hold is free, and one is due; and then not for thirty days', async () => {
+test('the planner takes an ice run when water is dear, the hold is free, and one is due; and then not until the gap is up', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
@@ -27,8 +27,8 @@ test('the planner takes an ice run when water is dear, the hold is free, and one
     const o = iceOption(here, st.systemId, reach, 40); out.opt = o && { ice: o.ice, good: o.good, cost: o.cost, tons: o.tons, longRun: o.days >= 8, sid: o.sid };
     window.price = () => 50; out.cheap = iceOption(here, st.systemId, reach, 40);
     window.price = () => 120; out.full = iceOption(here, st.systemId, reach, 5);
-    h.iceAt = st.day - 10; out.soon = iceOption(here, st.systemId, reach, 40);
-    h.iceAt = st.day - 31; out.later = !!iceOption(here, st.systemId, reach, 40);
+    h.iceAt = st.day - ICE_GAP / 2; out.soon = iceOption(here, st.systemId, reach, 40);
+    h.iceAt = st.day - ICE_GAP - 1; out.later = !!iceOption(here, st.systemId, reach, 40);
     h.iceAt = undefined; h.since = st.day - 3; out.green = iceOption(here, st.systemId, reach, 40);  // not in the first days aboard
     window.price = real;
     return out;
