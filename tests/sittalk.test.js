@@ -76,3 +76,27 @@ test('a war, a grudge, a close friend, or something you did last time each give 
   assert.ok(r.grudge && r.close); assert.equal(r.noWar, false); assert.ok(r.war); assert.ok(r.mem); assert.equal(r.memLiked, 1);
   await done();
 });
+
+test('someone in a bad way is talked to about it first, once, and then their story goes on where it was', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const { st, p } = setup(), out = {}, s = storyOf(p);
+    s.beat = 0;  // the first stage of the story is due
+    p.mood = { kind: 'low', until: st.day + 30, text: 'their brother lost the flat' };
+    const first = sitBeat(p, true); out.first = /the news: their brother lost the flat/.test(first.text); out.beat1 = s.beat;
+    const second = sitBeat(p, true); out.second = /tells you about/.test(second.text);  // the arc, not the same talk again
+    out.keyed = p.pressed;
+    p.mood = { kind: 'low', until: st.day + 30, text: 'their mother is ill' };  // a new letter, a new talk
+    out.again = /their mother is ill/.test(sitBeat(p, true).text);
+    p.mood = null; p.pressed = 'x'; sitBeat(p, true); out.cleared = p.pressed === null;
+    // an injury, likewise
+    p.memories = []; s.beat = 1; (st.injured = st.injured || {})[p.id] = true;
+    out.hurtFirst = /favoring one side/.test(sitBeat(p, true).text);
+    out.hurtThen = /small worn picture/.test(sitBeat(p, true).text);  // beat 1, the photograph
+    return out;
+  });
+  assert.ok(r.first); assert.equal(r.beat1, 0, 'the story did not move'); assert.ok(r.second); assert.equal(r.keyed, 'mood:their brother lost the flat');
+  assert.ok(r.again); assert.ok(r.cleared); assert.ok(r.hurtFirst); assert.ok(r.hurtThen);
+  await done();
+});

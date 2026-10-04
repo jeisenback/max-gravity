@@ -72,12 +72,12 @@ const TALK_IDLE = {
 function talkTopics(p) {
   const st = G.state, n = p.first, out = [];
   const lift = (x, memory, text) => ({ run() { like(p, x, memory); if (moodLow(p)) p.mood.until -= x * 3; return text; } });
-  if (moodLow(p)) out.push({ open: `${n} is quiet, and has been since ${p.mood.text ? `the news: ${p.mood.text}` : 'the last message from home'}. A mug sits in front of them, untouched.`, choices: [
+  if (moodLow(p)) out.push({ pressing: true, open: `${n} is quiet, and has been since ${p.mood.text ? `the news: ${p.mood.text}` : 'the last message from home'}. A mug sits in front of them, untouched.`, choices: [
     { label: 'Let them talk', ...lift(1, 'You sat with me while I was having a hard time.', `You say nothing, and ${n} talks, in pieces, about ${missed(p)}, and what they cannot do from here. By the end the mug is empty. They look lighter, and a little embarrassed about it.`) },
     { label: 'Offer to take a watch off them', ...lift(2, 'You offered to cover for me when I was having a hard time.', `${n} starts to say no, and then does not. "Just the one," ${n} says. It is the first time they have smiled in days.`) },
     { label: '"It will pass."', ...lift(0, null, `${n} nods. "It does," they say. "It just takes its time." You both drink your coffee.`) },
   ] });
-  if ((st.injured || {})[p.id]) out.push({ open: `${n} is favoring one side, and has been all watch. They have not asked for anything, and they have not sat down properly in two days.`, choices: [
+  if ((st.injured || {})[p.id]) out.push({ pressing: true, open: `${n} is favoring one side, and has been all watch. They have not asked for anything, and they have not sat down properly in two days.`, choices: [
     { label: 'Ask how it is', ...lift(1, 'You asked how I was, and meant it.', `"It is fine," ${n} says, and then, when you wait, "It is not fine. It is getting better." You nod, and that is enough.`) },
     { label: 'Tell them to rest', ...lift(1, 'You told me to rest, and I did.', `${n} argues for a minute and then goes to their bunk. You can hear them let out a long breath through the bulkhead.`) },
   ] });
@@ -117,6 +117,13 @@ function ordinaryTalk(p) {
 
 function sitBeat(p, isCrew) {
   const s = storyOf(p), st = G.state, n = p.first;
+  // Someone in a bad way (a letter that hurt, an injury) is talked to about that first, once, and then the story goes on where it was.
+  const pressKey = moodLow(p) ? `mood:${p.mood.text || p.mood.kind}` : (st.injured || {})[p.id] ? 'hurt' : null;
+  if (!pressKey) p.pressed = null;
+  else if (p.pressed !== pressKey) {
+    const t = talkTopics(p).find(x => x.pressing);
+    if (t) { p.pressed = pressKey; return { title: `With ${n}`, text: t.open, choices: t.choices }; }
+  }
   // `result` is what happens after: a line, or a list to pick from.
   const talk = (label, likeBy, result, extra) => ({ label, run() {
     like(p, likeBy, null); s.beat++; if (extra) extra();
