@@ -1,21 +1,24 @@
 'use strict';
 
-// Authored engagements for a hired hand, in place of the card duel (duel.js) when pirates make contact: a raid, in beats (and, when it goes all your way, boarding her).
+// Authored engagements for a hired hand, in place of the card duel (duel.js) when pirates or a hostile patrol make contact: a raid, in beats (and, when it goes all your way, boarding her).
 // The closing, two passes, and the close. At each beat you choose how to meet her, or do the job of your own post. Every
 // choice is a chance of going your way (+1 or +2) or hers (-1 or -2) on one running count, the position, and a lost one can
 // cost hull or hurt someone. How the position stands at the close decides it: she breaks off, she stands off and throws a
 // last round, or she is alongside and the fight goes to the lock (boarders.js). A corsair fights with torpedoes and a raider
 // with grapples, and the beats read differently for each. Loaded after boarders.js; only called into at runtime.
 
-const RAID_STYLE = { raider: 'grapple', corsair: 'torpedo' };
+const RAID_STYLE = { raider: 'grapple', corsair: 'torpedo', cutter: 'gun', destroyer: 'gun' };  // a patrol fights with guns
 
 const RAID_OPEN = {
+  gun: ['The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there would not be a third. She is on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine.',
+    'A patrol destroyer, or a cutter that thinks it is one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.'],
   grapple: ['She is at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody\'s boots.',
     'The plume is a raider\'s: short, white, hot. She is matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.'],
   torpedo: ['She is a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and does not hurry.',
     'A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.'],
 };
 const RAID_PASS = {
+  gun: ['She crosses your bow at two kilometers and her turret tracks you the whole way, and then she comes about and does it again with the guns hot.', 'She comes round for a second pass, and this time she does not bother with the transponder challenge. Her turret is already laid.'],
   grapple: ['She comes in for a gun run across the bow, close enough to count the weld seams on her hull, with her grapple arms out.', 'She makes a second pass, closer than the first, and the grapple arms are open.'],
   torpedo: ['A torpedo leaves her bay, a bright dot on the board that grows.', 'She has a second one in the tube. On the sensors the loader arm is moving.'],
 };
@@ -33,11 +36,11 @@ const RAID_CLOSING = [
 ];
 const RAID_EXCHANGE = [
   { id: 'screen', label: 'Fire the point defense', odds: st => (st === 'torpedo' ? 0.75 : 0.6),
-    win: { grapple: [1, 0, 'The point defense put a curtain of rounds across her approach. She breaks off the run with her grapple arms still folded.'], torpedo: [1, 0, 'The point defense take the torpedo at three kilometers, and the flash is white on the screens.'] },
-    lose: { grapple: [-1, 0.12, 'Her burst goes through the screen and the hull rings in three places.'], torpedo: [-1, 0.12, 'The torpedo comes through the screen and bursts close. The deck bucks and every light flickers.'] } },
+    win: { grapple: [1, 0, 'The point defense put a curtain of rounds across her approach. She breaks off the run with her grapple arms still folded.'], torpedo: [1, 0, 'The point defense take the torpedo at three kilometers, and the flash is white on the screens.'], gun: [1, 0, 'The point defense throw a curtain across her line, and her turret has to track through it. The burst goes wide.'] },
+    lose: { grapple: [-1, 0.12, 'Her burst goes through the screen and the hull rings in three places.'], torpedo: [-1, 0.12, 'The torpedo comes through the screen and bursts close. The deck bucks and every light flickers.'], gun: [-1, 0.12, 'Her burst goes through the screen. It is a patrol gun, and it is accurate. The hull rings in three places.'] } },
   { id: 'burn', label: 'Burn evasive', odds: st => (st === 'torpedo' ? 0.5 : 0.7),
-    win: { grapple: [1, 0, 'You throw the ship sideways. Her burst goes through the place you were.'], torpedo: [1, 0, 'The torpedo chases the plume and bursts well astern.'] },
-    lose: { grapple: [-1, 0.1, 'She is faster than the turn. The burst rakes your port side.'], torpedo: [-1, 0.1, 'The torpedo turns with you and bursts on the quarter.'] } },
+    win: { grapple: [1, 0, 'You throw the ship sideways. Her burst goes through the place you were.'], torpedo: [1, 0, 'The torpedo chases the plume and bursts well astern.'], gun: [1, 0, 'You throw the ship sideways and her burst goes through the place you were. She does not adjust fast enough.'] },
+    lose: { grapple: [-1, 0.1, 'She is faster than the turn. The burst rakes your port side.'], torpedo: [-1, 0.1, 'The torpedo turns with you and bursts on the quarter.'], gun: [-1, 0.1, 'She leads the turn and her burst takes you in it. Patrol gunners practise that exact one.'] } },
   { id: 'fire', label: 'Return fire', odds: () => 0.5,
     win: [2, 0, 'You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches.'],
     lose: [-1, 0, 'You fire and miss. The recoil costs you your own angle.'] },
@@ -58,10 +61,10 @@ const RAID_POST = {
   },
 };
 const RAID_CLOSE = {
-  off: { grapple: 'She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not.', torpedo: 'She does not fire the third torpedo. The bay doors close and she turns away, and the range opens.' },
-  crippled: { grapple: 'Your last burst takes her drive, and the plume goes out. She turns over and drifts, with the grapple arms hanging.', torpedo: 'Your last burst reaches her torpedo bay and not the torpedoes, which is lucky for everyone. Her plume goes out.' },
+  off: { gun: 'She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation.', grapple: 'She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not.', torpedo: 'She does not fire the third torpedo. The bay doors close and she turns away, and the range opens.' },
+  crippled: { gun: 'Your last burst takes her drive, and the cutter yaws and goes quiet. She will have a tow in a day. A beacon on her hull is already calling for it.', grapple: 'Your last burst takes her drive, and the plume goes out. She turns over and drifts, with the grapple arms hanging.', torpedo: 'Your last burst reaches her torpedo bay and not the torpedoes, which is lucky for everyone. Her plume goes out.' },
   standoff: 'She breaks off at long range, out of ammunition or out of patience, and throws one last burst as she goes. It clips the hull aft.',
-  boarded: { grapple: 'She is alongside. The grapples bang on the hull in four places and the lock alarm goes. They are coming aboard.', torpedo: 'A torpedo takes your drive housing and she closes while you are slow. The grapples bang on the hull, and the lock alarm goes.' },
+  boarded: { gun: 'She is alongside, and not with grapples: a boarding party in navy gray comes across with the lock cutter. They are coming aboard, by the book.', grapple: 'She is alongside. The grapples bang on the hull in four places and the lock alarm goes. They are coming aboard.', torpedo: 'A torpedo takes your drive housing and she closes while you are slow. The grapples bang on the hull, and the lock alarm goes.' },
 };
 
 // A crippled raider drifts beside you. Boarding her is the repel fight run the other way (boarders.js).
@@ -83,6 +86,7 @@ const raidPosition = s => (s.edge >= 1 ? 'ahead' : s.edge <= -1 ? 'behind' : 'ev
 function startRaid(spec, flee) {
   const st = G.state, foe = makeEnemy(spec), style = RAID_STYLE[foe.shipId] || 'grapple';
   const s = { spec, foe, style, edge: 0, beat: 0, hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0 };
+  if (spec.kind === 'patrol' && !flee) changeRep(spec.gov, -8);  // firing on a navy ship is not forgotten
   let text = `Battle stations. ${theShip(foe)} made the intercept.`;
   if (flee) {
     if (Math.random() < 0.4 + 0.12 * roleSkill('pilot')) return `${helmName()} winds the drive past the redline and opens the range. Their plume fades.`;
@@ -125,13 +129,13 @@ function raidStep(s, c, post) {
 // The close: broke off, stood off, or alongside.
 function raidClose(s) {
   const st = G.state, h = hired(), cap = person(h.captain), weak = st.armor <= ship().armor * 0.25;
-  if (s.edge >= 4 && !weak) {  // a clear win: her drive is gone and she drifts, and you can board her
+  if (s.edge >= 4 && !weak && s.spec.kind !== 'patrol') {  // a clear win: her drive is gone and she drifts, and you can board her
     G.nextEvent = deadInSpaceScene(s);
     return RAID_CLOSE.crippled[s.style];
   }
   if (s.edge >= 2 && !weak) {
     like(cap, 1, 'You stood us up to a raid and she broke off.');
-    changeRep('Pirate', -3);
+    if (s.spec.kind !== 'patrol') changeRep('Pirate', -3);
     gainSkill(h.post, 3);
     return `${RAID_CLOSE.off[s.style]} Captain ${cap.last} writes it in the log and nothing else. (+3 experience at the ${POSTS[h.post].name.toLowerCase()} post.)`;
   }

@@ -241,7 +241,11 @@ A decisive win (ahead by four or more) cripples her instead: she drifts, and you
 lock fight run the other way (her lock, her corridor, her bridge, with the same tactics and your post's job), and a win
 takes her strongbox for the ship's fund. Or let her drift, which is the same as breaking her off. Over 500 random-choice
 raids, about 1 in 10 cripple her, and a boarding is carried about three times in four.
-Other contacts (patrols, bounties, hunters) and an owner's fights are still the card duel above.
+A hostile patrol is the same beats with guns (a navy stop): firing on her costs 8 standing with her faction, a clear win only
+makes her break off with a warning (a navy ship is not boarded), and if she comes alongside her party is repelled the same
+way, with a levy on the ship's fund if the bridge is lost. A hired hand can also heave to and let the ship pay a quarter of
+its fund.
+Bounties, hunters and an owner's fights are still the card duel above.
 
 ## Open questions
 
