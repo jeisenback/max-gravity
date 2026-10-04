@@ -191,7 +191,7 @@ function ambushChoice(a, cap, h, post, spec) {
       return `You try, and the readings will not settle. The call keeps repeating, and you are no wiser.`;
     } });
   }
-  const scene = { title: 'Distress Call', personal: true, via: 'ship', owner: 'you', text: a.known ? (a.trap ? `You know what is out there. They have not lit their drives, and they do not know you know.` : `The readings are clean. She is real, and she is asking again.`) : `A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain ${cap.last} looks at the plot, then at the crew.`, choices };
+  const scene = { title: 'A Freighter in Trouble', personal: true, via: 'ship', owner: 'you', text: a.known ? (a.trap ? `You know what is out there. They have not lit their drives, and they do not know you know.` : `The readings are clean. She is real, and she is asking again.`) : `A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain ${cap.last} looks at the plot, then at the crew.`, choices };
   return scene;
 }
 

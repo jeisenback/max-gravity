@@ -177,7 +177,7 @@ test('she can be let drift instead: the same as breaking her off', async () => {
   await done();
 });
 
-test('a distress call is offered on a burn through unsettled space, and not again for sixty days', async () => {
+test('a freighter in trouble is offered on a burn through unsettled space, and not again for sixty days', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
@@ -203,7 +203,7 @@ test('answering a trap blind springs it, and you start the raid two behind', asy
     const t = chooseEvent(e.choices.findIndex(c => c.label === 'Go to her'));
     return { title: e.title, labels, sprung: /lights a drive/.test(t), next: G.nextEvent && G.nextEvent.title, behind: G.nextEvent && /Position: behind/.test(G.nextEvent.text), waiting: G.nextEvent && /waiting on the far side/.test(G.nextEvent.text) };
   });
-  assert.equal(r.title, 'Distress Call'); assert.deepEqual(r.labels, ['Go to her', 'Leave it', '[Pilot] Match her tumble']);
+  assert.equal(r.title, 'A Freighter in Trouble'); assert.deepEqual(r.labels, ['Go to her', 'Leave it', '[Pilot] Match her tumble']);
   assert.ok(r.sprung); assert.equal(r.next, 'The Closing'); assert.ok(r.behind && r.waiting);
   await done();
 });
