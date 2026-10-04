@@ -77,7 +77,7 @@ test('a crew member hurt twice in one fight is dead, and the berth is filled at 
   const r = await ev(() => {
     const st = fight(), d = G.duel, crew = generated(3), first = crew[0], n = st.crew.length;
     const s = repelStart(d, 'full');
-    rolls([0.99, 0.01, 0, 0.99, 0.01, 0]);  // fail, someone is hurt, the first of the pool; again
+    rolls([0.99, 0.01, 0, 0.99, 0.99, 0.01, 0]);  // fail, someone is hurt, the first of the pool, and not killed outright; again
     repelStep(s, 'post'); const afterOne = { injured: !!(st.injured || {})[first.id], here: st.crew.includes(first.id) };
     repelStep(s, 'post');
     const out = { afterOne, dead: !st.crew.includes(first.id), flagged: first.dead === true, fallen: (st.fallen || []).length, vacancy: (st.vacancies || []).length, size: st.crew.length === n - 1 };
@@ -98,7 +98,7 @@ test('a main character hurt twice is marked, not killed', async () => {
     const st = fight(), d = G.duel, ines = castPerson('ines');
     st.crew = [ines.id];
     const s = repelStart(d, 'full');
-    rolls([0.99, 0.01, 0, 0.99, 0.01, 0]);
+    rolls([0.99, 0.01, 0, 0.99, 0.99, 0.01, 0]);
     repelStep(s, 'post'); repelStep(s, 'post');
     return { here: st.crew.includes(ines.id), dead: castDead('ines'), marks: marksOf(ines).length };
   });

@@ -160,9 +160,13 @@ function repelCasualty(s) {
       s.marked.push(c);
       return `${c.first} is hit again and does not get up. ${c.first} is alive, and ${c.first} is not fit to work.`;
     }
-    killCrew(c);
+    loseCrew(c, `Killed repelling boarders near ${system().name}.`);
     s.dead.push(c);
     return `${c.first} is hit again and does not get up.`;
+  }
+  if (Math.random() < lossOdds(c, true)) {  // a hard hit that does not stop at hurt (losses.js)
+    if (loseCrew(c, `Killed repelling boarders near ${system().name}.`) === 'dead') { s.dead.push(c); return `${cover}${c.first} is hit, and does not get up, and will not.`; }
+    s.marked.push(c); return `${cover}${c.first} is hit, and carried below, and is alive, and is not fit to work.`;
   }
   (st.injured = st.injured || {})[who] = true;
   s.hurt.add(who);

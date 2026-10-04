@@ -62,14 +62,14 @@ function castShipLoss(cause) {
 // escaped here: the cause can carry the player's ship title, and an old or imported save carries whatever it carries.
 const marksOf = p => (p.cast && ((G.state.cast || {})[p.cast] || {}).marks) || [];
 const marksHtml = p => marksOf(p).map(m => `<div class="hint">Marked, ${esc(dateOf(m.day))}: ${esc(m.text)}</div>`).join('');
-const memorialName = key => (CAST[key] ? `${CAST[key].first} ${CAST[key].last}` : String(key));
+const memorialName = m => m.name || (CAST[m.key] ? `${CAST[m.key].first} ${CAST[m.key].last}` : String(m.key));
 function memorialHtml() {
   const list = G.state.memorial || [];
   if (!list.length) return '';
-  return `<h3>In memory</h3>${list.map(m => `<div class="hint"><b>${esc(memorialName(m.key))}</b>, ${esc(dateOf(m.day))}, ${esc(m.place)}: ${esc(m.cause)}</div>`).join('')}`;
+  return `<h3>In memory</h3>${list.map(m => `<div class="hint"><b>${esc(memorialName(m))}</b>, ${esc(dateOf(m.day))}, ${esc(m.place)}: ${esc(m.cause)}</div>`).join('')}`;
 }
 // For the goodbye: who flew with you and did not live to see it. Names are authored, not typed by the player.
 function memorialNote() {
-  const names = (G.state.memorial || []).map(m => memorialName(m.key));
+  const names = (G.state.memorial || []).map(m => memorialName(m));
   return names.length ? ` ${names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]} are` : `${names[0]} is`} not here to see it.` : '';
 }

@@ -25,12 +25,13 @@ function onDamage(o, shieldHit, byPlayer, hull) {
   if (o === G.player && hull > 0 && Math.random() < 0.04) hurtCrew();
 }
 
-function hurtCrew() {
+function hurtCrew(severe) {
   const healthy = G.state.crew.filter(id => !injured()[id]);
   if (!healthy.length) return null;
-  const id = pick(healthy);
+  const id = pick(healthy), who = person(id);
+  if (severe && hired() && Math.random() < lossOdds(who, true) && loseCrew(who, `Killed in an accident near ${system().name}.`) === 'dead') { msg(`${fullName(who)} is dead.`); return who; }
   injured()[id] = true;
-  const c = person(id);
+  const c = who;
   msg(`${fullName(c)} is hurt. Their ${ROLE_NAMES[c.role].toLowerCase()} work will suffer until they are treated.`);
   return c;
 }
