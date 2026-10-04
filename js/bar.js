@@ -192,74 +192,7 @@ function talkEvent(pat) {
       `${pick(OPENERS[t0])} It is ${p.first} ${p.last}, ${GOALS[p.goal]}: a ${p.job} from ${p.home}, and ${TRAITS[p.traits[1]].adj}, you would say, if you had to.`,
       `Somebody has taken the other stool. ${p.first} ${p.last} is a ${p.job} from ${p.home}, ${TRAITS[p.traits[0]].adj} and ${TRAITS[p.traits[1]].adj}, and ${GOALS[p.goal]}. ${pick(OPENERS[t0])}`,
     ][byName(p, 'intro', 3)];
-  const choices = [
-    { label: `Buy ${p.first} a drink (${DRINK} cr)`, can: () => st.credits >= DRINK && !pat.drank, run() {
-      pat.drank = true;
-      st.credits -= DRINK;
-      met(pat);
-      like(p, 1, `The captain bought me a drink at ${bar}.`);
-      if (p.secret && (p.traits.includes('talkative') || p.traits.includes('drunk') || Math.random() < 0.3)) return `${p.first} ${pick(SECRET_TALK[p.secret])}`;
-      if (Math.random() < 0.5) return `${p.first} looks around and leans in. "Here's something you can use," they say, low and fast: "${addRumor()}" Then they sit back and finish their drink. Neither of you speaks for the rest of the glass.`;
-      return barSays(barTrait('drink', p, BAR_DRINK_TALK), p);
-    } },
-    { label: 'Ask what they have heard', can: () => !pat.asked, run() {
-      pat.asked = true;
-      met(pat);
-      if (p.traits.includes('secretive')) return `"Nothing worth repeating," ${p.first} says, and smiles, and goes back to their drink. They do not look up again while you are there.`;
-      const aside = barSays(BAR_GOAL[p.goal] || '', p);
-      const heard = Math.random() < 0.6 ? `${p.first} thinks about it, then says: "${addRumor()}"` : `${p.first} laughs and leans back. "Did you hear? ${feedLine().replace('[Feed] ', '')}" They go on for twenty minutes.`;
-      return aside ? `${aside} ${heard}` : heard;
-    } },
-  ];
-  // A berth is the captain's to give, so a hand has none to offer.
-  if (!hired() && (!pat.known || p.opinion >= 0)) choices.push({ label: `Offer ${p.first} passage`, can: () => !pat.offered && berthsFree() > 0 && p.goal !== 'fresh', run() {
-    pat.offered = true;
-    met(pat);
-    const o = travelOffer(p);
-    if (!o) return `${p.first} counts on their fingers, then shakes their head. "Nowhere you can reach from here," they say. "Ask me again when you have a longer tank."`;
-    G.offers.unshift(o);
-    return `"${o.destPlanet}?" ${p.first} says. "That's where I need to be." They name a fair fare and shake on it with both hands. The job is on the mission board.`;
-  } });
-  choices.push({ label: `Play ${p.first} at cards (${CARDS} cr)`, can: () => st.credits >= CARDS && !pat.played, run() {
-    pat.played = true;
-    met(pat);
-    if (Math.random() < 0.5) {
-      st.credits += CARDS;
-      like(p, p.traits.includes('greedy') || p.traits.includes('rude') ? -1 : 0, 'The captain took my money at cards.');
-      return `${barSays(barTrait('win', p, BAR_CARD_WIN), p, { cr: fmt(CARDS) })} ${p.traits.includes('rude') ? `${p.first} stands up and says you cheated, loudly, and the whole bar turns to look. You leave them to it.` : pick([`${p.first} buys you a drink with your own money.`, `${p.first} shakes your hand and means it.`, `${p.first} tells the story of it to the next table, with you as the villain.`])}`;
-    }
-    st.credits -= CARDS;
-    like(p, 1, null);
-    return `${barSays(barTrait('lose', p, BAR_CARD_LOSE), p, { cr: fmt(CARDS) })} By the end of the glass you are laughing.${barTone(pat, p)}`;
-  } });
-  if (p.traits.includes('rude') && !pat.known) choices.push({ label: 'Tell them what you think of their manners', can: () => !pat.fought, run() {
-    pat.fought = true;
-    met(pat);
-    like(p, -2, 'The captain started a fight with me.');
-    if (roleSkill('gunner') || Math.random() < 0.4) return `It is short and loud. ${roleSkill('gunner') ? `${roleName('gunner')} steps in and ` : ''}${p.first} ends up on the floor, and the whole bar cheers. Someone starts a chant. The bartender charges you for the stool anyway.`;
-    st.credits = Math.max(0, st.credits - 150);
-    return `It is short, and it does not go your way. There is a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 150 cr bill for the mirror. The bartender is standing over you with a wet cloth. "You were doing so well," the bartender says.`;
-  } });
-  if (p.traits.includes('homesick')) choices.push({ label: `Ask about ${p.home}`, can: () => !pat.home, run() {
-    pat.home = true; met(pat); like(p, 2, `The captain let me talk about ${p.home}.`);
-    return barSays(pick(BAR_HOME_TALK), p);
-  } });
-  if (p.traits.includes('pious')) choices.push({ label: hired() ? 'Ask for a blessing on the ship' : 'Ask for a blessing on your ship', can: () => !pat.blessed, run() {
-    pat.blessed = true; met(pat); like(p, 1, 'I blessed the captain\'s ship.');
-    return barSays(pick(BAR_BLESS), p);
-  } });
-  if (pat.known && p.opinion <= OPINION.GRUDGE) choices.push({ label: 'Make peace (buy them a bottle, 300 cr)', can: () => st.credits >= 300 && !pat.peace, run() {
-    pat.peace = true; st.credits -= 300; like(p, 3, 'The captain bought me a bottle and apologized.');
-    return `${p.first} looks at the bottle a long time before taking it, turning it in the light to read the label. Then they set it between you on the table and pour two glasses. "It's a start," they say.`;
-  } });
-  // Two of three more things to do at a table, which two depends on the person, so the doors are not the same for everyone.
-  const more = [
-    { label: `Ask ${p.first} about their work`, can: () => !pat.work, run() { pat.work = true; met(pat); return barSays(pick(BAR_WORK[workGroup(p.job)]), p); } },
-    { label: `Sit with ${p.first} and say nothing`, can: () => !pat.quiet, run() { pat.quiet = true; met(pat); like(p, ['nervous', 'secretive', 'homesick', 'kind'].some(t => p.traits.includes(t)) ? 1 : 0, 'The captain sat with me and did not make me talk.'); return barSays(barTrait('quiet', p, BAR_SILENCE), p); } },
-    { label: `Ask ${p.first} about this place`, can: () => !pat.place, run() { pat.place = true; met(pat); return barSays(pick(BAR_PLACE), p); } },
-  ];
-  const skip = byName(p, 'skip', 3);
-  choices.push(...more.filter((_, i) => i !== skip));
+  const choices = barMenu(pat, p, { st, bar });  // a rotating few from the pool in bartopics.js
   choices.push({ label: 'Leave them to their drink', run: () => barSays(barTrait('leave', p, BAR_LEAVE), p) + barTone(pat, p) });
   return { title: `${bar}: ${p.first} ${p.last}`, text, choices };
 }
