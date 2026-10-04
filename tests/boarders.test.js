@@ -10,7 +10,7 @@ const { open, closeBrowser } = require('./helpers');
 after(closeBrowser);
 
 const helpers = () => {
-  window.DUEL_SPEC = { kind: 'patrol', gov: 'Earth Coalition' };  // a pirate is a raid in beats (engagements.js); the card duel is for the rest
+  window.DUEL_SPEC = { kind: 'hunter', person: { first: 'Ana', last: 'Voss' } };  // a pirate or a patrol is a raid in beats (engagements.js); the card duel is for the rest
   window.fight = (post = 'gunner') => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post, captainKey: 'hester' }); while (G.dialog) finishEvent();
     const st = G.state; st.story.next = 1e9; st.day += 30;

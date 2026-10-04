@@ -246,7 +246,11 @@ in 60 days): seven in ten are a trap, and the rest are a real freighter that pay
 way to read the call (scan her hull, read her drive, match her tumble, check her registry), which works at 50% plus a tenth
 a level. Answering a trap blind springs it and starts the raid two behind. A good read lets you hit them first (the raid
 starts one ahead) or turn away (the captain's regard and 2 experience), and shows a real call so you can help or leave it.
-Other contacts (patrols, bounties, hunters) and an owner's fights are still the card duel above.
+A hostile patrol is the same beats with guns (a navy stop): firing on her costs 8 standing with her faction, a clear win only
+makes her break off with a warning (a navy ship is not boarded), and if she comes alongside her party is repelled the same
+way, with a levy on the ship's fund if the bridge is lost. A hired hand can also heave to and let the ship pay a quarter of
+its fund.
+Bounties, hunters and an owner's fights are still the card duel above.
 
 ## Open questions
 
