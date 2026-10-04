@@ -397,8 +397,8 @@ const ACTIVITIES = {
     run() {
       for (const p of shipPeople()) if (p.role !== 'you') goTo(p, 'galley');
       goTo(shipPeople()[0], 'galley');
-      for (const id of G.state.crew) if (G.state.people[id]) like(G.state.people[id], 1, 'We shared a meal on a long burn.');
-      for (const m of paxAboard()) if (m.pid) like(G.state.people[m.pid], 1, 'The captain shared a meal with us.');
+      for (const id of G.state.crew) if (G.state.people[id]) likeAmbient(G.state.people[id], 1, 'We shared a meal on a long burn.');
+      for (const m of paxAboard()) if (m.pid) likeAmbient(G.state.people[m.pid], 1, 'The captain shared a meal with us.');
       return pick(['You cook something real for once, out of the good stores, with garlic and a little stolen butter, and everyone crowds into the galley, elbow to elbow, passing bowls. Somebody produces a bottle. Somebody else tells a story. When the last bowl is scraped clean, nobody is the first to leave.', 'You cook, badly, and it works. The whole ship crowds around the table. The steam fogs the lamp. There is a toast, and a second, and an unplanned song.']);
     },
   },

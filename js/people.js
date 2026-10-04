@@ -124,8 +124,17 @@ function registerPerson(p) {
   return p;
 }
 
+// Liking someone gets harder the more they already like you: each OPINION_EASE points of opinion take one off every gain (so a
+// small kindness stops at 'trusted', and only a large one gets to 'devoted'), and a high opinion fades by one every
+// OPINION_FADE days that you do not do anything for them. Both are about keeping a whole crew from being friends by the end of a chapter.
+const OPINION_EASE = 3, OPINION_FADE = 14;
+// A thing that happens to everyone aboard (a shared meal, a tradition) only gets someone as far as 'welcome': it makes a stranger
+// easy with you, and does nothing to make a friend. Friends are made one at a time, on purpose.
+const likeAmbient = (p, n, memory) => { if (p && p.opinion < OPINION.CLOSE) like(p, n, memory); };
 function like(p, n, memory) {
   if (!p.memories) return;  // handcrafted crew (crew.js) have arcs instead of opinions
+  if (n > 0) n = Math.max(0, n - Math.floor(Math.max(0, p.opinion) / OPINION_EASE));
+  if (n) p.touched = G.state.day;
   p.opinion += n;
   if (G.shifts && n) G.shifts.push({ p, n });  // what a choice did, for its result screen (shiftLines, character.js)
   if (memory) p.memories.push(`${dateOf()}: ${memory}`);
