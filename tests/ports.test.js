@@ -17,12 +17,12 @@ const helpers = () => {
   window.portScenes = () => STORYLETS.filter(s => s.id.startsWith('port-'));
 };
 
-test('Mars, Ganymede and Hermes Foundry each have scenes of their own, and they come up there and nowhere else', async () => {
+test('Each port with scenes of its own has scenes, and they come up there and nowhere else', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     const st = setup(), out = { per: {}, elsewhere: [] };
-    for (const [planet, sid] of [['Mars', 'mars'], ['Ganymede', 'jupiter'], ['Hermes Foundry', 'mercury'], ['Earth', 'earth']]) {
+    for (const [planet, sid] of [['Mars', 'mars'], ['Ganymede', 'jupiter'], ['Hermes Foundry', 'mercury'], ['Earth', 'earth'], ['Ceres Station', 'ceres'], ['Juno Commons', 'juno']]) {
       st.planet = planet; st.systemId = sid; G.mode = 'landed';
       const seen = new Set();
       const roll = CONDITIONS.chance; CONDITIONS.chance = () => true;  // every chance comes up
@@ -32,10 +32,12 @@ test('Mars, Ganymede and Hermes Foundry each have scenes of their own, and they 
     out.all = portScenes().map(s => s.id).length;
     return out;
   });
-  assert.equal(r.all, 9);
+  assert.equal(r.all, 15);
   assert.deepEqual(r.per.Mars, ['port-mars-front', 'port-mars-sky']);  // the recruiter needs a war
   assert.deepEqual(r.per.Ganymede, ['port-ganymede-jupiter', 'port-ganymede-market', 'port-ganymede-pump']);
-  assert.deepEqual(r.per['Hermes Foundry'], ['port-hermes-coolant', 'port-hermes-glass', 'port-hermes-heat']); assert.deepEqual(r.per.Earth, []);
+  assert.deepEqual(r.per['Hermes Foundry'], ['port-hermes-coolant', 'port-hermes-glass', 'port-hermes-heat']); assert.deepEqual(r.per.Earth, ['port-earth-queue', 'port-earth-yard']);
+  assert.deepEqual(r.per['Ceres Station'], ['port-ceres-dock', 'port-ceres-gym']);
+  assert.deepEqual(r.per['Juno Commons'], ['port-juno-commons', 'port-juno-trade']);
   await done();
 });
 
@@ -47,7 +49,7 @@ test('every choice in every port scene works for every post, with clean text, an
     factionState().war = { a: 'Mars Republic', b: 'Earth Coalition', start: st.day, until: st.day + 40, score: { 'Mars Republic': 0, 'Earth Coalition': 0 } };
     for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
       for (const s of portScenes()) {
-        hired().post = post; st.credits = 5000; st.planet = [].concat(s.when.planet)[0]; st.systemId = { Mars: 'mars', Ganymede: 'jupiter', 'Hermes Foundry': 'mercury' }[st.planet]; G.mode = 'landed';
+        hired().post = post; st.credits = 5000; st.planet = [].concat(s.when.planet)[0]; st.systemId = { Mars: 'mars', Ganymede: 'jupiter', 'Hermes Foundry': 'mercury', Earth: 'earth', 'Ceres Station': 'ceres', 'Juno Commons': 'juno' }[st.planet]; G.mode = 'landed';
         const e = storyletEvent(s);
         out.counts[`${s.id}:${post}`] = e.choices.length;
         for (let i = 0; i < e.choices.length; i++) {
