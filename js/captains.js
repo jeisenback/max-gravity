@@ -38,6 +38,11 @@ function captainSays(id, part, fallback) {
 const CAPTAIN_BEATS = ['trouble', 'secret'];
 const CAPTAIN_BEAT_DAYS = { trouble: 15, secret: 40 };
 const SECRET_TRUST = 2;
+// A due scene is tier 1, because the picker draws only from the lowest tier present (happenings.js) and a tier 2 scene never
+// competes with the news, the holidays and the ice occasions: as tier 2 with a ramp it waited up to 5 burns and, in 3 of 20 soak
+// games, never played before the chapter ended. In tier 1 it plays within 2 burns. A scene that was not drawn also gains
+// BEAT_RAMP weight for each draw it missed (h.beatWait), so a run of tier 1 scenes ahead of it cannot hold it back for long.
+const BEAT_WEIGHT = 2, BEAT_RAMP = 3;
 // The chapter's beats run in one order: the captain's trouble, their secret, then the used ship (hired.js dealCheck). The offer
 // waits until both scenes have played and a run has been sailed since the secret, so the two never land together. A captain
 // with no scenes does not hold it up.
@@ -88,7 +93,9 @@ Mods.register({
     M.filter('happenings', (list, where) => {
       const name = where === 'transit' ? captainBeat() : null;
       if (!name) return list;
-      return list.concat([{ tier: 1, weight: 2, via: 'crew', make() { hired().beats = (hired().beats || 0) + 1; hired().beatRun = runTotals(hired()).runs; return captainScene(name); } }]);
+      const h = hired(), missed = h.beatWait || 0;
+      h.beatWait = missed + 1;  // a miss unless make() runs and clears it
+      return list.concat([{ tier: 1, weight: BEAT_WEIGHT + BEAT_RAMP * missed, via: 'crew', make() { h.beats = (h.beats || 0) + 1; h.beatRun = runTotals(h).runs; h.beatWait = 0; return captainScene(name); } }]);
     });
   },
 });
