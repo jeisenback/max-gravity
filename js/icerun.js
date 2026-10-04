@@ -94,7 +94,7 @@ function iceStep(n, c, post) {
   const won = Math.random() < c.odds, [edge, hull, text] = won ? c.win : (c.lose || c.win);
   ice.edge += edge; ice.round = (ice.round || 0) + 1;
   let out = text;
-  if (hull) { const pts = Math.round(ship().armor * hull); st.armor = Math.max(1, st.armor - pts); out += ` Armor -${pts}.`; if (!won && Math.random() < 0.25) { const c2 = typeof hurtCrew === 'function' ? hurtCrew() : null; if (c2) out += ` ${c2.first} is hurt.`; } }
+  if (hull) { const pts = Math.round(ship().armor * hull); st.armor = Math.max(1, st.armor - pts); out += ` Armor -${pts}.`; if (!won && Math.random() < CASUALTY_ODDS) { const c2 = typeof hurtCrew === 'function' ? hurtCrew(true) : null; if (c2) out += c2.dead ? ` ${c2.first} is dead.` : ` ${c2.first} is hurt.`; } }
   if (post) gainSkill(post, won ? 4 : 1); else gainSkill(h.post, 1);
   if (n === 1) out += iceLoad(false);       // the cutting fills the hold
   if (n === 2) out += iceHome(ice.edge);

@@ -119,7 +119,7 @@ function raidStep(s, c, post) {
   const [edge, hull, text] = Array.isArray(line) ? line : (line[s.style] || line.grapple);
   s.edge += edge;
   let out = text;
-  if (hull) { const pts = Math.round(ship().armor * hull); st.armor = Math.max(1, st.armor - pts); out += ` Armor -${pts}.`; if (!won && Math.random() < 0.25) out += ` ${repelCasualty(s)}`; }
+  if (hull) { const pts = Math.round(ship().armor * hull); st.armor = Math.max(1, st.armor - pts); out += ` Armor -${pts}.`; if (!won && Math.random() < CASUALTY_ODDS) out += ` ${repelCasualty(s)}`; }
   s.beat++;
   if (s.beat >= 3 || s.edge >= 3 || s.edge <= -3) return `${out} ${raidClose(s)}`;
   G.nextEvent = raidScene(s);
