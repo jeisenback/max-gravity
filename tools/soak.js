@@ -26,7 +26,8 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
       while (G.dialog) finishEvent();
     };
     answer();
-    let runs = 0, stuck = 0, reached = null;
+    let runs = 0, stuck = 0, reached = null, offerDay = null;
+    const beatDays = [], xoDays = [];  // the day each of the captain's scenes played, and when the used ship was offered
     while (runs < maxLegs && stuck < 5 && !reached) {
       try {
         UI.tab = 'bar'; UI.render();
@@ -48,13 +49,17 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         answer();
         runs++;
         paid.push(st.credits - creditsBefore);
+        while (beatDays.length < (hired().beats || 0)) beatDays.push(st.day - hired().since);
+        if (hired().deal && offerDay === null) offerDay = hired().deal.day - hired().since;
+        const xoKey = CAPTAINS[hired().captainKey] && CAPTAINS[hired().captainKey].xo;
+        while (xoKey && xoDays.length < (castRec(xoKey).arc || 0)) xoDays.push(st.day - hired().since);
         const d = hired().deal, price = d && dealOpen() ? d.price : target;  // she is bought when the deal's price is in hand, or the chapter's if it lapsed
         if (st.credits >= price) reached = { runs, day: st.day, credits: st.credits, deal: d ? { price: d.price, offered: d.day, lapsed: !dealOpen() } : null };
         for (const n of UI.notes) if (odd(n)) bad.push('note: ' + n.slice(0, 80));
       } catch (e) { bad.push('threw: ' + String(e).slice(0, 120)); break; }
     }
     const avg = (a, n) => Math.round(a / Math.max(1, n));
-    return { runs, days: st.day, credits: st.credits, reached, stuck, scenes, bad,
+    return { runs, days: st.day, credits: st.credits, reached, stuck, scenes, bad, beatDays, xoDays, offerDay,
       avgPayPerRun: avg(paid.reduce((a, b) => a + b, 0), paid.length), avgDaysPerRun: Math.round(10 * st.day / Math.max(1, runs)) / 10 };
   }, [legs, captainKey]);
   await ctx.close();
@@ -69,7 +74,7 @@ if (require.main === module) {
   (async () => {
     for (const seed of seeds) {
       const r = await soak({ seed, legs, captainKey });
-      console.log(`seed ${seed} runs ${r.runs} days ${r.days} credits ${r.credits} reached ${JSON.stringify(r.reached)} pay/run ${r.avgPayPerRun} days/run ${r.avgDaysPerRun} stuck ${r.stuck} bad ${r.bad.length} errors ${r.errors.length}`);
+      console.log(`seed ${seed} runs ${r.runs} days ${r.days} credits ${r.credits} reached ${JSON.stringify(r.reached)} pay/run ${r.avgPayPerRun} days/run ${r.avgDaysPerRun} stuck ${r.stuck} trouble ${r.beatDays[0] ?? '-'} secret ${r.beatDays[1] ?? '-'} offer ${r.offerDay ?? '-'} xo [${r.xoDays.join(',')}] (days since sign-on) bad ${r.bad.length} errors ${r.errors.length}`);
     }
     await closeBrowser();
   })();

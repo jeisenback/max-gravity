@@ -21,7 +21,7 @@ const LIGHT_DUTY = 0.6;  // a hurt hand's wage while they work light duty
 const HIRED_TARGET = 19000;  // the used Ore Runner Tomas finds (the chapter's goal), at the price he asks a hand he thinks well enough of
 // The captain heads for a yard when the used Ore Runner can be had: at the offer's threshold until she is offered, then at
 // her price, and at the middle price again if the deal lapses.
-const wantsYard = () => { const h = hired(); return G.state.credits >= (!h.deal ? USED_OFFER_AT : dealOpen() ? h.deal.price : HIRED_TARGET); };
+const wantsYard = () => { const h = hired(); return G.state.credits >= (!h.deal ? (captainBeatsDone(h) ? USED_OFFER_AT : HIRED_TARGET) : dealOpen() ? h.deal.price : HIRED_TARGET); };
 const hired = () => (G.state && G.state.hired) || null;
 // A hired hand works one post. The others are the crew's, and the captain's to command.
 const hiredCaptain = () => (hired() ? G.state.people[hired().captain] : null);
@@ -360,12 +360,12 @@ function dealScene(planet) {
     choices: [{ label: 'Look her over', run: () => `You walk the apron with the broker and look her over. She is worn, and she is a ship. She is on the yard list now, as the used Ore Runner, until about day ${h.deal.until}.` }],
   };
 }
-// Offered once, at a yard, when the savings are about 55% of her middle price. A lapsed deal is noted once.
+// Offered once, at a yard, when the savings are about 55% of her middle price and the captain's two scenes have played (captains.js). A lapsed deal is noted once.
 function dealCheck(planet) {
   const st = G.state, h = hired();
   if (!h) return;
   if (h.deal && !dealOpen() && !h.deal.lapsed) { h.deal.lapsed = true; M_NOTE('The used Ore Runner is gone. Somebody else bought her.'); return; }
-  if (h.deal || !planet.services.includes('shipyard') || st.credits < USED_OFFER_AT || G.dialog) return;
+  if (h.deal || !planet.services.includes('shipyard') || st.credits < USED_OFFER_AT || !captainBeatsDone(h) || G.dialog) return;
   openEvent(dealScene(planet));
 }
 const buyInPrice = id => buyShip(id).price - (hired() && hired().haggle && hired().haggle.id === id ? hired().haggle.off : 0);  // nothing to trade in: the ship you fly is the captain's

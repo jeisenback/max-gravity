@@ -36,8 +36,15 @@ function captainSays(id, part, fallback) {
 // Their two scenes, once each and in order, once the days since you signed on are up. They come through the happenings filter
 // the main characters use. The second reads by trust: at SECRET_TRUST the captain confides, otherwise the hand finds out.
 const CAPTAIN_BEATS = ['trouble', 'secret'];
-const CAPTAIN_BEAT_DAYS = { trouble: 25, secret: 60 };
+const CAPTAIN_BEAT_DAYS = { trouble: 15, secret: 40 };
 const SECRET_TRUST = 2;
+// The chapter's beats run in one order: the captain's trouble, their secret, then the used ship (hired.js dealCheck). The offer
+// waits until both scenes have played and a run has been sailed since the secret, so the two never land together. A captain
+// with no scenes does not hold it up.
+const captainBeatsDone = h => {
+  const d = captainEntry();
+  return !d || !d.scenes || ((h.beats || 0) >= CAPTAIN_BEATS.length && runTotals(h).runs - (h.beatRun || 0) >= 2);
+};
 function captainBeat() {
   const h = hired(), d = captainEntry();
   if (!h || !d || !d.scenes) return null;
@@ -81,7 +88,7 @@ Mods.register({
     M.filter('happenings', (list, where) => {
       const name = where === 'transit' ? captainBeat() : null;
       if (!name) return list;
-      return list.concat([{ tier: 2, weight: 2, via: 'crew', make() { hired().beats = (hired().beats || 0) + 1; return captainScene(name); } }]);
+      return list.concat([{ tier: 1, weight: 2, via: 'crew', make() { hired().beats = (hired().beats || 0) + 1; hired().beatRun = runTotals(hired()).runs; return captainScene(name); } }]);
     });
   },
 });

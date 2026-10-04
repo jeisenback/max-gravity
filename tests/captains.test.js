@@ -222,11 +222,11 @@ test('her two scenes come once each, in order, when the days are up', async () =
     const st = start(), h = st.hired, cap = hiredCaptain(), out = {};
     underway();
     const at = d => { st.day = h.since + d; return captainBeat(); };
-    out.early = at(24); out.trouble = at(25);
+    const T = CAPTAIN_BEAT_DAYS.trouble, S = CAPTAIN_BEAT_DAYS.secret; out.early = at(T - 1); out.trouble = at(T);
     out.beats0 = h.beats || 0;
     for (const e of Mods.filter('happenings', [], 'transit')) if (e.make().title === 'The First of the Month') break;  // the main characters' scenes come through the same filter
     out.beats1 = h.beats;
-    out.beforeSecret = at(59); out.secret = at(60);
+    out.beforeSecret = at(S - 1); out.secret = at(S);
     cap.opinion = 3; out.confide = captainScene('secret').title; cap.opinion = 1; out.found = captainScene('secret').title;
     h.beats = 2; out.done = at(200);
     return out;
@@ -333,7 +333,7 @@ test('every captain\'s two scenes come once each, in order, and the goodbye play
     const r = await run(k => {
       const st = start({ captainKey: k }), h = st.hired, cap = hiredCaptain(), d = captainEntry(), out = {};
       const at = n => { st.day = h.since + n; return captainBeat(); };
-      out.early = at(24); out.trouble = at(25); h.beats = 1; out.secret = at(60); cap.opinion = 3; out.confide = captainScene('secret').title; cap.opinion = 1; out.found = captainScene('secret').title;
+      const T = CAPTAIN_BEAT_DAYS.trouble, S = CAPTAIN_BEAT_DAYS.secret; out.early = at(T - 1); out.trouble = at(T); h.beats = 1; out.secret = at(S); cap.opinion = 3; out.confide = captainScene('secret').title; cap.opinion = 1; out.found = captainScene('secret').title;
       h.beats = 2; out.done = at(300);
       cap.opinion = 5; out.warm = captainGoodbye().text; cap.opinion = -1; out.cold = captainGoodbye().text;
       out.xo = d.goodbye.xo.split(' ')[0]; out.xoLine = captainGoodbye().text.includes(d.goodbye.xo);
@@ -499,4 +499,25 @@ test('the boarding lock follows the state: he lives, is marked or dies, and the 
   for (const k of ['four', 'three']) assert.deepEqual([r[k].dead, r[k].marks, r[k].mood], [false, 0, false], `${k} points: he lives`);
   assert.deepEqual([r.two.dead, r.two.marks, r.two.mood], [false, 1, true], 'two points: marked, and the captain is low');
   for (const k of ['one', 'none']) { assert.deepEqual([r[k].dead, r[k].mood], [true, true], `${k}: he dies`); assert.match(r[k].cause, /^Lost at the boarding lock near /); assert.equal(r[k].opinion, 1); }
+});
+
+test('the used-ship offer waits for both of the captain\'s scenes and a run sailed after the secret', async () => {
+  const r = await run(() => {
+    const st = start({ captainKey: 'hester' }), h = st.hired, out = {};
+    const yard = system().planets.find(p => p.services.includes('shipyard'));
+    st.credits = USED_OFFER_AT + 1000;
+    out.fresh = captainBeatsDone(h);
+    h.beats = 1; out.oneScene = captainBeatsDone(h);
+    h.beats = 2; h.runsDone = 5; h.beatRun = 5; out.sameRun = captainBeatsDone(h);
+    h.runsDone = 6; out.nextLanding = captainBeatsDone(h);
+    h.beats = 1; G.dialog = null; dealCheck(yard); out.earlyOffer = !!h.deal || !!G.dialog;
+    h.beats = 2; h.runsDone = 7; out.sailed = captainBeatsDone(h);
+    dealCheck(yard); out.offer = !!h.deal && !!G.dialog;
+    h.captainKey = null; out.noCaptain = captainBeatsDone(h);
+    return out;
+  });
+  assert.deepEqual([r.fresh, r.oneScene, r.sameRun, r.nextLanding], [false, false, false, false]);
+  assert.equal(r.earlyOffer, false, 'no offer at a yard before the secret has played');
+  assert.equal(r.sailed, true); assert.equal(r.offer, true, 'a run after the secret, the offer comes');
+  assert.equal(r.noCaptain, true, 'a hand with no captain entry is not held up');
 });
