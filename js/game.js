@@ -1029,15 +1029,20 @@ function drawHudCompact(W) {
   }
 }
 
+// A hired hand who is docked or on a burn does not fly or target anything: the radar, the Nav and Target blocks and the key
+// legend stay for flight (a pilot-post hand takes the ship out by hand).
+const hudCalm = () => hired() && (G.mode === 'landed' || G.mode === 'transit');
+
 function drawHud(W, H) {
   if (!G.hudW) return drawHudCompact(W);
   const x0 = W - HUD_W, p = G.player, st = G.state, s = ship(), sys = system();
-  const inTransit = G.mode === 'transit';
+  const inTransit = G.mode === 'transit', calm = hudCalm();
   ctx.fillStyle = '#081018';
   ctx.fillRect(x0, 0, HUD_W, H);
   ctx.fillStyle = '#23405f';
   ctx.fillRect(x0, 0, 2, H);
-  if (!inTransit) drawRadar(x0 + HUD_W / 2, 110, 95);
+  if (calm) { /* no radar: nothing to scan */ }
+  else if (!inTransit) drawRadar(x0 + HUD_W / 2, 110, 95);
   else {
     ctx.fillStyle = '#02070c';
     ctx.strokeStyle = '#23405f';
@@ -1047,7 +1052,7 @@ function drawHud(W, H) {
   ctx.font = '12px "IBM Plex Mono", monospace';
   ctx.textAlign = 'left';
   const x = x0 + 14, w = HUD_W - 28;
-  let y = 228;
+  let y = calm ? 40 : 228;
   ctx.fillStyle = inTransit ? '#7fb4ff' : GOV_COLORS[sys.gov];
   ctx.font = `600 17px ${LABEL_FONT}`;
   ctx.fillText(inTransit ? 'In transit' : sys.name, x, y);
@@ -1075,7 +1080,7 @@ function drawHud(W, H) {
   ctx.font = '12px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#cfe3ff';
   const nav = G.navPlanet !== null && p ? system().planets[G.navPlanet] : null;
-  ctx.fillText(nav ? `${nav.name} (${Math.round(dist(nav, p))})` : 'none (L)', x, y += 16);
+  if (!calm) ctx.fillText(nav ? `${nav.name} (${Math.round(dist(nav, p))})` : 'none (L)', x, y += 16);
   const from = G.transit ? G.transit.to : st.systemId;
   ctx.fillText(st.dest ? `Burn: ${SYSTEMS[st.dest].name}` : hired() ? 'Burn: the captain\'s call' : 'Burn: none (M)', x, y += 16);
   if (st.dest) {
@@ -1084,26 +1089,28 @@ function drawHud(W, H) {
     ctx.fillText(`${travelDays(from, st.dest)} days, ${need} mass`, x, y += 16);
   }
 
-  y += 28;
-  hudLabel('Target', x, y);
-  ctx.font = '12px "IBM Plex Mono", monospace';
-  if (G.target && p) {
-    const t = G.target;
-    ctx.fillStyle = npcColor(t);
-    for (const l of wrapText(t.name, w)) ctx.fillText(l, x, y += 16);
-    ctx.fillStyle = '#9ab';
-    for (const l of wrapText(`${SHIPS[t.shipId].name}${t.captain ? `, Capt. ${t.captain}` : ''}`, w)) ctx.fillText(l, x, y += 16);
-    ctx.fillText(`Dist ${Math.round(dist(t, p))}`, x, y += 16);
-    y += 14;
-    ctx.fillStyle = '#1a2533'; ctx.fillRect(x, y, w, 5); ctx.fillRect(x, y + 8, w, 5);
-    ctx.fillStyle = '#4aa3ff'; ctx.fillRect(x, y, w * Math.max(0, t.shields / SHIPS[t.shipId].shields), 5);
-    ctx.fillStyle = '#ff9a3c'; ctx.fillRect(x, y + 8, w * Math.max(0, t.armor / t.maxArmor), 5);
-  } else {
-    ctx.fillStyle = '#cfe3ff';
-    ctx.fillText('none (Tab)', x, y += 16);
+  if (!calm) {
+    y += 28;
+    hudLabel('Target', x, y);
+    ctx.font = '12px "IBM Plex Mono", monospace';
+    if (G.target && p) {
+      const t = G.target;
+      ctx.fillStyle = npcColor(t);
+      for (const l of wrapText(t.name, w)) ctx.fillText(l, x, y += 16);
+      ctx.fillStyle = '#9ab';
+      for (const l of wrapText(`${SHIPS[t.shipId].name}${t.captain ? `, Capt. ${t.captain}` : ''}`, w)) ctx.fillText(l, x, y += 16);
+      ctx.fillText(`Dist ${Math.round(dist(t, p))}`, x, y += 16);
+      y += 14;
+      ctx.fillStyle = '#1a2533'; ctx.fillRect(x, y, w, 5); ctx.fillRect(x, y + 8, w, 5);
+      ctx.fillStyle = '#4aa3ff'; ctx.fillRect(x, y, w * Math.max(0, t.shields / SHIPS[t.shipId].shields), 5);
+      ctx.fillStyle = '#ff9a3c'; ctx.fillRect(x, y + 8, w * Math.max(0, t.armor / t.maxArmor), 5);
+    } else {
+      ctx.fillStyle = '#cfe3ff';
+      ctx.fillText('none (Tab)', x, y += 16);
+    }
   }
 
-  if (Touch.on) return;
+  if (Touch.on || calm) return;
   ctx.fillStyle = '#56687a';
   ctx.font = '11px "IBM Plex Mono", monospace';
   const help = ['Arrows/WASD fly', 'S/Down  reverse', 'Space   fire', 'Tab     target', 'H  hail target', 'L  select / land', 'M  system map', 'J  burn', 'N  sound'];

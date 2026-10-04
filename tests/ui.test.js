@@ -485,3 +485,21 @@ test('a crew member\'s page shows what they have told you, the news behind their
   assert.match(text, /abrasive and nervous/, 'and the reason');
   await done();
 });
+
+test('a hired hand docked or on a burn gets no radar, targeting or flight keys in the sidebar, but flies with them', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const out = { errors: [] }, W = innerWidth, H = innerHeight, at = m => { G.mode = m; try { drawHud(W, H); } catch (e) { out.errors.push(`${m}:${e.message}`); } return hudCalm(); };
+    out.landed = at('landed');
+    G.state.tutorial = null; sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.dialog = null;
+    out.transit = at('transit'); out.flight = at('flight');
+    return out;
+  });
+  assert.deepEqual(r.errors, []);
+  assert.ok(r.landed && r.transit, 'docked and on a burn'); assert.ok(!r.flight, 'a pilot-post hand takes the ship out by hand');
+  const owner = await open();
+  assert.ok(!await owner.ev(() => { G.mode = 'landed'; return hudCalm(); }), 'an owner keeps the sidebar');
+  await owner.done();
+  await done();
+});
