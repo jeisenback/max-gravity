@@ -51,7 +51,7 @@ const OWNER_TABS = ['trade', 'company'];  // contracts are the captain's too, bu
 const OWNER_ACTIONS = ['takeoff', 'buy', 'buymax', 'sell', 'sellall', 'buyship', 'cbuy', 'refuel', 'repair', 'overhaul', 'buyout', 'sellout', 'torpbuy', 'hire', 'interviewHire', 'dismiss'];
 
 function setupHired(o) {
-  const st = G.state, post = HIRED_POSTS.includes(o.post) ? o.post : 'pilot';
+  const st = G.state, post = HIRED_POSTS.includes(o.post) ? o.post : scopeOff('posts') ? 'gunner' : 'pilot';
   st.shipId = 'freighter';
   st.fuel = SHIPS.freighter.fuel; st.armor = SHIPS.freighter.armor;
   st.credits = o.credits !== undefined ? o.credits : HIRED_SAVINGS;  // o.credits and o.skill: a hand put ashore (stakes.js) carries both to the next berth

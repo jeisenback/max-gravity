@@ -21,11 +21,40 @@ test('the new game screen offers only a hired Earth start, with no tutorial', as
     mode: !!document.querySelector('[data-action=menuMode]'), background: !!document.querySelector('[data-action=menuBackground]'),
     tutorial: !!document.querySelector('#ngTutorial'), posts: document.querySelectorAll('[data-action=menuPost]').length,
   }));
-  assert.deepEqual(seen, { mode: false, background: false, tutorial: false, posts: 4 });
+  assert.deepEqual(seen, { mode: false, background: false, tutorial: false, posts: 0 }, 'no start, no tutorial, no post to choose');
   await page.fill('#ngCaptain', 'Sam Rowe');
   await page.click('[data-action=menuStart]');
   const st = await ev(() => { while (G.dialog) finishEvent(); return { hired: !!G.state.hired, background: G.state.background, tutorial: G.state.tutorial, at: G.state.planet }; });
   assert.deepEqual(st, { hired: true, background: 'earth', tutorial: null, at: 'Earth' });
+  await done();
+});
+
+test('the narrow build starts a gunner under Hester with Cato, whatever the random draw', async () => {
+  const { page, ev, done } = await open({ title: true, ...NARROW });
+  await page.click('[data-action=menuView][data-arg=new]');
+  await page.fill('#ngCaptain', 'Sam Rowe');
+  await page.click('[data-action=menuStart]');
+  const r = await ev(() => { while (G.dialog) finishEvent(); const h = G.state.hired; return { post: h.post, captain: h.captainKey, xo: hiredXo() && hiredXo().cast }; });
+  assert.deepEqual(r, { post: 'gunner', captain: 'hester', xo: 'cato' });
+  const keys = await ev(() => { const out = new Set(); for (let s = 1; s <= 12; s++) { __seed(s); startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired' }); while (G.dialog) finishEvent(); out.add(`${G.state.hired.captainKey}/${G.state.hired.post}`); } return [...out]; });
+  assert.deepEqual(keys, ['hester/gunner'], 'the same pair on every draw');
+  await done();
+});
+
+test('a test or a tester can still name another post or captain in the narrow build', async () => {
+  const { ev, done } = await open(NARROW);
+  const r = await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'engineer', captainKey: 'dov' }); while (G.dialog) finishEvent(); const h = G.state.hired; return { post: h.post, captain: h.captainKey, xo: hiredXo() && hiredXo().cast }; });
+  assert.deepEqual(r, { post: 'engineer', captain: 'dov', xo: 'ilsa' });
+  await done();
+});
+
+test('the full build offers the four posts and draws a captain at random', async () => {
+  const { page, ev, done } = await open({ title: true, scope: 'full' });
+  await page.click('[data-action=menuView][data-arg=new]');
+  await page.click('[data-action=menuMode][data-arg=hired]');
+  assert.equal(await page.$$eval('[data-action=menuPost]', b => b.length), 4);
+  const keys = await ev(() => { const out = new Set(); for (let s = 1; s <= 12; s++) { __seed(s); out.add(pickCaptainKey()); } return [...out]; });
+  assert.ok(keys.length >= 3, `the draw varies: ${keys}`);
   await done();
 });
 
