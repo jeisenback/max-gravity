@@ -53,8 +53,77 @@ function storyOf(p) {
 }
 const missed = p => `${storyOf(p).rel} ${storyOf(p).name}`;
 
+// When there is no arc to move on, the talk is about what is on their mind now: how they are (a letter, an injury), the war if they
+// are of a side in it, how they get on with the others, what you did last time. Each is its own short scene, with its own choices.
+const TALK_IDLE = {
+  talkative: 'is already telling you about something that happened at the last port, and by the second mug has told you about two more',
+  nervous: 'keeps glancing at the corridor, and relaxes a little when you stay',
+  generous: 'has saved you the good end of the loaf, and does not mention it',
+  greedy: 'is working out, aloud and not quite to you, what the next run should clear',
+  pious: 'sits with a hand around the cord at their wrist and says nothing for a long time, comfortably',
+  rude: 'has a view on the galley, the rota, and the way you hold a mug, and shares them',
+  curious: 'wants to know how the drive works, what you do on watch, and whether you have ever been to Titan',
+  drunk: 'is on water tonight, and says so with an effort that is its own kind of story',
+  secretive: 'answers a question about the weather with a question about you',
+  kind: 'asks if you have slept, and does not take "fine" for an answer',
+  brave: 'tells you about the worst day they have had on a ship, quietly, as if it were a recipe',
+  homesick: 'has a photograph out, and puts it away when you come in, and then takes it out again',
+};
+function talkTopics(p) {
+  const st = G.state, n = p.first, out = [];
+  const lift = (x, memory, text) => ({ run() { like(p, x, memory); if (moodLow(p)) p.mood.until -= x * 3; return text; } });
+  if (moodLow(p)) out.push({ pressing: true, open: `${n} is quiet, and has been since ${p.mood.text ? `the news: ${p.mood.text}` : 'the last message from home'}. A mug sits in front of them, untouched.`, choices: [
+    { label: 'Let them talk', ...lift(1, 'You sat with me while I was having a hard time.', `You say nothing, and ${n} talks, in pieces, about ${missed(p)}, and what they cannot do from here. By the end the mug is empty. They look lighter, and a little embarrassed about it.`) },
+    { label: 'Offer to take a watch off them', ...lift(2, 'You offered to cover for me when I was having a hard time.', `${n} starts to say no, and then does not. "Just the one," ${n} says. It is the first time they have smiled in days.`) },
+    { label: '"It will pass."', ...lift(0, null, `${n} nods. "It does," they say. "It just takes its time." You both drink your coffee.`) },
+  ] });
+  if ((st.injured || {})[p.id]) out.push({ pressing: true, open: `${n} is favoring one side, and has been all watch. They have not asked for anything, and they have not sat down properly in two days.`, choices: [
+    { label: 'Ask how it is', ...lift(1, 'You asked how I was, and meant it.', `"It is fine," ${n} says, and then, when you wait, "It is not fine. It is getting better." You nod, and that is enough.`) },
+    { label: 'Tell them to rest', ...lift(1, 'You told me to rest, and I did.', `${n} argues for a minute and then goes to their bunk. You can hear them let out a long breath through the bulkhead.`) },
+  ] });
+  const t = typeof tiesOf === 'function' ? tiesOf(p) : null, w = typeof factionState === 'function' ? factionState().war : null;
+  if (t && w && (t.aff === w.a || t.aff === w.b)) { const foe = t.aff === w.a ? w.b : w.a; out.push({ open: `${n} has had the war on the galley screen since it started, the ${t.aff} against the ${foe}, with the sound off. "Do not tell me it will be over soon," ${n} says.`, choices: [
+    { label: 'Ask what they think', ...lift(1, 'You asked what I thought about the war.', `${n} thinks about it for a while. "I think I would have stayed home," ${n} says, "and I think I would have been wrong." You do not have anything to add to that.`) },
+    { label: 'Ask if they want to go home', ...lift(1, 'You asked if I wanted to go home during the war.', `"Every day," ${n} says. "And then I look at what is on the screen and I think, not like this." They do not sound sure.`) },
+    { label: 'Change the subject', ...lift(0, null, `You ask about the food at the last port. ${n} is grateful for that, and says so by going on about it for ten minutes.`) },
+  ] }); }
+  const others = typeof bond === 'function' ? G.state.crew.filter(id => id !== p.id).map(id => ({ id, p: person(id) })).filter(f => f.p) : [], me = { id: p.id, p };
+  const worst = others.map(f => ({ f, b: bond(me, f) })).sort((x, y) => x.b - y.b)[0], best = others.map(f => ({ f, b: bond(me, f) })).sort((x, y) => y.b - x.b)[0];
+  if (worst && worst.b <= -2) out.push({ open: `${n} is short with ${worst.f.p.first} all through the meal, and then pretends not to be.`, choices: [
+    { label: 'Ask what happened', ...lift(1, `You asked what was wrong between me and ${worst.f.p.first}.`, `${n} says it was nothing, and then says it was the thing at the rota, and then the thing from before. "I do not even like being angry," ${n} says. "It is just there."`) },
+    { label: 'Stay out of it', ...lift(0, null, `You say you will not take sides. ${n} nods, a little disappointed, and you finish the coffee talking about something else.`) },
+  ] });
+  if (best && best.b >= 6) out.push({ open: `${n} laughs at something ${best.f.p.first} said across the galley, and then catches you looking. "We have been through a lot," ${n} says, a little defensively.`, choices: [
+    { label: `Ask about ${best.f.p.first}`, ...lift(1, `You asked about ${best.f.p.first}, and I told you.`, `${n} talks about ${best.f.p.first} for a long time: how they met, what ${best.f.p.first} is like on a bad day, the one thing ${n} would never say to their face. It is the warmest part of the watch.`) },
+    { label: 'Say you can tell', ...lift(1, null, `"You can tell?" ${n} says. They look pleased, and alarmed. "Do not say anything." You will not.`) },
+  ] });
+  const mem = p.memories && p.memories.length ? p.memories[p.memories.length - 1].replace(/^(Day \d+|\d+ \w+ \d+): /, '') : null;
+  if (mem) out.push({ open: `${n} says, without quite looking at you, that they have been thinking about something: "${mem}"`, choices: [
+    { label: 'Bring it up', ...lift(1, 'You brought it up, and I was glad.', `You say you remember it too. ${n} looks up. "I did not think you would," ${n} says. It is quiet for a moment, and then it is easy.`) },
+    { label: 'Let it lie', ...lift(0, null, `You let it lie. ${n} nods, and after a minute the talk turns to the next port, and you both pretend that was the point.`) },
+  ] });
+  return out;
+}
+function ordinaryTalk(p) {
+  const n = p.first, topics = talkTopics(p), tp = topics.length ? pick(topics) : null;
+  if (tp) return { title: `With ${n}`, text: tp.open, choices: tp.choices };
+  const idle = (p.traits || []).map(t => TALK_IDLE[t]).filter(Boolean);
+  return { title: `With ${n}`, text: `You sit with ${n} in the galley, over two mugs. ${n} ${idle.length ? pick(idle) : 'is easy company'}. The drive hums. A pipe ticks.`,
+    choices: [
+      { label: 'Stay a while', run() { like(p, 1, null); if (moodLow(p)) p.mood.until -= 5; return pick([`The ship hums around you both, steady and warm. Somewhere aft, a door closes. You watch ${n}'s shoulders come down, one careful inch at a time.`, `You do not say much, and neither does ${n}. When you stand to go, ${n} says it was good, and the mug is still warm in your hand.`, `${n} tells you a story about the last ship they were on. It is a small one, and it goes nowhere, and it is the best thing you will hear this week.`]); } },
+      { label: `Ask ${n} about ${p.home}`, run() { like(p, 1, null); return `${n} tells you what they miss about ${p.home}, and what they do not. By the end it is hard to say which list is longer.`; } },
+    ] };
+}
+
 function sitBeat(p, isCrew) {
   const s = storyOf(p), st = G.state, n = p.first;
+  // Someone in a bad way (a letter that hurt, an injury) is talked to about that first, once, and then the story goes on where it was.
+  const pressKey = moodLow(p) ? `mood:${p.mood.text || p.mood.kind}` : (st.injured || {})[p.id] ? 'hurt' : null;
+  if (!pressKey) p.pressed = null;
+  else if (p.pressed !== pressKey) {
+    const t = talkTopics(p).find(x => x.pressing);
+    if (t) { p.pressed = pressKey; return { title: `With ${n}`, text: t.open, choices: t.choices }; }
+  }
   // `result` is what happens after: a line, or a list to pick from.
   const talk = (label, likeBy, result, extra) => ({ label, run() {
     like(p, likeBy, null); s.beat++; if (extra) extra();
@@ -106,8 +175,7 @@ function sitBeat(p, isCrew) {
         { label: '"I can\'t, not now."', run: () => `"I know," ${n} says. "I did not expect you to." And they mean it, which is the hardest part. They stand, and touch the table once, and go back to work.` },
       ] };
   }
-  return { title: `With ${n}`, text: `You sit with ${n} in the quiet, and neither of you needs to say much. The drive hums. A pipe ticks. ${moodLow(p) ? 'They are still carrying the news from home. Now and then, a breath of a laugh comes out of them.' : 'It is a good, quiet hour.'}`,
-    choices: [{ label: 'Stay a while', run() { like(p, 1, null); if (p.mood && p.mood.kind === 'low') p.mood.until -= 5; return `The ship hums around you both, steady and warm. Somewhere aft, a door closes. You watch ${n}\'s shoulders come down, one careful inch at a time, and, when you finally stand to go, ${n} says, softly, "Same time tomorrow?" .`; } }] };
+  return ordinaryTalk(p);
 }
 
 function becomeLoyal(p, memory) {
@@ -127,7 +195,7 @@ function sitPicker() {
       'You are carrying a plate of the good biscuits down the corridor. Who is it for?',
     ]),
     choices: aboard.map(f => ({
-      label: `${f.p.first} (${f.pax ? 'passenger' : ROLE_NAMES[f.p.role].toLowerCase()})${moodLow(f.p) ? ', having a hard time' : ''}`,
+      label: `${f.p.first} (${f.pax ? 'passenger' : ROLE_NAMES[f.p.role].toLowerCase()})${moodLow(f.p) ? ', having a hard time' : (G.state.injured || {})[f.p.id] ? ', hurt' : ''}`,
       run() { G.nextEvent = sitBeat(f.p, !f.pax); return `You find ${f.p.first} in the galley.`; },
     })),
   };
