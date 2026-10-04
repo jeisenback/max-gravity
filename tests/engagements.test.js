@@ -114,7 +114,7 @@ test('burning hard can get clear before there is a fight, and failing costs hull
 test('other contacts for a hired hand are still the card duel', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
-  const r = await ev(() => { raid('gunner'); startDuel({ kind: 'patrol', gov: 'Earth Coalition' }, false); return { duel: !!G.duel, next: G.nextEvent && G.nextEvent.title }; });
+  const r = await ev(() => { raid('gunner'); startDuel({ kind: 'hunter', person: { first: 'Ana', last: 'Voss' } }, false); return { duel: !!G.duel, next: G.nextEvent && G.nextEvent.title }; });
   assert.ok(r.duel); assert.match(r.next, /Contact: exchange/);
   await done();
 });
@@ -174,5 +174,56 @@ test('she can be let drift instead: the same as breaking her off', async () => {
     return { t: /experience/.test(t), opinion: cap.opinion - op, xp: skillXp('gunner') - xp, next: G.nextEvent };
   });
   assert.ok(r.t); assert.equal(r.opinion, 1); assert.equal(r.xp, 3); assert.equal(r.next, null);
+  await done();
+});
+
+test('a hostile patrol is a navy stop for a hired hand: the same beats with guns, and firing on her costs your standing', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = raid('gunner'), gov = 'Earth Coalition', before = repOf(gov);
+    const spare = window.realMakeEnemy({ kind: 'patrol', gov }); window.makeEnemy = () => Object.assign(spare, { shipId: 'cutter' });
+    const text = startDuel({ kind: 'patrol', gov }, false); begin();
+    const out = { duel: !!G.duel, title: G.dialog.event.title, open: /patrol/.test(G.dialog.event.text), rep: repOf(gov) - before, text: /Battle stations/.test(text) };
+    rolls([0.01, 0.01]);  // two post wins: +2 and +2, which would cripple a raider
+    choose('Get a lock'); finishEvent();
+    const t = choose('Walk a burst');
+    out.off = /registry has been logged/.test(t); out.boardable = !!(G.nextEvent && G.nextEvent.title === 'Dead in Space');
+    return out;
+  });
+  assert.equal(r.duel, false); assert.equal(r.title, 'The Closing'); assert.ok(r.open && r.text); assert.equal(r.rep, -8);
+  assert.ok(r.off, 'she breaks off with a warning'); assert.ok(!r.boardable, 'a navy ship is not boarded');
+  await done();
+});
+
+test('a hired hand can heave to and let the ship pay a quarter of its fund, instead of fighting', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = raid('gunner'), h = hired(), gov = 'Earth Coalition', cap = person(h.captain), op = cap.opinion;
+    st.rep[gov] = -30; h.fund = 2000;
+    const e = contactEvent({ kind: 'patrol', gov }), i = e.choices.findIndex(c => /Heave to/.test(c.label));
+    G.dialog = { event: e, choices: e.choices };
+    const t = chooseEvent(i);
+    return { i, fund: h.fund, rep: st.rep[gov], opinion: cap.opinion - op, text: /500 cr/.test(t) };
+  });
+  assert.ok(r.i >= 0); assert.equal(r.fund, 1500); assert.equal(r.rep, -10); assert.equal(r.opinion, -1); assert.ok(r.text);
+  await done();
+});
+
+test('a patrol that boards a hired hand\'s ship levies the fund and does not rob it', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = raid('gunner'), h = hired(), gov = 'Earth Coalition';
+    const spare = window.realMakeEnemy({ kind: 'patrol', gov }); Object.assign(spare, { shipId: 'cutter' });
+    h.fund = 1000;
+    const d = { foe: spare, foeHp: 0, init: 'foe' }, s = repelStart(d, 'full');
+    rolls([0.99, 0.99, 0.99, 0.99]);  // every exchange fails, and no one is hurt
+    repelStep(s, 'post');
+    const text = repelStep(s, 'post');
+    return { levy: /levy of 300 cr/.test(text), fund: h.fund };
+  });
+  assert.ok(r.levy); assert.equal(r.fund, 700);
   await done();
 });
