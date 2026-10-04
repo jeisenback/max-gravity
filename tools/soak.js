@@ -2,14 +2,16 @@
 
 // Sails the hired hand's captain for N runs with random answers and reports runs, days and pay: the tuning tool for the
 // chapter's economy (HIRED_FUND, HIRED_WAGE, HIRED_SHARE, HIRED_TARGET in js/hired.js).
-//   node tools/soak.js --seeds 1,2,3 --legs 40 [--captain hester]
+//   node tools/soak.js --seeds 1,2,3 --legs 40 [--captain hester] [--real-draw]
 // With no captain named, the narrow build's captain (Hester, with Cato) sails every seed, as a gunner.
 
 const { open, closeBrowser } = require('../tests/helpers');
 
-async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = null } = {}) {
+// realDraw: the two main characters come from the pool as in the game; tests start from the pair they knew (tests/helpers.js).
+async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = null, realDraw = false } = {}) {
   const { ev, errors, ctx } = await open({ scope, seed });
-  const r = await ev(([maxLegs, key]) => {
+  const r = await ev(([maxLegs, key, real]) => {
+    if (real) window.drawCastPair = realDrawCastPair;
     const scenes = {}, bad = [], paid = [];
     const odd = t => /undefined|NaN|\[object|\{[a-z]+\}/.test(String(t));
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: key });
@@ -28,7 +30,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     };
     answer();
     let runs = 0, stuck = 0, reached = null, offerDay = null;
-    const beatDays = [], xoDays = [], waits = [], burns = [], dueBurns = {};  // waits: days from a captain scene becoming due to its playing; burns: burns sailed with it due, the playing one included  // the day each of the captain's scenes played, and when the used ship was offered
+    const beatDays = [], xoDays = [], waits = [], burns = [], dueBurns = {}, introRun = {};  // introRun: the run in which each main character's first scene played  // waits: days from a captain scene becoming due to its playing; burns: burns sailed with it due, the playing one included  // the day each of the captain's scenes played, and when the used ship was offered
     while (runs < maxLegs && stuck < 5 && !reached) {
       try {
         UI.tab = 'bar'; UI.render();
@@ -41,6 +43,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         for (const o of G.transit.occasions) { openEvent(occasionEvent(o)); answer(); }
         const due = captainBeat(); if (due) dueBurns[due] = (dueBurns[due] || 0) + 1;  // a burn sailed with the scene due
         for (let h = 0; h < draws; h++) { startHappening(); answer(); }
+        for (const c of castAboard()) if ((castRec(c.cast).arc || 0) >= 1 && !(c.cast in introRun)) introRun[c.cast] = runs + 1;
         while (beatDays.length < (hired().beats || 0)) {  // read on the day she left, before the burn's days pass
           const name = CAPTAIN_BEATS[beatDays.length];
           beatDays.push(st.day - hired().since); waits.push(st.day - hired().since - CAPTAIN_BEAT_DAYS[name]); burns.push(dueBurns[name]);
@@ -64,9 +67,9 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
       } catch (e) { bad.push('threw: ' + String(e).slice(0, 120)); break; }
     }
     const avg = (a, n) => Math.round(a / Math.max(1, n));
-    return { runs, days: st.day, credits: st.credits, reached, stuck, scenes, bad, beatDays, xoDays, waits, burns, offerDay,
+    return { runs, days: st.day, credits: st.credits, reached, stuck, scenes, bad, beatDays, xoDays, waits, burns, introRun, firstOfficers: Object.keys(CAST).filter(k => CAST[k].xo), offerDay,
       avgPayPerRun: avg(paid.reduce((a, b) => a + b, 0), paid.length), avgDaysPerRun: Math.round(10 * st.day / Math.max(1, runs)) / 10 };
-  }, [legs, captainKey]);
+  }, [legs, captainKey, realDraw]);
   await ctx.close();
   return { seed, ...r, errors };
 }
@@ -75,11 +78,11 @@ module.exports = { soak };
 
 if (require.main === module) {
   const arg = n => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : null; };
-  const seeds = (arg('seeds') || '1').split(',').map(Number), legs = Number(arg('legs') || 40), captainKey = arg('captain');
+  const seeds = (arg('seeds') || '1').split(',').map(Number), legs = Number(arg('legs') || 40), captainKey = arg('captain'), realDraw = process.argv.includes('--real-draw');
   (async () => {
     for (const seed of seeds) {
-      const r = await soak({ seed, legs, captainKey });
-      console.log(`seed ${seed} runs ${r.runs} days ${r.days} credits ${r.credits} reached ${JSON.stringify(r.reached)} pay/run ${r.avgPayPerRun} days/run ${r.avgDaysPerRun} stuck ${r.stuck} trouble ${r.beatDays[0] ?? '-'} secret ${r.beatDays[1] ?? '-'} (due ${r.waits.join(',') || '-'} days, ${r.burns.join(',') || '-'} burns) offer ${r.offerDay ?? '-'} xo [${r.xoDays.join(',')}] (days since sign-on) bad ${r.bad.length} errors ${r.errors.length}`);
+      const r = await soak({ seed, legs, captainKey, realDraw });
+      console.log(`seed ${seed} runs ${r.runs} days ${r.days} credits ${r.credits} reached ${JSON.stringify(r.reached)} pay/run ${r.avgPayPerRun} days/run ${r.avgDaysPerRun} stuck ${r.stuck} trouble ${r.beatDays[0] ?? '-'} secret ${r.beatDays[1] ?? '-'} (due ${r.waits.join(',') || '-'} days, ${r.burns.join(',') || '-'} burns) offer ${r.offerDay ?? '-'} intros ${Object.entries(r.introRun).map(([k, v]) => `${k}:${v}`).join(',') || '-'} xo [${r.xoDays.join(',')}] (days since sign-on) bad ${r.bad.length} errors ${r.errors.length}`);
     }
     await closeBrowser();
   })();
