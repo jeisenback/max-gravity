@@ -361,7 +361,7 @@ function dealCheck(planet) {
   if (h.deal || !planet.services.includes('shipyard') || st.credits < USED_OFFER_AT || G.dialog) return;
   openEvent(dealScene(planet));
 }
-const buyInPrice = id => buyShip(id).price;  // nothing to trade in: the ship you fly is the captain's
+const buyInPrice = id => buyShip(id).price - (hired() && hired().haggle && hired().haggle.id === id ? hired().haggle.off : 0);  // nothing to trade in: the ship you fly is the captain's
 const canBuyIn = (id, planet) => !!hired() && G.mode === 'landed' && planet.services.includes('shipyard') && buyShip(id) && buyShip(id).forSale
   && G.state.credits >= buyInPrice(id) && !(buyShip(id).req && repOf(localGov()) < buyShip(id).req);
 
@@ -369,7 +369,9 @@ function buyIn(id) {
   const st = G.state, h = hired(), planet = currentPlanet();
   if (!canBuyIn(id, planet)) return;
   const cap = st.people[h.captain], friends = buyInCompanions(), oldName = home().name, bought = buyShip(id);
-  st.credits -= buyInPrice(id);
+  const price = buyInPrice(id);
+  st.credits -= price;
+  h.haggle = null;
   st.shipId = id === USED_ID ? 'lightfreighter' : id; st.fuel = ship().fuel; st.armor = ship().armor;
   st.cargo = {}; st.paid = {};  // what was in the hold was the captain's
   // The captain stays a contact, and a known captain on the lanes.
@@ -384,7 +386,7 @@ function buyIn(id) {
   home().name = shipName(false);
   st.hired = null;
   G.offers = generateMissions(planet);
-  return `You bought the ${bought.name} for ${fmt(bought.price)} cr and left the ${oldName}. Captain ${cap.first} ${cap.last} shakes your hand on the dock and says they will keep an eye out for you on the lanes.${friends.length ? ` ${namesOf(friends)} came with you.` : ' You are on your own.'} She is yours now: the exchange, the contracts and the yard are open to you, and the crew are your wages to pay.`;
+  return `You bought the ${bought.name} for ${fmt(price)} cr and left the ${oldName}. Captain ${cap.first} ${cap.last} shakes your hand on the dock and says they will keep an eye out for you on the lanes.${friends.length ? ` ${namesOf(friends)} came with you.` : ' You are on your own.'} She is yours now: the exchange, the contracts and the yard are open to you, and the crew are your wages to pay.`;
 }
 
 // The close of the hired-hand chapter (scope 'earth-hired', js/build.js): one scene at the foot of the new ship's ramp.
@@ -478,8 +480,12 @@ Mods.register({
     M_NOTE = text => M.note(text);
     M.action('sail', () => { if (hired()) sail(); });
     M.action('swapPost', post => askSwap(post));
-    M.action('buyInAsk', id => { if (hired() && canBuyIn(id, currentPlanet())) hired().confirm = id; });
-    M.action('buyInNo', () => { if (hired()) hired().confirm = null; });
+    M.action('buyInAsk', id => {
+      if (!hired() || !canBuyIn(id, currentPlanet())) return;
+      if (hired().haggle && hired().haggle.id === id) hired().confirm = id;  // already settled at the yard office
+      else openEvent(yardScene(id));
+    });
+    M.action('buyInNo', () => { if (hired()) hired().confirm = hired().haggle = null; });
     M.action('buyInGo', id => {
       if (!hired() || hired().confirm !== id) return;
       const scene = castLateAtBuyIn(), goodbye = captainGoodbye(), closing = chapterEnd(id), recap = closing ? chapterRecap() : null, text = buyIn(id);  // all read from the crew and the captain before they leave
