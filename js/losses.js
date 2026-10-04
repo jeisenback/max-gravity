@@ -7,6 +7,7 @@
 // a scene where you choose how the ship marks it; each of the crew takes that choice by who they are (barReact, bartopics.js).
 // Loaded after boarders.js and fate.js; only called into at runtime.
 
+const CASUALTY_ODDS = 0.4;  // a lost beat that costs hull hurts someone, this often (engagements.js, icerun.js)
 const LOSS_BASE = 0.35, LOSS_MEDIC = 0.5, LOSS_NO_MEDIC = 1.3, LOSS_HURT = 2.5, LOSS_MAX = 0.6, MILD_SHARE = 1 / 3;
 const lossOdds = (c, severe) => Math.min(LOSS_MAX, LOSS_BASE * (severe ? 1 : MILD_SHARE) * (roleHolder('medic') ? LOSS_MEDIC : LOSS_NO_MEDIC) * ((G.state.injured || {})[c.id] ? LOSS_HURT : 1));
 
