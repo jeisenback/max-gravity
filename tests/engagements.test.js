@@ -141,7 +141,7 @@ test('winning every beat cripples her, and boarding her is the lock fight run th
   });
   assert.ok(r.crippled, 'a clear win cripples her'); assert.equal(r.title, 'Dead in Space'); assert.deepEqual(r.labels, ['Board her', 'Let her drift']);
   assert.equal(r.first, 'Her Corridor'); assert.ok(r.defenders); assert.equal(r.second, 'Her Bridge');
-  assert.ok(r.taken, r.end); assert.ok(r.fund >= 1000 && r.fund <= 3000, `fund ${r.fund}`); assert.equal(r.opinion, 2); assert.equal(r.xp, 5);
+  assert.ok(r.taken, r.end); assert.ok(r.fund >= 1000 && r.fund <= 3000, `fund ${r.fund}`); assert.equal(r.opinion, 4, 'two calls that turned it, and the strongbox'); assert.equal(r.xp, 5);
   assert.equal(r.next, null);
   await done();
 });
@@ -159,7 +159,7 @@ test('losing the boarding drives you back to your lock, and she drifts on', asyn
     const end = choose('Put fire down the corridor');
     return { end: /driven back/.test(end), fund: h.fund === fund, opinion: cap.opinion - op, armor: st.armor < armor, next: G.nextEvent };
   });
-  assert.ok(r.end); assert.ok(r.fund); assert.equal(r.opinion, -1); assert.ok(r.armor); assert.equal(r.next, null);
+  assert.ok(r.end); assert.ok(r.fund); assert.equal(r.opinion, 1, 'two winning calls, and the boarding lost'); assert.ok(r.armor); assert.equal(r.next, null);
   await done();
 });
 
@@ -173,7 +173,7 @@ test('she can be let drift instead: the same as breaking her off', async () => {
     const t = choose('Let her drift');
     return { t: /experience/.test(t), opinion: cap.opinion - op, xp: skillXp('gunner') - xp, next: G.nextEvent };
   });
-  assert.ok(r.t); assert.equal(r.opinion, 1); assert.equal(r.xp, 3); assert.equal(r.next, null);
+  assert.ok(r.t); assert.equal(r.opinion, 3, 'two winning calls, and she broke off'); assert.equal(r.xp, 3); assert.equal(r.next, null);
   await done();
 });
 
@@ -298,5 +298,44 @@ test('a patrol that boards a hired hand\'s ship levies the fund and does not rob
     return { levy: /levy of 300 cr/.test(text), fund: h.fund };
   });
   assert.ok(r.levy); assert.equal(r.fund, 700);
+  await done();
+});
+
+test('your own bold call can go wrong on you: hurt, a clinic bill without a medic, and the captain remembers it', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = raid('gunner'), out = {}, h = hired(), cap = person(h.captain);
+    st.crew = st.crew.filter(id => person(id).role !== 'medic'); st.injured = {};
+    startDuel({ kind: 'pirate' }, false); begin();
+    cap.opinion = 0; const cred = st.credits;
+    rolls([0.99, 0.01]);  // the call fails, and it is the kind that hurts you
+    const text = choose('Turn into her');
+    out.hurt = handHurt(); out.text = text; out.paid = cred - st.credits; out.cap = cap.opinion;
+    // a cautious choice does not risk you, even when it fails
+    const st2 = raid('gunner'); st2.crew = st2.crew.filter(id => person(id).role !== 'medic');
+    startDuel({ kind: 'pirate' }, false); begin(); hired().hurtUntil = 0;
+    rolls([0.99, 0.01]); choose('Hold course'); out.safeHurt = handHurt();
+    return out;
+  });
+  assert.ok(r.hurt, 'hurt on a bold call'); assert.match(r.text, /clinic is 150 cr of your own/); assert.equal(r.paid, 150); assert.ok(r.cap < 0, 'the captain notes a call that went wrong');
+  assert.equal(r.safeHurt, false);
+  await done();
+});
+
+test('a medic aboard treats you free, and a bold call that wins earns the captain\'s regard', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = raid('gunner'), out = {}, h = hired(), cap = person(h.captain);
+    startDuel({ kind: 'pirate' }, false); begin();
+    cap.opinion = 0; rolls([0.01]);  // the call works
+    choose('Turn into her'); out.won = cap.opinion;
+    const st2 = raid('gunner'); const medic = makePerson('earth'); medic.role = 'medic'; medic.skill = 1; registerPerson(medic); st2.crew.push(medic.id); st2.injured = {};
+    startDuel({ kind: 'pirate' }, false); begin(); const cred = st2.credits;
+    rolls([0.99, 0.01]); const text = choose('Turn into her'); out.free = { hurt: handHurt(), paid: cred - st2.credits, bill: /clinic is/.test(text) };
+    return out;
+  });
+  assert.ok(r.won > 0); assert.deepEqual(r.free, { hurt: true, paid: 0, bill: false });
   await done();
 });

@@ -139,6 +139,19 @@ function repelStep(s, kind) {
 
 const pickWeighted = table => { let r = Math.random() * Object.values(table).reduce((a, b) => a + b, 0); for (const [k, w] of Object.entries(table)) if ((r -= w) < 0) return k; return Object.keys(table)[0]; };
 
+// The hand is hurt: laid up for a while (a level worse, light duty), longer if already hurt, and with no medic aboard the clinic is on
+// their own savings. Used when a crew member is hit (below) and when the hand's own call in a raid goes wrong (engagements.js).
+const HAND_CLINIC = 150;
+function hurtHand(s) {
+  const st = G.state, h = hired(), again = s.youHurt || handHurt();
+  h.hurtUntil = st.day + (again ? 18 : 12);
+  s.youHurt = true;
+  const bill = roleHolder('medic') ? 0 : Math.min(st.credits, HAND_CLINIC);
+  st.credits -= bill;
+  const pay = bill ? ` The clinic is ${fmt(bill)} cr of your own, with no medic aboard.` : '';
+  return `${again ? 'You are hurt again, and you stay down. It will be some time before you are any use.' : 'You are hurt. For a while your work will be a level worse.'}${pay}`;
+}
+
 // Someone goes down. The hand can be hurt but not killed. A crew member hurt twice in one fight is dead, or marked if a main character.
 function repelCasualty(s) {
   const st = G.state, pool = [...st.crew.filter(id => !(st.injured || {})[id] || s.hurt.has(id)), 'you'];
@@ -147,12 +160,7 @@ function repelCasualty(s) {
     const friend = st.crew.map(person).find(c => c && (c.opinion >= OPINION.FRIEND || c.owes) && !(st.injured || {})[c.id] && !s.hurt.has(c.id) && !(s.held || []).some(l => l.startsWith(c.first)));
     if (friend) { who = friend.id; s.covered = true; cover = `${friend.first} pulls you down behind the closer and takes it${friend.owes ? ` ("We are even," ${friend.first} says later)` : ''}. `; delete friend.owes; }
   }
-  if (who === 'you') {
-    const h = hired(), again = s.youHurt || handHurt();
-    h.hurtUntil = st.day + (again ? 18 : 12);
-    s.youHurt = true;
-    return again ? 'You are hurt again, and you stay down. It will be some time before you are any use.' : 'You are hurt. For a while your work will be a level worse.';
-  }
+  if (who === 'you') return hurtHand(s);
   const c = person(who);
   if (s.hurt.has(who)) {
     if (c.cast) {

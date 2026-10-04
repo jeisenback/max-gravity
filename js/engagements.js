@@ -80,6 +80,8 @@ function deadInSpaceScene(s) {
   };
 }
 
+// What a choice risks for the hand: a lost bold call can hurt you yourself, and the captain remembers a call that failed or won it.
+const HAND_RISK = { hold: 0, screen: 0, warn: 0.15, burn: 0.15, turn: 0.35, fire: 0.35, post: 0.35 };
 const raidPosition = s => (s.edge >= 1 ? 'ahead' : s.edge <= -1 ? 'behind' : 'even');
 
 // The start. Returns what to show now and queues the first beat. A hard burn can get you clear before there is a fight.
@@ -104,7 +106,7 @@ function raidScene(s) {
   const general = closing ? RAID_CLOSING : RAID_EXCHANGE, spec = RAID_POST[kind][post];
   const text = closing ? s.open || RAID_OPEN[s.style][s.round % 2] : RAID_PASS[s.style][s.beat - 1];
   const choices = general.map(c => ({ label: c.label, run: () => raidStep(s, c, null) }));
-  choices.push({ label: `[${POSTS[post].name}] ${spec.label}`, run: () => raidStep(s, { odds: () => Math.min(0.85, 0.5 + 0.1 * level), win: spec.win, lose: spec.lose }, post) });
+  choices.push({ label: `[${POSTS[post].name}] ${spec.label}`, run: () => raidStep(s, { id: 'post', odds: () => Math.min(0.85, 0.5 + 0.1 * level), win: spec.win, lose: spec.lose }, post) });
   return {
     title: closing ? 'The Closing' : s.beat === 1 ? 'First Pass' : 'Second Pass', personal: true, via: 'crew', owner: 'you',  // yours to decide, not the captain's (hired.js hiredCall)
     text: `${text}</p><p>Position: ${raidPosition(s)}. Armor ${st.armor}/${ship().armor}.`,
@@ -119,6 +121,12 @@ function raidStep(s, c, post) {
   const [edge, hull, text] = Array.isArray(line) ? line : (line[s.style] || line.grapple);
   s.edge += edge;
   let out = text;
+  const risk = HAND_RISK[c.id] || 0, cap = person(hired().captain);
+  if (!won && risk && Math.random() < risk) out += ` ${hurtHand(s)}`;  // your own call, and it went wrong on you
+  if (risk >= 0.35) {
+    if (!won) like(cap, -1, 'You made a call in a raid and it went wrong.');
+    else if (edge >= 2) like(cap, 1, 'You made the call that turned a raid.');
+  }
   if (hull) { const pts = Math.round(ship().armor * hull); st.armor = Math.max(1, st.armor - pts); out += ` Armor -${pts}.`; if (!won && Math.random() < CASUALTY_ODDS) out += ` ${repelCasualty(s)}`; }
   s.beat++;
   if (s.beat >= 3 || s.edge >= 3 || s.edge <= -3) return `${out} ${raidClose(s)}`;
