@@ -225,8 +225,9 @@ test('posts: your own work teaches you, it is kept, and it improves your odds', 
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('engineer'); const st = G.state, h = st.hired, out = {};
+    out.steps = SKILL_STEPS;
     out.start = { level: skillLevel('engineer'), xp: skillXp('engineer'), other: skillLevel('pilot'), odds: soloOdds('engineer'), otherOdds: soloOdds('pilot') };
-    gainSkill('engineer', 30); out.after = { level: skillLevel('engineer'), odds: soloOdds('engineer') };
+    gainSkill('engineer', SKILL_STEPS[2] - SKILL_STEPS[1]); out.after = { level: skillLevel('engineer'), odds: soloOdds('engineer') };
     // Orders, projects and programs you do yourself teach; a crew member's do not.
     const x0 = skillXp('engineer'); Settings.wear = 'off'; st.armor = 1; st.crew = st.crew.filter(id => person(id).role !== 'engineer');
     postState('engineer').busy = false; giveOrder('engineer', 'patch'); out.order = skillXp('engineer') - x0;
@@ -240,7 +241,7 @@ test('posts: your own work teaches you, it is kept, and it improves your odds', 
     out.owner = { odds: orderOdds('engineer'), skill: skillLevel('engineer') };
     return out;
   });
-  assert.deepEqual(r.start, { level: 1, xp: 10, other: -1 + 1, odds: 0.55, otherOdds: 0.45 });
+  assert.deepEqual(r.start, { level: 1, xp: r.steps[1], other: -1 + 1, odds: 0.55, otherOdds: 0.45 });
   assert.deepEqual(r.after, { level: 2, odds: 0.65 });
   assert.equal(r.order, 1, 'your own order teaches you a little');
   assert.equal(r.run.xp, 2, 'a burn worked teaches you more'); assert.equal(r.run.opinion, -1, 'a run that made nothing costs you the captain\'s regard');
@@ -256,7 +257,7 @@ test('posts: you can ask the captain to move you, and they decide', async () => 
   assert.match(await page.innerText('#panel'), /your posts/i);
   assert.equal(await page.$$eval('[data-action=swapPost]', b => b.length), 3, 'the three others');
   const r = await ev(() => {
-    const st = G.state, h = st.hired, out = {};
+    const st = G.state, h = st.hired, out = { steps: SKILL_STEPS };
     const before = st.crew.map(id => [person(id).first, person(id).role]);
     const holder = roleHolder('engineer'), holderSkill = holder.skill;
     // They say no: nothing changes, and it cannot be asked again today.
@@ -276,7 +277,7 @@ test('posts: you can ask the captain to move you, and they decide', async () => 
   assert.deepEqual(r.yes.modes, ['crewed', 'crewed', 'manual', 'crewed'], 'pilot, gunner, engineer, comms: the engineer post is now yours');
   assert.equal(r.yes.holderRole, 'gunner'); assert.ok(r.yes.gunnerHeld, 'the engineer took the gun post');
   assert.equal(r.yes.holderSkill, Math.max(1, r.yes.was - 1), 'and is a little rusty at it');
-  assert.equal(r.yes.gunnerXp, 10, 'what you learned at the gun post stays with you');
+  assert.equal(r.yes.gunnerXp, r.steps[1], 'what you learned at the gun post stays with you');
   assert.ok(r.odds.more > r.odds.low, 'whoever decides is likelier to say yes once they trust you');
   await done();
 });

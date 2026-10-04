@@ -25,8 +25,9 @@ const hiredCaptain = () => (hired() ? G.state.people[hired().captain] : null);
 const notYours = post => !!hired() && hired().post !== post;
 
 // ---------- skill at each post ----------
-// Experience points per post, kept when you swap. Levels come at 0, 10, 30 and 60 points.
-const SKILL_STEPS = [0, 10, 30, 60];
+// Experience points per post, kept when you swap. Levels come at 0, 12, 45 and 110 points: about 0.7 a day, so a chapter of a hundred
+// days ends at the second level, and the third is for someone who works at it (or the chapters after).
+const SKILL_STEPS = [0, 12, 45, 110];
 // Runs with the captain and what they paid you, over the whole chapter. A save from before these were kept counts what its ledger holds.
 const runTotals = h => ({
   runs: h.runsDone !== undefined ? h.runsDone : h.ledger.length,

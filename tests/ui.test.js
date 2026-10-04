@@ -287,7 +287,7 @@ test('the character sheet shows experience on every post row, not only the one h
     return [...d.querySelectorAll('.char-skill')].map(row => ({ name: row.firstElementChild.textContent, xp: row.querySelector('.char-xp').textContent }));
   });
   assert.equal(r.length, 4);
-  assert.match(r.find(x => /Gunner/.test(x.name)).xp, /^12 \/ 30$/);
+  assert.match(r.find(x => /Gunner/.test(x.name)).xp, /^12 \/ 45$/);
   assert.match(r.find(x => /Pilot/.test(x.name)).name, /posted/);
   for (const x of r) assert.match(x.xp, /^\d+ (\/ \d+)?$/);
   await done();

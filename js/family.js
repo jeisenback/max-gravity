@@ -395,7 +395,7 @@ function catEvent() {
       ...names.map((nm, i) => ({ label: `"${nm}," suggests ${voters[i]}`, run() {
         h.cat = nm;
         homeLog(`${nm} the cat came aboard at ${G.state.planet}.`);
-        for (const f of crewPeople()) like(f.p, 1, null);
+        for (const f of crewPeople()) likeAmbient(f.p, 1, null);
         return `${nm} it is. The cat, for its part, does not acknowledge the name, or the vote, or the existence of the arrangement. By the time you take off, ${nm} has found the warmest spot on the ship, which is on the reactor housing, and has curled into a perfect gray circle, one ear twitching. Somebody puts a saucer of milk down, and somebody else makes a small bed out of a folded jacket.`;
       } })),
       { label: 'Put it back on the dock', run: () => 'You carry it back down the ramp, in both hands, and set it on the dock, and it gives you a look you will remember for a long time, a long, level, wholly unsurprised stare, and walks off, with its tail high. Nobody on the crew speaks to you for an hour. Somewhere, in the distance, a small, imperious meow.' },
@@ -466,6 +466,12 @@ Mods.register({
       label: 'Sit with someone', can: () => procedural().length > 0 || paxAboard().some(m => m.pid),
       run() { G.nextEvent = sitPicker(); return 'You make two mugs of coffee.'; },
     };
+    M.on('newDay', day => {  // a high opinion fades when you do nothing for them (people.js)
+      for (const id of [...G.state.crew, (hired() || {}).captain].filter(Boolean)) {
+        const p = person(id);
+        if (p && p.memories && !p.loyal && p.opinion > OPINION.FRIEND && day - (p.liftedAt || 0) >= OPINION_FADE) { p.opinion--; p.liftedAt = day; }
+      }
+    });
     M.on('frame', () => {
       const t = G.transit;
       if (G.mode !== 'transit' || !t) return;

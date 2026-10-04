@@ -115,6 +115,7 @@ const bonds = () => (G.state.bonds = G.state.bonds || {});
 const bond = (a, b) => bonds()[bondKey(a, b)] || 0;
 function addBond(a, b, n) {
   const k = bondKey(a, b);
+  if (n > 0) n *= Math.max(0.15, 1 - Math.max(0, (bonds()[k] || 0) - 1) / 6);  // a close bond is slower to deepen
   bonds()[k] = Math.max(-10, Math.min(10, (bonds()[k] || 0) + n));
   if (G.shifts && n) G.shifts.push({ a: a.p, b: b.p, n });
 }
@@ -131,7 +132,7 @@ function bondDay() {
   if (!G.transit) return;
   for (const [a, b] of pairs(folk())) {
     const ta = tastes(a), tb = tastes(b);
-    let d = (ta.genre === tb.genre ? 0.15 : 0) + (ta.team === tb.team ? 0.1 : 0) + (clash(a, b) ? -0.2 : 0.03) + factionPull(a.p, b.p);
+    let d = (ta.genre === tb.genre ? 0.1 : 0) + (ta.team === tb.team ? 0.06 : 0) + (clash(a, b) ? -0.2 : 0) + factionPull(a.p, b.p);
     if (bond(a, b) >= 6 && clash(a, b)) d += 0.2;  // love conquers some things
     addBond(a, b, d);
   }
