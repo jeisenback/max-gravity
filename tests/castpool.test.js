@@ -61,3 +61,26 @@ test('a game saved before the draw keeps the pair it had, and an owner meets the
   assert.equal(r.legacy, 'yelena+ruben'); assert.equal(r.n, 2); assert.ok(r.first, 'the first of the pair is who the owner meets first');
   await done();
 });
+
+test('the draw leans toward the start background\'s own people, and still brings in others', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    const out = {};
+    for (const bg of ['earth', 'mars', 'belt']) {
+      let own = 0, both = 0, none = 0; const seen = new Set(), N = 900;
+      for (let i = 0; i < N; i++) {
+        const pair = realDrawCastPair(bg), n = pair.filter(k => CAST[k].culture === bg).length;
+        if (n >= 1) own++; if (n === 2) both++; if (n === 0) none++;
+        pair.forEach(k => seen.add(k));
+      }
+      out[bg] = { own: own / N, both: both / N, none: none / N, seen: seen.size };
+    }
+    return out;
+  });
+  for (const bg of ['earth', 'mars', 'belt']) {
+    assert.ok(r[bg].own > 0.8 && r[bg].own < 0.95, `${bg}: ${r[bg].own} of draws have someone of their own`);
+    assert.ok(r[bg].both > 0.15 && r[bg].both < 0.45, `${bg}: ${r[bg].both} have both`);
+    assert.ok(r[bg].none > 0.05, `${bg}: ${r[bg].none} have no one of their own`); assert.equal(r[bg].seen, 6, 'and all six still come up');
+  }
+  await done();
+});

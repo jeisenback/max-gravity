@@ -361,9 +361,13 @@ const CAST = {
 // to start from a pair they know (tests/helpers.js).
 const CAST_PAIRS = { earth: ['ines', 'tomas'], mars: ['yelena', 'ruben'], belt: ['bexa', 'pax'] };
 const castPool = () => Object.keys(CAST).filter(k => !CAST[k].xo);
-function drawCastPair() {
-  const pool = castPool().sort(() => Math.random() - 0.5), first = pool[0], second = pool.slice(1).find(k => CAST[k].role !== CAST[first].role) || pool[1];
-  return [first, second].filter(Boolean);
+// A main character of the start background's own culture is this many times as likely as one from elsewhere, so an earth start is mostly
+// Earth people, and now and then not.
+const CAST_HOME_WEIGHT = 3;
+function drawCastPair(background) {
+  const take = keys => pickWeighted(Object.fromEntries(keys.map(k => [k, CAST[k].culture === background ? CAST_HOME_WEIGHT : 1])));
+  const pool = castPool(), first = take(pool), rest = pool.filter(k => k !== first), other = rest.filter(k => CAST[k].role !== CAST[first].role);
+  return [first, take(other.length ? other : rest)];
 }
 function castPair() {
   const st = G.state;
