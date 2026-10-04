@@ -63,6 +63,28 @@ const CREW_AT_BAR = {
   medic: ['{n} is patching up someone who lost an argument with a bulkhead.', '{n} is nursing one drink and watching everyone else\'s.', '{n} has been cornered by a stranger with a rash.', '{n} is giving a short lecture on hydration to a table of dockers.', '{n} is sitting alone with an empty glass in both hands.', '{n} is showing the bartender how to bandage a burn, with a napkin.'],
 };
 
+// What happens at the table, so the same four doors do not open onto the same rooms. Variants are picked by the person (a hash of
+// their name, so no random draw) where they are about who someone is, and at random where they are about the night.
+const WORK_GROUP = [[/dock|rigger|salvag|miner|ore |ice |haul|crane|freight/i, 'hands'], [/engineer|tech|weld|chemist|hydro|model|architect|mechanic/i, 'tech'], [/navy|veteran|pilot|guard|officer/i, 'service']];
+const BAR_WORK = {
+  hands: ['{n} talks about the work with their hands: how a load shifts in a hold, the sound a bad cable makes before it goes. You get a feel for what it costs the body, and what the pay is for.', '"Fourteen years," {n} says, "and I can tell the weather on the other side of a hull by the way it hums." They mean it as a joke. It is not entirely one.', '{n} shows you a hand with two fingers that do not close. It was a clamp, and a shift supervisor who did not check it. They have never told anyone the supervisor\'s name.'],
+  tech: ['{n} explains, with a coaster and a fork, why a thing you have always assumed works a certain way does not. By the end of it you have a new respect for something you were about to ignore.', '"Nobody thanks you when it works," {n} says. "They thank you when it breaks and then you fix it." They drink to that.', '{n} has opinions on three kinds of failure and a favorite, and tells you which. It is a boring one, which is the point.'],
+  service: ['{n} sits very straight for a person with a drink in their hand. They talk about the service the way people talk about a family they have left, with exasperation and a kind of loyalty they would not admit.', '"They taught me to count exits," {n} says. "I still do it. There are three." They glance at each one, in order, without moving their head.', '{n} will not tell you where they served. They will tell you what the food was like, and that is a long story.'],
+  other: ['{n} talks about the work: the hours, the people, the small politics. It is not exciting. It is a life, described by someone who is good at it.', '"It is not what I thought I would do," {n} says. "But I am better at it than I thought I would be." They look pleased by that, and a little surprised.', '{n} tells you about a bad day at work in such detail that you can see the room. It ends with an apology to a colleague, and the colleague, to everyone\'s surprise, accepting.'],
+};
+const BAR_SILENCE = ['You sit with {n} and neither of you says anything. The room talks around you. After a while {n} pushes the bowl of beans an inch toward you, and that is all.', 'You share the table. {n} reads something on a terminal, you watch the room, and it is the quietest twenty minutes you have had in a week.', '{n} starts to say something, stops, and you do not ask. They nod, as if you had answered. The drink goes down slowly.', 'Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, {n} lifts a hand without looking up.'];
+const BAR_PLACE = ['"{bar}," {n} says, "has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you do not ask."', '{n} points out the table by the wall. "A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again."', '"The bartender knows everyone\'s business," {n} says, "and has never repeated any of it. That is why anyone trusts this place."', '{n} tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a small, useful set of rules.', '"They tried to close {bar} twice," {n} says. "The first time the regulars paid the rent. The second time nobody could find the owner."'];
+const BAR_CARD_WIN = ['Three hands, slow and close. On the last card you take {cr} cr off {n}, who groans and says you were counting.', '{n} deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. {cr} cr.', 'You play it quiet and let {n} talk. They talk themselves into a bad bet. {cr} cr, and they laugh about it, which is the worst part.', 'The cards run for you all night. {n} tries a different seat, a different deck, a different luck charm. {cr} cr to you in the end.'];
+const BAR_CARD_LOSE = ['It goes the other way. {n} takes {cr} cr off you, and buys you a drink with it, and sets it in front of you. Fair is fair.', '{n} plays like someone who learned on a long watch: patient, quiet, unrattled. {cr} cr, and you cannot find the mistake you made.', 'You have the better hand for most of the evening and none of it at the end. {n} says sorry and means about half of it. {cr} cr.', '{n} fans the last cards with a flourish you have seen before, in a port you do not name. {cr} cr, and a lesson.'];
+const BAR_HOME_TALK = ['{n} talks about the view from the ring where the light comes in at dusk, the smell of the market, the man who sold fried dough on the corner, and a sister who writes every week. They talk until the bar is nearly empty.', '"You will think I am making it up," {n} says, and then tells you about a festival on {home} where the whole district eats at one long table, and the oldest person gets the first plate and the last word.', '{n} draws {home} on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. "That is the street," {n} says. "That is where I will be, one day."', '{n} says the name of a street on {home} and then says nothing for a while. When they start again it is about a dog, and it is a happy story, and then it is not.'];
+const BAR_BLESS = ['{n} closes their eyes and lays two fingers on the transponder. They say a few words over your ship\'s name, in a cadence you do not know. The bar goes quiet. When they are done they open their eyes and touch your hand.', '{n} takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. "It will not stop a rock," {n} says. "It is not for rocks."', '{n} does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost. It is the most convincing blessing you have had.'];
+const BAR_LEAVE = ['You get up and leave them to their drink. You go back to the bar and the noise of the room.', 'You nod, and {n} nods, and that is the whole goodbye. The room closes over the gap you left.', '"Safe burn," {n} says, to your back. You do not turn round, but you lift a hand.', 'You finish what is in your glass and stand. {n} has already gone back to their own business, which is a kind of courtesy.'];
+const BAR_DRINK_TALK = ['{n} tells you about {home}: the streets, the smell of the market, why they left, and why they might go back. There is no rumor in it, and no secret, and no angle. It takes an hour.', '{n} spends the whole drink on a long story about a boss they hated and a ship they loved, and how the two are the same person. It is very funny. It teaches you nothing.', '{n} asks about you, and listens, and says nothing useful, and the drink is gone before you notice. It is the most relaxing hour of the week.', '{n} complains for an hour about the price of everything, with such precision and love that you leave feeling you have been to a very good concert.', '{n} talks about the one trip that went right: the cargo that sold, the weather that held, the pilot who sang. It is a nice story. It has no use at all.'];
+
+const workGroup = job => (WORK_GROUP.find(([re]) => re.test(job || '')) || [null, 'other'])[1];
+const byName = (p, salt, n) => Math.abs(hash(`${p.first}${p.last}${salt}`)) % n;  // the person's own pick, the same every time
+const barSays = (line, p, extra = {}) => line.replace(/\{n\}/g, p.first).replace(/\{home\}/g, p.home).replace(/\{bar\}/g, (G.barState || {}).name || 'this place').replace(/\{cr\}/g, extra.cr || '');
+
 function barOf(planet) {
   const b = BARS[planet.name];
   return b ? { name: b[0], vibe: b[1] } : { name: `The ${pick(TITLE_A)} ${pick(TITLE_N)}`, vibe: 'A dockside bar like a hundred others: bad light, cheap drinks, and everybody\'s business.' };
@@ -132,7 +154,11 @@ function talkEvent(pat) {
   const mem = p.memories.length ? p.memories[p.memories.length - 1].replace(/^(Day \d+|\d+ \w+ \d+): /, '') : null;
   const text = pat.known
     ? `${p.first} ${p.last} ${p.opinion >= OPINION.FRIEND ? 'waves you over' : p.opinion <= OPINION.ENEMY ? 'sees you and scowls into their drink' : 'nods at you'}.${pat.regular && p.gossip ? ` Since you were last here, ${p.first} ${p.gossip}` : ''}${mem ? ` Last time: "${mem}"` : ''}`
-    : `${p.first} ${p.last}: a ${TRAITS[p.traits[0]].adj}, ${TRAITS[p.traits[1]].adj} ${p.job} from ${p.home}, ${GOALS[p.goal]}. ${pick(OPENERS[t0])}`;
+    : [
+      `${p.first} ${p.last}: a ${TRAITS[p.traits[0]].adj}, ${TRAITS[p.traits[1]].adj} ${p.job} from ${p.home}, ${GOALS[p.goal]}. ${pick(OPENERS[t0])}`,
+      `${pick(OPENERS[t0])} It is ${p.first} ${p.last}, ${GOALS[p.goal]}: a ${p.job} from ${p.home}, and ${TRAITS[p.traits[1]].adj}, you would say, if you had to.`,
+      `Somebody has taken the other stool. ${p.first} ${p.last} is a ${p.job} from ${p.home}, ${TRAITS[p.traits[0]].adj} and ${TRAITS[p.traits[1]].adj}, and ${GOALS[p.goal]}. ${pick(OPENERS[t0])}`,
+    ][byName(p, 'intro', 3)];
   const choices = [
     { label: `Buy ${p.first} a drink (${DRINK} cr)`, can: () => st.credits >= DRINK && !pat.drank, run() {
       pat.drank = true;
@@ -141,7 +167,7 @@ function talkEvent(pat) {
       like(p, 1, `The captain bought me a drink at ${bar}.`);
       if (p.secret && (p.traits.includes('talkative') || p.traits.includes('drunk') || Math.random() < 0.3)) return `${p.first} ${pick(SECRET_TALK[p.secret])}`;
       if (Math.random() < 0.5) return `${p.first} looks around and leans in. "Here's something you can use," they say, low and fast: "${addRumor()}" Then they sit back and finish their drink. Neither of you speaks for the rest of the glass.`;
-      return `${p.first} tells you about ${p.home}: the streets, the smell of the market, why they left, and why they might go back. There is no rumor in it, and no secret, and no angle. It takes an hour.`;
+      return barSays(pick(BAR_DRINK_TALK), p);
     } },
     { label: 'Ask what they have heard', can: () => !pat.asked, run() {
       pat.asked = true;
@@ -165,11 +191,11 @@ function talkEvent(pat) {
     if (Math.random() < 0.5) {
       st.credits += CARDS;
       like(p, p.traits.includes('greedy') || p.traits.includes('rude') ? -1 : 0, 'The captain took my money at cards.');
-      return `Three hands, slow and close. On the last card you take ${fmt(CARDS)} cr off ${p.first}. ${p.traits.includes('rude') ? `${p.first} stands up and says you cheated, loudly, and the whole bar turns to look. You leave them to it.` : `${p.first} shrugs, groans, and buys you a drink with your own money. You talk about nothing for an hour.`}`;
+      return `${barSays(pick(BAR_CARD_WIN), p, { cr: fmt(CARDS) })} ${p.traits.includes('rude') ? `${p.first} stands up and says you cheated, loudly, and the whole bar turns to look. You leave them to it.` : pick([`${p.first} buys you a drink with your own money.`, `${p.first} shakes your hand and means it.`, `${p.first} tells the story of it to the next table, with you as the villain.`])}`;
     }
     st.credits -= CARDS;
     like(p, 1, null);
-    return `It goes the other way. ${p.first} takes ${fmt(CARDS)} cr off you, and buys you a drink with it, and sets it in front of you. Fair's fair. By the end of the glass you are laughing.`;
+    return `${barSays(pick(BAR_CARD_LOSE), p, { cr: fmt(CARDS) })} By the end of the glass you are laughing.`;
   } });
   if (p.traits.includes('rude') && !pat.known) choices.push({ label: 'Tell them what you think of their manners', can: () => !pat.fought, run() {
     pat.fought = true;
@@ -181,17 +207,25 @@ function talkEvent(pat) {
   } });
   if (p.traits.includes('homesick')) choices.push({ label: `Ask about ${p.home}`, can: () => !pat.home, run() {
     pat.home = true; met(pat); like(p, 2, `The captain let me talk about ${p.home}.`);
-    return `${p.first} talks about the view from the ring where the light comes in at dusk, the smell of the market, the man who sold fried dough on the corner, and a sister who writes every week and signs off the same way. They talk until the bar is nearly empty. Then they buy the next round.`;
+    return barSays(pick(BAR_HOME_TALK), p);
   } });
   if (p.traits.includes('pious')) choices.push({ label: hired() ? 'Ask for a blessing on the ship' : 'Ask for a blessing on your ship', can: () => !pat.blessed, run() {
     pat.blessed = true; met(pat); like(p, 1, 'I blessed the captain\'s ship.');
-    return `${p.first} closes their eyes and lays two fingers on the transponder. They say a few words over your ship's name, in a cadence you do not know. The bar goes quiet. When they are done they open their eyes and touch your hand.`;
+    return barSays(pick(BAR_BLESS), p);
   } });
   if (pat.known && p.opinion <= OPINION.GRUDGE) choices.push({ label: 'Make peace (buy them a bottle, 300 cr)', can: () => st.credits >= 300 && !pat.peace, run() {
     pat.peace = true; st.credits -= 300; like(p, 3, 'The captain bought me a bottle and apologized.');
     return `${p.first} looks at the bottle a long time before taking it, turning it in the light to read the label. Then they set it between you on the table and pour two glasses. "It's a start," they say.`;
   } });
-  choices.push({ label: 'Leave them to their drink', run: () => 'You get up and leave them to their drink. You go back to the bar and the noise of the room.' });
+  // Two of three more things to do at a table, which two depends on the person, so the doors are not the same for everyone.
+  const more = [
+    { label: `Ask ${p.first} about their work`, can: () => !pat.work, run() { pat.work = true; met(pat); return barSays(pick(BAR_WORK[workGroup(p.job)]), p); } },
+    { label: `Sit with ${p.first} and say nothing`, can: () => !pat.quiet, run() { pat.quiet = true; met(pat); like(p, ['nervous', 'secretive', 'homesick', 'kind'].some(t => p.traits.includes(t)) ? 1 : 0, 'The captain sat with me and did not make me talk.'); return barSays(pick(BAR_SILENCE), p); } },
+    { label: `Ask ${p.first} about this place`, can: () => !pat.place, run() { pat.place = true; met(pat); return barSays(pick(BAR_PLACE), p); } },
+  ];
+  const skip = byName(p, 'skip', 3);
+  choices.push(...more.filter((_, i) => i !== skip));
+  choices.push({ label: 'Leave them to their drink', run: () => barSays(pick(BAR_LEAVE), p) });
   return { title: `${bar}: ${p.first} ${p.last}`, text, choices };
 }
 
