@@ -207,6 +207,7 @@ function letters(planet) {
     p.mood = { kind: good ? 'high' : 'low', until: st.day + (good ? 10 : 25), text };
     p.news = { good, text };
     notes.push(noteFor(`A message for ${p.first} at ${planet.name}: ${text}.`, p.id));
+    break;  // one letter a landing: each one is a scene on the next burn, so three would be three scenes in a row
   }
   if (notes.length) st.letterAt = st.day;
   return notes;
