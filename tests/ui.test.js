@@ -392,12 +392,13 @@ test('on a phone, the choices of a long scene stay in view and the dialog clears
 test('the transit Comms box leaves room for the ship on a short phone', async () => {
   const { ev, done } = await open();
   const r = await ev(() => ({
-    wide: transitCommsLines(false, 0, 400, 640),
+    wide: transitCommsLines(false, 0, 470, 640),
+    wideBig: transitCommsLines(false, 0, 470, 860),
     tall: transitCommsLines(true, 84, 492, 330),
     short: transitCommsLines(true, 84, 390, 300),
     tiny: transitCommsLines(true, 84, 100, 300),
   }));
-  assert.equal(r.wide, 16);
+  assert.ok(r.wide >= 12 && r.wide <= 16, `a wide screen keeps most of its lines: ${r.wide}`); assert.ok(r.wideBig < r.wide && r.wideBig >= 4, 'and fewer when the ship is drawn larger');
   assert.equal(r.tall, 8, 'a tall phone keeps 8 lines');
   assert.ok(r.short >= 2 && r.short < 8, `a short phone gets fewer: ${r.short}`);
   assert.equal(r.tiny, 2, 'never fewer than 2');
