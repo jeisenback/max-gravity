@@ -27,7 +27,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     };
     answer();
     let runs = 0, stuck = 0, reached = null, offerDay = null;
-    const beatDays = [], xoDays = [];  // the day each of the captain's scenes played, and when the used ship was offered
+    const beatDays = [], xoDays = [], waits = [], burns = [], dueBurns = {};  // waits: days from a captain scene becoming due to its playing; burns: burns sailed with it due, the playing one included  // the day each of the captain's scenes played, and when the used ship was offered
     while (runs < maxLegs && stuck < 5 && !reached) {
       try {
         UI.tab = 'bar'; UI.render();
@@ -35,10 +35,15 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         if (!sail()) { stuck++; st.day += 1; continue; }
         const to = hired().run.sid, runPlanet = hired().run.planet, creditsBefore = st.credits;
         answer();
-        tryBurn(); enterTransit(); G.transit.times = [];
+        tryBurn(); enterTransit(); const draws = G.transit.times.length; G.transit.times = [];  // as many draws as the burn would make
         planOccasions();
         for (const o of G.transit.occasions) { openEvent(occasionEvent(o)); answer(); }
-        for (let h = 0; h < 4; h++) { startHappening(); answer(); }
+        const due = captainBeat(); if (due) dueBurns[due] = (dueBurns[due] || 0) + 1;  // a burn sailed with the scene due
+        for (let h = 0; h < draws; h++) { startHappening(); answer(); }
+        while (beatDays.length < (hired().beats || 0)) {  // read on the day she left, before the burn's days pass
+          const name = CAPTAIN_BEATS[beatDays.length];
+          beatDays.push(st.day - hired().since); waits.push(st.day - hired().since - CAPTAIN_BEAT_DAYS[name]); burns.push(dueBurns[name]);
+        }
         const acts = Object.values(ACTIVITIES).filter(a => a.can());
         if (acts.length) pick(acts).run();
         const rs = relationshipScene(); if (rs) { openEvent(rs); answer(); }
@@ -49,7 +54,6 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         answer();
         runs++;
         paid.push(st.credits - creditsBefore);
-        while (beatDays.length < (hired().beats || 0)) beatDays.push(st.day - hired().since);
         if (hired().deal && offerDay === null) offerDay = hired().deal.day - hired().since;
         const xoKey = CAPTAINS[hired().captainKey] && CAPTAINS[hired().captainKey].xo;
         while (xoKey && xoDays.length < (castRec(xoKey).arc || 0)) xoDays.push(st.day - hired().since);
@@ -59,7 +63,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
       } catch (e) { bad.push('threw: ' + String(e).slice(0, 120)); break; }
     }
     const avg = (a, n) => Math.round(a / Math.max(1, n));
-    return { runs, days: st.day, credits: st.credits, reached, stuck, scenes, bad, beatDays, xoDays, offerDay,
+    return { runs, days: st.day, credits: st.credits, reached, stuck, scenes, bad, beatDays, xoDays, waits, burns, offerDay,
       avgPayPerRun: avg(paid.reduce((a, b) => a + b, 0), paid.length), avgDaysPerRun: Math.round(10 * st.day / Math.max(1, runs)) / 10 };
   }, [legs, captainKey]);
   await ctx.close();
@@ -74,7 +78,7 @@ if (require.main === module) {
   (async () => {
     for (const seed of seeds) {
       const r = await soak({ seed, legs, captainKey });
-      console.log(`seed ${seed} runs ${r.runs} days ${r.days} credits ${r.credits} reached ${JSON.stringify(r.reached)} pay/run ${r.avgPayPerRun} days/run ${r.avgDaysPerRun} stuck ${r.stuck} trouble ${r.beatDays[0] ?? '-'} secret ${r.beatDays[1] ?? '-'} offer ${r.offerDay ?? '-'} xo [${r.xoDays.join(',')}] (days since sign-on) bad ${r.bad.length} errors ${r.errors.length}`);
+      console.log(`seed ${seed} runs ${r.runs} days ${r.days} credits ${r.credits} reached ${JSON.stringify(r.reached)} pay/run ${r.avgPayPerRun} days/run ${r.avgDaysPerRun} stuck ${r.stuck} trouble ${r.beatDays[0] ?? '-'} secret ${r.beatDays[1] ?? '-'} (due ${r.waits.join(',') || '-'} days, ${r.burns.join(',') || '-'} burns) offer ${r.offerDay ?? '-'} xo [${r.xoDays.join(',')}] (days since sign-on) bad ${r.bad.length} errors ${r.errors.length}`);
     }
     await closeBrowser();
   })();
