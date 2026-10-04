@@ -26,15 +26,17 @@ test('new game offers a hired start, and the choice of post', async () => {
     return {
       post: st.hired.post, credits: st.credits, ship: st.shipId, captain: !!cap && cap.role === 'captain',
       roles: st.crew.map(id => person(id).role).sort(), modes: Object.keys(POSTS).map(p => postMode(p)),
-      tutorial: st.tutorial, mode: G.mode, intro: UI.notes.join(' '),
+      tutorial: st.tutorial, mode: G.mode, intro: UI.notes.join(' '), scene: G.dialog ? { title: G.dialog.event.title, text: G.dialog.event.text } : null,
     };
   });
   assert.equal(r.post, 'gunner'); assert.equal(r.credits, 300); assert.equal(r.ship, 'freighter'); assert.ok(r.captain);
   assert.deepEqual(r.roles, ['cook', 'engineer', 'icehand', 'icehand', 'medic', 'pilot', 'quartermaster', 'slicer', 'xo'], 'the crew fill every role but yours, and the chapter\'s wider crew');
   assert.deepEqual(r.modes, ['crewed', 'manual', 'crewed', 'crewed'], 'pilot, gunner, engineer, comms: your post is the manual one');
   assert.equal(r.tutorial, null); assert.equal(r.mode, 'landed');
-  assert.match(r.intro, /signed on to the/);
-  assert.match(r.intro, /gunner/);
+  assert.doesNotMatch(r.intro, /signed on to the|credits to your name|Save toward a ship|You are her/, 'the port screen does not repeat what Signing On says');
+  assert.equal(r.scene.title, 'Signing On');
+  assert.match(r.scene.text, /ice hauler/); assert.match(r.scene.text, /Captain/); assert.match(r.scene.text, /You have the guns/);
+  assert.match(r.scene.text, /300 credits to your name\. Save toward a ship of your own/);
   await done();
 });
 
