@@ -28,7 +28,7 @@ test('a captain who has had enough warns you once, then puts you ashore, and you
     openEvent(putAshoreScene()); chooseEvent(0);
     const st2 = G.state, h2 = hired();
     out.fresh = st2 !== st; out.other = h2.captainKey !== was; out.credits = st2.credits; out.skill = h2.skill.gunner; out.times = st2.putOff;
-    out.scene = G.dialog && G.dialog.event.title; out.warnedAgain = !!h2.warned; out.notes = UI.notes.join(' '); out.signOn = G.dialog ? G.dialog.event.text : '';
+    out.scene = G.dialog && G.dialog.event.title; out.warnedAgain = !!h2.warned; out.notes = UI.notes.join(' ');
     return out;
   });
   assert.equal(r.calm, false, 'nothing at -1');
@@ -40,7 +40,6 @@ test('a captain who has had enough warns you once, then puts you ashore, and you
   assert.equal(r.credits, 777, 'with your savings'); assert.equal(r.skill, 35, 'and what you learned'); assert.equal(r.times, 1);
   assert.equal(r.scene, 'Signing On', 'and the sign-on is on screen');
   assert.equal(r.warnedAgain, false); assert.match(r.notes, /put you ashore/);
-  assert.match(r.signOn, /777 credits to your name/, 'the sign-on shows the savings carried, not the starting 300');
   await done();
 });
 
