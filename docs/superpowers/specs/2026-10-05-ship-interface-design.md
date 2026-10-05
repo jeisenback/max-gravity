@@ -19,6 +19,9 @@ This design replaces the navigation with the ship itself. It folds in those issu
 5. **Escaping moves into view helpers.** Pages that move onto them get template escaping (#251) without a separate pass.
 6. **Dormant, not deleted.** Owner-era pages (Exchange, Company) stay reachable through the same rail table in the full build, in the Ashore group.
 7. **Layout is B for port and C for the burn view,** with A (a ship strip above the page) as the fallback if B proves too far from today's layout. Mockups: https://claude.ai/artifact/P6EidhH96QcofRreEZT8Lp.
+8. **The Journal is an entry of its own on the rail,** not a room. It sits with the ship group, below the rooms, since it is the ship's record (the Crew page already keeps the ship's history).
+9. **The gunnery room and the Weapons page are one page.** The room is the page; there is no separate Weapons station in the new shell.
+10. **The flag is on by default in the narrow build from step 2,** once every page is registered. Before that it is off, and the full build keeps the old screens until cutover.
 
 ## The pieces
 
@@ -26,7 +29,7 @@ This design replaces the navigation with the ship itself. It folds in those issu
 - **The rail table** is one data list and the single source of truth. Each entry has an id, a label, a group (ship or ashore) and an `available()` rule (docked, scope, post). It replaces the `STATIONS` and `tabs` mapping in `js/bridge.js`. A disabled entry carries a reason that is shown (#264).
 - **The page registry** maps a room id to a render function. In the first pass each existing page (`port`, `bar`, `crew`, `journal`, `weapons`, `shipyard`) is wrapped as it is.
 - **The view helpers** (`js/views.js`) are a panel, a list, a person card and a choice block, with escaping inside them.
-- **The flag** is one switch in `js/build.js`, in the style of `scopeOff()`. It is off by default until cutover, on in the narrow build first, and tests can set it either way.
+- **The flag** is one switch in `js/build.js`, in the style of `scopeOff()`. It is off until step 2 is done, then on by default in the narrow build (decision 10) and off in the full build until cutover. Tests can set it either way.
 - **The burn view** is the same flag in a later phase. The cutaway drawn in `js/transit.js` becomes the screen, and pages open as sheets from the same registry.
 
 **Data flow:** game state, then the page registry's render, then the shell. An unknown page id falls back to Port. With the flag off the old path runs unchanged.
@@ -37,7 +40,7 @@ Each step ships on its own behind the flag and leaves `main` working.
 
 0. **Before starting:** #289 (the narrowing), then the injection-gap items (#251, #310), because the shell touches the same templates.
 1. **Walking skeleton:** the shell, rail table, page registry and flag, with only Port, Bar and Crew registered. That is enough to play a hired hand's loop in port with the new frame.
-2. **Register the remaining pages** (Journal, Missions, gunnery, engine, bridge and comms) and fix #262, #263, #264, #265 and #268 once, in the shell's layout rules, with one type scale and one set of spacing tokens.
+2. **Register the remaining pages** (Journal, Missions, gunnery, engine, bridge and comms) and fix #262, #263, #264, #265 and #268 once, in the shell's layout rules, with one type scale and one set of spacing tokens. At the end of this step the flag turns on by default in the narrow build.
 3. **Move pages onto the view helpers,** starting with those that print names (Crew, Bar, scenes). #309's removal of the three inline handlers happens here.
 4. **Phone and tablet:** the rail becomes a bottom strip, a tablet breakpoint is added (#269), and focus and screen-reader handling is done in the shell (#267).
 5. **The burn view:** the cutaway becomes the screen, with pages as sheets. The cutaway is drawn on a canvas in `js/transit.js`, so tapping a room needs hit-testing on the canvas.
@@ -66,9 +69,7 @@ Each step ships on its own behind the flag and leaves `main` working.
 
 ## Open questions
 
-- Is the Journal a room (the galley or berths) or an entry of its own on the rail?
-- Does a hired gunner's Weapons page and the gunnery room share one page, or is the gunnery a room with several pages?
-- Should the flag ship on by default in the narrow build at step 2, or only at step 4?
+None. The three raised in the first draft are settled as decisions 8, 9 and 10.
 
 ## Done when
 
