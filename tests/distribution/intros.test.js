@@ -1,12 +1,12 @@
 'use strict';
 
 // Distribution check: the main characters are introduced early (npm run soak). Not part of `npm test`: it depends on a spread over
-// many random games. Their introductions are tier 1 candidates in the burn's draw (js/cast.js), so one plays in the first run or
-// two without any extra weight; this guards that it stays so, whatever is added to the draw.
+// many random games. Their introductions are tier 1 candidates in the burn's draw (js/cast.js) and gain weight for each draw they
+// miss (the rule from #256), so one plays in the first run or two; this guards that it stays so, whatever is added to the draw.
 //
 // Sample:    60 seeded games (seeds 1 to 60) of three runs each, with the two main characters drawn from the pool as in the game
-//            (tools/soak.js --real-draw). Measured when this was written, over 100 seeds: the first main character in run 1 in 86
-//            games and in run 2 in the other 14; the second in run 1, 2 or 3.
+//            (tools/soak.js --real-draw). Measured over 100 seeds with the ramp: the first main character in run 1 in 91 games and
+//            in run 2 in 9; the second in run 1 in 21, run 2 in 75 and run 3 in 4 (without the ramp: 86 and 14; 20, 57 and 23).
 // Tolerance: in every game the first main character (not the first officer) is introduced by the end of run 2, and the second by
 //            the end of run 3.
 
