@@ -204,7 +204,7 @@ const Menu = {
     load() {
       return `<h2>Saved games</h2><p class="hint">The game saves itself every time you dock.</p>
         ${this.slotRows('load')}
-        ${this.exported ? `<p class="hint">Save code for slot ${this.exported.n} (copy it somewhere safe; paste it back with Import):</p><textarea readonly rows="3" onclick="this.select()">${this.exported.code}</textarea>` : ''}
+        ${this.exported ? `<p class="hint">Save code for slot ${this.exported.n} (copy it somewhere safe; paste it back with Import):</p><textarea readonly rows="3" data-select>${this.exported.code}</textarea>` : ''}
         <h3>Import a save</h3>
         <div class="row"><input type="file" id="importFile" accept=".json,application/json"></div>
         <div class="row"><input type="text" id="importCode" placeholder="Or paste a save code"><button data-action="menuImport">Import</button></div>

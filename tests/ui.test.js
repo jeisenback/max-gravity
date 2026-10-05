@@ -597,3 +597,12 @@ test('markup and quotes in the names a game keeps reach neither the memorial nor
   assert.deepEqual(found, []);
   await done();
 });
+
+test('clicking a save code selects it, with no inline handler (data-select)', async () => {
+  const { page, ev, done } = await open();
+  await ev(() => { const t = document.createElement('textarea'); t.id = 'sel'; t.readOnly = true; t.value = 'abc def'; t.setAttribute('data-select', ''); document.body.appendChild(t); });
+  await page.click('#sel');
+  const picked = await ev(() => { const t = document.getElementById('sel'); return t.value.slice(t.selectionStart, t.selectionEnd); });
+  assert.equal(picked, 'abc def');
+  await done();
+});

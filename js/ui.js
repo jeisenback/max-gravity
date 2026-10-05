@@ -7,6 +7,9 @@
 // to show as HTML; store is localStorage that never throws (a blocked browser just
 // forgets, and the game runs on).
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+// A field marked data-select selects its text when clicked, so a code or link can be copied (no inline handler: the page's
+// Content Security Policy in index.html does not allow them).
+document.addEventListener('click', e => { const el = e.target.closest && e.target.closest('[data-select]'); if (el && el.select) el.select(); }, true);
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },  // false: storage blocked, session only
