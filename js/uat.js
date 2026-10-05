@@ -215,7 +215,7 @@ const Uat = {
         <select data-sel="scene"><option value="">Play a scene...</option>${scenes.map(s => `<option>${esc(s)}</option>`).join('')}</select></div>
       ${items}
       <h4>Report</h4>
-      <textarea readonly rows="8" onclick="this.select()">${esc(this.report())}</textarea>
+      <textarea readonly rows="8" data-select>${esc(this.report())}</textarea>
       <div class="uat-row"><button data-uat="clear">Clear results</button><button data-uat="off">Turn tester tools off</button></div>`;
   },
   click(e) {

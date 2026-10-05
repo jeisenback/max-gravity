@@ -187,7 +187,7 @@ function communityHtml() {
     ${pending ? `<p class="desc">Start "${pending.title}"? Your current game will be replaced. <button data-action="scenarioGo">Start it</button> <button data-action="scenarioCancel">Keep playing</button></p>` : ''}
     ${SCENARIOS.map((sc, i) => `<div class="mission"><div><b>${sc.title}</b><div class="hint">${sc.text}</div></div>
       <div class="row" style="margin:0"><button data-action="scenarioPlay" data-arg="${i}">Play</button><button data-action="scenarioShare" data-arg="${i}">Share link</button></div></div>`).join('')}
-    ${UI.shareLink ? `<div class="row"><input type="text" readonly value="${esc(UI.shareLink)}" onclick="this.select()"></div><p class="hint">Copy this link to share the scenario.</p>` : ''}
+    ${UI.shareLink ? `<div class="row"><input type="text" readonly value="${esc(UI.shareLink)}" data-select></div><p class="hint">Copy this link to share the scenario.</p>` : ''}
     <div class="row"><input type="text" id="scenarioCode" placeholder="Paste a scenario link or code"><button data-action="scenarioPaste">Play it</button></div>
     ${UI.scenarioNote ? `<p class="hint">${UI.scenarioNote}</p>` : ''}`;
 }
