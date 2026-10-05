@@ -88,7 +88,7 @@ test('a burn that skips the scenes comes home with a thin hold, and still pays',
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    const st = setup(), h = hired(); st.cargo = {}; st.paid = {};
+    const st = setup(), h = hired(); st.cargo = {}; st.paid = {}; h.runsDone = 1;  // a later arrival: the first one is the first officer's scene
     const planet = currentPlanet();
     h.run = { ice: { edge: 0 }, good: 'water', tons: 50, cost: 0, planet: planet.name, sid: st.systemId, day: st.day - 12, from: 'X' };
     const credits = st.credits, realPrice = window.price; window.price = () => 100;

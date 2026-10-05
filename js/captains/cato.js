@@ -132,9 +132,8 @@ CAST.cato = {
 // The walk-through on the first burn (captains.js plays it once, before anything else): Cato takes the new hand round the ship. The
 // names are the crew's own; a role nobody holds reads as the job. Only the Gunner's post gets a line of its own.
 CAST.cato.round = () => {
-  const named = role => { const c = roleHolder(role); return c ? c.first : `the ${ROLE_NAMES[role].toLowerCase()}`; };
   const ice = G.state.crew.map(person).filter(c => c && c.role === 'icehand').map(c => c.first);
-  const [cook, medic, qm, eng, pilot, comms] = ['cook', 'medic', 'quartermaster', 'engineer', 'pilot', 'slicer'].map(named);
+  const [cook, medic, qm, eng, pilot, comms] = ['cook', 'medic', 'quartermaster', 'engineer', 'pilot', 'slicer'].map(crewNamed);
   const iceA = ice[0] || 'one ice hand', iceB = ice[1] || 'the other';
   const guns = hired().post === 'gunner'
     ? 'The last stop is at the foot of the guns. "And these are yours, which I should say plainly, since I have been talking about everyone else. When something closes on us, the captain tells you who and how far, and you play it: what they are threatening, what we answer. You will get one wrong. I did, and I am still here, and so is the ship."' : '';
@@ -155,4 +154,12 @@ CAST.cato.round = () => {
       { label: 'Another time', run: () => '"Fair enough," Cato says. "The watch bill is on the galley wall. Everything else you will find by walking into it, and I will be somewhere nearby when you do." He takes the mug back, which seems to be the point of the mug.' },
     ],
   };
+};
+
+// The first arrival (captains.js arrivalScene): Cato settles up at the foot of the ramp.
+CAST.cato.arrival = {
+  open: 'The ramp is down. Cato has the ledger open on a crate on the apron, and he turns it round so you can read it.',
+  memory: '"My first share was ninety," he says. "I bought boots with it. They were the wrong boots, and I wore them for six years." He taps the page. "Yours is in your account. Look at the header."',
+  column: '"That column is {cap}\'s," Cato says. "I only keep the money."',
+  pace: '"A season," Cato says. "{cap} was a hand on this ship before she owned it. It took her three."',
 };

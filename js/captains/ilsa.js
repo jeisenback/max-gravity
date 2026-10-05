@@ -127,3 +127,11 @@ CAST.ilsa = {
     },
   },
 };
+
+// The first arrival (captains.js arrivalScene): Ilsa settles up at the foot of the ramp.
+CAST.ilsa.arrival = {
+  open: 'Ilsa is at the foot of the ramp with the maintenance board under one arm and the ledger on top of it. She has the page open before you reach her.',
+  memory: '"I have checked it twice, in two pencils," Ilsa says. "I do that with anything I am going to hand to somebody." She slides the page an inch toward you. "It is in your account. The header will say so."',
+  column: '"That column is {cap}\'s," Ilsa says. "I do not touch it, and I do not read it either."',
+  pace: '"A season of runs," Ilsa says. "More if the fuel goes up. I keep that in pencil."',
+};
