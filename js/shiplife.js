@@ -473,6 +473,7 @@ function downtimeEvent(all) {
         run() {
           t.lifeUsed = t.lifeUsed || {};
           t.lifeUsed[lifeHalf()] = true;
+          if (hired()) hired().did = { ...hired().did, downtime: true };  // the first run's steps (tutorial.js)
           const text = a.run();
           comm(`[Ship] ${text}`);
           return text;

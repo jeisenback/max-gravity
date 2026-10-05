@@ -32,7 +32,7 @@ test('new game offers a hired start, and the choice of post', async () => {
   assert.equal(r.post, 'gunner'); assert.equal(r.credits, 300); assert.equal(r.ship, 'freighter'); assert.ok(r.captain);
   assert.deepEqual(r.roles, ['cook', 'engineer', 'icehand', 'icehand', 'medic', 'pilot', 'quartermaster', 'slicer', 'xo'], 'the crew fill every role but yours, and the chapter\'s wider crew');
   assert.deepEqual(r.modes, ['crewed', 'manual', 'crewed', 'crewed'], 'pilot, gunner, engineer, comms: your post is the manual one');
-  assert.equal(r.tutorial, null); assert.equal(r.mode, 'landed');
+  assert.equal(r.tutorial, 0, 'the first run begins'); assert.equal(r.mode, 'landed');
   assert.doesNotMatch(r.intro, /signed on to the|credits to your name|Save toward a ship|You are her/, 'the port screen does not repeat what Signing On says');
   assert.equal(r.scene.title, 'Signing On');
   assert.match(r.scene.text, /ice hauler/); assert.match(r.scene.text, /Captain/); assert.match(r.scene.text, /You have the guns/);
