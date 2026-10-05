@@ -65,6 +65,7 @@ const played = s => `${Math.floor(s / 3600)}h ${String(Math.floor(s / 60) % 60).
 function migrate(st) {
   const defaults = stateDefaults(st.shipId);
   for (const key of Object.keys(defaults)) if (st[key] == null) st[key] = defaults[key];
+  for (const p of Object.values(st.people)) if (p && typeof p === 'object') { p.first = cleanName(p.first); p.last = cleanName(p.last); }  // an event title is built from a name, and a title ends up in an attribute
   if (st.captain) st.captain.name = cleanName(st.captain.name);
   for (const c of st.captains || []) { c.name = cleanName(c.name); c.fate = stripTags(c.fate); }
   for (const m of st.memorial || []) m.cause = stripTags(m.cause);

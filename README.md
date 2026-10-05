@@ -171,6 +171,14 @@ The game opens on a title screen: Continue, New game, Load game, Settings, Contr
 
 Hosted on its own web address (GitHub Pages, itch.io, or any static host), the game can be installed like an app and plays offline after one visit (`manifest.webmanifest`, `sw.js`, and `icons/`). Inside claude.ai's frame this part is simply skipped. Saves carry a version number, and older saves are upgraded when they load. For a public release, set `dev: false` in `js/build.js` to keep the tester tools hidden.
 
+## Releasing
+
+Before the game goes public, three steps (nothing else holds them):
+
+1. Set `dev: false` in `js/build.js`. The tester tools (`js/uat.js`: credits, time, scene jumping, opened with Shift+U or `#uat`) then stay hidden whatever the address or keys.
+2. Set `version` in `js/build.js`. It shows on the title screen and is stored with each save.
+3. Bump `CACHE` in `sw.js` (`max-gravity-v1`, then `v2`, and so on) after a big change, so installed copies drop their old files.
+
 ## Automated tests
 
 The game itself needs nothing installed. The tests drive it in a headless browser with Playwright:
