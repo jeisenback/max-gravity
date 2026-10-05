@@ -414,6 +414,8 @@ function chapterRecap() {
   const list = names => names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0];
   const t = runTotals(h), days = st.day - h.since;
   const work = `${days} days aboard ${esc(shipTitle())}. ${t.runs} run${t.runs === 1 ? '' : 's'} with Captain ${cap.last}, and ${fmt(t.earned)} cr earned in wage and share. You worked the ${POSTS[h.post].name.toLowerCase()} and reached level ${skillLevel(h.post)}.`;
+  const why = { money: `You signed on for the money. You came with ${fmt(HIRED_SAVINGS)} cr and have ${fmt(st.credits)} cr now.`, learn: `You signed on to learn the work. The ${POSTS[h.post].name.toLowerCase()} post is at level ${skillLevel(h.post)}, ${t.runs} run${t.runs === 1 ? '' : 's'} in.`,
+    away: `You signed on to be somewhere else. It is ${days} days and ${t.runs} run${t.runs === 1 ? '' : 's'} from the dock you left.` }[h.reason] || '';
   const near = [...(cap && cap.memories ? [{ c: cap, name: `Captain ${cap.last}` }] : []), ...crew.map(c => ({ c, name: c.first }))]
     .filter(x => x.c.opinion >= OPINION.FRIEND).sort((a, b) => b.c.opinion - a.c.opinion).slice(0, 3);
   const told = crew.filter(c => c.story && c.story.beat >= 3).map(c => c.first), trusted = Object.keys(CAST).filter(k => ((st.cast[k] || {}).flags || {}).trusted).map(k => castPerson(k).first), favor = crew.filter(c => c.story && c.story.beat >= 4).map(c => c.first), loyal = crew.filter(c => c.loyal).map(c => c.first);
@@ -423,7 +425,7 @@ function chapterRecap() {
   const ties = webTies(folk()).slice(0, 2).map(x => `${x.a.p.first} and ${x.b.p.first}: ${bondWord(x.n)}.`).join(' ');
   const marks = [cap, ...crew].flatMap(c => (c ? marksOf(c) : [])).sort((a, b) => b.day - a.day).slice(0, 3).map(m => `${dateOf(m.day)}: ${m.text}`).join(' ');
   return {
-    title: 'Looking Back', personal: true, text: [work, people, lost, ties, marks].filter(Boolean).join('</p><p>'),
+    title: 'Looking Back', personal: true, text: [work, why, people, lost, ties, marks].filter(Boolean).join('</p><p>'),
     choices: [{ label: 'Go on', run: () => 'You close the ledger.' }],
   };
 }
