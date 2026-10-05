@@ -1,5 +1,8 @@
 name: Tests
 on: [push, pull_request]
+# The job checks out the code and runs the tests, so it needs to read the repository and nothing else.
+permissions:
+  contents: read
 jobs:
   test:
     runs-on: ubuntu-latest
