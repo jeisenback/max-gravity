@@ -122,7 +122,7 @@ function claimHtml() {
   const ok = st.credits >= b.cr && (st.cargo.industrial || 0) >= b.mat.industrial;
   return `<div class="mission"><div><b>Claim ${site}</b>
       <div class="hint">${OUTPOST_SITES[site].desc} Found an outpost there: ${fmt(b.cr)} cr and ${b.mat.industrial}t of Machine Parts in your hold for the habitat ring. Keep it supplied and it grows and pays you a share every day.</div>
-      <div class="row"><input type="text" id="opName" maxlength="30" placeholder="Name it (${site} Landing)"><button data-action="opFound" data-arg="${site}" ${ok ? '' : 'disabled'}>Found it</button></div></div></div>`;
+      <div class="row"><input type="text" id="opName" maxlength="30" placeholder="Name it (${site} Landing)"><button data-action="opFound" data-arg="${esc(site)}" ${ok ? '' : 'disabled'}>Found it</button></div></div></div>`;
 }
 
 function outpostHtml() {
