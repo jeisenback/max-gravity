@@ -22,7 +22,7 @@ test('every background and post opens with Signing On, naming the ship, the capt
         out.push({
           at: `${bg}/${post}`, title: e && e.title, choices: e && e.choices.map(c => c.label),
           ship: text.includes(shipTitle().replace(/^./, ch => ch.toUpperCase())), cap: text.includes(`Captain ${cap.first} ${cap.last}`), pair: pair.length === 3 && pair.every(n => text.includes(n)),  // the pair and the first officer
-          bg: text.includes(marks[bg]), post: text.includes(lines[post]), savings: text.includes('300 credits'), paragraphs: text.split('</p><p>').length,
+          bg: text.includes(marks[bg]), post: text.includes(lines[post]), paragraphs: text.split('</p><p>').length,
           emoji: /[\u{1F300}-\u{1FAFF}☀-➿]/u.test(text), undefinedText: /undefined|NaN/.test(text),
         });
       }
@@ -33,7 +33,7 @@ test('every background and post opens with Signing On, naming the ship, the capt
   for (const x of r) {
     assert.equal(x.title, 'Signing On', x.at);
     assert.deepEqual(x.choices, ['For the money', 'To learn the work', 'To be somewhere else'], x.at);
-    assert.ok(x.ship && x.cap && x.pair && x.bg && x.post && x.savings, `${x.at}: names the ship, captain, pair, background, post and savings`);
+    assert.ok(x.ship && x.cap && x.pair && x.bg && x.post, `${x.at}: names the ship, captain, pair, background and post`);
     assert.equal(x.paragraphs, 3, `${x.at}: three paragraphs`);
     assert.ok(!x.emoji && !x.undefinedText, `${x.at}: clean text`);
   }
@@ -73,5 +73,27 @@ test('it works with any captain, and an owner does not get it', async () => {
   });
   assert.deepEqual(r.bad, []);
   assert.equal(r.owner, false);
+  await done();
+});
+
+test('the opening says nothing of the interface, and the look back echoes why you signed on', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    const out = {};
+    for (const [i, reason] of ['money', 'learn', 'away'].entries()) {
+      startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' });
+      out.opening = signOnEvent().text;
+      chooseEvent(i);
+      out[reason] = chapterRecap().text;
+    }
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' });
+    out.none = chapterRecap().text;
+    return out;
+  });
+  assert.doesNotMatch(r.opening, /press Sail|Save toward|credits to your name/);
+  assert.match(r.money, /You signed on for the money\. You came with 300 cr and have /);
+  assert.match(r.learn, /You signed on to learn the work\. The gunner post is at level \d/);
+  assert.match(r.away, /You signed on to be somewhere else\. It is \d+ days and \d+ runs? from the dock you left\./);
+  assert.doesNotMatch(r.none, /You signed on/, 'a save with no reason says nothing');
   await done();
 });

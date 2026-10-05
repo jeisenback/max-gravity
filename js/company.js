@@ -376,7 +376,7 @@ function companyView() {
       const pl = planetNamed(name).pl, value = Math.round(stakeValue(pl) * (s.share / STAKE_STEP) * (1 - BROKER_FEE));
       return `<div class="mission"><div><b>${Math.round(s.share * 100)}% stake in ${name}</b>
         <div class="hint">Paying about ${fmt(stakeDividend(pl, s.share))} cr/day. Paid ${fmt(s.paid)} cr; dividends so far ${fmt(s.dividends)} cr; sells for ${fmt(value)} cr now.</div></div>
-        <button data-action="ssell" data-arg="${name}">Sell</button></div>`;
+        <button data-action="ssell" data-arg="${esc(name)}">Sell</button></div>`;
     }).join('') : '<p class="hint">None. Buy a stake from the Port tab of any market.</p>'}
     ${outpostCompanyHtml()}
     ${legacyHtml()}

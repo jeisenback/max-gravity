@@ -7,6 +7,9 @@
 // to show as HTML; store is localStorage that never throws (a blocked browser just
 // forgets, and the game runs on).
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+// A field marked data-select selects its text when clicked, so a code or link can be copied (no inline handler: the page's
+// Content Security Policy in index.html does not allow them).
+document.addEventListener('click', e => { const el = e.target.closest && e.target.closest('[data-select]'); if (el && el.select) el.select(); }, true);
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : JSON.parse(v); } catch (e) { return d; } },
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); return true; } catch (e) { return false; } },  // false: storage blocked, session only
@@ -16,7 +19,11 @@ const store = {
 
 // Names the player types (captain, ship, outpost, heir) are shown as HTML, so
 // they lose the characters that could make markup. Imported saves lose < and >
-// in every string (Saves.import in menu.js).
+// in every string (Saves.import in menu.js), and migrate() cleans the names of the people in
+// them. The rule: markup characters come out when a string enters; text that is HTML by design
+// (scenes, port notes) is left alone; and anything that goes inside an attribute value is
+// passed through esc() where it is written, because stripTags leaves quotes in, and an event
+// title is built from a person's name (see the aria-label in showEvent).
 const cleanName = s => String(s || '').replace(/[<>"`]/g, '').replace(/\s+/g, ' ').trim().slice(0, 30);
 const stripTags = v => (typeof v === 'string' ? v.replace(/[<>]/g, '')
   : Array.isArray(v) ? v.map(stripTags)
@@ -50,7 +57,7 @@ const UI = {
     const where = G.mode === 'hail' ? 'Comms channel' : G.mode === 'transit' ? 'In transit' : G.state.planet;
     this.setAccent(G.mode === 'hail' ? '#6fb0ff' : G.mode === 'transit' ? '#9fb4ff' : GOV_COLORS[system().gov]);
     this.el.innerHTML = `
-      <div class="event-body" role="dialog" aria-label="${ev.title}">
+      <div class="event-body" role="dialog" aria-label="${esc(ev.title)}">
         <div class="eyebrow">${ev.via ? `${VIA_LABELS[ev.via]} &middot; ` : ''}${where}</div>
         ${sceneFacesHtml(ev)}
         <h1>${ev.title}</h1>

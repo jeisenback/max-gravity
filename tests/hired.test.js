@@ -36,7 +36,7 @@ test('new game offers a hired start, and the choice of post', async () => {
   assert.doesNotMatch(r.intro, /signed on to the|credits to your name|Save toward a ship|You are her/, 'the port screen does not repeat what Signing On says');
   assert.equal(r.scene.title, 'Signing On');
   assert.match(r.scene.text, /ice hauler/); assert.match(r.scene.text, /Captain/); assert.match(r.scene.text, /You have the guns/);
-  assert.match(r.scene.text, /300 credits to your name\. Save toward a ship of your own/);
+  assert.doesNotMatch(r.scene.text, /credits to your name|Save toward|press Sail/, 'the opening leaves the interface to the help');
   await done();
 });
 

@@ -201,3 +201,18 @@ test('names the player types never become markup', async () => {
   assert.equal(await ev(() => !!window.pwned), false);
   await done();
 });
+
+test('the Mods screen says a mod runs code in the page and to trust its author, beside the field that takes a link', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    G.state.tutorial = null; while (G.dialog) finishEvent();
+    UI.tab = 'port'; UI.render();
+    const field = document.getElementById('modUrl'), section = field && field.closest('.row').parentElement;
+    const warning = [...document.querySelectorAll('.hint')].find(e => /A mod runs code in this page/.test(e.textContent));
+    return { field: !!field, warning: warning ? warning.textContent : null, together: !!(warning && section && section.contains(warning)) };
+  });
+  assert.ok(r.field, 'a link can be typed in');
+  assert.match(r.warning, /only load mods from people you trust/);
+  assert.ok(r.together, 'the warning is in the same section as the field');
+  await done();
+});

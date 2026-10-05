@@ -780,3 +780,27 @@ test('the most common relationship scenes wait their turn crew-wide, and Small S
   assert.ok(r.roots >= 3, `Small System opens in at least three ways (${r.roots})`);
   await done();
 });
+
+test('a waiting introduction gains weight for each draw it misses, and the ones still waiting carry on once another plays', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    start({ mode: 'hired', post: 'gunner' });
+    sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.transit.times = []; G.dialog = null;
+    const intros = () => Mods.filter('happenings', [], 'transit').filter(c => String(c.make).includes('castScene'));
+    const waiting = () => castAboard().filter(c => (castRec(c.cast).arc || 0) === 0);
+    const out = { aboard: waiting().length };
+    out.draws = [intros(), intros(), intros()].map(list => list.map(c => `${c.tier}:${c.weight}`));
+    const first = intros()[0];  // a fourth draw: weight 11, and this one plays
+    first.make();
+    out.afterPlay = { played: castAboard().filter(c => castRec(c.cast).arc === 1).length, waits: castAboard().map(c => castRec(c.cast).wait) };
+    out.next = intros().map(c => `${c.tier}:${c.weight}`);
+    return out;
+  });
+  assert.equal(r.aboard, 3, 'the two main characters and the first officer are all waiting to be introduced');
+  assert.deepEqual(r.draws, [['1:2', '1:2', '1:2'], ['1:5', '1:5', '1:5'], ['1:8', '1:8', '1:8']], 'weight 2, then 3 more for each draw missed');
+  assert.equal(r.afterPlay.played, 1);
+  assert.ok(r.afterPlay.waits.includes(0), 'the one that played starts again at zero');
+  assert.deepEqual(r.next, ['1:14', '1:14'], 'the two still waiting have each missed four draws, and carry on from there');
+  await done();
+});

@@ -542,3 +542,67 @@ test('markup in the ship name does not reach a hired hand\'s person pages', asyn
   assert.deepEqual(leaks, []);
   await done();
 });
+
+// A quote in a string that reaches an attribute value breaks out of it. stripTags (ui.js) takes < and > out of an imported save, not
+// quotes, and event titles are built from people's names ("With <name>"), so a name in an imported save could end an aria-label.
+const QUOTE_NAME = 'x" onmouseover="window.pwned=1" data-xss="1';
+
+test('a quote in a person\'s name does not break out of an attribute in the event dialog, the crew page or the person page', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const found = await ev(name => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent();
+    const st = G.state; st.tutorial = null; G.mode = 'landed';
+    const p = person(st.crew.find(id => person(id).role === 'cook') || st.crew[0]);
+    p.first = name; p.last = 'Vane';  // written straight into the state, past anything done on the way in
+    const out = [], scan = where => { for (const e of document.querySelectorAll('*')) for (const a of e.attributes) if (/^on/i.test(a.name) || a.name === 'data-xss') out.push(`${where}: <${e.tagName.toLowerCase()} ${a.name}>`); };
+    openEvent(ordinaryTalk(p)); scan('the event dialog'); while (G.dialog) finishEvent();
+    UI.openLanded(currentPlanet(), []);
+    UI.tab = 'crew'; UI.render(); scan('the crew page');
+    G.viewPerson = p.id; UI.tab = 'person'; UI.render(); scan('the person page');
+    return out;
+  }, QUOTE_NAME);
+  assert.deepEqual(found, []);
+  await done();
+});
+
+test('an imported save loses quotes, and the brackets stripTags takes, from the names of the people in it', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(name => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent();
+    const st = G.state, id = st.crew.find(i => !person(i).cast) || st.crew[0];
+    const copy = JSON.parse(JSON.stringify(st)); copy.people[id].first = name + '<b>'; copy.people[id].last = '`' + name;
+    const refused = Saves.import(JSON.stringify(copy), 2);
+    Saves.use(2); loadGame();
+    const p = G.state.people[id];
+    return { refused, first: p.first, last: p.last };
+  }, QUOTE_NAME);
+  assert.equal(r.refused, null);
+  assert.doesNotMatch(r.first + r.last, /["`<>]/, `the names that came in: ${r.first} / ${r.last}`);
+  await done();
+});
+
+test('markup and quotes in the names a game keeps reach neither the memorial nor the menu\'s save slots', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const found = await ev(name => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent();
+    const st = G.state; st.tutorial = null;
+    captain().name = name; home().name = name;  // written past cleanName
+    st.memorial = [{ key: 'k', name, day: 1, place: name, cause: name }];
+    Saves.write(st);
+    const out = [], scan = where => { for (const e of document.querySelectorAll('*')) for (const a of e.attributes) if (/^on/i.test(a.name) || a.name === 'data-xss') out.push(`${where}: <${e.tagName.toLowerCase()} ${a.name}>`); };
+    const box = document.createElement('div'); box.innerHTML = memorialHtml(); document.body.appendChild(box); scan('the memorial'); box.remove();
+    for (const view of ['load', 'new', 'main']) { Menu.view = view; Menu.render(); scan(`the ${view} menu`); }
+    return out;
+  }, '<i data-xss="1" onmouseover="window.pwned=1">x</i>" onmouseover="window.pwned=1" data-xss="1');
+  assert.deepEqual(found, []);
+  await done();
+});
+
+test('clicking a save code selects it, with no inline handler (data-select)', async () => {
+  const { page, ev, done } = await open();
+  await ev(() => { const t = document.createElement('textarea'); t.id = 'sel'; t.readOnly = true; t.value = 'abc def'; t.setAttribute('data-select', ''); document.body.appendChild(t); });
+  await page.click('#sel');
+  const picked = await ev(() => { const t = document.getElementById('sel'); return t.value.slice(t.selectionStart, t.selectionEnd); });
+  assert.equal(picked, 'abc def');
+  await done();
+});

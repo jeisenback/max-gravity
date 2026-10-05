@@ -65,6 +65,7 @@ const played = s => `${Math.floor(s / 3600)}h ${String(Math.floor(s / 60) % 60).
 function migrate(st) {
   const defaults = stateDefaults(st.shipId);
   for (const key of Object.keys(defaults)) if (st[key] == null) st[key] = defaults[key];
+  for (const p of Object.values(st.people)) if (p && typeof p === 'object') { p.first = cleanName(p.first); p.last = cleanName(p.last); }  // an event title is built from a name, and a title ends up in an attribute
   if (st.captain) st.captain.name = cleanName(st.captain.name);
   for (const c of st.captains || []) { c.name = cleanName(c.name); c.fate = stripTags(c.fate); }
   for (const m of st.memorial || []) m.cause = stripTags(m.cause);
@@ -203,7 +204,7 @@ const Menu = {
     load() {
       return `<h2>Saved games</h2><p class="hint">The game saves itself every time you dock.</p>
         ${this.slotRows('load')}
-        ${this.exported ? `<p class="hint">Save code for slot ${this.exported.n} (copy it somewhere safe; paste it back with Import):</p><textarea readonly rows="3" onclick="this.select()">${this.exported.code}</textarea>` : ''}
+        ${this.exported ? `<p class="hint">Save code for slot ${this.exported.n} (copy it somewhere safe; paste it back with Import):</p><textarea readonly rows="3" data-select>${this.exported.code}</textarea>` : ''}
         <h3>Import a save</h3>
         <div class="row"><input type="file" id="importFile" accept=".json,application/json"></div>
         <div class="row"><input type="text" id="importCode" placeholder="Or paste a save code"><button data-action="menuImport">Import</button></div>

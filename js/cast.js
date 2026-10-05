@@ -532,7 +532,11 @@ Mods.register({
       if (where === 'transit') {
         for (const p of castAboard()) {
           const n = castNext(p.cast);
-          if (n) out.push({ tier: n.name === 'intro' ? 1 : 2, weight: 2, via: 'crew', make() { castRec(p.cast).arc++; return castScene(p.cast, n.sc); } });
+          if (!n) continue;
+          // An introduction that is waiting gains BEAT_RAMP weight (captains.js) for each draw it missed, as the captain's scenes do.
+          const rec = castRec(p.cast), intro = n.name === 'intro', missed = intro ? rec.wait || 0 : 0;
+          if (intro) rec.wait = missed + 1;  // a miss unless make() runs and clears it
+          out.push({ tier: intro ? 1 : 2, weight: intro ? BEAT_WEIGHT + BEAT_RAMP * missed : 2, via: 'crew', make() { rec.arc++; rec.wait = 0; return castScene(p.cast, n.sc); } });
         }
       } else if (castDue()) {
         const key = castDue();
