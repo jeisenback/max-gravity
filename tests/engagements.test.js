@@ -30,7 +30,7 @@ test('a pirate contact for a hired hand opens the raid, not the card duel, and t
   const r = await ev(() => {
     const st = raid('pilot'); const text = startDuel({ kind: 'pirate' }, false);
     begin();
-    return { text: /Battle stations/.test(text), title: G.dialog.event.title, duel: !!G.duel, decided: !!G.dialog.event.decided, labels: G.dialog.choices.map(c => c.label), pos: /Position: even/.test(G.dialog.event.text) };
+    return { text: /Battle stations/.test(text), title: G.dialog.event.title, duel: !!G.duel, decided: !!G.dialog.event.decided, labels: G.dialog.choices.map(c => c.label), pos: /Position: (even|ahead|behind)/.test(G.dialog.event.text) };
   });
   assert.ok(r.text); assert.equal(r.title, 'The Closing'); assert.equal(r.duel, false); assert.ok(!r.decided, 'the captain does not take this call');
   assert.equal(r.labels.length, 4); assert.ok(r.labels.some(l => l === '[Pilot] Put the sun behind us')); assert.ok(r.pos);

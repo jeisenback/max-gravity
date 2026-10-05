@@ -787,7 +787,7 @@ test('a waiting introduction gains weight for each draw it misses, and the ones 
   const r = await ev(() => {
     start({ mode: 'hired', post: 'gunner' });
     sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.transit.times = []; G.dialog = null;
-    const intros = () => Mods.filter('happenings', [], 'transit').filter(c => String(c.make).includes('castScene'));
+    const intros = () => Mods.filter('happenings', [], 'transit').filter(c => c.tier > 0 && String(c.make).includes('castScene'));
     const waiting = () => castAboard().filter(c => (castRec(c.cast).arc || 0) === 0);
     const out = { aboard: waiting().length };
     out.draws = [intros(), intros(), intros()].map(list => list.map(c => `${c.tier}:${c.weight}`));

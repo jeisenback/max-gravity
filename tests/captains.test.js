@@ -541,3 +541,55 @@ test('a due captain scene gains weight for each draw it misses, and starts again
   assert.deepEqual(r.afterPlay, [1, 0]);
   assert.equal(r.secretStarts, 2, 'the next scene starts at the ordinary weight');
 });
+
+// ---------- Cato's walk-through ----------
+
+test('the first burn begins with Cato walking you round the ship, once, naming the whole crew', async () => {
+  const r = await run(() => {
+    const st = start(), h = st.hired, out = {};
+    out.opening = signOnEvent().text; underway();
+    const crewNames = st.crew.map(person).filter(c => c.role !== 'xo').map(c => c.first);
+    out.crew = crewNames.length;
+    const first = pickHappening('transit');
+    out.title = first && first.title; out.walked = h.walked;
+    out.walk = first ? first.choices[0].run() : '';
+    out.missing = crewNames.filter(n => !out.walk.includes(n));
+    out.again = pickHappening('transit') ? pickHappening('transit').title : null;
+    return out;
+  });
+  assert.equal(r.title, 'The Round'); assert.equal(r.walked, true);
+  assert.equal(r.crew, 8, 'eight crew besides Cato; the hand is the ninth'); assert.deepEqual(r.missing, [], 'every one of them is named');
+  assert.match(r.walk, /You have the middle watch/); assert.match(r.walk, /these are yours/);
+  assert.doesNotMatch(r.opening, /Working beside you/, 'the opening leaves the introductions to him');
+  assert.notEqual(r.again, 'The Round', 'and it does not play twice');
+});
+
+test('the walk-through is not offered after the first run, or to a save that has already sailed', async () => {
+  const r = await run(() => {
+    const st = start(), h = st.hired;
+    underway(); h.runsDone = 1;
+    const a = pickHappening('transit');
+    return { title: a && a.title, walked: h.walked };
+  });
+  assert.notEqual(r.title, 'The Round'); assert.ok(!r.walked);
+});
+
+test('"Another time" closes the walk-through at once', async () => {
+  const r = await run(() => {
+    start(); underway();
+    const ev = pickHappening('transit');
+    return { text: ev.choices[1].run(), label: ev.choices[1].label };
+  });
+  assert.equal(r.label, 'Another time'); assert.match(r.text, /watch bill is on the galley wall/);
+});
+
+test('the first burn has a happening more for the walk-through, and later burns do not', async () => {
+  const r = await run(() => {
+    start();
+    const burn = () => { sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); const n = G.transit.times.length, total = G.transit.total; G.transit.times = []; return n - (1 + Math.floor(total / 40)); };
+    const first = burn();
+    hired().walked = true; G.transit = null; G.state.dest = null; G.mode = 'landed';
+    return { first, spare: walkPending() };
+  });
+  assert.equal(r.first, 1); assert.equal(r.spare, false);
+});

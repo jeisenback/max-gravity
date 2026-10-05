@@ -50,6 +50,12 @@ const captainBeatsDone = h => {
   const d = captainEntry();
   return !d || !d.scenes || ((h.beats || 0) >= CAPTAIN_BEATS.length && runTotals(h).runs - (h.beatRun || 0) >= 2);
 };
+// A first officer with a walk-through (cato.js) takes a new hand round the ship on the first burn. That burn gets a happening more
+// for it (transit.js), so the introductions that would have played then still do.
+function walkPending() {
+  const hand = hired(), xo = hand && hiredXo();
+  return !!(xo && CAST[xo.cast].round && !hand.walked && runTotals(hand).runs === 0);
+}
 function captainBeat() {
   const h = hired(), d = captainEntry();
   if (!h || !d || !d.scenes) return null;
@@ -91,6 +97,11 @@ Mods.register({
   id: 'captains', name: 'The captain\'s own scenes', builtin: true,
   init(M) {
     M.filter('happenings', (list, where) => {
+      // The first officer walks a new hand round the ship on the first burn: tier 0, so nothing is drawn before it.
+      if (where === 'transit' && walkPending()) {
+        const hand = hired(), xo = hiredXo();
+        list = list.concat([{ tier: 0, weight: 1, via: 'crew', make() { hand.walked = true; return castScene(xo.cast, CAST[xo.cast].round()); } }]);
+      }
       const name = where === 'transit' ? captainBeat() : null;
       if (!name) return list;
       const h = hired(), missed = h.beatWait || 0;

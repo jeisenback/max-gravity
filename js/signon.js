@@ -48,7 +48,8 @@ function signOnEvent() {
   const postKey = c => Object.keys(POSTS).find(k => POSTS[k].role === c.role);
   // A first officer holds no post.
   const who = c => (postKey(c) ? `${fullName(c)}, ${c.job} from ${c.home}, on the ${POSTS[postKey(c)].name.toLowerCase()} post` : `${fullName(c)}, the ${ROLE_NAMES[c.role].toLowerCase()}, from ${c.home}`);
-  const beside = pair.length ? ` Working beside you: ${pair.map(who).join(', and ')}.` : '';
+  // A first officer who walks you round the ship on the first burn (cato.js) does the introducing there.
+  const beside = pair.length && !(d && CAST[d.xo] && CAST[d.xo].round) ? ` Working beside you: ${pair.map(who).join(', and ')}.` : '';
   const pay = d && d.intro ? '' : `You are paid ${h.wage} a day and ${Math.round(h.share * 100)} percent of what she clears. `;  // a captain with their own words has said it
   const week = `${ctx.cap} picks each run and buys the cargo from the ship's funds. ${scopeOff('errands') ? '' : 'Errands for wherever she is going come through the port, and the captain keeps a fifth. '}${pay}`.trim();
   return {
