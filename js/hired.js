@@ -244,11 +244,15 @@ function settleRun(planet) {
   h.runsDone = total.runs + 1; h.earnedTotal = total.earned + wage + share;  // the ledger keeps the last 20; these keep the whole chapter
   h.ledger.unshift({ day: st.day, from: run.from, to: planet.name, good: run.good, tons: sold, cost: run.cost, revenue, profit, wage, share, days, ice: !!run.ice });
   h.ledger.length = Math.min(h.ledger.length, 20);
+  // The first officer settles up on the first arrival (captains.js): keep the figures, and leave the one-line note for later arrivals.
+  const settling = total.runs === 0 && arrivalWanted();
+  if (settling) h.first = { good: run.good ? COMMODITIES.find(c => c.id === run.good).name.toLowerCase() : null, tons: sold, cost: run.cost, revenue, profit, forecast: run.profit, wage, share, days, planet: planet.name };
   h.run = null;
   h.plan = null;
   gainSkill(h.post, 2);  // a burn worked
   like(st.people[h.captain], profit > 0 ? 1 : -1, profit > 0 ? 'Good run. You pull your weight.' : 'That run lost money.');
   const name = run.good ? COMMODITIES.find(c => c.id === run.good).name : null;
+  if (settling) return;
   return `${name ? `The captain sold ${sold}t of ${name} for ${fmt(revenue)} cr (${profit >= 0 ? `profit ${fmt(profit)}` : `loss ${fmt(-profit)}`} cr). ` : 'A run with no cargo. '}Your pay: ${fmt(wage)} cr wage${share ? ` and ${fmt(share)} cr share` : ''}.${owed ? ` The yard bill took ${fmt(owed)} cr of the profit first.` : ''}`;
 }
 
@@ -485,7 +489,11 @@ Mods.register({
       G.state.fuel = ship().fuel;
       if (G.state.armor >= ship().armor * (1 - REPAIR_AT)) G.state.armor = ship().armor;  // a scrape is patched on the way in; real damage is the yard's (repairs.js)
     });
-    M.on('landed', planet => { const text = hired() && settleRun(planet); if (text) M.note(text); });
+    M.on('landed', planet => {
+      const text = hired() && settleRun(planet);
+      if (text) M.note(text);
+      if (hired() && arrivalPending(planet) && !G.dialog) { hired().arrived = true; openEvent(castScene(hiredXo().cast, arrivalScene())); }  // the first officer settles up (captains.js)
+    });
     M.on('landed', planet => dealCheck(planet));
     M.on('landed', planet => { if (hired()) G.offers = errandsFor(planet); });  // the board has errands, not contracts
     M_NOTE = text => M.note(text);

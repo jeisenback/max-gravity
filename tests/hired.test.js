@@ -137,7 +137,7 @@ test('a run, end to end: sail, burn, come in, sell, and be paid a wage and a sha
     const e = h.ledger[0];
     out.settled = { mode: G.mode, planet: st.planet, matches: st.planet === plan.planet, run: h.run, cargo: Object.keys(st.cargo).length, entry: e && { tons: e.tons, profit: e.profit, revenue: e.revenue - e.cost === e.profit, wage: e.wage > 0 } };
     out.paid = { credits: st.credits - credits0, equals: e && st.credits - credits0 === e.wage + e.share, share: e && e.share === Math.round(Math.max(0, e.profit) * h.share), fund: e && h.fund === fund0 - e.cost + e.revenue };
-    out.note = UI.notes.join(' ');
+    out.note = UI.notes.join(' '); out.scene = G.dialog && G.dialog.event.title;
     return out;
   });
   assert.equal(r.sailed, true);
@@ -146,7 +146,7 @@ test('a run, end to end: sail, burn, come in, sell, and be paid a wage and a sha
   assert.deepEqual([r.settled.mode, r.settled.matches, r.settled.run, r.settled.cargo], ['landed', true, null, 0], 'she docked where the captain said and sold it all');
   assert.ok(r.settled.entry.tons > 0 && r.settled.entry.wage);
   assert.ok(r.paid.equals && r.paid.share && r.paid.fund, `the books add up (${JSON.stringify(r.paid)})`);
-  assert.match(r.note, /The captain sold \d+t of .* Your pay: [\d,]+ cr wage/);
+  assert.equal(r.scene, 'Settling Up', 'the first officer settles up on the first arrival, in place of the one-line note');
   await ev(() => UI.render());
   await done();
 });
@@ -352,7 +352,7 @@ test('a second run buys new cargo: a plan made before the last cargo was sold is
     startHired('engineer'); const st = G.state, h = st.hired;
     const fly = () => { let steps = 0; while (G.mode !== 'landed' && steps++ < 30000) { while (G.dialog) { chooseEvent(0); finishEvent(); } G.npcs = []; update(G.mode === 'transit' ? 1 : 1 / 30); Mods.emit('frame', G.mode === 'transit' ? 1 : 1 / 30); } };
     const out = {};
-    currentPlan(); sail(); fly();
+    currentPlan(); sail(); fly(); while (G.dialog) finishEvent();  // the first arrival has a scene
     // The port screen drew while the cargo was still aboard: the plan it made must not survive the sale.
     out.stale = !!h.plan; out.cargo = Object.keys(st.cargo).length;
     const plan = currentPlan(); out.loaded = !!plan.loaded;

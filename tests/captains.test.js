@@ -11,6 +11,17 @@ after(closeBrowser);
 
 const helpers = () => {
   window.underway = () => { if (!sail()) throw new Error('no plan'); for (let k = 0; k < 8 && G.dialog; k++) { const d = G.dialog, ok = d.choices.map((c, i) => i).filter(i => !d.choices[i].can || d.choices[i].can()); if (ok.length) chooseEvent(ok[0]); finishEvent(); } while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.transit.times = []; };
+  window.arriveFirst = (mutate) => {
+    const st = G.state, h = hired();
+    if (!sail()) throw new Error('no plan');
+    while (G.dialog) finishEvent();
+    const run = h.run;
+    if (mutate) mutate(run);
+    G.transit = null; G.mode = 'landed'; st.dest = null; st.systemId = run.sid; st.planet = run.planet; st.day += run.days;
+    UI.notes.length = 0; G.dialog = null; G.nextEvent = null;
+    Mods.emit('landed', currentPlanet());
+    return { notes: UI.notes.join(' '), scene: G.dialog && G.dialog.event };
+  };
   window.start = (o = {}) => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', ...o }); while (G.dialog) finishEvent(); const st = G.state; st.story.next = 1e9; return st; };
 };
 const run = async (fn, o, arg) => { const t = await open(o); await t.ev(helpers); const r = await t.ev(fn, arg); await t.done(); return r; };
@@ -592,4 +603,80 @@ test('the first burn has a happening more for the walk-through, and later burns 
     return { first, spare: walkPending() };
   });
   assert.equal(r.first, 1); assert.equal(r.spare, false);
+});
+
+// ---------- the first arrival ----------
+
+test('the first arrival is the first officer settling up, with the figures and the ledger line, instead of the one-line note', async () => {
+  const r = await run(() => {
+    const st = start(), h = hired(), before = person(h.captain).opinion;
+    const a = arriveFirst(), e = a.scene, f = h.first;
+    const out = { notes: a.notes, title: e && e.title, text: e ? e.text : '', f, arrived: h.arrived, opinion: person(h.captain).opinion - before, credits: st.credits };
+    out.ask = e ? e.choices[0].run() : ''; out.labels = e ? e.choices.map(c => c.label) : [];
+    return out;
+  }, undefined);
+  assert.equal(r.title, 'Settling Up'); assert.doesNotMatch(r.notes, /Your pay:/, 'the one-line note is not shown as well');
+  assert.ok(r.f.profit > 0 && r.f.wage > 0, 'the figures are kept');
+  for (const x of [r.f.revenue, r.f.cost, r.f.profit, r.f.wage, r.f.share]) assert.ok(r.text.includes(Math.round(x).toLocaleString('en-US')), `the page shows ${x}`);
+  assert.match(r.text, /Forecast, [\d,]+\./); assert.match(r.text, /there is a line in Hester's hand with your name on it/);
+  assert.match(r.text, /Missions tab/); assert.match(r.text, /The bar/);
+  assert.doesNotMatch(r.text, /undefined|NaN/); assert.equal(r.arrived, true); assert.equal(r.opinion, 1);
+  assert.deepEqual(r.labels, ['Ask how long a ship takes', 'Go ashore']); assert.match(r.ask, /A season/);
+  assert.doesNotMatch(r.text + r.ask, /\b(three|four|five|six|ten|twenty) runs\b|\d+ runs/, 'no count of runs');
+});
+
+test('a run that lost money leaves the line empty, and a second arrival is the plain note', async () => {
+  const r = await run(() => {
+    start();
+    const a = arriveFirst(run => { run.cost = 1e9; });
+    const out = { text: a.scene ? a.scene.text : '' };
+    G.dialog = null; G.mode = 'landed'; hired().plan = null;
+    const b = arriveFirst();
+    out.second = b; out.runs = runTotals(hired()).runs;
+    return out;
+  });
+  assert.match(r.text, /Loss [\d,]+\./); assert.match(r.text, /your line is empty/);
+  assert.equal(r.second.scene && r.second.scene.title === 'Settling Up', false, 'it does not play twice');
+  assert.match(r.second.notes, /Your pay:/, 'later arrivals keep the one-line note');
+});
+
+test('a save with runs behind it never gets the first arrival scene', async () => {
+  const r = await run(() => {
+    const h = (start(), hired());
+    h.runsDone = 1;
+    const a = arriveFirst();
+    return { first: h.first || null, scene: a.scene && a.scene.title, notes: a.notes };
+  });
+  assert.equal(r.first, null); assert.notEqual(r.scene, 'Settling Up'); assert.match(r.notes, /Your pay:/);
+});
+
+test('every first officer settles up in their own words', async () => {
+  const r = await run(() => {
+    
+    const out = {};
+    for (const key of ['hester', 'dov', 'imre', 'zoya']) {
+      start({ captainKey: key });
+      const a = arriveFirst();
+      out[key] = a.scene ? { title: a.scene.title, text: a.scene.text, xo: hiredXo().first, pace: a.scene.choices[0].run() } : null;
+    }
+    return out;
+  });
+  const names = { hester: 'Cato', dov: 'Ilsa', imre: 'Pilar', zoya: 'Ansel' };
+  for (const [key, xo] of Object.entries(names)) {
+    assert.ok(r[key], `${key}: the scene plays`); assert.equal(r[key].title, 'Settling Up'); assert.equal(r[key].xo, xo);
+    assert.ok(r[key].text.includes(xo), `${key}: ${xo} speaks`); assert.doesNotMatch(r[key].text + r[key].pace, /undefined|NaN|\{cap\}|\p{Extended_Pictographic}/u);
+  }
+  assert.equal(new Set(Object.values(r).map(x => x.text.split('</p><p>')[0])).size, 4, 'four different openings');
+});
+
+test('the first arrival comes before a job waiting at the port', async () => {
+  const r = await run(() => {
+    const st = start(), h = hired();
+    const plan = currentPlan(), o = awayOffer();
+    Object.assign(o, { planet: plan.planet, sid: plan.sid, until: st.day + 50 }); o.ctx.dest = plan.planet;
+    h.away = [o];
+    const a = arriveFirst();
+    return { first: a.scene && a.scene.title, queued: G.nextEvent && G.nextEvent.title };
+  });
+  assert.equal(r.first, 'Settling Up'); assert.ok(r.queued, 'the job follows it');
 });

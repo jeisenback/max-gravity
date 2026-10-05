@@ -127,3 +127,11 @@ CAST.ansel = {
     },
   },
 };
+
+// The first arrival (captains.js arrivalScene): Ansel settles up at the foot of the ramp.
+CAST.ansel.arrival = {
+  open: 'Ansel is waiting at the foot of the ramp in his coat, with the ledger held flat against his chest like a tray. He opens it at the right page and holds it out.',
+  memory: '"There are three numbers," Ansel says. "The forecast, the result, and a third that I keep for myself, which is what the run would have paid if something had gone wrong. It is smaller than people like. I will not show you that one." He turns the book a little. "Yours is in your account. Look at the header."',
+  column: '"That column is {cap}\'s," Ansel says. "I have advised against it, and it is hers to keep."',
+  pace: '"A season, if the runs hold," Ansel says. "I have written down what happens if they do not. It is a longer number."',
+};
