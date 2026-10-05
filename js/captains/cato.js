@@ -128,3 +128,31 @@ CAST.cato = {
     },
   },
 };
+
+// The walk-through on the first burn (captains.js plays it once, before anything else): Cato takes the new hand round the ship. The
+// names are the crew's own; a role nobody holds reads as the job. Only the Gunner's post gets a line of its own.
+CAST.cato.round = () => {
+  const named = role => { const c = roleHolder(role); return c ? c.first : `the ${ROLE_NAMES[role].toLowerCase()}`; };
+  const ice = G.state.crew.map(person).filter(c => c && c.role === 'icehand').map(c => c.first);
+  const [cook, medic, qm, eng, pilot, comms] = ['cook', 'medic', 'quartermaster', 'engineer', 'pilot', 'slicer'].map(named);
+  const iceA = ice[0] || 'one ice hand', iceB = ice[1] || 'the other';
+  const guns = hired().post === 'gunner'
+    ? 'The last stop is at the foot of the guns. "And these are yours, which I should say plainly, since I have been talking about everyone else. When something closes on us, the captain tells you who and how far, and you play it: what they are threatening, what we answer. You will get one wrong. I did, and I am still here, and so is the ship."' : '';
+  const walk = [
+    `He starts at the galley, because he says everyone should. "It is eleven feet across, I measured it once, and that is where we eat and where we argue, mostly at the same time. ${cook} runs it. The water ration is on the wall in chalk. Do not rub it out, I know it looks like something you could rub out. And tell ${cook} what you will not eat. Once, early. ${cook} is fine about it if you say it the first week. After that it is a complaint, and then there is a conversation."`,
+    `Two doors down, he knocks on the frame of the medical bay without going in. "${medic}. This is the one I said. ${medic} keeps the kit and the log, and I will tell you what I tell everybody, which is come in when you are hurt, not when it is bad. By the time it is bad it is a different conversation." ${medic} says something to him that you do not catch, and he laughs.`,
+    `In the hold he slows down, and his voice changes a little, the way it does when he talks about the place he came up. "${qm} has the count. Everything aboard, twice. If a number looks off to you, ask ${qm} before you go to the captain, because it has already been found and it is sitting on a list somewhere. And these two," he says, nodding at ${iceA} and ${iceB}, who are lashing something that does not look loose, "they will ask you to hold a strap. Just hold it. It is not a test. I mean, it is a bit."`,
+    `The engine room is warm and the passage floor hums under your boots. "${eng}'s plant. I would not touch anything with a tag on it, and everything has a tag. If ${eng} hands you a spanner, though, you can take that how you like. I have been aboard four years and I have had it twice." Up forward he points at the helm without going in. "${pilot} flies her. Talks to the board the whole time. Do not answer. It is not for you." Beside it, ${comms} has the bands. "Anything that comes in for you comes through there, and ${comms} reads it first. It is not rude. That is the job, and it is how you will know it has been looked at."`,
+    `At a row of doors on the left he stops. "Third one is yours. It is on a closer, so it hisses, it does not slam. You will try to slam it once. Everyone does. It is all right."`,
+    guns,
+    `He finishes the tea and looks into the empty mug. "That is everyone. You have the middle watch with ${pilot}, it is on the bill, and I wrote it on the back of my hand as well, in case the bill goes missing. It has, before."`,
+  ].filter(Boolean);
+  return {
+    title: 'The Round', personal: true,
+    text: 'Cato Rahman finds you in the passage an hour after the burn starts. He has a mug in each hand, and he gives you one before you can say anything. "I do this for everyone," he says. "The captain says I should do it on the dock, but on the dock nobody is listening, they are looking for their bunk. Walk with me. It is not far. It feels far, the first time."',
+    choices: [
+      { label: 'Walk it with him', run: () => walk.join('</p><p>') },
+      { label: 'Another time', run: () => '"Fair enough," Cato says. "The watch bill is on the galley wall. Everything else you will find by walking into it, and I will be somewhere nearby when you do." He takes the mug back, which seems to be the point of the mug.' },
+    ],
+  };
+};

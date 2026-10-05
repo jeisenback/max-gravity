@@ -15,7 +15,7 @@ test('every background and post opens with Signing On, naming the ship, the capt
     const out = [], marks = { earth: 'Earth is crowded', mars: 'domes of Tharsis', belt: 'Ceres spin' }, lines = { pilot: 'the helm', gunner: 'the guns', engineer: 'the plant', comms: 'the bands' };
     for (const bg of ['earth', 'mars', 'belt']) {
       for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
-        startGame({ slot: 1, background: bg, captain: 'Sam Rowe', mode: 'hired', post });
+        startGame({ slot: 1, background: bg, captain: 'Sam Rowe', mode: 'hired', post, captainKey: 'imre' });  // a first officer with no walk-through of their own: the opening names the pair
         const e = G.dialog && G.dialog.event, st = G.state, cap = st.people[st.hired.captain];
         const pair = st.crew.map(person).filter(c => c.cast).map(c => fullName(c));
         const text = e ? e.text : '';
