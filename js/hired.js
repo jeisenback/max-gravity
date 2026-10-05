@@ -55,7 +55,7 @@ function setupHired(o) {
   st.shipId = 'freighter';
   st.fuel = SHIPS.freighter.fuel; st.armor = SHIPS.freighter.armor;
   st.credits = o.credits !== undefined ? o.credits : HIRED_SAVINGS;  // o.credits and o.skill: a hand put ashore (stakes.js) carries both to the next berth
-  st.tutorial = null;
+  st.tutorial = o.tutorial ? 0 : null;  // the first run's steps (tutorial.js); a hand put ashore or a test starts without
   home().name = shipName(false);
   // The captain, and a crew with every role but yours. The main characters (cast.js) take their posts first.
   // An authored captain (captains.js) with their first officer; a game with none keeps a generated captain.

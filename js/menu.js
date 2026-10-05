@@ -85,7 +85,7 @@ const BACKGROUNDS = {
 };
 
 function startGame(o) {
-  if (scopeOff('starts')) o = { ...o, mode: 'hired', background: 'earth', tutorial: false };  // the one start this build has
+  if (scopeOff('starts')) o = { ...o, mode: 'hired', background: 'earth' };  // the one start this build has
   Saves.use(o.slot);
   G.paused = false;
   G.dialog = null; G.transit = null;

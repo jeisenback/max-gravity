@@ -29,6 +29,27 @@ const TUTORIAL = [
     done: () => false, last: true },
 ];
 
+// A hired hand's first run (st.tutorial too, set by setupHired): sail, hear the first officer's walk-through, spend downtime, sit with
+// someone, and dock. What the hand did on the burn is kept on the hand (h.did, set in shiplife.js and comms.js). A step also counts as
+// done once the first run is over, so none is left hanging at the dock.
+const firstRunOver = () => runTotals(hired()).runs >= 1;
+const didOnBurn = what => () => !!(hired().did && hired().did[what]) || firstRunOver();
+const HAND_TUTORIAL = [
+  { text: () => 'The captain\'s plan is on the Port tab: where she is going and what she will carry. Read it, then press Sail.',
+    done: () => !!G.transit || firstRunOver() },
+  { text: () => `${hiredXo() ? hiredXo().first : 'The first officer'} is walking you round the ship. Hear them out.`,
+    done: () => !walkPending() && !!G.transit || firstRunOver() },
+  { text: () => 'On a long burn there is downtime, once before the flip and once after. Spend some, and practice at your post.',
+    done: didOnBurn('downtime') },
+  { text: () => 'Open the Comms tab and sit with someone. The chats happen on the burn, once each half of the trip.',
+    done: didOnBurn('chat') },
+  { text: () => 'Answer whatever comes up on the way. When the ship docks, the first run is done.',
+    done: () => firstRunOver() && G.mode === 'landed' },
+  { text: () => 'That is the first run. The captain picks the next one, and the Port tab shows her plan and what the last run paid.',
+    done: () => false, last: true },
+];
+const tutorialSteps = () => (hired() ? HAND_TUTORIAL : TUTORIAL);
+
 const tutorialOn = () => G.state.tutorial != null;
 
 // Called every frame. Advances past finished steps and refreshes the port screen.
@@ -37,7 +58,8 @@ function tutorialTick(dt) {
   if (!tutorialOn()) return;
   if (G.mode === 'flight' && G.player && G.player.thrusting) G.tutThrust = (G.tutThrust || 0) + dt;
   const before = st.tutorial;
-  while (st.tutorial < TUTORIAL.length && TUTORIAL[st.tutorial].done(st)) st.tutorial++;
+  const steps = tutorialSteps();
+  while (st.tutorial < steps.length && steps[st.tutorial].done(st)) st.tutorial++;
   if (st.tutorial === before) return;
   Sfx.comms();
   if (G.mode === 'landed' && !G.dialog) UI.render();
@@ -51,11 +73,11 @@ function endTutorial() {
 // The banner at the top of the port screen.
 function tutorialHtml() {
   if (!tutorialOn()) return '';
-  const i = G.state.tutorial, step = TUTORIAL[i];
+  const i = G.state.tutorial, steps = tutorialSteps(), step = steps[i];
   return `
     <div class="tutorial">
       <div>
-        <div class="eyebrow">${step.last ? 'Tutorial complete' : `Tutorial &middot; step ${i + 1} of ${TUTORIAL.length - 1}`}</div>
+        <div class="eyebrow">${step.last ? 'Tutorial complete' : `Tutorial &middot; step ${i + 1} of ${steps.length - 1}`}</div>
         <p>${step.text()}</p>
       </div>
       <button data-action="tutorial">${step.last ? 'Got it' : 'Skip'}</button>
@@ -65,7 +87,7 @@ function tutorialHtml() {
 // The same prompt over the flight view, transit, and the map.
 function drawTutorial(viewW) {
   if (!tutorialOn() || !['flight', 'departing', 'transit', 'map'].includes(G.mode)) return;
-  const i = G.state.tutorial, step = TUTORIAL[i];
+  const i = G.state.tutorial, steps = tutorialSteps(), step = steps[i];
   if (step.last) return;
   const w = Math.min(viewW - 24, 440);
   const x = G.mode === 'map' && G.hudW ? viewW - w - 16 : (viewW - w) / 2;  // desktop map: clear of the orbits
@@ -78,7 +100,7 @@ function drawTutorial(viewW) {
   ctx.fillStyle = '#6fb0ff';
   ctx.fillRect(x, y, 3, h);
   ctx.textAlign = 'left';
-  hudLabel(`Tutorial ${i + 1}/${TUTORIAL.length - 1}`, x + 14, y + 18, '#6fb0ff');
+  hudLabel(`Tutorial ${i + 1}/${steps.length - 1}`, x + 14, y + 18, '#6fb0ff');
   ctx.font = '13px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#d4e4f5';
   lines.forEach((l, n) => ctx.fillText(l, x + 14, y + 38 + n * 17));

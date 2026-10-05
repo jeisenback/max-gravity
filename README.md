@@ -70,7 +70,7 @@ At any market you can also buy a stake in the port's business from the Port tab,
 
 No build step and no dependencies. Open `index.html` in a browser.
 
-This build is scoped to one chapter: an Earth hired hand on an Ice Hauler, ending when they buy a ship (the used Ore Runner Tomas offers, or a yard ship) and the crew who like them come along (`BUILD.scope` is `'earth-hired'` in `js/build.js`). It is one path, tuned first: a gunner, with Captain Hester Vance and her fragile first officer Cato Rahman; the New Game form offers no post or captain. The other three posts and the other three captain and first officer pairs (Dov and Ilsa, Imre and Pilar, Zoya and Ansel) stay in the code and in the full build. Owner mode, the Mars and Belt starts, the tutorial, hired errands, bar side work and leads, the five storylines, the shipping company, stakes and outposts, and the community section are switched off. To play everything, open the game with `?scope=full` on the address; the tests do the same.
+This build is scoped to one chapter: an Earth hired hand on an Ice Hauler, ending when they buy a ship (the used Ore Runner Tomas offers, or a yard ship) and the crew who like them come along (`BUILD.scope` is `'earth-hired'` in `js/build.js`). It is one path, tuned first: a gunner, with Captain Hester Vance and her fragile first officer Cato Rahman; the New Game form offers no post or captain. The other three posts and the other three captain and first officer pairs (Dov and Ilsa, Imre and Pilar, Zoya and Ansel) stay in the code and in the full build. Owner mode, the Mars and Belt starts, the owner's tutorial (a hand still gets the first-run steps), hired errands, bar side work and leads, the five storylines, the shipping company, stakes and outposts, and the community section are switched off. To play everything, open the game with `?scope=full` on the address; the tests do the same.
 
 Progress is saved automatically in your browser's localStorage whenever you land.
 
@@ -158,7 +158,7 @@ On a keyboard:
 - `js/stories/hired-aftermath.js` - what comes of a hired hand's own events: follow-ups that name the captain or shipmate they were about
 - `js/hiredevents.js` - what is written for a hired hand: burn events in five groups (work at your post, the captain, the crew with the main characters where aboard, money, and the road), twelve downtime additions (up to four offered at a time, the main characters first), the weights in one table, and the owner-only events hidden
 - `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike), `mars-navy.js` (Reserve Commission, a Mars Navy career), `rook-crown.js` (The Rook's Crown, a pirate lord's rise), `tethys.js` (The Partner's Chair, a corporate climb), and `cold-water.js` (the scenes of Cold Water)
-- `js/tutorial.js` - the first-run tutorial: a guided Earth-to-Mars electronics run that advances as you play (Skip in port ends it)
+- `js/tutorial.js` - the first-run tutorial: for an owner, a guided Earth-to-Mars electronics run; for a hired hand, a few steps (sail, the first officer's walk-through, downtime, a chat, docking). Either advances as you play (Skip in port ends it)
 - `js/audio.js` - sound effects synthesized with Web Audio (no audio files): guns, hits, explosions, engine rumble, docking, burns, comms
 - `js/transit.js` - transit between locations, choice events, market rumors (tune `TRANSIT_MIN`/`TRANSIT_MAX` for burn length)
 - `tests/` - the automated tests (see Automated tests below)

@@ -110,6 +110,7 @@ Mods.register({
       const t = G.transit, p = G.state.people[id];
       if (!p || !chatFree() || !chatAble(id)) return;
       t.lifeUsed = t.lifeUsed || {}; t.lifeUsed[lifeHalf()] = true;
+      if (hired()) hired().did = { ...hired().did, chat: true };  // the first run's steps (tutorial.js)
       G.bridgeOpen = null;
       openEvent(sitBeat(p, G.state.crew.includes(id)));
     });

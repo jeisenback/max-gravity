@@ -14,18 +14,18 @@ const helpers = () => {
   window.start = (o = {}) => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', ...o }); while (G.dialog) finishEvent(); const st = G.state; st.story.next = 1e9; return st; };
 };
 
-test('the new game screen offers only a hired Earth start, with no tutorial', async () => {
+test('the new game screen offers only a hired Earth start, and the first-run steps begin', async () => {
   const { page, ev, done } = await open({ title: true, ...NARROW });
   await page.click('[data-action=menuView][data-arg=new]');
   const seen = await page.evaluate(() => ({
     mode: !!document.querySelector('[data-action=menuMode]'), background: !!document.querySelector('[data-action=menuBackground]'),
     tutorial: !!document.querySelector('#ngTutorial'), posts: document.querySelectorAll('[data-action=menuPost]').length,
   }));
-  assert.deepEqual(seen, { mode: false, background: false, tutorial: false, posts: 0 }, 'no start, no tutorial, no post to choose');
+  assert.deepEqual(seen, { mode: false, background: false, tutorial: false, posts: 0 }, 'no start, no tutorial checkbox, no post to choose');
   await page.fill('#ngCaptain', 'Sam Rowe');
   await page.click('[data-action=menuStart]');
   const st = await ev(() => { while (G.dialog) finishEvent(); return { hired: !!G.state.hired, background: G.state.background, tutorial: G.state.tutorial, at: G.state.planet }; });
-  assert.deepEqual(st, { hired: true, background: 'earth', tutorial: null, at: 'Earth' });
+  assert.deepEqual(st, { hired: true, background: 'earth', tutorial: 0, at: 'Earth' });
   await done();
 });
 
@@ -62,7 +62,7 @@ test('the full build offers the four posts and draws a captain from all of them'
 test('any other start is turned into a hired Earth start', async () => {
   const { ev, done } = await open(NARROW);
   const r = await ev(() => { startGame({ slot: 1, background: 'mars', mode: 'owner', tutorial: true, captain: 'Sam Rowe' }); while (G.dialog) finishEvent(); const st = G.state; return { hired: !!st.hired, background: st.background, tutorial: st.tutorial, at: st.planet }; });
-  assert.deepEqual(r, { hired: true, background: 'earth', tutorial: null, at: 'Earth' });
+  assert.deepEqual(r, { hired: true, background: 'earth', tutorial: 0, at: 'Earth' });
   await done();
 });
 
