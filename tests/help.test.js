@@ -56,3 +56,24 @@ test('the tips do not point at an outpost the build does not have', async () => 
   assert.equal(r, false);
   await done();
 });
+
+test('a new hired game shows the one-time tips again, and a save from before keeps using the browser\'s record', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    const shown = [], burn = TIPS.find(t => t.id === 'burn'), real = burn.show;
+    burn.show = () => shown.push('burn');
+    const game = o => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', ...o }); while (G.dialog) finishEvent(); G.mode = 'transit'; G.paused = false; };
+    const out = {};
+    Help.seen = {};
+    game(); Help.tipTick(); out.first = shown.length; out.saved = { ...G.state.tips };
+    Help.tipTick(); out.again = shown.length;
+    game(); Help.tipTick(); out.second = shown.length; out.browser = !!Help.seen.burn;
+    G.state.tips = null; Help.seen = { burn: true }; Help.tipTick(); out.old = shown.length;
+    burn.show = real; G.mode = 'landed';  // no transit behind it: leave the frame loop a mode it can run
+    return out;
+  });
+  assert.equal(r.first, 1); assert.equal(r.saved.burn, true); assert.equal(r.again, 1, 'once a game');
+  assert.equal(r.second, 2, 'the next new game shows it again'); assert.equal(r.browser, false, 'without touching the browser\'s record');
+  assert.equal(r.old, 2, 'a save with no record uses the browser\'s, which has seen it');
+  await done();
+});

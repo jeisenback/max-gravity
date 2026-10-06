@@ -2,7 +2,8 @@
 
 // In-game help: a Help page in the menu (title screen and pause) with a topic for each
 // system, and one-time tips the first time a player meets a new one. Tips seen are
-// remembered in this browser. A topic can be hidden in the narrow build (`off`: the SCOPE_OFF feature it describes), can have its
+// remembered in the save for a new hired game (st.tips, so a second game or another slot sees them again), and in this browser
+// for every other game: a save from before has no record, so it keeps using the browser's and does not repeat them. A topic can be hidden in the narrow build (`off`: the SCOPE_OFF feature it describes), can have its
 // own text for a hired hand (`hand`, shown whenever the build is narrow, since everyone is one), and can be for a hired hand
 // only (`handOnly`). Loaded before game.js; only calls into it at runtime.
 
@@ -67,12 +68,15 @@ const TIPS = [
 
 const Help = {
   seen: store.get('maxGravity.tips', {}),
+  // The record in use: the save's, for a new hired game (hired.js sets st.tips); otherwise this browser's.
+  record() { const st = G.state; return st.tips && hired() ? st.tips : this.seen; },
   tipTick() {
     if (!G.state || G.paused || G.dialog) return;
+    const seen = this.record();
     for (const t of TIPS) {
-      if (this.seen[t.id] || !t.when()) continue;
-      this.seen[t.id] = true;
-      store.set('maxGravity.tips', this.seen);
+      if (seen[t.id] || !t.when()) continue;
+      seen[t.id] = true;
+      if (seen === this.seen) store.set('maxGravity.tips', this.seen);
       t.show();
       if (G.mode === 'landed') UI.render();
       return;
