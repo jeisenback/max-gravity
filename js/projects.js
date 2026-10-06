@@ -62,7 +62,7 @@ function projectsTick(dt) {
 
 // The projects a post can run: what is running, and what can be started.
 function projectsHtml(post) {
-  if (notYours(post)) return '';
+  if (notYours(post) || hired()) return '';  // a hand's hold is the captain's cargo, never spare parts, so there is nothing to start
   const running = Object.values(projectsOf()).find(p => PROJECTS[p.id].post === post);
   const list = Object.entries(PROJECTS).filter(([, P]) => P.post === post);
   return `<div class="post"><div class="eyebrow">Projects &middot; parts ${partsHeld()}t</div>
