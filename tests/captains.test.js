@@ -680,3 +680,25 @@ test('the first arrival comes before a job waiting at the port', async () => {
   });
   assert.equal(r.first, 'Settling Up'); assert.ok(r.queued, 'the job follows it');
 });
+
+// ---------- opinion notes at the cutoffs (#281) ----------
+
+test('a result that carries the captain or the first officer across a cutoff says where they stand now', async () => {
+  const r = await run(() => {
+    const st = start(), cap = person(hired().captain), xo = hiredXo(), other = st.crew.map(person).find(c => c && c.id !== xo.id && c.role !== 'xo');
+    const line = (p, from, to) => { p.opinion = to; return shiftLines([{ p, n: to - from }]).replace(/<[^>]+>/g, ''); };
+    return {
+      up: [[0, 1], [1, 2], [2, 3], [0, 3], [0, 2]].map(([a, b]) => line(cap, a, b)),
+      down: [[0, -2], [-2, -3], [0, -3], [-1, -2]].map(([a, b]) => line(cap, a, b)),
+      inside: [[3, 4], [-2, -1], [0, -1], [4, 5]].map(([a, b]) => line(cap, a, b)),
+      xo: line(xo, 1, 2), name: xo.first, cap: cap.first,
+      other: line(other, 1, 3),
+    };
+  });
+  const [c1, c2, c3, c03, c02] = r.up, [d2, d3, d03, d12] = r.down;
+  assert.match(c1, /thinks better of you: easy with you now\./); assert.match(c2, /: friendly now\./); assert.match(c3, /: trusts you now\./);
+  assert.match(c03, /thinks much better of you: trusts you now\./, 'the highest cutoff crossed'); assert.match(c02, /: friendly now\./);
+  assert.match(d2, /thinks less of you: wary of you now\./); assert.match(d3, /: holds it against you now\./); assert.match(d03, /thinks much less of you: holds it against you now\./); assert.match(d12, /: wary of you now\./);
+  for (const t of r.inside) assert.doesNotMatch(t, /:/, `inside a band: ${t}`);
+  assert.match(r.xo, new RegExp(`${r.name} thinks better of you: friendly now\\.`)); assert.doesNotMatch(r.other, /:/, 'other crew keep the plain line');
+});

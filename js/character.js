@@ -178,6 +178,17 @@ function sceneFacesHtml(ev) {
   }).join('')}</div>` : '';
 }
 
+// Where the captain or the first officer now stands, when a result carried them across a cutoff (OPINION, people.js): the word for the
+// highest cutoff crossed going up, or the lowest going down. Anyone else, or a change inside a band, gets none.
+const CROSS_UP = [[OPINION.TRUSTED, 'trusts you now'], [OPINION.FRIEND, 'friendly now'], [OPINION.CLOSE, 'easy with you now']];
+const CROSS_DOWN = [[OPINION.GRUDGE, 'holds it against you now'], [OPINION.ENEMY, 'wary of you now']];
+function crossWord(p, n) {
+  const h = typeof hired === 'function' ? hired() : null, xo = h && hiredXo();
+  if (!h || !(p.id === h.captain || (xo && p.id === xo.id))) return '';
+  const before = p.opinion - n, hit = (n > 0 ? CROSS_UP : CROSS_DOWN).find(([c]) => (n > 0 ? before < c && p.opinion >= c : before > c && p.opinion <= c));
+  return hit ? hit[1] : '';
+}
+
 // What a choice did to how people feel, as lines under the result: the changes like() (people.js) and addBond() (social.js) logged.
 function shiftLines(log) {
   const who = new Map(), byPair = new Map();
@@ -186,7 +197,7 @@ function shiftLines(log) {
     else { const k = [s.a.id, s.b.id].sort().join('|'), e = byPair.get(k) || { a: s.a, b: s.b, n: 0 }; e.n += s.n; byPair.set(k, e); }
   }
   const lines = [
-    ...[...who].filter(([, n]) => n).map(([p, n]) => ({ n, text: `${p.first} thinks ${Math.abs(n) >= 3 ? 'much ' : ''}${n > 0 ? 'better' : 'less'} of you` })),
+    ...[...who].filter(([, n]) => n).map(([p, n]) => ({ n, text: `${p.first} thinks ${Math.abs(n) >= 3 ? 'much ' : ''}${n > 0 ? 'better' : 'less'} of you${crossWord(p, n) ? `: ${crossWord(p, n)}` : ''}` })),
     ...[...byPair.values()].filter(e => e.n).map(e => ({ n: e.n, text: `${e.a.first} and ${e.b.first} are ${e.n > 0 ? 'closer' : 'further apart'}` })),
   ].sort((a, b) => Math.abs(b.n) - Math.abs(a.n));
   if (!lines.length) return '';
