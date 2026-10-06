@@ -33,7 +33,7 @@ test('a pirate contact for a hired hand opens the raid, not the card duel, and t
     return { text: /Battle stations/.test(text), title: G.dialog.event.title, duel: !!G.duel, decided: !!G.dialog.event.decided, labels: G.dialog.choices.map(c => c.label), pos: /Position: (even|ahead|behind)/.test(G.dialog.event.text) };
   });
   assert.ok(r.text); assert.equal(r.title, 'The Closing'); assert.equal(r.duel, false); assert.ok(!r.decided, 'the captain does not take this call');
-  assert.equal(r.labels.length, 4); assert.ok(r.labels.some(l => l === '[Pilot] Put the sun behind us')); assert.ok(r.pos);
+  assert.equal(r.labels.length, 4); assert.ok(r.labels.some(l => l.startsWith('[Pilot] Put the sun behind us'))); assert.ok(r.pos);
   await done();
 });
 
@@ -410,5 +410,43 @@ test('an owner does not get the Gunner\'s orders', async () => {
   const { ev, done } = await open();
   const r = await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'owner' }); return postOrders('gunner').map(o => o.id); });
   assert.deepEqual(r, []);
+  await done();
+});
+
+test('each raid option says what it can cost, from what it declares, and a sure option says nothing', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = [];
+    const text = html => { const b = document.createElement('div'); b.innerHTML = html; return b.textContent; };
+    for (const style of ['grapple', 'torpedo', 'gun']) {
+      for (const c of [...RAID_CLOSING, ...RAID_EXCHANGE]) {
+        const lose = c.lose || c.win, line = Array.isArray(lose) ? lose : (lose[style] || lose.grapple), risk = HAND_RISK[c.id] || 0;
+        out.push({ id: c.id, style, sure: c.odds(style) >= 1, hull: line[1] > 0, risk, note: text(raidCostNote(c, style)).trim() });
+      }
+    }
+    return out;
+  });
+  assert.ok(r.length >= 18);
+  for (const x of r) {
+    const name = `${x.id} (${x.style})`;
+    if (x.sure) { assert.equal(x.note, '', `${name}: a sure option says nothing`); continue; }
+    assert.equal(/hull damage/.test(x.note), x.hull, `${name}: hull`); assert.equal(/a crew casualty/.test(x.note), x.hull, `${name}: casualty`);
+    assert.equal(/you may be hurt/.test(x.note), x.risk > 0, `${name}: hurt`); assert.equal(/the captain marks it/.test(x.note), x.risk >= 0.35, `${name}: the captain`);
+    assert.equal(x.note === '', !x.hull && !x.risk, `${name}: nothing at stake, no note`);
+  }
+  const turn = r.find(x => x.id === 'turn'); assert.equal(turn.note, '[if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]');
+  assert.equal(r.find(x => x.id === 'fire').note, '[if it fails: you may be hurt, and the captain marks it]');
+  assert.equal(r.find(x => x.id === 'hold').note, '');
+  await done();
+});
+
+test('the note is part of the option in the scene, and the Gunner\'s own move carries one', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => { raid('gunner'); startDuel({ kind: 'pirate' }, false); begin(); return G.dialog.choices.map(c => c.label); });
+  assert.ok(r[0].startsWith('Hold course') && !r[0].includes('[if it fails'), 'hold course has none');
+  assert.ok(r.slice(1).every(l => l.includes('[if it fails:')), 'every other option has one');
+  assert.ok(r.some(l => l.startsWith('[Gunner] Get a lock on her drive') && l.includes('you may be hurt, and the captain marks it')));
   await done();
 });
