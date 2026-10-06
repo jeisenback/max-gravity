@@ -236,11 +236,11 @@ In the hired-hand chapter a pirate contact is not the card duel. It plays as an 
 job of your own post, and each choice is a chance of going your way (+1 or +2) or hers (-1 or -2) on a running
 position. At the close she breaks off, stands off and throws a last round, or comes alongside, and then the fight goes
 to the lock (`js/boarders.js`): hold, rush, go round, or your post's job, with casualties. Measured over random-choice
-play, about 40% of raids end with her breaking off, 40% stand off, and 15 to 25% go to the lock, for 7 to 10% of the hull.
+play (`npm run fights`, below), about a quarter of raids end with her breaking off, 4 in 10 stand off, and 3 in 10 go to the lock, for 11% of the hull.
 A decisive win (ahead by four or more) cripples her instead: she drifts, and you can board her. That is the same
 lock fight run the other way (her lock, her corridor, her bridge, with the same tactics and your post's job), and a win
-takes her strongbox for the ship's fund. Or let her drift, which is the same as breaking her off. Over 500 random-choice
-raids, about 1 in 10 cripple her, and a boarding is carried about three times in four.
+takes her strongbox for the ship's fund. Or let her drift, which is the same as breaking her off. Over random-choice
+raids, about 1 in 16 cripple her, and a boarding is carried about two times in three.
 A hired hand can also meet a distress call on a burn through unsettled space (pirates 0.25 or more at either end, at most once
 in 60 days): seven in ten are a trap, and the rest are a real freighter that pays the ship's fund 500 cr. Each post has its own
 way to read the call (scan her hull, read her drive, match her tumble, check her registry), which works at 50% plus a tenth
@@ -255,6 +255,27 @@ berth, and of two at each other's throats (the bond at which a split is on the c
 stand in the same section, so the line is a person shorter each time. A friend takes the first hit meant for you, once a
 fight (so does someone who owes you one, from a watch you covered for them). The same goes for the repel fight and for boarding a crippled raider.
 Bounties, hunters and an owner's fights are still the card duel above.
+
+### Measured: `npm run fights`
+
+`tools/fights.js` plays the raid, the repel fight and the assault fight over many seeded trials (5 seeds of 200, a hired gunner
+on Hester's ship with nine aboard, against a raider) and reports how they close and who is hurt. The game is put back between
+trials. It is run by hand and is not part of `npm test`. Figures from the run that wrote this section (the tuning constants are as
+they were: `CASUALTY_ODDS` 0.4, `REPEL_HURT` 0.45 on a loss and 0.15 on a win, `CUNNING` 0.25):
+
+- **The raid**, random choices: she breaks off 23%, stands off 41%, is crippled 6% (boarded and carried 69% of the time), and goes
+  to the lock 30% (held 58%). Hull lost 11%. Someone is hurt in 53% of raids, someone dies in about 1 in 9, and the hand is hurt in 34%.
+  Always the post's own move: crippled 18%, hull 3%. Always the first general choice: no crippling, 51% stand off, 10% reach the lock.
+- **The lock fight** (repel and assault give the same figures within a few points), random tactics, level 2, five standing with
+  you: won 80%. By crew: one 45%, three 75%, five 80%. By the post's level (the post's move every round): 69%, 83%, 95%.
+  By the foe's grade: 0 is 81%, 1 is 59%, 2 is 35%. Casualties per fight with five: 0.4 hurt, 0.2 dead, 0.15 marked (a main character),
+  the hand hurt 14%, and someone or other hurt in 55% of fights. A grade 2 foe hurts someone in 80%.
+- **Tactics are not a mix.** Against a pirate (who leans to rush, then go round, then hold) always going round wins 97% and always
+  holding wins 49%. Against a patrol the lean is hold, so rushing is the answer. A player who learns the lean has a
+  dominant tactic, and one who does not has about a coin's toss on each choice.
+
+Not yet tuned: whether a death in 1 in 5 lock fights and a hurt crew member in 1 in 2 is "neither rare nor routine", and whether
+one tactic should win nearly every time, are for the designer to say. The tool is how to check a change to either.
 
 ## Open questions
 

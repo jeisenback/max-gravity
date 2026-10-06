@@ -4,7 +4,8 @@
   "description": "Tests for Max Gravity. The game itself needs no build: open index.html.",
   "scripts": {
     "test": "node --test --test-concurrency=4 \"tests/*.test.js\"",
-    "soak": "node --test --test-concurrency=4 \"tests/distribution/*.test.js\""
+    "soak": "node --test --test-concurrency=4 \"tests/distribution/*.test.js\"",
+    "fights": "node tools/fights.js --seeds 1,2,3,4,5 --n 200"
   },
   "devDependencies": {
     "playwright": "^1.63.0"
