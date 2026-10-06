@@ -373,3 +373,42 @@ test('a save from before the explanation has no flag, and its first raid goes st
   assert.equal(r, 'The Closing');
   await done();
 });
+
+test('a hired Gunner has two orders: a drill that teaches, and boresighting that makes the next raid\'s own move ten points better until the next port', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    raid('gunner'); const st = G.state, out = {};
+    out.ids = postOrders('gunner').map(o => o.id);
+    const real = Math.random, lvl = skillLevel('gunner');
+    out.base = raidPostOdds(lvl);
+    const xp = skillXp('gunner');
+    Math.random = () => 0.9; const miss = giveOrder('gunner', 'boresight'); Math.random = real;
+    out.missed = { text: miss, odds: raidPostOdds(lvl), busy: postState('gunner').busy, xp: skillXp('gunner') - xp };
+    out.again = giveOrder('gunner', 'drill');
+    postState('gunner').busy = false;
+    Math.random = () => 0.01; const hit = giveOrder('gunner', 'boresight'); Math.random = real;
+    out.hit = { text: hit, odds: raidPostOdds(lvl) };
+    out.cap = raidPostOdds(10);
+    postState('gunner').busy = false;
+    Math.random = () => 0.01; const drill = giveOrder('gunner', 'drill'); Math.random = real;
+    out.drill = { text: drill, xp: skillXp('gunner') - xp };
+    Mods.emit('landed', currentPlanet());
+    out.landed = raidPostOdds(lvl);
+    return out;
+  });
+  assert.deepEqual(r.ids, ['drill', 'boresight']);
+  assert.match(r.missed.text, /the third drifts a finger/i); assert.equal(r.missed.odds, r.base, 'a failed boresight changes nothing'); assert.equal(r.missed.busy, true); assert.equal(r.missed.xp, 1, 'your own work teaches');
+  assert.equal(r.again, null, 'one order a day');
+  assert.match(r.hit.text, /target plate at four hundred meters/); assert.ok(Math.abs(r.hit.odds - Math.min(0.85, r.base + 0.1)) < 1e-9, 'ten points better');
+  assert.equal(r.cap, 0.85, 'never above 0.85'); assert.match(r.drill.text, /three times in four/); assert.equal(r.drill.xp, 3, 'a miss, a hit and a drill each taught one');
+  assert.equal(r.landed, r.base, 'the next port clears it');
+  await done();
+});
+
+test('an owner does not get the Gunner\'s orders', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'owner' }); return postOrders('gunner').map(o => o.id); });
+  assert.deepEqual(r, []);
+  await done();
+});

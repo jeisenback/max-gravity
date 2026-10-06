@@ -64,6 +64,7 @@ function giveOrder(id, orderId) {
   if (!o.sure) ps.busy = true;  // a sure order (a command, not a task) does not use up the day
   ps.note = o.run(o.sure || Math.random() < orderOdds(id), doer, doer ? roleSkill(POSTS[id].role) : 0);
   if (!doer) gainSkill(id, 1);  // your own work teaches you (hired.js)
+  if (!doer && hired()) hired().did = { ...hired().did, order: true };  // the first run's steps (tutorial.js)
   return ps.note;
 }
 

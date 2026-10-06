@@ -88,3 +88,16 @@ test('a captain with no walk-through does not hold up the steps', async () => {
   assert.equal(r, 2);
   await done();
 });
+
+test('giving an order at your post counts as working it, as downtime does', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = begin(), h = hired(); sailOut(); h.walked = true; tick();
+    const before = tick();
+    giveOrder('gunner', 'drill');
+    return { before, after: tick(), did: { ...h.did } };
+  });
+  assert.equal(r.before, 2); assert.equal(r.after, 3, 'the order completes the step'); assert.equal(r.did.order, true);
+  await done();
+});

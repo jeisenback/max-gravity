@@ -80,6 +80,26 @@ function deadInSpaceScene(s) {
   };
 }
 
+// The Gunner's own move in a raid: half a chance, a tenth better for each level, and a tenth more once the guns are boresighted (the
+// Gunner's order below), until the next port. Never above 0.85.
+const BORESIGHT = 0.1;
+const boresighted = () => !!postState('gunner').sighted;
+const raidPostOdds = level => Math.min(0.85, 0.5 + 0.1 * level + (boresighted() ? BORESIGHT : 0));
+
+// The Gunner's orders, for a hired Gunner (the other posts have theirs in stations.js, comms.js): a drill that teaches, and a
+// stance that pays in the next raid. Each uses up the day, like the others (giveOrder, stations.js).
+const GUNNER_ORDERS = [
+  { id: 'drill', name: 'Run the range sim', desc: 'Tracking drills on the sim. Once a day.',
+    run: ok => (ok ? 'You spend the watch on the range sim, leading a drone that dodges on a timer. By the end the lead lands inside the ring three times in four.'
+      : 'You spend the watch on the range sim. The drone dodges on a timer you cannot read, and you log fourteen misses.') },
+  { id: 'boresight', name: 'Boresight the guns', desc: 'Walk the guns onto a target plate. Your own move at the guns is ten points better in the next raid, until the next port. Once a day.',
+    run(ok) {
+      if (!ok) return 'You hang the plate and the mounts will not agree. Two settle. The third drifts a finger\'s width and stays there.';
+      postState('gunner').sighted = true;
+      return 'You hang a target plate at four hundred meters and walk the guns onto it, one mount at a time, until the plate has one hole in it.';
+    } },
+];
+
 // What a choice risks for the hand: a lost bold call can hurt you yourself, and the captain remembers a call that failed or won it.
 const HAND_RISK = { hold: 0, screen: 0, warn: 0.15, burn: 0.15, turn: 0.35, fire: 0.35, post: 0.35 };
 const raidPosition = s => (s.edge >= 1 ? 'ahead' : s.edge <= -1 ? 'behind' : 'even');
@@ -110,7 +130,7 @@ function raidScene(s) {
   const general = closing ? RAID_CLOSING : RAID_EXCHANGE, spec = RAID_POST[kind][post];
   const text = closing ? s.open || RAID_OPEN[s.style][s.round % 2] : RAID_PASS[s.style][s.beat - 1];
   const choices = general.map(c => ({ label: c.label, run: () => raidStep(s, c, null) }));
-  choices.push({ label: `[${POSTS[post].name}] ${spec.label}`, run: () => raidStep(s, { id: 'post', odds: () => Math.min(0.85, 0.5 + 0.1 * level), win: spec.win, lose: spec.lose }, post) });
+  choices.push({ label: `[${POSTS[post].name}] ${spec.label}`, run: () => raidStep(s, { id: 'post', odds: () => raidPostOdds(level), win: spec.win, lose: spec.lose }, post) });
   return {
     title: closing ? 'The Closing' : s.beat === 1 ? 'First Pass' : 'Second Pass', personal: true, via: 'crew', owner: 'you',  // yours to decide, not the captain's (hired.js hiredCall)
     text: `${text}</p><p>${raidRead(s)} Position: ${raidPosition(s)}. Armor ${st.armor}/${ship().armor}.`,
@@ -210,6 +230,14 @@ function ambushChoice(a, cap, h, post, spec) {
   const scene = { title: 'A Freighter in Trouble', personal: true, via: 'ship', owner: 'you', text: a.known ? (a.trap ? `You know what is out there. They have not lit their drives, and they do not know you know.` : `The readings are clean. She is real, and she is asking again.`) : `A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain ${cap.last} looks at the plot, then at the crew.`, choices };
   return scene;
 }
+
+Mods.register({
+  id: 'gunner-orders', name: 'The Gunner\'s orders', builtin: true,
+  init(M) {
+    M.filter('orders', (list, id) => (id === 'gunner' && hired() ? list.concat(GUNNER_ORDERS) : list));
+    M.on('landed', () => { if (hired()) postState('gunner').sighted = false; });  // the guns are boresighted until the next port
+  },
+});
 
 Mods.register({
   id: 'ambush', name: 'Distress call ambush', builtin: true,
