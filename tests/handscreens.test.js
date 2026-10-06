@@ -83,3 +83,35 @@ test('a suggested run reads in the captain\'s terms, and the deck plan draws a f
   }
   await done();
 });
+
+test('a hired hand\'s map says what it is for and shows the captain\'s plan; an owner\'s map is unchanged', async () => {
+  const hand = await open({ scope: 'earth-hired' });
+  await hand.ev(helpers);
+  await hand.ev(() => {
+    window.drawIt = () => {
+      const said = [], rings = [], text = ctx.fillText, arc = ctx.arc;
+      ctx.fillText = function (t, ...a) { said.push(String(t)); return text.call(this, t, ...a); };
+      ctx.arc = function (x, y, r, ...a) { if (r === 15 && ctx.strokeStyle === '#5fd35f') rings.push([x, y]); return arc.call(this, x, y, r, ...a); };
+      try { drawMap(900, 700); } finally { ctx.fillText = text; ctx.arc = arc; }
+      return { said: said.join(' '), rings: rings.length };
+    };
+  });
+  const r = await hand.ev(() => {
+    const st = startHand(), h = hired(), out = {}, base = { good: 'water', tons: 5, cost: 100, planet: 'Mars', ballast: false, sid: 'mars', days: 5, profit: 1000 };
+    h.plan = { day: st.day, at: st.planet, cargo: JSON.stringify(st.cargo), run: base, alts: [] };
+    out.port = drawIt();
+    h.plan = { day: st.day, at: st.planet, cargo: JSON.stringify(st.cargo), run: null, alts: [] };
+    out.none = drawIt();
+    return out;
+  });
+  assert.match(r.port.said, /The captain picks where she goes\. Look around; you cannot plot a burn\./);
+  assert.doesNotMatch(r.port.said, /to plot a burn\.|full tank|No burn plotted/);
+  assert.match(r.port.said, /The captain's run: Earth to Mars, 5 days\./); assert.equal(r.port.rings, 1, 'the destination is ringed');
+  assert.match(r.none.said, /waiting for a market/); assert.equal(r.none.rings, 0);
+  await hand.done();
+  const owner = await open({ scope: 'full' });
+  await owner.ev(() => { window.drawIt = () => { const said = [], text = ctx.fillText; ctx.fillText = function (t, ...a) { said.push(String(t)); return text.call(this, t, ...a); }; try { drawMap(900, 700); } finally { ctx.fillText = text; } return said.join(' '); }; });
+  const o = await owner.ev(() => { G.state = newState(); return drawIt(); });
+  assert.match(o, /to plot a burn\./); assert.match(o, /beyond a full tank/); assert.match(o, /No burn plotted/);
+  await owner.done();
+});
