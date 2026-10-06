@@ -91,6 +91,18 @@ function boardingEvent(n) {
   }
   const st = G.state, loot = lootFor(n), prize = SHIPS[n.shipId], prizeFee = 30 * 60;
   const resists = n.kind !== 'trader';
+  // A hired hand boards a ship that resists as the authored assault (boarders.js), not a roll: a win carries her bridge.
+  if (hired() && resists) {
+    const a = assaultStart(n);
+    return {
+      title, personal: true, via: 'crew',
+      text: `${n.captain ? `Capt. ${n.captain}` : 'Her crew'} is armed and waiting behind the inner lock. The ${prize.name} is still spaceworthy, barely. A boarding would be ${repelStanding(a) - 1} of yours against ${a.boarders} of hers.`,
+      choices: [
+        { label: 'Board her', can: () => n.disabled !== 'stripped', run() { G.nextEvent = repelScene(a); return 'You match her drift and the cutter goes out of the lock. It is a short crossing.'; } },
+        { label: 'Let her drift', run: () => (n.kind === 'pirate' ? 'You leave them drifting. They will not thank you.' : 'You leave them to call for a tow.') },
+      ],
+    };
+  }
   return {
     title,
     text: `${n.captain ? `Capt. ${n.captain}` : 'The crew'} ${resists ? 'is armed and waiting behind the inner lock' : 'has given up and is waiting to see what you do'}. The ${prize.name} is still spaceworthy, barely.${resists ? ` Boarding against resistance: about ${Math.round(boardOdds() * 100)}% to carry it${roleSkill('gunner') ? `, with ${roleName('gunner')} leading` : ''}.` : ''}`,
@@ -113,7 +125,7 @@ function boardingEvent(n) {
           return `You haul ${q}t of ${name} across. The crew watch you do it. Somebody will report this.`;
         } },
       { label: `Take the ship as a prize (prize crew: ${fmt(prizeFee)} cr)`,
-        can: () => st.credits >= prizeFee,
+        can: () => st.credits >= prizeFee, owner: true,
         run() {
           const fail = boardingFight(n);
           if (fail) return fail;
@@ -134,7 +146,7 @@ function boardingEvent(n) {
           return `Your prize crew takes the helm and limps the ${prize.name} toward ${at.name}. It's on your Company tab now, with its hull as you left it.`;
         } },
       { label: 'Let them go', run: () => (n.kind === 'pirate' ? 'You leave them drifting. They will not thank you.' : 'You leave them to call for a tow.') },
-    ],
+    ].filter(c => !(c.owner && hired())),  // a hand takes no prize: a company ship is the owner's
   };
 }
 
