@@ -124,13 +124,24 @@ function startRaid(spec, flee, o = {}) {
   return text;
 }
 
+// What a choice can cost, said before it is picked (#293): its worst outcome in a few words, built from what the choice declares (a hull
+// cost on a lost roll, the hand's own risk, and the captain's remark on a risky call), never the odds. A sure choice, or one with
+// nothing at stake, carries no note.
+function raidCostNote(c, style) {
+  if (c.odds(style) >= 1) return '';
+  const lose = c.lose || c.win, line = Array.isArray(lose) ? lose : (lose[style] || lose.grapple), risk = HAND_RISK[c.id] || 0;
+  const costs = [...(line[1] > 0 ? ['hull damage', 'a crew casualty'] : []), ...(risk > 0 ? ['you may be hurt'] : [])];
+  const text = risk >= 0.35 ? [...(costs.length ? [`${costs.join(', ')}, and`] : []), 'the captain marks it'].join(' ') : costs.join(', ');
+  return text ? ` <span class="hint">[if it fails: ${text}]</span>` : '';
+}
+
 function raidScene(s) {
   const st = G.state, h = hired(), post = h.post, level = skillLevel(post);
   const closing = s.beat === 0, kind = closing ? 'closing' : 'exchange';
   const general = closing ? RAID_CLOSING : RAID_EXCHANGE, spec = RAID_POST[kind][post];
   const text = closing ? s.open || RAID_OPEN[s.style][s.round % 2] : RAID_PASS[s.style][s.beat - 1];
-  const choices = general.map(c => ({ label: c.label, run: () => raidStep(s, c, null) }));
-  choices.push({ label: `[${POSTS[post].name}] ${spec.label}`, run: () => raidStep(s, { id: 'post', odds: () => raidPostOdds(level), win: spec.win, lose: spec.lose }, post) });
+  const choices = general.map(c => ({ label: `${c.label}${raidCostNote(c, s.style)}`, run: () => raidStep(s, c, null) }));
+  choices.push({ label: `[${POSTS[post].name}] ${spec.label}${raidCostNote({ id: 'post', odds: () => raidPostOdds(level), win: spec.win, lose: spec.lose }, s.style)}`, run: () => raidStep(s, { id: 'post', odds: () => raidPostOdds(level), win: spec.win, lose: spec.lose }, post) });
   return {
     title: closing ? 'The Closing' : s.beat === 1 ? 'First Pass' : 'Second Pass', personal: true, via: 'crew', owner: 'you',  // yours to decide, not the captain's (hired.js hiredCall)
     text: `${text}</p><p>${raidRead(s)} Position: ${raidPosition(s)}. Armor ${st.armor}/${ship().armor}.`,
