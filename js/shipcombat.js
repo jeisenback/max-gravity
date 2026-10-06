@@ -60,7 +60,7 @@ function raidRead(s) {
 // What they try: a raider's boarders lean on the rush, a corsair's hold the line, and a veteran crew is sometimes ready for exactly
 // the tactic you chose. And the ship you fight in: a long one has room to go round them and little for a rush; a cramped one the
 // other way about.
-const BOARDER_LEAN = { raider: { rush: 0.5, hold: 0.2, flank: 0.3 }, corsair: { hold: 0.45, rush: 0.25, flank: 0.3 } };
+const BOARDER_LEAN = { raider: { rush: 0.38, hold: 0.3, flank: 0.32 }, corsair: { hold: 0.38, rush: 0.3, flank: 0.32 } };
 const CUNNING = 0.25;  // a veteran's chance, per grade, of countering your tactic outright
 const boardersFor = (foe, outcome, rate = {}) => Math.max(1, (FOE_CREW[foe.shipId] || 3) + (outcome === 'full' ? 1 : -1) + Math.round(0.6 * (rate.grade || 0)) + (rate.pack ? 2 : 0));
 const foeLean = s => BOARDER_LEAN[s.d.foe.shipId] || REPEL_LEAN[s.d.foe.kind] || { rush: 0.34, hold: 0.33, flank: 0.33 };

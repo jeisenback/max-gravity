@@ -65,7 +65,7 @@ const ASSAULT_POST = {
   comms: { label: 'Take her intercom', win: 'You find her intercom and put the captain on it, calmly, telling her people the ship is lost and the lock is open. Some of them go.', lose: 'You find her intercom and it is a recording, which says something unrepeatable about your mother.' },
 };
 
-const REPEL_LEAN = { pirate: { rush: 0.5, hold: 0.2, flank: 0.3 }, patrol: { hold: 0.5, rush: 0.2, flank: 0.3 } };
+const REPEL_LEAN = { pirate: { rush: 0.38, hold: 0.3, flank: 0.32 }, patrol: { hold: 0.38, rush: 0.3, flank: 0.32 } };
 const REPEL_HURT = { lose: 0.45, win: 0.15 };  // the chance someone is hurt in an exchange, by how it went
 
 const repelSet = s => (s.assault ? { titles: ASSAULT_TITLES, openings: ASSAULT_OPENINGS, tactics: ASSAULT_TACTICS, post: ASSAULT_POST } : { titles: REPEL_TITLES, openings: REPEL_OPENINGS, tactics: REPEL_TACTICS, post: REPEL_POST });

@@ -207,9 +207,10 @@ test('a hired hand boards a ship that resists as the authored assault, and a shi
 test('an owner boarding a disabled ship still rolls for it, with the odds in the prompt', async () => {
   const { ev, done } = await open({ scope: 'full' });
   const r = await ev(() => {
-    G.state = newState(); G.state.credits = 99999; G.mode = 'flight'; G.player = { x: 0, y: 0, vx: 0, vy: 0 };
+    G.state = newState(); G.state.credits = 99999; const was = G.player; G.player = { x: 0, y: 0, vx: 0, vy: 0 };  // the title screen goes on drawing, so nothing here puts the game into flight
     const foe = { name: 'Test', kind: 'pirate', shipId: 'freighter', armor: 10, maxArmor: 40, x: 0, y: 0, vx: 0, vy: 0, disabled: true, captain: 'Voss' };
     const e = boardingEvent(foe);
+    G.player = was;
     return { labels: e.choices.map(c => c.label), odds: /%/.test(e.text) };
   });
   assert.ok(r.labels.some(l => /prize/i.test(l))); assert.ok(r.odds);
