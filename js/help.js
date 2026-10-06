@@ -9,7 +9,7 @@
 
 const HELP = [
   { id: 'hand', title: 'Your post, your pay and a ship of your own', handOnly: true, text: () => [
-    `You sign on to a captain's ship and work one post: the pilot's helm, the guns, the engineer's plant, or the comms. The post is yours to work by hand; the rest of the crew hold the others. The captain picks every run and buys the cargo from the ship's funds. You press Sail, and on arrival you are paid a wage for each day and a share of the run's profit. Your savings are your own.`,
+    `You sign on to a captain's ship and work one post: the pilot's helm, the guns, the engineer's plant, or the comms. The post is yours to work by hand; the rest of the crew hold the others. The captain picks every run and buys the cargo from the ship's funds. You press Sail, and on arrival you are paid a wage for each day and a share of the run's profit. Your savings are your own, but you came aboard owing the hiring hall for the berth, the passage and the kit: about three thousand credits. A third of each run's pay goes to it until it is paid, and a ship cannot be bought while anything is owed.`,
     `A first officer runs the watch: they decide who moves to which post, and the crew-side calls on the road. The captain keeps money and ship matters. You have an opinion with each of them, and the two can differ.`,
     `Save toward a ship of your own. Once your savings are high enough, a ship may be offered to you at a port with a yard. The yard's own ships stay on the list, and the Rock Hopper is the cheapest.`,
     'Buying a ship ends your time as a hand. The crew who like you come with you, and the captain says goodbye at the foot of the ramp.' ] },

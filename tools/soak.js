@@ -9,7 +9,7 @@ const { open, closeBrowser } = require('../tests/helpers');
 
 // realDraw: the two main characters come from the pool as in the game; tests start from the pair they knew (tests/helpers.js).
 async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = null, realDraw = false } = {}) {
-  const { ev, errors, ctx } = await open({ scope, seed });
+  const { ev, errors, ctx } = await open({ scope, seed, debt: true });  // the chapter's economy includes the hiring hall's bond
   const r = await ev(([maxLegs, key, real]) => {
     if (real) window.drawCastPair = realDrawCastPair;
     const scenes = {}, bad = [], paid = [];

@@ -18,6 +18,7 @@ const HIRED_WAGE = 40, HIRED_SHARE = 0.06;  // a day's wage and a share of each 
 const HAND_RAID = { base: 0.08, per: 1.4 };  // a hand's chance of a pirate contact on a run: this and the lane's danger (engage.js), in place of 0.05 and 0.6
 const HAND_LANE_WEIGHT = 8;  // and how much a dangerous lane weights the ship's own incidents (happenings.js)
 const LIGHT_DUTY = 0.6;  // a hurt hand's wage while they work light duty
+const HIRED_DEBT = 3000, DEBT_SHARE = 0.3;  // the hiring hall's bond for the berth, the passage and the kit (#280): a third of each run's pay goes to it, never more than is owed
 const HIRED_TARGET = 19000;  // the used Ore Runner Tomas finds (the chapter's goal), at the price he asks a hand he thinks well enough of
 // The captain heads for a yard when the used Ore Runner can be had: at the offer's threshold until she is offered, then at
 // her price, and at the middle price again if the deal lapses.
@@ -83,7 +84,7 @@ function setupHired(o) {
     st.crew.push(c.id);
   }
   const d = captainKey && CAPTAINS[captainKey];
-  st.hired = { captain: cap.id, captainKey, post, since: st.day, wage: d ? d.wage : HIRED_WAGE, share: d ? d.share : HIRED_SHARE, fund: HIRED_FUND, run: null, ledger: [], skill: { ...(o.skill || {}), [post]: Math.max((o.skill || {})[post] || 0, SKILL_STEPS[1]) }, asked: 0, raidTold: false };
+  st.hired = { captain: cap.id, captainKey, post, since: st.day, wage: d ? d.wage : HIRED_WAGE, share: d ? d.share : HIRED_SHARE, fund: HIRED_FUND, run: null, ledger: [], skill: { ...(o.skill || {}), [post]: Math.max((o.skill || {})[post] || 0, SKILL_STEPS[1]) }, asked: 0, raidTold: false, debt: o.debt !== undefined ? o.debt : HIRED_DEBT };  // o.debt: a hand put ashore carries what is left (stakes.js)
   // The port screen says only what Signing On (signon.js) does not: who put a hand ashore. The ship, the captain, the post and
   // the savings are said there, once.
   return o.putOffBy ? [`${o.putOffBy} put you ashore. You carry your savings and what you learned.`] : [];
@@ -240,21 +241,23 @@ function settleRun(planet) {
   const profit = revenue - run.cost, days = Math.max(1, st.day - run.day);
   const wage = Math.round(h.wage * days * (run.ice ? ICE_HAZARD : 1) * (handHurt() ? LIGHT_DUTY : 1)), owed = Math.min(h.bill || 0, Math.max(0, profit)), share = profit > 0 ? Math.round((profit - owed) * h.share) : 0;  // the yard bill (repairs.js) comes out of the profit first
   h.bill = Math.max(0, (h.bill || 0) - owed);  // (the long run pays double the wage, above)
-  st.credits += wage + share;
+  const toHall = Math.min(h.debt || 0, Math.round((wage + share) * DEBT_SHARE));  // the hall's cut of the pay, never more than is owed
+  if (toHall) { h.debt -= toHall; if (!h.debt) captainFlag('debtCleared'); }
+  st.credits += wage + share - toHall;
   const total = runTotals(h);
   h.runsDone = total.runs + 1; h.earnedTotal = total.earned + wage + share;  // the ledger keeps the last 20; these keep the whole chapter
-  h.ledger.unshift({ day: st.day, from: run.from, to: planet.name, good: run.good, tons: sold, cost: run.cost, revenue, profit, wage, share, days, ice: !!run.ice });
+  h.ledger.unshift({ day: st.day, from: run.from, to: planet.name, good: run.good, tons: sold, cost: run.cost, revenue, profit, wage, share, hall: toHall, days, ice: !!run.ice });
   h.ledger.length = Math.min(h.ledger.length, 20);
   // The first officer settles up on the first arrival (captains.js): keep the figures, and leave the one-line note for later arrivals.
   const settling = total.runs === 0 && arrivalWanted();
-  if (settling) h.first = { good: run.good ? COMMODITIES.find(c => c.id === run.good).name.toLowerCase() : null, tons: sold, cost: run.cost, revenue, profit, forecast: run.profit, wage, share, days, planet: planet.name };
+  if (settling) h.first = { good: run.good ? COMMODITIES.find(c => c.id === run.good).name.toLowerCase() : null, tons: sold, cost: run.cost, revenue, profit, forecast: run.profit, wage, share, hall: toHall, owed: h.debt || 0, days, planet: planet.name };
   h.run = null;
   h.plan = null;
   gainSkill(h.post, 2);  // a burn worked
   like(st.people[h.captain], profit > 0 ? 1 : -1, profit > 0 ? 'Good run. You pull your weight.' : 'That run lost money.');
   const name = run.good ? COMMODITIES.find(c => c.id === run.good).name : null;
   if (settling) return;
-  return `${name ? `The captain sold ${sold}t of ${name} for ${fmt(revenue)} cr (${profit >= 0 ? `profit ${fmt(profit)}` : `loss ${fmt(-profit)}`} cr). ` : 'A run with no cargo. '}Your pay: ${fmt(wage)} cr wage${share ? ` and ${fmt(share)} cr share` : ''}.${owed ? ` The yard bill took ${fmt(owed)} cr of the profit first.` : ''}`;
+  return `${name ? `The captain sold ${sold}t of ${name} for ${fmt(revenue)} cr (${profit >= 0 ? `profit ${fmt(profit)}` : `loss ${fmt(-profit)}`} cr). ` : 'A run with no cargo. '}Your pay: ${fmt(wage)} cr wage${share ? ` and ${fmt(share)} cr share` : ''}.${owed ? ` The yard bill took ${fmt(owed)} cr of the profit first.` : ''}${toHall ? ` The hall took ${fmt(toHall)} cr of your pay. ${h.debt ? `${fmt(h.debt)} cr still owed.` : 'The bond is paid.'}` : ''}`;
 }
 
 // ---------- errands ----------
@@ -374,7 +377,7 @@ function dealCheck(planet) {
 }
 const buyInPrice = id => buyShip(id).price - (hired() && hired().haggle && hired().haggle.id === id ? hired().haggle.off : 0);  // nothing to trade in: the ship you fly is the captain's
 const canBuyIn = (id, planet) => !!hired() && G.mode === 'landed' && planet.services.includes('shipyard') && buyShip(id) && buyShip(id).forSale
-  && G.state.credits >= buyInPrice(id) && !(buyShip(id).req && repOf(localGov()) < buyShip(id).req);
+  && !(hired().debt > 0) && G.state.credits >= buyInPrice(id) && !(buyShip(id).req && repOf(localGov()) < buyShip(id).req);
 
 function buyIn(id) {
   const st = G.state, h = hired(), planet = currentPlanet();
@@ -446,6 +449,7 @@ function buyInHtml() {
       : `<button data-action="buyInAsk" data-arg="${id}" ${canBuyIn(id, p) ? '' : 'disabled'}>Buy (${fmt(s.price)})</button>`}</div>`;
   }).join('');
   return `<div class="post"><div class="eyebrow">A ship of your own &middot; your savings ${fmt(G.state.credits)} cr</div>
+    ${h.debt > 0 ? `<p class="hint">You owe the hiring hall ${fmt(h.debt)} cr. You cannot buy a ship until it is paid.</p>` : ''}
     ${rows}
     <p class="hint">${h.confirm ? `Leaving means leaving Captain ${esc(cap.first)} ${esc(cap.last)} and the crew behind${friends.length ? `, but ${esc(namesOf(friends))} would come with you` : ', and nobody on the crew knows you well enough to come'}.` : `Buy a ship and go out on your own. ${friends.length ? `${esc(namesOf(friends))} would come with you.` : 'Nobody on the crew knows you well enough to come with you yet.'}`}</p></div>`;
 }
