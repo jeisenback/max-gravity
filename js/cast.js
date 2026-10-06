@@ -522,7 +522,9 @@ function overTheHull(backup) {
     + (promised ? ' "You said someday," she adds.' : '');
 }
 
-const castScene = (key, sc) => ({ title: sc.title, text: sc.text, personal: true, choices: sc.choices });
+// A scene with a `closed` reading plays it, in place of the scene itself, when the person's regard for the hand is below friendly
+// (the first officers' "what they know", cato.js): the same slot, so nothing is skipped.
+const castScene = (key, sc) => { const s = sc.closed && castPerson(key).opinion < OPINION.FRIEND ? sc.closed : sc; return { title: s.title, text: s.text, personal: true, choices: s.choices }; };
 
 Mods.register({
   id: 'cast', name: 'The main characters', builtin: true,
