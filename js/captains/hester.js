@@ -78,8 +78,9 @@ CAPTAINS.hester = {
     },
     secret: {
       confide: {
+        flag: 'ownersDebt',  // the spine (#294): the Ore Runner's owners were each one payment short
         title: 'What the Notebook Is For',
-        text: 'Late in the watch Captain Vance asks you to sit. She turns the notebook round so you can read the last page, and lays a pencil across it. "The ship is not mine," she says. "She is the bank\'s until the end of the year, and mine after that, if I miss nothing. One more missed payment and the bank takes her, and I am a hand again, on somebody else\'s articles." She says it evenly. "Cato knows. You are the second. I am telling you because you have kept the books straight, and because I would rather you heard it from me."',
+        text: 'Late in the watch Captain Vance asks you to sit. She turns the notebook round so you can read the last page, and lays a pencil across it. "The ship is not mine," she says. "She is the bank\'s until the end of the year, and mine after that, if I miss nothing. One more missed payment and the bank takes her, and I am a hand again, on somebody else\'s articles." She says it evenly. "There is an Ore Runner on the yard list at the next port with her name painted over. Same bank. Three owners, and each of them missed one payment. One. I have counted what I am from it." She turns a page. "Cato knows. You are the second. I am telling you because you have kept the books straight, and because I would rather you heard it from me."',
         choices: [
           { label: 'Say you will keep it to yourself', run() {
             captainLike(2, 'You said you would keep the bank to yourself.'); captainFlag('secretKnown');
@@ -92,8 +93,9 @@ CAPTAINS.hester = {
         ],
       },
       found: {
+        flag: 'ownersDebt',
         title: 'Under the Sugar',
-        text: 'There is a letter on the galley table, unfolded, under the sugar tin. It is from the bank. You read three lines before you understand what you are reading: the ship is theirs, the next payment is the last they will wait for, and Captain Vance\'s name is typed at the top above the word FINAL. You hear her in the passage. She comes in, and sees the letter, and sees you, and her face does not change at all. "Sit down," she says. "That was not for you."',
+        text: 'There is a letter on the galley table, unfolded, under the sugar tin. It is from the bank. You read three lines before you understand what you are reading: the ship is theirs, the next payment is the last they will wait for, and Captain Vance\'s name is typed at the top above the word FINAL. The second page is a schedule of ships the bank has taken since the spring, and the Ore Runner is the third line. You hear her in the passage. She comes in, and sees the letter, and sees you, and her face does not change at all. "Sit down," she says. "That was not for you."',
         choices: [
           { label: 'Say you did not read it', run() {
             captainLike(-2, 'You said you had not read the bank\'s letter, and you had.'); captainFlag('secretKnown'); captainFlag('secretAngry');

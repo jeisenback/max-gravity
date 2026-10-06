@@ -357,15 +357,24 @@ function dealScene(planet) {
   h.deal = { price, day: st.day, until: st.day + DEAL_DAYS, broker: !tomas };
   const fault = 'Her drive is all right. Her life support I would watch. Her fire control is nearly done, and you should not trust it.';
   const tell = price < USED_PRICE.mid ? `${fmt(price)} cr, and that is the price for you.` : price > USED_PRICE.mid && tomas ? `${fmt(price)} cr, and I am not going to pretend it is a favor.` : `${fmt(price)} cr.`;
+  if (tomas) captainFlag('tomasWaited');  // the last piece of the spine (#294)
   return tomas ? {
     title: 'A Hull on the Apron', personal: true,
-    text: `Tomas is waiting at the head of the ramp when you come back from the yard office, wiping his hands on a rag that has not been clean in years. "Come and see something," he says. He walks you the length of the apron to a long, tired Ore Runner with a mismatched hatch and primer on one flank. "I have rebuilt her three times," he says. "Three owners, and every one of them sold her out from under me. I fixed what the last one skipped, and the next one skipped it again. She is for sale once more, and cheap, because the last owner let her go." He lays a palm flat on her hull. "${fault} I know every fault she has. I would rather you had her than a stranger. ${tell} Give it a few weeks and she will be gone."`,
+    text: `Tomas is waiting at the head of the ramp when you come back from the yard office, wiping his hands on a rag that has not been clean in years. "Come and see something," he says. He walks you the length of the apron to a long, tired Ore Runner with a mismatched hatch and primer on one flank. "I have rebuilt her three times," he says. "Three owners, and every one of them sold her, and none for bad luck. Each ran one payment short. I fixed what the last one skipped, and the next one skipped it again, because they were paying the bank and not the ship. She is for sale once more, and cheap, because the last owner let her go." He lays a palm flat on her hull. "${fault} I know every fault she has. ${h.debt > 0 ? `You owe the hall ${fmt(h.debt)} still. I looked at its book. Clear it, and you will be the first owner she has had who owes nobody.` : `You owe nobody now. I looked at the hall\'s book. She has only ever had owners who owed everybody.`} I would rather you had her than a stranger. ${tell} Give it a few weeks and she will be gone."`,
     choices: [{ label: 'Walk her with him', run() { like(tomas, 1, 'The captain walked the Ore Runner with me, and listened.'); return `He shows you the drive housing, the patched coolant line and the place where the fire control cable has been spliced twice. He talks the whole way, and does not once sound like he is selling. The ship is on the yard list now, as the used Ore Runner, until about day ${h.deal.until}.`; } }],
   } : {
     title: 'A Used Ore Runner', personal: true,
     text: `A broker at the yard office has been watching the board for someone with savings. "There is a used Ore Runner on the apron," the broker says. "Three owners, a lot of repairs, and the last one let her go. Her fire control is poor and her life support is tired. The yard will not warrant either. ${fmt(price)} cr, as she stands. Give it a few weeks and somebody else will have her."`,
     choices: [{ label: 'Look her over', run: () => `You walk the apron with the broker and look her over. She is worn, and she is a ship. She is on the yard list now, as the used Ore Runner, until about day ${h.deal.until}.` }],
   };
+}
+// The first piece of the spine (#294): from the second arrival on, a long Ore Runner on the apron with her name painted over, and Tomas
+// walks past her. Once, and only with Tomas aboard.
+function hullNote() {
+  const h = hired(), tomas = castAboard().find(c => c.cast === 'tomas');
+  if (!h || !tomas || (h.flags || {}).sawHull || runTotals(h).runs < 2) return;
+  captainFlag('sawHull');
+  M_NOTE('On the apron a long Ore Runner sits on her struts with her name painted over in grey. Tomas stops at the foot of the ramp and looks at her. Then he walks on.');
 }
 // Offered once, at a yard, when the savings are about 55% of her middle price and the captain's two scenes have played (captains.js). A lapsed deal is noted once.
 function dealCheck(planet) {
@@ -500,7 +509,7 @@ Mods.register({
       if (text) M.note(text);
       if (hired() && arrivalPending(planet) && !G.dialog) { hired().arrived = true; openEvent(castScene(hiredXo().cast, arrivalScene())); }  // the first officer settles up (captains.js)
     });
-    M.on('landed', planet => dealCheck(planet));
+    M.on('landed', planet => { hullNote(); dealCheck(planet); });
     M.on('landed', planet => { if (hired()) G.offers = errandsFor(planet); });  // the board has errands, not contracts
     M_NOTE = text => M.note(text);
     M.action('sail', () => { if (hired()) sail(); });
