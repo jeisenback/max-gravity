@@ -39,7 +39,7 @@ const ICE_STAGES = [
       'The rock is bigger than the charts said, and it is turning, a long slow roll that takes eleven minutes. The ice is on the shadow side, a pale band between slabs of dust and rock. The captain has the ship stationed and the crew are at their suits. "Somebody tell me how we get close," the captain says.'],
     general: [
       { label: 'Match the roll and go in slow', odds: 0.6, win: [1, 0, 'You match the roll over the course of an hour and come alongside at walking pace. The anchors bite on the first try.'], lose: [-1, 0.06, 'The roll catches you out by a few degrees and a spur of rock clips the hull. The anchors hold, in the end.'] },
-      { label: 'Go in fast, and brake hard', odds: 0.45, win: [2, 0, 'You go in faster than anyone likes and brake at the last moment. You are on the ice with an hour in hand.'], lose: [-2, 0.12, 'You come in too fast, and brake too late, and the hull takes a hit from the rock that rings every deck.'] },
+      { label: 'Go in fast, and brake hard', odds: 0.4, win: [3, 0, 'You go in faster than anyone likes and brake at the last moment. You are on the ice with an hour in hand.'], lose: [-1, 0.12, 'You come in too fast, and brake too late, and the hull takes a hit from the rock that rings every deck.'] },
       { label: 'Send a line across first', odds: 0.7, win: [1, 0, 'The line goes across and holds. You haul the ship in on it, a meter at a time, and no one has to be clever.'], lose: [0, 0, 'The line parts on the first haul. You spend two hours getting it across again.'] },
     ],
     post: {
@@ -53,7 +53,7 @@ const ICE_STAGES = [
       'You are on the ice at the second shift, and the ship hangs above like a big dull star. The blocks are the size of a bunk, blue-white and very clean, and each one is worth more than a month of your wage. Someone on the radio says to watch the seam. It cracks while they are saying it.'],
     general: [
       { label: 'Cut small, and carry every block', odds: 0.75, win: [1, 0, 'You cut the blocks small and carry each one, and the hold fills steadily, with nothing lost and nothing hurt.'], lose: [0, 0, 'You cut small and carry everything, and the work is so slow that the light changes twice. The hold is not as full as it should be.'] },
-      { label: 'Cut big, and use the lift', odds: 0.5, win: [2, 0, 'The big blocks come out clean and the lift takes them. The hold is full an hour early.'], lose: [-1, 0.08, 'A big block shifts on the lift and takes the edge off the hold door. Nobody is under it, which is luck.'] },
+      { label: 'Cut big, and use the lift', odds: 0.55, win: [2, 0, 'The big blocks come out clean and the lift takes them. The hold is full an hour early.'], lose: [-1, 0.08, 'A big block shifts on the lift and takes the edge off the hold door. Nobody is under it, which is luck.'] },
       { label: 'Work in pairs, and rotate every hour', odds: 0.65, win: [1, 0, 'You work in pairs and rotate every hour. It is slower on paper, and nobody makes a mistake from tiredness.'], lose: [0, 0, 'The rotation is a good idea and the radio is bad. The pairs lose each other twice, and both times it ends well.'] },
     ],
     post: {
@@ -67,7 +67,7 @@ const ICE_STAGES = [
       'The rock is a pale dot astern, and then it is not. Nobody says anything for a while. The hold is full of water that will keep a dome alive for a month. It is a long way home, and the ship has never felt so slow.'],
     general: [
       { label: 'Keep the burn gentle and the hold cold', odds: 0.8, win: [1, 0, 'You keep the burn gentle and the hold cold, and the ice comes home as it left, in blocks, not in pools.'], lose: [0, 0, 'A gentle burn is a long one. The ice softens a little at the edges, and you lose a ton to the drains.'] },
-      { label: 'Burn hard, and trust the insulation', odds: 0.5, win: [2, 0, 'You burn hard, and the insulation holds. You gain two days, and the buyer is not asking where the time went.'], lose: [-1, 0.06, 'The hard burn heats the hold wall, and a seam goes. You pump the water to the tanks, and lose some on the way.'] },
+      { label: 'Burn hard, and trust the insulation', odds: 0.58, win: [2, 0, 'You burn hard, and the insulation holds. You gain two days, and the buyer is not asking where the time went.'], lose: [-1, 0.06, 'The hard burn heats the hold wall, and a seam goes. You pump the water to the tanks, and lose some on the way.'] },
       { label: 'Stand watches on the hold', odds: 0.7, win: [1, 0, 'You stand a watch on the hold all the way. Nothing goes wrong, because someone is looking at it.'], lose: [0, 0, 'Nobody wants the hold watch, and everyone takes it. It is a long, cold trip, and a quiet one.'] },
     ],
     post: {
