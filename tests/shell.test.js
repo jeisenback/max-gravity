@@ -98,3 +98,49 @@ test('an unavailable entry says why', async () => {
   assert.match(html, /No work board here/, 'the reason is visible text, not only a disabled button');
   await done();
 });
+
+// Where the rail and the page sit, and whether anything runs off the side.
+const layout = () => {
+  const rail = document.querySelector('.rail').getBoundingClientRect(), body = document.querySelector('.shell .body').getBoundingClientRect();
+  const buttons = [...document.querySelectorAll('.rail button')].map(b => b.getBoundingClientRect());
+  return {
+    railLeftOfBody: rail.right <= body.left + 1, railAboveBody: rail.bottom <= body.top + 1,
+    noSideScroll: document.documentElement.scrollWidth <= window.innerWidth,
+    buttonsOnScreen: buttons.every(r => r.left >= 0 && r.right <= window.innerWidth && r.width > 0),
+  };
+};
+
+test('a scene opened over the shell returns to the shell', async () => {
+  const { ev, done } = await open({ shell: true });
+  await ev(helpers);
+  const r = await ev(() => {
+    start();
+    const before = UI.tab;
+    openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', run: () => 'a' }] });
+    chooseEvent(0); finishEvent();
+    return { shell: !!document.querySelector('.shell'), tab: UI.tab, before };
+  });
+  assert.equal(r.shell, true, 'the shell is back on screen, not the old screen');
+  assert.equal(r.tab, r.before);
+  await done();
+});
+
+test('at desktop width the rail sits beside the page', async () => {
+  const { ev, done } = await open({ shell: true });
+  await ev(helpers);
+  const r = await ev(([fn]) => { start(); return (0, eval)(`(${fn})`)(); }, [layout.toString()]);
+  assert.equal(r.railLeftOfBody, true, 'the rail is to the left of the page');
+  assert.equal(r.noSideScroll, true);
+  assert.equal(r.buttonsOnScreen, true);
+  await done();
+});
+
+test('a phone has no horizontal scroll, the rail is a row above the page, and every entry is on screen', async () => {
+  const { ev, done } = await open({ shell: true, viewport: { width: 390, height: 844 }, mobile: true });
+  await ev(helpers);
+  const r = await ev(([fn]) => { start(); return (0, eval)(`(${fn})`)(); }, [layout.toString()]);
+  assert.equal(r.railAboveBody, true, 'the rail is above the page');
+  assert.equal(r.noSideScroll, true, 'the page does not scroll sideways');
+  assert.equal(r.buttonsOnScreen, true, 'every rail entry is inside the screen width');
+  await done();
+});
