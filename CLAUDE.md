@@ -18,6 +18,13 @@ An Escape Velocity homage in vanilla JS and canvas. Static site, no build step. 
 
 `CHROMIUM_PATH=$(ls /opt/pw-browsers/chromium_headless_shell-*/chrome-linux/headless_shell | tail -1) npm test` (about two minutes; the headless shell opens a page about a third faster than `/opt/pw-browsers/chromium`, which also works). Run the full suite before pushing. `npm run soak` runs the distribution checks (many seeds, a stated sample and tolerance) that are not in `npm test`; run it when you change pacing or pay.
 
+## Skills
+
+- `session-heartbeat`: the heartbeat steps, and what to do after a merged PR.
+- `pr-body`: writing a pull request description.
+- `balance-change`: pacing, pay, odds and other declared numbers.
+- `player-facing-change`: scenes, screens and text the player reads.
+
 ## Git
 
 - Work on the branch named in the task. Open a PR only when asked.
