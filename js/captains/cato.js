@@ -106,6 +106,14 @@ CAST.cato = {
           return '"No," he says. "It is not." He sounds relieved, and sorry to be. "I wanted somebody to hear it said, that is all. It is a lot to carry in the hold."';
         } },
       ],
+      // Below friendly he keeps it to himself, and the favour he would have asked (the `told` flag, read in the ice hold) is not asked.
+      closed: {
+        title: 'What Cato Knows',
+        text: 'Cato has the watch bill open on the galley table, and he closes it when you come in. "I was going to say something," he says. "I have thought better of it." He turns the pencil over in his fingers. "It is not that you have done anything. I have not known you long enough, and what I would say is a lot to put on somebody I do not know yet. Ask me again some day."',
+        choices: [
+          { label: 'Say it can wait', run: () => '"It can," he says, and puts the pencil back behind his ear. "Thank you for not asking what it was."' },
+        ],
+      },
     },
     pivot: {
       days: 70, title: 'In the Ice Hold',

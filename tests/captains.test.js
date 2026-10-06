@@ -759,3 +759,31 @@ test('the hot-burn order has a choice that needs the captain to listen, and the 
   assert.ok(r.owedShut && r.owedShut.can === false && /needs .*'s friendship/.test(r.owedShut.label), 'no longer hidden');
   assert.equal(r.owedOpen, true);
 });
+
+// ---------- the first officer's confidence (#283) ----------
+
+test('Cato\'s "What Cato Knows" opens at friendly or better, and below it he keeps it to himself', async () => {
+  const r = await run(() => {
+    start();
+    const play = opinion => { castPerson('cato').opinion = opinion; castRec('cato').flags = {}; const sc = CAST.cato.scenes.late, e = castScene('cato', sc); openEvent(e); const c = G.dialog.choices.map(x => x.label); G.dialog = null; if (G.transit) G.transit.event = null; return { text: e.text, labels: c, e }; };
+    const closed = play(OPINION.FRIEND - 1), open = play(OPINION.FRIEND);
+    const result = closed.e.choices[0].run();
+    const out = { closed: closed.labels, open: open.labels, closedText: closed.text, openText: open.text, closedTold: !!castRec('cato').flags.told, result };
+    castPerson('cato').opinion = OPINION.FRIEND; castRec('cato').flags = {};
+    open.e.choices[0].run(); out.openTold = !!castRec('cato').flags.told;
+    return out;
+  });
+  assert.deepEqual(r.closed, ['Say it can wait']); assert.match(r.closedText, /I have not known you long enough/); assert.equal(r.closedTold, false, 'the favour is not asked');
+  assert.deepEqual(r.open, ['Ask him to tell you if it goes badly', 'Tell him it is not yours to carry']); assert.match(r.openText, /I have known about the bank since the spring/);
+  assert.equal(r.openTold, true); assert.match(r.result, /Thank you for not asking/);
+});
+
+test('the other first officers\' scenes are not gated yet, and an opinion at friendly plays the open reading in the same slot', async () => {
+  const r = await run(() => {
+    start({ captainKey: 'dov' });
+    castPerson('ilsa').opinion = -1;
+    const sc = CAST.ilsa.scenes.late, e = castScene('ilsa', sc);
+    return { same: e.title === sc.title, closed: !!sc.closed };
+  });
+  assert.equal(r.same, true); assert.equal(r.closed, false);
+});
