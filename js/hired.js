@@ -56,6 +56,7 @@ function setupHired(o) {
   st.shipId = 'freighter';
   st.fuel = SHIPS.freighter.fuel; st.armor = SHIPS.freighter.armor;
   st.credits = o.credits !== undefined ? o.credits : HIRED_SAVINGS;  // o.credits and o.skill: a hand put ashore (stakes.js) carries both to the next berth
+  st.carried = o.carried || null;  // one line the dock says of the last ship (stakes.js); Signing On shows it once
   st.tips = {};  // the one-time tips this game has shown (help.js): a new game shows them again
   st.tutorial = o.tutorial ? 0 : null;  // the first run's steps (tutorial.js); a hand put ashore or a test starts without
   home().name = shipName(false);

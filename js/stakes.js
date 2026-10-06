@@ -25,19 +25,31 @@ function warningScene() {
 }
 
 function putAshoreScene() {
-  const cap = person(hired().captain);
+  const cap = person(hired().captain), facts = goodbyeFacts(hired().flags || {}).slice(0, 2).map(f => f.line).join(' ');
   return {
     title: 'Put Ashore', personal: true,
-    text: `Captain ${cap.last} is at the foot of the ramp with the articles in one hand and your bag in the other. "I said I would say it once," the captain says. "I did. The berth is not yours after this port." Your pay is settled to the day.`,
+    text: `Captain ${cap.last} is at the foot of the ramp with the articles in one hand and your bag in the other. "I said I would say it once," the captain says. "I did. The berth is not yours after this port." Your pay is settled to the day.${facts ? `</p><p>${facts}` : ''}`,
     choices: [{ label: 'Take the bag', run: putAshore }],
   };
+}
+
+// What the dock says of the ship you were put off: the first true fact, else the plain one.
+const CARRIED = [
+  ['iceBad', n => `On the dock they are still talking about the ice run on Captain ${n}'s ship.`],
+  ['iceClean', n => `On the dock they say Captain ${n}'s ship brought the ice in clean.`],
+  ['hurt', n => `On the dock they say Captain ${n}'s hand was hurt on duty.`],
+  ['raided', n => `On the dock they say Captain ${n}'s ship fought off a raid.`],
+];
+function carriedLine(flags, last) {
+  const hit = CARRIED.find(([id]) => flags[id]);
+  return hit ? hit[1](last) : `On the dock they know whose ship you were put off.`;
 }
 
 // Back to the sign-on, with another captain. Savings and post experience come with you; the ship, the crew and the friends do not.
 function putAshore() {
   const st = G.state, h = hired(), cap = person(h.captain), others = Object.keys(CAPTAINS).filter(k => k !== h.captainKey);
   const keep = { slot: Saves.current, name: captain().name, background: st.background, post: h.post, credits: st.credits, debt: h.debt, skill: { ...h.skill }, times: (st.putOff || 0) + 1 };
-  startGame({ slot: keep.slot, background: keep.background, captain: keep.name, mode: 'hired', post: keep.post, captainKey: others.length ? pick(others) : undefined, credits: keep.credits, debt: keep.debt, skill: keep.skill, putOffBy: `Captain ${cap.last}` });
+  startGame({ slot: keep.slot, background: keep.background, captain: keep.name, mode: 'hired', post: keep.post, captainKey: others.length ? pick(others) : undefined, credits: keep.credits, debt: keep.debt, skill: keep.skill, putOffBy: `Captain ${cap.last}`, carried: carriedLine(h.flags || {}, cap.last) });
   G.state.putOff = keep.times;
   return null;
 }

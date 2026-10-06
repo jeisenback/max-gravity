@@ -84,3 +84,32 @@ test('a feud that has been seen and not mended splits the ship, and someone from
   assert.ok(r.text);
   await done();
 });
+
+test('the put-ashore scene reads up to two shared facts, and the dock carries one line into the next Signing On', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const text = () => { const d = document.createElement('div'); d.innerHTML = putAshoreScene().text; return d.textContent; };
+    const out = {};
+    let st = start(), h = hired(); h.flags = {};
+    out.none = text();
+    h.flags = { debtCleared: true, hurt: true, raided: true, iceBad: true };
+    out.many = text();
+    out.carriedBad = carriedLine(h.flags, 'Rowe');
+    out.carriedRaid = carriedLine({ raided: true }, 'Rowe');
+    out.carriedNone = carriedLine({ debtCleared: true }, 'Rowe');
+    openEvent(putAshoreScene()); chooseEvent(0);
+    const ev1 = G.dialog && G.dialog.event;
+    out.shown = G.state.carried; out.title = ev1.title; out.opening = ev1.text.split('</p><p>')[1];
+    chooseEvent(0);
+    out.cleared = G.state.carried;
+    G.state = newState(); out.fresh = G.state.carried;
+    return out;
+  });
+  assert.doesNotMatch(r.none, /On the dock|log|book|record/);
+  assert.match(r.many, /ice run is in the book/); assert.match(r.many, /medical log/); assert.doesNotMatch(r.many, /plot record|bond/);
+  assert.match(r.carriedBad, /still talking about the ice run/); assert.match(r.carriedRaid, /fought off a raid/); assert.match(r.carriedNone, /whose ship you were put off/);
+  assert.equal(r.title, 'Signing On'); assert.match(r.shown, /On the dock/); assert.equal(r.opening, r.shown, 'its own paragraph after the first');
+  assert.equal(r.cleared, null); assert.equal(r.fresh, null);
+  await done();
+});
