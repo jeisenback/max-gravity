@@ -98,7 +98,8 @@ function startRaid(spec, flee, o = {}) {
   }
   rateFoe(s);
   const flavor = foeFlavor(s); if (flavor) text += ` ${flavor}`;
-  G.nextEvent = raidScene(s);
+  const told = raidExplanation();  // the first raid of a new game is explained once, before the first scene (captains.js)
+  G.nextEvent = told ? chainEvents([told, raidScene(s)]) : raidScene(s);
   return text;
 }
 

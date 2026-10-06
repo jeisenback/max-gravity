@@ -12,7 +12,7 @@ const helpers = () => {
   window.raid = (post = 'gunner', shipId = 'raider') => {
     __seed(1);  // a constant random (rolls, below) hangs the generators, so every game starts from the seeded one
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post, captainKey: 'hester' }); while (G.dialog) finishEvent();
-    const st = G.state; st.story.next = 1e9; st.day += 30;
+    const st = G.state; st.story.next = 1e9; st.day += 30; hired().raidTold = true;  // the first raid is explained once (below); these are about the raids
     uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
     if (!window.realMakeEnemy) window.realMakeEnemy = makeEnemy;
     const spare = window.realMakeEnemy({ kind: 'pirate' });  // made now: the enemy's person cannot be made under a constant random
@@ -337,5 +337,39 @@ test('a medic aboard treats you free, and a bold call that wins earns the captai
     return out;
   });
   assert.ok(r.won > 0); assert.deepEqual(r.free, { hurt: true, paid: 0, bill: false });
+  await done();
+});
+
+test('the first raid of a new game is explained once, by the first officer, before The Closing', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = raid('gunner'); hired().raidTold = false;
+    const text = startDuel({ kind: 'pirate' }, false);
+    const first = G.nextEvent; begin();
+    const out = { text: /Battle stations/.test(text), title: G.dialog.event.title, body: G.dialog.event.text, labels: G.dialog.choices.map(c => c.label), told: hired().raidTold };
+    chooseEvent(0); finishEvent();
+    out.next = G.dialog && G.dialog.event.title;
+    // a later raid goes straight to The Closing
+    G.dialog = null; G.nextEvent = null;
+    startDuel({ kind: 'pirate' }, false); begin();
+    out.later = G.dialog.event.title;
+    return out;
+  });
+  assert.equal(r.title, 'The Guns Hatch'); assert.match(r.body, /Position/); assert.match(r.body, /in brackets/); assert.match(r.body, /a level lower/);
+  assert.deepEqual(r.labels, ['Take your post']); assert.equal(r.told, true);
+  assert.equal(r.next, 'The Closing', 'the raid follows'); assert.equal(r.later, 'The Closing', 'and it is not said twice');
+  await done();
+});
+
+test('a save from before the explanation has no flag, and its first raid goes straight to The Closing', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    raid('gunner'); delete hired().raidTold;
+    startDuel({ kind: 'pirate' }, false); begin();
+    return G.dialog.event.title;
+  });
+  assert.equal(r, 'The Closing');
   await done();
 });

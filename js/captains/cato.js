@@ -163,3 +163,10 @@ CAST.cato.arrival = {
   column: '"That column is {cap}\'s," Cato says. "I only keep the money."',
   pace: '"A season," Cato says. "{cap} was a hand on this ship before she owned it. It took her three."',
 };
+
+// The first raid (captains.js raidExplanation): Cato at the guns hatch, before the first scene.
+CAST.cato.firstRaid = {
+  title: 'The Guns Hatch',
+  text: 'Cato is at the guns hatch before you have your boots on. He has the ledger under his arm, which he has never left behind in a fight. "The line at the bottom of each scene says Position," he says. "Ahead, even, behind. It is a count, nothing more, and everything you choose moves it. Ahead at the end and she breaks off. Even, and she stands off and throws one last round at us. Behind, and she comes alongside, and then it goes to the lock."</p><p>He points at the screen. "One choice has your post in front of it, in brackets. That one is yours. It is the thing you can do and nobody else aboard can. It is also the one that can go wrong on you. You are hurt, and your work counts a level lower for some days. I had it once, in the hold. I wore a glove for eleven days."',
+  choices: [{ label: 'Take your post', run: () => 'He lets go of the hatch frame. "Choose what you would choose," he says. "I will be behind you."' }],
+};
