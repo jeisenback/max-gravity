@@ -100,10 +100,10 @@ const UI = {
     this.el.classList.remove('hidden', 'event');
   },
 
-  render() {
-    const st = G.state, p = this.planet, sys = system(), s = ship();
-    this.setAccent(GOV_COLORS[sys.gov]);
-    this.el.innerHTML = `
+  // The port's name, government, date, ship and stores: the top of a landed screen, and of the shell's (js/shell.js).
+  headerHtml(p) {
+    const st = G.state, sys = system(), s = ship();
+    return `
       <div class="hdr">
         <div>
           <div class="eyebrow">Docked &middot; ${sys.name}</div>
@@ -115,16 +115,28 @@ const UI = {
           <b>${fmt(st.credits)} cr</b><br>
           Cargo ${cargoUsed()}/${s.cargo}t &middot; Berths ${berthsUsed()}/${s.berths} &middot; Mass ${st.fuel}/${s.fuel}
         </div>
-      </div>
-      <canvas id="vs" class="vs" aria-hidden="true"></canvas>
-      ${bridgeKeys(p, this.tab)}
-      ${Mods.filter('portBanner', '')}
-      <div class="body">${this.views[this.tab].call(this)}</div>
+      </div>`;
+  },
+
+  // The bottom bar: the map, and the way off the ground.
+  dockHtml() {
+    return `
       <div class="dock">
         ${Mods.filter('dockButtons', '')}
         <button data-action="map">System map</button>
         ${hired() ? `<button data-action="sail" class="primary">Sail with the captain${Touch.on ? '' : ' (T)'}</button>` : `<button data-action="takeoff" class="primary">Take off${Touch.on ? '' : ' (T)'}</button>`}
       </div>`;
+  },
+
+  render() {
+    const p = this.planet;
+    this.setAccent(GOV_COLORS[system().gov]);
+    if (shellOn()) { this.el.innerHTML = shellHtml(this, p); return; }  // the ship-interface shell (js/shell.js)
+    this.el.innerHTML = `${this.headerHtml(p)}
+      <canvas id="vs" class="vs" aria-hidden="true"></canvas>
+      ${bridgeKeys(p, this.tab)}
+      ${Mods.filter('portBanner', '')}
+      <div class="body">${this.views[this.tab].call(this)}</div>${this.dockHtml()}`;
   },
 
   conditionList(list, none) {

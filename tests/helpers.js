@@ -36,7 +36,8 @@ function seedScript(seed) {
 //   init: a function to run in the page before the game loads
 //   seed: the random seed
 //   scope: 'full' (the default here) or 'earth-hired', the narrow build the game ships with (js/build.js)
-async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '', scope = 'full' } = {}) {
+//   shell: true to open the ship-interface shell (js/shell.js), which is off unless the address says shell=on
+async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '', scope = 'full', shell = false } = {}) {
   browser = browser || await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
   const ctx = await browser.newContext({ viewport, isMobile: mobile, hasTouch: mobile });
   await ctx.addInitScript(seedScript, seed);
@@ -47,7 +48,8 @@ async function open({ title = false, viewport = { width: 1280, height: 800 }, mo
   const page = await ctx.newPage();
   const errors = [];
   watch(page, errors);
-  await page.goto(URL + (scope === 'full' ? '?scope=full' : '') + hash);  // the build's scope (js/build.js): tests run everything unless they ask for the narrow one
+  const query = [scope === 'full' ? 'scope=full' : '', shell ? 'shell=on' : ''].filter(Boolean).join('&');
+  await page.goto(URL + (query ? `?${query}` : '') + hash);  // the build's scope (js/build.js): tests run everything unless they ask for the narrow one
   await page.waitForFunction(() => typeof G !== 'undefined' && (G.state || G.mode === 'title'));
   // The main characters are drawn from a pool (js/cast.js). A test starts from the pair it knew (by background) unless it asks for the draw: realDrawCastPair.
   await page.evaluate(() => { window.realDrawCastPair = drawCastPair; window.drawCastPair = bg => (CAST_PAIRS[bg] ? [...CAST_PAIRS[bg]] : []); });
