@@ -78,7 +78,7 @@ function stateDefaults(shipId) {
     fuel: ship.fuel, armor: ship.armor,
     cargo: {}, paid: {}, market: {}, rumors: [], missions: [], dest: null, nextId: 1,
     crew: [], flags: {}, people: {}, nextPid: 1, rep: {}, outfits: {},
-    story: { stage: 0, next: STORY_START_DAY, log: [] }, tutorial: null, tips: null,
+    story: { stage: 0, next: STORY_START_DAY, log: [] }, tutorial: null, tips: null, carried: null,
   };
 }
 const newState = () => ({ ...stateDefaults(), tutorial: 0 });

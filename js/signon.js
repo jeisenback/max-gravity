@@ -54,7 +54,7 @@ function signOnEvent() {
   const week = `${ctx.cap} picks each run and buys the cargo from the ship's funds. ${scopeOff('errands') ? '' : 'Errands for wherever she is going come through the port, and the captain keeps a fifth. '}${pay}`.trim();
   const event = {
     title: 'Signing On',
-    text: [b.text(ctx), `${SIGN_POSTS[h.post](ctx.cap)}${beside}`, `${week} Why did you sign on?`].join('</p><p>'),
+    text: [b.text(ctx), ...(st.carried ? [st.carried] : []), `${SIGN_POSTS[h.post](ctx.cap)}${beside}`, `${week} Why did you sign on?`].join('</p><p>'),
     choices: [
       { label: 'For the money', run() { h.share = +(h.share + SIGN_SHARE_UP).toFixed(3); h.reason = 'money'; return b.money; } },
       { label: 'To learn the work', run() { gainSkill(h.post, SIGN_LEARN_XP); h.reason = 'learn'; return b.learn; } },
@@ -62,6 +62,6 @@ function signOnEvent() {
     ],
   };
   // The game was saved at the first landing, before this choice: save again, so quitting before the next dock keeps what it did.
-  event.choices = event.choices.map(c => ({ ...c, run() { const text = c.run(); save(); return text; } }));
+  event.choices = event.choices.map(c => ({ ...c, run() { const text = c.run(); st.carried = null; save(); return text; } }));
   return event;
 }
