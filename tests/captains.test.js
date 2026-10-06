@@ -702,3 +702,60 @@ test('a result that carries the captain or the first officer across a cutoff say
   for (const t of r.inside) assert.doesNotMatch(t, /:/, `inside a band: ${t}`);
   assert.match(r.xo, new RegExp(`${r.name} thinks better of you: friendly now\\.`)); assert.doesNotMatch(r.other, /:/, 'other crew keep the plain line');
 });
+
+// ---------- opinion-gated choices (#282) ----------
+
+test('a choice that needs someone\'s regard is shown shut, with what it needs, until they stand there', async () => {
+  const r = await run(() => {
+    const st = start(), cap = person(hired().captain), xo = hiredXo(), cast = castAboard().find(p => p.cast !== xo.cast);
+    const probe = (who, p, min) => {
+      p.opinion = min - 1;
+      openEvent({ title: 'Probe', personal: true, text: 'x', choices: [{ label: 'Plain', run: () => 'a' }, { label: 'Gated', opinion: { who, min }, run: () => 'b' }] });
+      const shut = G.dialog.choices[1], below = { can: shut.can(), label: shut.label, count: G.dialog.choices.length };
+      G.dialog = null; if (G.transit) G.transit.event = null;
+      p.opinion = min;
+      openEvent({ title: 'Probe', personal: true, text: 'x', choices: [{ label: 'Gated', opinion: { who, min }, run: () => 'b' }] });
+      const open = { can: G.dialog.choices[0].can(), label: G.dialog.choices[0].label };
+      G.dialog = null;
+      return { below, open };
+    };
+    return {
+      cap: probe('captain', cap, OPINION.FRIEND), xo: probe('xo', xo, OPINION.TRUSTED), cast: probe(cast.cast, cast, OPINION.CLOSE),
+      names: [cap.first, xo.first, cast.first],
+    };
+  });
+  const [c, x, k] = r.names;
+  assert.deepEqual([r.cap.below.can, r.cap.open.can], [false, true]); assert.ok(r.cap.below.label.includes(`needs ${c}'s friendship`)); assert.equal(r.cap.open.label, 'Gated', 'no reason once it is open');
+  assert.deepEqual([r.xo.below.can, r.xo.open.can], [false, true]); assert.ok(r.xo.below.label.includes(`needs ${x}'s trust`));
+  assert.deepEqual([r.cast.below.can, r.cast.open.can], [false, true]); assert.ok(r.cast.below.label.includes(`needs ${k} to listen`));
+  assert.equal(r.cap.below.count, 2, 'shut, never hidden');
+});
+
+test('the hot-burn order has a choice that needs the captain to listen, and the pitch for work elsewhere shows its friendly argument shut', async () => {
+  const r = await run(() => {
+    const st = start(), cap = person(hired().captain), out = {};
+    const gated = () => {
+      G.dialog = null; if (G.transit) G.transit.event = null;
+      openEvent(HAND_EVENTS.find(x => x.id === 'cap-order').make(handContext()));
+      const c = G.dialog.choices.find(x => /Ninety/.test(x.label));
+      return c && { can: c.can(), label: c.label, index: G.dialog.choices.indexOf(c) };
+    };
+    cap.opinion = captainHears() - 1; out.below = gated();
+    cap.opinion = captainHears(); out.above = gated();
+    const before = cap.opinion; out.result = chooseEvent(out.above.index); out.liked = cap.opinion - before;
+    // work elsewhere
+    G.dialog = null; if (G.transit) G.transit.event = null;
+    const o = awayOffer(); hired().away = [o];
+    cap.opinion = OPINION.FRIEND - 1; openEvent(pitchScene(o));
+    const owed = () => G.dialog.choices.find(c => /Call in what the captain owes you/.test(c.label));
+    out.owedShut = owed() && { can: owed().can(), label: owed().label };
+    G.dialog = null; cap.opinion = OPINION.FRIEND; openEvent(pitchScene(o));
+    out.owedOpen = owed() && owed().can();
+    return out;
+  });
+  assert.ok(r.below && r.below.can === false && /needs .* to listen/.test(r.below.label), 'shut below, with the reason');
+  assert.ok(r.above && r.above.can === true && !/needs/.test(r.above.label), 'open at the captain\'s own cutoff');
+  assert.match(r.result, /The window is made at ninety/); assert.equal(r.liked, 2);
+  assert.ok(r.owedShut && r.owedShut.can === false && /needs .*'s friendship/.test(r.owedShut.label), 'no longer hidden');
+  assert.equal(r.owedOpen, true);
+});
