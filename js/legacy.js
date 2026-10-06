@@ -19,7 +19,7 @@ function succeed(fate, heirName) {
   const st = G.state, old = captain(), died = fate === 'died';
   const oldShip = `${shipTitle()}, ${SHIPS[st.shipId].name}`;
   st.captains.push({ name: old.name, from: old.since, to: st.day, fate: died ? `lost with ${oldShip}` : 'retired' });
-  const heir = heirName || (() => { const p = makePerson(); return `${p.first} ${p.last}`; })();
+  const heir = cleanName(heirName) || (() => { const p = makePerson(); return `${p.first} ${p.last}`; })();
   st.captain = { name: heir, since: st.day };
   st.credits = Math.round(st.credits * (died ? 0.5 : 0.7));
   for (const p of Object.values(st.people)) p.opinion = Math.trunc(p.opinion / 2);
@@ -35,12 +35,12 @@ function succeed(fate, heirName) {
     Object.assign(st, { crew: kept, shipId: 'shuttle', outfits: {}, torpedoes: 0, cargo: {}, paid: {} });
     st.missions = st.missions.filter(m => m.type === 'bounty');
     st.home = null;
-    homeLog(`In memory of Captain ${old.name}${lost ? ` and the crew` : ''}, lost with ${oldShip}.`);
-    notes.push(`Captain ${old.name} is gone${lost ? `, and ${lost === 1 ? 'the crew member' : `the ${lost} crew`} aboard with them` : ''}. The company passes to ${heir}, with half the money after the estate is settled, and a new Rock Hopper.`);
+    homeLog(`In memory of Captain ${cleanName(old.name)}${lost ? ` and the crew` : ''}, lost with ${oldShip}.`);
+    notes.push(`Captain ${cleanName(old.name)} is gone${lost ? `, and ${lost === 1 ? 'the crew member' : `the ${lost} crew`} aboard with them` : ''}. The company passes to ${heir}, with half the money after the estate is settled, and a new Rock Hopper.`);
     if (kept.length) notes.push(`${kept.map(id => person(id).first).join(' and ')} came out of the wreck alive, and changed.`);
   } else {
-    notes.push(`Captain ${old.name} retires with 30% of the money and a berth on a quiet habitat. ${heir} takes command of ${shipTitle()}, the crew, and the company.`);
-    homeLog(`Captain ${old.name} retired. ${heir} took command.`);
+    notes.push(`Captain ${cleanName(old.name)} retires with 30% of the money and a berth on a quiet habitat. ${heir} takes command of ${shipTitle()}, the crew, and the company.`);
+    homeLog(`Captain ${cleanName(old.name)} retired. ${heir} took command.`);
   }
   st.fuel = ship().fuel;
   st.armor = ship().armor;
