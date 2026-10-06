@@ -686,7 +686,7 @@ test('the first arrival comes before a job waiting at the port', async () => {
 test('a result that carries the captain or the first officer across a cutoff says where they stand now', async () => {
   const r = await run(() => {
     const st = start(), cap = person(hired().captain), xo = hiredXo(), other = st.crew.map(person).find(c => c && c.id !== xo.id && c.role !== 'xo');
-    const line = (p, from, to) => { p.opinion = to; return shiftLines([{ p, n: to - from }]).replace(/<[^>]+>/g, ''); };
+    const line = (p, from, to) => { p.opinion = to; const box = document.createElement('div'); box.innerHTML = shiftLines([{ p, n: to - from }]); return box.textContent; };
     return {
       up: [[0, 1], [1, 2], [2, 3], [0, 3], [0, 2]].map(([a, b]) => line(cap, a, b)),
       down: [[0, -2], [-2, -3], [0, -3], [-1, -2]].map(([a, b]) => line(cap, a, b)),
