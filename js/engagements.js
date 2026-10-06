@@ -30,18 +30,18 @@ const RAID_CLOSING = [
   { id: 'warn', label: 'Put a warning round across her bow', odds: () => 0.5,
     win: [1, 0, 'The round crosses her bow with a kilometer to spare. She sheers off her line and loses a minute getting back on it.'],
     lose: [-1, 0, 'The round goes wide, and she answers it with one burst, close enough that the hull rings. She has your range now.'] },
-  { id: 'turn', label: 'Turn into her', odds: () => 0.45,
+  { id: 'turn', label: 'Turn into her', odds: () => 0.5,
     win: [2, 0, 'You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.'],
     lose: [-2, 0.1, 'You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet.'] },
 ];
 const RAID_EXCHANGE = [
-  { id: 'screen', label: 'Fire the point defense', odds: st => (st === 'torpedo' ? 0.75 : 0.6),
+  { id: 'screen', label: 'Fire the point defense', odds: st => (st === 'torpedo' ? 0.7 : 0.6),
     win: { grapple: [1, 0, 'The point defense put a curtain of rounds across her approach. She breaks off the run with her grapple arms still folded.'], torpedo: [1, 0, 'The point defense take the torpedo at three kilometers, and the flash is white on the screens.'], gun: [1, 0, 'The point defense throw a curtain across her line, and her turret has to track through it. The burst goes wide.'] },
     lose: { grapple: [-1, 0.12, 'Her burst goes through the screen and the hull rings in three places.'], torpedo: [-1, 0.12, 'The torpedo comes through the screen and bursts close. The deck bucks and every light flickers.'], gun: [-1, 0.12, 'Her burst goes through the screen. It is a patrol gun, and it is accurate. The hull rings in three places.'] } },
   { id: 'burn', label: 'Burn evasive', odds: st => (st === 'torpedo' ? 0.5 : 0.7),
     win: { grapple: [1, 0, 'You throw the ship sideways. Her burst goes through the place you were.'], torpedo: [1, 0, 'The torpedo chases the plume and bursts well astern.'], gun: [1, 0, 'You throw the ship sideways and her burst goes through the place you were. She does not adjust fast enough.'] },
     lose: { grapple: [-1, 0.1, 'She is faster than the turn. The burst rakes your port side.'], torpedo: [-1, 0.1, 'The torpedo turns with you and bursts on the quarter.'], gun: [-1, 0.1, 'She leads the turn and her burst takes you in it. Patrol gunners practise that exact one.'] } },
-  { id: 'fire', label: 'Return fire', odds: () => 0.5,
+  { id: 'fire', label: 'Return fire', odds: () => 0.45,
     win: [2, 0, 'You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches.'],
     lose: [-1, 0, 'You fire and miss. The recoil costs you your own angle.'] },
 ];
