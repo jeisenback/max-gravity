@@ -65,6 +65,20 @@ function raidExplanation() {
   return castScene(xo.cast, CAST[xo.cast].firstRaid);
 }
 
+// A choice that needs someone's regard (`opinion: { who, min }`, `who` being 'captain', 'xo' or a cast key; `min` a cutoff from OPINION):
+// shown shut, with what it needs said in its label, until they stand at `min` or better. With nobody in that place (a first officer
+// who is gone), the choice is not offered. openEvent (transit.js) runs every choice through this.
+const OPINION_NEEDS = [[OPINION.TRUSTED, n => `${n}'s trust`], [OPINION.FRIEND, n => `${n}'s friendship`], [-Infinity, n => `${n} to listen`]];
+function opinionOf(who) {
+  return who === 'captain' ? hiredCaptain() : who === 'xo' ? hiredXo() : castAboard().find(p => p.cast === who) || null;
+}
+function opinionGate(c) {
+  const p = opinionOf(c.opinion.who);
+  if (!p) return null;
+  const min = c.opinion.min, open = () => p.opinion >= min, need = OPINION_NEEDS.find(([m]) => min >= m)[1](esc(p.first));
+  return { ...c, label: open() ? c.label : `${c.label} <span class="hint">(needs ${need})</span>`, can: () => open() && (!c.can || c.can()) };
+}
+
 // A crew member's first name by role, or the job where nobody holds it (the walk-through and the first arrival name the crew).
 const crewNamed = role => { const c = roleHolder(role); return c ? c.first : `the ${ROLE_NAMES[role].toLowerCase()}`; };
 

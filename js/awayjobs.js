@@ -83,7 +83,7 @@ const awayJob = a => AWAY.find(t => t.id === a.tpl);
 const PITCH = [
   { id: 'pay', label: a => `Put the fee in front of them (it pays about 900 cr, all told)`, loves: ['greedy', 'secretive'], hates: ['pious', 'generous'],
     yes: 'looks at the figure, and at the route, and does the sum.', no: 'does not look at the figure.' },
-  { id: 'owed', label: () => 'Call in what the captain owes you', when: cap => cap.opinion >= OPINION.FRIEND, loves: ['generous', 'kind', 'brave'], hates: ['greedy', 'rude'],
+  { id: 'owed', label: () => 'Call in what the captain owes you', opinion: { who: 'captain', min: OPINION.FRIEND }, loves: ['generous', 'kind', 'brave'], hates: ['greedy', 'rude'],
     yes: 'goes quiet, because it is true.', no: 'does not like being reminded of what they owe.' },
   { id: 'right', label: () => 'Say it is the right thing to do', loves: ['kind', 'pious', 'brave', 'homesick'], hates: ['greedy', 'rude'],
     yes: 'hears it out, and does not look away.', no: 'says the ship is not a charity.' },
@@ -107,9 +107,9 @@ function bookRun(a) {
 }
 function pitchScene(a) {
   const h = hired(), st = G.state, cap = hiredCaptain(), job = awayJob(a);
-  const choices = PITCH.filter(p => !p.when || p.when(cap)).map(p => {
+  const choices = PITCH.map(p => {
     const odds = pitchOdds(p, a);
-    return { label: `${p.label(a)} [${jobOddsWord(odds)}]`, run() {
+    return { label: `${p.label(a)} [${jobOddsWord(odds)}]`, opinion: p.opinion, run() {
       a.pitched = `${st.day}@${st.planet}`;
       const r = barReact(cap, p.loves, p.hates), ok = Math.random() < odds;
       if (ok) {
