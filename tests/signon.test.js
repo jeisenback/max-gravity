@@ -97,3 +97,28 @@ test('the opening says nothing of the interface, and the look back echoes why yo
   assert.doesNotMatch(r.none, /You signed on/, 'a save with no reason says nothing');
   await done();
 });
+
+test('each answer to Signing On is in the stored game, so quitting before the first dock keeps it', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    const out = {};
+    for (const [i, reason] of ['money', 'learn', 'away'].entries()) {
+      startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' });
+      const h = hired(), pair = G.state.crew.map(person).filter(c => c.cast), cap = person(h.captain);
+      const live = { share: h.share, xp: skillXp('gunner'), cap: cap.opinion, pair: pair.map(c => c.opinion) };
+      chooseEvent(i);
+      const now = { share: h.share, xp: skillXp('gunner'), cap: cap.opinion, pair: pair.map(c => c.opinion), reason: h.reason };
+      Saves.use(1); loadGame();   // as Continue does, after quitting before the next dock
+      const g = hired(), c2 = person(g.captain), p2 = G.state.crew.map(person).filter(c => c.cast);
+      out[reason] = { live, now, stored: { share: g.share, xp: skillXp('gunner'), cap: c2.opinion, pair: p2.map(c => c.opinion), reason: g.reason } };
+    }
+    return out;
+  });
+  for (const reason of ['money', 'learn', 'away']) {
+    const x = r[reason];
+    assert.deepEqual(x.stored, x.now, `${reason}: the stored game has what the choice did`);
+    assert.equal(x.stored.reason, reason);
+  }
+  assert.ok(r.money.stored.share > r.money.live.share); assert.ok(r.learn.stored.xp > r.learn.live.xp); assert.ok(r.away.stored.cap > r.away.live.cap);
+  await done();
+});
