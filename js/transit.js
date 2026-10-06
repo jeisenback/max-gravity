@@ -350,7 +350,8 @@ function openEvent(ev) {
   const hand = typeof hired === 'function' ? hired() : null, level = hand ? skillLevel(hand.post) : 0;
   const choices = ev.choices.filter(c => (!c.role || roleSkill(c.role)) && (c.post === undefined || (hand && hand.post === c.post)) && (c.skill === undefined || hand))
     .map(c => (c.role ? { ...c, label: c.label.replace(/\{crew\}/g, roleName(c.role)) } : c))
-    .map(c => (c.skill === undefined ? c : { ...c, can: () => level >= c.skill && (!c.can || c.can()) }));
+    .map(c => (c.skill === undefined ? c : { ...c, can: () => level >= c.skill && (!c.can || c.can()) }))
+    .map(c => (c.opinion === undefined ? c : opinionGate(c))).filter(Boolean);  // a choice that needs someone's regard (captains.js)
   G.dialog = { event: ev, choices };
   Mods.emit('eventOpened', ev);
   if (G.transit) G.transit.event = ev;  // pauses the transit timer

@@ -43,7 +43,7 @@ test('putting it to the captain: their character decides, a yes sets the run, a 
     const pay = PITCH.find(p => p.id === 'pay'), right = PITCH.find(p => p.id === 'right');
     cap.traits = ['greedy', 'secretive']; out.greedyPay = pitchOdds(pay, a); out.greedyRight = pitchOdds(right, a);
     cap.traits = ['kind', 'pious']; out.kindPay = pitchOdds(pay, a); out.kindRight = pitchOdds(right, a);
-    out.owedHidden = !pitchScene(a).choices.some(c => /owes you/.test(c.label)); cap.opinion = OPINION.FRIEND; out.owedShown = pitchScene(a).choices.some(c => /owes you/.test(c.label)); cap.opinion = 1;
+    const owed = pitchScene(a).choices.find(c => /owes you/.test(c.label)); out.owedGated = !!owed && owed.opinion.min === OPINION.FRIEND;  // shown shut below it, by openEvent (captains.test.js)
     // a no
     let e = pitchScene(a); G.dialog = { event: e, choices: e.choices }; rolls([0.999]); const no = chooseEvent(0); G.dialog = null;
     out.no = { text: no, booked: a.booked, run: currentPlan() && currentPlan().planet !== a.planet, once: pitchedNow(a), html: /disabled/.test(awayHtml()) };
@@ -53,7 +53,7 @@ test('putting it to the captain: their character decides, a yes sets the run, a 
     return out;
   });
   assert.ok(r.greedyPay > r.greedyRight, 'a greedy captain hears the money'); assert.ok(r.kindRight > r.kindPay, 'a kind one hears what is right');
-  assert.ok(r.owedHidden && r.owedShown);
+  assert.ok(r.owedGated, 'the friendly argument is always listed, and needs the captain\'s friendship');
   assert.equal(r.no.booked, false); assert.ok(r.no.run); assert.ok(r.no.once); assert.ok(r.no.html); assert.match(r.no.text, /Not this run/);
   assert.ok(r.yes.booked && r.yes.planet && r.yes.sid && r.yes.shown); assert.match(r.yes.text, /The run is set for/);
   await done();
