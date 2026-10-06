@@ -104,8 +104,10 @@ function workEvent(d) {
     title: d.title, text: d.text, via: 'crew', owner: post, workId: d.id, personal: true,
     choices: [
       { label: d.careful[0], run() { gainSkill(post, 3); return d.careful[1] + note(3); } },
-      { label: d.quick[0], run() {
-        if (Math.random() < soloOdds(post)) { gainSkill(post, 4); return d.quick[1] + note(4); }
+      { label: d.quick[0], bold: true, run() {
+        const won = Math.random() < soloOdds(post);
+        boldWithCaptain(won);  // the captain's nerve (captains.js)
+        if (won) { gainSkill(post, 4); return d.quick[1] + note(4); }
         gainSkill(post, 1); return d.quick[2] + note(1);
       } },
     ],

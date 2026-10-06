@@ -79,6 +79,15 @@ function opinionGate(c) {
   return { ...c, label: open() ? c.label : `${c.label} <span class="hint">(needs ${need})</span>`, can: () => open() && (!c.can || c.can()) };
 }
 
+// A choice marked `bold` (raid, ice run, a work event's quick option) moves the captain's opinion a little more by their nerve (the
+// `captain.nerve` of their entry, 1 to 5): a bold success lifts a captain of nerve 4 or 5, and a bold failure costs more with a
+// cautious one of nerve 1 or 2. Nerve 3, and a captain with no entry, change nothing. Opinion moves in whole points, so this is one point.
+function boldWithCaptain(won) {
+  const d = captainEntry(), cap = hiredCaptain(), nerve = d ? d.captain.nerve : 3;
+  const n = won ? (nerve >= 4 ? 1 : 0) : (nerve <= 2 ? -1 : 0);
+  if (n && cap) like(cap, n, won ? 'You took the bold line and it came off.' : 'You took the bold line and it did not.');
+}
+
 // A crew member's first name by role, or the job where nobody holds it (the walk-through and the first arrival name the crew).
 const crewNamed = role => { const c = roleHolder(role); return c ? c.first : `the ${ROLE_NAMES[role].toLowerCase()}`; };
 
