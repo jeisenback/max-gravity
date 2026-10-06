@@ -56,6 +56,15 @@ function walkPending() {
   const hand = hired(), xo = hand && hiredXo();
   return !!(xo && CAST[xo.cast].round && !hand.walked && runTotals(hand).runs === 0);
 }
+// The first raid of a new game: the first officer says what Position is, which choice is your own, and what a bad one costs, once
+// (cast entry `firstRaid`). h.raidTold starts false in a new game (hired.js); a save from before has none, so it never plays.
+function raidExplanation() {
+  const h = hired(), xo = h && hiredXo();
+  if (!(h && h.raidTold === false && xo && CAST[xo.cast].firstRaid)) return null;
+  h.raidTold = true;
+  return castScene(xo.cast, CAST[xo.cast].firstRaid);
+}
+
 // A crew member's first name by role, or the job where nobody holds it (the walk-through and the first arrival name the crew).
 const crewNamed = role => { const c = roleHolder(role); return c ? c.first : `the ${ROLE_NAMES[role].toLowerCase()}`; };
 

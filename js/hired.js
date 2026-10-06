@@ -82,7 +82,7 @@ function setupHired(o) {
     st.crew.push(c.id);
   }
   const d = captainKey && CAPTAINS[captainKey];
-  st.hired = { captain: cap.id, captainKey, post, since: st.day, wage: d ? d.wage : HIRED_WAGE, share: d ? d.share : HIRED_SHARE, fund: HIRED_FUND, run: null, ledger: [], skill: { ...(o.skill || {}), [post]: Math.max((o.skill || {})[post] || 0, SKILL_STEPS[1]) }, asked: 0 };
+  st.hired = { captain: cap.id, captainKey, post, since: st.day, wage: d ? d.wage : HIRED_WAGE, share: d ? d.share : HIRED_SHARE, fund: HIRED_FUND, run: null, ledger: [], skill: { ...(o.skill || {}), [post]: Math.max((o.skill || {})[post] || 0, SKILL_STEPS[1]) }, asked: 0, raidTold: false };
   // The port screen says only what Signing On (signon.js) does not: who put a hand ashore. The ship, the captain, the post and
   // the savings are said there, once.
   return o.putOffBy ? [`${o.putOffBy} put you ashore. You carry your savings and what you learned.`] : [];
