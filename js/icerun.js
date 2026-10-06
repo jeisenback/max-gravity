@@ -114,8 +114,8 @@ function iceLoad(thin) {
 // How it ends: a clean run is remembered, a bad one is paid for less.
 function iceHome(edge) {
   const h = hired(), cap = person(h.captain);
-  if (edge >= 3) { like(cap, 1, 'You brought the ice in.'); return ' The captain writes it in the log: a clean haul, and a good crew.'; }
-  if (edge <= -2) { like(cap, -1, 'You made a mess of the ice.'); return ' The captain does not write anything in the log, and it is not a good silence.'; }
+  if (edge >= 3) { like(cap, 1, 'You brought the ice in.'); captainFlag('iceClean'); delete h.flags.iceBad; return ' The captain writes it in the log: a clean haul, and a good crew.'; }
+  if (edge <= -2) { like(cap, -1, 'You made a mess of the ice.'); captainFlag('iceBad'); delete h.flags.iceClean; return ' The captain does not write anything in the log, and it is not a good silence.'; }
   return '';
 }
 

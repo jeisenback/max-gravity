@@ -96,6 +96,7 @@ function startRaid(spec, flee, o = {}) {
     s.edge = -1;
     text = `${helmName()} runs, but ${theShip(foe).replace(/^The/, 'the')} gets a burst in first. Battle stations.`;
   }
+  captainFlag('raided');  // fought, not outrun: kept for the goodbye (captains.js)
   rateFoe(s);
   const flavor = foeFlavor(s); if (flavor) text += ` ${flavor}`;
   const told = raidExplanation();  // the first raid of a new game is explained once, before the first scene (captains.js)
