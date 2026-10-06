@@ -62,3 +62,24 @@ test('the Missions tab shows no empty headings for a hand, and shows them once t
   assert.match(r.filled, /Active missions/); assert.doesNotMatch(r.filled, /Available work/);
   await done();
 });
+
+test('a suggested run reads in the captain\'s terms, and the deck plan draws a face for each person', async () => {
+  const { page, ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = startHand(), h = hired(), base = { good: 'water', tons: 5, cost: 100, planet: 'Mars', ballast: false, sid: 'mars', days: 5, profit: 1000 };
+    h.plan = { day: st.day, at: st.planet, cargo: JSON.stringify(st.cargo), run: base, alts: [{ ...base }] };
+    const dock = document.createElement('div'); dock.innerHTML = runHtml();
+    return { captain: dock.querySelector('p.desc').textContent, alt: dock.querySelector('.row .hint').textContent, terms: runTerms(base) };
+  });
+  assert.ok(r.captain.includes(r.terms) && r.alt.includes(r.terms), 'the same terms, from one formula');
+  assert.match(r.alt, /cr to you, plus .* cr wage/);
+  const n = await ev(() => { G.mode = 'landed'; UI.render(); return crewMembers().length + 2; });
+  for (const [w, h] of [[1280, 800], [390, 844]]) {
+    await page.setViewportSize({ width: w, height: h });
+    await page.click('[data-action=station][data-arg=interior]');
+    const faces = await page.$$eval('#panel .con-plant circle.person', c => c.length), portraits = await page.$$eval('#panel .con-plant .face svg.char-portrait', c => c.length);
+    assert.equal(faces, n, `a token for everyone at ${w}px`); assert.equal(portraits, n - 1, `a portrait for everyone but you at ${w}px`);
+  }
+  await done();
+});

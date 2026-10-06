@@ -22,7 +22,7 @@ function swayHtml() {
   const name = id => COMMODITIES.find(c => c.id === id).name;
   const cap = hiredCaptain(), deaf = cap.opinion < captainHears();  // shut, with the reason beside it, until the captain listens
   return `<div class="eyebrow">Suggest another run</div>${deaf ? `<p class="hint">Captain ${cap.last} does not take suggestions from a hand they do not know yet.</p>` : ''}${swayAsked() ? '<p class="hint">You have put a run to the captain already at this stop.</p>' : h.plan.alts.map((o, i) =>
-    `<div class="row"><span class="hint">${o.tons}t ${name(o.good)} to ${o.planet}, ${SYSTEMS[o.sid].name}: ${o.days} days, about ${fmt(o.profit)} cr profit.</span> <button data-action="suggestRun" data-arg="${i}" ${deaf ? 'disabled' : ''}>Suggest</button></div>`).join('')}`;
+    `<div class="row"><span class="hint">${o.tons}t ${name(o.good)} to ${o.planet}, ${SYSTEMS[o.sid].name}: ${runTerms(o)}.</span> <button data-action="suggestRun" data-arg="${i}" ${deaf ? 'disabled' : ''}>Suggest</button></div>`).join('')}`;
 }
 
 Mods.register({
