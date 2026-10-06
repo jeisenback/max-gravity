@@ -89,6 +89,7 @@ canvas { display: block; touch-action: none; }
   text-transform: uppercase;
   color: var(--accent);
 }
+.eyebrow button.link { text-transform: inherit; }  /* a name in a heading keeps the heading's case: "Adair's", not "Adair'S" */
 
 .event-body { padding: 18px 16px; }
 .event-body h1 {
@@ -115,6 +116,8 @@ canvas { display: block; touch-action: none; }
 .shifts .down { color: var(--warn); }
 #panel.event .choices { position: sticky; bottom: 0; z-index: 1; max-height: 44vh; overflow-y: auto; margin: 14px -16px 0; padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)); background: linear-gradient(transparent, var(--panel) 18%); }
 @media (min-width: 700px) { #panel.event .choices { margin: 14px -26px 0; padding: 12px 26px 22px; } }
+/* A scene longer than the dialog says so above the pinned choices, until the last of the text is in view. */
+#panel.event.more .choices::before { content: 'The scene continues. Scroll to read the rest.'; display: block; margin: 0 -16px 8px; padding: 4px 16px; background: var(--panel); font-size: 12px; color: var(--muted); }
 .choices button { text-align: left; padding: 10px 12px; }
 @media (min-width: 700px) { .event-body { padding: 22px 26px; } }
 

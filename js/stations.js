@@ -15,13 +15,13 @@ const POSTS = {
   comms: { role: 'slicer', name: 'Comms' },
 };
 
-// An order: { id, name, desc, can() (optional), sure (optional: a command that cannot fail and
+// An order: { id, name, desc, can() (optional), idle (the reason `can` is false, shown as text beside it), sure (optional: a command that cannot fail and
 // does not use up the day), run(ok, doer, skill) -> text }.
 // `ok` is the roll against orderOdds; `doer` is the crew member, or null when you do it yourself.
 const ORDERS = {
   engineer: [{
     id: 'patch', name: 'Patch the hull', desc: 'Field repairs, up to three quarters of full armor. Once a day.',
-    can: () => G.state.armor < Math.floor(ship().armor * 0.75),
+    can: () => G.state.armor < Math.floor(ship().armor * 0.75), idle: 'Nothing to patch: the armor is above three quarters of full.',
     run(ok, doer, skill) {
       const st = G.state, cap = Math.floor(ship().armor * 0.75), who = doer ? doer.first || doer.name : 'You';
       if (!ok) return `${who} spend${doer ? 's' : ''} a watch on the plating and get${doer ? 's' : ''} nowhere. The seams will need a yard.`;
@@ -78,12 +78,14 @@ function postHtml(id) {
     : `Nobody is assigned as ${P.name.toLowerCase()}. You do it yourself.`;
   const btn = mode === 'crewed' ? `<button data-action="takeControl" data-arg="${id}">Take controls</button>`
     : h ? `<button data-action="handBack" data-arg="${id}">Hand back</button>` : '';
-  const orders = postOrders(id).map(o => `<button data-action="postOrder" data-arg="${id}:${o.id}" title="${esc(o.desc)}" ${ps.busy || (o.can && !o.can()) ? 'disabled' : ''}>${o.name}</button>`).join('');
+  const shut = o => ps.busy ? 'Done for today. The post is free again tomorrow or on the next burn.' : o.can && !o.can() ? o.idle || 'Not available now.' : '';
+  const orders = postOrders(id).map(o => `<button data-action="postOrder" data-arg="${id}:${o.id}" title="${esc(o.desc)}" ${shut(o) ? 'disabled' : ''}>${o.name}</button>`).join('');
+  const why = postOrders(id).filter(shut).map(o => `<div class="hint">${o.name}: ${shut(o)}</div>`).join('');
   return `<div class="post">
     <div class="eyebrow">${P.name} post &middot; ${mode}</div>
     <p class="desc">${line}</p>
     ${ps.note ? `<div class="note">${ps.note}</div>` : ''}
-    ${btn || orders ? `<div class="row">${orders}${btn}</div>` : ''}
+    ${btn || orders ? `<div class="row">${orders}${btn}</div>` : ''}${why}
   </div>`;
 }
 
