@@ -157,7 +157,8 @@ function deckSvg() {
       if (!q.o) return `<circle cx="${cx}" cy="${cy}" r="10" fill="none" stroke="#4b617a" stroke-dasharray="4 4"/>`;
       if (q.o.you) return `<circle class="person" cx="${cx}" cy="${cy}" r="10" fill="#12202f" stroke="#5fd35f" stroke-width="3"/><text x="${cx}" y="${cy + 3}" fill="#d4e4f5" font-size="8" text-anchor="middle">YOU</text>`;
       const c = q.o.who;
-      return `<circle class="person" cx="${cx}" cy="${cy}" r="10" fill="#12202f" stroke="${ring(c)}" stroke-width="3"/><text x="${cx}" y="${cy + 4}" fill="#d4e4f5" font-size="11" text-anchor="middle">${(c.first || c.name || '?')[0]}</text>`;
+      const clip = `face-${String(c.id).replace(/\W/g, '')}-${i}`;  // the portrait, cut to the token's circle, inside the mood ring
+      return `<clipPath id="${clip}"><circle cx="${cx}" cy="${cy}" r="10"/></clipPath><g class="face" clip-path="url(#${clip})">${portraitSvg(c).replace('<svg class="char-portrait"', `<svg class="char-portrait" x="${cx - 10}" y="${cy - 10}" width="20" height="20" style="width:20px;height:20px;max-width:none;border:0;border-radius:0"`)}</g><circle class="person" cx="${cx}" cy="${cy}" r="10" fill="none" stroke="${ring(c)}" stroke-width="3"/>`;
     }).join('');
   }).join('');
   const ladder = Array.from({ length: 8 }, (_, i) => `<line x1="${X(LADDER) - 5}" y1="${mid - 4 + i * 11}" x2="${X(LADDER) + 5}" y2="${mid - 4 + i * 11}" stroke="#4a6a8c"/>`).join('');
