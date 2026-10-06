@@ -834,3 +834,15 @@ test('the goodbye shows at most two of what happened, by priority, in one paragr
   assert.ok(r.recap.includes('The ice run went badly.') && r.recap.includes('You were hurt on duty.') && r.recap.includes('You fought a raid.'));
   assert.doesNotMatch(r.recapNone, /ice run|hurt on duty|fought a raid/);
 });
+
+test('the first arrival shows the hall\'s cut as a ledger line, and the goodbye and the look back read a cleared bond', async () => {
+  const r = await run(() => {
+    start(); const h = hired();
+    const a = arriveFirst(), text = a.scene.text, f = h.first;
+    h.flags = { debtCleared: true };
+    return { text, hall: f.hall, owed: f.owed, wage: f.wage, share: f.share, debt: h.debt, goodbye: captainGoodbye().text, recap: chapterRecap().text };
+  }, { debt: true });
+  assert.equal(r.hall, Math.round((r.wage + r.share) * 0.3)); assert.equal(r.owed, 3000 - r.hall); assert.equal(r.debt, r.owed);
+  assert.ok(r.text.includes(`Hall bond, 30 percent of your pay: ${r.hall.toLocaleString('en-US')}. Still owed: ${r.owed.toLocaleString('en-US')}.`));
+  assert.ok(r.goodbye.includes('The hall\'s bond is struck off the book, with the day it was paid.')); assert.ok(r.recap.includes('You paid off the hiring-hall bond.'));
+});

@@ -36,8 +36,8 @@ function putAshoreScene() {
 // Back to the sign-on, with another captain. Savings and post experience come with you; the ship, the crew and the friends do not.
 function putAshore() {
   const st = G.state, h = hired(), cap = person(h.captain), others = Object.keys(CAPTAINS).filter(k => k !== h.captainKey);
-  const keep = { slot: Saves.current, name: captain().name, background: st.background, post: h.post, credits: st.credits, skill: { ...h.skill }, times: (st.putOff || 0) + 1 };
-  startGame({ slot: keep.slot, background: keep.background, captain: keep.name, mode: 'hired', post: keep.post, captainKey: others.length ? pick(others) : undefined, credits: keep.credits, skill: keep.skill, putOffBy: `Captain ${cap.last}` });
+  const keep = { slot: Saves.current, name: captain().name, background: st.background, post: h.post, credits: st.credits, debt: h.debt, skill: { ...h.skill }, times: (st.putOff || 0) + 1 };
+  startGame({ slot: keep.slot, background: keep.background, captain: keep.name, mode: 'hired', post: keep.post, captainKey: others.length ? pick(others) : undefined, credits: keep.credits, debt: keep.debt, skill: keep.skill, putOffBy: `Captain ${cap.last}` });
   G.state.putOff = keep.times;
   return null;
 }

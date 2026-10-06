@@ -552,3 +552,44 @@ test('the Gunner\'s line and the GUNS tab match how contacts play for a hired ha
   assert.equal(r.hiredNow, false); assert.doesNotMatch(r.owner.weapons, /A raid plays as scenes/); assert.match(r.owner.projects, /Refit the fire control/, 'an owner still has them');
   await done();
 });
+
+// ---------- the hiring hall's bond (#280) ----------
+
+test('a hand starts owing the hall, each arrival repays a third of the pay and never more than is owed, and the note says so', async () => {
+  const { ev, done } = await open({ debt: true });
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    startHired('gunner'); const st = G.state, h = hired(), out = { start: h.debt }; h.runsDone = 1;  // a later arrival: the first is the first officer's scene
+    const arrive = days => { h.run = { planet: currentPlanet().name, sid: st.systemId, day: st.day - days, from: 'X', cost: 0 }; const c0 = st.credits, d0 = h.debt; const note = settleRun(currentPlanet()); return { note, credits: st.credits - c0, paid: d0 - h.debt, entry: h.ledger[0] }; };
+    out.first = arrive(5);
+    h.debt = 40; out.cap = arrive(5); out.capFlag = !!(h.flags || {}).debtCleared; out.after = h.debt;
+    out.none = arrive(5);
+    return out;
+  });
+  assert.equal(r.start, 3000);
+  assert.equal(r.first.paid, Math.round(r.first.entry.wage * 0.3)); assert.equal(r.first.credits, r.first.entry.wage + r.first.entry.share - r.first.paid, 'the hall is paid out of the pay');
+  assert.match(r.first.note, new RegExp(`The hall took ${r.first.paid} cr of your pay\\. [\\d,]+ cr still owed\\.`)); assert.equal(r.first.entry.hall, r.first.paid);
+  assert.equal(r.cap.paid, 40, 'never more than is owed'); assert.match(r.cap.note, /The hall took 40 cr of your pay\. The bond is paid\./); assert.equal(r.capFlag, true); assert.equal(r.after, 0);
+  assert.equal(r.none.paid, 0); assert.doesNotMatch(r.none.note, /The hall/, 'nothing owed, nothing said');
+  await done();
+});
+
+test('a hand cannot buy a ship while owing, the panel says what is left, and a hand put ashore carries it; an older save has none to pay', async () => {
+  const { ev, done } = await open({ debt: true });
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    startHired('gunner'); const st = G.state, h = hired(), out = {};
+    G.mode = 'landed'; const yard = Object.values(SYSTEMS).flatMap(s => s.planets).find(p => p.services.includes('shipyard'));
+    st.credits = 2000000; const ship = Object.keys(SHIPS).find(id => SHIPS[id].forSale && !SHIPS[id].req);
+    out.owing = canBuyIn(ship, yard); out.panelOwing = (st.planet = yard.name, buyInHtml());
+    h.debt = 0; out.clear = canBuyIn(ship, yard);
+    h.debt = 1234; startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', debt: 1234 }); out.carried = hired().debt;
+    hired().debt = 777; putAshore(); out.ashore = hired().debt;
+    const old = hired(); old.runsDone = 1; delete old.debt; out.older = { guard: !(old.debt > 0), note: (old.run = { planet: currentPlanet().name, sid: G.state.systemId, day: G.state.day - 3, from: 'X', cost: 0 }, settleRun(currentPlanet())) };
+    return out;
+  });
+  assert.equal(r.owing, false); assert.match(r.panelOwing, /You owe the hiring hall [\d,]+ cr\. You cannot buy a ship until it is paid\./); assert.equal(r.clear, true);
+  assert.equal(r.carried, 1234); assert.equal(r.ashore, 777, 'a hand put ashore keeps what is left');
+  assert.ok(r.older.guard); assert.doesNotMatch(r.older.note, /The hall/);
+  await done();
+});
