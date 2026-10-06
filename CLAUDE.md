@@ -24,6 +24,8 @@ An Escape Velocity homage in vanilla JS and canvas. Static site, no build step. 
 - `pr-body`: writing a pull request description.
 - `balance-change`: pacing, pay, odds and other declared numbers.
 - `player-facing-change`: scenes, screens and text the player reads.
+- `issue-writing`: parent and child issue shapes, and sub-issue links.
+- `roadmap-sync`: keeping ROADMAP.md in step with closed and new issues.
 
 ## Git
 
