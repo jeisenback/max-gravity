@@ -27,7 +27,8 @@ const tabReady = (p, id) => ((hired() && OWNER_TABS.includes(id)) || (scopeOff('
 function bridgeKeys(p, tab) {
   const here = stationOf(tab);
   const keys = STATIONS.map(s => `<button data-action="station" data-arg="${s.id}" class="${s.id === here.id ? 'active' : ''}" ${s.id === here.id ? 'aria-current="true"' : ''} ${s.tabs.some(id => tabReady(p, id)) ? '' : 'disabled'} aria-label="${s.name}"><span class="full">${s.name}</span><span class="short" aria-hidden="true">${s.short}</span></button>`).join('');
-  const sub = here.tabs.length > 1 ? `<div class="tabs sub">${here.tabs.map(id => `<button data-action="tab" data-arg="${id}" class="${tab === id ? 'active' : ''}" ${tab === id ? 'aria-current="page"' : ''} ${tabReady(p, id) ? '' : 'disabled'}>${TAB_NAMES[id]}</button>`).join('')}</div>` : '';
+  const shown = here.tabs.filter(id => !(hired() && OWNER_TABS.includes(id)));  // a hand has no Exchange or Company: not drawn, not greyed
+  const sub = shown.length > 1 ? `<div class="tabs sub">${shown.map(id => `<button data-action="tab" data-arg="${id}" class="${tab === id ? 'active' : ''}" ${tab === id ? 'aria-current="page"' : ''} ${tabReady(p, id) ? '' : 'disabled'}>${TAB_NAMES[id]}</button>`).join('')}</div>` : '';
   return `<div class="tabs stations" role="navigation" aria-label="Stations">${keys}</div>${sub}`;
 }
 

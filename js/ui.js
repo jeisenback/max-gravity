@@ -200,11 +200,9 @@ const UI = {
     },
 
     missions() {
-      return `
-        <h3>Available work</h3>
-        ${this.missionList(G.offers, 'accept', 'Accept')}
-        <h3>Active missions</h3>
-        ${this.missionList(G.state.missions, 'abort', 'Abandon')}`;
+      // A hand with errands off sees a heading only once there is something under it.
+      const bare = hired() && scopeOff('errands'), part = (title, list, action, label) => bare && !list.length ? '' : `<h3>${title}</h3>${this.missionList(list, action, label)}`;
+      return `${part('Available work', G.offers, 'accept', 'Accept')}${part('Active missions', G.state.missions, 'abort', 'Abandon')}`;
     },
 
     crew() {
