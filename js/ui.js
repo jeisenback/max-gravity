@@ -131,6 +131,7 @@ const UI = {
   render() {
     const p = this.planet;
     this.setAccent(GOV_COLORS[system().gov]);
+    if (shellOn()) { this.el.innerHTML = shellHtml(this, p); return; }  // the ship-interface shell (js/shell.js)
     this.el.innerHTML = `${this.headerHtml(p)}
       <canvas id="vs" class="vs" aria-hidden="true"></canvas>
       ${bridgeKeys(p, this.tab)}
