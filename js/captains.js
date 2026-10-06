@@ -46,9 +46,13 @@ const BEAT_WEIGHT = 2, BEAT_RAMP = 3;
 // The chapter's beats run in one order: the captain's trouble, their secret, then the used ship (hired.js dealCheck). The offer
 // waits until both scenes have played and a run has been sailed since the secret, so the two never land together. A captain
 // with no scenes does not hold it up.
+// The chapter's spine (#294): why does every owner of the Ore Runner sell her? The hand sees her once, painted over on an apron (a note, hired.js
+// `hullNote`), hears of the bank in the captain's secret (ownersDebt, set by the scene), and Tomas answers it when she is offered. The offer
+// waits for the first, as it waits for the second. Without Tomas aboard the offer is the broker's, and there is no spine to wait for.
+const spineSeen = h => !castAboard().some(c => c.cast === 'tomas') || !!(h.flags && h.flags.sawHull);
 const captainBeatsDone = h => {
   const d = captainEntry();
-  return !d || !d.scenes || ((h.beats || 0) >= CAPTAIN_BEATS.length && runTotals(h).runs - (h.beatRun || 0) >= 2);
+  return !d || !d.scenes || ((h.beats || 0) >= CAPTAIN_BEATS.length && runTotals(h).runs - (h.beatRun || 0) >= 2 && spineSeen(h));
 };
 // A first officer with a walk-through (cato.js) takes a new hand round the ship on the first burn. That burn gets a happening more
 // for it (transit.js), so the introductions that would have played then still do.
@@ -127,6 +131,7 @@ function captainBeat() {
 function captainScene(name) {
   const d = captainEntry(), sc = d.scenes[name], cap = hiredCaptain();
   const s = name === 'secret' ? (cap.opinion >= SECRET_TRUST ? sc.confide : sc.found) : sc;
+  if (s.flag) captainFlag(s.flag);  // a fact the scene tells (the spine of the chapter, #294)
   return { title: s.title, text: s.text, personal: true, choices: s.choices };
 }
 

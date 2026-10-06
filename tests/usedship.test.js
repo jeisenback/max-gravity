@@ -10,7 +10,7 @@ const { open, closeBrowser } = require('./helpers');
 after(closeBrowser);
 
 const helpers = () => {
-  window.start = () => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent(); const st = G.state; st.story.next = 1e9; Object.assign(st.hired, { beats: 2, beatRun: -2 }); return st; };  // the captain's two scenes are behind them: the offer waits for those (captains.js), and these are about the deal
+  window.start = () => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent(); const st = G.state; st.story.next = 1e9; Object.assign(st.hired, { beats: 2, beatRun: -2, flags: { sawHull: true } }); return st; };  // the captain's two scenes are behind them and the hull has been seen: the offer waits for those (captains.js), and these are about the deal
   window.tomas = () => person('c:tomas');
   // Dock at the start port (it has a yard) with this much in savings, and say what came up.
   window.dock = credits => { G.state.credits = credits; G.mode = 'landed'; Mods.emit('landed', currentPlanet()); const scene = G.dialog ? G.dialog.event : null; if (scene) { G.nextEvent = null; while (G.dialog) finishEvent(); } return scene; };

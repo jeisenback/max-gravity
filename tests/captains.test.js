@@ -522,14 +522,15 @@ test('the used-ship offer waits for both of the captain\'s scenes and a run sail
     h.beats = 2; h.runsDone = 5; h.beatRun = 5; out.sameRun = captainBeatsDone(h);
     h.runsDone = 6; out.nextLanding = captainBeatsDone(h);
     h.beats = 1; G.dialog = null; dealCheck(yard); out.earlyOffer = !!h.deal || !!G.dialog;
-    h.beats = 2; h.runsDone = 7; out.sailed = captainBeatsDone(h);
+    h.beats = 2; h.runsDone = 7; out.sailedUnseen = captainBeatsDone(h); h.flags = { ...(h.flags || {}), sawHull: true };  // the hull seen on an apron (the spine, #294)
+    out.sailed = captainBeatsDone(h);
     dealCheck(yard); out.offer = !!h.deal && !!G.dialog;
     h.captainKey = null; out.noCaptain = captainBeatsDone(h);
     return out;
   });
   assert.deepEqual([r.fresh, r.oneScene, r.sameRun, r.nextLanding], [false, false, false, false]);
   assert.equal(r.earlyOffer, false, 'no offer at a yard before the secret has played');
-  assert.equal(r.sailed, true); assert.equal(r.offer, true, 'a run after the secret, the offer comes');
+  assert.equal(r.sailedUnseen, false, 'with Tomas aboard, the offer also waits for the hull to have been seen'); assert.equal(r.sailed, true); assert.equal(r.offer, true, 'a run after the secret, the offer comes');
   assert.equal(r.noCaptain, true, 'a hand with no captain entry is not held up');
 });
 
@@ -877,4 +878,52 @@ test('only the bold options carry it: the fast, big and hard ice options, the ra
   });
   assert.deepEqual(r.bold.sort(), ['fire', 'turn']); assert.deepEqual(r.ice, [[false, true, false], [false, true, false], [false, true, false]]);
   assert.equal(r.quickWon, 1, 'a bold success with a nerve 5 captain'); assert.equal(r.careful, 0, 'the careful option moves nothing');
+});
+
+// ---------- the spine: why does every owner of the Ore Runner sell her? (#294) ----------
+
+test('the hull is seen once, painted over, from the second arrival on, and only with Tomas aboard', async () => {
+  const r = await run(() => {
+    start(); const h = hired(), out = {};
+    const land = () => { UI.notes.length = 0; Mods.emit('landed', currentPlanet()); return UI.notes.join(' '); };
+    h.runsDone = 1; out.early = land(); out.earlyFlag = !!(h.flags || {}).sawHull;
+    h.runsDone = 2; out.first = land(); out.flag = !!h.flags.sawHull;
+    out.again = land();
+    start(); const g = hired(); g.runsDone = 2;
+    G.state.crew = G.state.crew.filter(id => !(person(id) || {}).cast || person(id).cast !== 'tomas');
+    out.noTomas = land(); out.noTomasFlag = !!(g.flags || {}).sawHull;
+    return out;
+  });
+  assert.doesNotMatch(r.early, /painted over/); assert.equal(r.earlyFlag, false);
+  assert.match(r.first, /Ore Runner sits on her struts with her name painted over in grey\. Tomas stops at the foot of the ramp/); assert.equal(r.flag, true);
+  assert.doesNotMatch(r.again, /painted over/, 'once'); assert.doesNotMatch(r.noTomas, /painted over/); assert.equal(r.noTomasFlag, false);
+});
+
+test('the captain\'s secret tells the bank holds the Ore Runner too, in both readings, and sets the fact', async () => {
+  const r = await run(() => {
+    start(); const h = hired(), cap = person(h.captain), out = {};
+    cap.opinion = SECRET_TRUST; const confide = captainScene('secret'); out.confide = confide.text; out.confideFlag = !!(h.flags || {}).ownersDebt;
+    h.flags = {}; cap.opinion = SECRET_TRUST - 1; const found = captainScene('secret'); out.found = found.text; out.foundFlag = !!h.flags.ownersDebt;
+    return out;
+  });
+  assert.match(r.confide, /There is an Ore Runner on the yard list at the next port with her name painted over\. Same bank\. Three owners, and each of them missed one payment\. One\./);
+  assert.match(r.found, /schedule of ships the bank has taken since the spring, and the Ore Runner is the third line/);
+  assert.equal(r.confideFlag, true); assert.equal(r.foundFlag, true);
+});
+
+test('Tomas gives the reason when she is offered, which waits for the hull to have been seen, and says whether the hand still owes the hall', async () => {
+  const r = await run(() => {
+    start(); const h = hired(), st = G.state, out = {};
+    h.beats = CAPTAIN_BEATS.length; h.beatRun = 0; h.runsDone = 5; h.flags = {};
+    out.waits = captainBeatsDone(h); h.flags.sawHull = true; out.opens = captainBeatsDone(h);
+    h.debt = 1500; const owed = dealScene(currentPlanet()); out.owed = owed.text; out.tomasFlag = !!h.flags.tomasWaited;
+    h.debt = 0; out.clear = dealScene(currentPlanet()).text;
+    // no Tomas aboard: the broker's offer, with nothing to wait for
+    G.state.crew = G.state.crew.filter(id => (person(id) || {}).cast !== 'tomas'); h.flags = {}; out.broker = captainBeatsDone(h);
+    return out;
+  }, { debt: true });
+  assert.equal(r.waits, false, 'the offer waits for the hull to have been seen'); assert.equal(r.opens, true); assert.equal(r.broker, true, 'without Tomas, nothing to wait for');
+  assert.match(r.owed, /Three owners, and every one of them sold her, and none for bad luck\. Each ran one payment short\./);
+  assert.match(r.owed, /You owe the hall 1,500 still\. I looked at its book\. Clear it, and you will be the first owner she has had who owes nobody\./);
+  assert.match(r.clear, /You owe nobody now\. I looked at the hall's book\. She has only ever had owners who owed everybody\./); assert.equal(r.tomasFlag, true);
 });
