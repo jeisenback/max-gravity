@@ -240,7 +240,7 @@ play (`npm run fights`, below), about a quarter of raids end with her breaking o
 A decisive win (ahead by four or more) cripples her instead: she drifts, and you can board her. That is the same
 lock fight run the other way (her lock, her corridor, her bridge, with the same tactics and your post's job), and a win
 takes her strongbox for the ship's fund. Or let her drift, which is the same as breaking her off. Over random-choice
-raids, about 1 in 16 cripple her, and a boarding is carried about two times in three.
+raids, about 1 in 20 cripple her, and a boarding is carried about two times in three.
 A hired hand can also meet a distress call on a burn through unsettled space (pirates 0.25 or more at either end, at most once
 in 60 days): seven in ten are a trap, and the rest are a real freighter that pays the ship's fund 500 cr. Each post has its own
 way to read the call (scan her hull, read her drive, match her tumble, check her registry), which works at 50% plus a tenth
@@ -260,22 +260,23 @@ Bounties, hunters and an owner's fights are still the card duel above.
 
 `tools/fights.js` plays the raid, the repel fight and the assault fight over many seeded trials (5 seeds of 200, a hired gunner
 on Hester's ship with nine aboard, against a raider) and reports how they close and who is hurt. The game is put back between
-trials. It is run by hand and is not part of `npm test`. Figures from the run that wrote this section (the tuning constants are as
-they were: `CASUALTY_ODDS` 0.4, `REPEL_HURT` 0.45 on a loss and 0.15 on a win, `CUNNING` 0.25):
+trials. It is run by hand and is not part of `npm test`. Figures from the run that wrote this section (`CASUALTY_ODDS` 0.4,
+`REPEL_HURT` 0.45 on a loss and 0.15 on a win, `CUNNING` 0.25, and the boarders' lean in `BOARDER_LEAN` and `REPEL_LEAN`):
 
-- **The raid**, random choices: she breaks off 23%, stands off 41%, is crippled 6% (boarded and carried 69% of the time), and goes
-  to the lock 30% (held 58%). Hull lost 11%. Someone is hurt in 53% of raids, someone dies in about 1 in 9, and the hand is hurt in 34%.
-  Always the post's own move: crippled 18%, hull 3%. Always the first general choice: no crippling, 51% stand off, 10% reach the lock.
+- **The raid**, random choices: she breaks off 23%, stands off 40%, is crippled 5% (boarded and carried 70% of the time), and goes
+  to the lock 31% (held 63%). Hull lost 11%. Someone is hurt in 52% of raids, someone dies in about 1 in 11, and the hand is hurt in 35%.
+  Always the post's own move: crippled 19%, hull 3%. Always the first general choice: no crippling, half stand off, 10% reach the lock.
 - **The lock fight** (repel and assault give the same figures within a few points), random tactics, level 2, five standing with
-  you: won 80%. By crew: one 45%, three 75%, five 80%. By the post's level (the post's move every round): 69%, 83%, 95%.
-  By the foe's grade: 0 is 81%, 1 is 59%, 2 is 35%. Casualties per fight with five: 0.4 hurt, 0.2 dead, 0.15 marked (a main character),
-  the hand hurt 14%, and someone or other hurt in 55% of fights. A grade 2 foe hurts someone in 80%.
-- **Tactics are not a mix.** Against a pirate (who leans to rush, then go round, then hold) always going round wins 97% and always
-  holding wins 49%. Against a patrol the lean is hold, so rushing is the answer. A player who learns the lean has a
-  dominant tactic, and one who does not has about a coin's toss on each choice.
+  you: won 80%. By crew: one 43%, three 77%, five 81%. By the post's level (the post's move every round): 68%, 84%, 95%.
+  By the foe's grade: 0 is 80%, 1 is 58%, 2 is 37%. Casualties per fight with five: 0.4 hurt, 0.2 dead, 0.15 marked (a main character),
+  the hand hurt 14%, and someone or other hurt in 55% of fights. A grade 2 foe hurts someone in 78%. These are the intended cost
+  of a fight and were left as they are.
+- **Tactics are a lean, not a rule.** A raider's boarders rush a little more than they hold (38%, 30%, with going round 32%), and a
+  corsair's hold a little more than they rush. Fixed over a fight against a raider, always holding wins 72%, always rushing 70%
+  and always going round 89%, against 80% for a random mix. Going round stays ahead partly because the freighter is long and has room
+  to go round (`layoutEdge`, +0.15 for going round and -0.1 for a rush). Before the lean was flattened (50%, 20%, 30%) always going round won 97% and always holding 49%, which left one dominant tactic.
 
-Not yet tuned: whether a death in 1 in 5 lock fights and a hurt crew member in 1 in 2 is "neither rare nor routine", and whether
-one tactic should win nearly every time, are for the designer to say. The tool is how to check a change to either.
+The tool is how to check a change to the casualty odds, the lean or the layout bonus.
 
 ## Open questions
 

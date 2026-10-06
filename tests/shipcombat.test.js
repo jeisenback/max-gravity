@@ -70,7 +70,7 @@ test('boarders come by her ship, her crew and her company, try what her ship tri
     // what they try, and a veteran's counter
     const sFor = (f, grade) => ({ d: { foe: f }, grade, assault: false });
     const tally = (f, n = 600) => { const t = { rush: 0, hold: 0, flank: 0 }; for (let i = 0; i < n; i++) t[pickWeighted(foeLean(sFor(f, 0)))]++; return t; };
-    const r1 = tally(raider), c1 = tally(corsair); out.raiderRush = r1.rush > r1.hold * 1.5; out.corsairHold = c1.hold > c1.rush * 1.3;
+    const r1 = tally(raider), c1 = tally(corsair); out.raiderRush = r1.rush > r1.hold * 1.1; out.corsairHold = c1.hold > c1.rush * 1.1;
     out.counter = counterOf(REPEL_TACTICS, 'hold') === 'rush' && counterOf(REPEL_TACTICS, 'rush') === 'flank' && counterOf(REPEL_TACTICS, 'flank') === 'hold';
     // a veteran crew counters your tactic outright some of the time
     const sv = repelStart({ foe: corsair, foeHp: 0, grade: 2 }, 'full'); out.gradeKept = sv.grade === 2;
