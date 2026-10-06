@@ -717,7 +717,7 @@ function updateShots(dt) {
 
 function update(dt) {
   G.time += dt;
-  if (G.mode === 'flight') { if (G.auto) updateAutopilot(dt); else updatePlayer(dt); }
+  if (G.mode === 'flight') { if (G.auto) updateAutopilot(dt); else { updatePlayer(dt); captainCallsBurn(); } }
   else if (G.mode === 'departing') updateDeparture(dt);
   else if (G.mode === 'transit') return updateTransit(dt);
 

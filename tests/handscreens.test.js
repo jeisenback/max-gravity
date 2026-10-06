@@ -150,3 +150,27 @@ test('the person page puts where you stand first, and explains the Ties card', a
   }
   await done();
 });
+
+test('a hired pilot on a touch screen has the burn called once the ship is clear of local space', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {}, go = (post, far) => {
+      startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post, captainKey: 'hester' }); while (G.dialog) finishEvent();
+      const st = G.state, h = hired(); st.story.next = 1e9; st.tutorial = null; G.mode = 'landed'; h.fund = 20000;
+      const base = { good: 'water', tons: 5, cost: 100, planet: 'Mars', ballast: false, sid: 'mars', days: 5, profit: 1000 };
+      h.plan = { day: st.day, at: st.planet, cargo: JSON.stringify(st.cargo), run: base, alts: [] };
+      sail();
+      if (far !== null) { G.player.x = far; G.player.y = 0; }
+      update(0.016);
+      return G.mode;
+    };
+    out.near = go('pilot', 100);                    // still close: nothing starts
+    out.far = go('pilot', BURN_DIST + 100);         // clear: the captain calls it
+    out.gunner = go('gunner', null);                // the other posts depart as before: the autopilot flies out first
+    return out;
+  });
+  assert.equal(r.near, 'flight'); assert.equal(r.far, 'departing');
+  assert.equal(r.gunner, 'flight');
+  await done();
+});
