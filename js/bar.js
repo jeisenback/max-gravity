@@ -168,7 +168,7 @@ function roomLines(planet) {
   ]));
   for (const cm of crewMembers()) {
     const lines = CREW_AT_BAR[cm.role];
-    if (lines && Math.random() < 0.6) out.push(pick(lines).replace(/\{n\}/g, cm.first));
+    if (lines && Math.random() < 0.6) out.push(pick(lines).replace(/\{n\}/g, `<button class="link" data-action="person" data-arg="${esc(cm.id)}">${esc(cm.first)}</button>`));  // the name opens their page
   }
   return out;
 }

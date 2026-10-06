@@ -115,3 +115,38 @@ test('a hired hand\'s map says what it is for and shows the captain\'s plan; an 
   assert.match(o, /to plot a burn\./); assert.match(o, /beyond a full tank/); assert.match(o, /No burn plotted/);
   await owner.done();
 });
+
+test('crew names in the bar link to their pages', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    startHand();
+    let html = '';  // each crew member is at the bar six times in ten: a few dozen evenings show every one
+    for (let i = 0; i < 40; i++) html += roomLines(currentPlanet()).map(l => `<div class="hint">${l}</div>`).join('');
+    const d = document.createElement('div'); d.innerHTML = html;
+    const links = [...d.querySelectorAll('.hint button.link[data-action=person]')].map(b => b.dataset.arg);
+    return { links, crew: crewMembers().filter(c => CREW_AT_BAR[c.role]).map(c => c.id), raw: /\{n\}/.test(html) };
+  });
+  assert.ok(!r.raw, 'no name left unfilled');
+  for (const id of r.crew) assert.ok(r.links.includes(id), `${id} is a link`);
+  await done();
+});
+
+test('the person page puts where you stand first, and explains the Ties card', async () => {
+  const { page, ev, done } = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
+  await ev(helpers);
+  const r = await ev(() => {
+    startHand();
+    const out = { crew: crewMembers()[0].id, cap: hired().captain };
+    return out;
+  });
+  for (const id of [r.cap, r.crew]) {
+    await ev(arg => { G.bridgeOpen = null; Mods.act('person', arg); UI.render(); }, id);
+    const heads = await page.$$eval('#panel .con:has(.char-id) .con-side .con-card .eyebrow', e => e.map(x => x.textContent));
+    assert.equal(heads[0], 'Standing with you', `first card for ${id}`);
+    if (heads.includes('Ties')) assert.match(await page.innerText('#panel .con:has(.char-id) .con-side'), /Whom they answer to/, 'the Ties card says what it is for');
+    const box = await page.$eval('#panel .con:has(.char-id) .con-side .con-card', e => { const b = e.getBoundingClientRect(); return { top: b.top, bottom: b.bottom, h: window.innerHeight }; });
+    assert.ok(box.top >= 0 && box.bottom <= box.h, `Standing is in view at 1280 by 800 for ${id}`);
+  }
+  await done();
+});
