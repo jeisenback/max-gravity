@@ -31,7 +31,7 @@ const overhaulCost = part => Math.round((100 - condition()[part]) * 8);
 
 (ORDERS.engineer = ORDERS.engineer || []).push({
   id: 'service', name: 'Service the worst system', desc: 'Put the system in the worst shape right. Once a day.',
-  can: () => condition()[worstPart()] < 95,
+  can: () => condition()[worstPart()] < 95, idle: 'Every system is in good order.',
   run(ok, doer, skill) {
     const part = worstPart(), who = doer ? doer.first || doer.name : 'You';
     if (!ok) return `${who} open${doer ? 's' : ''} up the ${SHIP_PARTS[part].name.toLowerCase()} and spend${doer ? 's' : ''} a watch on it, and close${doer ? 's' : ''} it up no better.`;

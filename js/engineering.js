@@ -34,7 +34,7 @@ function setPower(key, value) {
 for (const [id, pre] of Object.entries(POWER_PRESETS)) {
   (ORDERS.engineer = ORDERS.engineer || []).push({
     id, name: pre.name, sure: true, desc: `Put the reactor's output behind ${pre.label}.`,
-    can: () => Object.entries(pre.to).some(([k, v]) => power()[k] !== v),
+    can: () => Object.entries(pre.to).some(([k, v]) => power()[k] !== v), idle: 'The reactor is already set that way.',
     run(ok, doer) {
       Object.assign(power(), pre.to);
       return `${doer ? doer.first || doer.name : 'You'} put${doer ? 's' : ''} the reactor's output behind ${pre.label}.`;

@@ -174,3 +174,29 @@ test('a hired pilot on a touch screen has the burn called once the ship is clear
   assert.equal(r.gunner, 'flight');
   await done();
 });
+
+test('a long scene says it continues, the Port heading keeps one case, and a shut order says why', async () => {
+  const { page, ev, done } = await open({ scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
+  await ev(helpers);
+  // Signing On at 390 by 844: the choices stay pinned, and the dialog says the text continues until it is read to the end.
+  await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'engineer', captainKey: 'hester' }); });
+  const cue = () => page.evaluate(() => ({ more: document.querySelector('#panel').classList.contains('more'), text: getComputedStyle(document.querySelector('#panel .choices'), '::before').content }));
+  const first = await cue();
+  assert.ok(first.more, 'the cue shows while text remains'); assert.match(first.text, /The scene continues/);
+  await page.evaluate(() => { const p = document.querySelector('#panel'); p.scrollTop = p.scrollHeight; });
+  await page.waitForTimeout(100);
+  assert.equal((await cue()).more, false, 'and goes at the end of the text');
+  // The Port heading: the captain's name inherits the heading's case.
+  await ev(() => { while (G.dialog) finishEvent(); G.state.tutorial = null; G.mode = 'landed'; UI.render(); });
+  const heading = await page.evaluate(() => { const l = document.querySelector('#panel .post .eyebrow button.link'); return l ? getComputedStyle(l).textTransform : null; });
+  assert.equal(heading, 'uppercase');
+  // A shut order and a shut project say why, as text.
+  const r = await ev(() => {
+    const st = G.state; st.armor = ship().armor;
+    const d = document.createElement('div'); d.innerHTML = postHtml('engineer');
+    const shutOrders = [...d.querySelectorAll('button[disabled]')].length, hints = [...d.querySelectorAll('.hint')].map(h => h.textContent);
+    return { shutOrders, hints };
+  });
+  assert.ok(r.shutOrders > 0); assert.ok(r.hints.some(h => /Patch the hull: Nothing to patch/.test(h)), r.hints.join('|'));
+  await done();
+});

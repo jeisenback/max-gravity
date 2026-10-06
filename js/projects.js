@@ -69,7 +69,7 @@ function projectsHtml(post) {
     ${running ? `<div class="slider"><span>${PROJECTS[running.id].name}</span><span class="pbar" data-project-bar="${running.id}"><i></i></span><span class="mono" data-project="${running.id}"></span></div>
       <p class="hint">${G.mode === 'transit' ? 'Work goes on while you burn.' : 'Work goes on while you burn. Nothing moves in port.'}</p>`
     : list.map(([id, P]) => `<div class="row"><div><b>${P.name}</b> <span class="hint">${P.parts}t parts, ${Math.round(P.secs * (projectDoer(id) ? 1 : 1.5))}s of burn, odds ${Math.round(projectOdds(id) * 100)}%</span><div class="hint">${P.desc}</div></div>
-      <button data-action="project" data-arg="${id}" ${canStart(id) ? '' : 'disabled'} title="${partsHeld() < P.parts ? 'Not enough machine parts in the hold' : ''}">Start</button></div>`).join('')}
+      <button data-action="project" data-arg="${id}" ${canStart(id) ? '' : 'disabled'} title="${partsHeld() < P.parts ? 'Not enough machine parts in the hold' : ''}">Start</button>${!canStart(id) && partsHeld() < P.parts ? `<div class="hint">Needs ${P.parts}t of machine parts; the hold has ${partsHeld()}t.</div>` : ''}</div>`).join('')}
   </div>`;
 }
 

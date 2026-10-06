@@ -68,6 +68,15 @@ const UI = {
       </div>`;
     this.el.classList.remove('hidden');
     this.el.classList.add('event');
+    this.el.scrollTop = 0;
+    this.el.onscroll = () => this.moreCue();
+    this.moreCue();
+  },
+
+  // Whether text of the scene remains below the dialog's fold (style.css shows the cue).
+  moreCue() {
+    const el = this.el;
+    el.classList.toggle('more', el.classList.contains('event') && el.scrollHeight - el.clientHeight - el.scrollTop > 40);
   },
 
   showEventResult(title, text, shifts) {
