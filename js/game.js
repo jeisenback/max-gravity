@@ -1075,9 +1075,11 @@ function drawMap(W, H) {
     line(st.systemId, G.transit.to);
     ctx.setLineDash([]);
   }
-  if (st.dest) {
+  // A hired hand's map shows the captain's plan, from the same source as the Port tab, and in a burn the course she is on.
+  const plan = hired() && !G.transit ? currentPlan() : null, bound = hired() ? (G.transit ? G.transit.to : plan && plan.sid) : st.dest;
+  if (bound && bound !== from) {
     ctx.strokeStyle = '#5fd35f';
-    line(from, st.dest);
+    line(from, bound);
   }
 
   const missionSystems = new Set(st.missions.map(m => m.destSystem || m.targetSystem));
@@ -1088,7 +1090,7 @@ function drawMap(W, H) {
   const order = [from, st.dest, ...ids].filter((id, i, a) => id && a.indexOf(id) === i);
   for (const id of order) {
     const [x, y] = P(id), sys = SYSTEMS[id], rim = sys.au > span;
-    ctx.globalAlpha = inRange(from, id) ? 1 : 0.35;
+    ctx.globalAlpha = hired() || inRange(from, id) ? 1 : 0.35;
     ctx.fillStyle = GOV_COLORS[sys.gov];
     if (rim) {
       // Off the edge of this zoom: a pointer on the rim.
@@ -1122,6 +1124,10 @@ function drawMap(W, H) {
       ctx.strokeStyle = '#ff6b5a'; ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.arc(x, y, 11, 0, Math.PI * 2); ctx.stroke();
     }
+    if (hired() && id === bound && id !== from) {  // where the captain is taking her
+      ctx.strokeStyle = '#5fd35f'; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(x, y, 15, 0, Math.PI * 2); ctx.stroke();
+    }
     if (missionSystems.has(id)) {
       ctx.strokeStyle = '#ffa53a'; ctx.lineWidth = 1.5;
       ctx.setLineDash([4, 4]);
@@ -1136,12 +1142,17 @@ function drawMap(W, H) {
   ctx.fillText('SYSTEM MAP', 16, 36);
   ctx.font = narrow ? '12px "IBM Plex Mono", monospace' : '13px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
-  const help = `True scale, ${span} AU to the rim${Touch.on ? '' : ' (scroll or +/- to zoom)'}. ${Touch.on ? 'Tap' : 'Click'} a destination to plot a burn.${Touch.on ? '' : ' M or Esc to close.'} White ring: you. Orange: mission. Red: pirate raids. Dim: beyond a full tank.`;
+  const zoom = `True scale, ${span} AU to the rim${Touch.on ? '' : ' (scroll or +/- to zoom)'}.`, close = Touch.on ? '' : ' M or Esc to close.';
+  const help = hired() ? `${zoom} The captain picks where she goes. Look around; you cannot plot a burn.${close} White ring: you. Green ring: where she is going. Orange: mission. Red: pirate raids.`
+    : `${zoom} ${Touch.on ? 'Tap' : 'Click'} a destination to plot a burn.${close} White ring: you. Orange: mission. Red: pirate raids. Dim: beyond a full tank.`;
   let y = 42;
   for (const l of wrapText(help, W - 150)) ctx.fillText(l, 16, y += 16);  // clear of the Close and zoom buttons
   let status = 'No burn plotted.';
   ctx.fillStyle = '#9ab';
-  if (st.dest) {
+  if (hired()) {
+    status = bound ? (G.transit ? `The ship is bound for ${SYSTEMS[bound].name}.` : `The captain's run: ${SYSTEMS[from].name} to ${SYSTEMS[bound].name}, ${plan.days} days.`)
+      : 'The captain is waiting for a market worth the fuel.';
+  } else if (st.dest) {
     const need = burnFuel(from, st.dest);
     ctx.fillStyle = need > st.fuel ? '#ff7f7f' : '#5fd35f';
     const now = travelDays(from, st.dest), w = bestWindow(from, st.dest);
