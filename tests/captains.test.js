@@ -846,3 +846,35 @@ test('the first arrival shows the hall\'s cut as a ledger line, and the goodbye 
   assert.ok(r.text.includes(`Hall bond, 30 percent of your pay: ${r.hall.toLocaleString('en-US')}. Still owed: ${r.owed.toLocaleString('en-US')}.`));
   assert.ok(r.goodbye.includes('The hall\'s bond is struck off the book, with the day it was paid.')); assert.ok(r.recap.includes('You paid off the hiring-hall bond.'));
 });
+
+// ---------- risk and reward by the captain's nerve (#274) ----------
+
+test('a bold outcome moves the captain\'s opinion one more point by their nerve: a success for the bold, a failure for the cautious', async () => {
+  const r = await run(() => {
+    const out = {};
+    for (const key of ['hester', 'dov', 'imre', 'zoya']) {
+      start({ captainKey: key }); const cap = person(hired().captain), nerve = captainEntry().captain.nerve;
+      const delta = won => { cap.opinion = 0; boldWithCaptain(won); return cap.opinion; };
+      out[key] = { nerve, won: delta(true), lost: delta(false) };
+    }
+    return out;
+  });
+  for (const [key, x] of Object.entries(r)) {
+    assert.equal(x.won, x.nerve >= 4 ? 1 : 0, `${key} (nerve ${x.nerve}): a bold success`);
+    assert.equal(x.lost, x.nerve <= 2 ? -1 : 0, `${key} (nerve ${x.nerve}): a bold failure`);
+  }
+  assert.deepEqual([r.hester.won, r.hester.lost, r.zoya.won, r.zoya.lost], [0, -1, 1, 0], 'the same choice has a different best answer under each');
+});
+
+test('only the bold options carry it: the fast, big and hard ice options, the raid\'s turn and return fire, and a work event\'s quick option', async () => {
+  const r = await run(() => {
+    const bold = [...RAID_CLOSING, ...RAID_EXCHANGE].filter(c => c.bold).map(c => c.id);
+    const ice = ICE_STAGES.map(s => s.general.map(c => !!c.bold));
+    start({ captainKey: 'zoya' }); const cap = person(hired().captain);
+    const play = (choice, roll) => { cap.opinion = 0; const real = Math.random; Math.random = () => roll; try { choice.run(); } finally { Math.random = real; } return cap.opinion; };
+    const ev = workEvent(WORK_EVENTS.find(w => w.post === hired().post));
+    return { bold, ice, quickWon: play(ev.choices[1], 0.001), careful: play(ev.choices[0], 0.001) };
+  });
+  assert.deepEqual(r.bold.sort(), ['fire', 'turn']); assert.deepEqual(r.ice, [[false, true, false], [false, true, false], [false, true, false]]);
+  assert.equal(r.quickWon, 1, 'a bold success with a nerve 5 captain'); assert.equal(r.careful, 0, 'the careful option moves nothing');
+});

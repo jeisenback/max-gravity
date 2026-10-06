@@ -30,7 +30,7 @@ const RAID_CLOSING = [
   { id: 'warn', label: 'Put a warning round across her bow', odds: () => 0.5,
     win: [1, 0, 'The round crosses her bow with a kilometer to spare. She sheers off her line and loses a minute getting back on it.'],
     lose: [-1, 0, 'The round goes wide, and she answers it with one burst, close enough that the hull rings. She has your range now.'] },
-  { id: 'turn', label: 'Turn into her', odds: () => 0.5,
+  { id: 'turn', label: 'Turn into her', bold: true, odds: () => 0.5,
     win: [2, 0, 'You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.'],
     lose: [-2, 0.1, 'You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet.'] },
 ];
@@ -41,7 +41,7 @@ const RAID_EXCHANGE = [
   { id: 'burn', label: 'Burn evasive', odds: st => (st === 'torpedo' ? 0.5 : 0.7),
     win: { grapple: [1, 0, 'You throw the ship sideways. Her burst goes through the place you were.'], torpedo: [1, 0, 'The torpedo chases the plume and bursts well astern.'], gun: [1, 0, 'You throw the ship sideways and her burst goes through the place you were. She does not adjust fast enough.'] },
     lose: { grapple: [-1, 0.1, 'She is faster than the turn. The burst rakes your port side.'], torpedo: [-1, 0.1, 'The torpedo turns with you and bursts on the quarter.'], gun: [-1, 0.1, 'She leads the turn and her burst takes you in it. Patrol gunners practise that exact one.'] } },
-  { id: 'fire', label: 'Return fire', odds: () => 0.45,
+  { id: 'fire', label: 'Return fire', bold: true, odds: () => 0.45,
     win: [2, 0, 'You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches.'],
     lose: [-1, 0, 'You fire and miss. The recoil costs you your own angle.'] },
 ];
@@ -147,6 +147,7 @@ function raidStep(s, c, post) {
   let out = text;
   const risk = HAND_RISK[c.id] || 0, cap = person(hired().captain);
   if (!won && risk && Math.random() < risk) out += ` ${hurtHand(s)}`;  // your own call, and it went wrong on you
+  if (c.bold) boldWithCaptain(won);  // the captain's nerve (captains.js)
   if (risk >= 0.35) {
     if (!won) like(cap, -1, 'You made a call in a raid and it went wrong.');
     else if (edge >= 2) like(cap, 1, 'You made the call that turned a raid.');
