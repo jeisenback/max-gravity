@@ -47,6 +47,14 @@ function updateAutopilot(dt) {
   physics(p, dt);
 }
 
+// A hired hand who flies the pilot's post flies the ship out by hand, but the captain calls the burn: once the ship is clear of
+// local space on a run the captain sailed, it starts (the J key still starts it sooner).
+function captainCallsBurn() {
+  const st = G.state;
+  if (!hired() || G.mode !== 'flight' || !hired().run || !st.dest || postMode('pilot') === 'crewed') return;
+  if (Math.hypot(G.player.x, G.player.y) >= BURN_DIST + 40) tryBurn();
+}
+
 const canDepart = () => {
   const st = G.state;
   return !hired() && G.mode === 'landed' && !G.dialog && postMode('pilot') === 'crewed' && !!st.dest && st.dest !== st.systemId && st.fuel >= burnFuel(st.systemId, st.dest);
