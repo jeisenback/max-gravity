@@ -426,11 +426,12 @@ function chapterRecap() {
   const told = crew.filter(c => c.story && c.story.beat >= 3).map(c => c.first), trusted = Object.keys(CAST).filter(k => ((st.cast[k] || {}).flags || {}).trusted).map(k => castPerson(k).first), favor = crew.filter(c => c.story && c.story.beat >= 4).map(c => c.first), loyal = crew.filter(c => c.loyal).map(c => c.first);
   const people = [near.length ? `Closest to you: ${near.map(x => `${x.name} (${opinionWord(x.c.opinion)})`).join(', ')}.` : 'Nobody aboard was a friend yet.',
     told.length ? `Told you what they want: ${list(told)}.` : '', favor.length ? `You took on a favor for ${list(favor)}.` : '', loyal.length ? `Loyal to the ship: ${list(loyal)}.` : '', trusted.length ? `Let you do their work: ${list(trusted)}.` : ''].filter(Boolean).join(' ');
+  const lived = goodbyeFacts(h.flags || {}).map(f => f.recap).join(' ');  // what the hand went through (captains.js)
   const lost = (st.memorial || []).length ? `Lost on the way: ${list((st.memorial || []).map(m => memorialName(m)))}.` : '';
   const ties = webTies(folk()).slice(0, 2).map(x => `${x.a.p.first} and ${x.b.p.first}: ${bondWord(x.n)}.`).join(' ');
   const marks = [cap, ...crew].flatMap(c => (c ? marksOf(c) : [])).sort((a, b) => b.day - a.day).slice(0, 3).map(m => `${dateOf(m.day)}: ${m.text}`).join(' ');
   return {
-    title: 'Looking Back', personal: true, text: [work, why, people, lost, ties, marks].filter(Boolean).join('</p><p>'),
+    title: 'Looking Back', personal: true, text: [work, why, lived, people, lost, ties, marks].filter(Boolean).join('</p><p>'),
     choices: [{ label: 'Go on', run: () => 'You close the ledger.' }],
   };
 }

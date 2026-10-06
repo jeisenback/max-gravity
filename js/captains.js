@@ -120,6 +120,17 @@ function captainScene(name) {
   return { title: s.title, text: s.text, personal: true, choices: s.choices };
 }
 
+// What the hand lived through, kept as flags where it happened (icerun.js, boarders.js, engagements.js) and read by the goodbye and the
+// look back. In priority order: the goodbye shows at most two, in one paragraph, so it stays a scene; the look back names every one
+// that is true. A bad ice run and a clean one replace each other (the last counts). A captain's own `goodbye` is untouched.
+const GOODBYE_FACTS = [
+  { id: 'iceBad', line: 'The ice run is in the book with a line struck through and a figure beside it.', recap: 'The ice run went badly.' },
+  { id: 'iceClean', line: 'The ice run is in the log as a clean haul, and nothing is written beside it.', recap: 'The ice run came in clean.' },
+  { id: 'hurt', line: 'Your name is in the medical log, with a date.', recap: 'You were hurt on duty.' },
+  { id: 'raided', line: 'The raid is in the plot record, with the day and the range.', recap: 'You fought a raid.' },
+];
+const goodbyeFacts = flags => GOODBYE_FACTS.filter(f => flags[f.id]);
+
 // How you leave: read before the ship is yours, because the crew and the captain's record go with the hired game. The parts are the
 // entry's `goodbye`: an opening by how the captain feels about you, then a line for each of crew taken, the secret learned, the
 // first officer (dead or alive), a repaid loan (`repaid` and `repay`, the credits), and a parting line. The choices set the captain's last opinion.
@@ -131,6 +142,8 @@ function captainGoodbye() {
   const parts = [g[warmth]];
   if (friends.length) parts.push(g.crew.replace('{names}', namesOf(friends)));
   if (flags.secretKnown) parts.push(g.secret);
+  const facts = goodbyeFacts(flags).slice(0, 2);
+  if (facts.length) parts.push(facts.map(f => f.line).join(' '));
   if (flags.lent && g.repaid) parts.push(g.repaid);
   if (castDead(d.xo)) parts.push(g.xoDead); else if (hiredXo() && g.xo) parts.push(g.xo);
   parts.push(g.parting);

@@ -787,3 +787,50 @@ test('the other first officers\' scenes are not gated yet, and an opinion at fri
   });
   assert.equal(r.same, true); assert.equal(r.closed, false);
 });
+
+// ---------- what the hand lived through, for the goodbye and the look back (#275) ----------
+
+test('the ice run, an injury and a raid each set their flag when they happen, and a bad ice run and a clean one replace each other', async () => {
+  const r = await run(() => {
+    start(); const h = hired(), out = { start: { ...(h.flags || {}) } };
+    iceHome(0); out.mid = { ...(h.flags || {}) };
+    iceHome(3); out.clean = { iceClean: !!h.flags.iceClean, iceBad: !!h.flags.iceBad };
+    iceHome(-2); out.bad = { iceClean: !!h.flags.iceClean, iceBad: !!h.flags.iceBad };
+    out.beforeHurt = !!h.flags.hurt; hurtHand({}); out.hurt = !!h.flags.hurt;
+    out.beforeRaid = !!h.flags.raided; assaultStart({ shipId: 'raider' }); out.raided = !!h.flags.raided;
+    return out;
+  });
+  assert.deepEqual(r.start, {}); assert.deepEqual(r.mid, {}, 'a middling ice run records nothing');
+  assert.deepEqual(r.clean, { iceClean: true, iceBad: false }); assert.deepEqual(r.bad, { iceClean: false, iceBad: true });
+  assert.deepEqual([r.beforeHurt, r.hurt, r.beforeRaid, r.raided], [false, true, false, true]);
+});
+
+test('a raid that is outrun is not fought, and a raid that is fought is kept', async () => {
+  const r = await run(() => {
+    start(); const h = hired(); hired().raidTold = true;
+    const rolls = [0]; const real = Math.random; Math.random = () => rolls.length ? rolls.shift() : 0.5;
+    try { startRaid({ kind: 'pirate' }, true); } finally { Math.random = real; }
+    const outrun = !!(h.flags || {}).raided;
+    startRaid({ kind: 'pirate' }, false);
+    return { outrun, fought: !!h.flags.raided };
+  });
+  assert.equal(r.outrun, false); assert.equal(r.fought, true);
+});
+
+test('the goodbye shows at most two of what happened, by priority, in one paragraph, and the look back names them all', async () => {
+  const r = await run(() => {
+    start(); const h = hired(), out = {};
+    const text = flags => { h.flags = { ...flags }; return captainGoodbye().text; };
+    out.none = text({}); out.all = text({ iceBad: true, hurt: true, raided: true }); out.low = text({ hurt: true, raided: true }); out.one = text({ iceClean: true });
+    h.flags = { iceBad: true, hurt: true, raided: true }; out.recap = chapterRecap().text;
+    h.flags = {}; out.recapNone = chapterRecap().text;
+    return out;
+  });
+  const bad = 'The ice run is in the book with a line struck through', hurt = 'Your name is in the medical log, with a date.', raid = 'The raid is in the plot record';
+  assert.ok(!r.none.includes('ice run') && !r.none.includes('medical log') && !r.none.includes('plot record'), 'nothing true, nothing added');
+  assert.ok(r.all.includes(bad) && r.all.includes(hurt) && !r.all.includes(raid), 'two of three, by priority');
+  assert.ok(r.all.indexOf(bad) < r.all.indexOf(hurt) && !r.all.slice(r.all.indexOf(bad), r.all.indexOf(hurt)).includes('</p>'), 'in one paragraph');
+  assert.ok(r.low.includes(hurt) && r.low.includes(raid)); assert.ok(r.one.includes('as a clean haul'));
+  assert.ok(r.recap.includes('The ice run went badly.') && r.recap.includes('You were hurt on duty.') && r.recap.includes('You fought a raid.'));
+  assert.doesNotMatch(r.recapNone, /ice run|hurt on duty|fought a raid/);
+});

@@ -99,6 +99,7 @@ function repelEvent(d, outcome) { return repelScene(repelStart(d, outcome)); }
 // Boarding a crippled ship: her people hold the middle, and you are a section in.
 function assaultStart(foe, rate = {}) {
   const w = repelCrew();
+  captainFlag('raided');  // kept for the goodbye (captains.js)
   return { d: { foe, foeHp: 0 }, assault: true, pos: 1, boarders: boardersFor(foe, 'full', rate), grade: rate.grade || 0, base: Math.min(6, w.fight.length + 1), held: w.held, hurt: new Set(), dead: [], marked: [], youHurt: false, round: 0, lines: [] };
 }
 
@@ -151,6 +152,7 @@ function hurtHand(s) {
   const st = G.state, h = hired(), again = s.youHurt || handHurt();
   h.hurtUntil = st.day + (again ? 18 : 12);
   s.youHurt = true;
+  captainFlag('hurt');  // kept for the goodbye (captains.js)
   const bill = roleHolder('medic') ? 0 : Math.min(st.credits, HAND_CLINIC);
   st.credits -= bill;
   const pay = bill ? ` The clinic is ${fmt(bill)} cr of your own, with no medic aboard.` : '';
