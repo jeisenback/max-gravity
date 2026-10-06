@@ -16,7 +16,7 @@ function home() {
   if (!st.home) st.home = { name: 'Second Chance', named: st.day, traditions: [], proposed: [], touches: [], cat: null, log: [], burns: 0 };
   return st.home;
 }
-const shipTitle = () => `the ${home().name}`;
+const shipTitle = () => `the ${cleanName(home().name)}`;  // cleaned here too: the title goes into scene text, news and canvas as well as templates
 function homeLog(text) {
   const h = home();
   h.log.unshift({ day: G.state.day, text });

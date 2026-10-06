@@ -28,6 +28,7 @@ const BUILDINGS = {
 };
 const cname = cid => COMMODITIES.find(c => c.id === cid).name;
 const outpost = () => G.state.outpost;
+const outpostName = o => cleanName((o || outpost()).name);  // safe as text or markup: the characters that make markup are gone
 const hasBuilt = b => outpost().built.includes(b);
 const opPlanet = () => outpost() && planetNamed(outpost().site) && planetNamed(outpost().site).pl;
 const atOutpost = () => outpost() && G.state.planet === outpost().site;
@@ -68,7 +69,7 @@ function outpostDay() {
     st.companyWeek = (st.companyWeek || 0) + pay;
   } else {
     o.pop = Math.max(10, o.pop * (1 - 0.01 * short.length));
-    if (!o.warned || o.warned < st.day - 10) { o.warned = st.day; worldNews(`${o.name} is running short of ${short.map(cname).join(' and ')}. Settlers are leaving.`); }
+    if (!o.warned || o.warned < st.day - 10) { o.warned = st.day; worldNews(`${outpostName(o)} is running short of ${short.map(cname).join(' and ')}. Settlers are leaving.`); }
   }
 }
 
@@ -79,8 +80,8 @@ function found(site, name) {
   st.outpost = { site, name: name || `${site} Landing`, founded: st.day, pop: 40, built: ['habitat'], earned: 0, moments: [],
     stock: { food: 12, water: 12, medical: 3, equipment: 2 } };
   placeOutpost();
-  if (typeof homeLog === 'function') homeLog(`Founded ${st.outpost.name} on ${site}.`);
-  worldNews(`A new settlement, ${st.outpost.name}, has been founded on ${site}.`);
+  if (typeof homeLog === 'function') homeLog(`Founded ${outpostName(st.outpost)} on ${site}.`);
+  worldNews(`A new settlement, ${outpostName(st.outpost)}, has been founded on ${site}.`);
 }
 
 function canBuild(id) {
@@ -90,21 +91,21 @@ function canBuild(id) {
 
 // ---------- settler moments ----------
 const MOMENTS = [
-  { at: 60, make: o => ({ title: 'First Born', text: `The first child born on ${o.name} arrived last night, small and loud and perfectly healthy. The parents want you to choose the name.`,
-    choices: ['Hope', captain().name.split(' ')[0], o.site, 'Nova'].map(n => ({ label: `"${n}"`, run() { o.log = o.log || []; outpostLog(`${n}, the first child born on ${o.name}.`); return `${n} it is. The whole outpost turns out to meet ${n}, who sleeps through it.`; } })) }) },
+  { at: 60, make: o => ({ title: 'First Born', text: `The first child born on ${outpostName(o)} arrived last night, small and loud and perfectly healthy. The parents want you to choose the name.`,
+    choices: ['Hope', cleanName(captain().name).split(' ')[0], o.site, 'Nova'].map(n => ({ label: `"${n}"`, run() { o.log = o.log || []; outpostLog(`${n}, the first child born on ${outpostName(o)}.`); return `${n} it is. The whole outpost turns out to meet ${n}, who sleeps through it.`; } })) }) },
   { at: 100, make: o => ({ title: 'Shift Dispute', text: `The ice crews and the hydroponics crews are at each other's throats over who gets the day shift. Both sides want you to settle it.`,
     choices: [
       { label: 'Rotate everyone', run() { outpostLog('Settled the shift dispute with a rotation.'); return 'Nobody is happy, which means it is fair.'; } },
       { label: 'Let them vote', run() { outpostLog('The settlers voted on their shifts.'); return 'The vote is close, loud, and binding. They seem prouder of that than of the result.'; } },
     ] }) },
-  { at: 150, make: o => ({ title: 'Founders\' Day', text: `A year's worth of settlers have planned a Founders' Day on ${o.name}, and you are the founder. There will be a speech. Yours.`,
+  { at: 150, make: o => ({ title: 'Founders\' Day', text: `A year's worth of settlers have planned a Founders' Day on ${outpostName(o)}, and you are the founder. There will be a speech. Yours.`,
     choices: [
       { label: 'Give the speech', run() { outpostLog('Gave the Founders\' Day speech.'); return 'You keep it short. They cheer anyway, and someone has painted your ship on the habitat wall.'; } },
       { label: 'Let the settlers speak instead', run() { outpostLog('The settlers spoke on Founders\' Day.'); return 'An old ice miner tells the story of the first week, and there is not a dry eye in the ring.'; } },
     ] }) },
-  { at: 250, make: o => ({ title: 'A Council', text: `${o.name} has outgrown a founder making every call. The settlers want to elect a council. They are asking for your blessing, not your permission.`,
+  { at: 250, make: o => ({ title: 'A Council', text: `${outpostName(o)} has outgrown a founder making every call. The settlers want to elect a council. They are asking for your blessing, not your permission.`,
     choices: [
-      { label: 'Give it gladly', run() { o.council = true; outpostLog('The settlers elected their first council.'); return `${o.name} holds its first election. You are invited to every meeting, and expected at none.`; } },
+      { label: 'Give it gladly', run() { o.council = true; outpostLog('The settlers elected their first council.'); return `${outpostName(o)} holds its first election. You are invited to every meeting, and expected at none.`; } },
       { label: 'Keep a seat for yourself', run() { o.council = true; outpostLog('The first council kept a seat for the founder.'); return 'They agree, and put your chair at the end of the table.'; } },
     ] }) },
 ];
@@ -136,7 +137,7 @@ function outpostHtml() {
       <div><b>${b.name}</b><div class="hint">${b.text} Needs ${fmt(b.cr)} cr and ${Object.entries(b.mat).map(([cid, t]) => `${t}t ${cname(cid)}`).join(', ')} in your hold. Housing +${b.cap}.</div></div>
       <button data-action="opBuild" data-arg="${id}" ${canBuild(id) ? '' : 'disabled'}>Build</button></div>`).join('');
   const short = shortages();
-  return `<h3>${o.name}</h3>
+  return `<h3>${outpostName(o)}</h3>
     <p class="desc">${Math.round(o.pop)} settlers, housing for ${capOf()}. ${short.length ? `Short of ${short.map(cname).join(' and ')}: settlers are leaving and there is no share for you.` : `Supplied: growing, and paying you about ${fmt(income())} cr a day.`} Earned so far: ${fmt(o.earned)} cr.</p>
     ${needs}
     ${builds ? `<h3>Build</h3>${builds}` : ''}
@@ -146,7 +147,7 @@ function outpostHtml() {
 function outpostCompanyHtml() {
   const o = outpost();
   if (!o) return '';
-  return `<h3>Outpost</h3><p class="hint">${o.name} on ${o.site}: ${Math.round(o.pop)} settlers of ${capOf()}. ${shortages().length ? `Short of ${shortages().map(cname).join(' and ')}.` : `About ${fmt(income())} cr a day.`} Earned ${fmt(o.earned)} cr since ${dateOf(o.founded)}.</p>`;
+  return `<h3>Outpost</h3><p class="hint">${outpostName(o)} on ${o.site}: ${Math.round(o.pop)} settlers of ${capOf()}. ${shortages().length ? `Short of ${shortages().map(cname).join(' and ')}.` : `About ${fmt(income())} cr a day.`} Earned ${fmt(o.earned)} cr since ${dateOf(o.founded)}.</p>`;
 }
 
 Mods.register({
@@ -160,7 +161,7 @@ Mods.register({
     M.action('opFound', site => {
       const el = document.getElementById('opName'), name = cleanName(el && el.value);
       found(site, name);
-      UI.notes.push(`You file the claim. ${outpost().name} is on your map at ${OUTPOST_SITES[site].sid === 'jupiter' ? 'Jupiter' : 'Neptune'}: fly there to see it, and bring supplies.`);
+      UI.notes.push(`You file the claim. ${outpostName()} is on your map at ${OUTPOST_SITES[site].sid === 'jupiter' ? 'Jupiter' : 'Neptune'}: fly there to see it, and bring supplies.`);
     });
     M.action('opSupply', cid => {
       const st = G.state, t = deliverable(cid), held = st.cargo[cid] || 0;
