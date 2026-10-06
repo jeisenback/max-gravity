@@ -30,7 +30,7 @@ const SIGN_ON = {
 // What the post you chose means for you.
 const SIGN_POSTS = {
   pilot: cap => `You have the helm: ${cap} plots the run, and you fly it, by hand.`,
-  gunner: () => 'You have the guns: when a contact closes, the cards are yours, threats and answers, played as you judge.',
+  gunner: () => 'You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.',
   engineer: () => 'You have the plant: the reactor\'s output, the heat and the wear are yours to watch, and yours to break.',
   comms: () => 'You have the bands: tips, hails and the inbox are yours. You are the ship\'s ear.',
 };
@@ -52,7 +52,7 @@ function signOnEvent() {
   const beside = pair.length && !(d && CAST[d.xo] && CAST[d.xo].round) ? ` Working beside you: ${pair.map(who).join(', and ')}.` : '';
   const pay = d && d.intro ? '' : `You are paid ${h.wage} a day and ${Math.round(h.share * 100)} percent of what she clears. `;  // a captain with their own words has said it
   const week = `${ctx.cap} picks each run and buys the cargo from the ship's funds. ${scopeOff('errands') ? '' : 'Errands for wherever she is going come through the port, and the captain keeps a fifth. '}${pay}`.trim();
-  return {
+  const event = {
     title: 'Signing On',
     text: [b.text(ctx), `${SIGN_POSTS[h.post](ctx.cap)}${beside}`, `${week} Why did you sign on?`].join('</p><p>'),
     choices: [
@@ -61,4 +61,7 @@ function signOnEvent() {
       { label: 'To be somewhere else', run() { like(cap, 1, 'You came aboard easy to get along with.'); for (const c of pair) like(c, 1, 'You came aboard easy to get along with.'); h.reason = 'away'; return b.away; } },
     ],
   };
+  // The game was saved at the first landing, before this choice: save again, so quitting before the next dock keeps what it did.
+  event.choices = event.choices.map(c => ({ ...c, run() { const text = c.run(); save(); return text; } }));
+  return event;
 }

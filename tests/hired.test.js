@@ -536,3 +536,19 @@ test('a hired hand\'s own page shows their place on the ship and how the crew se
   assert.ok(await page.$(`#panel [data-action=person][data-arg="${cap}"]`), 'the captain, linked, among those who see you');
   await done();
 });
+
+test('the Gunner\'s line and the GUNS tab match how contacts play for a hired hand: no card play, no projects that cannot start', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    startHired('gunner');
+    const hand = { sign: SIGN_POSTS.gunner('Captain X'), weapons: weaponsPanel(), projects: projectsHtml('gunner') };
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'owner' });
+    const owner = { weapons: weaponsPanel(), projects: projectsHtml('gunner') };
+    return { hand, owner, hiredNow: !!hired() };
+  });
+  assert.doesNotMatch(r.hand.sign, /cards|threats and answers/); assert.match(r.hand.sign, /the move at the guns is yours alone/);
+  assert.match(r.hand.weapons, /A raid plays as scenes, not cards/); assert.equal(r.hand.projects, '', 'no projects a hand cannot start');
+  assert.equal(r.hiredNow, false); assert.doesNotMatch(r.owner.weapons, /A raid plays as scenes/); assert.match(r.owner.projects, /Refit the fire control/, 'an owner still has them');
+  await done();
+});
