@@ -174,3 +174,44 @@ test('a friend takes the first hit meant for you, once in a fight, and the rest 
   assert.match(r.second, /You are hurt/); assert.ok(r.youHurt);
   await done();
 });
+
+test('a hired hand boards a ship that resists as the authored assault, and a ship that has given up needs no fight', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = fight(), h = hired(), out = {}, foe = G.duel.foe;
+    duelDisabledEvent(foe);  // she drifts beside you
+    const e = boardingEvent(foe);
+    out.labels = e.choices.map(c => c.label); out.odds = /%|odds/i.test(e.text); out.counts = /of yours against/.test(e.text);
+    G.nextEvent = null; e.choices[0].run();
+    out.scene = G.nextEvent && G.nextEvent.title;
+    // A win carries her bridge: her strongbox goes into the ship's fund.
+    const a = assaultStart(foe); a.pos = -1; const fund = h.fund, rep = person(h.captain).opinion;
+    out.won = repelSettle(a); out.fundUp = h.fund > fund; out.foeDead = !!foe.dead; out.liked = person(h.captain).opinion > rep;
+    // A loss drives you back to your lock, and she is still drifting.
+    const foe2 = { ...foe, dead: false }, b = assaultStart(foe2); b.pos = 3; const armor = st.armor;
+    out.lost = repelSettle(b); out.armorDown = st.armor < armor; out.stillDrifting = !foe2.dead;
+    // A trader that has given up: no fight, and no prize for a hand.
+    const t = { ...foe, kind: 'trader', dead: false, disabled: true }, te = boardingEvent(t);
+    out.trader = te.choices.map(c => c.label);
+    return out;
+  });
+  assert.deepEqual(r.labels, ['Board her', 'Let her drift']); assert.ok(!r.odds, 'no odds in the prompt'); assert.ok(r.counts, 'the numbers are in the prompt');
+  assert.ok(['Her Corridor'].includes(r.scene), r.scene);
+  assert.match(r.won, /strongbox/); assert.ok(r.fundUp && r.foeDead && r.liked);
+  assert.match(r.lost, /driven back to the lock/); assert.ok(r.armorDown && r.stillDrifting);
+  assert.ok(!r.trader.some(l => /prize/i.test(l)) && r.trader.some(l => /strip the cargo/.test(l)), r.trader.join('|'));
+  await done();
+});
+
+test('an owner boarding a disabled ship still rolls for it, with the odds in the prompt', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  const r = await ev(() => {
+    G.state = newState(); G.state.credits = 99999; G.mode = 'flight'; G.player = { x: 0, y: 0, vx: 0, vy: 0 };
+    const foe = { name: 'Test', kind: 'pirate', shipId: 'freighter', armor: 10, maxArmor: 40, x: 0, y: 0, vx: 0, vy: 0, disabled: true, captain: 'Voss' };
+    const e = boardingEvent(foe);
+    return { labels: e.choices.map(c => c.label), odds: /%/.test(e.text) };
+  });
+  assert.ok(r.labels.some(l => /prize/i.test(l))); assert.ok(r.odds);
+  await done();
+});
