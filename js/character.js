@@ -103,7 +103,7 @@ function factionCard(c) {
   }
   if (!c.id) return '';
   const t = tiesOf(c), held = Object.entries(t.status).filter(([f]) => f !== t.aff).map(([f, s]) => `${s} in ${shortFaction(f).replace('the ', '')}`);
-  return conCard('Ties', `${conRead('Affiliation', t.aff ? `${t.aff} (${t.status[t.aff]})` : 'none')}${held.length ? `<div class="hint">${esc(held.join('; '))}.</div>` : ''}${FACTIONS.map(f => conRead(f === 'Pirate' ? 'Pirates' : f.replace(/ .*/, ''), regardWord(t.regard[f]))).join('')}`);
+  return conCard('Ties', `<div class="hint">Whom they answer to. It decides how the crew take what you do, and what a port makes of them when the ship comes in.</div>${conRead('Affiliation', t.aff ? `${t.aff} (${t.status[t.aff]})` : 'none')}${held.length ? `<div class="hint">${esc(held.join('; '))}.</div>` : ''}${FACTIONS.map(f => conRead(f === 'Pirate' ? 'Pirates' : f.replace(/ .*/, ''), regardWord(t.regard[f]))).join('')}`);
 }
 
 // The strongest bonds with the others aboard (social.js keeps them).
@@ -142,8 +142,8 @@ function characterPanel() {
   return consoleHtml({
     title: fullName(c), status: c.you ? 'Playing as' : whereIs(c),
     screen: `<div class="char-id">${portraitSvg(c)}<div><div class="char-name">${esc(fullName(c))}</div><div class="hint">${esc(sub)}</div><div class="char-chips">${chips}</div>${news}${blurb}</div></div>`,
-    side: isCaptain ? command + factionCard(c) + standing : conCard('Post skills', rows) + cap + marked + toldCard(c) + tiesCard(c) + factionCard(c)
-      + (c.you ? '' : conCard('Where', `${conRead('Aboard', crewed ? esc(shipTitle()) : 'no')}${crewed && wage(c.id) ? conRead('Wage', `${fmt(wage(c.id))} cr/day`) : ''}${!crewed ? `<div class="hint">${whereIs(c)}</div>` : ''}`)) + standing,
+    side: isCaptain ? standing + command + factionCard(c) : standing + conCard('Post skills', rows) + cap + marked + toldCard(c) + tiesCard(c) + factionCard(c)
+      + (c.you ? '' : conCard('Where', `${conRead('Aboard', crewed ? esc(shipTitle()) : 'no')}${crewed && wage(c.id) ? conRead('Wage', `${fmt(wage(c.id))} cr/day`) : ''}${!crewed ? `<div class="hint">${whereIs(c)}</div>` : ''}`)),
     controls: '<div class="row"><button data-action="personBack">Back</button></div>',
   });
 }
