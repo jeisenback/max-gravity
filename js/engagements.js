@@ -168,15 +168,19 @@ function startRaid(spec, flee, o = {}) {
   return text;
 }
 
-// What a choice can cost, said before it is picked (#293): its worst outcome in a few words, built from what the choice declares (a hull
-// cost on a lost roll, the hand's own risk, and the captain's remark on a risky call), never the odds. A sure choice, or one with
-// nothing at stake, carries no note.
+// What a choice can cost, said before it is picked (#293, #364): its worst outcome in a few words, built from what the choice declares, never
+// the odds. `hull`: a lost roll costs hull, and with it a crew casualty; `casualty`: a lost exchange can cost one without hull; `hand`: you may
+// be hurt; `xp`: you learn less; `marks`: the captain marks the call (a bold or risky one). A sure choice, or one with nothing at stake,
+// carries no note. The raids, the boarding scenes, the ice run and the work events all say it through this.
+function costNote(c) {
+  const costs = [...(c.hull || c.casualty ? [...(c.hull ? ['hull damage'] : []), 'a crew casualty'] : []), ...(c.hand ? ['you may be hurt'] : []), ...(c.xp ? ['you learn less'] : [])];
+  const text = c.marks ? [...(costs.length ? [`${costs.join(', ')}, and`] : []), 'the captain marks it'].join(' ') : costs.join(', ');
+  return text ? ` <span class="hint">[if it fails: ${text}]</span>` : '';
+}
 function raidCostNote(c, style) {
   if (c.odds(style) >= 1) return '';
   const lose = c.lose || c.win, line = Array.isArray(lose) ? lose : (lose[style] || lose.grapple), risk = HAND_RISK[c.id] || 0;
-  const costs = [...(line[1] > 0 ? ['hull damage', 'a crew casualty'] : []), ...(risk > 0 ? ['you may be hurt'] : [])];
-  const text = risk >= 0.35 ? [...(costs.length ? [`${costs.join(', ')}, and`] : []), 'the captain marks it'].join(' ') : costs.join(', ');
-  return text ? ` <span class="hint">[if it fails: ${text}]</span>` : '';
+  return costNote({ hull: line[1] > 0, hand: risk > 0, marks: risk >= 0.35 });
 }
 
 function raidScene(s) {
