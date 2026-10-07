@@ -21,6 +21,8 @@ const ROOMS = [
 const LADDER = 0.62;
 for (const r of ROOMS) { r.w = r.x1 - r.x0; r.mid = (r.x0 + r.x1) / 2; }
 const roomAt = id => ROOMS.find(r => r.id === id);
+// The room under a point on the screen, from the boxes the last cutaway drawing recorded (js/transit.js maps them to pixels).
+const roomAtPoint = (x, y) => { const r = (G.cutRooms || []).find(b => x >= b.x && x <= b.x + b.w && y >= b.y && y <= b.y + b.h); return r ? r.id : null; };
 
 // Where each kind of person likes to spend a burn.
 const HAUNTS = {
@@ -211,6 +213,9 @@ function drawCutaway(cx, cy, maxL) {
     ctx.beginPath(); ctx.moveTo(sx, cy - H * PLUME.cone); ctx.lineTo(sx + dir * len, cy); ctx.lineTo(sx, cy + H * PLUME.cone); ctx.fill();
   }
   if (Math.abs(turn) < 0.05) return;  // edge-on mid-turn
+
+  // Each room's box, for a tap (#323): x0 and x1 swap after the flip, and the engine is the full height of the stern.
+  G.cutRooms = ROOMS.map(r => { const a = X(r.x0), b = X(r.x1), tall = r.tall || r.deck === 0 ? top : mid; return { id: r.id, x: Math.min(a, b), y: r.tall ? top : tall, w: Math.abs(b - a), h: r.tall ? H : H / 2 }; });
 
   // Hull, with a rounded nose, lit from above.
   const shade = ctx.createLinearGradient(0, top, 0, top + H);

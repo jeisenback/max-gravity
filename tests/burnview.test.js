@@ -119,3 +119,54 @@ test('canvas text in the burn view is 12px or more (#265)', async () => {
   assert.ok(sizes.every(s => s >= 12), `font sizes drawn: ${sizes.join(', ')}`);
   await done();
 });
+
+// The rooms of the cutaway, as boxes a tap can find (#323, step 5 task 2).
+test('every room has a box inside the window, the boxes do not overlap, and they are empty mid-turn', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = { bad: [], midTurn: true }, W = innerWidth, H = innerHeight;
+    for (const shipId of ['shuttle', 'lightfreighter', 'courier', 'freighter', 'gunship']) {
+      burn(shipId); const t = G.transit;
+      for (const [angle, flipped] of [[-Math.PI / 2, false], [Math.PI / 2, true]]) {
+        t.left = t.total * 0.6; t.angle = angle; t.flipped = flipped; drawTransit(W, H);
+        const b = G.cutRooms;
+        if (b.length !== ROOMS.length) out.bad.push(`${shipId}: ${b.length} boxes`);
+        for (const x of b) if (x.x < 0 || x.y < 0 || x.x + x.w > W || x.y + x.h > H) out.bad.push(`${shipId}: ${x.id} outside`);
+        for (let i = 0; i < b.length; i++) for (let j = i + 1; j < b.length; j++) {
+          const p = b[i], q = b[j];
+          if (!(p.x + p.w <= q.x + 0.01 || q.x + q.w <= p.x + 0.01 || p.y + p.h <= q.y + 0.01 || q.y + q.h <= p.y + 0.01)) out.bad.push(`${shipId}: ${p.id} overlaps ${q.id}`);
+        }
+      }
+      t.angle = 0; drawTransit(W, H); if (G.cutRooms.length) out.midTurn = false;
+    }
+    return out;
+  });
+  assert.deepEqual(r.bad, []); assert.ok(r.midTurn, 'no boxes mid-turn');
+  await done();
+});
+
+test('a tap at the centre of each room finds that room, on every ship, both ways round, wide and phone', async () => {
+  for (const [name, viewport, mobile] of [['wide', { width: 1280, height: 800 }, false], ['phone', { width: 390, height: 844 }, true]]) {
+    const { ev, done } = await open({ scope: 'earth-hired', viewport, mobile });
+    await ev(helpers);
+    const r = await ev(() => {
+      const out = { wrong: [], gap: [] }, W = innerWidth, H = innerHeight;
+      for (const shipId of ['shuttle', 'lightfreighter', 'courier', 'freighter', 'gunship']) {
+        burn(shipId); const t = G.transit;
+        for (const [angle, flipped] of [[-Math.PI / 2, false], [Math.PI / 2, true]]) {
+          t.left = t.total * 0.6; t.angle = angle; t.flipped = flipped; drawTransit(W, H);
+          for (const b of G.cutRooms) {
+            const hit = roomAtPoint(b.x + b.w / 2, b.y + b.h / 2);
+            if (hit !== b.id) out.wrong.push(`${shipId}: ${b.id} found ${hit}`);
+          }
+          const top = Math.min(...G.cutRooms.map(b => b.y));
+          if (roomAtPoint(G.cutRooms[0].x + 2, top - 20) !== null) out.gap.push(shipId);
+        }
+      }
+      return out;
+    });
+    assert.deepEqual(r.wrong, [], `${name}: wrong rooms`); assert.deepEqual(r.gap, [], `${name}: a point above the hull finds a room`);
+    await done();
+  }
+});

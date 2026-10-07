@@ -546,11 +546,13 @@ function drawTransit(W, H) {
   ctx.save();
   ctx.translate(cx + (narrow ? 0 : 40) + Math.sin(G.time * 53) * 0.5 * shake, shipY + Math.sin(G.time * 71 + 1) * 0.8 * shake);  // a shiver, not a random draw: the game's random is seeded in the tests
   ctx.scale(k, k);
-  G.cutHits = [];  // (a mid-turn frame draws no one)
+  G.cutHits = []; G.cutRooms = [];  // (a mid-turn frame draws no one)
   drawCutaway(0, 0, L);
   G.burnBoxes = { ship: { x: cx + (narrow ? 0 : 40) - L * k / 2, y: shipY - L * k * CUTAWAY_H / 2, w: L * k, h: L * k * CUTAWAY_H } };  // where each block was drawn, for the test (#262)
   ctx.restore();
-  for (const h of G.cutHits || []) { h.x = cx + h.x * k; h.y = shipY + h.y * k; }  // drawn at the origin, scaled: back to the screen for a click
+  const ox = cx + (narrow ? 0 : 40);  // where the cutaway's origin was drawn
+  for (const r of G.cutRooms) { r.x = ox + r.x * k; r.y = shipY + r.y * k; r.w *= k; r.h *= k; }
+  for (const h of G.cutHits || []) { h.x = ox + h.x * k; h.y = shipY + h.y * k; }  // drawn at the origin, scaled: back to the screen for a click
   G.lifeY = shipY + L * k * CUTAWAY_H / 2 + 14 + 40 * k;  // downtime buttons sit below it
 
   // Route, on a plate so the star streaks do not run through the title and the clock (#262)
