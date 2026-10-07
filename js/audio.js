@@ -2,7 +2,7 @@
 
 // Sound effects synthesized with Web Audio: no audio files. Browsers only allow audio
 // after a user gesture, so the context starts on the first key or tap. N (or the
-// Sound button in port) toggles it. Loaded before game.js; only calls into it at runtime.
+// Sound setting) toggles it. Loaded before game.js; only calls into it at runtime.
 
 const Sfx = {
   ctx: null, out: null, hum: null, noiseBuf: null,
@@ -133,7 +133,5 @@ Mods.register({
       Sfx.toggle();
       if (G.mode === 'landed' && !G.dialog) UI.render();
     });
-    M.filter('dockButtons', html => `${html}<button data-action="sound">Sound: ${Sfx.on ? 'on' : 'off'}</button>`);
-    M.action('sound', () => Sfx.toggle());
   },
 });

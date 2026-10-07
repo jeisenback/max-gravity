@@ -81,6 +81,11 @@ canvas { display: block; touch-action: none; }
   #panel.event { inset: 0; margin: auto; width: min(560px, 94vw); height: fit-content; max-height: 92vh; top: 0; transform: none; }
 }
 
+/* A tablet has the compact HUD strip (84px) across the top, so the panel sits below it. From 1000px the HUD is a sidebar. */
+@media (min-width: 700px) and (max-width: 999px) {
+  #panel:not(.event) { top: 84px; height: min(780px, calc(100vh - 92px)); }
+}
+
 .eyebrow {
   font-family: var(--font-label);
   font-size: 12px;
@@ -187,9 +192,10 @@ canvas { display: block; touch-action: none; }
   background: var(--panel-2);
   flex-shrink: 0;
 }
-.dock { flex-wrap: wrap; }  /* phones: the buttons take two rows rather than run off the screen */
-.dock button { flex: 1 1 30%; min-width: 0; }
-@media (min-width: 700px) { .dock button { flex: 0 0 auto; } }
+.dock { flex-wrap: nowrap; }  /* phones: Menu, System map and the primary action share one row */
+.dock button { flex: 1 1 0; min-width: 0; }
+.dock button.primary { flex: 2 1 0; }
+@media (min-width: 700px) { .dock button, .dock button.primary { flex: 0 0 auto; } }
 
 .tutorial {
   display: flex;
@@ -629,22 +635,28 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 #bkeys.compact .full { display: none; } #bkeys.compact .short { display: inline; } #bkeys.compact { gap: 4px; padding-inline: 6px; } #bkeys.compact button { padding-inline: 4px; letter-spacing: 0.04em; }
 @media (max-height: 480px) { #bkeys { padding-top: 4px; padding-bottom: calc(4px + env(safe-area-inset-bottom, 0px)); } #bkeys button { min-height: 30px; } #bsheet { max-height: 55vh; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); } }
 
-/* The ship-interface shell (js/shell.js): a rail of the ship's rooms beside the page. On a phone the rail is a wrapping
-   row above the page; the bottom strip comes in a later step. */
+/* Text for a screen reader only (the live region, #live). */
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* The ship-interface shell (js/shell.js): a rail of the ship's rooms. On a phone it is a grid between the page and the dock,
+   every entry 44px high, nothing hidden or scrolled sideways; the group headings are for screen readers only. From 700px
+   it is a column beside the page. */
 .shell { flex: 1; min-height: 0; display: flex; flex-direction: column; }
-.shell .body { min-width: 0; }
-.rail { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 6px 12px; flex-shrink: 0; background: var(--panel-2); border-bottom: 1px solid var(--line); }
-.rail-group { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; min-width: 0; }
-.rail-group h3 { margin: 0 4px 0 0; font-size: 12px; }
+.shell .body { min-width: 0; order: 1; }
+.rail { order: 2; display: grid; grid-template-columns: repeat(auto-fit, minmax(64px, 1fr)); gap: 4px; padding: 6px 12px; flex-shrink: 0; background: var(--panel-2); border-top: 1px solid var(--line); }
+.rail-group { display: contents; }
+.rail-group h3 { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .rail-group h3::after { display: none; }
+.rail button { min-height: 44px; padding-inline: 4px; }
 .rail button.active { color: var(--accent); border-color: var(--accent); }
-.rail-why { flex-basis: 100%; color: var(--muted); font-size: 12px; line-height: 1.4; }
+.rail-why { grid-column: 1 / -1; color: var(--muted); font-size: 12px; line-height: 1.4; }
 @media (min-width: 700px) {
   .shell { flex-direction: row; }
-  .rail { flex-direction: column; flex-wrap: nowrap; gap: 14px; width: 132px; padding: 10px; overflow-y: auto; border-bottom: 0; border-right: 1px solid var(--line); }
-  .rail-group { flex-direction: column; align-items: stretch; }
-  .rail-group h3 { margin: 0 0 4px; }
-  .rail button { width: 100%; text-align: left; }
+  .shell .body { order: 0; }
+  .rail { order: 0; display: flex; flex-direction: column; gap: 14px; width: 132px; padding: 10px; overflow-y: auto; border-top: 0; border-right: 1px solid var(--line); }
+  .rail-group { display: flex; flex-direction: column; gap: 4px; align-items: stretch; }
+  .rail-group h3 { position: static; width: auto; height: auto; margin: 0 0 4px; overflow: visible; clip: auto; white-space: normal; }
+  .rail button { min-height: 0; width: 100%; text-align: left; }
 }
 
 /* A name, and the word that belongs to it, stay on one line (#263). */

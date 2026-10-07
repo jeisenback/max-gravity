@@ -17,6 +17,7 @@
 <body>
   <canvas id="game" role="img" aria-label="Game view. Ships, planets, and the map are drawn here; menus, trading, and story scenes are text panels beside it."></canvas>
   <div id="panel" class="hidden"></div>
+  <div id="live" class="sr-only" aria-live="polite" aria-atomic="true"></div>
   <script src="js/build.js"></script>
   <script src="js/data.js"></script>
   <script src="js/util.js"></script>
@@ -115,6 +116,7 @@
   <script src="js/uat.js"></script>
   <script src="js/help.js"></script>
   <script src="js/menu.js"></script>
+  <script src="js/a11y.js"></script>
   <!-- Mods: one script tag each, here, after the built-in systems and before game.js. See the README. -->
   <!-- <script src="mods/example-vesta.js"></script> -->
   <script src="js/game.js"></script>
