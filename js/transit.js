@@ -400,7 +400,7 @@ function openEvent(ev) {
   // A choice can need your own trade: `post` is the post you must work, `skill` the level you must have reached there (a hired
   // hand's: hired.js). One for a post you do not work is hidden; one you have not the level for is shown, and cannot be taken.
   const hand = typeof hired === 'function' ? hired() : null, level = hand ? skillLevel(hand.post) : 0;
-  const choices = ev.choices.filter(c => (!c.role || roleSkill(c.role)) && (c.post === undefined || (hand && hand.post === c.post)) && (c.skill === undefined || hand))
+  const choices = ev.choices.filter(c => (!c.role || c.own || roleSkill(c.role)) && (c.post === undefined || (hand && hand.post === c.post)) && (c.skill === undefined || hand))
     .map(c => (c.role ? { ...c, label: c.label.replace(/\{crew\}/g, roleName(c.role)) } : c))
     .map(c => (c.skill === undefined ? c : { ...c, can: () => level >= c.skill && (!c.can || c.can()), why: () => (level < c.skill ? `Needs skill ${c.skill} at your post; you have ${level}.` : c.why && (typeof c.why === 'function' ? c.why() : c.why)) }))
     .map(c => (c.opinion === undefined ? c : opinionGate(c))).filter(Boolean);  // a choice that needs someone's regard (captains.js)
