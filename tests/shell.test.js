@@ -203,3 +203,32 @@ test('a hired hand with a stale Exchange or Company tab falls back to Port', asy
   assert.deepEqual(r, { trade: 'port', company: 'port' });
   await done();
 });
+
+// The captain's run label and the header's captain name: one phrase, no gap before the possessive, never split across lines.
+const labelState = () => {
+  const eyebrow = document.querySelector('.post .eyebrow'), btn = eyebrow.querySelector('button.link');
+  const after = btn.nextSibling, range = document.createRange();
+  range.setStart(after, 0); range.setEnd(after, 1);
+  const header = document.querySelector('.stats .nowrap');
+  return {
+    text: eyebrow.innerText.replace(/\s+/g, ' ').trim().toLowerCase(),
+    nameRects: btn.getClientRects().length,
+    gap: Math.round((range.getBoundingClientRect().left - btn.getBoundingClientRect().right) * 10) / 10,
+    header: header ? header.textContent : null, headerRects: header ? header.getClientRects().length : 0,
+  };
+};
+
+test('the captain\'s name and run label do not split or gap, at 390 and 1280', async () => {
+  for (const viewport of [{ width: 1280, height: 800 }, { width: 390, height: 844 }]) {
+    const { ev, done } = await open({ shell: true, viewport, mobile: viewport.width < 700 });
+    await ev(helpers);
+    const r = await ev(([fn]) => { start(); return (0, eval)(`(${fn})`)(); }, [labelState.toString()]);
+    const at = `at ${viewport.width}px`;
+    assert.ok(r.text.startsWith("captain hester vance's run"), `the label reads as one phrase ${at}: ${r.text}`);
+    assert.equal(r.nameRects, 1, `the name stays on one line ${at}`);
+    assert.ok(r.gap <= 2, `no gap before the possessive ${at}: ${r.gap}px`);
+    assert.equal(r.header, 'Capt. Hester Vance', `the header names the captain in one piece ${at}`);
+    assert.equal(r.headerRects, 1, `the header name stays on one line ${at}`);
+    await done();
+  }
+});
