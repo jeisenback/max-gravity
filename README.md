@@ -123,6 +123,7 @@ On a keyboard:
 - `js/help.js` - the Help topics and one-time tips
 - `js/menu.js` - the title screen, new-game setup, save slots, the pause menu, and settings
 - `js/build.js` - the version number, the release switch for tester tools, and the scope switch (see Running)
+- `tools/coverage.js` - runs the suite with the browser's V8 coverage on and reports line coverage per file, the lines with a branch that did not run, and the functions never called (`npm run coverage`; `--files`, `--top`, `--all`, `--keep`, `--from DIR`)
 - `tools/soak.js` - sails the captain's runs for N legs and reports runs, days and pay: the tuning tool for the chapter's economy (`node tools/soak.js --seeds 1,2,3 --legs 40`)
 - `js/captains.js` and `js/captains/` - the authored captains of the hired chapter (one file each: who they are, how they run a ship, what they pay) and their first officers, which are `CAST` entries marked fragile; a hired game is run by one of them
 - `js/uat.js` - tester tools: a checklist of set-ups for every feature, general tools, and a pass/fail report

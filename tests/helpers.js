@@ -12,6 +12,9 @@ const { chromium } = require('playwright');
 const assert = require('node:assert/strict');
 const path = require('node:path');
 
+const fs = require('node:fs');
+const COVERAGE_DIR = process.env.COVERAGE_DIR || '';  // set by tools/coverage.js: each page's JS coverage is written there
+let coverageN = 0;
 const URL = 'file://' + path.resolve(__dirname, '..', 'index.html');
 let browser = null;
 
@@ -51,6 +54,7 @@ async function open({ title = false, viewport = { width: 1280, height: 800 }, mo
   const page = await ctx.newPage();
   const errors = [];
   watch(page, errors);
+  if (COVERAGE_DIR) await page.coverage.startJSCoverage({ resetOnNavigation: false });  // tools/coverage.js
   const query = [scope === 'full' ? 'scope=full' : '', shell === 'default' ? '' : shell ? 'shell=on' : 'shell=off'].filter(Boolean).join('&');
   await page.goto(URL + (query ? `?${query}` : '') + hash);  // the build's scope (js/build.js): tests run everything unless they ask for the narrow one
   await page.waitForFunction(() => typeof G !== 'undefined' && (G.state || G.mode === 'title'));
@@ -60,7 +64,14 @@ async function open({ title = false, viewport = { width: 1280, height: 800 }, mo
   // Runs a function in the page with the random seed reset first, so a block of
   // game logic plays out the same way whatever the frame loop did before it.
   const ev = (fn, arg) => page.evaluate(([src, a, s]) => { __seed(s); return (0, eval)(`(${src})`)(a); }, [fn.toString(), arg, seed]);
-  const done = async () => { await ctx.close(); assert.deepEqual(errors, [], 'page errors'); };
+  const done = async () => {
+    if (COVERAGE_DIR) {  // the scripts this page ran, kept for tools/coverage.js to merge
+      const entries = await page.coverage.stopJSCoverage();
+      fs.writeFileSync(path.join(COVERAGE_DIR, `${process.pid}-${coverageN++}.json`), JSON.stringify(entries.filter(e => e.url.includes('/js/')).map(e => ({ url: e.url, length: e.source.length, functions: e.functions }))));
+    }
+    await ctx.close();
+    assert.deepEqual(errors, [], 'page errors');
+  };
   return { page, ctx, ev, errors, done, url: URL };
 }
 
