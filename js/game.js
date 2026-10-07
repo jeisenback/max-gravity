@@ -48,6 +48,7 @@ const currentPlanet = () => system().planets.find(p => p.name === G.state.planet
 function msg(text) {
   G.messages.push({ text, t: G.time });
   if (G.messages.length > 30) G.messages.shift();
+  announce(text);
 }
 
 // Day 1 is 9 June 2214.

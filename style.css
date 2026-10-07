@@ -635,6 +635,9 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 #bkeys.compact .full { display: none; } #bkeys.compact .short { display: inline; } #bkeys.compact { gap: 4px; padding-inline: 6px; } #bkeys.compact button { padding-inline: 4px; letter-spacing: 0.04em; }
 @media (max-height: 480px) { #bkeys { padding-top: 4px; padding-bottom: calc(4px + env(safe-area-inset-bottom, 0px)); } #bkeys button { min-height: 30px; } #bsheet { max-height: 55vh; bottom: calc(40px + env(safe-area-inset-bottom, 0px)); } }
 
+/* Text for a screen reader only (the live region, #live). */
+.sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
 /* The ship-interface shell (js/shell.js): a rail of the ship's rooms. On a phone it is a grid between the page and the dock,
    every entry 44px high, nothing hidden or scrolled sideways; the group headings are for screen readers only. From 700px
    it is a column beside the page. */

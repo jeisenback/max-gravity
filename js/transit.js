@@ -316,6 +316,7 @@ function comm(text) {
   if (isQuiet(text)) return;  // muted on the Comms screen
   G.transit.comms.push(text);
   if (G.transit.comms.length > 10) G.transit.comms.shift();
+  announce(text);
 }
 
 function transitSeconds(days) {
