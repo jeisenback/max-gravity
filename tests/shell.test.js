@@ -130,6 +130,26 @@ test('an entry for a service this port lacks is shut and says why', async () => 
   await done();
 });
 
+test('the captain\'s name and run label do not split or gap, at 390 and 1280', async () => {
+  for (const [name, viewport, mobile] of [['phone', { width: 390, height: 844 }, true], ['wide', { width: 1280, height: 800 }, false]]) {
+    const { ev, done } = await open({ shell: true, scope: 'earth-hired', viewport, mobile });
+    await ev(helpers);
+    const r = await ev(() => {
+      start({ captainKey: 'hester' });
+      const label = document.querySelector('.post .eyebrow'), btn = label.querySelector('button.link'), after = btn.nextSibling;
+      const range = document.createRange(); range.setStart(after, 0); range.setEnd(after, after.textContent.indexOf("'") + 1);
+      const apos = range.getClientRects()[0], inner = document.createRange(); inner.selectNodeContents(btn); const b = inner.getBoundingClientRect();  // the name's own text, not the button's padding
+      const head = document.querySelector('.stats .nowrap');
+      return { text: label.textContent.replace(/\s+/g, ' ').trim().toLowerCase(), btnRects: btn.getClientRects().length, gap: apos.left - b.right, head: head ? head.getClientRects().length : null, headText: head ? head.textContent : '' };
+    });
+    assert.ok(r.text.startsWith("captain hester vance's run"), `${name}: ${r.text}`);
+    assert.equal(r.btnRects, 1, `${name}: the name is on one line`);
+    assert.ok(r.gap <= 2, `${name}: the gap before the apostrophe is ${r.gap}px`);
+    assert.equal(r.head, 1, `${name}: the header name is on one line`); assert.match(r.headText, /^Capt\. Hester Vance$/);
+    await done();
+  }
+});
+
 test('an unavailable entry says why', async () => {
   const { ev, done } = await open({ shell: true });
   await ev(helpers);

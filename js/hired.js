@@ -531,7 +531,7 @@ const runTerms = r => `${r.days} days, about ${fmt(r.profit)} cr profit, so abou
 
 const runHtml = () => {
   const h = G.state.hired, plan = currentPlan(), led = h.ledger.slice(0, 5), name = id => COMMODITIES.find(c => c.id === id).name;
-  return `<div class="post"><div class="eyebrow">${hiredCaptain() ? `Captain ${personLink(hiredCaptain())}'s run` : 'The captain\'s run'} &middot; ship's funds ${fmt(h.fund)} cr &middot; your savings ${fmt(G.state.credits)} cr</div>
+  return `<div class="post"><div class="eyebrow">${hiredCaptain() ? `<span class="nowrap">Captain ${personLink(hiredCaptain())}'s</span> run` : 'The captain\'s run'} &middot; ship's funds ${fmt(h.fund)} cr &middot; your savings ${fmt(G.state.credits)} cr</div>
     <p class="desc">${plan && plan.yard && wantsYard() ? 'The captain knows you have the money for a ship, and is heading for a port with a yard. ' : ''}${!plan ? 'The captain is waiting for a market worth the fuel.'
       : plan.ballast ? `The captain has no cargo worth carrying and will run light to ${plan.planet}, ${SYSTEMS[plan.sid].name}, to look for work.`
       : plan.loaded ? `The captain will take the ${plan.tons}t of ${name(plan.good)} already aboard to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${plan.days} days.`

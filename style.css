@@ -89,7 +89,7 @@ canvas { display: block; touch-action: none; }
   text-transform: uppercase;
   color: var(--accent);
 }
-.eyebrow button.link { text-transform: inherit; }  /* a name in a heading keeps the heading's case: "Adair's", not "Adair'S" */
+.eyebrow button.link { text-transform: inherit; padding: 0; min-height: 0; }  /* a name in a heading keeps the heading's case: "Adair's", not "Adair'S" */
 
 .event-body { padding: 18px 16px; }
 .event-body h1 {
@@ -646,3 +646,6 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
   .rail-group h3 { margin: 0 0 4px; }
   .rail button { width: 100%; text-align: left; }
 }
+
+/* A name, and the word that belongs to it, stay on one line (#263). */
+.nowrap { white-space: nowrap; }
