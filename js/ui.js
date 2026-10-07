@@ -248,9 +248,9 @@ const UI = {
       const known = alivePeople().filter(p => p.opinion !== 0 && !st.crew.includes(p.id))
         .sort((a, b) => Math.abs(b.opinion) - Math.abs(a.opinion)).slice(0, 12)
         .map(p => (`<div class="hint"><b>${personLink(p)}</b> ` +
-            `(${opinionWord(p.opinion)}, ${p.ship ? `captain of the ${p.ship.name}, flies around ${SYSTEMS[p.haunt].name}` : p.location ?
-              `last seen at ${p.location}` : 'whereabouts unknown'})${p.location === here ? ' <b>- here now</b>' : ''}: ${p.memories.length ?
-              p.memories[p.memories.length - 1] : ''}</div>`)).join('');
+            `(${opinionWord(p.opinion)}, ${p.ship ? `captain of the ${esc(p.ship.name)}, flies around ${SYSTEMS[p.haunt].name}` : p.location ?
+              `last seen at ${esc(p.location)}` : 'whereabouts unknown'})${p.location === here ? ' <b>- here now</b>' : ''}: ${p.memories.length ?
+              esc(p.memories[p.memories.length - 1]) : ''}</div>`)).join('');
       const elsewhere = Object.values(CREW).filter(c => c.home !== here).map(c => `${c.name} (${ROLE_NAMES[c.role]}) at ${c.home}`);
       return `
         <h3>${hired() ? 'The crew' : 'Your crew'}</h3>

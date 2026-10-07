@@ -84,3 +84,80 @@ test('no template in js/ has an inline handler, and data-select selects', async 
   assert.equal(await ev(() => { const el = document.getElementById('sel'); return el.value.slice(el.selectionStart, el.selectionEnd); }), 'a code to copy');
   await done();
 });
+
+// ---------- hostile data (#321, #251) ----------
+
+// Two hostile strings: one that breaks out of an attribute, one that is a tag. They go straight into the state, past the cleaning
+// on the way in (cleanName, stripTags), as if an import or a mod had missed a field: the templates must hold on their own.
+const HOSTILE_A = 'x" onmouseover="alert(1)', HOSTILE_B = '<img src=x onerror="window.pwned=1">';
+
+const hostileGame = ([HOSTILE_A, HOSTILE_B]) => {
+  startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+  const st = G.state; st.tutorial = null; st.story.next = 1e9;
+  const crew = person(st.crew.find(id => !person(id).cast));
+  Object.assign(crew, { first: 'Kay' + HOSTILE_A, last: HOSTILE_B, home: HOSTILE_A });
+  const stranger = registerPerson(Object.assign(makePerson(), { first: HOSTILE_A, last: HOSTILE_B, opinion: 2, location: HOSTILE_A }));
+  stranger.memories.push(`Day 1: ${HOSTILE_B}`);
+  const patron = registerPerson(Object.assign(makePerson(), { first: HOSTILE_A, last: HOSTILE_B, opinion: 2, location: st.planet }));  // at the bar tonight
+  patron.memories.push(`Day 1: ${HOSTILE_B}`); G.patrons = null;  // the bar is filled again on the next look
+  captain().name = HOSTILE_A + HOSTILE_B;
+  home().name = HOSTILE_A + HOSTILE_B;
+  st.journal = [{ day: 1, text: HOSTILE_A + HOSTILE_B }];
+  return crew.id;
+};
+
+// What the page must not contain: an element or attribute the hostile strings could have made.
+const injected = () => ({
+  elements: document.querySelectorAll('#panel img, #panel script, #panel iframe').length,
+  attrs: [...document.querySelectorAll('#panel *')].filter(el => [...el.attributes].some(a => /^on/i.test(a.name))).map(el => el.tagName.toLowerCase()),
+  pwned: !!window.pwned,
+});
+
+test('a hostile name breaks no rail page, the scene dialog or the menu', async () => {
+  const { page, ev, done } = await open({ scope: 'earth-hired', shell: 'default' });
+  await page.evaluate(`window.injected = ${injected.toString()}`);
+  await ev(hostileGame, [HOSTILE_A, HOSTILE_B]);
+  const tabs = await ev(() => { UI.tab = 'port'; UI.render(); return [...document.querySelectorAll('.rail button:not([disabled])')].map(b => b.dataset.arg); });
+  const failures = [];
+  for (const tab of tabs) {
+    await page.click(`.rail [data-action=tab][data-arg=${tab}]`);
+    const r = await ev(() => injected());
+    if (r.elements || r.attrs.length || r.pwned) failures.push(`${tab}: ${JSON.stringify(r)}`);
+  }
+  assert.ok(await ev(() => { UI.tab = 'bar'; UI.render(); return /Tonight/.test(document.getElementById('panel').textContent) && G.patrons.some(x => x.p.first.includes('onmouseover')); }), 'a hostile patron is at the bar');
+  // the Crew page shows the hostile name as literal text
+  await page.click('.rail [data-action=tab][data-arg=crew]');
+  assert.ok((await ev(() => document.getElementById('panel').textContent)).includes(HOSTILE_A), 'the name is on the Crew page as text');
+  // a scene whose title and text carry the name, and the menu
+  await ev(([a, b]) => openEvent({ title: `The ${a}`, text: `${a} says hello.`, choices: [{ label: `Ask ${a}`, run: () => `${a} nods.` }] }), [HOSTILE_A, HOSTILE_B]);
+  const scene = await ev(() => ({ ...injected(), label: document.querySelector('.event-body').getAttribute('aria-label') }));
+  if (scene.elements || scene.attrs.length || scene.pwned) failures.push(`scene: ${JSON.stringify(scene)}`);
+  assert.equal(scene.label, `The ${HOSTILE_A}`, 'the dialog label is the title, as text');
+  await ev(() => { while (G.dialog) finishEvent(); Menu.pause(); Menu.view = 'load'; Menu.render(); });
+  const menu = await ev(() => injected());
+  if (menu.elements || menu.attrs.length || menu.pwned) failures.push(`menu: ${JSON.stringify(menu)}`);
+  assert.deepEqual(failures, [], 'the pages a hostile name reaches');
+  await done();
+});
+
+// ---------- golden markup: the pages keep their markup as they move onto the helpers (#321) ----------
+
+// An ordinary seeded hired game, no hostile data: the page's markup is the same every run. UPDATE_GOLDEN=1 rewrites the fixtures (do it
+// in the same commit as any intended change to what a page says).
+const ordinaryGame = () => {
+  startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+  const st = G.state; st.tutorial = null; st.story.next = 1e9;
+};
+
+for (const tab of ['crew', 'bar']) {
+  test(`the ${tab} page renders the golden markup for an ordinary game`, async () => {
+    const { page, ev, done } = await open({ scope: 'earth-hired', shell: 'default' });
+    await ev(ordinaryGame);
+    await page.click(`.rail [data-action=tab][data-arg=${tab}]`);
+    const html = await ev(() => document.querySelector('.shell .body').innerHTML);
+    const file = `tests/fixtures/${tab}.html`;
+    if (process.env.UPDATE_GOLDEN) fs.writeFileSync(file, html + '\n');
+    assert.equal(html + '\n', fs.readFileSync(file, 'utf8'), `${tab}: the markup changed (UPDATE_GOLDEN=1 rewrites ${file})`);
+    await done();
+  });
+}

@@ -390,14 +390,14 @@ function barHtml() {
   if (!G.patrons || G.barState.planet !== planet.name) fillBar(planet);
   const b = barOf(planet), round = 25 * (4 + G.patrons.filter(x => !x.cast).length);
   const rows = G.patrons.map(({ p, known, cast, regular }, i) => (`<div class="mission">
-      <div><b>${p.first} ${p.last}</b>${known ? ` <span class="hint">(${opinionWord(p.opinion)})</span>` : ''}
+      <div><b>${esc(p.first)} ${esc(p.last)}</b>${known ? ` <span class="hint">(${opinionWord(p.opinion)})</span>` : ''}
         <div ` +
       `class="hint">${cast ? 'Aboard with you, and at the bar tonight.' : known ? `${regular ? 'A regular here.' : 'Someone you know.'} ${regular && p.gossip ?
-        `${p.first} ${p.gossip} ` : ''}${p.memories.length ? p.memories[p.memories.length - 1] : ''}` : `${TRAITS[p.traits[0]].adj[0].toUpperCase()}${TRAITS[p.traits[0]].adj.slice(1)} ${p.job} from ${p.home}.`}</div></div>
+        `${esc(p.first)} ${p.gossip} ` : ''}${p.memories.length ? esc(p.memories[p.memories.length - 1]) : ''}` : `${TRAITS[p.traits[0]].adj[0].toUpperCase()}${TRAITS[p.traits[0]].adj.slice(1)} ${esc(p.job)} from ${esc(p.home)}.`}</div></div>
       <button data-action="barTalk" data-arg="${i}">Talk</button>
     </div>`)).join('');
   const hire = G.bar.map((c, i) => `<div class="mission">
-      <div><b>${fullName(c)}</b> &middot; ${ROLE_NAMES[c.role]}, skill ${c.skill}/3<div class="hint">${describe(c).replace(GOALS[c.goal], 'looking for a ship')}</div></div>
+      <div><b>${esc(fullName(c))}</b> &middot; ${ROLE_NAMES[c.role]}, skill ${c.skill}/3<div class="hint">${describe(c).replace(GOALS[c.goal], 'looking for a ship')}</div></div>
       ${interviewButton(i)}<button data-action="hire" data-arg="bar:${i}" ${berthsFree() > 0 && st.credits >= c.fee ? '' : 'disabled'}>Hire (${fmt(c.fee)} cr)</button>
     </div>`).join('');
   return `
