@@ -1,6 +1,6 @@
 # Death and departure as a real risk (#357): spike
 
-Status: a draft for the owner's decisions. No code is kept from the spike. The last section lists what has to be settled before any is written.
+Status: decided by the owner on 2026-10-07 (section 6). No code is kept from the spike.
 
 ## 1. What exists now
 
@@ -12,23 +12,31 @@ Status: a draft for the owner's decisions. No code is kept from the spike. The l
 
 ## 2. What it costs today, measured
 
-Twelve simulated chapters (seeds 1 to 12, `tools/soak.js`, the narrow build, a gunner on Hester's ship), each about 20 runs and 127 days:
+Twenty simulated chapters (seeds 1 to 20, the narrow build, a gunner on Hester's ship, random answers), each about 18 runs and 120 days. The soak (`tools/soak.js`) jumps a burn in one step, so it never fires the per-frame contact (`planIntercept` in `js/engage.js`), which is where most raids come from in play. The measurement below emulates it: the contact is planned, seen only if the drive is hot enough, then answered at random. **An earlier version of this document measured without it and wrongly concluded that danger events happen less than once a chapter.**
 
 | Per chapter, on average | Now |
 |---|---|
-| Raids | 0.75 |
-| Lock fights (repel or assault) | 0.17 |
-| Ice-run scenes | 6.5 (about two runs) |
-| Work events | 3.75 |
-| Crew hurt | 0.5 |
-| The hand hurt | 0.5 |
-| Crew dead | 0.08 (one chapter in twelve) |
-| Main characters marked or dead | 0 |
-| The hand dead | 0 |
+| Contacts planned / seen | 9.4 / 6.6 |
+| Raids fought | 3.45 |
+| Lock fights (repel or assault) | 1.1 |
+| The hand hurt | 1.4 |
+| Crew hurt | 0.7 |
+| Crew dead | 0.2 (4 chapters in 20 lose someone) |
+| Chapters where the hand is hurt twice or more | 6 in 20 |
+| Main characters marked or dead | 0 (the floor) |
+| The hand dead | 0 (no rule) |
 
 Per fight, from `npm run fights`: a lock fight with five standing costs someone about half the time and kills one in five, and the hand is hurt in 14 percent.
 
-So the machinery is sound and the exposure is not. The danger events happen under once a chapter, and of everyone who could be lost only a generated crew member ever is, about one chapter in twelve. Raising the lethality of the existing events cannot reach a "real" rate on its own: 0.17 lock fights a chapter at 0.2 deaths each is 0.03 deaths a chapter. Either there are more dangerous events, or there are authored moments that carry the risk.
+**Does more contact change it?** `HAND_RAID` (`js/hired.js`, the chance of a pirate contact per run) halved, as it is, and doubled:
+
+| `HAND_RAID` | Raids | Lock fights | The hand hurt | Hand hurt 2+ times |
+|---|---|---|---|---|
+| halved | 2.15 | 0.65 | 0.85 | 3 in 20 |
+| as it is | 3.45 | 1.1 | 1.4 | 6 in 20 |
+| doubled | 4.95 | 1.4 | 1.2 | 7 in 20 |
+
+The rate is capped and the chapter lengthens with the extra fights, so doubling it gives well under double the exposure. The exposure is already substantial. What is missing is the consequence: the machinery hurts people and then lets them off. `AMBUSH_GAP` has no effect in these chapters (the ambush needs a route with unrest of 0.25 or more).
 
 ## 3. Proposed rules
 
@@ -39,17 +47,17 @@ So the machinery is sound and the exposure is not. The danger events happen unde
 2. *Marked.* Already there for main characters (a lost skill point). A character who is already marked, or already hurt and unhealed, and is hit again dies. This is the existing "hurt twice" rule, extended to main characters.
 3. *Foreshadowed.* Each fate scene below is preceded by an earlier scene that says what will matter (a medic aboard, a hull above 60 percent, a kept favor), so the player can see it coming and do something. Yelena's pivot already counts points of this kind (`js/cast.js`).
 
-**3.3 Fate scenes: where the real rate comes from.** The pivot pattern is the right mechanism: an authored scene whose outcome (live, mark, die) is decided by points the player could influence. It already exists for the first officers and for Yelena. I recommend one fate scene per named person in the narrow build:
+**3.3 Fate scenes: where the named losses come from.** Exposure is not the problem (section 2); consequence is. A fate scene is the right mechanism for the named people, because it is seen coming and can be influenced: an authored scene whose outcome (live, mark, die) is decided by points the player could influence. It already exists for the first officers and for Yelena. I recommend one fate scene per named person in the narrow build:
 - Ines and Tomas each get a pivot (they have none now), timed after their late scene.
 - Cato keeps his.
 - The captain gets one (3.4).
 - The hand gets one (3.5).
-The rates are then set by the point thresholds and tuned with the soak, not by how often a raid happens to land. This is authored prose, so each scene is drafted for review before it goes in, as for the first-raid and first-arrival scenes.
+The rates are then set by the point thresholds and tuned with the soak. The contact rate is left alone: the measurement above shows more contact would give little. This is authored prose, so each scene is drafted for review before it goes in, as for the first-raid and first-arrival scenes.
 
 **3.4 The captain.** Two ways to be lost, both from events that already exist: a lost bridge in a boarding (`repelSettle`) can kill or capture the captain instead of costing the fund, and the captain's fate scene (a raid or a bad run where the captain is the one in danger). When the captain is lost the hand is put ashore at the next port and starts again with another captain, keeping savings, skill and debt, the way `putAshore` already works, and the carried line (#295) says it. I recommend this over the first officer taking command: the first officers have no captain's entry (wage, share, run style, scenes), and giving them one doubles the authored content. If the first officer is also gone the same applies.
 
 **3.5 The hand.** The hand can die in three named ways:
-- hurt a second time while still hurt, then a death roll;
+- hurt a second time while still hurt, then a death roll (the hand is hurt twice in 6 chapters in 20 now, so a death roll of about one in four puts the hand's death near the 1 in 12 target);
 - a lock fight lost at the lock with the hand already hurt;
 - the hand's own fate scene (a fate scene like the others, with the points shown beforehand).
 The chapter then ends with the hand's look back (`chapterRecap`) reading the record (#275), then a new game with a carried line (the field added for #295). Carrying on as another hand on the same ship would break the chapter's one protagonist.
@@ -71,10 +79,10 @@ Today all of these are near zero except a generated crew member at 1 in 12.
 
 In order, each its own PR with tests: the floor flag and the second-strike rule with its warning line; the pivots for Ines and Tomas (drafted first); the captain's fate and the put-ashore path; the hand's death and the ending; the soak report. The farewell (#356) reads these events and follows them.
 
-## 6. Decisions needed
+## 6. Decisions (the owner, 2026-10-07)
 
-1. **The floor.** 0 in the narrow build, or 1 (at least one main character always survives)? I recommend 0 with the warning ladder.
-2. **When the captain is lost.** The hand is put ashore and starts again with another captain (recommended), or the first officer takes command?
-3. **When the hand dies.** The chapter ends with a look back and a new game (recommended), or something else?
-4. **The rates in section 4.** Are they the right starting point, and which are too high or too low?
-5. **How the rates are reached.** Authored fate scenes for each named person (recommended, with prose drafted for your review), or more dangerous events as well? More events changes the pacing tuned in #256 and #278.
+1. **The floor:** 0 in the narrow build, with the warning ladder.
+2. **When the captain is lost:** the hand is put ashore and starts again with another captain.
+3. **When the hand dies:** the chapter ends with a look back, then a new game with a carried line.
+4. **The rates in section 4:** the starting point, tuned with the soak.
+5. **How the rates are reached:** authored fate scenes for each named person, drafted for the owner's review before they go in, plus the measurement above. No change to contact frequency.
