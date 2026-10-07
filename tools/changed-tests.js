@@ -66,7 +66,7 @@ function main() {
   if (!r.full && !r.files.length) { console.log('no tests to run'); return; }
   const args = r.full ? ['tests/*.test.js'] : r.files;
   console.log(r.full ? 'running the full suite' : `running ${r.files.length} test file(s)`);
-  process.exit(spawnSync('node', ['--test', '--test-concurrency=4', ...args], { cwd: root, stdio: 'inherit', shell: r.full }).status ?? 1);
+  process.exit(spawnSync('node', ['--test', '--test-concurrency=4', ...args], { cwd: root, stdio: 'inherit' }).status ?? 1);  // node expands the glob itself, so no shell
 }
 
 if (require.main === module) main();

@@ -28,10 +28,11 @@ const BUNDLE = 'js/__bundle.js';
 function bundleOf(html, read) {
   const tags = [...html.matchAll(/<script src="(js\/[^"]+)"><\/script>/g)];
   if (!tags.length) return null;
-  const run = html.slice(tags[0].index, tags.at(-1).index + tags.at(-1)[0].length);
-  if (run.replace(/<script src="js\/[^"]+"><\/script>/g, '').replace(/<!--[\s\S]*?-->/g, '').trim()) return null;
-  let first = true;
-  const page = html.replace(/<script src="js\/[^"]+"><\/script>\n?/g, () => (first ? (first = false, `<script src="${BUNDLE}"></script>\n`) : ''));
+  const quiet = /^(?:\s|<!--[\s\S]*?-->)*$/;  // only whitespace and comments may sit between the scripts
+  const end = t => t.index + t[0].length;
+  for (let i = 1; i < tags.length; i++) if (!quiet.test(html.slice(end(tags[i - 1]), tags[i].index))) return null;
+  let page = html;
+  for (let i = tags.length - 1; i >= 0; i--) page = page.slice(0, tags[i].index) + (i === 0 ? `<script src="${BUNDLE}"></script>` : '') + page.slice(end(tags[i]));
   return { html: page, js: tags.map(m => read(m[1])).join('\n'), src: BUNDLE };
 }
 let bundled;  // read once per test file
