@@ -5,7 +5,7 @@
 // go-round, rush beats hold, go-round beats rush) or do the job of your own post. Winning an exchange pushes them back a
 // place and losing it lets them in a place; out of the lock and they are repelled, onto the bridge and they have the ship.
 // Casualties come with it: someone is hurt (an injured hand's perk stops until treated, and a hurt hand works a level
-// lower), and one who is hurt twice in a fight is dead if generated, or marked if a main character (fate.js). Loaded
+// lower), and one who is hurt twice in a fight is dead (a main character too, unless a floor of them holds, fate.js). Loaded
 // after duel.js; only called into at runtime. The same fight, run the other way, is boarding a ship you have crippled
 // (engagements.js): the choices are the same and a win carries her bridge instead of holding yours (assault, below).
 
@@ -31,7 +31,8 @@ const REPEL_TACTICS = {
 };
 const REPEL_TIE = 'Neither side gives. The air handler runs, somebody coughs, and the fighting goes on in the same place.';
 const REPEL_POST = {
-  gunner: { label: 'Fire down the line', win: 'You put three rounds down the line at the seam, one at a time, and the ones in front go down across the ones behind. They go back toward the lock.', lose: 'You fire, and the round goes through a berth door. They use the noise and come a section deeper.' },
+  gunner: { label: 'Fire down the line', win: ('You put three rounds down the line at the seam, one at a time, and the ones in front go down across ' +
+      'the ones behind. They go back toward the lock.'), lose: 'You fire, and the round goes through a berth door. They use the noise and come a section deeper.' },
   engineer: { label: 'Seal the bulkhead behind them', win: 'You close the section bulkhead by hand, behind the front of them, and run the lock cutter to overload. The hull groans. They are on the wrong side of the ship.', lose: 'The bulkhead jams a hand short of shut. They use the gap.' },
   pilot: { label: 'Roll the ship', win: 'You roll the ship thirty degrees, hard. The boarders, in their suits, go into the corridor wall. The crew were braced, and go the other way.', lose: 'You roll, and your own people are not braced either. The boarders come up first.' },
   comms: { label: 'Lock the doors from the console', win: 'You lock every door between them and the bridge from the console, then open the one that leads back to the lock. They follow the open door.', lose: 'You lock the wrong door. It is the one behind you.' },
@@ -61,7 +62,8 @@ const ASSAULT_TACTICS = {
 const ASSAULT_POST = {
   gunner: { label: 'Put fire down the corridor', win: 'You put three rounds down the corridor at the crate, one at a time. The one behind it stops firing and the others pull back.', lose: 'You fire, and the rounds go into the deck. They use the noise to move up.' },
   engineer: { label: 'Cut her power', win: 'You find her breaker panel by the lock and pull it. Every light in the section goes out, and you have your helmet lamps and they do not.', lose: 'You pull the wrong breaker and her emergency lights come on instead, all of them, in your eyes.' },
-  pilot: { label: 'Bring the ship round to her hatch', win: 'You take the cutter along her side to the hatch by the bridge. The crew go out of the second lock behind them and the corridor is a pincer.', lose: 'You bring her round and misjudge it by a meter. The hull scrapes and the crew in the lock go over like skittles.' },
+  pilot: { label: 'Bring the ship round to her hatch', win: ('You take the cutter along her side to the hatch by the bridge. The crew go out of the ' +
+      'second lock behind them and the corridor is a pincer.'), lose: 'You bring her round and misjudge it by a meter. The hull scrapes and the crew in the lock go over like skittles.' },
   comms: { label: 'Take her intercom', win: 'You find her intercom and put the captain on it, calmly, telling her people the ship is lost and the lock is open. Some of them go.', lose: 'You find her intercom and it is a recording, which says something unrepeatable about your mother.' },
 };
 
@@ -105,8 +107,9 @@ function assaultStart(foe, rate = {}) {
 
 function repelScene(s) {
   const h = hired(), post = h.post, set = repelSet(s), spec = set.post[post];
-  const choices = Object.entries(set.tactics).map(([k, t]) => ({ label: t.label, run: () => repelStep(s, k) }));
-  choices.push({ label: `[${POSTS[post].name}] ${spec.label}`, run: () => repelStep(s, 'post') });
+  const note = costNote({ casualty: true, hand: true });  // any exchange can cost someone, and the hand is among them
+  const choices = Object.entries(set.tactics).map(([k, t]) => ({ label: `${t.label}${note}`, run: () => repelStep(s, k) }));
+  choices.push({ label: `[${POSTS[post].name}] ${spec.label}${note}`, run: () => repelStep(s, 'post') });
   return {
     title: set.titles[s.pos], personal: true, via: 'crew',
     text: `${set.openings[s.pos][s.round % 2]}</p><p>${s.assault ? 'Defenders' : 'Boarders'}: ${s.boarders}. With you: ${repelStanding(s) - 1}.${(s.held || []).length ? ` ${s.held.join(' ')}` : ''} ${layoutHint()}`.trim(),
@@ -138,6 +141,7 @@ function repelStep(s, kind) {
   if (result === 'lose') s.pos++;
   s.round++;
   if (result !== 'tie' && Math.random() < REPEL_HURT[result] * (1 + 0.15 * (s.grade || 0))) text += ` ${repelCasualty(s)}`;
+  if (s.handDied) return text;  // the hand is dead: the ending is queued, and the fight does not go on
   if (s.pos < 0 || s.pos > 2) return `${text} ${repelSettle(s)}`;
   G.nextEvent = repelScene(s);
   return text;
@@ -148,6 +152,18 @@ const pickWeighted = table => { let r = Math.random() * Object.values(table).red
 // The hand is hurt: laid up for a while (a level worse, light duty), longer if already hurt, and with no medic aboard the clinic is on
 // their own savings. Used when a crew member is hit (below) and when the hand's own call in a raid goes wrong (engagements.js).
 const HAND_CLINIC = 150;
+// The hand can die (#357): hurt a second time while still hurt, or with the bridge taken while laid up, is a roll of one in four, halved with a
+// medic aboard (the factor crew deaths use, losses.js). A first hurt never rolls. The next scene is the ending (stakes.js), so a caller that
+// queues a scene after this one checks `s.handDied` first.
+const HAND_DEATH = 0.25;
+const handDeathOdds = () => HAND_DEATH * (roleHolder('medic') ? LOSS_MEDIC : 1);
+// The captain can be lost (#357): a pirate bridge taken is a roll of one in three. The next scene is the captain's loss (stakes.js).
+const CAPTAIN_LOST = 1 / 3;
+function handDies(s, how) {
+  const st = G.state, h = hired();
+  s.handDied = true; h.died = { day: st.day, how };
+  G.nextEvent = handDeathScene(how);
+}
 function hurtHand(s) {
   const st = G.state, h = hired(), again = s.youHurt || handHurt();
   h.hurtUntil = st.day + (again ? 18 : 12);
@@ -156,10 +172,12 @@ function hurtHand(s) {
   const bill = roleHolder('medic') ? 0 : Math.min(st.credits, HAND_CLINIC);
   st.credits -= bill;
   const pay = bill ? ` The clinic is ${fmt(bill)} cr of your own, with no medic aboard.` : '';
+  if (again && Math.random() < handDeathOdds()) handDies(s, 'hurt');
   return `${again ? 'You are hurt again, and you stay down. It will be some time before you are any use.' : 'You are hurt. For a while your work will be a level worse.'}${pay}`;
 }
 
-// Someone goes down. The hand can be hurt but not killed. A crew member hurt twice in one fight is dead, or marked if a main character.
+// Someone goes down. The hand can be hurt but not killed. A crew member hurt twice in one fight is dead, and so is a named person marked before; where a floor of main
+// characters holds (the full build, fate.js) they are marked instead.
 function repelCasualty(s) {
   const st = G.state, pool = [...st.crew.filter(id => !(st.injured || {})[id] || s.hurt.has(id)), 'you'];
   let who = pick(pool), cover = '';
@@ -169,13 +187,11 @@ function repelCasualty(s) {
   }
   if (who === 'you') return hurtHand(s);
   const c = person(who);
-  if (s.hurt.has(who)) {
-    if (c.cast) {
-      castFate(c.cast, 'mark', `Hurt twice repelling boarders near ${system().name}.`, 'Carried off the bridge after the boarding.');
+  if (s.hurt.has(who) || secondStrike(c)) {  // hurt twice in a fight, or marked before and hit again: the second strike
+    if (loseCrew(c, `Killed repelling boarders near ${system().name}.`) === 'marked') {  // a floor held them (the full build)
       s.marked.push(c);
       return `${c.first} is hit again and does not get up. ${c.first} is alive, and ${c.first} is not fit to work.`;
     }
-    loseCrew(c, `Killed repelling boarders near ${system().name}.`);
     s.dead.push(c);
     return `${c.first} is hit again and does not get up.`;
   }
@@ -185,7 +201,7 @@ function repelCasualty(s) {
   }
   (st.injured = st.injured || {})[who] = true;
   s.hurt.add(who);
-  return `${cover}${c.first} is hurt.`;
+  return `${cover}${c.first} is hurt.${hurtWarning(c)}`;
 }
 
 // A generated crew member dies: off the crew, on the record, and the berth is offered at the next port.
@@ -216,6 +232,12 @@ function repelSettle(s) {
   like(cap, -1, 'The bridge was taken on your watch.');
   st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.1));
   d.foeHp = -1; G.duel = null; G.nextEvent = null;
+  if ((s.youHurt || handHurt()) && Math.random() < handDeathOdds()) handDies(s, 'bridge');  // laid up when they came through
+  if (d.foe.kind !== 'patrol' && !s.handDied && Math.random() < CAPTAIN_LOST) {
+    h.captainLost = { day: st.day, how: 'bridge' };
+    G.nextEvent = captainLostScene();
+    return `They are on the bridge. Captain ${cap.last} is at the console and does not give them the code, so they take it. They take ${fmt(taken)} cr of the ship's fund and go. The ship still flies. Captain ${cap.last} does not get up.${lost}`;
+  }
   if (d.foe.kind === 'patrol') return `They are on the bridge. Captain ${cap.last} surrenders the ship to the ${d.foe.gov} Navy, and the boarding officer writes a levy of ${fmt(taken)} cr against the ship's fund, which is collected on the spot. The cutter lets you go, with a citation.${lost}`;
   return `They are on the bridge. Captain ${cap.last} gives them the code to the strongbox because there is no choice, and they take ${fmt(taken)} cr of the ship's fund and go. The ship still flies.${lost}`;
 }

@@ -45,11 +45,62 @@ function carriedLine(flags, last) {
   return hit ? hit[1](last) : `On the dock they know whose ship you were put off.`;
 }
 
-// Back to the sign-on, with another captain. Savings and post experience come with you; the ship, the crew and the friends do not.
-function putAshore() {
+// The hand's death (#357), the ending of the chapter: what happened, the look back (hired.js, which reads the record), and a new game.
+const HAND_DEATH_TEXT = {
+  hurt: last => `The first hurt was not mended when the second one came. You are on the deck, with the cold of it against your cheek, and the crew are saying your name. Captain ${last} says it from the hatch, and then asks for the medic, and it is already late for that.`,
+  bridge: last => `You are laid up in the corridor, where the first hit left you, when they come through the last hatch. You do not get up. Captain ${last} gives them the code to the strongbox, and the crew carry you below before the lock cycles.`,
+};
+function handDeathScene(how) {
+  const cap = person(hired().captain), last = cap.last;
+  return {
+    title: 'The Last Run', personal: true,
+    text: [HAND_DEATH_TEXT[how](last), `Captain ${last} writes it in the log: the day, the place, your name. The ship goes on without you.`, chapterRecap().text].join('</p><p>'),
+    choices: [{ label: 'Begin again', run: beginAgain }],
+  };
+}
+// A new hand, in the same slot and under the same name, with another captain if there is one and nothing carried but a line on the dock.
+function beginAgain() {
   const st = G.state, h = hired(), cap = person(h.captain), others = Object.keys(CAPTAINS).filter(k => k !== h.captainKey);
-  const keep = { slot: Saves.current, name: captain().name, background: st.background, post: h.post, credits: st.credits, debt: h.debt, skill: { ...h.skill }, times: (st.putOff || 0) + 1 };
-  startGame({ slot: keep.slot, background: keep.background, captain: keep.name, mode: 'hired', post: keep.post, captainKey: others.length ? pick(others) : undefined, credits: keep.credits, debt: keep.debt, skill: keep.skill, putOffBy: `Captain ${cap.last}`, carried: carriedLine(h.flags || {}, cap.last) });
+  startGame({
+    slot: Saves.current,
+    background: st.background,
+    captain: captain().name,
+    mode: 'hired',
+    post: h.post,
+    captainKey: others.length ? pick(others) : undefined,
+    carried: `On the dock they say the hand on Captain ${cap.last}'s ship did not come back.`,
+  });
+  return null;
+}
+
+// The captain is lost on the bridge (#357): the articles end with the captain, so the hand goes ashore as when put off, with the same things kept.
+function captainLostScene() {
+  const last = person(hired().captain).last;
+  return {
+    title: 'Without a Captain', personal: true,
+    text: `The ship makes the next port on the pilot's hands. The articles were Captain ${last}'s, and the articles end with the captain. The owner's agent comes aboard, reads the log, and pays you to the day. "There is no berth," the agent says. "There is no ship until somebody is found to sign for her." Your bag is on the dock before the lock has cycled.`,
+    choices: [{ label: 'Take the bag', run: () => putAshore(true) }],
+  };
+}
+
+// Back to the sign-on, with another captain. Savings and post experience come with you; the ship, the crew and the friends do not.
+// lost: the captain did not come back, so nobody put the hand ashore.
+function putAshore(lost) {
+  const st = G.state, h = hired(), cap = person(h.captain), others = Object.keys(CAPTAINS).filter(k => k !== h.captainKey);
+  const keep = { slot: Saves.current, name: captain().name, background: st.background, post: h.post, credits: st.credits, debt: h.debt, skill: { ...h.skill }, times: (st.putOff || 0) + (lost ? 0 : 1) };
+  startGame({
+    slot: keep.slot,
+    background: keep.background,
+    captain: keep.name,
+    mode: 'hired',
+    post: keep.post,
+    captainKey: others.length ? pick(others) : undefined,
+    credits: keep.credits,
+    debt: keep.debt,
+    skill: keep.skill,
+    [lost ? 'captainLost' : 'putOffBy']: `Captain ${cap.last}`,
+    carried: lost ? `On the dock they say Captain ${cap.last} did not come back from the bridge.` : carriedLine(h.flags || {}, cap.last)
+  });
   G.state.putOff = keep.times;
   return null;
 }
@@ -72,7 +123,10 @@ function splitScene() {
   const { a, b, movable } = worst, A = a.p.first, B = b.p.first;
   (st.relAt = st.relAt || {}).split = st.day;
   const choices = movable.map(x => ({ label: `Let ${x.p.first} go`, run: () => letGo(x, x === a ? b : a) }));
-  choices.push({ label: 'Keep both', run() { addBond(a, b, -1); like(a.p, -1, 'You made me stay on a ship with ' + B + '.'); like(b.p, -1, 'You made me stay on a ship with ' + A + '.'); return '"Then we all sail," you say. Neither of them answers. At the next watch they take opposite ends of the galley.'; } });
+  choices.push({
+    label: 'Keep both',
+    run() { addBond(a, b, -1); like(a.p, -1, 'You made me stay on a ship with ' + B + '.'); like(b.p, -1, 'You made me stay on a ship with ' + A + '.'); return '"Then we all sail," you say. Neither of them answers. At the next watch they take opposite ends of the galley.'; }
+  });
   return {
     title: 'Not on the Same Ship', personal: true,
     text: `${A} and ${B} are both on the dock when you come down the ramp, a few meters apart. "One of us gets off here," ${A} says. "I will not stand another burn with that." ${B} says nothing.${hired() ? ` Captain ${cap.last} has put it to you: "They both talk to you. Who stays?"` : ''}`,

@@ -88,16 +88,22 @@ function programsHtml() {
   if (hired()) return '';  // standing rules for a crew are the captain's business
   const p = programs(), w = p.writing, conds = Object.entries(PROGRAM_CONDITIONS), orders = programOrders();
   const pick = (kind, id, label, on) => `<button data-action="programPick" data-arg="${kind}:${id}" class="${on ? 'primary' : ''}">${label}</button>`;
-  return `<div class="post"><div class="eyebrow">Programs &middot; ${p.rules.length} of ${p.slots} slot${p.slots > 1 ? 's' : ''}</div>
-    ${p.rules.map((r, i) => `<div class="row"><span>When ${PROGRAM_CONDITIONS[r.cond].name}: ${programOrder(r.post, r.order) ? programOrder(r.post, r.order).name.toLowerCase() : r.order}${postMode(r.post) === 'crewed' ? '' : ' <span class="hint">(needs a crewed ' + POSTS[r.post].name.toLowerCase() + ')</span>'}</span><button data-action="programRemove" data-arg="${i}">Remove</button></div>`).join('') || '<p class="hint">No programs yet. A program runs a crewed post by itself when its condition comes true.</p>'}
-    ${w ? `<div class="slider"><span>${w.kind === 'slot' ? 'Rule table' : 'Writing'}</span><span class="pbar" data-program-bar><i></i></span><span class="mono" data-program></span></div>
+  return (`<div class="post"><div class="eyebrow">Programs &middot; ${p.rules.length} of ${p.slots} slot${p.slots > 1 ? 's' : ''}</div>
+   ` +
+      ` ${p.rules.map((r, i) => (`<div ` +
+        `class="row"><span>When ${PROGRAM_CONDITIONS[r.cond].name}: ${programOrder(r.post, r.order) ? programOrder(r.post, r.order).name.toLowerCase() :
+          r.order}${postMode(r.post) === 'crewed' ? '' : ' <span class="hint">(needs a crewed ' + POSTS[r.post].name.toLowerCase() + ')</span>'}</span><button ` +
+        `data-action="programRemove" data-arg="${i}">Remove</button></div>`)).join('') || '<p class="hint">No programs yet. A program runs a crewed post by itself when its condition comes true.</p>'}
+   ` +
+      ` ${w ? `<div class="slider"><span>${w.kind === 'slot' ? 'Rule table' : 'Writing'}</span><span class="pbar" data-program-bar><i></i></span><span class="mono" data-program></span></div>
       <p class="hint">Writing goes on while you burn. Nothing moves in port.</p>`
     : p.rules.length < p.slots ? `<div class="hint">Write a rule. When:</div><div class="row">${conds.map(([id, c]) => pick('cond', id, c.name, programDraft.cond === id)).join('')}</div>
       <div class="hint">Then:</div><div class="row">${orders.map(o => pick('order', `${o.post}.${o.id}`, o.name, programDraft.order === `${o.post}.${o.id}`)).join('')}</div>
       <div class="row"><span class="hint">${Math.round(PROGRAM_SECS * (programDoer() ? 1 : 1.5))}s of burn, odds ${Math.round(programOdds() * 100)}%</span><button data-action="programWrite" ${programDraft.cond && programDraft.order ? '' : 'disabled'}>Write it</button></div>`
     : '<p class="hint">Every slot is in use. Remove a program, or make room.</p>'}
-    ${!w && p.slots < SLOTS_MAX ? `<div class="row"><span class="hint">Make room for another program (${Math.round(SLOT_SECS * (programDoer() ? 1 : 1.5))}s of burn)</span><button data-action="programSlot">Make room</button></div>` : ''}
-  </div>`;
+   ` +
+      ` ${!w && p.slots < SLOTS_MAX ? `<div class="row"><span class="hint">Make room for another program (${Math.round(SLOT_SECS * (programDoer() ? 1 : 1.5))}s of burn)</span><button data-action="programSlot">Make room</button></div>` : ''}
+  </div>`);
 }
 
 function programReadouts() {

@@ -450,3 +450,36 @@ test('the note is part of the option in the scene, and the Gunner\'s own move ca
   assert.ok(r.some(l => l.startsWith('[Gunner] Get a lock on her drive') && l.includes('you may be hurt, and the captain marks it')));
   await done();
 });
+
+// ---------- cost notes on the rest (#364) ----------
+
+test('the ice run, the work events and the lock fights say what an option can cost, from what it declares, and an option with no stake says nothing', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = { ice: [], work: [], lock: [] };
+    const text = label => { const b = document.createElement('div'); b.innerHTML = label; return b.textContent; };
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    hired().run = { ice: { edge: 0 } };
+    // the ice run: every general choice and the post's own, against its declared lost-roll hull and bold flag
+    ICE_STAGES.forEach((stage, n) => {
+      const labels = iceStageScene(n).choices.map(c => text(c.label)), specs = [...stage.general, stage.post.gunner];
+      specs.forEach((c, i) => out.ice.push({ label: labels[i], hull: (c.lose || c.win)[1] > 0, bold: !!c.bold }));
+    });
+    // the work events: the careful option has no stake, the quick one is bold and pays less on a miss
+    for (const d of WORK_EVENTS) { const e = workEvent(d); out.work.push(e.choices.map(c => text(c.label))); }
+    // the lock fights, both ways
+    for (const s of [repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full'), assaultStart(makeEnemy({ kind: 'pirate' }))]) out.lock.push(repelScene(s).choices.map(c => text(c.label)));
+    return out;
+  });
+  assert.ok(r.ice.length >= 12);
+  for (const x of r.ice) {
+    assert.equal(x.label.includes('hull damage, a crew casualty'), x.hull, `${x.label}: hull cost matches`);
+    assert.equal(x.label.includes('the captain marks it'), x.bold, `${x.label}: a bold call is marked`);
+    assert.equal(x.label.includes('[if it fails:'), x.hull || x.bold, `${x.label}: nothing at stake, no note`);
+  }
+  assert.ok(r.ice.some(x => !x.hull && !x.bold) && r.ice.some(x => x.hull && !x.bold) && r.ice.some(x => x.hull && x.bold), 'the run has each kind');
+  for (const [careful, quick] of r.work) { assert.ok(!careful.includes('[if it fails'), careful); assert.ok(quick.endsWith('[if it fails: you learn less, and the captain marks it]'), quick); }
+  for (const labels of r.lock) { assert.equal(labels.length, 4); for (const l of labels) assert.ok(l.endsWith('[if it fails: a crew casualty, you may be hurt]'), l); }
+  await done();
+});

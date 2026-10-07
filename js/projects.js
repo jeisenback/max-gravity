@@ -65,12 +65,16 @@ function projectsHtml(post) {
   if (notYours(post) || hired()) return '';  // a hand's hold is the captain's cargo, never spare parts, so there is nothing to start
   const running = Object.values(projectsOf()).find(p => PROJECTS[p.id].post === post);
   const list = Object.entries(PROJECTS).filter(([, P]) => P.post === post);
-  return `<div class="post"><div class="eyebrow">Projects &middot; parts ${partsHeld()}t</div>
-    ${running ? `<div class="slider"><span>${PROJECTS[running.id].name}</span><span class="pbar" data-project-bar="${running.id}"><i></i></span><span class="mono" data-project="${running.id}"></span></div>
+  return (`<div class="post"><div class="eyebrow">Projects &middot; parts ${partsHeld()}t</div>
+   ` +
+      ` ${running ? `<div class="slider"><span>${PROJECTS[running.id].name}</span><span class="pbar" data-project-bar="${running.id}"><i></i></span><span class="mono" data-project="${running.id}"></span></div>
       <p class="hint">${G.mode === 'transit' ? 'Work goes on while you burn.' : 'Work goes on while you burn. Nothing moves in port.'}</p>`
-    : list.map(([id, P]) => `<div class="row"><div><b>${P.name}</b> <span class="hint">${P.parts}t parts, ${Math.round(P.secs * (projectDoer(id) ? 1 : 1.5))}s of burn, odds ${Math.round(projectOdds(id) * 100)}%</span><div class="hint">${P.desc}</div></div>
-      <button data-action="project" data-arg="${id}" ${canStart(id) ? '' : 'disabled'} title="${partsHeld() < P.parts ? 'Not enough machine parts in the hold' : ''}">Start</button>${!canStart(id) && partsHeld() < P.parts ? `<div class="hint">Needs ${P.parts}t of machine parts; the hold has ${partsHeld()}t.</div>` : ''}</div>`).join('')}
-  </div>`;
+    : list.map(([id, P]) => (`<div class="row"><div><b>${P.name}</b> <span class="hint">${P.parts}t ` +
+        `parts, ${Math.round(P.secs * (projectDoer(id) ? 1 : 1.5))}s of burn, odds ${Math.round(projectOdds(id) * 100)}%</span><div ` +
+        `class="hint">${P.desc}</div></div>
+      <button data-action="project" data-arg="${id}" ${canStart(id) ? '' : 'disabled'} ` +
+        `title="${partsHeld() < P.parts ? 'Not enough machine parts in the hold' : ''}">Start</button>${!canStart(id) && partsHeld() < P.parts ? `<div class="hint">Needs ${P.parts}t of machine parts; the hold has ${partsHeld()}t.</div>` : ''}</div>`)).join('')}
+  </div>`);
 }
 
 function projectReadouts() {

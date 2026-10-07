@@ -42,11 +42,13 @@ function mournScene(m) {
   const who = `${m.first} ${m.last}`, crew = st.crew.map(person).filter(Boolean);
   return { title: 'After the Loss', personal: true,
     text: `${who}, the ${ROLE_NAMES[m.role] ? ROLE_NAMES[m.role].toLowerCase() : 'hand'}, is on the ship's memorial now, and the ship is in port. There is a berth with a made bunk and a locker nobody has opened. The crew are waiting to see what you do.`,
-    choices: MOURN.map(o => ({ label: o.label, can: () => !o.cost || st.credits >= o.cost, run() {
+    choices: MOURN.map(o => ({ label: o.label, ...(o.cost ? gated(needCr(o.cost)) : {}), run() {
       if (o.cost) st.credits -= o.cost;
       if (o.fund && h) h.fund = Math.max(0, h.fund - o.fund);
       const lines = [];
-      for (const p of crew) { const r = barReact(p, o.loves, o.hates), n = r.n === 2 ? 1 : r.n === -1 ? -1 : 0; if (n) like(p, n, n > 0 ? `The captain marked ${m.first}'s death the way ${m.first} deserved.` : `The captain did not give ${m.first} their due.`); if (r.line && lines.length < 2) lines.push(r.line); }
+      for (const p of crew) { const r = barReact(p, o.loves, o.hates), n = r.n === 2 ? 1 : r.n === -1 ? -1 : 0; if (n) like(p, n, n > 0 ?
+        `The captain marked ${m.first}'s death the way ${m.first} deserved.` : `The captain did not give ${m.first} their due.`); if (r.line &&
+        lines.length < 2) lines.push(r.line); }
       if (cap && o.like === 'cap') like(cap, 1, `You wrote to ${m.first}'s family.`);
       return `${o.text} ${lines.join(' ')}`.trim();
     } })),

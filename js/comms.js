@@ -61,7 +61,10 @@ const chatAble = id => procedural().some(f => f.id === id) || paxAboard().some(m
 
 function quietHtml() {
   const q = Settings.quiet;
-  return conCard('Quiet the bands', `<div class="row">${QUIET_KINDS.map(([id, label]) => `<button data-action="commsQuiet" data-arg="${id}" class="${q[id] ? 'on' : ''}" aria-pressed="${q[id]}">${q[id] ? 'Show' : 'Hide'} ${label}</button>`).join('')}</div><p class="hint">${q.market ? 'Market tips are muted; they still move prices.' : ''}${q.market && q.chatter ? ' ' : ''}${q.chatter ? 'Crew chatter is muted.' : ''}${q.market || q.chatter ? '' : 'Mute what you do not want on the bands. It applies to the inbox and the burn feed.'}</p>`);
+  return conCard('Quiet the bands', (`<div ` +
+      `class="row">${QUIET_KINDS.map(([id, label]) => (`<button data-action="commsQuiet" data-arg="${id}" ` +
+      `class="${q[id] ? 'on' : ''}" aria-pressed="${q[id]}">${q[id] ? 'Show' : 'Hide'} ${label}</button>`)).join('')}</div><p ` +
+      `class="hint">${q.market ? 'Market tips are muted; they still move prices.' : ''}${q.market && q.chatter ? ' ' : ''}${q.chatter ? 'Crew chatter is muted.' : ''}${q.market || q.chatter ? '' : 'Mute what you do not want on the bands. It applies to the inbox and the burn feed.'}</p>`));
 }
 
 function contactsHtml() {
@@ -82,7 +85,8 @@ function commsPanel() {
   const chips = COMMS_FILTERS.map(([id, label]) => `<button class="link${id === filter ? ' on' : ''}" data-action="commsFilter" data-arg="${id}" ${id === filter ? 'aria-pressed="true"' : ''}>${label}</button>`).join(' ');
   const feed = inbox.length ? inbox.map(m => {
     const who = m.pid && st.people[m.pid];
-    return `<div class="con-msg via-${VIA_TAG[m.via] || 'message'}"><span class="tag">${VIA_TAG[m.via] || m.via}</span> <span class="hint">${dateOf(m.day)}</span>${m.n > since ? ' <b class="char-tag">new</b>' : ''}<div>${m.text}</div>${who ? `<div class="hint">About ${personLink(who)}</div>` : ''}</div>`;
+    return (`<div class="con-msg via-${VIA_TAG[m.via] || 'message'}"><span class="tag">${VIA_TAG[m.via] || m.via}</span> <span ` +
+        `class="hint">${dateOf(m.day)}</span>${m.n > since ? ' <b class="char-tag">new</b>' : ''}<div>${m.text}</div>${who ? `<div class="hint">About ${personLink(who)}</div>` : ''}</div>`);
   }).join('')
     : `<p class="hint">${(st.inbox || []).length ? 'Nothing of that kind.' : 'Nothing yet. Word arrives as you fly and dock.'}</p>`;
   const holder = postHolder('comms');

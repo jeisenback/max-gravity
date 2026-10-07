@@ -39,11 +39,22 @@ const runTotals = h => ({
 });
 const skillXp = post => (hired() && hired().skill && hired().skill[post]) || 0;
 const skillLevel = post => Math.max(0, SKILL_STEPS.filter(n => skillXp(post) >= n).length - 1 - (handHurt() ? 1 : 0));  // a hurt hand works a level lower (boarders.js)
+// The step a post's points have reached, from the stored points alone: an injury (skillLevel above) lowers the level worked, not this.
+const skillStep = xp => SKILL_STEPS.filter(s => xp >= s).length - 1;
 function gainSkill(post, n) {
   const h = hired();
   if (!h) return;
   h.skill = h.skill || {};
+  const before = skillStep(h.skill[post] || 0);
   h.skill[post] = (h.skill[post] || 0) + n;
+  if (post === h.post && skillStep(h.skill[post]) > before) levelNote(post, skillStep(h.skill[post]));
+}
+// One plain line when the hand's own post reaches a new level, on the port screen when docked and in the flight log on a burn (as Mods' note).
+function levelNote(post, level) {
+  const name = POSTS[post].name, text = `Your work at the ${name.toLowerCase()} post is level ${level} now. Your own move in a raid works a tenth more often${level >= 2 ? `, and the choices marked [${name} ${level}] are open to you` : ''}.`;
+  if (G.mode !== 'landed') return msg(text);
+  UI.notes.push(text);
+  if (!G.dialog) UI.render();
 }
 // Doing a job yourself: the odds are worse than a crew member's, and get better as you learn the post.
 const soloOdds = post => 0.45 + 0.1 * skillLevel(post);
@@ -85,9 +96,27 @@ function setupHired(o) {
     st.crew.push(c.id);
   }
   const d = captainKey && CAPTAINS[captainKey];
-  st.hired = { captain: cap.id, captainKey, post, since: st.day, wage: d ? d.wage : HIRED_WAGE, share: d ? d.share : HIRED_SHARE, fund: HIRED_FUND, run: null, ledger: [], skill: { ...(o.skill || {}), [post]: Math.max((o.skill || {})[post] || 0, SKILL_STEPS[1]) }, asked: 0, raidTold: false, debt: o.debt !== undefined ? o.debt : HIRED_DEBT };  // o.debt: a hand put ashore carries what is left (stakes.js)
-  // The port screen says only what Signing On (signon.js) does not: who put a hand ashore. The ship, the captain, the post and
+  st.hired = {
+    captain: cap.id,
+    captainKey,
+    post,
+    since: st.day,
+    wage: d ? d.wage : HIRED_WAGE,
+    share: d ? d.share : HIRED_SHARE,
+    fund: HIRED_FUND,
+    run: null,
+    ledger: [],
+    skill: {
+    ...(o.skill || {}),
+    [post]: Math.max((o.skill || {})[post] || 0, SKILL_STEPS[1])
+  },
+    asked: 0,
+    raidTold: false,
+    debt: o.debt !== undefined ? o.debt : HIRED_DEBT
+  };  // o.debt: a hand put ashore carries what is left (stakes.js)
+  // The port screen says only what Signing On (signon.js) does not: who put a hand ashore, or that the captain was lost. The ship, the captain, the post and
   // the savings are said there, once.
+  if (o.captainLost) return [`${o.captainLost} did not come back from the bridge. You carry your savings and what you learned.`];
   return o.putOffBy ? [`${o.putOffBy} put you ashore. You carry your savings and what you learned.`] : [];
 }
 
@@ -202,7 +231,13 @@ function planRun() {
 // The plan is made once per stop and kept, unless the hold has changed since (a plan to sell cargo that is gone).
 const planStale = h => !h.plan || h.plan.day !== G.state.day || h.plan.at !== G.state.planet
   || h.plan.cargo !== JSON.stringify(G.state.cargo);
-const currentPlan = () => { const h = G.state.hired; if (planStale(h)) { const run = planRun(); h.plan = { day: G.state.day, at: G.state.planet, cargo: JSON.stringify(G.state.cargo), run, alts: planAlts.filter(o => !run || o.sid !== run.sid || o.planet !== run.planet || o.good !== run.good).slice(0, 3) }; } return h.plan.run; };
+const currentPlan = () => { const h = G.state.hired; if (planStale(h)) { const run = planRun(); h.plan = {
+  day: G.state.day,
+  at: G.state.planet,
+  cargo: JSON.stringify(G.state.cargo),
+  run,
+  alts: planAlts.filter(o => !run || o.sid !== run.sid || o.planet !== run.planet || o.good !== run.good).slice(0, 3)
+}; } return h.plan.run; };
 
 // Buys the cargo, sets the course, and sails: a crewed pilot flies her out, otherwise the pilot is you.
 function sail() {
@@ -258,7 +293,10 @@ function settleRun(planet) {
   like(st.people[h.captain], profit > 0 ? 1 : -1, profit > 0 ? 'Good run. You pull your weight.' : 'That run lost money.');
   const name = run.good ? COMMODITIES.find(c => c.id === run.good).name : null;
   if (settling) return;
-  return `${name ? `The captain sold ${sold}t of ${name} for ${fmt(revenue)} cr (${profit >= 0 ? `profit ${fmt(profit)}` : `loss ${fmt(-profit)}`} cr). ` : 'A run with no cargo. '}Your pay: ${fmt(wage)} cr wage${share ? ` and ${fmt(share)} cr share` : ''}.${owed ? ` The yard bill took ${fmt(owed)} cr of the profit first.` : ''}${toHall ? ` The hall took ${fmt(toHall)} cr of your pay. ${h.debt ? `${fmt(h.debt)} cr still owed.` : 'The bond is paid.'}` : ''}`;
+  return (`${name ? (`The captain sold ${sold}t of ${name} for ${fmt(revenue)} cr (${profit >= 0 ? `profit ${fmt(profit)}` : `loss ${fmt(-profit)}`} ` +
+      `cr). `) : 'A run with no cargo. '}Your ` +
+      `pay: ${fmt(wage)} cr ` +
+      `wage${share ? ` and ${fmt(share)} cr share` : ''}.${owed ? ` The yard bill took ${fmt(owed)} cr of the profit first.` : ''}${toHall ? ` The hall took ${fmt(toHall)} cr of your pay. ${h.debt ? `${fmt(h.debt)} cr still owed.` : 'The bond is paid.'}` : ''}`);
 }
 
 // ---------- errands ----------
@@ -361,11 +399,22 @@ function dealScene(planet) {
   if (tomas) captainFlag('tomasWaited');  // the last piece of the spine (#294)
   return tomas ? {
     title: 'A Hull on the Apron', personal: true,
-    text: `Tomas is waiting at the head of the ramp when you come back from the yard office, wiping his hands on a rag that has not been clean in years. "Come and see something," he says. He walks you the length of the apron to a long, tired Ore Runner with a mismatched hatch and primer on one flank. "I have rebuilt her three times," he says. "Three owners, and every one of them sold her, and none for bad luck. Each ran one payment short. I fixed what the last one skipped, and the next one skipped it again, because they were paying the bank and not the ship. She is for sale once more, and cheap, because the last owner let her go." He lays a palm flat on her hull. "${fault} I know every fault she has. ${h.debt > 0 ? `You owe the hall ${fmt(h.debt)} still. I looked at its book. Clear it, and you will be the first owner she has had who owes nobody.` : `You owe nobody now. I looked at the hall\'s book. She has only ever had owners who owed everybody.`} I would rather you had her than a stranger. ${tell} Give it a few weeks and she will be gone."`,
-    choices: [{ label: 'Walk her with him', run() { like(tomas, 1, 'The captain walked the Ore Runner with me, and listened.'); return `He shows you the drive housing, the patched coolant line and the place where the fire control cable has been spliced twice. He talks the whole way, and does not once sound like he is selling. The ship is on the yard list now, as the used Ore Runner, until about day ${h.deal.until}.`; } }],
+    text: (`Tomas is waiting at the head of the ramp when you come back from the yard office, wiping his hands on a rag that has not been clean in ` +
+        `years. "Come and see something," he says. He walks you the length of the apron to a long, tired Ore Runner with a mismatched hatch and primer ` +
+        `on one flank. "I have rebuilt her three times," he says. "Three owners, and every one of them sold her, and none for bad luck. Each ran one ` +
+        `payment short. I fixed what the last one skipped, and the next one skipped it again, because they were paying the bank and not the ship. She ` +
+        `is for sale once more, and cheap, because the last owner let her go." He lays a palm flat on her hull. "${fault} I know every fault she ` +
+        `has. ${h.debt > 0 ? `You owe the hall ${fmt(h.debt)} still. I looked at its book. Clear it, and you will be the first owner she has had who owes nobody.` : `You owe nobody now. I looked at the hall\'s book. She has only ever had owners who owed everybody.`} ` +
+        `I would rather you had her than a stranger. ${tell} Give it a few weeks and she will be gone."`),
+    choices: [{ label: 'Walk her with him', run() { like(tomas, 1, 'The captain walked the Ore Runner with me, and listened.'); return (
+        `He shows you the drive housing, the patched coolant line and the place where the fire control cable has been spliced twice. He talks the ` +
+        `whole way, and does not once sound like he is selling. The ship is on the yard list now, as the used Ore Runner, until about ` +
+        `day ${h.deal.until}.`); } }],
   } : {
     title: 'A Used Ore Runner', personal: true,
-    text: `A broker at the yard office has been watching the board for someone with savings. "There is a used Ore Runner on the apron," the broker says. "Three owners, a lot of repairs, and the last one let her go. Her fire control is poor and her life support is tired. The yard will not warrant either. ${fmt(price)} cr, as she stands. Give it a few weeks and somebody else will have her."`,
+    text: (`A broker at the yard office has been watching the board for someone with savings. "There is a used Ore Runner on the apron," the broker ` +
+        `says. "Three owners, a lot of repairs, and the last one let her go. Her fire control is poor and her life support is tired. The yard will not ` +
+        `warrant either. ${fmt(price)} cr, as she stands. Give it a few weeks and somebody else will have her."`),
     choices: [{ label: 'Look her over', run: () => `You walk the apron with the broker and look her over. She is worn, and she is a ship. She is on the yard list now, as the used Ore Runner, until about day ${h.deal.until}.` }],
   };
 }
@@ -410,7 +459,9 @@ function buyIn(id) {
   home().name = shipName(false);
   st.hired = null;
   G.offers = generateMissions(planet);
-  return `You bought the ${bought.name} for ${fmt(price)} cr and left the ${oldName}. Captain ${cap.first} ${cap.last} shakes your hand on the dock and says they will keep an eye out for you on the lanes.${friends.length ? ` ${namesOf(friends)} came with you.` : ' You are on your own.'} She is yours now: the exchange, the contracts and the yard are open to you, and the crew are your wages to pay.`;
+  return (`You bought the ${bought.name} for ${fmt(price)} cr and left the ${oldName}. Captain ${cap.first} ${cap.last} shakes your hand on the dock ` +
+      `and says they will keep an eye out for you on the lanes.${friends.length ? ` ${namesOf(friends)} came with you.` : ' You are on your own.'} She ` +
+      `is yours now: the exchange, the contracts and the yard are open to you, and the crew are your wages to pay.`);
 }
 
 // The close of the hired-hand chapter (scope 'earth-hired', js/build.js): one scene at the foot of the new ship's ramp.
@@ -420,7 +471,10 @@ function chapterEnd(id) {
   const st = G.state, h = hired(), cap = st.people[h.captain], friends = buyInCompanions(), oldName = home().name, days = st.day - h.since;
   return {
     title: 'Your Own Ship', personal: true,
-    text: `The ${buyShip(id).name} is on the apron at ${currentPlanet().name} with her ramp down and the hold empty. The papers have your name on them. You came aboard the ${oldName} ${days} days ago with ${fmt(HIRED_SAVINGS)} cr and a post to learn. ${captainEntry() ? '' : `Captain ${cap.last} shook your hand at the foot of the ramp and went back up it. `}${friends.length ? `${namesOf(friends)} ${friends.length > 1 ? 'are' : 'is'} already aboard, stowing a bag.` : 'Nobody came with you.'}${memorialNote()} The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.`,
+    text: (`The ${buyShip(id).name} is on the apron at ${currentPlanet().name} with her ramp down and the hold empty. The papers have your name on ` +
+        `them. You came aboard the ${oldName} ${days} days ago with ${fmt(HIRED_SAVINGS)} cr and a post to ` +
+        `learn. ${captainEntry() ? '' : `Captain ${cap.last} shook your hand at the foot of the ramp and went back up it. `}${friends.length ? `${namesOf(friends)} ${friends.length > 1 ? 'are' : 'is'} already aboard, stowing a bag.` : 'Nobody came with you.'}${memorialNote()} ` +
+        `The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.`),
     choices: [{ label: 'Keep flying', run: () => 'You walk up the ramp and shut the hatch behind you.' }],
   };
 }
@@ -436,7 +490,8 @@ function chapterRecap() {
     away: `You signed on to be somewhere else. It is ${days} days and ${t.runs} run${t.runs === 1 ? '' : 's'} from the dock you left.` }[h.reason] || '';
   const near = [...(cap && cap.memories ? [{ c: cap, name: `Captain ${cap.last}` }] : []), ...crew.map(c => ({ c, name: c.first }))]
     .filter(x => x.c.opinion >= OPINION.FRIEND).sort((a, b) => b.c.opinion - a.c.opinion).slice(0, 3);
-  const told = crew.filter(c => c.story && c.story.beat >= 3).map(c => c.first), trusted = Object.keys(CAST).filter(k => ((st.cast[k] || {}).flags || {}).trusted).map(k => castPerson(k).first), favor = crew.filter(c => c.story && c.story.beat >= 4).map(c => c.first), loyal = crew.filter(c => c.loyal).map(c => c.first);
+  const told = crew.filter(c => c.story && c.story.beat >= 3).map(c => c.first), trusted = Object.keys(CAST).filter(k => ((st.cast[k] || {}).flags ||
+    {}).trusted).map(k => castPerson(k).first), favor = crew.filter(c => c.story && c.story.beat >= 4).map(c => c.first), loyal = crew.filter(c => c.loyal).map(c => c.first);
   const people = [near.length ? `Closest to you: ${near.map(x => `${x.name} (${opinionWord(x.c.opinion)})`).join(', ')}.` : 'Nobody aboard was a friend yet.',
     told.length ? `Told you what they want: ${list(told)}.` : '', favor.length ? `You took on a favor for ${list(favor)}.` : '', loyal.length ? `Loyal to the ship: ${list(loyal)}.` : '', trusted.length ? `Let you do their work: ${list(trusted)}.` : ''].filter(Boolean).join(' ');
   const lived = goodbyeFacts(h.flags || {}).map(f => f.recap).join(' ');  // what the hand went through (captains.js)
@@ -454,14 +509,21 @@ function buyInHtml() {
   if (!p.services.includes('shipyard')) return '<p class="hint">The yard deals with the captain, not with you. A ship of your own can be bought at a shipyard.</p>';
   const rows = [...(dealOpen() ? [[USED_ID, buyShip(USED_ID)]] : []), ...Object.entries(SHIPS).filter(([, s]) => s.forSale)].map(([id, s]) => {
     const locked = s.req && repOf(localGov()) < s.req;
-    return `<div class="row"><div><b>${s.name}</b> <span class="hint">${s.cargo}t, ${s.berths} berths, ${s.guns} gun${s.guns > 1 ? 's' : ''}. ${fmt(s.price)} cr${locked ? ', needs better standing here' : ''}${id === USED_ID ? `. Worn, with her fire control close to failing. Until about day ${h.deal.until}` : ''}</span></div>
-      ${h.confirm === id ? `<span><button data-action="buyInGo" data-arg="${id}" class="primary">Yes, buy and leave</button> <button data-action="buyInNo">Not yet</button></span>`
-      : `<button data-action="buyInAsk" data-arg="${id}" ${canBuyIn(id, p) ? '' : 'disabled'}>Buy (${fmt(s.price)})</button>`}</div>`;
+    return (`<div class="row"><div><b>${s.name}</b> <span class="hint">${s.cargo}t, ${s.berths} berths, ${s.guns} ` +
+        `gun${s.guns > 1 ? 's' : ''}. ${fmt(s.price)} ` +
+        `cr${locked ? ', needs better standing here' : ''}${id === USED_ID ? `. Worn, with her fire control close to failing. Until about day ${h.deal.until}` : ''}</span></div>
+     ` +
+        ` ${h.confirm === id ? `<span><button data-action="buyInGo" data-arg="${id}" class="primary">Yes, buy and leave</button> <button data-action="buyInNo">Not yet</button></span>`
+      : `<button data-action="buyInAsk" data-arg="${id}" ${canBuyIn(id, p) ? '' : 'disabled'}>Buy (${fmt(s.price)})</button>`}</div>`);
   }).join('');
-  return `<div class="post"><div class="eyebrow">A ship of your own &middot; your savings ${fmt(G.state.credits)} cr</div>
+  return (`<div class="post"><div class="eyebrow">A ship of your own &middot; your savings ${fmt(G.state.credits)} cr</div>
     ${h.debt > 0 ? `<p class="hint">You owe the hiring hall ${fmt(h.debt)} cr. You cannot buy a ship until it is paid.</p>` : ''}
     ${rows}
-    <p class="hint">${h.confirm ? `Leaving means leaving Captain ${esc(cap.first)} ${esc(cap.last)} and the crew behind${friends.length ? `, but ${esc(namesOf(friends))} would come with you` : ', and nobody on the crew knows you well enough to come'}.` : `Buy a ship and go out on your own. ${friends.length ? `${esc(namesOf(friends))} would come with you.` : 'Nobody on the crew knows you well enough to come with you yet.'}`}</p></div>`;
+    <p ` +
+      `class="hint">${h.confirm ? (`Leaving means leaving Captain ${esc(cap.first)} ${esc(cap.last)} and the crew ` +
+        `behind${friends.length ? `, but ${esc(namesOf(friends))} would come with you` : ', and nobody on the crew knows you well enough to come'}.`) : (
+        `Buy a ship and go out on your ` +
+        `own. ${friends.length ? `${esc(namesOf(friends))} would come with you.` : 'Nobody on the crew knows you well enough to come with you yet.'}`)}</p></div>`);
 }
 
 // A run in the hand's terms: the days, the ship's profit, and what that is to you. The captain's run and each suggested run say it alike.

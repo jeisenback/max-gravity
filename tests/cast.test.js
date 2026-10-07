@@ -87,7 +87,7 @@ test('each background has its own pair, and the pairs do not cross', async () =>
   await done();
 });
 
-test('every authored scene is complete: a title, text, two choices with results, and a day for the mid and late ones', async () => {
+test('every authored scene is complete: a title, text, two choices (and a gated one where a scene has it) with results, and a day for the mid and late ones', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
@@ -98,7 +98,7 @@ test('every authored scene is complete: a title, text, two choices with results,
       for (const [name, sc] of Object.entries(d.scenes)) {
         const bad = [];
         if (!sc.title || sc.text.length < 100) bad.push('text');
-        if (sc.choices.length !== (name === 'pivot' ? 3 : 2) || !sc.choices.every(c => c.label)) bad.push('choices');
+        if (sc.choices.length !== (name === 'pivot' ? 3 : 2 + sc.choices.filter(c => c.opinion).length) || !sc.choices.every(c => c.label)) bad.push('choices');  // a choice that needs someone's regard (#345) is one more
         if (['mid1', 'mid2', 'late', 'pivot'].includes(name) && !(sc.days > 0)) bad.push('days');
         if (/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/u.test(sc.text + sc.choices.map(c => c.label).join(''))) bad.push('emoji');
         out.push({ key, name, bad });
@@ -107,7 +107,7 @@ test('every authored scene is complete: a title, text, two choices with results,
     return out;
   });
   assert.deepEqual(r.filter(x => x.bad.length), []);
-  assert.equal(r.length, 51, 'six characters, five scenes each, Yelena\'s pivot, and the first officers\' five each');
+  assert.equal(r.length, 53, 'six characters, five scenes each, the pivots of Yelena, Ines and Tomas, and the first officers\' five each');
   await done();
 });
 
@@ -130,7 +130,7 @@ test('every choice of every scene runs and says what happened', async () => {
     return out;
   });
   assert.deepEqual(r.filter(x => !x.ok), []);
-  assert.equal(r.length, 107, 'six characters, five scenes, two choices, and the pivots\' three; and the first officers\' five scenes each');
+  assert.equal(r.length, 115, 'six characters, five scenes, two choices, and the pivots\' three; and the first officers\' five scenes each; and the two gated choices of Ines and Tomas');
   await done();
 });
 
@@ -393,7 +393,7 @@ test('a lost ship with no core characters aboard is unchanged', async () => {
   await done();
 });
 
-test('the pivot comes after late, after sixty days, and only for Yelena', async () => {
+test('the pivot comes after late, after sixty days', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
@@ -402,10 +402,10 @@ test('the pivot comes after late, after sixty days, and only for Yelena', async 
     rec.arc = 4;
     st.day = rec.since + 59; out.early = castNext('yelena');
     st.day = rec.since + 60; out.on = (castNext('yelena') || {}).name;
-    start({ mode: 'hired' }); castRec('ines').arc = 4; out.ines = castNext('ines');
+    start({ mode: 'hired' }); castRec('ines').arc = 4; castRec('ines').since = G.state.day - 60; out.ines = (castNext('ines') || {}).name;
     return out;
   });
-  assert.equal(r.early, null); assert.equal(r.on, 'pivot'); assert.equal(r.ines, null, 'nobody else has a pivot yet');
+  assert.equal(r.early, null); assert.equal(r.on, 'pivot'); assert.equal(r.ines, 'pivot', 'Ines has one too');
   await done();
 });
 
@@ -437,6 +437,48 @@ test('the pivot outcome follows the state', async () => {
   assert.equal(r.injuredMedic.dead, true, 'an injured medic does not count');
   assert.equal(r.rusty.marks, 1, 'a gunner below 3 loses a point');
   assert.deepEqual(r.pairOnly, { text: true, dead: false, marks: 1, cause: null }, 'with only the pair the floor turns it into a mark');
+  await done();
+});
+
+test('the pivots of Ines and Tomas follow the state, and the narrow build lets them die', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const run = (key, { medic = false, hull = 'good', flag = false, backup = false }) => {
+      __seed(1); start({ mode: 'hired', post: 'gunner' }); postsOnly();
+      const st = G.state; st.injured = {};
+      if (medic) { const m = makeCrewCandidate('earth'); m.role = 'medic'; m.skill = 1; registerPerson(m); st.crew.push(m.id); }
+      st.armor = hull === 'good' ? ship().armor : Math.floor(ship().armor * 0.5);
+      if (flag) castFlag(key, key === 'ines' ? 'practiced' : 'plan');
+      const text = CAST[key].scenes.pivot.choices[backup ? 1 : 0].run(), m = (st.memorial || [])[0];
+      return { text: typeof text === 'string' && text.length > 40, dead: castDead(key), marks: (castRec(key).marks || []).length, cause: m ? m.cause : null };
+    };
+    const out = {};
+    for (const key of ['ines', 'tomas']) out[key] = { live: run(key, { medic: true, flag: true }), mark: run(key, { flag: true }), die: run(key, { hull: 'low' }), backup: run(key, { hull: 'low', flag: true, backup: true }) };
+    return out;
+  });
+  for (const key of ['ines', 'tomas']) {
+    assert.deepEqual(r[key].live, { text: true, dead: false, marks: 0, cause: null }, `${key}: three points live`);
+    assert.deepEqual(r[key].mark, { text: true, dead: false, marks: 1, cause: null }, `${key}: two points are marked`);
+    assert.equal(r[key].die.dead, true, `${key}: one point dies`); assert.match(r[key].die.cause, /near /);
+    assert.equal(r[key].backup.dead, false, `${key}: a second hand is a point`); assert.equal(r[key].backup.marks, 1);
+  }
+  await done();
+});
+
+test('the earlier scenes set what the pivots count, and calling them off costs opinion only', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    start({ mode: 'hired', post: 'gunner' }); postsOnly();
+    CAST.ines.scenes.mid1.choices[0].run(); CAST.tomas.scenes.mid2.choices[0].run();
+    const out = { practiced: !!castRec('ines').flags.practiced, plan: !!castRec('tomas').flags.plan };
+    CAST.tomas.scenes.mid2.choices[1].run && (castRec('tomas').flags = {});
+    for (const key of ['ines', 'tomas']) { const p = person('c:' + key), before = p.opinion; CAST[key].scenes.pivot.choices[2].run(); out[key] = { delta: p.opinion - before, dead: castDead(key), marks: (castRec(key).marks || []).length }; }
+    return out;
+  });
+  assert.equal(r.practiced, true); assert.equal(r.plan, true);
+  assert.deepEqual(r.ines, { delta: -3, dead: false, marks: 0 }); assert.deepEqual(r.tomas, { delta: -3, dead: false, marks: 0 });
   await done();
 });
 
@@ -802,5 +844,35 @@ test('a waiting introduction gains weight for each draw it misses, and the ones 
   assert.equal(r.afterPlay.played, 1);
   assert.ok(r.afterPlay.waits.includes(0), 'the one that played starts again at zero');
   assert.deepEqual(r.next, ['1:14', '1:14'], 'the two still waiting have each missed four draws, and carry on from there');
+  await done();
+});
+
+// ---------- opinion-gated choices in the mid scenes (#345) ----------
+
+test('Ines\'s Board and Tomas\'s Third Hull each have a choice that needs their trust: shut below it, open at it, and it does what it says', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    start({ post: 'gunner', captainKey: 'hester' });
+    const out = {};
+    for (const [key, sceneId, label, flag] of [['ines', 'mid2', 'Offer to say it to the board in person', 'reference'], ['tomas', 'mid2', 'Ask him to write it down', null]]) {
+      const p = castAboard().find(c => c.cast === key), probe = op => {
+        p.opinion = op; G.dialog = null; if (G.transit) G.transit.event = null;
+        openEvent(castScene(key, CAST[key].scenes[sceneId]));
+        const i = G.dialog.choices.findIndex(c => c.label.includes(label));
+        return { i, can: G.dialog.choices[i].can(), label: G.dialog.choices[i].label, count: G.dialog.choices.length };
+      };
+      const below = probe(OPINION.TRUSTED - 1), open = probe(OPINION.TRUSTED), before = p.opinion, text = chooseEvent(open.i);
+      out[key] = { below, open, gain: p.opinion - before, text, flag: flag ? !!castRec(key).flags && !!castRec(key).flags[flag] : null, first: p.first };
+    }
+    return out;
+  });
+  for (const key of ['ines', 'tomas']) {
+    const k = r[key];
+    assert.equal(k.below.can, false, `${key} shut below the minimum`); assert.ok(k.below.label.includes(`needs ${k.first}'s trust`), k.below.label);
+    assert.equal(k.open.can, true, `${key} open at it`); assert.ok(!k.open.label.includes('needs'), 'no reason once open');
+    assert.ok(k.below.count >= 3, 'shut, never hidden'); assert.ok(k.text.length > 200, 'it says what happened');
+  }
+  assert.ok(r.ines.gain >= 2 && r.tomas.gain >= 1, 'it lifts their regard (opinion tops out, so from the minimum it is less than the full gain)'); assert.ok(r.ines.flag, 'the reference flag is set');
   await done();
 });

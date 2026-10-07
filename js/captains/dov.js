@@ -11,7 +11,9 @@ CAPTAINS.dov = {
   captain: { trade: 2, nerve: 2, thrift: 1 }, wage: 50, share: 0.08, hears: -1, bonus: 0, talk: 1.5,
   xo: 'ilsa',
 
-  intro: (wage, share) => `Captain Dov Adair is shaking your hand before you have finished coming up the ramp. He has read your papers, and your next of kin, and he says your sister\'s name correctly, the first time. "${wage} a day and ${share} percent," he says, "and if the fund runs thin, which it does, we do not talk about it before supper. Sit. Have you eaten?"`,
+  intro: (wage, share) => (`Captain Dov Adair is shaking your hand before you have finished coming up the ramp. He has read your papers, and your ` +
+      `next of kin, and he says your sister\'s name correctly, the first time. "${wage} a day and ${share} percent," he says, "and if the fund runs ` +
+      `thin, which it does, we do not talk about it before supper. Sit. Have you eaten?"`),
 
   chatter: [
     'Captain Adair is telling the story about the pump and the harbourmaster, for the third time this watch. It gets better each time.',
@@ -29,7 +31,9 @@ CAPTAINS.dov = {
 
   events: {
     'cap-order': {
-      text: 'Captain Adair wants the drive run hotter than you would. He promised a woman at the last port that her crates would be there by the fifth, and did not look at the berth window until this morning. He tells it against himself, and well. "I know," he says. "I know. Do it anyway, and I will make it up to everyone."',
+      text: ('Captain Adair wants the drive run hotter than you would. He promised a woman at the last port that her crates would be there by the ' +
+          'fifth, and did not look at the berth window until this morning. He tells it against himself, and well. "I know," he says. "I know. Do it ' +
+          'anyway, and I will make it up to everyone."'),
       ordered: 'You run it hot. The window is made, just. He claps you on the shoulder, and tells the galley about it twice before the next watch, and by the second time you are the hero of it.',
       heard: 'You say it plainly. He listens with his whole face. You can watch him decide. "You are right," he says. "Ninety. I will ring her and tell her the truth. She will forgive me. They always do."',
       notHeard: 'You say it, and for the first time you see him go quiet. "I did not ask," he says. It is not loud, and it is worse than loud. You run it hot.',
@@ -60,13 +64,15 @@ CAPTAINS.dov = {
   scenes: {
     trouble: {
       title: 'Short at the Dock',
-      text: 'The fuel dock will not release the fuel. The fund is short, and Captain Adair, who has told the harbourmaster three stories already, is working on a fourth. He turns to you in the middle of it. "You have an honest face," he says. "Would you tell her we are good for it? Just that. Or if you had three hundred... no. No. Tell her we are good for it." The harbourmaster looks at you.',
+      text: ('The fuel dock will not release the fuel. The fund is short, and Captain Adair, who has told the harbourmaster three stories already, is ' +
+          'working on a fourth. He turns to you in the middle of it. "You have an honest face," he says. "Would you tell her we are good for it? Just ' +
+          'that. Or if you had three hundred... no. No. Tell her we are good for it." The harbourmaster looks at you.'),
       choices: [
         { label: 'Vouch for him', run() {
           captainLike(2, 'You told the harbourmaster we were good for it.');
           return 'You say it. Your voice is steadier than you expected. She looks at the captain, and at the fund board, and at you, and puts the stamp on the form. "Once," she says. He is crying, and laughing at himself for it. He does not forget it.';
         } },
-        { label: 'Cover three hundred from your savings', can: () => G.state.credits >= 300, run() {
+        { label: 'Cover three hundred from your savings', ...gated(needCr(300)), run() {
           G.state.credits -= 300; captainLike(3, 'You covered the fuel when the fund was short.'); captainFlag('lent');
           return 'You pay it at the window, in your own cash. He stands still beside you. "I will pay you back," he says, and for once does not tell a story about it. He writes the figure on the back of his hand.';
         } },
@@ -75,7 +81,10 @@ CAPTAINS.dov = {
     secret: {
       confide: {
         title: 'The Cash Box',
-        text: 'Late in the watch Captain Adair does not talk. It takes you a while to notice. He puts the cash box on the table and opens it, and shows you the book beside it, which is not a ledger so much as a list of kindnesses: a fare forgiven, a loan to a deckhand, a gift to a dock family in a bad year. "I have been taking it out of the fund," he says. "Not for me. Well. Mostly not for me. It does not balance. It has not balanced in two years, and every quarter it does, and I do not know why." He looks at the book. "I am afraid to ask."',
+        text: ('Late in the watch Captain Adair does not talk. It takes you a while to notice. He puts the cash box on the table and opens it, and ' +
+            'shows you the book beside it, which is not a ledger so much as a list of kindnesses: a fare forgiven, a loan to a deckhand, a gift to a ' +
+            'dock family in a bad year. "I have been taking it out of the fund," he says. "Not for me. Well. Mostly not for me. It does not balance. ' +
+            'It has not balanced in two years, and every quarter it does, and I do not know why." He looks at the book. "I am afraid to ask."'),
         choices: [
           { label: 'Tell him to ask Ilsa', run() {
             captainLike(2, 'You told me to ask Ilsa.'); captainFlag('secretKnown');
@@ -89,7 +98,10 @@ CAPTAINS.dov = {
       },
       found: {
         title: 'The Initials',
-        text: 'You are looking for the wrong page of the fund book and find the right one. There is a column of deposits every quarter in the same small hand, initialled I.B., none of them from the bank. They arrive a day before every audit and a day after every shortfall. You are still looking at them when Captain Adair comes in. He sees the page, and what it is, and for the first time since you came aboard he has nothing to say.',
+        text: ('You are looking for the wrong page of the fund book and find the right one. There is a column of deposits every quarter in the same ' +
+            'small hand, initialled I.B., none of them from the bank. They arrive a day before every audit and a day after every shortfall. You are ' +
+            'still looking at them when Captain Adair comes in. He sees the page, and what it is, and for the first time since you came aboard he has ' +
+            'nothing to say.'),
         choices: [
           { label: 'Close the book and say nothing', run() {
             captainLike(0, 'You closed the fund book and said nothing.'); captainFlag('secretKnown');
@@ -118,7 +130,11 @@ CAPTAINS.dov = {
     parting: 'He hugs you, which you did not expect, and which he does badly, and warmly. "Come and see us," he says. "Come and see me. I will be here. There is always somebody in the galley."',
     choices: [
       { label: 'Thank him for the work', run: () => { captainLike(2, 'You thanked me for the work.'); return 'You thank him. He says it was nothing, and then, because he cannot help it, tells you what it was.'; } },
-      { label: 'Tell him to ask Ilsa for help', can: flags => !!flags.secretKnown, run: () => { captainLike(2, 'You told me to ask for help.'); return 'He nods slowly. "I will," he says. "I will ask her to dinner. That is a start." He tries to make a story of it, and finds he does not need to.'; } },
+      {
+        label: 'Tell him to ask Ilsa for help',
+        can: flags => !!flags.secretKnown,
+        run: () => { captainLike(2, 'You told me to ask for help.'); return 'He nods slowly. "I will," he says. "I will ask her to dinner. That is a start." He tries to make a story of it, and finds he does not need to.'; }
+      },
       { label: 'Take the bread and go', run: () => { captainLike(0, 'You took the bread and went.'); return 'You take the bread and go. You look back from the end of the dock, and he is still at the foot of the ramp, waving, a small figure on a lit dock with nobody to tell.'; } },
     ],
   },

@@ -36,10 +36,43 @@ const RAID_CLOSING = [
 ];
 const RAID_EXCHANGE = [
   { id: 'screen', label: 'Fire the point defense', odds: st => (st === 'torpedo' ? 0.7 : 0.6),
-    win: { grapple: [1, 0, 'The point defense put a curtain of rounds across her approach. She breaks off the run with her grapple arms still folded.'], torpedo: [1, 0, 'The point defense take the torpedo at three kilometers, and the flash is white on the screens.'], gun: [1, 0, 'The point defense throw a curtain across her line, and her turret has to track through it. The burst goes wide.'] },
-    lose: { grapple: [-1, 0.12, 'Her burst goes through the screen and the hull rings in three places.'], torpedo: [-1, 0.12, 'The torpedo comes through the screen and bursts close. The deck bucks and every light flickers.'], gun: [-1, 0.12, 'Her burst goes through the screen. It is a patrol gun, and it is accurate. The hull rings in three places.'] } },
+    win: { grapple: [1, 0, ('The point defense put a curtain of rounds across her approach. She breaks off the run with her grapple arms still ' +
+        'folded.')], torpedo: [1, 0, 'The point defense take the torpedo at three kilometers, and the flash is white on the screens.'], gun: [1, 0, 'The point defense throw a curtain across her line, and her turret has to track through it. The burst goes wide.'] },
+    lose: {
+      grapple: [
+      -1,
+      0.12,
+      'Her burst goes through the screen and the hull rings in three places.'
+    ],
+      torpedo: [
+      -1,
+      0.12,
+      'The torpedo comes through the screen and bursts close. The deck bucks and every light flickers.'
+    ],
+      gun: [
+      -1,
+      0.12,
+      'Her burst goes through the screen. It is a patrol gun, and it is accurate. The hull rings in three places.'
+    ]
+    } },
   { id: 'burn', label: 'Burn evasive', odds: st => (st === 'torpedo' ? 0.5 : 0.7),
-    win: { grapple: [1, 0, 'You throw the ship sideways. Her burst goes through the place you were.'], torpedo: [1, 0, 'The torpedo chases the plume and bursts well astern.'], gun: [1, 0, 'You throw the ship sideways and her burst goes through the place you were. She does not adjust fast enough.'] },
+    win: {
+      grapple: [
+      1,
+      0,
+      'You throw the ship sideways. Her burst goes through the place you were.'
+    ],
+      torpedo: [
+      1,
+      0,
+      'The torpedo chases the plume and bursts well astern.'
+    ],
+      gun: [
+      1,
+      0,
+      'You throw the ship sideways and her burst goes through the place you were. She does not adjust fast enough.'
+    ]
+    },
     lose: { grapple: [-1, 0.1, 'She is faster than the turn. The burst rakes your port side.'], torpedo: [-1, 0.1, 'The torpedo turns with you and bursts on the quarter.'], gun: [-1, 0.1, 'She leads the turn and her burst takes you in it. Patrol gunners practise that exact one.'] } },
   { id: 'fire', label: 'Return fire', bold: true, odds: () => 0.45,
     win: [2, 0, 'You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches.'],
@@ -50,8 +83,10 @@ const RAID_POST = {
   closing: {
     gunner: { label: 'Get a lock on her drive', win: [2, 0, 'You put the fire control on her drive bloom and hold it. The lock tone sounds and does not drop. Whatever she does next, you have her.'], lose: [-1, 0, 'The lock will not hold. She jinks, and your reticle goes to the stars.'] },
     pilot: { label: 'Put the sun behind us', win: [2, 0, 'You swing the ship so the sun sits behind you and she has to fly into it. Her sensors wash out. She comes on blind for a minute.'], lose: [-1, 0, 'You bring the sun around, and she is already on the other side of it.'] },
-    engineer: { label: 'Run the drive hot and open the range', win: [2, 0, 'You push the drive past the line you would normally keep. The range opens, a kilometer a minute. She is a long way behind when the coolant temperature comes back down.'], lose: [-1, 0, 'The drive coughs at the top of the climb and the range closes again. You lose a minute to the coolant.'] },
-    comms: { label: 'Hail her on her own band', win: [2, 0, 'You hail her on the band the pirates use and say the navy is a day behind, with a patrol number. She goes quiet and hangs back for a minute.'], lose: [-2, 0, 'You hail her and she laughs on the open band. The next thing you hear is her fire control painting you.'] },
+    engineer: { label: 'Run the drive hot and open the range', win: [2, 0, ('You push the drive past the line you would normally keep. The range ' +
+        'opens, a kilometer a minute. She is a long way behind when the coolant temperature comes back down.')], lose: [-1, 0, 'The drive coughs at the top of the climb and the range closes again. You lose a minute to the coolant.'] },
+    comms: { label: 'Hail her on her own band', win: [2, 0, ('You hail her on the band the pirates use and say the navy is a day behind, with a ' +
+        'patrol number. She goes quiet and hangs back for a minute.')], lose: [-2, 0, 'You hail her and she laughs on the open band. The next thing you hear is her fire control painting you.'] },
   },
   exchange: {
     gunner: { label: 'Walk a burst along her line', win: [2, 0, 'You walk the burst along her line, a hand at a time. The last round hits her gun housing, and she stops firing.'], lose: [-1, 0, 'You walk it wrong. The burst goes ahead of her.'] },
@@ -61,10 +96,15 @@ const RAID_POST = {
   },
 };
 const RAID_CLOSE = {
-  off: { gun: 'She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation.', grapple: 'She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not.', torpedo: 'She does not fire the third torpedo. The bay doors close and she turns away, and the range opens.' },
-  crippled: { gun: 'Your last burst takes her drive, and the cutter yaws and goes quiet. She will have a tow in a day. A beacon on her hull is already calling for it.', grapple: 'Your last burst takes her drive, and the plume goes out. She turns over and drifts, with the grapple arms hanging.', torpedo: 'Your last burst reaches her torpedo bay and not the torpedoes, which is lucky for everyone. Her plume goes out.' },
+  off: { gun: ('She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and ' +
+      'the next stop will not be a conversation.'), grapple: (
+      'She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she ' +
+      'is not.'), torpedo: 'She does not fire the third torpedo. The bay doors close and she turns away, and the range opens.' },
+  crippled: { gun: ('Your last burst takes her drive, and the cutter yaws and goes quiet. She will have a tow in a day. A beacon on her hull is ' +
+      'already calling for it.'), grapple: 'Your last burst takes her drive, and the plume goes out. She turns over and drifts, with the grapple arms hanging.', torpedo: 'Your last burst reaches her torpedo bay and not the torpedoes, which is lucky for everyone. Her plume goes out.' },
   standoff: 'She breaks off at long range, out of ammunition or out of patience, and throws one last burst as she goes. It clips the hull aft.',
-  boarded: { gun: 'She is alongside, and not with grapples: a boarding party in navy gray comes across with the lock cutter. They are coming aboard, by the book.', grapple: 'She is alongside. The grapples bang on the hull in four places and the lock alarm goes. They are coming aboard.', torpedo: 'A torpedo takes your drive housing and she closes while you are slow. The grapples bang on the hull, and the lock alarm goes.' },
+  boarded: { gun: ('She is alongside, and not with grapples: a boarding party in navy gray comes across with the lock cutter. They are coming aboard, ' +
+      'by the book.'), grapple: 'She is alongside. The grapples bang on the hull in four places and the lock alarm goes. They are coming aboard.', torpedo: 'A torpedo takes your drive housing and she closes while you are slow. The grapples bang on the hull, and the lock alarm goes.' },
 };
 
 // A crippled raider drifts beside you. Boarding her is the repel fight run the other way (boarders.js).
@@ -72,10 +112,14 @@ function deadInSpaceScene(s) {
   const h = hired(), cap = person(h.captain);
   return {
     title: 'Dead in Space', personal: true, via: 'crew', owner: 'you',
-    text: `${theShip(s.foe)} is still. Her drive is out and she is turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain ${cap.last} holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be ${repelStanding(assaultStart(s.foe)) - 1} of yours against ${assaultStart(s.foe).boarders} of hers.`,
+    text: (`${theShip(s.foe)} is still. Her drive is out and she is turning slowly on her axis, with her running lights flickering and her lock open ` +
+        `to vacuum. Captain ${cap.last} holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would ` +
+        `be ${repelStanding(assaultStart(s.foe)) - 1} of yours against ${assaultStart(s.foe).boarders} of hers.`),
     choices: [
       { label: 'Board her', run() { G.nextEvent = repelScene(assaultStart(s.foe, s)); return `The cutter goes out of the lock. It is a short crossing.`; } },
-      { label: 'Let her drift', run() { like(cap, 1, 'You stood us up to a raid and she broke off.'); changeRep('Pirate', -3); gainSkill(h.post, 3); return `You leave her turning in the dark. Captain ${cap.last} writes it in the log and nothing else. (+3 experience at the ${POSTS[h.post].name.toLowerCase()} post.)`; } },
+      { label: 'Let her drift', run() { like(cap, 1, 'You stood us up to a raid and she broke off.'); changeRep('Pirate', -3); gainSkill(h.post, 3); return (
+          `You leave her turning in the dark. Captain ${cap.last} writes it in the log and nothing else. (+3 experience at ` +
+          `the ${POSTS[h.post].name.toLowerCase()} post.)`); } },
     ],
   };
 }
@@ -124,15 +168,19 @@ function startRaid(spec, flee, o = {}) {
   return text;
 }
 
-// What a choice can cost, said before it is picked (#293): its worst outcome in a few words, built from what the choice declares (a hull
-// cost on a lost roll, the hand's own risk, and the captain's remark on a risky call), never the odds. A sure choice, or one with
-// nothing at stake, carries no note.
+// What a choice can cost, said before it is picked (#293, #364): its worst outcome in a few words, built from what the choice declares, never
+// the odds. `hull`: a lost roll costs hull, and with it a crew casualty; `casualty`: a lost exchange can cost one without hull; `hand`: you may
+// be hurt; `xp`: you learn less; `marks`: the captain marks the call (a bold or risky one). A sure choice, or one with nothing at stake,
+// carries no note. The raids, the boarding scenes, the ice run and the work events all say it through this.
+function costNote(c) {
+  const costs = [...(c.hull || c.casualty ? [...(c.hull ? ['hull damage'] : []), 'a crew casualty'] : []), ...(c.hand ? ['you may be hurt'] : []), ...(c.xp ? ['you learn less'] : [])];
+  const text = c.marks ? [...(costs.length ? [`${costs.join(', ')}, and`] : []), 'the captain marks it'].join(' ') : costs.join(', ');
+  return text ? ` <span class="hint">[if it fails: ${text}]</span>` : '';
+}
 function raidCostNote(c, style) {
   if (c.odds(style) >= 1) return '';
   const lose = c.lose || c.win, line = Array.isArray(lose) ? lose : (lose[style] || lose.grapple), risk = HAND_RISK[c.id] || 0;
-  const costs = [...(line[1] > 0 ? ['hull damage', 'a crew casualty'] : []), ...(risk > 0 ? ['you may be hurt'] : [])];
-  const text = risk >= 0.35 ? [...(costs.length ? [`${costs.join(', ')}, and`] : []), 'the captain marks it'].join(' ') : costs.join(', ');
-  return text ? ` <span class="hint">[if it fails: ${text}]</span>` : '';
+  return costNote({ hull: line[1] > 0, hand: risk > 0, marks: risk >= 0.35 });
 }
 
 function raidScene(s) {
@@ -164,6 +212,7 @@ function raidStep(s, c, post) {
     else if (edge >= 2) like(cap, 1, 'You made the call that turned a raid.');
   }
   if (hull) { const pts = Math.round(ship().armor * hull * foePunch(s)); st.armor = Math.max(1, st.armor - pts); out += ` Armor -${pts}.`; if (!won && Math.random() < CASUALTY_ODDS * (1 + 0.15 * s.grade + (s.pack ? 0.25 : 0))) out += ` ${repelCasualty(s)}`; }
+  if (s.handDied) return out;  // the hand is dead: the ending is queued, and the raid does not go on
   s.beat++;
   if (s.beat >= 3 || s.edge >= 3 || s.edge <= -3) return `${out} ${raidClose(s)}`;
   G.nextEvent = raidScene(s);
@@ -198,10 +247,18 @@ function raidClose(s) {
 // raid two behind, and one you saw coming starts it one ahead. Offered for a burn through unsettled space (hired hand only).
 const AMBUSH_GAP = 60, AMBUSH_DANGER = 0.25, AMBUSH_TRAP = 0.7;
 const AMBUSH_READ = {
-  gunner: { label: 'Scan her hull for weapons', trap: 'You hold the fire control on her and watch the hull. There is a gun housing under the freighter plating, and the plating has been cut to let it traverse. She is not a freighter.', real: 'You hold the fire control on her and look for a gun housing, a torpedo bay, anything. There is a cargo door hanging open and nothing else. She is a freighter.' },
-  engineer: { label: 'Read her drive signature', trap: 'You put the drive plume on the analyzer. It is a freighter\'s hull with a corsair\'s drive, and a freighter that is dying does not burn like that. She is bait.', real: 'You put the drive plume on the analyzer. It is a freighter\'s drive and it is failing in the way that they fail, a coolant fault on the second bank. She is real.' },
-  pilot: { label: 'Match her tumble', trap: 'You match her tumble in your head and it is wrong. A hull with its drive out spins slower than that, and she is spinning on a clock. She is not dead in space, she is playing it.', real: 'You match her tumble and it fits: a hull with its drive out, spinning slow, the way an uncontrolled one does. She is real.' },
-  comms: { label: 'Check her call against the registry', trap: 'You check the transponder against the registry. The hull number belongs to a freighter that was scrapped two years ago. The call is a lie.', real: 'You check the transponder against the registry. The hull number is current, and her last port was two days ago. The call is genuine.' },
+  gunner: { label: 'Scan her hull for weapons', trap: ('You hold the fire control on her and watch the hull. There is a gun housing under the ' +
+      'freighter plating, and the plating has been cut to let it traverse. She is not a freighter.'), real: (
+      'You hold the fire control on her and look for a gun housing, a torpedo bay, anything. There is a cargo door hanging open and nothing else. She ' +
+      'is a freighter.') },
+  engineer: { label: 'Read her drive signature', trap: ('You put the drive plume on the analyzer. It is a freighter\'s hull with a corsair\'s drive, ' +
+      'and a freighter that is dying does not burn like that. She is bait.'), real: (
+      'You put the drive plume on the analyzer. It is a freighter\'s drive and it is failing in the way that they fail, a coolant fault on the second ' +
+      'bank. She is real.') },
+  pilot: { label: 'Match her tumble', trap: ('You match her tumble in your head and it is wrong. A hull with its drive out spins slower than that, ' +
+      'and she is spinning on a clock. She is not dead in space, she is playing it.'), real: 'You match her tumble and it fits: a hull with its drive out, spinning slow, the way an uncontrolled one does. She is real.' },
+  comms: { label: 'Check her call against the registry', trap: ('You check the transponder against the registry. The hull number belongs to a ' +
+      'freighter that was scrapped two years ago. The call is a lie.'), real: 'You check the transponder against the registry. The hull number is current, and her last port was two days ago. The call is genuine.' },
 };
 
 const ambushDue = () => {
@@ -218,13 +275,19 @@ function ambushScene() {
 // The call, before and after a read. `known` is set once a read has told you which it is.
 function ambushChoice(a, cap, h, post, spec) {
   const springs = (edge, text, open) => startRaid({ kind: 'pirate' }, false, { edge, text, open });
-  const sprung = () => springs(-2, `You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two more come off the rock behind her, and the call stops.`, `They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they are inside the range, and your position is already bad.`);
+  const sprung = () => springs(-2, (`You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two ` +
+      `more come off the rock behind her, and the call stops.`), (
+      `They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they are inside the range, and ` +
+      `your position is already bad.`));
   const real = () => { h.fund += 500; like(cap, 1, 'You stopped for a real distress call.'); return `She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund, which is more than you asked.`; };
   const choices = [];
   if (a.known) {
     if (a.trap) {
-      choices.push({ label: 'Hit them before they are ready', run: () => springs(1, `You come in hot with the drive cold, and light it at three kilometers. They are not ready. Battle stations.`, `They are in position behind the freighter, with their drives cold, and they have not lit them. You have the range, and the first move.`) });
-      choices.push({ label: 'Turn away and leave it', run() { like(cap, 1, 'You saw a trap before it closed.'); gainSkill(post, 2); return `You turn away and burn for the lane. At four kilometers the freighter's drive lights, the real one, and she comes after you for twenty minutes before she gives it up. (+2 experience at the ${POSTS[post].name.toLowerCase()} post.)`; } });
+      choices.push({ label: 'Hit them before they are ready', run: () => springs(1, (`You come in hot with the drive cold, and light it at three ` +
+          `kilometers. They are not ready. Battle stations.`), `They are in position behind the freighter, with their drives cold, and they have not lit them. You have the range, and the first move.`) });
+      choices.push({ label: 'Turn away and leave it', run() { like(cap, 1, 'You saw a trap before it closed.'); gainSkill(post, 2); return (
+          `You turn away and burn for the lane. At four kilometers the freighter's drive lights, the real one, and she comes after you for twenty ` +
+          `minutes before she gives it up. (+2 experience at the ${POSTS[post].name.toLowerCase()} post.)`); } });
     } else {
       choices.push({ label: 'Go to her', run: real });
       choices.push({ label: 'Leave her', run() { like(cap, -1, 'You left a real distress call.'); return `You leave her to call for someone else. Captain ${cap.last} says nothing, and does not look up from the plot.`; } });
@@ -239,7 +302,9 @@ function ambushChoice(a, cap, h, post, spec) {
       return `You try, and the readings will not settle. The call keeps repeating, and you are no wiser.`;
     } });
   }
-  const scene = { title: 'A Freighter in Trouble', personal: true, via: 'ship', owner: 'you', text: a.known ? (a.trap ? `You know what is out there. They have not lit their drives, and they do not know you know.` : `The readings are clean. She is real, and she is asking again.`) : `A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain ${cap.last} looks at the plot, then at the crew.`, choices };
+  const scene = { title: 'A Freighter in Trouble', personal: true, via: 'ship', owner: 'you', text: a.known ? (a.trap ? `You know what is out there. They have not lit their drives, and they do not know you know.` : `The readings are clean. She is real, and she is asking again.`) : (
+      `A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes ` +
+      `off your course. Captain ${cap.last} looks at the plot, then at the crew.`), choices };
   return scene;
 }
 

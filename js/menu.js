@@ -234,11 +234,16 @@ const Menu = {
     },
     controls() {
       const row = (k, d) => `<div class="hint"><b>${k}</b>: ${d}</div>`;
-      return `<h2>Controls</h2>
-        <h3>Flying</h3>${row('W / Up', 'thrust')}${row('A D / Left Right', 'turn')}${row('S / Down', 'turn to brake')}${row('Space', 'fire')}${row('F', 'launch a torpedo')}${row('Tab', 'next target')}${row('H', 'hail your target')}${row('L', 'land at the nearest port')}${row('M', 'system map')}${row('J', 'start a burn')}${row('N', 'sound on or off')}${row('Esc', 'pause menu')}
-        <h3>Fights during burns</h3>${row('W', 'burn at your set thrust')}${row('Q / E', 'less or more thrust')}${row('S', 'point retrograde against the enemy')}${row('Space', 'guns')}${row('F', 'torpedo')}${row('H', 'hail, or board a disabled ship')}
-        <h3>Touch</h3><div class="hint">The stick steers and burns (push further for more thrust), Fire and Brake are held, and the buttons above them tap.</div>
-        <div class="menu-buttons row"><button data-action="menuBack">Back</button></div>`;
+      return (`<h2>Controls</h2>
+        ` +
+          `<h3>Flying</h3>${row('W / Up', 'thrust')}${row('A D / Left Right', 'turn')}${row('S / Down', 'turn to brake')}${row('Space', 'fire')}${row('F',
+            'launch a torpedo')}${row('Tab', 'next target')}${row('H', 'hail your target')}${row('L', 'land at the nearest port')}${row('M', 'system map')}${row('J',
+            'start a burn')}${row('N', 'sound on or off')}${row('Esc', 'pause menu')}
+        <h3>Fights during ` +
+          `burns</h3>${row('W', 'burn at your set thrust')}${row('Q / E', 'less or more thrust')}${row('S', 'point retrograde against the enemy')}${row('Space', 'guns')}${row('F', 'torpedo')}${row('H', 'hail, or board a disabled ship')}
+        <h3>Touch</h3><div class="hint">The stick steers and burns (push further for more thrust), Fire and Brake are held, and the buttons above them ` +
+          `tap.</div>
+        <div class="menu-buttons row"><button data-action="menuBack">Back</button></div>`);
     },
     credits() {
       return `<h2>Credits</h2>

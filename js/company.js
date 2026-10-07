@@ -329,7 +329,8 @@ function relieveCaptain(i) {
 }
 function captainHtml(i, s) {
   const p = castCaptain(s), here = !s.dest && !s.escort && s.at === G.state.planet, e = captainEdge(s);
-  if (p) return `<div class="hint">${personLink(p)} in command: trade ${e.trade}, nerve ${e.nerve}, thrift ${e.thrift}.${e.ready ? '' : ` Green: every stat two lower until skill ${CAPTAIN_SKILL} and ${CAPTAIN_DAYS} days with you.`} ${here ? `<button data-action="crelieve" data-arg="${i}">Relieve</button>` : ''}</div>`;
+  if (p) return (`<div class="hint">${personLink(p)} in command: trade ${e.trade}, nerve ${e.nerve}, ` +
+      `thrift ${e.thrift}.${e.ready ? '' : ` Green: every stat two lower until skill ${CAPTAIN_SKILL} and ${CAPTAIN_DAYS} days with you.`} ${here ? `<button data-action="crelieve" data-arg="${i}">Relieve</button>` : ''}</div>`);
   return here ? castAboard().map(c => `<button data-action="cpost" data-arg="${i}|${c.cast}">Put ${esc(c.first)} in command</button>`).join(' ') : '';
 }
 
@@ -367,10 +368,13 @@ function companyView() {
       </div>
     </div>`;
   }).join('');
-  return `
+  return (`
     <h3>Your company</h3>
-    ${cards || '<p class="hint">No ships yet. At any shipyard, buy a ship for the company: it comes with a captain and runs a trade route while you fly.</p>'}
-    <p class="hint">Company ships trade with your credits but never touch the last ${fmt(COMPANY_RESERVE)} cr. Captains are paid daily. Raids on a route can cost cargo or repairs; skilled captains get through more often. Up to ${MAX_ESCORTS} ships docked where you are can fly with you as escorts instead; you pay their reaction mass and repairs.</p>
+   ` +
+      ` ${cards || '<p class="hint">No ships yet. At any shipyard, buy a ship for the company: it comes with a captain and runs a trade route while you fly.</p>'}
+    <p class="hint">Company ships trade with your credits but never touch the last ${fmt(COMPANY_RESERVE)} cr. Captains are paid daily. Raids on a ` +
+      `route can cost cargo or repairs; skilled captains get through more often. Up to ${MAX_ESCORTS} ships docked where you are can fly with you as ` +
+      `escorts instead; you pay their reaction mass and repairs.</p>
     <h3>Stakes</h3>
     ${Object.keys(stakes()).length ? Object.entries(stakes()).map(([name, s]) => {
       const pl = planetNamed(name).pl, value = Math.round(stakeValue(pl) * (s.share / STAKE_STEP) * (1 - BROKER_FEE));
@@ -381,7 +385,8 @@ function companyView() {
     ${outpostCompanyHtml()}
     ${legacyHtml()}
     <h3>Company log</h3>
-    ${st.companyLog.length ? st.companyLog.map(l => `<div class="hint">${dateOf(l.day)}: ${l.text}</div>`).join('') : '<p class="hint">Nothing yet.</p>'}`;
+   ` +
+      ` ${st.companyLog.length ? st.companyLog.map(l => `<div class="hint">${dateOf(l.day)}: ${l.text}</div>`).join('') : '<p class="hint">Nothing yet.</p>'}`);
 }
 
 Mods.register({

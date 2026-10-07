@@ -106,6 +106,7 @@ On a keyboard:
 - `js/ui.js` - landed screens: spaceport, commodity exchange, mission board, shipyard
 - `js/crew.js` - handcrafted crew and passenger groups, role perks, and wages
 - `js/people.js` - procedural people: generation, passenger and crew events, memory, and reunions
+- `js/peopletext.js` - the name tables, trait words and ship words of `people.js`: data only
 - `js/factions.js` - faction standing, patrols, and fines
 - `js/hail.js` - hailing ships in flight
 - `js/story.js` - the Cold Water plot's machinery: story state, the recovery ship, the blockade, the endings and epilogue
@@ -127,6 +128,7 @@ On a keyboard:
 - `js/uat.js` - tester tools: a checklist of set-ups for every feature, general tools, and a pass/fail report
 - `js/community.js` - mods by link, shareable scenarios, and shared news between players
 - `js/family.js` - the ship as home: its name and history, personal stories and favors, birthdays and holidays, letters and moods, traditions, touches, the cat, and passengers who join the crew
+- `js/familytext.js` - the text tables of `family.js` (what people left, what they hope for, idle talk, holidays, letters from home): data only, one entry per line
 - `js/calendar.js` - the year's culture as data: shows, books, leagues and one-off broadcasts by game date
 - `js/social.js` - bonds between people aboard, tastes, relationship scenes, the culture's feeds and results, shared downtime, and returning passengers
 - `js/bar.js` - the Bar tab: each port's bar, the room's mood, patrons to talk to, and crew for hire
@@ -158,6 +160,7 @@ On a keyboard:
 - `js/stories/aftermath.js` - what comes of the hand-written burn events: second beats and follow-ups that arrive days later
 - `js/stories/hired-aftermath.js` - what comes of a hired hand's own events: follow-ups that name the captain or shipmate they were about
 - `js/hiredevents.js` - what is written for a hired hand: burn events in five groups (work at your post, the captain, the crew with the main characters where aboard, money, and the road), twelve downtime additions (up to four offered at a time, the main characters first), the weights in one table, and the owner-only events hidden
+- `js/hiredeventstext.js` - the work events of `hiredevents.js`: data only
 - `js/stories/` - storylines written as storylets: `ice-strike.js` (the Ice Haulers' Strike), `mars-navy.js` (Reserve Commission, a Mars Navy career), `rook-crown.js` (The Rook's Crown, a pirate lord's rise), `tethys.js` (The Partner's Chair, a corporate climb), and `cold-water.js` (the scenes of Cold Water)
 - `js/tutorial.js` - the first-run tutorial: for an owner, a guided Earth-to-Mars electronics run; for a hired hand, a few steps (sail, the first officer's walk-through, downtime, a chat, docking). Either advances as you play (Skip in port ends it)
 - `js/audio.js` - sound effects synthesized with Web Audio (no audio files): guns, hits, explosions, engine rumble, docking, burns, comms

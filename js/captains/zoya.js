@@ -11,7 +11,9 @@ CAPTAINS.zoya = {
   captain: { trade: 4, nerve: 5, thrift: 1 }, wage: 25, share: 0.07, hears: 0, bonus: 2, talk: 1.0,
   xo: 'ansel',
 
-  intro: (wage, share) => `Captain Zoya Pell signs your papers on the galley hatch, with a pen she has borrowed from you, and does not give it back. "${wage} a day and ${share} percent," she says. "Which is nothing, most days, and a great deal on the day it comes good. And it will come good." She grins. "Mind the third step. It lies."`,
+  intro: (wage, share) => (`Captain Zoya Pell signs your papers on the galley hatch, with a pen she has borrowed from you, and does not give it back. ` +
+      `"${wage} a day and ${share} percent," she says. "Which is nothing, most days, and a great deal on the day it comes good. And it will come ` +
+      `good." She grins. "Mind the third step. It lies."`),
 
   chatter: [
     'Captain Pell is doing sums on the back of her hand. She stops when she sees you looking, and grins, and does them again.',
@@ -25,7 +27,11 @@ CAPTAINS.zoya = {
   ],
 
   // How they take a hand's suggestion of a different run (suggest.js): `ok` by their style, and a line for each answer.
-  sway: { ok: (o, cur) => o.days >= cur.days, yes: 'Captain Pell grins and slaps the chart. "A longer burn, a bigger bag. That is the kind of idea I hire for." She changes the course on the spot.', no: 'Captain Pell looks at your lane and winces, kindly. "Shorter? Safer? Love, we are never going to clear anything that way." You go her way.' },
+  sway: {
+    ok: (o, cur) => o.days >= cur.days,
+    yes: 'Captain Pell grins and slaps the chart. "A longer burn, a bigger bag. That is the kind of idea I hire for." She changes the course on the spot.',
+    no: 'Captain Pell looks at your lane and winces, kindly. "Shorter? Safer? Love, we are never going to clear anything that way." You go her way.'
+  },
 
   events: {
     'cap-order': {
@@ -60,26 +66,36 @@ CAPTAINS.zoya = {
   scenes: {
     trouble: {
       title: 'The Man on the Dock',
-      text: 'A man in a good coat is standing at the foot of the ramp when you dock, with a folder and no luggage. Captain Pell sees him from the hatch, and does not break step, and does not stop smiling. "Friend of mine," she says to nobody. "Ansel, would you take the book down? Tell him I am out." The man waits. After an hour he sends up a card. It says Dobrescu, and a number, and a figure with five digits.',
+      text: ('A man in a good coat is standing at the foot of the ramp when you dock, with a folder and no luggage. Captain Pell sees him from the ' +
+          'hatch, and does not break step, and does not stop smiling. "Friend of mine," she says to nobody. "Ansel, would you take the book down? Tell ' +
+          'him I am out." The man waits. After an hour he sends up a card. It says Dobrescu, and a number, and a figure with five digits.'),
       choices: [
         { label: 'Tell him the captain is out', run() {
           captainLike(1, 'You told Dobrescu I was out.');
           return 'You go down, and tell him. He nods, and leaves the folder with you. "Tell her Tuesday," he says. It is Thursday. When you come back up, Pell is whistling at the nav console and has not turned a page of the thing she is reading.';
         } },
-        { label: 'Give him a hundred to wait a week', can: () => G.state.credits >= 100, run() {
+        { label: 'Give him a hundred to wait a week', ...gated(needCr(100)), run() {
           G.state.credits -= 100; captainLike(3, 'You paid Dobrescu a hundred to wait a week.'); captainFlag('lent');
-          return 'He counts it twice, in front of you, and goes, and you are not sure he is done. Pell laughs when she hears, which is the worst possible response, and then hugs you, unexpectedly, hard, and lets go at once. "A hundred," she says. "I will pay you a hundred and a quarter, and that is a bet I will not lose."';
+          return ('He counts it twice, in front of you, and goes, and you are not sure he is done. Pell laughs when she hears, which is the worst ' +
+              'possible response, and then hugs you, unexpectedly, hard, and lets go at once. "A hundred," she says. "I will pay you a hundred and a ' +
+              'quarter, and that is a bet I will not lose."');
         } },
       ],
     },
     secret: {
       confide: {
         title: 'The Hand of Cards',
-        text: 'Late in the watch, with the lights low, Captain Pell lays out a hand of cards that is not a game. Five cards, face up, and a name written on the back of each. "These are the people I owe," she says. "Dobrescu, you have met. The yard at Ceres. Two brothers who ran a fuel dock. A man I would not now ask a favor of. And my sister." She taps the last card. "It adds to a great deal more than the ship is worth. One good run clears it, or it would, if the market held, and I have been one run from it for six years." She is smiling. "Ansel knows. He keeps a sheet. It is the only document on this ship I am afraid of."',
+        text: ('Late in the watch, with the lights low, Captain Pell lays out a hand of cards that is not a game. Five cards, face up, and a name ' +
+            'written on the back of each. "These are the people I owe," she says. "Dobrescu, you have met. The yard at Ceres. Two brothers who ran a ' +
+            'fuel dock. A man I would not now ask a favor of. And my sister." She taps the last card. "It adds to a great deal more than the ship is ' +
+            'worth. One good run clears it, or it would, if the market held, and I have been one run from it for six years." She is smiling. "Ansel ' +
+            'knows. He keeps a sheet. It is the only document on this ship I am afraid of."'),
         choices: [
           { label: 'Ask what one good run would have to be', run() {
             captainLike(1, 'You asked what the good run would have to be.'); captainFlag('secretKnown');
-            return 'She tells you, to the figure, and it is not an absurd one. That is the worst part. "Eleven percent over the best I have ever done," she says. "I could do it on a Tuesday. I have not done it on a Tuesday." She gathers the cards. "Do not tell the galley. They like me better when I am lucky."';
+            return ('She tells you, to the figure, and it is not an absurd one. That is the worst part. "Eleven percent over the best I have ever ' +
+                'done," she says. "I could do it on a Tuesday. I have not done it on a Tuesday." She gathers the cards. "Do not tell the galley. They ' +
+                'like me better when I am lucky."');
           } },
           { label: 'Say you will stay till it is done', run() {
             captainLike(3, 'You said you would stay till the debts were done.'); captainFlag('secretKnown');
@@ -89,7 +105,9 @@ CAPTAINS.zoya = {
       },
       found: {
         title: 'The Sheet',
-        text: 'You are looking for a spanner in the captain\'s locker, and find Ansel\'s sheet, printed, with a rubber band round it. It has columns of names and figures, and a bottom line in red, and at the foot, underlined twice, one sentence: She will not stop. You are still reading when Captain Pell comes in. She sees the sheet, and sees you, and stops whistling.',
+        text: ('You are looking for a spanner in the captain\'s locker, and find Ansel\'s sheet, printed, with a rubber band round it. It has columns ' +
+            'of names and figures, and a bottom line in red, and at the foot, underlined twice, one sentence: She will not stop. You are still reading ' +
+            'when Captain Pell comes in. She sees the sheet, and sees you, and stops whistling.'),
         choices: [
           { label: 'Put it back and say nothing', run() {
             captainLike(0, 'You put the sheet back and said nothing.'); captainFlag('secretKnown'); captainFlag('secretAngry');

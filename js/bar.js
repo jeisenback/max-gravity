@@ -9,25 +9,64 @@
 const DRINK = 20, CARDS = 200;
 
 const BARS = {
-  'Hermes Foundry': ['The Heat Sink', 'Foundry shifts change every six hours, and the bar fills and empties with them. Everyone is red through two layers of shielding. The ice in the drinks costs more than the liquor. The bartender slides your glass down the bar without looking. The place smells of cold metal and lime. Nobody stays for more than one round, and everybody says they are here for a couple more years.'],
-  Earth: ['The Gravity Well', 'A spaceport bar with a long copper counter and travel posters from a dozen ports curling on the walls. The drinks are real, and so are the prices. At the far end a man in a good coat is telling a story about the sea to a table of Belters, and he is paying for every round.'],
-  Luna: ['Copernicus Lounge', 'Low gravity, a long bar, and Coalition officers in civilian jackets that do not fit. The bartender pours slow on purpose: in one-sixth g the drinks come out in tall ribbons and take a long time to settle. A window behind the bar looks out on the gray plain, the drydocks and, past them, Earth. People keep their voices down.'],
-  Mars: ['The Red Line', 'Tharsis veterans at one end of the bar, terraforming engineers at the other, and in the middle an argument about the atmosphere that has run for forty years. The bar top is one slab of red basalt. Most people order coffee. A countdown is chalked on the wall: DAYS UNTIL THE FIRST RAIN. Someone updates it every morning.'],
-  'Phobos Yards': ['Dry Dock', 'Shipwrights at tables where they can see the yard through a wide window: gantries, and the welded ribs of a half-finished hull. Every table has a ship part on it and someone explaining it on a napkin. There is a jar behind the bar for lost tools. In the corner an old man is asleep in a chair. They say he built the first hull that left Phobos. Nobody wakes him.'],
-  'Ceres Station': ['The Spin', 'Belters, three deep at the bar, talking with their hands in a mix of dialects. The water ration is posted over the taps in block letters and updated on the hour. Every drink comes with a small glass of tap water, because the law says so. The floor tilts toward the curve of the station, and the regulars lean with it.'],
-  'Ring Nine': ['Auntie Oyelaran\'s', 'A noodle counter with a still behind it, in a corner of an old cargo bay, with paper lanterns strung from the pipes. Squatter families and off-shift dockers sit on stools made from fuel drums. The menu is one hand-lettered board. Auntie says the broth is the best in the Belt, points a wooden spoon at your chest, and says it again. By the till is a shrine to the ship\'s old captain, with a dish of fresh noodles in front of it. Nobody takes them.'],
-  'Pallas Refinery': ['The Slag Heap', 'Refinery crews in heat suits unzipped to the waist, steaming in the cool air. By custom no stranger pays for the first round, and the bartender enforces it with a raised eyebrow. The tables are old casting molds, still warm. Signed work jackets hang on the walls like flags, one for every crew that lost someone. It smells of hot metal and beer.'],
-  'The Hollows': ['The Chute', 'A bar in an old ore chute, dim and hung with quilts, with a long curved counter cut from the rock. Children underfoot, grandparents at dominoes, a ring-ball match on every screen, and an argument at every table. Someone\'s aunt pours the drinks. Someone\'s cousin plays the fiddle badly. A bowl of salted beans reaches you within a minute of sitting down. Nobody asks your business.'],
-  'The Rook': ['The Gallows', 'Hollis Mbeki\'s people drink here. Their tables are known, and nobody sits at them by mistake. The ceiling is low and made of dull black pipe, and a rope with a noose knotted in it hangs over the bar as a joke. It has collected a great many hats. Keep your hands where people can see them. The bartender is polite.'],
-  Boneyard: ['The Wreck Room', 'Built inside the bridge of a dead ore hauler. The captain\'s chair is still bolted to the floor, and by custom nobody sits in it. The old instruments are in place, dark and dusty. The original viewport looks out on a hundred other wrecks lashed together. Salvagers trade rumors of fresh wrecks over thick sweet coffee. At closing they switch on the old running lights, one after another.'],
-  Ironheart: ['Co-op Hall', 'Half bar, half meeting hall, with a long trestle table down the middle and a cracked gavel on a hook. Most nights there is a vote on something, and the losers buy the next round. The ballot box is a fuel can. The minutes of every meeting are pinned to the wall in handwriting that runs from neat to unreadable. Newcomers are expected to speak.'],
-  'Juno Commons': ['The Greenhouse', 'Tables among tomato vines under a curved glass dome. The air is warm and wet and smells of leaves. Within the hour people will ask your name, your ship, and how you take your tea. A small brass watering can hangs at every table, and when you sit, someone hands you one to water the vine over your seat.'],
-  'Eros Old Town': ['The Last Strike', 'Sepia holos of the boom years flicker on the walls: crowds, dust, hopeful faces. The regulars are old enough to be in them, and will say which one. The bar is a plank from a mining sledge, dented by a hundred picks. On a shelf behind it, in a glass case, sits one nugget of platinum. Nobody has been able to prove it is real.'],
-  Ganymede: ['Harvest Moon', 'Agri-dome workers with dirt under their nails and money in their pockets. A skylight overhead fills with Jupiter, banded and slow. The bar is polished wood, brought from Earth, they say. The drinks are made from whatever came in that week: peach, pear, wild honey, something with rosemary. The air smells of ripe fruit.'],
-  Europa: ['The Crack', 'Ice haulers between runs, in bulky insulated jackets, bent over steaming mugs. The walls sweat. The floor is always wet. Union notices are three layers deep on every bulkhead. One blue lamp lights the room, and the only sound is the ice groaning beneath it. When they come in, the regulars tap the wall twice. Nobody explains it, and nobody skips it.'],
-  Titan: ['Orange Sky', 'Consortium clerks and methane-rig crews at separate tables, with a space down the middle of the room that nobody crosses. The window looks out on rain, a slow amber curtain, and the light all day is the color of weak tea. The drinks are quiet and expensive. The bartender is at your elbow the moment your glass is empty, and gone before you can say thank you.'],
-  Enceladus: ['Geyser Bar', 'Six stools and a window on the plumes, which rise white and silent against the black. The bartender is also the harbormaster, the doctor and, when it comes up, the mayor. A first-aid kit sits next to the bottles, and a shortwave radio on the bar. One bottle of something good stays on the top shelf. It is not for sale. Everyone is offered a glass of it, sooner or later.'],
-  'Triton Outpost': ['The Long Night', 'The last bar in the solar system, according to a hand-painted sign. A jar of coins from every port sits on the bar; people leave one to show they came. The people here are either running from something or waiting for someone, and the ones waiting keep their eyes on the door. The stove in the corner burns whatever will burn. The light is dim and orange.'],
+  'Hermes Foundry': ['The Heat Sink', ('Foundry shifts change every six hours, and the bar fills and empties with them. Everyone is red through two ' +
+      'layers of shielding. The ice in the drinks costs more than the liquor. The bartender slides your glass down the bar without looking. The place ' +
+      'smells of cold metal and lime. Nobody stays for more than one round, and everybody says they are here for a couple more years.')],
+  Earth: ['The Gravity Well', ('A spaceport bar with a long copper counter and travel posters from a dozen ports curling on the walls. The drinks are ' +
+      'real, and so are the prices. At the far end a man in a good coat is telling a story about the sea to a table of Belters, and he is paying for ' +
+      'every round.')],
+  Luna: ['Copernicus Lounge', ('Low gravity, a long bar, and Coalition officers in civilian jackets that do not fit. The bartender pours slow on ' +
+      'purpose: in one-sixth g the drinks come out in tall ribbons and take a long time to settle. A window behind the bar looks out on the gray ' +
+      'plain, the drydocks and, past them, Earth. People keep their voices down.')],
+  Mars: ['The Red Line', ('Tharsis veterans at one end of the bar, terraforming engineers at the other, and in the middle an argument about the ' +
+      'atmosphere that has run for forty years. The bar top is one slab of red basalt. Most people order coffee. A countdown is chalked on the wall: ' +
+      'DAYS UNTIL THE FIRST RAIN. Someone updates it every morning.')],
+  'Phobos Yards': ['Dry Dock', ('Shipwrights at tables where they can see the yard through a wide window: gantries, and the welded ribs of a ' +
+      'half-finished hull. Every table has a ship part on it and someone explaining it on a napkin. There is a jar behind the bar for lost tools. In ' +
+      'the corner an old man is asleep in a chair. They say he built the first hull that left Phobos. Nobody wakes him.')],
+  'Ceres Station': ['The Spin', ('Belters, three deep at the bar, talking with their hands in a mix of dialects. The water ration is posted over the ' +
+      'taps in block letters and updated on the hour. Every drink comes with a small glass of tap water, because the law says so. The floor tilts ' +
+      'toward the curve of the station, and the regulars lean with it.')],
+  'Ring Nine': ['Auntie Oyelaran\'s', ('A noodle counter with a still behind it, in a corner of an old cargo bay, with paper lanterns strung from the ' +
+      'pipes. Squatter families and off-shift dockers sit on stools made from fuel drums. The menu is one hand-lettered board. Auntie says the broth ' +
+      'is the best in the Belt, points a wooden spoon at your chest, and says it again. By the till is a shrine to the ship\'s old captain, with a ' +
+      'dish of fresh noodles in front of it. Nobody takes them.')],
+  'Pallas Refinery': ['The Slag Heap', ('Refinery crews in heat suits unzipped to the waist, steaming in the cool air. By custom no stranger pays for ' +
+      'the first round, and the bartender enforces it with a raised eyebrow. The tables are old casting molds, still warm. Signed work jackets hang on ' +
+      'the walls like flags, one for every crew that lost someone. It smells of hot metal and beer.')],
+  'The Hollows': ['The Chute', ('A bar in an old ore chute, dim and hung with quilts, with a long curved counter cut from the rock. Children ' +
+      'underfoot, grandparents at dominoes, a ring-ball match on every screen, and an argument at every table. Someone\'s aunt pours the drinks. ' +
+      'Someone\'s cousin plays the fiddle badly. A bowl of salted beans reaches you within a minute of sitting down. Nobody asks your business.')],
+  'The Rook': ['The Gallows', ('Hollis Mbeki\'s people drink here. Their tables are known, and nobody sits at them by mistake. The ceiling is low and ' +
+      'made of dull black pipe, and a rope with a noose knotted in it hangs over the bar as a joke. It has collected a great many hats. Keep your ' +
+      'hands where people can see them. The bartender is polite.')],
+  Boneyard: ['The Wreck Room', ('Built inside the bridge of a dead ore hauler. The captain\'s chair is still bolted to the floor, and by custom ' +
+      'nobody sits in it. The old instruments are in place, dark and dusty. The original viewport looks out on a hundred other wrecks lashed together. ' +
+      'Salvagers trade rumors of fresh wrecks over thick sweet coffee. At closing they switch on the old running lights, one after another.')],
+  Ironheart: ['Co-op Hall', ('Half bar, half meeting hall, with a long trestle table down the middle and a cracked gavel on a hook. Most nights there ' +
+      'is a vote on something, and the losers buy the next round. The ballot box is a fuel can. The minutes of every meeting are pinned to the wall in ' +
+      'handwriting that runs from neat to unreadable. Newcomers are expected to speak.')],
+  'Juno Commons': ['The Greenhouse', ('Tables among tomato vines under a curved glass dome. The air is warm and wet and smells of leaves. Within the ' +
+      'hour people will ask your name, your ship, and how you take your tea. A small brass watering can hangs at every table, and when you sit, ' +
+      'someone hands you one to water the vine over your seat.')],
+  'Eros Old Town': ['The Last Strike', ('Sepia holos of the boom years flicker on the walls: crowds, dust, hopeful faces. The regulars are old enough ' +
+      'to be in them, and will say which one. The bar is a plank from a mining sledge, dented by a hundred picks. On a shelf behind it, in a glass ' +
+      'case, sits one nugget of platinum. Nobody has been able to prove it is real.')],
+  Ganymede: ['Harvest Moon', ('Agri-dome workers with dirt under their nails and money in their pockets. A skylight overhead fills with Jupiter, ' +
+      'banded and slow. The bar is polished wood, brought from Earth, they say. The drinks are made from whatever came in that week: peach, pear, wild ' +
+      'honey, something with rosemary. The air smells of ripe fruit.')],
+  Europa: ['The Crack', ('Ice haulers between runs, in bulky insulated jackets, bent over steaming mugs. The walls sweat. The floor is always wet. ' +
+      'Union notices are three layers deep on every bulkhead. One blue lamp lights the room, and the only sound is the ice groaning beneath it. When ' +
+      'they come in, the regulars tap the wall twice. Nobody explains it, and nobody skips it.')],
+  Titan: ['Orange Sky', ('Consortium clerks and methane-rig crews at separate tables, with a space down the middle of the room that nobody crosses. ' +
+      'The window looks out on rain, a slow amber curtain, and the light all day is the color of weak tea. The drinks are quiet and expensive. The ' +
+      'bartender is at your elbow the moment your glass is empty, and gone before you can say thank you.')],
+  Enceladus: ['Geyser Bar', ('Six stools and a window on the plumes, which rise white and silent against the black. The bartender is also the ' +
+      'harbormaster, the doctor and, when it comes up, the mayor. A first-aid kit sits next to the bottles, and a shortwave radio on the bar. One ' +
+      'bottle of something good stays on the top shelf. It is not for sale. Everyone is offered a glass of it, sooner or later.')],
+  'Triton Outpost': ['The Long Night', ('The last bar in the solar system, according to a hand-painted sign. A jar of coins from every port sits on ' +
+      'the bar; people leave one to show they came. The people here are either running from something or waiting for someone, and the ones waiting ' +
+      'keep their eyes on the door. The stove in the corner burns whatever will burn. The light is dim and orange.')],
 };
 
 
@@ -55,47 +94,196 @@ const SECRET_TALK = {
 };
 
 const CREW_AT_BAR = {
-  engineer: ['{n} is sketching a drive modification on a napkin for anyone who will look.', '{n} has found the one other engineer here. They are arguing about injectors.', '{n} is holding a fork up to the light and saying "tolerances" under their breath.', '{n} is under a table with a flashlight, looking at the bar\'s wiring.', '{n} has been handed a wrench by the bartender and is fixing the tap.', '{n} is explaining the coolant loop to a stranger with four salt shakers and a pool of gravy.'],
-  pilot: ['The flip burn in {n}\'s story is two g harder than it was an hour ago.', '{n} is losing at darts and blaming the gravity.', '{n} has drawn a lane map in spilled beer and is arguing for it with anyone who comes by.', '{n} and another pilot at the far end of the bar are arguing about angles, in hand gestures.', '{n} is sitting straight, listening to a stranger\'s story about a bad landing. {n} winces at the landing.', '{n} is standing on a chair, demonstrating a docking maneuver with two glasses and a napkin.'],
-  gunner: ['{n} is arm-wrestling a dockworker, and winning.', '{n} sits with their back to the wall and watches the room.', '{n} is cleaning a cup with the hem of their shirt and watching the door.', '{n} has won a small bet on a dart throw and is refusing the money.', '{n} shares a corner table with an old navy veteran. Neither has spoken in an hour. Both have ordered a second round.', '{n} is telling a quiet story about a jammed gun and a captain who never found out.'],
-  quartermaster: ['{n} is working the room, buying no drinks.', '{n} is haggling with the bartender over the price of a bottle.', '{n} is making a list on the back of a receipt.', '{n} is talking with a grain merchant. A price has been mentioned twice.', '{n} is listening to a stranger\'s theory about the price of water and taking notes.', '{n} has a very large bag of dried figs and is handing them out to the room.'],
-  slicer: ['{n} is at a corner table, doing something to the bar\'s jukebox.', '{n} is on their terminal with their back to the room.', '{n} has taken over the bar\'s music. Nobody has complained.', '{n} is watching the bar\'s security feed on a very small screen.', '{n} is talking to the bartender, low, about the till. The bartender counts it twice.', '{n} has made three friends and one enemy in the last ten minutes.'],
-  medic: ['{n} is patching up someone who lost an argument with a bulkhead.', '{n} is nursing one drink and watching everyone else\'s.', '{n} has been cornered by a stranger with a rash.', '{n} is giving a short lecture on hydration to a table of dockers.', '{n} is sitting alone with an empty glass in both hands.', '{n} is showing the bartender how to bandage a burn, with a napkin.'],
+  engineer: [
+    '{n} is sketching a drive modification on a napkin for anyone who will look.',
+    '{n} has found the one other engineer here. They are arguing about injectors.',
+    '{n} is holding a fork up to the light and saying "tolerances" under their breath.',
+    '{n} is under a table with a flashlight, looking at the bar\'s wiring.',
+    '{n} has been handed a wrench by the bartender and is fixing the tap.',
+    '{n} is explaining the coolant loop to a stranger with four salt shakers and a pool of gravy.'
+  ],
+  pilot: [
+    'The flip burn in {n}\'s story is two g harder than it was an hour ago.',
+    '{n} is losing at darts and blaming the gravity.',
+    '{n} has drawn a lane map in spilled beer and is arguing for it with anyone who comes by.',
+    '{n} and another pilot at the far end of the bar are arguing about angles, in hand gestures.',
+    '{n} is sitting straight, listening to a stranger\'s story about a bad landing. {n} winces at the landing.',
+    '{n} is standing on a chair, demonstrating a docking maneuver with two glasses and a napkin.'
+  ],
+  gunner: [
+    '{n} is arm-wrestling a dockworker, and winning.',
+    '{n} sits with their back to the wall and watches the room.',
+    '{n} is cleaning a cup with the hem of their shirt and watching the door.',
+    '{n} has won a small bet on a dart throw and is refusing the money.',
+    '{n} shares a corner table with an old navy veteran. Neither has spoken in an hour. Both have ordered a second round.',
+    '{n} is telling a quiet story about a jammed gun and a captain who never found out.'
+  ],
+  quartermaster: [
+    '{n} is working the room, buying no drinks.',
+    '{n} is haggling with the bartender over the price of a bottle.',
+    '{n} is making a list on the back of a receipt.',
+    '{n} is talking with a grain merchant. A price has been mentioned twice.',
+    '{n} is listening to a stranger\'s theory about the price of water and taking notes.',
+    '{n} has a very large bag of dried figs and is handing them out to the room.'
+  ],
+  slicer: [
+    '{n} is at a corner table, doing something to the bar\'s jukebox.',
+    '{n} is on their terminal with their back to the room.',
+    '{n} has taken over the bar\'s music. Nobody has complained.',
+    '{n} is watching the bar\'s security feed on a very small screen.',
+    '{n} is talking to the bartender, low, about the till. The bartender counts it twice.',
+    '{n} has made three friends and one enemy in the last ten minutes.'
+  ],
+  medic: [
+    '{n} is patching up someone who lost an argument with a bulkhead.',
+    '{n} is nursing one drink and watching everyone else\'s.',
+    '{n} has been cornered by a stranger with a rash.',
+    '{n} is giving a short lecture on hydration to a table of dockers.',
+    '{n} is sitting alone with an empty glass in both hands.',
+    '{n} is showing the bartender how to bandage a burn, with a napkin.'
+  ],
 };
 
 // What happens at the table, so the same four doors do not open onto the same rooms. Variants are picked by the person (a hash of
 // their name, so no random draw) where they are about who someone is, and at random where they are about the night.
 const WORK_GROUP = [[/dock|rigger|salvag|miner|ore |ice |haul|crane|freight/i, 'hands'], [/engineer|tech|weld|chemist|hydro|model|architect|mechanic/i, 'tech'], [/navy|veteran|pilot|guard|officer/i, 'service']];
 const BAR_WORK = {
-  hands: ['{n} talks about the work with their hands: how a load shifts in a hold, the sound a bad cable makes before it goes. You get a feel for what it costs the body, and what the pay is for.', '"Fourteen years," {n} says, "and I can tell the weather on the other side of a hull by the way it hums." They mean it as a joke. It is not entirely one.', '{n} shows you a hand with two fingers that do not close. It was a clamp, and a shift supervisor who did not check it. They have never told anyone the supervisor\'s name.'],
-  tech: ['{n} explains, with a coaster and a fork, why a thing you have always assumed works a certain way does not. By the end of it you have a new respect for something you were about to ignore.', '"Nobody thanks you when it works," {n} says. "They thank you when it breaks and then you fix it." They drink to that.', '{n} has opinions on three kinds of failure and a favorite, and tells you which. It is a boring one, which is the point.'],
-  service: ['{n} sits very straight for a person with a drink in their hand. They talk about the service the way people talk about a family they have left, with exasperation and a kind of loyalty they would not admit.', '"They taught me to count exits," {n} says. "I still do it. There are three." They glance at each one, in order, without moving their head.', '{n} will not tell you where they served. They will tell you what the food was like, and that is a long story.'],
-  other: ['{n} talks about the work: the hours, the people, the small politics. It is not exciting. It is a life, described by someone who is good at it.', '"It is not what I thought I would do," {n} says. "But I am better at it than I thought I would be." They look pleased by that, and a little surprised.', '{n} tells you about a bad day at work in such detail that you can see the room. It ends with an apology to a colleague, and the colleague, to everyone\'s surprise, accepting.'],
+  hands: [('{n} talks about the work with their hands: how a load shifts in a hold, the sound a bad cable makes before it goes. You get a feel for ' +
+      'what it costs the body, and what the pay is for.'), (
+      '"Fourteen years," {n} says, "and I can tell the weather on the other side of a hull by the way it hums." They mean it as a joke. It is not ' +
+      'entirely one.'), (
+      '{n} shows you a hand with two fingers that do not close. It was a clamp, and a shift supervisor who did not check it. They have never told ' +
+      'anyone the supervisor\'s name.')],
+  tech: [('{n} explains, with a coaster and a fork, why a thing you have always assumed works a certain way does not. By the end of it you have a new ' +
+      'respect for something you were about to ignore.'), ('"Nobody thanks you when it works," {n} says. "They thank you when it breaks and then you ' +
+          'fix it." They drink to that.'), '{n} has opinions on three kinds of failure and a favorite, and tells you which. It is a boring one, which is the point.'],
+  service: [('{n} sits very straight for a person with a drink in their hand. They talk about the service the way people talk about a family they ' +
+      'have left, with exasperation and a kind of loyalty they would not admit.'), ('"They taught me to count exits," {n} says. "I still do it. There ' +
+          'are three." They glance at each one, in order, without moving their head.'), '{n} will not tell you where they served. They will tell you what the food was like, and that is a long story.'],
+  other: [('{n} talks about the work: the hours, the people, the small politics. It is not exciting. It is a life, described by someone who is good ' +
+      'at it.'), (
+      '"It is not what I thought I would do," {n} says. "But I am better at it than I thought I would be." They look pleased by that, and a little ' +
+      'surprised.'), (
+      '{n} tells you about a bad day at work in such detail that you can see the room. It ends with an apology to a colleague, and the colleague, to ' +
+      'everyone\'s surprise, accepting.')],
 };
-const BAR_SILENCE = ['You sit with {n} and neither of you says anything. The room talks around you. After a while {n} pushes the bowl of beans an inch toward you, and that is all.', 'You share the table. {n} reads something on a terminal, you watch the room, and it is the quietest twenty minutes you have had in a week.', '{n} starts to say something, stops, and you do not ask. They nod, as if you had answered. The drink goes down slowly.', 'Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, {n} lifts a hand without looking up.'];
-const BAR_PLACE = ['"{bar}," {n} says, "has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you do not ask."', '{n} points out the table by the wall. "A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again."', '"The bartender knows everyone\'s business," {n} says, "and has never repeated any of it. That is why anyone trusts this place."', '{n} tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a small, useful set of rules.', '"They tried to close {bar} twice," {n} says. "The first time the regulars paid the rent. The second time nobody could find the owner."'];
-const BAR_CARD_WIN = ['Three hands, slow and close. On the last card you take {cr} cr off {n}, who groans and says you were counting.', '{n} deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. {cr} cr.', 'You play it quiet and let {n} talk. They talk themselves into a bad bet. {cr} cr, and they laugh about it, which is the worst part.', 'The cards run for you all night. {n} tries a different seat, a different deck, a different luck charm. {cr} cr to you in the end.'];
-const BAR_CARD_LOSE = ['It goes the other way. {n} takes {cr} cr off you, and buys you a drink with it, and sets it in front of you. Fair is fair.', '{n} plays like someone who learned on a long watch: patient, quiet, unrattled. {cr} cr, and you cannot find the mistake you made.', 'You have the better hand for most of the evening and none of it at the end. {n} says sorry and means about half of it. {cr} cr.', '{n} fans the last cards with a flourish you have seen before, in a port you do not name. {cr} cr, and a lesson.'];
-const BAR_HOME_TALK = ['{n} talks about the view from the ring where the light comes in at dusk, the smell of the market, the man who sold fried dough on the corner, and a sister who writes every week. They talk until the bar is nearly empty.', '"You will think I am making it up," {n} says, and then tells you about a festival on {home} where the whole district eats at one long table, and the oldest person gets the first plate and the last word.', '{n} draws {home} on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. "That is the street," {n} says. "That is where I will be, one day."', '{n} says the name of a street on {home} and then says nothing for a while. When they start again it is about a dog, and it is a happy story, and then it is not.'];
-const BAR_BLESS = ['{n} closes their eyes and lays two fingers on the transponder. They say a few words over your ship\'s name, in a cadence you do not know. The bar goes quiet. When they are done they open their eyes and touch your hand.', '{n} takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. "It will not stop a rock," {n} says. "It is not for rocks."', '{n} does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost. It is the most convincing blessing you have had.'];
-const BAR_LEAVE = ['You get up and leave them to their drink. You go back to the bar and the noise of the room.', 'You nod, and {n} nods, and that is the whole goodbye. The room closes over the gap you left.', '"Safe burn," {n} says, to your back. You do not turn round, but you lift a hand.', 'You finish what is in your glass and stand. {n} has already gone back to their own business, which is a kind of courtesy.'];
-const BAR_DRINK_TALK = ['{n} tells you about {home}: the streets, the smell of the market, why they left, and why they might go back. There is no rumor in it, and no secret, and no angle. It takes an hour.', '{n} spends the whole drink on a long story about a boss they hated and a ship they loved, and how the two are the same person. It is very funny. It teaches you nothing.', '{n} asks about you, and listens, and says nothing useful, and the drink is gone before you notice. It is the most relaxing hour of the week.', '{n} complains for an hour about the price of everything, with such precision and love that you leave feeling you have been to a very good concert.', '{n} talks about the one trip that went right: the cargo that sold, the weather that held, the pilot who sang. It is a nice story. It has no use at all.'];
+const BAR_SILENCE = [('You sit with {n} and neither of you says anything. The room talks around you. After a while {n} pushes the bowl of beans an ' +
+    'inch toward you, and that is all.'), ('You share the table. {n} reads something on a terminal, you watch the room, and it is the quietest twenty ' +
+        'minutes you have had in a week.'), ('{n} starts to say something, stops, and you do not ask. They nod, as if you had answered. The drink ' +
+            'goes down slowly.'), (
+            'Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, {n} lifts a hand without looking ' +
+            'up.')];
+const BAR_PLACE = [('"{bar}," {n} says, "has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you ' +
+    'do not ask."'), (
+    '{n} points out the table by the wall. "A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, ' +
+    'and then it was a table again."'), '"The bartender knows everyone\'s business," {n} says, "and has never repeated any of it. That is why anyone trusts this place."', (
+    '{n} tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a small, ' +
+    'useful set of rules.'), '"They tried to close {bar} twice," {n} says. "The first time the regulars paid the rent. The second time nobody could find the owner."'];
+const BAR_CARD_WIN = [
+  'Three hands, slow and close. On the last card you take {cr} cr off {n}, who groans and says you were counting.',
+  '{n} deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. {cr} cr.',
+  'You play it quiet and let {n} talk. They talk themselves into a bad bet. {cr} cr, and they laugh about it, which is the worst part.',
+  'The cards run for you all night. {n} tries a different seat, a different deck, a different luck charm. {cr} cr to you in the end.'
+];
+const BAR_CARD_LOSE = [
+  'It goes the other way. {n} takes {cr} cr off you, and buys you a drink with it, and sets it in front of you. Fair is fair.',
+  '{n} plays like someone who learned on a long watch: patient, quiet, unrattled. {cr} cr, and you cannot find the mistake you made.',
+  'You have the better hand for most of the evening and none of it at the end. {n} says sorry and means about half of it. {cr} cr.',
+  '{n} fans the last cards with a flourish you have seen before, in a port you do not name. {cr} cr, and a lesson.'
+];
+const BAR_HOME_TALK = [('{n} talks about the view from the ring where the light comes in at dusk, the smell of the market, the man who sold fried ' +
+    'dough on the corner, and a sister who writes every week. They talk until the bar is nearly empty.'), (
+    '"You will think I am making it up," {n} says, and then tells you about a festival on {home} where the whole district eats at one long table, and ' +
+    'the oldest person gets the first plate and the last word.'), (
+    '{n} draws {home} on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. "That is the street," ' +
+    '{n} says. "That is where I will be, one day."'), (
+    '{n} says the name of a street on {home} and then says nothing for a while. When they start again it is about a dog, and it is a happy story, and ' +
+    'then it is not.')];
+const BAR_BLESS = [('{n} closes their eyes and lays two fingers on the transponder. They say a few words over your ship\'s name, in a cadence you do ' +
+    'not know. The bar goes quiet. When they are done they open their eyes and touch your hand.'), (
+    '{n} takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. "It will not stop a rock," {n} says. ' +
+    '"It is not for rocks."'), (
+    '{n} does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost. ' +
+    'It is the most convincing blessing you have had.')];
+const BAR_LEAVE = [
+  'You get up and leave them to their drink. You go back to the bar and the noise of the room.',
+  'You nod, and {n} nods, and that is the whole goodbye. The room closes over the gap you left.',
+  '"Safe burn," {n} says, to your back. You do not turn round, but you lift a hand.',
+  'You finish what is in your glass and stand. {n} has already gone back to their own business, which is a kind of courtesy.'
+];
+const BAR_DRINK_TALK = [('{n} tells you about {home}: the streets, the smell of the market, why they left, and why they might go back. There is no ' +
+    'rumor in it, and no secret, and no angle. It takes an hour.'), (
+    '{n} spends the whole drink on a long story about a boss they hated and a ship they loved, and how the two are the same person. It is very funny. ' +
+    'It teaches you nothing.'), '{n} asks about you, and listens, and says nothing useful, and the drink is gone before you notice. It is the most relaxing hour of the week.', (
+    '{n} complains for an hour about the price of everything, with such precision and love that you leave feeling you have been to a very good ' +
+    'concert.'), (
+    '{n} talks about the one trip that went right: the cargo that sold, the weather that held, the pilot who sang. It is a nice story. It has no use ' +
+    'at all.')];
 
 // What the person is like colors what they say: a line for each of their first two traits (70% of the time, else the shared pool),
 // for the kinds of thing that used to be the same for everyone.
 const BAR_TRAIT = {
-  talkative: { win: '{n} talks the whole way through the hand and loses the thread of the bet. You take {cr} cr off them while they are explaining a cousin.', lose: '{n} talks, and you talk back, and somewhere in it {cr} cr leaves your pocket. You could not say which hand it was.', drink: '{n} starts a story, stops it for a better one, and starts the first again at the end. You learn the names of eleven people and the plot of none.', leave: '"Wait, one more thing," {n} says, and then three more things, and you are at the door before the last of them.', quiet: '{n} lasts nearly a minute in the silence, and then it comes out of them like water out of a pipe, and you let it.' },
-  nervous: { win: '{n} watches your hands the whole game and flinches at every card. You take {cr} cr off them, and they thank you for it, which is worse.', lose: '{n} plays carefully and with tiny, exact movements, and wins, and looks so relieved that you cannot be angry about the {cr} cr.', drink: '{n} holds the glass in both hands and talks to it. By the end they have said more in an hour than they meant to, and look at the door.', leave: '{n} half rises when you stand, and sits again, and says goodbye to the table.', quiet: '{n} lets out a breath you did not know they were holding. After ten minutes their hands stop moving.' },
-  generous: { win: '{n} insists on shuffling for you and refills your glass between hands. You take {cr} cr off them and they would not hear of giving it back, or of taking it back.', lose: '{n} wins {cr} cr and tries to press half of it back into your hand. You refuse. They put it in the tip jar in your name.', drink: '{n} will not let you pay for anything and tells you about the first person who was kind to them on a ship, and what they did with it.', leave: '{n} puts a roll in your pocket as you go and does not mention it.', quiet: '{n} pushes the bowl of beans across, and then the bread, and then a second glass of water, without a word.' },
-  greedy: { win: '{n} counts the pot twice, then counts your {cr} cr, and then counts it again as you take it. "Beginner\'s luck," {n} says. It is not a friendly phrase.', lose: '{n} takes the {cr} cr, checks it against a coin they keep for the purpose, and bites nothing. "A pleasure," {n} says, and means the money.', drink: '{n} has a price for everything: the drink, the stool, the gossip about the man two tables over. By the end you have heard a lot of figures and no stories.', leave: '"Next time, bring a bigger tank," {n} says, "and a bigger purse."', quiet: '{n} does sums on a napkin for twenty minutes, in silence, and at the end turns the napkin round for you to see. It is your ship\'s price, within a few percent.' },
-  pious: { win: '{n} says a short word over each card, and loses, and says one over the {cr} cr as it leaves. "What is lost is returned in another form," {n} says.', lose: '{n} plays as if each card were asked for. You lose {cr} cr, and {n} touches the charm at their throat and says it was not their doing.', drink: '{n} speaks of the long road, and the long wait, and the small kindness that is worth more than either. It is not a sermon. You are not sure what it is.', leave: '"Fair winds," {n} says, as if it were a vow.', quiet: '{n} bows their head, and you sit beside them, and for a while the bar sounds like the sea. When they lift it again they say it was good to have company.' },
-  rude: { win: '{n} slams down the last card and says it was a dishonest deck. You take {cr} cr off them anyway.', lose: '{n} wins {cr} cr, and says it was not even close. You do not argue, because they would only get louder.', drink: '{n} insults the drink, the bar, the bartender, and the city, in that order, with great energy. By the end you are fond of them against your will.', leave: '"Don\'t come back," {n} says. They are looking at the screen when they say it, so it is hard to know how they mean it.', quiet: '{n} says nothing for a long time, which for them is a sort of courtesy, and then says, "You are not as bad as I thought." It is a lot, from them.' },
-  curious: { win: '{n} asks how you knew, and what the odds were, and whether you count, and takes {cr} cr off the table in questions before you take it in coin.', lose: '{n} plays a hand and then spends ten minutes asking how you lost it, and you are never sure whether it is a joke. {cr} cr.', drink: '{n} asks about your ship, your home, your last port and the best thing you have eaten, and writes none of it down, and does not forget any of it.', leave: '"Where are you headed next?" {n} asks, at the door, and writes it on their hand.', quiet: '{n} watches you not talking with open interest, as if it were a skill, and then tries it. They last four minutes.' },
-  drunk: { win: '{n} deals you a hand and then forgets which they dealt to themselves. You take {cr} cr, and {n} cheers for you, sincerely, and orders another.', lose: '{n} wins {cr} cr and looks astonished, and wants it understood that it was skill, and then asks what game it was.', drink: '{n} tells you the same story three times, and each time it is about a different ship. You are not sure which one is true. You think none of them.', leave: '{n} waves, a little to the left of where you are, and says something warm that does not quite make a word.', quiet: '{n} falls asleep with their head on their arm, and you sit with them until the bartender comes over with a blanket.' },
-  secretive: { win: '{n} plays with an expression you cannot read and a hand you cannot guess. You take {cr} cr, and {n} gives nothing away, and the only change is that they do not look at the door.', lose: '{n} wins {cr} cr without a word, and counts it without looking, and the whole thing was a conversation you only half understood.', drink: '{n} answers every question with a question and gives you, as far as you can tell, nothing. On the way home you realize you told them a great deal.', leave: '"I never saw you," {n} says, without a smile, and you cannot tell whether that is a joke.', quiet: '{n} relaxes a little, in the silence, in the way of someone who has not been asked a question for some time.' },
-  kind: { win: '{n} loses gracefully, and as you take {cr} cr they ask if you are all right, because you looked tired. You were.', lose: '{n} wins {cr} cr and feels bad about it at once, and buys you a drink, and says it is nothing.', drink: '{n} asks about you, and means it. By the end of the glass you have said something true that you had not planned to say to anyone.', leave: '"Look after yourself," {n} says, and it is not a figure of speech.', quiet: '{n} makes room, and then nothing else, and the quiet is the kind that you can lean on.' },
-  brave: { win: '{n} bets everything on the last hand with a grin and loses {cr} cr to you, and offers a rematch, double or nothing, before the cards are down.', lose: '{n} wins {cr} cr on a bluff that should not have worked, and shows you the hand afterwards, with relish.', drink: '{n} tells you about a bad moment and what they did in it, and does not make it sound better than it was. You believe every word.', leave: '"Any time," {n} says, "and any place." It is an offer.', quiet: '{n} sits with their back to the door, as always, and for once does not watch it. You count that as a compliment.' },
-  homesick: { win: '{n} plays absent-mindedly, thinking of somewhere else, and loses {cr} cr to you without noticing. You almost feel bad.', lose: '{n} plays well, for someone whose mind is elsewhere. {cr} cr, and a small smile that is not about the game.', drink: '{n} talks about {home}, and then stops, and then talks about it again, and by the third time you could draw the street.', leave: '{n} looks at the door, and then at you, and says, "Say hello to somewhere nice for me."', quiet: '{n} takes out a creased photograph and sets it between you, and neither of you mentions it. You look at it for a while.' },
+  talkative: { win: ('{n} talks the whole way through the hand and loses the thread of the bet. You take {cr} cr off them while they are explaining a ' +
+      'cousin.'), lose: '{n} talks, and you talk back, and somewhere in it {cr} cr leaves your pocket. You could not say which hand it was.', drink: (
+      '{n} starts a story, stops it for a better one, and starts the first again at the end. You learn the names of eleven people and the plot of ' +
+      'none.'), leave: '"Wait, one more thing," {n} says, and then three more things, and you are at the door before the last of them.', quiet: '{n} lasts nearly a minute in the silence, and then it comes out of them like water out of a pipe, and you let it.' },
+  nervous: { win: ('{n} watches your hands the whole game and flinches at every card. You take {cr} cr off them, and they thank you for it, which is ' +
+      'worse.'), lose: ('{n} plays carefully and with tiny, exact movements, and wins, and looks so relieved that you cannot be angry about the {cr} ' +
+          'cr.'), drink: ('{n} holds the glass in both hands and talks to it. By the end they have said more in an hour than they meant to, and look ' +
+              'at the door.'), leave: '{n} half rises when you stand, and sits again, and says goodbye to the table.', quiet: '{n} lets out a breath you did not know they were holding. After ten minutes their hands stop moving.' },
+  generous: { win: ('{n} insists on shuffling for you and refills your glass between hands. You take {cr} cr off them and they would not hear of ' +
+      'giving it back, or of taking it back.'), lose: ('{n} wins {cr} cr and tries to press half of it back into your hand. You refuse. They put it ' +
+          'in the tip jar in your name.'), drink: ('{n} will not let you pay for anything and tells you about the first person who was kind to them ' +
+              'on a ship, and what they did with it.'), leave: '{n} puts a roll in your pocket as you go and does not mention it.', quiet: '{n} pushes the bowl of beans across, and then the bread, and then a second glass of water, without a word.' },
+  greedy: { win: ('{n} counts the pot twice, then counts your {cr} cr, and then counts it again as you take it. "Beginner\'s luck," {n} says. It is ' +
+      'not a friendly phrase.'), lose: '{n} takes the {cr} cr, checks it against a coin they keep for the purpose, and bites nothing. "A pleasure," {n} says, and means the money.', drink: (
+      '{n} has a price for everything: the drink, the stool, the gossip about the man two tables over. By the end you have heard a lot of figures and ' +
+      'no stories.'), leave: '"Next time, bring a bigger tank," {n} says, "and a bigger purse."', quiet: (
+      '{n} does sums on a napkin for twenty minutes, in silence, and at the end turns the napkin round for you to see. It is your ship\'s price, ' +
+      'within a few percent.') },
+  pious: { win: ('{n} says a short word over each card, and loses, and says one over the {cr} cr as it leaves. "What is lost is returned in another ' +
+      'form," {n} says.'), lose: '{n} plays as if each card were asked for. You lose {cr} cr, and {n} touches the charm at their throat and says it was not their doing.', drink: (
+      '{n} speaks of the long road, and the long wait, and the small kindness that is worth more than either. It is not a sermon. You are not sure ' +
+      'what it is.'), leave: '"Fair winds," {n} says, as if it were a vow.', quiet: (
+      '{n} bows their head, and you sit beside them, and for a while the bar sounds like the sea. When they lift it again they say it was good to ' +
+      'have company.') },
+  rude: { win: '{n} slams down the last card and says it was a dishonest deck. You take {cr} cr off them anyway.', lose: '{n} wins {cr} cr, and says it was not even close. You do not argue, because they would only get louder.', drink: (
+      '{n} insults the drink, the bar, the bartender, and the city, in that order, with great energy. By the end you are fond of them against your ' +
+      'will.'), leave: '"Don\'t come back," {n} says. They are looking at the screen when they say it, so it is hard to know how they mean it.', quiet: (
+      '{n} says nothing for a long time, which for them is a sort of courtesy, and then says, "You are not as bad as I thought." It is a lot, from ' +
+      'them.') },
+  curious: { win: ('{n} asks how you knew, and what the odds were, and whether you count, and takes {cr} cr off the table in questions before you ' +
+      'take it in coin.'), lose: '{n} plays a hand and then spends ten minutes asking how you lost it, and you are never sure whether it is a joke. {cr} cr.', drink: (
+      '{n} asks about your ship, your home, your last port and the best thing you have eaten, and writes none of it down, and does not forget any of ' +
+      'it.'), leave: '"Where are you headed next?" {n} asks, at the door, and writes it on their hand.', quiet: '{n} watches you not talking with open interest, as if it were a skill, and then tries it. They last four minutes.' },
+  drunk: { win: ('{n} deals you a hand and then forgets which they dealt to themselves. You take {cr} cr, and {n} cheers for you, sincerely, and ' +
+      'orders another.'), lose: '{n} wins {cr} cr and looks astonished, and wants it understood that it was skill, and then asks what game it was.', drink: (
+      '{n} tells you the same story three times, and each time it is about a different ship. You are not sure which one is true. You think none of ' +
+      'them.'), leave: '{n} waves, a little to the left of where you are, and says something warm that does not quite make a word.', quiet: '{n} falls asleep with their head on their arm, and you sit with them until the bartender comes over with a blanket.' },
+  secretive: { win: ('{n} plays with an expression you cannot read and a hand you cannot guess. You take {cr} cr, and {n} gives nothing away, and the ' +
+      'only change is that they do not look at the door.'), lose: '{n} wins {cr} cr without a word, and counts it without looking, and the whole thing was a conversation you only half understood.', drink: (
+      '{n} answers every question with a question and gives you, as far as you can tell, nothing. On the way home you realize you told them a great ' +
+      'deal.'), leave: '"I never saw you," {n} says, without a smile, and you cannot tell whether that is a joke.', quiet: '{n} relaxes a little, in the silence, in the way of someone who has not been asked a question for some time.' },
+  kind: {
+    win: '{n} loses gracefully, and as you take {cr} cr they ask if you are all right, because you looked tired. You were.',
+    lose: '{n} wins {cr} cr and feels bad about it at once, and buys you a drink, and says it is nothing.',
+    drink: '{n} asks about you, and means it. By the end of the glass you have said something true that you had not planned to say to anyone.',
+    leave: '"Look after yourself," {n} says, and it is not a figure of speech.',
+    quiet: '{n} makes room, and then nothing else, and the quiet is the kind that you can lean on.'
+  },
+  brave: { win: ('{n} bets everything on the last hand with a grin and loses {cr} cr to you, and offers a rematch, double or nothing, before the ' +
+      'cards are down.'),
+  lose: '{n} wins {cr} cr on a bluff that should not have worked, and shows you the hand afterwards, with relish.',
+      drink: '{n} tells you about a bad moment and what they did in it, and does not make it sound better than it was. You believe every word.',
+      leave: '"Any time," {n} says, "and any place." It is an offer.',
+      quiet: '{n} sits with their back to the door, as always, and for once does not watch it. You count that as a compliment.' },
+  homesick: {
+    win: '{n} plays absent-mindedly, thinking of somewhere else, and loses {cr} cr to you without noticing. You almost feel bad.',
+    lose: '{n} plays well, for someone whose mind is elsewhere. {cr} cr, and a small smile that is not about the game.',
+    drink: '{n} talks about {home}, and then stops, and then talks about it again, and by the third time you could draw the street.',
+    leave: '{n} looks at the door, and then at you, and says, "Say hello to somewhere nice for me."',
+    quiet: '{n} takes out a creased photograph and sets it between you, and neither of you mentions it. You look at it for a while.'
+  },
 };
 const BAR_GOAL = {
   home: '{n} is going home, and keeps looking at the clock. "Three more ports," they say, to nobody in particular.',
@@ -201,11 +389,13 @@ function barHtml() {
   const st = G.state, planet = currentPlanet();
   if (!G.patrons || G.barState.planet !== planet.name) fillBar(planet);
   const b = barOf(planet), round = 25 * (4 + G.patrons.filter(x => !x.cast).length);
-  const rows = G.patrons.map(({ p, known, cast, regular }, i) => `<div class="mission">
+  const rows = G.patrons.map(({ p, known, cast, regular }, i) => (`<div class="mission">
       <div><b>${p.first} ${p.last}</b>${known ? ` <span class="hint">(${opinionWord(p.opinion)})</span>` : ''}
-        <div class="hint">${cast ? 'Aboard with you, and at the bar tonight.' : known ? `${regular ? 'A regular here.' : 'Someone you know.'} ${regular && p.gossip ? `${p.first} ${p.gossip} ` : ''}${p.memories.length ? p.memories[p.memories.length - 1] : ''}` : `${TRAITS[p.traits[0]].adj[0].toUpperCase()}${TRAITS[p.traits[0]].adj.slice(1)} ${p.job} from ${p.home}.`}</div></div>
+        <div ` +
+      `class="hint">${cast ? 'Aboard with you, and at the bar tonight.' : known ? `${regular ? 'A regular here.' : 'Someone you know.'} ${regular && p.gossip ?
+        `${p.first} ${p.gossip} ` : ''}${p.memories.length ? p.memories[p.memories.length - 1] : ''}` : `${TRAITS[p.traits[0]].adj[0].toUpperCase()}${TRAITS[p.traits[0]].adj.slice(1)} ${p.job} from ${p.home}.`}</div></div>
       <button data-action="barTalk" data-arg="${i}">Talk</button>
-    </div>`).join('');
+    </div>`)).join('');
   const hire = G.bar.map((c, i) => `<div class="mission">
       <div><b>${fullName(c)}</b> &middot; ${ROLE_NAMES[c.role]}, skill ${c.skill}/3<div class="hint">${describe(c).replace(GOALS[c.goal], 'looking for a ship')}</div></div>
       ${interviewButton(i)}<button data-action="hire" data-arg="bar:${i}" ${berthsFree() > 0 && st.credits >= c.fee ? '' : 'disabled'}>Hire (${fmt(c.fee)} cr)</button>
