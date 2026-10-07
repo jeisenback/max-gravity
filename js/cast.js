@@ -71,7 +71,7 @@ const CAST = {
             'on cold thrusters. It is the one thing I have never been allowed to practice, because it frightens the people who sign things." She ' +
             'waits. "I will not do it without somebody to say stop."'),
         choices: [
-          { label: 'Stand by the cutoff while she does it', run() { castLike('ines', 2, 'You stood by the cutoff while I flew it dead.'); castXp('ines', 'pilot', 4); return (
+          { label: 'Stand by the cutoff while she does it', run() { castLike('ines', 2, 'You stood by the cutoff while I flew it dead.'); castFlag('ines', 'practiced'); castXp('ines', 'pilot', 4); return (
               'You put your hand on the cutoff and she cuts the drive. The ship drifts in a silence you feel in your teeth. Ines turns her on cold ' +
               'thrusters, a long clean arc, and when she brings the drive back up she is grinning so widely that she has to look away. "Ten seconds," ' +
               'she says. "I did not touch the stop." You did not say it.'); } },
@@ -109,6 +109,21 @@ const CAST = {
               '"Someday," you say, "and you will be asked." She does not answer. Then she nods once at the windscreen. "That is all I wanted," she ' +
               'says. "A date would have been a lie. This is better."'); } },
           { label: 'Make no promises', run() { castLike('ines', 1, 'You would not promise a command, but you listened.'); return '"I cannot promise that," you say, "but I heard you." She smiles at the glass, crooked. "That is the honest answer," she says. "I will take the honest one."'; } },
+        ],
+      },
+      pivot: {
+        days: 60, title: 'Cold Thrusters',
+        get text() {
+          return 'The drive trips out on the approach and will not relight. The dock is closing, and there is no thrust to slow the ship, only the cold thrusters. Ines has both hands on the helm and the logbook shut beside her. "I can bring her in on these," she says. "It is the dead-stick flip again, with a dock at the end of it. I would like somebody at the cutoff."'
+            + castRiskLines();
+        },
+        choices: [
+          { label: 'Let her fly it', run: () => coldThrusters(false) },
+          { label: 'Put a second hand at the cutoff', ...gated(needCrew(2)), run: () => coldThrusters(true) },
+          { label: 'Order her to ditch', run() {
+            castLike('ines', -3, 'You ordered me to ditch the ship, as the tower did.');
+            return 'You order the ditch. She does it by the book, and the book is correct, and neither of you says that she would have made the pad.';
+          } },
         ],
       },
     },
@@ -186,11 +201,11 @@ const CAST = {
             'this three times," he says. "The same hull. For three owners. Every time I made her better, and every time they sold her to somebody who ' +
             'did not know." He turns the flask in his hands. "Do you want to know how I would rebuild her now? It would take a long time to tell."'),
         choices: [
-          { label: 'Ask him to teach you', run() { castLike('tomas', 2, 'You asked me how I would rebuild her, and listened.'); castXp('tomas', 'engineer', 2); if (hired()) gainSkill('engineer', 3); return (
+          { label: 'Ask him to teach you', run() { castFlag('tomas', 'plan'); castLike('tomas', 2, 'You asked me how I would rebuild her, and listened.'); castXp('tomas', 'engineer', 2); if (hired()) gainSkill('engineer', 3); return (
               'It takes the whole of the quiet watch and half the next one. He draws it on the deck in chalk, a plant you would not know from a ' +
               'diagram, and then he makes you say it back. At the end you can hold the whole thing in your head, which has never been true of any ' +
               'machine before. "There," he says. "Now you know her. Do not tell the owners."'); } },
-          { label: 'Ask him to write it down, so it does not go with the hull', opinion: { who: 'tomas', min: OPINION.TRUSTED }, run() { castLike('tomas', 2, 'You asked me to write the plan down, so it would last.'); return (
+          { label: 'Ask him to write it down, so it does not go with the hull', opinion: { who: 'tomas', min: OPINION.TRUSTED }, run() { castFlag('tomas', 'plan'); castLike('tomas', 2, 'You asked me to write the plan down, so it would last.'); return (
               'He looks at the flask for a while. "Nobody has asked me that," he says. He goes below and comes back with a notebook with a stained ' +
               'cover, and spends the quiet watch filling eleven pages in small square capitals, a diagram on each. He tears them out along the fold, ' +
               'carefully, and puts them in your hand. "If she is sold again," he says, "somebody will need to know where the cracks are. Not the ' +
@@ -210,6 +225,21 @@ const CAST = {
           { label: 'Say you cannot promise that', run() { castLike('tomas', 1, 'You were honest about what you could promise.'); return (
               '"No," he says, "no, of course. Nobody can." He smiles. "Thank you for not being kind," he says. "It is a rare thing." He goes back to ' +
               'the engines, and, on the way, pats the bulkhead twice.'); } },
+        ],
+      },
+      pivot: {
+        days: 60, title: 'The Plant',
+        get text() {
+          return 'A coolant line lets go in the engine room and the plant climbs to a whine you feel in your fillings. The only way to hold her is to go in and close the valves by hand, with the compartment too hot to stand in. Tomas is already at the door with a wet rag over his face. "I know where she is cracked," he says. "I know where all of them are. Nobody else should be in there."'
+            + castRiskLines();
+        },
+        choices: [
+          { label: 'Let him go in', run: () => thePlant(false) },
+          { label: 'Send a second person in with him', ...gated(needCrew(2)), run: () => thePlant(true) },
+          { label: 'Tell him to vent the plant', run() {
+            castLike('tomas', -3, 'You told me to vent the plant.');
+            return 'You tell him to vent her. He stands at the door for a moment, and then he does it, and the plant dies with a sound like a long breath. He does not look at you. He goes below to tell her he is sorry.';
+          } },
         ],
       },
     },
@@ -765,6 +795,48 @@ function overTheHull(backup) {
     + (promised ? ' "You said someday," she adds.' : '');
 }
 
+// The hull and the medic, as the pivot scenes state them (Yelena's, Ines's, Tomas's), so the player sees what will count.
+function castRiskLines() {
+  const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6;
+  return (low ? ' Your own hull has taken a beating, and a bad hull is a bad place to fall back to.' : ' Your hull is sound, which is something.')
+    + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There is nobody aboard who can do more than a field dressing.');
+}
+const castRiskPoints = () => (roleHolder('medic') ? 1 : 0) + (G.state.armor > ship().armor * 0.6 ? 1 : 0);
+const castPoints = n => (n >= 3 ? 'live' : n === 2 ? 'mark' : 'die');
+
+// Ines's pivot: a point each for a medic, a hull above 60 percent, the dead-stick flip practiced with you, and a second hand at the cutoff.
+function coldThrusters(backup) {
+  const rec = castRec('ines'), practiced = !!rec.flags.practiced, promised = !!rec.flags.promised;
+  const outcome = castFate('ines', castPoints(castRiskPoints() + (practiced ? 1 : 0) + (backup ? 1 : 0)), `Flew the ship in dead stick near ${system().name}.`, 'Her left hand shakes on the stick.', 'pilot');
+  const lead = backup ? 'You put a second hand at the cutoff. ' : '';
+  if (outcome === 'die') {
+    return lead + 'The flip is a half second late. You hear the tower, and then the cutoff, and then the pad. When the crew reach the helm the logbook is open on the chair, and the last entry is half written.'
+      + (promised ? ' You remember the ship you promised her, and that nobody will ask for it now.' : '');
+  }
+  castLike('ines', 2, outcome === 'mark' ? 'You let me fly it in dead, and I came down with a hand that shakes.' : 'You let me fly it in dead, and I came down.');
+  if (outcome === 'mark') {
+    return lead + 'She holds the ship, and the ship comes down hard, and the helm throws her against the harness. She walks off on her own. Later you see her in the pilot\'s chair, holding her left hand in her right until it stops shaking. It does not quite stop.';
+  }
+  return lead + 'She flies it the way she wrote it in the log: the long clean arc on the cold thrusters, the flip, the last slow roll toward the pad. The ship touches down so softly that the cup on the console does not move. Ines sits with her hands in her lap. "Boring," she says. "Very boring."'
+    + (practiced ? ' "You stood by the cutoff once," she adds. "It was enough to know it was there."' : '');
+}
+
+// Tomas's pivot: a point each for a medic, a hull above 60 percent, the plan he taught or wrote down for you, and a second person with him.
+function thePlant(backup) {
+  const rec = castRec('tomas'), plan = !!rec.flags.plan, promised = !!rec.flags.promised;
+  const outcome = castFate('tomas', castPoints(castRiskPoints() + (plan ? 1 : 0) + (backup ? 1 : 0)), `Went into the plant to close the valves near ${system().name}.`, 'His hands ache in the cold.', 'engineer');
+  const lead = backup ? 'You send a second person in after him. ' : '';
+  if (outcome === 'die') {
+    return lead + 'The whine drops. The plant holds. Nobody comes out. When the compartment has cooled you open the hatch, and he is at the last valve with the wrench in his hand and the rag still over his face. He had closed them all. The plant runs perfectly for the rest of the burn.'
+      + (promised ? ' You remember what you said about trying to keep the crew together.' : '');
+  }
+  castLike('tomas', 2, outcome === 'mark' ? 'You let me go into the plant, and I came out scalded.' : 'You let me go into the plant, and I came out.');
+  if (outcome === 'mark') {
+    return lead + 'He comes out carried, both forearms scalded, and the plant holds behind him. He will weld again. He does not take the flask in his left hand after that, and he does not complain.';
+  }
+  return lead + 'He goes in, and comes out in four minutes with no eyebrows, which he does not mention. The plant settles. He sits on a crate with the flask and tells her, quietly, that she did well.';
+}
+
 // A scene with a `closed` reading plays it, in place of the scene itself, when the person's regard for the hand is below friendly
 // (the first officers' "what they know", cato.js): the same slot, so nothing is skipped.
 const castScene = (key, sc) => { const s = sc.closed && castPerson(key).opinion < OPINION.FRIEND ? sc.closed : sc; return { title: s.title, text: s.text, personal: true, choices: s.choices }; };
@@ -778,10 +850,11 @@ Mods.register({
         for (const p of castAboard()) {
           const n = castNext(p.cast);
           if (!n) continue;
-          // An introduction that is waiting gains BEAT_RAMP weight (captains.js) for each draw it missed, as the captain's scenes do.
-          const rec = castRec(p.cast), intro = n.name === 'intro', missed = intro ? rec.wait || 0 : 0;
-          if (intro) rec.wait = missed + 1;  // a miss unless make() runs and clears it
-          out.push({ tier: intro ? 1 : 2, weight: intro ? BEAT_WEIGHT + BEAT_RAMP * missed : 2, via: 'crew', make() { rec.arc++; rec.wait = 0; return castScene(p.cast, n.sc); } });
+          // A scene that is waiting gains BEAT_RAMP weight (captains.js) for each draw it missed, as the captain's scenes do, so each
+          // one plays within the chapter; the introduction is tier 1, the later ones tier 2.
+          const rec = castRec(p.cast), intro = n.name === 'intro', missed = rec.wait || 0;
+          rec.wait = missed + 1;  // a miss unless make() runs and clears it
+          out.push({ tier: intro ? 1 : 2, weight: (intro ? BEAT_WEIGHT : 2) + BEAT_RAMP * missed, via: 'crew', make() { rec.arc++; rec.wait = 0; return castScene(p.cast, n.sc); } });
         }
       } else if (castDue()) {
         const key = castDue();
