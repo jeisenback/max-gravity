@@ -141,6 +141,7 @@ function repelStep(s, kind) {
   if (result === 'lose') s.pos++;
   s.round++;
   if (result !== 'tie' && Math.random() < REPEL_HURT[result] * (1 + 0.15 * (s.grade || 0))) text += ` ${repelCasualty(s)}`;
+  if (s.handDied) return text;  // the hand is dead: the ending is queued, and the fight does not go on
   if (s.pos < 0 || s.pos > 2) return `${text} ${repelSettle(s)}`;
   G.nextEvent = repelScene(s);
   return text;
@@ -151,6 +152,16 @@ const pickWeighted = table => { let r = Math.random() * Object.values(table).red
 // The hand is hurt: laid up for a while (a level worse, light duty), longer if already hurt, and with no medic aboard the clinic is on
 // their own savings. Used when a crew member is hit (below) and when the hand's own call in a raid goes wrong (engagements.js).
 const HAND_CLINIC = 150;
+// The hand can die (#357): hurt a second time while still hurt, or with the bridge taken while laid up, is a roll of one in four, halved with a
+// medic aboard (the factor crew deaths use, losses.js). A first hurt never rolls. The next scene is the ending (stakes.js), so a caller that
+// queues a scene after this one checks `s.handDied` first.
+const HAND_DEATH = 0.25;
+const handDeathOdds = () => HAND_DEATH * (roleHolder('medic') ? LOSS_MEDIC : 1);
+function handDies(s, how) {
+  const st = G.state, h = hired();
+  s.handDied = true; h.died = { day: st.day, how };
+  G.nextEvent = handDeathScene(how);
+}
 function hurtHand(s) {
   const st = G.state, h = hired(), again = s.youHurt || handHurt();
   h.hurtUntil = st.day + (again ? 18 : 12);
@@ -159,6 +170,7 @@ function hurtHand(s) {
   const bill = roleHolder('medic') ? 0 : Math.min(st.credits, HAND_CLINIC);
   st.credits -= bill;
   const pay = bill ? ` The clinic is ${fmt(bill)} cr of your own, with no medic aboard.` : '';
+  if (again && Math.random() < handDeathOdds()) handDies(s, 'hurt');
   return `${again ? 'You are hurt again, and you stay down. It will be some time before you are any use.' : 'You are hurt. For a while your work will be a level worse.'}${pay}`;
 }
 
@@ -218,6 +230,7 @@ function repelSettle(s) {
   like(cap, -1, 'The bridge was taken on your watch.');
   st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.1));
   d.foeHp = -1; G.duel = null; G.nextEvent = null;
+  if ((s.youHurt || handHurt()) && Math.random() < handDeathOdds()) handDies(s, 'bridge');  // laid up when they came through
   if (d.foe.kind === 'patrol') return `They are on the bridge. Captain ${cap.last} surrenders the ship to the ${d.foe.gov} Navy, and the boarding officer writes a levy of ${fmt(taken)} cr against the ship's fund, which is collected on the spot. The cutter lets you go, with a citation.${lost}`;
   return `They are on the bridge. Captain ${cap.last} gives them the code to the strongbox because there is no choice, and they take ${fmt(taken)} cr of the ship's fund and go. The ship still flies.${lost}`;
 }
