@@ -25,12 +25,24 @@ let browser = null;
 // it is. Scripts that are not in one run in index.html (a mod between two built-ins) are not bundled. bundleOf(html, read) returns
 // { html, js, src }, or null. Coverage (tools/coverage.js) reads each script by its own address, so it loads them one by one.
 const BUNDLE = 'js/__bundle.js';
+// True if the text is only whitespace and whole comments (the gap between two scripts that may still be bundled). A scan, not a regex,
+// so a long run of comment markers cannot make it slow.
+function onlyComments(text) {
+  let i = 0;
+  for (;;) {
+    while (i < text.length && text[i].trim() === '') i++;
+    if (i >= text.length) return true;
+    if (!text.startsWith('<!--', i)) return false;
+    const close = text.indexOf('-->', i + 4);
+    if (close < 0) return false;
+    i = close + 3;
+  }
+}
 function bundleOf(html, read) {
   const tags = [...html.matchAll(/<script src="(js\/[^"]+)"><\/script>/g)];
   if (!tags.length) return null;
-  const quiet = /^(?:\s|<!--[\s\S]*?-->)*$/;  // only whitespace and comments may sit between the scripts
   const end = t => t.index + t[0].length;
-  for (let i = 1; i < tags.length; i++) if (!quiet.test(html.slice(end(tags[i - 1]), tags[i].index))) return null;
+  for (let i = 1; i < tags.length; i++) if (!onlyComments(html.slice(end(tags[i - 1]), tags[i].index))) return null;
   let page = html;
   for (let i = tags.length - 1; i >= 0; i--) page = page.slice(0, tags[i].index) + (i === 0 ? `<script src="${BUNDLE}"></script>` : '') + page.slice(end(tags[i]));
   return { html: page, js: tags.map(m => read(m[1])).join('\n'), src: BUNDLE };

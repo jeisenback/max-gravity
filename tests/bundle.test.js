@@ -37,6 +37,16 @@ test('scripts that are not in one run are not bundled', () => {
   assert.ok(bundleOf(commented, () => ''), 'a commented-out mod does not split the run');
 });
 
+test('a long run of comments between scripts is checked in linear time', () => {
+  const gap = '<!--' + '--><!--'.repeat(24) + 'x';  // a regex that backtracks takes exponential time on this
+  const html = `<script src="js/a.js"></script>${gap}<script src="js/b.js"></script>`;
+  const start = process.hrtime.bigint();
+  assert.equal(bundleOf(html, () => ''), null, 'text that is not a comment between the scripts means no bundle');
+  assert.ok(Number(process.hrtime.bigint() - start) / 1e6 < 200, 'and it is decided quickly');
+  const many = `<script src="js/a.js"></script>${'<!-- c -->'.repeat(5000)}<script src="js/b.js"></script>`;
+  assert.ok(bundleOf(many, () => ''), 'any number of whole comments is fine');
+});
+
 test('a test page is bundled unless it asks not to be, and both start the game', async () => {
   const bundled = await open({});
   const a = await bundled.ev(() => ({ scripts: document.scripts.length, started: typeof G !== 'undefined' && !!G.state }));
