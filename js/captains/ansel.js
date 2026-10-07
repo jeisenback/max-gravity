@@ -139,7 +139,7 @@ CAST.ansel = {
       },
       choices: [
         { label: 'Let him go to the lock', run: () => atTheLock(false) },
-        { label: 'Send a second person with him', can: () => G.state.crew.length >= 2, run: () => atTheLock(true) },
+        { label: 'Send a second person with him', ...gated(needCrew(2)), run: () => atTheLock(true) },
         { label: 'Back the captain, and open fire', run() {
           castFlag('ansel', 'benched'); castLike('ansel', -3, 'You opened fire on Dobrescu\'s ship against my word.'); captainLike(1, 'You backed me when I picked the fight.'); G.state.armor = Math.round(G.state.armor * 0.7);
           return ('You give the word, and the guns speak, and the long ship answers, and for a minute it is loud and bright and Pell is laughing. The ' +

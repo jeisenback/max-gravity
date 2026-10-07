@@ -48,7 +48,7 @@ const CAST_BAR = {
           'have been talking for an hour. The whole of the bar rail, you see now, was welded by somebody very good. "Look at the bead," Tomas says to ' +
           'you, low. "Look at that. Nobody does that for a bar."'),
       choices: [
-        { label: 'Buy a round for the dock crew (40 cr)', can: () => G.state.credits >= 40, run() { G.state.credits -= 40; castLike('tomas', 2, 'You bought a round for the dock crew, and let me talk shop.'); castXp('tomas', 'engineer', 2); return (
+        { label: 'Buy a round for the dock crew (40 cr)', ...gated(needCr(40)), run() { G.state.credits -= 40; castLike('tomas', 2, 'You bought a round for the dock crew, and let me talk shop.'); castXp('tomas', 'engineer', 2); return (
             'A round for the dock crew turns into three hours. Tomas is shown the jig they use for the rail, and a trick for a seam that has given ' +
             'him trouble since the ring, and he shows them one of his own. He walks back to the ship with a notebook full of sketches. "They talk to ' +
             'the work," he says. "The same as me."'); } },
@@ -115,7 +115,7 @@ const CAST_BAR = {
           'is short of what, which dock office is slow, whose cousin is getting married. "Nobody tells a bartender anything," Ruben says to you. "They ' +
           'tell him everything. He is the best comms officer on the station and he does not know it."'),
       choices: [
-        { label: 'Buy a round (30 cr)', can: () => G.state.credits >= 30, run() { G.state.credits -= 30; castLike('ruben', 2, 'You bought a round, and the bartender talked.'); castXp('ruben', 'slicer', 2); const tip = addRumor(); return (
+        { label: 'Buy a round (30 cr)', ...gated(needCr(30)), run() { G.state.credits -= 30; castLike('ruben', 2, 'You bought a round, and the bartender talked.'); castXp('ruben', 'slicer', 2); const tip = addRumor(); return (
             `A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of ` +
             `the night you have the news of three docks, and one item worth money: ${tip} Ruben puts the pencil behind his ear. "A good listener has ` +
             `no name," he says. "A good bartender has a hundred."`); } },

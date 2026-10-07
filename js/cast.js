@@ -45,7 +45,7 @@ const CAST = {
             'ordered. Forty-one people walked off. I lost my license for the way I did it." She turns the jacket over. "I can fly anything you can put ' +
             'a hull around. I would just like to be asked, not told."'),
         choices: [
-          { label: 'Offer her the helm', can: () => berthsFree() > 0, run: () => castJoin('ines', ('Ines folds the jacket over one arm and looks at ' +
+          { label: 'Offer her the helm', ...gated(needBerth), run: () => castJoin('ines', ('Ines folds the jacket over one arm and looks at ' +
               'you for a moment. "Asked," she says. "Good." She follows you down the dock with a bag that holds, as far as you can tell, one logbook ' +
               'and nothing else.')) },
           { label: '"Not this time."', run: () => castLater('ines', 'She nods, and goes back to the jacket. "I will be around," she says.') },
@@ -137,7 +137,7 @@ const CAST = {
             'who sold her out from under him." He holds out the spanner handle-first. "Does your ship have a plant I could look after? Properly. For ' +
             'ten years."'),
         choices: [
-          { label: 'Take him on as engineer', can: () => berthsFree() > 0, run: () => castJoin('tomas', ('He wipes his hands on the rag. Then he ' +
+          { label: 'Take him on as engineer', ...gated(needBerth), run: () => castJoin('tomas', ('He wipes his hands on the rag. Then he ' +
               'wipes them again. "Properly," he says, and picks up his bag, which clinks. "I will tell you now that I am going to talk to her. The ' +
               'engines. It is not a joke. They like it."')) },
           { label: '"Not this time."', run: () => castLater('tomas', '"That is all right," he says, and turns back to the loop. "I will be here. The ship I am working on will be sold in a month, and then I will be somewhere else, but I will be here."') },
@@ -165,7 +165,7 @@ const CAST = {
             'credits. "I will pay it back from the first two pay days. I always pay it back."'),
         personal: true,
         choices: [
-          { label: 'Lend him 200 cr', can: () => G.state.credits >= 200, run() { G.state.credits -= 200; castLike('tomas', 3, 'You lent me two hundred credits for my sister\'s rent.'); castFlag('tomas', 'loan'); return (
+          { label: 'Lend him 200 cr', ...gated(needCr(200)), run() { G.state.credits -= 200; castLike('tomas', 3, 'You lent me two hundred credits for my sister\'s rent.'); castFlag('tomas', 'loan'); return (
               'He takes it with both hands. "Thank you," he says, and then, because it is not enough, he says it again in Igbo. By the second pay day ' +
               'the two hundred is in your account, with an extra: a ring of braided wire, on a note that says "for luck, from a man who understands ' +
               'machines".'); } },
@@ -222,7 +222,7 @@ const CAST = {
             'living, dome defense mostly, and the pay is an insult. I can put a round through a washer at four kilometers. Does your ship have guns ' +
             'that want somebody who cares where they land?"'),
         choices: [
-          { label: 'Offer her the guns', can: () => berthsFree() > 0, run: () => castJoin('yelena', ('She puts the ice down and gets up so fast the ' +
+          { label: 'Offer her the guns', ...gated(needBerth), run: () => castJoin('yelena', ('She puts the ice down and gets up so fast the ' +
               'stool falls over, and does not pick it up. "Do you know," she says, "you are the first person to ask me that as if it were a question." ' +
               'She is already walking. Over her shoulder, to the screen: "Do not think I have forgotten the foul."')) },
           { label: '"Not this time."', run: () => castLater('yelena', '"Sure," she says, and the stool, which she has set upright, rocks once. "I will be at the rail. I am usually at the rail."') },
@@ -298,7 +298,7 @@ const CAST = {
         },
         choices: [
           { label: 'Let her lead', run: () => overTheHull(false) },
-          { label: 'Send her with a second person', can: () => G.state.crew.length >= 2, run: () => overTheHull(true) },
+          { label: 'Send her with a second person', ...gated(needCrew(2)), run: () => overTheHull(true) },
           { label: 'Call it off', run() {
             castFlag('yelena', 'benched'); castLike('yelena', -3, 'You called off the boarding and put me on the bench.');
             return ('You tell her no, and cut the channel, and the drifting ship goes on drifting. Yelena stands at the hatch for a while with her ' +
@@ -332,7 +332,7 @@ const CAST = {
             'week, who is lying about it, and what they will pay. Twenty-five years on the Valles network. They let me go for keeping a relay running ' +
             'in my kitchen." He beams. "Does your ship have an ear?"'),
         choices: [
-          { label: 'Take him on as comms', can: () => berthsFree() > 0, run: () => castJoin('ruben', ('He packs the whole stall into one battered ' +
+          { label: 'Take him on as comms', ...gated(needBerth), run: () => castJoin('ruben', ('He packs the whole stall into one battered ' +
               'case in what seems like a single motion, and presses the thermos into your hands. "Hold this," he says, "it is still hot, that is ' +
               'important." He talks the whole way to the ship: about the band, about your ship, about three domes you have never heard of, and about ' +
               'how glad he is. Nobody has the heart to interrupt.')) },
@@ -417,7 +417,7 @@ const CAST = {
             'ships home. You learn what a ship wants. Mostly, to be found." She caps the pen. "The blockade killed the work. Nobody sells a wreck any ' +
             'more, they keep them. I would like a ship I can fly instead of tow."'),
         choices: [
-          { label: 'Offer her the helm', can: () => berthsFree() > 0, run: () => castJoin('bexa', ('She looks at you with a level gaze. Then she ' +
+          { label: 'Offer her the helm', ...gated(needBerth), run: () => castJoin('bexa', ('She looks at you with a level gaze. Then she ' +
               'hangs the pen on its chain from her belt and picks up her bag. "I will take your helm," she says. "I will tell you now that I talk to ' +
               'the transponder. It is not a problem. It listens better than most people."')) },
           { label: '"Not this time."', run: () => castLater('bexa', '"That is all right," she says. "I know where the docks are. There is always another wreck." She says it kindly, and means it, and you suspect there are not as many wrecks as she is saying.') },
@@ -511,7 +511,7 @@ const CAST = {
             'good with a laser. I am the best on the Spin. I want a job where nobody is standing next to the thing when it fires." They look up. "That ' +
             'is a bad thing to say, I know."'),
         choices: [
-          { label: 'Offer them the guns', can: () => berthsFree() > 0, run: () => castJoin('pax', ('The dart goes down, carefully. "Really?" Pax ' +
+          { label: 'Offer them the guns', ...gated(needBerth), run: () => castJoin('pax', ('The dart goes down, carefully. "Really?" Pax ' +
               'says, and then, because that sounded like asking for too much: "I mean, thanks. Yes. I mean, I will try not to flinch." You tell them ' +
               'the flinching can come, too. Pax picks up a small bag.')) },
           { label: '"Not this time."', run: () => castLater('pax', '"Right," Pax says, to the board, and puts a dart in the center, and then another beside it. "Sure. I am around. I am always around. I am here every evening." They say it lightly. It is an effort, and it shows.') },

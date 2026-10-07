@@ -72,7 +72,7 @@ CAPTAINS.dov = {
           captainLike(2, 'You told the harbourmaster we were good for it.');
           return 'You say it. Your voice is steadier than you expected. She looks at the captain, and at the fund board, and at you, and puts the stamp on the form. "Once," she says. He is crying, and laughing at himself for it. He does not forget it.';
         } },
-        { label: 'Cover three hundred from your savings', can: () => G.state.credits >= 300, run() {
+        { label: 'Cover three hundred from your savings', ...gated(needCr(300)), run() {
           G.state.credits -= 300; captainLike(3, 'You covered the fuel when the fund was short.'); captainFlag('lent');
           return 'You pay it at the window, in your own cash. He stands still beside you. "I will pay you back," he says, and for once does not tell a story about it. He writes the figure on the back of his hand.';
         } },

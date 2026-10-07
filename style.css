@@ -119,6 +119,7 @@ canvas { display: block; touch-action: none; }
 /* A scene longer than the dialog says so above the pinned choices, until the last of the text is in view. */
 #panel.event.more .choices::before { content: 'The scene continues. Scroll to read the rest.'; display: block; margin: 0 -16px 8px; padding: 4px 16px; background: var(--panel); font-size: 12px; color: var(--muted); }
 .choices button { text-align: left; padding: 10px 12px; }
+.choices .why { margin: -4px 0 2px 2px; }
 @media (min-width: 700px) { .event-body { padding: 22px 26px; } }
 
 .hdr {

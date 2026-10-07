@@ -50,7 +50,7 @@ function patrolHail(n) {
       title: n.name,
       text: `${captain}: "Your ship is flagged in ${gov} space. Pay ${fmt(fine)} cr in fines and we will clear your record, or we disable you and collect."`,
       choices: [
-        { label: `Pay the fine (${fmt(fine)} cr)`, can: () => st.credits >= fine, run() {
+        { label: `Pay the fine (${fmt(fine)} cr)`, ...gated(needCr(fine)), run() {
           st.credits -= fine;
           st.rep[gov] = -10;
           for (const o of G.npcs) if (o.kind === 'patrol' && o.gov === gov) o.hostile = false;
@@ -65,7 +65,7 @@ function patrolHail(n) {
     title: n.name,
     text: `${captain}: "${friendly ? 'Good to see you, captain. Clear skies out there.' : 'This is a patrol ship. Keep your transponder on and your guns cold.'}"`,
     choices: [
-      { label: 'Any trouble out here?', can: () => !n.gossiped, run() {
+      { label: 'Any trouble out here?', ...gated(notYet(() => n.gossiped, 'They have told you what they know.')), run() {
         n.gossiped = true;
         const pirates = G.npcs.filter(o => o.kind === 'pirate' && o.hostile).length;
         return pirates ? `"We are tracking ${pirates} hostile contact${pirates > 1 ? 's' : ''} in local space. Stay close if you like."` : '"Quiet so far. Let us keep it that way."';

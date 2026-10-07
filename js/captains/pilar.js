@@ -135,7 +135,7 @@ CAST.pilar = {
       },
       choices: [
         { label: 'Let her fly it', run: () => atTheHelm(false) },
-        { label: 'Put a second hand on the console with her', can: () => G.state.crew.length >= 2, run: () => atTheHelm(true) },
+        { label: 'Put a second hand on the console with her', ...gated(needCrew(2)), run: () => atTheHelm(true) },
         { label: 'Take the ship off the approach and go round', run() {
           castFlag('pilar', 'benched'); castLike('pilar', -3, 'You took the ship off the approach on me.'); G.state.fuel = Math.round(G.state.fuel * 0.8);
           return 'You tell her no, and call the go-round. The ship stands off from the gate, and the ice sits in the hold, and the cells burn for the second pass. Pilar takes her hands off the stick one at a time. "It is your call," she says. "It was always going to be somebody\'s."';

@@ -179,7 +179,7 @@ function sitBeat(p, isCrew) {
         `them anymore. I just watch the little number go up." They look at you, at last, with a plain, tired courage. "I am not asking. I just wanted ` +
         `you to know, before you decide whether I am worth what you pay me."`),
       choices: [
-        { label: `Pay it off (${fmt(s.debt)} cr)`, can: () => st.credits >= s.debt, run() {
+        { label: `Pay it off (${fmt(s.debt)} cr)`, ...gated(needCr(s.debt)), run() {
           st.credits -= s.debt;
           s.beat = 4;
           becomeLoyal(p, 'The captain paid off my debt.');
@@ -253,7 +253,7 @@ function occasionEvent(o) {
             `Somebody makes a cake out of ration bars and a candle out of a welding stub, and somebody else finds a bottle no one admits to hiding. ` +
             `The whole ship crowds into the galley to sing, off-key and enthusiastically, and ${n}, who was going to be cool about it, laughs until ` +
             `they cry, and blows out the welding stub on the third try.`))(); } },
-        { label: 'Give them something from the cargo (1t luxury goods)', can: () => (st.cargo.luxury || 0) >= 1, run() {
+        { label: 'Give them something from the cargo (1t luxury goods)', ...gated([() => (st.cargo.luxury || 0) >= 1, () => 'There is no luxury cargo in the hold.']), run() {
           st.cargo.luxury -= 1;
           like(p, 3, 'The captain remembered my birthday.');
           return `${n} unwraps it slowly, saving the paper. When they see what it is, they go still. They do not say anything for a moment. Then they set it on the shelf by their bunk, and keep it there for the rest of the trip. More than once you see them stop and look at it.`;
@@ -333,7 +333,7 @@ function newsEvent(p) {
         `on and a night in the market. You stay until the watch bell, and ${n} says thank you at the hatch.`), (
         `You sit on the other side of the galley table and do not look at the terminal. ${n} tells you what the section was like before the cuts. It ` +
         `takes an hour. At the end ${n} washes both cups.`)]); } },
-    { label: 'Advance them 500 cr to send home', can: () => st.credits >= 500, run() { st.credits -= 500; like(p, 3, 'The captain advanced me money to send home.'); p.mood.until = st.day; return pick([(
+    { label: 'Advance them 500 cr to send home', ...gated(needCr(500)), run() { st.credits -= 500; like(p, 3, 'The captain advanced me money to send home.'); p.mood.until = st.day; return pick([(
         `${n} sends it at the next relay with a short message. For two days ${n} checks the terminal every few minutes. When the reply comes, ${n} ` +
         `reads it aloud in the galley. "They are all right," ${n} says. "They are all right." They sit down.`), (
         `${n} sends it from the bridge console with two lines. The reply is nine hours behind the question. When it comes, ${n} reads it standing at ` +
@@ -487,7 +487,7 @@ function joinEvent(p) {
         `anywhere I need to be. And I like it here. I like all of you. Could ${shipTitle()} use a ${ROLE_NAMES[role].toLowerCase()}?" They hold your ` +
         `eye, bravely, and wait, braced for either answer.`),
     choices: [
-      { label: 'Welcome aboard', can: () => berthsFree() > 0, run() {
+      { label: 'Welcome aboard', ...gated(needBerth), run() {
         Object.assign(p, { role, skill: randInt(1, 2), location: null });
         p.wage = Math.round(ROLE_WAGE[role] * (0.6 + 0.3 * p.skill));
         st.crew.push(p.id);

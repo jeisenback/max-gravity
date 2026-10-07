@@ -98,7 +98,7 @@ function boardingEvent(n) {
       title, personal: true, via: 'crew',
       text: `${n.captain ? `Capt. ${n.captain}` : 'Her crew'} is armed and waiting behind the inner lock. The ${prize.name} is still spaceworthy, barely. A boarding would be ${repelStanding(a) - 1} of yours against ${a.boarders} of hers.`,
       choices: [
-        { label: 'Board her', can: () => n.disabled !== 'stripped', run() { G.nextEvent = repelScene(a); return 'You match her drift and the cutter goes out of the lock. It is a short crossing.'; } },
+        { label: 'Board her', ...gated(notYet(() => n.disabled === 'stripped', 'She has been stripped already.')), run() { G.nextEvent = repelScene(a); return 'You match her drift and the cutter goes out of the lock. It is a short crossing.'; } },
         { label: 'Let her drift', run: () => (n.kind === 'pirate' ? 'You leave them drifting. They will not thank you.' : 'You leave them to call for a tow.') },
       ],
     };
@@ -112,7 +112,7 @@ function boardingEvent(n) {
         `it${roleSkill('gunner') ? `, with ${roleName('gunner')} leading` : ''}.`) : ''}`),
     choices: [
       { label: n.kind === 'pirate' ? 'Board and take what they have' : 'Board and strip the cargo',
-        can: () => n.disabled !== 'stripped' && (n.kind === 'pirate' || cargoFree() > 0),
+        ...gated(notYet(() => n.disabled === 'stripped', 'She has been stripped already.'), [() => n.kind === 'pirate' || cargoFree() > 0, () => 'There is no room in the hold.']),
         run() {
           const fail = boardingFight(n);
           if (fail) return fail;
@@ -129,7 +129,7 @@ function boardingEvent(n) {
           return `You haul ${q}t of ${name} across. The crew watch you do it. Somebody will report this.`;
         } },
       { label: `Take the ship as a prize (prize crew: ${fmt(prizeFee)} cr)`,
-        can: () => st.credits >= prizeFee, owner: true,
+        ...gated(needCr(prizeFee)), owner: true,
         run() {
           const fail = boardingFight(n);
           if (fail) return fail;

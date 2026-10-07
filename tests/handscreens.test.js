@@ -200,3 +200,32 @@ test('a long scene says it continues, the Port heading keeps one case, and a shu
   assert.ok(r.shutOrders > 0); assert.ok(r.hints.some(h => /Patch the hull: Nothing to patch/.test(h)), r.hints.join('|'));
   await done();
 });
+
+test('a shut scene choice says why as text: credits with the figures, a berth, fuel, and a thing already done', async () => {
+  const { page, ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = startHand(), out = {};
+    // the checks
+    st.credits = 120; out.cr = gated(needCr(500)).why(); st.credits = 600; out.crOpen = gated(needCr(500)).why() === '' && gated(needCr(500)).can();
+    st.fuel = 12; out.mass = gated(needMass(40)).why();
+    out.once = gated(notYet(() => true, 'Done already.')).why();
+    out.first = gated(notYet(() => true, 'First.'), needCr(99999999)).why();  // the first check to fail gives the reason
+    // the scene tables: every authored choice of the cast with a `can` has a reason
+    const cast = Object.values(CAST).flatMap(c => Object.values(c.scenes || {})).flatMap(s => s.choices || []).filter(c => c.can);
+    out.castShut = cast.length > 0 && cast.every(c => typeof c.why === 'function');
+    // a shut button draws it, and an open one does not
+    st.credits = 120;
+    openEvent({ title: 'A Test', text: 'Text.', choices: [{ label: 'Pay', ...gated(needCr(500)), run: () => 'paid' }, { label: 'Leave', run: () => 'left' }] });
+    return out;
+  });
+  const shown = await page.evaluate(() => [...document.querySelectorAll('#panel .choices .why')].map(e => e.textContent));
+  assert.equal(r.cr, 'You have 120 cr; this costs 500 cr.'); assert.ok(r.crOpen);
+  assert.match(r.mass, /You have 12 reaction mass; this takes 40\./); assert.equal(r.once, 'Done already.'); assert.equal(r.first, 'First.');
+  assert.ok(r.castShut, 'every authored choice of the cast that can be shut says why');
+  assert.deepEqual(shown, ['You have 120 cr; this costs 500 cr.']);
+  assert.equal(await page.evaluate(() => document.querySelector('#panel .choices button[disabled]').textContent), 'Pay');
+  await ev(() => { G.state.credits = 600; finishEvent(); openEvent({ title: 'A Test', text: 'Text.', choices: [{ label: 'Pay', ...gated(needCr(500)), run: () => 'paid' }] }); });
+  assert.equal(await page.evaluate(() => document.querySelectorAll('#panel .choices .why').length), 0);
+  await done();
+});

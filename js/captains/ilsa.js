@@ -119,7 +119,7 @@ CAST.ilsa = {
           'stop. If he does not, I cannot." She closes it. "I am not asking you to do anything. I am telling you, because somebody ought to know who ' +
           'is holding it up."'),
       choices: [
-        { label: 'Offer to put something in', can: () => G.state.credits >= 200, run() {
+        { label: 'Offer to put something in', ...gated(needCr(200)), run() {
           G.state.credits -= 200; castLike('ilsa', 2, 'You offered to put something into the fund.');
           return 'She looks at the two hundred for a long time. "No," she says. Then: "Yes. Not for him. For me. So that it is not only me." She writes it in the book, in a column of its own.';
         } },
@@ -144,7 +144,7 @@ CAST.ilsa = {
       },
       choices: [
         { label: 'Let her go in', run: () => atTheReactor(false) },
-        { label: 'Send the engineer in with her', can: () => !!roleHolder('engineer'), run: () => atTheReactor(true) },
+        { label: 'Send the engineer in with her', ...gated([() => !!roleHolder('engineer'), () => 'There is no engineer aboard.']), run: () => atTheReactor(true) },
         { label: 'Vent the plant and let the ship coast', run() {
           castFlag('ilsa', 'benched'); castLike('ilsa', -3, 'You vented the plant on me.'); G.state.fuel = Math.round(G.state.fuel * 0.8);
           return 'You tell her no, and hit the vent. The pile cools, and the ship coasts for two days on what is left of the cells. Ilsa stands at the shielded door with the gloves on and does not say a word. "It is your call," she says at last, and takes the gloves off one finger at a time.';

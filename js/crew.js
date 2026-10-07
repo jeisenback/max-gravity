@@ -68,7 +68,7 @@ const CREW = {
             'me 2,500 credits for parts and I will squeeze another ten percent out of it. Permanently. I have been designing it for a year." She does ' +
             'not say who she was designing it for before you.'),
         choices: [
-          { label: 'Fund it (2,500 cr)', can: () => G.state.credits >= 2500, run() {
+          { label: 'Fund it (2,500 cr)', ...gated(needCr(2500)), run() {
             G.state.credits -= 2500;
             G.state.flags.rosaTuned = true;
             return ('Two days of swearing, one small fire, and one nearly-lost finger later, the drive runs cooler and leaner than it ever did. Rosa ' +
@@ -85,7 +85,7 @@ const CREW = {
             'or everyone on Ceres will hear why she really left." Behind you, Rosa has stopped moving. She is standing very still in the hatchway, ' +
             'with her hands at her sides, looking at the floor.'),
         choices: [
-          { label: 'Pay him (3,000 cr)', can: () => G.state.credits >= 3000, run() {
+          { label: 'Pay him (3,000 cr)', ...gated(needCr(3000)), run() {
             G.state.credits -= 3000;
             G.state.flags.rosaHalfWage = true;
             return ('The channel closes. Rosa says nothing for an hour, then finds you in the galley with a mug of the good coffee she has been ' +
@@ -171,7 +171,7 @@ const CREW = {
             'would like to put a few hundred rounds into it. Keeps me sharp. Ammo is about 300 credits." She sets the crate down. "I am not asking for ' +
             'me. I am asking because the day I am not sharp, someone on this ship is going to get hurt."'),
         choices: [
-          { label: 'Let her (300 cr)', can: () => G.state.credits >= 300, run() {
+          { label: 'Let her (300 cr)', ...gated(needCr(300)), run() {
             G.state.credits -= 300;
             G.state.flags.kitSharp = true;
             return ('The rock does not survive. It goes to gravel in six seconds, in a pretty sweep of tracer fire, and the chunks scatter in a slow ' +
@@ -264,7 +264,7 @@ const CREW = {
             'ship, its papers, its past. Half the pirates out here will read you as one of theirs. It will take three thousand credits in parts, and ' +
             'one very long night."'),
         choices: [
-          { label: 'Do it (3,000 cr)', can: () => G.state.credits >= 3000, run() {
+          { label: 'Do it (3,000 cr)', ...gated(needCr(3000)), run() {
             G.state.credits -= 3000;
             G.state.flags.ghost = true;
             return ('Wren works through the night, her hands moving in the blue of three screens like a pianist\'s, murmuring to the machines in a ' +
@@ -290,7 +290,7 @@ const CREW = {
                 `before they break off, laughing. Wren says nothing for a long time. Then she says, in a flat little voice, "That was my fault. I ` +
                 `should have known." She is wrong, and you tell her so, and she does not believe you yet.`);
           } },
-          { label: 'Pay them off (2,000 cr)', can: () => G.state.credits >= 2000, run() {
+          { label: 'Pay them off (2,000 cr)', ...gated(needCr(2000)), run() {
             G.state.credits -= 2000;
             return ('They take the money, and the channel closes with a soft, satisfied click. Wren stares at the dark screen for a long time ' +
                 'afterward, her hands quite still. When she finally speaks it is to nobody in particular: "I have never had anyone pay for me before." ' +
@@ -312,7 +312,7 @@ const PASSENGERS = {
         'the thermometer has stopped reading at a number that makes her voice crack. You are days from anywhere. Behind her, in the corridor, her ' +
         'husband is trying very hard to look calm, and failing.'),
     choices: [
-      { label: "Open the ship's medkit (500 cr of supplies)", can: () => G.state.credits >= 500, run() {
+      { label: "Open the ship's medkit (500 cr of supplies)", ...gated(needCr(500)), run() {
         G.state.credits -= 500;
         m.bonus += 1500;
         return ('You spend the good antibiotics without a second thought, and sit by the little girl\'s bunk with a bulb of water and a very bad ' +
@@ -320,7 +320,7 @@ const PASSENGERS = {
             'family insists on paying you extra when you arrive, and Mrs. Adeyemi presses a paper bird into your hand. "She made it for the captain," ' +
             'she says. "It is a ship."');
       } },
-      { label: 'Burn harder to get there sooner (40 reaction mass)', can: () => G.state.fuel >= 40, run() {
+      { label: 'Burn harder to get there sooner (40 reaction mass)', ...gated(needMass(40)), run() {
         G.state.fuel -= 40;
         delay(-10);
         m.bonus += 500;
@@ -357,7 +357,7 @@ const PASSENGERS = {
         'that his meeting cannot wait, that it concerns matters he is not at liberty to discuss, and that he had expected a faster ship. He glances at ' +
         'your control panel, and lets the silence do the rest of the work.'),
     choices: [
-      { label: 'Hard burn to shave a day (50 reaction mass)', can: () => G.state.fuel >= 50, run() {
+      { label: 'Hard burn to shave a day (50 reaction mass)', ...gated(needMass(50)), run() {
         G.state.fuel -= 50;
         m.bonus += Math.round(m.pay * 0.4);
         return ('Hale spends the burn pinned to his couch, too crushed by the acceleration to complain, his fine coat twisted awkwardly about him and ' +

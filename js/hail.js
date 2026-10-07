@@ -154,7 +154,7 @@ function hailEvent(n) {
     const choices = [];
     if (grudge) {
       const price = 2000 + 500 * -c.opinion;
-      choices.push({ label: `Offer compensation (${fmt(price)} cr)`, can: () => st.credits >= price, run() {
+      choices.push({ label: `Offer compensation (${fmt(price)} cr)`, ...gated(needCr(price)), run() {
         st.credits -= price;
         feel(n, 4, 'You paid to settle things between us.');
         leave(n);
@@ -163,7 +163,7 @@ function hailEvent(n) {
             `chest, and in your shoulders, comes down, one notch at a time.`);
       } });
     } else if (hired) {
-      choices.push({ label: 'Outbid whoever paid you (3,000 cr)', can: () => st.credits >= 3000, run() {
+      choices.push({ label: 'Outbid whoever paid you (3,000 cr)', ...gated(needCr(3000)), run() {
         st.credits -= 3000;
         leave(n);
         return (`${captain} considers it, for a long moment, with a faint, ironic hum. "Your money spends the same as ${n.payer}'s," they say at ` +
@@ -171,7 +171,7 @@ function hailEvent(n) {
             `"Tell ${n.payer} I said hello."`);
       } });
     } else {
-      choices.push({ label: `Pay tribute (${fmt(tribute)} cr)`, can: () => st.credits >= tribute, run() {
+      choices.push({ label: `Pay tribute (${fmt(tribute)} cr)`, ...gated(needCr(tribute)), run() {
         st.credits -= tribute;
         c.tributes = (c.tributes || 0) + 1;
         feel(n, 1, 'You paid me off.');
@@ -181,7 +181,7 @@ function hailEvent(n) {
             `faintly sinister manner of a man who has been told his price and is content. ${n.name} peels away, running lights blinking, in a lazy, ` +
             `contented arc, and you feel, for a while, very small.`);
       } });
-      choices.push({ label: 'Dump half your biggest cargo', can: hasTradeCargo, run() {
+      choices.push({ label: 'Dump half your biggest cargo', ...gated(needGoods), run() {
         const text = loseCargo(0.5);
         feel(n, 1, 'You dumped cargo for me.');
         leave(n);
@@ -225,8 +225,8 @@ function hailEvent(n) {
     return {
       title, text: `${captain} ${c.id && c.opinion >= OPINION.TRUSTED ? 'recognizes you. "Our favorite customer.' : 'reads your transponder and relaxes. "One of ours.'} What do you need?"`,
       choices: [
-        { label: 'Any news?', can: () => !n.gossiped, run() { n.gossiped = true; return `"${addRumor()}"`; } },
-        { label: 'Buy stolen luxury goods (5t at 250 cr/t)', can: () => !n.fenced && cargoFree() >= 5 && st.credits >= 1250, run() {
+        { label: 'Any news?', ...gated(notYet(() => n.gossiped, 'They have told you what they know.')), run() { n.gossiped = true; return `"${addRumor()}"`; } },
+        { label: 'Buy stolen luxury goods (5t at 250 cr/t)', ...gated(notYet(() => n.fenced, 'They have sold you what they had.'), [() => cargoFree() >= 5, () => 'This needs 5t of room in the hold.'], needCr(1250)), run() {
           n.fenced = true;
           feel(n, 1, 'You bought our goods.');
           changeRep('Pirate', 2);
@@ -248,7 +248,7 @@ function hailEvent(n) {
     return {
       title, text: n.hostile && !n.wasShot ? `${captain}: "You! I remember you. Keep your distance."` : n.hostile ? `${captain}: "You shot at us! What kind of lunatic are you?"` : `${captain}: "Oh. It's you. We have nothing to say to you."`,
       choices: [
-        { label: `Apologize and pay for the damage (${fmt(price)} cr)`, can: () => st.credits >= price, run() {
+        { label: `Apologize and pay for the damage (${fmt(price)} cr)`, ...gated(needCr(price)), run() {
           st.credits -= price;
           n.hostile = false;
           feel(n, 3, 'You apologized and paid for the damage.');
@@ -272,12 +272,12 @@ function hailEvent(n) {
   return {
     title, text: `${captain}: "${friend ? 'Captain! Good to see you again. ' : ''}${voice(n, GREETINGS, 'This is {ship}. Go ahead.')}${hauling}"`,
     choices: [
-      { label: 'Any news?', can: () => !n.gossiped, run() {
+      { label: 'Any news?', ...gated(notYet(() => n.gossiped, 'They have told you what they know.')), run() {
         n.gossiped = true;
         return c.traits.includes('secretive') ? '"Nothing I care to share." Fair enough.' : `"${addRumor()}"`;
       } },
       ...(spare > 0 ? [{ label: free ? `Could you spare ${spare} units of reaction mass?` : `Buy ${spare} units of reaction mass (${fmt(spare * 4)} cr)`,
-        can: () => !n.soldFuel && (free || st.credits >= spare * 4), run() {
+        ...gated(notYet(() => n.soldFuel, 'They have sold you fuel already.'), [() => free || st.credits >= spare * 4, () => `You have ${fmt(st.credits)} cr; this costs ${fmt(spare * 4)} cr.`]), run() {
           n.soldFuel = true;
           st.fuel += spare;
           feel(n, 1, free ? 'We helped you out with reaction mass.' : 'You bought reaction mass from us.');
@@ -287,7 +287,7 @@ function hailEvent(n) {
           st.credits -= spare * 4;
           return 'You match velocity, in a long, careful dance, and they pump it across, in a steady, humming stream, with a brisk professional silence on the channel. Not cheap, but you are not stuck, and you tip your hand to the cockpit glass as they peel away.';
         } }] : []),
-      ...(good ? [{ label: `Sell them ${qty}t of ${good.name} (${fmt(offer)} cr/t)`, can: () => !n.bought, run() {
+      ...(good ? [{ label: `Sell them ${qty}t of ${good.name} (${fmt(offer)} cr/t)`, ...gated(notYet(() => n.bought, 'They have bought from you already.')), run() {
         n.bought = true;
         feel(n, 1, 'We did business.');
         const held = st.cargo[cid];
