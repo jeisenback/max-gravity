@@ -210,7 +210,9 @@ test('an owner boarding a disabled ship still rolls for it, with the odds in the
     G.state = newState(); G.state.credits = 99999; G.mode = 'flight'; G.player = { x: 0, y: 0, vx: 0, vy: 0 };
     const foe = { name: 'Test', kind: 'pirate', shipId: 'freighter', armor: 10, maxArmor: 40, x: 0, y: 0, vx: 0, vy: 0, disabled: true, captain: 'Voss' };
     const e = boardingEvent(foe);
-    return { labels: e.choices.map(c => c.label), odds: /%/.test(e.text) };
+    const out = { labels: e.choices.map(c => c.label), odds: /%/.test(e.text) };
+    G.mode = 'landed'; G.player = null;  // the frame loop runs once this returns, and a flying player with no ship throws in it
+    return out;
   });
   assert.ok(r.labels.some(l => /prize/i.test(l))); assert.ok(r.odds);
   await done();
