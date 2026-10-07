@@ -37,6 +37,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider' } = 
       let last = '', k = 0;
       while (G.dialog && k++ < 40) {
         titles.push(G.dialog.event.title);
+        if (/^(Without a Captain|The Last Run)$/.test(G.dialog.event.title)) break;  // the endings start a new game: the trial is over
         const i = /Dead in Space/.test(G.dialog.event.title) ? 0 : POLICY[policy](G.dialog);  // a crippled raider is always boarded
         last = chooseEvent(i);
         finishEvent();

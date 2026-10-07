@@ -157,6 +157,8 @@ const HAND_CLINIC = 150;
 // queues a scene after this one checks `s.handDied` first.
 const HAND_DEATH = 0.25;
 const handDeathOdds = () => HAND_DEATH * (roleHolder('medic') ? LOSS_MEDIC : 1);
+// The captain can be lost (#357): a pirate bridge taken is a roll of one in three. The next scene is the captain's loss (stakes.js).
+const CAPTAIN_LOST = 1 / 3;
 function handDies(s, how) {
   const st = G.state, h = hired();
   s.handDied = true; h.died = { day: st.day, how };
@@ -231,6 +233,11 @@ function repelSettle(s) {
   st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.1));
   d.foeHp = -1; G.duel = null; G.nextEvent = null;
   if ((s.youHurt || handHurt()) && Math.random() < handDeathOdds()) handDies(s, 'bridge');  // laid up when they came through
+  if (d.foe.kind !== 'patrol' && !s.handDied && Math.random() < CAPTAIN_LOST) {
+    h.captainLost = { day: st.day, how: 'bridge' };
+    G.nextEvent = captainLostScene();
+    return `They are on the bridge. Captain ${cap.last} is at the console and does not give them the code, so they take it. They take ${fmt(taken)} cr of the ship's fund and go. The ship still flies. Captain ${cap.last} does not get up.${lost}`;
+  }
   if (d.foe.kind === 'patrol') return `They are on the bridge. Captain ${cap.last} surrenders the ship to the ${d.foe.gov} Navy, and the boarding officer writes a levy of ${fmt(taken)} cr against the ship's fund, which is collected on the spot. The cutter lets you go, with a citation.${lost}`;
   return `They are on the bridge. Captain ${cap.last} gives them the code to the strongbox because there is no choice, and they take ${fmt(taken)} cr of the ship's fund and go. The ship still flies.${lost}`;
 }

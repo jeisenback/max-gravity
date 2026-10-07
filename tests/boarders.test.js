@@ -261,7 +261,7 @@ test('the hand dies on a second hurt or a lost bridge while laid up, one in four
     st.crew = st.crew.filter(id => id !== medic.id); reset();
     // the bridge taken while laid up, and not while well
     h.hurtUntil = st.day + 5; rolls([0.01]); const s = repelStart(d, 'full'); s.pos = 3; repelSettle(s); out.bridge = { title: G.nextEvent && G.nextEvent.title, how: h.died && h.died.how };
-    reset(); rolls([0.01]); const s2 = repelStart(d, 'full'); s2.pos = 3; repelSettle(s2); out.well = { next: G.nextEvent, died: !!h.died };
+    reset(); rolls([0.99]); const s2 = repelStart(d, 'full'); s2.pos = 3; repelSettle(s2); out.well = { next: G.nextEvent, died: !!h.died };
     return out;
   });
   assert.deepEqual([r.first.died, r.first.next], [false, null], 'a first hurt does not roll');
@@ -270,6 +270,36 @@ test('the hand dies on a second hurt or a lost bridge while laid up, one in four
   assert.ok(r.medicSaves, 'a medic halves it'); assert.ok(r.medicStillRolls);
   assert.deepEqual(r.bridge, { title: 'The Last Run', how: 'bridge' });
   assert.deepEqual([r.well.next, r.well.died], [null, false], 'a bridge taken while well does not roll');
+  await done();
+});
+
+test('a pirate bridge taken can cost the captain, one in three, and the hand goes ashore keeping savings, skill and debt', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = fight(), h = hired(), d = G.duel, cap = person(h.captain), out = { last: cap.last };
+    const reset = () => { G.nextEvent = null; delete h.captainLost; delete h.died; delete h.hurtUntil; };
+    const bridge = (roll, foe) => { reset(); const was = d.foe.kind; if (foe) d.foe.kind = foe; rolls([roll]); const s = repelStart(d, 'full'); s.pos = 3; const text = repelSettle(s); d.foe.kind = was; return { text, title: G.nextEvent && G.nextEvent.title, lost: !!h.captainLost }; };
+    out.hit = bridge(0.2); out.miss = bridge(0.5); out.patrol = bridge(0.2, 'patrol');
+    reset(); h.hurtUntil = st.day + 5; rolls([0.01]); const s = repelStart(d, 'full'); s.pos = 3; repelSettle(s);  // the hand's roll first, and one scene only
+    out.handFirst = { title: G.nextEvent && G.nextEvent.title, lost: !!h.captainLost };
+    reset(); bridge(0.2);
+    const e = G.nextEvent; out.text = e.text; out.choices = e.choices.map(c => c.label);
+    st.credits = 777; h.debt = 1234; h.skill.gunner = 60;
+    __seed(1);
+    e.choices[0].run();
+    out.fresh = G.state !== st; out.credits = G.state.credits; out.debt = hired().debt; out.skill = hired().skill.gunner; out.carried = G.state.carried; out.putOff = G.state.putOff || 0; out.notes = UI.notes.join(' ');
+    return out;
+  });
+  assert.equal(r.hit.title, 'Without a Captain'); assert.ok(r.hit.lost); assert.ok(r.hit.text.includes(`Captain ${r.last} does not get up`));
+  assert.deepEqual([r.miss.title, r.miss.lost], [null, false], 'over one in three: the captain lives');
+  assert.deepEqual([r.patrol.title, r.patrol.lost], [null, false], 'a patrol surrenders the ship and kills nobody');
+  assert.deepEqual(r.handFirst, { title: 'The Last Run', lost: false });
+  assert.deepEqual(r.choices, ['Take the bag']); assert.ok(r.text.includes(`The articles were Captain ${r.last}'s`));
+  assert.ok(r.fresh); assert.equal(r.credits, 777); assert.equal(r.debt, 1234); assert.equal(r.skill, 60);
+  assert.equal(r.carried, `On the dock they say Captain ${r.last} did not come back from the bridge.`);
+  assert.equal(r.putOff, 0, 'nobody put the hand off');
+  assert.match(r.notes, /did not come back from the bridge\. You carry your savings/);
   await done();
 });
 
