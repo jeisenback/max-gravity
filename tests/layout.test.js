@@ -116,3 +116,34 @@ test('the rail groups are labelled at every width', async () => {
     for (const g of groups) { assert.equal(g.role, 'group', `${size.name}: ${g.heading} is a group`); assert.equal(g.label, g.heading, `${size.name}: ${g.heading} is labelled`); }
   });
 });
+
+test('the dock has no Sound button, and is one row on a phone', async () => {
+  for (const size of [SIZES[2], SIZES[0]]) {
+    const g = await open({ scope: 'earth-hired', shell: 'default', viewport: size.viewport, mobile: size.mobile });
+    const r = await g.ev(() => {
+      startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent();
+      const buttons = [...document.querySelectorAll('.dock button')].map(b => { const r = b.getBoundingClientRect(); return { top: r.top, width: r.width, primary: b.classList.contains('primary') }; });
+      return { buttons, sound: !!document.querySelector('.dock [data-action=sound]') };
+    });
+    assert.equal(r.sound, false, `${size.name}: no Sound button in the dock`);
+    if (size.name === 'phone') {
+      assert.ok(r.buttons.every(b => Math.abs(b.top - r.buttons[0].top) <= 1), `the dock buttons share one row: ${r.buttons.map(b => b.top)}`);
+      assert.ok(r.buttons.find(b => b.primary).width >= Math.max(...r.buttons.map(b => b.width)) - 1, 'the primary button is the widest');
+    }
+    await g.done();
+  }
+});
+
+test('Sound is still a setting', async () => {
+  const g = await open({ scope: 'earth-hired', shell: 'default' });
+  const r = await g.ev(() => {
+    Menu.view = 'settings'; Menu.render();
+    const box = document.getElementById('setSound'), before = Sfx.on;
+    if (!box) return { box: false };
+    box.checked = !before; box.dispatchEvent(new Event('change', { bubbles: true }));
+    return { box: true, before, after: Sfx.on };
+  });
+  assert.equal(r.box, true, 'the Settings screen has #setSound');
+  assert.notEqual(r.after, r.before, 'toggling it changes Sfx.on');
+  await g.done();
+});

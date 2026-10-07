@@ -192,9 +192,10 @@ canvas { display: block; touch-action: none; }
   background: var(--panel-2);
   flex-shrink: 0;
 }
-.dock { flex-wrap: wrap; }  /* phones: the buttons take two rows rather than run off the screen */
-.dock button { flex: 1 1 30%; min-width: 0; }
-@media (min-width: 700px) { .dock button { flex: 0 0 auto; } }
+.dock { flex-wrap: nowrap; }  /* phones: Menu, System map and the primary action share one row */
+.dock button { flex: 1 1 0; min-width: 0; }
+.dock button.primary { flex: 2 1 0; }
+@media (min-width: 700px) { .dock button, .dock button.primary { flex: 0 0 auto; } }
 
 .tutorial {
   display: flex;
