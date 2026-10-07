@@ -5,39 +5,6 @@
 // a secret. People you deal with persist in the save, remember what you did, and can
 // turn up again. Loaded before game.js; only calls into it at runtime.
 
-const NAMES = {
-  earth: {
-    first: ['Amara', 'Daniel', 'Priya', 'Mateo', 'Chen', 'Fatima', 'Oliver', 'Aiko', 'Samuel', 'Leila', 'Tomas', 'Grace', 'Ravi', 'Ines', 'Kwame', 'Hana', 'Diego', 'Nadia', 'Arjun', 'Sofia'],
-    last: ['Nakamura', 'Silva', 'Hassan', 'Kowalski', 'Mbeki', 'Singh', 'Ferreira', 'Lindqvist', 'Moreau', 'Castillo', 'Haddad', 'Petrov', 'Osei', 'Tanaka', 'Mendoza', 'Kaur', 'Novak', 'Achebe', 'Okonjo', 'Brennan'],
-    jobs: ['accountant', 'schoolteacher', 'insurance adjuster', 'journalist', 'nurse', 'software auditor', 'lawyer', 'aid worker', 'sales rep'],
-  },
-  mars: {
-    first: ['Marcus', 'Yelena', 'Tariq', 'Ingrid', 'Hector', 'Mei', 'Anton', 'Zara', 'Felix', 'Olga', 'Kenji', 'Dalia', 'Viktor', 'Sana', 'Ruben', 'Noor'],
-    last: ['Holloway', 'Achterberg', 'Castellanos', 'Ibarra', 'Kerr', 'Laszlo', 'Quint', 'Reyes', 'Sato', 'Ueda', 'Valenti', 'Weller', 'Zamora', 'Okoye', 'Brandvold'],
-    jobs: ['terraforming engineer', 'soil chemist', 'dome architect', 'navy veteran', 'hydrologist', 'teacher', 'atmospheric modeler'],
-  },
-  belt: {
-    first: ['Tiko', 'Ama', 'Bexa', 'Dru', 'Esa', 'Fen', 'Gaz', 'Imi', 'Jo', 'Kez', 'Lolo', 'Mika', 'Nim', 'Pax', 'Ruo', 'Sabe', 'Tuk', 'Vesna', 'Wim', 'Yuri'],
-    last: ['Ashford-Kamau', 'Bello', 'Chu-Okoro', 'Dagny', 'Esteban-Li', 'Faro', 'Ghosh', 'Hollis', 'Iwu', 'Jansen-Ruiz', 'Kalu', 'Lindo', 'Marsh', 'Nyambura', 'Oyelaran', 'Pike', 'Quesada', 'Rourke', 'Soto-Nakamura', 'Tembo'],
-    jobs: ['ice miner', 'hydroponics tech', 'dockworker', 'refinery welder', 'water recycler tech', 'salvager', 'ore assayer', 'EVA rigger'],
-  },
-};
-
-const TRAITS = {
-  talkative:  { adj: 'talkative',   chatter: ['{first}: "Did I ever tell you about the time on {home}..."', '{first} is telling a long story in the galley, and, from the sound of it, has reached the good part for the third time.', '{first}: "And that, I always say, is the whole trouble with {home}. Oh, but that reminds me..."', '{first} has been talking for an hour, and the coffee maker, in a corner, has given up in sympathy.', '{first} is explaining, to nobody in particular, what they would do with a ship of their own.'] },
-  nervous:    { adj: 'nervous',     chatter: ['{first} keeps checking the hull pressure readouts.', '{first} jumps at a small clank from the engine room, and pretends they did not.', '{first} has, for the fifth time this watch, tested the seal on the nearest hatch.', '{first} is counting the emergency suits, quietly, under their breath, in a low, steady mutter.', '{first} sleeps with a hand on the bulkhead.'] },
-  generous:   { adj: 'generous',    chatter: ['{first} made coffee for everyone.', '{first} has left a small plate of something sweet outside the engine room, without a note.', '{first} is giving away, one piece at a time, the contents of their sock drawer.', '{first} covered someone\'s shift, and will not hear a word about it.', '{first} has a knack for turning up, unasked, with exactly what you need.'] },
-  greedy:     { adj: 'money-minded', chatter: ['{first} is doing sums on a hand terminal and muttering.', '{first} has worked out what every ton of cargo on the ship is worth, and tells you, twice.', '{first} is running the numbers on a trade route, and, from the muttering, it is not going to be enough.', '{first} watches the fuel gauge, and does not blink.', '{first} has started a small betting pool on the arrival date, and holds all the odds.'] },
-  pious:      { adj: 'devout',      chatter: ['{first} is praying quietly in the cargo bay.', '{first} has tied a small ribbon to a bulkhead, for luck, and blessed it.', '{first} murmurs a short blessing over the drive before each flip.', '{first} is reading, aloud and very softly, from a small worn book.', '{first} is lighting a very small, very safe candle in a jar, and shielding it from the draught with a hand.'] },
-  rude:       { adj: 'abrasive',    chatter: ['{first}: "Who designed this galley, and were they drunk?"', '{first} is complaining about the coffee. The coffee, to be fair, deserves it.', '{first}: "In my last ship, we had a proper bunk. With a door."', '{first} has an opinion about the way you are flying, and shares it, generously, at every turn.', '{first} is glaring at the thermostat.'] },
-  curious:    { adj: 'curious',     chatter: ['{first} is asking the nav computer far too many questions.', '{first} has taken the panel off the galley clock to see what makes it tick.', '{first} is following the plume readout with a small notebook, and a look of pure joy.', '{first}: "But why does it hum at that particular note? Has anybody ever asked?"', '{first} is pressing an ear to the bulkhead, listening to something nobody else can hear.'] },
-  drunk:      { adj: 'hard-drinking', chatter: ['{first} is suspiciously cheerful for this hour.', '{first} is humming, loudly, an old song from {home}, and has forgotten the second verse.', '{first} is sitting very carefully upright, with a mug that smells like anything but coffee.', '{first} has made a small toast to the ship, and is now, tenderly, toasting the coffee maker.', '{first} is cheerfully explaining something to a coaster.'] },
-  secretive:  { adj: 'guarded',     chatter: ['{first} closes a message window whenever you walk past.', '{first} answers every question with a question, and does it very gracefully.', '{first} has a small locked case, and a way of standing between it and everyone else.', '{first} is very quiet, and very watchful, and always knows where everyone is.', '{first} deletes a message, and looks up, and smiles at you.'] },
-  kind:       { adj: 'kind',        chatter: ['{first} fixed the squeaky hatch without being asked.', '{first} noticed someone was tired, and quietly took the rest of their watch.', '{first} is sewing a torn sleeve, by a lamp, for someone who is not going to ask.', '{first} has left a note on the galley wall: "Ask me if you need anything. Anything at all."', '{first} is humming, softly, at the sink, while washing everyone else\'s cups.'] },
-  brave:      { adj: 'steady',      chatter: ['{first} volunteered for the next EVA before anyone asked.', '{first} is calmly checking the emergency hatches, one by one, whistling.', '{first} has a small, plain scar, and a small, plain refusal to talk about it.', '{first}: "If anything goes wrong, I will be the one to go and look. That is what I am for."', '{first} is smiling, in the face of a very small, very real problem with the coolant.'] },
-  homesick:   { adj: 'homesick',    chatter: ['{first} is looking through old pictures of {home}.', '{first} has gone very quiet, and is watching the viewport.', '{first} is making a dish from {home}, out of not-quite-right ingredients, and eating it with great seriousness.', '{first} is humming something from {home}, low and soft, and does not seem to know.', '{first} keeps a small stone from {home}, worn smooth, and turns it over, and over, and over.'] },
-};
-
 const GOALS = {
   home: 'going home', family: 'visiting family', job: 'heading to a job interview', fresh: 'starting over after a bad divorce',
   research: 'taking up a research posting', pilgrim: 'on a pilgrimage', medical: 'traveling for medical treatment', vague: 'traveling for reasons they keep vague',
@@ -59,13 +26,6 @@ const ROLE_PERKS = {
   xo: () => 'Runs the watch bill and speaks for the captain.',
   cook: () => 'Keeps the galley and knows everyone\'s business.',
   icehand: () => 'Handles the ice and the cargo.',
-};
-
-const SHIP_WORDS = {
-  a: ['Patient', 'Lucky', 'Stubborn', 'Quiet', 'Wandering', 'Iron', 'Honest', 'Restless', 'Silver', 'Distant', 'Second', 'Brave'],
-  n: ['Promise', 'Horizon', 'Tortoise', 'Heron', 'Bargain', 'Anvil', 'Lantern', 'Wager', 'Pilgrim', 'Ember', 'Mule', 'Comet'],
-  pa: ['Crimson', 'Hungry', 'Silent', 'Black', 'Bitter', 'Rusted'],
-  pn: ['Knife', 'Grin', 'Debt', 'Tooth', 'Widow', 'Vulture', 'Hook'],
 };
 
 // ---------- generation ----------
@@ -204,18 +164,24 @@ function dropPassenger(m, location) {
 const PAX_EVENTS = [
   { weight: 3, when: p => p.secret === 'contraband', make: (p, m) => ({
     title: 'Customs Inspection',
-    text: `A customs cutter hails for a cargo scan. Its searchlight sweeps your hull, and the voice on the open band is calm and businesslike. ${p.first} has gone pale. Their hands are shaking, and they keep glancing toward the hold. "Captain," they whisper. "Please. Whatever you can do. Stall them, delay them, anything. I will explain later. I promise."`,
+    text: (`A customs cutter hails for a cargo scan. Its searchlight sweeps your hull, and the voice on the open band is calm and ` +
+        `businesslike. ${p.first} has gone pale. Their hands are shaking, and they keep glancing toward the hold. "Captain," they whisper. "Please. ` +
+        `Whatever you can do. Stall them, delay them, anything. I will explain later. I promise."`),
     choices: [
       { label: 'Stall them', run() {
         if (Math.random() < 0.6) {
           m.bonus += 1500 * p.wealth;
           like(p, 3, 'You covered for me with customs.');
-          return `You bury the customs officer in paperwork, forms and queries and a long story about a sensor fault, for forty-one minutes, until their intercept window closes and the cutter peels away with a burst of static. ${p.first} sits down on a crate and lets out a breath. Later they slip you a tip, folded small, and do not say what it is for.`;
+          return (`You bury the customs officer in paperwork, forms and queries and a long story about a sensor fault, for forty-one minutes, until ` +
+              `their intercept window closes and the cutter peels away with a burst of static. ${p.first} sits down on a crate and lets out a breath. ` +
+              `Later they slip you a tip, folded small, and do not say what it is for.`);
         }
         G.state.credits = Math.max(0, G.state.credits - 2000);
         changeRep(localGov(), -5);
         like(p, 1, 'You tried to cover for me with customs.');
-        return `It does not work. The inspectors board within the hour. They find ${p.first}'s stash in the second bay, behind a false panel, in under ten minutes. ${p.first} does not say a word. You pay a 2,000 cr fine for "negligent inspection", and for the rest of the trip nobody on the ship meets anyone else's eye.`;
+        return (`It does not work. The inspectors board within the hour. They find ${p.first}'s stash in the second bay, behind a false panel, in ` +
+            `under ten minutes. ${p.first} does not say a word. You pay a 2,000 cr fine for "negligent inspection", and for the rest of the trip ` +
+            `nobody on the ship meets anyone else's eye.`);
       } },
       { role: 'slicer', label: '[{crew}] Spoof the cargo manifest', run() {
         if (Math.random() < slicerOdds()) {
@@ -236,7 +202,9 @@ const PAX_EVENTS = [
     ] }) },
   { weight: 3, when: p => p.secret === 'wanted', make: (p, m) => ({
     title: 'Bounty Hunter',
-    text: `A bounty hunter matches your burn, dark and silent, with one running light that winks on and off. The voice on the channel is low and bored. "You are carrying ${p.first} ${p.last}, wanted on ${p.home} for ${p.crime}. Five thousand for the handover, or I take them the hard way." In the galley, ${p.first} sets down a cup, carefully, and says nothing. Their hands are steady.`,
+    text: (`A bounty hunter matches your burn, dark and silent, with one running light that winks on and off. The voice on the channel is low and ` +
+        `bored. "You are carrying ${p.first} ${p.last}, wanted on ${p.home} for ${p.crime}. Five thousand for the handover, or I take them the hard ` +
+        `way." In the galley, ${p.first} sets down a cup, carefully, and says nothing. Their hands are steady.`),
     choices: [
       { label: 'Hand them over (+5,000 cr)', run() {
         G.state.credits += 5000;
@@ -261,7 +229,10 @@ const PAX_EVENTS = [
     ] }) },
   { weight: 3, when: p => p.secret === 'ill' || p.goal === 'medical', make: (p, m) => ({
     title: 'Medical Emergency',
-    text: `${p.first} collapses in the galley, dropping a cup, gray and sweating, and slides to the deck with their back against a cabinet. Their breath is shallow. ${p.goal === 'medical' ? 'The condition they were traveling to get treated has taken a turn.' : 'They say, between breaths, that they have been hiding an illness for weeks and did not want to be a burden.'} Everyone in the room has stopped moving. They look at you.`,
+    text: (`${p.first} collapses in the galley, dropping a cup, gray and sweating, and slides to the deck with their back against a cabinet. Their ` +
+        `breath is ` +
+        `shallow. ${p.goal === 'medical' ? 'The condition they were traveling to get treated has taken a turn.' : 'They say, between breaths, that they have been hiding an illness for weeks and did not want to be a burden.'} ` +
+        `Everyone in the room has stopped moving. They look at you.`),
     choices: [
       { role: 'medic', label: '[{crew}] Treat them', run() {
         m.bonus += 1000;
@@ -288,7 +259,9 @@ const PAX_EVENTS = [
     ] }) },
   { weight: 3, when: p => p.secret === 'spy', make: (p, m) => ({
     title: 'Encrypted Bursts',
-    text: `Your comms log shows ${p.first} sending tight-beam encrypted bursts at odd hours, always between the second and third watch, short pulses aimed at no port you know. They send them from the observation blister, alone, with the lights off. It may be nothing. You have started to count how often ${p.first} looks at the door.`,
+    text: (`Your comms log shows ${p.first} sending tight-beam encrypted bursts at odd hours, always between the second and third watch, short pulses ` +
+        `aimed at no port you know. They send them from the observation blister, alone, with the lights off. It may be nothing. You have started to ` +
+        `count how often ${p.first} looks at the door.`),
     choices: [
       { label: 'Confront them', run() {
         if (Math.random() < 0.5) {
@@ -309,7 +282,9 @@ const PAX_EVENTS = [
     ] }) },
   { weight: 3, when: p => p.secret === 'debt', make: (p, m) => ({
     title: 'Collectors',
-    text: `A collection agency hails, in a crisp voice, reading from a script: ${p.first} owes 1,500 credits and they want it now, "or we flag your ship as an accessory". In the corner of the galley ${p.first} has gone the color of old paper and is not looking at anyone. The agent adds, pleasantly, that they have "a great deal of patience, and a great many lawyers."`,
+    text: (`A collection agency hails, in a crisp voice, reading from a script: ${p.first} owes 1,500 credits and they want it now, "or we flag your ` +
+        `ship as an accessory". In the corner of the galley ${p.first} has gone the color of old paper and is not looking at anyone. The agent adds, ` +
+        `pleasantly, that they have "a great deal of patience, and a great many lawyers."`),
     choices: [
       { label: 'Pay it for them (1,500 cr)', can: () => G.state.credits >= 1500, run() {
         G.state.credits -= 1500;
@@ -324,7 +299,9 @@ const PAX_EVENTS = [
     ] }) },
   { weight: 2, when: p => p.goal === 'job', make: (p, m) => ({
     title: 'Running Late',
-    text: `${p.first} has a job interview on ${m.destPlanet}, and the schedule is tighter than they thought. They have ironed their good shirt three times in the galley and rehearsed their answers to the mirror. Now they stand at the cockpit hatch, twisting their hands. "Captain, I hate to ask. Is there any way at all to go any faster?"`,
+    text: (`${p.first} has a job interview on ${m.destPlanet}, and the schedule is tighter than they thought. They have ironed their good shirt three ` +
+        `times in the galley and rehearsed their answers to the mirror. Now they stand at the cockpit hatch, twisting their hands. "Captain, I hate to ` +
+        `ask. Is there any way at all to go any faster?"`),
     choices: [
       { role: 'pilot', label: '[{crew}] Find a faster line', run() {
         m.bonus += 800;
@@ -344,22 +321,30 @@ const PAX_EVENTS = [
     ] }) },
   { weight: 2, when: p => p.goal === 'research', make: (p, m) => ({
     title: 'Sample Opportunity',
-    text: `${p.first} has been at the observation blister for hours with a battered notebook and a pair of binoculars. Now they appear at the cockpit hatch, out of breath, hair on end. They have spotted a rock a few hours off your trajectory, pale, with a bright glint in the sun. "A sample from that could make my career," they say. "I will pay for the detour. Please. I have waited my whole life for something like this."`,
+    text: (`${p.first} has been at the observation blister for hours with a battered notebook and a pair of binoculars. Now they appear at the ` +
+        `cockpit hatch, out of breath, hair on end. They have spotted a rock a few hours off your trajectory, pale, with a bright glint in the sun. "A ` +
+        `sample from that could make my career," they say. "I will pay for the detour. Please. I have waited my whole life for something like this."`),
     choices: [
       { label: 'Match orbits and take a sample (costs time)', run() {
         delay(20);
         m.bonus += 1000 * p.wealth;
         like(p, 3, 'You made a detour for my research.');
-        return `${p.first} spends six hours in a vac suit on the rock's pale surface, tethered to your hull, giggling into the radio, chipping at the crust with a tiny hammer. When they come back in, frosted and shaking, they hold a small vial to the light. They promise to name something after you.`;
+        return (`${p.first} spends six hours in a vac suit on the rock's pale surface, tethered to your hull, giggling into the radio, chipping at ` +
+            `the crust with a tiny hammer. When they come back in, frosted and shaking, they hold a small vial to the light. They promise to name ` +
+            `something after you.`);
       } },
       { label: 'Stay on course', run() {
         like(p, -1, 'You would not stop for my research.');
-        return `They watch it slide past the window, a pale point in the dark, and stay at the glass until it is gone. Later you see them write something in the notebook: the date, and a line you cannot read. They are polite for the rest of the trip. When they disembark they leave a folded drawing on the galley table, of a rock, and a ship, and a long distance.`;
+        return (`They watch it slide past the window, a pale point in the dark, and stay at the glass until it is gone. Later you see them write ` +
+            `something in the notebook: the date, and a line you cannot read. They are polite for the rest of the trip. When they disembark they leave ` +
+            `a folded drawing on the galley table, of a rock, and a ship, and a long distance.`);
       } },
     ] }) },
   { weight: 2, when: p => p.goal === 'pilgrim' || p.traits.includes('pious'), make: (p, m) => ({
     title: 'A Request for Stillness',
-    text: `${p.first} comes to the cockpit hatch holding a worn book. They ask whether you might cut the drive for a few hours, so that they can hold a prayer service in zero g. It is a holy day for them, and the old prayers say that in weightlessness a person is closest to whatever is out there. They do not press. They wait with their hands folded, and the book shakes a little in their grip.`,
+    text: (`${p.first} comes to the cockpit hatch holding a worn book. They ask whether you might cut the drive for a few hours, so that they can ` +
+        `hold a prayer service in zero g. It is a holy day for them, and the old prayers say that in weightlessness a person is closest to whatever is ` +
+        `out there. They do not press. They wait with their hands folded, and the book shakes a little in their grip.`),
     choices: [
       { label: 'Cut thrust for them (costs time)', run() {
         delay(12);
@@ -374,7 +359,9 @@ const PAX_EVENTS = [
     ] }) },
   { weight: 1, when: p => p.traits.includes('talkative') || p.traits.includes('homesick'), make: (p, m) => ({
     title: 'Long Stories',
-    text: `${p.first} corners you in the galley with a bulb of coffee and begins to talk before you can leave. They talk about ${p.home}: the streets, the smells, the bakery at the corner, the neighbor who kept bees, the long evenings. Every story is longer than the last, and every one ends with "and then, of course, I left."`,
+    text: (`${p.first} corners you in the galley with a bulb of coffee and begins to talk before you can leave. They talk about ${p.home}: the ` +
+        `streets, the smells, the bakery at the corner, the neighbor who kept bees, the long evenings. Every story is longer than the last, and every ` +
+        `one ends with "and then, of course, I left."`),
     choices: [
       { label: 'Listen', run() {
         like(p, 1, 'You listened to my stories.');
@@ -391,7 +378,9 @@ const PAX_EVENTS = [
     choices: [
       { label: 'Talk them through it', run() {
         like(p, 2, 'You talked me through a panic attack.');
-        return `You sit beside them and explain flip-and-burn three times, slowly, in an even voice, with a hand on their shoulder and a cup of water. You draw it on the bulkhead with a finger. The third time, they nod, and the trembling slows, and they laugh, once, wetly. ${p.first} apologizes. You tell them there is nothing to apologize for.`;
+        return (`You sit beside them and explain flip-and-burn three times, slowly, in an even voice, with a hand on their shoulder and a cup of ` +
+            `water. You draw it on the bulkhead with a finger. The third time, they nod, and the trembling slows, and they laugh, once, ` +
+            `wetly. ${p.first} apologizes. You tell them there is nothing to apologize for.`);
       } },
       { label: 'Give them a sedative (200 cr)', can: () => G.state.credits >= 200, run() {
         G.state.credits -= 200;
@@ -406,7 +395,9 @@ const PAX_EVENTS = [
     ] }) },
   { weight: 1, when: p => p.traits.includes('curious'), make: (p, m) => ({
     title: 'Engine Room Tour',
-    text: `${p.first} has been hovering near the engine room hatch for two days, listening to the hum, with an ear pressed to the bulkhead. Now they come to you. "Captain, I would love to see the drive room. Just a quick look. I will not touch anything. I promise. I have always wanted to know how it works."`,
+    text: (`${p.first} has been hovering near the engine room hatch for two days, listening to the hum, with an ear pressed to the bulkhead. Now they ` +
+        `come to you. "Captain, I would love to see the drive room. Just a quick look. I will not touch anything. I promise. I have always wanted to ` +
+        `know how it works."`),
     choices: [
       { label: 'Show them around', run() {
         like(p, 2, 'You showed me the drive room.');
@@ -423,7 +414,9 @@ const PAX_EVENTS = [
     ] }) },
   { weight: 1, when: p => p.traits.includes('drunk'), make: (p, m) => ({
     title: 'Galley Incident',
-    text: `${p.first} got into the good whiskey, the bottle you were saving, and at about the third glass decided to give the galley water recycler "a bit of a fix", with a spoon and a fork. There is a gap in the wall and a fine mist in the air, and ${p.first} is sitting in the middle of the galley, wet through, holding the spoon like a scepter. Repairs will run about 400 credits.`,
+    text: (`${p.first} got into the good whiskey, the bottle you were saving, and at about the third glass decided to give the galley water recycler ` +
+        `"a bit of a fix", with a spoon and a fork. There is a gap in the wall and a fine mist in the air, and ${p.first} is sitting in the middle of ` +
+        `the galley, wet through, holding the spoon like a scepter. Repairs will run about 400 credits.`),
     choices: [
       { label: 'Add it to their fare', run() {
         m.bonus += 400;
@@ -450,7 +443,9 @@ const PAX_EVENTS = [
     ] }) },
   { weight: 1, when: p => p.traits.includes('generous') || p.traits.includes('kind'), make: (p, m) => ({
     title: 'Gratitude',
-    text: `${p.first} takes over the galley for an afternoon and cooks a dinner for everyone aboard, with spices they brought from ${p.home}, wrapped in twists of paper in a hidden pouch. The ship fills with the smell of cumin and roasted peppers, and the crew drift in one by one. At the end they insist on tipping you for a smooth trip, pressing the notes into your palm.`,
+    text: (`${p.first} takes over the galley for an afternoon and cooks a dinner for everyone aboard, with spices they brought from ${p.home}, ` +
+        `wrapped in twists of paper in a hidden pouch. The ship fills with the smell of cumin and roasted peppers, and the crew drift in one by one. ` +
+        `At the end they insist on tipping you for a smooth trip, pressing the notes into your palm.`),
     choices: [
       { label: 'Accept graciously', run() {
         m.bonus += 300 * p.wealth;
@@ -464,9 +459,12 @@ const PAX_EVENTS = [
     ] }) },
   { weight: 1, when: p => p.traits.includes('rude'), make: (p, m) => ({
     title: 'Complaints',
-    text: `${p.first} has a list of complaints in a neat notebook, and reads it aloud, in order, like a prosecutor. The bunk is too hard. The food is a crime. The gravity is "insufficiently serious". The coffee tastes of pipe. Then, after a pause: "And frankly, captain, your face is not one I would choose to look at for so long."`,
+    text: (`${p.first} has a list of complaints in a neat notebook, and reads it aloud, in order, like a prosecutor. The bunk is too hard. The food ` +
+        `is a crime. The gravity is "insufficiently serious". The coffee tastes of pipe. Then, after a pause: "And frankly, captain, your face is not ` +
+        `one I would choose to look at for so long."`),
     choices: [
-      { label: 'Humor them', run() { like(p, 1, null); return 'You nod gravely, make sounds of sympathy in the right places, and write a few of the complaints down in a small book. By the end of the hour ' + p.first + ' has run out, and asks, in a smaller voice, whether there might be more tea.'; } },
+      { label: 'Humor them', run() { like(p, 1, null); return ('You nod gravely, make sounds of sympathy in the right places, and write a few of the ' +
+          'complaints down in a small book. By the end of the hour ') + p.first + ' has run out, and asks, in a smaller voice, whether there might be more tea.'; } },
       { label: 'Put them in their place', run() {
         m.bonus -= 300;
         like(p, -2, 'You put me in my place.');
@@ -488,30 +486,46 @@ function passengerEvent(m) {
 
 // Small trait-driven events for procedural crew members.
 const CREW_EVENTS = {
-  greedy: c => ({ title: `${c.first} Wants a Raise`, text: `${c.first} finds you at the end of a long shift with a printed sheet and folded arms. The sheet lists what crew with their skills earn on other ships, what a ship of your size can afford, and what ${c.first} has done for you lately. The last line says: "I am worth it."`,
+  greedy: c => ({ title: `${c.first} Wants a Raise`, text: (`${c.first} finds you at the end of a long shift with a printed sheet and folded arms. ` +
+      `The sheet lists what crew with their skills earn on other ships, what a ship of your size can afford, and what ${c.first} has done for you ` +
+      `lately. The last line says: "I am worth it."`),
     choices: [
       { label: `Give them 25% more (${fmt(c.wage * 1.25)} cr/day)`, run() { c.wage = Math.round(c.wage * 1.25); like(c, 3, 'You gave me a raise.'); return `${c.first} hums while they work for the rest of the week and calls you "boss". Unasked, they tidy the corner of the cockpit.`; } },
       { label: 'No', run() { like(c, -2, 'You refused me a raise.'); return `${c.first} goes back to work without a word. For the next few days they do exactly what is asked and nothing more. Their tools are always where they were left. They have stopped smiling.`; } },
     ] }),
-  drunk: c => ({ title: 'Galley Brawl', text: `${c.first} got drunk on something they had been keeping in a pipe, and had an argument with the galley bulkhead. The bulkhead won. There is a dent the size of a fist in the wall, blood on the deck, and ${c.first} sitting on the floor with a cloth pressed to their forehead. The medical supplies cost 300 cr.`,
+  drunk: c => ({ title: 'Galley Brawl', text: (`${c.first} got drunk on something they had been keeping in a pipe, and had an argument with the ` +
+      `galley bulkhead. The bulkhead won. There is a dent the size of a fist in the wall, blood on the deck, and ${c.first} sitting on the floor with ` +
+      `a cloth pressed to their forehead. The medical supplies cost 300 cr.`),
     choices: [
       { label: 'Dock their pay', run() { like(c, -2, 'You docked my pay.'); return `${c.first} spends the week in a corner of the engine room with their back to the ship, and does the work in silence.`; } },
-      { label: 'Pay for it and let it go (300 cr)', run() { G.state.credits = Math.max(0, G.state.credits - 300); like(c, 2, 'You let the brawl go.'); return `${c.first} stares at the floor, then swears off drink. For now. They insist on doing the next three galley shifts. When you find them scrubbing the bulkhead, they do not meet your eye. The dent has been polished.`; } },
+      { label: 'Pay for it and let it go (300 cr)', run() { G.state.credits = Math.max(0, G.state.credits - 300); like(c, 2, 'You let the brawl go.'); return (
+          `${c.first} stares at the floor, then swears off drink. For now. They insist on doing the next three galley shifts. When you find them ` +
+          `scrubbing the bulkhead, they do not meet your eye. The dent has been polished.`); } },
     ] }),
   homesick: c => ({ title: 'Homesick', text: `${c.first} has been quiet for days. At mealtimes they push their food around. At night you have seen them at the viewport, looking at a point of light. They have not said they miss ${c.home}.`,
     choices: [
-      { label: 'Give them a 500 cr bonus to call home', can: () => G.state.credits >= 500, run() { G.state.credits -= 500; like(c, 3, 'You paid for my call home.'); return `${c.first} spends an hour on a lagged call home, in a quiet corner of the ship, with a hand over their mouth. They come back with red eyes and laugh once. They will not say what was said. For the rest of the week they hum in the corridors, and nobody mentions it.`; } },
-      { label: 'Share a drink and listen', run() { like(c, 1, null); return `You pour two cups of something strong and sit on a crate beside them. For an hour you listen to them talk about ${c.home}: the weather, the food, the quiet places. You say almost nothing. When they go to bed, they put a hand on your shoulder on the way out.`; } },
+      { label: 'Give them a 500 cr bonus to call home', can: () => G.state.credits >= 500, run() { G.state.credits -= 500; like(c, 3, 'You paid for my call home.'); return (
+          `${c.first} spends an hour on a lagged call home, in a quiet corner of the ship, with a hand over their mouth. They come back with red eyes ` +
+          `and laugh once. They will not say what was said. For the rest of the week they hum in the corridors, and nobody mentions it.`); } },
+      { label: 'Share a drink and listen', run() { like(c, 1, null); return (`You pour two cups of something strong and sit on a crate beside them. ` +
+          `For an hour you listen to them talk about ${c.home}: the weather, the food, the quiet places. You say almost nothing. When they go to bed, ` +
+          `they put a hand on your shoulder on the way out.`); } },
       { label: '"We all miss somewhere."', run() { like(c, -1, null); return `${c.first} nods and goes back to work. That night you see them at the viewport again, alone, and you leave them to it.`; } },
     ] }),
-  nervous: c => ({ title: 'Bad Dreams', text: `${c.first} has not been sleeping. There are dark shadows under their eyes, they fumble small tasks, and they jump at every clank of the hull. When you ask, they tell you in a flat voice: nightmares about hull breaches, the same one every night. The thin bright line of a crack, spreading. The sudden silence. The cold.`,
+  nervous: c => ({ title: 'Bad Dreams', text: (`${c.first} has not been sleeping. There are dark shadows under their eyes, they fumble small tasks, ` +
+      `and they jump at every clank of the hull. When you ask, they tell you in a flat voice: nightmares about hull breaches, the same one every ` +
+      `night. The thin bright line of a crack, spreading. The sudden silence. The cold.`),
     choices: [
-      { label: 'Talk them through it', run() { like(c, 2, 'You helped me through the nightmares.'); return `You sit with them in the galley at three in the morning with a pot of tea between you, and talk about nothing in particular. ${c.first} sleeps through the night for the first time in a week. In the morning they bring you a cup of coffee and spill half of it.`; } },
+      { label: 'Talk them through it', run() { like(c, 2, 'You helped me through the nightmares.'); return (`You sit with them in the galley at three ` +
+          `in the morning with a pot of tea between you, and talk about nothing in particular. ${c.first} sleeps through the night for the first time ` +
+          `in a week. In the morning they bring you a cup of coffee and spill half of it.`); } },
       { label: 'Tell them to toughen up', run() { like(c, -2, 'You told me to toughen up.'); return `${c.first} flinches, nods, and stops mentioning it. In the days after, the shadows under their eyes get darker. They check the seals on every hatch they pass.`; } },
     ] }),
   talkative: c => ({ title: 'Gossip', text: `${c.first} has been on the open band with half the ships in comm range, chatting. They know the name of the freighter captain's dog. They know who is feuding with whom at the next port. They lean in at your cabin door with news.`,
     choices: [{ label: 'What have you heard?', run() { like(c, 1, null); return `${c.first} sits down and gives you an hour of gossip: names, and small betrayals. In the middle of it is one thing that is useful: "${addRumor()}" Then ${c.first} moves on to the next thing.`; } }] }),
-  secretive: c => ({ title: 'Locked Locker', text: `${c.first}'s locker has two locks, one you do not recognize and a cheap padlock over it. They have been receiving messages with no sender ID, short ones, at odd hours. They read them, delete them, and read them again. When you come into the room, they flinch.`,
+  secretive: c => ({ title: 'Locked Locker', text: (`${c.first}'s locker has two locks, one you do not recognize and a cheap padlock over it. They ` +
+      `have been receiving messages with no sender ID, short ones, at odd hours. They read them, delete them, and read them again. When you come into ` +
+      `the room, they flinch.`),
     choices: [
       { label: 'Ask about it', run() { like(c, -2, 'You pried into my locker.'); return `${c.first} looks at you. "Family business," ${c.first} says, quietly. That is all you get. Afterward ${c.first} takes meals in the bunk and locks the door to sleep.`; } },
       { label: 'Respect their privacy', run() { like(c, 2, 'You respected my privacy.'); return 'You say nothing and turn to go. Behind you, their shoulders come down. That evening ' + c.first + ' brings you a cup of tea you did not ask for, stands a moment in the doorway, and goes.'; } },
@@ -520,30 +534,52 @@ const CREW_EVENTS = {
     choices: [
       { label: 'Let them experiment', run() {
         like(c, 2, 'You let me tinker.');
-        if (Math.random() < 0.6) { G.state.fuel = Math.min(ship().fuel, G.state.fuel + 25); return 'They find a leak nobody knew about, a hairline crack in an old fitting that has been weeping mass for months, and seal it with a strip of foil. You recover 25 units of reaction mass. From then on the pumps run quiet, and ' + c.first + ' hums while they work.'; }
+        if (Math.random() < 0.6) { G.state.fuel = Math.min(ship().fuel, G.state.fuel + 25); return ('They find a leak nobody knew about, a hairline ' +
+            'crack in an old fitting that has been weeping mass for months, and seal it with a strip of foil. You recover 25 units of reaction mass. ' +
+            'From then on the pumps run quiet, and ') + c.first + ' hums while they work.'; }
         G.state.fuel = Math.max(0, G.state.fuel - 20);
         return 'Something goes pop. A thin jet of reaction mass hisses out of the open housing before you can shut it, and you lose 20 units. ' + c.first + ' looks at the empty housing. "Ah," ' + c.first + ' says.';
       } },
       { label: 'Put it back together. Now.', run() { like(c, -1, null); return 'They reassemble every part, muttering, and the pumps run as before. ' + c.first + ' tightens the last bolt without looking at you.'; } },
     ] }),
-  pious: c => ({ title: 'Quiet Prayer', text: `${c.first} finds you in the galley at the turn of the watch with a worn charm in one hand and asks you to join a short prayer for safe passage. They say it every burn, alone, in a corner, but tonight they wanted company. It will take a few minutes. They say you may stay silent.`,
+  pious: c => ({ title: 'Quiet Prayer', text: (`${c.first} finds you in the galley at the turn of the watch with a worn charm in one hand and asks ` +
+      `you to join a short prayer for safe passage. They say it every burn, alone, in a corner, but tonight they wanted company. It will take a few ` +
+      `minutes. They say you may stay silent.`),
     choices: [
       { label: 'Join them', run() { like(c, 2, 'You prayed with me.'); return 'You kneel beside them in the dim light. For a few minutes nobody speaks. The drive hums. A pipe ticks. When it ends, you both sit a moment. "Thank you," ' + c.first + ' says.'; } },
       { label: 'Politely decline', run() { like(c, 0, null); return `${c.first} goes to their corner. Through the thin wall you hear the low murmur of their prayer. ${c.first} prays for you anyway. You listen for a while.`; } },
     ] }),
   rude: c => ({ title: 'Friction', text: `${c.first} has been needling the rest of the crew for days: a jab at breakfast, a remark in the corridor, a sneer at how someone hums. Tonight in the galley a chair scrapes, and a level voice says, "Say that again." There is going to be a fight.`,
     choices: [
-      { label: 'Reprimand them', run() { like(c, -2, 'You reprimanded me in front of everyone.'); return `You step between them and say a few sharp things in front of everyone. The room goes still. ${c.first} goes red, then pale, and leaves without a word. The air clears, mostly. For days ${c.first} eats alone.`; } },
-      { label: 'Let them sort it out', run() { like(c, 1, null); return `You lean in the doorway with your arms folded and let them. It is short, loud and untidy, and involves a soup pot. ${hurt(0.03)} points of hull damage later they are sitting side by side on the deck, breathing hard, sharing a cloth for a bloody lip, and laughing.`; } },
+      { label: 'Reprimand them', run() { like(c, -2, 'You reprimanded me in front of everyone.'); return (`You step between them and say a few sharp ` +
+          `things in front of everyone. The room goes still. ${c.first} goes red, then pale, and leaves without a word. The air clears, mostly. For ` +
+          `days ${c.first} eats alone.`); } },
+      { label: 'Let them sort it out', run() { like(c, 1, null); return (`You lean in the doorway with your arms folded and let them. It is short, ` +
+          `loud and untidy, and involves a soup pot. ${hurt(0.03)} points of hull damage later they are sitting side by side on the deck, breathing ` +
+          `hard, sharing a cloth for a bloody lip, and laughing.`); } },
     ] }),
-  kind: c => ({ title: 'Small Kindnesses', text: `${c.first} spent the night fixing everyone's bunk lights, one by one, with a small screwdriver, and in the small hours cooked a real meal from the last of the good stores, with a pinch of something warm. Nobody asked them to. In the morning every bunk had a light that worked, and every plate was full.`,
+  kind: c => ({ title: 'Small Kindnesses', text: (`${c.first} spent the night fixing everyone's bunk lights, one by one, with a small screwdriver, ` +
+      `and in the small hours cooked a real meal from the last of the good stores, with a pinch of something warm. Nobody asked them to. In the ` +
+      `morning every bunk had a light that worked, and every plate was full.`),
     choices: [{ label: 'Thank them', run() { like(c, 1, null); return `You find ${c.first} in the galley washing the last of the pots. You thank them. They wave it off and make a joke of it, and their ears go pink. For the rest of the trip nobody snaps at the table.`; } }] }),
-  generous: c => ({ title: 'Shared Bottle', text: `${c.first} comes into the galley at the end of a long shift with a dusty bottle wrapped in a shirt. They have carried it in the bottom of their bag since they left ${c.home}. They set it on the table and take down every cup in the cupboard. "I was saving it for a special occasion," they say. "But I think we are the occasion."`,
-    choices: [{ label: 'Raise a glass', run() { like(c, 1, 'We shared a bottle.'); return `You raise a glass, and so does everyone else, in a ring around the table. The bottle tastes of ${c.home}: sweet, smoky, a little strange. To the ship. To the crew. To not dying. Somebody laughs, then everyone does, and the bottle goes round twice before it is empty.`; } }] }),
-  brave: c => ({ title: 'Volunteer', text: `A sensor mast has come loose in the burn and hangs by one strut, banging against the hull with every pulse of the drive. It will tear free sooner or later and take plating with it. Before you can speak, ${c.first} has the suit half on. "I will go, captain," they say, buckling a strap. "It is a ten-minute job. I have done worse."`,
+  generous: c => ({ title: 'Shared Bottle', text: (`${c.first} comes into the galley at the end of a long shift with a dusty bottle wrapped in a ` +
+      `shirt. They have carried it in the bottom of their bag since they left ${c.home}. They set it on the table and take down every cup in the ` +
+      `cupboard. "I was saving it for a special occasion," they say. "But I think we are the occasion."`),
+    choices: [{ label: 'Raise a glass', run() { like(c, 1, 'We shared a bottle.'); return (`You raise a glass, and so does everyone else, in a ring ` +
+        `around the table. The bottle tastes of ${c.home}: sweet, smoky, a little strange. To the ship. To the crew. To not dying. Somebody laughs, ` +
+        `then everyone does, and the bottle goes round twice before it is empty.`); } }] }),
+  brave: c => ({ title: 'Volunteer', text: (`A sensor mast has come loose in the burn and hangs by one strut, banging against the hull with every ` +
+      `pulse of the drive. It will tear free sooner or later and take plating with it. Before you can speak, ${c.first} has the suit half on. "I will ` +
+      `go, captain," they say, buckling a strap. "It is a ten-minute job. I have done worse."`),
     choices: [
-      { label: 'Let them go', run() { like(c, 1, null); return Math.random() < 0.85 ? `${c.first} goes out through the lock with a tether and a bag of tools. For twenty minutes they are a small bright shape against the stars, working along the hull. Then they are back inside, helmet off, sweating, grinning, holding the bent strut.` : `A tether snaps. For one second ${c.first} drifts, arms out, into the black, until a gloved hand catches a handhold and holds. They make it back, shaking and gasping. The ship takes ${hurt(0.05)} points of damage from the loose mast, and nobody sleeps that night.`; } },
-      { label: 'Go yourself', run() { like(c, 2, 'You took the risky EVA yourself.'); return `You go out through the lock yourself, with the tether at your belt, and fix it in the cold and the silence with the ship turning slowly below your boots. It takes forty minutes. ${c.first} watched through the port, and when you come in ${c.first} hands you a cup without a word.`; } },
+      { label: 'Let them go', run() { like(c, 1, null); return Math.random() < 0.85 ? (`${c.first} goes out through the lock with a tether and a bag ` +
+          `of tools. For twenty minutes they are a small bright shape against the stars, working along the hull. Then they are back inside, helmet ` +
+          `off, sweating, grinning, holding the bent strut.`) : (
+          `A tether snaps. For one second ${c.first} drifts, arms out, into the black, until a gloved hand catches a handhold and holds. They make it ` +
+          `back, shaking and gasping. The ship takes ${hurt(0.05)} points of damage from the loose mast, and nobody sleeps that night.`); } },
+      { label: 'Go yourself', run() { like(c, 2, 'You took the risky EVA yourself.'); return (`You go out through the lock yourself, with the tether ` +
+          `at your belt, and fix it in the cold and the silence with the ship turning slowly below your boots. It takes forty minutes. ${c.first} ` +
+          `watched through the port, and when you come in ${c.first} hands you a cup without a word.`); } },
     ] }),
 };
 

@@ -31,7 +31,8 @@ const REPEL_TACTICS = {
 };
 const REPEL_TIE = 'Neither side gives. The air handler runs, somebody coughs, and the fighting goes on in the same place.';
 const REPEL_POST = {
-  gunner: { label: 'Fire down the line', win: 'You put three rounds down the line at the seam, one at a time, and the ones in front go down across the ones behind. They go back toward the lock.', lose: 'You fire, and the round goes through a berth door. They use the noise and come a section deeper.' },
+  gunner: { label: 'Fire down the line', win: ('You put three rounds down the line at the seam, one at a time, and the ones in front go down across ' +
+      'the ones behind. They go back toward the lock.'), lose: 'You fire, and the round goes through a berth door. They use the noise and come a section deeper.' },
   engineer: { label: 'Seal the bulkhead behind them', win: 'You close the section bulkhead by hand, behind the front of them, and run the lock cutter to overload. The hull groans. They are on the wrong side of the ship.', lose: 'The bulkhead jams a hand short of shut. They use the gap.' },
   pilot: { label: 'Roll the ship', win: 'You roll the ship thirty degrees, hard. The boarders, in their suits, go into the corridor wall. The crew were braced, and go the other way.', lose: 'You roll, and your own people are not braced either. The boarders come up first.' },
   comms: { label: 'Lock the doors from the console', win: 'You lock every door between them and the bridge from the console, then open the one that leads back to the lock. They follow the open door.', lose: 'You lock the wrong door. It is the one behind you.' },
@@ -61,7 +62,8 @@ const ASSAULT_TACTICS = {
 const ASSAULT_POST = {
   gunner: { label: 'Put fire down the corridor', win: 'You put three rounds down the corridor at the crate, one at a time. The one behind it stops firing and the others pull back.', lose: 'You fire, and the rounds go into the deck. They use the noise to move up.' },
   engineer: { label: 'Cut her power', win: 'You find her breaker panel by the lock and pull it. Every light in the section goes out, and you have your helmet lamps and they do not.', lose: 'You pull the wrong breaker and her emergency lights come on instead, all of them, in your eyes.' },
-  pilot: { label: 'Bring the ship round to her hatch', win: 'You take the cutter along her side to the hatch by the bridge. The crew go out of the second lock behind them and the corridor is a pincer.', lose: 'You bring her round and misjudge it by a meter. The hull scrapes and the crew in the lock go over like skittles.' },
+  pilot: { label: 'Bring the ship round to her hatch', win: ('You take the cutter along her side to the hatch by the bridge. The crew go out of the ' +
+      'second lock behind them and the corridor is a pincer.'), lose: 'You bring her round and misjudge it by a meter. The hull scrapes and the crew in the lock go over like skittles.' },
   comms: { label: 'Take her intercom', win: 'You find her intercom and put the captain on it, calmly, telling her people the ship is lost and the lock is open. Some of them go.', lose: 'You find her intercom and it is a recording, which says something unrepeatable about your mother.' },
 };
 

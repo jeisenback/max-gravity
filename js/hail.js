@@ -27,7 +27,8 @@ const PIRATE_DEMANDS = {
   rude: ['Cargo. Now. Or we cut it out of your hull.', 'You have exactly ten seconds to make me not want to shoot you. Start counting.', 'Your cargo, your credits, and your attitude, in that order. Move.'],
   greedy: ['Everything has a price, including your ship. Let us negotiate.', 'I am prepared to be very reasonable. Everything you have, for the privilege of continuing to breathe.', 'Consider this a tax. A large one. Payable now.'],
   nervous: ['We, uh, we are pirates! Cut your drive and hand over your cargo!', 'Stand and, um, deliver! We have guns! Real ones! Please do not make us use them.', 'This is a robbery! It is, um, a serious one! Please cooperate!'],
-  talkative: ['Now, I know what you are thinking, and the answer is yes, we really are going to rob you.', 'Good day to you, captain! I hate to be a bother, but we are, as it happens, pirates, and, well, you know how it goes.', 'Lovely burn you are having. Shame if anything were to happen to it. Which is where we come in.'],
+  talkative: ['Now, I know what you are thinking, and the answer is yes, we really are going to rob you.', ('Good day to you, captain! I hate to be a ' +
+      'bother, but we are, as it happens, pirates, and, well, you know how it goes.'), 'Lovely burn you are having. Shame if anything were to happen to it. Which is where we come in.'],
   drunk: ['Stand and deliver! Wait, no. Cut your drive! That is the one.', 'Hold it right there! Or, well, not right there. Just, um. Nearby. Give us money.', 'We are, hic, pirates. Hand over the, the, the stuff.'],
   brave: ['This is a boarding action. Cut your drive, and I promise we will be quick, and, mostly, gentle.', 'We are going to take what we came for. You can fight, but I would not.'],
   kind: ['I really do hate to do this. Cargo, please, and nobody has to get hurt.', 'I am sorry, truly, but times are hard. Your cargo, and we will leave your crew alone.'],
@@ -138,7 +139,9 @@ function hailEvent(n) {
             st.credits += m.pay;
             st.missions = st.missions.filter(x => x !== m);
           }
-          return `There is a long silence on the channel. Then a tired voice says, "All right. All right, that is enough." ${n.name} powers down, drive by drive, until she is a dark hull in the dark, and a patrol cutter, called in, takes custody. The ${m ? `${fmt(m.pay)} cr ` : ''}bounty is yours without firing another shot, and you feel, oddly, not triumphant but tired.`;
+          return (`There is a long silence on the channel. Then a tired voice says, "All right. All right, that is enough." ${n.name} powers down, ` +
+              `drive by drive, until she is a dark hull in the dark, and a patrol cutter, called in, takes custody. ` +
+              `The ${m ? `${fmt(m.pay)} cr ` : ''}bounty is yours without firing another shot, and you feel, oddly, not triumphant but tired.`);
         } },
         signOff,
       ],
@@ -155,13 +158,17 @@ function hailEvent(n) {
         st.credits -= price;
         feel(n, 4, 'You paid to settle things between us.');
         leave(n);
-        return `A long silence on the band, so long you think the channel has dropped. Then, low and flat: "...Fine. We are square." It is not forgiveness, but it is an end to it. ${n.name} breaks off, slowly, and her drive dwindles into the dark, and the tightness, in your chest, and in your shoulders, comes down, one notch at a time.`;
+        return (`A long silence on the band, so long you think the channel has dropped. Then, low and flat: "...Fine. We are square." It is not ` +
+            `forgiveness, but it is an end to it. ${n.name} breaks off, slowly, and her drive dwindles into the dark, and the tightness, in your ` +
+            `chest, and in your shoulders, comes down, one notch at a time.`);
       } });
     } else if (hired) {
       choices.push({ label: 'Outbid whoever paid you (3,000 cr)', can: () => st.credits >= 3000, run() {
         st.credits -= 3000;
         leave(n);
-        return `${captain} considers it, for a long moment, with a faint, ironic hum. "Your money spends the same as ${n.payer}'s," they say at last, and there is even a little respect in it. "Honor among thieves, and so on." They break off, and, as they go, a last, dry joke: "Tell ${n.payer} I said hello."`;
+        return (`${captain} considers it, for a long moment, with a faint, ironic hum. "Your money spends the same as ${n.payer}'s," they say at ` +
+            `last, and there is even a little respect in it. "Honor among thieves, and so on." They break off, and, as they go, a last, dry joke: ` +
+            `"Tell ${n.payer} I said hello."`);
       } });
     } else {
       choices.push({ label: `Pay tribute (${fmt(tribute)} cr)`, can: () => st.credits >= tribute, run() {
@@ -170,7 +177,9 @@ function hailEvent(n) {
         feel(n, 1, 'You paid me off.');
         changeRep('Pirate', 1);
         leave(n);
-        return `The credits clear, with a small, soft, satisfied chime. "Pleasure doing business," says ${captain}, and means it, in the courteous, faintly sinister manner of a man who has been told his price and is content. ${n.name} peels away, running lights blinking, in a lazy, contented arc, and you feel, for a while, very small.`;
+        return (`The credits clear, with a small, soft, satisfied chime. "Pleasure doing business," says ${captain}, and means it, in the courteous, ` +
+            `faintly sinister manner of a man who has been told his price and is content. ${n.name} peels away, running lights blinking, in a lazy, ` +
+            `contented arc, and you feel, for a while, very small.`);
       } });
       choices.push({ label: 'Dump half your biggest cargo', can: hasTradeCargo, run() {
         const text = loseCargo(0.5);
@@ -195,7 +204,9 @@ function hailEvent(n) {
       if (Math.random() < threatOdds(n) - (grudge ? 0.2 : 0)) {
         feel(n, -1, 'You scared me off.');
         leave(n);
-        return `There is a long pause, and you can almost hear ${captain} looking at your guns, then at theirs, and doing the sum. "Not worth it," they say at last, in a voice like a shrug. They break off, and the sudden, enormous quiet, in your cockpit, is the sound of a very long breath being let out.`;
+        return (`There is a long pause, and you can almost hear ${captain} looking at your guns, then at theirs, and doing the sum. "Not worth it," ` +
+            `they say at last, in a voice like a shrug. They break off, and the sudden, enormous quiet, in your cockpit, is the sound of a very long ` +
+            `breath being let out.`);
       }
       return `${captain} laughs at you, low and warm and entirely unimpressed. "Brave words." They keep coming, closing steadily, and your instruments, one by one, light up with targeting lock.`;
     } });
@@ -222,7 +233,9 @@ function hailEvent(n) {
           st.credits -= 1250;
           st.cargo.luxury = (st.cargo.luxury || 0) + 5;
           st.paid.luxury = (st.paid.luxury || 0) + 1250;
-          return 'Five tons of "slightly used" luxury goods drift across on a tether, in a line of dented, glittering crates, stamped with the marks of at least three different owners, none of them a pirate. No questions asked. There is a faint smell of spilled perfume in the airlock for days, and, somewhere in the stack, an unopened bottle of very good wine.';
+          return ('Five tons of "slightly used" luxury goods drift across on a tether, in a line of dented, glittering crates, stamped with the marks ' +
+              'of at least three different owners, none of them a pirate. No questions asked. There is a faint smell of spilled perfume in the airlock ' +
+              'for days, and, somewhere in the stack, an unopened bottle of very good wine.');
         } },
         signOff,
       ],
@@ -239,7 +252,9 @@ function hailEvent(n) {
           st.credits -= price;
           n.hostile = false;
           feel(n, 3, 'You apologized and paid for the damage.');
-          return `${captain} grumbles, in a long, aggrieved mutter, but takes the money, and, after a while, the aggrieved mutter turns into a sort of grudging thanks. "Well," they say, "I have had worse days." They stand down, and, as they fall behind, you hear, very faintly, a small, weary laugh.`;
+          return (`${captain} grumbles, in a long, aggrieved mutter, but takes the money, and, after a while, the aggrieved mutter turns into a sort ` +
+              `of grudging thanks. "Well," they say, "I have had worse days." They stand down, and, as they fall behind, you hear, very faintly, a ` +
+              `small, weary laugh.`);
         } },
         signOff,
       ],
@@ -266,7 +281,9 @@ function hailEvent(n) {
           n.soldFuel = true;
           st.fuel += spare;
           feel(n, 1, free ? 'We helped you out with reaction mass.' : 'You bought reaction mass from us.');
-          if (free) return `"Of course. We all need help out here," ${captain} says, warmly, without a moment's hesitation. They pass it over on a hose, free, in a long, low, gurgling stream, and, when the tank is full, they wave you off with a hand that you can see through the cockpit glass. It is a small kindness, and it sits in your chest for a long time.`;
+          if (free) return (`"Of course. We all need help out here," ${captain} says, warmly, without a moment's hesitation. They pass it over on a ` +
+              `hose, free, in a long, low, gurgling stream, and, when the tank is full, they wave you off with a hand that you can see through the ` +
+              `cockpit glass. It is a small kindness, and it sits in your chest for a long time.`);
           st.credits -= spare * 4;
           return 'You match velocity, in a long, careful dance, and they pump it across, in a steady, humming stream, with a brisk professional silence on the channel. Not cheap, but you are not stuck, and you tip your hand to the cockpit glass as they peel away.';
         } }] : []),
@@ -277,9 +294,13 @@ function hailEvent(n) {
         st.paid[cid] -= st.paid[cid] * qty / held;
         st.cargo[cid] -= qty;
         st.credits += qty * offer;
-        return `A cargo tender flits across, small and quick as a dragonfly, and the crates go over in three neat trips. ${captain} pays ${fmt(qty * offer)} cr for the lot, over the open band, in a clipped, cheerful tone, and signs off with a friendly "Pleasure." It is a good, clean, ordinary deal, the kind that keeps the lanes turning.`;
+        return (`A cargo tender flits across, small and quick as a dragonfly, and the crates go over in three neat trips. ${captain} ` +
+            `pays ${fmt(qty * offer)} cr for the lot, over the open band, in a clipped, cheerful tone, and signs off with a friendly "Pleasure." It is ` +
+            `a good, clean, ordinary deal, the kind that keeps the lanes turning.`);
       } }] : []),
-      { label: 'Sign off', run: () => c.traits.includes('rude') ? '"Finally," says the voice, and the channel closes with a small, sharp click.' : '"Safe burns, captain," says the voice, warmly, and, for a moment, the channel hums, open and companionable, before it closes, and you are alone again, in the long dark, with your own small light.' },
+      { label: 'Sign off', run: () => c.traits.includes('rude') ? '"Finally," says the voice, and the channel closes with a small, sharp click.' : (
+          '"Safe burns, captain," says the voice, warmly, and, for a moment, the channel hums, open and companionable, before it closes, and you are ' +
+          'alone again, in the long dark, with your own small light.') },
     ],
   };
 }

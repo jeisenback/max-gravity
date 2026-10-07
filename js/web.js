@@ -25,7 +25,10 @@ function webSvg(list) {
   }).join('');
   const nodes = list.map((f, i) => {
     const [x, y] = spots[i], ring = moodLow(f.p) ? '#ff9a3c' : '#6fb0ff', below = y > 150 ? 32 : -24;
-    return `<g data-action="person" data-arg="${esc(f.id)}" class="web-node" role="button"><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="16" fill="#12202f" stroke="${ring}" stroke-width="3"${f.crew ? '' : ' stroke-dasharray="4 3"'}/><text x="${x.toFixed(1)}" y="${(y + 5).toFixed(1)}" fill="#d4e4f5" font-size="13" text-anchor="middle">${esc((f.p.first || '?')[0])}</text><text x="${x.toFixed(1)}" y="${(y + below).toFixed(1)}" fill="#9ab" font-size="11" text-anchor="middle">${esc(f.p.first)}</text></g>`;
+    return (`<g data-action="person" data-arg="${esc(f.id)}" class="web-node" role="button"><circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="16" ` +
+        `fill="#12202f" stroke="${ring}" stroke-width="3"${f.crew ? '' : ' stroke-dasharray="4 3"'}/><text x="${x.toFixed(1)}" ` +
+        `y="${(y + 5).toFixed(1)}" fill="#d4e4f5" font-size="13" text-anchor="middle">${esc((f.p.first || '?')[0])}</text><text x="${x.toFixed(1)}" ` +
+        `y="${(y + below).toFixed(1)}" fill="#9ab" font-size="11" text-anchor="middle">${esc(f.p.first)}</text></g>`);
   }).join('');
   return `<svg class="con-plant" viewBox="0 0 640 300" role="img" aria-label="Who aboard gets on with whom"><rect width="640" height="300" fill="#050a11"/>${lines}${nodes}<text x="14" y="24" fill="#7f95ab" font-size="11" letter-spacing="2">BONDS</text></svg>`;
 }
@@ -41,6 +44,8 @@ UI.views.web = function () {
     title: 'Bonds',
     status: `${list.length} aboard`,
     screen: webSvg(list),
-    side: conCard('Strongest ties', strongest) + conCard('Reading the web', `<div class="hint"><span style="color:${WEB_COLORS.good}">Green</span> lines join friends, <span style="color:${WEB_COLORS.bad}">orange</span> lines join rivals; thicker is stronger. An orange ring is someone having a hard time. Click a name to open them.</div>`),
+    side: conCard('Strongest ties', strongest) + conCard('Reading the web', (`<div class="hint"><span style="color:${WEB_COLORS.good}">Green</span> ` +
+        `lines join friends, <span style="color:${WEB_COLORS.bad}">orange</span> lines join rivals; thicker is stronger. An orange ring is someone ` +
+        `having a hard time. Click a name to open them.</div>`)),
   });
 };

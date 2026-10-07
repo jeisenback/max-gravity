@@ -44,7 +44,9 @@ function crewOpinionsCard() {
 // A hired hand's place on the ship: whose, which post, how long, what it pays.
 function onTheShipCard() {
   const h = hired(), cap = person(h.captain), days = G.state.day - h.since;
-  return conCard('On the ship', `${conRead('Captain', cap ? personLink(cap) : 'none')}${conRead('Post', POSTS[h.post].name)}${conRead('Aboard', `${days} day${days === 1 ? '' : 's'}`)}${handHurt() ? conRead('Condition', `hurt, ${h.hurtUntil - G.state.day} days`) : ''}${conRead('Pay', `${fmt(h.wage)} cr/day, ${Math.round(h.share * 100)}% of profit`)}${conRead('Savings', `${fmt(G.state.credits)} cr`)}`);
+  return conCard('On the ship', `${conRead('Captain', cap ? personLink(cap) : 'none')}${conRead('Post', POSTS[h.post].name)}${conRead('Aboard',
+    `${days} day${days === 1 ? '' : 's'}`)}${handHurt() ? conRead('Condition', `hurt, ${h.hurtUntil - G.state.day} days`) : ''}${conRead('Pay',
+    `${fmt(h.wage)} cr/day, ${Math.round(h.share * 100)}% of profit`)}${conRead('Savings', `${fmt(G.state.credits)} cr`)}`);
 }
 
 const skillsOf = c => c.skills || (c.role && c.skill !== undefined ? { [c.role]: c.skill } : {});
@@ -103,7 +105,9 @@ function factionCard(c) {
   }
   if (!c.id) return '';
   const t = tiesOf(c), held = Object.entries(t.status).filter(([f]) => f !== t.aff).map(([f, s]) => `${s} in ${shortFaction(f).replace('the ', '')}`);
-  return conCard('Ties', `<div class="hint">Whom they answer to. It decides how the crew take what you do, and what a port makes of them when the ship comes in.</div>${conRead('Affiliation', t.aff ? `${t.aff} (${t.status[t.aff]})` : 'none')}${held.length ? `<div class="hint">${esc(held.join('; '))}.</div>` : ''}${FACTIONS.map(f => conRead(f === 'Pirate' ? 'Pirates' : f.replace(/ .*/, ''), regardWord(t.regard[f]))).join('')}`);
+  return conCard('Ties', (`<div class="hint">Whom they answer to. It decides how the crew take what you do, and what a port makes of them when the ` +
+      `ship comes ` +
+      `in.</div>${conRead('Affiliation', t.aff ? `${t.aff} (${t.status[t.aff]})` : 'none')}${held.length ? `<div class="hint">${esc(held.join('; '))}.</div>` : ''}${FACTIONS.map(f => conRead(f === 'Pirate' ? 'Pirates' : f.replace(/ .*/, ''), regardWord(t.regard[f]))).join('')}`));
 }
 
 // The strongest bonds with the others aboard (social.js keeps them).
@@ -129,13 +133,17 @@ function characterPanel() {
   const isCaptain = c.role === 'captain', hand = hired();
   const sub = [isCaptain ? 'Captain' : c.role && ROLE_NAMES[c.role] ? ROLE_NAMES[c.role] : c.job, c.age ? `${c.age}` : '', c.home ? `from ${c.home}` : ''].filter(Boolean).join(', ');
   const grade = c.captain && c.cast ? captainGrade(c) : null;
-  const cap = (c.you && hired() ? onTheShipCard() + crewOpinionsCard() : '') + (c.captain ? conCard('Captain', ['trade', 'nerve', 'thrift'].map(k => `<div class="con-part char-cap"><span>${k[0].toUpperCase() + k.slice(1)}</span>${conBar(c.captain[k] / 5 * 100, '#6fb0ff')}<b>${c.captain[k]} / 5</b></div>`).join('') + (grade ? conRead('Ready to captain', grade.ready ? 'yes' : `skill ${grade.skill} of ${CAPTAIN_SKILL}, ${grade.days} of ${CAPTAIN_DAYS} days`) : '')) : '');
+  const cap = (c.you && hired() ? onTheShipCard() + crewOpinionsCard() : '') + (c.captain ? conCard('Captain', ['trade', 'nerve', 'thrift'].map(k => (
+      `<div class="con-part char-cap"><span>${k[0].toUpperCase() + k.slice(1)}</span>${conBar(c.captain[k] / 5 * 100, '#6fb0ff')}<b>${c.captain[k]} / ` +
+      `5</b></div>`)).join('') + (grade ? conRead('Ready to captain', grade.ready ? 'yes' : `skill ${grade.skill} of ${CAPTAIN_SKILL}, ${grade.days} of ${CAPTAIN_DAYS} days`) : '')) : '');
   const standing = c.memories ? conCard('Standing with you', `${conRead('Opinion', opinionWord(c.opinion))}${conBar(Math.max(0, Math.min(10, c.opinion + 5)) * 10, c.opinion >= 0 ? '#5fd35f' : '#ff6a4a')}
     ${c.memories.length ? `<div class="eyebrow" style="margin-top:8px">Remembers</div>${c.memories.slice(-3).reverse().map(m => `<div class="hint">${m}</div>`).join('')}` : ''}`) : '';
   // A captain holds no post: what they pay you and what you earn with them (a hired hand), or what you command (an owner).
   const command = !isCaptain ? '' : c.you
     ? conCard('Command', `${conRead('Ship', `${esc(shipTitle())}, ${ship().name}`)}${conRead('Crew', `${st.crew.length}, ${berthsUsed()}/${ship().berths} berths`)}${(st.fleet || []).length ? conRead('Company', `${st.fleet.length} ship${st.fleet.length > 1 ? 's' : ''}`) : ''}`) + crewOpinionsCard()
-    : hand && c.id === hand.captain ? conCard('Command', `${conRead('Your wage', `${fmt(hand.wage)} cr/day`)}${conRead('Your share', `${Math.round(hand.share * 100)}% of each run's profit`)}${conRead('Runs together', runTotals(hand).runs)}${conRead('You earned', `${fmt(runTotals(hand).earned)} cr`)}${conRead('The ship\'s funds', `${fmt(hand.fund)} cr`)}`) + captainRunsHtml() : '';
+    : hand && c.id === hand.captain ? conCard('Command', `${conRead('Your wage', `${fmt(hand.wage)} cr/day`)}${conRead('Your share',
+      `${Math.round(hand.share * 100)}% of each run's profit`)}${conRead('Runs together', runTotals(hand).runs)}${conRead('You earned',
+      `${fmt(runTotals(hand).earned)} cr`)}${conRead('The ship\'s funds', `${fmt(hand.fund)} cr`)}`) + captainRunsHtml() : '';
   const marked = marksOf(c).length ? conCard('Marks', marksOf(c).map(m => `<div class="hint">${esc(dateOf(m.day))}: ${esc(m.text)}</div>`).join('')) : '';
   const news = (moodLow(c) || moodHigh(c)) && c.mood.text ? `<div class="hint">News from home: ${esc(c.mood.text)}.</div>` : '';
   const blurb = c.ambition ? `<div class="char-amb">${c.ambition}</div>` : c.bio ? `<div class="char-amb">${c.bio}</div>` : '';

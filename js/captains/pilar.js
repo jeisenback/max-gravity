@@ -15,7 +15,9 @@ function atTheHelm(backup) {
   const lead = backup ? 'You put a second hand on the console beside her. ' : '';
   if (outcome === 'die') {
     like(cap, -1, 'We lost Pilar at the helm.'); cap.mood = { kind: 'low', until: G.state.day + 30 };
-    return lead + 'She brings her in by hand. The crosswind takes the ship at the last moment, and for a long second the bridge is the sound of the stick in her hands. The gate crew say afterwards it was the cleanest approach they had seen, until the last four meters. Captain Sato enters it in the log, in the same hand as every other entry, and then sits for a long time with the pen over the next line.'
+    return lead + ('She brings her in by hand. The crosswind takes the ship at the last moment, and for a long second the bridge is the sound of the ' +
+        'stick in her hands. The gate crew say afterwards it was the cleanest approach they had seen, until the last four meters. Captain Sato enters ' +
+        'it in the log, in the same hand as every other entry, and then sits for a long time with the pen over the next line.')
       + (spoke ? ' You spoke to the captain about the rule. It was not in time.' : '');
   }
   castLike('pilar', 2, 'You let me fly the approach by hand, and I came out.');
@@ -53,7 +55,10 @@ CAST.pilar = {
   scenes: {
     intro: {
       title: 'The Approach',
-      text: 'Pilar Quesada has the helm for the approach, with the nav display off and her hands light on the stick. "Do not tell the captain," she says, not turning. "The manual says the display stays on. The manual has never docked at this port. The crosswind at the gate is a fifteen-second window, and the display lags by twelve." She brings the ship in without a tremor, and then looks at you for the first time. "You can tell them. I would rather you knew than guessed."',
+      text: ('Pilar Quesada has the helm for the approach, with the nav display off and her hands light on the stick. "Do not tell the captain," she ' +
+          'says, not turning. "The manual says the display stays on. The manual has never docked at this port. The crosswind at the gate is a ' +
+          'fifteen-second window, and the display lags by twelve." She brings the ship in without a tremor, and then looks at you for the first time. ' +
+          '"You can tell them. I would rather you knew than guessed."'),
       choices: [
         { label: 'Ask her to show you the window', run() {
           castLike('pilar', 2, 'You asked me to show you the crosswind window.');
@@ -67,7 +72,10 @@ CAST.pilar = {
     },
     mid1: {
       days: 25, title: 'No Certificate',
-      text: 'Pilar has a folder of thirty-one reference letters, and no certificate. "Ten years on hauler berths, and every one of them signed off by someone who was sacked or retired or dead before the inspector came," she says. "The paper says I am not a pilot. The ship says otherwise. I would like, once, for the paper to agree." She taps the folder. "The captain says I am the best helm on any ship they have served on. They put it in the log. The log is not a certificate."',
+      text: ('Pilar has a folder of thirty-one reference letters, and no certificate. "Ten years on hauler berths, and every one of them signed off ' +
+          'by someone who was sacked or retired or dead before the inspector came," she says. "The paper says I am not a pilot. The ship says ' +
+          'otherwise. I would like, once, for the paper to agree." She taps the folder. "The captain says I am the best helm on any ship they have ' +
+          'served on. They put it in the log. The log is not a certificate."'),
       choices: [
         { label: 'Offer to write a reference', run() {
           castLike('pilar', 2, 'You wrote me a reference.'); castFlag('pilar', 'reference');
@@ -81,7 +89,10 @@ CAST.pilar = {
     },
     mid2: {
       days: 40, title: 'Two Orders',
-      text: 'You are ten minutes from the gate, and you have two orders for the approach. Captain Sato\'s is written on a card: the posted rate, the display on, the full checklist before the gate. Pilar\'s came aloud, from the helm: skip the checklist, come in on the crosswind window, and run the checklist in the berth. She says it will make the gate by four minutes. Neither will tell you what the other said, and both are looking at the gate.',
+      text: ('You are ten minutes from the gate, and you have two orders for the approach. Captain Sato\'s is written on a card: the posted rate, the ' +
+          'display on, the full checklist before the gate. Pilar\'s came aloud, from the helm: skip the checklist, come in on the crosswind window, ' +
+          'and run the checklist in the berth. She says it will make the gate by four minutes. Neither will tell you what the other said, and both are ' +
+          'looking at the gate.'),
       choices: [
         { label: 'Follow the posted rate, as the captain wrote it', run() {
           castLike('pilar', -1, 'You followed the posted rate against my window.'); captainLike(2, 'You followed the posted rate as I wrote it.');
@@ -95,7 +106,10 @@ CAST.pilar = {
     },
     late: {
       days: 55, title: 'The Rules Turned',
-      text: 'Pilar has a standing order in her hand, the one Captain Sato wrote last week, and a flat look. "It says that a helm without a certificate may not take the approach unless the captain is on the bridge," she says. "It is a good rule. It is a fair rule. It is the rule I have been waiting for them to write. It is the day, you understand, that the rules get used against me." She folds it small. "I do not think they meant it so. That is the part I cannot say to them."',
+      text: ('Pilar has a standing order in her hand, the one Captain Sato wrote last week, and a flat look. "It says that a helm without a ' +
+          'certificate may not take the approach unless the captain is on the bridge," she says. "It is a good rule. It is a fair rule. It is the rule ' +
+          'I have been waiting for them to write. It is the day, you understand, that the rules get used against me." She folds it small. "I do not ' +
+          'think they meant it so. That is the part I cannot say to them."'),
       choices: [
         { label: 'Offer to speak to the captain', run() {
           castLike('pilar', 2, 'You offered to speak to the captain about the rule.'); castFlag('pilar', 'spoke');
@@ -111,7 +125,9 @@ CAST.pilar = {
       days: 70, title: 'The Docking Emergency',
       get text() {
         const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6, worn = condition().drive < 60;
-        return 'The gate\'s tractor beam fails twenty seconds out, and the ship is carrying forty tonnes of ice at a closing speed the berth was never meant for. The nav display is lagging. Captain Sato, on the bridge, has the checklist open. Pilar has the stick. "I can bring her in by hand," she says, "if you let me, and if you do not put anything on the display." She says it item by item.'
+        return ('The gate\'s tractor beam fails twenty seconds out, and the ship is carrying forty tonnes of ice at a closing speed the berth was ' +
+            'never meant for. The nav display is lagging. Captain Sato, on the bridge, has the checklist open. Pilar has the stick. "I can bring her ' +
+            'in by hand," she says, "if you let me, and if you do not put anything on the display." She says it item by item.')
           + (low ? ' The hull has taken a beating, and a bad hull is a bad thing to put against a berth wall.' : ' The hull is sound, which is something.')
           + (worn ? ' The drive has been run hard, and the thrusters take what it has left.' : ' The drive is in good order.')
           + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There is nobody aboard who can do more than a field dressing, and she knows it.')

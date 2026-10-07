@@ -26,7 +26,9 @@ const tabReady = (p, id) => ((hired() && OWNER_TABS.includes(id)) || (scopeOff('
 // The station keys, and under them the tabs of a station that has several.
 function bridgeKeys(p, tab) {
   const here = stationOf(tab);
-  const keys = STATIONS.map(s => `<button data-action="station" data-arg="${s.id}" class="${s.id === here.id ? 'active' : ''}" ${s.id === here.id ? 'aria-current="true"' : ''} ${s.tabs.some(id => tabReady(p, id)) ? '' : 'disabled'} aria-label="${s.name}"><span class="full">${s.name}</span><span class="short" aria-hidden="true">${s.short}</span></button>`).join('');
+  const keys = STATIONS.map(s => (`<button data-action="station" data-arg="${s.id}" ` +
+      `class="${s.id === here.id ? 'active' : ''}" ${s.id === here.id ? 'aria-current="true"' : ''} ${s.tabs.some(id => tabReady(p, id)) ? '' : 'disabled'} ` +
+      `aria-label="${s.name}"><span class="full">${s.name}</span><span class="short" aria-hidden="true">${s.short}</span></button>`)).join('');
   const shown = here.tabs.filter(id => !(hired() && OWNER_TABS.includes(id)));  // a hand has no Exchange or Company: not drawn, not greyed
   const sub = shown.length > 1 ? `<div class="tabs sub">${shown.map(id => `<button data-action="tab" data-arg="${id}" class="${tab === id ? 'active' : ''}" ${tab === id ? 'aria-current="page"' : ''} ${tabReady(p, id) ? '' : 'disabled'}>${TAB_NAMES[id]}</button>`).join('')}</div>` : '';
   return `<div class="tabs stations" role="navigation" aria-label="Stations">${keys}</div>${sub}`;
@@ -45,7 +47,8 @@ function routeSvg(from, to, progress, flipped) {
   const reach = Math.max(2, 1.3 * Math.max(SYSTEMS[from].au, to ? SYSTEMS[to].au : 0)), ids = Object.keys(SYSTEMS).filter(id => SYSTEMS[id].au <= reach), K = 135 / Math.sqrt(reach);
   const P = id => { const o = orbitPos(id), a = Math.atan2(o.y, o.x), r = Math.sqrt(SYSTEMS[id].au) * K; return [320 + Math.cos(a) * r, 150 + Math.sin(a) * r]; };
   const rings = [...new Set(ids.map(id => SYSTEMS[id].au))].map(au => `<circle cx="320" cy="150" r="${(Math.sqrt(au) * K).toFixed(1)}" fill="none" stroke="#14243a"/>`).join('');
-  const dots = ids.map(id => { const [x, y] = P(id); return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" fill="#7f95ab"/>${id === from || id === to ? '' : `<text class="lbl" x="${(x + 6).toFixed(1)}" y="${(y + 3).toFixed(1)}" fill="#4b617a" font-size="13">${SYSTEMS[id].name}</text>`}`; }).join('');
+  const dots = ids.map(id => { const [x, y] = P(id); return (`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="3" ` +
+      `fill="#7f95ab"/>${id === from || id === to ? '' : `<text class="lbl" x="${(x + 6).toFixed(1)}" y="${(y + 3).toFixed(1)}" fill="#4b617a" font-size="13">${SYSTEMS[id].name}</text>`}`); }).join('');
   let course = '';
   const [fx, fy] = P(from);
   course += `<circle cx="${fx.toFixed(1)}" cy="${fy.toFixed(1)}" r="6" fill="none" stroke="#5fd35f" stroke-width="2"/><text x="${(fx + 9).toFixed(1)}" y="${(fy - 8).toFixed(1)}" fill="#d4e4f5" font-size="16">${SYSTEMS[from].name}</text>`;
@@ -96,8 +99,13 @@ const armament = () => {
 function gunnerySvg() {
   const st = G.state, s = ship(), fire = condColor(condition().fire), pdc = Math.min(2, (st.outfits || {}).pdc || 0);
   const guns = Math.min(6, s.guns), spineY = x => 112 - (x - 110) * 12 / 360, keelY = x => 188 + (x - 110) * 12 / 360;
-  const mounts = Array.from({ length: guns }, (_, i) => { const x = 180 + i * 48; return `<rect x="${x}" y="${(spineY(x) - 16).toFixed(1)}" width="22" height="14" rx="3" fill="#0a1320" stroke="${fire}" stroke-width="2"/><line x1="${x + 22}" y1="${(spineY(x) - 9).toFixed(1)}" x2="${x + 44}" y2="${(spineY(x + 22) - 9).toFixed(1)}" stroke="${fire}" stroke-width="3"/>`; }).join('');
-  const turrets = Array.from({ length: pdc }, (_, i) => { const x = 210 + i * 80; return `<circle cx="${x}" cy="${(keelY(x) + 9).toFixed(1)}" r="8" fill="#0a1320" stroke="#5fd35f" stroke-width="2"/><line x1="${x - 5}" y1="${(keelY(x) + 9).toFixed(1)}" x2="${x + 5}" y2="${(keelY(x) + 9).toFixed(1)}" stroke="#5fd35f"/><line x1="${x}" y1="${(keelY(x) + 4).toFixed(1)}" x2="${x}" y2="${(keelY(x) + 14).toFixed(1)}" stroke="#5fd35f"/>`; }).join('');
+  const mounts = Array.from({ length: guns }, (_, i) => { const x = 180 + i * 48; return (`<rect x="${x}" y="${(spineY(x) - 16).toFixed(1)}" ` +
+      `width="22" height="14" rx="3" fill="#0a1320" stroke="${fire}" stroke-width="2"/><line x1="${x + 22}" y1="${(spineY(x) - 9).toFixed(1)}" ` +
+      `x2="${x + 44}" y2="${(spineY(x + 22) - 9).toFixed(1)}" stroke="${fire}" stroke-width="3"/>`); }).join('');
+  const turrets = Array.from({ length: pdc }, (_, i) => { const x = 210 + i * 80; return (`<circle cx="${x}" cy="${(keelY(x) + 9).toFixed(1)}" r="8" ` +
+      `fill="#0a1320" stroke="#5fd35f" stroke-width="2"/><line x1="${x - 5}" y1="${(keelY(x) + 9).toFixed(1)}" x2="${x + 5}" ` +
+      `y2="${(keelY(x) + 9).toFixed(1)}" stroke="#5fd35f"/><line x1="${x}" y1="${(keelY(x) + 4).toFixed(1)}" x2="${x}" ` +
+      `y2="${(keelY(x) + 14).toFixed(1)}" stroke="#5fd35f"/>`); }).join('');
   const held = Math.min(TORP_MAX, st.torpedoes || 0);
   const tubes = s.launcher ? `<rect x="494" y="139" width="${TORP_MAX * 11 + 8}" height="22" rx="3" fill="#0a1320" stroke="#34506e"/>${Array.from({ length: TORP_MAX }, (_, i) => `<circle cx="${503 + i * 11}" cy="150" r="4" fill="${i < held ? '#6fb0ff' : 'none'}" stroke="#6fb0ff"/>`).join('')}` : '';
   return `${hullSvg()}${mounts}${turrets}${tubes}
@@ -158,7 +166,11 @@ function deckSvg() {
       if (q.o.you) return `<circle class="person" cx="${cx}" cy="${cy}" r="10" fill="#12202f" stroke="#5fd35f" stroke-width="3"/><text x="${cx}" y="${cy + 3}" fill="#d4e4f5" font-size="8" text-anchor="middle">YOU</text>`;
       const c = q.o.who;
       const clip = `face-${String(c.id).replace(/\W/g, '')}-${i}`;  // the portrait, cut to the token's circle, inside the mood ring
-      return `<clipPath id="${clip}"><circle cx="${cx}" cy="${cy}" r="10"/></clipPath><g class="face" clip-path="url(#${clip})">${portraitSvg(c).replace('<svg class="char-portrait"', `<svg class="char-portrait" x="${cx - 10}" y="${cy - 10}" width="20" height="20" style="width:20px;height:20px;max-width:none;border:0;border-radius:0"`)}</g><circle class="person" cx="${cx}" cy="${cy}" r="10" fill="none" stroke="${ring(c)}" stroke-width="3"/>`;
+      return (`<clipPath id="${clip}"><circle cx="${cx}" cy="${cy}" r="10"/></clipPath><g class="face" ` +
+          `clip-path="url(#${clip})">${portraitSvg(c).replace('<svg class="char-portrait"', (
+          `<svg class="char-portrait" x="${cx - 10}" y="${cy - 10}" width="20" height="20" ` +
+          `style="width:20px;height:20px;max-width:none;border:0;border-radius:0"`))}</g><circle ` +
+          `class="person" cx="${cx}" cy="${cy}" r="10" fill="none" stroke="${ring(c)}" stroke-width="3"/>`);
     }).join('');
   }).join('');
   const ladder = Array.from({ length: 8 }, (_, i) => `<line x1="${X(LADDER) - 5}" y1="${mid - 4 + i * 11}" x2="${X(LADDER) + 5}" y2="${mid - 4 + i * 11}" stroke="#4a6a8c"/>`).join('');

@@ -137,11 +137,13 @@ function outpostHtml() {
       <div><b>${b.name}</b><div class="hint">${b.text} Needs ${fmt(b.cr)} cr and ${Object.entries(b.mat).map(([cid, t]) => `${t}t ${cname(cid)}`).join(', ')} in your hold. Housing +${b.cap}.</div></div>
       <button data-action="opBuild" data-arg="${id}" ${canBuild(id) ? '' : 'disabled'}>Build</button></div>`).join('');
   const short = shortages();
-  return `<h3>${outpostName(o)}</h3>
-    <p class="desc">${Math.round(o.pop)} settlers, housing for ${capOf()}. ${short.length ? `Short of ${short.map(cname).join(' and ')}: settlers are leaving and there is no share for you.` : `Supplied: growing, and paying you about ${fmt(income())} cr a day.`} Earned so far: ${fmt(o.earned)} cr.</p>
+  return (`<h3>${outpostName(o)}</h3>
+    <p class="desc">${Math.round(o.pop)} settlers, housing ` +
+      `for ${capOf()}. ${short.length ? `Short of ${short.map(cname).join(' and ')}: settlers are leaving and there is no share for you.` : `Supplied: growing, and paying you about ${fmt(income())} cr a day.`} ` +
+      `Earned so far: ${fmt(o.earned)} cr.</p>
     ${needs}
     ${builds ? `<h3>Build</h3>${builds}` : ''}
-    ${(o.log || []).slice(0, 5).map(l => `<div class="hint">${dateOf(l.day)}: ${l.text}</div>`).join('')}`;
+    ${(o.log || []).slice(0, 5).map(l => `<div class="hint">${dateOf(l.day)}: ${l.text}</div>`).join('')}`);
 }
 
 function outpostCompanyHtml() {

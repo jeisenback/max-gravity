@@ -11,7 +11,9 @@ CAPTAINS.imre = {
   captain: { trade: 3, nerve: 2, thrift: 4 }, wage: 45, share: 0.07, hears: 2, bonus: 3, talk: 1.0,
   xo: 'pilar',
 
-  intro: (wage, share) => `Captain Imre Sato reads your papers once, straight through, and writes the time on them. The jacket is navy, and has been worn for years without a mark on it. "${wage} a day and ${share} percent," they say. "The rules are on the wall of the galley. They apply to everyone, including me. Noted that you are aboard."`,
+  intro: (wage, share) => (`Captain Imre Sato reads your papers once, straight through, and writes the time on them. The jacket is navy, and has been ` +
+      `worn for years without a mark on it. "${wage} a day and ${share} percent," they say. "The rules are on the wall of the galley. They apply to ` +
+      `everyone, including me. Noted that you are aboard."`),
 
   chatter: [
     'Captain Sato is entering something in the log. It is the same size and shape as everything else in the log.',
@@ -25,7 +27,11 @@ CAPTAINS.imre = {
   ],
 
   // How they take a hand's suggestion of a different run (suggest.js): `ok` by their style, and a line for each answer.
-  sway: { ok: (o, cur) => danger(o.sid) <= danger(cur.sid), yes: 'Captain Sato reads the lane report twice, and finds nothing wrong with it. "It is as clean as ours," they say. "Log it. We go your way."', no: 'Captain Sato reads the lane report and puts it down. "That lane is worse than ours. We do not go there without a reason, and a better price is not a reason." The log is closed.' },
+  sway: {
+    ok: (o, cur) => danger(o.sid) <= danger(cur.sid),
+    yes: 'Captain Sato reads the lane report twice, and finds nothing wrong with it. "It is as clean as ours," they say. "Log it. We go your way."',
+    no: 'Captain Sato reads the lane report and puts it down. "That lane is worse than ours. We do not go there without a reason, and a better price is not a reason." The log is closed.'
+  },
 
   events: {
     'cap-order': {
@@ -50,7 +56,9 @@ CAPTAINS.imre = {
       admit: 'You say it late. "The gap is yours," Captain Sato says. "It is entered. You came to it second, and it is noted that you came."',
     },
     'cap-favour': {
-      text: 'Captain Sato asks whether you would stand an extra watch so a crew member can sleep. They have written the request out, with the reason, the hours, and a line for your name. "It is outside the articles," they say. "So it is a request, and a request can be refused. I have written that down too."',
+      text: ('Captain Sato asks whether you would stand an extra watch so a crew member can sleep. They have written the request out, with the ' +
+          'reason, the hours, and a line for your name. "It is outside the articles," they say. "So it is a request, and a request can be refused. I ' +
+          'have written that down too."'),
       stand: 'You sign. The hours go slowly. In the morning the log has a line in Captain Sato\'s hand: Extra watch, volunteered. It is the nicest thing you have been written down as.',
       fee: 'They pay it from the ship\'s contingency, forty, and enter it under the heading for it. The watch passes like any other.',
       beg: '"Entered," Captain Sato says, and puts the paper away. It was a request, and you refused, and nothing is held against you, which is its own kind of cold.',
@@ -60,22 +68,32 @@ CAPTAINS.imre = {
   scenes: {
     trouble: {
       title: 'The Inspection',
-      text: 'A port inspector is aboard, in a clean uniform, with a tablet. Captain Sato has been up since four with every log, certificate and manifest laid out in order, and is perfectly calm, in a way that costs them. One certificate has lapsed by two days: a berth renewal, signed at the wrong office. The inspector is polite and writes it down. "A four hundred fine, or a correction order," the inspector says. Captain Sato looks at the form, and at Pilar, who is not looking at them. The renewal was hers to file. Nobody has said so.',
+      text: ('A port inspector is aboard, in a clean uniform, with a tablet. Captain Sato has been up since four with every log, certificate and ' +
+          'manifest laid out in order, and is perfectly calm, in a way that costs them. One certificate has lapsed by two days: a berth renewal, ' +
+          'signed at the wrong office. The inspector is polite and writes it down. "A four hundred fine, or a correction order," the inspector says. ' +
+          'Captain Sato looks at the form, and at Pilar, who is not looking at them. The renewal was hers to file. Nobody has said so.'),
       choices: [
         { label: 'Say you took the form to the wrong office', run() {
           captainLike(-1, 'You said you filed the renewal at the wrong office, and I do not think you did.'); castLike('pilar', 3, 'You took the blame for my renewal.'); captainFlag('covered');
-          return 'You say it. Captain Sato looks at you, and then at the form, and enters it, because it is what has been said. The correction order is yours. Pilar says nothing until the inspector has gone, and then says, quietly, "I will not forget that." Captain Sato says nothing at all, and you suspect that is because Captain Sato knows.';
+          return ('You say it. Captain Sato looks at you, and then at the form, and enters it, because it is what has been said. The correction order ' +
+              'is yours. Pilar says nothing until the inspector has gone, and then says, quietly, "I will not forget that." Captain Sato says nothing ' +
+              'at all, and you suspect that is because Captain Sato knows.');
         } },
         { label: 'Let the captain answer', run() {
           captainLike(1, 'You let me answer for the renewal.'); castLike('pilar', -1, 'You let the captain answer for my renewal.');
-          return 'You say nothing. Captain Sato takes the correction order, and signs for it, and the inspector goes. "The renewal was filed at the wrong office," Captain Sato says to the empty galley, in the voice of a person reading it into the record. "It is entered as an error of the ship. It is not entered by whom." Pilar looks at the deck for some time.';
+          return ('You say nothing. Captain Sato takes the correction order, and signs for it, and the inspector goes. "The renewal was filed at the ' +
+              'wrong office," Captain Sato says to the empty galley, in the voice of a person reading it into the record. "It is entered as an error ' +
+              'of the ship. It is not entered by whom." Pilar looks at the deck for some time.');
         } },
       ],
     },
     secret: {
       confide: {
         title: 'The Same Jacket',
-        text: 'Captain Sato has the jacket on the back of the galley chair, and not on. It is the first time you have seen it off. The shirt under it has the left sleeve cut away at the shoulder: a stripe\'s width of cloth, gone. "I left the navy with an other-than-honourable discharge," they say. "Eleven years ago. For an order I did not give and a report I did not write. I have kept every log since, in case anyone asks." They look at the jacket. "Pilar knows. You are the second. I would like it noted that I told you."',
+        text: ('Captain Sato has the jacket on the back of the galley chair, and not on. It is the first time you have seen it off. The shirt under ' +
+            'it has the left sleeve cut away at the shoulder: a stripe\'s width of cloth, gone. "I left the navy with an other-than-honourable ' +
+            'discharge," they say. "Eleven years ago. For an order I did not give and a report I did not write. I have kept every log since, in case ' +
+            'anyone asks." They look at the jacket. "Pilar knows. You are the second. I would like it noted that I told you."'),
         choices: [
           { label: 'Say it is noted', run() {
             captainLike(2, 'You said it was noted.'); captainFlag('secretKnown');
@@ -89,7 +107,9 @@ CAPTAINS.imre = {
       },
       found: {
         title: 'The Stripe',
-        text: 'You are looking for a manual in the captain\'s locker and find a navy service record in a drawer, under a clean set of logs. It is stamped in red at the foot of the second page: OTHER THAN HONORABLE. Captain Sato\'s name is on every line. You have read the stamp before you understand it is not yours to read. The locker door closes behind you. "That is not on the manifest," Captain Sato says.',
+        text: ('You are looking for a manual in the captain\'s locker and find a navy service record in a drawer, under a clean set of logs. It is ' +
+            'stamped in red at the foot of the second page: OTHER THAN HONORABLE. Captain Sato\'s name is on every line. You have read the stamp ' +
+            'before you understand it is not yours to read. The locker door closes behind you. "That is not on the manifest," Captain Sato says.'),
         choices: [
           { label: 'Say you were looking for the manual', run() {
             captainLike(-1, 'You said you were looking for a manual, and you had read the record.'); captainFlag('secretKnown'); captainFlag('secretAngry');

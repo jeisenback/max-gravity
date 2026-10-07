@@ -54,7 +54,9 @@ function repairScene(planet) {
     for (const id of Object.keys(st.injured || {})) delete st.injured[id];
     return finish(days, 'You and the others sleep, eat and sit in the sun lamp for a few days. The aches go.')();
   } });
-  return { title: 'Hull Damage', personal: true, text: `The ship has taken enough damage on the way in that she cannot sail as she is. ${where}, and the estimate is ${plan.days} days${plan.wait ? ` and ${plan.wait} waiting for a shipment` : ''}. ${source} Labor is ${fmt(plan.labor)} cr. The captain does not like the sum, and does not say so. Until she is whole, the ship stays on the pad.`, choices };
+  return { title: 'Hull Damage', personal: true, text: (`The ship has taken enough damage on the way in that she cannot sail as she is. ${where}, and ` +
+      `the estimate is ${plan.days} days${plan.wait ? ` and ${plan.wait} waiting for a shipment` : ''}. ${source} Labor is ${fmt(plan.labor)} cr. The ` +
+      `captain does not like the sum, and does not say so. Until she is whole, the ship stays on the pad.`), choices };
 }
 
 Mods.register({
