@@ -90,6 +90,11 @@ const CAST = {
               'You write it that night, plainly, and it takes four tries because the first three sound like a eulogy. You say what you have seen: the ' +
               'care, the nerve, the logbook. When you send it, Ines is standing in the hatch and does not say anything at all. In the morning there is ' +
               'a mug of coffee on your console, and the bunk across from yours has been made with corners.'); } },
+          { label: 'Offer to say it to the board in person', opinion: { who: 'ines', min: OPINION.TRUSTED }, run() { castLike('ines', 3, 'You offered to stand before the Lisbon board for me.'); castFlag('ines', 'reference'); return (
+              'You say it before she can fold the message away. "I will come to Lisbon. I will stand up and say it myself." Ines turns from the ' +
+              'wall. "It is forty days," she says. "You would be away from the ship for a week." "Then I will ask the captain for the week." She ' +
+              'looks at you for some time. Then she takes the pencil from behind her ear and writes the date of the hearing on the inside of her ' +
+              'wrist, the way she writes a landing slot, and holds it up for you to read. "In ten years," she says, "nobody has offered me a week."'); } },
           { label: '"It is not my place."', run() { castLike('ines', -1, 'You said a reference was not your place.'); return 'Her face does not change. "No," she says, "of course not." She folds the message and puts it away. She is polite for the rest of the day.'; } },
         ],
       },
@@ -185,6 +190,11 @@ const CAST = {
               'It takes the whole of the quiet watch and half the next one. He draws it on the deck in chalk, a plant you would not know from a ' +
               'diagram, and then he makes you say it back. At the end you can hold the whole thing in your head, which has never been true of any ' +
               'machine before. "There," he says. "Now you know her. Do not tell the owners."'); } },
+          { label: 'Ask him to write it down, so it does not go with the hull', opinion: { who: 'tomas', min: OPINION.TRUSTED }, run() { castLike('tomas', 2, 'You asked me to write the plan down, so it would last.'); return (
+              'He looks at the flask for a while. "Nobody has asked me that," he says. He goes below and comes back with a notebook with a stained ' +
+              'cover, and spends the quiet watch filling eleven pages in small square capitals, a diagram on each. He tears them out along the fold, ' +
+              'carefully, and puts them in your hand. "If she is sold again," he says, "somebody will need to know where the cracks are. Not the ' +
+              'owners. Somebody." You fold the pages into your jacket, and he goes back to the plant and tells it, quietly, that it will be all right.'); } },
           { label: '"Stick to your shifts."', run() { castLike('tomas', -1, 'You told me to stick to my shifts.'); return 'He closes his mouth, and the flask, and nods. "As you say." The plant runs perfectly for the rest of the burn.'; } },
         ],
       },
