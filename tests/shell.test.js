@@ -232,3 +232,40 @@ test('the captain\'s name and run label do not split or gap, at 390 and 1280', a
     await done();
   }
 });
+
+// Text under 12px is hard to read on a phone (#265). Lists each visible text element under the floor as `tag.class size`.
+const smallText = () => {
+  const out = new Set();
+  for (const el of document.querySelectorAll('body *')) {
+    if (el.closest('#uat, #uatBtn, [class*="con-"]')) continue;  // the tester tool, and the console readouts that step 5 reworks
+    if (!el.offsetParent && getComputedStyle(el).position !== 'fixed') continue;
+    if (![...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) continue;
+    const size = parseFloat(getComputedStyle(el).fontSize);
+    if (size < 12) out.add(`${el.tagName.toLowerCase()}${el.className && typeof el.className === 'string' ? '.' + el.className.trim().replace(/\s+/g, '.') : ''} ${size}`);
+  }
+  return [...out];
+};
+
+test('no visible text on a rail page is under 12px at 390px', async () => {
+  const { page, ev, done } = await open({ shell: true, viewport: { width: 390, height: 844 }, mobile: true });
+  await ev(helpers);
+  await ev(() => { start(); });
+  const tabs = await page.evaluate(() => [...document.querySelectorAll('.rail button:not([disabled])')].map(b => b.dataset.arg));
+  const small = {};
+  for (const tab of tabs) {
+    await page.click(`.rail [data-action=tab][data-arg=${tab}]`);
+    const found = await ev(([fn]) => (0, eval)(`(${fn})`)(), [smallText.toString()]);
+    if (found.length) small[tab] = found;
+  }
+  assert.deepEqual(small, {}, 'text under 12px, by page');
+  await done();
+});
+
+test('the rail fits at 360px: no sideways scroll, every entry on screen', async () => {
+  const { ev, done } = await open({ shell: true, viewport: { width: 360, height: 740 }, mobile: true });
+  await ev(helpers);
+  const r = await ev(([fn]) => { start(); return (0, eval)(`(${fn})`)(); }, [layout.toString()]);
+  assert.equal(r.noSideScroll, true, 'the page does not scroll sideways');
+  assert.equal(r.buttonsOnScreen, true, 'every rail entry is inside the screen width');
+  await done();
+});
