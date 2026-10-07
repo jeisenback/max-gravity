@@ -36,6 +36,9 @@ const SHELL_PAGES = {
 // A page the shell does not know falls back to Port.
 const shellTab = tab => (SHELL_PAGES[tab] ? tab : 'port');
 
+// The name of the room a page belongs to, for the page's label.
+const shellRoom = tab => { const under = (SHELL_PAGES[tab] || {}).under || tab, e = RAIL.find(r => r.tab === under); return e ? e.label : 'Page'; };
+
 // One rail button. An unavailable entry is disabled and says why, as text under the button.
 function railEntryHtml(entry, p, activeId) {
   const ok = entry.ready(p), on = entry.id === activeId;
@@ -57,5 +60,5 @@ function shellHtml(ui, p) {
   return `${ui.headerHtml(p)}
     <canvas id="vs" class="vs" aria-hidden="true"></canvas>
     ${Mods.filter('portBanner', '')}
-    <div class="shell">${railHtml(p, ui.tab)}<div class="body">${ui.views[ui.tab].call(ui)}</div></div>${ui.dockHtml()}`;
+    <div class="shell">${railHtml(p, ui.tab)}<div class="body" tabindex="-1" role="region" aria-label="${esc(shellRoom(ui.tab))}">${ui.views[ui.tab].call(ui)}</div></div>${ui.dockHtml()}`;
 }

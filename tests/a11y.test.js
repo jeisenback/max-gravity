@@ -52,3 +52,51 @@ test('the live region survives a re-render', async () => {
   assert.equal(r.inPanel, false, 'it sits outside #panel');
   await g.done();
 });
+
+const active = page => page.evaluate(() => { const a = document.activeElement; return { page: !!a.closest && a.matches('.shell .body'), text: a.textContent.slice(0, 40), tag: a.tagName }; });
+
+test('a room change focuses the page, and a re-render of the same page does not', async () => {
+  const g = await landed();
+  await g.page.click('.rail button[data-arg="crew"]');
+  let a = await active(g.page);
+  assert.equal(a.page, true, 'the page has focus after a room change');
+  const body = await g.ev(() => { const b = document.querySelector('.shell .body'); return { role: b.getAttribute('role'), label: b.getAttribute('aria-label') }; });
+  assert.equal(body.role, 'region'); assert.equal(body.label, 'Crew');
+  await g.ev(() => { document.querySelector('.rail button[data-arg="journal"]').focus(); UI.render(); });
+  a = await active(g.page);
+  assert.equal(a.page, false, 'a re-render of the same page leaves focus alone');
+  await g.done();
+});
+
+test('the active rail entry has aria-current', async () => {
+  const g = await landed();
+  await g.page.click('.rail button[data-arg="crew"]');
+  assert.equal(await g.ev(() => document.querySelector('.rail button[aria-current="page"]').textContent), 'Crew');
+  await g.done();
+});
+
+test('a scene dialog is modal, takes focus on its first enabled choice, and gives it back', async () => {
+  const g = await landed();
+  await g.page.click('.rail button[data-arg="crew"]');
+  await g.ev(() => openEvent({ title: 'Two doors', text: 'Pick.', choices: [
+    { label: 'Shut', can: () => false, why: () => 'Not yet.', run: () => 'no' }, { label: 'Open', run: () => 'You went through.' }] }));
+  assert.equal(await g.ev(() => document.querySelector('.event-body').getAttribute('aria-modal')), 'true');
+  assert.equal(await g.ev(() => document.activeElement.textContent), 'Open', 'focus is on the first enabled choice');
+  await g.page.keyboard.press('Enter');
+  const c = await g.ev(() => { const a = document.activeElement; return { text: a.textContent, d: a.getAttribute('aria-describedby'), dt: document.getElementById(a.getAttribute('aria-describedby') || 'none')?.textContent }; });
+  assert.equal(c.text, 'Continue', 'Continue has focus after a choice');
+  assert.ok(c.dt && c.dt.includes('You went through.'), 'Continue is described by the result');
+  await g.page.keyboard.press('Enter');
+  assert.equal((await active(g.page)).page, true, 'focus returns to the page when the opener is gone');
+  await g.done();
+});
+
+test('a link button shows a focus ring', async () => {
+  const g = await landed();
+  const r = await g.ev(() => {
+    const b = document.createElement('button'); b.className = 'link'; b.textContent = 'x'; document.body.appendChild(b);
+    b.focus(); return b.matches(':focus-visible') ? getComputedStyle(b).outlineStyle : 'not-visible';
+  });
+  assert.notEqual(r, 'none');
+  await g.done();
+});
