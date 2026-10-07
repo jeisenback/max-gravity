@@ -36,6 +36,27 @@ test('the instruments follow the burn: from rest up to a peak at the flip, then 
   await done();
 });
 
+test('with an event open, the Comms box stays clear of the dialog on a wide screen and a phone (#262)', async () => {
+  for (const [name, viewport, mobile] of [['wide', { width: 1280, height: 800 }, false], ['phone', { width: 390, height: 844 }, true]]) {
+    const { ev, page, done } = await open({ scope: 'earth-hired', viewport, mobile });
+    await ev(helpers);
+    await ev(() => {
+      burn(); G.transit.left = G.transit.total * 0.5;
+      for (const c of ['[Comms] The station refuses to say what it is carrying or where it is going, and logs a hail twice.', 'Rosa: "If you hear a clank, that is normal."', '[Market] Water is up at Ceres by a tenth after the strike.']) comm(c);
+      openEvent({ title: 'Distress Call', text: 'A ship is drifting across your path with her drive dark: disabled, and armed, going by the way she is not answering. The captain says it is your call.', choices: [{ label: 'See how it goes', run: () => 'Done.' }] });
+    });
+    await page.waitForTimeout(400);
+    const r = await ev(() => {
+      const d = document.querySelector('#panel.event').getBoundingClientRect(), c = canvas.getBoundingClientRect(), box = G.commsBox;
+      return { box, dialog: { x: d.left - c.left, y: d.top - c.top } };
+    });
+    assert.ok(r.box, `${name}: the Comms box is drawn`);
+    if (name === 'wide') assert.ok(r.box.x + r.box.w <= r.dialog.x - 8, `wide: the box ends at ${r.box.x + r.box.w}, the dialog starts at ${r.dialog.x}`);
+    else assert.ok(r.box.y + r.box.h <= r.dialog.y - 4, `phone: the box ends at ${r.box.y + r.box.h}, the dialog starts at ${r.dialog.y}`);
+    await done();
+  }
+});
+
 test('the burn view draws for every ship and every turn of the hull without an error, and the click targets stay put', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);

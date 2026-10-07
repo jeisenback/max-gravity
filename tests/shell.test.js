@@ -50,13 +50,37 @@ const railState = () => {
   return { names, groups: names.map(group), active: active ? active.dataset.arg : null, tab: UI.tab, body: (document.querySelector('.shell .body') || {}).innerHTML || '' };
 };
 
-test('the rail shows the ship group and the Ashore group', async () => {
+test('a hired gunner\'s rail has the ship\'s pages and three Ashore pages, and no owner pages', async () => {
   const { ev, done } = await open({ shell: true });
   await ev(helpers);
   const r = await ev(([fn]) => { start(); return (0, eval)(`(${fn})`)(); }, [railState.toString()]);
-  assert.deepEqual(r.names, ['Crew', 'Port', 'Bar']);
-  assert.deepEqual(r.groups, ['Ship', 'Ashore', 'Ashore']);
+  assert.deepEqual(r.names, ['Bridge', 'Comms', 'Gunnery', 'Engine', 'Crew', 'Bonds', 'Journal', 'Port', 'Missions', 'Bar']);
+  assert.deepEqual(r.groups, ['Ship', 'Ship', 'Ship', 'Ship', 'Ship', 'Ship', 'Ship', 'Ashore', 'Ashore', 'Ashore']);
+  assert.ok(!r.names.includes('Exchange') && !r.names.includes('Company'), 'the owner pages are not on a hand\'s rail');
   assert.equal(r.active, 'port', 'a new landing opens on Port');
+  await done();
+});
+
+test('an owner\'s rail keeps Exchange and Company in the Ashore group', async () => {
+  const { ev, done } = await open({ shell: true });
+  await ev(helpers);
+  const r = await ev(([fn]) => { start({ mode: 'owner', post: undefined }); return (0, eval)(`(${fn})`)(); }, [railState.toString()]);
+  assert.ok(r.names.includes('Exchange') && r.names.includes('Company'), 'both owner pages are on the rail');
+  assert.equal(r.groups[r.names.indexOf('Exchange')], 'Ashore'); assert.equal(r.groups[r.names.indexOf('Company')], 'Ashore');
+  await done();
+});
+
+test('every rail entry opens its page', async () => {
+  const { page, ev, done } = await open({ shell: true });
+  await ev(helpers);
+  await ev(() => { start(); });
+  const tabs = await ev(() => [...document.querySelectorAll('.rail button:not([disabled])')].map(b => b.dataset.arg));
+  assert.ok(tabs.length >= 7, `enough enabled entries: ${tabs}`);
+  for (const tab of tabs) {
+    await page.click(`.rail [data-action=tab][data-arg=${tab}]`);
+    const r = await ev(([fn]) => (0, eval)(`(${fn})`)(), [railState.toString()]);
+    assert.equal(r.tab, tab); assert.equal(r.active, tab, `${tab} is lit`); assert.ok(r.body.length > 0, `${tab} has a page`);
+  }
   await done();
 });
 
@@ -84,9 +108,25 @@ test('the character screen keeps the Crew entry lit', async () => {
 test('a tab the shell does not know falls back to Port', async () => {
   const { ev, done } = await open({ shell: true });
   await ev(helpers);
-  const r = await ev(([fn]) => { start(); UI.tab = 'nav'; UI.render(); return (0, eval)(`(${fn})`)(); }, [railState.toString()]);
+  const r = await ev(([fn]) => { start(); UI.tab = 'nowhere'; UI.render(); return (0, eval)(`(${fn})`)(); }, [railState.toString()]);
   assert.equal(r.tab, 'port');
   assert.equal(r.active, 'port');
+  await done();
+});
+
+test('an entry for a service this port lacks is shut and says why', async () => {
+  const { ev, done } = await open({ shell: true });
+  await ev(helpers);
+  const r = await ev(() => {
+    start();
+    const planet = Object.values(SYSTEMS).flatMap(sy => sy.planets).find(pl => !['shipyard', 'outfitter', 'missions'].some(x => pl.services.includes(x)));
+    if (!planet) return { none: true };
+    const engine = RAIL.find(e => e.id === 'engine'), why = engine.ready(planet);
+    return { why, html: railEntryHtml(engine, planet, 'port'), missions: RAIL.find(e => e.id === 'missions').ready(planet) };
+  });
+  assert.ok(!r.none, 'a planet with none of those services exists');
+  assert.equal(typeof r.why, 'string'); assert.match(r.html, /disabled/); assert.ok(r.html.includes(r.why), 'the reason is visible text');
+  assert.equal(typeof r.missions, 'string');
   await done();
 });
 
