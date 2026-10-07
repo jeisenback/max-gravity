@@ -684,9 +684,9 @@ test('the first arrival comes before a job waiting at the port', async () => {
 
 // ---------- opinion notes at the cutoffs (#281) ----------
 
-test('a result that carries the captain or the first officer across a cutoff says where they stand now', async () => {
+test('a result that carries the captain, the first officer or a main character across a cutoff says where they stand now', async () => {
   const r = await run(() => {
-    const st = start(), cap = person(hired().captain), xo = hiredXo(), other = st.crew.map(person).find(c => c && c.id !== xo.id && c.role !== 'xo');
+    const st = start(), cap = person(hired().captain), xo = hiredXo(), other = st.crew.map(person).find(c => c && !c.cast && c.role !== 'xo'), ines = person('c:ines');
     const line = (p, from, to) => { p.opinion = to; const box = document.createElement('div'); box.innerHTML = shiftLines([{ p, n: to - from }]); return box.textContent; };
     return {
       up: [[0, 1], [1, 2], [2, 3], [0, 3], [0, 2]].map(([a, b]) => line(cap, a, b)),
@@ -694,6 +694,7 @@ test('a result that carries the captain or the first officer across a cutoff say
       inside: [[3, 4], [-2, -1], [0, -1], [4, 5]].map(([a, b]) => line(cap, a, b)),
       xo: line(xo, 1, 2), name: xo.first, cap: cap.first,
       other: line(other, 1, 3),
+      ines: [[0, -2], [-2, -3], [-3, -4]].map(([a, b]) => line(ines, a, b)), inesLoyal: (ines.loyal = true, line(ines, -2, -3)), capDown: line(cap, -2, -3),
     };
   });
   const [c1, c2, c3, c03, c02] = r.up, [d2, d3, d03, d12] = r.down;
@@ -702,6 +703,9 @@ test('a result that carries the captain or the first officer across a cutoff say
   assert.match(d2, /thinks less of you: wary of you now\./); assert.match(d3, /: holds it against you now\./); assert.match(d03, /thinks much less of you: holds it against you now\./); assert.match(d12, /: wary of you now\./);
   for (const t of r.inside) assert.doesNotMatch(t, /:/, `inside a band: ${t}`);
   assert.match(r.xo, new RegExp(`${r.name} thinks better of you: friendly now\\.`)); assert.doesNotMatch(r.other, /:/, 'other crew keep the plain line');
+  assert.match(r.ines[0], /Ines thinks less of you: wary of you now\./); assert.match(r.ines[1], /: holds it against you now, and is close to leaving\./);
+  assert.doesNotMatch(r.ines[2], /close to leaving/, 'at the walk-off itself the warning is past'); assert.match(r.inesLoyal, /: holds it against you now\./, 'a loyal main character does not leave');
+  assert.match(r.capDown, /: holds it against you now\./); assert.doesNotMatch(r.capDown, /leaving/, 'the captain is not crew');
 });
 
 // ---------- opinion-gated choices (#282) ----------

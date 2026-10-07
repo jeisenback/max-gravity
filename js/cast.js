@@ -37,6 +37,15 @@ const CAST = {
       'Ines is running a dead-stick approach on the sim, humming, with her eyes shut.',
       'Ines: "Everybody wants to tell the pilot where to put the ship down. Nobody wants to be aboard when it does not."'
     ],
+    // What they leave behind when they walk off or die (fate.js farewellFacts): a flag and its line, in priority order, two at most.
+    farewell: {
+      walk: 'Ines does not ask for leave. At the foot of the ramp on {planet} she writes the landing in the logbook, the pad and the time, and then she is gone.',
+      facts: [
+        ['reference', 'Your reference for the Lisbon board is folded into the back of her logbook, with the date of the hearing written on the fold.'],
+        ['practiced', 'Her logbook has the dead-stick flip on a page of its own: ten seconds, cold thrusters, your hand on the cutoff.'],
+        ['promised', 'On the last page of the logbook she has written the word someday, and no date.'],
+      ],
+    },
     scenes: {
       meet: {
         title: 'A Pilot Without a Ship',
@@ -149,6 +158,15 @@ const CAST = {
         'and then be embarrassed that you did not before."'), 'Tomas has left the engine room door open. He says she likes the air.',
         'Tomas is sending a message home, and counting something on his fingers, and sending it again.',
         'Tomas: "Ten years, one ship. That is the whole plan. People think I am being modest."'],
+    // What they leave behind when they walk off or die (fate.js farewellFacts): a flag and its line, in priority order, two at most.
+    farewell: {
+      walk: 'Tomas shuts the engine room door, which he has never done, and says nothing to the plant. He takes the bag that clinks down the ramp at {planet}.',
+      facts: [
+        ['loan', 'The ring of braided wire he sent back with your two hundred credits is on the hook by the engine room door.'],
+        ['plan', 'You can still say the plant back from memory, every valve of it, in his order.'],
+        ['promised', 'He asked whether you would try to keep the crew together, and you said you would try.'],
+      ],
+    },
     scenes: {
       meet: {
         title: 'The Man with the Torque Wrench',

@@ -186,15 +186,17 @@ function sceneFacesHtml(ev) {
   }).join('')}</div>` : '';
 }
 
-// Where the captain or the first officer now stands, when a result carried them across a cutoff (OPINION, people.js): the word for the
-// highest cutoff crossed going up, or the lowest going down. Anyone else, or a change inside a band, gets none.
+// Where the captain, the first officer or a main character now stands, when a result carried them across a cutoff (OPINION, people.js): the word for the
+// highest cutoff crossed going up, or the lowest going down. Anyone else, or a change inside a band, gets none. A main character or first officer at the grudge cutoff is told they are close to leaving.
 const CROSS_UP = [[OPINION.TRUSTED, 'trusts you now'], [OPINION.FRIEND, 'friendly now'], [OPINION.CLOSE, 'easy with you now']];
 const CROSS_DOWN = [[OPINION.GRUDGE, 'holds it against you now'], [OPINION.ENEMY, 'wary of you now']];
 function crossWord(p, n) {
   const h = typeof hired === 'function' ? hired() : null, xo = h && hiredXo();
-  if (!h || !(p.id === h.captain || (xo && p.id === xo.id))) return '';
+  if (!h || !(p.id === h.captain || p.cast || (xo && p.id === xo.id))) return '';
   const before = p.opinion - n, hit = (n > 0 ? CROSS_UP : CROSS_DOWN).find(([c]) => (n > 0 ? before < c && p.opinion >= c : before > c && p.opinion <= c));
-  return hit ? hit[1] : '';
+  if (!hit) return '';
+  // One step above the walk-off (game.js): the last point where the player can still change course.
+  return hit[0] === OPINION.GRUDGE && p.id !== h.captain && !p.loyal ? `${hit[1]}, and is close to leaving` : hit[1];
 }
 
 // What a choice did to how people feel, as lines under the result: the changes like() (people.js) and addBond() (social.js) logged.

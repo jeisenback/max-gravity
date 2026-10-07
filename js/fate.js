@@ -81,3 +81,22 @@ function memorialNote() {
   const names = (G.state.memorial || []).map(m => memorialName(m));
   return names.length ? ` ${names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]} are` : `${names[0]} is`} not here to see it.` : '';
 }
+
+// A farewell (#356): what the hand did with a person who has a `farewell` in their cast entry (cast.js, captains/cato.js), read when they
+// leave or die. Each fact is a flag on their record and the line it leaves behind, in priority order; at most two are shown, so it stays
+// a scene. A person with no `farewell`, or no true fact, gets none.
+function farewellFacts(key) {
+  const d = CAST[key] && CAST[key].farewell, flags = (G.state.cast && G.state.cast[key] && G.state.cast[key].flags) || {};
+  return d ? d.facts.filter(([id]) => flags[id]).slice(0, 2).map(f => f[1]) : [];
+}
+
+// They walk off at a port (game.js): their own leaving line, then the facts, and a record of it for the soak and the look back.
+function walkOffScene(c, planet) {
+  const st = G.state, d = CAST[c.cast].farewell;
+  (st.departed = st.departed || []).push({ key: c.cast, day: st.day, place: planet.name, why: 'opinion' });
+  return {
+    title: 'Gone Ashore', personal: true,
+    text: [d.walk.replace('{planet}', planet.name), ...farewellFacts(c.cast)].join('</p><p>'),
+    choices: [{ label: 'Close the hatch', run: () => 'The berth is empty.' }],
+  };
+}

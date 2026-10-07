@@ -482,6 +482,73 @@ test('the earlier scenes set what the pivots count, and calling them off costs o
   await done();
 });
 
+// ---------- the farewell (#356) ----------
+
+test('a farewell reads at most two true facts, in priority order, and none when none are true', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    start({ mode: 'hired', post: 'gunner' });
+    const out = { none: ['ines', 'tomas', 'cato'].map(farewellFacts) };
+    for (const f of ['practiced', 'promised', 'reference']) castFlag('ines', f);
+    out.ines = farewellFacts('ines');
+    castFlag('cato', 'share'); castFlag('cato', 'benched'); castFlag('cato', 'told');
+    out.cato = farewellFacts('cato');
+    out.other = farewellFacts('yelena');
+    return out;
+  });
+  assert.deepEqual(r.none, [[], [], []]);
+  assert.equal(r.ines.length, 2); assert.match(r.ines[0], /reference for the Lisbon board/); assert.match(r.ines[1], /dead-stick flip/);
+  assert.match(r.cato[0], /hold you sealed on him/); assert.match(r.cato[1], /tell them if it goes badly/);
+  assert.deepEqual(r.other, [], 'someone with no farewell reads nothing');
+  await done();
+});
+
+test('a main character who walks off is a scene with their leaving line and what you did, and is on the record; other crew keep the message', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    start({ mode: 'hired', post: 'gunner' });
+    const st = G.state, planet = system().planets[0], ines = person('c:ines'), tomas = person('c:tomas'), out = {};
+    castFlag('ines', 'promised'); ines.opinion = OPINION.BITTER; tomas.opinion = OPINION.BITTER; tomas.loyal = true;
+    const other = st.crew.map(person).find(c => c && !c.cast && c.role !== 'xo'); other.opinion = OPINION.BITTER;
+    G.dialog = null; G.nextEvent = null; G.player = makeShip(st.shipId, 0, 0, 0);
+    land(planet);
+    const e = G.dialog && G.dialog.event;
+    out.title = e && e.title; out.text = e && e.text; out.choices = e && G.dialog.choices.map(c => c.label);
+    out.gone = [!st.crew.includes(ines.id), !st.crew.includes(other.id), st.crew.includes(tomas.id)];
+    out.departed = st.departed; out.planet = planet.name;
+    out.message = G.messages.some(m => m.text.includes(`${fullName(other)} has had enough`)) && !G.messages.some(m => m.text.includes('Ines Ferreira has had enough'));
+    return out;
+  });
+  assert.equal(r.title, 'Gone Ashore'); assert.deepEqual(r.choices, ['Close the hatch']);
+  assert.ok(r.text.startsWith(`Ines does not ask for leave. At the foot of the ramp on ${r.planet}`));
+  assert.ok(r.text.includes('the word someday'), 'what you did with her');
+  assert.deepEqual(r.gone, [true, true, true], 'Ines and the crew member go, loyal Tomas stays');
+  assert.equal(r.departed.length, 1); assert.equal(r.departed[0].key, 'ines'); assert.equal(r.departed[0].why, 'opinion');
+  assert.ok(r.message, 'a crew member with no farewell keeps the one line');
+  await done();
+});
+
+test('a main character lost outside their own pivot has what you did added to After the Loss', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    start({ mode: 'hired', post: 'gunner' });
+    const st = G.state, tomas = person('c:tomas'), plain = st.crew.map(person).find(c => c && !c.cast && c.role !== 'xo');
+    castFlag('tomas', 'plan'); castFlag('tomas', 'loan');
+    const out = {};
+    out.tomas = loseCrew(tomas, 'Cause.');
+    out.plain = loseCrew(plain, 'Cause.');
+    const scenes = st.mourn.map(m => mournScene(m).text);
+    return { ...out, scenes, cast: st.mourn.map(m => m.cast || null) };
+  });
+  assert.equal(r.tomas, 'dead');
+  assert.match(r.scenes[0], /ring of braided wire/); assert.match(r.scenes[0], /say the plant back/);
+  assert.doesNotMatch(r.scenes[1], /braided|plant back/, 'a crew member with no farewell reads as before');
+  await done();
+});
+
 test('calling off the boarding costs her the bench', async () => {
   const { ev, done } = await open();
   await ev(helpers);
