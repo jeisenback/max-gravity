@@ -118,11 +118,13 @@ const ICE_STAGES = [
 function iceStageScene(n) {
   const h = hired(), st = G.state, stage = ICE_STAGES[n], post = h.post, run = h.run || {};
   const ice = run.ice = run.ice || { edge: 0 };
-  const choices = stage.general.map(c => ({ label: c.label, run: () => iceStep(n, c, null) }));
+  const choices = stage.general.map(c => ({ label: `${c.label}${iceCostNote(c)}`, run: () => iceStep(n, c, null) }));
   const spec = stage.post[post], level = skillLevel(post);
-  choices.push({ label: `[${POSTS[post].name}] ${spec.label}`, run: () => iceStep(n, { odds: Math.min(0.85, 0.5 + 0.1 * level), win: spec.win, lose: spec.lose }, post) });
+  choices.push({ label: `[${POSTS[post].name}] ${spec.label}${iceCostNote(spec)}`, run: () => iceStep(n, { odds: Math.min(0.85, 0.5 + 0.1 * level), win: spec.win, lose: spec.lose }, post) });
   return { title: stage.title, personal: true, via: 'crew', owner: 'you', text: `${stage.open[ice.round % 2 || 0]}</p><p>The haul so far: ${iceHaulWord(ice.edge)}. Armor ${st.armor}/${ship().armor}.`, choices };
 }
+// What a choice can cost, from what it declares: a lost roll's hull cost (and the casualty that can come with it), and a bold call the captain marks.
+const iceCostNote = c => costNote({ hull: (c.lose || c.win)[1] > 0, marks: !!c.bold });
 const iceHaulWord = e => (e >= 3 ? 'a good one' : e >= 1 ? 'going well' : e <= -2 ? 'going badly' : 'even');
 
 function iceStep(n, c, post) {

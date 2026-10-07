@@ -107,8 +107,9 @@ function assaultStart(foe, rate = {}) {
 
 function repelScene(s) {
   const h = hired(), post = h.post, set = repelSet(s), spec = set.post[post];
-  const choices = Object.entries(set.tactics).map(([k, t]) => ({ label: t.label, run: () => repelStep(s, k) }));
-  choices.push({ label: `[${POSTS[post].name}] ${spec.label}`, run: () => repelStep(s, 'post') });
+  const note = costNote({ casualty: true, hand: true });  // any exchange can cost someone, and the hand is among them
+  const choices = Object.entries(set.tactics).map(([k, t]) => ({ label: `${t.label}${note}`, run: () => repelStep(s, k) }));
+  choices.push({ label: `[${POSTS[post].name}] ${spec.label}${note}`, run: () => repelStep(s, 'post') });
   return {
     title: set.titles[s.pos], personal: true, via: 'crew',
     text: `${set.openings[s.pos][s.round % 2]}</p><p>${s.assault ? 'Defenders' : 'Boarders'}: ${s.boarders}. With you: ${repelStanding(s) - 1}.${(s.held || []).length ? ` ${s.held.join(' ')}` : ''} ${layoutHint()}`.trim(),
