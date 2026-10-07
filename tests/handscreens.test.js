@@ -229,3 +229,37 @@ test('a shut scene choice says why as text: credits with the figures, a berth, f
   assert.equal(await page.evaluate(() => document.querySelectorAll('#panel .choices .why').length), 0);
   await done();
 });
+
+test('a hand is told once when their post reaches a new level, and an injury says nothing', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = startHand(), h = hired(), post = h.post, out = {}, notes = () => UI.notes.filter(n => /is level \d now/.test(n));
+    const reset = xp => { UI.notes.length = 0; h.skill[post] = xp; };
+    G.mode = 'landed';
+    reset(5); gainSkill(post, 8); out.to12 = notes();       // 5 + 8 = 13: past 12
+    reset(40); gainSkill(post, 3); out.to45 = notes();      // 43: inside the band, nothing
+    reset(40); gainSkill(post, 6); out.cross45 = notes();   // 46: past 45
+    reset(100); gainSkill(post, 12); out.cross110 = notes(); // 112: past 110
+    reset(50); gainSkill(post, 5); out.inside = notes();
+    reset(50); gainSkill(post, 5); gainSkill(post, 5); out.twice = notes().length;  // the second gain is inside the band too
+    // an injury lowers the level worked, and lifting it is not a level up
+    reset(50); h.hurtUntil = st.day + 10; const worked = skillLevel(post); gainSkill(post, 2); out.hurt = notes(); out.worked = worked;
+    delete h.hurtUntil; gainSkill(post, 2); out.healed = notes();
+    // another post, not the hand's own
+    const other = ['pilot', 'gunner', 'engineer', 'comms'].find(p => p !== post);
+    reset(0); h.skill[other] = 40; gainSkill(other, 10); out.other = notes();
+    // on a burn it goes to the flight log
+    uatBurn('Earth', 'mars'); G.transit.times = []; G.transit.event = null; G.dialog = null; UI.notes.length = 0; G.messages = []; reset(40); gainSkill(post, 6); out.log = G.messages.map(m => m.text).filter(t => /is level \d now/.test(t)); out.notesInFlight = notes().length;
+    out.name = POSTS[post].name; out.post = post;
+    return out;
+  });
+  const N = r.name.toLowerCase();
+  assert.deepEqual(r.to12, [`Your work at the ${N} post is level 1 now. Your own move in a raid works a tenth more often.`]);
+  assert.deepEqual(r.to45, []); assert.deepEqual(r.inside, []); assert.equal(r.twice, 0);
+  assert.deepEqual(r.cross45, [`Your work at the ${N} post is level 2 now. Your own move in a raid works a tenth more often, and the choices marked [${r.name} 2] are open to you.`]);
+  assert.match(r.cross110[0], /level 3 now.*\[.* 3\] are open to you\.$/);
+  assert.deepEqual(r.hurt, []); assert.deepEqual(r.healed, []); assert.deepEqual(r.other, []);
+  assert.equal(r.log.length, 1); assert.equal(r.notesInFlight, 0);
+  await done();
+});
