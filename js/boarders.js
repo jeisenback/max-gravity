@@ -5,7 +5,7 @@
 // go-round, rush beats hold, go-round beats rush) or do the job of your own post. Winning an exchange pushes them back a
 // place and losing it lets them in a place; out of the lock and they are repelled, onto the bridge and they have the ship.
 // Casualties come with it: someone is hurt (an injured hand's perk stops until treated, and a hurt hand works a level
-// lower), and one who is hurt twice in a fight is dead if generated, or marked if a main character (fate.js). Loaded
+// lower), and one who is hurt twice in a fight is dead (a main character too, unless a floor of them holds, fate.js). Loaded
 // after duel.js; only called into at runtime. The same fight, run the other way, is boarding a ship you have crippled
 // (engagements.js): the choices are the same and a win carries her bridge instead of holding yours (assault, below).
 
@@ -162,7 +162,8 @@ function hurtHand(s) {
   return `${again ? 'You are hurt again, and you stay down. It will be some time before you are any use.' : 'You are hurt. For a while your work will be a level worse.'}${pay}`;
 }
 
-// Someone goes down. The hand can be hurt but not killed. A crew member hurt twice in one fight is dead, or marked if a main character.
+// Someone goes down. The hand can be hurt but not killed. A crew member hurt twice in one fight is dead, and so is a named person marked before; where a floor of main
+// characters holds (the full build, fate.js) they are marked instead.
 function repelCasualty(s) {
   const st = G.state, pool = [...st.crew.filter(id => !(st.injured || {})[id] || s.hurt.has(id)), 'you'];
   let who = pick(pool), cover = '';
@@ -172,13 +173,11 @@ function repelCasualty(s) {
   }
   if (who === 'you') return hurtHand(s);
   const c = person(who);
-  if (s.hurt.has(who)) {
-    if (c.cast) {
-      castFate(c.cast, 'mark', `Hurt twice repelling boarders near ${system().name}.`, 'Carried off the bridge after the boarding.');
+  if (s.hurt.has(who) || secondStrike(c)) {  // hurt twice in a fight, or marked before and hit again: the second strike
+    if (loseCrew(c, `Killed repelling boarders near ${system().name}.`) === 'marked') {  // a floor held them (the full build)
       s.marked.push(c);
       return `${c.first} is hit again and does not get up. ${c.first} is alive, and ${c.first} is not fit to work.`;
     }
-    loseCrew(c, `Killed repelling boarders near ${system().name}.`);
     s.dead.push(c);
     return `${c.first} is hit again and does not get up.`;
   }
@@ -188,7 +187,7 @@ function repelCasualty(s) {
   }
   (st.injured = st.injured || {})[who] = true;
   s.hurt.add(who);
-  return `${cover}${c.first} is hurt.`;
+  return `${cover}${c.first} is hurt.${hurtWarning(c)}`;
 }
 
 // A generated crew member dies: off the crew, on the record, and the berth is offered at the next port.
