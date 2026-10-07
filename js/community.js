@@ -70,8 +70,8 @@ const Community = {
     db.collection('deeds').orderBy('updated', 'desc').limit(40).onSnapshot(snap => {
       this.news = snap.docs.filter(doc => doc.id !== this.uid).flatMap(doc => cleanDeeds(doc.data())).slice(0, 30);
     }, () => { this.news = []; });
-    // This can finish before game.js has even run.
-    if (typeof G !== 'undefined' && G.mode === 'landed' && !G.dialog) UI.render();
+    // This can finish before game.js has even run, or while a mod loaded by link is still loading (no game yet).
+    if (typeof G !== 'undefined' && G.state && G.mode === 'landed' && !G.dialog) UI.render();
   },
   deed(text) {
     if (!this.share || !this.db || typeof G === 'undefined' || !G.state) return;
