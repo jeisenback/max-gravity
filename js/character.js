@@ -58,7 +58,7 @@ function whereIs(c) {
   if (hired() && c.id === hired().captain) return `captain of ${esc(shipTitle())}, ${G.transit ? `en route to ${SYSTEMS[G.transit.to].name}` : `docked at ${st.planet}`}`;
   if (c.you) return `aboard ${esc(shipTitle())}${hired() ? `, ${POSTS[hired().post].name}` : ', in command'}`;
   if (st.crew.includes(c.id)) return `aboard ${esc(shipTitle())}${c.role && ROLE_NAMES[c.role] ? `, ${ROLE_NAMES[c.role]}` : ''}`;
-  return c.ship ? `captain of the ${c.ship.name}, around ${SYSTEMS[c.haunt] ? SYSTEMS[c.haunt].name : 'the system'}` : c.location ? `last seen at ${c.location}` : 'whereabouts unknown';
+  return c.ship ? `captain of the ${esc(c.ship.name)}, around ${SYSTEMS[c.haunt] ? SYSTEMS[c.haunt].name : 'the system'}` : c.location ? `last seen at ${esc(c.location)}` : 'whereabouts unknown';
 }
 
 // The last few runs with the captain: where, when, what was carried, and what it paid you (wage plus share).

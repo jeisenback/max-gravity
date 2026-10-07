@@ -71,8 +71,8 @@ function giveOrder(id, orderId) {
 // The post's block on a station view: who has it, the take/hand-back button, and its orders.
 function postHtml(id) {
   const P = POSTS[id], h = postHolder(id), ps = postState(id), mode = postMode(id);
-  if (notYours(id)) return `<div class="post"><div class="eyebrow">${P.name} post &middot; crewed</div><p class="desc">${h ? `${fullName(h)} has the ${P.name.toLowerCase()} post.` : `Nobody has the ${P.name.toLowerCase()} post.`} It is the captain's to command, not yours.</p></div>`;
-  const name = h ? fullName(h) : '';
+  if (notYours(id)) return `<div class="post"><div class="eyebrow">${P.name} post &middot; crewed</div><p class="desc">${h ? `${esc(fullName(h))} has the ${P.name.toLowerCase()} post.` : `Nobody has the ${P.name.toLowerCase()} post.`} It is the captain's to command, not yours.</p></div>`;
+  const name = h ? esc(fullName(h)) : '';
   const line = mode === 'crewed' ? `${name} has the ${P.name.toLowerCase()} post.`
     : h ? `You have taken the ${P.name.toLowerCase()} controls from ${name}.`
     : `Nobody is assigned as ${P.name.toLowerCase()}. You do it yourself.`;
