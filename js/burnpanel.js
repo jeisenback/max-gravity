@@ -23,7 +23,7 @@ function drawBurnPanel(x, y, w) {
   const hot = Math.min(1, b.v / b.peak || 0);
   ctx.fillStyle = `rgb(${Math.round(150 + 90 * hot)},${Math.round(200 + 40 * hot)},255)`;
   ctx.fillText(fmtKms(b.v), x + 12, y + 46);
-  ctx.font = '11px "IBM Plex Mono", monospace';
+  ctx.font = '12px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#8fb0d0';
   ctx.fillText(b.phase === 'FLIP' ? 'FLIP: drive off, weightless' : `${b.phase}: ${b.g.toFixed(2)} g thrust`, x + 12, y + 64);
   // The gauge: up to the peak and back, with the flip in the middle.

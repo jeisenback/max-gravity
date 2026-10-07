@@ -453,7 +453,7 @@ function transitPanel(x, y, w, h, title) {
   ctx.fill(); ctx.stroke();
   ctx.fillStyle = '#7fb4ff';
   ctx.fillRect(x, y, 3, h);
-  ctx.font = `600 11px ${LABEL_FONT}`;
+  ctx.font = `600 12px ${LABEL_FONT}`;
   ctx.fillStyle = '#8fb0d0';
   ctx.textAlign = 'left';
   ctx.fillText(title, x + 12, y + 16);
@@ -481,7 +481,7 @@ function drawRoute(cx, y, barW, progress) {
   // The flip point.
   ctx.fillStyle = '#56687a';
   ctx.fillRect(cx - 1, y - 8, 2, 16);
-  ctx.font = `600 9px ${LABEL_FONT}`;
+  ctx.font = `600 12px ${LABEL_FONT}`;
   ctx.textAlign = 'center';
   ctx.fillText('FLIP', cx, y + 20);
   dot(bx, G.state.systemId);
@@ -548,17 +548,19 @@ function drawTransit(W, H) {
   ctx.scale(k, k);
   G.cutHits = [];  // (a mid-turn frame draws no one)
   drawCutaway(0, 0, L);
+  G.burnBoxes = { ship: { x: cx + (narrow ? 0 : 40) - L * k / 2, y: shipY - L * k * CUTAWAY_H / 2, w: L * k, h: L * k * CUTAWAY_H } };  // where each block was drawn, for the test (#262)
   ctx.restore();
   for (const h of G.cutHits || []) { h.x = cx + h.x * k; h.y = shipY + h.y * k; }  // drawn at the origin, scaled: back to the screen for a click
-  G.lifeY = shipY + L * k * CUTAWAY_H / 2 + 14 + 32 * k;  // downtime buttons sit below it
+  G.lifeY = shipY + L * k * CUTAWAY_H / 2 + 14 + 40 * k;  // downtime buttons sit below it
 
   // Route, on a plate so the star streaks do not run through the title and the clock (#262)
   const plateW = Math.min(viewW - 24, 640);
+  G.burnBoxes.plate = { x: cx - plateW / 2, y: top + 6, w: plateW, h: narrow ? 116 : 100 };
   ctx.fillStyle = 'rgba(3,6,15,0.82)';
   ctx.fillRect(cx - plateW / 2, top + 6, plateW, narrow ? 116 : 100);
   const barW = Math.min(420, viewW - 60);
   ctx.textAlign = 'center';
-  ctx.font = `600 11px ${LABEL_FONT}`;
+  ctx.font = `600 12px ${LABEL_FONT}`;
   ctx.fillStyle = '#7fb4ff';
   ctx.fillText(`${shipTitle().toUpperCase()} IN TRANSIT`, cx, top + 22);
   ctx.fillStyle = '#e6f0ff';
@@ -574,7 +576,7 @@ function drawTransit(W, H) {
   else ctx.fillText(`${dates}  -  ${clock}`, cx, top + 98);
 
   // The burn instruments: a panel at the right on a wide screen, the figure on the clock line on a phone.
-  if (!narrow) drawBurnPanel(viewW - 316, 116, 300);
+  if (!narrow) { drawBurnPanel(viewW - 316, 116, 300); G.burnBoxes.burn = { x: viewW - 316, y: 116, w: 300, h: 112 }; }
 
   // Comms log, top-left
   let colW = narrow ? viewW - 56 : Math.min(360, viewW / 2 - 76), maxLines = transitCommsLines(narrow, top, shipY, L * k);
@@ -593,6 +595,7 @@ function drawTransit(W, H) {
   if (!lines.length && t.comms.length) lines = wrapText(t.comms[t.comms.length - 1], colW).slice(-maxLines).map(l => ({ l, recent: true, market: false }));  // the newest message alone is longer than the box: its end
   let y = commsY;
   G.commsBox = room ? { x: 16, y, w: colW + 24, h: 30 + lines.length * 16 } : null;  // where it was drawn, for the test
+  if (G.commsBox) G.burnBoxes.comms = G.commsBox;
   if (room) {
     transitPanel(16, y, colW + 24, 30 + lines.length * 16, 'COMMS');
     y += 18;
@@ -612,6 +615,7 @@ function drawTransit(W, H) {
   const logW = narrow ? viewW - 170 : Math.min(460, viewW - 56);  // clear the Map button on phones
   const logLines = log.flatMap(l => wrapText(l, logW));
   y = H - BRIDGE_KEYS_H - 30 - logLines.length * 16;  // above the bridge key bar
+  G.burnBoxes.log = { x: 16, y: y - 18, w: logW + 24, h: 30 + logLines.length * 16 };
   transitPanel(16, y - 18, logW + 24, 30 + logLines.length * 16, "SHIP'S LOG");
   ctx.fillStyle = '#cfe3ff';
   for (const l of logLines) ctx.fillText(l, 28, y += 16);

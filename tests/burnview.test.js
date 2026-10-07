@@ -78,3 +78,44 @@ test('the burn view draws for every ship and every turn of the hull without an e
   assert.deepEqual(r.errors, []); assert.equal(r.drawn, 25); assert.ok(r.stable, 'the hits do not drift'); assert.ok(r.hits > 3); assert.ok(r.inside); assert.ok(r.midTurn);
   await done();
 });
+
+// The burn view's canvas blocks, at the three screen sizes (#262): none overlaps another, and each is inside the view.
+const BURN_SIZES = [['desktop', { width: 1280, height: 800 }, false], ['tablet', { width: 768, height: 1024 }, false], ['phone', { width: 390, height: 844 }, true]];
+
+test('the burn view\'s blocks do not overlap, at the three screen sizes (#262)', async () => {
+  for (const [name, viewport, mobile] of BURN_SIZES) {
+    const { ev, page, done } = await open({ scope: 'earth-hired', viewport, mobile });
+    await ev(helpers);
+    await ev(() => {
+      burn(); G.transit.left = G.transit.total * 0.5;
+      for (const c of ['[Comms] The station refuses to say what it is carrying or where it is going, and logs a hail twice.', 'Rosa: "If you hear a clank, that is normal."', '[Market] Water is up at Ceres by a tenth after the strike.']) comm(c);
+    });
+    await page.waitForTimeout(300);
+    const r = await ev(() => ({ boxes: G.burnBoxes, viewW: innerWidth - G.hudW, H: innerHeight }));
+    const names = Object.keys(r.boxes);
+    for (const n of names) {
+      const b = r.boxes[n];
+      assert.ok(b.x >= 0 && b.y >= 0 && b.x + b.w <= r.viewW && b.y + b.h <= r.H, `${name}: ${n} is inside the view ${JSON.stringify(b)}`);
+    }
+    for (let i = 0; i < names.length; i++) for (let j = i + 1; j < names.length; j++) {
+      const a = r.boxes[names[i]], b = r.boxes[names[j]];
+      const apart = a.x + a.w <= b.x || b.x + b.w <= a.x || a.y + a.h <= b.y || b.y + b.h <= a.y;
+      assert.ok(apart, `${name}: ${names[i]} ${JSON.stringify(a)} overlaps ${names[j]} ${JSON.stringify(b)}`);
+    }
+    await done();
+  }
+});
+
+test('canvas text in the burn view is 12px or more (#265)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const sizes = await ev(() => {
+    burn(); const seen = new Set(), proto = Object.getOwnPropertyDescriptor(CanvasRenderingContext2D.prototype, 'font');
+    Object.defineProperty(ctx, 'font', { configurable: true, get() { return proto.get.call(this); }, set(v) { proto.set.call(this, v); const m = /(\d+(?:\.\d+)?)px/.exec(v); if (m) seen.add(Number(m[1])); } });
+    G.transit.left = G.transit.total * 0.5; comm('A line.'); drawTransit(innerWidth, innerHeight);
+    delete ctx.font; return [...seen];
+  });
+  assert.ok(sizes.length > 0, 'the spy saw the fonts');
+  assert.ok(sizes.every(s => s >= 12), `font sizes drawn: ${sizes.join(', ')}`);
+  await done();
+});
