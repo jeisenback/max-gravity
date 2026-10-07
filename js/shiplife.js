@@ -107,6 +107,18 @@ function lifeLine(p, crowd) {
   return line && line.replace('{n}', p.name).replace('{m}', others.length ? pick(others).name : '');
 }
 
+// ---------- faces ----------
+// A person's portrait as a picture the canvas can draw (#297): the same drawing as their page, made once. null until it has loaded,
+// so a frame before then draws the figure alone.
+const faceCache = new Map();
+const faceSource = p => `data:image/svg+xml;charset=utf-8,${encodeURIComponent(portraitSvg({ id: p.id, name: p.name, role: p.role }).replace('<svg ', '<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" '))}`;
+function faceImage(p) {
+  const key = `${p.id || p.name}:${p.role}`;
+  let img = faceCache.get(key);
+  if (!img) { img = new Image(); img.src = faceSource(p); faceCache.set(key, img); }
+  return img.complete && img.naturalWidth ? img : null;
+}
+
 // ---------- the people aboard ----------
 function shipPeople() {
   const t = G.transit;
@@ -408,7 +420,11 @@ function drawCutaway(cx, cy, maxL) {
       if (legH > 0) { ctx.beginPath(); ctx.moveTo(x - 1, y - legH); ctx.lineTo(x - 1 + swing, y); ctx.moveTo(x + 1, y - legH); ctx.lineTo(x + 1 - swing, y); ctx.stroke(); }
       ctx.lineWidth = 1;
       ctx.fillRect(x - 2.5, y - legH - bodyH, 5, bodyH);
-      ctx.beginPath(); ctx.arc(x, y - legH - bodyH - 2.5, 2.6, 0, Math.PI * 2); ctx.fill();
+      const face = faceImage(p), hy = y - legH - bodyH - 2.5;  // the head: a face once its picture has loaded (#297), else a dot
+      if (face) {
+        ctx.save(); ctx.beginPath(); ctx.arc(x, hy - 1.5, 6, 0, Math.PI * 2); ctx.clip(); ctx.drawImage(face, x - 6, hy - 7.5, 12, 12); ctx.restore();
+        ctx.beginPath(); ctx.arc(x, hy - 1.5, 6, 0, Math.PI * 2); ctx.stroke();
+      } else { ctx.beginPath(); ctx.arc(x, hy, 2.6, 0, Math.PI * 2); ctx.fill(); }
     }
     if (p.role !== 'passenger' || p.pid) {
       const w = ctx.measureText(p.name).width + 4;

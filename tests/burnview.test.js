@@ -183,7 +183,7 @@ test('every room has a sheet, and every sheet is a station', async () => {
 test('a tap on a room opens its console as a sheet, and a second tap on the room closes it when the sheet has not covered it', async () => {
   const { ev, page, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
-  await ev(() => { burn(); G.transit.left = G.transit.total * 0.5; G.transit.angle = -Math.PI / 2; G.transit.flipped = false; });
+  await ev(() => { burn(); G.transit.left = G.transit.total * 0.7; G.transit.angle = -Math.PI / 2; G.transit.flipped = false; });
   await page.waitForTimeout(300);
   // The point in a room's box that is farthest from everyone in it, so a tap there is a room's and not a person's.
   const pick = id => ev(id => {
@@ -215,7 +215,7 @@ test('a tap on a room opens its console as a sheet, and a second tap on the room
 test('a tap on a person opens the person, not the room under them; and a tap does nothing while a scene is open', async () => {
   const { ev, page, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
-  await ev(() => { burn(); G.transit.left = G.transit.total * 0.5; G.transit.angle = -Math.PI / 2; G.transit.flipped = false; });
+  await ev(() => { burn(); G.transit.left = G.transit.total * 0.7; G.transit.angle = -Math.PI / 2; G.transit.flipped = false; });
   await page.waitForTimeout(300);
   const hit = await ev(() => G.cutHits[0]);
   await page.mouse.click(hit.x, hit.y);
@@ -226,5 +226,30 @@ test('a tap on a person opens the person, not the room under them; and a tap doe
   await page.mouse.click(b.x + 2, b.y + 2);
   await page.waitForTimeout(150);
   assert.equal(await ev(() => G.bridgeOpen), null, 'no sheet opens under a scene');
+  await done();
+});
+
+// Faces on the cutaway's people (#297, step 5 task 4).
+test('a face is not there until its picture has loaded, and is drawn for each person once it has', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const first = await ev(() => { const p = { id: `new-${Math.random()}`, name: 'Newcomer', role: 'pilot' }; window.__p = p; return faceImage(p); });
+  assert.equal(first, null, 'null at first: the figure is drawn');
+  await page.waitForFunction(() => faceImage(__p) !== null, null, { timeout: 5000 });
+  await ev(() => {
+    burn(); const t = G.transit; t.left = t.total * 0.7; t.angle = -Math.PI / 2; t.flipped = false;
+    window.__faces = 0; const real = ctx.drawImage.bind(ctx); ctx.drawImage = (...a) => { __faces++; return real(...a); };
+  });
+  await page.waitForFunction(() => shipPeople().filter(p => p.role !== 'cat').every(p => faceImage(p) !== null), null, { timeout: 5000 });
+  const r = await ev(() => { __faces = 0; drawTransit(innerWidth, innerHeight); return { faces: __faces, awake: shipPeople().filter(p => p.role !== 'cat' && !isAsleep(p)).length }; });
+  assert.ok(r.faces > 0 && r.faces === r.awake, `a face for each of the ${r.awake} people awake, drawn ${r.faces}`);
+  await done();
+});
+
+test('a face is built from the person alone, and a name puts no markup in the picture', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const src = await ev(() => decodeURIComponent(faceSource({ id: 'x2', name: '<script>x</script>', role: 'pilot' })));
+  assert.ok(src.startsWith('data:image/svg+xml'), 'a picture as a data URL');
+  assert.ok(!src.includes('<script>'), 'the name is escaped');
   await done();
 });
