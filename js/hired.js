@@ -114,8 +114,9 @@ function setupHired(o) {
     raidTold: false,
     debt: o.debt !== undefined ? o.debt : HIRED_DEBT
   };  // o.debt: a hand put ashore carries what is left (stakes.js)
-  // The port screen says only what Signing On (signon.js) does not: who put a hand ashore. The ship, the captain, the post and
+  // The port screen says only what Signing On (signon.js) does not: who put a hand ashore, or that the captain was lost. The ship, the captain, the post and
   // the savings are said there, once.
+  if (o.captainLost) return [`${o.captainLost} did not come back from the bridge. You carry your savings and what you learned.`];
   return o.putOffBy ? [`${o.putOffBy} put you ashore. You carry your savings and what you learned.`] : [];
 }
 

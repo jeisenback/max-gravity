@@ -73,10 +73,21 @@ function beginAgain() {
   return null;
 }
 
+// The captain is lost on the bridge (#357): the articles end with the captain, so the hand goes ashore as when put off, with the same things kept.
+function captainLostScene() {
+  const last = person(hired().captain).last;
+  return {
+    title: 'Without a Captain', personal: true,
+    text: `The ship makes the next port on the pilot's hands. The articles were Captain ${last}'s, and the articles end with the captain. The owner's agent comes aboard, reads the log, and pays you to the day. "There is no berth," the agent says. "There is no ship until somebody is found to sign for her." Your bag is on the dock before the lock has cycled.`,
+    choices: [{ label: 'Take the bag', run: () => putAshore(true) }],
+  };
+}
+
 // Back to the sign-on, with another captain. Savings and post experience come with you; the ship, the crew and the friends do not.
-function putAshore() {
+// lost: the captain did not come back, so nobody put the hand ashore.
+function putAshore(lost) {
   const st = G.state, h = hired(), cap = person(h.captain), others = Object.keys(CAPTAINS).filter(k => k !== h.captainKey);
-  const keep = { slot: Saves.current, name: captain().name, background: st.background, post: h.post, credits: st.credits, debt: h.debt, skill: { ...h.skill }, times: (st.putOff || 0) + 1 };
+  const keep = { slot: Saves.current, name: captain().name, background: st.background, post: h.post, credits: st.credits, debt: h.debt, skill: { ...h.skill }, times: (st.putOff || 0) + (lost ? 0 : 1) };
   startGame({
     slot: keep.slot,
     background: keep.background,
@@ -87,8 +98,8 @@ function putAshore() {
     credits: keep.credits,
     debt: keep.debt,
     skill: keep.skill,
-    putOffBy: `Captain ${cap.last}`,
-    carried: carriedLine(h.flags || {}, cap.last)
+    [lost ? 'captainLost' : 'putOffBy']: `Captain ${cap.last}`,
+    carried: lost ? `On the dock they say Captain ${cap.last} did not come back from the bridge.` : carriedLine(h.flags || {}, cap.last)
   });
   G.state.putOff = keep.times;
   return null;
