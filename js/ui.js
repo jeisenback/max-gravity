@@ -46,6 +46,7 @@ const UI = {
   show() {
     this.render();
     this.el.classList.remove('hidden', 'event');
+    releaseDialog();
   },
 
   // Accent color for the panel: the local faction's, or a neutral blue.
@@ -57,10 +58,11 @@ const UI = {
   choiceHtml(c, i) { return String(choiceButtonHtml(c, i)); },
 
   showEvent(ev, choices) {
+    const opener = document.activeElement;  // read before the panel is rebuilt
     const where = G.mode === 'hail' ? 'Comms channel' : G.mode === 'transit' ? 'In transit' : G.state.planet;
     this.setAccent(G.mode === 'hail' ? '#6fb0ff' : G.mode === 'transit' ? '#9fb4ff' : GOV_COLORS[system().gov]);
     this.el.innerHTML = String(h`
-      <div class="event-body" role="dialog" aria-label="${ev.title}">
+      <div class="event-body" role="dialog" aria-modal="true" aria-label="${ev.title}">
         <div class="eyebrow">${ev.via ? raw(`${VIA_LABELS[ev.via]} &middot; `) : ''}${where}</div>
         ${raw(sceneFacesHtml(ev))}
         <h1>${ev.title}</h1>
@@ -72,6 +74,7 @@ const UI = {
     this.el.scrollTop = 0;
     this.el.onscroll = () => this.moreCue();
     this.moreCue();
+    trapDialog(opener);
   },
 
   // Whether text of the scene remains below the dialog's fold (style.css shows the cue).
@@ -86,14 +89,16 @@ const UI = {
         <div class="eyebrow">${G.mode === 'hail' ? 'Comms channel' : G.mode === 'transit' ? 'In transit' : G.state.planet}</div>
         ${raw(sceneFacesHtml(G.dialog && G.dialog.event))}
         <h1>${title}</h1>
-        <p>${raw(text)}</p>
+        <p id="event-result">${raw(text)}</p>
         ${raw(shiftLines(shifts || []))}
-        <div class="choices"><button data-action="continue" class="primary">Continue</button></div>
+        <div class="choices"><button data-action="continue" class="primary" aria-describedby="event-result">Continue</button></div>
       </div>`);
+    this.el.querySelector('[data-action="continue"]').focus();
   },
 
   hide() {
     this.el.classList.add('hidden');
+    releaseDialog();
   },
 
   showDead() {
@@ -141,7 +146,11 @@ const UI = {
   render() {
     const p = this.planet;
     this.setAccent(GOV_COLORS[system().gov]);
-    if (shellOn()) { this.el.innerHTML = shellHtml(this, p); return; }  // the ship-interface shell (js/shell.js)
+    if (shellOn()) {
+      this.el.innerHTML = shellHtml(this, p);
+      if (this.lastTab !== this.tab) { this.lastTab = this.tab; focusPage(); }  // a room change, not a re-render of the same page
+      return;
+    }  // the ship-interface shell (js/shell.js)
     this.el.innerHTML = `${this.headerHtml(p)}
       <canvas id="vs" class="vs" aria-hidden="true"></canvas>
       ${bridgeKeys(p, this.tab)}
