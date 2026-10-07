@@ -107,7 +107,7 @@ function customsScene(gov, planet, patrol) {
   if (papers) choices.push({ label: `[${gov} papers] Vouch for ${n} as a member`, run() { like(p, 2, patrol ? `You vouched for me to a patrol.` : `You vouched for me at customs on ${planet.name}.`); return (
       `You give the officer your papers and say ${n} is signed on the ship's articles. The officer reads the date, stamps the manifest, and does not ` +
       `look at ${n}.`); } });
-  choices.push({ label: `Pay the officer (400 cr from the ship's fund)`, can: () => h.fund >= 400, run() { h.fund -= 400; like(cap, -1, `You paid a customs officer from the fund.`); return (
+  choices.push({ label: `Pay the officer (400 cr from the ship's fund)`, ...gated(needFunds(400)), run() { h.fund -= 400; like(cap, -1, `You paid a customs officer from the fund.`); return (
       `The envelope goes across the counter. The officer takes the manifest into the back and brings it out stamped, and the number on it is not the ` +
       `number it was.`); } });
   choices.push({ label: `Say nothing and keep ${n} below`, run() {

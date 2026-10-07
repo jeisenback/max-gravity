@@ -42,7 +42,7 @@ function mournScene(m) {
   const who = `${m.first} ${m.last}`, crew = st.crew.map(person).filter(Boolean);
   return { title: 'After the Loss', personal: true,
     text: `${who}, the ${ROLE_NAMES[m.role] ? ROLE_NAMES[m.role].toLowerCase() : 'hand'}, is on the ship's memorial now, and the ship is in port. There is a berth with a made bunk and a locker nobody has opened. The crew are waiting to see what you do.`,
-    choices: MOURN.map(o => ({ label: o.label, can: () => !o.cost || st.credits >= o.cost, run() {
+    choices: MOURN.map(o => ({ label: o.label, ...(o.cost ? gated(needCr(o.cost)) : {}), run() {
       if (o.cost) st.credits -= o.cost;
       if (o.fund && h) h.fund = Math.max(0, h.fund - o.fund);
       const lines = [];

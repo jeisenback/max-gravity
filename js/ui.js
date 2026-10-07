@@ -53,6 +53,12 @@ const UI = {
     this.el.style.setProperty('--accent', color || '#6fb0ff');
   },
 
+  // A choice's button; shut, it says why as text (js/gates.js), not only in a tooltip.
+  choiceHtml(c, i) {
+    const shut = c.can && !c.can(), why = shut && (typeof c.why === 'function' ? c.why() : c.why);
+    return `<button data-action="choose" data-arg="${i}" ${shut ? 'disabled' : ''}>${c.label}</button>${why ? `<div class="hint why">${why}</div>` : ''}`;
+  },
+
   showEvent(ev, choices) {
     const where = G.mode === 'hail' ? 'Comms channel' : G.mode === 'transit' ? 'In transit' : G.state.planet;
     this.setAccent(G.mode === 'hail' ? '#6fb0ff' : G.mode === 'transit' ? '#9fb4ff' : GOV_COLORS[system().gov]);
@@ -63,7 +69,7 @@ const UI = {
         <h1>${ev.title}</h1>
         <p>${ev.text}</p>
         <div class="choices">
-          ${choices.map((c, i) => `<button data-action="choose" data-arg="${i}" ${c.can && !c.can() ? 'disabled' : ''}>${c.label}</button>`).join('')}
+          ${choices.map((c, i) => this.choiceHtml(c, i)).join('')}
         </div>
       </div>`;
     this.el.classList.remove('hidden');

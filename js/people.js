@@ -239,13 +239,13 @@ const PAX_EVENTS = [
         like(p, 4, 'Your medic saved my life.');
         return `{crew} works through the night with a lamp and a case of instruments and does not leave the bunk once. By morning ${p.first} is sitting up, pale, and asking for coffee in a cracked voice. {crew} is asleep in the corridor with a blanket over their shoulders, and nobody wakes them.`;
       } },
-      { label: "Use the ship's medkit (500 cr of supplies)", can: () => G.state.credits >= 500, run() {
+      { label: "Use the ship's medkit (500 cr of supplies)", ...gated(needCr(500)), run() {
         G.state.credits -= 500;
         like(p, 3, 'You spent your medical supplies on me.');
         if (Math.random() < 0.75) { m.bonus += 800; return 'You sit up with them through the night, working from the manual, with a bulb of water and a flashlight in your teeth. It is enough, barely. The fever breaks in the small hours, and they sleep for the first time in days.'; }
         return 'You do everything the medkit and the manual allow, and it keeps them stable, only just. They will need a real doctor, soon. For the rest of the burn you check their pulse every twenty minutes, in the dark.';
       } },
-      { label: 'Burn harder to get them help (40 reaction mass)', can: () => G.state.fuel >= 40, run() {
+      { label: 'Burn harder to get them help (40 reaction mass)', ...gated(needMass(40)), run() {
         G.state.fuel -= 40;
         delay(-10);
         like(p, 2, 'You burned hard to get me to a doctor.');
@@ -286,7 +286,7 @@ const PAX_EVENTS = [
         `ship as an accessory". In the corner of the galley ${p.first} has gone the color of old paper and is not looking at anyone. The agent adds, ` +
         `pleasantly, that they have "a great deal of patience, and a great many lawyers."`),
     choices: [
-      { label: 'Pay it for them (1,500 cr)', can: () => G.state.credits >= 1500, run() {
+      { label: 'Pay it for them (1,500 cr)', ...gated(needCr(1500)), run() {
         G.state.credits -= 1500;
         p.owes = 1500;
         like(p, 5, 'You paid off my debt. I will pay you back.');
@@ -308,7 +308,7 @@ const PAX_EVENTS = [
         like(p, 3, 'You got me to my interview on time.');
         return `{crew} bends over the nav display, muttering, and finds a gravity assist nobody else would try, a long swoop around a moon barely on the charts. It works. ${p.first} arrives with an hour to spare, freshly ironed, and at the dock hugs {crew} before they can dodge.`;
       } },
-      { label: 'Hard burn (40 reaction mass)', can: () => G.state.fuel >= 40, run() {
+      { label: 'Hard burn (40 reaction mass)', ...gated(needMass(40)), run() {
         G.state.fuel -= 40;
         m.bonus += 800;
         like(p, 3, 'You got me to my interview on time.');
@@ -382,7 +382,7 @@ const PAX_EVENTS = [
             `water. You draw it on the bulkhead with a finger. The third time, they nod, and the trembling slows, and they laugh, once, ` +
             `wetly. ${p.first} apologizes. You tell them there is nothing to apologize for.`);
       } },
-      { label: 'Give them a sedative (200 cr)', can: () => G.state.credits >= 200, run() {
+      { label: 'Give them a sedative (200 cr)', ...gated(needCr(200)), run() {
         G.state.credits -= 200;
         like(p, 1, null);
         return `${p.first} takes the sedative with a shaking hand and lies back on the bunk. Within minutes they are breathing slow and deep. They sleep through the rest of the burn and wake at the dock calmer. They do not remember what frightened them.`;
@@ -433,7 +433,7 @@ const PAX_EVENTS = [
     title: 'Card Game',
     text: `${p.first} produces a deck of cards, worn soft at the corners, and shuffles it with a flourish. The smile is friendly, a little too friendly. "A friendly game, captain," they say, "with a little money on it. Just to make things interesting. It is a long burn, and a man gets bored."`,
     choices: [
-      { label: `Play (500 cr stake)`, can: () => G.state.credits >= 500, run() {
+      { label: `Play (500 cr stake)`, ...gated(needCr(500)), run() {
         if (Math.random() < 0.5) { G.state.credits += 500; like(p, -1, 'You beat me at cards.'); return `You clean ${p.first} out in one long quiet hand. ${p.first} stares at the table for ten seconds. For the rest of the trip ${p.first} sulks in a corner and mutters about "luck".`; }
         G.state.credits -= 500;
         like(p, 1, null);
@@ -504,7 +504,7 @@ const CREW_EVENTS = {
     ] }),
   homesick: c => ({ title: 'Homesick', text: `${c.first} has been quiet for days. At mealtimes they push their food around. At night you have seen them at the viewport, looking at a point of light. They have not said they miss ${c.home}.`,
     choices: [
-      { label: 'Give them a 500 cr bonus to call home', can: () => G.state.credits >= 500, run() { G.state.credits -= 500; like(c, 3, 'You paid for my call home.'); return (
+      { label: 'Give them a 500 cr bonus to call home', ...gated(needCr(500)), run() { G.state.credits -= 500; like(c, 3, 'You paid for my call home.'); return (
           `${c.first} spends an hour on a lagged call home, in a quiet corner of the ship, with a hand over their mouth. They come back with red eyes ` +
           `and laugh once. They will not say what was said. For the rest of the week they hum in the corridors, and nobody mentions it.`); } },
       { label: 'Share a drink and listen', run() { like(c, 1, null); return (`You pour two cups of something strong and sit on a crate beside them. ` +

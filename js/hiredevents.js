@@ -150,7 +150,7 @@ const HAND_EVENTS = [
 
   { id: 'crew-cards', mate: true, group: 'crew', make: c => handEvent('Card Night',
     `There is a game in the galley, a long-running, ill-tempered one with a deck gone soft at the corners, and ${c.mate.first} has kept you a seat. The stake is fifty credits a hand, which on a hired hand's pay is a great deal of money to lose.`, [
-      { label: 'Sit in (50 cr)', can: () => G.state.credits >= 50, run() {
+      { label: 'Sit in (50 cr)', ...gated(needCr(50)), run() {
         remember('cards', c.mate); setLater('h-cards-rematch', 7, 'Played cards with {thread:cards}. They want a rematch.');
         if (Math.random() < 0.45) { G.state.credits += 100; like(c.mate, 1, 'You took the pot off me fair and square.'); return (
             `The cards fall your way for once, and you take the pot, fifty credits of other people's money, and ${c.mate.first} slaps the table and ` +
@@ -259,13 +259,13 @@ const HAND_EVENTS = [
   { id: 'money-loan', mate: true, group: 'money', make: c => handEvent('A Loan',
     `${c.mate.first} asks to borrow a hundred credits, quietly, at the end of a watch, in one breath. There is a family matter, something about a debt at home, and it will, they say, be paid back.`, [
       { label: 'Lend a hundred',
-      can: () => G.state.credits >= 100,
+      ...gated(needCr(100)),
       run() { G.state.credits -= 100; remember('loan', c.mate); setLater(Math.random() < 0.7 ? 'h-loan-repaid' : 'h-loan-default', 12, 'Lent {thread:loan} a hundred credits.'); like(c.mate, 3, 'You lent me a hundred credits when I needed it.'); return (
           `You lend it, no questions, and ${c.mate.first} takes it with both hands and cannot find the words. It is a hundred credits you may or may ` +
           `not see again, and a good deal more than that in other ways.`); } },
       {
         label: 'Lend fifty',
-        can: () => G.state.credits >= 50,
+        ...gated(needCr(50)),
         run() { G.state.credits -= 50; remember('loan', c.mate); setLater('h-loan-small', 12, 'Lent {thread:loan} fifty credits.'); like(c.mate, 1, 'You lent me fifty credits, which was what you could spare.'); return (
             `"It is what I can spare," you say, and ${c.mate.first} says that is fine, that it is more than anyone else offered, and means it, ` +
             `mostly.`); }

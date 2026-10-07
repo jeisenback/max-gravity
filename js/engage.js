@@ -55,7 +55,7 @@ function contactEvent(spec) {
     { label: 'Burn hard to outrun them', run: () => startDuel(spec, true) },
   ];
   if (spec.kind === 'pirate') {
-    choices.push({ label: 'Pay them off (10% of your credits, at least 500)', can: () => st.credits >= 500, run() {
+    choices.push({ label: 'Pay them off (10% of your credits, at least 500)', ...gated(needCr(500)), run() {
       const c = Math.max(500, Math.round(st.credits * 0.1));
       st.credits -= c;
       return `You transfer ${fmt(c)} cr. Their plume swings away.`;
@@ -72,7 +72,7 @@ function contactEvent(spec) {
     like(person(hired().captain), -1, 'We were stopped by a patrol and it cost the fund.');
     return `You cut the drive and the cutter closes. The boarding officer reads the citation, and ${fmt(fine)} cr goes out of the ship's fund. The ship is logged as settled. For now.`;
   } });
-  else if (spec.kind === 'patrol') choices.push({ label: 'Cut your drive and pay the fine (4,000 cr)', can: () => st.credits >= 4000, run() {
+  else if (spec.kind === 'patrol') choices.push({ label: 'Cut your drive and pay the fine (4,000 cr)', ...gated(needCr(4000)), run() {
     st.credits -= 4000;
     st.rep[spec.gov] = Math.max(repOf(spec.gov), -10);
     return 'They take your money and log your ship as settled. For now.';

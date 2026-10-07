@@ -157,7 +157,7 @@ CAST.cato = {
       },
       choices: [
         { label: 'Let him go in', run: () => inTheIceHold(false) },
-        { label: 'Send an ice hand in with him', can: () => iceHands() >= 1, run: () => inTheIceHold(true) },
+        { label: 'Send an ice hand in with him', ...gated([() => iceHands() >= 1, () => 'There is no ice hand to send.']), run: () => inTheIceHold(true) },
         { label: 'Seal the hold and let the ice go', run() {
           castFlag('cato', 'benched'); castLike('cato', -3, 'You sealed the hold on me.');
           return 'You tell him no, and shut the hatch. The ice goes where ice goes, and the pod will not be the same. Cato stands at the hatch with the strap in his hands and says nothing for a while. "It is your call," he says at last, and means it, and it costs you.';

@@ -162,7 +162,7 @@ const TRANSIT_EVENTS = [
         applyEffects({ later: { 'pi-subscription': 20 } });
         return `You transfer ${fmt(c)} cr. They peel off with a flash of their running lights, three long, one short, and on the open band a last, cheerful "Safe burn, hoser." You sit in the quiet with your hand still on the transfer key.`;
       } },
-      { label: 'Dump half your biggest cargo', can: hasTradeCargo, run: () => (`${loseCargo(0.5)} The crates tumble away into the dark, spinning and ` +
+      { label: 'Dump half your biggest cargo', ...gated(needGoods), run: () => (`${loseCargo(0.5)} The crates tumble away into the dark, spinning and ` +
           `glinting. The pirates chase them down, whooping on the channel, while you burn on. You watch their running lights dwindle, and try not to ` +
           `do the arithmetic.`) },
       { label: 'Fight', run() {
@@ -183,7 +183,7 @@ const TRANSIT_EVENTS = [
             'channel. You do not answer. Your hands on the controls are not steady.');
         return `They see through it in seconds and open fire. ${hurt(0.2)} points of armor damage before you get clear, and {crew} sits still afterward, mouthing a numbered list of what went wrong.`;
       } },
-      { label: 'Hard burn to outrun them (50 reaction mass)', can: () => G.state.fuel >= 50, run() {
+      { label: 'Hard burn to outrun them (50 reaction mass)', ...gated(needMass(50)), run() {
         G.state.fuel -= 50;
         if (Math.random() < 0.7) return ('Eight g. The juice floods your veins and keeps you conscious, barely, in a gray, roaring tunnel of sound, ' +
             'with the whole ship groaning around you and the stars streaking to threads. When you can see again, they are gone, small and dwindling ' +
@@ -202,7 +202,7 @@ const TRANSIT_EVENTS = [
         'could have fallen off a freighter last week, or last decade. Everyone in the cockpit is looking at it, and nobody says what they are ' +
         'thinking.'),
     choices: [
-      { label: 'Grab it', can: () => cargoFree() > 0, run() {
+      { label: 'Grab it', ...gated(needRoom), run() {
         if (Math.random() < 0.2) return `Booby-trapped. The container detonates against your hull, a flat white flash and a slam that throws everything in the cockpit to the deck, for ${hurt(0.2)} points of armor damage. When the ringing stops, someone says, "Well. That is why they call it free."`;
         const c = pick(COMMODITIES), tons = Math.min(cargoFree(), randInt(2, 8));
         G.state.cargo[c.id] = (G.state.cargo[c.id] || 0) + tons;
@@ -299,7 +299,7 @@ const TRANSIT_EVENTS = [
         'face, and a cup raised in greeting. "Market tip, friend?" the captain says, in a voice like a well-worn saddle. "I have been up and down ' +
         'these lanes forty years, and I hear things. Five hundred credits and it is yours. I promise you will not regret it. Usually."'),
     choices: [
-      { label: 'Buy the tip (500 cr)', can: () => G.state.credits >= 500, run() {
+      { label: 'Buy the tip (500 cr)', ...gated(needCr(500)), run() {
         G.state.credits -= 500;
         applyEffects({ later: { [Math.random() < 0.6 ? 'me-good' : 'me-bad']: 10 } });
         return `The captain clears their throat and says, solemnly: "${addRumor()}" There is a pause. "That is the good stuff," they add. "I would not sell it to just anyone." They sign off with a wink and a two-fingered salute, and in a few minutes their lights are a distant spark.`;
@@ -402,7 +402,7 @@ function openEvent(ev) {
   const hand = typeof hired === 'function' ? hired() : null, level = hand ? skillLevel(hand.post) : 0;
   const choices = ev.choices.filter(c => (!c.role || roleSkill(c.role)) && (c.post === undefined || (hand && hand.post === c.post)) && (c.skill === undefined || hand))
     .map(c => (c.role ? { ...c, label: c.label.replace(/\{crew\}/g, roleName(c.role)) } : c))
-    .map(c => (c.skill === undefined ? c : { ...c, can: () => level >= c.skill && (!c.can || c.can()) }))
+    .map(c => (c.skill === undefined ? c : { ...c, can: () => level >= c.skill && (!c.can || c.can()), why: () => (level < c.skill ? `Needs skill ${c.skill} at your post; you have ${level}.` : c.why && (typeof c.why === 'function' ? c.why() : c.why)) }))
     .map(c => (c.opinion === undefined ? c : opinionGate(c))).filter(Boolean);  // a choice that needs someone's regard (captains.js)
   G.dialog = { event: ev, choices };
   Mods.emit('eventOpened', ev);
