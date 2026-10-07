@@ -130,6 +130,85 @@ test('an entry for a service this port lacks is shut and says why', async () => 
   await done();
 });
 
+test('the captain\'s name and run label do not split or gap, at 390 and 1280', async () => {
+  for (const [name, viewport, mobile] of [['phone', { width: 390, height: 844 }, true], ['wide', { width: 1280, height: 800 }, false]]) {
+    const { ev, done } = await open({ shell: true, scope: 'earth-hired', viewport, mobile });
+    await ev(helpers);
+    const r = await ev(() => {
+      start({ captainKey: 'hester' });
+      const label = document.querySelector('.post .eyebrow'), btn = label.querySelector('button.link'), after = btn.nextSibling;
+      const range = document.createRange(); range.setStart(after, 0); range.setEnd(after, after.textContent.indexOf("'") + 1);
+      const apos = range.getClientRects()[0], inner = document.createRange(); inner.selectNodeContents(btn); const b = inner.getBoundingClientRect();  // the name's own text, not the button's padding
+      const head = document.querySelector('.stats .nowrap');
+      return { text: label.textContent.replace(/\s+/g, ' ').trim().toLowerCase(), btnRects: btn.getClientRects().length, gap: apos.left - b.right, head: head ? head.getClientRects().length : null, headText: head ? head.textContent : '' };
+    });
+    assert.ok(r.text.startsWith("captain hester vance's run"), `${name}: ${r.text}`);
+    assert.equal(r.btnRects, 1, `${name}: the name is on one line`);
+    assert.ok(r.gap <= 2, `${name}: the gap before the apostrophe is ${r.gap}px`);
+    assert.equal(r.head, 1, `${name}: the header name is on one line`); assert.match(r.headText, /^Capt\. Hester Vance$/);
+    await done();
+  }
+});
+
+// (The plant and cutaway drawings are SVG, and the con- readouts sit beside them: step 5, the burn view, reworks both.)
+const smallText = () => [...document.querySelectorAll('#panel *')].filter(el => !el.closest('#uat, svg, [class^=con-], [class*=" con-"]') && el.offsetParent !== null
+  && [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()) && parseFloat(getComputedStyle(el).fontSize) < 12)
+  .map(el => `${el.tagName.toLowerCase()}.${String(el.className).trim().replace(/\s+/g, '.')} ${getComputedStyle(el).fontSize}`);
+
+test('no visible text on a shell page is under 12px at 390px', async () => {
+  const { page, ev, done } = await open({ shell: true, viewport: { width: 390, height: 844 }, mobile: true });
+  await ev(helpers);
+  await ev(() => { start(); });
+  const tabs = await ev(() => [...document.querySelectorAll('.rail button:not([disabled])')].map(b => b.dataset.arg));
+  const offenders = {};
+  for (const tab of tabs) {
+    await page.click(`.rail [data-action=tab][data-arg=${tab}]`);
+    for (const o of await ev(([fn]) => (0, eval)(`(${fn})`)(), [smallText.toString()])) (offenders[o] = offenders[o] || (offenders[o] = [])).includes(tab) || offenders[o].push(tab);
+  }
+  assert.deepEqual(offenders, {}, 'text under 12px, with the pages it shows on');
+  await done();
+});
+
+test('the rail fits at 360px', async () => {
+  const { ev, done } = await open({ shell: true, viewport: { width: 360, height: 740 }, mobile: true });
+  await ev(helpers);
+  const r = await ev(([fn]) => { start(); return (0, eval)(`(${fn})`)(); }, [layout.toString()]);
+  assert.equal(r.noSideScroll, true, 'the page does not scroll sideways'); assert.equal(r.buttonsOnScreen, true, 'every entry is on screen');
+  await done();
+});
+
+test('the last item can be scrolled clear of the dock at 390px', async () => {
+  const { ev, done } = await open({ shell: true, viewport: { width: 390, height: 844 }, mobile: true });
+  await ev(helpers);
+  const r = await ev(() => {
+    start(); UI.tab = 'port'; UI.render();
+    const body = document.querySelector('.shell .body'), dock = document.querySelector('.dock');
+    // whichever box scrolls: the page body or the panel
+    for (const el of [body, document.getElementById('panel'), document.scrollingElement]) if (el) el.scrollTop = el.scrollHeight;
+    const last = [...body.children].pop().getBoundingClientRect();
+    return { lastBottom: last.bottom, dockTop: dock.getBoundingClientRect().top };
+  });
+  assert.ok(r.lastBottom <= r.dockTop + 1, `the last item ends at ${r.lastBottom}, the dock starts at ${r.dockTop}`);
+  await done();
+});
+
+test('the Suggest buttons line up at 1280px and stack at 390px', async () => {
+  for (const [name, viewport, mobile] of [['wide', { width: 1280, height: 800 }, false], ['phone', { width: 390, height: 844 }, true]]) {
+    const { ev, done } = await open({ shell: true, scope: 'earth-hired', viewport, mobile });
+    await ev(helpers);
+    const r = await ev(() => {
+      start({ captainKey: 'hester' }); UI.tab = 'port'; UI.render();
+      const rows = [...document.querySelectorAll('.suggest-row')];
+      return { n: rows.length, lefts: rows.map(row => row.querySelector('button').getBoundingClientRect().left), widths: rows.map(row => [row.querySelector('button').getBoundingClientRect().width, row.getBoundingClientRect().width]),
+        below: rows.map(row => row.querySelector('button').getBoundingClientRect().top >= row.querySelector('.hint').getBoundingClientRect().bottom - 1) };
+    });
+    assert.ok(r.n >= 2, `${name}: the alternatives are shown (${r.n})`);
+    if (name === 'wide') assert.ok(r.lefts.every(l => Math.abs(l - r.lefts[0]) <= 1), `wide: the buttons share a left edge: ${r.lefts}`);
+    else { assert.ok(r.widths.every(([b, w]) => b >= w - 2), `phone: each button is as wide as its row: ${JSON.stringify(r.widths)}`); assert.ok(r.below.every(Boolean), 'phone: each button sits below its text'); }
+    await done();
+  }
+});
+
 test('an unavailable entry says why', async () => {
   const { ev, done } = await open({ shell: true });
   await ev(helpers);

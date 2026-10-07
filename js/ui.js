@@ -126,7 +126,7 @@ const UI = {
           <div class="sub" style="color:${GOV_COLORS[sys.gov]}">${sys.gov}</div>
         </div>
         <div class="stats">
-          ${dateOf()} &middot; ${esc(shipTitle())}, ${s.name}${hired() ? ` &middot; Capt. ${esc(hiredCaptain().first)} ${esc(hiredCaptain().last)}` : ''}<br>
+          ${dateOf()} &middot; ${esc(shipTitle())}, ${s.name}${hired() ? ` &middot; <span class="nowrap">Capt. ${esc(hiredCaptain().first)} ${esc(hiredCaptain().last)}</span>` : ''}<br>
           <b>${fmt(st.credits)} cr</b><br>
           Cargo ${cargoUsed()}/${s.cargo}t &middot; Berths ${berthsUsed()}/${s.berths} &middot; Mass ${st.fuel}/${s.fuel}
         </div>
