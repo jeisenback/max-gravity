@@ -494,6 +494,14 @@ function drawRoute(cx, y, barW, progress) {
 // How many lines the Comms box may take: 16 on a wide screen; on a phone as many as fit between the clock and the ship, at most 8.
 const transitCommsLines = (narrow, top, shipY, L) => Math.max(narrow ? 2 : 4, Math.min(narrow ? 8 : 16, Math.floor((shipY - L * 0.13 - (top + (narrow ? 132 : 116)) - 38) / 16)));
 
+// Where the event dialog sits, in canvas pixels, while one is open (the panel, style.css), so the Comms box can keep clear of it (#262).
+function transitDialogBox(W) {
+  const el = G.transit && G.transit.event && document.querySelector('#panel.event');
+  if (!el) return null;
+  const r = el.getBoundingClientRect(), c = canvas.getBoundingClientRect(), k = W / c.width;
+  return { x: (r.left - c.left) * k, y: (r.top - c.top) * k, w: r.width * k, h: r.height * k };
+}
+
 function drawTransit(W, H) {
   const viewW = W - G.hudW, cx = viewW / 2, cy = H / 2, t = G.transit, st = G.state;
   const narrow = !G.hudW, top = narrow ? 84 : 0;  // clear the phone HUD strip
@@ -543,7 +551,10 @@ function drawTransit(W, H) {
   for (const h of G.cutHits || []) { h.x = cx + h.x * k; h.y = shipY + h.y * k; }  // drawn at the origin, scaled: back to the screen for a click
   G.lifeY = shipY + L * k * CUTAWAY_H / 2 + 14 + 32 * k;  // downtime buttons sit below it
 
-  // Route
+  // Route, on a plate so the star streaks do not run through the title and the clock (#262)
+  const plateW = Math.min(viewW - 24, 640);
+  ctx.fillStyle = 'rgba(3,6,15,0.82)';
+  ctx.fillRect(cx - plateW / 2, top + 6, plateW, narrow ? 116 : 100);
   const barW = Math.min(420, viewW - 60);
   ctx.textAlign = 'center';
   ctx.font = `600 11px ${LABEL_FONT}`;
@@ -565,7 +576,11 @@ function drawTransit(W, H) {
   if (!narrow) drawBurnPanel(viewW - 316, 116, 300);
 
   // Comms log, top-left
-  const colW = narrow ? viewW - 56 : Math.min(360, viewW / 2 - 76), maxLines = transitCommsLines(narrow, top, shipY, L * k);
+  let colW = narrow ? viewW - 56 : Math.min(360, viewW / 2 - 76), maxLines = transitCommsLines(narrow, top, shipY, L * k);
+  const commsY = top + (narrow ? 132 : 116), dlg = transitDialogBox(W);
+  if (dlg && narrow) maxLines = Math.min(maxLines, Math.floor((dlg.y - 8 - commsY - 30) / 16));  // ends above the dialog
+  else if (dlg) colW = Math.max(120, Math.min(colW, dlg.x - 56));  // its right edge (colW + 40) stays 16 left of the dialog
+  const room = maxLines >= 1;
   ctx.font = '12px "IBM Plex Mono", monospace';
   // Show whole messages, newest last, as many as fit.
   let lines = [];
@@ -575,12 +590,15 @@ function drawTransit(W, H) {
     lines = wrapped.map(l => ({ l, recent: i === t.comms.length - 1, market: c.startsWith('[Market]') })).concat(lines);
   }
   if (!lines.length && t.comms.length) lines = wrapText(t.comms[t.comms.length - 1], colW).slice(-maxLines).map(l => ({ l, recent: true, market: false }));  // the newest message alone is longer than the box: its end
-  let y = top + (narrow ? 132 : 116);
-  transitPanel(16, y, colW + 24, 30 + lines.length * 16, 'COMMS');
-  y += 18;
-  for (const { l, recent, market } of lines) {
-    ctx.fillStyle = market ? '#ffcf7f' : recent ? '#cfe3ff' : '#7d93aa';
-    ctx.fillText(l, 28, y += 16);
+  let y = commsY;
+  G.commsBox = room ? { x: 16, y, w: colW + 24, h: 30 + lines.length * 16 } : null;  // where it was drawn, for the test
+  if (room) {
+    transitPanel(16, y, colW + 24, 30 + lines.length * 16, 'COMMS');
+    y += 18;
+    for (const { l, recent, market } of lines) {
+      ctx.fillStyle = market ? '#ffcf7f' : recent ? '#cfe3ff' : '#7d93aa';
+      ctx.fillText(l, 28, y += 16);
+    }
   }
 
   // Ship's log, bottom-left

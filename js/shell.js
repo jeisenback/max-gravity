@@ -6,39 +6,35 @@
 // Each page is the existing UI.views[tab] function, looked up when the screen is drawn, so the wrappers other scripts
 // put around a view still apply. Loaded before game.js; only calls into it at runtime.
 
-// The rail, one entry per page that has a place on it. `shown` says whether the entry is drawn at all: a page that can never be used
-// in this game (the owner's pages, for a hired hand) is hidden, not greyed out (#264). `ready` returns true, or the reason an entry
-// that is drawn is unavailable at this port, which the rail prints as text. The hold and the medbay have no page yet, so no entry.
-const ownerOnly = tab => !hired() && !(tab === 'company' && scopeOff('owner'));
-const railEntry = (id, label, group, tab, more = {}) => ({ id, label, group, tab, shown: () => true, ready: () => true, ...more });
+// The rail, one entry per page that has a place on it. `ready` returns true, or the reason the entry is unavailable;
+// `shown` says whether the entry is on this player's rail at all: a page that can never be used (the owner's Exchange and
+// Company, for a hired hand) is left off, not greyed.
 const RAIL = [
-  railEntry('bridge', 'Bridge', 'ship', 'nav'),
-  railEntry('comms', 'Comms', 'ship', 'comms'),
-  railEntry('gunnery', 'Gunnery', 'ship', 'weapons'),
-  railEntry('engine', 'Engine', 'ship', 'shipyard', { ready: p => tabReady(p, 'shipyard') || 'No shipyard here' }),
-  railEntry('crew', 'Crew', 'ship', 'crew'),
-  railEntry('bonds', 'Bonds', 'ship', 'web'),
-  railEntry('journal', 'Journal', 'ship', 'journal'),
-  railEntry('port', 'Port', 'ashore', 'port'),
-  railEntry('missions', 'Missions', 'ashore', 'missions', { ready: p => tabReady(p, 'missions') || 'No work board here' }),
-  railEntry('bar', 'Bar', 'ashore', 'bar'),
-  railEntry('exchange', 'Exchange', 'ashore', 'trade', { shown: () => ownerOnly('trade'), ready: p => tabReady(p, 'trade') || 'No exchange at this port' }),
-  railEntry('company', 'Company', 'ashore', 'company', { shown: () => ownerOnly('company') }),
+  { id: 'bridge', label: 'Bridge', group: 'ship', tab: 'nav', ready: p => tabReady(p, 'nav') || 'Not available here' },
+  { id: 'comms', label: 'Comms', group: 'ship', tab: 'comms', ready: p => tabReady(p, 'comms') || 'Not available here' },
+  { id: 'gunnery', label: 'Gunnery', group: 'ship', tab: 'weapons', ready: p => tabReady(p, 'weapons') || 'Not available here' },
+  { id: 'engine', label: 'Engine', group: 'ship', tab: 'shipyard', ready: p => tabReady(p, 'shipyard') || 'No shipyard here' },
+  { id: 'crew', label: 'Crew', group: 'ship', tab: 'crew', ready: p => tabReady(p, 'crew') || 'Not available here' },
+  { id: 'bonds', label: 'Bonds', group: 'ship', tab: 'web', ready: p => tabReady(p, 'web') || 'Not available here' },
+  { id: 'journal', label: 'Journal', group: 'ship', tab: 'journal', ready: p => tabReady(p, 'journal') || 'Not available here' },
+  { id: 'port', label: 'Port', group: 'ashore', tab: 'port', ready: p => tabReady(p, 'port') || 'Not available here' },
+  { id: 'missions', label: 'Missions', group: 'ashore', tab: 'missions', ready: p => tabReady(p, 'missions') || 'No work board here' },
+  { id: 'bar', label: 'Bar', group: 'ashore', tab: 'bar', ready: p => tabReady(p, 'bar') || 'No bar here' },
+  { id: 'exchange', label: 'Exchange', group: 'ashore', tab: 'trade', shown: () => !hired(), ready: p => tabReady(p, 'trade') || 'No exchange at this port' },
+  { id: 'company', label: 'Company', group: 'ashore', tab: 'company', shown: () => !hired() && !scopeOff('owner'), ready: p => tabReady(p, 'company') || 'Not available here' },
 ];
-// The entries drawn at this port, in table order.
-const railEntries = p => RAIL.filter(e => e.shown(p));
+const railEntries = p => RAIL.filter(e => !e.shown || e.shown(p));
 const RAIL_GROUPS = [['ship', 'Ship'], ['ashore', 'Ashore']];
 
-// The pages the shell can show. `under` names the page whose rail entry a page without an entry of its own belongs to: the
-// character screen is opened from a name on the crew list, and keeps the Crew entry lit.
-const SHELL_PAGES = { nav: {}, comms: {}, weapons: {}, shipyard: {}, crew: {}, web: {}, journal: {}, port: {}, missions: {}, bar: {}, trade: {}, company: {}, person: { under: 'crew' } };
-
-// A page the shell does not know, or whose entry is hidden in this game (an older UI.tab, say), falls back to Port.
-const shellTab = tab => {
-  if (!SHELL_PAGES[tab]) return 'port';
-  const entry = RAIL.find(e => e.tab === tab);
-  return entry && !entry.shown(UI.planet) ? 'port' : tab;
+// The pages the shell can show. `under` names the rail entry a page without an entry of its own belongs to: the
+// character screen is opened from a name on the crew list, and keeps Crew lit.
+const SHELL_PAGES = {
+  nav: {}, comms: {}, weapons: {}, shipyard: {}, crew: {}, web: {}, journal: {}, port: {}, missions: {}, bar: {}, trade: {}, company: {},
+  person: { under: 'crew' },
 };
+
+// A page the shell does not know falls back to Port.
+const shellTab = tab => (SHELL_PAGES[tab] ? tab : 'port');
 
 // One rail button. An unavailable entry is disabled and says why, as text under the button.
 function railEntryHtml(entry, p, activeId) {
@@ -48,7 +44,7 @@ function railEntryHtml(entry, p, activeId) {
 }
 
 function railHtml(p, tab) {
-  const lit = RAIL.find(e => e.tab === ((SHELL_PAGES[tab] || {}).under || tab)), activeId = lit && lit.id;  // the entry that opens this page, or the one it sits under
+  const under = (SHELL_PAGES[tab] || {}).under || tab, lit = RAIL.find(e => e.tab === under), activeId = lit ? lit.id : under;
   return `<nav class="rail" aria-label="Ship">${RAIL_GROUPS.map(([group, label]) => {
     const entries = railEntries(p).filter(e => e.group === group);
     return entries.length ? `<div class="rail-group"><h3>${label}</h3>${entries.map(e => railEntryHtml(e, p, activeId)).join('')}</div>` : '';

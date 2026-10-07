@@ -21,7 +21,7 @@ function loseCrew(c, cause) {
     if (b >= 3) p.mood = { kind: 'low', until: st.day + Math.min(30, 10 + 2 * b), text: `${c.first} is gone` };
   }
   c.dead = true;
-  (st.mourn = st.mourn || []).push({ id: c.id, first: c.first, last: c.last, role: c.role, home: c.home });
+  (st.mourn = st.mourn || []).push({ id: c.id, cast: c.cast, first: c.first, last: c.last, role: c.role, home: c.home });
   return 'dead';
 }
 
@@ -41,7 +41,8 @@ function mournScene(m) {
   const st = G.state, h = hired(), cap = h && hiredCaptain();
   const who = `${m.first} ${m.last}`, crew = st.crew.map(person).filter(Boolean);
   return { title: 'After the Loss', personal: true,
-    text: `${who}, the ${ROLE_NAMES[m.role] ? ROLE_NAMES[m.role].toLowerCase() : 'hand'}, is on the ship's memorial now, and the ship is in port. There is a berth with a made bunk and a locker nobody has opened. The crew are waiting to see what you do.`,
+    text: [`${who}, the ${ROLE_NAMES[m.role] ? ROLE_NAMES[m.role].toLowerCase() : 'hand'}, is on the ship's memorial now, and the ship is in port. There is a berth with a made bunk and a locker nobody has opened. The crew are waiting to see what you do.`,
+      ...(m.cast ? farewellFacts(m.cast) : [])].join('</p><p>'),
     choices: MOURN.map(o => ({ label: o.label, ...(o.cost ? gated(needCr(o.cost)) : {}), run() {
       if (o.cost) st.credits -= o.cost;
       if (o.fund && h) h.fund = Math.max(0, h.fund - o.fund);

@@ -441,7 +441,7 @@ test('the sign-on dialog keeps its choices on screen at 1280x800, and a hand see
   await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); });
   const choices = await page.evaluate(() => [...document.querySelectorAll('#panel.event .choices button')].map(b => { const r = b.getBoundingClientRect(); return r.top >= 0 && r.bottom <= window.innerHeight; }));
   assert.ok(choices.length >= 3 && choices.every(Boolean), `every sign-on choice is inside the window: ${JSON.stringify(choices)}`);
-  const order = await ev(() => { while (G.dialog) finishEvent(); UI.tab = 'port'; UI.render(); const h = document.getElementById('panel').innerHTML; return [h.indexOf('class="nowrap">Captain'), h.indexOf('Cargo bay')]; });
+  const order = await ev(() => { while (G.dialog) finishEvent(); UI.tab = 'port'; UI.render(); const h = document.getElementById('panel').innerHTML; return [h.indexOf("'s</span> run"), h.indexOf('Cargo bay')]; });
   assert.ok(order[0] > 0 && order[1] > 0 && order[0] < order[1], `the captain's run comes before the cargo bay: ${order}`);
   await done();
 });

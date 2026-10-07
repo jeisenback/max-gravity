@@ -56,6 +56,15 @@ CAST.cato = {
     'Cato has written someone\'s mother\'s name on the back of the watch bill so that he remembers to ask.',
     'Cato is humming something with no tune. It is the sound of the hold gang he came up with.',
   ],
+  // What he leaves behind when he walks off or dies (fate.js farewellFacts): a flag and its line, in priority order, two at most.
+  farewell: {
+    walk: 'Cato leaves the watch bill on the galley table, filled in for the next seven days, and takes his mug.',
+    facts: [
+      ['benched', 'The hold you sealed on him is in the log, with the date and the hour, in his hand.'],
+      ['told', 'At the foot of the watch bill, in pencil, is a line that reads: tell them if it goes badly.'],
+      ['share', 'His notebook has the old slow ship with the question mark, and her price, crossed out and written again six times.'],
+    ],
+  },
   scenes: {
     intro: {
       title: 'The Watch Bill',
