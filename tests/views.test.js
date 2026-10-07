@@ -161,3 +161,47 @@ for (const tab of ['crew', 'bar']) {
     await done();
   });
 }
+
+// ---------- the scene dialog on the helpers (#321) ----------
+
+test('no authored event title or choice label carries markup or an entity', async () => {
+  const html = fs.readFileSync('index.html', 'utf8');
+  const files = [...html.matchAll(/<script src="([^"]+)"/g)].map(m => m[1]);
+  const offenders = [];
+  for (const f of files) {
+    for (const [n, line] of fs.readFileSync(f, 'utf8').split('\n').entries()) {
+      for (const m of line.matchAll(/\b(title|label):\s*[`'"]([^`'"]*)/g)) if (/<[a-z/]|&[a-z#0-9]+;/i.test(m[2])) offenders.push(`${f}:${n + 1} ${m[1]}: ${m[2].slice(0, 50)}`);
+    }
+  }
+  assert.deepEqual(offenders, [], 'a title or label with markup would show literally once it is escaped');
+});
+
+test('the scene dialog escapes the title and the aria-label, leaves the text raw, and shows a shut choice with its reason', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired', shell: 'default' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    openEvent({ title: 'A <b>', text: 'Some <i>text</i> &middot; more.', choices: [{ label: 'Pay <up>', ...gated(needCr(1e9)), run: () => 'ok' }, { label: 'Leave', run: () => 'ok' }] });
+    const body = document.querySelector('.event-body'), shut = body.querySelector('button[disabled]');
+    return {
+      heading: body.querySelector('h1').textContent, headingEls: body.querySelectorAll('h1 b').length, label: body.getAttribute('aria-label'),
+      italic: !!body.querySelector('p i'), entity: body.querySelector('p').textContent.includes('·'),
+      shut: shut && shut.textContent, why: (body.querySelector('.hint.why') || {}).textContent, buttons: body.querySelectorAll('.choices button').length,
+    };
+  });
+  assert.equal(r.heading, 'A <b>'); assert.equal(r.headingEls, 0); assert.equal(r.label, 'A <b>');
+  assert.ok(r.italic, 'the text keeps its markup'); assert.ok(r.entity, 'and its entities');
+  assert.equal(r.shut, 'Pay <up>'); assert.ok(r.why && r.why.length > 3, `the shut choice says why: ${r.why}`); assert.equal(r.buttons, 2);
+  await done();
+});
+
+test('the result screen escapes its title and keeps its text raw', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired', shell: 'default' });
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    UI.showEventResult('Done <b>', 'It went <i>well</i>.', []);
+    const body = document.querySelector('.event-body');
+    return { heading: body.querySelector('h1').textContent, bold: body.querySelectorAll('h1 b').length, italic: !!body.querySelector('p i') };
+  });
+  assert.deepEqual(r, { heading: 'Done <b>', bold: 0, italic: true });
+  await done();
+});

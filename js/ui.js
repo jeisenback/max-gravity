@@ -53,25 +53,20 @@ const UI = {
     this.el.style.setProperty('--accent', color || '#6fb0ff');
   },
 
-  // A choice's button; shut, it says why as text (js/gates.js), not only in a tooltip.
-  choiceHtml(c, i) {
-    const shut = c.can && !c.can(), why = shut && (typeof c.why === 'function' ? c.why() : c.why);
-    return `<button data-action="choose" data-arg="${i}" ${shut ? 'disabled' : ''}>${c.label}</button>${why ? `<div class="hint why">${why}</div>` : ''}`;
-  },
+  // A choice's button; shut, it says why as text (js/gates.js). Built on the view helpers (js/views.js): the label and the reason are text.
+  choiceHtml(c, i) { return String(choiceButtonHtml(c, i)); },
 
   showEvent(ev, choices) {
     const where = G.mode === 'hail' ? 'Comms channel' : G.mode === 'transit' ? 'In transit' : G.state.planet;
     this.setAccent(G.mode === 'hail' ? '#6fb0ff' : G.mode === 'transit' ? '#9fb4ff' : GOV_COLORS[system().gov]);
-    this.el.innerHTML = `
-      <div class="event-body" role="dialog" aria-label="${esc(ev.title)}">
-        <div class="eyebrow">${ev.via ? `${VIA_LABELS[ev.via]} &middot; ` : ''}${where}</div>
-        ${sceneFacesHtml(ev)}
+    this.el.innerHTML = String(h`
+      <div class="event-body" role="dialog" aria-label="${ev.title}">
+        <div class="eyebrow">${ev.via ? raw(`${VIA_LABELS[ev.via]} &middot; `) : ''}${where}</div>
+        ${raw(sceneFacesHtml(ev))}
         <h1>${ev.title}</h1>
-        <p>${ev.text}</p>
-        <div class="choices">
-          ${choices.map((c, i) => this.choiceHtml(c, i)).join('')}
-        </div>
-      </div>`;
+        <p>${raw(ev.text)}</p>
+        ${choiceBlockHtml(choices)}
+      </div>`);
     this.el.classList.remove('hidden');
     this.el.classList.add('event');
     this.el.scrollTop = 0;
@@ -86,15 +81,15 @@ const UI = {
   },
 
   showEventResult(title, text, shifts) {
-    this.el.innerHTML = `
+    this.el.innerHTML = String(h`
       <div class="event-body">
         <div class="eyebrow">${G.mode === 'hail' ? 'Comms channel' : G.mode === 'transit' ? 'In transit' : G.state.planet}</div>
-        ${sceneFacesHtml(G.dialog && G.dialog.event)}
+        ${raw(sceneFacesHtml(G.dialog && G.dialog.event))}
         <h1>${title}</h1>
-        <p>${text}</p>
-        ${shiftLines(shifts || [])}
+        <p>${raw(text)}</p>
+        ${raw(shiftLines(shifts || []))}
         <div class="choices"><button data-action="continue" class="primary">Continue</button></div>
-      </div>`;
+      </div>`);
   },
 
   hide() {
