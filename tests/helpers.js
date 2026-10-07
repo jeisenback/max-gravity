@@ -15,8 +15,40 @@ const path = require('node:path');
 const fs = require('node:fs');
 const COVERAGE_DIR = process.env.COVERAGE_DIR || '';  // set by tools/coverage.js: each page's JS coverage is written there
 let coverageN = 0;
-const URL = 'file://' + path.resolve(__dirname, '..', 'index.html');
+const ROOT = path.resolve(__dirname, '..');
+const INDEX = path.join(ROOT, 'index.html');
+const URL = 'file://' + INDEX;
 let browser = null;
+
+// The page loads about 100 scripts one by one, which takes about 510 ms to open; served as one script it takes about 240 ms (#402).
+// The tests serve the bundle at the same address: the document and one script are answered by a route, and every other file is read as
+// it is. Scripts that are not in one run in index.html (a mod between two built-ins) are not bundled. bundleOf(html, read) returns
+// { html, js, src }, or null. Coverage (tools/coverage.js) reads each script by its own address, so it loads them one by one.
+const BUNDLE = 'js/__bundle.js';
+// True if the text is only whitespace and whole comments (the gap between two scripts that may still be bundled). A scan, not a regex,
+// so a long run of comment markers cannot make it slow.
+function onlyComments(text) {
+  let i = 0;
+  for (;;) {
+    while (i < text.length && text[i].trim() === '') i++;
+    if (i >= text.length) return true;
+    if (!text.startsWith('<!--', i)) return false;
+    const close = text.indexOf('-->', i + 4);
+    if (close < 0) return false;
+    i = close + 3;
+  }
+}
+function bundleOf(html, read) {
+  const tags = [...html.matchAll(/<script src="(js\/[^"]+)"><\/script>/g)];
+  if (!tags.length) return null;
+  const end = t => t.index + t[0].length;
+  for (let i = 1; i < tags.length; i++) if (!onlyComments(html.slice(end(tags[i - 1]), tags[i].index))) return null;
+  let page = html;
+  for (let i = tags.length - 1; i >= 0; i--) page = page.slice(0, tags[i].index) + (i === 0 ? `<script src="${BUNDLE}"></script>` : '') + page.slice(end(tags[i]));
+  return { html: page, js: tags.map(m => read(m[1])).join('\n'), src: BUNDLE };
+}
+let bundled;  // read once per test file
+const theBundle = () => (bundled === undefined ? (bundled = bundleOf(fs.readFileSync(INDEX, 'utf8'), f => fs.readFileSync(path.join(ROOT, f), 'utf8'))) : bundled);
 
 // Runs in the page before any game script. mulberry32: small, fast, good enough.
 function seedScript(seed) {
@@ -39,11 +71,12 @@ function seedScript(seed) {
 //   init: a function to run in the page before the game loads
 //   seed: the random seed
 //   scope: 'full' (the default here) or 'earth-hired', the narrow build the game ships with (js/build.js)
+//   bundle: false to load the scripts one by one as index.html lists them (the default serves them as one, bundleOf above)
 //   debt: true to start a hired hand owing the hiring hall's bond (js/hired.js, #280). It is off in tests, so the many that buy a ship or
 //         count a hand's pay start as they did before the bond; the soak and the tests of the bond turn it on.
 //   shell: true to open the ship-interface shell (js/shell.js, shell=on), false (the default) to open the old screens (shell=off), or
 //          'default' to add nothing, so the build's own default applies (on in the narrow build). SHELL_TESTS=on makes true the default.
-async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '', scope = 'full', shell = process.env.SHELL_TESTS === 'on', debt = false } = {}) {
+async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '', scope = 'full', shell = process.env.SHELL_TESTS === 'on', debt = false, bundle = true } = {}) {
   browser = browser || await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
   const ctx = await browser.newContext({ viewport, isMobile: mobile, hasTouch: mobile });
   await ctx.addInitScript(seedScript, seed);
@@ -51,6 +84,11 @@ async function open({ title = false, viewport = { width: 1280, height: 800 }, mo
   if (init) await ctx.addInitScript(init);
   // The page links Google Fonts. A test should not depend on the network (a dropped tunnel is a page error), so answer those requests here.
   await ctx.route(/fonts\.(googleapis|gstatic)\.com/, route => route.fulfill({ status: 200, contentType: 'text/css', body: '' }));
+  const b = bundle && !COVERAGE_DIR && theBundle();
+  if (b) {
+    await ctx.route(u => u.protocol === 'file:' && u.pathname === INDEX, route => route.fulfill({ status: 200, contentType: 'text/html', body: b.html }));
+    await ctx.route(u => u.protocol === 'file:' && u.pathname.endsWith('/' + b.src), route => route.fulfill({ status: 200, contentType: 'text/javascript', body: b.js }));
+  }
   const page = await ctx.newPage();
   const errors = [];
   watch(page, errors);
@@ -85,4 +123,4 @@ async function closeBrowser() {
   browser = null;
 }
 
-module.exports = { open, watch, closeBrowser, URL };
+module.exports = { open, watch, closeBrowser, bundleOf, URL };

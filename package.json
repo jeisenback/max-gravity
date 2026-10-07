@@ -3,8 +3,9 @@
   "private": true,
   "description": "Tests for Max Gravity. The game itself needs no build: open index.html.",
   "scripts": {
-    "test": "node --test --test-concurrency=4 \"tests/*.test.js\"",
-    "coverage": "node tools/coverage.js",
+    "test": "node --test --test-concurrency=4 --test-reporter=tap --test-reporter-destination=stdout --test-reporter=./tools/slowest.js --test-reporter-destination=stdout \"tests/*.test.js\"",
+    "test:changed": "node tools/changed-tests.js",
+    "coverage":"node tools/coverage.js",
     "soak": "node --test --test-concurrency=4 \"tests/distribution/*.test.js\"",
     "fights": "node tools/fights.js --seeds 1,2,3,4,5 --n 200"
   },
