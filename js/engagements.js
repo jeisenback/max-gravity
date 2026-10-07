@@ -212,6 +212,7 @@ function raidStep(s, c, post) {
     else if (edge >= 2) like(cap, 1, 'You made the call that turned a raid.');
   }
   if (hull) { const pts = Math.round(ship().armor * hull * foePunch(s)); st.armor = Math.max(1, st.armor - pts); out += ` Armor -${pts}.`; if (!won && Math.random() < CASUALTY_ODDS * (1 + 0.15 * s.grade + (s.pack ? 0.25 : 0))) out += ` ${repelCasualty(s)}`; }
+  if (s.handDied) return out;  // the hand is dead: the ending is queued, and the raid does not go on
   s.beat++;
   if (s.beat >= 3 || s.edge >= 3 || s.edge <= -3) return `${out} ${raidClose(s)}`;
   G.nextEvent = raidScene(s);

@@ -241,3 +241,59 @@ test('an owner boarding a disabled ship still rolls for it, with the odds in the
   assert.ok(r.labels.some(l => /prize/i.test(l))); assert.ok(r.odds);
   await done();
 });
+
+// ---------- the hand can die (#357) ----------
+
+test('the hand dies on a second hurt or a lost bridge while laid up, one in four, halved by a medic; a first hurt never rolls', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = fight(), h = hired(), out = {}, d = G.duel;  // a lost bridge ends the duel, so keep it
+    const medic = makePerson('earth'); medic.role = 'medic'; medic.skill = 1; registerPerson(medic);  // made before the rolls: a constant random hangs makePerson
+    const reset = () => { G.nextEvent = null; delete h.died; delete h.hurtUntil; };
+    st.crew = st.crew.filter(id => person(id).role !== 'medic');  // the chapter's crew carries one: start without
+    reset(); rolls([0.01]); const first = {}; hurtHand(first); out.first = { died: !!first.handDied, next: G.nextEvent };
+    rolls([0.2]); const again = {}; hurtHand(again); out.again = { died: !!again.handDied, title: G.nextEvent && G.nextEvent.title, how: h.died && h.died.how };
+    reset(); hurtHand({}); rolls([0.3]); const miss = {}; hurtHand(miss); out.miss = { died: !!miss.handDied, next: G.nextEvent };   // 0.3 is over one in four
+    reset(); st.crew.push(medic.id);
+    hurtHand({}); rolls([0.2]); const withMedic = {}; hurtHand(withMedic); out.medicSaves = !withMedic.handDied;   // 0.2 is under one in four, over one in eight
+    reset(); hurtHand({}); rolls([0.1]); const medicDies = {}; hurtHand(medicDies); out.medicStillRolls = !!medicDies.handDied;
+    st.crew = st.crew.filter(id => id !== medic.id); reset();
+    // the bridge taken while laid up, and not while well
+    h.hurtUntil = st.day + 5; rolls([0.01]); const s = repelStart(d, 'full'); s.pos = 3; repelSettle(s); out.bridge = { title: G.nextEvent && G.nextEvent.title, how: h.died && h.died.how };
+    reset(); rolls([0.01]); const s2 = repelStart(d, 'full'); s2.pos = 3; repelSettle(s2); out.well = { next: G.nextEvent, died: !!h.died };
+    return out;
+  });
+  assert.deepEqual([r.first.died, r.first.next], [false, null], 'a first hurt does not roll');
+  assert.deepEqual(r.again, { died: true, title: 'The Last Run', how: 'hurt' });
+  assert.deepEqual([r.miss.died, r.miss.next], [false, null]);
+  assert.ok(r.medicSaves, 'a medic halves it'); assert.ok(r.medicStillRolls);
+  assert.deepEqual(r.bridge, { title: 'The Last Run', how: 'bridge' });
+  assert.deepEqual([r.well.next, r.well.died], [null, false], 'a bridge taken while well does not roll');
+  await done();
+});
+
+test('a lock fight ends on the hand\'s death, and the ending reads the record and starts a new hand with a line on the dock', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = fight(), h = hired(), d = G.duel, cap = person(h.captain), out = {};
+    generated(0); h.hurtUntil = st.day + 5; st.credits = 777; h.skill.gunner = 60;
+    const s = repelStart(d, 'full');
+    rolls([0.99, 0.01, 0, 0.01]);  // the exchange is lost, someone is hurt and with no crew it is you, and the roll is over one in four
+    repelStep(s, 'post');
+    const e = G.nextEvent;
+    out.title = e.title; out.fight = s.handDied; out.last = cap.last; out.text = e.text; out.choices = e.choices.map(c => c.label);
+    __seed(1);  // a constant random hangs the generators, so the new hand starts from the seeded one
+    e.choices[0].run();
+    out.fresh = G.state !== st; out.credits = G.state.credits; out.carried = G.state.carried; out.name = captain().name;
+    out.skill = hired().skill.gunner; out.since = hired().since;
+    return out;
+  });
+  assert.equal(r.title, 'The Last Run'); assert.ok(r.fight); assert.deepEqual(r.choices, ['Begin again']);
+  assert.ok(r.text.includes(`Captain ${r.last} says it from the hatch`), 'what happened'); assert.ok(r.text.includes(`Captain ${r.last} writes it in the log`));
+  assert.match(r.text, /days aboard/, 'the look back follows');
+  assert.ok(r.fresh && r.credits !== 777 && r.credits > 0, 'a new hand with fresh savings'); assert.equal(r.carried, `On the dock they say the hand on Captain ${r.last}'s ship did not come back.`);
+  assert.equal(r.name, 'Sam Rowe');
+  await done();
+});

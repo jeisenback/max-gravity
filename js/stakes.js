@@ -45,6 +45,34 @@ function carriedLine(flags, last) {
   return hit ? hit[1](last) : `On the dock they know whose ship you were put off.`;
 }
 
+// The hand's death (#357), the ending of the chapter: what happened, the look back (hired.js, which reads the record), and a new game.
+const HAND_DEATH_TEXT = {
+  hurt: last => `The first hurt was not mended when the second one came. You are on the deck, with the cold of it against your cheek, and the crew are saying your name. Captain ${last} says it from the hatch, and then asks for the medic, and it is already late for that.`,
+  bridge: last => `You are laid up in the corridor, where the first hit left you, when they come through the last hatch. You do not get up. Captain ${last} gives them the code to the strongbox, and the crew carry you below before the lock cycles.`,
+};
+function handDeathScene(how) {
+  const cap = person(hired().captain), last = cap.last;
+  return {
+    title: 'The Last Run', personal: true,
+    text: [HAND_DEATH_TEXT[how](last), `Captain ${last} writes it in the log: the day, the place, your name. The ship goes on without you.`, chapterRecap().text].join('</p><p>'),
+    choices: [{ label: 'Begin again', run: beginAgain }],
+  };
+}
+// A new hand, in the same slot and under the same name, with another captain if there is one and nothing carried but a line on the dock.
+function beginAgain() {
+  const st = G.state, h = hired(), cap = person(h.captain), others = Object.keys(CAPTAINS).filter(k => k !== h.captainKey);
+  startGame({
+    slot: Saves.current,
+    background: st.background,
+    captain: captain().name,
+    mode: 'hired',
+    post: h.post,
+    captainKey: others.length ? pick(others) : undefined,
+    carried: `On the dock they say the hand on Captain ${cap.last}'s ship did not come back.`,
+  });
+  return null;
+}
+
 // Back to the sign-on, with another captain. Savings and post experience come with you; the ship, the crew and the friends do not.
 function putAshore() {
   const st = G.state, h = hired(), cap = person(h.captain), others = Object.keys(CAPTAINS).filter(k => k !== h.captainKey);
