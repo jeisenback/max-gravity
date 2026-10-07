@@ -39,11 +39,22 @@ const runTotals = h => ({
 });
 const skillXp = post => (hired() && hired().skill && hired().skill[post]) || 0;
 const skillLevel = post => Math.max(0, SKILL_STEPS.filter(n => skillXp(post) >= n).length - 1 - (handHurt() ? 1 : 0));  // a hurt hand works a level lower (boarders.js)
+// The step a post's points have reached, from the stored points alone: an injury (skillLevel above) lowers the level worked, not this.
+const skillStep = xp => SKILL_STEPS.filter(s => xp >= s).length - 1;
 function gainSkill(post, n) {
   const h = hired();
   if (!h) return;
   h.skill = h.skill || {};
+  const before = skillStep(h.skill[post] || 0);
   h.skill[post] = (h.skill[post] || 0) + n;
+  if (post === h.post && skillStep(h.skill[post]) > before) levelNote(post, skillStep(h.skill[post]));
+}
+// One plain line when the hand's own post reaches a new level, on the port screen when docked and in the flight log on a burn (as Mods' note).
+function levelNote(post, level) {
+  const name = POSTS[post].name, text = `Your work at the ${name.toLowerCase()} post is level ${level} now. Your own move in a raid works a tenth more often${level >= 2 ? `, and the choices marked [${name} ${level}] are open to you` : ''}.`;
+  if (G.mode !== 'landed') return msg(text);
+  UI.notes.push(text);
+  if (!G.dialog) UI.render();
 }
 // Doing a job yourself: the odds are worse than a crew member's, and get better as you learn the post.
 const soloOdds = post => 0.45 + 0.1 * skillLevel(post);
