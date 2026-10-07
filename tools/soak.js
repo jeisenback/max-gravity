@@ -38,7 +38,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
       const day = st.day - hired().since;
       for (const id of seen.filter(id => !st.crew.includes(id))) {
         const c = person(id), name = fullName(c), m = (st.memorial || []).find(m => m.key === id || (c.cast && m.key === c.cast)), f = (st.fallen || []).find(f => f.name === name);
-        losses.push({ day, who: name, what: m || f || (c.cast && castDead(c.cast)) ? 'died' : 'left', why: m ? m.cause : f ? 'killed repelling boarders' : 'opinion' });
+        losses.push({ day, who: name, what: m || f || (c.cast && castDead(c.cast)) ? 'died' : 'left', why: m ? m.cause : f ? 'killed repelling boarders' : (dep => dep ? `opinion, at ${dep.place}` : 'opinion')((st.departed || []).find(x => x.key === c.cast)) });
       }
       seen = [...st.crew];
       const marks = Object.values(st.cast || {}).reduce((t, c) => t + (c.marks || []).length, 0);

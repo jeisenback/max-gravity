@@ -483,12 +483,15 @@ function land(planet) {
     return false;
   });
   expireMissions();
+  const farewells = [];
   for (const c of crewMembers().filter(c => c.id && c.opinion <= OPINION.BITTER && !c.loyal)) {
     leaveCrew(c.id);
     c.location = planet.name;
-    msg(`${fullName(c)} has had enough of you and your ship, and walks off at ${planet.name}.`);
+    if (c.cast && CAST[c.cast].farewell) farewells.push(c);  // a scene, once they are in port
+    else msg(`${fullName(c)} has had enough of you and your ship, and walks off at ${planet.name}.`);
   }
   landAt(planet, G.messages.slice(before).map(m => m.text));
+  for (const c of farewells) { const ev = walkOffScene(c, planet); if (G.dialog) G.nextEvent = G.nextEvent || ev; else openEvent(ev); }
 }
 
 function landAt(planet, notes) {
