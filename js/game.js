@@ -2,7 +2,7 @@
 
 // Core game: state, flight physics, AI, combat, burns between locations, and rendering.
 
-const HUD_W = 220;          // sidebar width on wide screens; phones get a top strip
+const HUD_W = 220;          // sidebar width from 1000px; narrower screens get a top strip
 const BURN_DIST = 800;      // must be this far out from local traffic to start a long burn
 const LAND_SPEED = 140;
 const FUEL_PRICE = 2;       // credits per unit of reaction mass
@@ -1250,7 +1250,7 @@ canvas.addEventListener('click', e => {
 function resize() {
   const dpr = window.devicePixelRatio || 1;
   G.W = window.innerWidth; G.H = window.innerHeight;
-  G.hudW = G.W >= 700 ? HUD_W : 0;
+  G.hudW = G.W >= 1000 ? HUD_W : 0;
   canvas.width = G.W * dpr; canvas.height = G.H * dpr;
   canvas.style.width = G.W + 'px'; canvas.style.height = G.H + 'px';
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);

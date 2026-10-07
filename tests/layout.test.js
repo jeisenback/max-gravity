@@ -64,3 +64,14 @@ test('the HUD sidebar and the panel do not overlap, and the panel clears the com
   else assert.ok(r.panelTop >= 84, `the panel's top (${r.panelTop}) is at least 84px, clear of the compact HUD strip`);
   await g.done();
 });
+
+test('between 700 and 999px the compact HUD is used, and from 1000px the sidebar', async () => {
+  const g = await open({ scope: 'earth-hired', shell: 'default', viewport: { width: 768, height: 1024 } });
+  const hudAt = async w => { await g.page.setViewportSize({ width: w, height: 800 }); await g.page.waitForFunction(x => innerWidth === x && G.W === x, w); return g.ev(() => ({ hudW: G.hudW, hud: HUD_W })); };
+  assert.equal((await hudAt(768)).hudW, 0, 'no sidebar at 768');
+  assert.equal((await hudAt(999)).hudW, 0, 'no sidebar at 999');
+  const wide = await hudAt(1000);
+  assert.equal(wide.hudW, wide.hud, 'the sidebar at 1000');
+  assert.equal((await hudAt(1280)).hudW, wide.hud, 'the sidebar at 1280');
+  await g.done();
+});

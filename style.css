@@ -81,6 +81,11 @@ canvas { display: block; touch-action: none; }
   #panel.event { inset: 0; margin: auto; width: min(560px, 94vw); height: fit-content; max-height: 92vh; top: 0; transform: none; }
 }
 
+/* A tablet has the compact HUD strip (84px) across the top, so the panel sits below it. From 1000px the HUD is a sidebar. */
+@media (min-width: 700px) and (max-width: 999px) {
+  #panel:not(.event) { top: 84px; height: min(780px, calc(100vh - 92px)); }
+}
+
 .eyebrow {
   font-family: var(--font-label);
   font-size: 12px;
