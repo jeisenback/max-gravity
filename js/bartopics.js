@@ -212,7 +212,9 @@ const BAR_TOPICS = [
     const r = barWarm(p, { loves: ['nervous', 'secretive', 'homesick', 'kind'], hates: ['talkative', 'drunk'] }, 'The captain sat with me and did not make me talk.');
     return `${barSays(barTrait('quiet', p, BAR_SILENCE), p)} ${r.line}`.trim();
   } }) },
-  { id: 'goal', w: p => (GOAL_HELP[p.goal] ? 3 : 0), make: (p, pat, c) => ({ label: GOAL_HELP[p.goal].ask, ...gated(notYet(() => pat.goal, 'You have done that already tonight.')), run() { pat.goal = true; met(pat); G.nextEvent = helpScene(p, pat, c); return `You ask, and ${p.first} puts down the glass.`; } }) },
+  { id: 'goal', w: p => (GOAL_HELP[p.goal] ? 3 : 0), make: (p, pat, c) => ({ label: GOAL_HELP[p.goal].ask, ...gated(notYet(() => pat.goal,
+    'You have done that already tonight.')), run() { pat.goal = true; met(pat); G.nextEvent = helpScene(p, pat, c);
+    return `You ask, and ${p.first} puts down the glass.`; } }) },
   {
     id: 'secret',
     w: (p, pat) => (p.secret && SECRET_HELP[p.secret] && (pat.drank || p.opinion >= OPINION.CLOSE) ? 4 : 0),
@@ -222,7 +224,9 @@ const BAR_TOPICS = [
     run() { pat.troubled = true; met(pat); G.nextEvent = secretScene(p, pat, c); return `${p.first} looks at you for a while before deciding.`; }
   })
   },
-  { id: 'home', w: p => (barHas(p, 'homesick') ? 4 : 0), make: (p, pat) => ({ label: `Ask about ${p.home}`, ...gated(notYet(() => pat.home, 'You have done that already tonight.')), run() { pat.home = true; met(pat); like(p, 2, `The captain let me talk about ${p.home}.`); return barSays(pick(BAR_HOME_TALK), p); } }) },
+  { id: 'home', w: p => (barHas(p, 'homesick') ? 4 : 0), make: (p, pat) => ({ label: `Ask about ${p.home}`, ...gated(notYet(() => pat.home,
+    'You have done that already tonight.')), run() { pat.home = true; met(pat); like(p, 2, `The captain let me talk about ${p.home}.`);
+    return barSays(pick(BAR_HOME_TALK), p); } }) },
   {
     id: 'bless',
     w: p => (barHas(p, 'pious') ? 4 : 0),
