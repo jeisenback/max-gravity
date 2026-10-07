@@ -649,3 +649,8 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 
 /* A name, and the word that belongs to it, stay on one line (#263). */
 .nowrap { white-space: nowrap; }
+
+/* A suggested run: the text, and the button below it on a phone or in a column of its own beside it, so the buttons line up (#268). */
+.suggest-row { display: grid; gap: 6px; padding: 6px 0; }
+.suggest-row button { width: 100%; }
+@media (min-width: 700px) { .suggest-row { grid-template-columns: 1fr 96px; align-items: center; gap: 12px; } }

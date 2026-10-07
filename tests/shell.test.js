@@ -177,6 +177,38 @@ test('the rail fits at 360px', async () => {
   await done();
 });
 
+test('the last item can be scrolled clear of the dock at 390px', async () => {
+  const { ev, done } = await open({ shell: true, viewport: { width: 390, height: 844 }, mobile: true });
+  await ev(helpers);
+  const r = await ev(() => {
+    start(); UI.tab = 'port'; UI.render();
+    const body = document.querySelector('.shell .body'), dock = document.querySelector('.dock');
+    // whichever box scrolls: the page body or the panel
+    for (const el of [body, document.getElementById('panel'), document.scrollingElement]) if (el) el.scrollTop = el.scrollHeight;
+    const last = [...body.children].pop().getBoundingClientRect();
+    return { lastBottom: last.bottom, dockTop: dock.getBoundingClientRect().top };
+  });
+  assert.ok(r.lastBottom <= r.dockTop + 1, `the last item ends at ${r.lastBottom}, the dock starts at ${r.dockTop}`);
+  await done();
+});
+
+test('the Suggest buttons line up at 1280px and stack at 390px', async () => {
+  for (const [name, viewport, mobile] of [['wide', { width: 1280, height: 800 }, false], ['phone', { width: 390, height: 844 }, true]]) {
+    const { ev, done } = await open({ shell: true, scope: 'earth-hired', viewport, mobile });
+    await ev(helpers);
+    const r = await ev(() => {
+      start({ captainKey: 'hester' }); UI.tab = 'port'; UI.render();
+      const rows = [...document.querySelectorAll('.suggest-row')];
+      return { n: rows.length, lefts: rows.map(row => row.querySelector('button').getBoundingClientRect().left), widths: rows.map(row => [row.querySelector('button').getBoundingClientRect().width, row.getBoundingClientRect().width]),
+        below: rows.map(row => row.querySelector('button').getBoundingClientRect().top >= row.querySelector('.hint').getBoundingClientRect().bottom - 1) };
+    });
+    assert.ok(r.n >= 2, `${name}: the alternatives are shown (${r.n})`);
+    if (name === 'wide') assert.ok(r.lefts.every(l => Math.abs(l - r.lefts[0]) <= 1), `wide: the buttons share a left edge: ${r.lefts}`);
+    else { assert.ok(r.widths.every(([b, w]) => b >= w - 2), `phone: each button is as wide as its row: ${JSON.stringify(r.widths)}`); assert.ok(r.below.every(Boolean), 'phone: each button sits below its text'); }
+    await done();
+  }
+});
+
 test('an unavailable entry says why', async () => {
   const { ev, done } = await open({ shell: true });
   await ev(helpers);
