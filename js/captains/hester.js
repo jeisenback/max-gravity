@@ -12,7 +12,9 @@ CAPTAINS.hester = {
   xo: 'cato',
 
   // The sign-on paragraph's last lines, in place of "whom the crew describe as ...".
-  intro: (wage, share) => `Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. "${wage} a day and ${share} percent of what we clear," she says. "That is the whole of it. I will not surprise you, and I would like you not to surprise me."`,
+  intro: (wage, share) => (`Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled ` +
+      `notebook before she looks up. "${wage} a day and ${share} percent of what we clear," she says. "That is the whole of it. I will not surprise ` +
+      `you, and I would like you not to surprise me."`),
 
   chatter: [
     'Captain Vance is working the fuel bill out in her notebook. It does not come out any better the second time.',
@@ -28,11 +30,17 @@ CAPTAINS.hester = {
   // Her wording for the four shared events (hiredevents.js). What the choices do stays there; a part left out falls back to the
   // generic text.
   // How they take a hand's suggestion of a different run (suggest.js): `ok` by their style, and a line for each answer.
-  sway: { ok: (o, cur) => o.profit >= 0.9 * (cur.profit || 0), yes: 'Captain Vance looks at your figure, and then at hers. It is within a tenth, and she draws a line through hers. "Your way," she says. "Do not make me regret the notebook."', no: 'Captain Vance puts her figure beside yours without a word. It is better by more than a tenth, and she does not need to say so. "We go as planned," she says, and turns the page.' },
+  sway: {
+    ok: (o, cur) => o.profit >= 0.9 * (cur.profit || 0),
+    yes: 'Captain Vance looks at your figure, and then at hers. It is within a tenth, and she draws a line through hers. "Your way," she says. "Do not make me regret the notebook."',
+    no: 'Captain Vance puts her figure beside yours without a word. It is better by more than a tenth, and she does not need to say so. "We go as planned," she says, and turns the page.'
+  },
 
   events: {
     'cap-order': {
-      text: 'Captain Vance wants the drive run hotter than you would. The berth window at the next port closes in six days, and arriving after it costs two days of fuel. She has done the sum on the back of the manifest and turned it so you can read it. "It is not an order I like either," she says. "It is the cheaper one."',
+      text: ('Captain Vance wants the drive run hotter than you would. The berth window at the next port closes in six days, and arriving after it ' +
+          'costs two days of fuel. She has done the sum on the back of the manifest and turned it so you can read it. "It is not an order I like ' +
+          'either," she says. "It is the cheaper one."'),
       ordered: 'You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing, and the nothing has a figure in it.',
       heard: 'You say it plainly: what the extra heat does to the housings, and what a housing costs. She looks at the sum again and crosses a line out. "Nine percent," she says. "Not ten." It is the first time she has changed a number in front of you.',
       notHeard: '"I did not ask what you thought of the sum," she says, not unkindly. "I asked for the burn." You run it hot, and it works, which does not help.',
@@ -64,7 +72,9 @@ CAPTAINS.hester = {
   scenes: {
     trouble: {
       title: 'The First of the Month',
-      text: 'The bank\'s payment is due on the first, and the fund is four hundred short of it. Captain Vance tells you at the galley table, plainly, with the notebook open between you. She is not asking. She has said she does not ask. "I am telling you," she says, "so that when the cargo is late, you know what it is for."',
+      text: ('The bank\'s payment is due on the first, and the fund is four hundred short of it. Captain Vance tells you at the galley table, ' +
+          'plainly, with the notebook open between you. She is not asking. She has said she does not ask. "I am telling you," she says, "so that when ' +
+          'the cargo is late, you know what it is for."'),
       choices: [
         { label: 'Lend her four hundred', can: () => G.state.credits >= 400, run() {
           G.state.credits -= 400; captainLike(3, 'You lent me four hundred when the fund was short.'); captainFlag('lent');
@@ -80,7 +90,12 @@ CAPTAINS.hester = {
       confide: {
         flag: 'ownersDebt',  // the spine (#294): the Ore Runner's owners were each one payment short
         title: 'What the Notebook Is For',
-        text: 'Late in the watch Captain Vance asks you to sit. She turns the notebook round so you can read the last page, and lays a pencil across it. "The ship is not mine," she says. "She is the bank\'s until the end of the year, and mine after that, if I miss nothing. One more missed payment and the bank takes her, and I am a hand again, on somebody else\'s articles." She says it evenly. "There is an Ore Runner on the yard list at the next port with her name painted over. Same bank. Three owners, and each of them missed one payment. One. I have counted what I am from it." She turns a page. "Cato knows. You are the second. I am telling you because you have kept the books straight, and because I would rather you heard it from me."',
+        text: ('Late in the watch Captain Vance asks you to sit. She turns the notebook round so you can read the last page, and lays a pencil across ' +
+            'it. "The ship is not mine," she says. "She is the bank\'s until the end of the year, and mine after that, if I miss nothing. One more ' +
+            'missed payment and the bank takes her, and I am a hand again, on somebody else\'s articles." She says it evenly. "There is an Ore Runner ' +
+            'on the yard list at the next port with her name painted over. Same bank. Three owners, and each of them missed one payment. One. I have ' +
+            'counted what I am from it." She turns a page. "Cato knows. You are the second. I am telling you because you have kept the books straight, ' +
+            'and because I would rather you heard it from me."'),
         choices: [
           { label: 'Say you will keep it to yourself', run() {
             captainLike(2, 'You said you would keep the bank to yourself.'); captainFlag('secretKnown');
@@ -95,7 +110,11 @@ CAPTAINS.hester = {
       found: {
         flag: 'ownersDebt',
         title: 'Under the Sugar',
-        text: 'There is a letter on the galley table, unfolded, under the sugar tin. It is from the bank. You read three lines before you understand what you are reading: the ship is theirs, the next payment is the last they will wait for, and Captain Vance\'s name is typed at the top above the word FINAL. The second page is a schedule of ships the bank has taken since the spring, and the Ore Runner is the third line. You hear her in the passage. She comes in, and sees the letter, and sees you, and her face does not change at all. "Sit down," she says. "That was not for you."',
+        text: ('There is a letter on the galley table, unfolded, under the sugar tin. It is from the bank. You read three lines before you understand ' +
+            'what you are reading: the ship is theirs, the next payment is the last they will wait for, and Captain Vance\'s name is typed at the top ' +
+            'above the word FINAL. The second page is a schedule of ships the bank has taken since the spring, and the Ore Runner is the third line. ' +
+            'You hear her in the passage. She comes in, and sees the letter, and sees you, and her face does not change at all. "Sit down," she says. ' +
+            '"That was not for you."'),
         choices: [
           { label: 'Say you did not read it', run() {
             captainLike(-2, 'You said you had not read the bank\'s letter, and you had.'); captainFlag('secretKnown'); captainFlag('secretAngry');

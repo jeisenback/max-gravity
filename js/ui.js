@@ -241,7 +241,10 @@ const UI = {
       }).join('');
       const known = alivePeople().filter(p => p.opinion !== 0 && !st.crew.includes(p.id))
         .sort((a, b) => Math.abs(b.opinion) - Math.abs(a.opinion)).slice(0, 12)
-        .map(p => `<div class="hint"><b>${personLink(p)}</b> (${opinionWord(p.opinion)}, ${p.ship ? `captain of the ${p.ship.name}, flies around ${SYSTEMS[p.haunt].name}` : p.location ? `last seen at ${p.location}` : 'whereabouts unknown'})${p.location === here ? ' <b>- here now</b>' : ''}: ${p.memories.length ? p.memories[p.memories.length - 1] : ''}</div>`).join('');
+        .map(p => (`<div class="hint"><b>${personLink(p)}</b> ` +
+            `(${opinionWord(p.opinion)}, ${p.ship ? `captain of the ${p.ship.name}, flies around ${SYSTEMS[p.haunt].name}` : p.location ?
+              `last seen at ${p.location}` : 'whereabouts unknown'})${p.location === here ? ' <b>- here now</b>' : ''}: ${p.memories.length ?
+              p.memories[p.memories.length - 1] : ''}</div>`)).join('');
       const elsewhere = Object.values(CREW).filter(c => c.home !== here).map(c => `${c.name} (${ROLE_NAMES[c.role]}) at ${c.home}`);
       return `
         <h3>${hired() ? 'The crew' : 'Your crew'}</h3>
@@ -334,7 +337,8 @@ const UI = {
     switch (action) {
       case 'tab': this.tab = arg; this.tradeNote = null; break;
       case 'station': this.tab = stationOf(this.tab).id === arg && this.tab !== 'person' ? this.tab : bridgeStation(arg, p); this.tradeNote = null; break;
-      case 'choose': { const title = G.dialog.event.title, before = G.state; G.shifts = []; const text = chooseEvent(Number(arg)), shifts = G.shifts; G.shifts = null; if (G.state !== before) return;  /* a new game began (stakes.js): its first scene is up */ this.showEventResult(title, text, shifts); return; }
+      case 'choose': { const title = G.dialog.event.title, before = G.state; G.shifts = []; const text = chooseEvent(Number(arg)), shifts = G.shifts;
+        G.shifts = null; if (G.state !== before) return;  /* a new game began (stakes.js): its first scene is up */ this.showEventResult(title, text, shifts); return; }
       case 'continue': finishEvent(); return;
       case 'epilogue': openEvent(epilogueEvent()); return;
       case 'takeoff': takeOff(); return;

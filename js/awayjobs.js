@@ -14,10 +14,13 @@ const AWAY = [
       { text: 'The contact is waiting at the dock gate on {dest}, a man in a long coat who looks at your ship before he looks at you. He is not the one {who} described. He is too easy, too well dressed, and he knows your name. "I will take that off your hands," he says, and holds out both of them.',
         choices: [
           { label: 'Ask him what {who} said to say', check: { post: 'comms' },
-            win: { text: 'You ask the question {who} made you carry, the one with no right answer for a stranger. He does not have it. He smiles, and does not try, and is gone into the crowd before you have finished putting the package away. You find the real contact an hour later, a woman in a grocery stall, and the pay with her.', pay: 660, xp: 'comms', next: 1 },
+            win: { text: ('You ask the question {who} made you carry, the one with no right answer for a stranger. He does not have it. He smiles, ' +
+                'and does not try, and is gone into the crowd before you have finished putting the package away. You find the real contact an hour ' +
+                'later, a woman in a grocery stall, and the pay with her.'), pay: 660, xp: 'comms', next: 1 },
             lose: { text: 'You ask, and he answers well enough, and you hand it over. It is not until the evening, when the real contact asks where it is, that you know the answer was a good guess. You are paid a fee for the trip, and nothing for the package.', pay: 130, rep: -2 } },
           { label: 'Walk him to a crowded place before you hand it over', check: { post: 'gunner' },
-            win: { text: 'You steer him to the market square, one hand on the package and the other on the rail. In the open he changes his mind about what he wanted, and walks away with his hands in his coat. The real contact finds you at the next stall, laughing, and paying.', pay: 620, xp: 'gunner', next: 1 },
+            win: { text: ('You steer him to the market square, one hand on the package and the other on the rail. In the open he changes his mind ' +
+                'about what he wanted, and walks away with his hands in his coat. The real contact finds you at the next stall, laughing, and paying.'), pay: 620, xp: 'gunner', next: 1 },
             lose: { text: 'The market square is not as crowded as you thought. He steps close and the case leaves your hands in a movement you do not quite see, and the elbow that comes with it leaves you with a cracked rib. The fee is the fee, at least.', hurt: true, pay: 180 } },
           { label: 'Hand it over and take the fee', win: { text: 'You hand it over, and he thanks you in a voice you will not remember, and the fee is exactly what {who} promised. It is not until you are back on the ship that you think about his hands.', pay: 260 } },
         ] },
@@ -29,10 +32,14 @@ const AWAY = [
     ] },
   { id: 'stranded', title: 'A Hauler Down on {dest}', blurb: '{who}\'s brother is stuck on {dest} with a failed drive and no money for the yard. {who} cannot go. You could.',
     stages: [
-      { text: 'The hauler sits at the far end of the apron on {dest}, listing a degree to port, with her drive housing open to the sky and a man underneath it who has not slept in a day. He climbs out when you hail. "{who} sent you," he says. "I have been telling the yard it is the injector, and the yard has been telling me it is three thousand credits."',
+      { text: ('The hauler sits at the far end of the apron on {dest}, listing a degree to port, with her drive housing open to the sky and a man ' +
+          'underneath it who has not slept in a day. He climbs out when you hail. "{who} sent you," he says. "I have been telling the yard it is the ' +
+          'injector, and the yard has been telling me it is three thousand credits."'),
         choices: [
           { label: 'Rebuild the injector', check: { post: 'engineer' },
-            win: { text: 'It is the injector, and a cracked housing behind it that the yard did not mention. You spend a long afternoon in the housing with a torch in your teeth, and at dusk the drive lights on the first try. He does not say anything for a long time, and then he gives you what he has.', pay: 750, xp: 'engineer', next: 1 },
+            win: { text: ('It is the injector, and a cracked housing behind it that the yard did not mention. You spend a long afternoon in the ' +
+                'housing with a torch in your teeth, and at dusk the drive lights on the first try. He does not say anything for a long time, and then ' +
+                'he gives you what he has.'), pay: 750, xp: 'engineer', next: 1 },
             lose: { text: 'You get it half rebuilt before a feed line lets go and sprays you with hot coolant. He gets you out and wraps your arm in a wet cloth. The drive is no better, and you are in worse shape than it is. He gives you what he can for the effort.', hurt: true, pay: 180 } },
           { label: 'Tow her to the yard and argue the price down', check: { post: 'pilot' },
             win: { text: 'You take her in tow with a line you do not entirely trust, and drag her the length of the apron at a crawl. At the yard you argue, in her captain\'s name, for a price he can pay, and win. He pays you from what is left.', pay: 570, xp: 'pilot', next: 1 },
@@ -47,14 +54,22 @@ const AWAY = [
     ] },
   { id: 'witness', title: 'A Witness on {dest}', blurb: '{who} knows a dockworker on {dest} who saw something and needs an escort to give a statement. Nobody there will do it.',
     stages: [
-      { text: 'The dockworker is waiting in the back room of a noodle stall on {dest}, a small woman with her coat buttoned to the neck and her hands flat on the table. "{who} said you would come," she says. "The office is four streets away. I have been told, twice, that I would not make it there." She looks at you. "I would like to make it there."',
+      { text: ('The dockworker is waiting in the back room of a noodle stall on {dest}, a small woman with her coat buttoned to the neck and her ' +
+          'hands flat on the table. "{who} said you would come," she says. "The office is four streets away. I have been told, twice, that I would not ' +
+          'make it there." She looks at you. "I would like to make it there."'),
         choices: [
           { label: 'Walk her through the streets', check: { post: 'gunner' },
-            win: { text: 'You take the middle of the street and keep her on the inside. A man steps out of a doorway ahead of you, and sees your face, and steps back into it. At the office she gives her statement for an hour, and when she comes out she takes your hand in both of hers.', pay: 700, xp: 'gunner', next: 1 },
+            win: { text: ('You take the middle of the street and keep her on the inside. A man steps out of a doorway ahead of you, and sees your ' +
+                'face, and steps back into it. At the office she gives her statement for an hour, and when she comes out she takes your hand in both ' +
+                'of hers.'), pay: 700, xp: 'gunner', next: 1 },
             lose: { text: 'They are waiting at the third corner, two of them, and it is short and ugly. You get her into a doorway and keep her there, and you get a broken tooth and a cut on the scalp for it. The office gets her statement after dark.', hurt: true, pay: 260 } },
           { label: 'Arrange a quiet meeting by relay instead', check: { post: 'comms' },
-            win: { text: 'You make a call you should not be able to make, in a voice that sounds like an authorized one, and an officer from the office comes to the noodle stall in plain clothes and takes the statement over the counter. Nobody who was watching the street sees anything.', pay: 620, xp: 'comms', next: 1 },
-            lose: { text: 'The call goes through somebody else\'s relay. By the time the officer arrives, there is a man across the street with a good view of the stall, and the dockworker has gone out the back and has not come back. You get a fee for the trouble, and a lasting dislike of relays.', rep: -3, pay: 130 } },
+            win: { text: ('You make a call you should not be able to make, in a voice that sounds like an authorized one, and an officer from the ' +
+                'office comes to the noodle stall in plain clothes and takes the statement over the counter. Nobody who was watching the street sees ' +
+                'anything.'), pay: 620, xp: 'comms', next: 1 },
+            lose: { text: ('The call goes through somebody else\'s relay. By the time the officer arrives, there is a man across the street with a ' +
+                'good view of the stall, and the dockworker has gone out the back and has not come back. You get a fee for the trouble, and a lasting ' +
+                'dislike of relays.'), rep: -3, pay: 130 } },
           { label: 'Tell her you cannot do this', win: { text: '"I understand," she says. She does not look surprised, and that is somehow the worst of it. You leave her at the table with her tea.' } },
         ] },
       { text: 'Before you go, the dockworker presses something into your hand: a key on a loop of string. "It is the locker at the back of the stall," she says. "{who} knows. It is for whoever comes."',

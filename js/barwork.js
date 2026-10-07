@@ -24,7 +24,9 @@ const SIDE_WORK = {
   odd: { label: 'Odd jobs for the bartender (about 50 cr)', can: () => !sideWorkDone(),
     run() { G.barState.worked = true; const n = randInt(4, 6) * 10; G.state.credits += n; return `You haul crates, change a keg and mop the back, and the bartender counts ${fmt(n)} cr into your hand without looking up.`; } },
   dock: { label: () => `A dock gig at your post (${60 + 40 * skillLevel(hired().post)} cr, and you learn a little)`, can: () => !sideWorkDone(),
-    run() { const h = hired(), n = 60 + 40 * skillLevel(h.post); G.barState.worked = true; G.state.credits += n; gainSkill(h.post, 2); return `A dock boss who needs a ${POSTS[h.post].name.toLowerCase()} for a shift finds you at the bar. It is dull and well paid: ${fmt(n)} cr, and two more points of experience at the ${POSTS[h.post].name.toLowerCase()} post.`; } },
+    run() { const h = hired(), n = 60 + 40 * skillLevel(h.post); G.barState.worked = true; G.state.credits += n; gainSkill(h.post, 2); return (
+        `A dock boss who needs a ${POSTS[h.post].name.toLowerCase()} for a shift finds you at the bar. It is dull and well paid: ${fmt(n)} cr, and ` +
+        `two more points of experience at the ${POSTS[h.post].name.toLowerCase()} post.`); } },
   cards: { label: `Sit in on a card game (${CARD_STAKE} cr stake)`, can: () => G.state.credits >= CARD_STAKE && !G.barState.played,
     run() {
       const st = G.state; G.barState.played = true;

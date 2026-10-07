@@ -97,7 +97,17 @@ const UAT_ITEMS = [
   { group: 'Combat', id: 'duel', title: 'Console duel', check: 'Threat and answer: your hand only offers cards you hold, a stopped threat passes the initiative, and the fight ends in eight exchanges or fewer. With no gunner aboard, you take the guns yourself.',
     setup() { uatFresh({ launcher: true, ship: 'courier' }); G.state.torpedoes = 3; uatBurn('The Rook', 'ceres'); startDuel({ kind: 'pirate' }, false); finishEvent(); } },
   { group: 'Combat', id: 'board', title: 'Boarding after a duel', check: 'A beaten pirate drifts, disabled: board her, finish her, or leave her. Boarding offers her strongbox or the ship as a prize.',
-    setup() { uatFresh({ launcher: true, ship: 'courier' }); uatBurn('The Rook', 'ceres'); startDuel({ kind: 'pirate' }, false); G.nextEvent = null; G.duel.foeHp = 1; G.duel.init = 'me'; G.duel.me.threat.hand[0] = 'torp'; G.duel.them.answer.hand = ['locks']; openEvent({ title: 'Last exchange', text: 'Fire the torpedo.', choices: [{ label: 'Torpedo', run: () => duelExchange('torp', 'locks') }] }); } },
+    setup() { uatFresh({
+      launcher: true,
+      ship: 'courier'
+    }); uatBurn('The Rook', 'ceres'); startDuel({ kind: 'pirate' }, false); G.nextEvent = null; G.duel.foeHp = 1; G.duel.init = 'me'; G.duel.me.threat.hand[0] = 'torp'; G.duel.them.answer.hand = ['locks']; openEvent({
+      title: 'Last exchange',
+      text: 'Fire the torpedo.',
+      choices: [{
+      label: 'Torpedo',
+      run: () => duelExchange('torp', 'locks')
+    }]
+    }); } },
   { group: 'Combat', id: 'local', title: 'Combat in local space', check: 'Pirates attack in local space; torpedoes and point defense work.',
     setup() { uatFresh({ launcher: true, ship: 'gunship' }); uatLand('The Rook'); takeOff(); for (let i = 0; i < 2; i++) { const n = spawnNpc('pirate', false); n.hostile = true; } } },
   { group: 'Frontier', id: 'claim', title: 'Found an outpost', check: 'Claim Callisto at Ganymede, fly there, deliver supplies (capped at 30 days), and build.',
@@ -117,7 +127,15 @@ const UAT_ITEMS = [
   { group: 'Cold Water', id: 'cw-contacts', title: 'Act 2: who gets the proof', check: 'At Ceres Station the Collective contact offers to take the proof.',
     setup() { uatFresh(); Object.assign(G.state.story, { stage: 5 }); uatLand('Ceres Station'); uatScene('cw-contact-ceres'); } },
   { group: 'Cold Water', id: 'cw-blockade', title: 'Act 3: the blockade', check: 'Arriving at Ceres, the blockade fleet engages; allies help; landing is allowed.',
-    setup() { uatFresh({ ship: 'gunship', launcher: true, classic: true, cargo: { water: 20 } }); Object.assign(G.state.story, { stage: 'act3', side: 'belt' }); uatLand('Pallas Refinery'); G.state.systemId = 'ceres'; G.player = makeShip(G.state.shipId, -1100, 0, 0); G.mode = 'flight'; UI.hide(); populateSystem(); } },
+    setup() { uatFresh({
+      ship: 'gunship',
+      launcher: true,
+      classic: true,
+      cargo: { water: 20 }
+    }); Object.assign(G.state.story, {
+      stage: 'act3',
+      side: 'belt'
+    }); uatLand('Pallas Refinery'); G.state.systemId = 'ceres'; G.player = makeShip(G.state.shipId, -1100, 0, 0); G.mode = 'flight'; UI.hide(); populateSystem(); } },
   { group: 'Cold Water', id: 'cw-finale', title: 'The final choice', check: 'Landing at Ceres Station with water opens the last choice, then the epilogue (which mentions the ship).',
     setup() { uatFresh({ cargo: { water: 25 } }); Object.assign(G.state.story, { stage: 'act3', side: 'mars' }); uatLand('Ceres Station'); uatScene('cw-final-mars'); } },
   { group: 'Campaigns', id: 'strike', title: 'Ice Haulers\' Strike', check: 'The Guild broadcast opens on a burn into the Belt.',

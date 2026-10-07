@@ -105,7 +105,11 @@ function boardingEvent(n) {
   }
   return {
     title,
-    text: `${n.captain ? `Capt. ${n.captain}` : 'The crew'} ${resists ? 'is armed and waiting behind the inner lock' : 'has given up and is waiting to see what you do'}. The ${prize.name} is still spaceworthy, barely.${resists ? ` Boarding against resistance: about ${Math.round(boardOdds() * 100)}% to carry it${roleSkill('gunner') ? `, with ${roleName('gunner')} leading` : ''}.` : ''}`,
+    text: (`${n.captain ? `Capt. ${n.captain}` : 'The crew'} ${resists ? 'is armed and waiting behind the inner lock' : 'has given up and is waiting to see what you do'}. ` +
+        `The ${prize.name} is still spaceworthy, ` +
+        `barely.${resists ? (
+        ` Boarding against resistance: about ${Math.round(boardOdds() * 100)}% to carry ` +
+        `it${roleSkill('gunner') ? `, with ${roleName('gunner')} leading` : ''}.`) : ''}`),
     choices: [
       { label: n.kind === 'pirate' ? 'Board and take what they have' : 'Board and strip the cargo',
         can: () => n.disabled !== 'stripped' && (n.kind === 'pirate' || cargoFree() > 0),

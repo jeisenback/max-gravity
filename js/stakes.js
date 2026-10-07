@@ -49,7 +49,19 @@ function carriedLine(flags, last) {
 function putAshore() {
   const st = G.state, h = hired(), cap = person(h.captain), others = Object.keys(CAPTAINS).filter(k => k !== h.captainKey);
   const keep = { slot: Saves.current, name: captain().name, background: st.background, post: h.post, credits: st.credits, debt: h.debt, skill: { ...h.skill }, times: (st.putOff || 0) + 1 };
-  startGame({ slot: keep.slot, background: keep.background, captain: keep.name, mode: 'hired', post: keep.post, captainKey: others.length ? pick(others) : undefined, credits: keep.credits, debt: keep.debt, skill: keep.skill, putOffBy: `Captain ${cap.last}`, carried: carriedLine(h.flags || {}, cap.last) });
+  startGame({
+    slot: keep.slot,
+    background: keep.background,
+    captain: keep.name,
+    mode: 'hired',
+    post: keep.post,
+    captainKey: others.length ? pick(others) : undefined,
+    credits: keep.credits,
+    debt: keep.debt,
+    skill: keep.skill,
+    putOffBy: `Captain ${cap.last}`,
+    carried: carriedLine(h.flags || {}, cap.last)
+  });
   G.state.putOff = keep.times;
   return null;
 }
@@ -72,7 +84,10 @@ function splitScene() {
   const { a, b, movable } = worst, A = a.p.first, B = b.p.first;
   (st.relAt = st.relAt || {}).split = st.day;
   const choices = movable.map(x => ({ label: `Let ${x.p.first} go`, run: () => letGo(x, x === a ? b : a) }));
-  choices.push({ label: 'Keep both', run() { addBond(a, b, -1); like(a.p, -1, 'You made me stay on a ship with ' + B + '.'); like(b.p, -1, 'You made me stay on a ship with ' + A + '.'); return '"Then we all sail," you say. Neither of them answers. At the next watch they take opposite ends of the galley.'; } });
+  choices.push({
+    label: 'Keep both',
+    run() { addBond(a, b, -1); like(a.p, -1, 'You made me stay on a ship with ' + B + '.'); like(b.p, -1, 'You made me stay on a ship with ' + A + '.'); return '"Then we all sail," you say. Neither of them answers. At the next watch they take opposite ends of the galley.'; }
+  });
   return {
     title: 'Not on the Same Ship', personal: true,
     text: `${A} and ${B} are both on the dock when you come down the ramp, a few meters apart. "One of us gets off here," ${A} says. "I will not stand another burn with that." ${B} says nothing.${hired() ? ` Captain ${cap.last} has put it to you: "They both talk to you. Who stays?"` : ''}`,

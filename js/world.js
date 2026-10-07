@@ -56,7 +56,12 @@ function worldTick() {
     const w = worldOf(sid);
     if (sys.pirates > 0 && Math.random() < FLARE_CHANCE) {
       w.unrest = Math.min(1, w.unrest + FLARE_SIZE);
-      worldNews(pick([`Pirate raids reported around ${sys.name}. Shipping there is thinning out.`, `A string of pirate attacks near ${sys.name} has haulers taking the long way round.`, `Insurance rates around ${sys.name} have doubled after a run of raids, and some captains are refusing the lane.`, `Pirate raiders are reported at ${sys.name}: two freighters missing, and the navy is "looking into it".`]));
+      worldNews(pick([
+        `Pirate raids reported around ${sys.name}. Shipping there is thinning out.`,
+        `A string of pirate attacks near ${sys.name} has haulers taking the long way round.`,
+        `Insurance rates around ${sys.name} have doubled after a run of raids, and some captains are refusing the lane.`,
+        `Pirate raiders are reported at ${sys.name}: two freighters missing, and the navy is "looking into it".`
+      ]));
     }
     w.unrest += (sys.pirates - w.unrest) * UNREST_DRIFT;
     const raid = excessUnrest(sid) * SHORTAGE_RATE;

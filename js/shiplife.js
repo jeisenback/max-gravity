@@ -55,7 +55,12 @@ const isAsleep = p => isDark() && p.room === 'berths' && p.tx === null && p.dk =
 // What someone is seen doing, by room and (optionally) role. {n} is their name, {m} someone else here.
 const LIFE_LINES = {
   engine: { cat: ['{n} is asleep on the reactor housing, where it is warm.', '{n} is stretched full length along a warm pipe, purring in a key that matches the drive.', '{n} is watching a dripping valve without blinking.'],
-    engineer: ['{n} is elbow-deep in the reactor housing again.', '{n} is rerunning the injector timing. It was fine. It is finer now.', '{n} is lying on their back under the coolant manifold, telling a gasket a joke.', '{n} is tapping a pipe with a wrench, listening to the note it makes, and frowning.'],
+    engineer: [
+      '{n} is elbow-deep in the reactor housing again.',
+      '{n} is rerunning the injector timing. It was fine. It is finer now.',
+      '{n} is lying on their back under the coolant manifold, telling a gasket a joke.',
+      '{n} is tapping a pipe with a wrench, listening to the note it makes, and frowning.'
+    ],
     any: ['{n} is watching the reactor telltales like they owe money.', '{n} is leaning on the engine room hatch, feeling the drive hum through the deck.', '{n} is warming their hands on the coolant housing.'] },
   hold: { cat: ['{n} is stalking something between the crates.', '{n} has found a box and is asleep in it.', '{n} sits on the highest crate in the hold, upright, watching the hatch.'],
     quartermaster: ['{n} re-straps the cargo and counts it twice.', '{n} is arguing with the manifest.', '{n} is walking the rows with a clipboard, tapping each crate in turn.', '{n} is sniffing a crate of food and writing something down.'],
@@ -66,9 +71,22 @@ const LIFE_LINES = {
     passenger: ['{n} is writing letters in their bunk.', '{n} is asleep, or pretending to be.', '{n} is looking through a small pile of photographs, and putting them back, one at a time.', '{n} is sitting on the edge of their bunk, looking at the wall.'],
     any: ['{n} is catching a few hours in their bunk.', '{n} is asleep with an arm thrown over their eyes and a small book open on their chest.', '{n} is reading, by the light of a small lamp, with their lips moving.'] },
   galley: { cat: ['{n} is sitting by the food locker, staring at it.', '{n} is licking a drop of milk from the galley floor.', '{n} has taken a seat at the table. Nobody moves it.'],
-    any: ['{n} is making coffee that could strip paint.', '{n} and {m} are playing cards in the galley, badly.', '{n} is telling {m} a story that is only partly true.', '{n} and {m} are washing up together without talking, passing each other cups.', '{n} is trying to teach {m} a card trick, and the deck is on the floor.', '{n} is cooking something unlabeled in a pan.', '{n} is leaning on the counter with a mug, watching {m} argue with the recycler.'] },
+    any: [
+      '{n} is making coffee that could strip paint.',
+      '{n} and {m} are playing cards in the galley, badly.',
+      '{n} is telling {m} a story that is only partly true.',
+      '{n} and {m} are washing up together without talking, passing each other cups.',
+      '{n} is trying to teach {m} a card trick, and the deck is on the floor.',
+      '{n} is cooking something unlabeled in a pan.',
+      '{n} is leaning on the counter with a mug, watching {m} argue with the recycler.'
+    ] },
   gunnery: { cat: ['{n} is asleep on the warm side of the fire-control cabinet.', '{n} is sitting in the gunner\'s seat with the harness hanging off it.'],
-    gunner: ['{n} is running the fire-control checks. Each one goes in the log.', '{n} is wiping down the feed tray of the point-defense cannon.', '{n} is counting rounds in the magazine rack and writing the number on the rack.', '{n} has a drill up on the targeting display and is tracking a dot across it.'],
+    gunner: [
+      '{n} is running the fire-control checks. Each one goes in the log.',
+      '{n} is wiping down the feed tray of the point-defense cannon.',
+      '{n} is counting rounds in the magazine rack and writing the number on the rack.',
+      '{n} has a drill up on the targeting display and is tracking a dot across it.'
+    ],
     any: ['{n} is reading the range tables taped above the console.', '{n} is checking the latch on the weapons locker.', '{n} is watching the tracking screen. It shows the sun and nothing else.'] },
   medbay: { cat: ['{n} is asleep on the exam bed, on a folded blanket.', '{n} is sitting in front of the cabinet, looking at the lock.'],
     medic: ['{n} is counting the ampoules in the cabinet and writing the count on the door.', '{n} is labeling vials in small, even handwriting.', '{n} is wiping down the exam bed in long strokes.', '{n} is reading the date stamped on each sterile pack.'],
@@ -160,6 +178,9 @@ function lifeTick(dt) {
 
 // ---------- the cutaway ----------
 const CUTAWAY_H = 0.24;  // hull height as a share of its length: two decks
+// The drive plume off the stern: its length as a share of the hull (growing with the burn's peak), the flicker in pixels, and the
+// halo and the cone's half-width as shares of the hull's height.
+const PLUME = { base: 0.28, gain: 0.32, flicker: 14, halo: 0.7, cone: 0.16 };
 
 function drawCutaway(cx, cy, maxL) {
   // Longer hulls for bigger ships: a Rock Hopper is 60% of the space, an Ice Hauler all of it.
@@ -177,17 +198,17 @@ function drawCutaway(cx, cy, maxL) {
 
   // Drive plume off the stern.
   if (burning) {
-    const pk = Math.sin(Math.PI * Math.min(1, 1 - t.left / t.total)), len = L * (0.28 + 0.32 * pk) + Math.random() * 14, sx = X(0), dir = -Math.sign(turn || 1);
+    const pk = Math.sin(Math.PI * Math.min(1, 1 - t.left / t.total)), len = L * (PLUME.base + PLUME.gain * pk) + Math.random() * PLUME.flicker, sx = X(0), dir = -Math.sign(turn || 1);
     const g = ctx.createLinearGradient(sx, 0, sx + dir * len, 0);
     g.addColorStop(0, 'rgba(255,255,255,0.95)');
     g.addColorStop(0.15, 'rgba(140,190,255,0.8)');
     g.addColorStop(1, 'rgba(60,90,255,0)');
-    const halo = ctx.createRadialGradient(sx, cy, 0, sx, cy, H * 0.7);
+    const halo = ctx.createRadialGradient(sx, cy, 0, sx, cy, H * PLUME.halo);
     halo.addColorStop(0, 'rgba(140,190,255,0.3)'); halo.addColorStop(1, 'rgba(60,90,255,0)');
     ctx.fillStyle = halo;
-    ctx.fillRect(sx - H * 0.7, cy - H * 0.7, H * 1.4, H * 1.4);
+    ctx.fillRect(sx - H * PLUME.halo, cy - H * PLUME.halo, H * PLUME.halo * 2, H * PLUME.halo * 2);
     ctx.fillStyle = g;
-    ctx.beginPath(); ctx.moveTo(sx, cy - H * 0.16); ctx.lineTo(sx + dir * len, cy); ctx.lineTo(sx, cy + H * 0.16); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(sx, cy - H * PLUME.cone); ctx.lineTo(sx + dir * len, cy); ctx.lineTo(sx, cy + H * PLUME.cone); ctx.fill();
   }
   if (Math.abs(turn) < 0.05) return;  // edge-on mid-turn
 
@@ -406,7 +427,11 @@ const ACTIVITIES = {
       goTo(shipPeople()[0], 'galley');
       for (const id of G.state.crew) if (G.state.people[id]) likeAmbient(G.state.people[id], 1, 'We shared a meal on a long burn.');
       for (const m of paxAboard()) if (m.pid) likeAmbient(G.state.people[m.pid], 1, 'The captain shared a meal with us.');
-      return pick(['You cook something real for once, out of the good stores, with garlic and a little stolen butter, and everyone crowds into the galley, elbow to elbow, passing bowls. Somebody produces a bottle. Somebody else tells a story. When the last bowl is scraped clean, nobody is the first to leave.', 'You cook, badly, and it works. The whole ship crowds around the table. The steam fogs the lamp. There is a toast, and a second, and an unplanned song.']);
+      return pick([('You cook something real for once, out of the good stores, with garlic and a little stolen butter, and everyone crowds into the ' +
+          'galley, elbow to elbow, passing bowls. Somebody produces a bottle. Somebody else tells a story. When the last bowl is scraped clean, nobody ' +
+          'is the first to leave.'), (
+          'You cook, badly, and it works. The whole ship crowds around the table. The steam fogs the lamp. There is a toast, and a second, and an ' +
+          'unplanned song.')]);
     },
   },
   drills: {
@@ -414,7 +439,9 @@ const ACTIVITIES = {
     run() {
       G.transit.drilled = true;
       for (const p of shipPeople()) goTo(p, p.role === 'you' ? 'bridge' : pick(['hold', 'bridge', 'engine']));
-      return 'You call it, and the klaxon sounds, and the whole ship jumps. Damage control, then gunnery, then damage control again, against a stopwatch, with a great deal of muttering and one argument about whose fault the fire in the galley was. Nobody enjoys it. When it is done the crew sits on the deck, breathing hard. (Better odds in a fight for the rest of this burn.)';
+      return ('You call it, and the klaxon sounds, and the whole ship jumps. Damage control, then gunnery, then damage control again, against a ' +
+          'stopwatch, with a great deal of muttering and one argument about whose fault the fire in the galley was. Nobody enjoys it. When it is done ' +
+          'the crew sits on the deck, breathing hard. (Better odds in a fight for the rest of this burn.)');
     },
   },
   repair: {
@@ -423,7 +450,9 @@ const ACTIVITIES = {
       const max = ship().armor, amount = Math.round(max * (roleSkill('engineer') ? 0.4 : 0.2)), before = G.state.armor;
       G.state.armor = Math.min(max, before + amount);
       for (const p of shipPeople()) goTo(p, p.role === 'passenger' ? 'galley' : pick(['engine', 'hold']));
-      return `You spend a watch patching and sealing, with a heat gun and a tin of compound, crawling along the frame with a flashlight in your teeth, filling the scars of old fights. Hull ${before} to ${G.state.armor} of ${max}.${roleSkill('engineer') ? ` ${roleName('engineer')} does the hard parts, and when it is done pats the bulkhead once.` : ' It is slow work. At the end you sit against the wall with your hands black to the wrist.'}`;
+      return (`You spend a watch patching and sealing, with a heat gun and a tin of compound, crawling along the frame with a flashlight in your ` +
+          `teeth, filling the scars of old fights. Hull ${before} to ${G.state.armor} ` +
+          `of ${max}.${roleSkill('engineer') ? ` ${roleName('engineer')} does the hard parts, and when it is done pats the bulkhead once.` : ' It is slow work. At the end you sit against the wall with your hands black to the wrist.'}`);
     },
   },
   visit: {
@@ -431,7 +460,11 @@ const ACTIVITIES = {
     run() {
       goTo(shipPeople()[0], 'berths');
       for (const m of paxAboard()) if (m.pid) like(G.state.people[m.pid], 1, 'The captain came to check on us.');
-      return pick(['You make the rounds of the berths, knocking on each door in turn. You hear out a complaint about the air recycler, a story about a cousin, a request for an extra blanket, and, from one quiet passenger, a long question about whether it is normal to feel this far from everything. You promise to look into the recycler. You tell them it is.', 'You go from bunk to bunk and sit on the edge of each mattress for a few minutes. You hear a complaint about the air recycler, another about the coffee, and a longer one about the silence. You promise to look into it.']);
+      return pick([('You make the rounds of the berths, knocking on each door in turn. You hear out a complaint about the air recycler, a story about ' +
+          'a cousin, a request for an extra blanket, and, from one quiet passenger, a long question about whether it is normal to feel this far from ' +
+          'everything. You promise to look into the recycler. You tell them it is.'), (
+          'You go from bunk to bunk and sit on the edge of each mattress for a few minutes. You hear a complaint about the air recycler, another ' +
+          'about the coffee, and a longer one about the silence. You promise to look into it.')]);
     },
   },
 };

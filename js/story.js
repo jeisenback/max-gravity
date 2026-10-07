@@ -43,7 +43,8 @@ function storyObjective() {
     earth1: 'Pick up Mira Castellane on Europa and bring her to Director Achebe on Luna.',
     earth2: 'Take Mira Castellane to Luna.',
     aq1: 'Carry Aquilon\'s maintenance technicians to Ceres Station.',
-    act3: `Ceres is under blockade. Bring at least 20t of Water and land at Ceres Station, whatever it takes. ${{ belt: 'The Collective is counting on you.', mars: 'Mars wants its colors on that water.', earth: 'Coalition relief is waiting on you.', aquilon: 'Voight has paid the blockade to let you through.' }[s.side] || ''}`,
+    act3: (`Ceres is under blockade. Bring at least 20t of Water and land at Ceres Station, whatever it ` +
+        `takes. ${{ belt: 'The Collective is counting on you.', mars: 'Mars wants its colors on that water.', earth: 'Coalition relief is waiting on you.', aquilon: 'Voight has paid the blockade to let you through.' }[s.side] || ''}`),
     end: 'The story of Cold Water is over. The solar system carries on, and so do you.',
     act2: {
       belt: 'The Belt is on strike and the Collective has voided Aquilon\'s ice claims. A Coalition fleet is on its way to "secure" Ceres. (Act 3, the blockade of Ceres, arrives in a later update.)',
@@ -237,7 +238,9 @@ function blockadeScene() {
   };
   return {
     title: 'The Blockade of Ceres', via: 'station',
-    text: `${coalitionBlocks ? 'The Coalition blockade holds the approach to Ceres Station' : 'Collective hardliners are attacking ships near Ceres Station'}: ${foes.map(f => f.name).join(' and ')}. ${allies ? `${allies} ship${allies > 1 ? 's' : ''} on your side are already moving to meet them.` : 'Nobody is on your side out here.'} Twenty tons of water are in your hold, and Ceres is thirsty.`,
+    text: (`${coalitionBlocks ? 'The Coalition blockade holds the approach to Ceres Station' : ('Collective hardliners are attacking ships near Ceres ' +
+        'Station')}: ${foes.map(f => f.name).join(' and ')}. ${allies ? `${allies} ship${allies > 1 ? 's' : ''} on your side are already moving to meet them.` : 'Nobody is on your side out here.'} ` +
+        `Twenty tons of water are in your hold, and Ceres is thirsty.`),
     choices: [
       { label: `Run the blockade (${gunnerLabel()})`, run() { return gauntlet(0, true); } },
       { label: 'Slip in on a cold drive', can: () => true, run() {

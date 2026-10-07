@@ -14,18 +14,25 @@ const jobOddsWord = p => (p >= 0.7 ? 'good odds' : p >= 0.5 ? 'even odds' : 'lon
 const JOBS = [
   { id: 'lock', title: 'A Jammed Freight Lock', blurb: 'A cargo lock has stuck half open with a loader crew behind it. The dockmaster will pay for hands that know a lock.',
     stages: [
-      { text: 'A crowd has gathered at Lock Six, and a woman in a dockmaster\'s vest is shouting into a handset. The outer door has jammed half open, the inner door will not cycle, and somewhere in the gap four loaders are sealed in with an hour of air in their suits. "Anyone," the dockmaster says, to the crowd and to you. "Anyone who knows a lock."',
+      { text: ('A crowd has gathered at Lock Six, and a woman in a dockmaster\'s vest is shouting into a handset. The outer door has jammed half ' +
+          'open, the inner door will not cycle, and somewhere in the gap four loaders are sealed in with an hour of air in their suits. "Anyone," the ' +
+          'dockmaster says, to the crowd and to you. "Anyone who knows a lock."'),
         choices: [
           { label: 'Cut the manual release', check: { post: 'engineer' },
-            win: { text: 'You find the release behind a panel nobody has opened in years, and cut the seized pin with a torch while the dockmaster counts the minutes aloud. The door goes with a bang. Four loaders come out into the light, and one of them sits down on the deck and laughs.', pay: 250, xp: 'engineer', next: 1 },
+            win: { text: ('You find the release behind a panel nobody has opened in years, and cut the seized pin with a torch while the dockmaster ' +
+                'counts the minutes aloud. The door goes with a bang. Four loaders come out into the light, and one of them sits down on the deck and ' +
+                'laughs.'), pay: 250, xp: 'engineer', next: 1 },
             lose: { text: 'The pin is harder than it looked. You are still cutting when the inner door cycles on its own, and the edge of it catches you across the shoulder. The loaders get out by the other lock. You get a medic and a bandage.', hurt: true, pay: 40 } },
           { label: 'Talk the controller into an override', check: { post: 'comms' },
-            win: { text: 'The lock controller is a tired man in a booth who has been told no by every system on the board. You give him the override sequence he did not know he had, and a reason to try it. The lock shudders and cycles, and the loaders come out coughing.', pay: 250, xp: 'comms', next: 1 },
+            win: { text: ('The lock controller is a tired man in a booth who has been told no by every system on the board. You give him the override ' +
+                'sequence he did not know he had, and a reason to try it. The lock shudders and cycles, and the loaders come out coughing.'), pay: 250, xp: 'comms', next: 1 },
             lose: { text: 'The controller will not hear you, or cannot, and by the time somebody senior arrives the loaders are out and the dockmaster has already written down who was in the way. It was you.', opinion: -1 } },
           { label: 'Put your shoulder to the wheel', check: { post: 'gunner', bonus: -0.05 },
             win: { text: 'Six of you on the wheel, and the seized door gives a hand at a time. It is not clever and it is not quick, but it opens, and the dockmaster remembers the hand at the end of the bar.', pay: 150, xp: 'gunner', next: 1 },
             lose: { text: 'The wheel kicks back when the pin lets go and takes you across the ribs. Somebody else gets the door open. You get a bruise the shape of a handle, and nothing else.', hurt: true } },
-          { label: 'Fetch the dockmaster the crew chief and stay out of it', win: { text: 'You run for the crew chief and bring her back, and the dockmaster takes it from there. It is the right call for someone who does not know locks, and nobody thanks you for it, which is also right.', pay: 30 } },
+          { label: 'Fetch the dockmaster the crew chief and stay out of it', win: { text: ('You run for the crew chief and bring her back, and the ' +
+              'dockmaster takes it from there. It is the right call for someone who does not know locks, and nobody thanks you for it, which is also ' +
+              'right.'), pay: 30 } },
         ] },
       { text: 'The foreman of the loader crew finds you afterwards, still shaking, with his helmet under his arm. "I owe you," he says. "I do not have much. I have this, or I have a word with the dockmaster, and that is worth more than you think on this pad."',
         choices: [
@@ -35,7 +42,9 @@ const JOBS = [
     ] },
   { id: 'message', title: 'A Message That Has to Go Quietly', blurb: 'A clerk needs a sealed message out over the long bands without traffic control reading it first.',
     stages: [
-      { text: 'The clerk finds you at the back of the comms office, twisting a ring on a finger. "It is not illegal," she says. "It is just that if it goes through the port\'s relay, it will be read by somebody who has a reason not to like it." She slides a chip across the counter. "I need it on the long bands to a ship that is six days out, and I need nobody to know I asked."',
+      { text: ('The clerk finds you at the back of the comms office, twisting a ring on a finger. "It is not illegal," she says. "It is just that if ' +
+          'it goes through the port\'s relay, it will be read by somebody who has a reason not to like it." She slides a chip across the counter. "I ' +
+          'need it on the long bands to a ship that is six days out, and I need nobody to know I asked."'),
         choices: [
           { label: 'Put it on a ship\'s relay under a cargo header', check: { post: 'comms' },
             win: { text: 'You put it in a manifest packet, in the part of the header that nobody reads, and send it with the evening cargo burst. A relay six days out opens it and sends back a receipt. The clerk reads the receipt twice and puts it in her mouth.', pay: 220, xp: 'comms' },
@@ -48,10 +57,13 @@ const JOBS = [
     ] },
   { id: 'escort', title: 'Escort on the Lower Decks', blurb: 'A debt courier is carrying a case through the lower decks tonight and wants somebody who can use a gun and a straight face.',
     stages: [
-      { text: 'The courier is a thin man in a good coat who keeps both hands on a case. "It is not far," he says. "Three decks down, a lock, and a door with a lamp over it. There are people who would like what is in this case, and I would like them not to have it." He looks at your boots. "I pay for people who walk quietly."',
+      { text: ('The courier is a thin man in a good coat who keeps both hands on a case. "It is not far," he says. "Three decks down, a lock, and a ' +
+          'door with a lamp over it. There are people who would like what is in this case, and I would like them not to have it." He looks at your ' +
+          'boots. "I pay for people who walk quietly."'),
         choices: [
           { label: 'Walk the lower decks ahead of him', check: { post: 'gunner' },
-            win: { text: 'You see the two at the second junction before they see you, and they decide to see something else. At the door with the lamp the courier hands you the pay without a word and goes in. The door shuts. You walk back up alone, and nothing follows.', pay: 300, xp: 'gunner', next: 1 },
+            win: { text: ('You see the two at the second junction before they see you, and they decide to see something else. At the door with the ' +
+                'lamp the courier hands you the pay without a word and goes in. The door shuts. You walk back up alone, and nothing follows.'), pay: 300, xp: 'gunner', next: 1 },
             lose: { text: 'They are three, not two, and the third has a length of pipe. It is short and ugly in a narrow passage. The courier gets through to the lamp; you get through to a medic, with a split lip and a broken finger, and a handful of what he left you.', hurt: true, pay: 120 } },
           { label: 'Take him down a service route', check: { post: 'pilot' },
             win: { text: 'You know the service crawls better than the people who watch the main passages, and you take him through the ducts with a flashlight in your teeth. He is covered in dust at the other end and says nothing, and pays well for it.', pay: 260, xp: 'pilot', next: 1 },
@@ -66,7 +78,9 @@ const JOBS = [
     ] },
   { id: 'ration', title: 'Trouble in the Ration Line', blurb: 'A ration line is about to turn into a fight, and the warden wants someone who is not on either side.',
     stages: [
-      { text: 'The line for the day\'s water runs around the corner and back, and at the head of it two families are shouting at the clerk, and at each other, over a ration chit that was issued twice. The warden catches your sleeve. "You are not from here," she says, "which is what I need. Somebody they both will not mind listening to."',
+      { text: ('The line for the day\'s water runs around the corner and back, and at the head of it two families are shouting at the clerk, and at ' +
+          'each other, over a ration chit that was issued twice. The warden catches your sleeve. "You are not from here," she says, "which is what I ' +
+          'need. Somebody they both will not mind listening to."'),
         choices: [
           { label: 'Talk them down', check: { post: 'comms' },
             win: { text: 'You find out whose chit it is by asking whose child is whose, and the thing falls apart into a conversation about names. By the end both families are sharing a bench and the clerk is stamping new chits as fast as she can.', pay: 160, xp: 'comms', rep: 3 },

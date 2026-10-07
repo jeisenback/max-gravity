@@ -9,7 +9,11 @@
 
 const HELP = [
   { id: 'hand', title: 'Your post, your pay and a ship of your own', handOnly: true, text: () => [
-    `You sign on to a captain's ship and work one post: the pilot's helm, the guns, the engineer's plant, or the comms. The post is yours to work by hand; the rest of the crew hold the others. The captain picks every run and buys the cargo from the ship's funds. You press Sail, and on arrival you are paid a wage for each day and a share of the run's profit. Your savings are your own, but you came aboard owing the hiring hall for the berth, the passage and the kit: about three thousand credits. A third of each run's pay goes to it until it is paid, and a ship cannot be bought while anything is owed.`,
+    (`You sign on to a captain's ship and work one post: the pilot's helm, the guns, the engineer's plant, or the comms. The post is yours to work by ` +
+        `hand; the rest of the crew hold the others. The captain picks every run and buys the cargo from the ship's funds. You press Sail, and on ` +
+        `arrival you are paid a wage for each day and a share of the run's profit. Your savings are your own, but you came aboard owing the hiring ` +
+        `hall for the berth, the passage and the kit: about three thousand credits. A third of each run's pay goes to it until it is paid, and a ship ` +
+        `cannot be bought while anything is owed.`),
     `A first officer runs the watch: they decide who moves to which post, and the crew-side calls on the road. The captain keeps money and ship matters. You have an opinion with each of them, and the two can differ.`,
     `Save toward a ship of your own. Once your savings are high enough, a ship may be offered to you at a port with a yard. The yard's own ships stay on the list, and the Rock Hopper is the cheapest.`,
     'Buying a ship ends your time as a hand. The crew who like you come with you, and the captain says goodbye at the foot of the ramp.' ] },
@@ -31,7 +35,9 @@ const HELP = [
   { id: 'crew', title: 'Crew and relationships', hand: [
     'You work one post, and the rest of the crew hold the others. A first officer runs the watch and decides post swaps. Each role has a perk: engineers save reaction mass, pilots shorten burns, gunners add a gun, quartermasters hear rumors, slicers spoof transponders, medics heal.',
     'People aboard have feelings about you and about each other. Shared tastes bring them together; clashing habits pull them apart. Downtime activities build bonds, and a day of work at your post is experience.',
-    'Sit with someone during downtime to learn their story over several talks. Letters from home arrive at ports, and a crew member having a hard time works one skill lower until someone helps. A hurt or dead crew member is marked on the crew screen, and the dead are remembered there. When you buy a ship, the crew who like you come with you.' ], text: [
+    ('Sit with someone during downtime to learn their story over several talks. Letters from home arrive at ports, and a crew member having a hard ' +
+        'time works one skill lower until someone helps. A hurt or dead crew member is marked on the crew screen, and the dead are remembered there. ' +
+        'When you buy a ship, the crew who like you come with you.') ], text: [
     'Hire crew in the Bar or the Crew tab. Each role has a perk: engineers save reaction mass, pilots shorten burns, gunners add a gun, quartermasters hear rumors, slicers spoof transponders, medics heal.',
     'People aboard have feelings about you and about each other. Shared tastes (a favorite kind of vid or book, a ring-ball team) bring them together; clashing habits pull them apart. Downtime activities build bonds.',
     'Sit with someone during downtime to learn their story over several talks. A crew member may ask a favor; keeping it makes them loyal for good. Letters from home arrive at ports, and a crew member having a hard time works one skill lower until someone helps.' ] },
@@ -61,7 +67,9 @@ const helpText = h => { const t = h.hand && (scopeNarrow() || hired()) ? h.hand 
 
 // One-time tips: a key, a condition checked each frame, and how to show it.
 const TIPS = [
-  { id: 'burn', when: () => G.mode === 'transit', show: () => comm(`[Tip] During a burn, press Spend some downtime to ${hired() ? 'practice your post, share a meal, learn from a shipmate' : 'cook, drill'}, watch the hit vid, or sit with someone. Click anyone in the ship to open their page. Esc pauses. (Help is in the menu.)`) },
+  { id: 'burn', when: () => G.mode === 'transit', show: () => comm((`[Tip] During a burn, press Spend some downtime ` +
+      `to ${hired() ? 'practice your post, share a meal, learn from a shipmate' : 'cook, drill'}, watch the hit vid, or sit with someone. Click anyone ` +
+      `in the ship to open their page. Esc pauses. (Help is in the menu.)`)) },
   { id: 'claim', when: () => !scopeOff('owner') && G.mode === 'landed' && ['Ganymede', 'Triton Outpost'].includes(G.state.planet) && !G.state.outpost, show: () => UI.notes.push('Tip: you can found your own outpost from here. See the claim at the top of this page, and the Help in the menu.') },
   { id: 'bar', when: () => G.mode === 'landed' && G.state.day >= 3, show: () => UI.notes.push(hired() ? 'Tip: every port has a Bar. Talk to people there for rumors and news.' : 'Tip: every port has a Bar. Talk to people there for rumors, passengers, and crew.') },
 ];
