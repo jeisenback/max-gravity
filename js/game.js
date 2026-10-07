@@ -1230,11 +1230,15 @@ canvas.addEventListener('click', e => {
     if (i >= 0) { G.navPlanet = i; msg(`Nav target: ${system().planets[i].name}.`); }
     return;
   }
-  // On a burn, tap or click someone in the cutaway to open their page.
+  // On a burn, tap or click someone in the cutaway to open their page, or a room to open its console.
   if (G.mode === 'transit' && G.transit && !G.transit.event) {
     const reach = Touch.on ? 24 : 14;
     const near = (G.cutHits || []).map(h => ({ h, d: Math.hypot(e.clientX - h.x, e.clientY - h.y) })).filter(c => c.d < reach).sort((a, b) => a.d - b.d)[0];
     if (near) Mods.act('person', near.h.id);
+    else {  // no one there: the room, which opens its console as the key bar's key does (a second tap closes it)
+      const room = roomAtPoint(e.clientX, e.clientY), sheet = room && roomSheet(room);
+      if (sheet) { G.bridgeOpen = G.bridgeOpen === sheet ? null : sheet; Sfx.click(); syncBridge(true); }
+    }
     return;
   }
   if (G.mode !== 'map' || !G.mapPos) return;

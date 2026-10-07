@@ -170,3 +170,61 @@ test('a tap at the centre of each room finds that room, on every ship, both ways
     await done();
   }
 });
+
+// A tap on a room opens its console as a sheet (#323, step 5 task 3).
+test('every room has a sheet, and every sheet is a station', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => ({ rooms: ROOMS.map(x => x.id).sort(), mapped: Object.keys(ROOM_SHEETS).sort(), stations: STATIONS.map(s => s.id), sheets: Object.values(ROOM_SHEETS) }));
+  assert.deepEqual(r.mapped, r.rooms, 'one sheet per room');
+  for (const s of r.sheets) assert.ok(r.stations.includes(s), `${s} is a station`);
+  await done();
+});
+
+test('a tap on a room opens its console as a sheet, and a second tap on the room closes it when the sheet has not covered it', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  await ev(() => { burn(); G.transit.left = G.transit.total * 0.5; G.transit.angle = -Math.PI / 2; G.transit.flipped = false; });
+  await page.waitForTimeout(300);
+  // The point in a room's box that is farthest from everyone in it, so a tap there is a room's and not a person's.
+  const pick = id => ev(id => {
+    const b = G.cutRooms.find(r => r.id === id); let best = null;
+    for (let fx = 0.15; fx <= 0.85; fx += 0.1) for (let fy = 0.15; fy <= 0.85; fy += 0.1) {
+      const x = b.x + b.w * fx, y = b.y + b.h * fy, d = Math.min(99, ...G.cutHits.map(h => Math.hypot(x - h.x, y - h.y)));
+      if (!best || d > best.d) best = { x, y, d };
+    }
+    return best;
+  }, id);
+  for (const id of ['bridge', 'gunnery', 'engine', 'berths', 'galley', 'hold', 'medbay']) {
+    await ev(() => { G.bridgeOpen = null; });
+    await page.waitForTimeout(120);
+    const p = await pick(id);
+    assert.ok(p.d > 14, `${id}: a point clear of people (${Math.round(p.d)}px)`);
+    await page.mouse.click(p.x, p.y);
+    await page.waitForTimeout(150);
+    assert.equal(await ev(() => G.bridgeOpen), await ev(id => roomSheet(id), id), `${id}: its sheet is open`);
+    assert.equal(await ev(() => document.getElementById('bsheet').hidden), false, `${id}: the sheet is shown`);
+    if (await ev(([x, y]) => document.elementFromPoint(x, y) === canvas, [p.x, p.y])) {  // a sheet can cover the room it came from; the key closes it then
+      await page.mouse.click(p.x, p.y);
+      await page.waitForTimeout(150);
+      assert.equal(await ev(() => G.bridgeOpen), null, `${id}: a second tap closes it`);
+    }
+  }
+  await done();
+});
+
+test('a tap on a person opens the person, not the room under them; and a tap does nothing while a scene is open', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  await ev(() => { burn(); G.transit.left = G.transit.total * 0.5; G.transit.angle = -Math.PI / 2; G.transit.flipped = false; });
+  await page.waitForTimeout(300);
+  const hit = await ev(() => G.cutHits[0]);
+  await page.mouse.click(hit.x, hit.y);
+  await page.waitForTimeout(150);
+  assert.equal(await ev(() => G.bridgeOpen), 'person', 'the person came first');
+  await ev(() => { G.bridgeOpen = null; openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', run: () => 'a' }] }); });
+  const b = await ev(() => G.cutRooms.find(r => r.id === 'bridge'));
+  await page.mouse.click(b.x + 2, b.y + 2);
+  await page.waitForTimeout(150);
+  assert.equal(await ev(() => G.bridgeOpen), null, 'no sheet opens under a scene');
+  await done();
+});
