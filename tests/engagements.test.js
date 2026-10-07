@@ -413,6 +413,29 @@ test('an owner does not get the Gunner\'s orders', async () => {
   await done();
 });
 
+test('a Comms hand makes the call in a pirate contact, rolled on their own skill; the other posts and the patrol contacts stay the captain\'s', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {};
+    const contact = (post, kind = 'pirate') => { raid(post); G.dialog = null; openEvent(contactEvent({ kind, gov: 'Earth Coalition' })); const d = G.dialog; return { decided: !!d.event.decided, labels: d.choices.map(c => c.label), text: d.event.text }; };
+    out.comms = contact('comms'); out.pilot = contact('pilot'); out.gunner = contact('gunner'); out.engineer = contact('engineer'); out.patrol = contact('comms', 'patrol');
+    const spoof = (level, roll) => {
+      raid('comms'); hired().skill.comms = SKILL_STEPS[level]; G.dialog = null; openEvent(contactEvent({ kind: 'pirate' }));
+      const i = G.dialog.choices.findIndex(c => /^\[Comms\] Spoof/.test(c.label));
+      rolls([roll]); return chooseEvent(i);
+    };
+    out.low = spoof(1, 0.7); out.high = spoof(3, 0.7);
+    return out;
+  });
+  assert.equal(r.comms.decided, false, 'the hand picks'); assert.ok(r.comms.labels.includes('[Comms] Spoof a pirate transponder'));
+  assert.ok(r.comms.labels.length >= 4, 'every choice is shown'); assert.doesNotMatch(r.comms.text, /takes the call/);
+  for (const post of ['pilot', 'gunner', 'engineer']) { assert.equal(r[post].decided, true, `${post}: the captain's call`); assert.match(r[post].text, /takes the call/); }
+  assert.equal(r.patrol.decided, true, 'no option fits the post');
+  assert.match(r.low, /^They see through it/, 'level 1 is 0.6'); assert.match(r.high, /^Your fake transponder/, 'level 3 is 0.8');
+  await done();
+});
+
 test('each raid option says what it can cost, from what it declares, and a sure option says nothing', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);

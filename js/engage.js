@@ -65,6 +65,14 @@ function contactEvent(spec) {
       return `They see through it. ${startDuel(spec, false)}`;
     } });
   }
+  // A hired hand whose post fits one of the options makes the call (hiredCall, hired.js): the option is theirs, rolled on their skill.
+  const post = hired() && hired().post, mine = post && choices.find(c => c.role === POSTS[post].role);
+  if (mine) {
+    mine.label = mine.label.replace('{crew}', POSTS[post].name); mine.own = true;  // shown with no crew member in the role (transit.js)
+    mine.run = () => Math.random() < Math.min(0.85, 0.5 + 0.1 * skillLevel(post))
+      ? 'Your fake transponder reads as one of their own. The plume swings away.'
+      : `They see through it. ${startDuel(spec, false)}`;
+  }
   if (spec.kind === 'patrol' && hired()) choices.push({ label: `Heave to and take the fine from the ship's fund`, run() {  // a hired hand has no 4,000 cr: the ship pays a quarter of its fund
     const fine = Math.round(st.credits * 0.25);  // st.credits is the ship's fund inside a hired hand's contact (hiredFunds)
     st.credits -= fine;
@@ -77,7 +85,7 @@ function contactEvent(spec) {
     st.rep[spec.gov] = Math.max(repOf(spec.gov), -10);
     return 'They take your money and log your ship as settled. For now.';
   } });
-  return { title: 'Contact', via: 'ship', text: `Sensors: a drive plume at ${d} km, on an intercept course. ${who}`, choices };
+  return { title: 'Contact', via: 'ship', ...(mine ? { owner: post } : {}), text: `Sensors: a drive plume at ${d} km, on an intercept course. ${who}`, choices };
 }
 
 Mods.register({
