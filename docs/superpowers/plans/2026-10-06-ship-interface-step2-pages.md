@@ -48,6 +48,7 @@
 - `style.css` (modify): a `.nowrap` rule, the text-size floor, the dock and Suggest rows.
 - `js/build.js` (modify): the flag's default.
 - `tests/helpers.js` (modify): the `shell` option's default.
+- `sw.js` (modify): the cache name, `max-gravity-v2`.
 - `tests/shell.test.js` (modify).
 - `README.md` (modify): the shell line.
 
@@ -159,23 +160,24 @@ git commit -m "Lay the Suggest rows out in two columns, and keep content clear o
 ### Task 5: Turn the shell on by default in the narrow build
 
 **Files:**
-- Modify: `js/build.js`, `tests/helpers.js`, `README.md`
+- Modify: `js/build.js`, `tests/helpers.js`, `README.md`, `sw.js`
 - Test: `tests/shell.test.js`
 
 **Interfaces:**
 - Consumes: `BUILD.scope`, `shellOn()` (step 1).
+- Cache: `CACHE` in `sw.js` changes from `'max-gravity-v1'` to `'max-gravity-v2'`. The worker is network first, so a player online gets the new shell anyway. The bump matters offline: the `activate` handler deletes every cache whose name is not `CACHE`, so a returning player does not keep a mix of old and new files from the old cache.
 - Produces: `BUILD.shell` is `'on'` when the address says `shell=on`, `'off'` when it says `shell=off`, and otherwise `'on'` in the `earth-hired` scope and `'off'` in `full`. `open({ shell })` takes `true` (adds `shell=on`), `false` (the default, adds `shell=off`) or `'default'` (adds nothing, so the build's own default applies). The environment variable `SHELL_TESTS=on` changes the helper's default from `false` to `true`.
 
 - [ ] **Step 1: Write the failing test** `'the shell is on by default in the narrow build and off in the full build'`: `open({ scope: 'earth-hired', shell: 'default' })` gives `shellOn() === true`; `open({ scope: 'full', shell: 'default' })` gives `false`; and with the narrow default, `UI.tab = 'nav'; UI.render()` falls back to Port (the older-value case).
 - [ ] **Step 2: Run it to see it fail.** Run: `node --test tests/shell.test.js`. Expected: FAIL.
-- [ ] **Step 3: Implement** the default in `js/build.js` and the option in `tests/helpers.js` as above. Update the README line for `js/shell.js`: on by default in the narrow build, `?shell=off` for the old screens.
+- [ ] **Step 3: Implement** the default in `js/build.js` and the option in `tests/helpers.js` as above. Update the README line for `js/shell.js`: on by default in the narrow build, `?shell=off` for the old screens. Change `CACHE` in `sw.js` to `'max-gravity-v2'`, and leave the comment above it as it is.
 - [ ] **Step 4: Run the full suite both ways.** Run: `npm test`, then `SHELL_TESTS=on npm test`. Expected: the first PASSES, with the same count plus the new tests. The second is a report, not a gate: write the names of the tests that fail with the shell on as a comment on #324 (the cutover plan), since those tests select on the old markup.
 - [ ] **Step 5: Look at it.** With Playwright, open `index.html` (the narrow build, no query) at 1280x800, 768x1024 and 390x844, start a hired game, and save a screenshot of the Port, Crew and Bar pages at each width to the scratchpad. Check by eye that nothing is clipped or overlapping, and note what you saw in the commit body.
 - [ ] **Step 6: Commit.**
 
 ```bash
-git add js/build.js tests/helpers.js tests/shell.test.js README.md
-git commit -m "Turn the shell on by default in the narrow build"
+git add js/build.js tests/helpers.js tests/shell.test.js README.md sw.js
+git commit -m "Turn the shell on by default in the narrow build, and bump the offline cache"
 ```
 
 ---
