@@ -50,13 +50,59 @@ const railState = () => {
   return { names, groups: names.map(group), active: active ? active.dataset.arg : null, tab: UI.tab, body: (document.querySelector('.shell .body') || {}).innerHTML || '' };
 };
 
-test('the rail shows the ship group and the Ashore group', async () => {
+test('a hired gunner\'s rail has the ship\'s pages and three Ashore pages, and no owner pages', async () => {
   const { ev, done } = await open({ shell: true });
   await ev(helpers);
   const r = await ev(([fn]) => { start(); return (0, eval)(`(${fn})`)(); }, [railState.toString()]);
-  assert.deepEqual(r.names, ['Crew', 'Port', 'Bar']);
-  assert.deepEqual(r.groups, ['Ship', 'Ashore', 'Ashore']);
+  assert.deepEqual(r.names, ['Bridge', 'Comms', 'Gunnery', 'Engine', 'Crew', 'Bonds', 'Journal', 'Port', 'Missions', 'Bar']);
+  assert.deepEqual(r.groups, [...Array(7).fill('Ship'), ...Array(3).fill('Ashore')]);
+  assert.ok(!r.names.includes('Exchange') && !r.names.includes('Company'), 'the owner pages are not drawn for a hired hand');
   assert.equal(r.active, 'port', 'a new landing opens on Port');
+  await done();
+});
+
+test('an owner\'s rail keeps Exchange and Company in the Ashore group', async () => {
+  const { ev, done } = await open({ shell: true });
+  const r = await ev(([fn]) => {
+    startGame({ slot: 1, background: 'earth', mode: 'owner', captain: 'Sam Rowe' });
+    while (G.dialog) finishEvent();
+    UI.render();
+    return (0, eval)(`(${fn})`)();
+  }, [railState.toString()]);
+  for (const name of ['Exchange', 'Company']) assert.equal(r.groups[r.names.indexOf(name)], 'Ashore', `${name} is on the rail, in Ashore`);
+  await done();
+});
+
+test('every enabled rail entry opens its page', async () => {
+  const { page, ev, done } = await open({ shell: true });
+  await ev(helpers);
+  await ev(() => { start(); });
+  const tabs = await page.evaluate(() => [...document.querySelectorAll('.rail button:not([disabled])')].map(b => b.dataset.arg));
+  assert.ok(tabs.length >= 8, `most entries are enabled: ${tabs}`);
+  for (const tab of tabs) {
+    await page.click(`.rail [data-action=tab][data-arg=${tab}]`);
+    const r = await ev(([fn]) => (0, eval)(`(${fn})`)(), [railState.toString()]);
+    assert.equal(r.tab, tab, `${tab}: the page opened`);
+    assert.equal(r.active, tab, `${tab}: its entry is lit`);
+    assert.ok(r.body.length > 0, `${tab}: the page has content`);
+  }
+  await done();  // fails on any page error
+});
+
+test('an entry for a service this port lacks is shut and says why', async () => {
+  const { ev, done } = await open({ shell: true });
+  await ev(helpers);
+  const r = await ev(() => {
+    start();
+    const planet = Object.values(SYSTEMS).flatMap(s => s.planets).find(pl => !['shipyard', 'outfitter', 'missions'].some(s => pl.services.includes(s)));
+    if (!planet) return null;
+    const engine = RAIL.find(e => e.id === 'engine');
+    return { why: engine.ready(planet), html: railEntryHtml(engine, planet, 'port') };
+  });
+  assert.ok(r, 'a planet with no yard and no work board exists');
+  assert.equal(typeof r.why, 'string', 'ready returns the reason');
+  assert.match(r.html, /disabled/);
+  assert.ok(r.html.includes(r.why), 'the reason is visible text');
   await done();
 });
 
@@ -84,7 +130,7 @@ test('the character screen keeps the Crew entry lit', async () => {
 test('a tab the shell does not know falls back to Port', async () => {
   const { ev, done } = await open({ shell: true });
   await ev(helpers);
-  const r = await ev(([fn]) => { start(); UI.tab = 'nav'; UI.render(); return (0, eval)(`(${fn})`)(); }, [railState.toString()]);
+  const r = await ev(([fn]) => { start(); UI.tab = 'nonsense'; UI.render(); return (0, eval)(`(${fn})`)(); }, [railState.toString()]);
   assert.equal(r.tab, 'port');
   assert.equal(r.active, 'port');
   await done();
@@ -142,5 +188,18 @@ test('a phone has no horizontal scroll, the rail is a row above the page, and ev
   assert.equal(r.railAboveBody, true, 'the rail is above the page');
   assert.equal(r.noSideScroll, true, 'the page does not scroll sideways');
   assert.equal(r.buttonsOnScreen, true, 'every rail entry is inside the screen width');
+  await done();
+});
+
+test('a hired hand with a stale Exchange or Company tab falls back to Port', async () => {
+  const { ev, done } = await open({ shell: true });
+  await ev(helpers);
+  const r = await ev(([fn]) => {
+    start();
+    const out = {};
+    for (const tab of ['trade', 'company']) { UI.tab = tab; UI.render(); out[tab] = (0, eval)(`(${fn})`)().tab; }
+    return out;
+  }, [railState.toString()]);
+  assert.deepEqual(r, { trade: 'port', company: 'port' });
   await done();
 });
