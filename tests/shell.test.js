@@ -150,6 +150,33 @@ test('the captain\'s name and run label do not split or gap, at 390 and 1280', a
   }
 });
 
+// (The plant and cutaway drawings are SVG, and the con- readouts sit beside them: step 5, the burn view, reworks both.)
+const smallText = () => [...document.querySelectorAll('#panel *')].filter(el => !el.closest('#uat, svg, [class^=con-], [class*=" con-"]') && el.offsetParent !== null
+  && [...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()) && parseFloat(getComputedStyle(el).fontSize) < 12)
+  .map(el => `${el.tagName.toLowerCase()}.${String(el.className).trim().replace(/\s+/g, '.')} ${getComputedStyle(el).fontSize}`);
+
+test('no visible text on a shell page is under 12px at 390px', async () => {
+  const { page, ev, done } = await open({ shell: true, viewport: { width: 390, height: 844 }, mobile: true });
+  await ev(helpers);
+  await ev(() => { start(); });
+  const tabs = await ev(() => [...document.querySelectorAll('.rail button:not([disabled])')].map(b => b.dataset.arg));
+  const offenders = {};
+  for (const tab of tabs) {
+    await page.click(`.rail [data-action=tab][data-arg=${tab}]`);
+    for (const o of await ev(([fn]) => (0, eval)(`(${fn})`)(), [smallText.toString()])) (offenders[o] = offenders[o] || (offenders[o] = [])).includes(tab) || offenders[o].push(tab);
+  }
+  assert.deepEqual(offenders, {}, 'text under 12px, with the pages it shows on');
+  await done();
+});
+
+test('the rail fits at 360px', async () => {
+  const { ev, done } = await open({ shell: true, viewport: { width: 360, height: 740 }, mobile: true });
+  await ev(helpers);
+  const r = await ev(([fn]) => { start(); return (0, eval)(`(${fn})`)(); }, [layout.toString()]);
+  assert.equal(r.noSideScroll, true, 'the page does not scroll sideways'); assert.equal(r.buttonsOnScreen, true, 'every entry is on screen');
+  await done();
+});
+
 test('an unavailable entry says why', async () => {
   const { ev, done } = await open({ shell: true });
   await ev(helpers);
