@@ -91,18 +91,43 @@ test('a crew member hurt twice in one fight is dead, and the berth is filled at 
   await done();
 });
 
-test('a main character hurt twice is marked, not killed', async () => {
+test('a main character hurt twice dies in the narrow build, where there is no floor, and is marked in the full build, where there is', async () => {
+  const strike = scope => async () => {
+    const { ev, done } = await open({ scope });
+    await ev(helpers);
+    const r = await ev(() => {
+      const st = fight(), d = G.duel, ines = castPerson('ines');
+      st.crew = [ines.id];
+      const s = repelStart(d, 'full');
+      rolls([0.99, 0.01, 0, 0.99, 0.99, 0.01, 0]);
+      const first = repelStep(s, 'post'), second = repelStep(s, 'post');
+      return { here: st.crew.includes(ines.id), dead: castDead('ines'), marks: marksOf(ines).length, first, second, floor: castFloor() };
+    });
+    await done();
+    return r;
+  };
+  const narrow = await strike('earth-hired')(), full = await strike('full')();
+  assert.equal(narrow.floor, 0); assert.ok(narrow.dead && !narrow.here, 'dead in the narrow build'); assert.equal(narrow.marks, 0);
+  assert.ok(/Another hit like that could kill Ines\./.test(narrow.first), `the first hurt warns: ${narrow.first}`);
+  assert.equal(full.floor, 2); assert.ok(full.here && !full.dead && full.marks === 1, 'marked, not killed, where the floor holds');
+});
+
+test('a named person already marked who is hit again dies, and a hurt crew member in an accident carries the warning', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    const st = fight(), d = G.duel, ines = castPerson('ines');
-    st.crew = [ines.id];
-    const s = repelStart(d, 'full');
-    rolls([0.99, 0.01, 0, 0.99, 0.99, 0.01, 0]);
-    repelStep(s, 'post'); repelStep(s, 'post');
-    return { here: st.crew.includes(ines.id), dead: castDead('ines'), marks: marksOf(ines).length };
+    const st = fight(), tomas = castPerson('tomas'), ines = castPerson('ines'), out = {};
+    st.crew = [ines.id, tomas.id];
+    castFate('tomas', 'mark', 'Hurt.', 'Marked once.');           // marked: the step before
+    out.markedAlive = !castDead('tomas');
+    G.state.crew = [tomas.id]; hurtCrew();                         // an ordinary hit on a marked person
+    out.deadAfter = castDead('tomas');
+    G.state.crew = [ines.id]; const msgs = []; const real = msg; window.msg = t => { msgs.push(t); }; try { hurtCrew(); } finally { window.msg = real; }
+    out.warned = msgs.some(t => /Ines.* is hurt\./.test(t) && /Another hit like that could kill Ines\./.test(t));
+    out.crewWarn = hurtWarning(person(st.crew[0])) !== '' && hurtWarning({ first: 'Sam' }) === '';  // a generated crew member gets none
+    return out;
   });
-  assert.ok(r.here && !r.dead); assert.equal(r.marks, 1);
+  assert.ok(r.markedAlive); assert.ok(r.deadAfter, 'marked, then hit again: dead'); assert.ok(r.warned, 'a hurt named person is warned'); assert.ok(r.crewWarn);
   await done();
 });
 

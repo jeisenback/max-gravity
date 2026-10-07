@@ -9,6 +9,9 @@
 // Loaded after cast.js; only calls into the game at runtime.
 
 const CAST_FLOOR = 2;
+// The narrow build has no floor: a main character can die (#357). What keeps the chapter going is the captain, the first officer and the hand,
+// and the warnings below, so a loss is seen coming.
+const castFloor = () => (scopeNarrow() ? 0 : CAST_FLOOR);
 
 const castDead = key => ((G.state.cast || {})[key] || {}).status === 'dead';
 // Main characters who have joined you, wherever they are posted, and are not dead.
@@ -18,7 +21,7 @@ const castLiving = () => Object.keys(G.state.cast || {}).filter(key => typeof G.
 // Everyone in the people registry except main characters who have died, for anything that asks who still knows you.
 const alivePeople = () => Object.values(G.state.people).filter(p => !(p.cast && castDead(p.cast)));
 
-// outcome is 'live', 'mark' or 'die'. A death that would leave fewer than CAST_FLOOR alive becomes a mark. A mark is a
+// outcome is 'live', 'mark' or 'die'. A death that would leave fewer than the floor (castFloor) alive becomes a mark. A mark is a
 // line of text and one lost point at the skill named by role (the post they hold, if none is given), with the experience
 // set back so it is not earned again the next day (at skill 0 that sets progress toward level 1 back to nothing).
 // A character who has not joined you is ignored. Returns what happened.
@@ -26,7 +29,7 @@ function castFate(key, outcome, cause, markText, role) {
   if (castDead(key)) return 'die';
   const joined = ((G.state.cast || {})[key] || {}).since;
   if (typeof joined !== 'number') return 'live';
-  if (outcome === 'die' && !castFragile(key) && castLiving().filter(k => k !== key).length < CAST_FLOOR) outcome = 'mark';
+  if (outcome === 'die' && !castFragile(key) && castLiving().filter(k => k !== key).length < castFloor()) outcome = 'mark';
   const st = G.state, p = castPerson(key), rec = castRec(key);
   if (outcome === 'mark') {
     (rec.marks = rec.marks || []).push({ text: markText, day: st.day });
@@ -49,13 +52,18 @@ function castFate(key, outcome, cause, markText, role) {
   return outcome;
 }
 
-// A lost ship takes its main characters through the same floor: all but CAST_FLOOR of them die, and the rest come out
+// A lost ship takes its main characters through the same floor: all but the floor's worth of them die, and the rest come out
 // of the wreck marked. Returns who died and who was spared.
 function castShipLoss(cause) {
   const out = { dead: [], saved: [] };
   for (const p of castAboard()) (castFate(p.cast, 'die', cause, 'Pulled from the wreck.') === 'die' ? out.dead : out.saved).push(p.cast);
   return out;
 }
+
+// The ladder before a loss (#357): hurt, then marked, then dead. A named person (a main character or the first officer) who is already marked
+// and is hit again dies, and the first hurt says so, so that nobody is lost without a warning.
+const secondStrike = c => !!(c && c.cast && marksOf(c).length);
+const hurtWarning = c => (c && c.cast ? ` Another hit like that could kill ${c.first}.` : '');
 
 // ---------- what the player sees ----------
 // A character's marks beside them, the memorial as a list, and a line in the chapter's goodbye. Everything from a record is

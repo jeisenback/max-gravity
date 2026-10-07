@@ -135,7 +135,7 @@ function iceStep(n, c, post) {
   let out = text;
   if (hull) { const pts = Math.round(ship().armor * hull); st.armor = Math.max(1, st.armor - pts); out += ` Armor -${pts}.`; if (!won &&
     Math.random() < CASUALTY_ODDS) { const c2 = typeof hurtCrew === 'function' ? hurtCrew(true) : null; if (c2) out += c2.dead ? ` ${c2.first} is dead.` :
-    ` ${c2.first} is hurt.`; } }
+    ` ${c2.first} is hurt.${hurtWarning(c2)}`; } }
   if (post) gainSkill(post, won ? 4 : 1); else gainSkill(h.post, 1);
   if (n === 1) out += iceLoad(false);       // the cutting fills the hold
   if (n === 2) out += iceHome(ice.edge);
