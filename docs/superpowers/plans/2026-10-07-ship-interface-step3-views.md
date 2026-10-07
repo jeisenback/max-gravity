@@ -20,7 +20,7 @@ The issue was written before two of its items were closed, so this plan does not
 ## Global Constraints
 
 - No framework, no bundler, no build step.
-- Classic scripts share one global scope: every new top-level name must be unique (`tests/globals.test.js` enforces it). The helpers are `h`, `raw`, `panelHtml`, `listHtml`, `personCardHtml` and `choiceBlockHtml`; check each against the existing globals before adding.
+- Classic scripts share one global scope: every new top-level name must be unique (`tests/globals.test.js` enforces it). The helpers are `h`, `raw`, `panelHtml`, `listHtml`, `personCardHtml`, `choiceButtonHtml` and `choiceBlockHtml`; check each against the existing globals before adding.
 - A moved page keeps its markup: the same element nesting, classes, and `data-action`/`data-arg` values. No existing test is edited to make a move pass, except where a test asserts on exact escaped text.
 - Text that is HTML by design (scene text, port notes, `&middot;` joins in templates) stays `raw`. Only values that are data (names, titles, labels typed or generated, attribute values) are escaped.
 - The helpers are used by both the old screens and the shell, so they work with the flag on and off.
@@ -67,7 +67,7 @@ Each of these is pinned by a test named in the task:
 - Modify: `index.html`
 
 **Interfaces:**
-- Produces: `raw(s: string): Raw`; `h(strings, ...values): Raw`; `panelHtml({ eyebrow?: string, title?: string, body: Raw|string }): Raw`; `listHtml(items: any[], row: (item, i) => Raw): Raw`; `personCardHtml(person, { sub?: Raw|string, actions?: Raw|string, ring?: string }): Raw`; `choiceBlockHtml(choices: Choice[]): Raw`. `Raw` is an object with a `html` string and a `toString()` that returns it, so a helper result can sit inside a template literal unchanged.
+- Produces: `raw(s: string): Raw`; `h(strings, ...values): Raw`; `panelHtml({ eyebrow?: string, title?: string, body: Raw|string }): Raw`; `listHtml(items: any[], row: (item, i) => Raw): Raw`; `personCardHtml(person, { sub?: Raw|string, actions?: Raw|string, ring?: string }): Raw`; `choiceButtonHtml(choice, i): Raw` (one button, and its reason when shut); `choiceBlockHtml(choices: Choice[]): Raw`. `Raw` is an object with a `html` string and a `toString()` that returns it, so a helper result can sit inside a template literal unchanged.
 
 - [ ] **Step 1: Write the failing tests** in `tests/views.test.js`:
   - `'h escapes data and passes raw and nested h through'`: `h\`<b>${'<i>&"'}</b>\`` is `<b>&lt;i&gt;&amp;&quot;</b>`; `h\`${raw('<i>x</i>')}\`` is `<i>x</i>`; `h\`${h\`<u>${'<'}</u>\`}\`` is `<u>&lt;</u>`.
@@ -123,7 +123,7 @@ git commit -m "Pin that a hostile name breaks no rail page, the scene dialog or 
   - `'no authored event title carries markup'`: for every title in `TRANSIT_EVENTS`, every scene of `CAST` and `CAPTAINS`, and the other event tables the game exports, assert `/[<&]/.test(title) === false`. If any fails, list them in the output: they are the titles to fix before the title is escaped.
   - `'the scene dialog escapes the title and the aria-label, leaves the text raw, and shows a shut choice with its reason'`: open an event titled `A <b>` with text `<i>x</i>` and one shut choice (`gated(needCr(1e9))`); the heading's text is `A <b>`, the label attribute equals it, the paragraph has an `<i>` element, and the shut button is disabled with the reason as visible text.
 - [ ] **Step 2: Run them to see them fail.** Expected: the second FAILS (the heading is raw today).
-- [ ] **Step 3: Implement.** `choiceBlockHtml(choices)` is the `.choices` block with `UI.choiceHtml` per choice (labels are HTML by design today, so a label is `raw`; the shut reason is `raw` too, as it is built from `gated`). `showEvent` becomes an `h` template: `${ev.title}` escaped, `${raw(ev.text)}`, `${choiceBlockHtml(choices)}`, with `esc` gone from the `aria-label` because `h` does it.
+- [ ] **Step 3: Implement.** `UI.choiceHtml(c, i)` returns `String(choiceButtonHtml(c, i))`: a choice label and a shut reason are text (a scan of every `label:` in `js/` found none with markup or an entity), so both are escaped, and a test (Step 1) scans the labels of the event tables for `<` and `&`. `showEvent` becomes an `h` template: `${ev.title}` escaped, `${raw(ev.text)}`, `${choiceBlockHtml(choices)}`, with `esc` gone from the `aria-label` because `h` does it.
 - [ ] **Step 4: Run the tests.** Run: `node --test tests/views.test.js tests/ui.test.js`, then the full suite. Expected: PASS.
 - [ ] **Step 5: Commit.**
 
