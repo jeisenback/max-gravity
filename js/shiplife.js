@@ -278,7 +278,7 @@ function drawCutaway(cx, cy, maxL) {
   for (let y = mid + 4; y < lower; y += 5) { ctx.moveTo(X(LADDER) - 4, y); ctx.lineTo(X(LADDER) + 4, y); }
   ctx.stroke();
   ctx.fillStyle = '#5b7896';
-  ctx.font = `600 ${L < 450 ? 8 : 10}px ${LABEL_FONT}`;
+  ctx.font = `600 12px ${LABEL_FONT}`;
   ctx.textAlign = 'center';
   for (const r of ROOMS) {  // a name too long for a narrow room is cut to three letters
     const name = r.name.toUpperCase();
@@ -370,7 +370,7 @@ function drawCutaway(cx, cy, maxL) {
 
   // People, with names below the hull where they fit.
   ctx.textAlign = 'center';
-  ctx.font = `${L < 450 ? 8 : 9}px "IBM Plex Mono", monospace`;
+  ctx.font = '12px "IBM Plex Mono", monospace';
   const labels = [];
   // At night, whoever is turned in lies on a bunk.
   const bunk = i => ({ x: X(berths.x0 + berths.w * (Math.floor(i / 2) + 0.5) / cols), y: i % 2 ? upper - 22 : upper - 9 });
@@ -411,7 +411,7 @@ function drawCutaway(cx, cy, maxL) {
       if (row !== undefined) {
         labels.push({ x, w, row });
         ctx.fillStyle = '#9fb4c9';
-        ctx.fillText(p.name, x, top + H + 12 + row * 10);
+        ctx.fillText(p.name, x, top + H + 12 + row * 14);
       }
     }
   });

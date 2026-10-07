@@ -4,7 +4,7 @@
 
 **Goal:** Make the cutaway the screen in a burn. Tapping a room opens that room's console as a sheet over it, the canvas blocks around it stop overlapping and are readable at 1280x800, 768x1024 and 390x844, and the people in it show faces. The station key bar stays until cutover (step 6), so the burn view is never without a keyboard path.
 
-**Architecture:** Three small additions around code that already works. `drawCutaway` records each room's screen box next to the person hits it records today (`G.cutRooms` beside `G.cutHits`). A tap on a room does what pressing its station key does (`G.bridgeOpen = id`), through one table, `ROOM_SHEETS`. The burn view's canvas blocks get their positions from one function, `burnLayout(W, H)`, so a test can check them for overlap at the three sizes. Faces are cached portrait images drawn in place of the stick figures. No sheet is drawn on the canvas; sheets stay DOM (`#bsheet`).
+**Architecture:** Three small additions around code that already works. `drawCutaway` records each room's screen box next to the person hits it records today (`G.cutRooms` beside `G.cutHits`). A tap on a room does what pressing its station key does (`G.bridgeOpen = id`), through one table, `ROOM_SHEETS`. The burn view's canvas blocks are recorded as drawn (`G.burnBoxes`), so a test can check them for overlap at the three sizes. Faces are cached portrait images drawn in place of the stick figures. No sheet is drawn on the canvas; sheets stay DOM (`#bsheet`).
 
 **Tech Stack:** Vanilla JS classic scripts in one global scope, no build step. Tests are Playwright through `tests/helpers.js`.
 
@@ -22,7 +22,7 @@
 ## Global Constraints
 
 - No framework, no bundler, no build step.
-- Classic scripts share one global scope: every new top-level name must be unique (`tests/globals.test.js` enforces it). New names: `ROOM_SHEETS`, `roomSheet`, `burnLayout`, `faceImage`.
+- Classic scripts share one global scope: every new top-level name must be unique (`tests/globals.test.js` enforces it). New names: `ROOM_SHEETS`, `roomSheet`, `faceImage`.
 - The station key bar, `#bsheet` and every `data-bst` key keep working unchanged; `tests/stations.test.js` and `tests/downtime.test.js` must pass without edits.
 - The old screens and the full build are untouched except where a task says so.
 - Canvas text is 12px or more after Task 1.
@@ -36,32 +36,29 @@
 - **Sheets are DOM over the canvas, not drawn in it.** The panels already exist as DOM with text, buttons and focus; drawing them on the canvas would lose all three. A room opens the sheet its station key opens, through `ROOM_SHEETS`: bridge to `nav`, gunnery to `weapons`, engine to `eng`, berths and medbay to `interior`, galley to `interior`, hold to `ops`. The shell's page registry is not used in a burn: its views depend on the landed port, and the burn panels are already the burn's registry. The spec's "same registry" is met by one table that both the key bar and the rooms read.
 - **A scene or contact leaves the view as it is.** While `G.dialog` or `t.event` is set, the sheet and key bar are hidden (`syncBridge` does this today), the timer is paused, and a tap on a room does nothing. The dialog sits over the cutaway as now. No change.
 - **The key bar stays until cutover.** It is the keyboard and screen-reader way into the sheets (the cutaway is a canvas), and the fallback if the rooms do not work out. Step 6 decides whether it goes.
-- **The canvas blocks get one layout function.** `burnLayout(W, H)` returns the boxes for the route plate, Comms, the burn instruments, the ship's log and the cutaway. Task 1 moves today's constants into it with no change in what is drawn; the new overlap test then shows what actually collides at the three sizes, and the fix is in the function. The canvas text floor is 12px.
+- **The canvas blocks' layout is pinned by a test, not a function.** `drawTransit` records where each block was drawn (`G.burnBoxes`), and a test checks they do not overlap at the three sizes; they already did not, so nothing was restructured. The canvas text floor is 12px.
 - **Faces are cached images.** `faceImage(person)` builds an `Image` from the person's `portraitSvg` as a data URL, once per person and mood, and the cutaway draws it in a circle where the head is; until the image has loaded, the stick figure is drawn. Task 4 can be dropped without affecting the others.
 - **The cost cut-off.** If Task 2's tap sweep (a tap at the centre of every room, on all five ships, at 1280x800 and 390x844, and a sweep through the turn) cannot be made to land on the right room, or a room's box on the phone is under 36px in either direction for more than two rooms, the rooms are not tappable, Tasks 3 and 4 are dropped, the key bar is kept, and Task 1 and the plan's close-out still ship. That is the evidence named in the spec's Risks.
 - **Out of scope.** Restyling the cutaway art, new rooms, moving the HUD, the pilot's flight screen, and the old screens' layout.
 
 ---
 
-### Task 1: One layout for the canvas blocks, and a 12px text floor (#262, #265)
+### Task 1: Pin the canvas blocks' layout, and a 12px text floor (#262, #265)
+
+Built as: the blocks (route plate, burn instruments, Comms, ship's log, cutaway) already did not overlap at the three sizes, so no `burnLayout` function was written; `drawTransit` records each block's box in `G.burnBoxes` and a test checks them. The 9 to 11px canvas text (plate, FLIP label, burn panel, room labels, people's names) went to 12px.
 
 **Files:**
-- Modify: `js/transit.js`
+- Modify: `js/transit.js`, `js/shiplife.js`, `js/burnpanel.js`
 - Test: `tests/burnview.test.js`
 
-**Interfaces:**
-- Produces: `burnLayout(W, H): { plate, comms, burn, log, ship }`, each a `{ x, y, w, h }` in screen pixels (`burn` is `null` when there is no room for it, on a phone).
-
-- [ ] **Step 1: Extract.** Move the constants in `drawTransit` (the plate, the Comms box, the instruments panel, the ship's log and the cutaway's centre and length) into `burnLayout`, and have `drawTransit` read them. Run `tests/burnview.test.js`: it passes unchanged, and nothing is drawn differently.
-- [ ] **Step 2: Write the failing test.** `'the burn view's blocks do not overlap, at the three screen sizes'`: for 1280x800, 768x1024 and 390x844, enter a burn and call `burnLayout`; assert every pair of boxes is disjoint and every box is inside the view (`W - G.hudW` wide). Also `'canvas text is 12px or more'`: run `drawTransit` with a spy on the context's `font` setter and assert no size under 12.
-- [ ] **Step 3: Run them to see them fail.** Expected: FAIL for whichever blocks collide, and for the 9 to 11px fonts.
-- [ ] **Step 4: Fix.** Adjust the boxes in `burnLayout` until the pairs are disjoint; raise the font sizes to 12px and the boxes' heights with them.
-- [ ] **Step 5: Run.** `node --test tests/burnview.test.js tests/layout.test.js`, then the full suite. Expected: PASS.
-- [ ] **Step 6: Commit.**
+- [x] **Step 1: Write the tests.** `'the burn view's blocks do not overlap, at the three screen sizes (#262)'` (every pair of boxes in `G.burnBoxes` is disjoint and inside the view, at 1280x800, 768x1024 and 390x844) and `'canvas text in the burn view is 12px or more (#265)'` (a spy on the context's `font` setter sees no size under 12).
+- [x] **Step 2: Run them.** The overlap test passed already; the text test failed on 8 to 11px.
+- [x] **Step 3: Fix.** The text to 12px; the names' rows 14px apart; the downtime button 8px lower to clear them.
+- [x] **Step 4: Run and commit.**
 
 ```bash
-git add js/transit.js tests/burnview.test.js
-git commit -m "Lay out the burn view's blocks in one place, and keep canvas text at 12px (#323, #262)"
+git add js/transit.js js/shiplife.js js/burnpanel.js tests/burnview.test.js
+git commit -m "Record the burn view's blocks, and keep canvas text at 12px (#323, #262, #265)"
 ```
 
 ### Task 2: The cutaway records its rooms
@@ -150,6 +147,6 @@ git commit -m "Record step 5 of the ship interface (#323)"
 
 - **Spec coverage (step 5):** the cutaway as the burn screen with people in it (it already is; Tasks 2 and 3 make it the way in); a tap on a room opens a sheet from the same table the key bar reads (Task 3); #262's remaining overlaps and the canvas text size (Task 1); faces (Task 4); the cost cut-off with named evidence (Decisions, Task 2). Not here by design: the key bar's removal (step 6), restyling the art, and the pilot's flight screen.
 - **Decisions made:** hit-testing against recorded boxes; DOM sheets; the burn panels (not the shell's landed views) as the burn's registry; the dialog case unchanged; the key bar kept; one layout function; cached face images; the cut-off test.
-- **Type consistency:** `G.cutRooms`, `roomAtPoint`, `ROOM_SHEETS`, `roomSheet`, `burnLayout` and `faceImage` are used with the same names and shapes in every task.
-- **Known risks:** the flip swaps `x0` and `x1` and the cutaway draws no people mid-turn (Task 2's turn sweep pins both); room boxes on a phone may be too small (the 36px check is the evidence); moving the constants into `burnLayout` must change nothing before anything is fixed (Task 1, Step 1); a face image loads late or fails, and the figure must remain the fallback (Task 4); the click handler sits in `js/game.js` with the person test, so the order of the two is pinned by a test.
+- **Type consistency:** `G.burnBoxes`, `G.cutRooms`, `roomAtPoint`, `ROOM_SHEETS`, `roomSheet` and `faceImage` are used with the same names and shapes in every task.
+- **Known risks:** the flip swaps `x0` and `x1` and the cutaway draws no people mid-turn (Task 2's turn sweep pins both); room boxes on a phone may be too small (the 36px check is the evidence); a face image loads late or fails, and the figure must remain the fallback (Task 4); the click handler sits in `js/game.js` with the person test, so the order of the two is pinned by a test.
 - **Proportion:** the plan holds signatures, test names, assertions and values, not bodies.
