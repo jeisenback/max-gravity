@@ -53,25 +53,20 @@ const UI = {
     this.el.style.setProperty('--accent', color || '#6fb0ff');
   },
 
-  // A choice's button; shut, it says why as text (js/gates.js), not only in a tooltip.
-  choiceHtml(c, i) {
-    const shut = c.can && !c.can(), why = shut && (typeof c.why === 'function' ? c.why() : c.why);
-    return `<button data-action="choose" data-arg="${i}" ${shut ? 'disabled' : ''}>${c.label}</button>${why ? `<div class="hint why">${why}</div>` : ''}`;
-  },
+  // A choice's button; shut, it says why as text (js/gates.js). Built on the view helpers (js/views.js): the label and the reason are text.
+  choiceHtml(c, i) { return String(choiceButtonHtml(c, i)); },
 
   showEvent(ev, choices) {
     const where = G.mode === 'hail' ? 'Comms channel' : G.mode === 'transit' ? 'In transit' : G.state.planet;
     this.setAccent(G.mode === 'hail' ? '#6fb0ff' : G.mode === 'transit' ? '#9fb4ff' : GOV_COLORS[system().gov]);
-    this.el.innerHTML = `
-      <div class="event-body" role="dialog" aria-label="${esc(ev.title)}">
-        <div class="eyebrow">${ev.via ? `${VIA_LABELS[ev.via]} &middot; ` : ''}${where}</div>
-        ${sceneFacesHtml(ev)}
+    this.el.innerHTML = String(h`
+      <div class="event-body" role="dialog" aria-label="${ev.title}">
+        <div class="eyebrow">${ev.via ? raw(`${VIA_LABELS[ev.via]} &middot; `) : ''}${where}</div>
+        ${raw(sceneFacesHtml(ev))}
         <h1>${ev.title}</h1>
-        <p>${ev.text}</p>
-        <div class="choices">
-          ${choices.map((c, i) => this.choiceHtml(c, i)).join('')}
-        </div>
-      </div>`;
+        <p>${raw(ev.text)}</p>
+        ${choiceBlockHtml(choices)}
+      </div>`);
     this.el.classList.remove('hidden');
     this.el.classList.add('event');
     this.el.scrollTop = 0;
@@ -86,15 +81,15 @@ const UI = {
   },
 
   showEventResult(title, text, shifts) {
-    this.el.innerHTML = `
+    this.el.innerHTML = String(h`
       <div class="event-body">
         <div class="eyebrow">${G.mode === 'hail' ? 'Comms channel' : G.mode === 'transit' ? 'In transit' : G.state.planet}</div>
-        ${sceneFacesHtml(G.dialog && G.dialog.event)}
+        ${raw(sceneFacesHtml(G.dialog && G.dialog.event))}
         <h1>${title}</h1>
-        <p>${text}</p>
-        ${shiftLines(shifts || [])}
+        <p>${raw(text)}</p>
+        ${raw(shiftLines(shifts || []))}
         <div class="choices"><button data-action="continue" class="primary">Continue</button></div>
-      </div>`;
+      </div>`);
   },
 
   hide() {
@@ -224,47 +219,45 @@ const UI = {
       const st = G.state, here = this.planet.name;
       const traits = c => (c.traits ? ` &middot; ${c.traits.map(t => TRAITS[t].adj).join(', ')}` : '');
       const skill = c => `${ROLE_NAMES[c.role]}, skill ${c.skill}/3`;
-      const mine = st.crew.map((id, i) => {
+      const mine = listHtml(st.crew, (id, i) => {
         const c = person(id);
         const mood = CREW[id] ? '' : ` &middot; ${opinionWord(c.opinion)}`;
         const hurt = !!(st.injured || {})[id], ring = hurt || moodLow(c) ? 'warn' : moodHigh(c) ? 'good' : '';
-        return `<div class="mission">
-          <div class="crew-face ${ring}">${portraitSvg(c)}</div>
-          <div><b>${personLink(c)}</b>${hurt ? ' <span class="tag high">injured</span>' : ''}${moodLow(c) ? ' <span class="char-chip warn">having a hard time</span>' : moodHigh(c) ? ' <span class="char-chip good">in high spirits</span>' : ''} &middot; ${skill(c)}${traits(c)}${mood}
-            <div class="hint">${CREW[id] ? c.perk : ROLE_PERKS[c.role](c.skill)} Wage ${fmt(wage(id))} cr/day.</div>${marksHtml(c)}</div>
-          ${hired() ? '' : `<button data-action="dismiss" data-arg="${i}">Dismiss</button>`}
-        </div>`;
-      }).join('');
+        return personCardHtml(c, {
+          ring,
+          sub: h`${hurt ? raw(' <span class="tag high">injured</span>') : ''}${moodLow(c) ? raw(' <span class="char-chip warn">having a hard time</span>') : moodHigh(c) ? raw(' <span class="char-chip good">in high spirits</span>') : ''} &middot; ${skill(c)}${raw(traits(c))}${raw(mood)}
+            <div class="hint">${CREW[id] ? c.perk : ROLE_PERKS[c.role](c.skill)} Wage ${fmt(wage(id))} cr/day.</div>${raw(marksHtml(c))}`,
+          actions: hired() ? '' : raw(`<button data-action="dismiss" data-arg="${i}">Dismiss</button>`),
+        });
+      });
       const unique = Object.entries(CREW).filter(([id, c]) => c.home === here && !st.crew.includes(id))
         .map(([id, c]) => ({ c, arg: id, bio: c.bio, perk: c.perk }));
       const locals = G.bar.map((c, i) => ({ c, arg: `bar:${i}`, bio: describe(c).replace(GOALS[c.goal], 'looking for a ship'), perk: ROLE_PERKS[c.role](c.skill) }));
-      const forHire = hired() ? '' : [...unique, ...locals].map(({ c, arg, bio, perk }) => {
+      const forHire = listHtml([...unique, ...locals], ({ c, arg, bio, perk }) => {
         const ok = berthsFree() > 0 && st.credits >= c.fee;
-        return `<div class="mission">
+        return h`<div class="mission">
           <div><b>${fullName(c)}</b> &middot; ${skill(c)}<div class="hint">${bio}</div><div class="hint">${perk} Wage ${fmt(c.wage)} cr/day.</div></div>
-          ${arg.startsWith('bar:') ? interviewButton(arg.slice(4)) : ''}<button data-action="hire" data-arg="${arg}" ${ok ? '' : 'disabled'}>Hire (${fmt(c.fee)} cr)</button>
+          ${arg.startsWith('bar:') ? raw(interviewButton(arg.slice(4))) : ''}<button data-action="hire" data-arg="${arg}" ${ok ? '' : 'disabled'}>Hire (${fmt(c.fee)} cr)</button>
         </div>`;
-      }).join('');
-      const known = alivePeople().filter(p => p.opinion !== 0 && !st.crew.includes(p.id))
-        .sort((a, b) => Math.abs(b.opinion) - Math.abs(a.opinion)).slice(0, 12)
-        .map(p => (`<div class="hint"><b>${personLink(p)}</b> ` +
-            `(${opinionWord(p.opinion)}, ${p.ship ? `captain of the ${p.ship.name}, flies around ${SYSTEMS[p.haunt].name}` : p.location ?
-              `last seen at ${p.location}` : 'whereabouts unknown'})${p.location === here ? ' <b>- here now</b>' : ''}: ${p.memories.length ?
-              p.memories[p.memories.length - 1] : ''}</div>`)).join('');
+      });
+      const known = listHtml(alivePeople().filter(p => p.opinion !== 0 && !st.crew.includes(p.id))
+        .sort((a, b) => Math.abs(b.opinion) - Math.abs(a.opinion)).slice(0, 12), p => h`<div class="hint"><b>${raw(personLink(p))}</b> (${opinionWord(p.opinion)}, ${p.ship ? h`captain of the ${p.ship.name}, flies around ${SYSTEMS[p.haunt].name}` : p.location ?
+              h`last seen at ${p.location}` : 'whereabouts unknown'})${p.location === here ? raw(' <b>- here now</b>') : ''}: ${p.memories.length ?
+              p.memories[p.memories.length - 1] : ''}</div>`);
       const elsewhere = Object.values(CREW).filter(c => c.home !== here).map(c => `${c.name} (${ROLE_NAMES[c.role]}) at ${c.home}`);
-      return `
+      return String(h`
         <h3>${hired() ? 'The crew' : 'Your crew'}</h3>
-        ${mine || '<p class="hint">Just you. Crew take a berth each and are paid daily wages in transit.</p>'}
-        ${hired() ? '' : `<p class="hint">Berths: ${berthsUsed()}/${ship().berths} used by crew and passengers. Unhappy crew will walk off the ship.</p>`}
-        ${homeHtml()}
-        ${memorialHtml()}
-        ${bondsHtml()}
-        ${hired() ? '' : `<h3>Looking for work here</h3>
-        ${forHire || '<p class="hint">Nobody in the bar is looking for a ship right now.</p>'}`}
+        ${st.crew.length ? mine : raw('<p class="hint">Just you. Crew take a berth each and are paid daily wages in transit.</p>')}
+        ${hired() ? '' : h`<p class="hint">Berths: ${berthsUsed()}/${ship().berths} used by crew and passengers. Unhappy crew will walk off the ship.</p>`}
+        ${raw(homeHtml())}
+        ${raw(memorialHtml())}
+        ${raw(bondsHtml())}
+        ${hired() ? '' : h`<h3>Looking for work here</h3>
+        ${unique.length + locals.length ? forHire : raw('<p class="hint">Nobody in the bar is looking for a ship right now.</p>')}`}
         <h3>People you know</h3>
-        ${known || '<p class="hint">Nobody yet. Passengers and crew remember how you treated them.</p>'}
+        ${known.html ? known : raw('<p class="hint">Nobody yet. Passengers and crew remember how you treated them.</p>')}
         <h3>Legends of the spaceways</h3>
-        <p class="hint">${elsewhere.join('; ')}.</p>`;
+        <p class="hint">${elsewhere.join('; ')}.</p>`);
     },
 
     shipyard() {

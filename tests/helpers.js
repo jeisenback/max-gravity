@@ -38,8 +38,9 @@ function seedScript(seed) {
 //   scope: 'full' (the default here) or 'earth-hired', the narrow build the game ships with (js/build.js)
 //   debt: true to start a hired hand owing the hiring hall's bond (js/hired.js, #280). It is off in tests, so the many that buy a ship or
 //         count a hand's pay start as they did before the bond; the soak and the tests of the bond turn it on.
-//   shell: true to open the ship-interface shell (js/shell.js), which is off unless the address says shell=on
-async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '', scope = 'full', shell = false, debt = false } = {}) {
+//   shell: true to open the ship-interface shell (js/shell.js, shell=on), false (the default) to open the old screens (shell=off), or
+//          'default' to add nothing, so the build's own default applies (on in the narrow build). SHELL_TESTS=on makes true the default.
+async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '', scope = 'full', shell = process.env.SHELL_TESTS === 'on', debt = false } = {}) {
   browser = browser || await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
   const ctx = await browser.newContext({ viewport, isMobile: mobile, hasTouch: mobile });
   await ctx.addInitScript(seedScript, seed);
@@ -50,7 +51,7 @@ async function open({ title = false, viewport = { width: 1280, height: 800 }, mo
   const page = await ctx.newPage();
   const errors = [];
   watch(page, errors);
-  const query = [scope === 'full' ? 'scope=full' : '', shell ? 'shell=on' : ''].filter(Boolean).join('&');
+  const query = [scope === 'full' ? 'scope=full' : '', shell === 'default' ? '' : shell ? 'shell=on' : 'shell=off'].filter(Boolean).join('&');
   await page.goto(URL + (query ? `?${query}` : '') + hash);  // the build's scope (js/build.js): tests run everything unless they ask for the narrow one
   await page.waitForFunction(() => typeof G !== 'undefined' && (G.state || G.mode === 'title'));
   // The main characters are drawn from a pool (js/cast.js). A test starts from the pair it knew (by background) unless it asks for the draw: realDrawCastPair.

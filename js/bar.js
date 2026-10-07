@@ -389,28 +389,27 @@ function barHtml() {
   const st = G.state, planet = currentPlanet();
   if (!G.patrons || G.barState.planet !== planet.name) fillBar(planet);
   const b = barOf(planet), round = 25 * (4 + G.patrons.filter(x => !x.cast).length);
-  const rows = G.patrons.map(({ p, known, cast, regular }, i) => (`<div class="mission">
-      <div><b>${p.first} ${p.last}</b>${known ? ` <span class="hint">(${opinionWord(p.opinion)})</span>` : ''}
-        <div ` +
-      `class="hint">${cast ? 'Aboard with you, and at the bar tonight.' : known ? `${regular ? 'A regular here.' : 'Someone you know.'} ${regular && p.gossip ?
-        `${p.first} ${p.gossip} ` : ''}${p.memories.length ? p.memories[p.memories.length - 1] : ''}` : `${TRAITS[p.traits[0]].adj[0].toUpperCase()}${TRAITS[p.traits[0]].adj.slice(1)} ${p.job} from ${p.home}.`}</div></div>
+  const rows = listHtml(G.patrons, ({ p, known, cast, regular }, i) => h`<div class="mission">
+      <div><b>${p.first} ${p.last}</b>${known ? h` <span class="hint">(${opinionWord(p.opinion)})</span>` : ''}
+        <div class="hint">${cast ? 'Aboard with you, and at the bar tonight.' : known ? h`${regular ? 'A regular here.' : 'Someone you know.'} ${regular && p.gossip ?
+        h`${p.first} ${p.gossip} ` : ''}${p.memories.length ? p.memories[p.memories.length - 1] : ''}` : h`${TRAITS[p.traits[0]].adj[0].toUpperCase()}${TRAITS[p.traits[0]].adj.slice(1)} ${p.job} from ${p.home}.`}</div></div>
       <button data-action="barTalk" data-arg="${i}">Talk</button>
-    </div>`)).join('');
-  const hire = G.bar.map((c, i) => `<div class="mission">
+    </div>`);
+  const hire = listHtml(G.bar, (c, i) => h`<div class="mission">
       <div><b>${fullName(c)}</b> &middot; ${ROLE_NAMES[c.role]}, skill ${c.skill}/3<div class="hint">${describe(c).replace(GOALS[c.goal], 'looking for a ship')}</div></div>
-      ${interviewButton(i)}<button data-action="hire" data-arg="bar:${i}" ${berthsFree() > 0 && st.credits >= c.fee ? '' : 'disabled'}>Hire (${fmt(c.fee)} cr)</button>
-    </div>`).join('');
-  return `
-    <h3>${b.name}</h3>
-    <p class="desc">${b.vibe}</p>
-    ${matchNight() ? `<div class="hint">${matchNight().text}</div>` : ''}
-    ${(G.barState.lines = G.barState.lines || roomLines(planet)).map(l => `<div class="hint">${l}</div>`).join('')}
-    ${G.barState.note ? `<p class="desc">${G.barState.note}</p>` : ''}
+      ${raw(interviewButton(i))}<button data-action="hire" data-arg="bar:${i}" ${berthsFree() > 0 && st.credits >= c.fee ? '' : 'disabled'}>Hire (${fmt(c.fee)} cr)</button>
+    </div>`);
+  return String(h`
+    <h3>${raw(b.name)}</h3>
+    <p class="desc">${raw(b.vibe)}</p>
+    ${matchNight() ? h`<div class="hint">${raw(matchNight().text)}</div>` : ''}
+    ${(G.barState.lines = G.barState.lines || roomLines(planet)).map(l => h`<div class="hint">${raw(l)}</div>`)}
+    ${G.barState.note ? h`<p class="desc">${raw(G.barState.note)}</p>` : ''}
     <div class="row"><button data-action="barRound" ${st.credits >= round && !G.barState.round ? '' : 'disabled'}>${G.barState.round ? 'You bought a round' : `Buy a round for the house (${fmt(round)} cr)`}</button></div>
-    ${barWorkHtml()}
+    ${raw(barWorkHtml())}
     <h3>Tonight</h3>
-    ${rows || '<p class="hint">Just you and the bartender.</p>'}
-    ${hire && !hired() ? `<h3>Looking for a ship</h3>${hire}` : ''}`;
+    ${G.patrons.length ? rows : raw('<p class="hint">Just you and the bartender.</p>')}
+    ${G.bar.length && !hired() ? h`<h3>Looking for a ship</h3>${hire}` : ''}`);
 }
 
 Mods.register({

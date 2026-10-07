@@ -22,6 +22,21 @@ test('the shell is off unless the address asks for it', async () => {
   await on.done();
 });
 
+test('the shell is on by default in the narrow build and off in the full build', async () => {
+  const narrow = await open({ scope: 'earth-hired', shell: 'default' });
+  assert.equal(await narrow.ev(() => shellOn()), true);
+  await narrow.ev(helpers);
+  const tab = await narrow.ev(() => { start(); UI.tab = 'nowhere'; UI.render(); return { shell: !!document.querySelector('.shell'), tab: UI.tab }; });  // a tab value the shell does not know: Port
+  assert.equal(tab.shell, true); assert.equal(tab.tab, 'port');
+  await narrow.done();
+  const full = await open({ scope: 'full', shell: 'default' });
+  assert.equal(await full.ev(() => shellOn()), false);
+  await full.done();
+  const off = await open({ scope: 'earth-hired', shell: false });
+  assert.equal(await off.ev(() => shellOn()), false, 'shell=off keeps the old screens in the narrow build');
+  await off.done();
+});
+
 test('with the shell off the landed screen is unchanged', async () => {
   const { ev, done } = await open({});
   await ev(helpers);
