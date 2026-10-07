@@ -142,6 +142,7 @@ On a keyboard:
 - `js/bridge.js` - the ship's stations: keys across the landed screen and a key bar with status sheets in a burn
 - `js/shell.js` - the ship-interface shell, on by default in the narrow build (`?shell=off` keeps the old screens) and off in the full one (`?shell=on` turns it on): the landed screen with a rail of the ship's rooms and an Ashore group in place of the station keys and tabs (design: `docs/superpowers/specs/2026-10-05-ship-interface-design.md`)
 - `js/views.js` - the view helpers: a tagged template `h` that escapes what it prints (`raw()` marks trusted HTML), and a panel, list, person card and choice block built on it; the Crew page, the Bar page and the scene dialog use them
+- `js/a11y.js` - access for a screen reader and a keyboard: `announce(text)` reads a line through one polite live region, `#live`, outside the panel; `focusPage`, `trapDialog` and `releaseDialog` move focus on a room change and into and out of a scene dialog
 - `js/stations.js` - posts (pilot, gunner, engineer, comms): crewed or manual, taking the controls, and orders
 - `js/autopilot.js` - the crewed pilot: departs, brings the ship in and lands; any flight key takes the controls
 - `js/duel.js` - the crewed gunner: a contact is settled on the console in exchanges of threat and answer, with decks built from your fit (see `COMBAT.md`); with no crewed gunner, you fight it
