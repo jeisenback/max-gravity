@@ -205,3 +205,37 @@ test('the result screen escapes its title and keeps its text raw', async () => {
   assert.deepEqual(r, { heading: 'Done <b>', bold: 0, italic: true });
   await done();
 });
+
+// An owner's Crew page (the for-hire list and the Dismiss buttons only an owner has), on the old screens: the full build.
+test('the crew page of an owner renders the golden markup', async () => {
+  const { ev, done } = await open({ scope: 'full', shell: false });
+  const html = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000;
+    for (const key of ['ines', 'tomas']) { const p = castPerson(key); p.role = CAST[key].role; p.skill = p.skills[p.role]; if (!st.crew.includes(p.id)) st.crew.push(p.id); castRec(key).since = st.day; }
+    UI.tab = 'crew'; UI.render();
+    return document.querySelector('#panel .body').innerHTML;
+  });
+  const file = 'tests/fixtures/crew-owner.html';
+  if (process.env.UPDATE_GOLDEN) fs.writeFileSync(file, html + '\n');
+  assert.equal(html + '\n', fs.readFileSync(file, 'utf8'), `the markup changed (UPDATE_GOLDEN=1 rewrites ${file})`);
+  await done();
+});
+
+test('the Crew page escapes a hostile name in its rows, the for-hire list and the people you know', async () => {
+  const { ev, done } = await open({ scope: 'full', shell: false });
+  const r = await ev(([a, b]) => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000;
+    const p = castPerson('ines'); if (!st.crew.includes(p.id)) st.crew.push(p.id);
+    Object.assign(p, { first: a, last: b });
+    Object.assign(G.bar[0], { first: a, last: b });
+    registerPerson(Object.assign(makePerson(), { first: a, last: b, opinion: 2, location: a })).memories.push(`Day 1: ${b}`);
+    UI.tab = 'crew'; UI.render();
+    const body = document.querySelector('#panel .body');
+    return { img: body.querySelectorAll('img, script').length, attrs: [...body.querySelectorAll('*')].filter(el => [...el.attributes].some(x => /^on/i.test(x.name))).length, text: body.textContent.split(a).length - 1, hire: !!body.querySelector('[data-action=hire]') };
+  }, [HOSTILE_A, HOSTILE_B]);
+  assert.equal(r.img, 0); assert.equal(r.attrs, 0); assert.ok(r.hire, 'the for-hire list is shown');
+  assert.ok(r.text >= 3, `the name shows as text in the row, the for-hire list and the people you know (${r.text})`);
+  await done();
+});

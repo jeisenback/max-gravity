@@ -16,12 +16,13 @@ const panelHtml = ({ eyebrow, title, body }) => h`${eyebrow ? h`<div class="eyeb
 // A list: one row per item, each built by `row(item, i)` (use h). An empty list prints nothing.
 const listHtml = (items, row) => raw(items.map((item, i) => viewText(row(item, i))).join(''));
 
-// A person's row, as the Crew page draws it: the face, the name as a link to their screen, a line under it, and the buttons.
+// A person's row, as the Crew page draws it: the face, the name as a link to their screen, a line under it, and the buttons. The
+// whitespace is the Crew page's own, so the page keeps its markup exactly (tests/fixtures/crew.html).
 const personCardHtml = (person, { sub, actions, ring } = {}) => h`<div class="mission">
-  <div class="crew-face ${ring || ''}">${raw(portraitSvg(person))}</div>
-  <div><b>${raw(personLink(person))}</b>${sub}</div>
-  ${actions}
-</div>`;
+          <div class="crew-face ${ring || ''}">${raw(portraitSvg(person))}</div>
+          <div><b>${raw(personLink(person))}</b>${sub}</div>
+          ${actions}
+        </div>`;
 
 // A choice's button; shut, it says why as text (gates.js). The label and the reason are text, so they are escaped.
 const choiceButtonHtml = (c, i) => {
