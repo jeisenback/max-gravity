@@ -77,3 +77,37 @@ test('a new hired game shows the one-time tips again, and a save from before kee
   assert.equal(r.old, 2, 'a save with no record uses the browser\'s, which has seen it');
   await done();
 });
+
+// A hired hand's contact plays as an authored raid in beats (js/engagements.js), with no keys and no card duel (#300).
+test('a hired hand\'s "Fights during burns" describes the raid as it plays, not the card duel', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => helpText(helpTopics().find(h => h.id === 'combat')).join(' '));
+  assert.match(r, /The Closing/); assert.match(r, /First Pass/); assert.match(r, /Second Pass/);
+  assert.match(r, /your own post/i, 'a move of your own post');
+  assert.doesNotMatch(r, /card duel|initiative|PDCs/, 'the duel is not explained to a hand');
+  await done();
+});
+
+test('Controls has no burn-fight keys, leads with Touch on a touch device, and says the captain calls the burn', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    const out = {};
+    for (const on of [false, true]) { Touch.on = on; out[on ? 'touch' : 'keys'] = Menu.views.controls.call(Menu); }
+    return out;
+  });
+  for (const [k, html] of Object.entries(r)) {
+    assert.doesNotMatch(html, /Fights during burns|retrograde|less or more thrust/, `${k}: no burn-fight section`);
+    assert.match(html, /captain calls the burn/i, `${k}: a hand is told who calls the burn`);
+  }
+  assert.ok(r.touch.indexOf('<h3>Touch</h3>') < r.touch.indexOf('<h3>Flying</h3>'), 'Touch comes first on a touch device');
+  assert.ok(r.keys.indexOf('<h3>Flying</h3>') < r.keys.indexOf('<h3>Touch</h3>'), 'the keys come first with a keyboard');
+  await done();
+});
+
+test('an owner\'s Controls page keeps its own text (out of scope for #300)', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  const html = await ev(() => Menu.views.controls.call(Menu));
+  assert.doesNotMatch(html, /captain calls the burn/i);
+  assert.match(html, /Fights during burns/);
+  await done();
+});

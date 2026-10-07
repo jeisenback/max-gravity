@@ -28,7 +28,10 @@ const HELP = [
     'Things happen along the way: distress calls, rumors, crew moments, the captain\'s and the first officer\'s own scenes. Time stops while you decide.' ], text: [
     'Open the system map (M), pick a destination, and start the burn (J) once you are clear of the port. Everything orbits at its real period, so travel times change over the months; the map shows the best upcoming window.',
     'A burn accelerates to the midpoint, flips, and decelerates. Things happen along the way: distress calls, rumors, crew moments, passengers\' stories. Time stops while you decide.' ] },
-  { id: 'combat', title: 'Fights during burns', text: [
+  { id: 'combat', title: 'Fights during burns', hand: [
+    'Pirates, a navy patrol that wants the ship, or a raider can come up on you mid-burn. The captain calls battle stations, and the raid plays out in three scenes: The Closing, First Pass and Second Pass.',
+    'At each scene you pick how to meet her, or do the job of your own post. Each choice says what it can cost before you pick it, such as hull damage, a crew casualty, or that you may be hurt. A post move gets better as you gain levels.',
+    'How the three scenes go decides the close: she breaks off, she stands off and throws a last round, or she comes alongside and the fight goes to the lock.' ], text: [
     'Pirates, navy patrols that want you, bounty targets, and hired guns can intercept you mid-burn, more often on dangerous lanes. You can fight, burn hard to run, or pay them off.',
     'The fight is a card duel on the console. The ship with the initiative plays a threat, the other an answer. PDCs stop torpedoes, evasive burns stop gun runs, and crew at the locks stop boarders. A stopped threat passes the initiative.',
     'Your cards come from your ship: torpedoes, point-defense cannons, guns, pilot, power, and crew. A beaten pirate drifts, disabled, and can be boarded.' ] },
