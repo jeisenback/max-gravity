@@ -87,7 +87,7 @@ test('each background has its own pair, and the pairs do not cross', async () =>
   await done();
 });
 
-test('every authored scene is complete: a title, text, two choices with results, and a day for the mid and late ones', async () => {
+test('every authored scene is complete: a title, text, two choices (and a gated one where a scene has it) with results, and a day for the mid and late ones', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
@@ -98,7 +98,7 @@ test('every authored scene is complete: a title, text, two choices with results,
       for (const [name, sc] of Object.entries(d.scenes)) {
         const bad = [];
         if (!sc.title || sc.text.length < 100) bad.push('text');
-        if (sc.choices.length !== (name === 'pivot' ? 3 : 2) || !sc.choices.every(c => c.label)) bad.push('choices');
+        if (sc.choices.length !== (name === 'pivot' ? 3 : 2 + sc.choices.filter(c => c.opinion).length) || !sc.choices.every(c => c.label)) bad.push('choices');  // a choice that needs someone's regard (#345) is one more
         if (['mid1', 'mid2', 'late', 'pivot'].includes(name) && !(sc.days > 0)) bad.push('days');
         if (/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/u.test(sc.text + sc.choices.map(c => c.label).join(''))) bad.push('emoji');
         out.push({ key, name, bad });
@@ -130,7 +130,7 @@ test('every choice of every scene runs and says what happened', async () => {
     return out;
   });
   assert.deepEqual(r.filter(x => !x.ok), []);
-  assert.equal(r.length, 107, 'six characters, five scenes, two choices, and the pivots\' three; and the first officers\' five scenes each');
+  assert.equal(r.length, 109, 'six characters, five scenes, two choices, and the pivots\' three; and the first officers\' five scenes each; and the two gated choices of Ines and Tomas');
   await done();
 });
 
@@ -802,5 +802,35 @@ test('a waiting introduction gains weight for each draw it misses, and the ones 
   assert.equal(r.afterPlay.played, 1);
   assert.ok(r.afterPlay.waits.includes(0), 'the one that played starts again at zero');
   assert.deepEqual(r.next, ['1:14', '1:14'], 'the two still waiting have each missed four draws, and carry on from there');
+  await done();
+});
+
+// ---------- opinion-gated choices in the mid scenes (#345) ----------
+
+test('Ines\'s Board and Tomas\'s Third Hull each have a choice that needs their trust: shut below it, open at it, and it does what it says', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    start({ post: 'gunner', captainKey: 'hester' });
+    const out = {};
+    for (const [key, sceneId, label, flag] of [['ines', 'mid2', 'Offer to say it to the board in person', 'reference'], ['tomas', 'mid2', 'Ask him to write it down', null]]) {
+      const p = castAboard().find(c => c.cast === key), probe = op => {
+        p.opinion = op; G.dialog = null; if (G.transit) G.transit.event = null;
+        openEvent(castScene(key, CAST[key].scenes[sceneId]));
+        const i = G.dialog.choices.findIndex(c => c.label.includes(label));
+        return { i, can: G.dialog.choices[i].can(), label: G.dialog.choices[i].label, count: G.dialog.choices.length };
+      };
+      const below = probe(OPINION.TRUSTED - 1), open = probe(OPINION.TRUSTED), before = p.opinion, text = chooseEvent(open.i);
+      out[key] = { below, open, gain: p.opinion - before, text, flag: flag ? !!castRec(key).flags && !!castRec(key).flags[flag] : null, first: p.first };
+    }
+    return out;
+  });
+  for (const key of ['ines', 'tomas']) {
+    const k = r[key];
+    assert.equal(k.below.can, false, `${key} shut below the minimum`); assert.ok(k.below.label.includes(`needs ${k.first}'s trust`), k.below.label);
+    assert.equal(k.open.can, true, `${key} open at it`); assert.ok(!k.open.label.includes('needs'), 'no reason once open');
+    assert.ok(k.below.count >= 3, 'shut, never hidden'); assert.ok(k.text.length > 200, 'it says what happened');
+  }
+  assert.ok(r.ines.gain >= 2 && r.tomas.gain >= 1, 'it lifts their regard (opinion tops out, so from the minimum it is less than the full gain)'); assert.ok(r.ines.flag, 'the reference flag is set');
   await done();
 });
