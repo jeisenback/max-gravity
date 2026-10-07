@@ -238,7 +238,7 @@ const layout = () => {
   const rail = document.querySelector('.rail').getBoundingClientRect(), body = document.querySelector('.shell .body').getBoundingClientRect();
   const buttons = [...document.querySelectorAll('.rail button')].map(b => b.getBoundingClientRect());
   return {
-    railLeftOfBody: rail.right <= body.left + 1, railAboveBody: rail.bottom <= body.top + 1,
+    railLeftOfBody: rail.right <= body.left + 1, railBelowBody: rail.top >= body.bottom - 1,
     noSideScroll: document.documentElement.scrollWidth <= window.innerWidth,
     buttonsOnScreen: buttons.every(r => r.left >= 0 && r.right <= window.innerWidth && r.width > 0),
   };
@@ -269,11 +269,11 @@ test('at desktop width the rail sits beside the page', async () => {
   await done();
 });
 
-test('a phone has no horizontal scroll, the rail is a row above the page, and every entry is on screen', async () => {
+test('a phone has no horizontal scroll, the rail is a grid below the page, and every entry is on screen', async () => {
   const { ev, done } = await open({ shell: true, viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
   const r = await ev(([fn]) => { start(); return (0, eval)(`(${fn})`)(); }, [layout.toString()]);
-  assert.equal(r.railAboveBody, true, 'the rail is above the page');
+  assert.equal(r.railBelowBody, true, 'the rail is below the page');
   assert.equal(r.noSideScroll, true, 'the page does not scroll sideways');
   assert.equal(r.buttonsOnScreen, true, 'every rail entry is inside the screen width');
   await done();

@@ -47,7 +47,7 @@ function railHtml(p, tab) {
   const under = (SHELL_PAGES[tab] || {}).under || tab, lit = RAIL.find(e => e.tab === under), activeId = lit ? lit.id : under;
   return `<nav class="rail" aria-label="Ship">${RAIL_GROUPS.map(([group, label]) => {
     const entries = railEntries(p).filter(e => e.group === group);
-    return entries.length ? `<div class="rail-group"><h3>${label}</h3>${entries.map(e => railEntryHtml(e, p, activeId)).join('')}</div>` : '';
+    return entries.length ? `<div class="rail-group" role="group" aria-label="${label}"><h3>${label}</h3>${entries.map(e => railEntryHtml(e, p, activeId)).join('')}</div>` : '';
   }).join('')}</nav>`;
 }
 

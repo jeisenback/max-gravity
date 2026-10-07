@@ -75,3 +75,44 @@ test('between 700 and 999px the compact HUD is used, and from 1000px the sidebar
   assert.equal((await hudAt(1280)).hudW, wide.hud, 'the sidebar at 1280');
   await g.done();
 });
+
+test('on a phone the rail is a grid between the page and the dock, with every entry at least 44px high', async () => {
+  const g = await open({ scope: 'earth-hired', shell: 'default', viewport: { width: 390, height: 844 }, mobile: true });
+  await g.ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent(); });
+  const r = await g.ev(() => {
+    const rail = document.querySelector('.rail'), rb = rail.getBoundingClientRect();
+    const buttons = [...rail.querySelectorAll('button')].map(b => b.getBoundingClientRect());
+    return {
+      bodyBottom: document.querySelector('.shell .body').getBoundingClientRect().bottom, dockTop: document.querySelector('.dock').getBoundingClientRect().top,
+      railTop: rb.top, railBottom: rb.bottom, scrollW: rail.scrollWidth, clientW: rail.clientWidth,
+      heights: buttons.map(b => b.height), rows: new Set(buttons.map(b => Math.round(b.top))).size,
+    };
+  });
+  assert.ok(r.railTop >= r.bodyBottom - 1, `the rail (top ${r.railTop}) is below the page (bottom ${r.bodyBottom})`);
+  assert.ok(r.railBottom <= r.dockTop + 1, `the rail (bottom ${r.railBottom}) is above the dock (top ${r.dockTop})`);
+  assert.ok(r.heights.every(h => h >= 44), `every entry is at least 44px high: ${r.heights}`);
+  assert.ok(r.rows <= 6, `the entries are in at most six rows (${r.rows})`);
+  assert.ok(r.scrollW <= r.clientW, 'the rail does not scroll sideways');
+  await g.done();
+});
+
+test('a shut entry\'s reason is visible text on a phone, across the grid', async () => {
+  const g = await open({ scope: 'earth-hired', shell: 'default', viewport: { width: 390, height: 844 }, mobile: true });
+  const r = await g.ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent();
+    UI.planet.services = []; UI.render();  // a port with no work board and no shipyard
+    const why = [...document.querySelectorAll('.rail-why')].map(e => { const b = e.getBoundingClientRect(); return { text: e.textContent, visible: b.height > 0 && getComputedStyle(e).visibility !== 'hidden', width: b.width }; });
+    return { why, railW: document.querySelector('.rail').getBoundingClientRect().width };
+  });
+  assert.ok(r.why.length > 0, 'a shut entry gives a reason');
+  for (const w of r.why) { assert.ok(w.visible, `"${w.text}" is visible`); assert.ok(w.width >= r.railW - 30, `"${w.text}" spans the grid (${w.width} of ${r.railW})`); }
+  await g.done();
+});
+
+test('the rail groups are labelled at every width', async () => {
+  await atWidths(async ({ ev, size }) => {
+    const groups = await ev(() => [...document.querySelectorAll('.rail-group')].map(g => ({ role: g.getAttribute('role'), label: g.getAttribute('aria-label'), heading: g.querySelector('h3').textContent })));
+    assert.ok(groups.length >= 2, `${size.name}: the Ship and Ashore groups`);
+    for (const g of groups) { assert.equal(g.role, 'group', `${size.name}: ${g.heading} is a group`); assert.equal(g.label, g.heading, `${size.name}: ${g.heading} is labelled`); }
+  });
+});
