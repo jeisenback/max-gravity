@@ -239,3 +239,38 @@ test('the Crew page escapes a hostile name in its rows, the for-hire list and th
   assert.ok(r.text >= 3, `the name shows as text in the row, the for-hire list and the people you know (${r.text})`);
   await done();
 });
+
+// A richer Bar page: an owner (so the for-hire list shows), a patron you know with a memory, a regular with gossip, and a crew member at the bar.
+test('the bar page with known patrons, a regular and a hire list renders the golden markup', async () => {
+  const { ev, done } = await open({ scope: 'full', shell: false });
+  const html = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000;
+    const ines = castPerson('ines'); if (!st.crew.includes(ines.id)) st.crew.push(ines.id);
+    const friend = registerPerson(Object.assign(makePerson(), { opinion: 2, location: st.planet })); friend.memories.push('Day 1: You bought a round.');
+    const regular = registerPerson(Object.assign(makePerson(), { opinion: 1, location: st.planet, regular: true, gossip: 'says the docks are quiet this week.' }));
+    G.patrons = null; UI.tab = 'bar'; UI.render();
+    return document.querySelector('#panel .body').innerHTML;
+  });
+  const file = 'tests/fixtures/bar-rich.html';
+  if (process.env.UPDATE_GOLDEN) fs.writeFileSync(file, html + '\n');
+  assert.equal(html + '\n', fs.readFileSync(file, 'utf8'), `the markup changed (UPDATE_GOLDEN=1 rewrites ${file})`);
+  assert.ok(/A regular here\./.test(html) && /Someone you know\./.test(html) && /Looking for a ship/.test(html), 'the page shows each kind of row');
+  await done();
+});
+
+test('the Bar page escapes a hostile patron name, memory and job', async () => {
+  const { ev, done } = await open({ scope: 'full', shell: false });
+  const r = await ev(([a, b]) => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000;
+    const friend = registerPerson(Object.assign(makePerson(), { first: a, last: b, opinion: 2, location: st.planet })); friend.memories.push(`Day 1: ${b}`);
+    const regular = registerPerson(Object.assign(makePerson(), { first: a, last: b, opinion: 1, location: st.planet, regular: true, gossip: `says ${b}` }));
+    Object.assign(G.bar[0], { first: a, last: b });
+    G.patrons = null; UI.tab = 'bar'; UI.render();
+    const body = document.querySelector('#panel .body');
+    return { img: body.querySelectorAll('img, script').length, attrs: [...body.querySelectorAll('*')].filter(el => [...el.attributes].some(x => /^on/i.test(x.name))).length, shown: body.textContent.split(a).length - 1 };
+  }, [HOSTILE_A, HOSTILE_B]);
+  assert.equal(r.img, 0); assert.equal(r.attrs, 0); assert.ok(r.shown >= 3, `the name shows as text: ${r.shown}`);
+  await done();
+});
