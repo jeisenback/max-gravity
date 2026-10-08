@@ -169,10 +169,18 @@ const DUEL_LINES = {
   },
 };
 
+// Now and then a destroyed pirate (not a named bounty) leaves a pod behind (the storylet 'The Escape Pod', stories/aftermath.js), and not twice within its `every` days.
+const POD_ODDS = 0.35;
+function escapePod(foe) {
+  const pod = STORYLETS.find(x => x.id === 'pi-survivors'), last = quality('last:pi-survivors');
+  if (pod && foe.kind === 'pirate' && !foe.bountyId && Math.random() < POD_ODDS && !(last && G.state.day - last < pod.every)) chainTo(pod.id);
+}
+
 // Settles a kill, and says what it paid.
 function duelFinish(foe) {
   const st = G.state, pre = st.credits;
   settleKill(foe, true);
+  escapePod(foe);
   return st.credits > pre ? ` Bounty +${fmt(st.credits - pre)} cr.` : '';
 }
 
