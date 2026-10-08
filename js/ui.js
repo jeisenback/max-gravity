@@ -151,8 +151,8 @@ const UI = {
   },
 
   conditionList(list, none) {
-    if (!list.length) return none ? `<p class="hint">${none}</p>` : '';
-    return list.map(c => `<div class="cond ${c.bad ? 'bad' : 'good'}">${c.text}</div>`).join('');
+    if (!list.length) return none ? String(h`<p class="hint">${none}</p>`) : '';
+    return String(listHtml(list, c => h`<div class="cond ${c.bad ? 'bad' : 'good'}">${c.text}</div>`));
   },
 
   views: {

@@ -6,18 +6,19 @@
 
 UI.views.journal = function () {
   const st = G.state;
-  return `
-        ${journalHtml(20)}
+  const elsewhere = Object.keys(SYSTEMS).filter(id => id !== st.systemId).flatMap(conditions)
+    .filter((c, i, all) => all.findIndex(d => d.text === c.text) === i && !conditions(st.systemId).some(d => d.text === c.text));
+  return String(h`
+        ${raw(journalHtml(20))}
         <h3>Standing</h3>
-        <div class="standing">${FACTIONS.map(g => `<div><span style="color:${GOV_COLORS[g]}">${g === 'Pirate' ? 'Pirates' : g}</span> <b>${standingWord(repOf(g))}</b> <span class="hint">${repOf(g) > 0 ? '+' : ''}${repOf(g)}</span></div>`).join('')}</div>
+        <div class="standing">${listHtml(FACTIONS, g => h`<div><span style="color:${GOV_COLORS[g]}">${g === 'Pirate' ? 'Pirates' : g}</span> <b>${standingWord(repOf(g))}</b> <span class="hint">${repOf(g) > 0 ? '+' : ''}${repOf(g)}</span></div>`)}</div>
         <h3>On the feeds</h3>
-        ${feedHeadlines().map(l => `<div class="hint">${l}</div>`).join('')}
+        ${listHtml(feedHeadlines(), l => h`<div class="hint">${l}</div>`)}
         <h3>News</h3>
-        ${UI.conditionList(Object.keys(SYSTEMS).filter(id => id !== st.systemId).flatMap(conditions)
-          .filter((c, i, all) => all.findIndex(d => d.text === c.text) === i && !conditions(st.systemId).some(d => d.text === c.text)), '')}
-        ${(st.news || []).map(n => `<div class="hint">${dateOf(n.day)}: ${n.text}</div>`).join('')}
-        ${st.rumors.map(r => `<div class="hint">${r.text} Until ${dateOf(r.until)}.</div>`).join('')}
-        ${!(st.news || []).length && !st.rumors.length ? '<p class="hint">Listen to the comms in transit for more.</p>' : ''}
-        ${othersNewsHtml()}
-        <p class="hint">What the port offers is on the Port page, under Operations.</p>`;
+        ${raw(UI.conditionList(elsewhere, ''))}
+        ${listHtml(st.news || [], n => h`<div class="hint">${dateOf(n.day)}: ${n.text}</div>`)}
+        ${listHtml(st.rumors, r => h`<div class="hint">${r.text} Until ${dateOf(r.until)}.</div>`)}
+        ${!(st.news || []).length && !st.rumors.length ? h`<p class="hint">Listen to the comms in transit for more.</p>` : ''}
+        ${raw(othersNewsHtml())}
+        <p class="hint">What the port offers is on the Port page, under Operations.</p>`);
 };
