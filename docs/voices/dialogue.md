@@ -1,6 +1,6 @@
 # Dialogue rules
 
-Status: Draft, for the owner to confirm.
+Status: Confirmed by the owner, 2026-10-08.
 
 The rules for narration in `docs/prose-style.md` do not protect speech. A narrator can follow every one of them and still have two people talk in the same clipped, tidy way, or fold what they said into a summary. These rules are for what people say and how it is set down. The passages that show them are in `reference.md`.
 
