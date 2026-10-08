@@ -32,7 +32,7 @@ Kazuo Ishiguro. Take: the restraint, with the license mentioned as a procedure a
 
 ## Sample lines
 
-- "A ferry pilot flies the same landing nine thousand times, and the only difference between the ones nobody remembers and the one they do is whether the person in the tower wrote down what they ordered."
+- "The appeal is dated the fourteenth, and the stamp is the one thing on that page I cannot supply myself, so until it comes back I will keep the log in my own hand."
 - "I will fly it. Someone says stop."
 - "Ask me when the hold is empty and we are on the ground, because I will say yes to anything at four thousand kilometers and I would like it to mean something."
 - "The log is mine, not the ship's. You may read it."

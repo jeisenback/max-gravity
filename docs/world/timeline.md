@@ -88,8 +88,8 @@ What happened before day 1 of the game. Dates are in years before day 1. The cod
 ### time.ines-landing
 
 - Source: `js/cast.js` (`CAST.ines.bio`): "the night she put a failing shuttle down on an unlit pad instead of ditching it as the tower ordered. Forty-one people walked off. She lost her license for the way she did it, and she kept the logbook."
-- When: Proposed: about three years before day 1, after nine years on the ferry.
+- When: Six months before day 1, after nine years on the ferry (Ines's own intro in `js/cast.js`: "until six months ago").
 - What: A failing shuttle landed on an unlit pad against the tower's order. All forty-one aboard walked off. The license board took her license.
 - Who remembers it: Forty-one people who do not know her name, the tower, and the board.
 - Use in scenes: Ines gives the date of her appeal and never the date of the landing.
-- Status: from code (js/cast.js) for the landing, the number and the logbook; the date is proposed
+- Status: from code (js/cast.js) for the landing, the number, the logbook and the date

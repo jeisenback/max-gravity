@@ -36,14 +36,30 @@ function readQuoted(src, i, quote) {
   return [text, j + 1];
 }
 
-// The index after the `${ ... }` expression that starts at j, which may hold braces, quoted strings and templates of its own.
+// The index after a regex literal that starts at src[i], or -1 when the slash there is a division. A slash starts a regex after an
+// operator or an opening bracket (prev is the last character before it that was not whitespace), or after `return` or `typeof`.
+function regexEnd(src, i, prev) {
+  if (!(prev === '' || '(,=:[!&|?{;+-*%<>~^'.includes(prev) || /\b(?:return|typeof)\s*$/.test(src.slice(Math.max(0, i - 8), i)))) return -1;
+  let inClass = false;
+  for (let j = i + 1; j < src.length && src[j] !== '\n'; j++) {
+    const ch = src[j];
+    if (ch === '\\') j++;
+    else if (ch === '[') inClass = true;
+    else if (ch === ']') inClass = false;
+    else if (ch === '/' && !inClass) { j++; while (/[a-z]/i.test(src[j] || '')) j++; return j; }
+  }
+  return -1;
+}
+
+// The index after the `${ ... }` expression that starts at j, which may hold braces, quoted strings, regexes and templates of its own.
 function skipExpr(src, j) {
-  let depth = 1;
+  let depth = 1, prev = '(';
   while (j < src.length && depth > 0) {
-    const c = src[j];
-    if (c === "'" || c === '"') j = readQuoted(src, j, c)[1];
-    else if (c === '`') j = readTemplate(src, j)[1];
-    else { if (c === '{') depth++; else if (c === '}') depth--; j++; }
+    const c = src[j], end = c === '/' ? regexEnd(src, j, prev) : -1;
+    if (c === "'" || c === '"') { j = readQuoted(src, j, c)[1]; prev = c; }
+    else if (c === '`') { j = readTemplate(src, j)[1]; prev = c; }
+    else if (end > 0) { j = end; prev = ')'; }
+    else { if (c === '{') depth++; else if (c === '}') depth--; if (!/\s/.test(c)) prev = c; j++; }
   }
   return j;
 }
@@ -61,17 +77,32 @@ function readTemplate(src, i) {
 
 const wordCount = s => (s.match(/\S+/g) || []).length;
 
-// The strings in a script's source that have four or more words, in order. Comments are skipped.
+const JOIN = /\s*\+\s*(?=['"`])/y;
+
+// A string or template literal starting at src[i], with any literals added to it with `+` read as the same passage: the scenes are
+// built that way, a line at a time. Returns [its text, the index after it].
+function readLiteral(src, i) {
+  let [text, next] = src[i] === '`' ? readTemplate(src, i) : readQuoted(src, i, src[i]);
+  for (;;) {
+    JOIN.lastIndex = next;
+    const m = JOIN.exec(src);
+    if (!m) return [text, next];
+    const j = next + m[0].length, [more, after] = src[j] === '`' ? readTemplate(src, j) : readQuoted(src, j, src[j]);
+    text += more; next = after;
+  }
+}
+
+// The strings in a script's source that have four or more words, in order. Comments and regex literals are skipped.
 function extractProse(src) {
   const out = [], keep = text => { if (wordCount(text) >= 4) out.push(text); };
-  let i = 0;
+  let i = 0, prev = '';
   while (i < src.length) {
-    const c = src[i];
+    const c = src[i], end = c === '/' ? regexEnd(src, i, prev) : -1;
     if (c === '/' && src[i + 1] === '/') { while (i < src.length && src[i] !== '\n') i++; }
-    else if (c === '/' && src[i + 1] === '*') { const end = src.indexOf('*/', i + 2); i = end < 0 ? src.length : end + 2; }
-    else if (c === "'" || c === '"') { const [text, next] = readQuoted(src, i, c); keep(text); i = next; }
-    else if (c === '`') { const [text, next] = readTemplate(src, i); keep(text); i = next; }
-    else i++;
+    else if (c === '/' && src[i + 1] === '*') { const close = src.indexOf('*/', i + 2); i = close < 0 ? src.length : close + 2; }
+    else if (c === "'" || c === '"' || c === '`') { const [text, next] = readLiteral(src, i); keep(text); i = next; prev = c; }
+    else if (end > 0) { i = end; prev = ')'; }
+    else { if (!/\s/.test(c)) prev = c; i++; }
   }
   return out;
 }

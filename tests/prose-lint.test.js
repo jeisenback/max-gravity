@@ -92,3 +92,25 @@ test('main writes a baseline, compares to it, and explains when there is none', 
   assert.equal(lines.join('\n'), 'no change');
   assert.equal(main([], { root: tmp({}), out }), 0);
 });
+
+test('extractProse reads string literals joined with + as one passage', () => {
+  const src = [
+    "const t = 'Cato finds you at the end of the watch. \"I ' +",
+    "  'do the watch bill,\" he says. He holds out a mug.';",
+    "const n = 1 + 2; const s = 'a separate string with four words';",
+  ].join('\n');
+  assert.deepEqual(extractProse(src), ['Cato finds you at the end of the watch. "I do the watch bill," he says. He holds out a mug.', 'a separate string with four words']);
+});
+
+test('extractProse skips a regex literal that holds a quote mark', () => {
+  const src = "const r = /it's/; const s = 'the real string with four words';";
+  assert.deepEqual(extractProse(src), ['the real string with four words']);
+});
+
+test('extractProse survives a regex with a quote inside a template expression, and still reads a division', () => {
+  const src = [
+    "const t = `Hello ${x.replace(/'/g, '')} there and welcome aboard.`;",
+    "const h = total / 2; const s = 'another string with four words';",
+  ].join('\n');
+  assert.deepEqual(extractProse(src), ['Hello X there and welcome aboard.', 'another string with four words']);
+});

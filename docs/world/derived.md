@@ -2,7 +2,7 @@
 
 The owner wants the game's world to move away from The Expanse. This is a sourced list of the places where the code and README lean on it, each with a proposed replacement and an empty `Decision:` line for the owner. It changes no code: renames and reworks are a separate issue, after the decisions.
 
-Real places (Ceres, Eros, Ganymede) and generic hard-SF terms (reaction mass, the flip) are not listed. Checked: `README.md`, `js/data.js`, `js/menu.js`, `js/ties.js`, `js/calendar.js`, the descriptions of Earth, Mars, Ceres and Jupiter in `SYSTEMS`, and the stories `cold-water.js`, `mars-navy.js`, `ice-strike.js`, `on-the-road.js` and the transit text by searching for the terms, not by reading them through. `js/cast.js` was read for Ines and Tomas only. Other story files have not been audited.
+Real places (Ceres, Eros, Ganymede) and generic hard-SF terms (reaction mass, the flip) are not listed. Checked: `README.md`, `js/data.js`, `js/menu.js`, `js/ties.js`, `js/calendar.js`, the descriptions of Earth, Mars, Ceres and Jupiter in `SYSTEMS`, and the stories `cold-water.js`, `mars-navy.js`, `ice-strike.js`, `on-the-road.js` and the transit text by searching for the terms, not by reading them through. `js/cast.js` was read for Ines and Tomas only. Other story files have not been audited. Flagged on review and not verified against the books: "Rock Hopper" (`SHIPS.shuttle`, the starting ship) may be Belter slang in the Expanse, and Pax Iwu's home "Ceres Spin" in `js/cast.js` uses the same word as the Belt background; both are left to the owner's judgment.
 
 ### derived.readme-flavor
 
@@ -46,10 +46,18 @@ Real places (Ceres, Eros, Ganymede) and generic hard-SF terms (reaction mass, th
 
 ### derived.mars-navy
 
-- Where: `PATROL_NAMES` in `js/data.js` ("MRN frigate"); `js/stories/mars-navy.js`; the "Mars Republic Navy intelligence" path in Cold Water Act 2.
+- Where: `PATROL_NAMES` in `js/data.js` ("MRN frigate"); `js/stories/mars-navy.js` (the strings "MCRN Reserve", "MCRN munitions" and "MCRN call-up", and the quest flag `mcrn`); the "Mars Republic Navy intelligence" path in Cold Water Act 2.
 - What: Mars is a republic with a navy and an intelligence service that recruits reservists and runs deniable work.
-- Why it reads as the Expanse: A Martian navy with its own intelligence arm that sits across from a Belt authority is the Expanse's arrangement.
+- Why it reads as the Expanse: "MCRN" is the Expanse's own abbreviation for the Martian Congressional Republic Navy, used as is. A Martian navy with its own intelligence arm that sits across from a Belt authority is the Expanse's arrangement.
 - Proposed instead: The Mars service is a fleet owned by the dome councils and paid for by an air levy, with an auditor and no intelligence arm. The Reserve Commission keeps its beats, and the fixer becomes a council auditor.
+- Decision:
+
+### derived.juice
+
+- Where: `js/transit.js`, line 14 ("Crash couch: juice reservoir at 80 percent.") and line 188 ("The juice floods your veins").
+- What: The drug that keeps a crew conscious at high acceleration is called juice.
+- Why it reads as the Expanse: "Juice" is the Expanse's name for exactly that drug.
+- Proposed instead: Call it by what it does: "the anti-g drip", and "the drip floods your veins".
 - Decision:
 
 ### derived.pdc-torch

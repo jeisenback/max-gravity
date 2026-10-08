@@ -35,8 +35,8 @@ Patrick O'Brian. Take: the shop talk that wanders about the work and arrives lat
 - "No, I know, you have been running on a seal I should have changed at Mars, and I am not going to pretend it was the budget, it was me, and I am going to change it now and you are going to run quiet for it."
 - "Handle first. There."
 - "That sound is the bearing, not the pump. The pump only gets blamed because it is louder."
-- "Sit down, drink this, tell me what it was doing when you heard it, and do not tell me what you think it was, because by the time you have thought it you have forgotten what you heard."
-- "Ten years is not a long time for a ship. It is a long time for a crew."
+- "Sit. Drink this. Then tell me what it was doing when you heard it."
+- "Third bolt from the left is the one that has been lying to you since Mars."
 
 ## Dialogue risks
 
