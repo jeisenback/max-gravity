@@ -36,15 +36,15 @@ function youPerson() {
 // How the crew see you: the captain and everyone aboard, by what they think of you.
 function crewOpinionsCard() {
   const rows = [], h = hired(), cap = h && person(h.captain);
-  if (cap && cap.memories) rows.push(conRead(personLink(cap), opinionWord(cap.opinion)));
-  for (const id of G.state.crew) { const c = person(id); if (c && c.memories) rows.push(conRead(personLink(c), opinionWord(c.opinion))); }
+  if (cap && cap.memories) rows.push(conRead(raw(personLink(cap)), opinionWord(cap.opinion)));
+  for (const id of G.state.crew) { const c = person(id); if (c && c.memories) rows.push(conRead(raw(personLink(c)), opinionWord(c.opinion))); }
   return rows.length ? conCard('How they see you', rows.join('')) : '';
 }
 
 // A hired hand's place on the ship: whose, which post, how long, what it pays.
 function onTheShipCard() {
   const h = hired(), cap = person(h.captain), days = G.state.day - h.since;
-  return conCard('On the ship', `${conRead('Captain', cap ? personLink(cap) : 'none')}${conRead('Post', POSTS[h.post].name)}${conRead('Aboard',
+  return conCard('On the ship', `${conRead('Captain', cap ? raw(personLink(cap)) : 'none')}${conRead('Post', POSTS[h.post].name)}${conRead('Aboard',
     `${days} day${days === 1 ? '' : 's'}`)}${handHurt() ? conRead('Condition', `hurt, ${h.hurtUntil - G.state.day} days`) : ''}${conRead('Pay',
     `${fmt(h.wage)} cr/day, ${Math.round(h.share * 100)}% of profit`)}${conRead('Savings', `${fmt(G.state.credits)} cr`)}`);
 }
@@ -116,7 +116,7 @@ function tiesCard(c) {
   if (c.you || !me) return '';
   const rows = list.filter(f => f !== me).map(f => ({ f, n: bond(me, f) })).filter(t => bondWord(t.n)).sort((x, y) => Math.abs(y.n) - Math.abs(x.n)).slice(0, 4);
   if (!rows.length) return '';
-  return conCard('Aboard', rows.map(({ f, n }) => { const why = tieReason(me, f); return `${conRead(personLink(f.p), bondWord(n))}${why ? `<div class="hint">${esc(why)}</div>` : ''}`; }).join(''));
+  return conCard('Aboard', rows.map(({ f, n }) => { const why = tieReason(me, f); return `${conRead(raw(personLink(f.p)), bondWord(n))}${why ? `<div class="hint">${esc(why)}</div>` : ''}`; }).join(''));
 }
 
 function characterPanel() {
@@ -140,7 +140,7 @@ function characterPanel() {
     ${c.memories.length ? `<div class="eyebrow" style="margin-top:8px">Remembers</div>${listHtml(c.memories.slice(-3).reverse(), m => h`<div class="hint">${m}</div>`)}` : ''}`) : '';
   // A captain holds no post: what they pay you and what you earn with them (a hired hand), or what you command (an owner).
   const command = !isCaptain ? '' : c.you
-    ? conCard('Command', `${conRead('Ship', `${esc(shipTitle())}, ${ship().name}`)}${conRead('Crew', `${st.crew.length}, ${berthsUsed()}/${ship().berths} berths`)}${(st.fleet || []).length ? conRead('Company', `${st.fleet.length} ship${st.fleet.length > 1 ? 's' : ''}`) : ''}`) + crewOpinionsCard()
+    ? conCard('Command', `${conRead('Ship', `${shipTitle()}, ${ship().name}`)}${conRead('Crew', `${st.crew.length}, ${berthsUsed()}/${ship().berths} berths`)}${(st.fleet || []).length ? conRead('Company', `${st.fleet.length} ship${st.fleet.length > 1 ? 's' : ''}`) : ''}`) + crewOpinionsCard()
     : hand && c.id === hand.captain ? conCard('Command', `${conRead('Your wage', `${fmt(hand.wage)} cr/day`)}${conRead('Your share',
       `${Math.round(hand.share * 100)}% of each run's profit`)}${conRead('Runs together', runTotals(hand).runs)}${conRead('You earned',
       `${fmt(runTotals(hand).earned)} cr`)}${conRead('The ship\'s funds', `${fmt(hand.fund)} cr`)}`) + captainRunsHtml() : '';
@@ -148,10 +148,10 @@ function characterPanel() {
   const news = (moodLow(c) || moodHigh(c)) && c.mood.text ? `<div class="hint">News from home: ${esc(c.mood.text)}.</div>` : '';
   const blurb = c.ambition || c.bio ? String(h`<div class="char-amb">${c.ambition || c.bio}</div>`) : '';
   return consoleHtml({
-    title: esc(fullName(c)), status: c.you ? 'Playing as' : whereIs(c),
+    title: fullName(c), status: c.you ? 'Playing as' : raw(whereIs(c)),
     screen: `<div class="char-id">${portraitSvg(c)}<div><div class="char-name">${esc(fullName(c))}</div><div class="hint">${esc(sub)}</div><div class="char-chips">${chips}</div>${news}${blurb}</div></div>`,
     side: isCaptain ? standing + command + factionCard(c) : standing + conCard('Post skills', rows) + cap + marked + toldCard(c) + tiesCard(c) + factionCard(c)
-      + (c.you ? '' : conCard('Where', `${conRead('Aboard', crewed ? esc(shipTitle()) : 'no')}${crewed && wage(c.id) ? conRead('Wage', `${fmt(wage(c.id))} cr/day`) : ''}${!crewed ? `<div class="hint">${whereIs(c)}</div>` : ''}`)),
+      + (c.you ? '' : conCard('Where', `${conRead('Aboard', crewed ? shipTitle() : 'no')}${crewed && wage(c.id) ? conRead('Wage', `${fmt(wage(c.id))} cr/day`) : ''}${!crewed ? `<div class="hint">${whereIs(c)}</div>` : ''}`)),
     controls: '<div class="row"><button data-action="personBack">Back</button></div>',
   });
 }

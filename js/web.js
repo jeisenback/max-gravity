@@ -38,7 +38,7 @@ const webLink = p => `<button class="link" data-action="person" data-arg="${esc(
 UI.views.web = function () {
   const list = folk(), ties = webTies(list);
   const strongest = ties.length
-    ? ties.slice(0, 8).map(t => conRead(`${webLink(t.a.p)} and ${webLink(t.b.p)}`, bondWord(t.n))).join('')
+    ? ties.slice(0, 8).map(t => conRead(raw(`${webLink(t.a.p)} and ${webLink(t.b.p)}`), bondWord(t.n))).join('')
     : '<p class="hint">Nobody aboard has strong feelings about anyone else yet. Bonds grow as people share days.</p>';
   return consoleHtml({
     title: 'Bonds',

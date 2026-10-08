@@ -132,6 +132,25 @@ test('the template scanner finds a plain template and an h template, nested', ()
   assert.deepEqual(t.map(x => [x.tag, x.exprs, /<[a-z]/.test(x.text)]), [['', 1, true], ['h', 1, true], ['', 1, true]]);
 });
 
+// ---------- the console helpers (#412) ----------
+
+test('the console helpers escape text, and take markup only as raw()', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    const bad = '<img src=x onerror=1>';
+    const read = conRead(bad, bad, 'data-x="1"'), readRaw = conRead(raw('<a>link</a>'), raw('<b>bold</b>'));
+    const card = conCard(bad, '<p>body is markup</p>');
+    const con = consoleHtml({ title: bad, status: bad, screen: '<svg></svg>', side: '<i>side</i>', controls: '<button>go</button>' });
+    return { read, readRaw, card, con };
+  });
+  assert.ok(!r.read.includes('<img') && r.read.includes('&lt;img'), 'a reading escapes its label and value');
+  assert.ok(r.read.includes('<b data-x="1">'), 'its attributes are the caller\'s own markup');
+  assert.ok(r.readRaw.includes('<a>link</a>') && r.readRaw.includes('<b>bold</b>'), 'raw() passes markup through');
+  assert.ok(!r.card.includes('<img') && r.card.includes('<p>body is markup</p>'), 'a card escapes its label, and its body is markup');
+  assert.ok(!r.con.includes('<img') && r.con.includes('<svg></svg>') && r.con.includes('<i>side</i>') && r.con.includes('<button>go</button>'), 'a console escapes its title and status, and its parts are markup');
+  await done();
+});
+
 // ---------- hostile data (#321, #251) ----------
 
 // Two hostile strings: one that breaks out of an attribute, one that is a tag. They go straight into the state, past the cleaning
@@ -159,7 +178,7 @@ const hostileGame = ([HOSTILE_A, HOSTILE_B]) => {
   noteInbox('message', HOSTILE_A + HOSTILE_B);  // the comms inbox, the news and the market tips come from text a story or a mod wrote
   st.news = [{ day: 1, text: HOSTILE_A + HOSTILE_B }];
   st.rumors.push({ planet: st.planet, cid: 'water', mult: 1.5, until: st.day + 5, text: HOSTILE_A + HOSTILE_B });
-  return { crew: crew.id, stranger: stranger.id };
+  return { crew: crew.id, stranger: stranger.id, captain: hired().captain, you: 'you' };
 };
 
 // What the page must not contain: an element or attribute the hostile strings could have made.
@@ -211,7 +230,7 @@ const ordinaryGame = () => {
   const st = G.state; st.tutorial = null; st.story.next = 1e9;
 };
 
-for (const tab of ['crew', 'bar', 'journal', 'comms', 'port', 'missions']) {
+for (const tab of ['crew', 'bar', 'journal', 'comms', 'port', 'missions', 'nav', 'weapons', 'shipyard', 'web']) {
   test(`the ${tab} page renders the golden markup for an ordinary game`, async () => {
     const { page, ev, done } = await open({ scope: 'earth-hired' });
     await ev(ordinaryGame);
@@ -224,13 +243,31 @@ for (const tab of ['crew', 'bar', 'journal', 'comms', 'port', 'missions']) {
   });
 }
 
-test('the character page renders the golden markup for an ordinary game', async () => {
-  const { ev, done } = await open({ scope: 'earth-hired' });
-  await ev(ordinaryGame);
-  const html = await ev(() => { G.viewPerson = G.state.crew[0]; UI.tab = 'person'; UI.render(); return document.querySelector('.shell .body').innerHTML; });
-  const file = 'tests/fixtures/person.html';
+// The character page for a crew member, for you and for the hired captain: three consoles built from the same helpers.
+for (const [name, who] of [['person', 'crew'], ['person-you', 'you'], ['person-captain', 'captain']]) {
+  test(`the character page (${who}) renders the golden markup for an ordinary game`, async () => {
+    const { ev, done } = await open({ scope: 'earth-hired' });
+    await ev(ordinaryGame);
+    const html = await ev(w => { G.viewPerson = w === 'crew' ? G.state.crew[0] : w === 'you' ? 'you' : hired().captain; UI.tab = 'person'; UI.render(); return document.querySelector('.shell .body').innerHTML; }, who);
+    const file = `tests/fixtures/${name}.html`;
+    if (process.env.UPDATE_GOLDEN) fs.writeFileSync(file, html + '\n');
+    assert.equal(html + '\n', fs.readFileSync(file, 'utf8'), `${name}: the markup changed (UPDATE_GOLDEN=1 rewrites ${file})`);
+    await done();
+  });
+}
+
+// An owner's interview of someone for hire at the bar (the candidate page: wage, signing fee, perks and the questions).
+test('the interview page renders the golden markup for an ordinary owner game', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  const html = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
+    const st = G.state; st.tutorial = null; st.story.next = 1e9;
+    UI.tab = 'bar'; UI.render(); G.viewPerson = 'bar:0'; UI.tab = 'person'; UI.render();
+    return document.querySelector('.shell .body').innerHTML;
+  });
+  const file = 'tests/fixtures/interview.html';
   if (process.env.UPDATE_GOLDEN) fs.writeFileSync(file, html + '\n');
-  assert.equal(html + '\n', fs.readFileSync(file, 'utf8'), `person: the markup changed (UPDATE_GOLDEN=1 rewrites ${file})`);
+  assert.equal(html + '\n', fs.readFileSync(file, 'utf8'), `interview: the markup changed (UPDATE_GOLDEN=1 rewrites ${file})`);
   await done();
 });
 
