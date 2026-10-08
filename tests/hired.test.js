@@ -394,15 +394,13 @@ test('a hired hand is offered only what is theirs: their own post, and no owner\
   const problems = [];
   for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
     await ev(p => { startHired(p); G.state.tutorial = null; G.state.credits = 50000; UI.render(); }, post);
-    for (const station of ['nav', 'weapons', 'eng', 'interior', 'comms', 'ops']) {
-      for (const tab of station === 'ops' ? ['port', 'bar', 'missions'] : [null]) {
-        await ev(([s, t]) => { UI.tab = t || bridgeStation(s, currentPlanet()); UI.render(); }, [station, tab]);
-        const found = await page.evaluate(() => [...document.querySelectorAll('#panel .body button, #panel .post button')].filter(b => !b.disabled).map(b => [b.dataset.action, b.dataset.arg || '']));
-        for (const [a, arg] of found) {
-          if (FORBIDDEN.includes(a)) problems.push(`${post}/${station}${tab ? '/' + tab : ''}: ${a}`);
-          if (a === 'takeControl') problems.push(`${post}/${station}: take controls`);
-          if ((a === 'postOrder' || a === 'project') && !(arg.split(':')[0] === post || (a === 'project' && ({ patch: 'engineer', tune: 'engineer', refit: 'gunner' })[arg] === post))) problems.push(`${post}/${station}: ${a} ${arg} is not their post`);
-        }
+    for (const tab of ['nav', 'weapons', 'shipyard', 'crew', 'web', 'journal', 'comms', 'port', 'bar', 'missions']) {
+      await ev(t => { UI.tab = t; UI.render(); }, tab);
+      const found = await page.evaluate(() => [...document.querySelectorAll('#panel .body button, #panel .post button')].filter(b => !b.disabled).map(b => [b.dataset.action, b.dataset.arg || '']));
+      for (const [a, arg] of found) {
+        if (FORBIDDEN.includes(a)) problems.push(`${post}/${tab}: ${a}`);
+        if (a === 'takeControl') problems.push(`${post}/${tab}: take controls`);
+        if ((a === 'postOrder' || a === 'project') && !(arg.split(':')[0] === post || (a === 'project' && ({ patch: 'engineer', tune: 'engineer', refit: 'gunner' })[arg] === post))) problems.push(`${post}/${tab}: ${a} ${arg} is not their post`);
       }
     }
   }

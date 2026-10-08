@@ -74,8 +74,7 @@ function seedScript(seed) {
 //   bundle: false to load the scripts one by one as index.html lists them (the default serves them as one, bundleOf above)
 //   debt: true to start a hired hand owing the hiring hall's bond (js/hired.js, #280). It is off in tests, so the many that buy a ship or
 //         count a hand's pay start as they did before the bond; the soak and the tests of the bond turn it on.
-//   shell: false to open the old screens (shell=off). Left out, the build's own default applies: the ship-interface shell (js/shell.js).
-async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '', scope = 'full', shell, debt = false, bundle = true } = {}) {
+async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '', scope = 'full', debt = false, bundle = true } = {}) {
   browser = browser || await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
   const ctx = await browser.newContext({ viewport, isMobile: mobile, hasTouch: mobile });
   await ctx.addInitScript(seedScript, seed);
@@ -92,7 +91,7 @@ async function open({ title = false, viewport = { width: 1280, height: 800 }, mo
   const errors = [];
   watch(page, errors);
   if (COVERAGE_DIR) await page.coverage.startJSCoverage({ resetOnNavigation: false });  // tools/coverage.js
-  const query = [scope === 'full' ? 'scope=full' : '', shell === false ? 'shell=off' : ''].filter(Boolean).join('&');
+  const query = [scope === 'full' ? 'scope=full' : ''].filter(Boolean).join('&');
   await page.goto(URL + (query ? `?${query}` : '') + hash);  // the build's scope (js/build.js): tests run everything unless they ask for the narrow one
   await page.waitForFunction(() => typeof G !== 'undefined' && (G.state || G.mode === 'title'));
   // The main characters are drawn from a pool (js/cast.js). A test starts from the pair it knew (by background) unless it asks for the draw: realDrawCastPair.

@@ -19,5 +19,5 @@ UI.views.journal = function () {
         ${st.rumors.map(r => `<div class="hint">${r.text} Until ${dateOf(r.until)}.</div>`).join('')}
         ${!(st.news || []).length && !st.rumors.length ? '<p class="hint">Listen to the comms in transit for more.</p>' : ''}
         ${othersNewsHtml()}
-        <p class="hint">What the port offers is on the Port tab, under Operations.</p>`;
+        <p class="hint">What the port offers is on the Port page, under Operations.</p>`;
 };

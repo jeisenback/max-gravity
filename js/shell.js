@@ -1,8 +1,7 @@
 'use strict';
 
 // The ship-interface shell (docs/superpowers/specs/2026-10-05-ship-interface-design.md): a landed screen whose
-// navigation is a rail of the ship's rooms and an Ashore group, in place of the station keys and tabs. It is off unless
-// the address says shell=on (shellOn in js/build.js), and UI.render hands over to shellHtml when it is on.
+// navigation is a rail of the ship's rooms and an Ashore group. UI.render hands over to shellHtml.
 // Each page is the existing UI.views[tab] function, looked up when the screen is drawn, so the wrappers other scripts
 // put around a view still apply. Loaded before game.js; only calls into it at runtime.
 

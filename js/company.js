@@ -301,7 +301,7 @@ function stakeOffer() {
     <div class="mission"><div>${share ? `You hold a ${Math.round(share * 100)}% stake in ${pl.name}. ` : ''}${share < MAX_STAKE
       ? `A 10% stake in ${pl.name}'s business costs ${fmt(cost)} cr and pays about ${fmt(stakeDividend(pl, STAKE_STEP))} cr a day in today's conditions.`
       : `That is as much as the port will sell.`}
-      <div class="hint">Dividends rise in a boom and fall with slumps, raids, and war. Manage stakes on the Company tab.</div></div>
+      <div class="hint">Dividends rise in a boom and fall with slumps, raids, and war. Manage stakes on the Company page.</div></div>
       <button data-action="sbuy" ${can ? '' : 'disabled'}>Buy 10%</button></div>`;
 }
 
@@ -381,7 +381,7 @@ function companyView() {
       return `<div class="mission"><div><b>${Math.round(s.share * 100)}% stake in ${name}</b>
         <div class="hint">Paying about ${fmt(stakeDividend(pl, s.share))} cr/day. Paid ${fmt(s.paid)} cr; dividends so far ${fmt(s.dividends)} cr; sells for ${fmt(value)} cr now.</div></div>
         <button data-action="ssell" data-arg="${esc(name)}">Sell</button></div>`;
-    }).join('') : '<p class="hint">None. Buy a stake from the Port tab of any market.</p>'}
+    }).join('') : '<p class="hint">None. Buy a stake from the Port page of any market.</p>'}
     ${outpostCompanyHtml()}
     ${legacyHtml()}
     <h3>Company log</h3>

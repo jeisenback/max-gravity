@@ -7,9 +7,6 @@ const BUILD = {
   version: '0.9.0', dev: true,
   scope: /[?&]scope=full(&|$)/.test(location.search) ? 'full' : 'earth-hired',
 };
-// The ship-interface shell (js/shell.js): on in both builds, unless the address says shell=off.
-BUILD.shell = /[?&]shell=off(&|$)/.test(location.search) ? 'off' : 'on';
-const shellOn = () => BUILD.shell === 'on';
 
 // Scope. 'earth-hired' is the chapter being tuned: an Earth hired hand, ending when they buy a ship. The systems listed
 // in SCOPE_OFF are switched off in it and come back with scope 'full' (open the game with ?scope=full on the address;

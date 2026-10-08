@@ -1,7 +1,7 @@
 'use strict';
 
 // The ship-interface shell (docs/superpowers/specs/2026-10-05-ship-interface-design.md): a landed screen with a rail of
-// the ship's rooms and an Ashore group, built behind a flag that is off unless the address says shell=on (js/build.js).
+// the ship's rooms and an Ashore group, the only way through the landed screens.
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
@@ -13,28 +13,14 @@ const helpers = () => {
   window.start = (o = {}) => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', ...o }); while (G.dialog) finishEvent(); const st = G.state; st.story.next = 1e9; return st; };
 };
 
-test('the shell is on unless the address says shell=off', async () => {
-  const off = await open({ shell: false });
-  assert.equal(await off.ev(() => shellOn()), false);
-  await off.done();
-  const on = await open({});
-  assert.equal(await on.ev(() => shellOn()), true);
-  await on.done();
-});
-
-test('the shell is on by default in both builds, and the address can turn it off', async () => {
-  const narrow = await open({ scope: 'earth-hired' });
-  assert.equal(await narrow.ev(() => shellOn()), true);
-  await narrow.ev(helpers);
-  const tab = await narrow.ev(() => { start(); UI.tab = 'nowhere'; UI.render(); return { shell: !!document.querySelector('.shell'), tab: UI.tab }; });  // a tab value the shell does not know: Port
-  assert.equal(tab.shell, true); assert.equal(tab.tab, 'port');
-  await narrow.done();
-  const full = await open({ scope: 'full' });
-  assert.equal(await full.ev(() => shellOn()), true);
-  await full.done();
-  const off = await open({ scope: 'earth-hired', shell: false });
-  assert.equal(await off.ev(() => shellOn()), false, 'shell=off keeps the old screens in the narrow build');
-  await off.done();
+test('the shell draws in both builds, and a tab it does not know falls back to Port', async () => {
+  for (const scope of ['earth-hired', 'full']) {
+    const g = await open({ scope });
+    await g.ev(helpers);
+    const r = await g.ev(() => { start(); UI.tab = 'nowhere'; UI.render(); return { shell: !!document.querySelector('.shell'), tab: UI.tab }; });
+    assert.equal(r.shell, true, `${scope}: the shell is drawn`); assert.equal(r.tab, 'port', `${scope}: an unknown tab is Port`);
+    await g.done();
+  }
 });
 
 test('the full build reaches every page it reached before, through the rail (#324)', async () => {
@@ -48,27 +34,7 @@ test('the full build reaches every page it reached before, through the rail (#32
   await done();
 });
 
-test('with the shell off the landed screen is unchanged', async () => {
-  const { ev, done } = await open({ shell: false });
-  await ev(helpers);
-  const r = await ev(() => {
-    start();
-    // innerHTML is the browser's own serialization, so put the pieces through the same parser before comparing.
-    const norm = html => { const d = document.createElement('div'); d.innerHTML = html; return d.innerHTML; };
-    const shown = UI.el.innerHTML;
-    return {
-      shell: !!document.querySelector('.shell'), stations: document.querySelectorAll('[data-action=station]').length,
-      header: shown.includes(norm(UI.headerHtml(UI.planet))), dock: shown.includes(norm(UI.dockHtml())),
-    };
-  });
-  assert.equal(r.shell, false, 'no shell');
-  assert.ok(r.stations > 0, 'the old station keys are still there');
-  assert.ok(r.header, 'the screen contains the header UI.headerHtml builds');
-  assert.ok(r.dock, 'the screen contains the dock UI.dockHtml builds');
-  await done();
-});
-
-// With the shell on, a hired gunner at Earth. Returns what the rail shows.
+// A hired gunner at Earth. Returns what the rail shows.
 const railState = () => {
   const names = [...document.querySelectorAll('.rail button')].map(b => b.textContent);
   const group = name => { const g = [...document.querySelectorAll('.rail-group')].find(x => [...x.querySelectorAll('button')].some(b => b.textContent === name)); return g ? g.querySelector('h3').textContent : null; };

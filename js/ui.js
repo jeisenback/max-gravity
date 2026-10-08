@@ -146,16 +146,8 @@ const UI = {
   render() {
     const p = this.planet;
     this.setAccent(GOV_COLORS[system().gov]);
-    if (shellOn()) {
-      this.el.innerHTML = shellHtml(this, p);
-      if (this.lastTab !== this.tab) { this.lastTab = this.tab; focusPage(); }  // a room change, not a re-render of the same page
-      return;
-    }  // the ship-interface shell (js/shell.js)
-    this.el.innerHTML = `${this.headerHtml(p)}
-      <canvas id="vs" class="vs" aria-hidden="true"></canvas>
-      ${bridgeKeys(p, this.tab)}
-      ${Mods.filter('portBanner', '')}
-      <div class="body">${this.views[this.tab].call(this)}</div>${this.dockHtml()}`;
+    this.el.innerHTML = shellHtml(this, p);  // the ship-interface shell (js/shell.js)
+    if (this.lastTab !== this.tab) { this.lastTab = this.tab; focusPage(); }  // a room change, not a re-render of the same page
   },
 
   conditionList(list, none) {
@@ -298,7 +290,7 @@ const UI = {
             <tr><th>Ship</th><th class="num">Cargo</th><th class="num">Berths</th><th class="num">Shd/Arm</th><th class="num">Mass</th><th class="num">Speed</th><th class="num">Guns</th><th class="num">Price</th><th></th></tr>
             ${rows}
           </table></div>
-          <p class="hint">Fly it: your ${SHIPS[st.shipId].name} is worth ${fmt(tradeIn)} cr as a trade-in, and your outfits move to the new ship. For company: the ship comes with a captain and runs a trade route for you (Company tab). Hull stats shown without outfits.</p>`;
+          <p class="hint">Fly it: your ${SHIPS[st.shipId].name} is worth ${fmt(tradeIn)} cr as a trade-in, and your outfits move to the new ship. For company: the ship comes with a captain and runs a trade route for you (Company page). Hull stats shown without outfits.</p>`;
       }
       if (p.services.includes('outfitter')) {
         const items = Object.entries(OUTFITS).filter(([, o]) => !o.pirate || gov === 'Pirate').map(([id, o]) => {
@@ -344,7 +336,6 @@ const UI = {
     const st = G.state, p = this.planet, s = ship();
     switch (action) {
       case 'tab': this.tab = arg; this.tradeNote = null; break;
-      case 'station': this.tab = stationOf(this.tab).id === arg && this.tab !== 'person' ? this.tab : bridgeStation(arg, p); this.tradeNote = null; break;
       case 'choose': { const title = G.dialog.event.title, before = G.state; G.shifts = []; const text = chooseEvent(Number(arg)), shifts = G.shifts;
         G.shifts = null; if (G.state !== before) return;  /* a new game began (stakes.js): its first scene is up */ this.showEventResult(title, text, shifts); return; }
       case 'continue': finishEvent(); return;
@@ -483,7 +474,7 @@ UI.el.addEventListener('click', e => {
     if (!G.paused && ['flight', 'departing'].includes(G.mode)) return;
     const buttons = [...UI.el.querySelectorAll('button:not(:disabled)')];
     const same = buttons.find(b => (last.id && b.id === last.id) || (last.action && b.dataset.action === last.action && b.dataset.arg === last.arg));
-    const target = same || UI.el.querySelector('.tabs button.active') || buttons[0];
+    const target = same || UI.el.querySelector('.rail button.active') || buttons[0];
     if (target) target.focus({ preventScroll: true });
   }).observe(UI.el, { childList: true });
 }

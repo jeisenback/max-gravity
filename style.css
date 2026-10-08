@@ -154,34 +154,6 @@ canvas { display: block; touch-action: none; }
   .stats { text-align: right; font-size: 13px; }
 }
 
-/* Tabs scroll sideways on phones instead of wrapping into a wall of buttons. */
-.tabs {
-  display: flex;
-  gap: 2px;
-  padding: 8px 8px 0;
-  border-bottom: 1px solid var(--line);
-  overflow-x: auto;
-  flex-shrink: 0;
-}
-.tabs button {
-  white-space: nowrap;
-  flex: 1 0 auto;
-  padding: 7px 3px;
-  font-family: var(--font-label);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  background: transparent;
-  border: 0;
-  border-bottom: 2px solid transparent;
-  clip-path: none;
-  color: var(--muted);
-}
-.tabs button:hover:not(:disabled) { background: var(--panel-2); color: var(--text); }
-.tabs button.active { background: transparent; color: var(--text); border-bottom-color: var(--accent); }
-@media (max-width: 420px) { .tabs { gap: 0; padding-inline: 4px; } .tabs button { font-size: 12px; letter-spacing: 0; padding-inline: 2px; } }
-@media (min-width: 700px) { .tabs { gap: 6px; padding-inline: 12px; } .tabs button { flex: 0 0 auto; padding: 7px 12px; font-size: 14px; } }
-
 /* Map and Take off stay in reach at the bottom of the landed screen. */
 .dock {
   display: flex;
@@ -509,11 +481,6 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 /* Viewscreen strip at the top of a landed screen, then the station keys. */
 .vs { display: block; width: 100%; height: 92px; flex-shrink: 0; background: #03070a; border-bottom: 1px solid var(--line); }
 @media (min-width: 700px) { .vs { height: 96px; } }
-.tabs.stations button { text-transform: uppercase; letter-spacing: 0.08em; font-size: 12px; }
-.tabs.stations button.active { color: var(--accent); }
-@media (min-width: 700px) { .tabs.stations button { font-size: 12px; } }
-.tabs.sub { padding-top: 4px; }
-.tabs.sub button { font-size: 12px; }
 /* In a burn: station keys along the bottom, and a status sheet above them. */
 #bkeys {
   position: fixed;
@@ -554,7 +521,6 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 @media (min-width: 700px) { #bkeys { justify-content: safe center; } }
 #bsheet h3 { margin: 0 0 6px; }
 #bsheet:has(.con) { max-height: 70vh; }  /* a console needs room for its controls */
-@media (max-width: 420px) { .tabs.stations { padding-inline: 2px; } .tabs.stations button { flex: 1 1 0; min-width: 0; font-size: 12px; letter-spacing: 0; padding-inline: 0; } }
 /* A post's block on a station view (stations.js). */
 .post { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--line); }
 .post .row { flex-wrap: wrap; gap: 6px; }
@@ -627,9 +593,6 @@ td { padding: 6px; border-bottom: 1px solid var(--line-soft); vertical-align: to
 .slider { display: grid; grid-template-columns: 74px 1fr 44px; gap: 8px; align-items: center; padding: 4px 0; font-size: 13px; }
 .pbar { display: block; height: 6px; background: var(--line); }
 .pbar i { display: block; height: 100%; background: var(--accent, #6fb0ff); }
-/* Station keys: full names, or short ones on a phone (bridge.js). */
-.tabs.stations .short { display: none; }
-@media (max-width: 480px) { .tabs.stations .full { display: none; } .tabs.stations .short { display: inline; } .tabs.stations button { font-size: 12px; letter-spacing: 0.04em; } }
 /* The burn key bar on a phone: short names, so all six keys show; and compact when the screen is short (landscape). */
 #bkeys .short { display: none; }
 #bkeys.compact .full { display: none; } #bkeys.compact .short { display: inline; } #bkeys.compact { gap: 4px; padding-inline: 6px; } #bkeys.compact button { padding-inline: 4px; letter-spacing: 0.04em; }

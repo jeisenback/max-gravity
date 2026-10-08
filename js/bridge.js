@@ -7,40 +7,22 @@
 // Loaded before game.js; only calls into it at runtime.
 
 const STATIONS = [
-  { id: 'nav', name: 'Navigation', short: 'Nav', tabs: ['nav'] },
-  { id: 'weapons', name: 'Weapons', short: 'Guns', tabs: ['weapons'] },
-  { id: 'eng', name: 'Engineering', short: 'Eng', tabs: ['shipyard'] },
-  { id: 'interior', name: 'Interior', short: 'Deck', tabs: ['crew', 'web', 'journal'] },
-  { id: 'comms', name: 'Comms', short: 'Comms', tabs: ['comms'] },
-  { id: 'ops', name: 'Operations', short: 'Ops', tabs: ['port', 'trade', 'missions', 'bar', 'company'] },
+  { id: 'nav', name: 'Navigation', short: 'Nav' },
+  { id: 'weapons', name: 'Weapons', short: 'Guns' },
+  { id: 'eng', name: 'Engineering', short: 'Eng' },
+  { id: 'interior', name: 'Interior', short: 'Deck' },
+  { id: 'comms', name: 'Comms', short: 'Comms' },
+  { id: 'ops', name: 'Operations', short: 'Ops' },
 ];
 // The console each room of the cutaway opens in a burn (#323): the same sheets as the key bar's keys, so a tap on a room and a press of its key are one thing.
 const ROOM_SHEETS = { bridge: 'nav', gunnery: 'weapons', engine: 'eng', berths: 'interior', medbay: 'interior', galley: 'interior', hold: 'ops' };
 const roomSheet = id => ROOM_SHEETS[id];
-const TAB_NAMES = { crew: 'Crew', web: 'Bonds', journal: 'Journal', port: 'Port', trade: 'Exchange', missions: 'Missions', bar: 'Bar', company: 'Company' };
 const BRIDGE_KEYS_H = 52;  // the key bar's height in a burn; the transit view leaves room for it
 
-const stationOf = tab => STATIONS.find(s => s.tabs.includes(tab) || (tab === 'person' && s.id === 'interior')) || STATIONS.find(s => s.id === 'ops');  // the character screen sits under Interior
 const tabReady = (p, id) => ((hired() && OWNER_TABS.includes(id)) || (scopeOff('owner') && id === 'company')) ? false : id === 'trade' ? p.services.includes('trade')
   : id === 'missions' ? p.services.includes('missions')
   : id === 'shipyard' ? p.services.includes('shipyard') || p.services.includes('outfitter')
   : true;
-
-// The station keys, and under them the tabs of a station that has several.
-function bridgeKeys(p, tab) {
-  const here = stationOf(tab);
-  const keys = STATIONS.map(s => (`<button data-action="station" data-arg="${s.id}" ` +
-      `class="${s.id === here.id ? 'active' : ''}" ${s.id === here.id ? 'aria-current="true"' : ''} ${s.tabs.some(id => tabReady(p, id)) ? '' : 'disabled'} ` +
-      `aria-label="${s.name}"><span class="full">${s.name}</span><span class="short" aria-hidden="true">${s.short}</span></button>`)).join('');
-  const shown = here.tabs.filter(id => !(hired() && OWNER_TABS.includes(id)));  // a hand has no Exchange or Company: not drawn, not greyed
-  const sub = shown.length > 1 ? `<div class="tabs sub">${shown.map(id => `<button data-action="tab" data-arg="${id}" class="${tab === id ? 'active' : ''}" ${tab === id ? 'aria-current="page"' : ''} ${tabReady(p, id) ? '' : 'disabled'}>${TAB_NAMES[id]}</button>`).join('')}</div>` : '';
-  return `<div class="tabs stations" role="navigation" aria-label="Stations">${keys}</div>${sub}`;
-}
-
-function bridgeStation(id, planet) {
-  const s = STATIONS.find(x => x.id === id);
-  return (s.tabs.find(t => tabReady(planet, t))) || s.tabs[0];
-}
 
 // ---------- station views at port ----------
 

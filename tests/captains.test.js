@@ -620,7 +620,7 @@ test('the first arrival is the first officer settling up, with the figures and t
   assert.ok(r.f.profit > 0 && r.f.wage > 0, 'the figures are kept');
   for (const x of [r.f.revenue, r.f.cost, r.f.profit, r.f.wage, r.f.share]) assert.ok(r.text.includes(Math.round(x).toLocaleString('en-US')), `the page shows ${x}`);
   assert.match(r.text, /Forecast, [\d,]+\./); assert.match(r.text, /there is a line in Hester's hand with your name on it/);
-  assert.match(r.text, /Missions tab/); assert.match(r.text, /The bar/);
+  assert.match(r.text, /Missions page/); assert.match(r.text, /The bar/);
   assert.doesNotMatch(r.text, /undefined|NaN/); assert.equal(r.arrived, true); assert.equal(r.opinion, 1);
   assert.deepEqual(r.labels, ['Ask how long a ship takes', 'Go ashore']); assert.match(r.ask, /A season/);
   assert.doesNotMatch(r.text + r.ask, /\b(three|four|five|six|ten|twenty) runs\b|\d+ runs/, 'no count of runs');

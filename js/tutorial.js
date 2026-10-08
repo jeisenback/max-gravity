@@ -8,7 +8,7 @@
 const tutKey = (touch, keyboard) => (Touch.on ? touch : keyboard);
 
 const TUTORIAL = [
-  { text: () => 'Open the Exchange tab and buy Electronics with Max. Earth makes them cheap; Mars pays well.',
+  { text: () => 'Open the Exchange page and buy Electronics with Max. Earth makes them cheap; Mars pays well.',
     done: st => (st.cargo.equipment || 0) > 0 },
   { text: () => `Take off${tutKey('', ' (T)')}.`,
     done: () => G.mode === 'flight' },
@@ -25,7 +25,7 @@ const TUTORIAL = [
     done: () => G.mode === 'landed' },
   { text: () => 'Open the Exchange and sell your Electronics.',
     done: st => G.mode === 'landed' && !st.cargo.equipment },
-  { text: () => (`That is the trade loop. The Missions tab pays for deliveries and passengers, and the Port tab tracks your standing with each ` +
+  { text: () => (`That is the trade loop. The Missions page pays for deliveries and passengers, and the Port page tracks your standing with each ` +
       `faction. Before you head into the Belt, where pirates fly heavier ships, fit a Point-defense cannon at an outfitter. If you are outgunned, hail ` +
       `the pirate (${tutKey('Hail', 'H')}) and pay them off. Good luck, captain.`),
     done: () => false, last: true },
@@ -37,17 +37,17 @@ const TUTORIAL = [
 const firstRunOver = () => runTotals(hired()).runs >= 1;
 const didOnBurn = what => () => !!(hired().did && hired().did[what]) || firstRunOver();
 const HAND_TUTORIAL = [
-  { text: () => 'The captain\'s plan is on the Port tab: where she is going and what she will carry. Read it, then press Sail.',
+  { text: () => 'The captain\'s plan is on the Port page: where she is going and what she will carry. Read it, then press Sail.',
     done: () => !!G.transit || firstRunOver() },
   { text: () => `${hiredXo() ? hiredXo().first : 'The first officer'} is walking you round the ship. Hear them out.`,
     done: () => !walkPending() && !!G.transit || firstRunOver() },
-  { text: () => 'Work your post: open the GUNS tab and give an order, or spend some downtime, once before the flip and once after, and practice.',
+  { text: () => 'Work your post: open the Gunnery page and give an order, or spend some downtime, once before the flip and once after, and practice.',
     done: () => didOnBurn('downtime')() || didOnBurn('order')() },
-  { text: () => 'Open the Comms tab and sit with someone. The chats happen on the burn, once each half of the trip.',
+  { text: () => 'Open the Comms page and sit with someone. The chats happen on the burn, once each half of the trip.',
     done: didOnBurn('chat') },
   { text: () => 'Answer whatever comes up on the way. When the ship docks, the first run is done.',
     done: () => firstRunOver() && G.mode === 'landed' },
-  { text: () => 'That is the first run. The captain picks the next one, and the Port tab shows her plan and what the last run paid.',
+  { text: () => 'That is the first run. The captain picks the next one, and the Port page shows her plan and what the last run paid.',
     done: () => false, last: true },
 ];
 const tutorialSteps = () => (hired() ? HAND_TUTORIAL : TUTORIAL);
