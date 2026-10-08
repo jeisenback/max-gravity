@@ -2,19 +2,19 @@
 
 One entry for each name in `FACTIONS` in `js/data.js`. What the code does with them (standing, patrols, ties, customs) is in `js/factions.js` and `js/ties.js` and is not copied here. The three powers are on the audit list in `derived.md`, so each carries a `Divergence:` line, and the texture below is deliberately its own. The owner has decided to keep three powers, reshaped as proposed, and expects the outer planets (Jupiter, Saturn, Neptune) to split into factions of their own later, with Ganymede as an anchor. Do not write the three as final.
 
-### faction.earth-coalition
+### faction.arcology-compact
 
 - Source: `FACTIONS`, `PATROL_NAMES` in `js/data.js`; `CULTURE_FACTION` in `js/ties.js`; standing from -100 to 100 (README, "Factions and outfitting").
 - Wants: Licenses honored, tariffs paid, and the wall rotas kept.
 - Treats a hand: By the license book. A lapsed license makes a person an exile in the code's terms; a stamp in good order is the way into a Trusted contract.
-- Shows up as: A Coalition cutter in flight, a license desk on the dock.
+- Shows up as: A Compact cutter in flight, a license desk on the dock.
 - Divergence: `derived.power-triangle`. A compact of arcology cities, with no world government.
 - Use in scenes: An officer asks for the license and the owed shifts, in that order.
 - Status: from code (js/data.js, js/ties.js) for the patrol and the statuses; the license book is confirmed (owner, 2026-10-08)
 
-### faction.mars-republic
+### faction.dome-concord
 
-- Source: `FACTIONS`, `PATROL_NAMES` ("MRN frigate") in `js/data.js`; `CULTURE_FACTION` in `js/ties.js`.
+- Source: `FACTIONS`, `PATROL_NAMES` ("Concord frigate") in `js/data.js`; `CULTURE_FACTION` in `js/ties.js`.
 - Wants: Air accounts kept clean and dome rules explained to anyone who will listen.
 - Treats a hand: Politely and in detail. A Martian will tell you why their way is the right one (from the code's description), and will check the work.
 - Shows up as: A patrol frigate; an auditor on the dock.
@@ -22,9 +22,9 @@ One entry for each name in `FACTIONS` in `js/data.js`. What the code does with t
 - Use in scenes: An auditor asks for the air bill before the manifest.
 - Status: from code (js/data.js) for the patrol and the manner; the air levy is confirmed (owner, 2026-10-08)
 
-### faction.belt-collective
+### faction.charter-league
 
-- Source: `FACTIONS`, `PATROL_NAMES` ("Collective militia") in `js/data.js`; `CULTURE_FACTION` and `FACTION_COOL` in `js/ties.js`.
+- Source: `FACTIONS`, `PATROL_NAMES` ("League militia") in `js/data.js`; `CULTURE_FACTION` and `FACTION_COOL` in `js/ties.js`.
 - Wants: Water and berth rights honored on every station.
 - Treats a hand: By where they are from. A stranger is fed first and asked later (Ring Nine, from the code). A person is named by the hatch and the Warren.
 - Shows up as: A militia boat on a lane; a ration notice on a corridor wall.

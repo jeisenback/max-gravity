@@ -51,9 +51,9 @@ const HELP = [
     'Claim Callisto at Ganymede, or Nereid at Triton Outpost, and build a habitat ring. Keep the settlers supplied with food, water, medical supplies, and electronics from your hold.',
     'Supplied, the outpost grows and pays you every day; short of anything, settlers leave. Buildings make it self-sufficient, add housing, and open services.' ] },
   { id: 'world', title: 'Factions, raids, and war', hand: [
-    'The Earth Coalition, Mars Republic, and Belt Collective each have an economy that booms and slumps. Tension between them can boil over into war.',
+    'The Arcology Compact, Dome Concord, and Charter League each have an economy that booms and slumps. Tension between them can boil over into war.',
     'Your standing with each faction opens (or closes) their shipyards and outfitters, which matters when you come to buy a ship. Pirates remember you too.' ], text: [
-    'The Earth Coalition, Mars Republic, and Belt Collective each have an economy that booms and slumps. Tension between them can boil over into war, and the side you help remembers it.',
+    'The Arcology Compact, Dome Concord, and Charter League each have an economy that booms and slumps. Tension between them can boil over into war, and the side you help remembers it.',
     'Your standing with each faction opens (or closes) their shipyards, outfitters, and missions. Pirates remember you too.' ] },
   { id: 'story', title: 'Story and campaigns', off: 'storylines', text: [
     'Cold Water, the main story, begins with a derelict on one of your early burns. Three rival careers (a Mars Navy commission, a pirate lord\'s rise, and a corporate climb) exclude each other, and a Belt haulers\' strike can draw you in.',

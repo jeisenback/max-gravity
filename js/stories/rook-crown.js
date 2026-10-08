@@ -23,10 +23,10 @@ Mods.register({
       text: ('Nobody rules the Rook, which is why everyone on it answers to Hollis Mbeki. He finds you at the refuel collar, an old man in a flight ' +
           'suit older than you, patched at the elbows and the knees, with a cracked leather cap and a soft, raspy voice. He does not seem to be in a ' +
           'hurry. He watches you top off your tanks with the flat, patient gaze of a man who has been reading captains for sixty years. "Captains who ' +
-          'dock here more than twice get asked the question," he says. "Do you want to fly under the Rook\'s colors? The Coalition and Mars will hate ' +
+          'dock here more than twice get asked the question," he says. "Do you want to fly under the Rook\'s colors? The Compact and Mars will hate ' +
           'you for it. We will not. That is not a small thing, in these lanes."'),
       choices: [
-        { label: 'Fly under the Rook\'s colors', effects: { q: { crown: 1 }, set: { pirateSworn: 1 }, rep: { Pirate: 8, 'Earth Coalition': -4, 'Mars Republic': -4 }, log: 'Swore to fly under the Rook\'s colors.' },
+        { label: 'Fly under the Rook\'s colors', effects: { q: { crown: 1 }, set: { pirateSworn: 1 }, rep: { Pirate: 8, 'Arcology Compact': -4, 'Dome Concord': -4 }, log: 'Swore to fly under the Rook\'s colors.' },
           result: ('Hollis climbs the ladder to your airlock, slowly, wheezing a little, with a small pot of black paint and a brush older than you ' +
               'are, and paints a tower on the frame with his own hand, dot by dot, in silence. It takes ten minutes. He steps back to look at it, head ' +
               'cocked, and nods. "There. Now every pirate in the Belt knows whose you are. Do not make me regret the paint."') },
@@ -51,8 +51,8 @@ Mods.register({
       when: { planet: rook, q: { crown: 1 }, ...free },
       title: 'Unmarked Crates',
       text: ('Hollis walks you past a stack of crates in a dim side bay of the Rook, ten tons of them, stenciled MEDICAL in official red paint that ' +
-          'has not quite dried. He rests one hand on the top of the pile, affectionately, as if it were a horse. "Reactor parts, from a Coalition ' +
-          'depot that is missing some reactor parts. Ceres will pay for them and not ask. Collective customs might. That\'s what you\'re for." He ' +
+          'has not quite dried. He rests one hand on the top of the pile, affectionately, as if it were a horse. "Reactor parts, from a Compact ' +
+          'depot that is missing some reactor parts. Ceres will pay for them and not ask. League customs might. That\'s what you\'re for." He ' +
           'smiles, thinly. "Nobody has ever inspected a captain who looks this honest."'),
       choices: [
         { label: 'Run the crates to Ceres (10t, 7,000 cr)', when: { space: 10 },
@@ -75,8 +75,8 @@ Mods.register({
     M.addStorylet({
       id: 'rook-customs', where: 'transit', priority: 2,
       when: { at: 'ceres', q: { contraband: 1 } },
-      title: 'Collective Customs',
-      text: ('A Collective militia cutter pulls alongside on the approach to Ceres, close enough that you can see the scratches on her hull and the ' +
+      title: 'League Customs',
+      text: ('A League militia cutter pulls alongside on the approach to Ceres, close enough that you can see the scratches on her hull and the ' +
           'crew in the observation blister, watching you. A cheerful young voice, far too friendly to be reassuring: "Manifest check. Ten tons of ' +
           'medical? Lovely. We\'ll just have a look." In the hold, behind you, the crates sit quietly, stenciled a bright, honest red.'),
       choices: [
@@ -93,7 +93,7 @@ Mods.register({
           result: ('The crates go out the lock one after another, and tumble away in slow, dark rotation toward the Belt, each one a small red cross ' +
               'falling into the black. It takes eleven minutes. The militia boards and finds an empty hold and a very innocent captain, and a faint, ' +
               'guilty smell of stencil paint. Hollis is not going to be pleased, and you know it.') },
-        { label: 'Run for it', effects: { rep: { 'Belt Collective': -6 }, q: { crown: 1 } },
+        { label: 'Run for it', effects: { rep: { 'Charter League': -6 }, q: { crown: 1 } },
           result: 'You light the drive and dive headlong into the Ceres traffic, between lumbering ice haulers and a tangle of tugs, with the militia\'s voice ringing on every band. They don\'t follow. But they have your transponder now, and, on Ceres, that is a long memory.' },
       ],
     });
@@ -104,7 +104,7 @@ Mods.register({
       title: 'Dagger Quartey',
       text: ('"Ines Quartey," Hollis says, as if the name tastes bad, and spits, neatly, into a cup. He is sitting in a battered old chair at the ' +
           'back of the bar, with a blanket over his knees, and his hands are trembling slightly on the armrests. "Calls herself Dagger. She wants my ' +
-          'chair, and she has been telling the council you are a Coalition plant. She runs out of the Saturn moons, in a ship called the Knife in the ' +
+          'chair, and she has been telling the council you are a Compact plant. She runs out of the Saturn moons, in a ship called the Knife in the ' +
           'Dark, which tells you everything you need to know. Settle it." His voice, for a moment, is very old.'),
       choices: [
         { label: 'Hunt her down', effects: { set: { rookTask: 1 }, log: 'Went hunting for Dagger Quartey around Saturn.',
@@ -142,8 +142,8 @@ Mods.register({
           'that will hurt, prices driven up, and the inner planets reminded who owns the dark between the rocks. They want you to lead it. Nobody in ' +
           'the room is smiling. Everybody is watching to see what you will do.'),
       choices: [
-        raid('Martian', 'mars', 'Mars Republic'),
-        raid('Coalition', 'earth', 'Earth Coalition'),
+        raid('Martian', 'mars', 'Dome Concord'),
+        raid('Compact', 'earth', 'Arcology Compact'),
         {
           label: 'Decline',
           effects: { rep: { Pirate: -5 } },

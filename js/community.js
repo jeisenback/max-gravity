@@ -107,12 +107,12 @@ const SCENARIOS = [
     storylets: [{ id: 'pax-debt', where: 'port', when: { planet: 'Ceres Station', day: 45 }, title: 'Pax', text: 'Pax is waiting at your airlock, smiling the way people smile when they have brought friends. "Two thousand, captain. Or the ship."',
       choices: [
         { label: 'Pay him (2,000 cr)', when: { credits: 2000 }, effects: { credits: -2000, log: 'Paid off Pax on Ceres.' }, result: 'Pax counts it twice and wishes you a long and profitable life.' },
-        { label: 'Ask for more time', effects: { rep: { 'Belt Collective': -2 } }, result: '"Ten days," Pax says. "Then we talk about the ship."' },
+        { label: 'Ask for more time', effects: { rep: { 'Charter League': -2 } }, result: '"Ten days," Pax says. "Then we talk about the ship."' },
       ] }] },
   { title: 'Ice Rush', text: 'Ceres is thirsty, and you own an Ice Hauler full of Europa water. Everyone between here and the Belt knows it.',
     start: { credits: 20000, shipId: 'freighter', systemId: 'jupiter', planet: 'Europa', cargo: { water: 80 }, day: 90 } },
   { title: 'Rook\'s Favorite', text: 'The pirates of Hygiea like you, which is more than anyone else can say. You start at the Rook with a Needle courier, a slicer\'s reputation, and very few friends in uniform.',
-    start: { credits: 15000, shipId: 'courier', systemId: 'hygiea', planet: 'The Rook', rep: { Pirate: 30, 'Earth Coalition': -20, 'Mars Republic': -10 }, day: 60 } },
+    start: { credits: 15000, shipId: 'courier', systemId: 'hygiea', planet: 'The Rook', rep: { Pirate: 30, 'Arcology Compact': -20, 'Dome Concord': -10 }, day: 60 } },
 ];
 
 const encode = obj => btoa(unescape(encodeURIComponent(JSON.stringify(obj)))).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');

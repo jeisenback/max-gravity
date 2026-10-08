@@ -15,7 +15,7 @@ const BARS = {
   Earth: ['The Gravity Well', ('A spaceport bar with a long copper counter and travel posters from a dozen ports curling on the walls. The drinks are ' +
       'real, and so are the prices. At the far end a man in a good coat is telling a story about the sea to a table of Belters, and he is paying for ' +
       'every round.')],
-  Luna: ['Copernicus Lounge', ('Low gravity, a long bar, and Coalition officers in civilian jackets that do not fit. The bartender pours slow on ' +
+  Luna: ['Copernicus Lounge', ('Low gravity, a long bar, and Compact officers in civilian jackets that do not fit. The bartender pours slow on ' +
       'purpose: in one-sixth g the drinks come out in tall ribbons and take a long time to settle. A window behind the bar looks out on the gray ' +
       'plain, the drydocks and, past them, Earth. People keep their voices down.')],
   Mars: ['The Red Line', ('Tharsis veterans at one end of the bar, terraforming engineers at the other, and in the middle an argument about the ' +

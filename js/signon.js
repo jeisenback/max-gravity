@@ -16,19 +16,19 @@ const SIGN_ON = {
     away: 'You stow your bag and do not go back down the ramp. When the hatch closes, the arcology is one more speck among the habitat lights.',
   },
   mars: {
-    text: c => (`You grew up under the domes of Tharsis, where everyone argues about the future, and the Republic's navy did not want you. You spent ` +
+    text: c => (`You grew up under the domes of Tharsis, where everyone argues about the future, and the Concord's navy did not want you. You spent ` +
         `a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your ` +
         `politics, only whether you could stand a watch. ${c.ship}, an ice hauler out of ${c.sys}, is yours to work.${c.who}`),
-    money: 'The Republic offered you a dome stipend. The freighter offers a wage and a share, in writing, and you read the page to the bottom before you sign.',
+    money: 'The Concord offered you a dome stipend. The freighter offers a wage and a share, in writing, and you read the page to the bottom before you sign.',
     learn: 'The navy would not teach you. On the first day you ask to see the coupling, and the engineer shows you, and then has you do it.',
     away: 'The domes will argue about the future without you. Aboard, nobody asks whose side you are on. The first thing anyone asks is whether you have eaten.',
   },
   belt: {
     text: c => (`You were born in the Ceres Warren, and you know what water is worth. A hand's share in a freighter that crosses to the inner system ` +
-        `and back is not much, but it is a berth, and a berth is the one thing in the Belt that is truly yours. The Collective's dock office stamped ` +
+        `and back is not much, but it is a berth, and a berth is the one thing in the Belt that is truly yours. The League's dock office stamped ` +
         `the papers and wished you luck, in the tone of people who have wished a great many people luck. ${c.ship}, an ice hauler out of ${c.sys}, ` +
         `sails.${c.who}`),
-    money: 'You count the wage twice and the share once. The Collective stamp is on the papers. Every credit of it goes into the savings line.',
+    money: 'You count the wage twice and the share once. The League stamp is on the papers. Every credit of it goes into the savings line.',
     learn: 'Ceres taught you water and rock. You ask the crew how they cross to the inner system, and four people answer at once, each differently.',
     away: 'Ceres spins on behind you with its ice and its arguments. You lift a hand to it from the viewport, like a person on a dock.',
   },

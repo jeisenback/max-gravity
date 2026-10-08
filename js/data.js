@@ -35,9 +35,9 @@ const SHIPS = {
 };
 
 const GOV_COLORS = {
-  'Earth Coalition': '#5fa8ff',
-  'Mars Republic': '#ff8a4a',
-  'Belt Collective': '#e8d17a',
+  'Arcology Compact': '#5fa8ff',
+  'Dome Concord': '#ff8a4a',
+  'Charter League': '#e8d17a',
   'Independent': '#d0d0d0',
   'Pirate': '#d05fff',
 };
@@ -59,7 +59,7 @@ const SYSTEMS = {
     ],
   },
   earth: {
-    name: 'Earth', au: 1.0, angle: 100, gov: 'Earth Coalition', pirates: 0,
+    name: 'Earth', au: 1.0, angle: 100, gov: 'Arcology Compact', pirates: 0,
     planets: [
       { name: 'Earth', x: -150, y: 80, r: 95, color: '#3a7bd5', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
         prices: { water: 'M', food: 'M', industrial: 'L', medical: 'L', luxury: 'H', metal: 'H', equipment: 'L' },
@@ -69,13 +69,13 @@ const SYSTEMS = {
             'for someone to blame.') },
       { name: 'Luna', x: 380, y: -260, r: 40, color: '#b8b8b8', services: ['missions', 'shipyard', 'outfitter', 'refuel'],
         prices: {},
-        desc: ('Coalition shipyards and navy drydocks under a black sky, spread across the gray plain in long, hard-lit rows. The dust here gets into ' +
+        desc: ('Compact shipyards and navy drydocks under a black sky, spread across the gray plain in long, hard-lit rows. The dust here gets into ' +
             'everything and never quite leaves, and every dockhand has a story about the one time they saw it float. Officers in pressed uniforms move ' +
             'through crowds of civilian riggers who resent them. Everyone on Luna has an opinion about Mars, and most of them would like to share it.') },
     ],
   },
   mars: {
-    name: 'Mars', au: 1.52, angle: 60, gov: 'Mars Republic', pirates: 0.05,
+    name: 'Mars', au: 1.52, angle: 60, gov: 'Dome Concord', pirates: 0.05,
     planets: [
       { name: 'Mars', x: 100, y: -120, r: 70, color: '#c1440e', services: ['trade', 'missions', 'refuel'],
         prices: { equipment: 'H', food: 'H', water: 'H', medical: 'M', industrial: 'M', metal: 'L', luxury: 'M' },
@@ -92,7 +92,7 @@ const SYSTEMS = {
     ],
   },
   ceres: {
-    name: 'Ceres', au: 2.77, angle: 130, gov: 'Belt Collective', pirates: 0.2,
+    name: 'Ceres', au: 2.77, angle: 130, gov: 'Charter League', pirates: 0.2,
     planets: [
       { name: 'Ceres Station', x: -60, y: -40, r: 60, color: '#90a4ae', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
         prices: { water: 'H', food: 'H', medical: 'H', metal: 'L', luxury: 'M', equipment: 'M', industrial: 'M' },
@@ -109,7 +109,7 @@ const SYSTEMS = {
     ],
   },
   pallas: {
-    name: 'Pallas', au: 2.77, angle: 20, gov: 'Belt Collective', pirates: 0.3,
+    name: 'Pallas', au: 2.77, angle: 20, gov: 'Charter League', pirates: 0.3,
     planets: [
       { name: 'Pallas Refinery', x: 200, y: 150, r: 45, color: '#78909c', services: ['trade', 'missions', 'refuel'],
         prices: { metal: 'L', industrial: 'H', food: 'H', water: 'H', equipment: 'H' },
@@ -152,7 +152,7 @@ const SYSTEMS = {
     ],
   },
   juno: {
-    name: 'Juno', au: 2.67, angle: 75, gov: 'Belt Collective', pirates: 0.15,
+    name: 'Juno', au: 2.67, angle: 75, gov: 'Charter League', pirates: 0.15,
     planets: [
       { name: 'Juno Commons', x: -40, y: 50, r: 38, color: '#8f9c7a', services: ['trade', 'missions', 'refuel'],
         prices: { food: 'L', luxury: 'H', equipment: 'H', medical: 'H', water: 'M' },
@@ -191,7 +191,7 @@ const SYSTEMS = {
     ],
   },
   saturn: {
-    name: 'Saturn', au: 9.54, angle: 110, gov: 'Belt Collective', pirates: 0.35,
+    name: 'Saturn', au: 9.54, angle: 110, gov: 'Charter League', pirates: 0.35,
     planets: [
       { name: 'Titan', x: -80, y: 160, r: 75, color: '#e0a040', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
         prices: { medical: 'L', luxury: 'M', equipment: 'H', industrial: 'H' },
@@ -220,8 +220,8 @@ const SYSTEMS = {
 };
 
 // Factions that track your standing. Independent ports do not.
-const FACTIONS = ['Earth Coalition', 'Mars Republic', 'Belt Collective', 'Pirate'];
-const PATROL_NAMES = { 'Earth Coalition': 'Coalition cutter', 'Mars Republic': 'MRN frigate', 'Belt Collective': 'Collective militia' };
+const FACTIONS = ['Arcology Compact', 'Dome Concord', 'Charter League', 'Pirate'];
+const PATROL_NAMES = { 'Arcology Compact': 'Compact cutter', 'Dome Concord': 'Concord frigate', 'Charter League': 'League militia' };
 
 // Outfits take cargo space (`space`, tons) and modify the ship's stats; `max` per ship.
 // `req` needs that much standing with the faction running the shop; `pirate` gear is

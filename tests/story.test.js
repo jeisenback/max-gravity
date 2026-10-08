@@ -116,7 +116,7 @@ test('Cold Water act 2: every side can be chosen', async () => {
     G.state.crew.push('rosa'); S.burn('pallas'); S.arrive('Pallas Refinery'); S.choose('Tell them');
     o.belt = [story().stage, story().side];
     // Mars: needs standing, then Hermes Foundry and Phobos.
-    S.reset(5); G.state.rep['Mars Republic'] = 20; S.land('mars', 'Mars'); S.choose('Give the proof');
+    S.reset(5); G.state.rep['Dome Concord'] = 20; S.land('mars', 'Mars'); S.choose('Give the proof');
     S.burn('mercury'); S.arrive('Hermes Foundry'); S.choose('Bribe');
     G.state.crew.push('dima'); S.burn('mars'); S.arrive('Phobos Yards'); S.choose('Take');
     o.mars = [story().stage, story().side];
@@ -194,7 +194,7 @@ test('the Mars Navy commission runs start to finish', async () => {
   const { ev, done } = await open();
   await ev(helpers);
   const r = await ev(() => {
-    S.reset(); const st = G.state; st.story.next = 1e9; st.day = 20; st.rep['Mars Republic'] = 20; S.slicer('mars');
+    S.reset(); const st = G.state; st.story.next = 1e9; st.day = 20; st.rep['Dome Concord'] = 20; S.slicer('mars');
     S.at('mars', 'Mars');
     const steps = [S.play('port', 'Accept'), S.play('port', 'Take the hunt')];
     S.at('pallas', 'Pallas Refinery'); const target = G.state.missions.some(m => m.type === 'bounty' && m.targetSystem === 'pallas'); S.killBounty('pallas');

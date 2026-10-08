@@ -101,7 +101,7 @@ const CREW = {
   dima: {
     name: 'Dmitri "Dima" Sokolov', first: 'Dima', role: 'pilot', skill: 3, home: 'Mars', fee: 4000, wage: 80,
     perk: 'Burns take 20% fewer days.',
-    bio: ('Ex-Mars Republic Navy pilot, discharged for "creative interpretation of orders". Flies like he is still being shot at, and talks like it ' +
+    bio: ('Ex-Dome Concord Navy pilot, discharged for "creative interpretation of orders". Flies like he is still being shot at, and talks like it ' +
         'is a joke. He kept his flight jacket, his call sign, and a small framed photograph of a squadron that no longer exists, and he will tell you ' +
         'the story of how he lost the rest of it if you buy the drinks.'),
     chatter: ['Dima: "Smooth as glass. You are welcome."', 'Dima is arguing with the nav computer again. He is winning.', 'Dima: "Everyone says the good pilots are the ones who never get scared. That is a lie. The good ones get scared very precisely."', (
@@ -134,7 +134,7 @@ const CREW = {
               'at himself and it clears the air.') },
         ] },
       { title: 'Mars Calling',
-        text: ('A priority message comes in on a Navy band, sealed and formal, and Dima goes still when he reads it. The Mars Republic Navy is ' +
+        text: ('A priority message comes in on a Navy band, sealed and formal, and Dima goes still when he reads it. The Dome Concord Navy is ' +
             'offering him his commission back: a cutter of his own, a squadron, an official apology. He does not say anything for a long time. Then he ' +
             'says, very carefully, not looking at you, "I did not think they would ever ask. What do you think, captain?"'),
         choices: [
@@ -154,7 +154,7 @@ const CREW = {
   kit: {
     name: 'Kit Halloran', first: 'Kit', role: 'gunner', skill: 3, home: 'Luna', fee: 3500, wage: 70,
     perk: 'Adds one gun in combat. Better odds when fighting in transit.',
-    bio: ('Earth Coalition Navy gunnery sergeant, retired early. Talks to her guns. They seem to listen. She served twelve years and lost a squad, ' +
+    bio: ('Arcology Compact Navy gunnery sergeant, retired early. Talks to her guns. They seem to listen. She served twelve years and lost a squad, ' +
         'and she does not drink, does not gamble, and does not sleep more than five hours a night, but she remembers every birthday aboard, and will ' +
         'bake you a cake with a real candle if you look sad.'),
     chatter: ['Kit: "Guns are clean. Guns are always clean."',
@@ -183,8 +183,8 @@ const CREW = {
               'ship twice that night, quietly, with her jaw set.') },
         ] },
       { title: 'A Name She Knows',
-        text: ('Kit is reading a Coalition bounty list in the galley, the way you might read a menu, and then she is not reading at all. The color ' +
-            'has gone from her face. "Harlan Voss," she says. "Ex-Coalition. He walked out on a firefight and left my squad in it. Eleven people. He ' +
+        text: ('Kit is reading a Compact bounty list in the galley, the way you might read a menu, and then she is not reading at all. The color ' +
+            'has gone from her face. "Harlan Voss," she says. "Ex-Compact. He walked out on a firefight and left my squad in it. Eleven people. He ' +
             'is on the list, now, for something else. I know where he hides: Hygiea." She looks up, and there is no anger in her face at all, which is ' +
             'worse than anger.'),
         choices: [
@@ -353,7 +353,7 @@ const PASSENGERS = {
     ] }) },
   hale: { name: 'Undersecretary Hale', pax: 1, fare: 1.5, event: m => ({
     title: 'An Important Man',
-    text: ('Undersecretary Hale of the Earth Coalition appears in the cockpit in a tailored coat, and does not take off his gloves. He informs you ' +
+    text: ('Undersecretary Hale of the Arcology Compact appears in the cockpit in a tailored coat, and does not take off his gloves. He informs you ' +
         'that his meeting cannot wait, that it concerns matters he is not at liberty to discuss, and that he had expected a faster ship. He glances at ' +
         'your control panel, and lets the silence do the rest of the work.'),
     choices: [
@@ -391,7 +391,7 @@ const PASSENGERS = {
       } },
       { label: '[{crew}] Spoof a Navy transponder', role: 'slicer', run() {
         m.bonus += 1000;
-        return ('{crew} bends to the console with a soft, private smile. A second later, on every scope in range, you are a Coalition Navy frigate, ' +
+        return ('{crew} bends to the console with a soft, private smile. A second later, on every scope in range, you are a Compact Navy frigate, ' +
             'with a full crew and an ugly reputation. The unmarked ship scatters like startled pigeons. Sable laughs, for the first time since she ' +
             'came aboard, a short startled bark, then a longer, warmer sound. "Oh," she says, wiping her eyes. "Oh, that is very good."');
       } },

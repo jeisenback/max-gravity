@@ -373,7 +373,7 @@ const CAST = {
     skills: { slicer: 3, engineer: 1, gunner: 1, pilot: 0 }, captain: { trade: 5, nerve: 1, thrift: 3 },
     ambition: 'Wants every dome on Mars on one open band before he retires.',
     bio: ('He ran the Valles dome network for twenty-five years, and knows what every dome is short of this week, who is lying about it, and what ' +
-        'they would pay. When the Republic closed the open band to break a strike, he kept a relay running in his own kitchen for eleven days, and was ' +
+        'they would pay. When the Concord closed the open band to break a strike, he kept a relay running in his own kitchen for eleven days, and was ' +
         'let go for it.'),
     chatter: [
       'Ruben: "Mars is not quiet. It is listening. There is a difference, and the difference is the whole business."',

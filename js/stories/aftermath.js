@@ -37,7 +37,7 @@ Mods.register({
         {
           label: 'Ask for nothing',
           effects: {
-          rep: { 'Earth Coalition': 1 },
+          rep: { 'Arcology Compact': 1 },
           later: { 'dc-gift': 10 },
           log: 'Told Halden Voss I wanted nothing. He said he owed me something worse than money.'
         },
@@ -84,12 +84,12 @@ Mods.register({
           label: 'Accept the contract',
           effects: {
           credits: 4000,
-          rep: { 'Earth Coalition': 1 },
+          rep: { 'Arcology Compact': 1 },
           log: 'Voss\'s house paid out on the letter: 4,000 cr.'
         },
           result: 'You accept, and the first payment is in your account before the end of the watch. The second message is just a photograph of the yacht, back on its pad, with a small hand-lettered sign on the bow: "Thanks to the ship that stopped."'
         },
-        { label: 'Decline with thanks', effects: { rep: { 'Earth Coalition': 2 } }, result: '"Too kind," you write, "but I did not stop for a contract." His reply is one line, and warm, and it spreads, in the way these things do, a good deal further than a contract would have.' },
+        { label: 'Decline with thanks', effects: { rep: { 'Arcology Compact': 2 } }, result: '"Too kind," you write, "but I did not stop for a contract." His reply is one line, and warm, and it spreads, in the way these things do, a good deal further than a contract would have.' },
       ],
     });
     after({
@@ -113,7 +113,7 @@ Mods.register({
         {
           label: 'Send them your sensor logs',
           effects: {
-          rep: { 'Earth Coalition': 1 },
+          rep: { 'Arcology Compact': 1 },
           credits: 600,
           log: 'Sent the patrol my logs on the yacht decoy. They paid a finder\'s fee.'
         },
@@ -133,12 +133,12 @@ Mods.register({
           when: { credits: 200 },
           effects: {
           credits: -200,
-          rep: { 'Earth Coalition': 1 },
+          rep: { 'Arcology Compact': 1 },
           log: 'Sent 200 cr to the rescue fund for a yacht I did not stop for.'
         },
           result: 'It is not an apology, quite, and nobody will ever know what it is for. You send it anyway, and do not feel better, and it is something.'
         },
-        { label: 'Switch it off', effects: { rep: { 'Earth Coalition': -1 }, log: 'A yacht I did not stop for lost one of its crew.' }, result: 'You switch it off. You tell yourself it was a trap, and it probably was. It was not, this time. That is the thing about the probably.' },
+        { label: 'Switch it off', effects: { rep: { 'Arcology Compact': -1 }, log: 'A yacht I did not stop for lost one of its crew.' }, result: 'You switch it off. You tell yourself it was a trap, and it probably was. It was not, this time. That is the thing about the probably.' },
       ],
     });
 
@@ -156,7 +156,7 @@ Mods.register({
         },
           result: 'You haul the pod in on a line, and crack it on the deck, and a thin, furious teenager glares up at you through a cracked visor. They are fed, and watched, and, after a day of silence, begin, bit by bit, to talk. You do not hand them over to anyone. Not yet.'
         },
-        { label: 'Report it and keep burning', effects: { rep: { 'Earth Coalition': 1 } }, result: 'You log the pod\'s position and pass it to the nearest patrol, and burn on. It is correct, and it is cold, and it is probably what the survivors would have done for you. Probably.' },
+        { label: 'Report it and keep burning', effects: { rep: { 'Arcology Compact': 1 } }, result: 'You log the pod\'s position and pass it to the nearest patrol, and burn on. It is correct, and it is cold, and it is probably what the survivors would have done for you. Probably.' },
         { label: 'Leave it', effects: { later: { 'pi-vendetta': 18 }, log: 'Left a pirate escape pod to drift. Somebody will want to know.' }, result: 'The pod falls behind, its beacon flickering. Nobody speaks. Somewhere, a family will not get the news from you.' },
       ],
     });
@@ -165,7 +165,7 @@ Mods.register({
       text: 'A message arrives, a single line from a stranger: "I am out. I am clean. I am sorry. There is a cache on the rock at the coordinates below, my crew\'s, and nobody left to claim it. Take it." The coordinates are a day off your course. A second line, smaller: "You did not have to."',
       choices: [
         { label: 'Detour for the cache (costs time)', effects: { delay: 8, credits: 1800, log: 'The pirate kid sent a cache. Took it. Did not feel good, quite.' }, result: 'It is where they said, under a tarp, and it is more than you expected. You feel like someone who was paid by a ghost.' },
-        { label: 'Let it lie', effects: { rep: { 'Belt Collective': 1 } }, result: 'You leave it where it is. The kid will hear about it, eventually, the way these things get around the Belt, and it will count for something.' },
+        { label: 'Let it lie', effects: { rep: { 'Charter League': 1 } }, result: 'You leave it where it is. The kid will hear about it, eventually, the way these things get around the Belt, and it will count for something.' },
       ],
     });
     after({
@@ -177,7 +177,7 @@ Mods.register({
           when: { credits: 1000 },
           effects: {
           credits: -1000,
-          rep: { 'Belt Collective': 1 },
+          rep: { 'Charter League': 1 },
           log: 'Paid blood money for a pirate I left in a pod.'
         },
           result: 'You send it, and the line goes quiet, and then it says, "That is not forgiveness." "No," you say. "I know." It is enough, and the ship turns away.'
@@ -210,7 +210,7 @@ Mods.register({
           label: 'Run the parcel (900 cr)',
           effects: {
           credits: 900,
-          rep: { 'Belt Collective': -1 },
+          rep: { 'Charter League': -1 },
           log: 'Ran a parcel for pirates who think I am their cousin. It was only heavy.'
         },
           result: 'It is a crate, and it is heavy, and it asks nothing of you but a small detour and a short silence. They pay in clean notes. "Family," says the voice, with real warmth. You do not correct it.'
@@ -246,7 +246,7 @@ Mods.register({
         {
           label: 'Hand it to the authorities',
           effects: {
-          rep: { 'Earth Coalition': 1 },
+          rep: { 'Arcology Compact': 1 },
           later: { 'co-reward': 8 },
           log: 'Handed a sealed case from a drifting container to customs.'
         },
@@ -264,18 +264,18 @@ Mods.register({
           label: 'Answer the questions',
           effects: {
           credits: -400,
-          rep: { 'Earth Coalition': -2 },
+          rep: { 'Arcology Compact': -2 },
           log: 'Customs asked about the case. It cost me.'
         },
           result: 'You answer them, all of them, and they are polite, and they take 400 cr and a good deal of your standing. When you leave, a junior officer holds the door and does not meet your eye.'
         },
-        { label: 'Ignore it', effects: { rep: { 'Earth Coalition': -1 } }, result: 'You ignore it, and it is ignored back. It will be remembered at the next port with a customs office.' },
+        { label: 'Ignore it', effects: { rep: { 'Arcology Compact': -1 } }, result: 'You ignore it, and it is ignored back. It will be remembered at the next port with a customs office.' },
       ],
     });
     after({
       id: 'co-reward', title: 'A Reward',
       text: 'A letter from the customs office, on proper paper. The case you handed in held records in a smuggling case that has run for six years. There is a reward, a thank-you, and a line at the bottom, handwritten, that says: "Few people hand these in."',
-      choices: [{ label: 'Accept the reward', effects: { credits: 1000, rep: { 'Earth Coalition': 1 }, log: 'Customs paid a 1,000 cr reward for the case I handed in.' }, result: 'It is less than you would have got from the buyer. You find, to your surprise, that you do not mind.' }],
+      choices: [{ label: 'Accept the reward', effects: { credits: 1000, rep: { 'Arcology Compact': 1 }, log: 'Customs paid a 1,000 cr reward for the case I handed in.' }, result: 'It is less than you would have got from the buyer. You find, to your surprise, that you do not mind.' }],
     });
 
     // ---- Stowaway ----
@@ -302,7 +302,7 @@ Mods.register({
         label: 'Keep the shirt, and the notes',
         effects: {
         credits: 700,
-        rep: { 'Belt Collective': 1 },
+        rep: { 'Charter League': 1 },
         log: 'The stowaway kid\'s aunt sent a shirt and 700 cr.'
       },
         result: 'You put the shirt on, and it fits, and nobody in the galley says a word. It has been a long time since anyone ironed anything for you.'
@@ -338,12 +338,12 @@ Mods.register({
       id: 'de-family', title: 'The Hauler\'s Family',
       text: 'A message comes by a slow channel, from a woman on Ceres whose husband flew the Marguerite. She has been told the ship is lost with everything aboard. She asks, politely, whether you took anything from her, in particular the nav core, which is the last thing he touched.',
       choices: [
-        { label: 'Return the nav core, free', effects: { rep: { 'Belt Collective': 2 }, log: 'Gave a widow her husband\'s nav core.' }, result: 'You send it by the next courier, and a week later the reply is two lines, and the second one is just your ship\'s name, in capitals, underlined.' },
+        { label: 'Return the nav core, free', effects: { rep: { 'Charter League': 2 }, log: 'Gave a widow her husband\'s nav core.' }, result: 'You send it by the next courier, and a week later the reply is two lines, and the second one is just your ship\'s name, in capitals, underlined.' },
         {
           label: 'Sell it to her for 2,000 cr',
           effects: {
           credits: 2000,
-          rep: { 'Belt Collective': -1 },
+          rep: { 'Charter League': -1 },
           log: 'Sold a widow her husband\'s nav core for 2,000 cr.'
         },
           result: 'She pays it, without arguing, and the receipt comes back, signed, in a very steady hand. It is what the thing was worth. It is also what it was worth.'

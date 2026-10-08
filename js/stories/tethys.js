@@ -52,14 +52,14 @@ Mods.register({
       when: { planet: titan, q: { tsc: 1 }, qBelow: { tsc: 2, tscTask: 1, tscDone: 1 } },
       title: 'A Rush Contract',
       text: ('Halvorsen is waiting at the same table, at the same window, with Saturn hanging behind her like a slow, patient eye. "A test," she ' +
-          'says, "because I believe in tests. Twenty tons of cryo-cells for a Coalition hospital on Earth. Human tissue, grown from donors, packed in ' +
-          'cold. They spoil in twenty-four days, and the Coalition does not forgive a spoiled shipment. The Consortium does not deliver spoiled ' +
+          'says, "because I believe in tests. Twenty tons of cryo-cells for a Compact hospital on Earth. Human tissue, grown from donors, packed in ' +
+          'cold. They spoil in twenty-four days, and the Compact does not forgive a spoiled shipment. The Consortium does not deliver spoiled ' +
           'goods." She steeples her fingers. "It has never been an option."'),
       choices: [
         { label: 'Take the cryo-cells (20t)', when: { space: 20 },
           effects: { set: { tscTask: 1 }, log: 'Rushing Consortium cryo-cells from Titan to Earth.',
             mission: { to: 'Earth', tons: 20, good: 'Consortium cryo-cells', pay: 15000, days: 24, title: 'Rush Consortium cryo-cells to Earth before they spoil',
-              onDone: { q: { tsc: 1 }, set: taskOver, rep: { 'Earth Coalition': 3 }, log: 'Delivered the Consortium\'s cryo-cells to Earth on time.' },
+              onDone: { q: { tsc: 1 }, set: taskOver, rep: { 'Arcology Compact': 3 }, log: 'Delivered the Consortium\'s cryo-cells to Earth on time.' },
               onFail: { set: taskOver, log: 'The Consortium\'s cryo-cells spoiled in the hold. Halvorsen sent a one-word message: "Again."' } } },
           result: ('"Twenty-four days," she says. "The clock started when you walked in." Two technicians in white coats load the cells into your ' +
               'hold in silver-cold pallets, checking each seal, tagging each with a small green light. You feel, for the first time, the weight of a ' +
@@ -121,8 +121,8 @@ Mods.register({
           'Consortium," she says. "There are councillors on Ceres who will never speak to you again. There are people on this moon who will never ' +
           'forget you did it." She looks up, and, to your surprise, there is something like sympathy in her face. "Both of those are true, and both of ' +
           'them are the price."'),
-      choices: [{ label: 'Hand over the proxy', effects: { q: { tsc: 1 }, set: { tscTask: 0, takeover: 0 }, rep: { 'Belt Collective': -5 }, log: 'Voted my Ceres Station shares with the Consortium.' },
-        result: ('The proxy takes a thumbprint, a small, warm click, and the screen chimes once and goes dark. It is done. The Belt Collective takes ' +
+      choices: [{ label: 'Hand over the proxy', effects: { q: { tsc: 1 }, set: { tscTask: 0, takeover: 0 }, rep: { 'Charter League': -5 }, log: 'Voted my Ceres Station shares with the Consortium.' },
+        result: ('The proxy takes a thumbprint, a small, warm click, and the screen chimes once and goes dark. It is done. The Charter League takes ' +
             'it personally. By the time you reach the docks, someone has already sprayed a small, neat drop of water on your hull, in blue, and ' +
             'beneath it, in a hand that shakes very slightly, the word REMEMBER.') }],
     });

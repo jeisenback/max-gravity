@@ -124,7 +124,7 @@ const UAT_ITEMS = [
     setup() { uatFresh(); Object.assign(G.state.story, { stage: 3 }); uatLand('Mars'); uatScene('cw-mira-contact'); } },
   { group: 'Cold Water', id: 'cw-europa', title: 'Europa reveal', check: 'The core is decrypted on Europa and Act 1 ends.',
     setup() { uatFresh(); Object.assign(G.state.story, { stage: 4 }); storyPassenger('Mira Castellane', 1, 'jupiter', 'Europa', 3000, 'mira-europa'); uatLand('Europa'); uatScene('cw-europa'); } },
-  { group: 'Cold Water', id: 'cw-contacts', title: 'Act 2: who gets the proof', check: 'At Ceres Station the Collective contact offers to take the proof.',
+  { group: 'Cold Water', id: 'cw-contacts', title: 'Act 2: who gets the proof', check: 'At Ceres Station the League contact offers to take the proof.',
     setup() { uatFresh(); Object.assign(G.state.story, { stage: 5 }); uatLand('Ceres Station'); uatScene('cw-contact-ceres'); } },
   { group: 'Cold Water', id: 'cw-blockade', title: 'Act 3: the blockade', check: 'Arriving at Ceres, the blockade fleet engages; allies help; landing is allowed.',
     setup() { uatFresh({
@@ -141,7 +141,7 @@ const UAT_ITEMS = [
   { group: 'Campaigns', id: 'strike', title: 'Ice Haulers\' Strike', check: 'The Guild broadcast opens on a burn into the Belt.',
     setup() { uatFresh(); G.state.day = 15; uatBurn('Mars', 'ceres'); uatScene('strike-broadcast'); } },
   { group: 'Campaigns', id: 'navy', title: 'Reserve Commission', check: 'The Mars Navy offers a commission.',
-    setup() { uatFresh(); G.state.rep['Mars Republic'] = 30; uatLand('Mars'); uatScene('navy-recruit'); } },
+    setup() { uatFresh(); G.state.rep['Dome Concord'] = 30; uatLand('Mars'); uatScene('navy-recruit'); } },
   { group: 'Campaigns', id: 'rook', title: 'The Rook\'s Crown', check: 'Hollis Mbeki invites you to fly under the Rook\'s colors.',
     setup() { uatFresh(); G.state.day = 25; uatLand('The Rook'); uatScene('rook-invite'); } },
   { group: 'Campaigns', id: 'tethys', title: 'The Partner\'s Chair', check: 'The Tethys Consortium invites you once you own a company ship.',

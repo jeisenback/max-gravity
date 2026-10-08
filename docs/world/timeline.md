@@ -15,7 +15,7 @@ What happened before day 1 of the game. Dates are in years before day 1. The cod
 
 - Source: `docs/world/backgrounds.md` (`bg.earth`).
 - When: Estimate, confirmed: about twenty-five years before day 1.
-- What: The Coalition's coastal arcologies replaced paid sea-wall crews with a rota that every household owes. The wall books date from then.
+- What: The Compact's coastal arcologies replaced paid sea-wall crews with a rota that every household owes. The wall books date from then.
 - Who remembers it: Grandparents on the lower tiers, who remember when the rota was paid.
 - Use in scenes: A grandparent's story, told as a debt that was moved from the city to the family.
 - Status: confirmed by the owner on 2026-10-08
