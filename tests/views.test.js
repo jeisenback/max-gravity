@@ -5,6 +5,7 @@
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const path = require('node:path');
 const { open, closeBrowser } = require('./helpers');
 
 after(closeBrowser);
@@ -85,6 +86,52 @@ test('no template in js/ has an inline handler, and data-select selects', async 
   await done();
 });
 
+// The template literals of a source file, each with its tag (`h` in h`...`) and its static text, found by walking the source (a regex
+// cannot tell an opening backtick from a closing one, and templates nest inside ${...}).
+function templatesOf(src) {
+  const out = [];
+  const walk = (i, stopAtBrace) => {  // reads code from i; returns where it stopped
+    let depth = 0;
+    while (i < src.length) {
+      const c = src[i];
+      if (c === '/' && src[i + 1] === '/') { while (i < src.length && src[i] !== '\n') i++; continue; }
+      if (c === "'" || c === '"') { const q = c; i++; while (i < src.length && src[i] !== q) i += src[i] === '\\' ? 2 : 1; i++; continue; }
+      if (c === '`') {
+        let k = i; while (k > 0 && /\w/.test(src[k - 1])) k--;
+        const t = { tag: src.slice(k, i), text: '', exprs: 0 }; out.push(t);
+        i++;
+        while (i < src.length && src[i] !== '`') {
+          if (src[i] === '\\') { t.text += src.slice(i, i + 2); i += 2; continue; }
+          if (src[i] === '$' && src[i + 1] === '{') { t.exprs++; i = walk(i + 2, true); continue; }
+          t.text += src[i++];
+        }
+        i++; continue;
+      }
+      if (stopAtBrace) { if (c === '{') depth++; if (c === '}') { if (depth === 0) return i + 1; depth--; } }
+      i++;
+    }
+    return i;
+  };
+  walk(0, false);
+  return out;
+}
+
+// A file wholly on the helpers has no plain template literal that mixes markup with an interpolation: its markup is built with `h`
+// (which escapes), so an interpolated name cannot reach the page raw (#411). Add a file here when it has moved.
+test('the files moved onto the helpers build their markup with h, not plain templates', () => {
+  const found = [];
+  for (const f of ['journal.js']) {
+    const src = fs.readFileSync(path.join(__dirname, '..', 'js', f), 'utf8');
+    for (const t of templatesOf(src)) if (t.tag !== 'h' && t.exprs && /<[a-z]/.test(t.text)) found.push(`${f}: ${t.tag}\`${t.text.trim().slice(0, 60)}`);
+  }
+  assert.deepEqual(found, []);
+});
+
+test('the template scanner finds a plain template and an h template, nested', () => {
+  const t = templatesOf('const a = `<b>${x}</b>`; const b = h`<i>${list.map(y => `<u>${y}</u>`)}</i>`;');
+  assert.deepEqual(t.map(x => [x.tag, x.exprs, /<[a-z]/.test(x.text)]), [['', 1, true], ['h', 1, true], ['', 1, true]]);
+});
+
 // ---------- hostile data (#321, #251) ----------
 
 // Two hostile strings: one that breaks out of an attribute, one that is a tag. They go straight into the state, past the cleaning
@@ -98,12 +145,16 @@ const hostileGame = ([HOSTILE_A, HOSTILE_B]) => {
   Object.assign(crew, { first: 'Kay' + HOSTILE_A, last: HOSTILE_B, home: HOSTILE_A });
   const stranger = registerPerson(Object.assign(makePerson(), { first: HOSTILE_A, last: HOSTILE_B, opinion: 2, location: HOSTILE_A }));
   stranger.memories.push(`Day 1: ${HOSTILE_B}`);
+  Object.assign(stranger, { ambition: HOSTILE_B, bio: HOSTILE_A });
   const patron = registerPerson(Object.assign(makePerson(), { first: HOSTILE_A, last: HOSTILE_B, opinion: 2, location: st.planet }));  // at the bar tonight
   patron.memories.push(`Day 1: ${HOSTILE_B}`); G.patrons = null;  // the bar is filled again on the next look
   captain().name = HOSTILE_A + HOSTILE_B;
   home().name = HOSTILE_A + HOSTILE_B;
   st.journal = [{ day: 1, text: HOSTILE_A + HOSTILE_B }];
-  return crew.id;
+  noteInbox('message', HOSTILE_A + HOSTILE_B);  // the comms inbox, the news and the market tips come from text a story or a mod wrote
+  st.news = [{ day: 1, text: HOSTILE_A + HOSTILE_B }];
+  st.rumors.push({ planet: st.planet, cid: 'water', mult: 1.5, until: st.day + 5, text: HOSTILE_A + HOSTILE_B });
+  return { crew: crew.id, stranger: stranger.id };
 };
 
 // What the page must not contain: an element or attribute the hostile strings could have made.
@@ -116,7 +167,7 @@ const injected = () => ({
 test('a hostile name breaks no rail page, the scene dialog or the menu', async () => {
   const { page, ev, done } = await open({ scope: 'earth-hired' });
   await page.evaluate(`window.injected = ${injected.toString()}`);
-  await ev(hostileGame, [HOSTILE_A, HOSTILE_B]);
+  const seeded = await ev(hostileGame, [HOSTILE_A, HOSTILE_B]);
   const tabs = await ev(() => { UI.tab = 'port'; UI.render(); return [...document.querySelectorAll('.rail button:not([disabled])')].map(b => b.dataset.arg); });
   const failures = [];
   for (const tab of tabs) {
@@ -125,6 +176,12 @@ test('a hostile name breaks no rail page, the scene dialog or the menu', async (
     if (r.elements || r.attrs.length || r.pwned) failures.push(`${tab}: ${JSON.stringify(r)}`);
   }
   assert.ok(await ev(() => { UI.tab = 'bar'; UI.render(); return /Tonight/.test(document.getElementById('panel').textContent) && G.patrons.some(x => x.p.first.includes('onmouseover')); }), 'a hostile patron is at the bar');
+  // the character page, for a crew member and for a stranger (their name, memories, ambition and bio)
+  for (const who of Object.values(seeded)) {
+    await ev(id => { G.viewPerson = id; UI.tab = 'person'; UI.render(); }, who);
+    const r = await ev(() => injected());
+    if (r.elements || r.attrs.length || r.pwned) failures.push(`person ${who}: ${JSON.stringify(r)}`);
+  }
   // the Crew page shows the hostile name as literal text
   await page.click('.rail [data-action=tab][data-arg=crew]');
   assert.ok((await ev(() => document.getElementById('panel').textContent)).includes(HOSTILE_A), 'the name is on the Crew page as text');
@@ -149,7 +206,7 @@ const ordinaryGame = () => {
   const st = G.state; st.tutorial = null; st.story.next = 1e9;
 };
 
-for (const tab of ['crew', 'bar']) {
+for (const tab of ['crew', 'bar', 'journal', 'comms']) {
   test(`the ${tab} page renders the golden markup for an ordinary game`, async () => {
     const { page, ev, done } = await open({ scope: 'earth-hired' });
     await ev(ordinaryGame);
@@ -161,6 +218,16 @@ for (const tab of ['crew', 'bar']) {
     await done();
   });
 }
+
+test('the character page renders the golden markup for an ordinary game', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(ordinaryGame);
+  const html = await ev(() => { G.viewPerson = G.state.crew[0]; UI.tab = 'person'; UI.render(); return document.querySelector('.shell .body').innerHTML; });
+  const file = 'tests/fixtures/person.html';
+  if (process.env.UPDATE_GOLDEN) fs.writeFileSync(file, html + '\n');
+  assert.equal(html + '\n', fs.readFileSync(file, 'utf8'), `person: the markup changed (UPDATE_GOLDEN=1 rewrites ${file})`);
+  await done();
+});
 
 // ---------- the scene dialog on the helpers (#321) ----------
 

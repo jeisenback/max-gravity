@@ -83,18 +83,17 @@ function commsPanel() {
   const st = G.state, filter = UI.commsFilter || 'all', tips = st.rumors.filter(r => r.until >= st.day), since = (st.dockMark || {}).prev || 0;
   const inbox = (st.inbox || []).filter(m => !(m.tag && Settings.quiet[m.tag])).filter(m => filter === 'all' || m.via === filter).slice(0, 12);
   const chips = COMMS_FILTERS.map(([id, label]) => `<button class="link${id === filter ? ' on' : ''}" data-action="commsFilter" data-arg="${id}" ${id === filter ? 'aria-pressed="true"' : ''}>${label}</button>`).join(' ');
-  const feed = inbox.length ? inbox.map(m => {
+  const feed = inbox.length ? String(listHtml(inbox, m => {
     const who = m.pid && st.people[m.pid];
-    return (`<div class="con-msg via-${VIA_TAG[m.via] || 'message'}"><span class="tag">${VIA_TAG[m.via] || m.via}</span> <span ` +
-        `class="hint">${dateOf(m.day)}</span>${m.n > since ? ' <b class="char-tag">new</b>' : ''}<div>${m.text}</div>${who ? `<div class="hint">About ${personLink(who)}</div>` : ''}</div>`);
-  }).join('')
+    return h`<div class="con-msg via-${VIA_TAG[m.via] || 'message'}"><span class="tag">${VIA_TAG[m.via] || m.via}</span> <span class="hint">${dateOf(m.day)}</span>${m.n > since ? raw(' <b class="char-tag">new</b>') : ''}<div>${m.text}</div>${who ? h`<div class="hint">About ${raw(personLink(who))}</div>` : ''}</div>`;
+  }))
     : `<p class="hint">${(st.inbox || []).length ? 'Nothing of that kind.' : 'Nothing yet. Word arrives as you fly and dock.'}</p>`;
   const holder = postHolder('comms');
   return consoleHtml({
     title: 'Comms',
     status: notYours('comms') ? `${holder ? roleName('slicer') : 'Nobody'} has the bands` : postMode('comms') === 'manual' ? 'You have the bands' : `${roleName('slicer')} has the bands`,
     screen: `<div class="con-feed" role="log" aria-label="Inbox"><div class="eyebrow">Inbox</div><div class="con-filters">${chips}</div>${feed}</div>`,
-    side: contactsHtml() + quietHtml() + conCard(`Market tips in force`, Settings.quiet.market ? '<p class="hint">Muted. They still move prices.</p>' : tips.length ? tips.map(r => `<div class="hint">${r.text}, until ${dateOf(r.until)}</div>`).join('') : '<p class="hint">None in force.</p>'),
+    side: contactsHtml() + quietHtml() + conCard(`Market tips in force`, Settings.quiet.market ? '<p class="hint">Muted. They still move prices.</p>' : tips.length ? String(listHtml(tips, r => h`<div class="hint">${r.text}, until ${dateOf(r.until)}</div>`)) : '<p class="hint">None in force.</p>'),
     controls: `${postHtml('comms')}${programsHtml()}`,
   });
 }
