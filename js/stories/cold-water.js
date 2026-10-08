@@ -15,32 +15,35 @@ Mods.register({
     const scene = (def) => M.addStorylet({ priority: 10, once: false, ...def });
     const at = (stage, planet, extra) => ({ story: { stage }, ...(planet ? { planet } : {}), ...(extra || {}) });
 
-    // ==================== Act 1: the core ====================
+    // ==================== Act 1: the tally book ====================
 
     scene({
       id: 'cw-derelict', where: 'transit', when: { story: { stage: 0 }, storyDay: { next: 0 } },
       title: "The Persephone's Due",
-      text: ('A dead ice hauler tumbles across your trajectory, turning slowly end over end, her reactor cold and her transponder scrubbed clean of ' +
-          'any name. The paint on her flank still says PERSEPHONE\'S DUE, in the proud blocky letters of a family firm. Her hull is scorched around ' +
-          'the cargo locks, as if someone cut their way in and left in a hurry, and the locks hang open like a jaw. Through the bridge viewport you ' +
-          'can see, floating in the dark, a sealed data core, bolted to a console, blinking a single patient green light. Nothing else on the ship is ' +
-          'alive.'),
+      text: ('A hull is turning slowly across your trajectory, end over end, with a survey tag clamped to her bow in the yellow of the Ceres Water ' +
+          'Authority audit board: UNCLAIMED, and a date from the spring. Her reactor is cold. The paint on her flank still reads PERSEPHONE\'S DUE, ' +
+          'in the proud blocky letters of a family firm, and the cargo locks hang open where somebody cut their way in and left in a hurry. The ' +
+          'auditors came and counted and logged her, and then nobody paid the fee to tow her, which is how a ship comes to be everyone\'s and no one\'s. ' +
+          'Through the bridge viewport you can see a flat gray book lying against the pilot\'s locker, a tamper seal across its cover, its ' +
+          'e-paper edge blinking one patient green light. Nothing else aboard is alive.'),
       choices: [
-        { label: 'Match velocity and take the data core (costs time)',
-          effects: { delay: 10, story: { stage: 1 }, storyLog: "Recovered a data core from the derelict ice hauler Persephone's Due." },
-          result: ('You match velocity with the dead ship and go across in suits, through the ruin of her cargo locks, past a crew mess with a ' +
-              'half-eaten meal frozen to the table. The core comes free with a few turns of a wrench, cold as a stone in your hands. Back aboard, it ' +
-              'turns out to carry Ceres Water Authority markings, under a second layer of encryption from a company called Aquilon Hydrologics. ' +
-              'Someone will want this back. Someone, you think, has already been looking.') },
-        { label: '[{crew}] Crack it on the spot', when: { crew: 'slicer' },
-          effects: { delay: 15, story: { stage: 1, peeked: true }, storyLog: "Recovered a data core from the derelict ice hauler Persephone's Due." },
-          result: ('{crew} crouches over the core on the dead ship\'s bridge, hands moving in the glow of the console, and gets through the first ' +
-              'layer in eleven minutes: maintenance logs for Ceres cistern pumps, hundreds of them, every one signed off by Aquilon Hydrologics crews. ' +
-              'The rest is locked tight, behind something a good deal more serious. "Whoever put this here did not want it read," {crew} says quietly. ' +
-              '"And whoever locked it did not want it lost." You take the core, and get out of the dead ship\'s bridge as fast as you decently can.') },
+        { label: 'Match velocity and take the tally book (costs time)',
+          effects: { delay: 10, story: { stage: 1 }, storyLog: "Took a sealed tally book from the surveyed hulk Persephone's Due." },
+          result: ('You match velocity and go across in suits, through the ruin of her cargo locks, past a crew mess with a half-eaten meal frozen to ' +
+              'the table. The book comes out of the locker without a fight, light and cold, and heavier in the hand than it ought to be. Back ' +
+              'aboard you turn it over under the lamp. It is a pump ledger, with the Ceres Water Authority stamp on the spine, and the seal across ' +
+              'the cover is a corporate one, from a firm called Aquilon Hydrologics. Someone will want this back. Someone, you think, has already ' +
+              'been looking.') },
+        { label: '[{crew}] Read the seal on the spot', when: { crew: 'slicer' },
+          effects: { delay: 15, story: { stage: 1, peeked: true }, storyLog: "Took a sealed tally book from the surveyed hulk Persephone's Due." },
+          result: ('{crew} sits on the dead ship\'s bridge with the book on one knee and works at the seal with a probe no wider than a hair, and ' +
+              'gets the first leaves open in eleven minutes: maintenance entries for the Ceres cistern pumps, hundreds of them, each initialled by an ' +
+              'Aquilon Hydrologics crew. The rest of the book stays shut behind something a good deal more serious. "Whoever left this here did not ' +
+              'want it read," {crew} says quietly. "And whoever sealed it did not want it lost." You take the book, and leave the bridge as fast as ' +
+              'you decently can.') },
         // If you leave it, it drifts back into your path later.
         { label: 'Leave it', effects: { storyDays: { next: 10 } },
-          result: 'Whatever happened to her, you want no part of it. You log her position, and the name on her flank, and burn on. Behind you the dead hauler dwindles, turning slowly, still blinking her single green light. Somehow you know you have not seen the last of her.' },
+          result: 'Whatever happened to her, you want no part of it. You log her position and the name on her flank, and burn on. Behind you the hulk dwindles, turning slowly, still blinking her one green light. Somehow you know you have not seen the last of her.' },
       ],
     });
 
@@ -48,23 +51,24 @@ Mods.register({
       id: 'cw-voight', where: 'port', when: at(1),
       title: 'A Man From Aquilon',
       text: ('A man in an immaculate gray suit is waiting at your berth, which should not be possible: it is a private dock, and the door was locked. ' +
-          'He is tall, unhurried, and very clean, with a small silver pin of a water drop in his lapel. He holds out a hand, and, when you do not take ' +
+          'He is tall, unhurried and very clean, with a small silver pin of a water drop in his lapel. He holds out a hand, and, when you do not take ' +
           'it, lowers it without any sign of offense. "Anselm Voight, Aquilon Hydrologics, asset recovery. You have recovered some company property, ' +
-          'captain: a data core from the Persephone\'s Due. We would like it back, and we are happy to pay a generous finder\'s fee. Eight thousand ' +
-          'credits. No questions." His smile is a small precise thing. "I think you will find that I am a very reasonable man."'),
+          'captain: a tally book from the Persephone\'s Due. The audit board has no claim on it, having tagged the hull as surveyed and left it to rot, ' +
+          'and we would like it back. We are happy to pay a generous finder\'s fee. Eight thousand credits, and no questions." His smile is a small ' +
+          'precise thing. "I think you will find that I am a very reasonable man."'),
       choices: [
-        { label: 'Sell it (8,000 cr)', effects: { credits: 8000, story: { stage: 'sold' }, storyLog: 'Sold the Persephone\'s core to Anselm Voight of Aquilon Hydrologics for 8,000 cr.' },
-          result: ('Voight smiles and pockets the core, neatly, in an inside pocket, the way a man pockets a folded handkerchief. The credits arrive ' +
+        { label: 'Sell it (8,000 cr)', effects: { credits: 8000, story: { stage: 'sold' }, storyLog: 'Sold the Persephone\'s tally book to Anselm Voight of Aquilon Hydrologics for 8,000 cr.' },
+          result: ('Voight takes the book and slides it into an inside pocket, neatly, the way a man pockets a folded handkerchief. The credits arrive ' +
               'before he has finished turning away. "A pleasure, captain. You will find Aquilon never forgets its friends." Something about the way he ' +
               'says it stays with you: not a threat, exactly, but the calm of a man who has never been wrong about anyone\'s price. You watch him walk ' +
               'the length of the dock, and not once does he look back.') },
         { label: '[{crew}] Have {crew} copy it first, then sell', when: { crew: 'slicer' },
-          effects: { credits: 8000, story: { stage: 2, copied: true }, storyLog: 'Sold the core to Aquilon for 8,000 cr, after copying it.' },
-          result: ('{crew} clones the core in the ninety seconds it takes you to "find" it, fingers flying, with a small flash of a smile. Voight ' +
-              'pays, smiles, and leaves, and the dock is very quiet after he goes. "He will check it," {crew} says at last, quietly, sliding the copy ' +
-              'into a pocket. "And he will know. Men like that always know." Neither of you says anything more, but for the rest of the day the dock ' +
-              'feels smaller, as though it were listening.') },
-        { label: '"It is not for sale."', effects: { story: { stage: 2 }, storyLog: 'Refused to hand the core to Anselm Voight of Aquilon Hydrologics.' },
+          effects: { credits: 8000, story: { stage: 2, copied: true }, storyLog: 'Sold the tally book to Aquilon for 8,000 cr, after copying it.' },
+          result: ('{crew} photographs every leaf in the ninety seconds it takes you to "find" the book, fingers flying, with a small flash of a smile. ' +
+              'Voight pays, smiles, and leaves, and the dock is very quiet after he goes. "He will check it," {crew} says at last, quietly, sliding ' +
+              'the copy into a pocket. "And he will know. Men like that always know." Neither of you says anything more, but for the rest of the day ' +
+              'the dock feels smaller, as though it were listening.') },
+        { label: '"It is not for sale."', effects: { story: { stage: 2 }, storyLog: 'Refused to hand the tally book to Anselm Voight of Aquilon Hydrologics.' },
           result: ('Voight\'s smile does not move. It is the most frightening thing you have seen in a long while. "Everything is for sale, captain," ' +
               'he says gently, as if to a child. "We will talk again." He leaves, without hurry, and without another word. Your dock handler, who ' +
               'watched the whole thing from the corner, will not meet your eyes for the rest of the day, and, that night, someone slips a note under ' +
@@ -77,9 +81,10 @@ Mods.register({
       title: 'Mira Castellane',
       text: ('A wiry woman in a faded Ceres Water Authority jacket is waiting in the shadow of your airlock, with a battered duffel at her ' +
           'feet and the wary, watchful stillness of someone who has not slept properly in weeks. Her hands are cracked and stained blue at the ' +
-          'fingertips, the way pump engineers\' hands get. "You have the Persephone\'s core," she says, low and fast. "Aquilon has people on every ' +
-          'dock looking for you. I can read it, but not here. The decryption key is in a Water Authority relay on Europa. Take me there and I will ' +
-          'show you why Ceres is running dry." Her eyes flick to the corridor behind you, and back. "Please. I do not have long."'),
+          'fingertips, the way pump engineers\' hands get. "You have the Persephone\'s book," she says, low and fast. "Aquilon has people on every ' +
+          'dock looking for you. The seal is a corporate lock, and the only one who can open it without ruining the leaves is a Water Authority ' +
+          'clerk, on Europa. I can get you to her. Take me there and I will show you why Ceres is running dry." Her eyes flick to the corridor ' +
+          'behind you, and back. "Please. I do not have long."'),
       choices: [
         { label: 'Take her to Europa (needs a free berth)', when: { berths: 1 },
           effects: { story: { stage: 4 }, do: ['storyPassenger', 'Mira Castellane', 1, 'jupiter', 'Europa', 3000, 'mira-europa'], storyLog: 'Agreed to carry Mira Castellane, a former Ceres water engineer, to Europa.' },
@@ -107,7 +112,7 @@ Mods.register({
         { label: '"Why should I believe you?"', effects: { storyAdd: { miraTrust: -1 } },
           result: ('She looks at you for a long moment, without anger, and pulls up her sleeve. A ropey scar runs from wrist to elbow, white and ' +
               'puckered, the kind that only comes from a bad decompression. "Airlock door," she says. "It closed early. Someone overrode the safety." ' +
-              'She rolls the sleeve back down, slowly. "Believe whatever you like. I stopped needing people to believe me a long time ago. The core ' +
+              'She rolls the sleeve back down, slowly. "Believe whatever you like. I stopped needing people to believe me a long time ago. The book ' +
               'will speak for itself." She takes her cold mug, and goes back to her bunk, and the galley feels colder than before.') },
         { label: '"I believe you. What do you need from me?"', effects: { storyAdd: { miraTrust: 1 }, passenger: { who: 'mira-europa', bonus: 1000 } },
           result: ('She lets out a breath she seems to have been holding for three months, a long, shaky, ragged sound, and for the first time since ' +
@@ -126,14 +131,14 @@ Mods.register({
 
     scene({
       id: 'cw-europa', where: 'port', when: at(4, 'Europa'),
-      title: 'What the Core Says',
+      title: 'What the Book Says',
       text: ('In a rented room above the Europa ice docks, with the ice groaning faintly beneath the floor and the smell of cold metal in the air, ' +
-          'Mira splices the core into a Water Authority relay, and it all spills out. Line after line of it, scrolling faster than either of you can ' +
-          'read. Aquilon crews disabling Ceres recyclers on a schedule. Shell companies buying up ice claims on Europa and Enceladus at rock-bottom ' +
-          'prices. Water futures bought in Hermes Foundry\'s name the day before every "failure". Mira reads, and does not speak, and her lips go ' +
-          'white. Someone is starving the Belt of water to get rich, and the proof is in your hands.'),
+          'a Water Authority clerk lifts the seal off the tally book with a warm blade, and Mira turns the first leaf. It is all there, in a dozen ' +
+          'hands, ruled in columns. Aquilon crews disabling Ceres recyclers on a schedule. Shell companies buying up ice claims on Europa and ' +
+          'Enceladus at rock-bottom prices. Water futures bought in Hermes Foundry\'s name the day before every "failure". Mira reads, and does ' +
+          'not speak, and her lips go white. Someone is starving Ceres of water to get rich, and the proof is in your hands.'),
       choices: [
-        { label: '"What happens now?"', effects: { story: { stage: 5 }, storyLog: 'On Europa, Mira decrypted the core: Aquilon Hydrologics and Hermes Foundry are sabotaging Ceres\'s water supply.' },
+        { label: '"What happens now?"', effects: { story: { stage: 5 }, storyLog: 'On Europa, Mira opened the tally book: Aquilon Hydrologics and Hermes Foundry are sabotaging Ceres\'s water supply.' },
           result: ('Mira looks at you for a long moment, and for the first time you see how tired she is, and how much she has held together. "Now ' +
               'you decide who gets this," she says. "The League will fight. Mars will use it against Earth. Earth will bury it. And Aquilon will ' +
               'pay anything to make it disappear." She keeps a copy, in a small metal capsule on a chain, and stays on Europa, with the Water ' +
@@ -149,7 +154,7 @@ Mods.register({
       title: 'The League Council',
       text: ('Councillor Ama Tembo meets you in a pump room, because it is the only room on Ceres the council trusts: every wall a dripping tangle of ' +
           'pipe, every surface cold and damp, and the low steady thrum of the pumps in the floor. She is a broad, weathered woman in a League ' +
-          'jacket, with gray braids and a voice that carries. She reads the core in silence, one finger moving down the screen. When she reaches the ' +
+          'jacket, with gray braids and a voice that carries. She reads the book in silence, one finger moving down the screen. When she reaches the ' +
           'end, she sits down heavily on a crate. "Three months of rationing," she says. "Children on half water. Old people who did not make it. And ' +
           'it was a business plan." She looks up, and her eyes are terrible. "Give this to the League and we will fight with it. But we need ' +
           'people to believe the ration is breaking first."'),
@@ -170,7 +175,7 @@ Mods.register({
       text: [{ when: { standing: { 'Dome Concord': 15 } },
         text: ('Commander Yelena Ueda, fleet auditor of the Dome Concord Fleet, meets you in a room with no windows, no clock, and one chair too few. She is ' +
             'short, precise, and impeccably groomed, with the flat, attentive gaze of someone who has spent her life listening for what people do not ' +
-            'say. A single lamp burns on the desk. She reads the core without any visible reaction at all. "Headlines fade," she says at last. ' +
+            'say. A single lamp burns on the desk. She reads the book without any visible reaction at all. "Headlines fade," she says at last. ' +
             '"Leverage lasts. Give Mars this, and we will make Earth pay for every ton of water it let Aquilon steal. But first I want to know who ' +
             'else is on Aquilon\'s payroll. That is the difference between a scandal and a weapon."'),
         else: 'A Dome Concord Navy guard checks your record and shakes his head. "Commander Ueda does not meet with captains the Concord does not trust." (Needs Trusted standing with the Dome Concord.)' }],
@@ -190,7 +195,7 @@ Mods.register({
       title: 'Compact Intelligence',
       text: ('Director Samuel Achebe of Compact intelligence receives you in an office overlooking the Luna shipyards, with the gray plain spread ' +
           'below in the harsh, clean light, and a slow parade of hulls in the drydocks. He is a tall, courtly man in his sixties, with a soft, warm ' +
-          'baritone and a way of looking at you as though you were the only person in the room. He reads the core with evident distress. "You have ' +
+          'baritone and a way of looking at you as though you were the only person in the room. He reads the book with evident distress. "You have ' +
           'done Earth a great service, captain," he says. "This needs careful handling. A panic on Ceres helps no one." He folds his hands. "We will ' +
           'also need Ms. Castellane. For her own protection, of course. You understand."'),
       choices: [
@@ -198,7 +203,7 @@ Mods.register({
           when: { standing: { 'Arcology Compact': -14 } },
           effects: { story: { stage: 'earth1' }, storyLog: 'Gave the proof to Director Samuel Achebe of Compact intelligence.' },
           result: ('"Bring her from Europa," Achebe says, warmly, without looking up. "Discreetly. She has been through a great deal, and we should ' +
-              'not add to it." He is already reading the core, scrolling down through the damning lines with a small, thoughtful frown. You get the ' +
+              'not add to it." He is already reading the book, scrolling down through the damning lines with a small, thoughtful frown. You get the ' +
               'odd feeling of being politely dismissed by a man who has already forgotten you were there.') },
         {
           label: 'Not yet',
@@ -207,18 +212,18 @@ Mods.register({
       ],
     });
 
-    // Anselm Voight at Hermes Foundry: with the proof to sell, or after selling him the core.
+    // Anselm Voight at Hermes Foundry: with the proof to sell, or after selling him the book.
     const voightJob = (id, stage, hasProof) => scene({
       id, where: 'port', when: at(stage, 'Hermes Foundry'),
       title: 'Anselm Voight',
       text: hasProof
         ? ('Voight receives you in an office at Hermes Foundry with a view of the solar furnaces, which glow like the inside of a forge through ' +
             'tinted glass. He is as immaculate as ever, without a hair out of place, and his desk holds a single glass of water, untouched, that ' +
-            'catches the light. "You came to me," he says, and smiles. "Sensible. Twenty-five thousand credits for the core and every copy, and I can ' +
+            'catches the light. "You came to me," he says, and smiles. "Sensible. Twenty-five thousand credits for the book and every copy, and I can ' +
             'offer steady work besides. Aquilon rewards discretion."')
         : ('Voight receives you in an office at Hermes Foundry with a view of the solar furnaces, which glow like the inside of a forge through ' +
             'tinted glass. He is as immaculate as ever, and his desk holds a single glass of water, untouched, that catches the light. "Captain," he ' +
-            'says, and there is real warmth in it. "You made the right choice about that core. Now I have a job for someone discreet."'),
+            'says, and there is real warmth in it. "You made the right choice about that book. Now I have a job for someone discreet."'),
       choices: [
         { label: hasProof ? 'Sell the proof and take the job (+25,000 cr; needs 2 free berths)' : 'Take the job (needs 2 free berths)', when: { berths: 2 },
           effects: { credits: hasProof ? 25000 : 0, story: { stage: 'aq1' }, do: ['storyPassenger', 'two Aquilon technicians', 2, 'ceres', 'Ceres Station', 2000, 'techs'],
@@ -260,10 +265,10 @@ Mods.register({
           text: 'Before you can start, Rosa steps up beside you, wiping her hands on a rag. Half of them seem to know her, and a murmur goes through the crowd like wind through a field.',
           else: 'They look tired, thirsty, and in no mood for speeches. A few of them have brought their children. Nobody is smiling.'
         }],
-      choices: [{ label: 'Tell them what the core says',
+      choices: [{ label: 'Tell them what the book says',
         effects: { rep: { 'Charter League': 10 }, credits: 4000, do: ['endAct2', 'belt', 'Rallied the Pallas refinery crews. The Belt went on strike and the League voided Aquilon\'s ice claims.'] },
         result: [{ when: { crew: 'rosa' }, text: 'Rosa tells them about the Nine-B pumps, in her flat, plain voice, without a single decoration, and the room goes so quiet you can hear the molds cooling.' },
-          ('You tell them everything: the core, the pumps, the futures bought the day before every failure. When you finish, nobody speaks. Then ' +
+          ('You tell them everything: the book, the pumps, the futures bought the day before every failure. When you finish, nobody speaks. Then ' +
               'Marsh raises a fist, slowly, and one by one three hundred fists rise with hers, and the refinery shuts down around you with a long, ' +
               'falling groan of machinery. By nightfall every Belt station is on strike, and the League council declares Aquilon\'s ice claims ' +
               'void. The union sends 4,000 cr for your trouble. Earth answers within the week: a Compact fleet is on its way "to secure Ceres." (Act ' +
