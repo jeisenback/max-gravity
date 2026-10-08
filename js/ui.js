@@ -55,7 +55,6 @@ const UI = {
   },
 
   // A choice's button; shut, it says why as text (js/gates.js). Built on the view helpers (js/views.js): the label and the reason are text.
-  choiceHtml(c, i) { return String(choiceButtonHtml(c, i)); },
 
   showEvent(ev, choices) {
     const opener = document.activeElement;  // read before the panel is rebuilt

@@ -321,15 +321,6 @@ function spawnNpc(kind, atPlanet, fresh = false) {
   return n;
 }
 
-function spawnBountyTarget(m) {
-  const n = spawnNpc('pirate', false, true);
-  n.shipId = 'corsair';
-  n.name = m.targetName;
-  n.bountyId = m.id;
-  n.shields = SHIPS.corsair.shields;
-  n.armor = n.maxArmor = SHIPS.corsair.armor * 1.5;
-}
-
 function populateSystem() {
   const sys = system();
   G.npcs = []; G.shots = []; G.target = null;
