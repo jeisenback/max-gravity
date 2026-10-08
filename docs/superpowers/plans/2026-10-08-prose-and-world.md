@@ -21,6 +21,7 @@
 - American spelling. Samples are second person, present tense where they address the player.
 - Code is the authority for mechanics; docs are the authority for texture. A doc that states a fact the code also states names the file and does not copy the number, except where this plan says to quote.
 - A fact that is not in the code or the README and is invented for a sample or an entry is marked `Status: proposed` in the bible. The owner confirms proposed facts at review.
+- Bible texture is original: take no names, terms, institutions, plot shapes or character types from The Expanse. An entry whose source is listed in `docs/world/derived.md` carries a `- Divergence:` line (the derived id, and what the entry would say instead).
 
 ## Review Focus
 
@@ -179,7 +180,7 @@ Failure modes the spec implies that its tests would not otherwise touch, most li
 **Files:**
 - Create: `docs/writing-a-scene.md`
 
-- [ ] **Step 1: Write `docs/writing-a-scene.md`,** one page, numbered steps: (1) pick the register in `docs/voices/narrator.md`; (2) read the card of each speaker in `docs/voices/`; (3) read the bible entries for the place, faction, trade and custom, and use the `Use in scenes` line of each; (4) write; (5) check against `docs/prose-style.md` "Checking a passage" and `docs/voices/dialogue.md`; (6) run `npm run prose -- --compare` and read the sentence-shape and tic lines for the files touched; (7) if a fact was invented, add it to `docs/world/` with `Status: proposed`. State at the top that the report only measures and never fails a build.
+- [ ] **Step 1: Write `docs/writing-a-scene.md`,** one page, numbered steps: (1) pick the register in `docs/voices/narrator.md`; (2) read the card of each speaker in `docs/voices/`; (3) read the bible entries for the place, faction, trade and custom, and use the `Use in scenes` line of each; do not reach for Expanse names, terms or plot shapes, and read the `Divergence:` line where an entry has one; (4) write; (5) check against `docs/prose-style.md` "Checking a passage" and `docs/voices/dialogue.md`; (6) run `npm run prose -- --compare` and read the sentence-shape and tic lines for the files touched; (7) if a fact was invented, add it to `docs/world/` with `Status: proposed`. State at the top that the report only measures and never fails a build.
 
 - [ ] **Step 2: Verify.**
   Run: `grep -c '^[1-7]\. ' docs/writing-a-scene.md` Expected: `7`.
@@ -189,26 +190,31 @@ Failure modes the spec implies that its tests would not otherwise touch, most li
 
 ---
 
-### Task 7: World bible, backgrounds and customs
+### Task 7: World bible, the Expanse audit, backgrounds and customs
 
 **Files:**
-- Create: `docs/world/backgrounds.md`, `docs/world/customs.md`
+- Create: `docs/world/derived.md`, `docs/world/backgrounds.md`, `docs/world/customs.md`
 
 **Interfaces:**
 - Produces the entry format used by Tasks 8 and 9: each entry is a `### <id>` heading, then `- Field: value` lines, ending with `- Use in scenes:` (one or two concrete details) and `- Status:` (`from code (<path>)` or `proposed`).
-- Ids: `bg.earth`, `bg.mars`, `bg.belt`; `custom.<slug>`.
+- Entries whose `Source` is listed in `derived.md` also carry `- Divergence:` before `Use in scenes`.
+- `derived.md` entries are `### derived.<slug>` with `- Where:` (file and constant or line), `- What:`, `- Why it reads as the Expanse:`, `- Proposed instead:`, and `- Decision:` left empty for the owner.
+- Ids: `bg.earth`, `bg.mars`, `bg.belt`; `custom.<slug>`; `derived.<slug>`.
 - Fields, backgrounds: `Source`, `Home`, `Family`, `Schooling`, `Why they left`. Fields, customs: `Where`, `Done`, `Not done`, `Why`.
 
-- [ ] **Step 1: Write `docs/world/backgrounds.md`:** one entry for each key of `BACKGROUNDS` in `js/menu.js` (`earth`, `mars`, `belt`), Earth first. Quote the one-line `text` from the code in `Source` and cite the file. The Earth start is the one in play in the narrow build; write it with the most care. Where the code says nothing (family, schooling, why they left), write original text and mark the entry `Status: proposed`.
+- [ ] **Step 1: Write `docs/world/derived.md`.** One line of purpose, a line listing the files checked, then the entries. Start from these, found by the owner session on 2026-10-08, and add what a read of `js/stories/*.js`, `js/cast.js` and `README.md` turns up: the README's "flavored by *The Expanse*"; the Earth Coalition, Mars Republic and Belt Collective triangle with the Belt as the water-short outer population and wars between navies (`FACTIONS` in `js/data.js`); the Belt start's "long limbs and short patience" (`BACKGROUNDS.belt` in `js/menu.js`); "Point-defense cannon" (`OUTFITS.pdc` in `js/data.js`) and "Torch Courier" (`SHIPS`); the Ice Hauler as the player's ship with the ice and water economy and the Cold Water storyline (`js/stories/cold-water.js`). Do not list real places (Ceres, Eros, Ganymede) or generic hard-SF terms (reaction mass, the flip). Each entry's `Proposed instead` is original and short; the `Decision:` line stays empty.
 
-- [ ] **Step 2: Write `docs/world/customs.md`,** at least these entries: `custom.no-slamming-doors` (door closers, from `docs/prose-style.md`), `custom.water-ration`, `custom.galley-meal`, `custom.watch-change`, and `custom.ship-night` (lights to a third at 22:00 and back up at 06:00; boots ring on the deck; lower bunks a meter and a half below; from reference passage 4, `Status: proposed` until the owner confirms). At most 10 entries. Each states what is done, what is not, and why, and no one's feelings about it.
+- [ ] **Step 2: Write `docs/world/backgrounds.md`:** one entry for each key of `BACKGROUNDS` in `js/menu.js` (`earth`, `mars`, `belt`), Earth first. Quote the one-line `text` from the code in `Source` and cite the file. The Earth start is the one in play in the narrow build; write it with the most care. Where the code says nothing (family, schooling, why they left), write original text and mark the entry `Status: proposed`.
 
-- [ ] **Step 3: Verify.**
+- [ ] **Step 3: Write `docs/world/customs.md`,** at least these entries: `custom.no-slamming-doors` (door closers, from `docs/prose-style.md`), `custom.water-ration`, `custom.galley-meal`, `custom.watch-change`, and `custom.ship-night` (lights to a third at 22:00 and back up at 06:00; boots ring on the deck; lower bunks a meter and a half below; from reference passage 4, `Status: proposed` until the owner confirms). At most 10 entries. Each states what is done, what is not, and why, and no one's feelings about it.
+
+- [ ] **Step 4: Verify.**
+  Run: `grep -c '^### derived\.' docs/world/derived.md` Expected: `5` or more; and each of `- Where:`, `- What:`, `- Why it reads as the Expanse:`, `- Proposed instead:`, `- Decision:` counts the same.
   Run: `for f in docs/world/backgrounds.md docs/world/customs.md; do echo "$f $(grep -c '^### ' $f) $(grep -c '^- Use in scenes:' $f) $(grep -c '^- Status:' $f)"; done` Expected: the three numbers on each line are equal; backgrounds `3`, customs between `5` and `10`.
   Run: `grep -h '^### ' docs/world/*.md | sort | uniq -d` Expected: no output.
   Run the emoji check. Expected: exit 0.
 
-- [ ] **Step 4: Commit** ("Add the world bible: backgrounds and customs").
+- [ ] **Step 5: Commit** ("Add the world bible: the Expanse audit, backgrounds and customs"). Tell the owner the derived ids and ask for their decisions before Task 8.
 
 ---
 
@@ -222,7 +228,7 @@ Failure modes the spec implies that its tests would not otherwise touch, most li
 
 - [ ] **Step 1: Write `docs/world/places.md`** with exactly these eight entries: `place.earth`, `place.mars`, `place.ceres`, `place.jupiter` (with Ganymede and Europa described inside it), and the home arcologies `place.rotterdam-arcology` (Hester), `place.lisbon-arcology` (Ines), `place.lagos-ring` (Tomas), `place.chittagong-arcology` (Cato). Take the system facts (government, pirate level) from `SYSTEMS` in `js/data.js` and cite the file without copying numbers; take the homes from the `home` fields in `js/captains/*.js` and `js/cast.js`. More places are added when a scene needs them, not now.
 
-- [ ] **Step 2: Write `docs/world/factions.md`** with one entry for each name in `FACTIONS` in `js/data.js` (`faction.earth-coalition`, `faction.mars-republic`, `faction.belt-collective`, `faction.pirate`). Take what the code and `js/ties.js` already say about how each treats a hand and a crew member with that affiliation; add texture marked `proposed`.
+- [ ] **Step 2: Write `docs/world/factions.md`** with one entry for each name in `FACTIONS` in `js/data.js` (`faction.earth-coalition`, `faction.mars-republic`, `faction.belt-collective`, `faction.pirate`). Take what the code and `js/ties.js` already say about how each treats a hand and a crew member with that affiliation; add texture marked `proposed`. The triangle is on the audit list, so each faction entry carries a `Divergence:` line, and the texture added is original (its own institutions, grievances and customs, not the Expanse's).
 
 - [ ] **Step 3: Verify** with the Task 7 count command for both files. Expected: places `8 8 8`, factions `4 4 4`; no duplicate ids across `docs/world/*.md`; the emoji check exits 0.
 

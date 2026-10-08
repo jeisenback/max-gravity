@@ -13,6 +13,7 @@ The owner wants to write better prose and better narrative systems in a repeatab
 - Corey (crew) and Le Guin (narrator) stay the primary models. A small set of supplemental north stars covers dimensions they do not: fuller narration, dialogue mechanics, restraint and custom. Each is cited for what to take and what to leave.
 - Dialogue has rules of its own, because sentence-level rules for narration do not protect speech.
 - The existing text in the repo is too clipped to be the model, including the Hester and Tomas passages that `docs/prose-style.md` points to. The reference passages are the owner-approved samples below, which are fuller in syntax. Of the five samples the owner judged, Tomas's run-on speech to the pump was the one called good, and most of the others were called much better than the originals.
+- The world bible's new texture is original. The game's world leans on The Expanse (the README says "flavored by"), and the owner wants to move away from that. The bible takes no names, terms, institutions or plot shapes from it. Where the code is Expanse-flavored, the bible records the code's fact and a `Divergence:` note on what the world should say instead. Code renames wait for a separate issue.
 - No engine changes now. The first rewrite passes will show which engine gaps are real (variant pools for repeated scenes, callbacks to the record, scene-editor work); each would be scoped as its own sub-project then.
 
 Success: a person or Claude writing a scene can pick a register, read the speakers' cards and the relevant bible entries, write, and check the result against measured counts. Existing scenes are not rewritten by this work.
@@ -59,6 +60,7 @@ Success: a person or Claude writing a scene can pick a register, read the speake
 - Files: `places.md`, `factions.md`, `trades.md`, `customs.md`, `timeline.md`, `backgrounds.md`.
 - Each entry has a stable id (for example `place.rotterdam-arcology`), a few fixed fields, and a "use in scenes" line naming one or two concrete details. Entries are short enough to read in minutes.
 - `backgrounds.md` has a longer entry per start background in `BACKGROUNDS` (`js/menu.js`): home, family, schooling, why they left.
+- `derived.md`: a short, sourced audit of the Expanse-flavored elements in the code and README (each with where it is, why it reads as the Expanse, a proposed replacement, and a blank `Decision:` line for the owner). Real places and generic hard-SF terms (reaction mass, the flip) are not listed. It changes no code. Bible entries whose source is on the list carry a `Divergence:` line naming the derived id.
 - Where `js/data.js` or `js/menu.js` already states a fact, the bible quotes it and names the file. Code is the authority for mechanics; the bible is the authority for texture.
 - Entries are written after the cards, since writing the cards shows which facts are needed.
 
@@ -86,6 +88,7 @@ One page: choose the register, choose the speakers' cards, choose the bible entr
 ## Out of scope
 
 - Rewriting existing scenes (#136, #255 use these tools afterward).
+- Renaming or reworking factions, places or terms in the code (a separate issue, after the owner decides on `derived.md`).
 - Runtime voice variants, engine changes, a bible consistency test, voice cards as data.
 - The scene editor (#334 to #342).
 
