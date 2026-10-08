@@ -373,7 +373,7 @@ const CAST = {
     skills: { slicer: 3, engineer: 1, gunner: 1, pilot: 0 }, captain: { trade: 5, nerve: 1, thrift: 3 },
     ambition: 'Wants every dome on Mars on one open band before he retires.',
     bio: ('He ran the Valles dome network for twenty-five years, and knows what every dome is short of this week, who is lying about it, and what ' +
-        'they would pay. When the Republic closed the open band to break a strike, he kept a relay running in his own kitchen for eleven days, and was ' +
+        'they would pay. When the Concord closed the open band to break a strike, he kept a relay running in his own kitchen for eleven days, and was ' +
         'let go for it.'),
     chatter: [
       'Ruben: "Mars is not quiet. It is listening. There is a difference, and the difference is the whole business."',
@@ -549,7 +549,7 @@ const CAST = {
     },
   },
   pax: {
-    first: 'Pax', last: 'Iwu', culture: 'belt', home: 'Ceres Spin', job: 'ice-drill operator', age: 23, role: 'gunner',
+    first: 'Pax', last: 'Iwu', culture: 'belt', home: 'Ceres Warren', job: 'ice-drill operator', age: 23, role: 'gunner',
     traits: ['nervous', 'curious'], wage: 60,
     skills: { gunner: 3, engineer: 2, pilot: 0, slicer: 0 }, captain: { trade: 4, nerve: 2, thrift: 2 },
     ambition: 'Wants to stop flinching, and run a ship where nobody gets hurt on their watch.',
@@ -566,7 +566,7 @@ const CAST = {
         title: 'The Kid at the Range',
         text: ('In the dock bar there is a dart-laser board, and a young person at it with a perfect, unnerving score, who flinches at every cheer. ' +
             'Nobody is cheering for long. "Pax Iwu," says the kid, when you sit. "Ice-drill operator. Was." The hand with the dart goes still. "I am ' +
-            'good with a laser. I am the best on the Spin. I want a job where nobody is standing next to the thing when it fires." They look up. "That ' +
+            'good with a laser. I am the best in the Warren. I want a job where nobody is standing next to the thing when it fires." They look up. "That ' +
             'is a bad thing to say, I know."'),
         choices: [
           { label: 'Offer them the guns', ...gated(needBerth), run: () => castJoin('pax', ('The dart goes down, carefully. "Really?" Pax ' +
@@ -616,7 +616,7 @@ const CAST = {
               'You sit on the deck beside them, with your back to the bulkhead, saying nothing, and Pax opens it. It is short. The foreman is walking ' +
               'again, with a stick, and does not blame anybody, and would like to see the kid some day. Pax reads it twice, and puts the handheld ' +
               'face-down on their knee, and cries, quietly, for about a minute. Then Pax wipes their face on a sleeve and says, "He says to practice. ' +
-              'He says I have the best hands on the Spin." They laugh, a damp, astonished sound.'); } },
+              'He says I have the best hands in the Warren." They laugh, a damp, astonished sound.'); } },
           { label: 'Tell them to read it when they are ready', run() { castLike('pax', 0, 'You told me to read it when I was ready.'); return (
               '"Yes," Pax says. "When I am ready." It sounds like the right thing, and they put the handheld away. It stays unopened for the rest of ' +
               'the burn. When you pass the weapons bay, Pax has taken it out, and is holding it, and looking at the sender\'s name, and putting it ' +

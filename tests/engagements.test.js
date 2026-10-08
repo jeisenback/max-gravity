@@ -254,7 +254,7 @@ test('a hostile patrol is a navy stop for a hired hand: the same beats with guns
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    const st = raid('gunner'), gov = 'Earth Coalition', before = repOf(gov);
+    const st = raid('gunner'), gov = 'Arcology Compact', before = repOf(gov);
     const spare = window.realMakeEnemy({ kind: 'patrol', gov }); window.makeEnemy = () => Object.assign(spare, { shipId: 'cutter' });
     const text = startDuel({ kind: 'patrol', gov }, false); begin();
     const out = { duel: !!G.duel, title: G.dialog.event.title, open: /patrol/.test(G.dialog.event.text), rep: repOf(gov) - before, text: /Battle stations/.test(text) };
@@ -273,7 +273,7 @@ test('a hired hand can heave to and let the ship pay a quarter of its fund, inst
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    const st = raid('gunner'), h = hired(), gov = 'Earth Coalition', cap = person(h.captain), op = cap.opinion;
+    const st = raid('gunner'), h = hired(), gov = 'Arcology Compact', cap = person(h.captain), op = cap.opinion;
     st.rep[gov] = -30; h.fund = 2000;
     const e = contactEvent({ kind: 'patrol', gov }), i = e.choices.findIndex(c => /Heave to/.test(c.label));
     G.dialog = { event: e, choices: e.choices };
@@ -288,7 +288,7 @@ test('a patrol that boards a hired hand\'s ship levies the fund and does not rob
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    const st = raid('gunner'), h = hired(), gov = 'Earth Coalition';
+    const st = raid('gunner'), h = hired(), gov = 'Arcology Compact';
     const spare = window.realMakeEnemy({ kind: 'patrol', gov }); Object.assign(spare, { shipId: 'cutter' });
     h.fund = 1000;
     const d = { foe: spare, foeHp: 0, init: 'foe' }, s = repelStart(d, 'full');
@@ -418,7 +418,7 @@ test('each hand makes the call in a pirate contact, rolled on their own skill, a
   await ev(helpers);
   const r = await ev(() => {
     const out = {};
-    const contact = (post, kind = 'pirate') => { raid(post); G.dialog = null; openEvent(contactEvent({ kind, gov: 'Earth Coalition' })); const d = G.dialog; return { decided: !!d.event.decided, labels: d.choices.map(c => c.label), text: d.event.text }; };
+    const contact = (post, kind = 'pirate') => { raid(post); G.dialog = null; openEvent(contactEvent({ kind, gov: 'Arcology Compact' })); const d = G.dialog; return { decided: !!d.event.decided, labels: d.choices.map(c => c.label), text: d.event.text }; };
     for (const post of ['comms', 'pilot', 'gunner', 'engineer']) out[post] = contact(post);
     out.patrols = ['comms', 'pilot', 'gunner', 'engineer'].map(post => contact(post, 'patrol').decided);
     const spoof = (level, roll) => {

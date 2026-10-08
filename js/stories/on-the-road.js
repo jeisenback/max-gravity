@@ -15,9 +15,9 @@ Mods.register({
     const road = (def, chance = 0.4, every = 60) => M.addStorylet({ where: 'transit', once: false, every, ...def, when: { day: 5, ...def.when, chance } });
 
     road({
-      id: 'road-toll-beacon', when: { gov: 'Mars Republic' },
+      id: 'road-toll-beacon', when: { gov: 'Dome Concord' },
       title: 'Toll Beacon',
-      text: ('An automated beacon hangs in the lane with a Mars Republic seal on its casing. It has been pinging you politely for an hour: lane ' +
+      text: ('An automated beacon hangs in the lane with a Dome Concord seal on its casing. It has been pinging you politely for an hour: lane ' +
           'maintenance, a hundred and fifty credits, receipt provided. It is a real toll. It has also been collected, by the look of the paint, by at ' +
           'least three different people.'),
       choices: [
@@ -26,7 +26,7 @@ Mods.register({
           when: { credits: 150 },
           effects: {
           credits: -150,
-          rep: { 'Mars Republic': 1 }
+          rep: { 'Dome Concord': 1 }
         },
           result: ('You tap the transfer, and the beacon takes a moment, humming. It prints a receipt no one will ever read, on a thin strip of ' +
               'Martian paper, and wishes you a productive day, in a voice of flawless courtesy. It even, at the last, thanks you for your patience. ' +
@@ -39,14 +39,14 @@ Mods.register({
         },
         {
           label: 'Ignore it',
-          effects: { rep: { 'Mars Republic': -1 } },
+          effects: { rep: { 'Dome Concord': -1 } },
           result: 'It logs your transponder and asks you, politely, to reconsider. Twice. Then a third time. You do not. The beacon falls behind, still murmuring its reminders, until the signal fades. Somewhere in a Tharsis office a file gets thicker.'
         },
       ],
     });
 
     road({
-      id: 'road-ice-convoy', when: { gov: 'Belt Collective' },
+      id: 'road-ice-convoy', when: { gov: 'Charter League' },
       title: 'Ice Convoy',
       text: 'Six haulers are burning in a tight line ahead of you, nose to tail, sharing one long plume of heat. The lead ship hails. "Small ship. You can draft in our wake if you keep your distance and your hands to yourself. Costs nothing, saves your mass. We just like to know who is out here."',
       choices: [
@@ -57,7 +57,7 @@ Mods.register({
           'mass',
           30
         ],
-          rep: { 'Belt Collective': 1 }
+          rep: { 'Charter League': 1 }
         },
           result: 'For a day you ride in their shadow, sipping at the drive. At the shift change the lead hauler sends a single line: "Safe water." It is not a greeting exactly. It is what Belters say instead.'
         },
@@ -67,7 +67,7 @@ Mods.register({
         },
         {
           label: 'Ask what they are carrying',
-          when: { standing: { 'Belt Collective': 10 } },
+          when: { standing: { 'Charter League': 10 } },
           effects: { news: 'A convoy of ice haulers bound for the inner system is running short on medical stock.' },
           result: 'A pause. "Ice. Mostly. And a lot of people who want their families to hear from them." The lead ship shares the channel for an hour. You listen to other people\'s good news until you notice you are smiling.'
         },
@@ -110,7 +110,7 @@ Mods.register({
           'mass',
           -40
         ],
-          rep: { 'Belt Collective': 2 }
+          rep: { 'Charter League': 2 }
         },
           result: 'They fill their tank from your line with the grave care of people handling something breakable. The oldest presses a lump of ore into your hand. "It is not much. It is what we have. Tell them at Ceres that Tamsin\'s crew is alive."'
         },
@@ -118,7 +118,7 @@ Mods.register({
           label: 'Take them aboard, tow the tug',
           effects: {
           delay: 14,
-          rep: { 'Belt Collective': 3 }
+          rep: { 'Charter League': 3 }
         },
           result: 'Slow going, and the tug\'s spin drags at your hull. But three miners eat hot food for the first time in a fortnight, and the youngest sleeps through the whole burn with a blanket up to their nose.'
         },
@@ -132,7 +132,7 @@ Mods.register({
     }, 0.5, 90);
 
     road({
-      id: 'road-wedding', when: { gov: 'Belt Collective', standing: { 'Belt Collective': 0 } },
+      id: 'road-wedding', when: { gov: 'Charter League', standing: { 'Charter League': 0 } },
       title: 'Open Channel',
       text: 'An old habit of the Belt: when two people marry between ships, they do it on the open band, and anyone in range is a guest. You are in range. A small voice is reading vows off a paper that is clearly shaking, and the whole channel is quiet to listen.',
       choices: [
@@ -143,7 +143,7 @@ Mods.register({
           when: { cargo: { water: 5 } },
           effects: {
           cargo: { water: -5 },
-          rep: { 'Belt Collective': 3 },
+          rep: { 'Charter League': 3 },
           log: 'Sent five tons of water to a wedding on the open band.'
         },
           result: 'The bride reads out your ship\'s name, so the band will remember. A hundred people now think well of you.'
@@ -200,7 +200,7 @@ Mods.register({
     }, 0.35, 75);
 
     road({
-      id: 'road-prospector', when: { gov: ['Belt Collective', 'Independent'] },
+      id: 'road-prospector', when: { gov: ['Charter League', 'Independent'] },
       title: 'The Prospector',
       text: ('A single ship on a lonely rock, hailing on every band it has. The voice is a man working hard at being cheerful. He has a claim. He has ' +
           'assay results that make his voice crack when he reads them. What he does not have is water or food to last until the survey ship arrives. ' +
@@ -232,7 +232,7 @@ Mods.register({
         },
           result: 'He thanks you four times, his voice breaking on the third, and is still thanking you when you drop out of range, thin and tinny, on a channel that is turning to static. You are gripping the console harder than you need to.'
         },
-        { label: 'Give him what you can spare (2t of water)', when: { cargo: { water: 2 } }, effects: { cargo: { water: -2 }, rep: { 'Belt Collective': 1 } }, result: 'It is not half a share, and he knows it. There is a pause before he speaks. "That is very kind," he says. "I will remember it."' },
+        { label: 'Give him what you can spare (2t of water)', when: { cargo: { water: 2 } }, effects: { cargo: { water: -2 }, rep: { 'Charter League': 1 } }, result: 'It is not half a share, and he knows it. There is a pause before he speaks. "That is very kind," he says. "I will remember it."' },
         { label: 'Wish him luck', result: 'He wishes you the same in a voice that has stopped trying so hard. You keep the channel open a while after, just in case. He does not use it.' },
       ],
     }, 0.4, 90);
@@ -244,7 +244,7 @@ Mods.register({
       choices: [
         { label: 'Trade honest information', effects: { rep: { 'Independent': 1 } }, result: [
           'You trade half an hour of prices, shortages, and gossip. It is more than either of you expected. When you break off, the other captain says, "Fair winds," and means it.',
-          { when: { boom: 'Earth Coalition' }, text: 'They laugh at the news from Earth. "Boom times. Everybody\'s hiring."' },
+          { when: { boom: 'Arcology Compact' }, text: 'They laugh at the news from Earth. "Boom times. Everybody\'s hiring."' },
         ] },
         {
           label: 'Tell them the least you can',

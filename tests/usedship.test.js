@@ -54,7 +54,7 @@ test('the deal lasts a few weeks, and then the ship is gone and the ordinary yar
   });
   assert.equal(r.open, true); assert.equal(r.listed, true); assert.equal(r.lastDay, true);
   assert.equal(r.lapsed, false); assert.equal(r.listedAfter, false); assert.equal(r.usedBuyable, false);
-  assert.match(r.note, /gone/i); assert.equal(r.hopper, true, 'the Rock Hopper stays buyable');
+  assert.match(r.note, /gone/i); assert.equal(r.hopper, true, 'the Dust Skiff stays buyable');
   assert.ok(r.days >= 14 && r.days <= 90);
   await done();
 });

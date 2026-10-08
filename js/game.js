@@ -95,7 +95,7 @@ function loadSave() {
 }
 
 const INTRO = [
-  'You have 12,000 credits, a patched-up Rock Hopper, and a solar system full of opportunity.',
+  'You have 12,000 credits, a patched-up Dust Skiff, and a solar system full of opportunity.',
   'Buy low, sell high. The Commodity Exchange shows the best market in range for each good.',
   'Tip: Earth sells Electronics cheap, and Mars, a short burn away, pays well for them. Mars sells Refined Metals cheap for the trip back.',
 ];

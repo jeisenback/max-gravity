@@ -85,7 +85,7 @@ const LIFE_LINES = {
   gunnery: { cat: ['{n} is asleep on the warm side of the fire-control cabinet.', '{n} is sitting in the gunner\'s seat with the harness hanging off it.'],
     gunner: [
       '{n} is running the fire-control checks. Each one goes in the log.',
-      '{n} is wiping down the feed tray of the point-defense cannon.',
+      '{n} is wiping down the feed tray of the close-defense turret.',
       '{n} is counting rounds in the magazine rack and writing the number on the rack.',
       '{n} has a drill up on the targeting display and is tracking a dot across it.'
     ],
@@ -197,7 +197,7 @@ const CUTAWAY_H = 0.24;  // hull height as a share of its length: two decks
 const PLUME = { base: 0.28, gain: 0.32, flicker: 14, halo: 0.7, cone: 0.16 };
 
 function drawCutaway(cx, cy, maxL) {
-  // Longer hulls for bigger ships: a Rock Hopper is 60% of the space, an Ice Hauler all of it.
+  // Longer hulls for bigger ships: a Dust Skiff is 60% of the space, an Ice Hauler all of it.
   const L = maxL * Math.min(1, 0.6 + 0.4 * (SHIPS[G.state.shipId].size - 10) / 8);
   const t = G.transit, people = shipPeople(), ph = phase(), H = Math.round(maxL * CUTAWAY_H);
   const burning = !t.event && Math.abs(t.angle - (t.flipped ? Math.PI / 2 : -Math.PI / 2)) < 0.05;

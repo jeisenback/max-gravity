@@ -60,7 +60,7 @@ test('bounties intercept and pay; beaten pirates can be boarded; local space sta
       const d = G.duel; d.foeHp = 1; d.init = 'me'; d.me.threat.hand[0] = 'gun'; d.them.answer.hand = ['locks'];
       return duelExchange('gun', 'locks');
     };
-    st.missions.push({ id: 777, type: 'bounty', targetSystem: 'ceres', targetName: 'The Weeping Saint', issuer: 'Belt Collective', title: 'Bounty', pay: 9000, deadline: 999 });
+    st.missions.push({ id: 777, type: 'bounty', targetSystem: 'ceres', targetName: 'The Weeping Saint', issuer: 'Charter League', title: 'Bounty', pay: 9000, deadline: 999 });
     burnTo('hygiea', 'The Rook', 'ceres');
     planIntercept();
     out.bountyKind = G.transit.intercept && G.transit.intercept.spec.kind;
@@ -77,7 +77,7 @@ test('bounties intercept and pay; beaten pirates can be boarded; local space sta
     out.boardChoices = G.nextEvent.choices.map(c => c.label);
     G.nextEvent = null;
 
-    st.rep['Earth Coalition'] = -40;
+    st.rep['Arcology Compact'] = -40;
     burnTo('mars', 'Mars', 'earth');
     let patrols = 0;
     for (let i = 0; i < 40; i++) { G.transit.interceptPlanned = false; G.transit.intercept = null; planIntercept(); if (G.transit.intercept && G.transit.intercept.spec.kind === 'patrol') patrols++; }
@@ -256,7 +256,7 @@ test('escorts fly with you, cost reaction mass, and can be lost', async () => {
 test('paying off an intercept needs the money', async () => {
   const { ev, done } = await open();
   const r = await ev(() => {
-    const pay = kind => contactEvent(kind === 'pirate' ? { kind } : { kind, gov: 'Earth Coalition' }).choices.find(c => /^(Pay|Cut)/.test(c.label));
+    const pay = kind => contactEvent(kind === 'pirate' ? { kind } : { kind, gov: 'Arcology Compact' }).choices.find(c => /^(Pay|Cut)/.test(c.label));
     G.state.credits = 0;
     const broke = [pay('pirate').can(), pay('patrol').can()];
     G.state.credits = 50000;

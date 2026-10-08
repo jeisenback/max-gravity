@@ -125,7 +125,7 @@ test('buying a ship closes the chapter with one scene, then play goes on', async
   });
   assert.equal(r.goodbye, 'The Foot of the Ramp'); assert.equal(r.look, 'Looking Back'); assert.equal(r.title, 'Your Own Ship'); assert.ok(r.flag && r.owner);
   assert.match(r.lookText, /days aboard/); assert.match(r.lookText, /Closest to you: .*Ines/); assert.match(r.lookText, /reached level/);
-  assert.match(r.text, /Courier/); assert.match(r.text, /Ines/); assert.match(r.text, /Tomas/);
+  assert.match(r.text, /Needle courier/); assert.match(r.text, /Ines/); assert.match(r.text, /Tomas/);
   assert.equal(r.after, null, 'the scene is not repeated'); assert.equal(r.crew, 2);
   await done();
 });

@@ -11,8 +11,8 @@
 // Act 1 stages: 0 not started, 1 carrying the core, 2 refused Aquilon (recovery ship
 // coming), 3 Mira is looking for you, 4 carrying Mira to Europa, 5 Act 1 complete,
 // 'sold' gave the core to Aquilon.
-// Act 2 stages, one chain per side: 'belt1', 'belt2' (Belt Collective); 'mars1',
-// 'mars2' (Mars Republic); 'earth1', 'earth2' (Earth Coalition); 'aq1' (Aquilon).
+// Act 2 stages, one chain per side: 'belt1', 'belt2' (Charter League); 'mars1',
+// 'mars2' (Dome Concord); 'earth1', 'earth2' (Arcology Compact); 'aq1' (Aquilon).
 // 'act2' is Act 2 complete, with `side` recording who got the proof.
 // Act 3: 'act3' run 20t of water through the blockade to Ceres Station; 'end' is the
 // epilogue, with `ending` one of belt, mars, earth, aquilon, or truth.
@@ -34,22 +34,22 @@ function storyObjective() {
     2: 'You refused to hand over the core. Aquilon Hydrologics will not take no for an answer. Watch your back on the next takeoff.',
     3: 'A Ceres water engineer named Mira Castellane is looking for you. She will find you at your next port.',
     4: 'Take Mira Castellane to Europa, at Jupiter, so she can decrypt the core.',
-    5: 'Decide who gets the proof. Take it to Councillor Tembo of the Belt Collective on Ceres Station, Commander Ueda of Mars Republic Navy intelligence on Mars (needs Trusted standing), Director Achebe of Coalition intelligence on Luna, or Anselm Voight at Hermes Foundry on Mercury.',
+    5: 'Decide who gets the proof. Take it to Councillor Tembo of the Charter League on Ceres Station, Commander Ueda of Dome Concord Navy intelligence on Mars (needs Trusted standing), Director Achebe of Compact intelligence on Luna, or Anselm Voight at Hermes Foundry on Mercury.',
     sold: 'Anselm Voight wants to see you at Hermes Foundry, on Mercury. Aquilon has work for people it can trust.',
-    belt1: 'Bring 20t of Water to Ceres Station, so the Collective council can show people the ration is breaking.',
-    belt2: 'Aquilon knows you are working with the Collective. Get to Pallas Refinery and rally the refinery crews.',
+    belt1: 'Bring 20t of Water to Ceres Station, so the League council can show people the ration is breaking.',
+    belt2: 'Aquilon knows you are working with the League. Get to Pallas Refinery and rally the refinery crews.',
     mars1: 'Land at Hermes Foundry, on Mercury, and plant Commander Ueda\'s tracer in its comm net.',
     mars2: 'Report back to Commander Ueda at Phobos Yards, at Mars.',
     earth1: 'Pick up Mira Castellane on Europa and bring her to Director Achebe on Luna.',
     earth2: 'Take Mira Castellane to Luna.',
     aq1: 'Carry Aquilon\'s maintenance technicians to Ceres Station.',
     act3: (`Ceres is under blockade. Bring at least 20t of Water and land at Ceres Station, whatever it ` +
-        `takes. ${{ belt: 'The Collective is counting on you.', mars: 'Mars wants its colors on that water.', earth: 'Coalition relief is waiting on you.', aquilon: 'Voight has paid the blockade to let you through.' }[s.side] || ''}`),
+        `takes. ${{ belt: 'The League is counting on you.', mars: 'Mars wants its colors on that water.', earth: 'Compact relief is waiting on you.', aquilon: 'Voight has paid the blockade to let you through.' }[s.side] || ''}`),
     end: 'The story of Cold Water is over. The solar system carries on, and so do you.',
     act2: {
-      belt: 'The Belt is on strike and the Collective has voided Aquilon\'s ice claims. A Coalition fleet is on its way to "secure" Ceres. (Act 3, the blockade of Ceres, arrives in a later update.)',
+      belt: 'The Belt is on strike and the League has voided Aquilon\'s ice claims. A Compact fleet is on its way to "secure" Ceres. (Act 3, the blockade of Ceres, arrives in a later update.)',
       mars: 'Mars holds the proof as leverage over Earth. Both navies are moving toward Ceres. (Act 3, the blockade of Ceres, arrives in a later update.)',
-      earth: 'Coalition intelligence has buried the proof, and Mira with it. Ceres is rioting, and a Coalition fleet is moving in to "restore order". (Act 3, the blockade of Ceres, arrives in a later update.)',
+      earth: 'Compact intelligence has buried the proof, and Mira with it. Ceres is rioting, and a Compact fleet is moving in to "restore order". (Act 3, the blockade of Ceres, arrives in a later update.)',
       aquilon: 'You helped Aquilon. Ceres is dying of thirst, the Belt blames Earth, and the fleets are gathering. (Act 3, the blockade of Ceres, arrives in a later update.)',
     }[s.side],
   }[s.stage] || '';
@@ -212,9 +212,9 @@ function agentConsoleEvent(ambush) {
 // Ceres is under blockade: two ships of the other side, and whoever is on yours.
 function blockadeForces() {
   const s = story(), coalitionBlocks = s.side === 'belt' || s.side === 'mars';
-  const gov = coalitionBlocks ? 'Earth Coalition' : 'Belt Collective';
+  const gov = coalitionBlocks ? 'Arcology Compact' : 'Charter League';
   const foes = [
-    { kind: 'patrol', gov, story: false, shipId: coalitionBlocks ? 'destroyer' : 'corsair', name: coalitionBlocks ? 'Coalition destroyer "Resolute"' : 'Collective militia "Last Drop"' },
+    { kind: 'patrol', gov, story: false, shipId: coalitionBlocks ? 'destroyer' : 'corsair', name: coalitionBlocks ? 'Compact destroyer "Resolute"' : 'League militia "Last Drop"' },
     { kind: 'patrol', gov, story: false, shipId: 'cutter', name: `${PATROL_NAMES[gov]} "${shipName(false)}"` },
   ];
   const side = { belt: 3, mars: 3, earth: 2, aquilon: 1 }[s.side] || 0;  // ships of your side
@@ -238,7 +238,7 @@ function blockadeScene() {
   };
   return {
     title: 'The Blockade of Ceres', via: 'station',
-    text: (`${coalitionBlocks ? 'The Coalition blockade holds the approach to Ceres Station' : ('Collective hardliners are attacking ships near Ceres ' +
+    text: (`${coalitionBlocks ? 'The Compact blockade holds the approach to Ceres Station' : ('League hardliners are attacking ships near Ceres ' +
         'Station')}: ${foes.map(f => f.name).join(' and ')}. ${allies ? `${allies} ship${allies > 1 ? 's' : ''} on your side are already moving to meet them.` : 'Nobody is on your side out here.'} ` +
         `Twenty tons of water are in your hold, and Ceres is thirsty.`),
     choices: [
@@ -279,13 +279,13 @@ function storyInSystem() {
   const s = story();
   if (s.stage !== 'act3' || G.state.systemId !== 'ceres') return;
   const coalitionBlocks = s.side === 'belt' || s.side === 'mars';
-  const foeGov = coalitionBlocks ? 'Earth Coalition' : 'Belt Collective';
+  const foeGov = coalitionBlocks ? 'Arcology Compact' : 'Charter League';
   if (consoleFights()) { if (!s.blockadeCleared) G.pendingScene = blockadeScene(); return; }  // the console version, below
-  spawnFleetShip(coalitionBlocks ? 'destroyer' : 'corsair', foeGov, coalitionBlocks ? 'Coalition destroyer "Resolute"' : 'Collective militia "Last Drop"', true);
+  spawnFleetShip(coalitionBlocks ? 'destroyer' : 'corsair', foeGov, coalitionBlocks ? 'Compact destroyer "Resolute"' : 'League militia "Last Drop"', true);
   spawnFleetShip('cutter', foeGov, `${PATROL_NAMES[foeGov]} "${shipName(false)}"`, true);
   // Your side's ships.
-  if (!coalitionBlocks) for (let i = 0; i < 2; i++) spawnFleetShip('cutter', 'Earth Coalition', `Coalition cutter "${shipName(false)}"`, false);
-  const allies = { belt: ['Belt Collective', 'Collective militia', 3], mars: ['Mars Republic', 'MRN frigate', 3], aquilon: [null, 'Aquilon security', 1] }[s.side];
+  if (!coalitionBlocks) for (let i = 0; i < 2; i++) spawnFleetShip('cutter', 'Arcology Compact', `Compact cutter "${shipName(false)}"`, false);
+  const allies = { belt: ['Charter League', 'League militia', 3], mars: ['Dome Concord', 'Concord frigate', 3], aquilon: [null, 'Aquilon security', 1] }[s.side];
   if (allies) for (let i = 0; i < allies[2]; i++) spawnFleetShip('cutter', allies[0], `${allies[1]} "${shipName(false)}"`, false);
   // People who love you come to help. People who hate you pay someone to make it worse.
   const people = alivePeople().filter(p => !G.state.crew.includes(p.id));
@@ -300,7 +300,7 @@ function storyInSystem() {
     Object.assign(n, { kind: 'pirate', blockade: false, payer: `${p.first} ${p.last}` });
     msg(`A hired gun paid by ${p.first} ${p.last} has joined the blockade.`);
   }
-  msg(coalitionBlocks ? 'The Coalition blockade holds the approach to Ceres Station.' : 'Collective hardliners are attacking ships near Ceres Station.');
+  msg(coalitionBlocks ? 'The Compact blockade holds the approach to Ceres Station.' : 'League hardliners are attacking ships near Ceres Station.');
 }
 
 function blockadeHail(n) {
@@ -317,16 +317,16 @@ function blockadeHail(n) {
 // ---------- the last choice ----------
 
 const ENDINGS = {
-  belt: { credits: 10000, rep: { 'Belt Collective': 20, 'Earth Coalition': -15 },
-    text: 'Twenty tons of water roll off your ship under Collective banners while the blockade burns behind you. Within a month Earth withdraws its fleet, the strike ends on the Belt\'s terms, and Aquilon Hydrologics files for bankruptcy. Water flows on Ceres again.' },
-  mars: { credits: 20000, rep: { 'Mars Republic': 15, 'Earth Coalition': -10 },
-    text: 'Your water comes ashore under Mars Republic colors, and the Martian parliament gets its pictures. Earth backs down and concedes water rights to Mars-friendly Belt stations. Nobody ever answers for the Ceres pumps.' },
-  earth: { credits: 25000, rep: { 'Earth Coalition': 15, 'Belt Collective': -20 },
-    text: 'Coalition relief comes ashore, the riots end, and the proof stays buried. Aquilon quietly sells its claims to an Earth consortium. Ceres has water again, rationed under Coalition supervision.' },
-  aquilon: { credits: 20000, rep: { 'Belt Collective': -30 },
+  belt: { credits: 10000, rep: { 'Charter League': 20, 'Arcology Compact': -15 },
+    text: 'Twenty tons of water roll off your ship under League banners while the blockade burns behind you. Within a month Earth withdraws its fleet, the strike ends on the Belt\'s terms, and Aquilon Hydrologics files for bankruptcy. Water flows on Ceres again.' },
+  mars: { credits: 20000, rep: { 'Dome Concord': 15, 'Arcology Compact': -10 },
+    text: 'Your water comes ashore under Dome Concord colors, and the Martian parliament gets its pictures. Earth backs down and concedes water rights to Mars-friendly Belt stations. Nobody ever answers for the Ceres pumps.' },
+  earth: { credits: 25000, rep: { 'Arcology Compact': 15, 'Charter League': -20 },
+    text: 'Compact relief comes ashore, the riots end, and the proof stays buried. Aquilon quietly sells its claims to an Earth consortium. Ceres has water again, rationed under Compact supervision.' },
+  aquilon: { credits: 20000, rep: { 'Charter League': -30 },
     text: 'You sell twenty tons of water at a thousand credits a ton to people who have been thirsty for months. Aquilon\'s share price doubles. Ceres survives, barely, and the Belt never forgets the name of your ship.' },
-  truth: { credits: 5000, rep: { 'Belt Collective': 20, 'Earth Coalition': -10, 'Mars Republic': -10 },
-    text: 'You tell them everything: the pumps, the ice claims, the water futures, and everyone who looked away. The broadcast reaches every station in a day. Aquilon\'s executives are arrested on Mercury, three Coalition officials resign, and even Mars has questions to answer. Ceres drinks.' },
+  truth: { credits: 5000, rep: { 'Charter League': 20, 'Arcology Compact': -10, 'Dome Concord': -10 },
+    text: 'You tell them everything: the pumps, the ice claims, the water futures, and everyone who looked away. The broadcast reaches every station in a day. Aquilon\'s executives are arrested on Mercury, three Compact officials resign, and even Mars has questions to answer. Ceres drinks.' },
 };
 
 function finish(ending) {
@@ -338,7 +338,7 @@ function finish(ending) {
   s.stage = 'end';
   s.ending = ending;
   s.showEpilogue = true;
-  storyLog(`Ran the blockade to Ceres Station. Ending: ${{ belt: 'the Belt Collective', mars: 'the Mars Republic', earth: 'the Earth Coalition', aquilon: 'Aquilon', truth: 'the truth' }[ending]}.`);
+  storyLog(`Ran the blockade to Ceres Station. Ending: ${{ belt: 'the Charter League', mars: 'the Dome Concord', earth: 'the Arcology Compact', aquilon: 'Aquilon', truth: 'the truth' }[ending]}.`);
   return `${e.text} (+${fmt(e.credits)} cr)`;
 }
 
@@ -356,7 +356,7 @@ function epilogueEvent() {
   const mira = {
     belt: 'Mira Castellane runs the Ceres Water Authority now. She keeps a picture of your ship on her office wall.',
     truth: s.side === 'earth'
-      ? 'Mira Castellane walked out of Coalition custody the day your broadcast went out. She runs the Ceres Water Authority now.'
+      ? 'Mira Castellane walked out of Compact custody the day your broadcast went out. She runs the Ceres Water Authority now.'
       : 'Mira Castellane runs the Ceres Water Authority now. She keeps a picture of your ship on her office wall.',
     mars: 'Mira Castellane testified before the Martian parliament, then went home to Ceres to fix pumps.',
     earth: 'Nobody has heard from Mira Castellane since Luna.',
@@ -414,8 +414,8 @@ Mods.register({
         storyLog('Planted Commander Ueda\'s tracer in Hermes Foundry\'s comm net.');
         return 'You find an unguarded junction behind a coolant stack and plug it in. Nobody sees a thing.';
       }
-      changeRep('Earth Coalition', -10);
-      return 'A security patrol turns the corner just as you open the panel. You talk your way out of it, barely, and your record with the Coalition takes a hit. You will have to try again.';
+      changeRep('Arcology Compact', -10);
+      return 'A security patrol turns the corner just as you open the panel. You talk your way out of it, barely, and your record with the Compact takes a hit. You will have to try again.';
     });
     M.addAction('aquilonPumps', () => {
       G.state.rumors.push({ planet: 'Ceres Station', cid: 'water', mult: 1.8, until: G.state.day + 40, text: 'Three more pumps failed on Ceres Station. Water is worth more than fuel there now. (Ceres)' });

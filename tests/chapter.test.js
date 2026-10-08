@@ -124,6 +124,6 @@ test('the captain heads for a yard at the chapter\'s price, not the cheapest shi
     return out;
   });
   assert.equal(r.target, 19000); assert.equal(r.below, false); assert.equal(r.at, true);
-  assert.equal(r.cheapShip, false, 'the Rock Hopper price is not the signal');
+  assert.equal(r.cheapShip, false, 'the Dust Skiff price is not the signal');
   await done();
 });

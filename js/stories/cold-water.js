@@ -135,7 +135,7 @@ Mods.register({
       choices: [
         { label: '"What happens now?"', effects: { story: { stage: 5 }, storyLog: 'On Europa, Mira decrypted the core: Aquilon Hydrologics and Hermes Foundry are sabotaging Ceres\'s water supply.' },
           result: ('Mira looks at you for a long moment, and for the first time you see how tired she is, and how much she has held together. "Now ' +
-              'you decide who gets this," she says. "The Collective will fight. Mars will use it against Earth. Earth will bury it. And Aquilon will ' +
+              'you decide who gets this," she says. "The League will fight. Mars will use it against Earth. Earth will bury it. And Aquilon will ' +
               'pay anything to make it disappear." She keeps a copy, in a small metal capsule on a chain, and stays on Europa, with the Water ' +
               'Authority workers who still remember her. "Whatever you choose, I will be here. I will be the one on the ice, watching the ships come ' +
               'in." (Act 1 complete. Your choice is on the Port tab.)') },
@@ -146,17 +146,17 @@ Mods.register({
 
     scene({
       id: 'cw-contact-ceres', where: 'port', when: at(5, 'Ceres Station'),
-      title: 'The Collective Council',
+      title: 'The League Council',
       text: ('Councillor Ama Tembo meets you in a pump room, because it is the only room on Ceres the council trusts: every wall a dripping tangle of ' +
-          'pipe, every surface cold and damp, and the low steady thrum of the pumps in the floor. She is a broad, weathered woman in a Collective ' +
+          'pipe, every surface cold and damp, and the low steady thrum of the pumps in the floor. She is a broad, weathered woman in a League ' +
           'jacket, with gray braids and a voice that carries. She reads the core in silence, one finger moving down the screen. When she reaches the ' +
           'end, she sits down heavily on a crate. "Three months of rationing," she says. "Children on half water. Old people who did not make it. And ' +
-          'it was a business plan." She looks up, and her eyes are terrible. "Give this to the Collective and we will fight with it. But we need ' +
+          'it was a business plan." She looks up, and her eyes are terrible. "Give this to the League and we will fight with it. But we need ' +
           'people to believe the ration is breaking first."'),
       choices: [
-        { label: ['Give the proof to the Collective', { when: { standingBelow: { 'Belt Collective': -14 } }, text: '(the Collective does not trust you)' }],
-          when: { standing: { 'Belt Collective': -14 } },
-          effects: { story: { stage: 'belt1' }, storyLog: 'Gave the proof to Councillor Ama Tembo of the Belt Collective.' },
+        { label: ['Give the proof to the League', { when: { standingBelow: { 'Charter League': -14 } }, text: '(the League does not trust you)' }],
+          when: { standing: { 'Charter League': -14 } },
+          effects: { story: { stage: 'belt1' }, storyLog: 'Gave the proof to Councillor Ama Tembo of the Charter League.' },
           result: ('"Then bring us water," Tembo says. "Twenty tons, and let the whole station watch it come in. After that, we move." She puts her ' +
               'hand flat on the pump housing, as though on the shoulder of a friend, and for a while she does not speak. When she does, it is quieter. ' +
               '"My daughter is on the rationing list. She is eight. I am going to make sure this matters."') },
@@ -167,16 +167,16 @@ Mods.register({
     scene({
       id: 'cw-contact-mars', where: 'port', when: at(5, 'Mars'),
       title: 'Navy Intelligence',
-      text: [{ when: { standing: { 'Mars Republic': 15 } },
-        text: ('Commander Yelena Ueda of Mars Republic Navy intelligence meets you in a room with no windows, no clock, and one chair too few. She is ' +
+      text: [{ when: { standing: { 'Dome Concord': 15 } },
+        text: ('Commander Yelena Ueda of Dome Concord Navy intelligence meets you in a room with no windows, no clock, and one chair too few. She is ' +
             'short, precise, and impeccably groomed, with the flat, attentive gaze of someone who has spent her life listening for what people do not ' +
             'say. A single lamp burns on the desk. She reads the core without any visible reaction at all. "Headlines fade," she says at last. ' +
             '"Leverage lasts. Give Mars this, and we will make Earth pay for every ton of water it let Aquilon steal. But first I want to know who ' +
             'else is on Aquilon\'s payroll. That is the difference between a scandal and a weapon."'),
-        else: 'A Mars Republic Navy guard checks your record and shakes his head. "Commander Ueda does not meet with captains the Republic does not trust." (Needs Trusted standing with the Mars Republic.)' }],
+        else: 'A Dome Concord Navy guard checks your record and shakes his head. "Commander Ueda does not meet with captains the Concord does not trust." (Needs Trusted standing with the Dome Concord.)' }],
       choices: [
-        { label: 'Give the proof to Mars', when: { standing: { 'Mars Republic': 15 } },
-          effects: { story: { stage: 'mars1' }, storyLog: 'Gave the proof to Commander Yelena Ueda of Mars Republic Navy intelligence.' },
+        { label: 'Give the proof to Mars', when: { standing: { 'Dome Concord': 15 } },
+          effects: { story: { stage: 'mars1' }, storyLog: 'Gave the proof to Commander Yelena Ueda of Dome Concord Navy intelligence.' },
           result: ('Ueda slides a sliver of hardware across the table, no bigger than a thumbnail, and cold as a coin. "A tracer. Get it into Hermes ' +
               'Foundry\'s comm net, on Mercury. It will listen for a week. Then come to Phobos Yards and we will see who has been paying whom." She ' +
               'does not smile. But as you turn to go, she says, to the wall, in a voice so soft you almost miss it: "Thank you. It matters more than ' +
@@ -187,16 +187,16 @@ Mods.register({
 
     scene({
       id: 'cw-contact-luna', where: 'port', when: at(5, 'Luna'),
-      title: 'Coalition Intelligence',
-      text: ('Director Samuel Achebe of Coalition intelligence receives you in an office overlooking the Luna shipyards, with the gray plain spread ' +
+      title: 'Compact Intelligence',
+      text: ('Director Samuel Achebe of Compact intelligence receives you in an office overlooking the Luna shipyards, with the gray plain spread ' +
           'below in the harsh, clean light, and a slow parade of hulls in the drydocks. He is a tall, courtly man in his sixties, with a soft, warm ' +
           'baritone and a way of looking at you as though you were the only person in the room. He reads the core with evident distress. "You have ' +
           'done Earth a great service, captain," he says. "This needs careful handling. A panic on Ceres helps no one." He folds his hands. "We will ' +
           'also need Ms. Castellane. For her own protection, of course. You understand."'),
       choices: [
-        { label: ['Give the proof to the Coalition', { when: { standingBelow: { 'Earth Coalition': -14 } }, text: '(the Coalition does not trust you)' }],
-          when: { standing: { 'Earth Coalition': -14 } },
-          effects: { story: { stage: 'earth1' }, storyLog: 'Gave the proof to Director Samuel Achebe of Coalition intelligence.' },
+        { label: ['Give the proof to the Compact', { when: { standingBelow: { 'Arcology Compact': -14 } }, text: '(the Compact does not trust you)' }],
+          when: { standing: { 'Arcology Compact': -14 } },
+          effects: { story: { stage: 'earth1' }, storyLog: 'Gave the proof to Director Samuel Achebe of Compact intelligence.' },
           result: ('"Bring her from Europa," Achebe says, warmly, without looking up. "Discreetly. She has been through a great deal, and we should ' +
               'not add to it." He is already reading the core, scrolling down through the damning lines with a small, thoughtful frown. You get the ' +
               'odd feeling of being politely dismissed by a man who has already forgotten you were there.') },
@@ -232,17 +232,17 @@ Mods.register({
     voightJob('cw-voight-proof', 5, true);
     voightJob('cw-voight-sold', 'sold', false);
 
-    // ---------- Belt Collective ----------
+    // ---------- Charter League ----------
 
     scene({
       id: 'cw-belt-water', where: 'port', when: at('belt1', 'Ceres Station', { cargo: { water: 20 } }),
       title: 'Water Day',
       text: ('Word spreads before you even dock. By the time your cargo lock opens, half the ring is crowding the concourse to watch twenty tons of ' +
-          'water roll out under Collective banners, in blue-lidded drums, one after another, on a line of hand-drawn sleds. Children are perched on ' +
+          'water roll out under League banners, in blue-lidded drums, one after another, on a line of hand-drawn sleds. Children are perched on ' +
           'the shoulders of parents. Old women hold up their cups. Someone has begun to sing, an old Belter hymn, low and rough, and one by one the ' +
           'others take it up. Councillor Tembo stands at the head of the line, and makes sure the cameras catch every drum.'),
       choices: [{ label: 'Unload the water',
-        effects: { cargo: { water: -20 }, credits: 6000, rep: { 'Belt Collective': 10 }, story: { stage: 'belt2' }, storyLog: 'Delivered 20t of water to Ceres Station for the Collective.' },
+        effects: { cargo: { water: -20 }, credits: 6000, rep: { 'Charter League': 10 }, story: { stage: 'belt2' }, storyLog: 'Delivered 20t of water to Ceres Station for the League.' },
         result: ('The last drum rolls down the ramp, and the whole concourse erupts. The council pays 6,000 cr, and the crowd cheers your ship\'s ' +
             'name, again and again, until it is a wave. A small girl presses a paper cup into your hand, half full, and looks at you with grave, wide ' +
             'eyes. Tembo does not smile. "Aquilon will have seen that too," she says, low. "Get to Pallas Refinery. The refinery crews listen to ' +
@@ -261,16 +261,16 @@ Mods.register({
           else: 'They look tired, thirsty, and in no mood for speeches. A few of them have brought their children. Nobody is smiling.'
         }],
       choices: [{ label: 'Tell them what the core says',
-        effects: { rep: { 'Belt Collective': 10 }, credits: 4000, do: ['endAct2', 'belt', 'Rallied the Pallas refinery crews. The Belt went on strike and the Collective voided Aquilon\'s ice claims.'] },
+        effects: { rep: { 'Charter League': 10 }, credits: 4000, do: ['endAct2', 'belt', 'Rallied the Pallas refinery crews. The Belt went on strike and the League voided Aquilon\'s ice claims.'] },
         result: [{ when: { crew: 'rosa' }, text: 'Rosa tells them about the Nine-B pumps, in her flat, plain voice, without a single decoration, and the room goes so quiet you can hear the molds cooling.' },
           ('You tell them everything: the core, the pumps, the futures bought the day before every failure. When you finish, nobody speaks. Then ' +
               'Marsh raises a fist, slowly, and one by one three hundred fists rise with hers, and the refinery shuts down around you with a long, ' +
-              'falling groan of machinery. By nightfall every Belt station is on strike, and the Collective council declares Aquilon\'s ice claims ' +
-              'void. The union sends 4,000 cr for your trouble. Earth answers within the week: a Coalition fleet is on its way "to secure Ceres." (Act ' +
+              'falling groan of machinery. By nightfall every Belt station is on strike, and the League council declares Aquilon\'s ice claims ' +
+              'void. The union sends 4,000 cr for your trouble. Earth answers within the week: a Compact fleet is on its way "to secure Ceres." (Act ' +
               '2 complete. In a few days the fleets will reach Ceres, and your objective will be on the Port tab.)')] }],
     });
 
-    // ---------- Mars Republic ----------
+    // ---------- Dome Concord ----------
 
     scene({
       id: 'cw-tracer', where: 'port', when: at('mars1', 'Hermes Foundry'),
@@ -298,33 +298,33 @@ Mods.register({
       id: 'cw-mars-debrief', where: 'port', when: at('mars2', 'Phobos Yards'),
       title: 'Leverage',
       text: [('Commander Ueda spreads the tracer\'s take across a table at Phobos Yards, sheet after sheet, in a room lit only by a single low lamp. ' +
-          'Hermes Foundry executives bankrolling Aquilon. Three Earth Coalition trade officials on the payroll. Wire transfers with Martian banks, in ' +
+          'Hermes Foundry executives bankrolling Aquilon. Three Arcology Compact trade officials on the payroll. Wire transfers with Martian banks, in ' +
           'the names of dead men. She reads aloud, and her voice, for once, is not entirely flat. "Now," she says, "Earth will listen."'),
         { when: { crew: 'dima' }, text: 'She glances at Dima, who is leaning in the doorway with his arms folded. "Sokolov. I heard you were flying freighters now. Good." Dima grins, for a moment looking twenty years younger, and says nothing, which, for Dima, is a kind of speech.' }],
       choices: [{ label: 'Take the Navy\'s thanks',
-        effects: { credits: 15000, rep: { 'Mars Republic': 15 }, do: ['endAct2', 'mars', 'Mars Republic Navy intelligence used the proof as leverage over Earth.'] },
+        effects: { credits: 15000, rep: { 'Dome Concord': 15 }, do: ['endAct2', 'mars', 'Dome Concord Navy intelligence used the proof as leverage over Earth.'] },
         result: ('The Navy pays 15,000 cr and quietly marks your record, in a small, careful hand that you never see. Mars leaks just enough to make ' +
             'Earth sweat, a page here, a name there, timed to the hour. Earth accuses Mars of manufacturing the evidence, loudly and at length, and ' +
             'within a week both navies are moving toward Ceres, the way two ships circle each other in a crowded harbor. (Act 2 complete. In a few ' +
             'days the fleets will reach Ceres, and your objective will be on the Port tab.)') }],
     });
 
-    // ---------- Earth Coalition ----------
+    // ---------- Arcology Compact ----------
 
     scene({
       id: 'cw-mira-doubt', where: 'port', when: at('earth1', 'Europa'),
       title: 'Mira Castellane',
       text: ('Mira is waiting at the Europa ice docks, in the same faded jacket, hands deep in her pockets, with the cold breath of the ice hanging ' +
           'in the air between you. Her face is very still. "Achebe sent you," she says. It is not a question. She looks past you at the long white ' +
-          'hoses lining the dock, frozen into glittering fringes. "You know Coalition intelligence buries things for a living. I would like very much ' +
+          'hoses lining the dock, frozen into glittering fringes. "You know Compact intelligence buries things for a living. I would like very much ' +
           'for you to tell me I am wrong."'),
       choices: [
         { label: '"Come to Luna. You will be safe." (needs a free berth)', when: { berths: 1 },
           effects: { story: { stage: 'earth2' }, do: ['storyPassenger', 'Mira Castellane', 1, 'earth', 'Luna', 0, 'mira-luna'] },
           result: 'She looks at you for a long time, and something in her face slowly closes, like a hand. Then she picks up her duffel, without a word, and follows you up the ramp. She does not look back at the ice. You cannot tell if what you feel is trust, or its opposite.' },
         { label: '"Then let us take it to Ceres instead." (needs a free berth)', when: { berths: 1 },
-          effects: { story: { stage: 'belt1' }, rep: { 'Earth Coalition': -10 }, do: ['storyPassenger', 'Mira Castellane', 1, 'ceres', 'Ceres Station', 0, 'mira-ceres'],
-            storyLog: 'Turned away from Coalition intelligence and took Mira to the Belt Collective instead.' },
+          effects: { story: { stage: 'belt1' }, rep: { 'Arcology Compact': -10 }, do: ['storyPassenger', 'Mira Castellane', 1, 'ceres', 'Ceres Station', 0, 'mira-ceres'],
+            storyLog: 'Turned away from Compact intelligence and took Mira to the Charter League instead.' },
           result: ('"Now you are talking," Mira says, and, to your surprise, laughs, a sudden bright startled sound, and scrubs her eyes with the ' +
               'heel of her hand. Achebe will not be pleased. Councillor Tembo will want water on Ceres: 20 tons of it. Mira picks up her duffel with a ' +
               'little more spring than before. "I have been waiting for someone to say that for three months."') },
@@ -337,7 +337,7 @@ Mods.register({
       text: ('Mira watches Luna grow in the forward screen, gray and enormous, ringed with the pinpricks of a thousand drydock lights. She has not ' +
           'said a word in hours, and when she speaks, at last, her voice is dry and quiet. "You know what they will do with it. Achebe will lock the ' +
           'proof in a vault and me in a nice quiet room, and Ceres will keep running dry. I have seen it before, in a different coat." She turns to ' +
-          'you, and, for the first time, she is pleading. "Drop me at Ceres Station instead. Let the Collective have it. Please."'),
+          'you, and, for the first time, she is pleading. "Drop me at Ceres Station instead. Let the League have it. Please."'),
       choices: [
         {
           label: '"Trust me. Achebe gave his word."',
@@ -346,7 +346,7 @@ Mods.register({
         },
         { label: '"All right. Ceres it is."',
           effects: { passenger: { who: 'mira-luna', set: { destSystem: 'ceres', destPlanet: 'Ceres Station', title: 'Carry Mira Castellane (1) to Ceres Station' } },
-            story: { stage: 'belt1' }, storyAdd: { miraTrust: 2 }, rep: { 'Earth Coalition': -10 }, storyLog: 'Turned away from Coalition intelligence and took Mira to the Belt Collective instead.' },
+            story: { stage: 'belt1' }, storyAdd: { miraTrust: 2 }, rep: { 'Arcology Compact': -10 }, storyLog: 'Turned away from Compact intelligence and took Mira to the Charter League instead.' },
           result: ('She closes her eyes, and a single tear slides down her cheek and is gone. "Thank you," she whispers. You replot for Ceres, and ' +
               'the ship swings around with a long, low groan of the frame. Achebe will not be pleased. (Your burn continues to its current ' +
               'destination; take Mira on to Ceres Station from there.)') },
@@ -356,15 +356,15 @@ Mods.register({
     scene({
       id: 'cw-custody', where: 'port', when: at('earth2', 'Luna'),
       title: 'Protective Custody',
-      text: [('Two quiet people in Coalition gray are waiting at the airlock, with soft shoes and flat, kind faces, and a wheelchair no one will ' +
+      text: [('Two quiet people in Compact gray are waiting at the airlock, with soft shoes and flat, kind faces, and a wheelchair no one will ' +
           'need. "Ms. Castellane will be well looked after," Achebe says, warmly, at your shoulder. Mira steps out of the airlock with her duffel in ' +
           'her hand and does not look back. Not once. Her back is very straight, and the metal capsule is gone from her throat.'),
         { when: { crew: 'kit' }, text: 'Kit watches them go, arms folded, jaw set. "Protective custody," she mutters. "I have seen that before. Nobody comes back from it."' }],
       choices: [{ label: 'Collect your reward',
-        effects: { credits: 20000, rep: { 'Earth Coalition': 15 }, do: ['endAct2', 'earth', 'Handed the proof and Mira Castellane to Coalition intelligence.'] },
+        effects: { credits: 20000, rep: { 'Arcology Compact': 15 }, do: ['endAct2', 'earth', 'Handed the proof and Mira Castellane to Compact intelligence.'] },
         result: ('Achebe pays 20,000 cr from a discretionary fund and shakes your hand, warmly, with both of his. The proof disappears. So does Mira. ' +
             'Somewhere in the long cold corridors of the Luna shipyards, a door closes on a very quiet room. Two weeks later, Ceres riots over water, ' +
-            'and a Coalition fleet moves in to "restore order". (Act 2 complete. In a few days the fleets will reach Ceres, and your objective will be ' +
+            'and a Compact fleet moves in to "restore order". (Act 2 complete. In a few days the fleets will reach Ceres, and your objective will be ' +
             'on the Port tab.)') }],
     });
 
@@ -396,13 +396,13 @@ Mods.register({
         { when: { story: { techsKnown: true } }, text: 'You know exactly what is in those cases, and they know that you know.', else: 'A Water Authority engineer watching them pass goes pale, and takes a quiet step backward, as though from a snake.' },
         'Once they are through that door, three more pumps will fail, and a great many people you will never meet will go thirsty.'],
       choices: [
-        { label: 'Look the other way', effects: { credits: 12000, rep: { 'Belt Collective': -30 }, do: 'aquilonPumps' },
+        { label: 'Look the other way', effects: { credits: 12000, rep: { 'Charter League': -30 }, do: 'aquilonPumps' },
           result: ('An Aquilon account pays you 12,000 cr, quietly, with no note. You watch the door swing shut behind the technicians, and you turn ' +
               'away, and keep walking. Three more pumps fail on Ceres that week, and water there sells for more than reaction mass. In the ration ' +
-              'lines, people who have been calm for months begin to shout. The Collective blames Earth, Earth blames Mars, and the fleets start to ' +
+              'lines, people who have been calm for months begin to shout. The League blames Earth, Earth blames Mars, and the fleets start to ' +
               'gather. (Act 2 complete. In a few days the fleets will reach Ceres, and your objective will be on the Port tab.)') },
-        { label: 'Turn them in to the Collective', effects: { rep: { 'Belt Collective': 20 }, story: { stage: 'belt2' }, storyLog: 'Turned Aquilon\'s saboteurs over to the Belt Collective on Ceres.' },
-          result: ('You tip off the Collective, and the militia are waiting at the pump-room door, six of them, very quiet. They take the technicians ' +
+        { label: 'Turn them in to the League', effects: { rep: { 'Charter League': 20 }, story: { stage: 'belt2' }, storyLog: 'Turned Aquilon\'s saboteurs over to the Charter League on Ceres.' },
+          result: ('You tip off the League, and the militia are waiting at the pump-room door, six of them, very quiet. They take the technicians ' +
               'and their cases without a shot. The young man does not resist; he looks, if anything, relieved, and, as they lead him away, he gives ' +
               'you one wide, frightened look you will never forget. Councillor Tembo shakes your hand, hard, with both of hers. "Aquilon will come for ' +
               'you now," she says. "Get to Pallas Refinery. The refinery crews need to hear this from someone who was there."') },
@@ -417,26 +417,26 @@ Mods.register({
       text: [
         {
           when: { story: { side: 'belt' } },
-          text: ('Councillor Tembo, on a tight-beam channel, her voice raw and low: "The Coalition has blockaded Ceres. Nothing gets in, not even ' +
+          text: ('Councillor Tembo, on a tight-beam channel, her voice raw and low: "The Compact has blockaded Ceres. Nothing gets in, not even ' +
               'water. The rationing lines are three hours long, and we have buried four. Bring us twenty tons and break it. Every station in the Belt ' +
               'will be watching. We have nothing else left to ask you."')
         },
         {
           when: { story: { side: 'mars' } },
-          text: ('Commander Ueda, on an encrypted channel, clipped and cool: "The Coalition has closed Ceres. If a Mars-friendly captain breaks that ' +
+          text: ('Commander Ueda, on an encrypted channel, clipped and cool: "The Compact has closed Ceres. If a Mars-friendly captain breaks that ' +
               'blockade with water, Earth loses the Belt. Twenty tons, captain. Under our colors. Do not be brave. Be exact. I will not be able to ' +
               'help you once you are inside."')
         },
         {
           when: { story: { side: 'earth' } },
-          text: ('Director Achebe, gravely, with the air of a man burdened by duty: "Ceres is rioting, and Collective hardliners are attacking ' +
-              'anything that approaches. Our blockade holds the station. Bring twenty tons of water through for Coalition relief and we can end this, ' +
+          text: ('Director Achebe, gravely, with the air of a man burdened by duty: "Ceres is rioting, and League hardliners are attacking ' +
+              'anything that approaches. Our blockade holds the station. Bring twenty tons of water through for Compact relief and we can end this, ' +
               'before any more lives are lost. It is a sad business, captain. I would like to see it finished."')
         },
         {
           when: { story: { side: 'aquilon' } },
           text: ('Anselm Voight, pleasantly, as though inviting you to dinner: "The blockade has made water on Ceres very valuable. Bring twenty ' +
-              'tons. The Coalition will let you through; I have seen to it. The Collective hardliners, less so. Do try to be quick. The price is at ' +
+              'tons. The Compact will let you through; I have seen to it. The League hardliners, less so. Do try to be quick. The price is at ' +
               'its peak, and peaks do not last."')
         },
       ],
@@ -464,9 +464,9 @@ Mods.register({
       when: { story: { stage: 'act3', side }, planet: 'Ceres Station', cargo: { water: 20 } },
       title: 'Ceres Station', text: finalText, choices,
     });
-    final('belt', [ending('Unload the water for the Collective', 'belt')]);
+    final('belt', [ending('Unload the water for the League', 'belt')]);
     final('mars', [ending('Deliver it under Mars colors', 'mars'), ending('Publish everything, Mars\'s dealings included', 'truth')]);
-    final('earth', [ending('Hand the water to Coalition relief', 'earth'), ending('Tell the crowd the truth', 'truth')]);
+    final('earth', [ending('Hand the water to Compact relief', 'earth'), ending('Tell the crowd the truth', 'truth')]);
     final('aquilon', [ending('Sell it at blockade prices (1,000 cr/t)', 'aquilon'), ending('Give it away, and tell them who poisoned their wells', 'truth')]);
   },
 });

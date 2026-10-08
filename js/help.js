@@ -15,7 +15,7 @@ const HELP = [
         `hall for the berth, the passage and the kit: about three thousand credits. A third of each run's pay goes to it until it is paid, and a ship ` +
         `cannot be bought while anything is owed.`),
     `A first officer runs the watch: they decide who moves to which post, and the crew-side calls on the road. The captain keeps money and ship matters. You have an opinion with each of them, and the two can differ.`,
-    `Save toward a ship of your own. Once your savings are high enough, a ship may be offered to you at a port with a yard. The yard's own ships stay on the list, and the Rock Hopper is the cheapest.`,
+    `Save toward a ship of your own. Once your savings are high enough, a ship may be offered to you at a port with a yard. The yard's own ships stay on the list, and the Dust Skiff is the cheapest.`,
     'Buying a ship ends your time as a hand. The crew who like you come with you, and the captain says goodbye at the foot of the ramp.' ] },
   { id: 'trading', title: 'Trading and markets', hand: [
     'The captain trades. Each run is the best cargo and port within reach, bought from the ship\'s funds; the Port page shows the plan, the funds and your savings. When you press Sail, the captain buys the cargo and the ship leaves. On arrival it is sold, and your wage and share are paid.',
@@ -34,7 +34,7 @@ const HELP = [
     'How the three scenes go decides the close: she breaks off, she stands off and throws a last round, or she comes alongside and the fight goes to the lock.' ], text: [
     'Pirates, navy patrols that want you, bounty targets, and hired guns can intercept you mid-burn, more often on dangerous lanes. You can fight, burn hard to run, or pay them off.',
     'The fight is a card duel on the console. The ship with the initiative plays a threat, the other an answer. PDCs stop torpedoes, evasive burns stop gun runs, and crew at the locks stop boarders. A stopped threat passes the initiative.',
-    'Your cards come from your ship: torpedoes, point-defense cannons, guns, pilot, power, and crew. A beaten pirate drifts, disabled, and can be boarded.' ] },
+    'Your cards come from your ship: torpedoes, close-defense turrets, guns, pilot, power, and crew. A beaten pirate drifts, disabled, and can be boarded.' ] },
   { id: 'crew', title: 'Crew and relationships', hand: [
     'You work one post, and the rest of the crew hold the others. A first officer runs the watch and decides post swaps. Each role has a perk: engineers save reaction mass, pilots shorten burns, gunners add a gun, quartermasters hear rumors, slicers spoof transponders, medics heal.',
     'People aboard have feelings about you and about each other. Shared tastes bring them together; clashing habits pull them apart. Downtime activities build bonds, and a day of work at your post is experience.',
@@ -51,9 +51,9 @@ const HELP = [
     'Claim Callisto at Ganymede, or Nereid at Triton Outpost, and build a habitat ring. Keep the settlers supplied with food, water, medical supplies, and electronics from your hold.',
     'Supplied, the outpost grows and pays you every day; short of anything, settlers leave. Buildings make it self-sufficient, add housing, and open services.' ] },
   { id: 'world', title: 'Factions, raids, and war', hand: [
-    'The Earth Coalition, Mars Republic, and Belt Collective each have an economy that booms and slumps. Tension between them can boil over into war.',
+    'The Arcology Compact, Dome Concord, and Charter League each have an economy that booms and slumps. Tension between them can boil over into war.',
     'Your standing with each faction opens (or closes) their shipyards and outfitters, which matters when you come to buy a ship. Pirates remember you too.' ], text: [
-    'The Earth Coalition, Mars Republic, and Belt Collective each have an economy that booms and slumps. Tension between them can boil over into war, and the side you help remembers it.',
+    'The Arcology Compact, Dome Concord, and Charter League each have an economy that booms and slumps. Tension between them can boil over into war, and the side you help remembers it.',
     'Your standing with each faction opens (or closes) their shipyards, outfitters, and missions. Pirates remember you too.' ] },
   { id: 'story', title: 'Story and campaigns', off: 'storylines', text: [
     'Cold Water, the main story, begins with a derelict on one of your early burns. Three rival careers (a Mars Navy commission, a pirate lord\'s rise, and a corporate climb) exclude each other, and a Belt haulers\' strike can draw you in.',

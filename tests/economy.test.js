@@ -66,7 +66,7 @@ test('wars break out and end; slumps follow, and player trade makes booms', asyn
     factionState().war = null;
     const mars = SYSTEMS.mars.planets[0];
     for (let d = 0; d < 60; d++) { recordTrade(mars, 'equipment', 20, -1); st.day++; Mods.emit('newDay', st.day); }
-    return { econ: [...econ], wars: wars.size, mars: economy('Mars Republic') };
+    return { econ: [...econ], wars: wars.size, mars: economy('Dome Concord') };
   });
   assert.ok(r.wars >= 1, 'at least one war in 1200 days');
   assert.ok(r.econ.includes('bust'), 'wars and raids cause slumps');
@@ -78,7 +78,7 @@ test('a war sends warships into local space', async () => {
   const { ev, done } = await open({});
   const r = await ev(() => {
     const st = G.state; st.tutorial = null;
-    factionState().war = { a: 'Earth Coalition', b: 'Mars Republic', start: st.day, until: st.day + 40, score: { 'Earth Coalition': 0, 'Mars Republic': 0 } };
+    factionState().war = { a: 'Arcology Compact', b: 'Dome Concord', start: st.day, until: st.day + 40, score: { 'Arcology Compact': 0, 'Dome Concord': 0 } };
     while (G.dialog) finishEvent();
     takeOff(); G.spawnTimer = 1e9;
     const spawned = G.npcs.filter(n => n.war).length;
@@ -104,7 +104,7 @@ test('outfits change the ship, standing unlocks ships, hostility closes ports', 
   await ev(() => { G.state.cargo.food = ship().cargo; UI.render(); });
   await page.click('[data-action=sellout][data-arg=pod]');
   assert.equal(await ev(() => G.state.outfits.pod), 1);
-  await ev(() => { G.state.cargo.food = 0; changeRep('Earth Coalition', 20); UI.render(); });
+  await ev(() => { G.state.cargo.food = 0; changeRep('Arcology Compact', 20); UI.render(); });
   assert.ok(await page.isEnabled('[data-action=buyship][data-arg=gunship]'), 'corvette unlocked at Trusted');
   await page.click('[data-action=buyship][data-arg=gunship]');
   assert.equal(await ev(() => G.state.shipId), 'gunship');
@@ -114,7 +114,7 @@ test('outfits change the ship, standing unlocks ships, hostility closes ports', 
   await page.click('[data-action=takeoff]');
   const r = await ev(() => {
     G.npcs = []; const n = spawnNpc('patrol', false); Object.assign(n, { x: G.player.x + 400, y: G.player.y });
-    changeRep('Earth Coalition', -80);
+    changeRep('Arcology Compact', -80);
     const pl = system().planets[0]; Object.assign(G.player, { x: pl.x, y: pl.y, vx: 0, vy: 0 });
     tryLand();
     return { hostile: n.hostile, mode: G.mode };

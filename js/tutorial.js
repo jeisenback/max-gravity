@@ -26,7 +26,7 @@ const TUTORIAL = [
   { text: () => 'Open the Exchange and sell your Electronics.',
     done: st => G.mode === 'landed' && !st.cargo.equipment },
   { text: () => (`That is the trade loop. The Missions page pays for deliveries and passengers, and the Port page tracks your standing with each ` +
-      `faction. Before you head into the Belt, where pirates fly heavier ships, fit a Point-defense cannon at an outfitter. If you are outgunned, hail ` +
+      `faction. Before you head into the Belt, where pirates fly heavier ships, fit a Close-defense turret at an outfitter. If you are outgunned, hail ` +
       `the pirate (${tutKey('Hail', 'H')}) and pay them off. Good luck, captain.`),
     done: () => false, last: true },
 ];

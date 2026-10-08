@@ -3,7 +3,7 @@
 // Torpedoes and point defense. A Torpedo launcher outfit fires homing torpedoes at
 // your target (F, or TORP on touch); torpedoes are bought as ammunition at outfitters.
 // They leave the rail slow, then accelerate past anything with a drive, and hit hard.
-// Point defense shoots them down: each Point-defense cannon you fit is also an
+// Point defense shoots them down: each Close-defense turret you fit is also an
 // automatic turret, and heavier NPC ships (two guns or more) carry one too. Ordinary
 // gunfire can hit torpedoes as well. Corsairs, cutters, and destroyers launch
 // torpedoes of their own. Loaded before game.js; only calls into it at runtime.

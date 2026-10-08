@@ -4,7 +4,7 @@ The places the narrow build's chapter touches: four systems and the four home ar
 
 ### place.earth
 
-- Source: `SYSTEMS.earth` in `js/data.js` (Earth and Luna), government Earth Coalition.
+- Source: `SYSTEMS.earth` in `js/data.js` (Earth and Luna), government Arcology Compact.
 - Day there: Customs queues at the foot of the orbital elevator, noodle stalls along the queue, and shipping clerks who stamp by the tier of the hull.
 - Work: Freight up the cable, license desks, wall rotas in the coastal arcologies.
 - Sound and smell: Frying oil and wet concrete; the tide gates, which sound at the turn.
@@ -15,18 +15,18 @@ The places the narrow build's chapter touches: four systems and the four home ar
 
 ### place.mars
 
-- Source: `SYSTEMS.mars` in `js/data.js` (Mars and Phobos Yards), government Mars Republic.
+- Source: `SYSTEMS.mars` in `js/data.js` (Mars and Phobos Yards), government Dome Concord.
 - Day there: Domed cities in the Mariner Valley under a butterscotch sky; a dome council posts its air accounts in the market hall.
 - Work: Dome maintenance, engineering at Phobos Yards, coffee.
 - Sound and smell: Green things and hot metal inside the dome; the click of the airlock count.
 - Custom: A newcomer is asked which dome and which air share before they are asked their name.
-- Divergence: `derived.power-triangle`. The dome and its air share come before the Republic.
+- Divergence: `derived.power-triangle`. The dome and its air share come before the Concord.
 - Use in scenes: A Martian quotes a dome rule at a captain and offers to show the page.
 - Status: from code (js/data.js) for the domes and the engineering; the custom is confirmed (owner, 2026-10-08)
 
 ### place.ceres
 
-- Source: `SYSTEMS.ceres` in `js/data.js` (Ceres Station and Ring Nine), government Belt Collective.
+- Source: `SYSTEMS.ceres` in `js/data.js` (Ceres Station and Ring Nine), government Charter League.
 - Day there: Corridors that curve upward, hydroponic troughs, and a hand-lettered notice of the day's water allotment on every wall.
 - Work: Water, ore, the valves.
 - Sound and smell: The knock of a pipe being tapped before it is opened; hot oil and ginger at Ring Nine.
