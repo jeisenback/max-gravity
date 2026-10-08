@@ -1,6 +1,6 @@
 # Factions
 
-One entry for each name in `FACTIONS` in `js/data.js`. What the code does with them (standing, patrols, ties, customs) is in `js/factions.js` and `js/ties.js` and is not copied here. The three powers are on the audit list in `derived.md`, so each carries a `Divergence:` line, and the texture below is deliberately its own.
+One entry for each name in `FACTIONS` in `js/data.js`. What the code does with them (standing, patrols, ties, customs) is in `js/factions.js` and `js/ties.js` and is not copied here. The three powers are on the audit list in `derived.md`, so each carries a `Divergence:` line, and the texture below is deliberately its own. The owner has decided to keep three powers, reshaped as proposed, and expects the outer planets (Jupiter, Saturn, Neptune) to split into factions of their own later, with Ganymede as an anchor. Do not write the three as final.
 
 ### faction.earth-coalition
 

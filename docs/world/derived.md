@@ -18,7 +18,7 @@ Real places (Ceres, Eros, Ganymede) and generic hard-SF terms (reaction mass, th
 - What: Three powers (Earth Coalition, Mars Republic, Belt Collective) plus pirates, with the Belt as the outer population that the two inner powers cool toward, and navies that go to war over incidents.
 - Why it reads as the Expanse: The Earth, Mars and Belt triangle, with the Belt as the side the other two look down on, is the Expanse's political frame.
 - Proposed instead: Keep three powers for the mechanics but change what each is. Earth is a compact of arcology cities that trade and license, with no world government. Mars is a set of dome municipalities that share a fleet and nothing else. The Belt is a league of stations held by chartered guilds that vote on water and berth rights.
-- Decision:
+- Decision: Keep three powers, reshaped as proposed (owner, 2026-10-08). The outer planets are expected to split into factions of their own later; see `derived.ganymede-breadbasket`.
 
 ### derived.belter-people
 
@@ -42,6 +42,7 @@ Real places (Ceres, Eros, Ganymede) and generic hard-SF terms (reaction mass, th
 - What: Ganymede's agri-domes feed the outer planets and half the Belt.
 - Why it reads as the Expanse: Ganymede as the outer system's breadbasket is the same role it has in the Expanse. This is a moderate match: a farming moon is an obvious SF idea.
 - Proposed instead: Keep Ganymede as a food source for the mechanics, but give it its own shape: a moon of leasehold terraces, where food is grown under a lease that is inherited, and the farmers' wariness is of the lease agent and not of investors.
+- Note: The owner expects the outer planets (Jupiter, Saturn, Neptune, now independent or under the Belt) to become factions of their own later, and Ganymede to anchor one. The lease idea is meant to carry over: food becomes leverage over the inner powers, and the wariness is toward inner-power lease buyers. Give the future faction local names (a Ganymede lease council, Europa's water board, Titan's consortium) and not "Outer Planets Alliance", which is the Expanse's own name for its outer-system group.
 - Decision:
 
 ### derived.mars-navy
