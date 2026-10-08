@@ -2,7 +2,8 @@
 
 // Line and function coverage of the game's scripts (js/**) over the whole test suite, from the browser's own V8 coverage
 // (Playwright's page.coverage), since the game is classic scripts in one page and Node coverage tools do not see it.
-//   node tools/coverage.js [--files tests/shell.test.js,tests/ui.test.js] [--top 40] [--keep] [--from DIR] [--all]
+//   node tools/coverage.js [--files tests/shell.test.js,tests/ui.test.js] [--top 40] [--keep] [--from DIR] [--all] [--check]
+//   --check fails (exit 1) when a file in tools/coverage-floor.json is under its minimum, and says which and by how many lines (tools/floor.js).
 //   --keep leaves the per-page coverage in a temp directory, and --from DIR merges one again without re-running the tests.
 //   npm run coverage
 // Runs the tests with COVERAGE_DIR set (tests/helpers.js writes each page's coverage there), merges every page by script, and
@@ -77,6 +78,7 @@ function report({ byUrl, calls }, top) {
   for (const [file, list] of Object.entries(by).sort((a, b) => b[1].length - a[1].length).slice(0, top)) console.log(`  ${file}  ${list.length}: ${(process.argv.includes('--all') ? list : list.slice(0, 8)).join(', ')}${list.length > 8 && !process.argv.includes('--all') ? ', ...' : ''}`);
   fs.writeFileSync(path.join(os.tmpdir(), 'uncovered-lines.json'), JSON.stringify(rows.map(r => ({ file: r.file, code: r.code, hit: r.hit, missed: r.missed, gaps: r.gaps })), null, 1));
   console.log(`\nThe uncovered line numbers per file are in ${path.join(os.tmpdir(), 'uncovered-lines.json')}.`);
+  return rows;
 }
 
 const from = arg('from');
@@ -85,5 +87,12 @@ const files = (arg('files') || '').split(',').filter(Boolean);
 const run = from ? { stdout: '' } : spawnSync(process.execPath, ['--test', '--test-concurrency=4', ...(files.length ? files : [path.join(root, 'tests') + '/*.test.js'])].flatMap(a => (a.includes('*') ? fs.readdirSync(path.dirname(a)).filter(x => x.endsWith('.test.js')).map(x => path.join(path.dirname(a), x)) : [a])), { cwd: root, env: { ...process.env, COVERAGE_DIR: dir }, stdio: ['ignore', 'pipe', 'inherit'], encoding: 'utf8', maxBuffer: 1 << 28 });
 const tap = run.stdout || '';
 console.log(`tests: ${(tap.match(/^# pass (\d+)/m) || [])[1] || '?'} passed, ${(tap.match(/^# fail (\d+)/m) || [])[1] || '?'} failed`);
-report(merge(dir), Number(arg('top') || 40));
+const rows = report(merge(dir), Number(arg('top') || 40));
 if (!from && !process.argv.includes('--keep')) fs.rmSync(dir, { recursive: true, force: true });
+if (process.argv.includes('--check')) {  // the floor (tools/coverage-floor.json): exit non-zero when a listed file has fallen under it
+  const { checkFloor, describe } = require('./floor');
+  const onDisk = [...fs.readdirSync(path.join(root, 'js')).filter(f => f.endsWith('.js')).map(f => `js/${f}`), ...fs.readdirSync(path.join(root, 'js/captains')).filter(f => f.endsWith('.js')).map(f => `js/captains/${f}`)];
+  const result = checkFloor(rows, JSON.parse(fs.readFileSync(path.join(__dirname, 'coverage-floor.json'), 'utf8')), onDisk);
+  console.log(`\n${describe(result)}`);
+  process.exitCode = result.failures.length ? 1 : 0;
+}

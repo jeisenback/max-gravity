@@ -16,7 +16,7 @@ An Escape Velocity homage in vanilla JS and canvas. Static site, no build step. 
 
 ## Tests
 
-`CHROMIUM_PATH=$(ls /opt/pw-browsers/chromium_headless_shell-*/chrome-linux/headless_shell | tail -1) npm test` (about two minutes; the headless shell opens a page about a third faster than `/opt/pw-browsers/chromium`, which also works). Run the full suite before pushing. While working, `npm run test:changed` runs only the test files the changed files can affect (`--list` shows the choice without running it). `npm run soak` runs the distribution checks (many seeds, a stated sample and tolerance) that are not in `npm test`; run it when you change pacing or pay.
+`CHROMIUM_PATH=$(ls /opt/pw-browsers/chromium_headless_shell-*/chrome-linux/headless_shell | tail -1) npm test` (about two minutes; the headless shell opens a page about a third faster than `/opt/pw-browsers/chromium`, which also works). Run the full suite before pushing. While working, `npm run test:changed` runs only the test files the changed files can affect (`--list` shows the choice without running it). `npm run coverage` reports line coverage and the functions never called; `npm run coverage -- --check` is the floor for the narrow build's files (`tools/coverage-floor.json`), run by CI as its own job. If a file falls under it, test what it names; when a file's coverage rises, raise its number. `npm run soak` runs the distribution checks (many seeds, a stated sample and tolerance) that are not in `npm test`; run it when you change pacing or pay.
 
 ## Git
 
