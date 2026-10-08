@@ -7,8 +7,8 @@ const BUILD = {
   version: '0.9.0', dev: true,
   scope: /[?&]scope=full(&|$)/.test(location.search) ? 'full' : 'earth-hired',
 };
-// The ship-interface shell (js/shell.js): on in the narrow build and off in the full one, unless the address says shell=on or shell=off.
-BUILD.shell = /[?&]shell=on(&|$)/.test(location.search) ? 'on' : /[?&]shell=off(&|$)/.test(location.search) ? 'off' : BUILD.scope === 'earth-hired' ? 'on' : 'off';
+// The ship-interface shell (js/shell.js): on in both builds, unless the address says shell=off.
+BUILD.shell = /[?&]shell=off(&|$)/.test(location.search) ? 'off' : 'on';
 const shellOn = () => BUILD.shell === 'on';
 
 // Scope. 'earth-hired' is the chapter being tuned: an Earth hired hand, ending when they buy a ship. The systems listed

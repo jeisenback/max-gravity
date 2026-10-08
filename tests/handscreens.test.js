@@ -4,7 +4,7 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { open, closeBrowser } = require('./helpers');
+const { open, closeBrowser, goTo } = require('./helpers');
 
 after(closeBrowser);
 
@@ -14,10 +14,10 @@ const helpers = () => {
     const st = G.state; st.story.next = 1e9; st.tutorial = null; G.mode = 'landed';
     return st;
   };
-  window.subTabs = () => { const d = document.createElement('div'); d.innerHTML = bridgeKeys(currentPlanet(), 'port'); return [...d.querySelectorAll('.tabs.sub button')].map(b => b.textContent); };
+  window.subTabs = () => { const d = document.createElement('div'); d.innerHTML = railHtml(currentPlanet(), 'port'); return [...d.querySelectorAll('.rail-group:last-child button')].map(b => b.textContent); };
 };
 
-test('a hired hand has no Exchange or Company sub-tab, and an owner keeps them', async () => {
+test('a hired hand has no Exchange or Company on the rail, and an owner keeps them', async () => {
   const hand = await open({ scope: 'earth-hired' });
   await hand.ev(helpers);
   const h = await hand.ev(() => { startHand(); return subTabs(); });
@@ -77,7 +77,7 @@ test('a suggested run reads in the captain\'s terms, and the deck plan draws a f
   const n = await ev(() => { G.mode = 'landed'; UI.render(); return crewMembers().length + 2; });
   for (const [w, h] of [[1280, 800], [390, 844]]) {
     await page.setViewportSize({ width: w, height: h });
-    await page.click('[data-action=station][data-arg=interior]');
+    await goTo(page, 'crew');
     const faces = await page.$$eval('#panel .con-plant circle.person', c => c.length), portraits = await page.$$eval('#panel .con-plant .face svg.char-portrait', c => c.length);
     assert.equal(faces, n, `a token for everyone at ${w}px`); assert.equal(portraits, n - 1, `a portrait for everyone but you at ${w}px`);
   }

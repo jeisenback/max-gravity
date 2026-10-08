@@ -5,24 +5,24 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { open, closeBrowser } = require('./helpers');
+const { open, closeBrowser, goTo } = require('./helpers');
 
 after(closeBrowser);
 
 const helpers = () => { window.hand = () => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'pilot', captainKey: 'hester' }); while (G.dialog) finishEvent(); }; };
 
-test('Interior has a Crew tab and a Journal tab, and the Journal holds the journal, standing, feeds and news', async () => {
+test('the rail has Crew and Journal, and the Journal holds the journal, standing, feeds and news', async () => {
   const { ev, page, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   await ev(() => { hand(); const st = G.state; st.journal = [{ day: st.day, text: 'You covered the watch.' }, { day: st.day - 3, text: 'The captain made the window.' }]; UI.tab = 'crew'; UI.render(); });
-  const tabs = await page.$$eval('.tabs.sub button', b => b.map(x => x.textContent));
+  const tabs = await page.$$eval('.rail button', b => b.map(x => x.textContent).filter(n => ['Crew', 'Bonds', 'Journal'].includes(n)));
   assert.deepEqual(tabs, ['Crew', 'Bonds', 'Journal']);
-  await page.click('.tabs.sub [data-arg=journal]');
+  await goTo(page, 'journal');
   const text = await page.innerText('#panel .body');
   for (const part of [/Journal/i, /You covered the watch/, /The captain made the window/, /Standing/i, /On the feeds/i, /News/i]) assert.match(text, part);  // headings are upper-cased by the page
   assert.equal(await ev(() => UI.tab), 'journal');
-  assert.equal(await ev(() => stationOf(UI.tab).id), 'interior', 'it sits under Interior');
-  await page.click('.tabs.sub [data-arg=crew]');
+  assert.equal(await page.innerText('.rail button.active'), 'Journal', 'the rail lights Journal');
+  await goTo(page, 'crew');
   assert.match(await page.innerText('#panel'), /Posts/i, 'the Crew tab is the deck as before');
   await done();
 });

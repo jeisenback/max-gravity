@@ -4,7 +4,7 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { open, closeBrowser } = require('./helpers');
+const { open, closeBrowser, goTo } = require('./helpers');
 
 after(closeBrowser);
 
@@ -29,7 +29,7 @@ const helpers = () => {
 };
 
 test('a solo captain is manual everywhere; hiring a role makes that post crewed', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.crew = []; delete st.posts;  // an old save has no posts
@@ -47,7 +47,7 @@ test('a solo captain is manual everywhere; hiring a role makes that post crewed'
 });
 
 test('taking the controls is instant; being overruled often costs the crew heart', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.crew = [];
@@ -66,7 +66,7 @@ test('taking the controls is instant; being overruled often costs the crew heart
 });
 
 test('orders: a skilled crew member does better than the captain, once a day, within the cap', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state, max = ship().armor, cap = Math.floor(max * 0.75);
@@ -88,16 +88,16 @@ test('orders: a skilled crew member does better than the captain, once a day, wi
 });
 
 test('mods can add orders, and the stations show the post', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({});
   await ev(helpers);
   await ev(() => { G.state.tutorial = null; while (G.dialog) finishEvent(); hire('engineer'); Mods.register({ id: 'test-orders', name: 'T', init(M) { M.filter('orders', (list, post) => post === 'gunner' ? [...list, { id: 'salute', name: 'Salute', desc: 'x', run: () => 'A crisp salute.' }] : list); } }); UI.render(); });
-  await page.click('[data-action=station][data-arg=eng]');
+  await goTo(page, 'shipyard');
   assert.match(await page.innerText('#panel'), /engineer post/i);
   assert.match(await page.innerText('#panel'), /has the engineer post/);
   await page.click('[data-action=takeControl][data-arg=engineer]');
   assert.match(await page.innerText('#panel'), /taken the engineer controls/);
   await page.click('[data-action=handBack][data-arg=engineer]');
-  await page.click('[data-action=station][data-arg=weapons]');
+  await goTo(page, 'weapons');
   await page.click('[data-action=postOrder][data-arg="gunner:salute"]');
   assert.match(await page.innerText('#panel'), /crisp salute/);
   // Underway, the same post shows on the station sheet and its buttons work.
@@ -112,7 +112,7 @@ test('mods can add orders, and the stations show the post', async () => {
 
 
 test('autopilot: a crewed pilot takes the ship out, brings it in and lands on the chosen planet', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.story.next = 1e9; st.crew = []; while (G.dialog) finishEvent();
@@ -143,7 +143,7 @@ test('autopilot: a crewed pilot takes the ship out, brings it in and lands on th
 });
 
 test('autopilot: a flight key, a hostile ship, or a hand-back gives the controls to you', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.story.next = 1e9; st.crew = []; while (G.dialog) finishEvent();
@@ -163,10 +163,10 @@ test('autopilot: a flight key, a hostile ship, or a hand-back gives the controls
 });
 
 test('autopilot: the Navigation station offers it to a crewed pilot, and the dock choice sticks', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({});
   await ev(helpers);
   await ev(() => { const st = G.state; st.tutorial = null; st.crew = []; while (G.dialog) finishEvent(); st.dest = 'mars'; st.fuel = ship().fuel; UI.render(); });
-  await page.click('[data-action=station][data-arg=nav]');
+  await goTo(page, 'nav');
   assert.equal(await page.$$eval('[data-action=routeDock]', b => b.length), 0, 'a solo captain has nothing to route');
   await ev(() => { hire('pilot', 2); UI.render(); });
   assert.ok(await page.$$eval('[data-action=routeDock]', b => b.length) >= 2, 'the planets of the destination');
@@ -180,7 +180,7 @@ test('autopilot: the Navigation station offers it to a crewed pilot, and the doc
 });
 
 test('gunner: a crewed gunner fights the duel; with none, or the post taken, you do', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     G.state.crew = [];
@@ -214,7 +214,7 @@ test('gunner: a crewed gunner fights the duel; with none, or the post taken, you
 });
 
 test('gunner: decks come from the fit, and torpedoes are spent for good', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state;
@@ -237,7 +237,7 @@ test('gunner: decks come from the fit, and torpedoes are spent for good', async 
 });
 
 test('gunner: exchanges follow threat and answer, end in eight, and never kill you', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     G.state.crew = []; hire('gunner', 3); hire('pilot', 2);
@@ -281,7 +281,7 @@ test('gunner: exchanges follow threat and answer, end in eight, and never kill y
 });
 
 test('gunner: the enemy counts cards from public information', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.crew = []; hire('gunner', 2); hire('pilot', 1);
@@ -303,7 +303,7 @@ test('gunner: the enemy counts cards from public information', async () => {
 });
 
 test('engineer: power always adds to 100, within limits', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   const bad = await ev(() => {
     const out = [];
     for (let i = 0; i < 300; i++) {
@@ -318,7 +318,7 @@ test('engineer: power always adds to 100, within limits', async () => {
 });
 
 test('engineer: a manual engineer can scram the reactor; a crewed one keeps it cool', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state, run = (secs) => { for (let i = 0; i < secs; i++) { G.transit.event = null; Mods.emit('frame', 1); } };
@@ -342,7 +342,7 @@ test('engineer: a manual engineer can scram the reactor; a crewed one keeps it c
 });
 
 test('engineer: power orders, and power changes the console fight', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.crew = []; st.tutorial = null;
@@ -371,10 +371,10 @@ test('engineer: power orders, and power changes the console fight', async () => 
 });
 
 test('engineer: sliders for a manual engineer, bars for a crewed one, and a sheet you can drag', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({});
   await ev(helpers);
   await ev(() => { G.state.tutorial = null; G.state.crew = []; while (G.dialog) finishEvent(); UI.render(); });
-  await page.click('[data-action=station][data-arg=eng]');
+  await goTo(page, 'shipyard');
   assert.equal(await page.$$eval('#panel input[data-power]', i => i.length), 3, 'a manual engineer gets sliders');
   await page.$eval('#panel input[data-power=weapons]', el => { el.value = 60; el.dispatchEvent(new Event('input', { bubbles: true })); });
   assert.equal(await ev(() => power().weapons), 60);
@@ -399,7 +399,7 @@ test('the engineering console shows wear in its colors, and fits a phone without
   const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
   await ev(() => { G.state.tutorial = null; G.state.crew = []; G.state.condition = { drive: 95, fire: 20, shields: 55, life: 100, sensors: 100 }; while (G.dialog) finishEvent(); UI.render(); });
-  await page.click('[data-action=station][data-arg=eng]');
+  await goTo(page, 'shipyard');
   const colors = await page.$$eval('#panel .con-part', rows => rows.map(r => r.querySelector('.con-bar i').style.backgroundColor));
   assert.deepEqual(colors, ['rgb(95, 211, 95)', 'rgb(255, 106, 74)', 'rgb(255, 154, 60)', 'rgb(95, 211, 95)', 'rgb(95, 211, 95)'], 'good, failing, worn, good, good');
   assert.ok(await page.$('#panel [data-gauge=heat]') && await page.$('#panel [data-plant]'), 'the heat gauge and the plant schematic are on the display');
@@ -412,7 +412,7 @@ test('the weapons console shows the armament and the fire deck from the ship, at
   const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
   await ev(() => { const st = G.state; st.tutorial = null; st.crew = []; st.outfits = { pdc: 2, launcher: 1 }; st.torpedoes = 4; st.condition = { drive: 100, fire: 20, shields: 100, life: 100, sensors: 100 }; while (G.dialog) finishEvent(); UI.render(); });
-  await page.click('[data-action=station][data-arg=weapons]');
+  await goTo(page, 'weapons');
   const want = await ev(() => ({ guns: Math.min(6, ship().guns), deck: playerCounts() }));
   assert.equal(await page.$$eval('#panel .con-plant rect[width="22"]', n => n.length), want.guns, 'a mount for each gun');
   assert.equal(await page.$$eval('#panel .con-plant rect[width="22"]', n => n[0].getAttribute('stroke')), '#ff6a4a', 'worn fire control shows red');
@@ -434,7 +434,7 @@ test('the navigation console plots the course at port and the burn in flight', a
   const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
   await ev(() => { G.state.tutorial = null; G.state.crew = []; while (G.dialog) finishEvent(); G.state.dest = 'mars'; UI.render(); });
-  await page.click('[data-action=station][data-arg=nav]');
+  await goTo(page, 'nav');
   const want = await ev(() => ({ days: travelDays(G.state.systemId, 'mars'), fuel: burnFuel(G.state.systemId, 'mars'), n: Object.values(SYSTEMS).filter(x => x.au <= Math.max(2, 1.3 * Math.max(SYSTEMS[G.state.systemId].au, SYSTEMS.mars.au))).length }));
   const row = (root, label) => page.$$eval(`${root} .con-read`, (rows, l) => { const r = rows.find(x => x.firstElementChild.textContent === l); return r && r.lastElementChild.textContent; }, label);
   assert.equal(await row('#panel', 'Burn'), `${want.days} days`, 'the course card has the burn');
@@ -463,7 +463,7 @@ test('the interior console puts the crew at their posts, with how they are doing
     UI.render();
     return { used: berthsUsed(), berths: Math.min(8, ship().berths), pilot: pilot.first, eng: fullName(eng) };
   });
-  await page.click('[data-action=station][data-arg=interior]');
+  await goTo(page, 'crew');
   const row = (root, label) => page.$$eval(`${root} .con-read`, (rows, l) => { const r = rows.find(x => x.firstElementChild.textContent === l); return r && r.lastElementChild.textContent; }, label);
   assert.match(await row('#panel', 'Pilot'), new RegExp(`^${want.pilot}`), 'the pilot post names its holder');
   assert.equal(await row('#panel', 'Engineer'), 'You', 'a hurt engineer cannot hold the post, so you do');
@@ -492,7 +492,7 @@ test('the comms console shows the inbox as a feed and the tips in force, at port
     addRumor(); G.nextEvent = null; while (G.dialog) finishEvent(); UI.render();
     return { n: st.inbox.length, tips: st.rumors.length };
   });
-  await page.click('[data-action=station][data-arg=comms]');
+  await goTo(page, 'comms');
   assert.equal(await page.$$eval('#panel .con-feed .con-msg', n => n.length), want.n, 'a line in the feed for each inbox entry');
   assert.equal(await page.$$eval('#panel .con-feed .con-msg.via-ship', n => n.length), 1, 'colored by how it arrived');
   assert.match(await page.innerText('#panel'), /Market tips in force/i);
@@ -514,13 +514,13 @@ test('the operations console shows the cargo bay and the manifest, at port and i
     st.cargo = { water: 5, metal: 3 }; UI.render();
     return { cap: ship().cargo, used: cargoUsed() };
   });
-  await page.click('[data-action=station][data-arg=ops]');
+  await goTo(page, 'port');
   assert.equal(await page.$$eval('#panel .con-plant rect', n => n.length), want.cap, 'a cell for each ton the hold takes');
   assert.equal(await page.$$eval('#panel .con-plant rect[data-bay]', n => n.length), want.used, 'filled for each ton aboard');
   assert.equal(await page.$$eval('#panel .con-plant rect[data-bay=water]', n => n.length), 5);
   assert.match(await page.innerText('#panel .con'), /Water\s*5t/);
   assert.match(await page.innerText('#panel .con'), /Refined Metals\s*3t/);
-  assert.equal(await page.$$eval('.tabs.sub button', b => b.length), 5, 'the port tabs are still there');
+  assert.ok(await page.$$eval('.rail [data-action=tab]', b => b.length) >= 5, 'the rail is still there');
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
   await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; });
   await page.waitForSelector('#bkeys', { state: 'visible' });
@@ -539,7 +539,7 @@ test('the character screen opens from the crew list and the posts, shows what we
     hire('gunner', 1); UI.render();
     return { name: fullName(pilot), id: pilot.id };
   });
-  await page.click('[data-action=station][data-arg=interior]');
+  await goTo(page, 'crew');
   await page.click(`#panel .con [data-action=person][data-arg="${who.id}"]`);
   assert.equal(await ev(() => UI.tab), 'person');
   assert.match(await page.innerText('#panel'), new RegExp(who.name));
@@ -554,7 +554,7 @@ test('the character screen opens from the crew list and the posts, shows what we
   await page.click('#panel [data-action=personBack]');
   assert.equal(await ev(() => UI.tab), 'crew', 'back to where you were');
   // You are a person too: the posts you hold are links to your own screen.
-  await page.click('[data-action=station][data-arg=interior]');
+  await goTo(page, 'crew');
   await page.click('#panel .con [data-action=person][data-arg=you]');
   assert.match(await page.innerText('#panel'), /playing as/i);
   assert.ok(await page.$('#panel svg.char-portrait'));
@@ -570,7 +570,7 @@ test('the character screen opens from the crew list and the posts, shows what we
 });
 
 test('drive power sets the burn: speed, days, reaction mass, and how easily pirates spot you', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; while (G.dialog) finishEvent();
@@ -616,7 +616,7 @@ test('drive power sets the burn: speed, days, reaction mass, and how easily pira
 });
 
 test('comms: a scene says how it arrived, the inbox keeps it, and the comms post listens', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; st.inbox = []; while (G.dialog) finishEvent();
@@ -645,14 +645,14 @@ test('comms: a scene says how it arrived, the inbox keeps it, and the comms post
   assert.match(r.note, /tip|static/); assert.equal(r.second, null, 'once a day');
   // The station at port and the sheet in a burn.
   await ev(() => { G.transit = null; G.mode = 'landed'; landAt(currentPlanet(), []); while (G.dialog) finishEvent(); UI.render(); });
-  await page.click('[data-action=station][data-arg=comms]');
+  await goTo(page, 'comms');
   assert.match(await page.innerText('#panel'), /Inbox/i);
   assert.ok(await page.$('#panel [data-action=postOrder][data-arg="comms:listen"]'));
   await done();
 });
 
 test('comms: a crewed officer takes the merchant hail themselves, a solo captain answers it', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; st.inbox = []; while (G.dialog) finishEvent();
@@ -678,7 +678,7 @@ test('comms: a crewed officer takes the merchant hail themselves, a solo captain
 
 
 test('wear: systems wear slowly with use, at the setting you choose, and old saves start new', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; while (G.dialog) finishEvent();
@@ -709,7 +709,7 @@ test('wear: systems wear slowly with use, at the setting you choose, and old sav
 });
 
 test('wear: a worn system costs performance, and breakdowns come as a scene', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; Settings.wear = 'slow'; while (G.dialog) finishEvent();
@@ -743,10 +743,10 @@ test('wear: a worn system costs performance, and breakdowns come as a scene', as
 });
 
 test('wear: port overhaul, servicing in flight, and the setting in the menu', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({});
   await ev(helpers);
   await ev(() => { const st = G.state; st.tutorial = null; st.crew = []; st.credits = 10000; while (G.dialog) finishEvent(); st.condition = undefined; Object.assign(condition(), { drive: 50, shields: 80 }); UI.render(); });
-  await page.click('[data-action=station][data-arg=eng]');
+  await goTo(page, 'shipyard');
   assert.match(await page.innerText('#panel'), /Condition/i);
   const cost = await ev(() => overhaulCost('drive'));
   assert.equal(cost, 400);
@@ -773,7 +773,7 @@ test('wear: port overhaul, servicing in flight, and the setting in the menu', as
 });
 
 test('projects: they take parts, run only on a burn, and finish with a result', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; Settings.wear = 'slow'; while (G.dialog) finishEvent();
@@ -794,7 +794,7 @@ test('projects: they take parts, run only on a burn, and finish with a result', 
 });
 
 test('projects: a crewed engineer does better; patch, tune and refit each have their effect', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; Settings.wear = 'slow'; while (G.dialog) finishEvent();
@@ -821,10 +821,10 @@ test('projects: a crewed engineer does better; patch, tune and refit each have t
 });
 
 test('projects: the station lists them, starts one, and shows its progress', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({});
   await ev(helpers);
   await ev(() => { const st = G.state; st.tutorial = null; st.crew = []; st.cargo = { industrial: 2 }; st.paid = { industrial: 400 }; while (G.dialog) finishEvent(); UI.render(); });
-  await page.click('[data-action=station][data-arg=eng]');
+  await goTo(page, 'shipyard');
   assert.match(await page.innerText('#panel'), /Projects/i);
   assert.ok(await page.$('#panel [data-action=project][data-arg=patch]:not([disabled])'));
   await page.click('[data-action=project][data-arg=patch]');
@@ -841,7 +841,7 @@ test('projects: the station lists them, starts one, and shows its progress', asy
 });
 
 test('programs: a slicer writes a rule over a burn, slots are limited, and a full table blocks new ones', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; st.programs = undefined; Settings.wear = 'off'; while (G.dialog) finishEvent();
@@ -875,7 +875,7 @@ test('programs: a slicer writes a rule over a burn, slots are limited, and a ful
 });
 
 test('programs: a rule runs a crewed post on the rising edge of its condition, and only a crewed one', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; st.programs = undefined; Settings.wear = 'off'; while (G.dialog) finishEvent();
@@ -909,10 +909,10 @@ test('programs: a rule runs a crewed post on the rising edge of its condition, a
 });
 
 test('programs: the Comms station lists them, takes a rule, and shows the writing', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({});
   await ev(helpers);
   await ev(() => { const st = G.state; st.tutorial = null; st.crew = []; st.programs = undefined; while (G.dialog) finishEvent(); hire('engineer', 2); hire('slicer', 2); UI.render(); });
-  await page.click('[data-action=station][data-arg=comms]');
+  await goTo(page, 'comms');
   assert.match(await page.innerText('#panel'), /Programs/i);
   assert.equal(await page.$eval('#panel [data-action=programWrite]', b => b.disabled), true, 'nothing picked yet');
   await page.click('#panel [data-action=programPick][data-arg="cond:heat"]');

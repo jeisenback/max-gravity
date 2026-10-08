@@ -4,7 +4,7 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { open, closeBrowser } = require('./helpers');
+const { open, closeBrowser, goTo } = require('./helpers');
 
 after(closeBrowser);
 
@@ -12,14 +12,14 @@ const helpers = () => { window.hand = () => { startGame({ slot: 1, background: '
 
 const parse = html => { const d = document.createElement('div'); d.innerHTML = html; return d; };
 
-test('Interior has Crew, Bonds and Journal tabs, in that order, and Bonds opens the web', async () => {
+test('the rail has Crew, Bonds and Journal in that order, and Bonds opens the web', async () => {
   const { ev, page, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   await ev(() => { hand(); UI.tab = 'crew'; UI.render(); });
-  assert.deepEqual(await page.$$eval('.tabs.sub button', b => b.map(x => x.textContent)), ['Crew', 'Bonds', 'Journal']);
-  await page.click('.tabs.sub [data-arg=web]');
+  assert.deepEqual(await page.$$eval('.rail button', b => b.map(x => x.textContent).filter(n => ['Crew', 'Bonds', 'Journal'].includes(n))), ['Crew', 'Bonds', 'Journal']);
+  await goTo(page, 'web');
   assert.equal(await ev(() => UI.tab), 'web');
-  assert.equal(await ev(() => stationOf(UI.tab).id), 'interior');
+  assert.equal(await page.innerText('.rail button.active'), 'Bonds', 'the rail lights Bonds');
   assert.ok(await page.$('#panel svg.con-plant .web-node'), 'the web is drawn');
   await done();
 });
@@ -67,7 +67,7 @@ test('the strongest ties are listed strongest first, and a click on a node opens
 });
 
 test('with no bonds the web says so, and an owner with a small crew still draws', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   const r = await ev(() => {
     while (G.dialog) finishEvent();
     const empty = UI.views.web.call(UI);

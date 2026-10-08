@@ -100,12 +100,14 @@ git commit -m "Move the remaining tests to the shell (#324)"
 
 ### Task 5: The helper's default becomes the shell
 
-**Files:**
-- Modify: `tests/helpers.js` and every call site that passes `shell`
+Built as: the helper opens with the build's default (the shell) and the options `shell: true` and `'default'` and the `SHELL_TESTS` variable are gone; `shell: false` stays, for the two flag tests only, so `main` stays green. Task 6 removes it with those tests.
 
-- [ ] **Step 1:** `open()` opens with the build's default (the shell); remove the `shell` option, the `SHELL_TESTS` variable and its comment; delete `shell: true`, `shell: false` and `shell: 'default'` at the call sites (about 35).
-- [ ] **Step 2: Run the full suite.** Expected: PASS except the two flag tests, which are marked for Task 6 (they assert the old path exists).
-- [ ] **Step 3: Commit.**
+**Files:**
+- Modify: `tests/helpers.js` and every call site that passed `shell`
+
+- [x] **Step 1:** `open()` opens with the build's default; remove `shell: true` and `shell: 'default'` at the call sites (about 150), and `SHELL_TESTS`; `shell: false` becomes the only value the option takes.
+- [x] **Step 2: Run the full suite.** Expected: PASS.
+- [x] **Step 3: Commit.**
 
 ```bash
 git add tests

@@ -5,7 +5,7 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { open, closeBrowser } = require('./helpers');
+const { open, closeBrowser, goTo } = require('./helpers');
 
 after(closeBrowser);
 
@@ -16,26 +16,26 @@ test('a hired hand sees the captain on Interior, the header, Operations and Navi
   await ev(`(${startHired})`);
   const cap = await ev(() => { const c = hiredCaptain(); return { id: c.id, name: `${c.first} ${c.last}`, wage: hired().wage, share: Math.round(hired().share * 100) }; });
   assert.match(await page.innerText('#panel .hdr, .hdr'), new RegExp(`Capt\\. ${cap.name}`), 'the port header says whose ship it is');
-  await page.click('[data-action=station][data-arg=interior]');
+  await goTo(page, 'crew');
   const row = await page.$$eval('#panel .con-read', rows => rows.map(r => [r.firstElementChild.textContent, r.lastElementChild.textContent]));
   assert.deepEqual(row[0], ['Captain', cap.name], 'the first row of the posts card');
   assert.ok(await page.$(`#panel .con-read [data-action=person][data-arg="${cap.id}"]`), 'and a link to their screen');
   const cabins = await page.$$eval('#panel .con-plant text.lbl', t => t.map(x => x.textContent));
   assert.ok(cabins.includes('BRIDGE'), 'the deck plan is the cutaway\'s ship');
   assert.equal(await page.$$eval('#panel .con-plant circle.person', n => n.length), await ev(() => crewMembers().length + 2), 'everyone aboard, the captain, and you, each in a room');
-  await page.click('[data-action=station][data-arg=ops]');
+  await goTo(page, 'port');
   assert.match(await page.innerText('#panel .con-head'), new RegExp(`captain's hold.*Capt\\. ${cap.name}`, 'i'));
-  await page.click('[data-action=station][data-arg=nav]');
+  await goTo(page, 'nav');
   assert.ok(await page.$(`#panel .eyebrow [data-action=person][data-arg="${cap.id}"]`), 'the run is the captain\'s, named and linked');
   assert.ok(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'no sideways scroll at phone width');
   await done();
 });
 
 test('the captain\'s screen has no post skills: what they pay you, and what you earn with them', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({});
   await ev(`(${startHired})`);
   const cap = await ev(() => { const c = hiredCaptain(); hired().ledger.push({ day: 1, from: 'A', to: 'B', good: 'water', tons: 5, profit: 500, wage: 120, share: 50 }); return { id: c.id, name: `${c.first} ${c.last}`, wage: hired().wage, share: Math.round(hired().share * 100) }; });
-  await page.click('[data-action=station][data-arg=interior]');
+  await goTo(page, 'crew');
   await page.click(`#panel .con-read [data-action=person][data-arg="${cap.id}"]`);
   const text = await page.innerText('#panel');
   assert.match(text, new RegExp(cap.name)); assert.match(text, /Captain, /);
@@ -46,9 +46,9 @@ test('the captain\'s screen has no post skills: what they pay you, and what you 
 });
 
 test('an owner is in command in the same places', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({});
   await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent(); G.state.tutorial = null; UI.render(); });
-  await page.click('[data-action=station][data-arg=interior]');
+  await goTo(page, 'crew');
   const first = await page.$$eval('#panel .con-read', rows => [rows[0].firstElementChild.textContent, rows[0].lastElementChild.textContent]);
   assert.deepEqual(first, ['Captain', 'You, in command']);
   assert.ok((await page.$$eval('#panel .con-plant text.lbl', t => t.map(x => x.textContent))).includes('BRIDGE'));
@@ -60,7 +60,7 @@ test('an owner is in command in the same places', async () => {
 });
 
 test('the burn HUD names the captain, and the chatter gives the captain their own lines', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(`(${startHired})`);
   const r = await ev(() => {
     const out = {}, c = hiredCaptain(), spoken = [], real = ctx.fillText;
@@ -88,7 +88,7 @@ test('the burn HUD names the captain, and the chatter gives the captain their ow
 });
 
 test('runs together and what you earned keep counting past the 20 runs the ledger holds', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(`(${startHired})`);
   const r = await ev(() => {
     const h = hired(), st = G.state, planet = currentPlanet();

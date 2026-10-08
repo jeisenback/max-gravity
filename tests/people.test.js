@@ -6,7 +6,7 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { open, closeBrowser } = require('./helpers');
+const { open, closeBrowser, goTo } = require('./helpers');
 
 after(closeBrowser);
 
@@ -22,10 +22,10 @@ const everyChoice = (make) => {
 };
 
 test('hiring crew, their perks, and every crew and passenger scene', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({});
   await ev(() => { const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 200000; while (G.dialog) finishEvent(); st.systemId = 'ceres'; st.planet = 'Ceres Station'; landAt(currentPlanet(), []); while (G.dialog) finishEvent(); });
   const massBefore = await ev(() => burnFuel('ceres', 'jupiter'));
-  await page.click('[data-action=station][data-arg=interior]');
+  await goTo(page, 'crew');
   await page.click('[data-action=hire][data-arg=rosa]');
   assert.ok(await ev(() => G.state.crew.includes('rosa')));
   assert.ok(await ev(() => burnFuel('ceres', 'jupiter')) < massBefore, 'an engineer saves reaction mass');
@@ -54,7 +54,7 @@ test('hiring crew, their perks, and every crew and passenger scene', async () =>
 });
 
 test('downtime from the transit screen', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({});
   await ev(() => {
     const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000; st.shipId = 'lightfreighter';
     while (G.dialog) finishEvent();
@@ -78,7 +78,7 @@ test('downtime from the transit screen', async () => {
 });
 
 test('relationships, feeds, seasons, and passengers who come back', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   const r = await ev(() => {
     const st = G.state, out = {}; st.tutorial = null; st.story.next = 1e9; st.credits = 50000; st.shipId = 'lightfreighter';
     while (G.dialog) finishEvent();
@@ -120,14 +120,14 @@ test('relationships, feeds, seasons, and passengers who come back', async () => 
 });
 
 test('the bar in every port, and every landing scene', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({});
   await ev(() => {
     const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000; st.shipId = 'lightfreighter';
     while (G.dialog) finishEvent();
     st.systemId = 'juno'; st.planet = 'Juno Commons'; landAt(SYSTEMS.juno.planets[0], []);
     while (G.dialog) { chooseEvent(G.dialog.choices.length - 1); finishEvent(); }
   });
-  await page.click('[data-action=station][data-arg=ops]');
+  await goTo(page, 'port');
   await page.click('[data-action=tab][data-arg=bar]');
   await page.click('[data-action=barTalk][data-arg="0"]');
   await page.click('[data-action=choose][data-arg="0"]');
@@ -161,7 +161,7 @@ test('the bar in every port, and every landing scene', async () => {
 });
 
 test('family: a personal story to loyalty, letters and moods, occasions, traditions, the cat, joining', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({});
   const r = await ev(() => {
     const st = G.state, out = {};
     st.tutorial = null; st.story.next = 1e9; st.credits = 60000; st.shipId = 'lightfreighter';
@@ -208,7 +208,7 @@ test('family: a personal story to loyalty, letters and moods, occasions, traditi
   assert.ok(r.log > 0, 'the home log records it');
   // Rename the ship from the Crew tab.
   await ev(() => { G.transit = null; G.state.systemId = 'ceres'; G.state.planet = 'Ceres Station'; landAt(SYSTEMS.ceres.planets[0], []); while (G.dialog) { chooseEvent(0); finishEvent(); } });
-  await page.click('[data-action=station][data-arg=interior]');
+  await goTo(page, 'crew');
   await page.fill('#shipName', 'Tuesday Forever');
   await page.click('[data-action=renameShip]');
   assert.equal(await ev(() => home().name), 'Tuesday Forever');
@@ -266,7 +266,7 @@ test('a long career with random answers: no errors, no broken text, no overfull 
 });
 
 test('what people are seen doing on the ship: every room and role has lines that fill in', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; while (G.dialog) finishEvent();
     st.crew.push('rosa', 'kit', 'dima'); home().cat = 'Rivet'; st.shipId = 'freighter';
@@ -288,7 +288,7 @@ test('what people are seen doing on the ship: every room and role has lines that
 });
 
 test('Good News and Bad News open and resolve in many ways, and every one fills in', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; while (G.dialog) finishEvent();
     const mk = role => { const p = makePerson('belt'); p.role = role; p.skill = 1; registerPerson(p); st.crew.push(p.id); return p; };

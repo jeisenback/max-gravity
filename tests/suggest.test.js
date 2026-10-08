@@ -4,7 +4,7 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { open, closeBrowser } = require('./helpers');
+const { open, closeBrowser, goTo } = require('./helpers');
 
 after(closeBrowser);
 
@@ -69,7 +69,7 @@ test('the run panel lists the next runs for a captain with a style, and the butt
   const { page, ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   await ev(() => { setup('dov'); stage({ profit: 1000 }, { profit: 400, planet: 'Ganymede' }); UI.render(); });
-  await page.click('[data-action=station][data-arg=eng]').catch(() => {});
+  await goTo(page, 'shipyard').catch(() => {});
   assert.ok(await ev(() => /Suggest another run/.test(document.querySelector('#panel').innerText) || /Suggest another run/.test(runHtml())));
   await ev(() => Mods.act('suggestRun', '0'));
   assert.equal(await ev(() => hired().plan.run.profit), 400);

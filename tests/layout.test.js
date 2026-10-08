@@ -18,7 +18,7 @@ const SIZES = [
 // Opens the narrow build at each size with a hired gunner landed at Earth, and runs fn({ page, ev, size }) there.
 async function atWidths(fn) {
   for (const size of SIZES) {
-    const g = await open({ scope: 'earth-hired', shell: 'default', viewport: size.viewport, mobile: size.mobile });
+    const g = await open({ scope: 'earth-hired', viewport: size.viewport, mobile: size.mobile });
     await g.ev(() => {
       window.start = (o = {}) => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', ...o }); while (G.dialog) finishEvent(); G.state.story.next = 1e9; };
       start();
@@ -54,7 +54,7 @@ test('every rail page fits at the three screen sizes', async () => {
 });
 
 test('the HUD sidebar and the panel do not overlap, and the panel clears the compact strip', async () => {
-  const g = await open({ scope: 'earth-hired', shell: 'default', viewport: { width: 768, height: 1024 }, mobile: true });
+  const g = await open({ scope: 'earth-hired', viewport: { width: 768, height: 1024 }, mobile: true });
   await g.ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent(); });
   const r = await g.ev(() => {
     const p = document.querySelector('#panel').getBoundingClientRect();
@@ -66,7 +66,7 @@ test('the HUD sidebar and the panel do not overlap, and the panel clears the com
 });
 
 test('between 700 and 999px the compact HUD is used, and from 1000px the sidebar', async () => {
-  const g = await open({ scope: 'earth-hired', shell: 'default', viewport: { width: 768, height: 1024 } });
+  const g = await open({ scope: 'earth-hired', viewport: { width: 768, height: 1024 } });
   const hudAt = async w => { await g.page.setViewportSize({ width: w, height: 800 }); await g.page.waitForFunction(x => innerWidth === x && G.W === x, w); return g.ev(() => ({ hudW: G.hudW, hud: HUD_W })); };
   assert.equal((await hudAt(768)).hudW, 0, 'no sidebar at 768');
   assert.equal((await hudAt(999)).hudW, 0, 'no sidebar at 999');
@@ -77,7 +77,7 @@ test('between 700 and 999px the compact HUD is used, and from 1000px the sidebar
 });
 
 test('on a phone the rail is a grid between the page and the dock, with every entry at least 44px high', async () => {
-  const g = await open({ scope: 'earth-hired', shell: 'default', viewport: { width: 390, height: 844 }, mobile: true });
+  const g = await open({ scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
   await g.ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent(); });
   const r = await g.ev(() => {
     const rail = document.querySelector('.rail'), rb = rail.getBoundingClientRect();
@@ -97,7 +97,7 @@ test('on a phone the rail is a grid between the page and the dock, with every en
 });
 
 test('a shut entry\'s reason is visible text on a phone, across the grid', async () => {
-  const g = await open({ scope: 'earth-hired', shell: 'default', viewport: { width: 390, height: 844 }, mobile: true });
+  const g = await open({ scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
   const r = await g.ev(() => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent();
     UI.planet.services = []; UI.render();  // a port with no work board and no shipyard
@@ -119,7 +119,7 @@ test('the rail groups are labelled at every width', async () => {
 
 test('the dock has no Sound button, and is one row on a phone', async () => {
   for (const size of [SIZES[2], SIZES[0]]) {
-    const g = await open({ scope: 'earth-hired', shell: 'default', viewport: size.viewport, mobile: size.mobile });
+    const g = await open({ scope: 'earth-hired', viewport: size.viewport, mobile: size.mobile });
     const r = await g.ev(() => {
       startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent();
       const buttons = [...document.querySelectorAll('.dock button')].map(b => { const r = b.getBoundingClientRect(); return { top: r.top, width: r.width, primary: b.classList.contains('primary') }; });
@@ -135,7 +135,7 @@ test('the dock has no Sound button, and is one row on a phone', async () => {
 });
 
 test('Sound is still a setting', async () => {
-  const g = await open({ scope: 'earth-hired', shell: 'default' });
+  const g = await open({ scope: 'earth-hired' });
   const r = await g.ev(() => {
     Menu.view = 'settings'; Menu.render();
     const box = document.getElementById('setSound'), before = Sfx.on;

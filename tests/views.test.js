@@ -114,7 +114,7 @@ const injected = () => ({
 });
 
 test('a hostile name breaks no rail page, the scene dialog or the menu', async () => {
-  const { page, ev, done } = await open({ scope: 'earth-hired', shell: 'default' });
+  const { page, ev, done } = await open({ scope: 'earth-hired' });
   await page.evaluate(`window.injected = ${injected.toString()}`);
   await ev(hostileGame, [HOSTILE_A, HOSTILE_B]);
   const tabs = await ev(() => { UI.tab = 'port'; UI.render(); return [...document.querySelectorAll('.rail button:not([disabled])')].map(b => b.dataset.arg); });
@@ -151,7 +151,7 @@ const ordinaryGame = () => {
 
 for (const tab of ['crew', 'bar']) {
   test(`the ${tab} page renders the golden markup for an ordinary game`, async () => {
-    const { page, ev, done } = await open({ scope: 'earth-hired', shell: 'default' });
+    const { page, ev, done } = await open({ scope: 'earth-hired' });
     await ev(ordinaryGame);
     await page.click(`.rail [data-action=tab][data-arg=${tab}]`);
     const html = await ev(() => document.querySelector('.shell .body').innerHTML);
@@ -177,7 +177,7 @@ test('no authored event title or choice label carries markup or an entity', asyn
 });
 
 test('the scene dialog escapes the title and the aria-label, leaves the text raw, and shows a shut choice with its reason', async () => {
-  const { ev, done } = await open({ scope: 'earth-hired', shell: 'default' });
+  const { ev, done } = await open({ scope: 'earth-hired' });
   const r = await ev(() => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
     openEvent({ title: 'A <b>', text: 'Some <i>text</i> &middot; more.', choices: [{ label: 'Pay <up>', ...gated(needCr(1e9)), run: () => 'ok' }, { label: 'Leave', run: () => 'ok' }] });
@@ -195,7 +195,7 @@ test('the scene dialog escapes the title and the aria-label, leaves the text raw
 });
 
 test('the result screen escapes its title and keeps its text raw', async () => {
-  const { ev, done } = await open({ scope: 'earth-hired', shell: 'default' });
+  const { ev, done } = await open({ scope: 'earth-hired' });
   const r = await ev(() => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
     UI.showEventResult('Done <b>', 'It went <i>well</i>.', []);
@@ -208,7 +208,7 @@ test('the result screen escapes its title and keeps its text raw', async () => {
 
 // An owner's Crew page (the for-hire list and the Dismiss buttons only an owner has), on the old screens: the full build.
 test('the crew page of an owner renders the golden markup', async () => {
-  const { ev, done } = await open({ scope: 'full', shell: false });
+  const { ev, done } = await open({ scope: 'full' });
   const html = await ev(() => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
     const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000;
@@ -223,7 +223,7 @@ test('the crew page of an owner renders the golden markup', async () => {
 });
 
 test('the Crew page escapes a hostile name in its rows, the for-hire list and the people you know', async () => {
-  const { ev, done } = await open({ scope: 'full', shell: false });
+  const { ev, done } = await open({ scope: 'full' });
   const r = await ev(([a, b]) => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
     const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000;
@@ -242,7 +242,7 @@ test('the Crew page escapes a hostile name in its rows, the for-hire list and th
 
 // A richer Bar page: an owner (so the for-hire list shows), a patron you know with a memory, a regular with gossip, and a crew member at the bar.
 test('the bar page with known patrons, a regular and a hire list renders the golden markup', async () => {
-  const { ev, done } = await open({ scope: 'full', shell: false });
+  const { ev, done } = await open({ scope: 'full' });
   const html = await ev(() => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
     const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000;
@@ -260,7 +260,7 @@ test('the bar page with known patrons, a regular and a hire list renders the gol
 });
 
 test('the Bar page escapes a hostile patron name, memory and job', async () => {
-  const { ev, done } = await open({ scope: 'full', shell: false });
+  const { ev, done } = await open({ scope: 'full' });
   const r = await ev(([a, b]) => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
     const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 50000;

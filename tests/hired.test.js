@@ -5,7 +5,7 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { open, closeBrowser } = require('./helpers');
+const { open, closeBrowser, goTo } = require('./helpers');
 
 after(closeBrowser);
 
@@ -46,16 +46,17 @@ test('hired: the captain\'s business is not yours', async () => {
   await page.click('[data-action=menuMode][data-arg=hired]');
   await page.click('[data-action=menuStart]');
   await ev(() => { while (G.dialog) finishEvent(); G.state.tutorial = null; UI.render(); });
-  // Ops tabs: the port, errands, the bar; not the exchange or the company.
-  const tabs = await page.$$eval('.tabs.sub button', bs => bs.map(b => [b.dataset.arg, b.disabled]));
-  for (const [id, off] of tabs) assert.equal(off, ['trade', 'company'].includes(id), `${id} ${off ? 'is off' : 'is on'}`);
+  // The rail: the port, errands, the bar; not the exchange or the company.
+  const ids = await page.$$eval('.rail [data-action=tab]', bs => bs.map(b => b.dataset.arg));
+  for (const id of ['port', 'missions', 'bar']) assert.ok(ids.includes(id), `${id} is on the rail`);
+  for (const id of ['trade', 'company']) assert.ok(!ids.includes(id), `${id} is not on a hired hand's rail`);
   // No refuel button, no yard table, no hiring.
   assert.equal(await page.$('[data-action=refuel]'), null);
-  await page.click('[data-action=station][data-arg=eng]');
+  await goTo(page, 'shipyard');
   assert.equal(await page.$('[data-action=buyship]'), null); assert.equal(await page.$('[data-action=overhaul]'), null);
   assert.match(await page.innerText('#panel'), /a ship of your own/i);
   assert.equal(await page.$eval('[data-action=buyInAsk]', b => b.disabled), true, 'and you cannot afford one yet');
-  await page.click('[data-action=station][data-arg=interior]');
+  await goTo(page, 'crew');
   assert.equal(await page.$('[data-action=hire]'), null); assert.equal(await page.$('[data-action=dismiss]'), null);
   assert.equal(await page.$$eval('#panel h3', h => h.some(x => /Looking for work/.test(x.textContent))), false);
   // The actions themselves are refused, and the crew are not yours to pay.
@@ -77,7 +78,7 @@ test('hired: the captain\'s business is not yours', async () => {
 });
 
 test('hired: a save keeps it, and an owner game is unchanged', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   const r = await ev(() => {
     // An owner: the tabs are on, crew are paid, hired() is null.
     const owner = { hired: hired(), trade: tabReady(currentPlanet(), 'trade'), paid: (() => { const st = G.state; st.crew = []; { const c = makeCrewCandidate('earth'); c.role = 'pilot'; registerPerson(c); st.crew.push(c.id); } const c0 = st.credits; payCrew(10); return c0 - st.credits; })() };
@@ -96,7 +97,7 @@ test('hired: a save keeps it, and an owner game is unchanged', async () => {
 const hiredHelpers = () => { window.startHired = (post = 'gunner') => { startGame({ slot: 1, background: 'earth', captain: 'Ines Okafor', mode: 'hired', post }); while (G.dialog) finishEvent(); G.state.flags.classicCombat = true; G.state.story.next = 1e9; }; };
 
 test('the captain plans a run: the best cargo within reach, paid for from the ship\'s funds', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({});
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired(); const st = G.state, h = st.hired;
@@ -119,7 +120,7 @@ test('the captain plans a run: the best cargo within reach, paid for from the sh
 });
 
 test('a run, end to end: sail, burn, come in, sell, and be paid a wage and a share', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('engineer'); const st = G.state, h = st.hired, out = {};
@@ -152,7 +153,7 @@ test('a run, end to end: sail, burn, come in, sell, and be paid a wage and a sha
 });
 
 test('the captain sails again from where she landed, and a manual pilot flies her out himself', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('pilot'); const st = G.state, h = st.hired, out = {};
@@ -173,7 +174,7 @@ test('the captain sails again from where she landed, and a manual pilot flies he
 });
 
 test('errands: small jobs for where she is going, paid less, with a cut to the captain', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({});
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('engineer'); const st = G.state, plan = currentPlan(); Mods.emit('landed', currentPlanet());
@@ -188,7 +189,7 @@ test('errands: small jobs for where she is going, paid less, with a cut to the c
     assert.equal(Math.round(o.cut / (o.pay + o.cut) * 100), 20, 'the captain keeps a fifth');
   }
   await ev(() => UI.render());
-  await page.click('[data-action=station][data-arg=ops]');
+  await goTo(page, 'port');
   await page.click('[data-action=tab][data-arg=missions]');
   assert.match(await page.innerText('#panel'), /Errand: carry/);
   await page.click('[data-action=accept][data-arg="0"]');
@@ -199,7 +200,7 @@ test('errands: small jobs for where she is going, paid less, with a cut to the c
 });
 
 test('errands: delivered when she docks, the fee to you and the cut to the ship', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('engineer'); const st = G.state, h = st.hired, plan = currentPlan();
@@ -223,7 +224,7 @@ test('errands: delivered when she docks, the fee to you and the cut to the ship'
 });
 
 test('posts: your own work teaches you, it is kept, and it improves your odds', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('engineer'); const st = G.state, h = st.hired, out = {};
@@ -252,10 +253,10 @@ test('posts: your own work teaches you, it is kept, and it improves your odds', 
 });
 
 test('posts: you can ask the captain to move you, and they decide', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({});
   await ev(hiredHelpers);
   await ev(() => { startHired('gunner'); G.state.tutorial = null; UI.render(); });
-  await page.click('[data-action=station][data-arg=interior]');
+  await goTo(page, 'crew');
   assert.match(await page.innerText('#panel'), /your posts/i);
   assert.equal(await page.$$eval('[data-action=swapPost]', b => b.length), 3, 'the three others');
   const r = await ev(() => {
@@ -285,12 +286,12 @@ test('posts: you can ask the captain to move you, and they decide', async () => 
 });
 
 test('buying in: a ship of your own, one friend, and the captain as a contact', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({});
   await ev(hiredHelpers);
   await ev(() => { startHired('pilot'); const st = G.state; st.tutorial = null; st.credits = 12000; st.cargo = { water: 5 }; st.paid = { water: 100 };
     const crew = st.crew.map(person); crew[0].opinion = 4; crew[1].opinion = 1; crew[2].opinion = -2; window.friendId = crew[0].id; window.otherIds = [crew[1].id, crew[2].id];
     UI.render(); });
-  await page.click('[data-action=station][data-arg=eng]');
+  await goTo(page, 'shipyard');
   const price = await ev(() => SHIPS.shuttle.price);
   assert.equal(await page.$$eval('[data-action=buyInAsk]:not([disabled])', b => b.length), 1, 'only the ship you can afford');
   await page.click('[data-action=buyInAsk]:not([disabled])');
@@ -321,7 +322,7 @@ test('buying in: a ship of your own, one friend, and the captain as a contact', 
 });
 
 test('buying in: nobody comes if nobody likes you, and it needs the money and a yard', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('engineer'); const st = G.state, out = {};
@@ -346,7 +347,7 @@ test('buying in: nobody comes if nobody likes you, and it needs the money and a 
 });
 
 test('a second run buys new cargo: a plan made before the last cargo was sold is not reused', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('engineer'); const st = G.state, h = st.hired;
@@ -369,7 +370,7 @@ test('a second run buys new cargo: a plan made before the last cargo was sold is
 });
 
 test('once you can afford a ship, the captain heads for a port with a yard', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('engineer'); const st = G.state, h = st.hired, out = {};
@@ -387,7 +388,7 @@ test('once you can afford a ship, the captain heads for a port with a yard', asy
 });
 
 test('a hired hand is offered only what is theirs: their own post, and no owner\'s business', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({});
   await ev(hiredHelpers);
   const FORBIDDEN = ['sbuy', 'hire', 'dismiss', 'renameShip', 'handBack', 'programWrite', 'programSlot', 'programPick', 'programRemove', 'routeDock', 'takeoff', 'buy', 'sell'];
   const problems = [];
@@ -424,7 +425,7 @@ test('a hired hand is offered only what is theirs: their own post, and no owner\
 });
 
 test('downtime for a hired hand: not the captain\'s drills, and a chance to practice your post', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(hiredHelpers);
   const r = await ev(() => {
     const labels = () => { G.transit.lifeUsed = {}; return downtimeEvent(true).choices.map(c => c.label); };
@@ -448,7 +449,7 @@ test('downtime for a hired hand: not the captain\'s drills, and a chance to prac
 });
 
 test('burn events for a hired hand: the captain takes the ship\'s calls, with the ship\'s money', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('pilot'); const st = G.state; st.tutorial = null; st.flags.classicCombat = false; st.armor = ship().armor;
@@ -484,7 +485,7 @@ test('burn events for a hired hand: the captain takes the ship\'s calls, with th
 });
 
 test('a hired hand who is not the gunner watches the duel; the gunner picks the cards', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(hiredHelpers);
   const r = await ev(() => {
     const run = post => {
@@ -506,7 +507,7 @@ test('a hired hand who is not the gunner watches the duel; the gunner picks the 
 });
 
 test('at the bar a hand cannot offer passage, because the berths are the captain\'s', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(hiredHelpers);
   const r = await ev(() => {
     const talk = () => { const p = makePerson('earth'); p.goal = 'home'; p.traits = ['pious', 'kind']; registerPerson(p); const seen = new Set(); for (let i = 0; i < 30; i++) talkEvent({ p, known: false }).choices.forEach(c => seen.add(c.label)); return [...seen]; };  // the menu rotates: look at several
@@ -538,7 +539,7 @@ test('a hired hand\'s own page shows their place on the ship and how the crew se
 });
 
 test('the Gunner\'s line and the GUNS tab match how contacts play for a hired hand: no card play, no projects that cannot start', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({});
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('gunner');
