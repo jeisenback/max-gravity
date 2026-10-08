@@ -14,6 +14,9 @@ const STATIONS = [
   { id: 'comms', name: 'Comms', short: 'Comms', tabs: ['comms'] },
   { id: 'ops', name: 'Operations', short: 'Ops', tabs: ['port', 'trade', 'missions', 'bar', 'company'] },
 ];
+// The console each room of the cutaway opens in a burn (#323): the same sheets as the key bar's keys, so a tap on a room and a press of its key are one thing.
+const ROOM_SHEETS = { bridge: 'nav', gunnery: 'weapons', engine: 'eng', berths: 'interior', medbay: 'interior', galley: 'interior', hold: 'ops' };
+const roomSheet = id => ROOM_SHEETS[id];
 const TAB_NAMES = { crew: 'Crew', web: 'Bonds', journal: 'Journal', port: 'Port', trade: 'Exchange', missions: 'Missions', bar: 'Bar', company: 'Company' };
 const BRIDGE_KEYS_H = 52;  // the key bar's height in a burn; the transit view leaves room for it
 

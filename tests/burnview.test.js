@@ -119,3 +119,137 @@ test('canvas text in the burn view is 12px or more (#265)', async () => {
   assert.ok(sizes.every(s => s >= 12), `font sizes drawn: ${sizes.join(', ')}`);
   await done();
 });
+
+// The rooms of the cutaway, as boxes a tap can find (#323, step 5 task 2).
+test('every room has a box inside the window, the boxes do not overlap, and they are empty mid-turn', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = { bad: [], midTurn: true }, W = innerWidth, H = innerHeight;
+    for (const shipId of ['shuttle', 'lightfreighter', 'courier', 'freighter', 'gunship']) {
+      burn(shipId); const t = G.transit;
+      for (const [angle, flipped] of [[-Math.PI / 2, false], [Math.PI / 2, true]]) {
+        t.left = t.total * 0.6; t.angle = angle; t.flipped = flipped; drawTransit(W, H);
+        const b = G.cutRooms;
+        if (b.length !== ROOMS.length) out.bad.push(`${shipId}: ${b.length} boxes`);
+        for (const x of b) if (x.x < 0 || x.y < 0 || x.x + x.w > W || x.y + x.h > H) out.bad.push(`${shipId}: ${x.id} outside`);
+        for (let i = 0; i < b.length; i++) for (let j = i + 1; j < b.length; j++) {
+          const p = b[i], q = b[j];
+          if (!(p.x + p.w <= q.x + 0.01 || q.x + q.w <= p.x + 0.01 || p.y + p.h <= q.y + 0.01 || q.y + q.h <= p.y + 0.01)) out.bad.push(`${shipId}: ${p.id} overlaps ${q.id}`);
+        }
+      }
+      t.angle = 0; drawTransit(W, H); if (G.cutRooms.length) out.midTurn = false;
+    }
+    return out;
+  });
+  assert.deepEqual(r.bad, []); assert.ok(r.midTurn, 'no boxes mid-turn');
+  await done();
+});
+
+test('a tap at the centre of each room finds that room, on every ship, both ways round, wide and phone', async () => {
+  for (const [name, viewport, mobile] of [['wide', { width: 1280, height: 800 }, false], ['phone', { width: 390, height: 844 }, true]]) {
+    const { ev, done } = await open({ scope: 'earth-hired', viewport, mobile });
+    await ev(helpers);
+    const r = await ev(() => {
+      const out = { wrong: [], gap: [] }, W = innerWidth, H = innerHeight;
+      for (const shipId of ['shuttle', 'lightfreighter', 'courier', 'freighter', 'gunship']) {
+        burn(shipId); const t = G.transit;
+        for (const [angle, flipped] of [[-Math.PI / 2, false], [Math.PI / 2, true]]) {
+          t.left = t.total * 0.6; t.angle = angle; t.flipped = flipped; drawTransit(W, H);
+          for (const b of G.cutRooms) {
+            const hit = roomAtPoint(b.x + b.w / 2, b.y + b.h / 2);
+            if (hit !== b.id) out.wrong.push(`${shipId}: ${b.id} found ${hit}`);
+          }
+          const top = Math.min(...G.cutRooms.map(b => b.y));
+          if (roomAtPoint(G.cutRooms[0].x + 2, top - 20) !== null) out.gap.push(shipId);
+        }
+      }
+      return out;
+    });
+    assert.deepEqual(r.wrong, [], `${name}: wrong rooms`); assert.deepEqual(r.gap, [], `${name}: a point above the hull finds a room`);
+    await done();
+  }
+});
+
+// A tap on a room opens its console as a sheet (#323, step 5 task 3).
+test('every room has a sheet, and every sheet is a station', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => ({ rooms: ROOMS.map(x => x.id).sort(), mapped: Object.keys(ROOM_SHEETS).sort(), stations: STATIONS.map(s => s.id), sheets: Object.values(ROOM_SHEETS) }));
+  assert.deepEqual(r.mapped, r.rooms, 'one sheet per room');
+  for (const s of r.sheets) assert.ok(r.stations.includes(s), `${s} is a station`);
+  await done();
+});
+
+test('a tap on a room opens its console as a sheet, and a second tap on the room closes it when the sheet has not covered it', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  await ev(() => { burn(); G.transit.left = G.transit.total * 0.7; G.transit.angle = -Math.PI / 2; G.transit.flipped = false; });
+  await page.waitForTimeout(300);
+  // The point in a room's box that is farthest from everyone in it, so a tap there is a room's and not a person's.
+  const pick = id => ev(id => {
+    const b = G.cutRooms.find(r => r.id === id); let best = null;
+    for (let fx = 0.15; fx <= 0.85; fx += 0.1) for (let fy = 0.15; fy <= 0.85; fy += 0.1) {
+      const x = b.x + b.w * fx, y = b.y + b.h * fy, d = Math.min(99, ...G.cutHits.map(h => Math.hypot(x - h.x, y - h.y)));
+      if (!best || d > best.d) best = { x, y, d };
+    }
+    return best;
+  }, id);
+  for (const id of ['bridge', 'gunnery', 'engine', 'berths', 'galley', 'hold', 'medbay']) {
+    await ev(() => { G.bridgeOpen = null; });
+    await page.waitForTimeout(120);
+    const p = await pick(id);
+    assert.ok(p.d > 14, `${id}: a point clear of people (${Math.round(p.d)}px)`);
+    await page.mouse.click(p.x, p.y);
+    await page.waitForTimeout(150);
+    assert.equal(await ev(() => G.bridgeOpen), await ev(id => roomSheet(id), id), `${id}: its sheet is open`);
+    assert.equal(await ev(() => document.getElementById('bsheet').hidden), false, `${id}: the sheet is shown`);
+    if (await ev(([x, y]) => document.elementFromPoint(x, y) === canvas, [p.x, p.y])) {  // a sheet can cover the room it came from; the key closes it then
+      await page.mouse.click(p.x, p.y);
+      await page.waitForTimeout(150);
+      assert.equal(await ev(() => G.bridgeOpen), null, `${id}: a second tap closes it`);
+    }
+  }
+  await done();
+});
+
+test('a tap on a person opens the person, not the room under them; and a tap does nothing while a scene is open', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  await ev(() => { burn(); G.transit.left = G.transit.total * 0.7; G.transit.angle = -Math.PI / 2; G.transit.flipped = false; });
+  await page.waitForTimeout(300);
+  const hit = await ev(() => G.cutHits[0]);
+  await page.mouse.click(hit.x, hit.y);
+  await page.waitForTimeout(150);
+  assert.equal(await ev(() => G.bridgeOpen), 'person', 'the person came first');
+  await ev(() => { G.bridgeOpen = null; openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', run: () => 'a' }] }); });
+  const b = await ev(() => G.cutRooms.find(r => r.id === 'bridge'));
+  await page.mouse.click(b.x + 2, b.y + 2);
+  await page.waitForTimeout(150);
+  assert.equal(await ev(() => G.bridgeOpen), null, 'no sheet opens under a scene');
+  await done();
+});
+
+// Faces on the cutaway's people (#297, step 5 task 4).
+test('a face is not there until its picture has loaded, and is drawn for each person once it has', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const first = await ev(() => { const p = { id: `new-${Math.random()}`, name: 'Newcomer', role: 'pilot' }; window.__p = p; return faceImage(p); });
+  assert.equal(first, null, 'null at first: the figure is drawn');
+  await page.waitForFunction(() => faceImage(__p) !== null, null, { timeout: 5000 });
+  await ev(() => {
+    burn(); const t = G.transit; t.left = t.total * 0.7; t.angle = -Math.PI / 2; t.flipped = false;
+    window.__faces = 0; const real = ctx.drawImage.bind(ctx); ctx.drawImage = (...a) => { __faces++; return real(...a); };
+  });
+  await page.waitForFunction(() => shipPeople().filter(p => p.role !== 'cat').every(p => faceImage(p) !== null), null, { timeout: 5000 });
+  const r = await ev(() => { __faces = 0; drawTransit(innerWidth, innerHeight); return { faces: __faces, awake: shipPeople().filter(p => p.role !== 'cat' && !isAsleep(p)).length }; });
+  assert.ok(r.faces > 0 && r.faces === r.awake, `a face for each of the ${r.awake} people awake, drawn ${r.faces}`);
+  await done();
+});
+
+test('a face is built from the person alone, and a name puts no markup in the picture', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const src = await ev(() => decodeURIComponent(faceSource({ id: 'x2', name: '<script>x</script>', role: 'pilot' })));
+  assert.ok(src.startsWith('data:image/svg+xml'), 'a picture as a data URL');
+  assert.ok(!src.includes('<script>'), 'the name is escaped');
+  await done();
+});
