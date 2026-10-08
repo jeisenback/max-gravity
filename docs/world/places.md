@@ -31,7 +31,7 @@ The places the narrow build's chapter touches: four systems and the four home ar
 - Work: Water, ore, the valves.
 - Sound and smell: The knock of a pipe being tapped before it is opened; hot oil and ginger at Ring Nine.
 - Custom: Strangers are fed at Ring Nine before they are asked their business (from the code). A household is named by its hatch number.
-- Divergence: `derived.belter-people`. Drop the physique and the single people; a person is from a hatch, a spin and a deck.
+- Divergence: `derived.belter-people`. Drop the physique and the single people; a person is from a hatch, the Warren and a deck.
 - Use in scenes: A Ceres hand taps a pipe before they speak; a stranger is given a bowl before a question.
 - Status: from code (js/data.js) for Ring Nine's custom and the allotment notices; the hatch and the pipe-tap are confirmed (owner, 2026-10-08)
 

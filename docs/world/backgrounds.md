@@ -26,10 +26,10 @@ One entry for each start background in `BACKGROUNDS` (`js/menu.js`). The narrow 
 ### bg.belt
 
 - Source: `BACKGROUNDS.belt` in `js/menu.js`: "Ceres-born, with long limbs and short patience. Start on Ceres Station with 9,000 credits and friends in the Belt Collective." The intro: "You were born in Ceres spin, and you know what water is worth."
-- Home: The Ceres spin, in a household known by its hatch number.
+- Home: The Ceres Warren, in a household known by its hatch number.
 - Family: A family on a water share tied to the hatch. When the hatch changed hands, the share went with it.
-- Schooling: The valves before the letters. A child of the spin can name every tap on a deck by its sound.
-- Why they left: The share passed to a cousin, and a berth off the spin was the way to send water money home.
+- Schooling: The valves before the letters. A child of the Warren can name every tap on a deck by its sound.
+- Why they left: The share passed to a cousin, and a berth out of the Warren was the way to send water money home.
 - Divergence: `derived.belter-people`. Drop "long limbs"; the Belt background is a place and its work, and not a body.
 - Use in scenes: A Ceres hand taps a pipe before they speak, and names a stranger by their hatch.
 - Status: confirmed by the owner on 2026-10-08

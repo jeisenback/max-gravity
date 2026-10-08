@@ -24,7 +24,7 @@ Real places (Ceres, Eros, Ganymede) and generic hard-SF terms (reaction mass, th
 - Where: `BACKGROUNDS.belt` in `js/menu.js` (line 83, "long limbs and short patience"); the description of Ceres Station in `SYSTEMS.ceres` (`js/data.js`: "Belters with long limbs and short tempers", "six million people spun up inside a dwarf planet"); "Belter" in `js/stories/ice-strike.js`, `js/stories/mars-navy.js` and the transit text in `js/transit.js`; the greeting "Safe water." in `js/stories/on-the-road.js`.
 - What: One Belt-wide people, called Belters, with a shared long memory ("Belters remember everything"), a mutual-aid greeting, and a body shaped by low gravity.
 - Why it reads as the Expanse: The Belters are the Expanse's people of the Belt, with the same physique, the same loyalty and the same keeping of debts.
-- Proposed instead: Make identity local: the spin or the station a person comes from (Ceres spin, the Hollows, Ring Nine, Ironheart). Each place has its own greeting and its own long memory, and there is no single Belt people. Drop the physique; show a place by its work.
+- Proposed instead: Make identity local: the place a person comes from (the Warren, the Hollows, Ring Nine, Ironheart). Each place has its own greeting and its own long memory, and there is no single Belt people. Drop the physique; show a place by its work.
 - Decision: Adopt the proposal (owner, 2026-10-08).
 ### derived.earth-basic
 
@@ -60,8 +60,8 @@ Real places (Ceres, Eros, Ganymede) and generic hard-SF terms (reaction mass, th
 - Where: `SHIPS.shuttle` ("Rock Hopper") in `js/data.js`; the start texts in `js/menu.js` and `js/game.js`; `js/help.js`, `js/community.js`, `js/legacy.js`, `js/art.js`, `js/shiplife.js`, `js/market.js` (comments and text); `README.md`.
 - What: The starting ship, and the smallest hull, is a Rock Hopper.
 - Why it reads as the Expanse: Flagged on review as Belter slang in the Expanse. Not verified against the books.
-- Proposed instead: A plain working name for a small hull, in the style of "Ore Runner" and "Ice Hauler": "Dust Skiff" or "Pebble Runner". The art comment already calls it "a boxy, patched-up skiff".
-- Decision: Change (owner, 2026-10-08). The new name is still to be chosen.
+- Proposed instead: A plain working name for a small hull, in the style of "Ore Runner" and "Ice Hauler": "Dust Skiff". The art comment already calls it "a boxy, patched-up skiff".
+- Decision: Change to "Dust Skiff" (owner, 2026-10-08).
 
 ### derived.ceres-spin
 
@@ -69,7 +69,7 @@ Real places (Ceres, Eros, Ganymede) and generic hard-SF terms (reaction mass, th
 - What: A Ceres-born person is "of the spin", and the inside of Ceres Station is "the Spin".
 - Why it reads as the Expanse: Flagged on review. Ceres as a spun-up interior, and a word for living in it, is the Expanse's picture of Ceres Station. Not verified against the books.
 - Proposed instead: "the Warren": a burrowed habitat inside the rock, so a person is from the Warren, by hatch number. The gym becomes "The Warren Ring" and the bar "The Warren", and the Ceres description says "burrowed", not "spun up".
-- Decision: Change (owner, 2026-10-08). The new name is still to be chosen.
+- Decision: Change to "the Warren" (owner, 2026-10-08).
 
 ### derived.pdc-torch
 

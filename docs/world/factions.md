@@ -26,7 +26,7 @@ One entry for each name in `FACTIONS` in `js/data.js`. What the code does with t
 
 - Source: `FACTIONS`, `PATROL_NAMES` ("Collective militia") in `js/data.js`; `CULTURE_FACTION` and `FACTION_COOL` in `js/ties.js`.
 - Wants: Water and berth rights honored on every station.
-- Treats a hand: By where they are from. A stranger is fed first and asked later (Ring Nine, from the code). A person is named by the hatch and the spin.
+- Treats a hand: By where they are from. A stranger is fed first and asked later (Ring Nine, from the code). A person is named by the hatch and the Warren.
 - Shows up as: A militia boat on a lane; a ration notice on a corridor wall.
 - Divergence: `derived.power-triangle`, `derived.belter-people`. A league of stations held by chartered guilds that vote on water and berth rights, with no single people.
 - Use in scenes: A guild clerk reads out the vote on the berth rate before a docking is allowed.
