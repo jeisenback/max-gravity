@@ -2,7 +2,7 @@
 
 The owner wants the game's world to move away from The Expanse. This is a sourced list of the places where the code and README lean on it, each with a proposed replacement and an empty `Decision:` line for the owner. It changes no code: renames and reworks are a separate issue, after the decisions.
 
-Real places (Ceres, Eros, Ganymede) and generic hard-SF terms (reaction mass, the flip) are not listed. Checked: `README.md`, `js/data.js`, `js/menu.js`, `js/ties.js`, `js/calendar.js`, and the stories `cold-water.js`, `mars-navy.js`, `ice-strike.js`, `on-the-road.js` and the transit text by searching for the terms, not by reading them through. `js/cast.js` was read for Ines and Tomas only. Other story files have not been audited.
+Real places (Ceres, Eros, Ganymede) and generic hard-SF terms (reaction mass, the flip) are not listed. Checked: `README.md`, `js/data.js`, `js/menu.js`, `js/ties.js`, `js/calendar.js`, the descriptions of Earth, Mars, Ceres and Jupiter in `SYSTEMS`, and the stories `cold-water.js`, `mars-navy.js`, `ice-strike.js`, `on-the-road.js` and the transit text by searching for the terms, not by reading them through. `js/cast.js` was read for Ines and Tomas only. Other story files have not been audited.
 
 ### derived.readme-flavor
 
@@ -22,10 +22,26 @@ Real places (Ceres, Eros, Ganymede) and generic hard-SF terms (reaction mass, th
 
 ### derived.belter-people
 
-- Where: `BACKGROUNDS.belt` in `js/menu.js` (line 83, "long limbs and short patience"); "Belter" in `js/stories/ice-strike.js`, `js/stories/mars-navy.js` and the transit text in `js/transit.js`; the greeting "Safe water." in `js/stories/on-the-road.js`.
+- Where: `BACKGROUNDS.belt` in `js/menu.js` (line 83, "long limbs and short patience"); the description of Ceres Station in `SYSTEMS.ceres` (`js/data.js`: "Belters with long limbs and short tempers", "six million people spun up inside a dwarf planet"); "Belter" in `js/stories/ice-strike.js`, `js/stories/mars-navy.js` and the transit text in `js/transit.js`; the greeting "Safe water." in `js/stories/on-the-road.js`.
 - What: One Belt-wide people, called Belters, with a shared long memory ("Belters remember everything"), a mutual-aid greeting, and a body shaped by low gravity.
 - Why it reads as the Expanse: The Belters are the Expanse's people of the Belt, with the same physique, the same loyalty and the same keeping of debts.
 - Proposed instead: Make identity local: the spin or the station a person comes from (Ceres spin, the Hollows, Ring Nine, Ironheart). Each place has its own greeting and its own long memory, and there is no single Belt people. Drop the physique; show a place by its work.
+- Decision:
+
+### derived.earth-basic
+
+- Where: the description of Earth in `SYSTEMS.earth` (`js/data.js`): "Thirty billion people, most of them on basic assistance".
+- What: An Earth of tens of billions supported by a basic allowance, with the orbital elevator ports and the customs queues on top of it.
+- Why it reads as the Expanse: The Expanse's Earth is a crowded world of billions on basic support. The figure and the word are close to it.
+- Proposed instead: A world of arcology cities held together by licenses and rota duties (see `bg.earth`), with no headline population and no allowance. Who has a license, and who has lost one, replaces who is on assistance.
+- Decision:
+
+### derived.ganymede-breadbasket
+
+- Where: the description of Ganymede in `SYSTEMS.jupiter` (`js/data.js`): "The breadbasket of the outer planets".
+- What: Ganymede's agri-domes feed the outer planets and half the Belt.
+- Why it reads as the Expanse: Ganymede as the outer system's breadbasket is the same role it has in the Expanse. This is a moderate match: a farming moon is an obvious SF idea.
+- Proposed instead: Keep Ganymede as a food source for the mechanics, but give it its own shape: a moon of leasehold terraces, where food is grown under a lease that is inherited, and the farmers' wariness is of the lease agent and not of investors.
 - Decision:
 
 ### derived.mars-navy
