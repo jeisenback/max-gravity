@@ -2,7 +2,7 @@
 
 The owner wants the game's world to move away from The Expanse. This is a sourced list of the places where the code and README lean on it, each with a proposed replacement and an empty `Decision:` line for the owner. It changes no code: renames and reworks are a separate issue, after the decisions.
 
-Real places (Ceres, Eros, Ganymede) and generic hard-SF terms (reaction mass, the flip) are not listed. Checked: `README.md`, `js/data.js`, `js/menu.js`, `js/ties.js`, `js/calendar.js`, the descriptions of Earth, Mars, Ceres and Jupiter in `SYSTEMS`, and the stories `cold-water.js`, `mars-navy.js`, `ice-strike.js`, `on-the-road.js` and the transit text by searching for the terms, not by reading them through. `js/cast.js` was read for Ines and Tomas only. Other story files have not been audited. Flagged on review and not verified against the books: "Rock Hopper" (`SHIPS.shuttle`, the starting ship) may be Belter slang in the Expanse, and Pax Iwu's home "Ceres Spin" in `js/cast.js` uses the same word as the Belt background; both are left to the owner's judgment.
+Real places (Ceres, Eros, Ganymede) and generic hard-SF terms (reaction mass, the flip) are not listed. Checked: `README.md`, `js/data.js`, `js/menu.js`, `js/ties.js`, `js/calendar.js`, the descriptions of Earth, Mars, Ceres and Jupiter in `SYSTEMS`, and the stories `cold-water.js`, `mars-navy.js`, `ice-strike.js`, `on-the-road.js` and the transit text by searching for the terms, not by reading them through. `js/cast.js` was read for Ines and Tomas only. Other story files have not been audited. Two entries ("Rock Hopper" and "Spin") were flagged on review and are not verified against the books; the owner decided to change both anyway.
 
 ### derived.readme-flavor
 
@@ -55,6 +55,22 @@ Real places (Ceres, Eros, Ganymede) and generic hard-SF terms (reaction mass, th
 - Why it reads as the Expanse: "Juice" is the Expanse's name for exactly that drug.
 - Proposed instead: Call it by what it does: "the anti-g drip", and "the drip floods your veins".
 - Decision: Adopt the proposal (owner, 2026-10-08).
+### derived.rock-hopper
+
+- Where: `SHIPS.shuttle` ("Rock Hopper") in `js/data.js`; the start texts in `js/menu.js` and `js/game.js`; `js/help.js`, `js/community.js`, `js/legacy.js`, `js/art.js`, `js/shiplife.js`, `js/market.js` (comments and text); `README.md`.
+- What: The starting ship, and the smallest hull, is a Rock Hopper.
+- Why it reads as the Expanse: Flagged on review as Belter slang in the Expanse. Not verified against the books.
+- Proposed instead: A plain working name for a small hull, in the style of "Ore Runner" and "Ice Hauler": "Dust Skiff" or "Pebble Runner". The art comment already calls it "a boxy, patched-up skiff".
+- Decision: Change (owner, 2026-10-08). The new name is still to be chosen.
+
+### derived.ceres-spin
+
+- Where: "Ceres spin" in the Belt start's intro (`BACKGROUNDS.belt` in `js/menu.js`); Pax Iwu's home "Ceres Spin" and two of his lines about "the Spin" (`js/cast.js`, lines 552, 569 and 619); the gym "The Spin Ring" (`js/stories/ports.js`); the bar "The Spin" (`js/bar.js`); "spun up inside a dwarf planet" in the Ceres Station description (`js/data.js`). The bible's own use of "the spin" (`bg.belt`, `place.ceres`, `faction.belt-collective`, and the proposals above) follows the decision.
+- What: A Ceres-born person is "of the spin", and the inside of Ceres Station is "the Spin".
+- Why it reads as the Expanse: Flagged on review. Ceres as a spun-up interior, and a word for living in it, is the Expanse's picture of Ceres Station. Not verified against the books.
+- Proposed instead: "the Warren": a burrowed habitat inside the rock, so a person is from the Warren, by hatch number. The gym becomes "The Warren Ring" and the bar "The Warren", and the Ceres description says "burrowed", not "spun up".
+- Decision: Change (owner, 2026-10-08). The new name is still to be chosen.
+
 ### derived.pdc-torch
 
 - Where: `OUTFITS.pdc` ("Point-defense cannon") and `SHIPS.courier` ("Torch Courier") in `js/data.js`.
