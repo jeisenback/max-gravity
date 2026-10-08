@@ -105,7 +105,7 @@ test('no screen overflows sideways at phone, landscape, and tablet sizes', async
   };
   const problems = [];
   for (const [w, h] of sizes) {
-    const { page, done } = await open({ title: true, shell: true, viewport: { width: w, height: h }, mobile: w < 700 || h < 500 });
+    const { page, done } = await open({ title: true, viewport: { width: w, height: h }, mobile: w < 700 || h < 500 });
     for (const [id, fn] of Object.entries(screens)) {
       await page.evaluate(`(${fn.toString()})()`);
       await page.waitForTimeout(100);
@@ -127,7 +127,7 @@ test('no screen overflows sideways at phone, landscape, and tablet sizes', async
 });
 
 test('keyboard focus survives the panel being rebuilt', async () => {
-  const { page, ev, done } = await open({ title: true, shell: true });
+  const { page, ev, done } = await open({ title: true });
   const focused = () => page.evaluate(() => { const a = document.activeElement; return a && a.dataset ? `${a.dataset.action}:${a.dataset.arg || ''}` : null; });
   await page.keyboard.press('Tab');
   assert.equal(await focused(), 'menuView:new');
@@ -196,7 +196,7 @@ test('every tab at every port reads cleanly, broke or rich, empty or full', asyn
 });
 
 test('the rail at port reaches each room, and a key bar with status sheets in a burn', async () => {
-  const { page, ev, done } = await open({ shell: true });
+  const { page, ev, done } = await open({});
   await ev(() => { G.state.tutorial = null; while (G.dialog) finishEvent(); UI.render(); });
   const names = await page.$$eval('.rail .rail-group:first-child button', bs => bs.map(b => b.textContent));
   assert.deepEqual(names, ['Bridge', 'Comms', 'Gunnery', 'Engine', 'Crew', 'Bonds', 'Journal']);

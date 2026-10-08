@@ -13,23 +13,23 @@ const helpers = () => {
   window.start = (o = {}) => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', ...o }); while (G.dialog) finishEvent(); const st = G.state; st.story.next = 1e9; return st; };
 };
 
-test('the shell is off unless the address asks for it', async () => {
-  const off = await open({});
+test('the shell is on unless the address says shell=off', async () => {
+  const off = await open({ shell: false });
   assert.equal(await off.ev(() => shellOn()), false);
   await off.done();
-  const on = await open({ shell: true });
+  const on = await open({});
   assert.equal(await on.ev(() => shellOn()), true);
   await on.done();
 });
 
 test('the shell is on by default in both builds, and the address can turn it off', async () => {
-  const narrow = await open({ scope: 'earth-hired', shell: 'default' });
+  const narrow = await open({ scope: 'earth-hired' });
   assert.equal(await narrow.ev(() => shellOn()), true);
   await narrow.ev(helpers);
   const tab = await narrow.ev(() => { start(); UI.tab = 'nowhere'; UI.render(); return { shell: !!document.querySelector('.shell'), tab: UI.tab }; });  // a tab value the shell does not know: Port
   assert.equal(tab.shell, true); assert.equal(tab.tab, 'port');
   await narrow.done();
-  const full = await open({ scope: 'full', shell: 'default' });
+  const full = await open({ scope: 'full' });
   assert.equal(await full.ev(() => shellOn()), true);
   await full.done();
   const off = await open({ scope: 'earth-hired', shell: false });
@@ -38,7 +38,7 @@ test('the shell is on by default in both builds, and the address can turn it off
 });
 
 test('the full build reaches every page it reached before, through the rail (#324)', async () => {
-  const { ev, done } = await open({ scope: 'full', shell: 'default' });
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const owner = await ev(() => { start({ mode: 'owner', post: undefined }); return { shell: !!document.querySelector('.shell'), rail: [...document.querySelectorAll('.rail [data-action=tab]')].map(b => b.dataset.arg), views: Object.keys(UI.views) }; });
   assert.equal(owner.shell, true, 'the full build draws the shell');
@@ -49,7 +49,7 @@ test('the full build reaches every page it reached before, through the rail (#32
 });
 
 test('with the shell off the landed screen is unchanged', async () => {
-  const { ev, done } = await open({});
+  const { ev, done } = await open({ shell: false });
   await ev(helpers);
   const r = await ev(() => {
     start();
@@ -77,7 +77,7 @@ const railState = () => {
 };
 
 test('a hired gunner\'s rail has the ship\'s pages and three Ashore pages, and no owner pages', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(([fn]) => { start(); return (0, eval)(`(${fn})`)(); }, [railState.toString()]);
   assert.deepEqual(r.names, ['Bridge', 'Comms', 'Gunnery', 'Engine', 'Crew', 'Bonds', 'Journal', 'Port', 'Missions', 'Bar']);
@@ -88,7 +88,7 @@ test('a hired gunner\'s rail has the ship\'s pages and three Ashore pages, and n
 });
 
 test('an owner\'s rail keeps Exchange and Company in the Ashore group', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(([fn]) => { start({ mode: 'owner', post: undefined }); return (0, eval)(`(${fn})`)(); }, [railState.toString()]);
   assert.ok(r.names.includes('Exchange') && r.names.includes('Company'), 'both owner pages are on the rail');
@@ -97,7 +97,7 @@ test('an owner\'s rail keeps Exchange and Company in the Ashore group', async ()
 });
 
 test('every rail entry opens its page', async () => {
-  const { page, ev, done } = await open({ shell: true });
+  const { page, ev, done } = await open({});
   await ev(helpers);
   await ev(() => { start(); });
   const tabs = await ev(() => [...document.querySelectorAll('.rail button:not([disabled])')].map(b => b.dataset.arg));
@@ -111,7 +111,7 @@ test('every rail entry opens its page', async () => {
 });
 
 test('a rail button opens its page and takes the highlight', async () => {
-  const { page, ev, done } = await open({ shell: true });
+  const { page, ev, done } = await open({});
   await ev(helpers);
   await ev(() => { start(); });
   await page.click('.rail [data-action=tab][data-arg=bar]');
@@ -123,7 +123,7 @@ test('a rail button opens its page and takes the highlight', async () => {
 });
 
 test('the character screen keeps the Crew entry lit', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(([fn]) => { start(); G.viewPerson = 'you'; UI.tab = 'person'; UI.render(); return (0, eval)(`(${fn})`)(); }, [railState.toString()]);
   assert.equal(r.tab, 'person', 'the character screen is still the page');
@@ -132,7 +132,7 @@ test('the character screen keeps the Crew entry lit', async () => {
 });
 
 test('a tab the shell does not know falls back to Port', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(([fn]) => { start(); UI.tab = 'nowhere'; UI.render(); return (0, eval)(`(${fn})`)(); }, [railState.toString()]);
   assert.equal(r.tab, 'port');
@@ -141,7 +141,7 @@ test('a tab the shell does not know falls back to Port', async () => {
 });
 
 test('goTo opens an entry on the rail, and throws the rail\'s reason for a shut one and a plain error for a missing one', async () => {
-  const { page, ev, done } = await open({ shell: true });
+  const { page, ev, done } = await open({});
   await ev(helpers);
   await ev(() => { start(); });
   await goTo(page, 'crew');
@@ -153,7 +153,7 @@ test('goTo opens an entry on the rail, and throws the rail\'s reason for a shut 
 });
 
 test('an entry for a service this port lacks is shut and says why', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     start();
@@ -170,7 +170,7 @@ test('an entry for a service this port lacks is shut and says why', async () => 
 
 test('the captain\'s name and run label do not split or gap, at 390 and 1280', async () => {
   for (const [name, viewport, mobile] of [['phone', { width: 390, height: 844 }, true], ['wide', { width: 1280, height: 800 }, false]]) {
-    const { ev, done } = await open({ shell: true, scope: 'earth-hired', viewport, mobile });
+    const { ev, done } = await open({ scope: 'earth-hired', viewport, mobile });
     await ev(helpers);
     const r = await ev(() => {
       start({ captainKey: 'hester' });
@@ -194,7 +194,7 @@ const smallText = () => [...document.querySelectorAll('#panel *')].filter(el => 
   .map(el => `${el.tagName.toLowerCase()}.${String(el.className).trim().replace(/\s+/g, '.')} ${getComputedStyle(el).fontSize}`);
 
 test('no visible text on a shell page is under 12px at 390px', async () => {
-  const { page, ev, done } = await open({ shell: true, viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
   await ev(() => { start(); });
   const tabs = await ev(() => [...document.querySelectorAll('.rail button:not([disabled])')].map(b => b.dataset.arg));
@@ -208,7 +208,7 @@ test('no visible text on a shell page is under 12px at 390px', async () => {
 });
 
 test('the rail fits at 360px', async () => {
-  const { ev, done } = await open({ shell: true, viewport: { width: 360, height: 740 }, mobile: true });
+  const { ev, done } = await open({ viewport: { width: 360, height: 740 }, mobile: true });
   await ev(helpers);
   const r = await ev(([fn]) => { start(); return (0, eval)(`(${fn})`)(); }, [layout.toString()]);
   assert.equal(r.noSideScroll, true, 'the page does not scroll sideways'); assert.equal(r.buttonsOnScreen, true, 'every entry is on screen');
@@ -216,7 +216,7 @@ test('the rail fits at 360px', async () => {
 });
 
 test('the last item can be scrolled clear of the dock at 390px', async () => {
-  const { ev, done } = await open({ shell: true, viewport: { width: 390, height: 844 }, mobile: true });
+  const { ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
   const r = await ev(() => {
     start(); UI.tab = 'port'; UI.render();
@@ -232,7 +232,7 @@ test('the last item can be scrolled clear of the dock at 390px', async () => {
 
 test('the Suggest buttons line up at 1280px and stack at 390px', async () => {
   for (const [name, viewport, mobile] of [['wide', { width: 1280, height: 800 }, false], ['phone', { width: 390, height: 844 }, true]]) {
-    const { ev, done } = await open({ shell: true, scope: 'earth-hired', viewport, mobile });
+    const { ev, done } = await open({ scope: 'earth-hired', viewport, mobile });
     await ev(helpers);
     const r = await ev(() => {
       start({ captainKey: 'hester' }); UI.tab = 'port'; UI.render();
@@ -248,7 +248,7 @@ test('the Suggest buttons line up at 1280px and stack at 390px', async () => {
 });
 
 test('an unavailable entry says why', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const html = await ev(() => { start(); return railEntryHtml({ id: 'x', label: 'X', group: 'ashore', tab: 'x', ready: () => 'No work board here' }, UI.planet, 'port'); });
   assert.match(html, /disabled/);
@@ -268,7 +268,7 @@ const layout = () => {
 };
 
 test('a scene opened over the shell returns to the shell', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     start();
@@ -283,7 +283,7 @@ test('a scene opened over the shell returns to the shell', async () => {
 });
 
 test('at desktop width the rail sits beside the page', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(([fn]) => { start(); return (0, eval)(`(${fn})`)(); }, [layout.toString()]);
   assert.equal(r.railLeftOfBody, true, 'the rail is to the left of the page');
@@ -293,7 +293,7 @@ test('at desktop width the rail sits beside the page', async () => {
 });
 
 test('a phone has no horizontal scroll, the rail is a grid below the page, and every entry is on screen', async () => {
-  const { ev, done } = await open({ shell: true, viewport: { width: 390, height: 844 }, mobile: true });
+  const { ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
   const r = await ev(([fn]) => { start(); return (0, eval)(`(${fn})`)(); }, [layout.toString()]);
   assert.equal(r.railBelowBody, true, 'the rail is below the page');

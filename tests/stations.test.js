@@ -29,7 +29,7 @@ const helpers = () => {
 };
 
 test('a solo captain is manual everywhere; hiring a role makes that post crewed', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.crew = []; delete st.posts;  // an old save has no posts
@@ -47,7 +47,7 @@ test('a solo captain is manual everywhere; hiring a role makes that post crewed'
 });
 
 test('taking the controls is instant; being overruled often costs the crew heart', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.crew = [];
@@ -66,7 +66,7 @@ test('taking the controls is instant; being overruled often costs the crew heart
 });
 
 test('orders: a skilled crew member does better than the captain, once a day, within the cap', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state, max = ship().armor, cap = Math.floor(max * 0.75);
@@ -88,7 +88,7 @@ test('orders: a skilled crew member does better than the captain, once a day, wi
 });
 
 test('mods can add orders, and the stations show the post', async () => {
-  const { page, ev, done } = await open({ shell: true });
+  const { page, ev, done } = await open({});
   await ev(helpers);
   await ev(() => { G.state.tutorial = null; while (G.dialog) finishEvent(); hire('engineer'); Mods.register({ id: 'test-orders', name: 'T', init(M) { M.filter('orders', (list, post) => post === 'gunner' ? [...list, { id: 'salute', name: 'Salute', desc: 'x', run: () => 'A crisp salute.' }] : list); } }); UI.render(); });
   await goTo(page, 'shipyard');
@@ -112,7 +112,7 @@ test('mods can add orders, and the stations show the post', async () => {
 
 
 test('autopilot: a crewed pilot takes the ship out, brings it in and lands on the chosen planet', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.story.next = 1e9; st.crew = []; while (G.dialog) finishEvent();
@@ -143,7 +143,7 @@ test('autopilot: a crewed pilot takes the ship out, brings it in and lands on th
 });
 
 test('autopilot: a flight key, a hostile ship, or a hand-back gives the controls to you', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.story.next = 1e9; st.crew = []; while (G.dialog) finishEvent();
@@ -163,7 +163,7 @@ test('autopilot: a flight key, a hostile ship, or a hand-back gives the controls
 });
 
 test('autopilot: the Navigation station offers it to a crewed pilot, and the dock choice sticks', async () => {
-  const { page, ev, done } = await open({ shell: true });
+  const { page, ev, done } = await open({});
   await ev(helpers);
   await ev(() => { const st = G.state; st.tutorial = null; st.crew = []; while (G.dialog) finishEvent(); st.dest = 'mars'; st.fuel = ship().fuel; UI.render(); });
   await goTo(page, 'nav');
@@ -180,7 +180,7 @@ test('autopilot: the Navigation station offers it to a crewed pilot, and the doc
 });
 
 test('gunner: a crewed gunner fights the duel; with none, or the post taken, you do', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     G.state.crew = [];
@@ -214,7 +214,7 @@ test('gunner: a crewed gunner fights the duel; with none, or the post taken, you
 });
 
 test('gunner: decks come from the fit, and torpedoes are spent for good', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state;
@@ -237,7 +237,7 @@ test('gunner: decks come from the fit, and torpedoes are spent for good', async 
 });
 
 test('gunner: exchanges follow threat and answer, end in eight, and never kill you', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     G.state.crew = []; hire('gunner', 3); hire('pilot', 2);
@@ -281,7 +281,7 @@ test('gunner: exchanges follow threat and answer, end in eight, and never kill y
 });
 
 test('gunner: the enemy counts cards from public information', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.crew = []; hire('gunner', 2); hire('pilot', 1);
@@ -303,7 +303,7 @@ test('gunner: the enemy counts cards from public information', async () => {
 });
 
 test('engineer: power always adds to 100, within limits', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   const bad = await ev(() => {
     const out = [];
     for (let i = 0; i < 300; i++) {
@@ -318,7 +318,7 @@ test('engineer: power always adds to 100, within limits', async () => {
 });
 
 test('engineer: a manual engineer can scram the reactor; a crewed one keeps it cool', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state, run = (secs) => { for (let i = 0; i < secs; i++) { G.transit.event = null; Mods.emit('frame', 1); } };
@@ -342,7 +342,7 @@ test('engineer: a manual engineer can scram the reactor; a crewed one keeps it c
 });
 
 test('engineer: power orders, and power changes the console fight', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.crew = []; st.tutorial = null;
@@ -371,7 +371,7 @@ test('engineer: power orders, and power changes the console fight', async () => 
 });
 
 test('engineer: sliders for a manual engineer, bars for a crewed one, and a sheet you can drag', async () => {
-  const { page, ev, done } = await open({ shell: true });
+  const { page, ev, done } = await open({});
   await ev(helpers);
   await ev(() => { G.state.tutorial = null; G.state.crew = []; while (G.dialog) finishEvent(); UI.render(); });
   await goTo(page, 'shipyard');
@@ -396,7 +396,7 @@ test('engineer: sliders for a manual engineer, bars for a crewed one, and a shee
 });
 
 test('the engineering console shows wear in its colors, and fits a phone without scrolling sideways', async () => {
-  const { page, ev, done } = await open({ shell: true, viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
   await ev(() => { G.state.tutorial = null; G.state.crew = []; G.state.condition = { drive: 95, fire: 20, shields: 55, life: 100, sensors: 100 }; while (G.dialog) finishEvent(); UI.render(); });
   await goTo(page, 'shipyard');
@@ -409,7 +409,7 @@ test('the engineering console shows wear in its colors, and fits a phone without
 });
 
 test('the weapons console shows the armament and the fire deck from the ship, at port and in a burn', async () => {
-  const { page, ev, done } = await open({ shell: true, viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
   await ev(() => { const st = G.state; st.tutorial = null; st.crew = []; st.outfits = { pdc: 2, launcher: 1 }; st.torpedoes = 4; st.condition = { drive: 100, fire: 20, shields: 100, life: 100, sensors: 100 }; while (G.dialog) finishEvent(); UI.render(); });
   await goTo(page, 'weapons');
@@ -431,7 +431,7 @@ test('the weapons console shows the armament and the fire deck from the ship, at
 });
 
 test('the navigation console plots the course at port and the burn in flight', async () => {
-  const { page, ev, done } = await open({ shell: true, viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
   await ev(() => { G.state.tutorial = null; G.state.crew = []; while (G.dialog) finishEvent(); G.state.dest = 'mars'; UI.render(); });
   await goTo(page, 'nav');
@@ -453,7 +453,7 @@ test('the navigation console plots the course at port and the burn in flight', a
 });
 
 test('the interior console puts the crew at their posts, with how they are doing, and the downtime button in a burn', async () => {
-  const { page, ev, done } = await open({ shell: true, viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
   const want = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; while (G.dialog) finishEvent();
@@ -484,7 +484,7 @@ test('the interior console puts the crew at their posts, with how they are doing
 });
 
 test('the comms console shows the inbox as a feed and the tips in force, at port and in a burn', async () => {
-  const { page, ev, done } = await open({ shell: true, viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
   const want = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; st.inbox = []; st.rumors = []; while (G.dialog) finishEvent();
@@ -507,7 +507,7 @@ test('the comms console shows the inbox as a feed and the tips in force, at port
 });
 
 test('the operations console shows the cargo bay and the manifest, at port and in a burn', async () => {
-  const { page, ev, done } = await open({ shell: true, viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
   const want = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; while (G.dialog) finishEvent();
@@ -531,7 +531,7 @@ test('the operations console shows the cargo bay and the manifest, at port and i
 });
 
 test('the character screen opens from the crew list and the posts, shows what we know, and goes back', async () => {
-  const { page, ev, done } = await open({ shell: true, viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
   const who = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; while (G.dialog) finishEvent();
@@ -570,7 +570,7 @@ test('the character screen opens from the crew list and the posts, shows what we
 });
 
 test('drive power sets the burn: speed, days, reaction mass, and how easily pirates spot you', async () => {
-  const { page, ev, done } = await open({ shell: true });
+  const { page, ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; while (G.dialog) finishEvent();
@@ -616,7 +616,7 @@ test('drive power sets the burn: speed, days, reaction mass, and how easily pira
 });
 
 test('comms: a scene says how it arrived, the inbox keeps it, and the comms post listens', async () => {
-  const { page, ev, done } = await open({ shell: true });
+  const { page, ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; st.inbox = []; while (G.dialog) finishEvent();
@@ -652,7 +652,7 @@ test('comms: a scene says how it arrived, the inbox keeps it, and the comms post
 });
 
 test('comms: a crewed officer takes the merchant hail themselves, a solo captain answers it', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; st.inbox = []; while (G.dialog) finishEvent();
@@ -678,7 +678,7 @@ test('comms: a crewed officer takes the merchant hail themselves, a solo captain
 
 
 test('wear: systems wear slowly with use, at the setting you choose, and old saves start new', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; while (G.dialog) finishEvent();
@@ -709,7 +709,7 @@ test('wear: systems wear slowly with use, at the setting you choose, and old sav
 });
 
 test('wear: a worn system costs performance, and breakdowns come as a scene', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; Settings.wear = 'slow'; while (G.dialog) finishEvent();
@@ -743,7 +743,7 @@ test('wear: a worn system costs performance, and breakdowns come as a scene', as
 });
 
 test('wear: port overhaul, servicing in flight, and the setting in the menu', async () => {
-  const { page, ev, done } = await open({ shell: true });
+  const { page, ev, done } = await open({});
   await ev(helpers);
   await ev(() => { const st = G.state; st.tutorial = null; st.crew = []; st.credits = 10000; while (G.dialog) finishEvent(); st.condition = undefined; Object.assign(condition(), { drive: 50, shields: 80 }); UI.render(); });
   await goTo(page, 'shipyard');
@@ -764,7 +764,7 @@ test('wear: port overhaul, servicing in flight, and the setting in the menu', as
   assert.ok(svc.shields === 20 || svc.shields === 45, `a service helps or fails (${svc.shields})`);
   await done();
   // The setting.
-  const m = await open({ shell: true, title: true });
+  const m = await open({ title: true });
   await m.ev(() => { Menu.view = 'settings'; Menu.render(); });
   await m.page.click('[data-action=menuWear][data-arg=off]');
   assert.equal(await m.ev(() => Settings.wear), 'off');
@@ -773,7 +773,7 @@ test('wear: port overhaul, servicing in flight, and the setting in the menu', as
 });
 
 test('projects: they take parts, run only on a burn, and finish with a result', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; Settings.wear = 'slow'; while (G.dialog) finishEvent();
@@ -794,7 +794,7 @@ test('projects: they take parts, run only on a burn, and finish with a result', 
 });
 
 test('projects: a crewed engineer does better; patch, tune and refit each have their effect', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; Settings.wear = 'slow'; while (G.dialog) finishEvent();
@@ -821,7 +821,7 @@ test('projects: a crewed engineer does better; patch, tune and refit each have t
 });
 
 test('projects: the station lists them, starts one, and shows its progress', async () => {
-  const { page, ev, done } = await open({ shell: true });
+  const { page, ev, done } = await open({});
   await ev(helpers);
   await ev(() => { const st = G.state; st.tutorial = null; st.crew = []; st.cargo = { industrial: 2 }; st.paid = { industrial: 400 }; while (G.dialog) finishEvent(); UI.render(); });
   await goTo(page, 'shipyard');
@@ -841,7 +841,7 @@ test('projects: the station lists them, starts one, and shows its progress', asy
 });
 
 test('programs: a slicer writes a rule over a burn, slots are limited, and a full table blocks new ones', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; st.programs = undefined; Settings.wear = 'off'; while (G.dialog) finishEvent();
@@ -875,7 +875,7 @@ test('programs: a slicer writes a rule over a burn, slots are limited, and a ful
 });
 
 test('programs: a rule runs a crewed post on the rising edge of its condition, and only a crewed one', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(helpers);
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.crew = []; st.programs = undefined; Settings.wear = 'off'; while (G.dialog) finishEvent();
@@ -909,7 +909,7 @@ test('programs: a rule runs a crewed post on the rising edge of its condition, a
 });
 
 test('programs: the Comms station lists them, takes a rule, and shows the writing', async () => {
-  const { page, ev, done } = await open({ shell: true });
+  const { page, ev, done } = await open({});
   await ev(helpers);
   await ev(() => { const st = G.state; st.tutorial = null; st.crew = []; st.programs = undefined; while (G.dialog) finishEvent(); hire('engineer', 2); hire('slicer', 2); UI.render(); });
   await goTo(page, 'comms');

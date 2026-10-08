@@ -12,7 +12,7 @@ after(closeBrowser);
 const startHired = (bg = 'earth', post = 'gunner') => { startGame({ slot: 1, background: bg, captain: 'Sam Rowe', mode: 'hired', post }); while (G.dialog) finishEvent(); const st = G.state; st.story.next = 1e9; st.flags.classicCombat = true; };
 
 test('a hired hand sees the captain on Interior, the header, Operations and Navigation', async () => {
-  const { page, ev, done } = await open({ shell: true, viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
   await ev(`(${startHired})`);
   const cap = await ev(() => { const c = hiredCaptain(); return { id: c.id, name: `${c.first} ${c.last}`, wage: hired().wage, share: Math.round(hired().share * 100) }; });
   assert.match(await page.innerText('#panel .hdr, .hdr'), new RegExp(`Capt\\. ${cap.name}`), 'the port header says whose ship it is');
@@ -32,7 +32,7 @@ test('a hired hand sees the captain on Interior, the header, Operations and Navi
 });
 
 test('the captain\'s screen has no post skills: what they pay you, and what you earn with them', async () => {
-  const { page, ev, done } = await open({ shell: true });
+  const { page, ev, done } = await open({});
   await ev(`(${startHired})`);
   const cap = await ev(() => { const c = hiredCaptain(); hired().ledger.push({ day: 1, from: 'A', to: 'B', good: 'water', tons: 5, profit: 500, wage: 120, share: 50 }); return { id: c.id, name: `${c.first} ${c.last}`, wage: hired().wage, share: Math.round(hired().share * 100) }; });
   await goTo(page, 'crew');
@@ -46,7 +46,7 @@ test('the captain\'s screen has no post skills: what they pay you, and what you 
 });
 
 test('an owner is in command in the same places', async () => {
-  const { page, ev, done } = await open({ shell: true });
+  const { page, ev, done } = await open({});
   await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent(); G.state.tutorial = null; UI.render(); });
   await goTo(page, 'crew');
   const first = await page.$$eval('#panel .con-read', rows => [rows[0].firstElementChild.textContent, rows[0].lastElementChild.textContent]);
@@ -60,7 +60,7 @@ test('an owner is in command in the same places', async () => {
 });
 
 test('the burn HUD names the captain, and the chatter gives the captain their own lines', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(`(${startHired})`);
   const r = await ev(() => {
     const out = {}, c = hiredCaptain(), spoken = [], real = ctx.fillText;
@@ -88,7 +88,7 @@ test('the burn HUD names the captain, and the chatter gives the captain their ow
 });
 
 test('runs together and what you earned keep counting past the 20 runs the ledger holds', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   await ev(`(${startHired})`);
   const r = await ev(() => {
     const h = hired(), st = G.state, planet = currentPlanet();

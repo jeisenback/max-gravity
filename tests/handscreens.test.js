@@ -18,12 +18,12 @@ const helpers = () => {
 };
 
 test('a hired hand has no Exchange or Company on the rail, and an owner keeps them', async () => {
-  const hand = await open({ shell: true, scope: 'earth-hired' });
+  const hand = await open({ scope: 'earth-hired' });
   await hand.ev(helpers);
   const h = await hand.ev(() => { startHand(); return subTabs(); });
   assert.deepEqual(h, ['Port', 'Missions', 'Bar']);
   await hand.done();
-  const owner = await open({ shell: true, scope: 'full' });
+  const owner = await open({ scope: 'full' });
   await owner.ev(helpers);
   const o = await owner.ev(() => { G.state = newState(); G.mode = 'landed'; return subTabs(); });
   assert.ok(o.includes('Exchange') && o.includes('Company'));
@@ -31,7 +31,7 @@ test('a hired hand has no Exchange or Company on the rail, and an owner keeps th
 });
 
 test('Suggest is shut with a visible reason until the captain listens', async () => {
-  const { ev, done } = await open({ shell: true, scope: 'earth-hired' });
+  const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     const st = startHand(), h = hired(), base = { good: 'water', tons: 5, cost: 100, planet: 'Mars', ballast: false, sid: 'mars', profit: 400 };
@@ -48,7 +48,7 @@ test('Suggest is shut with a visible reason until the captain listens', async ()
 });
 
 test('the Missions tab shows no empty headings for a hand, and shows them once there is content', async () => {
-  const { ev, done } = await open({ shell: true, scope: 'earth-hired' });
+  const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     startHand(); G.offers = [];
@@ -64,7 +64,7 @@ test('the Missions tab shows no empty headings for a hand, and shows them once t
 });
 
 test('a suggested run reads in the captain\'s terms, and the deck plan draws a face for each person', async () => {
-  const { page, ev, done } = await open({ shell: true, scope: 'earth-hired' });
+  const { page, ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     const st = startHand(), h = hired(), base = { good: 'water', tons: 5, cost: 100, planet: 'Mars', ballast: false, sid: 'mars', days: 5, profit: 1000 };
@@ -85,7 +85,7 @@ test('a suggested run reads in the captain\'s terms, and the deck plan draws a f
 });
 
 test('a hired hand\'s map says what it is for and shows the captain\'s plan; an owner\'s map is unchanged', async () => {
-  const hand = await open({ shell: true, scope: 'earth-hired' });
+  const hand = await open({ scope: 'earth-hired' });
   await hand.ev(helpers);
   await hand.ev(() => {
     window.drawIt = () => {
@@ -109,7 +109,7 @@ test('a hired hand\'s map says what it is for and shows the captain\'s plan; an 
   assert.match(r.port.said, /The captain's run: Earth to Mars, 5 days\./); assert.equal(r.port.rings, 1, 'the destination is ringed');
   assert.match(r.none.said, /waiting for a market/); assert.equal(r.none.rings, 0);
   await hand.done();
-  const owner = await open({ shell: true, scope: 'full' });
+  const owner = await open({ scope: 'full' });
   await owner.ev(() => { window.drawIt = () => { const said = [], text = ctx.fillText; ctx.fillText = function (t, ...a) { said.push(String(t)); return text.call(this, t, ...a); }; try { drawMap(900, 700); } finally { ctx.fillText = text; } return said.join(' '); }; });
   const o = await owner.ev(() => { G.state = newState(); return drawIt(); });
   assert.match(o, /to plot a burn\./); assert.match(o, /beyond a full tank/); assert.match(o, /No burn plotted/);
@@ -117,7 +117,7 @@ test('a hired hand\'s map says what it is for and shows the captain\'s plan; an 
 });
 
 test('crew names in the bar link to their pages', async () => {
-  const { ev, done } = await open({ shell: true, scope: 'earth-hired' });
+  const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     startHand();
@@ -133,7 +133,7 @@ test('crew names in the bar link to their pages', async () => {
 });
 
 test('the person page puts where you stand first, and explains the Ties card', async () => {
-  const { page, ev, done } = await open({ shell: true, scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
+  const { page, ev, done } = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
   await ev(helpers);
   const r = await ev(() => {
     startHand();
@@ -152,7 +152,7 @@ test('the person page puts where you stand first, and explains the Ties card', a
 });
 
 test('a hired pilot on a touch screen has the burn called once the ship is clear of local space', async () => {
-  const { ev, done } = await open({ shell: true, scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
+  const { ev, done } = await open({ scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
   const r = await ev(() => {
     const out = {}, go = (post, far) => {
@@ -176,7 +176,7 @@ test('a hired pilot on a touch screen has the burn called once the ship is clear
 });
 
 test('a long scene says it continues, the Port heading keeps one case, and a shut order says why', async () => {
-  const { page, ev, done } = await open({ shell: true, scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open({ scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
   // Signing On at 390 by 844: the choices stay pinned, and the dialog says the text continues until it is read to the end.
   await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'engineer', captainKey: 'hester' }); });
@@ -202,7 +202,7 @@ test('a long scene says it continues, the Port heading keeps one case, and a shu
 });
 
 test('a shut scene choice says why as text: credits with the figures, a berth, fuel, and a thing already done', async () => {
-  const { page, ev, done } = await open({ shell: true, scope: 'earth-hired' });
+  const { page, ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     const st = startHand(), out = {};
@@ -231,7 +231,7 @@ test('a shut scene choice says why as text: credits with the figures, a berth, f
 });
 
 test('a hand is told once when their post reaches a new level, and an injury says nothing', async () => {
-  const { ev, done } = await open({ shell: true, scope: 'earth-hired' });
+  const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     const st = startHand(), h = hired(), post = h.post, out = {}, notes = () => UI.notes.filter(n => /is level \d now/.test(n));

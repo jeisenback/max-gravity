@@ -10,7 +10,7 @@ after(closeBrowser);
 
 // A hired gunner landed at Earth, with a spy on announce() that records each line it is given.
 async function landed() {
-  const g = await open({ scope: 'earth-hired', shell: 'default' });
+  const g = await open({ scope: 'earth-hired' });
   await g.ev(() => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent(); G.state.story.next = 1e9;
     window.__told = []; const real = window.announce; window.announce = t => { __told.push(t); return real(t); };

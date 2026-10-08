@@ -11,7 +11,7 @@ const { open, closeBrowser, goTo } = require('./helpers');
 after(closeBrowser);
 
 test('buying raises the price, selling lowers it, markets save', async () => {
-  const { page, ev, done } = await open({ shell: true });
+  const { page, ev, done } = await open({});
   const before = await ev(() => price(currentPlanet(), 'equipment'));
   await page.click('[data-action=tab][data-arg=trade]');
   await page.click('[data-action=buymax][data-arg=equipment]');
@@ -25,7 +25,7 @@ test('buying raises the price, selling lowers it, markets save', async () => {
 });
 
 test('the world runs for years: shortages come and go, raids clear when pirates die', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   const r = await ev(() => {
     const st = G.state; st.tutorial = null;
     const pairs = Object.values(SYSTEMS).flatMap(s => s.planets).reduce((n, pl) => n + Object.keys(pl.prices).length, 0);
@@ -52,7 +52,7 @@ test('the world runs for years: shortages come and go, raids clear when pirates 
 });
 
 test('wars break out and end; slumps follow, and player trade makes booms', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   const r = await ev(() => {
     const st = G.state; st.tutorial = null;
     const econ = new Set(), wars = new Set();
@@ -75,7 +75,7 @@ test('wars break out and end; slumps follow, and player trade makes booms', asyn
 });
 
 test('a war sends warships into local space', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   const r = await ev(() => {
     const st = G.state; st.tutorial = null;
     factionState().war = { a: 'Earth Coalition', b: 'Mars Republic', start: st.day, until: st.day + 40, score: { 'Earth Coalition': 0, 'Mars Republic': 0 } };
@@ -91,7 +91,7 @@ test('a war sends warships into local space', async () => {
 });
 
 test('outfits change the ship, standing unlocks ships, hostility closes ports', async () => {
-  const { page, ev, done } = await open({ shell: true });
+  const { page, ev, done } = await open({});
   await ev(() => { G.state.tutorial = null; G.state.credits = 300000; while (G.dialog) finishEvent(); UI.render(); });
   await goTo(page, 'shipyard');
   const base = await ev(() => ({ ...ship() }));
@@ -125,7 +125,7 @@ test('outfits change the ship, standing unlocks ships, hostility closes ports', 
 });
 
 test('company ships and stakes earn money', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; st.credits = 1e6;
     for (const id of ['lightfreighter', 'freighter']) {
@@ -144,7 +144,7 @@ test('company ships and stakes earn money', async () => {
 });
 
 test('a greedy trader from a new game gets rich and upgrades', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   const r = await ev(() => {
     const st = G.state; st.tutorial = null;
     const all = Object.entries(SYSTEMS).flatMap(([sid, s]) => s.planets.map(pl => ({ sid, pl })));
@@ -192,7 +192,7 @@ test('a greedy trader from a new game gets rich and upgrades', async () => {
 });
 
 test('money never goes negative or NaN: broke escorts stay behind, empty sells do nothing', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   const r = await ev(() => {
     const st = G.state; st.tutorial = null; while (G.dialog) finishEvent();
     st.credits = 300000; buyCompanyShip('gunship'); Mods.act('cescort', '0');

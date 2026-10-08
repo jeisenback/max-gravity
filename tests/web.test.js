@@ -13,7 +13,7 @@ const helpers = () => { window.hand = () => { startGame({ slot: 1, background: '
 const parse = html => { const d = document.createElement('div'); d.innerHTML = html; return d; };
 
 test('the rail has Crew, Bonds and Journal in that order, and Bonds opens the web', async () => {
-  const { ev, page, done } = await open({ shell: true, scope: 'earth-hired' });
+  const { ev, page, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   await ev(() => { hand(); UI.tab = 'crew'; UI.render(); });
   assert.deepEqual(await page.$$eval('.rail button', b => b.map(x => x.textContent).filter(n => ['Crew', 'Bonds', 'Journal'].includes(n))), ['Crew', 'Bonds', 'Journal']);
@@ -25,7 +25,7 @@ test('the rail has Crew, Bonds and Journal in that order, and Bonds opens the we
 });
 
 test('every person aboard is a node, and a line joins each pair with a bond, green for friends and orange for rivals', async () => {
-  const { ev, page, done } = await open({ shell: true, scope: 'earth-hired' });
+  const { ev, page, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     hand();
@@ -50,7 +50,7 @@ test('every person aboard is a node, and a line joins each pair with a bond, gre
 });
 
 test('the strongest ties are listed strongest first, and a click on a node opens that person', async () => {
-  const { ev, page, done } = await open({ shell: true, scope: 'earth-hired' });
+  const { ev, page, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const ids = await ev(() => {
     hand();
@@ -67,7 +67,7 @@ test('the strongest ties are listed strongest first, and a click on a node opens
 });
 
 test('with no bonds the web says so, and an owner with a small crew still draws', async () => {
-  const { ev, done } = await open({ shell: true });
+  const { ev, done } = await open({});
   const r = await ev(() => {
     while (G.dialog) finishEvent();
     const empty = UI.views.web.call(UI);

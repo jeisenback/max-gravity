@@ -32,7 +32,7 @@ const cases = [
 
 for (const [key, cur, good, bad] of cases) {
   test(`${key} takes a suggestion that suits them and turns down one that does not`, async () => {
-    const { ev, done } = await open({ shell: true, scope: 'earth-hired' });
+    const { ev, done } = await open({ scope: 'earth-hired' });
     await ev(helpers);
     const r = await ev(([key, cur, good, bad]) => {
       setup(key); const out = {};
@@ -50,7 +50,7 @@ for (const [key, cur, good, bad] of cases) {
 }
 
 test('imre will not go to a worse lane, and a hand the captain does not know yet is not heard', async () => {
-  const { ev, done } = await open({ shell: true, scope: 'earth-hired' });
+  const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     setup('imre'); const out = {};
@@ -66,7 +66,7 @@ test('imre will not go to a worse lane, and a hand the captain does not know yet
 });
 
 test('the run panel lists the next runs for a captain with a style, and the button suggests one', async () => {
-  const { page, ev, done } = await open({ shell: true, scope: 'earth-hired' });
+  const { page, ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   await ev(() => { setup('dov'); stage({ profit: 1000 }, { profit: 400, planet: 'Ganymede' }); UI.render(); });
   await goTo(page, 'shipyard').catch(() => {});
