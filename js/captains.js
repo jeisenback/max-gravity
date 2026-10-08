@@ -111,7 +111,7 @@ function arrivalScene() {
     ...(f.hall ? [`Hall bond, ${Math.round(DEBT_SHARE * 100)} percent of your pay: ${fmt(f.hall)}. Still owed: ${fmt(f.owed)}.`] : []),
   ].join('<br>');
   const column = `Under the crew column, below ${crewNamed('engineer')} and ${crewNamed('pilot')}, ${f.profit > 0 ? `there is a line in ${cap.first}'s hand with your name on it.` : 'your line is empty.'} ${say(a.column)}`;
-  const ashore = `"You are off until ${cap.first} has a plan. The Missions tab has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew."`;
+  const ashore = `"You are off until ${cap.first} has a plan. The Missions page has day jobs on the station, and that pay is yours. Anything farther off, you put to the captain. The bar has people in it who are not crew."`;
   return {
     title: 'Settling Up', personal: true,
     text: [say(a.open), ledger, say(a.memory), column, ashore].join('</p><p>'),

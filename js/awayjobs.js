@@ -174,7 +174,7 @@ Mods.register({
         return;
       }
       // a contact offers something, now and then, at a port with a board
-      if (planet.services.includes('missions') && h.away.length < AWAY_MAX && Math.random() < AWAY_CHANCE) { const o = awayOffer(); if (o) { h.away.push(o); UI.notes.push(`${o.ctx.who} has work for someone who is going to ${o.planet}. It is on the Missions tab.`); } }
+      if (planet.services.includes('missions') && h.away.length < AWAY_MAX && Math.random() < AWAY_CHANCE) { const o = awayOffer(); if (o) { h.away.push(o); UI.notes.push(`${o.ctx.who} has work for someone who is going to ${o.planet}. It is on the Missions page.`); } }
     });
   },
 });

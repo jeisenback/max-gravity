@@ -18,11 +18,11 @@ const HELP = [
     `Save toward a ship of your own. Once your savings are high enough, a ship may be offered to you at a port with a yard. The yard's own ships stay on the list, and the Rock Hopper is the cheapest.`,
     'Buying a ship ends your time as a hand. The crew who like you come with you, and the captain says goodbye at the foot of the ramp.' ] },
   { id: 'trading', title: 'Trading and markets', hand: [
-    'The captain trades. Each run is the best cargo and port within reach, bought from the ship\'s funds; the Port tab shows the plan, the funds and your savings. When you press Sail, the captain buys the cargo and the ship leaves. On arrival it is sold, and your wage and share are paid.',
+    'The captain trades. Each run is the best cargo and port within reach, bought from the ship\'s funds; the Port page shows the plan, the funds and your savings. When you press Sail, the captain buys the cargo and the ship leaves. On arrival it is sold, and your wage and share are paid.',
     'Markets have real stock. A big hold moves a price when it is bought or sold, and stations use up what they import and pile up what they export. A raided port runs short, which is a chance for a bold captain.' ], text: [
-    'Buy where a good is cheap and sell where it is dear. The Exchange tab shows each good\'s price here and the best market within one tank of reaction mass.',
+    'Buy where a good is cheap and sell where it is dear. The Exchange page shows each good\'s price here and the best market within one tank of reaction mass.',
     'Markets have real stock. Buying pushes a price up and selling pushes it down, so a big hold has to spread its trade around. Stations use up what they import and pile up what they export; NPC haulers carry goods between them.',
-    'The Port tab\'s conditions show shortages and gluts, and how much is on its way. Pirate raids keep haulers away, so raided stations run short: a chance for a bold trader.' ] },
+    'The Port page\'s conditions show shortages and gluts, and how much is on its way. Pirate raids keep haulers away, so raided stations run short: a chance for a bold trader.' ] },
   { id: 'travel', title: 'Travel and burns', hand: [
     'The captain picks each run. Press Sail, and the ship burns to the midpoint, flips, and decelerates. If you hold the pilot\'s post, you fly her. Everything orbits at its real period, so travel times change over the months.',
     'Things happen along the way: distress calls, rumors, crew moments, the captain\'s and the first officer\'s own scenes. Time stops while you decide.' ], text: [
@@ -41,12 +41,12 @@ const HELP = [
     ('Sit with someone during downtime to learn their story over several talks. Letters from home arrive at ports, and a crew member having a hard ' +
         'time works one skill lower until someone helps. A hurt or dead crew member is marked on the crew screen, and the dead are remembered there. ' +
         'When you buy a ship, the crew who like you come with you.') ], text: [
-    'Hire crew in the Bar or the Crew tab. Each role has a perk: engineers save reaction mass, pilots shorten burns, gunners add a gun, quartermasters hear rumors, slicers spoof transponders, medics heal.',
+    'Hire crew in the Bar or the Crew page. Each role has a perk: engineers save reaction mass, pilots shorten burns, gunners add a gun, quartermasters hear rumors, slicers spoof transponders, medics heal.',
     'People aboard have feelings about you and about each other. Shared tastes (a favorite kind of vid or book, a ring-ball team) bring them together; clashing habits pull them apart. Downtime activities build bonds.',
     'Sit with someone during downtime to learn their story over several talks. A crew member may ask a favor; keeping it makes them loyal for good. Letters from home arrive at ports, and a crew member having a hard time works one skill lower until someone helps.' ] },
   { id: 'company', title: 'Your company', off: 'owner', text: [
     'Buy extra ships at a shipyard for your company. Each comes with a captain and runs a trade route while you fly, or flies with you as an escort.',
-    'Buy stakes in a port\'s business from the Port tab. They pay a daily share that rises with booms and falls with raids and war.' ] },
+    'Buy stakes in a port\'s business from the Port page. They pay a daily share that rises with booms and falls with raids and war.' ] },
   { id: 'outpost', title: 'Your outpost', off: 'owner', text: [
     'Claim Callisto at Ganymede, or Nereid at Triton Outpost, and build a habitat ring. Keep the settlers supplied with food, water, medical supplies, and electronics from your hold.',
     'Supplied, the outpost grows and pays you every day; short of anything, settlers leave. Buildings make it self-sufficient, add housing, and open services.' ] },
@@ -57,9 +57,9 @@ const HELP = [
     'Your standing with each faction opens (or closes) their shipyards, outfitters, and missions. Pirates remember you too.' ] },
   { id: 'story', title: 'Story and campaigns', off: 'storylines', text: [
     'Cold Water, the main story, begins with a derelict on one of your early burns. Three rival careers (a Mars Navy commission, a pirate lord\'s rise, and a corporate climb) exclude each other, and a Belt haulers\' strike can draw you in.',
-    'The Port tab shows your current objective and your journal.' ] },
+    'The Port page shows your current objective and your journal.' ] },
   { id: 'legacy', title: 'Death and legacy', off: 'owner', text: [
-    'If your ship is destroyed, you can go on as your heir, who inherits the company, its ships, stakes, and outpost, and half of everything else. You can also retire from the Company tab.' ] },
+    'If your ship is destroyed, you can go on as your heir, who inherits the company, its ships, stakes, and outpost, and half of everything else. You can also retire from the Company page.' ] },
   { id: 'saves', title: 'Saving', text: [
     'The game saves itself every time you dock, to the slot you chose. The Menu (Esc, or the Menu button) has Save, Load, and Settings. Export a save as a file or code to keep a backup or move it to another device.' ] },
 ];

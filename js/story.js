@@ -385,7 +385,7 @@ function epilogueEvent() {
   return {
     title: 'Epilogue: Cold Water',
     text: parts.join('<br><br>'),
-    choices: [{ label: 'Keep flying', run: () => 'The solar system carries on. So do you. (You can reread the epilogue from the Port tab.)' }],
+    choices: [{ label: 'Keep flying', run: () => 'The solar system carries on. So do you. (You can reread the epilogue from the Port page.)' }],
   };
 }
 

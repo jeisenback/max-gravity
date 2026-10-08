@@ -147,7 +147,7 @@ function boardingEvent(n) {
           loseVoyage(n);
           n.dead = true;
           if (G.target === n) G.target = null;
-          return `Your prize crew takes the helm and limps the ${prize.name} toward ${at.name}. It's on your Company tab now, with its hull as you left it.`;
+          return `Your prize crew takes the helm and limps the ${prize.name} toward ${at.name}. It's on your Company page now, with its hull as you left it.`;
         } },
       { label: 'Let them go', run: () => (n.kind === 'pirate' ? 'You leave them drifting. They will not thank you.' : 'You leave them to call for a tow.') },
     ].filter(c => !(c.owner && hired())),  // a hand takes no prize: a company ship is the owner's
