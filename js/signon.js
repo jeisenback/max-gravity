@@ -24,7 +24,7 @@ const SIGN_ON = {
     away: 'The domes will argue about the future without you. Aboard, nobody asks whose side you are on. The first thing anyone asks is whether you have eaten.',
   },
   belt: {
-    text: c => (`You were born in the Ceres spin, and you know what water is worth. A hand's share in a freighter that crosses to the inner system ` +
+    text: c => (`You were born in the Ceres Warren, and you know what water is worth. A hand's share in a freighter that crosses to the inner system ` +
         `and back is not much, but it is a berth, and a berth is the one thing in the Belt that is truly yours. The Collective's dock office stamped ` +
         `the papers and wished you luck, in the tone of people who have wished a great many people luck. ${c.ship}, an ice hauler out of ${c.sys}, ` +
         `sails.${c.who}`),

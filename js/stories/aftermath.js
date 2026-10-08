@@ -281,7 +281,7 @@ Mods.register({
     // ---- Stowaway ----
     beat({
       id: 'st-where', title: 'Where To?', via: 'crew',
-      text: 'The kid has eaten two bowls of stew and is sitting very straight at the galley table. "I should tell you where I am going," they say. "I have an aunt on Ceres, in the spin, with a laundry. She does not know I am coming. She will be furious. She will be glad."',
+      text: 'The kid has eaten two bowls of stew and is sitting very straight at the galley table. "I should tell you where I am going," they say. "I have an aunt on Ceres, in the Warren, with a laundry. She does not know I am coming. She will be furious. She will be glad."',
       choices: [
         { label: 'Drop them at the next port', result: 'They nod, quickly, the way people do when they have been disappointed in advance. They shake your hand, hard, and are gone at the first dock, with the rucksack, into the crowd.' },
         {

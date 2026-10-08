@@ -102,7 +102,7 @@ function cleanDeeds(d) {
 
 // ---------- scenarios ----------
 const SCENARIOS = [
-  { title: 'Broke on Ceres', text: 'You lost your last ship in a card game on Ceres Station. You have a Rock Hopper that smells of someone else\'s cigarettes, 800 credits, and a man named Pax who wants his money back.',
+  { title: 'Broke on Ceres', text: 'You lost your last ship in a card game on Ceres Station. You have a Dust Skiff that smells of someone else\'s cigarettes, 800 credits, and a man named Pax who wants his money back.',
     start: { credits: 800, shipId: 'shuttle', systemId: 'ceres', planet: 'Ceres Station', day: 40 },
     storylets: [{ id: 'pax-debt', where: 'port', when: { planet: 'Ceres Station', day: 45 }, title: 'Pax', text: 'Pax is waiting at your airlock, smiling the way people smile when they have brought friends. "Two thousand, captain. Or the ship."',
       choices: [
@@ -111,7 +111,7 @@ const SCENARIOS = [
       ] }] },
   { title: 'Ice Rush', text: 'Ceres is thirsty, and you own an Ice Hauler full of Europa water. Everyone between here and the Belt knows it.',
     start: { credits: 20000, shipId: 'freighter', systemId: 'jupiter', planet: 'Europa', cargo: { water: 80 }, day: 90 } },
-  { title: 'Rook\'s Favorite', text: 'The pirates of Hygiea like you, which is more than anyone else can say. You start at the Rook with a Torch Courier, a slicer\'s reputation, and very few friends in uniform.',
+  { title: 'Rook\'s Favorite', text: 'The pirates of Hygiea like you, which is more than anyone else can say. You start at the Rook with a Needle courier, a slicer\'s reputation, and very few friends in uniform.',
     start: { credits: 15000, shipId: 'courier', systemId: 'hygiea', planet: 'The Rook', rep: { Pirate: 30, 'Earth Coalition': -20, 'Mars Republic': -10 }, day: 60 } },
 ];
 

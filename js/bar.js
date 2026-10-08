@@ -24,7 +24,7 @@ const BARS = {
   'Phobos Yards': ['Dry Dock', ('Shipwrights at tables where they can see the yard through a wide window: gantries, and the welded ribs of a ' +
       'half-finished hull. Every table has a ship part on it and someone explaining it on a napkin. There is a jar behind the bar for lost tools. In ' +
       'the corner an old man is asleep in a chair. They say he built the first hull that left Phobos. Nobody wakes him.')],
-  'Ceres Station': ['The Spin', ('Belters, three deep at the bar, talking with their hands in a mix of dialects. The water ration is posted over the ' +
+  'Ceres Station': ['The Warren', ('Belters, three deep at the bar, talking with their hands in a mix of dialects. The water ration is posted over the ' +
       'taps in block letters and updated on the hour. Every drink comes with a small glass of tap water, because the law says so. The floor tilts ' +
       'toward the curve of the station, and the regulars lean with it.')],
   'Ring Nine': ['Auntie Oyelaran\'s', ('A noodle counter with a still behind it, in a corner of an old cargo bay, with paper lanterns strung from the ' +

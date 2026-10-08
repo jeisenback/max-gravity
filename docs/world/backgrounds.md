@@ -4,7 +4,7 @@ One entry for each start background in `BACKGROUNDS` (`js/menu.js`). The narrow 
 
 ### bg.earth
 
-- Source: `BACKGROUNDS.earth` in `js/menu.js`: "Start on Earth with 12,000 credits and a patched-up Rock Hopper."
+- Source: `BACKGROUNDS.earth` in `js/menu.js`: "Start on Earth with 12,000 credits and a patched-up Dust Skiff."
 - Home: A lower-tier ward of a coastal arcology, where the sea wall is kept by rota and every household owes the wall a shift each season.
 - Family: A parent on the wall rota and a grandparent who remembers when the rota was paid. The household keeps a wall book that lists who has stood which shift and who owes how many.
 - Schooling: A tier school that teaches everyone to splice a line and read a manifest before anything else. A berth on a ship is the usual way up the tiers.
@@ -25,7 +25,7 @@ One entry for each start background in `BACKGROUNDS` (`js/menu.js`). The narrow 
 
 ### bg.belt
 
-- Source: `BACKGROUNDS.belt` in `js/menu.js`: "Ceres-born, with long limbs and short patience. Start on Ceres Station with 9,000 credits and friends in the Belt Collective." The intro: "You were born in Ceres spin, and you know what water is worth."
+- Source: `BACKGROUNDS.belt` in `js/menu.js`: "Ceres-born, with long limbs and short patience. Start on Ceres Station with 9,000 credits and friends in the Belt Collective." The intro: "You were born in the Ceres Warren, and you know what water is worth."
 - Home: The Ceres Warren, in a household known by its hatch number.
 - Family: A family on a water share tied to the hatch. When the hatch changed hands, the share went with it.
 - Schooling: The valves before the letters. A child of the Warren can name every tap on a deck by its sound.

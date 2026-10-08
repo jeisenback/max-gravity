@@ -80,7 +80,7 @@ const armament = () => {
 };
 
 // What the ship carries to a fight, on the hull: the guns along the spine (colored by the fire control's condition),
-// the point-defense turrets underneath, and the torpedo tubes in the bow, filled for each torpedo held.
+// the close-defense turrets underneath, and the torpedo tubes in the bow, filled for each torpedo held.
 function gunnerySvg() {
   const st = G.state, s = ship(), fire = condColor(condition().fire), pdc = Math.min(2, (st.outfits || {}).pdc || 0);
   const guns = Math.min(6, s.guns), spineY = x => 112 - (x - 110) * 12 / 360, keelY = x => 188 + (x - 110) * 12 / 360;

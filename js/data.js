@@ -18,11 +18,11 @@ const PRICE_MULT = { L: 0.75, M: 1.0, H: 1.3 };
 // `fuel` is reaction mass. Burn costs scale with distance (see burnFuel in game.js).
 // `berths` are shared by crew and passengers.
 const SHIPS = {
-  shuttle:   { name: 'Rock Hopper',  price: 10000,  cargo: 20,  fuel: 300, berths: 4, shields: 60,  armor: 50,  accel: 170, maxSpeed: 260, turn: 3.0, guns: 1, size: 10, forSale: true,
+  shuttle:   { name: 'Dust Skiff',  price: 10000,  cargo: 20,  fuel: 300, berths: 4, shields: 60,  armor: 50,  accel: 170, maxSpeed: 260, turn: 3.0, guns: 1, size: 10, forSale: true,
                desc: 'A patched-up Belter skiff held together with sealant and optimism. Every captain starts somewhere.' },
   lightfreighter: { name: 'Ore Runner', price: 28000, cargo: 50, fuel: 300, berths: 5, shields: 90, armor: 100, accel: 150, maxSpeed: 250, turn: 2.6, guns: 1, size: 13, forSale: true,
-               desc: 'The first real step up for an independent hauler. Two and a half times the hold of a Rock Hopper.' },
-  courier:   { name: 'Torch Courier', price: 45000, cargo: 35,  fuel: 380, berths: 7, shields: 110, armor: 80,  accel: 260, maxSpeed: 380, turn: 3.8, guns: 1, size: 11, forSale: true,
+               desc: 'The first real step up for an independent hauler. Two and a half times the hold of a Dust Skiff.' },
+  courier:   { name: 'Needle courier', price: 45000, cargo: 35,  fuel: 380, berths: 7, shields: 110, armor: 80,  accel: 260, maxSpeed: 380, turn: 3.8, guns: 1, size: 11, forSale: true,
                desc: 'All drive and very little else. Mail runners and smugglers swear by them.' },
   freighter: { name: 'Ice Hauler',   price: 90000,  cargo: 120, fuel: 450, berths: 10, shields: 180, armor: 260, accel: 100, maxSpeed: 200, turn: 1.8, guns: 1, size: 18, forSale: true,
                desc: 'A water tank the size of a city block with a drive bolted on. Slow, sturdy, and long-legged enough to reach Triton.' },
@@ -63,7 +63,7 @@ const SYSTEMS = {
     planets: [
       { name: 'Earth', x: -150, y: 80, r: 95, color: '#3a7bd5', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
         prices: { water: 'M', food: 'M', industrial: 'L', medical: 'L', luxury: 'H', metal: 'H', equipment: 'L' },
-        desc: ('Thirty billion people, most of them on basic assistance, and the orbital elevator ports never sleep. From the dock you can see the ' +
+        desc: ('Arcology cities on every coast, each keeping its own sea wall by rota, and the orbital elevator ports never sleep. From the dock you can see the ' +
             'ribbon of lit cable dropping into a cloud deck the color of old pearls, and the freight climbing it in an endless string. Down there are ' +
             'oceans, and forests, and lines around the block for a job. Up here it is all customs queues, noodle stalls, and men in good suits looking ' +
             'for someone to blame.') },
@@ -96,7 +96,7 @@ const SYSTEMS = {
     planets: [
       { name: 'Ceres Station', x: -60, y: -40, r: 60, color: '#90a4ae', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
         prices: { water: 'H', food: 'H', medical: 'H', metal: 'L', luxury: 'M', equipment: 'M', industrial: 'M' },
-        desc: ('Six million people spun up inside a dwarf planet, Belters with long limbs and short tempers, and water rationing on every wall. The ' +
+        desc: ('Six million people burrowed into a dwarf planet, Belters with long limbs and short tempers, and water rationing on every wall. The ' +
             'corridors curve upward in both directions, lined with hydroponic troughs and hand-lettered notices about the day\'s allotment. Children ' +
             'play in the low gravity with the easy grace of people who have never known any other. Everyone knows the price of a liter of water to the ' +
             'credit, and everyone will tell you when it changes.') },
@@ -178,9 +178,9 @@ const SYSTEMS = {
     planets: [
       { name: 'Ganymede', x: 150, y: 50, r: 70, color: '#a1887f', services: ['trade', 'missions', 'refuel'],
         prices: { food: 'L', medical: 'M', luxury: 'H', equipment: 'H' },
-        desc: ('The breadbasket of the outer planets: mirror arrays turning slowly overhead, feeding sunlight to agri-domes that grow food for half ' +
+        desc: ('A moon of leasehold terraces: mirror arrays turning slowly overhead, feeding sunlight to agri-domes worked under leases that pass from parent to child, whose crops feed half ' +
             'the Belt. From the dock it looks like a small green sea under glass, with crop rows running to the horizon and irrigation booms tracing ' +
-            'their slow arcs. The farmers are practical, sunburned, and wary of anyone who talks like an investor. They will feed you very well, and ' +
+            'their slow arcs. The farmers are practical, sunburned, and wary of anyone who talks like a lease agent. They will feed you very well, and ' +
             'they will watch how you pay.') },
       { name: 'Europa', x: -350, y: -200, r: 55, color: '#d7ccc8', services: ['trade', 'refuel'],
         prices: { water: 'L', industrial: 'H' },
@@ -227,7 +227,7 @@ const PATROL_NAMES = { 'Earth Coalition': 'Coalition cutter', 'Mars Republic': '
 // `req` needs that much standing with the faction running the shop; `pirate` gear is
 // only sold in pirate ports. Outfits move with you when you change ships.
 const OUTFITS = {
-  pdc:     { name: 'Point-defense cannon', price: 6000, space: 3, max: 2, desc: 'An extra forward gun that also shoots down incoming torpedoes on its own.', mod: s => { s.guns += 1; } },
+  pdc:     { name: 'Close-defense turret', price: 6000, space: 3, max: 2, desc: 'An extra forward gun that also shoots down incoming torpedoes on its own.', mod: s => { s.guns += 1; } },
   launcher: { name: 'Torpedo launcher', price: 12000, space: 3, max: 1, desc: 'Fires homing torpedoes at your target (F). Slow off the rail, fast and hard-hitting after. Buy torpedoes at any outfitter.', mod: s => { s.launcher = true; } },
   heavy:   { name: 'Heavy rounds', price: 12000, space: 2, max: 1, req: 15, desc: 'Tungsten-cored ammunition. Your guns hit 40% harder.', mod: s => { s.dmgMult *= 1.4; } },
   armor:   { name: 'Armor plating', price: 4000, space: 4, max: 3, desc: '+40 armor.', mod: s => { s.armor += 40; } },
