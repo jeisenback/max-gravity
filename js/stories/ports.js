@@ -257,8 +257,8 @@ Mods.register({
       ],
     });
     scene({
-      id: 'port-ceres-gym', when: { planet: 'Ceres Station' }, title: 'The Spin Ring',
-      text: 'The Ceres spin ring is the only place on the station with something close to a full gravity, and the whole belt seems to queue for it. A woman on the next treadmill is on her first trip back after two years on a long run, and she is crying a little and trying to hide it.',
+      id: 'port-ceres-gym', when: { planet: 'Ceres Station' }, title: 'The Warren Ring',
+      text: 'The Warren ring is the only place on the station with something close to a full gravity, and the whole belt seems to queue for it. A woman on the next treadmill is on her first trip back after two years on a long run, and she is crying a little and trying to hide it.',
       choices: [
         { label: 'Talk to her', effects: { like: { crew: 1 }, learn: 1 }, result: 'You talk about nothing in particular: the food, the runs, the way a floor feels. She says it is the floor. After a while she laughs, and the crying stops, and you both finish your laps.' },
         { label: 'Give her the space', result: 'You finish your laps without a word, and so does she. When you leave, she lifts a hand, which is enough.' },

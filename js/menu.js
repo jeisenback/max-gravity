@@ -77,11 +77,11 @@ function migrate(st) {
 
 // ---------- starting out ----------
 const BACKGROUNDS = {
-  earth: { name: 'Earth', text: 'Start on Earth with 12,000 credits and a patched-up Rock Hopper. The tutorial walks you through your first trade run.', at: ['earth', 'Earth'], credits: 12000 },
+  earth: { name: 'Earth', text: 'Start on Earth with 12,000 credits and a patched-up Dust Skiff. The tutorial walks you through your first trade run.', at: ['earth', 'Earth'], credits: 12000 },
   mars: { name: 'Mars', text: 'Grew up under the Tharsis domes. Start on Mars with 10,000 credits and friends in the Mars Republic.', at: ['mars', 'Mars'], credits: 10000, rep: { 'Mars Republic': 10 },
-    intro: () => ['You grew up under the domes of Tharsis, where everyone argues about the future. Now you have a Rock Hopper, 10,000 credits, and a way off the planet.', 'Mars pays well for Electronics from Earth, and sells Refined Metals cheap.'] },
+    intro: () => ['You grew up under the domes of Tharsis, where everyone argues about the future. Now you have a Dust Skiff, 10,000 credits, and a way off the planet.', 'Mars pays well for Electronics from Earth, and sells Refined Metals cheap.'] },
   belt: { name: 'The Belt', text: 'Ceres-born, with long limbs and short patience. Start on Ceres Station with 9,000 credits and friends in the Belt Collective.', at: ['ceres', 'Ceres Station'], credits: 9000, rep: { 'Belt Collective': 10 },
-    intro: () => ['You were born in Ceres spin, and you know what water is worth. Now you have a Rock Hopper, 9,000 credits, and the whole Belt to work.', 'Ceres is always short of water and food. Europa and Ganymede, at Jupiter, sell both cheap.'] },
+    intro: () => ['You were born in the Ceres Warren, and you know what water is worth. Now you have a Dust Skiff, 9,000 credits, and the whole Belt to work.', 'Ceres is always short of water and food. Europa and Ganymede, at Jupiter, sell both cheap.'] },
 };
 
 function startGame(o) {

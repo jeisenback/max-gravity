@@ -36,7 +36,7 @@ function succeed(fate, heirName) {
     st.missions = st.missions.filter(m => m.type === 'bounty');
     st.home = null;
     homeLog(`In memory of Captain ${cleanName(old.name)}${lost ? ` and the crew` : ''}, lost with ${oldShip}.`);
-    notes.push(`Captain ${cleanName(old.name)} is gone${lost ? `, and ${lost === 1 ? 'the crew member' : `the ${lost} crew`} aboard with them` : ''}. The company passes to ${heir}, with half the money after the estate is settled, and a new Rock Hopper.`);
+    notes.push(`Captain ${cleanName(old.name)} is gone${lost ? `, and ${lost === 1 ? 'the crew member' : `the ${lost} crew`} aboard with them` : ''}. The company passes to ${heir}, with half the money after the estate is settled, and a new Dust Skiff.`);
     if (kept.length) notes.push(`${kept.map(id => person(id).first).join(' and ')} came out of the wreck alive, and changed.`);
   } else {
     notes.push(`Captain ${cleanName(old.name)} retires with 30% of the money and a berth on a quiet habitat. ${heir} takes command of ${shipTitle()}, the crew, and the company.`);

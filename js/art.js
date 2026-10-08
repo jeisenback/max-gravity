@@ -7,7 +7,7 @@
 // runtime.
 
 const HULLS = {
-  shuttle: {      // Rock Hopper: a boxy, patched-up skiff
+  shuttle: {      // Dust Skiff: a boxy, patched-up skiff
     outline: [[1, 0], [0.8, 0.25], [0.3, 0.35], [0.1, 0.55], [-0.5, 0.55], [-0.7, 0.35], [-0.9, 0.3], [-1, 0.15], [-1, 0]],
     drives: [[-1, 0]], nozzle: 0.16, bridge: 0.7, seams: [0.1, -0.5], guns: [[0.55, 0]],
   },
@@ -15,7 +15,7 @@ const HULLS = {
     outline: [[1, 0], [0.85, 0.15], [0.6, 0.18], [0.55, 0.4], [-0.4, 0.4], [-0.45, 0.18], [-0.8, 0.18], [-0.9, 0.28], [-1, 0.28], [-1, 0]],
     drives: [[-1, 0.14], [-1, -0.14]], nozzle: 0.11, bridge: 0.8, seams: [0.25, -0.05], guns: [],
   },
-  courier: {      // Torch Courier: a needle with an oversized drive
+  courier: {      // Needle courier: a needle with an oversized drive
     outline: [[1, 0], [0.5, 0.12], [-0.4, 0.14], [-0.6, 0.3], [-1, 0.34], [-1, 0]],
     drives: [[-1, 0]], nozzle: 0.3, bridge: 0.6, seams: [0, -0.6], guns: [],
   },

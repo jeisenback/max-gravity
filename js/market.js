@@ -6,7 +6,7 @@
 
 // Trading moves markets: each ton bought raises the local price and each ton sold
 // lowers it, up to MARKET_CAP either way. Local use and NPC haulers move them too
-// (world.js). A Rock Hopper barely dents a market; an Ice Hauler has to spread its
+// (world.js). A Dust Skiff barely dents a market; an Ice Hauler has to spread its
 // trade around.
 const MARKET_PER_TON = 0.002, MARKET_CAP = 0.4;
 

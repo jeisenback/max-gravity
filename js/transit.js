@@ -11,7 +11,7 @@ const CHATTER = [
   'Ice hauler "Mule\'s Promise" to all ships: anyone got a spare coolant pump?',
   'Coalition Navy picket: routine sweep, no contacts.',
   'Somebody is broadcasting polka on the emergency band again.',
-  'Crash couch: juice reservoir at 80 percent.',
+  'Crash couch: anti-g drip reservoir at 80 percent.',
   '"...and that is why you never play cards with a Pallas refinery crew." [laughter]',
   'Automated beacon: Ceres Station reports all docking bays open. Water ration unchanged.',
   'Courier "Swift Dispatch": running a hard burn, clear the approach please.',

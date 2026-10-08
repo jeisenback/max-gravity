@@ -416,7 +416,7 @@ test('the weapons console shows the armament and the fire deck from the ship, at
   const want = await ev(() => ({ guns: Math.min(6, ship().guns), deck: playerCounts() }));
   assert.equal(await page.$$eval('#panel .con-plant rect[width="22"]', n => n.length), want.guns, 'a mount for each gun');
   assert.equal(await page.$$eval('#panel .con-plant rect[width="22"]', n => n[0].getAttribute('stroke')), '#ff6a4a', 'worn fire control shows red');
-  assert.equal(await page.$$eval('#panel .con-plant circle[stroke="#5fd35f"]', n => n.length), 2, 'a turret for each point-defense cannon');
+  assert.equal(await page.$$eval('#panel .con-plant circle[stroke="#5fd35f"]', n => n.length), 2, 'a turret for each close-defense turret');
   assert.equal(await page.$$eval('#panel .con-plant circle[fill="#6fb0ff"]', n => n.length), 4, 'a torpedo in the tubes for each one held');
   const row = (root, label) => page.$$eval(`${root} .con-read`, (rows, l) => { const r = rows.find(x => x.firstElementChild.textContent === l); return r && r.lastElementChild.textContent; }, label);
   assert.equal(await row('#panel', 'Gun run'), String(want.deck.gun), 'the fire deck is the duel deck');
