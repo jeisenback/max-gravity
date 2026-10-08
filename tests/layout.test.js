@@ -65,6 +65,18 @@ test('the HUD sidebar and the panel do not overlap, and the panel clears the com
   await g.done();
 });
 
+test('the panel is centred in the area beside the HUD sidebar, so no sliver of the backdrop shows beside it (#269)', async () => {
+  for (const width of [1000, 1100, 1280, 1600]) {
+    const g = await open({ scope: 'earth-hired', viewport: { width, height: 800 } });
+    await g.ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent(); G.state.tutorial = null; UI.render(); });
+    const r = await g.ev(() => { const b = document.getElementById('panel').getBoundingClientRect(); return { left: b.left, right: b.right, hud: G.hudW, W: innerWidth }; });
+    const area = r.W - r.hud, gapLeft = r.left, gapRight = area - r.right;
+    assert.ok(r.right <= area + 0.5, `${width}px: the panel ends at ${r.right}, the sidebar starts at ${area}`);
+    assert.ok(Math.abs(gapLeft - gapRight) <= 1, `${width}px: the margins are ${gapLeft} and ${gapRight}`);
+    await g.done();
+  }
+});
+
 test('between 700 and 999px the compact HUD is used, and from 1000px the sidebar', async () => {
   const g = await open({ scope: 'earth-hired', viewport: { width: 768, height: 1024 } });
   const hudAt = async w => { await g.page.setViewportSize({ width: w, height: 800 }); await g.page.waitForFunction(x => innerWidth === x && G.W === x, w); return g.ev(() => ({ hudW: G.hudW, hud: HUD_W })); };
