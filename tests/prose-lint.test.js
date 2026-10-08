@@ -114,3 +114,15 @@ test('extractProse survives a regex with a quote inside a template expression, a
   ].join('\n');
   assert.deepEqual(extractProse(src), ['Hello X there and welcome aboard.', 'another string with four words']);
 });
+
+test('countTics also counts the asides listed in the tic table', () => {
+  assert.equal(countTics('She is very interested in the log, and gives a look you would like back.').aside, 2);
+});
+
+test('compare shows the spread, and reads an older baseline that lacks a tic id', () => {
+  const base = lint({ 'a.js': "const x = 'He sits. She stands up. They wait at the door for the others to come.';" });
+  const now = lint({ 'a.js': "const x = 'He sits down at the table. She stands up beside him and waits. They wait at the door for the others to come.';" });
+  assert.ok(/^sd: /m.test(compare(base, now)), compare(base, now));
+  const old = JSON.parse(JSON.stringify(base)); delete old.total.tics.aside;
+  assert.ok(!/NaN|undefined/.test(compare(old, now)), compare(old, now));
+});

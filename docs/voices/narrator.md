@@ -32,7 +32,7 @@ Build: Balanced sentences with a turn at the end. A subordinate clause sets up a
 Rhythm: Opens on the rule or the state of things, and ends on the plain fact, never on an explanation of it.
 Humor: In what the characters say and in the situation itself, never in the narrator's comment. The narrator reports the absurd thing and stops.
 Custom: Stated as the ship's own rule, with the humor in the rule and not in the telling.
-North star: Lois McMaster Bujold. Take: the dry line a character says, and the balanced sentence with a turn. Leave: the wry narrator commentary and the heavy interior thought, which break rule 8.
+North star: Lois McMaster Bujold. Take: the dry line a character says, and the balanced sentence with a turn. Leave: the wry narrator commentary and the heavy interior thought, which break rule 8 of `docs/prose-style.md`.
 
 Sample:
 

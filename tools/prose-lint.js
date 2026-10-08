@@ -20,7 +20,7 @@ const TICS = [
   { id: 'forAWhile', re: /\bfor a while\b/gi },
   { id: 'longMoment', re: /\bfor a long moment\b/gi },
   { id: 'adverb', re: /\b(?:somehow|oddly|strangely)\b/gi },
-  { id: 'aside', re: /\b(?:which is (?:worse|how)|in a way that|a kind of)\b/gi },
+  { id: 'aside', re: /\b(?:which is (?:worse|how)|in a way that|a kind of|very interested in|a look you would like back)\b/gi },
 ];
 
 const countTics = text => Object.fromEntries(TICS.map(({ id, re }) => [id, (text.match(re) || []).length]));
@@ -161,14 +161,15 @@ function report(result) {
   return [row('total', result.total), `  tics: ${ticLine}`, ...Object.entries(result.files).map(([file, r]) => row(file, r))].join('\n');
 }
 
-const diff = (name, a, b) => (a === b ? null : `${name}: ${a} -> ${b} (${b > a ? '+' : ''}${round2(b - a)})`);
+// A figure missing from an older baseline counts as zero.
+const diff = (name, a = 0, b = 0) => (a === b ? null : `${name}: ${a} -> ${b} (${b > a ? '+' : ''}${round2(b - a)})`);
 
 // What changed in the totals since the baseline, one line each, or `no change`.
 function compare(base, now) {
   const a = base.total, b = now.total;
   const lines = [
     ...TICS.map(({ id }) => diff(id, a.tics[id], b.tics[id])),
-    diff('mean', a.shape.mean, b.shape.mean), diff('shortShare', a.shape.shortShare, b.shape.shortShare), diff('shortRuns', a.shape.shortRuns, b.shape.shortRuns),
+    diff('mean', a.shape.mean, b.shape.mean), diff('sd', a.shape.sd, b.shape.sd), diff('shortShare', a.shape.shortShare, b.shape.shortShare), diff('shortRuns', a.shape.shortRuns, b.shape.shortRuns),
     diff('quoted', a.speech.quoted, b.speech.quoted), diff('reported', a.speech.reported, b.speech.reported),
   ].filter(Boolean);
   return lines.length ? lines.join('\n') : 'no change';

@@ -26,6 +26,10 @@ Decide what the hand feels or thinks. Describe the hand's skill as a feeling ("y
 
 The range. The magazine. The contact and how she closes. Who on the bridge is waiting for the call.
 
+## North star
+
+None supplemental. The primary model is James S. A. Corey for what the crew say and do in a result line, and the narrator's register for the scene (see `narrator.md`). The hand has no authored voice of their own, so the card needs no author for it.
+
 ## Sample choices
 
 - [Gunner 2] Hold fire until she is inside two thousand: the magazine has six, and she closes to nineteen hundred before she opens her bays, with the first round already tracking when she does.
