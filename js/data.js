@@ -19,7 +19,7 @@ const PRICE_MULT = { L: 0.75, M: 1.0, H: 1.3 };
 // `berths` are shared by crew and passengers.
 const SHIPS = {
   shuttle:   { name: 'Dust Skiff',  price: 10000,  cargo: 20,  fuel: 300, berths: 4, shields: 60,  armor: 50,  accel: 170, maxSpeed: 260, turn: 3.0, guns: 1, size: 10, forSale: true,
-               desc: 'A patched-up Belter skiff held together with sealant and optimism. Every captain starts somewhere.' },
+               desc: 'A patched-up skiff held together with sealant and optimism. Every captain starts somewhere.' },
   lightfreighter: { name: 'Ore Runner', price: 28000, cargo: 50, fuel: 300, berths: 5, shields: 90, armor: 100, accel: 150, maxSpeed: 250, turn: 2.6, guns: 1, size: 13, forSale: true,
                desc: 'The first real step up for an independent hauler. Two and a half times the hold of a Dust Skiff.' },
   courier:   { name: 'Needle courier', price: 45000, cargo: 35,  fuel: 380, berths: 7, shields: 110, armor: 80,  accel: 260, maxSpeed: 380, turn: 3.8, guns: 1, size: 11, forSale: true,
@@ -96,7 +96,7 @@ const SYSTEMS = {
     planets: [
       { name: 'Ceres Station', x: -60, y: -40, r: 60, color: '#90a4ae', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
         prices: { water: 'H', food: 'H', medical: 'H', metal: 'L', luxury: 'M', equipment: 'M', industrial: 'M' },
-        desc: ('Six million people burrowed into a dwarf planet, Belters with long limbs and short tempers, and water rationing on every wall. The ' +
+        desc: ('Six million people burrowed into a dwarf planet, quick to argue and exact about what they are owed, and water rationing on every wall. The ' +
             'corridors curve upward in both directions, lined with hydroponic troughs and hand-lettered notices about the day\'s allotment. Children ' +
             'play in the low gravity with the easy grace of people who have never known any other. Everyone knows the price of a liter of water to the ' +
             'credit, and everyone will tell you when it changes.') },

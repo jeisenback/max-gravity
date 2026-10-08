@@ -54,7 +54,7 @@ const CREW = {
         'before she was tall enough to reach the controls, and she treats every ship she works on as a patient with a long history of neglect. She ' +
         'left Ceres in a hurry three years ago, and she does not talk about why.'),
     chatter: [('Rosa: "If you hear a clank, that is normal. If you hear two clanks, wake me. If you hear three, it is already too late and we should ' +
-        'have a nice dinner."'), 'Rosa is humming in the engine room again, something slow and Belter, with her whole arm inside a coolant housing.', (
+        'have a nice dinner."'), 'Rosa is humming in the engine room again, something slow from the Warren, with her whole arm inside a coolant housing.', (
         'Rosa: "You know what the difference is between a good engineer and a great one? A great one is never quite sure it is going to hold. That is ' +
         'what keeps her checking."'), 'Rosa is asleep upright against the reactor housing, one hand still on a torque wrench. Nobody wakes her.', (
         'Rosa: "Ceres taught me the first rule. You do not waste water, you do not waste air, and you do not waste a good weld. Everything else is ' +
@@ -246,7 +246,7 @@ const CREW = {
   wren: {
     name: 'Wren', first: 'Wren', role: 'slicer', skill: 3, home: 'The Rook', fee: 5000, wage: 100,
     perk: 'Can spoof transponders when pirates come calling.',
-    bio: ('Belter slicer who talks mostly to machines. Nobody knows her real name, possibly including Wren. She works in the dark, with three screens ' +
+    bio: ('Slicer out of the Rook who talks mostly to machines. Nobody knows her real name, possibly including Wren. She works in the dark, with three screens ' +
         'and a mug of cold tea, and she is far kinder than she lets on: the ship\'s smaller machines, the thermostat and the coffee maker among them, ' +
         'all seem to have been quietly fixed in her first week aboard.'),
     chatter: ['Wren: "Your ship\'s firmware is a crime. I am fixing it."',
@@ -282,7 +282,7 @@ const CREW = {
             'another. She does not look at you, but you can see her hands, and they are shaking.'),
         choices: [
           { label: 'Let Wren handle it', run() {
-            if (Math.random() < 0.6) return ('Wren says three quiet words in Belter dialect, and her fingers move across the console with the speed ' +
+            if (Math.random() < 0.6) return ('Wren says three quiet words in Rook cant, and her fingers move across the console with the speed ' +
                 'of a card sharp. The channel goes dead. So do their running lights, one at a time, and you watch four ships go black in the distance. ' +
                 'Wren lets out a long breath, and, very quietly, begins to laugh, in the shaky, helpless way of a person who has just survived ' +
                 'something.');

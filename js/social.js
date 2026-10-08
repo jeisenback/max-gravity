@@ -15,7 +15,7 @@
 
 const MATCH_EVERY = 4;
 const GENRES = {
-  noir: 'Belter noir', war: 'war drama', soap: 'station soap', romance: 'romance',
+  noir: 'Warren noir', war: 'war drama', soap: 'station soap', romance: 'romance',
   comedy: 'comedy', horror: 'horror', doc: 'documentary', action: 'action serial',
 };
 const BANDS = ['The Pallas Smelt', 'Nine Sector', 'Dust Choir', 'Red Tide Brass', 'Luna Static', 'Hollow Moons', 'Vesna and the Welders', 'Low Orbit', 'The Ration Cards', 'Kez Ghosh Trio'];

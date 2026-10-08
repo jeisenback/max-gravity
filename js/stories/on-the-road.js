@@ -59,7 +59,7 @@ Mods.register({
         ],
           rep: { 'Charter League': 1 }
         },
-          result: 'For a day you ride in their shadow, sipping at the drive. At the shift change the lead hauler sends a single line: "Safe water." It is not a greeting exactly. It is what Belters say instead.'
+          result: 'For a day you ride in their shadow, sipping at the drive. At the shift change the lead hauler sends a single line: "Seals tight." It is not a greeting exactly. It is what haulers say instead.'
         },
         {
           label: 'Thank them and keep your own line',

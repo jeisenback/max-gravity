@@ -25,7 +25,7 @@ One entry for each start background in `BACKGROUNDS` (`js/menu.js`). The narrow 
 
 ### bg.belt
 
-- Source: `BACKGROUNDS.belt` in `js/menu.js`: "Ceres-born, with long limbs and short patience. Start on Ceres Station with 9,000 credits and friends in the Charter League." The intro: "You were born in the Ceres Warren, and you know what water is worth."
+- Source: `BACKGROUNDS.belt` in `js/menu.js`: "Born in the Warren, where a water share is the first thing you inherit. Start on Ceres Station with 9,000 credits and friends in the Charter League." The intro: "You were born in the Ceres Warren, and you know what water is worth."
 - Home: The Ceres Warren, in a household known by its hatch number.
 - Family: A family on a water share tied to the hatch. When the hatch changed hands, the share went with it.
 - Schooling: The valves before the letters. A child of the Warren can name every tap on a deck by its sound.

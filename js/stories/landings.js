@@ -343,7 +343,7 @@ Mods.register({
               'other half stand in silence, and then someone calls you a Compact spy, and the chant spreads. For the next hour you cannot walk the ' +
               'corridor without a delegation of children explaining your mistake.')
         },
-        { label: '"No goal."', result: 'You say it firmly, and the other half of the kids erupt, and the cheer echoes down the corridor. The half that lost stare at you. One of them, a girl with a missing front tooth, says clearly, "You are a Belter traitor," and stalks off.' },
+        { label: '"No goal."', result: 'You say it firmly, and the other half of the kids erupt, and the cheer echoes down the corridor. The half that lost stare at you. One of them, a girl with a missing front tooth, says clearly, "You are a traitor," and stalks off.' },
         {
           label: 'Buy them a new ball (50 cr)',
           when: { credits: 50 },

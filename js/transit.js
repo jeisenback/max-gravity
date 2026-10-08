@@ -200,7 +200,7 @@ const TRANSIT_EVENTS = [
   {
     title: 'Stowaway',
     via: 'crew', owner: 'captain',
-    text: ('A skinny Belter kid unfolds from behind the cargo netting, blinking, cramped and stiff, with a smudge of grease along one cheek and a ' +
+    text: ('A skinny station kid unfolds from behind the cargo netting, blinking, cramped and stiff, with a smudge of grease along one cheek and a ' +
         'tattered rucksack clutched to their chest. They have been in there for two days, living on packets of ration paste. They look at you, braced. ' +
         '"I just need to get off that rock," they say. "I can pay a little. Or I know things. I know a lot of things."'),
     choices: [

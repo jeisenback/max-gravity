@@ -25,7 +25,7 @@ test('title, new game, pause, autosave, continue, slots, settings', async () => 
   });
   assert.equal(await ev(() => G.mode), 'title');
 
-  // New game in slot 2 as a Belter, with a name and a ship name.
+  // New game in slot 2 with the Belt start, with a name and a ship name.
   await page.click('[data-action=menuView][data-arg=new]');
   await page.fill('#ngCaptain', 'Ines Okafor');
   await page.fill('#ngShip', 'Tuesday Forever');

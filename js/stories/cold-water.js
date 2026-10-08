@@ -75,7 +75,7 @@ Mods.register({
     scene({
       id: 'cw-mira-contact', where: 'port', when: at(3),
       title: 'Mira Castellane',
-      text: ('A wiry Belter woman in a faded Ceres Water Authority jacket is waiting in the shadow of your airlock, with a battered duffel at her ' +
+      text: ('A wiry woman in a faded Ceres Water Authority jacket is waiting in the shadow of your airlock, with a battered duffel at her ' +
           'feet and the wary, watchful stillness of someone who has not slept properly in weeks. Her hands are cracked and stained blue at the ' +
           'fingertips, the way pump engineers\' hands get. "You have the Persephone\'s core," she says, low and fast. "Aquilon has people on every ' +
           'dock looking for you. I can read it, but not here. The decryption key is in a Water Authority relay on Europa. Take me there and I will ' +
@@ -166,9 +166,9 @@ Mods.register({
 
     scene({
       id: 'cw-contact-mars', where: 'port', when: at(5, 'Mars'),
-      title: 'Navy Intelligence',
+      title: 'The Fleet Auditor',
       text: [{ when: { standing: { 'Dome Concord': 15 } },
-        text: ('Commander Yelena Ueda of Dome Concord Navy intelligence meets you in a room with no windows, no clock, and one chair too few. She is ' +
+        text: ('Commander Yelena Ueda, fleet auditor of the Dome Concord Fleet, meets you in a room with no windows, no clock, and one chair too few. She is ' +
             'short, precise, and impeccably groomed, with the flat, attentive gaze of someone who has spent her life listening for what people do not ' +
             'say. A single lamp burns on the desk. She reads the core without any visible reaction at all. "Headlines fade," she says at last. ' +
             '"Leverage lasts. Give Mars this, and we will make Earth pay for every ton of water it let Aquilon steal. But first I want to know who ' +
@@ -176,12 +176,12 @@ Mods.register({
         else: 'A Dome Concord Navy guard checks your record and shakes his head. "Commander Ueda does not meet with captains the Concord does not trust." (Needs Trusted standing with the Dome Concord.)' }],
       choices: [
         { label: 'Give the proof to Mars', when: { standing: { 'Dome Concord': 15 } },
-          effects: { story: { stage: 'mars1' }, storyLog: 'Gave the proof to Commander Yelena Ueda of Dome Concord Navy intelligence.' },
+          effects: { story: { stage: 'mars1' }, storyLog: 'Gave the proof to Commander Yelena Ueda, fleet auditor of the Dome Concord Fleet.' },
           result: ('Ueda slides a sliver of hardware across the table, no bigger than a thumbnail, and cold as a coin. "A tracer. Get it into Hermes ' +
               'Foundry\'s comm net, on Mercury. It will listen for a week. Then come to Phobos Yards and we will see who has been paying whom." She ' +
               'does not smile. But as you turn to go, she says, to the wall, in a voice so soft you almost miss it: "Thank you. It matters more than ' +
               'you know."') },
-        { label: 'Not yet', result: '"The offer stands, captain," Ueda says, without looking up from her desk, and her pen resumes its slow, exact scratching. "For now. But intelligence has a shelf life, and so, I am afraid, does patience."' },
+        { label: 'Not yet', result: '"The offer stands, captain," Ueda says, without looking up from her desk, and her pen resumes its slow, exact scratching. "For now. But evidence has a shelf life, and so, I am afraid, does patience."' },
       ],
     });
 
@@ -239,7 +239,7 @@ Mods.register({
       title: 'Water Day',
       text: ('Word spreads before you even dock. By the time your cargo lock opens, half the ring is crowding the concourse to watch twenty tons of ' +
           'water roll out under League banners, in blue-lidded drums, one after another, on a line of hand-drawn sleds. Children are perched on ' +
-          'the shoulders of parents. Old women hold up their cups. Someone has begun to sing, an old Belter hymn, low and rough, and one by one the ' +
+          'the shoulders of parents. Old women hold up their cups. Someone has begun to sing, an old Warren hymn, low and rough, and one by one the ' +
           'others take it up. Councillor Tembo stands at the head of the line, and makes sure the cameras catch every drum.'),
       choices: [{ label: 'Unload the water',
         effects: { cargo: { water: -20 }, credits: 6000, rep: { 'Charter League': 10 }, story: { stage: 'belt2' }, storyLog: 'Delivered 20t of water to Ceres Station for the League.' },
@@ -302,7 +302,7 @@ Mods.register({
           'the names of dead men. She reads aloud, and her voice, for once, is not entirely flat. "Now," she says, "Earth will listen."'),
         { when: { crew: 'dima' }, text: 'She glances at Dima, who is leaning in the doorway with his arms folded. "Sokolov. I heard you were flying freighters now. Good." Dima grins, for a moment looking twenty years younger, and says nothing, which, for Dima, is a kind of speech.' }],
       choices: [{ label: 'Take the Navy\'s thanks',
-        effects: { credits: 15000, rep: { 'Dome Concord': 15 }, do: ['endAct2', 'mars', 'Dome Concord Navy intelligence used the proof as leverage over Earth.'] },
+        effects: { credits: 15000, rep: { 'Dome Concord': 15 }, do: ['endAct2', 'mars', 'The Dome Concord Fleet auditor used the proof as leverage over Earth.'] },
         result: ('The Navy pays 15,000 cr and quietly marks your record, in a small, careful hand that you never see. Mars leaks just enough to make ' +
             'Earth sweat, a page here, a name there, timed to the hour. Earth accuses Mars of manufacturing the evidence, loudly and at length, and ' +
             'within a week both navies are moving toward Ceres, the way two ships circle each other in a crowded harbor. (Act 2 complete. In a few ' +

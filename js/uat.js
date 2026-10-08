@@ -74,7 +74,7 @@ const UAT_ITEMS = [
     setup() { uatFresh(); uatCrew(2, 6); uatBurn('Earth', 'mars'); openEvent(sitPicker()); } },
   { group: 'Life aboard', id: 'birthday', title: 'Birthday', check: 'The party, gift, and quiet-drink choices all work and feel warm.',
     setup() { uatFresh({ cargo: { luxury: 2 } }); const [a] = uatCrew(2, 2); uatBurn('Earth', 'mars'); openEvent(occasionEvent({ kind: 'birthday', id: a.id, day: G.state.day + 1 })); } },
-  { group: 'Life aboard', id: 'holiday', title: 'Holiday (First Water)', check: 'The Belter crew member leads the holiday; joining in brings the crew closer.',
+  { group: 'Life aboard', id: 'holiday', title: 'Holiday (First Water)', check: 'The crew member from the Belt leads the holiday; joining in brings the crew closer.',
     setup() { uatFresh(); const [a] = uatCrew(2, 2); a.culture = 'belt'; a.home = 'Ceres Station'; uatBurn('Earth', 'mars'); openEvent(occasionEvent({ kind: 'holiday', h: HOLIDAYS[2], id: a.id, day: G.state.day + 1, year: 2214 })); } },
   { group: 'Life aboard', id: 'letter', title: 'Bad news from home', check: 'The crew member is shown as having a hard time (Crew page), works a skill lower, and the choices help.',
     setup() { uatFresh(); const [a] = uatCrew(2, 2); a.news = { good: false, text: `their ${missed(a)} is sick, and the clinic wants money up front` }; a.mood = { kind: 'low', until: G.state.day + 25 }; uatBurn('Earth', 'mars'); openEvent(newsEvent(a)); } },
