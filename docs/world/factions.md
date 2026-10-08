@@ -10,7 +10,7 @@ One entry for each name in `FACTIONS` in `js/data.js`. What the code does with t
 - Shows up as: A Coalition cutter in flight, a license desk on the dock.
 - Divergence: `derived.power-triangle`. A compact of arcology cities, with no world government.
 - Use in scenes: An officer asks for the license and the owed shifts, in that order.
-- Status: from code (js/data.js, js/ties.js) for the patrol and the statuses; the license book is proposed
+- Status: from code (js/data.js, js/ties.js) for the patrol and the statuses; the license book is confirmed (owner, 2026-10-08)
 
 ### faction.mars-republic
 
@@ -20,7 +20,7 @@ One entry for each name in `FACTIONS` in `js/data.js`. What the code does with t
 - Shows up as: A patrol frigate; an auditor on the dock.
 - Divergence: `derived.power-triangle`, `derived.mars-navy`. A set of dome municipalities sharing a fleet, paid for by an air levy.
 - Use in scenes: An auditor asks for the air bill before the manifest.
-- Status: from code (js/data.js) for the patrol and the manner; the air levy is proposed
+- Status: from code (js/data.js) for the patrol and the manner; the air levy is confirmed (owner, 2026-10-08)
 
 ### faction.belt-collective
 
@@ -30,7 +30,7 @@ One entry for each name in `FACTIONS` in `js/data.js`. What the code does with t
 - Shows up as: A militia boat on a lane; a ration notice on a corridor wall.
 - Divergence: `derived.power-triangle`, `derived.belter-people`. A league of stations held by chartered guilds that vote on water and berth rights, with no single people.
 - Use in scenes: A guild clerk reads out the vote on the berth rate before a docking is allowed.
-- Status: from code (js/data.js, js/ties.js) for the patrol and the welcome; the guild vote is proposed
+- Status: from code (js/data.js, js/ties.js) for the patrol and the welcome; the guild vote is confirmed (owner, 2026-10-08)
 
 ### faction.pirate
 
@@ -39,4 +39,4 @@ One entry for each name in `FACTIONS` in `js/data.js`. What the code does with t
 - Treats a hand: Pirates who trust you often leave you alone (README). Everyone else is a payer or a prize.
 - Shows up as: Raiders and corsairs in flight; the Rook on Hygiea as a port.
 - Use in scenes: A raider names the fee before it names the threat.
-- Status: from code (js/data.js, README) for Hygiea and the trust; the fee order is proposed
+- Status: from code (js/data.js, README) for Hygiea and the trust; the fee order is confirmed (owner, 2026-10-08)

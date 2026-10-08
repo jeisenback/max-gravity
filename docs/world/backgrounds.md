@@ -1,6 +1,6 @@
 # Backgrounds
 
-One entry for each start background in `BACKGROUNDS` (`js/menu.js`). The narrow build plays the Earth start, so it comes first and has the most care. The code gives each background a one-line text and a short intro; the rest below is new and marked `proposed`. A `Divergence:` line names an id in `derived.md`, the audit of what the code takes from The Expanse.
+One entry for each start background in `BACKGROUNDS` (`js/menu.js`). The narrow build plays the Earth start, so it comes first and has the most care. The code gives each background a one-line text and a short intro; the rest below is new and was confirmed by the owner on 2026-10-08. A `Divergence:` line names an id in `derived.md`, the audit of what the code takes from The Expanse.
 
 ### bg.earth
 
@@ -10,7 +10,7 @@ One entry for each start background in `BACKGROUNDS` (`js/menu.js`). The narrow 
 - Schooling: A tier school that teaches everyone to splice a line and read a manifest before anything else. A berth on a ship is the usual way up the tiers.
 - Why they left: The wall book has been full for ten years and the hand's name is on no list. A gunner's berth on an ice hauler is the first offer that pays.
 - Use in scenes: The hand counts owed time the way others count days ("I owe the wall four"). A shipmate asks which tier, not which city.
-- Status: proposed
+- Status: confirmed by the owner on 2026-10-08
 
 ### bg.mars
 
@@ -21,7 +21,7 @@ One entry for each start background in `BACKGROUNDS` (`js/menu.js`). The narrow 
 - Why they left: The dome's air share is capped, and a second child has no share. Leaving frees the share for a sibling.
 - Divergence: `derived.power-triangle`. Loyalty is to the dome and its air share first, and a Republic second, if at all.
 - Use in scenes: The hand quotes a dome rule at a captain; a Martian crew member asks how many shares your household held.
-- Status: proposed
+- Status: confirmed by the owner on 2026-10-08
 
 ### bg.belt
 
@@ -32,4 +32,4 @@ One entry for each start background in `BACKGROUNDS` (`js/menu.js`). The narrow 
 - Why they left: The share passed to a cousin, and a berth off the spin was the way to send water money home.
 - Divergence: `derived.belter-people`. Drop "long limbs"; the Belt background is a place and its work, and not a body.
 - Use in scenes: A Ceres hand taps a pipe before they speak, and names a stranger by their hatch.
-- Status: proposed
+- Status: confirmed by the owner on 2026-10-08
