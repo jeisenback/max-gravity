@@ -10,6 +10,7 @@ The owner wants to write better prose and better narrative systems in a repeatab
 - Voice profiles are narrator registers plus one card per speaking character, kept as markdown.
 - Voice includes syntax and sentence structure, not only word choice and content. A register or card says how long and how built its sentences are, and how they vary. Short is one setting among several, not the house style.
 - The world is a bible in markdown with stable ids. No data-file fields, no consistency test yet.
+- Corey (crew) and Le Guin (narrator) stay the primary models. A small set of supplemental north stars covers dimensions they do not: fuller narration, dialogue mechanics, restraint and custom. Each is cited for what to take and what to leave.
 - Dialogue has rules of its own, because sentence-level rules for narration do not protect speech.
 - The existing text in the repo is too clipped to be the model, including the Hester and Tomas passages that `docs/prose-style.md` points to. The reference passages are the owner-approved samples below, which are fuller in syntax. Of the five samples the owner judged, Tomas's run-on speech to the pump was the one called good, and most of the others were called much better than the originals.
 - No engine changes now. The first rewrite passes will show which engine gaps are real (variant pools for repeated scenes, callbacks to the record, scene-editor work); each would be scoped as its own sub-project then.
@@ -33,6 +34,14 @@ Success: a person or Claude writing a scene can pick a register, read the speake
 
   One moment is written in every register so the dial can be seen. Every sample must show varied lengths and constructions; a sample of uniformly short sentences fails the card.
 - One card per speaking character, starting with the narrow build's cast: Hester Vance, Cato Rahman, Ines, Tomas Achebe, and the hired gunner's own lines. Each card holds diction, syntax habits (Hester's flat declaratives built around a figure, Tomas running on when he is talking to an engine), verbal habits, what they never say, topics they steer toward, and four to six sample lines. Facts already in code (`bio`, `wants`, `fears`, `traits` in `js/captains/*.js` and `js/cast.js`) are linked by file, not copied.
+- North stars, in `narrator.md` and on the cards. A register or card names its primary model and at most one supplemental author, with a "take" and a "leave" line. The set:
+  - Patrick O'Brian, for narration: a working ship as a society, long balanced sentences, talk that wanders and is about the work. Take the sentence build and the shop talk; leave the period diction.
+  - Elmore Leonard, for dialogue: sideways talk, interruption, plain "said" tags. Take the tags and the sideways answers; leave the crime-fiction slang.
+  - Kazuo Ishiguro, for the quiet register (partings, letters home): restraint, the important thing left unsaid, formal and fully built sentences. Take the restraint and the syntax; leave the first-person unreliable narrator, since ours reports.
+  - Ann Leckie, for custom: how people address each other and what is done and not done, stated flatly and in full. Take the custom-first approach.
+  - Lois McMaster Bujold, optional, for the dry register: humor in what characters say and in situation. Take the lines characters say; leave the narrator's wry commentary and heavy interior thought, which break rule 8.
+
+  Hemingway and Hammett model "report, do not color" but are the source of the clipped feel, so they are not north stars. Becky Chambers fits the domestic ship life but often names feelings directly. These authors set a direction only: no passage is copied from or closely imitates a specific text, and the reference passages stay original. The author notes are from memory and are for the owner to check against their own reading.
 - `dialogue.md`: the dialogue rules. Draft, for the owner to confirm:
   1. Speech stays quoted. A line that matters to the scene is spoken in the speaker's words; reported speech is for lines that do not matter.
   2. Each speaker has their own syntax, set on their card. With the tags hidden, two characters should not be interchangeable.
