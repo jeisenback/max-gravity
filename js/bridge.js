@@ -204,10 +204,10 @@ function bayGrid() {
 // The Operations station as a console: the cargo bay on the display, the manifest and the contracts beside it.
 function operationsPanel() {
   const st = G.state, s = ship(), bay = bayGrid();
-  const manifest = COMMODITIES.map((c, i) => st.cargo[c.id] > 0 ? `<div class="con-read"><span><i class="con-swatch" style="background:${CARGO_COLORS[i % CARGO_COLORS.length]}"></i>${c.name}</span><b>${st.cargo[c.id]}t</b></div>` : '').join('');
-  const jobs = st.missions.map(m => `<div class="hint">${m.title} (due ${dateOf(m.deadline)})</div>`).join('');
+  const manifest = String(listHtml(COMMODITIES.filter(c => st.cargo[c.id] > 0), c => h`<div class="con-read"><span><i class="con-swatch" style="background:${CARGO_COLORS[COMMODITIES.indexOf(c) % CARGO_COLORS.length]}"></i>${c.name}</span><b>${st.cargo[c.id]}t</b></div>`));
+  const jobs = String(listHtml(st.missions, m => h`<div class="hint">${m.title} (due ${dateOf(m.deadline)})</div>`));
   return consoleHtml({
-    title: 'Operations', status: hired() ? `The captain's hold: ${cargoUsed()}/${s.cargo}t, Capt. ${hiredCaptain().first} ${hiredCaptain().last}` : `Hold ${cargoUsed()}/${s.cargo}t`,
+    title: 'Operations', status: hired() ? String(h`The captain's hold: ${cargoUsed()}/${s.cargo}t, Capt. ${hiredCaptain().first} ${hiredCaptain().last}`) : `Hold ${cargoUsed()}/${s.cargo}t`,
     screen: bay.svg,
     side: conCard('Manifest', manifest || '<p class="hint">The hold is empty.</p>') + (jobs || !hired() ? conCard('Contracts', jobs || '<p class="hint">No active contracts.</p>') : ''),  // a hand with no errand has no contracts to show
     controls: G.transit ? '<p class="hint">Trade, contracts, and the bar open when you dock.</p>' : '',

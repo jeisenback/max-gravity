@@ -162,22 +162,22 @@ const UI = {
       const st = G.state, s = ship(), p = this.planet;
       const fuelNeed = s.fuel - st.fuel, armorNeed = s.armor - st.armor;
       const canService = p.services.includes('refuel') && !hired();  // a hired ship is topped up by the captain
-      return `
+      return String(h`
         <p class="desc">${p.desc}</p>
-        ${this.notes.map(n => `<div class="note">${n}</div>`).join('')}
-        ${canService ? `
+        ${listHtml(this.notes, n => h`<div class="note">${n}</div>`)}
+        ${canService ? h`
         <div class="row">
           <button data-action="refuel" ${fuelNeed > 0 ? '' : 'disabled'}>Refill reaction mass (${fmt(fuelNeed * FUEL_PRICE)} cr)</button>
           <button data-action="repair" ${armorNeed > 0 ? '' : 'disabled'}>Repair hull (${fmt(armorNeed * REPAIR_PRICE)} cr)</button>
         </div>` : ''}
         <h3>Active missions</h3>
-        ${this.missionList(st.missions, 'abort', 'Abandon')}
-        ${story().stage !== 0 ? `<h3>Story: Cold Water</h3><p class="desc">${storyObjective()}</p>${story().stage === 'end' ? '<div class="row"><button data-action="epilogue">Read the epilogue</button></div>' : ''}` : ''}
-        ${hired() || scopeOff('owner') ? '' : stakeOffer()}
+        ${raw(this.missionList(st.missions, 'abort', 'Abandon'))}
+        ${story().stage !== 0 ? h`<h3>Story: Cold Water</h3><p class="desc">${storyObjective()}</p>${story().stage === 'end' ? raw('<div class="row"><button data-action="epilogue">Read the epilogue</button></div>') : ''}` : ''}
+        ${hired() || scopeOff('owner') ? '' : raw(stakeOffer())}
         <h3>Local conditions</h3>
-        ${this.conditionList(conditions(st.systemId), 'Nothing unusual. Trade is flowing normally.')}
-        ${scopeOff('community') ? '' : communityHtml()}
-        <p class="hint">New games, saves, and settings are in the Menu (below, or Esc in flight).</p>`;
+        ${raw(this.conditionList(conditions(st.systemId), 'Nothing unusual. Trade is flowing normally.'))}
+        ${scopeOff('community') ? '' : raw(communityHtml())}
+        <p class="hint">New games, saves, and settings are in the Menu (below, or Esc in flight).</p>`);
     },
 
     trade() {
@@ -212,8 +212,8 @@ const UI = {
 
     missions() {
       // A hand with errands off sees a heading only once there is something under it.
-      const bare = hired() && scopeOff('errands'), part = (title, list, action, label) => bare && !list.length ? '' : `<h3>${title}</h3>${this.missionList(list, action, label)}`;
-      return `${part('Available work', G.offers, 'accept', 'Accept')}${part('Active missions', G.state.missions, 'abort', 'Abandon')}`;
+      const bare = hired() && scopeOff('errands'), part = (title, list, action, label) => bare && !list.length ? '' : h`<h3>${title}</h3>${raw(this.missionList(list, action, label))}`;
+      return String(h`${part('Available work', G.offers, 'accept', 'Accept')}${part('Active missions', G.state.missions, 'abort', 'Abandon')}`);
     },
 
     crew() {
@@ -318,17 +318,17 @@ const UI = {
 
   missionList(list, action, label) {
     if (!list.length) return '<p class="hint">None.</p>';
-    return list.map((m, i) => {
+    return String(listHtml(list, (m, i) => {
       const sid = m.destSystem || m.targetSystem;
       const where = sid === G.state.systemId ? 'Local' : `${SYSTEMS[sid].name}, ${travelDays(G.state.systemId, sid)} days away`;
       const noCargo = m.type === 'delivery' && cargoFree() < m.tons, noBerths = m.type === 'passenger' && berthsFree() < m.pax;
       const blocked = action === 'accept' && (noCargo || noBerths);
-      const need = m.tons ? ` &middot; ${m.tons}t cargo` : m.pax ? ` &middot; ${m.pax} berth${m.pax > 1 ? 's' : ''}` : '';
-      return `<div class="mission">
-        <div><b>${m.title}</b>${m.blurb ? `<div class="hint">${m.blurb}</div>` : ''}<div class="hint">${where} &middot; pays ${fmt(m.pay)} cr &middot; due by ${dateOf(m.deadline)}${need}</div></div>
-        <button data-action="${action}" data-arg="${i}" ${blocked || m.story ? `disabled title="${m.story ? 'Story passenger' : `Not enough ${noCargo ? 'cargo space' : 'berths'}`}"` : ''}>${label}</button>
+      const need = m.tons ? raw(` &middot; ${m.tons}t cargo`) : m.pax ? raw(` &middot; ${m.pax} berth${m.pax > 1 ? 's' : ''}`) : '';
+      return h`<div class="mission">
+        <div><b>${m.title}</b>${m.blurb ? h`<div class="hint">${m.blurb}</div>` : ''}<div class="hint">${where} &middot; pays ${fmt(m.pay)} cr &middot; due by ${dateOf(m.deadline)}${need}</div></div>
+        <button data-action="${action}" data-arg="${i}" ${blocked || m.story ? raw(`disabled title="${m.story ? 'Story passenger' : `Not enough ${noCargo ? 'cargo space' : 'berths'}`}"`) : ''}>${label}</button>
       </div>`;
-    }).join('');
+    }));
   },
 
   act(action, arg) {
