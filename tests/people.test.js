@@ -181,7 +181,7 @@ test('family: a personal story to loyalty, letters and moods, occasions, traditi
     out.lowSkill = roleSkill('engineer');
     newsEvent(a).choices[1].run();
     out.helpedSkill = roleSkill('engineer');
-    // A burn crossing First Water with a Belter aboard.
+    // A burn crossing First Water with a Belt-born crew member aboard.
     st.day = 53; takeOff(); st.dest = 'pallas'; G.player.x = 6000; tryBurn(); enterTransit(); planOccasions();
     out.holiday = G.transit.occasions.some(o => o.kind === 'holiday');
     occasionEvent({ kind: 'birthday', id: b.id, day: st.day + 1 }).choices[0].run();

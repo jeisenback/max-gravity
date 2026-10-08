@@ -201,7 +201,7 @@ test('the Mars Navy commission runs start to finish', async () => {
     G.mode = 'landed'; G.transit = { to: 'mars', total: 60, left: 30, flipped: true, event: null, comms: [] };
     steps.push(S.play('transit', 'Fatima'));
     S.at('mars', 'Mars'); steps.push(S.play('port', 'Carry the pouch'));
-    S.done('sealed MCRN pouch');
+    S.done('sealed Fleet pouch');
     steps.push(S.play('port', 'Refuse'), S.play('port', ''));
     return { steps, target: !!target, done: quality('mcrnDone') };
   });

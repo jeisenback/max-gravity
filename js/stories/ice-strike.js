@@ -34,7 +34,7 @@ Mods.register({
         { label: 'Report the broadcast to Compact customs',
           effects: { q: { scab: 1 }, rep: { 'Arcology Compact': 4, 'Charter League': -3 }, log: "Reported the Ice Haulers' Guild broadcast to Compact customs." },
           result: ('A customs officer thanks you in a flat, bored voice and logs the frequency without comment. It takes twelve minutes. It costs you ' +
-              'a great deal more than that: for weeks afterwards, Belter channels go quiet whenever your transponder comes up, and a dock hand at ' +
+              'a great deal more than that: for weeks afterwards, station channels go quiet whenever your transponder comes up, and a dock hand at ' +
               'Ceres turns her back on you, slowly and deliberately, as you walk past.') },
       ],
     });
@@ -63,7 +63,7 @@ Mods.register({
               onDone: { q: { strike: 3 }, set: { crates: 0 }, rep: { 'Charter League': 5 }, log: "Delivered the Guild's medical crates to Pallas, free of charge." },
               onFail: { q: { strike: -5 }, set: { crates: 0 }, rep: { 'Charter League': -5 }, log: 'The Guild crates never reached Pallas.' } } },
           result: ('Dana looks at you for a long moment, and something in her hard, tired face shifts. Then she shakes your hand, slowly, in both of ' +
-              'hers. "Word gets around," she says quietly. "Belters are terrible at forgetting a kindness, captain. You are going to find that out." ' +
+              'hers. "Word gets around," she says quietly. "Pallas is terrible at forgetting a kindness, captain. You are going to find that out." ' +
               'Behind her, the loaders have stopped and are watching. One of them, an old man with a gaunt face, touches two fingers to his forehead.') },
         { label: 'Not my fight', effects: { set: { strikeDone: 1 } },
           result: '"Fair," she says, and means the opposite. She does not argue, and she does not plead: she nods once, like a woman ticking off a name, and turns away into the crowd. You watch her go until she is a jacket among jackets. You finish your drink slowly. It tastes of metal.' },

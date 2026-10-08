@@ -27,6 +27,7 @@ Real places (Ceres, Eros, Ganymede) and generic hard-SF terms (reaction mass, th
 - Why it reads as the Expanse: The Belters are the Expanse's people of the Belt, with the same physique, the same loyalty and the same keeping of debts.
 - Proposed instead: Make identity local: the place a person comes from (the Warren, the Hollows, Ring Nine, Ironheart). Each place has its own greeting and its own long memory, and there is no single Belt people. Drop the physique; show a place by its work.
 - Decision: Adopt the proposal (owner, 2026-10-08).
+- Note: Done in the Belt and navy rewrites (#427, PR 3): the Belter physique, the single Belt people and the "Safe water." greeting are gone. Lines now name the place (Pallas, the Warren, the Rook) or the work (freight hands, station kids, haulers, whose greeting is "Seals tight."). The Ceres Station description and the Belt start no longer mention long limbs.
 ### derived.earth-basic
 
 - Where: the description of Earth in `SYSTEMS.earth` (`js/data.js`): "Thirty billion people, most of them on basic assistance".
@@ -49,6 +50,7 @@ Real places (Ceres, Eros, Ganymede) and generic hard-SF terms (reaction mass, th
 - Why it reads as the Expanse: "MCRN" is the Expanse's own abbreviation for the Martian Congressional Republic Navy, used as is. A Martian navy with its own intelligence arm that sits across from a Belt authority is the Expanse's arrangement.
 - Proposed instead: The Mars service is a fleet owned by the dome councils and paid for by an air levy, with an auditor and no intelligence arm. The Reserve Commission keeps its beats, and the fixer becomes a council auditor.
 - Decision: Adopt the proposal (owner, 2026-10-08).
+- Note: Done in the Belt and navy rewrites (#427, PR 3): "MCRN" is "Fleet" in the display text, the service is the Dome Concord Fleet, and naval intelligence is the fleet auditors (the Cold Water Act 2 scene is "The Fleet Auditor"). Internal ids and quality keys such as mcrn and navy-recruit are unchanged, so the storyline still runs from the same state.
 ### derived.juice
 
 - Where: `js/transit.js`, line 14 ("Crash couch: juice reservoir at 80 percent.") and line 188 ("The juice floods your veins").

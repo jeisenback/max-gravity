@@ -34,7 +34,7 @@ function storyObjective() {
     2: 'You refused to hand over the core. Aquilon Hydrologics will not take no for an answer. Watch your back on the next takeoff.',
     3: 'A Ceres water engineer named Mira Castellane is looking for you. She will find you at your next port.',
     4: 'Take Mira Castellane to Europa, at Jupiter, so she can decrypt the core.',
-    5: 'Decide who gets the proof. Take it to Councillor Tembo of the Charter League on Ceres Station, Commander Ueda of Dome Concord Navy intelligence on Mars (needs Trusted standing), Director Achebe of Compact intelligence on Luna, or Anselm Voight at Hermes Foundry on Mercury.',
+    5: 'Decide who gets the proof. Take it to Councillor Tembo of the Charter League on Ceres Station, Commander Ueda, fleet auditor of the Dome Concord Fleet, on Mars (needs Trusted standing), Director Achebe of Compact intelligence on Luna, or Anselm Voight at Hermes Foundry on Mercury.',
     sold: 'Anselm Voight wants to see you at Hermes Foundry, on Mercury. Aquilon has work for people it can trust.',
     belt1: 'Bring 20t of Water to Ceres Station, so the League council can show people the ration is breaking.',
     belt2: 'Aquilon knows you are working with the League. Get to Pallas Refinery and rally the refinery crews.',
