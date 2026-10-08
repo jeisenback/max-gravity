@@ -123,4 +123,12 @@ async function closeBrowser() {
   browser = null;
 }
 
-module.exports = { open, watch, closeBrowser, bundleOf, URL };
+// Opens a page on the shell's rail (js/shell.js) by clicking its entry. A shut entry is not clicked: it throws the reason the rail prints under it.
+async function goTo(page, tab) {
+  const entry = await page.$(`.rail [data-action=tab][data-arg="${tab}"]`);
+  if (!entry) throw new Error(`no rail entry for ${tab}`);
+  if (await entry.isDisabled()) throw new Error(`the ${tab} entry is shut: ${await entry.evaluate(b => (b.nextElementSibling && b.nextElementSibling.className === 'rail-why' ? b.nextElementSibling.textContent : ''))}`);
+  await entry.click();
+}
+
+module.exports = { open, watch, closeBrowser, bundleOf, URL, goTo };

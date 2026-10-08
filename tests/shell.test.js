@@ -5,7 +5,7 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { open, closeBrowser } = require('./helpers');
+const { open, closeBrowser, goTo } = require('./helpers');
 
 after(closeBrowser);
 
@@ -137,6 +137,18 @@ test('a tab the shell does not know falls back to Port', async () => {
   const r = await ev(([fn]) => { start(); UI.tab = 'nowhere'; UI.render(); return (0, eval)(`(${fn})`)(); }, [railState.toString()]);
   assert.equal(r.tab, 'port');
   assert.equal(r.active, 'port');
+  await done();
+});
+
+test('goTo opens an entry on the rail, and throws the rail\'s reason for a shut one and a plain error for a missing one', async () => {
+  const { page, ev, done } = await open({ shell: true });
+  await ev(helpers);
+  await ev(() => { start(); });
+  await goTo(page, 'crew');
+  assert.equal(await ev(() => UI.tab), 'crew');
+  await assert.rejects(goTo(page, 'nowhere'), /no rail entry for nowhere/);
+  await ev(() => { UI.planet = Object.values(SYSTEMS).flatMap(sy => sy.planets).find(pl => !['shipyard', 'outfitter'].some(x => pl.services.includes(x))); UI.tab = 'port'; UI.render(); });
+  await assert.rejects(goTo(page, 'shipyard'), /shut: .+/);
   await done();
 });
 

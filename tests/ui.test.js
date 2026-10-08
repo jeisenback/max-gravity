@@ -5,7 +5,7 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { open, closeBrowser } = require('./helpers');
+const { open, closeBrowser, goTo } = require('./helpers');
 
 after(closeBrowser);
 
@@ -105,7 +105,7 @@ test('no screen overflows sideways at phone, landscape, and tablet sizes', async
   };
   const problems = [];
   for (const [w, h] of sizes) {
-    const { page, done } = await open({ title: true, viewport: { width: w, height: h }, mobile: w < 700 || h < 500 });
+    const { page, done } = await open({ title: true, shell: true, viewport: { width: w, height: h }, mobile: w < 700 || h < 500 });
     for (const [id, fn] of Object.entries(screens)) {
       await page.evaluate(`(${fn.toString()})()`);
       await page.waitForTimeout(100);
@@ -127,7 +127,7 @@ test('no screen overflows sideways at phone, landscape, and tablet sizes', async
 });
 
 test('keyboard focus survives the panel being rebuilt', async () => {
-  const { page, ev, done } = await open({ title: true });
+  const { page, ev, done } = await open({ title: true, shell: true });
   const focused = () => page.evaluate(() => { const a = document.activeElement; return a && a.dataset ? `${a.dataset.action}:${a.dataset.arg || ''}` : null; });
   await page.keyboard.press('Tab');
   assert.equal(await focused(), 'menuView:new');
@@ -138,7 +138,7 @@ test('keyboard focus survives the panel being rebuilt', async () => {
   await ev(() => { G.state.tutorial = null; while (G.dialog) finishEvent(); UI.render(); });
   await page.focus('[data-action=tab][data-arg=trade]');
   await page.keyboard.press('Enter');
-  assert.equal(await focused(), 'tab:trade', 'the tab you activated keeps focus');
+  assert.ok(await page.evaluate(() => document.activeElement.matches('.shell .body')), 'a room change moves focus to the page (js/a11y.js)');
   assert.equal(await page.getAttribute('[data-action=tab][data-arg=trade]', 'aria-current'), 'page');
   await ev(() => openEvent({ title: 'T', text: 'x', choices: [{ label: 'A', run: () => 'a' }, { label: 'B', run: () => 'b' }] }));
   await page.keyboard.press('Tab');
@@ -195,20 +195,16 @@ test('every tab at every port reads cleanly, broke or rich, empty or full', asyn
   await done();
 });
 
-test('the bridge: station keys at port, and a key bar with status sheets in a burn', async () => {
-  const { page, ev, done } = await open();
+test('the rail at port reaches each room, and a key bar with status sheets in a burn', async () => {
+  const { page, ev, done } = await open({ shell: true });
   await ev(() => { G.state.tutorial = null; while (G.dialog) finishEvent(); UI.render(); });
-  const names = await page.$$eval('.stations button .full', bs => bs.map(b => b.textContent));
-  assert.deepEqual(names, ['Navigation', 'Weapons', 'Engineering', 'Interior', 'Comms', 'Operations']);
-  assert.ok(await page.isVisible('#vs'), 'the viewscreen is above the stations');
-  for (const [station, marker] of [['nav', 'System map'], ['weapons', 'Armament'], ['eng', 'Outfits'], ['interior', 'Crew'], ['comms', 'Inbox'], ['ops', 'Exchange']]) {
-    await page.click(`[data-action=station][data-arg=${station}]`);
-    assert.match(await page.innerText('#panel'), new RegExp(marker, 'i'), `${station} shows ${marker}`);
+  const names = await page.$$eval('.rail .rail-group:first-child button', bs => bs.map(b => b.textContent));
+  assert.deepEqual(names, ['Bridge', 'Comms', 'Gunnery', 'Engine', 'Crew', 'Bonds', 'Journal']);
+  assert.ok(await page.isVisible('#vs'), 'the viewscreen is above the rail');
+  for (const [tab, marker] of [['nav', 'System map'], ['weapons', 'Armament'], ['shipyard', 'Outfits'], ['crew', 'Crew'], ['comms', 'Inbox'], ['port', 'Cargo']]) {
+    await goTo(page, tab);
+    assert.match(await page.innerText('.shell .body'), new RegExp(marker, 'i'), `${tab} shows ${marker}`);
   }
-  assert.equal(await page.$$eval('.tabs.sub button', b => b.length), 5, 'Operations keeps the port tabs');
-  await page.click('[data-action=tab][data-arg=trade]');
-  await page.click('[data-action=station][data-arg=ops]');
-  assert.equal(await ev(() => UI.tab), 'trade', 'the key for the station you are in keeps your tab');
   // Underway: the key bar shows, a sheet opens on a key, and it goes when a scene opens.
   await ev(() => { uatBurn('Ceres Station', 'pallas'); G.transit.times = []; });
   await page.waitForSelector('#bkeys', { state: 'visible' });
