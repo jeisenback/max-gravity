@@ -151,6 +151,11 @@ const hostileGame = ([HOSTILE_A, HOSTILE_B]) => {
   captain().name = HOSTILE_A + HOSTILE_B;
   home().name = HOSTILE_A + HOSTILE_B;
   st.journal = [{ day: 1, text: HOSTILE_A + HOSTILE_B }];
+  // the port notes, the mission and work boards, and the hired captain's surname (the Suggest block prints it)
+  UI.notes = [HOSTILE_A + HOSTILE_B];
+  const job = { type: 'delivery', good: 'water', tons: 1, destSystem: 'mars', pay: 100, deadline: st.day + 9, title: HOSTILE_B, blurb: HOSTILE_A };
+  st.missions.push({ id: st.nextId++, ...job }); G.offers.push({ id: st.nextId++, ...job });
+  hiredCaptain().last = HOSTILE_B;
   noteInbox('message', HOSTILE_A + HOSTILE_B);  // the comms inbox, the news and the market tips come from text a story or a mod wrote
   st.news = [{ day: 1, text: HOSTILE_A + HOSTILE_B }];
   st.rumors.push({ planet: st.planet, cid: 'water', mult: 1.5, until: st.day + 5, text: HOSTILE_A + HOSTILE_B });
@@ -206,7 +211,7 @@ const ordinaryGame = () => {
   const st = G.state; st.tutorial = null; st.story.next = 1e9;
 };
 
-for (const tab of ['crew', 'bar', 'journal', 'comms']) {
+for (const tab of ['crew', 'bar', 'journal', 'comms', 'port', 'missions']) {
   test(`the ${tab} page renders the golden markup for an ordinary game`, async () => {
     const { page, ev, done } = await open({ scope: 'earth-hired' });
     await ev(ordinaryGame);
