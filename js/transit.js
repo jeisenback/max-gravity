@@ -165,33 +165,14 @@ const TRANSIT_EVENTS = [
       { label: 'Dump half your biggest cargo', ...gated(needGoods), run: () => (`${loseCargo(0.5)} The crates tumble away into the dark, spinning and ` +
           `glinting. The pirates chase them down, whooping on the channel, while you burn on. You watch their running lights dwindle, and try not to ` +
           `do the arithmetic.`) },
-      { label: 'Fight', run() {
-        if (Math.random() < fightOdds()) {
-          const b = randInt(10, 25) * 100;
-          G.state.credits += b;
-          chainTo('pi-survivors');
-          return (`It is a short, ugly fight, a flurry of tracers in the dark, and at the last a lucky shot: you hole their reactor shielding and ` +
-              `they go dark, tumbling, with one flare of venting gas. Salvage nets ${fmt(b)} cr, and you take ${hurt(0.2)} points of armor damage. ` +
-              `Nobody cheers. You count the crew, twice, and find them all. In the small hours you count them again.`);
-        }
-        applyEffects({ later: { 'pi-subscription': 15 } });
-        return `They outgun you, and the hull rings under the hits. You limp away with ${hurt(0.5)} points of armor damage. On the channel as you go a voice says, almost kindly: "Next time, pay."`;
-      } },
+      { label: 'Fight', run: () => '' },  // a duel: engage.js sets what it does
       { label: '[{crew}] Spoof a pirate transponder', role: 'slicer', run() {
         if (Math.random() < slicerOdds()) return applyEffects({ later: { 'pi-brother': 12 } }) && ('{crew}\'s fake transponder reads as one of their ' +
             'own, with a scrawled skull for good measure. They wave you through with a rude gesture, and one of them calls you "brother" over the ' +
             'channel. You do not answer. Your hands on the controls are not steady.');
         return `They see through it in seconds and open fire. ${hurt(0.2)} points of armor damage before you get clear, and {crew} sits still afterward, mouthing a numbered list of what went wrong.`;
       } },
-      { label: 'Hard burn to outrun them (50 reaction mass)', ...gated(needMass(50)), run() {
-        G.state.fuel -= 50;
-        if (Math.random() < 0.7) return ('Eight g. The juice floods your veins and keeps you conscious, barely, in a gray, roaring tunnel of sound, ' +
-            'with the whole ship groaning around you and the stars streaking to threads. When you can see again, they are gone, small and dwindling ' +
-            'behind, and someone, in the galley, is laughing, high and shaky, and cannot seem to stop.');
-        return (`You pull away, in a long, thundering rush, but not before they rake your hull for ${hurt(0.25)} points of armor damage, a line of ` +
-            `hits like a fist dragged along a wall. They do not follow. The silence, afterward, is deafening, and full of the small clicks and pings ` +
-            `of a ship settling.`);
-      } },
+      { label: 'Hard burn to outrun them (50 reaction mass)', ...gated(needMass(50)), run: () => '' },  // a duel too (engage.js)
     ],
   },
   {

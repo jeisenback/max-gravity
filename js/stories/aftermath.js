@@ -144,7 +144,7 @@ Mods.register({
 
     // ---- Pirates Matching Course ----
     beat({
-      id: 'pi-survivors', title: 'The Escape Pod',
+      id: 'pi-survivors', title: 'The Escape Pod', every: 40,
       text: 'Three hours after the fight, your sensors catch a small, battered escape pod, tumbling, its beacon stuttering. Somebody got out. Whoever it is will not last another day out here, and, an hour ago, they were shooting at you.',
       choices: [
         {

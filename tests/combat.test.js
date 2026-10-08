@@ -269,3 +269,22 @@ test('paying off an intercept needs the money', async () => {
   assert.equal(r.left, 45000);
   await done();
 });
+
+test('a destroyed pirate sometimes leaves an escape pod, never twice in forty days, and only an unnamed pirate does', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    const st = G.state, out = {}; st.tutorial = null; st.story.next = 1e9;
+    const real = Math.random, foe = (kind, bountyId) => ({ kind, name: 'Test', persona: null, bountyId });
+    const kill = (roll, kind = 'pirate', bountyId) => { G.nextEvent = null; Math.random = () => roll; try { duelFinish(foe(kind, bountyId)); } finally { Math.random = real; } const e = G.nextEvent; G.nextEvent = null; return e && e.title; };
+    out.lucky = kill(0.01);                      // the pod comes (and its scene is built, so the gap starts)
+    out.again = kill(0.01);                      // not again at once
+    st.day += 41; out.later = kill(0.01);        // after the gap, yes
+    st.day += 41; out.unlucky = kill(0.99);      // most kills leave nothing
+    out.trader = kill(0.01, 'trader');           // only a pirate
+    st.day += 41; out.bounty = kill(0.01, 'pirate', 777);  // and not a named bounty, who is finished
+    return out;
+  });
+  assert.equal(r.lucky, 'The Escape Pod'); assert.equal(r.again, null); assert.equal(r.later, 'The Escape Pod');
+  assert.equal(r.unlucky, null); assert.equal(r.trader, null); assert.equal(r.bounty, null);
+  await done();
+});
