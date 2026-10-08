@@ -5,7 +5,16 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { extractProse, countTics, shape, speech } = require('../tools/prose-lint');
+const fs = require('node:fs');
+const os = require('node:os');
+const path = require('node:path');
+const { extractProse, countTics, shape, speech, lint, report, compare, narrativeFiles, main } = require('../tools/prose-lint');
+
+const tmp = files => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'prose-'));
+  for (const [f, src] of Object.entries(files)) { fs.mkdirSync(path.dirname(path.join(root, f)), { recursive: true }); fs.writeFileSync(path.join(root, f), src); }
+  return root;
+};
 
 test('extractProse keeps prose strings and skips comments and short ids', () => {
   const src = [
@@ -46,4 +55,40 @@ test('shape splits after a closing quote, and gives zeros for no text', () => {
 test('speech counts quoted spans and reported speech', () => {
   const r = speech(['"I said something," Mara says. She says that she did.', 'Ines asks if it is on. He told her that it was.']);
   assert.deepEqual(r, { quoted: 1, reported: 3 });
+});
+
+test('lint totals the tics, strings and shape across files', () => {
+  const r = lint({ 'a.js': "const x = 'He nods and sits down at the table.';", 'b.js': 'const y = "She nods and leaves the galley now.";' });
+  assert.equal(r.total.tics.nods, 2);
+  assert.equal(r.files['a.js'].strings, 1);
+  assert.equal(r.total.shape.count, 2);
+  for (const p of ['a.js', 'b.js', 'total']) assert.ok(report(r).includes(p));
+});
+
+test('compare names each difference, and says no change when there is none', () => {
+  const base = lint({ 'a.js': "const x = 'He nods and she nods at the door.';" });
+  const now = lint({ 'a.js': "const x = 'He nods and she waits at the door.';" });
+  assert.ok(compare(base, now).includes('nods: 2 -> 1 (-1)'));
+  assert.equal(compare(base, base), 'no change');
+});
+
+test('narrativeFiles lists the real narrative files and nothing from tests', () => {
+  const root = path.resolve(__dirname, '..');
+  const files = narrativeFiles(root);
+  for (const f of ['js/cast.js', 'js/captains/hester.js', 'js/stories/aftermath.js']) assert.ok(files.includes(f), f);
+  assert.ok(files.every(f => fs.existsSync(path.join(root, f)) && !f.startsWith('tests/')));
+  assert.deepEqual(narrativeFiles(tmp({})), []);
+});
+
+test('main writes a baseline, compares to it, and explains when there is none', () => {
+  const root = tmp({ 'js/cast.js': "const a = 'He nods and sits down at the table.';" });
+  const lines = []; const out = s => lines.push(s);
+  assert.equal(main(['--compare'], { root, out }), 1);
+  assert.ok(lines.join('\n').includes('no baseline') && lines.join('\n').includes('--write'));
+  assert.equal(main(['--write'], { root, out }), 0);
+  assert.equal(JSON.parse(fs.readFileSync(path.join(root, 'docs/prose-baseline.json'), 'utf8')).total.strings, 1);
+  lines.length = 0;
+  assert.equal(main(['--compare'], { root, out }), 0);
+  assert.equal(lines.join('\n'), 'no change');
+  assert.equal(main([], { root: tmp({}), out }), 0);
 });

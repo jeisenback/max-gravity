@@ -8,6 +8,9 @@
 //   npm run prose -- --compare    the difference from the baseline
 // The string scan is a character walk, not a parser: a regex literal that holds a quote mark would confuse it.
 
+const fs = require('node:fs');
+const path = require('node:path');
+
 // The tic table of docs/prose-style.md. Each pattern is counted case-insensitively.
 const TICS = [
   { id: 'hedge', re: /\b(?:a little|a small|very slightly)\b/gi },
@@ -108,4 +111,72 @@ function speech(strings) {
   return { quoted, reported };
 }
 
-module.exports = { TICS, extractProse, countTics, shape, speech };
+// ---------- the report ----------
+
+const lintStrings = strings => ({ strings: strings.length, tics: countTics(strings.join('\n')), shape: shape(strings), speech: speech(strings) });
+
+// files: { path: source }. Returns each file's figures, and the total over all their strings together.
+function lint(files) {
+  const per = {}, all = [];
+  for (const [file, src] of Object.entries(files)) { const strings = extractProse(src); per[file] = lintStrings(strings); all.push(...strings); }
+  return { files: per, total: lintStrings(all) };
+}
+
+const row = (name, r) => `${name.padEnd(32)} ${String(r.strings).padStart(5)} strings  tics ${String(Object.values(r.tics).reduce((a, b) => a + b, 0)).padStart(4)}  ` +
+  `mean ${r.shape.mean}  sd ${r.shape.sd}  short ${Math.round(r.shape.shortShare * 100)}%  runs ${r.shape.shortRuns}  quoted ${r.speech.quoted}  reported ${r.speech.reported}`;
+
+function report(result) {
+  const ticLine = Object.entries(result.total.tics).map(([id, n]) => `${id} ${n}`).join(', ');
+  return [row('total', result.total), `  tics: ${ticLine}`, ...Object.entries(result.files).map(([file, r]) => row(file, r))].join('\n');
+}
+
+const diff = (name, a, b) => (a === b ? null : `${name}: ${a} -> ${b} (${b > a ? '+' : ''}${round2(b - a)})`);
+
+// What changed in the totals since the baseline, one line each, or `no change`.
+function compare(base, now) {
+  const a = base.total, b = now.total;
+  const lines = [
+    ...TICS.map(({ id }) => diff(id, a.tics[id], b.tics[id])),
+    diff('mean', a.shape.mean, b.shape.mean), diff('shortShare', a.shape.shortShare, b.shape.shortShare), diff('shortRuns', a.shape.shortRuns, b.shape.shortRuns),
+    diff('quoted', a.speech.quoted, b.speech.quoted), diff('reported', a.speech.reported, b.speech.reported),
+  ].filter(Boolean);
+  return lines.length ? lines.join('\n') : 'no change';
+}
+
+// ---------- the files and the command ----------
+
+const NARRATIVE_FILES = ['js/cast.js', 'js/castbar.js', 'js/people.js', 'js/peopletext.js', 'js/familytext.js', 'js/bartopics.js', 'js/hiredeventstext.js', 'js/social.js', 'js/family.js'];
+const NARRATIVE_DIRS = ['js/stories', 'js/captains'];
+
+// Repo-relative paths of the narrative files that exist under root, sorted.
+function narrativeFiles(root) {
+  const files = [...NARRATIVE_FILES];
+  for (const dir of NARRATIVE_DIRS) {
+    const abs = path.join(root, dir);
+    if (fs.existsSync(abs)) for (const f of fs.readdirSync(abs)) if (f.endsWith('.js')) files.push(`${dir}/${f}`);
+  }
+  return files.filter(f => fs.existsSync(path.join(root, f))).sort();
+}
+
+// Returns the exit code. `out` prints a line.
+function main(args, { root, out }) {
+  const result = lint(Object.fromEntries(narrativeFiles(root).map(f => [f, fs.readFileSync(path.join(root, f), 'utf8')])));
+  const baseline = path.join(root, 'docs', 'prose-baseline.json');
+  if (args.includes('--write')) {
+    fs.mkdirSync(path.dirname(baseline), { recursive: true });
+    fs.writeFileSync(baseline, JSON.stringify(result, null, 2) + '\n');
+    out(`wrote ${path.relative(root, baseline)}`);
+    return 0;
+  }
+  if (args.includes('--compare')) {
+    if (!fs.existsSync(baseline)) { out('no baseline yet: run `npm run prose -- --write` first'); return 1; }
+    out(compare(JSON.parse(fs.readFileSync(baseline, 'utf8')), result));
+    return 0;
+  }
+  out(report(result));
+  return 0;
+}
+
+if (require.main === module) process.exitCode = main(process.argv.slice(2), { root: path.resolve(__dirname, '..'), out: console.log });
+
+module.exports = { TICS, extractProse, countTics, shape, speech, lint, report, compare, narrativeFiles, main };

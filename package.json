@@ -7,7 +7,8 @@
     "test:changed": "node tools/changed-tests.js",
     "coverage":"node tools/coverage.js",
     "soak": "node --test --test-concurrency=4 \"tests/distribution/*.test.js\"",
-    "fights": "node tools/fights.js --seeds 1,2,3,4,5 --n 200"
+    "fights": "node tools/fights.js --seeds 1,2,3,4,5 --n 200",
+    "prose": "node tools/prose-lint.js"
   },
   "devDependencies": {
     "playwright": "^1.63.0"
