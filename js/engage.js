@@ -44,6 +44,21 @@ function makeEnemy(spec) {
   return n;
 }
 
+// A hired hand's own move at a pirate contact (#386), one for each post that is not Comms (the spoof, below). Rolled on the hand's skill like the
+// spoof. A win starts the raid with you two ahead and a loss one behind, as the post's own move in a raid does (RAID_POST, engagements.js); a
+// loss also costs a share of the hull where `hull` is set, as a failed run does (startRaid).
+const HAND_CONTACT = {
+  pilot: { label: 'Take the helm and break her intercept', hull: true,
+    win: 'You put the ship across her line before she has finished the turn and hold the burn at the edge of what the frame will take. She comes out of it two kilometers astern of where she meant to be, with her drive still swinging. Battle stations.',
+    lose: 'You put the ship across her line a second late. She is already inside the turn, and her first burst takes the aft plating before the range opens enough to matter. Battle stations.' },
+  gunner: { label: 'Put a burst across her bow',
+    win: 'The burst crosses her bow at a kilometer. She comes off her line, and on the open band a voice asks whether you are always this friendly. Her guns are still warm. Battle stations.',
+    lose: 'The burst goes wide. She has your range by then, and her answer comes back across the hull in three places. Battle stations.' },
+  engineer: { label: 'Cut the drive and go dark', hull: true,
+    win: 'You pull the drive down to a cold idle and the plume goes out. The ship coasts with the lights on emergency, and she overshoots your heading by eight kilometers before her sensors pick you up again. Battle stations.',
+    lose: 'You cut the drive, and the relight from cold takes forty seconds the coolant loop does not have. She sees the plume come back up and closes while the board is still red. Battle stations.' },
+};
+
 function contactEvent(spec) {
   const st = G.state, d = fmt(Math.round(rand(3200, 3800) / 10) * 10);
   const who = { pirate: 'No transponder. The plume signature says pirate.', patrol: `Transponder: ${spec.gov} navy. You are wanted in their space.`,
@@ -66,10 +81,18 @@ function contactEvent(spec) {
     } });
   }
   // A hired hand whose post fits one of the options makes the call (hiredCall, hired.js): the option is theirs, rolled on their skill.
-  const post = hired() && hired().post, mine = post && choices.find(c => c.role === POSTS[post].role);
+  const post = hired() && hired().post, hand = HAND_CONTACT[post];
+  if (spec.kind === 'pirate' && hand) choices.push({ label: `[{crew}] ${hand.label}${costNote({ hull: hand.hull })}`, role: POSTS[post].role, run() {
+    const won = Math.random() < Math.min(0.85, 0.5 + 0.1 * skillLevel(post));
+    if (won) return startRaid(spec, false, { edge: 2, text: hand.win });
+    const pts = hand.hull ? Math.round(ship().armor * 0.08) : 0;
+    st.armor = Math.max(1, st.armor - pts);
+    return startRaid(spec, false, { edge: -1, text: `${hand.lose}${pts ? ` Armor -${pts}.` : ''}` });
+  } });
+  const mine = post && choices.find(c => c.role === POSTS[post].role);
   if (mine) {
     mine.label = mine.label.replace('{crew}', POSTS[post].name); mine.own = true;  // shown with no crew member in the role (transit.js)
-    mine.run = () => Math.random() < Math.min(0.85, 0.5 + 0.1 * skillLevel(post))
+    if (!hand) mine.run = () => Math.random() < Math.min(0.85, 0.5 + 0.1 * skillLevel(post))  // Comms: the spoof
       ? 'Your fake transponder reads as one of their own. The plume swings away.'
       : `They see through it. ${startDuel(spec, false)}`;
   }

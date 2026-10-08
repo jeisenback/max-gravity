@@ -413,25 +413,45 @@ test('an owner does not get the Gunner\'s orders', async () => {
   await done();
 });
 
-test('a Comms hand makes the call in a pirate contact, rolled on their own skill; the other posts and the patrol contacts stay the captain\'s', async () => {
+test('each hand makes the call in a pirate contact, rolled on their own skill, and a patrol contact stays the captain\'s', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     const out = {};
     const contact = (post, kind = 'pirate') => { raid(post); G.dialog = null; openEvent(contactEvent({ kind, gov: 'Arcology Compact' })); const d = G.dialog; return { decided: !!d.event.decided, labels: d.choices.map(c => c.label), text: d.event.text }; };
-    out.comms = contact('comms'); out.pilot = contact('pilot'); out.gunner = contact('gunner'); out.engineer = contact('engineer'); out.patrol = contact('comms', 'patrol');
+    for (const post of ['comms', 'pilot', 'gunner', 'engineer']) out[post] = contact(post);
+    out.patrols = ['comms', 'pilot', 'gunner', 'engineer'].map(post => contact(post, 'patrol').decided);
     const spoof = (level, roll) => {
       raid('comms'); hired().skill.comms = SKILL_STEPS[level]; G.dialog = null; openEvent(contactEvent({ kind: 'pirate' }));
       const i = G.dialog.choices.findIndex(c => /^\[Comms\] Spoof/.test(c.label));
       rolls([roll]); return chooseEvent(i);
     };
     out.low = spoof(1, 0.7); out.high = spoof(3, 0.7);
+    // The other three: a win starts the raid two ahead, a loss one behind (and a share of the hull for the Pilot and the Engineer).
+    const move = (post, level, roll) => {
+      const st = raid(post); hired().skill[post] = SKILL_STEPS[level]; G.dialog = null; openEvent(contactEvent({ kind: 'pirate' }));
+      const i = G.dialog.choices.findIndex(c => c.label.startsWith(`[${POSTS[post].name}]`)), armor = st.armor;
+      G.nextEvent = null; rolls([roll]); const text = chooseEvent(i), scene = G.nextEvent;
+      return { text, position: scene && /Position: (\w+)/.exec(scene.text)[1], hit: armor - st.armor, title: scene && scene.title };
+    };
+    for (const post of ['pilot', 'gunner', 'engineer']) out[`${post}Level1`] = { low: move(post, 1, 0.7), high: move(post, 3, 0.7), win: move(post, 3, 0.01) };
     return out;
   });
   assert.equal(r.comms.decided, false, 'the hand picks'); assert.ok(r.comms.labels.includes('[Comms] Spoof a pirate transponder'));
   assert.ok(r.comms.labels.length >= 4, 'every choice is shown'); assert.doesNotMatch(r.comms.text, /takes the call/);
-  for (const post of ['pilot', 'gunner', 'engineer']) { assert.equal(r[post].decided, true, `${post}: the captain's call`); assert.match(r[post].text, /takes the call/); }
-  assert.equal(r.patrol.decided, true, 'no option fits the post');
+  const names = { pilot: 'Take the helm and break her intercept', gunner: 'Put a burst across her bow', engineer: 'Cut the drive and go dark' };
+  for (const post of ['pilot', 'gunner', 'engineer']) {
+    const Name = post[0].toUpperCase() + post.slice(1);
+    assert.equal(r[post].decided, false, `${post}: the hand picks`); assert.doesNotMatch(r[post].text, /takes the call/);
+    assert.ok(r[post].labels.some(l => l.startsWith(`[${Name}] ${names[post]}`)), `${post}: its own option`);
+    assert.equal(r[post].labels.filter(l => /^\[(Pilot|Gunner|Engineer)\]/.test(l)).length, 1, `${post}: only its own`);
+    const m = r[`${post}Level1`];
+    assert.equal(m.low.position, 'behind', `${post}: level 1 is 0.6, so 0.7 loses`); assert.equal(m.high.position, 'ahead', `${post}: level 3 is 0.8, so 0.7 wins`); assert.equal(m.win.position, 'ahead');
+    assert.equal(m.low.title, 'The Closing', 'the raid goes on either way'); assert.match(m.low.text, /Battle stations/);
+    const hull = post !== 'gunner';
+    assert.equal(m.low.hit > 0, hull, `${post}: a loss ${hull ? 'costs' : 'does not cost'} hull`); assert.equal(m.high.hit, 0, 'a win costs none');
+  }
+  assert.deepEqual(r.patrols, [true, true, true, true], 'no option fits a patrol contact: the captain\'s call');
   assert.match(r.low, /^They see through it/, 'level 1 is 0.6'); assert.match(r.high, /^Your fake transponder/, 'level 3 is 0.8');
   await done();
 });
