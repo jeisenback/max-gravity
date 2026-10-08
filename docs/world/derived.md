@@ -18,6 +18,7 @@ Real places (Ceres, Eros, Ganymede) and generic hard-SF terms (reaction mass, th
 - Why it reads as the Expanse: The Earth, Mars and Belt triangle, with the Belt as the side the other two look down on, is the Expanse's political frame.
 - Proposed instead: Keep three powers for the mechanics but change what each is. Earth is a compact of arcology cities that trade and license, with no world government. Mars is a set of dome municipalities that share a fleet and nothing else. The Belt is a league of stations held by chartered guilds that vote on water and berth rights.
 - Decision: Keep three powers, reshaped as proposed (owner, 2026-10-08). The outer planets are expected to split into factions of their own later; see `derived.ganymede-breadbasket`.
+- Note: Done in the faction rename (#427, PR 2): Earth Coalition is now Arcology Compact, Mars Republic is now Dome Concord, and Belt Collective is now Charter League, in the code, tests, README and the bible. The entry above describes the code before the rename.
 
 ### derived.belter-people
 

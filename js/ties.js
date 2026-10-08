@@ -6,21 +6,21 @@
 // They matter in four places: how the crew get on (social.js bondDay), how the crew take what you do (changeRep in
 // factions.js), what a port makes of who is aboard (customs below), and your own papers (youTies). Loaded after stakes.js.
 
-const CULTURE_FACTION = { earth: 'Earth Coalition', mars: 'Mars Republic', belt: 'Belt Collective' };
-const FACTION_COOL = { 'Earth Coalition': { 'Belt Collective': -1 }, 'Mars Republic': { 'Belt Collective': -1 }, 'Belt Collective': { 'Earth Coalition': -1, 'Mars Republic': -1 } };
+const CULTURE_FACTION = { earth: 'Arcology Compact', mars: 'Dome Concord', belt: 'Charter League' };
+const FACTION_COOL = { 'Arcology Compact': { 'Charter League': -1 }, 'Dome Concord': { 'Charter League': -1 }, 'Charter League': { 'Arcology Compact': -1, 'Dome Concord': -1 } };
 const TIE_NOTES = {
-  ines: { aff: 'Earth Coalition', status: { 'Earth Coalition': 'exile' } },  // her license, lost over one landing
-  tomas: { aff: 'Earth Coalition', status: { 'Earth Coalition': 'member' } },
-  yelena: { aff: 'Mars Republic', status: { 'Mars Republic': 'member' } },
-  ruben: { aff: 'Mars Republic', status: { 'Mars Republic': 'officer' } },
-  bexa: { aff: 'Belt Collective', status: { 'Belt Collective': 'member' } },
-  pax: { aff: 'Belt Collective', status: { 'Belt Collective': 'member' } },
+  ines: { aff: 'Arcology Compact', status: { 'Arcology Compact': 'exile' } },  // her license, lost over one landing
+  tomas: { aff: 'Arcology Compact', status: { 'Arcology Compact': 'member' } },
+  yelena: { aff: 'Dome Concord', status: { 'Dome Concord': 'member' } },
+  ruben: { aff: 'Dome Concord', status: { 'Dome Concord': 'officer' } },
+  bexa: { aff: 'Charter League', status: { 'Charter League': 'member' } },
+  pax: { aff: 'Charter League', status: { 'Charter League': 'member' } },
 };
-const shortFaction = f => (f === 'Pirate' ? 'the pirates' : `the ${f.replace(/^(Earth|Mars|Belt) /, '')}`);
+const shortFaction = f => (f === 'Pirate' ? 'the pirates' : `the ${f.replace(/^(Arcology|Dome|Charter) /, '')}`);
 
 function tiesOf(p) {
   const id = String(p.id || p.name || `${p.first || ''}${p.last || ''}` || 'x'), h = s => Math.abs(hash(id + s)), note = TIE_NOTES[p.cast || p.captainKey];
-  const culture = p.culture || (typeof cultureOfPerson === 'function' ? cultureOfPerson(p) : 'earth'), home = CULTURE_FACTION[culture] || 'Earth Coalition';
+  const culture = p.culture || (typeof cultureOfPerson === 'function' ? cultureOfPerson(p) : 'earth'), home = CULTURE_FACTION[culture] || 'Arcology Compact';
   const others = FACTIONS.filter(f => f !== home && f !== 'Pirate'), roll = h('aff') % 100;
   const aff = note ? note.aff : roll < 70 ? home : roll < 82 ? others[h('other') % others.length] : roll < 90 ? 'Pirate' : null;
   const status = note ? { ...note.status } : {};
@@ -38,7 +38,7 @@ const regardWord = n => (n >= 2 ? 'loyal' : n === 1 ? 'warm' : n === 0 ? 'neutra
 
 // You: your background's faction, a member, with your standing as the factions' regard for you (factions.js).
 function youTies() {
-  const st = G.state, aff = CULTURE_FACTION[(BACKGROUNDS[st.background] || {}).culture || st.background] || 'Earth Coalition';
+  const st = G.state, aff = CULTURE_FACTION[(BACKGROUNDS[st.background] || {}).culture || st.background] || 'Arcology Compact';
   return { aff, status: { [aff]: 'member' }, standing: Object.fromEntries(FACTIONS.map(f => [f, standingWord(repOf(f))])) };
 }
 

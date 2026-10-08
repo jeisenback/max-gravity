@@ -14,18 +14,18 @@ One entry for each start background in `BACKGROUNDS` (`js/menu.js`). The narrow 
 
 ### bg.mars
 
-- Source: `BACKGROUNDS.mars` in `js/menu.js`: "Grew up under the Tharsis domes. Start on Mars with 10,000 credits and friends in the Mars Republic." The intro adds that everyone there argues about the future.
+- Source: `BACKGROUNDS.mars` in `js/menu.js`: "Grew up under the Tharsis domes. Start on Mars with 10,000 credits and friends in the Dome Concord." The intro adds that everyone there argues about the future.
 - Home: A dome under Tharsis where the council keeps its own air accounts, and a household is known by its air share.
 - Family: A household that pays into the dome's air levy. The dome's budget meeting is held in the open, and the family sits in on it once a year.
 - Schooling: A council school where children are taught to read the dome's accounts, and every child is made to argue the other side of one vote.
 - Why they left: The dome's air share is capped, and a second child has no share. Leaving frees the share for a sibling.
-- Divergence: `derived.power-triangle`. Loyalty is to the dome and its air share first, and a Republic second, if at all.
+- Divergence: `derived.power-triangle`. Loyalty is to the dome and its air share first, and a Concord second, if at all.
 - Use in scenes: The hand quotes a dome rule at a captain; a Martian crew member asks how many shares your household held.
 - Status: confirmed by the owner on 2026-10-08
 
 ### bg.belt
 
-- Source: `BACKGROUNDS.belt` in `js/menu.js`: "Ceres-born, with long limbs and short patience. Start on Ceres Station with 9,000 credits and friends in the Belt Collective." The intro: "You were born in the Ceres Warren, and you know what water is worth."
+- Source: `BACKGROUNDS.belt` in `js/menu.js`: "Ceres-born, with long limbs and short patience. Start on Ceres Station with 9,000 credits and friends in the Charter League." The intro: "You were born in the Ceres Warren, and you know what water is worth."
 - Home: The Ceres Warren, in a household known by its hatch number.
 - Family: A family on a water share tied to the hatch. When the hatch changed hands, the share went with it.
 - Schooling: The valves before the letters. A child of the Warren can name every tap on a deck by its sound.

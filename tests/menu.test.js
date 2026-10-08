@@ -32,7 +32,7 @@ test('title, new game, pause, autosave, continue, slots, settings', async () => 
   await page.click('[data-action=menuBackground][data-arg=belt]');
   await page.click('[data-action=menuSlotPick][data-arg="2"]');
   await page.click('[data-action=menuStart]');
-  const started = await ev(() => ({ mode: G.mode, captain: captain().name, ship: home().name, belt: repOf('Belt Collective'), slot: Saves.current, v: G.state.v }));
+  const started = await ev(() => ({ mode: G.mode, captain: captain().name, ship: home().name, belt: repOf('Charter League'), slot: Saves.current, v: G.state.v }));
   assert.deepEqual(started, { mode: 'landed', captain: 'Ines Okafor', ship: 'Tuesday Forever', belt: started.belt, slot: 2, v: started.v });
   assert.ok(started.belt > 0, 'Belt background starts with Belt standing');
 

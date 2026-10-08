@@ -38,7 +38,7 @@ Mods.register({
         {
           label: 'Help the pad crew with the tarps',
           effects: {
-          rep: { 'Mars Republic': 2 },
+          rep: { 'Dome Concord': 2 },
           like: { crew: 1 }
         },
           result: 'You spend an hour on the pad with a stranger on the other end of every tarp, and when the front comes you are all inside the dome, grey to the knees and laughing. The pad boss writes your ship on a chit for a berth discount next time.'
@@ -52,18 +52,18 @@ Mods.register({
           'veteran from the first domes, who says it will be blue in her lifetime, and a young atmospheric modeler, who has the numbers and says it ' +
           'will not be in anyone\'s. They notice you listening and appeal to you, both at once, over the noise.'),
       choices: [
-        { label: 'Side with the veteran', effects: { like: { crew: 1 }, rep: { 'Mars Republic': 1 } }, result: '"There," says the veteran, and pays for your drink. The modeler says that is not how evidence works, and then says he hopes you are right, and means it.' },
+        { label: 'Side with the veteran', effects: { like: { crew: 1 }, rep: { 'Dome Concord': 1 } }, result: '"There," says the veteran, and pays for your drink. The modeler says that is not how evidence works, and then says he hopes you are right, and means it.' },
         { label: 'Side with the modeler', effects: { learn: 2 }, result: 'The modeler sits you down and shows you the numbers on a napkin: the pressure, the water, the long slow sums. By the end you understand why nobody is sure, and the veteran, grudgingly, buys the next round.' },
-        { label: 'Say the sky is a good color already', effects: { rep: { 'Mars Republic': 2 } }, result: 'They both stop. "Butterscotch," says the veteran, slowly. "It is the color of home," says the modeler. They agree on something for the first time in forty years, and the bar applauds.' },
+        { label: 'Say the sky is a good color already', effects: { rep: { 'Dome Concord': 2 } }, result: 'They both stop. "Butterscotch," says the veteran, slowly. "It is the color of home," says the modeler. They agree on something for the first time in forty years, and the bar applauds.' },
       ],
     });
     scene({
-      id: 'port-mars-recruiter', when: { planet: 'Mars', war: 'Mars Republic' }, title: 'A Recruiter at the Pad',
-      text: ('A navy recruiter in a good jacket is working the pad in the gap between ships, with a tablet and a smile. The Mars Republic is at war, ' +
+      id: 'port-mars-recruiter', when: { planet: 'Mars', war: 'Dome Concord' }, title: 'A Recruiter at the Pad',
+      text: ('A navy recruiter in a good jacket is working the pad in the gap between ships, with a tablet and a smile. The Dome Concord is at war, ' +
           'and the navy wants pilots, gunners, and anyone who can keep an old drive alive. She has a pitch ready, and the ship\'s name already, and ' +
           'she says it to you like a promise.'),
       choices: [
-        { label: 'Take the leaflet and say you will think about it', effects: { rep: { 'Mars Republic': 2 } }, result: 'You take the leaflet. She seems to expect that, and writes your name down anyway, in case. It is a good leaflet, and you keep it.' },
+        { label: 'Take the leaflet and say you will think about it', effects: { rep: { 'Dome Concord': 2 } }, result: 'You take the leaflet. She seems to expect that, and writes your name down anyway, in case. It is a good leaflet, and you keep it.' },
         { label: 'Ask what the pay is', effects: { learn: 1 }, result: 'She tells you, and you do the sums, and then she tells you what the navy pays for a hand who is good at their post. It is more than your share, and it is a hundred times the risk. You understand each other.' },
         { label: 'Tell her you have a berth', result: '"Everyone has a berth," she says, not unkindly. "Until they do not." She hands you a card anyway, for the day the berth stops being yours.' },
       ],
@@ -199,7 +199,7 @@ Mods.register({
           when: { post: 'pilot' },
           effects: {
           learn: 4,
-          rep: { 'Earth Coalition': 1 },
+          rep: { 'Arcology Compact': 1 },
           like: { captain: 1 }
         },
           result: 'You work out that two ships ahead of you are bound for the same lane and could go as one pair. The tower takes the suggestion without a word, and you are off the pad in forty minutes. Captain says nothing, and then asks how you saw it.'
@@ -240,7 +240,7 @@ Mods.register({
           when: { post: 'engineer' },
           effects: {
           learn: 4,
-          rep: { 'Belt Collective': 2 },
+          rep: { 'Charter League': 2 },
           like: { captain: 1 }
         },
           result: 'It is not pretty, and it holds. The hauler crew shake your hand until it hurts, and the dock boss writes a line in the log that you are not to be charged for the berth.'
@@ -248,7 +248,7 @@ Mods.register({
         {
           label: 'Help them move the cargo by hand',
           effects: {
-          rep: { 'Belt Collective': 1 },
+          rep: { 'Charter League': 1 },
           like: { crew: 1 }
         },
           result: 'It takes three hours and a long chain of people passing sealed drums down the dock. You are sore for a day, and on the next landing someone you do not know raises a hand to you across the pad.'
@@ -270,13 +270,13 @@ Mods.register({
       id: 'port-juno-commons', when: { planet: 'Juno Commons' }, title: 'The Commons Table',
       text: 'Juno Commons has one long table in its middle, and anyone who lands is expected to sit at it at the evening meal. Nobody explains the rule. A plate is simply put in front of you, and an old man on your left says, without looking up, that the bread is better than it looks.',
       choices: [
-        { label: 'Sit and eat', effects: { like: { crew: 1 }, rep: { 'Belt Collective': 1 } }, result: 'The bread is better than it looks. You sit for two hours, and by the end of it you have been told the names of every child at the table and the history of each of their quarrels.' },
+        { label: 'Sit and eat', effects: { like: { crew: 1 }, rep: { 'Charter League': 1 } }, result: 'The bread is better than it looks. You sit for two hours, and by the end of it you have been told the names of every child at the table and the history of each of their quarrels.' },
         {
           label: '[Engineer] Offer to look at their air plant',
           when: { post: 'engineer' },
           effects: {
           learn: 3,
-          rep: { 'Belt Collective': 2 },
+          rep: { 'Charter League': 2 },
           like: { captain: 1 }
         },
           result: 'They have been putting off a scrubber that rattles. You find a loose mount and a worn bearing, and by the dessert it is quiet. The old man says it was the first time the table had been that quiet in a year.'
