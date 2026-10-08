@@ -22,7 +22,7 @@ test('the shell is off unless the address asks for it', async () => {
   await on.done();
 });
 
-test('the shell is on by default in the narrow build and off in the full build', async () => {
+test('the shell is on by default in both builds, and the address can turn it off', async () => {
   const narrow = await open({ scope: 'earth-hired', shell: 'default' });
   assert.equal(await narrow.ev(() => shellOn()), true);
   await narrow.ev(helpers);
@@ -30,11 +30,22 @@ test('the shell is on by default in the narrow build and off in the full build',
   assert.equal(tab.shell, true); assert.equal(tab.tab, 'port');
   await narrow.done();
   const full = await open({ scope: 'full', shell: 'default' });
-  assert.equal(await full.ev(() => shellOn()), false);
+  assert.equal(await full.ev(() => shellOn()), true);
   await full.done();
   const off = await open({ scope: 'earth-hired', shell: false });
   assert.equal(await off.ev(() => shellOn()), false, 'shell=off keeps the old screens in the narrow build');
   await off.done();
+});
+
+test('the full build reaches every page it reached before, through the rail (#324)', async () => {
+  const { ev, done } = await open({ scope: 'full', shell: 'default' });
+  await ev(helpers);
+  const owner = await ev(() => { start({ mode: 'owner', post: undefined }); return { shell: !!document.querySelector('.shell'), rail: [...document.querySelectorAll('.rail [data-action=tab]')].map(b => b.dataset.arg), views: Object.keys(UI.views) }; });
+  assert.equal(owner.shell, true, 'the full build draws the shell');
+  for (const v of owner.views.filter(v => v !== 'person')) assert.ok(owner.rail.includes(v), `${v} is on the owner's rail: ${owner.rail}`);
+  const hand = await ev(() => { start(); return [...document.querySelectorAll('.rail [data-action=tab]')].map(b => b.dataset.arg); });
+  assert.ok(!hand.includes('trade') && !hand.includes('company'), 'a hired hand has no owner pages');
+  await done();
 });
 
 test('with the shell off the landed screen is unchanged', async () => {
