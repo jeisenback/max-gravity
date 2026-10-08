@@ -6,12 +6,12 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { open, watch, closeBrowser } = require('./helpers');
+const { open, watch, closeBrowser, goTo } = require('./helpers');
 
 after(closeBrowser);
 
 test('found an outpost, supply it, build, save and reload', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({ shell: true });
   await ev(() => {
     const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 120000; st.shipId = 'freighter';
     while (G.dialog) finishEvent();
@@ -47,7 +47,7 @@ test('found an outpost, supply it, build, save and reload', async () => {
 });
 
 test('death passes the company to an heir; a captain can retire', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({ shell: true });
   await ev(() => { const st = G.state; st.tutorial = null; st.credits = 10000; while (G.dialog) finishEvent(); st.crew.push('kit'); G.mode = 'dead'; UI.showDead(); });
   await page.click('[data-action=heir]');
   const heir = await ev(() => ({ mode: G.mode, credits: G.state.credits, crew: G.state.crew.length, past: G.state.captains.length }));
@@ -56,7 +56,7 @@ test('death passes the company to an heir; a captain can retire', async () => {
   assert.equal(heir.crew, 0, 'the crew are lost');
   assert.equal(heir.past, 1);
   await ev(() => { while (G.dialog) finishEvent(); UI.render(); });
-  await page.click('[data-action=station][data-arg=ops]');
+  await goTo(page, 'port');
   await page.click('[data-action=tab][data-arg=company]');
   await page.fill('#capName', 'Ines Okafor');
   await page.click('[data-action=renameCaptain]');
@@ -87,7 +87,7 @@ const fakeRuntime = () => {
 };
 
 test('shared news is escaped; sharing my deeds; mods by link', async () => {
-  const { page, ev, done } = await open({ init: fakeRuntime });
+  const { page, ev, done } = await open({ shell: true, init: fakeRuntime });
   await ev(() => { G.state.tutorial = null; while (G.dialog) finishEvent(); UI.tab = 'journal'; UI.render(); });  // shared news is on the Journal tab
   await page.waitForFunction(() => [...document.querySelectorAll('.hint')].some(e => /Captain Ama/.test(e.innerHTML)));
   const shown = await page.evaluate(() => [...document.querySelectorAll('.hint')].map(e => e.innerHTML).find(t => /Captain Ama/.test(t)));
@@ -109,7 +109,7 @@ test('shared news is escaped; sharing my deeds; mods by link', async () => {
 });
 
 test('scenarios: share a link, start it, and a hostile one is defanged', async () => {
-  const { page, ctx, ev, errors, done } = await open();
+  const { page, ctx, ev, errors, done } = await open({ shell: true });
   await ev(() => { G.state.tutorial = null; while (G.dialog) finishEvent(); UI.render(); });
   await page.click('[data-action=scenarioShare][data-arg="0"]');
   const link = await ev(() => UI.shareLink);
@@ -137,7 +137,7 @@ test('scenarios: share a link, start it, and a hostile one is defanged', async (
 });
 
 test('the UAT panel sets up every scene and restores the real game', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({ shell: true });
   await ev(() => { while (G.dialog) finishEvent(); G.state.credits = 777; G.state.day = 33; save(); });
   await page.keyboard.press('Shift+KeyU');
   assert.ok(await ev(() => !!document.getElementById('uat') && !!localStorage.getItem('maxGravity.save.uatBackup')));
@@ -162,16 +162,16 @@ test('the UAT panel sets up every scene and restores the real game', async () =>
 
 test('names the player types never become markup', async () => {
   const evil = '<img src=x onerror="window.pwned=1">Kay';
-  const { page, ev, done } = await open({ title: true });
+  const { page, ev, done } = await open({ shell: true, title: true });
   await page.click('[data-action=menuView][data-arg=new]');
   await page.fill('#ngCaptain', evil);
   await page.fill('#ngShip', evil);
   await page.click('[data-action=menuStart]');
   await ev(() => { G.state.tutorial = null; G.state.credits = 200000; G.state.shipId = 'freighter'; while (G.dialog) finishEvent(); UI.render(); });
-  await page.click('[data-action=station][data-arg=interior]');
+  await goTo(page, 'crew');
   await page.fill('#shipName', evil);
   await page.click('[data-action=renameShip]');
-  await page.click('[data-action=station][data-arg=ops]');
+  await goTo(page, 'port');
   await page.click('[data-action=tab][data-arg=company]');
   await page.fill('#capName', evil);
   await page.click('[data-action=renameCaptain]');
@@ -203,7 +203,7 @@ test('names the player types never become markup', async () => {
 });
 
 test('the Mods screen says a mod runs code in the page and to trust its author, beside the field that takes a link', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ shell: true });
   const r = await ev(() => {
     G.state.tutorial = null; while (G.dialog) finishEvent();
     UI.tab = 'port'; UI.render();

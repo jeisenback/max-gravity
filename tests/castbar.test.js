@@ -5,7 +5,7 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { open, closeBrowser } = require('./helpers');
+const { open, closeBrowser, goTo } = require('./helpers');
 
 after(closeBrowser);
 
@@ -15,7 +15,7 @@ const helpers = () => {
 };
 
 test('they turn up at the bar when a scene is due, and not before, and not once they have had them', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ shell: true });
   await ev(helpers);
   const r = await ev(() => {
     start(); const st = G.state, out = {};
@@ -42,7 +42,7 @@ test('they turn up at the bar when a scene is due, and not before, and not once 
 });
 
 test('only the pair aboard turn up, in every background', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ shell: true });
   await ev(helpers);
   const r = await ev(() => {
     const out = {};
@@ -60,7 +60,7 @@ test('only the pair aboard turn up, in every background', async () => {
 });
 
 test('all twelve scenes are complete, every choice runs, and the effects are the kind they say', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ shell: true });
   await ev(helpers);
   const r = await ev(() => {
     const out = [];
@@ -85,10 +85,10 @@ test('all twelve scenes are complete, every choice runs, and the effects are the
 });
 
 test('the bar shows them as aboard with you, the talk opens their scene, and a round for the house leaves them out', async () => {
-  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open({ shell: true, viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
   await ev(() => { start(); G.state.day += 6; G.state.credits = 1000; fillBar(currentPlanet()); UI.render(); });
-  await page.click('[data-action=station][data-arg=ops]');
+  await goTo(page, 'port');
   await page.click('[data-action=tab][data-arg=bar]');
   assert.match(await page.innerText('#panel'), /Aboard with you, and at the bar tonight/);
   const round = await ev(() => 25 * (4 + G.patrons.filter(x => !x.cast).length));
@@ -101,7 +101,7 @@ test('the bar shows them as aboard with you, the talk opens their scene, and a r
 });
 
 test('their money is your own savings, not the ship\'s', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ shell: true });
   await ev(helpers);
   const r = await ev(() => {
     start(); const st = G.state; st.credits = 500; st.hired.fund = 4000; st.day += 6;

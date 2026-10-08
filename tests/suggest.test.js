@@ -4,7 +4,7 @@
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const { open, closeBrowser } = require('./helpers');
+const { open, closeBrowser, goTo } = require('./helpers');
 
 after(closeBrowser);
 
@@ -32,7 +32,7 @@ const cases = [
 
 for (const [key, cur, good, bad] of cases) {
   test(`${key} takes a suggestion that suits them and turns down one that does not`, async () => {
-    const { ev, done } = await open({ scope: 'earth-hired' });
+    const { ev, done } = await open({ shell: true, scope: 'earth-hired' });
     await ev(helpers);
     const r = await ev(([key, cur, good, bad]) => {
       setup(key); const out = {};
@@ -50,7 +50,7 @@ for (const [key, cur, good, bad] of cases) {
 }
 
 test('imre will not go to a worse lane, and a hand the captain does not know yet is not heard', async () => {
-  const { ev, done } = await open({ scope: 'earth-hired' });
+  const { ev, done } = await open({ shell: true, scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     setup('imre'); const out = {};
@@ -66,10 +66,10 @@ test('imre will not go to a worse lane, and a hand the captain does not know yet
 });
 
 test('the run panel lists the next runs for a captain with a style, and the button suggests one', async () => {
-  const { page, ev, done } = await open({ scope: 'earth-hired' });
+  const { page, ev, done } = await open({ shell: true, scope: 'earth-hired' });
   await ev(helpers);
   await ev(() => { setup('dov'); stage({ profit: 1000 }, { profit: 400, planet: 'Ganymede' }); UI.render(); });
-  await page.click('[data-action=station][data-arg=eng]').catch(() => {});
+  await goTo(page, 'shipyard').catch(() => {});
   assert.ok(await ev(() => /Suggest another run/.test(document.querySelector('#panel').innerText) || /Suggest another run/.test(runHtml())));
   await ev(() => Mods.act('suggestRun', '0'));
   assert.equal(await ev(() => hired().plan.run.profit), 400);
