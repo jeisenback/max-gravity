@@ -1,0 +1,676 @@
+{
+  "files": {
+    "js/bartopics.js": {
+      "strings": 143,
+      "tics": {
+        "hedge": 3,
+        "nods": 3,
+        "andThen": 0,
+        "asIf": 1,
+        "forAWhile": 2,
+        "longMoment": 1,
+        "adverb": 0,
+        "aside": 2
+      },
+      "shape": {
+        "count": 193,
+        "mean": 8.74,
+        "sd": 4.75,
+        "shortShare": 0.23,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 25,
+        "reported": 0
+      }
+    },
+    "js/captains/ansel.js": {
+      "strings": 75,
+      "tics": {
+        "hedge": 4,
+        "nods": 0,
+        "andThen": 0,
+        "asIf": 1,
+        "forAWhile": 1,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 169,
+        "mean": 11.02,
+        "sd": 6.84,
+        "shortShare": 0.18,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 43,
+        "reported": 0
+      }
+    },
+    "js/captains/cato.js": {
+      "strings": 95,
+      "tics": {
+        "hedge": 2,
+        "nods": 1,
+        "andThen": 0,
+        "asIf": 0,
+        "forAWhile": 2,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 1
+      },
+      "shape": {
+        "count": 268,
+        "mean": 10.66,
+        "sd": 6.35,
+        "shortShare": 0.23,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 61,
+        "reported": 0
+      }
+    },
+    "js/captains/dov.js": {
+      "strings": 72,
+      "tics": {
+        "hedge": 1,
+        "nods": 1,
+        "andThen": 1,
+        "asIf": 0,
+        "forAWhile": 1,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 227,
+        "mean": 8.81,
+        "sd": 7.18,
+        "shortShare": 0.41,
+        "shortRuns": 5
+      },
+      "speech": {
+        "quoted": 60,
+        "reported": 2
+      }
+    },
+    "js/captains/hester.js": {
+      "strings": 75,
+      "tics": {
+        "hedge": 0,
+        "nods": 4,
+        "andThen": 2,
+        "asIf": 1,
+        "forAWhile": 2,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 212,
+        "mean": 9.79,
+        "sd": 5.77,
+        "shortShare": 0.25,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 62,
+        "reported": 0
+      }
+    },
+    "js/captains/ilsa.js": {
+      "strings": 74,
+      "tics": {
+        "hedge": 0,
+        "nods": 0,
+        "andThen": 2,
+        "asIf": 0,
+        "forAWhile": 0,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 173,
+        "mean": 9.84,
+        "sd": 6.17,
+        "shortShare": 0.24,
+        "shortRuns": 1
+      },
+      "speech": {
+        "quoted": 38,
+        "reported": 0
+      }
+    },
+    "js/captains/imre.js": {
+      "strings": 73,
+      "tics": {
+        "hedge": 0,
+        "nods": 0,
+        "andThen": 3,
+        "asIf": 1,
+        "forAWhile": 0,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 1
+      },
+      "shape": {
+        "count": 211,
+        "mean": 9.52,
+        "sd": 5.86,
+        "shortShare": 0.31,
+        "shortRuns": 1
+      },
+      "speech": {
+        "quoted": 64,
+        "reported": 2
+      }
+    },
+    "js/captains/pilar.js": {
+      "strings": 73,
+      "tics": {
+        "hedge": 0,
+        "nods": 1,
+        "andThen": 0,
+        "asIf": 0,
+        "forAWhile": 0,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 159,
+        "mean": 10.55,
+        "sd": 6.17,
+        "shortShare": 0.2,
+        "shortRuns": 1
+      },
+      "speech": {
+        "quoted": 38,
+        "reported": 1
+      }
+    },
+    "js/captains/zoya.js": {
+      "strings": 74,
+      "tics": {
+        "hedge": 2,
+        "nods": 1,
+        "andThen": 0,
+        "asIf": 0,
+        "forAWhile": 0,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 243,
+        "mean": 9.09,
+        "sd": 6.49,
+        "shortShare": 0.39,
+        "shortRuns": 3
+      },
+      "speech": {
+        "quoted": 79,
+        "reported": 2
+      }
+    },
+    "js/cast.js": {
+      "strings": 323,
+      "tics": {
+        "hedge": 14,
+        "nods": 11,
+        "andThen": 5,
+        "asIf": 1,
+        "forAWhile": 5,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 863,
+        "mean": 10.26,
+        "sd": 7.19,
+        "shortShare": 0.3,
+        "shortRuns": 3
+      },
+      "speech": {
+        "quoted": 248,
+        "reported": 3
+      }
+    },
+    "js/castbar.js": {
+      "strings": 83,
+      "tics": {
+        "hedge": 2,
+        "nods": 2,
+        "andThen": 0,
+        "asIf": 0,
+        "forAWhile": 1,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 272,
+        "mean": 9.67,
+        "sd": 6.51,
+        "shortShare": 0.31,
+        "shortRuns": 2
+      },
+      "speech": {
+        "quoted": 69,
+        "reported": 1
+      }
+    },
+    "js/family.js": {
+      "strings": 191,
+      "tics": {
+        "hedge": 13,
+        "nods": 6,
+        "andThen": 1,
+        "asIf": 0,
+        "forAWhile": 4,
+        "longMoment": 0,
+        "adverb": 1,
+        "aside": 0
+      },
+      "shape": {
+        "count": 452,
+        "mean": 10.18,
+        "sd": 6.77,
+        "shortShare": 0.27,
+        "shortRuns": 2
+      },
+      "speech": {
+        "quoted": 81,
+        "reported": 4
+      }
+    },
+    "js/familytext.js": {
+      "strings": 71,
+      "tics": {
+        "hedge": 4,
+        "nods": 0,
+        "andThen": 0,
+        "asIf": 1,
+        "forAWhile": 1,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 100,
+        "mean": 14.45,
+        "sd": 7.94,
+        "shortShare": 0.05,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 5,
+        "reported": 3
+      }
+    },
+    "js/hiredeventstext.js": {
+      "strings": 130,
+      "tics": {
+        "hedge": 4,
+        "nods": 0,
+        "andThen": 0,
+        "asIf": 0,
+        "forAWhile": 0,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 228,
+        "mean": 11.69,
+        "sd": 6.26,
+        "shortShare": 0.14,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 1,
+        "reported": 0
+      }
+    },
+    "js/people.js": {
+      "strings": 211,
+      "tics": {
+        "hedge": 10,
+        "nods": 3,
+        "andThen": 1,
+        "asIf": 0,
+        "forAWhile": 1,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 471,
+        "mean": 10.56,
+        "sd": 6.91,
+        "shortShare": 0.28,
+        "shortRuns": 2
+      },
+      "speech": {
+        "quoted": 36,
+        "reported": 0
+      }
+    },
+    "js/peopletext.js": {
+      "strings": 60,
+      "tics": {
+        "hedge": 11,
+        "nods": 0,
+        "andThen": 0,
+        "asIf": 0,
+        "forAWhile": 0,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 66,
+        "mean": 12.2,
+        "sd": 4.54,
+        "shortShare": 0.08,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 7,
+        "reported": 0
+      }
+    },
+    "js/social.js": {
+      "strings": 191,
+      "tics": {
+        "hedge": 8,
+        "nods": 7,
+        "andThen": 2,
+        "asIf": 0,
+        "forAWhile": 2,
+        "longMoment": 0,
+        "adverb": 2,
+        "aside": 0
+      },
+      "shape": {
+        "count": 382,
+        "mean": 9.8,
+        "sd": 6.51,
+        "shortShare": 0.28,
+        "shortRuns": 3
+      },
+      "speech": {
+        "quoted": 50,
+        "reported": 0
+      }
+    },
+    "js/stories/aftermath.js": {
+      "strings": 139,
+      "tics": {
+        "hedge": 6,
+        "nods": 1,
+        "andThen": 1,
+        "asIf": 0,
+        "forAWhile": 1,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 304,
+        "mean": 11.31,
+        "sd": 8.01,
+        "shortShare": 0.28,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 38,
+        "reported": 1
+      }
+    },
+    "js/stories/cold-water.js": {
+      "strings": 130,
+      "tics": {
+        "hedge": 11,
+        "nods": 1,
+        "andThen": 1,
+        "asIf": 10,
+        "forAWhile": 1,
+        "longMoment": 2,
+        "adverb": 1,
+        "aside": 1
+      },
+      "shape": {
+        "count": 466,
+        "mean": 11.76,
+        "sd": 8.38,
+        "shortShare": 0.25,
+        "shortRuns": 1
+      },
+      "speech": {
+        "quoted": 99,
+        "reported": 1
+      }
+    },
+    "js/stories/hired-aftermath.js": {
+      "strings": 101,
+      "tics": {
+        "hedge": 3,
+        "nods": 1,
+        "andThen": 0,
+        "asIf": 0,
+        "forAWhile": 1,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 1
+      },
+      "shape": {
+        "count": 206,
+        "mean": 11.78,
+        "sd": 7.45,
+        "shortShare": 0.22,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 34,
+        "reported": 0
+      }
+    },
+    "js/stories/ice-strike.js": {
+      "strings": 50,
+      "tics": {
+        "hedge": 4,
+        "nods": 1,
+        "andThen": 1,
+        "asIf": 0,
+        "forAWhile": 0,
+        "longMoment": 1,
+        "adverb": 1,
+        "aside": 0
+      },
+      "shape": {
+        "count": 127,
+        "mean": 13,
+        "sd": 9.2,
+        "shortShare": 0.2,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 20,
+        "reported": 0
+      }
+    },
+    "js/stories/landings.js": {
+      "strings": 119,
+      "tics": {
+        "hedge": 11,
+        "nods": 3,
+        "andThen": 0,
+        "asIf": 0,
+        "forAWhile": 0,
+        "longMoment": 1,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 370,
+        "mean": 13.55,
+        "sd": 9.05,
+        "shortShare": 0.21,
+        "shortRuns": 1
+      },
+      "speech": {
+        "quoted": 49,
+        "reported": 1
+      }
+    },
+    "js/stories/mars-navy.js": {
+      "strings": 51,
+      "tics": {
+        "hedge": 7,
+        "nods": 2,
+        "andThen": 1,
+        "asIf": 2,
+        "forAWhile": 0,
+        "longMoment": 1,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 161,
+        "mean": 11.58,
+        "sd": 8.14,
+        "shortShare": 0.24,
+        "shortRuns": 1
+      },
+      "speech": {
+        "quoted": 37,
+        "reported": 0
+      }
+    },
+    "js/stories/on-the-road.js": {
+      "strings": 83,
+      "tics": {
+        "hedge": 3,
+        "nods": 0,
+        "andThen": 0,
+        "asIf": 0,
+        "forAWhile": 0,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 203,
+        "mean": 10.46,
+        "sd": 6.82,
+        "shortShare": 0.27,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 26,
+        "reported": 0
+      }
+    },
+    "js/stories/ports.js": {
+      "strings": 105,
+      "tics": {
+        "hedge": 4,
+        "nods": 1,
+        "andThen": 0,
+        "asIf": 3,
+        "forAWhile": 0,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 207,
+        "mean": 14.04,
+        "sd": 9.24,
+        "shortShare": 0.19,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 16,
+        "reported": 4
+      }
+    },
+    "js/stories/rook-crown.js": {
+      "strings": 45,
+      "tics": {
+        "hedge": 7,
+        "nods": 2,
+        "andThen": 0,
+        "asIf": 3,
+        "forAWhile": 0,
+        "longMoment": 1,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 144,
+        "mean": 12.16,
+        "sd": 8.34,
+        "shortShare": 0.24,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 27,
+        "reported": 0
+      }
+    },
+    "js/stories/tethys.js": {
+      "strings": 40,
+      "tics": {
+        "hedge": 11,
+        "nods": 0,
+        "andThen": 0,
+        "asIf": 2,
+        "forAWhile": 0,
+        "longMoment": 1,
+        "adverb": 0,
+        "aside": 1
+      },
+      "shape": {
+        "count": 137,
+        "mean": 11.94,
+        "sd": 7.88,
+        "shortShare": 0.2,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 29,
+        "reported": 0
+      }
+    }
+  },
+  "total": {
+    "strings": 2877,
+    "tics": {
+      "hedge": 145,
+      "nods": 52,
+      "andThen": 21,
+      "asIf": 26,
+      "forAWhile": 25,
+      "longMoment": 8,
+      "adverb": 5,
+      "aside": 7
+    },
+    "shape": {
+      "count": 7014,
+      "mean": 10.85,
+      "sd": 7.34,
+      "shortShare": 0.26,
+      "shortRuns": 26
+    },
+    "speech": {
+      "quoted": 1342,
+      "reported": 25
+    }
+  }
+}

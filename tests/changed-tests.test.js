@@ -39,6 +39,15 @@ test('the script runs its own test', () => {
   assert.deepEqual(select(['tools/changed-tests.js'], { tests: { ...tests, 'tests/changed-tests.test.js': '' }, sources }).files, ['tests/changed-tests.test.js']);
 });
 
+test('the prose report runs its own test', () => {
+  assert.deepEqual(select(['tools/prose-lint.js'], { tests: { ...tests, 'tests/prose-lint.test.js': '' }, sources }).files, ['tests/prose-lint.test.js']);
+});
+
+test('a generated json under docs needs no tests', () => {
+  const r = pick(['docs/prose-baseline.json']);
+  assert.deepEqual(r.files, []); assert.equal(r.full, false);
+});
+
 test('markdown alone needs no tests', () => {
   const r = pick(['README.md', 'docs/superpowers/plans/x.md']);
   assert.deepEqual(r.files, []); assert.equal(r.full, false);

@@ -125,6 +125,7 @@ On a keyboard:
 - `js/build.js` - the version number, the release switch for tester tools, and the scope switch (see Running)
 - `tools/coverage.js` - runs the suite with the browser's V8 coverage on and reports line coverage per file, the lines with a branch that did not run, and the functions never called (`npm run coverage`; `--files`, `--top`, `--all`, `--keep`, `--from DIR`)
 - `tools/soak.js` - sails the captain's runs for N legs and reports runs, days and pay: the tuning tool for the chapter's economy (`node tools/soak.js --seeds 1,2,3 --legs 40`)
+- `tools/prose-lint.js` - counts the tic phrases, sentence shape and reported speech in the narrative files, so the style rules can be read as numbers (`npm run prose`; `-- --write` writes `docs/prose-baseline.json`, `-- --compare` shows the change in the totals from it). It reports only and is not part of `npm test`.
 - `js/captains.js` and `js/captains/` - the authored captains of the hired chapter (one file each: who they are, how they run a ship, what they pay) and their first officers, which are `CAST` entries marked fragile; a hired game is run by one of them
 - `js/uat.js` - tester tools: a checklist of set-ups for every feature, general tools, and a pass/fail report
 - `js/community.js` - mods by link, shareable scenarios, and shared news between players

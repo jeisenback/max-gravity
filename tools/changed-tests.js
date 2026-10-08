@@ -5,7 +5,7 @@
 //   node tools/changed-tests.js --list     print the choice and why, without running it
 //   node tools/changed-tests.js --files js/audio.js,style.css   choose for these files instead of the git change
 // A changed test file runs itself. A changed script runs the tests that use a name it declares at the top level (and the
-// globals check). The shell, the stylesheet and the page run the layout, shell and ui tests. Markdown needs none. A file it
+// globals check). The shell, the stylesheet and the page run the layout, shell and ui tests. Markdown and the JSON under docs/ need none. A file it
 // cannot map, or a script whose names no test uses, runs the whole suite.
 
 const { execFileSync, spawnSync } = require('node:child_process');
@@ -26,8 +26,9 @@ function select(changed, { tests, sources }) {
   const everything = reason => ({ files: Object.keys(tests).sort(), full: true, why: [reason] });
 
   for (const f of changed) {
-    if (f.endsWith('.md')) continue;
+    if (f.endsWith('.md') || /^docs\/[\w./-]+\.json$/.test(f)) continue;
     if (f === 'tools/changed-tests.js') { add(['tests/changed-tests.test.js'], `${f}: its own test`); continue; }
+    if (f === 'tools/prose-lint.js') { add(['tests/prose-lint.test.js'], `${f}: its own test`); continue; }
     if (/^tests\/(?:distribution\/)?[\w-]+\.test\.js$/.test(f)) { add([f], `${f}: a test file runs itself`); continue; }
     if (f === 'style.css' || f === 'index.html' || f === 'js/shell.js') {
       add(LAYOUT, `${f}: the layout, shell and ui tests`);

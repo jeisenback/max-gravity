@@ -9,7 +9,7 @@ Second person, present tense, American spelling. Two models:
 - **James S. A. Corey** for the crew and what they say and do. Working people on a working ship, talking over each other, with the ship always in the way: the air handler, the recycler, the water ration, a door on a closer.
 - **Ursula K. Le Guin** for the narrator. Patient, plain, interested in custom: what is done and not done aboard, and why. It explains the custom and leaves the feeling to the reader.
 
-In the game, the Hester Vance and Tomas Achebe passages (`js/captains/hester.js`, `js/cast.js`) already do this best.
+The reference passages are in `docs/voices/reference.md`, the dialogue rules in `docs/voices/dialogue.md`, and the narrator registers and character cards beside them in `docs/voices/`. The existing text in the game is too clipped to be the model.
 
 ## Rules
 
@@ -18,7 +18,7 @@ In the game, the Hester Vance and Tomas Achebe passages (`js/captains/hester.js`
 3. **State the custom, not the feeling.** "On a ship you cannot slam a door, so the quiet is made some other way." Say what is done and why; do not say what anyone feels about it.
 4. **Show the object or the act, and cut the narrator's reading of it.** "She initials the page and says nothing, and the nothing has a figure in it." Not: "which is how you learn that he is moved."
 5. **Put a number, a day or a credit on the cost.** "Two days of fuel." "Sixty. It is in the column already."
-6. **Keep the sentences short, and let a long one earn its place.** No chains of "and, X, and, Y" with commas around the conjunction.
+6. **Vary the sentences.** Mix lengths and constructions: coordinate and subordinate, open on something other than the subject, put a hard fact in a short sentence. No run of four short declaratives in a row. A long sentence earns its place by carrying a custom or a sequence of actions, never by chaining "and, X, and, Y" with commas around the conjunction.
 7. **Be rough.** Real scenes are untidy. Do not give every beat a small perfect gesture or end every outcome on a neat, symmetrical image. One good odd detail beats three tidy ones.
 8. **Report; do not color.** Narrate only what someone in the room could see or hear. No wry asides ("which is worse", "before anyone could say anything sensible", "Nobody wants to be asked"), no similes that carry a feeling ("like something coming loose"), no evaluative adverbs, and no sentences about what someone knows or is sure of. This is free indirect discourse, where the narrator takes on a character's judgment, and it is the main way the text reads as written by a model. If a line is the narrator's opinion, cut it or turn it into something said or done.
 9. **Do not tell the player how to feel.** No "Good." and no "It is, you realize, the most honest thing anyone has said to you all week."
@@ -48,7 +48,15 @@ Before:
 > Mara and Ines are shouting at each other in the galley about the thermostat. It started with a raised eyebrow and a pointed remark, and ten minutes later both of them are standing, and one of them is waving a spoon. It is not really about the thermostat. It never is. The rest of the crew has gone very quiet, and is looking at their food.
 
 After:
-> Mara and Ines are on their feet in the galley. The galley is eleven feet across, and everyone who is not on watch is in it. They are arguing about the thermostat. "If you'd said something," Ines says. "I said something," Mara says. "Tuesday. Ask anyone." Nobody at the table answers.
+> "If you had said something," Ines says, "I would have moved it. I am not going to stand here and be told I did it on purpose, when I did not know it was a problem until Pax mentioned it at the watch change."
+>
+> "I said something." Mara puts the spoon down on the counter, bowl up. "Tuesday, at the watch change, in front of Pax, and you said you would look at it when you had a minute, and it has been six days, and the minute has not come."
+>
+> "Then I forgot."
+>
+> "You forgot." Mara looks around the table. "Did anyone hear me say it?"
+>
+> Nobody answers.
 
 And for "Side with Mara": the old door slams "with a noise like a small explosion" and one of them looks "a little bit ashamed". Now Ines looks at the captain, then at Mara, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. Mara says "Thanks, Captain" to the table. Nobody answers. Nothing in it is the narrator's opinion.
 
@@ -59,7 +67,8 @@ And for "Side with Mara": the old door slams "with a noise like a small explosio
 - Is a feeling named by the narrator, or an aside added? Replace it with what is said or done.
 - Does the cost have a number?
 - Does it end on a tidy image? Try ending one line earlier, or on something untidy.
-- Read it after a Hester passage. Does it sound like the same book?
+- Does the speech follow `docs/voices/dialogue.md`, and does each speaker sound like their card?
+- Read it after the reference passages in `docs/voices/reference.md`. Does it sound like the same book?
 
 ## Where to start
 
