@@ -69,9 +69,9 @@ const SYSTEMS = {
             'for someone to blame.') },
       { name: 'Luna', x: 380, y: -260, r: 40, color: '#b8b8b8', services: ['missions', 'shipyard', 'outfitter', 'refuel'],
         prices: {},
-        desc: ('Compact shipyards and navy drydocks under a black sky, spread across the gray plain in long, hard-lit rows. The dust here gets into ' +
+        desc: ('Compact shipyards and licensed drydocks under a black sky, spread across the gray plain in long, hard-lit rows. The dust here gets into ' +
             'everything and never quite leaves, and every dockhand has a story about the one time they saw it float. Officers in pressed uniforms move ' +
-            'through crowds of civilian riggers who resent them. Everyone on Luna has an opinion about Mars, and most of them would like to share it.') },
+            'through crowds of civilian riggers who resent them. Every yard here works under a Compact license, and every rigger can tell you what theirs cost.') },
     ],
   },
   mars: {
@@ -81,11 +81,11 @@ const SYSTEMS = {
         prices: { equipment: 'H', food: 'H', water: 'H', medical: 'M', industrial: 'M', metal: 'L', luxury: 'M' },
         desc: ('Domed cities in the Mariner Valley, under a butterscotch sky, and a people who have spent generations fighting to make a dead world ' +
             'breathe. The air outside is still deadly, but the air inside the domes smells of green things and hot metal, and every tenth building has ' +
-            'a mural of the day the first lake filled. Martians are precise, proud, and slightly too willing to explain why their way is the right ' +
-            'one. They also make excellent coffee.') },
+            'a mural of the day the first lake filled. Each dome keeps its own council and its own air accounts, and the budget meetings are held in the open, ' +
+            'with a good deal of shouting. They also make excellent coffee.') },
       { name: 'Phobos Yards', x: -300, y: 220, r: 30, color: '#8d6e63', services: ['shipyard', 'outfitter', 'refuel'],
         prices: {},
-        desc: ('Military-grade shipwrights on a potato-shaped moon, so small that a good jump would put you into orbit. The yards are all clean lines ' +
+        desc: ('Fleet shipwrights on a potato-shaped moon, so small that a good jump would put you into orbit, kept in work by the domes\' air levy. The yards are all clean lines ' +
             'and quiet efficiency: the same twenty engineers have been rebuilding the same class of hull since before you were born, and they will ' +
             'tell you, without emotion, exactly what is wrong with yours. Martian engineering is precise, and the price shows it. Nobody haggles here. ' +
             'It would be insulting to both sides.') },
@@ -97,7 +97,7 @@ const SYSTEMS = {
       { name: 'Ceres Station', x: -60, y: -40, r: 60, color: '#90a4ae', services: ['trade', 'missions', 'shipyard', 'outfitter', 'refuel'],
         prices: { water: 'H', food: 'H', medical: 'H', metal: 'L', luxury: 'M', equipment: 'M', industrial: 'M' },
         desc: ('Six million people burrowed into a dwarf planet, quick to argue and exact about what they are owed, and water rationing on every wall. The ' +
-            'corridors curve upward in both directions, lined with hydroponic troughs and hand-lettered notices about the day\'s allotment. Children ' +
+            'corridors curve upward in both directions, lined with hydroponic troughs, guild halls and hand-lettered notices about the day\'s allotment and the next berth vote. Children ' +
             'play in the low gravity with the easy grace of people who have never known any other. Everyone knows the price of a liter of water to the ' +
             'credit, and everyone will tell you when it changes.') },
       { name: 'Ring Nine', x: 260, y: 190, r: 22, color: '#8a8f86', services: ['trade', 'refuel'],

@@ -84,7 +84,7 @@ test('Cold Water act 1: derelict, Voight, the agent, Mira, Europa', async () => 
     o.storyMission = G.state.missions.some(m => m.story);
     G.state.crew.push('rosa'); S.burn('jupiter'); startHappening(); o.miraScene = G.dialog.event.title; S.choose('[Rosa]');
     o.europa = S.arrive('Europa'); S.choose(G.dialog.choices[0].label); o.s5 = story().stage;
-    // The other road: sell the core to Voight.
+    // The other road: sell the book to Voight.
     S.reset(1); o.sold = S.land('earth', 'Earth'); S.choose('Sell it'); o.soldStage = story().stage;
     return o;
   });
@@ -99,7 +99,7 @@ test('Cold Water act 1: derelict, Voight, the agent, Mira, Europa', async () => 
   assert.equal(r.mira, 'Mira Castellane');
   assert.ok(r.storyMission);
   assert.equal(r.miraScene, "Mira's Story");
-  assert.equal(r.europa, 'What the Core Says');
+  assert.equal(r.europa, 'What the Book Says');
   assert.equal(r.s5, 5);
   assert.equal(r.soldStage, 'sold');
   await done();
@@ -357,8 +357,8 @@ test('the recovery ship on the console: a scene with a way out, and a fight sett
     S.reset(2); hireGunner();
     S.land('earth', 'Earth'); takeOff(); G.npcs = []; Mods.emit('frame', 0.1);
     out.scene = { title: G.dialog && G.dialog.event.title, mode: G.mode, agents: G.npcs.filter(n => n.kind === 'agent').length, labels: G.dialog.choices.map(c => c.label), via: G.dialog.event.via };
-    // Hand over the core: the story moves on, and there is no fight.
-    S.choose('Hand over the core'); Mods.emit('frame', 0.1);
+    // Hand over the book: the story moves on, and there is no fight.
+    S.choose('Hand over the book'); Mods.emit('frame', 0.1);
     out.sold = { stage: story().stage, fight: !!G.storyFight, mode: G.mode };
     // The other way: fight it out, on the console, and be back in flight after.
     S.reset(2); hireGunner(); st.credits = 50000; st.armor = ship().armor;
@@ -372,7 +372,7 @@ test('the recovery ship on the console: a scene with a way out, and a fight sett
   assert.equal(r.solo.agents, 0, 'no ship in local space, gunner or not'); assert.equal(r.solo.title, 'Aquilon Recovery Ship');
   assert.match(r.solo.fight, /you take the guns/);
   assert.equal(r.scene.title, 'Aquilon Recovery Ship'); assert.equal(r.scene.mode, 'hail'); assert.equal(r.scene.agents, 0); assert.equal(r.scene.via, 'ship');
-  assert.ok(r.scene.labels.some(l => /Hand over the core/.test(l)) && r.scene.labels.some(l => /outrun/.test(l)));
+  assert.ok(r.scene.labels.some(l => /Hand over the book/.test(l)) && r.scene.labels.some(l => /outrun/.test(l)));
   assert.deepEqual(r.sold, { stage: 'sold', fight: false, mode: 'flight' });
   assert.match(r.fighting.name, /Quiet Ledger/); assert.ok(r.fighting.story);
   assert.deepEqual(r.after, { duel: null, fight: null, mode: 'flight', dialog: false, armor: true }, 'the fight ends and the ship flies on');

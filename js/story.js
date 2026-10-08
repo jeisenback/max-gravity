@@ -1,16 +1,16 @@
 'use strict';
 
 // The main plot, "Cold Water": someone is sabotaging Ceres cisterns to drive up the
-// price of water. Act 1 runs from finding a derelict's data core to decrypting it on
+// price of water. Act 1 runs from finding a sealed tally book on a surveyed hulk to opening it on
 // Europa; Act 2 is deciding who gets the proof; Act 3 is running water through the
 // blockade (local space, or scenes and console duels with a crewed gunner). The scenes are storylets in js/stories/cold-water.js. This file keeps the
 // machinery they lean on: story state, the objective text, the recovery ship, the
 // blockade fleets, the endings and epilogue, and the named actions scenes run with
 // `do`. Loaded before game.js; only calls into it at runtime.
 //
-// Act 1 stages: 0 not started, 1 carrying the core, 2 refused Aquilon (recovery ship
+// Act 1 stages: 0 not started, 1 carrying the book, 2 refused Aquilon (recovery ship
 // coming), 3 Mira is looking for you, 4 carrying Mira to Europa, 5 Act 1 complete,
-// 'sold' gave the core to Aquilon.
+// 'sold' gave the book to Aquilon.
 // Act 2 stages, one chain per side: 'belt1', 'belt2' (Charter League); 'mars1',
 // 'mars2' (Dome Concord); 'earth1', 'earth2' (Arcology Compact); 'aq1' (Aquilon).
 // 'act2' is Act 2 complete, with `side` recording who got the proof.
@@ -30,10 +30,10 @@ function storyLog(text) {
 function storyObjective() {
   const s = story();
   return {
-    1: 'You have the Persephone\'s data core. Someone will come asking about it.',
-    2: 'You refused to hand over the core. Aquilon Hydrologics will not take no for an answer. Watch your back on the next takeoff.',
+    1: 'You have the Persephone\'s tally book. Someone will come asking about it.',
+    2: 'You refused to hand over the book. Aquilon Hydrologics will not take no for an answer. Watch your back on the next takeoff.',
     3: 'A Ceres water engineer named Mira Castellane is looking for you. She will find you at your next port.',
-    4: 'Take Mira Castellane to Europa, at Jupiter, so she can decrypt the core.',
+    4: 'Take Mira Castellane to Europa, at Jupiter, so a Water Authority clerk can open the book.',
     5: 'Decide who gets the proof. Take it to Councillor Tembo of the Charter League on Ceres Station, Commander Ueda, fleet auditor of the Dome Concord Fleet, on Mars (needs Trusted standing), Director Achebe of Compact intelligence on Luna, or Anselm Voight at Hermes Foundry on Mercury.',
     sold: 'Anselm Voight wants to see you at Hermes Foundry, on Mercury. Aquilon has work for people it can trust.',
     belt1: 'Bring 20t of Water to Ceres Station, so the League council can show people the ration is breaking.',
@@ -92,7 +92,7 @@ function storyOnTakeoff() {
 function agentWarning(n) {
   if (n.hailed) return;
   n.hailed = true;
-  const line = story().stage !== 2 ? 'Mr. Voight sends his regards.' : story().copied ? 'You kept a copy, captain. Mr. Voight is disappointed.' : 'Mr. Voight sends his regards. Hand over the core.';
+  const line = story().stage !== 2 ? 'Mr. Voight sends his regards.' : story().copied ? 'You kept a copy, captain. Mr. Voight is disappointed.' : 'Mr. Voight sends his regards. Hand over the book.';
   msg(`${n.name}: "${line}" (H to answer)`);
 }
 
@@ -109,11 +109,11 @@ function agentHail(n) {
     title: n.name,
     text: `Capt. ${n.persona.first} ${n.persona.last}: "${s.copied ? 'We know about the copy. Transmit it to us and wipe your systems, and you walk away.' : 'You have something that belongs to Aquilon. Hand it over and nobody gets hurt.'}"`,
     choices: [
-      { label: s.copied ? 'Hand over the copy' : 'Hand over the core', run() {
+      { label: s.copied ? 'Hand over the copy' : 'Hand over the book', run() {
         s.stage = 'sold';
         n.hostile = false;
         leave(n);
-        storyLog('Surrendered the Persephone\'s core to an Aquilon recovery ship.');
+        storyLog('Surrendered the Persephone\'s book to an Aquilon recovery ship.');
         return '"Smart choice." They take it and break off. Somewhere on Ceres, another pump fails.';
       } },
       { label: 'Cut the channel', run: () => 'You cut the channel. They keep coming.' },
@@ -195,9 +195,9 @@ function agentConsoleEvent(ambush) {
     : { kind: 'pirate', story: true, shipId: 'corsair', armorMult: 1.3, name: 'Aquilon recovery ship "Quiet Ledger"' };
   const fight = flee => () => storyFight(spec, { flee, onEnd: r => msg(r === 'won' ? `${spec.name} breaks up. Aquilon will not be happy.` : `${spec.name} breaks off, for now.`) });
   const choices = [];
-  if (!ambush) choices.push({ label: s.copied ? 'Hand over the copy' : 'Hand over the core', run() {
+  if (!ambush) choices.push({ label: s.copied ? 'Hand over the copy' : 'Hand over the book', run() {
     s.stage = 'sold';
-    storyLog('Surrendered the Persephone\'s core to an Aquilon recovery ship.');
+    storyLog('Surrendered the Persephone\'s book to an Aquilon recovery ship.');
     return '"Smart choice." They take it and break off. Somewhere on Ceres, another pump fails.';
   } });
   choices.push({ label: `Battle stations (${gunnerLabel()})`, run: fight(false) }, { label: 'Burn hard to outrun them', run: fight(true) });
