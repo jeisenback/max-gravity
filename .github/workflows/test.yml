@@ -15,3 +15,16 @@ jobs:
       - run: npm ci
       - run: npx playwright install --with-deps chromium
       - run: npm test
+  # The coverage floor (tools/coverage-floor.json) is its own job, beside the tests: it runs the suite again under the browser's coverage,
+  # so the tests job stays as long as it was. Its own result is the floor, not the tests (the bundle test cannot pass in a coverage run).
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run coverage -- --check
