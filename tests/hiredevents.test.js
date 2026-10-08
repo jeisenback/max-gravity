@@ -108,36 +108,66 @@ test('the captain, crew, money and road: every group has events, and the pool dr
   await done();
 });
 
-test('every choice of every hired event lands its effects and no others, and plays clean', async () => {
+test('every choice of every hired event lands its effects and no others, and plays clean, on a good roll and a bad one, through the follow-up scenes', async () => {
   const { ev, done } = await open();
   await ev(hiredHelpers);
   const r = await ev(() => {
-    const bad = [], rows = [];
-    for (const post of HIRED_POSTS) {
-      for (const d of HAND_EVENTS.filter(x => !x.post || x.post === post)) {
-        const n = (() => { startHired(post); G.state.tutorial = null; uatBurn('Ceres Station', 'pallas'); return handContext(); })();
-        const count = d.make(n).choices.length;
-        for (let i = 0; i < count; i++) {
-          startHired(post); const st = G.state, h = st.hired; st.tutorial = null; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; st.credits = 500;
-          const c = handContext();
-          if (d.when && !d.when(c)) continue;
-          const e = d.make(c), choice = e.choices[i];
-          if (choice.can && !choice.can()) continue;
-          const before = { fund: h.fund, wage: h.wage, share: h.share, run: JSON.stringify(h.run), xp: skillXp(post), cash: st.credits, cap: c.cap.opinion, mate: c.mate ? c.mate.opinion : 0, castNote: 0 };
-          G.dialog = { event: e, choices: e.choices };
-          const text = String(chooseEvent(i));
-          if (/undefined|NaN|\[object|\{[a-z]+\}/.test(e.title + e.text + choice.label + text)) bad.push(`${d.id}#${i}: ${text.slice(0, 80)}`);
-          if (h.fund !== before.fund || h.wage !== before.wage || h.share !== before.share || JSON.stringify(h.run) !== before.run) bad.push(`${d.id}#${i}: touched the run`);
-          if (st.credits - before.cash < -100 || st.credits - before.cash > 200) bad.push(`${d.id}#${i}: savings moved by ${st.credits - before.cash}`);
-          if (skillXp(post) - before.xp > 4) bad.push(`${d.id}#${i}: experience ${skillXp(post) - before.xp}`);
-          rows.push(d.group);
+    const bad = [], rows = [], realRandom = Math.random;
+    let played = 0, followed = 0;
+    // The events about a main character need them aboard.
+    const aboard = d => { const m = /^crew-(\w+)/.exec(d.id); if (m && CAST[m[1]]) castJoin(m[1], ''); };
+    const clean = (at, e, ch, text) => {
+      if (typeof text !== 'string' || text.length < 20 || /undefined|NaN|\[object|\{[a-z]+\}/.test(e.title + e.text + ch.label + text)) bad.push(`${at}: ${String(text).slice(0, 80)}`);
+    };
+    // A choice can lead straight into another scene (G.nextEvent); play its choices too, each once.
+    const follow = (e, at, depth) => {
+      e.choices.forEach((ch, j) => {
+        if (ch.can && !ch.can()) return;
+        G.state.credits = 500; G.dialog = { event: e, choices: e.choices }; G.nextEvent = null;
+        let text;
+        try { text = chooseEvent(j); } catch (err) { bad.push(`${at}.${j}: threw ${err}`); return; }
+        followed++; clean(`${at}.${j}`, e, ch, text);
+        const next = G.nextEvent; G.nextEvent = null;
+        if (next && depth < 4) follow(next, `${at}.${j}`, depth + 1);
+      });
+    };
+    // A low roll, then a high one: every die stays in the bottom or the top tenth, but still varies, so a draw that retries for a new
+    // value (a second trait, a different team) ends.
+    for (const base of [0, 0.9]) {
+      let seed = 12345;
+      Math.random = () => base + 0.099 * ((seed = (seed * 16807) % 2147483647) / 2147483647);
+      for (const post of HIRED_POSTS) {
+        for (const d of HAND_EVENTS.filter(x => !x.post || x.post === post)) {
+          const n = (() => { startHired(post); G.state.tutorial = null; uatBurn('Ceres Station', 'pallas'); aboard(d); return handContext(); })();
+          const count = d.make(n).choices.length;
+          for (let i = 0; i < count; i++) {
+            startHired(post); const st = G.state, h = st.hired; st.tutorial = null; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; st.credits = 500; aboard(d);
+            const c = handContext();
+            if (d.when && !d.when(c)) continue;
+            const e = d.make(c), choice = e.choices[i];
+            if (choice.can && !choice.can()) continue;
+            const before = { fund: h.fund, wage: h.wage, share: h.share, run: JSON.stringify(h.run), xp: skillXp(post), cash: st.credits, cap: c.cap.opinion, mate: c.mate ? c.mate.opinion : 0, castNote: 0 };
+            G.dialog = { event: e, choices: e.choices }; G.nextEvent = null;
+            let text;
+            try { text = String(chooseEvent(i)); } catch (err) { bad.push(`${d.id}#${i}: threw ${err}`); continue; }
+            played++; clean(`${d.id}#${i}`, e, choice, text);
+            if (h.fund !== before.fund || h.wage !== before.wage || h.share !== before.share || JSON.stringify(h.run) !== before.run) bad.push(`${d.id}#${i}: touched the run`);
+            if (st.credits - before.cash < -100 || st.credits - before.cash > 200) bad.push(`${d.id}#${i}: savings moved by ${st.credits - before.cash}`);
+            if (skillXp(post) - before.xp > 4) bad.push(`${d.id}#${i}: experience ${skillXp(post) - before.xp}`);
+            rows.push(d.group);
+            const next = G.nextEvent; G.nextEvent = null;
+            if (next) follow(next, `${d.id}#${i}`, 1);
+          }
         }
       }
     }
-    return { bad, groups: [...new Set(rows)].sort() };
+    Math.random = realRandom;
+    return { bad, groups: [...new Set(rows)].sort(), played, followed };
   });
   assert.deepEqual(r.bad, []);
   assert.deepEqual(r.groups, ['captain', 'crew', 'money', 'road', 'work']);
+  assert.equal(r.played, 536, 'choices played over both rolls and every post (a new choice moves this)');
+  assert.equal(r.followed, 48, 'choices played in the scenes they lead into');
   await done();
 });
 
@@ -371,5 +401,24 @@ test('a post\'s work problems are each shown once before any is shown twice', as
   });
   assert.ok(r.pool >= 3, `a pool of ${r.pool}`); assert.equal(r.nulls, 0);
   assert.equal(r.first, r.pool, 'all of them once before any twice'); assert.equal(r.secondDistinct, r.second, 'and then all of them again');
+  await done();
+});
+
+test('the used Ore Runner is offered by Tomas or by a broker, and the choice says what happened', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    const out = [];
+    for (const withTomas of [true, false]) {
+      startHired('pilot'); const st = G.state; st.credits = 20000;
+      st.crew = st.crew.filter(id => id !== 'c:tomas');  // the Earth pair is aboard from the start
+      if (withTomas) castJoin('tomas', '');
+      const e = dealScene(currentPlanet());
+      out.push({ withTomas, choices: e.choices.length, text: e.choices.map(c => String(c.run())), broker: hired().deal.broker });
+    }
+    return out;
+  });
+  assert.deepEqual(r.map(x => [x.withTomas, x.broker, x.choices]), [[true, false, 1], [false, true, 1]]);
+  for (const x of r) for (const t of x.text) assert.ok(t.length > 40 && !/undefined|NaN|\[object|\{[a-z]+\}/.test(t));
   await done();
 });
