@@ -1256,6 +1256,7 @@ function resize() {
   const dpr = window.devicePixelRatio || 1;
   G.W = window.innerWidth; G.H = window.innerHeight;
   G.hudW = G.W >= 1000 ? HUD_W : 0;
+  document.documentElement.style.setProperty('--hud-w', `${G.hudW}px`);  // the panel sits in the area beside the sidebar (style.css)
   canvas.width = G.W * dpr; canvas.height = G.H * dpr;
   canvas.style.width = G.W + 'px'; canvas.style.height = G.H + 'px';
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
