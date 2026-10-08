@@ -167,15 +167,15 @@ function deckSvg() {
 // The Interior station as a console: the deck plan, who has which post, and the downtime button along the bottom (in a burn).
 function interiorPanel() {
   const st = G.state, t = G.transit, crew = crewMembers();
-  const captainRow = conRead('Captain', hired() ? personLink(hiredCaptain()) : `${youLink()}, in command`);
+  const captainRow = conRead('Captain', raw(hired() ? personLink(hiredCaptain()) : `${youLink()}, in command`));
   const posts = captainRow + Object.keys(POSTS).map(id => {
     const o = postOccupant(id), h = postHolder(id);
     const mood = h && ((st.injured || {})[h.id] ? ', injured' : moodLow(h) ? ', having a hard time' : '');
-    return conRead(POSTS[id].name, o ? (o.you ? youLink() : `${personLink(o.who)}${mood}`) : 'Nobody');
+    return conRead(POSTS[id].name, o ? raw(o.you ? youLink() : `${personLink(o.who)}${mood}`) : 'Nobody');
   }).join('');
   // Crew who hold no post: the roles without one, a second hand, or someone too hurt to work.
   const holders = new Set(Object.keys(POSTS).map(postHolder).filter(Boolean));
-  const off = crew.filter(c => !holders.has(c)).map(c => conRead(personLink(c), `${ROLE_NAMES[c.role]}${(st.injured || {})[c.id] ? ', injured' : moodLow(c) ? ', having a hard time' : ''}`)).join('');
+  const off = crew.filter(c => !holders.has(c)).map(c => conRead(raw(personLink(c)), `${ROLE_NAMES[c.role]}${(st.injured || {})[c.id] ? ', injured' : moodLow(c) ? ', having a hard time' : ''}`)).join('');
   const free = t && phase() === 'move' && !(t.lifeUsed || {})[lifeHalf()];
   return consoleHtml({
     title: 'Interior', status: `${crew.length} crew, ${berthsUsed()}/${ship().berths} berths`,

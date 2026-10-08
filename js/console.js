@@ -8,16 +8,18 @@
 
 const condColor = c => c >= 70 ? '#5fd35f' : c >= 40 ? '#ff9a3c' : '#ff6a4a';  // good, worn, failing
 
+// The helpers escape their text (the title, the status, a card's label, a reading's label and value) as `h` does (js/views.js). The
+// markup a caller builds goes in as `raw(...)`: the screen, the side cards, the controls and a card's body are markup by nature.
 function consoleHtml({ title, status = '', screen, side = '', controls = '', note = '' }) {
-  return `<div class="con"><div class="con-bezel">
+  return String(h`<div class="con"><div class="con-bezel">
     <div class="con-head"><b>${title}</b><span>${status}</span></div>
-    <div class="con-grid"><div class="con-screen">${screen}</div>${side ? `<div class="con-side">${side}</div>` : ''}</div>
-    ${controls ? `<div class="con-ctl">${controls}</div>` : ''}${note}
-  </div></div>`;
+    <div class="con-grid"><div class="con-screen">${raw(screen)}</div>${side ? h`<div class="con-side">${raw(side)}</div>` : ''}</div>
+    ${controls ? h`<div class="con-ctl">${raw(controls)}</div>` : ''}${raw(note)}
+  </div></div>`);
 }
 
-const conCard = (label, html) => `<div class="con-card"><div class="eyebrow">${label}</div>${html}</div>`;
-const conRead = (label, value, attr = '') => `<div class="con-read"><span>${label}</span><b ${attr}>${value}</b></div>`;
+const conCard = (label, html) => String(h`<div class="con-card"><div class="eyebrow">${label}</div>${raw(html)}</div>`);
+const conRead = (label, value, attr = '') => String(h`<div class="con-read"><span>${label}</span><b ${raw(attr)}>${value}</b></div>`);
 const conBar = (pct, color) => `<span class="con-bar"><i style="width:${Math.max(0, Math.min(100, pct))}%;background:${color}"></i></span>`;
 
 // A half-dial from 0 to 100, with a mark where the limit is. The inner markup is rebuilt only when
