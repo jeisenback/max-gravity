@@ -88,3 +88,4 @@ Real places (Ceres, Eros, Ganymede) and generic hard-SF terms (reaction mass, th
 - Why it reads as the Expanse: An ice hauler found derelict, with a secret aboard and the water of the Belt at stake, is close to the Expanse's opening.
 - Proposed instead: Keep the water economy, which is physics and mechanics. Move the story's origin: it opens at a port after a failed water audit, with a sealed tally book that the audit board wants back, and the derelict is a surveyed hull nobody will claim.
 - Decision: Adopt the proposal (owner, 2026-10-08).
+- Note: Done in the Cold Water opening (#427, PR 4): Act 1 now opens on a hulk the Ceres Water Authority audit board surveyed and tagged unclaimed, with a sealed pump ledger (a tally book) in the pilot's locker. The stages, flags, choices and scene ids are unchanged. The Ice Hauler hull stays, as a mechanic. The powers also gained a line of texture each in the Luna, Mars, Phobos Yards and Ceres Station descriptions.
