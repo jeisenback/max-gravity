@@ -8,6 +8,7 @@ The owner wants to write better prose and better narrative systems in a repeatab
 
 - The voice dial is at authoring time. The player sees one fixed text per scene. No runtime voice variants.
 - Voice profiles are narrator registers plus one card per speaking character, kept as markdown.
+- Voice includes syntax and sentence structure, not only word choice and content. A register or card says how long and how built its sentences are, and how they vary. Short is one setting among several, not the house style.
 - The world is a bible in markdown with stable ids. No data-file fields, no consistency test yet.
 - No engine changes now. The first rewrite passes will show which engine gaps are real (variant pools for repeated scenes, callbacks to the record, scene-editor work); each would be scoped as its own sub-project then.
 
@@ -23,9 +24,14 @@ Success: a person or Claude writing a scene can pick a register, read the speake
   - tense (raids, losses),
   - quiet (partings, letters home).
 
-  Each register states sentence length, how much custom is explained, and how much humor is allowed, and carries a sample passage. One moment is written in every register so the dial can be seen.
-- One card per speaking character, starting with the narrow build's cast: Hester Vance, Cato Rahman, Ines, Tomas Achebe, and the hired gunner's own lines. Each card holds diction, verbal habits, what they never say, topics they steer toward, and four to six sample lines. Facts already in code (`bio`, `wants`, `fears`, `traits` in `js/captains/*.js` and `js/cast.js`) are linked by file, not copied.
-- `docs/prose-style.md` stays as the rules. The cards cite it and do not repeat it.
+  Each register states its syntax and how much custom is explained and how much humor is allowed, and carries a sample passage. Syntax means:
+  - the range of sentence length, and the usual mix (for example, mostly medium, a short one for a hard fact, a long one that earns its place by carrying a custom or a sequence of actions);
+  - how sentences are built: coordination or subordination, openings other than subject-verb, fragments allowed or not, lists and parallel structure used sparingly;
+  - paragraph rhythm: how a passage opens, where it lengthens, how it ends.
+
+  One moment is written in every register so the dial can be seen. Every sample must show varied lengths and constructions; a sample of uniformly short sentences fails the card.
+- One card per speaking character, starting with the narrow build's cast: Hester Vance, Cato Rahman, Ines, Tomas Achebe, and the hired gunner's own lines. Each card holds diction, syntax habits (Hester's flat declaratives built around a figure, Tomas running on when he is talking to an engine), verbal habits, what they never say, topics they steer toward, and four to six sample lines. Facts already in code (`bio`, `wants`, `fears`, `traits` in `js/captains/*.js` and `js/cast.js`) are linked by file, not copied.
+- `docs/prose-style.md` stays as the rules, with two changes made first, for the owner to judge. Rule 6 ("keep the sentences short") is replaced by a rule about variation: mix lengths and constructions, no run of several short declaratives, and a long sentence only when it carries something. The worked example (A Small Ship) is rewritten so that it is not clipped. The cards cite the rules and do not repeat them.
 
 ### 2. World bible, `docs/world/`
 
@@ -43,12 +49,14 @@ One page: choose the register, choose the speakers' cards, choose the bible entr
 
 - Reads the string literals in the narrative files: `js/stories/*`, `js/captains/*`, `js/cast.js`, `js/castbar.js`, `js/people.js`, `js/peopletext.js`, `js/familytext.js`, `js/bartopics.js`, `js/hiredeventstext.js`, `js/social.js`, `js/family.js`. A simple scan, not a JavaScript parser.
 - Counts each pattern in the tic table of `docs/prose-style.md`, per file and in total, and can write or compare a baseline file under `docs/`.
+- Also reports sentence shape per file: mean length in words, spread (standard deviation), the share of sentences under six words, and the number of runs of four or more such sentences in a row. A low spread or a high count of runs marks clipped text. These are measures for a human to read against a register's stated range, not thresholds.
 - It reports and never fails. It sits beside `soak` and `coverage`, outside `npm test`, so suite time is unchanged. Promoting it to a ratchet in `npm test` is a later decision, if drift shows up.
 - A small Node test in `tests/` covers the counter on a fixture string. The tool is not a game script, so `tests/globals.test.js` is unaffected.
 - Known limit: text edited through the scene editor's override layer (#336) is not scanned until that layer exists.
 
 ## Order of work
 
+0. Revise rule 6 and the worked example in `docs/prose-style.md`; the owner judges the new example before anything is built on it.
 1. Narrator registers and the cards for Hester, Cato, Ines, Tomas.
 2. The writing workflow doc.
 3. The world bible, starting with `backgrounds.md` and `customs.md`.
