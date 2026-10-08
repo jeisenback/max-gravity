@@ -297,12 +297,12 @@ function stakeOffer() {
   if (!pl || !pl.services.includes('trade')) return '';
   const s = stakes()[pl.name], share = s ? s.share : 0, cost = stakeValue(pl);
   const can = share < MAX_STAKE && st.credits >= cost;
-  return `<h3>Invest</h3>
+  return String(h`<h3>Invest</h3>
     <div class="mission"><div>${share ? `You hold a ${Math.round(share * 100)}% stake in ${pl.name}. ` : ''}${share < MAX_STAKE
       ? `A 10% stake in ${pl.name}'s business costs ${fmt(cost)} cr and pays about ${fmt(stakeDividend(pl, STAKE_STEP))} cr a day in today's conditions.`
       : `That is as much as the port will sell.`}
       <div class="hint">Dividends rise in a boom and fall with slumps, raids, and war. Manage stakes on the Company page.</div></div>
-      <button data-action="sbuy" ${can ? '' : 'disabled'}>Buy 10%</button></div>`;
+      <button data-action="sbuy" ${can ? '' : 'disabled'}>Buy 10%</button></div>`);
 }
 
 // Put a main character in command of a ship docked where you are, or take them off it. The hired captain they replace
@@ -329,9 +329,8 @@ function relieveCaptain(i) {
 }
 function captainHtml(i, s) {
   const p = castCaptain(s), here = !s.dest && !s.escort && s.at === G.state.planet, e = captainEdge(s);
-  if (p) return (`<div class="hint">${personLink(p)} in command: trade ${e.trade}, nerve ${e.nerve}, ` +
-      `thrift ${e.thrift}.${e.ready ? '' : ` Green: every stat two lower until skill ${CAPTAIN_SKILL} and ${CAPTAIN_DAYS} days with you.`} ${here ? `<button data-action="crelieve" data-arg="${i}">Relieve</button>` : ''}</div>`);
-  return here ? castAboard().map(c => `<button data-action="cpost" data-arg="${i}|${c.cast}">Put ${esc(c.first)} in command</button>`).join(' ') : '';
+  if (p) return String(h`<div class="hint">${raw(personLink(p))} in command: trade ${e.trade}, nerve ${e.nerve}, thrift ${e.thrift}.${e.ready ? '' : ` Green: every stat two lower until skill ${CAPTAIN_SKILL} and ${CAPTAIN_DAYS} days with you.`} ${here ? h`<button data-action="crelieve" data-arg="${i}">Relieve</button>` : ''}</div>`);
+  return here ? castAboard().map(c => String(h`<button data-action="cpost" data-arg="${i}|${c.cast}">Put ${c.first} in command</button>`)).join(' ') : '';
 }
 
 function sellCompanyShip(i) {
@@ -351,15 +350,15 @@ function companyView() {
     if (s.dest) return `En route ${s.at} to ${s.dest}, ${s.daysLeft} day${s.daysLeft > 1 ? 's' : ''} out${load ? `, carrying ${load}` : ', empty'}.`;
     return `Docked at ${s.at}${s.route ? '' : ', parked'}.`;
   };
-  const cards = ships.map((s, i) => {
+  const cards = listHtml(ships, (s, i) => {
     const c = st.people[s.captain.pid], picking = UI.companyPick === s.id;
-    const options = picking && !s.dest ? routeOptions(s).map(o => `<button data-action="croute" data-arg="${i}|${o.to}">${s.at} and ${o.to} &middot; about ${o.perDay >= 0 ? '' : '-'}${fmt(Math.abs(o.perDay))} cr/day</button>`).join('') : '';
-    return `<div class="mission company">
+    const options = picking && !s.dest ? listHtml(routeOptions(s), o => h`<button data-action="croute" data-arg="${i}|${o.to}">${s.at} and ${o.to} &middot; about ${o.perDay >= 0 ? '' : '-'}${fmt(Math.abs(o.perDay))} cr/day</button>`) : '';
+    return h`<div class="mission company">
       <div><b>${SHIPS[s.shipId].name} "${s.name}"</b> &middot; Capt. ${c ? `${c.first} ${c.last}` : 'unknown'}, skill ${s.captain.skill}/3, ${fmt(shipWage(s))} cr/day
         <div class="hint">Route: ${s.route ? `${s.route[0]} and ${s.route[1]}` : 'none'}. ${status(s)}</div>
-        ${captainHtml(i, s)}
+        ${raw(captainHtml(i, s))}
         <div class="hint">Last trip: ${s.lastTrip ? `${s.lastTrip.from} to ${s.lastTrip.to}, ${s.lastTrip.profit >= 0 ? '+' : ''}${fmt(s.lastTrip.profit)} cr` : 'none yet'}. Total: ${s.earned >= 0 ? '+' : ''}${fmt(s.earned)} cr.</div>
-        ${picking ? `<div class="row">${s.dest ? '<span class="hint">Routes can be set once the ship is docked; it finishes this leg first.</span>' : options || '<span class="hint">No profitable route in range.</span>'}</div>` : ''}</div>
+        ${picking ? h`<div class="row">${s.dest ? raw('<span class="hint">Routes can be set once the ship is docked; it finishes this leg first.</span>') : options || raw('<span class="hint">No profitable route in range.</span>')}</div>` : ''}</div>
       <div class="row" style="margin:0">
         <button data-action="cescort" data-arg="${i}" ${s.escort || (!s.dest && s.at === st.planet && escorts().length < MAX_ESCORTS) ? '' : 'disabled'}>${s.escort ? 'Release' : 'Escort'}</button>
         <button data-action="cpick" data-arg="${s.id}" ${s.escort ? 'disabled' : ''}>${picking ? 'Close' : 'Route'}</button>
@@ -367,26 +366,22 @@ function companyView() {
         <button data-action="csell" data-arg="${i}" ${s.dest ? 'disabled' : ''}>Sell (${fmt(SHIPS[s.shipId].price * 0.6)})</button>
       </div>
     </div>`;
-  }).join('');
-  return (`
+  });
+  return String(h`
     <h3>Your company</h3>
-   ` +
-      ` ${cards || '<p class="hint">No ships yet. At any shipyard, buy a ship for the company: it comes with a captain and runs a trade route while you fly.</p>'}
-    <p class="hint">Company ships trade with your credits but never touch the last ${fmt(COMPANY_RESERVE)} cr. Captains are paid daily. Raids on a ` +
-      `route can cost cargo or repairs; skilled captains get through more often. Up to ${MAX_ESCORTS} ships docked where you are can fly with you as ` +
-      `escorts instead; you pay their reaction mass and repairs.</p>
+    ${ships.length ? cards : raw('<p class="hint">No ships yet. At any shipyard, buy a ship for the company: it comes with a captain and runs a trade route while you fly.</p>')}
+    <p class="hint">Company ships trade with your credits but never touch the last ${fmt(COMPANY_RESERVE)} cr. Captains are paid daily. Raids on a route can cost cargo or repairs; skilled captains get through more often. Up to ${MAX_ESCORTS} ships docked where you are can fly with you as escorts instead; you pay their reaction mass and repairs.</p>
     <h3>Stakes</h3>
-    ${Object.keys(stakes()).length ? Object.entries(stakes()).map(([name, s]) => {
+    ${Object.keys(stakes()).length ? listHtml(Object.entries(stakes()), ([name, s]) => {
       const pl = planetNamed(name).pl, value = Math.round(stakeValue(pl) * (s.share / STAKE_STEP) * (1 - BROKER_FEE));
-      return `<div class="mission"><div><b>${Math.round(s.share * 100)}% stake in ${name}</b>
+      return h`<div class="mission"><div><b>${Math.round(s.share * 100)}% stake in ${name}</b>
         <div class="hint">Paying about ${fmt(stakeDividend(pl, s.share))} cr/day. Paid ${fmt(s.paid)} cr; dividends so far ${fmt(s.dividends)} cr; sells for ${fmt(value)} cr now.</div></div>
-        <button data-action="ssell" data-arg="${esc(name)}">Sell</button></div>`;
-    }).join('') : '<p class="hint">None. Buy a stake from the Port page of any market.</p>'}
-    ${outpostCompanyHtml()}
-    ${legacyHtml()}
+        <button data-action="ssell" data-arg="${name}">Sell</button></div>`;
+    }) : raw('<p class="hint">None. Buy a stake from the Port page of any market.</p>')}
+    ${raw(outpostCompanyHtml())}
+    ${raw(legacyHtml())}
     <h3>Company log</h3>
-   ` +
-      ` ${st.companyLog.length ? st.companyLog.map(l => `<div class="hint">${dateOf(l.day)}: ${l.text}</div>`).join('') : '<p class="hint">Nothing yet.</p>'}`);
+    ${st.companyLog.length ? listHtml(st.companyLog, l => h`<div class="hint">${dateOf(l.day)}: ${l.text}</div>`) : raw('<p class="hint">Nothing yet.</p>')}`);
 }
 
 Mods.register({

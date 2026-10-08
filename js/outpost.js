@@ -143,7 +143,7 @@ function outpostHtml() {
       `Earned so far: ${fmt(o.earned)} cr.</p>
     ${needs}
     ${builds ? `<h3>Build</h3>${builds}` : ''}
-    ${(o.log || []).slice(0, 5).map(l => `<div class="hint">${dateOf(l.day)}: ${l.text}</div>`).join('')}`);
+    ${listHtml((o.log || []).slice(0, 5), l => h`<div class="hint">${dateOf(l.day)}: ${l.text}</div>`)}`);
 }
 
 function outpostCompanyHtml() {

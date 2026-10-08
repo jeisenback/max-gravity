@@ -278,6 +278,49 @@ test('the result screen escapes its title and keeps its text raw', async () => {
   await done();
 });
 
+// An owner's company: a ship with a captain, a stake in the port, a line in the company log and an outpost. `hostile` swaps the ship's name,
+// the captain's name and the log lines for strings that carry markup (#411): they come from stories and imports, past the cleaning of typed names.
+const ownerCompany = hostile => {
+  startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
+  const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 500000; st.cargo.industrial = 20;
+  buyCompanyShip('courier');
+  stakes()[st.planet] = { share: STAKE_STEP, paid: 20000, dividends: 150 };
+  found(Object.keys(OUTPOST_SITES)[0], 'Landing');
+  companyLog('Paid the captains.');
+  st.outpost.log = [{ day: st.day, text: 'A shuttle of settlers arrived.' }];
+  if (hostile) {
+    const [a, b] = hostile, ship = fleet()[0], cap = st.people[ship.captain.pid];
+    ship.name = a + b; Object.assign(cap, { first: a, last: b });
+    companyLog(a + b); st.outpost.log = [{ day: st.day, text: a + b }];
+  }
+  UI.tab = 'company'; UI.render();
+};
+
+test('the company page of an owner renders the golden markup', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  const html = await ev(ownerCompany, undefined).then(() => ev(() => document.querySelector('.shell .body').innerHTML));
+  const file = 'tests/fixtures/company-owner.html';
+  if (process.env.UPDATE_GOLDEN) fs.writeFileSync(file, html + '\n');
+  assert.equal(html + '\n', fs.readFileSync(file, 'utf8'), `the markup changed (UPDATE_GOLDEN=1 rewrites ${file})`);
+  await done();
+});
+
+test('a hostile ship, captain and log line break no page of an owner\'s company', async () => {
+  const { page, ev, done } = await open({ scope: 'full' });
+  await page.evaluate(`window.injected = ${injected.toString()}`);
+  await ev(ownerCompany, [HOSTILE_A, HOSTILE_B]);
+  const failures = [];
+  for (const tab of ['company', 'port', 'crew']) {
+    const r = await ev(t => { UI.tab = t; UI.render(); return injected(); }, tab);
+    if (r.elements || r.attrs.length || r.pwned) failures.push(`${tab}: ${JSON.stringify(r)}`);
+  }
+  // the outpost's own page and the claim offer show on the port of the outpost's site, not here: render them as the Port page would
+  const out = await ev(() => { UI.el.innerHTML = outpostHtml() + outpostCompanyHtml() + stakeOffer() + legacyHtml(); return injected(); });
+  if (out.elements || out.attrs.length || out.pwned) failures.push(`outpost: ${JSON.stringify(out)}`);
+  assert.deepEqual(failures, [], 'the pages a hostile company reaches');
+  await done();
+});
+
 // An owner's Crew page (the for-hire list and the Dismiss buttons only an owner has), on the old screens: the full build.
 test('the crew page of an owner renders the golden markup', async () => {
   const { ev, done } = await open({ scope: 'full' });
