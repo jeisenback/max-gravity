@@ -119,3 +119,26 @@ test('the map paints a small body at every system in range, inside its faction r
   assert.deepEqual(r.dark, []); assert.ok(r.keys >= r.systems - 2, `a 7px sprite per system that is on the map: ${r.keys} of ${r.systems}`);
   await done();
 });
+
+// A hired gunner mid-burn, for the burn view tests.
+const burnHelper = () => {
+  window.burn = () => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent(); G.state.tutorial = null; sail(); while (G.dialog) finishEvent(); tryBurn(); enterTransit(); G.transit.times = []; G.transit.event = null; G.dialog = null; };
+};
+
+test('the burn view paints the destination ahead on a wide screen, growing, from one cached sprite; a phone leaves it out', async () => {
+  const wide = await open({ scope: 'earth-hired' });
+  await wide.ev(burnHelper);
+  const r = await wide.ev(() => {
+    burn(); const t = G.transit, d = devicePixelRatio || 1, lit = [], dest = SYSTEMS[t.to].planets[0];
+    for (const f of [0.1, 0.5, 0.9]) { t.left = t.total * (1 - f); drawTransit(innerWidth, innerHeight); const b = G.burnBoxes.dest; lit.push(ctx.getImageData(Math.round((b.x + 40) * d), Math.round((b.y + 40) * d), 1, 1).data.slice(0, 3).reduce((a, v) => a + v)); }
+    return { lit, keys: Object.keys(BODY_CACHE).filter(k => k.startsWith(dest.name + '@')).sort(), allowed: [`${dest.name}@40`, `${dest.name}@${dest.r}`], box: G.burnBoxes.dest };
+  });
+  assert.ok(r.lit.every(v => v > 40), `lit at every progress: ${r.lit}`);
+  assert.ok(r.keys.includes(r.allowed[0]) && r.keys.every(k => r.allowed.includes(k)), `one 40px sprite, not one per frame: ${r.keys}`);
+  assert.deepEqual([r.box.w, r.box.h], [80, 80]);
+  await wide.done();
+  const phone = await open({ scope: 'earth-hired', viewport: { width: 390, height: 844 }, mobile: true });
+  await phone.ev(burnHelper);
+  assert.equal(await phone.ev(() => { burn(); drawTransit(innerWidth, innerHeight); return G.burnBoxes.dest; }), undefined);
+  await phone.done();
+});

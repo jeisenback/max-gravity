@@ -424,14 +424,25 @@ function wrapText(text, maxW) {
 }
 
 // A translucent panel with a clipped corner, like the port screen's buttons.
-function transitPanel(x, y, w, h, title) {
+// The canvas twin of the panels' glass (style.css, --glass): a clipped-corner plate, the line, and the accent glow from
+// the top edge.
+function glassPanel(x, y, w, h) {
   const c = 10;
-  ctx.fillStyle = 'rgba(8,16,28,0.86)';
-  ctx.strokeStyle = '#1f3349';
-  ctx.lineWidth = 1;
   ctx.beginPath();
   ctx.moveTo(x, y); ctx.lineTo(x + w - c, y); ctx.lineTo(x + w, y + c); ctx.lineTo(x + w, y + h); ctx.lineTo(x, y + h); ctx.closePath();
-  ctx.fill(); ctx.stroke();
+  ctx.fillStyle = 'rgba(11,17,27,0.86)';
+  ctx.fill();
+  const glow = ctx.createLinearGradient(0, y, 0, y + 28);
+  glow.addColorStop(0, 'rgba(127,180,255,0.10)'); glow.addColorStop(1, 'rgba(127,180,255,0)');
+  ctx.fillStyle = glow;
+  ctx.fill();
+  ctx.strokeStyle = '#22384f';
+  ctx.lineWidth = 1;
+  ctx.stroke();
+}
+
+function transitPanel(x, y, w, h, title) {
+  glassPanel(x, y, w, h);
   ctx.fillStyle = '#7fb4ff';
   ctx.fillRect(x, y, 3, h);
   ctx.font = `600 12px ${LABEL_FONT}`;
@@ -501,6 +512,16 @@ function drawTransit(W, H) {
   };
   glow(viewW * 0.92, cy - H * 0.2, H * 0.55, 'rgba(60,90,160,0.16)');
   glow(viewW * 0.05, cy + H * 0.3, H * 0.45, 'rgba(160,110,60,0.08)');
+  // The destination ahead, in the glow, growing with progress: one 40px sprite drawn scaled, lit from the sun behind us.
+  // Not on a phone, where the Comms card spans the width.
+  let destBox = null;
+  if (!narrow) {
+    const dest = SYSTEMS[t.to].planets[0], dx = viewW * 0.92, dy = 284, k = (8 + 32 * progress) / 40;
+    ctx.save(); ctx.translate(dx, dy); ctx.scale(k, k);
+    drawBody({ name: dest.name, color: dest.color, r: 40 }, 0, 0, { sun: { angle: Math.PI, strength: 1 } });
+    ctx.restore();
+    destBox = { x: dx - 40, y: dy - 40, w: 80, h: 80 };
+  }
 
   // Stars streak with our speed: longest at the midpoint, with a fading tail, and a few long lines when we are really moving.
   const speed = 0.05 + Math.sin(Math.PI * progress) * 0.6, still = Settings.reduceMotion;
@@ -530,6 +551,7 @@ function drawTransit(W, H) {
   G.cutHits = []; G.cutRooms = [];  // (a mid-turn frame draws no one)
   drawCutaway(0, 0, L);
   G.burnBoxes = { ship: { x: cx + (narrow ? 0 : 40) - L * k / 2, y: shipY - L * k * CUTAWAY_H / 2, w: L * k, h: L * k * CUTAWAY_H } };  // where each block was drawn, for the test (#262)
+  if (destBox) G.burnBoxes.dest = destBox;
   ctx.restore();
   const ox = cx + (narrow ? 0 : 40);  // where the cutaway's origin was drawn
   for (const r of G.cutRooms) { r.x = ox + r.x * k; r.y = shipY + r.y * k; r.w *= k; r.h *= k; }
@@ -539,8 +561,7 @@ function drawTransit(W, H) {
   // Route, on a plate so the star streaks do not run through the title and the clock (#262)
   const plateW = Math.min(viewW - 24, 640);
   G.burnBoxes.plate = { x: cx - plateW / 2, y: top + 6, w: plateW, h: narrow ? 116 : 100 };
-  ctx.fillStyle = 'rgba(3,6,15,0.82)';
-  ctx.fillRect(cx - plateW / 2, top + 6, plateW, narrow ? 116 : 100);
+  glassPanel(cx - plateW / 2, top + 6, plateW, narrow ? 116 : 100);
   const barW = Math.min(420, viewW - 60);
   ctx.textAlign = 'center';
   ctx.font = `600 12px ${LABEL_FONT}`;
