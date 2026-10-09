@@ -31,7 +31,10 @@ const rule = (p, key) => `[data-rpath="${p}"][data-rkey="${key}"]`;
 const changes = async () => JSON.parse((await page.textContent('#changes')).match(/^const SCENE_OVERRIDES = ([\s\S]*?);\nconst NEW_SCENES/)[1]);
 const warn = (p, key) => page.textContent(`[data-rerr="${key === undefined ? p : `${p}|${key}`}"]`);
 // A fresh page of the same editor, so a test's edits do not leak into the next.
-async function reload() { await page.goto(URL); await page.waitForFunction(() => SceneIndex.rows, null, { timeout: 30000 }); }
+async function reload() {  // the editor keeps edits in the browser (#340), so each test starts with none
+  await page.goto(URL); await page.evaluate(() => localStorage.clear()); await page.reload();
+  await page.waitForFunction(() => SceneIndex.rows, null, { timeout: 30000 });
+}
 
 test('the forms offer exactly the conditions and effects the game has, read from its tables', async () => {
   await select('port-mars-sky');

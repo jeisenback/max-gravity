@@ -363,7 +363,12 @@
   // A form's entries, read: { value, errors }, an error for each entry that does not parse.
   function readRules(drafts, table) {
     const value = dict(), errors = dict();
-    for (const [k, d] of drafts) { const r = kindOf(table[k]).parse(d); if (r.error) errors[k] = r.error; else value[k] = r.value; }
+    const known = table === EFFECT_SPEC ? lists.effects : lists.conditions;
+    for (const [k, d] of drafts) {
+      const r = kindOf(table[k]).parse(d);
+      if (known && !known.includes(k)) errors[k] = 'is not something the game has';  // the forms never offer one; a file can name one
+      else if (r.error) errors[k] = r.error; else value[k] = r.value;
+    }
     return { value, errors };
   }
   let sceneIds = () => [];  // every scene a link can lead to: the game's data scenes and the new ones (set by mount)
@@ -421,7 +426,7 @@
   }
 
   // The {words} of a text that the game would not replace, by the rule the game sent (storylets.js PLACEHOLDER): the same check, run here.
-  let rule = null, onPreview = () => {}, newDefs = () => [];
+  let rule = null, onPreview = () => {}, newDefs = () => [], pendingNotice = '';
   function badPlaceholders(text) {
     if (!rule) return [];
     const known = new RegExp(rule.source);
@@ -490,6 +495,7 @@
       return `<h2>${esc(r.title)}</h2>
         <p class="hint">${esc(r.id)} | ${esc(r.where)} | ${esc(r.file)} | ${esc(r.belongs)} | ${esc(r.kind)}${r.off ? ' | off in the narrow build' : ''}</p>
         <p class="hint">Placeholders such as {captain}, {planet} and {crew:pilot} are kept as typed.</p>
+        <button data-action="revert-scene">Revert this scene to the shipped version</button>
         ${formHtml(r, values)}${structHtml(r, struct)}${changesHtml(rows, values, struct)}`;
     }
     return `
@@ -546,25 +552,136 @@
   }
 
 
+
+  // ---------- keeping, exporting, importing and reverting (#340) ----------
+  // js/overrides.js as a whole: its two comments are copied here, and tests/editorsave.test.js checks that an export with no changes is the file as it
+  // is, so a change to the comments there is a change here. The editor never writes the file; it hands over this text to download.
+  const FILE_HEAD = "'use strict';\n\n// The scene editor's changes to the shipped scenes (#336, #338), and nothing else. Keyed by a storylet's id, then by what changes: title, text,\n// `when` (the scene's conditions, replaced whole), and choices, which is keyed by the choice's place in the scene's list (0 is the first), each\n// with a label and/or a result line, and `when`, `effects` (each replaced whole) and `next` (a scene's id, or null for no link):\n//   { 'port-mars-front': { title: '...', when: { day: 5 }, choices: { 0: { label: '...', result: '...', effects: { credits: 100 }, next: 'port-mars-sky' } } } }\n// storyletEvent (js/storylets.js) puts these in front of the shipped scene when it builds it. Empty means the shipped game. An id that is not a\n// scene, or a word that is not text, is left out with one console warning. Conditions, effects and links are held to the check addStorylet\n// makes: a scene's changes to them that it would refuse are all left out.\n";
+  const FILE_MID = "\n// Scenes the editor wrote from scratch (#339): a list of storylets, each as addStorylet takes it ({ id, where, title, text, when, choices: [...] }).\n// They are added to the game's scenes when the first game starts, through addStorylet, so one it would refuse (an unknown condition, a repeated id)\n// is logged and left out.\n";
+  const exportText = (overrides, newScenes) => `${FILE_HEAD}const SCENE_OVERRIDES = ${JSON.stringify(overrides, null, 2)};\n${FILE_MID}const NEW_SCENES = ${JSON.stringify(newScenes, null, 2)};\n`;
+
+  // What an exported (or hand-written) file holds, read without running it: the two literals are cut out of the text and parsed as JSON. A file that
+  // is anything else, JS that would do something included, is not read.
+  function parseImport(text) {
+    const s = String(text).replace(/^﻿/, '');
+    const m = /(?:^|\n)\s*const\s+SCENE_OVERRIDES\s*=\s*([\s\S]*?);[ \t]*\r?\n(?:\s*\/\/[^\n]*\n)*\s*const\s+NEW_SCENES\s*=\s*([\s\S]*?);\s*$/.exec(s);
+    const asJson = () => { try { const j = JSON.parse(s); return j && typeof j === 'object' ? { overrides: j.overrides, newScenes: j.newScenes } : null; } catch (e) { return null; } };
+    if (!m) { const j = asJson(); return j || { error: 'This is not a file the editor wrote: it has no SCENE_OVERRIDES and NEW_SCENES. Nothing in it was run.' }; }
+    try { return { overrides: JSON.parse(m[1]), newScenes: JSON.parse(m[2]) }; } catch (e) { return { error: `The changes in this file are not plain data the editor can read (${String(e.message).slice(0, 80)}). Nothing in it was run.` }; }
+  }
+
+  const LIMIT = { text: 4000, entries: 100, scenes: 300 };
+  const isObj = v => !!v && typeof v === 'object' && !Array.isArray(v);
+  // A scene's conditions or effects from a file, checked by the forms' own kinds: '' if they are all fine, else what is wrong with the first.
+  function rulesError(value, table, known) {
+    if (!isObj(value)) return 'is not a list of names and values';
+    const keys = Object.keys(value);
+    if (keys.length > LIMIT.entries) return `has more than ${LIMIT.entries} entries`;
+    for (const k of keys) {
+      if (!(known || []).includes(k)) return `has ${k}, which the game does not have`;
+      const kind = kindOf(table[k]), r = kind.parse(kind.format(value[k]));
+      if (r.error) return `${k} ${r.error}`;
+    }
+    return '';
+  }
+  // What importing a file would do, item by item: the changes it can make, and what is refused and why. Nothing is applied here.
+  function planImport(parsed, rows) {
+    const items = [], accepted = { overrides: dict(), scenes: [] }, byId = new Map(rows.filter(r => r.kind === 'data').map(r => [r.id, r]));
+    const ok = text => items.push({ ok: true, text }), refuse = text => items.push({ ok: false, text });
+    const words = v => typeof v === 'string' && v.trim() !== '' && v.length <= LIMIT.text;
+    const sceneIds = () => [...byId.keys(), ...accepted.scenes.map(d => d.id)];
+    const ov = parsed.overrides === undefined ? {} : parsed.overrides;
+    if (!isObj(ov)) refuse('SCENE_OVERRIDES is not an object, so none of it is read');
+    else {
+      const entries = Object.entries(ov);
+      if (entries.length > LIMIT.scenes) refuse(`SCENE_OVERRIDES has more than ${LIMIT.scenes} scenes; the rest are not read`);
+      for (const [id, s] of entries.slice(0, LIMIT.scenes)) {
+        const r = byId.get(id);
+        if (!r) { refuse(`${id}: not a scene in the game`); continue; }
+        if (!isObj(s)) { refuse(`${id}: is not an object`); continue; }
+        const keep = dict(), what = [];
+        for (const [k, v] of Object.entries(s)) {
+          if (k === 'title' || k === 'text') {
+            if (k === 'text' && !r.edit.text) refuse(`${id} text: it has parts that depend on conditions, so it is edited in code`);
+            else if (!words(v)) refuse(`${id} ${k}: needs some text of up to ${LIMIT.text} characters`);
+            else { keep[k] = v; what.push(k); }
+          } else if (k === 'when') {
+            const e = rulesError(v, CONDITION_SPEC, lists.conditions);
+            if (e) refuse(`${id} when: ${e}`); else { keep.when = v; what.push('conditions'); }
+          } else if (k === 'choices' && isObj(v)) {
+            for (const [i, c] of Object.entries(v)) {
+              const at = `${id} choice ${Number(i) + 1}`;
+              if (!/^\d+$/.test(i) || Number(i) >= r.choices.length) { refuse(`${id}: no choice ${i}`); continue; }
+              if (!isObj(c)) { refuse(`${at}: is not an object`); continue; }
+              for (const [f, x] of Object.entries(c)) {
+                let bad = '';
+                if (f === 'label' || f === 'result') bad = !r.edit.choices[i][f] ? 'has parts that depend on conditions, so it is edited in code' : words(x) ? '' : `needs some text of up to ${LIMIT.text} characters`;
+                else if (f === 'when') bad = rulesError(x, CONDITION_SPEC, lists.conditions);
+                else if (f === 'effects') bad = rulesError(x, EFFECT_SPEC, lists.effects);
+                else if (f === 'next') bad = x === null || (typeof x === 'string' && byId.has(x)) ? '' : 'leads to a scene that is not there';
+                else bad = 'is not something the editor changes';
+                if (bad) { refuse(`${at} ${f}: ${bad}`); continue; }
+                keep.choices = keep.choices || dict(); (keep.choices[i] = keep.choices[i] || dict())[f] = x;
+                what.push(`choice ${Number(i) + 1} ${f}`);
+              }
+            }
+          } else refuse(`${id} ${k}: is not something the editor changes`);
+        }
+        if (Object.keys(keep).length) { accepted.overrides[id] = keep; ok(`${id}: ${[...new Set(what)].join(', ')}`); }
+      }
+    }
+    const list = parsed.newScenes === undefined ? [] : parsed.newScenes;
+    if (!Array.isArray(list)) refuse('NEW_SCENES is not a list, so none of it is read');
+    else {
+      if (list.length > LIMIT.scenes) refuse(`NEW_SCENES has more than ${LIMIT.scenes} scenes; the rest are not read`);
+      for (const def of list.slice(0, LIMIT.scenes)) {
+        if (!isObj(def)) { refuse('a new scene that is not an object'); continue; }
+        const name = `new scene ${typeof def.id === 'string' && def.id ? def.id : '(no id)'}`;
+        if (JSON.stringify(def).length > LIMIT.text * 10) { refuse(`${name}: too large`); continue; }
+        const probe = dict(), draft = draftFromDef(def, probe), problems = newProblems(draft, probe, sceneIds());
+        if (problems.length) refuse(`${name}: ${problems.join('; ')}`); else { accepted.scenes.push(newSceneDef(draft, probe)); ok(name); }
+      }
+    }
+    return { items, accepted };
+  }
+
+  // The editor's state as it is kept in the browser, and read back (anything that is not the right shape is ignored).
+  const STORE_KEY = 'maxGravity.editor.v1';
+  const snapshotOf = (values, struct, newRows, base, key = newKey) => JSON.stringify({ v: 1, base, newKey: key, values, struct, newRows });
+  function readSnapshot(text) {
+    try {
+      const s = JSON.parse(text);
+      if (!isObj(s) || s.v !== 1 || !isObj(s.values) || !isObj(s.struct) || !Array.isArray(s.newRows)) return null;
+      const values = dict(), struct = dict();
+      for (const [id, v] of Object.entries(s.values)) if (isObj(v)) values[id] = Object.assign(dict(), Object.fromEntries(Object.entries(v).filter(([, x]) => typeof x === 'string')));
+      for (const [id, v] of Object.entries(s.struct)) if (isObj(v)) struct[id] = Object.assign(dict(), Object.fromEntries(Object.entries(v).filter(([p, x]) => typeof x === 'string' ? /next$/.test(p) : Array.isArray(x) && x.every(e => Array.isArray(e) && typeof e[0] === 'string' && typeof e[1] === 'string'))));
+      const newRows = s.newRows.filter(r => isObj(r) && typeof r.id === 'string' && /^new:\d+$/.test(r.id) && r.isNew === true && Array.isArray(r.choices))
+        .map(r => ({ ...newRow(), ...r, choices: r.choices.map(c => ({ ...newChoice(), ...(isObj(c) ? c : {}) })) }));
+      return { values, struct, newRows, newKey: Number(s.newKey) || 1, base: typeof s.base === 'string' ? s.base : '' };
+    } catch (e) { return null; }
+  }
+
   // ---------- new scenes and chains (#339) ----------
   // A scene written from scratch is a draft row like the shipped ones (so the same forms edit it), with its own key and what is typed for its
   // id, title, text and choices on the row. What the forms hold for its conditions, effects and links are drafts in the same `struct`.
   let newKey = 1;
-  const newChoice = () => ({ label: '', result: '', when: {}, effects: {}, next: '' });
-  const newRow = () => ({ id: `new:${newKey++}`, kind: 'data', isNew: true, file: 'js/overrides.js', belongs: 'new scene', off: false, where: 'port', via: '', chained: false, sceneId: '', title: '', text: '', when: {}, choices: [newChoice()] });
+  const newChoice = () => ({ label: '', result: '', when: {}, effects: {}, next: '', extra: {} });
+  const newRow = () => ({ id: `new:${newKey++}`, kind: 'data', isNew: true, file: 'js/overrides.js', belongs: 'new scene', off: false, where: 'port', via: '', chained: false, sceneId: '', title: '', text: '', when: {}, extra: {}, choices: [newChoice()] });
   const SCENE_ID = /^[\w:.-]+$/;
   const keysOf = o => Object.keys(o || {});
   // The scene as addStorylet takes it, from a draft: the fields the form has, in a readable order, and none that are empty.
   function newSceneDef(r, struct) {
     const val = path => readRules(draftsFor(r, path, struct), specTable(path)).value;
-    const def = { id: r.sceneId.trim(), where: r.where, title: r.title.trim(), text: r.text.trim() };
+    const def = { id: r.sceneId.trim(), where: r.where, title: r.title.trim(), text: r.textRaw || r.text.trim() };
     if (r.via) def.via = r.via;
     if (r.chained) def.chained = true;
+    Object.assign(def, r.extra);
     const when = val('when');
     if (keysOf(when).length) def.when = when;
     def.choices = r.choices.map((c, i) => {
-      const o = { label: c.label.trim() }, w = val(`c${i}.when`), e = val(`c${i}.effects`), n = nextFor(r, `c${i}.next`, struct).trim();
-      if (c.result.trim()) o.result = c.result.trim();
+      const o = { label: c.labelRaw || c.label.trim() }, w = val(`c${i}.when`), e = val(`c${i}.effects`), n = nextFor(r, `c${i}.next`, struct).trim();
+      if (c.resultRaw || c.result.trim()) o.result = c.resultRaw || c.result.trim();
+      Object.assign(o, c.extra);
       if (keysOf(w).length) o.when = w;
       if (keysOf(e).length) o.effects = e;
       if (n) o.next = n;
@@ -577,9 +694,9 @@
     const p = [], id = r.sceneId.trim();
     if (!id) p.push('needs an id'); else if (!SCENE_ID.test(id)) p.push('the id may use letters, digits, - _ : and . only'); else if (takenIds.includes(id)) p.push(`the id ${id} is already a scene`);
     if (!r.title.trim()) p.push('needs a title');
-    if (!r.text.trim()) p.push('needs text');
+    if (!r.textRaw && !r.text.trim()) p.push('needs text');
     if (!r.choices.length) p.push('needs a choice');
-    r.choices.forEach((c, i) => { if (!c.label.trim()) p.push(`choice ${i + 1} needs a label`); });
+    r.choices.forEach((c, i) => { if (!c.labelRaw && !c.label.trim()) p.push(`choice ${i + 1} needs a label`); });
     for (const path of ['when', ...r.choices.flatMap((c, i) => [`c${i}.when`, `c${i}.effects`])]) {
       const errors = readRules(draftsFor(r, path, struct), specTable(path)).errors;
       for (const [k, e] of Object.entries(errors)) p.push(`${path === 'when' ? 'the scene' : `choice ${Number(/\d+/.exec(path)[0]) + 1}`} ${path.replace(/^c\d+\./, '')}: ${k} ${e}`);
@@ -589,12 +706,18 @@
   }
   // A draft from a scene the file already holds.
   function draftFromDef(def, struct) {
-    const r = newRow();
-    Object.assign(r, { sceneId: String(def.id || ''), title: String(def.title || ''), text: plain(def.text), where: def.where === 'transit' ? 'transit' : 'port', via: def.via || '', chained: !!def.chained });
-    r.choices = (def.choices || []).map(c => ({ ...newChoice(), label: plain(c.label), result: plain(c.result) }));
+    const r = newRow(), own = (o, keys) => Object.fromEntries(Object.entries(o).filter(([k]) => !keys.includes(k)));
+    Object.assign(r, { sceneId: String(def.id || ''), title: String(def.title || ''), text: plain(def.text), where: def.where === 'transit' ? 'transit' : 'port', via: def.via || '', chained: !!def.chained,
+      extra: own(def, ['id', 'where', 'title', 'text', 'via', 'chained', 'when', 'choices']) });  // priority, once, every and the like: kept, not edited
+    if (Array.isArray(def.text)) r.textRaw = def.text;  // a text of conditional parts: kept as it is
+    r.choices = (Array.isArray(def.choices) ? def.choices : []).map(c => {
+      const o = isObj(c) ? c : {};
+      return { ...newChoice(), label: plain(o.label), result: plain(o.result), extra: own(o, ['label', 'result', 'when', 'effects', 'next']), ...(Array.isArray(o.label) ? { labelRaw: o.label } : {}), ...(Array.isArray(o.result) ? { resultRaw: o.result } : {}) };
+    });
     const mine = struct[r.id] = dict();
     if (def.when) mine.when = toDrafts(def.when, CONDITION_SPEC);
-    (def.choices || []).forEach((c, i) => {
+    (Array.isArray(def.choices) ? def.choices : []).forEach((c, i) => {
+      if (!isObj(c)) return;
       if (c.when) mine[`c${i}.when`] = toDrafts(c.when, CONDITION_SPEC);
       if (c.effects) mine[`c${i}.effects`] = toDrafts(c.effects, EFFECT_SPEC);
       if (c.next) mine[`c${i}.next`] = c.next;
@@ -700,6 +823,20 @@
   }
   const listEl2 = items => `<ul>${items.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
 
+
+  const noticeHtml = (title, body, buttons) => `<div class="notice"><h3>${esc(title)}</h3>${body}<div>${buttons}</div></div>`;
+  const shippedHtml = r => `<div class="shipped"><span class="hint">Shipped</span><p><strong>${esc(r.title)}</strong></p>${paragraphs(r.text)}${r.choices.length ? `<ol>${r.choices.map(c => `<li>${esc(c.label)}${c.result ? `: ${esc(c.result)}` : ''}</li>`).join('')}</ol>` : ''}</div>`;
+  const revertSceneNotice = r => noticeHtml(`Revert ${r.id} to the shipped version?`, `<p>Your edits to this scene go, and it reads as it does in the game as shipped:</p>${shippedHtml(r)}`,
+    '<button data-action="confirm-revert" data-scope="scene">Revert this scene</button> <button data-action="cancel-notice">Keep my edits</button>');
+  const revertAllNotice = (edited, rows, newCount) => noticeHtml('Revert everything to the shipped version?',
+    `<p>${edited.length} edited scene${edited.length === 1 ? '' : 's'} and ${newCount} new scene${newCount === 1 ? '' : 's'} go. The shipped scenes read as they do in the game as shipped, including these:</p>${edited.slice(0, 5).map(id => shippedHtml(rows.find(r => r.id === id))).join('')}${edited.length > 5 ? `<p class="hint">and ${edited.length - 5} more.</p>` : ''}`,
+    '<button data-action="confirm-revert" data-scope="all">Revert everything</button> <button data-action="cancel-notice">Keep my edits</button>');
+  const importNotice = plan => {
+    const good = plan.items.filter(i => i.ok), bad = plan.items.filter(i => !i.ok);
+    return noticeHtml('What importing this file would do', `${good.length ? `<p>It would change:</p>${listEl2(good.map(i => i.text))}` : '<p class="warn">Nothing in it can be imported.</p>'}${bad.length ? `<p class="warn">Refused, item by item:</p>${listEl2(bad.map(i => i.text))}` : ''}<p class="hint">Importing replaces your edits to the scenes it names. Nothing is changed until you apply it.</p>`,
+      `<button data-action="import-apply"${good.length ? '' : ' disabled'}>Apply ${good.length} change${good.length === 1 ? '' : 's'}</button> <button data-action="cancel-notice">Cancel</button>`);
+  };
+
   // The form of a draft scene.
   function newSceneHtml(r, struct, takenIds, changes = '') {
     const problems = newProblems(r, struct, takenIds), sel = (field, list) => `<select data-new="${field}">${list.map(([v, text]) => `<option value="${esc(v)}"${r[field] === v ? ' selected' : ''}>${esc(text)}</option>`).join('')}</select>`;
@@ -709,14 +846,15 @@
       <div id="problems">${newProblemsHtml(problems)}</div>
       <div class="field"><label for="n-id">Id</label><input id="n-id" type="text" data-new="sceneId" value="${esc(r.sceneId)}" placeholder="a-unique-id"></div>
       <div class="field"><label for="n-title">Title</label><input id="n-title" type="text" data-new="title" value="${esc(r.title)}"></div>
-      <div class="field"><label for="n-text">Text</label><textarea id="n-text" data-new="text" rows="6">${esc(r.text)}</textarea></div>
+      <div class="field"><label for="n-text">Text</label><textarea id="n-text" data-new="text" rows="6"${r.textRaw ? ' disabled' : ''}>${esc(r.text)}</textarea>${r.textRaw ? '<p class="hint">This text has parts that depend on conditions. It is kept as it is and edited in code.</p>' : ''}</div>
+      ${Object.keys(r.extra || {}).length ? `<p class="hint">This scene also has ${esc(Object.keys(r.extra).join(', '))}, which the form does not edit. They are kept.</p>` : ''}
       <div class="field"><label>Where it plays ${sel('where', [['port', 'at a port'], ['transit', 'in a burn']])}</label>
         <label>Shown as ${sel('via', [['', 'a scene'], ['station', 'a call from a station'], ['ship', 'a call from a ship'], ['message', 'a message'], ['crew', 'something from the crew']])}</label>
         <label><input type="checkbox" data-new="chained"${r.chained ? ' checked' : ''}> It only plays when another scene leads to it</label></div>
       ${rulesHtml(r, 'when', 'The scene appears when', struct)}
       ${r.choices.map((c, i) => `<h4>Choice ${i + 1} <button data-action="drop-choice" data-i="${i}">Remove this choice</button></h4>
-        <div class="field"><label for="n-l${i}">Label</label><input id="n-l${i}" type="text" data-newc="${i}.label" value="${esc(c.label)}"></div>
-        <div class="field"><label for="n-r${i}">Result</label><textarea id="n-r${i}" data-newc="${i}.result" rows="3">${esc(c.result)}</textarea></div>
+        <div class="field"><label for="n-l${i}">Label</label><input id="n-l${i}" type="text" data-newc="${i}.label" value="${esc(c.label)}"${c.labelRaw ? ' disabled' : ''}></div>
+        <div class="field"><label for="n-r${i}">Result</label><textarea id="n-r${i}" data-newc="${i}.result" rows="3"${c.resultRaw ? ' disabled' : ''}>${esc(c.result)}</textarea></div>
         ${rulesHtml(r, `c${i}.when`, 'It can be taken when', struct)}${rulesHtml(r, `c${i}.effects`, 'It does', struct)}${nextHtml(r, `c${i}.next`, struct)}`).join('')}
       <button data-action="add-choice">Add a choice</button>${changes}`;
   }
@@ -736,11 +874,38 @@
         <button data-action="new-scene">New scene</button>
         <span id="count" class="hint" role="status"></span>
       </div>
+      <div class="controls" id="tools">
+        <button data-action="export">Export changes</button>
+        <label class="filebtn">Import a file <input type="file" id="import-file" accept=".js,.json,.txt"></label>
+        <button data-action="revert-all">Revert everything</button>
+        <span class="hint">Your edits are kept in this browser. Nothing here writes to the repo or to the game's saves: Export downloads js/overrides.js, to replace the file and commit.</span>
+      </div>
+      <div id="notice" role="status"></div>
       <div class="split"><div id="list"></div><div id="detail"></div><div id="preview">${previewPaneHtml(opt)}</div></div>`;
     const state = { q: '', where: '', file: '', kind: '', id: '', view: '', group: '' };
     lists = { ...opt, planets: opt.places.map(p => p.name) };
     const values = SceneIndex.values = valuesFrom(overrides), struct = SceneIndex.struct = structFrom(overrides);
     const newRows = SceneIndex.newRows = fileScenes.map(def => draftFromDef(def, struct));
+    const base = canon({ overrides, newScenes: fileScenes });
+    let ready = false;
+    const saveNow = () => { if (ready) { try { localStorage.setItem(STORE_KEY, snapshotOf(values, struct, newRows, base)); } catch (e) { /* storage blocked: the edits live for this visit */ } } };
+    const notice = html => { app.querySelector('#notice').innerHTML = html; };
+    {
+      let kept = null;
+      try { kept = readSnapshot(localStorage.getItem(STORE_KEY) || ''); } catch (e) { /* storage blocked */ }
+      const fresh = snapshotOf(values, struct, newRows, base, 0);
+      if (kept) {
+        for (const k of Object.keys(values)) delete values[k];
+        for (const k of Object.keys(struct)) delete struct[k];
+        Object.assign(values, kept.values); Object.assign(struct, kept.struct);
+        newRows.length = 0; newRows.push(...kept.newRows); newKey = Math.max(kept.newKey, ...kept.newRows.map(r => Number(r.id.slice(4)) + 1), 1);
+        if (snapshotOf(values, struct, newRows, base, 0) !== fresh) {
+          const changed = kept.base !== base;
+          pendingNotice = noticeHtml('Your edits from earlier are back', `<p>These are the edits this browser kept from your last visit${changed ? ', and js/overrides.js has changed since' : ''}.</p>`,
+            `<button data-action="discard-saved">Discard them and start from js/overrides.js</button> <button data-action="cancel-notice">Keep working</button>`);
+        }
+      }
+    }
     const everyRow = () => [...newRows, ...rows];
     sceneIds = () => [...rows.filter(r => r.kind === 'data').map(r => r.id), ...newRows.map(r => r.sceneId.trim()).filter(Boolean)];
     const takenFor = r => [...rows.filter(x => x.kind === 'data').map(x => x.id), ...newRows.filter(x => x !== r).map(x => x.sceneId.trim()).filter(Boolean)];
@@ -773,6 +938,7 @@
       const row = everyRow().find(r => r.id === state.id);
       app.querySelector('#detail').innerHTML = !row ? detailHtml(null) : row.isNew ? newSceneHtml(row, struct, takenFor(row), changesHtml(rows, values, struct)) : detailHtml(row, values, rows, struct);
       syncPlay();
+      saveNow();
     };
     // The place a scene needs, from its own conditions, unless one is chosen: a planet it names, a system it is bound for, or Earth.
     const placeFor = row => {
@@ -801,6 +967,7 @@
       const box = app.querySelector('#problems'), r = here();
       if (box && r) box.innerHTML = r.isNew ? newProblemsHtml(newProblems(r, struct, takenFor(r))) : problemsHtml(r, struct);
       syncPlay();
+      saveNow();
     };
     const warnFor = key => [...app.querySelectorAll('[data-rerr]')].find(e => e.dataset.rerr === key);
     app.addEventListener('input', e => {
@@ -838,6 +1005,20 @@
         update();
       } else if (t.id in state) { state[t.id] = t.value; update(); }
     });
+    let importPlan = null;
+    const clearAll = () => { for (const k of Object.keys(values)) delete values[k]; for (const k of Object.keys(struct)) delete struct[k]; newRows.length = 0; };
+    app.addEventListener('change', async e => {
+      const t = e.target;
+      if (t.id !== 'import-file' || !t.files || !t.files[0]) return;
+      const file = t.files[0], close = '<button data-action="cancel-notice">Close</button>';
+      let text = '';
+      try { text = await file.text(); } catch (err) { notice(noticeHtml('This file could not be read', `<p class="warn">${esc(err.message || err)}</p>`, close)); return; }
+      t.value = '';
+      const parsed = text.length > 2000000 ? { error: 'This file is larger than the editor reads (2 MB).' } : parseImport(text);
+      if (parsed.error) { notice(noticeHtml('This file cannot be imported', `<p class="warn">${esc(parsed.error)}</p>`, close)); return; }
+      importPlan = planImport(parsed, rows);
+      notice(importNotice(importPlan));
+    });
     app.addEventListener('click', e => {
       const b = e.target.closest('button[data-id]');
       if (b) { state.id = b.dataset.id; update(); return; }
@@ -855,6 +1036,40 @@
         const id = app.querySelector('#n-id'); if (id) id.focus();
       } else if (action === 'discard-scene' && row && row.isNew) {
         newRows.splice(newRows.indexOf(row), 1); delete struct[row.id]; state.id = ''; update(); refreshScenes();
+      } else if (action === 'export') {
+        const edited = Object.keys(overridesFrom(rows, values, struct)).length, left = newRows.filter(r => newProblems(r, struct, takenFor(r)).length).length + rows.reduce((n, r) => n + problemsOf(r, struct).length, 0);
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(new Blob([exportText(overridesFrom(rows, values, struct), newDefs())], { type: 'text/javascript' }));
+        link.download = 'overrides.js';
+        document.body.append(link); link.click(); link.remove();
+        setTimeout(() => URL.revokeObjectURL(link.href), 1000);
+        notice(noticeHtml('Exported js/overrides.js', `<p>It holds ${edited} changed scene${edited === 1 ? '' : 's'} and ${newDefs().length} new scene${newDefs().length === 1 ? '' : 's'}. Replace js/overrides.js with it and commit it like any change.${left ? ` ${left} with a problem ${left === 1 ? 'was' : 'were'} left out.` : ''}</p>`, '<button data-action="cancel-notice">Close</button>'));
+      } else if (action === 'revert-scene' && row && !row.isNew) notice(revertSceneNotice(row));
+      else if (action === 'revert-all') {
+        const edited = Object.keys(overridesFrom(rows, values, struct));
+        notice(edited.length || newRows.length ? revertAllNotice(edited, rows, newRows.length) : noticeHtml('Nothing to revert', '<p>No scene differs from the shipped version.</p>', '<button data-action="cancel-notice">Close</button>'));
+      } else if (action === 'confirm-revert') {
+        if (e.target.closest('[data-scope]').dataset.scope === 'scene' && row && !row.isNew) { delete values[row.id]; delete struct[row.id]; } else clearAll();
+        notice(''); update(); refreshScenes();
+      } else if (action === 'cancel-notice') notice('');
+      else if (action === 'discard-saved') {
+        clearAll();
+        Object.assign(values, valuesFrom(overrides)); Object.assign(struct, structFrom(overrides));
+        newRows.push(...fileScenes.map(def => draftFromDef(def, struct)));
+        try { localStorage.removeItem(STORE_KEY); } catch (err) { /* storage blocked */ }
+        notice(''); update(); refreshScenes();
+      } else if (action === 'import-apply' && importPlan) {
+        const acc = importPlan.accepted;
+        for (const id of Object.keys(acc.overrides)) { delete values[id]; delete struct[id]; }
+        Object.assign(values, valuesFrom(acc.overrides)); Object.assign(struct, structFrom(acc.overrides));
+        for (const def of acc.scenes) {
+          for (const old of newRows.filter(r => r.sceneId.trim() === def.id)) { newRows.splice(newRows.indexOf(old), 1); delete struct[old.id]; }
+          newRows.unshift(draftFromDef(def, struct));
+        }
+        const n = importPlan.items.filter(i => i.ok).length;
+        importPlan = null;
+        notice(noticeHtml('Imported', `<p>${n} change${n === 1 ? '' : 's'} applied. They are in the changes below each scene and can be exported or reverted.</p>`, '<button data-action="cancel-notice">Close</button>'));
+        update(); refreshScenes();
       } else if (action === 'add-choice' && row && row.isNew) { row.choices.push(newChoice()); update(); }
       else if (action === 'drop-choice' && row && row.isNew) { dropChoice(row, Number(e.target.closest('[data-i]').dataset.i), struct); update(); }
       else if (action === 'play' && row && row.kind === 'data') {
@@ -863,6 +1078,9 @@
       }
     });
     update();
+    ready = true;
+    if (pendingNotice) { notice(pendingNotice); pendingNotice = ''; }
+    SceneIndex.exportText = () => exportText(overridesFrom(rows, values, struct), newDefs());
   }
 
   // The page opens two frames of itself to read the game, and shows what they send back; a frame reads the game and sends it up.
@@ -897,6 +1115,6 @@
     }
   }
 
-  const SceneIndex = window.SceneIndex = { SCRIPTS, esc, plain, filterRows, tableHtml, detailHtml, overridesFrom, valuesFrom, fileText, badPlaceholders, reportNode, effectsNode, structFrom, kindOf, readRules, CONDITION_SPEC, EFFECT_SPEC, roundTrips, chainOf, modelOf, newSceneDef, chainHtml, newSceneHtml, draftFromDef, newProblems, rows: null, values: null, struct: null, setup: null };
+  const SceneIndex = window.SceneIndex = { SCRIPTS, esc, plain, filterRows, tableHtml, detailHtml, overridesFrom, valuesFrom, fileText, badPlaceholders, reportNode, effectsNode, structFrom, kindOf, readRules, parseImport, planImport, exportText, readSnapshot, FILE_HEAD, CONDITION_SPEC, EFFECT_SPEC, roundTrips, chainOf, modelOf, newSceneDef, chainHtml, newSceneHtml, draftFromDef, newProblems, rows: null, values: null, struct: null, setup: null };
   start();
 })();

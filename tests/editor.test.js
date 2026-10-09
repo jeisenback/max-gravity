@@ -140,7 +140,7 @@ test('the page shows the rows, opens a scene to read it, and filters as you type
 
 test('a code-written scene has no form, and a data scene\'s form edits only its words', async () => {
   const inputs = await page.locator('.controls input, .controls select').evaluateAll(list => list.map(e => e.id));
-  assert.deepEqual(inputs, ['q', 'where', 'file', 'kind', 'view', 'group'], 'the controls above the list only filter and choose a view');
+  assert.deepEqual(inputs, ['q', 'where', 'file', 'kind', 'view', 'group', 'import-file'], 'the controls above the list filter, choose a view and import a file');
   await page.fill('#q', 'cast:ilsa:late');
   await page.click('button[data-id="cast:ilsa:late"]');
   assert.equal(await page.locator('#detail textarea').count(), 0);

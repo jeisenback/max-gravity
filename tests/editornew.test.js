@@ -26,7 +26,10 @@ after(async () => {
   try { assert.deepEqual(errors, [], 'page errors'); } finally { await browser.close(); await closeBrowser(); }
 });
 
-async function reload() { await page.goto(URL); await page.waitForFunction(() => SceneIndex.rows, null, { timeout: 30000 }); }
+async function reload() {  // the editor keeps edits in the browser (#340), so each test starts with none
+  await page.goto(URL); await page.evaluate(() => localStorage.clear()); await page.reload();
+  await page.waitForFunction(() => SceneIndex.rows, null, { timeout: 30000 });
+}
 // The two constants the editor shows, as the file would hold them.
 const file = async () => {
   const text = await page.textContent('#changes');

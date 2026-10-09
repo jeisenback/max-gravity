@@ -75,7 +75,7 @@ test('the preview never touches a real save: the game writes to a memory that st
   const inside = await frame().evaluate(() => ({ real: localStorage.getItem('maxGravity.save.1'), n: localStorage.length, wrote: Object.keys(Object.fromEntries(Array.from({ length: localStorage.length }, (_, i) => [localStorage.key(i), 1]))) }));
   assert.equal(inside.real, null, 'the frame cannot see the real storage');
   assert.ok(inside.n > 0, 'the game did write its things, to the frame\'s memory');
-  const outside = await page.evaluate(() => ({ keys: Object.keys(localStorage), save: localStorage.getItem('maxGravity.save.1') }));
+  const outside = await page.evaluate(() => ({ keys: Object.keys(localStorage).filter(k => !k.startsWith('maxGravity.editor')), save: localStorage.getItem('maxGravity.save.1') }));
   assert.deepEqual(outside.keys, ['maxGravity.save.1']);
   assert.equal(outside.save, 'my real save');
   await page.evaluate(() => localStorage.clear());
