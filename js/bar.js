@@ -86,7 +86,7 @@ const OPENERS = {
 };
 
 const SECRET_TALK = {
-  contraband: ['lowers their voice: "If you ever need something moved and not looked at, I know people. I might be people."', 'leans in and does not meet your eye: "There is a kind of cargo that does not appear on a kind of manifest. I can put you in touch with a kind of person."'],
+  contraband: ['lowers their voice: "If you ever need something moved and not looked at, I know people. I might be people."', 'leans in and does not meet your eye: "There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it."'],
   wanted: ['goes quiet when a patrol officer comes in, and studies their drink until the officer leaves.', 'watches the door through the whole conversation. When it opens they stop moving. It is the barman\'s cousin, and they start again.'],
   ill: ['coughs into their sleeve and waves it off. "Nothing. Recyclers on my last ship. It\'ll pass."', 'coughs hard and hides the cloth. It is the dust in here, they say, and would you like another.'],
   spy: ['asks a lot of questions about your routes and answers none about theirs.', 'is pleasant and asks small, exact things about ports and times, and gives you nothing.'],
@@ -148,28 +148,23 @@ const CREW_AT_BAR = {
 // their name, so no random draw) where they are about who someone is, and at random where they are about the night.
 const WORK_GROUP = [[/dock|rigger|salvag|miner|ore |ice |haul|crane|freight/i, 'hands'], [/engineer|tech|weld|chemist|hydro|model|architect|mechanic/i, 'tech'], [/navy|veteran|pilot|guard|officer/i, 'service']];
 const BAR_WORK = {
-  hands: [('{n} talks about the work with their hands: how a load shifts in a hold, the sound a bad cable makes before it goes. You get a feel for ' +
-      'what it costs the body, and what the pay is for.'), (
-      '"Fourteen years," {n} says, "and I can tell the weather on the other side of a hull by the way it hums." They mean it as a joke. It is not ' +
-      'entirely one.'), (
-      '{n} shows you a hand with two fingers that do not close. It was a clamp, and a shift supervisor who did not check it. They have never told ' +
-      'anyone the supervisor\'s name.')],
-  tech: [('{n} explains, with a coaster and a fork, why a thing you have always assumed works a certain way does not. By the end of it you have a new ' +
-      'respect for something you were about to ignore.'), ('"Nobody thanks you when it works," {n} says. "They thank you when it breaks and then you ' +
-          'fix it." They drink to that.'), '{n} has opinions on three kinds of failure and a favorite, and tells you which. It is a boring one, which is the point.'],
+  hands: [('{n} talks about the work with their hands: how a load shifts in a hold, the sound a bad cable makes before it goes.'), (
+      '"Fourteen years," {n} says, "and I can tell the weather on the other side of a hull by the way it hums." They say it as a joke.'), (
+      '{n} shows you a hand with two fingers that do not close. It was a clamp, and a shift supervisor who did not check it. They do not give ' +
+      'the supervisor\'s name.')],
+  tech: [('{n} explains, with a coaster and a fork, why a thing you have always assumed works a certain way does not.'), ('"Nobody thanks you when it works," {n} says. "They thank you when it breaks and then you ' +
+          'fix it." They drink to that.'), '{n} has opinions on three kinds of failure and a favorite, and tells you which. It is a boring one.'],
   service: [('{n} sits very straight for a person with a drink in their hand. They talk about the service the way people talk about a family they ' +
-      'have left, with exasperation and a kind of loyalty they would not admit.'), ('"They taught me to count exits," {n} says. "I still do it. There ' +
+      'have left.'), ('"They taught me to count exits," {n} says. "I still do it. There ' +
           'are three." They glance at each one, in order, without moving their head.'), '{n} will not tell you where they served. They will tell you what the food was like, and that is a long story.'],
-  other: [('{n} talks about the work: the hours, the people, the small politics. It is not exciting. It is a life, described by someone who is good ' +
-      'at it.'), (
-      '"It is not what I thought I would do," {n} says. "But I am better at it than I thought I would be." They look pleased by that, and a little ' +
-      'surprised.'), (
+  other: [('{n} talks about the work: the hours, the people, the small politics.'), (
+      '"It is not what I thought I would do," {n} says. "But I am better at it than I thought I would be."'), (
       '{n} tells you about a bad day at work in such detail that you can see the room. It ends with an apology to a colleague, and the colleague, to ' +
       'everyone\'s surprise, accepting.')],
 };
 const BAR_SILENCE = [('You sit with {n} and neither of you says anything. The room talks around you. After a while {n} pushes the bowl of beans an ' +
     'inch toward you, and that is all.'), ('You share the table. {n} reads something on a terminal, you watch the room, and it is the quietest twenty ' +
-        'minutes you have had in a week.'), ('{n} starts to say something, stops, and you do not ask. They nod, as if you had answered. The drink ' +
+        'minutes you have had in a week.'), ('{n} starts to say something, stops, and you do not ask. The drink ' +
             'goes down slowly.'), (
             'Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, {n} lifts a hand without looking ' +
             'up.')];
@@ -177,12 +172,12 @@ const BAR_PLACE = [('"{bar}," {n} says, "has been here longer than the people wh
     'do not ask."'), (
     '{n} points out the table by the wall. "A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, ' +
     'and then it was a table again."'), '"The bartender knows everyone\'s business," {n} says, "and has never repeated any of it. That is why anyone trusts this place."', (
-    '{n} tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a small, ' +
-    'useful set of rules.'), '"They tried to close {bar} twice," {n} says. "The first time the regulars paid the rent. The second time nobody could find the owner."'];
+    '{n} tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short ' +
+    'list.'), '"They tried to close {bar} twice," {n} says. "The first time the regulars paid the rent. The second time nobody could find the owner."'];
 const BAR_CARD_WIN = [
   'Three hands, slow and close. On the last card you take {cr} cr off {n}, who groans and says you were counting.',
   '{n} deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. {cr} cr.',
-  'You play it quiet and let {n} talk. They talk themselves into a bad bet. {cr} cr, and they laugh about it, which is the worst part.',
+  'You play it quiet and let {n} talk. They talk themselves into a bad bet. {cr} cr, and they laugh about it.',
   'The cards run for you all night. {n} tries a different seat, a different deck, a different luck charm. {cr} cr to you in the end.'
 ];
 const BAR_CARD_LOSE = [
@@ -203,13 +198,12 @@ const BAR_BLESS = [('{n} closes their eyes and lays two fingers on the transpond
     'not know. The bar goes quiet. When they are done they open their eyes and touch your hand.'), (
     '{n} takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. "It will not stop a rock," {n} says. ' +
     '"It is not for rocks."'), (
-    '{n} does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost. ' +
-    'It is the most convincing blessing you have had.')];
+    '{n} does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost.')];
 const BAR_LEAVE = [
   'You get up and leave them to their drink. You go back to the bar and the noise of the room.',
   'You nod, and {n} nods, and that is the whole goodbye. The room closes over the gap you left.',
   '"Safe burn," {n} says, to your back. You do not turn round, but you lift a hand.',
-  'You finish what is in your glass and stand. {n} has already gone back to their own business, which is a kind of courtesy.'
+  'You finish what is in your glass and stand. {n} has already gone back to their own business.'
 ];
 const BAR_DRINK_TALK = [('{n} tells you about {home}: the streets, the smell of the market, why they left, and why they might go back. There is no ' +
     'rumor in it, and no secret, and no angle. It takes an hour.'), (
@@ -226,60 +220,55 @@ const BAR_TRAIT = {
   talkative: { win: ('{n} talks the whole way through the hand and loses the thread of the bet. You take {cr} cr off them while they are explaining a ' +
       'cousin.'), lose: '{n} talks, and you talk back, and somewhere in it {cr} cr leaves your pocket. You could not say which hand it was.', drink: (
       '{n} starts a story, stops it for a better one, and starts the first again at the end. You learn the names of eleven people and the plot of ' +
-      'none.'), leave: '"Wait, one more thing," {n} says, and then three more things, and you are at the door before the last of them.', quiet: '{n} lasts nearly a minute in the silence, and then it comes out of them like water out of a pipe, and you let it.' },
-  nervous: { win: ('{n} watches your hands the whole game and flinches at every card. You take {cr} cr off them, and they thank you for it, which is ' +
-      'worse.'), lose: ('{n} plays carefully and with tiny, exact movements, and wins, and looks so relieved that you cannot be angry about the {cr} ' +
+      'none.'), leave: '"Wait, one more thing," {n} says, and then three more things, and you are at the door before the last of them.', quiet: '{n} lasts nearly a minute in the silence, and then they start on the bakery, and you let them.' },
+  nervous: { win: ('{n} watches your hands the whole game and flinches at every card. You take {cr} cr off them, and they thank you for it.'), lose: ('{n} plays carefully and with tiny, exact movements, and wins, and looks at the door before they pick up the {cr} ' +
           'cr.'), drink: ('{n} holds the glass in both hands and talks to it. By the end they have said more in an hour than they meant to, and look ' +
-              'at the door.'), leave: '{n} half rises when you stand, and sits again, and says goodbye to the table.', quiet: '{n} lets out a breath you did not know they were holding. After ten minutes their hands stop moving.' },
+              'at the door.'), leave: '{n} half rises when you stand, and sits again, and says goodbye to the table.', quiet: '{n} sits with their hands flat on the table. After ten minutes they stop moving.' },
   generous: { win: ('{n} insists on shuffling for you and refills your glass between hands. You take {cr} cr off them and they would not hear of ' +
       'giving it back, or of taking it back.'), lose: ('{n} wins {cr} cr and tries to press half of it back into your hand. You refuse. They put it ' +
           'in the tip jar in your name.'), drink: ('{n} will not let you pay for anything and tells you about the first person who was kind to them ' +
               'on a ship, and what they did with it.'), leave: '{n} puts a roll in your pocket as you go and does not mention it.', quiet: '{n} pushes the bowl of beans across, and then the bread, and then a second glass of water, without a word.' },
-  greedy: { win: ('{n} counts the pot twice, then counts your {cr} cr, and then counts it again as you take it. "Beginner\'s luck," {n} says. It is ' +
-      'not a friendly phrase.'), lose: '{n} takes the {cr} cr, checks it against a coin they keep for the purpose, and bites nothing. "A pleasure," {n} says, and means the money.', drink: (
+  greedy: { win: ('{n} counts the pot twice, then counts your {cr} cr, and then counts it again as you take it. "Beginner\'s luck," {n} says.'), lose: '{n} takes the {cr} cr, checks it against a coin they keep for the purpose. "A pleasure," {n} says, and writes the figure on the napkin.', drink: (
       '{n} has a price for everything: the drink, the stool, the gossip about the man two tables over. By the end you have heard a lot of figures and ' +
       'no stories.'), leave: '"Next time, bring a bigger tank," {n} says, "and a bigger purse."', quiet: (
       '{n} does sums on a napkin for twenty minutes, in silence, and at the end turns the napkin round for you to see. It is your ship\'s price, ' +
       'within a few percent.') },
   pious: { win: ('{n} says a short word over each card, and loses, and says one over the {cr} cr as it leaves. "What is lost is returned in another ' +
-      'form," {n} says.'), lose: '{n} plays as if each card were asked for. You lose {cr} cr, and {n} touches the charm at their throat and says it was not their doing.', drink: (
-      '{n} speaks of the long road, and the long wait, and the small kindness that is worth more than either. It is not a sermon. You are not sure ' +
-      'what it is.'), leave: '"Fair winds," {n} says, as if it were a vow.', quiet: (
-      '{n} bows their head, and you sit beside them, and for a while the bar sounds like the sea. When they lift it again they say it was good to ' +
+      'form," {n} says.'), lose: '{n} says a word over each card. You lose {cr} cr, and {n} touches the charm at their throat and says it was not their doing.', drink: (
+      '{n} speaks of the long road, and the long wait, and the small kindness that is worth more than either. It is not a sermon.'), leave: '"Fair winds," {n} says.', quiet: (
+      '{n} bows their head, and you sit beside them, and for a while the bar is only glasses. When they lift it again they say it was good to ' +
       'have company.') },
-  rude: { win: '{n} slams down the last card and says it was a dishonest deck. You take {cr} cr off them anyway.', lose: '{n} wins {cr} cr, and says it was not even close. You do not argue, because they would only get louder.', drink: (
-      '{n} insults the drink, the bar, the bartender, and the city, in that order, with great energy. By the end you are fond of them against your ' +
-      'will.'), leave: '"Don\'t come back," {n} says. They are looking at the screen when they say it, so it is hard to know how they mean it.', quiet: (
-      '{n} says nothing for a long time, which for them is a sort of courtesy, and then says, "You are not as bad as I thought." It is a lot, from ' +
-      'them.') },
+  rude: { win: '{n} puts down the last card and says, in a level voice, that it was a dishonest deck. You take {cr} cr off them anyway.', lose: '{n} wins {cr} cr, and says it was not even close. You do not argue.', drink: (
+      '{n} insults the drink, the bar, the bartender, and the city, in that order, from a list.'), leave: '"Don\'t come back," {n} says, to the screen.', quiet: (
+      '{n} says nothing for a long time, and then says, "You are not as bad as I thought."') },
   curious: { win: ('{n} asks how you knew, and what the odds were, and whether you count, and takes {cr} cr off the table in questions before you ' +
       'take it in coin.'), lose: '{n} plays a hand and then spends ten minutes asking how you lost it, and you are never sure whether it is a joke. {cr} cr.', drink: (
       '{n} asks about your ship, your home, your last port and the best thing you have eaten, and writes none of it down, and does not forget any of ' +
-      'it.'), leave: '"Where are you headed next?" {n} asks, at the door, and writes it on their hand.', quiet: '{n} watches you not talking with open interest, as if it were a skill, and then tries it. They last four minutes.' },
+      'it.'), leave: '"Where are you headed next?" {n} asks, at the door, and writes it on their hand.', quiet: '{n} watches you not talking with open interest, and then tries it. They last four minutes.' },
   drunk: { win: ('{n} deals you a hand and then forgets which they dealt to themselves. You take {cr} cr, and {n} cheers for you, sincerely, and ' +
       'orders another.'), lose: '{n} wins {cr} cr and looks astonished, and wants it understood that it was skill, and then asks what game it was.', drink: (
       '{n} tells you the same story three times, and each time it is about a different ship. You are not sure which one is true. You think none of ' +
-      'them.'), leave: '{n} waves, a little to the left of where you are, and says something warm that does not quite make a word.', quiet: '{n} falls asleep with their head on their arm, and you sit with them until the bartender comes over with a blanket.' },
+      'them.'), leave: '{n} waves, to the left of where you are, and says something warm that is not quite a word.', quiet: '{n} falls asleep with their head on their arm, and you sit with them until the bartender comes over with a blanket.' },
   secretive: { win: ('{n} plays with an expression you cannot read and a hand you cannot guess. You take {cr} cr, and {n} gives nothing away, and the ' +
-      'only change is that they do not look at the door.'), lose: '{n} wins {cr} cr without a word, and counts it without looking, and the whole thing was a conversation you only half understood.', drink: (
+      'only change is that they do not look at the door.'), lose: '{n} wins {cr} cr without a word, counts it without looking, and asks how long you have had the ship.', drink: (
       '{n} answers every question with a question and gives you, as far as you can tell, nothing. On the way home you realize you told them a great ' +
-      'deal.'), leave: '"I never saw you," {n} says, without a smile, and you cannot tell whether that is a joke.', quiet: '{n} relaxes a little, in the silence, in the way of someone who has not been asked a question for some time.' },
+      'deal.'), leave: '"I never saw you," {n} says, without a smile.', quiet: '{n} relaxes in the silence, and does not ask you anything.' },
   kind: {
     win: '{n} loses gracefully, and as you take {cr} cr they ask if you are all right, because you looked tired. You were.',
     lose: '{n} wins {cr} cr and feels bad about it at once, and buys you a drink, and says it is nothing.',
     drink: '{n} asks about you, and means it. By the end of the glass you have said something true that you had not planned to say to anyone.',
-    leave: '"Look after yourself," {n} says, and it is not a figure of speech.',
-    quiet: '{n} makes room, and then nothing else, and the quiet is the kind that you can lean on.'
+    leave: '"Look after yourself," {n} says, and offers to walk you to the lock.',
+    quiet: '{n} makes room on the bench, and then nothing else.'
   },
   brave: { win: ('{n} bets everything on the last hand with a grin and loses {cr} cr to you, and offers a rematch, double or nothing, before the ' +
       'cards are down.'),
   lose: '{n} wins {cr} cr on a bluff that should not have worked, and shows you the hand afterwards, with relish.',
-      drink: '{n} tells you about a bad moment and what they did in it, and does not make it sound better than it was. You believe every word.',
+      drink: '{n} tells you about a bad moment and what they did in it, and does not make it sound better than it was.',
       leave: '"Any time," {n} says, "and any place." It is an offer.',
-      quiet: '{n} sits with their back to the door, as always, and for once does not watch it. You count that as a compliment.' },
+      quiet: '{n} sits with their back to the door, as always, and for once does not watch it.' },
   homesick: {
-    win: '{n} plays absent-mindedly, thinking of somewhere else, and loses {cr} cr to you without noticing. You almost feel bad.',
-    lose: '{n} plays well, for someone whose mind is elsewhere. {cr} cr, and a small smile that is not about the game.',
+    win: '{n} plays absent-mindedly, thinking of somewhere else, and loses {cr} cr to you without noticing.',
+    lose: '{n} plays well, for someone whose mind is elsewhere. {cr} cr, and a smile that is not about the game.',
     drink: '{n} talks about {home}, and then stops, and then talks about it again, and by the third time you could draw the street.',
     leave: '{n} looks at the door, and then at you, and says, "Say hello to somewhere nice for me."',
     quiet: '{n} takes out a creased photograph and sets it between you, and neither of you mentions it. You look at it for a while.'

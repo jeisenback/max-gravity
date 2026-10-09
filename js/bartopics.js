@@ -10,17 +10,17 @@ const BAR_MENU = 3, BAR_REPEAT = 45;  // topics offered at a table; days before 
 
 // What they feel about it: a line for each trait that loves it, or hates it.
 const BAR_REACT = {
-  talkative: ['{n} is off again, and tells it to the next table too, and you in it, favorably.', '{n} talks over the answer, and it is clear you were not listened to.'],
-  nervous: ['{n} lets out a breath, and for the first time sits back.', '{n} flinches, and does not quite trust you after that.'],
-  generous: ['{n} is moved, and says they will remember it, and means a bottle at the next port.', '{n} waves it away, and looks at the wall.'],
-  greedy: ['{n} counts it, pockets it, and decides you are worth knowing.', '{n} sniffs. There was nothing in it for them.'],
+  talkative: ['{n} is off again, and tells it to the next table too, and you are in it.', '{n} talks over the answer and goes back to the story about the tug.'],
+  nervous: ['{n} lets out a breath, and for the first time sits back.', '{n} flinches, and checks the seal on the nearest hatch.'],
+  generous: ['{n} says to have the rest, and means a bottle at the next port.', '{n} waves it away, and asks whether you have eaten.'],
+  greedy: ['{n} counts it, tells you the total, and decides you are worth knowing.', '{n} asks what it would fetch, and does not like the figure.'],
   pious: ['{n} says a short word over you, and means it.', '{n} turns the cord at their wrist and says nothing.'],
-  rude: ['{n} grunts. From {n}, it is a warm welcome.', '{n} says what they think of that, at length and with volume.'],
-  curious: ['{n} wants to know more, and asks, and the evening gets longer in a good way.', '{n} shrugs it off. It was not interesting.'],
-  drunk: ['{n} hugs you. It is a long hug, and not entirely stable.', '{n} does not seem to take it in, and orders another.'],
-  secretive: ['{n} looks at you a moment longer, and something is let in.', '{n} closes up, and the rest of the glass is polite.'],
-  kind: ['{n} takes your hand for a moment and does not say anything.', '{n} says it is all right, in the voice of someone it is not.'],
-  brave: ['{n} claps you on the shoulder, hard. You will have a bruise.', '{n} looks at you the way people look at a locked door.'],
+  rude: ['{n} says the coffee here is almost drinkable.', '{n} says what they think of that, in order, from the list, and does not raise their voice.'],
+  curious: ['{n} asks the next question, and then the one after it.', '{n} says "Ah," and turns to see how the till opens.'],
+  drunk: ['{n} hugs you. It is a long hug, and not entirely stable.', '{n} agrees at once, and orders another.'],
+  secretive: ['{n} asks how long you have had the ship, and this time wants the answer.', '{n} asks how long you have had the ship, and the rest of the glass is polite.'],
+  kind: ['{n} takes your hand for a moment and does not say anything.', '{n} says it is all right, and finds something to fix.'],
+  brave: ['{n} claps you on the shoulder, hard. You will have a bruise.', '{n} looks at you, and then at the door, and finishes the drink.'],
   homesick: ['{n} goes quiet, and then smiles, the first of the night.', '{n} looks at the photograph, not at you.'],
 };
 const barHas = (p, ...ts) => ts.some(t => p.traits.includes(t));
@@ -71,17 +71,17 @@ function helpScene(p, pat, ctx) {
 
 // ---------- a secret, once they trust you ----------
 const SECRET_HELP = {
-  debt: { text: ('{n} turns the glass in a ring on the bar. "It is not even a lot," they say. "It is just more than I have, and the people it is owed ' +
-      'to do not do arithmetic."'), opts: [['Cover part of it (200 cr)', 200, 3, (
+  debt: { text: ('{n} turns the glass in a ring on the bar. "Six hundred and twelve," they say. "It is not even a lot. It is just more than I have, and the ' +
+      'people it is owed to do not do arithmetic."'), opts: [['Cover part of it (200 cr)', 200, 3, (
       'You count out the credits. {n} turns them over, and then takes them, and does not say anything for a long ' +
-      'time.')], ['Say you will keep an ear out for who is asking', 0, 1, '"That would help," {n} says. It is not nothing. It is not much.']] },
-  ill: { text: ('{n} stops pretending. "Six months and the recyclers on that last ship," they say. "The clinic wants more than I have. I tell people ' +
+      'time.')], ['Say you will keep an ear out for who is asking', 0, 1, '"That would help," {n} says.']] },
+  ill: { text: ('{n} puts the glass down. "Six months and the recyclers on that last ship," they say. "The clinic wants more than I have. I tell people ' +
       'it is the dust."'), opts: [
         [
         'Pay for the clinic (100 cr)',
         100,
         3,
-        '{n} does not argue, which tells you how bad it is. The next time you see them, they say, they will be breathing better.'
+        '{n} does not argue. The next time you see them, they say, they will be breathing better.'
       ],
         [
         'Tell them where the nearest medic is',
@@ -90,8 +90,8 @@ const SECRET_HELP = {
         'You give the name and the street. {n} writes it on a napkin and puts it carefully in a pocket.'
       ]
       ] },
-  wanted: { text: ('{n} says it quietly: there is a warrant, and it is not for what they are accused of, and they would rather not be at a table by ' +
-      'the door.'), opts: [
+  wanted: { text: ('{n} has taken the seat with its back to the wall. "There is a warrant," they say, "and it is not for what they say it is. I would ' +
+      'rather not be at a table by the door."'), opts: [
         [
         'Say you have seen nothing',
         0,
@@ -121,7 +121,7 @@ const SECRET_HELP = {
       ]
       ] },
   spy: {
-    text: '{n} stops asking questions, and for a moment looks tired. "I am paid to ask them," they say. "I am not paid to like it."',
+    text: '{n} stops asking questions. "I am paid to ask them," they say. "I am not paid to like it."',
     opts: [
     [
     'Tell them what you know of the lanes',
@@ -133,7 +133,7 @@ const SECRET_HELP = {
     'Say you will not be asked again',
     0,
     0,
-    '"Fair," {n} says, and smiles, and orders you another, and means the thing they said.'
+    '"Fair," {n} says, and orders you another.'
   ]
   ]
   },
@@ -142,7 +142,7 @@ function secretScene(p, pat, ctx) {
   const d = SECRET_HELP[p.secret];
   return { title: `${ctx.bar}: ${p.first} ${p.last}`, text: barSays(d.text, p), choices: [
     ...d.opts.map(([label, cost, n, line]) => ({ label, ...gated(needCr(cost)), run() { ctx.st.credits -= cost; like(p, n, n > 0 ? `The captain stood by me when I told them my trouble (${p.secret}).` : null); return barSays(line, p); } })),
-    { label: 'Let it be', run: () => `You let it be. ${p.first} is grateful, or relieved, and the talk goes somewhere easier.` },
+    { label: 'Let it be', run: () => `You let it be, and the talk goes somewhere easier.` },
   ] };
 }
 
@@ -160,9 +160,9 @@ const BAR_TOPICS = [
   } }) },
   { id: 'heard', w: p => (barHas(p, 'secretive') ? 1 : 3), make: (p, pat, c) => ({ label: 'Ask what they have heard', ...gated(notYet(() => pat.asked, 'You have done that already tonight.')), run() {
     pat.asked = true; met(pat);
-    if (barHas(p, 'secretive') && p.opinion < OPINION.FRIEND) return `"Nothing worth repeating," ${p.first} says, and smiles, and goes back to their drink. They do not look up again while you are there.`;
+    if (barHas(p, 'secretive') && p.opinion < OPINION.FRIEND) return `"Nothing worth repeating," ${p.first} says, and smiles. "And you? How long have you had the ship?"`;
     const aside = barSays(BAR_GOAL[p.goal] || '', p), more = barHas(p, 'talkative', 'drunk', 'curious');
-    const heard = `${p.first} thinks about it, then says: "${addRumor()}"${more ? ` And then, because ${p.first} cannot leave a thing alone: "${addRumor()}"` : ''}`;
+    const heard = `${p.first} thinks about it, then says: "${addRumor()}"${more ? ` ${p.first} adds, before you can answer: "${addRumor()}"` : ''}`;
     return aside ? `${aside} ${heard}` : heard;
   } }) },
   { id: 'passage', w: (p, pat) => (!hired() && (!pat.known || p.opinion >= 0) && p.goal !== 'fresh' ? 2 : 0), make: (p, pat) => ({ label: `Offer ${p.first} passage`, ...gated(notYet(() => pat.offered, 'You have offered already.'), needBerth), run() {
@@ -170,15 +170,15 @@ const BAR_TOPICS = [
     const o = travelOffer(p);
     if (!o) return `${p.first} counts on their fingers, then shakes their head. "Nowhere you can reach from here," they say. "Ask me again when you have a longer tank."`;
     G.offers.unshift(o);
-    return `"${o.destPlanet}?" ${p.first} says. "That's where I need to be." They name a fair fare and shake on it with both hands. The job is on the mission board.`;
+    return `"${o.destPlanet}?" ${p.first} says. "That's where I need to be." They name a fare and shake on it with both hands. The job is on the mission board.`;
   } }) },
   { id: 'cards', w: p => (barHas(p, 'greedy', 'brave') ? 4 : barHas(p, 'pious') ? 1 : 2), make: (p, pat, c) => ({ label: `Play ${p.first} at cards (${CARDS} cr)`, ...gated(needCr(CARDS), notYet(() => pat.played, 'You have played already tonight.')), run() {
     pat.played = true; met(pat);
     if (Math.random() < 0.5) {
       c.st.credits += CARDS;
       like(p, barHas(p, 'greedy', 'rude') ? -1 : barHas(p, 'brave') ? 1 : 0, 'The captain took my money at cards.');
-      return `${barSays(barTrait('win', p, BAR_CARD_WIN), p, { cr: fmt(CARDS) })} ${barHas(p, 'rude') ? (`${p.first} stands up and says you cheated, ` +
-          `loudly, and the whole bar turns to look. You leave them to it.`) : pick([`${p.first} buys you a drink with your own money.`, `${p.first} shakes your hand and means it.`, `${p.first} tells the story of it to the next table, with you as the villain.`])}`;
+      return `${barSays(barTrait('win', p, BAR_CARD_WIN), p, { cr: fmt(CARDS) })} ${barHas(p, 'rude') ? (`${p.first} stands up and says, in a level voice, that you cheated, ` +
+          `and the whole bar turns to look. You leave them to it.`) : pick([`${p.first} buys you a drink with your own money.`, `${p.first} shakes your hand and means it.`, `${p.first} tells the story of it to the next table, with you as the villain.`])}`;
     }
     c.st.credits -= CARDS; like(p, 1, null);
     return `${barSays(barTrait('lose', p, BAR_CARD_LOSE), p, { cr: fmt(CARDS) })} By the end of the glass you are laughing.${barTone(pat, p)}`;
