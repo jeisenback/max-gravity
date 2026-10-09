@@ -136,7 +136,10 @@ CAST.pilar = {
             'you. A view is a thing you give to someone who has already shown they will carry it carefully, and you have not had the chance. Ask me again ' +
             'when the weather has changed."'),
         choices: [
-          { label: 'Say it can wait', run: () => '"It can," she says. "Thank you for not asking which rule." She goes forward to the helm.' },
+          {
+            label: 'Say it can wait',
+            result: '"It can," she says. "Thank you for not asking which rule." She goes forward to the helm.',
+          },
         ],
       },
     },

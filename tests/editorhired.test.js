@@ -43,16 +43,16 @@ test('the converted scenes are data rows of the registry, and the rest are code 
   const r = await page.evaluate(() => {
     const row = id => SceneIndex.rows.find(x => x.id === id);
     return { ansel: ['kind', 'registry'].map(k => row('cast:ansel:intro')[k]), closed: ['kind', 'registry'].map(k => row('cast:cato:late:closed')[k]), ilsa: ['kind', 'registry'].map(k => row('cast:ilsa:late')[k]),
-      effects: row('cast:ansel:intro').choices[0].effects, edit: row('cast:ilsa:late').edit.choices.map(c => c.effects), goodbye: row('captain:hester:goodbye').registry, signon: row('scene:sign-on').registry,
+      effects: row('cast:ansel:intro').choices[0].effects, edit: row('cast:ines:meet').edit.choices.map(c => c.effects), goodbye: row('captain:hester:goodbye').registry, signon: row('scene:sign-on').registry,
       storylets: SceneIndex.rows.filter(x => x.kind === 'data' && !x.registry).length, dataRegistry: SceneIndex.rows.filter(x => x.kind === 'data' && x.registry).length };
   });
   assert.deepEqual(r.ansel, ['data', true]);
   assert.deepEqual(r.closed, ['data', true]);
   assert.deepEqual(r.ilsa, ['code', true]);
   assert.equal(r.effects.castLike.who, 'ansel');
-  assert.deepEqual(r.edit, [false, false], 'code choices keep their effects in code');
+  assert.ok(r.edit.length > 0 && r.edit.every(e => e === false), 'code choices keep their effects in code');
   assert.ok(!r.goodbye && !r.signon, 'the goodbye and the function-built scenes are not edited yet');
-  assert.equal(r.dataRegistry, 13);
+  assert.equal(r.dataRegistry, 48);
 });
 
 test('a converted scene\'s effects are in forms, checked as typed, and changing one is a change to the file', async () => {
@@ -139,12 +139,12 @@ test('what the editor writes for a hired scene is a file the game takes, and a b
   await g.done();
   assert.deepEqual(r, { warnings: [], title: 'Exported' });
   const tmp = require('node:path').join(require('node:os').tmpdir(), `hired-import-${process.pid}.js`);
-  require('node:fs').writeFileSync(tmp, 'const SCENE_OVERRIDES = {"cast:cato:intro":{"title":"Imported","when":{"day":3},"choices":{"0":{"next":"port-mars-sky","effects":{"castLike":{"who":"nobody","n":1,"memory":"m"}}}}},"cast:ines:intro":{"choices":{"0":{"effects":{"credits":1}}}}};\nconst NEW_SCENES = [];\n');
+  require('node:fs').writeFileSync(tmp, 'const SCENE_OVERRIDES = {"cast:cato:intro":{"title":"Imported","when":{"day":3},"choices":{"0":{"next":"port-mars-sky","effects":{"castLike":{"who":"nobody","n":1,"memory":"m"}}}}},"cast:ines:meet":{"choices":{"0":{"effects":{"credits":1}}}}};\nconst NEW_SCENES = [];\n');
   await reload();
   await page.setInputFiles('#import-file', tmp);
   await page.waitForSelector('#notice .notice');
   const n = await page.textContent('#notice');
-  for (const part of ['cast:cato:intro: title', 'cast:cato:intro when: a hired scene plays by its days', 'choice 1 next: a hired scene plays by its days', 'choice 1 effects: castLike nobody is not a main character', 'cast:ines:intro choice 1 effects: this choice runs code']) assert.ok(n.includes(part), `${part} in: ${n}`);
+  for (const part of ['cast:cato:intro: title', 'cast:cato:intro when: a hired scene plays by its days', 'choice 1 next: a hired scene plays by its days', 'choice 1 effects: castLike nobody is not a main character', 'cast:ines:meet choice 1 effects: this choice runs code']) assert.ok(n.includes(part), `${part} in: ${n}`);
   require('node:fs').rmSync(tmp, { force: true });
 });
 

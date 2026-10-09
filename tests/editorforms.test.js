@@ -175,8 +175,8 @@ test('a code-written scene shows when it plays as read-only text, with no form',
 });
 
 test('a hired scene of the registry shows when it plays, and edits only what its choices let it', async () => {
-  await reload(); await select('cast:ilsa:late');
-  assert.match(await page.textContent('#detail'), /Plays 55 days after they join/);
+  await reload(); await select('cast:pilar:pivot');
+  assert.match(await page.textContent('#detail'), /Plays 70 days after they join/);
   assert.equal(await page.locator('#detail [data-add="when"], #detail [data-rnext]').count(), 0, 'it plays by its days, not by conditions');
   assert.equal(await page.locator('#detail [data-add]').count(), 0, 'its choices run code, so no effects form');
   assert.ok(await page.locator('#detail #f-title, #detail #f-c0\\.result').count() >= 2, 'its words are editable');

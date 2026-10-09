@@ -80,10 +80,11 @@ CAPTAINS.hester = {
           G.state.credits -= 400; captainLike(3, 'You lent me four hundred when the fund was short.'); captainFlag('lent');
           return 'You push four hundred across the table. She looks at it for a long time, and then writes it in the notebook, with the date and a figure beside it. "Four hundred and ten," she says, "the day you leave this ship."';
         } },
-        { label: 'Tell her it is not your place', run() {
-          captainLike(0, 'You said it was not your place to lend.');
-          return '"It is not," she says, and for a moment she looks almost relieved. "Thank you for knowing it." She turns the notebook round and goes on with the figures, and you go back to your watch. The payment is made on the first. You never learn how.';
-        } },
+        {
+          label: 'Tell her it is not your place',
+          effects: { captainLike: { n: 0, memory: 'You said it was not your place to lend.' } },
+          result: '"It is not," she says, and for a moment she looks almost relieved. "Thank you for knowing it." She turns the notebook round and goes on with the figures, and you go back to your watch. The payment is made on the first. You never learn how.',
+        },
       ],
     },
     secret: {
@@ -97,14 +98,16 @@ CAPTAINS.hester = {
             'counted what I am from it." She turns a page. "Cato knows. You are the second. I am telling you because you have kept the books straight, ' +
             'and because I would rather you heard it from me."'),
         choices: [
-          { label: 'Say you will keep it to yourself', run() {
-            captainLike(2, 'You said you would keep the bank to yourself.'); captainFlag('secretKnown');
-            return 'You say you will. She nods, and closes the notebook, and holds it a moment with both hands. "Thank you," she says. It is the first time you have heard her say it without a number after it.';
-          } },
-          { label: 'Ask how much she still owes', run() {
-            captainLike(1, 'You asked how much I owed, and did not flinch.'); captainFlag('secretKnown');
-            return '"Thirty-eight thousand, and some of it is interest," she says, and does not hesitate. "Eleven good runs, if the market holds. I have counted it a good many times."';
-          } },
+          {
+            label: 'Say you will keep it to yourself',
+            effects: { captainLike: { n: 2, memory: 'You said you would keep the bank to yourself.' }, captainFlag: 'secretKnown' },
+            result: 'You say you will. She nods, and closes the notebook, and holds it a moment with both hands. "Thank you," she says. It is the first time you have heard her say it without a number after it.',
+          },
+          {
+            label: 'Ask how much she still owes',
+            effects: { captainLike: { n: 1, memory: 'You asked how much I owed, and did not flinch.' }, captainFlag: 'secretKnown' },
+            result: '"Thirty-eight thousand, and some of it is interest," she says, and does not hesitate. "Eleven good runs, if the market holds. I have counted it a good many times."',
+          },
         ],
       },
       found: {
@@ -116,14 +119,16 @@ CAPTAINS.hester = {
             'You hear her in the passage. She comes in, and sees the letter, and sees you, and her face does not change at all. "Sit down," she says. ' +
             '"That was not for you."'),
         choices: [
-          { label: 'Say you did not read it', run() {
-            captainLike(-2, 'You said you had not read the bank\'s letter, and you had.'); captainFlag('secretKnown'); captainFlag('secretAngry');
-            return '"The tin was open and the letter was face up," she says. "You read it, and you have told me you did not, and I will remember both." She takes the letter, and puts it in her breast pocket, and goes out.';
-          } },
-          { label: 'Say you read it, and will say nothing', run() {
-            captainLike(0, 'You said you had read the bank\'s letter, and would say nothing.'); captainFlag('secretKnown'); captainFlag('secretAngry');
-            return 'She is angry, and she says so. "It was not for you," she says again. Then, more quietly: "But you told me. I will put that in the other column." She takes the letter, and goes.';
-          } },
+          {
+            label: 'Say you did not read it',
+            effects: { captainLike: { n: -2, memory: 'You said you had not read the bank\'s letter, and you had.' }, captainFlag: ['secretKnown', 'secretAngry'] },
+            result: '"The tin was open and the letter was face up," she says. "You read it, and you have told me you did not, and I will remember both." She takes the letter, and puts it in her breast pocket, and goes out.',
+          },
+          {
+            label: 'Say you read it, and will say nothing',
+            effects: { captainLike: { n: 0, memory: 'You said you had read the bank\'s letter, and would say nothing.' }, captainFlag: ['secretKnown', 'secretAngry'] },
+            result: 'She is angry, and she says so. "It was not for you," she says again. Then, more quietly: "But you told me. I will put that in the other column." She takes the letter, and goes.',
+          },
         ],
       },
     },

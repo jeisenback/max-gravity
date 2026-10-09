@@ -61,7 +61,7 @@ test('the hired chapter\'s code-written scenes are listed as code, and say where
   assert.match(late.text, /The fund has been short every quarter/);
   assert.equal(late.belongs, "ilsa (first officer)");
   assert.match(late.codeNote, /choices run code/);
-  assert.ok(late.choices.length > 0 && late.choices.every(c => c.label && c.result === ''));
+  assert.ok(late.choices.length > 0 && late.choices.every(c => c.label) && late.choices.some(c => c.result === ''), 'a choice that runs code has no result of its own');
   assert.equal(row('cast:ines:meet').where, 'port');
   assert.ok(row('cast:cato:late:closed'), 'a closed reading is its own row');
   // A text that reads the hull and the medic cannot be read without a game, and says so.
@@ -118,7 +118,8 @@ test('the filters narrow by where, by source and by data or code', async () => {
   assert.deepEqual((await filter({ file: 'js/stories/ice-strike.js' })).every(id => row(id).file === 'js/stories/ice-strike.js'), true);
   const code = await filter({ kind: 'code' });
   assert.ok(code.includes('cast:ilsa:late') && !code.includes('port-mars-front'));
-  assert.deepEqual(await filter({ kind: 'data', file: 'js/cast.js' }), [], 'filters combine');
+  const castData = await filter({ kind: 'data', file: 'js/cast.js' });
+  assert.ok(castData.includes('cast:ines:intro') && !castData.includes('cast:ines:meet') && castData.every(id => row(id).kind === 'data' && row(id).file === 'js/cast.js'), 'filters combine');
 });
 
 test('the page shows the rows, opens a scene to read it, and filters as you type', async () => {

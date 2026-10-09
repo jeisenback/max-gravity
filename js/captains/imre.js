@@ -73,18 +73,20 @@ CAPTAINS.imre = {
           'signed at the wrong office. The inspector is polite and writes it down. "A four hundred fine, or a correction order," the inspector says. ' +
           'Captain Sato looks at the form, and at Pilar, who is not looking at them. The renewal was hers to file. Nobody has said so.'),
       choices: [
-        { label: 'Say you took the form to the wrong office', run() {
-          captainLike(-1, 'You said you filed the renewal at the wrong office, and I do not think you did.'); castLike('pilar', 3, 'You took the blame for my renewal.'); captainFlag('covered');
-          return ('You say it. Captain Sato looks at you, and then at the form, and enters it, because it is what has been said. The correction order ' +
+        {
+          label: 'Say you took the form to the wrong office',
+          effects: { captainLike: { n: -1, memory: 'You said you filed the renewal at the wrong office, and I do not think you did.' }, castLike: { who: 'pilar', n: 3, memory: 'You took the blame for my renewal.' }, captainFlag: 'covered' },
+          result: 'You say it. Captain Sato looks at you, and then at the form, and enters it, because it is what has been said. The correction order ' +
               'is yours. Pilar says nothing until the inspector has gone, and then says, quietly, "I will not forget that." Captain Sato says nothing ' +
-              'at all, and you suspect that is because Captain Sato knows.');
-        } },
-        { label: 'Let the captain answer', run() {
-          captainLike(1, 'You let me answer for the renewal.'); castLike('pilar', -1, 'You let the captain answer for my renewal.');
-          return ('You say nothing. Captain Sato takes the correction order, and signs for it, and the inspector goes. "The renewal was filed at the ' +
+              'at all, and you suspect that is because Captain Sato knows.',
+        },
+        {
+          label: 'Let the captain answer',
+          effects: { captainLike: { n: 1, memory: 'You let me answer for the renewal.' }, castLike: { who: 'pilar', n: -1, memory: 'You let the captain answer for my renewal.' } },
+          result: 'You say nothing. Captain Sato takes the correction order, and signs for it, and the inspector goes. "The renewal was filed at the ' +
               'wrong office," Captain Sato says to the empty galley, in the voice of a person reading it into the record. "It is entered as an error ' +
-              'of the ship. It is not entered by whom." Pilar looks at the deck for some time.');
-        } },
+              'of the ship. It is not entered by whom." Pilar looks at the deck for some time.',
+        },
       ],
     },
     secret: {
@@ -95,14 +97,16 @@ CAPTAINS.imre = {
             'discharge," they say. "Eleven years ago. For an order I did not give and a report I did not write. I have kept every log since, in case ' +
             'anyone asks." They look at the jacket. "Pilar knows. You are the second. I would like it noted that I told you."'),
         choices: [
-          { label: 'Say it is noted', run() {
-            captainLike(2, 'You said it was noted.'); captainFlag('secretKnown');
-            return '"Noted," you say. Captain Sato looks at you, and the corner of their mouth moves once. They put the jacket back on. It is the same jacket, and it is not.';
-          } },
-          { label: 'Ask what the order was', run() {
-            captainLike(1, 'You asked what the order was.'); captainFlag('secretKnown');
-            return 'They tell you, in order, with the date and the hour and the name of the officer who gave it. It takes four minutes. It is the longest you have heard them speak. At the end of it they say, "That is the whole of it," and it is.';
-          } },
+          {
+            label: 'Say it is noted',
+            effects: { captainLike: { n: 2, memory: 'You said it was noted.' }, captainFlag: 'secretKnown' },
+            result: '"Noted," you say. Captain Sato looks at you, and the corner of their mouth moves once. They put the jacket back on. It is the same jacket, and it is not.',
+          },
+          {
+            label: 'Ask what the order was',
+            effects: { captainLike: { n: 1, memory: 'You asked what the order was.' }, captainFlag: 'secretKnown' },
+            result: 'They tell you, in order, with the date and the hour and the name of the officer who gave it. It takes four minutes. It is the longest you have heard them speak. At the end of it they say, "That is the whole of it," and it is.',
+          },
         ],
       },
       found: {
@@ -111,14 +115,16 @@ CAPTAINS.imre = {
             'stamped in red at the foot of the second page: OTHER THAN HONORABLE. Captain Sato\'s name is on every line. You have read the stamp ' +
             'before you understand it is not yours to read. The locker door closes behind you. "That is not on the manifest," Captain Sato says.'),
         choices: [
-          { label: 'Say you were looking for the manual', run() {
-            captainLike(-1, 'You said you were looking for a manual, and you had read the record.'); captainFlag('secretKnown'); captainFlag('secretAngry');
-            return '"The manual is on the second shelf," Captain Sato says, and holds the door. "The record is not a manual. You read it. It is noted that you did, and that you said otherwise." The door closes on the drawer. It will be a long time before you are given another key.';
-          } },
-          { label: 'Say you will not mention it', run() {
-            captainLike(0, 'You said you would not mention the record.'); captainFlag('secretKnown'); captainFlag('secretAngry');
-            return 'Captain Sato does not move. "It is not a secret," they say. "It is a record. It is accurate." They close the drawer. "Noted that you will not mention it." The jacket, on its hook, is the only thing in the locker that has not moved.';
-          } },
+          {
+            label: 'Say you were looking for the manual',
+            effects: { captainLike: { n: -1, memory: 'You said you were looking for a manual, and you had read the record.' }, captainFlag: ['secretKnown', 'secretAngry'] },
+            result: '"The manual is on the second shelf," Captain Sato says, and holds the door. "The record is not a manual. You read it. It is noted that you did, and that you said otherwise." The door closes on the drawer. It will be a long time before you are given another key.',
+          },
+          {
+            label: 'Say you will not mention it',
+            effects: { captainLike: { n: 0, memory: 'You said you would not mention the record.' }, captainFlag: ['secretKnown', 'secretAngry'] },
+            result: 'Captain Sato does not move. "It is not a secret," they say. "It is a record. It is accurate." They close the drawer. "Noted that you will not mention it." The jacket, on its hook, is the only thing in the locker that has not moved.',
+          },
         ],
       },
     },

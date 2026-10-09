@@ -226,7 +226,10 @@ CAST.cato.round = () => {
         'looking for their bunk. Walk with me. It is not far. It feels far, the first time."'),
     choices: [
       { label: 'Walk it with him', run: () => walk.join('</p><p>') },
-      { label: 'Another time', run: () => '"Fair enough," Cato says. "The watch bill is on the galley wall. Everything else you will find by walking into it, and I will be somewhere nearby when you do." He takes the mug back, which seems to be the point of the mug.' },
+      {
+        label: 'Another time',
+        result: '"Fair enough," Cato says. "The watch bill is on the galley wall. Everything else you will find by walking into it, and I will be somewhere nearby when you do." He takes the mug back, which seems to be the point of the mug.',
+      },
     ],
   };
 };
@@ -248,5 +251,8 @@ CAST.cato.firstRaid = {
       'goes to the lock."</p><p>He points at the screen. "One choice has your post in front of it, in brackets. That one is yours. It is the thing you ' +
       'can do and nobody else aboard can. It is also the one that can go wrong on you. You are hurt, and your work counts a level lower for some days. ' +
       'I had it once, in the hold. I wore a glove for eleven days."'),
-  choices: [{ label: 'Take your post', run: () => 'He lets go of the hatch frame. "Choose what you would choose," he says. "I will be behind you."' }],
+  choices: [{
+    label: 'Take your post',
+    result: 'He lets go of the hatch frame. "Choose what you would choose," he says. "I will be behind you."',
+  }],
 };

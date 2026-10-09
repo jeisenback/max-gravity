@@ -68,10 +68,11 @@ CAPTAINS.dov = {
           'working on a fourth. He turns to you in the middle of it. "You have an honest face," he says. "Would you tell her we are good for it? Just ' +
           'that. Or if you had three hundred... no. No. Tell her we are good for it." The harbourmaster looks at you.'),
       choices: [
-        { label: 'Vouch for him', run() {
-          captainLike(2, 'You told the harbourmaster we were good for it.');
-          return 'You say it. Your voice is steadier than you expected. She looks at the captain, and at the fund board, and at you, and puts the stamp on the form. "Once," she says. He is crying, and laughing at himself for it. He does not forget it.';
-        } },
+        {
+          label: 'Vouch for him',
+          effects: { captainLike: { n: 2, memory: 'You told the harbourmaster we were good for it.' } },
+          result: 'You say it. Your voice is steadier than you expected. She looks at the captain, and at the fund board, and at you, and puts the stamp on the form. "Once," she says. He is crying, and laughing at himself for it. He does not forget it.',
+        },
         { label: 'Cover three hundred from your savings', ...gated(needCr(300)), run() {
           G.state.credits -= 300; captainLike(3, 'You covered the fuel when the fund was short.'); captainFlag('lent');
           return 'You pay it at the window, in your own cash. He stands still beside you. "I will pay you back," he says, and for once does not tell a story about it. He writes the figure on the back of his hand.';
@@ -86,14 +87,16 @@ CAPTAINS.dov = {
             'dock family in a bad year. "I have been taking it out of the fund," he says. "Not for me. Well. Mostly not for me. It does not balance. ' +
             'It has not balanced in two years, and every quarter it does, and I do not know why." He looks at the book. "I am afraid to ask."'),
         choices: [
-          { label: 'Tell him to ask Ilsa', run() {
-            captainLike(2, 'You told me to ask Ilsa.'); captainFlag('secretKnown');
-            return 'He is quiet. "I know," he says. "That is the trouble. I know exactly who it is."';
-          } },
-          { label: 'Say you will say nothing', run() {
-            captainLike(2, 'You said you would say nothing about the book.'); captainFlag('secretKnown');
-            return 'You say you will. He closes the box and holds it in both hands for a while, like something warm. "Thank you," he says. For once he does not follow it with a story.';
-          } },
+          {
+            label: 'Tell him to ask Ilsa',
+            effects: { captainLike: { n: 2, memory: 'You told me to ask Ilsa.' }, captainFlag: 'secretKnown' },
+            result: 'He is quiet. "I know," he says. "That is the trouble. I know exactly who it is."',
+          },
+          {
+            label: 'Say you will say nothing',
+            effects: { captainLike: { n: 2, memory: 'You said you would say nothing about the book.' }, captainFlag: 'secretKnown' },
+            result: 'You say you will. He closes the box and holds it in both hands for a while, like something warm. "Thank you," he says. For once he does not follow it with a story.',
+          },
         ],
       },
       found: {
@@ -103,14 +106,16 @@ CAPTAINS.dov = {
             'still looking at them when Captain Adair comes in. He sees the page, and what it is, and for the first time since you came aboard he has ' +
             'nothing to say.'),
         choices: [
-          { label: 'Close the book and say nothing', run() {
-            captainLike(0, 'You closed the fund book and said nothing.'); captainFlag('secretKnown');
-            return 'You close it, and put it where you found it. He watches you do it. "Thank you," he says, quietly, and goes out. You hear him in the galley a minute later, talking to someone, too brightly.';
-          } },
-          { label: 'Ask him what the initials are', run() {
-            captainLike(-1, 'You asked me about the initials in the fund book.'); captainFlag('secretKnown');
-            return '"Ilsa," he says, with difficulty. "Ask Ilsa. Please. Do not ask me." He is not angry. He looks like a man who has been found in a room he thought was empty, and does not know where to put his hands.';
-          } },
+          {
+            label: 'Close the book and say nothing',
+            effects: { captainLike: { n: 0, memory: 'You closed the fund book and said nothing.' }, captainFlag: 'secretKnown' },
+            result: 'You close it, and put it where you found it. He watches you do it. "Thank you," he says, quietly, and goes out. You hear him in the galley a minute later, talking to someone, too brightly.',
+          },
+          {
+            label: 'Ask him what the initials are',
+            effects: { captainLike: { n: -1, memory: 'You asked me about the initials in the fund book.' }, captainFlag: 'secretKnown' },
+            result: '"Ilsa," he says, with difficulty. "Ask Ilsa. Please. Do not ask me." He is not angry. He looks like a man who has been found in a room he thought was empty, and does not know where to put his hands.',
+          },
         ],
       },
     },

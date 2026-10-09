@@ -63,14 +63,16 @@ CAST.ilsa = {
           'always, the rest. You will find the ship runs. Nobody will tell you why. I am telling you, so that you know whom to ask." She turns a page. ' +
           '"Ask me anything. Ask it quietly."'),
       choices: [
-        { label: 'Ask how long she has had the night watch', run() {
-          castLike('ilsa', 2, 'You asked how long I had had the night watch.');
-          return '"Four years," she says. "Six months of it by choice." She almost laughs, and does not.';
-        } },
-        { label: 'Offer to take an hour of it', run() {
-          castLike('ilsa', 1, 'You offered to take an hour of the night watch.');
-          return '"No," she says, and then, at once, "Yes. The second hour. Do not touch the board."';
-        } },
+        {
+          label: 'Ask how long she has had the night watch',
+          effects: { castLike: { who: 'ilsa', n: 2, memory: 'You asked how long I had had the night watch.' } },
+          result: '"Four years," she says. "Six months of it by choice." She almost laughs, and does not.',
+        },
+        {
+          label: 'Offer to take an hour of it',
+          effects: { castLike: { who: 'ilsa', n: 1, memory: 'You offered to take an hour of the night watch.' } },
+          result: '"No," she says, and then, at once, "Yes. The second hour. Do not touch the board."',
+        },
       ],
     },
     mid1: {
@@ -80,14 +82,16 @@ CAST.ilsa = {
           'wonderful, and tell the galley, and then he would sit on the bridge by himself at night, and I would have taken it from him. I do not take ' +
           'things. I keep them." She lays a pencil across the form. "Tell me I am being a fool."'),
       choices: [
-        { label: 'Tell her she is being a fool', run() {
-          castLike('ilsa', 1, 'You told me I was being a fool.');
-          return '"Good," she says, and does not smile, and does not sign. "Everyone else tells me I am being noble. I find that harder to bear."';
-        } },
-        { label: 'Tell her it is hers to decide, and can wait', run() {
-          castLike('ilsa', 2, 'You said it was mine to decide, and could wait.'); castFlag('ilsa', 'command');
-          return '"It can wait," she says. "It has been waiting. It is rather good at it." She puts the form back in the drawer, not far back.';
-        } },
+        {
+          label: 'Tell her she is being a fool',
+          effects: { castLike: { who: 'ilsa', n: 1, memory: 'You told me I was being a fool.' } },
+          result: '"Good," she says, and does not smile, and does not sign. "Everyone else tells me I am being noble. I find that harder to bear."',
+        },
+        {
+          label: 'Tell her it is hers to decide, and can wait',
+          effects: { castLike: { who: 'ilsa', n: 2, memory: 'You said it was mine to decide, and could wait.' }, castFlag: { who: 'ilsa', flag: 'command' } },
+          result: '"It can wait," she says. "It has been waiting. It is rather good at it." She puts the form back in the drawer, not far back.',
+        },
       ],
     },
     mid2: {
@@ -97,18 +101,20 @@ CAST.ilsa = {
           'passage: the second cabin\'s air handler is down, nobody sleeps there until it is fixed, and she has not had the hours to fix it. They have ' +
           'both told you, and neither has told the other.'),
       choices: [
-        { label: 'Put the family in the second cabin, as the captain said', run() {
-          castLike('ilsa', -1, 'You put the family in the cabin against my order.'); captainLike(2, 'You put the family in the second cabin as I said.');
-          return ('You put the family in the second cabin. The child sleeps, and the cat sleeps, and the air handler holds until morning and then ' +
+        {
+          label: 'Put the family in the second cabin, as the captain said',
+          effects: { castLike: { who: 'ilsa', n: -1, memory: 'You put the family in the cabin against my order.' }, captainLike: { n: 2, memory: 'You put the family in the second cabin as I said.' } },
+          result: 'You put the family in the second cabin. The child sleeps, and the cat sleeps, and the air handler holds until morning and then ' +
               'does not, and you and Ilsa are up until four with the panel off. She does not say a word about it. In the morning the captain thanks ' +
-              'everyone by name, and hers is the last on the list.');
-        } },
-        { label: 'Keep the cabin shut, as Ilsa said', run() {
-          castLike('ilsa', 2, 'You kept the cabin shut on my word.'); captainLike(-1, 'You kept the second cabin shut against my order.');
-          return ('You keep the cabin shut. The family sleeps in the galley, and the child is delighted, and the captain is the opposite of angry. ' +
+              'everyone by name, and hers is the last on the list.',
+        },
+        {
+          label: 'Keep the cabin shut, as Ilsa said',
+          effects: { castLike: { who: 'ilsa', n: 2, memory: 'You kept the cabin shut on my word.' }, captainLike: { n: -1, memory: 'You kept the second cabin shut against my order.' } },
+          result: 'You keep the cabin shut. The family sleeps in the galley, and the child is delighted, and the captain is the opposite of angry. ' +
               '"Of course," he says. "Of course. The air." He tells the galley, and by midnight it has become a story about Ilsa, with a good ending. ' +
-              'She does not look pleased.');
-        } },
+              'She does not look pleased.',
+        },
       ],
     },
     late: {
@@ -123,10 +129,11 @@ CAST.ilsa = {
           G.state.credits -= 200; castLike('ilsa', 2, 'You offered to put something into the fund.');
           return 'She looks at the two hundred for a long time. "No," she says. Then: "Yes. Not for him. For me. So that it is not only me." She writes it in the book, in a column of its own.';
         } },
-        { label: 'Ask what she needs', run() {
-          castLike('ilsa', 2, 'You asked me what I needed.'); castFlag('ilsa', 'asked');
-          return 'Her face does something complicated. "Nobody has asked me that in four years," she says. "I do not know. I will tell you when I do."';
-        } },
+        {
+          label: 'Ask what she needs',
+          effects: { castLike: { who: 'ilsa', n: 2, memory: 'You asked me what I needed.' }, castFlag: { who: 'ilsa', flag: 'asked' } },
+          result: 'Her face does something complicated. "Nobody has asked me that in four years," she says. "I do not know. I will tell you when I do."',
+        },
       ],
       // Below friendly she keeps it to herself, and the confidence (the `asked` flag) is not offered.
       closed: {
@@ -136,7 +143,10 @@ CAST.ilsa = {
             'book with the edge of the table. "It is nothing you have done. I do not know you well enough to hand you a thing like that. If you are still ' +
             'aboard in a month, ask me."'),
         choices: [
-          { label: 'Say it can wait', run: () => '"It can," she says, and slides the book into the drawer under the table and locks it. "Thank you for not asking which books."' },
+          {
+            label: 'Say it can wait',
+            result: '"It can," she says, and slides the book into the drawer under the table and locks it. "Thank you for not asking which books."',
+          },
         ],
       },
     },

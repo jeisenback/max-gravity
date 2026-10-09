@@ -333,19 +333,27 @@ test('the new scenes in the file are added once, when the first game starts', as
 
 // ---------- the hired chapter's scenes as data (#342) ----------
 
-// The scenes whose choices were turned from code into data; the pin (tests/hiredpin.test.js) shows they play as they did.
-const CONVERTED = ['cast:ansel:intro', 'cast:ansel:mid1', 'cast:ansel:mid2', 'cast:ansel:late', 'cast:pilar:intro', 'cast:pilar:mid1', 'cast:pilar:mid2', 'cast:pilar:late',
-  'cast:cato:intro', 'cast:cato:mid1', 'cast:cato:mid2', 'cast:cato:late', 'cast:cato:late:closed'];
+// The scenes whose choices were turned from code into data (the first officers, then the rest of the B2 scenes of #459); the pin (tests/hiredpin.test.js) shows they play as they did.
+const CONVERTED = [
+  'cast:ansel:intro', 'cast:ansel:mid1', 'cast:ansel:mid2', 'cast:ansel:late', 'cast:pilar:intro', 'cast:pilar:mid1', 'cast:pilar:mid2',
+  'cast:pilar:late', 'cast:cato:intro', 'cast:cato:mid1', 'cast:cato:mid2', 'cast:cato:late', 'cast:cato:late:closed', 'cast:ines:intro',
+  'cast:ines:mid1', 'cast:ines:mid2', 'cast:ines:late', 'cast:tomas:intro', 'cast:tomas:late', 'cast:yelena:intro', 'cast:yelena:mid1',
+  'cast:yelena:mid2', 'cast:yelena:late', 'cast:ruben:intro', 'cast:ruben:mid2', 'cast:ruben:late', 'cast:bexa:intro', 'cast:bexa:mid2',
+  'cast:bexa:late', 'cast:pax:intro', 'cast:pax:mid1', 'cast:pax:mid2', 'cast:pax:late', 'cast:ilsa:intro', 'cast:ilsa:mid1', 'cast:ilsa:mid2',
+  'cast:ilsa:late:closed', 'cast:pilar:late:closed', 'cast:ansel:late:closed', 'captain:hester:secret:confide', 'captain:hester:secret:found',
+  'captain:dov:secret:confide', 'captain:dov:secret:found', 'captain:imre:trouble', 'captain:imre:secret:confide', 'captain:imre:secret:found',
+  'captain:zoya:secret:confide', 'captain:zoya:secret:found'
+];
 
-test('the first group of hired scenes is data, and the rest of the chapter is untouched', async () => {
+test('the converted hired scenes are data, and the rest of the chapter is untouched', async () => {
   const g = await open({ scope: 'full' });
   const r = await g.ev(ids => {
     const by = Object.fromEntries(hiredSceneRegistry().filter(e => e.scene).map(e => [e.id, e.scene]));
     const data = id => by[id].choices.every(c => !c.run && typeof c.result === 'string' && c.label);
-    return { notData: ids.filter(id => !data(id)), pivots: ['cast:ansel:pivot', 'cast:pilar:pivot', 'cast:cato:pivot'].map(id => by[id].choices.some(c => c.run)), others: ['cast:ines:intro', 'captain:hester:secret:confide'].map(id => by[id].choices.some(c => c.run)) };
+    return { notData: ids.filter(id => !data(id)), pivots: ['cast:ansel:pivot', 'cast:pilar:pivot', 'cast:cato:pivot'].map(id => by[id].choices.some(c => c.run)), others: ['cast:ines:meet', 'captain:hester:goodbye', 'cast:tomas:mid1'].map(id => by[id].choices.some(c => c.run)) };
   }, CONVERTED);
   await g.done();
-  assert.deepEqual(r, { notData: [], pivots: [true, true, true], others: [true, true] });
+  assert.deepEqual(r, { notData: [], pivots: [true, true, true], others: [true, true, true] });
 });
 
 test('a choice written as data plays as its closure did, and a choice with run() is left alone', async () => {
@@ -418,7 +426,7 @@ test('an override for a hired scene the game would not take is left out, with on
     const warnings = [], real = console.warn; console.warn = m => warnings.push(m);
     const clean = cleanOverrides({
       'cast:cato:intro': { title: 'Kept', when: { day: 3 }, choices: { 0: { label: 'Kept label', when: { credits: 1 }, next: 'port-mars-sky' } } },
-      'cast:ines:intro': { choices: { 0: { effects: { credits: 5 }, result: 'Kept line.' } } },
+      'cast:ines:meet': { choices: { 0: { effects: { credits: 5 }, result: 'Kept line.' } } },
       'cast:cato:mid1': { choices: { 0: { effects: { castLike: { who: 'nobody', n: 1, memory: 'm' } }, label: 'Kept too' } } },
       'cast:nobody:intro': { title: 'x' },
     });
@@ -426,7 +434,7 @@ test('an override for a hired scene the game would not take is left out, with on
     return { clean, warnings };
   });
   await g.done();
-  assert.deepEqual(r.clean, { 'cast:cato:intro': { title: 'Kept', choices: { 0: { label: 'Kept label' } } }, 'cast:ines:intro': { choices: { 0: { result: 'Kept line.' } } }, 'cast:cato:mid1': { choices: { 0: { label: 'Kept too' } } } });
+  assert.deepEqual(r.clean, { 'cast:cato:intro': { title: 'Kept', choices: { 0: { label: 'Kept label' } } }, 'cast:ines:meet': { choices: { 0: { result: 'Kept line.' } } }, 'cast:cato:mid1': { choices: { 0: { label: 'Kept too' } } } });
   assert.equal(r.warnings.length, 1);
   for (const part of ['has no "when"', 'choice 0 has no "when"', 'choice 0 has no "next"', 'runs code, so its effects are not edited', 'effects left out: effect castLike nobody is not a main character', 'unknown scene "cast:nobody:intro"']) assert.ok(r.warnings[0].includes(part), `${part} in ${r.warnings[0]}`);
 });

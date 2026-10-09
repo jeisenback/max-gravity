@@ -195,7 +195,7 @@ test('their scenes move opinion and experience, and what is yours is your saving
     const st = G.state, ines = person('c:ines'), tomas = person('c:tomas');
     const out = {};
     out.intro = castScene('ines', CAST.ines.scenes.intro).personal;
-    CAST.ines.scenes.intro.choices[1].run(); out.ines = { opinion: ines.opinion, xp: ines.xp.pilot, mem: ines.memories.length };
+    dataChoice(CAST.ines.scenes.intro.choices[1]).run(); out.ines = { opinion: ines.opinion, xp: ines.xp.pilot, mem: ines.memories.length };
     // The loan comes out of your savings, in a burn, with the ship's funds untouched.
     st.credits = 500; st.hired.fund = 4000; uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.dialog = null; G.transit.event = null;
     openEvent(castScene('tomas', CAST.tomas.scenes.mid1));
@@ -570,7 +570,7 @@ test('the earlier scenes set what the pivots count, and calling them off costs o
   await ev(helpers);
   const r = await ev(() => {
     start({ mode: 'hired', post: 'gunner' }); postsOnly();
-    CAST.ines.scenes.mid1.choices[0].run(); CAST.tomas.scenes.mid2.choices[0].run();
+    dataChoice(CAST.ines.scenes.mid1.choices[0]).run(); dataChoice(CAST.tomas.scenes.mid2.choices[0]).run();
     const out = { practiced: !!castRec('ines').flags.practiced, plan: !!castRec('tomas').flags.plan };
     CAST.tomas.scenes.mid2.choices[1].run && (castRec('tomas').flags = {});
     for (const key of ['ines', 'tomas']) { const p = person('c:' + key), before = p.opinion; CAST[key].scenes.pivot.choices[2].run(); out[key] = { delta: p.opinion - before, dead: castDead(key), marks: (castRec(key).marks || []).length }; }
