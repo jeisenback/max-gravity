@@ -164,67 +164,68 @@ function dropPassenger(m, location) {
 const PAX_EVENTS = [
   { weight: 3, when: p => p.secret === 'contraband', make: (p, m) => ({
     title: 'Customs Inspection',
-    text: (`A customs cutter hails for a cargo scan, and its searchlight comes across the hull plate by plate. The officer on the open band reads your registry ` +
-        `back to you in a flat voice. ${p.first} is at the hold hatch with one hand on the frame. "Captain," ${p.first} says. "Stall them. Anything. ` +
-        `I will explain at the next port, and you will not like it, but I will explain."`),
+    text: (`The customs cutter's searchlight comes across the hull plate by plate. "Ship, this is Inspection," says the voice on the open band. "Hold your ` +
+        `burn and open the hold to a scan. It takes a quarter hour, and we do it twice if there is a reason to." ${p.first} is at the hold hatch with one hand ` +
+        `on the frame. "Captain." ${p.first} says it low. "Whatever you can do. Stall them. I will explain at the next port, and you will not like it, but I will explain."`),
     choices: [
       { label: 'Stall them', run() {
         if (Math.random() < 0.6) {
           m.bonus += 1500 * p.wealth;
           like(p, 3, 'You covered for me with customs.');
-          return (`You give the officer a sensor fault, and then the sensor fault's paperwork, and then three forms in the wrong order that she has to send back. ` +
-              `It takes forty-one minutes. Her intercept window closes at forty-two, and the cutter peels away with a burst of static. ${p.first} sits ` +
-              `down on a crate. At the airlock ${p.first} puts a folded note in your hand and does not say what it is for.`);
+          return (`"Inspection, the hold scanner has a fault," you say, and then you have the fault's maintenance log, and three forms in the wrong order that she has ` +
+              `to send back. "That is your problem, captain," the officer says. "It will be mine when I log it," you say. It takes forty-one minutes. Her intercept ` +
+              `window closes at forty-two, and the cutter peels away with a burst of static. ${p.first} sits down on a crate. At the airlock ${p.first} puts a folded ` +
+              `note in your hand and does not say what it is for.`);
         }
         G.state.credits = Math.max(0, G.state.credits - 2000);
         changeRep(localGov(), -5);
         like(p, 1, 'You tried to cover for me with customs.');
-        return (`It does not hold. The inspectors board inside the hour and find ${p.first}'s stash behind a false panel in the second bay, in under ten ` +
-            `minutes. You pay a 2,000 cr fine, which the form calls "negligent inspection". ${p.first} says nothing. At supper the only sound ` +
-            `in the galley is cutlery.`);
+        return (`"That is the second form I have asked for," the officer says. "For the third I come aboard." She comes aboard. They find ${p.first}'s stash ` +
+            `behind a false panel in the second bay, in under ten minutes. "Negligent inspection," she says, writing it, "two thousand credits." You pay it. At ` +
+            `supper the only sound in the galley is cutlery.`);
       } },
       { role: 'slicer', label: '[{crew}] Spoof the cargo manifest', run() {
         if (Math.random() < slicerOdds()) {
           m.bonus += 1500 * p.wealth;
           like(p, 3, 'Your slicer hid me from customs.');
-          return `{crew} sits down at the console and rewrites the manifest, the cargo record and the ship's last six ports in about ninety seconds. The scan crosses the hold and reads tidy crates and honest paperwork. ${p.first} watches from the hatch, looks at you, and then at {crew}.`;
+          return `{crew} sits down at the console. "Ninety seconds," {crew} says, "and do not talk to me." In ninety seconds the manifest, the cargo record and the ship's last six ports are rewritten. The scan crosses the hold and reads tidy crates and honest paperwork. ${p.first} watches from the hatch, looks at you, and then at {crew}.`;
         }
         G.state.credits = Math.max(0, G.state.credits - 2000);
-        return '{crew}\'s spoof fails a checksum on one line of the manifest, and the scanner lights. You pay a 2,000 cr fine. {crew} spends the next hour explaining that it was one digit.';
+        return '{crew}\'s spoof fails a checksum on one line of the manifest, and the scanner lights. You pay a 2,000 cr fine. "One digit," {crew} says, for the next hour. "It was one digit."';
       } },
       { label: `Turn ${p.first} in (+1,500 cr reward)`, run() {
         G.state.credits += 1500;
         dropPassenger(m, null);
         changeRep(localGov(), 3);
         like(p, -6, 'You turned me in to customs.');
-        return `Customs takes ${p.first} off in cuffs, with one hand on their shoulder, quietly. ${p.first} does not look back. The airlock cycles. At the galley table a cup is left half full, and nobody clears it.`;
+        return `"${p.first} ${p.last}," the officer says, once, to be sure, and customs takes ${p.first} off in cuffs with one hand on their shoulder. ${p.first} does not look back. The airlock cycles. At the galley table a cup is left half full, and nobody clears it.`;
       } },
     ] }) },
   { weight: 3, when: p => p.secret === 'wanted', make: (p, m) => ({
     title: 'Bounty Hunter',
-    text: (`A bounty hunter matches your burn, dark, with one running light that winks on and off. The voice on the channel is low. "You are carrying ` +
-        `${p.first} ${p.last}, wanted on ${p.home} for ${p.crime}. Five thousand for the handover, or I take them the hard way." In the galley ` +
-        `${p.first} sets a cup on the table and turns it a quarter turn, so that the handle faces away.`),
+    text: (`A bounty hunter matches your burn, dark, with one running light that winks on and off. "You are carrying ${p.first} ${p.last}," says the voice on ` +
+        `the channel, low and unhurried. "Wanted on ${p.home} for ${p.crime}. Five thousand for the handover. Or I come and take them, and that costs everyone ` +
+        `aboard." In the galley ${p.first} sets a cup on the table and turns it a quarter turn, so that the handle faces away.`),
     choices: [
       { label: 'Hand them over (+5,000 cr)', run() {
         G.state.credits += 5000;
         dropPassenger(m, null);
         like(p, -8, 'You sold me to a bounty hunter.');
-        return `The hunter docks, and ${p.first} goes across with one bag. At the lock ${p.first} looks back once. The credits arrive before the lock finishes cycling.`;
+        return `"Dock at my lock," the hunter says, "and keep your hands off the panel." ${p.first} goes across with one bag. At the lock ${p.first} looks back once. The credits arrive before the lock finishes cycling.`;
       } },
       { role: 'gunner', label: '[{crew}] Make them reconsider', run() {
         m.bonus += 2000;
         like(p, 4, 'You fought off a bounty hunter for me.');
-        return `{crew} puts a burst of tracer across the hunter's bow, a line of light that picks out the hull number. The hunter reconsiders. One wild shot comes back and costs you ${hurt(0.1)} points of armor. At the airlock ${p.first} pays you extra and shakes your hand hard enough to hurt.`;
+        return `{crew} puts a burst of tracer across the hunter's bow, a line of light that picks out the hull number. "That was the warning," {crew} says on the channel. "The next one has a number on it." The hunter reconsiders. One wild shot comes back and costs you ${hurt(0.1)} points of armor. At the airlock ${p.first} pays you extra and shakes your hand hard enough to hurt.`;
       } },
       { label: 'Refuse, and fight if you must', run() {
         if (Math.random() < fightOdds()) {
           m.bonus += 2000;
           like(p, 4, 'You fought off a bounty hunter for me.');
-          return `It takes a long, ugly exchange to drive the hunter off, and it costs you ${hurt(0.2)} points of armor and an antenna. That night in the galley, over a bulb of something strong, ${p.first} tells you their side of it. It takes the whole bulb.`;
+          return `It takes a long, ugly exchange to drive the hunter off, and it costs you ${hurt(0.2)} points of armor and an antenna. That night in the galley, over a bulb of something strong, ${p.first} tells you their side of it. "A bad partner and a worse lawyer," ${p.first} says, "and I did not do half of what is on the sheet." The bulb is empty before the other half.`;
         }
         like(p, 3, 'You risked your ship for me.');
-        return `The hunter hammers the hull for three minutes, ${hurt(0.4)} points of armor, and then breaks off with a curse on the channel. ${p.first}, gray in the face, holds the patch plate while you seal the worst of the breaches.`;
+        return `The hunter hammers the hull for three minutes, ${hurt(0.4)} points of armor, and then breaks off with a curse on the channel. ${p.first}, gray in the face, holds the patch plate. "Hold it flat," you say, and ${p.first} does, while you seal the worst of the breaches.`;
       } },
     ] }) },
   { weight: 3, when: p => p.secret === 'ill' || p.goal === 'medical', make: (p, m) => ({
@@ -427,15 +428,15 @@ const PAX_EVENTS = [
     ] }) },
   { weight: 1, when: p => p.traits.includes('greedy'), make: (p, m) => ({
     title: 'Card Game',
-    text: `${p.first} produces a deck of cards worn soft at the corners and shuffles it with a flourish. "A friendly game, captain," they say, smiling before the deck is square, "with a little money on it. Just to make things interesting. It is a long burn, and a man gets bored."`,
+    text: `${p.first} produces a deck worn soft at the corners and shuffles it with a flourish. "A friendly game, captain," ${p.first} says. "With a little money on it, just to make things interesting. It is a long burn, and a man gets bored." The deck is not yet square, and ${p.first} is already smiling.`,
     choices: [
       { label: `Play (500 cr stake)`, ...gated(needCr(500)), run() {
-        if (Math.random() < 0.5) { G.state.credits += 500; like(p, -1, 'You beat me at cards.'); return `You clean ${p.first} out in one long quiet hand. ${p.first} stares at the table for ten seconds. For the rest of the trip ${p.first} sits in a corner and mutters about "luck".`; }
+        if (Math.random() < 0.5) { G.state.credits += 500; like(p, -1, 'You beat me at cards.'); return `You clean ${p.first} out in one long quiet hand. ${p.first} looks at the table for ten seconds. "Luck," ${p.first} says. For the rest of the trip ${p.first} sits in a corner and mutters it at the deck.`; }
         G.state.credits -= 500;
         like(p, 1, null);
-        return `${p.first} wins in one slow hand, turning a single card over at the end. They gather the money, and for the rest of the trip they hum in the corridors and shuffle the deck where you can see it.`;
+        return `${p.first} wins in one slow hand, turning a single card over at the end. "Well," ${p.first} says, and gathers the money. "That was friendly." For the rest of the trip ${p.first} hums in the corridors and shuffles the deck where you can see it.`;
       } },
-      { label: 'Decline', run: () => 'They shrug and deal a hand of solitaire, slowly. You hear each card click down. They play it out, lose, and begin again.' },
+      { label: 'Decline', run: () => `"Suit yourself," ${p.first} says, and deals a hand of solitaire, slowly. You hear each card click down. ${p.first} plays it out, loses, and begins again.` },
     ] }) },
   { weight: 1, when: p => p.traits.includes('generous') || p.traits.includes('kind'), make: (p, m) => ({
     title: 'Gratitude',
@@ -455,15 +456,15 @@ const PAX_EVENTS = [
     ] }) },
   { weight: 1, when: p => p.traits.includes('rude'), make: (p, m) => ({
     title: 'Complaints',
-    text: (`${p.first} has a list of complaints in a neat notebook, and reads it aloud, in order, one item at a time. The bunk is too hard. The food is a ` +
-        `crime. The gravity is "insufficiently serious". The coffee tastes of pipe. Then, after a pause: "And frankly, captain, your face is not one I ` +
-        `would choose to look at for so long."`),
+    text: (`${p.first} has a list in a neat notebook, and reads it to you at the cockpit hatch, in order. "The bunk is too hard. The food is a crime. The ` +
+        `gravity is insufficiently serious. The coffee tastes of pipe." ${p.first} turns a page. "And frankly, captain, your face is not one I would choose ` +
+        `to look at for so long."`),
     choices: [
-      { label: 'Humor them', run() { like(p, 1, null); return `You make sounds of sympathy in the right places and write a few of the complaints down in a book. By the end of the hour ${p.first} has run out, and asks, more quietly, whether there is any more tea.`; } },
+      { label: 'Humor them', run() { like(p, 1, null); return `"Item one," you say, and write it in a book. "The bunk." ${p.first} reads the list again, slower, so that you can keep up. By the end of the hour ${p.first} has run out. "Is there any more tea?" ${p.first} asks.`; } },
       { label: 'Put them in their place', run() {
         m.bonus -= 300;
         like(p, -2, 'You put me in my place.');
-        return `You tell them, in a level voice, exactly what you think of their list, item by item. ${p.first} goes pale, then red, then still. They file a formal complaint, in triplicate, and it comes out of your fare. The rest of the trip is quiet, and at night you can hear the drive again.`;
+        return `"I have read your list," you say, in a level voice, "and here is what I think of it." You go item by item: the bunk is the bunk you were given, the food is the food you eat, and the gravity is the only gravity the drive makes. ${p.first} goes pale, then red, then still. A formal complaint arrives that evening, in triplicate, and the fee comes out of your fare. The rest of the trip is quiet, and at night you can hear the drive again.`;
       } },
     ] }) },
 ];
@@ -542,13 +543,13 @@ const CREW_EVENTS = {
       { label: 'Join them', run() { like(c, 2, 'You prayed with me.'); return `You kneel beside them in the dim light. For a few minutes nobody speaks. The drive hums. A pipe ticks. When it ends, you both sit a moment. "Thank you," ${c.first} says.`; } },
       { label: 'Politely decline', run() { like(c, 0, null); return `${c.first} goes to their corner. Through the thin wall you hear the low murmur of their prayer. ${c.first} prays for you anyway. You listen until it stops.`; } },
     ] }),
-  rude: c => ({ title: 'Friction', text: `${c.first} has been needling the rest of the crew for days: a jab at breakfast, a remark in the corridor, a sneer at how someone hums. Tonight in the galley a chair scrapes, and a level voice says, "Say that again." There is going to be a fight.`,
+  rude: c => ({ title: 'Friction', text: `${c.first} has been needling the rest of the crew for days: a jab at breakfast, a remark in the corridor, a sneer at how someone hums. Tonight in the galley it is the humming again. A chair scrapes. "Say that again," says a level voice. "I said it was flat," ${c.first} says. "I did not say it was your fault. I said it was flat." "Say that again." There is going to be a fight.`,
     choices: [
-      { label: 'Reprimand them', run() { like(c, -2, 'You reprimanded me in front of everyone.'); return (`You step between them and say a few sharp ` +
-          `things in front of everyone. The room goes still. ${c.first} goes red, then pale, and leaves. For days ${c.first} eats alone.`); } },
+      { label: 'Reprimand them', run() { like(c, -2, 'You reprimanded me in front of everyone.'); return (`You step between them. "Sit," you say. "Both of you." ` +
+          `The room goes still. "You do not talk about a shipmate's humming at my table," you say to ${c.first}, "or anywhere I can hear it." ${c.first} goes red, then pale, and leaves. For days ${c.first} eats alone.`); } },
       { label: 'Let them sort it out', run() { like(c, 1, null); return (`You lean in the doorway with your arms folded and let them. It is short, ` +
           `loud and untidy, and involves a soup pot. ${hurt(0.03)} points of hull damage later they are sitting side by side on the deck, breathing ` +
-          `hard, sharing a cloth for a bloody lip, and laughing.`); } },
+          `hard, sharing a cloth for a bloody lip. "It was flat," ${c.first} says. "It was flat," says the other, and they both laugh.`); } },
     ] }),
   kind: c => ({ title: 'Small Kindnesses', text: (`${c.first} spent the night fixing everyone's bunk lights, one by one, with a screwdriver, ` +
       `and in the small hours cooked a real meal from the last of the good stores. Nobody asked them to. In the ` +
