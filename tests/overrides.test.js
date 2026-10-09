@@ -439,6 +439,40 @@ test('an override for a hired scene the game would not take is left out, with on
   for (const part of ['has no "when"', 'choice 0 has no "when"', 'choice 0 has no "next"', 'runs code, so its effects are not edited', 'effects left out: effect castLike nobody is not a main character', 'unknown scene "cast:nobody:intro"']) assert.ok(r.warnings[0].includes(part), `${part} in ${r.warnings[0]}`);
 });
 
+// ---------- the hired events about one person as data (#473) ----------
+
+test('the seven hired events about one person are data, take the override layer, and refuse a bad effect', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey: 'hester', credits: 5000 }); G.dialog = null; G.nextEvent = null;
+    const mate = makeCrewCandidate(G.state.systemId); registerPerson(mate); G.state.crew.push(mate.id);
+    const ids = ['crew-ines', 'crew-tomas', 'crew-yelena', 'crew-ruben', 'crew-bexa', 'crew-pax', 'crew-cover'], c = handContext();
+    const def = id => HAND_EVENTS.find(d => d.id === id);
+    const who = c.mate, was = who.opinion;
+    const out = { data: ids.map(id => !!def(id).data && !!registryScene(`hired:${id}`)), code: !registryScene('hired:cap-order') && !def('cap-order').data, first: who.first };
+    out.title = def('crew-cover').make(c).title;
+    const plain = def('crew-cover').make(c).choices[0].run();
+    out.plain = { mate: plain.includes(who.first), note: / \(\+1 experience at the gunner post\.\)$/.test(plain), thread: G.state.threads.cover === who.id, opinion: who.opinion - was };
+    const warnings = [], real = console.warn; console.warn = m => warnings.push(m);
+    useOverrides({ 'hired:crew-cover': { title: 'Edited', text: 'Hello {mate}.', choices: { 0: { label: 'Do it', result: 'Done for {mate}.', effects: { learn: 5, mateLike: { n: 1, memory: 'Edited memory.' } } } } } });
+    const ev = def('crew-cover').make(c), edited = ev.choices[0].run();
+    out.edited = { title: ev.title, text: ev.text, label: ev.choices[0].label, result: edited };
+    useOverrides({ 'hired:crew-cover': { choices: { 0: { effects: { mateLike: { n: 'x' }, remember: '' } } } }, 'hired:cap-order': { title: 'No' } });
+    out.refused = { warnings: warnings.length, kept: Object.keys(sceneOverrides) };
+    console.warn = real; useOverrides({});
+    out.problems = [effectProblems({ remember: 'cover', mateLike: { n: 1, memory: 'm' }, learn: 2 }), effectProblems({ remember: ' ' }), effectProblems({ mateLike: { n: 1 } })];
+    return out;
+  });
+  await g.done();
+  assert.deepEqual(r.data, [true, true, true, true, true, true, true]);
+  assert.equal(r.code, true, 'an event written in code is not in the override layer');
+  assert.equal(r.title, 'Cover for a Shipmate');
+  assert.deepEqual(r.plain, { mate: true, note: true, thread: true, opinion: 2 });
+  assert.deepEqual(r.edited, { title: 'Edited', text: `Hello ${r.first}.`, label: 'Do it', result: `Done for ${r.first}. (+5 experience at the gunner post.)` });
+  assert.deepEqual(r.refused, { warnings: 1, kept: [] });
+  assert.deepEqual(r.problems.map(p => p.length), [0, 1, 1]);
+});
+
 // ---------- how often a scene comes up (#341) ----------
 
 test('with every weight 1 the storylet pick is the pick it always was, draw for draw', async () => {

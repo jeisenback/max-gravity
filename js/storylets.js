@@ -117,6 +117,10 @@ const EFFECTS = {
   castXp: v => castXp(v.who, v.role, v.n),
   captainLike: v => captainLike(v.n, v.memory),
   captainFlag: v => { for (const f of [].concat(v)) captainFlag(f); },
+  // The shipmate a hired event is about (#473), given to the effects as their context: their opinion of you, and a name to remember them by for a later
+  // scene ({thread:key}). Both do nothing outside an event that has a shipmate.
+  mateLike: (v, ctx) => { if (ctx && ctx.mate) like(ctx.mate, v.n, v.memory); },
+  remember: (key, ctx) => { if (ctx && ctx.mate) remember(key, ctx.mate); },
   news: text => worldNews(fill(text)),
   log: text => journal(fill(text)),
   unrest: v => { for (const [sid, n] of Object.entries(v)) worldOf(sid).unrest = Math.max(0, Math.min(1, worldOf(sid).unrest + n)); },
@@ -153,10 +157,10 @@ const EFFECTS = {
 };
 
 // Applies effects; returns any text they produced (from `do` actions).
-function applyEffects(effects = {}) {
+function applyEffects(effects = {}, ctx) {
   const said = [];
   for (const [k, v] of Object.entries(effects)) {
-    const r = EFFECTS[k](v);
+    const r = EFFECTS[k](v, ctx);
     if (typeof r === 'string' && r) said.push(r);
   }
   return said;
@@ -182,7 +186,7 @@ function fill(text = '') {
 
 // ---------- the scene editor's changes (js/overrides.js, #336) ----------
 // {planet}, {system}, {captain}, {crew}, {crew:role} and {thread:key}: what fill() and the dialog replace. Any other {word} is left as typed.
-const PLACEHOLDER = /^\{(?:planet|system|captain|crew|crew:(\w+)|thread:\w+)\}$/;
+const PLACEHOLDER = /^\{(?:planet|system|captain|crew|mate|crew:(\w+)|thread:\w+)\}$/;  // {mate} is filled by a hired event written as data (hiredevents.js), for the shipmate it is about
 const unknownPlaceholders = text => (String(text).match(/\{[^{}]*\}/g) || []).filter(t => { const m = PLACEHOLDER.exec(t); return !m || !!(m[1] && !ROLE_NAMES[m[1]]); });
 
 // The scene as the file changes it: its conditions, and each choice's conditions, effects and `next` link, where the file names them. The
@@ -269,8 +273,8 @@ function sceneRate(s) {
   return { weight: o.weight !== undefined ? o.weight : s.weight === undefined ? 1 : s.weight, every: o.every !== undefined ? o.every : s.every || 0, off: !!o.off };
 }
 
-// A scene of the hired chapter that is not a storylet (a main character's, a first officer's or a captain's), by its id in js/hiredscenes.js.
-const registryScene = id => { const e = /^(cast|captain):/.test(id) && hiredSceneRegistry().find(x => x.id === id); return e && e.scene ? e.scene : null; };
+// A scene of the hired chapter that is not a storylet (a main character's, a first officer's or a captain's, or a hired event written as data), by its id in js/hiredscenes.js.
+const registryScene = id => { const e = /^(cast|captain|hired):/.test(id) && hiredSceneRegistry().find(x => x.id === id); return e && e.scene ? e.scene : null; };
 
 // The file's words and effects put on a hired scene as the game builds it (#342). `scene` is { title, text, choices }, a choice either data ({ label, result,
 // effects }) or code (a run() that returns its result line). The title and the labels are escaped by the dialog; the text and the results are not, so an override's
@@ -306,6 +310,8 @@ const EFFECT_SHAPES = {
   castXp: v => (!isPlain(v) ? 'needs { who, role, n }' : !CAST[v.who] ? `${v.who} is not a main character or first officer` : typeof v.role !== 'string' || !v.role ? 'role must be a post' : !Number.isFinite(v.n) ? 'n must be a number' : ''),
   captainLike: v => (!isPlain(v) ? 'needs { n, memory }' : !Number.isFinite(v.n) ? 'n must be a number' : typeof v.memory !== 'string' || !v.memory.trim() ? 'memory must be some text' : ''),
   captainFlag: v => ([].concat(v).every(f => typeof f === 'string' && f.trim()) ? '' : 'needs a name, or a list of names'),
+  mateLike: v => (!isPlain(v) ? 'needs { n, memory }' : !Number.isFinite(v.n) ? 'n must be a number' : typeof v.memory !== 'string' || !v.memory.trim() ? 'memory must be some text' : ''),
+  remember: v => (typeof v === 'string' && v.trim() ? '' : 'needs a name'),
 };
 const effectProblems = effects => Object.entries(effects || {}).flatMap(([k, v]) => (!EFFECTS[k] ? [`unknown effect "${k}"`] : EFFECT_SHAPES[k] && EFFECT_SHAPES[k](v) ? [`effect ${k} ${EFFECT_SHAPES[k](v)}`] : []));
 

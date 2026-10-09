@@ -1098,13 +1098,14 @@ function theTow(backup) {
 // (the first officers' "what they know", cato.js): the same slot, so nothing is skipped.
 // A choice written as data ({ label, result, effects }) is played as the closure the game always played: its effects, then its result (#342). A choice with
 // a run() is left as it is, so a scene can have both.
-const dataChoice = c => (c.run ? c : { ...c, run() { applyEffects(c.effects); return c.result; } });
+// A hired event passes its context (the shipmate it is about) for the effects that need one, and a `learn` effect adds its line about experience to the result (#473).
+const dataChoice = (c, ctx) => (c.run ? c : { ...c, run() { applyEffects(c.effects, ctx); const n = c.effects && c.effects.learn; return n && hired() ? c.result + learnNote(n) : c.result; } });
 // The id a scene has in js/hiredscenes.js, found by the object it is (a scene made on the spot, like a first officer's round, has none).
 const castSceneId = (key, sc, shown) => { const e = Object.entries(CAST[key].scenes).find(([, x]) => x === sc); return e ? `cast:${key}:${e[0]}${shown !== sc ? ':closed' : ''}` : null; };
 const castScene = (key, sc) => {
   const s = sc.closed && castPerson(key).opinion < OPINION.FRIEND ? sc.closed : sc;
   const scene = sceneWords(castSceneId(key, sc, s), { title: s.title, text: s.text, personal: true, choices: s.choices });  // the editor's words, if any (storylets.js)
-  return { ...scene, choices: scene.choices.map(dataChoice) };
+  return { ...scene, choices: scene.choices.map(c => dataChoice(c)) };
 };
 
 Mods.register({

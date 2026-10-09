@@ -119,8 +119,9 @@
           choices: [{ label: d.careful[0], result: d.careful[1] }, { label: d.quick[0], result: outcome(d.quick[1], d.quick[2]) }],
         });
       } else if (e.kind === 'hand') {
-        const d = e.def;
-        add({ id: e.id, title: d.id, file: fileOf.hand, belongs: `${d.group} (hired event)`, on: postOn(d.post), text: '', choices: [], codeNote: CODE_ALL, pacing: pacingOf.hand(d), conditionsNote: `A ${d.group} event for a hired hand${d.post ? ` at the ${d.post} post` : ''}; its own conditions are written in code.` });
+        const d = e.def, note = `A ${d.group} event for a hired hand${d.post ? ` at the ${d.post} post` : ''}; its own conditions are written in code.`;
+        if (e.scene) add({ id: e.id, file: fileOf.hand, belongs: `${d.group} (hired event)`, on: postOn(d.post), pacing: pacingOf.hand(d), conditionsNote: note, ...registryRow(e.scene) });  // written as data (#473)
+        else add({ id: e.id, title: d.id, file: fileOf.hand, belongs: `${d.group} (hired event)`, on: postOn(d.post), text: '', choices: [], codeNote: CODE_ALL, pacing: pacingOf.hand(d), conditionsNote: note });
       } else if (e.kind === 'ice') {
         const st = e.stage, choice = (label, c) => ({ label, result: outcome(c.win[2], c.lose[2]) });
         add({
@@ -277,7 +278,7 @@
 
   function play(m) {
     useNewScenes(m.newScenes);  // the scenes written in the editor, not saved yet
-    const s = STORYLETS.find(x => x.id === m.id), reg = s ? null : hiredSceneRegistry().find(x => x.id === m.id && (x.kind === 'cast' || x.kind === 'captain') && x.name !== 'goodbye');
+    const s = STORYLETS.find(x => x.id === m.id), reg = s ? null : hiredSceneRegistry().find(x => x.id === m.id && ((x.kind === 'cast' || x.kind === 'captain') && x.name !== 'goodbye' || x.kind === 'hand' && x.scene));
     if (!s && !reg) return { error: `The game has no scene "${m.id}".` };
     useOverrides(m.overrides);  // the unsaved edits, through the same layer the game reads (storylets.js)
     const o = m.setup || {};
@@ -288,7 +289,10 @@
     if (where === 'transit') uatBurn(at.sid === 'earth' ? 'Mars' : 'Earth', at.sid); else uatLand(place);
     tweakState(o);
     if (reg) {  // a hired scene is played by its days and its place in the story: the preview opens it, with the regard that picks its reading
-      if (reg.kind === 'cast') {
+      if (reg.kind === 'hand') {  // a hired event is about a shipmate, so one is aboard
+        const mate = makeCrewCandidate(G.state.systemId); registerPerson(mate); G.state.crew.push(mate.id);
+        openEvent(reg.def.make(handContext()));
+      } else if (reg.kind === 'cast') {
         const sc = CAST[reg.key].scenes[reg.name];
         if (sc.closed) castPerson(reg.key).opinion = reg.closed ? OPINION.FRIEND - 1 : OPINION.FRIEND;
         openEvent(castScene(reg.key, sc));
@@ -397,6 +401,7 @@
     cargo: 'map:goods', q: 'map', like: 'map:like', learn: 'number', later: 'map', set: 'map', news: 'text', log: 'text', unrest: 'map:systems', cancelMission: 'text',
     bounty: 'json', companyShip: 'one:ships', mission: 'json',
     castLike: 'shape:castLike', castFlag: 'shape:castFlag', castXp: 'shape:castXp', captainLike: 'shape:captainLike', captainFlag: 'shape:captainFlag',
+    mateLike: 'shape:mateLike', remember: 'shape:remember',
   };
   let lists = {};  // the names the games' lists hold: systems, planets, factions, govs, goods, ships, posts, actions, conditions, effects, scenes
   const ok = value => ({ value }), no = error => ({ error });
@@ -412,6 +417,8 @@
     castXp: v => (!isObj(v) ? 'needs { who, role, n }' : !(lists.cast || []).includes(v.who) ? `${v.who} is not a main character or first officer` : !textOf(v.role) ? 'role must be a post' : !Number.isFinite(v.n) ? 'n must be a number' : ''),
     captainLike: v => (!isObj(v) ? 'needs { n, memory }' : !Number.isFinite(v.n) ? 'n must be a number' : !textOf(v.memory) ? 'memory must be some text' : ''),
     captainFlag: v => ([].concat(v).every(textOf) ? '' : 'needs a name, or a list of names'),
+    mateLike: v => (!isObj(v) ? 'needs { n, memory }' : !Number.isFinite(v.n) ? 'n must be a number' : !textOf(v.memory) ? 'memory must be some text' : ''),
+    remember: v => (textOf(v) ? '' : 'needs a name'),
   };
 
   // A kind: parse(text) gives { value } or { error }, format(value) gives the text, and `def` is what a new entry starts with.
@@ -446,7 +453,7 @@
       };
       case 'shape': return {
         parse: d => { let v; try { v = JSON.parse(d); } catch (e) { return no('needs valid JSON'); } const e = SHAPES[what](v); return e ? no(e) : ok(v); },
-        format: v => JSON.stringify(v), def: { castLike: '{"who":"","n":1,"memory":""}', castFlag: '{"who":"","flag":""}', castXp: '{"who":"","role":"","n":1}', captainLike: '{"n":1,"memory":""}', captainFlag: '""' }[what], hint: 'JSON',
+        format: v => JSON.stringify(v), def: { castLike: '{"who":"","n":1,"memory":""}', castFlag: '{"who":"","flag":""}', castXp: '{"who":"","role":"","n":1}', captainLike: '{"n":1,"memory":""}', captainFlag: '""', mateLike: '{"n":1,"memory":""}', remember: '""' }[what], hint: 'JSON',
       };
       case 'action': return {
         parse: d => {
@@ -1130,7 +1137,7 @@
     };
     // A hired scene needs the people it is about aboard: its own captain (or the first officer's captain), and the pair of main characters it belongs to.
     const hiredFor = row => {
-      const [kind, key] = row.id.split(':'), xo = kind === 'cast' && lists.captains.find(c => c.xo === key);
+      const [kind, id] = row.id.split(':'), key = kind === 'hired' ? id.replace(/^crew-/, '') : id, xo = kind === 'cast' && lists.captains.find(c => c.xo === key);  // a hired event 'crew-ines' is about ines
       const pair = lists.pairs.find(p => p.members.includes(key));
       return { as: 'hired', captain: kind === 'captain' ? key : xo ? xo.key : setup.captain, start: pair ? pair.key : setup.start };
     };

@@ -24,7 +24,7 @@ const HIRED_FUNCTION_SCENES = [
 ];
 
 // Every id, with what it is and where its scene lives: { id, kind, key, name, scene } for a cast or captain scene (its scene object), { id, kind: 'work' |
-// 'hand', def } for a hired event, { id, kind: 'ice', stage } for an ice run scene, and { id, kind: 'function', ...the entry above } for the rest.
+// 'hand', def } for a hired event (with its `scene` when it is written as data), { id, kind: 'ice', stage } for an ice run scene, and { id, kind: 'function', ...the entry above } for the rest.
 function hiredSceneRegistry() {
   const out = [];
   for (const [key, c] of Object.entries(CAST)) {
@@ -43,7 +43,7 @@ function hiredSceneRegistry() {
     if (c.goodbye) out.push({ id: `captain:${key}:goodbye`, kind: 'captain', key, name: 'goodbye', scene: { title: c.goodbye.title, choices: c.goodbye.choices, goodbye: c.goodbye } });
   }
   for (const d of WORK_EVENTS) out.push({ id: `hired:${d.id}`, kind: 'work', def: d });
-  for (const d of HAND_EVENTS.filter(x => x.group !== 'work')) out.push({ id: `hired:${d.id}`, kind: 'hand', def: d });
+  for (const d of HAND_EVENTS.filter(x => x.group !== 'work')) out.push({ id: `hired:${d.id}`, kind: 'hand', def: d, ...(d.data ? { scene: d.data } : {}) });
   ICE_STAGES.forEach((stage, i) => out.push({ id: `ice:${i + 1}`, kind: 'ice', stage }));
   for (const f of HIRED_FUNCTION_SCENES) out.push({ ...f, kind: 'function' });
   return out;
