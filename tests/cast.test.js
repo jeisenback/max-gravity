@@ -974,6 +974,52 @@ test('the chapter\'s other endings read the record: nobody aboard, a promise kep
   await done();
 });
 
+test('the chapter endings agree with how many came: one friend, two friends, and a wall with nobody at the ramp (#398)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const fresh = () => { start({ mode: 'hired', post: 'gunner' }); postsOnly(); const st = G.state; st.memorial = []; for (const k of Object.keys(st.cast || {})) { delete st.cast[k].marks; st.cast[k].flags = {}; } for (const id of st.crew) person(id).opinion = 0; st.credits = 19000; return st; };
+    const grave = key => ({ key, day: 1, place: 'x', cause: 'y' }), rich = 19000 + SHIPS.shuttle.price + 15000, out = {};
+    fresh(); person('c:ines').opinion = OPINION.CLOSE; castRec('ines').flags.promised = true; out.promisedOne = chapterEnd('shuttle').text;
+    fresh(); for (const k of ['ines', 'tomas']) { person('c:' + k).opinion = CAST_GOOD; castRec(k).flags.promised = true; } out.promisedTwo = chapterEnd('shuttle').text;
+    let st = fresh(); st.credits = rich; for (const k of ['ines', 'tomas']) person('c:' + k).opinion = CAST_GOOD; out.richTwo = chapterEnd('shuttle').text;
+    st = fresh(); st.credits = rich; person('c:ines').opinion = OPINION.CLOSE; out.richOne = chapterEnd('shuttle').text;
+    st = fresh(); st.memorial = [grave('ines'), grave('tomas')]; out.wallNobody = chapterEnd('shuttle').text;
+    st = fresh(); st.memorial = [grave('ines'), grave('tomas')]; person('c:tomas').opinion = OPINION.CLOSE; out.wallOne = chapterEnd('shuttle').text;
+    st = fresh(); st.memorial = [grave('ines')]; out.berthsLoss = chapterEnd('shuttle').text;
+    st = fresh(); out.berthsPlain = chapterEnd('shuttle').text;
+    return out;
+  });
+  assert.match(r.promisedOne, /Ines Ferreira goes up the ramp ahead of you with a bag/); assert.match(r.promisedOne, /Ines stops at the hatch and waits for you/);
+  assert.match(r.promisedTwo, /Ines Ferreira and Tomas Achebe go up the ramp ahead of you with their bags/); assert.match(r.promisedTwo, /Ines and Tomas stop at the hatch and wait for you/);
+  assert.match(r.richOne, /Ines Ferreira is already aboard/); assert.match(r.richTwo, /Ines Ferreira and Tomas Achebe are already aboard/);
+  assert.match(r.wallNobody, /Nobody is waiting at the foot of the ramp/);
+  assert.match(r.wallOne, /Tomas Achebe waits at the foot of the ramp until you have finished/);
+  assert.match(r.berthsLoss, /Ines Ferreira is not here/, 'a loss shows in the empty berths');
+  assert.doesNotMatch(r.berthsPlain, /is not here/, 'and no loss, no line');
+  await done();
+});
+
+test('an old save with no captain entry keeps the default hearing, bonus, lane risk and caution (#398)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    start({ mode: 'hired', post: 'gunner' });
+    const h = G.state.hired, real = Math.random, out = {};
+    h.captainKey = null;
+    out.entry = captainEntry(); out.hears = captainHears(); out.bonus = captainBonus(); out.risk = laneRisk(G.state.systemId);
+    const choose = (fund, labels, roll) => { h.fund = fund; Math.random = () => roll; try { return captainPick(labels.map(label => ({ label }))).label; } finally { Math.random = real; } };
+    out.poor = choose(3000, ['Pay the fine', 'Run for it'], 0.1);  // under the 4,000 floor the costly choice is a fifth as likely
+    out.flush = choose(5000, ['Pay the fine', 'Run for it'], 0.1);
+    out.fight = choose(5000, ['Battle stations', 'Run for it'], 0.5);  // the fight weighs 3 against 2 for a captain of no recorded nerve
+    out.heard = OPINION.HEARD; out.bonusDefault = OPINION.BONUS;
+    return out;
+  });
+  assert.equal(r.entry, null); assert.equal(r.hears, r.heard); assert.equal(r.bonus, r.bonusDefault); assert.equal(r.risk, 1);
+  assert.equal(r.poor, 'Run for it'); assert.equal(r.flush, 'Pay the fine'); assert.equal(r.fight, 'Battle stations');
+  await done();
+});
+
 test('letters from home come at most one landing in LETTER_GAP days, however many people are aboard', async () => {
   const { ev, done } = await open();
   await ev(helpers);
