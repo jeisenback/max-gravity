@@ -725,6 +725,52 @@
   "next": null
  },
  {
+  "id": "cast:ruben:pivot",
+  "i": 0,
+  "label": "Let him go out to the mast",
+  "result": "He gets the third bolt turned and the mast swings true, and the flare comes in before he is through the lock. When you reach him he is on the airlock deck with both hands over his left ear. The dome is already answering. \"I can hear it,\" he says, loudly, about the dome. \"Mostly.\" After that he turns the volume up on the quiet band, and sits closer to the speaker.",
+  "changes": [
+   "s.cast.ruben.marks.0.day: undefined -> 1",
+   "s.cast.ruben.marks.0.text: undefined -> He hears the quiet band in one ear only.",
+   "s.people.c:ruben.liftedAt: undefined -> 1",
+   "s.people.c:ruben.memories: [] -> undefined",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You let me go out to the north mast, and I came back with one good ear.",
+   "s.people.c:ruben.opinion: 0 -> 2",
+   "s.people.c:ruben.skill: 3 -> 2",
+   "s.people.c:ruben.skills.slicer: 3 -> 2",
+   "s.people.c:ruben.xp.slicer: 110 -> 45"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ruben:pivot",
+  "i": 1,
+  "label": "Send a second person out with him",
+  "result": "You send a second person out to the mast with him. He goes out with the thermos clipped to his belt, which nobody argues with, and calls the bolts as he turns them so the dome can follow along. The mast swings true in nine minutes. The flare comes in as the lock cycles, and the open band fills with a dome council all talking at once, which is the best noise he knows. \"There,\" Ruben says, pink with cold. \"Heard.\"",
+  "changes": [
+   "s.people.c:ruben.liftedAt: undefined -> 1",
+   "s.people.c:ruben.memories: [] -> undefined",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You let me go out to the north mast, and I came back.",
+   "s.people.c:ruben.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ruben:pivot",
+  "i": 2,
+  "label": "Tell him to hold the band from the console",
+  "result": "You tell him no, and put your hand on the console. The north mast stays dark, and the voice on the open band asks its question twice more and then stops asking. Ruben sits down at the comms post with the thermos untouched. \"It is your ship,\" he says quietly. \"I will keep the band open anyway. Somebody should be listening.\"",
+  "changes": [
+   "s.cast.ruben.flags: {} -> undefined",
+   "s.cast.ruben.flags.benched: undefined -> true",
+   "s.people.c:ruben.liftedAt: undefined -> 1",
+   "s.people.c:ruben.memories: [] -> undefined",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You kept me off the mast.",
+   "s.people.c:ruben.opinion: 0 -> -3"
+  ],
+  "next": null
+ },
+ {
   "id": "cast:bexa:meet",
   "i": 0,
   "label": "Offer her the helm",
@@ -861,6 +907,47 @@
   "next": null
  },
  {
+  "id": "cast:bexa:pivot",
+  "i": 0,
+  "label": "Let her go out on the line",
+  "result": "She takes the spin out of the hulk in eleven minutes by the clock, hand over hand along the line, and the hulk comes round to follow the tug like a dog that has been told. She comes back through the lock with frost in her eyebrows. At the next port she adds a line to the list, in the column with the others: a name, a date, a hull number.",
+  "changes": [
+   "s.people.c:bexa.liftedAt: undefined -> 1",
+   "s.people.c:bexa.memories: [] -> undefined",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You let me go out on the line, and I came back.",
+   "s.people.c:bexa.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:bexa:pivot",
+  "i": 1,
+  "label": "Send a second hand out with her",
+  "result": "You send a second hand out on the line with her. She takes the spin out of the hulk in eleven minutes by the clock, hand over hand along the line, and the hulk comes round to follow the tug like a dog that has been told. She comes back through the lock with frost in her eyebrows. At the next port she adds a line to the list, in the column with the others: a name, a date, a hull number.",
+  "changes": [
+   "s.people.c:bexa.liftedAt: undefined -> 1",
+   "s.people.c:bexa.memories: [] -> undefined",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You let me go out on the line, and I came back.",
+   "s.people.c:bexa.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:bexa:pivot",
+  "i": 2,
+  "label": "Cut the line and let the hulk go",
+  "result": "You tell her to cut the line, and she does, with her own hand on the release. The hulk goes on turning, slowly, its beacon calling every four seconds until it is too faint to hear. Bexa sits at the stick for a long while with the tag in her fist. \"It is your call,\" she says at last. \"I will put her on the list as lost.\"",
+  "changes": [
+   "s.cast.bexa.flags: {} -> undefined",
+   "s.cast.bexa.flags.benched: undefined -> true",
+   "s.people.c:bexa.liftedAt: undefined -> 1",
+   "s.people.c:bexa.memories: [] -> undefined",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You cut the tow on me.",
+   "s.people.c:bexa.opinion: 0 -> -3"
+  ],
+  "next": null
+ },
+ {
   "id": "cast:pax:meet",
   "i": 0,
   "label": "Offer them the guns",
@@ -993,6 +1080,51 @@
    "s.people.c:pax.memories: [] -> undefined",
    "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You would not promise a ship, but you listened.",
    "s.people.c:pax.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pax:pivot",
+  "i": 0,
+  "label": "Let Pax clear it alone",
+  "result": "Pax gets the wrench on and the coupling seats, and the mount takes two fingers of Pax's right hand on the way down. Pax walks to the med bay on their own, and says on the way that the hand at the rack is fine. After that, at the range, Pax stands with the hand in a pocket between runs, and flinches again at the clank of the mount.",
+  "changes": [
+   "s.cast.pax.marks.0.day: undefined -> 1",
+   "s.cast.pax.marks.0.text: undefined -> Their right hand is stiff, and they flinch again at a clank.",
+   "s.people.c:pax.liftedAt: undefined -> 1",
+   "s.people.c:pax.memories: [] -> undefined",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You let me hold the mount, and I came out with a hand that does not close.",
+   "s.people.c:pax.opinion: 0 -> 2",
+   "s.people.c:pax.skills.gunner: 3 -> 2",
+   "s.people.c:pax.xp.gunner: 110 -> 45"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pax:pivot",
+  "i": 1,
+  "label": "Put a second hand at the rack beside Pax",
+  "result": "You put a second hand at the rack beside Pax. Pax puts the wrench on the coupling with the mount still swinging, and the hand at the rack puts a shoulder to the arm, and the two of them hold it for eleven seconds, side by side, until the coupling seats. Pax does not flinch. They check it twice, as they always do, and then sit down on the deck beside the hand who stood there, and neither says anything.",
+  "changes": [
+   "s.people.c:pax.liftedAt: undefined -> 1",
+   "s.people.c:pax.memories: [] -> undefined",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You let me hold the mount, and I came out.",
+   "s.people.c:pax.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pax:pivot",
+  "i": 2,
+  "label": "Tell Pax to cut the power and let the mount drop",
+  "result": "You tell Pax to cut the power, and Pax does, at once, with a hand on the switch. The mount drops onto the rack with a sound you feel in the deck, and the hand beside it is unhurt. Pax stands at the controls with the wrench held out in front of them like something hot. \"I could have held it,\" Pax says. \"I think I could have.\" The coupling is the only thing in the bay that does not move.",
+  "changes": [
+   "s.cast.pax.flags: {} -> undefined",
+   "s.cast.pax.flags.benched: undefined -> true",
+   "s.people.c:pax.liftedAt: undefined -> 1",
+   "s.people.c:pax.memories: [] -> undefined",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You told me to cut the power on the mount.",
+   "s.people.c:pax.opinion: 0 -> -3"
   ],
   "next": null
  },
@@ -1279,6 +1411,14 @@
   "next": null
  },
  {
+  "id": "cast:ilsa:late:closed",
+  "i": 0,
+  "label": "Say it can wait",
+  "result": "\"It can,\" she says, and slides the book into the drawer under the table and locks it. \"Thank you for not asking which books.\"",
+  "changes": [],
+  "next": null
+ },
+ {
   "id": "cast:ilsa:pivot",
   "i": 0,
   "label": "Let her go in",
@@ -1447,6 +1587,14 @@
   "next": null
  },
  {
+  "id": "cast:pilar:late:closed",
+  "i": 0,
+  "label": "Say it can wait",
+  "result": "\"It can,\" she says. \"Thank you for not asking which rule.\" She goes forward to the helm.",
+  "changes": [],
+  "next": null
+ },
+ {
   "id": "cast:pilar:pivot",
   "i": 0,
   "label": "Let her fly it",
@@ -1612,6 +1760,14 @@
    "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You said you would stop her if you could.",
    "s.people.c:ansel.opinion: 0 -> 2"
   ],
+  "next": null
+ },
+ {
+  "id": "cast:ansel:late:closed",
+  "i": 0,
+  "label": "Say it can wait",
+  "result": "\"It can,\" he says. \"It always could. That is the trouble with it.\" He picks up a pencil and puts it down again without writing.",
+  "changes": [],
   "next": null
  },
  {
