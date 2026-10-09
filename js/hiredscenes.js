@@ -27,8 +27,36 @@ const HIRED_FUNCTION_SCENES = [
 const GOODBYE_PARTS = ['cold', 'neutral', 'warm', 'crew', 'secret', 'xo', 'xoDead', 'repaid', 'parting'];
 const goodbyeParts = g => Object.fromEntries(GOODBYE_PARTS.filter(k => g[k]).map(k => [k, g[k]]));
 
+// The words of the raid, ambush and boarding beats (#478), by the name each line has in its table: a line is found by where it sits, and the beat reads it through
+// lineWords (storylets.js) by the same name. A line the table does not hold (a casualty, a name, a count, the armor, the dead-in-space scene) is written in code and is not here.
+// Odds, damage and the roll are in code too. tests/beatlines.test.js plays every beat and checks that each name here is read.
+function raidLines() {
+  const out = {}, text = (key, line) => { out[key] = Array.isArray(line) ? line[2] : line; };
+  for (const [name, table] of [['open', RAID_OPEN], ['pass', RAID_PASS]]) for (const [style, list] of Object.entries(table)) list.forEach((t, i) => text(`${name}.${style}.${i}`, t));
+  const sides = (base, c) => { for (const o of ['win', 'lose']) if (c[o]) { if (Array.isArray(c[o])) text(`${base}.${o}`, c[o]); else for (const [style, line] of Object.entries(c[o])) text(`${base}.${o}.${style}`, line); } };
+  for (const [kind, list] of [['closing', RAID_CLOSING], ['exchange', RAID_EXCHANGE]]) for (const c of list) { text(`${kind}.${c.id}.label`, c.label); sides(`${kind}.${c.id}`, c); }
+  for (const [kind, posts] of Object.entries(RAID_POST)) for (const [post, c] of Object.entries(posts)) { text(`post.${kind}.${post}.label`, c.label); sides(`post.${kind}.${post}`, c); }
+  for (const [k, v] of Object.entries(RAID_CLOSE)) { if (typeof v === 'string') text(`close.${k}`, v); else for (const [style, t] of Object.entries(v)) text(`close.${k}.${style}`, t); }
+  return out;
+}
+function ambushLines() {
+  const out = {};
+  for (const [post, c] of Object.entries(AMBUSH_READ)) for (const k of ['label', 'trap', 'real']) out[`read.${post}.${k}`] = c[k];
+  return out;
+}
+function repelLines(assault) {
+  const out = {}, set = assault ? { titles: ASSAULT_TITLES, openings: ASSAULT_OPENINGS, tactics: ASSAULT_TACTICS, post: ASSAULT_POST } : { titles: REPEL_TITLES, openings: REPEL_OPENINGS, tactics: REPEL_TACTICS, post: REPEL_POST };
+  set.titles.forEach((t, i) => { out[`title.${i}`] = t; });
+  set.openings.forEach((list, pos) => list.forEach((t, i) => { out[`open.${pos}.${i}`] = t; }));
+  for (const [k, t] of Object.entries(set.tactics)) for (const f of ['label', 'win', 'lose']) out[`tactic.${k}.${f}`] = t[f];
+  if (!assault) out.tie = REPEL_TIE;
+  for (const [post, t] of Object.entries(set.post)) for (const f of ['label', 'win', 'lose']) out[`post.${post}.${f}`] = t[f];
+  return out;
+}
+const BEAT_LINES = { 'beats:raid': raidLines, 'beats:ambush': ambushLines, 'beats:repel': () => repelLines(false), 'beats:assault': () => repelLines(true) };
+
 // Every id, with what it is and where its scene lives: { id, kind, key, name, scene } for a cast or captain scene (its scene object), { id, kind: 'work' |
-// 'hand', def } for a hired event (with its `scene` when it is written as data), { id, kind: 'ice', stage } for an ice run scene, and { id, kind: 'function', ...the entry above } for the rest.
+// 'hand', def } for a hired event (with its `scene` when it is written as data), { id, kind: 'ice', stage } for an ice run scene, and { id, kind: 'function', ...the entry above } for the rest (a beat of the raid, the ambush or the boarding fights has its `scene`, the lines it can be given).
 function hiredSceneRegistry() {
   const out = [];
   for (const [key, c] of Object.entries(CAST)) {
@@ -49,6 +77,6 @@ function hiredSceneRegistry() {
   for (const d of WORK_EVENTS) out.push({ id: `hired:${d.id}`, kind: 'work', def: d });
   for (const d of HAND_EVENTS.filter(x => x.group !== 'work')) out.push({ id: `hired:${d.id}`, kind: 'hand', def: d, ...(d.data ? { scene: d.data } : {}) });
   ICE_STAGES.forEach((stage, i) => out.push({ id: `ice:${i + 1}`, kind: 'ice', stage }));
-  for (const f of HIRED_FUNCTION_SCENES) out.push({ ...f, kind: 'function' });
+  for (const f of HIRED_FUNCTION_SCENES) out.push({ ...f, kind: 'function', ...(BEAT_LINES[f.id] ? { scene: { title: f.title, choices: [], parts: BEAT_LINES[f.id](), noTitle: true } } : {}) });  // a beat's words, line by line (#478)
   return out;
 }

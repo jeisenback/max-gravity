@@ -77,11 +77,13 @@
     };
   }
 
-  // A captain's goodbye (#476): its words are the parts the game picks from (an opening by how they feel about you, a line for crew, the secret and so on), its choices are data.
-  function goodbyeRow(s) {
+  // A scene whose words are lines the game picks from, named in `parts` (#476, #478): a captain's goodbye (an opening by how they feel about you, a line for crew, the secret and
+  // so on; its choices are data) or a beat of the raid, the ambush or the boarding fights (lines from tables, no title of its own to change, choices from the tables too).
+  function partsRow(s) {
     const row = registryRow({ title: s.title, text: '', choices: s.choices });
-    return { ...row, text: Object.entries(s.parts).map(([k, t]) => `[${k}] ${t}`).join('\n'), parts: s.parts, edit: { ...row.edit, text: false, parts: Object.fromEntries(Object.keys(s.parts).map(k => [k, true])) } };
+    return { ...row, text: Object.entries(s.parts).map(([k, t]) => `[${k}] ${t}`).join('\n'), parts: s.parts, ...(s.noTitle ? { noTitle: true } : {}), edit: { ...row.edit, text: false, parts: Object.fromEntries(Object.keys(s.parts).map(k => [k, true])) } };
   }
+  const BEAT_NOTE = 'Its words are the lines of the tables the beats read, named by where each sits. Odds, damage and the roll are in code, and so are the lines built from the game state (a casualty, a name, a count, the armor) and the dead-in-space scene.';
 
   // A scene whose words live in a table one template plays (a work event, an ice run scene; #462) as the editor's row: its words are edited, and what it does is in code. A choice
   // has a label and either a result or the lines for a win and a lose; the odds and what each does are the table's.
@@ -124,7 +126,7 @@
         add({ id: e.id, where: 'transit', file: fileOf['captain:' + e.key], belongs: `${e.key} (captain)`, on: captainOn(e.key), conditionsNote: note, pacing: pacingOf.captain(e.name.split(':')[0]), ...registryRow(e.scene) });
       } else if (e.kind === 'captain') {
         const note = 'When you leave the ship to buy your own: the opening for how they feel about you, then a line for each thing that is true.';
-        add({ id: e.id, where: 'port', file: fileOf['captain:' + e.key], belongs: `${e.key} (captain)`, on: captainOn(e.key), conditionsNote: note, pacing: { tier: null, weight: null, cooldown: 'plays once', trigger: note, editable: false }, ...goodbyeRow(e.scene) });
+        add({ id: e.id, where: 'port', file: fileOf['captain:' + e.key], belongs: `${e.key} (captain)`, on: captainOn(e.key), conditionsNote: note, pacing: { tier: null, weight: null, cooldown: 'plays once', trigger: note, editable: false }, ...partsRow(e.scene) });
       } else if (e.kind === 'work') {
         const d = e.def;
         add({ id: e.id, file: fileOf.work, belongs: `${d.post} (post)`, on: postOn(d.post), post: d.post, pacing: pacingOf.work(d), conditionsNote: `A problem at the ${d.post} post, for a hand who works it; not repeated within ${WORK_SEEN_DAYS} days.`, ...tableRow(tableScene(e.id)) });
@@ -134,6 +136,8 @@
         else add({ id: e.id, title: d.id, file: fileOf.hand, belongs: `${d.group} (hired event)`, on: postOn(d.post), text: '', choices: [], codeNote: CODE_ALL, pacing: pacingOf.hand(d), conditionsNote: note });
       } else if (e.kind === 'ice') {
         add({ id: e.id, file: fileOf.ice, belongs: 'ice run', pacing: pacingOf.ice(), conditionsNote: `Scene ${Number(e.id.slice(4))} of 3 on an ice run, once the captain takes one.`, ...tableRow(tableScene(e.id)) });
+      } else if (e.scene) {  // a beat of the raid, the ambush or the boarding fights (#478): its lines, by name
+        add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: 'beats', conditionsNote: e.when, pacing: { tier: null, weight: null, cooldown: 'by its own rule', trigger: e.when, editable: false }, ...partsRow(e.scene), codeNote: BEAT_NOTE });
       } else {  // built by a function: no text to read, only what it is and when it plays
         add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: e.id.startsWith('beats:') ? 'beats' : 'hired chapter', text: '', choices: [], codeNote: CODE_ALL, conditionsNote: e.when, pacing: { tier: null, weight: null, cooldown: 'by its own rule', trigger: e.when, editable: false } });
       }
@@ -284,7 +288,7 @@
 
   function play(m) {
     useNewScenes(m.newScenes);  // the scenes written in the editor, not saved yet
-    const s = STORYLETS.find(x => x.id === m.id), reg = s ? null : hiredSceneRegistry().find(x => x.id === m.id && ((x.kind === 'cast' || x.kind === 'captain') || x.kind === 'hand' && x.scene || x.kind === 'work' || x.kind === 'ice'));
+    const s = STORYLETS.find(x => x.id === m.id), reg = s ? null : hiredSceneRegistry().find(x => x.id === m.id && ((x.kind === 'cast' || x.kind === 'captain') || x.kind === 'hand' && x.scene || x.kind === 'function' && x.scene || x.kind === 'work' || x.kind === 'ice'));
     if (!s && !reg) return { error: `The game has no scene "${m.id}".` };
     useOverrides(m.overrides);  // the unsaved edits, through the same layer the game reads (storylets.js)
     const o = m.setup || {};
@@ -305,6 +309,12 @@
         const sc = CAST[reg.key].scenes[reg.name];
         if (sc.closed) castPerson(reg.key).opinion = reg.closed ? OPINION.FRIEND - 1 : OPINION.FRIEND;
         openEvent(castScene(reg.key, sc));
+      } else if (reg.kind === 'function') {  // a beat of the raid, the ambush or the boarding fights: it needs a foe, and the first-raid explanation is out of the way
+        hired().raidTold = true;
+        const foe = makeEnemy({ kind: 'pirate' });
+        if (reg.id === 'beats:raid') { startDuel({ kind: 'pirate' }, false); const first = G.nextEvent; G.nextEvent = null; openEvent(first); }
+        else if (reg.id === 'beats:ambush') openEvent(ambushScene());
+        else openEvent(repelScene(reg.id === 'beats:assault' ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full')));
       } else if (reg.name === 'goodbye') {
         captainFlag('secretKnown');  // so the choice that waits on it is there to try
         openEvent(captainGoodbye());
@@ -362,9 +372,9 @@
   const CHOICE_FIELDS = ['label', 'result', 'win', 'lose'];  // a table scene's choice has a win and a lose line in place of a result (#462)
   const pathsOf = r => ['title', 'text', ...(r.text2 !== undefined ? ['text2'] : []), ...Object.keys(r.parts || {}).map(k => `p.${k}`), ...r.choices.flatMap((c, i) => CHOICE_FIELDS.filter(f => c[f] !== undefined).map(f => `c${i}.${f}`))];
   const CHOICE_PATH = /^c(\d+)\.(label|result|win|lose)$/;
-  const PART_PATH = /^p\.(\w+)$/;  // a goodbye's part (#476)
+  const PART_PATH = /^p\.([\w.]+)$/;  // a part of a goodbye or a beat (#476, #478)
   const shippedOf = (r, path) => { const m = CHOICE_PATH.exec(path), p = PART_PATH.exec(path); return m ? r.choices[m[1]][m[2]] : p ? r.parts[p[1]] : r[path]; };
-  const editableOf = (r, path) => { const m = CHOICE_PATH.exec(path), p = PART_PATH.exec(path); return !r.edit ? false : m ? r.edit.choices[m[1]][m[2]] : p ? !!(r.edit.parts || {})[p[1]] : path === 'title' || r.edit[path]; };
+  const editableOf = (r, path) => { const m = CHOICE_PATH.exec(path), p = PART_PATH.exec(path); return !r.edit ? false : m ? r.edit.choices[m[1]][m[2]] : p ? !!(r.edit.parts || {})[p[1]] : path === 'title' ? !r.noTitle : r.edit[path]; };
 
   // What js/overrides.js would hold for the values typed: only what differs from the shipped words, an empty field counting as not changed.
   // values: { sceneId: { path: text } }.
@@ -647,10 +657,18 @@
     ${r.choices.map((c, i) => `<h4>Choice ${i + 1}: ${esc(c.label)}</h4>${rulesHtml(r, `c${i}.when`, 'It can be taken when', struct)}${rulesHtml(r, `c${i}.effects`, 'It does', struct)}${nextHtml(r, `c${i}.next`, struct)}`).join('')}`);
 
   const PART_NAMES = { cold: 'Opening, if they think poorly of you', neutral: 'Opening, if they are neutral', warm: 'Opening, if they trust you', crew: 'If crew go with you ({names})', secret: 'If you learned their secret', xo: 'If the first officer is alive', xoDead: 'If the first officer is dead', repaid: 'If they repaid a loan', parting: 'Parting line' };
+  // A scene's lines, one field each, under a heading for each group of them (the first word of a beat's line names: open, pass, closing, exchange, post, close, read, title, tactic) (#478).
+  function partsHtml(r, mine) {
+    let group = null;
+    return Object.keys(r.parts).map(k => {
+      const g = k.includes('.') ? k.split('.')[0] : null, head = g !== group ? (group = g, g ? `<h4>${esc(g)}</h4>` : '') : '';
+      return `${head}${fieldHtml(r, `p.${k}`, PART_NAMES[k] || k, mine[`p.${k}`])}`;
+    }).join('');
+  }
   function formHtml(r, values = {}) {
     const mine = values[r.id] || {};
     return `<h3>Your words</h3><div class="form" data-form="${esc(r.id)}">
-      ${fieldHtml(r, 'title', 'Title', mine.title)}${r.parts ? Object.keys(r.parts).map(k => fieldHtml(r, `p.${k}`, PART_NAMES[k] || k, mine[`p.${k}`])).join('') : fieldHtml(r, 'text', r.text2 !== undefined ? 'Opening 1' : 'Text', mine.text)}${r.text2 !== undefined ? fieldHtml(r, 'text2', 'Opening 2', mine.text2) : ''}
+      ${r.noTitle ? '' : fieldHtml(r, 'title', 'Title', mine.title)}${r.parts ? partsHtml(r, mine) : fieldHtml(r, 'text', r.text2 !== undefined ? 'Opening 1' : 'Text', mine.text)}${r.text2 !== undefined ? fieldHtml(r, 'text2', 'Opening 2', mine.text2) : ''}
       ${r.choices.map((c, i) => `<h4>Choice ${i + 1}${c.post ? ` (${esc(c.post)}'s own)` : ''}</h4>${fieldHtml(r, `c${i}.label`, 'Label', mine[`c${i}.label`])}${[['result', 'Result'], ['win', 'If it works'], ['lose', 'If it fails']].filter(([f]) => c[f] !== undefined).map(([f, name]) => fieldHtml(r, `c${i}.${f}`, name, mine[`c${i}.${f}`])).join('')}`).join('')}
     </div>`;
   }
@@ -805,7 +823,8 @@
               else { (keep.parts = keep.parts || dict())[name] = x; what.push(`part ${name}`); }
             }
           } else if (k === 'title' || k === 'text') {
-            if (k === 'text' && !r.edit.text) refuse(`${id} text: it has parts that depend on conditions, so it is edited in code`);
+            if (k === 'title' && r.noTitle) refuse(`${id} title: this scene has no title of its own`);
+            else if (k === 'text' && !r.edit.text) refuse(`${id} text: it has parts that depend on conditions, so it is edited in code`);
             else if (!words(v)) refuse(`${id} ${k}: needs some text of up to ${LIMIT.text} characters`);
             else { keep[k] = v; what.push(k); }
           } else if (k === 'weight' || k === 'every' || k === 'off') {

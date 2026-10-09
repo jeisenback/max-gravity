@@ -72,6 +72,9 @@ const REPEL_HURT = { lose: 0.45, win: 0.15 };  // the chance someone is hurt in 
 
 const repelSet = s => (s.assault ? { titles: ASSAULT_TITLES, openings: ASSAULT_OPENINGS, tactics: ASSAULT_TACTICS, post: ASSAULT_POST } : { titles: REPEL_TITLES, openings: REPEL_OPENINGS, tactics: REPEL_TACTICS, post: REPEL_POST });
 
+// A line of the repel or the assault fight, read through the editor's words (lineWords, storylets.js) by the name it has in the set's tables (hiredscenes.js lists them).
+const repelWords = (s, key, shipped) => lineWords(s.assault ? 'beats:assault' : 'beats:repel', key, shipped);
+
 const handHurt = () => !!(hired() && hired().hurtUntil > G.state.day);
 
 // Who stands with you. A crew member who cannot stand you keeps to their berth, and of two who are at each other's throats
@@ -108,11 +111,11 @@ function assaultStart(foe, rate = {}) {
 function repelScene(s) {
   const h = hired(), post = h.post, set = repelSet(s), spec = set.post[post];
   const note = costNote({ casualty: true, hand: true });  // any exchange can cost someone, and the hand is among them
-  const choices = Object.entries(set.tactics).map(([k, t]) => ({ label: `${t.label}${note}`, run: () => repelStep(s, k) }));
-  choices.push({ label: `[${POSTS[post].name}] ${spec.label}${note}`, run: () => repelStep(s, 'post') });
+  const choices = Object.entries(set.tactics).map(([k, t]) => ({ label: `${repelWords(s, `tactic.${k}.label`, t.label)}${note}`, run: () => repelStep(s, k) }));
+  choices.push({ label: `[${POSTS[post].name}] ${repelWords(s, `post.${post}.label`, spec.label)}${note}`, run: () => repelStep(s, 'post') });
   return {
-    title: set.titles[s.pos], personal: true, via: 'crew',
-    text: `${set.openings[s.pos][s.round % 2]}</p><p>${s.assault ? 'Defenders' : 'Boarders'}: ${s.boarders}. With you: ${repelStanding(s) - 1}.${(s.held || []).length ? ` ${s.held.join(' ')}` : ''} ${layoutHint()}`.trim(),
+    title: repelWords(s, `title.${s.pos}`, set.titles[s.pos]), personal: true, via: 'crew',
+    text: `${repelWords(s, `open.${s.pos}.${s.round % 2}`, set.openings[s.pos][s.round % 2])}</p><p>${s.assault ? 'Defenders' : 'Boarders'}: ${s.boarders}. With you: ${repelStanding(s) - 1}.${(s.held || []).length ? ` ${s.held.join(' ')}` : ''} ${layoutHint()}`.trim(),
     choices,
   };
 }
@@ -123,19 +126,19 @@ function repelStep(s, kind) {
   let result, text;  // 'win', 'lose' or 'tie'
   if (kind === 'post') {
     result = Math.random() < Math.min(0.85, 0.5 + 0.1 * skillLevel(post)) ? 'win' : 'lose';
-    text = set.post[post][result];
+    text = repelWords(s, `post.${post}.${result}`, set.post[post][result]);
   } else if (kind === theirs) {
     const mine = repelStanding(s);
     result = mine > s.boarders ? 'win' : mine < s.boarders ? 'lose' : 'tie';
-    text = result === 'tie' ? REPEL_TIE : set.tactics[kind][result];
+    text = result === 'tie' ? repelWords(s, 'tie', REPEL_TIE) : repelWords(s, `tactic.${kind}.${result}`, set.tactics[kind][result]);
   } else {
     result = set.tactics[kind].beats === theirs ? 'win' : 'lose';
-    text = set.tactics[kind][result];
+    text = repelWords(s, `tactic.${kind}.${result}`, set.tactics[kind][result]);
   }
   const edge = kind === 'post' ? 0 : layoutEdge(kind);  // the ship you fight in (shipcombat.js)
   if (edge && result !== 'tie' && Math.random() < Math.abs(edge)) {
     const flipped = edge > 0 && result === 'lose' ? 'win' : edge < 0 && result === 'win' ? 'lose' : result;
-    if (flipped !== result) { result = flipped; text = set.tactics[kind][result]; }
+    if (flipped !== result) { result = flipped; text = repelWords(s, `tactic.${kind}.${result}`, set.tactics[kind][result]); }
   }
   if (result === 'win') { s.pos--; if (kind === 'post' && post === 'gunner') s.boarders = Math.max(1, s.boarders - 1); }
   if (result === 'lose') s.pos++;

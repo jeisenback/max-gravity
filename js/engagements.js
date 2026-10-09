@@ -23,6 +23,9 @@ const RAID_PASS = {
   torpedo: ['A torpedo leaves her bay, a bright dot on the board that grows.', 'She has a second one in the tube. On the sensors the loader arm is moving.'],
 };
 
+// A line of the raid, read through the editor's words (lineWords, storylets.js); the name is where the line sits in the tables below (hiredscenes.js lists them).
+const raidWords = (key, shipped) => lineWords('beats:raid', key, shipped);
+
 // Each choice: the odds it goes your way (a post's choice improves with your level), and what a win and a loss do to the position and the hull.
 // A line is [position, hull as a share of armor, text].
 const RAID_CLOSING = [
@@ -187,9 +190,9 @@ function raidScene(s) {
   const st = G.state, h = hired(), post = h.post, level = skillLevel(post);
   const closing = s.beat === 0, kind = closing ? 'closing' : 'exchange';
   const general = closing ? RAID_CLOSING : RAID_EXCHANGE, spec = RAID_POST[kind][post];
-  const text = closing ? s.open || RAID_OPEN[s.style][s.round % 2] : RAID_PASS[s.style][s.beat - 1];
-  const choices = general.map(c => ({ label: `${c.label}${raidCostNote(c, s.style)}`, run: () => raidStep(s, c, null) }));
-  choices.push({ label: `[${POSTS[post].name}] ${spec.label}${raidCostNote({ id: 'post', odds: () => raidPostOdds(level), win: spec.win, lose: spec.lose }, s.style)}`, run: () => raidStep(s, { id: 'post', odds: () => raidPostOdds(level), win: spec.win, lose: spec.lose }, post) });
+  const text = closing ? s.open || raidWords(`open.${s.style}.${s.round % 2}`, RAID_OPEN[s.style][s.round % 2]) : raidWords(`pass.${s.style}.${s.beat - 1}`, RAID_PASS[s.style][s.beat - 1]);
+  const choices = general.map(c => ({ label: `${raidWords(`${kind}.${c.id}.label`, c.label)}${raidCostNote(c, s.style)}`, run: () => raidStep(s, c, null) }));
+  choices.push({ label: `[${POSTS[post].name}] ${raidWords(`post.${kind}.${post}.label`, spec.label)}${raidCostNote({ id: 'post', odds: () => raidPostOdds(level), win: spec.win, lose: spec.lose }, s.style)}`, run: () => raidStep(s, { id: 'post', odds: () => raidPostOdds(level), win: spec.win, lose: spec.lose }, post) });
   return {
     title: closing ? 'The Closing' : s.beat === 1 ? 'First Pass' : 'Second Pass', personal: true, via: 'crew', owner: 'you',  // yours to decide, not the captain's (hired.js hiredCall)
     text: `${text}</p><p>${raidRead(s)} Position: ${raidPosition(s)}. Armor ${st.armor}/${ship().armor}.`,
@@ -200,8 +203,9 @@ function raidScene(s) {
 // One choice. Rolls it, applies the position and the hull, may hurt someone, and queues the next beat or the close.
 function raidStep(s, c, post) {
   const st = G.state, odds = shipOdds(s, c.id, post, c.odds(s.style)), won = odds >= 1 || Math.random() < odds;
-  const line = won ? c.win : (c.lose || c.win);
-  const [edge, hull, text] = Array.isArray(line) ? line : (line[s.style] || line.grapple);
+  const side = won || !c.lose ? 'win' : 'lose', line = c[side], base = post ? `post.${s.beat === 0 ? 'closing' : 'exchange'}.${post}` : `${s.beat === 0 ? 'closing' : 'exchange'}.${c.id}`;
+  const [edge, hull, shipped] = Array.isArray(line) ? line : (line[s.style] || line.grapple);
+  const text = raidWords(Array.isArray(line) ? `${base}.${side}` : `${base}.${side}.${line[s.style] ? s.style : 'grapple'}`, shipped);
   s.edge += edge;
   let out = text;
   const risk = HAND_RISK[c.id] || 0, cap = person(hired().captain);
@@ -224,22 +228,22 @@ function raidClose(s) {
   const st = G.state, h = hired(), cap = person(h.captain), weak = st.armor <= ship().armor * 0.25;
   if (s.edge >= 4 && !weak && s.spec.kind !== 'patrol') {  // a clear win: her drive is gone and she drifts, and you can board her
     G.nextEvent = deadInSpaceScene(s);
-    return RAID_CLOSE.crippled[s.style];
+    return raidWords(`close.crippled.${s.style}`, RAID_CLOSE.crippled[s.style]);
   }
   if (s.edge >= 2 && !weak) {
     like(cap, 1, 'You stood us up to a raid and she broke off.');
     if (s.spec.kind !== 'patrol') changeRep('Pirate', -3);
     gainSkill(h.post, 3);
-    return `${RAID_CLOSE.off[s.style]} Captain ${cap.last} writes it in the log and nothing else. (+3 experience at the ${POSTS[h.post].name.toLowerCase()} post.)`;
+    return `${raidWords(`close.off.${s.style}`, RAID_CLOSE.off[s.style])} Captain ${cap.last} writes it in the log and nothing else. (+3 experience at the ${POSTS[h.post].name.toLowerCase()} post.)`;
   }
   if (s.edge > -2 && !weak) {
     const pts = Math.round(ship().armor * 0.05);
     st.armor = Math.max(1, st.armor - pts);
-    return `${RAID_CLOSE.standoff} Armor -${pts}.`;
+    return `${raidWords('close.standoff', RAID_CLOSE.standoff)} Armor -${pts}.`;
   }
   const d = { foe: s.foe, foeHp: 0, init: 'foe', grade: s.grade, pack: s.pack };
   G.nextEvent = repelScene(repelStart(d, s.style === 'grapple' ? 'full' : 'half'));
-  return RAID_CLOSE.boarded[s.style];
+  return raidWords(`close.boarded.${s.style}`, RAID_CLOSE.boarded[s.style]);
 }
 
 // The ambush: a distress call, and the pirates waiting behind it (or, now and then, a real freighter). Each post has its own
@@ -295,9 +299,9 @@ function ambushChoice(a, cap, h, post, spec) {
   } else {
     choices.push({ label: 'Go to her', run: () => (a.trap ? sprung() : real()) });
     choices.push({ label: 'Leave it', run: () => (a.trap ? `You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.` : `You let the call play out and burn on. It might have been real.`) });
-    if (!a.tried) choices.push({ label: `[${POSTS[post].name}] ${spec.label}`, run() {
+    if (!a.tried) choices.push({ label: `[${POSTS[post].name}] ${lineWords('beats:ambush', `read.${post}.label`, spec.label)}`, run() {
       a.tried = true;
-      if (Math.random() < Math.min(0.85, 0.5 + 0.1 * skillLevel(post))) { a.known = true; G.nextEvent = ambushChoice(a, cap, h, post, spec); return a.trap ? spec.trap : spec.real; }
+      if (Math.random() < Math.min(0.85, 0.5 + 0.1 * skillLevel(post))) { a.known = true; G.nextEvent = ambushChoice(a, cap, h, post, spec); return a.trap ? lineWords('beats:ambush', `read.${post}.trap`, spec.trap) : lineWords('beats:ambush', `read.${post}.real`, spec.real); }
       G.nextEvent = ambushChoice(a, cap, h, post, spec);
       return `You try, and the readings will not settle. The call keeps repeating, and you are no wiser.`;
     } });
