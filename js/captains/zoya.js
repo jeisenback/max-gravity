@@ -75,12 +75,14 @@ CAPTAINS.zoya = {
           effects: { captainLike: { n: 1, memory: 'You told Dobrescu I was out.' } },
           result: 'You go down, and tell him. He nods, and leaves the folder with you. "Tell her Tuesday," he says. It is Thursday. When you come back up, Pell is whistling at the nav console and has not turned a page of the thing she is reading.',
         },
-        { label: 'Give him a hundred to wait a week', ...gated(needCr(100)), run() {
-          G.state.credits -= 100; captainLike(3, 'You paid Dobrescu a hundred to wait a week.'); captainFlag('lent');
-          return ('He counts it twice, in front of you, and goes, and you are not sure he is done. Pell laughs when she hears, which is the worst ' +
+        {
+          label: 'Give him a hundred to wait a week',
+          when: { credits: 100 },
+          effects: { credits: -100, captainLike: { n: 3, memory: 'You paid Dobrescu a hundred to wait a week.' }, captainFlag: 'lent' },
+          result: 'He counts it twice, in front of you, and goes, and you are not sure he is done. Pell laughs when she hears, which is the worst ' +
               'possible response, and then hugs you, unexpectedly, hard, and lets go at once. "A hundred," she says. "I will pay you a hundred and a ' +
-              'quarter, and that is a bet I will not lose."');
-        } },
+              'quarter, and that is a bet I will not lose."',
+        },
       ],
     },
     secret: {

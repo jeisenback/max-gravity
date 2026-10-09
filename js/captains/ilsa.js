@@ -125,10 +125,12 @@ CAST.ilsa = {
           'stop. If he does not, I cannot." She closes it. "I am not asking you to do anything. I am telling you, because somebody ought to know who ' +
           'is holding it up."'),
       choices: [
-        { label: 'Offer to put something in', ...gated(needCr(200)), run() {
-          G.state.credits -= 200; castLike('ilsa', 2, 'You offered to put something into the fund.');
-          return 'She looks at the two hundred for a long time. "No," she says. Then: "Yes. Not for him. For me. So that it is not only me." She writes it in the book, in a column of its own.';
-        } },
+        {
+          label: 'Offer to put something in',
+          when: { credits: 200 },
+          effects: { credits: -200, castLike: { who: 'ilsa', n: 2, memory: 'You offered to put something into the fund.' } },
+          result: 'She looks at the two hundred for a long time. "No," she says. Then: "Yes. Not for him. For me. So that it is not only me." She writes it in the book, in a column of its own.',
+        },
         {
           label: 'Ask what she needs',
           effects: { castLike: { who: 'ilsa', n: 2, memory: 'You asked me what I needed.' }, castFlag: { who: 'ilsa', flag: 'asked' } },

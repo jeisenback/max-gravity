@@ -14,7 +14,24 @@
    "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: I signed on with the Second Anvil.",
    "s.people.c:ines.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Offer her the helm",
+    "open": false,
+    "why": "There is no free berth aboard."
+   },
+   "poor": {
+    "label": "Offer her the helm",
+    "open": false,
+    "why": "There is no free berth aboard."
+   },
+   "liked": {
+    "label": "Offer her the helm",
+    "open": false,
+    "why": "There is no free berth aboard."
+   }
+  }
  },
  {
   "id": "cast:ines:meet",
@@ -24,7 +41,24 @@
   "changes": [
    "s.cast.ines.next: 0 -> 9"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "\"Not this time.\"",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "\"Not this time.\"",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "\"Not this time.\"",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ines:intro",
@@ -37,7 +71,24 @@
    "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: I told you about the landing, and you did not look at me differently.",
    "s.people.c:ines.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask about the landing anyway",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask about the landing anyway",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask about the landing anyway",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ines:intro",
@@ -51,7 +102,24 @@
    "s.people.c:ines.opinion: 0 -> 2",
    "s.people.c:ines.xp.pilot: 110 -> 112"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask about the book instead",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask about the book instead",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask about the book instead",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ines:mid1",
@@ -67,7 +135,24 @@
    "s.people.c:ines.opinion: 0 -> 2",
    "s.people.c:ines.xp.pilot: 110 -> 114"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Stand by the cutoff while she does it",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Stand by the cutoff while she does it",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Stand by the cutoff while she does it",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ines:mid1",
@@ -80,7 +165,24 @@
    "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You said not on a loaded burn, and you were right.",
    "s.people.c:ines.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Not on a loaded burn",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Not on a loaded burn",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Not on a loaded burn",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ines:mid2",
@@ -95,7 +197,24 @@
    "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You wrote my reference for the Lisbon board.",
    "s.people.c:ines.opinion: 0 -> 3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Write the reference",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Write the reference",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Write the reference",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ines:mid2",
@@ -110,7 +229,24 @@
    "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You offered to stand before the Lisbon board for me.",
    "s.people.c:ines.opinion: 0 -> 3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Offer to say it to the board in person",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Offer to say it to the board in person",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Offer to say it to the board in person",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ines:mid2",
@@ -123,7 +259,24 @@
    "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You said a reference was not your place.",
    "s.people.c:ines.opinion: 0 -> -1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "\"It is not my place.\"",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "\"It is not my place.\"",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "\"It is not my place.\"",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ines:late",
@@ -138,7 +291,24 @@
    "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: I told you I wanted a command, and you promised.",
    "s.people.c:ines.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Promise her a ship, someday",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Promise her a ship, someday",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Promise her a ship, someday",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ines:late",
@@ -151,7 +321,24 @@
    "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You would not promise a command, but you listened.",
    "s.people.c:ines.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Make no promises",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Make no promises",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Make no promises",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ines:pivot",
@@ -169,7 +356,24 @@
    "s.people.c:ines.skills.pilot: 3 -> 2",
    "s.people.c:ines.xp.pilot: 110 -> 45"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Let her fly it",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Let her fly it",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Let her fly it",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ines:pivot",
@@ -182,7 +386,24 @@
    "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You let me fly it in dead, and I came down.",
    "s.people.c:ines.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Put a second hand at the cutoff",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Put a second hand at the cutoff",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Put a second hand at the cutoff",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ines:pivot",
@@ -195,7 +416,24 @@
    "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You ordered me to ditch the ship, as the tower did.",
    "s.people.c:ines.opinion: 0 -> -3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Order her to ditch",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Order her to ditch",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Order her to ditch",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:tomas:meet",
@@ -212,7 +450,24 @@
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: I signed on with the Second Anvil.",
    "s.people.c:tomas.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Take him on as engineer",
+    "open": false,
+    "why": "There is no free berth aboard."
+   },
+   "poor": {
+    "label": "Take him on as engineer",
+    "open": false,
+    "why": "There is no free berth aboard."
+   },
+   "liked": {
+    "label": "Take him on as engineer",
+    "open": false,
+    "why": "There is no free berth aboard."
+   }
+  }
  },
  {
   "id": "cast:tomas:meet",
@@ -222,7 +477,24 @@
   "changes": [
    "s.cast.tomas.next: 0 -> 9"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "\"Not this time.\"",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "\"Not this time.\"",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "\"Not this time.\"",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:tomas:intro",
@@ -236,7 +508,24 @@
    "s.people.c:tomas.opinion: 0 -> 1",
    "s.people.c:tomas.xp.engineer: 110 -> 112"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Offer to help with the service",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Offer to help with the service",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Offer to help with the service",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:tomas:intro",
@@ -247,7 +536,24 @@
    "s.people.c:tomas.memories: [] -> undefined",
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You left me to my service."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Leave him to it",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Leave him to it",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Leave him to it",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:tomas:mid1",
@@ -263,7 +569,24 @@
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You lent me two hundred credits for my sister's rent.",
    "s.people.c:tomas.opinion: 0 -> 3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Lend him 200 cr",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Lend him 200 cr",
+    "open": false,
+    "why": "You have 0 cr; this costs 200 cr."
+   },
+   "liked": {
+    "label": "Lend him 200 cr",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:tomas:mid1",
@@ -276,7 +599,24 @@
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You could not spare two hundred credits.",
    "s.people.c:tomas.opinion: 0 -> -1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "\"I cannot spare it.\"",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "\"I cannot spare it.\"",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "\"I cannot spare it.\"",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:tomas:mid2",
@@ -293,7 +633,24 @@
    "s.people.c:tomas.opinion: 0 -> 2",
    "s.people.c:tomas.xp.engineer: 110 -> 112"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask him to teach you",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask him to teach you",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask him to teach you",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:tomas:mid2",
@@ -308,7 +665,24 @@
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You asked me to write the plan down, so it would last.",
    "s.people.c:tomas.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask him to write it down, so it does not go with the hull <span class=\"hint\">(needs Tomas's trust)</span>",
+    "open": false,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask him to write it down, so it does not go with the hull <span class=\"hint\">(needs Tomas's trust)</span>",
+    "open": false,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask him to write it down, so it does not go with the hull",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:tomas:mid2",
@@ -321,7 +695,24 @@
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You told me to stick to my shifts.",
    "s.people.c:tomas.opinion: 0 -> -1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "\"Stick to your shifts.\"",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "\"Stick to your shifts.\"",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "\"Stick to your shifts.\"",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:tomas:late",
@@ -336,7 +727,24 @@
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You said you would try to keep the crew together.",
    "s.people.c:tomas.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say you would try",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say you would try",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say you would try",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:tomas:late",
@@ -349,7 +757,24 @@
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You were honest about what you could promise.",
    "s.people.c:tomas.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say you cannot promise that",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say you cannot promise that",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say you cannot promise that",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:tomas:pivot",
@@ -367,7 +792,24 @@
    "s.people.c:tomas.skills.engineer: 3 -> 2",
    "s.people.c:tomas.xp.engineer: 110 -> 45"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Let him go in",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Let him go in",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Let him go in",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:tomas:pivot",
@@ -380,7 +822,24 @@
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You let me go into the plant, and I came out.",
    "s.people.c:tomas.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Send a second person in with him",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Send a second person in with him",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Send a second person in with him",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:tomas:pivot",
@@ -393,7 +852,24 @@
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You told me to vent the plant.",
    "s.people.c:tomas.opinion: 0 -> -3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell him to vent the plant",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell him to vent the plant",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell him to vent the plant",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:yelena:meet",
@@ -412,7 +888,24 @@
    "s.people.c:yelena.role: pilot -> gunner",
    "s.people.c:yelena.skill: 1 -> 3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Offer her the guns",
+    "open": false,
+    "why": "There is no free berth aboard."
+   },
+   "poor": {
+    "label": "Offer her the guns",
+    "open": false,
+    "why": "There is no free berth aboard."
+   },
+   "liked": {
+    "label": "Offer her the guns",
+    "open": false,
+    "why": "There is no free berth aboard."
+   }
+  }
  },
  {
   "id": "cast:yelena:meet",
@@ -422,7 +915,24 @@
   "changes": [
    "s.cast.yelena.next: 0 -> 9"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "\"Not this time.\"",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "\"Not this time.\"",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "\"Not this time.\"",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:yelena:intro",
@@ -436,7 +946,24 @@
    "s.people.c:yelena.opinion: 0 -> 2",
    "s.people.c:yelena.xp.gunner: 110 -> 112"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Take the ref's side",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Take the ref's side",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Take the ref's side",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:yelena:intro",
@@ -449,7 +976,24 @@
    "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You asked about the knee, and I told you.",
    "s.people.c:yelena.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask about the knee",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask about the knee",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask about the knee",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:yelena:mid1",
@@ -463,7 +1007,24 @@
    "s.people.c:yelena.opinion: 0 -> 2",
    "s.people.c:yelena.xp.gunner: 110 -> 113"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Clear the hold and play",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Clear the hold and play",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Clear the hold and play",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:yelena:mid1",
@@ -476,7 +1037,24 @@
    "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You said no to the game in the hold.",
    "s.people.c:yelena.opinion: 0 -> -1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Not in the hold",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Not in the hold",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Not in the hold",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:yelena:mid2",
@@ -489,7 +1067,24 @@
    "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You took my watch on the night of the final.",
    "s.people.c:yelena.opinion: 0 -> 3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Take her watch",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Take her watch",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Take her watch",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:yelena:mid2",
@@ -502,7 +1097,24 @@
    "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You said it was my watch on the night of the final.",
    "s.people.c:yelena.opinion: 0 -> -1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "\"It is your watch.\"",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "\"It is your watch.\"",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "\"It is your watch.\"",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:yelena:late",
@@ -517,7 +1129,24 @@
    "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: I told you I wanted a ship with no bench, and you promised.",
    "s.people.c:yelena.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Promise her a ship, someday",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Promise her a ship, someday",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Promise her a ship, someday",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:yelena:late",
@@ -530,7 +1159,24 @@
    "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You would not promise a ship, but you listened.",
    "s.people.c:yelena.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Make no promises",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Make no promises",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Make no promises",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:yelena:pivot",
@@ -543,7 +1189,24 @@
    "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You let me go first, and I came back.",
    "s.people.c:yelena.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Let her lead",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Let her lead",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Let her lead",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:yelena:pivot",
@@ -556,7 +1219,24 @@
    "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You let me go first, and I came back.",
    "s.people.c:yelena.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Send her with a second person",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Send her with a second person",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Send her with a second person",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:yelena:pivot",
@@ -571,7 +1251,24 @@
    "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You called off the boarding and put me on the bench.",
    "s.people.c:yelena.opinion: 0 -> -3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Call it off",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Call it off",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Call it off",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ruben:meet",
@@ -588,7 +1285,24 @@
    "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: I signed on with the Second Anvil.",
    "s.people.c:ruben.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Take him on as comms",
+    "open": false,
+    "why": "There is no free berth aboard."
+   },
+   "poor": {
+    "label": "Take him on as comms",
+    "open": false,
+    "why": "There is no free berth aboard."
+   },
+   "liked": {
+    "label": "Take him on as comms",
+    "open": false,
+    "why": "There is no free berth aboard."
+   }
+  }
  },
  {
   "id": "cast:ruben:meet",
@@ -598,7 +1312,24 @@
   "changes": [
    "s.cast.ruben.next: 0 -> 9"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "\"Not this time.\"",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "\"Not this time.\"",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "\"Not this time.\"",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ruben:intro",
@@ -612,7 +1343,24 @@
    "s.people.c:ruben.opinion: 0 -> 2",
    "s.people.c:ruben.xp.slicer: 110 -> 112"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Listen with him",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Listen with him",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Listen with him",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ruben:intro",
@@ -625,7 +1373,24 @@
    "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You asked what I was listening for.",
    "s.people.c:ruben.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask what he is listening for",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask what he is listening for",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask what he is listening for",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ruben:mid1",
@@ -656,7 +1421,24 @@
    "s.rumors.0.text: undefined -> A company on Ganymede has folded, and its whole stock of Luxury Goods is being sold off at auction. (Jupiter)",
    "s.rumors.0.until: undefined -> 20"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Act on the tip",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Act on the tip",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Act on the tip",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ruben:mid1",
@@ -669,7 +1451,24 @@
    "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You left the dispatcher's secret alone.",
    "s.people.c:ruben.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Leave it",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Leave it",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Leave it",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ruben:mid2",
@@ -683,7 +1482,24 @@
    "s.people.c:ruben.opinion: 0 -> 2",
    "s.people.c:ruben.xp.slicer: 110 -> 112"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask him to keep an ear on it",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask him to keep an ear on it",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask him to keep an ear on it",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ruben:mid2",
@@ -694,7 +1510,24 @@
    "s.people.c:ruben.memories: [] -> undefined",
    "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You told me not to bother with gossip."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell him not to bother with gossip",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell him not to bother with gossip",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell him not to bother with gossip",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ruben:late",
@@ -709,7 +1542,24 @@
    "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: I told you about the open band, and you promised.",
    "s.people.c:ruben.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Promise him a ship, someday",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Promise him a ship, someday",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Promise him a ship, someday",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ruben:late",
@@ -722,7 +1572,24 @@
    "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You would not promise, but you listened.",
    "s.people.c:ruben.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Make no promises",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Make no promises",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Make no promises",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ruben:pivot",
@@ -740,7 +1607,24 @@
    "s.people.c:ruben.skills.slicer: 3 -> 2",
    "s.people.c:ruben.xp.slicer: 110 -> 45"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Let him go out to the mast",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Let him go out to the mast",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Let him go out to the mast",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ruben:pivot",
@@ -753,7 +1637,24 @@
    "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You let me go out to the north mast, and I came back.",
    "s.people.c:ruben.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Send a second person out with him",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Send a second person out with him",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Send a second person out with him",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ruben:pivot",
@@ -768,7 +1669,24 @@
    "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You kept me off the mast.",
    "s.people.c:ruben.opinion: 0 -> -3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell him to hold the band from the console",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell him to hold the band from the console",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell him to hold the band from the console",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:bexa:meet",
@@ -785,7 +1703,24 @@
    "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: I signed on with the Second Anvil.",
    "s.people.c:bexa.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Offer her the helm",
+    "open": false,
+    "why": "There is no free berth aboard."
+   },
+   "poor": {
+    "label": "Offer her the helm",
+    "open": false,
+    "why": "There is no free berth aboard."
+   },
+   "liked": {
+    "label": "Offer her the helm",
+    "open": false,
+    "why": "There is no free berth aboard."
+   }
+  }
  },
  {
   "id": "cast:bexa:meet",
@@ -795,7 +1730,24 @@
   "changes": [
    "s.cast.bexa.next: 0 -> 9"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "\"Not this time.\"",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "\"Not this time.\"",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "\"Not this time.\"",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:bexa:intro",
@@ -809,7 +1761,24 @@
    "s.people.c:bexa.opinion: 0 -> 2",
    "s.people.c:bexa.xp.pilot: 110 -> 112"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask about the living ones",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask about the living ones",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask about the living ones",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:bexa:intro",
@@ -822,7 +1791,24 @@
    "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You asked about the others, and listened.",
    "s.people.c:bexa.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask about the others",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask about the others",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask about the others",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:bexa:mid1",
@@ -836,7 +1822,24 @@
    "s.people.c:bexa.opinion: 0 -> 2",
    "s.people.c:bexa.xp.pilot: 110 -> 113"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Take the detour",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Take the detour",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Take the detour",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:bexa:mid1",
@@ -849,7 +1852,24 @@
    "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You would not let me look at the wreck.",
    "s.people.c:bexa.opinion: 0 -> -1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Stay on course",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Stay on course",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Stay on course",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:bexa:mid2",
@@ -863,7 +1883,24 @@
    "s.people.c:bexa.opinion: 0 -> 2",
    "s.people.c:bexa.xp.pilot: 110 -> 112"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Trust her",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Trust her",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Trust her",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:bexa:mid2",
@@ -876,7 +1913,24 @@
    "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You raised the alarm about a ghost I had called.",
    "s.people.c:bexa.opinion: 0 -> -1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Raise the alarm anyway",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Raise the alarm anyway",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Raise the alarm anyway",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:bexa:late",
@@ -891,7 +1945,24 @@
    "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: I told you about the ship nobody wanted, and you promised.",
    "s.people.c:bexa.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Promise her a ship, someday",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Promise her a ship, someday",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Promise her a ship, someday",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:bexa:late",
@@ -904,7 +1975,24 @@
    "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You would not promise, but you listened.",
    "s.people.c:bexa.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Make no promises",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Make no promises",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Make no promises",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:bexa:pivot",
@@ -917,7 +2005,24 @@
    "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You let me go out on the line, and I came back.",
    "s.people.c:bexa.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Let her go out on the line",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Let her go out on the line",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Let her go out on the line",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:bexa:pivot",
@@ -930,7 +2035,24 @@
    "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You let me go out on the line, and I came back.",
    "s.people.c:bexa.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Send a second hand out with her",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Send a second hand out with her",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Send a second hand out with her",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:bexa:pivot",
@@ -945,7 +2067,24 @@
    "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You cut the tow on me.",
    "s.people.c:bexa.opinion: 0 -> -3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Cut the line and let the hulk go",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Cut the line and let the hulk go",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Cut the line and let the hulk go",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pax:meet",
@@ -964,7 +2103,24 @@
    "s.people.c:pax.role: engineer -> gunner",
    "s.people.c:pax.skill: 2 -> 3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Offer them the guns",
+    "open": false,
+    "why": "There is no free berth aboard."
+   },
+   "poor": {
+    "label": "Offer them the guns",
+    "open": false,
+    "why": "There is no free berth aboard."
+   },
+   "liked": {
+    "label": "Offer them the guns",
+    "open": false,
+    "why": "There is no free berth aboard."
+   }
+  }
  },
  {
   "id": "cast:pax:meet",
@@ -974,7 +2130,24 @@
   "changes": [
    "s.cast.pax.next: 0 -> 9"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "\"Not this time.\"",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "\"Not this time.\"",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "\"Not this time.\"",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pax:intro",
@@ -988,7 +2161,24 @@
    "s.people.c:pax.opinion: 0 -> 2",
    "s.people.c:pax.xp.gunner: 110 -> 112"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell them honestly that it is different",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell them honestly that it is different",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell them honestly that it is different",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pax:intro",
@@ -1001,7 +2191,24 @@
    "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You told me to aim and breathe.",
    "s.people.c:pax.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say it is the same: aim, breathe",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say it is the same: aim, breathe",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say it is the same: aim, breathe",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pax:mid1",
@@ -1015,7 +2222,24 @@
    "s.people.c:pax.opinion: 0 -> 2",
    "s.people.c:pax.xp.gunner: 110 -> 113"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Check it together",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Check it together",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Check it together",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pax:mid1",
@@ -1026,7 +2250,24 @@
    "s.people.c:pax.memories: [] -> undefined",
    "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You did the coupling for me."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Do it for them",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Do it for them",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Do it for them",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pax:mid2",
@@ -1042,7 +2283,24 @@
    "s.people.c:pax.opinion: 0 -> 3",
    "s.people.c:pax.xp.gunner: 110 -> 112"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Offer to sit with them while they read it",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Offer to sit with them while they read it",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Offer to sit with them while they read it",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pax:mid2",
@@ -1053,7 +2311,24 @@
    "s.people.c:pax.memories: [] -> undefined",
    "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You told me to read it when I was ready."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell them to read it when they are ready",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell them to read it when they are ready",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell them to read it when they are ready",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pax:late",
@@ -1068,7 +2343,24 @@
    "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: I told you about the ship where nobody got hurt, and you promised.",
    "s.people.c:pax.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Promise them a ship, someday",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Promise them a ship, someday",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Promise them a ship, someday",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pax:late",
@@ -1081,7 +2373,24 @@
    "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You would not promise a ship, but you listened.",
    "s.people.c:pax.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Make no promises",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Make no promises",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Make no promises",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pax:pivot",
@@ -1098,7 +2407,24 @@
    "s.people.c:pax.skills.gunner: 3 -> 2",
    "s.people.c:pax.xp.gunner: 110 -> 45"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Let Pax clear it alone",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Let Pax clear it alone",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Let Pax clear it alone",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pax:pivot",
@@ -1111,7 +2437,24 @@
    "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You let me hold the mount, and I came out.",
    "s.people.c:pax.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Put a second hand at the rack beside Pax",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Put a second hand at the rack beside Pax",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Put a second hand at the rack beside Pax",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pax:pivot",
@@ -1126,7 +2469,24 @@
    "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You told me to cut the power on the mount.",
    "s.people.c:pax.opinion: 0 -> -3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell Pax to cut the power and let the mount drop",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell Pax to cut the power and let the mount drop",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell Pax to cut the power and let the mount drop",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:cato:intro",
@@ -1139,7 +2499,24 @@
    "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You told me what you needed, and I put it on the bill.",
    "s.people.c:cato.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell him what you need",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell him what you need",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell him what you need",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:cato:intro",
@@ -1152,7 +2529,24 @@
    "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You said you were fine, and I left it there.",
    "s.people.c:cato.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say you are fine",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say you are fine",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say you are fine",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:cato:mid1",
@@ -1167,7 +2561,24 @@
    "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You asked about the ship with the question mark.",
    "s.people.c:cato.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask which ship has the question mark",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask which ship has the question mark",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask which ship has the question mark",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:cato:mid1",
@@ -1180,7 +2591,24 @@
    "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You said it was not stupid, but a long way off.",
    "s.people.c:cato.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say it is not stupid, but it is a long way off",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say it is not stupid, but it is a long way off",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say it is not stupid, but it is a long way off",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:cato:mid2",
@@ -1197,7 +2625,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You held the deck as I wrote it.",
    "s.people.p1.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Hold the deck, as the captain wrote it",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Hold the deck, as the captain wrote it",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Hold the deck, as the captain wrote it",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:cato:mid2",
@@ -1214,7 +2659,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You stood the watch down against my order.",
    "s.people.p1.opinion: 0 -> -1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Stand the watch down, as Cato said",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Stand the watch down, as Cato said",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Stand the watch down, as Cato said",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:cato:late",
@@ -1229,7 +2691,24 @@
    "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You asked me to tell you if it went badly.",
    "s.people.c:cato.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask him to tell you if it goes badly",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask him to tell you if it goes badly",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask him to tell you if it goes badly",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:cato:late",
@@ -1242,7 +2721,24 @@
    "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You said it was not yours to carry.",
    "s.people.c:cato.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell him it is not yours to carry",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell him it is not yours to carry",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell him it is not yours to carry",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:cato:late:closed",
@@ -1250,7 +2746,24 @@
   "label": "Say it can wait",
   "result": "\"It can,\" he says, and puts the pencil back behind his ear. \"Thank you for not asking what it was.\"",
   "changes": [],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say it can wait",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say it can wait",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say it can wait",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:cato:pivot",
@@ -1263,7 +2776,24 @@
    "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You let me go into the hold, and I came out.",
    "s.people.c:cato.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Let him go in",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Let him go in",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Let him go in",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:cato:pivot",
@@ -1276,7 +2806,24 @@
    "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You let me go into the hold, and I came out.",
    "s.people.c:cato.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Send an ice hand in with him",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Send an ice hand in with him",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Send an ice hand in with him",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:cato:pivot",
@@ -1291,7 +2838,24 @@
    "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You sealed the hold on me.",
    "s.people.c:cato.opinion: 0 -> -3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Seal the hold and let the ice go",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Seal the hold and let the ice go",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Seal the hold and let the ice go",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ilsa:intro",
@@ -1304,7 +2868,24 @@
    "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You asked how long I had had the night watch.",
    "s.people.c:ilsa.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask how long she has had the night watch",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask how long she has had the night watch",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask how long she has had the night watch",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ilsa:intro",
@@ -1317,7 +2898,24 @@
    "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You offered to take an hour of the night watch.",
    "s.people.c:ilsa.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Offer to take an hour of it",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Offer to take an hour of it",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Offer to take an hour of it",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ilsa:mid1",
@@ -1330,7 +2928,24 @@
    "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You told me I was being a fool.",
    "s.people.c:ilsa.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell her she is being a fool",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell her she is being a fool",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell her she is being a fool",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ilsa:mid1",
@@ -1345,7 +2960,24 @@
    "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You said it was mine to decide, and could wait.",
    "s.people.c:ilsa.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell her it is hers to decide, and can wait",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell her it is hers to decide, and can wait",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell her it is hers to decide, and can wait",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ilsa:mid2",
@@ -1362,7 +2994,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You put the family in the second cabin as I said.",
    "s.people.p1.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Put the family in the second cabin, as the captain said",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Put the family in the second cabin, as the captain said",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Put the family in the second cabin, as the captain said",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ilsa:mid2",
@@ -1379,7 +3028,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You kept the second cabin shut against my order.",
    "s.people.p1.opinion: 0 -> -1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Keep the cabin shut, as Ilsa said",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Keep the cabin shut, as Ilsa said",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Keep the cabin shut, as Ilsa said",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ilsa:late",
@@ -1393,7 +3059,24 @@
    "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You offered to put something into the fund.",
    "s.people.c:ilsa.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Offer to put something in",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Offer to put something in",
+    "open": false,
+    "why": "You have 0 cr; this costs 200 cr."
+   },
+   "liked": {
+    "label": "Offer to put something in",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ilsa:late",
@@ -1408,7 +3091,24 @@
    "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You asked me what I needed.",
    "s.people.c:ilsa.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask what she needs",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask what she needs",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask what she needs",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ilsa:late:closed",
@@ -1416,7 +3116,24 @@
   "label": "Say it can wait",
   "result": "\"It can,\" she says, and slides the book into the drawer under the table and locks it. \"Thank you for not asking which books.\"",
   "changes": [],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say it can wait",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say it can wait",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say it can wait",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ilsa:pivot",
@@ -1434,7 +3151,24 @@
    "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You let me go into the reactor, and I came out.",
    "s.people.c:ilsa.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Let her go in",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Let her go in",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Let her go in",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ilsa:pivot",
@@ -1452,7 +3186,24 @@
    "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You let me go into the reactor, and I came out.",
    "s.people.c:ilsa.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Send the engineer in with her",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Send the engineer in with her",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Send the engineer in with her",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ilsa:pivot",
@@ -1468,7 +3219,24 @@
    "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You vented the plant on me.",
    "s.people.c:ilsa.opinion: 0 -> -3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Vent the plant and let the ship coast",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Vent the plant and let the ship coast",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Vent the plant and let the ship coast",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pilar:intro",
@@ -1481,7 +3249,24 @@
    "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You asked me to show you the crosswind window.",
    "s.people.c:pilar.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask her to show you the window",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask her to show you the window",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask her to show you the window",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pilar:intro",
@@ -1494,7 +3279,24 @@
    "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You said you would keep my approach to yourself.",
    "s.people.c:pilar.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say you will keep it to yourself",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say you will keep it to yourself",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say you will keep it to yourself",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pilar:mid1",
@@ -1509,7 +3311,24 @@
    "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You wrote me a reference.",
    "s.people.c:pilar.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Offer to write a reference",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Offer to write a reference",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Offer to write a reference",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pilar:mid1",
@@ -1522,7 +3341,24 @@
    "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You said the helm mattered more than the paper.",
    "s.people.c:pilar.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell her the helm matters more than the paper",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell her the helm matters more than the paper",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell her the helm matters more than the paper",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pilar:mid2",
@@ -1539,7 +3375,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You followed the posted rate as I wrote it.",
    "s.people.p1.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Follow the posted rate, as the captain wrote it",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Follow the posted rate, as the captain wrote it",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Follow the posted rate, as the captain wrote it",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pilar:mid2",
@@ -1556,7 +3409,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You came in on the window against the posted rate.",
    "s.people.p1.opinion: 0 -> -1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Come in on the window, as Pilar said",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Come in on the window, as Pilar said",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Come in on the window, as Pilar said",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pilar:late",
@@ -1571,7 +3441,24 @@
    "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You offered to speak to the captain about the rule.",
    "s.people.c:pilar.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Offer to speak to the captain",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Offer to speak to the captain",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Offer to speak to the captain",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pilar:late",
@@ -1584,7 +3471,24 @@
    "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You told me to keep flying and let the rule wait.",
    "s.people.c:pilar.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell her to keep flying, and let the rule wait",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell her to keep flying, and let the rule wait",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell her to keep flying, and let the rule wait",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pilar:late:closed",
@@ -1592,7 +3496,24 @@
   "label": "Say it can wait",
   "result": "\"It can,\" she says. \"Thank you for not asking which rule.\" She goes forward to the helm.",
   "changes": [],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say it can wait",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say it can wait",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say it can wait",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pilar:pivot",
@@ -1610,7 +3531,24 @@
    "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You let me fly the approach by hand, and I came out.",
    "s.people.c:pilar.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Let her fly it",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Let her fly it",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Let her fly it",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pilar:pivot",
@@ -1628,7 +3566,24 @@
    "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You let me fly the approach by hand, and I came out.",
    "s.people.c:pilar.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Put a second hand on the console with her",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Put a second hand on the console with her",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Put a second hand on the console with her",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:pilar:pivot",
@@ -1644,7 +3599,24 @@
    "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You took the ship off the approach on me.",
    "s.people.c:pilar.opinion: 0 -> -3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Take the ship off the approach and go round",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Take the ship off the approach and go round",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Take the ship off the approach and go round",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ansel:intro",
@@ -1657,7 +3629,24 @@
    "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You asked what the figure meant.",
    "s.people.c:ansel.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask him what the figure means",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask him what the figure means",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask him what the figure means",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ansel:intro",
@@ -1670,7 +3659,24 @@
    "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You asked why I stay.",
    "s.people.c:ansel.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask him why he stays",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask him why he stays",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask him why he stays",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ansel:mid1",
@@ -1685,7 +3691,24 @@
    "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You said my ambition was not small.",
    "s.people.c:ansel.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell him it is not a small ambition",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell him it is not a small ambition",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell him it is not a small ambition",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ansel:mid1",
@@ -1698,7 +3721,24 @@
    "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You asked how close I was.",
    "s.people.c:ansel.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask how close he is",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask how close he is",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask how close he is",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ansel:mid2",
@@ -1715,7 +3755,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the cargo as I said.",
    "s.people.p1.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Take the cargo, as the captain said",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Take the cargo, as the captain said",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Take the cargo, as the captain said",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ansel:mid2",
@@ -1732,7 +3789,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You refused the cargo I wanted.",
    "s.people.p1.opinion: 0 -> -1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Refuse it, as Ansel said",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Refuse it, as Ansel said",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Refuse it, as Ansel said",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ansel:late",
@@ -1745,7 +3819,24 @@
    "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You asked me what the odds were.",
    "s.people.c:ansel.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask him what the odds are",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask him what the odds are",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask him what the odds are",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ansel:late",
@@ -1760,7 +3851,24 @@
    "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You said you would stop her if you could.",
    "s.people.c:ansel.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell him you will stop her if you can",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell him you will stop her if you can",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell him you will stop her if you can",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ansel:late:closed",
@@ -1768,7 +3876,24 @@
   "label": "Say it can wait",
   "result": "\"It can,\" he says. \"It always could. That is the trouble with it.\" He picks up a pencil and puts it down again without writing.",
   "changes": [],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say it can wait",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say it can wait",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say it can wait",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ansel:pivot",
@@ -1789,7 +3914,24 @@
    "s.people.p1.mood.kind: undefined -> low",
    "s.people.p1.mood.until: undefined -> 16"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Let him go to the lock",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Let him go to the lock",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Let him go to the lock",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ansel:pivot",
@@ -1802,7 +3944,24 @@
    "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You let me go to the lock, and I came back.",
    "s.people.c:ansel.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Send a second person with him",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Send a second person with him",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Send a second person with him",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "cast:ansel:pivot",
@@ -1822,7 +3981,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You backed me when I picked the fight.",
    "s.people.p1.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Back the captain, and open fire",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Back the captain, and open fire",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Back the captain, and open fire",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:hester:trouble",
@@ -1837,7 +4013,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You lent me four hundred when the fund was short.",
    "s.people.p1.opinion: 0 -> 3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Lend her four hundred",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Lend her four hundred",
+    "open": false,
+    "why": "You have 0 cr; this costs 400 cr."
+   },
+   "liked": {
+    "label": "Lend her four hundred",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:hester:trouble",
@@ -1848,7 +4041,24 @@
    "s.people.p1.memories: [] -> undefined",
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said it was not your place to lend."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell her it is not your place",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell her it is not your place",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell her it is not your place",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:hester:secret:confide",
@@ -1862,7 +4072,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you would keep the bank to yourself.",
    "s.people.p1.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say you will keep it to yourself",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say you will keep it to yourself",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say you will keep it to yourself",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:hester:secret:confide",
@@ -1876,7 +4103,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You asked how much I owed, and did not flinch.",
    "s.people.p1.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask how much she still owes",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask how much she still owes",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask how much she still owes",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:hester:secret:found",
@@ -1891,7 +4135,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you had not read the bank's letter, and you had.",
    "s.people.p1.opinion: 0 -> -2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say you did not read it",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say you did not read it",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say you did not read it",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:hester:secret:found",
@@ -1904,7 +4165,24 @@
    "s.people.p1.memories: [] -> undefined",
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you had read the bank's letter, and would say nothing."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say you read it, and will say nothing",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say you read it, and will say nothing",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say you read it, and will say nothing",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:hester:goodbye",
@@ -1917,7 +4195,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You thanked me for the work, and meant it.",
    "s.people.p1.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Thank her for the work",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Thank her for the work",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Thank her for the work",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:hester:goodbye",
@@ -1930,7 +4225,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You wished me the ship.",
    "s.people.p1.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Wish her the ship",
+    "open": false,
+    "why": ""
+   },
+   "poor": {
+    "label": "Wish her the ship",
+    "open": false,
+    "why": ""
+   },
+   "liked": {
+    "label": "Wish her the ship",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:hester:goodbye",
@@ -1941,7 +4253,24 @@
    "s.people.p1.memories: [] -> undefined",
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the papers and went."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Take the papers and go",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Take the papers and go",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Take the papers and go",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:dov:trouble",
@@ -1954,7 +4283,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You told the harbourmaster we were good for it.",
    "s.people.p1.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Vouch for him",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Vouch for him",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Vouch for him",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:dov:trouble",
@@ -1969,7 +4315,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You covered the fuel when the fund was short.",
    "s.people.p1.opinion: 0 -> 3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Cover three hundred from your savings",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Cover three hundred from your savings",
+    "open": false,
+    "why": "You have 0 cr; this costs 300 cr."
+   },
+   "liked": {
+    "label": "Cover three hundred from your savings",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:dov:secret:confide",
@@ -1983,7 +4346,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You told me to ask Ilsa.",
    "s.people.p1.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell him to ask Ilsa",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell him to ask Ilsa",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell him to ask Ilsa",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:dov:secret:confide",
@@ -1997,7 +4377,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you would say nothing about the book.",
    "s.people.p1.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say you will say nothing",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say you will say nothing",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say you will say nothing",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:dov:secret:found",
@@ -2009,7 +4406,24 @@
    "s.people.p1.memories: [] -> undefined",
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You closed the fund book and said nothing."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Close the book and say nothing",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Close the book and say nothing",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Close the book and say nothing",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:dov:secret:found",
@@ -2023,7 +4437,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You asked me about the initials in the fund book.",
    "s.people.p1.opinion: 0 -> -1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask him what the initials are",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask him what the initials are",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask him what the initials are",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:dov:goodbye",
@@ -2036,7 +4467,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You thanked me for the work.",
    "s.people.p1.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Thank him for the work",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Thank him for the work",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Thank him for the work",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:dov:goodbye",
@@ -2049,7 +4497,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You told me to ask for help.",
    "s.people.p1.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell him to ask Ilsa for help",
+    "open": false,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell him to ask Ilsa for help",
+    "open": false,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell him to ask Ilsa for help",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:dov:goodbye",
@@ -2060,7 +4525,24 @@
    "s.people.p1.memories: [] -> undefined",
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the bread and went."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Take the bread and go",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Take the bread and go",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Take the bread and go",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:imre:trouble",
@@ -2078,7 +4560,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you filed the renewal at the wrong office, and I do not think you did.",
    "s.people.p1.opinion: 0 -> -1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say you took the form to the wrong office",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say you took the form to the wrong office",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say you took the form to the wrong office",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:imre:trouble",
@@ -2095,7 +4594,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You let me answer for the renewal.",
    "s.people.p1.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Let the captain answer",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Let the captain answer",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Let the captain answer",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:imre:secret:confide",
@@ -2109,7 +4625,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said it was noted.",
    "s.people.p1.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say it is noted",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say it is noted",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say it is noted",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:imre:secret:confide",
@@ -2123,7 +4656,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You asked what the order was.",
    "s.people.p1.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask what the order was",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask what the order was",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask what the order was",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:imre:secret:found",
@@ -2138,7 +4688,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you were looking for a manual, and you had read the record.",
    "s.people.p1.opinion: 0 -> -1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say you were looking for the manual",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say you were looking for the manual",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say you were looking for the manual",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:imre:secret:found",
@@ -2151,7 +4718,24 @@
    "s.people.p1.memories: [] -> undefined",
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you would not mention the record."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say you will not mention it",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say you will not mention it",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say you will not mention it",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:imre:goodbye",
@@ -2164,7 +4748,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You thanked me for the work.",
    "s.people.p1.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Thank them for the work",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Thank them for the work",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Thank them for the work",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:imre:goodbye",
@@ -2177,7 +4778,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You wished me a clean record.",
    "s.people.p1.opinion: 0 -> 3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Wish them a clean record",
+    "open": false,
+    "why": ""
+   },
+   "poor": {
+    "label": "Wish them a clean record",
+    "open": false,
+    "why": ""
+   },
+   "liked": {
+    "label": "Wish them a clean record",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:imre:goodbye",
@@ -2188,7 +4806,24 @@
    "s.people.p1.memories: [] -> undefined",
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the papers and went."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Take the papers and go",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Take the papers and go",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Take the papers and go",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:zoya:trouble",
@@ -2201,7 +4836,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You told Dobrescu I was out.",
    "s.people.p1.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell him the captain is out",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell him the captain is out",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell him the captain is out",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:zoya:trouble",
@@ -2216,7 +4868,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You paid Dobrescu a hundred to wait a week.",
    "s.people.p1.opinion: 0 -> 3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Give him a hundred to wait a week",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Give him a hundred to wait a week",
+    "open": false,
+    "why": "You have 0 cr; this costs 100 cr."
+   },
+   "liked": {
+    "label": "Give him a hundred to wait a week",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:zoya:secret:confide",
@@ -2230,7 +4899,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You asked what the good run would have to be.",
    "s.people.p1.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask what one good run would have to be",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask what one good run would have to be",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask what one good run would have to be",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:zoya:secret:confide",
@@ -2244,7 +4930,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you would stay till the debts were done.",
    "s.people.p1.opinion: 0 -> 3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say you will stay till it is done",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say you will stay till it is done",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say you will stay till it is done",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:zoya:secret:found",
@@ -2257,7 +4960,24 @@
    "s.people.p1.memories: [] -> undefined",
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You put the sheet back and said nothing."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Put it back and say nothing",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Put it back and say nothing",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Put it back and say nothing",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:zoya:secret:found",
@@ -2272,7 +4992,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You asked me if the sheet was true.",
    "s.people.p1.opinion: 0 -> -1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask her if it is true",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask her if it is true",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask her if it is true",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:zoya:goodbye",
@@ -2285,7 +5022,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You wished me the good run.",
    "s.people.p1.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Wish her the good run",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Wish her the good run",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Wish her the good run",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:zoya:goodbye",
@@ -2298,7 +5052,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You told me to stop.",
    "s.people.p1.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell her to stop",
+    "open": false,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell her to stop",
+    "open": false,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell her to stop",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "captain:zoya:goodbye",
@@ -2309,7 +5080,24 @@
    "s.people.p1.memories: [] -> undefined",
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the papers and went."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Take the papers and go",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Take the papers and go",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Take the papers and go",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:cap-order",
@@ -2326,7 +5114,24 @@
    "s.people.p1.opinion: 0 -> 1",
    "s.qualities.due:h-hot-good: undefined -> 7"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Do as ordered",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Do as ordered",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Do as ordered",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:cap-order",
@@ -2342,7 +5147,24 @@
    "s.people.p1.opinion: 0 -> -1",
    "s.qualities.due:h-hot-bad: undefined -> 7"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say what you think",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say what you think",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say what you think",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:cap-order",
@@ -2359,7 +5181,24 @@
    "s.people.p1.opinion: 0 -> 2",
    "s.qualities.due:h-ninety: undefined -> 8"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "\"Ninety. I will find the minutes on the approach.\"",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "\"Ninety. I will find the minutes on the approach.\"",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "\"Ninety. I will find the minutes on the approach.\"",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:cap-order",
@@ -2376,7 +5215,24 @@
    "s.people.p1.opinion: 0 -> 2",
    "s.qualities.due:h-ninety: undefined -> 8"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Engineer 2] Put the heat figures in front of the captain",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Engineer 2] Put the heat figures in front of the captain",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Engineer 2] Put the heat figures in front of the captain",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:cap-order",
@@ -2393,7 +5249,24 @@
    "s.people.p1.opinion: 0 -> 2",
    "s.qualities.due:h-ninety: undefined -> 8"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Pilot 2] Replot the approach to make the window cooler",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Pilot 2] Replot the approach to make the window cooler",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Pilot 2] Replot the approach to make the window cooler",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:cap-praise",
@@ -2410,7 +5283,24 @@
    "s.people.p1.opinion: 0 -> 1",
    "s.qualities.due:h-praise-trust: undefined -> 11"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Take it modestly",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Take it modestly",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Take it modestly",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:cap-praise",
@@ -2426,7 +5316,24 @@
    "s.people.p1.opinion: 0 -> -1",
    "s.qualities.due:h-owed: undefined -> 9"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask if it is worth a bonus",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask if it is worth a bonus",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask if it is worth a bonus",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:cap-praise",
@@ -2441,7 +5348,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You asked for a bonus and brought the figures to show it.",
    "s.people.p1.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Gunner 3] Ask for the bonus, with the week's figures",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Gunner 3] Ask for the bonus, with the week's figures",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Gunner 3] Ask for the bonus, with the week's figures",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:cap-dressing",
@@ -2458,7 +5382,24 @@
    "s.people.p1.opinion: 0 -> 1",
    "s.qualities.due:h-log-trust: undefined -> 13"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Own it",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Own it",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Own it",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:cap-dressing",
@@ -2466,7 +5407,24 @@
   "label": "Blame the old terminal",
   "result": "You mention the terminal, which does lose entries, now and then. \"Then we will see,\" she says.",
   "changes": [],
-  "next": "The Terminal"
+  "next": "The Terminal",
+  "gate": {
+   "rich": {
+    "label": "Blame the old terminal",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Blame the old terminal",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Blame the old terminal",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:cap-favour",
@@ -2483,7 +5441,24 @@
    "s.people.p1.opinion: 0 -> 2",
    "s.qualities.due:h-favour-back: undefined -> 10"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Stand the watch",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Stand the watch",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Stand the watch",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:cap-favour",
@@ -2495,7 +5470,24 @@
    "s.people.p1.memories: [] -> undefined",
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You stood a watch for me for a fee."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Stand it for forty credits",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Stand it for forty credits",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Stand it for forty credits",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:cap-favour",
@@ -2511,7 +5503,24 @@
    "s.people.p1.opinion: 0 -> -1",
    "s.qualities.due:h-favour-cold: undefined -> 6"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Beg off",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Beg off",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Beg off",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-cover",
@@ -2529,7 +5538,24 @@
    "s.qualities.due:h-cover-back: undefined -> 11",
    "s.threads.cover: undefined -> p7"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Cover for them",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Cover for them",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Cover for them",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-cover",
@@ -2546,7 +5572,24 @@
    "s.qualities.due:h-cover-cold: undefined -> 6",
    "s.threads.cover: undefined -> p7"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Not tonight",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Not tonight",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Not tonight",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-needle",
@@ -2564,7 +5607,24 @@
    "s.qualities.due:h-needle-ally: undefined -> 9",
    "s.threads.needle: undefined -> p7"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Show them the work",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Show them the work",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Show them the work",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-needle",
@@ -2579,7 +5639,24 @@
    "s.people.p7.opinion: 0 -> 2",
    "s.threads.needle: undefined -> p7"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Gunner 2] Take them through the post, step by step",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Gunner 2] Take them through the post, step by step",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Gunner 2] Take them through the post, step by step",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-needle",
@@ -2590,7 +5667,24 @@
    "s.people.p7.memories: [] -> undefined",
    "s.people.p7.memories.0: undefined -> 9 Jun 2214: You let a needling go."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Let it go",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Let it go",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Let it go",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-cards",
@@ -2608,7 +5702,24 @@
    "s.qualities.due:h-cards-rematch: undefined -> 8",
    "s.threads.cards: undefined -> p7"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Sit in (50 cr)",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Sit in (50 cr)",
+    "open": false,
+    "why": "You have 0 cr; this costs 50 cr."
+   },
+   "liked": {
+    "label": "Sit in (50 cr)",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-cards",
@@ -2619,7 +5730,24 @@
    "s.people.p7.memories: [] -> undefined",
    "s.people.p7.memories.0: undefined -> 9 Jun 2214: You watched the card game and kept your credits."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Watch from the side",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Watch from the side",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Watch from the side",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-ines",
@@ -2633,7 +5761,24 @@
    "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You read me the numbers on a hard approach and did not try to be clever.",
    "s.people.c:ines.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Read her the numbers",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Read her the numbers",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Read her the numbers",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-ines",
@@ -2647,7 +5792,24 @@
    "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You caught a wrong figure on my approach and said it plainly.",
    "s.people.c:ines.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Pilot 2] Check her numbers against your own",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Pilot 2] Check her numbers against your own",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Pilot 2] Check her numbers against your own",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-ines",
@@ -2663,7 +5825,24 @@
    "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You flew the last leg of a hard approach with me beside you, and I did not touch the controls.",
    "s.people.c:ines.opinion: 0 -> 3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Pilot 3] Ask to fly the last leg",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Pilot 3] Ask to fly the last leg",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Pilot 3] Ask to fly the last leg",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-ines",
@@ -2674,7 +5853,24 @@
    "s.people.c:ines.memories: [] -> undefined",
    "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You watched from the back and let me fly."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say you would rather watch",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say you would rather watch",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say you would rather watch",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-tomas",
@@ -2688,7 +5884,24 @@
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You sat with me in the engine room and listened.",
    "s.people.c:tomas.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Sit and listen",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Sit and listen",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Sit and listen",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-tomas",
@@ -2702,7 +5915,24 @@
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You heard a tick in the loop that I had stopped hearing.",
    "s.people.c:tomas.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Engineer 2] Tell him what you hear in the loop",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Engineer 2] Tell him what you hear in the loop",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Engineer 2] Tell him what you hear in the loop",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-tomas",
@@ -2718,7 +5948,24 @@
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You took the other end of the loop with me and did not need to be told.",
    "s.people.c:tomas.opinion: 0 -> 3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Engineer 3] Ask to take the other end of the loop",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Engineer 3] Ask to take the other end of the loop",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Engineer 3] Ask to take the other end of the loop",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-tomas",
@@ -2729,7 +5976,24 @@
    "s.people.c:tomas.memories: [] -> undefined",
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You had work to do and did not stay."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say you have work to do",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say you have work to do",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say you have work to do",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-yelena",
@@ -2743,7 +6007,24 @@
    "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You took the other console on the range and did not sulk about losing.",
    "s.people.c:yelena.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Take the other console",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Take the other console",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Take the other console",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-yelena",
@@ -2757,7 +6038,24 @@
    "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You held the lead on the hard setting for ninety seconds.",
    "s.people.c:yelena.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Gunner 2] Take the hard setting and hold the lead",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Gunner 2] Take the hard setting and hold the lead",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Gunner 2] Take the hard setting and hold the lead",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-yelena",
@@ -2773,7 +6071,24 @@
    "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You beat my score on my own worst setting.",
    "s.people.c:yelena.opinion: 0 -> 3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Gunner 3] Ask for her own worst setting",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Gunner 3] Ask for her own worst setting",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Gunner 3] Ask for her own worst setting",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-yelena",
@@ -2784,7 +6099,24 @@
    "s.people.c:yelena.memories: [] -> undefined",
    "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You said you would sit out the range."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say your knee is bad too",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say your knee is bad too",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say your knee is bad too",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-ruben",
@@ -2798,7 +6130,24 @@
    "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You helped me sort the intercepts and did not mind the stories.",
    "s.people.c:ruben.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Help him sort",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Help him sort",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Help him sort",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-ruben",
@@ -2812,7 +6161,24 @@
    "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You sorted my intercepts by the handshake tones, and you were right.",
    "s.people.c:ruben.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Comms 2] Tell him which pile is true",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Comms 2] Tell him which pile is true",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Comms 2] Tell him which pile is true",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-ruben",
@@ -2828,7 +6194,24 @@
    "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You found the one in my stack that was neither lovely nor true.",
    "s.people.c:ruben.opinion: 0 -> 3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Comms 3] Find the signal that is neither",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Comms 3] Find the signal that is neither",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Comms 3] Find the signal that is neither",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-ruben",
@@ -2839,7 +6222,24 @@
    "s.people.c:ruben.memories: [] -> undefined",
    "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You took the tea and went."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Take the tea and go",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Take the tea and go",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Take the tea and go",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-bexa",
@@ -2853,7 +6253,24 @@
    "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You asked about the list the right way, and listened.",
    "s.people.c:bexa.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask about the first name",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask about the first name",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask about the first name",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-bexa",
@@ -2864,7 +6281,24 @@
    "s.people.c:bexa.memories: [] -> undefined",
    "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You looked away from the list."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Look away",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Look away",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Look away",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-pax",
@@ -2878,7 +6312,24 @@
    "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You checked the coupling with me instead of telling me to stop.",
    "s.people.c:pax.opinion: 0 -> 1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Check it with them",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Check it with them",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Check it with them",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-pax",
@@ -2892,7 +6343,24 @@
    "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You showed me the torque log, and it was the same every time.",
    "s.people.c:pax.opinion: 0 -> 2"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Gunner 2] Show them the torque log",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Gunner 2] Show them the torque log",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Gunner 2] Show them the torque log",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-pax",
@@ -2908,7 +6376,24 @@
    "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You asked me to check your mount, and listened to what I found.",
    "s.people.c:pax.opinion: 0 -> 3"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Gunner 3] Ask them to check your mount",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Gunner 3] Ask them to check your mount",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Gunner 3] Ask them to check your mount",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:crew-pax",
@@ -2919,7 +6404,24 @@
    "s.people.c:pax.memories: [] -> undefined",
    "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You told me the coupling was fine."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell them it is fine",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell them it is fine",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell them it is fine",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:money-side",
@@ -2927,7 +6429,24 @@
   "label": "Take the work",
   "result": "You say yes, and spend your time ashore in a warehouse that smells of cold iron and old packing straw.",
   "changes": [],
-  "next": "The Crates"
+  "next": "The Crates",
+  "gate": {
+   "rich": {
+    "label": "Take the work",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Take the work",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Take the work",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:money-side",
@@ -2935,7 +6454,24 @@
   "label": "Pass",
   "result": "You pass, and spend the time ashore as you like, The broker nods and finds somebody else.",
   "changes": [],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Pass",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Pass",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Pass",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:money-loan",
@@ -2953,7 +6489,24 @@
    "s.qualities.due:h-loan-repaid: undefined -> 13",
    "s.threads.loan: undefined -> p7"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Lend a hundred",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Lend a hundred",
+    "open": false,
+    "why": "You have 0 cr; this costs 100 cr."
+   },
+   "liked": {
+    "label": "Lend a hundred",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:money-loan",
@@ -2971,7 +6524,24 @@
    "s.qualities.due:h-loan-small: undefined -> 13",
    "s.threads.loan: undefined -> p7"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Lend fifty",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Lend fifty",
+    "open": false,
+    "why": "You have 0 cr; this costs 50 cr."
+   },
+   "liked": {
+    "label": "Lend fifty",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:money-loan",
@@ -2984,7 +6554,24 @@
    "s.people.p7.memories.0: undefined -> 9 Jun 2214: You would not lend me anything.",
    "s.people.p7.opinion: 0 -> -1"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say no",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say no",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say no",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:money-short",
@@ -2999,7 +6586,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You raised a short statement politely.",
    "s.qualities.due:h-short-audit: undefined -> 11"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Raise it quietly with the captain",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Raise it quietly with the captain",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Raise it quietly with the captain",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:money-short",
@@ -3016,7 +6620,24 @@
    "s.people.p1.opinion: 0 -> -2",
    "s.qualities.due:h-scene-fallout: undefined -> 7"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Make a scene",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Make a scene",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Make a scene",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:money-short",
@@ -3024,7 +6645,24 @@
   "label": "Say nothing",
   "result": "You say nothing, and let it go, and the day passes. It was only a day, you tell yourself, and it was.",
   "changes": [],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say nothing",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say nothing",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say nothing",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:road-scope",
@@ -3037,7 +6675,24 @@
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You brought me something off the lane when you saw it.",
    "s.people.p1.opinion: 0 -> 1"
   ],
-  "next": "What Did You See?"
+  "next": "What Did You See?",
+  "gate": {
+   "rich": {
+    "label": "Tell the captain at once",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell the captain at once",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell the captain at once",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:road-scope",
@@ -3049,7 +6704,24 @@
    "s.people.p1.memories: [] -> undefined",
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You logged something off the lane."
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Log it and keep watching",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Log it and keep watching",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Log it and keep watching",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:road-scope",
@@ -3066,7 +6738,24 @@
    "s.people.p1.opinion: 0 -> 2",
    "s.qualities.due:h-lane-again: undefined -> 10"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Pilot 2] Plot its track and give the captain a course round it",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Pilot 2] Plot its track and give the captain a course round it",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Pilot 2] Plot its track and give the captain a course round it",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:road-scope",
@@ -3083,7 +6772,24 @@
    "s.people.p1.opinion: 0 -> 2",
    "s.qualities.due:h-lane-again: undefined -> 10"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Gunner 2] Put a passive lock on it and watch what it does",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Gunner 2] Put a passive lock on it and watch what it does",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Gunner 2] Put a passive lock on it and watch what it does",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:road-scope",
@@ -3100,7 +6806,24 @@
    "s.people.p1.opinion: 0 -> 2",
    "s.qualities.due:h-lane-again: undefined -> 10"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Engineer 2] Read its drive signature off the stray return",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Engineer 2] Read its drive signature off the stray return",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Engineer 2] Read its drive signature off the stray return",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:road-scope",
@@ -3117,7 +6840,24 @@
    "s.people.p1.opinion: 0 -> 2",
    "s.qualities.due:h-lane-again: undefined -> 10"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Comms 2] Listen to its transponder for a minute",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Comms 2] Listen to its transponder for a minute",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Comms 2] Listen to its transponder for a minute",
+    "open": true,
+    "why": ""
+   }
+  }
  },
  {
   "id": "hired:road-scope",
@@ -3129,6 +6869,23 @@
    "s.journal.0.text: undefined -> Saw something off the lane and said nothing.",
    "s.qualities.due:h-lane-trouble: undefined -> 8"
   ],
-  "next": null
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say nothing",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say nothing",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say nothing",
+    "open": true,
+    "why": ""
+   }
+  }
  }
 ]
