@@ -176,3 +176,97 @@ test('no shipped storylet has a placeholder the check would flag', async () => {
   await g.done();
   assert.deepEqual(bad, []);
 });
+
+// ---------- conditions, effects and links (#338) ----------
+
+test('an override can change when a scene appears, replacing its conditions whole', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    const s = STORYLETS.find(x => x.id === 'port-mars-sky'), shipped = sceneView(s);
+    useOverrides({ 'port-mars-sky': { when: { day: 999 } } });
+    const never = meets(sceneView(s).when);
+    useOverrides({ 'port-mars-sky': { when: {} } });
+    const always = meets(sceneView(s).when);
+    useOverrides({});
+    return { sameObject: shipped === s && sceneView(s) === s, shippedWhen: JSON.stringify(s.when).includes('"day":3'), never, always };
+  });
+  await g.done();
+  assert.deepEqual(r, { sameObject: true, shippedWhen: true, never: false, always: true });
+});
+
+test('an override can change what a choice does and who can take it, and the scene\'s own definition is not touched', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    const s = STORYLETS.find(x => x.id === 'port-mars-sky'), before = JSON.stringify(s.choices[0]);
+    useOverrides({ 'port-mars-sky': { choices: { 0: { effects: { credits: 500 } }, 1: { when: { credits: 99999999 } } } } });
+    G.state.credits = 1000;
+    const rep = repOf('Dome Concord'), ev = storyletEvent(s);
+    ev.choices[0].run();
+    return { credits: G.state.credits, rep: repOf('Dome Concord') - rep, shut: ev.choices[1].can(), open: !ev.choices[2].can, untouched: JSON.stringify(s.choices[0]) === before };
+  });
+  await g.done();
+  assert.deepEqual(r, { credits: 1500, rep: 0, shut: false, open: true, untouched: true });
+});
+
+test('an override can link a choice to another scene, and null takes a link away', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    const s = STORYLETS.find(x => x.id === 'port-mars-sky');
+    useOverrides({ 'port-mars-sky': { choices: { 0: { next: 'port-mars-front' } } } });
+    G.nextEvent = null; storyletEvent(s).choices[0].run();
+    const linked = G.nextEvent && G.nextEvent.title;
+    s.choices[1].next = 'port-mars-front';  // a scene that has a link of its own
+    useOverrides({ 'port-mars-sky': { choices: { 1: { next: null } } } });
+    G.nextEvent = null; storyletEvent(s).choices[1].run();
+    const cut = G.nextEvent;
+    delete s.choices[1].next; useOverrides({});
+    return { linked, cut };
+  });
+  await g.done();
+  assert.deepEqual(r, { linked: 'A Front Over the Valley', cut: null });
+});
+
+test('conditions, effects and links the game would refuse are left out together, with the scene\'s words kept', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    const warnings = [], real = console.warn;
+    console.warn = (...a) => warnings.push(a.join(' '));
+    const clean = cleanOverrides({
+      'port-mars-sky': { title: 'Kept', when: { nonsense: 1 }, choices: { 0: { effects: { credits: 5 } }, 1: { next: 'no-such-scene', label: 'Also kept' } } },
+      'port-mars-front': { choices: { 0: { effects: { mission: { to: 'Mars', onDone: { nope: 1 } } } } } },
+      'land-customs': { when: { day: 4 }, choices: { 1: { effects: { rep: { 'Dome Concord': 1 } }, when: { credits: 10 }, next: 'port-mars-sky' } } },
+    });
+    console.warn = real;
+    return { clean, warnings };
+  });
+  await g.done();
+  assert.deepEqual(r.clean, {
+    'port-mars-sky': { title: 'Kept', choices: { 1: { label: 'Also kept' } } },
+    'land-customs': { when: { day: 4 }, choices: { 1: { effects: { rep: { 'Dome Concord': 1 } }, when: { credits: 10 }, next: 'port-mars-sky' } } },
+  });
+  assert.equal(r.warnings.length, 1);
+  for (const part of ['unknown condition "nonsense"', 'leads to a scene that is not there', 'unknown effect "nope"']) assert.ok(r.warnings[0].includes(part), `${part} in ${r.warnings[0]}`);
+});
+
+test('the check an override is held to is the one addStorylet makes, and the shipped scenes pass it', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    const errors = [], real = console.error;
+    console.error = (...a) => errors.push(a.join(' '));
+    const refused = addStorylet({ id: 'port-mars-sky', where: 'port', title: 't', text: 't', choices: [{ label: 'x' }] });
+    const unknown = addStorylet({ id: 'brand-new', where: 'port', title: 't', text: 't', when: { nope: 1 }, choices: [{ label: 'x', effects: { nothing: 1 } }] });
+    console.error = real;
+    return {
+      errors, added: STORYLETS.some(s => s.id === 'brand-new'),
+      bad: STORYLETS.flatMap(s => storyletProblems(s, { duplicate: false }).map(p => `${s.id}: ${p}`)),
+      same: [storyletProblems({ id: 'port-mars-sky', where: 'port', title: 't', text: 't', choices: [{ label: 'x' }] }), storyletProblems({ id: 'brand-new', where: 'port', title: 't', text: 't', when: { nope: 1 }, choices: [{ label: 'x', effects: { nothing: 1 } }] })],
+    };
+  });
+  await g.done();
+  assert.equal(r.added, false);
+  assert.deepEqual(r.bad, []);
+  assert.equal(r.errors.length, 2);
+  assert.match(r.errors[0], /duplicate id/);
+  assert.match(r.errors[1], /unknown condition "nope"; unknown effect "nothing"/);
+  assert.deepEqual(r.same, [['duplicate id'], ['unknown condition "nope"', 'unknown effect "nothing"']]);
+});

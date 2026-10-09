@@ -178,30 +178,59 @@ function fill(text = '') {
 const PLACEHOLDER = /^\{(?:planet|system|captain|crew|crew:(\w+)|thread:\w+)\}$/;
 const unknownPlaceholders = text => (String(text).match(/\{[^{}]*\}/g) || []).filter(t => { const m = PLACEHOLDER.exec(t); return !m || !!(m[1] && !ROLE_NAMES[m[1]]); });
 
-// The file's changes with everything wrong left out: { id: { title, text, choices: { index: { label, result } } } }. All the problems are
-// said together in one warning. A value must be a non-empty string; an id must be a scene and an index one of its choices.
+// The scene as the file changes it: its conditions, and each choice's conditions, effects and `next` link, where the file names them. The
+// words are not part of this (storyletEvent puts those in), so a scene with no such changes is the scene itself.
+function sceneView(s) {
+  const o = sceneOverride(s.id), cs = o.choices || {};
+  if (o.when === undefined && !Object.values(cs).some(c => c.when !== undefined || c.effects !== undefined || c.next !== undefined)) return s;
+  return { ...s, when: o.when !== undefined ? o.when : s.when, choices: s.choices.map((c, i) => ({ ...c, ...pickDefined(cs[i], ['when', 'effects', 'next']) })) };
+}
+const pickDefined = (o, keys) => Object.fromEntries(keys.filter(k => o && o[k] !== undefined).map(k => [k, o[k]]));
+
+// The file's changes with everything wrong left out: { id: { title, text, when, choices: { index: { label, result, when, effects, next } } } }.
+// All the problems are said together in one warning. A word must be a non-empty string; an id must be a scene and an index one of its
+// choices. Conditions and effects are held to the check addStorylet makes (storyletProblems), and a `next` must be a scene: a scene's changes
+// to them that fail it are all left out, so the file can never make a scene addStorylet would refuse.
 function cleanOverrides(raw) {
   const out = {}, bad = [];
   const isObj = v => !!v && typeof v === 'object' && !Array.isArray(v);
   const text = (where, v) => (typeof v === 'string' && v.trim() ? true : (bad.push(`${where} is not text`), false));
+  const STRUCT = ['when', 'effects', 'next'];
   if (!isObj(raw)) { if (raw !== undefined) bad.push('the overrides are not an object'); raw = {}; }
   for (const [id, o] of Object.entries(raw)) {
     const s = STORYLETS.find(x => x.id === id);
     if (!s) { bad.push(`unknown scene "${id}"`); continue; }
     if (!isObj(o)) { bad.push(`"${id}" is not an object`); continue; }
-    const mine = {};
+    const mine = {}, pre = `"${id}"`;
     for (const [k, v] of Object.entries(o)) {
-      if ((k === 'title' || k === 'text') && text(`"${id}".${k}`, v)) mine[k] = v;
+      if ((k === 'title' || k === 'text') && text(`${pre}.${k}`, v)) mine[k] = v;
+      else if (k === 'when') { if (isObj(v)) mine.when = v; else bad.push(`${pre}.when is not an object`); }
       else if (k === 'choices' && isObj(v)) {
         for (const [i, c] of Object.entries(v)) {
-          if (!/^\d+$/.test(i) || Number(i) >= s.choices.length) { bad.push(`"${id}" has no choice ${i}`); continue; }
-          if (!isObj(c)) { bad.push(`"${id}" choice ${i} is not an object`); continue; }
+          if (!/^\d+$/.test(i) || Number(i) >= s.choices.length) { bad.push(`${pre} has no choice ${i}`); continue; }
+          if (!isObj(c)) { bad.push(`${pre} choice ${i} is not an object`); continue; }
           for (const [f, x] of Object.entries(c)) {
-            if (f !== 'label' && f !== 'result') bad.push(`"${id}" choice ${i} has no "${f}"`);
-            else if (text(`"${id}" choice ${i} ${f}`, x)) { mine.choices = mine.choices || {}; (mine.choices[i] = mine.choices[i] || {})[f] = x; }
+            const slot = () => { mine.choices = mine.choices || {}; return (mine.choices[i] = mine.choices[i] || {}); };
+            if ((f === 'label' || f === 'result') && text(`${pre} choice ${i} ${f}`, x)) slot()[f] = x;
+            else if ((f === 'when' || f === 'effects') && isObj(x)) slot()[f] = x;
+            else if (f === 'next' && (x === null || (typeof x === 'string' && STORYLETS.some(y => y.id === x)))) slot().next = x;
+            else if (f !== 'label' && f !== 'result') bad.push(`${pre} choice ${i} ${f === 'next' ? 'leads to a scene that is not there' : STRUCT.includes(f) ? `.${f} is not an object` : `has no "${f}"`}`);
           }
         }
-      } else if (k !== 'title' && k !== 'text') bad.push(`"${id}" has no "${k}"`);
+      } else if (k !== 'title' && k !== 'text') bad.push(`${pre} has no "${k}"`);
+    }
+    // The conditions, effects and links together, as the scene would be: if the game would refuse it, none of them go in.
+    const changes = (mine.when !== undefined ? 1 : 0) + Object.values(mine.choices || {}).filter(c => STRUCT.some(f => c[f] !== undefined)).length;
+    if (changes) {
+      const view = { ...s, when: mine.when !== undefined ? mine.when : s.when, choices: s.choices.map((c, i) => ({ ...c, ...pickDefined((mine.choices || {})[i], STRUCT) })) };
+      const problems = storyletProblems(view, { duplicate: false });
+      if (problems.length) {
+        bad.push(`${pre} conditions, effects and links left out: ${problems.join('; ')}`);
+        delete mine.when;
+        for (const c of Object.values(mine.choices || {})) for (const f of STRUCT) delete c[f];
+        for (const [i, c] of Object.entries(mine.choices || {})) if (!Object.keys(c).length) delete mine.choices[i];
+        if (mine.choices && !Object.keys(mine.choices).length) delete mine.choices;
+      }
     }
     if (Object.keys(mine).length) out[id] = mine;
   }
@@ -215,7 +244,8 @@ const useOverrides = raw => { sceneOverrides = cleanOverrides(raw); return scene
 const sceneOverride = id => (sceneOverrides || useOverrides(SCENE_OVERRIDES))[id] || {};
 
 // ---------- the engine ----------
-function addStorylet(def, source = 'core') {
+// What is wrong with a storylet, as a list of lines (empty when addStorylet would take it). The scene editor's changes are held to the same check.
+function storyletProblems(def, { duplicate = true } = {}) {
   const bad = [];
   if (!def || !def.id || !def.title || !def.text || !Array.isArray(def.choices) || !def.choices.length) bad.push('needs id, title, text, and choices');
   if (def && !['port', 'transit'].includes(def.where)) bad.push('where must be "port" or "transit"');
@@ -228,7 +258,12 @@ function addStorylet(def, source = 'core') {
       for (const v of Object.values(c.effects || {})) if (v && v.onDone) check(v.onDone, EFFECTS, 'effect');  // a mission's effects on delivery
     }
   }
-  if (STORYLETS.some(s => s.id === (def && def.id))) bad.push('duplicate id');
+  if (duplicate && STORYLETS.some(s => s.id === (def && def.id))) bad.push('duplicate id');
+  return bad;
+}
+
+function addStorylet(def, source = 'core') {
+  const bad = storyletProblems(def);
   if (bad.length) return console.error(`Storylet "${def && def.id}" (${source}): ${bad.join('; ')}`);
   STORYLETS.push({ once: true, priority: 0, ...def });
 }
@@ -241,13 +276,14 @@ function storyletEvent(s) {
   if (s.every) qs[`last:${s.id}`] = G.state.day;
   if (s.consumes) qs[`due:${s.consumes}`] = 0;  // a follow-up plays once for each time it was set going
   // A choice that needs a particular crew member (not just a role) is hidden without them.
+  const view = sceneView(s);  // the file's conditions, effects and links, if it changes any
   const present = c => !(c.when && c.when.crew && !ROLE_NAMES[c.when.crew] && !G.state.crew.includes(c.when.crew)) && !(c.when && c.when.post && !CONDITIONS.post(c.when.post));  // and a choice for another post is not shown at all
   // The editor's words, by the choice's place in the list. The title and the labels are escaped by the dialog's template; the text and the
   // results go in as markup (the shipped ones are ours), so an override's are escaped here: they come from a file anyone can edit.
   const o = sceneOverride(s.id), mine = (i, field) => ((o.choices || {})[i] || {})[field];
   return {
     title: fill(o.title || s.title), text: fill(o.text ? esc(o.text) : s.text), via: s.via, personal: s.personal,
-    choices: s.choices.map((c, i) => [c, i]).filter(([c]) => present(c)).map(([c, i]) => ({
+    choices: view.choices.map((c, i) => [c, i]).filter(([c]) => present(c)).map(([c, i]) => ({
       label: fill(mine(i, 'label') || c.label),
       role: c.when && ROLE_NAMES[c.when.crew] ? c.when.crew : undefined,
       can: c.when ? () => meets(c.when) : undefined,
@@ -270,7 +306,7 @@ function chainTo(id) {
 // The storylet to play here and now: eligible ones of the highest priority, one at random.
 function pickStorylet(where, keep = () => true) {
   const waiting = s => s.every && quality(`last:${s.id}`) && G.state.day - quality(`last:${s.id}`) < s.every;  // `every: days` lets a scene come round again
-  const ok = STORYLETS.filter(s => s.where === where && !s.chained && keep(s) && !(s.once && quality(`seen:${s.id}`)) && !waiting(s) && meets(s.when));
+  const ok = STORYLETS.filter(s => s.where === where && !s.chained && keep(s) && !(s.once && quality(`seen:${s.id}`)) && !waiting(s) && meets(sceneView(s).when));
   if (!ok.length) return null;
   const top = Math.max(...ok.map(s => s.priority));
   return pick(ok.filter(s => s.priority === top));

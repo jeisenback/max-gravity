@@ -56,13 +56,13 @@
     const castOn = key => (CAST[key].xo ? !scopeOff('captains') || CAPTAINS.hester.xo === key : !scopeOff('starts') || CAST_PAIRS.earth.includes(key));
     const postOn = post => !post || !scopeOff('posts') || post === 'gunner';
     const rows = [];
-    const add = r => rows.push({ on: true, kind: 'code', where: 'transit', codeNote: '', ...r });
+    const add = r => rows.push({ on: true, kind: 'code', where: 'transit', codeNote: '', conditionsNote: '', ...r });
 
     for (const s of STORYLETS) {
       const file = fileOf['storylet:' + s.id];
       add({
         id: s.id, title: s.title, where: s.where, file, belongs: stem(file), kind: 'data', text: plain(s.text), when: s.when || {},
-        choices: s.choices.map(c => ({ label: plain(c.label), result: plain(c.result) })),
+        choices: s.choices.map(c => ({ label: plain(c.label), result: plain(c.result), when: c.when || {}, effects: c.effects || {}, next: c.next || '' })),
         // A text of conditional parts cannot be edited as one string, so the form leaves those fields to the code (conditions are story 4).
         edit: { text: typeof s.text === 'string', choices: s.choices.map(c => ({ label: typeof c.label === 'string', result: c.result === undefined || typeof c.result === 'string' })) },
       });
@@ -72,37 +72,40 @@
       const file = fileOf['cast:' + key], on = castOn(key);
       for (const [name, sc] of Object.entries(c.scenes)) {
         for (const [part, s] of [['', sc], [':closed', sc.closed]]) {
-          if (s) add({ id: `cast:${key}:${name}${part}`, title: s.title, where: name === 'meet' ? 'port' : 'transit', file, belongs: `${key} (${c.xo ? 'first officer' : 'main character'})`, on, ...codeScene(s) });
+          if (s) add({ id: `cast:${key}:${name}${part}`, title: s.title, where: name === 'meet' ? 'port' : 'transit', file, belongs: `${key} (${c.xo ? 'first officer' : 'main character'})`, on, conditionsNote: name === 'meet' ? 'Offered at a port bar when a main character is due.' : `Plays ${sc.days || 0} days after they join, after their earlier scenes${part ? '; this reading plays in its place when their opinion of you is below friendly' : ''}.`, ...codeScene(s) });
         }
       }
     }
 
     for (const [key, c] of Object.entries(CAPTAINS)) {
       const file = fileOf['captain:' + key], on = captainOn(key), belongs = `${key} (captain)`;
-      const scene = (id, s, where = 'transit') => add({ id: `captain:${key}:${id}`, title: s.title, where, file, belongs, on, ...codeScene(s) });
-      if (c.scenes.trouble) scene('trouble', c.scenes.trouble);
-      if (c.scenes.secret) { scene('secret:confide', c.scenes.secret.confide); scene('secret:found', c.scenes.secret.found); }
+      const scene = (id, s, where = 'transit', conditionsNote = '') => add({ id: `captain:${key}:${id}`, title: s.title, where, file, belongs, on, conditionsNote, ...codeScene(s) });
+      if (c.scenes.trouble) scene('trouble', c.scenes.trouble, 'transit', `${CAPTAIN_BEAT_DAYS.trouble} days after you sign on, on a burn.`);
+      if (c.scenes.secret) {
+        scene('secret:confide', c.scenes.secret.confide, 'transit', `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is ${SECRET_TRUST} or more.`);
+        scene('secret:found', c.scenes.secret.found, 'transit', `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is below ${SECRET_TRUST}.`);
+      }
       const g = c.goodbye;
       if (g) {
         const parts = ['cold', 'neutral', 'warm', 'crew', 'secret', 'xo', 'xoDead', 'repaid', 'parting'].filter(k => g[k]).map(k => `[${k}] ${g[k]}`);
-        scene('goodbye', { title: g.title, text: parts.join('\n'), choices: g.choices }, 'port');
+        scene('goodbye', { title: g.title, text: parts.join('\n'), choices: g.choices }, 'port', 'When you leave the ship to buy your own.');
       }
     }
 
     for (const d of WORK_EVENTS) {
       add({
-        id: 'hired:' + d.id, title: d.title, file: fileOf.work, belongs: `${d.post} (post)`, on: postOn(d.post), text: d.text,
+        id: 'hired:' + d.id, title: d.title, file: fileOf.work, belongs: `${d.post} (post)`, on: postOn(d.post), text: d.text, conditionsNote: `A problem at the ${d.post} post, for a hand who works it; not repeated within ${WORK_SEEN_DAYS} days.`,
         choices: [{ label: d.careful[0], result: d.careful[1] }, { label: d.quick[0], result: outcome(d.quick[1], d.quick[2]) }],
       });
     }
     for (const d of HAND_EVENTS.filter(x => x.group !== 'work')) {
-      add({ id: 'hired:' + d.id, title: d.id, file: fileOf.hand, belongs: `${d.group} (hired event)`, on: postOn(d.post), text: '', choices: [], codeNote: CODE_ALL });
+      add({ id: 'hired:' + d.id, title: d.id, file: fileOf.hand, belongs: `${d.group} (hired event)`, on: postOn(d.post), text: '', choices: [], codeNote: CODE_ALL, conditionsNote: `A ${d.group} event for a hired hand${d.post ? ` at the ${d.post} post` : ''}; its own conditions are written in code.` });
     }
 
     ICE_STAGES.forEach((st, i) => {
       const choice = (label, c) => ({ label, result: outcome(c.win[2], c.lose[2]) });
       add({
-        id: `ice:${i + 1}`, title: st.title, file: fileOf.ice, belongs: 'ice run', text: st.open.map((t, n) => `Version ${n + 1}: ${t}`).join('\n'),
+        id: `ice:${i + 1}`, title: st.title, file: fileOf.ice, belongs: 'ice run', conditionsNote: `Scene ${i + 1} of 3 on an ice run, once the captain takes one.`, text: st.open.map((t, n) => `Version ${n + 1}: ${t}`).join('\n'),
         choices: [...st.general.map(c => choice(c.label, c)), ...Object.entries(st.post).map(([post, c]) => choice(`[${post}] ${c.label}`, c))],
       });
     });
@@ -122,6 +125,9 @@
     pairs: Object.entries(CAST_PAIRS).map(([key, pair]) => ({ key, names: pair.map(c => CAST[c].first).join(' and ') })),
     captains: Object.entries(CAPTAINS).map(([key, c]) => ({ key, name: `${c.first} ${c.last}`, xo: c.xo })),
     places: Object.entries(SYSTEMS).flatMap(([sid, s]) => s.planets.map(p => ({ name: p.name, sid }))),
+    // The tables the forms are built from, read as they are now, so a condition or effect the game gains has a form with no change here.
+    conditions: Object.keys(CONDITIONS), effects: Object.keys(EFFECTS), systems: Object.keys(SYSTEMS), govs: [...new Set([...FACTIONS, ...Object.values(SYSTEMS).map(s => s.gov)])],
+    goods: COMMODITIES.map(c => c.id), ships: Object.keys(SHIPS), actions: Object.keys(Mods.storyActions),
   });
 
   // Loads the game's scripts one at a time and notes which script added each scene, by what appeared after it ran.
@@ -198,7 +204,8 @@
       const [name, value] = line.split('=').map(x => x.trim());
       if (name) (st.qualities = st.qualities || {})[name] = value === undefined || value === '' ? 1 : Number.isFinite(Number(value)) ? Number(value) : 1;
     }
-    const report = { type: 'played', failing: failing(s.when), chained: !!s.chained, chance: (s.when || {}).chance, shut: s.choices.map((c, i) => ({ n: i + 1, why: failing(c.when) })).filter(x => x.why.length) };
+    const view = sceneView(s);  // with the editor's conditions, if it changed any
+    const report = { type: 'played', failing: failing(view.when), chained: !!s.chained, chance: (view.when || {}).chance, shut: view.choices.map((c, i) => ({ n: i + 1, why: failing(c.when) })).filter(x => x.why.length) };
     openEvent(storyletEvent(s));
     return report;
   }
@@ -243,7 +250,7 @@
 
   // What js/overrides.js would hold for the values typed: only what differs from the shipped words, an empty field counting as not changed.
   // values: { sceneId: { path: text } }.
-  function overridesFrom(rows, values) {
+  function overridesFrom(rows, values, struct = dict()) {
     const out = dict();
     for (const r of rows.filter(x => values[x.id])) {
       for (const path of pathsOf(r)) {
@@ -251,6 +258,12 @@
         if (typeof v !== 'string' || !v.trim() || v === shippedOf(r, path) || !editableOf(r, path)) continue;
         const o = out[r.id] = out[r.id] || dict(), m = CHOICE_PATH.exec(path);
         if (m) { o.choices = o.choices || dict(); (o.choices[m[1]] = o.choices[m[1]] || dict())[m[2]] = v; } else o[path] = v;
+      }
+    }
+    for (const r of rows.filter(x => struct[x.id])) {  // the conditions, effects and links
+      for (const [path, value] of structChanges(r, struct).out) {
+        const o = out[r.id] = out[r.id] || dict(), m = STRUCT_PATH.exec(path);
+        if (m) { o.choices = o.choices || dict(); (o.choices[m[1]] = o.choices[m[1]] || dict())[m[2]] = value; } else o.when = value;
       }
     }
     return out;
@@ -267,6 +280,142 @@
     return values;
   }
   const fileText = overrides => `const SCENE_OVERRIDES = ${JSON.stringify(overrides, null, 2)};`;
+
+
+  // ---------- conditions, effects and links (#338) ----------
+  // The keys of the forms are the game's own tables (CONDITIONS and EFFECTS, sent by the reader as they are now). What kind of input a key takes is
+  // said here; a key with no entry gets a box for JSON, so a condition or effect the game gains has a form at once.
+  const CONDITION_SPEC = {
+    day: 'number', before: 'number', at: 'list:systems', planet: 'list:planets', gov: 'list:govs', standing: 'map:govs', standingBelow: 'map:govs',
+    credits: 'number', space: 'number', fleet: 'number', stake: 'map:planets', cargo: 'map:goods', crew: 'text', q: 'map', qBelow: 'map', war: 'flagOr:govs',
+    peace: 'flagOr:govs', boom: 'one:govs', bust: 'one:govs', raid: 'flagOr:systems', berths: 'number', story: 'json', storyDay: 'map', aboard: 'text',
+    chance: 'chance', post: 'list:posts', skill: 'number', hired: 'flag', due: 'list',
+  };
+  const EFFECT_SPEC = {
+    credits: 'number', story: 'json', storyLog: 'text', storyAdd: 'map', storyDays: 'map', delay: 'number', passenger: 'json', do: 'action', rep: 'map:govs',
+    cargo: 'map:goods', q: 'map', like: 'map:like', learn: 'number', later: 'map', set: 'map', news: 'text', log: 'text', unrest: 'map:systems', cancelMission: 'text',
+    bounty: 'json', companyShip: 'one:ships', mission: 'json',
+  };
+  let lists = {};  // the names the games' lists hold: systems, planets, factions, govs, goods, ships, posts, actions, conditions, effects, scenes
+  const ok = value => ({ value }), no = error => ({ error });
+  const LIKE_KEY = /^(captain|crew|thread:\w+)$/;
+
+  const NAMES = { systems: 'a system', planets: 'a planet', factions: 'a faction', govs: 'a government or faction', goods: 'a good', ships: 'a ship', posts: 'a post', actions: 'an action' };
+
+  // A kind: parse(text) gives { value } or { error }, format(value) gives the text, and `def` is what a new entry starts with.
+  function kindOf(spec) {
+    const [base, what] = (spec || 'json').split(':'), names = what ? lists[what] : null;
+    const known = v => (!names || names.includes(v) ? null : `${v} is not ${NAMES[what] || what}`);
+    const split = d => d.split(',').map(x => x.trim()).filter(Boolean);
+    switch (base) {
+      case 'number': return { parse: d => (d.trim() !== '' && Number.isFinite(Number(d)) ? ok(Number(d)) : no('needs a number')), format: String, def: '0', input: 'number' };
+      case 'chance': return { parse: d => (d.trim() !== '' && Number(d) >= 0 && Number(d) <= 1 ? ok(Number(d)) : no('needs a number from 0 to 1')), format: String, def: '0.5', input: 'number' };
+      case 'flag': return { parse: d => (d === 'true' ? ok(true) : d === 'false' ? ok(false) : no('needs true or false')), format: String, def: 'true', select: ['true', 'false'] };
+      case 'text': return { parse: d => (d.trim() ? ok(d.trim()) : no('needs some text')), format: String, def: '' };
+      case 'one': return { parse: d => (!d.trim() ? no('needs a name') : known(d.trim()) ? no(known(d.trim())) : ok(d.trim())), format: String, def: '', list: what };
+      case 'list': return {
+        parse: d => { const items = split(d); const bad = items.find(i => known(i)); return !items.length ? no('needs at least one name') : bad ? no(known(bad)) : ok(items.length === 1 ? items[0] : items); },
+        format: v => [].concat(v).join(', '), def: '', list: what, hint: 'names, separated by commas',
+      };
+      case 'flagOr': return { parse: d => (d.trim() === 'true' ? ok(true) : !d.trim() ? no('needs true or a name') : known(d.trim()) ? no(known(d.trim())) : ok(d.trim())), format: String, def: 'true', list: what, hint: 'true, or a name' };
+      case 'map': return {
+        parse: d => {
+          const out = dict(), pairs = split(d);
+          if (!pairs.length) return no('needs at least one name=number');
+          for (const pair of pairs) {
+            const [k, n] = pair.split('=').map(x => x.trim());
+            if (!k || n === undefined || n === '' || !Number.isFinite(Number(n))) return no(`"${pair}" needs the form name=number`);
+            if (what === 'like' ? !LIKE_KEY.test(k) : known(k)) return no(what === 'like' ? `${k} is not captain, crew or thread:name` : known(k));
+            out[k] = Number(n);
+          }
+          return ok(out);
+        },
+        format: v => Object.entries(v).map(([k, n]) => `${k}=${n}`).join(', '), def: '', list: what === 'like' ? '' : what, hint: 'name=number, separated by commas',
+      };
+      case 'action': return {
+        parse: d => {
+          const s = d.trim();
+          if (!s) return no('needs an action name');
+          let v = s;
+          if (s.startsWith('[')) { try { v = JSON.parse(s); } catch (e) { return no('needs a name, or a list as JSON'); } }
+          const name = [].concat(v)[0];
+          return !Array.isArray(v) && typeof v !== 'string' ? no('needs a name, or a list as JSON') : lists.actions && !lists.actions.includes(name) ? no(`${name} is not an action the game has`) : ok(v);
+        },
+        format: v => (typeof v === 'string' ? v : JSON.stringify(v)), def: '', list: 'actions', hint: 'an action name, or ["name", args...]',
+      };
+      default: return {
+        parse: d => {
+          let v;
+          try { v = JSON.parse(d); } catch (e) { return no('needs valid JSON'); }
+          for (const f of ['onDone', 'onFail']) if (v && typeof v === 'object' && v[f] && typeof v[f] === 'object') { const k = Object.keys(v[f]).find(x => lists.effects && !lists.effects.includes(x)); if (k) return no(`unknown effect "${k}" in ${f}`); }
+          return ok(v);
+        },
+        format: v => JSON.stringify(v), def: '{}', hint: 'JSON', fallback: !spec,
+      };
+    }
+  }
+  const specTable = path => (/effects$/.test(path) ? EFFECT_SPEC : CONDITION_SPEC);
+  const STRUCT_PATH = /^c(\d+)\.(when|effects|next)$/;
+  const structOf = (r, path) => { const m = STRUCT_PATH.exec(path); return m ? r.choices[m[1]][m[2]] : r.when; };
+  const toDrafts = (obj, table) => Object.entries(obj || {}).map(([k, v]) => [k, kindOf(table[k]).format(v)]);
+  // A form's entries, read: { value, errors }, an error for each entry that does not parse.
+  function readRules(drafts, table) {
+    const value = dict(), errors = dict();
+    for (const [k, d] of drafts) { const r = kindOf(table[k]).parse(d); if (r.error) errors[k] = r.error; else value[k] = r.value; }
+    return { value, errors };
+  }
+  const nextError = d => (d.trim() && lists.scenes && !lists.scenes.includes(d.trim()) ? `${d.trim()} is not a scene` : '');
+  const canon = v => JSON.stringify(v, (k, x) => (x && typeof x === 'object' && !Array.isArray(x) ? Object.fromEntries(Object.entries(x).sort(([a], [b]) => (a < b ? -1 : 1))) : x));
+  // The entries a field shows: what has been typed, or the shipped ones until it is touched.
+  const draftsFor = (r, path, struct) => (struct[r.id] && struct[r.id][path]) || toDrafts(structOf(r, path), specTable(path));
+  const nextFor = (r, path, struct) => (struct[r.id] && struct[r.id][path] !== undefined ? struct[r.id][path] : structOf(r, path)) || '';
+  // Start editing a field: copy the shipped entries into the drafts.
+  function touch(r, path, struct) {
+    const mine = struct[r.id] = struct[r.id] || dict();
+    if (mine[path] === undefined) mine[path] = /next$/.test(path) ? structOf(r, path) : toDrafts(structOf(r, path), specTable(path));
+    return mine;
+  }
+  // The changes held in the drafts: one value for each field that parses and differs from the shipped one. A field with a problem is left out.
+  function structChanges(r, struct) {
+    const out = [], problems = [];
+    for (const [path, drafts] of Object.entries(struct[r.id] || {})) {
+      if (/next$/.test(path)) {
+        const err = nextError(drafts);
+        if (err) problems.push(`${path}: ${err}`);
+        else if (drafts.trim() !== structOf(r, path)) out.push([path, drafts.trim() || null]);
+        continue;
+      }
+      const { value, errors } = readRules(drafts, specTable(path));
+      if (Object.keys(errors).length) problems.push(`${path}: ${Object.entries(errors).map(([k, e]) => `${k} ${e}`).join('; ')}`);
+      else if (canon(value) !== canon(structOf(r, path))) out.push([path, value]);
+    }
+    return { out, problems };
+  }
+  // Every condition, effect and link of the scenes, read into the forms' drafts and back: the ones that do not come back the same.
+  function roundTrips(rows) {
+    const bad = [];
+    for (const r of rows.filter(x => x.kind === 'data')) {
+      const paths = ['when', ...r.choices.flatMap((c, i) => [`c${i}.when`, `c${i}.effects`])];
+      for (const path of paths) {
+        const { value, errors } = readRules(toDrafts(structOf(r, path), specTable(path)), specTable(path));
+        if (Object.keys(errors).length || canon(value) !== canon(structOf(r, path))) bad.push(`${r.id} ${path}: ${JSON.stringify(errors)}`);
+      }
+    }
+    return bad;
+  }
+  function structFrom(overrides) {
+    const struct = dict();
+    for (const [id, o] of Object.entries(overrides || {})) {
+      const mine = struct[id] = dict();
+      if (o.when) mine.when = toDrafts(o.when, CONDITION_SPEC);
+      for (const [i, c] of Object.entries(o.choices || {})) {
+        if (c.when) mine[`c${i}.when`] = toDrafts(c.when, CONDITION_SPEC);
+        if (c.effects) mine[`c${i}.effects`] = toDrafts(c.effects, EFFECT_SPEC);
+        if (c.next !== undefined) mine[`c${i}.next`] = c.next || '';
+      }
+    }
+    return struct;
+  }
 
   // The {words} of a text that the game would not replace, by the rule the game sent (storylets.js PLACEHOLDER): the same check, run here.
   let rule = null, onPreview = () => {};
@@ -296,6 +445,30 @@
     </div>`;
   }
 
+
+  const ruleInputHtml = (path, key, draft, kind) => {
+    const attrs = `data-rpath="${esc(path)}" data-rkey="${esc(key)}" aria-label="${esc(key)}"`;
+    if (kind.select) return `<select ${attrs}>${kind.select.map(o => `<option${o === draft ? ' selected' : ''}>${esc(o)}</option>`).join('')}</select>`;
+    return `<input type="${kind.input === 'number' ? 'number' : 'text'}" step="any" ${attrs} value="${esc(draft)}"${kind.list ? ` list="dl-${esc(kind.list)}"` : ''}${kind.hint ? ` placeholder="${esc(kind.hint)}"` : ''}>`;
+  };
+  function rulesHtml(r, path, title, struct) {
+    const table = specTable(path), effects = /effects$/.test(path), drafts = draftsFor(r, path, struct), { errors } = readRules(drafts, table);
+    const all = (effects ? lists.effects : lists.conditions) || Object.keys(table), used = new Set(drafts.map(d => d[0]));
+    return `<div class="rules"><h4>${esc(title)}</h4>
+      ${drafts.length ? drafts.map(([k, d]) => { const kind = kindOf(table[k]); return `<div class="rule"><span class="key">${esc(k)}</span>${ruleInputHtml(path, k, d, kind)}
+        <button data-drop="${esc(path)}" data-dkey="${esc(k)}">Remove</button>${kind.fallback ? ' <span class="hint">no form for this yet: JSON</span>' : ''}
+        <div class="warn" data-rerr="${esc(path)}|${esc(k)}">${esc(errors[k] || '')}</div></div>`; }).join('') : '<p class="hint">None.</p>'}
+      <select data-add="${esc(path)}" aria-label="${esc(title)}: add"><option value="">Add ${effects ? 'an effect' : 'a condition'}</option>${all.filter(k => !used.has(k)).map(k => `<option value="${esc(k)}">${esc(k)}</option>`).join('')}</select></div>`;
+  }
+  const nextHtml = (r, path, struct) => { const d = nextFor(r, path, struct); return `<div class="rules"><h4>Leads on to</h4><div class="rule"><input type="text" data-rnext="${esc(path)}" value="${esc(d)}" list="dl-scenes" placeholder="no link" aria-label="Leads on to"><div class="warn" data-rerr="${esc(path)}">${esc(nextError(d))}</div></div></div>`; };
+  const problemsOf = (r, struct) => structChanges(r, struct).problems;
+  const problemsHtml = (r, struct) => { const p = problemsOf(r, struct); return p.length ? `<p class="warn">Left out of the changes until fixed: ${esc(p.join(' | '))}</p>` : ''; };
+  const structHtml = (r, struct) => `<h3>When it appears, and what it does</h3>
+    <p class="note">Changing a condition or an effect changes how the scene plays, not only its words. Try it with Play this scene, at the right.</p>
+    <div id="problems">${problemsHtml(r, struct)}</div>
+    ${rulesHtml(r, 'when', 'The scene appears when', struct)}
+    ${r.choices.map((c, i) => `<h4>Choice ${i + 1}: ${esc(c.label)}</h4>${rulesHtml(r, `c${i}.when`, 'It can be taken when', struct)}${rulesHtml(r, `c${i}.effects`, 'It does', struct)}${nextHtml(r, `c${i}.next`, struct)}`).join('')}`;
+
   function formHtml(r, values = {}) {
     const mine = values[r.id] || {};
     return `<h3>Your words</h3><div class="form" data-form="${esc(r.id)}">
@@ -304,22 +477,23 @@
     </div>`;
   }
 
-  const changesHtml = (rows, values) => `<h3>Changes so far</h3>
+  const changesHtml = (rows, values, struct) => `<h3>Changes so far</h3>
     <p class="hint">Only what differs from the shipped words. Saving, export and revert come with story 6; until then this is the whole of js/overrides.js to paste in.</p>
-    <pre id="changes">${esc(fileText(overridesFrom(rows, values)))}</pre>`;
+    <pre id="changes">${esc(fileText(overridesFrom(rows, values, struct)))}</pre>`;
 
-  function detailHtml(r, values = {}, rows = []) {
+  function detailHtml(r, values = {}, rows = [], struct = dict()) {
     if (!r) return '<p class="hint">Choose a scene to read it.</p>';
     if (r.kind === 'data') {
       return `<h2>${esc(r.title)}</h2>
         <p class="hint">${esc(r.id)} | ${esc(r.where)} | ${esc(r.file)} | ${esc(r.belongs)} | ${esc(r.kind)}${r.off ? ' | off in the narrow build' : ''}</p>
         <p class="hint">Placeholders such as {captain}, {planet} and {crew:pilot} are kept as typed.</p>
-        ${formHtml(r, values)}${changesHtml(rows, values)}`;
+        ${formHtml(r, values)}${structHtml(r, struct)}${changesHtml(rows, values, struct)}`;
     }
     return `
     <h2>${esc(r.title)}</h2>
     <p class="hint">${esc(r.id)} | ${esc(r.where)} | ${esc(r.file)} | ${esc(r.belongs)} | ${esc(r.kind)}${r.off ? ' | off in the narrow build' : ''}</p>
     ${r.codeNote ? `<p class="note">${esc(r.codeNote)}</p>` : ''}
+    ${r.conditionsNote ? `<h3>When it plays</h3><p>${esc(r.conditionsNote)}</p><p class="hint">Its conditions and effects are written in code, and are read only until story 8.</p>` : ''}
     ${paragraphs(r.text)}
     ${r.choices.length ? `<h3>Choices</h3><ol>${r.choices.map(c => `<li><strong>${esc(c.label)}</strong>${c.result ? paragraphs(c.result) : ''}</li>`).join('')}</ol>` : ''}
     <p class="hint">A code-written scene cannot be edited here until its text has an id (story 8).</p>`;
@@ -381,14 +555,17 @@
       </div>
       <div class="split"><div id="list"></div><div id="detail"></div><div id="preview">${previewPaneHtml(opt)}</div></div>`;
     const state = { q: '', where: '', file: '', kind: '', id: '' };
-    const values = SceneIndex.values = valuesFrom(overrides);
+    lists = { ...opt, planets: opt.places.map(p => p.name), scenes: rows.filter(r => r.kind === 'data').map(r => r.id) };
+    const values = SceneIndex.values = valuesFrom(overrides), struct = SceneIndex.struct = structFrom(overrides);
+    const datalists = Object.entries(lists).filter(([, v]) => Array.isArray(v) && typeof v[0] === 'string').map(([k, v]) => `<datalist id="dl-${esc(k)}">${v.map(x => `<option value="${esc(x)}">`).join('')}</datalist>`).join('');
+    app.insertAdjacentHTML('beforeend', datalists);
     const setup = SceneIndex.setup = { ...PREVIEW_DEFAULTS, rep: {} };
     const update = () => {
       const shown = filterRows(rows, state);
       app.querySelector('#count').textContent = `${shown.length} of ${rows.length} scenes`;
-      app.querySelector('#list').innerHTML = tableHtml(shown, state.id, new Set(Object.keys(overridesFrom(rows, values))));
+      app.querySelector('#list').innerHTML = tableHtml(shown, state.id, new Set(Object.keys(overridesFrom(rows, values, struct))));
       const row = rows.find(r => r.id === state.id), playable = !!row && row.kind === 'data';
-      app.querySelector('#detail').innerHTML = detailHtml(row, values, rows);
+      app.querySelector('#detail').innerHTML = detailHtml(row, values, rows, struct);
       app.querySelector('[data-action="play"]').disabled = !playable;
       app.querySelector('#pv-scene').textContent = playable ? `Scene: ${row.title} (${row.id})` : 'Choose a data scene to play it in the game\'s own dialog, from the state below. It starts a fresh test game that is never saved.';
     };
@@ -412,23 +589,52 @@
       else if (m.type === 'chose') app.querySelector('#pv-effects').replaceChildren(effectsNode(m));
       else app.querySelector('#pv-report').replaceChildren(reportNode(m));
     };
+    const here = () => rows.find(r => r.id === state.id);
+    const refresh = () => {  // the changes and the problems, redrawn without disturbing what is being typed in
+      app.querySelector('#changes').textContent = fileText(overridesFrom(rows, values, struct));
+      const box = app.querySelector('#problems');
+      if (box && here()) box.innerHTML = problemsHtml(here(), struct);
+    };
+    const warnFor = key => [...app.querySelectorAll('[data-rerr]')].find(e => e.dataset.rerr === key);
     app.addEventListener('input', e => {
-      const t = e.target;
-      if (t.dataset && t.dataset.pv) setup[t.dataset.pv] = t.value;
-      else if (t.dataset && t.dataset.pvRep) setup.rep[t.dataset.pvRep] = t.value;
-      else if (t.dataset && t.dataset.path) {  // a field of the form: keep the focus, so only its flag and the changes are redrawn
-        (values[state.id] = values[state.id] || dict())[t.dataset.path] = t.value;
-        app.querySelector(`[data-warn="${t.dataset.path}"]`).textContent = flagOf(t.value);
-        app.querySelector('#changes').textContent = fileText(overridesFrom(rows, values));
+      const t = e.target, d = t.dataset || {};
+      if (d.pv) setup[d.pv] = t.value;
+      else if (d.pvRep) setup.rep[d.pvRep] = t.value;
+      else if (d.path) {  // a field of the form: keep the focus, so only its flag and the changes are redrawn
+        (values[state.id] = values[state.id] || dict())[d.path] = t.value;
+        app.querySelector(`[data-warn="${d.path}"]`).textContent = flagOf(t.value);
+        refresh();
+      } else if (d.rpath) {  // a condition or effect's value
+        const entry = touch(here(), d.rpath, struct)[d.rpath].find(x => x[0] === d.rkey);
+        entry[1] = t.value;
+        const w = warnFor(`${d.rpath}|${d.rkey}`);
+        if (w) w.textContent = readRules([entry], specTable(d.rpath)).errors[d.rkey] || '';
+        refresh();
+      } else if (d.rnext) {
+        touch(here(), d.rnext, struct)[d.rnext] = t.value;
+        const w = warnFor(d.rnext);
+        if (w) w.textContent = nextError(t.value);
+        refresh();
+      } else if (d.add) {
+        if (!t.value) return;
+        touch(here(), d.add, struct)[d.add].push([t.value, kindOf(specTable(d.add)[t.value]).def]);
+        update();
       } else if (t.id in state) { state[t.id] = t.value; update(); }
     });
     app.addEventListener('click', e => {
       const b = e.target.closest('button[data-id]');
       if (b) { state.id = b.dataset.id; update(); return; }
+      const drop = e.target.closest('button[data-drop]');
+      if (drop) {
+        const list = touch(here(), drop.dataset.drop, struct), i = list[drop.dataset.drop].findIndex(x => x[0] === drop.dataset.dkey);
+        list[drop.dataset.drop].splice(i, 1);
+        update();
+        return;
+      }
       const row = rows.find(r => r.id === state.id);
       if (e.target.closest('[data-action="play"]') && row && row.kind === 'data') {
         app.querySelector('#pv-effects').replaceChildren(); app.querySelector('#pv-report').replaceChildren();
-        send({ cmd: 'play', id: row.id, overrides: overridesFrom(rows, values), setup: { ...setup, place: placeFor(row) } });
+        send({ cmd: 'play', id: row.id, overrides: overridesFrom(rows, values, struct), setup: { ...setup, place: placeFor(row) } });
       }
     });
     update();
@@ -466,6 +672,6 @@
     }
   }
 
-  const SceneIndex = window.SceneIndex = { SCRIPTS, esc, plain, filterRows, tableHtml, detailHtml, overridesFrom, valuesFrom, fileText, badPlaceholders, reportNode, effectsNode, rows: null, values: null, setup: null };
+  const SceneIndex = window.SceneIndex = { SCRIPTS, esc, plain, filterRows, tableHtml, detailHtml, overridesFrom, valuesFrom, fileText, badPlaceholders, reportNode, effectsNode, structFrom, kindOf, readRules, CONDITION_SPEC, EFFECT_SPEC, roundTrips, rows: null, values: null, struct: null, setup: null };
   start();
 })();
