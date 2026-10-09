@@ -1042,6 +1042,12 @@ function drawMap(W, H) {
   };
   G.mapPos = P;
 
+  // Depth: the inner system reads as nearer, under the orbit rings.
+  const depth = ctx.createRadialGradient(cx, cy, 0, cx, cy, R);
+  depth.addColorStop(0, 'rgba(111,176,255,0.07)'); depth.addColorStop(1, 'rgba(111,176,255,0)');
+  ctx.fillStyle = depth;
+  ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.fill();
+
   ctx.strokeStyle = 'rgba(232,209,122,0.07)';
   ctx.lineWidth = Math.max(0, Math.min(R, 3.3 * sc) - Math.min(R, 2.2 * sc));
   ctx.beginPath(); ctx.arc(cx, cy, (Math.min(R, 2.2 * sc) + Math.min(R, 3.3 * sc)) / 2, 0, Math.PI * 2); ctx.stroke();
@@ -1055,12 +1061,13 @@ function drawMap(W, H) {
   ctx.setLineDash([2, 6]);
   ctx.beginPath(); ctx.arc(cx, cy, R, 0, Math.PI * 2); ctx.stroke();
   ctx.setLineDash([]);
-  const sun = ctx.createRadialGradient(cx, cy, 2, cx, cy, 16);
-  sun.addColorStop(0, '#fff6d0');
-  sun.addColorStop(0.4, '#ffc44a');
-  sun.addColorStop(1, 'rgba(255,150,40,0)');
+  // The Sun, with the flight view's glow (drawBackdrop, js/art.js).
+  const sun = ctx.createRadialGradient(cx, cy, 0, cx, cy, 40);
+  sun.addColorStop(0, 'rgba(255,245,220,0.8)'); sun.addColorStop(0.15, 'rgba(255,220,150,0.25)'); sun.addColorStop(1, 'rgba(255,180,90,0)');
   ctx.fillStyle = sun;
-  ctx.beginPath(); ctx.arc(cx, cy, 16, 0, Math.PI * 2); ctx.fill();
+  ctx.beginPath(); ctx.arc(cx, cy, 40, 0, Math.PI * 2); ctx.fill();
+  ctx.fillStyle = '#fffaf0';
+  ctx.beginPath(); ctx.arc(cx, cy, 6, 0, Math.PI * 2); ctx.fill();
 
   const line = (a, b) => { const [x1, y1] = P(a), [x2, y2] = P(b); ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke(); };
   ctx.lineWidth = 3;
@@ -1096,7 +1103,11 @@ function drawMap(W, H) {
       ctx.lineTo(x + Math.cos(a - 2.4) * 7, y + Math.sin(a - 2.4) * 7);
       ctx.fill();
     } else {
-      ctx.beginPath(); ctx.arc(x, y, 6, 0, Math.PI * 2); ctx.fill();
+      // The system's first body, painted small and lit from the Sun at the centre, ringed in its faction's colour.
+      const first = sys.planets[0];
+      drawBody({ name: first.name, color: first.color, r: 7 }, x, y, { sun: { angle: Math.atan2(cy - y, cx - x), strength: 1 }, lights: false });
+      ctx.strokeStyle = GOV_COLORS[sys.gov]; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.arc(x, y, 9.5, 0, Math.PI * 2); ctx.stroke();
     }
     ctx.fillStyle = '#cfe3ff';
     ctx.font = narrow ? '12px "IBM Plex Mono", monospace' : '13px "IBM Plex Mono", monospace';
@@ -1130,6 +1141,13 @@ function drawMap(W, H) {
       ctx.setLineDash([]);
     }
   }
+
+  // A soft vignette at the rim.
+  const far = Math.hypot(Math.max(cx, W - cx), Math.max(cy, H - cy));
+  const vignette = ctx.createRadialGradient(cx, cy, R * 0.9, cx, cy, far);
+  vignette.addColorStop(0, 'rgba(0,0,0,0)'); vignette.addColorStop(1, 'rgba(0,0,0,0.55)');
+  ctx.fillStyle = vignette;
+  ctx.fillRect(0, 0, W, H);
 
   ctx.textAlign = 'left';
   ctx.fillStyle = '#cfe3ff';

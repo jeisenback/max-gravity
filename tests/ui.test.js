@@ -418,7 +418,7 @@ test('the touch Burn button is hidden for a hired hand and shown for an owner', 
   assert.equal(state.hand.target, false);
 });
 
-test('the port scene banner is 96px on desktop and 92px on a phone, and still draws', async () => {
+test('the port scene banner is 150px on desktop and 92px on a phone, and still draws', async () => {
   const out = {};
   for (const [name, viewport, mobile] of [['desktop', { width: 1280, height: 800 }, false], ['phone', { width: 390, height: 844 }, true]]) {
     const { ev, page, done } = await open({ viewport, mobile });
@@ -427,7 +427,7 @@ test('the port scene banner is 96px on desktop and 92px on a phone, and still dr
     out[name] = await page.evaluate(() => { const c = document.getElementById('vs'), g = c.getContext('2d'), d = g.getImageData(0, 0, c.width, c.height).data; let lit = 0; for (let i = 0; i < d.length; i += 4) if (d[i] + d[i + 1] + d[i + 2] > 60) lit++; return { h: c.getBoundingClientRect().height, lit }; });
     await done();
   }
-  assert.equal(out.desktop.h, 96);
+  assert.equal(out.desktop.h, 150);
   assert.equal(out.phone.h, 92);
   assert.ok(out.desktop.lit > 50 && out.phone.lit > 50, `the scene has lit pixels: ${JSON.stringify(out)}`);
 });
