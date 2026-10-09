@@ -112,7 +112,7 @@ test('buying a ship closes the chapter with one scene, then play goes on', async
   const { ev, done } = await open(NARROW);
   await ev(helpers);
   const r = await ev(() => {
-    const st = start(); st.credits = 100000;
+    const st = start(); st.credits = SHIPS.courier.price + 500;  // not enough left over to close quietly rich (#132)
     person('c:ines').opinion = 3; person('c:tomas').opinion = 2;
     hired().confirm = 'courier'; Mods.act('buyInGo', 'courier');
     const out = { goodbye: G.dialog && G.dialog.event.title };
@@ -134,7 +134,7 @@ test('the closing scene waits for a main character\'s own buy-in scene', async (
   const { ev, done } = await open(NARROW);
   await ev(helpers);
   const r = await ev(() => {
-    const st = start(); st.credits = 100000;
+    const st = start(); st.credits = SHIPS.courier.price + 500;  // not enough left over to close quietly rich (#132)
     person('c:ines').opinion = 3; person('c:tomas').opinion = 2; castRec('ines').arc = 3;
     hired().confirm = 'courier'; Mods.act('buyInGo', 'courier');
     const first = G.dialog.event.title; chooseEvent(0); finishEvent();

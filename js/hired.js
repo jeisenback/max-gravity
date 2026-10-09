@@ -469,7 +469,12 @@ function buyIn(id) {
 // gives the scene its title and its middle; if none does, it is the ordinary "Your Own Ship".
 function chapterRecord(id) {
   const st = G.state, h = hired(), cap = st.people[h.captain], friends = buyInCompanions(), oldName = home().name, days = st.day - h.since;
-  return { id, friends, oldName, days, cap, dead: (st.memorial || []).map(m => memorialName(m)), credits: st.credits };
+  const kept = key => ((st.cast || {})[key] || {}), untouched = !(st.memorial || []).length && Object.keys(st.cast || {}).every(k => !(kept(k).marks || []).length && !(kept(k).flags || {}).benched);
+  return {
+    id, friends, oldName, days, cap, dead: (st.memorial || []).map(m => memorialName(m)), credits: st.credits,
+    berths: buyShip(id).berths, left: st.credits - buyInPrice(id), untouched,  // no mark, no loss and no one benched on the way
+    promised: friends.filter(c => c.cast && (kept(c.cast).flags || {}).promised).map(c => c.first),  // who coming with you was promised something
+  };
 }
 // The endings the chapter can close on, in priority order: loss first, then the crew, then the quiet ones. Each has a `group`, a `title`,
 // a `when(record)` and a `text(record)` for the middle of the scene; the foot of the ramp before it and the line after it are shared.
@@ -478,7 +483,20 @@ const CHAPTER_ENDINGS = [
     text: r => (`Beside the hatch you put up a strip of tape and write the names on it in marker, one under another: ${chapterList(r.dead)}. Nobody asked you ` +
       `to. ${r.friends.length ? `${namesOf(r.friends)} ${r.friends.length > 1 ? 'wait' : 'waits'} at the foot of the ramp until you have finished.` : 'Nobody is waiting at the foot of the ramp.'} ` +
       `You came aboard the ${r.oldName} ${r.days} days ago with ${fmt(HIRED_SAVINGS)} cr and a post to learn, and you leave a hand's width of tape clear under the last name.`) },
+  { id: 'empty-berths', group: 'Loss', title: 'The Empty Berths', when: r => !r.friends.length,
+    text: r => (`Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has ${r.berths} berths, and each has its mattress folded to the wall. ` +
+      `You walk the length of the passage once and close the hatch of each, and the sound goes on a little after you do. You came aboard the ${r.oldName} ${r.days} days ago ` +
+      `with ${fmt(HIRED_SAVINGS)} cr and a post to learn.${memorialNote()}`) },
+  { id: 'ten-years', group: 'Crew', title: 'Ten Years, One Ship', when: r => r.promised.length > 0,
+    text: r => (`${namesOf(r.friends)} ${r.friends.length > 1 ? 'go' : 'goes'} up the ramp ahead of you with ${r.friends.length > 1 ? 'their bags' : 'a bag'}. ` +
+      `${chapterList(r.promised)} ${r.promised.length > 1 ? 'stop' : 'stops'} at the hatch and ${r.promised.length > 1 ? 'wait' : 'waits'} for you, and neither of you mentions what you said aboard the ${r.oldName}. ` +
+      `You count the berths. The first bag goes in the first, and the next in the second, and you leave the other hatches open.${memorialNote()}`) },
+  { id: 'quiet-fortune', group: 'Quiet', title: 'The Quiet Fortune', when: r => r.untouched && r.left >= QUIET_FORTUNE,
+    text: r => (`The yard clerk reads the balance twice: the ship paid for, and ${fmt(r.left)} cr still in the account. ` +
+      `${r.friends.length ? `${namesOf(r.friends)} ${r.friends.length > 1 ? 'are' : 'is'} already aboard, stowing a bag. ` : ''}No one aboard carries a mark, and no name is on a wall. ` +
+      `You came aboard the ${r.oldName} ${r.days} days ago with ${fmt(HIRED_SAVINGS)} cr and a post to learn, and you take the ramp at a walk, with nothing to carry but the ledger.`) },
 ];
+const QUIET_FORTUNE = 10000;  // credits left after the ship is paid for, at which a clean chapter closes quietly rich (to be reviewed)
 const chapterList = names => (names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0]);
 function chapterEnd(id) {
   if (!scopeNarrow()) return null;
