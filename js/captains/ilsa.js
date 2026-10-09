@@ -128,6 +128,17 @@ CAST.ilsa = {
           return 'Her face does something complicated. "Nobody has asked me that in four years," she says. "I do not know. I will tell you when I do."';
         } },
       ],
+      // Below friendly she keeps it to herself, and the confidence (the `asked` flag) is not offered.
+      closed: {
+        title: 'What Ilsa Knows',
+        text: ('Ilsa has the fund book open on the galley table, and she closes it when you come in and lays her hand flat on the cover. "I was going to ' +
+            'tell you something about the books," she says. "I have decided it is not mine to tell, and it is not yet yours to hear." She squares the ' +
+            'book with the edge of the table. "It is nothing you have done. I do not know you well enough to hand you a thing like that. If you are still ' +
+            'aboard in a month, ask me."'),
+        choices: [
+          { label: 'Say it can wait', run: () => '"It can," she says, and slides the book into the drawer under the table and locks it. "Thank you for not asking which books."' },
+        ],
+      },
     },
     pivot: {
       days: 70, title: 'At the Reactor',

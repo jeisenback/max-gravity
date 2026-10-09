@@ -783,14 +783,37 @@ test('Cato\'s "What Cato Knows" opens at friendly or better, and below it he kee
   assert.equal(r.openTold, true); assert.match(r.result, /Thank you for not asking/);
 });
 
-test('the other first officers\' scenes are not gated yet, and an opinion at friendly plays the open reading in the same slot', async () => {
+test('Ilsa\'s, Pilar\'s and Ansel\'s "what they know" scenes open at friendly or better, and below it they keep it to themselves (#346)', async () => {
   const r = await run(() => {
-    start({ captainKey: 'dov' });
-    castPerson('ilsa').opinion = -1;
-    const sc = CAST.ilsa.scenes.late, e = castScene('ilsa', sc);
-    return { same: e.title === sc.title, closed: !!sc.closed };
+    const cases = [
+      { cap: 'dov', key: 'ilsa', flag: 'asked', openPick: 1 },
+      { cap: 'imre', key: 'pilar', flag: 'spoke', openPick: 0 },
+      { cap: 'zoya', key: 'ansel', flag: 'told', openPick: 1 },
+    ], out = {};
+    for (const c of cases) {
+      start({ captainKey: c.cap });
+      const play = opinion => { castPerson(c.key).opinion = opinion; castRec(c.key).flags = {}; const sc = CAST[c.key].scenes.late, e = castScene(c.key, sc); openEvent(e); const labels = G.dialog.choices.map(x => x.label); G.dialog = null; if (G.transit) G.transit.event = null; return { text: e.text, labels, e, title: e.title, authored: sc.title }; };
+      const closed = play(OPINION.FRIEND - 1), open = play(OPINION.FRIEND);
+      const result = closed.e.choices[0].run();
+      const o = { closed: closed.labels, open: open.labels, closedText: closed.text, openText: open.text, sameTitle: closed.title === open.title, closedFlag: !!castRec(c.key).flags[c.flag], result };
+      castPerson(c.key).opinion = OPINION.FRIEND; castRec(c.key).flags = {};
+      open.e.choices[c.openPick].run(); o.openFlag = !!castRec(c.key).flags[c.flag];
+      out[c.key] = o;
+    }
+    return out;
   });
-  assert.equal(r.same, true); assert.equal(r.closed, false);
+  for (const key of ['ilsa', 'pilar', 'ansel']) {
+    const o = r[key];
+    assert.deepEqual(o.closed, ['Say it can wait'], `${key}: one choice below friendly`);
+    assert.equal(o.closedFlag, false, `${key}: the confidence is not offered`);
+    assert.equal(o.sameTitle, true, `${key}: the same slot and title`);
+    assert.equal(o.open.length, 2, `${key}: the open reading keeps both choices`);
+    assert.equal(o.openFlag, true, `${key}: the open reading sets its flag`);
+    assert.match(o.result, /"It can,"/, `${key}: the closed reply`);
+  }
+  assert.match(r.ilsa.closedText, /not yet yours to hear/); assert.match(r.ilsa.openText, /short every quarter for two years/);
+  assert.match(r.pilar.closedText, /keep the view/); assert.match(r.pilar.openText, /a good rule/);
+  assert.match(r.ansel.closedText, /keep it/); assert.match(r.ansel.openText, /I am going to say a number/);
 });
 
 // ---------- what the hand lived through, for the goodbye and the look back (#275) ----------

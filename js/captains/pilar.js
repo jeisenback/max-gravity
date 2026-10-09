@@ -120,6 +120,17 @@ CAST.pilar = {
           return '"It will not wait," she says. "But I will. That is the difference between a rule and a person." She takes the order, and flattens it, and puts it in her pocket with the spanner.';
         } },
       ],
+      // Below friendly she keeps her view to herself, and the errand she would have asked (the `spoke` flag) is not asked.
+      closed: {
+        title: 'The Rules Turned',
+        text: ('Pilar has a standing order in her hand, and she folds it small when you come into the galley. "Captain Sato wrote a rule last week," she ' +
+            'says. "I have a view on it. I am going to keep the view." She puts the order in her pocket with the spanner. "It is not that I do not trust ' +
+            'you. A view is a thing you give to someone who has already shown they will carry it carefully, and you have not had the chance. Ask me again ' +
+            'when the weather has changed."'),
+        choices: [
+          { label: 'Say it can wait', run: () => '"It can," she says. "Thank you for not asking which rule." She goes forward to the helm.' },
+        ],
+      },
     },
     pivot: {
       days: 70, title: 'The Docking Emergency',
