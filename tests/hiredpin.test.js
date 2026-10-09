@@ -1,6 +1,6 @@
 'use strict';
 
-// Pins what every choice of every main character's, first officer's and captain's scene does (#342). Each choice is run in a seeded hired game, with the
+// Pins what every choice of every main character's, first officer's and captain's scene, and of every hired event but the post work problems, does (#342, #473). Each choice is run in a seeded hired game, with the
 // scene's own captain and first officer and the main characters it needs aboard, and what it returns and every change it makes to the game's state are
 // recorded in tests/fixtures/hired-scene-pin.json. Turning a scene's code into data must leave this fixture as it is. After a change to what a scene does on
 // purpose, write it again with `PIN_WRITE=1 node --test tests/hiredpin.test.js` and read the diff.
@@ -48,14 +48,41 @@ const pinAll = () => {
       out.push(rec);
     });
   }
+  // The hired events that are not a post's work problem (#473): built for the captain and a shipmate who are about, and each choice run in a fresh game.
+  for (const d of HAND_EVENTS.filter(x => x.group !== 'work')) {
+    for (let i = 0; ; i++) {
+      const rec = { id: `hired:${d.id}`, i, label: '' };
+      try {
+        const key = (/^crew-(\w+)$/.exec(d.id) || [])[1];
+        const pair = CAST_PAIRS[Object.keys(CAST_PAIRS).find(b => CAST_PAIRS[b].includes(key))] || CAST_PAIRS.earth;
+        window.__seed(11);
+        window.drawCastPair = () => [...pair];
+        startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey: 'hester', credits: 5000 });
+        window.drawCastPair = real;
+        G.dialog = null; G.nextEvent = null;
+        const mate = makeCrewCandidate(G.state.systemId); registerPerson(mate); G.state.crew.push(mate.id);
+        const ev = d.make(handContext());
+        if (i >= ev.choices.length) break;
+        const c = ev.choices[i];
+        rec.label = typeof c.label === 'string' ? c.label : '(built)';
+        const before = flat(G.state, 's', {});
+        const text = dataChoice(c).run();
+        rec.result = typeof text === 'string' ? text : String(text);
+        rec.changes = diff(before, flat(G.state, 's', {}));
+        rec.next = G.nextEvent ? G.nextEvent.title : null;
+      } catch (err) { rec.error = String(err && err.message || err); } finally { window.drawCastPair = real; }
+      out.push(rec);
+      if (rec.error) break;
+    }
+  }
   return out;
 };
 
-test('every choice of every cast and captain scene does what it did', async () => {
+test('every choice of every cast and captain scene and every hired event does what it did', async () => {
   const g = await open({ scope: 'full' });
   const got = await g.ev(pinAll);
   await g.done();
-  assert.ok(got.length > 150, `${got.length} choices`);
+  assert.ok(got.length > 200, `${got.length} choices`);
   assert.deepEqual(got.filter(r => r.error), [], 'no choice throws in its own scene\'s state');
   if (process.env.PIN_WRITE) fs.writeFileSync(FIXTURE, JSON.stringify(got, null, 1) + '\n');
   const want = JSON.parse(fs.readFileSync(FIXTURE, 'utf8'));
