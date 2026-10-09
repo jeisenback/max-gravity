@@ -45,7 +45,7 @@ test('edits survive a reload of the page, scene by scene, new scenes included', 
   await fresh();
   await select('port-mars-sky');
   await page.fill('#f-title', 'Kept Title');
-  await page.fill(rule('when', 'chance').replace('"when"', '"when"'), '0.5').catch(() => {});
+  await page.fill(rule('when', 'chance'), '0.5').catch(() => {});
   await select('land-customs');
   await page.fill('[data-rnext="c0.next"]', 'port-mars-sky');
   await page.click('[data-action="new-scene"]');
