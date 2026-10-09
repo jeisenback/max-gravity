@@ -60,14 +60,16 @@ CAST.pilar = {
           'fifteen-second window, and the display lags by twelve." She brings the ship in without a tremor, and then looks at you for the first time. ' +
           '"You can tell them. I would rather you knew than guessed."'),
       choices: [
-        { label: 'Ask her to show you the window', run() {
-          castLike('pilar', 2, 'You asked me to show you the crosswind window.');
-          return 'She makes you count it with her, out loud, on the next approach, with the display off. You get it wrong twice. The third time you feel it, a thing in the stick rather than the numbers. "That is it," she says, and does not say anything else, and her shoulders drop an inch.';
-        } },
-        { label: 'Say you will keep it to yourself', run() {
-          castLike('pilar', 1, 'You said you would keep my approach to yourself.');
-          return '"Good," she says. "It is not a secret. It is a courtesy. The captain will find out, and when they do I would rather it was from the log." She goes back to the stick.';
-        } },
+        {
+          label: 'Ask her to show you the window',
+          effects: { castLike: { who: 'pilar', n: 2, memory: 'You asked me to show you the crosswind window.' } },
+          result: 'She makes you count it with her, out loud, on the next approach, with the display off. You get it wrong twice. The third time you feel it, a thing in the stick rather than the numbers. "That is it," she says, and does not say anything else, and her shoulders drop an inch.',
+        },
+        {
+          label: 'Say you will keep it to yourself',
+          effects: { castLike: { who: 'pilar', n: 1, memory: 'You said you would keep my approach to yourself.' } },
+          result: '"Good," she says. "It is not a secret. It is a courtesy. The captain will find out, and when they do I would rather it was from the log." She goes back to the stick.',
+        },
       ],
     },
     mid1: {
@@ -77,14 +79,16 @@ CAST.pilar = {
           'otherwise. I would like, once, for the paper to agree." She taps the folder. "The captain says I am the best helm on any ship they have ' +
           'served on. They put it in the log. The log is not a certificate."'),
       choices: [
-        { label: 'Offer to write a reference', run() {
-          castLike('pilar', 2, 'You wrote me a reference.'); castFlag('pilar', 'reference');
-          return 'You write it that night, and it says what you have seen: the window, the approach, the four meters. She reads it standing up, twice. "Thirty-two," she says, and puts it at the front of the folder, where the best ones go.';
-        } },
-        { label: 'Tell her the helm matters more than the paper', run() {
-          castLike('pilar', 1, 'You said the helm mattered more than the paper.');
-          return '"It does," she says. "It matters more to everybody but the ones who issue the paper." She almost laughs. "That is not a complaint. That is the whole of the trade."';
-        } },
+        {
+          label: 'Offer to write a reference',
+          effects: { castLike: { who: 'pilar', n: 2, memory: 'You wrote me a reference.' }, castFlag: { who: 'pilar', flag: 'reference' } },
+          result: 'You write it that night, and it says what you have seen: the window, the approach, the four meters. She reads it standing up, twice. "Thirty-two," she says, and puts it at the front of the folder, where the best ones go.',
+        },
+        {
+          label: 'Tell her the helm matters more than the paper',
+          effects: { castLike: { who: 'pilar', n: 1, memory: 'You said the helm mattered more than the paper.' } },
+          result: '"It does," she says. "It matters more to everybody but the ones who issue the paper." She almost laughs. "That is not a complaint. That is the whole of the trade."',
+        },
       ],
     },
     mid2: {
@@ -94,14 +98,16 @@ CAST.pilar = {
           'and run the checklist in the berth. She says it will make the gate by four minutes. Neither will tell you what the other said, and both are ' +
           'looking at the gate.'),
       choices: [
-        { label: 'Follow the posted rate, as the captain wrote it', run() {
-          castLike('pilar', -1, 'You followed the posted rate against my window.'); captainLike(2, 'You followed the posted rate as I wrote it.');
-          return 'You run the full checklist. The ship misses the window and waits at the gate for forty minutes, in the correct order, with the correct lights on. Captain Sato enters it. Pilar, on the bridge, stands with her arms folded and says nothing, and the nothing is a lot.';
-        } },
-        { label: 'Come in on the window, as Pilar said', run() {
-          castLike('pilar', 2, 'You came in on my window.'); captainLike(-1, 'You came in on the window against the posted rate.');
-          return 'You come in on the crosswind window. It works, by four minutes, and the gate crew applaud the approach. Captain Sato reads the log entry, which you have written accurately, and writes no comment under it. For the first time there is a blank where there should be a line.';
-        } },
+        {
+          label: 'Follow the posted rate, as the captain wrote it',
+          effects: { castLike: { who: 'pilar', n: -1, memory: 'You followed the posted rate against my window.' }, captainLike: { n: 2, memory: 'You followed the posted rate as I wrote it.' } },
+          result: 'You run the full checklist. The ship misses the window and waits at the gate for forty minutes, in the correct order, with the correct lights on. Captain Sato enters it. Pilar, on the bridge, stands with her arms folded and says nothing, and the nothing is a lot.',
+        },
+        {
+          label: 'Come in on the window, as Pilar said',
+          effects: { castLike: { who: 'pilar', n: 2, memory: 'You came in on my window.' }, captainLike: { n: -1, memory: 'You came in on the window against the posted rate.' } },
+          result: 'You come in on the crosswind window. It works, by four minutes, and the gate crew applaud the approach. Captain Sato reads the log entry, which you have written accurately, and writes no comment under it. For the first time there is a blank where there should be a line.',
+        },
       ],
     },
     late: {
@@ -111,14 +117,16 @@ CAST.pilar = {
           'I have been waiting for them to write. It is the day, you understand, that the rules get used against me." She folds it small. "I do not ' +
           'think they meant it so. That is the part I cannot say to them."'),
       choices: [
-        { label: 'Offer to speak to the captain', run() {
-          castLike('pilar', 2, 'You offered to speak to the captain about the rule.'); castFlag('pilar', 'spoke');
-          return '"Do," she says. "Not about me. About the rule." She holds your eye. "They will hear it better from somebody with a certificate." She says the last word slowly.';
-        } },
-        { label: 'Tell her to keep flying, and let the rule wait', run() {
-          castLike('pilar', 1, 'You told me to keep flying and let the rule wait.');
-          return '"It will not wait," she says. "But I will. That is the difference between a rule and a person." She takes the order, and flattens it, and puts it in her pocket with the spanner.';
-        } },
+        {
+          label: 'Offer to speak to the captain',
+          effects: { castLike: { who: 'pilar', n: 2, memory: 'You offered to speak to the captain about the rule.' }, castFlag: { who: 'pilar', flag: 'spoke' } },
+          result: '"Do," she says. "Not about me. About the rule." She holds your eye. "They will hear it better from somebody with a certificate." She says the last word slowly.',
+        },
+        {
+          label: 'Tell her to keep flying, and let the rule wait',
+          effects: { castLike: { who: 'pilar', n: 1, memory: 'You told me to keep flying and let the rule wait.' } },
+          result: '"It will not wait," she says. "But I will. That is the difference between a rule and a person." She takes the order, and flattens it, and puts it in her pocket with the spanner.',
+        },
       ],
       // Below friendly she keeps her view to herself, and the errand she would have asked (the `spoke` flag) is not asked.
       closed: {

@@ -1,0 +1,2314 @@
+[
+ {
+  "id": "cast:ines:meet",
+  "i": 0,
+  "label": "Offer her the helm",
+  "result": "Ines folds the jacket over one arm and looks at you for a moment. \"Asked,\" she says. \"Good.\" She follows you down the dock with a bag that holds, as far as you can tell, one logbook and nothing else.",
+  "changes": [
+   "s.crew.9: undefined -> c:ines",
+   "s.home.log: [] -> undefined",
+   "s.home.log.0.day: undefined -> 1",
+   "s.home.log.0.text: undefined -> Ines Ferreira came aboard as a pilot.",
+   "s.people.c:ines.liftedAt: undefined -> 1",
+   "s.people.c:ines.memories: [] -> undefined",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: I signed on with the Second Anvil.",
+   "s.people.c:ines.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ines:meet",
+  "i": 1,
+  "label": "\"Not this time.\"",
+  "result": "She nods, and goes back to the jacket. \"I will be around,\" she says.",
+  "changes": [
+   "s.cast.ines.next: 0 -> 9"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ines:intro",
+  "i": 0,
+  "label": "Ask about the landing anyway",
+  "result": "She is silent for most of a minute. Then she tells it flat and fast: the dark pad, the tower saying ditch, the forty-one faces she could see on the cabin feed, and the thing she decided. When she finishes she lets out a breath. \"There,\" she says. \"That is the whole thing. It is much shorter than I thought.\"",
+  "changes": [
+   "s.people.c:ines.liftedAt: undefined -> 1",
+   "s.people.c:ines.memories: [] -> undefined",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: I told you about the landing, and you did not look at me differently.",
+   "s.people.c:ines.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ines:intro",
+  "i": 1,
+  "label": "Ask about the book instead",
+  "result": "\"Oh,\" she says, and for the first time looks round. \"It is my log. Every landing I have made, nine years of them, with the pad, the wind and what I would do differently.\" She turns it so you can see a column of small neat entries. \"Most of what I know is in here.\" She lets you read one page, and you do.",
+  "changes": [
+   "s.people.c:ines.liftedAt: undefined -> 1",
+   "s.people.c:ines.memories: [] -> undefined",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You asked about the book, not the landing.",
+   "s.people.c:ines.opinion: 0 -> 2",
+   "s.people.c:ines.xp.pilot: 110 -> 112"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ines:mid1",
+  "i": 0,
+  "label": "Stand by the cutoff while she does it",
+  "result": "You put your hand on the cutoff and she cuts the drive. The ship drifts in a silence you feel in your teeth. Ines turns her on cold thrusters, a long clean arc, and when she brings the drive back up she is grinning so widely that she has to look away. \"Ten seconds,\" she says. \"I did not touch the stop.\" You did not say it.",
+  "changes": [
+   "s.cast.ines.flags: {} -> undefined",
+   "s.cast.ines.flags.practiced: undefined -> true",
+   "s.people.c:ines.liftedAt: undefined -> 1",
+   "s.people.c:ines.memories: [] -> undefined",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You stood by the cutoff while I flew it dead.",
+   "s.people.c:ines.opinion: 0 -> 2",
+   "s.people.c:ines.xp.pilot: 110 -> 114"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ines:mid1",
+  "i": 1,
+  "label": "Not on a loaded burn",
+  "result": "She nods once. \"That is the correct answer,\" she says. \"Ask me again when there is nothing aboard but air.\" She goes back to the helm, and flies the rest of the shift by the book.",
+  "changes": [
+   "s.people.c:ines.liftedAt: undefined -> 1",
+   "s.people.c:ines.memories: [] -> undefined",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You said not on a loaded burn, and you were right.",
+   "s.people.c:ines.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ines:mid2",
+  "i": 0,
+  "label": "Write the reference",
+  "result": "You write it that night, plainly, and it takes four tries because the first three sound like a eulogy. You say what you have seen: the care, the nerve, the logbook. When you send it, Ines is standing in the hatch and does not say anything at all. In the morning there is a mug of coffee on your console, and the bunk across from yours has been made with corners.",
+  "changes": [
+   "s.cast.ines.flags: {} -> undefined",
+   "s.cast.ines.flags.reference: undefined -> true",
+   "s.people.c:ines.liftedAt: undefined -> 1",
+   "s.people.c:ines.memories: [] -> undefined",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You wrote my reference for the Lisbon board.",
+   "s.people.c:ines.opinion: 0 -> 3"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ines:mid2",
+  "i": 1,
+  "label": "Offer to say it to the board in person",
+  "result": "You say it before she can fold the message away. \"I will come to Lisbon. I will stand up and say it myself.\" Ines turns from the wall. \"It is forty days,\" she says. \"You would be away from the ship for a week.\" \"Then I will ask the captain for the week.\" She looks at you for some time. Then she takes the pencil from behind her ear and writes the date of the hearing on the inside of her wrist, the way she writes a landing slot, and holds it up for you to read. \"In ten years,\" she says, \"nobody has offered me a week.\"",
+  "changes": [
+   "s.cast.ines.flags: {} -> undefined",
+   "s.cast.ines.flags.reference: undefined -> true",
+   "s.people.c:ines.liftedAt: undefined -> 1",
+   "s.people.c:ines.memories: [] -> undefined",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You offered to stand before the Lisbon board for me.",
+   "s.people.c:ines.opinion: 0 -> 3"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ines:mid2",
+  "i": 2,
+  "label": "\"It is not my place.\"",
+  "result": "Her face does not change. \"No,\" she says, \"of course not.\" She folds the message and puts it away. For the rest of the day she says good morning, good evening and thank you, and nothing in between.",
+  "changes": [
+   "s.people.c:ines.liftedAt: undefined -> 1",
+   "s.people.c:ines.memories: [] -> undefined",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You said a reference was not your place.",
+   "s.people.c:ines.opinion: 0 -> -1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ines:late",
+  "i": 0,
+  "label": "Promise her a ship, someday",
+  "result": "\"Someday,\" you say, \"and you will be asked.\" She does not answer. Then she nods once at the windscreen. \"That is all I wanted,\" she says. \"A date would have been a lie. This is better.\"",
+  "changes": [
+   "s.cast.ines.flags: {} -> undefined",
+   "s.cast.ines.flags.promised: undefined -> true",
+   "s.people.c:ines.liftedAt: undefined -> 1",
+   "s.people.c:ines.memories: [] -> undefined",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: I told you I wanted a command, and you promised.",
+   "s.people.c:ines.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ines:late",
+  "i": 1,
+  "label": "Make no promises",
+  "result": "\"I cannot promise that,\" you say, \"but I heard you.\" She smiles at the glass, crooked. \"That is the honest answer,\" she says. \"I will take the honest one.\"",
+  "changes": [
+   "s.people.c:ines.liftedAt: undefined -> 1",
+   "s.people.c:ines.memories: [] -> undefined",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You would not promise a command, but you listened.",
+   "s.people.c:ines.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ines:pivot",
+  "i": 0,
+  "label": "Let her fly it",
+  "result": "She holds the ship, and the ship comes down hard, and the helm throws her against the harness. She walks off on her own. Later you see her in the pilot's chair, holding her left hand in her right until it stops shaking. It does not quite stop.",
+  "changes": [
+   "s.cast.ines.marks.0.day: undefined -> 1",
+   "s.cast.ines.marks.0.text: undefined -> Her left hand shakes on the stick.",
+   "s.people.c:ines.liftedAt: undefined -> 1",
+   "s.people.c:ines.memories: [] -> undefined",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You let me fly it in dead, and I came down with a hand that shakes.",
+   "s.people.c:ines.opinion: 0 -> 2",
+   "s.people.c:ines.skill: 3 -> 2",
+   "s.people.c:ines.skills.pilot: 3 -> 2",
+   "s.people.c:ines.xp.pilot: 110 -> 45"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ines:pivot",
+  "i": 1,
+  "label": "Put a second hand at the cutoff",
+  "result": "You put a second hand at the cutoff. She flies it the way she wrote it in the log: the long clean arc on the cold thrusters, the flip, the last slow roll toward the pad. The ship touches down so softly that the cup on the console does not move. Ines sits with her hands in her lap. \"Boring,\" she says. \"Very boring.\"",
+  "changes": [
+   "s.people.c:ines.liftedAt: undefined -> 1",
+   "s.people.c:ines.memories: [] -> undefined",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You let me fly it in dead, and I came down.",
+   "s.people.c:ines.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ines:pivot",
+  "i": 2,
+  "label": "Order her to ditch",
+  "result": "You order the ditch. She does it by the book, and the book is correct, and neither of you says that she would have made the pad.",
+  "changes": [
+   "s.people.c:ines.liftedAt: undefined -> 1",
+   "s.people.c:ines.memories: [] -> undefined",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You ordered me to ditch the ship, as the tower did.",
+   "s.people.c:ines.opinion: 0 -> -3"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:tomas:meet",
+  "i": 0,
+  "label": "Take him on as engineer",
+  "result": "He wipes his hands on the rag. Then he wipes them again. \"Properly,\" he says, and picks up his bag, which clinks. \"I will tell you now that I am going to talk to her. The engines. It is not a joke. They like it.\"",
+  "changes": [
+   "s.crew.9: undefined -> c:tomas",
+   "s.home.log: [] -> undefined",
+   "s.home.log.0.day: undefined -> 1",
+   "s.home.log.0.text: undefined -> Tomas Achebe came aboard as an engineer.",
+   "s.people.c:tomas.liftedAt: undefined -> 1",
+   "s.people.c:tomas.memories: [] -> undefined",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: I signed on with the Second Anvil.",
+   "s.people.c:tomas.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:tomas:meet",
+  "i": 1,
+  "label": "\"Not this time.\"",
+  "result": "\"That is all right,\" he says, and turns back to the loop. \"I will be here. The ship I am working on will be sold in a month, and then I will be somewhere else, but I will be here.\"",
+  "changes": [
+   "s.cast.tomas.next: 0 -> 9"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:tomas:intro",
+  "i": 0,
+  "label": "Offer to help with the service",
+  "result": "He gives you a rag, a torque wrench and a short, kind lecture on what not to touch, and then you spend two hours on your back under a coolant loop. When you come out, black to the elbows, he looks at you for a while. \"Next time,\" he says, \"you are holding the light. You are better at that.\"",
+  "changes": [
+   "s.people.c:tomas.liftedAt: undefined -> 1",
+   "s.people.c:tomas.memories: [] -> undefined",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You helped me with the service on my own time.",
+   "s.people.c:tomas.opinion: 0 -> 1",
+   "s.people.c:tomas.xp.engineer: 110 -> 112"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:tomas:intro",
+  "i": 1,
+  "label": "Leave him to it",
+  "result": "He nods. \"It is all right,\" he says. \"Most people do. She will thank you anyway.\" He goes back to the loop, and you hear him, softly, as you leave, telling the pipes that nobody is angry at them.",
+  "changes": [
+   "s.people.c:tomas.memories: [] -> undefined",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You left me to my service."
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:tomas:mid1",
+  "i": 0,
+  "label": "Lend him 200 cr",
+  "result": "He takes it with both hands. \"Thank you,\" he says, and then, because it is not enough, he says it again in Igbo. By the second pay day the two hundred is in your account, with an extra: a ring of braided wire, on a note that says \"for luck, from a man who understands machines\".",
+  "changes": [
+   "s.cast.tomas.flags: {} -> undefined",
+   "s.cast.tomas.flags.loan: undefined -> true",
+   "s.credits: 5000 -> 4800",
+   "s.people.c:tomas.liftedAt: undefined -> 1",
+   "s.people.c:tomas.memories: [] -> undefined",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You lent me two hundred credits for my sister's rent.",
+   "s.people.c:tomas.opinion: 0 -> 3"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:tomas:mid1",
+  "i": 1,
+  "label": "\"I cannot spare it.\"",
+  "result": "He straightens his shoulders. \"Of course,\" he says. \"I should not have asked.\" He does not ask anyone else, and in the evening you hear him in the engine room, low and steady, working out a month of arithmetic on his fingers. The next day he has taken two extra shifts.",
+  "changes": [
+   "s.people.c:tomas.liftedAt: undefined -> 1",
+   "s.people.c:tomas.memories: [] -> undefined",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You could not spare two hundred credits.",
+   "s.people.c:tomas.opinion: 0 -> -1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:tomas:mid2",
+  "i": 0,
+  "label": "Ask him to teach you",
+  "result": "It takes the whole of the quiet watch and half the next one. He draws it on the deck in chalk, a plant you would not know from a diagram, and then he rubs out the first pipe and makes you put it back from memory, and the second, and the third, until the deck is bare and the whole of her is laid out in your head. \"There,\" he says. \"Now you know her. Do not tell the owners.\"",
+  "changes": [
+   "s.cast.tomas.flags: {} -> undefined",
+   "s.cast.tomas.flags.plan: undefined -> true",
+   "s.hired.skill.engineer: undefined -> 3",
+   "s.people.c:tomas.liftedAt: undefined -> 1",
+   "s.people.c:tomas.memories: [] -> undefined",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You asked me how I would rebuild her, and listened.",
+   "s.people.c:tomas.opinion: 0 -> 2",
+   "s.people.c:tomas.xp.engineer: 110 -> 112"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:tomas:mid2",
+  "i": 1,
+  "label": "Ask him to write it down, so it does not go with the hull",
+  "result": "He looks at the flask for a while. \"Nobody has asked me that,\" he says. He goes below and comes back with a notebook with a stained cover, and spends the quiet watch filling eleven pages in small square capitals, a diagram on each. He tears them out along the fold, carefully, and puts them in your hand. \"If she is sold again,\" he says, \"somebody will need to know where the cracks are. Not the owners. Somebody.\" You fold the pages into your jacket, and he goes back to the plant and tells it, quietly, that it will be all right.",
+  "changes": [
+   "s.cast.tomas.flags: {} -> undefined",
+   "s.cast.tomas.flags.plan: undefined -> true",
+   "s.people.c:tomas.liftedAt: undefined -> 1",
+   "s.people.c:tomas.memories: [] -> undefined",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You asked me to write the plan down, so it would last.",
+   "s.people.c:tomas.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:tomas:mid2",
+  "i": 2,
+  "label": "\"Stick to your shifts.\"",
+  "result": "He closes his mouth, and the flask, and nods. \"As you say.\" The plant runs perfectly for the rest of the burn.",
+  "changes": [
+   "s.people.c:tomas.liftedAt: undefined -> 1",
+   "s.people.c:tomas.memories: [] -> undefined",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You told me to stick to my shifts.",
+   "s.people.c:tomas.opinion: 0 -> -1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:tomas:late",
+  "i": 0,
+  "label": "Say you would try",
+  "result": "\"I would try,\" you say, and he lets out a breath. \"That is enough,\" he says. \"Nobody has ever said that. They say yes, or no. Nobody says try.\" He claps your shoulder, once, hard, and goes below. You can hear him telling the engines the news.",
+  "changes": [
+   "s.cast.tomas.flags: {} -> undefined",
+   "s.cast.tomas.flags.promised: undefined -> true",
+   "s.people.c:tomas.liftedAt: undefined -> 1",
+   "s.people.c:tomas.memories: [] -> undefined",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You said you would try to keep the crew together.",
+   "s.people.c:tomas.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:tomas:late",
+  "i": 1,
+  "label": "Say you cannot promise that",
+  "result": "\"No,\" he says, \"no, of course. Nobody can.\" He smiles. \"Thank you for not being kind,\" he says. \"It is a rare thing.\" He goes back to the engines, and, on the way, pats the bulkhead twice.",
+  "changes": [
+   "s.people.c:tomas.liftedAt: undefined -> 1",
+   "s.people.c:tomas.memories: [] -> undefined",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You were honest about what you could promise.",
+   "s.people.c:tomas.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:tomas:pivot",
+  "i": 0,
+  "label": "Let him go in",
+  "result": "He comes out carried, both forearms scalded, and the plant holds behind him. He will weld again. He does not take the flask in his left hand after that, and he does not complain.",
+  "changes": [
+   "s.cast.tomas.marks.0.day: undefined -> 1",
+   "s.cast.tomas.marks.0.text: undefined -> His hands ache in the cold.",
+   "s.people.c:tomas.liftedAt: undefined -> 1",
+   "s.people.c:tomas.memories: [] -> undefined",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You let me go into the plant, and I came out scalded.",
+   "s.people.c:tomas.opinion: 0 -> 2",
+   "s.people.c:tomas.skill: 3 -> 2",
+   "s.people.c:tomas.skills.engineer: 3 -> 2",
+   "s.people.c:tomas.xp.engineer: 110 -> 45"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:tomas:pivot",
+  "i": 1,
+  "label": "Send a second person in with him",
+  "result": "You send a second person in after him. He goes in, and comes out in four minutes with no eyebrows, which he does not mention. The plant settles. He sits on a crate with the flask and tells her, quietly, that she did well.",
+  "changes": [
+   "s.people.c:tomas.liftedAt: undefined -> 1",
+   "s.people.c:tomas.memories: [] -> undefined",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You let me go into the plant, and I came out.",
+   "s.people.c:tomas.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:tomas:pivot",
+  "i": 2,
+  "label": "Tell him to vent the plant",
+  "result": "You tell him to vent her. He stands at the door for a moment, and then he does it, and the plant dies with a sound like a long breath. He does not look at you. He goes below to tell her he is sorry.",
+  "changes": [
+   "s.people.c:tomas.liftedAt: undefined -> 1",
+   "s.people.c:tomas.memories: [] -> undefined",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You told me to vent the plant.",
+   "s.people.c:tomas.opinion: 0 -> -3"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:yelena:meet",
+  "i": 0,
+  "label": "Offer her the guns",
+  "result": "She puts the ice down and gets up so fast the stool falls over, and does not pick it up. \"Do you know,\" she says, \"you are the first person to ask me that as if it were a question.\" She is already walking. Over her shoulder, to the screen: \"Do not think I have forgotten the foul.\"",
+  "changes": [
+   "s.crew.9: undefined -> c:yelena",
+   "s.home.log: [] -> undefined",
+   "s.home.log.0.day: undefined -> 1",
+   "s.home.log.0.text: undefined -> Yelena Quint came aboard as a gunner.",
+   "s.people.c:yelena.liftedAt: undefined -> 1",
+   "s.people.c:yelena.memories: [] -> undefined",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: I signed on with the Second Anvil.",
+   "s.people.c:yelena.opinion: 0 -> 2",
+   "s.people.c:yelena.role: pilot -> gunner",
+   "s.people.c:yelena.skill: 1 -> 3"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:yelena:meet",
+  "i": 1,
+  "label": "\"Not this time.\"",
+  "result": "\"Sure,\" she says, and the stool, which she has set upright, rocks once. \"I will be at the rail. I am usually at the rail.\"",
+  "changes": [
+   "s.cast.yelena.next: 0 -> 9"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:yelena:intro",
+  "i": 0,
+  "label": "Take the ref's side",
+  "result": "You say the elbow was clean, and for ten minutes she is the happiest you have seen her, taking you through the replay frame by frame with a fork for a pointer. By the end she has you pointing too. \"You are wrong,\" she says, delighted, \"and you know exactly where, and that is the whole game.\" She goes back to her post with a slight spring in the step, favoring the good knee.",
+  "changes": [
+   "s.people.c:yelena.liftedAt: undefined -> 1",
+   "s.people.c:yelena.memories: [] -> undefined",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You took the ref's side, and I enjoyed it very much.",
+   "s.people.c:yelena.opinion: 0 -> 2",
+   "s.people.c:yelena.xp.gunner: 110 -> 112"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:yelena:intro",
+  "i": 1,
+  "label": "Ask about the knee",
+  "result": "She looks at you for a moment, deciding. \"Twenty-six,\" she says. \"Final. A girl from Hellas came in low, and I heard it before I felt it.\" She taps the brace. \"They say it was nobody's fault. That is the worst part. Nobody to be angry with.\" She turns the replay off.",
+  "changes": [
+   "s.people.c:yelena.liftedAt: undefined -> 1",
+   "s.people.c:yelena.memories: [] -> undefined",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You asked about the knee, and I told you.",
+   "s.people.c:yelena.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:yelena:mid1",
+  "i": 0,
+  "label": "Clear the hold and play",
+  "result": "It is the worst ring-ball ever played. Low gravity, no lines, a ring made of tied cable. You are on her side, and she captains you loudly and unfairly, calling every foul against her own side and none for it, and when the cable ring finally drops through on the last throw she is the one who shouts. You lose by two. She does not mention the score once, but at the evening meal she asks everybody, by name, how they feel about next week.",
+  "changes": [
+   "s.people.c:yelena.liftedAt: undefined -> 1",
+   "s.people.c:yelena.memories: [] -> undefined",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You played, and you were on my side.",
+   "s.people.c:yelena.opinion: 0 -> 2",
+   "s.people.c:yelena.xp.gunner: 110 -> 113"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:yelena:mid1",
+  "i": 1,
+  "label": "Not in the hold",
+  "result": "\"Sure,\" she says, and puts the ball back in her bag, carefully. She is professional for the rest of the burn. It is the quietest the galley has been.",
+  "changes": [
+   "s.people.c:yelena.liftedAt: undefined -> 1",
+   "s.people.c:yelena.memories: [] -> undefined",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You said no to the game in the hold.",
+   "s.people.c:yelena.opinion: 0 -> -1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:yelena:mid2",
+  "i": 0,
+  "label": "Take her watch",
+  "result": "You tell her to go. She does not argue. You hear the roar from the galley, through the deck, from the second quarter on: shouted refereeing, a long agonized groan, and, near the end, a silence so complete you think the feed has gone. In the morning there is a small black raven drawn on the back of your hand, in marker, and she does not mention it.",
+  "changes": [
+   "s.people.c:yelena.liftedAt: undefined -> 1",
+   "s.people.c:yelena.memories: [] -> undefined",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You took my watch on the night of the final.",
+   "s.people.c:yelena.opinion: 0 -> 3"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:yelena:mid2",
+  "i": 1,
+  "label": "\"It is your watch.\"",
+  "result": "\"Of course,\" she says. She stands the watch perfectly, to the minute, with the radio turned low, and says nothing at all, then or after. When you come to relieve her she is at the guns with her chin up.",
+  "changes": [
+   "s.people.c:yelena.liftedAt: undefined -> 1",
+   "s.people.c:yelena.memories: [] -> undefined",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You said it was my watch on the night of the final.",
+   "s.people.c:yelena.opinion: 0 -> -1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:yelena:late",
+  "i": 0,
+  "label": "Promise her a ship, someday",
+  "result": "\"Someday,\" you say, \"and you will be asked.\" She puts the cloth down on the housing and, for once, does not pick anything up in its place. She says \"Good,\" to the fire control, in a small voice, and then, louder, to the whole housing, \"Did you hear that?\"",
+  "changes": [
+   "s.cast.yelena.flags: {} -> undefined",
+   "s.cast.yelena.flags.promised: undefined -> true",
+   "s.people.c:yelena.liftedAt: undefined -> 1",
+   "s.people.c:yelena.memories: [] -> undefined",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: I told you I wanted a ship with no bench, and you promised.",
+   "s.people.c:yelena.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:yelena:late",
+  "i": 1,
+  "label": "Make no promises",
+  "result": "\"I cannot promise that,\" you say, \"but I heard you.\" She nods, once, sharply, like a referee, and the cloth goes back to the housing. \"Fair,\" she says. \"I will take fair. Fair is more than most of the bench ever got.\"",
+  "changes": [
+   "s.people.c:yelena.liftedAt: undefined -> 1",
+   "s.people.c:yelena.memories: [] -> undefined",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You would not promise a ship, but you listened.",
+   "s.people.c:yelena.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:yelena:pivot",
+  "i": 0,
+  "label": "Let her lead",
+  "result": "She goes over the hull first, as she said she would, and the party follows. It is loud and fast and over before you have finished counting. She comes back across the gap with a split lip and a stranger's cap in her fist. \"Nobody on the bench,\" she says.",
+  "changes": [
+   "s.people.c:yelena.liftedAt: undefined -> 1",
+   "s.people.c:yelena.memories: [] -> undefined",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You let me go first, and I came back.",
+   "s.people.c:yelena.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:yelena:pivot",
+  "i": 1,
+  "label": "Send her with a second person",
+  "result": "You send a second hand over with her. She goes over the hull first, as she said she would, and the party follows. It is loud and fast and over before you have finished counting. She comes back across the gap with a split lip and a stranger's cap in her fist. \"Nobody on the bench,\" she says.",
+  "changes": [
+   "s.people.c:yelena.liftedAt: undefined -> 1",
+   "s.people.c:yelena.memories: [] -> undefined",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You let me go first, and I came back.",
+   "s.people.c:yelena.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:yelena:pivot",
+  "i": 2,
+  "label": "Call it off",
+  "result": "You tell her no, and cut the channel, and the drifting ship goes on drifting. Yelena stands at the hatch for a while with her helmet in her hand. \"Fine,\" she says. She sits down on the bench by the airlock, straight, and does not say another word to you for the rest of the burn.",
+  "changes": [
+   "s.cast.yelena.flags: {} -> undefined",
+   "s.cast.yelena.flags.benched: undefined -> true",
+   "s.people.c:yelena.liftedAt: undefined -> 1",
+   "s.people.c:yelena.memories: [] -> undefined",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You called off the boarding and put me on the bench.",
+   "s.people.c:yelena.opinion: 0 -> -3"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ruben:meet",
+  "i": 0,
+  "label": "Take him on as comms",
+  "result": "He packs the whole stall into one battered case in what seems like a single motion, and presses the thermos into your hands. \"Hold this,\" he says, \"it is still hot, that is important.\" He talks the whole way to the ship: about the band, about your ship, about three domes you have never heard of, and about how glad he is. Nobody has the heart to interrupt.",
+  "changes": [
+   "s.crew.9: undefined -> c:ruben",
+   "s.home.log: [] -> undefined",
+   "s.home.log.0.day: undefined -> 1",
+   "s.home.log.0.text: undefined -> Ruben Castellanos came aboard as a slicer.",
+   "s.people.c:ruben.liftedAt: undefined -> 1",
+   "s.people.c:ruben.memories: [] -> undefined",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: I signed on with the Second Anvil.",
+   "s.people.c:ruben.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ruben:meet",
+  "i": 1,
+  "label": "\"Not this time.\"",
+  "result": "\"Of course,\" he says, and, because it is his nature, he pours you another cup. \"Take it for the road. If you hear anything good on the bands, you know where my stall is. I will hear it first, mind.\"",
+  "changes": [
+   "s.cast.ruben.next: 0 -> 9"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ruben:intro",
+  "i": 0,
+  "label": "Listen with him",
+  "result": "You listen for most of an hour. It sounds, at first, like nothing: figures, polite interruptions. Then he nudges you, and you hear it: the same dome asking three times, in three different ways, whether the shipment is on time. \"Frightened,\" Ruben says, beaming. \"Of the answer. You see? You are very good at this. You have the ear.\"",
+  "changes": [
+   "s.people.c:ruben.liftedAt: undefined -> 1",
+   "s.people.c:ruben.memories: [] -> undefined",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You sat and listened to the bands with me.",
+   "s.people.c:ruben.opinion: 0 -> 2",
+   "s.people.c:ruben.xp.slicer: 110 -> 112"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ruben:intro",
+  "i": 1,
+  "label": "Ask what he is listening for",
+  "result": "\"Ah,\" he says, and holds up the thermos, as one raises a glass. \"What they need. People never say it outright, but they tell you in ways they do not notice. A little too fast, a little too polite. That is when you know you are about to be useful.\" He turns the band down, gently, so as not to frighten them.",
+  "changes": [
+   "s.people.c:ruben.liftedAt: undefined -> 1",
+   "s.people.c:ruben.memories: [] -> undefined",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You asked what I was listening for.",
+   "s.people.c:ruben.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ruben:mid1",
+  "i": 0,
+  "label": "Act on the tip",
+  "result": "He tells you, and he is right to be careful: A company on Ganymede has folded, and its whole stock of Luxury Goods is being sold off at auction. He watches your face while you take it in, fiddling with the lid of the thermos. \"Not a word,\" he says, delighted, \"about where you heard it. A good listener has no name.\"",
+  "changes": [
+   "s.inbox.0.n: 1 -> 2",
+   "s.inbox.0.pid: c:ruben -> undefined",
+   "s.inbox.0.tag: undefined -> market",
+   "s.inbox.0.text: A message for Ruben at Earth: their daughter Viktor has been laid off, and the severance has not come. -> A company on Ganymede has folded, and its whole stock of Luxury Goods is being sold off at auction. (Jupiter)",
+   "s.inbox.0.via: message -> station",
+   "s.inbox.1.day: undefined -> 1",
+   "s.inbox.1.n: undefined -> 1",
+   "s.inbox.1.pid: undefined -> c:ruben",
+   "s.inbox.1.text: undefined -> A message for Ruben at Earth: their daughter Viktor has been laid off, and the severance has not come.",
+   "s.inbox.1.via: undefined -> message",
+   "s.inboxN: 1 -> 2",
+   "s.people.c:ruben.liftedAt: undefined -> 1",
+   "s.people.c:ruben.memories: [] -> undefined",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You acted on what I heard.",
+   "s.people.c:ruben.opinion: 0 -> 2",
+   "s.people.c:ruben.xp.slicer: 110 -> 112",
+   "s.rumors: [] -> undefined",
+   "s.rumors.0.cid: undefined -> luxury",
+   "s.rumors.0.mult: undefined -> 0.6165445584454574",
+   "s.rumors.0.planet: undefined -> Ganymede",
+   "s.rumors.0.text: undefined -> A company on Ganymede has folded, and its whole stock of Luxury Goods is being sold off at auction. (Jupiter)",
+   "s.rumors.0.until: undefined -> 20"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ruben:mid1",
+  "i": 1,
+  "label": "Leave it",
+  "result": "He deflates, and then rallies. \"You are quite right,\" he says. \"It is not mine to sell.\" He goes back to the post, and, for a day or so, is more careful about where he points the dish.",
+  "changes": [
+   "s.people.c:ruben.liftedAt: undefined -> 1",
+   "s.people.c:ruben.memories: [] -> undefined",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You left the dispatcher's secret alone.",
+   "s.people.c:ruben.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ruben:mid2",
+  "i": 0,
+  "label": "Ask him to keep an ear on it",
+  "result": "\"Of course. Of course.\" He is glowing. For the rest of the burn there is a small notebook next to the comms console, titled, in his careful hand, WHAT IS SAID, and each page is a name, a time, and a verdict. By the end, you could write the ship's biography from it.",
+  "changes": [
+   "s.people.c:ruben.liftedAt: undefined -> 1",
+   "s.people.c:ruben.memories: [] -> undefined",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You asked me to keep an ear on what is said about the ship.",
+   "s.people.c:ruben.opinion: 0 -> 2",
+   "s.people.c:ruben.xp.slicer: 110 -> 112"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ruben:mid2",
+  "i": 1,
+  "label": "Tell him not to bother with gossip",
+  "result": "\"Gossip,\" he says, softly. \"Yes. Of course.\" He turns the second recording off, carefully.",
+  "changes": [
+   "s.people.c:ruben.memories: [] -> undefined",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You told me not to bother with gossip."
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ruben:late",
+  "i": 0,
+  "label": "Promise him a ship, someday",
+  "result": "\"Someday,\" you say, \"and there will be room for a relay.\" He does not say anything for some time. Then he picks up the thermos, pours a cup with both hands, and sets it in front of you. For once he does not tell you what is in it.",
+  "changes": [
+   "s.cast.ruben.flags: {} -> undefined",
+   "s.cast.ruben.flags.promised: undefined -> true",
+   "s.people.c:ruben.liftedAt: undefined -> 1",
+   "s.people.c:ruben.memories: [] -> undefined",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: I told you about the open band, and you promised.",
+   "s.people.c:ruben.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ruben:late",
+  "i": 1,
+  "label": "Make no promises",
+  "result": "\"I cannot promise that,\" you say, \"but I heard you.\" He smiles, crookedly, and nods. \"That is what the open band is for,\" he says. \"Not promises. Being heard.\" He turns the volume up on the quiet band, and, together, for a while, you sit and listen.",
+  "changes": [
+   "s.people.c:ruben.liftedAt: undefined -> 1",
+   "s.people.c:ruben.memories: [] -> undefined",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You would not promise, but you listened.",
+   "s.people.c:ruben.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ruben:pivot",
+  "i": 0,
+  "label": "Let him go out to the mast",
+  "result": "He gets the third bolt turned and the mast swings true, and the flare comes in before he is through the lock. When you reach him he is on the airlock deck with both hands over his left ear. The dome is already answering. \"I can hear it,\" he says, loudly, about the dome. \"Mostly.\" After that he turns the volume up on the quiet band, and sits closer to the speaker.",
+  "changes": [
+   "s.cast.ruben.marks.0.day: undefined -> 1",
+   "s.cast.ruben.marks.0.text: undefined -> He hears the quiet band in one ear only.",
+   "s.people.c:ruben.liftedAt: undefined -> 1",
+   "s.people.c:ruben.memories: [] -> undefined",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You let me go out to the north mast, and I came back with one good ear.",
+   "s.people.c:ruben.opinion: 0 -> 2",
+   "s.people.c:ruben.skill: 3 -> 2",
+   "s.people.c:ruben.skills.slicer: 3 -> 2",
+   "s.people.c:ruben.xp.slicer: 110 -> 45"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ruben:pivot",
+  "i": 1,
+  "label": "Send a second person out with him",
+  "result": "You send a second person out to the mast with him. He goes out with the thermos clipped to his belt, which nobody argues with, and calls the bolts as he turns them so the dome can follow along. The mast swings true in nine minutes. The flare comes in as the lock cycles, and the open band fills with a dome council all talking at once, which is the best noise he knows. \"There,\" Ruben says, pink with cold. \"Heard.\"",
+  "changes": [
+   "s.people.c:ruben.liftedAt: undefined -> 1",
+   "s.people.c:ruben.memories: [] -> undefined",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You let me go out to the north mast, and I came back.",
+   "s.people.c:ruben.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ruben:pivot",
+  "i": 2,
+  "label": "Tell him to hold the band from the console",
+  "result": "You tell him no, and put your hand on the console. The north mast stays dark, and the voice on the open band asks its question twice more and then stops asking. Ruben sits down at the comms post with the thermos untouched. \"It is your ship,\" he says quietly. \"I will keep the band open anyway. Somebody should be listening.\"",
+  "changes": [
+   "s.cast.ruben.flags: {} -> undefined",
+   "s.cast.ruben.flags.benched: undefined -> true",
+   "s.people.c:ruben.liftedAt: undefined -> 1",
+   "s.people.c:ruben.memories: [] -> undefined",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You kept me off the mast.",
+   "s.people.c:ruben.opinion: 0 -> -3"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:bexa:meet",
+  "i": 0,
+  "label": "Offer her the helm",
+  "result": "She looks at you for the length of a breath, hangs the pen on its chain from her belt, and picks up her bag. \"I will take your helm,\" she says. \"I will tell you now that I talk to the transponder. It is not a problem. It listens better than most people.\"",
+  "changes": [
+   "s.crew.9: undefined -> c:bexa",
+   "s.home.log: [] -> undefined",
+   "s.home.log.0.day: undefined -> 1",
+   "s.home.log.0.text: undefined -> Bexa Oyelaran came aboard as a pilot.",
+   "s.people.c:bexa.liftedAt: undefined -> 1",
+   "s.people.c:bexa.memories: [] -> undefined",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: I signed on with the Second Anvil.",
+   "s.people.c:bexa.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:bexa:meet",
+  "i": 1,
+  "label": "\"Not this time.\"",
+  "result": "\"That is all right,\" she says. \"I know where the docks are. There is always another wreck.\" She says it kindly, and the chit in her hand is the last one on the clipboard.",
+  "changes": [
+   "s.cast.bexa.next: 0 -> 9"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:bexa:intro",
+  "i": 0,
+  "label": "Ask about the living ones",
+  "result": "\"Oh,\" she says, and smiles, for the first time since you came aboard. \"Eleven. Eleven of them lived. There is a boy on Pallas who sends me a card every year with the same drawing of a tug, and a woman at Hygiea who runs a water shop and gives me a free flask every time I dock.\" She runs a finger down the list, stopping at the names, one at a time. \"That is the part I put the list here for.\"",
+  "changes": [
+   "s.people.c:bexa.liftedAt: undefined -> 1",
+   "s.people.c:bexa.memories: [] -> undefined",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You asked about the ones who lived.",
+   "s.people.c:bexa.opinion: 0 -> 2",
+   "s.people.c:bexa.xp.pilot: 110 -> 112"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:bexa:intro",
+  "i": 1,
+  "label": "Ask about the others",
+  "result": "She is silent for a long time. \"Thirty-one,\" she says. \"I make sure I say their names once a year, out loud, on the day I found them. Somebody should.\" She closes the cover, finally, gently, as you would a door on someone sleeping. \"Thank you for asking. It is not what most people ask.\"",
+  "changes": [
+   "s.people.c:bexa.liftedAt: undefined -> 1",
+   "s.people.c:bexa.memories: [] -> undefined",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You asked about the others, and listened.",
+   "s.people.c:bexa.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:bexa:mid1",
+  "i": 0,
+  "label": "Take the detour",
+  "result": "She brings the ship in slow and gentle, the way you approach a frightened animal. The wreck is a small hauler, dark and cold, her hatches sealed, her beacon the only living thing on her. Nobody aboard. Bexa stays on the scope until the beacon is a speck, and then, quietly, writes a name on a list you cannot see. \"She was called the Patient Wren,\" she says. \"I will tell the registry. She will be towed home.\" She flies the rest of the shift with two fingers on the stick.",
+  "changes": [
+   "s.people.c:bexa.liftedAt: undefined -> 1",
+   "s.people.c:bexa.memories: [] -> undefined",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You took the detour to look at the wreck.",
+   "s.people.c:bexa.opinion: 0 -> 2",
+   "s.people.c:bexa.xp.pilot: 110 -> 113"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:bexa:mid1",
+  "i": 1,
+  "label": "Stay on course",
+  "result": "\"No,\" she says. \"Of course. It is not my ship.\" She takes her hand off the console slowly, and the transponder's faint call fades behind you, four seconds at a time, until you cannot hear it. She flies on, correct and silent, and later you see her write something small on the inside of the console cover.",
+  "changes": [
+   "s.people.c:bexa.liftedAt: undefined -> 1",
+   "s.people.c:bexa.memories: [] -> undefined",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You would not let me look at the wreck.",
+   "s.people.c:bexa.opinion: 0 -> -1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:bexa:mid2",
+  "i": 0,
+  "label": "Trust her",
+  "result": "You tell her to carry on. She nods once, and she does, and for the next twenty minutes the whole ship waits with her, listening to the thing she is certain is not there. At the end, the contact goes pale, and thins, and is gone, like breath on a pane. Bexa lets out a long, slow exhale. \"Echo,\" she says. \"Forty-one.\" She does not say thank you. She puts a small tick on the inside of the console cover.",
+  "changes": [
+   "s.people.c:bexa.liftedAt: undefined -> 1",
+   "s.people.c:bexa.memories: [] -> undefined",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You trusted me about the ghost on the scope.",
+   "s.people.c:bexa.opinion: 0 -> 2",
+   "s.people.c:bexa.xp.pilot: 110 -> 112"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:bexa:mid2",
+  "i": 1,
+  "label": "Raise the alarm anyway",
+  "result": "The alarm goes, and the crew goes to stations, and in twenty minutes the contact fades to nothing, as she said it would. Bexa takes the ship off alert herself, calmly, without a word, and flies on. \"Better safe,\" she says at last. For a day she answers in single words, and after that she reports a contact only once she is sure of it.",
+  "changes": [
+   "s.people.c:bexa.liftedAt: undefined -> 1",
+   "s.people.c:bexa.memories: [] -> undefined",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You raised the alarm about a ghost I had called.",
+   "s.people.c:bexa.opinion: 0 -> -1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:bexa:late",
+  "i": 0,
+  "label": "Promise her a ship, someday",
+  "result": "\"Someday,\" you say, \"and you will be asked.\" She does not answer for a moment. Then she takes a small brass tag from above the console, on its string, and holds it in her palm. \"He would have liked you,\" she says, to nobody in particular, and puts it carefully back.",
+  "changes": [
+   "s.cast.bexa.flags: {} -> undefined",
+   "s.cast.bexa.flags.promised: undefined -> true",
+   "s.people.c:bexa.liftedAt: undefined -> 1",
+   "s.people.c:bexa.memories: [] -> undefined",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: I told you about the ship nobody wanted, and you promised.",
+   "s.people.c:bexa.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:bexa:late",
+  "i": 1,
+  "label": "Make no promises",
+  "result": "\"I cannot promise that,\" you say, \"but I heard you.\" She nods slowly, and her mouth does something small and crooked. \"That is the right answer,\" she says. \"A promise is a tow rope. Do not put one on a ship you have not looked at.\"",
+  "changes": [
+   "s.people.c:bexa.liftedAt: undefined -> 1",
+   "s.people.c:bexa.memories: [] -> undefined",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You would not promise, but you listened.",
+   "s.people.c:bexa.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:bexa:pivot",
+  "i": 0,
+  "label": "Let her go out on the line",
+  "result": "She takes the spin out of the hulk in eleven minutes by the clock, hand over hand along the line, and the hulk comes round to follow the tug like a dog that has been told. She comes back through the lock with frost in her eyebrows. At the next port she adds a line to the list, in the column with the others: a name, a date, a hull number.",
+  "changes": [
+   "s.people.c:bexa.liftedAt: undefined -> 1",
+   "s.people.c:bexa.memories: [] -> undefined",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You let me go out on the line, and I came back.",
+   "s.people.c:bexa.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:bexa:pivot",
+  "i": 1,
+  "label": "Send a second hand out with her",
+  "result": "You send a second hand out on the line with her. She takes the spin out of the hulk in eleven minutes by the clock, hand over hand along the line, and the hulk comes round to follow the tug like a dog that has been told. She comes back through the lock with frost in her eyebrows. At the next port she adds a line to the list, in the column with the others: a name, a date, a hull number.",
+  "changes": [
+   "s.people.c:bexa.liftedAt: undefined -> 1",
+   "s.people.c:bexa.memories: [] -> undefined",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You let me go out on the line, and I came back.",
+   "s.people.c:bexa.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:bexa:pivot",
+  "i": 2,
+  "label": "Cut the line and let the hulk go",
+  "result": "You tell her to cut the line, and she does, with her own hand on the release. The hulk goes on turning, slowly, its beacon calling every four seconds until it is too faint to hear. Bexa sits at the stick for a long while with the tag in her fist. \"It is your call,\" she says at last. \"I will put her on the list as lost.\"",
+  "changes": [
+   "s.cast.bexa.flags: {} -> undefined",
+   "s.cast.bexa.flags.benched: undefined -> true",
+   "s.people.c:bexa.liftedAt: undefined -> 1",
+   "s.people.c:bexa.memories: [] -> undefined",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You cut the tow on me.",
+   "s.people.c:bexa.opinion: 0 -> -3"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pax:meet",
+  "i": 0,
+  "label": "Offer them the guns",
+  "result": "The dart goes down, carefully. \"Really?\" Pax says, and then, because that sounded like asking for too much: \"I mean, thanks. Yes. I mean, I will try not to flinch.\" You tell them the flinching can come, too. Pax picks up a small bag.",
+  "changes": [
+   "s.crew.9: undefined -> c:pax",
+   "s.home.log: [] -> undefined",
+   "s.home.log.0.day: undefined -> 1",
+   "s.home.log.0.text: undefined -> Pax Iwu came aboard as a gunner.",
+   "s.people.c:pax.liftedAt: undefined -> 1",
+   "s.people.c:pax.memories: [] -> undefined",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: I signed on with the Second Anvil.",
+   "s.people.c:pax.opinion: 0 -> 2",
+   "s.people.c:pax.role: engineer -> gunner",
+   "s.people.c:pax.skill: 2 -> 3"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pax:meet",
+  "i": 1,
+  "label": "\"Not this time.\"",
+  "result": "\"Right,\" Pax says, to the board, and puts a dart in the center, and then another beside it. \"Sure. I am around. I am always around. I am here every evening.\" They say it lightly, and the second dart lands a hair off the first.",
+  "changes": [
+   "s.cast.pax.next: 0 -> 9"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pax:intro",
+  "i": 0,
+  "label": "Tell them honestly that it is different",
+  "result": "\"Yes,\" you say. \"It is different. It is louder, and everything you do matters, and your hands shake. Everybody's do. You do it anyway, and it gets quieter.\" Pax lets out a breath, slowly. \"Thank you,\" they say. \"Everybody else says it is the same. It is a relief to be told it is not.\" They go back to the scores.",
+  "changes": [
+   "s.people.c:pax.liftedAt: undefined -> 1",
+   "s.people.c:pax.memories: [] -> undefined",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You told me the truth about what it is like when it is real.",
+   "s.people.c:pax.opinion: 0 -> 2",
+   "s.people.c:pax.xp.gunner: 110 -> 112"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pax:intro",
+  "i": 1,
+  "label": "Say it is the same: aim, breathe",
+  "result": "\"Aim, breathe,\" Pax repeats, and writes it, in small letters, on the inside of the handheld case. \"Aim. Breathe.\" They say it twice more under their breath, and the second time only their lips move.",
+  "changes": [
+   "s.people.c:pax.liftedAt: undefined -> 1",
+   "s.people.c:pax.memories: [] -> undefined",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You told me to aim and breathe.",
+   "s.people.c:pax.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pax:mid1",
+  "i": 0,
+  "label": "Check it together",
+  "result": "You stand beside them, not helping, just present, and, after a minute, Pax puts the wrench to the coupling. It takes twelve minutes, not ten. When it is done, Pax breathes out for what must be the first time in a quarter hour, and tests it, twice, and nods. \"Good,\" they say. \"It is good.\" They put the wrench back in its clip and square it with the rack, and the two of you stand a while longer with the hum of the mount coming up through your boots.",
+  "changes": [
+   "s.people.c:pax.liftedAt: undefined -> 1",
+   "s.people.c:pax.memories: [] -> undefined",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You checked the coupling with me.",
+   "s.people.c:pax.opinion: 0 -> 2",
+   "s.people.c:pax.xp.gunner: 110 -> 113"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pax:mid1",
+  "i": 1,
+  "label": "Do it for them",
+  "result": "You take the wrench, and do it in nine minutes. Pax says \"Thank you,\" in a small voice and watches your hands the whole time. Pax tests the coupling after you, quietly, when they think no one is looking, and finds it perfect, and does not look any happier about it.",
+  "changes": [
+   "s.people.c:pax.memories: [] -> undefined",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You did the coupling for me."
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pax:mid2",
+  "i": 0,
+  "label": "Offer to sit with them while they read it",
+  "result": "You sit on the deck beside them, with your back to the bulkhead, saying nothing, and Pax opens it. It is short. The foreman is walking again, with a stick, and does not blame anybody, and would like to see the kid some day. Pax reads it twice, and puts the handheld face-down on their knee, and cries, quietly, for about a minute. Then Pax wipes their face on a sleeve and says, \"He says to practice. He says I have the best hands in the Warren.\" They laugh, a damp, astonished sound.",
+  "changes": [
+   "s.cast.pax.flags: {} -> undefined",
+   "s.cast.pax.flags.foreman: undefined -> true",
+   "s.people.c:pax.liftedAt: undefined -> 1",
+   "s.people.c:pax.memories: [] -> undefined",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You sat with me while I read the foreman's message.",
+   "s.people.c:pax.opinion: 0 -> 3",
+   "s.people.c:pax.xp.gunner: 110 -> 112"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pax:mid2",
+  "i": 1,
+  "label": "Tell them to read it when they are ready",
+  "result": "\"Yes,\" Pax says. \"When I am ready.\" It sounds like the right thing, and they put the handheld away. It stays unopened for the rest of the burn. When you pass the weapons bay, Pax has taken it out, and is holding it, and looking at the sender's name, and putting it back.",
+  "changes": [
+   "s.people.c:pax.memories: [] -> undefined",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You told me to read it when I was ready."
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pax:late",
+  "i": 0,
+  "label": "Promise them a ship, someday",
+  "result": "\"Someday,\" you say, \"and you will be asked.\" Pax opens their mouth and shuts it again, and then the grin gets away from them entirely, wide and helpless. \"Nine days,\" they say. \"Nine days, and a ship. If I tell the foreman he will not believe me.\" They go away down the corridor, walking straight, with their hands in plain view.",
+  "changes": [
+   "s.cast.pax.flags: {} -> undefined",
+   "s.cast.pax.flags.promised: undefined -> true",
+   "s.people.c:pax.liftedAt: undefined -> 1",
+   "s.people.c:pax.memories: [] -> undefined",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: I told you about the ship where nobody got hurt, and you promised.",
+   "s.people.c:pax.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pax:late",
+  "i": 1,
+  "label": "Make no promises",
+  "result": "\"I cannot promise that,\" you say, \"but I heard you.\" Pax nods. \"That is fair,\" they say. \"It would be strange to be promised. I am not used to it.\" They smile, a small crooked one, and then, to your surprise, they say, \"Nine days is already a good thing, though. I will take that.\"",
+  "changes": [
+   "s.people.c:pax.liftedAt: undefined -> 1",
+   "s.people.c:pax.memories: [] -> undefined",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You would not promise a ship, but you listened.",
+   "s.people.c:pax.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pax:pivot",
+  "i": 0,
+  "label": "Let Pax clear it alone",
+  "result": "Pax gets the wrench on and the coupling seats, and the mount takes two fingers of Pax's right hand on the way down. Pax walks to the med bay on their own, and says on the way that the hand at the rack is fine. After that, at the range, Pax stands with the hand in a pocket between runs, and flinches again at the clank of the mount.",
+  "changes": [
+   "s.cast.pax.marks.0.day: undefined -> 1",
+   "s.cast.pax.marks.0.text: undefined -> Their right hand is stiff, and they flinch again at a clank.",
+   "s.people.c:pax.liftedAt: undefined -> 1",
+   "s.people.c:pax.memories: [] -> undefined",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You let me hold the mount, and I came out with a hand that does not close.",
+   "s.people.c:pax.opinion: 0 -> 2",
+   "s.people.c:pax.skills.gunner: 3 -> 2",
+   "s.people.c:pax.xp.gunner: 110 -> 45"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pax:pivot",
+  "i": 1,
+  "label": "Put a second hand at the rack beside Pax",
+  "result": "You put a second hand at the rack beside Pax. Pax puts the wrench on the coupling with the mount still swinging, and the hand at the rack puts a shoulder to the arm, and the two of them hold it for eleven seconds, side by side, until the coupling seats. Pax does not flinch. They check it twice, as they always do, and then sit down on the deck beside the hand who stood there, and neither says anything.",
+  "changes": [
+   "s.people.c:pax.liftedAt: undefined -> 1",
+   "s.people.c:pax.memories: [] -> undefined",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You let me hold the mount, and I came out.",
+   "s.people.c:pax.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pax:pivot",
+  "i": 2,
+  "label": "Tell Pax to cut the power and let the mount drop",
+  "result": "You tell Pax to cut the power, and Pax does, at once, with a hand on the switch. The mount drops onto the rack with a sound you feel in the deck, and the hand beside it is unhurt. Pax stands at the controls with the wrench held out in front of them like something hot. \"I could have held it,\" Pax says. \"I think I could have.\" The coupling is the only thing in the bay that does not move.",
+  "changes": [
+   "s.cast.pax.flags: {} -> undefined",
+   "s.cast.pax.flags.benched: undefined -> true",
+   "s.people.c:pax.liftedAt: undefined -> 1",
+   "s.people.c:pax.memories: [] -> undefined",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You told me to cut the power on the mount.",
+   "s.people.c:pax.opinion: 0 -> -3"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:cato:intro",
+  "i": 0,
+  "label": "Tell him what you need",
+  "result": "You tell him you would rather have the middle watch than the cold one, and that you sleep badly after a hard burn. He writes it on the back of his hand with a stub of pencil. \"Done,\" he says. Nobody has asked you that on a ship before, and it takes you a moment to find the rest of your coffee.",
+  "changes": [
+   "s.people.c:cato.liftedAt: undefined -> 1",
+   "s.people.c:cato.memories: [] -> undefined",
+   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You told me what you needed, and I put it on the bill.",
+   "s.people.c:cato.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:cato:intro",
+  "i": 1,
+  "label": "Say you are fine",
+  "result": "You say you are fine. \"Good,\" he says, and means it, and does not believe it. He leaves the mug on the rail beside you, and the offer with it, and goes aft to see about somebody else's watch.",
+  "changes": [
+   "s.people.c:cato.liftedAt: undefined -> 1",
+   "s.people.c:cato.memories: [] -> undefined",
+   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You said you were fine, and I left it there.",
+   "s.people.c:cato.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:cato:mid1",
+  "i": 0,
+  "label": "Ask which ship has the question mark",
+  "result": "He tells you, and it is a hull you have seen on the lanes: old, slow, honest. \"Her owner wants out in two years,\" he says. \"I have been watching her price like the weather.\" He talks about her for ten minutes without stopping, and when he is done he looks slightly embarrassed, and slightly lighter.",
+  "changes": [
+   "s.cast.cato.flags: {} -> undefined",
+   "s.cast.cato.flags.share: undefined -> true",
+   "s.people.c:cato.liftedAt: undefined -> 1",
+   "s.people.c:cato.memories: [] -> undefined",
+   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You asked about the ship with the question mark.",
+   "s.people.c:cato.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:cato:mid1",
+  "i": 1,
+  "label": "Say it is not stupid, but it is a long way off",
+  "result": "\"It is,\" he says. \"It is a long way off every day, and then it is one day nearer. That is how I came up through the hold.\" He puts a hand on the lashing.",
+  "changes": [
+   "s.people.c:cato.liftedAt: undefined -> 1",
+   "s.people.c:cato.memories: [] -> undefined",
+   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You said it was not stupid, but a long way off.",
+   "s.people.c:cato.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:cato:mid2",
+  "i": 0,
+  "label": "Hold the deck, as the captain wrote it",
+  "result": "You hold the deck. The count comes out right the second time and wrong by one crate the first. Captain Vance writes it in the notebook and does not look up. Cato says nothing at all, and takes the cold watch himself the next night, without being asked, which is worse.",
+  "changes": [
+   "s.people.c:cato.liftedAt: undefined -> 1",
+   "s.people.c:cato.memories: [] -> undefined",
+   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You held the deck against my order.",
+   "s.people.c:cato.opinion: 0 -> -1",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You held the deck as I wrote it.",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:cato:mid2",
+  "i": 1,
+  "label": "Stand the watch down, as Cato said",
+  "result": "You stand them down. Cato covers the watch. The count is not done until morning, and Captain Vance finds the gap in it, and finds you. \"Whose order?\" she says. You tell her. \"I see,\" she says, and writes something down. Cato, passing in the passage, does not look at either of you, and puts a hand on the bulkhead for a moment as he goes.",
+  "changes": [
+   "s.people.c:cato.liftedAt: undefined -> 1",
+   "s.people.c:cato.memories: [] -> undefined",
+   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You stood the watch down on my word.",
+   "s.people.c:cato.opinion: 0 -> 2",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You stood the watch down against my order.",
+   "s.people.p1.opinion: 0 -> -1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:cato:late",
+  "i": 0,
+  "label": "Ask him to tell you if it goes badly",
+  "result": "He nods slowly. \"I will,\" he says. \"I will put it on the bill.\" He tries to smile at it, and it does not quite come. \"It is something, to have somebody to tell.\"",
+  "changes": [
+   "s.cast.cato.flags: {} -> undefined",
+   "s.cast.cato.flags.told: undefined -> true",
+   "s.people.c:cato.liftedAt: undefined -> 1",
+   "s.people.c:cato.memories: [] -> undefined",
+   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You asked me to tell you if it went badly.",
+   "s.people.c:cato.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:cato:late",
+  "i": 1,
+  "label": "Tell him it is not yours to carry",
+  "result": "\"No,\" he says. \"It is not.\" He sounds relieved, and sorry to be. \"I wanted somebody to hear it said, that is all. It is a lot to carry in the hold.\"",
+  "changes": [
+   "s.people.c:cato.liftedAt: undefined -> 1",
+   "s.people.c:cato.memories: [] -> undefined",
+   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You said it was not yours to carry.",
+   "s.people.c:cato.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:cato:late:closed",
+  "i": 0,
+  "label": "Say it can wait",
+  "result": "\"It can,\" he says, and puts the pencil back behind his ear. \"Thank you for not asking what it was.\"",
+  "changes": [],
+  "next": null
+ },
+ {
+  "id": "cast:cato:pivot",
+  "i": 0,
+  "label": "Let him go in",
+  "result": "He goes in, and the pod is lashed, and the load stops. He comes out with ice in his beard and a cut across one knuckle, and sits down on the hatch coaming to get his breath. \"That is where it goes,\" he says. Captain Vance looks at the hold, and at him, and says nothing, and writes it down.",
+  "changes": [
+   "s.people.c:cato.liftedAt: undefined -> 1",
+   "s.people.c:cato.memories: [] -> undefined",
+   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You let me go into the hold, and I came out.",
+   "s.people.c:cato.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:cato:pivot",
+  "i": 1,
+  "label": "Send an ice hand in with him",
+  "result": "You send an ice hand in with him. He goes in, and the pod is lashed, and the load stops. He comes out with ice in his beard and a cut across one knuckle, and sits down on the hatch coaming to get his breath. \"That is where it goes,\" he says. Captain Vance looks at the hold, and at him, and says nothing, and writes it down.",
+  "changes": [
+   "s.people.c:cato.liftedAt: undefined -> 1",
+   "s.people.c:cato.memories: [] -> undefined",
+   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You let me go into the hold, and I came out.",
+   "s.people.c:cato.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:cato:pivot",
+  "i": 2,
+  "label": "Seal the hold and let the ice go",
+  "result": "You tell him no, and shut the hatch. The ice goes where ice goes, and the pod will not be the same. Cato stands at the hatch with the strap in his hands and says nothing for a while. \"It is your call,\" he says at last, and means it, and it costs you.",
+  "changes": [
+   "s.cast.cato.flags: {} -> undefined",
+   "s.cast.cato.flags.benched: undefined -> true",
+   "s.people.c:cato.liftedAt: undefined -> 1",
+   "s.people.c:cato.memories: [] -> undefined",
+   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You sealed the hold on me.",
+   "s.people.c:cato.opinion: 0 -> -3"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ilsa:intro",
+  "i": 0,
+  "label": "Ask how long she has had the night watch",
+  "result": "\"Four years,\" she says. \"Six months of it by choice.\" She almost laughs, and does not.",
+  "changes": [
+   "s.people.c:ilsa.liftedAt: undefined -> 1",
+   "s.people.c:ilsa.memories: [] -> undefined",
+   "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You asked how long I had had the night watch.",
+   "s.people.c:ilsa.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ilsa:intro",
+  "i": 1,
+  "label": "Offer to take an hour of it",
+  "result": "\"No,\" she says, and then, at once, \"Yes. The second hour. Do not touch the board.\"",
+  "changes": [
+   "s.people.c:ilsa.liftedAt: undefined -> 1",
+   "s.people.c:ilsa.memories: [] -> undefined",
+   "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You offered to take an hour of the night watch.",
+   "s.people.c:ilsa.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ilsa:mid1",
+  "i": 0,
+  "label": "Tell her she is being a fool",
+  "result": "\"Good,\" she says, and does not smile, and does not sign. \"Everyone else tells me I am being noble. I find that harder to bear.\"",
+  "changes": [
+   "s.people.c:ilsa.liftedAt: undefined -> 1",
+   "s.people.c:ilsa.memories: [] -> undefined",
+   "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You told me I was being a fool.",
+   "s.people.c:ilsa.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ilsa:mid1",
+  "i": 1,
+  "label": "Tell her it is hers to decide, and can wait",
+  "result": "\"It can wait,\" she says. \"It has been waiting. It is rather good at it.\" She puts the form back in the drawer, not far back.",
+  "changes": [
+   "s.cast.ilsa.flags: {} -> undefined",
+   "s.cast.ilsa.flags.command: undefined -> true",
+   "s.people.c:ilsa.liftedAt: undefined -> 1",
+   "s.people.c:ilsa.memories: [] -> undefined",
+   "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You said it was mine to decide, and could wait.",
+   "s.people.c:ilsa.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ilsa:mid2",
+  "i": 0,
+  "label": "Put the family in the second cabin, as the captain said",
+  "result": "You put the family in the second cabin. The child sleeps, and the cat sleeps, and the air handler holds until morning and then does not, and you and Ilsa are up until four with the panel off. She does not say a word about it. In the morning the captain thanks everyone by name, and hers is the last on the list.",
+  "changes": [
+   "s.people.c:ilsa.liftedAt: undefined -> 1",
+   "s.people.c:ilsa.memories: [] -> undefined",
+   "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You put the family in the cabin against my order.",
+   "s.people.c:ilsa.opinion: 0 -> -1",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You put the family in the second cabin as I said.",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ilsa:mid2",
+  "i": 1,
+  "label": "Keep the cabin shut, as Ilsa said",
+  "result": "You keep the cabin shut. The family sleeps in the galley, and the child is delighted, and the captain is the opposite of angry. \"Of course,\" he says. \"Of course. The air.\" He tells the galley, and by midnight it has become a story about Ilsa, with a good ending. She does not look pleased.",
+  "changes": [
+   "s.people.c:ilsa.liftedAt: undefined -> 1",
+   "s.people.c:ilsa.memories: [] -> undefined",
+   "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You kept the cabin shut on my word.",
+   "s.people.c:ilsa.opinion: 0 -> 2",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You kept the second cabin shut against my order.",
+   "s.people.p1.opinion: 0 -> -1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ilsa:late",
+  "i": 0,
+  "label": "Offer to put something in",
+  "result": "She looks at the two hundred for a long time. \"No,\" she says. Then: \"Yes. Not for him. For me. So that it is not only me.\" She writes it in the book, in a column of its own.",
+  "changes": [
+   "s.credits: 5000 -> 4800",
+   "s.people.c:ilsa.liftedAt: undefined -> 1",
+   "s.people.c:ilsa.memories: [] -> undefined",
+   "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You offered to put something into the fund.",
+   "s.people.c:ilsa.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ilsa:late",
+  "i": 1,
+  "label": "Ask what she needs",
+  "result": "Her face does something complicated. \"Nobody has asked me that in four years,\" she says. \"I do not know. I will tell you when I do.\"",
+  "changes": [
+   "s.cast.ilsa.flags: {} -> undefined",
+   "s.cast.ilsa.flags.asked: undefined -> true",
+   "s.people.c:ilsa.liftedAt: undefined -> 1",
+   "s.people.c:ilsa.memories: [] -> undefined",
+   "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You asked me what I needed.",
+   "s.people.c:ilsa.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ilsa:late:closed",
+  "i": 0,
+  "label": "Say it can wait",
+  "result": "\"It can,\" she says, and slides the book into the drawer under the table and locks it. \"Thank you for not asking which books.\"",
+  "changes": [],
+  "next": null
+ },
+ {
+  "id": "cast:ilsa:pivot",
+  "i": 0,
+  "label": "Let her go in",
+  "result": "She goes in, and the scram goes home, and the alarm winds down through its notes into silence. She comes out with her sleeves burnt through and her hands steady, and sits on the deck for a minute. \"Routine,\" she says, and writes it in the log. Captain Adair has come down the passage without any of his speeches, and stands at the door.",
+  "changes": [
+   "s.condition.drive: undefined -> 100",
+   "s.condition.fire: undefined -> 100",
+   "s.condition.life: undefined -> 100",
+   "s.condition.sensors: undefined -> 100",
+   "s.condition.shields: undefined -> 100",
+   "s.people.c:ilsa.liftedAt: undefined -> 1",
+   "s.people.c:ilsa.memories: [] -> undefined",
+   "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You let me go into the reactor, and I came out.",
+   "s.people.c:ilsa.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ilsa:pivot",
+  "i": 1,
+  "label": "Send the engineer in with her",
+  "result": "You send the engineer in with her. She goes in, and the scram goes home, and the alarm winds down through its notes into silence. She comes out with her sleeves burnt through and her hands steady, and sits on the deck for a minute. \"Routine,\" she says, and writes it in the log. Captain Adair has come down the passage without any of his speeches, and stands at the door.",
+  "changes": [
+   "s.condition.drive: undefined -> 100",
+   "s.condition.fire: undefined -> 100",
+   "s.condition.life: undefined -> 100",
+   "s.condition.sensors: undefined -> 100",
+   "s.condition.shields: undefined -> 100",
+   "s.people.c:ilsa.liftedAt: undefined -> 1",
+   "s.people.c:ilsa.memories: [] -> undefined",
+   "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You let me go into the reactor, and I came out.",
+   "s.people.c:ilsa.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ilsa:pivot",
+  "i": 2,
+  "label": "Vent the plant and let the ship coast",
+  "result": "You tell her no, and hit the vent. The pile cools, and the ship coasts for two days on what is left of the cells. Ilsa stands at the shielded door with the gloves on and does not say a word. \"It is your call,\" she says at last, and takes the gloves off one finger at a time.",
+  "changes": [
+   "s.cast.ilsa.flags: {} -> undefined",
+   "s.cast.ilsa.flags.benched: undefined -> true",
+   "s.fuel: 450 -> 360",
+   "s.people.c:ilsa.liftedAt: undefined -> 1",
+   "s.people.c:ilsa.memories: [] -> undefined",
+   "s.people.c:ilsa.memories.0: undefined -> 9 Jun 2214: You vented the plant on me.",
+   "s.people.c:ilsa.opinion: 0 -> -3"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pilar:intro",
+  "i": 0,
+  "label": "Ask her to show you the window",
+  "result": "She makes you count it with her, out loud, on the next approach, with the display off. You get it wrong twice. The third time you feel it, a thing in the stick rather than the numbers. \"That is it,\" she says, and does not say anything else, and her shoulders drop an inch.",
+  "changes": [
+   "s.people.c:pilar.liftedAt: undefined -> 1",
+   "s.people.c:pilar.memories: [] -> undefined",
+   "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You asked me to show you the crosswind window.",
+   "s.people.c:pilar.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pilar:intro",
+  "i": 1,
+  "label": "Say you will keep it to yourself",
+  "result": "\"Good,\" she says. \"It is not a secret. It is a courtesy. The captain will find out, and when they do I would rather it was from the log.\" She goes back to the stick.",
+  "changes": [
+   "s.people.c:pilar.liftedAt: undefined -> 1",
+   "s.people.c:pilar.memories: [] -> undefined",
+   "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You said you would keep my approach to yourself.",
+   "s.people.c:pilar.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pilar:mid1",
+  "i": 0,
+  "label": "Offer to write a reference",
+  "result": "You write it that night, and it says what you have seen: the window, the approach, the four meters. She reads it standing up, twice. \"Thirty-two,\" she says, and puts it at the front of the folder, where the best ones go.",
+  "changes": [
+   "s.cast.pilar.flags: {} -> undefined",
+   "s.cast.pilar.flags.reference: undefined -> true",
+   "s.people.c:pilar.liftedAt: undefined -> 1",
+   "s.people.c:pilar.memories: [] -> undefined",
+   "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You wrote me a reference.",
+   "s.people.c:pilar.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pilar:mid1",
+  "i": 1,
+  "label": "Tell her the helm matters more than the paper",
+  "result": "\"It does,\" she says. \"It matters more to everybody but the ones who issue the paper.\" She almost laughs. \"That is not a complaint. That is the whole of the trade.\"",
+  "changes": [
+   "s.people.c:pilar.liftedAt: undefined -> 1",
+   "s.people.c:pilar.memories: [] -> undefined",
+   "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You said the helm mattered more than the paper.",
+   "s.people.c:pilar.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pilar:mid2",
+  "i": 0,
+  "label": "Follow the posted rate, as the captain wrote it",
+  "result": "You run the full checklist. The ship misses the window and waits at the gate for forty minutes, in the correct order, with the correct lights on. Captain Sato enters it. Pilar, on the bridge, stands with her arms folded and says nothing, and the nothing is a lot.",
+  "changes": [
+   "s.people.c:pilar.liftedAt: undefined -> 1",
+   "s.people.c:pilar.memories: [] -> undefined",
+   "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You followed the posted rate against my window.",
+   "s.people.c:pilar.opinion: 0 -> -1",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You followed the posted rate as I wrote it.",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pilar:mid2",
+  "i": 1,
+  "label": "Come in on the window, as Pilar said",
+  "result": "You come in on the crosswind window. It works, by four minutes, and the gate crew applaud the approach. Captain Sato reads the log entry, which you have written accurately, and writes no comment under it. For the first time there is a blank where there should be a line.",
+  "changes": [
+   "s.people.c:pilar.liftedAt: undefined -> 1",
+   "s.people.c:pilar.memories: [] -> undefined",
+   "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You came in on my window.",
+   "s.people.c:pilar.opinion: 0 -> 2",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You came in on the window against the posted rate.",
+   "s.people.p1.opinion: 0 -> -1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pilar:late",
+  "i": 0,
+  "label": "Offer to speak to the captain",
+  "result": "\"Do,\" she says. \"Not about me. About the rule.\" She holds your eye. \"They will hear it better from somebody with a certificate.\" She says the last word slowly.",
+  "changes": [
+   "s.cast.pilar.flags: {} -> undefined",
+   "s.cast.pilar.flags.spoke: undefined -> true",
+   "s.people.c:pilar.liftedAt: undefined -> 1",
+   "s.people.c:pilar.memories: [] -> undefined",
+   "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You offered to speak to the captain about the rule.",
+   "s.people.c:pilar.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pilar:late",
+  "i": 1,
+  "label": "Tell her to keep flying, and let the rule wait",
+  "result": "\"It will not wait,\" she says. \"But I will. That is the difference between a rule and a person.\" She takes the order, and flattens it, and puts it in her pocket with the spanner.",
+  "changes": [
+   "s.people.c:pilar.liftedAt: undefined -> 1",
+   "s.people.c:pilar.memories: [] -> undefined",
+   "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You told me to keep flying and let the rule wait.",
+   "s.people.c:pilar.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pilar:late:closed",
+  "i": 0,
+  "label": "Say it can wait",
+  "result": "\"It can,\" she says. \"Thank you for not asking which rule.\" She goes forward to the helm.",
+  "changes": [],
+  "next": null
+ },
+ {
+  "id": "cast:pilar:pivot",
+  "i": 0,
+  "label": "Let her fly it",
+  "result": "She brings her in by hand, and the ship settles into the berth like a coin into a slot. Pilar lets go of the stick and flexes her fingers. \"Four minutes,\" she says. \"Enter that.\" Captain Sato enters it, word for word, and under it, in their own hand, writes: Correct.",
+  "changes": [
+   "s.condition.drive: undefined -> 100",
+   "s.condition.fire: undefined -> 100",
+   "s.condition.life: undefined -> 100",
+   "s.condition.sensors: undefined -> 100",
+   "s.condition.shields: undefined -> 100",
+   "s.people.c:pilar.liftedAt: undefined -> 1",
+   "s.people.c:pilar.memories: [] -> undefined",
+   "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You let me fly the approach by hand, and I came out.",
+   "s.people.c:pilar.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pilar:pivot",
+  "i": 1,
+  "label": "Put a second hand on the console with her",
+  "result": "You put a second hand on the console beside her. She brings her in by hand, and the ship settles into the berth like a coin into a slot. Pilar lets go of the stick and flexes her fingers. \"Four minutes,\" she says. \"Enter that.\" Captain Sato enters it, word for word, and under it, in their own hand, writes: Correct.",
+  "changes": [
+   "s.condition.drive: undefined -> 100",
+   "s.condition.fire: undefined -> 100",
+   "s.condition.life: undefined -> 100",
+   "s.condition.sensors: undefined -> 100",
+   "s.condition.shields: undefined -> 100",
+   "s.people.c:pilar.liftedAt: undefined -> 1",
+   "s.people.c:pilar.memories: [] -> undefined",
+   "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You let me fly the approach by hand, and I came out.",
+   "s.people.c:pilar.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:pilar:pivot",
+  "i": 2,
+  "label": "Take the ship off the approach and go round",
+  "result": "You tell her no, and call the go-round. The ship stands off from the gate, and the ice sits in the hold, and the cells burn for the second pass. Pilar takes her hands off the stick one at a time. \"It is your call,\" she says. \"It was always going to be somebody's.\"",
+  "changes": [
+   "s.cast.pilar.flags: {} -> undefined",
+   "s.cast.pilar.flags.benched: undefined -> true",
+   "s.fuel: 450 -> 360",
+   "s.people.c:pilar.liftedAt: undefined -> 1",
+   "s.people.c:pilar.memories: [] -> undefined",
+   "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You took the ship off the approach on me.",
+   "s.people.c:pilar.opinion: 0 -> -3"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ansel:intro",
+  "i": 0,
+  "label": "Ask him what the figure means",
+  "result": "\"It is the chance she gets all the way home,\" he says. \"From where we are, with what she owes. It is not a bad figure. It is not a good one.\" He takes the sheet back and folds it, once. \"I do not show it to the captain. She would bet on it.\"",
+  "changes": [
+   "s.people.c:ansel.liftedAt: undefined -> 1",
+   "s.people.c:ansel.memories: [] -> undefined",
+   "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You asked what the figure meant.",
+   "s.people.c:ansel.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ansel:intro",
+  "i": 1,
+  "label": "Ask him why he stays",
+  "result": "\"Habit, or loyalty,\" he says, after a moment. \"I have not decided which, and I have been deciding for six years.\" He seems surprised to have been asked. \"I would say it was the pay, but I have seen the pay.\"",
+  "changes": [
+   "s.people.c:ansel.liftedAt: undefined -> 1",
+   "s.people.c:ansel.memories: [] -> undefined",
+   "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You asked why I stay.",
+   "s.people.c:ansel.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ansel:mid1",
+  "i": 0,
+  "label": "Tell him it is not a small ambition",
+  "result": "\"It is the largest there is,\" he says, thoughtfully. \"Everyone else wants the number to go up. I want it to stay.\" He folds the letter and puts it in the inside pocket, over the heart, where, you suspect, it has been for some time.",
+  "changes": [
+   "s.cast.ansel.flags: {} -> undefined",
+   "s.cast.ansel.flags.annuity: undefined -> true",
+   "s.people.c:ansel.liftedAt: undefined -> 1",
+   "s.people.c:ansel.memories: [] -> undefined",
+   "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You said my ambition was not small.",
+   "s.people.c:ansel.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ansel:mid1",
+  "i": 1,
+  "label": "Ask how close he is",
+  "result": "He tells you, to the credit, and it is a good deal further than you hoped. He does not seem troubled by it. \"That is the nice thing about a number,\" he says. \"It does not pretend.\"",
+  "changes": [
+   "s.people.c:ansel.liftedAt: undefined -> 1",
+   "s.people.c:ansel.memories: [] -> undefined",
+   "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You asked how close I was.",
+   "s.people.c:ansel.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ansel:mid2",
+  "i": 0,
+  "label": "Take the cargo, as the captain said",
+  "result": "You load it. The crates are heavier than they look, and the man is gone before the lock cycles, and the pay is, as promised, triple. Captain Pell kisses the roll of notes. Ansel writes the date and the weight on his sheet, and closes the cover on it, quietly, like a lid.",
+  "changes": [
+   "s.people.c:ansel.liftedAt: undefined -> 1",
+   "s.people.c:ansel.memories: [] -> undefined",
+   "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You took the cargo against my advice.",
+   "s.people.c:ansel.opinion: 0 -> -1",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the cargo as I said.",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ansel:mid2",
+  "i": 1,
+  "label": "Refuse it, as Ansel said",
+  "result": "You refuse. The man shrugs, and takes the crates to the next ship, and the next ship is gone by morning with a cheerful crew. Captain Pell takes it well, which is to say loudly. \"Triple!\" she says, to the galley. \"He made me refuse triple!\" Ansel does not look up from the sheet, and his pencil is not quite steady.",
+  "changes": [
+   "s.people.c:ansel.liftedAt: undefined -> 1",
+   "s.people.c:ansel.memories: [] -> undefined",
+   "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You refused the cargo on my word.",
+   "s.people.c:ansel.opinion: 0 -> 2",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You refused the cargo I wanted.",
+   "s.people.p1.opinion: 0 -> -1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ansel:late",
+  "i": 0,
+  "label": "Ask him what the odds are",
+  "result": "He tells you, and you wish he had not. It is not a small figure and it is not a large one, and it is somewhere you could stand to lose, if it were only you. \"That is the part I cannot do anything with,\" he says. \"It is never only you.\"",
+  "changes": [
+   "s.people.c:ansel.liftedAt: undefined -> 1",
+   "s.people.c:ansel.memories: [] -> undefined",
+   "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You asked me what the odds were.",
+   "s.people.c:ansel.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ansel:late",
+  "i": 1,
+  "label": "Tell him you will stop her if you can",
+  "result": "He looks at you for a long time. \"You cannot,\" he says, gently. \"But thank you for saying it as if you could. That is more than I have had in six years.\" He turns the sheet over, face down, for the first time since you have known him.",
+  "changes": [
+   "s.cast.ansel.flags: {} -> undefined",
+   "s.cast.ansel.flags.told: undefined -> true",
+   "s.people.c:ansel.liftedAt: undefined -> 1",
+   "s.people.c:ansel.memories: [] -> undefined",
+   "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You said you would stop her if you could.",
+   "s.people.c:ansel.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ansel:late:closed",
+  "i": 0,
+  "label": "Say it can wait",
+  "result": "\"It can,\" he says. \"It always could. That is the trouble with it.\" He picks up a pencil and puts it down again without writing.",
+  "changes": [],
+  "next": null
+ },
+ {
+  "id": "cast:ansel:pivot",
+  "i": 0,
+  "label": "Let him go to the lock",
+  "result": "He goes to the lock with the sheet, and it goes wrong at the second sentence, and for a minute the only sound is shouting through a hatch. He comes back carried, with a cut over one eye, and the hand that held the sheet is closed round it and will not open properly. \"They have agreed to wait,\" he says. \"I told them the odds.\"",
+  "changes": [
+   "s.cast.ansel.marks.0.day: undefined -> 1",
+   "s.cast.ansel.marks.0.text: undefined -> The hand that held the sheet does not close properly.",
+   "s.people.c:ansel.liftedAt: undefined -> 1",
+   "s.people.c:ansel.memories: [] -> undefined",
+   "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You let me go to the lock, and I came back.",
+   "s.people.c:ansel.opinion: 0 -> 2",
+   "s.people.c:ansel.skill: 3 -> 2",
+   "s.people.c:ansel.skills.xo: 3 -> 2",
+   "s.people.c:ansel.xp.xo: 110 -> 45",
+   "s.people.p1.mood: null -> undefined",
+   "s.people.p1.mood.kind: undefined -> low",
+   "s.people.p1.mood.until: undefined -> 16"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ansel:pivot",
+  "i": 1,
+  "label": "Send a second person with him",
+  "result": "You send a second person to the lock with him. He goes to the lock with the sheet in his hand, and talks for eleven minutes, in a level voice, about the odds. The long ship backs off. He comes back with his coat buttoned wrong and says, \"They have agreed to wait,\" and sits down on the lock coaming and does not say anything else for a while. Captain Pell does not make a joke. She puts a hand on his shoulder, and takes it off again.",
+  "changes": [
+   "s.people.c:ansel.liftedAt: undefined -> 1",
+   "s.people.c:ansel.memories: [] -> undefined",
+   "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You let me go to the lock, and I came back.",
+   "s.people.c:ansel.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "cast:ansel:pivot",
+  "i": 2,
+  "label": "Back the captain, and open fire",
+  "result": "You give the word, and the guns speak, and the long ship answers, and for a minute it is loud and bright and Pell is laughing. The hull takes what it takes. Ansel stands at the lock with the sheet and does not say anything. When it is over he writes a number on it, and puts it in his pocket, and does not show it to anyone.",
+  "changes": [
+   "s.armor: 260 -> 182",
+   "s.cast.ansel.flags: {} -> undefined",
+   "s.cast.ansel.flags.benched: undefined -> true",
+   "s.people.c:ansel.liftedAt: undefined -> 1",
+   "s.people.c:ansel.memories: [] -> undefined",
+   "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You opened fire on Dobrescu's ship against my word.",
+   "s.people.c:ansel.opinion: 0 -> -3",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You backed me when I picked the fight.",
+   "s.people.p1.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:hester:trouble",
+  "i": 0,
+  "label": "Lend her four hundred",
+  "result": "You push four hundred across the table. She looks at it for a long time, and then writes it in the notebook, with the date and a figure beside it. \"Four hundred and ten,\" she says, \"the day you leave this ship.\"",
+  "changes": [
+   "s.credits: 5000 -> 4600",
+   "s.hired.flags.lent: undefined -> true",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You lent me four hundred when the fund was short.",
+   "s.people.p1.opinion: 0 -> 3"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:hester:trouble",
+  "i": 1,
+  "label": "Tell her it is not your place",
+  "result": "\"It is not,\" she says, and for a moment she looks almost relieved. \"Thank you for knowing it.\" She turns the notebook round and goes on with the figures, and you go back to your watch. The payment is made on the first. You never learn how.",
+  "changes": [
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said it was not your place to lend."
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:hester:secret:confide",
+  "i": 0,
+  "label": "Say you will keep it to yourself",
+  "result": "You say you will. She nods, and closes the notebook, and holds it a moment with both hands. \"Thank you,\" she says. It is the first time you have heard her say it without a number after it.",
+  "changes": [
+   "s.hired.flags.secretKnown: undefined -> true",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you would keep the bank to yourself.",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:hester:secret:confide",
+  "i": 1,
+  "label": "Ask how much she still owes",
+  "result": "\"Thirty-eight thousand, and some of it is interest,\" she says, and does not hesitate. \"Eleven good runs, if the market holds. I have counted it a good many times.\"",
+  "changes": [
+   "s.hired.flags.secretKnown: undefined -> true",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You asked how much I owed, and did not flinch.",
+   "s.people.p1.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:hester:secret:found",
+  "i": 0,
+  "label": "Say you did not read it",
+  "result": "\"The tin was open and the letter was face up,\" she says. \"You read it, and you have told me you did not, and I will remember both.\" She takes the letter, and puts it in her breast pocket, and goes out.",
+  "changes": [
+   "s.hired.flags.secretAngry: undefined -> true",
+   "s.hired.flags.secretKnown: undefined -> true",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you had not read the bank's letter, and you had.",
+   "s.people.p1.opinion: 0 -> -2"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:hester:secret:found",
+  "i": 1,
+  "label": "Say you read it, and will say nothing",
+  "result": "She is angry, and she says so. \"It was not for you,\" she says again. Then, more quietly: \"But you told me. I will put that in the other column.\" She takes the letter, and goes.",
+  "changes": [
+   "s.hired.flags.secretAngry: undefined -> true",
+   "s.hired.flags.secretKnown: undefined -> true",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you had read the bank's letter, and would say nothing."
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:hester:goodbye",
+  "i": 0,
+  "label": "Thank her for the work",
+  "result": "You thank her. She nods once, and writes nothing down.",
+  "changes": [
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You thanked me for the work, and meant it.",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:hester:goodbye",
+  "i": 1,
+  "label": "Wish her the ship",
+  "result": "\"I will keep her,\" she says. She almost smiles.",
+  "changes": [
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You wished me the ship.",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:hester:goodbye",
+  "i": 2,
+  "label": "Take the papers and go",
+  "result": "You take the papers and go. She does not call after you. When you look back from the dock she has the notebook open again, and is writing.",
+  "changes": [
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the papers and went."
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:dov:trouble",
+  "i": 0,
+  "label": "Vouch for him",
+  "result": "You say it. Your voice is steadier than you expected. She looks at the captain, and at the fund board, and at you, and puts the stamp on the form. \"Once,\" she says. He is crying, and laughing at himself for it. He does not forget it.",
+  "changes": [
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You told the harbourmaster we were good for it.",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:dov:trouble",
+  "i": 1,
+  "label": "Cover three hundred from your savings",
+  "result": "You pay it at the window, in your own cash. He stands still beside you. \"I will pay you back,\" he says, and for once does not tell a story about it. He writes the figure on the back of his hand.",
+  "changes": [
+   "s.credits: 5000 -> 4700",
+   "s.hired.flags.lent: undefined -> true",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You covered the fuel when the fund was short.",
+   "s.people.p1.opinion: 0 -> 3"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:dov:secret:confide",
+  "i": 0,
+  "label": "Tell him to ask Ilsa",
+  "result": "He is quiet. \"I know,\" he says. \"That is the trouble. I know exactly who it is.\"",
+  "changes": [
+   "s.hired.flags.secretKnown: undefined -> true",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You told me to ask Ilsa.",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:dov:secret:confide",
+  "i": 1,
+  "label": "Say you will say nothing",
+  "result": "You say you will. He closes the box and holds it in both hands for a while, like something warm. \"Thank you,\" he says. For once he does not follow it with a story.",
+  "changes": [
+   "s.hired.flags.secretKnown: undefined -> true",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you would say nothing about the book.",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:dov:secret:found",
+  "i": 0,
+  "label": "Close the book and say nothing",
+  "result": "You close it, and put it where you found it. He watches you do it. \"Thank you,\" he says, quietly, and goes out. You hear him in the galley a minute later, talking to someone, too brightly.",
+  "changes": [
+   "s.hired.flags.secretKnown: undefined -> true",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You closed the fund book and said nothing."
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:dov:secret:found",
+  "i": 1,
+  "label": "Ask him what the initials are",
+  "result": "\"Ilsa,\" he says, with difficulty. \"Ask Ilsa. Please. Do not ask me.\" He is not angry. He looks like a man who has been found in a room he thought was empty, and does not know where to put his hands.",
+  "changes": [
+   "s.hired.flags.secretKnown: undefined -> true",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You asked me about the initials in the fund book.",
+   "s.people.p1.opinion: 0 -> -1"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:dov:goodbye",
+  "i": 0,
+  "label": "Thank him for the work",
+  "result": "You thank him. He says it was nothing, and then, because he cannot help it, tells you what it was.",
+  "changes": [
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You thanked me for the work.",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:dov:goodbye",
+  "i": 1,
+  "label": "Tell him to ask Ilsa for help",
+  "result": "He nods slowly. \"I will,\" he says. \"I will ask her to dinner. That is a start.\" He tries to make a story of it, and finds he does not need to.",
+  "changes": [
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You told me to ask for help.",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:dov:goodbye",
+  "i": 2,
+  "label": "Take the bread and go",
+  "result": "You take the bread and go. You look back from the end of the dock, and he is still at the foot of the ramp, waving, a small figure on a lit dock with nobody to tell.",
+  "changes": [
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the bread and went."
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:imre:trouble",
+  "i": 0,
+  "label": "Say you took the form to the wrong office",
+  "result": "You say it. Captain Sato looks at you, and then at the form, and enters it, because it is what has been said. The correction order is yours. Pilar says nothing until the inspector has gone, and then says, quietly, \"I will not forget that.\" Captain Sato says nothing at all, and you suspect that is because Captain Sato knows.",
+  "changes": [
+   "s.hired.flags.covered: undefined -> true",
+   "s.people.c:pilar.liftedAt: undefined -> 1",
+   "s.people.c:pilar.memories: [] -> undefined",
+   "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You took the blame for my renewal.",
+   "s.people.c:pilar.opinion: 0 -> 3",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you filed the renewal at the wrong office, and I do not think you did.",
+   "s.people.p1.opinion: 0 -> -1"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:imre:trouble",
+  "i": 1,
+  "label": "Let the captain answer",
+  "result": "You say nothing. Captain Sato takes the correction order, and signs for it, and the inspector goes. \"The renewal was filed at the wrong office,\" Captain Sato says to the empty galley, in the voice of a person reading it into the record. \"It is entered as an error of the ship. It is not entered by whom.\" Pilar looks at the deck for some time.",
+  "changes": [
+   "s.people.c:pilar.liftedAt: undefined -> 1",
+   "s.people.c:pilar.memories: [] -> undefined",
+   "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You let the captain answer for my renewal.",
+   "s.people.c:pilar.opinion: 0 -> -1",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You let me answer for the renewal.",
+   "s.people.p1.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:imre:secret:confide",
+  "i": 0,
+  "label": "Say it is noted",
+  "result": "\"Noted,\" you say. Captain Sato looks at you, and the corner of their mouth moves once. They put the jacket back on. It is the same jacket, and it is not.",
+  "changes": [
+   "s.hired.flags.secretKnown: undefined -> true",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said it was noted.",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:imre:secret:confide",
+  "i": 1,
+  "label": "Ask what the order was",
+  "result": "They tell you, in order, with the date and the hour and the name of the officer who gave it. It takes four minutes. It is the longest you have heard them speak. At the end of it they say, \"That is the whole of it,\" and it is.",
+  "changes": [
+   "s.hired.flags.secretKnown: undefined -> true",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You asked what the order was.",
+   "s.people.p1.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:imre:secret:found",
+  "i": 0,
+  "label": "Say you were looking for the manual",
+  "result": "\"The manual is on the second shelf,\" Captain Sato says, and holds the door. \"The record is not a manual. You read it. It is noted that you did, and that you said otherwise.\" The door closes on the drawer. It will be a long time before you are given another key.",
+  "changes": [
+   "s.hired.flags.secretAngry: undefined -> true",
+   "s.hired.flags.secretKnown: undefined -> true",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you were looking for a manual, and you had read the record.",
+   "s.people.p1.opinion: 0 -> -1"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:imre:secret:found",
+  "i": 1,
+  "label": "Say you will not mention it",
+  "result": "Captain Sato does not move. \"It is not a secret,\" they say. \"It is a record. It is accurate.\" They close the drawer. \"Noted that you will not mention it.\" The jacket, on its hook, is the only thing in the locker that has not moved.",
+  "changes": [
+   "s.hired.flags.secretAngry: undefined -> true",
+   "s.hired.flags.secretKnown: undefined -> true",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you would not mention the record."
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:imre:goodbye",
+  "i": 0,
+  "label": "Thank them for the work",
+  "result": "You thank them. \"Entered,\" they say, and, after a moment, \"Appreciated.\" It is the only time you hear the second word.",
+  "changes": [
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You thanked me for the work.",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:imre:goodbye",
+  "i": 1,
+  "label": "Wish them a clean record",
+  "result": "Captain Sato is silent. \"Thank you,\" they say, which is not in any standing order, and is not entered anywhere.",
+  "changes": [
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You wished me a clean record.",
+   "s.people.p1.opinion: 0 -> 3"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:imre:goodbye",
+  "i": 2,
+  "label": "Take the papers and go",
+  "result": "You take the papers and go. When you look back from the dock, Captain Sato is at the foot of the ramp, writing something down.",
+  "changes": [
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the papers and went."
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:zoya:trouble",
+  "i": 0,
+  "label": "Tell him the captain is out",
+  "result": "You go down, and tell him. He nods, and leaves the folder with you. \"Tell her Tuesday,\" he says. It is Thursday. When you come back up, Pell is whistling at the nav console and has not turned a page of the thing she is reading.",
+  "changes": [
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You told Dobrescu I was out.",
+   "s.people.p1.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:zoya:trouble",
+  "i": 1,
+  "label": "Give him a hundred to wait a week",
+  "result": "He counts it twice, in front of you, and goes, and you are not sure he is done. Pell laughs when she hears, which is the worst possible response, and then hugs you, unexpectedly, hard, and lets go at once. \"A hundred,\" she says. \"I will pay you a hundred and a quarter, and that is a bet I will not lose.\"",
+  "changes": [
+   "s.credits: 5000 -> 4900",
+   "s.hired.flags.lent: undefined -> true",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You paid Dobrescu a hundred to wait a week.",
+   "s.people.p1.opinion: 0 -> 3"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:zoya:secret:confide",
+  "i": 0,
+  "label": "Ask what one good run would have to be",
+  "result": "She tells you, to the figure, and it is not an absurd one. That is the worst part. \"Eleven percent over the best I have ever done,\" she says. \"I could do it on a Tuesday. I have not done it on a Tuesday.\" She gathers the cards. \"Do not tell the galley. They like me better when I am lucky.\"",
+  "changes": [
+   "s.hired.flags.secretKnown: undefined -> true",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You asked what the good run would have to be.",
+   "s.people.p1.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:zoya:secret:confide",
+  "i": 1,
+  "label": "Say you will stay till it is done",
+  "result": "\"Till it is done,\" she says, and for once she is not whistling, and not smiling, and it is a plain, tired, hopeful face. \"That is a promise with no end date. I will hold you to it, and I will let you off it, both. Do not tell me which.\"",
+  "changes": [
+   "s.hired.flags.secretKnown: undefined -> true",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you would stay till the debts were done.",
+   "s.people.p1.opinion: 0 -> 3"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:zoya:secret:found",
+  "i": 0,
+  "label": "Put it back and say nothing",
+  "result": "You put it back, and close the locker, and say nothing, and she watches you do it. \"Thank you,\" she says, lightly. She starts to whistle. It is the same four bars. It is a little flat.",
+  "changes": [
+   "s.hired.flags.secretAngry: undefined -> true",
+   "s.hired.flags.secretKnown: undefined -> true",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You put the sheet back and said nothing."
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:zoya:secret:found",
+  "i": 1,
+  "label": "Ask her if it is true",
+  "result": "\"Every line,\" she says, and the smile is on, perfectly, like a coat. \"And the last one is wrong. I have been wrong about the last one for six years. It is the only thing I am good at.\" She takes the sheet out of your hand, gently, and puts it in the locker, and shuts it.",
+  "changes": [
+   "s.hired.flags.secretAngry: undefined -> true",
+   "s.hired.flags.secretKnown: undefined -> true",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You asked me if the sheet was true.",
+   "s.people.p1.opinion: 0 -> -1"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:zoya:goodbye",
+  "i": 0,
+  "label": "Wish her the good run",
+  "result": "\"From your mouth,\" she says, and crosses two fingers on each hand, and holds them up, and laughs. It is the best laugh you have heard from her, and the shortest.",
+  "changes": [
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You wished me the good run.",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:zoya:goodbye",
+  "i": 1,
+  "label": "Tell her to stop",
+  "result": "She laughs, and means it, and does not. \"I will think about it,\" she says. \"On a Tuesday.\" She does not say which one.",
+  "changes": [
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You told me to stop.",
+   "s.people.p1.opinion: 0 -> 1"
+  ],
+  "next": null
+ },
+ {
+  "id": "captain:zoya:goodbye",
+  "i": 2,
+  "label": "Take the papers and go",
+  "result": "You take the papers and go. When you look back from the dock, she is on the ramp with a coin on her thumb, and she tosses it, and you do not stay to see how it lands.",
+  "changes": [
+   "s.people.p1.memories: [] -> undefined",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the papers and went."
+  ],
+  "next": null
+ }
+]

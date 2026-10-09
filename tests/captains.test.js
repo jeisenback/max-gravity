@@ -311,7 +311,7 @@ test('Cato\'s scenes come in order as the days pass', async () => {
 test('Two Orders moves the captain\'s and Cato\'s opinion opposite ways', async () => {
   const r = await run(() => {
     const st = start(), cap = hiredCaptain(), cato = person('c:cato'), sc = CAST.cato.scenes.mid2, out = {};
-    const run = i => { cap.opinion = 0; cato.opinion = 0; sc.choices[i].run(); return [cap.opinion, cato.opinion]; };
+    const run = i => { cap.opinion = 0; cato.opinion = 0; dataChoice(sc.choices[i]).run(); return [cap.opinion, cato.opinion]; };
     out.hold = run(0); out.stand = run(1);
     return out;
   });
@@ -382,7 +382,7 @@ test('Ilsa\'s scenes come in order, and Two Orders moves the captain\'s and her 
     const st = start({ captainKey: 'dov' }), rec = castRec('ilsa'), cap = hiredCaptain(), ilsa = person('c:ilsa'), out = {};
     const next = d => { st.day = rec.since + d; const n = castNext('ilsa'); return n && n.name; };
     out.order = [next(0), (rec.arc = 1, next(24)), next(25), (rec.arc = 2, next(39)), next(40), (rec.arc = 3, next(54)), next(55), (rec.arc = 4, next(69)), next(70)];
-    const sc = CAST.ilsa.scenes.mid2, run = i => { cap.opinion = 0; ilsa.opinion = 0; sc.choices[i].run(); return [cap.opinion, ilsa.opinion]; };
+    const sc = CAST.ilsa.scenes.mid2, run = i => { cap.opinion = 0; ilsa.opinion = 0; dataChoice(sc.choices[i]).run(); return [cap.opinion, ilsa.opinion]; };
     out.family = run(0); out.shut = run(1);
     return out;
   });
@@ -435,7 +435,7 @@ test('Pilar\'s scenes come in order, and Two Orders moves the captain\'s and her
     const st = start({ captainKey: 'imre' }), rec = castRec('pilar'), cap = hiredCaptain(), pilar = person('c:pilar'), out = {};
     const next = d => { st.day = rec.since + d; const n = castNext('pilar'); return n && n.name; };
     out.order = [next(0), (rec.arc = 1, next(24)), next(25), (rec.arc = 2, next(39)), next(40), (rec.arc = 3, next(54)), next(55), (rec.arc = 4, next(69)), next(70)];
-    const sc = CAST.pilar.scenes.mid2, run = i => { cap.opinion = 0; pilar.opinion = 0; sc.choices[i].run(); return [cap.opinion, pilar.opinion]; };
+    const sc = CAST.pilar.scenes.mid2, run = i => { cap.opinion = 0; pilar.opinion = 0; dataChoice(sc.choices[i]).run(); return [cap.opinion, pilar.opinion]; };
     out.posted = run(0); out.window = run(1);
     return out;
   });
@@ -488,7 +488,7 @@ test('Ansel\'s scenes come in order, and Two Orders moves the captain\'s and his
     const st = start({ captainKey: 'zoya' }), rec = castRec('ansel'), cap = hiredCaptain(), ansel = person('c:ansel'), out = {};
     const next = d => { st.day = rec.since + d; const n = castNext('ansel'); return n && n.name; };
     out.order = [next(0), (rec.arc = 1, next(24)), next(25), (rec.arc = 2, next(39)), next(40), (rec.arc = 3, next(54)), next(55), (rec.arc = 4, next(69)), next(70)];
-    const sc = CAST.ansel.scenes.mid2, run = i => { cap.opinion = 0; ansel.opinion = 0; sc.choices[i].run(); return [cap.opinion, ansel.opinion]; };
+    const sc = CAST.ansel.scenes.mid2, run = i => { cap.opinion = 0; ansel.opinion = 0; dataChoice(sc.choices[i]).run(); return [cap.opinion, ansel.opinion]; };
     out.take = run(0); out.refuse = run(1);
     return out;
   });

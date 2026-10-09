@@ -14,6 +14,7 @@ const path = require('node:path');
 
 const LAYOUT = ['tests/layout.test.js', 'tests/shell.test.js', 'tests/ui.test.js'];
 const GLOBALS = 'tests/globals.test.js';
+const EDITOR = ['tests/editor.test.js', 'tests/editorforms.test.js', 'tests/editorfreq.test.js', 'tests/editornew.test.js', 'tests/editorpreview.test.js', 'tests/editorsave.test.js', 'tests/editorhired.test.js'];
 
 const declared = src => [...src.matchAll(/^(?:async\s+)?(?:const|let|var|function|class)\s+([A-Za-z_$][\w$]*)/gm)].map(m => m[1]).filter(n => n.length >= 3);
 const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -28,12 +29,12 @@ function select(changed, { tests, sources }) {
   for (const f of changed) {
     if (f.endsWith('.md') || /^docs\/[\w./-]+\.json$/.test(f)) continue;
     if (f === 'tools/changed-tests.js') { add(['tests/changed-tests.test.js'], `${f}: its own test`); continue; }
-    if (f === 'editor.html' || f === 'editor.js' || f === 'editor-preview.html') { add(['tests/editor.test.js', 'tests/editorpreview.test.js'], `${f}: the scene editor's own tests`); continue; }
+    if (f === 'editor.html' || f === 'editor.js' || f === 'editor-preview.html') { add(EDITOR, `${f}: the scene editor's own tests`); continue; }
     if (f === 'tools/prose-lint.js') { add(['tests/prose-lint.test.js'], `${f}: its own test`); continue; }
     if (/^tests\/(?:distribution\/)?[\w-]+\.test\.js$/.test(f)) { add([f], `${f}: a test file runs itself`); continue; }
     if (f === 'style.css' || f === 'index.html' || f === 'js/shell.js') {
       add(LAYOUT, `${f}: the layout, shell and ui tests`);
-      if (f === 'index.html') { add([GLOBALS], `${f}: the globals check`); add(['tests/editor.test.js', 'tests/editorpreview.test.js'], `${f}: the scene editor reads the same script list`); }
+      if (f === 'index.html') { add([GLOBALS], `${f}: the globals check`); add(EDITOR, `${f}: the scene editor reads the same script list`); }
       if (f !== 'js/shell.js') continue;
     }
     if (/^js\/[\w-]+\.js$/.test(f)) {

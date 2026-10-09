@@ -122,7 +122,7 @@ test('every choice of every scene runs and says what happened', async () => {
           start({ background: d.culture, mode: 'hired', post: 'pilot' });
           G.state.credits = 1000; castPerson(key);
           let res = null, err = null;
-          try { res = ch.can && !ch.can() ? 'skipped' : ch.run(); } catch (e) { err = String(e); }
+          try { res = ch.can && !ch.can() ? 'skipped' : dataChoice(ch).run(); } catch (e) { err = String(e); }
           out.push({ at: `${key}.${name}.${i}`, ok: err === null && typeof res === 'string' && res.length > 40, err });
         });
       }
