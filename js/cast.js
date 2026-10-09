@@ -663,6 +663,23 @@ const CAST = {
               'take that."'); } },
         ],
       },
+      pivot: {
+        days: 60, title: 'The Coupling Again',
+        get text() {
+          const read = !!castRec('pax').flags.foreman;
+          return 'A coupling on the gun mount works loose in the middle of a drill, with a hand at the rack beside it, and the mount begins to swing. Pax has the controls, a wrench and about ten seconds. "It is the same kind," Pax says, to the screen, in a voice that is trying to be level. "If I cut the power it drops on the rack. If I hold it, I have to hold it with someone standing right there." They have not moved their hand from the wrench.'
+            + castRiskLines()
+            + (read ? ' The foreman\'s message from Ceres is still open on the handheld by the controls, the last line showing: practice.' : ' The foreman\'s message from Ceres is still unopened in the queue.');
+        },
+        choices: [
+          { label: 'Let Pax clear it alone', run: () => theCoupling(false) },
+          { label: 'Put a second hand at the rack beside Pax', ...gated(needCrew(2)), run: () => theCoupling(true) },
+          { label: 'Tell Pax to cut the power and let the mount drop', run() {
+            castFlag('pax', 'benched'); castLike('pax', -3, 'You told me to cut the power on the mount.');
+            return 'You tell Pax to cut the power, and Pax does, at once, with a hand on the switch. The mount drops onto the rack with a sound you feel in the deck, and the hand beside it is unhurt. Pax stands at the controls with the wrench held out in front of them like something hot. "I could have held it," Pax says. "I think I could have." The coupling is the only thing in the bay that does not move.';
+          } },
+        ],
+      },
     },
   },
 };
@@ -877,6 +894,23 @@ function thePlant(backup) {
     return lead + 'He comes out carried, both forearms scalded, and the plant holds behind him. He will weld again. He does not take the flask in his left hand after that, and he does not complain.';
   }
   return lead + 'He goes in, and comes out in four minutes with no eyebrows, which he does not mention. The plant settles. He sits on a crate with the flask and tells her, quietly, that she did well.';
+}
+
+// Pax's pivot: a point each for a medic, a hull above 60 percent, the foreman's message read, and a second hand at the rack beside them.
+function theCoupling(backup) {
+  const rec = castRec('pax'), promised = !!rec.flags.promised, read = !!rec.flags.foreman;
+  const outcome = castFate('pax', castPoints(castRiskPoints() + (read ? 1 : 0) + (backup ? 1 : 0)), `Held the gun mount at the coupling near ${system().name}.`, 'Their right hand is stiff, and they flinch again at a clank.', 'gunner');
+  const lead = backup ? 'You put a second hand at the rack beside Pax. ' : '';
+  if (outcome === 'die') {
+    return lead + 'Pax gets the wrench onto the coupling and the mount drops anyway, and Pax is between it and the rack, which is where Pax put themself. The hand at the rack is untouched. The mount comes to rest on the deck with the wrench still turning in the coupling, a quarter turn, and another.'
+      + (promised ? ' You remember the ship you promised them, and that nobody will ask for it now.' : '');
+  }
+  castLike('pax', 2, outcome === 'mark' ? 'You let me hold the mount, and I came out with a hand that does not close.' : 'You let me hold the mount, and I came out.');
+  if (outcome === 'mark') {
+    return lead + 'Pax gets the wrench on and the coupling seats, and the mount takes two fingers of Pax\'s right hand on the way down. Pax walks to the med bay on their own, and says on the way that the hand at the rack is fine. After that, at the range, Pax stands with the hand in a pocket between runs, and flinches again at the clank of the mount.';
+  }
+  return lead + 'Pax puts the wrench on the coupling with the mount still swinging, and the hand at the rack puts a shoulder to the arm, and the two of them hold it for eleven seconds, side by side, until the coupling seats. Pax does not flinch. They check it twice, as they always do, and then sit down on the deck beside the hand who stood there, and neither says anything.'
+    + (read ? ' "The foreman said practice," Pax says, to the coupling. "I practiced."' : '');
 }
 
 // Ruben's pivot: a point each for a medic, a hull above 60 percent, the councillor who vouches for the relay, and a second person at the mast.
