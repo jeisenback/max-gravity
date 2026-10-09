@@ -54,10 +54,19 @@ const CAST = {
             'ordered. Forty-one people walked off. I lost my license for the way I did it." She turns the jacket over. "I can fly anything you can put ' +
             'a hull around. I would just like to be asked, not told."'),
         choices: [
-          { label: 'Offer her the helm', ...gated(needBerth), run: () => castJoin('ines', ('Ines folds the jacket over one arm and looks at ' +
+          {
+            label: 'Offer her the helm',
+            when: { berths: 1 },
+            effects: { castJoin: 'ines' },
+            result: 'Ines folds the jacket over one arm and looks at ' +
               'you for a moment. "Asked," she says. "Good." She follows you down the dock with a bag that holds, as far as you can tell, one logbook ' +
-              'and nothing else.')) },
-          { label: '"Not this time."', run: () => castLater('ines', 'She nods, and goes back to the jacket. "I will be around," she says.') },
+              'and nothing else.',
+          },
+          {
+            label: '"Not this time."',
+            effects: { castLater: 'ines' },
+            result: 'She nods, and goes back to the jacket. "I will be around," she says.',
+          },
         ],
       },
       intro: {
@@ -205,10 +214,19 @@ const CAST = {
             'who sold her out from under him." He holds out the spanner handle-first. "Does your ship have a plant I could look after? Properly. For ' +
             'ten years."'),
         choices: [
-          { label: 'Take him on as engineer', ...gated(needBerth), run: () => castJoin('tomas', ('He wipes his hands on the rag. Then he ' +
+          {
+            label: 'Take him on as engineer',
+            when: { berths: 1 },
+            effects: { castJoin: 'tomas' },
+            result: 'He wipes his hands on the rag. Then he ' +
               'wipes them again. "Properly," he says, and picks up his bag, which clinks. "I will tell you now that I am going to talk to her. The ' +
-              'engines. It is not a joke. They like it."')) },
-          { label: '"Not this time."', run: () => castLater('tomas', '"That is all right," he says, and turns back to the loop. "I will be here. The ship I am working on will be sold in a month, and then I will be somewhere else, but I will be here."') },
+              'engines. It is not a joke. They like it."',
+          },
+          {
+            label: '"Not this time."',
+            effects: { castLater: 'tomas' },
+            result: '"That is all right," he says, and turns back to the loop. "I will be here. The ship I am working on will be sold in a month, and then I will be somewhere else, but I will be here."',
+          },
         ],
       },
       intro: {
@@ -340,10 +358,19 @@ const CAST = {
             'living, dome defense mostly, and the pay is an insult. I can put a round through a washer at four kilometers. Does your ship have guns ' +
             'that want somebody who cares where they land?"'),
         choices: [
-          { label: 'Offer her the guns', ...gated(needBerth), run: () => castJoin('yelena', ('She puts the ice down and gets up so fast the ' +
+          {
+            label: 'Offer her the guns',
+            when: { berths: 1 },
+            effects: { castJoin: 'yelena' },
+            result: 'She puts the ice down and gets up so fast the ' +
               'stool falls over, and does not pick it up. "Do you know," she says, "you are the first person to ask me that as if it were a question." ' +
-              'She is already walking. Over her shoulder, to the screen: "Do not think I have forgotten the foul."')) },
-          { label: '"Not this time."', run: () => castLater('yelena', '"Sure," she says, and the stool, which she has set upright, rocks once. "I will be at the rail. I am usually at the rail."') },
+              'She is already walking. Over her shoulder, to the screen: "Do not think I have forgotten the foul."',
+          },
+          {
+            label: '"Not this time."',
+            effects: { castLater: 'yelena' },
+            result: '"Sure," she says, and the stool, which she has set upright, rocks once. "I will be at the rail. I am usually at the rail."',
+          },
         ],
       },
       intro: {
@@ -471,11 +498,20 @@ const CAST = {
             'week, who is lying about it, and what they will pay. Twenty-five years on the Valles network. They let me go for keeping a relay running ' +
             'in my kitchen." He beams. "Does your ship have an ear?"'),
         choices: [
-          { label: 'Take him on as comms', ...gated(needBerth), run: () => castJoin('ruben', ('He packs the whole stall into one battered ' +
+          {
+            label: 'Take him on as comms',
+            when: { berths: 1 },
+            effects: { castJoin: 'ruben' },
+            result: 'He packs the whole stall into one battered ' +
               'case in what seems like a single motion, and presses the thermos into your hands. "Hold this," he says, "it is still hot, that is ' +
               'important." He talks the whole way to the ship: about the band, about your ship, about three domes you have never heard of, and about ' +
-              'how glad he is. Nobody has the heart to interrupt.')) },
-          { label: '"Not this time."', run: () => castLater('ruben', '"Of course," he says, and, because it is his nature, he pours you another cup. "Take it for the road. If you hear anything good on the bands, you know where my stall is. I will hear it first, mind."') },
+              'how glad he is. Nobody has the heart to interrupt.',
+          },
+          {
+            label: '"Not this time."',
+            effects: { castLater: 'ruben' },
+            result: '"Of course," he says, and, because it is his nature, he pours you another cup. "Take it for the road. If you hear anything good on the bands, you know where my stall is. I will hear it first, mind."',
+          },
         ],
       },
       intro: {
@@ -593,9 +629,18 @@ const CAST = {
             'ships home. You learn what a ship wants. Mostly, to be found." She caps the pen. "The blockade killed the work. Nobody sells a wreck any ' +
             'more, they keep them. I would like a ship I can fly instead of tow."'),
         choices: [
-          { label: 'Offer her the helm', ...gated(needBerth), run: () => castJoin('bexa', ('She looks at you for the length of a breath, hangs the pen on its chain from her belt, and picks up her bag. "I will take your helm," she says. "I will tell you now that I talk to ' +
-              'the transponder. It is not a problem. It listens better than most people."')) },
-          { label: '"Not this time."', run: () => castLater('bexa', '"That is all right," she says. "I know where the docks are. There is always another wreck." She says it kindly, and the chit in her hand is the last one on the clipboard.') },
+          {
+            label: 'Offer her the helm',
+            when: { berths: 1 },
+            effects: { castJoin: 'bexa' },
+            result: 'She looks at you for the length of a breath, hangs the pen on its chain from her belt, and picks up her bag. "I will take your helm," she says. "I will tell you now that I talk to ' +
+              'the transponder. It is not a problem. It listens better than most people."',
+          },
+          {
+            label: '"Not this time."',
+            effects: { castLater: 'bexa' },
+            result: '"That is all right," she says. "I know where the docks are. There is always another wreck." She says it kindly, and the chit in her hand is the last one on the clipboard.',
+          },
         ],
       },
       intro: {
@@ -726,10 +771,19 @@ const CAST = {
             'good with a laser. I am the best in the Warren. I want a job where nobody is standing next to the thing when it fires." They look up. "That ' +
             'is a bad thing to say, I know."'),
         choices: [
-          { label: 'Offer them the guns', ...gated(needBerth), run: () => castJoin('pax', ('The dart goes down, carefully. "Really?" Pax ' +
+          {
+            label: 'Offer them the guns',
+            when: { berths: 1 },
+            effects: { castJoin: 'pax' },
+            result: 'The dart goes down, carefully. "Really?" Pax ' +
               'says, and then, because that sounded like asking for too much: "I mean, thanks. Yes. I mean, I will try not to flinch." You tell them ' +
-              'the flinching can come, too. Pax picks up a small bag.')) },
-          { label: '"Not this time."', run: () => castLater('pax', '"Right," Pax says, to the board, and puts a dart in the center, and then another beside it. "Sure. I am around. I am always around. I am here every evening." They say it lightly, and the second dart lands a hair off the first.') },
+              'the flinching can come, too. Pax picks up a small bag.',
+          },
+          {
+            label: '"Not this time."',
+            effects: { castLater: 'pax' },
+            result: '"Right," Pax says, to the board, and puts a dart in the center, and then another beside it. "Sure. I am around. I am always around. I am here every evening." They say it lightly, and the second dart lands a hair off the first.',
+          },
         ],
       },
       intro: {
@@ -1109,11 +1163,12 @@ function theTow(backup) {
 // A choice written as data ({ label, result, effects }) is played as the closure the game always played: its effects, then its result (#342). A choice with
 // a run() is left as it is, so a scene can have both.
 // A hired event passes its context (the shipmate it is about) for the effects that need one, and a `learn` effect adds its line about experience to the result (#473).
-// A data choice's `when` shuts it as the code did (#460): credits as gated(needCr(n)) does, with its reason, a regard as the opinion gate does (captains.js), and any other
+// A data choice's `when` shuts it as the code did (#460): credits as gated(needCr(n)) does, with its reason, a free berth as gated(needBerth) does (#461), a regard as the opinion gate does (captains.js), and any other
 // condition as a storylet's choice does, shut with no reason given.
 function choiceGate(when) {
-  const { credits, opinion, ...rest } = when, checks = [];
+  const { credits, berths, opinion, ...rest } = when, checks = [];
   if (credits !== undefined) checks.push(needCr(credits));
+  if (berths !== undefined) checks.push([() => berthsFree() >= berths, () => 'There is no free berth aboard.']);
   if (Object.keys(rest).length) checks.push([() => meets(rest), () => '']);
   return { ...(checks.length ? gated(...checks) : {}), ...(opinion ? { opinion } : {}) };
 }

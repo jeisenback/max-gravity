@@ -122,7 +122,7 @@ test('every choice of every scene runs and says what happened', async () => {
           start({ background: d.culture, mode: 'hired', post: 'pilot' });
           G.state.credits = 1000; castPerson(key);
           let res = null, err = null;
-          try { res = ch.can && !ch.can() ? 'skipped' : dataChoice(ch).run(); } catch (e) { err = String(e); }
+          try { const d = dataChoice(ch); res = d.can && !d.can() ? 'skipped' : d.run(); } catch (e) { err = String(e); }
           out.push({ at: `${key}.${name}.${i}`, ok: err === null && typeof res === 'string' && res.length > 40, err });
         });
       }
@@ -145,14 +145,14 @@ test('an owner meets them at a port, in order, and a put-off meeting comes round
     const meet = () => { const e = pickHappening('port', currentPlanet()); return e && e.title; };
     out.title = meet();
     // Put off: not offered again for a week, and the second does not jump the queue.
-    const first = CAST.ines.scenes.meet.choices[1].run();
+    const first = dataChoice(CAST.ines.scenes.meet.choices[1]).run();
     out.putOff = castRec('ines').next - st.day; out.soon = castDue();
     st.day += 8; out.again = castDue();
     // Joins: a berth is taken, they are crew, and the second is due later.
-    const text = CAST.ines.scenes.meet.choices[0].run();
+    const text = dataChoice(CAST.ines.scenes.meet.choices[0]).run();
     out.joined = st.crew.includes('c:ines'); out.opinion = person('c:ines').opinion; out.since = castRec('ines').since === st.day;
     st.day = 13; out.tomasNow = castDue(); st.day = 14; out.tomas = castDue();
-    for (let i = 0; i < 3; i++) { const c = makeCrewCandidate(st.systemId); registerPerson(c); st.crew.push(c.id); } out.full = CAST.tomas.scenes.meet.choices[0].can();
+    for (let i = 0; i < 3; i++) { const c = makeCrewCandidate(st.systemId); registerPerson(c); st.crew.push(c.id); } out.full = dataChoice(CAST.tomas.scenes.meet.choices[0]).can();
     return out;
   });
   assert.equal(r.day0, null, 'not on the first day'); assert.equal(r.first, 'ines'); assert.equal(r.title, 'A Pilot Without a Ship');

@@ -286,7 +286,8 @@
     useOverrides(m.overrides);  // the unsaved edits, through the same layer the game reads (storylets.js)
     const o = m.setup || {};
     const place = planetNamed(o.place) ? o.place : 'Earth', at = planetNamed(place);
-    beginGame(o, !!reg);
+    const meeting = !!reg && reg.kind === 'cast' && reg.name === 'meet';  // an owner meets a main character at a port bar; a hired hand never does
+    beginGame(meeting ? { ...o, as: 'owner' } : o, !!reg && !meeting);
     // A scene in a burn is played on the way to the place (its `at` is the destination); one at a port, landed there.
     const where = s ? s.where : reg.name === 'meet' || reg.name === 'goodbye' ? 'port' : 'transit';
     if (where === 'transit') uatBurn(at.sid === 'earth' ? 'Mars' : 'Earth', at.sid); else uatLand(place);
@@ -413,7 +414,7 @@
     cargo: 'map:goods', q: 'map', like: 'map:like', learn: 'number', later: 'map', set: 'map', news: 'text', log: 'text', unrest: 'map:systems', cancelMission: 'text',
     bounty: 'json', companyShip: 'one:ships', mission: 'json',
     castLike: 'shape:castLike', castFlag: 'shape:castFlag', castXp: 'shape:castXp', captainLike: 'shape:captainLike', captainFlag: 'shape:captainFlag',
-    mateLike: 'shape:mateLike', remember: 'shape:remember', gainSkill: 'shape:gainSkill',
+    mateLike: 'shape:mateLike', remember: 'shape:remember', gainSkill: 'shape:gainSkill', castJoin: 'shape:castJoin', castLater: 'shape:castLater',
   };
   let lists = {};  // the names the games' lists hold: systems, planets, factions, govs, goods, ships, posts, actions, conditions, effects, scenes
   const ok = value => ({ value }), no = error => ({ error });
@@ -431,6 +432,8 @@
     captainFlag: v => ([].concat(v).every(textOf) ? '' : 'needs a name, or a list of names'),
     mateLike: v => (!isObj(v) ? 'needs { n, memory }' : !Number.isFinite(v.n) ? 'n must be a number' : !textOf(v.memory) ? 'memory must be some text' : ''),
     remember: v => (textOf(v) ? '' : 'needs a name'),
+    castJoin: v => (typeof v !== 'string' || !(lists.cast || []).includes(v) ? 'needs the key of a main character' : ''),
+    castLater: v => (typeof v !== 'string' || !(lists.cast || []).includes(v) ? 'needs the key of a main character' : ''),
     gainSkill: v => (!isObj(v) ? 'needs { post, n }' : !(lists.posts || []).includes(v.post) ? `${v.post} is not a post` : !Number.isFinite(v.n) ? 'n must be a number' : ''),
     opinion: v => (!isObj(v) ? 'needs { who, min }' : !['captain', 'xo', ...(lists.cast || [])].includes(v.who) ? `${v.who} is not the captain, the first officer or a main character` : !Number.isFinite(v.min) ? 'min must be a number' : ''),
   };
@@ -467,7 +470,7 @@
       };
       case 'shape': return {
         parse: d => { let v; try { v = JSON.parse(d); } catch (e) { return no('needs valid JSON'); } const e = SHAPES[what](v); return e ? no(e) : ok(v); },
-        format: v => JSON.stringify(v), def: { castLike: '{"who":"","n":1,"memory":""}', castFlag: '{"who":"","flag":""}', castXp: '{"who":"","role":"","n":1}', captainLike: '{"n":1,"memory":""}', captainFlag: '""', mateLike: '{"n":1,"memory":""}', remember: '""', gainSkill: '{"post":"","n":1}', opinion: '{"who":"captain","min":0}' }[what], hint: 'JSON',
+        format: v => JSON.stringify(v), def: { castLike: '{"who":"","n":1,"memory":""}', castFlag: '{"who":"","flag":""}', castXp: '{"who":"","role":"","n":1}', captainLike: '{"n":1,"memory":""}', captainFlag: '""', mateLike: '{"n":1,"memory":""}', remember: '""', gainSkill: '{"post":"","n":1}', castJoin: '""', castLater: '""', opinion: '{"who":"captain","min":0}' }[what], hint: 'JSON',
       };
       case 'action': return {
         parse: d => {
