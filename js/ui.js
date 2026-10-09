@@ -65,7 +65,7 @@ const UI = {
     const opener = document.activeElement;  // read before the panel is rebuilt
     const where = G.mode === 'hail' ? 'Comms channel' : G.mode === 'transit' ? 'In transit' : G.state.planet;
     this.setAccent(G.mode === 'hail' ? '#6fb0ff' : G.mode === 'transit' ? '#9fb4ff' : GOV_COLORS[system().gov]);
-    this.setLight(G.state ? sunLight().angle : -0.9);
+    this.setLight(G.state ? sunLight().angle : TITLE_SUN.angle);
     this.el.innerHTML = String(h`
       <div class="event-body" role="dialog" aria-modal="true" aria-label="${ev.title}">
         <div class="eyebrow">${ev.via ? raw(`${VIA_LABELS[ev.via]} &middot; `) : ''}${where}</div>

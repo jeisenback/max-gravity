@@ -89,3 +89,17 @@ test('a port with no art entry of its own (a founded outpost) paints from its co
   assert.ok(r >= 30, 'the limb is painted');
   await done();
 });
+
+test('the title paints Earth\'s limb with no save state, and lights the menu from the sun\'s side', async () => {
+  const { ev, page, done } = await open({ scope: 'earth-hired', title: true });
+  await page.waitForTimeout(200);
+  const r = await ev(() => {
+    const d = devicePixelRatio || 1, W = innerWidth, H = innerHeight;
+    const px = (x, y) => [...ctx.getImageData(Math.round(x * d), Math.round(y * d), 1, 1).data].slice(0, 3);
+    const limb = [0.25, 0.3, 0.35, 0.4, 0.45].map(f => px(W * f, H - 10)), sky = px(12, 12);
+    // Earth's ocean, not the old orange glow: blue leads, and the pixel is lit.
+    return { state: G.state, limb: limb.some(([r, g, b]) => b > r && r + g + b > 45), sky: sky.reduce((a, v) => a + v) < 60, light: getComputedStyle(document.getElementById('panel')).getPropertyValue('--light-x').trim(), key: !!BODY_CACHE['Earth@720~'] };
+  });
+  assert.equal(r.state, null); assert.ok(r.limb, 'the limb is painted along the bottom'); assert.ok(r.sky, 'dark sky at the top'); assert.equal(r.light, '81%', 'lit from the fixed title sun'); assert.ok(r.key, 'one 720px Earth sprite, without its caps');
+  await done();
+});
