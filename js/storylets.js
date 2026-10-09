@@ -173,6 +173,47 @@ function fill(text = '') {
     .replace(/\{thread:(\w+)\}/g, (_, key) => { const p = threadPerson(key); return p ? p.first : 'a shipmate'; });
 }
 
+// ---------- the scene editor's changes (js/overrides.js, #336) ----------
+// {planet}, {system}, {captain}, {crew}, {crew:role} and {thread:key}: what fill() and the dialog replace. Any other {word} is left as typed.
+const PLACEHOLDER = /^\{(?:planet|system|captain|crew|crew:(\w+)|thread:\w+)\}$/;
+const unknownPlaceholders = text => (String(text).match(/\{[^{}]*\}/g) || []).filter(t => { const m = PLACEHOLDER.exec(t); return !m || !!(m[1] && !ROLE_NAMES[m[1]]); });
+
+// The file's changes with everything wrong left out: { id: { title, text, choices: { index: { label, result } } } }. All the problems are
+// said together in one warning. A value must be a non-empty string; an id must be a scene and an index one of its choices.
+function cleanOverrides(raw) {
+  const out = {}, bad = [];
+  const isObj = v => !!v && typeof v === 'object' && !Array.isArray(v);
+  const text = (where, v) => (typeof v === 'string' && v.trim() ? true : (bad.push(`${where} is not text`), false));
+  if (!isObj(raw)) { if (raw !== undefined) bad.push('the overrides are not an object'); raw = {}; }
+  for (const [id, o] of Object.entries(raw)) {
+    const s = STORYLETS.find(x => x.id === id);
+    if (!s) { bad.push(`unknown scene "${id}"`); continue; }
+    if (!isObj(o)) { bad.push(`"${id}" is not an object`); continue; }
+    const mine = {};
+    for (const [k, v] of Object.entries(o)) {
+      if ((k === 'title' || k === 'text') && text(`"${id}".${k}`, v)) mine[k] = v;
+      else if (k === 'choices' && isObj(v)) {
+        for (const [i, c] of Object.entries(v)) {
+          if (!/^\d+$/.test(i) || Number(i) >= s.choices.length) { bad.push(`"${id}" has no choice ${i}`); continue; }
+          if (!isObj(c)) { bad.push(`"${id}" choice ${i} is not an object`); continue; }
+          for (const [f, x] of Object.entries(c)) {
+            if (f !== 'label' && f !== 'result') bad.push(`"${id}" choice ${i} has no "${f}"`);
+            else if (text(`"${id}" choice ${i} ${f}`, x)) { mine.choices = mine.choices || {}; (mine.choices[i] = mine.choices[i] || {})[f] = x; }
+          }
+        }
+      } else if (k !== 'title' && k !== 'text') bad.push(`"${id}" has no "${k}"`);
+    }
+    if (Object.keys(mine).length) out[id] = mine;
+  }
+  if (bad.length) console.warn(`Scene overrides (js/overrides.js): ${bad.join('; ')}`);
+  return out;
+}
+
+// Cleaned once, on the first scene built or the first game started, so a mod's scenes are there to be named.
+let sceneOverrides = null;
+const useOverrides = raw => { sceneOverrides = cleanOverrides(raw); return sceneOverrides; };
+const sceneOverride = id => (sceneOverrides || useOverrides(SCENE_OVERRIDES))[id] || {};
+
 // ---------- the engine ----------
 function addStorylet(def, source = 'core') {
   const bad = [];
@@ -201,17 +242,20 @@ function storyletEvent(s) {
   if (s.consumes) qs[`due:${s.consumes}`] = 0;  // a follow-up plays once for each time it was set going
   // A choice that needs a particular crew member (not just a role) is hidden without them.
   const present = c => !(c.when && c.when.crew && !ROLE_NAMES[c.when.crew] && !G.state.crew.includes(c.when.crew)) && !(c.when && c.when.post && !CONDITIONS.post(c.when.post));  // and a choice for another post is not shown at all
+  // The editor's words, by the choice's place in the list. The title and the labels are escaped by the dialog's template; the text and the
+  // results go in as markup (the shipped ones are ours), so an override's are escaped here: they come from a file anyone can edit.
+  const o = sceneOverride(s.id), mine = (i, field) => ((o.choices || {})[i] || {})[field];
   return {
-    title: fill(s.title), text: fill(s.text), via: s.via, personal: s.personal,
-    choices: s.choices.filter(present).map(c => ({
-      label: fill(c.label),
+    title: fill(o.title || s.title), text: fill(o.text ? esc(o.text) : s.text), via: s.via, personal: s.personal,
+    choices: s.choices.map((c, i) => [c, i]).filter(([c]) => present(c)).map(([c, i]) => ({
+      label: fill(mine(i, 'label') || c.label),
       role: c.when && ROLE_NAMES[c.when.crew] ? c.when.crew : undefined,
       can: c.when ? () => meets(c.when) : undefined,
       run() {
         const said = applyEffects(c.effects);
         const next = c.next && STORYLETS.find(x => x.id === c.next);
         if (next) G.nextEvent = storyletEvent(next);
-        return [fill(c.result || ''), ...said].filter(Boolean).join(' ');
+        return [fill(mine(i, 'result') ? esc(mine(i, 'result')) : c.result || ''), ...said].filter(Boolean).join(' ');
       },
     })),
   };
@@ -242,5 +286,6 @@ Mods.register({
   init(M) {
     M.on('missionDone', m => applyEffects(m.onDone));
     M.on('missionFailed', m => applyEffects(m.onFail));
+    M.on('stateReady', () => { if (!sceneOverrides) useOverrides(SCENE_OVERRIDES); });  // the warning about the file comes with the first game, not the first scene
   },
 });

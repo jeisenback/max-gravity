@@ -28,11 +28,12 @@ function select(changed, { tests, sources }) {
   for (const f of changed) {
     if (f.endsWith('.md') || /^docs\/[\w./-]+\.json$/.test(f)) continue;
     if (f === 'tools/changed-tests.js') { add(['tests/changed-tests.test.js'], `${f}: its own test`); continue; }
+    if (f === 'editor.html' || f === 'editor.js' || f === 'editor-preview.html') { add(['tests/editor.test.js', 'tests/editorpreview.test.js'], `${f}: the scene editor's own tests`); continue; }
     if (f === 'tools/prose-lint.js') { add(['tests/prose-lint.test.js'], `${f}: its own test`); continue; }
     if (/^tests\/(?:distribution\/)?[\w-]+\.test\.js$/.test(f)) { add([f], `${f}: a test file runs itself`); continue; }
     if (f === 'style.css' || f === 'index.html' || f === 'js/shell.js') {
       add(LAYOUT, `${f}: the layout, shell and ui tests`);
-      if (f === 'index.html') add([GLOBALS], `${f}: the globals check`);
+      if (f === 'index.html') { add([GLOBALS], `${f}: the globals check`); add(['tests/editor.test.js', 'tests/editorpreview.test.js'], `${f}: the scene editor reads the same script list`); }
       if (f !== 'js/shell.js') continue;
     }
     if (/^js\/[\w-]+\.js$/.test(f)) {

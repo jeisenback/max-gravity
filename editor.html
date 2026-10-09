@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; object-src 'none'; base-uri 'none'">
+  <title>Max Gravity: scene index</title>
+  <style>
+    body { background: #02040a; color: #cfd8e6; font: 14px/1.5 'IBM Plex Mono', monospace; margin: 0; padding: 16px 24px; }
+    h1 { font-size: 20px; margin: 0 0 12px; }
+    h2 { font-size: 17px; margin: 0 0 4px; }
+    h3 { font-size: 14px; margin: 16px 0 4px; }
+    .hint { color: #8493a8; }
+    .note { border-left: 3px solid #d9a441; padding-left: 8px; }
+    .controls { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; }
+    .controls input { width: 22em; }
+    input, select { background: #0b1220; color: inherit; border: 1px solid #2b3a52; padding: 4px 6px; font: inherit; }
+    .split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 4fr) minmax(360px, 4fr); gap: 24px; align-items: start; }
+    #list { max-height: 80vh; overflow: auto; }
+    #detail { position: sticky; top: 16px; max-height: 90vh; overflow: auto; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { text-align: left; padding: 2px 8px; border-bottom: 1px solid #16213a; vertical-align: top; }
+    tr.on td { background: #12203a; }
+    button { background: none; border: 0; color: #7fb4ff; font: inherit; padding: 0; cursor: pointer; text-align: left; }
+    .off { color: #d9a441; white-space: nowrap; }
+    ol { padding-left: 28px; }
+    h4 { font-size: 13px; margin: 14px 0 2px; color: #8493a8; }
+    #preview { position: sticky; top: 16px; max-height: 95vh; overflow: auto; }
+    #preview iframe { width: 100%; height: 640px; border: 1px solid #2b3a52; background: #000; margin-top: 8px; }
+    .pv-state label { display: block; margin: 2px 0; }
+    .pv-state select, .pv-state input, .pv-state textarea { margin-left: 6px; }
+    .pv-state textarea { display: block; width: 100%; box-sizing: border-box; margin: 2px 0; }
+    .pv-state fieldset { border: 1px solid #16213a; margin: 6px 0; }
+    .pv-state input[type=number] { width: 6em; }
+    .ok { color: #6fd08c; }
+    button[data-action=play] { border: 1px solid #2b3a52; padding: 4px 10px; margin: 8px 0; color: #cfd8e6; }
+    button[data-action=play]:disabled { color: #56627a; cursor: default; }
+    .edited { color: #6fd08c; white-space: nowrap; }
+    .field { margin: 6px 0 10px; }
+    .field label { display: block; font-weight: 600; }
+    .shipped { border-left: 3px solid #2b3a52; padding-left: 8px; color: #9fb0c8; }
+    .shipped .hint { font-size: 12px; }
+    textarea { display: block; width: 100%; box-sizing: border-box; background: #0b1220; color: inherit; border: 1px solid #2b3a52; padding: 4px 6px; font: inherit; resize: vertical; }
+    .warn { color: #d9a441; min-height: 1.2em; }
+    pre { white-space: pre-wrap; background: #0b1220; border: 1px solid #16213a; padding: 8px; max-height: 40vh; overflow: auto; }
+    p { margin: 4px 0 8px; }
+  </style>
+</head>
+<body>
+  <main id="app"><p class="hint">Reading the game's scenes...</p></main>
+  <script src="editor.js"></script>
+</body>
+</html>
