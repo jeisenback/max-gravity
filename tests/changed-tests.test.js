@@ -39,6 +39,13 @@ test('the script runs its own test', () => {
   assert.deepEqual(select(['tools/changed-tests.js'], { tests: { ...tests, 'tests/changed-tests.test.js': '' }, sources }).files, ['tests/changed-tests.test.js']);
 });
 
+test('the scene index runs its own test, and so does a change to the script list it copies', () => {
+  const withEditor = { ...tests, 'tests/editor.test.js': '' };
+  assert.deepEqual(select(['editor.js'], { tests: withEditor, sources }).files, ['tests/editor.test.js']);
+  assert.deepEqual(select(['editor.html'], { tests: withEditor, sources }).files, ['tests/editor.test.js']);
+  assert.ok(select(['index.html'], { tests: withEditor, sources }).files.includes('tests/editor.test.js'));
+});
+
 test('the prose report runs its own test', () => {
   assert.deepEqual(select(['tools/prose-lint.js'], { tests: { ...tests, 'tests/prose-lint.test.js': '' }, sources }).files, ['tests/prose-lint.test.js']);
 });
