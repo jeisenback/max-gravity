@@ -76,10 +76,12 @@ CAPTAINS.hester = {
           'plainly, with the notebook open between you. She is not asking. She has said she does not ask. "I am telling you," she says, "so that when ' +
           'the cargo is late, you know what it is for."'),
       choices: [
-        { label: 'Lend her four hundred', ...gated(needCr(400)), run() {
-          G.state.credits -= 400; captainLike(3, 'You lent me four hundred when the fund was short.'); captainFlag('lent');
-          return 'You push four hundred across the table. She looks at it for a long time, and then writes it in the notebook, with the date and a figure beside it. "Four hundred and ten," she says, "the day you leave this ship."';
-        } },
+        {
+          label: 'Lend her four hundred',
+          when: { credits: 400 },
+          effects: { credits: -400, captainLike: { n: 3, memory: 'You lent me four hundred when the fund was short.' }, captainFlag: 'lent' },
+          result: 'You push four hundred across the table. She looks at it for a long time, and then writes it in the notebook, with the date and a figure beside it. "Four hundred and ten," she says, "the day you leave this ship."',
+        },
         {
           label: 'Tell her it is not your place',
           effects: { captainLike: { n: 0, memory: 'You said it was not your place to lend.' } },

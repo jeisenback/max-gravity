@@ -116,7 +116,7 @@ const CAST = {
           },
           {
             label: 'Offer to say it to the board in person',
-            opinion: { who: 'ines', min: OPINION.TRUSTED },
+            when: { opinion: { who: 'ines', min: OPINION.TRUSTED } },
             effects: { castLike: { who: 'ines', n: 3, memory: 'You offered to stand before the Lisbon board for me.' }, castFlag: { who: 'ines', flag: 'reference' } },
             result: 'You say it before she can fold the message away. "I will come to Lisbon. I will stand up and say it myself." Ines turns from the ' +
               'wall. "It is forty days," she says. "You would be away from the ship for a week." "Then I will ask the captain for the week." She ' +
@@ -240,10 +240,14 @@ const CAST = {
             'credits. "I will pay it back from the first two pay days. I always pay it back."'),
         personal: true,
         choices: [
-          { label: 'Lend him 200 cr', ...gated(needCr(200)), run() { G.state.credits -= 200; castLike('tomas', 3, 'You lent me two hundred credits for my sister\'s rent.'); castFlag('tomas', 'loan'); return (
-              'He takes it with both hands. "Thank you," he says, and then, because it is not enough, he says it again in Igbo. By the second pay day ' +
+          {
+            label: 'Lend him 200 cr',
+            when: { credits: 200 },
+            effects: { credits: -200, castLike: { who: 'tomas', n: 3, memory: 'You lent me two hundred credits for my sister\'s rent.' }, castFlag: { who: 'tomas', flag: 'loan' } },
+            result: 'He takes it with both hands. "Thank you," he says, and then, because it is not enough, he says it again in Igbo. By the second pay day ' +
               'the two hundred is in your account, with an extra: a ring of braided wire, on a note that says "for luck, from a man who understands ' +
-              'machines".'); } },
+              'machines".',
+          },
           {
             label: '"I cannot spare it."',
             effects: { castLike: { who: 'tomas', n: -1, memory: 'You could not spare two hundred credits.' } },
@@ -259,12 +263,15 @@ const CAST = {
             'this three times," he says. "The same hull. For three owners. Every time I made her better, and every time they sold her to somebody who ' +
             'did not know." He turns the flask in his hands. "Do you want to know how I would rebuild her now? It would take a long time to tell."'),
         choices: [
-          { label: 'Ask him to teach you', run() { castFlag('tomas', 'plan'); castLike('tomas', 2, 'You asked me how I would rebuild her, and listened.'); castXp('tomas', 'engineer', 2); if (hired()) gainSkill('engineer', 3); return (
-              'It takes the whole of the quiet watch and half the next one. He draws it on the deck in chalk, a plant you would not know from a ' +
-              'diagram, and then he rubs out the first pipe and makes you put it back from memory, and the second, and the third, until the deck is bare and the whole of her is laid out in your head. "There," he says. "Now you know her. Do not tell the owners."'); } },
+          {
+            label: 'Ask him to teach you',
+            effects: { castFlag: { who: 'tomas', flag: 'plan' }, castLike: { who: 'tomas', n: 2, memory: 'You asked me how I would rebuild her, and listened.' }, castXp: { who: 'tomas', role: 'engineer', n: 2 }, gainSkill: { post: 'engineer', n: 3 } },
+            result: 'It takes the whole of the quiet watch and half the next one. He draws it on the deck in chalk, a plant you would not know from a ' +
+              'diagram, and then he rubs out the first pipe and makes you put it back from memory, and the second, and the third, until the deck is bare and the whole of her is laid out in your head. "There," he says. "Now you know her. Do not tell the owners."',
+          },
           {
             label: 'Ask him to write it down, so it does not go with the hull',
-            opinion: { who: 'tomas', min: OPINION.TRUSTED },
+            when: { opinion: { who: 'tomas', min: OPINION.TRUSTED } },
             effects: { castFlag: { who: 'tomas', flag: 'plan' }, castLike: { who: 'tomas', n: 2, memory: 'You asked me to write the plan down, so it would last.' } },
             result: 'He looks at the flask for a while. "Nobody has asked me that," he says. He goes below and comes back with a notebook with a stained ' +
               'cover, and spends the quiet watch filling eleven pages in small square capitals, a diagram on each. He tears them out along the fold, ' +
@@ -619,11 +626,14 @@ const CAST = {
             'console. "It is a derelict," she says. "She has been calling a long time. A few hours, no more. It is not my ship to ask for. But I would ' +
             'like to look." She keeps her eyes on the scope. "I will not do it if you say no."'),
         choices: [
-          { label: 'Take the detour', run() { castLike('bexa', 2, 'You took the detour to look at the wreck.'); castXp('bexa', 'pilot', 3); if (G.transit) delay(6); return (
-              'She brings the ship in slow and gentle, the way you approach a frightened animal. The wreck is a small hauler, dark and cold, her ' +
+          {
+            label: 'Take the detour',
+            effects: { castLike: { who: 'bexa', n: 2, memory: 'You took the detour to look at the wreck.' }, castXp: { who: 'bexa', role: 'pilot', n: 3 }, delay: 6 },
+            result: 'She brings the ship in slow and gentle, the way you approach a frightened animal. The wreck is a small hauler, dark and cold, her ' +
               'hatches sealed, her beacon the only living thing on her. Nobody aboard. Bexa stays on the scope until the beacon is a speck, and then, ' +
               'quietly, writes a name on a list you cannot see. "She was called the Patient Wren," she says. "I will tell the registry. She will be ' +
-              'towed home." She flies the rest of the shift with two fingers on the stick.'); } },
+              'towed home." She flies the rest of the shift with two fingers on the stick.',
+          },
           {
             label: 'Stay on course',
             effects: { castLike: { who: 'bexa', n: -1, memory: 'You would not let me look at the wreck.' } },
@@ -1099,7 +1109,15 @@ function theTow(backup) {
 // A choice written as data ({ label, result, effects }) is played as the closure the game always played: its effects, then its result (#342). A choice with
 // a run() is left as it is, so a scene can have both.
 // A hired event passes its context (the shipmate it is about) for the effects that need one, and a `learn` effect adds its line about experience to the result (#473).
-const dataChoice = (c, ctx) => (c.run ? c : { ...c, run() { applyEffects(c.effects, ctx); const n = c.effects && c.effects.learn; return n && hired() ? c.result + learnNote(n) : c.result; } });
+// A data choice's `when` shuts it as the code did (#460): credits as gated(needCr(n)) does, with its reason, a regard as the opinion gate does (captains.js), and any other
+// condition as a storylet's choice does, shut with no reason given.
+function choiceGate(when) {
+  const { credits, opinion, ...rest } = when, checks = [];
+  if (credits !== undefined) checks.push(needCr(credits));
+  if (Object.keys(rest).length) checks.push([() => meets(rest), () => '']);
+  return { ...(checks.length ? gated(...checks) : {}), ...(opinion ? { opinion } : {}) };
+}
+const dataChoice = (c, ctx) => (c.run ? c : { ...c, ...(c.when ? choiceGate(c.when) : {}), run() { applyEffects(c.effects, ctx); const n = c.effects && c.effects.learn; return n && hired() ? c.result + learnNote(n) : c.result; } });
 // The id a scene has in js/hiredscenes.js, found by the object it is (a scene made on the spot, like a first officer's round, has none).
 const castSceneId = (key, sc, shown) => { const e = Object.entries(CAST[key].scenes).find(([, x]) => x === sc); return e ? `cast:${key}:${e[0]}${shown !== sc ? ':closed' : ''}` : null; };
 const castScene = (key, sc) => {

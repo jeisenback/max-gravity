@@ -48,6 +48,8 @@ const CONDITIONS = {
   post: v => !!hired() && [].concat(v).includes(hired().post),  // a hired hand's own post
   skill: v => !!hired() && skillLevel(hired().post) >= v,  // and the level they have there
   hired: v => !!hired() === !!v,  // follow-ups of a hired hand's choices stop when they buy a ship of their own
+  // Someone's regard for the hand (#460): { who: 'captain' | 'xo' | a main character's key, min: a cutoff from OPINION }. With nobody in that place it does not hold.
+  opinion: v => { const p = isPlain(v) ? opinionOf(v.who) : null; return !!p && p.opinion >= v.min; },
   // A follow-up that an earlier choice set going with `later`: holds once its days have passed.
   due: v => [].concat(v).every(n => quality(`due:${n}`) > 0 && G.state.day >= quality(`due:${n}`)),
 };
@@ -117,6 +119,8 @@ const EFFECTS = {
   castXp: v => castXp(v.who, v.role, v.n),
   captainLike: v => captainLike(v.n, v.memory),
   captainFlag: v => { for (const f of [].concat(v)) captainFlag(f); },
+  // Experience at a named post (learn is the hand's own), for a hired hand.
+  gainSkill: v => { if (hired()) gainSkill(v.post, v.n); },
   // The shipmate a hired event is about (#473), given to the effects as their context: their opinion of you, and a name to remember them by for a later
   // scene ({thread:key}). Both do nothing outside an event that has a shipmate.
   mateLike: (v, ctx) => { if (ctx && ctx.mate) like(ctx.mate, v.n, v.memory); },
@@ -235,7 +239,8 @@ function cleanOverrides(raw) {
               else bad.push(`${pre} choice ${i} is rolled by the game, so it has no "${f}"`);
               continue;
             }
-            if (rs && (f === 'when' || f === 'next')) { bad.push(`${pre} choice ${i} has no "${f}" (a hired scene plays by its days, not by conditions)`); continue; }
+            if (rs && f === 'next') { bad.push(`${pre} choice ${i} has no "next" (a hired scene plays by its days, not by conditions)`); continue; }
+            if (rs && f === 'when' && rs.choices[i].run) { bad.push(`${pre} choice ${i} runs code, so its conditions are not edited`); continue; }
             if (rs && f === 'effects' && rs.choices[i].run) { bad.push(`${pre} choice ${i} runs code, so its effects are not edited`); continue; }
             if ((f === 'label' || f === 'result') && text(`${pre} choice ${i} ${f}`, x)) slot()[f] = x;
             else if ((f === 'when' || f === 'effects') && isObj(x)) slot()[f] = x;
@@ -248,11 +253,11 @@ function cleanOverrides(raw) {
     }
     // The conditions, effects and links together, as the scene would be: if the game would refuse it, none of them go in.
     const changes = (mine.when !== undefined ? 1 : 0) + Object.values(mine.choices || {}).filter(c => STRUCT.some(f => c[f] !== undefined)).length;
-    if (changes && rs) {  // a hired scene: only the effects of its data choices, held to the same shapes
-      const problems = Object.values(mine.choices || {}).flatMap(c => effectProblems(c.effects));
+    if (changes && rs) {  // a hired scene: only the conditions and effects of its data choices, held to the same shapes
+      const problems = Object.values(mine.choices || {}).flatMap(c => [...conditionProblems(c.when), ...effectProblems(c.effects)]);
       if (problems.length) {
-        bad.push(`${pre} effects left out: ${problems.join('; ')}`);
-        for (const c of Object.values(mine.choices || {})) delete c.effects;
+        bad.push(`${pre} conditions and effects left out: ${problems.join('; ')}`);
+        for (const c of Object.values(mine.choices || {})) { delete c.effects; delete c.when; }
         for (const [i, c] of Object.entries(mine.choices || {})) if (!Object.keys(c).length) delete mine.choices[i];
         if (mine.choices && !Object.keys(mine.choices).length) delete mine.choices;
       }
@@ -309,6 +314,7 @@ function sceneWords(id, scene) {
       const out = { ...c };
       if (co.label) out.label = co.label;
       if (co.effects && !c.run) out.effects = co.effects;
+      if (co.when && !c.run) out.when = co.when;
       if (co.result) { const line = esc(co.result), run = c.run; if (run) out.run = function () { run.call(this); return line; }; else out.result = line; }
       return out;
     }),
@@ -332,6 +338,12 @@ const EFFECT_SHAPES = {
   mateLike: v => (!isPlain(v) ? 'needs { n, memory }' : !Number.isFinite(v.n) ? 'n must be a number' : typeof v.memory !== 'string' || !v.memory.trim() ? 'memory must be some text' : ''),
   remember: v => (typeof v === 'string' && v.trim() ? '' : 'needs a name'),
 };
+EFFECT_SHAPES.gainSkill = v => (!isPlain(v) ? 'needs { post, n }' : !HIRED_POSTS.includes(v.post) ? `${v.post} is not a post` : !Number.isFinite(v.n) ? 'n must be a number' : '');
+// The shape each condition takes, where it is more than a number or a name: '' if the value is right, else what is wrong.
+const CONDITION_SHAPES = {
+  opinion: v => (!isPlain(v) ? 'needs { who, min }' : !['captain', 'xo'].includes(v.who) && !CAST[v.who] ? `${v.who} is not the captain, the first officer or a main character` : !Number.isFinite(v.min) ? 'min must be a number' : ''),
+};
+const conditionProblems = when => Object.entries(when || {}).flatMap(([k, v]) => (!CONDITIONS[k] ? [`unknown condition "${k}"`] : CONDITION_SHAPES[k] && CONDITION_SHAPES[k](v) ? [`condition ${k} ${CONDITION_SHAPES[k](v)}`] : []));
 const effectProblems = effects => Object.entries(effects || {}).flatMap(([k, v]) => (!EFFECTS[k] ? [`unknown effect "${k}"`] : EFFECT_SHAPES[k] && EFFECT_SHAPES[k](v) ? [`effect ${k} ${EFFECT_SHAPES[k](v)}`] : []));
 
 // What is wrong with a storylet, as a list of lines (empty when addStorylet would take it). The scene editor's changes are held to the same check.
@@ -345,8 +357,10 @@ function storyletProblems(def, { duplicate = true } = {}) {
   const check = (obj, table, what) => Object.keys(obj || {}).forEach(k => { if (!table[k]) bad.push(`unknown ${what} "${k}"`); });
   if (def) {
     check(def.when, CONDITIONS, 'condition');
+    for (const [k, v] of Object.entries(def.when || {})) if (CONDITION_SHAPES[k] && CONDITION_SHAPES[k](v)) bad.push(`condition ${k} ${CONDITION_SHAPES[k](v)}`);
     for (const c of def.choices || []) {
       check(c.when, CONDITIONS, 'condition'); check(c.effects, EFFECTS, 'effect');
+      for (const [k, v] of Object.entries(c.when || {})) if (CONDITION_SHAPES[k] && CONDITION_SHAPES[k](v)) bad.push(`condition ${k} ${CONDITION_SHAPES[k](v)}`);
       for (const [k, v] of Object.entries(c.effects || {})) if (EFFECT_SHAPES[k] && EFFECT_SHAPES[k](v)) bad.push(`effect ${k} ${EFFECT_SHAPES[k](v)}`);
       for (const v of Object.values(c.effects || {})) if (v && v.onDone) check(v.onDone, EFFECTS, 'effect');  // a mission's effects on delivery
     }

@@ -1,6 +1,7 @@
 'use strict';
 
-// Pins what every choice of every main character's, first officer's and captain's scene, and of every hired event but the post work problems, does (#342, #473). Each choice is run in a seeded hired game, with the
+// Pins what every choice of every main character's, first officer's and captain's scene, and of every hired event but the post work problems, does, and how it is
+// shut or shown (#342, #473, #460). Each choice is run in a seeded hired game, with the
 // scene's own captain and first officer and the main characters it needs aboard, and what it returns and every change it makes to the game's state are
 // recorded in tests/fixtures/hired-scene-pin.json. Turning a scene's code into data must leave this fixture as it is. After a change to what a scene does on
 // purpose, write it again with `PIN_WRITE=1 node --test tests/hiredpin.test.js` and read the diff.
@@ -23,6 +24,14 @@ const pinAll = () => {
     return out;
   };
   const diff = (a, b) => Object.keys({ ...a, ...b }).filter(k => a[k] !== b[k]).sort().map(k => `${k}: ${String(a[k]).slice(0, 160)} -> ${String(b[k]).slice(0, 160)}`);
+  // How a choice is shut or shown (#460): its label, whether it is open and why not, as a hand with money, the captain's and a friend's regard and the captain's secret sees it, and as a poor one does.
+  const gateOf = (c0, key) => {
+    const read = () => { const c = dataChoice(c0), g = c.opinion ? opinionGate(c) : c; return g ? { label: String(g.label), open: g.can ? !!g.can((hired() || {}).flags || {}) : true, why: g.why ? String(g.why()) : '' } : 'not offered'; };
+    const rich = read();
+    G.state.credits = 0; const poor = read();
+    G.state.credits = 5000; hiredCaptain().opinion = 99; captainFlag('secretKnown'); if (key && CAST[key]) castPerson(key).opinion = 99; const liked = read();
+    return { rich, poor, liked };
+  };
   const out = [];
   const real = drawCastPair;
   for (const e of hiredSceneRegistry().filter(x => x.kind === 'cast' || x.kind === 'captain')) {
@@ -44,6 +53,7 @@ const pinAll = () => {
         rec.result = typeof text === 'string' ? text : String(text);
         rec.changes = diff(before, flat(G.state, 's', {}));
         rec.next = G.nextEvent ? G.nextEvent.title : null;
+        rec.gate = gateOf(c, e.kind === 'cast' ? e.key : null);
       } catch (err) { rec.error = String(err && err.message || err); } finally { window.drawCastPair = real; }
       out.push(rec);
     });
@@ -70,6 +80,7 @@ const pinAll = () => {
         rec.result = typeof text === 'string' ? text : String(text);
         rec.changes = diff(before, flat(G.state, 's', {}));
         rec.next = G.nextEvent ? G.nextEvent.title : null;
+        rec.gate = gateOf(c, (/^crew-(\w+)$/.exec(d.id) || [])[1]);
       } catch (err) { rec.error = String(err && err.message || err); } finally { window.drawCastPair = real; }
       out.push(rec);
       if (rec.error) break;

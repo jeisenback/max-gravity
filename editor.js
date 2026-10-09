@@ -72,7 +72,7 @@
     return {
       kind: data ? 'data' : 'code', registry: true, title: s.title, text: getter ? '' : plain(s.text), when: {},
       codeNote: getter ? CODE_TEXT : data ? '' : 'Some of its choices run code. Their effects stay in code; a result written for one replaces the line it returns.',
-      choices: s.choices.map(c => ({ label: plain(c.label), result: c.run ? '' : plain(c.result), when: {}, effects: c.effects || {}, next: '' })),
+      choices: s.choices.map(c => ({ label: plain(c.label), result: c.run ? '' : plain(c.result), when: c.run ? {} : c.when || {}, effects: c.effects || {}, next: '' })),
       edit: { text: !getter && typeof s.text === 'string', choices: s.choices.map(c => ({ label: typeof c.label === 'string', result: true, effects: !c.run })) },
     };
   }
@@ -401,14 +401,14 @@
     day: 'number', before: 'number', at: 'list:systems', planet: 'list:planets', gov: 'list:govs', standing: 'map:govs', standingBelow: 'map:govs',
     credits: 'number', space: 'number', fleet: 'number', stake: 'map:planets', cargo: 'map:goods', crew: 'text', q: 'map', qBelow: 'map', war: 'flagOr:govs',
     peace: 'flagOr:govs', boom: 'one:govs', bust: 'one:govs', raid: 'flagOr:systems', berths: 'number', story: 'json', storyDay: 'map', aboard: 'text',
-    chance: 'chance', post: 'list:posts', skill: 'number', hired: 'flag', due: 'list',
+    chance: 'chance', post: 'list:posts', skill: 'number', hired: 'flag', due: 'list', opinion: 'shape:opinion',
   };
   const EFFECT_SPEC = {
     credits: 'number', story: 'json', storyLog: 'text', storyAdd: 'map', storyDays: 'map', delay: 'number', passenger: 'json', do: 'action', rep: 'map:govs',
     cargo: 'map:goods', q: 'map', like: 'map:like', learn: 'number', later: 'map', set: 'map', news: 'text', log: 'text', unrest: 'map:systems', cancelMission: 'text',
     bounty: 'json', companyShip: 'one:ships', mission: 'json',
     castLike: 'shape:castLike', castFlag: 'shape:castFlag', castXp: 'shape:castXp', captainLike: 'shape:captainLike', captainFlag: 'shape:captainFlag',
-    mateLike: 'shape:mateLike', remember: 'shape:remember',
+    mateLike: 'shape:mateLike', remember: 'shape:remember', gainSkill: 'shape:gainSkill',
   };
   let lists = {};  // the names the games' lists hold: systems, planets, factions, govs, goods, ships, posts, actions, conditions, effects, scenes
   const ok = value => ({ value }), no = error => ({ error });
@@ -426,6 +426,8 @@
     captainFlag: v => ([].concat(v).every(textOf) ? '' : 'needs a name, or a list of names'),
     mateLike: v => (!isObj(v) ? 'needs { n, memory }' : !Number.isFinite(v.n) ? 'n must be a number' : !textOf(v.memory) ? 'memory must be some text' : ''),
     remember: v => (textOf(v) ? '' : 'needs a name'),
+    gainSkill: v => (!isObj(v) ? 'needs { post, n }' : !(lists.posts || []).includes(v.post) ? `${v.post} is not a post` : !Number.isFinite(v.n) ? 'n must be a number' : ''),
+    opinion: v => (!isObj(v) ? 'needs { who, min }' : !['captain', 'xo', ...(lists.cast || [])].includes(v.who) ? `${v.who} is not the captain, the first officer or a main character` : !Number.isFinite(v.min) ? 'min must be a number' : ''),
   };
 
   // A kind: parse(text) gives { value } or { error }, format(value) gives the text, and `def` is what a new entry starts with.
@@ -460,7 +462,7 @@
       };
       case 'shape': return {
         parse: d => { let v; try { v = JSON.parse(d); } catch (e) { return no('needs valid JSON'); } const e = SHAPES[what](v); return e ? no(e) : ok(v); },
-        format: v => JSON.stringify(v), def: { castLike: '{"who":"","n":1,"memory":""}', castFlag: '{"who":"","flag":""}', castXp: '{"who":"","role":"","n":1}', captainLike: '{"n":1,"memory":""}', captainFlag: '""', mateLike: '{"n":1,"memory":""}', remember: '""' }[what], hint: 'JSON',
+        format: v => JSON.stringify(v), def: { castLike: '{"who":"","n":1,"memory":""}', castFlag: '{"who":"","flag":""}', castXp: '{"who":"","role":"","n":1}', captainLike: '{"n":1,"memory":""}', captainFlag: '""', mateLike: '{"n":1,"memory":""}', remember: '""', gainSkill: '{"post":"","n":1}', opinion: '{"who":"captain","min":0}' }[what], hint: 'JSON',
       };
       case 'action': return {
         parse: d => {
@@ -550,7 +552,7 @@
   function roundTrips(rows) {
     const bad = [];
     for (const r of rows.filter(x => isStorylet(x) || (x.registry && x.kind === 'data'))) {
-      const paths = [...(r.registry ? [] : ['when']), ...r.choices.flatMap((c, i) => (r.registry ? [`c${i}.effects`] : [`c${i}.when`, `c${i}.effects`]))];
+      const paths = [...(r.registry ? [] : ['when']), ...r.choices.flatMap((c, i) => (r.registry ? [`c${i}.when`, `c${i}.effects`] : [`c${i}.when`, `c${i}.effects`]))];
       for (const path of paths) {
         const { value, errors } = readRules(toDrafts(structOf(r, path), specTable(path)), specTable(path));
         if (Object.keys(errors).length || canon(value) !== canon(structOf(r, path))) bad.push(`${r.id} ${path}: ${JSON.stringify(errors)}`);
@@ -624,9 +626,9 @@
     ? '<h3>What its choices do</h3><p class="note">This scene is played by one template from a table: its odds, what a win or a loss gains and costs, and the roll are in code. Only its words are edited here.</p>'
     : r.registry
     ? `<h3>What its choices do</h3>
-    <p class="note">A scene of the hired chapter plays by its days and its place in the story, not by conditions, so only what a data choice does is edited here. Changing an effect changes how the scene plays, not only its words. Try it with Play this scene, at the right.</p>
+    <p class="note">A scene of the hired chapter plays by its days and its place in the story, not by conditions, so only what a data choice needs and does is edited here. Changing a condition or an effect changes how the scene plays, not only its words. Try it with Play this scene, at the right.</p>
     <div id="problems">${problemsHtml(r, struct)}</div>
-    ${r.choices.map((c, i) => `<h4>Choice ${i + 1}: ${esc(c.label)}</h4>${effectsEditable(r, i) ? rulesHtml(r, `c${i}.effects`, 'It does', struct) : '<p class="hint">This choice runs code. Its effects are written there, and only its words are edited here: a result written here replaces the line it returns.</p>'}`).join('')}`
+    ${r.choices.map((c, i) => `<h4>Choice ${i + 1}: ${esc(c.label)}</h4>${effectsEditable(r, i) ? rulesHtml(r, `c${i}.when`, 'It can be taken when', struct) + rulesHtml(r, `c${i}.effects`, 'It does', struct) : '<p class="hint">This choice runs code. Its conditions and effects are written there, and only its words are edited here: a result written here replaces the line it returns.</p>'}`).join('')}`
     : `<h3>When it appears, and what it does</h3>
     <p class="note">Changing a condition or an effect changes how the scene plays, not only its words. Try it with Play this scene, at the right.</p>
     <div id="problems">${problemsHtml(r, struct)}</div>
@@ -800,7 +802,7 @@
               for (const [f, x] of Object.entries(c)) {
                 let bad = '';
                 if (f === 'label' || f === 'result' || f === 'win' || f === 'lose') bad = r.edit.choices[i][f] === undefined ? 'is not something this choice has' : !r.edit.choices[i][f] ? 'has parts that depend on conditions, so it is edited in code' : words(x) ? '' : `needs some text of up to ${LIMIT.text} characters`;
-                else if (f === 'when') bad = r.registry ? 'a hired scene plays by its days, not by conditions' : rulesError(x, CONDITION_SPEC, lists.conditions);
+                else if (f === 'when') bad = r.registry && !effectsEditable(r, Number(i)) ? 'this choice runs code, so its conditions are not edited' : rulesError(x, CONDITION_SPEC, lists.conditions);
                 else if (f === 'effects') bad = r.registry && !effectsEditable(r, Number(i)) ? 'this choice runs code, so its effects are not edited' : rulesError(x, EFFECT_SPEC, lists.effects);
                 else if (f === 'next') bad = r.registry ? 'a hired scene plays by its days, not by conditions' : x === null || (typeof x === 'string' && storylets.has(x)) ? '' : 'leads to a scene that is not there';
                 else bad = 'is not something the editor changes';

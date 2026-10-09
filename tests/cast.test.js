@@ -98,7 +98,7 @@ test('every authored scene is complete: a title, text, two choices (and a gated 
       for (const [name, sc] of Object.entries(d.scenes)) {
         const bad = [];
         if (!sc.title || sc.text.length < 100) bad.push('text');
-        if (sc.choices.length !== (name === 'pivot' ? 3 : 2 + sc.choices.filter(c => c.opinion).length) || !sc.choices.every(c => c.label)) bad.push('choices');  // a choice that needs someone's regard (#345) is one more
+        if (sc.choices.length !== (name === 'pivot' ? 3 : 2 + sc.choices.filter(c => c.opinion || (c.when && c.when.opinion)).length) || !sc.choices.every(c => c.label)) bad.push('choices');  // a choice that needs someone's regard (#345) is one more
         if (['mid1', 'mid2', 'late', 'pivot'].includes(name) && !(sc.days > 0)) bad.push('days');
         if (/[\u{1F300}-\u{1FAFF}\u2600-\u27BF]/u.test(sc.text + sc.choices.map(c => c.label).join(''))) bad.push('emoji');
         out.push({ key, name, bad });

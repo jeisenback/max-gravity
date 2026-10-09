@@ -42,7 +42,7 @@ async function play() {
 test('the converted scenes are data rows of the registry, and the rest are code rows with a text layer', async () => {
   const r = await page.evaluate(() => {
     const row = id => SceneIndex.rows.find(x => x.id === id);
-    return { ansel: ['kind', 'registry'].map(k => row('cast:ansel:intro')[k]), closed: ['kind', 'registry'].map(k => row('cast:cato:late:closed')[k]), ilsa: ['kind', 'registry'].map(k => row('cast:ilsa:late')[k]),
+    return { ansel: ['kind', 'registry'].map(k => row('cast:ansel:intro')[k]), closed: ['kind', 'registry'].map(k => row('cast:cato:late:closed')[k]), ilsa: ['kind', 'registry'].map(k => row('cast:ruben:mid1')[k]),
       effects: row('cast:ansel:intro').choices[0].effects, edit: row('cast:ines:meet').edit.choices.map(c => c.effects), goodbye: row('captain:hester:goodbye').registry, signon: row('scene:sign-on').registry,
       storylets: SceneIndex.rows.filter(x => x.kind === 'data' && !x.registry).length, dataRegistry: SceneIndex.rows.filter(x => x.kind === 'data' && x.registry).length };
   });
@@ -52,7 +52,7 @@ test('the converted scenes are data rows of the registry, and the rest are code 
   assert.equal(r.effects.castLike.who, 'ansel');
   assert.ok(r.edit.length > 0 && r.edit.every(e => e === false), 'code choices keep their effects in code');
   assert.ok(!r.goodbye && !r.signon, 'the goodbye and the function-built scenes are not edited yet');
-  assert.equal(r.dataRegistry, 78);
+  assert.equal(r.dataRegistry, 85);
 });
 
 test('a converted scene\'s effects are in forms, checked as typed, and changing one is a change to the file', async () => {
@@ -154,16 +154,37 @@ test('an imported file may give a table scene its words and its lines, and a lin
   require('node:fs').rmSync(tmp, { force: true });
 });
 
+test('a hired data choice has its conditions in forms, checked as typed, and changing one is a change to the file (#460)', async () => {
+  await reload();
+  const at = await page.evaluate(() => { for (const r of SceneIndex.rows) { const i = r.choices.findIndex(c => c.label === 'Lend him 200 cr'); if (i >= 0) return { id: r.id, i }; } });
+  await select(at.id);
+  assert.equal(await page.inputValue(rule(`c${at.i}.when`, 'credits')), '200');
+  await page.fill(rule(`c${at.i}.when`, 'credits'), '500');
+  assert.deepEqual((await changes())[at.id], { choices: { [at.i]: { when: { credits: 500 } } } });
+  // A regard is a condition with a form: { who, min }, and a person who is not there is refused as typed.
+  const w = await page.evaluate(() => { for (const r of SceneIndex.rows) { const i = r.choices.findIndex(c => c.when && c.when.opinion); if (i >= 0) return { id: r.id, i, opinion: r.choices[i].when.opinion }; } });
+  await select(w.id);
+  assert.deepEqual(JSON.parse(await page.inputValue(rule(`c${w.i}.when`, 'opinion'))), w.opinion);
+  await page.fill(rule(`c${w.i}.when`, 'opinion'), JSON.stringify({ who: 'nobody', min: 3 }));
+  assert.match(await page.textContent('#detail'), /nobody is not the captain, the first officer or a main character/);
+  await page.fill(rule(`c${w.i}.when`, 'opinion'), JSON.stringify({ who: 'captain', min: 3 }));
+  assert.deepEqual((await changes())[w.id], { choices: { [w.i]: { when: { opinion: { who: 'captain', min: 3 } } } } });
+  // A choice that runs code has no conditions form: its conditions are written in code.
+  await select('cast:ruben:mid1');
+  assert.equal(await page.locator('#detail [data-add="c0.when"]').count(), 0);
+  assert.equal(await page.locator('#detail [data-add="c1.when"]').count(), 1, 'its data choice has one');
+});
+
 test('the words of a code scene can be edited, and a result written replaces the line the code returns', async () => {
-  await reload(); await select('cast:ilsa:late');
-  await page.fill('#f-title', 'Ilsa, Edited');
-  await page.fill('#f-c0\\.result', 'Ilsa says nothing at all.');
-  assert.deepEqual(await changes(), { 'cast:ilsa:late': { title: 'Ilsa, Edited', choices: { 0: { result: 'Ilsa says nothing at all.' } } } });
+  await reload(); await select('cast:ruben:mid1');
+  await page.fill('#f-title', 'Ruben, Edited');
+  await page.fill('#f-c0\\.result', 'Ruben says nothing at all.');
+  assert.deepEqual(await changes(), { 'cast:ruben:mid1': { title: 'Ruben, Edited', choices: { 0: { result: 'Ruben says nothing at all.' } } } });
   const f = await play();
-  assert.equal(await f.evaluate(() => G.dialog.event.title), 'Ilsa, Edited');
+  assert.equal(await f.evaluate(() => G.dialog.event.title), 'Ruben, Edited');
   await f.click('[data-action="choose"][data-arg="0"]');
   await page.waitForFunction(() => document.querySelector('#pv-effects').textContent.length > 0);
-  assert.equal((await f.textContent('#event-result')).trim(), 'Ilsa says nothing at all.');
+  assert.equal((await f.textContent('#event-result')).trim(), 'Ruben says nothing at all.');
   assert.match(await page.textContent('#pv-effects'), /opinion of you/, 'what the code does is unchanged');
 });
 
@@ -215,10 +236,12 @@ test('what the editor writes for a hired scene is a file the game takes, and a b
 
 test('the editor\'s checks of the hired effects are the game\'s', async () => {
   const samples = [{ who: 'ilsa', n: 1, memory: 'm' }, { who: 'nobody', n: 1, memory: 'm' }, { who: 'ilsa', n: 'x', memory: 'm' }, { who: 'ilsa', n: 1, memory: ' ' }, 'oops', null,
-    { who: 'ilsa', flag: 'f' }, { who: 'ilsa', flag: '' }, { who: 'ilsa', role: 'engineer', n: 2 }, { who: 'ilsa', role: '', n: 2 }, { n: 2, memory: 'm' }, { n: 'x' }, 'a', ['a', 'b'], [1], ''];
-  const here = await page.evaluate(s => ['castLike', 'castFlag', 'castXp', 'captainLike', 'captainFlag'].map(k => s.map(v => { const kind = SceneIndex.kindOf(`shape:${k}`); return !kind.parse(JSON.stringify(v === undefined ? null : v)).error; })), samples);
+    { who: 'ilsa', flag: 'f' }, { who: 'ilsa', flag: '' }, { who: 'ilsa', role: 'engineer', n: 2 }, { who: 'ilsa', role: '', n: 2 }, { n: 2, memory: 'm' }, { n: 'x' }, 'a', ['a', 'b'], [1], '',
+    { post: 'engineer', n: 3 }, { post: 'nobody', n: 3 }, { post: 'gunner', n: 'x' }, { who: 'captain', min: 3 }, { who: 'xo', min: 1 }, { who: 'ilsa', min: 2 }, { who: 'nobody', min: 1 }, { who: 'captain', min: 'x' }];
+  const names = ['castLike', 'castFlag', 'castXp', 'captainLike', 'captainFlag', 'mateLike', 'remember', 'gainSkill', 'opinion'];
+  const here = await page.evaluate(([s, names]) => names.map(k => s.map(v => { const kind = SceneIndex.kindOf(`shape:${k}`); return !kind.parse(JSON.stringify(v === undefined ? null : v)).error; })), [samples, names]);
   const g = await open({ scope: 'full' });
-  const there = await g.ev(s => ['castLike', 'castFlag', 'castXp', 'captainLike', 'captainFlag'].map(k => s.map(v => !EFFECT_SHAPES[k](v))), samples);
+  const there = await g.ev(([s, names]) => names.map(k => s.map(v => !(EFFECT_SHAPES[k] || CONDITION_SHAPES[k])(v))), [samples, names]);
   await g.done();
   assert.deepEqual(here, there);
 });

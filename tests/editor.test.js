@@ -53,13 +53,13 @@ test('every storylet is listed once, as data, with its source file', async () =>
 });
 
 test('the hired chapter\'s code-written scenes are listed as code, and say where their text lives', () => {
-  const late = row('cast:ilsa:late');
+  const late = row('cast:ruben:mid1');
   assert.equal(late.kind, 'code');
-  assert.equal(late.file, 'js/captains/ilsa.js');
-  assert.equal(late.title, 'What Ilsa Knows');
+  assert.equal(late.file, 'js/cast.js');
+  assert.equal(late.title, 'A Tip');
   assert.equal(late.where, 'transit');
-  assert.match(late.text, /The fund has been short every quarter/);
-  assert.equal(late.belongs, "ilsa (first officer)");
+  assert.match(late.text, /Ruben comes to you with the look of a man holding something that might burst/);
+  assert.equal(late.belongs, "ruben (main character)");
   assert.match(late.codeNote, /choices run code/);
   assert.ok(late.choices.length > 0 && late.choices.every(c => c.label) && late.choices.some(c => c.result === ''), 'a choice that runs code has no result of its own');
   assert.equal(row('cast:ines:meet').where, 'port');
@@ -119,7 +119,7 @@ test('the filters narrow by where, by source and by data or code', async () => {
   assert.ok(port.includes('port-mars-front') && !port.includes('strike-broadcast'));
   assert.deepEqual((await filter({ file: 'js/stories/ice-strike.js' })).every(id => row(id).file === 'js/stories/ice-strike.js'), true);
   const code = await filter({ kind: 'code' });
-  assert.ok(code.includes('cast:ilsa:late') && !code.includes('port-mars-front'));
+  assert.ok(code.includes('cast:ruben:mid1') && !code.includes('port-mars-front'));
   const castData = await filter({ kind: 'data', file: 'js/cast.js' });
   assert.ok(castData.includes('cast:ines:intro') && !castData.includes('cast:ines:meet') && castData.every(id => row(id).kind === 'data' && row(id).file === 'js/cast.js'), 'filters combine');
 });
