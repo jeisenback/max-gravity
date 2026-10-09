@@ -19,7 +19,7 @@
   'js/character.js', 'js/interview.js', 'js/cast.js', 'js/captains.js', 'js/stakes.js', 'js/boarders.js', 'js/engagements.js',
   'js/shipcombat.js', 'js/yardoffice.js', 'js/icerun.js', 'js/ties.js', 'js/captains/hester.js', 'js/captains/cato.js',
   'js/captains/dov.js', 'js/captains/ilsa.js', 'js/captains/imre.js', 'js/captains/pilar.js', 'js/captains/zoya.js',
-  'js/captains/ansel.js', 'js/fate.js', 'js/signon.js', 'js/castbar.js', 'js/regulars.js', 'js/barwork.js', 'js/overrides.js', 'js/storylets.js',
+  'js/captains/ansel.js', 'js/hiredscenes.js', 'js/fate.js', 'js/signon.js', 'js/castbar.js', 'js/regulars.js', 'js/barwork.js', 'js/overrides.js', 'js/storylets.js',
   'js/happenings.js', 'js/stories/ice-strike.js', 'js/stories/mars-navy.js', 'js/stories/rook-crown.js',
   'js/stories/tethys.js', 'js/stories/cold-water.js', 'js/stories/landings.js', 'js/stories/ports.js',
   'js/stories/on-the-road.js', 'js/stories/aftermath.js', 'js/stories/hired-aftermath.js', 'js/community.js', 'js/uat.js',
@@ -68,47 +68,37 @@
       });
     }
 
-    for (const [key, c] of Object.entries(CAST)) {
-      const file = fileOf['cast:' + key], on = castOn(key);
-      for (const [name, sc] of Object.entries(c.scenes)) {
-        for (const [part, s] of [['', sc], [':closed', sc.closed]]) {
-          if (s) add({ id: `cast:${key}:${name}${part}`, title: s.title, where: name === 'meet' ? 'port' : 'transit', file, belongs: `${key} (${c.xo ? 'first officer' : 'main character'})`, on, conditionsNote: name === 'meet' ? 'Offered at a port bar when a main character is due.' : `Plays ${sc.days || 0} days after they join, after their earlier scenes${part ? '; this reading plays in its place when their opinion of you is below friendly' : ''}.`, ...codeScene(s) });
-        }
+    // The hired chapter's scenes, as the game's own registry lists them (js/hiredscenes.js): each has its id there.
+    for (const e of hiredSceneRegistry()) {
+      if (e.kind === 'cast') {
+        const c = CAST[e.key], sc = c.scenes[e.name];
+        add({ id: e.id, title: e.scene.title, where: e.name === 'meet' ? 'port' : 'transit', file: fileOf['cast:' + e.key], belongs: `${e.key} (${c.xo ? 'first officer' : 'main character'})`, on: castOn(e.key),
+          conditionsNote: e.name === 'meet' ? 'Offered at a port bar when a main character is due.' : `Plays ${sc.days || 0} days after they join, after their earlier scenes${e.closed ? '; this reading plays in its place when their opinion of you is below friendly' : ''}.`, ...codeScene(e.scene) });
+      } else if (e.kind === 'captain') {
+        const g = e.scene.goodbye, note = e.name === 'trouble' ? `${CAPTAIN_BEAT_DAYS.trouble} days after you sign on, on a burn.`
+          : e.name === 'secret:confide' ? `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is ${SECRET_TRUST} or more.`
+          : e.name === 'secret:found' ? `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is below ${SECRET_TRUST}.` : 'When you leave the ship to buy your own.';
+        const scene = g ? { title: g.title, text: ['cold', 'neutral', 'warm', 'crew', 'secret', 'xo', 'xoDead', 'repaid', 'parting'].filter(k => g[k]).map(k => `[${k}] ${g[k]}`).join('\n'), choices: g.choices } : e.scene;
+        add({ id: e.id, title: scene.title, where: g ? 'port' : 'transit', file: fileOf['captain:' + e.key], belongs: `${e.key} (captain)`, on: captainOn(e.key), conditionsNote: note, ...codeScene(scene) });
+      } else if (e.kind === 'work') {
+        const d = e.def;
+        add({
+          id: e.id, title: d.title, file: fileOf.work, belongs: `${d.post} (post)`, on: postOn(d.post), text: d.text, conditionsNote: `A problem at the ${d.post} post, for a hand who works it; not repeated within ${WORK_SEEN_DAYS} days.`,
+          choices: [{ label: d.careful[0], result: d.careful[1] }, { label: d.quick[0], result: outcome(d.quick[1], d.quick[2]) }],
+        });
+      } else if (e.kind === 'hand') {
+        const d = e.def;
+        add({ id: e.id, title: d.id, file: fileOf.hand, belongs: `${d.group} (hired event)`, on: postOn(d.post), text: '', choices: [], codeNote: CODE_ALL, conditionsNote: `A ${d.group} event for a hired hand${d.post ? ` at the ${d.post} post` : ''}; its own conditions are written in code.` });
+      } else if (e.kind === 'ice') {
+        const st = e.stage, choice = (label, c) => ({ label, result: outcome(c.win[2], c.lose[2]) });
+        add({
+          id: e.id, title: st.title, file: fileOf.ice, belongs: 'ice run', conditionsNote: `Scene ${Number(e.id.slice(4))} of 3 on an ice run, once the captain takes one.`, text: st.open.map((t, n) => `Version ${n + 1}: ${t}`).join('\n'),
+          choices: [...st.general.map(c => choice(c.label, c)), ...Object.entries(st.post).map(([post, c]) => choice(`[${post}] ${c.label}`, c))],
+        });
+      } else {  // built by a function: no text to read, only what it is and when it plays
+        add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: e.id.startsWith('beats:') ? 'beats' : 'hired chapter', text: '', choices: [], codeNote: CODE_ALL, conditionsNote: e.when });
       }
     }
-
-    for (const [key, c] of Object.entries(CAPTAINS)) {
-      const file = fileOf['captain:' + key], on = captainOn(key), belongs = `${key} (captain)`;
-      const scene = (id, s, where = 'transit', conditionsNote = '') => add({ id: `captain:${key}:${id}`, title: s.title, where, file, belongs, on, conditionsNote, ...codeScene(s) });
-      if (c.scenes.trouble) scene('trouble', c.scenes.trouble, 'transit', `${CAPTAIN_BEAT_DAYS.trouble} days after you sign on, on a burn.`);
-      if (c.scenes.secret) {
-        scene('secret:confide', c.scenes.secret.confide, 'transit', `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is ${SECRET_TRUST} or more.`);
-        scene('secret:found', c.scenes.secret.found, 'transit', `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is below ${SECRET_TRUST}.`);
-      }
-      const g = c.goodbye;
-      if (g) {
-        const parts = ['cold', 'neutral', 'warm', 'crew', 'secret', 'xo', 'xoDead', 'repaid', 'parting'].filter(k => g[k]).map(k => `[${k}] ${g[k]}`);
-        scene('goodbye', { title: g.title, text: parts.join('\n'), choices: g.choices }, 'port', 'When you leave the ship to buy your own.');
-      }
-    }
-
-    for (const d of WORK_EVENTS) {
-      add({
-        id: 'hired:' + d.id, title: d.title, file: fileOf.work, belongs: `${d.post} (post)`, on: postOn(d.post), text: d.text, conditionsNote: `A problem at the ${d.post} post, for a hand who works it; not repeated within ${WORK_SEEN_DAYS} days.`,
-        choices: [{ label: d.careful[0], result: d.careful[1] }, { label: d.quick[0], result: outcome(d.quick[1], d.quick[2]) }],
-      });
-    }
-    for (const d of HAND_EVENTS.filter(x => x.group !== 'work')) {
-      add({ id: 'hired:' + d.id, title: d.id, file: fileOf.hand, belongs: `${d.group} (hired event)`, on: postOn(d.post), text: '', choices: [], codeNote: CODE_ALL, conditionsNote: `A ${d.group} event for a hired hand${d.post ? ` at the ${d.post} post` : ''}; its own conditions are written in code.` });
-    }
-
-    ICE_STAGES.forEach((st, i) => {
-      const choice = (label, c) => ({ label, result: outcome(c.win[2], c.lose[2]) });
-      add({
-        id: `ice:${i + 1}`, title: st.title, file: fileOf.ice, belongs: 'ice run', conditionsNote: `Scene ${i + 1} of 3 on an ice run, once the captain takes one.`, text: st.open.map((t, n) => `Version ${n + 1}: ${t}`).join('\n'),
-        choices: [...st.general.map(c => choice(c.label, c)), ...Object.entries(st.post).map(([post, c]) => choice(`[${post}] ${c.label}`, c))],
-      });
-    });
     return rows;
   }
 
