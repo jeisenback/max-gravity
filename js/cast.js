@@ -537,6 +537,23 @@ const CAST = {
               'right answer," she says. "A promise is a tow rope. Do not put one on a ship you have not looked at."'); } },
         ],
       },
+      pivot: {
+        days: 60, title: 'The Tow',
+        get text() {
+          const lowMass = G.state.fuel <= ship().fuel * 0.5;
+          return 'The hulk on your line has begun to turn. It is a slow roll at first, and the line takes it up, and then the roll gets into the line and you feel it in the stick. The hulk\'s beacon is still calling, every four seconds. Bexa has both hands on the controls and her eyes on the scope. "She will tear the cleat out of her bow in an hour," she says, "or she will tear it out of us. I could cut her loose. I am not going to cut her loose. Somebody has to go out on the line and take the spin out of her, and I am the one who has done it." She reaches for the tether. "Put somebody on the stick."'
+            + castRiskLines()
+            + (lowMass ? ' The tanks are low, and a hard burn to take up slack is more than the ship can spare.' : ' The tanks are over half, enough for a hard burn if the line comes back on her.');
+        },
+        choices: [
+          { label: 'Let her go out on the line', run: () => theTow(false) },
+          { label: 'Send a second hand out with her', ...gated(needCrew(2)), run: () => theTow(true) },
+          { label: 'Cut the line and let the hulk go', run() {
+            castFlag('bexa', 'benched'); castLike('bexa', -3, 'You cut the tow on me.');
+            return 'You tell her to cut the line, and she does, with her own hand on the release. The hulk goes on turning, slowly, its beacon calling every four seconds until it is too faint to hear. Bexa sits at the stick for a long while with the tag in her fist. "It is your call," she says at last. "I will put her on the list as lost."';
+          } },
+        ],
+      },
     },
   },
   pax: {
@@ -843,6 +860,23 @@ function thePlant(backup) {
     return lead + 'He comes out carried, both forearms scalded, and the plant holds behind him. He will weld again. He does not take the flask in his left hand after that, and he does not complain.';
   }
   return lead + 'He goes in, and comes out in four minutes with no eyebrows, which he does not mention. The plant settles. He sits on a crate with the flask and tells her, quietly, that she did well.';
+}
+
+// Bexa's pivot: a point each for a medic, a hull above 60 percent, more than half the reaction mass, and a second hand on the line.
+function theTow(backup) {
+  const rec = castRec('bexa'), promised = !!rec.flags.promised, mass = G.state.fuel > ship().fuel * 0.5;
+  const outcome = castFate('bexa', castPoints(castRiskPoints() + (mass ? 1 : 0) + (backup ? 1 : 0)), `Went out on the tow line near ${system().name}.`, 'Her left hand is numb from the cold, and she flies with the right.', 'pilot');
+  const lead = backup ? 'You send a second hand out on the line with her. ' : '';
+  if (outcome === 'die') {
+    return lead + 'She goes out hand over hand along the line, and the hulk\'s roll slows, and slows, and then the line lets go. It does not part with a bang. It goes all at once, like a breath, and the tug jumps forward a hundred meters before anyone has a hand on the stick. Her suit beacon comes up on the board beside the hulk\'s, and the two of them call in turn, four seconds apart, until the second one stops.'
+      + (promised ? ' You remember the ship you promised her, and that nobody will ask for it now.' : '');
+  }
+  castLike('bexa', 2, outcome === 'mark' ? 'You let me go out on the line, and I came back with a hand that is numb.' : 'You let me go out on the line, and I came back.');
+  if (outcome === 'mark') {
+    return lead + 'She takes the spin out of the hulk, and the line comes slack, and the cold gets into her left hand on the way back to the lock. She flies the rest of the run with the right, the left held in her lap with the glove still on. "It will come back," she says, about the hand, and does not take the glove off to show you.';
+  }
+  return lead + 'She takes the spin out of the hulk in eleven minutes by the clock, hand over hand along the line, and the hulk comes round to follow the tug like a dog that has been told. She comes back through the lock with frost in her eyebrows. At the next port she adds a line to the list, in the column with the others: a name, a date, a hull number.'
+    + (promised ? ' "You said someday," she adds, and hangs the brass tag back above the console.' : '');
 }
 
 // A scene with a `closed` reading plays it, in place of the scene itself, when the person's regard for the hand is below friendly
