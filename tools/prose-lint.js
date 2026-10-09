@@ -7,6 +7,8 @@
 //   npm run prose -- --write      write docs/prose-baseline.json
 //   npm run prose -- --compare    the difference from the baseline
 // The string scan is a character walk, not a parser: a regex literal that holds a quote mark would confuse it.
+// It does not read js/overrides.js: words changed in the scene editor (#336) live there and not in the narrative files below, so the report does not see
+// them until they are written back into those files. The file is empty in the shipped game, and its strings are mostly ids and keys, not prose.
 
 const fs = require('node:fs');
 const path = require('node:path');
