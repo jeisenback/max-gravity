@@ -252,10 +252,12 @@ function bodyPath(g, r, shape) {
 // Draw a body's surface once into an offscreen canvas; lighting is added live. Cached by name and radius: the same body
 // is painted small on the map, at its size in flight and large in the port's viewscreen. Over 200px it is drawn at
 // device ratio 1, like the gas giants, to bound memory.
+// `pl.art` overrides parts of the body's art for this sprite (the port's viewscreen leaves the polar caps off, since the
+// pole is what faces the dock); such a sprite is cached apart.
 function bodySprite(pl) {
-  const key = `${pl.name}@${pl.r}`;
+  const key = `${pl.name}@${pl.r}${pl.art ? '~' : ''}`;
   if (BODY_CACHE[key]) return BODY_CACHE[key];
-  const art = BODY_ART[pl.name] || { type: 'moon', base: [pl.color, '#1a1d22'], craters: 8 };
+  const art = { ...(BODY_ART[pl.name] || { type: 'moon', base: [pl.color, '#1a1d22'], craters: 8 }), ...(pl.art || {}) };
   const r = pl.r, k = art.type === 'giant' || r > 200 ? 1 : Math.min(2, window.devicePixelRatio || 1);
   const span = r * 2 * (art.type === 'station' ? 1.4 : art.rings ? 2.4 : 1.4);
   const c = document.createElement('canvas');

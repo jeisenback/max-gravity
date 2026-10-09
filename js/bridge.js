@@ -225,24 +225,59 @@ UI.views.shipyard = function () { return engineerPanel() + (hired() ? buyInHtml(
 
 const bridgeStars = Array.from({ length: 90 }, (_, i) => ({ x: (i * 0.6180339) % 1, y: (i * 0.4142135 + 0.13) % 1, z: 0.3 + (i * 0.7071) % 0.7 }));
 
+// A hand-made backdrop for a port (VISTA_IMAGES, js/data.js), once it has loaded; null until then, or when there is none
+// or it failed to load, and the painted scene is drawn instead.
+function vistaImage(name) {
+  const src = VISTA_IMAGES[name];
+  if (!src) return null;
+  if (!VISTA_IMAGE_CACHE[name]) { const img = new Image(); img.src = src; VISTA_IMAGE_CACHE[name] = img; }
+  const img = VISTA_IMAGE_CACHE[name];
+  return img.complete && img.naturalWidth ? img : null;
+}
+
+// The port seen from the dock: the docked body painted large, its limb across the bottom of the strip and sky above
+// (a station, not being a world, hangs whole in the middle), lit by the sun, with the parent world behind a moon or
+// a station and the station ring turning ahead. A dock faces the day side: a sun below the horizon is mirrored above it.
 function drawViewscreen(time) {
   const c = document.getElementById('vs');
   if (!c || G.mode !== 'landed') return;
-  const d = Math.min(window.devicePixelRatio || 1, 2), w = Math.round(c.clientWidth * d), h = Math.round(c.clientHeight * d);
+  const d = Math.min(window.devicePixelRatio || 1, 2), w = c.clientWidth, h = c.clientHeight;
   if (!w || !h) return;
-  if (c.width !== w || c.height !== h) { c.width = w; c.height = h; }
-  const g = c.getContext('2d'), color = GOV_COLORS[system().gov] || '#6fb0ff';
+  if (c.width !== Math.round(w * d) || c.height !== Math.round(h * d)) { c.width = Math.round(w * d); c.height = Math.round(h * d); }
+  const g = c.getContext('2d'), st = G.state, sys = system(), p = currentPlanet();
+  g.setTransform(d, 0, 0, d, 0, 0);
   g.fillStyle = '#03070a'; g.fillRect(0, 0, w, h);
-  for (const s of bridgeStars) { g.fillStyle = `rgba(215,229,233,${0.2 + s.z * 0.6})`; g.fillRect(s.x * w, s.y * h, Math.max(1, s.z * 1.6 * d), Math.max(1, s.z * 1.6 * d)); }
-  // The planet below, its rim in the local faction's color, and the station ring turning ahead of it.
-  g.fillStyle = '#0f2233'; g.beginPath(); g.arc(w * 0.25, h * 2.1, h * 1.75, 0, 7); g.fill();
-  g.strokeStyle = color; g.globalAlpha = 0.6; g.lineWidth = 2 * d; g.beginPath(); g.arc(w * 0.25, h * 2.1, h * 1.75, 3.9, 5.5); g.stroke(); g.globalAlpha = 1;
+  if (!p) return;  // a save whose port is unknown: the sky alone
+  const img = vistaImage(p.name);
+  if (img) {  // cover the strip, centred
+    const k = Math.max(w / img.naturalWidth, h / img.naturalHeight), iw = img.naturalWidth * k, ih = img.naturalHeight * k;
+    g.drawImage(img, (w - iw) / 2, (h - ih) / 2, iw, ih);
+    return;
+  }
+  for (const s of bridgeStars) { g.fillStyle = `rgba(215,229,233,${0.2 + s.z * 0.6})`; g.fillRect(s.x * w, s.y * h, Math.max(1, s.z * 1.6), Math.max(1, s.z * 1.6)); }
+  const real = sunLight(), sun = { angle: Math.sin(real.angle) > 0 ? -real.angle : real.angle, strength: real.strength };
+  const back = BACKDROPS[st.systemId] || (sys.planets[0].name !== p.name ? sys.planets[0] : null);
+  if (back) {
+    const br = h * 0.22, bx = w * 0.78, by = h * 0.3;
+    drawBody({ name: back.name, color: back.color, r: br }, bx, by, { g, sun });
+    g.fillStyle = 'rgba(3,7,10,0.35)';  // distance haze
+    g.beginPath(); g.arc(bx, by, br * 1.02, 0, Math.PI * 2); g.fill();
+  }
+  const art = BODY_ART[p.name] || {};
+  if (art.type === 'station') drawBody({ name: p.name, color: p.color, r: h * 0.42 }, w * 0.32, h * 0.5, { g, sun });
+  else {
+    // An asteroid's lumpy outline runs under the radius, so it sits higher. The pole faces the dock, so a world's polar
+    // cap is left off this sprite: a cap would be a white band across the whole limb.
+    const R = Math.min(w * 0.7, 360);
+    drawBody({ name: p.name, color: p.color, r: R, art: art.caps ? { caps: null } : undefined }, w * 0.32, h + R * (art.type === 'asteroid' ? 0.6 : 0.72), { g, sun });
+  }
+  // The station ring turning ahead.
   const ox = w * 0.74, oy = h * 0.46, rx = Math.min(w * 0.14, h * 0.9), ry = rx * 0.32, tilt = -0.25, a = Settings.reduceMotion ? 0 : time / 6000;
-  g.strokeStyle = '#7f97a1'; g.lineWidth = 3 * d; g.beginPath(); g.ellipse(ox, oy, rx, ry, tilt, 0, 7); g.stroke();
+  g.strokeStyle = '#7f97a1'; g.lineWidth = 3; g.beginPath(); g.ellipse(ox, oy, rx, ry, tilt, 0, 7); g.stroke();
   g.fillStyle = '#d7e5e9';
   for (let i = 0; i < 12; i++) {
     const t = a + i * Math.PI / 6, ex = Math.cos(t) * rx, ey = Math.sin(t) * ry;
-    g.fillRect(ox + ex * Math.cos(tilt) - ey * Math.sin(tilt) - 2 * d, oy + ex * Math.sin(tilt) + ey * Math.cos(tilt) - 2 * d, 4 * d, 4 * d);
+    g.fillRect(ox + ex * Math.cos(tilt) - ey * Math.sin(tilt) - 2, oy + ex * Math.sin(tilt) + ey * Math.cos(tilt) - 2, 4, 4);
   }
 }
 

@@ -38,7 +38,8 @@ const select = async id => { await page.fill('#q', id); await page.click(`button
 const rule = (p, key) => `[data-rpath="${p}"][data-rkey="${key}"]`;
 const fileOf = async () => { const t = await page.textContent('#changes'); return { overrides: JSON.parse(t.match(/^const SCENE_OVERRIDES = ([\s\S]*?);\nconst NEW_SCENES/)[1]), scenes: JSON.parse(t.match(/\nconst NEW_SCENES = ([\s\S]*);$/)[1]) }; };
 async function exported() { const [d] = await Promise.all([page.waitForEvent('download'), page.click('[data-action="export"]')]); return { name: d.suggestedFilename(), text: fs.readFileSync(await d.path(), 'utf8') }; }
-async function importText(text, name = 'in.js') { const f = path.join(tmp, name); fs.writeFileSync(f, text); await page.setInputFiles('#import-file', f); await page.waitForSelector('#notice .notice'); }
+// The notice is cleared first: a notice from the import before would otherwise satisfy the wait before the file is read.
+async function importText(text, name = 'in.js') { const f = path.join(tmp, name); fs.writeFileSync(f, text); await page.evaluate(() => { document.querySelector('#notice').innerHTML = ''; }); await page.setInputFiles('#import-file', f); await page.waitForSelector('#notice .notice'); }
 const notice = () => page.textContent('#notice');
 
 test('edits survive a reload of the page, scene by scene, new scenes included', async () => {

@@ -42,6 +42,11 @@ const GOV_COLORS = {
   'Pirate': '#d05fff',
 };
 
+// A hand-made backdrop for a port's viewscreen, by port name: a path relative to index.html (the Content Security Policy
+// allows the site's own files and data: URIs). Empty for now; a port without one gets the painted scene (js/bridge.js).
+const VISTA_IMAGES = {};
+const VISTA_IMAGE_CACHE = {};
+
 // Bodies at the same location must not trade a commodity at different price levels,
 // or players could hop between them for free profit.
 // Each location sits on an orbit (`au` from the Sun, at `angle` degrees) for travel
