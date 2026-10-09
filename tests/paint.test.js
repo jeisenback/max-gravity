@@ -154,3 +154,27 @@ test('a scene is glass lit from the sun\'s side, and its markup is unchanged', a
   assert.deepEqual(r.tags, ['DIV', 'H1', 'P', 'DIV'], 'eyebrow, title, text, choices: the markup is as before');
   await done();
 });
+
+test('resizing the window does not grow the sprite cache: the vista and the title each keep one large Earth', async () => {
+  const landed = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
+  for (const width of [900, 700, 600, 500]) { await landed.page.setViewportSize({ width, height: 800 }); await landed.page.waitForTimeout(120); }
+  const vista = await landed.ev(() => { drawViewscreen(0); return Object.keys(BODY_CACHE).filter(k => /^Earth@\d+~$/.test(k)); });
+  assert.deepEqual(vista, ['Earth@360~'], 'one vista sprite at the cap radius, drawn scaled');
+  await landed.done();
+  const title = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 }, title: true });
+  for (const width of [900, 800, 700, 600]) { await title.page.setViewportSize({ width, height: 800 }); await title.page.waitForTimeout(120); }
+  const keys = await title.ev(() => Object.keys(BODY_CACHE).filter(k => /^Earth@\d+~$/.test(k)));
+  assert.deepEqual(keys, ['Earth@720~'], 'one title sprite at the cap radius, drawn scaled');
+  await title.done();
+});
+
+test('the map paints its small bodies without their lights, which would read as mission or raid markers', async () => {
+  const { ev, done } = await open({ scope: 'full' });
+  const r = await ev(() => {
+    const real = drawBodyLights; let calls = 0; drawBodyLights = () => { calls++; };
+    try { openMap(); G.mapZoom = MAP_ZOOMS.length - 1; render(); } finally { drawBodyLights = real; closeMap(); }
+    return calls;
+  });
+  assert.equal(r, 0);
+  await done();
+});

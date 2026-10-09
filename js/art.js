@@ -475,7 +475,8 @@ function drawBodyLights(sp, x, y, c = ctx) {
 }
 
 // A body at (x, y) on the main canvas, lit by the real sun, or with opts: g, the context to draw on; sun, { angle, strength }
-// (the title has no game state to read a sun from).
+// (the title has no game state to read a sun from); lights: false to leave the station lights off (the map's bodies are
+// too small for them, and a lit one would read as a mission or raid marker).
 function drawBody(pl, x, y, opts = {}) {
   const sp = bodySprite(pl), c = opts.g || ctx, sun = opts.sun || sunLight();
   if (sp.art.rings) drawRings(x, y, pl.r, true, sun, c);
@@ -483,7 +484,7 @@ function drawBody(pl, x, y, opts = {}) {
   if (sp.art.type !== 'station') shadeBody(x, y, pl.r, sp.shape, sun, c);
   if (sp.art.atmo) drawAtmosphere(sp.art.atmo, x, y, pl.r, sun, c);
   if (sp.art.rings) drawRings(x, y, pl.r, false, sun, c);
-  drawBodyLights(sp, x, y, c);
+  if (opts.lights !== false) drawBodyLights(sp, x, y, c);
 }
 
 // Saturn's rings: the far half behind the planet, the near half in front.

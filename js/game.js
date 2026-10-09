@@ -1105,7 +1105,7 @@ function drawMap(W, H) {
     } else {
       // The system's first body, painted small and lit from the Sun at the centre, ringed in its faction's colour.
       const first = sys.planets[0];
-      drawBody({ name: first.name, color: first.color, r: 7 }, x, y, { sun: { angle: Math.atan2(cy - y, cx - x), strength: 1 } });
+      drawBody({ name: first.name, color: first.color, r: 7 }, x, y, { sun: { angle: Math.atan2(cy - y, cx - x), strength: 1 }, lights: false });
       ctx.strokeStyle = GOV_COLORS[sys.gov]; ctx.lineWidth = 1.5;
       ctx.beginPath(); ctx.arc(x, y, 9.5, 0, Math.PI * 2); ctx.stroke();
     }

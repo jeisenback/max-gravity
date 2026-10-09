@@ -223,6 +223,7 @@ UI.views.shipyard = function () { return engineerPanel() + (hired() ? buyInHtml(
 
 // ---------- the viewscreen at port ----------
 
+const VISTA_R = 360;  // the vista body's sprite radius; the strip gets it scaled
 const bridgeStars = Array.from({ length: 90 }, (_, i) => ({ x: (i * 0.6180339) % 1, y: (i * 0.4142135 + 0.13) % 1, z: 0.3 + (i * 0.7071) % 0.7 }));
 
 // A hand-made backdrop for a port (VISTA_IMAGES, js/data.js), once it has loaded; null until then, or when there is none
@@ -263,13 +264,15 @@ function drawViewscreen(time) {
     g.fillStyle = 'rgba(3,7,10,0.35)';  // distance haze
     g.beginPath(); g.arc(bx, by, br * 1.02, 0, Math.PI * 2); g.fill();
   }
-  const art = BODY_ART[p.name] || {};
-  if (art.type === 'station') drawBody({ name: p.name, color: p.color, r: h * 0.42 }, w * 0.32, h * 0.5, { g, sun });
+  // The body is one sprite at a fixed radius, drawn scaled to the strip, so a resize does not fill the cache with a sprite
+  // per width (VISTA_R, and 64 for a station).
+  const art = BODY_ART[p.name] || {}, scaled = (pl, x, y, r) => { g.save(); g.translate(x, y); g.scale(r / pl.r, r / pl.r); drawBody(pl, 0, 0, { g, sun }); g.restore(); };
+  if (art.type === 'station') scaled({ name: p.name, color: p.color, r: 64 }, w * 0.32, h * 0.5, h * 0.42);
   else {
     // An asteroid's lumpy outline runs under the radius, so it sits higher. The pole faces the dock, so a world's polar
     // cap is left off this sprite: a cap would be a white band across the whole limb.
-    const R = Math.min(w * 0.7, 360);
-    drawBody({ name: p.name, color: p.color, r: R, art: art.caps ? { caps: null } : undefined }, w * 0.32, h + R * (art.type === 'asteroid' ? 0.6 : 0.72), { g, sun });
+    const R = Math.min(w * 0.7, VISTA_R);
+    scaled({ name: p.name, color: p.color, r: VISTA_R, art: art.caps ? { caps: null } : undefined }, w * 0.32, h + R * (art.type === 'asteroid' ? 0.6 : 0.72), R);
   }
   // The station ring turning ahead.
   const ox = w * 0.74, oy = h * 0.46, rx = Math.min(w * 0.14, h * 0.9), ry = rx * 0.32, tilt = -0.25, a = Settings.reduceMotion ? 0 : time / 6000;
