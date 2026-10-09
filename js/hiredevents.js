@@ -15,15 +15,18 @@ const WORK_SEEN_DAYS = 30;  // a problem does not come round again for this long
 
 function workEvent(d) {
   const post = d.post, note = n => ` (+${n} experience at the ${POSTS[post].name.toLowerCase()} post.)`;
+  // The editor's words for this event, if any (#462): put in front of the table's. The text and the lines are escaped, as for any override; the odds and what a win or a lose does are not touched.
+  const o = sceneOverride(`hired:${d.id}`), co = i => (o.choices || {})[i] || {}, line = (mine, shipped) => (mine ? esc(mine) : shipped);
+  const careful = [co(0).label || d.careful[0], line(co(0).result, d.careful[1])], quick = [co(1).label || d.quick[0], line(co(1).win, d.quick[1]), line(co(1).lose, d.quick[2])];
   return {
-    title: d.title, text: d.text, via: 'crew', owner: post, workId: d.id, personal: true,
+    title: o.title || d.title, text: line(o.text, d.text), via: 'crew', owner: post, workId: d.id, personal: true,
     choices: [
-      { label: d.careful[0], run() { gainSkill(post, 3); return d.careful[1] + note(3); } },
-      { label: `${d.quick[0]}${costNote({ xp: true, marks: true })}`, bold: true, run() {
+      { label: careful[0], run() { gainSkill(post, 3); return careful[1] + note(3); } },
+      { label: `${quick[0]}${costNote({ xp: true, marks: true })}`, bold: true, run() {
         const won = Math.random() < soloOdds(post);
         boldWithCaptain(won);  // the captain's nerve (captains.js)
-        if (won) { gainSkill(post, 4); return d.quick[1] + note(4); }
-        gainSkill(post, 1); return d.quick[2] + note(1);
+        if (won) { gainSkill(post, 4); return quick[1] + note(4); }
+        gainSkill(post, 1); return quick[2] + note(1);
       } },
     ],
   };
