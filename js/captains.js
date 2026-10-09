@@ -155,18 +155,21 @@ function captainGoodbye() {
   const d = captainEntry(), g = d && d.goodbye;
   if (!g) return null;
   const h = hired(), cap = hiredCaptain(), friends = buyInCompanions(), flags = { ...(h.flags || {}) };
+  // The editor's words (#476): the title, the labels, results and conditions of the choices, and the parts of the text. A part a file gives is escaped, as any override is.
+  const id = `captain:${cap.captainKey}:goodbye`, o = sceneOverride(id), say = k => (o.parts && o.parts[k] ? esc(o.parts[k]) : g[k]);
+  const scene = sceneWords(id, { title: g.title, text: '', personal: true, choices: g.choices });
   const warmth = cap.opinion >= OPINION.TRUSTED ? 'warm' : cap.opinion < 0 ? 'cold' : 'neutral';
-  const parts = [g[warmth]];
-  if (friends.length) parts.push(g.crew.replace('{names}', namesOf(friends)));
-  if (flags.secretKnown) parts.push(g.secret);
+  const parts = [say(warmth)];
+  if (friends.length) parts.push(say('crew').replace('{names}', namesOf(friends)));
+  if (flags.secretKnown) parts.push(say('secret'));
   const facts = goodbyeFacts(flags).slice(0, 2);
   if (facts.length) parts.push(facts.map(f => f.line).join(' '));
-  if (flags.lent && g.repaid) parts.push(g.repaid);
-  if (castDead(d.xo)) parts.push(g.xoDead); else if (hiredXo() && g.xo) parts.push(g.xo);
-  parts.push(g.parting);
+  if (flags.lent && g.repaid) parts.push(say('repaid'));
+  if (castDead(d.xo)) parts.push(say('xoDead')); else if (hiredXo() && g.xo) parts.push(say('xo'));
+  parts.push(say('parting'));
   return {
-    title: g.title, personal: true, text: parts.join('</p><p>'),
-    choices: g.choices.filter(c => !c.can || c.can(flags)).map(c => ({ label: c.label, run() { leavingCaptain = cap; try { if (flags.lent) G.state.credits += g.repay || 0; return c.run(); } finally { leavingCaptain = null; } } })),
+    title: scene.title, personal: true, text: parts.join('</p><p>'),
+    choices: scene.choices.map(c => dataChoice(c)).filter(c => !c.can || c.can(flags)).map(c => ({ label: c.label, run() { leavingCaptain = cap; try { if (flags.lent) G.state.credits += g.repay || 0; return c.run(); } finally { leavingCaptain = null; } } })),
   };
 }
 // Each event hands on to the next: the last choice of one opens the one after.

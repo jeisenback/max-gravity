@@ -48,6 +48,8 @@ const CONDITIONS = {
   post: v => !!hired() && [].concat(v).includes(hired().post),  // a hired hand's own post
   skill: v => !!hired() && skillLevel(hired().post) >= v,  // and the level they have there
   hired: v => !!hired() === !!v,  // follow-ups of a hired hand's choices stop when they buy a ship of their own
+  // A fact the hired hand's record holds (the flags captainFlag sets: the secret learned, a loan lent), by name (#476).
+  captainFlag: name => !!(hired() && (hired().flags || {})[name]),
   // Someone's regard for the hand (#460): { who: 'captain' | 'xo' | a main character's key, min: a cutoff from OPINION }. With nobody in that place it does not hold.
   opinion: v => { const p = isPlain(v) ? opinionOf(v.who) : null; return !!p && p.opinion >= v.min; },
   // A follow-up that an earlier choice set going with `later`: holds once its days have passed.
@@ -193,7 +195,7 @@ function fill(text = '') {
 
 // ---------- the scene editor's changes (js/overrides.js, #336) ----------
 // {planet}, {system}, {captain}, {crew}, {crew:role} and {thread:key}: what fill() and the dialog replace. Any other {word} is left as typed.
-const PLACEHOLDER = /^\{(?:planet|system|captain|crew|mate|crew:(\w+)|thread:\w+)\}$/;  // {mate} is filled by a hired event written as data (hiredevents.js), for the shipmate it is about
+const PLACEHOLDER = /^\{(?:planet|system|captain|crew|mate|names|crew:(\w+)|thread:\w+)\}$/;  // {mate} is filled by a hired event written as data (hiredevents.js), for the shipmate it is about; {names} by a captain's goodbye (captains.js), for who goes with you
 const unknownPlaceholders = text => (String(text).match(/\{[^{}]*\}/g) || []).filter(t => { const m = PLACEHOLDER.exec(t); return !m || !!(m[1] && !ROLE_NAMES[m[1]]); });
 
 // The scene as the file changes it: its conditions, and each choice's conditions, effects and `next` link, where the file names them. The
@@ -221,7 +223,8 @@ function cleanOverrides(raw) {
     if (!isObj(o)) { bad.push(`"${id}" is not an object`); continue; }
     const mine = {}, pre = `"${id}"`;
     for (const [k, v] of Object.entries(o)) {
-      if ((k === 'title' || k === 'text') && text(`${pre}.${k}`, v)) mine[k] = v;
+      if (k === 'text' && rs && rs.goodbye) bad.push(`${pre} text is built from parts, so a file gives "parts"`);
+      else if ((k === 'title' || k === 'text') && text(`${pre}.${k}`, v)) mine[k] = v;
       else if (k === 'weight' || k === 'every' || k === 'off') {
         const why = rs ? 'a hired scene is drawn by its days and the story, not by weight' : s.priority > 0 ? 'a story scene is picked by priority, not by weight'
           : k === 'weight' ? (Number.isFinite(v) && v >= 0 && v <= 100 ? '' : 'needs a number from 0 to 100')
@@ -251,6 +254,11 @@ function cleanOverrides(raw) {
             else if (f !== 'label' && f !== 'result') bad.push(`${pre} choice ${i} ${f === 'next' ? 'leads to a scene that is not there' : STRUCT.includes(f) ? `.${f} is not an object` : `has no "${f}"`}`);
           }
         }
+      } else if (k === 'parts') {  // a captain's goodbye is built from parts (cold, neutral, warm, crew, secret, xo, xoDead, repaid, parting)
+        const names = rs && rs.goodbye ? Object.keys(rs.goodbye).filter(n => PART_NAMES.includes(n)) : [];
+        if (!names.length) bad.push(`${pre} has no "parts"`);
+        else if (!isObj(v)) bad.push(`${pre}.parts is not an object`);
+        else for (const [n, t] of Object.entries(v)) { if (!names.includes(n)) bad.push(`${pre}.parts has no "${n}"`); else if (text(`${pre}.parts.${n}`, t)) (mine.parts = mine.parts || {})[n] = t; }
       } else if (k === 'text2') { if (rs && rs.text2 !== undefined) { if (text(`${pre}.text2`, v)) mine.text2 = v; } else bad.push(`${pre} has no "text2"`); }
       else if (k !== 'title' && k !== 'text' && k !== 'weight' && k !== 'every' && k !== 'off') bad.push(`${pre} has no "${k}"`);
     }
@@ -290,6 +298,8 @@ function sceneRate(s) {
 }
 
 // A scene of the hired chapter that is not a storylet (a main character's, a first officer's or a captain's, or a hired event written as data), by its id in js/hiredscenes.js.
+// The parts a captain's goodbye is built from (captains.js captainGoodbye), by the name each has in the captain's `goodbye` entry.
+const PART_NAMES = ['cold', 'neutral', 'warm', 'crew', 'secret', 'repaid', 'xoDead', 'xo', 'parting'];  // in the order the text is put together
 const registryScene = id => { const e = /^(cast|captain|hired):/.test(id) && hiredSceneRegistry().find(x => x.id === id); return e && e.scene ? e.scene : tableScene(id); };
 
 // A scene whose words live in a table that one template plays (#462): a work event (WORK_EVENTS, hiredevents.js workEvent) or an ice run scene (ICE_STAGES,
@@ -345,6 +355,7 @@ EFFECT_SHAPES.castJoin = EFFECT_SHAPES.castLater = v => (typeof v !== 'string' |
 EFFECT_SHAPES.gainSkill = v => (!isPlain(v) ? 'needs { post, n }' : !HIRED_POSTS.includes(v.post) ? `${v.post} is not a post` : !Number.isFinite(v.n) ? 'n must be a number' : '');
 // The shape each condition takes, where it is more than a number or a name: '' if the value is right, else what is wrong.
 const CONDITION_SHAPES = {
+  captainFlag: v => (typeof v === 'string' && v.trim() ? '' : 'needs a name'),
   opinion: v => (!isPlain(v) ? 'needs { who, min }' : !['captain', 'xo'].includes(v.who) && !CAST[v.who] ? `${v.who} is not the captain, the first officer or a main character` : !Number.isFinite(v.min) ? 'min must be a number' : ''),
 };
 const conditionProblems = when => Object.entries(when || {}).flatMap(([k, v]) => (!CONDITIONS[k] ? [`unknown condition "${k}"`] : CONDITION_SHAPES[k] && CONDITION_SHAPES[k](v) ? [`condition ${k} ${CONDITION_SHAPES[k](v)}`] : []));

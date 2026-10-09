@@ -1,0 +1,487 @@
+[
+ {
+  "captain": "hester",
+  "state": "cold",
+  "title": "The Foot of the Ramp",
+  "text": "Captain Vance is at the foot of the ramp, and she has the papers ready. She does not offer her hand. \"Your account is correct,\" she says. \"Sign here, and here.\"</p><p>Cato is at the hatch, because the captain would not go and say it. \"Take care of your people,\" he says. \"They will take care of you. That is the whole job. I have been trying to tell her for years.\"</p><p>She holds out her hand at last. It is dry and brief. \"Fair winds,\" she says. \"And keep your own books.\"",
+  "labels": [
+   "Thank her for the work",
+   "Take the papers and go"
+  ]
+ },
+ {
+  "captain": "hester",
+  "state": "plain",
+  "title": "The Foot of the Ramp",
+  "text": "Captain Vance meets you at the foot of the ramp with the papers and the notebook. She counts your last pay twice, into your hand, and has you sign for it.</p><p>Cato is at the hatch, because the captain would not go and say it. \"Take care of your people,\" he says. \"They will take care of you. That is the whole job. I have been trying to tell her for years.\"</p><p>She holds out her hand at last. It is dry and brief. \"Fair winds,\" she says. \"And keep your own books.\"",
+  "labels": [
+   "Thank her for the work",
+   "Take the papers and go"
+  ]
+ },
+ {
+  "captain": "hester",
+  "state": "warm",
+  "title": "The Foot of the Ramp",
+  "text": "Captain Vance is waiting at the foot of the ramp when you come down, which is not like her. She has the notebook under one arm. \"I have your account,\" she says. \"It is correct. I would like you to check it anyway.\"</p><p>Cato is at the hatch, because the captain would not go and say it. \"Take care of your people,\" he says. \"They will take care of you. That is the whole job. I have been trying to tell her for years.\"</p><p>She holds out her hand at last. It is dry and brief. \"Fair winds,\" she says. \"And keep your own books.\"",
+  "labels": [
+   "Thank her for the work",
+   "Take the papers and go"
+  ]
+ },
+ {
+  "captain": "hester",
+  "state": "secret",
+  "title": "The Foot of the Ramp",
+  "text": "Captain Vance meets you at the foot of the ramp with the papers and the notebook. She counts your last pay twice, into your hand, and has you sign for it.</p><p>She does not mention the bank. She does not need to. \"The first of the month,\" she says, \"and the first after that. I will be there for them.\"</p><p>Cato is at the hatch, because the captain would not go and say it. \"Take care of your people,\" he says. \"They will take care of you. That is the whole job. I have been trying to tell her for years.\"</p><p>She holds out her hand at last. It is dry and brief. \"Fair winds,\" she says. \"And keep your own books.\"",
+  "labels": [
+   "Thank her for the work",
+   "Wish her the ship",
+   "Take the papers and go"
+  ],
+  "results": [
+   {
+    "label": "Thank her for the work",
+    "text": "You thank her. She nods once, and writes nothing down.",
+    "changes": [
+     "s.people.p1.liftedAt: undefined -> 1",
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You thanked me for the work, and meant it.",
+     "s.people.p1.opinion: 0 -> 2"
+    ]
+   },
+   {
+    "label": "Wish her the ship",
+    "text": "\"I will keep her,\" she says. She almost smiles.",
+    "changes": [
+     "s.people.p1.liftedAt: undefined -> 1",
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You wished me the ship.",
+     "s.people.p1.opinion: 0 -> 2"
+    ]
+   },
+   {
+    "label": "Take the papers and go",
+    "text": "You take the papers and go. She does not call after you. When you look back from the dock she has the notebook open again, and is writing.",
+    "changes": [
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the papers and went."
+    ]
+   }
+  ]
+ },
+ {
+  "captain": "hester",
+  "state": "full",
+  "title": "The Foot of the Ramp",
+  "text": "Captain Vance is waiting at the foot of the ramp when you come down, which is not like her. She has the notebook under one arm. \"I have your account,\" she says. \"It is correct. I would like you to check it anyway.\"</p><p>Ines Ferreira and Ines Ferreira will go with you. She looks at the crew list for a while. \"That is a column I will have to fill again,\" she says, without heat.</p><p>She does not mention the bank. She does not need to. \"The first of the month,\" she says, \"and the first after that. I will be there for them.\"</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>She counts four hundred and ten onto the rail, the day you leave, as she said she would. You count it after her. It is correct.</p><p>Cato is at the hatch, because the captain would not go and say it. \"Take care of your people,\" he says. \"They will take care of you. That is the whole job. I have been trying to tell her for years.\"</p><p>She holds out her hand at last. It is dry and brief. \"Fair winds,\" she says. \"And keep your own books.\"",
+  "labels": [
+   "Thank her for the work",
+   "Wish her the ship",
+   "Take the papers and go"
+  ],
+  "results": [
+   {
+    "label": "Thank her for the work",
+    "text": "You thank her. She nods once, and writes nothing down.",
+    "changes": [
+     "s.credits: 5000 -> 5410",
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You thanked me for the work, and meant it."
+    ]
+   },
+   {
+    "label": "Wish her the ship",
+    "text": "\"I will keep her,\" she says. She almost smiles.",
+    "changes": [
+     "s.credits: 5000 -> 5410",
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You wished me the ship."
+    ]
+   },
+   {
+    "label": "Take the papers and go",
+    "text": "You take the papers and go. She does not call after you. When you look back from the dock she has the notebook open again, and is writing.",
+    "changes": [
+     "s.credits: 5000 -> 5410",
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the papers and went."
+    ]
+   }
+  ]
+ },
+ {
+  "captain": "hester",
+  "state": "xoDead",
+  "title": "The Foot of the Ramp",
+  "text": "Captain Vance meets you at the foot of the ramp with the papers and the notebook. She counts your last pay twice, into your hand, and has you sign for it.</p><p>She does not mention the bank. She does not need to. \"The first of the month,\" she says, \"and the first after that. I will be there for them.\"</p><p>She does not look at the empty place on the watch bill. \"I have taken Cato out of the book,\" she says. \"I had to. It is the first time I did not want to.\"</p><p>She holds out her hand at last. It is dry and brief. \"Fair winds,\" she says. \"And keep your own books.\"",
+  "labels": [
+   "Thank her for the work",
+   "Wish her the ship",
+   "Take the papers and go"
+  ]
+ },
+ {
+  "captain": "dov",
+  "state": "cold",
+  "title": "The Foot of the Ramp",
+  "text": "Captain Adair is at the foot of the ramp, and for once he has little to say. He does not tell a story. He shakes your hand, which is warm, and holds it a moment too long, and lets go.</p><p>Ilsa is at the hatch with her arms folded. \"He will not say it,\" she says, \"so I will. You were good to him. Do not tell him I said so.\"</p><p>He hugs you, which you did not expect, and which he does badly, and warmly. \"Come and see us,\" he says. \"Come and see me. I will be here. There is always somebody in the galley.\"",
+  "labels": [
+   "Thank him for the work",
+   "Take the bread and go"
+  ]
+ },
+ {
+  "captain": "dov",
+  "state": "plain",
+  "title": "The Foot of the Ramp",
+  "text": "Captain Adair meets you at the foot of the ramp and walks you to the end of the dock, talking, so that the goodbye takes a good deal longer than it should.</p><p>Ilsa is at the hatch with her arms folded. \"He will not say it,\" she says, \"so I will. You were good to him. Do not tell him I said so.\"</p><p>He hugs you, which you did not expect, and which he does badly, and warmly. \"Come and see us,\" he says. \"Come and see me. I will be here. There is always somebody in the galley.\"",
+  "labels": [
+   "Thank him for the work",
+   "Take the bread and go"
+  ]
+ },
+ {
+  "captain": "dov",
+  "state": "warm",
+  "title": "The Foot of the Ramp",
+  "text": "Captain Adair is at the foot of the ramp with a paper bag that smells of bread. \"I did not know what to give you,\" he says. \"So it is food. It is always food.\"</p><p>Ilsa is at the hatch with her arms folded. \"He will not say it,\" she says, \"so I will. You were good to him. Do not tell him I said so.\"</p><p>He hugs you, which you did not expect, and which he does badly, and warmly. \"Come and see us,\" he says. \"Come and see me. I will be here. There is always somebody in the galley.\"",
+  "labels": [
+   "Thank him for the work",
+   "Take the bread and go"
+  ]
+ },
+ {
+  "captain": "dov",
+  "state": "secret",
+  "title": "The Foot of the Ramp",
+  "text": "Captain Adair meets you at the foot of the ramp and walks you to the end of the dock, talking, so that the goodbye takes a good deal longer than it should.</p><p>He does not mention the book. He has put it away, and what is in it, somewhere you will not see it. \"Look after your own fund,\" he says. \"Not like mine.\"</p><p>Ilsa is at the hatch with her arms folded. \"He will not say it,\" she says, \"so I will. You were good to him. Do not tell him I said so.\"</p><p>He hugs you, which you did not expect, and which he does badly, and warmly. \"Come and see us,\" he says. \"Come and see me. I will be here. There is always somebody in the galley.\"",
+  "labels": [
+   "Thank him for the work",
+   "Tell him to ask Ilsa for help",
+   "Take the bread and go"
+  ],
+  "results": [
+   {
+    "label": "Thank him for the work",
+    "text": "You thank him. He says it was nothing, and then, because he cannot help it, tells you what it was.",
+    "changes": [
+     "s.people.p1.liftedAt: undefined -> 1",
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You thanked me for the work.",
+     "s.people.p1.opinion: 0 -> 2"
+    ]
+   },
+   {
+    "label": "Tell him to ask Ilsa for help",
+    "text": "He nods slowly. \"I will,\" he says. \"I will ask her to dinner. That is a start.\" He tries to make a story of it, and finds he does not need to.",
+    "changes": [
+     "s.people.p1.liftedAt: undefined -> 1",
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You told me to ask for help.",
+     "s.people.p1.opinion: 0 -> 2"
+    ]
+   },
+   {
+    "label": "Take the bread and go",
+    "text": "You take the bread and go. You look back from the end of the dock, and he is still at the foot of the ramp, waving, a small figure on a lit dock with nobody to tell.",
+    "changes": [
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the bread and went."
+    ]
+   }
+  ]
+ },
+ {
+  "captain": "dov",
+  "state": "full",
+  "title": "The Foot of the Ramp",
+  "text": "Captain Adair is at the foot of the ramp with a paper bag that smells of bread. \"I did not know what to give you,\" he says. \"So it is food. It is always food.\"</p><p>Ines Ferreira and Ines Ferreira will go with you. He takes it harder than he wants to. \"Good,\" he says. \"That is good. They like you. Of course they do.\" He does not say anything else for a moment.</p><p>He does not mention the book. He has put it away, and what is in it, somewhere you will not see it. \"Look after your own fund,\" he says. \"Not like mine.\"</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>He presses three hundred and thirty into your hand, the day you leave, and a card with the three stories you liked best written on the back, in case you want to tell them.</p><p>Ilsa is at the hatch with her arms folded. \"He will not say it,\" she says, \"so I will. You were good to him. Do not tell him I said so.\"</p><p>He hugs you, which you did not expect, and which he does badly, and warmly. \"Come and see us,\" he says. \"Come and see me. I will be here. There is always somebody in the galley.\"",
+  "labels": [
+   "Thank him for the work",
+   "Tell him to ask Ilsa for help",
+   "Take the bread and go"
+  ],
+  "results": [
+   {
+    "label": "Thank him for the work",
+    "text": "You thank him. He says it was nothing, and then, because he cannot help it, tells you what it was.",
+    "changes": [
+     "s.credits: 5000 -> 5330",
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You thanked me for the work."
+    ]
+   },
+   {
+    "label": "Tell him to ask Ilsa for help",
+    "text": "He nods slowly. \"I will,\" he says. \"I will ask her to dinner. That is a start.\" He tries to make a story of it, and finds he does not need to.",
+    "changes": [
+     "s.credits: 5000 -> 5330",
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You told me to ask for help."
+    ]
+   },
+   {
+    "label": "Take the bread and go",
+    "text": "You take the bread and go. You look back from the end of the dock, and he is still at the foot of the ramp, waving, a small figure on a lit dock with nobody to tell.",
+    "changes": [
+     "s.credits: 5000 -> 5330",
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the bread and went."
+    ]
+   }
+  ]
+ },
+ {
+  "captain": "dov",
+  "state": "xoDead",
+  "title": "The Foot of the Ramp",
+  "text": "Captain Adair meets you at the foot of the ramp and walks you to the end of the dock, talking, so that the goodbye takes a good deal longer than it should.</p><p>He does not mention the book. He has put it away, and what is in it, somewhere you will not see it. \"Look after your own fund,\" he says. \"Not like mine.\"</p><p>Ilsa's chair on the bridge is empty, and he has not moved it. \"I took her for granted,\" he says. \"I took all of it for granted. I did not know it was she who was holding it up.\"</p><p>He hugs you, which you did not expect, and which he does badly, and warmly. \"Come and see us,\" he says. \"Come and see me. I will be here. There is always somebody in the galley.\"",
+  "labels": [
+   "Thank him for the work",
+   "Tell him to ask Ilsa for help",
+   "Take the bread and go"
+  ]
+ },
+ {
+  "captain": "imre",
+  "state": "cold",
+  "title": "The Foot of the Ramp",
+  "text": "Captain Sato is at the foot of the ramp with the papers, and the log, and the red tag from the gap you left in it. \"The record is complete,\" they say. \"It will not be amended.\"</p><p>Pilar is at the hatch with her arms folded and a spanner in one hand. \"Do not let anybody tell you the book is the ship,\" she says. \"And do not tell them I said so. I need them to go on writing it.\"</p><p>They offer a hand. It is a single, formal handshake, firm and exactly as long as it should be. \"Fair winds,\" they say. \"Noted.\"",
+  "labels": [
+   "Thank them for the work",
+   "Take the papers and go"
+  ]
+ },
+ {
+  "captain": "imre",
+  "state": "plain",
+  "title": "The Foot of the Ramp",
+  "text": "Captain Sato meets you at the foot of the ramp with the final pay slip, countersigned, and the log page for your last watch. It is in order.</p><p>Pilar is at the hatch with her arms folded and a spanner in one hand. \"Do not let anybody tell you the book is the ship,\" she says. \"And do not tell them I said so. I need them to go on writing it.\"</p><p>They offer a hand. It is a single, formal handshake, firm and exactly as long as it should be. \"Fair winds,\" they say. \"Noted.\"",
+  "labels": [
+   "Thank them for the work",
+   "Take the papers and go"
+  ]
+ },
+ {
+  "captain": "imre",
+  "state": "warm",
+  "title": "The Foot of the Ramp",
+  "text": "Captain Sato is at the foot of the ramp in the same jacket, with a paper folded in four. It is your reference, in their own hand, entered and stamped. \"You will want this,\" they say. \"It is accurate.\"</p><p>Pilar is at the hatch with her arms folded and a spanner in one hand. \"Do not let anybody tell you the book is the ship,\" she says. \"And do not tell them I said so. I need them to go on writing it.\"</p><p>They offer a hand. It is a single, formal handshake, firm and exactly as long as it should be. \"Fair winds,\" they say. \"Noted.\"",
+  "labels": [
+   "Thank them for the work",
+   "Take the papers and go"
+  ]
+ },
+ {
+  "captain": "imre",
+  "state": "secret",
+  "title": "The Foot of the Ramp",
+  "text": "Captain Sato meets you at the foot of the ramp with the final pay slip, countersigned, and the log page for your last watch. It is in order.</p><p>They do not mention the discharge, and neither do you. Their hand goes, once, to the left sleeve of the jacket. \"I keep a clean record,\" they say. \"I intend to go on.\"</p><p>Pilar is at the hatch with her arms folded and a spanner in one hand. \"Do not let anybody tell you the book is the ship,\" she says. \"And do not tell them I said so. I need them to go on writing it.\"</p><p>They offer a hand. It is a single, formal handshake, firm and exactly as long as it should be. \"Fair winds,\" they say. \"Noted.\"",
+  "labels": [
+   "Thank them for the work",
+   "Wish them a clean record",
+   "Take the papers and go"
+  ],
+  "results": [
+   {
+    "label": "Thank them for the work",
+    "text": "You thank them. \"Entered,\" they say, and, after a moment, \"Appreciated.\" It is the only time you hear the second word.",
+    "changes": [
+     "s.people.p1.liftedAt: undefined -> 1",
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You thanked me for the work.",
+     "s.people.p1.opinion: 0 -> 2"
+    ]
+   },
+   {
+    "label": "Wish them a clean record",
+    "text": "Captain Sato is silent. \"Thank you,\" they say, which is not in any standing order, and is not entered anywhere.",
+    "changes": [
+     "s.people.p1.liftedAt: undefined -> 1",
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You wished me a clean record.",
+     "s.people.p1.opinion: 0 -> 3"
+    ]
+   },
+   {
+    "label": "Take the papers and go",
+    "text": "You take the papers and go. When you look back from the dock, Captain Sato is at the foot of the ramp, writing something down.",
+    "changes": [
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the papers and went."
+    ]
+   }
+  ]
+ },
+ {
+  "captain": "imre",
+  "state": "full",
+  "title": "The Foot of the Ramp",
+  "text": "Captain Sato is at the foot of the ramp in the same jacket, with a paper folded in four. It is your reference, in their own hand, entered and stamped. \"You will want this,\" they say. \"It is accurate.\"</p><p>Ines Ferreira and Ines Ferreira will go with you. Captain Sato enters it. \"It is noted,\" they say, and then, a beat later, and more quietly, \"It is regretted.\"</p><p>They do not mention the discharge, and neither do you. Their hand goes, once, to the left sleeve of the jacket. \"I keep a clean record,\" they say. \"I intend to go on.\"</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>Pilar is at the hatch with her arms folded and a spanner in one hand. \"Do not let anybody tell you the book is the ship,\" she says. \"And do not tell them I said so. I need them to go on writing it.\"</p><p>They offer a hand. It is a single, formal handshake, firm and exactly as long as it should be. \"Fair winds,\" they say. \"Noted.\"",
+  "labels": [
+   "Thank them for the work",
+   "Wish them a clean record",
+   "Take the papers and go"
+  ],
+  "results": [
+   {
+    "label": "Thank them for the work",
+    "text": "You thank them. \"Entered,\" they say, and, after a moment, \"Appreciated.\" It is the only time you hear the second word.",
+    "changes": [
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You thanked me for the work."
+    ]
+   },
+   {
+    "label": "Wish them a clean record",
+    "text": "Captain Sato is silent. \"Thank you,\" they say, which is not in any standing order, and is not entered anywhere.",
+    "changes": [
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You wished me a clean record."
+    ]
+   },
+   {
+    "label": "Take the papers and go",
+    "text": "You take the papers and go. When you look back from the dock, Captain Sato is at the foot of the ramp, writing something down.",
+    "changes": [
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the papers and went."
+    ]
+   }
+  ]
+ },
+ {
+  "captain": "imre",
+  "state": "xoDead",
+  "title": "The Foot of the Ramp",
+  "text": "Captain Sato meets you at the foot of the ramp with the final pay slip, countersigned, and the log page for your last watch. It is in order.</p><p>They do not mention the discharge, and neither do you. Their hand goes, once, to the left sleeve of the jacket. \"I keep a clean record,\" they say. \"I intend to go on.\"</p><p>There is a line struck through in the watch bill, in Captain Sato's hand, and next to it, in a different ink, a date. \"I amended the record,\" they say. \"I have entered her as a casualty of the service. She would have found that very funny.\"</p><p>They offer a hand. It is a single, formal handshake, firm and exactly as long as it should be. \"Fair winds,\" they say. \"Noted.\"",
+  "labels": [
+   "Thank them for the work",
+   "Wish them a clean record",
+   "Take the papers and go"
+  ]
+ },
+ {
+  "captain": "zoya",
+  "state": "cold",
+  "title": "The Ramp",
+  "text": "Captain Pell is at the foot of the ramp with your papers and a smile that has been put on. \"Fair winds,\" she says, and it sounds like something said many times, to many people who were leaving.</p><p>Ansel is at the hatch, in his coat, with the folded sheet in one hand. \"I advised against most of it,\" he says. \"I want that on the record. And I want you to know it was the best six years of my working life. Do not tell her the second part.\"</p><p>She hugs you, fast, and lets go before it can be anything. \"Go on,\" she says. \"Before I bet against myself.\"",
+  "labels": [
+   "Wish her the good run",
+   "Take the papers and go"
+  ]
+ },
+ {
+  "captain": "zoya",
+  "state": "plain",
+  "title": "The Ramp",
+  "text": "Captain Pell meets you at the foot of the ramp and counts your last pay into your hand, fast, in notes, and then counts it again, slower, because she is not sure she did it right the first time. She did.</p><p>Ansel is at the hatch, in his coat, with the folded sheet in one hand. \"I advised against most of it,\" he says. \"I want that on the record. And I want you to know it was the best six years of my working life. Do not tell her the second part.\"</p><p>She hugs you, fast, and lets go before it can be anything. \"Go on,\" she says. \"Before I bet against myself.\"",
+  "labels": [
+   "Wish her the good run",
+   "Take the papers and go"
+  ]
+ },
+ {
+  "captain": "zoya",
+  "state": "warm",
+  "title": "The Ramp",
+  "text": "Captain Pell is on the ramp, not at the foot of it, leaning on the rail with her boots crossed. \"I do not do goodbyes,\" she says. \"I do wagers. I bet you do well. I bet you come back. I will take either side.\"</p><p>Ansel is at the hatch, in his coat, with the folded sheet in one hand. \"I advised against most of it,\" he says. \"I want that on the record. And I want you to know it was the best six years of my working life. Do not tell her the second part.\"</p><p>She hugs you, fast, and lets go before it can be anything. \"Go on,\" she says. \"Before I bet against myself.\"",
+  "labels": [
+   "Wish her the good run",
+   "Take the papers and go"
+  ]
+ },
+ {
+  "captain": "zoya",
+  "state": "secret",
+  "title": "The Ramp",
+  "text": "Captain Pell meets you at the foot of the ramp and counts your last pay into your hand, fast, in notes, and then counts it again, slower, because she is not sure she did it right the first time. She did.</p><p>She does not mention the cards. She does not need to. \"One good run,\" she says, \"and I will send you a postcard from somewhere with a beach. If I do not, it is because it was not good enough.\" She says it lightly. She has said it for six years.</p><p>Ansel is at the hatch, in his coat, with the folded sheet in one hand. \"I advised against most of it,\" he says. \"I want that on the record. And I want you to know it was the best six years of my working life. Do not tell her the second part.\"</p><p>She hugs you, fast, and lets go before it can be anything. \"Go on,\" she says. \"Before I bet against myself.\"",
+  "labels": [
+   "Wish her the good run",
+   "Tell her to stop",
+   "Take the papers and go"
+  ],
+  "results": [
+   {
+    "label": "Wish her the good run",
+    "text": "\"From your mouth,\" she says, and crosses two fingers on each hand, and holds them up, and laughs. It is the best laugh you have heard from her, and the shortest.",
+    "changes": [
+     "s.people.p1.liftedAt: undefined -> 1",
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You wished me the good run.",
+     "s.people.p1.opinion: 0 -> 2"
+    ]
+   },
+   {
+    "label": "Tell her to stop",
+    "text": "She laughs, and means it, and does not. \"I will think about it,\" she says. \"On a Tuesday.\" She does not say which one.",
+    "changes": [
+     "s.people.p1.liftedAt: undefined -> 1",
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You told me to stop.",
+     "s.people.p1.opinion: 0 -> 1"
+    ]
+   },
+   {
+    "label": "Take the papers and go",
+    "text": "You take the papers and go. When you look back from the dock, she is on the ramp with a coin on her thumb, and she tosses it, and you do not stay to see how it lands.",
+    "changes": [
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the papers and went."
+    ]
+   }
+  ]
+ },
+ {
+  "captain": "zoya",
+  "state": "full",
+  "title": "The Ramp",
+  "text": "Captain Pell is on the ramp, not at the foot of it, leaning on the rail with her boots crossed. \"I do not do goodbyes,\" she says. \"I do wagers. I bet you do well. I bet you come back. I will take either side.\"</p><p>Ines Ferreira and Ines Ferreira will go with you. She whistles, one low note. \"I bet you will do better by them than I did,\" she says. \"I am not even joking. That is not a bet. That is a fact.\"</p><p>She does not mention the cards. She does not need to. \"One good run,\" she says, \"and I will send you a postcard from somewhere with a beach. If I do not, it is because it was not good enough.\" She says it lightly. She has said it for six years.</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>She counts a hundred and twenty-five into your hand, in folded notes, from the roll. \"A quarter,\" she says. \"As promised. Do not tell Dobrescu where I got it.\"</p><p>Ansel is at the hatch, in his coat, with the folded sheet in one hand. \"I advised against most of it,\" he says. \"I want that on the record. And I want you to know it was the best six years of my working life. Do not tell her the second part.\"</p><p>She hugs you, fast, and lets go before it can be anything. \"Go on,\" she says. \"Before I bet against myself.\"",
+  "labels": [
+   "Wish her the good run",
+   "Tell her to stop",
+   "Take the papers and go"
+  ],
+  "results": [
+   {
+    "label": "Wish her the good run",
+    "text": "\"From your mouth,\" she says, and crosses two fingers on each hand, and holds them up, and laughs. It is the best laugh you have heard from her, and the shortest.",
+    "changes": [
+     "s.credits: 5000 -> 5125",
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You wished me the good run."
+    ]
+   },
+   {
+    "label": "Tell her to stop",
+    "text": "She laughs, and means it, and does not. \"I will think about it,\" she says. \"On a Tuesday.\" She does not say which one.",
+    "changes": [
+     "s.credits: 5000 -> 5125",
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You told me to stop."
+    ]
+   },
+   {
+    "label": "Take the papers and go",
+    "text": "You take the papers and go. When you look back from the dock, she is on the ramp with a coin on her thumb, and she tosses it, and you do not stay to see how it lands.",
+    "changes": [
+     "s.credits: 5000 -> 5125",
+     "s.people.p1.memories: [] -> undefined",
+     "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the papers and went."
+    ]
+   }
+  ]
+ },
+ {
+  "captain": "zoya",
+  "state": "xoDead",
+  "title": "The Ramp",
+  "text": "Captain Pell meets you at the foot of the ramp and counts your last pay into your hand, fast, in notes, and then counts it again, slower, because she is not sure she did it right the first time. She did.</p><p>She does not mention the cards. She does not need to. \"One good run,\" she says, \"and I will send you a postcard from somewhere with a beach. If I do not, it is because it was not good enough.\" She says it lightly. She has said it for six years.</p><p>Ansel's chair at the nav table is empty, and the sheet is not on it. \"He kept the books,\" she says. \"I did not know what I was without somebody who wrote down what I was. I am finding out.\" She is not smiling.</p><p>She hugs you, fast, and lets go before it can be anything. \"Go on,\" she says. \"Before I bet against myself.\"",
+  "labels": [
+   "Wish her the good run",
+   "Tell her to stop",
+   "Take the papers and go"
+  ]
+ }
+]

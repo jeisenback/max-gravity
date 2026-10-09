@@ -136,13 +136,22 @@ CAPTAINS.dov = {
     xo: 'Ilsa is at the hatch with her arms folded. "He will not say it," she says, "so I will. You were good to him. Do not tell him I said so."',
     parting: 'He hugs you, which you did not expect, and which he does badly, and warmly. "Come and see us," he says. "Come and see me. I will be here. There is always somebody in the galley."',
     choices: [
-      { label: 'Thank him for the work', run: () => { captainLike(2, 'You thanked me for the work.'); return 'You thank him. He says it was nothing, and then, because he cannot help it, tells you what it was.'; } },
+      {
+        label: 'Thank him for the work',
+        effects: { captainLike: { n: 2, memory: 'You thanked me for the work.' } },
+        result: 'You thank him. He says it was nothing, and then, because he cannot help it, tells you what it was.',
+      },
       {
         label: 'Tell him to ask Ilsa for help',
-        can: flags => !!flags.secretKnown,
-        run: () => { captainLike(2, 'You told me to ask for help.'); return 'He nods slowly. "I will," he says. "I will ask her to dinner. That is a start." He tries to make a story of it, and finds he does not need to.'; }
+        when: { captainFlag: 'secretKnown' },
+        effects: { captainLike: { n: 2, memory: 'You told me to ask for help.' } },
+        result: 'He nods slowly. "I will," he says. "I will ask her to dinner. That is a start." He tries to make a story of it, and finds he does not need to.',
       },
-      { label: 'Take the bread and go', run: () => { captainLike(0, 'You took the bread and went.'); return 'You take the bread and go. You look back from the end of the dock, and he is still at the foot of the ramp, waving, a small figure on a lit dock with nobody to tell.'; } },
+      {
+        label: 'Take the bread and go',
+        effects: { captainLike: { n: 0, memory: 'You took the bread and went.' } },
+        result: 'You take the bread and go. You look back from the end of the dock, and he is still at the foot of the ramp, waving, a small figure on a lit dock with nobody to tell.',
+      },
     ],
   },
 };
