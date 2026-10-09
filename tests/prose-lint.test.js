@@ -49,6 +49,7 @@ test('shape measures sentence length, spread and runs of short sentences', () =>
 
 test('shape splits after a closing quote, and gives zeros for no text', () => {
   assert.equal(shape(['"Hold it," she says. "Hold it until she is inside two thousand."']).count, 2);
+  assert.equal(shape(['\u201CHold it,\u201D she says. \u201CHold it until she is inside two thousand.\u201D']).count, 2, 'curly closing quotes split too (#429)');
   assert.deepEqual(shape([]), { count: 0, mean: 0, sd: 0, shortShare: 0, shortRuns: 0 });
 });
 

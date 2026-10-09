@@ -110,7 +110,7 @@ function extractProse(src) {
 // ---------- sentence shape and speech ----------
 
 const round2 = x => Math.round(x * 100) / 100;
-const sentences = text => text.split(/(?<=[.!?]["')\]]*)\s+/).filter(s => /\S/.test(s));
+const sentences = text => text.split(/(?<=[.!?]["')\]\u201D\u2019]*)\s+/).filter(s => /\S/.test(s));  // straight or curly closing quotes (#429)
 
 // Sentence length in words over all the strings: count, mean, spread (population standard deviation), the share under six words,
 // and the number of runs of four or more such short sentences in a row (counted within each string).
