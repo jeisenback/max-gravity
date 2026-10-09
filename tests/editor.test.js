@@ -42,7 +42,7 @@ test('every storylet is listed once, as data, with its source file', async () =>
   const g = await open({ scope: 'full' });
   const ids = await g.ev(() => STORYLETS.map(s => s.id));
   await g.done();
-  const data = rows.filter(r => r.kind === 'data');
+  const data = rows.filter(r => r.kind === 'data' && !r.registry);  // the storylets; the hired scenes of the registry are data or code by how they are written
   assert.deepEqual(data.map(r => r.id).sort(), [...ids].sort());
   assert.equal(new Set(rows.map(r => r.id)).size, rows.length, 'ids are unique');
   for (const r of data) assert.match(r.file, /^js\/stories\/[\w-]+\.js$/, r.id);
@@ -60,7 +60,7 @@ test('the hired chapter\'s code-written scenes are listed as code, and say where
   assert.equal(late.where, 'transit');
   assert.match(late.text, /The fund has been short every quarter/);
   assert.equal(late.belongs, "ilsa (first officer)");
-  assert.match(late.codeNote, /result lines are written inside functions/);
+  assert.match(late.codeNote, /choices run code/);
   assert.ok(late.choices.length > 0 && late.choices.every(c => c.label && c.result === ''));
   assert.equal(row('cast:ines:meet').where, 'port');
   assert.ok(row('cast:cato:late:closed'), 'a closed reading is its own row');
@@ -141,8 +141,8 @@ test('the page shows the rows, opens a scene to read it, and filters as you type
 test('a code-written scene has no form, and a data scene\'s form edits only its words', async () => {
   const inputs = await page.locator('.controls input, .controls select').evaluateAll(list => list.map(e => e.id));
   assert.deepEqual(inputs, ['q', 'where', 'file', 'kind', 'view', 'group', 'import-file'], 'the controls above the list filter, choose a view and import a file');
-  await page.fill('#q', 'cast:ilsa:late');
-  await page.click('button[data-id="cast:ilsa:late"]');
+  await page.fill('#q', 'scene:warning');
+  await page.click('button[data-id="scene:warning"]');
   assert.equal(await page.locator('#detail textarea').count(), 0);
   assert.match(await page.textContent('#detail'), /cannot be edited here until its text has an id/);
   await page.fill('#q', 'port-mars-sky');

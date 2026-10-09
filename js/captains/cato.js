@@ -73,16 +73,18 @@ CAST.cato = {
           'least. I will do the same for you, if you tell me what you need. The captain does not like it when I do. She is right to count it. I do it ' +
           'anyway." He holds out one of the mugs.'),
       choices: [
-        { label: 'Tell him what you need', run() {
-          castLike('cato', 2, 'You told me what you needed, and I put it on the bill.');
-          return ('You tell him you would rather have the middle watch than the cold one, and that you sleep badly after a hard burn. He writes it on ' +
+        {
+          label: 'Tell him what you need',
+          effects: { castLike: { who: 'cato', n: 2, memory: 'You told me what you needed, and I put it on the bill.' } },
+          result: ('You tell him you would rather have the middle watch than the cold one, and that you sleep badly after a hard burn. He writes it on ' +
               'the back of his hand with a stub of pencil. "Done," he says. Nobody has asked you that on a ship before, and it takes you a moment to ' +
-              'find the rest of your coffee.');
-        } },
-        { label: 'Say you are fine', run() {
-          castLike('cato', 1, 'You said you were fine, and I left it there.');
-          return 'You say you are fine. "Good," he says, and means it, and does not believe it. He leaves the mug on the rail beside you, and the offer with it, and goes aft to see about somebody else\'s watch.';
-        } },
+              'find the rest of your coffee.'),
+        },
+        {
+          label: 'Say you are fine',
+          effects: { castLike: { who: 'cato', n: 1, memory: 'You said you were fine, and I left it there.' } },
+          result: 'You say you are fine. "Good," he says, and means it, and does not believe it. He leaves the mug on the rail beside you, and the offer with it, and goes aft to see about somebody else\'s watch.',
+        },
       ],
     },
     mid1: {
@@ -93,16 +95,18 @@ CAST.cato = {
           'do not want to own her. I want a share, and a deck, and the same hold gang on it at the end. That is all." He puts the notebook away. "Do ' +
           'you think that is a stupid thing to want?"'),
       choices: [
-        { label: 'Ask which ship has the question mark', run() {
-          castLike('cato', 2, 'You asked about the ship with the question mark.'); castFlag('cato', 'share');
-          return ('He tells you, and it is a hull you have seen on the lanes: old, slow, honest. "Her owner wants out in two years," he says. "I have ' +
+        {
+          label: 'Ask which ship has the question mark',
+          effects: { castLike: { who: 'cato', n: 2, memory: 'You asked about the ship with the question mark.' }, castFlag: { who: 'cato', flag: 'share' } },
+          result: ('He tells you, and it is a hull you have seen on the lanes: old, slow, honest. "Her owner wants out in two years," he says. "I have ' +
               'been watching her price like the weather." He talks about her for ten minutes without stopping, and when he is done he looks slightly ' +
-              'embarrassed, and slightly lighter.');
-        } },
-        { label: 'Say it is not stupid, but it is a long way off', run() {
-          castLike('cato', 1, 'You said it was not stupid, but a long way off.');
-          return '"It is," he says. "It is a long way off every day, and then it is one day nearer. That is how I came up through the hold." He puts a hand on the lashing.';
-        } },
+              'embarrassed, and slightly lighter.'),
+        },
+        {
+          label: 'Say it is not stupid, but it is a long way off',
+          effects: { castLike: { who: 'cato', n: 1, memory: 'You said it was not stupid, but a long way off.' } },
+          result: '"It is," he says. "It is a long way off every day, and then it is one day nearer. That is how I came up through the hold." He puts a hand on the lashing.',
+        },
       ],
     },
     mid2: {
@@ -112,16 +116,18 @@ CAST.cato = {
           'will cover it, they have had four hours\' sleep in two days. Neither of them is wrong. Both are somewhere aft of you, not looking at each ' +
           'other, and neither will tell you what the other said.'),
       choices: [
-        { label: 'Hold the deck, as the captain wrote it', run() {
-          castLike('cato', -1, 'You held the deck against my order.'); captainLike(2, 'You held the deck as I wrote it.');
-          return 'You hold the deck. The count comes out right the second time and wrong by one crate the first. Captain Vance writes it in the notebook and does not look up. Cato says nothing at all, and takes the cold watch himself the next night, without being asked, which is worse.';
-        } },
-        { label: 'Stand the watch down, as Cato said', run() {
-          castLike('cato', 2, 'You stood the watch down on my word.'); captainLike(-1, 'You stood the watch down against my order.');
-          return ('You stand them down. Cato covers the watch. The count is not done until morning, and Captain Vance finds the gap in it, and finds ' +
+        {
+          label: 'Hold the deck, as the captain wrote it',
+          effects: { castLike: { who: 'cato', n: -1, memory: 'You held the deck against my order.' }, captainLike: { n: 2, memory: 'You held the deck as I wrote it.' } },
+          result: 'You hold the deck. The count comes out right the second time and wrong by one crate the first. Captain Vance writes it in the notebook and does not look up. Cato says nothing at all, and takes the cold watch himself the next night, without being asked, which is worse.',
+        },
+        {
+          label: 'Stand the watch down, as Cato said',
+          effects: { castLike: { who: 'cato', n: 2, memory: 'You stood the watch down on my word.' }, captainLike: { n: -1, memory: 'You stood the watch down against my order.' } },
+          result: ('You stand them down. Cato covers the watch. The count is not done until morning, and Captain Vance finds the gap in it, and finds ' +
               'you. "Whose order?" she says. You tell her. "I see," she says, and writes something down. Cato, passing in the passage, does not look ' +
-              'at either of you, and puts a hand on the bulkhead for a moment as he goes.');
-        } },
+              'at either of you, and puts a hand on the bulkhead for a moment as he goes.'),
+        },
       ],
     },
     late: {
@@ -132,14 +138,16 @@ CAST.cato = {
           'face. "I am not asking you for anything. I am telling you where I stand. If it goes badly, I would rather you were somewhere I could find ' +
           'you."'),
       choices: [
-        { label: 'Ask him to tell you if it goes badly', run() {
-          castLike('cato', 2, 'You asked me to tell you if it went badly.'); castFlag('cato', 'told');
-          return 'He nods slowly. "I will," he says. "I will put it on the bill." He tries to smile at it, and it does not quite come. "It is something, to have somebody to tell."';
-        } },
-        { label: 'Tell him it is not yours to carry', run() {
-          castLike('cato', 1, 'You said it was not yours to carry.');
-          return '"No," he says. "It is not." He sounds relieved, and sorry to be. "I wanted somebody to hear it said, that is all. It is a lot to carry in the hold."';
-        } },
+        {
+          label: 'Ask him to tell you if it goes badly',
+          effects: { castLike: { who: 'cato', n: 2, memory: 'You asked me to tell you if it went badly.' }, castFlag: { who: 'cato', flag: 'told' } },
+          result: 'He nods slowly. "I will," he says. "I will put it on the bill." He tries to smile at it, and it does not quite come. "It is something, to have somebody to tell."',
+        },
+        {
+          label: 'Tell him it is not yours to carry',
+          effects: { castLike: { who: 'cato', n: 1, memory: 'You said it was not yours to carry.' } },
+          result: '"No," he says. "It is not." He sounds relieved, and sorry to be. "I wanted somebody to hear it said, that is all. It is a lot to carry in the hold."',
+        },
       ],
       // Below friendly he keeps it to himself, and the favour he would have asked (the `told` flag, read in the ice hold) is not asked.
       closed: {
@@ -148,7 +156,10 @@ CAST.cato = {
             'thought better of it." He turns the pencil over in his fingers. "It is not that you have done anything. I have not known you long enough, ' +
             'and what I would say is a lot to put on somebody I do not know yet. Ask me again some day."'),
         choices: [
-          { label: 'Say it can wait', run: () => '"It can," he says, and puts the pencil back behind his ear. "Thank you for not asking what it was."' },
+          {
+            label: 'Say it can wait',
+            result: '"It can," he says, and puts the pencil back behind his ear. "Thank you for not asking what it was."',
+          },
         ],
       },
     },
@@ -167,10 +178,11 @@ CAST.cato = {
       choices: [
         { label: 'Let him go in', run: () => inTheIceHold(false) },
         { label: 'Send an ice hand in with him', ...gated([() => iceHands() >= 1, () => 'There is no ice hand to send.']), run: () => inTheIceHold(true) },
-        { label: 'Seal the hold and let the ice go', run() {
-          castFlag('cato', 'benched'); castLike('cato', -3, 'You sealed the hold on me.');
-          return 'You tell him no, and shut the hatch. The ice goes where ice goes, and the pod will not be the same. Cato stands at the hatch with the strap in his hands and says nothing for a while. "It is your call," he says at last, and means it, and it costs you.';
-        } },
+        {
+          label: 'Seal the hold and let the ice go',
+          effects: { castFlag: { who: 'cato', flag: 'benched' }, castLike: { who: 'cato', n: -3, memory: 'You sealed the hold on me.' } },
+          result: 'You tell him no, and shut the hatch. The ice goes where ice goes, and the pod will not be the same. Cato stands at the hatch with the strap in his hands and says nothing for a while. "It is your call," he says at last, and means it, and it costs you.',
+        },
       ],
     },
   },

@@ -123,7 +123,7 @@ test('the new scene is in the index, can be found, and plays in the preview with
   const list = await page.textContent('#list');
   assert.match(list, /first-beat/); assert.match(list, /second-beat/); assert.match(list, /The Second Beat/);
   assert.equal(await page.locator('#list .edited', { hasText: 'new' }).count(), 2);
-  assert.equal(await page.evaluate(() => SceneIndex.rows.some(r => /beat/.test(r.id))), false, 'the shipped rows are the shipped scenes');
+  assert.equal(await page.evaluate(() => SceneIndex.rows.some(r => /^(first|second)-beat$/.test(r.id))), false, 'the shipped rows are the shipped scenes');
   await page.click('button[data-id="new:1"]');
   assert.match(await page.textContent('#detail'), /The First Beat/);
   await page.click('[data-action="play"]');

@@ -132,7 +132,8 @@ function captainScene(name) {
   const d = captainEntry(), sc = d.scenes[name], cap = hiredCaptain();
   const s = name === 'secret' ? (cap.opinion >= SECRET_TRUST ? sc.confide : sc.found) : sc;
   if (s.flag) captainFlag(s.flag);  // a fact the scene tells (the spine of the chapter, #294)
-  return { title: s.title, text: s.text, personal: true, choices: s.choices };
+  const scene = sceneWords(`captain:${cap.captainKey}:${name === 'secret' ? (cap.opinion >= SECRET_TRUST ? 'secret:confide' : 'secret:found') : name}`, { title: s.title, text: s.text, personal: true, choices: s.choices });
+  return { ...scene, choices: scene.choices.map(dataChoice) };
 }
 
 // What the hand lived through, kept as flags where it happened (icerun.js, boarders.js, engagements.js) and read by the goodbye and the

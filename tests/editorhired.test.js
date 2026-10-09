@@ -1,0 +1,167 @@
+'use strict';
+
+// The hired chapter's scenes in the editor (#342): the ones turned into data have their effects in forms, every cast and captain scene has its words
+// editable, and each plays in the preview with the people it is about aboard.
+
+const { test, before, after } = require('node:test');
+const assert = require('node:assert/strict');
+const path = require('node:path');
+const { chromium } = require('playwright');
+const { open, watch, closeBrowser } = require('./helpers');
+
+const URL = 'file://' + path.resolve(__dirname, '..', 'editor.html');
+let browser, page, errors;
+
+before(async () => {
+  browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
+  const ctx = await browser.newContext({ viewport: { width: 1700, height: 1000 } });
+  await ctx.route(/fonts\.(googleapis|gstatic)\.com/, route => route.fulfill({ status: 200, contentType: 'text/css', body: '' }));
+  page = await ctx.newPage();
+  errors = [];
+  watch(page, errors);
+  await page.goto(URL);
+  await page.waitForFunction(() => SceneIndex.rows, null, { timeout: 30000 });
+});
+after(async () => {
+  try { assert.deepEqual(errors, [], 'page errors'); } finally { await browser.close(); await closeBrowser(); }
+});
+
+async function reload() { await page.goto(URL); await page.evaluate(() => localStorage.clear()); await page.reload(); await page.waitForFunction(() => SceneIndex.rows, null, { timeout: 30000 }); }
+const select = async id => { await page.fill('#q', id); await page.click(`button[data-id="${id}"]`); };
+const rule = (p, key) => `[data-rpath="${p}"][data-rkey="${key}"]`;
+const changes = async () => JSON.parse((await page.textContent('#changes')).match(/^const SCENE_OVERRIDES = ([\s\S]*?);\nconst NEW_SCENES/)[1]);
+async function play() {
+  await page.evaluate(() => { document.querySelector('#pv-report').replaceChildren(); document.querySelector('#pv-effects').replaceChildren(); });
+  await page.click('[data-action="play"]');
+  await page.waitForFunction(() => document.querySelector('#pv-report').textContent.length > 0, null, { timeout: 30000 });
+  const f = page.frames().find(x => /editor-preview/.test(x.url()));
+  await f.waitForFunction(() => typeof G !== 'undefined' && G.dialog, null, { timeout: 30000 });
+  return f;
+}
+
+test('the converted scenes are data rows of the registry, and the rest are code rows with a text layer', async () => {
+  const r = await page.evaluate(() => {
+    const row = id => SceneIndex.rows.find(x => x.id === id);
+    return { ansel: ['kind', 'registry'].map(k => row('cast:ansel:intro')[k]), closed: ['kind', 'registry'].map(k => row('cast:cato:late:closed')[k]), ilsa: ['kind', 'registry'].map(k => row('cast:ilsa:late')[k]),
+      effects: row('cast:ansel:intro').choices[0].effects, edit: row('cast:ilsa:late').edit.choices.map(c => c.effects), goodbye: row('captain:hester:goodbye').registry, signon: row('scene:sign-on').registry,
+      storylets: SceneIndex.rows.filter(x => x.kind === 'data' && !x.registry).length, dataRegistry: SceneIndex.rows.filter(x => x.kind === 'data' && x.registry).length };
+  });
+  assert.deepEqual(r.ansel, ['data', true]);
+  assert.deepEqual(r.closed, ['data', true]);
+  assert.deepEqual(r.ilsa, ['code', true]);
+  assert.equal(r.effects.castLike.who, 'ansel');
+  assert.deepEqual(r.edit, [false, false], 'code choices keep their effects in code');
+  assert.ok(!r.goodbye && !r.signon, 'the goodbye and the function-built scenes are not edited yet');
+  assert.equal(r.dataRegistry, 13);
+});
+
+test('a converted scene\'s effects are in forms, checked as typed, and changing one is a change to the file', async () => {
+  await reload(); await select('cast:ansel:intro');
+  const shown = JSON.parse(await page.inputValue(rule('c0.effects', 'castLike')));
+  assert.deepEqual(Object.keys(shown), ['who', 'n', 'memory']);
+  assert.equal(await page.locator('#detail [data-add="when"]').count(), 0, 'no conditions on a hired scene');
+  await page.fill(rule('c0.effects', 'castLike'), JSON.stringify({ ...shown, n: 5 }));
+  assert.deepEqual((await changes())['cast:ansel:intro'], { choices: { 0: { effects: { castLike: { ...shown, n: 5 } } } } });
+  await page.fill(rule('c0.effects', 'castLike'), JSON.stringify({ ...shown, who: 'nobody' }));
+  assert.match(await page.textContent('[data-rerr="c0.effects|castLike"]'), /nobody is not a main character or first officer/);
+  assert.deepEqual(await changes(), {}, 'a field with a problem is left out');
+  await page.fill(rule('c0.effects', 'castLike'), JSON.stringify(shown));
+  assert.deepEqual(await changes(), {}, 'the shipped value is no change');
+  // A flag the scene does not set can be added from the list the game's table gives.
+  await page.selectOption('[data-add="c0.effects"]', 'castFlag');
+  await page.fill(rule('c0.effects', 'castFlag'), '{"who":"ansel","flag":"heard"}');
+  assert.equal((await changes())['cast:ansel:intro'].choices[0].effects.castFlag.flag, 'heard');
+});
+
+test('the scene plays in the preview with its own captain and first officer aboard, and the edited effect plays', async () => {
+  await reload(); await select('cast:ansel:intro');
+  const shown = JSON.parse(await page.inputValue(rule('c0.effects', 'castLike')));
+  await page.fill('#f-title', 'An Edited Title');
+  await page.fill(rule('c0.effects', 'castLike'), JSON.stringify({ ...shown, n: 4 }));
+  const f = await play();
+  const r = await f.evaluate(() => ({ title: G.dialog.event.title, captain: hired().captainKey, aboard: castAboard().map(c => c.cast).sort(), mode: G.mode }));
+  assert.equal(r.title, 'An Edited Title');
+  assert.equal(r.captain, 'zoya', 'the captain whose first officer is Ansel');
+  assert.ok(r.aboard.includes('ansel'));
+  assert.match(await page.textContent('#pv-report'), /plays by its days/);
+  await f.click('[data-action="choose"][data-arg="0"]');
+  await page.waitForFunction(() => document.querySelector('#pv-effects').textContent.length > 0);
+  assert.match(await page.textContent('#pv-effects'), /opinion of you: 0 to 4 \(\+4\)/);
+});
+
+test('the words of a code scene can be edited, and a result written replaces the line the code returns', async () => {
+  await reload(); await select('cast:ilsa:late');
+  await page.fill('#f-title', 'Ilsa, Edited');
+  await page.fill('#f-c0\\.result', 'Ilsa says nothing at all.');
+  assert.deepEqual(await changes(), { 'cast:ilsa:late': { title: 'Ilsa, Edited', choices: { 0: { result: 'Ilsa says nothing at all.' } } } });
+  const f = await play();
+  assert.equal(await f.evaluate(() => G.dialog.event.title), 'Ilsa, Edited');
+  await f.click('[data-action="choose"][data-arg="0"]');
+  await page.waitForFunction(() => document.querySelector('#pv-effects').textContent.length > 0);
+  assert.equal((await f.textContent('#event-result')).trim(), 'Ilsa says nothing at all.');
+  assert.match(await page.textContent('#pv-effects'), /opinion of you/, 'what the code does is unchanged');
+});
+
+test('the closed and the open reading of a scene are two rows, and the preview plays the one asked for', async () => {
+  await reload(); await select('cast:cato:late:closed');
+  await page.fill('#f-title', 'The Shut Door');
+  let f = await play();
+  assert.equal(await f.evaluate(() => G.dialog.event.title), 'The Shut Door');
+  await select('cast:cato:late');
+  f = await play();
+  assert.equal(await f.evaluate(() => G.dialog.event.title), 'What Cato Knows', 'the open reading is as shipped');
+});
+
+test('a captain\'s scene plays in the preview, in the reading its regard picks', async () => {
+  await reload(); await select('captain:hester:secret:found');
+  await page.fill('#f-title', 'Found Out');
+  let f = await play();
+  assert.deepEqual(await f.evaluate(() => [G.dialog.event.title, hired().captainKey]), ['Found Out', 'hester']);
+  await select('captain:hester:secret:confide');
+  f = await play();
+  assert.notEqual(await f.evaluate(() => G.dialog.event.title), 'Found Out');
+});
+
+test('what the editor writes for a hired scene is a file the game takes, and a bad one is refused item by item', async () => {
+  await reload(); await select('cast:pilar:mid1');
+  const shown = JSON.parse(await page.inputValue(rule('c0.effects', 'castLike')));
+  await page.fill('#f-title', 'Exported'); await page.fill(rule('c0.effects', 'castLike'), JSON.stringify({ ...shown, n: 2 }));
+  const [d] = await Promise.all([page.waitForEvent('download'), page.click('[data-action="export"]')]);
+  const text = require('node:fs').readFileSync(await d.path(), 'utf8');
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(src => {
+    const warnings = [], w = console.warn; console.warn = m => warnings.push(m);
+    const file = Function(`'use strict'; ${src}; return { SCENE_OVERRIDES };`)();
+    useOverrides(file.SCENE_OVERRIDES); console.warn = w;
+    startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey: 'imre', credits: 5000 }); G.dialog = null;
+    return { warnings, title: castScene('pilar', CAST.pilar.scenes.mid1).title };
+  }, text);
+  await g.done();
+  assert.deepEqual(r, { warnings: [], title: 'Exported' });
+  const tmp = require('node:path').join(require('node:os').tmpdir(), `hired-import-${process.pid}.js`);
+  require('node:fs').writeFileSync(tmp, 'const SCENE_OVERRIDES = {"cast:cato:intro":{"title":"Imported","when":{"day":3},"choices":{"0":{"next":"port-mars-sky","effects":{"castLike":{"who":"nobody","n":1,"memory":"m"}}}}},"cast:ines:intro":{"choices":{"0":{"effects":{"credits":1}}}}};\nconst NEW_SCENES = [];\n');
+  await reload();
+  await page.setInputFiles('#import-file', tmp);
+  await page.waitForSelector('#notice .notice');
+  const n = await page.textContent('#notice');
+  for (const part of ['cast:cato:intro: title', 'cast:cato:intro when: a hired scene plays by its days', 'choice 1 next: a hired scene plays by its days', 'choice 1 effects: castLike nobody is not a main character', 'cast:ines:intro choice 1 effects: this choice runs code']) assert.ok(n.includes(part), `${part} in: ${n}`);
+  require('node:fs').rmSync(tmp, { force: true });
+});
+
+test('the editor\'s checks of the hired effects are the game\'s', async () => {
+  const samples = [{ who: 'ilsa', n: 1, memory: 'm' }, { who: 'nobody', n: 1, memory: 'm' }, { who: 'ilsa', n: 'x', memory: 'm' }, { who: 'ilsa', n: 1, memory: ' ' }, 'oops', null,
+    { who: 'ilsa', flag: 'f' }, { who: 'ilsa', flag: '' }, { who: 'ilsa', role: 'engineer', n: 2 }, { who: 'ilsa', role: '', n: 2 }, { n: 2, memory: 'm' }, { n: 'x' }, 'a', ['a', 'b'], [1], ''];
+  const here = await page.evaluate(s => ['castLike', 'castFlag', 'castXp', 'captainLike', 'captainFlag'].map(k => s.map(v => { const kind = SceneIndex.kindOf(`shape:${k}`); return !kind.parse(JSON.stringify(v === undefined ? null : v)).error; })), samples);
+  const g = await open({ scope: 'full' });
+  const there = await g.ev(s => ['castLike', 'castFlag', 'castXp', 'captainLike', 'captainFlag'].map(k => s.map(v => !EFFECT_SHAPES[k](v))), samples);
+  await g.done();
+  assert.deepEqual(here, there);
+});
+
+test('the chain view leaves the hired scenes out: they are played by their days, not led to', async () => {
+  await reload();
+  await page.selectOption('#view', 'chain');
+  const groups = await page.locator('#group option').allTextContents();
+  assert.ok(groups.length > 5);
+  assert.ok(!groups.some(g => /first officer|captain\)|main character/.test(g)), groups.join(', '));
+});

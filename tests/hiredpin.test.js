@@ -39,8 +39,8 @@ const pinAll = () => {
         window.drawCastPair = real;
         G.dialog = null; G.nextEvent = null;
         const before = flat(G.state, 's', {});
-        const run = c.run ? c.run : () => (typeof c.result === 'string' ? c.result : '');
-        const text = run.call(c);
+        const played = dataChoice(c);  // a choice written as data is played as the game plays it
+        const text = played.run();
         rec.result = typeof text === 'string' ? text : String(text);
         rec.changes = diff(before, flat(G.state, 's', {}));
         rec.next = G.nextEvent ? G.nextEvent.title : null;

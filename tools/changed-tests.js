@@ -14,7 +14,7 @@ const path = require('node:path');
 
 const LAYOUT = ['tests/layout.test.js', 'tests/shell.test.js', 'tests/ui.test.js'];
 const GLOBALS = 'tests/globals.test.js';
-const EDITOR = ['tests/editor.test.js', 'tests/editorforms.test.js', 'tests/editornew.test.js', 'tests/editorpreview.test.js', 'tests/editorsave.test.js'];
+const EDITOR = ['tests/editor.test.js', 'tests/editorforms.test.js', 'tests/editornew.test.js', 'tests/editorpreview.test.js', 'tests/editorsave.test.js', 'tests/editorhired.test.js'];
 
 const declared = src => [...src.matchAll(/^(?:async\s+)?(?:const|let|var|function|class)\s+([A-Za-z_$][\w$]*)/gm)].map(m => m[1]).filter(n => n.length >= 3);
 const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

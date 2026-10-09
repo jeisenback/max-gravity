@@ -330,3 +330,103 @@ test('the new scenes in the file are added once, when the first game starts', as
   await g.done();
   assert.deepEqual(r, { n: 1, errors: [] });
 });
+
+// ---------- the hired chapter's scenes as data (#342) ----------
+
+// The scenes whose choices were turned from code into data; the pin (tests/hiredpin.test.js) shows they play as they did.
+const CONVERTED = ['cast:ansel:intro', 'cast:ansel:mid1', 'cast:ansel:mid2', 'cast:ansel:late', 'cast:pilar:intro', 'cast:pilar:mid1', 'cast:pilar:mid2', 'cast:pilar:late',
+  'cast:cato:intro', 'cast:cato:mid1', 'cast:cato:mid2', 'cast:cato:late', 'cast:cato:late:closed'];
+
+test('the first group of hired scenes is data, and the rest of the chapter is untouched', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(ids => {
+    const by = Object.fromEntries(hiredSceneRegistry().filter(e => e.scene).map(e => [e.id, e.scene]));
+    const data = id => by[id].choices.every(c => !c.run && typeof c.result === 'string' && c.label);
+    return { notData: ids.filter(id => !data(id)), pivots: ['cast:ansel:pivot', 'cast:pilar:pivot', 'cast:cato:pivot'].map(id => by[id].choices.some(c => c.run)), others: ['cast:ines:intro', 'captain:hester:secret:confide'].map(id => by[id].choices.some(c => c.run)) };
+  }, CONVERTED);
+  await g.done();
+  assert.deepEqual(r, { notData: [], pivots: [true, true, true], others: [true, true] });
+});
+
+test('a choice written as data plays as its closure did, and a choice with run() is left alone', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey: 'hester', credits: 5000 }); G.dialog = null;
+    const code = { label: 'x', run() { return 'code result'; } };
+    const data = { label: 'y', result: 'data result', effects: { castLike: { who: 'cato', n: 2, memory: 'You did it.' }, captainFlag: ['one', 'two'], castFlag: { who: 'cato', flag: 'seen' }, castXp: { who: 'cato', role: 'xo', n: 1 }, captainLike: { n: 1, memory: 'You helped.' } } };
+    const op = castPerson('cato').opinion, cap = hiredCaptain().opinion;
+    const text = dataChoice(data).run();
+    return { same: dataChoice(code) === code, code: dataChoice(code).run(), text, cato: castPerson('cato').opinion - op, captain: hiredCaptain().opinion - cap, memory: castPerson('cato').memories.some(m => /You did it/.test(m.text || m)),
+      flags: [!!castRec('cato').flags.seen, !!hired().flags.one, !!hired().flags.two] };
+  });
+  await g.done();
+  assert.deepEqual(r, { same: true, code: 'code result', text: 'data result', cato: 2, captain: 1, memory: true, flags: [true, true, true] });
+});
+
+test('the hired chapter\'s effects are checked for their shape wherever effects are', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    const s = fx => storyletProblems({ id: 'probe', where: 'port', title: 't', text: 't', choices: [{ label: 'x', effects: fx }] });
+    return {
+      ok: s({ castLike: { who: 'ilsa', n: 1, memory: 'm' }, castFlag: { who: 'ilsa', flag: 'f' }, castXp: { who: 'ilsa', role: 'engineer', n: 2 }, captainLike: { n: -1, memory: 'm' }, captainFlag: 'a' }),
+      bad: s({ castLike: { who: 'nobody', n: 1, memory: 'm' }, castFlag: 'oops', castXp: { who: 'ilsa', role: '', n: 'x' }, captainLike: { n: 1 }, captainFlag: [1] }),
+    };
+  });
+  await g.done();
+  assert.deepEqual(r.ok, []);
+  assert.equal(r.bad.length, 5);
+  assert.ok(r.bad.some(p => /castLike nobody is not a main character/.test(p)) && r.bad.some(p => /captainFlag needs a name/.test(p)));
+});
+
+test('an override changes the words, labels, results and effects of a hired scene, and the choices it does not name stay as they were', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey: 'hester', credits: 5000 }); G.dialog = null;
+    const plain = castScene('cato', CAST.cato.scenes.mid1);
+    useOverrides({ 'cast:cato:mid1': { title: 'New <b>Title</b>', text: 'New <i>text</i>.', choices: { 0: { label: 'New label', result: 'New result & more.', effects: { castLike: { who: 'cato', n: 3, memory: 'Changed.' } } } } } });
+    const ov = castScene('cato', CAST.cato.scenes.mid1);
+    const op = castPerson('cato').opinion, text = ov.choices[0].run();
+    return { title: ov.title, text: ov.text, label: ov.choices[0].label, result: text, gain: castPerson('cato').opinion - op, other: ov.choices[1].label === plain.choices[1].label && ov.choices[1].result === plain.choices[1].result, usesEffects: !ov.choices[0].run.toString().includes('castLike(') };
+  });
+  await g.done();
+  assert.deepEqual(r, { title: 'New <b>Title</b>', text: 'New &lt;i&gt;text&lt;/i&gt;.', label: 'New label', result: 'New result &amp; more.', gain: 3, other: true, usesEffects: true });
+});
+
+test('a closed reading has its own id, and a code choice takes a result line and keeps its effects in code', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey: 'hester', credits: 5000 }); G.dialog = null;
+    castPerson('cato').opinion = OPINION.FRIEND - 1;
+    useOverrides({ 'cast:cato:late:closed': { title: 'Shut Title' }, 'cast:ines:intro': { choices: { 0: { result: 'Replaced line.' } } } });
+    const closed = castScene('cato', CAST.cato.scenes.late).title;
+    castPerson('cato').opinion = OPINION.FRIEND;
+    const open_ = castScene('cato', CAST.cato.scenes.late).title;
+    const ines = castScene('ines', CAST.ines.scenes.intro), op = castPerson('ines').opinion;
+    const line = ines.choices[0].run();
+    return { closed, open_, line, gain: castPerson('ines').opinion - op };
+  });
+  await g.done();
+  assert.equal(r.closed, 'Shut Title');
+  assert.notEqual(r.open_, 'Shut Title');
+  assert.equal(r.line, 'Replaced line.');
+  assert.ok(r.gain > 0, 'the code still changed their opinion');
+});
+
+test('an override for a hired scene the game would not take is left out, with one warning', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    const warnings = [], real = console.warn; console.warn = m => warnings.push(m);
+    const clean = cleanOverrides({
+      'cast:cato:intro': { title: 'Kept', when: { day: 3 }, choices: { 0: { label: 'Kept label', when: { credits: 1 }, next: 'port-mars-sky' } } },
+      'cast:ines:intro': { choices: { 0: { effects: { credits: 5 }, result: 'Kept line.' } } },
+      'cast:cato:mid1': { choices: { 0: { effects: { castLike: { who: 'nobody', n: 1, memory: 'm' } }, label: 'Kept too' } } },
+      'cast:nobody:intro': { title: 'x' },
+    });
+    console.warn = real;
+    return { clean, warnings };
+  });
+  await g.done();
+  assert.deepEqual(r.clean, { 'cast:cato:intro': { title: 'Kept', choices: { 0: { label: 'Kept label' } } }, 'cast:ines:intro': { choices: { 0: { result: 'Kept line.' } } }, 'cast:cato:mid1': { choices: { 0: { label: 'Kept too' } } } });
+  assert.equal(r.warnings.length, 1);
+  for (const part of ['has no "when"', 'choice 0 has no "when"', 'choice 0 has no "next"', 'runs code, so its effects are not edited', 'effects left out: effect castLike nobody is not a main character', 'unknown scene "cast:nobody:intro"']) assert.ok(r.warnings[0].includes(part), `${part} in ${r.warnings[0]}`);
+});

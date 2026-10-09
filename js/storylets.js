@@ -110,6 +110,13 @@ const EFFECTS = {
   learn: n => { if (hired()) gainSkill(hired().post, n); },
   later: v => { const qs = G.state.qualities = G.state.qualities || {}; for (const [k, n] of Object.entries(v)) qs[`due:${k}`] = G.state.day + Math.max(1, n); },
   set: v => { const qs = G.state.qualities = G.state.qualities || {}; Object.assign(qs, v); },
+  // The hired chapter's people (#342): what a main character, a first officer or the captain thinks of you, and what they know. Each value has a shape
+  // that EFFECT_SHAPES checks, so a scene cannot be written with one that would throw.
+  castLike: v => castLike(v.who, v.n, v.memory),
+  castFlag: v => castFlag(v.who, v.flag),
+  castXp: v => castXp(v.who, v.role, v.n),
+  captainLike: v => captainLike(v.n, v.memory),
+  captainFlag: v => { for (const f of [].concat(v)) captainFlag(f); },
   news: text => worldNews(fill(text)),
   log: text => journal(fill(text)),
   unrest: v => { for (const [sid, n] of Object.entries(v)) worldOf(sid).unrest = Math.max(0, Math.min(1, worldOf(sid).unrest + n)); },
@@ -198,19 +205,21 @@ function cleanOverrides(raw) {
   const STRUCT = ['when', 'effects', 'next'];
   if (!isObj(raw)) { if (raw !== undefined) bad.push('the overrides are not an object'); raw = {}; }
   for (const [id, o] of Object.entries(raw)) {
-    const s = STORYLETS.find(x => x.id === id);
-    if (!s) { bad.push(`unknown scene "${id}"`); continue; }
+    const s = STORYLETS.find(x => x.id === id), rs = s ? null : registryScene(id), scene = s || rs;  // a storylet, or a hired scene of the registry
+    if (!scene) { bad.push(`unknown scene "${id}"`); continue; }
     if (!isObj(o)) { bad.push(`"${id}" is not an object`); continue; }
     const mine = {}, pre = `"${id}"`;
     for (const [k, v] of Object.entries(o)) {
       if ((k === 'title' || k === 'text') && text(`${pre}.${k}`, v)) mine[k] = v;
-      else if (k === 'when') { if (isObj(v)) mine.when = v; else bad.push(`${pre}.when is not an object`); }
+      else if (k === 'when') { if (rs) bad.push(`${pre} has no "when" (a hired scene plays by its days, not by conditions)`); else if (isObj(v)) mine.when = v; else bad.push(`${pre}.when is not an object`); }
       else if (k === 'choices' && isObj(v)) {
         for (const [i, c] of Object.entries(v)) {
-          if (!/^\d+$/.test(i) || Number(i) >= s.choices.length) { bad.push(`${pre} has no choice ${i}`); continue; }
+          if (!/^\d+$/.test(i) || Number(i) >= scene.choices.length) { bad.push(`${pre} has no choice ${i}`); continue; }
           if (!isObj(c)) { bad.push(`${pre} choice ${i} is not an object`); continue; }
           for (const [f, x] of Object.entries(c)) {
             const slot = () => { mine.choices = mine.choices || {}; return (mine.choices[i] = mine.choices[i] || {}); };
+            if (rs && (f === 'when' || f === 'next')) { bad.push(`${pre} choice ${i} has no "${f}" (a hired scene plays by its days, not by conditions)`); continue; }
+            if (rs && f === 'effects' && rs.choices[i].run) { bad.push(`${pre} choice ${i} runs code, so its effects are not edited`); continue; }
             if ((f === 'label' || f === 'result') && text(`${pre} choice ${i} ${f}`, x)) slot()[f] = x;
             else if ((f === 'when' || f === 'effects') && isObj(x)) slot()[f] = x;
             else if (f === 'next' && (x === null || (typeof x === 'string' && STORYLETS.some(y => y.id === x)))) slot().next = x;
@@ -221,7 +230,15 @@ function cleanOverrides(raw) {
     }
     // The conditions, effects and links together, as the scene would be: if the game would refuse it, none of them go in.
     const changes = (mine.when !== undefined ? 1 : 0) + Object.values(mine.choices || {}).filter(c => STRUCT.some(f => c[f] !== undefined)).length;
-    if (changes) {
+    if (changes && rs) {  // a hired scene: only the effects of its data choices, held to the same shapes
+      const problems = Object.values(mine.choices || {}).flatMap(c => effectProblems(c.effects));
+      if (problems.length) {
+        bad.push(`${pre} effects left out: ${problems.join('; ')}`);
+        for (const c of Object.values(mine.choices || {})) delete c.effects;
+        for (const [i, c] of Object.entries(mine.choices || {})) if (!Object.keys(c).length) delete mine.choices[i];
+        if (mine.choices && !Object.keys(mine.choices).length) delete mine.choices;
+      }
+    } else if (changes) {
       const view = { ...s, when: mine.when !== undefined ? mine.when : s.when, choices: s.choices.map((c, i) => ({ ...c, ...pickDefined((mine.choices || {})[i], STRUCT) })) };
       const problems = storyletProblems(view, { duplicate: false });
       if (problems.length) {
@@ -238,12 +255,46 @@ function cleanOverrides(raw) {
   return out;
 }
 
+// A scene of the hired chapter that is not a storylet (a main character's, a first officer's or a captain's), by its id in js/hiredscenes.js.
+const registryScene = id => { const e = /^(cast|captain):/.test(id) && hiredSceneRegistry().find(x => x.id === id); return e && e.scene ? e.scene : null; };
+
+// The file's words and effects put on a hired scene as the game builds it (#342). `scene` is { title, text, choices }, a choice either data ({ label, result,
+// effects }) or code (a run() that returns its result line). The title and the labels are escaped by the dialog; the text and the results are not, so an override's
+// are escaped here. A code choice's override result replaces the line it returns and its effects stay in code. A scene the file does not name comes back as it was.
+function sceneWords(id, scene) {
+  const o = id ? sceneOverride(id) : {}, cs = o.choices || {};
+  if (!Object.keys(o).length) return scene;
+  return {
+    ...scene, title: o.title || scene.title, text: o.text ? esc(o.text) : scene.text,
+    choices: scene.choices.map((c, i) => {
+      const co = cs[i];
+      if (!co) return c;
+      const out = { ...c };
+      if (co.label) out.label = co.label;
+      if (co.effects && !c.run) out.effects = co.effects;
+      if (co.result) { const line = esc(co.result), run = c.run; if (run) out.run = function () { run.call(this); return line; }; else out.result = line; }
+      return out;
+    }),
+  };
+}
+
 // Cleaned once, on the first scene built or the first game started, so a mod's scenes are there to be named.
 let sceneOverrides = null;
 const useOverrides = raw => { sceneOverrides = cleanOverrides(raw); return sceneOverrides; };
 const sceneOverride = id => (sceneOverrides || useOverrides(SCENE_OVERRIDES))[id] || {};
 
 // ---------- the engine ----------
+// The shape each of the hired chapter's effects takes: '' if the value is right, else what is wrong. Checked wherever effects are checked.
+const isPlain = v => !!v && typeof v === 'object' && !Array.isArray(v);
+const EFFECT_SHAPES = {
+  castLike: v => (!isPlain(v) ? 'needs { who, n, memory }' : !CAST[v.who] ? `${v.who} is not a main character or first officer` : !Number.isFinite(v.n) ? 'n must be a number' : typeof v.memory !== 'string' || !v.memory.trim() ? 'memory must be some text' : ''),
+  castFlag: v => (!isPlain(v) ? 'needs { who, flag }' : !CAST[v.who] ? `${v.who} is not a main character or first officer` : typeof v.flag !== 'string' || !v.flag.trim() ? 'flag must be a name' : ''),
+  castXp: v => (!isPlain(v) ? 'needs { who, role, n }' : !CAST[v.who] ? `${v.who} is not a main character or first officer` : typeof v.role !== 'string' || !v.role ? 'role must be a post' : !Number.isFinite(v.n) ? 'n must be a number' : ''),
+  captainLike: v => (!isPlain(v) ? 'needs { n, memory }' : !Number.isFinite(v.n) ? 'n must be a number' : typeof v.memory !== 'string' || !v.memory.trim() ? 'memory must be some text' : ''),
+  captainFlag: v => ([].concat(v).every(f => typeof f === 'string' && f.trim()) ? '' : 'needs a name, or a list of names'),
+};
+const effectProblems = effects => Object.entries(effects || {}).flatMap(([k, v]) => (!EFFECTS[k] ? [`unknown effect "${k}"`] : EFFECT_SHAPES[k] && EFFECT_SHAPES[k](v) ? [`effect ${k} ${EFFECT_SHAPES[k](v)}`] : []));
+
 // What is wrong with a storylet, as a list of lines (empty when addStorylet would take it). The scene editor's changes are held to the same check.
 function storyletProblems(def, { duplicate = true } = {}) {
   const bad = [];
@@ -255,6 +306,7 @@ function storyletProblems(def, { duplicate = true } = {}) {
     check(def.when, CONDITIONS, 'condition');
     for (const c of def.choices || []) {
       check(c.when, CONDITIONS, 'condition'); check(c.effects, EFFECTS, 'effect');
+      for (const [k, v] of Object.entries(c.effects || {})) if (EFFECT_SHAPES[k] && EFFECT_SHAPES[k](v)) bad.push(`effect ${k} ${EFFECT_SHAPES[k](v)}`);
       for (const v of Object.values(c.effects || {})) if (v && v.onDone) check(v.onDone, EFFECTS, 'effect');  // a mission's effects on delivery
     }
   }

@@ -166,10 +166,21 @@ test('what the forms write never produces a scene the game would refuse, whateve
 });
 
 test('a code-written scene shows when it plays as read-only text, with no form', async () => {
-  await reload(); await select('cast:ilsa:late');
-  assert.match(await page.textContent('#detail'), /days after they join/);
+  await reload(); await select('captain:hester:goodbye');
+  assert.match(await page.textContent('#detail'), /When you leave the ship to buy your own/);
   assert.match(await page.textContent('#detail'), /written in code, and are read only until story 8/);
-  assert.equal(await page.locator('#detail [data-add], #detail [data-rpath]').count(), 0);
+  assert.equal(await page.locator('#detail [data-add], #detail [data-rpath], #detail textarea').count(), 0);
+  await select('scene:put-ashore');
+  assert.match(await page.textContent('#detail'), /falls to -3/);
+});
+
+test('a hired scene of the registry shows when it plays, and edits only what its choices let it', async () => {
+  await reload(); await select('cast:ilsa:late');
+  assert.match(await page.textContent('#detail'), /Plays 55 days after they join/);
+  assert.equal(await page.locator('#detail [data-add="when"], #detail [data-rnext]').count(), 0, 'it plays by its days, not by conditions');
+  assert.equal(await page.locator('#detail [data-add]').count(), 0, 'its choices run code, so no effects form');
+  assert.ok(await page.locator('#detail #f-title, #detail #f-c0\\.result').count() >= 2, 'its words are editable');
+  assert.match(await page.textContent('#detail'), /A result written here replaces the line it returns/);
   await select('captain:hester:secret:confide');
   assert.match(await page.textContent('#detail'), /40 days after you sign on, when their opinion of you is 2 or more/);
 });

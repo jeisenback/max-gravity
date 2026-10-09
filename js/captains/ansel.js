@@ -63,14 +63,16 @@ CAST.ansel = {
           'the person who tells the captain the probability. I tell her. She says, Good, and does it anyway." He turns the sheet round so you can see: ' +
           'columns, and a figure at the bottom. "I am not a pessimist. I was an actuary. It is the same thing, with better pay, and then it was not."'),
       choices: [
-        { label: 'Ask him what the figure means', run() {
-          castLike('ansel', 2, 'You asked what the figure meant.');
-          return '"It is the chance she gets all the way home," he says. "From where we are, with what she owes. It is not a bad figure. It is not a good one." He takes the sheet back and folds it, once. "I do not show it to the captain. She would bet on it."';
-        } },
-        { label: 'Ask him why he stays', run() {
-          castLike('ansel', 1, 'You asked why I stay.');
-          return '"Habit, or loyalty," he says, after a moment. "I have not decided which, and I have been deciding for six years." He seems surprised to have been asked. "I would say it was the pay, but I have seen the pay."';
-        } },
+        {
+          label: 'Ask him what the figure means',
+          effects: { castLike: { who: 'ansel', n: 2, memory: 'You asked what the figure meant.' } },
+          result: '"It is the chance she gets all the way home," he says. "From where we are, with what she owes. It is not a bad figure. It is not a good one." He takes the sheet back and folds it, once. "I do not show it to the captain. She would bet on it."',
+        },
+        {
+          label: 'Ask him why he stays',
+          effects: { castLike: { who: 'ansel', n: 1, memory: 'You asked why I stay.' } },
+          result: '"Habit, or loyalty," he says, after a moment. "I have not decided which, and I have been deciding for six years." He seems surprised to have been asked. "I would say it was the pay, but I have seen the pay."',
+        },
       ],
     },
     mid1: {
@@ -79,14 +81,16 @@ CAST.ansel = {
           '"It costs eleven thousand, which I do not have, and I am sixty-three, and the price goes up every year I am not sixty-three. This is the ' +
           'whole of my ambition. It is not a large one. I have never wanted to be rich. I would like to be sure."'),
       choices: [
-        { label: 'Tell him it is not a small ambition', run() {
-          castLike('ansel', 2, 'You said my ambition was not small.'); castFlag('ansel', 'annuity');
-          return '"It is the largest there is," he says, thoughtfully. "Everyone else wants the number to go up. I want it to stay." He folds the letter and puts it in the inside pocket, over the heart, where, you suspect, it has been for some time.';
-        } },
-        { label: 'Ask how close he is', run() {
-          castLike('ansel', 1, 'You asked how close I was.');
-          return 'He tells you, to the credit, and it is a good deal further than you hoped. He does not seem troubled by it. "That is the nice thing about a number," he says. "It does not pretend."';
-        } },
+        {
+          label: 'Tell him it is not a small ambition',
+          effects: { castLike: { who: 'ansel', n: 2, memory: 'You said my ambition was not small.' }, castFlag: { who: 'ansel', flag: 'annuity' } },
+          result: '"It is the largest there is," he says, thoughtfully. "Everyone else wants the number to go up. I want it to stay." He folds the letter and puts it in the inside pocket, over the heart, where, you suspect, it has been for some time.',
+        },
+        {
+          label: 'Ask how close he is',
+          effects: { castLike: { who: 'ansel', n: 1, memory: 'You asked how close I was.' } },
+          result: 'He tells you, to the credit, and it is a good deal further than you hoped. He does not seem troubled by it. "That is the nice thing about a number," he says. "It does not pretend."',
+        },
       ],
     },
     mid2: {
@@ -95,16 +99,18 @@ CAST.ansel = {
           'end of the dock, no manifest, triple the rate, and do not ask. Ansel\'s came in a quiet voice, in the passage: refuse it, there is a ' +
           'manifest or there is no cargo, and the man is on a list he has seen. They have both told you, and neither has told the other.'),
       choices: [
-        { label: 'Take the cargo, as the captain said', run() {
-          castLike('ansel', -1, 'You took the cargo against my advice.'); captainLike(2, 'You took the cargo as I said.');
-          return 'You load it. The crates are heavier than they look, and the man is gone before the lock cycles, and the pay is, as promised, triple. Captain Pell kisses the roll of notes. Ansel writes the date and the weight on his sheet, and closes the cover on it, quietly, like a lid.';
-        } },
-        { label: 'Refuse it, as Ansel said', run() {
-          castLike('ansel', 2, 'You refused the cargo on my word.'); captainLike(-1, 'You refused the cargo I wanted.');
-          return ('You refuse. The man shrugs, and takes the crates to the next ship, and the next ship is gone by morning with a cheerful crew. ' +
+        {
+          label: 'Take the cargo, as the captain said',
+          effects: { castLike: { who: 'ansel', n: -1, memory: 'You took the cargo against my advice.' }, captainLike: { n: 2, memory: 'You took the cargo as I said.' } },
+          result: 'You load it. The crates are heavier than they look, and the man is gone before the lock cycles, and the pay is, as promised, triple. Captain Pell kisses the roll of notes. Ansel writes the date and the weight on his sheet, and closes the cover on it, quietly, like a lid.',
+        },
+        {
+          label: 'Refuse it, as Ansel said',
+          effects: { castLike: { who: 'ansel', n: 2, memory: 'You refused the cargo on my word.' }, captainLike: { n: -1, memory: 'You refused the cargo I wanted.' } },
+          result: ('You refuse. The man shrugs, and takes the crates to the next ship, and the next ship is gone by morning with a cheerful crew. ' +
               'Captain Pell takes it well, which is to say loudly. "Triple!" she says, to the galley. "He made me refuse triple!" Ansel does not look ' +
-              'up from the sheet, and his pencil is not quite steady.');
-        } },
+              'up from the sheet, and his pencil is not quite steady.'),
+        },
       ],
     },
     late: {
@@ -114,14 +120,16 @@ CAST.ansel = {
           'kept it up since. It comes out the same every time." He looks at you. "I do not want to be a person who knew. If the last big run comes, I ' +
           'would like somebody else to have known."'),
       choices: [
-        { label: 'Ask him what the odds are', run() {
-          castLike('ansel', 1, 'You asked me what the odds were.');
-          return 'He tells you, and you wish he had not. It is not a small figure and it is not a large one, and it is somewhere you could stand to lose, if it were only you. "That is the part I cannot do anything with," he says. "It is never only you."';
-        } },
-        { label: 'Tell him you will stop her if you can', run() {
-          castLike('ansel', 2, 'You said you would stop her if you could.'); castFlag('ansel', 'told');
-          return 'He looks at you for a long time. "You cannot," he says, gently. "But thank you for saying it as if you could. That is more than I have had in six years." He turns the sheet over, face down, for the first time since you have known him.';
-        } },
+        {
+          label: 'Ask him what the odds are',
+          effects: { castLike: { who: 'ansel', n: 1, memory: 'You asked me what the odds were.' } },
+          result: 'He tells you, and you wish he had not. It is not a small figure and it is not a large one, and it is somewhere you could stand to lose, if it were only you. "That is the part I cannot do anything with," he says. "It is never only you."',
+        },
+        {
+          label: 'Tell him you will stop her if you can',
+          effects: { castLike: { who: 'ansel', n: 2, memory: 'You said you would stop her if you could.' }, castFlag: { who: 'ansel', flag: 'told' } },
+          result: 'He looks at you for a long time. "You cannot," he says, gently. "But thank you for saying it as if you could. That is more than I have had in six years." He turns the sheet over, face down, for the first time since you have known him.',
+        },
       ],
       // Below friendly he keeps the number to himself, and the promise he would have drawn out (the `told` flag) is not asked for.
       closed: {
