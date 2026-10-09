@@ -70,10 +70,11 @@ CAPTAINS.zoya = {
           'hatch, and does not break step, and does not stop smiling. "Friend of mine," she says to nobody. "Ansel, would you take the book down? Tell ' +
           'him I am out." The man waits. After an hour he sends up a card. It says Dobrescu, and a number, and a figure with five digits.'),
       choices: [
-        { label: 'Tell him the captain is out', run() {
-          captainLike(1, 'You told Dobrescu I was out.');
-          return 'You go down, and tell him. He nods, and leaves the folder with you. "Tell her Tuesday," he says. It is Thursday. When you come back up, Pell is whistling at the nav console and has not turned a page of the thing she is reading.';
-        } },
+        {
+          label: 'Tell him the captain is out',
+          effects: { captainLike: { n: 1, memory: 'You told Dobrescu I was out.' } },
+          result: 'You go down, and tell him. He nods, and leaves the folder with you. "Tell her Tuesday," he says. It is Thursday. When you come back up, Pell is whistling at the nav console and has not turned a page of the thing she is reading.',
+        },
         { label: 'Give him a hundred to wait a week', ...gated(needCr(100)), run() {
           G.state.credits -= 100; captainLike(3, 'You paid Dobrescu a hundred to wait a week.'); captainFlag('lent');
           return ('He counts it twice, in front of you, and goes, and you are not sure he is done. Pell laughs when she hears, which is the worst ' +
@@ -91,16 +92,18 @@ CAPTAINS.zoya = {
             'worth. One good run clears it, or it would, if the market held, and I have been one run from it for six years." She is smiling. "Ansel ' +
             'knows. He keeps a sheet. It is the only document on this ship I am afraid of."'),
         choices: [
-          { label: 'Ask what one good run would have to be', run() {
-            captainLike(1, 'You asked what the good run would have to be.'); captainFlag('secretKnown');
-            return ('She tells you, to the figure, and it is not an absurd one. That is the worst part. "Eleven percent over the best I have ever ' +
+          {
+            label: 'Ask what one good run would have to be',
+            effects: { captainLike: { n: 1, memory: 'You asked what the good run would have to be.' }, captainFlag: 'secretKnown' },
+            result: 'She tells you, to the figure, and it is not an absurd one. That is the worst part. "Eleven percent over the best I have ever ' +
                 'done," she says. "I could do it on a Tuesday. I have not done it on a Tuesday." She gathers the cards. "Do not tell the galley. They ' +
-                'like me better when I am lucky."');
-          } },
-          { label: 'Say you will stay till it is done', run() {
-            captainLike(3, 'You said you would stay till the debts were done.'); captainFlag('secretKnown');
-            return '"Till it is done," she says, and for once she is not whistling, and not smiling, and it is a plain, tired, hopeful face. "That is a promise with no end date. I will hold you to it, and I will let you off it, both. Do not tell me which."';
-          } },
+                'like me better when I am lucky."',
+          },
+          {
+            label: 'Say you will stay till it is done',
+            effects: { captainLike: { n: 3, memory: 'You said you would stay till the debts were done.' }, captainFlag: 'secretKnown' },
+            result: '"Till it is done," she says, and for once she is not whistling, and not smiling, and it is a plain, tired, hopeful face. "That is a promise with no end date. I will hold you to it, and I will let you off it, both. Do not tell me which."',
+          },
         ],
       },
       found: {
@@ -109,14 +112,16 @@ CAPTAINS.zoya = {
             'of names and figures, and a bottom line in red, and at the foot, underlined twice, one sentence: She will not stop. You are still reading ' +
             'when Captain Pell comes in. She sees the sheet, and sees you, and stops whistling.'),
         choices: [
-          { label: 'Put it back and say nothing', run() {
-            captainLike(0, 'You put the sheet back and said nothing.'); captainFlag('secretKnown'); captainFlag('secretAngry');
-            return 'You put it back, and close the locker, and say nothing, and she watches you do it. "Thank you," she says, lightly. She starts to whistle. It is the same four bars. It is a little flat.';
-          } },
-          { label: 'Ask her if it is true', run() {
-            captainLike(-1, 'You asked me if the sheet was true.'); captainFlag('secretKnown'); captainFlag('secretAngry');
-            return '"Every line," she says, and the smile is on, perfectly, like a coat. "And the last one is wrong. I have been wrong about the last one for six years. It is the only thing I am good at." She takes the sheet out of your hand, gently, and puts it in the locker, and shuts it.';
-          } },
+          {
+            label: 'Put it back and say nothing',
+            effects: { captainLike: { n: 0, memory: 'You put the sheet back and said nothing.' }, captainFlag: ['secretKnown', 'secretAngry'] },
+            result: 'You put it back, and close the locker, and say nothing, and she watches you do it. "Thank you," she says, lightly. She starts to whistle. It is the same four bars. It is a little flat.',
+          },
+          {
+            label: 'Ask her if it is true',
+            effects: { captainLike: { n: -1, memory: 'You asked me if the sheet was true.' }, captainFlag: ['secretKnown', 'secretAngry'] },
+            result: '"Every line," she says, and the smile is on, perfectly, like a coat. "And the last one is wrong. I have been wrong about the last one for six years. It is the only thing I am good at." She takes the sheet out of your hand, gently, and puts it in the locker, and shuts it.',
+          },
         ],
       },
     },

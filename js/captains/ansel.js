@@ -138,7 +138,10 @@ CAST.ansel = {
             'tell you," he says. "I have decided to keep it. It is not a number you can do anything with, and I do not know you well enough to ask you ' +
             'to carry it." He takes his fingers off the sheet. "It does not change. It will be the same number when you have been here longer."'),
         choices: [
-          { label: 'Say it can wait', run: () => '"It can," he says. "It always could. That is the trouble with it." He picks up a pencil and puts it down again without writing.' },
+          {
+            label: 'Say it can wait',
+            result: '"It can," he says. "It always could. That is the trouble with it." He picks up a pencil and puts it down again without writing.',
+          },
         ],
       },
     },
