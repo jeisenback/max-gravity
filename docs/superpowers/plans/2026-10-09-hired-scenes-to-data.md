@@ -46,7 +46,7 @@ The editor shows each registry scene as a data scene (its effects through the sa
 
 Later, one commit each, in this order:
 
-6. The captains' secret scenes (8, B2) and `js/cast.js` (20, B2): the main characters and the hired events with a person in them. Done for the scenes (#459: 48 scenes are data in all); the hired events are not, since their results append `learn(n)` and name the captain or shipmate, which needs a data form for an event and a sixth effect (`remember`) first.
+6. The captains' secret scenes (8, B2) and `js/cast.js` (20, B2): the main characters and the hired events with a person in them. Done for the scenes (#459: 48 scenes are data in all); the seven hired events about one person are data too (#473): a data form for an event (`dataEvent` in `js/hiredevents.js`), `learn` adding its line to the result, `{mate}` for the shipmate, and two effects that act on the shipmate (`mateLike`, `remember`).
 7. The gates (16, B3): three new conditions on a choice (`opinion`, a hired flag, a crew count), then the captains' trouble and goodbye scenes and the main characters' middle scenes.
 8. The joins (6, B3): `castJoin` and `castLater` as effects, then the six `meet` scenes.
 9. The table-driven scenes (28): ids and a text layer for `WORK_EVENTS`, `ICE_STAGES`, the raid tables and the boarding tables, so their words are editable with no change to the templates that roll. A roll effect is built only if a scene wants one with no template.

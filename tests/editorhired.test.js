@@ -52,7 +52,7 @@ test('the converted scenes are data rows of the registry, and the rest are code 
   assert.equal(r.effects.castLike.who, 'ansel');
   assert.ok(r.edit.length > 0 && r.edit.every(e => e === false), 'code choices keep their effects in code');
   assert.ok(!r.goodbye && !r.signon, 'the goodbye and the function-built scenes are not edited yet');
-  assert.equal(r.dataRegistry, 48);
+  assert.equal(r.dataRegistry, 55);
 });
 
 test('a converted scene\'s effects are in forms, checked as typed, and changing one is a change to the file', async () => {
@@ -87,6 +87,28 @@ test('the scene plays in the preview with its own captain and first officer aboa
   await f.click('[data-action="choose"][data-arg="0"]');
   await page.waitForFunction(() => document.querySelector('#pv-effects').textContent.length > 0);
   assert.match(await page.textContent('#pv-effects'), /opinion of you: 0 to 4 \(\+4\)/);
+});
+
+test('a hired event written as data has its effects in forms and plays in the preview with a shipmate aboard (#473)', async () => {
+  await reload(); await select('hired:crew-cover');
+  const row = await page.evaluate(() => { const r = SceneIndex.rows.find(x => x.id === 'hired:crew-cover'); return { kind: r.kind, registry: r.registry, title: r.title, effects: Object.keys(r.choices[0].effects) }; });
+  assert.deepEqual(row, { kind: 'data', registry: true, title: 'Cover for a Shipmate', effects: ['remember', 'later', 'log', 'mateLike', 'learn'] });
+  // {mate} is a word the game replaces, so the text shows no flag; the new effects have forms that check as typed.
+  assert.doesNotMatch(await page.textContent('#detail'), /Not a placeholder the game replaces/);
+  const like = JSON.parse(await page.inputValue(rule('c0.effects', 'mateLike')));
+  await page.fill(rule('c0.effects', 'mateLike'), JSON.stringify({ ...like, n: 3 }));
+  await page.fill(rule('c0.effects', 'remember'), '""');
+  assert.match(await page.textContent('#detail'), /needs a name/);
+  await page.fill(rule('c0.effects', 'remember'), JSON.stringify('cover'));
+  await page.fill('#f-c0\\.result', '{mate} was grateful.');
+  assert.deepEqual((await changes())['hired:crew-cover'], { choices: { 0: { result: '{mate} was grateful.', effects: { remember: 'cover', later: { 'h-cover-back': 10 }, log: "Covered an hour of {thread:cover}'s watch.", mateLike: { ...like, n: 3 }, learn: 1 } } } });
+  const f = await play();
+  const first = await f.evaluate(() => { const m = handContext().mate; return m && m.first; });
+  assert.ok(await f.evaluate(() => G.dialog.event.text.length > 0));
+  await f.click('[data-action="choose"][data-arg="0"]');
+  await page.waitForFunction(() => document.querySelector('#pv-effects').textContent.length > 0);
+  assert.match(await page.textContent('#pv-effects'), /(\+3)/);
+  assert.ok(first, 'a shipmate was aboard');
 });
 
 test('the words of a code scene can be edited, and a result written replaces the line the code returns', async () => {

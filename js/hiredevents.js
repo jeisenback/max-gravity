@@ -33,9 +33,19 @@ function workEvent(d) {
 // Each is { id, group, mate, when(c), make(c) }; c is who is about: the captain, a shipmate (anyone aboard).
 // `mate` marks an event that needs a shipmate.
 const capLike = (c, n, memory) => like(c.cap, n, memory);
-const learn = n => { gainSkill(hired().post, n); return ` (+${n} experience at the ${POSTS[hired().post].name.toLowerCase()} post.)`; };
+const learnNote = n => ` (+${n} experience at the ${POSTS[hired().post].name.toLowerCase()} post.)`;
+const learn = n => { gainSkill(hired().post, n); return learnNote(n); };
 const castKeys = () => castAboard().map(m => m.cast);
 const handEvent = (title, text, choices) => ({ title, text, choices, via: 'crew', personal: true });
+// A hired event written as data (#473): `data` is { title, text, choices: [{ label, result, effects, post?, skill? }] }, the choices played by dataChoice (js/cast.js)
+// with the shipmate the event is about as their context, and the words put through the override layer (sceneWords). {mate} in any of them is the shipmate's first
+// name. The event's `learn` effect gives the experience and adds its line to the result.
+function dataHandEvent(d, c) {
+  const mate = t => (typeof t === 'string' && c.mate ? t.replace(/\{mate\}/g, c.mate.first) : t);
+  const scene = sceneWords(`hired:${d.id}`, d.data);
+  return handEvent(mate(scene.title), mate(scene.text), scene.choices.map(ch => dataChoice({ ...ch, label: mate(ch.label), result: mate(ch.result) }, c)));
+}
+const dataEvent = def => { const d = { ...def }; d.make = c => dataHandEvent(d, c); return d; };
 // A choice sets a follow-up going (stories/hired-aftermath.js) and the Journal keeps the thread.
 const setLater = (name, days, log) => applyEffects({ later: { [name]: days }, log });
 
@@ -124,13 +134,26 @@ const HAND_EVENTS = [
           'back of your neck for the rest of the burn.')); } },
     ]) },
 
-  { id: 'crew-cover', mate: true, group: 'crew', make: c => handEvent('Cover for a Shipmate',
-    `${c.mate.first} finds you before the watch change, looking at the deck. They have a thing to do, a message to send, a call home that cannot wait, and could you take the first hour of their watch, and not say anything about it?`, [
-      { label: 'Cover for them', run() { remember('cover', c.mate); setLater('h-cover-back', 10, 'Covered an hour of {thread:cover}\'s watch.'); like(c.mate, 2, 'You covered an hour of my watch and said nothing.'); return (
-          `You cover it, and it is a quiet hour. When they come back, ${c.mate.first} looks at you across the galley, and does not mention ` +
-          `it.${learn(1)}`); } },
-      { label: 'Not tonight', run() { remember('cover', c.mate); setLater('h-cover-cold', 5, 'Would not cover for {thread:cover}.'); like(c.mate, -1, 'You would not cover an hour of my watch.'); return `${c.mate.first} nods and says it is fine. For a day or two the galley table is colder.`; } },
-    ]) },
+  dataEvent({
+    id: 'crew-cover', mate: true, group: 'crew',
+    data: {
+      title: 'Cover for a Shipmate',
+      text: '{mate} finds you before the watch change, looking at the deck. They have a thing to do, a message to send, a call home that cannot wait, and could you take the first hour of their watch, and not say anything about it?',
+      choices: [
+        {
+          label: 'Cover for them',
+          effects: { remember: 'cover', later: { 'h-cover-back': 10 }, log: 'Covered an hour of {thread:cover}\'s watch.', mateLike: { n: 2, memory: 'You covered an hour of my watch and said nothing.' }, learn: 1 },
+          result: 'You cover it, and it is a quiet hour. When they come back, {mate} looks at you across the galley, and does not mention ' +
+            'it.',
+        },
+        {
+          label: 'Not tonight',
+          effects: { remember: 'cover', later: { 'h-cover-cold': 5 }, log: 'Would not cover for {thread:cover}.', mateLike: { n: -1, memory: 'You would not cover an hour of my watch.' } },
+          result: '{mate} nods and says it is fine. For a day or two the galley table is colder.',
+        },
+      ],
+    },
+  }),
 
   { id: 'crew-needle', mate: true, group: 'crew', make: c => handEvent('Words in the Galley',
     `${c.mate.first} has been needling you for a week about the ${POSTS[hired().post].name.toLowerCase()}, calling it a soft job. Tonight, over the mess table, they say it where everyone can hear.`, [
@@ -161,85 +184,214 @@ const HAND_EVENTS = [
       { label: 'Watch from the side', run() { like(c.mate, 0, 'You watched the card game and kept your credits.'); return 'You watch from the end of the bench, with your tea, and enjoy the argument more than the cards.'; } },
     ]) },
 
-  { id: 'crew-ines', group: 'crew', when: () => castKeys().includes('ines'), make: c => handEvent('Ines Calls the Numbers',
-    'Ines is flying a hard approach by hand, a tight, ugly one, and asks you over her shoulder, without looking round, whether you would read her the numbers. "Slowly," she says. "And do not be clever."', [
-      { label: 'Read her the numbers', run() { castLike('ines', 1, 'You read me the numbers on a hard approach and did not try to be clever.'); return (
-          `You read her the numbers one by one, plainly, and she flies them, and the ship settles onto the line. "Good," says Ines. You have learned ` +
-          `more in ten minutes than in the last week.${learn(3)}`); } },
-      { label: '[Pilot 2] Check her numbers against your own', post: 'pilot', skill: 2, run() { castLike('ines', 2, 'You caught a wrong figure on my approach and said it plainly.'); return (
-          `You have the approach on your own plot, half a second behind hers. On the last leg one of your figures does not match. "Say again," Ines ` +
-          `says. You say it again. She finds the transposed digit on her sheet, corrects it without a word, and flies the corrected line. Afterward ` +
-          `she writes the figure in her notebook.${learn(2)}`); } },
-      { label: '[Pilot 3] Ask to fly the last leg', post: 'pilot', skill: 3, run() { castFlag('ines', 'trusted'); castLike('ines', 3, 'You flew the last leg of a hard approach with me beside you, and I did not touch the controls.'); return (
-          `"Your line," Ines says, and takes her hands off. You fly the last leg with her reading the sheet beside you and saying nothing. The ship ` +
-          `comes onto the pad. She signs the log under your name. "Do not tell the captain," she says. "Tell everyone else."${learn(3)}`); } },
-      { label: 'Say you would rather watch', run() { castLike('ines', 0, 'You watched from the back and let me fly.'); return 'You stand behind her and watch her hands, and she does not say a word, and the approach is flawless. You do not learn much, but you do not break anything.'; } },
-    ]) },
+  dataEvent({
+    id: 'crew-ines', group: 'crew', when: () => castKeys().includes('ines'),
+    data: {
+      title: 'Ines Calls the Numbers',
+      text: 'Ines is flying a hard approach by hand, a tight, ugly one, and asks you over her shoulder, without looking round, whether you would read her the numbers. "Slowly," she says. "And do not be clever."',
+      choices: [
+        {
+          label: 'Read her the numbers',
+          effects: { castLike: { who: 'ines', n: 1, memory: 'You read me the numbers on a hard approach and did not try to be clever.' }, learn: 3 },
+          result: 'You read her the numbers one by one, plainly, and she flies them, and the ship settles onto the line. "Good," says Ines. You have learned ' +
+            'more in ten minutes than in the last week.',
+        },
+        {
+          label: '[Pilot 2] Check her numbers against your own',
+          post: 'pilot',
+          skill: 2,
+          effects: { castLike: { who: 'ines', n: 2, memory: 'You caught a wrong figure on my approach and said it plainly.' }, learn: 2 },
+          result: 'You have the approach on your own plot, half a second behind hers. On the last leg one of your figures does not match. "Say again," Ines ' +
+            'says. You say it again. She finds the transposed digit on her sheet, corrects it without a word, and flies the corrected line. Afterward ' +
+            'she writes the figure in her notebook.',
+        },
+        {
+          label: '[Pilot 3] Ask to fly the last leg',
+          post: 'pilot',
+          skill: 3,
+          effects: { castFlag: { who: 'ines', flag: 'trusted' }, castLike: { who: 'ines', n: 3, memory: 'You flew the last leg of a hard approach with me beside you, and I did not touch the controls.' }, learn: 3 },
+          result: '"Your line," Ines says, and takes her hands off. You fly the last leg with her reading the sheet beside you and saying nothing. The ship ' +
+            'comes onto the pad. She signs the log under your name. "Do not tell the captain," she says. "Tell everyone else."',
+        },
+        {
+          label: 'Say you would rather watch',
+          effects: { castLike: { who: 'ines', n: 0, memory: 'You watched from the back and let me fly.' } },
+          result: 'You stand behind her and watch her hands, and she does not say a word, and the approach is flawless. You do not learn much, but you do not break anything.',
+        },
+      ],
+    },
+  }),
 
-  { id: 'crew-tomas', group: 'crew', when: () => castKeys().includes('tomas'), make: c => handEvent('Tomas in the Engine Room',
-    'Tomas has a flask, two tin cups and the whole of a quiet watch, and he pours you one without asking. "Sit," he says. "She is running well, and I would like to tell somebody why."', [
-      { label: 'Sit and listen', run() { castLike('tomas', 1, 'You sat with me in the engine room and listened.'); return (
-          `He tells you about the loop, and the mounts, and the three hulls he has rebuilt, with unhurried pride, and you listen, and the flask goes ` +
-          `round twice. By the end you know something about machines you did not before.${learn(2)}`); } },
-      { label: '[Engineer 2] Tell him what you hear in the loop', post: 'engineer', skill: 2, run() { castLike('tomas', 2, 'You heard a tick in the loop that I had stopped hearing.'); return (
-          `You say there is a tick on the third pump at the top of each cycle, a hair late. Tomas puts a hand flat on the housing and waits for it to ` +
-          `come round. "Third pump," he says. He writes the number on the back of his hand and pours you a second cup.${learn(2)}`); } },
-      { label: '[Engineer 3] Ask to take the other end of the loop', post: 'engineer', skill: 3, run() { castFlag('tomas', 'trusted'); castLike('tomas', 3, 'You took the other end of the loop with me and did not need to be told.'); return (
-          `Tomas hands you the wrench. You take the second pump out of the loop while he holds the light, and put it back, and he checks nothing. ` +
-          `"Twenty years," he says, "and I have never let anyone take the second pump." He pours the second cup.${learn(3)}`); } },
-      { label: 'Say you have work to do', run() { castLike('tomas', 0, 'You had work to do and did not stay.'); return '"Of course," he says, and caps the flask, and turns back to the loop. He goes back to the loop.'; } },
-    ]) },
+  dataEvent({
+    id: 'crew-tomas', group: 'crew', when: () => castKeys().includes('tomas'),
+    data: {
+      title: 'Tomas in the Engine Room',
+      text: 'Tomas has a flask, two tin cups and the whole of a quiet watch, and he pours you one without asking. "Sit," he says. "She is running well, and I would like to tell somebody why."',
+      choices: [
+        {
+          label: 'Sit and listen',
+          effects: { castLike: { who: 'tomas', n: 1, memory: 'You sat with me in the engine room and listened.' }, learn: 2 },
+          result: 'He tells you about the loop, and the mounts, and the three hulls he has rebuilt, with unhurried pride, and you listen, and the flask goes ' +
+            'round twice. By the end you know something about machines you did not before.',
+        },
+        {
+          label: '[Engineer 2] Tell him what you hear in the loop',
+          post: 'engineer',
+          skill: 2,
+          effects: { castLike: { who: 'tomas', n: 2, memory: 'You heard a tick in the loop that I had stopped hearing.' }, learn: 2 },
+          result: 'You say there is a tick on the third pump at the top of each cycle, a hair late. Tomas puts a hand flat on the housing and waits for it to ' +
+            'come round. "Third pump," he says. He writes the number on the back of his hand and pours you a second cup.',
+        },
+        {
+          label: '[Engineer 3] Ask to take the other end of the loop',
+          post: 'engineer',
+          skill: 3,
+          effects: { castFlag: { who: 'tomas', flag: 'trusted' }, castLike: { who: 'tomas', n: 3, memory: 'You took the other end of the loop with me and did not need to be told.' }, learn: 3 },
+          result: 'Tomas hands you the wrench. You take the second pump out of the loop while he holds the light, and put it back, and he checks nothing. ' +
+            '"Twenty years," he says, "and I have never let anyone take the second pump." He pours the second cup.',
+        },
+        {
+          label: 'Say you have work to do',
+          effects: { castLike: { who: 'tomas', n: 0, memory: 'You had work to do and did not stay.' } },
+          result: '"Of course," he says, and caps the flask, and turns back to the loop. He goes back to the loop.',
+        },
+      ],
+    },
+  }),
 
-  { id: 'crew-yelena', group: 'crew', when: () => castKeys().includes('yelena'), make: c => handEvent('Yelena Wants a Sparring Partner',
-    'Yelena has set up the range sim on its hardest setting, and is holding the second controller out to you. "No benches," she says. "Everybody plays. Come on."', [
-      { label: 'Take the other console', run() { castLike('yelena', 1, 'You took the other console on the range and did not sulk about losing.'); return (
-          `You take the other console, and she beats you soundly, and then shows you how: where to look, and when. You lose four rounds in a row. By ` +
-          `the fifth you are less bad.${learn(3)}`); } },
-      { label: '[Gunner 2] Take the hard setting and hold the lead', post: 'gunner', skill: 2, run() { castLike('yelena', 2, 'You held the lead on the hard setting for ninety seconds.'); return (
-          `You take the other console on the hard setting and hold the lead for ninety seconds before she takes it back. She finishes ahead. She sets ` +
-          `the controller down and tells you where you lost it: the third target, the late lead on the crossing. The next watch she asks you ` +
-          `again.${learn(2)}`); } },
-      { label: '[Gunner 3] Ask for her own worst setting', post: 'gunner', skill: 3, run() { castFlag('yelena', 'trusted'); castLike('yelena', 3, 'You beat my score on my own worst setting.'); return (
-          `She sets the sim to the setting she keeps for herself. You beat her score by four points. Yelena looks at the number for a while, then ` +
-          `writes it on the bulkhead over the console with a marker, under her own. "Again tomorrow," she says.${learn(3)}`); } },
-      { label: 'Say your knee is bad too', run() { castLike('yelena', 0, 'You said you would sit out the range.'); return '"You do not have a bad knee," Yelena says. "You have a bench." But she lets it go, with a snort, and sets the sim back to something kinder for whoever comes next.'; } },
-    ]) },
+  dataEvent({
+    id: 'crew-yelena', group: 'crew', when: () => castKeys().includes('yelena'),
+    data: {
+      title: 'Yelena Wants a Sparring Partner',
+      text: 'Yelena has set up the range sim on its hardest setting, and is holding the second controller out to you. "No benches," she says. "Everybody plays. Come on."',
+      choices: [
+        {
+          label: 'Take the other console',
+          effects: { castLike: { who: 'yelena', n: 1, memory: 'You took the other console on the range and did not sulk about losing.' }, learn: 3 },
+          result: 'You take the other console, and she beats you soundly, and then shows you how: where to look, and when. You lose four rounds in a row. By ' +
+            'the fifth you are less bad.',
+        },
+        {
+          label: '[Gunner 2] Take the hard setting and hold the lead',
+          post: 'gunner',
+          skill: 2,
+          effects: { castLike: { who: 'yelena', n: 2, memory: 'You held the lead on the hard setting for ninety seconds.' }, learn: 2 },
+          result: 'You take the other console on the hard setting and hold the lead for ninety seconds before she takes it back. She finishes ahead. She sets ' +
+            'the controller down and tells you where you lost it: the third target, the late lead on the crossing. The next watch she asks you ' +
+            'again.',
+        },
+        {
+          label: '[Gunner 3] Ask for her own worst setting',
+          post: 'gunner',
+          skill: 3,
+          effects: { castFlag: { who: 'yelena', flag: 'trusted' }, castLike: { who: 'yelena', n: 3, memory: 'You beat my score on my own worst setting.' }, learn: 3 },
+          result: 'She sets the sim to the setting she keeps for herself. You beat her score by four points. Yelena looks at the number for a while, then ' +
+            'writes it on the bulkhead over the console with a marker, under her own. "Again tomorrow," she says.',
+        },
+        {
+          label: 'Say your knee is bad too',
+          effects: { castLike: { who: 'yelena', n: 0, memory: 'You said you would sit out the range.' } },
+          result: '"You do not have a bad knee," Yelena says. "You have a bench." But she lets it go, with a snort, and sets the sim back to something kinder for whoever comes next.',
+        },
+      ],
+    },
+  }),
 
-  { id: 'crew-ruben', group: 'crew', when: () => castKeys().includes('ruben'), make: c => handEvent('Ruben and the Thermos',
-    'Ruben has a thermos of something hot and a stack of intercepts in piles, and he offers you a cup, as he offers everyone, and a pile, as he does not. "Help me sort," he says. "Slowly. I will tell you what is true and what is only lovely."', [
-      { label: 'Help him sort', run() { castLike('ruben', 1, 'You helped me sort the intercepts and did not mind the stories.'); return (
-          `You sort, and he talks, and by the end of the stack you have learned which dome is short of what, who is lying about it, and a good deal ` +
-          `about how to listen to a lane. It is the best hour of the burn.${learn(2)}`); } },
-      { label: '[Comms 2] Tell him which pile is true', post: 'comms', skill: 2, run() { castLike('ruben', 2, 'You sorted my intercepts by the handshake tones, and you were right.'); return (
-          `You go through the stack and split it in two by the timing of the handshake tones. Ruben checks three of your picks against what he knows ` +
-          `and finds all three right. He moves the thermos from his pile to yours.${learn(2)}`); } },
-      { label: '[Comms 3] Find the signal that is neither', post: 'comms', skill: 3, run() { castFlag('ruben', 'trusted'); castLike('ruben', 3, 'You found the one in my stack that was neither lovely nor true.'); return (
-          `Near the bottom of the stack there is a signal that is neither a rumor nor a story: a burst, repeated, with a pattern in the gaps. You ` +
-          `hold it up. Ruben stops talking. He takes a key from his collar and unlocks the box under the console, and puts the originals in front of ` +
-          `you.${learn(3)}`); } },
-      { label: 'Take the tea and go', run() { castLike('ruben', 0, 'You took the tea and went.'); return 'You take the cup, and thank him, and go. "Another time," Ruben says, cheerfully, and returns to his piles, humming. He is not the kind to hold it against you.'; } },
-    ]) },
+  dataEvent({
+    id: 'crew-ruben', group: 'crew', when: () => castKeys().includes('ruben'),
+    data: {
+      title: 'Ruben and the Thermos',
+      text: 'Ruben has a thermos of something hot and a stack of intercepts in piles, and he offers you a cup, as he offers everyone, and a pile, as he does not. "Help me sort," he says. "Slowly. I will tell you what is true and what is only lovely."',
+      choices: [
+        {
+          label: 'Help him sort',
+          effects: { castLike: { who: 'ruben', n: 1, memory: 'You helped me sort the intercepts and did not mind the stories.' }, learn: 2 },
+          result: 'You sort, and he talks, and by the end of the stack you have learned which dome is short of what, who is lying about it, and a good deal ' +
+            'about how to listen to a lane. It is the best hour of the burn.',
+        },
+        {
+          label: '[Comms 2] Tell him which pile is true',
+          post: 'comms',
+          skill: 2,
+          effects: { castLike: { who: 'ruben', n: 2, memory: 'You sorted my intercepts by the handshake tones, and you were right.' }, learn: 2 },
+          result: 'You go through the stack and split it in two by the timing of the handshake tones. Ruben checks three of your picks against what he knows ' +
+            'and finds all three right. He moves the thermos from his pile to yours.',
+        },
+        {
+          label: '[Comms 3] Find the signal that is neither',
+          post: 'comms',
+          skill: 3,
+          effects: { castFlag: { who: 'ruben', flag: 'trusted' }, castLike: { who: 'ruben', n: 3, memory: 'You found the one in my stack that was neither lovely nor true.' }, learn: 3 },
+          result: 'Near the bottom of the stack there is a signal that is neither a rumor nor a story: a burst, repeated, with a pattern in the gaps. You ' +
+            'hold it up. Ruben stops talking. He takes a key from his collar and unlocks the box under the console, and puts the originals in front of ' +
+            'you.',
+        },
+        {
+          label: 'Take the tea and go',
+          effects: { castLike: { who: 'ruben', n: 0, memory: 'You took the tea and went.' } },
+          result: 'You take the cup, and thank him, and go. "Another time," Ruben says, cheerfully, and returns to his piles, humming. He is not the kind to hold it against you.',
+        },
+      ],
+    },
+  }),
 
-  { id: 'crew-bexa', group: 'crew', when: () => castKeys().includes('bexa'), make: c => handEvent('Bexa\'s List',
-    'Bexa has a small brass tag on a string above the helm, and a notebook she keeps open on the console and does not like being looked at. Tonight she catches you looking, and turns it round instead of closing it. "It is a list," she says. "Ask me properly."', [
-      { label: 'Ask about the first name', run() { castLike('bexa', 2, 'You asked about the list the right way, and listened.'); return (
-          `You ask about the first name, quietly, and she tells you: a ship, a year, a crew of six, and what was left. She talks for a long time. ` +
-          `When she stops, she closes the book and nods at the helm. "Sit. I will show you how I would have brought them in."${learn(2)}`); } },
-      { label: 'Look away', run() { castLike('bexa', 0, 'You looked away from the list.'); return 'You look at the console, and she closes the book, with a nod, and puts it back in her pocket.'; } },
-    ]) },
+  dataEvent({
+    id: 'crew-bexa', group: 'crew', when: () => castKeys().includes('bexa'),
+    data: {
+      title: 'Bexa\'s List',
+      text: 'Bexa has a small brass tag on a string above the helm, and a notebook she keeps open on the console and does not like being looked at. Tonight she catches you looking, and turns it round instead of closing it. "It is a list," she says. "Ask me properly."',
+      choices: [
+        {
+          label: 'Ask about the first name',
+          effects: { castLike: { who: 'bexa', n: 2, memory: 'You asked about the list the right way, and listened.' }, learn: 2 },
+          result: 'You ask about the first name, quietly, and she tells you: a ship, a year, a crew of six, and what was left. She talks for a long time. ' +
+            'When she stops, she closes the book and nods at the helm. "Sit. I will show you how I would have brought them in."',
+        },
+        {
+          label: 'Look away',
+          effects: { castLike: { who: 'bexa', n: 0, memory: 'You looked away from the list.' } },
+          result: 'You look at the console, and she closes the book, with a nod, and puts it back in her pocket.',
+        },
+      ],
+    },
+  }),
 
-  { id: 'crew-pax', group: 'crew', when: () => castKeys().includes('pax'), make: c => handEvent('Pax Checks the Coupling',
-    'Pax is checking the coupling on the gun mount for the fifth time this watch. It is perfect. Pax knows it is perfect, and checks it anyway, jaw tight, and glances at you when the check is done.', [
-      { label: 'Check it with them', run() { castLike('pax', 1, 'You checked the coupling with me instead of telling me to stop.'); return `You take the other side and check it together, torque by torque, and when you reach the end you both say "good" at once. Pax almost smiles.${learn(2)}`; } },
-      { label: '[Gunner 2] Show them the torque log', post: 'gunner', skill: 2, run() { castLike('pax', 2, 'You showed me the torque log, and it was the same every time.'); return (
-          `You pull the mount's torque log for the last six watches and put it in front of Pax. The coupling has read the same figure every time. Pax ` +
-          `reads the column down twice and closes the panel. They do not check it again that watch.${learn(2)}`); } },
-      { label: '[Gunner 3] Ask them to check your mount', post: 'gunner', skill: 3, run() { castFlag('pax', 'trusted'); castLike('pax', 3, 'You asked me to check your mount, and listened to what I found.'); return (
-          `You ask Pax to go over your own mount. Pax does it torque by torque, with the log open, and finds one fitting a quarter turn under. You ` +
-          `fix it together. Pax signs the log next to your initials. "Yours now," Pax says, and does not check the coupling again that ` +
-          `watch.${learn(3)}`); } },
-      { label: 'Tell them it is fine', run() { castLike('pax', 0, 'You told me the coupling was fine.'); return '"I know it is fine," says Pax. "That is not the point." They go back to it, and you leave them to it, feeling that you have said the true thing in the wrong way.'; } },
-    ]) },
+  dataEvent({
+    id: 'crew-pax', group: 'crew', when: () => castKeys().includes('pax'),
+    data: {
+      title: 'Pax Checks the Coupling',
+      text: 'Pax is checking the coupling on the gun mount for the fifth time this watch. It is perfect. Pax knows it is perfect, and checks it anyway, jaw tight, and glances at you when the check is done.',
+      choices: [
+        {
+          label: 'Check it with them',
+          effects: { castLike: { who: 'pax', n: 1, memory: 'You checked the coupling with me instead of telling me to stop.' }, learn: 2 },
+          result: 'You take the other side and check it together, torque by torque, and when you reach the end you both say "good" at once. Pax almost smiles.',
+        },
+        {
+          label: '[Gunner 2] Show them the torque log',
+          post: 'gunner',
+          skill: 2,
+          effects: { castLike: { who: 'pax', n: 2, memory: 'You showed me the torque log, and it was the same every time.' }, learn: 2 },
+          result: 'You pull the mount\'s torque log for the last six watches and put it in front of Pax. The coupling has read the same figure every time. Pax ' +
+            'reads the column down twice and closes the panel. They do not check it again that watch.',
+        },
+        {
+          label: '[Gunner 3] Ask them to check your mount',
+          post: 'gunner',
+          skill: 3,
+          effects: { castFlag: { who: 'pax', flag: 'trusted' }, castLike: { who: 'pax', n: 3, memory: 'You asked me to check your mount, and listened to what I found.' }, learn: 3 },
+          result: 'You ask Pax to go over your own mount. Pax does it torque by torque, with the log open, and finds one fitting a quarter turn under. You ' +
+            'fix it together. Pax signs the log next to your initials. "Yours now," Pax says, and does not check the coupling again that ' +
+            'watch.',
+        },
+        {
+          label: 'Tell them it is fine',
+          effects: { castLike: { who: 'pax', n: 0, memory: 'You told me the coupling was fine.' } },
+          result: '"I know it is fine," says Pax. "That is not the point." They go back to it, and you leave them to it, feeling that you have said the true thing in the wrong way.',
+        },
+      ],
+    },
+  }),
 
   { id: 'money-side', group: 'money', make: c => handEvent('Work on the Side',
     'A broker at the last port left word that there is a day of work going, nothing to do with the ship: loading, mostly, for a trading house that pays cash and asks nobody anything. It would be your own time. It would be, as they say, a few credits.', [
