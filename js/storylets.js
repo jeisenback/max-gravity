@@ -119,6 +119,9 @@ const EFFECTS = {
   castXp: v => castXp(v.who, v.role, v.n),
   captainLike: v => captainLike(v.n, v.memory),
   captainFlag: v => { for (const f of [].concat(v)) captainFlag(f); },
+  // A main character joins the crew, or is put off for eight days (the meeting scenes of js/cast.js, #461): the key of the person. The words are the choice's result.
+  castJoin: key => { castJoin(key); },
+  castLater: key => { castLater(key); },
   // Experience at a named post (learn is the hand's own), for a hired hand.
   gainSkill: v => { if (hired()) gainSkill(v.post, v.n); },
   // The shipmate a hired event is about (#473), given to the effects as their context: their opinion of you, and a name to remember them by for a later
@@ -338,6 +341,7 @@ const EFFECT_SHAPES = {
   mateLike: v => (!isPlain(v) ? 'needs { n, memory }' : !Number.isFinite(v.n) ? 'n must be a number' : typeof v.memory !== 'string' || !v.memory.trim() ? 'memory must be some text' : ''),
   remember: v => (typeof v === 'string' && v.trim() ? '' : 'needs a name'),
 };
+EFFECT_SHAPES.castJoin = EFFECT_SHAPES.castLater = v => (typeof v !== 'string' || !CAST[v] ? `needs the key of a main character` : '');
 EFFECT_SHAPES.gainSkill = v => (!isPlain(v) ? 'needs { post, n }' : !HIRED_POSTS.includes(v.post) ? `${v.post} is not a post` : !Number.isFinite(v.n) ? 'n must be a number' : '');
 // The shape each condition takes, where it is more than a number or a name: '' if the value is right, else what is wrong.
 const CONDITION_SHAPES = {

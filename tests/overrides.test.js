@@ -343,7 +343,7 @@ const CONVERTED = [
   'cast:ilsa:late:closed', 'cast:pilar:late:closed', 'cast:ansel:late:closed', 'captain:hester:secret:confide', 'captain:hester:secret:found',
   'captain:dov:secret:confide', 'captain:dov:secret:found', 'captain:imre:trouble', 'captain:imre:secret:confide', 'captain:imre:secret:found',
   'captain:zoya:secret:confide', 'captain:zoya:secret:found', 'cast:tomas:mid1', 'cast:tomas:mid2', 'cast:bexa:mid1', 'cast:ilsa:late', 'captain:hester:trouble', 'captain:dov:trouble',
-  'captain:zoya:trouble'
+  'captain:zoya:trouble', 'cast:ines:meet', 'cast:tomas:meet', 'cast:yelena:meet', 'cast:ruben:meet', 'cast:bexa:meet', 'cast:pax:meet'
 ];
 
 test('the converted hired scenes are data, and the rest of the chapter is untouched', async () => {
@@ -351,7 +351,7 @@ test('the converted hired scenes are data, and the rest of the chapter is untouc
   const r = await g.ev(ids => {
     const by = Object.fromEntries(hiredSceneRegistry().filter(e => e.scene).map(e => [e.id, e.scene]));
     const data = id => by[id].choices.every(c => !c.run && typeof c.result === 'string' && c.label);
-    return { notData: ids.filter(id => !data(id)), pivots: ['cast:ansel:pivot', 'cast:pilar:pivot', 'cast:cato:pivot'].map(id => by[id].choices.some(c => c.run)), others: ['cast:ines:meet', 'captain:hester:goodbye', 'cast:ruben:mid1'].map(id => by[id].choices.some(c => c.run)) };
+    return { notData: ids.filter(id => !data(id)), pivots: ['cast:ansel:pivot', 'cast:pilar:pivot', 'cast:cato:pivot'].map(id => by[id].choices.some(c => c.run)), others: ['cast:ines:pivot', 'captain:hester:goodbye', 'cast:ruben:mid1'].map(id => by[id].choices.some(c => c.run)) };
   }, CONVERTED);
   await g.done();
   assert.deepEqual(r, { notData: [], pivots: [true, true, true], others: [true, true, true] });
@@ -427,7 +427,7 @@ test('an override for a hired scene the game would not take is left out, with on
     const warnings = [], real = console.warn; console.warn = m => warnings.push(m);
     const clean = cleanOverrides({
       'cast:cato:intro': { title: 'Kept', when: { day: 3 }, choices: { 0: { label: 'Kept label', when: { credits: 1 }, next: 'port-mars-sky' } } },
-      'cast:ines:meet': { choices: { 0: { effects: { credits: 5 }, when: { credits: 1 }, result: 'Kept line.' } } },
+      'cast:ines:pivot': { choices: { 0: { effects: { credits: 5 }, when: { credits: 1 }, result: 'Kept line.' } } },
       'cast:cato:mid1': { choices: { 0: { effects: { castLike: { who: 'nobody', n: 1, memory: 'm' } }, when: { opinion: { who: 'nobody', min: 1 } }, label: 'Kept too' } } },
       'cast:nobody:intro': { title: 'x' },
     });
@@ -435,7 +435,7 @@ test('an override for a hired scene the game would not take is left out, with on
     return { clean, warnings };
   });
   await g.done();
-  assert.deepEqual(r.clean, { 'cast:cato:intro': { title: 'Kept', choices: { 0: { label: 'Kept label', when: { credits: 1 } } } }, 'cast:ines:meet': { choices: { 0: { result: 'Kept line.' } } }, 'cast:cato:mid1': { choices: { 0: { label: 'Kept too' } } } });
+  assert.deepEqual(r.clean, { 'cast:cato:intro': { title: 'Kept', choices: { 0: { label: 'Kept label', when: { credits: 1 } } } }, 'cast:ines:pivot': { choices: { 0: { result: 'Kept line.' } } }, 'cast:cato:mid1': { choices: { 0: { label: 'Kept too' } } } });
   assert.equal(r.warnings.length, 1);
   for (const part of ['has no "when"', 'choice 0 has no "next"', 'runs code, so its effects are not edited', 'runs code, so its conditions are not edited', 'conditions and effects left out: condition opinion nobody is not the captain, the first officer or a main character; effect castLike nobody is not a main character', 'unknown scene "cast:nobody:intro"']) assert.ok(r.warnings[0].includes(part), `${part} in ${r.warnings[0]}`);
 });
@@ -479,6 +479,40 @@ test('a hired scene\'s data choice is shut by its conditions as the code gates w
   assert.deepEqual(r.regard, { label: true, open: false, held: false, openLiked: true, heldLiked: true });
   assert.equal(r.skill, 3);
   assert.deepEqual(r.problems, [0, 1, 1, 1, 1]);
+});
+
+// ---------- joining and leaving as effects (#461) ----------
+
+test('a meeting scene joins or puts off the person as its closures did, with the berth check, and the file can change the check', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    uatFresh({ credits: 5000 }); G.dialog = null; G.nextEvent = null;
+    const st = G.state, meet = key => castScene(key, CAST[key].scenes.meet).choices;
+    const out = { shapes: [effectProblems({ castJoin: 'ines' }).length, effectProblems({ castLater: 'nobody' }).length, effectProblems({ castJoin: 3 }).length] };
+    let c = meet('ines');
+    out.open = c[0].can(); const crew0 = st.crew.length;
+    const text = c[0].run();
+    out.joined = { crew: st.crew.length - crew0, aboard: st.crew.includes('c:ines'), since: castRec('ines').since === st.day, opinion: person('c:ines').opinion, text: /Asked/.test(text), role: person('c:ines').role };
+    // Put off: the offer comes round again after eight days, and nobody joins.
+    const day = st.day, before = st.crew.length;
+    const later = meet('tomas')[1].run();
+    out.later = { next: castRec('tomas').next - day, crew: st.crew.length - before, text: /That is all right/.test(later) };
+    // The file changes the check for the one choice: it asks for a berth more than is free.
+    useOverrides({ 'cast:yelena:meet': { choices: { 0: { when: { berths: berthsFree() + 1 } } } } });
+    out.edited = meet('yelena')[0].can();
+    useOverrides({});
+    // No berth: the join is shut, with the reason the code gave.
+    while (berthsFree() > 0) { const c2 = makeCrewCandidate(st.systemId); registerPerson(c2); st.crew.push(c2.id); }
+    c = meet('yelena'); out.full = { open: c[0].can(), why: c[0].why(), other: c[1].can ? c[1].can() : true };
+    return out;
+  });
+  await g.done();
+  assert.deepEqual(r.shapes, [0, 1, 1]);
+  assert.equal(r.open, true);
+  assert.deepEqual(r.joined, { crew: 1, aboard: true, since: true, opinion: 2, text: true, role: 'pilot' });
+  assert.deepEqual(r.later, { next: 8, crew: 0, text: true });
+  assert.deepEqual(r.full, { open: false, why: 'There is no free berth aboard.', other: true });
+  assert.equal(r.edited, false);
 });
 
 // ---------- the table-driven hired scenes (#462) ----------

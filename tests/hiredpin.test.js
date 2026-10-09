@@ -30,7 +30,8 @@ const pinAll = () => {
     const rich = read();
     G.state.credits = 0; const poor = read();
     G.state.credits = 5000; hiredCaptain().opinion = 99; captainFlag('secretKnown'); if (key && CAST[key]) castPerson(key).opinion = 99; const liked = read();
-    return { rich, poor, liked };
+    const berths = ship().berths; ship().berths = berthsUsed(); const full = read(); ship().berths = berths;  // and with no berth free
+    return { rich, poor, liked, full };
   };
   const out = [];
   const real = drawCastPair;
