@@ -342,7 +342,8 @@ const CONVERTED = [
   'cast:bexa:late', 'cast:pax:intro', 'cast:pax:mid1', 'cast:pax:mid2', 'cast:pax:late', 'cast:ilsa:intro', 'cast:ilsa:mid1', 'cast:ilsa:mid2',
   'cast:ilsa:late:closed', 'cast:pilar:late:closed', 'cast:ansel:late:closed', 'captain:hester:secret:confide', 'captain:hester:secret:found',
   'captain:dov:secret:confide', 'captain:dov:secret:found', 'captain:imre:trouble', 'captain:imre:secret:confide', 'captain:imre:secret:found',
-  'captain:zoya:secret:confide', 'captain:zoya:secret:found'
+  'captain:zoya:secret:confide', 'captain:zoya:secret:found', 'cast:tomas:mid1', 'cast:tomas:mid2', 'cast:bexa:mid1', 'cast:ilsa:late', 'captain:hester:trouble', 'captain:dov:trouble',
+  'captain:zoya:trouble'
 ];
 
 test('the converted hired scenes are data, and the rest of the chapter is untouched', async () => {
@@ -350,7 +351,7 @@ test('the converted hired scenes are data, and the rest of the chapter is untouc
   const r = await g.ev(ids => {
     const by = Object.fromEntries(hiredSceneRegistry().filter(e => e.scene).map(e => [e.id, e.scene]));
     const data = id => by[id].choices.every(c => !c.run && typeof c.result === 'string' && c.label);
-    return { notData: ids.filter(id => !data(id)), pivots: ['cast:ansel:pivot', 'cast:pilar:pivot', 'cast:cato:pivot'].map(id => by[id].choices.some(c => c.run)), others: ['cast:ines:meet', 'captain:hester:goodbye', 'cast:tomas:mid1'].map(id => by[id].choices.some(c => c.run)) };
+    return { notData: ids.filter(id => !data(id)), pivots: ['cast:ansel:pivot', 'cast:pilar:pivot', 'cast:cato:pivot'].map(id => by[id].choices.some(c => c.run)), others: ['cast:ines:meet', 'captain:hester:goodbye', 'cast:ruben:mid1'].map(id => by[id].choices.some(c => c.run)) };
   }, CONVERTED);
   await g.done();
   assert.deepEqual(r, { notData: [], pivots: [true, true, true], others: [true, true, true] });
@@ -426,17 +427,58 @@ test('an override for a hired scene the game would not take is left out, with on
     const warnings = [], real = console.warn; console.warn = m => warnings.push(m);
     const clean = cleanOverrides({
       'cast:cato:intro': { title: 'Kept', when: { day: 3 }, choices: { 0: { label: 'Kept label', when: { credits: 1 }, next: 'port-mars-sky' } } },
-      'cast:ines:meet': { choices: { 0: { effects: { credits: 5 }, result: 'Kept line.' } } },
-      'cast:cato:mid1': { choices: { 0: { effects: { castLike: { who: 'nobody', n: 1, memory: 'm' } }, label: 'Kept too' } } },
+      'cast:ines:meet': { choices: { 0: { effects: { credits: 5 }, when: { credits: 1 }, result: 'Kept line.' } } },
+      'cast:cato:mid1': { choices: { 0: { effects: { castLike: { who: 'nobody', n: 1, memory: 'm' } }, when: { opinion: { who: 'nobody', min: 1 } }, label: 'Kept too' } } },
       'cast:nobody:intro': { title: 'x' },
     });
     console.warn = real;
     return { clean, warnings };
   });
   await g.done();
-  assert.deepEqual(r.clean, { 'cast:cato:intro': { title: 'Kept', choices: { 0: { label: 'Kept label' } } }, 'cast:ines:meet': { choices: { 0: { result: 'Kept line.' } } }, 'cast:cato:mid1': { choices: { 0: { label: 'Kept too' } } } });
+  assert.deepEqual(r.clean, { 'cast:cato:intro': { title: 'Kept', choices: { 0: { label: 'Kept label', when: { credits: 1 } } } }, 'cast:ines:meet': { choices: { 0: { result: 'Kept line.' } } }, 'cast:cato:mid1': { choices: { 0: { label: 'Kept too' } } } });
   assert.equal(r.warnings.length, 1);
-  for (const part of ['has no "when"', 'choice 0 has no "when"', 'choice 0 has no "next"', 'runs code, so its effects are not edited', 'effects left out: effect castLike nobody is not a main character', 'unknown scene "cast:nobody:intro"']) assert.ok(r.warnings[0].includes(part), `${part} in ${r.warnings[0]}`);
+  for (const part of ['has no "when"', 'choice 0 has no "next"', 'runs code, so its effects are not edited', 'runs code, so its conditions are not edited', 'conditions and effects left out: condition opinion nobody is not the captain, the first officer or a main character; effect castLike nobody is not a main character', 'unknown scene "cast:nobody:intro"']) assert.ok(r.warnings[0].includes(part), `${part} in ${r.warnings[0]}`);
+});
+
+// ---------- choice gates as data (#460) ----------
+
+test('a hired scene\'s data choice is shut by its conditions as the code gates were, and the file can change them', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey: 'hester', credits: 5000 }); G.dialog = null; G.nextEvent = null;
+    const find = (key, label) => { for (const [name, sc] of Object.entries(CAST[key].scenes)) { const i = sc.choices.findIndex(c => c.label === label); if (i >= 0) return { id: `cast:${key}:${name}`, name, i, sc }; } };
+    const lend = find('tomas', 'Lend him 200 cr'), write = find('tomas', 'Ask him to write it down, so it does not go with the hull');
+    const shown = (f, key) => castScene(key, CAST[key].scenes[f.name]).choices[f.i];
+    const out = {};
+    G.state.credits = 100;
+    let c = shown(lend, 'tomas');
+    out.poor = { open: c.can(), why: c.why() };
+    G.state.credits = 300; c = shown(lend, 'tomas');
+    const before = G.state.credits, open = c.can(); c.run();
+    out.rich = { open, spent: before - G.state.credits, flag: !!castRec('tomas').flags.loan };
+    useOverrides({ [lend.id]: { choices: { [lend.i]: { when: { credits: 500 } } } } });
+    G.state.credits = 300; c = shown(lend, 'tomas'); out.edited = { open300: c.can(), why: c.why() };
+    G.state.credits = 600; out.edited.open600 = shown(lend, 'tomas').can();
+    useOverrides({});
+    // A regard shuts a choice with what it needs in its label (the opinion gate of captains.js), and the condition holds for the person aboard.
+    castPerson('tomas').opinion = 0;
+    const gate = opinionGate(shown(write, 'tomas'));
+    out.regard = { label: /needs/.test(gate.label), open: gate.can(), held: meets({ opinion: { who: 'tomas', min: 3 } }) };
+    castPerson('tomas').opinion = 99;
+    out.regard.openLiked = opinionGate(shown(write, 'tomas')).can(); out.regard.heldLiked = meets({ opinion: { who: 'tomas', min: 3 } });
+    // A named post's experience.
+    const was = hired().skill.engineer || 0; applyEffects({ gainSkill: { post: 'engineer', n: 3 } });
+    out.skill = hired().skill.engineer - was;
+    out.problems = [conditionProblems({ opinion: { who: 'tomas', min: 3 } }).length, conditionProblems({ opinion: { who: 'nobody', min: 3 } }).length, conditionProblems({ opinion: 'x' }).length, conditionProblems({ nonsense: 1 }).length, effectProblems({ gainSkill: { post: 'nope', n: 1 } }).length];
+    return out;
+  });
+  await g.done();
+  assert.deepEqual(r.poor, { open: false, why: 'You have 100 cr; this costs 200 cr.' });
+  assert.deepEqual(r.rich, { open: true, spent: 200, flag: true });
+  assert.deepEqual(r.edited, { open300: false, why: 'You have 300 cr; this costs 500 cr.', open600: true });
+  assert.deepEqual(r.regard, { label: true, open: false, held: false, openLiked: true, heldLiked: true });
+  assert.equal(r.skill, 3);
+  assert.deepEqual(r.problems, [0, 1, 1, 1, 1]);
 });
 
 // ---------- the hired events about one person as data (#473) ----------
