@@ -929,6 +929,24 @@ test('the chapter\'s closing scene remembers who did not make it', async () => {
   await done();
 });
 
+test('the chapter\'s closing scene reads the record: two losses close on The Memorial Wall, fewer on Your Own Ship (#132)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    start({ mode: 'hired', post: 'gunner' });
+    const none = chapterEnd('shuttle'), grave = (key, day) => ({ key, day, place: 'Ceres', cause: 'Lost on the way.' });
+    G.state.memorial = [grave('ines', 5)]; const one = chapterEnd('shuttle');
+    G.state.memorial = [grave('ines', 5), grave('tomas', 9)]; const two = chapterEnd('shuttle');
+    return { none: { title: none.title, text: none.text }, one: { title: one.title, text: one.text }, two: { title: two.title, text: two.text, labels: two.choices.map(c => c.label) }, endings: CHAPTER_ENDINGS.map(e => e.id), firstTwo: CHAPTER_ENDINGS[0].when({ dead: ['a', 'b'] }), firstOne: CHAPTER_ENDINGS[0].when({ dead: ['a'] }) };
+  });
+  assert.equal(r.none.title, 'Your Own Ship'); assert.equal(r.one.title, 'Your Own Ship'); assert.match(r.one.text, /Ines Ferreira is not here to see it/, 'one loss is a line in the ordinary scene');
+  assert.equal(r.two.title, 'The Memorial Wall'); assert.match(r.two.text, /Ines Ferreira and Tomas Achebe/); assert.match(r.two.text, /hand's width of tape/);
+  for (const k of ['none', 'one', 'two']) { assert.match(r[k].text, /is on the apron at /, `${k}: the foot of the ramp is shared`); assert.match(r[k].text, /This is where the hired-hand chapter ends\.$/, `${k}: the closing line is shared`); }
+  assert.deepEqual(r.two.labels, ['Keep flying']);
+  assert.deepEqual(r.endings, ['memorial-wall']); assert.equal(r.firstTwo, true); assert.equal(r.firstOne, false);
+  await done();
+});
+
 test('letters from home come at most one landing in LETTER_GAP days, however many people are aboard', async () => {
   const { ev, done } = await open();
   await ev(helpers);

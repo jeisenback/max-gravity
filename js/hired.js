@@ -464,17 +464,31 @@ function buyIn(id) {
       `is yours now: the exchange, the contracts and the yard are open to you, and the crew are your wages to pay.`);
 }
 
-// The close of the hired-hand chapter (scope 'earth-hired', js/build.js): one scene at the foot of the new ship's ramp.
-// It is read before buyIn takes the captain and the crew apart.
+// The close of the hired-hand chapter (scope 'earth-hired', js/build.js): one scene at the foot of the new ship's ramp. It is read before
+// buyIn takes the captain and the crew apart, and it reads the record (#132): the first ending in CHAPTER_ENDINGS whose `when` holds
+// gives the scene its title and its middle; if none does, it is the ordinary "Your Own Ship".
+function chapterRecord(id) {
+  const st = G.state, h = hired(), cap = st.people[h.captain], friends = buyInCompanions(), oldName = home().name, days = st.day - h.since;
+  return { id, friends, oldName, days, cap, dead: (st.memorial || []).map(m => memorialName(m)), credits: st.credits };
+}
+// The endings the chapter can close on, in priority order: loss first, then the crew, then the quiet ones. Each has a `group`, a `title`,
+// a `when(record)` and a `text(record)` for the middle of the scene; the foot of the ramp before it and the line after it are shared.
+const CHAPTER_ENDINGS = [
+  { id: 'memorial-wall', group: 'Loss', title: 'The Memorial Wall', when: r => r.dead.length >= 2,
+    text: r => (`Beside the hatch you put up a strip of tape and write the names on it in marker, one under another: ${chapterList(r.dead)}. Nobody asked you ` +
+      `to. ${r.friends.length ? `${namesOf(r.friends)} ${r.friends.length > 1 ? 'wait' : 'waits'} at the foot of the ramp until you have finished.` : 'Nobody is waiting at the foot of the ramp.'} ` +
+      `You came aboard the ${r.oldName} ${r.days} days ago with ${fmt(HIRED_SAVINGS)} cr and a post to learn, and you leave a hand's width of tape clear under the last name.`) },
+];
+const chapterList = names => (names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0]);
 function chapterEnd(id) {
   if (!scopeNarrow()) return null;
-  const st = G.state, h = hired(), cap = st.people[h.captain], friends = buyInCompanions(), oldName = home().name, days = st.day - h.since;
+  const r = chapterRecord(id), e = CHAPTER_ENDINGS.find(x => x.when(r));
+  const foot = `The ${buyShip(id).name} is on the apron at ${currentPlanet().name} with her ramp down and the hold empty. The papers have your name on them.`;
+  const plain = (`You came aboard the ${r.oldName} ${r.days} days ago with ${fmt(HIRED_SAVINGS)} cr and a post to learn. ` +
+    `${captainEntry() ? '' : `Captain ${r.cap.last} shook your hand at the foot of the ramp and went back up it. `}${r.friends.length ? `${namesOf(r.friends)} ${r.friends.length > 1 ? 'are' : 'is'} already aboard, stowing a bag.` : 'Nobody came with you.'}${memorialNote()}`);
   return {
-    title: 'Your Own Ship', personal: true,
-    text: (`The ${buyShip(id).name} is on the apron at ${currentPlanet().name} with her ramp down and the hold empty. The papers have your name on ` +
-        `them. You came aboard the ${oldName} ${days} days ago with ${fmt(HIRED_SAVINGS)} cr and a post to ` +
-        `learn. ${captainEntry() ? '' : `Captain ${cap.last} shook your hand at the foot of the ramp and went back up it. `}${friends.length ? `${namesOf(friends)} ${friends.length > 1 ? 'are' : 'is'} already aboard, stowing a bag.` : 'Nobody came with you.'}${memorialNote()} ` +
-        `The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.`),
+    title: e ? e.title : 'Your Own Ship', personal: true,
+    text: [foot, e ? e.text(r) : plain, 'The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.'].join(' '),
     choices: [{ label: 'Keep flying', run: () => 'You walk up the ramp and shut the hatch behind you.' }],
   };
 }
