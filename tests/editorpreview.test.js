@@ -179,9 +179,14 @@ test('picking a choice shows what it changed', async () => {
   assert.match(await page.textContent('#pv-effects'), /credits: 1000 to 700 \(-300\)/);
 });
 
-test('what the game reports is escaped on the page', async () => {
-  const html = await page.evaluate(() => SceneIndex.reportHtml({ failing: ['<img src=x>'], chained: true, chance: '<b>', shut: [{ n: 1, why: ['<svg onload=1>'] }] })
-    + SceneIndex.reportHtml({ error: '<script>1</script>' }) + SceneIndex.effectsHtml({ label: '<i>L</i>', lines: ['<u>x</u>'] }));
-  assert.ok(!/<(?:img|svg|b>|script|i>|u>)/.test(html), html);
-  assert.match(html, /&lt;img src=x&gt;/);
+test('what the game reports is shown as text, never as markup', async () => {
+  const html = await page.evaluate(() => {
+    const box = document.createElement('div');
+    box.append(SceneIndex.reportNode({ failing: ['<img src=x>'], chained: true, chance: '<b>', shut: [{ n: 1, why: ['<svg onload=1>'] }] }),
+      SceneIndex.reportNode({ error: '<script>1</script>' }), SceneIndex.effectsNode({ label: '<i>L</i>', lines: ['<u>x</u>'] }));
+    return { html: box.innerHTML, elements: box.querySelectorAll('img, svg, script, b, i, u').length };
+  });
+  assert.equal(html.elements, 0, html.html);
+  assert.match(html.html, /&lt;img src=x&gt;/);
+  assert.match(html.html, /&lt;script&gt;1&lt;\/script&gt;/);
 });

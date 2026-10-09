@@ -247,7 +247,7 @@ test('every field is escaped on the page', async () => {
     const evil = { id: 'x"><img src=x onerror=1>', title: '<script>1</script>', where: '<b>', file: '<i>', belongs: '<u>', kind: '<s>', off: true, codeNote: '<em>note</em>', text: '<img src=x>\n<p>', choices: [{ label: '<a href=x>', result: '<svg onload=1>' }] };
     return SceneIndex.tableHtml([evil], evil.id) + SceneIndex.detailHtml(evil);
   });
-  assert.ok(!/<(?:img|script|svg|a |b>|i>|u>|s>|em>)/.test(html), html);
+  assert.ok(!/<(?:img|script|svg|a |b>|i>|u>|s>|em>)/i.test(html), html);
   assert.match(html, /&lt;script&gt;1&lt;\/script&gt;/);
   // A data scene's form, and the file text, with hostile words typed into it.
   const form = await page.evaluate(() => {
@@ -256,7 +256,7 @@ test('every field is escaped on the page', async () => {
     const values = { [evil.id]: { title: '"><img src=y>', 'c0.result': '<b>r</b>' } };
     return SceneIndex.detailHtml(evil, values, [evil]);
   });
-  assert.ok(!/<(?:img|script|svg|a |b>)/.test(form), form);
+  assert.ok(!/<(?:img|script|svg|a |b>)/i.test(form), form);
   assert.match(form, /&lt;b&gt;r&lt;\/b&gt;/);
 });
 

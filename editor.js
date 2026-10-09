@@ -232,6 +232,9 @@
     return rows.filter(r => (!where || r.where === where) && (!file || r.file === file) && (!kind || r.kind === kind) && words.every(w => haystack(r).includes(w)));
   }
 
+  // Ids and paths come from the page's messages and the form, so the maps keyed by them have no prototype to change.
+  const dict = () => Object.create(null);
+
   // The fields of a data scene's form, named by a path: 'title', 'text', and 'c0.label' and 'c0.result' for the first choice.
   const pathsOf = r => ['title', 'text', ...r.choices.flatMap((c, i) => [`c${i}.label`, `c${i}.result`])];
   const CHOICE_PATH = /^c(\d+)\.(label|result)$/;
@@ -241,22 +244,22 @@
   // What js/overrides.js would hold for the values typed: only what differs from the shipped words, an empty field counting as not changed.
   // values: { sceneId: { path: text } }.
   function overridesFrom(rows, values) {
-    const out = {};
+    const out = dict();
     for (const r of rows.filter(x => values[x.id])) {
       for (const path of pathsOf(r)) {
         const v = values[r.id][path];
         if (typeof v !== 'string' || !v.trim() || v === shippedOf(r, path) || !editableOf(r, path)) continue;
-        const o = out[r.id] = out[r.id] || {}, m = CHOICE_PATH.exec(path);
-        if (m) { o.choices = o.choices || {}; (o.choices[m[1]] = o.choices[m[1]] || {})[m[2]] = v; } else o[path] = v;
+        const o = out[r.id] = out[r.id] || dict(), m = CHOICE_PATH.exec(path);
+        if (m) { o.choices = o.choices || dict(); (o.choices[m[1]] = o.choices[m[1]] || dict())[m[2]] = v; } else o[path] = v;
       }
     }
     return out;
   }
   // The other way: the values to start from, for the changes the file already holds.
   function valuesFrom(overrides) {
-    const values = {};
+    const values = dict();
     for (const [id, o] of Object.entries(overrides || {})) {
-      const v = values[id] = {};
+      const v = values[id] = dict();
       if (o.title) v.title = o.title;
       if (o.text) v.text = o.text;
       for (const [i, c] of Object.entries(o.choices || {})) for (const f of ['label', 'result']) if (c[f]) v[`c${i}.${f}`] = c[f];
@@ -346,17 +349,24 @@
       <div id="pv-effects" role="status"></div>
       <div id="pv-frame"></div>`;
   }
-  const listHtml = items => `<ul>${items.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
-  function reportHtml(m) {
-    if (m.error) return `<p class="note">${esc(m.error)}</p>`;
-    const lines = [];
-    lines.push(m.failing.length ? `<p class="warn">This scene's conditions do not hold in this state:</p>${listHtml(m.failing)}<p class="hint">It is played anyway.</p>` : '<p class="ok">Every condition of the scene holds in this state.</p>');
-    if (m.chance !== undefined) lines.push(`<p class="hint">It also has a chance of ${esc(m.chance)}, rolled when the game picks a scene.</p>`);
-    if (m.chained) lines.push('<p class="hint">It only plays after another scene leads into it.</p>');
-    for (const c of m.shut) lines.push(`<p class="warn">Choice ${c.n} is shut:</p>${listHtml(c.why)}`);
-    return lines.join('');
+  // What the game reported is built as nodes with text, never as markup: it arrives in a message.
+  const el = (tag, text, cls) => { const e = document.createElement(tag); if (text !== undefined) e.textContent = text; if (cls) e.className = cls; return e; };
+  const listEl = items => { const ul = el('ul'); for (const x of items) ul.append(el('li', x)); return ul; };
+  function reportNode(m) {
+    const box = el('div');
+    if (m.error) { box.append(el('p', m.error, 'note')); return box; }
+    if (m.failing.length) box.append(el('p', 'This scene\'s conditions do not hold in this state:', 'warn'), listEl(m.failing), el('p', 'It is played anyway.', 'hint'));
+    else box.append(el('p', 'Every condition of the scene holds in this state.', 'ok'));
+    if (m.chance !== undefined) box.append(el('p', `It also has a chance of ${m.chance}, rolled when the game picks a scene.`, 'hint'));
+    if (m.chained) box.append(el('p', 'It only plays after another scene leads into it.', 'hint'));
+    for (const c of m.shut) box.append(el('p', `Choice ${c.n} is shut:`, 'warn'), listEl(c.why));
+    return box;
   }
-  const effectsHtml = m => `<h3>You chose: ${esc(m.label)}</h3>${m.lines.length ? listHtml(m.lines) : '<p class="hint">Nothing it tracks changed.</p>'}`;
+  function effectsNode(m) {
+    const box = el('div');
+    box.append(el('h3', `You chose: ${m.label}`), m.lines.length ? listEl(m.lines) : el('p', 'Nothing it tracks changed.', 'hint'));
+    return box;
+  }
 
   function mount(app, rows, overrides, opt) {
     const files = [...new Set(rows.map(r => r.file))].sort();
@@ -399,15 +409,15 @@
       const f = app.querySelector('#pv-frame-el');
       if (!f || source !== f.contentWindow) return;
       if (m.type === 'ready') { previewReady = true; if (pending) { f.contentWindow.postMessage(pending, '*'); pending = null; } }
-      else if (m.type === 'chose') app.querySelector('#pv-effects').innerHTML = effectsHtml(m);
-      else app.querySelector('#pv-report').innerHTML = reportHtml(m);
+      else if (m.type === 'chose') app.querySelector('#pv-effects').replaceChildren(effectsNode(m));
+      else app.querySelector('#pv-report').replaceChildren(reportNode(m));
     };
     app.addEventListener('input', e => {
       const t = e.target;
       if (t.dataset && t.dataset.pv) setup[t.dataset.pv] = t.value;
       else if (t.dataset && t.dataset.pvRep) setup.rep[t.dataset.pvRep] = t.value;
       else if (t.dataset && t.dataset.path) {  // a field of the form: keep the focus, so only its flag and the changes are redrawn
-        (values[state.id] = values[state.id] || {})[t.dataset.path] = t.value;
+        (values[state.id] = values[state.id] || dict())[t.dataset.path] = t.value;
         app.querySelector(`[data-warn="${t.dataset.path}"]`).textContent = flagOf(t.value);
         app.querySelector('#changes').textContent = fileText(overridesFrom(rows, values));
       } else if (t.id in state) { state[t.id] = t.value; update(); }
@@ -417,7 +427,7 @@
       if (b) { state.id = b.dataset.id; update(); return; }
       const row = rows.find(r => r.id === state.id);
       if (e.target.closest('[data-action="play"]') && row && row.kind === 'data') {
-        app.querySelector('#pv-effects').innerHTML = ''; app.querySelector('#pv-report').innerHTML = '';
+        app.querySelector('#pv-effects').replaceChildren(); app.querySelector('#pv-report').replaceChildren();
         send({ cmd: 'play', id: row.id, overrides: overridesFrom(rows, values), setup: { ...setup, place: placeFor(row) } });
       }
     });
@@ -440,7 +450,7 @@
       const m = ev.data;
       if (m && m.mode === 'preview') { onPreview(m, ev.source); return; }
       if (!m || !frames[m.mode] || ev.source !== document.getElementById('frame-' + m.mode).contentWindow) return;
-      if (m.error) { app.innerHTML = `<p class="note">Could not read the game: ${esc(m.error)}</p>`; return; }
+      if (m.error) { app.replaceChildren(el('p', `Could not read the game: ${m.error}`, 'note')); return; }
       got[m.mode] = m;
       if (!got.full || !got.narrow) return;
       const kept = new Set(got.narrow.rows.filter(r => r.on).map(r => r.id));
@@ -456,6 +466,6 @@
     }
   }
 
-  const SceneIndex = window.SceneIndex = { SCRIPTS, esc, plain, filterRows, tableHtml, detailHtml, overridesFrom, valuesFrom, fileText, badPlaceholders, reportHtml, effectsHtml, rows: null, values: null, setup: null };
+  const SceneIndex = window.SceneIndex = { SCRIPTS, esc, plain, filterRows, tableHtml, detailHtml, overridesFrom, valuesFrom, fileText, badPlaceholders, reportNode, effectsNode, rows: null, values: null, setup: null };
   start();
 })();
