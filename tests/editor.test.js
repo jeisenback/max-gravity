@@ -119,7 +119,7 @@ test('the filters narrow by where, by source and by data or code', async () => {
   const code = await filter({ kind: 'code' });
   assert.ok(code.includes('cast:ruben:mid1') && !code.includes('port-mars-front'));
   const castData = await filter({ kind: 'data', file: 'js/cast.js' });
-  assert.ok(castData.includes('cast:ines:intro') && !castData.includes('cast:ines:meet') && castData.every(id => row(id).kind === 'data' && row(id).file === 'js/cast.js'), 'filters combine');
+  assert.ok(castData.includes('cast:ines:meet') && !castData.includes('cast:ines:pivot') && castData.every(id => row(id).kind === 'data' && row(id).file === 'js/cast.js'), 'filters combine');
 });
 
 test('the page shows the rows, opens a scene to read it, and filters as you type', async () => {
