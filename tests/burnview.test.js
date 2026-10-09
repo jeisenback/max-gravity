@@ -238,7 +238,7 @@ test('a face is not there until its picture has loaded, and is drawn for each pe
   await page.waitForFunction(() => faceImage(__p) !== null, null, { timeout: 5000 });
   await ev(() => {
     burn(); const t = G.transit; t.left = t.total * 0.7; t.angle = -Math.PI / 2; t.flipped = false;
-    window.__faces = 0; const real = ctx.drawImage.bind(ctx); ctx.drawImage = (...a) => { __faces++; return real(...a); };
+    window.__faces = 0; const real = ctx.drawImage.bind(ctx); ctx.drawImage = (...a) => { if (a[0] instanceof HTMLImageElement) __faces++; return real(...a); };  // a face is an Image; the destination ahead is a sprite canvas
   });
   await page.waitForFunction(() => shipPeople().filter(p => p.role !== 'cat').every(p => faceImage(p) !== null), null, { timeout: 5000 });
   const r = await ev(() => { __faces = 0; drawTransit(innerWidth, innerHeight); return { faces: __faces, awake: shipPeople().filter(p => p.role !== 'cat' && !isAsleep(p)).length }; });

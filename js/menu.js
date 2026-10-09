@@ -146,6 +146,7 @@ const Menu = {
 
   render() {
     const V = this.views[this.view].call(this);
+    if (G.mode === 'title') UI.setLight(TITLE_SUN.angle);
     UI.el.innerHTML = `<div class="menu">${V}${this.note ? `<p class="hint">${this.note}</p>` : ''}</div>`;
     UI.el.classList.remove('hidden', 'event');
     this.note = '';
@@ -268,13 +269,12 @@ const Menu = {
   },
 };
 
-// The title screen's backdrop: stars drifting past a distant sun.
+// The title screen's backdrop: stars drifting past, Earth's limb across the bottom of the screen, and the sun rising at
+// its edge. There is no game state here, so the sun is fixed.
+const TITLE_SUN = { angle: -0.9, strength: 1 }, TITLE_R = 720;
 function drawTitle(W, H) {
   ctx.fillStyle = '#02040a';
   ctx.fillRect(0, 0, W, H);
-  const g = ctx.createRadialGradient(W * 0.2, H * 0.75, 0, W * 0.2, H * 0.75, H * 0.8);
-  g.addColorStop(0, 'rgba(255,200,120,0.22)'); g.addColorStop(1, 'rgba(0,0,0,0)');
-  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
   if (!G.transitStars) G.transitStars = Array.from({ length: 150 }, () => ({ x: Math.random(), y: Math.random(), z: rand(0.2, 1) }));
   for (const s of G.transitStars) {
     s.x -= (Settings.reduceMotion ? 0.002 : 0.01) * s.z / 60;
@@ -282,6 +282,16 @@ function drawTitle(W, H) {
     ctx.fillStyle = `rgba(200,215,255,${s.z})`;
     ctx.fillRect(s.x * W, s.y * H, s.z * 2, s.z * 2);
   }
+  const R = Math.min(W * 0.8, TITLE_R), cx = W * 0.35, cy = H + R * 0.72;
+  const sx = cx + Math.cos(TITLE_SUN.angle) * R, sy = cy + Math.sin(TITLE_SUN.angle) * R;  // on the limb, at the sun's side
+  const g = ctx.createRadialGradient(sx, sy, 0, sx, sy, H * 0.5);
+  g.addColorStop(0, 'rgba(255,245,220,0.8)'); g.addColorStop(0.15, 'rgba(255,220,150,0.25)'); g.addColorStop(1, 'rgba(255,180,90,0)');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  // One sprite at TITLE_R, drawn scaled to the window, so a resize does not keep a sprite per width. The pole faces us, as
+  // at the dock: no cap.
+  ctx.save(); ctx.translate(cx, cy); ctx.scale(R / TITLE_R, R / TITLE_R);
+  drawBody({ name: 'Earth', r: TITLE_R, art: { caps: null } }, 0, 0, { sun: TITLE_SUN });
+  ctx.restore();
 }
 
 // A Menu button over flight, transit, and fights (the port has its own).
