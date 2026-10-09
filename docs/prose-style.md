@@ -9,7 +9,7 @@ Second person, present tense, American spelling. Two models:
 - **James S. A. Corey** for the crew and what they say and do. Working people on a working ship, talking over each other, with the ship always in the way: the air handler, the recycler, the water ration, a door on a closer.
 - **Ursula K. Le Guin** for the narrator. Patient, plain, interested in custom: what is done and not done aboard, and why. It explains the custom and leaves the feeling to the reader.
 
-The reference passages are in `docs/voices/reference.md`, the dialogue rules in `docs/voices/dialogue.md`, and the narrator registers and character cards beside them in `docs/voices/`. The existing text in the game is too clipped to be the model.
+The reference passages are in `docs/voices/reference.md`, the dialogue rules in `docs/voices/dialogue.md`, and the narrator registers and character cards beside them in `docs/voices/`. Generated people (passengers, hired hands, patrons) have no card of their own: their voices are built from traits, cultures and secrets in `docs/voices/people.md`. The existing text in the game is too clipped to be the model.
 
 ## Rules
 
