@@ -446,6 +446,23 @@ const CAST = {
               '"Not promises. Being heard." He turns the volume up on the quiet band, and, together, for a while, you sit and listen.'); } },
         ],
       },
+      pivot: {
+        days: 60, title: 'The Last Relay',
+        get text() {
+          const named = !!castRec('ruben').flags.councillor;
+          return 'A flare has been building on the sun-side sensors for an hour, and Ruben has been watching it with his thermos going cold. Now the Hellas relay drops off the open band mid-sentence, and a voice that is not the dome\'s comes up on the channel asking whether anyone can hear. "That is the north mast," Ruben says. "It will not take a realign from the console, the motor is fouled. It needs a hand on the third bolt, from outside, and the flare will be on us in forty minutes." He has one arm in the suit already. "I know which bolt. I have known which bolt since the kitchen. Nobody else here does."'
+            + castRiskLines()
+            + (named ? ' Councillor Reyes\'s name is on the relay\'s access list, and the dome will take the signal on her word.' : ' No councillor on Hellas has your name, and the dome will take a stranger\'s signal slowly.');
+        },
+        choices: [
+          { label: 'Let him go out to the mast', run: () => theMast(false) },
+          { label: 'Send a second person out with him', ...gated(needCrew(2)), run: () => theMast(true) },
+          { label: 'Tell him to hold the band from the console', run() {
+            castFlag('ruben', 'benched'); castLike('ruben', -3, 'You kept me off the mast.');
+            return 'You tell him no, and put your hand on the console. The north mast stays dark, and the voice on the open band asks its question twice more and then stops asking. Ruben sits down at the comms post with the thermos untouched. "It is your ship," he says quietly. "I will keep the band open anyway. Somebody should be listening."';
+          } },
+        ],
+      },
     },
   },
   bexa: {
@@ -860,6 +877,23 @@ function thePlant(backup) {
     return lead + 'He comes out carried, both forearms scalded, and the plant holds behind him. He will weld again. He does not take the flask in his left hand after that, and he does not complain.';
   }
   return lead + 'He goes in, and comes out in four minutes with no eyebrows, which he does not mention. The plant settles. He sits on a crate with the flask and tells her, quietly, that she did well.';
+}
+
+// Ruben's pivot: a point each for a medic, a hull above 60 percent, the councillor who vouches for the relay, and a second person at the mast.
+function theMast(backup) {
+  const rec = castRec('ruben'), promised = !!rec.flags.promised, named = !!rec.flags.councillor;
+  const outcome = castFate('ruben', castPoints(castRiskPoints() + (named ? 1 : 0) + (backup ? 1 : 0)), `Went out to the north mast to hold the band open near ${system().name}.`, 'He hears the quiet band in one ear only.', 'slicer');
+  const lead = backup ? 'You send a second person out to the mast with him. ' : '';
+  if (outcome === 'die') {
+    return lead + 'He goes out the lock with the tool roll on his belt and the dish tilting above him, and for eleven minutes the open band is his voice, calling the bolts as he turns them, one, two, three, and a dome somewhere answering each. The flare arrives on the fourth. The band fills with noise, and then with a number, which is the last thing he says, and then with the dome, saying it back.'
+      + (promised ? ' You remember the room for a relay you told him there would be.' : '');
+  }
+  castLike('ruben', 2, outcome === 'mark' ? 'You let me go out to the north mast, and I came back with one good ear.' : 'You let me go out to the north mast, and I came back.');
+  if (outcome === 'mark') {
+    return lead + 'He gets the third bolt turned and the mast swings true, and the flare comes in before he is through the lock. When you reach him he is on the airlock deck with both hands over his left ear. The dome is already answering. "I can hear it," he says, loudly, about the dome. "Mostly." After that he turns the volume up on the quiet band, and sits closer to the speaker.';
+  }
+  return lead + 'He goes out with the thermos clipped to his belt, which nobody argues with, and calls the bolts as he turns them so the dome can follow along. The mast swings true in nine minutes. The flare comes in as the lock cycles, and the open band fills with a dome council all talking at once, which is the best noise he knows. "There," Ruben says, pink with cold. "Heard."'
+    + (promised ? ' "You said there would be room," he adds, and pours you a cup.' : '');
 }
 
 // Bexa's pivot: a point each for a medic, a hull above 60 percent, more than half the reaction mass, and a second hand on the line.
