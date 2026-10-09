@@ -23,6 +23,10 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'beats:assault', fn: 'repelScene', file: 'js/boarders.js', title: 'Boarding Her', where: 'transit', when: 'When you board the crippled raider.' },
 ];
 
+// The words of a captain's goodbye, by part (captains.js builds the scene from the parts that apply). `repay` is a sum, not words.
+const GOODBYE_PARTS = ['cold', 'neutral', 'warm', 'crew', 'secret', 'xo', 'xoDead', 'repaid', 'parting'];
+const goodbyeParts = g => Object.fromEntries(GOODBYE_PARTS.filter(k => g[k]).map(k => [k, g[k]]));
+
 // Every id, with what it is and where its scene lives: { id, kind, key, name, scene } for a cast or captain scene (its scene object), { id, kind: 'work' |
 // 'hand', def } for a hired event (with its `scene` when it is written as data), { id, kind: 'ice', stage } for an ice run scene, and { id, kind: 'function', ...the entry above } for the rest.
 function hiredSceneRegistry() {
@@ -40,7 +44,7 @@ function hiredSceneRegistry() {
       out.push({ id: `captain:${key}:secret:confide`, kind: 'captain', key, name: 'secret:confide', scene: s.secret.confide });
       out.push({ id: `captain:${key}:secret:found`, kind: 'captain', key, name: 'secret:found', scene: s.secret.found });
     }
-    if (c.goodbye) out.push({ id: `captain:${key}:goodbye`, kind: 'captain', key, name: 'goodbye', scene: { title: c.goodbye.title, choices: c.goodbye.choices, goodbye: c.goodbye } });
+    if (c.goodbye) out.push({ id: `captain:${key}:goodbye`, kind: 'captain', key, name: 'goodbye', scene: { title: c.goodbye.title, choices: c.goodbye.choices, parts: goodbyeParts(c.goodbye), goodbye: c.goodbye } });
   }
   for (const d of WORK_EVENTS) out.push({ id: `hired:${d.id}`, kind: 'work', def: d });
   for (const d of HAND_EVENTS.filter(x => x.group !== 'work')) out.push({ id: `hired:${d.id}`, kind: 'hand', def: d, ...(d.data ? { scene: d.data } : {}) });

@@ -51,8 +51,8 @@ test('the converted scenes are data rows of the registry, and the rest are code 
   assert.deepEqual(r.ilsa, ['code', true]);
   assert.equal(r.effects.castLike.who, 'ansel');
   assert.ok(r.edit.length > 0 && r.edit.every(e => e === false), 'code choices keep their effects in code');
-  assert.ok(!r.goodbye && !r.signon, 'the goodbye and the function-built scenes are not edited yet');
-  assert.equal(r.dataRegistry, 91);
+  assert.ok(r.goodbye && !r.signon, 'the goodbye is edited by its parts, the function-built scenes are not edited yet');
+  assert.equal(r.dataRegistry, 95);
 });
 
 test('a converted scene\'s effects are in forms, checked as typed, and changing one is a change to the file', async () => {
@@ -271,4 +271,23 @@ test('the chain view leaves the hired scenes out: they are played by their days,
   const groups = await page.locator('#group option').allTextContents();
   assert.ok(groups.length > 5);
   assert.ok(!groups.some(g => /first officer|captain\)|main character/.test(g)), groups.join(', '));
+});
+
+test('a captain\'s goodbye is edited part by part, the parts go to and from the file, and it plays in the preview (#476)', async () => {
+  await reload(); await select('captain:hester:goodbye');
+  const r = await page.evaluate(() => {
+    const row = SceneIndex.rows.find(x => x.id === 'captain:hester:goodbye'), values = { [row.id]: { 'p.parting': 'A new parting.', 'p.warm': row.parts.warm } };
+    const out = SceneIndex.overridesFrom(SceneIndex.rows, values);
+    return { kind: row.kind, parts: Object.keys(row.parts), out: out[row.id], back: SceneIndex.valuesFrom(out)[row.id], plan: SceneIndex.planImport({ overrides: { [row.id]: { parts: { parting: 'Ok.', nope: 'x' }, text: 'x' } } }, SceneIndex.rows).items.map(i => [i.ok, i.text]) };
+  });
+  assert.equal(r.kind, 'data');
+  assert.deepEqual(r.parts, ['cold', 'neutral', 'warm', 'crew', 'secret', 'xo', 'xoDead', 'repaid', 'parting']);
+  assert.deepEqual(r.out, { parts: { parting: 'A new parting.' } }, 'only what differs');
+  assert.deepEqual(r.back, { 'p.parting': 'A new parting.' });
+  assert.deepEqual(r.plan.map(i => i[0]), [false, false, true], 'the unknown part and the text are refused');
+  assert.equal(await page.locator('#detail textarea[data-path^="p."]').count(), 9);
+  assert.equal(await page.locator('#detail #f-text').count(), 0, 'no single text field');
+  await page.fill('#f-p\\.parting', 'Typed parting.');
+  const f = await play();
+  assert.deepEqual(await f.evaluate(() => [G.dialog.event.title, hired().captainKey, G.dialog.event.text.includes('Typed parting.'), G.dialog.choices.length]), ['The Foot of the Ramp', 'hester', true, 3]);
 });

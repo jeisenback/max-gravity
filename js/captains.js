@@ -155,18 +155,20 @@ function captainGoodbye() {
   const d = captainEntry(), g = d && d.goodbye;
   if (!g) return null;
   const h = hired(), cap = hiredCaptain(), friends = buyInCompanions(), flags = { ...(h.flags || {}) };
+  const id = `captain:${cap.captainKey}:goodbye`, mine = sceneOverride(id).parts || {}, say = k => (mine[k] ? esc(mine[k]) : g[k]);  // the editor's words for a part, if any (storylets.js)
   const warmth = cap.opinion >= OPINION.TRUSTED ? 'warm' : cap.opinion < 0 ? 'cold' : 'neutral';
-  const parts = [g[warmth]];
-  if (friends.length) parts.push(g.crew.replace('{names}', namesOf(friends)));
-  if (flags.secretKnown) parts.push(g.secret);
+  const parts = [say(warmth)];
+  if (friends.length) parts.push(say('crew').replace('{names}', namesOf(friends)));
+  if (flags.secretKnown) parts.push(say('secret'));
   const facts = goodbyeFacts(flags).slice(0, 2);
   if (facts.length) parts.push(facts.map(f => f.line).join(' '));
-  if (flags.lent && g.repaid) parts.push(g.repaid);
-  if (castDead(d.xo)) parts.push(g.xoDead); else if (hiredXo() && g.xo) parts.push(g.xo);
-  parts.push(g.parting);
+  if (flags.lent && g.repaid) parts.push(say('repaid'));
+  if (castDead(d.xo)) parts.push(say('xoDead')); else if (hiredXo() && g.xo) parts.push(say('xo'));
+  parts.push(say('parting'));
+  const scene = sceneWords(id, { title: g.title, choices: g.choices });
   return {
-    title: g.title, personal: true, text: parts.join('</p><p>'),
-    choices: g.choices.filter(c => !c.can || c.can(flags)).map(c => ({ label: c.label, run() { leavingCaptain = cap; try { if (flags.lent) G.state.credits += g.repay || 0; return c.run(); } finally { leavingCaptain = null; } } })),
+    title: scene.title, personal: true, text: parts.join('</p><p>'),
+    choices: scene.choices.filter(c => !c.when || meets(c.when)).map(c => ({ label: c.label, run() { leavingCaptain = cap; try { if (flags.lent) G.state.credits += g.repay || 0; return dataChoice(c).run(); } finally { leavingCaptain = null; } } })),
   };
 }
 // Each event hands on to the next: the last choice of one opens the one after.

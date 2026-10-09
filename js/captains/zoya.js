@@ -142,9 +142,9 @@ CAPTAINS.zoya = {
     xo: 'Ansel is at the hatch, in his coat, with the folded sheet in one hand. "I advised against most of it," he says. "I want that on the record. And I want you to know it was the best six years of my working life. Do not tell her the second part."',
     parting: 'She hugs you, fast, and lets go before it can be anything. "Go on," she says. "Before I bet against myself."',
     choices: [
-      { label: 'Wish her the good run', run: () => { captainLike(2, 'You wished me the good run.'); return '"From your mouth," she says, and crosses two fingers on each hand, and holds them up, and laughs. It is the best laugh you have heard from her, and the shortest.'; } },
-      { label: 'Tell her to stop', can: flags => !!flags.secretKnown, run: () => { captainLike(1, 'You told me to stop.'); return 'She laughs, and means it, and does not. "I will think about it," she says. "On a Tuesday." She does not say which one.'; } },
-      { label: 'Take the papers and go', run: () => { captainLike(0, 'You took the papers and went.'); return 'You take the papers and go. When you look back from the dock, she is on the ramp with a coin on her thumb, and she tosses it, and you do not stay to see how it lands.'; } },
+      { label: 'Wish her the good run', effects: { captainLike: { n: 2, memory: 'You wished me the good run.' } }, result: '"From your mouth," she says, and crosses two fingers on each hand, and holds them up, and laughs. It is the best laugh you have heard from her, and the shortest.' },
+      { label: 'Tell her to stop', when: { hiredFlag: 'secretKnown' }, effects: { captainLike: { n: 1, memory: 'You told me to stop.' } }, result: 'She laughs, and means it, and does not. "I will think about it," she says. "On a Tuesday." She does not say which one.' },
+      { label: 'Take the papers and go', effects: { captainLike: { n: 0, memory: 'You took the papers and went.' } }, result: 'You take the papers and go. When you look back from the dock, she is on the ramp with a coin on her thumb, and she tosses it, and you do not stay to see how it lands.' },
     ],
   },
 };

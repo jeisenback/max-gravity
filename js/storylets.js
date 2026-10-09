@@ -47,6 +47,7 @@ const CONDITIONS = {
   chance: v => Math.random() < v,
   post: v => !!hired() && [].concat(v).includes(hired().post),  // a hired hand's own post
   skill: v => !!hired() && skillLevel(hired().post) >= v,  // and the level they have there
+  hiredFlag: v => !!hired() && !!(hired().flags || {})[v],  // something the hand lived through, kept by captainFlag (#476)
   hired: v => !!hired() === !!v,  // follow-ups of a hired hand's choices stop when they buy a ship of their own
   // Someone's regard for the hand (#460): { who: 'captain' | 'xo' | a main character's key, min: a cutoff from OPINION }. With nobody in that place it does not hold.
   opinion: v => { const p = isPlain(v) ? opinionOf(v.who) : null; return !!p && p.opinion >= v.min; },
@@ -221,7 +222,8 @@ function cleanOverrides(raw) {
     if (!isObj(o)) { bad.push(`"${id}" is not an object`); continue; }
     const mine = {}, pre = `"${id}"`;
     for (const [k, v] of Object.entries(o)) {
-      if ((k === 'title' || k === 'text') && text(`${pre}.${k}`, v)) mine[k] = v;
+      if (k === 'text' && rs && rs.parts) bad.push(`${pre} has no "text" (its words are in parts)`);
+      else if ((k === 'title' || k === 'text') && text(`${pre}.${k}`, v)) mine[k] = v;
       else if (k === 'weight' || k === 'every' || k === 'off') {
         const why = rs ? 'a hired scene is drawn by its days and the story, not by weight' : s.priority > 0 ? 'a story scene is picked by priority, not by weight'
           : k === 'weight' ? (Number.isFinite(v) && v >= 0 && v <= 100 ? '' : 'needs a number from 0 to 100')
@@ -251,8 +253,12 @@ function cleanOverrides(raw) {
             else if (f !== 'label' && f !== 'result') bad.push(`${pre} choice ${i} ${f === 'next' ? 'leads to a scene that is not there' : STRUCT.includes(f) ? `.${f} is not an object` : `has no "${f}"`}`);
           }
         }
+      } else if (k === 'parts') {  // a goodbye's words, part by part (#476)
+        if (!rs || !rs.parts) bad.push(`${pre} has no "parts"`);
+        else if (!isObj(v)) bad.push(`${pre}.parts is not an object`);
+        else for (const [name, x] of Object.entries(v)) { if (rs.parts[name] === undefined) bad.push(`${pre} has no part "${name}"`); else if (text(`${pre} part ${name}`, x)) (mine.parts = mine.parts || {})[name] = x; }
       } else if (k === 'text2') { if (rs && rs.text2 !== undefined) { if (text(`${pre}.text2`, v)) mine.text2 = v; } else bad.push(`${pre} has no "text2"`); }
-      else if (k !== 'title' && k !== 'text' && k !== 'weight' && k !== 'every' && k !== 'off') bad.push(`${pre} has no "${k}"`);
+      else if (k !== 'title' && k !== 'text' && k !== 'parts' && k !== 'weight' && k !== 'every' && k !== 'off') bad.push(`${pre} has no "${k}"`);
     }
     // The conditions, effects and links together, as the scene would be: if the game would refuse it, none of them go in.
     const changes = (mine.when !== undefined ? 1 : 0) + Object.values(mine.choices || {}).filter(c => STRUCT.some(f => c[f] !== undefined)).length;
@@ -345,6 +351,7 @@ EFFECT_SHAPES.castJoin = EFFECT_SHAPES.castLater = v => (typeof v !== 'string' |
 EFFECT_SHAPES.gainSkill = v => (!isPlain(v) ? 'needs { post, n }' : !HIRED_POSTS.includes(v.post) ? `${v.post} is not a post` : !Number.isFinite(v.n) ? 'n must be a number' : '');
 // The shape each condition takes, where it is more than a number or a name: '' if the value is right, else what is wrong.
 const CONDITION_SHAPES = {
+  hiredFlag: v => (typeof v === 'string' && v.trim() ? '' : 'needs a name'),
   opinion: v => (!isPlain(v) ? 'needs { who, min }' : !['captain', 'xo'].includes(v.who) && !CAST[v.who] ? `${v.who} is not the captain, the first officer or a main character` : !Number.isFinite(v.min) ? 'min must be a number' : ''),
 };
 const conditionProblems = when => Object.entries(when || {}).flatMap(([k, v]) => (!CONDITIONS[k] ? [`unknown condition "${k}"`] : CONDITION_SHAPES[k] && CONDITION_SHAPES[k](v) ? [`condition ${k} ${CONDITION_SHAPES[k](v)}`] : []));

@@ -343,7 +343,7 @@ const CONVERTED = [
   'cast:ilsa:late:closed', 'cast:pilar:late:closed', 'cast:ansel:late:closed', 'captain:hester:secret:confide', 'captain:hester:secret:found',
   'captain:dov:secret:confide', 'captain:dov:secret:found', 'captain:imre:trouble', 'captain:imre:secret:confide', 'captain:imre:secret:found',
   'captain:zoya:secret:confide', 'captain:zoya:secret:found', 'cast:tomas:mid1', 'cast:tomas:mid2', 'cast:bexa:mid1', 'cast:ilsa:late', 'captain:hester:trouble', 'captain:dov:trouble',
-  'captain:zoya:trouble', 'cast:ines:meet', 'cast:tomas:meet', 'cast:yelena:meet', 'cast:ruben:meet', 'cast:bexa:meet', 'cast:pax:meet'
+  'captain:zoya:trouble', 'captain:hester:goodbye', 'captain:dov:goodbye', 'captain:imre:goodbye', 'captain:zoya:goodbye', 'cast:ines:meet', 'cast:tomas:meet', 'cast:yelena:meet', 'cast:ruben:meet', 'cast:bexa:meet', 'cast:pax:meet'
 ];
 
 test('the converted hired scenes are data, and the rest of the chapter is untouched', async () => {
@@ -351,10 +351,10 @@ test('the converted hired scenes are data, and the rest of the chapter is untouc
   const r = await g.ev(ids => {
     const by = Object.fromEntries(hiredSceneRegistry().filter(e => e.scene).map(e => [e.id, e.scene]));
     const data = id => by[id].choices.every(c => !c.run && typeof c.result === 'string' && c.label);
-    return { notData: ids.filter(id => !data(id)), pivots: ['cast:ansel:pivot', 'cast:pilar:pivot', 'cast:cato:pivot'].map(id => by[id].choices.some(c => c.run)), others: ['cast:ines:pivot', 'captain:hester:goodbye', 'cast:ruben:mid1'].map(id => by[id].choices.some(c => c.run)) };
+    return { notData: ids.filter(id => !data(id)), pivots: ['cast:ansel:pivot', 'cast:pilar:pivot', 'cast:cato:pivot'].map(id => by[id].choices.some(c => c.run)), others: ['cast:ines:pivot', 'cast:ruben:mid1'].map(id => by[id].choices.some(c => c.run)) };
   }, CONVERTED);
   await g.done();
-  assert.deepEqual(r, { notData: [], pivots: [true, true, true], others: [true, true, true] });
+  assert.deepEqual(r, { notData: [], pivots: [true, true, true], others: [true, true] });
 });
 
 test('a choice written as data plays as its closure did, and a choice with run() is left alone', async () => {
@@ -677,4 +677,30 @@ test('a rate the game would not take is left out, with one warning, and a story 
   assert.deepEqual(r.plain, { weight: 1, every: 25, off: false });
   assert.deepEqual(r.changed, { weight: 4, every: 40, off: true });
   assert.deepEqual(r.bad, ['weight must be a number of 0 or more', 'every must be a whole number of days']);
+});
+
+test('a captain\'s goodbye takes the file\'s parts, title and choice words, a choice can wait on a hired flag, and a bad part is left out with one warning (#476)', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey: 'hester', credits: 5000 }); G.dialog = null;
+    const labels = () => captainGoodbye().choices.map(c => c.label);
+    const before = { text: captainGoodbye().text, labels: labels() };
+    captainFlag('secretKnown');
+    const known = labels();
+    const warned = []; const warn = console.warn; console.warn = m => warned.push(m);
+    const cleaned = cleanOverrides({ 'captain:hester:goodbye': { title: 'Changed <b>', parts: { parting: 'New parting & more.', nope: 'x', cold: '' }, text: 'x', choices: { 0: { label: 'Thank her' } } } });
+    console.warn = warn;
+    useOverrides({ 'captain:hester:goodbye': { title: 'Changed <b>', parts: { parting: 'New parting & more.' }, choices: { 0: { label: 'Thank her' } } } });
+    const ov = captainGoodbye();
+    return { before, known, cleaned, warned: warned.length, title: ov.title, text: ov.text, labels: ov.choices.map(c => c.label), flagShape: conditionProblems({ hiredFlag: '' }).length, flagOk: conditionProblems({ hiredFlag: 'secretKnown' }).length };
+  });
+  await g.done();
+  assert.equal(r.before.labels.length, 2, 'the choice that waits on the secret is not offered');
+  assert.equal(r.known.length, 3);
+  assert.deepEqual(r.cleaned, { 'captain:hester:goodbye': { title: 'Changed <b>', parts: { parting: 'New parting & more.' }, choices: { 0: { label: 'Thank her' } } } });
+  assert.equal(r.warned, 1);
+  assert.equal(r.title, 'Changed <b>');
+  assert.ok(r.text.endsWith('New parting &amp; more.') && r.text.startsWith(r.before.text.split('</p><p>')[0]), 'one part changed, the others as they were');
+  assert.deepEqual(r.labels, ['Thank her', 'Wish her the ship', 'Take the papers and go']);
+  assert.equal(r.flagShape, 1); assert.equal(r.flagOk, 0);
 });
