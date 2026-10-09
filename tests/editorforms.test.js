@@ -23,14 +23,12 @@ before(async () => {
   await page.waitForFunction(() => SceneIndex.rows, null, { timeout: 30000 });
 });
 after(async () => {
-  assert.deepEqual(errors, [], 'page errors');
-  await browser.close();
-  await closeBrowser();
+  try { assert.deepEqual(errors, [], 'page errors'); } finally { await browser.close(); await closeBrowser(); }
 });
 
 const select = async id => { await page.fill('#q', id); await page.click(`button[data-id="${id}"]`); };
 const rule = (p, key) => `[data-rpath="${p}"][data-rkey="${key}"]`;
-const changes = async () => JSON.parse((await page.textContent('#changes')).replace(/^const SCENE_OVERRIDES = /, '').replace(/;$/, ''));
+const changes = async () => JSON.parse((await page.textContent('#changes')).match(/^const SCENE_OVERRIDES = ([\s\S]*?);\nconst NEW_SCENES/)[1]);
 const warn = (p, key) => page.textContent(`[data-rerr="${key === undefined ? p : `${p}|${key}`}"]`);
 // A fresh page of the same editor, so a test's edits do not leak into the next.
 async function reload() { await page.goto(URL); await page.waitForFunction(() => SceneIndex.rows, null, { timeout: 30000 }); }
@@ -69,11 +67,11 @@ test('every condition, effect and link of every shipped scene reads into the for
 
 test('untouched forms change nothing, and touching a field without changing it changes nothing', async () => {
   await reload(); await select('land-customs');
-  assert.equal(await page.textContent('#changes'), 'const SCENE_OVERRIDES = {};');
+  assert.equal(await page.textContent('#changes'), 'const SCENE_OVERRIDES = {};\nconst NEW_SCENES = [];');
   await page.fill(rule('when', 'day'), '4');
   assert.equal((await changes())['land-customs'].when.day, 4);
   await page.fill(rule('when', 'day'), '3');
-  assert.equal(await page.textContent('#changes'), 'const SCENE_OVERRIDES = {};');
+  assert.equal(await page.textContent('#changes'), 'const SCENE_OVERRIDES = {};\nconst NEW_SCENES = [];');
 });
 
 test('adding, changing and removing a condition changes the scene\'s conditions, and the game takes the result', async () => {

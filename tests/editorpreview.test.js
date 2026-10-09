@@ -23,8 +23,7 @@ before(async () => {
   await page.waitForFunction(() => SceneIndex.rows, null, { timeout: 30000 });
 });
 after(async () => {
-  assert.deepEqual(errors, [], 'page errors');
-  await browser.close();
+  try { assert.deepEqual(errors, [], 'page errors'); } finally { await browser.close(); }
 });
 
 const frame = () => page.frames().find(f => /editor-preview/.test(f.url()));

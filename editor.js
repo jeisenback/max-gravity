@@ -58,10 +58,10 @@
     const rows = [];
     const add = r => rows.push({ on: true, kind: 'code', where: 'transit', codeNote: '', conditionsNote: '', ...r });
 
-    for (const s of STORYLETS) {
+    for (const s of STORYLETS.filter(x => !newSceneIds.includes(x.id))) {
       const file = fileOf['storylet:' + s.id];
       add({
-        id: s.id, title: s.title, where: s.where, file, belongs: stem(file), kind: 'data', text: plain(s.text), when: s.when || {},
+        id: s.id, title: s.title, where: s.where, file, belongs: stem(file), kind: 'data', text: plain(s.text), when: s.when || {}, chained: !!s.chained,
         choices: s.choices.map(c => ({ label: plain(c.label), result: plain(c.result), when: c.when || {}, effects: c.effects || {}, next: c.next || '' })),
         // A text of conditional parts cannot be edited as one string, so the form leaves those fields to the code (conditions are story 4).
         edit: { text: typeof s.text === 'string', choices: s.choices.map(c => ({ label: typeof c.label === 'string', result: c.result === undefined || typeof c.result === 'string' })) },
@@ -143,7 +143,8 @@
       if (typeof HAND_EVENTS !== 'undefined' && !fileOf.hand) fileOf.hand = src;
       if (typeof ICE_STAGES !== 'undefined' && !fileOf.ice) fileOf.ice = src;
     }
-    return { rows: collect(fileOf), overrides: useOverrides(SCENE_OVERRIDES), placeholder: { source: PLACEHOLDER.source, roles: Object.keys(ROLE_NAMES) }, options: previewOptions() };
+    useNewScenes(NEW_SCENES);  // the file's new scenes are the editor's own drafts, not rows of the shipped game
+    return { rows: collect(fileOf), newScenes: NEW_SCENES, overrides: useOverrides(SCENE_OVERRIDES), placeholder: { source: PLACEHOLDER.source, roles: Object.keys(ROLE_NAMES) }, options: previewOptions() };
   }
 
   // ---------- the preview, inside editor-preview.html: the game itself ----------
@@ -180,6 +181,7 @@
 
   // Starts a fresh test game in the state asked for, and opens the scene in the dialog. m: { id, overrides, setup }.
   function play(m) {
+    useNewScenes(m.newScenes);  // the scenes written in the editor, not saved yet
     const s = STORYLETS.find(x => x.id === m.id);
     if (!s) return { error: `The game has no scene "${m.id}".` };
     useOverrides(m.overrides);  // the unsaved edits, through the same layer the game reads (storylets.js)
@@ -232,7 +234,7 @@
   }
 
   // ---------- the page ----------
-  const haystack = r => [r.id, r.title, r.text, ...r.choices.flatMap(c => [c.label, c.result])].join('\n').toLowerCase();
+  const haystack = r => [r.id, r.sceneId || '', r.title, r.text, ...r.choices.flatMap(c => [c.label, c.result])].join('\n').toLowerCase();
   // Every word typed must appear in the id, the title, the text, or a choice or its result.
   function filterRows(rows, { q = '', where = '', file = '', kind = '' } = {}) {
     const words = q.toLowerCase().split(/\s+/).filter(Boolean);
@@ -279,7 +281,7 @@
     }
     return values;
   }
-  const fileText = overrides => `const SCENE_OVERRIDES = ${JSON.stringify(overrides, null, 2)};`;
+  const fileText = (overrides, newScenes = []) => `const SCENE_OVERRIDES = ${JSON.stringify(overrides, null, 2)};\nconst NEW_SCENES = ${JSON.stringify(newScenes, null, 2)};`;
 
 
   // ---------- conditions, effects and links (#338) ----------
@@ -364,7 +366,8 @@
     for (const [k, d] of drafts) { const r = kindOf(table[k]).parse(d); if (r.error) errors[k] = r.error; else value[k] = r.value; }
     return { value, errors };
   }
-  const nextError = d => (d.trim() && lists.scenes && !lists.scenes.includes(d.trim()) ? `${d.trim()} is not a scene` : '');
+  let sceneIds = () => [];  // every scene a link can lead to: the game's data scenes and the new ones (set by mount)
+  const nextError = d => (d.trim() && !sceneIds().includes(d.trim()) ? `${d.trim()} is not a scene` : '');
   const canon = v => JSON.stringify(v, (k, x) => (x && typeof x === 'object' && !Array.isArray(x) ? Object.fromEntries(Object.entries(x).sort(([a], [b]) => (a < b ? -1 : 1))) : x));
   // The entries a field shows: what has been typed, or the shipped ones until it is touched.
   const draftsFor = (r, path, struct) => (struct[r.id] && struct[r.id][path]) || toDrafts(structOf(r, path), specTable(path));
@@ -418,7 +421,7 @@
   }
 
   // The {words} of a text that the game would not replace, by the rule the game sent (storylets.js PLACEHOLDER): the same check, run here.
-  let rule = null, onPreview = () => {};
+  let rule = null, onPreview = () => {}, newDefs = () => [];
   function badPlaceholders(text) {
     if (!rule) return [];
     const known = new RegExp(rule.source);
@@ -429,8 +432,8 @@
   const paragraphs = text => text.split('\n').filter(Boolean).map(p => `<p>${esc(p)}</p>`).join('');
   const tableHtml = (rows, selected = '', edited = new Set()) => (rows.length ? `<table>
     <thead><tr><th>Id</th><th>Title</th><th>Where</th><th>Source</th><th>Belongs to</th><th>Kind</th></tr></thead>
-    <tbody>${rows.map(r => `<tr class="${r.id === selected ? 'on' : ''}"><td><button data-id="${esc(r.id)}">${esc(r.id)}</button></td>
-      <td>${esc(r.title)}${r.off ? ' <span class="off">off in the narrow build</span>' : ''}${edited.has(r.id) ? ' <span class="edited">edited</span>' : ''}</td><td>${esc(r.where)}</td><td>${esc(r.file)}</td><td>${esc(r.belongs)}</td><td>${esc(r.kind)}</td></tr>`).join('')}</tbody>
+    <tbody>${rows.map(r => `<tr class="${r.id === selected ? 'on' : ''}"><td><button data-id="${esc(r.id)}">${esc(r.isNew ? r.sceneId || '(no id yet)' : r.id)}</button></td>
+      <td>${esc(r.title || '(untitled)')}${r.isNew ? ' <span class="edited">new</span>' : ''}${r.off ? ' <span class="off">off in the narrow build</span>' : ''}${edited.has(r.id) ? ' <span class="edited">edited</span>' : ''}</td><td>${esc(r.where)}</td><td>${esc(r.file)}</td><td>${esc(r.belongs)}</td><td>${esc(r.kind)}</td></tr>`).join('')}</tbody>
   </table>` : '<p class="hint">No scene matches.</p>');
 
   // One field of the form: the shipped words, and below them the box for yours. A field the form cannot edit shows only the shipped words.
@@ -479,7 +482,7 @@
 
   const changesHtml = (rows, values, struct) => `<h3>Changes so far</h3>
     <p class="hint">Only what differs from the shipped words. Saving, export and revert come with story 6; until then this is the whole of js/overrides.js to paste in.</p>
-    <pre id="changes">${esc(fileText(overridesFrom(rows, values, struct)))}</pre>`;
+    <pre id="changes">${esc(fileText(overridesFrom(rows, values, struct), newDefs()))}</pre>`;
 
   function detailHtml(r, values = {}, rows = [], struct = dict()) {
     if (!r) return '<p class="hint">Choose a scene to read it.</p>';
@@ -542,7 +545,184 @@
     return box;
   }
 
-  function mount(app, rows, overrides, opt) {
+
+  // ---------- new scenes and chains (#339) ----------
+  // A scene written from scratch is a draft row like the shipped ones (so the same forms edit it), with its own key and what is typed for its
+  // id, title, text and choices on the row. What the forms hold for its conditions, effects and links are drafts in the same `struct`.
+  let newKey = 1;
+  const newChoice = () => ({ label: '', result: '', when: {}, effects: {}, next: '' });
+  const newRow = () => ({ id: `new:${newKey++}`, kind: 'data', isNew: true, file: 'js/overrides.js', belongs: 'new scene', off: false, where: 'port', via: '', chained: false, sceneId: '', title: '', text: '', when: {}, choices: [newChoice()] });
+  const SCENE_ID = /^[\w:.-]+$/;
+  const keysOf = o => Object.keys(o || {});
+  // The scene as addStorylet takes it, from a draft: the fields the form has, in a readable order, and none that are empty.
+  function newSceneDef(r, struct) {
+    const val = path => readRules(draftsFor(r, path, struct), specTable(path)).value;
+    const def = { id: r.sceneId.trim(), where: r.where, title: r.title.trim(), text: r.text.trim() };
+    if (r.via) def.via = r.via;
+    if (r.chained) def.chained = true;
+    const when = val('when');
+    if (keysOf(when).length) def.when = when;
+    def.choices = r.choices.map((c, i) => {
+      const o = { label: c.label.trim() }, w = val(`c${i}.when`), e = val(`c${i}.effects`), n = nextFor(r, `c${i}.next`, struct).trim();
+      if (c.result.trim()) o.result = c.result.trim();
+      if (keysOf(w).length) o.when = w;
+      if (keysOf(e).length) o.effects = e;
+      if (n) o.next = n;
+      return o;
+    });
+    return def;
+  }
+  // What stops a draft from being a scene the game takes: the id, the words, a choice, a field that does not fit, a link to nothing.
+  function newProblems(r, struct, takenIds) {
+    const p = [], id = r.sceneId.trim();
+    if (!id) p.push('needs an id'); else if (!SCENE_ID.test(id)) p.push('the id may use letters, digits, - _ : and . only'); else if (takenIds.includes(id)) p.push(`the id ${id} is already a scene`);
+    if (!r.title.trim()) p.push('needs a title');
+    if (!r.text.trim()) p.push('needs text');
+    if (!r.choices.length) p.push('needs a choice');
+    r.choices.forEach((c, i) => { if (!c.label.trim()) p.push(`choice ${i + 1} needs a label`); });
+    for (const path of ['when', ...r.choices.flatMap((c, i) => [`c${i}.when`, `c${i}.effects`])]) {
+      const errors = readRules(draftsFor(r, path, struct), specTable(path)).errors;
+      for (const [k, e] of Object.entries(errors)) p.push(`${path === 'when' ? 'the scene' : `choice ${Number(/\d+/.exec(path)[0]) + 1}`} ${path.replace(/^c\d+\./, '')}: ${k} ${e}`);
+    }
+    r.choices.forEach((c, i) => { const e = nextError(nextFor(r, `c${i}.next`, struct)); if (e) p.push(`choice ${i + 1}: ${e}`); });
+    return p;
+  }
+  // A draft from a scene the file already holds.
+  function draftFromDef(def, struct) {
+    const r = newRow();
+    Object.assign(r, { sceneId: String(def.id || ''), title: String(def.title || ''), text: plain(def.text), where: def.where === 'transit' ? 'transit' : 'port', via: def.via || '', chained: !!def.chained });
+    r.choices = (def.choices || []).map(c => ({ ...newChoice(), label: plain(c.label), result: plain(c.result) }));
+    const mine = struct[r.id] = dict();
+    if (def.when) mine.when = toDrafts(def.when, CONDITION_SPEC);
+    (def.choices || []).forEach((c, i) => {
+      if (c.when) mine[`c${i}.when`] = toDrafts(c.when, CONDITION_SPEC);
+      if (c.effects) mine[`c${i}.effects`] = toDrafts(c.effects, EFFECT_SPEC);
+      if (c.next) mine[`c${i}.next`] = c.next;
+    });
+    return r;
+  }
+  // Takes a choice out of a draft, and moves the drafts of the choices after it up one place.
+  function dropChoice(r, i, struct) {
+    r.choices.splice(i, 1);
+    const old = struct[r.id] || dict(), moved = dict();
+    for (const [path, v] of Object.entries(old)) {
+      const m = STRUCT_PATH.exec(path);
+      if (!m) moved[path] = v;
+      else if (Number(m[1]) < i) moved[path] = v;
+      else if (Number(m[1]) > i) moved[`c${Number(m[1]) - 1}.${m[2]}`] = v;
+    }
+    struct[r.id] = moved;
+  }
+
+  // A scene as the chain view sees it: its place in a storyline, its conditions and, for each choice, the link and the follow-up it sets going,
+  // with the changes in the forms put on top of the shipped scene.
+  function modelOf(r, struct) {
+    const m = { key: r.id, id: r.isNew ? r.sceneId.trim() : r.id, title: r.title || '(untitled)', group: r.belongs, chained: !!r.chained, when: r.when || {},
+      choices: r.choices.map(c => ({ label: c.label, next: c.next || '', effects: c.effects || {} })) };
+    // What is typed, even where it has a problem, so a link to a scene that is not there still shows in the chain.
+    for (const [path, drafts] of Object.entries(struct[r.id] || {})) {
+      const s = STRUCT_PATH.exec(path);
+      if (s && s[2] === 'next') { m.choices[s[1]].next = drafts.trim(); continue; }
+      const value = readRules(drafts, specTable(path)).value;
+      if (!s) m.when = value; else if (s[2] === 'effects') m.choices[s[1]].effects = value; else m.choices[s[1]].when = value;
+    }
+    return m;
+  }
+  // The links among scenes, and what to look at in a storyline. A link is a choice's `next` (the next scene opens at once) or a follow-up: an effect
+  // `later: { name: days }` that a scene waiting on `due: name` picks up. Scenes of the storyline are drawn in the order the links reach them.
+  function chainOf(models, group) {
+    const byId = new Map(models.filter(m => m.id).map(m => [m.id, m])), waiting = new Map(), links = [];
+    for (const m of models) for (const k of [].concat((m.when || {}).due || [])) { if (!waiting.has(k)) waiting.set(k, []); waiting.get(k).push(m.id); }
+    for (const m of models) {
+      m.choices.forEach((c, i) => {
+        const base = { from: m.id, choice: i, label: c.label };
+        if (c.next) links.push({ ...base, kind: 'next', to: c.next, missing: !byId.has(c.next) });
+        for (const [key, days] of Object.entries((c.effects || {}).later || {})) {
+          const to = waiting.get(key) || [];
+          if (!to.length) links.push({ ...base, kind: 'later', key, days, to: '', missing: true });
+          for (const id of to) links.push({ ...base, kind: 'later', key, days, to: id, missing: false });
+        }
+      });
+    }
+    // A choice that sets the story's stage or a flag, or raises a quality, leads to a scene that waits for that.
+    const needs = models.flatMap(m => [
+      ...Object.entries((m.when || {}).story || {}).map(([k, want]) => ({ to: m.id, kind: 'story', key: k, want })),
+      ...Object.entries((m.when || {}).q || {}).map(([k, want]) => ({ to: m.id, kind: 'quality', key: k, want })),
+    ]);
+    for (const m of models) {
+      m.choices.forEach((c, i) => {
+        const gives = [
+          ...Object.entries((c.effects || {}).story || {}).map(([k, v]) => ({ kind: 'story', key: k, v })),
+          ...Object.entries((c.effects || {}).q || {}).map(([k, v]) => ({ kind: 'quality', key: k, v })),
+          ...Object.entries((c.effects || {}).set || {}).map(([k, v]) => ({ kind: 'quality', key: k, v })),
+        ];
+        for (const g of gives) {
+          for (const n of needs.filter(x => x.kind === g.kind && x.key === g.key && x.to !== m.id)) {
+            const met = g.kind === 'quality' ? Number(g.v) >= Number(n.want) : (g.key === 'stage' || g.key === 'side') ? [].concat(n.want).includes(g.v) : !!g.v === !!n.want;
+            if (met && !links.some(l => l.from === m.id && l.choice === i && l.to === n.to && l.kind === g.kind && l.key === g.key)) links.push({ from: m.id, choice: i, label: c.label, kind: g.kind, key: g.key, value: g.v, to: n.to, missing: false });
+          }
+        }
+      });
+    }
+    const inGroup = models.filter(m => m.group === group && m.id), incoming = new Map(inGroup.map(m => [m.id, []]));
+    for (const l of links) if (incoming.has(l.to)) incoming.get(l.to).push(l);
+    const depth = new Map(), queue = inGroup.filter(m => !incoming.get(m.id).length).map(m => m.id);
+    queue.forEach(id => depth.set(id, 0));
+    for (let i = 0; i < queue.length; i++) for (const l of links.filter(x => x.from === queue[i] && incoming.has(x.to) && !depth.has(x.to))) { depth.set(l.to, depth.get(queue[i]) + 1); queue.push(l.to); }
+    const nodes = inGroup.map(m => ({
+      id: m.id, key: m.key, title: m.title, chained: m.chained, depth: depth.has(m.id) ? depth.get(m.id) : 0, reached: depth.has(m.id),
+      incoming: incoming.get(m.id), outgoing: links.filter(l => l.from === m.id),
+    })).sort((a, b) => (a.reached === b.reached ? a.depth - b.depth : a.reached ? -1 : 1));
+    const problems = [];
+    for (const n of nodes) {
+      if (n.chained && !n.incoming.some(l => l.kind === 'next' || l.kind === 'later')) problems.push(`${n.id} only plays after another scene leads to it, and no scene in the data does (code can, with chainTo)`);
+      for (const l of n.outgoing.filter(x => x.missing)) problems.push(l.kind === 'next' ? `${n.id}: choice ${l.choice + 1} leads to ${l.to}, which is not a scene` : `${n.id}: choice ${l.choice + 1} sets follow-up ${l.key} going, and no scene in the data waits for it (code can)`);
+    }
+    return { nodes, problems, byId };
+  }
+  const groupsOf = models => [...new Set(models.map(m => m.group))].sort();
+  function chainHtml(chain, models, group, selected) {
+    const titleOf = id => (chain.byId.get(id) || {}).title, keyOf = id => (chain.byId.get(id) || {}).key;
+    const link = l => {
+      const target = l.missing ? `<span class="warn">${esc(l.kind === 'next' ? `${l.to} (not a scene)` : `follow-up ${l.key} (no scene in the data waits for it)`)}</span>`
+        : `<button data-id="${esc(keyOf(l.to))}">${esc(titleOf(l.to))}</button> <span class="hint">${esc(l.to)}${chain.byId.get(l.to).group !== group ? `, in ${esc(chain.byId.get(l.to).group)}` : ''}</span>`;
+      const how = l.kind === 'later' ? `after ${l.days} days` : l.kind === 'story' ? `by setting the story's ${l.key} to ${l.value}` : l.kind === 'quality' ? `by setting quality ${l.key} to ${l.value}` : '';
+      return `<li>Choice ${l.choice + 1}${l.label ? ` (${esc(l.label)})` : ''} leads to ${target}${how ? ` <span class="hint">${esc(how)}</span>` : ''}</li>`;
+    };
+    return `<h2>Chain: ${esc(group)}</h2>
+      <p class="hint">${chain.nodes.length} scenes. A scene is a box; a link is a line under it that leads to the next box: a link from a choice, a follow-up set going for some days, or a stage, flag or quality that another scene waits for. Code can lead to scenes too, and cannot be seen here.</p>
+      ${chain.problems.length ? `<div class="warn"><p>To look at:</p>${listEl2(chain.problems)}</div>` : '<p class="ok">Every link in this storyline leads to a scene.</p>'}
+      ${chain.nodes.map(n => `<div class="box depth-${Math.min(n.depth, 6)}${n.id === selected || n.key === selected ? ' on' : ''}">
+        <button data-id="${esc(n.key)}">${esc(n.title)}</button> <span class="hint">${esc(n.id || '(no id yet)')}</span>
+        ${!n.incoming.length ? (n.chained ? ' <span class="warn">nothing leads here</span>' : ' <span class="hint">starts a chain</span>') : ''}${!n.outgoing.length ? ' <span class="hint">ends here</span>' : ''}
+        ${n.incoming.length ? `<div class="hint">Reached from ${n.incoming.map(l => `<button data-id="${esc((chain.byId.get(l.from) || {}).key)}">${esc(l.from)}</button>`).join(', ')}</div>` : ''}
+        ${n.outgoing.length ? `<ul>${n.outgoing.map(link).join('')}</ul>` : ''}</div>`).join('')}`;
+  }
+  const listEl2 = items => `<ul>${items.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
+
+  // The form of a draft scene.
+  function newSceneHtml(r, struct, takenIds, changes = '') {
+    const problems = newProblems(r, struct, takenIds), sel = (field, list) => `<select data-new="${field}">${list.map(([v, text]) => `<option value="${esc(v)}"${r[field] === v ? ' selected' : ''}>${esc(text)}</option>`).join('')}</select>`;
+    return `<h2>${esc(r.title || 'New scene')}</h2>
+      <p class="hint">A scene written here is a data scene, added to the game's through addStorylet. Until saving comes (story 6) it is in the changes below; the preview plays it.</p>
+      <button data-action="discard-scene">Discard this scene</button>
+      <div id="problems">${newProblemsHtml(problems)}</div>
+      <div class="field"><label for="n-id">Id</label><input id="n-id" type="text" data-new="sceneId" value="${esc(r.sceneId)}" placeholder="a-unique-id"></div>
+      <div class="field"><label for="n-title">Title</label><input id="n-title" type="text" data-new="title" value="${esc(r.title)}"></div>
+      <div class="field"><label for="n-text">Text</label><textarea id="n-text" data-new="text" rows="6">${esc(r.text)}</textarea></div>
+      <div class="field"><label>Where it plays ${sel('where', [['port', 'at a port'], ['transit', 'in a burn']])}</label>
+        <label>Shown as ${sel('via', [['', 'a scene'], ['station', 'a call from a station'], ['ship', 'a call from a ship'], ['message', 'a message'], ['crew', 'something from the crew']])}</label>
+        <label><input type="checkbox" data-new="chained"${r.chained ? ' checked' : ''}> It only plays when another scene leads to it</label></div>
+      ${rulesHtml(r, 'when', 'The scene appears when', struct)}
+      ${r.choices.map((c, i) => `<h4>Choice ${i + 1} <button data-action="drop-choice" data-i="${i}">Remove this choice</button></h4>
+        <div class="field"><label for="n-l${i}">Label</label><input id="n-l${i}" type="text" data-newc="${i}.label" value="${esc(c.label)}"></div>
+        <div class="field"><label for="n-r${i}">Result</label><textarea id="n-r${i}" data-newc="${i}.result" rows="3">${esc(c.result)}</textarea></div>
+        ${rulesHtml(r, `c${i}.when`, 'It can be taken when', struct)}${rulesHtml(r, `c${i}.effects`, 'It does', struct)}${nextHtml(r, `c${i}.next`, struct)}`).join('')}
+      <button data-action="add-choice">Add a choice</button>${changes}`;
+  }
+  const newProblemsHtml = problems => (problems.length ? `<p class="warn">Left out of the changes until fixed:</p>${listEl2(problems)}` : '<p class="ok">This scene is ready: addStorylet would take it.</p>');
+
+  function mount(app, rows, overrides, opt, fileScenes = []) {
     const files = [...new Set(rows.map(r => r.file))].sort();
     const options = (list, any) => `<option value="">${any}</option>${list.map(([v, t]) => `<option value="${esc(v)}">${esc(t)}</option>`).join('')}`;
     app.innerHTML = `<h1>Scenes</h1>
@@ -551,28 +731,53 @@
         <select id="where" aria-label="Where it plays">${options([['port', 'port'], ['transit', 'transit']], 'Anywhere')}</select>
         <select id="file" aria-label="Source file">${options(files.map(f => [f, f]), 'Any source')}</select>
         <select id="kind" aria-label="Data or code">${options([['data', 'data (storylet)'], ['code', 'code']], 'Data or code')}</select>
+        <select id="view" aria-label="Show">${options([['chain', 'the chains of a storyline']], 'the list of scenes')}</select>
+        <select id="group" aria-label="Storyline" hidden></select>
+        <button data-action="new-scene">New scene</button>
         <span id="count" class="hint" role="status"></span>
       </div>
       <div class="split"><div id="list"></div><div id="detail"></div><div id="preview">${previewPaneHtml(opt)}</div></div>`;
-    const state = { q: '', where: '', file: '', kind: '', id: '' };
-    lists = { ...opt, planets: opt.places.map(p => p.name), scenes: rows.filter(r => r.kind === 'data').map(r => r.id) };
+    const state = { q: '', where: '', file: '', kind: '', id: '', view: '', group: '' };
+    lists = { ...opt, planets: opt.places.map(p => p.name) };
     const values = SceneIndex.values = valuesFrom(overrides), struct = SceneIndex.struct = structFrom(overrides);
+    const newRows = SceneIndex.newRows = fileScenes.map(def => draftFromDef(def, struct));
+    const everyRow = () => [...newRows, ...rows];
+    sceneIds = () => [...rows.filter(r => r.kind === 'data').map(r => r.id), ...newRows.map(r => r.sceneId.trim()).filter(Boolean)];
+    const takenFor = r => [...rows.filter(x => x.kind === 'data').map(x => x.id), ...newRows.filter(x => x !== r).map(x => x.sceneId.trim()).filter(Boolean)];
+    newDefs = () => newRows.filter(r => !newProblems(r, struct, takenFor(r)).length).map(r => newSceneDef(r, struct));
     const datalists = Object.entries(lists).filter(([, v]) => Array.isArray(v) && typeof v[0] === 'string').map(([k, v]) => `<datalist id="dl-${esc(k)}">${v.map(x => `<option value="${esc(x)}">`).join('')}</datalist>`).join('');
-    app.insertAdjacentHTML('beforeend', datalists);
+    app.insertAdjacentHTML('beforeend', datalists + '<datalist id="dl-scenes"></datalist>');
+    const refreshScenes = () => { app.querySelector('#dl-scenes').innerHTML = sceneIds().map(x => `<option value="${esc(x)}">`).join(''); };
+    refreshScenes();
     const setup = SceneIndex.setup = { ...PREVIEW_DEFAULTS, rep: {} };
+    const models = () => everyRow().filter(r => r.kind === 'data').map(r => modelOf(r, struct));
+    const renderList = () => {
+      const all = everyRow(), shown = filterRows(all, state), edited = new Set([...Object.keys(overridesFrom(rows, values, struct))]);
+      app.querySelector('#count').textContent = `${shown.length} of ${all.length} scenes`;
+      const groupBox = app.querySelector('#group'), chain = state.view === 'chain';
+      groupBox.hidden = !chain;
+      if (!chain) { app.querySelector('#list').innerHTML = tableHtml(shown, state.id, edited); return; }
+      const ms = models(), groups = groupsOf(ms);
+      if (!groups.includes(state.group)) state.group = groups.find(g => chainOf(ms, g).nodes.some(n => n.outgoing.length)) || groups[0] || '';
+      groupBox.innerHTML = groups.map(g => `<option value="${esc(g)}"${g === state.group ? ' selected' : ''}>${esc(g)}</option>`).join('');
+      app.querySelector('#list').innerHTML = chainHtml(chainOf(ms, state.group), ms, state.group, state.id);
+    };
+    // The Play button and the line above it: a shipped data scene can be played, and a new one when the game would take it.
+    const syncPlay = () => {
+      const row = everyRow().find(r => r.id === state.id), ready = !!row && row.kind === 'data' && (!row.isNew || !newProblems(row, struct, takenFor(row)).length);
+      app.querySelector('[data-action="play"]').disabled = !ready;
+      app.querySelector('#pv-scene').textContent = ready ? `Scene: ${row.title} (${row.isNew ? row.sceneId.trim() : row.id})` : row && row.isNew ? 'This new scene has problems the game would refuse. Fix them to play it.' : 'Choose a data scene to play it in the game\'s own dialog, from the state below. It starts a fresh test game that is never saved.';
+    };
     const update = () => {
-      const shown = filterRows(rows, state);
-      app.querySelector('#count').textContent = `${shown.length} of ${rows.length} scenes`;
-      app.querySelector('#list').innerHTML = tableHtml(shown, state.id, new Set(Object.keys(overridesFrom(rows, values, struct))));
-      const row = rows.find(r => r.id === state.id), playable = !!row && row.kind === 'data';
-      app.querySelector('#detail').innerHTML = detailHtml(row, values, rows, struct);
-      app.querySelector('[data-action="play"]').disabled = !playable;
-      app.querySelector('#pv-scene').textContent = playable ? `Scene: ${row.title} (${row.id})` : 'Choose a data scene to play it in the game\'s own dialog, from the state below. It starts a fresh test game that is never saved.';
+      renderList();
+      const row = everyRow().find(r => r.id === state.id);
+      app.querySelector('#detail').innerHTML = !row ? detailHtml(null) : row.isNew ? newSceneHtml(row, struct, takenFor(row), changesHtml(rows, values, struct)) : detailHtml(row, values, rows, struct);
+      syncPlay();
     };
     // The place a scene needs, from its own conditions, unless one is chosen: a planet it names, a system it is bound for, or Earth.
     const placeFor = row => {
       if (setup.place) return setup.place;
-      const w = row.when || {}, planet = [].concat(w.planet || [])[0], at = [].concat(w.at || [])[0];
+      const w = modelOf(row, struct).when || {}, planet = [].concat(w.planet || [])[0], at = [].concat(w.at || [])[0];
       return planet || (at && (opt.places.find(p => p.sid === at) || {}).name) || 'Earth';
     };
     const send = msg => { const f = frameEl(); if (previewReady) f.contentWindow.postMessage(msg, '*'); else pending = msg; };
@@ -589,11 +794,13 @@
       else if (m.type === 'chose') app.querySelector('#pv-effects').replaceChildren(effectsNode(m));
       else app.querySelector('#pv-report').replaceChildren(reportNode(m));
     };
-    const here = () => rows.find(r => r.id === state.id);
+    const here = () => everyRow().find(r => r.id === state.id);
     const refresh = () => {  // the changes and the problems, redrawn without disturbing what is being typed in
-      app.querySelector('#changes').textContent = fileText(overridesFrom(rows, values, struct));
-      const box = app.querySelector('#problems');
-      if (box && here()) box.innerHTML = problemsHtml(here(), struct);
+      const pre = app.querySelector('#changes');
+      if (pre) pre.textContent = fileText(overridesFrom(rows, values, struct), newDefs());
+      const box = app.querySelector('#problems'), r = here();
+      if (box && r) box.innerHTML = r.isNew ? newProblemsHtml(newProblems(r, struct, takenFor(r))) : problemsHtml(r, struct);
+      syncPlay();
     };
     const warnFor = key => [...app.querySelectorAll('[data-rerr]')].find(e => e.dataset.rerr === key);
     app.addEventListener('input', e => {
@@ -615,6 +822,16 @@
         const w = warnFor(d.rnext);
         if (w) w.textContent = nextError(t.value);
         refresh();
+      } else if (d.new) {  // a field of a new scene
+        const r = here();
+        r[d.new] = t.type === 'checkbox' ? t.checked : t.value;
+        if (d.new === 'sceneId') refreshScenes();
+        if (d.new === 'sceneId' || d.new === 'title') renderList();
+        refresh();
+      } else if (d.newc) {
+        const [i, field] = d.newc.split('.');
+        here().choices[Number(i)][field] = t.value;
+        refresh();
       } else if (d.add) {
         if (!t.value) return;
         touch(here(), d.add, struct)[d.add].push([t.value, kindOf(specTable(d.add)[t.value]).def]);
@@ -631,10 +848,18 @@
         update();
         return;
       }
-      const row = rows.find(r => r.id === state.id);
-      if (e.target.closest('[data-action="play"]') && row && row.kind === 'data') {
+      const action = (e.target.closest('[data-action]') || { dataset: {} }).dataset.action, row = here();
+      if (action === 'new-scene') {
+        const r = newRow();
+        newRows.unshift(r); state.id = r.id; update(); refreshScenes();
+        const id = app.querySelector('#n-id'); if (id) id.focus();
+      } else if (action === 'discard-scene' && row && row.isNew) {
+        newRows.splice(newRows.indexOf(row), 1); delete struct[row.id]; state.id = ''; update(); refreshScenes();
+      } else if (action === 'add-choice' && row && row.isNew) { row.choices.push(newChoice()); update(); }
+      else if (action === 'drop-choice' && row && row.isNew) { dropChoice(row, Number(e.target.closest('[data-i]').dataset.i), struct); update(); }
+      else if (action === 'play' && row && row.kind === 'data') {
         app.querySelector('#pv-effects').replaceChildren(); app.querySelector('#pv-report').replaceChildren();
-        send({ cmd: 'play', id: row.id, overrides: overridesFrom(rows, values, struct), setup: { ...setup, place: placeFor(row) } });
+        send({ cmd: 'play', id: row.isNew ? row.sceneId.trim() : row.id, overrides: overridesFrom(rows, values, struct), newScenes: newDefs(), setup: { ...setup, place: placeFor(row) } });
       }
     });
     update();
@@ -663,7 +888,7 @@
       rule = got.full.placeholder;
       SceneIndex.rows = got.full.rows.map(r => ({ ...r, off: !kept.has(r.id) }));
       document.querySelectorAll('iframe').forEach(f => f.remove());
-      mount(app, SceneIndex.rows, got.full.overrides, got.full.options);
+      mount(app, SceneIndex.rows, got.full.overrides, got.full.options, got.full.newScenes);
     });
     for (const [mode, src] of Object.entries(frames)) {
       const f = document.createElement('iframe');
@@ -672,6 +897,6 @@
     }
   }
 
-  const SceneIndex = window.SceneIndex = { SCRIPTS, esc, plain, filterRows, tableHtml, detailHtml, overridesFrom, valuesFrom, fileText, badPlaceholders, reportNode, effectsNode, structFrom, kindOf, readRules, CONDITION_SPEC, EFFECT_SPEC, roundTrips, rows: null, values: null, struct: null, setup: null };
+  const SceneIndex = window.SceneIndex = { SCRIPTS, esc, plain, filterRows, tableHtml, detailHtml, overridesFrom, valuesFrom, fileText, badPlaceholders, reportNode, effectsNode, structFrom, kindOf, readRules, CONDITION_SPEC, EFFECT_SPEC, roundTrips, chainOf, modelOf, newSceneDef, chainHtml, newSceneHtml, draftFromDef, newProblems, rows: null, values: null, struct: null, setup: null };
   start();
 })();

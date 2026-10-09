@@ -8,3 +8,8 @@
 // scene, or a word that is not text, is left out with one console warning. Conditions, effects and links are held to the check addStorylet
 // makes: a scene's changes to them that it would refuse are all left out.
 const SCENE_OVERRIDES = {};
+
+// Scenes the editor wrote from scratch (#339): a list of storylets, each as addStorylet takes it ({ id, where, title, text, when, choices: [...] }).
+// They are added to the game's scenes when the first game starts, through addStorylet, so one it would refuse (an unknown condition, a repeated id)
+// is logged and left out.
+const NEW_SCENES = [];

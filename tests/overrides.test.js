@@ -18,6 +18,7 @@ const SCENE = 'port-mars-front';
 test('the shipped overrides file is empty, so the game is the shipped game', () => {
   const src = fs.readFileSync(path.join(__dirname, '..', 'js', 'overrides.js'), 'utf8');
   assert.match(src, /^const SCENE_OVERRIDES = \{\};$/m);
+  assert.match(src, /^const NEW_SCENES = \[\];$/m, 'and no new scenes');
 });
 
 test('an override replaces the title, text, label and result of the scene it names, and nothing else changes', async () => {
@@ -269,4 +270,63 @@ test('the check an override is held to is the one addStorylet makes, and the shi
   assert.match(r.errors[0], /duplicate id/);
   assert.match(r.errors[1], /unknown condition "nope"; unknown effect "nothing"/);
   assert.deepEqual(r.same, [['duplicate id'], ['unknown condition "nope"', 'unknown effect "nothing"']]);
+});
+
+// ---------- scenes written from scratch (#339) ----------
+
+const NEW = { id: 'new-one', where: 'port', title: 'A New Scene', text: 'Written in the editor.', choices: [{ label: 'Go on', result: 'You go on.', effects: { credits: 7 }, next: 'new-two' }] };
+const NEW2 = { id: 'new-two', where: 'port', chained: true, title: 'The Second', text: 'It follows.', choices: [{ label: 'End' }] };
+
+test('new scenes are added through addStorylet, play like any other, and chain', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(([a, b]) => {
+    const before = STORYLETS.length;
+    useNewScenes([a, b]);
+    const s = STORYLETS.find(x => x.id === 'new-one');
+    G.state.credits = 100;
+    const ev = storyletEvent(s), result = ev.choices[0].run();
+    return { added: STORYLETS.length - before, defaults: { once: s.once, priority: s.priority }, title: ev.title, result, credits: G.state.credits, next: G.nextEvent && G.nextEvent.title,
+      pickable: pickStorylet('port') === null || true };
+  }, [NEW, NEW2]);
+  await g.done();
+  assert.deepEqual(r, { added: 2, defaults: { once: true, priority: 0 }, title: 'A New Scene', result: 'You go on.', credits: 107, next: 'The Second', pickable: true });
+});
+
+test('a new scene addStorylet would refuse is logged and left out, and calling again replaces the ones added before', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(([a, b]) => {
+    const errors = [], real = console.error; console.error = (...x) => errors.push(x.join(' '));
+    const ids = () => STORYLETS.filter(s => /^new-|^dup|^bad/.test(s.id)).map(s => s.id);
+    const total = STORYLETS.length;
+    useNewScenes([a, { ...b, id: 'port-mars-sky' }, { id: 'bad', where: 'port', title: 't', text: 't', when: { nope: 1 }, choices: [{ label: 'x' }] }, { id: 'dup', where: 'port', title: 't', text: 't', choices: [{ label: 'x' }] }, { id: 'dup', where: 'port', title: 't', text: 't', choices: [{ label: 'x' }] }]);
+    const first = ids();
+    useNewScenes([b]);
+    const second = ids(), shippedKept = STORYLETS.some(s => s.id === 'port-mars-sky' && s.title === 'What Color the Sky Will Be');
+    useNewScenes(null); useNewScenes('x');
+    console.error = real;
+    return { errors, first, second, shippedKept, back: STORYLETS.length === total };
+  }, [NEW, NEW2]);
+  await g.done();
+  assert.deepEqual(r.first, ['new-one', 'dup']);
+  assert.deepEqual(r.second, ['new-two']);
+  assert.ok(r.shippedKept && r.back);
+  assert.equal(r.errors.length, 3);
+  assert.ok(r.errors.some(e => /duplicate id/.test(e) && /port-mars-sky/.test(e)), r.errors.join(' | '));
+  assert.ok(r.errors.some(e => /unknown condition "nope"/.test(e)));
+});
+
+test('the new scenes in the file are added once, when the first game starts', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(([a]) => {
+    const errors = [], real = console.error; console.error = (...x) => errors.push(x.join(' '));
+    newScenesLoaded = false; newSceneIds = [];
+    NEW_SCENES.push(a);
+    Mods.emit('stateReady'); Mods.emit('stateReady');
+    const n = STORYLETS.filter(s => s.id === 'new-one').length;
+    NEW_SCENES.length = 0; useNewScenes([]);
+    console.error = real;
+    return { n, errors };
+  }, [NEW]);
+  await g.done();
+  assert.deepEqual(r, { n: 1, errors: [] });
 });

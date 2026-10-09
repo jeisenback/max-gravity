@@ -24,9 +24,7 @@ before(async () => {
   rows = await page.evaluate(() => SceneIndex.rows);
 });
 after(async () => {
-  assert.deepEqual(errors, [], 'page errors');
-  await browser.close();
-  await closeBrowser();
+  try { assert.deepEqual(errors, [], 'page errors'); } finally { await browser.close(); await closeBrowser(); }
 });
 
 const row = id => rows.find(r => r.id === id);
@@ -142,7 +140,7 @@ test('the page shows the rows, opens a scene to read it, and filters as you type
 
 test('a code-written scene has no form, and a data scene\'s form edits only its words', async () => {
   const inputs = await page.locator('.controls input, .controls select').evaluateAll(list => list.map(e => e.id));
-  assert.deepEqual(inputs, ['q', 'where', 'file', 'kind'], 'the controls above the list only filter');
+  assert.deepEqual(inputs, ['q', 'where', 'file', 'kind', 'view', 'group'], 'the controls above the list only filter and choose a view');
   await page.fill('#q', 'cast:ilsa:late');
   await page.click('button[data-id="cast:ilsa:late"]');
   assert.equal(await page.locator('#detail textarea').count(), 0);
@@ -161,18 +159,18 @@ test('a code-written scene has no form, and a data scene\'s form edits only its 
 test('typing changes a field, and the changes hold only what differs from the shipped words', async () => {
   await page.fill('#q', 'port-mars-sky');
   await page.click('button[data-id="port-mars-sky"]');
-  assert.equal(await page.textContent('#changes'), 'const SCENE_OVERRIDES = {};');
+  assert.equal(await page.textContent('#changes'), 'const SCENE_OVERRIDES = {};\nconst NEW_SCENES = [];');
   await page.fill('#f-title', 'A New Title');
   await page.fill('#f-c1\\.label', 'Side with the numbers');
   await page.fill('#f-c2\\.result', 'They stop. "Butterscotch," says the veteran.');
-  const overrides = JSON.parse((await page.textContent('#changes')).replace(/^const SCENE_OVERRIDES = /, '').replace(/;$/, ''));
+  const overrides = JSON.parse((await page.textContent('#changes')).match(/^const SCENE_OVERRIDES = ([\s\S]*?);\nconst NEW_SCENES/)[1]);
   assert.deepEqual(overrides, { 'port-mars-sky': { title: 'A New Title', choices: { 1: { label: 'Side with the numbers' }, 2: { result: 'They stop. "Butterscotch," says the veteran.' } } } });
   // Putting the shipped words back, or emptying the box, is no change.
   await page.fill('#f-title', 'What Color the Sky Will Be');
   await page.fill('#f-c1\\.label', '');
   assert.match(await page.textContent('[data-warn="c1.label"]'), /Empty: the shipped words are used/);
   await page.fill('#f-c2\\.result', await page.evaluate(() => SceneIndex.rows.find(r => r.id === 'port-mars-sky').choices[2].result));
-  assert.equal(await page.textContent('#changes'), 'const SCENE_OVERRIDES = {};');
+  assert.equal(await page.textContent('#changes'), 'const SCENE_OVERRIDES = {};\nconst NEW_SCENES = [];');
   // The list marks a scene with changes in it.
   await page.fill('#f-text', 'Different words.');
   await page.fill('#q', 'mars-sky');
@@ -223,7 +221,7 @@ test('what the form writes is what the game reads: the changes, pasted into the 
   const g = await open({ scope: 'full' });
   const r = await g.ev(src => {
     const warned = []; const real = console.warn; console.warn = m => warned.push(m);
-    Function(`${src.replace('const SCENE_OVERRIDES', 'SCENE_OVERRIDES_FROM_EDITOR')}; window.fromEditor = SCENE_OVERRIDES_FROM_EDITOR;`)();
+    Function(`${src.replace('const SCENE_OVERRIDES', 'var SCENE_OVERRIDES_FROM_EDITOR').replace('const NEW_SCENES', 'var NEW_FROM_EDITOR')}; window.fromEditor = SCENE_OVERRIDES_FROM_EDITOR;`)();
     useOverrides(window.fromEditor); console.warn = real;
     const ev = storyletEvent(STORYLETS.find(x => x.id === 'port-mars-sky'));
     return { warned, title: ev.title, result: ev.choices[0].run(), other: ev.choices[1].label };

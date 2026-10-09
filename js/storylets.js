@@ -268,6 +268,20 @@ function addStorylet(def, source = 'core') {
   STORYLETS.push({ once: true, priority: 0, ...def });
 }
 
+// The scenes the editor wrote (js/overrides.js NEW_SCENES): added to the game's through addStorylet, so the same check holds for them. Calling it
+// again replaces the ones it added before, which is how the editor's preview plays a scene that is not saved yet.
+let newSceneIds = [], newScenesLoaded = false;
+function useNewScenes(list) {
+  for (const id of newSceneIds) { const i = STORYLETS.findIndex(s => s.id === id); if (i >= 0) STORYLETS.splice(i, 1); }
+  newSceneIds = [];
+  newScenesLoaded = true;
+  for (const def of Array.isArray(list) ? list : []) {
+    const before = STORYLETS.length;
+    addStorylet(def, 'js/overrides.js');
+    if (STORYLETS.length > before) newSceneIds.push(def.id);
+  }
+}
+
 // The dialog for a storylet, in the shape openEvent expects. A choice that needs a
 // crew role is hidden when nobody aboard fills it, and {crew} in its label names them.
 function storyletEvent(s) {
@@ -322,6 +336,6 @@ Mods.register({
   init(M) {
     M.on('missionDone', m => applyEffects(m.onDone));
     M.on('missionFailed', m => applyEffects(m.onFail));
-    M.on('stateReady', () => { if (!sceneOverrides) useOverrides(SCENE_OVERRIDES); });  // the warning about the file comes with the first game, not the first scene
+    M.on('stateReady', () => { if (!newScenesLoaded) useNewScenes(NEW_SCENES); if (!sceneOverrides) useOverrides(SCENE_OVERRIDES); });  // the warning about the file comes with the first game, not the first scene
   },
 });
