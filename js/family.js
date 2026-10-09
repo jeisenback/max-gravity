@@ -55,18 +55,18 @@ function talkTopics(p) {
   const st = G.state, n = p.first, out = [];
   const lift = (x, memory, text) => ({ run() { like(p, x, memory); if (moodLow(p)) p.mood.until -= x * 3; return text; } });
   if (moodLow(p)) out.push({ pressing: true, open: `${n} is quiet, and has been since ${p.mood.text ? `the news: ${p.mood.text}` : 'the last message from home'}. A mug sits in front of them, untouched.`, choices: [
-    { label: 'Let them talk', ...lift(1, 'You sat with me while I was having a hard time.', `You say nothing, and ${n} talks, in pieces, about ${missed(p)}, and what they cannot do from here. By the end the mug is empty. They look lighter, and a little embarrassed about it.`) },
-    { label: 'Offer to take a watch off them', ...lift(2, 'You offered to cover for me when I was having a hard time.', `${n} starts to say no, and then does not. "Just the one," ${n} says. It is the first time they have smiled in days.`) },
+    { label: 'Let them talk', ...lift(1, 'You sat with me while I was having a hard time.', `You say nothing, and ${n} talks, in pieces, about ${missed(p)}, and what they cannot do from here. By the end the mug is empty. They set the empty mug in the rack and say, to the rack, that it was a long watch.`) },
+    { label: 'Offer to take a watch off them', ...lift(2, 'You offered to cover for me when I was having a hard time.', `${n} starts to say no, and then does not. "Just the one," ${n} says. A corner of their mouth goes up.`) },
     { label: '"It will pass."', ...lift(0, null, `${n} nods. "It does," they say. "It just takes its time." You both drink your coffee.`) },
   ] });
   if ((st.injured || {})[p.id]) out.push({ pressing: true, open: `${n} is favoring one side, and has been all watch. They have not asked for anything, and they have not sat down properly in two days.`, choices: [
-    { label: 'Ask how it is', ...lift(1, 'You asked how I was, and meant it.', `"It is fine," ${n} says, and then, when you wait, "It is not fine. It is getting better." You nod, and that is enough.`) },
+    { label: 'Ask how it is', ...lift(1, 'You asked how I was, and meant it.', `"It is fine," ${n} says, and then, when you wait, "It is not fine. It is getting better." You nod. ${n} lowers themselves onto the bench, bad side last.`) },
     { label: 'Tell them to rest', ...lift(1, 'You told me to rest, and I did.', `${n} argues for a minute and then goes to their bunk. You can hear them let out a long breath through the bulkhead.`) },
   ] });
   const t = typeof tiesOf === 'function' ? tiesOf(p) : null, w = typeof factionState === 'function' ? factionState().war : null;
   if (t && w && (t.aff === w.a || t.aff === w.b)) { const foe = t.aff === w.a ? w.b : w.a; out.push({ open: `${n} has had the war on the galley screen since it started, the ${t.aff} against the ${foe}, with the sound off. "Do not tell me it will be over soon," ${n} says.`, choices: [
     { label: 'Ask what they think', ...lift(1, 'You asked what I thought about the war.', `${n} thinks about it for a while. "I think I would have stayed home," ${n} says, "and I think I would have been wrong." You do not have anything to add to that.`) },
-    { label: 'Ask if they want to go home', ...lift(1, 'You asked if I wanted to go home during the war.', `"Every day," ${n} says. "And then I look at what is on the screen and I think, not like this." They do not sound sure.`) },
+    { label: 'Ask if they want to go home', ...lift(1, 'You asked if I wanted to go home during the war.', `"Every day," ${n} says. "And then I look at what is on the screen and I think, not like this."`) },
     { label: 'Change the subject', ...lift(0, null, `You ask about the food at the last port. ${n} is grateful for that, and says so by going on about it for ten minutes.`) },
   ] }); }
   const others = typeof bond === 'function' ? G.state.crew.filter(id => id !== p.id).map(id => ({ id, p: person(id) })).filter(f => f.p) : [], me = { id: p.id, p };
@@ -79,7 +79,7 @@ function talkTopics(p) {
     { label: `Ask about ${best.f.p.first}`, ...lift(1, `You asked about ${best.f.p.first}, and I told you.`, (`${n} talks about ${best.f.p.first} for ` +
         `a long time: how they met, what ${best.f.p.first} is like on a bad day, the one thing ${n} would never say to their face. It is the warmest ` +
         `part of the watch.`)) },
-    { label: 'Say you can tell', ...lift(1, null, `"You can tell?" ${n} says. They look pleased, and alarmed. "Do not say anything." You will not.`) },
+    { label: 'Say you can tell', ...lift(1, null, `"You can tell?" ${n} says. They glance past you at the corridor. "Do not say anything." You will not.`) },
   ] });
   const mem = p.memories && p.memories.length ? p.memories[p.memories.length - 1].replace(/^(Day \d+|\d+ \w+ \d+): /, '') : null;
   if (mem) out.push({ open: `${n} says, without quite looking at you, that they have been thinking about something: "${mem}"`, choices: [
@@ -96,8 +96,7 @@ function ordinaryTalk(p) {
     choices: [
       { label: 'Stay a while', run() { like(p, 1, null); if (moodLow(p)) p.mood.until -= 5; return pick([(`The ship hums around you both, steady and ` +
           `warm. Somewhere aft, a door closes. You watch ${n}'s shoulders come down, one careful inch at a time.`), `You do not say much, and neither does ${n}. When you stand to go, ${n} says it was good, and the mug is still warm in your hand.`, (
-          `${n} tells you a story about the last ship they were on. It is a small one, and it goes nowhere, and it is the best thing you will hear ` +
-          `this week.`)]); } },
+          `${n} tells you a story about the last ship they were on. It is a small one, and it goes nowhere, and when it ends you both look into your mugs.`)]); } },
       { label: `Ask ${n} about ${p.home}`, run() { like(p, 1, null); return `${n} tells you what they miss about ${p.home}, and what they do not. By the end it is hard to say which list is longer.`; } },
     ] };
 }
@@ -122,8 +121,7 @@ function sitBeat(p, isCrew) {
         `the noise the recycler makes at night, the next port. It is easy and polite. Whenever the talk drifts toward anything real, ${n} asks about ` +
         `the food, or the next port, or whether you have eaten. Nothing about themselves, not yet.`),
       choices: [{ label: 'That\'s all right', run() { like(p, 1, null); return (`You let it be, and finish your coffee, and say nothing about the ` +
-          `hole in the floor. Some people take longer, and that is all right too. When you get up to go, ${n} looks up, quickly, with something in ` +
-          `their face that might be gratitude, and says, "Thanks for the company." It is more than they have said all week.`); } }] };
+          `hole in the floor. Some people take longer, and that is all right too. When you get up to go, ${n} looks up quickly and says, "Thanks for the company." It is more than they have said all week.`); } }] };
   }
   if (s.beat === 0) return { title: `With ${n}`, text: (`${n} tells you about ${p.home}: ${s.homeDetail || HOME_DETAIL[cultureOfPerson(p)]}. They ` +
       `turn their mug a quarter turn on the table as they say it. Then, unprompted, they say they left because of ${s.left}, and stop, and drink, and ` +
@@ -176,7 +174,7 @@ function sitBeat(p, isCrew) {
     }
     return { title: 'A Favor', text: (`${n} finds you alone, at the end of the watch, and sits down without being asked, hands flat on the table. "I ` +
         `owe ${fmt(s.debt)} cr to people on ${p.home}," they say, all in one breath. "It is the real reason I left. They send messages. I do not open ` +
-        `them anymore. I just watch the little number go up." They look at you, at last, with a plain, tired courage. "I am not asking. I just wanted ` +
+        `them anymore. I just watch the little number go up." They look at you, at last, and do not look away. "I am not asking. I just wanted ` +
         `you to know, before you decide whether I am worth what you pay me."`),
       choices: [
         { label: `Pay it off (${fmt(s.debt)} cr)`, ...gated(needCr(s.debt)), run() {
@@ -187,7 +185,7 @@ function sitBeat(p, isCrew) {
               `bunk. After a while you hear them crying through the bulkhead, and, after a longer while, laughing. In the morning they are making ` +
               `everyone breakfast. They will not look you in the eye, and they will not stop smiling.`);
         } },
-        { label: '"I can\'t, not now."', run: () => `"I know," ${n} says. "I did not expect you to." And they mean it, which is the hardest part. They stand, and touch the table once, and go back to work.` },
+        { label: '"I can\'t, not now."', run: () => `"I know," ${n} says. "I did not expect you to." They stand, touch the table once, and go back to work.` },
       ] };
   }
   return ordinaryTalk(p);
@@ -404,7 +402,7 @@ function traditionEvent() {
       { label: 'Make it a tradition', run() { h.traditions.push(id); homeLog(`Started ${T.name}.`); for (const [a, b] of pairs(folk())) addBond(a, b, 1); like(f.p, 1, null); return (
           `You say the words, and nobody speaks for a second, and then somebody laughs, and it is done. It sticks. From now on, ${T.name} is part of ` +
           `life aboard ${shipTitle()}.`); } },
-      { label: 'Just this once', run: () => 'You say yes to the moment and no to the promise. Nobody makes a fuss. It\'s a good moment. It doesn\'t have to be more than that.' },
+      { label: 'Just this once', run: () => 'You say yes to the moment and no to the promise. Nobody makes a fuss, and the cups go round again.' },
     ],
   };
 }
@@ -484,8 +482,7 @@ function joinEvent(p) {
     title: 'One More Berth', text: (`The trip is over, and the other passengers have gone ashore, but ${p.first} ${p.last} lingers at the airlock ` +
         `with their bag, a battered, over-stuffed thing that has, over the burn, become oddly familiar. They shift it from hand to hand. They look at ` +
         `the deck, and at the hatch, and at you, and back at the deck. "I've been thinking," they say at last, in a rush. "I don't really have ` +
-        `anywhere I need to be. And I like it here. I like all of you. Could ${shipTitle()} use a ${ROLE_NAMES[role].toLowerCase()}?" They hold your ` +
-        `eye, bravely, and wait, braced for either answer.`),
+        `anywhere I need to be. And I like it here. I like all of you. Could ${shipTitle()} use a ${ROLE_NAMES[role].toLowerCase()}?" They hold your eye and wait.`),
     choices: [
       { label: 'Welcome aboard', ...gated(needBerth), run() {
         Object.assign(p, { role, skill: randInt(1, 2), location: null });
@@ -495,8 +492,7 @@ function joinEvent(p) {
         homeLog(`${p.first} ${p.last} came aboard as a passenger and stayed as crew.`);
         return `${p.first} lets out a breath so long it is almost a laugh, and drops their bag in the same bunk as before, with a thump. "Same one," they say. "It's lucky." Somebody, in the galley, starts to clap. (They join as your ${ROLE_NAMES[role].toLowerCase()}.)`;
       } },
-      { label: '"Not this time."', run: () => (`"I understand," ${p.first} says, quickly, with a brave, bright smile that does not entirely work. ` +
-          `"Really. If you ever need someone..." They write their contact code on the back of your hand, in pen, since they do not seem to have paper, ` +
+      { label: '"Not this time."', run: () => (`"I understand," ${p.first} says, quickly. "Really. If you ever need someone..." They write their contact code on the back of your hand, in pen, since they do not seem to have paper, ` +
           `wave, shoulder their bag, and go down the ramp. You watch them all the way to the end of the dock, and, at the corner, they turn, and lift ` +
           `a hand, and are gone.`) },
     ],
