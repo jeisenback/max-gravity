@@ -25,25 +25,23 @@ Mods.register({
           'in the proud blocky letters of a family firm, and the cargo locks hang open where somebody cut their way in and left in a hurry. The ' +
           'auditors came and counted and logged her, and then nobody paid the fee to tow her, which is how a ship comes to be everyone\'s and no one\'s. ' +
           'Through the bridge viewport you can see a flat gray book lying against the pilot\'s locker, a tamper seal across its cover, its ' +
-          'e-paper edge blinking one patient green light. Nothing else aboard is alive.'),
+          'e-paper edge blinking one green light. Nothing else aboard is alive.'),
       choices: [
         { label: 'Match velocity and take the tally book (costs time)',
           effects: { delay: 10, story: { stage: 1 }, storyLog: "Took a sealed tally book from the surveyed hulk Persephone's Due." },
           result: ('You match velocity and go across in suits, through the ruin of her cargo locks, past a crew mess with a half-eaten meal frozen to ' +
               'the table. The book comes out of the locker without a fight, light and cold, and heavier in the hand than it ought to be. Back ' +
               'aboard you turn it over under the lamp. It is a pump ledger, with the Ceres Water Authority stamp on the spine, and the seal across ' +
-              'the cover is a corporate one, from a firm called Aquilon Hydrologics. Someone will want this back. Someone, you think, has already ' +
-              'been looking.') },
+              'the cover is a corporate one, from a firm called Aquilon Hydrologics. Someone will want this back.') },
         { label: '[{crew}] Read the seal on the spot', when: { crew: 'slicer' },
           effects: { delay: 15, story: { stage: 1, peeked: true }, storyLog: "Took a sealed tally book from the surveyed hulk Persephone's Due." },
           result: ('{crew} sits on the dead ship\'s bridge with the book on one knee and works at the seal with a probe no wider than a hair, and ' +
               'gets the first leaves open in eleven minutes: maintenance entries for the Ceres cistern pumps, hundreds of them, each initialled by an ' +
-              'Aquilon Hydrologics crew. The rest of the book stays shut behind something a good deal more serious. "Whoever left this here did not ' +
-              'want it read," {crew} says quietly. "And whoever sealed it did not want it lost." You take the book, and leave the bridge as fast as ' +
-              'you decently can.') },
+              'Aquilon Hydrologics crew. The rest of the book stays shut behind a second seal. "Whoever left this here did not ' +
+              'want it read," {crew} says. "And whoever sealed it did not want it lost." You take the book, and leave the bridge.') },
         // If you leave it, it drifts back into your path later.
         { label: 'Leave it', effects: { storyDays: { next: 10 } },
-          result: 'Whatever happened to her, you want no part of it. You log her position and the name on her flank, and burn on. Behind you the hulk dwindles, turning slowly, still blinking her one green light. Somehow you know you have not seen the last of her.' },
+          result: 'You log her position and the name on her flank, and burn on. Behind you the hulk dwindles, turning slowly, still blinking her one green light.' },
       ],
     });
 
@@ -51,26 +49,24 @@ Mods.register({
       id: 'cw-voight', where: 'port', when: at(1),
       title: 'A Man From Aquilon',
       text: ('A man in an immaculate gray suit is waiting at your berth, which should not be possible: it is a private dock, and the door was locked. ' +
-          'He is tall, unhurried and very clean, with a small silver pin of a water drop in his lapel. He holds out a hand, and, when you do not take ' +
-          'it, lowers it without any sign of offense. "Anselm Voight, Aquilon Hydrologics, asset recovery. You have recovered some company property, ' +
+          'He is tall and unhurried, with a silver pin of a water drop in his lapel. He holds out a hand, and, when you do not take ' +
+          'it, lowers it. "Anselm Voight, Aquilon Hydrologics, asset recovery. You have recovered some company property, ' +
           'captain: a tally book from the Persephone\'s Due. The audit board has no claim on it, having tagged the hull as surveyed and left it to rot, ' +
-          'and we would like it back. We are happy to pay a generous finder\'s fee. Eight thousand credits, and no questions." His smile is a small ' +
-          'precise thing. "I think you will find that I am a very reasonable man."'),
+          'and we would like it back. We are happy to pay a generous finder\'s fee. Eight thousand credits, and no questions." He smiles before he says ' +
+          'it. "I think you will find that I am a very reasonable man."'),
       choices: [
         { label: 'Sell it (8,000 cr)', effects: { credits: 8000, story: { stage: 'sold' }, storyLog: 'Sold the Persephone\'s tally book to Anselm Voight of Aquilon Hydrologics for 8,000 cr.' },
           result: ('Voight takes the book and slides it into an inside pocket, neatly, the way a man pockets a folded handkerchief. The credits arrive ' +
-              'before he has finished turning away. "A pleasure, captain. You will find Aquilon never forgets its friends." Something about the way he ' +
-              'says it stays with you: not a threat, exactly, but the calm of a man who has never been wrong about anyone\'s price. You watch him walk ' +
+              'before he has finished turning away. "A pleasure, captain. You will find Aquilon never forgets its friends." You watch him walk ' +
               'the length of the dock, and not once does he look back.') },
         { label: '[{crew}] Have {crew} copy it first, then sell', when: { crew: 'slicer' },
           effects: { credits: 8000, story: { stage: 2, copied: true }, storyLog: 'Sold the tally book to Aquilon for 8,000 cr, after copying it.' },
-          result: ('{crew} photographs every leaf in the ninety seconds it takes you to "find" the book, fingers flying, with a small flash of a smile. ' +
-              'Voight pays, smiles, and leaves, and the dock is very quiet after he goes. "He will check it," {crew} says at last, quietly, sliding ' +
-              'the copy into a pocket. "And he will know. Men like that always know." Neither of you says anything more, but for the rest of the day ' +
-              'the dock feels smaller, as though it were listening.') },
+          result: ('{crew} photographs every leaf in the ninety seconds it takes you to "find" the book, fingers flying. ' +
+              'Voight pays, smiles, and leaves, and the dock is very quiet after he goes. "He will check it," {crew} says at last, sliding ' +
+              'the copy into a pocket. "And he will know. Men like that always know." Neither of you says anything more.') },
         { label: '"It is not for sale."', effects: { story: { stage: 2 }, storyLog: 'Refused to hand the tally book to Anselm Voight of Aquilon Hydrologics.' },
-          result: ('Voight\'s smile does not move. It is the most frightening thing you have seen in a long while. "Everything is for sale, captain," ' +
-              'he says gently, as if to a child. "We will talk again." He leaves, without hurry, and without another word. Your dock handler, who ' +
+          result: ('Voight\'s smile does not move. "Everything is for sale, captain," ' +
+              'he says. "We will talk again." He leaves, without hurry, and without another word. Your dock handler, who ' +
               'watched the whole thing from the corner, will not meet your eyes for the rest of the day, and, that night, someone slips a note under ' +
               'your hatch that says only: BE CAREFUL.') },
       ],
@@ -132,16 +128,16 @@ Mods.register({
     scene({
       id: 'cw-europa', where: 'port', when: at(4, 'Europa'),
       title: 'What the Book Says',
-      text: ('In a rented room above the Europa ice docks, with the ice groaning faintly beneath the floor and the smell of cold metal in the air, ' +
+      text: ('In a rented room above the Europa ice docks, with the ice groaning beneath the floor and the smell of cold metal in the air, ' +
           'a Water Authority clerk lifts the seal off the tally book with a warm blade, and Mira turns the first leaf. It is all there, in a dozen ' +
           'hands, ruled in columns. Aquilon crews disabling Ceres recyclers on a schedule. Shell companies buying up ice claims on Europa and ' +
           'Enceladus at rock-bottom prices. Water futures bought in Hermes Foundry\'s name the day before every "failure". Mira reads, and does ' +
-          'not speak, and her lips go white. Someone is starving Ceres of water to get rich, and the proof is in your hands.'),
+          'not speak, and her lips go white. "Someone is starving Ceres of water to get rich," Mira says. "And it is in your hands."'),
       choices: [
         { label: '"What happens now?"', effects: { story: { stage: 5 }, storyLog: 'On Europa, Mira opened the tally book: Aquilon Hydrologics and Hermes Foundry are sabotaging Ceres\'s water supply.' },
-          result: ('Mira looks at you for a long moment, and for the first time you see how tired she is, and how much she has held together. "Now ' +
-              'you decide who gets this," she says. "The League will fight. Mars will use it against Earth. Earth will bury it. And Aquilon will ' +
-              'pay anything to make it disappear." She keeps a copy, in a small metal capsule on a chain, and stays on Europa, with the Water ' +
+          result: ('Mira sits down on the edge of the bed. "Now ' +
+              'you decide who gets this," she says. "The League will fight over it, and Mars will use it against Earth, and Earth will bury it, and Aquilon will ' +
+              'pay anything to make it disappear." She keeps a copy, in a metal capsule on a chain, and stays on Europa, with the Water ' +
               'Authority workers who still remember her. "Whatever you choose, I will be here. I will be the one on the ice, watching the ships come ' +
               'in." (Act 1 complete. Your choice is on the Port tab.)') },
       ],
