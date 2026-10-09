@@ -103,3 +103,19 @@ test('the title paints Earth\'s limb with no save state, and lights the menu fro
   assert.equal(r.state, null); assert.ok(r.limb, 'the limb is painted along the bottom'); assert.ok(r.sky, 'dark sky at the top'); assert.equal(r.light, '81%', 'lit from the fixed title sun'); assert.ok(r.key, 'one 720px Earth sprite, without its caps');
   await done();
 });
+
+test('the map paints a small body at every system in range, inside its faction ring', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    openMap(); G.mapZoom = MAP_ZOOMS.length - 1; render();
+    const d = devicePixelRatio || 1, dark = [];
+    for (const id of Object.keys(SYSTEMS)) {
+      const [x, y] = G.mapPos(id), [pr, pg, pb] = ctx.getImageData(Math.round(x * d), Math.round(y * d), 1, 1).data;
+      if (pr + pg + pb < 40) dark.push(id);
+    }
+    closeMap();
+    return { dark, keys: Object.keys(BODY_CACHE).filter(k => k.endsWith('@7')).length, systems: Object.keys(SYSTEMS).length };
+  });
+  assert.deepEqual(r.dark, []); assert.ok(r.keys >= r.systems - 2, `a 7px sprite per system that is on the map: ${r.keys} of ${r.systems}`);
+  await done();
+});
