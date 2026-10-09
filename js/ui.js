@@ -54,12 +54,18 @@ const UI = {
     this.el.style.setProperty('--accent', color || '#6fb0ff');
   },
 
+  // Where the sun is, across the panel: the header's glow falls from that side (style.css, --light-x).
+  setLight(angle) {
+    this.el.style.setProperty('--light-x', `${Math.round(50 + 50 * Math.cos(angle))}%`);
+  },
+
   // A choice's button; shut, it says why as text (js/gates.js). Built on the view helpers (js/views.js): the label and the reason are text.
 
   showEvent(ev, choices) {
     const opener = document.activeElement;  // read before the panel is rebuilt
     const where = G.mode === 'hail' ? 'Comms channel' : G.mode === 'transit' ? 'In transit' : G.state.planet;
     this.setAccent(G.mode === 'hail' ? '#6fb0ff' : G.mode === 'transit' ? '#9fb4ff' : GOV_COLORS[system().gov]);
+    this.setLight(G.state ? sunLight().angle : -0.9);
     this.el.innerHTML = String(h`
       <div class="event-body" role="dialog" aria-modal="true" aria-label="${ev.title}">
         <div class="eyebrow">${ev.via ? raw(`${VIA_LABELS[ev.via]} &middot; `) : ''}${where}</div>
@@ -145,6 +151,7 @@ const UI = {
   render() {
     const p = this.planet;
     this.setAccent(GOV_COLORS[system().gov]);
+    this.setLight(sunLight().angle);
     this.el.innerHTML = shellHtml(this, p);  // the ship-interface shell (js/shell.js)
     if (this.lastTab !== this.tab) { this.lastTab = this.tab; focusPage(); }  // a room change, not a re-render of the same page
   },

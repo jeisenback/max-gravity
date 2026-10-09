@@ -249,11 +249,14 @@ function bodyPath(g, r, shape) {
   } else g.arc(0, 0, r, 0, Math.PI * 2);
 }
 
-// Draw a body's surface once into an offscreen canvas; lighting is added live.
+// Draw a body's surface once into an offscreen canvas; lighting is added live. Cached by name and radius: the same body
+// is painted small on the map, at its size in flight and large in the port's viewscreen. Over 200px it is drawn at
+// device ratio 1, like the gas giants, to bound memory.
 function bodySprite(pl) {
-  if (BODY_CACHE[pl.name]) return BODY_CACHE[pl.name];
+  const key = `${pl.name}@${pl.r}`;
+  if (BODY_CACHE[key]) return BODY_CACHE[key];
   const art = BODY_ART[pl.name] || { type: 'moon', base: [pl.color, '#1a1d22'], craters: 8 };
-  const r = pl.r, k = art.type === 'giant' ? 1 : Math.min(2, window.devicePixelRatio || 1);
+  const r = pl.r, k = art.type === 'giant' || r > 200 ? 1 : Math.min(2, window.devicePixelRatio || 1);
   const span = r * 2 * (art.type === 'station' ? 1.4 : art.rings ? 2.4 : 1.4);
   const c = document.createElement('canvas');
   c.width = c.height = Math.ceil(span * k);
@@ -266,7 +269,7 @@ function bodySprite(pl) {
 
   if (art.type === 'station') {
     drawFoundry(g, r, lights);
-    return (BODY_CACHE[pl.name] = { c, span, art, shape, lights });
+    return (BODY_CACHE[key] = { c, span, art, shape, lights });
   }
 
   bodyPath(g, r, shape);
@@ -378,7 +381,7 @@ function bodySprite(pl) {
     }
     g.globalCompositeOperation = 'source-over';
   }
-  return (BODY_CACHE[pl.name] = { c, span, art, shape, lights });
+  return (BODY_CACHE[key] = { c, span, art, shape, lights });
 }
 
 function pick2(rnd, arr) {
@@ -418,80 +421,83 @@ function drawFoundry(g, r, lights) {
 }
 
 // Day and night sides, from the Sun's direction, clipped to the body's outline.
-function shadeBody(x, y, r, shape, sun) {
+// The painters below draw on the main canvas unless handed another context (the viewscreen, a test's canvas).
+function shadeBody(x, y, r, shape, sun, c = ctx) {
   const a = sun.angle, s = sun.strength, ox = Math.cos(a) * r * 0.8, oy = Math.sin(a) * r * 0.8;
-  ctx.save();
-  ctx.translate(x, y);
-  bodyPath(ctx, r, shape);
-  const g = ctx.createRadialGradient(ox, oy, r * 0.1, ox, oy, r * 2);
+  c.save();
+  c.translate(x, y);
+  bodyPath(c, r, shape);
+  const g = c.createRadialGradient(ox, oy, r * 0.1, ox, oy, r * 2);
   g.addColorStop(0, `rgba(255,250,235,${0.14 * s})`);
   g.addColorStop(0.42, 'rgba(0,0,8,0)');
   g.addColorStop(0.6, `rgba(0,0,8,${0.78 + 0.12 * (1.2 - s)})`);
   g.addColorStop(0.85, 'rgba(0,0,8,0.96)');
-  ctx.fillStyle = g;
-  ctx.fill();
-  ctx.restore();
+  c.fillStyle = g;
+  c.fill();
+  c.restore();
 }
 
-function drawAtmosphere(color, x, y, r, sun) {
-  ctx.save();
-  ctx.globalCompositeOperation = 'lighter';
+function drawAtmosphere(color, x, y, r, sun, c = ctx) {
+  c.save();
+  c.globalCompositeOperation = 'lighter';
   // Transparent inside the disc: a gradient's first stop would otherwise tint the whole planet.
-  const g = ctx.createRadialGradient(x, y, r * 0.85, x, y, r * 1.14);
+  const g = c.createRadialGradient(x, y, r * 0.85, x, y, r * 1.14);
   g.addColorStop(0, hexA(color, 0));
   g.addColorStop(0.45, hexA(color, 0.3 * sun.strength));
   g.addColorStop(1, hexA(color, 0));
-  ctx.fillStyle = g;
-  ctx.beginPath(); ctx.arc(x, y, r * 1.14, 0, Math.PI * 2); ctx.fill();
-  ctx.strokeStyle = hexA(color, 0.35 * sun.strength);
-  ctx.lineWidth = r * 0.05;
-  ctx.beginPath(); ctx.arc(x, y, r * 1.01, sun.angle - 1.2, sun.angle + 1.2); ctx.stroke();
-  ctx.restore();
+  c.fillStyle = g;
+  c.beginPath(); c.arc(x, y, r * 1.14, 0, Math.PI * 2); c.fill();
+  c.strokeStyle = hexA(color, 0.35 * sun.strength);
+  c.lineWidth = r * 0.05;
+  c.beginPath(); c.arc(x, y, r * 1.01, sun.angle - 1.2, sun.angle + 1.2); c.stroke();
+  c.restore();
 }
 
-function drawBodyLights(sp, x, y) {
+function drawBodyLights(sp, x, y, c = ctx) {
   for (const l of sp.lights) {
     if (l.glow) {
       const pulse = 0.6 + 0.4 * Math.sin(G.time * 3 + l.phase);
-      ctx.save();
-      ctx.globalCompositeOperation = 'lighter';
-      const g = ctx.createRadialGradient(x + l.x, y + l.y, 0, x + l.x, y + l.y, 7);
+      c.save();
+      c.globalCompositeOperation = 'lighter';
+      const g = c.createRadialGradient(x + l.x, y + l.y, 0, x + l.x, y + l.y, 7);
       g.addColorStop(0, hexA(l.color, 0.9 * pulse));
       g.addColorStop(1, hexA(l.color, 0));
-      ctx.fillStyle = g;
-      ctx.fillRect(x + l.x - 7, y + l.y - 7, 14, 14);
-      ctx.restore();
+      c.fillStyle = g;
+      c.fillRect(x + l.x - 7, y + l.y - 7, 14, 14);
+      c.restore();
     } else if (!l.blink || Math.sin(G.time * 3 + l.phase) > 0) {
-      ctx.fillStyle = l.color;
-      ctx.fillRect(x + l.x - 1, y + l.y - 1, 2, 2);
+      c.fillStyle = l.color;
+      c.fillRect(x + l.x - 1, y + l.y - 1, 2, 2);
     }
   }
 }
 
-function drawBody(pl, x, y) {
-  const sp = bodySprite(pl), sun = sunLight();
-  if (sp.art.rings) drawRings(x, y, pl.r, true);
-  ctx.drawImage(sp.c, x - sp.span / 2, y - sp.span / 2, sp.span, sp.span);
-  if (sp.art.type !== 'station') shadeBody(x, y, pl.r, sp.shape, sun);
-  if (sp.art.atmo) drawAtmosphere(sp.art.atmo, x, y, pl.r, sun);
-  if (sp.art.rings) drawRings(x, y, pl.r, false);
-  drawBodyLights(sp, x, y);
+// A body at (x, y) on the main canvas, lit by the real sun, or with opts: g, the context to draw on; sun, { angle, strength }
+// (the title has no game state to read a sun from).
+function drawBody(pl, x, y, opts = {}) {
+  const sp = bodySprite(pl), c = opts.g || ctx, sun = opts.sun || sunLight();
+  if (sp.art.rings) drawRings(x, y, pl.r, true, sun, c);
+  c.drawImage(sp.c, x - sp.span / 2, y - sp.span / 2, sp.span, sp.span);
+  if (sp.art.type !== 'station') shadeBody(x, y, pl.r, sp.shape, sun, c);
+  if (sp.art.atmo) drawAtmosphere(sp.art.atmo, x, y, pl.r, sun, c);
+  if (sp.art.rings) drawRings(x, y, pl.r, false, sun, c);
+  drawBodyLights(sp, x, y, c);
 }
 
 // Saturn's rings: the far half behind the planet, the near half in front.
-function drawRings(x, y, r, back) {
-  const tilt = -0.35, s = sunLight().strength;
-  ctx.save();
-  ctx.translate(x, y);
-  ctx.rotate(tilt);
+function drawRings(x, y, r, back, sun, c = ctx) {
+  const tilt = -0.35, s = sun.strength;
+  c.save();
+  c.translate(x, y);
+  c.rotate(tilt);
   for (const [f, w, a] of [[1.35, 0.1, 0.35], [1.55, 0.18, 0.55], [1.8, 0.12, 0.4], [2.05, 0.06, 0.25]]) {
-    ctx.strokeStyle = `rgba(226,210,170,${a * Math.max(0.5, s)})`;
-    ctx.lineWidth = r * w;
-    ctx.beginPath();
-    ctx.ellipse(0, 0, r * f, r * f * 0.22, 0, back ? Math.PI : 0, back ? Math.PI * 2 : Math.PI);
-    ctx.stroke();
+    c.strokeStyle = `rgba(226,210,170,${a * Math.max(0.5, s)})`;
+    c.lineWidth = r * w;
+    c.beginPath();
+    c.ellipse(0, 0, r * f, r * f * 0.22, 0, back ? Math.PI : 0, back ? Math.PI * 2 : Math.PI);
+    c.stroke();
   }
-  ctx.restore();
+  c.restore();
 }
 
 // The Sun (sized by your real distance from it) and any gas giant behind the moons.
