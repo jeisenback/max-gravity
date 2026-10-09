@@ -140,10 +140,106 @@ test('the page shows the rows, opens a scene to read it, and filters as you type
   await page.fill('#q', '');
 });
 
-test('nothing on the page can change a scene', async () => {
-  assert.equal(await page.locator('textarea, [contenteditable]').count(), 0);
+test('a code-written scene has no form, and a data scene\'s form edits only its words', async () => {
   const inputs = await page.locator('input, select').evaluateAll(list => list.map(e => e.id));
-  assert.deepEqual(inputs, ['q', 'where', 'file', 'kind'], 'the controls only filter');
+  assert.deepEqual(inputs, ['q', 'where', 'file', 'kind'], 'the controls above the list only filter');
+  await page.fill('#q', 'cast:ilsa:late');
+  await page.click('button[data-id="cast:ilsa:late"]');
+  assert.equal(await page.locator('textarea').count(), 0);
+  assert.match(await page.textContent('#detail'), /cannot be edited here until its text has an id/);
+  await page.fill('#q', 'port-mars-sky');
+  await page.click('button[data-id="port-mars-sky"]');
+  // Title, text, and a label and a result for each of three choices; the shipped words are beside each.
+  assert.deepEqual(await page.locator('#detail textarea').evaluateAll(l => l.map(e => e.dataset.path)),
+    ['title', 'text', 'c0.label', 'c0.result', 'c1.label', 'c1.result', 'c2.label', 'c2.result']);
+  assert.equal(await page.locator('#detail .shipped').count(), 8);
+  assert.match(await page.textContent('#detail .shipped'), /What Color the Sky Will Be/);
+  assert.equal(await page.inputValue('#f-title'), 'What Color the Sky Will Be', 'the box starts with the shipped words');
+  await page.fill('#q', '');
+});
+
+test('typing changes a field, and the changes hold only what differs from the shipped words', async () => {
+  await page.fill('#q', 'port-mars-sky');
+  await page.click('button[data-id="port-mars-sky"]');
+  assert.equal(await page.textContent('#changes'), 'const SCENE_OVERRIDES = {};');
+  await page.fill('#f-title', 'A New Title');
+  await page.fill('#f-c1\\.label', 'Side with the numbers');
+  await page.fill('#f-c2\\.result', 'They stop. "Butterscotch," says the veteran.');
+  const overrides = JSON.parse((await page.textContent('#changes')).replace(/^const SCENE_OVERRIDES = /, '').replace(/;$/, ''));
+  assert.deepEqual(overrides, { 'port-mars-sky': { title: 'A New Title', choices: { 1: { label: 'Side with the numbers' }, 2: { result: 'They stop. "Butterscotch," says the veteran.' } } } });
+  // Putting the shipped words back, or emptying the box, is no change.
+  await page.fill('#f-title', 'What Color the Sky Will Be');
+  await page.fill('#f-c1\\.label', '');
+  assert.match(await page.textContent('[data-warn="c1.label"]'), /Empty: the shipped words are used/);
+  await page.fill('#f-c2\\.result', await page.evaluate(() => SceneIndex.rows.find(r => r.id === 'port-mars-sky').choices[2].result));
+  assert.equal(await page.textContent('#changes'), 'const SCENE_OVERRIDES = {};');
+  // The list marks a scene with changes in it.
+  await page.fill('#f-text', 'Different words.');
+  await page.fill('#q', 'mars-sky');
+  assert.match(await page.textContent('#list'), /edited/);
+  await page.fill('#f-text', await page.evaluate(() => SceneIndex.rows.find(r => r.id === 'port-mars-sky').text));
+});
+
+test('a placeholder the game does not replace is flagged in the form, and the real ones are not', async () => {
+  await page.fill('#q', 'port-mars-sky');
+  await page.click('button[data-id="port-mars-sky"]');
+  const warn = () => page.textContent('[data-warn="text"]');
+  await page.fill('#f-text', 'Captain {captian} waits at {planet} with {crew:pilot}, {crew}, {system}, {captain} and {thread:loan}.');
+  assert.match(await warn(), /\{captian\}/);
+  assert.ok(!/planet|crew|system|\{captain\}|thread/.test(await warn()), await warn());
+  await page.fill('#f-text', 'Ask {crew:pilott} about {nope}.');
+  assert.match(await warn(), /\{crew:pilott\} \{nope\}/);
+  await page.fill('#f-text', 'All good: {planet}.');
+  assert.equal(await warn(), '');
+  // The page's check and the game's give the same answer.
+  const samples = ['{planet}', '{planet }', '{crew:pilot}', '{crew:pilott}', '{crew}', '{thread:loan}', '{thread:}', '{who}', '{}', 'plain', '{system} {captian}'];
+  const here = await page.evaluate(s => s.map(t => SceneIndex.badPlaceholders(t)), samples);
+  const g = await open({ scope: 'full' });
+  const there = await g.ev(s => s.map(t => unknownPlaceholders(t)), samples);
+  await g.done();
+  assert.deepEqual(here, there);
+  await page.fill('#f-text', await page.evaluate(() => SceneIndex.rows.find(r => r.id === 'port-mars-sky').text));
+});
+
+test('a text of conditional parts is shown but not edited as one string', async () => {
+  const parted = rows.find(r => r.kind === 'data' && !r.edit.text);
+  assert.ok(parted, 'some storylet has a text of parts');
+  await page.fill('#q', parted.id);
+  await page.click(`button[data-id="${parted.id}"]`);
+  assert.equal(await page.locator('#f-text').count(), 0);
+  assert.match(await page.textContent('#detail'), /depend on conditions/);
+  assert.ok(await page.locator('#f-title').count() === 1, 'its title can still be edited');
+  await page.fill('#q', '');
+});
+
+test('what the form writes is what the game reads: the changes, pasted into the file, change the scene and nothing else', async () => {
+  await page.fill('#q', 'port-mars-sky');
+  await page.click('button[data-id="port-mars-sky"]');
+  await page.fill('#f-title', 'Round Trip');
+  await page.fill('#f-c0\\.result', 'A line from the editor, for {planet}.');
+  const file = await page.textContent('#changes');
+  await page.fill('#f-title', 'What Color the Sky Will Be');
+  await page.fill('#f-c0\\.result', await page.evaluate(() => SceneIndex.rows.find(r => r.id === 'port-mars-sky').choices[0].result));
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(src => {
+    const warned = []; const real = console.warn; console.warn = m => warned.push(m);
+    Function(`${src.replace('const SCENE_OVERRIDES', 'SCENE_OVERRIDES_FROM_EDITOR')}; window.fromEditor = SCENE_OVERRIDES_FROM_EDITOR;`)();
+    useOverrides(window.fromEditor); console.warn = real;
+    const ev = storyletEvent(STORYLETS.find(x => x.id === 'port-mars-sky'));
+    return { warned, title: ev.title, result: ev.choices[0].run(), other: ev.choices[1].label };
+  }, file);
+  await g.done();
+  assert.deepEqual(r.warned, []);
+  assert.equal(r.title, 'Round Trip');
+  assert.match(r.result, /^A line from the editor, for \S/);
+  assert.equal(r.other, 'Side with the modeler');
+});
+
+test('the changes a file already holds are the form\'s starting values, and come back out unchanged', async () => {
+  const file = { 'port-mars-sky': { title: 'T', text: 'X', choices: { 0: { label: 'L', result: 'R' }, 2: { result: 'R2' } } }, 'land-customs': { choices: { 1: { label: 'Pay' } } } };
+  const out = await page.evaluate(f => SceneIndex.overridesFrom(SceneIndex.rows, SceneIndex.valuesFrom(f)), file);
+  assert.deepEqual(out, file);
+  assert.deepEqual(await page.evaluate(() => SceneIndex.valuesFrom({ 'port-mars-sky': { choices: { 1: { label: 'L' } } } })), { 'port-mars-sky': { 'c1.label': 'L' } });
 });
 
 test('every field is escaped on the page', async () => {
@@ -153,4 +249,22 @@ test('every field is escaped on the page', async () => {
   });
   assert.ok(!/<(?:img|script|svg|a |b>|i>|u>|s>|em>)/.test(html), html);
   assert.match(html, /&lt;script&gt;1&lt;\/script&gt;/);
+  // A data scene's form, and the file text, with hostile words typed into it.
+  const form = await page.evaluate(() => {
+    const evil = { id: 'x"><img src=x>', title: '<script>1</script>', where: 'port', file: 'f', belongs: 'b', kind: 'data', text: '<img src=x>', choices: [{ label: '<a href=x>', result: '<svg onload=1>' }],
+      edit: { text: true, choices: [{ label: true, result: true }] } };
+    const values = { [evil.id]: { title: '"><img src=y>', 'c0.result': '<b>r</b>' } };
+    return SceneIndex.detailHtml(evil, values, [evil]);
+  });
+  assert.ok(!/<(?:img|script|svg|a |b>)/.test(form), form);
+  assert.match(form, /&lt;b&gt;r&lt;\/b&gt;/);
+});
+
+test('words typed into the form are not run as markup', async () => {
+  await page.fill('#q', 'port-mars-sky');
+  await page.click('button[data-id="port-mars-sky"]');
+  await page.fill('#f-text', '<img src=x onerror=1> and {planet}');
+  assert.equal(await page.locator('#detail img, #detail svg, #changes img').count(), 0);
+  assert.match(await page.textContent('#changes'), /<img src=x onerror=1>/, 'shown as text');
+  await page.fill('#f-text', await page.evaluate(() => SceneIndex.rows.find(r => r.id === 'port-mars-sky').text));
 });
