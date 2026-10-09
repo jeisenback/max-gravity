@@ -116,12 +116,12 @@
       } else if (e.kind === 'captain' && e.name !== 'goodbye') {
         const note = e.name === 'trouble' ? `${CAPTAIN_BEAT_DAYS.trouble} days after you sign on, on a burn.` : e.name === 'secret:confide' ? `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is ${SECRET_TRUST} or more.` : `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is below ${SECRET_TRUST}.`;
         add({ id: e.id, where: 'transit', file: fileOf['captain:' + e.key], belongs: `${e.key} (captain)`, on: captainOn(e.key), conditionsNote: note, pacing: pacingOf.captain(e.name.split(':')[0]), ...registryRow(e.scene) });
-      } else if (e.kind === 'captain') {
-        const g = e.scene.goodbye, note = e.name === 'trouble' ? `${CAPTAIN_BEAT_DAYS.trouble} days after you sign on, on a burn.`
-          : e.name === 'secret:confide' ? `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is ${SECRET_TRUST} or more.`
-          : e.name === 'secret:found' ? `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is below ${SECRET_TRUST}.` : 'When you leave the ship to buy your own.';
-        const scene = g ? { title: g.title, text: ['cold', 'neutral', 'warm', 'crew', 'secret', 'xo', 'xoDead', 'repaid', 'parting'].filter(k => g[k]).map(k => `[${k}] ${g[k]}`).join('\n'), choices: g.choices } : e.scene;
-        add({ id: e.id, title: scene.title, where: g ? 'port' : 'transit', file: fileOf['captain:' + e.key], belongs: `${e.key} (captain)`, on: captainOn(e.key), conditionsNote: note, pacing: { tier: null, weight: null, cooldown: 'plays once', trigger: note, editable: false }, ...codeScene(scene) });
+      } else if (e.kind === 'captain') {  // a captain's goodbye (#476): built from parts, so each part is a field, and its choices are data
+        const g = e.scene.goodbye, note = 'When you leave the ship to buy your own.';
+        const parts = Object.fromEntries(PART_NAMES.filter(n => typeof g[n] === 'string').map(n => [n, g[n]]));
+        const row = registryRow({ title: g.title, text: '', choices: g.choices });
+        add({ id: e.id, where: 'port', file: fileOf['captain:' + e.key], belongs: `${e.key} (captain)`, on: captainOn(e.key), conditionsNote: note, pacing: { tier: null, weight: null, cooldown: 'plays once', trigger: note, editable: false }, ...row,
+          text: PART_NAMES.filter(n => parts[n]).map(n => `[${n}] ${parts[n]}`).join('\n'), parts, codeNote: 'Its text is built from these parts by the captain\'s regard for you, who goes with you, the secret and what you lived through; what the hand lived through (the ice run, the raid, a hurt) is the same for every captain and is not edited here.', edit: { ...row.edit, text: false } });
       } else if (e.kind === 'work') {
         const d = e.def;
         add({ id: e.id, file: fileOf.work, belongs: `${d.post} (post)`, on: postOn(d.post), post: d.post, pacing: pacingOf.work(d), conditionsNote: `A problem at the ${d.post} post, for a hand who works it; not repeated within ${WORK_SEEN_DAYS} days.`, ...tableRow(tableScene(e.id)) });
@@ -281,14 +281,14 @@
 
   function play(m) {
     useNewScenes(m.newScenes);  // the scenes written in the editor, not saved yet
-    const s = STORYLETS.find(x => x.id === m.id), reg = s ? null : hiredSceneRegistry().find(x => x.id === m.id && ((x.kind === 'cast' || x.kind === 'captain') && x.name !== 'goodbye' || x.kind === 'hand' && x.scene || x.kind === 'work' || x.kind === 'ice'));
+    const s = STORYLETS.find(x => x.id === m.id), reg = s ? null : hiredSceneRegistry().find(x => x.id === m.id && ((x.kind === 'cast' || x.kind === 'captain') || x.kind === 'hand' && x.scene || x.kind === 'work' || x.kind === 'ice'));
     if (!s && !reg) return { error: `The game has no scene "${m.id}".` };
     useOverrides(m.overrides);  // the unsaved edits, through the same layer the game reads (storylets.js)
     const o = m.setup || {};
     const place = planetNamed(o.place) ? o.place : 'Earth', at = planetNamed(place);
     beginGame(o, !!reg);
     // A scene in a burn is played on the way to the place (its `at` is the destination); one at a port, landed there.
-    const where = s ? s.where : reg.name === 'meet' ? 'port' : 'transit';
+    const where = s ? s.where : reg.name === 'meet' || reg.name === 'goodbye' ? 'port' : 'transit';
     if (where === 'transit') uatBurn(at.sid === 'earth' ? 'Mars' : 'Earth', at.sid); else uatLand(place);
     tweakState(o);
     if (reg) {  // a hired scene is played by its days and its place in the story: the preview opens it, with the regard that picks its reading
@@ -301,6 +301,9 @@
         const sc = CAST[reg.key].scenes[reg.name];
         if (sc.closed) castPerson(reg.key).opinion = reg.closed ? OPINION.FRIEND - 1 : OPINION.FRIEND;
         openEvent(castScene(reg.key, sc));
+      } else if (reg.name === 'goodbye') {  // leaving the ship: with the secret learned, so every choice shows
+        captainFlag('secretKnown');
+        openEvent(captainGoodbye());
       } else {
         const name = reg.name.split(':')[0];
         if (name === 'secret') hiredCaptain().opinion = reg.name === 'secret:confide' ? SECRET_TRUST : SECRET_TRUST - 1;
@@ -352,11 +355,12 @@
   const isStorylet = r => r.kind === 'data' && !r.registry;
 
   // The fields of a data scene's form, named by a path: 'title', 'text', and 'c0.label' and 'c0.result' for the first choice.
+  const PART_LABEL = { cold: 'Opening, when they think little of you', neutral: 'Opening, when they think plainly of you', warm: 'Opening, when they think well of you', crew: 'If crew go with you ({names} is who)', secret: 'If you learned their secret', repaid: 'If a loan you made is repaid', xoDead: 'If the first officer is dead', xo: 'If the first officer is there', parting: 'The parting' };
   const CHOICE_FIELDS = ['label', 'result', 'win', 'lose'];  // a table scene's choice has a win and a lose line in place of a result (#462)
-  const pathsOf = r => ['title', 'text', ...(r.text2 !== undefined ? ['text2'] : []), ...r.choices.flatMap((c, i) => CHOICE_FIELDS.filter(f => c[f] !== undefined).map(f => `c${i}.${f}`))];
+  const pathsOf = r => ['title', ...(r.parts ? [] : ['text']), ...(r.text2 !== undefined ? ['text2'] : []), ...Object.keys(r.parts || {}).map(n => `part.${n}`), ...r.choices.flatMap((c, i) => CHOICE_FIELDS.filter(f => c[f] !== undefined).map(f => `c${i}.${f}`))];
   const CHOICE_PATH = /^c(\d+)\.(label|result|win|lose)$/;
-  const shippedOf = (r, path) => { const m = CHOICE_PATH.exec(path); return m ? r.choices[m[1]][m[2]] : r[path]; };
-  const editableOf = (r, path) => { const m = CHOICE_PATH.exec(path); return !r.edit ? false : m ? r.edit.choices[m[1]][m[2]] : path === 'title' || r.edit[path]; };
+  const shippedOf = (r, path) => { const m = CHOICE_PATH.exec(path); return m ? r.choices[m[1]][m[2]] : path.startsWith('part.') ? (r.parts || {})[path.slice(5)] : r[path]; };
+  const editableOf = (r, path) => { const m = CHOICE_PATH.exec(path); return !r.edit ? false : m ? r.edit.choices[m[1]][m[2]] : path === 'title' || (path.startsWith('part.') ? !!r.parts : r.edit[path]); };
 
   // What js/overrides.js would hold for the values typed: only what differs from the shipped words, an empty field counting as not changed.
   // values: { sceneId: { path: text } }.
@@ -367,7 +371,7 @@
         const v = values[r.id][path];
         if (typeof v !== 'string' || !v.trim() || v === shippedOf(r, path) || !editableOf(r, path)) continue;
         const o = out[r.id] = out[r.id] || dict(), m = CHOICE_PATH.exec(path);
-        if (m) { o.choices = o.choices || dict(); (o.choices[m[1]] = o.choices[m[1]] || dict())[m[2]] = v; } else o[path] = v;
+        if (m) { o.choices = o.choices || dict(); (o.choices[m[1]] = o.choices[m[1]] || dict())[m[2]] = v; } else if (path.startsWith('part.')) { o.parts = o.parts || dict(); o.parts[path.slice(5)] = v; } else o[path] = v;
       }
     }
     for (const r of rows.filter(x => struct[x.id])) {  // the conditions, effects and links
@@ -387,6 +391,7 @@
       if (o.title) v.title = o.title;
       if (o.text) v.text = o.text;
       if (o.text2) v.text2 = o.text2;
+      for (const [n, t] of Object.entries(o.parts || {})) v[`part.${n}`] = t;
       for (const [i, c] of Object.entries(o.choices || {})) for (const f of CHOICE_FIELDS) if (c[f]) v[`c${i}.${f}`] = c[f];
     }
     return values;
@@ -401,7 +406,7 @@
     day: 'number', before: 'number', at: 'list:systems', planet: 'list:planets', gov: 'list:govs', standing: 'map:govs', standingBelow: 'map:govs',
     credits: 'number', space: 'number', fleet: 'number', stake: 'map:planets', cargo: 'map:goods', crew: 'text', q: 'map', qBelow: 'map', war: 'flagOr:govs',
     peace: 'flagOr:govs', boom: 'one:govs', bust: 'one:govs', raid: 'flagOr:systems', berths: 'number', story: 'json', storyDay: 'map', aboard: 'text',
-    chance: 'chance', post: 'list:posts', skill: 'number', hired: 'flag', due: 'list', opinion: 'shape:opinion',
+    chance: 'chance', post: 'list:posts', skill: 'number', hired: 'flag', due: 'list', opinion: 'shape:opinion', captainFlag: 'text',
   };
   const EFFECT_SPEC = {
     credits: 'number', story: 'json', storyLog: 'text', storyAdd: 'map', storyDays: 'map', delay: 'number', passenger: 'json', do: 'action', rep: 'map:govs',
@@ -638,7 +643,7 @@
   function formHtml(r, values = {}) {
     const mine = values[r.id] || {};
     return `<h3>Your words</h3><div class="form" data-form="${esc(r.id)}">
-      ${fieldHtml(r, 'title', 'Title', mine.title)}${fieldHtml(r, 'text', r.text2 !== undefined ? 'Opening 1' : 'Text', mine.text)}${r.text2 !== undefined ? fieldHtml(r, 'text2', 'Opening 2', mine.text2) : ''}
+      ${fieldHtml(r, 'title', 'Title', mine.title)}${r.parts ? '' : fieldHtml(r, 'text', r.text2 !== undefined ? 'Opening 1' : 'Text', mine.text)}${Object.keys(r.parts || {}).map(n => fieldHtml(r, `part.${n}`, PART_LABEL[n] || n, mine[`part.${n}`])).join('')}${r.text2 !== undefined ? fieldHtml(r, 'text2', 'Opening 2', mine.text2) : ''}
       ${r.choices.map((c, i) => `<h4>Choice ${i + 1}${c.post ? ` (${esc(c.post)}'s own)` : ''}</h4>${fieldHtml(r, `c${i}.label`, 'Label', mine[`c${i}.label`])}${[['result', 'Result'], ['win', 'If it works'], ['lose', 'If it fails']].filter(([f]) => c[f] !== undefined).map(([f, name]) => fieldHtml(r, `c${i}.${f}`, name, mine[`c${i}.${f}`])).join('')}`).join('')}
     </div>`;
   }
@@ -780,7 +785,11 @@
         if (!isObj(s)) { refuse(`${id}: is not an object`); continue; }
         const keep = dict(), what = [];
         for (const [k, v] of Object.entries(s)) {
-          if (k === 'text2') {
+          if (k === 'parts') {
+            if (!r.parts) refuse(`${id} parts: this scene is not built from parts`);
+            else if (!isObj(v)) refuse(`${id} parts: is not an object`);
+            else for (const [n, t] of Object.entries(v)) { if (!(n in r.parts)) refuse(`${id} parts ${n}: this scene has no such part`); else if (!words(t)) refuse(`${id} parts ${n}: needs some text of up to ${LIMIT.text} characters`); else { (keep.parts = keep.parts || dict())[n] = t; what.push(`part ${n}`); } }
+          } else if (k === 'text2') {
             if (!r.edit.text2) refuse(`${id} text2: this scene has no second opening`);
             else if (!words(v)) refuse(`${id} text2: needs some text of up to ${LIMIT.text} characters`);
             else { keep.text2 = v; what.push('text2'); }

@@ -51,8 +51,8 @@ test('the converted scenes are data rows of the registry, and the rest are code 
   assert.deepEqual(r.ilsa, ['code', true]);
   assert.equal(r.effects.castLike.who, 'ansel');
   assert.ok(r.edit.length > 0 && r.edit.every(e => e === false), 'code choices keep their effects in code');
-  assert.ok(!r.goodbye && !r.signon, 'the goodbye and the function-built scenes are not edited yet');
-  assert.equal(r.dataRegistry, 85);
+  assert.ok(r.goodbye && !r.signon, 'the goodbye is a row of the registry; the function-built scenes are not edited yet');
+  assert.equal(r.dataRegistry, 89);
 });
 
 test('a converted scene\'s effects are in forms, checked as typed, and changing one is a change to the file', async () => {
@@ -173,6 +173,31 @@ test('a hired data choice has its conditions in forms, checked as typed, and cha
   await select('cast:ruben:mid1');
   assert.equal(await page.locator('#detail [data-add="c0.when"]').count(), 0);
   assert.equal(await page.locator('#detail [data-add="c1.when"]').count(), 1, 'its data choice has one');
+});
+
+test('a captain\'s goodbye has a field for each part of its text and its choices as data, and plays in the preview (#476)', async () => {
+  await reload(); await select('captain:hester:goodbye');
+  const ids = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
+  assert.deepEqual(ids.slice(0, 10), ['title', 'part.cold', 'part.neutral', 'part.warm', 'part.crew', 'part.secret', 'part.repaid', 'part.xoDead', 'part.xo', 'part.parting']);
+  assert.ok(ids.includes('c1.result'));
+  assert.doesNotMatch(await page.textContent('#detail'), /Not a placeholder the game replaces/, '{names} is a word the game replaces');
+  assert.equal(await page.inputValue(rule('c1.when', 'captainFlag')), 'secretKnown');
+  await page.fill('#f-part\\.parting', 'A parting, edited.');
+  await page.fill('#f-title', 'The Ramp, edited');
+  assert.deepEqual(await changes(), { 'captain:hester:goodbye': { title: 'The Ramp, edited', parts: { parting: 'A parting, edited.' } } });
+  const f = await play();
+  const r = await f.evaluate(() => ({ title: G.dialog.event.title, text: G.dialog.event.text, labels: G.dialog.choices.map(c => c.label) }));
+  assert.equal(r.title, 'The Ramp, edited');
+  assert.match(r.text, /A parting, edited\.$/);
+  assert.equal(r.labels.length, 3, 'with the secret learned, every choice shows');
+  // An imported file may give parts, and refuses one the scene does not have.
+  const tmp = path.join(require('node:os').tmpdir(), `goodbye-import-${process.pid}.js`);
+  require('node:fs').writeFileSync(tmp, 'const SCENE_OVERRIDES = {"captain:hester:goodbye":{"parts":{"warm":"Kept warm.","nonsense":"x"}},"cast:ines:pivot":{"parts":{"cold":"x"}}};\nconst NEW_SCENES = [];\n');
+  await page.setInputFiles('#import-file', tmp);
+  await page.waitForSelector('#notice .notice');
+  const n = await page.textContent('#notice');
+  for (const part of ['captain:hester:goodbye parts nonsense: this scene has no such part', 'cast:ines:pivot parts: this scene is not built from parts']) assert.ok(n.includes(part), `${part} in: ${n}`);
+  require('node:fs').rmSync(tmp, { force: true });
 });
 
 test('the words of a code scene can be edited, and a result written replaces the line the code returns', async () => {
