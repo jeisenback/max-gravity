@@ -27,12 +27,12 @@ Mods.register({
         credits: 60,
         log: 'The hot burn made the window. {captain} said thank you, once.'
       },
-        result: 'It is a short speech, delivered to the deck, and there is sixty credits in it, in an envelope with no name. You do not say anything clever. It is, you find, enough.'
+        result: 'It is a short speech, delivered to the deck, and the envelope that goes with it has sixty credits in it and no name. You do not say anything clever. You put it in the inside pocket, and the next ship in the queue goes on idling.'
       }],
     });
     after({
       id: 'h-hot-bad', title: 'The Pump Trips',
-      text: 'The coolant pump trips at the worst moment of the burn, a flat chirp and a line of amber, and the drive drops back to a crawl. The hot burn did not make the window, and {captain} has not said a word about it. You can feel what the silence is waiting for.',
+      text: 'The coolant pump trips at the worst moment of the burn, a flat chirp and a line of amber, and the drive drops back to a crawl. The hot burn did not make the window, and {captain} has not said a word about it. The galley has gone quiet enough that you can hear the pump ticking as it cools.',
       choices: [
         {
           label: 'Help sort it quietly',
@@ -41,7 +41,7 @@ Mods.register({
           like: { captain: 1 },
           log: 'The hot burn tripped the pump. I helped sort it and said nothing.'
         },
-          result: 'You help sort it, which takes an hour and a good deal of language, and you say nothing about whose idea the burn was. The captain finds it out from the log, and is, for the rest of the run, noticeably gentle.'
+          result: 'You help sort it, which takes an hour and a good deal of language, and you say nothing about whose idea the burn was. The captain finds it out from the log, and for the rest of the run knocks before coming into the engine room.'
         },
         { label: 'Remind the captain you said so', effects: { like: { captain: -1 }, learn: 1, log: 'Told {captain} I had said so. It was true and it did not help.' }, result: '"I said so," you say. The pump is fixed, and nobody thanks you.' },
       ],
@@ -72,8 +72,7 @@ Mods.register({
     after({
       id: 'h-owed', title: 'What You Asked For',
       text: ('The captain has remembered the bonus you asked for before you had earned one. "You wanted something for a speech," {captain} says. ' +
-          '"Here is a job instead." It is the inventory: every part in the hold, counted, listed, and checked against the book, a day of dull work, ' +
-          'which, in fairness, is what a bonus usually is.'),
+          '"Here is a job instead." It is the inventory: every part in the hold, counted, listed, and checked against the book, a day of dull work.'),
       choices: [
         {
           label: 'Do the inventory',
@@ -107,8 +106,7 @@ Mods.register({
     after({
       id: 'h-favour-cold', title: 'Passed Over',
       text: ('The captain has stopped asking you for things. It took you a few days to notice, because it happened gradually, like weather. A task ' +
-          'that would have been yours goes to someone else. A word at the end of the watch goes unsaid. {captain} is perfectly polite, and perfectly ' +
-          'distant, and the distance is the point.'),
+          'that would have been yours goes to someone else. A word at the end of the watch goes unsaid. {captain} is polite, says good morning, and takes the far end of the galley table.'),
       choices: [
         {
           label: 'Ask why',
@@ -116,9 +114,9 @@ Mods.register({
           like: { captain: 1 },
           log: 'Asked {captain} why I was being passed over. It cleared some of the air.'
         },
-          result: '"I asked for one thing," the captain says, after a long moment, "and you said no. That is allowed. It is also information." It is not forgiveness. It is a door, and it is not locked.'
+          result: '"I asked for one thing," the captain says, after a long moment, "and you said no. That is allowed. It is also information." The captain pours two mugs and leaves one on your side of the table.'
         },
-        { label: 'Let it be', result: 'You let it be, and it stays that way, a small gray fact in the corner of every watch, getting neither better nor worse.' },
+        { label: 'Let it be', result: 'You let it be, and for the rest of the run the captain says good morning to you and nothing after it.' },
       ],
     });
 
@@ -130,10 +128,10 @@ Mods.register({
     });
     after({
       id: 'h-cover-cold', title: 'Asked Again',
-      text: '{thread:cover} comes to find you again, and stands there a moment before saying it. It is the same favor as before, an hour of cover, a call that cannot wait. It is not going to be the last time they ask.',
+      text: '{thread:cover} comes to find you again, and stands there a moment before saying it. It is the same favor as before, an hour of cover, a call that cannot wait. They have a mug in one hand and the rota in the other.',
       choices: [
         { label: 'Cover for them', effects: { like: { 'thread:cover': 2 }, log: 'Covered for {thread:cover} after all.' }, result: 'You cover it, and it is a long hour. Afterward {thread:cover} says nothing at all.' },
-        { label: 'Still no', effects: { like: { 'thread:cover': -2 } }, result: '"I understand," {thread:cover} says, in a voice that has stopped being warm, and goes. You find, the next day, that your tea has been moved to a lower shelf.' },
+        { label: 'Still no', effects: { like: { 'thread:cover': -2 } }, result: '"I understand," {thread:cover} says, and goes. The next day your tea has been moved to the lower shelf, behind the tins.' },
       ],
     });
 
@@ -148,7 +146,7 @@ Mods.register({
         learn: 2,
         log: '{thread:needle} asked me to teach them my post, after being wrong at the mess table.'
       },
-        result: 'You show them, slowly, from the bottom, and they are a better student than a needler. By the end of the watch, the thing between you has changed its shape, and neither of you has to say what it was.'
+        result: 'You show them, slowly, from the bottom, and they are a better student than a needler. By the end of the watch they are reading the board aloud and you are correcting them, and neither of you mentions why.'
       }],
     });
     after({
@@ -171,18 +169,17 @@ Mods.register({
     // ---- Card Night ----
     after({
       id: 'h-cards-rematch', title: 'The Rematch',
-      text: '{thread:cards} has been keeping the deck warm. "Same table, same stakes, but I want to see you again," they say. "A hundred a hand. I am not a man who loses twice in a row." They are, for the record, exactly that kind of man.',
+      text: '{thread:cards} has been keeping the deck warm. "Same table, same stakes, but I want to see you again," they say. "A hundred a hand. I am not a man who loses twice in a row." The deck is soft at the corners.',
       choices: [
         { label: 'Play the rematch (100 cr)', when: { credits: 100 }, effects: { do: ['gamble', 100], like: { 'thread:cards': 1 } }, result: 'The cards come out, and the room goes quiet. The hand takes less than a minute. When it is over, everybody has something to say about it.' },
-        { label: 'Decline', effects: { like: { 'thread:cards': -1 } }, result: '"Of course," they say, and put the deck away, with the exaggerated care of a man trying not to look hurt.' },
+        { label: 'Decline', effects: { like: { 'thread:cards': -1 } }, result: '"Of course," they say, and square the deck against the table twice before putting it away.' },
       ],
     });
 
     // ---- Work on the Side ----
     after({
       id: 'h-side-trouble', title: 'Questions at the Dock',
-      text: ('A customs officer you do not know is waiting at the end of the dock with a clipboard, and a polite smile that does not reach the eyes. ' +
-          'The trading house whose crates you loaded is "of interest," and anyone who loaded for them is, for the purposes of the inquiry, a person of ' +
+      text: ('A customs officer you do not know is waiting at the end of the dock with a clipboard, and a polite smile. The trading house whose crates you loaded is "of interest," and anyone who loaded for them is, for the purposes of the inquiry, a person of ' +
           'interest too.'),
       choices: [
         {
@@ -200,7 +197,7 @@ Mods.register({
           later: { 'h-side-found': 6 },
           log: 'Took 100 cr to stay quiet about the side work.'
         },
-          result: 'The man from the trading house finds you before the officer does, and the hundred credits in your hand is warm from his pocket. "Nothing happened," he says. You say nothing happened. It will, you are fairly sure, not stay that way.'
+          result: 'The man from the trading house finds you before the officer does, and the hundred credits in your hand is warm from his pocket. "Nothing happened," he says. You say nothing happened. The hundred stays warm from his pocket for most of the afternoon.'
         },
       ],
     });
@@ -213,7 +210,7 @@ Mods.register({
         like: { captain: -2 },
         log: '{captain} found out about the side work from customs, and not from me.'
       },
-        result: 'There is nothing to say, and you say it, and the captain accepts it with a nod that costs the captain more than it costs you. You will be working a long time to put this right.'
+        result: 'There is nothing to say, and you say it, and the captain accepts it with a nod. For a month your name goes on the watch list in pencil.'
       }],
     });
 
@@ -230,7 +227,7 @@ Mods.register({
     });
     after({
       id: 'h-loan-default', title: 'The Loan Is Not Mentioned',
-      text: '{thread:loan} has stopped meeting your eye. It has been three weeks. They are polite, and quick, and in a hurry, and there has been no mention of the hundred credits. Each day it is not mentioned, it sits between you at the galley table.',
+      text: '{thread:loan} has stopped meeting your eye. It has been three weeks. They are polite, and quick, and in a hurry, and there has been no mention of the hundred credits. The galley table is eleven feet long and they take the far end of it.',
       choices: [
         {
           label: 'Let it go',
@@ -238,7 +235,7 @@ Mods.register({
           like: { 'thread:loan': 1 },
           log: 'Let {thread:loan} keep the hundred I lent them. It was not worth the silence.'
         },
-          result: 'You say, lightly, over tea, that you have forgotten about the loan, and they look at you with a startled, naked relief, and are, from that day, a different sort of friend.'
+          result: 'You say, lightly, over tea, that you have forgotten about the loan, and they look at you with such startled relief that they spill their tea, and after that they sit beside you.'
         },
         {
           label: 'Ask for it back',
@@ -247,7 +244,7 @@ Mods.register({
           like: { 'thread:loan': -2 },
           log: 'Asked {thread:loan} for the loan. They gave me half and have not forgiven the asking.'
         },
-          result: 'You ask, plainly, and they pay half, in an envelope, with a face like a door closing, and you will be, from here on, a person who asked.'
+          result: 'You ask, plainly, and they pay half, in an envelope, without looking up. After that they use the other galley hatch.'
         },
       ],
     });
@@ -267,12 +264,12 @@ Mods.register({
       },
         log: 'My short statement turned out to be everyone\'s. {captain} made it good to all of them.'
       },
-        result: 'It is awkward. Over the next few days a lot of people find a way to put a cup of something in your hand, which is how crews say thank you.'
+        result: 'Over the next few days a lot of people put a cup of something in your hand and say nothing about it.'
       }],
     });
     after({
       id: 'h-scene-fallout', title: 'The Worst Watch',
-      text: '{captain} did not mention the scene you made over your statement. They simply rewrote the watch list, and you are on the worst watch of the week, the dead hours after the flip, for the whole run. It is a perfectly reasonable rota. It is also, you note, mathematically pointed.',
+      text: '{captain} did not mention the scene you made over your statement. They simply rewrote the watch list, and you are on the worst watch of the week, the dead hours after the flip, for the whole run. It is a reasonable rota. Your name is on it four times.',
       choices: [
         {
           label: 'Work it without complaint',
@@ -283,7 +280,7 @@ Mods.register({
         },
           result: 'You work it, and say nothing, and the long dead hours teach you more about the ship than the good ones ever did. At the end of the run, the captain moves your name, without a word, back up the list.'
         },
-        { label: 'Complain', effects: { like: { captain: -1 } }, result: 'You complain, and it is received with the exquisite courtesy of a person who has heard it before, and the watch list does not change.' },
+        { label: 'Complain', effects: { like: { captain: -1 } }, result: 'You complain, and the captain writes it down, and the watch list does not change.' },
       ],
     });
 
@@ -299,7 +296,7 @@ Mods.register({
           learn: 2,
           log: 'The ship I reported turned up again, and this time I called it in at once.'
         },
-          result: 'You call it in, and the cutter lights its drive, and the strange ship, deciding that it has places to be, abandons the lane. {captain} says "Good eyes" for the second time, which, from this captain, is unheard of.'
+          result: 'You call it in, and the cutter lights its drive, and the strange ship, deciding that it has places to be, abandons the lane. {captain} says "Good eyes" for the second time.'
         },
         { label: 'Wait and see', effects: { learn: 1 }, result: 'You wait, and watch, and the cutter does the work, and nothing is lost, and nothing is learned beyond the fact that you did not need to be the one.' },
       ],
@@ -308,7 +305,7 @@ Mods.register({
       id: 'h-lane-trouble', title: 'It Was Not Nothing',
       text: 'The ship you did not mention turns out to have been a raider. It rakes your hull on the way past, one clean pass, and is gone again before anyone can shoot. When the alarms stop, {captain} is in the cockpit door, and asks, in a level voice, whether any of the crew saw it coming.',
       choices: [
-        { label: 'Admit you saw it', effects: { do: ['hull', 0.1], like: { captain: -2 }, log: 'A raider I saw and did not report hit the ship. I told {captain}.' }, result: 'You say it, and the captain\'s face does not change, "Thank you for telling me," the captain says. It is not a thank-you.' },
+        { label: 'Admit you saw it', effects: { do: ['hull', 0.1], like: { captain: -2 }, log: 'A raider I saw and did not report hit the ship. I told {captain}.' }, result: 'You say it. The captain\'s face does not change. "Thank you for telling me," the captain says, and writes it in the log.' },
         { label: 'Say nothing', effects: { do: ['hull', 0.1], like: { captain: 0 } }, result: 'You say nothing, and the captain looks at each of the crew in turn, and the silence goes on. Then the captain shrugs and goes. You never learn whether the captain knew.' },
       ],
     });

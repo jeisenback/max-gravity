@@ -104,7 +104,7 @@ const HAND_EVENTS = [
           } },
           { label: 'Admit it was you', run() { capLike(c, 0, 'You admitted the gap in the log after blaming the terminal.'); return captainSays('cap-dressing', 'admit', (
               'You say it, late, and with your eyes on the table. The captain nods. "That is the second time you have told me the truth tonight," the ' +
-              'captain says. "The first one cost you more." It is not forgiveness. It is arithmetic.')); } },
+              'captain says. "The first one cost you more." The captain turns the log round and initials the line.')); } },
         ]);
         return captainSays('cap-dressing', 'blame', 'You mention the terminal, which does, in fairness, lose entries. "Then we will see," the captain says, quietly.');
       } },
