@@ -142,3 +142,15 @@ test('the burn view paints the destination ahead on a wide screen, growing, from
   assert.equal(await phone.ev(() => { burn(); drawTransit(innerWidth, innerHeight); return G.burnBoxes.dest; }), undefined);
   await phone.done();
 });
+
+test('a scene is glass lit from the sun\'s side, and its markup is unchanged', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  const r = await ev(() => {
+    openEvent({ title: 'A Word at the Lock', text: 'The dock boss leans on the rail.', choices: [{ label: 'Say nothing', run() {} }] });
+    const p = document.getElementById('panel'), body = p.querySelector('.event-body'), cs = getComputedStyle(body);
+    return { light: getComputedStyle(p).getPropertyValue('--light-x').trim(), glow: /radial-gradient/.test(cs.backgroundImage), tags: [...body.children].map(e => e.tagName) };
+  });
+  assert.match(r.light, /^\d{1,3}%$/); assert.ok(r.glow);
+  assert.deepEqual(r.tags, ['DIV', 'H1', 'P', 'DIV'], 'eyebrow, title, text, choices: the markup is as before');
+  await done();
+});
