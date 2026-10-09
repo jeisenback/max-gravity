@@ -107,7 +107,7 @@ test('every authored scene is complete: a title, text, two choices (and a gated 
     return out;
   });
   assert.deepEqual(r.filter(x => x.bad.length), []);
-  assert.equal(r.length, 53, 'six characters, five scenes each, the pivots of Yelena, Ines and Tomas, and the first officers\' five each');
+  assert.equal(r.length, 54, 'six characters, five scenes each, the pivots of Yelena, Ines, Tomas and Bexa, and the first officers\' five each');
   await done();
 });
 
@@ -130,7 +130,7 @@ test('every choice of every scene runs and says what happened', async () => {
     return out;
   });
   assert.deepEqual(r.filter(x => !x.ok), []);
-  assert.equal(r.length, 115, 'six characters, five scenes, two choices, and the pivots\' three; and the first officers\' five scenes each; and the two gated choices of Ines and Tomas');
+  assert.equal(r.length, 118, 'six characters, five scenes, two choices, and the pivots\' three; and the first officers\' five scenes each; and the two gated choices of Ines and Tomas');
   await done();
 });
 
@@ -463,6 +463,39 @@ test('the pivots of Ines and Tomas follow the state, and the narrow build lets t
     assert.equal(r[key].die.dead, true, `${key}: one point dies`); assert.match(r[key].die.cause, /near /);
     assert.equal(r[key].backup.dead, false, `${key}: a second hand is a point`); assert.equal(r[key].backup.marks, 1);
   }
+  await done();
+});
+
+test('Bexa\'s pivot, The Tow, follows the state, and calling it off costs opinion only (#130)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const run = ({ medic = false, hull = 'good', mass = true, backup = false, promised = false, pick = null }) => {
+      __seed(1); start({ mode: 'hired', post: 'gunner' }); postsOnly();
+      const st = G.state; st.injured = {};
+      castPerson('bexa'); castRec('bexa').since = st.day;
+      if (medic) { const m = makeCrewCandidate('earth'); m.role = 'medic'; m.skill = 1; registerPerson(m); st.crew.push(m.id); }
+      st.armor = hull === 'good' ? ship().armor : Math.floor(ship().armor * 0.5);
+      st.fuel = mass ? ship().fuel : Math.floor(ship().fuel * 0.4);
+      if (promised) castFlag('bexa', 'promised');
+      const p = person('c:bexa'), before = p.opinion;
+      const text = CAST.bexa.scenes.pivot.choices[pick !== null ? pick : backup ? 1 : 0].run(), m = (st.memorial || [])[0];
+      return { text: typeof text === 'string' && text.length > 40, dead: castDead('bexa'), marks: (castRec('bexa').marks || []).length, cause: m ? m.cause : null, delta: p.opinion - before, raw: text, bench: !!castRec('bexa').flags.benched };
+    };
+    const shown = (() => { __seed(1); start({ mode: 'hired', post: 'gunner' }); postsOnly(); castPerson('bexa'); G.state.fuel = 1; const t1 = CAST.bexa.scenes.pivot.text; G.state.fuel = ship().fuel; return { low: t1, full: CAST.bexa.scenes.pivot.text }; })();
+    return {
+      live: run({ medic: true }), mark: run({}), die: run({ hull: 'low', mass: false }), backup: run({ hull: 'low', backup: true }),
+      noMass: run({ medic: true, mass: false }), off: run({ pick: 2, promised: true }), dieP: run({ hull: 'low', mass: false, promised: true }), shown,
+    };
+  });
+  assert.deepEqual({ ...r.live, raw: 0 }, { text: true, dead: false, marks: 0, cause: null, delta: 2, raw: 0, bench: false }, 'medic, hull and reaction mass: she lives');
+  assert.equal(r.mark.dead, false); assert.equal(r.mark.marks, 1, 'two points: marked');
+  assert.equal(r.die.dead, true, 'no medic, a bad hull, low mass: dies'); assert.match(r.die.cause, /^Went out on the tow line near /);
+  assert.equal(r.backup.dead, false, 'a second hand is a point'); assert.equal(r.backup.marks, 1);
+  assert.equal(r.noMass.marks, 1, 'low reaction mass loses a point');
+  assert.deepEqual({ delta: r.off.delta, dead: r.off.dead, marks: r.off.marks, bench: r.off.bench }, { delta: -3, dead: false, marks: 0, bench: true }, 'cutting the line benches her and costs opinion only');
+  assert.match(r.dieP.raw, /you promised her/); assert.doesNotMatch(r.die.raw, /you promised her/);
+  assert.match(r.shown.low, /tanks are low/); assert.match(r.shown.full, /tanks are over half/);
   await done();
 });
 
