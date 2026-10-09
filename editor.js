@@ -77,6 +77,16 @@
     };
   }
 
+  // A scene whose words live in a table one template plays (a work event, an ice run scene; #462) as the editor's row: its words are edited, and what it does is in code. A choice
+  // has a label and either a result or the lines for a win and a lose; the odds and what each does are the table's.
+  function tableRow(s) {
+    return {
+      kind: 'data', registry: true, table: true, title: s.title, text: s.text, ...(s.text2 !== undefined ? { text2: s.text2 } : {}), when: {}, codeNote: '',
+      choices: s.choices.map(c => ({ label: c.label, ...(c.result !== undefined ? { result: c.result } : {}), ...(c.win !== undefined ? { win: c.win } : {}), ...(c.lose !== undefined ? { lose: c.lose } : {}), ...(c.post ? { post: c.post } : {}), when: {}, effects: {}, next: '' })),
+      edit: { text: true, ...(s.text2 !== undefined ? { text2: true } : {}), choices: s.choices.map(c => ({ label: true, ...(c.result !== undefined ? { result: true } : {}), ...(c.win !== undefined ? { win: true } : {}), ...(c.lose !== undefined ? { lose: true } : {}), effects: false })) },
+    };
+  }
+
   // fileOf: where each registry entry was first seen, by the script that added it (see loadGame).
   function collect(fileOf) {
     // What the narrow build keeps (build.js SCOPE_OFF): the one captain (captains.js), the Earth start's main characters (menu.js) and
@@ -114,20 +124,13 @@
         add({ id: e.id, title: scene.title, where: g ? 'port' : 'transit', file: fileOf['captain:' + e.key], belongs: `${e.key} (captain)`, on: captainOn(e.key), conditionsNote: note, pacing: { tier: null, weight: null, cooldown: 'plays once', trigger: note, editable: false }, ...codeScene(scene) });
       } else if (e.kind === 'work') {
         const d = e.def;
-        add({
-          id: e.id, title: d.title, file: fileOf.work, belongs: `${d.post} (post)`, on: postOn(d.post), text: d.text, pacing: pacingOf.work(d), conditionsNote: `A problem at the ${d.post} post, for a hand who works it; not repeated within ${WORK_SEEN_DAYS} days.`,
-          choices: [{ label: d.careful[0], result: d.careful[1] }, { label: d.quick[0], result: outcome(d.quick[1], d.quick[2]) }],
-        });
+        add({ id: e.id, file: fileOf.work, belongs: `${d.post} (post)`, on: postOn(d.post), post: d.post, pacing: pacingOf.work(d), conditionsNote: `A problem at the ${d.post} post, for a hand who works it; not repeated within ${WORK_SEEN_DAYS} days.`, ...tableRow(tableScene(e.id)) });
       } else if (e.kind === 'hand') {
         const d = e.def, note = `A ${d.group} event for a hired hand${d.post ? ` at the ${d.post} post` : ''}; its own conditions are written in code.`;
         if (e.scene) add({ id: e.id, file: fileOf.hand, belongs: `${d.group} (hired event)`, on: postOn(d.post), pacing: pacingOf.hand(d), conditionsNote: note, ...registryRow(e.scene) });  // written as data (#473)
         else add({ id: e.id, title: d.id, file: fileOf.hand, belongs: `${d.group} (hired event)`, on: postOn(d.post), text: '', choices: [], codeNote: CODE_ALL, pacing: pacingOf.hand(d), conditionsNote: note });
       } else if (e.kind === 'ice') {
-        const st = e.stage, choice = (label, c) => ({ label, result: outcome(c.win[2], c.lose[2]) });
-        add({
-          id: e.id, title: st.title, file: fileOf.ice, belongs: 'ice run', pacing: pacingOf.ice(), conditionsNote: `Scene ${Number(e.id.slice(4))} of 3 on an ice run, once the captain takes one.`, text: st.open.map((t, n) => `Version ${n + 1}: ${t}`).join('\n'),
-          choices: [...st.general.map(c => choice(c.label, c)), ...Object.entries(st.post).map(([post, c]) => choice(`[${post}] ${c.label}`, c))],
-        });
+        add({ id: e.id, file: fileOf.ice, belongs: 'ice run', pacing: pacingOf.ice(), conditionsNote: `Scene ${Number(e.id.slice(4))} of 3 on an ice run, once the captain takes one.`, ...tableRow(tableScene(e.id)) });
       } else {  // built by a function: no text to read, only what it is and when it plays
         add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: e.id.startsWith('beats:') ? 'beats' : 'hired chapter', text: '', choices: [], codeNote: CODE_ALL, conditionsNote: e.when, pacing: { tier: null, weight: null, cooldown: 'by its own rule', trigger: e.when, editable: false } });
       }
@@ -278,7 +281,7 @@
 
   function play(m) {
     useNewScenes(m.newScenes);  // the scenes written in the editor, not saved yet
-    const s = STORYLETS.find(x => x.id === m.id), reg = s ? null : hiredSceneRegistry().find(x => x.id === m.id && ((x.kind === 'cast' || x.kind === 'captain') && x.name !== 'goodbye' || x.kind === 'hand' && x.scene));
+    const s = STORYLETS.find(x => x.id === m.id), reg = s ? null : hiredSceneRegistry().find(x => x.id === m.id && ((x.kind === 'cast' || x.kind === 'captain') && x.name !== 'goodbye' || x.kind === 'hand' && x.scene || x.kind === 'work' || x.kind === 'ice'));
     if (!s && !reg) return { error: `The game has no scene "${m.id}".` };
     useOverrides(m.overrides);  // the unsaved edits, through the same layer the game reads (storylets.js)
     const o = m.setup || {};
@@ -289,7 +292,9 @@
     if (where === 'transit') uatBurn(at.sid === 'earth' ? 'Mars' : 'Earth', at.sid); else uatLand(place);
     tweakState(o);
     if (reg) {  // a hired scene is played by its days and its place in the story: the preview opens it, with the regard that picks its reading
-      if (reg.kind === 'hand') {  // a hired event is about a shipmate, so one is aboard
+      if (reg.kind === 'work') openEvent(workEvent(reg.def));  // a problem at the hand's post, played by the shared template from its table
+      else if (reg.kind === 'ice') { hired().run = { tons: 40, ice: { edge: 0, round: 0 } }; openEvent(iceStageScene(Number(reg.id.slice(4)) - 1)); }  // the first opening of an ice run's scene
+      else if (reg.kind === 'hand') {  // a hired event is about a shipmate, so one is aboard
         const mate = makeCrewCandidate(G.state.systemId); registerPerson(mate); G.state.crew.push(mate.id);
         openEvent(reg.def.make(handContext()));
       } else if (reg.kind === 'cast') {
@@ -332,7 +337,7 @@
   }
 
   // ---------- the page ----------
-  const haystack = r => [r.id, r.sceneId || '', r.title, r.text, ...r.choices.flatMap(c => [c.label, c.result])].join('\n').toLowerCase();
+  const haystack = r => [r.id, r.sceneId || '', r.title, r.text, r.text2 || '', ...r.choices.flatMap(c => [c.label, c.result, c.win, c.lose])].filter(x => x !== undefined).join('\n').toLowerCase();
   // Every word typed must appear in the id, the title, the text, or a choice or its result.
   function filterRows(rows, { q = '', where = '', file = '', kind = '' } = {}) {
     const words = q.toLowerCase().split(/\s+/).filter(Boolean);
@@ -347,8 +352,9 @@
   const isStorylet = r => r.kind === 'data' && !r.registry;
 
   // The fields of a data scene's form, named by a path: 'title', 'text', and 'c0.label' and 'c0.result' for the first choice.
-  const pathsOf = r => ['title', 'text', ...r.choices.flatMap((c, i) => [`c${i}.label`, `c${i}.result`])];
-  const CHOICE_PATH = /^c(\d+)\.(label|result)$/;
+  const CHOICE_FIELDS = ['label', 'result', 'win', 'lose'];  // a table scene's choice has a win and a lose line in place of a result (#462)
+  const pathsOf = r => ['title', 'text', ...(r.text2 !== undefined ? ['text2'] : []), ...r.choices.flatMap((c, i) => CHOICE_FIELDS.filter(f => c[f] !== undefined).map(f => `c${i}.${f}`))];
+  const CHOICE_PATH = /^c(\d+)\.(label|result|win|lose)$/;
   const shippedOf = (r, path) => { const m = CHOICE_PATH.exec(path); return m ? r.choices[m[1]][m[2]] : r[path]; };
   const editableOf = (r, path) => { const m = CHOICE_PATH.exec(path); return !r.edit ? false : m ? r.edit.choices[m[1]][m[2]] : path === 'title' || r.edit[path]; };
 
@@ -380,7 +386,8 @@
       const v = values[id] = dict();
       if (o.title) v.title = o.title;
       if (o.text) v.text = o.text;
-      for (const [i, c] of Object.entries(o.choices || {})) for (const f of ['label', 'result']) if (c[f]) v[`c${i}.${f}`] = c[f];
+      if (o.text2) v.text2 = o.text2;
+      for (const [i, c] of Object.entries(o.choices || {})) for (const f of CHOICE_FIELDS) if (c[f]) v[`c${i}.${f}`] = c[f];
     }
     return values;
   }
@@ -593,7 +600,7 @@
       ${editable ? `<textarea id="f-${esc(path)}" data-path="${esc(path)}" rows="${Math.max(2, Math.ceil((value || shipped || '').length / 60))}">${esc(value === undefined ? shipped : value)}</textarea>
         <div class="warn" data-warn="${esc(path)}" role="status">${esc(value === undefined ? '' : flagOf(value))}</div>`
         : r.registry ? '<p class="hint">Its text is built from the game state when it plays, so it is edited in code.</p>' : '<p class="hint">This one has parts that depend on conditions. It is edited in code until the conditions can be edited (story 4).</p>'}
-      ${editable && r.registry && /\.result$/.test(path) && !effectsEditable(r, Number(/^c(\d+)/.exec(path)[1])) ? '<p class="hint">This choice runs code. A result written here replaces the line it returns.</p>' : ''}
+      ${editable && r.registry && !r.table && /\.result$/.test(path) && !effectsEditable(r, Number(/^c(\d+)/.exec(path)[1])) ? '<p class="hint">This choice runs code. A result written here replaces the line it returns.</p>' : ''}
     </div>`;
   }
 
@@ -615,7 +622,9 @@
   const nextHtml = (r, path, struct) => { const d = nextFor(r, path, struct); return `<div class="rules"><h4>Leads on to</h4><div class="rule"><input type="text" data-rnext="${esc(path)}" value="${esc(d)}" list="dl-scenes" placeholder="no link" aria-label="Leads on to"><div class="warn" data-rerr="${esc(path)}">${esc(nextError(d))}</div></div></div>`; };
   const problemsOf = (r, struct) => structChanges(r, struct).problems;
   const problemsHtml = (r, struct) => { const p = problemsOf(r, struct); return p.length ? `<p class="warn">Left out of the changes until fixed: ${esc(p.join(' | '))}</p>` : ''; };
-  const structHtml = (r, struct) => (r.registry
+  const structHtml = (r, struct) => (r.table
+    ? '<h3>What its choices do</h3><p class="note">This scene is played by one template from a table: its odds, what a win or a loss gains and costs, and the roll are in code. Only its words are edited here.</p>'
+    : r.registry
     ? `<h3>What its choices do</h3>
     <p class="note">A scene of the hired chapter plays by its days and its place in the story, not by conditions, so only what a data choice needs and does is edited here. Changing a condition or an effect changes how the scene plays, not only its words. Try it with Play this scene, at the right.</p>
     <div id="problems">${problemsHtml(r, struct)}</div>
@@ -629,8 +638,8 @@
   function formHtml(r, values = {}) {
     const mine = values[r.id] || {};
     return `<h3>Your words</h3><div class="form" data-form="${esc(r.id)}">
-      ${fieldHtml(r, 'title', 'Title', mine.title)}${fieldHtml(r, 'text', 'Text', mine.text)}
-      ${r.choices.map((c, i) => `<h4>Choice ${i + 1}</h4>${fieldHtml(r, `c${i}.label`, 'Label', mine[`c${i}.label`])}${fieldHtml(r, `c${i}.result`, 'Result', mine[`c${i}.result`])}`).join('')}
+      ${fieldHtml(r, 'title', 'Title', mine.title)}${fieldHtml(r, 'text', r.text2 !== undefined ? 'Opening 1' : 'Text', mine.text)}${r.text2 !== undefined ? fieldHtml(r, 'text2', 'Opening 2', mine.text2) : ''}
+      ${r.choices.map((c, i) => `<h4>Choice ${i + 1}${c.post ? ` (${esc(c.post)}'s own)` : ''}</h4>${fieldHtml(r, `c${i}.label`, 'Label', mine[`c${i}.label`])}${[['result', 'Result'], ['win', 'If it works'], ['lose', 'If it fails']].filter(([f]) => c[f] !== undefined).map(([f, name]) => fieldHtml(r, `c${i}.${f}`, name, mine[`c${i}.${f}`])).join('')}`).join('')}
     </div>`;
   }
 
@@ -653,8 +662,8 @@
     <p class="hint">${esc(r.id)} | ${esc(r.where)} | ${esc(r.file)} | ${esc(r.belongs)} | ${esc(r.kind)}${r.off ? ' | off in the narrow build' : ''}</p>
     ${r.codeNote ? `<p class="note">${esc(r.codeNote)}</p>` : ''}
     ${r.conditionsNote ? `<h3>When it plays</h3><p>${esc(r.conditionsNote)}</p><p class="hint">Its conditions and effects are written in code, and are read only until story 8.</p>` : ''}
-    ${paragraphs(r.text)}
-    ${r.choices.length ? `<h3>Choices</h3><ol>${r.choices.map(c => `<li><strong>${esc(c.label)}</strong>${c.result ? paragraphs(c.result) : ''}</li>`).join('')}</ol>` : ''}
+    ${paragraphs(r.text)}${r.text2 ? paragraphs(r.text2) : ''}
+    ${r.choices.length ? `<h3>Choices</h3><ol>${r.choices.map(c => `<li><strong>${esc(c.label)}</strong>${c.result ? paragraphs(c.result) : ''}${c.win ? `<p><em>If it works:</em></p>${paragraphs(c.win)}` : ''}${c.lose ? `<p><em>If it fails:</em></p>${paragraphs(c.lose)}` : ''}</li>`).join('')}</ol>` : ''}
     ${pacingHtml(r)}
     <p class="hint">A code-written scene cannot be edited here until its text has an id (story 8).</p>`;
   }
@@ -771,7 +780,11 @@
         if (!isObj(s)) { refuse(`${id}: is not an object`); continue; }
         const keep = dict(), what = [];
         for (const [k, v] of Object.entries(s)) {
-          if (k === 'title' || k === 'text') {
+          if (k === 'text2') {
+            if (!r.edit.text2) refuse(`${id} text2: this scene has no second opening`);
+            else if (!words(v)) refuse(`${id} text2: needs some text of up to ${LIMIT.text} characters`);
+            else { keep.text2 = v; what.push('text2'); }
+          } else if (k === 'title' || k === 'text') {
             if (k === 'text' && !r.edit.text) refuse(`${id} text: it has parts that depend on conditions, so it is edited in code`);
             else if (!words(v)) refuse(`${id} ${k}: needs some text of up to ${LIMIT.text} characters`);
             else { keep[k] = v; what.push(k); }
@@ -788,7 +801,7 @@
               if (!isObj(c)) { refuse(`${at}: is not an object`); continue; }
               for (const [f, x] of Object.entries(c)) {
                 let bad = '';
-                if (f === 'label' || f === 'result') bad = !r.edit.choices[i][f] ? 'has parts that depend on conditions, so it is edited in code' : words(x) ? '' : `needs some text of up to ${LIMIT.text} characters`;
+                if (f === 'label' || f === 'result' || f === 'win' || f === 'lose') bad = r.edit.choices[i][f] === undefined ? 'is not something this choice has' : !r.edit.choices[i][f] ? 'has parts that depend on conditions, so it is edited in code' : words(x) ? '' : `needs some text of up to ${LIMIT.text} characters`;
                 else if (f === 'when') bad = r.registry && !effectsEditable(r, Number(i)) ? 'this choice runs code, so its conditions are not edited' : rulesError(x, CONDITION_SPEC, lists.conditions);
                 else if (f === 'effects') bad = r.registry && !effectsEditable(r, Number(i)) ? 'this choice runs code, so its effects are not edited' : rulesError(x, EFFECT_SPEC, lists.effects);
                 else if (f === 'next') bad = r.registry ? 'a hired scene plays by its days, not by conditions' : x === null || (typeof x === 'string' && storylets.has(x)) ? '' : 'leads to a scene that is not there';
@@ -1141,7 +1154,7 @@
     const hiredFor = row => {
       const [kind, id] = row.id.split(':'), key = kind === 'hired' ? id.replace(/^crew-/, '') : id, xo = kind === 'cast' && lists.captains.find(c => c.xo === key);  // a hired event 'crew-ines' is about ines
       const pair = lists.pairs.find(p => p.members.includes(key));
-      return { as: 'hired', captain: kind === 'captain' ? key : xo ? xo.key : setup.captain, start: pair ? pair.key : setup.start };
+      return { as: 'hired', captain: kind === 'captain' ? key : xo ? xo.key : setup.captain, start: pair ? pair.key : setup.start, ...(row.post ? { post: row.post } : {}) };  // a work event is played at its own post
     };
     const send = msg => { const f = frameEl(); if (previewReady) f.contentWindow.postMessage(msg, '*'); else pending = msg; };
     let previewReady = false, pending = null;

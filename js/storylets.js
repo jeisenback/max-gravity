@@ -232,6 +232,13 @@ function cleanOverrides(raw) {
           if (!isObj(c)) { bad.push(`${pre} choice ${i} is not an object`); continue; }
           for (const [f, x] of Object.entries(c)) {
             const slot = () => { mine.choices = mine.choices || {}; return (mine.choices[i] = mine.choices[i] || {}); };
+            const tc = rs && rs.choices[i].table ? rs.choices[i] : null;
+            if (tc) {  // a table scene's choice: its label and its lines, nothing the game rolls or does
+              if (f === 'label') { if (text(`${pre} choice ${i} label`, x)) slot().label = x; }
+              else if (['result', 'win', 'lose'].includes(f)) { if (tc[f] === undefined) bad.push(`${pre} choice ${i} has no "${f}"`); else if (text(`${pre} choice ${i} ${f}`, x)) slot()[f] = x; }
+              else bad.push(`${pre} choice ${i} is rolled by the game, so it has no "${f}"`);
+              continue;
+            }
             if (rs && f === 'next') { bad.push(`${pre} choice ${i} has no "next" (a hired scene plays by its days, not by conditions)`); continue; }
             if (rs && f === 'when' && rs.choices[i].run) { bad.push(`${pre} choice ${i} runs code, so its conditions are not edited`); continue; }
             if (rs && f === 'effects' && rs.choices[i].run) { bad.push(`${pre} choice ${i} runs code, so its effects are not edited`); continue; }
@@ -241,7 +248,8 @@ function cleanOverrides(raw) {
             else if (f !== 'label' && f !== 'result') bad.push(`${pre} choice ${i} ${f === 'next' ? 'leads to a scene that is not there' : STRUCT.includes(f) ? `.${f} is not an object` : `has no "${f}"`}`);
           }
         }
-      } else if (k !== 'title' && k !== 'text' && k !== 'weight' && k !== 'every' && k !== 'off') bad.push(`${pre} has no "${k}"`);
+      } else if (k === 'text2') { if (rs && rs.text2 !== undefined) { if (text(`${pre}.text2`, v)) mine.text2 = v; } else bad.push(`${pre} has no "text2"`); }
+      else if (k !== 'title' && k !== 'text' && k !== 'weight' && k !== 'every' && k !== 'off') bad.push(`${pre} has no "${k}"`);
     }
     // The conditions, effects and links together, as the scene would be: if the game would refuse it, none of them go in.
     const changes = (mine.when !== undefined ? 1 : 0) + Object.values(mine.choices || {}).filter(c => STRUCT.some(f => c[f] !== undefined)).length;
@@ -279,7 +287,18 @@ function sceneRate(s) {
 }
 
 // A scene of the hired chapter that is not a storylet (a main character's, a first officer's or a captain's, or a hired event written as data), by its id in js/hiredscenes.js.
-const registryScene = id => { const e = /^(cast|captain|hired):/.test(id) && hiredSceneRegistry().find(x => x.id === id); return e && e.scene ? e.scene : null; };
+const registryScene = id => { const e = /^(cast|captain|hired):/.test(id) && hiredSceneRegistry().find(x => x.id === id); return e && e.scene ? e.scene : tableScene(id); };
+
+// A scene whose words live in a table that one template plays (#462): a work event (WORK_EVENTS, hiredevents.js workEvent) or an ice run scene (ICE_STAGES,
+// icerun.js iceStageScene). Its words are the title, the text (an ice scene has two openings: `text` and `text2`) and, for each choice, the label and either one
+// result or the lines for a win and a lose. The odds, what a win or a lose does and the roll are in code and are not in the override layer.
+function tableScene(id) {
+  const w = /^hired:/.test(id) && WORK_EVENTS.find(d => `hired:${d.id}` === id);
+  if (w) return { table: true, title: w.title, text: w.text, choices: [{ table: true, label: w.careful[0], result: w.careful[1] }, { table: true, label: w.quick[0], win: w.quick[1], lose: w.quick[2] }] };
+  const m = /^ice:(\d+)$/.exec(id), st = m && ICE_STAGES[Number(m[1]) - 1];
+  if (st) return { table: true, title: st.title, text: st.open[0], text2: st.open[1], choices: [...st.general.map(c => [c, null]), ...Object.entries(st.post).map(([post, c]) => [c, post])].map(([c, post]) => ({ table: true, label: c.label, win: c.win[2], ...(c.lose ? { lose: c.lose[2] } : {}), ...(post ? { post } : {}) })) };
+  return null;
+}
 
 // The file's words and effects put on a hired scene as the game builds it (#342). `scene` is { title, text, choices }, a choice either data ({ label, result,
 // effects }) or code (a run() that returns its result line). The title and the labels are escaped by the dialog; the text and the results are not, so an override's
