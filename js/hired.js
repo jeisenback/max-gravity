@@ -168,7 +168,7 @@ function hiredCall(ev) {
   const usable = ev.choices.filter(c => hiredFunds(() => !c.can || c.can()) && (!c.role || roleSkill(c.role)) && !/yourself/i.test(c.label));
   if (!usable.length) return ev;
   const c = captainPick(usable);
-  const said = c.label.replace(/\s*\(.*?\)/g, '').replace(/\[\{crew\}\]\s*/, '').replace(/\{crew\}/g, 'the crew').replace(/\s+/g, ' ').trim();
+  const said = c.label.replace(/\s*<span class="hint">.*?<\/span>/g, '').replace(/\s*\(.*?\)/g, '').replace(/\[\{crew\}\]\s*/, '').replace(/\{crew\}/g, 'the crew').replace(/\s+/g, ' ').trim();
   return { ...ev, decided: true, text: `${ev.text} ${bossName(cap)} takes the call: "${said}."`,
     choices: [{ label: 'See how it goes', run: () => { const r = c.run(); return c.role ? r.replace(/\{crew\}/g, roleName(c.role)) : r; } }] };
 }
