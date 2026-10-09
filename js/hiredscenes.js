@@ -23,10 +23,6 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'beats:assault', fn: 'repelScene', file: 'js/boarders.js', title: 'Boarding Her', where: 'transit', when: 'When you board the crippled raider.' },
 ];
 
-// The words of a captain's goodbye, by part (captains.js builds the scene from the parts that apply). `repay` is a sum, not words.
-const GOODBYE_PARTS = ['cold', 'neutral', 'warm', 'crew', 'secret', 'xo', 'xoDead', 'repaid', 'parting'];
-const goodbyeParts = g => Object.fromEntries(GOODBYE_PARTS.filter(k => g[k]).map(k => [k, g[k]]));
-
 // The words of the raid, ambush and boarding beats (#478), by the name each line has in its table: a line is found by where it sits, and the beat reads it through
 // lineWords (storylets.js) by the same name. A line the table does not hold (a casualty, a name, a count, the armor, the dead-in-space scene) is written in code and is not here.
 // Odds, damage and the roll are in code too. tests/beatlines.test.js plays every beat and checks that each name here is read.
@@ -72,7 +68,7 @@ function hiredSceneRegistry() {
       out.push({ id: `captain:${key}:secret:confide`, kind: 'captain', key, name: 'secret:confide', scene: s.secret.confide });
       out.push({ id: `captain:${key}:secret:found`, kind: 'captain', key, name: 'secret:found', scene: s.secret.found });
     }
-    if (c.goodbye) out.push({ id: `captain:${key}:goodbye`, kind: 'captain', key, name: 'goodbye', scene: { title: c.goodbye.title, choices: c.goodbye.choices, parts: goodbyeParts(c.goodbye), goodbye: c.goodbye } });
+    if (c.goodbye) out.push({ id: `captain:${key}:goodbye`, kind: 'captain', key, name: 'goodbye', scene: { title: c.goodbye.title, choices: c.goodbye.choices, goodbye: c.goodbye } });
   }
   for (const d of WORK_EVENTS) out.push({ id: `hired:${d.id}`, kind: 'work', def: d });
   for (const d of HAND_EVENTS.filter(x => x.group !== 'work')) out.push({ id: `hired:${d.id}`, kind: 'hand', def: d, ...(d.data ? { scene: d.data } : {}) });

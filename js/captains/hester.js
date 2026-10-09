@@ -151,9 +151,22 @@ CAPTAINS.hester = {
     xo: 'Cato is at the hatch, because the captain would not go and say it. "Take care of your people," he says. "They will take care of you. That is the whole job. I have been trying to tell her for years."',
     parting: 'She holds out her hand at last. It is dry and brief. "Fair winds," she says. "And keep your own books."',
     choices: [
-      { label: 'Thank her for the work', effects: { captainLike: { n: 2, memory: 'You thanked me for the work, and meant it.' } }, result: 'You thank her. She nods once, and writes nothing down.' },
-      { label: 'Wish her the ship', when: { hiredFlag: 'secretKnown' }, effects: { captainLike: { n: 2, memory: 'You wished me the ship.' } }, result: '"I will keep her," she says. She almost smiles.' },
-      { label: 'Take the papers and go', effects: { captainLike: { n: 0, memory: 'You took the papers and went.' } }, result: 'You take the papers and go. She does not call after you. When you look back from the dock she has the notebook open again, and is writing.' },
+      {
+        label: 'Thank her for the work',
+        effects: { captainLike: { n: 2, memory: 'You thanked me for the work, and meant it.' } },
+        result: 'You thank her. She nods once, and writes nothing down.',
+      },
+      {
+        label: 'Wish her the ship',
+        when: { captainFlag: 'secretKnown' },
+        effects: { captainLike: { n: 2, memory: 'You wished me the ship.' } },
+        result: '"I will keep her," she says. She almost smiles.',
+      },
+      {
+        label: 'Take the papers and go',
+        effects: { captainLike: { n: 0, memory: 'You took the papers and went.' } },
+        result: 'You take the papers and go. She does not call after you. When you look back from the dock she has the notebook open again, and is writing.',
+      },
     ],
   },
 };

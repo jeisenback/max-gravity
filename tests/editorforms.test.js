@@ -167,9 +167,9 @@ test('what the forms write never produces a scene the game would refuse, whateve
 
 test('a code-written scene shows when it plays as read-only text, with no form', async () => {
   await reload(); await select('scene:put-ashore');
+  assert.match(await page.textContent('#detail'), /falls to -3/);
   assert.match(await page.textContent('#detail'), /written in code, and are read only until story 8/);
   assert.equal(await page.locator('#detail [data-add], #detail [data-rpath], #detail textarea').count(), 0);
-  assert.match(await page.textContent('#detail'), /falls to -3/);
 });
 
 test('a hired scene of the registry shows when it plays, and edits only what its choices let it', async () => {

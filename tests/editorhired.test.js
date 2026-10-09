@@ -51,7 +51,7 @@ test('the converted scenes are data rows of the registry, and the rest are code 
   assert.deepEqual(r.ilsa, ['code', true]);
   assert.equal(r.effects.castLike.who, 'ansel');
   assert.ok(r.edit.length > 0 && r.edit.every(e => e === false), 'code choices keep their effects in code');
-  assert.ok(r.goodbye && !r.signon, 'the goodbye is edited by its parts, the function-built scenes are not edited yet');
+  assert.ok(r.goodbye && !r.signon, 'the goodbye is a row of the registry; the function-built scenes are not edited yet');
   assert.equal(r.dataRegistry, 99);
 });
 
@@ -175,6 +175,31 @@ test('a hired data choice has its conditions in forms, checked as typed, and cha
   assert.equal(await page.locator('#detail [data-add="c1.when"]').count(), 1, 'its data choice has one');
 });
 
+test('a captain\'s goodbye has a field for each part of its text and its choices as data, and plays in the preview (#476)', async () => {
+  await reload(); await select('captain:hester:goodbye');
+  const ids = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
+  assert.deepEqual(ids.slice(0, 10), ['title', 'part.cold', 'part.neutral', 'part.warm', 'part.crew', 'part.secret', 'part.repaid', 'part.xoDead', 'part.xo', 'part.parting']);
+  assert.ok(ids.includes('c1.result'));
+  assert.doesNotMatch(await page.textContent('#detail'), /Not a placeholder the game replaces/, '{names} is a word the game replaces');
+  assert.equal(await page.inputValue(rule('c1.when', 'captainFlag')), 'secretKnown');
+  await page.fill('#f-part\\.parting', 'A parting, edited.');
+  await page.fill('#f-title', 'The Ramp, edited');
+  assert.deepEqual(await changes(), { 'captain:hester:goodbye': { title: 'The Ramp, edited', parts: { parting: 'A parting, edited.' } } });
+  const f = await play();
+  const r = await f.evaluate(() => ({ title: G.dialog.event.title, text: G.dialog.event.text, labels: G.dialog.choices.map(c => c.label) }));
+  assert.equal(r.title, 'The Ramp, edited');
+  assert.match(r.text, /A parting, edited\.$/);
+  assert.equal(r.labels.length, 3, 'with the secret learned, every choice shows');
+  // An imported file may give parts, and refuses one the scene does not have.
+  const tmp = path.join(require('node:os').tmpdir(), `goodbye-import-${process.pid}.js`);
+  require('node:fs').writeFileSync(tmp, 'const SCENE_OVERRIDES = {"captain:hester:goodbye":{"parts":{"warm":"Kept warm.","nonsense":"x"}},"cast:ines:pivot":{"parts":{"cold":"x"}}};\nconst NEW_SCENES = [];\n');
+  await page.setInputFiles('#import-file', tmp);
+  await page.waitForSelector('#notice .notice');
+  const n = await page.textContent('#notice');
+  for (const part of ['captain:hester:goodbye parts nonsense: this scene has no such part', 'cast:ines:pivot parts: this scene is not built from parts']) assert.ok(n.includes(part), `${part} in: ${n}`);
+  require('node:fs').rmSync(tmp, { force: true });
+});
+
 test('a meeting scene is data: its choices have a berth condition and a join effect, and it plays at a port with the person not yet aboard (#461)', async () => {
   await reload(); await select('cast:ines:meet');
   const row = await page.evaluate(() => { const r = SceneIndex.rows.find(x => x.id === 'cast:ines:meet'); return { kind: r.kind, when: r.choices.map(c => c.when), effects: r.choices.map(c => c.effects) }; });
@@ -273,29 +298,10 @@ test('the chain view leaves the hired scenes out: they are played by their days,
   assert.ok(!groups.some(g => /first officer|captain\)|main character/.test(g)), groups.join(', '));
 });
 
-test('a captain\'s goodbye is edited part by part, the parts go to and from the file, and it plays in the preview (#476)', async () => {
-  await reload(); await select('captain:hester:goodbye');
-  const r = await page.evaluate(() => {
-    const row = SceneIndex.rows.find(x => x.id === 'captain:hester:goodbye'), values = { [row.id]: { 'p.parting': 'A new parting.', 'p.warm': row.parts.warm } };
-    const out = SceneIndex.overridesFrom(SceneIndex.rows, values);
-    return { kind: row.kind, parts: Object.keys(row.parts), out: out[row.id], back: SceneIndex.valuesFrom(out)[row.id], plan: SceneIndex.planImport({ overrides: { [row.id]: { parts: { parting: 'Ok.', nope: 'x' }, text: 'x' } } }, SceneIndex.rows).items.map(i => [i.ok, i.text]) };
-  });
-  assert.equal(r.kind, 'data');
-  assert.deepEqual(r.parts, ['cold', 'neutral', 'warm', 'crew', 'secret', 'xo', 'xoDead', 'repaid', 'parting']);
-  assert.deepEqual(r.out, { parts: { parting: 'A new parting.' } }, 'only what differs');
-  assert.deepEqual(r.back, { 'p.parting': 'A new parting.' });
-  assert.deepEqual(r.plan.map(i => i[0]), [false, false, true], 'the unknown part and the text are refused');
-  assert.equal(await page.locator('#detail textarea[data-path^="p."]').count(), 9);
-  assert.equal(await page.locator('#detail #f-text').count(), 0, 'no single text field');
-  await page.fill('#f-p\\.parting', 'Typed parting.');
-  const f = await play();
-  assert.deepEqual(await f.evaluate(() => [G.dialog.event.title, hired().captainKey, G.dialog.event.text.includes('Typed parting.'), G.dialog.choices.length]), ['The Foot of the Ramp', 'hester', true, 3]);
-});
-
 test('the raid, ambush and boarding beats are edited line by line, the lines go to and from the file, and each plays in the preview (#478)', async () => {
   await reload(); await select('beats:raid');
   const r = await page.evaluate(() => {
-    const row = id => SceneIndex.rows.find(x => x.id === id), raid = row('beats:raid'), values = { [raid.id]: { 'p.open.gun.0': 'A new opening.', 'p.close.standoff': raid.parts['close.standoff'] } };
+    const row = id => SceneIndex.rows.find(x => x.id === id), raid = row('beats:raid'), values = { [raid.id]: { 'part.open.gun.0': 'A new opening.', 'part.close.standoff': raid.parts['close.standoff'] } };
     const out = SceneIndex.overridesFrom(SceneIndex.rows, values);
     return {
       kinds: ['beats:raid', 'beats:ambush', 'beats:repel', 'beats:assault'].map(id => [row(id).kind, row(id).noTitle, Object.keys(row(id).parts).length > 10]), dead: row('beats:dead-in-space').kind,
@@ -306,14 +312,14 @@ test('the raid, ambush and boarding beats are edited line by line, the lines go 
   assert.deepEqual(r.kinds, [['data', true, true], ['data', true, true], ['data', true, true], ['data', true, true]]);
   assert.equal(r.dead, 'code', 'the dead-in-space scene has no table to read');
   assert.deepEqual(r.out, { parts: { 'open.gun.0': 'A new opening.' } }, 'only what differs');
-  assert.deepEqual(r.back, { 'p.open.gun.0': 'A new opening.' });
+  assert.deepEqual(r.back, { 'part.open.gun.0': 'A new opening.' });
   assert.deepEqual(r.plan, [false, false, true], 'the title and the unknown line are refused');
   assert.equal(await page.locator('#detail #f-title').count(), 0, 'a beat has no title to change');
-  assert.ok(await page.locator('#detail textarea[data-path^="p."]').count() > 60, 'a field for every line');
+  assert.ok(await page.locator('#detail textarea[data-path^="part."]').count() > 60, 'a field for every line');
   assert.ok(await page.locator('#detail h4', { hasText: /^exchange$/ }).count() === 1, 'the lines are grouped');
-  for (const [id, line] of [['beats:raid', 'open.grapple.0'], ['beats:repel', 'open.1.0'], ['beats:assault', 'open.1.0'], ['beats:ambush', 'read.gunner.label']]) {
+  for (const [id, lines] of [['beats:raid', ['open.grapple.0', 'open.torpedo.0', 'open.gun.0']], ['beats:repel', ['open.1.0']], ['beats:assault', ['open.1.0']], ['beats:ambush', ['read.gunner.label']]]) {  // the raid's foe is drawn, so any style's opening
     await select(id);
-    await page.fill(`#f-p\\.${line.replace(/\./g, '\\.')}`, `Typed ${id}.`);
+    for (const line of lines) await page.fill(`#f-part\\.${line.replace(/\./g, '\\.')}`, `Typed ${id}.`);
     const f = await play();
     const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.event.text, G.dialog.choices.map(c => c.label)]));
     assert.ok(seen.includes(`Typed ${id}.`), `${id} plays the typed line: ${seen.slice(0, 200)}`);

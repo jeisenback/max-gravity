@@ -141,9 +141,22 @@ CAPTAINS.imre = {
     xo: 'Pilar is at the hatch with her arms folded and a spanner in one hand. "Do not let anybody tell you the book is the ship," she says. "And do not tell them I said so. I need them to go on writing it."',
     parting: 'They offer a hand. It is a single, formal handshake, firm and exactly as long as it should be. "Fair winds," they say. "Noted."',
     choices: [
-      { label: 'Thank them for the work', effects: { captainLike: { n: 2, memory: 'You thanked me for the work.' } }, result: 'You thank them. "Entered," they say, and, after a moment, "Appreciated." It is the only time you hear the second word.' },
-      { label: 'Wish them a clean record', when: { hiredFlag: 'secretKnown' }, effects: { captainLike: { n: 3, memory: 'You wished me a clean record.' } }, result: 'Captain Sato is silent. "Thank you," they say, which is not in any standing order, and is not entered anywhere.' },
-      { label: 'Take the papers and go', effects: { captainLike: { n: 0, memory: 'You took the papers and went.' } }, result: 'You take the papers and go. When you look back from the dock, Captain Sato is at the foot of the ramp, writing something down.' },
+      {
+        label: 'Thank them for the work',
+        effects: { captainLike: { n: 2, memory: 'You thanked me for the work.' } },
+        result: 'You thank them. "Entered," they say, and, after a moment, "Appreciated." It is the only time you hear the second word.',
+      },
+      {
+        label: 'Wish them a clean record',
+        when: { captainFlag: 'secretKnown' },
+        effects: { captainLike: { n: 3, memory: 'You wished me a clean record.' } },
+        result: 'Captain Sato is silent. "Thank you," they say, which is not in any standing order, and is not entered anywhere.',
+      },
+      {
+        label: 'Take the papers and go',
+        effects: { captainLike: { n: 0, memory: 'You took the papers and went.' } },
+        result: 'You take the papers and go. When you look back from the dock, Captain Sato is at the foot of the ramp, writing something down.',
+      },
     ],
   },
 };

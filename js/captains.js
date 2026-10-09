@@ -155,7 +155,9 @@ function captainGoodbye() {
   const d = captainEntry(), g = d && d.goodbye;
   if (!g) return null;
   const h = hired(), cap = hiredCaptain(), friends = buyInCompanions(), flags = { ...(h.flags || {}) };
-  const id = `captain:${cap.captainKey}:goodbye`, mine = sceneOverride(id).parts || {}, say = k => (mine[k] ? esc(mine[k]) : g[k]);  // the editor's words for a part, if any (storylets.js)
+  // The editor's words (#476): the title, the labels, results and conditions of the choices, and the parts of the text. A part a file gives is escaped, as any override is.
+  const id = `captain:${cap.captainKey}:goodbye`, o = sceneOverride(id), say = k => (o.parts && o.parts[k] ? esc(o.parts[k]) : g[k]);
+  const scene = sceneWords(id, { title: g.title, text: '', personal: true, choices: g.choices });
   const warmth = cap.opinion >= OPINION.TRUSTED ? 'warm' : cap.opinion < 0 ? 'cold' : 'neutral';
   const parts = [say(warmth)];
   if (friends.length) parts.push(say('crew').replace('{names}', namesOf(friends)));
@@ -165,10 +167,9 @@ function captainGoodbye() {
   if (flags.lent && g.repaid) parts.push(say('repaid'));
   if (castDead(d.xo)) parts.push(say('xoDead')); else if (hiredXo() && g.xo) parts.push(say('xo'));
   parts.push(say('parting'));
-  const scene = sceneWords(id, { title: g.title, choices: g.choices });
   return {
     title: scene.title, personal: true, text: parts.join('</p><p>'),
-    choices: scene.choices.filter(c => !c.when || meets(c.when)).map(c => ({ label: c.label, run() { leavingCaptain = cap; try { if (flags.lent) G.state.credits += g.repay || 0; return dataChoice(c).run(); } finally { leavingCaptain = null; } } })),
+    choices: scene.choices.map(c => dataChoice(c)).filter(c => !c.can || c.can(flags)).map(c => ({ label: c.label, run() { leavingCaptain = cap; try { if (flags.lent) G.state.credits += g.repay || 0; return c.run(); } finally { leavingCaptain = null; } } })),
   };
 }
 // Each event hands on to the next: the last choice of one opens the one after.

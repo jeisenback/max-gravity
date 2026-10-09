@@ -77,11 +77,11 @@
     };
   }
 
-  // A scene whose words are lines the game picks from, named in `parts` (#476, #478): a captain's goodbye (an opening by how they feel about you, a line for crew, the secret and
-  // so on; its choices are data) or a beat of the raid, the ambush or the boarding fights (lines from tables, no title of its own to change, choices from the tables too).
-  function partsRow(s) {
-    const row = registryRow({ title: s.title, text: '', choices: s.choices });
-    return { ...row, text: Object.entries(s.parts).map(([k, t]) => `[${k}] ${t}`).join('\n'), parts: s.parts, ...(s.noTitle ? { noTitle: true } : {}), edit: { ...row.edit, text: false, parts: Object.fromEntries(Object.keys(s.parts).map(k => [k, true])) } };
+  // A beat of the raid, the ambush or the boarding fights (#478): its words are the lines of the tables it reads, named in `parts`, and it has no title of its own to change
+  // and no choices of its own (they come from the tables).
+  function beatRow(s) {
+    const row = registryRow({ title: s.title, text: '', choices: [] });
+    return { ...row, text: Object.entries(s.parts).map(([k, t]) => `[${k}] ${t}`).join('\n'), parts: s.parts, noTitle: true, edit: { ...row.edit, text: false } };
   }
   const BEAT_NOTE = 'Its words are the lines of the tables the beats read, named by where each sits. Odds, damage and the roll are in code, and so are the lines built from the game state (a casualty, a name, a count, the armor) and the dead-in-space scene.';
 
@@ -124,9 +124,12 @@
       } else if (e.kind === 'captain' && e.name !== 'goodbye') {
         const note = e.name === 'trouble' ? `${CAPTAIN_BEAT_DAYS.trouble} days after you sign on, on a burn.` : e.name === 'secret:confide' ? `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is ${SECRET_TRUST} or more.` : `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is below ${SECRET_TRUST}.`;
         add({ id: e.id, where: 'transit', file: fileOf['captain:' + e.key], belongs: `${e.key} (captain)`, on: captainOn(e.key), conditionsNote: note, pacing: pacingOf.captain(e.name.split(':')[0]), ...registryRow(e.scene) });
-      } else if (e.kind === 'captain') {
-        const note = 'When you leave the ship to buy your own: the opening for how they feel about you, then a line for each thing that is true.';
-        add({ id: e.id, where: 'port', file: fileOf['captain:' + e.key], belongs: `${e.key} (captain)`, on: captainOn(e.key), conditionsNote: note, pacing: { tier: null, weight: null, cooldown: 'plays once', trigger: note, editable: false }, ...partsRow(e.scene) });
+      } else if (e.kind === 'captain') {  // a captain's goodbye (#476): built from parts, so each part is a field, and its choices are data
+        const g = e.scene.goodbye, note = 'When you leave the ship to buy your own.';
+        const parts = Object.fromEntries(PART_NAMES.filter(n => typeof g[n] === 'string').map(n => [n, g[n]]));
+        const row = registryRow({ title: g.title, text: '', choices: g.choices });
+        add({ id: e.id, where: 'port', file: fileOf['captain:' + e.key], belongs: `${e.key} (captain)`, on: captainOn(e.key), conditionsNote: note, pacing: { tier: null, weight: null, cooldown: 'plays once', trigger: note, editable: false }, ...row,
+          text: PART_NAMES.filter(n => parts[n]).map(n => `[${n}] ${parts[n]}`).join('\n'), parts, codeNote: 'Its text is built from these parts by the captain\'s regard for you, who goes with you, the secret and what you lived through; what the hand lived through (the ice run, the raid, a hurt) is the same for every captain and is not edited here.', edit: { ...row.edit, text: false } });
       } else if (e.kind === 'work') {
         const d = e.def;
         add({ id: e.id, file: fileOf.work, belongs: `${d.post} (post)`, on: postOn(d.post), post: d.post, pacing: pacingOf.work(d), conditionsNote: `A problem at the ${d.post} post, for a hand who works it; not repeated within ${WORK_SEEN_DAYS} days.`, ...tableRow(tableScene(e.id)) });
@@ -137,7 +140,7 @@
       } else if (e.kind === 'ice') {
         add({ id: e.id, file: fileOf.ice, belongs: 'ice run', pacing: pacingOf.ice(), conditionsNote: `Scene ${Number(e.id.slice(4))} of 3 on an ice run, once the captain takes one.`, ...tableRow(tableScene(e.id)) });
       } else if (e.scene) {  // a beat of the raid, the ambush or the boarding fights (#478): its lines, by name
-        add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: 'beats', conditionsNote: e.when, pacing: { tier: null, weight: null, cooldown: 'by its own rule', trigger: e.when, editable: false }, ...partsRow(e.scene), codeNote: BEAT_NOTE });
+        add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: 'beats', conditionsNote: e.when, pacing: { tier: null, weight: null, cooldown: 'by its own rule', trigger: e.when, editable: false }, ...beatRow(e.scene), codeNote: BEAT_NOTE });
       } else {  // built by a function: no text to read, only what it is and when it plays
         add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: e.id.startsWith('beats:') ? 'beats' : 'hired chapter', text: '', choices: [], codeNote: CODE_ALL, conditionsNote: e.when, pacing: { tier: null, weight: null, cooldown: 'by its own rule', trigger: e.when, editable: false } });
       }
@@ -296,7 +299,7 @@
     const meeting = !!reg && reg.kind === 'cast' && reg.name === 'meet';  // an owner meets a main character at a port bar; a hired hand never does
     beginGame(meeting ? { ...o, as: 'owner' } : o, !!reg && !meeting);
     // A scene in a burn is played on the way to the place (its `at` is the destination); one at a port, landed there.
-    const where = s ? s.where : reg.name === 'meet' ? 'port' : 'transit';
+    const where = s ? s.where : reg.name === 'meet' || reg.name === 'goodbye' ? 'port' : 'transit';
     if (where === 'transit') uatBurn(at.sid === 'earth' ? 'Mars' : 'Earth', at.sid); else uatLand(place);
     tweakState(o);
     if (reg) {  // a hired scene is played by its days and its place in the story: the preview opens it, with the regard that picks its reading
@@ -315,8 +318,8 @@
         if (reg.id === 'beats:raid') { startDuel({ kind: 'pirate' }, false); const first = G.nextEvent; G.nextEvent = null; openEvent(first); }
         else if (reg.id === 'beats:ambush') openEvent(ambushScene());
         else openEvent(repelScene(reg.id === 'beats:assault' ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full')));
-      } else if (reg.name === 'goodbye') {
-        captainFlag('secretKnown');  // so the choice that waits on it is there to try
+      } else if (reg.name === 'goodbye') {  // leaving the ship: with the secret learned, so every choice shows
+        captainFlag('secretKnown');
         openEvent(captainGoodbye());
       } else {
         const name = reg.name.split(':')[0];
@@ -369,12 +372,12 @@
   const isStorylet = r => r.kind === 'data' && !r.registry;
 
   // The fields of a data scene's form, named by a path: 'title', 'text', and 'c0.label' and 'c0.result' for the first choice.
+  const PART_LABEL = { cold: 'Opening, when they think little of you', neutral: 'Opening, when they think plainly of you', warm: 'Opening, when they think well of you', crew: 'If crew go with you ({names} is who)', secret: 'If you learned their secret', repaid: 'If a loan you made is repaid', xoDead: 'If the first officer is dead', xo: 'If the first officer is there', parting: 'The parting' };
   const CHOICE_FIELDS = ['label', 'result', 'win', 'lose'];  // a table scene's choice has a win and a lose line in place of a result (#462)
-  const pathsOf = r => ['title', 'text', ...(r.text2 !== undefined ? ['text2'] : []), ...Object.keys(r.parts || {}).map(k => `p.${k}`), ...r.choices.flatMap((c, i) => CHOICE_FIELDS.filter(f => c[f] !== undefined).map(f => `c${i}.${f}`))];
+  const pathsOf = r => ['title', ...(r.parts ? [] : ['text']), ...(r.text2 !== undefined ? ['text2'] : []), ...Object.keys(r.parts || {}).map(n => `part.${n}`), ...r.choices.flatMap((c, i) => CHOICE_FIELDS.filter(f => c[f] !== undefined).map(f => `c${i}.${f}`))];
   const CHOICE_PATH = /^c(\d+)\.(label|result|win|lose)$/;
-  const PART_PATH = /^p\.([\w.]+)$/;  // a part of a goodbye or a beat (#476, #478)
-  const shippedOf = (r, path) => { const m = CHOICE_PATH.exec(path), p = PART_PATH.exec(path); return m ? r.choices[m[1]][m[2]] : p ? r.parts[p[1]] : r[path]; };
-  const editableOf = (r, path) => { const m = CHOICE_PATH.exec(path), p = PART_PATH.exec(path); return !r.edit ? false : m ? r.edit.choices[m[1]][m[2]] : p ? !!(r.edit.parts || {})[p[1]] : path === 'title' ? !r.noTitle : r.edit[path]; };
+  const shippedOf = (r, path) => { const m = CHOICE_PATH.exec(path); return m ? r.choices[m[1]][m[2]] : path.startsWith('part.') ? (r.parts || {})[path.slice(5)] : r[path]; };
+  const editableOf = (r, path) => { const m = CHOICE_PATH.exec(path); return !r.edit ? false : m ? r.edit.choices[m[1]][m[2]] : path === 'title' ? !r.noTitle : (path.startsWith('part.') ? !!r.parts : r.edit[path]); };
 
   // What js/overrides.js would hold for the values typed: only what differs from the shipped words, an empty field counting as not changed.
   // values: { sceneId: { path: text } }.
@@ -384,8 +387,8 @@
       for (const path of pathsOf(r)) {
         const v = values[r.id][path];
         if (typeof v !== 'string' || !v.trim() || v === shippedOf(r, path) || !editableOf(r, path)) continue;
-        const o = out[r.id] = out[r.id] || dict(), m = CHOICE_PATH.exec(path), p = PART_PATH.exec(path);
-        if (p) { o.parts = o.parts || dict(); o.parts[p[1]] = v; } else if (m) { o.choices = o.choices || dict(); (o.choices[m[1]] = o.choices[m[1]] || dict())[m[2]] = v; } else o[path] = v;
+        const o = out[r.id] = out[r.id] || dict(), m = CHOICE_PATH.exec(path);
+        if (m) { o.choices = o.choices || dict(); (o.choices[m[1]] = o.choices[m[1]] || dict())[m[2]] = v; } else if (path.startsWith('part.')) { o.parts = o.parts || dict(); o.parts[path.slice(5)] = v; } else o[path] = v;
       }
     }
     for (const r of rows.filter(x => struct[x.id])) {  // the conditions, effects and links
@@ -405,7 +408,7 @@
       if (o.title) v.title = o.title;
       if (o.text) v.text = o.text;
       if (o.text2) v.text2 = o.text2;
-      for (const [name, x] of Object.entries(o.parts || {})) v[`p.${name}`] = x;
+      for (const [n, t] of Object.entries(o.parts || {})) v[`part.${n}`] = t;
       for (const [i, c] of Object.entries(o.choices || {})) for (const f of CHOICE_FIELDS) if (c[f]) v[`c${i}.${f}`] = c[f];
     }
     return values;
@@ -420,7 +423,7 @@
     day: 'number', before: 'number', at: 'list:systems', planet: 'list:planets', gov: 'list:govs', standing: 'map:govs', standingBelow: 'map:govs',
     credits: 'number', space: 'number', fleet: 'number', stake: 'map:planets', cargo: 'map:goods', crew: 'text', q: 'map', qBelow: 'map', war: 'flagOr:govs',
     peace: 'flagOr:govs', boom: 'one:govs', bust: 'one:govs', raid: 'flagOr:systems', berths: 'number', story: 'json', storyDay: 'map', aboard: 'text',
-    chance: 'chance', post: 'list:posts', skill: 'number', hired: 'flag', due: 'list', opinion: 'shape:opinion', hiredFlag: 'text',
+    chance: 'chance', post: 'list:posts', skill: 'number', hired: 'flag', due: 'list', opinion: 'shape:opinion', captainFlag: 'text',
   };
   const EFFECT_SPEC = {
     credits: 'number', story: 'json', storyLog: 'text', storyAdd: 'map', storyDays: 'map', delay: 'number', passenger: 'json', do: 'action', rep: 'map:govs',
@@ -656,13 +659,12 @@
     ${rulesHtml(r, 'when', 'The scene appears when', struct)}
     ${r.choices.map((c, i) => `<h4>Choice ${i + 1}: ${esc(c.label)}</h4>${rulesHtml(r, `c${i}.when`, 'It can be taken when', struct)}${rulesHtml(r, `c${i}.effects`, 'It does', struct)}${nextHtml(r, `c${i}.next`, struct)}`).join('')}`);
 
-  const PART_NAMES = { cold: 'Opening, if they think poorly of you', neutral: 'Opening, if they are neutral', warm: 'Opening, if they trust you', crew: 'If crew go with you ({names})', secret: 'If you learned their secret', xo: 'If the first officer is alive', xoDead: 'If the first officer is dead', repaid: 'If they repaid a loan', parting: 'Parting line' };
   // A scene's lines, one field each, under a heading for each group of them (the first word of a beat's line names: open, pass, closing, exchange, post, close, read, title, tactic) (#478).
   function partsHtml(r, mine) {
     let group = null;
-    return Object.keys(r.parts).map(k => {
-      const g = k.includes('.') ? k.split('.')[0] : null, head = g !== group ? (group = g, g ? `<h4>${esc(g)}</h4>` : '') : '';
-      return `${head}${fieldHtml(r, `p.${k}`, PART_NAMES[k] || k, mine[`p.${k}`])}`;
+    return Object.keys(r.parts).map(n => {
+      const g = n.includes('.') ? n.split('.')[0] : null, head = g !== group ? (group = g, g ? `<h4>${esc(g)}</h4>` : '') : '';
+      return `${head}${fieldHtml(r, `part.${n}`, PART_LABEL[n] || n, mine[`part.${n}`])}`;
     }).join('');
   }
   function formHtml(r, values = {}) {
@@ -810,18 +812,14 @@
         if (!isObj(s)) { refuse(`${id}: is not an object`); continue; }
         const keep = dict(), what = [];
         for (const [k, v] of Object.entries(s)) {
-          if (k === 'text2') {
+          if (k === 'parts') {
+            if (!r.parts) refuse(`${id} parts: this scene is not built from parts`);
+            else if (!isObj(v)) refuse(`${id} parts: is not an object`);
+            else for (const [n, t] of Object.entries(v)) { if (!(n in r.parts)) refuse(`${id} parts ${n}: this scene has no such part`); else if (!words(t)) refuse(`${id} parts ${n}: needs some text of up to ${LIMIT.text} characters`); else { (keep.parts = keep.parts || dict())[n] = t; what.push(`part ${n}`); } }
+          } else if (k === 'text2') {
             if (!r.edit.text2) refuse(`${id} text2: this scene has no second opening`);
             else if (!words(v)) refuse(`${id} text2: needs some text of up to ${LIMIT.text} characters`);
             else { keep.text2 = v; what.push('text2'); }
-          } else if (k === 'parts') {
-            if (!r.parts) refuse(`${id} parts: this scene has no parts`);
-            else if (!isObj(v)) refuse(`${id} parts: is not an object`);
-            else for (const [name, x] of Object.entries(v)) {
-              if (!(r.edit.parts || {})[name]) refuse(`${id} part ${name}: this scene has no such part`);
-              else if (!words(x)) refuse(`${id} part ${name}: needs some text of up to ${LIMIT.text} characters`);
-              else { (keep.parts = keep.parts || dict())[name] = x; what.push(`part ${name}`); }
-            }
           } else if (k === 'title' || k === 'text') {
             if (k === 'title' && r.noTitle) refuse(`${id} title: this scene has no title of its own`);
             else if (k === 'text' && !r.edit.text) refuse(`${id} text: it has parts that depend on conditions, so it is edited in code`);
