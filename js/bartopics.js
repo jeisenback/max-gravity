@@ -12,9 +12,9 @@ const BAR_MENU = 3, BAR_REPEAT = 45;  // topics offered at a table; days before 
 const BAR_REACT = {
   talkative: ['{n} is off again, and tells it to the next table too, and you in it, favorably.', '{n} talks over the answer, and it is clear you were not listened to.'],
   nervous: ['{n} lets out a breath, and for the first time sits back.', '{n} flinches, and does not quite trust you after that.'],
-  generous: ['{n} is moved, and says they will remember it, and means a bottle at the next port.', '{n} waves it away, a little hurt.'],
-  greedy: ['{n} counts it, nods, and decides you are worth knowing.', '{n} sniffs. There was nothing in it for them.'],
-  pious: ['{n} says a short word over you, and means it.', '{n} turns the cord at their wrist and says nothing, which is worse.'],
+  generous: ['{n} is moved, and says they will remember it, and means a bottle at the next port.', '{n} waves it away, and looks at the wall.'],
+  greedy: ['{n} counts it, pockets it, and decides you are worth knowing.', '{n} sniffs. There was nothing in it for them.'],
+  pious: ['{n} says a short word over you, and means it.', '{n} turns the cord at their wrist and says nothing.'],
   rude: ['{n} grunts. From {n}, it is a warm welcome.', '{n} says what they think of that, at length and with volume.'],
   curious: ['{n} wants to know more, and asks, and the evening gets longer in a good way.', '{n} shrugs it off. It was not interesting.'],
   drunk: ['{n} hugs you. It is a long hug, and not entirely stable.', '{n} does not seem to take it in, and orders another.'],
@@ -45,7 +45,7 @@ const GOAL_HELP = {
   family: { ask: 'Ask about the family', text: '{n} is going to see family, and has been trying all evening to think what to bring.', gift: 'Press a few credits into their hand for a present (60 cr)', advice: 'Suggest something from the market here', listen: 'Ask who they are going to see' },
   job: { ask: 'Ask about the interview', text: '{n} has an interview at the other end, and says the questions over under their breath.', gift: 'Stand them the clothes for it (60 cr)', advice: 'Play the interviewer for a few questions', listen: 'Let them talk it through' },
   fresh: { ask: 'Ask about starting again', text: ('{n} says only that it is a fresh start, and that they would rather not say from what. They are ' +
-      'watching to see how you take it.'), gift: 'Put a little toward the first month (60 cr)', advice: 'Tell them what to do first in a new port', listen: 'Say it is all right not to say' },
+      'watching to see how you take it.'), gift: 'Put something toward the first month (60 cr)', advice: 'Tell them what to do first in a new port', listen: 'Say it is all right not to say' },
   research: { ask: 'Ask about the posting', text: ('{n} has a research posting, and the instruments for it in a case under the table that they have ' +
       'not let go of since you sat down.'), gift: 'Pay the case\'s berth fee (60 cr)', advice: 'Tell them what to watch for on the lane', listen: 'Ask what they are going to measure' },
   pilgrim: { ask: 'Ask about the pilgrimage', text: '{n} is bound for somewhere holy, a long way off, and says it more quietly than anything else tonight.', gift: 'Pay a leg of the trip (60 cr)', advice: 'Tell them how to find a berth on the long haul', listen: 'Ask what the place means to them' },
@@ -64,8 +64,8 @@ function helpScene(p, pat, ctx) {
   return { title: `${ctx.bar}: ${p.first} ${p.last}`, text: barSays(g.text, p), choices: [
     act('gift', g.gift, 'You put it on the table and push it across.'),
     act('advice', g.advice, 'You tell them what you know, plainly.'),
-    act('listen', g.listen, 'You sit back, and ask, and for a while that is all there is.'),
-    { label: 'Say you hope it goes well', run: () => `${p.first} nods, and thanks you, and that is the end of it.` },
+    act('listen', g.listen, 'You sit back, and ask, and for an hour that is all there is.'),
+    { label: 'Say you hope it goes well', run: () => `${p.first} thanks you, and that is the end of it.` },
   ] };
 }
 
@@ -73,7 +73,7 @@ function helpScene(p, pat, ctx) {
 const SECRET_HELP = {
   debt: { text: ('{n} turns the glass in a ring on the bar. "It is not even a lot," they say. "It is just more than I have, and the people it is owed ' +
       'to do not do arithmetic."'), opts: [['Cover part of it (200 cr)', 200, 3, (
-      'You count out the credits. {n} looks at them as if they were somebody else\'s, and then takes them, and does not say anything for a long ' +
+      'You count out the credits. {n} turns them over, and then takes them, and does not say anything for a long ' +
       'time.')], ['Say you will keep an ear out for who is asking', 0, 1, '"That would help," {n} says. It is not nothing. It is not much.']] },
   ill: { text: ('{n} stops pretending. "Six months and the recyclers on that last ship," they say. "The clinic wants more than I have. I tell people ' +
       'it is the dust."'), opts: [
@@ -102,10 +102,10 @@ const SECRET_HELP = {
         'Tell them to give themselves up',
         0,
         -1,
-        '{n} looks at you for a long moment and does not answer. They finish their drink and leave, and do not look back.'
+        '{n} looks at you and does not answer. They finish their drink and leave, and do not look back.'
       ]
       ] },
-  contraband: { text: ('{n} makes a small gesture at the room, and lowers their voice to nothing. "I move things," they say, "the kind that do not go ' +
+  contraband: { text: ('{n} makes a gesture at the room, and lowers their voice to nothing. "I move things," they say, "the kind that do not go ' +
       'on a manifest. I do not tell everyone."'), opts: [
         [
         'Ask who they know',
@@ -117,7 +117,7 @@ const SECRET_HELP = {
         'Say you do not want to know',
         0,
         1,
-        '{n} nods, and relaxes. "Good," they say. "Then we have never talked."'
+        '{n} relaxes. "Good," they say. "Then we have never talked."'
       ]
       ] },
   spy: {
@@ -127,7 +127,7 @@ const SECRET_HELP = {
     'Tell them what you know of the lanes',
     0,
     0,
-    '{n} writes nothing down, which is how you can tell they will remember all of it.'
+    '{n} writes nothing down, and does not need to.'
   ],
     [
     'Say you will not be asked again',
@@ -221,7 +221,7 @@ const BAR_TOPICS = [
     make: (p, pat, c) => ({
     label: `Ask ${p.first} what is weighing on them`,
     ...gated(notYet(() => pat.troubled, 'You have done that already tonight.')),
-    run() { pat.troubled = true; met(pat); G.nextEvent = secretScene(p, pat, c); return `${p.first} looks at you for a while before deciding.`; }
+    run() { pat.troubled = true; met(pat); G.nextEvent = secretScene(p, pat, c); return `${p.first} looks at you, and takes their time deciding.`; }
   })
   },
   { id: 'home', w: p => (barHas(p, 'homesick') ? 4 : 0), make: (p, pat) => ({ label: `Ask about ${p.home}`, ...gated(notYet(() => pat.home,

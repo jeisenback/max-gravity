@@ -179,7 +179,7 @@ const TRAITS = {
     adj: 'nervous',
     chatter: [
       '{first} keeps checking the hull pressure readouts.',
-      '{first} jumps at a small clank from the engine room, and pretends they did not.',
+      '{first} jumps at a clank from the engine room, and pretends they did not.',
       '{first} has, for the fifth time this watch, tested the seal on the nearest hatch.',
       '{first} is counting the emergency suits, quietly, under their breath, in a low, steady mutter.',
       '{first} sleeps with a hand on the bulkhead.'
@@ -189,7 +189,7 @@ const TRAITS = {
     adj: 'generous',
     chatter: [
       '{first} made coffee for everyone.',
-      '{first} has left a small plate of something sweet outside the engine room, without a note.',
+      '{first} has left a plate of something sweet outside the engine room, without a note.',
       '{first} is giving away, one piece at a time, the contents of their sock drawer.',
       '{first} covered someone\'s shift, and will not hear a word about it.',
       '{first} has a knack for turning up, unasked, with exactly what you need.'
@@ -202,16 +202,16 @@ const TRAITS = {
       '{first} has worked out what every ton of cargo on the ship is worth, and tells you, twice.',
       '{first} is running the numbers on a trade route, and, from the muttering, it is not going to be enough.',
       '{first} watches the fuel gauge, and does not blink.',
-      '{first} has started a small betting pool on the arrival date, and holds all the odds.'
+      '{first} has started a betting pool on the arrival date, and holds all the odds.'
     ]
   },
   pious: {
     adj: 'devout',
     chatter: [
       '{first} is praying quietly in the cargo bay.',
-      '{first} has tied a small ribbon to a bulkhead, for luck, and blessed it.',
+      '{first} has tied a ribbon to a bulkhead, for luck, and blessed it.',
       '{first} murmurs a short blessing over the drive before each flip.',
-      '{first} is reading, aloud and very softly, from a small worn book.',
+      '{first} is reading, aloud and softly, from a worn book.',
       '{first} is lighting a very small, very safe candle in a jar, and shielding it from the draught with a hand.'
     ]
   },
@@ -230,7 +230,7 @@ const TRAITS = {
     chatter: [
       '{first} is asking the nav computer far too many questions.',
       '{first} has taken the panel off the galley clock to see what makes it tick.',
-      '{first} is following the plume readout with a small notebook, and a look of pure joy.',
+      '{first} is following the plume readout with a notebook, and a look of pure joy.',
       '{first}: "But why does it hum at that particular note? Has anybody ever asked?"',
       '{first} is pressing an ear to the bulkhead, listening to something nobody else can hear.'
     ]
@@ -241,7 +241,7 @@ const TRAITS = {
       '{first} is suspiciously cheerful for this hour.',
       '{first} is humming, loudly, an old song from {home}, and has forgotten the second verse.',
       '{first} is sitting very carefully upright, with a mug that smells like anything but coffee.',
-      '{first} has made a small toast to the ship, and is now, tenderly, toasting the coffee maker.',
+      '{first} has made a toast to the ship, and is now, tenderly, toasting the coffee maker.',
       '{first} is cheerfully explaining something to a coaster.'
     ]
   },
@@ -250,7 +250,7 @@ const TRAITS = {
     chatter: [
       '{first} closes a message window whenever you walk past.',
       '{first} answers every question with a question, and does it very gracefully.',
-      '{first} has a small locked case, and a way of standing between it and everyone else.',
+      '{first} has a locked case, and a way of standing between it and everyone else.',
       '{first} is very quiet, and very watchful, and always knows where everyone is.',
       '{first} deletes a message, and looks up, and smiles at you.'
     ]
@@ -270,7 +270,7 @@ const TRAITS = {
     chatter: [
       '{first} volunteered for the next EVA before anyone asked.',
       '{first} is calmly checking the emergency hatches, one by one, whistling.',
-      '{first} has a small, plain scar, and a small, plain refusal to talk about it.',
+      '{first} has a plain scar, and a plain refusal to talk about it.',
       '{first}: "If anything goes wrong, I will be the one to go and look. That is what I am for."',
       '{first} is smiling, in the face of a very small, very real problem with the coolant.'
     ]
@@ -282,7 +282,7 @@ const TRAITS = {
       '{first} has gone very quiet, and is watching the viewport.',
       '{first} is making a dish from {home}, out of not-quite-right ingredients, and eating it with great seriousness.',
       '{first} is humming something from {home}, low and soft, and does not seem to know.',
-      '{first} keeps a small stone from {home}, worn smooth, and turns it over, and over, and over.'
+      '{first} keeps a stone from {home}, worn smooth, and turns it over, and over, and over.'
     ]
   }
 };
