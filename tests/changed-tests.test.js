@@ -40,7 +40,7 @@ test('the script runs its own test', () => {
 });
 
 test('the scene editor runs its own tests, and so does a change to the script list it copies', () => {
-  const both = ['tests/editor.test.js', 'tests/editorforms.test.js', 'tests/editorhired.test.js', 'tests/editornew.test.js', 'tests/editorpreview.test.js', 'tests/editorsave.test.js'], withEditor = { ...tests, ...Object.fromEntries(both.map(f => [f, ''])) };
+  const both = ['tests/editor.test.js', 'tests/editorforms.test.js', 'tests/editorfreq.test.js', 'tests/editorhired.test.js', 'tests/editornew.test.js', 'tests/editorpreview.test.js', 'tests/editorsave.test.js'], withEditor = { ...tests, ...Object.fromEntries(both.map(f => [f, ''])) };
   for (const f of ['editor.js', 'editor.html', 'editor-preview.html']) assert.deepEqual(select([f], { tests: withEditor, sources }).files, both, f);
   const r = select(['index.html'], { tests: withEditor, sources });
   for (const t of both) assert.ok(r.files.includes(t), `index.html runs ${t}`);

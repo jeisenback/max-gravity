@@ -167,7 +167,7 @@ test('a file with bad items is reported item by item, and the rest still imports
   const file = `const SCENE_OVERRIDES = {
     "no-such-scene": { "title": "x" },
     "port-mars-front": "not an object",
-    "port-mars-sky": { "title": 42, "text": "Kept words.", "choices": { "9": { "label": "x" }, "1": { "label": "Kept label", "effects": { "nonsense": 1 }, "next": "nowhere" } }, "weight": 3, "when": { "day": "soon" } },
+    "port-mars-sky": { "title": 42, "text": "Kept words.", "choices": { "9": { "label": "x" }, "1": { "label": "Kept label", "effects": { "nonsense": 1 }, "next": "nowhere" } }, "priority": 3, "when": { "day": "soon" } },
     "land-customs": { "when": { "day": 6 } }
   };
   // a comment between the two
@@ -181,7 +181,7 @@ test('a file with bad items is reported item by item, and the rest still imports
   await importText(file);
   const text = await notice();
   for (const part of ['no-such-scene: not a scene in the game', 'port-mars-front: is not an object', 'port-mars-sky title: needs some text', 'no choice 9', 'choice 2 effects: has nonsense, which the game does not have',
-    'choice 2 next: leads to a scene that is not there', 'port-mars-sky weight: is not something the editor changes', 'port-mars-sky when: day needs a number', 'new scene port-mars-sky: the id port-mars-sky is already a scene',
+    'choice 2 next: leads to a scene that is not there', 'port-mars-sky priority: is not something the editor changes', 'port-mars-sky when: day needs a number', 'new scene port-mars-sky: the id port-mars-sky is already a scene',
     'new scene bad-cond: ', 'a new scene that is not an object', 'port-mars-sky: text, choice 2 label', 'land-customs: conditions', 'new scene good-one']) assert.ok(text.includes(part), `${part} in: ${text}`);
   await page.click('[data-action="import-apply"]');
   await select('land-customs');

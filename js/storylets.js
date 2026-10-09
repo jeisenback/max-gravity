@@ -211,7 +211,13 @@ function cleanOverrides(raw) {
     const mine = {}, pre = `"${id}"`;
     for (const [k, v] of Object.entries(o)) {
       if ((k === 'title' || k === 'text') && text(`${pre}.${k}`, v)) mine[k] = v;
-      else if (k === 'when') { if (rs) bad.push(`${pre} has no "when" (a hired scene plays by its days, not by conditions)`); else if (isObj(v)) mine.when = v; else bad.push(`${pre}.when is not an object`); }
+      else if (k === 'weight' || k === 'every' || k === 'off') {
+        const why = rs ? 'a hired scene is drawn by its days and the story, not by weight' : s.priority > 0 ? 'a story scene is picked by priority, not by weight'
+          : k === 'weight' ? (Number.isFinite(v) && v >= 0 && v <= 100 ? '' : 'needs a number from 0 to 100')
+          : k === 'every' ? (!Number.isInteger(v) || v < 0 || v > 365 ? 'needs a whole number of days from 0 to 365' : s.once ? 'plays once, so it has no cooldown' : '')
+          : v === true ? '' : 'needs true';
+        if (why) bad.push(`${pre}.${k} ${why}`); else mine[k] = v;
+      } else if (k === 'when') { if (rs) bad.push(`${pre} has no "when" (a hired scene plays by its days, not by conditions)`); else if (isObj(v)) mine.when = v; else bad.push(`${pre}.when is not an object`); }
       else if (k === 'choices' && isObj(v)) {
         for (const [i, c] of Object.entries(v)) {
           if (!/^\d+$/.test(i) || Number(i) >= scene.choices.length) { bad.push(`${pre} has no choice ${i}`); continue; }
@@ -226,7 +232,7 @@ function cleanOverrides(raw) {
             else if (f !== 'label' && f !== 'result') bad.push(`${pre} choice ${i} ${f === 'next' ? 'leads to a scene that is not there' : STRUCT.includes(f) ? `.${f} is not an object` : `has no "${f}"`}`);
           }
         }
-      } else if (k !== 'title' && k !== 'text') bad.push(`${pre} has no "${k}"`);
+      } else if (k !== 'title' && k !== 'text' && k !== 'weight' && k !== 'every' && k !== 'off') bad.push(`${pre} has no "${k}"`);
     }
     // The conditions, effects and links together, as the scene would be: if the game would refuse it, none of them go in.
     const changes = (mine.when !== undefined ? 1 : 0) + Object.values(mine.choices || {}).filter(c => STRUCT.some(f => c[f] !== undefined)).length;
@@ -253,6 +259,14 @@ function cleanOverrides(raw) {
   }
   if (bad.length) console.warn(`Scene overrides (js/overrides.js): ${bad.join('; ')}`);
   return out;
+}
+
+// How often a storylet comes up (#341): its weight among the eligible scenes of its priority (1 unless it says), the days before it can come round
+// again (`every`, for a scene that plays more than once), and whether the editor has switched it off. The file's `weight`, `every` and `off` replace the
+// scene's own. A story scene (priority above 0) is picked by priority, not by weight, so only a color scene's can be changed.
+function sceneRate(s) {
+  const o = sceneOverride(s.id);
+  return { weight: o.weight !== undefined ? o.weight : s.weight === undefined ? 1 : s.weight, every: o.every !== undefined ? o.every : s.every || 0, off: !!o.off };
 }
 
 // A scene of the hired chapter that is not a storylet (a main character's, a first officer's or a captain's), by its id in js/hiredscenes.js.
@@ -300,6 +314,8 @@ function storyletProblems(def, { duplicate = true } = {}) {
   const bad = [];
   if (!def || !def.id || !def.title || !def.text || !Array.isArray(def.choices) || !def.choices.length) bad.push('needs id, title, text, and choices');
   if (def && !['port', 'transit'].includes(def.where)) bad.push('where must be "port" or "transit"');
+  if (def && def.weight !== undefined && !(Number.isFinite(def.weight) && def.weight >= 0)) bad.push('weight must be a number of 0 or more');
+  if (def && def.every !== undefined && !(Number.isInteger(def.every) && def.every >= 0)) bad.push('every must be a whole number of days');
   if (def && def.via && !VIA_LABELS[def.via]) bad.push('via must be "station", "ship", "message" or "crew"');
   const check = (obj, table, what) => Object.keys(obj || {}).forEach(k => { if (!table[k]) bad.push(`unknown ${what} "${k}"`); });
   if (def) {
@@ -371,11 +387,14 @@ function chainTo(id) {
 
 // The storylet to play here and now: eligible ones of the highest priority, one at random.
 function pickStorylet(where, keep = () => true) {
-  const waiting = s => s.every && quality(`last:${s.id}`) && G.state.day - quality(`last:${s.id}`) < s.every;  // `every: days` lets a scene come round again
-  const ok = STORYLETS.filter(s => s.where === where && !s.chained && keep(s) && !(s.once && quality(`seen:${s.id}`)) && !waiting(s) && meets(sceneView(s).when));
+  const waiting = s => sceneRate(s).every && quality(`last:${s.id}`) && G.state.day - quality(`last:${s.id}`) < sceneRate(s).every;  // `every: days` lets a scene come round again
+  const ok = STORYLETS.filter(s => s.where === where && !s.chained && keep(s) && !sceneRate(s).off && sceneRate(s).weight > 0 && !(s.once && quality(`seen:${s.id}`)) && !waiting(s) && meets(sceneView(s).when));
   if (!ok.length) return null;
-  const top = Math.max(...ok.map(s => s.priority));
-  return pick(ok.filter(s => s.priority === top));
+  const top = Math.max(...ok.map(s => s.priority)), level = ok.filter(s => s.priority === top);
+  // By weight: with every weight 1 this is the pick it always was (one draw, the same index).
+  let r = Math.random() * level.reduce((n, s) => n + sceneRate(s).weight, 0);
+  for (const s of level) { if ((r -= sceneRate(s).weight) < 0) return s; }
+  return level[level.length - 1];
 }
 
 function journalHtml(limit = 6) {

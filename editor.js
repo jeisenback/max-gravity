@@ -48,6 +48,22 @@
   }
   const outcome = (win, lose) => `If it goes well: ${win}\nIf it does not: ${lose}`;
 
+  // How a scene is drawn (#341), as the happenings filters draw it (js/happenings.js, cast.js, captains.js): its tier, its weight and cooldown where it has them,
+  // what triggers it, and whether the editor can change its weight (only a color storylet's). A tier 0 or 1 scene is due by state, so it is read only.
+  const pacingOf = {
+    storylet: s => (s.priority > 0
+      ? { tier: 0, weight: null, cooldown: s.once ? 'plays once' : s.every ? `${s.every} days` : 'none', trigger: `The story: played first, by priority ${s.priority}, whenever its conditions hold.`, editable: false }
+      : { tier: 2, weight: s.weight === undefined ? 1 : s.weight, every: s.every || 0, once: !!s.once, cooldown: s.once ? 'plays once' : s.every ? `${s.every} days` : 'none', editable: true,
+        trigger: `A color scene: one of the scenes ${s.where === 'port' ? 'at a landing' : 'in a burn'} whose conditions hold, drawn by weight among them, as one candidate of weight 2${s.where === 'port' ? '' : ` against the burn's other events and a quiet burn of ${3}`}.` }),
+    cast: (name, sc, closed) => (name === 'meet' ? { tier: 1, weight: 1, cooldown: 'plays once', trigger: 'Due when a main character is offered at a port bar.', editable: false }
+      : { tier: name === 'intro' ? 1 : 2, weight: `${name === 'intro' ? BEAT_WEIGHT : 2}, and ${BEAT_RAMP} more for each draw it was due and not drawn`, cooldown: 'plays once', trigger: `Due ${sc.days || 0} days after they join, after their earlier scenes${closed ? '; this reading plays in its place when their opinion of you is below friendly' : ''}.`, editable: false }),
+    captain: name => ({ tier: 1, weight: `${BEAT_WEIGHT}, and ${BEAT_RAMP} more for each draw it was due and not drawn`, cooldown: 'plays once', editable: false,
+      trigger: name === 'trouble' ? `Due ${CAPTAIN_BEAT_DAYS.trouble} days after you sign on.` : `Due ${CAPTAIN_BEAT_DAYS.secret} days after you sign on, once the trouble has played.` }),
+    work: d => ({ tier: 2, weight: `${HIRED_WEIGHTS.work} for the work group`, cooldown: `${WORK_SEEN_DAYS} days`, trigger: `One event of the group is drawn on a burn, a problem at the ${d.post} post.`, editable: false }),
+    hand: d => ({ tier: 2, weight: `${HIRED_WEIGHTS[d.group]} for the ${d.group} group`, cooldown: `${WORK_SEEN_DAYS} days`, trigger: `One event of the ${d.group} group is drawn on a burn.`, editable: false }),
+    ice: () => ({ tier: 1, weight: '8, as an occasion of an ice run', cooldown: 'plays once on each run', trigger: 'Due part of the way through an ice run.', editable: false }),
+  };
+
   // A cast or captain scene as the editor's row: the words it can be given (js/hiredscenes.js lists the ids), and for each choice whether it is data (its
   // effects are edited) or code (only its label and result line are: a result written replaces the line the code returns). A text built from the game
   // state cannot be read, nor replaced here.
@@ -74,7 +90,7 @@
     for (const s of STORYLETS.filter(x => !newSceneIds.includes(x.id))) {
       const file = fileOf['storylet:' + s.id];
       add({
-        id: s.id, title: s.title, where: s.where, file, belongs: stem(file), kind: 'data', text: plain(s.text), when: s.when || {}, chained: !!s.chained,
+        id: s.id, title: s.title, where: s.where, file, belongs: stem(file), kind: 'data', text: plain(s.text), when: s.when || {}, chained: !!s.chained, pacing: pacingOf.storylet(s),
         choices: s.choices.map(c => ({ label: plain(c.label), result: plain(c.result), when: c.when || {}, effects: c.effects || {}, next: c.next || '' })),
         // A text of conditional parts cannot be edited as one string, so the form leaves those fields to the code (conditions are story 4).
         edit: { text: typeof s.text === 'string', choices: s.choices.map(c => ({ label: typeof c.label === 'string', result: c.result === undefined || typeof c.result === 'string' })) },
@@ -86,33 +102,33 @@
       if (e.kind === 'cast') {
         const c = CAST[e.key], sc = c.scenes[e.name];
         add({ id: e.id, where: e.name === 'meet' ? 'port' : 'transit', file: fileOf['cast:' + e.key], belongs: `${e.key} (${c.xo ? 'first officer' : 'main character'})`, on: castOn(e.key),
-          conditionsNote: e.name === 'meet' ? 'Offered at a port bar when a main character is due.' : `Plays ${sc.days || 0} days after they join, after their earlier scenes${e.closed ? '; this reading plays in its place when their opinion of you is below friendly' : ''}.`, ...registryRow(e.scene) });
+          conditionsNote: e.name === 'meet' ? 'Offered at a port bar when a main character is due.' : `Plays ${sc.days || 0} days after they join, after their earlier scenes${e.closed ? '; this reading plays in its place when their opinion of you is below friendly' : ''}.`, pacing: pacingOf.cast(e.name, sc, e.closed), ...registryRow(e.scene) });
       } else if (e.kind === 'captain' && e.name !== 'goodbye') {
         const note = e.name === 'trouble' ? `${CAPTAIN_BEAT_DAYS.trouble} days after you sign on, on a burn.` : e.name === 'secret:confide' ? `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is ${SECRET_TRUST} or more.` : `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is below ${SECRET_TRUST}.`;
-        add({ id: e.id, where: 'transit', file: fileOf['captain:' + e.key], belongs: `${e.key} (captain)`, on: captainOn(e.key), conditionsNote: note, ...registryRow(e.scene) });
+        add({ id: e.id, where: 'transit', file: fileOf['captain:' + e.key], belongs: `${e.key} (captain)`, on: captainOn(e.key), conditionsNote: note, pacing: pacingOf.captain(e.name.split(':')[0]), ...registryRow(e.scene) });
       } else if (e.kind === 'captain') {
         const g = e.scene.goodbye, note = e.name === 'trouble' ? `${CAPTAIN_BEAT_DAYS.trouble} days after you sign on, on a burn.`
           : e.name === 'secret:confide' ? `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is ${SECRET_TRUST} or more.`
           : e.name === 'secret:found' ? `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is below ${SECRET_TRUST}.` : 'When you leave the ship to buy your own.';
         const scene = g ? { title: g.title, text: ['cold', 'neutral', 'warm', 'crew', 'secret', 'xo', 'xoDead', 'repaid', 'parting'].filter(k => g[k]).map(k => `[${k}] ${g[k]}`).join('\n'), choices: g.choices } : e.scene;
-        add({ id: e.id, title: scene.title, where: g ? 'port' : 'transit', file: fileOf['captain:' + e.key], belongs: `${e.key} (captain)`, on: captainOn(e.key), conditionsNote: note, ...codeScene(scene) });
+        add({ id: e.id, title: scene.title, where: g ? 'port' : 'transit', file: fileOf['captain:' + e.key], belongs: `${e.key} (captain)`, on: captainOn(e.key), conditionsNote: note, pacing: { tier: null, weight: null, cooldown: 'plays once', trigger: note, editable: false }, ...codeScene(scene) });
       } else if (e.kind === 'work') {
         const d = e.def;
         add({
-          id: e.id, title: d.title, file: fileOf.work, belongs: `${d.post} (post)`, on: postOn(d.post), text: d.text, conditionsNote: `A problem at the ${d.post} post, for a hand who works it; not repeated within ${WORK_SEEN_DAYS} days.`,
+          id: e.id, title: d.title, file: fileOf.work, belongs: `${d.post} (post)`, on: postOn(d.post), text: d.text, pacing: pacingOf.work(d), conditionsNote: `A problem at the ${d.post} post, for a hand who works it; not repeated within ${WORK_SEEN_DAYS} days.`,
           choices: [{ label: d.careful[0], result: d.careful[1] }, { label: d.quick[0], result: outcome(d.quick[1], d.quick[2]) }],
         });
       } else if (e.kind === 'hand') {
         const d = e.def;
-        add({ id: e.id, title: d.id, file: fileOf.hand, belongs: `${d.group} (hired event)`, on: postOn(d.post), text: '', choices: [], codeNote: CODE_ALL, conditionsNote: `A ${d.group} event for a hired hand${d.post ? ` at the ${d.post} post` : ''}; its own conditions are written in code.` });
+        add({ id: e.id, title: d.id, file: fileOf.hand, belongs: `${d.group} (hired event)`, on: postOn(d.post), text: '', choices: [], codeNote: CODE_ALL, pacing: pacingOf.hand(d), conditionsNote: `A ${d.group} event for a hired hand${d.post ? ` at the ${d.post} post` : ''}; its own conditions are written in code.` });
       } else if (e.kind === 'ice') {
         const st = e.stage, choice = (label, c) => ({ label, result: outcome(c.win[2], c.lose[2]) });
         add({
-          id: e.id, title: st.title, file: fileOf.ice, belongs: 'ice run', conditionsNote: `Scene ${Number(e.id.slice(4))} of 3 on an ice run, once the captain takes one.`, text: st.open.map((t, n) => `Version ${n + 1}: ${t}`).join('\n'),
+          id: e.id, title: st.title, file: fileOf.ice, belongs: 'ice run', pacing: pacingOf.ice(), conditionsNote: `Scene ${Number(e.id.slice(4))} of 3 on an ice run, once the captain takes one.`, text: st.open.map((t, n) => `Version ${n + 1}: ${t}`).join('\n'),
           choices: [...st.general.map(c => choice(c.label, c)), ...Object.entries(st.post).map(([post, c]) => choice(`[${post}] ${c.label}`, c))],
         });
       } else {  // built by a function: no text to read, only what it is and when it plays
-        add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: e.id.startsWith('beats:') ? 'beats' : 'hired chapter', text: '', choices: [], codeNote: CODE_ALL, conditionsNote: e.when });
+        add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: e.id.startsWith('beats:') ? 'beats' : 'hired chapter', text: '', choices: [], codeNote: CODE_ALL, conditionsNote: e.when, pacing: { tier: null, weight: null, cooldown: 'by its own rule', trigger: e.when, editable: false } });
       }
     }
     return rows;
@@ -186,25 +202,21 @@
   const failing = when => Object.entries(when || {}).filter(([k]) => k !== 'chance').filter(([k, v]) => { try { return !CONDITIONS[k](v); } catch (e) { return true; } }).map(([k, v]) => `${k}: ${JSON.stringify(v)}`);
 
   // Starts a fresh test game in the state asked for, and opens the scene in the dialog. m: { id, overrides, setup }.
-  function play(m) {
-    useNewScenes(m.newScenes);  // the scenes written in the editor, not saved yet
-    const s = STORYLETS.find(x => x.id === m.id), reg = s ? null : hiredSceneRegistry().find(x => x.id === m.id && (x.kind === 'cast' || x.kind === 'captain') && x.name !== 'goodbye');
-    if (!s && !reg) return { error: `The game has no scene "${m.id}".` };
-    useOverrides(m.overrides);  // the unsaved edits, through the same layer the game reads (storylets.js)
-    const o = m.setup || {}, num = (v, d) => (Number.isFinite(Number(v)) && String(v).trim() !== '' ? Number(v) : d);
-    const place = planetNamed(o.place) ? o.place : 'Earth', at = planetNamed(place);
+  // A fresh test game in the state the page asked for, not yet placed anywhere; and the numbers it can set once it is (day, credits, standing, qualities).
+  const num = (v, d) => (Number.isFinite(Number(v)) && String(v).trim() !== '' ? Number(v) : d);
+  function beginGame(o, hiredOnly) {
     G.dialog = null; G.nextEvent = null; G.transit = null;
-    if (o.as === 'owner' && !reg) uatFresh({ credits: num(o.credits, 50000) });  // a hired scene needs a hired hand
+    if (o.as === 'owner' && !hiredOnly) uatFresh({ credits: num(o.credits, 50000) });  // a hired scene needs a hired hand
     else {
       // The game draws its two main characters from a pool; a preview takes the pair asked for.
       const pair = CAST_PAIRS[o.start] || CAST_PAIRS.earth, drawn = drawCastPair;
       window.drawCastPair = () => [...pair];
       try { startGame({ mode: 'hired', background: 'earth', post: o.post, captainKey: o.captain, credits: num(o.credits, undefined) }); } finally { window.drawCastPair = drawn; }
       G.dialog = null; G.nextEvent = null; G.state.uat = true;
+      if (G.state.story) G.state.story.next = 1e9;  // keep the Cold Water derelict out of the way, as the tester tools do (js/uat.js)
     }
-    // A scene in a burn is played on the way to the place (its `at` is the destination); one at a port, landed there.
-    const where = s ? s.where : reg.name === 'meet' ? 'port' : 'transit';
-    if (where === 'transit') uatBurn(at.sid === 'earth' ? 'Mars' : 'Earth', at.sid); else uatLand(place);
+  }
+  function tweakState(o) {
     const st = G.state;
     if (o.credits !== undefined && String(o.credits).trim() !== '') st.credits = num(o.credits, st.credits);
     if (String(o.day || '').trim() !== '') st.day = Math.max(1, num(o.day, st.day));
@@ -213,6 +225,68 @@
       const [name, value] = line.split('=').map(x => x.trim());
       if (name) (st.qualities = st.qualities || {})[name] = value === undefined || value === '' ? 1 : Number.isFinite(Number(value)) ? Number(value) : 1;
     }
+  }
+
+  // The frequency simulator (#341): plays the real pickHappening on fresh test games from the state asked for, for a number of burns (or landings, for a scene at a
+  // port), and counts what comes up. The numbers are a sample, with its size. The scene's own plays are counted where the game builds it (storyletEvent).
+  const mulberry = seed => { let a = seed >>> 0; return () => { a = (a + 0x6d2b79f5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; };
+  async function simulate(m) {
+    useNewScenes(m.newScenes);
+    const s = STORYLETS.find(x => x.id === m.id);
+    if (!s) return { error: `The game has no scene "${m.id}" that is drawn by weight.` };
+    useOverrides(m.overrides);
+    const o = m.setup || {}, seeds = Math.min(200, Math.max(1, Math.floor(num(m.seeds, 30)))), burns = Math.min(40, Math.max(1, Math.floor(num(m.burns, 10))));
+    const place = planetNamed(o.place) ? o.place : 'Earth', at = planetNamed(place), port = s.where === 'port';
+    const real = { random: Math.random, storyletEvent: window.storyletEvent, pickHappening: window.pickHappening };
+    const tally = { draws: 0, quiet: 0, events: 0, plays: 0, burnsWith: 0, titles: {} };
+    let counting = false, here = 0;
+    window.storyletEvent = sc => { if (counting && sc.id === m.id) here++; return real.storyletEvent(sc); };
+    // Setting a burn or a landing up draws happenings of its own (the landing handler); those are not part of the count, and take nothing from the scenes.
+    window.pickHappening = (w, p) => { if (!counting) return null; const ev = real.pickHappening(w, p); tally.draws++; if (ev) { tally.events++; tally.titles[ev.title] = (tally.titles[ev.title] || 0) + 1; } else tally.quiet++; return ev; };
+    try {
+      for (let seed = 1; seed <= seeds; seed++) {
+        Math.random = mulberry(seed * 7919 + 13);
+        counting = false;
+        beginGame(o, false); tweakState(o);
+        const st = G.state;
+        for (let b = 0; b < burns; b++) {
+          counting = false; here = 0;
+          if (port) { uatLand(place); counting = true; window.pickHappening('port', currentPlanet()); }
+          else {
+            uatLand(at.sid === 'earth' ? 'Mars' : 'Earth'); takeOff(); st.dest = at.sid; G.player.x = 6000; G.player.y = 0; tryBurn(); enterTransit();
+            const draws = G.transit.times.length; G.transit.times = []; G.transit.interceptPlanned = true;
+            counting = true;
+            for (let i = 0; i < draws; i++) window.pickHappening('transit');
+            counting = false; st.day += G.transit.days; G.transit = null; G.mode = 'landed';
+          }
+          counting = false;
+          tally.plays += here; if (here) tally.burnsWith++;
+          G.dialog = null; G.nextEvent = null;
+          if (port) st.day += 3;
+        }
+        await new Promise(r => setTimeout(r, 0));
+      }
+    } finally { Math.random = real.random; window.storyletEvent = real.storyletEvent; window.pickHappening = real.pickHappening; counting = false; }
+    const n = seeds * burns, p = tally.burnsWith / n;
+    return {
+      type: 'simulated', where: port ? 'landing' : 'burn', sample: { seeds, burns, total: n, draws: tally.draws }, quietShare: tally.draws ? tally.quiet / tally.draws : 0, eventsPerBurn: tally.events / n,
+      scene: { id: m.id, plays: tally.plays, perBurn: tally.plays / n, burnsWith: p, range: [Math.max(0, p - 1.96 * Math.sqrt(p * (1 - p) / n)), Math.min(1, p + 1.96 * Math.sqrt(p * (1 - p) / n))] },
+      top: Object.entries(tally.titles).sort((a, b) => b[1] - a[1]).slice(0, 8).map(([title, c]) => ({ title, perBurn: c / n })),
+    };
+  }
+
+  function play(m) {
+    useNewScenes(m.newScenes);  // the scenes written in the editor, not saved yet
+    const s = STORYLETS.find(x => x.id === m.id), reg = s ? null : hiredSceneRegistry().find(x => x.id === m.id && (x.kind === 'cast' || x.kind === 'captain') && x.name !== 'goodbye');
+    if (!s && !reg) return { error: `The game has no scene "${m.id}".` };
+    useOverrides(m.overrides);  // the unsaved edits, through the same layer the game reads (storylets.js)
+    const o = m.setup || {};
+    const place = planetNamed(o.place) ? o.place : 'Earth', at = planetNamed(place);
+    beginGame(o, !!reg);
+    // A scene in a burn is played on the way to the place (its `at` is the destination); one at a port, landed there.
+    const where = s ? s.where : reg.name === 'meet' ? 'port' : 'transit';
+    if (where === 'transit') uatBurn(at.sid === 'earth' ? 'Mars' : 'Earth', at.sid); else uatLand(place);
+    tweakState(o);
     if (reg) {  // a hired scene is played by its days and its place in the story: the preview opens it, with the regard that picks its reading
       if (reg.kind === 'cast') {
         const sc = CAST[reg.key].scenes[reg.name];
@@ -244,7 +318,8 @@
       return text;
     };
     window.addEventListener('message', ev => {
-      if (ev.source !== parent || !ev.data || ev.data.cmd !== 'play') return;
+      if (ev.source !== parent || !ev.data || (ev.data.cmd !== 'play' && ev.data.cmd !== 'simulate')) return;
+      if (ev.data.cmd === 'simulate') { simulate(ev.data).then(out => parent.postMessage({ mode: 'preview', type: 'simulated', ...out }, '*'), e => parent.postMessage({ mode: 'preview', type: 'simulated', error: String(e && e.message || e) }, '*')); return; }
       let out;
       try { out = play(ev.data); } catch (e) { out = { error: String(e && e.message || e) }; }
       parent.postMessage({ mode: 'preview', ...out }, '*');
@@ -287,8 +362,9 @@
     }
     for (const r of rows.filter(x => struct[x.id])) {  // the conditions, effects and links
       for (const [path, value] of structChanges(r, struct).out) {
-        const o = out[r.id] = out[r.id] || dict(), m = STRUCT_PATH.exec(path);
-        if (m) { o.choices = o.choices || dict(); (o.choices[m[1]] = o.choices[m[1]] || dict())[m[2]] = value; } else o.when = value;
+        const o = out[r.id] = out[r.id] || dict(), m = STRUCT_PATH.exec(path), rate = RATE_PATH.exec(path);
+        if (rate) o[rate[1]] = value;
+        else if (m) { o.choices = o.choices || dict(); (o.choices[m[1]] = o.choices[m[1]] || dict())[m[2]] = value; } else o.when = value;
       }
     }
     return out;
@@ -397,7 +473,15 @@
   const effectsEditable = (r, i) => !r.edit || !r.edit.choices[i] || r.edit.choices[i].effects !== false;  // a code choice of a hired scene keeps its effects in code
   const specTable = path => (/effects$/.test(path) ? EFFECT_SPEC : CONDITION_SPEC);
   const STRUCT_PATH = /^c(\d+)\.(when|effects|next)$/;
-  const structOf = (r, path) => { const m = STRUCT_PATH.exec(path); return m ? r.choices[m[1]][m[2]] : r.when; };
+  const RATE_PATH = /^rate\.(weight|every|off)$/;  // how often a color scene comes up (#341): scalars, kept as the text typed
+  const structOf = (r, path) => { const rate = RATE_PATH.exec(path); if (rate) return rate[1] === 'off' ? false : r.pacing[rate[1]]; const m = STRUCT_PATH.exec(path); return m ? r.choices[m[1]][m[2]] : r.when; };
+  // What is wrong with a rate typed in: '' if it is fine.
+  function rateError(r, field, text) {
+    const s = String(text).trim(), n = Number(s);
+    if (field === 'weight') return s !== '' && Number.isFinite(n) && n >= 0 && n <= 100 ? '' : 'needs a number from 0 to 100';
+    if (field === 'every') return s === '' || !Number.isInteger(n) || n < 0 || n > 365 ? 'needs a whole number of days from 0 to 365' : r.pacing.once ? 'it plays once, so it has no cooldown' : '';
+    return s === 'true' || s === 'false' ? '' : 'needs true or false';
+  }
   const toDrafts = (obj, table) => Object.entries(obj || {}).map(([k, v]) => [k, kindOf(table[k]).format(v)]);
   // A form's entries, read: { value, errors }, an error for each entry that does not parse.
   function readRules(drafts, table) {
@@ -426,6 +510,16 @@
   function structChanges(r, struct) {
     const out = [], problems = [];
     for (const [path, drafts] of Object.entries(struct[r.id] || {})) {
+      const rate = RATE_PATH.exec(path);
+      if (rate) {
+        const err = r.pacing && r.pacing.editable ? rateError(r, rate[1], drafts) : 'this scene is not drawn by weight';
+        if (err) problems.push(`${rate[1]}: ${err}`);
+        else {
+          const v = rate[1] === 'off' ? drafts === 'true' : Number(drafts);
+          if (v !== structOf(r, path)) out.push([path, v]);
+        }
+        continue;
+      }
       if (/next$/.test(path)) {
         const err = nextError(drafts);
         if (err) problems.push(`${path}: ${err}`);
@@ -454,6 +548,7 @@
     const struct = dict();
     for (const [id, o] of Object.entries(overrides || {})) {
       const mine = struct[id] = dict();
+      for (const f of ['weight', 'every', 'off']) if (o[f] !== undefined) mine[`rate.${f}`] = String(o[f]);
       if (o.when) mine.when = toDrafts(o.when, CONDITION_SPEC);
       for (const [i, c] of Object.entries(o.choices || {})) {
         if (c.when) mine[`c${i}.when`] = toDrafts(c.when, CONDITION_SPEC);
@@ -542,7 +637,7 @@
         ${r.registry && r.conditionsNote ? `<p>${esc(r.conditionsNote)}</p>` : ''}${r.registry && r.codeNote ? `<p class="note">${esc(r.codeNote)}</p>` : ''}
         <p class="hint">Placeholders such as {captain}, {planet} and {crew:pilot} are kept as typed.</p>
         <button data-action="revert-scene">Revert this scene to the shipped version</button>
-        ${formHtml(r, values)}${structHtml(r, struct)}${changesHtml(rows, values, struct)}`;
+        ${formHtml(r, values)}${structHtml(r, struct)}${pacingHtml(r, struct)}${changesHtml(rows, values, struct)}`;
     }
     return `
     <h2>${esc(r.title)}</h2>
@@ -551,6 +646,7 @@
     ${r.conditionsNote ? `<h3>When it plays</h3><p>${esc(r.conditionsNote)}</p><p class="hint">Its conditions and effects are written in code, and are read only until story 8.</p>` : ''}
     ${paragraphs(r.text)}
     ${r.choices.length ? `<h3>Choices</h3><ol>${r.choices.map(c => `<li><strong>${esc(c.label)}</strong>${c.result ? paragraphs(c.result) : ''}</li>`).join('')}</ol>` : ''}
+    ${pacingHtml(r)}
     <p class="hint">A code-written scene cannot be edited here until its text has an id (story 8).</p>`;
   }
 
@@ -573,6 +669,12 @@
         <fieldset><legend>Standing</legend>${opt.factions.map(f => `<label>${esc(f)} <input type="number" data-pv-rep="${esc(f)}" placeholder="0"></label>`).join('')}</fieldset>
         <label>Story qualities, one a line (name=number)<textarea data-pv="qualities" rows="3" placeholder="strike-day=1"></textarea></label>
         <button data-action="play" disabled>Play this scene</button>
+        <fieldset><legend>How often it comes up</legend>
+          <label>Games <input type="number" min="1" max="200" data-sim="seeds" value="30"></label>
+          <label>Burns each <input type="number" min="1" max="40" data-sim="burns" value="10"></label>
+          <button data-action="simulate" disabled>Simulate</button>
+          <div id="pv-sim" role="status"></div>
+        </fieldset>
       </div>
       <div id="pv-report" role="status"></div>
       <div id="pv-effects" role="status"></div>
@@ -592,6 +694,18 @@
     for (const c of m.shut) box.append(el('p', `Choice ${c.n} is shut:`, 'warn'), listEl(c.why));
     return box;
   }
+  const pct = x => `${(x * 100).toFixed(1)} percent`;
+  function simNode(m) {
+    const box = el('div');
+    if (m.error) { box.append(el('p', m.error, 'note')); return box; }
+    const unit = m.where, s = m.scene;
+    box.append(el('p', `Sample: ${m.sample.seeds} games of ${m.sample.burns} ${unit}s, ${m.sample.total} ${unit}s and ${m.sample.draws} draws in all.`, 'hint'));
+    box.append(el('p', s.plays ? `This scene played ${s.plays} times: ${s.perBurn.toFixed(3)} a ${unit}. It came up in ${pct(s.burnsWith)} of ${unit}s (a range of ${pct(s.range[0])} to ${pct(s.range[1])}).` : `This scene did not play once in ${m.sample.total} ${unit}s.`, s.plays ? 'ok' : 'warn'));
+    box.append(el('p', `A draw was quiet ${pct(m.quietShare)} of the time. Events a ${unit}: ${m.eventsPerBurn.toFixed(2)}.`));
+    if (m.top.length) { box.append(el('p', `What came up most, a ${unit}:`, 'hint'), listEl(m.top.map(x => `${x.title}: ${x.perBurn.toFixed(3)}`))); }
+    box.append(el('p', 'A sample from this state, not a rule of the game. It is not part of the tests.', 'hint'));
+    return box;
+  }
   function effectsNode(m) {
     const box = el('div');
     box.append(el('h3', `You chose: ${m.label}`), m.lines.length ? listEl(m.lines) : el('p', 'Nothing it tracks changed.', 'hint'));
@@ -603,7 +717,7 @@
   // ---------- keeping, exporting, importing and reverting (#340) ----------
   // js/overrides.js as a whole: its two comments are copied here, and tests/editorsave.test.js checks that an export with no changes is the file as it
   // is, so a change to the comments there is a change here. The editor never writes the file; it hands over this text to download.
-  const FILE_HEAD = "'use strict';\n\n// The scene editor's changes to the shipped scenes (#336, #338), and nothing else. Keyed by a storylet's id, then by what changes: title, text,\n// `when` (the scene's conditions, replaced whole), and choices, which is keyed by the choice's place in the scene's list (0 is the first), each\n// with a label and/or a result line, and `when`, `effects` (each replaced whole) and `next` (a scene's id, or null for no link):\n//   { 'port-mars-front': { title: '...', when: { day: 5 }, choices: { 0: { label: '...', result: '...', effects: { credits: 100 }, next: 'port-mars-sky' } } } }\n// storyletEvent (js/storylets.js) puts these in front of the shipped scene when it builds it. Empty means the shipped game. An id that is not a\n// scene, or a word that is not text, is left out with one console warning. Conditions, effects and links are held to the check addStorylet\n// makes: a scene's changes to them that it would refuse are all left out.\n";
+  const FILE_HEAD = "'use strict';\n\n// The scene editor's changes to the shipped scenes (#336, #338), and nothing else. Keyed by a storylet's id, then by what changes: title, text,\n// `when` (the scene's conditions, replaced whole), and choices, which is keyed by the choice's place in the scene's list (0 is the first), each\n// with a label and/or a result line, and `when`, `effects` (each replaced whole) and `next` (a scene's id, or null for no link). A color scene\n// (one the game draws by weight) also takes `weight` (0 to 100), `every` (days before it can come round again) and `off: true`:\n//   { 'port-mars-front': { title: '...', when: { day: 5 }, choices: { 0: { label: '...', result: '...', effects: { credits: 100 }, next: 'port-mars-sky' } } } }\n// storyletEvent (js/storylets.js) puts these in front of the shipped scene when it builds it. Empty means the shipped game. An id that is not a\n// scene, or a word that is not text, is left out with one console warning. Conditions, effects and links are held to the check addStorylet\n// makes: a scene's changes to them that it would refuse are all left out.\n";
   const FILE_MID = "\n// Scenes the editor wrote from scratch (#339): a list of storylets, each as addStorylet takes it ({ id, where, title, text, when, choices: [...] }).\n// They are added to the game's scenes when the first game starts, through addStorylet, so one it would refuse (an unknown condition, a repeated id)\n// is logged and left out.\n";
   const exportText = (overrides, newScenes) => `${FILE_HEAD}const SCENE_OVERRIDES = ${JSON.stringify(overrides, null, 2)};\n${FILE_MID}const NEW_SCENES = ${JSON.stringify(newScenes, null, 2)};\n`;
 
@@ -652,6 +766,9 @@
             if (k === 'text' && !r.edit.text) refuse(`${id} text: it has parts that depend on conditions, so it is edited in code`);
             else if (!words(v)) refuse(`${id} ${k}: needs some text of up to ${LIMIT.text} characters`);
             else { keep[k] = v; what.push(k); }
+          } else if (k === 'weight' || k === 'every' || k === 'off') {
+            const bad = r.registry || !r.pacing || !r.pacing.editable ? 'this scene is not drawn by weight' : rateError(r, k, String(v));
+            if (bad || (k === 'off' && v !== true) || typeof v === 'string') refuse(`${id} ${k}: ${bad || 'needs a number (or true for off)'}`); else { keep[k] = v; what.push(k); }
           } else if (k === 'when') {
             const e = r.registry ? 'a hired scene plays by its days, not by conditions' : rulesError(v, CONDITION_SPEC, lists.conditions);
             if (e) refuse(`${id} when: ${e}`); else { keep.when = v; what.push('conditions'); }
@@ -701,7 +818,7 @@
       if (!isObj(s) || s.v !== 1 || !isObj(s.values) || !isObj(s.struct) || !Array.isArray(s.newRows)) return null;
       const values = dict(), struct = dict();
       for (const [id, v] of Object.entries(s.values)) if (isObj(v)) values[id] = Object.assign(dict(), Object.fromEntries(Object.entries(v).filter(([, x]) => typeof x === 'string')));
-      for (const [id, v] of Object.entries(s.struct)) if (isObj(v)) struct[id] = Object.assign(dict(), Object.fromEntries(Object.entries(v).filter(([p, x]) => typeof x === 'string' ? /next$/.test(p) : Array.isArray(x) && x.every(e => Array.isArray(e) && typeof e[0] === 'string' && typeof e[1] === 'string'))));
+      for (const [id, v] of Object.entries(s.struct)) if (isObj(v)) struct[id] = Object.assign(dict(), Object.fromEntries(Object.entries(v).filter(([p, x]) => typeof x === 'string' ? /next$|^rate\.(weight|every|off)$/.test(p) : Array.isArray(x) && x.every(e => Array.isArray(e) && typeof e[0] === 'string' && typeof e[1] === 'string'))));
       const newRows = s.newRows.filter(r => isObj(r) && typeof r.id === 'string' && /^new:\d+$/.test(r.id) && r.isNew === true && Array.isArray(r.choices))
         .map(r => ({ ...newRow(), ...r, choices: r.choices.map(c => ({ ...newChoice(), ...(isObj(c) ? c : {}) })) }));
       return { values, struct, newRows, newKey: Number(s.newKey) || 1, base: typeof s.base === 'string' ? s.base : '' };
@@ -791,6 +908,7 @@
       choices: r.choices.map(c => ({ label: c.label, next: c.next || '', effects: c.effects || {} })) };
     // What is typed, even where it has a problem, so a link to a scene that is not there still shows in the chain.
     for (const [path, drafts] of Object.entries(struct[r.id] || {})) {
+      if (RATE_PATH.test(path)) continue;
       const s = STRUCT_PATH.exec(path);
       if (s && s[2] === 'next') { m.choices[s[1]].next = drafts.trim(); continue; }
       const value = readRules(drafts, specTable(path)).value;
@@ -870,6 +988,22 @@
   }
   const listEl2 = items => `<ul>${items.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
 
+
+
+  // How often a scene comes up, as the page shows it (#341): the facts for every scene, and for a color storylet the boxes that change them.
+  const TIER = { 0: '0, the story', 1: '1, due now', 2: '2, drawn by weight' };
+  function pacingHtml(r, struct = dict()) {
+    const p = r.pacing;
+    if (!p) return '';
+    const info = `<dl class="pacing"><dt>Tier</dt><dd>${esc(p.tier === null ? 'its own rule' : TIER[p.tier])}</dd><dt>Weight</dt><dd>${esc(p.weight === null ? 'none: it is picked by priority' : p.weight)}</dd><dt>Cooldown</dt><dd>${esc(p.cooldown)}</dd></dl><p class="hint">${esc(p.trigger)}</p>`;
+    if (!p.editable) return `<h3>How often it comes up</h3>${info}<p class="hint">Read only: ${p.tier === 0 ? 'a story scene is picked by priority, not by weight' : 'this scene is due by the game\'s state, and is not drawn by weight'}.</p>`;
+    const mine = struct[r.id] || {}, draft = f => (mine[`rate.${f}`] !== undefined ? mine[`rate.${f}`] : f === 'off' ? 'false' : String(structOf(r, `rate.${f}`)));
+    const warn = f => (mine[`rate.${f}`] !== undefined ? rateError(r, f, mine[`rate.${f}`]) : '');
+    return `<h3>How often it comes up</h3>${info}
+      <div class="rule"><span class="key">Weight</span><input type="number" min="0" max="100" step="any" data-rate="weight" value="${esc(draft('weight'))}" aria-label="Weight"><span class="hint">1 is as likely as another scene; 0 never</span><div class="warn" data-rerr="rate.weight">${esc(warn('weight'))}</div></div>
+      ${p.once ? '<p class="hint">It plays once, so it has no cooldown.</p>' : `<div class="rule"><span class="key">Cooldown</span><input type="number" min="0" max="365" step="1" data-rate="every" value="${esc(draft('every'))}" aria-label="Cooldown in days"><span class="hint">days before it can come round again</span><div class="warn" data-rerr="rate.every">${esc(warn('every'))}</div></div>`}
+      <label><input type="checkbox" data-rate="off"${draft('off') === 'true' ? ' checked' : ''}> Never draw this scene</label>`;
+  }
 
   const noticeHtml = (title, body, buttons) => `<div class="notice"><h3>${esc(title)}</h3>${body}<div>${buttons}</div></div>`;
   const shippedHtml = r => `<div class="shipped"><span class="hint">Shipped</span><p><strong>${esc(r.title)}</strong></p>${paragraphs(r.text)}${r.choices.length ? `<ol>${r.choices.map(c => `<li>${esc(c.label)}${c.result ? `: ${esc(c.result)}` : ''}</li>`).join('')}</ol>` : ''}</div>`;
@@ -961,7 +1095,7 @@
     app.insertAdjacentHTML('beforeend', datalists + '<datalist id="dl-scenes"></datalist>');
     const refreshScenes = () => { app.querySelector('#dl-scenes').innerHTML = sceneIds().map(x => `<option value="${esc(x)}">`).join(''); };
     refreshScenes();
-    const setup = SceneIndex.setup = { ...PREVIEW_DEFAULTS, rep: {} };
+    const setup = SceneIndex.setup = { ...PREVIEW_DEFAULTS, rep: {} }, simSetup = SceneIndex.simSetup = { seeds: '30', burns: '10' };
     const models = () => everyRow().filter(r => isStorylet(r) || r.isNew).map(r => modelOf(r, struct));
     const renderList = () => {
       const all = everyRow(), shown = filterRows(all, state), edited = new Set([...Object.keys(overridesFrom(rows, values, struct))]);
@@ -978,6 +1112,7 @@
     const syncPlay = () => {
       const row = everyRow().find(r => r.id === state.id), ready = !!row && editable(row) && (!row.isNew || !newProblems(row, struct, takenFor(row)).length);
       app.querySelector('[data-action="play"]').disabled = !ready;
+      app.querySelector('[data-action="simulate"]').disabled = !(ready && row && (isStorylet(row) || row.isNew));
       app.querySelector('#pv-scene').textContent = ready ? `Scene: ${row.title} (${row.isNew ? row.sceneId.trim() : row.id})` : row && row.isNew ? 'This new scene has problems the game would refuse. Fix them to play it.' : 'Choose a data scene to play it in the game\'s own dialog, from the state below. It starts a fresh test game that is never saved.';
     };
     const update = () => {
@@ -1011,6 +1146,7 @@
       if (!f || source !== f.contentWindow) return;
       if (m.type === 'ready') { previewReady = true; if (pending) { f.contentWindow.postMessage(pending, '*'); pending = null; } }
       else if (m.type === 'chose') app.querySelector('#pv-effects').replaceChildren(effectsNode(m));
+      else if (m.type === 'simulated') app.querySelector('#pv-sim').replaceChildren(simNode(m));
       else app.querySelector('#pv-report').replaceChildren(reportNode(m));
     };
     const here = () => everyRow().find(r => r.id === state.id);
@@ -1025,7 +1161,8 @@
     const warnFor = key => [...app.querySelectorAll('[data-rerr]')].find(e => e.dataset.rerr === key);
     app.addEventListener('input', e => {
       const t = e.target, d = t.dataset || {};
-      if (d.pv) setup[d.pv] = t.value;
+      if (d.sim) simSetup[d.sim] = t.value;
+      else if (d.pv) setup[d.pv] = t.value;
       else if (d.pvRep) setup.rep[d.pvRep] = t.value;
       else if (d.path) {  // a field of the form: keep the focus, so only its flag and the changes are redrawn
         (values[state.id] = values[state.id] || dict())[d.path] = t.value;
@@ -1036,6 +1173,12 @@
         entry[1] = t.value;
         const w = warnFor(`${d.rpath}|${d.rkey}`);
         if (w) w.textContent = readRules([entry], specTable(d.rpath)).errors[d.rkey] || '';
+        refresh();
+      } else if (d.rate) {  // how often a color scene comes up
+        const key = `rate.${d.rate}`, text = t.type === 'checkbox' ? String(t.checked) : t.value;
+        (struct[state.id] = struct[state.id] || dict())[key] = text;
+        const w = warnFor(key);
+        if (w) w.textContent = rateError(here(), d.rate, text);
         refresh();
       } else if (d.rnext) {
         touch(here(), d.rnext, struct)[d.rnext] = t.value;
@@ -1125,7 +1268,10 @@
         update(); refreshScenes();
       } else if (action === 'add-choice' && row && row.isNew) { row.choices.push(newChoice()); update(); }
       else if (action === 'drop-choice' && row && row.isNew) { dropChoice(row, Number(e.target.closest('[data-i]').dataset.i), struct); update(); }
-      else if (action === 'play' && row && editable(row)) {
+      else if (action === 'simulate' && row && (isStorylet(row) || row.isNew)) {
+        app.querySelector('#pv-sim').replaceChildren(el('p', 'Running...', 'hint'));
+        send({ cmd: 'simulate', id: row.isNew ? row.sceneId.trim() : row.id, overrides: overridesFrom(rows, values, struct), newScenes: newDefs(), seeds: simSetup.seeds, burns: simSetup.burns, setup: { ...setup, place: placeFor(row) } });
+      } else if (action === 'play' && row && editable(row)) {
         app.querySelector('#pv-effects').replaceChildren(); app.querySelector('#pv-report').replaceChildren();
         send({ cmd: 'play', id: row.isNew ? row.sceneId.trim() : row.id, overrides: overridesFrom(rows, values, struct), newScenes: newDefs(), setup: { ...setup, place: placeFor(row), ...(row.registry ? hiredFor(row) : {}) } });
       }
@@ -1168,6 +1314,6 @@
     }
   }
 
-  const SceneIndex = window.SceneIndex = { SCRIPTS, esc, plain, filterRows, tableHtml, detailHtml, overridesFrom, valuesFrom, fileText, badPlaceholders, reportNode, effectsNode, structFrom, kindOf, readRules, parseImport, planImport, exportText, readSnapshot, FILE_HEAD, CONDITION_SPEC, EFFECT_SPEC, roundTrips, chainOf, modelOf, newSceneDef, chainHtml, newSceneHtml, draftFromDef, newProblems, rows: null, values: null, struct: null, setup: null };
+  const SceneIndex = window.SceneIndex = { SCRIPTS, esc, plain, filterRows, tableHtml, detailHtml, overridesFrom, valuesFrom, fileText, badPlaceholders, reportNode, effectsNode, simNode, structFrom, kindOf, readRules, parseImport, planImport, exportText, readSnapshot, FILE_HEAD, CONDITION_SPEC, EFFECT_SPEC, roundTrips, chainOf, modelOf, newSceneDef, chainHtml, newSceneHtml, draftFromDef, newProblems, rows: null, values: null, struct: null, setup: null };
   start();
 })();

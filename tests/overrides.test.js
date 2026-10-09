@@ -80,7 +80,7 @@ test('an unknown id or a value of the wrong type is left out, with one warning t
     console.warn = (...a) => warnings.push(a.join(' '));
     const clean = cleanOverrides({
       'no-such-scene': { title: 'x' },
-      'port-mars-sky': { title: 42, text: 'Kept.', choices: { 0: { label: ['no'], result: 'Also kept.' }, 9: { label: 'x' }, one: { label: 'x' } }, weight: 3 },
+      'port-mars-sky': { title: 42, text: 'Kept.', choices: { 0: { label: ['no'], result: 'Also kept.' }, 9: { label: 'x' }, one: { label: 'x' } }, priority: 3 },
       'port-mars-front': 'not an object',
     });
     console.warn = real;
@@ -89,7 +89,7 @@ test('an unknown id or a value of the wrong type is left out, with one warning t
   await g.done();
   assert.deepEqual(r.clean, { 'port-mars-sky': { text: 'Kept.', choices: { 0: { result: 'Also kept.' } } } });
   assert.equal(r.warnings.length, 1);
-  for (const part of ['unknown scene "no-such-scene"', '"port-mars-sky".title is not text', 'has no choice 9', 'has no choice one', 'choice 0 label is not text', 'has no "weight"', '"port-mars-front" is not an object']) {
+  for (const part of ['unknown scene "no-such-scene"', '"port-mars-sky".title is not text', 'has no choice 9', 'has no choice one', 'choice 0 label is not text', 'has no "priority"', '"port-mars-front" is not an object']) {
     assert.ok(r.warnings[0].includes(part), `${part} in: ${r.warnings[0]}`);
   }
 });
@@ -429,4 +429,87 @@ test('an override for a hired scene the game would not take is left out, with on
   assert.deepEqual(r.clean, { 'cast:cato:intro': { title: 'Kept', choices: { 0: { label: 'Kept label' } } }, 'cast:ines:intro': { choices: { 0: { result: 'Kept line.' } } }, 'cast:cato:mid1': { choices: { 0: { label: 'Kept too' } } } });
   assert.equal(r.warnings.length, 1);
   for (const part of ['has no "when"', 'choice 0 has no "when"', 'choice 0 has no "next"', 'runs code, so its effects are not edited', 'effects left out: effect castLike nobody is not a main character', 'unknown scene "cast:nobody:intro"']) assert.ok(r.warnings[0].includes(part), `${part} in ${r.warnings[0]}`);
+});
+
+// ---------- how often a scene comes up (#341) ----------
+
+test('with every weight 1 the storylet pick is the pick it always was, draw for draw', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey: 'hester', credits: 5000 }); G.dialog = null;
+    G.state.day = 40;
+    const oldPick = where => {  // pickStorylet as it was before weights: a uniform pick among the eligible of the top priority
+      const ok = STORYLETS.filter(s => s.where === where && !s.chained && !(s.once && quality(`seen:${s.id}`)) && !(s.every && quality(`last:${s.id}`) && G.state.day - quality(`last:${s.id}`) < s.every) && meets(s.when));
+      const top = Math.max(...ok.map(s => s.priority));
+      return pick(ok.filter(s => s.priority === top));
+    };
+    const same = [];
+    let spread = new Set();
+    for (let seed = 1; seed <= 300; seed++) {
+      __seed(seed); const a = pickStorylet('port'); __seed(seed); const b = oldPick('port');
+      same.push((a ? a.id : '') === (b ? b.id : '')); if (a) spread.add(a.id);
+    }
+    return { all: same.every(Boolean), n: same.length, spread: spread.size };
+  });
+  await g.done();
+  assert.equal(r.all, true);
+  assert.ok(r.spread > 3, `${r.spread} different scenes came up`);
+});
+
+test('a weight, a cooldown and an off switch from the file change what comes up, and nothing else', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey: 'hester', credits: 5000 }); G.dialog = null; G.state.day = 40;
+    const a = 'port-mars-sky', b = 'port-mars-front';
+    const only = ids => { for (const s of STORYLETS) s.chained = !ids.includes(s.id) && s.where === 'port' ? true : s.chained; };
+    const wasChained = STORYLETS.map(s => s.chained);
+    only([a, b]);
+    for (const s of STORYLETS.filter(x => [a, b].includes(x.id))) s.when = { chance: 1 };
+    const draw = n => { const c = { [a]: 0, [b]: 0 }; for (let i = 0; i < n; i++) { __seed(i + 1); const s = pickStorylet('port'); if (s) c[s.id]++; } return c; };
+    const even = draw(400);
+    useOverrides({ [a]: { weight: 3 } }); const heavy = draw(400);
+    useOverrides({ [a]: { weight: 0 } }); const none = draw(100);
+    useOverrides({ [b]: { off: true } }); const off = draw(100);
+    useOverrides({ [a]: { every: 100 } });
+    const s = STORYLETS.find(x => x.id === a);
+    G.state.qualities = G.state.qualities || {}; G.state.qualities[`last:${a}`] = G.state.day - 60;
+    useOverrides({}); const free = (G.state.day - 60 < s.every); // shipped cooldown 25: free again after 60 days
+    useOverrides({ [a]: { every: 100 } }); __seed(5); const stillWaiting = pickStorylet('port') === null || pickStorylet('port').id !== a;
+    STORYLETS.forEach((x, i) => { x.chained = wasChained[i]; });
+    return { even, heavy, none, off, free: !free, stillWaiting, shipped: STORYLETS.find(x => x.id === a).every };
+  });
+  await g.done();
+  assert.ok(Math.abs(r.even['port-mars-sky'] - 200) < 50, JSON.stringify(r.even));
+  assert.ok(r.heavy['port-mars-sky'] > 270, `weight 3 against 1: ${JSON.stringify(r.heavy)}`);
+  assert.equal(r.none['port-mars-sky'], 0);
+  assert.equal(r.off['port-mars-front'], 0);
+  assert.equal(r.stillWaiting, true, 'a longer cooldown keeps it waiting');
+  assert.equal(r.shipped, 25, 'the scene itself is as shipped');
+});
+
+test('a rate the game would not take is left out, with one warning, and a story scene has none', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    const story = STORYLETS.find(s => s.priority > 0).id, once = 'probe-once';
+    addStorylet({ id: once, where: 'port', title: 't', text: 't', choices: [{ label: 'x' }] });  // plays once, as a scene does unless it says otherwise
+    const warnings = [], real = console.warn; console.warn = m => warnings.push(m);
+    const clean = cleanOverrides({
+      'port-mars-sky': { weight: 2.5, every: 30, off: true },
+      'port-mars-front': { weight: -1, every: 1.5, off: false },
+      [story]: { weight: 2, title: 'Kept' },
+      [once]: { every: 10 },
+      'cast:cato:intro': { weight: 2 },
+    });
+    console.warn = real;
+    const rate = (id, fx) => { useOverrides(fx); return sceneRate(STORYLETS.find(s => s.id === id)); };
+    return { clean, warnings, plain: rate('port-mars-sky', {}), changed: rate('port-mars-sky', { 'port-mars-sky': { weight: 4, off: true, every: 40 } }), story, once,
+      bad: storyletProblems({ id: 'p', where: 'port', title: 't', text: 't', weight: -2, every: 1.5, choices: [{ label: 'x' }] }) };
+  });
+  await g.done();
+  assert.deepEqual(r.clean, { 'port-mars-sky': { weight: 2.5, every: 30, off: true }, [r.story]: { title: 'Kept' } });
+  assert.equal(r.warnings.length, 1);
+  for (const part of ['"port-mars-front".weight needs a number from 0 to 100', '"port-mars-front".every needs a whole number of days', '"port-mars-front".off needs true', 'a story scene is picked by priority, not by weight', 'plays once, so it has no cooldown', 'a hired scene is drawn by its days']) assert.ok(r.warnings[0].includes(part), `${part} in ${r.warnings[0]}`);
+  assert.deepEqual(r.plain, { weight: 1, every: 25, off: false });
+  assert.deepEqual(r.changed, { weight: 4, every: 40, off: true });
+  assert.deepEqual(r.bad, ['weight must be a number of 0 or more', 'every must be a whole number of days']);
 });
