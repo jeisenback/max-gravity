@@ -201,7 +201,7 @@ function main(args, { root, out }) {
     return 0;
   }
   if (args.includes('--compare')) {
-    if (!fs.existsSync(baseline)) { out('no baseline yet: run `npm run prose -- --write` first'); return 1; }
+    if (!fs.existsSync(baseline)) { out('no baseline yet: run `npm run prose -- --write` first'); return 0; }  // the report never fails a script (#431)
     out(compare(JSON.parse(fs.readFileSync(baseline, 'utf8')), result));
     return 0;
   }

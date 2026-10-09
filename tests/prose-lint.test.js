@@ -83,7 +83,7 @@ test('narrativeFiles lists the real narrative files and nothing from tests', () 
 test('main writes a baseline, compares to it, and explains when there is none', () => {
   const root = tmp({ 'js/cast.js': "const a = 'He nods and sits down at the table.';" });
   const lines = []; const out = s => lines.push(s);
-  assert.equal(main(['--compare'], { root, out }), 1);
+  assert.equal(main(['--compare'], { root, out }), 0, 'the report never fails a script, so a missing baseline exits 0 (#431)');
   assert.ok(lines.join('\n').includes('no baseline') && lines.join('\n').includes('--write'));
   assert.equal(main(['--write'], { root, out }), 0);
   assert.equal(JSON.parse(fs.readFileSync(path.join(root, 'docs/prose-baseline.json'), 'utf8')).total.strings, 1);
