@@ -462,11 +462,9 @@ function relationshipScene() {
       choices: [
         { label: 'Put them on the same rotation', run() { addBond(a, b, 2); like(a.p, 1, null); like(b.p, 1, null); return (
             `You pencil them onto the same rotation, and hand over the new roster, without comment. ${A} pretends not to be pleased, and studies the ` +
-            `paper with immense, fake seriousness. ${B} doesn't bother pretending, and beams, openly, and squeezes ${A}'s arm, and is immediately ` +
-            `embarrassed. It is very sweet, and it is going to be a problem, and you feel, for the moment, quite good about it.`); } },
+            `paper as if it were a contract. ${B} does not bother pretending, and grins, and squeezes ${A}'s arm, and then examines the ceiling.`); } },
         { label: 'Leave the rotation alone', run: () => ('You leave the roster as it is, and say nothing, and, by the end of the week, they have ' +
-            'found each other on the same watch anyway, by a route that involves three trades and a forged note. Some things find their own way. You ' +
-            'pretend, at the next meal, not to notice, and everyone, magnificently, does the same.') },
+            'found each other on the same watch anyway, by a route that involves three trades and a forged note. At the next meal you pretend not to notice, and everyone at the table pretends with you, at some length.') },
       ] }));
     if ((n <= -2 || clash(a, b)) && !isCooled(a, b, 'feud', 45) && relReady('feud')) scenes.push(() => {
       cool(a, b, 'feud'); relMark('feud');
@@ -562,9 +560,7 @@ function relationshipScene() {
         hired() ? { label: '"That is between the two of you."', run() { like(a.p, -1, null); return `${a.p.first} nods, and says, "Right. Sorry," and goes. An hour later you hear them ask the cook the same question, in a lower voice.`; } }
           : { label: '"Keep your head down and do your job."', run() { like(a.p, -1, null); return `${a.p.first} nods, and says, "Aye, captain," and goes. For a while, ${a.p.first} is brisk and correct, and answers in single words.`; } },
         { label: `"What's ${b.p.first} really like?"`, run() { like(a.p, 1, null); return (`"${b.p.first}? ${(b.p.traits || []).length ? `${TRAITS[b.p.traits[0]].adj[0].toUpperCase()}${TRAITS[b.p.traits[0]].adj.slice(1)}, mostly. ` : ''}Watches ` +
-            `too much ${GENRES[tastes(b).genre]}. Would go down with the ship for you, though." ${a.p.first} stops, and blinks, and seems surprised to ` +
-            `have said it, and then, slowly, embarrassed, and then, oddly, proud, and looks at the deck. "Anyway," they say. "That is ` +
-            `what ${b.p.first} is like." It is, you realize, the most honest thing anyone has said to you all week.`); } },
+            `too much ${GENRES[tastes(b).genre]}. Would go down with the ship for you, though." ${a.p.first} stops, and blinks, and looks at the deck. "Anyway," they say. "That is what ${b.p.first} is like."`); } },
       ] }));
   }
   // A friend asks you to cover their watch: you learn their post for a night, and they owe you one.
@@ -618,7 +614,7 @@ function welcomeBack() {
   return {
     title: 'Welcome Back', text: `${p.first} ${p.last} settles into the same berth as last time.${mem ? ` "Last time, ${mem.charAt(0).toLowerCase()}${mem.slice(1)}"` : ''}${friends.length ? ` ${names(friends)} ${friends.length > 1 ? 'have' : 'has'} saved them the good mug.` : ''}`,
     choices: [
-      { label: '"Good to have you aboard again."', run() { like(p, 1, 'The captain welcomed me back.'); for (const f of friends) addBond(f, me, 1); return `${p.first} beams. Regulars are what keep a ship like this flying.`; } },
+      { label: '"Good to have you aboard again."', run() { like(p, 1, 'The captain welcomed me back.'); for (const f of friends) addBond(f, me, 1); return `${p.first} grins and goes straight for the good mug.`; } },
     ],
   };
 }
