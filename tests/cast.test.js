@@ -107,7 +107,7 @@ test('every authored scene is complete: a title, text, two choices (and a gated 
     return out;
   });
   assert.deepEqual(r.filter(x => x.bad.length), []);
-  assert.equal(r.length, 54, 'six characters, five scenes each, the pivots of Yelena, Ines, Tomas and Bexa, and the first officers\' five each');
+  assert.equal(r.length, 55, 'six characters, five scenes each, the pivots of Yelena, Ines, Tomas, Bexa and Ruben, and the first officers\' five each');
   await done();
 });
 
@@ -130,7 +130,7 @@ test('every choice of every scene runs and says what happened', async () => {
     return out;
   });
   assert.deepEqual(r.filter(x => !x.ok), []);
-  assert.equal(r.length, 118, 'six characters, five scenes, two choices, and the pivots\' three; and the first officers\' five scenes each; and the two gated choices of Ines and Tomas');
+  assert.equal(r.length, 121, 'six characters, five scenes, two choices, and the pivots\' three; and the first officers\' five scenes each; and the two gated choices of Ines and Tomas');
   await done();
 });
 
@@ -496,6 +496,39 @@ test('Bexa\'s pivot, The Tow, follows the state, and calling it off costs opinio
   assert.deepEqual({ delta: r.off.delta, dead: r.off.dead, marks: r.off.marks, bench: r.off.bench }, { delta: -3, dead: false, marks: 0, bench: true }, 'cutting the line benches her and costs opinion only');
   assert.match(r.dieP.raw, /you promised her/); assert.doesNotMatch(r.die.raw, /you promised her/);
   assert.match(r.shown.low, /tanks are low/); assert.match(r.shown.full, /tanks are over half/);
+  await done();
+});
+
+test('Ruben\'s pivot, The Last Relay, follows the state, and calling it off costs opinion only (#130)', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const run = ({ medic = false, hull = 'good', named = false, backup = false, promised = false, pick = null }) => {
+      __seed(1); start({ mode: 'hired', post: 'gunner' }); postsOnly();
+      const st = G.state; st.injured = {};
+      castPerson('ruben'); castRec('ruben').since = st.day;
+      if (medic) { const m = makeCrewCandidate('earth'); m.role = 'medic'; m.skill = 1; registerPerson(m); st.crew.push(m.id); }
+      st.armor = hull === 'good' ? ship().armor : Math.floor(ship().armor * 0.5);
+      if (named) castFlag('ruben', 'councillor');
+      if (promised) castFlag('ruben', 'promised');
+      const p = person('c:ruben'), before = p.opinion;
+      const text = CAST.ruben.scenes.pivot.choices[pick !== null ? pick : backup ? 1 : 0].run(), m = (st.memorial || [])[0];
+      return { text: typeof text === 'string' && text.length > 40, dead: castDead('ruben'), marks: (castRec('ruben').marks || []).length, cause: m ? m.cause : null, delta: p.opinion - before, raw: text, bench: !!castRec('ruben').flags.benched };
+    };
+    const shown = (() => { __seed(1); start({ mode: 'hired', post: 'gunner' }); postsOnly(); castPerson('ruben'); const a = CAST.ruben.scenes.pivot.text; castFlag('ruben', 'councillor'); return { without: a, withName: CAST.ruben.scenes.pivot.text }; })();
+    return {
+      live: run({ medic: true, named: true }), mark: run({ named: true }), die: run({ hull: 'low' }), backup: run({ hull: 'low', named: true, backup: true }),
+      noName: run({ medic: true }), off: run({ pick: 2, promised: true }), dieP: run({ hull: 'low', promised: true }), shown,
+    };
+  });
+  assert.deepEqual({ ...r.live, raw: 0 }, { text: true, dead: false, marks: 0, cause: null, delta: 2, raw: 0, bench: false }, 'medic, hull and the councillor: he lives');
+  assert.equal(r.mark.dead, false); assert.equal(r.mark.marks, 1, 'two points: marked');
+  assert.equal(r.die.dead, true, 'one point: dies'); assert.match(r.die.cause, /^Went out to the north mast to hold the band open near /);
+  assert.equal(r.backup.dead, false, 'a second person is a point'); assert.equal(r.backup.marks, 1);
+  assert.equal(r.noName.marks, 1, 'without the councillor he loses a point');
+  assert.deepEqual({ delta: r.off.delta, dead: r.off.dead, marks: r.off.marks, bench: r.off.bench }, { delta: -3, dead: false, marks: 0, bench: true }, 'holding him at the console benches him and costs opinion only');
+  assert.match(r.dieP.raw, /room for a relay you told him/); assert.doesNotMatch(r.die.raw, /room for a relay you told him/);
+  assert.match(r.shown.without, /No councillor on Hellas has your name/); assert.match(r.shown.withName, /Councillor Reyes\'s name is on the relay/);
   await done();
 });
 
