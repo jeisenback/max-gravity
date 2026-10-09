@@ -72,8 +72,10 @@ test('the hired chapter\'s code-written scenes are listed as code, and say where
   assert.match(row('captain:dov:trouble').file, /captains\/dov\.js/);
   // Tables of text are read in full.
   assert.match(row('hired:pilot-drift').text, /stale/);
-  assert.match(row('hired:pilot-drift').choices[1].result, /If it goes well: .*\nIf it does not: /s);
-  assert.match(row('ice:1').choices.at(-1).label, /^\[comms\] /);
+  assert.match(row('hired:pilot-drift').choices[1].win, /settles back/);
+  assert.match(row('hired:pilot-drift').choices[1].lose, /overshoot/);
+  assert.equal(row('ice:1').choices.at(-1).post, 'comms');
+  assert.ok(row('ice:1').text2.length > 40 && row('ice:1').choices.every(c => c.win), 'both openings, and a win line for every choice');
   // An event built whole in code has an id and a group, and no text.
   const built = rows.find(r => r.id === 'hired:cap-order');
   assert.equal(built.text, '');

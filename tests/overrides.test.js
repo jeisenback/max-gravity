@@ -515,6 +515,53 @@ test('a meeting scene joins or puts off the person as its closures did, with the
   assert.equal(r.edited, false);
 });
 
+// ---------- the table-driven hired scenes (#462) ----------
+
+test('an override changes the words a work event and an ice scene play, and nothing else, and a bad one is left out with one warning', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    startGame({ mode: 'hired', background: 'earth', post: 'pilot', captainKey: 'hester', credits: 5000 }); G.dialog = null; G.nextEvent = null;
+    const real = Math.random, play = (ev, i, roll) => { Math.random = () => roll; try { const xp0 = hired().skill.pilot || 0, text = ev.choices[i].run(); return { text, xp: (hired().skill.pilot || 0) - xp0 }; } finally { Math.random = real; } };
+    const d = WORK_EVENTS.find(x => x.id === 'pilot-drift'), shipped = { careful: play(workEvent(d), 0, 0), win: play(workEvent(d), 1, 0), lose: play(workEvent(d), 1, 0.999) };
+    useOverrides({ 'hired:pilot-drift': { title: 'Edited <b>Title</b>', text: 'Edited text & more.', choices: { 0: { label: 'Careful', result: 'Careful <i>line</i>.' }, 1: { label: 'Quick', win: 'Won line.', lose: 'Lost line.' } } } });
+    const ev = workEvent(d), edited = { careful: play(workEvent(d), 0, 0), win: play(workEvent(d), 1, 0), lose: play(workEvent(d), 1, 0.999) };
+    const out = { title: ev.title, text: ev.text, labels: ev.choices[0].label + '|' + ev.choices[1].label.split(' <span')[0], lines: [edited.careful.text, edited.win.text, edited.lose.text], xp: [edited.careful.xp, edited.win.xp, edited.lose.xp], shippedXp: [shipped.careful.xp, shipped.win.xp, shipped.lose.xp] };
+    useOverrides({});
+    // The ice scene: the openings, the general choices, and a post's own, by their place in the list.
+    const stage = ICE_STAGES[0], mine = Object.keys(stage.post).indexOf('pilot'), own = stage.general.length + mine;
+    const ice = round => { hired().run = { tons: 40, ice: { edge: 0, round } }; return iceStageScene(0); };
+    const was = { open0: ice(0).text.split('</p>')[0] === stage.open[0], open1: ice(1).text.split('</p>')[0] === stage.open[1], lines: [1, 2].map(i => play(ice(0), i, 0.999).text) };
+    useOverrides({ 'ice:1': { title: 'Ice, edited', text: 'First <b>opening</b>.', text2: 'Second opening.', choices: { 0: { label: 'Go slow', win: 'Slow win.', lose: 'Slow lose.' }, [own]: { label: 'By hand', lose: 'Hand lose.' } } } });
+    const e0 = ice(0), e1 = ice(1);
+    out.ice = { title: e0.title, open0: e0.text.split('</p>')[0], open1: e1.text.split('</p>')[0], label0: e0.choices[0].label.split(' <span')[0], labelPost: e0.choices[stage.general.length].label.split(' <span')[0],
+      slowWin: play(ice(0), 0, 0).text, slowLose: play(ice(0), 0, 0.999).text.split(' Armor')[0], handLose: play(ice(0), stage.general.length, 0.999).text.split(' Armor')[0],
+      untouched: [1, 2].map(i => play(ice(0), i, 0.999).text === was.lines[i - 1]) };
+    out.was = { open0: was.open0, open1: was.open1 };
+    useOverrides({});
+    // A bad override is left out, and said once.
+    const warnings = [], warn = console.warn; console.warn = m => warnings.push(m);
+    out.clean = cleanOverrides({
+      'hired:pilot-drift': { weight: 3, choices: { 0: { win: 'x' }, 1: { effects: { credits: 5 }, label: '' } } },
+      'ice:1': { text2: 'Kept', choices: { 3: { lose: 'Kept lose' }, 2: { result: 'x' } } },
+      'hired:pilot-lane': { text2: 'x' },
+      'ice:9': { title: 'x' },
+    });
+    console.warn = warn; out.warnings = warnings;
+    return out;
+  });
+  await g.done();
+  assert.equal(r.title, 'Edited <b>Title</b>', 'a title is escaped where the dialog shows it');
+  assert.equal(r.text, 'Edited text &amp; more.');
+  assert.equal(r.labels, 'Careful|Quick');
+  assert.deepEqual(r.lines, ['Careful &lt;i&gt;line&lt;/i&gt;. (+3 experience at the pilot post.)', 'Won line. (+4 experience at the pilot post.)', 'Lost line. (+1 experience at the pilot post.)']);
+  assert.deepEqual(r.xp, r.shippedXp, 'what a choice does is the table\'s');
+  assert.deepEqual(r.was, { open0: true, open1: true });
+  assert.deepEqual(r.ice, { title: 'Ice, edited', open0: 'First &lt;b&gt;opening&lt;/b&gt;.', open1: 'Second opening.', label0: 'Go slow', labelPost: '[Pilot] By hand', slowWin: 'Slow win.', slowLose: 'Slow lose.', handLose: 'Hand lose.', untouched: [true, true] });
+  assert.deepEqual(r.clean, { 'ice:1': { text2: 'Kept', choices: { 3: { lose: 'Kept lose' } } } });
+  assert.equal(r.warnings.length, 1);
+  for (const part of ['"hired:pilot-drift".weight a hired scene is drawn by its days and the story, not by weight', 'choice 0 has no "win"', 'choice 1 is rolled by the game, so it has no "effects"', 'choice 1 label is not text', 'choice 2 has no "result"', '"hired:pilot-lane" has no "text2"', 'unknown scene "ice:9"']) assert.ok(r.warnings[0].includes(part), `${part} in ${r.warnings[0]}`);
+});
+
 // ---------- the hired events about one person as data (#473) ----------
 
 test('the seven hired events about one person are data, take the override layer, and refuse a bad effect', async () => {

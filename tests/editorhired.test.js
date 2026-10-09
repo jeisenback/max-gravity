@@ -52,7 +52,7 @@ test('the converted scenes are data rows of the registry, and the rest are code 
   assert.equal(r.effects.castLike.who, 'ansel');
   assert.ok(r.edit.length > 0 && r.edit.every(e => e === false), 'code choices keep their effects in code');
   assert.ok(!r.goodbye && !r.signon, 'the goodbye and the function-built scenes are not edited yet');
-  assert.equal(r.dataRegistry, 68);
+  assert.equal(r.dataRegistry, 91);
 });
 
 test('a converted scene\'s effects are in forms, checked as typed, and changing one is a change to the file', async () => {
@@ -109,6 +109,49 @@ test('a hired event written as data has its effects in forms and plays in the pr
   await page.waitForFunction(() => document.querySelector('#pv-effects').textContent.length > 0);
   assert.match(await page.textContent('#pv-effects'), /(\+3)/);
   assert.ok(first, 'a shipmate was aboard');
+});
+
+test('a work event and an ice scene have their words in the form, the lines for a win and a lose among them, and play in the preview (#462)', async () => {
+  await reload(); await select('hired:pilot-drift');
+  const ids = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
+  assert.deepEqual(ids, ['title', 'text', 'c0.label', 'c0.result', 'c1.label', 'c1.win', 'c1.lose']);
+  assert.match(await page.textContent('#detail'), /played by one template from a table/);
+  assert.equal(await page.locator('#detail [data-add]').count(), 0, 'no conditions or effects to edit: the odds are in code');
+  await page.fill('#f-title', 'Drift, edited');
+  await page.fill('#f-c0\\.result', 'You fix the drift, the editor\'s way.');
+  await page.fill('#f-c1\\.win', 'Won, the editor\'s way.');
+  assert.deepEqual(await changes(), { 'hired:pilot-drift': { title: 'Drift, edited', choices: { 0: { result: 'You fix the drift, the editor\'s way.' }, 1: { win: 'Won, the editor\'s way.' } } } });
+  const f = await play();
+  assert.equal(await f.evaluate(() => [G.dialog.event.title, hired().post].join()), 'Drift, edited,pilot', 'played at its own post');
+  await f.click('[data-action="choose"][data-arg="0"]');
+  await page.waitForFunction(() => document.querySelector('#pv-effects').textContent.length > 0);
+  assert.match((await f.textContent('#event-result')).trim(), /^You fix the drift, the editor's way\. \(\+3 experience at the pilot post\.\)$/);
+  // An ice scene: two openings, the general choices, and a post's own.
+  await reload(); await select('ice:1');
+  const ice = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
+  assert.deepEqual(ice.slice(0, 3), ['title', 'text', 'text2']);
+  assert.ok(ice.includes('c3.win') && ice.includes('c3.lose') && ice.includes('c6.lose'), ice.join());
+  assert.match(await page.textContent('#detail'), /pilot's own/);
+  await page.fill('#f-text2', 'A second opening, edited.');
+  await page.fill('#f-c0\\.lose', 'The slow way loses, edited.');
+  assert.deepEqual(await changes(), { 'ice:1': { text2: 'A second opening, edited.', choices: { 0: { lose: 'The slow way loses, edited.' } } } });
+  const g = await play();
+  assert.equal(await g.evaluate(() => G.dialog.event.title), 'The Rock');
+  assert.equal(await g.evaluate(() => G.dialog.choices.length), 4);
+});
+
+test('an imported file may give a table scene its words and its lines, and a line it does not have is refused item by item (#462)', async () => {
+  await reload();
+  const tmp = path.join(require('node:os').tmpdir(), `table-import-${process.pid}.js`);
+  require('node:fs').writeFileSync(tmp, `const SCENE_OVERRIDES = {"hired:pilot-drift":{"title":"Imported","text2":"No","choices":{"0":{"win":"No such line"},"1":{"win":"Kept win"}}},"ice:2":{"text2":"Kept opening","choices":{"1":{"lose":"Kept lose"}}}};\nconst NEW_SCENES = [];\n`);
+  await page.setInputFiles('#import-file', tmp);
+  await page.waitForSelector('#notice .notice');
+  const n = await page.textContent('#notice');
+  for (const part of ['hired:pilot-drift text2: this scene has no second opening', 'hired:pilot-drift choice 1 win: is not something this choice has']) assert.ok(n.includes(part), `${part} in: ${n}`);
+  await page.click('[data-action="import-apply"]');
+  await select('hired:pilot-drift');
+  assert.deepEqual(await changes(), { 'hired:pilot-drift': { title: 'Imported', choices: { 1: { win: 'Kept win' } } }, 'ice:2': { text2: 'Kept opening', choices: { 1: { lose: 'Kept lose' } } } });
+  require('node:fs').rmSync(tmp, { force: true });
 });
 
 test('a hired data choice has its conditions in forms, checked as typed, and changing one is a change to the file (#460)', async () => {

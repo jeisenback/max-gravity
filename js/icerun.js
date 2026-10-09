@@ -118,10 +118,15 @@ const ICE_STAGES = [
 function iceStageScene(n) {
   const h = hired(), st = G.state, stage = ICE_STAGES[n], post = h.post, run = h.run || {};
   const ice = run.ice = run.ice || { edge: 0 };
-  const choices = stage.general.map(c => ({ label: `${c.label}${iceCostNote(c)}`, run: () => iceStep(n, c, null) }));
-  const spec = stage.post[post], level = skillLevel(post);
+  // The editor's words for this scene, if any (#462): the title, the two openings, and each choice's label and lines (the general choices, then a post's own in the table's
+  // order). Escaped, as any override is; the odds, the edge and the hull a choice costs are the table's.
+  const o = sceneOverride(`ice:${n + 1}`), co = i => (o.choices || {})[i] || {}, line = (mine, shipped) => (mine ? esc(mine) : shipped);
+  const worded = (c, i) => ({ ...c, label: co(i).label || c.label, win: [c.win[0], c.win[1], line(co(i).win, c.win[2])], ...(c.lose ? { lose: [c.lose[0], c.lose[1], line(co(i).lose, c.lose[2])] } : {}) });
+  const choices = stage.general.map((c0, i) => { const c = worded(c0, i); return { label: `${c.label}${iceCostNote(c)}`, run: () => iceStep(n, c, null) }; });
+  const spec = worded(stage.post[post], stage.general.length + Object.keys(stage.post).indexOf(post)), level = skillLevel(post);
   choices.push({ label: `[${POSTS[post].name}] ${spec.label}${iceCostNote(spec)}`, run: () => iceStep(n, { odds: Math.min(0.85, 0.5 + 0.1 * level), win: spec.win, lose: spec.lose }, post) });
-  return { title: stage.title, personal: true, via: 'crew', owner: 'you', text: `${stage.open[ice.round % 2 || 0]}</p><p>The haul so far: ${iceHaulWord(ice.edge)}. Armor ${st.armor}/${ship().armor}.`, choices };
+  const opening = [line(o.text, stage.open[0]), line(o.text2, stage.open[1])];
+  return { title: o.title || stage.title, personal: true, via: 'crew', owner: 'you', text: `${opening[ice.round % 2 || 0]}</p><p>The haul so far: ${iceHaulWord(ice.edge)}. Armor ${st.armor}/${ship().armor}.`, choices };
 }
 // What a choice can cost, from what it declares: a lost roll's hull cost (and the casualty that can come with it), and a bold call the captain marks.
 const iceCostNote = c => costNote({ hull: (c.lose || c.win)[1] > 0, marks: !!c.bold });
