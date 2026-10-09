@@ -123,6 +123,16 @@ CAST.ansel = {
           return 'He looks at you for a long time. "You cannot," he says, gently. "But thank you for saying it as if you could. That is more than I have had in six years." He turns the sheet over, face down, for the first time since you have known him.';
         } },
       ],
+      // Below friendly he keeps the number to himself, and the promise he would have drawn out (the `told` flag) is not asked for.
+      closed: {
+        title: 'What Ansel Knows',
+        text: ('Ansel has the sheet on the galley table, and when you come in he turns it face down and keeps two fingers on it. "I had a number to ' +
+            'tell you," he says. "I have decided to keep it. It is not a number you can do anything with, and I do not know you well enough to ask you ' +
+            'to carry it." He takes his fingers off the sheet. "It does not change. It will be the same number when you have been here longer."'),
+        choices: [
+          { label: 'Say it can wait', run: () => '"It can," he says. "It always could. That is the trouble with it." He picks up a pencil and puts it down again without writing.' },
+        ],
+      },
     },
     pivot: {
       days: 70, title: 'The Fight She Should Not Have Picked',
