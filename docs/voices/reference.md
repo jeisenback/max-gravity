@@ -32,7 +32,7 @@ The five passages the owner reviewed on 2026-10-08. They are the reference for e
 
 > On a ship of eleven people the night is kept by whoever has the watch and by the lights, which go down to a third at twenty-two hundred and come back up at six, and in between it is understood that you do not use the corridor unless you have to, and that if you have to you go in your socks, because the deck rings under a boot and the lower bunks are a meter and a half beneath it. Nobody has written this down. Pax, who came aboard in March, was told once, by Tomas, at the end of her first watch, and has not needed telling since.
 
-*Shows:* a custom carried in one long sentence.
+*Shows:* a custom carried in one long sentence. Its last clause ("and has not needed telling since") is the one place a passage here says what someone needed. It was kept on purpose: it reports what followed (she was told once and was not told again), and the owner approved the passage as written (#432).
 
 ## 5. The bridge, tense register
 

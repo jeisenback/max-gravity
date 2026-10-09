@@ -36,7 +36,7 @@ North star: Lois McMaster Bujold. Take: the dry line a character says, and the b
 
 Sample:
 
-> The galley has one thermostat, set into the bulkhead beside the coffee maker, and by long agreement it is moved only by whoever is prepared to be blamed for it. Tonight that is Ines, and Mara has come to say so. "If you had said something," Ines says, "I would have moved it back." "I said something." Mara puts the spoon on the counter, bowl up. "Tuesday, at the watch change, in front of Pax." Pax, three seats down with a tray of rice, goes on eating the rice. The display reads eighteen degrees. "Then I forgot," Ines says, and Mara asks the table whether anyone heard her say it, and the table passes the salt.
+> The galley has one thermostat, set into the bulkhead beside the coffee maker, with a strip of tape across its dial and INES written on the tape in marker. Tonight Ines has moved it, and Mara is standing in front of it with her arms crossed. "If you had said something," Ines says, "I would have moved it back." "I said something." Mara puts the spoon on the counter, bowl up. "Tuesday, at the watch change, in front of Pax." Pax, three seats down with a tray of rice, goes on eating the rice. The display reads eighteen degrees. "Then I forgot," Ines says, and Mara asks the table whether anyone heard her say it, and the table passes the salt.
 
 ## tense
 
