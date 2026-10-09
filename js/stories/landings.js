@@ -27,15 +27,14 @@ Mods.register({
           label: 'Let them inspect',
           effects: { cargo: { luxury: -3 } },
           result: ('The young officer runs the scanner over every crate. After a long silence he finds a "labeling irregularity" and confiscates ' +
-              'three tons of luxury goods. For evidence. The old officer signs the form, and they carry the crates out on a sled. Your hold feels ' +
-              'emptier than three tons should.')
+              'three tons of luxury goods. For evidence. The old officer signs the form, and they carry the crates out on a sled.')
         },
         {
           label: 'Offer a "processing fee" (300 cr)',
           when: { credits: 300 },
           effects: { credits: -300 },
           result: ('The old officer looks at the chit, and at you, and taps his scanner against his palm. "Would you look at that," he says. "A ' +
-              'fault." The young one starts to speak and is stepped on. They wish you a pleasant stay, in the tone of a funeral, and leave. The whole ' +
+              'fault." The young one starts to speak and is stepped on. They wish you a pleasant stay and leave. The whole ' +
               'thing takes less than a minute.')
         },
         {
@@ -90,7 +89,7 @@ Mods.register({
         },
           result: ('You press the gift into the groom\'s hands and are swept into a dance you do not know, led by a grandmother. You dance badly, eat ' +
               'well, and are toasted three times, in three dialects. Somewhere after midnight you are singing a chorus you have never heard, with an ' +
-              'arm around a stranger. They will remember your ship\'s name.')
+              'arm around a stranger.')
         },
         { label: 'Stand at the back and raise a glass', result: 'The couple are very young, and they do not seem to care who is watching. You raise your glass at the vows, and the bride, across the crowd, lifts hers. You stay for the first dance and leave before the music turns wild.' },
         { label: 'Excuse yourself', result: 'You have cargo to see to, and you say so. The music follows you back to the dock, down three corridors and a ladder, and you can hear it for a long time.' },
@@ -102,7 +101,7 @@ Mods.register({
       title: 'Procession',
       text: ('A funeral procession fills the corridor, slow and silent, and the whole dock goes still to let it pass. A refinery accident, three ' +
           'crew, taken in the night when a coolant line let go. Their families walk in front, carrying the helmets, in a row, with the visors polished ' +
-          'to a mirror shine. Behind them, in ranks, come the smelter crews in their soot-stained work jackets, each with a small blue candle. Nobody ' +
+          'to a mirror shine. Behind them, in ranks, come the smelter crews in their soot-stained work jackets, each with a blue candle. Nobody ' +
           'speaks. The only sound is the shuffle of boots, and the hush of the vents.'),
       choices: [
         {
@@ -114,7 +113,7 @@ Mods.register({
         },
           result: ('You put the credits into the box at the head of the line, a battered ore canister with a slot cut in the lid. A woman in a heat ' +
               'suit, one of the families, stops and takes your hand in both of hers without a word. Her hands are burned and rough and shaking. She ' +
-              'nods, and moves on, and the line closes behind her.')
+              'lets go, and moves on, and the line closes behind her.')
         },
         { label: 'Stand aside with your head bowed', result: 'You step back against the bulkhead and wait, hands folded, as the procession goes by. It takes a long time. When the last of them has passed the dock stays hushed a moment more, and then the noise comes back, one voice at a time.' },
       ],
@@ -130,7 +129,7 @@ Mods.register({
         {
           label: 'Walk them home',
           effects: { rep: { 'Charter League': 1 } },
-          result: ('You walk them home, through three corridors and a market, without speaking. Their mother meets you at the door of a small crowded ' +
+          result: ('You walk them home, through three corridors and a market, without speaking. Their mother meets you at the door of a crowded ' +
               'cabin. She cries, then shouts, then cries again, with her hands on the kid\'s face. The kid will not look at you. You stand there a ' +
               'moment. The mother, still crying, presses a fried dumpling into your hand, and you go.')
         },
@@ -138,9 +137,9 @@ Mods.register({
           label: 'Give them 200 cr and some advice',
           when: { credits: 200 },
           effects: { credits: -200 },
-          result: '"Find a ship with a good captain," you say, low, "and learn a trade first. Do not go with anyone who is in a hurry." They take the money in both hands, staring at it, and look up at you, once. Then they nod, and vanish into the crowd, quick as a fish.'
+          result: '"Find a ship with a good captain," you say, low, "and learn a trade first. Do not go with anyone who is in a hurry." They take the money in both hands, staring at it, and look up at you, once. Then they are gone into the crowd.'
         },
-        { label: 'Hand them to dock security', result: 'Security is not gentle about it. The kid does not fight, does not cry, does not say a word. They look back once over their shoulder as they are led away, and their eyes find yours. It takes a while for your hands to feel right again.' },
+        { label: 'Hand them to dock security', result: 'Security is not gentle about it. The kid does not fight, does not cry, does not say a word. They look back once over their shoulder as they are led away, and their eyes find yours. You keep your hands in your pockets all the way back to the ship.' },
       ],
     });
 
@@ -184,7 +183,7 @@ Mods.register({
           500,
           0.3,
           { credits: 2500 },
-          'You sell the survey to the claims office for 2,500 cr, in a small dusty room, to a surprised clerk. The old man was telling the truth. When you go back to find him, the dock crew say he left on the last ship to Ceres.',
+          'You sell the survey to the claims office for 2,500 cr, in a dusty room, to a surprised clerk. The old man was telling the truth. When you go back to find him, the dock crew say he left on the last ship to Ceres.',
           'The claims office laughs you out of the room, kindly: the rock was registered forty years ago and has been mined out for thirty. The old man is nowhere to be found. Someone at the dock says he does this to a new captain every year.'
         ] },
           result: ''
@@ -211,7 +210,7 @@ Mods.register({
           2
         ]
         },
-          result: 'The sergeant takes the credits with a nod and pins a small enamel badge to your jacket. Behind him is a wall of names, the fallen, in small neat letters, and a child is laying a paper flower under the newest. For the rest of your stay strangers nod at the pin.'
+          result: 'The sergeant takes the credits with a nod and pins an enamel badge to your jacket. Behind him is a wall of names, the fallen, in neat letters, and a child is laying a paper flower under the newest. For the rest of your stay strangers nod at the pin.'
         },
         { label: 'Walk past', result: 'A recruiter calls after you about patriotism, then, as you keep going, about duty, then, more quietly, about somebody\'s brother. You keep walking. The voice fades behind you.' },
       ],
@@ -284,15 +283,14 @@ Mods.register({
           when: { credits: 200 },
           effects: { credits: -200 },
           result: ('The dockmaster stamps your form without looking up, and files it, and does not say thank you. His stamp is worn nearly to a ' +
-              'smooth blob, and each press leaves a smeared, purple ring. As you turn to go, you catch a flicker of something in his face, shame, or ' +
-              'exhaustion, and then it is gone, and the next ship is at the counter.')
+              'smooth blob, and each press leaves a smeared, purple ring. As you turn to go, you see him look at the pencilled "DAILY," and then ' +
+              'at the next ship in the line.')
         },
         {
           label: 'Argue',
           effects: { rep: { 'Charter League': -1 } },
-          result: ('You argue, at length, with citations, and a rising voice. The dockmaster gives in at last and stamps the form PAID. You win. You ' +
-              'feel wonderful for about ten minutes. Then you notice the line of tired captains behind you, who could not have won, and the ' +
-              'dockmaster, who will remember.')
+          result: ('You argue, at length, with citations, and a rising voice. The dockmaster gives in at last and stamps the form PAID. You win. Behind ' +
+              'you the line of tired captains has not moved, and the dockmaster is writing your ship\'s name on the back of the form.')
         },
         {
           label: '[{crew}] Let {crew} talk to them',
@@ -333,7 +331,7 @@ Mods.register({
       id: 'land-ringball-kids', when: { planet: ['The Hollows', 'Juno Commons', 'Ring Nine'] },
       title: 'Referee',
       text: ('A gang of kids is playing ring-ball in the corridor outside your dock, a dozen of them in mismatched jerseys made of old work shirts, ' +
-          'and the argument over the last goal is turning into a fight. Voices are rising, fists are balling, and one small boy, red in the face, has ' +
+          'and the argument over the last goal is turning into a fight. Voices are rising, fists are balling, and one boy, red in the face, has ' +
           'picked up the ball and is holding it hostage. Then, all at once, they turn and look at you: an adult, a stranger, obviously neutral, the ' +
           'only person in the corridor who does not have a team.'),
       choices: [
@@ -352,7 +350,7 @@ Mods.register({
           rep: { 'Charter League': 1 }
         },
           result: ('You duck into the nearest shop and come back with a fresh orange ball that smells of new rubber. The old one, you see, was mostly ' +
-              'tape, layers of it, wound by generations of small hands. The argument is forgotten. They swarm you, shouting thanks, and within a ' +
+              'tape, layers of it, wound by generations of hands. The argument is forgotten. They swarm you, shouting thanks, and within a ' +
               'minute the whole gang is playing again.')
         },
       ],
@@ -404,7 +402,7 @@ Mods.register({
           when: { credits: 300 },
           effects: { credits: -300 },
           result: ('She writes you a receipt in a looping hand, tears it off the pad, and gives it to you with a flourish. It is a real receipt, ' +
-              'stamped and numbered, with a little black tower embossed at the top. "Keep it," she says. "If anyone stops you, show them. It will save ' +
+              'stamped and numbered, with a black tower embossed at the top. "Keep it," she says. "If anyone stops you, show them. It will save ' +
               'you trouble." She steps aside to let you pass.')
         },
         {
@@ -416,7 +414,7 @@ Mods.register({
           label: '[{crew}] {crew} steps forward',
           when: { crew: 'gunner' },
           effects: { rep: { Pirate: 1 } },
-          result: ('{crew} steps forward, hands loose at their sides, and looks at her for a long moment without a word. The corridor goes quiet. ' +
+          result: ('{crew} steps forward, hands loose at their sides, and looks at her. The corridor goes quiet. ' +
               'Then the woman with the pistols throws back her head and laughs, and lowers her clipboard. "Fair enough. First one\'s free." She claps ' +
               '{crew} on the shoulder, hard, and steps aside. You do not get a receipt, but you get a wave from the whole bar.')
         },
@@ -427,7 +425,7 @@ Mods.register({
       id: 'land-journalist', when: { planet: ['Earth', 'Luna'] },
       title: 'Human Interest',
       text: ('A feed journalist with a camera drone waylays you at the dock, well dressed, with a microphone the size of a child\'s fist. The drone ' +
-          'hovers at your shoulder, humming, with a small red light. "Excuse me! Excuse me, captain! You look like a real Belt captain." She flashes a ' +
+          'hovers at your shoulder, humming, with a red light. "Excuse me! Excuse me, captain! You look like a real Belt captain." She flashes a ' +
           'good smile. "I am doing a segment on life in the outer system, and, honestly, nobody here has any idea what it is like out there. Two ' +
           'minutes? It would mean the world."'),
       choices: [
@@ -457,9 +455,9 @@ Mods.register({
         },
         {
           label: '"No comment."',
-          result: ('The drone follows you halfway to customs, humming, with its small red eye fixed on your face, and the journalist trots behind it, ' +
+          result: ('The drone follows you halfway to customs, humming, with its red eye fixed on your face, and the journalist trots behind it, ' +
               'calling out increasingly creative questions. "Just one word, captain! One word! Do you like the food?" You do not answer. At the ' +
-              'customs gate, the drone finally peels off, with what feels like a small electronic sigh.')
+              'customs gate, the drone finally peels off, with a short electronic whine.')
         },
       ],
     });
@@ -474,13 +472,12 @@ Mods.register({
         {
           label: 'Join the moment of silence',
           effects: { rep: { 'Dome Concord': 1 } },
-          result: 'You stand with the others, head bowed, hands folded, for the full two minutes, as the bugle plays and the wreaths are laid. When it ends, an old woman in a faded MRN jacket, with a chest full of tarnished medals, comes over and nods to you once. She does not say a word.'
+          result: 'You stand with the others, head bowed, hands folded, for the full two minutes, as the bugle plays and the wreaths are laid. When it ends, an old woman in a faded MRN jacket, with a chest full of tarnished medals, comes over and touches your sleeve once. She does not say a word.'
         },
         {
           label: 'Get on with your business',
           result: ('You get some looks. Not angry ones, exactly, but a slow, steady, silent turning of heads as you cross the dock with your cargo ' +
-              'sled, the wheels loud in the hush. A veteran in a wheelchair watches you all the way to the far gate, without expression, and you feel, ' +
-              'at every step, the weight of what you did not stop for.')
+              'sled, the wheels loud in the hush. A veteran in a wheelchair watches you all the way to the far gate, without expression.')
         },
       ],
     });
@@ -502,12 +499,12 @@ Mods.register({
         },
           result: ('Fresh, cheap, and loaded by a gang of sunburned teenagers who badger you the whole time with questions about your ship: how fast, ' +
               'how big, how many guns, has it ever been in a fight? The food is still warm from the sun. The woman in the straw hat throws in a bag of ' +
-              'peaches for free. "For the road," she says. A good deal.')
+              'peaches for free. "For the road," she says.')
         },
         {
           label: 'Just buy lunch',
           result: ('You wander the carts with a paper plate and a fork, and eat, standing up, a hot bean stew with sweet bread, a slice of peach pie, ' +
-              'a tomato salted and eaten like an apple. It is the best meal you have had in months. Nobody rushes you. An old man on a crate hums a ' +
+              'a tomato salted and eaten like an apple. Nobody rushes you. An old man on a crate hums a ' +
               'tune, and a child, unbidden, brings you a cup of cold, sweet tea.')
         },
       ],
@@ -517,7 +514,7 @@ Mods.register({
       id: 'land-long-night', when: { planet: ['Triton Outpost', 'Enceladus'] },
       title: 'News From Inside',
       text: ('Your ship is the first in weeks. Half the outpost comes down to the dock as you arrive, in heavy quilted coats and patched suits, in ' +
-          'small silent clusters, not to trade, but to ask what is happening in the inner system. They stand at the edge of the light with their ' +
+          'silent clusters, not to trade, but to ask what is happening in the inner system. They stand at the edge of the light with their ' +
           'breath steaming, and do not crowd you. An old man in a knitted cap steps forward. "Sorry, captain," he says. "It is just that, out here, it ' +
           'gets very quiet. Would you tell us something? Anything?"'),
       choices: [
@@ -536,7 +533,7 @@ Mods.register({
           cargo: { luxury: -1 },
           credits: 900
         },
-          result: ('You carry the crate down the ramp and crack the lid. Nobody moves: chocolate, coffee, small bottles of spirits, a wheel of real ' +
+          result: ('You carry the crate down the ramp and crack the lid. Nobody moves: chocolate, coffee, bottles of spirits, a wheel of real ' +
               'cheese. Then a laugh goes up, and someone passes the hat, and they give you 900 cr for it, which is more than it is worth anywhere ' +
               'else. A little girl sits on the crate and eats chocolate with her eyes closed.')
         },
@@ -549,7 +546,7 @@ Mods.register({
       text: ('Auntie Oyelaran from the noodle counter presses a sealed envelope into your hand, wiping her other hand on her apron, with steam from ' +
           'the broth still curling around her face. The envelope is real paper, thick and creamy, addressed in a careful, old-fashioned hand. "For my ' +
           'son, on Ceres Station," she says. "He never answers his messages. He will answer a letter. A mother knows these things." She looks at you ' +
-          'with the calm, unshakeable authority of every mother who has ever stood at a counter.'),
+          'and waits.'),
       choices: [
         {
           label: 'Carry it',
@@ -561,7 +558,7 @@ Mods.register({
         } },
           result: ('She gives you a bowl of noodles for the road, packed in a hot metal tin with a lid tied down by string, with ginger, and chili ' +
               'oil, and a soft-boiled egg on top, which is worth more than the fee. "Tell him I said to eat properly," she calls, as you go, and half ' +
-              'the counter turns to watch you leave, nodding gravely.')
+              'the counter turns to watch you leave.')
         },
         { label: '"I\'m not going that way."', result: '"Everyone goes that way eventually," she says, and tucks the envelope back in her apron. "The letter will keep. My son will not, but the letter will." She goes back to the broth.' },
       ],
@@ -585,7 +582,7 @@ Mods.register({
           ('You speak for a minute and forty seconds, about ships and trade and how an open dock feeds a town, and the hall listens with a long, dry ' +
               'silence that turns, unexpectedly, into a ripple of applause. They vote the fee down, and a grateful member finds you on the way out and ' +
               'slips you a 300 cr contract to haul her ore samples, wrapped in a cloth. "Nobody ever talks that sense in here," she says.'),
-          'You are booed off the floor within thirty seconds, in a rolling, cheerful wave of jeers, and somebody throws a heel of bread. The fee passes. At least you tried, and at least, on the way out, the old woman with the gavel gives you a small nod that might be sympathy.'
+          'You are booed off the floor within thirty seconds, in a rolling, cheerful wave of jeers, and somebody throws a heel of bread. The fee passes. On the way out the old woman with the gavel gives you a nod.'
         ] },
           result: ''
         },
@@ -622,7 +619,7 @@ Mods.register({
         },
         {
           label: 'Politely excuse yourself',
-          result: 'He nods, without offense, and turns back to the rail. By the time you have reached the end of the dock, he has found the next captain, and his voice, low and warm, has begun again: "I was nineteen." It follows you a long way, softer and softer, like a tune.'
+          result: 'He shrugs, without offense, and turns back to the rail. By the time you have reached the end of the dock, he has found the next captain, and his voice, low and warm, has begun again: "I was nineteen." It follows you a long way, softer and softer, like a tune.'
         },
       ],
     }, 0.2);
