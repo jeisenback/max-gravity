@@ -141,11 +141,11 @@ test('the page shows the rows, opens a scene to read it, and filters as you type
 });
 
 test('a code-written scene has no form, and a data scene\'s form edits only its words', async () => {
-  const inputs = await page.locator('input, select').evaluateAll(list => list.map(e => e.id));
+  const inputs = await page.locator('.controls input, .controls select').evaluateAll(list => list.map(e => e.id));
   assert.deepEqual(inputs, ['q', 'where', 'file', 'kind'], 'the controls above the list only filter');
   await page.fill('#q', 'cast:ilsa:late');
   await page.click('button[data-id="cast:ilsa:late"]');
-  assert.equal(await page.locator('textarea').count(), 0);
+  assert.equal(await page.locator('#detail textarea').count(), 0);
   assert.match(await page.textContent('#detail'), /cannot be edited here until its text has an id/);
   await page.fill('#q', 'port-mars-sky');
   await page.click('button[data-id="port-mars-sky"]');

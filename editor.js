@@ -61,7 +61,7 @@
     for (const s of STORYLETS) {
       const file = fileOf['storylet:' + s.id];
       add({
-        id: s.id, title: s.title, where: s.where, file, belongs: stem(file), kind: 'data', text: plain(s.text),
+        id: s.id, title: s.title, where: s.where, file, belongs: stem(file), kind: 'data', text: plain(s.text), when: s.when || {},
         choices: s.choices.map(c => ({ label: plain(c.label), result: plain(c.result) })),
         // A text of conditional parts cannot be edited as one string, so the form leaves those fields to the code (conditions are story 4).
         edit: { text: typeof s.text === 'string', choices: s.choices.map(c => ({ label: typeof c.label === 'string', result: c.result === undefined || typeof c.result === 'string' })) },
@@ -109,17 +109,27 @@
     return rows;
   }
 
+  const loadScript = src => new Promise((resolve, reject) => {
+    const el = document.createElement('script');
+    el.src = src; el.async = false;
+    el.onload = resolve; el.onerror = () => reject(new Error(`could not load ${src}`));
+    document.head.append(el);
+  });
+
+  // What the preview's state form offers: the game's own lists.
+  const previewOptions = () => ({
+    posts: HIRED_POSTS, factions: FACTIONS,
+    pairs: Object.entries(CAST_PAIRS).map(([key, pair]) => ({ key, names: pair.map(c => CAST[c].first).join(' and ') })),
+    captains: Object.entries(CAPTAINS).map(([key, c]) => ({ key, name: `${c.first} ${c.last}`, xo: c.xo })),
+    places: Object.entries(SYSTEMS).flatMap(([sid, s]) => s.planets.map(p => ({ name: p.name, sid }))),
+  });
+
   // Loads the game's scripts one at a time and notes which script added each scene, by what appeared after it ran.
   async function loadGame() {
     const fileOf = {}, cast = new Set(), captains = new Set();
     let storylets = 0;
     for (const src of SCRIPTS) {
-      await new Promise((resolve, reject) => {
-        const el = document.createElement('script');
-        el.src = src; el.async = false;
-        el.onload = resolve; el.onerror = () => reject(new Error(`could not load ${src}`));
-        document.head.append(el);
-      });
+      await loadScript(src);
       if (typeof STORYLETS !== 'undefined') for (; storylets < STORYLETS.length; storylets++) fileOf['storylet:' + STORYLETS[storylets].id] = src;
       if (typeof CAST !== 'undefined') for (const k of Object.keys(CAST)) if (!cast.has(k)) { cast.add(k); fileOf['cast:' + k] = src; }
       if (typeof CAPTAINS !== 'undefined') for (const k of Object.keys(CAPTAINS)) if (!captains.has(k)) { captains.add(k); fileOf['captain:' + k] = src; }
@@ -127,7 +137,91 @@
       if (typeof HAND_EVENTS !== 'undefined' && !fileOf.hand) fileOf.hand = src;
       if (typeof ICE_STAGES !== 'undefined' && !fileOf.ice) fileOf.ice = src;
     }
-    return { rows: collect(fileOf), overrides: useOverrides(SCENE_OVERRIDES), placeholder: { source: PLACEHOLDER.source, roles: Object.keys(ROLE_NAMES) } };
+    return { rows: collect(fileOf), overrides: useOverrides(SCENE_OVERRIDES), placeholder: { source: PLACEHOLDER.source, roles: Object.keys(ROLE_NAMES) }, options: previewOptions() };
+  }
+
+  // ---------- the preview, inside editor-preview.html: the game itself ----------
+  // The page loads the whole game, game.js too, so a scene opens in the game's own dialog, built by storyletEvent. What the game writes
+  // stays in this frame: its storage is a memory that goes with the frame, so a preview never touches a real save.
+  function memoryStorage() {
+    const kept = new Map();
+    return {
+      getItem: k => (kept.has(String(k)) ? kept.get(String(k)) : null), setItem: (k, v) => { kept.set(String(k), String(v)); }, removeItem: k => { kept.delete(String(k)); },
+      clear: () => kept.clear(), key: i => [...kept.keys()][i] ?? null, get length() { return kept.size; },
+    };
+  }
+
+  // What a choice can change that the designer cares about, as one flat list of names and values.
+  function watched() {
+    const st = G.state, out = { credits: st.credits, day: st.day };
+    const take = (prefix, obj) => { for (const [k, v] of Object.entries(obj || {})) if (['number', 'boolean', 'string'].includes(typeof v) && !/^(seen|last):/.test(k)) out[`${prefix} ${k}`] = v; };
+    take('standing with', st.rep); take('quality', st.qualities); take('story', st.story); take('hired flag', st.hired && st.hired.flags);
+    for (const p of Object.values(st.people || {})) if (typeof p.opinion === 'number') out[`${p.first} ${p.last}'s opinion of you`] = p.opinion;
+    return out;
+  }
+  function changesBetween(before, after) {
+    const lines = [];
+    for (const k of Object.keys({ ...before, ...after })) {
+      const a = before[k], b = after[k];
+      if (a === b) continue;
+      lines.push(typeof b === 'number' && (typeof a === 'number' || a === undefined) ? `${k}: ${a === undefined ? 0 : a} to ${b} (${b - (a || 0) > 0 ? '+' : ''}${b - (a || 0)})` : `${k}: ${a === undefined ? 'unset' : a} to ${b === undefined ? 'unset' : b}`);
+    }
+    return lines;
+  }
+
+  // Which of a scene's conditions do not hold now, as the game checks them. `chance` is a roll when the scene is picked, so it is not one.
+  const failing = when => Object.entries(when || {}).filter(([k]) => k !== 'chance').filter(([k, v]) => { try { return !CONDITIONS[k](v); } catch (e) { return true; } }).map(([k, v]) => `${k}: ${JSON.stringify(v)}`);
+
+  // Starts a fresh test game in the state asked for, and opens the scene in the dialog. m: { id, overrides, setup }.
+  function play(m) {
+    const s = STORYLETS.find(x => x.id === m.id);
+    if (!s) return { error: `The game has no scene "${m.id}".` };
+    useOverrides(m.overrides);  // the unsaved edits, through the same layer the game reads (storylets.js)
+    const o = m.setup || {}, num = (v, d) => (Number.isFinite(Number(v)) && String(v).trim() !== '' ? Number(v) : d);
+    const place = planetNamed(o.place) ? o.place : 'Earth', at = planetNamed(place);
+    G.dialog = null; G.nextEvent = null; G.transit = null;
+    if (o.as === 'owner') uatFresh({ credits: num(o.credits, 50000) });
+    else {
+      // The game draws its two main characters from a pool; a preview takes the pair asked for.
+      const pair = CAST_PAIRS[o.start] || CAST_PAIRS.earth, drawn = drawCastPair;
+      window.drawCastPair = () => [...pair];
+      try { startGame({ mode: 'hired', background: 'earth', post: o.post, captainKey: o.captain, credits: num(o.credits, undefined) }); } finally { window.drawCastPair = drawn; }
+      G.dialog = null; G.nextEvent = null; G.state.uat = true;
+    }
+    // A scene in a burn is played on the way to the place (its `at` is the destination); one at a port, landed there.
+    if (s.where === 'transit') uatBurn(at.sid === 'earth' ? 'Mars' : 'Earth', at.sid); else uatLand(place);
+    const st = G.state;
+    if (o.credits !== undefined && String(o.credits).trim() !== '') st.credits = num(o.credits, st.credits);
+    if (String(o.day || '').trim() !== '') st.day = Math.max(1, num(o.day, st.day));
+    for (const f of FACTIONS) if (o.rep && String(o.rep[f] || '').trim() !== '' && Number.isFinite(Number(o.rep[f]))) st.rep[f] = Number(o.rep[f]);
+    for (const line of String(o.qualities || '').split('\n')) {
+      const [name, value] = line.split('=').map(x => x.trim());
+      if (name) (st.qualities = st.qualities || {})[name] = value === undefined || value === '' ? 1 : Number.isFinite(Number(value)) ? Number(value) : 1;
+    }
+    const report = { type: 'played', failing: failing(s.when), chained: !!s.chained, chance: (s.when || {}).chance, shut: s.choices.map((c, i) => ({ n: i + 1, why: failing(c.when) })).filter(x => x.why.length) };
+    openEvent(storyletEvent(s));
+    return report;
+  }
+
+  async function startPreview() {
+    Object.defineProperty(window, 'localStorage', { value: memoryStorage(), configurable: true });
+    for (const src of [...SCRIPTS, 'js/game.js']) await loadScript(src);
+    // The game starts at its title screen; wait for it, then answer the editor.
+    while (G.mode !== 'title' && !G.state) await new Promise(r => setTimeout(r, 20));
+    const real = chooseEvent;  // reports what a choice changed, from the game's own function
+    window.chooseEvent = i => {
+      const label = G.dialog && G.dialog.choices[i] ? G.dialog.choices[i].label : '', before = watched();
+      const text = real(i);
+      parent.postMessage({ mode: 'preview', type: 'chose', label, lines: changesBetween(before, watched()) }, '*');
+      return text;
+    };
+    window.addEventListener('message', ev => {
+      if (ev.source !== parent || !ev.data || ev.data.cmd !== 'play') return;
+      let out;
+      try { out = play(ev.data); } catch (e) { out = { error: String(e && e.message || e) }; }
+      parent.postMessage({ mode: 'preview', ...out }, '*');
+    });
+    parent.postMessage({ mode: 'preview', type: 'ready' }, '*');
   }
 
   // ---------- the page ----------
@@ -172,7 +266,7 @@
   const fileText = overrides => `const SCENE_OVERRIDES = ${JSON.stringify(overrides, null, 2)};`;
 
   // The {words} of a text that the game would not replace, by the rule the game sent (storylets.js PLACEHOLDER): the same check, run here.
-  let rule = null;
+  let rule = null, onPreview = () => {};
   function badPlaceholders(text) {
     if (!rule) return [];
     const known = new RegExp(rule.source);
@@ -228,7 +322,43 @@
     <p class="hint">A code-written scene cannot be edited here until its text has an id (story 8).</p>`;
   }
 
-  function mount(app, rows, overrides) {
+
+  // The preview pane: the state to start from, a button, the game's frame, and what the game reported. It outlives the choice of scene, so the
+  // frame is not rebuilt as you move between scenes.
+  const PREVIEW_DEFAULTS = { as: 'hired', post: 'gunner', captain: 'hester', start: 'earth', day: '', credits: '', place: '', qualities: '', rep: {} };
+  function previewPaneHtml(opt) {
+    const sel = (key, list) => `<select data-pv="${key}">${list.map(([v, text]) => `<option value="${esc(v)}"${PREVIEW_DEFAULTS[key] === v ? ' selected' : ''}>${esc(text)}</option>`).join('')}</select>`;
+    return `<h2>Preview</h2>
+      <p id="pv-scene" class="hint">Choose a data scene to play it in the game's own dialog, from the state below. It starts a fresh test game that is never saved.</p>
+      <div class="pv-state">
+        <label>Start as ${sel('as', [['hired', 'a hired hand'], ['owner', 'a ship owner']])}</label>
+        <label>Post ${sel('post', opt.posts.map(p => [p, p]))}</label>
+        <label>Captain (first officer) ${sel('captain', opt.captains.map(c => [c.key, `${c.name} (${c.xo})`]))}</label>
+        <label>Main characters aboard ${sel('start', opt.pairs.map(p => [p.key, p.names]))}</label>
+        <label>Day <input type="number" min="1" data-pv="day" placeholder="1"></label>
+        <label>Credits <input type="number" data-pv="credits" placeholder="the start's"></label>
+        <label>Place ${sel('place', [['', 'from the scene'], ...opt.places.map(p => [p.name, p.name])])}</label>
+        <fieldset><legend>Standing</legend>${opt.factions.map(f => `<label>${esc(f)} <input type="number" data-pv-rep="${esc(f)}" placeholder="0"></label>`).join('')}</fieldset>
+        <label>Story qualities, one a line (name=number)<textarea data-pv="qualities" rows="3" placeholder="strike-day=1"></textarea></label>
+        <button data-action="play" disabled>Play this scene</button>
+      </div>
+      <div id="pv-report" role="status"></div>
+      <div id="pv-effects" role="status"></div>
+      <div id="pv-frame"></div>`;
+  }
+  const listHtml = items => `<ul>${items.map(x => `<li>${esc(x)}</li>`).join('')}</ul>`;
+  function reportHtml(m) {
+    if (m.error) return `<p class="note">${esc(m.error)}</p>`;
+    const lines = [];
+    lines.push(m.failing.length ? `<p class="warn">This scene's conditions do not hold in this state:</p>${listHtml(m.failing)}<p class="hint">It is played anyway.</p>` : '<p class="ok">Every condition of the scene holds in this state.</p>');
+    if (m.chance !== undefined) lines.push(`<p class="hint">It also has a chance of ${esc(m.chance)}, rolled when the game picks a scene.</p>`);
+    if (m.chained) lines.push('<p class="hint">It only plays after another scene leads into it.</p>');
+    for (const c of m.shut) lines.push(`<p class="warn">Choice ${c.n} is shut:</p>${listHtml(c.why)}`);
+    return lines.join('');
+  }
+  const effectsHtml = m => `<h3>You chose: ${esc(m.label)}</h3>${m.lines.length ? listHtml(m.lines) : '<p class="hint">Nothing it tracks changed.</p>'}`;
+
+  function mount(app, rows, overrides, opt) {
     const files = [...new Set(rows.map(r => r.file))].sort();
     const options = (list, any) => `<option value="">${any}</option>${list.map(([v, t]) => `<option value="${esc(v)}">${esc(t)}</option>`).join('')}`;
     app.innerHTML = `<h1>Scenes</h1>
@@ -239,29 +369,64 @@
         <select id="kind" aria-label="Data or code">${options([['data', 'data (storylet)'], ['code', 'code']], 'Data or code')}</select>
         <span id="count" class="hint" role="status"></span>
       </div>
-      <div class="split"><div id="list"></div><div id="detail"></div></div>`;
+      <div class="split"><div id="list"></div><div id="detail"></div><div id="preview">${previewPaneHtml(opt)}</div></div>`;
     const state = { q: '', where: '', file: '', kind: '', id: '' };
     const values = SceneIndex.values = valuesFrom(overrides);
+    const setup = SceneIndex.setup = { ...PREVIEW_DEFAULTS, rep: {} };
     const update = () => {
       const shown = filterRows(rows, state);
       app.querySelector('#count').textContent = `${shown.length} of ${rows.length} scenes`;
       app.querySelector('#list').innerHTML = tableHtml(shown, state.id, new Set(Object.keys(overridesFrom(rows, values))));
-      app.querySelector('#detail').innerHTML = detailHtml(rows.find(r => r.id === state.id), values, rows);
+      const row = rows.find(r => r.id === state.id), playable = !!row && row.kind === 'data';
+      app.querySelector('#detail').innerHTML = detailHtml(row, values, rows);
+      app.querySelector('[data-action="play"]').disabled = !playable;
+      app.querySelector('#pv-scene').textContent = playable ? `Scene: ${row.title} (${row.id})` : 'Choose a data scene to play it in the game\'s own dialog, from the state below. It starts a fresh test game that is never saved.';
+    };
+    // The place a scene needs, from its own conditions, unless one is chosen: a planet it names, a system it is bound for, or Earth.
+    const placeFor = row => {
+      if (setup.place) return setup.place;
+      const w = row.when || {}, planet = [].concat(w.planet || [])[0], at = [].concat(w.at || [])[0];
+      return planet || (at && (opt.places.find(p => p.sid === at) || {}).name) || 'Earth';
+    };
+    const send = msg => { const f = frameEl(); if (previewReady) f.contentWindow.postMessage(msg, '*'); else pending = msg; };
+    let previewReady = false, pending = null;
+    const frameEl = () => {
+      let f = app.querySelector('#pv-frame-el');
+      if (!f) { f = document.createElement('iframe'); f.id = 'pv-frame-el'; f.title = 'The scene in the game'; f.src = 'editor-preview.html?scope=full'; app.querySelector('#pv-frame').append(f); }
+      return f;
+    };
+    onPreview = (m, source) => {
+      const f = app.querySelector('#pv-frame-el');
+      if (!f || source !== f.contentWindow) return;
+      if (m.type === 'ready') { previewReady = true; if (pending) { f.contentWindow.postMessage(pending, '*'); pending = null; } }
+      else if (m.type === 'chose') app.querySelector('#pv-effects').innerHTML = effectsHtml(m);
+      else app.querySelector('#pv-report').innerHTML = reportHtml(m);
     };
     app.addEventListener('input', e => {
       const t = e.target;
-      if (t.dataset && t.dataset.path) {  // a field of the form: keep the focus, so only its flag and the changes are redrawn
+      if (t.dataset && t.dataset.pv) setup[t.dataset.pv] = t.value;
+      else if (t.dataset && t.dataset.pvRep) setup.rep[t.dataset.pvRep] = t.value;
+      else if (t.dataset && t.dataset.path) {  // a field of the form: keep the focus, so only its flag and the changes are redrawn
         (values[state.id] = values[state.id] || {})[t.dataset.path] = t.value;
         app.querySelector(`[data-warn="${t.dataset.path}"]`).textContent = flagOf(t.value);
         app.querySelector('#changes').textContent = fileText(overridesFrom(rows, values));
       } else if (t.id in state) { state[t.id] = t.value; update(); }
     });
-    app.addEventListener('click', e => { const b = e.target.closest('button[data-id]'); if (b) { state.id = b.dataset.id; update(); } });
+    app.addEventListener('click', e => {
+      const b = e.target.closest('button[data-id]');
+      if (b) { state.id = b.dataset.id; update(); return; }
+      const row = rows.find(r => r.id === state.id);
+      if (e.target.closest('[data-action="play"]') && row && row.kind === 'data') {
+        app.querySelector('#pv-effects').innerHTML = ''; app.querySelector('#pv-report').innerHTML = '';
+        send({ cmd: 'play', id: row.id, overrides: overridesFrom(rows, values), setup: { ...setup, place: placeFor(row) } });
+      }
+    });
     update();
   }
 
   // The page opens two frames of itself to read the game, and shows what they send back; a frame reads the game and sends it up.
   function start() {
+    if (document.body.dataset.role === 'preview') { startPreview().catch(e => parent.postMessage({ mode: 'preview', error: String(e && e.stack || e) }, '*')); return; }
     const mode = new URLSearchParams(location.search).get('read');
     if (mode) {
       // The game's scripts expect these in the page (ui.js, a11y.js).
@@ -273,6 +438,7 @@
     const frames = { full: 'editor.html?read=full&scope=full', narrow: 'editor.html?read=narrow' };
     window.addEventListener('message', ev => {
       const m = ev.data;
+      if (m && m.mode === 'preview') { onPreview(m, ev.source); return; }
       if (!m || !frames[m.mode] || ev.source !== document.getElementById('frame-' + m.mode).contentWindow) return;
       if (m.error) { app.innerHTML = `<p class="note">Could not read the game: ${esc(m.error)}</p>`; return; }
       got[m.mode] = m;
@@ -281,7 +447,7 @@
       rule = got.full.placeholder;
       SceneIndex.rows = got.full.rows.map(r => ({ ...r, off: !kept.has(r.id) }));
       document.querySelectorAll('iframe').forEach(f => f.remove());
-      mount(app, SceneIndex.rows, got.full.overrides);
+      mount(app, SceneIndex.rows, got.full.overrides, got.full.options);
     });
     for (const [mode, src] of Object.entries(frames)) {
       const f = document.createElement('iframe');
@@ -290,6 +456,6 @@
     }
   }
 
-  const SceneIndex = window.SceneIndex = { SCRIPTS, esc, plain, filterRows, tableHtml, detailHtml, overridesFrom, valuesFrom, fileText, badPlaceholders, rows: null, values: null };
+  const SceneIndex = window.SceneIndex = { SCRIPTS, esc, plain, filterRows, tableHtml, detailHtml, overridesFrom, valuesFrom, fileText, badPlaceholders, reportHtml, effectsHtml, rows: null, values: null, setup: null };
   start();
 })();

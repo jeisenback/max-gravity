@@ -39,11 +39,12 @@ test('the script runs its own test', () => {
   assert.deepEqual(select(['tools/changed-tests.js'], { tests: { ...tests, 'tests/changed-tests.test.js': '' }, sources }).files, ['tests/changed-tests.test.js']);
 });
 
-test('the scene index runs its own test, and so does a change to the script list it copies', () => {
-  const withEditor = { ...tests, 'tests/editor.test.js': '' };
-  assert.deepEqual(select(['editor.js'], { tests: withEditor, sources }).files, ['tests/editor.test.js']);
-  assert.deepEqual(select(['editor.html'], { tests: withEditor, sources }).files, ['tests/editor.test.js']);
-  assert.ok(select(['index.html'], { tests: withEditor, sources }).files.includes('tests/editor.test.js'));
+test('the scene editor runs its own tests, and so does a change to the script list it copies', () => {
+  const withEditor = { ...tests, 'tests/editor.test.js': '', 'tests/editorpreview.test.js': '' };
+  const both = ['tests/editor.test.js', 'tests/editorpreview.test.js'];
+  for (const f of ['editor.js', 'editor.html', 'editor-preview.html']) assert.deepEqual(select([f], { tests: withEditor, sources }).files, both, f);
+  const r = select(['index.html'], { tests: withEditor, sources });
+  for (const t of both) assert.ok(r.files.includes(t), `index.html runs ${t}`);
 });
 
 test('the prose report runs its own test', () => {
