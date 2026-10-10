@@ -32,11 +32,38 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: test "${{ needs.shard.result }}" = success
-  # The coverage floor (tools/coverage-floor.json) is its own job, beside the tests: it runs the suite again under the browser's coverage,
-  # so the tests job stays as long as it was. Its own result is the floor, not the tests (the bundle test cannot pass in a coverage run).
-  coverage:
+  # The coverage floor (tools/coverage-floor.json): the suite again under the browser's coverage, in the same four parts, and then one job merges what the parts saw and
+  # checks the floor. The merge job keeps the name `coverage`. Its own result is the floor, not the tests (the bundle test cannot pass in a coverage run).
+  coverage-shard:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ['1/4', '2/4', '3/4', '4/4']
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup
-      - run: npm run coverage -- --check
+      - run: npm run coverage -- --shard ${{ matrix.shard }} --into coverage-data
+      - uses: actions/upload-artifact@v4
+        with:
+          name: coverage-${{ strategy.job-index }}
+          path: coverage-data
+          retention-days: 1
+  coverage:
+    needs: coverage-shard
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: coverage-*
+          path: coverage-parts
+      # The parts' files are named by process, so two parts can share a name: the merge reads one directory, with the part in each name.
+      - run: |
+          mkdir coverage-all
+          for part in coverage-parts/*/; do for f in "$part"*.json; do cp "$f" "coverage-all/$(basename "$part")-$(basename "$f")"; done; done
+          ls coverage-all | wc -l
+      - run: node tools/coverage.js --from coverage-all --check
