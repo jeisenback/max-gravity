@@ -1,0 +1,660 @@
+[
+ {
+  "id": "greedy",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Sam hums through the rest of the week and calls you \"boss\". Unasked, they tidy the corner of the cockpit.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 25,
+     "opinion": 3
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Sam hums through the rest of the week and calls you \"boss\". Unasked, they tidy the corner of the cockpit.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 25,
+     "opinion": 3
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Sam goes back to work. For the next few days they do exactly what is asked and nothing more, and their tools are always where they were left. They have stopped smiling.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": -2
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "Sam goes back to work. For the next few days they do exactly what is asked and nothing more, and their tools are always where they were left. They have stopped smiling.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": -2
+    }
+   }
+  ],
+  "title": "Sam Wants a Raise",
+  "text": "Sam finds you at the end of a long shift with a printed sheet and folded arms. The sheet lists what crew with their skills earn on other ships, what a ship of your size can afford, and what Sam has done for you lately. The last line says: \"I am worth it.\"",
+  "labels": [
+   "Give them 25% more (125 cr/day)",
+   "No"
+  ]
+ },
+ {
+  "id": "drunk",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Sam spends the week in a corner of the engine room with their back to the ship, and does the work in silence.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": -2
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Sam spends the week in a corner of the engine room with their back to the ship, and does the work in silence.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": -2
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Sam stares at the floor, then swears off drink. For now. They take the next three galley shifts. You find them scrubbing the bulkhead, and they do not look up. The dent is polished.",
+    "d": {
+     "credits": -300,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 2
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "Sam stares at the floor, then swears off drink. For now. They take the next three galley shifts. You find them scrubbing the bulkhead, and they do not look up. The dent is polished.",
+    "d": {
+     "credits": -300,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 2
+    }
+   }
+  ],
+  "title": "Galley Brawl",
+  "text": "Sam got drunk on something they had been keeping in a pipe, and had an argument with the galley bulkhead. The bulkhead won. There is a dent the size of a fist in the wall, blood on the deck, and Sam on the floor with a cloth pressed to their forehead. The medical supplies cost 300 cr.",
+  "labels": [
+   "Dock their pay",
+   "Pay for it and let it go (300 cr)"
+  ]
+ },
+ {
+  "id": "homesick",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Sam takes an hour on a lagged call home, in a quiet corner of the ship, with a hand over their mouth. They come back with red eyes and laugh once. They do not say what was said. For the rest of the week they hum in the corridors, and nobody mentions it.",
+    "d": {
+     "credits": -500,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 3
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Sam takes an hour on a lagged call home, in a quiet corner of the ship, with a hand over their mouth. They come back with red eyes and laugh once. They do not say what was said. For the rest of the week they hum in the corridors, and nobody mentions it.",
+    "d": {
+     "credits": -500,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 3
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You pour two cups of something strong and sit on a crate beside them. For an hour they talk about Mars: the weather, the food, the quiet places. You say almost nothing. When they go to bed, they put a hand on your shoulder on the way out.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You pour two cups of something strong and sit on a crate beside them. For an hour they talk about Mars: the weather, the food, the quiet places. You say almost nothing. When they go to bed, they put a hand on your shoulder on the way out.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 1
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "Sam goes back to work. That night you see them at the viewport again, alone, and you leave them to it.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": -1
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "Sam goes back to work. That night you see them at the viewport again, alone, and you leave them to it.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": -1
+    }
+   }
+  ],
+  "title": "Homesick",
+  "text": "Sam has been quiet for days. At mealtimes they push their food around. At night you have seen them at the viewport, looking at a point of light. They have not said they miss Mars.",
+  "labels": [
+   "Give them a 500 cr bonus to call home",
+   "Share a drink and listen",
+   "\"We all miss somewhere.\""
+  ]
+ },
+ {
+  "id": "nervous",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You sit with them in the galley at three in the morning with a pot of tea between you, and talk about nothing in particular. Sam sleeps through the night for the first time in a week. In the morning they bring you a cup of coffee and spill half of it.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 2
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You sit with them in the galley at three in the morning with a pot of tea between you, and talk about nothing in particular. Sam sleeps through the night for the first time in a week. In the morning they bring you a cup of coffee and spill half of it.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 2
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Sam flinches, and stops mentioning it. In the days after, the shadows under their eyes get darker. They check the seals on every hatch they pass.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": -2
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "Sam flinches, and stops mentioning it. In the days after, the shadows under their eyes get darker. They check the seals on every hatch they pass.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": -2
+    }
+   }
+  ],
+  "title": "Bad Dreams",
+  "text": "Sam has not been sleeping. There are shadows under their eyes, they drop small tools, and they jump at every clank of the hull. When you ask, they tell you in a flat voice: nightmares about hull breaches, the same one every night. The thin bright line of a crack, spreading. The sudden silence. The cold.",
+  "labels": [
+   "Talk them through it",
+   "Tell them to toughen up"
+  ]
+ },
+ {
+  "id": "talkative",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Sam sits down and gives you an hour of gossip: names, debts, who left whom at which port. In the middle of it is one thing you can use: \"Word is that the governor of Juno Commons is stockpiling Food for a party, and will pay well over the odds.\" Then Sam moves on to the next thing.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 1
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Sam sits down and gives you an hour of gossip: names, debts, who left whom at which port. In the middle of it is one thing you can use: \"A strike ended on Ring Nine, and every dock in town is suddenly flooded with Food.\" Then Sam moves on to the next thing.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 1
+    }
+   }
+  ],
+  "title": "Gossip",
+  "text": "Sam has been on the open band with half the ships in comm range, chatting. They know the name of the freighter captain's dog. They know who is feuding with whom at the next port. They lean in at your cabin door with news.",
+  "labels": [
+   "What have you heard?"
+  ]
+ },
+ {
+  "id": "secretive",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Sam looks at you. \"Family business,\" Sam says. That is all you get. Afterward Sam takes meals in the bunk and locks the door to sleep.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": -2
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Sam looks at you. \"Family business,\" Sam says. That is all you get. Afterward Sam takes meals in the bunk and locks the door to sleep.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": -2
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You say nothing and turn to go. Behind you their shoulders come down. That evening Sam brings you a cup of tea you did not ask for, stands in the doorway, and goes.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 2
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You say nothing and turn to go. Behind you their shoulders come down. That evening Sam brings you a cup of tea you did not ask for, stands in the doorway, and goes.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 2
+    }
+   }
+  ],
+  "title": "Locked Locker",
+  "text": "Sam's locker has two locks, one you do not recognize and a cheap padlock over it. They have been receiving messages with no sender ID, short ones, at odd hours. They read them, delete them, and read them again. When you come into the room, they flinch.",
+  "labels": [
+   "Ask about it",
+   "Respect their privacy"
+  ]
+ },
+ {
+  "id": "curious",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "They find a leak nobody knew about, a hairline crack in an old fitting that has been weeping mass for months, and seal it with a strip of foil. You recover 25 units of reaction mass. From then on the pumps run quiet, and Sam hums while they work.",
+    "d": {
+     "credits": 0,
+     "fuel": 25,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 2
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Something goes pop. A thin jet of reaction mass hisses out of the open housing before you can shut it, and you lose 20 units. Sam looks at the empty housing. \"Ah,\" Sam says.",
+    "d": {
+     "credits": 0,
+     "fuel": -20,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 2
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "They reassemble every part, muttering, and the pumps run as before. Sam tightens the last bolt without looking at you.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": -1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "They reassemble every part, muttering, and the pumps run as before. Sam tightens the last bolt without looking at you.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": -1
+    }
+   }
+  ],
+  "title": "Tinkering",
+  "text": "Sam has the reaction mass pumps in pieces on newspaper in the middle of the engine room, \"to see how they work\". Every bolt is in a row. Three manuals are open, and there is a cup of cold tea. Nobody asked them to.",
+  "labels": [
+   "Let them experiment",
+   "Put it back together. Now."
+  ]
+ },
+ {
+  "id": "pious",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You kneel beside them in the dim light. For a few minutes nobody speaks. The drive hums. A pipe ticks. When it ends, you both sit a moment. \"Thank you,\" Sam says.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 2
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You kneel beside them in the dim light. For a few minutes nobody speaks. The drive hums. A pipe ticks. When it ends, you both sit a moment. \"Thank you,\" Sam says.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 2
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Sam goes to their corner. Through the thin wall you hear the low murmur of their prayer. Sam prays for you anyway. You listen until it stops.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "Sam goes to their corner. Through the thin wall you hear the low murmur of their prayer. Sam prays for you anyway. You listen until it stops.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 0
+    }
+   }
+  ],
+  "title": "Quiet Prayer",
+  "text": "Sam finds you in the galley at the turn of the watch with a worn charm in one hand and asks you to join a short prayer for safe passage. They say it every burn, alone, in a corner, but tonight they wanted company. It will take a few minutes. They say you may stay silent.",
+  "labels": [
+   "Join them",
+   "Politely decline"
+  ]
+ },
+ {
+  "id": "rude",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You step between them. \"Sit,\" you say. \"Both of you.\" The room goes still. \"You do not talk about a shipmate's humming at my table,\" you say to Sam, \"or anywhere I can hear it.\" Sam goes red, then pale, and leaves. For days Sam eats alone.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": -2
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You step between them. \"Sit,\" you say. \"Both of you.\" The room goes still. \"You do not talk about a shipmate's humming at my table,\" you say to Sam, \"or anywhere I can hear it.\" Sam goes red, then pale, and leaves. For days Sam eats alone.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": -2
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You lean in the doorway with your arms folded and let them. It is short, loud and untidy, and involves a soup pot. 8 points of hull damage later they are sitting side by side on the deck, breathing hard, sharing a cloth for a bloody lip. \"It was flat,\" Sam says. \"It was flat,\" says the other, and they both laugh.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": -8,
+     "wage": 0,
+     "opinion": 1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You lean in the doorway with your arms folded and let them. It is short, loud and untidy, and involves a soup pot. 8 points of hull damage later they are sitting side by side on the deck, breathing hard, sharing a cloth for a bloody lip. \"It was flat,\" Sam says. \"It was flat,\" says the other, and they both laugh.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": -8,
+     "wage": 0,
+     "opinion": 1
+    }
+   }
+  ],
+  "title": "Friction",
+  "text": "Sam has been needling the rest of the crew for days: a jab at breakfast, a remark in the corridor, a sneer at how someone hums. Tonight in the galley it is the humming again. A chair scrapes. \"Say that again,\" says a level voice. \"I said it was flat,\" Sam says. \"I did not say it was your fault. I said it was flat.\" \"Say that again.\" There is going to be a fight.",
+  "labels": [
+   "Reprimand them",
+   "Let them sort it out"
+  ]
+ },
+ {
+  "id": "kind",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You find Sam in the galley washing the last of the pots. You thank them. They wave it off and make a joke of it, and their ears go pink. For the rest of the trip nobody snaps at the table.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 1
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You find Sam in the galley washing the last of the pots. You thank them. They wave it off and make a joke of it, and their ears go pink. For the rest of the trip nobody snaps at the table.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 1
+    }
+   }
+  ],
+  "title": "Small Kindnesses",
+  "text": "Sam spent the night fixing everyone's bunk lights, one by one, with a screwdriver, and in the small hours cooked a real meal from the last of the good stores. Nobody asked them to. In the morning every bunk had a light that worked, and every plate was full.",
+  "labels": [
+   "Thank them"
+  ]
+ },
+ {
+  "id": "generous",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You raise a glass, and so does everyone else, in a ring around the table. The bottle tastes of Mars: sweet, smoky, with something bitter under it. To the ship. To the crew. To not dying. Somebody laughs, then everyone does, and the bottle goes round twice before it is empty.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 1
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You raise a glass, and so does everyone else, in a ring around the table. The bottle tastes of Mars: sweet, smoky, with something bitter under it. To the ship. To the crew. To not dying. Somebody laughs, then everyone does, and the bottle goes round twice before it is empty.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 1
+    }
+   }
+  ],
+  "title": "Shared Bottle",
+  "text": "Sam comes into the galley at the end of a long shift with a dusty bottle wrapped in a shirt. They have carried it in the bottom of their bag since they left Mars. They set it on the table and take down every cup in the cupboard. \"I was saving it for a special occasion,\" they say. \"But I think we are the occasion.\"",
+  "labels": [
+   "Raise a glass"
+  ]
+ },
+ {
+  "id": "brave",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Sam goes out through the lock with a tether and a bag of tools. For twenty minutes they are a bright shape against the stars, working along the hull. Then they are back inside, helmet off, sweating, grinning, holding the bent strut.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 1
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "A tether snaps. For one second Sam drifts, arms out, into the black, until a gloved hand catches a handhold and holds. They make it back, shaking and gasping. The ship takes 13 points of damage from the loose mast, and nobody sleeps that night.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": -13,
+     "wage": 0,
+     "opinion": 1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You go out through the lock yourself, with the tether at your belt, and fix it in the cold and the silence with the ship turning slowly below your boots. It takes forty minutes. Sam watched through the port, and when you come in Sam hands you a cup and says nothing.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 2
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You go out through the lock yourself, with the tether at your belt, and fix it in the cold and the silence with the ship turning slowly below your boots. It takes forty minutes. Sam watched through the port, and when you come in Sam hands you a cup and says nothing.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "wage": 0,
+     "opinion": 2
+    }
+   }
+  ],
+  "title": "Volunteer",
+  "text": "A sensor mast has come loose in the burn and hangs by one strut, banging against the hull with every pulse of the drive. It will tear free sooner or later and take plating with it. Before you can speak, Sam has the suit half on. \"I will go, captain,\" they say, buckling a strap. \"It is a ten-minute job. I have done worse.\"",
+  "labels": [
+   "Let them go",
+   "Go yourself"
+  ]
+ }
+]
