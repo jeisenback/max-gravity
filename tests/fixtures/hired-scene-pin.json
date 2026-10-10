@@ -42,7 +42,7 @@
   "id": "cast:ines:meet",
   "i": 1,
   "label": "\"Not this time.\"",
-  "result": "She nods, and goes back to the jacket. \"I will be around,\" she says.",
+  "result": "She goes back to the jacket. \"I will be around,\" she says.",
   "changes": [
    "s.cast.ines.next: 0 -> 9"
   ],
@@ -183,7 +183,7 @@
   "id": "cast:ines:mid1",
   "i": 1,
   "label": "Not on a loaded burn",
-  "result": "She nods once. \"That is the correct answer,\" she says. \"Ask me again when there is nothing aboard but air.\" She goes back to the helm, and flies the rest of the shift by the book.",
+  "result": "\"That is the correct answer,\" she says. \"Ask me again when there is nothing aboard but air.\" She goes back to the helm, and flies the rest of the shift by the book.",
   "changes": [
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
@@ -327,7 +327,7 @@
   "id": "cast:ines:late",
   "i": 0,
   "label": "Promise her a ship, someday",
-  "result": "\"Someday,\" you say, \"and you will be asked.\" She does not answer. Then she nods once at the windscreen. \"That is all I wanted,\" she says. \"A date would have been a lie. This is better.\"",
+  "result": "\"Someday,\" you say, \"and you will be asked.\" She does not answer. Then, to the windscreen: \"That is all I wanted,\" she says. \"A date would have been a lie. This is better.\"",
   "changes": [
    "s.cast.ines.flags: {} -> undefined",
    "s.cast.ines.flags.promised: undefined -> true",
@@ -580,7 +580,7 @@
   "id": "cast:tomas:intro",
   "i": 0,
   "label": "Offer to help with the service",
-  "result": "He gives you a rag, a torque wrench and a short, kind lecture on what not to touch, and then you spend two hours on your back under a coolant loop. When you come out, black to the elbows, he looks at you for a while. \"Next time,\" he says, \"you are holding the light. You are better at that.\"",
+  "result": "He gives you a rag, a torque wrench and a short, kind lecture on what not to touch, and then you spend two hours on your back under a coolant loop. When you come out, black to the elbows, he looks at you. \"Next time,\" he says, \"you are holding the light. You are better at that.\"",
   "changes": [
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
@@ -616,7 +616,7 @@
   "id": "cast:tomas:intro",
   "i": 1,
   "label": "Leave him to it",
-  "result": "He nods. \"It is all right,\" he says. \"Most people do. She will thank you anyway.\" He goes back to the loop, and you hear him, softly, as you leave, telling the pipes that nobody is angry at them.",
+  "result": "\"It is all right,\" he says. \"Most people do. She will thank you anyway.\" He goes back to the loop, and you hear him, softly, as you leave, telling the pipes that nobody is angry at them.",
   "changes": [
    "s.people.c:tomas.memories: [] -> undefined",
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You left me to my service."
@@ -761,7 +761,7 @@
   "id": "cast:tomas:mid2",
   "i": 1,
   "label": "Ask him to write it down, so it does not go with the hull",
-  "result": "He looks at the flask for a while. \"Nobody has asked me that,\" he says. He goes below and comes back with a notebook with a stained cover, and spends the quiet watch filling eleven pages in small square capitals, a diagram on each. He tears them out along the fold, carefully, and puts them in your hand. \"If she is sold again,\" he says, \"somebody will need to know where the cracks are. Not the owners. Somebody.\" You fold the pages into your jacket, and he goes back to the plant and tells it, quietly, that it will be all right.",
+  "result": "He looks at the flask. \"Nobody has asked me that,\" he says. He goes below and comes back with a notebook with a stained cover, and spends the quiet watch filling eleven pages in small square capitals, a diagram on each. He tears them out along the fold, carefully, and puts them in your hand. \"If she is sold again,\" he says, \"somebody will need to know where the cracks are. Not the owners. Somebody.\" You fold the pages into your jacket, and he goes back to the plant and tells it, quietly, that it will be all right.",
   "changes": [
    "s.cast.tomas.flags: {} -> undefined",
    "s.cast.tomas.flags.plan: undefined -> true",
@@ -798,7 +798,7 @@
   "id": "cast:tomas:mid2",
   "i": 2,
   "label": "\"Stick to your shifts.\"",
-  "result": "He closes his mouth, and the flask, and nods. \"As you say.\" The plant runs perfectly for the rest of the burn.",
+  "result": "He closes his mouth, and the flask. \"As you say.\" The plant runs perfectly for the rest of the burn.",
   "changes": [
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
@@ -1015,7 +1015,7 @@
   "id": "cast:yelena:meet",
   "i": 0,
   "label": "Offer her the guns",
-  "result": "She puts the ice down and gets up so fast the stool falls over, and does not pick it up. \"Do you know,\" she says, \"you are the first person to ask me that as if it were a question.\" She is already walking. Over her shoulder, to the screen: \"Do not think I have forgotten the foul.\"",
+  "result": "She puts the ice down and gets up so fast the stool falls over, and does not pick it up. \"Do you know,\" she says, \"you are the first person to ask me that and wait for the answer.\" She is already walking. Over her shoulder, to the screen: \"Do not think I have forgotten the foul.\"",
   "changes": [
    "s.crew.9: undefined -> c:yelena",
    "s.home.log: [] -> undefined",
@@ -1088,7 +1088,7 @@
   "id": "cast:yelena:intro",
   "i": 0,
   "label": "Take the ref's side",
-  "result": "You say the elbow was clean, and for ten minutes she is the happiest you have seen her, taking you through the replay frame by frame with a fork for a pointer. By the end she has you pointing too. \"You are wrong,\" she says, delighted, \"and you know exactly where, and that is the whole game.\" She goes back to her post with a slight spring in the step, favoring the good knee.",
+  "result": "You say the elbow was clean, and for ten minutes she is the happiest you have seen her, taking you through the replay frame by frame with a fork for a pointer. By the end she has you pointing too. \"You are wrong,\" she says, delighted, \"and you know exactly where, and that is the whole game.\" She goes back to her post with a spring in her step, favoring the good knee.",
   "changes": [
    "s.people.c:yelena.liftedAt: undefined -> 1",
    "s.people.c:yelena.memories: [] -> undefined",
@@ -1300,7 +1300,7 @@
   "id": "cast:yelena:late",
   "i": 0,
   "label": "Promise her a ship, someday",
-  "result": "\"Someday,\" you say, \"and you will be asked.\" She puts the cloth down on the housing and, for once, does not pick anything up in its place. She says \"Good,\" to the fire control, in a small voice, and then, louder, to the whole housing, \"Did you hear that?\"",
+  "result": "\"Someday,\" you say, \"and you will be asked.\" She puts the cloth down on the housing and, for once, does not pick anything up in its place. She says \"Good,\" to the fire control, in a low voice, and then, louder, to the whole housing, \"Did you hear that?\"",
   "changes": [
    "s.cast.yelena.flags: {} -> undefined",
    "s.cast.yelena.flags.promised: undefined -> true",
@@ -1337,7 +1337,7 @@
   "id": "cast:yelena:late",
   "i": 1,
   "label": "Make no promises",
-  "result": "\"I cannot promise that,\" you say, \"but I heard you.\" She nods, once, sharply, like a referee, and the cloth goes back to the housing. \"Fair,\" she says. \"I will take fair. Fair is more than most of the bench ever got.\"",
+  "result": "\"I cannot promise that,\" you say, \"but I heard you.\" She raises one flat hand, like a referee, and the cloth goes back to the housing. \"Fair,\" she says. \"I will take fair. Fair is more than most of the bench ever got.\"",
   "changes": [
    "s.people.c:yelena.liftedAt: undefined -> 1",
    "s.people.c:yelena.memories: [] -> undefined",
@@ -1586,7 +1586,7 @@
   "id": "cast:ruben:intro",
   "i": 1,
   "label": "Ask what he is listening for",
-  "result": "\"Ah,\" he says, and holds up the thermos, as one raises a glass. \"What they need. People never say it outright, but they tell you in ways they do not notice. A little too fast, a little too polite. That is when you know you are about to be useful.\" He turns the band down, gently, so as not to frighten them.",
+  "result": "\"Ah,\" he says, and holds up the thermos, as one raises a glass. \"What they need. People never say it outright, but they tell you in ways they do not notice. Too fast, too polite. That is when you know you are about to be useful.\" He turns the band down, gently, so as not to frighten them.",
   "changes": [
    "s.people.c:ruben.liftedAt: undefined -> 1",
    "s.people.c:ruben.memories: [] -> undefined",
@@ -1709,7 +1709,7 @@
   "id": "cast:ruben:mid2",
   "i": 0,
   "label": "Ask him to keep an ear on it",
-  "result": "\"Of course. Of course.\" He is glowing. For the rest of the burn there is a small notebook next to the comms console, titled, in his careful hand, WHAT IS SAID, and each page is a name, a time, and a verdict. By the end, you could write the ship's biography from it.",
+  "result": "\"Of course. Of course.\" He is glowing. For the rest of the burn there is a notebook next to the comms console, titled, in his careful hand, WHAT IS SAID, and each page is a name, a time, and a verdict. By the end, you could write the ship's biography from it.",
   "changes": [
    "s.people.c:ruben.liftedAt: undefined -> 1",
    "s.people.c:ruben.memories: [] -> undefined",
@@ -1815,7 +1815,7 @@
   "id": "cast:ruben:late",
   "i": 1,
   "label": "Make no promises",
-  "result": "\"I cannot promise that,\" you say, \"but I heard you.\" He smiles, crookedly, and nods. \"That is what the open band is for,\" he says. \"Not promises. Being heard.\" He turns the volume up on the quiet band, and, together, for a while, you sit and listen.",
+  "result": "\"I cannot promise that,\" you say, \"but I heard you.\" He smiles. \"That is what the open band is for,\" he says. \"Not promises. Being heard.\" He turns the volume up on the quiet band, and the two of you sit and listen.",
   "changes": [
    "s.people.c:ruben.liftedAt: undefined -> 1",
    "s.people.c:ruben.memories: [] -> undefined",
@@ -2104,7 +2104,7 @@
   "id": "cast:bexa:mid1",
   "i": 0,
   "label": "Take the detour",
-  "result": "She brings the ship in slow and gentle, the way you approach a frightened animal. The wreck is a small hauler, dark and cold, her hatches sealed, her beacon the only living thing on her. Nobody aboard. Bexa stays on the scope until the beacon is a speck, and then, quietly, writes a name on a list you cannot see. \"She was called the Patient Wren,\" she says. \"I will tell the registry. She will be towed home.\" She flies the rest of the shift with two fingers on the stick.",
+  "result": "She brings the ship in slow and gentle, the way you approach a frightened animal. The wreck is a hauler, dark and cold, her hatches sealed, her beacon the only living thing on her. Nobody aboard. Bexa stays on the scope until the beacon is a speck, and then, quietly, writes a name on a list you cannot see. \"She was called the Patient Wren,\" she says. \"I will tell the registry. She will be towed home.\" She flies the rest of the shift with two fingers on the stick.",
   "changes": [
    "s.people.c:bexa.liftedAt: undefined -> 1",
    "s.people.c:bexa.memories: [] -> undefined",
@@ -2175,7 +2175,7 @@
   "id": "cast:bexa:mid2",
   "i": 0,
   "label": "Trust her",
-  "result": "You tell her to carry on. She nods once, and she does, and for the next twenty minutes the whole ship waits with her, listening to the thing she is certain is not there. At the end, the contact goes pale, and thins, and is gone, like breath on a pane. Bexa lets out a long, slow exhale. \"Echo,\" she says. \"Forty-one.\" She does not say thank you. She puts a small tick on the inside of the console cover.",
+  "result": "You tell her to carry on. She carries on, and for the next twenty minutes the whole ship waits with her, listening to the thing she is certain is not there. At the end, the contact goes pale, and thins, and is gone, like breath on a pane. Bexa lets out a long, slow exhale. \"Echo,\" she says. \"Forty-one.\" She does not say thank you. She puts a tick on the inside of the console cover.",
   "changes": [
    "s.people.c:bexa.liftedAt: undefined -> 1",
    "s.people.c:bexa.memories: [] -> undefined",
@@ -2246,7 +2246,7 @@
   "id": "cast:bexa:late",
   "i": 0,
   "label": "Promise her a ship, someday",
-  "result": "\"Someday,\" you say, \"and you will be asked.\" She does not answer for a moment. Then she takes a small brass tag from above the console, on its string, and holds it in her palm. \"He would have liked you,\" she says, to nobody in particular, and puts it carefully back.",
+  "result": "\"Someday,\" you say, \"and you will be asked.\" She does not answer for a moment. Then she takes the brass tag from above the console, on its string, and holds it in her palm. \"He would have liked you,\" she says, to nobody in particular, and puts it carefully back.",
   "changes": [
    "s.cast.bexa.flags: {} -> undefined",
    "s.cast.bexa.flags.promised: undefined -> true",
@@ -2283,7 +2283,7 @@
   "id": "cast:bexa:late",
   "i": 1,
   "label": "Make no promises",
-  "result": "\"I cannot promise that,\" you say, \"but I heard you.\" She nods slowly, and her mouth does something small and crooked. \"That is the right answer,\" she says. \"A promise is a tow rope. Do not put one on a ship you have not looked at.\"",
+  "result": "\"I cannot promise that,\" you say, \"but I heard you.\" Her mouth goes crooked. \"That is the right answer,\" she says. \"A promise is a tow rope. Do not put one on a ship you have not looked at.\"",
   "changes": [
    "s.people.c:bexa.liftedAt: undefined -> 1",
    "s.people.c:bexa.memories: [] -> undefined",
@@ -2425,7 +2425,7 @@
   "id": "cast:pax:meet",
   "i": 0,
   "label": "Offer them the guns",
-  "result": "The dart goes down, carefully. \"Really?\" Pax says, and then, because that sounded like asking for too much: \"I mean, thanks. Yes. I mean, I will try not to flinch.\" You tell them the flinching can come, too. Pax picks up a small bag.",
+  "result": "The dart goes down, carefully. \"Really?\" Pax says, and then, because that sounded like asking for too much: \"I mean, thanks. Yes. I mean, I will try not to flinch.\" You tell them the flinching can come, too. Pax picks up a bag.",
   "changes": [
    "s.crew.9: undefined -> c:pax",
    "s.home.log: [] -> undefined",
@@ -2569,7 +2569,7 @@
   "id": "cast:pax:mid1",
   "i": 0,
   "label": "Check it together",
-  "result": "You stand beside them, not helping, just present, and, after a minute, Pax puts the wrench to the coupling. It takes twelve minutes, not ten. When it is done, Pax breathes out for what must be the first time in a quarter hour, and tests it, twice, and nods. \"Good,\" they say. \"It is good.\" They put the wrench back in its clip and square it with the rack, and the two of you stand a while longer with the hum of the mount coming up through your boots.",
+  "result": "You stand beside them, not helping, just present, and, after a minute, Pax puts the wrench to the coupling. It takes twelve minutes, not ten. When it is done, Pax breathes out for what must be the first time in a quarter hour, and tests it, twice. \"Good,\" they say. \"It is good.\" They put the wrench back in its clip and square it with the rack, and the two of you stand a while longer with the hum of the mount coming up through your boots.",
   "changes": [
    "s.people.c:pax.liftedAt: undefined -> 1",
    "s.people.c:pax.memories: [] -> undefined",
@@ -2605,7 +2605,7 @@
   "id": "cast:pax:mid1",
   "i": 1,
   "label": "Do it for them",
-  "result": "You take the wrench, and do it in nine minutes. Pax says \"Thank you,\" in a small voice and watches your hands the whole time. Pax tests the coupling after you, quietly, when they think no one is looking, and finds it perfect, and does not look any happier about it.",
+  "result": "You take the wrench, and do it in nine minutes. Pax says \"Thank you\" and watches your hands the whole time. Pax tests the coupling after you, quietly, when they think no one is looking, and finds it perfect, and does not look any happier about it.",
   "changes": [
    "s.people.c:pax.memories: [] -> undefined",
    "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You did the coupling for me."
@@ -2746,7 +2746,7 @@
   "id": "cast:pax:late",
   "i": 1,
   "label": "Make no promises",
-  "result": "\"I cannot promise that,\" you say, \"but I heard you.\" Pax nods. \"That is fair,\" they say. \"It would be strange to be promised. I am not used to it.\" They smile, a small crooked one, and then, to your surprise, they say, \"Nine days is already a good thing, though. I will take that.\"",
+  "result": "\"I cannot promise that,\" you say, \"but I heard you.\" \"That is fair,\" Pax says. \"It would be strange to be promised. I am not used to it.\" They smile, a crooked one, and then, to your surprise, they say, \"Nine days is already a good thing, though. I will take that.\"",
   "changes": [
    "s.people.c:pax.liftedAt: undefined -> 1",
    "s.people.c:pax.memories: [] -> undefined",
