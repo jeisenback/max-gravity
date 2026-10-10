@@ -23,6 +23,29 @@ const playLines = () => {
   // the crew's chatter: a captain with no lines of their own, once for each trait
   hired().captainKey = null;
   for (const t of traits) for (const seed of [1, 2, 3]) { __seed(seed); hiredCaptain().traits = [t]; note(`chatter:${t}:${seed}`, captainChatter().join(' | ')); }
+  // the openers a stranger gets, by the first trait and by the name (the person's own pick of three)
+  for (const t of traits) for (const last of ['Vale', 'Okafor', 'Lind', 'Marsh']) { __seed(1); const p = person([t, t === 'kind' ? 'brave' : 'kind'], { last }); note(`opener:${t}:${last}`, talkEvent({ p, known: false }).text); }
+  // what a secret lets slip over a drink, and what it asks of you
+  const secrets = Object.keys(SECRET_TALK), ctx = { st, bar: 'The Anchor' }, scene = (key, ev) => note(key, JSON.stringify([ev.title, ev.text, ev.choices.map(c => String(c.label))]));
+  secrets.forEach((sec, i) => { for (const seed of [1, 2, 3]) note(`secret:${sec}:${seed}`, topic('drink', person(['talkative'], { secret: sec }), seed * 100 + i)); });
+  secrets.forEach((sec, i) => {
+    __seed(500 + i); st.credits = 5000;
+    const p = person(['kind'], { secret: sec, opinion: OPINION.CLOSE }), o = BAR_TOPICS.find(t => t.id === 'secret').make(p, { p, known: false, drank: true }, ctx);
+    G.nextEvent = null; note(`secrethelp:${sec}:go`, o.run()); const ev = G.nextEvent; G.nextEvent = null; scene(`secrethelp:${sec}:scene`, ev);
+    ev.choices.forEach((c, k) => { st.credits = 5000; __seed(600 + i * 10 + k); note(`secrethelp:${sec}:${k}`, c.run()); });
+  });
+  // what they are traveling for: the ask, the scene and each thing you can do (the person has a secret, for what the quiet after lets slip)
+  Object.keys(GOAL_HELP).forEach((goal, i) => {
+    __seed(300 + i); st.credits = 5000;
+    const p = person(['talkative'], { goal, secret: 'debt' }), o = BAR_TOPICS.find(t => t.id === 'goal').make(p, { p, known: false }, ctx);
+    note(`goalask:${goal}`, o.label); G.nextEvent = null; note(`goalhelp:${goal}:go`, o.run()); const ev = G.nextEvent; G.nextEvent = null; scene(`goalhelp:${goal}:scene`, ev);
+    ev.choices.forEach((c, k) => { st.credits = 5000; __seed(400 + i * 10 + k); note(`goalhelp:${goal}:${k}`, c.run()); });
+  });
+  // the crew in the room: a shipmate of each role, and the lines about them that the room draws
+  for (const role of ['engineer', 'pilot', 'gunner', 'quartermaster', 'slicer', 'medic']) for (const seed of [1, 2, 3, 4, 5, 6]) {
+    __seed(seed * 7); const c = makeCrewCandidate(st.systemId); c.role = role; c.first = 'Sam'; registerPerson(c); st.crew = [c.id];
+    note(`crewbar:${role}:${seed}`, roomLines(currentPlanet()).filter(l => /data-action="person"/.test(l)).join(' | '));
+  }
   return out;
 };
 

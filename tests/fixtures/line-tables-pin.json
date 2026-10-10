@@ -1358,5 +1358,697 @@
  {
   "key": "chatter:homesick:3",
   "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance is humming something from Rotterdam Arcology, low and soft, and does not seem to know."
+ },
+ {
+  "key": "opener:talkative:Vale",
+  "text": "Sam Vale: a talkative, kind software auditor from Mars, going home. They start talking before you have finished sitting. They do not stop for breath."
+ },
+ {
+  "key": "opener:talkative:Okafor",
+  "text": "Sam Okafor: a talkative, kind software auditor from Mars, going home. They start talking before you have finished sitting. They do not stop for breath."
+ },
+ {
+  "key": "opener:talkative:Lind",
+  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, talkative and kind, and going home. They are already halfway through a story when you sit down."
+ },
+ {
+  "key": "opener:talkative:Marsh",
+  "text": "They start talking before you have finished sitting. They do not stop for breath. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+ },
+ {
+  "key": "opener:nervous:Vale",
+  "text": "Sam Vale: a nervous, kind software auditor from Mars, going home. They jump when you sit down, laugh, and apologize."
+ },
+ {
+  "key": "opener:nervous:Okafor",
+  "text": "Sam Okafor: a nervous, kind software auditor from Mars, going home. They jump when you sit down, laugh, and apologize."
+ },
+ {
+  "key": "opener:nervous:Lind",
+  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, nervous and kind, and going home. They keep one eye on the door."
+ },
+ {
+  "key": "opener:nervous:Marsh",
+  "text": "They jump when you sit down, laugh, and apologize. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+ },
+ {
+  "key": "opener:generous:Vale",
+  "text": "Sam Vale: a generous, kind software auditor from Mars, going home. They have already ordered you a drink, and say the barman got it wrong."
+ },
+ {
+  "key": "opener:generous:Okafor",
+  "text": "Sam Okafor: a generous, kind software auditor from Mars, going home. They have already ordered you a drink, and say the barman got it wrong."
+ },
+ {
+  "key": "opener:generous:Lind",
+  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, generous and kind, and going home. They push a bowl of salted beans toward you."
+ },
+ {
+  "key": "opener:generous:Marsh",
+  "text": "They have already ordered you a drink, and say the barman got it wrong. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+ },
+ {
+  "key": "opener:greedy:Vale",
+  "text": "Sam Vale: a money-minded, kind software auditor from Mars, going home. They are doing sums on a napkin. When they see you looking, they keep going."
+ },
+ {
+  "key": "opener:greedy:Okafor",
+  "text": "Sam Okafor: a money-minded, kind software auditor from Mars, going home. They are doing sums on a napkin. When they see you looking, they keep going."
+ },
+ {
+  "key": "opener:greedy:Lind",
+  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, money-minded and kind, and going home. They ask what a ship like yours clears in a month before they ask your name."
+ },
+ {
+  "key": "opener:greedy:Marsh",
+  "text": "They are doing sums on a napkin. When they see you looking, they keep going. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+ },
+ {
+  "key": "opener:pious:Vale",
+  "text": "Sam Vale: a devout, kind software auditor from Mars, going home. They murmur a short blessing over their cup before they drink. They see you watching and say sorry."
+ },
+ {
+  "key": "opener:pious:Okafor",
+  "text": "Sam Okafor: a devout, kind software auditor from Mars, going home. They murmur a short blessing over their cup before they drink. They see you watching and say sorry."
+ },
+ {
+  "key": "opener:pious:Lind",
+  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, devout and kind, and going home. There is a prayer cord around their wrist, worn smooth."
+ },
+ {
+  "key": "opener:pious:Marsh",
+  "text": "They murmur a short blessing over their cup before they drink. They see you watching and say sorry. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+ },
+ {
+  "key": "opener:rude:Vale",
+  "text": "Sam Vale: a abrasive, kind software auditor from Mars, going home. \"Do you mind? I was here first, and I was enjoying the silence.\""
+ },
+ {
+  "key": "opener:rude:Okafor",
+  "text": "Sam Okafor: a abrasive, kind software auditor from Mars, going home. \"Do you mind? I was here first, and I was enjoying the silence.\""
+ },
+ {
+  "key": "opener:rude:Lind",
+  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, abrasive and kind, and going home. \"You're in my light.\""
+ },
+ {
+  "key": "opener:rude:Marsh",
+  "text": "\"Do you mind? I was here first, and I was enjoying the silence.\" It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+ },
+ {
+  "key": "opener:curious:Vale",
+  "text": "Sam Vale: a curious, kind software auditor from Mars, going home. They ask what the drive is, how many g, and whether it is true about the coolant loops, all in one breath."
+ },
+ {
+  "key": "opener:curious:Okafor",
+  "text": "Sam Okafor: a curious, kind software auditor from Mars, going home. They ask what the drive is, how many g, and whether it is true about the coolant loops, all in one breath."
+ },
+ {
+  "key": "opener:curious:Lind",
+  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, curious and kind, and going home. They want to know everything about your ship."
+ },
+ {
+  "key": "opener:curious:Marsh",
+  "text": "They ask what the drive is, how many g, and whether it is true about the coolant loops, all in one breath. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+ },
+ {
+  "key": "opener:drunk:Vale",
+  "text": "Sam Vale: a hard-drinking, kind software auditor from Mars, going home. They greet you like a cousin and lose their train of thought in the same breath."
+ },
+ {
+  "key": "opener:drunk:Okafor",
+  "text": "Sam Okafor: a hard-drinking, kind software auditor from Mars, going home. They greet you like a cousin and lose their train of thought in the same breath."
+ },
+ {
+  "key": "opener:drunk:Lind",
+  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, hard-drinking and kind, and going home. They are several drinks ahead of you."
+ },
+ {
+  "key": "opener:drunk:Marsh",
+  "text": "They greet you like a cousin and lose their train of thought in the same breath. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+ },
+ {
+  "key": "opener:secretive:Vale",
+  "text": "Sam Vale: a guarded, kind software auditor from Mars, going home. They look at you one second longer than is comfortable, and smile."
+ },
+ {
+  "key": "opener:secretive:Okafor",
+  "text": "Sam Okafor: a guarded, kind software auditor from Mars, going home. They look at you one second longer than is comfortable, and smile."
+ },
+ {
+  "key": "opener:secretive:Lind",
+  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, guarded and kind, and going home. They angle their terminal away from you."
+ },
+ {
+  "key": "opener:secretive:Marsh",
+  "text": "They look at you one second longer than is comfortable, and smile. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+ },
+ {
+  "key": "opener:kind:Vale",
+  "text": "Sam Vale: a kind, steady software auditor from Mars, going home. They push a glass of water toward you before they say anything."
+ },
+ {
+  "key": "opener:kind:Okafor",
+  "text": "Sam Okafor: a kind, steady software auditor from Mars, going home. They push a glass of water toward you before they say anything."
+ },
+ {
+  "key": "opener:kind:Lind",
+  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, kind and steady, and going home. They ask if you have eaten."
+ },
+ {
+  "key": "opener:kind:Marsh",
+  "text": "They push a glass of water toward you before they say anything. It is Sam Marsh, going home: a software auditor from Mars, and steady, you would say, if you had to."
+ },
+ {
+  "key": "opener:brave:Vale",
+  "text": "Sam Vale: a steady, kind software auditor from Mars, going home. They sit with their back to the door."
+ },
+ {
+  "key": "opener:brave:Okafor",
+  "text": "Sam Okafor: a steady, kind software auditor from Mars, going home. They sit with their back to the door."
+ },
+ {
+  "key": "opener:brave:Lind",
+  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, steady and kind, and going home. They have a fresh scar and a story about it."
+ },
+ {
+  "key": "opener:brave:Marsh",
+  "text": "They sit with their back to the door. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+ },
+ {
+  "key": "opener:homesick:Vale",
+  "text": "Sam Vale: a homesick, kind software auditor from Mars, going home. They hold a creased photograph in both hands and set it down on the table as you sit."
+ },
+ {
+  "key": "opener:homesick:Okafor",
+  "text": "Sam Okafor: a homesick, kind software auditor from Mars, going home. They hold a creased photograph in both hands and set it down on the table as you sit."
+ },
+ {
+  "key": "opener:homesick:Lind",
+  "text": "Somebody has taken the other stool. Sam Lind is a software auditor from Mars, homesick and kind, and going home. They are showing the bartender pictures of home."
+ },
+ {
+  "key": "opener:homesick:Marsh",
+  "text": "They hold a creased photograph in both hands and set it down on the table as you sit. It is Sam Marsh, going home: a software auditor from Mars, and kind, you would say, if you had to."
+ },
+ {
+  "key": "secret:contraband:1",
+  "text": "Sam lowers their voice: \"If you ever need something moved and not looked at, I know people. I might be people.\""
+ },
+ {
+  "key": "secret:contraband:2",
+  "text": "Sam lowers their voice: \"If you ever need something moved and not looked at, I know people. I might be people.\""
+ },
+ {
+  "key": "secret:contraband:3",
+  "text": "Sam leans in and does not meet your eye: \"There is cargo that does not appear on a manifest. I can put you in touch with someone who moves it.\""
+ },
+ {
+  "key": "secret:wanted:1",
+  "text": "Sam goes quiet when a patrol officer comes in, and studies their drink until the officer leaves."
+ },
+ {
+  "key": "secret:wanted:2",
+  "text": "Sam goes quiet when a patrol officer comes in, and studies their drink until the officer leaves."
+ },
+ {
+  "key": "secret:wanted:3",
+  "text": "Sam goes quiet when a patrol officer comes in, and studies their drink until the officer leaves."
+ },
+ {
+  "key": "secret:ill:1",
+  "text": "Sam coughs hard and hides the cloth. It is the dust in here, they say, and would you like another."
+ },
+ {
+  "key": "secret:ill:2",
+  "text": "Sam coughs into their sleeve and waves it off. \"Nothing. Recyclers on my last ship. It'll pass.\""
+ },
+ {
+  "key": "secret:ill:3",
+  "text": "Sam coughs hard and hides the cloth. It is the dust in here, they say, and would you like another."
+ },
+ {
+  "key": "secret:spy:1",
+  "text": "Sam asks a lot of questions about your routes and answers none about theirs."
+ },
+ {
+  "key": "secret:spy:2",
+  "text": "Sam is pleasant and asks small, exact things about ports and times, and gives you nothing."
+ },
+ {
+  "key": "secret:spy:3",
+  "text": "Sam is pleasant and asks small, exact things about ports and times, and gives you nothing."
+ },
+ {
+  "key": "secret:debt:1",
+  "text": "Sam looks into the bottom of their cup and says there are people looking for them, and it is mostly a question of time."
+ },
+ {
+  "key": "secret:debt:2",
+  "text": "Sam looks into the bottom of their cup and says there are people looking for them, and it is mostly a question of time."
+ },
+ {
+  "key": "secret:debt:3",
+  "text": "Sam says, three drinks in, that they owe the wrong people more than they will make in a year."
+ },
+ {
+  "key": "secrethelp:contraband:go",
+  "text": "Sam looks at you, and takes their time deciding."
+ },
+ {
+  "key": "secrethelp:contraband:scene",
+  "text": "[\"The Anchor: Sam Vale\",\"Sam makes a gesture at the room, and lowers their voice to nothing. \\\"I move things,\\\" they say, \\\"the kind that do not go on a manifest. I do not tell everyone.\\\"\",[\"Ask who they know\",\"Say you do not want to know\",\"Let it be\"]]"
+ },
+ {
+  "key": "secrethelp:contraband:0",
+  "text": "Sam names a name, and a port, and a time of day, and then says you never heard it. It is a door, and you now know where."
+ },
+ {
+  "key": "secrethelp:contraband:1",
+  "text": "Sam relaxes. \"Good,\" they say. \"Then we have never talked.\""
+ },
+ {
+  "key": "secrethelp:contraband:2",
+  "text": "You let it be, and the talk goes somewhere easier."
+ },
+ {
+  "key": "secrethelp:wanted:go",
+  "text": "Sam looks at you, and takes their time deciding."
+ },
+ {
+  "key": "secrethelp:wanted:scene",
+  "text": "[\"The Anchor: Sam Vale\",\"Sam has taken the seat with its back to the wall. \\\"There is a warrant,\\\" they say, \\\"and it is not for what they say it is. I would rather not be at a table by the door.\\\"\",[\"Say you have seen nothing\",\"Tell them to give themselves up\",\"Let it be\"]]"
+ },
+ {
+  "key": "secrethelp:wanted:0",
+  "text": "\"Good,\" Sam says. \"Thank you.\" They leave by the back a few minutes later, without hurry."
+ },
+ {
+  "key": "secrethelp:wanted:1",
+  "text": "Sam looks at you and does not answer. They finish their drink and leave, and do not look back."
+ },
+ {
+  "key": "secrethelp:wanted:2",
+  "text": "You let it be, and the talk goes somewhere easier."
+ },
+ {
+  "key": "secrethelp:ill:go",
+  "text": "Sam looks at you, and takes their time deciding."
+ },
+ {
+  "key": "secrethelp:ill:scene",
+  "text": "[\"The Anchor: Sam Vale\",\"Sam puts the glass down. \\\"Six months and the recyclers on that last ship,\\\" they say. \\\"The clinic wants more than I have. I tell people it is the dust.\\\"\",[\"Pay for the clinic (100 cr)\",\"Tell them where the nearest medic is\",\"Let it be\"]]"
+ },
+ {
+  "key": "secrethelp:ill:0",
+  "text": "Sam does not argue. The next time you see them, they say, they will be breathing better."
+ },
+ {
+  "key": "secrethelp:ill:1",
+  "text": "You give the name and the street. Sam writes it on a napkin and puts it carefully in a pocket."
+ },
+ {
+  "key": "secrethelp:ill:2",
+  "text": "You let it be, and the talk goes somewhere easier."
+ },
+ {
+  "key": "secrethelp:spy:go",
+  "text": "Sam looks at you, and takes their time deciding."
+ },
+ {
+  "key": "secrethelp:spy:scene",
+  "text": "[\"The Anchor: Sam Vale\",\"Sam stops asking questions. \\\"I am paid to ask them,\\\" they say. \\\"I am not paid to like it.\\\"\",[\"Tell them what you know of the lanes\",\"Say you will not be asked again\",\"Let it be\"]]"
+ },
+ {
+  "key": "secrethelp:spy:0",
+  "text": "Sam writes nothing down, and does not need to."
+ },
+ {
+  "key": "secrethelp:spy:1",
+  "text": "\"Fair,\" Sam says, and orders you another."
+ },
+ {
+  "key": "secrethelp:spy:2",
+  "text": "You let it be, and the talk goes somewhere easier."
+ },
+ {
+  "key": "secrethelp:debt:go",
+  "text": "Sam looks at you, and takes their time deciding."
+ },
+ {
+  "key": "secrethelp:debt:scene",
+  "text": "[\"The Anchor: Sam Vale\",\"Sam turns the glass in a ring on the bar. \\\"Six hundred and twelve,\\\" they say. \\\"It is not even a lot. It is just more than I have, and the people it is owed to do not do arithmetic.\\\"\",[\"Cover part of it (200 cr)\",\"Say you will keep an ear out for who is asking\",\"Let it be\"]]"
+ },
+ {
+  "key": "secrethelp:debt:0",
+  "text": "You count out the credits. Sam turns them over, and then takes them, and does not say anything for a long time."
+ },
+ {
+  "key": "secrethelp:debt:1",
+  "text": "\"That would help,\" Sam says."
+ },
+ {
+  "key": "secrethelp:debt:2",
+  "text": "You let it be, and the talk goes somewhere easier."
+ },
+ {
+  "key": "goalask:home",
+  "text": "Ask about the way home"
+ },
+ {
+  "key": "goalhelp:home:go",
+  "text": "You ask, and Sam puts down the glass."
+ },
+ {
+  "key": "goalhelp:home:scene",
+  "text": "[\"The Anchor: Sam Vale\",\"Sam has not been home in years, and has the route on a card in a pocket, worn to cloth. \\\"Three more ports,\\\" they say. \\\"Maybe four, if the money holds.\\\"\",[\"Pay part of the fare (60 cr)\",\"Tell them which lanes are quick right now\",\"Ask them what they will do first, when they get there\",\"Say you hope it goes well\"]]"
+ },
+ {
+  "key": "goalhelp:home:0",
+  "text": "You put it on the table and push it across."
+ },
+ {
+  "key": "goalhelp:home:1",
+  "text": "You tell them what you know, plainly."
+ },
+ {
+  "key": "goalhelp:home:2",
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, and you are in it. In the quiet after, Sam says, three drinks in, that they owe the wrong people more than they will make in a year."
+ },
+ {
+  "key": "goalhelp:home:3",
+  "text": "Sam thanks you, and that is the end of it."
+ },
+ {
+  "key": "goalask:family",
+  "text": "Ask about the family"
+ },
+ {
+  "key": "goalhelp:family:go",
+  "text": "You ask, and Sam puts down the glass."
+ },
+ {
+  "key": "goalhelp:family:scene",
+  "text": "[\"The Anchor: Sam Vale\",\"Sam is going to see family, and has been trying all evening to think what to bring.\",[\"Press a few credits into their hand for a present (60 cr)\",\"Suggest something from the market here\",\"Ask who they are going to see\",\"Say you hope it goes well\"]]"
+ },
+ {
+  "key": "goalhelp:family:0",
+  "text": "You put it on the table and push it across."
+ },
+ {
+  "key": "goalhelp:family:1",
+  "text": "You tell them what you know, plainly."
+ },
+ {
+  "key": "goalhelp:family:2",
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, and you are in it. In the quiet after, Sam says, three drinks in, that they owe the wrong people more than they will make in a year."
+ },
+ {
+  "key": "goalhelp:family:3",
+  "text": "Sam thanks you, and that is the end of it."
+ },
+ {
+  "key": "goalask:job",
+  "text": "Ask about the interview"
+ },
+ {
+  "key": "goalhelp:job:go",
+  "text": "You ask, and Sam puts down the glass."
+ },
+ {
+  "key": "goalhelp:job:scene",
+  "text": "[\"The Anchor: Sam Vale\",\"Sam has an interview at the other end, and says the questions over under their breath.\",[\"Stand them the clothes for it (60 cr)\",\"Play the interviewer for a few questions\",\"Let them talk it through\",\"Say you hope it goes well\"]]"
+ },
+ {
+  "key": "goalhelp:job:0",
+  "text": "You put it on the table and push it across."
+ },
+ {
+  "key": "goalhelp:job:1",
+  "text": "You tell them what you know, plainly."
+ },
+ {
+  "key": "goalhelp:job:2",
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, and you are in it. In the quiet after, Sam says, three drinks in, that they owe the wrong people more than they will make in a year."
+ },
+ {
+  "key": "goalhelp:job:3",
+  "text": "Sam thanks you, and that is the end of it."
+ },
+ {
+  "key": "goalask:fresh",
+  "text": "Ask about starting again"
+ },
+ {
+  "key": "goalhelp:fresh:go",
+  "text": "You ask, and Sam puts down the glass."
+ },
+ {
+  "key": "goalhelp:fresh:scene",
+  "text": "[\"The Anchor: Sam Vale\",\"Sam says only that it is a fresh start, and that they would rather not say from what. They are watching to see how you take it.\",[\"Put something toward the first month (60 cr)\",\"Tell them what to do first in a new port\",\"Say it is all right not to say\",\"Say you hope it goes well\"]]"
+ },
+ {
+  "key": "goalhelp:fresh:0",
+  "text": "You put it on the table and push it across."
+ },
+ {
+  "key": "goalhelp:fresh:1",
+  "text": "You tell them what you know, plainly."
+ },
+ {
+  "key": "goalhelp:fresh:2",
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, and you are in it. In the quiet after, Sam looks into the bottom of their cup and says there are people looking for them, and it is mostly a question of time."
+ },
+ {
+  "key": "goalhelp:fresh:3",
+  "text": "Sam thanks you, and that is the end of it."
+ },
+ {
+  "key": "goalask:research",
+  "text": "Ask about the posting"
+ },
+ {
+  "key": "goalhelp:research:go",
+  "text": "You ask, and Sam puts down the glass."
+ },
+ {
+  "key": "goalhelp:research:scene",
+  "text": "[\"The Anchor: Sam Vale\",\"Sam has a research posting, and the instruments for it in a case under the table that they have not let go of since you sat down.\",[\"Pay the case's berth fee (60 cr)\",\"Tell them what to watch for on the lane\",\"Ask what they are going to measure\",\"Say you hope it goes well\"]]"
+ },
+ {
+  "key": "goalhelp:research:0",
+  "text": "You put it on the table and push it across."
+ },
+ {
+  "key": "goalhelp:research:1",
+  "text": "You tell them what you know, plainly."
+ },
+ {
+  "key": "goalhelp:research:2",
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, and you are in it. In the quiet after, Sam looks into the bottom of their cup and says there are people looking for them, and it is mostly a question of time."
+ },
+ {
+  "key": "goalhelp:research:3",
+  "text": "Sam thanks you, and that is the end of it."
+ },
+ {
+  "key": "goalask:pilgrim",
+  "text": "Ask about the pilgrimage"
+ },
+ {
+  "key": "goalhelp:pilgrim:go",
+  "text": "You ask, and Sam puts down the glass."
+ },
+ {
+  "key": "goalhelp:pilgrim:scene",
+  "text": "[\"The Anchor: Sam Vale\",\"Sam is bound for somewhere holy, a long way off, and says it more quietly than anything else tonight.\",[\"Pay a leg of the trip (60 cr)\",\"Tell them how to find a berth on the long haul\",\"Ask what the place means to them\",\"Say you hope it goes well\"]]"
+ },
+ {
+  "key": "goalhelp:pilgrim:0",
+  "text": "You put it on the table and push it across."
+ },
+ {
+  "key": "goalhelp:pilgrim:1",
+  "text": "You tell them what you know, plainly."
+ },
+ {
+  "key": "goalhelp:pilgrim:2",
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, and you are in it. In the quiet after, Sam says, three drinks in, that they owe the wrong people more than they will make in a year."
+ },
+ {
+  "key": "goalhelp:pilgrim:3",
+  "text": "Sam thanks you, and that is the end of it."
+ },
+ {
+  "key": "goalask:medical",
+  "text": "Ask what is wrong"
+ },
+ {
+  "key": "goalhelp:medical:go",
+  "text": "You ask, and Sam puts down the glass."
+ },
+ {
+  "key": "goalhelp:medical:scene",
+  "text": "[\"The Anchor: Sam Vale\",\"Sam presses a hand to their side, and says it is the reason for the trip: a specialist, a long way out.\",[\"Pay toward the specialist (60 cr)\",\"Tell them where the medics are on the way\",\"Ask them to tell you about it\",\"Say you hope it goes well\"]]"
+ },
+ {
+  "key": "goalhelp:medical:0",
+  "text": "You put it on the table and push it across."
+ },
+ {
+  "key": "goalhelp:medical:1",
+  "text": "You tell them what you know, plainly."
+ },
+ {
+  "key": "goalhelp:medical:2",
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, and you are in it. In the quiet after, Sam looks into the bottom of their cup and says there are people looking for them, and it is mostly a question of time."
+ },
+ {
+  "key": "goalhelp:medical:3",
+  "text": "Sam thanks you, and that is the end of it."
+ },
+ {
+  "key": "crewbar:engineer:1",
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p305\">Sam</button> is holding a fork up to the light and saying \"tolerances\" under their breath."
+ },
+ {
+  "key": "crewbar:engineer:2",
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p306\">Sam</button> is under a table with a flashlight, looking at the bar's wiring."
+ },
+ {
+  "key": "crewbar:engineer:3",
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p307\">Sam</button> is holding a fork up to the light and saying \"tolerances\" under their breath."
+ },
+ {
+  "key": "crewbar:engineer:4",
+  "text": ""
+ },
+ {
+  "key": "crewbar:engineer:5",
+  "text": ""
+ },
+ {
+  "key": "crewbar:engineer:6",
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p310\">Sam</button> is holding a fork up to the light and saying \"tolerances\" under their breath."
+ },
+ {
+  "key": "crewbar:pilot:1",
+  "text": ""
+ },
+ {
+  "key": "crewbar:pilot:2",
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p312\">Sam</button> and another pilot at the far end of the bar are arguing about angles, in hand gestures."
+ },
+ {
+  "key": "crewbar:pilot:3",
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p313\">Sam</button> has drawn a lane map in spilled beer and is arguing for it with anyone who comes by."
+ },
+ {
+  "key": "crewbar:pilot:4",
+  "text": ""
+ },
+ {
+  "key": "crewbar:pilot:5",
+  "text": ""
+ },
+ {
+  "key": "crewbar:pilot:6",
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p316\">Sam</button> has drawn a lane map in spilled beer and is arguing for it with anyone who comes by."
+ },
+ {
+  "key": "crewbar:gunner:1",
+  "text": ""
+ },
+ {
+  "key": "crewbar:gunner:2",
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p318\">Sam</button> has won a small bet on a dart throw and is refusing the money."
+ },
+ {
+  "key": "crewbar:gunner:3",
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p319\">Sam</button> is cleaning a cup with the hem of their shirt and watching the door."
+ },
+ {
+  "key": "crewbar:gunner:4",
+  "text": ""
+ },
+ {
+  "key": "crewbar:gunner:5",
+  "text": ""
+ },
+ {
+  "key": "crewbar:gunner:6",
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p322\">Sam</button> is cleaning a cup with the hem of their shirt and watching the door."
+ },
+ {
+  "key": "crewbar:quartermaster:1",
+  "text": ""
+ },
+ {
+  "key": "crewbar:quartermaster:2",
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p324\">Sam</button> is talking with a grain merchant. A price has been mentioned twice."
+ },
+ {
+  "key": "crewbar:quartermaster:3",
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p325\">Sam</button> is making a list on the back of a receipt."
+ },
+ {
+  "key": "crewbar:quartermaster:4",
+  "text": ""
+ },
+ {
+  "key": "crewbar:quartermaster:5",
+  "text": ""
+ },
+ {
+  "key": "crewbar:quartermaster:6",
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p328\">Sam</button> is making a list on the back of a receipt."
+ },
+ {
+  "key": "crewbar:slicer:1",
+  "text": ""
+ },
+ {
+  "key": "crewbar:slicer:2",
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p330\">Sam</button> is watching the bar's security feed on a very small screen."
+ },
+ {
+  "key": "crewbar:slicer:3",
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p331\">Sam</button> has taken over the bar's music. Nobody has complained."
+ },
+ {
+  "key": "crewbar:slicer:4",
+  "text": ""
+ },
+ {
+  "key": "crewbar:slicer:5",
+  "text": ""
+ },
+ {
+  "key": "crewbar:slicer:6",
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p334\">Sam</button> has taken over the bar's music. Nobody has complained."
+ },
+ {
+  "key": "crewbar:medic:1",
+  "text": ""
+ },
+ {
+  "key": "crewbar:medic:2",
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p336\">Sam</button> is giving a short lecture on hydration to a table of dockers."
+ },
+ {
+  "key": "crewbar:medic:3",
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p337\">Sam</button> has been cornered by a stranger with a rash."
+ },
+ {
+  "key": "crewbar:medic:4",
+  "text": ""
+ },
+ {
+  "key": "crewbar:medic:5",
+  "text": ""
+ },
+ {
+  "key": "crewbar:medic:6",
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p340\">Sam</button> has been cornered by a stranger with a rash."
  }
 ]
