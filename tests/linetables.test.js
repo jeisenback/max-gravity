@@ -104,3 +104,13 @@ test('an override is escaped in a bar line and left plain in the chatter, and a 
   assert.equal(r.bar2, 'You get up and leave them to their drink. You go back to the bar and the noise of the room.', 'the other lines are as shipped');
   assert.equal(r.chatter, '<b>{first}</b> & talks.', 'the chatter is drawn as plain text');
 });
+
+test('a line table in the bar files with no id fails here: every BAR_ table is in LINE_TABLES', () => {
+  const src = f => fs.readFileSync(path.join(__dirname, '..', 'js', f), 'utf8');
+  const NOT_TABLES = ['BAR_MENU', 'BAR_REPEAT', 'BAR_TOPICS'];  // the menu's size, the days before a topic comes round again, and the topics (code)
+  const tables = ['bar.js', 'bartopics.js'].flatMap(f => [...src(f).matchAll(/^const (BAR_[A-Z_]+) = /gm)].map(m => m[1])).filter(n => !NOT_TABLES.includes(n));
+  const registered = src('linetables.js');
+  assert.ok(tables.length >= 12, `${tables.length} tables found`);
+  assert.deepEqual(tables.filter(n => !registered.includes(`table: () => ${n} }`) && !registered.includes(`table: () => ${n},`)), [], 'a BAR_ table with no id in js/linetables.js');
+  assert.ok(registered.includes('d.chatter'), 'the trait chatter has an id');
+});
