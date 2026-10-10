@@ -151,8 +151,11 @@
       add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: 'line tables', conditionsNote: 'A pool of lines the game picks from at random, in the bar or in a burn.', pacing: { tier: null, weight: null, cooldown: 'none', trigger: 'Picked at random from the pool when the line is needed.', editable: false },
         ...beatRow(e.scene), lines: true, codeNote: LINES_NOTE });
     }
-    for (const e of peopleEventRegistry()) {  // the passenger events (#457): written in code, with their words as lines
-      add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: 'passenger events', conditionsNote: 'A passenger aboard whom the event is about (their secret, goal or traits); one event is drawn for a passenger by weight.', pacing: { tier: null, weight: e.event.weight, cooldown: 'one per passenger', trigger: 'Drawn by weight among the events that fit the passenger, on a burn.', editable: false },
+    for (const e of peopleEventRegistry()) {  // the passenger and crew events (#457): written in code, with their words as lines
+      const pax = !!e.event;
+      add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: pax ? 'passenger events' : 'crew events',
+        conditionsNote: pax ? 'A passenger aboard whom the event is about (their secret, goal or traits); one event is drawn for a passenger by weight.' : 'A shipmate with the trait the event is about: one of the crew is picked on a burn, then one of their traits.',
+        pacing: { tier: null, weight: pax ? e.event.weight : null, cooldown: pax ? 'one per passenger' : 'by its own rule', trigger: pax ? 'Drawn by weight among the events that fit the passenger, on a burn.' : 'Picked at random among the crew and their traits, on a burn.', editable: false },
         ...beatRow(e.scene), codeNote: SCENE_NOTE });
     }
     return rows;
@@ -312,6 +315,11 @@
     const where = s ? s.where : pe ? 'transit' : reg.name === 'meet' || reg.name === 'goodbye' ? 'port' : 'transit';
     if (where === 'transit') uatBurn(at.sid === 'earth' ? 'Mars' : 'Earth', at.sid); else uatLand(place);
     tweakState(o);
+    if (pe && pe.make) {  // a crew event: a shipmate with the trait is aboard
+      const mate = makeCrewCandidate(G.state.systemId); registerPerson(mate); mate.traits = [pe.trait]; G.state.crew.push(mate.id);
+      openEvent(pe.make(mate));
+      return { type: 'played', failing: [], chained: false, shut: [], note: 'A crew event is drawn for a shipmate it fits, so no condition is checked here.' };
+    }
     if (pe) {  // a passenger event: a passenger it is about is aboard, bound for where the burn goes
       const person = uatPassenger(), mission = G.state.missions.find(x => x.pid === person.id);
       Object.assign(person, { secret: null, goal: 'home', traits: ['kind'] }, pe.event.sample);

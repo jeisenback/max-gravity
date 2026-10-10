@@ -351,18 +351,21 @@ test('the line tables of the generated people are rows with a field for every li
   assert.ok(await page.locator('#detail textarea[data-path="part.talkative.win"]').count() === 1, 'a line under two keys');
 });
 
-test('the passenger events are rows with a field for every line, the lines go to and from the file, and each plays in the preview with a passenger it is about (#457)', async () => {
+test('the passenger and crew events are rows with a field for every line, the lines go to and from the file, and each plays in the preview with the person it is about (#457)', async () => {
   await reload(); await select('people:pax:debt');
   const r = await page.evaluate(() => {
     const row = id => SceneIndex.rows.find(x => x.id === id), debt = row('people:pax:debt'), values = { [debt.id]: { 'part.c1.result': 'They go, {first}.', 'part.title': debt.parts.title } };
     const out = SceneIndex.overridesFrom(SceneIndex.rows, values);
     return {
       events: SceneIndex.rows.filter(x => x.id.startsWith('people:pax:')).map(x => [x.id, x.kind, x.noTitle, x.where, x.file]),
+      crew: SceneIndex.rows.filter(x => x.id.startsWith('people:crew:')).map(x => [x.id, x.kind, x.noTitle, x.where, x.file]),
       out: out[debt.id], back: SceneIndex.valuesFrom(out)[debt.id], ill: Object.keys(row('people:pax:ill').parts).filter(k => k.startsWith('reason')),
       plan: SceneIndex.planImport({ overrides: { 'people:pax:debt': { title: 'No', parts: { 'c1.result': 'Ok.', 'c9.result': 'x' } } } }, SceneIndex.rows).items.map(i => i.ok),
     };
   });
   assert.equal(r.events.length, 15);
+  assert.equal(r.crew.length, 12);
+  assert.ok(r.crew.every(([, kind, noTitle, where, file]) => kind === 'data' && noTitle && where === 'transit' && file === 'js/people.js'), 'each crew event is lines too');
   assert.ok(r.events.every(([, kind, noTitle, where, file]) => kind === 'data' && noTitle && where === 'transit' && file === 'js/people.js'), 'each is lines, in a burn, in js/people.js');
   assert.deepEqual(r.out, { parts: { 'c1.result': 'They go, {first}.' } }, 'only what differs');
   assert.deepEqual(r.back, { 'part.c1.result': 'They go, {first}.' });
@@ -370,7 +373,7 @@ test('the passenger events are rows with a field for every line, the lines go to
   assert.deepEqual(r.plan, [false, false, true], 'the title and the unknown line are refused');
   assert.equal(await page.locator('#detail #f-title').count(), 0, 'an event has no title to change');
   assert.equal(await page.locator('#detail textarea[data-path^="part."]').count(), 6, 'a field for every line');
-  for (const id of ['people:pax:debt', 'people:pax:contraband', 'people:pax:ill', 'people:pax:curious']) {
+  for (const id of ['people:pax:debt', 'people:pax:contraband', 'people:pax:ill', 'people:pax:curious', 'people:crew:greedy', 'people:crew:brave']) {
     await select(id);
     await page.fill('textarea[data-path="part.text"]', `Typed ${id}.`);
     const f = await play();

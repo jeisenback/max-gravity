@@ -49,4 +49,41 @@ const playPax = () => {
   return out;
 };
 
-module.exports = { playPax };
+// The same for the crew events (CREW_EVENTS): each trait's event for a shipmate with that trait, every choice on a good roll and a bad one, with what it changed (credits, reaction
+// mass, armor, the shipmate's wage and regard).
+const playCrew = () => {
+  const out = [];
+  const real = Math.random;
+  const seq = list => { const l = [...list]; Math.random = () => (l.length ? l.shift() : real()); };
+  const start = () => {
+    __seed(1);
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' });
+    while (G.dialog) finishEvent();
+    const st = G.state; st.tutorial = null; st.story.next = 1e9; st.credits = 20000; st.shipId = 'freighter'; st.fuel = 50;
+    const c = makeCrewCandidate('earth'); Object.assign(c, { first: 'Sam', last: 'Vale', home: 'Mars', wage: 100, opinion: 0 });
+    registerPerson(c); st.crew.push(c.id);
+    takeOff(); st.dest = 'mars'; G.player.x = 6000; tryBurn(); enterTransit(); G.transit.times = [];
+    G.state.fuel = 50;  // the burn has taken its mass: the tanks are as the events read them
+    return { snap: JSON.stringify(G.state), id: c.id };
+  };
+  for (const trait of Object.keys(CREW_EVENTS)) {
+    if (window.__only && !new RegExp(window.__only).test(trait)) continue;
+    const rec = { id: trait, plays: [] };
+    try {
+      const { snap, id } = start();
+      const make = () => { G.state = JSON.parse(snap); const c = G.state.people[id]; c.traits = [trait]; G.nextEvent = null; return { c, ev: CREW_EVENTS[trait](c) }; };
+      const first = make().ev;
+      rec.title = first.title; rec.text = first.text; rec.labels = first.choices.map(x => String(x.label));
+      for (let i = 0; i < first.choices.length; i++) for (const roll of [0, 0.999]) {
+        __seed(7); const { c, ev } = make(); const before = { credits: G.state.credits, fuel: G.state.fuel, wage: c.wage, opinion: c.opinion }; G.player.armor = G.player.maxArmor; const armor0 = G.player.armor;
+        seq([roll]); const text = ev.choices[i].run();
+        rec.plays.push({ i, roll, text: text === null || text === undefined ? null : String(text), d: { credits: G.state.credits - before.credits, fuel: G.state.fuel - before.fuel, armor: G.player.armor - armor0, wage: c.wage - before.wage, opinion: c.opinion - before.opinion } });
+      }
+    } catch (err) { rec.error = String(err && err.message || err); }
+    out.push(rec);
+  }
+  Math.random = real;
+  return out;
+};
+
+module.exports = { playPax, playCrew };

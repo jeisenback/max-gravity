@@ -320,9 +320,9 @@ const SHIP_WORDS = {
   pn: ['Knife', 'Grin', 'Debt', 'Tooth', 'Widow', 'Vulture', 'Hook']
 };
 
-// The words of the passenger events (PAX_EVENTS, js/people.js; #457), by the id of each event and the name each line has: `title`, `text`, and for each choice `c0.label` and
+// The words of the passenger events (PAX_EVENTS) and the crew events (CREW_EVENTS) of js/people.js (#457), by the id of each event and the name each line has: `title`, `text`, and for each choice `c0.label` and
 // its result (`c0.result`, or `c0.win` and `c0.lose` where the choice rolls). A {word} is filled from the game when the event plays: {first}, {last}, {home} and {crime} are
-// the passenger's, {dest} the port they are bound for, {armor} the hull the event takes and {rumor} the tip it gives; {crew} is the shipmate who does the work, and the dialog fills it.
+// the passenger's, {dest} the port they are bound for, {armor} the hull the event takes and {rumor} the tip it gives; {crew} is the shipmate who does the work, and the dialog fills it. A crew event's {first}, {last} and {home} are the shipmate's, and {raise} the new wage.
 // What a choice does (credits, regard, time, who stays aboard) is in code. tests/peoplelines.test.js plays every event and checks that each name here is read.
 const PEOPLE_LINES = {
   'people:pax:contraband': {
@@ -467,5 +467,99 @@ const PEOPLE_LINES = {
     'c0.result': '"Item one," you say, and write it in a book. "The bunk." {first} reads the list again, slower, so that you can keep up. By the end of the hour {first} has run out. "Is there any more tea?" {first} asks.',
     'c1.label': 'Put them in their place',
     'c1.result': '"I have read your list," you say, in a level voice, "and here is what I think of it." You go item by item: the bunk is the bunk you were given, the food is the food you eat, and the gravity is the only gravity the drive makes. {first} goes pale, then red, then still. A formal complaint arrives that evening, in triplicate, and the fee comes out of your fare. The rest of the trip is quiet, and at night you can hear the drive again.',
+  },
+  'people:crew:greedy': {
+    title: '{first} Wants a Raise',
+    text: '{first} finds you at the end of a long shift with a printed sheet and folded arms. The sheet lists what crew with their skills earn on other ships, what a ship of your size can afford, and what {first} has done for you lately. The last line says: "I am worth it."',
+    'c0.label': 'Give them 25% more ({raise} cr/day)',
+    'c0.result': '{first} hums through the rest of the week and calls you "boss". Unasked, they tidy the corner of the cockpit.',
+    'c1.label': 'No',
+    'c1.result': '{first} goes back to work. For the next few days they do exactly what is asked and nothing more, and their tools are always where they were left. They have stopped smiling.',
+  },
+  'people:crew:drunk': {
+    title: 'Galley Brawl',
+    text: '{first} got drunk on something they had been keeping in a pipe, and had an argument with the galley bulkhead. The bulkhead won. There is a dent the size of a fist in the wall, blood on the deck, and {first} on the floor with a cloth pressed to their forehead. The medical supplies cost 300 cr.',
+    'c0.label': 'Dock their pay',
+    'c0.result': '{first} spends the week in a corner of the engine room with their back to the ship, and does the work in silence.',
+    'c1.label': 'Pay for it and let it go (300 cr)',
+    'c1.result': '{first} stares at the floor, then swears off drink. For now. They take the next three galley shifts. You find them scrubbing the bulkhead, and they do not look up. The dent is polished.',
+  },
+  'people:crew:homesick': {
+    title: 'Homesick',
+    text: '{first} has been quiet for days. At mealtimes they push their food around. At night you have seen them at the viewport, looking at a point of light. They have not said they miss {home}.',
+    'c0.label': 'Give them a 500 cr bonus to call home',
+    'c0.result': '{first} takes an hour on a lagged call home, in a quiet corner of the ship, with a hand over their mouth. They come back with red eyes and laugh once. They do not say what was said. For the rest of the week they hum in the corridors, and nobody mentions it.',
+    'c1.label': 'Share a drink and listen',
+    'c1.result': 'You pour two cups of something strong and sit on a crate beside them. For an hour they talk about {home}: the weather, the food, the quiet places. You say almost nothing. When they go to bed, they put a hand on your shoulder on the way out.',
+    'c2.label': '"We all miss somewhere."',
+    'c2.result': '{first} goes back to work. That night you see them at the viewport again, alone, and you leave them to it.',
+  },
+  'people:crew:nervous': {
+    title: 'Bad Dreams',
+    text: '{first} has not been sleeping. There are shadows under their eyes, they drop small tools, and they jump at every clank of the hull. When you ask, they tell you in a flat voice: nightmares about hull breaches, the same one every night. The thin bright line of a crack, spreading. The sudden silence. The cold.',
+    'c0.label': 'Talk them through it',
+    'c0.result': 'You sit with them in the galley at three in the morning with a pot of tea between you, and talk about nothing in particular. {first} sleeps through the night for the first time in a week. In the morning they bring you a cup of coffee and spill half of it.',
+    'c1.label': 'Tell them to toughen up',
+    'c1.result': '{first} flinches, and stops mentioning it. In the days after, the shadows under their eyes get darker. They check the seals on every hatch they pass.',
+  },
+  'people:crew:talkative': {
+    title: 'Gossip',
+    text: '{first} has been on the open band with half the ships in comm range, chatting. They know the name of the freighter captain\'s dog. They know who is feuding with whom at the next port. They lean in at your cabin door with news.',
+    'c0.label': 'What have you heard?',
+    'c0.result': '{first} sits down and gives you an hour of gossip: names, debts, who left whom at which port. In the middle of it is one thing you can use: "{rumor}" Then {first} moves on to the next thing.',
+  },
+  'people:crew:secretive': {
+    title: 'Locked Locker',
+    text: '{first}\'s locker has two locks, one you do not recognize and a cheap padlock over it. They have been receiving messages with no sender ID, short ones, at odd hours. They read them, delete them, and read them again. When you come into the room, they flinch.',
+    'c0.label': 'Ask about it',
+    'c0.result': '{first} looks at you. "Family business," {first} says. That is all you get. Afterward {first} takes meals in the bunk and locks the door to sleep.',
+    'c1.label': 'Respect their privacy',
+    'c1.result': 'You say nothing and turn to go. Behind you their shoulders come down. That evening {first} brings you a cup of tea you did not ask for, stands in the doorway, and goes.',
+  },
+  'people:crew:curious': {
+    title: 'Tinkering',
+    text: '{first} has the reaction mass pumps in pieces on newspaper in the middle of the engine room, "to see how they work". Every bolt is in a row. Three manuals are open, and there is a cup of cold tea. Nobody asked them to.',
+    'c0.label': 'Let them experiment',
+    'c0.win': 'They find a leak nobody knew about, a hairline crack in an old fitting that has been weeping mass for months, and seal it with a strip of foil. You recover 25 units of reaction mass. From then on the pumps run quiet, and {first} hums while they work.',
+    'c0.lose': 'Something goes pop. A thin jet of reaction mass hisses out of the open housing before you can shut it, and you lose 20 units. {first} looks at the empty housing. "Ah," {first} says.',
+    'c1.label': 'Put it back together. Now.',
+    'c1.result': 'They reassemble every part, muttering, and the pumps run as before. {first} tightens the last bolt without looking at you.',
+  },
+  'people:crew:pious': {
+    title: 'Quiet Prayer',
+    text: '{first} finds you in the galley at the turn of the watch with a worn charm in one hand and asks you to join a short prayer for safe passage. They say it every burn, alone, in a corner, but tonight they wanted company. It will take a few minutes. They say you may stay silent.',
+    'c0.label': 'Join them',
+    'c0.result': 'You kneel beside them in the dim light. For a few minutes nobody speaks. The drive hums. A pipe ticks. When it ends, you both sit a moment. "Thank you," {first} says.',
+    'c1.label': 'Politely decline',
+    'c1.result': '{first} goes to their corner. Through the thin wall you hear the low murmur of their prayer. {first} prays for you anyway. You listen until it stops.',
+  },
+  'people:crew:rude': {
+    title: 'Friction',
+    text: '{first} has been needling the rest of the crew for days: a jab at breakfast, a remark in the corridor, a sneer at how someone hums. Tonight in the galley it is the humming again. A chair scrapes. "Say that again," says a level voice. "I said it was flat," {first} says. "I did not say it was your fault. I said it was flat." "Say that again." There is going to be a fight.',
+    'c0.label': 'Reprimand them',
+    'c0.result': 'You step between them. "Sit," you say. "Both of you." The room goes still. "You do not talk about a shipmate\'s humming at my table," you say to {first}, "or anywhere I can hear it." {first} goes red, then pale, and leaves. For days {first} eats alone.',
+    'c1.label': 'Let them sort it out',
+    'c1.result': 'You lean in the doorway with your arms folded and let them. It is short, loud and untidy, and involves a soup pot. {armor} points of hull damage later they are sitting side by side on the deck, breathing hard, sharing a cloth for a bloody lip. "It was flat," {first} says. "It was flat," says the other, and they both laugh.',
+  },
+  'people:crew:kind': {
+    title: 'Small Kindnesses',
+    text: '{first} spent the night fixing everyone\'s bunk lights, one by one, with a screwdriver, and in the small hours cooked a real meal from the last of the good stores. Nobody asked them to. In the morning every bunk had a light that worked, and every plate was full.',
+    'c0.label': 'Thank them',
+    'c0.result': 'You find {first} in the galley washing the last of the pots. You thank them. They wave it off and make a joke of it, and their ears go pink. For the rest of the trip nobody snaps at the table.',
+  },
+  'people:crew:generous': {
+    title: 'Shared Bottle',
+    text: '{first} comes into the galley at the end of a long shift with a dusty bottle wrapped in a shirt. They have carried it in the bottom of their bag since they left {home}. They set it on the table and take down every cup in the cupboard. "I was saving it for a special occasion," they say. "But I think we are the occasion."',
+    'c0.label': 'Raise a glass',
+    'c0.result': 'You raise a glass, and so does everyone else, in a ring around the table. The bottle tastes of {home}: sweet, smoky, with something bitter under it. To the ship. To the crew. To not dying. Somebody laughs, then everyone does, and the bottle goes round twice before it is empty.',
+  },
+  'people:crew:brave': {
+    title: 'Volunteer',
+    text: 'A sensor mast has come loose in the burn and hangs by one strut, banging against the hull with every pulse of the drive. It will tear free sooner or later and take plating with it. Before you can speak, {first} has the suit half on. "I will go, captain," they say, buckling a strap. "It is a ten-minute job. I have done worse."',
+    'c0.label': 'Let them go',
+    'c0.win': '{first} goes out through the lock with a tether and a bag of tools. For twenty minutes they are a bright shape against the stars, working along the hull. Then they are back inside, helmet off, sweating, grinning, holding the bent strut.',
+    'c0.lose': 'A tether snaps. For one second {first} drifts, arms out, into the black, until a gloved hand catches a handhold and holds. They make it back, shaking and gasping. The ship takes {armor} points of damage from the loose mast, and nobody sleeps that night.',
+    'c1.label': 'Go yourself',
+    'c1.result': 'You go out through the lock yourself, with the tether at your belt, and fix it in the cold and the silence with the ship turning slowly below your boots. It takes forty minutes. {first} watched through the port, and when you come in {first} hands you a cup and says nothing.',
   },
 };
