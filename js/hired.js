@@ -577,7 +577,7 @@ function captainChatter() {
   const c = hiredCaptain(), name = `Captain ${c.last}`, d = captainEntry();
   if (d && d.chatter) return d.chatter.map(l => l.replace(/\{post\}/g, POSTS[hired().post].name.toLowerCase()));  // their own lines, and no trait chatter
   const lines = CAPTAIN_CHATTER.map(l => l.replace('{cap}', name).replace('{post}', POSTS[hired().post].name.toLowerCase()));
-  for (const t of c.traits) lines.push(pick([].concat(TRAITS[t].chatter)).replace('{first}', name).replace('{home}', c.home));
+  for (const t of c.traits) lines.push(pick(traitChatter(t)).replace('{first}', name).replace('{home}', c.home));
   return lines;
 }
 

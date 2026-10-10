@@ -285,7 +285,7 @@ const BAR_GOAL = {
   vague: '{n} says they are traveling for reasons, and leaves it there, and orders another.',
 };
 const barTrait = (kind, p, generic) => {
-  const own = p.traits.slice(0, 2).map(t => (BAR_TRAIT[t] || {})[kind]).filter(Boolean);
+  const trait = barLines('trait'), own = p.traits.slice(0, 2).map(t => (trait[t] || {})[kind]).filter(Boolean);
   return own.length && Math.random() < 0.7 ? pick(own) : pick(generic);
 };
 // How they take you, for someone you know: a friend teases, an enemy keeps it stiff.
@@ -370,7 +370,7 @@ function talkEvent(pat) {
       `Somebody has taken the other stool. ${p.first} ${p.last} is a ${p.job} from ${p.home}, ${TRAITS[p.traits[0]].adj} and ${TRAITS[p.traits[1]].adj}, and ${GOALS[p.goal]}. ${pick(OPENERS[t0])}`,
     ][byName(p, 'intro', 3)];
   const choices = barMenu(pat, p, { st, bar });  // a rotating few from the pool in bartopics.js
-  choices.push({ label: 'Leave them to their drink', run: () => barSays(barTrait('leave', p, BAR_LEAVE), p) + barTone(pat, p) });
+  choices.push({ label: 'Leave them to their drink', run: () => barSays(barTrait('leave', p, barLines('leave')), p) + barTone(pat, p) });
   return { title: `${bar}: ${p.first} ${p.last}`, text, choices };
 }
 

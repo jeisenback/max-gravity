@@ -44,7 +44,7 @@ test('the converted scenes are data rows of the registry, and the rest are code 
     const row = id => SceneIndex.rows.find(x => x.id === id);
     return { ansel: ['kind', 'registry'].map(k => row('cast:ansel:intro')[k]), closed: ['kind', 'registry'].map(k => row('cast:cato:late:closed')[k]), ilsa: ['kind', 'registry'].map(k => row('cast:ruben:mid1')[k]),
       effects: row('cast:ansel:intro').choices[0].effects, edit: row('cast:ines:pivot').edit.choices.map(c => c.effects), goodbye: row('captain:hester:goodbye').registry, signon: row('scene:sign-on').registry,
-      storylets: SceneIndex.rows.filter(x => x.kind === 'data' && !x.registry).length, dataRegistry: SceneIndex.rows.filter(x => x.kind === 'data' && x.registry).length };
+      storylets: SceneIndex.rows.filter(x => x.kind === 'data' && !x.registry).length, dataRegistry: SceneIndex.rows.filter(x => x.kind === 'data' && x.registry && !x.id.startsWith('lines:')).length };  // the hired chapter's scenes; the line tables are counted in their own test (#457)
   });
   assert.deepEqual(r.ansel, ['data', true]);
   assert.deepEqual(r.closed, ['data', true]);
@@ -324,6 +324,31 @@ test('the raid, ambush and boarding beats are edited line by line, the lines go 
     const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.event.text, G.dialog.choices.map(c => c.label)]));
     assert.ok(seen.includes(`Typed ${id}.`), `${id} plays the typed line: ${seen.slice(0, 200)}`);
   }
+});
+
+test('the line tables of the generated people are rows with a field for every line, the lines go to and from the file, and there is no scene to play (#457)', async () => {
+  await reload(); await select('lines:bar-leave');
+  const r = await page.evaluate(() => {
+    const row = id => SceneIndex.rows.find(x => x.id === id), leave = row('lines:bar-leave'), values = { [leave.id]: { 'part.1': 'A new goodbye, {n}.', 'part.0': leave.parts['0'] } };
+    const out = SceneIndex.overridesFrom(SceneIndex.rows, values);
+    return {
+      tables: SceneIndex.rows.filter(x => x.id.startsWith('lines:')).map(x => [x.id, x.kind, x.noTitle, x.where, x.file]),
+      out: out[leave.id], back: SceneIndex.valuesFrom(out)[leave.id],
+      plan: SceneIndex.planImport({ overrides: { 'lines:bar-leave': { title: 'No', parts: { 1: 'Ok.', 7: 'x' } } } }, SceneIndex.rows).items.map(i => i.ok),
+    };
+  });
+  assert.equal(r.tables.length, 13);
+  assert.ok(r.tables.every(([, kind, noTitle]) => kind === 'data' && noTitle), 'each is lines and no title');
+  assert.deepEqual(r.tables.find(t => t[0] === 'lines:trait-chatter'), ['lines:trait-chatter', 'data', true, 'transit', 'js/peopletext.js']);
+  assert.deepEqual(r.out, { parts: { 1: 'A new goodbye, {n}.' } }, 'only what differs');
+  assert.deepEqual(r.back, { 'part.1': 'A new goodbye, {n}.' });
+  assert.deepEqual(r.plan, [false, false, true], 'the title and the unknown line are refused');
+  assert.equal(await page.locator('#detail #f-title').count(), 0, 'a table has no title to change');
+  assert.equal(await page.locator('#detail textarea[data-path^="part."]').count(), 4, 'a field for every line');
+  assert.equal(await page.isDisabled('[data-action="play"]'), true, 'a pool of lines has no scene to play');
+  assert.match(await page.textContent('#pv-scene'), /no scene to play/);
+  await select('lines:bar-trait');
+  assert.ok(await page.locator('#detail textarea[data-path="part.talkative.win"]').count() === 1, 'a line under two keys');
 });
 
 test('the function-built scenes and the code-written hired events are edited line by line, and each plays in the preview (#463)', async () => {

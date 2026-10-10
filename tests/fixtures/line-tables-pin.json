@@ -1,0 +1,1362 @@
+[
+ {
+  "key": "drink:talkative:1",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A big contract on Ironheart has swallowed the whole local supply of Medical Supplies, and the bidding has gone wild.\" Then they sit back and finish their drink. "
+ },
+ {
+  "key": "drink:talkative:2",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A strike ended on Boneyard, and every dock in town is suddenly flooded with Food.\" Then they sit back and finish their drink. "
+ },
+ {
+  "key": "drink:talkative:3",
+  "text": "Sam starts a story, stops it for a better one, and starts the first again at the end. You learn the names of eleven people and the plot of none."
+ },
+ {
+  "key": "drink:talkative:4",
+  "text": "Sam starts a story, stops it for a better one, and starts the first again at the end. You learn the names of eleven people and the plot of none."
+ },
+ {
+  "key": "cards:talkative:1",
+  "text": "Sam talks the whole way through the hand and loses the thread of the bet. You take 200 cr off them while they are explaining a cousin. Sam tells the story of it to the next table, with you as the villain."
+ },
+ {
+  "key": "cards:talkative:2",
+  "text": "Sam talks the whole way through the hand and loses the thread of the bet. You take 200 cr off them while they are explaining a cousin. Sam shakes your hand and means it."
+ },
+ {
+  "key": "cards:talkative:3",
+  "text": "Sam talks, and you talk back, and somewhere in it 200 cr leaves your pocket. You could not say which hand it was. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards:talkative:4",
+  "text": "Sam talks, and you talk back, and somewhere in it 200 cr leaves your pocket. You could not say which hand it was. By the end of the glass you are laughing."
+ },
+ {
+  "key": "quiet:talkative:1",
+  "text": "Sam lasts nearly a minute in the silence, and then they start on the bakery, and you let them. Sam talks over the answer and goes back to the story about the tug."
+ },
+ {
+  "key": "quiet:talkative:2",
+  "text": "Sam lasts nearly a minute in the silence, and then they start on the bakery, and you let them. Sam talks over the answer and goes back to the story about the tug."
+ },
+ {
+  "key": "quiet:talkative:3",
+  "text": "You sit with Sam and neither of you says anything. The room talks around you. After a while Sam pushes the bowl of beans an inch toward you, and that is all. Sam talks over the answer and goes back to the story about the tug."
+ },
+ {
+  "key": "quiet:talkative:4",
+  "text": "Sam lasts nearly a minute in the silence, and then they start on the bakery, and you let them. Sam talks over the answer and goes back to the story about the tug."
+ },
+ {
+  "key": "place:talkative:1",
+  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam is off again, and tells it to the next table too, and you are in it."
+ },
+ {
+  "key": "place:talkative:2",
+  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam is off again, and tells it to the next table too, and you are in it."
+ },
+ {
+  "key": "place:talkative:3",
+  "text": "\"They tried to close The Gravity Well twice,\" Sam says. \"The first time the regulars paid the rent. The second time nobody could find the owner.\" Sam is off again, and tells it to the next table too, and you are in it."
+ },
+ {
+  "key": "place:talkative:4",
+  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list. Sam is off again, and tells it to the next table too, and you are in it."
+ },
+ {
+  "key": "drink:nervous:1",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A big contract on Ironheart has swallowed the whole local supply of Water, and the bidding has gone wild.\" Then they sit back and finish their drink. "
+ },
+ {
+  "key": "drink:nervous:2",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A disease scare on The Hollows has everyone hoarding Water.\" Then they sit back and finish their drink. "
+ },
+ {
+  "key": "drink:nervous:3",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A rumor that Machine Parts on Europa is contaminated has, for the moment, cratered the price, though everyone knows it is nonsense.\" Then they sit back and finish their drink. "
+ },
+ {
+  "key": "drink:nervous:4",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A big contract on The Rook has swallowed the whole local supply of Water, and the bidding has gone wild.\" Then they sit back and finish their drink. "
+ },
+ {
+  "key": "cards:nervous:1",
+  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 200 cr, and they laugh about it. Sam shakes your hand and means it."
+ },
+ {
+  "key": "cards:nervous:2",
+  "text": "Sam watches your hands the whole game and flinches at every card. You take 200 cr off them, and they thank you for it. Sam tells the story of it to the next table, with you as the villain."
+ },
+ {
+  "key": "cards:nervous:3",
+  "text": "Sam watches your hands the whole game and flinches at every card. You take 200 cr off them, and they thank you for it. Sam tells the story of it to the next table, with you as the villain."
+ },
+ {
+  "key": "cards:nervous:4",
+  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 200 cr. Sam tells the story of it to the next table, with you as the villain."
+ },
+ {
+  "key": "quiet:nervous:1",
+  "text": "Sam sits with their hands flat on the table. After ten minutes they stop moving. Sam lets out a breath, and for the first time sits back."
+ },
+ {
+  "key": "quiet:nervous:2",
+  "text": "Sam sits with their hands flat on the table. After ten minutes they stop moving. Sam lets out a breath, and for the first time sits back."
+ },
+ {
+  "key": "quiet:nervous:3",
+  "text": "Sam sits with their hands flat on the table. After ten minutes they stop moving. Sam lets out a breath, and for the first time sits back."
+ },
+ {
+  "key": "quiet:nervous:4",
+  "text": "Sam sits with their hands flat on the table. After ten minutes they stop moving. Sam lets out a breath, and for the first time sits back."
+ },
+ {
+  "key": "place:nervous:1",
+  "text": "\"The Gravity Well,\" Sam says, \"has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you do not ask.\""
+ },
+ {
+  "key": "place:nervous:2",
+  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\""
+ },
+ {
+  "key": "place:nervous:3",
+  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\""
+ },
+ {
+  "key": "place:nervous:4",
+  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\""
+ },
+ {
+  "key": "drink:generous:1",
+  "text": "Sam will not hear of it, and slides the credits back across the bar, and buys the next one too. Sam says to have the rest, and means a bottle at the next port."
+ },
+ {
+  "key": "drink:generous:2",
+  "text": "Sam will not hear of it, and slides the credits back across the bar, and buys the next one too. Sam says to have the rest, and means a bottle at the next port."
+ },
+ {
+  "key": "drink:generous:3",
+  "text": "Sam will not hear of it, and slides the credits back across the bar, and buys the next one too. Sam says to have the rest, and means a bottle at the next port."
+ },
+ {
+  "key": "drink:generous:4",
+  "text": "Sam will not hear of it, and slides the credits back across the bar, and buys the next one too. Sam says to have the rest, and means a bottle at the next port."
+ },
+ {
+  "key": "cards:generous:1",
+  "text": "Sam wins 200 cr and tries to press half of it back into your hand. You refuse. They put it in the tip jar in your name. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards:generous:2",
+  "text": "Three hands, slow and close. On the last card you take 200 cr off Sam, who groans and says you were counting. Sam shakes your hand and means it."
+ },
+ {
+  "key": "cards:generous:3",
+  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. Fair is fair. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards:generous:4",
+  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 200 cr. Sam tells the story of it to the next table, with you as the villain."
+ },
+ {
+  "key": "quiet:generous:1",
+  "text": "Sam pushes the bowl of beans across, and then the bread, and then a second glass of water, without a word."
+ },
+ {
+  "key": "quiet:generous:2",
+  "text": "Sam pushes the bowl of beans across, and then the bread, and then a second glass of water, without a word."
+ },
+ {
+  "key": "quiet:generous:3",
+  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up."
+ },
+ {
+  "key": "quiet:generous:4",
+  "text": "Sam pushes the bowl of beans across, and then the bread, and then a second glass of water, without a word."
+ },
+ {
+  "key": "place:generous:1",
+  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list."
+ },
+ {
+  "key": "place:generous:2",
+  "text": "\"The Gravity Well,\" Sam says, \"has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you do not ask.\""
+ },
+ {
+  "key": "place:generous:3",
+  "text": "\"They tried to close The Gravity Well twice,\" Sam says. \"The first time the regulars paid the rent. The second time nobody could find the owner.\""
+ },
+ {
+  "key": "place:generous:4",
+  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\""
+ },
+ {
+  "key": "drink:greedy:1",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Customs on Mars seized a shipment of Luxury Goods. Buyers there are desperate.\" Then they sit back and finish their drink. Sam counts it, tells you the total, and decides you are worth knowing."
+ },
+ {
+  "key": "drink:greedy:2",
+  "text": "Sam has a price for everything: the drink, the stool, the gossip about the man two tables over. By the end you have heard a lot of figures and no stories. Sam counts it, tells you the total, and decides you are worth knowing."
+ },
+ {
+  "key": "drink:greedy:3",
+  "text": "Sam spends the whole drink on a long story about a boss they hated and a ship they loved, and how the two are the same person. It is very funny. It teaches you nothing. Sam counts it, tells you the total, and decides you are worth knowing."
+ },
+ {
+  "key": "drink:greedy:4",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A strike ended on Ring Nine, and every dock in town is suddenly flooded with Water.\" Then they sit back and finish their drink. Sam counts it, tells you the total, and decides you are worth knowing."
+ },
+ {
+  "key": "cards:greedy:1",
+  "text": "Three hands, slow and close. On the last card you take 200 cr off Sam, who groans and says you were counting. Sam tells the story of it to the next table, with you as the villain."
+ },
+ {
+  "key": "cards:greedy:2",
+  "text": "Sam takes the 200 cr, checks it against a coin they keep for the purpose. \"A pleasure,\" Sam says, and writes the figure on the napkin. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards:greedy:3",
+  "text": "Sam plays like someone who learned on a long watch: patient, quiet, unrattled. 200 cr, and you cannot find the mistake you made. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards:greedy:4",
+  "text": "Sam counts the pot twice, then counts your 200 cr, and then counts it again as you take it. \"Beginner's luck,\" Sam says. Sam buys you a drink with your own money."
+ },
+ {
+  "key": "quiet:greedy:1",
+  "text": "Sam does sums on a napkin for twenty minutes, in silence, and at the end turns the napkin round for you to see. It is your ship's price, within a few percent."
+ },
+ {
+  "key": "quiet:greedy:2",
+  "text": "You share the table. Sam reads something on a terminal, you watch the room, and it is the quietest twenty minutes you have had in a week."
+ },
+ {
+  "key": "quiet:greedy:3",
+  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up."
+ },
+ {
+  "key": "quiet:greedy:4",
+  "text": "Sam does sums on a napkin for twenty minutes, in silence, and at the end turns the napkin round for you to see. It is your ship's price, within a few percent."
+ },
+ {
+  "key": "place:greedy:1",
+  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\""
+ },
+ {
+  "key": "place:greedy:2",
+  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list."
+ },
+ {
+  "key": "place:greedy:3",
+  "text": "\"They tried to close The Gravity Well twice,\" Sam says. \"The first time the regulars paid the rent. The second time nobody could find the owner.\""
+ },
+ {
+  "key": "place:greedy:4",
+  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\""
+ },
+ {
+  "key": "drink:pious:1",
+  "text": "Sam complains for an hour about the price of everything, with such precision and love that you leave feeling you have been to a very good concert. Sam turns the cord at their wrist and says nothing."
+ },
+ {
+  "key": "drink:pious:2",
+  "text": "Sam speaks of the long road, and the long wait, and the small kindness that is worth more than either. It is not a sermon. Sam turns the cord at their wrist and says nothing."
+ },
+ {
+  "key": "drink:pious:3",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A new tax on Luxury Goods at Ganymede has, for reasons no one can explain, made it more valuable, not less.\" Then they sit back and finish their drink. Sam turns the cord at their wrist and says nothing."
+ },
+ {
+  "key": "drink:pious:4",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A new tax on Food at Mars has, for reasons no one can explain, made it more valuable, not less.\" Then they sit back and finish their drink. Sam turns the cord at their wrist and says nothing."
+ },
+ {
+  "key": "cards:pious:1",
+  "text": "You have the better hand for most of the evening and none of it at the end. Sam says sorry and means about half of it. 200 cr. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards:pious:2",
+  "text": "Sam says a word over each card. You lose 200 cr, and Sam touches the charm at their throat and says it was not their doing. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards:pious:3",
+  "text": "Sam says a short word over each card, and loses, and says one over the 200 cr as it leaves. \"What is lost is returned in another form,\" Sam says. Sam shakes your hand and means it."
+ },
+ {
+  "key": "cards:pious:4",
+  "text": "Three hands, slow and close. On the last card you take 200 cr off Sam, who groans and says you were counting. Sam buys you a drink with your own money."
+ },
+ {
+  "key": "quiet:pious:1",
+  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up."
+ },
+ {
+  "key": "quiet:pious:2",
+  "text": "Sam bows their head, and you sit beside them, and for a while the bar is only glasses. When they lift it again they say it was good to have company."
+ },
+ {
+  "key": "quiet:pious:3",
+  "text": "Sam bows their head, and you sit beside them, and for a while the bar is only glasses. When they lift it again they say it was good to have company."
+ },
+ {
+  "key": "quiet:pious:4",
+  "text": "Sam bows their head, and you sit beside them, and for a while the bar is only glasses. When they lift it again they say it was good to have company."
+ },
+ {
+  "key": "place:pious:1",
+  "text": "\"They tried to close The Gravity Well twice,\" Sam says. \"The first time the regulars paid the rent. The second time nobody could find the owner.\""
+ },
+ {
+  "key": "place:pious:2",
+  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\""
+ },
+ {
+  "key": "place:pious:3",
+  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\""
+ },
+ {
+  "key": "place:pious:4",
+  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\""
+ },
+ {
+  "key": "drink:rude:1",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A bumper output of Water on Triton Outpost has the markets swamped.\" Then they sit back and finish their drink. "
+ },
+ {
+  "key": "drink:rude:2",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A ceremonial feast on Boneyard has drained every last ounce of Food, and the cooks are frantic.\" Then they sit back and finish their drink. "
+ },
+ {
+  "key": "drink:rude:3",
+  "text": "Sam insults the drink, the bar, the bartender, and the city, in that order, from a list."
+ },
+ {
+  "key": "drink:rude:4",
+  "text": "Sam insults the drink, the bar, the bartender, and the city, in that order, from a list."
+ },
+ {
+  "key": "cards:rude:1",
+  "text": "Sam puts down the last card and says, in a level voice, that it was a dishonest deck. You take 200 cr off them anyway. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it."
+ },
+ {
+  "key": "cards:rude:2",
+  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 200 cr, and they laugh about it. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it."
+ },
+ {
+  "key": "cards:rude:3",
+  "text": "Sam wins 200 cr, and says it was not even close. You do not argue. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards:rude:4",
+  "text": "Sam wins 200 cr, and says it was not even close. You do not argue. By the end of the glass you are laughing."
+ },
+ {
+  "key": "quiet:rude:1",
+  "text": "Sam says nothing for a long time, and then says, \"You are not as bad as I thought.\""
+ },
+ {
+  "key": "quiet:rude:2",
+  "text": "Sam says nothing for a long time, and then says, \"You are not as bad as I thought.\""
+ },
+ {
+  "key": "quiet:rude:3",
+  "text": "Sam says nothing for a long time, and then says, \"You are not as bad as I thought.\""
+ },
+ {
+  "key": "quiet:rude:4",
+  "text": "You sit with Sam and neither of you says anything. The room talks around you. After a while Sam pushes the bowl of beans an inch toward you, and that is all."
+ },
+ {
+  "key": "place:rude:1",
+  "text": "\"The Gravity Well,\" Sam says, \"has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you do not ask.\""
+ },
+ {
+  "key": "place:rude:2",
+  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\""
+ },
+ {
+  "key": "place:rude:3",
+  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list."
+ },
+ {
+  "key": "place:rude:4",
+  "text": "\"They tried to close The Gravity Well twice,\" Sam says. \"The first time the regulars paid the rent. The second time nobody could find the owner.\""
+ },
+ {
+  "key": "drink:curious:1",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A ship carrying Refined Metals to Mars was hijacked two weeks ago, and the shelves are getting bare.\" Then they sit back and finish their drink. "
+ },
+ {
+  "key": "drink:curious:2",
+  "text": "Sam talks about the one trip that went right: the cargo that sold, the weather that held, the pilot who sang. It is a nice story. It has no use at all."
+ },
+ {
+  "key": "drink:curious:3",
+  "text": "Sam asks about your ship, your home, your last port and the best thing you have eaten, and writes none of it down, and does not forget any of it."
+ },
+ {
+  "key": "drink:curious:4",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A shipping delay has stranded a convoy of Luxury Goods on the way to Ironheart, and buyers are getting anxious.\" Then they sit back and finish their drink. "
+ },
+ {
+  "key": "cards:curious:1",
+  "text": "Sam asks how you knew, and what the odds were, and whether you count, and takes 200 cr off the table in questions before you take it in coin. Sam tells the story of it to the next table, with you as the villain."
+ },
+ {
+  "key": "cards:curious:2",
+  "text": "Sam fans the last cards with a flourish you have seen before, in a port you do not name. 200 cr, and a lesson. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards:curious:3",
+  "text": "Sam plays a hand and then spends ten minutes asking how you lost it, and you are never sure whether it is a joke. 200 cr. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards:curious:4",
+  "text": "Sam asks how you knew, and what the odds were, and whether you count, and takes 200 cr off the table in questions before you take it in coin. Sam tells the story of it to the next table, with you as the villain."
+ },
+ {
+  "key": "quiet:curious:1",
+  "text": "Sam watches you not talking with open interest, and then tries it. They last four minutes."
+ },
+ {
+  "key": "quiet:curious:2",
+  "text": "Sam watches you not talking with open interest, and then tries it. They last four minutes."
+ },
+ {
+  "key": "quiet:curious:3",
+  "text": "Sam watches you not talking with open interest, and then tries it. They last four minutes."
+ },
+ {
+  "key": "quiet:curious:4",
+  "text": "Sam watches you not talking with open interest, and then tries it. They last four minutes."
+ },
+ {
+  "key": "place:curious:1",
+  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam asks the next question, and then the one after it."
+ },
+ {
+  "key": "place:curious:2",
+  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list. Sam asks the next question, and then the one after it."
+ },
+ {
+  "key": "place:curious:3",
+  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list. Sam asks the next question, and then the one after it."
+ },
+ {
+  "key": "place:curious:4",
+  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam asks the next question, and then the one after it."
+ },
+ {
+  "key": "drink:drunk:1",
+  "text": "Sam tells you the same story three times, and each time it is about a different ship. You are not sure which one is true. You think none of them. Sam hugs you. It is a long hug, and not entirely stable."
+ },
+ {
+  "key": "drink:drunk:2",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Word is that the governor of Titan is stockpiling Electronics for a party, and will pay well over the odds.\" Then they sit back and finish their drink. Sam hugs you. It is a long hug, and not entirely stable."
+ },
+ {
+  "key": "drink:drunk:3",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A warehouse on The Rook has been cleared out in a hurry, and the Medical Supplies is going, quite literally, for whatever anyone will pay.\" Then they sit back and finish their drink. Sam hugs you. It is a long hug, and not entirely stable."
+ },
+ {
+  "key": "drink:drunk:4",
+  "text": "Sam tells you the same story three times, and each time it is about a different ship. You are not sure which one is true. You think none of them. Sam hugs you. It is a long hug, and not entirely stable."
+ },
+ {
+  "key": "cards:drunk:1",
+  "text": "Sam wins 200 cr and looks astonished, and wants it understood that it was skill, and then asks what game it was. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards:drunk:2",
+  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 200 cr to you in the end. Sam tells the story of it to the next table, with you as the villain."
+ },
+ {
+  "key": "cards:drunk:3",
+  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 200 cr. Sam shakes your hand and means it."
+ },
+ {
+  "key": "cards:drunk:4",
+  "text": "Sam wins 200 cr and looks astonished, and wants it understood that it was skill, and then asks what game it was. By the end of the glass you are laughing."
+ },
+ {
+  "key": "quiet:drunk:1",
+  "text": "You share the table. Sam reads something on a terminal, you watch the room, and it is the quietest twenty minutes you have had in a week. Sam agrees at once, and orders another."
+ },
+ {
+  "key": "quiet:drunk:2",
+  "text": "Sam falls asleep with their head on their arm, and you sit with them until the bartender comes over with a blanket. Sam agrees at once, and orders another."
+ },
+ {
+  "key": "quiet:drunk:3",
+  "text": "Sam falls asleep with their head on their arm, and you sit with them until the bartender comes over with a blanket. Sam agrees at once, and orders another."
+ },
+ {
+  "key": "quiet:drunk:4",
+  "text": "You share the table. Sam reads something on a terminal, you watch the room, and it is the quietest twenty minutes you have had in a week. Sam agrees at once, and orders another."
+ },
+ {
+  "key": "place:drunk:1",
+  "text": "\"They tried to close The Gravity Well twice,\" Sam says. \"The first time the regulars paid the rent. The second time nobody could find the owner.\""
+ },
+ {
+  "key": "place:drunk:2",
+  "text": "\"The Gravity Well,\" Sam says, \"has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you do not ask.\""
+ },
+ {
+  "key": "place:drunk:3",
+  "text": "\"The Gravity Well,\" Sam says, \"has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you do not ask.\""
+ },
+ {
+  "key": "place:drunk:4",
+  "text": "\"They tried to close The Gravity Well twice,\" Sam says. \"The first time the regulars paid the rent. The second time nobody could find the owner.\""
+ },
+ {
+  "key": "drink:secretive:1",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A corporate buying spree on Ganymede has cleared the shelves of Electronics.\" Then they sit back and finish their drink. "
+ },
+ {
+  "key": "drink:secretive:2",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Warehouses on Eros Old Town are overflowing with Electronics. Sellers are dumping it cheap.\" Then they sit back and finish their drink. "
+ },
+ {
+  "key": "drink:secretive:3",
+  "text": "Sam tells you about Mars: the streets, the smell of the market, why they left, and why they might go back. There is no rumor in it, and no secret, and no angle. It takes an hour."
+ },
+ {
+  "key": "drink:secretive:4",
+  "text": "Sam answers every question with a question and gives you, as far as you can tell, nothing. On the way home you realize you told them a great deal."
+ },
+ {
+  "key": "cards:secretive:1",
+  "text": "Sam plays with an expression you cannot read and a hand you cannot guess. You take 200 cr, and Sam gives nothing away, and the only change is that they do not look at the door. Sam tells the story of it to the next table, with you as the villain."
+ },
+ {
+  "key": "cards:secretive:2",
+  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 200 cr, and they laugh about it. Sam tells the story of it to the next table, with you as the villain."
+ },
+ {
+  "key": "cards:secretive:3",
+  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. Fair is fair. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards:secretive:4",
+  "text": "Sam wins 200 cr without a word, counts it without looking, and asks how long you have had the ship. By the end of the glass you are laughing."
+ },
+ {
+  "key": "quiet:secretive:1",
+  "text": "Sam relaxes in the silence, and does not ask you anything. Sam asks how long you have had the ship, and this time wants the answer."
+ },
+ {
+  "key": "quiet:secretive:2",
+  "text": "Sam relaxes in the silence, and does not ask you anything. Sam asks how long you have had the ship, and this time wants the answer."
+ },
+ {
+  "key": "quiet:secretive:3",
+  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up. Sam asks how long you have had the ship, and this time wants the answer."
+ },
+ {
+  "key": "quiet:secretive:4",
+  "text": "Sam relaxes in the silence, and does not ask you anything. Sam asks how long you have had the ship, and this time wants the answer."
+ },
+ {
+  "key": "place:secretive:1",
+  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\""
+ },
+ {
+  "key": "place:secretive:2",
+  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\""
+ },
+ {
+  "key": "place:secretive:3",
+  "text": "\"They tried to close The Gravity Well twice,\" Sam says. \"The first time the regulars paid the rent. The second time nobody could find the owner.\""
+ },
+ {
+  "key": "place:secretive:4",
+  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\""
+ },
+ {
+  "key": "drink:kind:1",
+  "text": "Sam complains for an hour about the price of everything, with such precision and love that you leave feeling you have been to a very good concert. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "drink:kind:2",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A disease scare on Titan has everyone hoarding Medical Supplies.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "drink:kind:3",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A trade fair on The Rook has brought in a great many merchants, and Food is going for a song.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "drink:kind:4",
+  "text": "Sam asks about you, and means it. By the end of the glass you have said something true that you had not planned to say to anyone. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "cards:kind:1",
+  "text": "You have the better hand for most of the evening and none of it at the end. Sam says sorry and means about half of it. 200 cr. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards:kind:2",
+  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 200 cr to you in the end. Sam buys you a drink with your own money."
+ },
+ {
+  "key": "cards:kind:3",
+  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 200 cr. Sam tells the story of it to the next table, with you as the villain."
+ },
+ {
+  "key": "cards:kind:4",
+  "text": "Sam wins 200 cr and feels bad about it at once, and buys you a drink, and says it is nothing. By the end of the glass you are laughing."
+ },
+ {
+  "key": "quiet:kind:1",
+  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "quiet:kind:2",
+  "text": "Sam makes room on the bench, and then nothing else. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "quiet:kind:3",
+  "text": "Sam makes room on the bench, and then nothing else. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "quiet:kind:4",
+  "text": "Sam makes room on the bench, and then nothing else. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "place:kind:1",
+  "text": "\"They tried to close The Gravity Well twice,\" Sam says. \"The first time the regulars paid the rent. The second time nobody could find the owner.\""
+ },
+ {
+  "key": "place:kind:2",
+  "text": "\"The Gravity Well,\" Sam says, \"has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you do not ask.\""
+ },
+ {
+  "key": "place:kind:3",
+  "text": "\"The Gravity Well,\" Sam says, \"has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you do not ask.\""
+ },
+ {
+  "key": "place:kind:4",
+  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\""
+ },
+ {
+  "key": "drink:brave:1",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A fire in a warehouse on Titan took most of the local stock of Machine Parts, and nobody is saying how it started.\" Then they sit back and finish their drink. "
+ },
+ {
+  "key": "drink:brave:2",
+  "text": "Sam tells you about a bad moment and what they did in it, and does not make it sound better than it was."
+ },
+ {
+  "key": "drink:brave:3",
+  "text": "Sam tells you about a bad moment and what they did in it, and does not make it sound better than it was."
+ },
+ {
+  "key": "drink:brave:4",
+  "text": "Sam tells you about a bad moment and what they did in it, and does not make it sound better than it was."
+ },
+ {
+  "key": "cards:brave:1",
+  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 200 cr to you in the end. Sam tells the story of it to the next table, with you as the villain."
+ },
+ {
+  "key": "cards:brave:2",
+  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards:brave:3",
+  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards:brave:4",
+  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish. By the end of the glass you are laughing."
+ },
+ {
+  "key": "quiet:brave:1",
+  "text": "Sam sits with their back to the door, as always, and for once does not watch it."
+ },
+ {
+  "key": "quiet:brave:2",
+  "text": "You sit with Sam and neither of you says anything. The room talks around you. After a while Sam pushes the bowl of beans an inch toward you, and that is all."
+ },
+ {
+  "key": "quiet:brave:3",
+  "text": "You sit with Sam and neither of you says anything. The room talks around you. After a while Sam pushes the bowl of beans an inch toward you, and that is all."
+ },
+ {
+  "key": "quiet:brave:4",
+  "text": "You sit with Sam and neither of you says anything. The room talks around you. After a while Sam pushes the bowl of beans an inch toward you, and that is all."
+ },
+ {
+  "key": "place:brave:1",
+  "text": "\"The Gravity Well,\" Sam says, \"has been here longer than the people who own it. Nobody knows where the counter came from. The rule is you do not ask.\""
+ },
+ {
+  "key": "place:brave:2",
+  "text": "\"They tried to close The Gravity Well twice,\" Sam says. \"The first time the regulars paid the rent. The second time nobody could find the owner.\""
+ },
+ {
+  "key": "place:brave:3",
+  "text": "\"They tried to close The Gravity Well twice,\" Sam says. \"The first time the regulars paid the rent. The second time nobody could find the owner.\""
+ },
+ {
+  "key": "place:brave:4",
+  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list."
+ },
+ {
+  "key": "drink:homesick:1",
+  "text": "Sam tells you about Mars: the streets, the smell of the market, why they left, and why they might go back. There is no rumor in it, and no secret, and no angle. It takes an hour."
+ },
+ {
+  "key": "drink:homesick:2",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Customs on Boneyard seized a shipment of Medical Supplies. Buyers there are desperate.\" Then they sit back and finish their drink. "
+ },
+ {
+  "key": "drink:homesick:3",
+  "text": "Sam talks about Mars, and then stops, and then talks about it again, and by the third time you could draw the street."
+ },
+ {
+  "key": "drink:homesick:4",
+  "text": "Sam tells you about Mars: the streets, the smell of the market, why they left, and why they might go back. There is no rumor in it, and no secret, and no angle. It takes an hour."
+ },
+ {
+  "key": "cards:homesick:1",
+  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. Fair is fair. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards:homesick:2",
+  "text": "Sam plays absent-mindedly, thinking of somewhere else, and loses 200 cr to you without noticing. Sam buys you a drink with your own money."
+ },
+ {
+  "key": "cards:homesick:3",
+  "text": "Sam plays well, for someone whose mind is elsewhere. 200 cr, and a smile that is not about the game. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards:homesick:4",
+  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. Fair is fair. By the end of the glass you are laughing."
+ },
+ {
+  "key": "quiet:homesick:1",
+  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up. Sam goes quiet, and then smiles, the first of the night."
+ },
+ {
+  "key": "quiet:homesick:2",
+  "text": "Sam takes out a creased photograph and sets it between you, and neither of you mentions it. You look at it for a while. Sam goes quiet, and then smiles, the first of the night."
+ },
+ {
+  "key": "quiet:homesick:3",
+  "text": "Sam takes out a creased photograph and sets it between you, and neither of you mentions it. You look at it for a while. Sam goes quiet, and then smiles, the first of the night."
+ },
+ {
+  "key": "quiet:homesick:4",
+  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up. Sam goes quiet, and then smiles, the first of the night."
+ },
+ {
+  "key": "place:homesick:1",
+  "text": "\"They tried to close The Gravity Well twice,\" Sam says. \"The first time the regulars paid the rent. The second time nobody could find the owner.\" Sam goes quiet, and then smiles, the first of the night."
+ },
+ {
+  "key": "place:homesick:2",
+  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam goes quiet, and then smiles, the first of the night."
+ },
+ {
+  "key": "place:homesick:3",
+  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\" Sam goes quiet, and then smiles, the first of the night."
+ },
+ {
+  "key": "place:homesick:4",
+  "text": "\"They tried to close The Gravity Well twice,\" Sam says. \"The first time the regulars paid the rent. The second time nobody could find the owner.\" Sam goes quiet, and then smiles, the first of the night."
+ },
+ {
+  "key": "home:talkative:1",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:talkative:1",
+  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\""
+ },
+ {
+  "key": "home:talkative:2",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:talkative:2",
+  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost."
+ },
+ {
+  "key": "home:nervous:1",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:nervous:1",
+  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\""
+ },
+ {
+  "key": "home:nervous:2",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:nervous:2",
+  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost."
+ },
+ {
+  "key": "home:generous:1",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:generous:1",
+  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\""
+ },
+ {
+  "key": "home:generous:2",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:generous:2",
+  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost."
+ },
+ {
+  "key": "home:greedy:1",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:greedy:1",
+  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\""
+ },
+ {
+  "key": "home:greedy:2",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:greedy:2",
+  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost."
+ },
+ {
+  "key": "home:pious:1",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:pious:1",
+  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\""
+ },
+ {
+  "key": "home:pious:2",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:pious:2",
+  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost."
+ },
+ {
+  "key": "home:rude:1",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:rude:1",
+  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\""
+ },
+ {
+  "key": "home:rude:2",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:rude:2",
+  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost."
+ },
+ {
+  "key": "home:curious:1",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:curious:1",
+  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\""
+ },
+ {
+  "key": "home:curious:2",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:curious:2",
+  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost."
+ },
+ {
+  "key": "home:drunk:1",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:drunk:1",
+  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\""
+ },
+ {
+  "key": "home:drunk:2",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:drunk:2",
+  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost."
+ },
+ {
+  "key": "home:secretive:1",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:secretive:1",
+  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\""
+ },
+ {
+  "key": "home:secretive:2",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:secretive:2",
+  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost."
+ },
+ {
+  "key": "home:kind:1",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:kind:1",
+  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\""
+ },
+ {
+  "key": "home:kind:2",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:kind:2",
+  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost."
+ },
+ {
+  "key": "home:brave:1",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:brave:1",
+  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\""
+ },
+ {
+  "key": "home:brave:2",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:brave:2",
+  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost."
+ },
+ {
+  "key": "home:homesick:1",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:homesick:1",
+  "text": "Sam takes a small cord from their wrist and ties it to the transponder with three knots, a word for each. \"It will not stop a rock,\" Sam says. \"It is not for rocks.\""
+ },
+ {
+  "key": "home:homesick:2",
+  "text": "Sam draws Mars on the bar in spilled water: the lanes, the lock, the place where the lift always stops a floor early. \"That is the street,\" Sam says. \"That is where I will be, one day.\""
+ },
+ {
+  "key": "bless:homesick:2",
+  "text": "Sam does not close their eyes or raise their voice. They say, in a normal tone, as if giving directions, where the ship should go if it is lost."
+ },
+ {
+  "key": "heard:home:1",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A company on Hermes Foundry has folded, and its whole stock of Food is being sold off at auction.\" Sam adds, before you can answer: \"A strike ended on Ganymede, and every dock in town is suddenly flooded with Medical Supplies.\""
+ },
+ {
+  "key": "heard:home:2",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A cold snap on Pallas Refinery has made Machine Parts the only thing anyone wants to talk about.\" Sam adds, before you can answer: \"A shipping delay has stranded a convoy of Water on the way to The Hollows, and buyers are getting anxious.\""
+ },
+ {
+  "key": "heard:family:1",
+  "text": "Sam is going to see family, and has brought the wrong present, and knows it. \"What do you give a niece?\" they ask. Sam thinks about it, then says: \"A company on Hermes Foundry has folded, and its whole stock of Food is being sold off at auction.\" Sam adds, before you can answer: \"A strike ended on Ganymede, and every dock in town is suddenly flooded with Medical Supplies.\""
+ },
+ {
+  "key": "heard:family:2",
+  "text": "Sam is going to see family, and has brought the wrong present, and knows it. \"What do you give a niece?\" they ask. Sam thinks about it, then says: \"A cold snap on Pallas Refinery has made Machine Parts the only thing anyone wants to talk about.\" Sam adds, before you can answer: \"A shipping delay has stranded a convoy of Water on the way to The Hollows, and buyers are getting anxious.\""
+ },
+ {
+  "key": "heard:job:1",
+  "text": "Sam has an interview, and is rehearsing it under their breath, and stops when they see you looking. Sam thinks about it, then says: \"A company on Hermes Foundry has folded, and its whole stock of Food is being sold off at auction.\" Sam adds, before you can answer: \"A strike ended on Ganymede, and every dock in town is suddenly flooded with Medical Supplies.\""
+ },
+ {
+  "key": "heard:job:2",
+  "text": "Sam has an interview, and is rehearsing it under their breath, and stops when they see you looking. Sam thinks about it, then says: \"A cold snap on Pallas Refinery has made Machine Parts the only thing anyone wants to talk about.\" Sam adds, before you can answer: \"A shipping delay has stranded a convoy of Water on the way to The Hollows, and buyers are getting anxious.\""
+ },
+ {
+  "key": "heard:fresh:1",
+  "text": "Sam says, flatly, that they are starting again, and that they would rather not say from what. Sam thinks about it, then says: \"A company on Hermes Foundry has folded, and its whole stock of Food is being sold off at auction.\" Sam adds, before you can answer: \"A strike ended on Ganymede, and every dock in town is suddenly flooded with Medical Supplies.\""
+ },
+ {
+  "key": "heard:fresh:2",
+  "text": "Sam says, flatly, that they are starting again, and that they would rather not say from what. Sam thinks about it, then says: \"A cold snap on Pallas Refinery has made Machine Parts the only thing anyone wants to talk about.\" Sam adds, before you can answer: \"A shipping delay has stranded a convoy of Water on the way to The Hollows, and buyers are getting anxious.\""
+ },
+ {
+  "key": "heard:research:1",
+  "text": "Sam has a posting waiting at the end of the trip, and mentions the instruments for it before the name. Sam thinks about it, then says: \"A company on Hermes Foundry has folded, and its whole stock of Food is being sold off at auction.\" Sam adds, before you can answer: \"A strike ended on Ganymede, and every dock in town is suddenly flooded with Medical Supplies.\""
+ },
+ {
+  "key": "heard:research:2",
+  "text": "Sam has a posting waiting at the end of the trip, and mentions the instruments for it before the name. Sam thinks about it, then says: \"A cold snap on Pallas Refinery has made Machine Parts the only thing anyone wants to talk about.\" Sam adds, before you can answer: \"A shipping delay has stranded a convoy of Water on the way to The Hollows, and buyers are getting anxious.\""
+ },
+ {
+  "key": "heard:pilgrim:1",
+  "text": "Sam touches the cord at their wrist and asks, quietly, whether your ship is bound anywhere holy. Sam thinks about it, then says: \"A company on Hermes Foundry has folded, and its whole stock of Food is being sold off at auction.\" Sam adds, before you can answer: \"A strike ended on Ganymede, and every dock in town is suddenly flooded with Medical Supplies.\""
+ },
+ {
+  "key": "heard:pilgrim:2",
+  "text": "Sam touches the cord at their wrist and asks, quietly, whether your ship is bound anywhere holy. Sam thinks about it, then says: \"A cold snap on Pallas Refinery has made Machine Parts the only thing anyone wants to talk about.\" Sam adds, before you can answer: \"A shipping delay has stranded a convoy of Water on the way to The Hollows, and buyers are getting anxious.\""
+ },
+ {
+  "key": "heard:medical:1",
+  "text": "Sam presses a hand to their side and asks, quietly, whether your ship carries a medic. Sam thinks about it, then says: \"A company on Hermes Foundry has folded, and its whole stock of Food is being sold off at auction.\" Sam adds, before you can answer: \"A strike ended on Ganymede, and every dock in town is suddenly flooded with Medical Supplies.\""
+ },
+ {
+  "key": "heard:medical:2",
+  "text": "Sam presses a hand to their side and asks, quietly, whether your ship carries a medic. Sam thinks about it, then says: \"A cold snap on Pallas Refinery has made Machine Parts the only thing anyone wants to talk about.\" Sam adds, before you can answer: \"A shipping delay has stranded a convoy of Water on the way to The Hollows, and buyers are getting anxious.\""
+ },
+ {
+  "key": "heard:vague:1",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A company on Hermes Foundry has folded, and its whole stock of Food is being sold off at auction.\" Sam adds, before you can answer: \"A strike ended on Ganymede, and every dock in town is suddenly flooded with Medical Supplies.\""
+ },
+ {
+  "key": "heard:vague:2",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A cold snap on Pallas Refinery has made Machine Parts the only thing anyone wants to talk about.\" Sam adds, before you can answer: \"A shipping delay has stranded a convoy of Water on the way to The Hollows, and buyers are getting anxious.\""
+ },
+ {
+  "key": "work:dockhand:1",
+  "text": "\"Fourteen years,\" Sam says, \"and I can tell the weather on the other side of a hull by the way it hums.\" They say it as a joke. Then Sam tells you what they are hearing on the docks: \"A bumper output of Food on Boneyard has the markets swamped.\""
+ },
+ {
+  "key": "work:dockhand:2",
+  "text": "Sam shows you a hand with two fingers that do not close. It was a clamp, and a shift supervisor who did not check it. They do not give the supervisor's name. Then Sam tells you what they are hearing on the docks: \"A warehouse on Ring Nine has been cleared out in a hurry, and the Food is going, quite literally, for whatever anyone will pay.\""
+ },
+ {
+  "key": "work:dockhand:3",
+  "text": "Sam shows you a hand with two fingers that do not close. It was a clamp, and a shift supervisor who did not check it. They do not give the supervisor's name. Then Sam tells you what they are hearing on the docks: \"A strike ended on The Rook, and every dock in town is suddenly flooded with Luxury Goods.\""
+ },
+ {
+  "key": "work:welder:1",
+  "text": "\"Nobody thanks you when it works,\" Sam says. \"They thank you when it breaks and then you fix it.\" They drink to that."
+ },
+ {
+  "key": "work:welder:2",
+  "text": "Sam has opinions on three kinds of failure and a favorite, and tells you which. It is a boring one."
+ },
+ {
+  "key": "work:welder:3",
+  "text": "Sam has opinions on three kinds of failure and a favorite, and tells you which. It is a boring one."
+ },
+ {
+  "key": "work:navy pilot:1",
+  "text": "\"They taught me to count exits,\" Sam says. \"I still do it. There are three.\" They glance at each one, in order, without moving their head. You come away knowing something new about the gunner. (Experience gained.)"
+ },
+ {
+  "key": "work:navy pilot:2",
+  "text": "Sam will not tell you where they served. They will tell you what the food was like, and that is a long story. You come away knowing something new about the gunner. (Experience gained.)"
+ },
+ {
+  "key": "work:navy pilot:3",
+  "text": "Sam will not tell you where they served. They will tell you what the food was like, and that is a long story. You come away knowing something new about the gunner. (Experience gained.)"
+ },
+ {
+  "key": "work:clerk:1",
+  "text": "\"It is not what I thought I would do,\" Sam says. \"But I am better at it than I thought I would be.\""
+ },
+ {
+  "key": "work:clerk:2",
+  "text": "Sam tells you about a bad day at work in such detail that you can see the room. It ends with an apology to a colleague, and the colleague, to everyone's surprise, accepting."
+ },
+ {
+  "key": "work:clerk:3",
+  "text": "Sam tells you about a bad day at work in such detail that you can see the room. It ends with an apology to a colleague, and the colleague, to everyone's surprise, accepting."
+ },
+ {
+  "key": "leave:talkative:1",
+  "text": "\"Look after yourself,\" Sam says, and offers to walk you to the lock."
+ },
+ {
+  "key": "leave:talkative:2",
+  "text": "\"Look after yourself,\" Sam says, and offers to walk you to the lock."
+ },
+ {
+  "key": "leave:talkative:3",
+  "text": "You finish what is in your glass and stand. Sam has already gone back to their own business."
+ },
+ {
+  "key": "leave:nervous:1",
+  "text": "Sam half rises when you stand, and sits again, and says goodbye to the table."
+ },
+ {
+  "key": "leave:nervous:2",
+  "text": "\"Look after yourself,\" Sam says, and offers to walk you to the lock."
+ },
+ {
+  "key": "leave:nervous:3",
+  "text": "Sam half rises when you stand, and sits again, and says goodbye to the table."
+ },
+ {
+  "key": "leave:generous:1",
+  "text": "Sam puts a roll in your pocket as you go and does not mention it."
+ },
+ {
+  "key": "leave:generous:2",
+  "text": "You nod, and Sam nods, and that is the whole goodbye. The room closes over the gap you left."
+ },
+ {
+  "key": "leave:generous:3",
+  "text": "\"Look after yourself,\" Sam says, and offers to walk you to the lock."
+ },
+ {
+  "key": "leave:greedy:1",
+  "text": "\"Look after yourself,\" Sam says, and offers to walk you to the lock."
+ },
+ {
+  "key": "leave:greedy:2",
+  "text": "You nod, and Sam nods, and that is the whole goodbye. The room closes over the gap you left."
+ },
+ {
+  "key": "leave:greedy:3",
+  "text": "\"Look after yourself,\" Sam says, and offers to walk you to the lock."
+ },
+ {
+  "key": "leave:pious:1",
+  "text": "You nod, and Sam nods, and that is the whole goodbye. The room closes over the gap you left."
+ },
+ {
+  "key": "leave:pious:2",
+  "text": "\"Fair winds,\" Sam says."
+ },
+ {
+  "key": "leave:pious:3",
+  "text": "\"Look after yourself,\" Sam says, and offers to walk you to the lock."
+ },
+ {
+  "key": "leave:rude:1",
+  "text": "You finish what is in your glass and stand. Sam has already gone back to their own business."
+ },
+ {
+  "key": "leave:rude:2",
+  "text": "You finish what is in your glass and stand. Sam has already gone back to their own business."
+ },
+ {
+  "key": "leave:rude:3",
+  "text": "You get up and leave them to their drink. You go back to the bar and the noise of the room."
+ },
+ {
+  "key": "leave:curious:1",
+  "text": "You finish what is in your glass and stand. Sam has already gone back to their own business."
+ },
+ {
+  "key": "leave:curious:2",
+  "text": "\"Where are you headed next?\" Sam asks, at the door, and writes it on their hand."
+ },
+ {
+  "key": "leave:curious:3",
+  "text": "\"Where are you headed next?\" Sam asks, at the door, and writes it on their hand."
+ },
+ {
+  "key": "leave:drunk:1",
+  "text": "You get up and leave them to their drink. You go back to the bar and the noise of the room."
+ },
+ {
+  "key": "leave:drunk:2",
+  "text": "Sam waves, to the left of where you are, and says something warm that is not quite a word."
+ },
+ {
+  "key": "leave:drunk:3",
+  "text": "\"Safe burn,\" Sam says, to your back. You do not turn round, but you lift a hand."
+ },
+ {
+  "key": "leave:secretive:1",
+  "text": "\"I never saw you,\" Sam says, without a smile."
+ },
+ {
+  "key": "leave:secretive:2",
+  "text": "\"I never saw you,\" Sam says, without a smile."
+ },
+ {
+  "key": "leave:secretive:3",
+  "text": "\"Look after yourself,\" Sam says, and offers to walk you to the lock."
+ },
+ {
+  "key": "leave:kind:1",
+  "text": "You get up and leave them to their drink. You go back to the bar and the noise of the room."
+ },
+ {
+  "key": "leave:kind:2",
+  "text": "\"Look after yourself,\" Sam says, and offers to walk you to the lock."
+ },
+ {
+  "key": "leave:kind:3",
+  "text": "\"Any time,\" Sam says, \"and any place.\" It is an offer."
+ },
+ {
+  "key": "leave:brave:1",
+  "text": "\"Any time,\" Sam says, \"and any place.\" It is an offer."
+ },
+ {
+  "key": "leave:brave:2",
+  "text": "You nod, and Sam nods, and that is the whole goodbye. The room closes over the gap you left."
+ },
+ {
+  "key": "leave:brave:3",
+  "text": "\"Look after yourself,\" Sam says, and offers to walk you to the lock."
+ },
+ {
+  "key": "leave:homesick:1",
+  "text": "You get up and leave them to their drink. You go back to the bar and the noise of the room."
+ },
+ {
+  "key": "leave:homesick:2",
+  "text": "\"Look after yourself,\" Sam says, and offers to walk you to the lock."
+ },
+ {
+  "key": "leave:homesick:3",
+  "text": "You finish what is in your glass and stand. Sam has already gone back to their own business."
+ },
+ {
+  "key": "chatter:talkative:1",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance has been talking for an hour, and the coffee maker, in a corner, has given up in sympathy."
+ },
+ {
+  "key": "chatter:talkative:2",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance has been talking for an hour, and the coffee maker, in a corner, has given up in sympathy."
+ },
+ {
+  "key": "chatter:talkative:3",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance has been talking for an hour, and the coffee maker, in a corner, has given up in sympathy."
+ },
+ {
+  "key": "chatter:nervous:1",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance is counting the emergency suits, quietly, under their breath, in a low, steady mutter."
+ },
+ {
+  "key": "chatter:nervous:2",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance is counting the emergency suits, quietly, under their breath, in a low, steady mutter."
+ },
+ {
+  "key": "chatter:nervous:3",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance is counting the emergency suits, quietly, under their breath, in a low, steady mutter."
+ },
+ {
+  "key": "chatter:generous:1",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance covered someone's shift, and will not hear a word about it."
+ },
+ {
+  "key": "chatter:generous:2",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance covered someone's shift, and will not hear a word about it."
+ },
+ {
+  "key": "chatter:generous:3",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance covered someone's shift, and will not hear a word about it."
+ },
+ {
+  "key": "chatter:greedy:1",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance watches the fuel gauge, and does not blink."
+ },
+ {
+  "key": "chatter:greedy:2",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance watches the fuel gauge, and does not blink."
+ },
+ {
+  "key": "chatter:greedy:3",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance watches the fuel gauge, and does not blink."
+ },
+ {
+  "key": "chatter:pious:1",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance is reading, aloud and softly, from a worn book."
+ },
+ {
+  "key": "chatter:pious:2",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance is reading, aloud and softly, from a worn book."
+ },
+ {
+  "key": "chatter:pious:3",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance is reading, aloud and softly, from a worn book."
+ },
+ {
+  "key": "chatter:rude:1",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance has an opinion about the way you are flying, and shares it, generously, at every turn."
+ },
+ {
+  "key": "chatter:rude:2",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance has an opinion about the way you are flying, and shares it, generously, at every turn."
+ },
+ {
+  "key": "chatter:rude:3",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance has an opinion about the way you are flying, and shares it, generously, at every turn."
+ },
+ {
+  "key": "chatter:curious:1",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance: \"But why does it hum at that particular note? Has anybody ever asked?\""
+ },
+ {
+  "key": "chatter:curious:2",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance: \"But why does it hum at that particular note? Has anybody ever asked?\""
+ },
+ {
+  "key": "chatter:curious:3",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance: \"But why does it hum at that particular note? Has anybody ever asked?\""
+ },
+ {
+  "key": "chatter:drunk:1",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance has made a toast to the ship, and is now, tenderly, toasting the coffee maker."
+ },
+ {
+  "key": "chatter:drunk:2",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance has made a toast to the ship, and is now, tenderly, toasting the coffee maker."
+ },
+ {
+  "key": "chatter:drunk:3",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance has made a toast to the ship, and is now, tenderly, toasting the coffee maker."
+ },
+ {
+  "key": "chatter:secretive:1",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance is very quiet, and very watchful, and always knows where everyone is."
+ },
+ {
+  "key": "chatter:secretive:2",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance is very quiet, and very watchful, and always knows where everyone is."
+ },
+ {
+  "key": "chatter:secretive:3",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance is very quiet, and very watchful, and always knows where everyone is."
+ },
+ {
+  "key": "chatter:kind:1",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance has left a note on the galley wall: \"Ask me if you need anything. Anything at all.\""
+ },
+ {
+  "key": "chatter:kind:2",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance has left a note on the galley wall: \"Ask me if you need anything. Anything at all.\""
+ },
+ {
+  "key": "chatter:kind:3",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance has left a note on the galley wall: \"Ask me if you need anything. Anything at all.\""
+ },
+ {
+  "key": "chatter:brave:1",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance: \"If anything goes wrong, I will be the one to go and look. That is what I am for.\""
+ },
+ {
+  "key": "chatter:brave:2",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance: \"If anything goes wrong, I will be the one to go and look. That is what I am for.\""
+ },
+ {
+  "key": "chatter:brave:3",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance: \"If anything goes wrong, I will be the one to go and look. That is what I am for.\""
+ },
+ {
+  "key": "chatter:homesick:1",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance is humming something from Rotterdam Arcology, low and soft, and does not seem to know."
+ },
+ {
+  "key": "chatter:homesick:2",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance is humming something from Rotterdam Arcology, low and soft, and does not seem to know."
+ },
+ {
+  "key": "chatter:homesick:3",
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance is humming something from Rotterdam Arcology, low and soft, and does not seem to know."
+ }
+]
