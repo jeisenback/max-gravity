@@ -450,99 +450,66 @@ function passengerEvent(m) {
 // ---------- procedural crew ----------
 
 // Small trait-driven events for procedural crew members.
+// The words of each event are in PEOPLE_LINES (peopletext.js), as the passenger events' are; `say` fills a line's {words} from the shipmate. What a choice does is here.
+const crewSay = (trait, c) => (key, vars) => peopleSay(`people:crew:${trait}`, key, { first: c.first, last: c.last, home: c.home, ...vars });
 const CREW_EVENTS = {
-  greedy: c => ({ title: `${c.first} Wants a Raise`, text: (`${c.first} finds you at the end of a long shift with a printed sheet and folded arms. ` +
-      `The sheet lists what crew with their skills earn on other ships, what a ship of your size can afford, and what ${c.first} has done for you ` +
-      `lately. The last line says: "I am worth it."`),
+  greedy: c => { const say = crewSay('greedy', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: `Give them 25% more (${fmt(c.wage * 1.25)} cr/day)`, run() { c.wage = Math.round(c.wage * 1.25); like(c, 3, 'You gave me a raise.'); return `${c.first} hums through the rest of the week and calls you "boss". Unasked, they tidy the corner of the cockpit.`; } },
-      { label: 'No', run() { like(c, -2, 'You refused me a raise.'); return `${c.first} goes back to work. For the next few days they do exactly what is asked and nothing more, and their tools are always where they were left. They have stopped smiling.`; } },
-    ] }),
-  drunk: c => ({ title: 'Galley Brawl', text: (`${c.first} got drunk on something they had been keeping in a pipe, and had an argument with the ` +
-      `galley bulkhead. The bulkhead won. There is a dent the size of a fist in the wall, blood on the deck, and ${c.first} on the floor with ` +
-      `a cloth pressed to their forehead. The medical supplies cost 300 cr.`),
+      { label: say('c0.label', { raise: fmt(c.wage * 1.25) }), run() { c.wage = Math.round(c.wage * 1.25); like(c, 3, 'You gave me a raise.'); return say('c0.result'); } },
+      { label: say('c1.label'), run() { like(c, -2, 'You refused me a raise.'); return say('c1.result'); } },
+    ] }); },
+  drunk: c => { const say = crewSay('drunk', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: 'Dock their pay', run() { like(c, -2, 'You docked my pay.'); return `${c.first} spends the week in a corner of the engine room with their back to the ship, and does the work in silence.`; } },
-      { label: 'Pay for it and let it go (300 cr)', run() { G.state.credits = Math.max(0, G.state.credits - 300); like(c, 2, 'You let the brawl go.'); return (
-          `${c.first} stares at the floor, then swears off drink. For now. They take the next three galley shifts. You find them scrubbing the ` +
-          `bulkhead, and they do not look up. The dent is polished.`); } },
-    ] }),
-  homesick: c => ({ title: 'Homesick', text: `${c.first} has been quiet for days. At mealtimes they push their food around. At night you have seen them at the viewport, looking at a point of light. They have not said they miss ${c.home}.`,
+      { label: say('c0.label'), run() { like(c, -2, 'You docked my pay.'); return say('c0.result'); } },
+      { label: say('c1.label'), run() { G.state.credits = Math.max(0, G.state.credits - 300); like(c, 2, 'You let the brawl go.'); return say('c1.result'); } },
+    ] }); },
+  homesick: c => { const say = crewSay('homesick', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: 'Give them a 500 cr bonus to call home', ...gated(needCr(500)), run() { G.state.credits -= 500; like(c, 3, 'You paid for my call home.'); return (
-          `${c.first} takes an hour on a lagged call home, in a quiet corner of the ship, with a hand over their mouth. They come back with red eyes ` +
-          `and laugh once. They do not say what was said. For the rest of the week they hum in the corridors, and nobody mentions it.`); } },
-      { label: 'Share a drink and listen', run() { like(c, 1, null); return (`You pour two cups of something strong and sit on a crate beside them. ` +
-          `For an hour they talk about ${c.home}: the weather, the food, the quiet places. You say almost nothing. When they go to bed, ` +
-          `they put a hand on your shoulder on the way out.`); } },
-      { label: '"We all miss somewhere."', run() { like(c, -1, null); return `${c.first} goes back to work. That night you see them at the viewport again, alone, and you leave them to it.`; } },
-    ] }),
-  nervous: c => ({ title: 'Bad Dreams', text: (`${c.first} has not been sleeping. There are shadows under their eyes, they drop small tools, ` +
-      `and they jump at every clank of the hull. When you ask, they tell you in a flat voice: nightmares about hull breaches, the same one every ` +
-      `night. The thin bright line of a crack, spreading. The sudden silence. The cold.`),
+      { label: say('c0.label'), ...gated(needCr(500)), run() { G.state.credits -= 500; like(c, 3, 'You paid for my call home.'); return say('c0.result'); } },
+      { label: say('c1.label'), run() { like(c, 1, null); return say('c1.result'); } },
+      { label: say('c2.label'), run() { like(c, -1, null); return say('c2.result'); } },
+    ] }); },
+  nervous: c => { const say = crewSay('nervous', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: 'Talk them through it', run() { like(c, 2, 'You helped me through the nightmares.'); return (`You sit with them in the galley at three ` +
-          `in the morning with a pot of tea between you, and talk about nothing in particular. ${c.first} sleeps through the night for the first time ` +
-          `in a week. In the morning they bring you a cup of coffee and spill half of it.`); } },
-      { label: 'Tell them to toughen up', run() { like(c, -2, 'You told me to toughen up.'); return `${c.first} flinches, and stops mentioning it. In the days after, the shadows under their eyes get darker. They check the seals on every hatch they pass.`; } },
-    ] }),
-  talkative: c => ({ title: 'Gossip', text: `${c.first} has been on the open band with half the ships in comm range, chatting. They know the name of the freighter captain's dog. They know who is feuding with whom at the next port. They lean in at your cabin door with news.`,
-    choices: [{ label: 'What have you heard?', run() { like(c, 1, null); return `${c.first} sits down and gives you an hour of gossip: names, debts, who left whom at which port. In the middle of it is one thing you can use: "${addRumor()}" Then ${c.first} moves on to the next thing.`; } }] }),
-  secretive: c => ({ title: 'Locked Locker', text: (`${c.first}'s locker has two locks, one you do not recognize and a cheap padlock over it. They ` +
-      `have been receiving messages with no sender ID, short ones, at odd hours. They read them, delete them, and read them again. When you come into ` +
-      `the room, they flinch.`),
+      { label: say('c0.label'), run() { like(c, 2, 'You helped me through the nightmares.'); return say('c0.result'); } },
+      { label: say('c1.label'), run() { like(c, -2, 'You told me to toughen up.'); return say('c1.result'); } },
+    ] }); },
+  talkative: c => { const say = crewSay('talkative', c); return ({ title: say('title'), text: say('text'),
+    choices: [{ label: say('c0.label'), run() { like(c, 1, null); return say('c0.result', { rumor: addRumor() }); } }] }); },
+  secretive: c => { const say = crewSay('secretive', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: 'Ask about it', run() { like(c, -2, 'You pried into my locker.'); return `${c.first} looks at you. "Family business," ${c.first} says. That is all you get. Afterward ${c.first} takes meals in the bunk and locks the door to sleep.`; } },
-      { label: 'Respect their privacy', run() { like(c, 2, 'You respected my privacy.'); return `You say nothing and turn to go. Behind you their shoulders come down. That evening ${c.first} brings you a cup of tea you did not ask for, stands in the doorway, and goes.`; } },
-    ] }),
-  curious: c => ({ title: 'Tinkering', text: `${c.first} has the reaction mass pumps in pieces on newspaper in the middle of the engine room, "to see how they work". Every bolt is in a row. Three manuals are open, and there is a cup of cold tea. Nobody asked them to.`,
+      { label: say('c0.label'), run() { like(c, -2, 'You pried into my locker.'); return say('c0.result'); } },
+      { label: say('c1.label'), run() { like(c, 2, 'You respected my privacy.'); return say('c1.result'); } },
+    ] }); },
+  curious: c => { const say = crewSay('curious', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: 'Let them experiment', run() {
+      { label: say('c0.label'), run() {
         like(c, 2, 'You let me tinker.');
-        if (Math.random() < 0.6) { G.state.fuel = Math.min(ship().fuel, G.state.fuel + 25); return `They find a leak nobody knew about, a hairline crack in an old fitting that has been weeping mass for months, and seal it with a strip of foil. You recover 25 units of reaction mass. From then on the pumps run quiet, and ${c.first} hums while they work.`; }
+        if (Math.random() < 0.6) { G.state.fuel = Math.min(ship().fuel, G.state.fuel + 25); return say('c0.win'); }
         G.state.fuel = Math.max(0, G.state.fuel - 20);
-        return `Something goes pop. A thin jet of reaction mass hisses out of the open housing before you can shut it, and you lose 20 units. ${c.first} looks at the empty housing. "Ah," ${c.first} says.`;
+        return say('c0.lose');
       } },
-      { label: 'Put it back together. Now.', run() { like(c, -1, null); return `They reassemble every part, muttering, and the pumps run as before. ${c.first} tightens the last bolt without looking at you.`; } },
-    ] }),
-  pious: c => ({ title: 'Quiet Prayer', text: (`${c.first} finds you in the galley at the turn of the watch with a worn charm in one hand and asks ` +
-      `you to join a short prayer for safe passage. They say it every burn, alone, in a corner, but tonight they wanted company. It will take a few ` +
-      `minutes. They say you may stay silent.`),
+      { label: say('c1.label'), run() { like(c, -1, null); return say('c1.result'); } },
+    ] }); },
+  pious: c => { const say = crewSay('pious', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: 'Join them', run() { like(c, 2, 'You prayed with me.'); return `You kneel beside them in the dim light. For a few minutes nobody speaks. The drive hums. A pipe ticks. When it ends, you both sit a moment. "Thank you," ${c.first} says.`; } },
-      { label: 'Politely decline', run() { like(c, 0, null); return `${c.first} goes to their corner. Through the thin wall you hear the low murmur of their prayer. ${c.first} prays for you anyway. You listen until it stops.`; } },
-    ] }),
-  rude: c => ({ title: 'Friction', text: `${c.first} has been needling the rest of the crew for days: a jab at breakfast, a remark in the corridor, a sneer at how someone hums. Tonight in the galley it is the humming again. A chair scrapes. "Say that again," says a level voice. "I said it was flat," ${c.first} says. "I did not say it was your fault. I said it was flat." "Say that again." There is going to be a fight.`,
+      { label: say('c0.label'), run() { like(c, 2, 'You prayed with me.'); return say('c0.result'); } },
+      { label: say('c1.label'), run() { like(c, 0, null); return say('c1.result'); } },
+    ] }); },
+  rude: c => { const say = crewSay('rude', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: 'Reprimand them', run() { like(c, -2, 'You reprimanded me in front of everyone.'); return (`You step between them. "Sit," you say. "Both of you." ` +
-          `The room goes still. "You do not talk about a shipmate's humming at my table," you say to ${c.first}, "or anywhere I can hear it." ${c.first} goes red, then pale, and leaves. For days ${c.first} eats alone.`); } },
-      { label: 'Let them sort it out', run() { like(c, 1, null); return (`You lean in the doorway with your arms folded and let them. It is short, ` +
-          `loud and untidy, and involves a soup pot. ${hurt(0.03)} points of hull damage later they are sitting side by side on the deck, breathing ` +
-          `hard, sharing a cloth for a bloody lip. "It was flat," ${c.first} says. "It was flat," says the other, and they both laugh.`); } },
-    ] }),
-  kind: c => ({ title: 'Small Kindnesses', text: (`${c.first} spent the night fixing everyone's bunk lights, one by one, with a screwdriver, ` +
-      `and in the small hours cooked a real meal from the last of the good stores. Nobody asked them to. In the ` +
-      `morning every bunk had a light that worked, and every plate was full.`),
-    choices: [{ label: 'Thank them', run() { like(c, 1, null); return `You find ${c.first} in the galley washing the last of the pots. You thank them. They wave it off and make a joke of it, and their ears go pink. For the rest of the trip nobody snaps at the table.`; } }] }),
-  generous: c => ({ title: 'Shared Bottle', text: (`${c.first} comes into the galley at the end of a long shift with a dusty bottle wrapped in a ` +
-      `shirt. They have carried it in the bottom of their bag since they left ${c.home}. They set it on the table and take down every cup in the ` +
-      `cupboard. "I was saving it for a special occasion," they say. "But I think we are the occasion."`),
-    choices: [{ label: 'Raise a glass', run() { like(c, 1, 'We shared a bottle.'); return (`You raise a glass, and so does everyone else, in a ring ` +
-        `around the table. The bottle tastes of ${c.home}: sweet, smoky, with something bitter under it. To the ship. To the crew. To not dying. Somebody laughs, ` +
-        `then everyone does, and the bottle goes round twice before it is empty.`); } }] }),
-  brave: c => ({ title: 'Volunteer', text: (`A sensor mast has come loose in the burn and hangs by one strut, banging against the hull with every ` +
-      `pulse of the drive. It will tear free sooner or later and take plating with it. Before you can speak, ${c.first} has the suit half on. "I will ` +
-      `go, captain," they say, buckling a strap. "It is a ten-minute job. I have done worse."`),
+      { label: say('c0.label'), run() { like(c, -2, 'You reprimanded me in front of everyone.'); return say('c0.result'); } },
+      { label: say('c1.label'), run() { like(c, 1, null); return say('c1.result', { armor: hurt(0.03) }); } },
+    ] }); },
+  kind: c => { const say = crewSay('kind', c); return ({ title: say('title'), text: say('text'),
+    choices: [{ label: say('c0.label'), run() { like(c, 1, null); return say('c0.result'); } }] }); },
+  generous: c => { const say = crewSay('generous', c); return ({ title: say('title'), text: say('text'),
+    choices: [{ label: say('c0.label'), run() { like(c, 1, 'We shared a bottle.'); return say('c0.result'); } }] }); },
+  brave: c => { const say = crewSay('brave', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: 'Let them go', run() { like(c, 1, null); return Math.random() < 0.85 ? (`${c.first} goes out through the lock with a tether and a bag ` +
-          `of tools. For twenty minutes they are a bright shape against the stars, working along the hull. Then they are back inside, helmet ` +
-          `off, sweating, grinning, holding the bent strut.`) : (
-          `A tether snaps. For one second ${c.first} drifts, arms out, into the black, until a gloved hand catches a handhold and holds. They make it ` +
-          `back, shaking and gasping. The ship takes ${hurt(0.05)} points of damage from the loose mast, and nobody sleeps that night.`); } },
-      { label: 'Go yourself', run() { like(c, 2, 'You took the risky EVA yourself.'); return (`You go out through the lock yourself, with the tether ` +
-          `at your belt, and fix it in the cold and the silence with the ship turning slowly below your boots. It takes forty minutes. ${c.first} ` +
-          `watched through the port, and when you come in ${c.first} hands you a cup and says nothing.`); } },
-    ] }),
+      { label: say('c0.label'), run() { like(c, 1, null); return Math.random() < 0.85 ? say('c0.win') : say('c0.lose', { armor: hurt(0.05) }); } },
+      { label: say('c1.label'), run() { like(c, 2, 'You took the risky EVA yourself.'); return say('c1.result'); } },
+    ] }); },
 };
 
 function crewTraitEvent() {

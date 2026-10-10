@@ -1,20 +1,20 @@
 'use strict';
 
-// The text layer for the passenger events (#457): each line of PEOPLE_LINES can be given other words through the override layer, the event plays them and nothing else
+// The text layer for the passenger and crew events (#457): each line of PEOPLE_LINES can be given other words through the override layer, the event plays them and nothing else
 // changes, and an override the game would not take is left out with one warning. The pin (peoplepin.test.js) shows that the shipped words are as they were.
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { open, closeBrowser } = require('./helpers');
-const { playPax } = require('./peopleplay');
+const { playPax, playCrew } = require('./peopleplay');
 
 after(closeBrowser);
 
-test('every passenger event has an id and lines, and every line is read: an override shows in what the event plays, and nothing else changes', async () => {
+test('every passenger and crew event has an id and lines, and every line is read: an override shows in what the event plays, and nothing else changes', async () => {
   const g = await open({ scope: 'full' });
-  const r = await g.ev(src => {
-    const play = (0, eval)(`(${src})`);
-    const ids = PAX_EVENTS.map(e => e.id), registry = peopleEventRegistry().map(e => e.id);
+  const r = await g.ev(arg => {
+    const playP = (0, eval)(`(${arg.pax})`), playC = (0, eval)(`(${arg.crew})`), play = () => [...playP(), ...playC()];
+    const ids = PAX_EVENTS.map(e => e.id), crewIds = Object.keys(CREW_EVENTS), registry = peopleEventRegistry().map(e => e.id);
     const mark = (id, key) => `@@${id}|${key}@@${(PEOPLE_LINES[id][key].match(/\{\w+\}/g) || []).join('')}`;  // a line keeps the {words} it has, so the lines it leads to are still read
     const overrides = Object.fromEntries(Object.keys(PEOPLE_LINES).map(id => [id, { parts: Object.fromEntries(Object.keys(PEOPLE_LINES[id]).map(k => [k, mark(id, k)])) }]));
     const base = play();
@@ -22,12 +22,13 @@ test('every passenger event has an id and lines, and every line is read: an over
     useOverrides(overrides);
     console.warn = warn;
     const changed = play();
-    return { base, changed, warned, ids, registry, lineIds: Object.keys(PEOPLE_LINES), keys: Object.fromEntries(Object.entries(PEOPLE_LINES).map(([id, l]) => [id, Object.keys(l)])) };
-  }, playPax.toString());
+    return { base, changed, warned, ids, crewIds, registry, lineIds: Object.keys(PEOPLE_LINES), keys: Object.fromEntries(Object.entries(PEOPLE_LINES).map(([id, l]) => [id, Object.keys(l)])) };
+  }, { pax: playPax.toString(), crew: playCrew.toString() });
   await g.done();
   assert.equal(new Set(r.ids).size, r.ids.length, 'ids are unique');
   assert.ok(r.ids.every(Boolean) && r.ids.length === 15, 'fifteen events with an id each');
-  assert.deepEqual(r.registry, r.ids.map(id => `people:pax:${id}`), 'the registry lists every event');
+  assert.equal(r.crewIds.length, 12, 'twelve crew events');
+  assert.deepEqual(r.registry, [...r.ids.map(id => `people:pax:${id}`), ...r.crewIds.map(id => `people:crew:${id}`)], 'the registry lists every event');
   assert.deepEqual(r.lineIds, r.registry, 'lines for every event, and for nothing else');
   assert.deepEqual(r.warned, [], 'the game keeps every line');
   const all = JSON.stringify(r.changed), missing = [];
