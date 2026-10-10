@@ -304,7 +304,7 @@ function sceneRate(s) {
 // A scene of the hired chapter that is not a storylet (a main character's, a first officer's or a captain's, or a hired event written as data), by its id in js/hiredscenes.js.
 // The parts a captain's goodbye is built from (captains.js captainGoodbye), by the name each has in the captain's `goodbye` entry.
 const PART_NAMES = ['cold', 'neutral', 'warm', 'crew', 'secret', 'repaid', 'xoDead', 'xo', 'parting'];  // in the order the text is put together
-const registryScene = id => { const e = /^(cast|captain|hired|beats|scene):/.test(id) && hiredSceneRegistry().find(x => x.id === id); return e && e.scene ? e.scene : tableScene(id); };
+const registryScene = id => { const e = /^(cast|captain|hired|beats|scene):/.test(id) ? hiredSceneRegistry().find(x => x.id === id) : /^lines:/.test(id) && lineTableRegistry().find(x => x.id === id); return e && e.scene ? e.scene : tableScene(id); };
 
 // A scene whose words live in a table that one template plays (#462): a work event (WORK_EVENTS, hiredevents.js workEvent) or an ice run scene (ICE_STAGES,
 // icerun.js iceStageScene). Its words are the title, the text (an ice scene has two openings: `text` and `text2`) and, for each choice, the label and either one
@@ -342,7 +342,7 @@ function sceneWords(id, scene) {
 // beat (hiredscenes.js lists them). A title and a label are escaped by the dialog; a text is not, so an override's is escaped here.
 function lineWords(id, key, shipped) {
   const t = (sceneOverride(id).parts || {})[key];
-  return t === undefined ? shipped : /(^|\.)(title|label)(\.|$)/.test(key) ? t : esc(t);
+  return t === undefined ? shipped : /(^|\.)(title|label)(\.|$)/.test(key) || (lineTable(id) || {}).plain ? t : esc(t);  // a line drawn on the canvas or read aloud is plain text (js/linetables.js)
 }
 
 // One line of a scene built by a function (#463): the editor's words for it, else the shipped line (SCENE_LINES, hiredscenes.js), with each {word} filled from `vars` (the names, sums

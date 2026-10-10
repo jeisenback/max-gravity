@@ -352,8 +352,8 @@ function updateTransit(dt) {
     t.chatter = rand(12, 20);
     const fill = (line, c) => line.replace('{first}', c.first).replace('{home}', c.home);
     const aboard = [
-      ...crewMembers().flatMap(c => c.chatter || c.traits.map(t => fill(pick([].concat(TRAITS[t].chatter)), c))),
-      ...paxAboard().filter(m => m.pid).map(m => G.state.people[m.pid]).flatMap(p => p.traits.map(t => `(passenger) ${fill(pick([].concat(TRAITS[t].chatter)), p)}`)),
+      ...crewMembers().flatMap(c => c.chatter || c.traits.map(t => fill(pick(traitChatter(t)), c))),
+      ...paxAboard().filter(m => m.pid).map(m => G.state.people[m.pid]).flatMap(p => p.traits.map(t => `(passenger) ${fill(pick(traitChatter(t)), p)}`)),
     ];
     const line = pick(Mods.filter('chatter', aboard.length && Math.random() < 0.6 ? aboard : CHATTER));
     if (!Settings.quiet.chatter) comm(line);

@@ -19,7 +19,7 @@
   'js/character.js', 'js/interview.js', 'js/cast.js', 'js/captains.js', 'js/stakes.js', 'js/boarders.js', 'js/engagements.js',
   'js/shipcombat.js', 'js/yardoffice.js', 'js/icerun.js', 'js/ties.js', 'js/captains/hester.js', 'js/captains/cato.js',
   'js/captains/dov.js', 'js/captains/ilsa.js', 'js/captains/imre.js', 'js/captains/pilar.js', 'js/captains/zoya.js',
-  'js/captains/ansel.js', 'js/hiredscenes.js', 'js/fate.js', 'js/signon.js', 'js/castbar.js', 'js/regulars.js', 'js/barwork.js', 'js/overrides.js', 'js/storylets.js',
+  'js/captains/ansel.js', 'js/hiredscenes.js', 'js/linetables.js', 'js/fate.js', 'js/signon.js', 'js/castbar.js', 'js/regulars.js', 'js/barwork.js', 'js/overrides.js', 'js/storylets.js',
   'js/happenings.js', 'js/stories/ice-strike.js', 'js/stories/mars-navy.js', 'js/stories/rook-crown.js',
   'js/stories/tethys.js', 'js/stories/cold-water.js', 'js/stories/landings.js', 'js/stories/ports.js',
   'js/stories/on-the-road.js', 'js/stories/aftermath.js', 'js/stories/hired-aftermath.js', 'js/community.js', 'js/uat.js',
@@ -84,6 +84,7 @@
     return { ...row, text: Object.entries(s.parts).map(([k, t]) => `[${k}] ${t}`).join('\n'), parts: s.parts, noTitle: true, edit: { ...row.edit, text: false } };
   }
   const SCENE_NOTE = 'Its words are the lines it is built from, named by what each is for. A {word} in a line is filled from the game when the scene plays, and is kept as typed. What a choice does, the experience it teaches and what the scene builds from the game state (a recap, who has gone, a sum) are in code.';
+  const LINES_NOTE = 'Its words are the lines of one pool, named by where each sits. The game picks one at random, so a change to a line changes how often its words come up and nothing else. A {word} in a line is filled from the game and is kept as typed.';
   const BEAT_NOTE = 'Its words are the lines of the tables the beats read, named by where each sits. Odds, damage and the roll are in code, and so are the lines built from the game state (a casualty, a name, a count, the armor) and the dead-in-space scene.';
 
   // A scene whose words live in a table one template plays (a work event, an ice run scene; #462) as the editor's row: its words are edited, and what it does is in code. A choice
@@ -145,6 +146,10 @@
       } else {  // built by a function: no text to read, only what it is and when it plays
         add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: e.id.startsWith('beats:') ? 'beats' : 'hired chapter', text: '', choices: [], codeNote: CODE_ALL, conditionsNote: e.when, pacing: { tier: null, weight: null, cooldown: 'by its own rule', trigger: e.when, editable: false } });
       }
+    }
+    for (const e of lineTableRegistry()) {  // the line tables of the generated people (#457): a pool of lines each, no scene
+      add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: 'line tables', conditionsNote: 'A pool of lines the game picks from at random, in the bar or in a burn.', pacing: { tier: null, weight: null, cooldown: 'none', trigger: 'Picked at random from the pool when the line is needed.', editable: false },
+        ...beatRow(e.scene), lines: true, codeNote: LINES_NOTE });
     }
     return rows;
   }
@@ -1181,10 +1186,10 @@
     };
     // The Play button and the line above it: a shipped data scene can be played, and a new one when the game would take it.
     const syncPlay = () => {
-      const row = everyRow().find(r => r.id === state.id), ready = !!row && editable(row) && (!row.isNew || !newProblems(row, struct, takenFor(row)).length);
+      const row = everyRow().find(r => r.id === state.id), ready = !!row && editable(row) && !row.lines && (!row.isNew || !newProblems(row, struct, takenFor(row)).length);
       app.querySelector('[data-action="play"]').disabled = !ready;
       app.querySelector('[data-action="simulate"]').disabled = !(ready && row && (isStorylet(row) || row.isNew));
-      app.querySelector('#pv-scene').textContent = ready ? `Scene: ${row.title} (${row.isNew ? row.sceneId.trim() : row.id})` : row && row.isNew ? 'This new scene has problems the game would refuse. Fix them to play it.' : 'Choose a data scene to play it in the game\'s own dialog, from the state below. It starts a fresh test game that is never saved.';
+      app.querySelector('#pv-scene').textContent = ready ? `Scene: ${row.title} (${row.isNew ? row.sceneId.trim() : row.id})` : row && row.lines ? 'A table of lines has no scene to play: its lines come up in the bar and in the crew chatter.' : row && row.isNew ? 'This new scene has problems the game would refuse. Fix them to play it.' : 'Choose a data scene to play it in the game\'s own dialog, from the state below. It starts a fresh test game that is never saved.';
     };
     const update = () => {
       renderList();
