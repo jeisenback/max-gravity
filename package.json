@@ -4,6 +4,7 @@
   "description": "Tests for Max Gravity. The game itself needs no build: open index.html.",
   "scripts": {
     "test": "node --test --test-concurrency=4 --test-reporter=tap --test-reporter-destination=stdout --test-reporter=./tools/slowest.js --test-reporter-destination=stdout \"tests/*.test.js\"",
+    "test:shard": "node --test --test-concurrency=4 --test-shard=${SHARD:-1/1} --test-reporter=tap --test-reporter-destination=stdout --test-reporter=./tools/slowest.js --test-reporter-destination=stdout \"tests/*.test.js\"",
     "test:changed": "node tools/changed-tests.js",
     "coverage":"node tools/coverage.js",
     "soak": "node --test --test-concurrency=4 \"tests/distribution/*.test.js\"",
