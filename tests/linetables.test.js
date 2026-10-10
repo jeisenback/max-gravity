@@ -131,3 +131,26 @@ test('the labels of the goal help are left plain for the dialog to escape, and t
   assert.equal(r.text, '{n} sighs &lt;b&gt;twice&lt;/b&gt;.');
   assert.equal(r.other, 'Press a few credits into their hand for a present (60 cr)');
 });
+
+test('every bar topic has an id and lines, and every line is read: the button, the reason it is shut and what it ends on', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(src => {
+    const play = (0, eval)(`(${src})`);
+    const ids = [...BAR_TOPICS.map(t => `bar:${t.id}`), 'bar:goal-help', 'bar:secret-help'], have = Object.keys(PEOPLE_LINES).filter(id => id.startsWith('bar:'));
+    const mark = (id, key) => `@@${id}|${key}@@${(PEOPLE_LINES[id][key].match(/\{\w+\}/g) || []).join('')}`;
+    const overrides = Object.fromEntries(ids.map(id => [id, { parts: Object.fromEntries(Object.keys(PEOPLE_LINES[id]).map(k => [k, mark(id, k)])) }]));
+    const base = play(), warned = []; const warn = console.warn; console.warn = m => warned.push(m);
+    useOverrides(overrides);
+    console.warn = warn;
+    const changed = play();
+    return { base, changed, ids, have, warned, keys: Object.fromEntries(ids.map(id => [id, Object.keys(PEOPLE_LINES[id])])), registry: peopleEventRegistry().map(e => e.id).filter(id => id.startsWith('bar:')) };
+  }, playLines.toString());
+  await g.done();
+  assert.deepEqual(r.have, r.ids, 'lines for every topic and the two help scenes, and for nothing else');
+  assert.deepEqual(r.registry, r.ids, 'the registry lists them');
+  assert.deepEqual(r.warned, [], 'the game keeps every line');
+  const all = JSON.stringify(r.changed), missing = [];
+  for (const [id, keys] of Object.entries(r.keys)) for (const k of keys) if (!all.includes(`@@${id}|${k}@@`)) missing.push(`${id} ${k}`);
+  assert.deepEqual(missing, [], 'a line the topics never read');
+  assert.equal(r.changed.length, r.base.length);
+});
