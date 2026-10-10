@@ -68,7 +68,9 @@ const playSocial = () => {
   play('back:friend', false, st => { const g = guest(st, 'Pia', { memories: ['Day 3: You lent me a coat.'] }, { regular: true }); const a = mate(st, 'Ana'); setBond(st, a, g, 3); }, () => welcomeBack(), [1]);
   play('back:friends', false, st => regular(st, true, true), () => welcomeBack(), [1]);
   Math.random = real;
-  return out;
+  // a scene that came up again as the same words with the same results adds nothing to the pin: keep the first of each (the seed and the setup say where it came from)
+  const seen = new Set();
+  return out.filter(r => { if (r.title === undefined) return true; const k = JSON.stringify([r.title, r.text, r.labels, r.plays]); if (seen.has(k)) return false; seen.add(k); return true; });
 };
 
 module.exports = { playSocial };
