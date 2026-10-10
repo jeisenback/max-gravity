@@ -612,7 +612,7 @@ test('the seven hired events about one person are data, take the override layer,
     const ids = ['crew-ines', 'crew-tomas', 'crew-yelena', 'crew-ruben', 'crew-bexa', 'crew-pax', 'crew-cover'], c = handContext();
     const def = id => HAND_EVENTS.find(d => d.id === id);
     const who = c.mate, was = who.opinion;
-    const out = { data: ids.map(id => !!def(id).data && !!registryScene(`hired:${id}`)), code: !registryScene('hired:cap-order') && !def('cap-order').data, first: who.first };
+    const out = { data: ids.map(id => !!def(id).data && !!registryScene(`hired:${id}`)), code: !def('cap-order').data && !!registryScene('hired:cap-order').noTitle, first: who.first };
     out.title = def('crew-cover').make(c).title;
     const plain = def('crew-cover').make(c).choices[0].run();
     out.plain = { mate: plain.includes(who.first), note: / \(\+1 experience at the gunner post\.\)$/.test(plain), thread: G.state.threads.cover === who.id, opinion: who.opinion - was };
@@ -628,7 +628,7 @@ test('the seven hired events about one person are data, take the override layer,
   });
   await g.done();
   assert.deepEqual(r.data, [true, true, true, true, true, true, true]);
-  assert.equal(r.code, true, 'an event written in code is not in the override layer');
+  assert.equal(r.code, true, 'an event written in code takes lines (parts), not a title or choices');
   assert.equal(r.title, 'Cover for a Shipmate');
   assert.deepEqual(r.plain, { mate: true, note: true, thread: true, opinion: 2 });
   assert.deepEqual(r.edited, { title: 'Edited', text: `Hello ${r.first}.`, label: 'Do it', result: `Done for ${r.first}. (+5 experience at the gunner post.)` });
