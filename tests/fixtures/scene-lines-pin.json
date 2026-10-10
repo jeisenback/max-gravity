@@ -17,7 +17,7 @@
    {
     "i": 2,
     "roll": 0.5,
-    "text": "\"Unfair,\" the captain says. The captain looks at you for some time. \"We will see,\" the captain says.",
+    "text": "\"Unfair,\" the captain says. The captain looks at you across the hold. \"We will see,\" the captain says.",
     "next": null
    }
   ],
@@ -51,7 +51,7 @@
   "id": "scene:hand-death:hurt",
   "plays": [],
   "title": "The Last Run",
-  "text": "The first hurt was not mended when the second one came. You are on the deck, with the cold of it against your cheek, and the crew are saying your name. Captain Vance says it from the hatch, and then asks for the medic, and it is already late for that.</p><p>Captain Vance writes it in the log: the day, the place, your name. The ship goes on without you.</p><p>30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet.",
+  "text": "The first hurt was not mended when the second one came. You are on the deck, with the cold of it against your cheek, and the crew are saying your name. Captain Vance says it from the hatch, and then asks for the medic.</p><p>Captain Vance writes it in the log: the day, the place, your name. The ship goes on without you.</p><p>30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet.",
   "labels": [
    "Begin again"
   ]
@@ -254,7 +254,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "He shows you the drive housing, the patched coolant line and the place where the fire control cable has been spliced twice. He talks the whole way, and does not once sound like he is selling. The ship is on the yard list now, as the used Ore Runner, until about day 87.",
+    "text": "He shows you the drive housing, the patched coolant line and the place where the fire control cable has been spliced twice. He talks the whole way, about the ship and not the price. The ship is on the yard list now, as the used Ore Runner, until about day 87.",
     "next": null
    }
   ],
@@ -270,7 +270,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "He shows you the drive housing, the patched coolant line and the place where the fire control cable has been spliced twice. He talks the whole way, and does not once sound like he is selling. The ship is on the yard list now, as the used Ore Runner, until about day 87.",
+    "text": "He shows you the drive housing, the patched coolant line and the place where the fire control cable has been spliced twice. He talks the whole way, about the ship and not the price. The ship is on the yard list now, as the used Ore Runner, until about day 87.",
     "next": null
    }
   ],
@@ -286,7 +286,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "He shows you the drive housing, the patched coolant line and the place where the fire control cable has been spliced twice. He talks the whole way, and does not once sound like he is selling. The ship is on the yard list now, as the used Ore Runner, until about day 87.",
+    "text": "He shows you the drive housing, the patched coolant line and the place where the fire control cable has been spliced twice. He talks the whole way, about the ship and not the price. The ship is on the yard list now, as the used Ore Runner, until about day 87.",
     "next": null
    }
   ],
