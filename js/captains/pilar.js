@@ -50,7 +50,7 @@ CAST.pilar = {
     'Pilar: "The manual says do it this way. The manual has never docked at this port."',
     'Pilar has been fixing something that is not broken yet, which she says is the only way to fix it.',
     'Pilar, reading a new standing order: "I will note it. I will note it with a very good pen."',
-    'Pilar has left the captain\'s coffee on the rail, hot, with no comment. She does that. It is how she says it.',
+    'Pilar has left the captain\'s coffee on the rail, hot, with no comment. She does that.',
   ],
   scenes: {
     intro: {
@@ -87,7 +87,7 @@ CAST.pilar = {
         {
           label: 'Tell her the helm matters more than the paper',
           effects: { castLike: { who: 'pilar', n: 1, memory: 'You said the helm mattered more than the paper.' } },
-          result: '"It does," she says. "It matters more to everybody but the ones who issue the paper." She almost laughs. "That is not a complaint. That is the whole of the trade."',
+          result: '"It does," she says. "It matters more to everybody but the ones who issue the paper. That is not a complaint. That is the whole of the trade."',
         },
       ],
     },
@@ -101,7 +101,7 @@ CAST.pilar = {
         {
           label: 'Follow the posted rate, as the captain wrote it',
           effects: { castLike: { who: 'pilar', n: -1, memory: 'You followed the posted rate against my window.' }, captainLike: { n: 2, memory: 'You followed the posted rate as I wrote it.' } },
-          result: 'You run the full checklist. The ship misses the window and waits at the gate for forty minutes, in the correct order, with the correct lights on. Captain Sato enters it. Pilar, on the bridge, stands with her arms folded and says nothing, and the nothing is a lot.',
+          result: 'You run the full checklist. The ship misses the window and waits at the gate for forty minutes, in the correct order, with the correct lights on. Captain Sato enters it. Pilar, on the bridge, stands with her arms folded and says nothing.',
         },
         {
           label: 'Come in on the window, as Pilar said',
@@ -120,7 +120,7 @@ CAST.pilar = {
         {
           label: 'Offer to speak to the captain',
           effects: { castLike: { who: 'pilar', n: 2, memory: 'You offered to speak to the captain about the rule.' }, castFlag: { who: 'pilar', flag: 'spoke' } },
-          result: '"Do," she says. "Not about me. About the rule." She holds your eye. "They will hear it better from somebody with a certificate." She says the last word slowly.',
+          result: '"Do," she says. "Not about me. About the rule. They will hear it better from somebody with a certificate." She holds your eye on the last word.',
         },
         {
           label: 'Tell her to keep flying, and let the rule wait',
@@ -170,7 +170,7 @@ CAST.pilar = {
 // The first arrival (captains.js arrivalScene): Pilar settles up at the foot of the ramp.
 CAST.pilar.arrival = {
   open: 'Pilar comes down the ramp last, with the ledger in one hand and a spanner in the other, and puts both on the nearest crate. She opens the book with the spanner.',
-  memory: '"First pay I ever drew on a hauler," Pilar says, "the purser counted it into my hand and told me I would not see that much again. I saw it again in March." She nods at the page. "Yours has gone to your account. Look at the header."',
+  memory: '"First pay I ever drew on a hauler," Pilar says, "the purser counted it into my hand and told me I would not see that much again. I saw it again in March." She taps the page. "Yours has gone to your account. Look at the header."',
   column: '"That column is {cap}\'s," Pilar says. "I have never been in it."',
   pace: '"A season of good runs," Pilar says. "Most seasons do not have that many."',
 };

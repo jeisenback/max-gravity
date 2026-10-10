@@ -77,19 +77,18 @@ CAST.cato = {
           label: 'Tell him what you need',
           effects: { castLike: { who: 'cato', n: 2, memory: 'You told me what you needed, and I put it on the bill.' } },
           result: ('You tell him you would rather have the middle watch than the cold one, and that you sleep badly after a hard burn. He writes it on ' +
-              'the back of his hand with a stub of pencil. "Done," he says. Nobody has asked you that on a ship before, and it takes you a moment to ' +
-              'find the rest of your coffee.'),
+              'the back of his hand with a stub of pencil. "Done," he says. It takes you a moment to find the rest of your coffee.'),
         },
         {
           label: 'Say you are fine',
           effects: { castLike: { who: 'cato', n: 1, memory: 'You said you were fine, and I left it there.' } },
-          result: 'You say you are fine. "Good," he says, and means it, and does not believe it. He leaves the mug on the rail beside you, and the offer with it, and goes aft to see about somebody else\'s watch.',
+          result: 'You say you are fine. "Good," he says. He leaves the mug on the rail beside you, and the offer with it, and goes aft to see about somebody else\'s watch.',
         },
       ],
     },
     mid1: {
       days: 25, title: 'A Share of a Ship',
-      text: ('Cato is sitting on a cargo lashing with a small notebook, the kind that goes in a shirt pocket. It is not the captain\'s; it has no ' +
+      text: ('Cato is sitting on a cargo lashing with a notebook the size of a hand, the kind that goes in a shirt pocket. It is not the captain\'s; it has no ' +
           'columns. "Twelve years," he says, "and a bit over nine thousand in the jar. A share of a ship costs more than that, a lot more. I do the ' +
           'sum when I cannot sleep." He turns it round so you can see: a ship\'s name crossed out, and another, and a third with a question mark. "I ' +
           'do not want to own her. I want a share, and a deck, and the same hold gang on it at the end. That is all." He puts the notebook away. "Do ' +
@@ -99,8 +98,7 @@ CAST.cato = {
           label: 'Ask which ship has the question mark',
           effects: { castLike: { who: 'cato', n: 2, memory: 'You asked about the ship with the question mark.' }, castFlag: { who: 'cato', flag: 'share' } },
           result: ('He tells you, and it is a hull you have seen on the lanes: old, slow, honest. "Her owner wants out in two years," he says. "I have ' +
-              'been watching her price like the weather." He talks about her for ten minutes without stopping, and when he is done he looks slightly ' +
-              'embarrassed, and slightly lighter.'),
+              'been watching her price like the weather." He talks about her for ten minutes without stopping, and when he is done the mug in his hand has gone cold.'),
         },
         {
           label: 'Say it is not stupid, but it is a long way off',
@@ -119,7 +117,7 @@ CAST.cato = {
         {
           label: 'Hold the deck, as the captain wrote it',
           effects: { castLike: { who: 'cato', n: -1, memory: 'You held the deck against my order.' }, captainLike: { n: 2, memory: 'You held the deck as I wrote it.' } },
-          result: 'You hold the deck. The count comes out right the second time and wrong by one crate the first. Captain Vance writes it in the notebook and does not look up. Cato says nothing at all, and takes the cold watch himself the next night, without being asked, which is worse.',
+          result: 'You hold the deck. The count comes out right the second time and wrong by one crate the first. Captain Vance writes it in the notebook and does not look up. Cato says nothing at all, and takes the cold watch himself the next night, without being asked.',
         },
         {
           label: 'Stand the watch down, as Cato said',
@@ -141,12 +139,12 @@ CAST.cato = {
         {
           label: 'Ask him to tell you if it goes badly',
           effects: { castLike: { who: 'cato', n: 2, memory: 'You asked me to tell you if it went badly.' }, castFlag: { who: 'cato', flag: 'told' } },
-          result: 'He nods slowly. "I will," he says. "I will put it on the bill." He tries to smile at it, and it does not quite come. "It is something, to have somebody to tell."',
+          result: 'He writes it on the back of his hand. "I will," he says. "I will put it on the bill. It is something, to have somebody to tell."',
         },
         {
           label: 'Tell him it is not yours to carry',
           effects: { castLike: { who: 'cato', n: 1, memory: 'You said it was not yours to carry.' } },
-          result: '"No," he says. "It is not." He sounds relieved, and sorry to be. "I wanted somebody to hear it said, that is all. It is a lot to carry in the hold."',
+          result: '"No," he says. "It is not." He squares the watch bill on the table. "I wanted somebody to hear it said, that is all. It is a lot to carry in the hold."',
         },
       ],
       // Below friendly he keeps it to himself, and the favour he would have asked (the `told` flag, read in the ice hold) is not asked.
@@ -181,7 +179,7 @@ CAST.cato = {
         {
           label: 'Seal the hold and let the ice go',
           effects: { castFlag: { who: 'cato', flag: 'benched' }, castLike: { who: 'cato', n: -3, memory: 'You sealed the hold on me.' } },
-          result: 'You tell him no, and shut the hatch. The ice goes where ice goes, and the pod will not be the same. Cato stands at the hatch with the strap in his hands and says nothing for a while. "It is your call," he says at last, and means it, and it costs you.',
+          result: 'You tell him no, and shut the hatch. The ice goes where ice goes, and the pod will not be the same. Cato stands at the hatch with the strap in his hands and says nothing until the lock indicator goes green. "It is your call," he says.',
         },
       ],
     },
@@ -206,7 +204,7 @@ CAST.cato.round = () => {
     (`Two doors down, he knocks on the frame of the medical bay without going in. "${medic}. This is the one I said. ${medic} keeps the kit and the ` +
         `log, and I will tell you what I tell everybody, which is come in when you are hurt, not when it is bad. By the time it is bad it is a ` +
         `different conversation." ${medic} says something to him that you do not catch, and he laughs.`),
-    (`In the hold he slows down, and his voice changes a little, the way it does when he talks about the place he came up. "${qm} has the count. ` +
+    (`In the hold he slows down, and his voice drops, the way it does when he talks about the place he came up. "${qm} has the count. ` +
         `Everything aboard, twice. If a number looks off to you, ask ${qm} before you go to the captain, because it has already been found and it is ` +
         `sitting on a list somewhere. And these two," he says, nodding at ${iceA} and ${iceB}, who are lashing something that does not look loose, ` +
         `"they will ask you to hold a strap. Just hold it. It is not a test. I mean, it is a bit."`),
@@ -228,7 +226,7 @@ CAST.cato.round = () => {
       { label: 'Walk it with him', run: () => walk.join('</p><p>') },
       {
         label: 'Another time',
-        result: '"Fair enough," Cato says. "The watch bill is on the galley wall. Everything else you will find by walking into it, and I will be somewhere nearby when you do." He takes the mug back, which seems to be the point of the mug.',
+        result: '"Fair enough," Cato says. "The watch bill is on the galley wall. Everything else you will find by walking into it, and I will be somewhere nearby when you do." He takes the mug back.',
       },
     ],
   };

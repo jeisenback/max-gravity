@@ -39,7 +39,7 @@ CAST.ansel = {
   bio: 'An actuary once, and he plans for the worst, and writes it down in small numbers. He is the brake on every one of the captain\'s schemes, and stays out of loyalty or habit; he has not decided which.',
   story: {
     left: 'a pension fund he was the actuary for, which was spent by the people he had warned', rel: 'wife', name: 'Margit',
-    hope: 'a small house with a garden, and an annuity that nobody can touch',
+    hope: 'a house with a garden, and an annuity that nobody can touch',
     homeDetail: 'a flat above a bookshop with a tilted floor, a radiator that clanked in a pattern, and a wife who corrected his sums',
     favor: null,
     news: {
@@ -48,10 +48,10 @@ CAST.ansel = {
     },
   },
   chatter: [
-    'Ansel is going through the manifest with a pencil, and looking at the line that says "assorted" with great care.',
+    'Ansel is going through the manifest with a pencil. He has circled the line that says "assorted".',
     'Ansel has written the probability of everything on a card, and the card is in his pocket, and he does not take it out.',
     'Ansel: "I do not say it will go wrong. I say that if it does, here is the sheet."',
-    'Ansel eats his lunch at the same table, in the same chair, from the same tin, with a faint, sustained look of worry.',
+    'Ansel eats his lunch at the same table, in the same chair, from the same tin.',
     'Ansel has put a second set of fuel orders in the drawer, the cautious ones, in case.',
     'Ansel: "She has never lost on a Tuesday. I do not know what that means. I am watching it."',
   ],
@@ -71,7 +71,7 @@ CAST.ansel = {
         {
           label: 'Ask him why he stays',
           effects: { castLike: { who: 'ansel', n: 1, memory: 'You asked why I stay.' } },
-          result: '"Habit, or loyalty," he says, after a moment. "I have not decided which, and I have been deciding for six years." He seems surprised to have been asked. "I would say it was the pay, but I have seen the pay."',
+          result: '"Habit, or loyalty," he says, after a moment. "I have not decided which, and I have been deciding for six years. I would say it was the pay, but I have seen the pay."',
         },
       ],
     },
@@ -82,14 +82,14 @@ CAST.ansel = {
           'whole of my ambition. It is not a large one. I have never wanted to be rich. I would like to be sure."'),
       choices: [
         {
-          label: 'Tell him it is not a small ambition',
+          label: 'Tell him it is not a modest ambition',
           effects: { castLike: { who: 'ansel', n: 2, memory: 'You said my ambition was not small.' }, castFlag: { who: 'ansel', flag: 'annuity' } },
-          result: '"It is the largest there is," he says, thoughtfully. "Everyone else wants the number to go up. I want it to stay." He folds the letter and puts it in the inside pocket, over the heart, where, you suspect, it has been for some time.',
+          result: '"It is the largest there is," he says. "Everyone else wants the number to go up. I want it to stay." He folds the letter and puts it in the inside pocket, over the heart.',
         },
         {
           label: 'Ask how close he is',
           effects: { castLike: { who: 'ansel', n: 1, memory: 'You asked how close I was.' } },
-          result: 'He tells you, to the credit, and it is a good deal further than you hoped. He does not seem troubled by it. "That is the nice thing about a number," he says. "It does not pretend."',
+          result: 'He tells you, to the credit, and it is less than half of eleven thousand. "That is the nice thing about a number," he says. "It does not pretend."',
         },
       ],
     },
@@ -102,13 +102,13 @@ CAST.ansel = {
         {
           label: 'Take the cargo, as the captain said',
           effects: { castLike: { who: 'ansel', n: -1, memory: 'You took the cargo against my advice.' }, captainLike: { n: 2, memory: 'You took the cargo as I said.' } },
-          result: 'You load it. The crates are heavier than they look, and the man is gone before the lock cycles, and the pay is, as promised, triple. Captain Pell kisses the roll of notes. Ansel writes the date and the weight on his sheet, and closes the cover on it, quietly, like a lid.',
+          result: 'You load it. The crates are heavier than they look, and the man is gone before the lock cycles, and the pay is, as promised, triple. Captain Pell kisses the roll of notes. Ansel writes the date and the weight on his sheet, and closes the cover on it.',
         },
         {
           label: 'Refuse it, as Ansel said',
           effects: { castLike: { who: 'ansel', n: 2, memory: 'You refused the cargo on my word.' }, captainLike: { n: -1, memory: 'You refused the cargo I wanted.' } },
           result: ('You refuse. The man shrugs, and takes the crates to the next ship, and the next ship is gone by morning with a cheerful crew. ' +
-              'Captain Pell takes it well, which is to say loudly. "Triple!" she says, to the galley. "He made me refuse triple!" Ansel does not look ' +
+              'Captain Pell takes it loudly, to the galley. "Triple!" she says. "He made me refuse triple!" Ansel does not look ' +
               'up from the sheet, and his pencil is not quite steady.'),
         },
       ],
@@ -123,12 +123,12 @@ CAST.ansel = {
         {
           label: 'Ask him what the odds are',
           effects: { castLike: { who: 'ansel', n: 1, memory: 'You asked me what the odds were.' } },
-          result: 'He tells you, and you wish he had not. It is not a small figure and it is not a large one, and it is somewhere you could stand to lose, if it were only you. "That is the part I cannot do anything with," he says. "It is never only you."',
+          result: 'He tells you: one in four. "You could stand to lose at one in four, if it were only you," he says. "That is the part I cannot do anything with. It is never only you."',
         },
         {
           label: 'Tell him you will stop her if you can',
           effects: { castLike: { who: 'ansel', n: 2, memory: 'You said you would stop her if you could.' }, castFlag: { who: 'ansel', flag: 'told' } },
-          result: 'He looks at you for a long time. "You cannot," he says, gently. "But thank you for saying it as if you could. That is more than I have had in six years." He turns the sheet over, face down, for the first time since you have known him.',
+          result: 'He looks at you across the sheet. "You cannot," he says. "But thank you for saying it. That is more than I have had in six years." He turns the sheet over, face down, for the first time since you have known him.',
         },
       ],
       // Below friendly he keeps the number to himself, and the promise he would have drawn out (the `told` flag) is not asked for.
@@ -176,7 +176,7 @@ CAST.ansel = {
 CAST.ansel.arrival = {
   open: 'Ansel is waiting at the foot of the ramp in his coat, with the ledger held flat against his chest like a tray. He opens it at the right page and holds it out.',
   memory: ('"There are three numbers," Ansel says. "The forecast, the result, and a third that I keep for myself, which is what the run would have ' +
-      'paid if something had gone wrong. It is smaller than people like. I will not show you that one." He turns the book a little. "Yours is in your ' +
+      'paid if something had gone wrong. It is smaller than people like. I will not show you that one." He turns the book toward you. "Yours is in your ' +
       'account. Look at the header."'),
   column: '"That column is {cap}\'s," Ansel says. "I have advised against it, and it is hers to keep."',
   pace: '"A season, if the runs hold," Ansel says. "I have written down what happens if they do not. It is a longer number."',
