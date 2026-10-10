@@ -153,6 +153,102 @@
   ]
  },
  {
+  "id": "scene:walk-off:ines:facts",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "The berth is empty.",
+    "next": null
+   }
+  ],
+  "title": "Gone Ashore",
+  "text": "Ines does not ask for leave. At the foot of the ramp on Earth she writes the landing in the logbook, the pad and the time, and then she is gone.</p><p>Your reference for the Lisbon board is folded into the back of her logbook, with the date of the hearing written on the fold.</p><p>Her logbook has the dead-stick flip on a page of its own: ten seconds, cold thrusters, your hand on the cutoff.",
+  "labels": [
+   "Close the hatch"
+  ]
+ },
+ {
+  "id": "scene:walk-off:ines:facts2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "The berth is empty.",
+    "next": null
+   }
+  ],
+  "title": "Gone Ashore",
+  "text": "Ines does not ask for leave. At the foot of the ramp on Earth she writes the landing in the logbook, the pad and the time, and then she is gone.</p><p>Her logbook has the dead-stick flip on a page of its own: ten seconds, cold thrusters, your hand on the cutoff.</p><p>On the last page of the logbook she has written the word someday, and no date.",
+  "labels": [
+   "Close the hatch"
+  ]
+ },
+ {
+  "id": "scene:walk-off:tomas:facts",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "The berth is empty.",
+    "next": null
+   }
+  ],
+  "title": "Gone Ashore",
+  "text": "Tomas shuts the engine room door, which he has never done, and says nothing to the plant. He takes the bag that clinks down the ramp at Earth.</p><p>The ring of braided wire he sent back with your two hundred credits is on the hook by the engine room door.</p><p>You can still say the plant back from memory, every valve of it, in his order.",
+  "labels": [
+   "Close the hatch"
+  ]
+ },
+ {
+  "id": "scene:walk-off:tomas:facts2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "The berth is empty.",
+    "next": null
+   }
+  ],
+  "title": "Gone Ashore",
+  "text": "Tomas shuts the engine room door, which he has never done, and says nothing to the plant. He takes the bag that clinks down the ramp at Earth.</p><p>You can still say the plant back from memory, every valve of it, in his order.</p><p>He asked whether you would try to keep the crew together, and you said you would try.",
+  "labels": [
+   "Close the hatch"
+  ]
+ },
+ {
+  "id": "scene:walk-off:cato:facts",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "The berth is empty.",
+    "next": null
+   }
+  ],
+  "title": "Gone Ashore",
+  "text": "Cato leaves the watch bill on the galley table, filled in for the next seven days, and takes his mug.</p><p>The hold you sealed on him is in the log, with the date and the hour, in his hand.</p><p>At the foot of the watch bill, in pencil, is a line that reads: tell them if it goes badly.",
+  "labels": [
+   "Close the hatch"
+  ]
+ },
+ {
+  "id": "scene:walk-off:cato:facts2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "The berth is empty.",
+    "next": null
+   }
+  ],
+  "title": "Gone Ashore",
+  "text": "Cato leaves the watch bill on the galley table, filled in for the next seven days, and takes his mug.</p><p>At the foot of the watch bill, in pencil, is a line that reads: tell them if it goes badly.</p><p>His notebook has the old slow ship with the question mark, and her price, crossed out and written again six times.",
+  "labels": [
+   "Close the hatch"
+  ]
+ },
+ {
   "id": "scene:used-ship-offer:friend",
   "plays": [
    {
@@ -748,6 +844,36 @@
   ],
   "title": "Signing On",
   "text": "Earth is crowded: thirty billion people, ten thousand applicants for every berth that flies, and the berths go to people with a cousin. You have no cousin. You have a trade, and a card you found pinned to the notice board at the arcology docks: HAND WANTED, ICE HAULER, DEPARTS WHEN FULL. The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance reads your papers twice. The second time she has a pencil, and she writes your wage into a ruled notebook before she looks up. \"35 a day and 6 percent of what we clear,\" she says. \"That is the whole of it. I will not surprise you, and I would like you not to surprise me.\"</p><p>On the dock they say the hand on the last ship did not come back.</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.</p><p>Captain Hester Vance picks each run and buys the cargo from the ship's funds. Errands for wherever she is going come through the port, and the captain keeps a fifth. Why did you sign on?",
+  "labels": [
+   "For the money",
+   "To learn the work",
+   "To be somewhere else"
+  ]
+ },
+ {
+  "id": "scene:sign-on:generated",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You work it out on the ramp, on your fingers: a wage a day, a share of every run, and no cousin needed. Ten thousand applicants, one berth.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "At the first bulkhead you stop and ask what the placard says, and someone tells you. By the end of the hour you have asked eleven more questions. Nobody has charged you for any of them.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "You stow your bag and do not go back down the ramp. When the hatch closes, the arcology is one more speck among the habitat lights.",
+    "next": null
+   }
+  ],
+  "title": "Signing On",
+  "text": "Earth is crowded: thirty billion people, ten thousand applicants for every berth that flies, and the berths go to people with a cousin. You have no cousin. You have a trade, and a card you found pinned to the notice board at the arcology docks: HAND WANTED, ICE HAULER, DEPARTS WHEN FULL. The Iron Anvil, an ice hauler out of Earth, took you for what you could do. Captain Hester Vance, whom the crew describe as money-minded, signed the papers.</p><p>You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone. Working beside you: Ines Ferreira, ferry pilot from Lisbon Arcology, on the pilot post, and Tomas Achebe, dockyard welder from Lagos Ring, on the engineer post, and Cato Rahman, the first officer, from Chittagong Arcology.</p><p>Captain Hester Vance picks each run and buys the cargo from the ship's funds. Errands for wherever she is going come through the port, and the captain keeps a fifth. You are paid 35 a day and 6 percent of what she clears. Why did you sign on?",
   "labels": [
    "For the money",
    "To learn the work",
@@ -5693,6 +5819,128 @@
    "[Engineer 2] Read its drive signature off the stray return",
    "[Comms 2] Listen to its transponder for a minute",
    "Say nothing"
+  ]
+ },
+ {
+  "id": "hired:cap-order:low",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing, and the nothing has a figure in it. (+1 experience at the gunner post.)",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You run it the way she wrote it. The window is made with a minute to spare. She initials the page and says nothing, and the nothing has a figure in it. (+1 experience at the gunner post.)",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"I did not ask what you thought of the sum,\" she says, not unkindly. \"I asked for the burn.\" You run it hot, and it works, which does not help.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"I did not ask what you thought of the sum,\" she says, not unkindly. \"I asked for the burn.\" You run it hot, and it works, which does not help.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You say it flat, like a figure and not a complaint. The captain looks up from the board for the first time. \"Show me the approach,\" the captain says, and you do. The window is made at ninety, with two minutes to spare. (+2 experience at the gunner post.)",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You say it flat, like a figure and not a complaint. The captain looks up from the board for the first time. \"Show me the approach,\" the captain says, and you do. The window is made at ninety, with two minutes to spare. (+2 experience at the gunner post.)",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "You put the coolant temperatures and the housing margin on the board and say how long the drive lasts at that setting. The captain reads the figures twice. \"Ninety,\" the captain says. The window is made. (+2 experience at the gunner post.)",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "You put the coolant temperatures and the housing margin on the board and say how long the drive lasts at that setting. The captain reads the figures twice. \"Ninety,\" the captain says. The window is made. (+2 experience at the gunner post.)",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You rerun the approach with a later flip and a shallower brake and show the captain the arrival time. It is four minutes inside the window. \"Run it at ninety, and fly that,\" the captain says. (+2 experience at the gunner post.)",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.999,
+    "text": "You rerun the approach with a later flip and a shallower brake and show the captain the arrival time. It is four minutes inside the window. \"Run it at ninety, and fly that,\" the captain says. (+2 experience at the gunner post.)",
+    "next": null
+   }
+  ],
+  "title": "An Order You Do Not Like",
+  "text": "Captain Vance wants the drive run hotter than you would. The berth window at the next port closes in six days, and arriving after it costs two days of fuel. She has done the sum on the back of the manifest and turned it so you can read it. \"It is not an order I like either,\" she says. \"It is the cheaper one.\"",
+  "labels": [
+   "Do as ordered",
+   "Say what you think",
+   "\"Ninety. I will find the minutes on the approach.\"",
+   "[Engineer 2] Put the heat figures in front of the captain",
+   "[Pilot 2] Replot the approach to make the window cooler"
+  ]
+ },
+ {
+  "id": "hired:cap-praise:low",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"The crew make it easy,\" you say. She nods once and turns a page. You stand straighter for the rest of the watch. (+1 experience at the gunner post.)",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"The crew make it easy,\" you say. She nods once and turns a page. You stand straighter for the rest of the watch. (+1 experience at the gunner post.)",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"When it is a word, it is free,\" she says. \"When it is a bonus, it has to be earned. I have a column for each.\" You have the feeling of having spent something you did not have.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"When it is a word, it is free,\" she says. \"When it is a bonus, it has to be earned. I have a column for each.\" You have the feeling of having spent something you did not have.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You bring the week's log from the post, with the figures marked. The captain reads down the column. \"Sixty,\" the captain says. It is in your account before the end of the watch. (+1 experience at the gunner post.)",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You bring the week's log from the post, with the figures marked. The captain reads down the column. \"Sixty,\" the captain says. It is in your account before the end of the watch. (+1 experience at the gunner post.)",
+    "next": null
+   }
+  ],
+  "title": "A Word of Praise",
+  "text": "Captain Vance finds you at the end of a watch with the notebook open. She says the gunner has not cost her a repair or a worry in a week, and that she has written it down. It is, from her, a speech.",
+  "labels": [
+   "Take it modestly",
+   "Ask if it is worth a bonus",
+   "[Gunner 3] Ask for the bonus, with the week's figures"
   ]
  }
 ]

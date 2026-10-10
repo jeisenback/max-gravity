@@ -51,8 +51,8 @@ test('the converted scenes are data rows of the registry, and the rest are code 
   assert.deepEqual(r.ilsa, ['code', true]);
   assert.equal(r.effects.castLike.who, 'ansel');
   assert.ok(r.edit.length > 0 && r.edit.every(e => e === false), 'code choices keep their effects in code');
-  assert.ok(r.goodbye && !r.signon, 'the goodbye is a row of the registry; the function-built scenes are not edited yet');
-  assert.equal(r.dataRegistry, 99);
+  assert.ok(r.goodbye && r.signon, 'the goodbye and the sign-on are rows of the registry');
+  assert.equal(r.dataRegistry, 118);
 });
 
 test('a converted scene\'s effects are in forms, checked as typed, and changing one is a change to the file', async () => {
@@ -320,6 +320,32 @@ test('the raid, ambush and boarding beats are edited line by line, the lines go 
   for (const [id, lines] of [['beats:raid', ['open.grapple.0', 'open.torpedo.0', 'open.gun.0']], ['beats:repel', ['open.1.0']], ['beats:assault', ['open.1.0']], ['beats:ambush', ['read.gunner.label']]]) {  // the raid's foe is drawn, so any style's opening
     await select(id);
     for (const line of lines) await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${id}.`);
+    const f = await play();
+    const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.event.text, G.dialog.choices.map(c => c.label)]));
+    assert.ok(seen.includes(`Typed ${id}.`), `${id} plays the typed line: ${seen.slice(0, 200)}`);
+  }
+});
+
+test('the function-built scenes and the code-written hired events are edited line by line, and each plays in the preview (#463)', async () => {
+  await reload(); await select('scene:warning');
+  const r = await page.evaluate(() => {
+    const row = id => SceneIndex.rows.find(x => x.id === id), warning = row('scene:warning'), values = { [warning.id]: { 'part.text': 'A new warning.', 'part.c0.label': warning.parts['c0.label'] } };
+    const out = SceneIndex.overridesFrom(SceneIndex.rows, values);
+    return {
+      rows: ['scene:sign-on', 'scene:warning', 'scene:put-ashore', 'scene:hand-death', 'scene:captain-lost', 'scene:split', 'scene:walk-off', 'scene:used-ship-offer', 'scene:yard-office', 'hired:cap-order', 'hired:road-scope'].map(id => [row(id).kind, row(id).noTitle, Object.keys(row(id).parts || {}).length >= 3]),
+      title: row('hired:cap-order').title, out: out[warning.id], back: SceneIndex.valuesFrom(out)[warning.id],
+      bad: [SceneIndex.badPlaceholders('Captain {last} {nobody}', warning.parts.text), SceneIndex.badPlaceholders('Captain {last}', 'No words')],
+    };
+  });
+  assert.ok(r.rows.every(x => x[0] === 'data' && x[1] === true && x[2] === true), JSON.stringify(r.rows));
+  assert.equal(r.title, 'An Order You Do Not Like');
+  assert.deepEqual(r.out, { parts: { text: 'A new warning.' } }, 'only what differs');
+  assert.deepEqual(r.back, { 'part.text': 'A new warning.' });
+  assert.deepEqual(r.bad, [['{nobody}'], ['{last}']], 'a {word} the line has is kept as typed; one it has not is flagged');
+  for (const [id, line] of [['scene:sign-on', 'title'], ['scene:warning', 'text'], ['scene:put-ashore', 'text'], ['scene:hand-death', 'text.hurt'], ['scene:captain-lost', 'text'], ['scene:split', 'text'],
+    ['scene:walk-off', 'title'], ['scene:used-ship-offer', 'tomas.title'], ['scene:yard-office', 'title'], ['hired:cap-order', 'text'], ['hired:road-scope', 'text']]) {
+    await select(id);
+    await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${id}.`);
     const f = await play();
     const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.event.text, G.dialog.choices.map(c => c.label)]));
     assert.ok(seen.includes(`Typed ${id}.`), `${id} plays the typed line: ${seen.slice(0, 200)}`);

@@ -60,6 +60,15 @@ const playScenes = () => {
   });
   // ---------- a main character walks off ----------
   for (const who of ['ines', 'tomas', 'cato']) run(`scene:walk-off:${who}`, who === 'cato' ? { captainKey: 'hester' } : {}, () => { if (!G.state.crew.includes(castPerson(who).id)) G.state.crew.push(castPerson(who).id); return walkOffScene(castPerson(who), currentPlanet()); });
+  // the lines each fact leaves: the first two that are true are shown, so once with all of them true and once with the first one not
+  for (const who of ['ines', 'tomas', 'cato']) for (const skipFirst of [false, true]) {
+    run(`scene:walk-off:${who}:facts${skipFirst ? '2' : ''}`, {}, () => {
+      if (!G.state.crew.includes(castPerson(who).id)) G.state.crew.push(castPerson(who).id);
+      const flags = {}; CAST[who].farewell.facts.forEach(([id], i) => { if (!(skipFirst && i === 0)) flags[id] = true; });
+      G.state.cast = G.state.cast || {}; G.state.cast[who] = { ...(G.state.cast[who] || {}), flags };
+      return walkOffScene(castPerson(who), currentPlanet());
+    });
+  }
   // ---------- the used ship ----------
   const deal = (id, tomas, debt, opinion) => run(id, { credits: 20000 }, () => {
     const st = G.state; st.crew = st.crew.filter(c => c !== 'c:tomas');
@@ -80,6 +89,7 @@ const playScenes = () => {
     run(`scene:sign-on:${background}:${post}`, { background, post }, () => { G.state.carried = null; return signOnEvent(); });
   }
   run('scene:sign-on:carried', {}, () => { G.state.carried = 'On the dock they say the hand on the last ship did not come back.'; return signOnEvent(); });
+  run('scene:sign-on:generated', {}, () => { G.state.carried = null; hired().captainKey = null; return signOnEvent(); });  // a captain with no words of their own (an older save's)
   for (const captainKey of ['dov', 'imre', 'zoya']) run(`scene:sign-on:${captainKey}`, { captainKey, background: 'mars' }, () => { G.state.carried = null; return signOnEvent(); });
 
   // ---------- the hired events written in code ----------
@@ -94,6 +104,11 @@ const playScenes = () => {
         }, { rolls: [0, 0.999], prep: () => { if (!handContext().mate) { const m = makeCrewCandidate(G.state.systemId); registerPerson(m); G.state.crew.push(m.id); } } });
       }
     }
+  }
+  // and a captain who thinks little of the hand, for the choices that go the other way
+  for (const id of ['cap-order', 'cap-praise']) {
+    const d = HAND_EVENTS.find(x => x.id === id);
+    run(`hired:${id}:low`, {}, () => { const c = handContext(); c.cap.opinion = -3; return d.make(c); }, { rolls: [0, 0.999] });
   }
   Math.random = real;
   return out;
