@@ -342,7 +342,7 @@ function sceneWords(id, scene) {
 // beat (hiredscenes.js lists them). A title and a label are escaped by the dialog; a text is not, so an override's is escaped here.
 function lineWords(id, key, shipped) {
   const t = (sceneOverride(id).parts || {})[key];
-  return t === undefined ? shipped : /(^|\.)(title|label)(\.|$)/.test(key) || ((lineTable(id) || {}).plain || ((lineTable(id) || {}).plainKey || /$^/).test(key)) ? t : esc(t);  // a line drawn on the canvas or read aloud is plain text (js/linetables.js)
+  return t === undefined ? shipped : /(^|\.)(title|label|gate)(\.|$)/.test(key) || ((lineTable(id) || {}).plain || ((lineTable(id) || {}).plainKey || /$^/).test(key)) ? t : esc(t);  // a line drawn on the canvas or read aloud is plain text (js/linetables.js)
 }
 
 // One line of a scene built by a function (#463): the editor's words for it, else the shipped line (SCENE_LINES, hiredscenes.js), with each {word} filled from `vars` (the names, sums

@@ -63,6 +63,12 @@ const playLines = () => {
     G.nextEvent = null; o.run(); const ev = G.nextEvent; G.nextEvent = null;
     ev.choices.forEach((c, k) => { st.credits = 5000; __seed(450 + i * 10 + k); note(`goalhelp2:${goal}:${k}`, c.run()); });
   });
+  // the button of each topic and the reason it gives when it is shut (a topic done already tonight)
+  for (const t of BAR_TOPICS) {
+    const done = { drank: true, asked: true, offered: true, played: true, work: true, place: true, quiet: true, goal: true, troubled: true, home: true, blessed: true, fought: true, peace: true }, p = person(['kind', 'brave'], { goal: 'home', secret: 'debt' });
+    __seed(1); const o = t.make(p, { p, known: false, ...done }, ctx); note(`label:${t.id}`, o.label); note(`gate:${t.id}`, o.why ? o.why() : '');
+  }
+  { const was = st.hired; st.hired = null; const p = person(['pious', 'kind']); note('label:bless:owner', BAR_TOPICS.find(t => t.id === 'bless').make(p, { p, known: false }, ctx).label); st.hired = was; }  // an owner's blessing is for 'your ship'
   return out;
 };
 

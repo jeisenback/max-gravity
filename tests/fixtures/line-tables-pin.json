@@ -2762,5 +2762,113 @@
  {
   "key": "goalhelp2:medical:3",
   "text": "Sam thanks you, and that is the end of it."
+ },
+ {
+  "key": "label:drink",
+  "text": "Buy Sam a drink (20 cr)"
+ },
+ {
+  "key": "gate:drink",
+  "text": "You have bought them a drink already."
+ },
+ {
+  "key": "label:heard",
+  "text": "Ask what they have heard"
+ },
+ {
+  "key": "gate:heard",
+  "text": "You have done that already tonight."
+ },
+ {
+  "key": "label:passage",
+  "text": "Offer Sam passage"
+ },
+ {
+  "key": "gate:passage",
+  "text": "You have offered already."
+ },
+ {
+  "key": "label:cards",
+  "text": "Play Sam at cards (200 cr)"
+ },
+ {
+  "key": "gate:cards",
+  "text": "You have played already tonight."
+ },
+ {
+  "key": "label:work",
+  "text": "Ask Sam about their work"
+ },
+ {
+  "key": "gate:work",
+  "text": "You have done that already tonight."
+ },
+ {
+  "key": "label:place",
+  "text": "Ask Sam about this place"
+ },
+ {
+  "key": "gate:place",
+  "text": "You have done that already tonight."
+ },
+ {
+  "key": "label:quiet",
+  "text": "Sit with Sam and say nothing"
+ },
+ {
+  "key": "gate:quiet",
+  "text": "You have done that already tonight."
+ },
+ {
+  "key": "label:goal",
+  "text": "Ask about the way home"
+ },
+ {
+  "key": "gate:goal",
+  "text": "You have done that already tonight."
+ },
+ {
+  "key": "label:secret",
+  "text": "Ask Sam what is weighing on them"
+ },
+ {
+  "key": "gate:secret",
+  "text": "You have done that already tonight."
+ },
+ {
+  "key": "label:home",
+  "text": "Ask about Mars"
+ },
+ {
+  "key": "gate:home",
+  "text": "You have done that already tonight."
+ },
+ {
+  "key": "label:bless",
+  "text": "Ask for a blessing on the ship"
+ },
+ {
+  "key": "gate:bless",
+  "text": "You have done that already tonight."
+ },
+ {
+  "key": "label:fight",
+  "text": "Tell them what you think of their manners"
+ },
+ {
+  "key": "gate:fight",
+  "text": "You have done that already tonight."
+ },
+ {
+  "key": "label:peace",
+  "text": "Make peace (buy them a bottle, 300 cr)"
+ },
+ {
+  "key": "gate:peace",
+  "text": "You have made peace already tonight."
+ },
+ {
+  "key": "label:bless:owner",
+  "text": "Ask for a blessing on your ship"
  }
 ]
