@@ -35,7 +35,7 @@ test('the pin is repeatable: playing the lines twice gives the same record', asy
   assert.deepEqual(a, b);
 });
 
-const IDS = ['bar-silence', 'bar-place', 'bar-card-win', 'bar-card-lose', 'bar-home-talk', 'bar-bless', 'bar-leave', 'bar-drink-talk', 'bar-work', 'bar-trait', 'bar-goal', 'bar-react', 'trait-chatter'].map(x => `lines:${x}`);
+const IDS = ['bar-silence', 'bar-place', 'bar-card-win', 'bar-card-lose', 'bar-home-talk', 'bar-bless', 'bar-leave', 'bar-drink-talk', 'bar-work', 'bar-trait', 'bar-goal', 'bar-openers', 'bar-secret-talk', 'bar-crew', 'bar-goal-help', 'bar-secret-help', 'bar-react', 'trait-chatter'].map(x => `lines:${x}`);
 
 test('every table is read: an override for each of its lines shows in what the topics and the chatter play, and nothing else changes', async () => {
   const g = await open({ scope: 'full' });
@@ -43,7 +43,7 @@ test('every table is read: an override for each of its lines shows in what the t
     const play = (0, eval)(`(${arg.src})`);
     const lines = Object.fromEntries(arg.ids.map(id => [id, lineTableRegistry().find(e => e.id === id).scene.parts]));
     const base = play();
-    const overrides = Object.fromEntries(arg.ids.map(id => [id, { parts: Object.fromEntries(Object.keys(lines[id]).map(k => [k, `@@${id}|${k}@@`])) }]));
+    const overrides = Object.fromEntries(arg.ids.map(id => [id, { parts: Object.fromEntries(Object.keys(lines[id]).map(k => [k, `@@${id}|${k}@@${(lines[id][k].match(/\{\w+\}/g) || []).join('')}`])) }]));  // a line keeps the {words} it has, so a name in it is still filled
     const warned = []; const warn = console.warn; console.warn = m => warned.push(m);
     useOverrides(overrides);
     console.warn = warn;
@@ -108,9 +108,26 @@ test('an override is escaped in a bar line and left plain in the chatter, and a 
 test('a line table in the bar files with no id fails here: every BAR_ table is in LINE_TABLES', () => {
   const src = f => fs.readFileSync(path.join(__dirname, '..', 'js', f), 'utf8');
   const NOT_TABLES = ['BAR_MENU', 'BAR_REPEAT', 'BAR_TOPICS'];  // the menu's size, the days before a topic comes round again, and the topics (code)
-  const tables = ['bar.js', 'bartopics.js'].flatMap(f => [...src(f).matchAll(/^const (BAR_[A-Z_]+) = /gm)].map(m => m[1])).filter(n => !NOT_TABLES.includes(n));
+  const OTHER = ['OPENERS', 'SECRET_TALK', 'CREW_AT_BAR', 'GOAL_HELP', 'SECRET_HELP'];  // tables of the bar files with names of their own (HELP_TASTE holds traits and a price, no words)
+  const tables = [...['bar.js', 'bartopics.js'].flatMap(f => [...src(f).matchAll(/^const (BAR_[A-Z_]+) = /gm)].map(m => m[1])).filter(n => !NOT_TABLES.includes(n)), ...OTHER];
   const registered = src('linetables.js');
-  assert.ok(tables.length >= 12, `${tables.length} tables found`);
+  assert.ok(tables.length >= 17, `${tables.length} tables found`);
+  for (const n of OTHER) assert.ok(['bar.js', 'bartopics.js'].some(f => new RegExp(`^const ${n} = `, 'm').test(src(f))), `${n} is still a table of the bar files`);
   assert.deepEqual(tables.filter(n => !registered.includes(`table: () => ${n} }`) && !registered.includes(`table: () => ${n},`)), [], 'a BAR_ table with no id in js/linetables.js');
   assert.ok(registered.includes('d.chatter'), 'the trait chatter has an id');
+});
+
+test('the labels of the goal help are left plain for the dialog to escape, and the lines under them are text', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    useOverrides({ 'lines:bar-goal-help': { parts: { 'home.gift': 'Pay <b>part</b> & go (60 cr)', 'home.ask': 'Ask <i>about</i> home', 'home.text': '{n} sighs <b>twice</b>.' } } });
+    const h = barLines('goal-help').home, plain = barLines('goal-help').family;
+    useOverrides({});
+    return { gift: h.gift, ask: h.ask, text: h.text, other: plain.gift };
+  });
+  await g.done();
+  assert.equal(r.gift, 'Pay <b>part</b> & go (60 cr)');
+  assert.equal(r.ask, 'Ask <i>about</i> home');
+  assert.equal(r.text, '{n} sighs &lt;b&gt;twice&lt;/b&gt;.');
+  assert.equal(r.other, 'Press a few credits into their hand for a present (60 cr)');
 });

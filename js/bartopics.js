@@ -52,13 +52,13 @@ const GOAL_HELP = {
   medical: { ask: 'Ask what is wrong', text: '{n} presses a hand to their side, and says it is the reason for the trip: a specialist, a long way out.', gift: 'Pay toward the specialist (60 cr)', advice: 'Tell them where the medics are on the way', listen: 'Ask them to tell you about it' },
 };
 function helpScene(p, pat, ctx) {
-  const g = GOAL_HELP[p.goal];
+  const g = barLines('goal-help')[p.goal];
   const act = (kind, label, line) => ({ label, ...(kind === 'gift' ? gated(needCr(HELP_TASTE.gift.cost)) : {}), run() {
     const t = HELP_TASTE[kind], r = barWarm(p, t, kind === 'gift' ? `The captain helped me on my way (${GOALS[p.goal]}).` : kind === 'advice' ? 'The captain gave me good advice.' : 'The captain let me talk it through.');
     if (t.cost) ctx.st.credits -= t.cost;
     let extra = '';
     if (kind === 'gift' && r.n >= 2) extra = ` As thanks ${p.first} leans in. "Here's something you can use," they say: "${addRumor()}"`;
-    if (kind === 'listen' && r.n >= 2 && p.secret) extra = ` In the quiet after, ${p.first} ${pick(SECRET_TALK[p.secret])}`;
+    if (kind === 'listen' && r.n >= 2 && p.secret) extra = ` In the quiet after, ${p.first} ${pick(barLines('secret-talk')[p.secret])}`;
     return `${line.replace(/\{n\}/g, p.first)} ${r.line}${extra}`.replace(/\s+/g, ' ').trim();
   } });
   return { title: `${ctx.bar}: ${p.first} ${p.last}`, text: barSays(g.text, p), choices: [
@@ -70,78 +70,49 @@ function helpScene(p, pat, ctx) {
 }
 
 // ---------- a secret, once they trust you ----------
+// Each secret's scene: what they say, and what you can do about it (a label, what it costs, how much they think of you for it, and the line you get). The words are lines
+// of the text layer (lines:bar-secret-help, linetables.js).
 const SECRET_HELP = {
-  debt: { text: ('{n} turns the glass in a ring on the bar. "Six hundred and twelve," they say. "It is not even a lot. It is just more than I have, and the ' +
-      'people it is owed to do not do arithmetic."'), opts: [['Cover part of it (200 cr)', 200, 3, (
-      'You count out the credits. {n} turns them over, and then takes them, and does not say anything for a long ' +
-      'time.')], ['Say you will keep an ear out for who is asking', 0, 1, '"That would help," {n} says.']] },
-  ill: { text: ('{n} puts the glass down. "Six months and the recyclers on that last ship," they say. "The clinic wants more than I have. I tell people ' +
-      'it is the dust."'), opts: [
-        [
-        'Pay for the clinic (100 cr)',
-        100,
-        3,
-        '{n} does not argue. The next time you see them, they say, they will be breathing better.'
-      ],
-        [
-        'Tell them where the nearest medic is',
-        0,
-        1,
-        'You give the name and the street. {n} writes it on a napkin and puts it carefully in a pocket.'
-      ]
-      ] },
-  wanted: { text: ('{n} has taken the seat with its back to the wall. "There is a warrant," they say, "and it is not for what they say it is. I would ' +
-      'rather not be at a table by the door."'), opts: [
-        [
-        'Say you have seen nothing',
-        0,
-        2,
-        '"Good," {n} says. "Thank you." They leave by the back a few minutes later, without hurry.'
-      ],
-        [
-        'Tell them to give themselves up',
-        0,
-        -1,
-        '{n} looks at you and does not answer. They finish their drink and leave, and do not look back.'
-      ]
-      ] },
-  contraband: { text: ('{n} makes a gesture at the room, and lowers their voice to nothing. "I move things," they say, "the kind that do not go ' +
-      'on a manifest. I do not tell everyone."'), opts: [
-        [
-        'Ask who they know',
-        0,
-        1,
-        '{n} names a name, and a port, and a time of day, and then says you never heard it. It is a door, and you now know where.'
-      ],
-        [
-        'Say you do not want to know',
-        0,
-        1,
-        '{n} relaxes. "Good," they say. "Then we have never talked."'
-      ]
-      ] },
+  debt: {
+    text: '{n} turns the glass in a ring on the bar. "Six hundred and twelve," they say. "It is not even a lot. It is just more than I have, and the people it is owed to do not do arithmetic."',
+    opts: [
+      { label: 'Cover part of it (200 cr)', cost: 200, n: 3, line: 'You count out the credits. {n} turns them over, and then takes them, and does not say anything for a long time.' },
+      { label: 'Say you will keep an ear out for who is asking', cost: 0, n: 1, line: '"That would help," {n} says.' },
+    ],
+  },
+  ill: {
+    text: '{n} puts the glass down. "Six months and the recyclers on that last ship," they say. "The clinic wants more than I have. I tell people it is the dust."',
+    opts: [
+      { label: 'Pay for the clinic (100 cr)', cost: 100, n: 3, line: '{n} does not argue. The next time you see them, they say, they will be breathing better.' },
+      { label: 'Tell them where the nearest medic is', cost: 0, n: 1, line: 'You give the name and the street. {n} writes it on a napkin and puts it carefully in a pocket.' },
+    ],
+  },
+  wanted: {
+    text: '{n} has taken the seat with its back to the wall. "There is a warrant," they say, "and it is not for what they say it is. I would rather not be at a table by the door."',
+    opts: [
+      { label: 'Say you have seen nothing', cost: 0, n: 2, line: '"Good," {n} says. "Thank you." They leave by the back a few minutes later, without hurry.' },
+      { label: 'Tell them to give themselves up', cost: 0, n: -1, line: '{n} looks at you and does not answer. They finish their drink and leave, and do not look back.' },
+    ],
+  },
+  contraband: {
+    text: '{n} makes a gesture at the room, and lowers their voice to nothing. "I move things," they say, "the kind that do not go on a manifest. I do not tell everyone."',
+    opts: [
+      { label: 'Ask who they know', cost: 0, n: 1, line: '{n} names a name, and a port, and a time of day, and then says you never heard it. It is a door, and you now know where.' },
+      { label: 'Say you do not want to know', cost: 0, n: 1, line: '{n} relaxes. "Good," they say. "Then we have never talked."' },
+    ],
+  },
   spy: {
     text: '{n} stops asking questions. "I am paid to ask them," they say. "I am not paid to like it."',
     opts: [
-    [
-    'Tell them what you know of the lanes',
-    0,
-    0,
-    '{n} writes nothing down, and does not need to.'
-  ],
-    [
-    'Say you will not be asked again',
-    0,
-    0,
-    '"Fair," {n} says, and orders you another.'
-  ]
-  ]
+      { label: 'Tell them what you know of the lanes', cost: 0, n: 0, line: '{n} writes nothing down, and does not need to.' },
+      { label: 'Say you will not be asked again', cost: 0, n: 0, line: '"Fair," {n} says, and orders you another.' },
+    ],
   },
 };
 function secretScene(p, pat, ctx) {
-  const d = SECRET_HELP[p.secret];
+  const d = barLines('secret-help')[p.secret];
   return { title: `${ctx.bar}: ${p.first} ${p.last}`, text: barSays(d.text, p), choices: [
-    ...d.opts.map(([label, cost, n, line]) => ({ label, ...gated(needCr(cost)), run() { ctx.st.credits -= cost; like(p, n, n > 0 ? `The captain stood by me when I told them my trouble (${p.secret}).` : null); return barSays(line, p); } })),
+    ...d.opts.map(({ label, cost, n, line }) => ({ label, ...gated(needCr(cost)), run() { ctx.st.credits -= cost; like(p, n, n > 0 ? `The captain stood by me when I told them my trouble (${p.secret}).` : null); return barSays(line, p); } })),
     { label: 'Let it be', run: () => `You let it be, and the talk goes somewhere easier.` },
   ] };
 }
@@ -154,7 +125,7 @@ const BAR_TOPICS = [
     pat.drank = true; c.st.credits -= DRINK; met(pat);
     const r = barWarm(p, { loves: ['generous', 'drunk', 'greedy', 'kind'], hates: ['pious'] }, `The captain bought me a drink at ${c.bar}.`);
     if (barHas(p, 'generous')) { c.st.credits += DRINK; return `${p.first} will not hear of it, and slides the credits back across the bar, and buys the next one too. ${r.line}`; }
-    if (p.secret && (barHas(p, 'talkative', 'drunk') || Math.random() < 0.3)) return `${p.first} ${pick(SECRET_TALK[p.secret])}`;
+    if (p.secret && (barHas(p, 'talkative', 'drunk') || Math.random() < 0.3)) return `${p.first} ${pick(barLines('secret-talk')[p.secret])}`;
     if (Math.random() < 0.5) return `${p.first} looks around and leans in. "Here's something you can use," they say, low and fast: "${addRumor()}" Then they sit back and finish their drink. ${r.line}`;
     return `${barSays(barTrait('drink', p, barLines('drink-talk')), p)} ${r.line}`.trim();
   } }) },
@@ -212,7 +183,7 @@ const BAR_TOPICS = [
     const r = barWarm(p, { loves: ['nervous', 'secretive', 'homesick', 'kind'], hates: ['talkative', 'drunk'] }, 'The captain sat with me and did not make me talk.');
     return `${barSays(barTrait('quiet', p, barLines('silence')), p)} ${r.line}`.trim();
   } }) },
-  { id: 'goal', w: p => (GOAL_HELP[p.goal] ? 3 : 0), make: (p, pat, c) => ({ label: GOAL_HELP[p.goal].ask, ...gated(notYet(() => pat.goal,
+  { id: 'goal', w: p => (GOAL_HELP[p.goal] ? 3 : 0), make: (p, pat, c) => ({ label: barLines('goal-help')[p.goal].ask, ...gated(notYet(() => pat.goal,
     'You have done that already tonight.')), run() { pat.goal = true; met(pat); G.nextEvent = helpScene(p, pat, c);
     return `You ask, and ${p.first} puts down the glass.`; } }) },
   {
