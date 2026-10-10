@@ -21,7 +21,7 @@ CAPTAINS.imre = {
     'Captain Sato has hung the standing orders on the galley wall, squared to the edge of the panel, and is straightening them again.',
     'Pilar has propped the galley hatch with a spanner, against standing order nine. Captain Sato has written it down and has not moved the spanner.',
     'Captain Sato is polishing a button on the jacket that is already bright.',
-    'Captain Sato checks every transponder return against the log, and then, as if it were a different task, checks the log.',
+    'Captain Sato checks every transponder return against the log, and then checks the log against the returns.',
     'Captain Sato: "If it is not in the log, it did not happen. If it is in the log, I will see to it that it did."',
     'Captain Sato eats lunch at noon, and not a minute before, with a book that is a manual.',
   ],
@@ -59,9 +59,9 @@ CAPTAINS.imre = {
       text: ('Captain Sato asks whether you would stand an extra watch so a crew member can sleep. They have written the request out, with the ' +
           'reason, the hours, and a line for your name. "It is outside the articles," they say. "So it is a request, and a request can be refused. I ' +
           'have written that down too."'),
-      stand: 'You sign. The hours go slowly. In the morning the log has a line in Captain Sato\'s hand: Extra watch, volunteered. It is the nicest thing you have been written down as.',
+      stand: 'You sign. The hours go slowly. In the morning the log has a line in Captain Sato\'s hand: Extra watch, volunteered.',
       fee: 'They pay it from the ship\'s contingency, forty, and enter it under the heading for it. The watch passes like any other.',
-      beg: '"Entered," Captain Sato says, and puts the paper away. It was a request, and you refused, and nothing is held against you, which is its own kind of cold.',
+      beg: '"Entered," Captain Sato says, and puts the paper away. It was a request, and you refused, and nothing is held against you.',
     },
   },
 
@@ -69,7 +69,7 @@ CAPTAINS.imre = {
     trouble: {
       title: 'The Inspection',
       text: ('A port inspector is aboard, in a clean uniform, with a tablet. Captain Sato has been up since four with every log, certificate and ' +
-          'manifest laid out in order, and is perfectly calm, in a way that costs them. One certificate has lapsed by two days: a berth renewal, ' +
+          'manifest laid out in order, and is perfectly calm. One certificate has lapsed by two days: a berth renewal, ' +
           'signed at the wrong office. The inspector is polite and writes it down. "A four hundred fine, or a correction order," the inspector says. ' +
           'Captain Sato looks at the form, and at Pilar, who is not looking at them. The renewal was hers to file. Nobody has said so.'),
       choices: [
@@ -77,15 +77,15 @@ CAPTAINS.imre = {
           label: 'Say you took the form to the wrong office',
           effects: { captainLike: { n: -1, memory: 'You said you filed the renewal at the wrong office, and I do not think you did.' }, castLike: { who: 'pilar', n: 3, memory: 'You took the blame for my renewal.' }, captainFlag: 'covered' },
           result: 'You say it. Captain Sato looks at you, and then at the form, and enters it, because it is what has been said. The correction order ' +
-              'is yours. Pilar says nothing until the inspector has gone, and then says, quietly, "I will not forget that." Captain Sato says nothing ' +
-              'at all, and you suspect that is because Captain Sato knows.',
+              'is yours. Pilar says nothing until the inspector has gone, and then says, "I will not forget that." Captain Sato says nothing ' +
+              'at all.',
         },
         {
           label: 'Let the captain answer',
           effects: { captainLike: { n: 1, memory: 'You let me answer for the renewal.' }, castLike: { who: 'pilar', n: -1, memory: 'You let the captain answer for my renewal.' } },
           result: 'You say nothing. Captain Sato takes the correction order, and signs for it, and the inspector goes. "The renewal was filed at the ' +
               'wrong office," Captain Sato says to the empty galley, in the voice of a person reading it into the record. "It is entered as an error ' +
-              'of the ship. It is not entered by whom." Pilar looks at the deck for some time.',
+              'of the ship. It is not entered by whom." Pilar looks at the deck.',
         },
       ],
     },
@@ -100,12 +100,12 @@ CAPTAINS.imre = {
           {
             label: 'Say it is noted',
             effects: { captainLike: { n: 2, memory: 'You said it was noted.' }, captainFlag: 'secretKnown' },
-            result: '"Noted," you say. Captain Sato looks at you, and the corner of their mouth moves once. They put the jacket back on. It is the same jacket, and it is not.',
+            result: '"Noted," you say. Captain Sato looks at you, and the corner of their mouth moves once. They put the jacket back on.',
           },
           {
             label: 'Ask what the order was',
             effects: { captainLike: { n: 1, memory: 'You asked what the order was.' }, captainFlag: 'secretKnown' },
-            result: 'They tell you, in order, with the date and the hour and the name of the officer who gave it. It takes four minutes. It is the longest you have heard them speak. At the end of it they say, "That is the whole of it," and it is.',
+            result: 'They tell you, in order, with the date and the hour and the name of the officer who gave it. It takes four minutes. It is the longest you have heard them speak. At the end of it they say, "That is the whole of it."',
           },
         ],
       },
@@ -123,7 +123,7 @@ CAPTAINS.imre = {
           {
             label: 'Say you will not mention it',
             effects: { captainLike: { n: 0, memory: 'You said you would not mention the record.' }, captainFlag: ['secretKnown', 'secretAngry'] },
-            result: 'Captain Sato does not move. "It is not a secret," they say. "It is a record. It is accurate." They close the drawer. "Noted that you will not mention it." The jacket, on its hook, is the only thing in the locker that has not moved.',
+            result: 'Captain Sato does not move. "It is not a secret," they say. "It is a record. It is accurate." They close the drawer. "Noted that you will not mention it."',
           },
         ],
       },
@@ -135,7 +135,7 @@ CAPTAINS.imre = {
     warm: 'Captain Sato is at the foot of the ramp in the same jacket, with a paper folded in four. It is your reference, in their own hand, entered and stamped. "You will want this," they say. "It is accurate."',
     neutral: 'Captain Sato meets you at the foot of the ramp with the final pay slip, countersigned, and the log page for your last watch. It is in order.',
     cold: 'Captain Sato is at the foot of the ramp with the papers, and the log, and the red tag from the gap you left in it. "The record is complete," they say. "It will not be amended."',
-    crew: '{names} will go with you. Captain Sato enters it. "It is noted," they say, and then, a beat later, and more quietly, "It is regretted."',
+    crew: '{names} will go with you. Captain Sato enters it. "It is noted," they say. A beat later: "It is regretted."',
     secret: 'They do not mention the discharge, and neither do you. Their hand goes, once, to the left sleeve of the jacket. "I keep a clean record," they say. "I intend to go on."',
     xoDead: 'There is a line struck through in the watch bill, in Captain Sato\'s hand, and next to it, in a different ink, a date. "I amended the record," they say. "I have entered her as a casualty of the service. She would have found that very funny."',
     xo: 'Pilar is at the hatch with her arms folded and a spanner in one hand. "Do not let anybody tell you the book is the ship," she says. "And do not tell them I said so. I need them to go on writing it."',

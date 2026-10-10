@@ -42,7 +42,7 @@
   "results": [
    {
     "label": "Thank her for the work",
-    "text": "You thank her. She nods once, and writes nothing down.",
+    "text": "You thank her. She writes nothing in the notebook.",
     "changes": [
      "s.people.p1.liftedAt: undefined -> 1",
      "s.people.p1.memories: [] -> undefined",
@@ -52,7 +52,7 @@
    },
    {
     "label": "Wish her the ship",
-    "text": "\"I will keep her,\" she says. She almost smiles.",
+    "text": "\"I will keep her,\" she says, and opens the notebook.",
     "changes": [
      "s.people.p1.liftedAt: undefined -> 1",
      "s.people.p1.memories: [] -> undefined",
@@ -74,7 +74,7 @@
   "captain": "hester",
   "state": "full",
   "title": "The Foot of the Ramp",
-  "text": "Captain Vance is waiting at the foot of the ramp when you come down, which is not like her. She has the notebook under one arm. \"I have your account,\" she says. \"It is correct. I would like you to check it anyway.\"</p><p>Ines Ferreira and Ines Ferreira will go with you. She looks at the crew list for a while. \"That is a column I will have to fill again,\" she says, without heat.</p><p>She does not mention the bank. She does not need to. \"The first of the month,\" she says, \"and the first after that. I will be there for them.\"</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>She counts four hundred and ten onto the rail, the day you leave, as she said she would. You count it after her. It is correct.</p><p>Cato is at the hatch, because the captain would not go and say it. \"Take care of your people,\" he says. \"They will take care of you. That is the whole job. I have been trying to tell her for years.\"</p><p>She holds out her hand at last. It is dry and brief. \"Fair winds,\" she says. \"And keep your own books.\"",
+  "text": "Captain Vance is waiting at the foot of the ramp when you come down, which is not like her. She has the notebook under one arm. \"I have your account,\" she says. \"It is correct. I would like you to check it anyway.\"</p><p>Ines Ferreira and Ines Ferreira will go with you. She runs a finger down the crew list. \"That is a column I will have to fill again,\" she says.</p><p>She does not mention the bank. She does not need to. \"The first of the month,\" she says, \"and the first after that. I will be there for them.\"</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>She counts four hundred and ten onto the rail, the day you leave, as she said she would. You count it after her. It is correct.</p><p>Cato is at the hatch, because the captain would not go and say it. \"Take care of your people,\" he says. \"They will take care of you. That is the whole job. I have been trying to tell her for years.\"</p><p>She holds out her hand at last. It is dry and brief. \"Fair winds,\" she says. \"And keep your own books.\"",
   "labels": [
    "Thank her for the work",
    "Wish her the ship",
@@ -83,7 +83,7 @@
   "results": [
    {
     "label": "Thank her for the work",
-    "text": "You thank her. She nods once, and writes nothing down.",
+    "text": "You thank her. She writes nothing in the notebook.",
     "changes": [
      "s.credits: 5000 -> 5410",
      "s.people.p1.memories: [] -> undefined",
@@ -92,7 +92,7 @@
    },
    {
     "label": "Wish her the ship",
-    "text": "\"I will keep her,\" she says. She almost smiles.",
+    "text": "\"I will keep her,\" she says, and opens the notebook.",
     "changes": [
      "s.credits: 5000 -> 5410",
      "s.people.p1.memories: [] -> undefined",
@@ -125,7 +125,7 @@
   "captain": "dov",
   "state": "cold",
   "title": "The Foot of the Ramp",
-  "text": "Captain Adair is at the foot of the ramp, and for once he has little to say. He does not tell a story. He shakes your hand, which is warm, and holds it a moment too long, and lets go.</p><p>Ilsa is at the hatch with her arms folded. \"He will not say it,\" she says, \"so I will. You were good to him. Do not tell him I said so.\"</p><p>He hugs you, which you did not expect, and which he does badly, and warmly. \"Come and see us,\" he says. \"Come and see me. I will be here. There is always somebody in the galley.\"",
+  "text": "Captain Adair is at the foot of the ramp, and for once he has little to say. He does not tell a story. He shakes your hand, which is warm, and holds it a moment too long, and lets go.</p><p>Ilsa is at the hatch with her arms folded. \"He will not say it,\" she says, \"so I will. You were good to him. Do not tell him I said so.\"</p><p>He hugs you. \"Come and see us,\" he says. \"Come and see me. I will be here. There is always somebody in the galley.\"",
   "labels": [
    "Thank him for the work",
    "Take the bread and go"
@@ -135,7 +135,7 @@
   "captain": "dov",
   "state": "plain",
   "title": "The Foot of the Ramp",
-  "text": "Captain Adair meets you at the foot of the ramp and walks you to the end of the dock, talking, so that the goodbye takes a good deal longer than it should.</p><p>Ilsa is at the hatch with her arms folded. \"He will not say it,\" she says, \"so I will. You were good to him. Do not tell him I said so.\"</p><p>He hugs you, which you did not expect, and which he does badly, and warmly. \"Come and see us,\" he says. \"Come and see me. I will be here. There is always somebody in the galley.\"",
+  "text": "Captain Adair meets you at the foot of the ramp and walks you to the end of the dock, talking, so that the goodbye takes a good deal longer than it should.</p><p>Ilsa is at the hatch with her arms folded. \"He will not say it,\" she says, \"so I will. You were good to him. Do not tell him I said so.\"</p><p>He hugs you. \"Come and see us,\" he says. \"Come and see me. I will be here. There is always somebody in the galley.\"",
   "labels": [
    "Thank him for the work",
    "Take the bread and go"
@@ -145,7 +145,7 @@
   "captain": "dov",
   "state": "warm",
   "title": "The Foot of the Ramp",
-  "text": "Captain Adair is at the foot of the ramp with a paper bag that smells of bread. \"I did not know what to give you,\" he says. \"So it is food. It is always food.\"</p><p>Ilsa is at the hatch with her arms folded. \"He will not say it,\" she says, \"so I will. You were good to him. Do not tell him I said so.\"</p><p>He hugs you, which you did not expect, and which he does badly, and warmly. \"Come and see us,\" he says. \"Come and see me. I will be here. There is always somebody in the galley.\"",
+  "text": "Captain Adair is at the foot of the ramp with a paper bag that smells of bread. \"I did not know what to give you,\" he says. \"So it is food. It is always food.\"</p><p>Ilsa is at the hatch with her arms folded. \"He will not say it,\" she says, \"so I will. You were good to him. Do not tell him I said so.\"</p><p>He hugs you. \"Come and see us,\" he says. \"Come and see me. I will be here. There is always somebody in the galley.\"",
   "labels": [
    "Thank him for the work",
    "Take the bread and go"
@@ -155,7 +155,7 @@
   "captain": "dov",
   "state": "secret",
   "title": "The Foot of the Ramp",
-  "text": "Captain Adair meets you at the foot of the ramp and walks you to the end of the dock, talking, so that the goodbye takes a good deal longer than it should.</p><p>He does not mention the book. He has put it away, and what is in it, somewhere you will not see it. \"Look after your own fund,\" he says. \"Not like mine.\"</p><p>Ilsa is at the hatch with her arms folded. \"He will not say it,\" she says, \"so I will. You were good to him. Do not tell him I said so.\"</p><p>He hugs you, which you did not expect, and which he does badly, and warmly. \"Come and see us,\" he says. \"Come and see me. I will be here. There is always somebody in the galley.\"",
+  "text": "Captain Adair meets you at the foot of the ramp and walks you to the end of the dock, talking, so that the goodbye takes a good deal longer than it should.</p><p>He does not mention the book. He has put it away, and what is in it, somewhere you will not see it. \"Look after your own fund,\" he says. \"Not like mine.\"</p><p>Ilsa is at the hatch with her arms folded. \"He will not say it,\" she says, \"so I will. You were good to him. Do not tell him I said so.\"</p><p>He hugs you. \"Come and see us,\" he says. \"Come and see me. I will be here. There is always somebody in the galley.\"",
   "labels": [
    "Thank him for the work",
    "Tell him to ask Ilsa for help",
@@ -174,7 +174,7 @@
    },
    {
     "label": "Tell him to ask Ilsa for help",
-    "text": "He nods slowly. \"I will,\" he says. \"I will ask her to dinner. That is a start.\" He tries to make a story of it, and finds he does not need to.",
+    "text": "He takes out a card and begins to write. \"I will,\" he says. \"I will ask her to dinner. That is a start.\" He does not tell the story of it.",
     "changes": [
      "s.people.p1.liftedAt: undefined -> 1",
      "s.people.p1.memories: [] -> undefined",
@@ -184,7 +184,7 @@
    },
    {
     "label": "Take the bread and go",
-    "text": "You take the bread and go. You look back from the end of the dock, and he is still at the foot of the ramp, waving, a small figure on a lit dock with nobody to tell.",
+    "text": "You take the bread and go. You look back from the end of the dock, and he is still at the foot of the ramp, waving, alone on the lit dock.",
     "changes": [
      "s.people.p1.memories: [] -> undefined",
      "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the bread and went."
@@ -196,7 +196,7 @@
   "captain": "dov",
   "state": "full",
   "title": "The Foot of the Ramp",
-  "text": "Captain Adair is at the foot of the ramp with a paper bag that smells of bread. \"I did not know what to give you,\" he says. \"So it is food. It is always food.\"</p><p>Ines Ferreira and Ines Ferreira will go with you. He takes it harder than he wants to. \"Good,\" he says. \"That is good. They like you. Of course they do.\" He does not say anything else for a moment.</p><p>He does not mention the book. He has put it away, and what is in it, somewhere you will not see it. \"Look after your own fund,\" he says. \"Not like mine.\"</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>He presses three hundred and thirty into your hand, the day you leave, and a card with the three stories you liked best written on the back, in case you want to tell them.</p><p>Ilsa is at the hatch with her arms folded. \"He will not say it,\" she says, \"so I will. You were good to him. Do not tell him I said so.\"</p><p>He hugs you, which you did not expect, and which he does badly, and warmly. \"Come and see us,\" he says. \"Come and see me. I will be here. There is always somebody in the galley.\"",
+  "text": "Captain Adair is at the foot of the ramp with a paper bag that smells of bread. \"I did not know what to give you,\" he says. \"So it is food. It is always food.\"</p><p>Ines Ferreira and Ines Ferreira will go with you. \"Good,\" he says. \"That is good. They like you. Of course they do.\" He does not say anything else for a moment.</p><p>He does not mention the book. He has put it away, and what is in it, somewhere you will not see it. \"Look after your own fund,\" he says. \"Not like mine.\"</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>He presses three hundred and thirty into your hand, the day you leave, and a card with the three stories you liked best written on the back, in case you want to tell them.</p><p>Ilsa is at the hatch with her arms folded. \"He will not say it,\" she says, \"so I will. You were good to him. Do not tell him I said so.\"</p><p>He hugs you. \"Come and see us,\" he says. \"Come and see me. I will be here. There is always somebody in the galley.\"",
   "labels": [
    "Thank him for the work",
    "Tell him to ask Ilsa for help",
@@ -214,7 +214,7 @@
    },
    {
     "label": "Tell him to ask Ilsa for help",
-    "text": "He nods slowly. \"I will,\" he says. \"I will ask her to dinner. That is a start.\" He tries to make a story of it, and finds he does not need to.",
+    "text": "He takes out a card and begins to write. \"I will,\" he says. \"I will ask her to dinner. That is a start.\" He does not tell the story of it.",
     "changes": [
      "s.credits: 5000 -> 5330",
      "s.people.p1.memories: [] -> undefined",
@@ -223,7 +223,7 @@
    },
    {
     "label": "Take the bread and go",
-    "text": "You take the bread and go. You look back from the end of the dock, and he is still at the foot of the ramp, waving, a small figure on a lit dock with nobody to tell.",
+    "text": "You take the bread and go. You look back from the end of the dock, and he is still at the foot of the ramp, waving, alone on the lit dock.",
     "changes": [
      "s.credits: 5000 -> 5330",
      "s.people.p1.memories: [] -> undefined",
@@ -236,7 +236,7 @@
   "captain": "dov",
   "state": "xoDead",
   "title": "The Foot of the Ramp",
-  "text": "Captain Adair meets you at the foot of the ramp and walks you to the end of the dock, talking, so that the goodbye takes a good deal longer than it should.</p><p>He does not mention the book. He has put it away, and what is in it, somewhere you will not see it. \"Look after your own fund,\" he says. \"Not like mine.\"</p><p>Ilsa's chair on the bridge is empty, and he has not moved it. \"I took her for granted,\" he says. \"I took all of it for granted. I did not know it was she who was holding it up.\"</p><p>He hugs you, which you did not expect, and which he does badly, and warmly. \"Come and see us,\" he says. \"Come and see me. I will be here. There is always somebody in the galley.\"",
+  "text": "Captain Adair meets you at the foot of the ramp and walks you to the end of the dock, talking, so that the goodbye takes a good deal longer than it should.</p><p>He does not mention the book. He has put it away, and what is in it, somewhere you will not see it. \"Look after your own fund,\" he says. \"Not like mine.\"</p><p>Ilsa's chair on the bridge is empty, and he has not moved it. \"I took her for granted,\" he says. \"I took all of it for granted. I did not know it was she who was holding it up.\"</p><p>He hugs you. \"Come and see us,\" he says. \"Come and see me. I will be here. There is always somebody in the galley.\"",
   "labels": [
    "Thank him for the work",
    "Tell him to ask Ilsa for help",
@@ -318,7 +318,7 @@
   "captain": "imre",
   "state": "full",
   "title": "The Foot of the Ramp",
-  "text": "Captain Sato is at the foot of the ramp in the same jacket, with a paper folded in four. It is your reference, in their own hand, entered and stamped. \"You will want this,\" they say. \"It is accurate.\"</p><p>Ines Ferreira and Ines Ferreira will go with you. Captain Sato enters it. \"It is noted,\" they say, and then, a beat later, and more quietly, \"It is regretted.\"</p><p>They do not mention the discharge, and neither do you. Their hand goes, once, to the left sleeve of the jacket. \"I keep a clean record,\" they say. \"I intend to go on.\"</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>Pilar is at the hatch with her arms folded and a spanner in one hand. \"Do not let anybody tell you the book is the ship,\" she says. \"And do not tell them I said so. I need them to go on writing it.\"</p><p>They offer a hand. It is a single, formal handshake, firm and exactly as long as it should be. \"Fair winds,\" they say. \"Noted.\"",
+  "text": "Captain Sato is at the foot of the ramp in the same jacket, with a paper folded in four. It is your reference, in their own hand, entered and stamped. \"You will want this,\" they say. \"It is accurate.\"</p><p>Ines Ferreira and Ines Ferreira will go with you. Captain Sato enters it. \"It is noted,\" they say. A beat later: \"It is regretted.\"</p><p>They do not mention the discharge, and neither do you. Their hand goes, once, to the left sleeve of the jacket. \"I keep a clean record,\" they say. \"I intend to go on.\"</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>Pilar is at the hatch with her arms folded and a spanner in one hand. \"Do not let anybody tell you the book is the ship,\" she says. \"And do not tell them I said so. I need them to go on writing it.\"</p><p>They offer a hand. It is a single, formal handshake, firm and exactly as long as it should be. \"Fair winds,\" they say. \"Noted.\"",
   "labels": [
    "Thank them for the work",
    "Wish them a clean record",
@@ -366,7 +366,7 @@
   "captain": "zoya",
   "state": "cold",
   "title": "The Ramp",
-  "text": "Captain Pell is at the foot of the ramp with your papers and a smile that has been put on. \"Fair winds,\" she says, and it sounds like something said many times, to many people who were leaving.</p><p>Ansel is at the hatch, in his coat, with the folded sheet in one hand. \"I advised against most of it,\" he says. \"I want that on the record. And I want you to know it was the best six years of my working life. Do not tell her the second part.\"</p><p>She hugs you, fast, and lets go before it can be anything. \"Go on,\" she says. \"Before I bet against myself.\"",
+  "text": "Captain Pell is at the foot of the ramp with your papers and a smile. \"Fair winds,\" she says.</p><p>Ansel is at the hatch, in his coat, with the folded sheet in one hand. \"I advised against most of it,\" he says. \"I want that on the record. And I want you to know it was the best six years of my working life. Do not tell her the second part.\"</p><p>She hugs you, fast, and lets go before it can be anything. \"Go on,\" she says. \"Before I bet against myself.\"",
   "labels": [
    "Wish her the good run",
    "Take the papers and go"
@@ -396,7 +396,7 @@
   "captain": "zoya",
   "state": "secret",
   "title": "The Ramp",
-  "text": "Captain Pell meets you at the foot of the ramp and counts your last pay into your hand, fast, in notes, and then counts it again, slower, because she is not sure she did it right the first time. She did.</p><p>She does not mention the cards. She does not need to. \"One good run,\" she says, \"and I will send you a postcard from somewhere with a beach. If I do not, it is because it was not good enough.\" She says it lightly. She has said it for six years.</p><p>Ansel is at the hatch, in his coat, with the folded sheet in one hand. \"I advised against most of it,\" he says. \"I want that on the record. And I want you to know it was the best six years of my working life. Do not tell her the second part.\"</p><p>She hugs you, fast, and lets go before it can be anything. \"Go on,\" she says. \"Before I bet against myself.\"",
+  "text": "Captain Pell meets you at the foot of the ramp and counts your last pay into your hand, fast, in notes, and then counts it again, slower, because she is not sure she did it right the first time. She did.</p><p>She does not mention the cards. She does not need to. \"One good run,\" she says, \"and I will send you a postcard from somewhere with a beach. If I do not, it is because it was not good enough.\" She has said it for six years.</p><p>Ansel is at the hatch, in his coat, with the folded sheet in one hand. \"I advised against most of it,\" he says. \"I want that on the record. And I want you to know it was the best six years of my working life. Do not tell her the second part.\"</p><p>She hugs you, fast, and lets go before it can be anything. \"Go on,\" she says. \"Before I bet against myself.\"",
   "labels": [
    "Wish her the good run",
    "Tell her to stop",
@@ -405,7 +405,7 @@
   "results": [
    {
     "label": "Wish her the good run",
-    "text": "\"From your mouth,\" she says, and crosses two fingers on each hand, and holds them up, and laughs. It is the best laugh you have heard from her, and the shortest.",
+    "text": "\"From your mouth,\" she says, and crosses two fingers on each hand, and holds them up, and laughs.",
     "changes": [
      "s.people.p1.liftedAt: undefined -> 1",
      "s.people.p1.memories: [] -> undefined",
@@ -415,7 +415,7 @@
    },
    {
     "label": "Tell her to stop",
-    "text": "She laughs, and means it, and does not. \"I will think about it,\" she says. \"On a Tuesday.\" She does not say which one.",
+    "text": "She laughs, and does not. \"I will think about it,\" she says. \"On a Tuesday.\" She does not say which one.",
     "changes": [
      "s.people.p1.liftedAt: undefined -> 1",
      "s.people.p1.memories: [] -> undefined",
@@ -437,7 +437,7 @@
   "captain": "zoya",
   "state": "full",
   "title": "The Ramp",
-  "text": "Captain Pell is on the ramp, not at the foot of it, leaning on the rail with her boots crossed. \"I do not do goodbyes,\" she says. \"I do wagers. I bet you do well. I bet you come back. I will take either side.\"</p><p>Ines Ferreira and Ines Ferreira will go with you. She whistles, one low note. \"I bet you will do better by them than I did,\" she says. \"I am not even joking. That is not a bet. That is a fact.\"</p><p>She does not mention the cards. She does not need to. \"One good run,\" she says, \"and I will send you a postcard from somewhere with a beach. If I do not, it is because it was not good enough.\" She says it lightly. She has said it for six years.</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>She counts a hundred and twenty-five into your hand, in folded notes, from the roll. \"A quarter,\" she says. \"As promised. Do not tell Dobrescu where I got it.\"</p><p>Ansel is at the hatch, in his coat, with the folded sheet in one hand. \"I advised against most of it,\" he says. \"I want that on the record. And I want you to know it was the best six years of my working life. Do not tell her the second part.\"</p><p>She hugs you, fast, and lets go before it can be anything. \"Go on,\" she says. \"Before I bet against myself.\"",
+  "text": "Captain Pell is on the ramp, not at the foot of it, leaning on the rail with her boots crossed. \"I do not do goodbyes,\" she says. \"I do wagers. I bet you do well. I bet you come back. I will take either side.\"</p><p>Ines Ferreira and Ines Ferreira will go with you. She whistles, one low note. \"I bet you will do better by them than I did,\" she says. \"I am not even joking. That is not a bet. That is a fact.\"</p><p>She does not mention the cards. She does not need to. \"One good run,\" she says, \"and I will send you a postcard from somewhere with a beach. If I do not, it is because it was not good enough.\" She has said it for six years.</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>She counts a hundred and twenty-five into your hand, in folded notes, from the roll. \"A quarter,\" she says. \"As promised. Do not tell Dobrescu where I got it.\"</p><p>Ansel is at the hatch, in his coat, with the folded sheet in one hand. \"I advised against most of it,\" he says. \"I want that on the record. And I want you to know it was the best six years of my working life. Do not tell her the second part.\"</p><p>She hugs you, fast, and lets go before it can be anything. \"Go on,\" she says. \"Before I bet against myself.\"",
   "labels": [
    "Wish her the good run",
    "Tell her to stop",
@@ -446,7 +446,7 @@
   "results": [
    {
     "label": "Wish her the good run",
-    "text": "\"From your mouth,\" she says, and crosses two fingers on each hand, and holds them up, and laughs. It is the best laugh you have heard from her, and the shortest.",
+    "text": "\"From your mouth,\" she says, and crosses two fingers on each hand, and holds them up, and laughs.",
     "changes": [
      "s.credits: 5000 -> 5125",
      "s.people.p1.memories: [] -> undefined",
@@ -455,7 +455,7 @@
    },
    {
     "label": "Tell her to stop",
-    "text": "She laughs, and means it, and does not. \"I will think about it,\" she says. \"On a Tuesday.\" She does not say which one.",
+    "text": "She laughs, and does not. \"I will think about it,\" she says. \"On a Tuesday.\" She does not say which one.",
     "changes": [
      "s.credits: 5000 -> 5125",
      "s.people.p1.memories: [] -> undefined",
@@ -477,7 +477,7 @@
   "captain": "zoya",
   "state": "xoDead",
   "title": "The Ramp",
-  "text": "Captain Pell meets you at the foot of the ramp and counts your last pay into your hand, fast, in notes, and then counts it again, slower, because she is not sure she did it right the first time. She did.</p><p>She does not mention the cards. She does not need to. \"One good run,\" she says, \"and I will send you a postcard from somewhere with a beach. If I do not, it is because it was not good enough.\" She says it lightly. She has said it for six years.</p><p>Ansel's chair at the nav table is empty, and the sheet is not on it. \"He kept the books,\" she says. \"I did not know what I was without somebody who wrote down what I was. I am finding out.\" She is not smiling.</p><p>She hugs you, fast, and lets go before it can be anything. \"Go on,\" she says. \"Before I bet against myself.\"",
+  "text": "Captain Pell meets you at the foot of the ramp and counts your last pay into your hand, fast, in notes, and then counts it again, slower, because she is not sure she did it right the first time. She did.</p><p>She does not mention the cards. She does not need to. \"One good run,\" she says, \"and I will send you a postcard from somewhere with a beach. If I do not, it is because it was not good enough.\" She has said it for six years.</p><p>Ansel's chair at the nav table is empty, and the sheet is not on it. \"He kept the books,\" she says. \"I did not know what I was without somebody who wrote down what I was. I am finding out.\" She is not smiling.</p><p>She hugs you, fast, and lets go before it can be anything. \"Go on,\" she says. \"Before I bet against myself.\"",
   "labels": [
    "Wish her the good run",
    "Tell her to stop",

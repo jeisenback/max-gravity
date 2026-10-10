@@ -16,7 +16,7 @@ CAPTAINS.dov = {
       `thin, which it does, we do not talk about it before supper. Sit. Have you eaten?"`),
 
   chatter: [
-    'Captain Adair is telling the story about the pump and the harbourmaster, for the third time this watch. It gets better each time.',
+    'Captain Adair is telling the story about the pump and the harbourmaster, for the third time this watch.',
     'Captain Adair has a passenger in the galley and is asking after the passenger\'s mother by name.',
     'Captain Adair, to the bridge at large: "Does anyone else hear that? No? Good. I was only checking."',
     'Ilsa has put the fuel order through again, correctly, over the one the captain put through. Nobody has mentioned it.',
@@ -27,7 +27,7 @@ CAPTAINS.dov = {
   ],
 
   // How they take a hand's suggestion of a different run (suggest.js): `ok` by their style, and a line for each answer.
-  sway: { ok: () => true, yes: 'Captain Adair is delighted to be asked. "Now that is a thought," he says, and he means it, and tells three people before the hatch is shut. "Your way. I always say a ship should have opinions."', no: '' },
+  sway: { ok: () => true, yes: 'Captain Adair is delighted to be asked. "Now that is a thought," he says, and tells three people before the hatch is shut. "Your way. I always say a ship should have opinions."', no: '' },
 
   events: {
     'cap-order': {
@@ -35,22 +35,22 @@ CAPTAINS.dov = {
           'fifth, and did not look at the berth window until this morning. He tells it against himself, and well. "I know," he says. "I know. Do it ' +
           'anyway, and I will make it up to everyone."'),
       ordered: 'You run it hot. The window is made, just. He claps you on the shoulder, and tells the galley about it twice before the next watch, and by the second time you are the hero of it.',
-      heard: 'You say it plainly. He listens with his whole face. You can watch him decide. "You are right," he says. "Ninety. I will ring her and tell her the truth. She will forgive me. They always do."',
-      notHeard: 'You say it, and for the first time you see him go quiet. "I did not ask," he says. It is not loud, and it is worse than loud. You run it hot.',
+      heard: 'You say it plainly. He listens with his whole face. "You are right," he says. "Ninety. I will ring her and tell her the truth. She will forgive me. They always do."',
+      notHeard: 'You say it, and for the first time you see him go quiet. "I did not ask," he says. You run it hot.',
     },
     'cap-praise': {
-      text: 'Captain Adair catches you at the end of the watch and tells you, at length and with names, how well the {post} has been run. He has told two passengers already. You are, by now, widely known.',
+      text: 'Captain Adair catches you at the end of the watch and tells you, at length and with names, how well the {post} has been run. He has told two passengers already.',
       take: '"The crew make it easy," you say. He laughs, and says that is just what he tells people, and you both know he does. You stand straighter.',
-      bonusYes: 'He does not even pause. "Sixty," he says, and is already counting it out of the cash box. "Do not tell Ilsa." You do not yet know what that means.',
-      bonusNo: 'For a moment he looks stricken. "Not this week," he says. "Ask me when I have been to the bank." You leave it there.',
+      bonusYes: 'He does not even pause. "Sixty," he says, and is already counting it out of the cash box. "Do not tell Ilsa."',
+      bonusNo: 'He puts a hand over the cash box. "Not this week," he says. "Ask me when I have been to the bank." You leave it there.',
     },
     'cap-dressing': {
-      text: 'There is a watch with no entry in the log, and Captain Adair has found it. He cannot bring himself to say so. He puts the log on the galley table and talks about the weather for a minute first, and then about your sister, and then he turns the log round.',
-      own: '"That was mine," you say. "It will be fixed tonight." "Of course it will," he says, relieved to the point of being embarrassed. "I only wanted to be sure you were all right."',
+      text: 'There is a watch with no entry in the log, and Captain Adair has found it. He puts the log on the galley table and talks about the weather for a minute first, and then about your sister, and then he turns the log round.',
+      own: '"That was mine," you say. "It will be fixed tonight." "Of course it will," he says. "I only wanted to be sure you were all right."',
       blame: 'You mention the terminal. "Of course," he says. "Of course. Let us have a look." He has not stopped smiling, but the smile has changed.',
-      terminal: '"Let us have a look," Captain Adair says, and pulls the terminal across, and the two of you watch it for a minute without talking, which is hard for him.',
-      showWin: 'It does it: a line blinks out and back. "There!" he says, so pleased that you almost forget it was your gap. "I will have it replaced. I knew it." He did not know it.',
-      showLose: 'It does nothing. He watches it a while longer than he needs to. "Well," he says, kindly. "Well. Everyone has an off night." It is the kindest thing anyone has said to you about it, and the worst.',
+      terminal: '"Let us have a look," Captain Adair says, and pulls the terminal across, and the two of you watch it for a minute without talking.',
+      showWin: 'It does it: a line blinks out and back. "There!" he says, "I will have it replaced. I knew it."',
+      showLose: 'It does nothing. He watches it a while longer than he needs to. "Well," he says, kindly. "Well. Everyone has an off night."',
       admit: 'You say it late. He puts a hand on your arm. "Thank you for saying so," he says. "I would rather be told. People think I would rather not." For a moment he does not talk, and you hear how quiet the galley is.',
     },
     'cap-favour': {
@@ -71,7 +71,7 @@ CAPTAINS.dov = {
         {
           label: 'Vouch for him',
           effects: { captainLike: { n: 2, memory: 'You told the harbourmaster we were good for it.' } },
-          result: 'You say it. Your voice is steadier than you expected. She looks at the captain, and at the fund board, and at you, and puts the stamp on the form. "Once," she says. He is crying, and laughing at himself for it. He does not forget it.',
+          result: 'You say it. She looks at the captain, and at the fund board, and at you, and puts the stamp on the form. "Once," she says. He is crying, and laughing at himself for it.',
         },
         {
           label: 'Cover three hundred from your savings',
@@ -97,7 +97,7 @@ CAPTAINS.dov = {
           {
             label: 'Say you will say nothing',
             effects: { captainLike: { n: 2, memory: 'You said you would say nothing about the book.' }, captainFlag: 'secretKnown' },
-            result: 'You say you will. He closes the box and holds it in both hands for a while, like something warm. "Thank you," he says. For once he does not follow it with a story.',
+            result: 'You say you will. He closes the box and holds it in both hands. "Thank you," he says. For once he does not follow it with a story.',
           },
         ],
       },
@@ -111,12 +111,12 @@ CAPTAINS.dov = {
           {
             label: 'Close the book and say nothing',
             effects: { captainLike: { n: 0, memory: 'You closed the fund book and said nothing.' }, captainFlag: 'secretKnown' },
-            result: 'You close it, and put it where you found it. He watches you do it. "Thank you," he says, quietly, and goes out. You hear him in the galley a minute later, talking to someone, too brightly.',
+            result: 'You close it, and put it where you found it. He watches you do it. "Thank you," he says, and goes out. You hear him in the galley a minute later, talking to someone.',
           },
           {
             label: 'Ask him what the initials are',
             effects: { captainLike: { n: -1, memory: 'You asked me about the initials in the fund book.' }, captainFlag: 'secretKnown' },
-            result: '"Ilsa," he says, with difficulty. "Ask Ilsa. Please. Do not ask me." He is not angry. He looks like a man who has been found in a room he thought was empty, and does not know where to put his hands.',
+            result: '"Ilsa," he says. "Ask Ilsa. Please. Do not ask me." He puts his hands in his pockets, and takes them out again.',
           },
         ],
       },
@@ -128,13 +128,13 @@ CAPTAINS.dov = {
     warm: 'Captain Adair is at the foot of the ramp with a paper bag that smells of bread. "I did not know what to give you," he says. "So it is food. It is always food."',
     neutral: 'Captain Adair meets you at the foot of the ramp and walks you to the end of the dock, talking, so that the goodbye takes a good deal longer than it should.',
     cold: 'Captain Adair is at the foot of the ramp, and for once he has little to say. He does not tell a story. He shakes your hand, which is warm, and holds it a moment too long, and lets go.',
-    crew: '{names} will go with you. He takes it harder than he wants to. "Good," he says. "That is good. They like you. Of course they do." He does not say anything else for a moment.',
+    crew: '{names} will go with you. "Good," he says. "That is good. They like you. Of course they do." He does not say anything else for a moment.',
     secret: 'He does not mention the book. He has put it away, and what is in it, somewhere you will not see it. "Look after your own fund," he says. "Not like mine."',
     repay: 330,
     repaid: 'He presses three hundred and thirty into your hand, the day you leave, and a card with the three stories you liked best written on the back, in case you want to tell them.',
     xoDead: 'Ilsa\'s chair on the bridge is empty, and he has not moved it. "I took her for granted," he says. "I took all of it for granted. I did not know it was she who was holding it up."',
     xo: 'Ilsa is at the hatch with her arms folded. "He will not say it," she says, "so I will. You were good to him. Do not tell him I said so."',
-    parting: 'He hugs you, which you did not expect, and which he does badly, and warmly. "Come and see us," he says. "Come and see me. I will be here. There is always somebody in the galley."',
+    parting: 'He hugs you. "Come and see us," he says. "Come and see me. I will be here. There is always somebody in the galley."',
     choices: [
       {
         label: 'Thank him for the work',
@@ -145,12 +145,12 @@ CAPTAINS.dov = {
         label: 'Tell him to ask Ilsa for help',
         when: { captainFlag: 'secretKnown' },
         effects: { captainLike: { n: 2, memory: 'You told me to ask for help.' } },
-        result: 'He nods slowly. "I will," he says. "I will ask her to dinner. That is a start." He tries to make a story of it, and finds he does not need to.',
+        result: 'He takes out a card and begins to write. "I will," he says. "I will ask her to dinner. That is a start." He does not tell the story of it.',
       },
       {
         label: 'Take the bread and go',
         effects: { captainLike: { n: 0, memory: 'You took the bread and went.' } },
-        result: 'You take the bread and go. You look back from the end of the dock, and he is still at the foot of the ramp, waving, a small figure on a lit dock with nobody to tell.',
+        result: 'You take the bread and go. You look back from the end of the dock, and he is still at the foot of the ramp, waving, alone on the lit dock.',
       },
     ],
   },

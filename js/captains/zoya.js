@@ -19,7 +19,7 @@ CAPTAINS.zoya = {
     'Captain Pell is doing sums on the back of her hand. She stops when she sees you looking, and grins, and does them again.',
     'Captain Pell: "One run. One good run. That is all it takes. Nobody ever believes it until it is Tuesday."',
     'Captain Pell has a bet going on the burn time with the whole galley. She is losing, cheerfully.',
-    'Ansel is going through the manifest with a pencil, and looking, with some care, at the line that says "assorted".',
+    'Ansel is going through the manifest with a pencil, and has stopped at the line that says "assorted".',
     'Captain Pell is whistling. It is the same four bars as yesterday, and the same four bars as the day she signed your papers.',
     'Captain Pell has her boots on the nav console, and is reading a message with a fixed smile.',
     'Captain Pell: "If you ever meet a man called Dobrescu, I have not heard of him."',
@@ -36,23 +36,23 @@ CAPTAINS.zoya = {
   events: {
     'cap-order': {
       text: 'Captain Pell wants the drive run hotter than you would. There is a cargo at the next port that is worth more if it arrives a day early, and she has told three people it will. "We will not have another chance at this one," she says, cheerfully. "We never do."',
-      ordered: 'You run it hot. The window is made, with a minute and a half in hand, and Pell is on the comm to the buyer before the drive has cooled. "Early," she says, "as promised." You have never heard anyone enjoy a figure so much.',
+      ordered: 'You run it hot. The window is made, with a minute and a half in hand, and Pell is on the comm to the buyer before the drive has cooled. "Early," she says, "as promised."',
       heard: 'You say it plainly. She listens, half-turned, with one eye on the board, and then laughs, a short one. "You are right," she says. "I hate it when you are right. Ninety. We will be late by an hour, and I will tell them it was on purpose."',
       notHeard: 'You say it. "I did not ask," she says, still smiling, and the smile does not move at all. You run it hot, and it works, and she does not look at you for the rest of the watch.',
     },
     'cap-praise': {
-      text: 'Captain Pell finds you at the end of a watch and tells you, loudly and to the whole galley, that the {post} is the best on the lanes. She says it about everything. It is still nice to hear.',
+      text: 'Captain Pell finds you at the end of a watch and tells you, loudly and to the whole galley, that the {post} is the best on the lanes. She says it about everything.',
       take: '"The crew make it easy," you say. "The crew make it a gamble," she says, "and you make it a sure thing. That is the whole trick. Keep it." She winks, and goes.',
-      bonusYes: 'She does not even look in the cash box. "Sixty," she says. "Out of the next one, and I will make it a hundred if it comes good." It lands in your account before the end of the watch, which is a surprise.',
+      bonusYes: 'She does not even look in the cash box. "Sixty," she says. "Out of the next one, and I will make it a hundred if it comes good." It lands in your account before the end of the watch.',
       bonusNo: '"Not this week," she says, and for a second the smile is not there. "Ask me on the day it comes good." The smile comes back. "It is always next week."',
     },
     'cap-dressing': {
-      text: 'There is a watch with no entry in the log, and Captain Pell has found it. She holds the log up in one hand like a card she is deciding whether to play. "Somebody was supposed to write this," she says, quite cheerfully. "I have a good idea who. Do I?"',
-      own: '"That was mine," you say. "Good," she says, and means it, and tosses the log onto the table. "Honest is cheaper. Do it again, but properly."',
+      text: 'There is a watch with no entry in the log, and Captain Pell has found it. She holds the log up in one hand like a card she is deciding whether to play. "Somebody was supposed to write this," she says. "I have a good idea who. Do I?"',
+      own: '"That was mine," you say. "Good," she says, and tosses the log onto the table. "Honest is cheaper. Do it again, but properly."',
       blame: 'You mention the terminal. She raises both eyebrows. "Does it?" she says. "I love a terminal that fails. Let us see."',
-      terminal: '"Let us see," Captain Pell says, and drags the terminal across with one boot. The two of you watch it for a long minute. She starts to whistle, quietly.',
-      showWin: 'It does it: a line blinks out and back. "There," she says. "There! I knew it. I have always said that thing was a card sharp." She is genuinely delighted, and you are, with some shame, saved.',
-      showLose: 'It does nothing. She watches it for a long time. "That is the first time that terminal has ever played straight with me," she says, "and it did it to catch you. I am a little offended on its behalf."',
+      terminal: '"Let us see," Captain Pell says, and drags the terminal across with one boot. The two of you watch it for a long minute. She starts to whistle.',
+      showWin: 'It does it: a line blinks out and back. "There," she says. "There! I knew it. I have always said that thing was a card sharp."',
+      showLose: 'It does nothing. She watches it until the screen dims. "That is the first time that terminal has ever played straight with me," she says, "and it did it to catch you. I am offended on its behalf."',
       admit: 'You say it late. She puts the log down. "Third time this week somebody has told me the truth," she says. "I ought to be worried." She is, briefly, not smiling. "Thank you."',
     },
     'cap-favour': {
@@ -73,14 +73,14 @@ CAPTAINS.zoya = {
         {
           label: 'Tell him the captain is out',
           effects: { captainLike: { n: 1, memory: 'You told Dobrescu I was out.' } },
-          result: 'You go down, and tell him. He nods, and leaves the folder with you. "Tell her Tuesday," he says. It is Thursday. When you come back up, Pell is whistling at the nav console and has not turned a page of the thing she is reading.',
+          result: 'You go down, and tell him. He leaves the folder with you. "Tell her Tuesday," he says. It is Thursday. When you come back up, Pell is whistling at the nav console and has not turned a page of the thing she is reading.',
         },
         {
           label: 'Give him a hundred to wait a week',
           when: { credits: 100 },
           effects: { credits: -100, captainLike: { n: 3, memory: 'You paid Dobrescu a hundred to wait a week.' }, captainFlag: 'lent' },
-          result: 'He counts it twice, in front of you, and goes, and you are not sure he is done. Pell laughs when she hears, which is the worst ' +
-              'possible response, and then hugs you, unexpectedly, hard, and lets go at once. "A hundred," she says. "I will pay you a hundred and a ' +
+          result: 'He counts it twice, in front of you, and goes, and you are not sure he is done. Pell laughs when she hears, ' +
+              'and then hugs you, hard, and lets go at once. "A hundred," she says. "I will pay you a hundred and a ' +
               'quarter, and that is a bet I will not lose."',
         },
       ],
@@ -97,14 +97,14 @@ CAPTAINS.zoya = {
           {
             label: 'Ask what one good run would have to be',
             effects: { captainLike: { n: 1, memory: 'You asked what the good run would have to be.' }, captainFlag: 'secretKnown' },
-            result: 'She tells you, to the figure, and it is not an absurd one. That is the worst part. "Eleven percent over the best I have ever ' +
+            result: 'She tells you, to the figure, and it is not an absurd one. "Eleven percent over the best I have ever ' +
                 'done," she says. "I could do it on a Tuesday. I have not done it on a Tuesday." She gathers the cards. "Do not tell the galley. They ' +
                 'like me better when I am lucky."',
           },
           {
             label: 'Say you will stay till it is done',
             effects: { captainLike: { n: 3, memory: 'You said you would stay till the debts were done.' }, captainFlag: 'secretKnown' },
-            result: '"Till it is done," she says, and for once she is not whistling, and not smiling, and it is a plain, tired, hopeful face. "That is a promise with no end date. I will hold you to it, and I will let you off it, both. Do not tell me which."',
+            result: '"Till it is done," she says, and for once she is not whistling, and not smiling. "That is a promise with no end date. I will hold you to it, and I will let you off it, both. Do not tell me which."',
           },
         ],
       },
@@ -117,12 +117,12 @@ CAPTAINS.zoya = {
           {
             label: 'Put it back and say nothing',
             effects: { captainLike: { n: 0, memory: 'You put the sheet back and said nothing.' }, captainFlag: ['secretKnown', 'secretAngry'] },
-            result: 'You put it back, and close the locker, and say nothing, and she watches you do it. "Thank you," she says, lightly. She starts to whistle. It is the same four bars. It is a little flat.',
+            result: 'You put it back, and close the locker, and say nothing, and she watches you do it. "Thank you," she says, lightly. She starts to whistle. It is the same four bars, flat.',
           },
           {
             label: 'Ask her if it is true',
             effects: { captainLike: { n: -1, memory: 'You asked me if the sheet was true.' }, captainFlag: ['secretKnown', 'secretAngry'] },
-            result: '"Every line," she says, and the smile is on, perfectly, like a coat. "And the last one is wrong. I have been wrong about the last one for six years. It is the only thing I am good at." She takes the sheet out of your hand, gently, and puts it in the locker, and shuts it.',
+            result: '"Every line," she says, smiling. "And the last one is wrong. I have been wrong about the last one for six years. It is the only thing I am good at." She takes the sheet out of your hand, and puts it in the locker, and shuts it.',
           },
         ],
       },
@@ -133,9 +133,9 @@ CAPTAINS.zoya = {
     title: 'The Ramp',
     warm: 'Captain Pell is on the ramp, not at the foot of it, leaning on the rail with her boots crossed. "I do not do goodbyes," she says. "I do wagers. I bet you do well. I bet you come back. I will take either side."',
     neutral: 'Captain Pell meets you at the foot of the ramp and counts your last pay into your hand, fast, in notes, and then counts it again, slower, because she is not sure she did it right the first time. She did.',
-    cold: 'Captain Pell is at the foot of the ramp with your papers and a smile that has been put on. "Fair winds," she says, and it sounds like something said many times, to many people who were leaving.',
+    cold: 'Captain Pell is at the foot of the ramp with your papers and a smile. "Fair winds," she says.',
     crew: '{names} will go with you. She whistles, one low note. "I bet you will do better by them than I did," she says. "I am not even joking. That is not a bet. That is a fact."',
-    secret: 'She does not mention the cards. She does not need to. "One good run," she says, "and I will send you a postcard from somewhere with a beach. If I do not, it is because it was not good enough." She says it lightly. She has said it for six years.',
+    secret: 'She does not mention the cards. She does not need to. "One good run," she says, "and I will send you a postcard from somewhere with a beach. If I do not, it is because it was not good enough." She has said it for six years.',
     repay: 125,
     repaid: 'She counts a hundred and twenty-five into your hand, in folded notes, from the roll. "A quarter," she says. "As promised. Do not tell Dobrescu where I got it."',
     xoDead: 'Ansel\'s chair at the nav table is empty, and the sheet is not on it. "He kept the books," she says. "I did not know what I was without somebody who wrote down what I was. I am finding out." She is not smiling.',
@@ -145,13 +145,13 @@ CAPTAINS.zoya = {
       {
         label: 'Wish her the good run',
         effects: { captainLike: { n: 2, memory: 'You wished me the good run.' } },
-        result: '"From your mouth," she says, and crosses two fingers on each hand, and holds them up, and laughs. It is the best laugh you have heard from her, and the shortest.',
+        result: '"From your mouth," she says, and crosses two fingers on each hand, and holds them up, and laughs.',
       },
       {
         label: 'Tell her to stop',
         when: { captainFlag: 'secretKnown' },
         effects: { captainLike: { n: 1, memory: 'You told me to stop.' } },
-        result: 'She laughs, and means it, and does not. "I will think about it," she says. "On a Tuesday." She does not say which one.',
+        result: 'She laughs, and does not. "I will think about it," she says. "On a Tuesday." She does not say which one.',
       },
       {
         label: 'Take the papers and go',

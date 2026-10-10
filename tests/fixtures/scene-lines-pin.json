@@ -1050,25 +1050,25 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "\"The crew make it easy,\" you say. She nods once and turns a page. You stand straighter for the rest of the watch. (+1 experience at the gunner post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the gunner post.)",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "\"The crew make it easy,\" you say. She nods once and turns a page. You stand straighter for the rest of the watch. (+1 experience at the gunner post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the gunner post.)",
     "next": null
    },
    {
     "i": 1,
     "roll": 0,
-    "text": "She looks at you, and then at the notebook, and then, to your surprise, laughs. \"Sixty,\" she says. \"It is in the column already.\" It reaches your account before the end of the watch.",
+    "text": "She looks at you, and at the notebook, and laughs. \"Sixty,\" she says. \"It is in the column already.\" It reaches your account before the end of the watch.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "She looks at you, and then at the notebook, and then, to your surprise, laughs. \"Sixty,\" she says. \"It is in the column already.\" It reaches your account before the end of the watch.",
+    "text": "She looks at you, and at the notebook, and laughs. \"Sixty,\" she says. \"It is in the column already.\" It reaches your account before the end of the watch.",
     "next": null
    },
    {
@@ -1123,7 +1123,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "Just as you open your mouth, it does it: one line blinks out and back. She watches it for a while. \"I will have it replaced,\" she says. \"And I was wrong, which I will put in the book in the ink I keep for that.\" (+1 experience at the gunner post.)"
+      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I will have it replaced,\" she says. \"And I was wrong, which I will put in the book in the ink I keep for that.\" (+1 experience at the gunner post.)"
      },
      {
       "j": 0,
@@ -1133,12 +1133,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. She nods. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
+      "text": "You say it late, with your eyes on the table. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. She nods. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
+      "text": "You say it late, with your eyes on the table. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
      }
     ]
    },
@@ -1158,7 +1158,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "Just as you open your mouth, it does it: one line blinks out and back. She watches it for a while. \"I will have it replaced,\" she says. \"And I was wrong, which I will put in the book in the ink I keep for that.\" (+1 experience at the gunner post.)"
+      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I will have it replaced,\" she says. \"And I was wrong, which I will put in the book in the ink I keep for that.\" (+1 experience at the gunner post.)"
      },
      {
       "j": 0,
@@ -1168,12 +1168,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. She nods. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
+      "text": "You say it late, with your eyes on the table. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. She nods. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
+      "text": "You say it late, with your eyes on the table. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
      }
     ]
    }
@@ -1215,13 +1215,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. You feel the number go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. You feel the number go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
     "next": null
    }
   ],
@@ -1743,25 +1743,25 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "\"The crew make it easy,\" you say. She nods once and turns a page. You stand straighter for the rest of the watch. (+1 experience at the pilot post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the pilot post.)",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "\"The crew make it easy,\" you say. She nods once and turns a page. You stand straighter for the rest of the watch. (+1 experience at the pilot post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the pilot post.)",
     "next": null
    },
    {
     "i": 1,
     "roll": 0,
-    "text": "She looks at you, and then at the notebook, and then, to your surprise, laughs. \"Sixty,\" she says. \"It is in the column already.\" It reaches your account before the end of the watch.",
+    "text": "She looks at you, and at the notebook, and laughs. \"Sixty,\" she says. \"It is in the column already.\" It reaches your account before the end of the watch.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "She looks at you, and then at the notebook, and then, to your surprise, laughs. \"Sixty,\" she says. \"It is in the column already.\" It reaches your account before the end of the watch.",
+    "text": "She looks at you, and at the notebook, and laughs. \"Sixty,\" she says. \"It is in the column already.\" It reaches your account before the end of the watch.",
     "next": null
    },
    {
@@ -1816,7 +1816,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "Just as you open your mouth, it does it: one line blinks out and back. She watches it for a while. \"I will have it replaced,\" she says. \"And I was wrong, which I will put in the book in the ink I keep for that.\" (+1 experience at the pilot post.)"
+      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I will have it replaced,\" she says. \"And I was wrong, which I will put in the book in the ink I keep for that.\" (+1 experience at the pilot post.)"
      },
      {
       "j": 0,
@@ -1826,12 +1826,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. She nods. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
+      "text": "You say it late, with your eyes on the table. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. She nods. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
+      "text": "You say it late, with your eyes on the table. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
      }
     ]
    },
@@ -1851,7 +1851,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "Just as you open your mouth, it does it: one line blinks out and back. She watches it for a while. \"I will have it replaced,\" she says. \"And I was wrong, which I will put in the book in the ink I keep for that.\" (+1 experience at the pilot post.)"
+      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I will have it replaced,\" she says. \"And I was wrong, which I will put in the book in the ink I keep for that.\" (+1 experience at the pilot post.)"
      },
      {
       "j": 0,
@@ -1861,12 +1861,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. She nods. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
+      "text": "You say it late, with your eyes on the table. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. She nods. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
+      "text": "You say it late, with your eyes on the table. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
      }
     ]
    }
@@ -1908,13 +1908,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. You feel the number go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. You feel the number go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
     "next": null
    }
   ],
@@ -2436,25 +2436,25 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "\"The crew make it easy,\" you say. She nods once and turns a page. You stand straighter for the rest of the watch. (+1 experience at the engineer post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the engineer post.)",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "\"The crew make it easy,\" you say. She nods once and turns a page. You stand straighter for the rest of the watch. (+1 experience at the engineer post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the engineer post.)",
     "next": null
    },
    {
     "i": 1,
     "roll": 0,
-    "text": "She looks at you, and then at the notebook, and then, to your surprise, laughs. \"Sixty,\" she says. \"It is in the column already.\" It reaches your account before the end of the watch.",
+    "text": "She looks at you, and at the notebook, and laughs. \"Sixty,\" she says. \"It is in the column already.\" It reaches your account before the end of the watch.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "She looks at you, and then at the notebook, and then, to your surprise, laughs. \"Sixty,\" she says. \"It is in the column already.\" It reaches your account before the end of the watch.",
+    "text": "She looks at you, and at the notebook, and laughs. \"Sixty,\" she says. \"It is in the column already.\" It reaches your account before the end of the watch.",
     "next": null
    },
    {
@@ -2509,7 +2509,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "Just as you open your mouth, it does it: one line blinks out and back. She watches it for a while. \"I will have it replaced,\" she says. \"And I was wrong, which I will put in the book in the ink I keep for that.\" (+1 experience at the engineer post.)"
+      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I will have it replaced,\" she says. \"And I was wrong, which I will put in the book in the ink I keep for that.\" (+1 experience at the engineer post.)"
      },
      {
       "j": 0,
@@ -2519,12 +2519,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. She nods. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
+      "text": "You say it late, with your eyes on the table. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. She nods. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
+      "text": "You say it late, with your eyes on the table. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
      }
     ]
    },
@@ -2544,7 +2544,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "Just as you open your mouth, it does it: one line blinks out and back. She watches it for a while. \"I will have it replaced,\" she says. \"And I was wrong, which I will put in the book in the ink I keep for that.\" (+1 experience at the engineer post.)"
+      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I will have it replaced,\" she says. \"And I was wrong, which I will put in the book in the ink I keep for that.\" (+1 experience at the engineer post.)"
      },
      {
       "j": 0,
@@ -2554,12 +2554,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. She nods. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
+      "text": "You say it late, with your eyes on the table. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. She nods. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
+      "text": "You say it late, with your eyes on the table. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
      }
     ]
    }
@@ -2601,13 +2601,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. You feel the number go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. You feel the number go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
     "next": null
    }
   ],
@@ -3129,25 +3129,25 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "\"The crew make it easy,\" you say. She nods once and turns a page. You stand straighter for the rest of the watch. (+1 experience at the comms post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the comms post.)",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "\"The crew make it easy,\" you say. She nods once and turns a page. You stand straighter for the rest of the watch. (+1 experience at the comms post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the comms post.)",
     "next": null
    },
    {
     "i": 1,
     "roll": 0,
-    "text": "She looks at you, and then at the notebook, and then, to your surprise, laughs. \"Sixty,\" she says. \"It is in the column already.\" It reaches your account before the end of the watch.",
+    "text": "She looks at you, and at the notebook, and laughs. \"Sixty,\" she says. \"It is in the column already.\" It reaches your account before the end of the watch.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "She looks at you, and then at the notebook, and then, to your surprise, laughs. \"Sixty,\" she says. \"It is in the column already.\" It reaches your account before the end of the watch.",
+    "text": "She looks at you, and at the notebook, and laughs. \"Sixty,\" she says. \"It is in the column already.\" It reaches your account before the end of the watch.",
     "next": null
    },
    {
@@ -3202,7 +3202,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "Just as you open your mouth, it does it: one line blinks out and back. She watches it for a while. \"I will have it replaced,\" she says. \"And I was wrong, which I will put in the book in the ink I keep for that.\" (+1 experience at the comms post.)"
+      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I will have it replaced,\" she says. \"And I was wrong, which I will put in the book in the ink I keep for that.\" (+1 experience at the comms post.)"
      },
      {
       "j": 0,
@@ -3212,12 +3212,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. She nods. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
+      "text": "You say it late, with your eyes on the table. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. She nods. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
+      "text": "You say it late, with your eyes on the table. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
      }
     ]
    },
@@ -3237,7 +3237,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "Just as you open your mouth, it does it: one line blinks out and back. She watches it for a while. \"I will have it replaced,\" she says. \"And I was wrong, which I will put in the book in the ink I keep for that.\" (+1 experience at the comms post.)"
+      "text": "Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. \"I will have it replaced,\" she says. \"And I was wrong, which I will put in the book in the ink I keep for that.\" (+1 experience at the comms post.)"
      },
      {
       "j": 0,
@@ -3247,12 +3247,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. She nods. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
+      "text": "You say it late, with your eyes on the table. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. She nods. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
+      "text": "You say it late, with your eyes on the table. \"That is the second true thing you have told me tonight,\" she says. \"The first one cost you more.\" She does not forgive it. She records it."
      }
     ]
    }
@@ -3294,13 +3294,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. You feel the number go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. You feel the number go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
     "next": null
    }
   ],
@@ -3760,13 +3760,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You say it plainly. He listens with his whole face. You can watch him decide. \"You are right,\" he says. \"Ninety. I will ring her and tell her the truth. She will forgive me. They always do.\" (+2 experience at the gunner post.)",
+    "text": "You say it plainly. He listens with his whole face. \"You are right,\" he says. \"Ninety. I will ring her and tell her the truth. She will forgive me. They always do.\" (+2 experience at the gunner post.)",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You say it plainly. He listens with his whole face. You can watch him decide. \"You are right,\" he says. \"Ninety. I will ring her and tell her the truth. She will forgive me. They always do.\" (+2 experience at the gunner post.)",
+    "text": "You say it plainly. He listens with his whole face. \"You are right,\" he says. \"Ninety. I will ring her and tell her the truth. She will forgive me. They always do.\" (+2 experience at the gunner post.)",
     "next": null
    },
    {
@@ -3834,13 +3834,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "He does not even pause. \"Sixty,\" he says, and is already counting it out of the cash box. \"Do not tell Ilsa.\" You do not yet know what that means.",
+    "text": "He does not even pause. \"Sixty,\" he says, and is already counting it out of the cash box. \"Do not tell Ilsa.\"",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "He does not even pause. \"Sixty,\" he says, and is already counting it out of the cash box. \"Do not tell Ilsa.\" You do not yet know what that means.",
+    "text": "He does not even pause. \"Sixty,\" he says, and is already counting it out of the cash box. \"Do not tell Ilsa.\"",
     "next": null
    },
    {
@@ -3857,7 +3857,7 @@
    }
   ],
   "title": "A Word of Praise",
-  "text": "Captain Adair catches you at the end of the watch and tells you, at length and with names, how well the gunner has been run. He has told two passengers already. You are, by now, widely known.",
+  "text": "Captain Adair catches you at the end of the watch and tells you, at length and with names, how well the gunner has been run. He has told two passengers already.",
   "labels": [
    "Take it modestly",
    "Ask if it is worth a bonus",
@@ -3870,13 +3870,13 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "\"That was mine,\" you say. \"It will be fixed tonight.\" \"Of course it will,\" he says, relieved to the point of being embarrassed. \"I only wanted to be sure you were all right.\" (+2 experience at the gunner post.)",
+    "text": "\"That was mine,\" you say. \"It will be fixed tonight.\" \"Of course it will,\" he says. \"I only wanted to be sure you were all right.\" (+2 experience at the gunner post.)",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "\"That was mine,\" you say. \"It will be fixed tonight.\" \"Of course it will,\" he says, relieved to the point of being embarrassed. \"I only wanted to be sure you were all right.\" (+2 experience at the gunner post.)",
+    "text": "\"That was mine,\" you say. \"It will be fixed tonight.\" \"Of course it will,\" he says. \"I only wanted to be sure you were all right.\" (+2 experience at the gunner post.)",
     "next": null
    },
    {
@@ -3885,7 +3885,7 @@
     "text": "You mention the terminal. \"Of course,\" he says. \"Of course. Let us have a look.\" He has not stopped smiling, but the smile has changed.",
     "next": {
      "title": "The Terminal",
-     "text": "\"Let us have a look,\" Captain Adair says, and pulls the terminal across, and the two of you watch it for a minute without talking, which is hard for him.",
+     "text": "\"Let us have a look,\" Captain Adair says, and pulls the terminal across, and the two of you watch it for a minute without talking.",
      "labels": [
       "Show how it drops entries",
       "Admit it was you"
@@ -3895,12 +3895,12 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "It does it: a line blinks out and back. \"There!\" he says, so pleased that you almost forget it was your gap. \"I will have it replaced. I knew it.\" He did not know it. (+1 experience at the gunner post.)"
+      "text": "It does it: a line blinks out and back. \"There!\" he says, \"I will have it replaced. I knew it.\" (+1 experience at the gunner post.)"
      },
      {
       "j": 0,
       "roll": 0.999,
-      "text": "It does nothing. He watches it a while longer than he needs to. \"Well,\" he says, kindly. \"Well. Everyone has an off night.\" It is the kindest thing anyone has said to you about it, and the worst."
+      "text": "It does nothing. He watches it a while longer than he needs to. \"Well,\" he says, kindly. \"Well. Everyone has an off night.\""
      },
      {
       "j": 1,
@@ -3920,7 +3920,7 @@
     "text": "You mention the terminal. \"Of course,\" he says. \"Of course. Let us have a look.\" He has not stopped smiling, but the smile has changed.",
     "next": {
      "title": "The Terminal",
-     "text": "\"Let us have a look,\" Captain Adair says, and pulls the terminal across, and the two of you watch it for a minute without talking, which is hard for him.",
+     "text": "\"Let us have a look,\" Captain Adair says, and pulls the terminal across, and the two of you watch it for a minute without talking.",
      "labels": [
       "Show how it drops entries",
       "Admit it was you"
@@ -3930,12 +3930,12 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "It does it: a line blinks out and back. \"There!\" he says, so pleased that you almost forget it was your gap. \"I will have it replaced. I knew it.\" He did not know it. (+1 experience at the gunner post.)"
+      "text": "It does it: a line blinks out and back. \"There!\" he says, \"I will have it replaced. I knew it.\" (+1 experience at the gunner post.)"
      },
      {
       "j": 0,
       "roll": 0.999,
-      "text": "It does nothing. He watches it a while longer than he needs to. \"Well,\" he says, kindly. \"Well. Everyone has an off night.\" It is the kindest thing anyone has said to you about it, and the worst."
+      "text": "It does nothing. He watches it a while longer than he needs to. \"Well,\" he says, kindly. \"Well. Everyone has an off night.\""
      },
      {
       "j": 1,
@@ -3951,7 +3951,7 @@
    }
   ],
   "title": "A Dressing-Down",
-  "text": "There is a watch with no entry in the log, and Captain Adair has found it. He cannot bring himself to say so. He puts the log on the galley table and talks about the weather for a minute first, and then about your sister, and then he turns the log round.",
+  "text": "There is a watch with no entry in the log, and Captain Adair has found it. He puts the log on the galley table and talks about the weather for a minute first, and then about your sister, and then he turns the log round.",
   "labels": [
    "Own it",
    "Blame the old terminal"
@@ -4656,13 +4656,13 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You sign. The hours go slowly. In the morning the log has a line in Captain Sato's hand: Extra watch, volunteered. It is the nicest thing you have been written down as. (+2 experience at the gunner post.)",
+    "text": "You sign. The hours go slowly. In the morning the log has a line in Captain Sato's hand: Extra watch, volunteered. (+2 experience at the gunner post.)",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You sign. The hours go slowly. In the morning the log has a line in Captain Sato's hand: Extra watch, volunteered. It is the nicest thing you have been written down as. (+2 experience at the gunner post.)",
+    "text": "You sign. The hours go slowly. In the morning the log has a line in Captain Sato's hand: Extra watch, volunteered. (+2 experience at the gunner post.)",
     "next": null
    },
    {
@@ -4680,13 +4680,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Entered,\" Captain Sato says, and puts the paper away. It was a request, and you refused, and nothing is held against you, which is its own kind of cold.",
+    "text": "\"Entered,\" Captain Sato says, and puts the paper away. It was a request, and you refused, and nothing is held against you.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Entered,\" Captain Sato says, and puts the paper away. It was a request, and you refused, and nothing is held against you, which is its own kind of cold.",
+    "text": "\"Entered,\" Captain Sato says, and puts the paper away. It was a request, and you refused, and nothing is held against you.",
     "next": null
    }
   ],
@@ -5134,13 +5134,13 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You run it hot. The window is made, with a minute and a half in hand, and Pell is on the comm to the buyer before the drive has cooled. \"Early,\" she says, \"as promised.\" You have never heard anyone enjoy a figure so much. (+1 experience at the gunner post.)",
+    "text": "You run it hot. The window is made, with a minute and a half in hand, and Pell is on the comm to the buyer before the drive has cooled. \"Early,\" she says, \"as promised.\" (+1 experience at the gunner post.)",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You run it hot. The window is made, with a minute and a half in hand, and Pell is on the comm to the buyer before the drive has cooled. \"Early,\" she says, \"as promised.\" You have never heard anyone enjoy a figure so much. (+1 experience at the gunner post.)",
+    "text": "You run it hot. The window is made, with a minute and a half in hand, and Pell is on the comm to the buyer before the drive has cooled. \"Early,\" she says, \"as promised.\" (+1 experience at the gunner post.)",
     "next": null
    },
    {
@@ -5220,13 +5220,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "She does not even look in the cash box. \"Sixty,\" she says. \"Out of the next one, and I will make it a hundred if it comes good.\" It lands in your account before the end of the watch, which is a surprise.",
+    "text": "She does not even look in the cash box. \"Sixty,\" she says. \"Out of the next one, and I will make it a hundred if it comes good.\" It lands in your account before the end of the watch.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "She does not even look in the cash box. \"Sixty,\" she says. \"Out of the next one, and I will make it a hundred if it comes good.\" It lands in your account before the end of the watch, which is a surprise.",
+    "text": "She does not even look in the cash box. \"Sixty,\" she says. \"Out of the next one, and I will make it a hundred if it comes good.\" It lands in your account before the end of the watch.",
     "next": null
    },
    {
@@ -5243,7 +5243,7 @@
    }
   ],
   "title": "A Word of Praise",
-  "text": "Captain Pell finds you at the end of a watch and tells you, loudly and to the whole galley, that the gunner is the best on the lanes. She says it about everything. It is still nice to hear.",
+  "text": "Captain Pell finds you at the end of a watch and tells you, loudly and to the whole galley, that the gunner is the best on the lanes. She says it about everything.",
   "labels": [
    "Take it modestly",
    "Ask if it is worth a bonus",
@@ -5256,13 +5256,13 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "\"That was mine,\" you say. \"Good,\" she says, and means it, and tosses the log onto the table. \"Honest is cheaper. Do it again, but properly.\" (+2 experience at the gunner post.)",
+    "text": "\"That was mine,\" you say. \"Good,\" she says, and tosses the log onto the table. \"Honest is cheaper. Do it again, but properly.\" (+2 experience at the gunner post.)",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "\"That was mine,\" you say. \"Good,\" she says, and means it, and tosses the log onto the table. \"Honest is cheaper. Do it again, but properly.\" (+2 experience at the gunner post.)",
+    "text": "\"That was mine,\" you say. \"Good,\" she says, and tosses the log onto the table. \"Honest is cheaper. Do it again, but properly.\" (+2 experience at the gunner post.)",
     "next": null
    },
    {
@@ -5271,7 +5271,7 @@
     "text": "You mention the terminal. She raises both eyebrows. \"Does it?\" she says. \"I love a terminal that fails. Let us see.\"",
     "next": {
      "title": "The Terminal",
-     "text": "\"Let us see,\" Captain Pell says, and drags the terminal across with one boot. The two of you watch it for a long minute. She starts to whistle, quietly.",
+     "text": "\"Let us see,\" Captain Pell says, and drags the terminal across with one boot. The two of you watch it for a long minute. She starts to whistle.",
      "labels": [
       "Show how it drops entries",
       "Admit it was you"
@@ -5281,12 +5281,12 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "It does it: a line blinks out and back. \"There,\" she says. \"There! I knew it. I have always said that thing was a card sharp.\" She is genuinely delighted, and you are, with some shame, saved. (+1 experience at the gunner post.)"
+      "text": "It does it: a line blinks out and back. \"There,\" she says. \"There! I knew it. I have always said that thing was a card sharp.\" (+1 experience at the gunner post.)"
      },
      {
       "j": 0,
       "roll": 0.999,
-      "text": "It does nothing. She watches it for a long time. \"That is the first time that terminal has ever played straight with me,\" she says, \"and it did it to catch you. I am a little offended on its behalf.\""
+      "text": "It does nothing. She watches it until the screen dims. \"That is the first time that terminal has ever played straight with me,\" she says, \"and it did it to catch you. I am offended on its behalf.\""
      },
      {
       "j": 1,
@@ -5306,7 +5306,7 @@
     "text": "You mention the terminal. She raises both eyebrows. \"Does it?\" she says. \"I love a terminal that fails. Let us see.\"",
     "next": {
      "title": "The Terminal",
-     "text": "\"Let us see,\" Captain Pell says, and drags the terminal across with one boot. The two of you watch it for a long minute. She starts to whistle, quietly.",
+     "text": "\"Let us see,\" Captain Pell says, and drags the terminal across with one boot. The two of you watch it for a long minute. She starts to whistle.",
      "labels": [
       "Show how it drops entries",
       "Admit it was you"
@@ -5316,12 +5316,12 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "It does it: a line blinks out and back. \"There,\" she says. \"There! I knew it. I have always said that thing was a card sharp.\" She is genuinely delighted, and you are, with some shame, saved. (+1 experience at the gunner post.)"
+      "text": "It does it: a line blinks out and back. \"There,\" she says. \"There! I knew it. I have always said that thing was a card sharp.\" (+1 experience at the gunner post.)"
      },
      {
       "j": 0,
       "roll": 0.999,
-      "text": "It does nothing. She watches it for a long time. \"That is the first time that terminal has ever played straight with me,\" she says, \"and it did it to catch you. I am a little offended on its behalf.\""
+      "text": "It does nothing. She watches it until the screen dims. \"That is the first time that terminal has ever played straight with me,\" she says, \"and it did it to catch you. I am offended on its behalf.\""
      },
      {
       "j": 1,
@@ -5337,7 +5337,7 @@
    }
   ],
   "title": "A Dressing-Down",
-  "text": "There is a watch with no entry in the log, and Captain Pell has found it. She holds the log up in one hand like a card she is deciding whether to play. \"Somebody was supposed to write this,\" she says, quite cheerfully. \"I have a good idea who. Do I?\"",
+  "text": "There is a watch with no entry in the log, and Captain Pell has found it. She holds the log up in one hand like a card she is deciding whether to play. \"Somebody was supposed to write this,\" she says. \"I have a good idea who. Do I?\"",
   "labels": [
    "Own it",
    "Blame the old terminal"
@@ -5839,13 +5839,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "\"I did not ask what you thought of the sum,\" she says, not unkindly. \"I asked for the burn.\" You run it hot, and it works, which does not help.",
+    "text": "\"I did not ask what you thought of the sum,\" she says. \"I asked for the burn.\" You run it hot, and it works.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "\"I did not ask what you thought of the sum,\" she says, not unkindly. \"I asked for the burn.\" You run it hot, and it works, which does not help.",
+    "text": "\"I did not ask what you thought of the sum,\" she says. \"I asked for the burn.\" You run it hot, and it works.",
     "next": null
    },
    {
@@ -5901,25 +5901,25 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "\"The crew make it easy,\" you say. She nods once and turns a page. You stand straighter for the rest of the watch. (+1 experience at the gunner post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the gunner post.)",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "\"The crew make it easy,\" you say. She nods once and turns a page. You stand straighter for the rest of the watch. (+1 experience at the gunner post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the gunner post.)",
     "next": null
    },
    {
     "i": 1,
     "roll": 0,
-    "text": "\"When it is a word, it is free,\" she says. \"When it is a bonus, it has to be earned. I have a column for each.\" You have the feeling of having spent something you did not have.",
+    "text": "\"When it is a word, it is free,\" she says. \"When it is a bonus, it has to be earned. I have a column for each.\"",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "\"When it is a word, it is free,\" she says. \"When it is a bonus, it has to be earned. I have a column for each.\" You have the feeling of having spent something you did not have.",
+    "text": "\"When it is a word, it is free,\" she says. \"When it is a bonus, it has to be earned. I have a column for each.\"",
     "next": null
    },
    {
