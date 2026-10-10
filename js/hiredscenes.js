@@ -49,6 +49,119 @@ function repelLines(assault) {
   for (const [post, t] of Object.entries(set.post)) for (const f of ['label', 'win', 'lose']) out[`post.${post}.${f}`] = t[f];
   return out;
 }
+// The lines of a scene built by a function, by the name each has (#463): sceneSay (storylets.js) reads them, and fills the {words} from what the scene knows. A line is the
+// scene's own words; what the scene builds from the game state (a recap, who has gone, a sum worked out) is code and is not here. tests/scenelines.test.js plays every scene
+// and checks that each name is read.
+const SCENE_LINES = {
+  'scene:warning': {
+    title: 'The Captain\'s Terms',
+    text: 'Captain {last} waits until the hold is shut and the others have gone ashore. "I will say this once," the captain says. "I have had enough of the last few weeks. The next port like this one, the berth goes to somebody else."',
+    'c0.label': 'Say you will do better', 'c0.result': '"Then do," the captain says, and goes down the ramp.',
+    'c1.label': 'Apologize for the worst of it', 'c1.result': 'You name two things, the log and the order, and say you were wrong in both. The captain listens to the end. "That is said, then," the captain says.',
+    'c2.label': 'Say the captain has been unfair', 'c2.result': '"Unfair," the captain says. The captain looks at you for some time. "We will see," the captain says.',
+  },
+  'scene:put-ashore': {
+    title: 'Put Ashore',
+    text: 'Captain {last} is at the foot of the ramp with the articles in one hand and your bag in the other. "I said I would say it once," the captain says. "I did. The berth is not yours after this port." Your pay is settled to the day.',
+    'c0.label': 'Take the bag',
+  },
+  'scene:hand-death': {
+    title: 'The Last Run',
+    'text.hurt': 'The first hurt was not mended when the second one came. You are on the deck, with the cold of it against your cheek, and the crew are saying your name. Captain {last} says it from the hatch, and then asks for the medic, and it is already late for that.',
+    'text.bridge': 'You are laid up in the corridor, where the first hit left you, when they come through the last hatch. You do not get up. Captain {last} gives them the code to the strongbox, and the crew carry you below before the lock cycles.',
+    log: 'Captain {last} writes it in the log: the day, the place, your name. The ship goes on without you.',
+    'c0.label': 'Begin again',
+  },
+  'scene:captain-lost': {
+    title: 'Without a Captain',
+    text: 'The ship makes the next port on the pilot\'s hands. The articles were Captain {last}\'s, and the articles end with the captain. The owner\'s agent comes aboard, reads the log, and pays you to the day. "There is no berth," the agent says. "There is no ship until somebody is found to sign for her." Your bag is on the dock before the lock has cycled.',
+    'c0.label': 'Take the bag',
+  },
+  'scene:split': {
+    title: 'Not on the Same Ship',
+    text: '{A} and {B} are both on the dock when you come down the ramp, a few meters apart. "One of us gets off here," {A} says. "I will not stand another burn with that." {B} says nothing.',
+    ask: 'Captain {last} has put it to you: "They both talk to you. Who stays?"',
+    'let.label': 'Let {name} go',
+    'let.result': '{gone} takes a bag and goes down the ramp without looking round. {stays} watches the ramp until it is clear. By the next watch bell a new {job}, {new}, has signed on for the berth.',
+    'keep.label': 'Keep both',
+    'keep.result': '"Then we all sail," you say. Neither of them answers. At the next watch they take opposite ends of the galley.',
+  },
+  'scene:walk-off': {  // the lines each person leaves are in their own entry (cast.js, captains/cato.js), and are listed with these (walkOffLines)
+    title: 'Gone Ashore',
+    'c0.label': 'Close the hatch', 'c0.result': 'The berth is empty.',
+  },
+  'scene:used-ship-offer': {
+    'tomas.title': 'A Hull on the Apron',
+    'tomas.text': 'Tomas is waiting at the head of the ramp when you come back from the yard office, wiping his hands on a rag that has not been clean in years. "Come and see something," he says. He walks you the length of the apron to a long, tired Ore Runner with a mismatched hatch and primer on one flank. "I have rebuilt her three times," he says. "Three owners, and every one of them sold her, and none for bad luck. Each ran one payment short. I fixed what the last one skipped, and the next one skipped it again, because they were paying the bank and not the ship. She is for sale once more, and cheap, because the last owner let her go." He lays a palm flat on her hull. "{fault} I know every fault she has. {debt} I would rather you had her than a stranger. {tell} Give it a few weeks and she will be gone."',
+    'tomas.fault': 'Her drive is all right. Her life support I would watch. Her fire control is nearly done, and you should not trust it.',
+    'tomas.debt.owed': 'You owe the hall {debt} still. I looked at its book. Clear it, and you will be the first owner she has had who owes nobody.',
+    'tomas.debt.clear': 'You owe nobody now. I looked at the hall\'s book. She has only ever had owners who owed everybody.',
+    'tomas.tell.good': '{price} cr, and that is the price for you.',
+    'tomas.tell.bad': '{price} cr, and I am not going to pretend it is a favor.',
+    'tomas.tell.plain': '{price} cr.',
+    'tomas.c0.label': 'Walk her with him',
+    'tomas.c0.result': 'He shows you the drive housing, the patched coolant line and the place where the fire control cable has been spliced twice. He talks the whole way, and does not once sound like he is selling. The ship is on the yard list now, as the used Ore Runner, until about day {until}.',
+    'broker.title': 'A Used Ore Runner',
+    'broker.text': 'A broker at the yard office has been watching the board for someone with savings. "There is a used Ore Runner on the apron," the broker says. "Three owners, a lot of repairs, and the last one let her go. Her fire control is poor and her life support is tired. The yard will not warrant either. {price} cr, as she stands. Give it a few weeks and somebody else will have her."',
+    'broker.c0.label': 'Look her over',
+    'broker.c0.result': 'You walk the apron with the broker and look her over. She is worn, and she is a ship. She is on the yard list now, as the used Ore Runner, until about day {until}.',
+  },
+  'scene:yard-office': {
+    title: 'The Yard Office',
+    text: 'The broker at {planet} keeps a small office at the head of the apron, with a window onto the pad and a ship on it that is, for the moment, the only thing in the room. "The {ship}," she says, and puts a form on the desk. "{price} cr, as she stands. You have been asking about her, so I assume you have the money. What would you like to do?"',
+    'pay.label': 'Pay the asking price ({price} cr)',
+    'pay.result': 'The broker slides the papers across, and does not smile. It is a clean sale, and a quick one. "Whenever you are ready," she says.',
+    'haggle.label': 'Haggle',
+    'haggle.won': 'You haggle for a quarter of an hour. {trusted}{skilled}She gives up {off} cr, and writes it on the papers.',
+    'haggle.trusted': 'The broker knows your ship\'s name from the port, and it counts.',
+    'haggle.skilled': 'You know what she is worth, and say so, line by line.',
+    'haggle.lost': 'You haggle for a quarter of an hour. The broker does not know you, and you cannot show her you know the ship. She does not move by a single credit, and is polite about it.',
+    'inspect.label.engineer': '[Engineer] Go over her yourself',
+    'inspect.label.paid': 'Pay the yard\'s inspector ({fee} cr)',
+    'inspect.did.engineer': 'You spend two hours in her bilges with a light and a wrench.',
+    'inspect.did.paid': 'The inspector spends two hours in her with a light and a clipboard.',
+    'inspect.found.used': 'Her drive is sound. Her life support is tired, and the fire control cable has been spliced where it should not be.',
+    'inspect.found.other': 'She is sound, with a sticky valve in the coolant loop and a worn seal on the cargo hatch.',
+    'inspect.result': '{did} {found} You put the list in front of the broker, and {off} cr comes off the price.',
+    'away.label': 'Not today',
+    'away.result': 'You thank the broker and say you will think about it. She says the ship will still be there, and in the same tone, that it might not be.',
+  },
+  'scene:sign-on': {  // a captain's own introduction (their entry's `intro`), and the line on the dock a put-ashore hand carries, are not here
+    title: 'Signing On',
+    'text.earth': 'Earth is crowded: thirty billion people, ten thousand applicants for every berth that flies, and the berths go to people with a cousin. You have no cousin. You have a trade, and a card you found pinned to the notice board at the arcology docks: HAND WANTED, ICE HAULER, DEPARTS WHEN FULL. {ship}, an ice hauler out of {sys}, took you for what you could do.{who}',
+    'text.mars': 'You grew up under the domes of Tharsis, where everyone argues about the future, and the Concord\'s navy did not want you. You spent a winter learning how many ways a no can be worded. Then a freighter at Phobos Yards put out a call for a hand, and nobody asked about your politics, only whether you could stand a watch. {ship}, an ice hauler out of {sys}, is yours to work.{who}',
+    'text.belt': 'You were born in the Ceres Warren, and you know what water is worth. A hand\'s share in a freighter that crosses to the inner system and back is not much, but it is a berth, and a berth is the one thing in the Belt that is truly yours. The League\'s dock office stamped the papers and wished you luck, in the tone of people who have wished a great many people luck. {ship}, an ice hauler out of {sys}, sails.{who}',
+    'money.earth': 'You work it out on the ramp, on your fingers: a wage a day, a share of every run, and no cousin needed. Ten thousand applicants, one berth.',
+    'learn.earth': 'At the first bulkhead you stop and ask what the placard says, and someone tells you. By the end of the hour you have asked eleven more questions. Nobody has charged you for any of them.',
+    'away.earth': 'You stow your bag and do not go back down the ramp. When the hatch closes, the arcology is one more speck among the habitat lights.',
+    'money.mars': 'The Concord offered you a dome stipend. The freighter offers a wage and a share, in writing, and you read the page to the bottom before you sign.',
+    'learn.mars': 'The navy would not teach you. On the first day you ask to see the coupling, and the engineer shows you, and then has you do it.',
+    'away.mars': 'The domes will argue about the future without you. Aboard, nobody asks whose side you are on. The first thing anyone asks is whether you have eaten.',
+    'money.belt': 'You count the wage twice and the share once. The League stamp is on the papers. Every credit of it goes into the savings line.',
+    'learn.belt': 'Ceres taught you water and rock. You ask the crew how they cross to the inner system, and four people answer at once, each differently.',
+    'away.belt': 'Ceres spins on behind you with its ice and its arguments. You lift a hand to it from the viewport, like a person on a dock.',
+    'who.generated': '{cap}, whom the crew describe as {adj}, signed the papers.',
+    'post.pilot': 'You have the helm: {cap} plots the run, and you fly it, by hand.',
+    'post.gunner': 'You have the guns. When a contact closes, you choose how to meet her, and the move at the guns is yours alone.',
+    'post.engineer': 'You have the plant: the reactor\'s output, the heat and the wear are yours to watch, and yours to break.',
+    'post.comms': 'You have the bands: tips, hails and the inbox are yours. You are the ship\'s ear.',
+    beside: 'Working beside you: {crew}.',
+    'week.run': '{cap} picks each run and buys the cargo from the ship\'s funds.',
+    'week.errands': 'Errands for wherever she is going come through the port, and the captain keeps a fifth.',
+    'week.pay': 'You are paid {wage} a day and {share} percent of what she clears.',
+    why: 'Why did you sign on?',
+    'c0.label': 'For the money',
+    'c1.label': 'To learn the work',
+    'c2.label': 'To be somewhere else',
+  },
+};
+// A person's farewell is in their own entry (their `walk` line and the line each fact leaves), so the walk-off scene lists theirs with its own.
+function walkOffLines() {
+  const out = { ...SCENE_LINES['scene:walk-off'] };
+  for (const [who, c] of Object.entries(CAST)) if (c.farewell) { out[`walk.${who}`] = c.farewell.walk; for (const [id, line] of c.farewell.facts) out[`fact.${who}.${id}`] = line; }
+  return out;
+}
+const linesOf = id => (BEAT_LINES[id] ? BEAT_LINES[id]() : id === 'scene:walk-off' ? walkOffLines() : SCENE_LINES[id] || null);
 const BEAT_LINES = { 'beats:raid': raidLines, 'beats:ambush': ambushLines, 'beats:repel': () => repelLines(false), 'beats:assault': () => repelLines(true) };
 
 // Every id, with what it is and where its scene lives: { id, kind, key, name, scene } for a cast or captain scene (its scene object), { id, kind: 'work' |
@@ -73,6 +186,6 @@ function hiredSceneRegistry() {
   for (const d of WORK_EVENTS) out.push({ id: `hired:${d.id}`, kind: 'work', def: d });
   for (const d of HAND_EVENTS.filter(x => x.group !== 'work')) out.push({ id: `hired:${d.id}`, kind: 'hand', def: d, ...(d.data ? { scene: d.data } : {}) });
   ICE_STAGES.forEach((stage, i) => out.push({ id: `ice:${i + 1}`, kind: 'ice', stage }));
-  for (const f of HIRED_FUNCTION_SCENES) out.push({ ...f, kind: 'function', ...(BEAT_LINES[f.id] ? { scene: { title: f.title, choices: [], parts: BEAT_LINES[f.id](), noTitle: true } } : {}) });  // a beat's words, line by line (#478)
+  for (const f of HIRED_FUNCTION_SCENES) out.push({ ...f, kind: 'function', ...(linesOf(f.id) ? { scene: { title: f.title, choices: [], parts: linesOf(f.id), noTitle: true } } : {}) });  // a beat's or a function's words, line by line (#478, #463)
   return out;
 }

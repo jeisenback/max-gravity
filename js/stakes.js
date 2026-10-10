@@ -11,25 +11,25 @@ const PATIENCE = { warn: OPINION.ENEMY, end: OPINION.GRUDGE };  // -2 and -3
 const SPLIT_BOND = -5, SPLIT_GAP = 30;  // a bond this low, and at most one split in this many days
 
 function warningScene() {
-  const h = hired(), cap = person(h.captain);
+  const h = hired(), cap = person(h.captain), say = (key, vars) => sceneSay('scene:warning', key, { last: cap.last, ...vars });
   h.warned = true;
   return {
-    title: 'The Captain\'s Terms', personal: true,
-    text: `Captain ${cap.last} waits until the hold is shut and the others have gone ashore. "I will say this once," the captain says. "I have had enough of the last few weeks. The next port like this one, the berth goes to somebody else."`,
+    title: say('title'), personal: true,
+    text: say('text'),
     choices: [
-      { label: 'Say you will do better', run() { like(cap, 1, 'You said you would do better, and said it plainly.'); return '"Then do," the captain says, and goes down the ramp.'; } },
-      { label: 'Apologize for the worst of it', run() { like(cap, 2, 'You named what you got wrong and apologized for it.'); return 'You name two things, the log and the order, and say you were wrong in both. The captain listens to the end. "That is said, then," the captain says.'; } },
-      { label: 'Say the captain has been unfair', run() { like(cap, -2, 'You told me I had been unfair.'); return '"Unfair," the captain says. The captain looks at you for some time. "We will see," the captain says.'; } },
+      { label: say('c0.label'), run() { like(cap, 1, 'You said you would do better, and said it plainly.'); return say('c0.result'); } },
+      { label: say('c1.label'), run() { like(cap, 2, 'You named what you got wrong and apologized for it.'); return say('c1.result'); } },
+      { label: say('c2.label'), run() { like(cap, -2, 'You told me I had been unfair.'); return say('c2.result'); } },
     ],
   };
 }
 
 function putAshoreScene() {
-  const cap = person(hired().captain), facts = goodbyeFacts(hired().flags || {}).slice(0, 2).map(f => f.line).join(' ');
+  const cap = person(hired().captain), facts = goodbyeFacts(hired().flags || {}).slice(0, 2).map(f => f.line).join(' '), say = key => sceneSay('scene:put-ashore', key, { last: cap.last });
   return {
-    title: 'Put Ashore', personal: true,
-    text: `Captain ${cap.last} is at the foot of the ramp with the articles in one hand and your bag in the other. "I said I would say it once," the captain says. "I did. The berth is not yours after this port." Your pay is settled to the day.${facts ? `</p><p>${facts}` : ''}`,
-    choices: [{ label: 'Take the bag', run: putAshore }],
+    title: say('title'), personal: true,
+    text: `${say('text')}${facts ? `</p><p>${facts}` : ''}`,  // what the hand lived through is read from the record
+    choices: [{ label: say('c0.label'), run: putAshore }],
   };
 }
 
@@ -46,16 +46,12 @@ function carriedLine(flags, last) {
 }
 
 // The hand's death (#357), the ending of the chapter: what happened, the look back (hired.js, which reads the record), and a new game.
-const HAND_DEATH_TEXT = {
-  hurt: last => `The first hurt was not mended when the second one came. You are on the deck, with the cold of it against your cheek, and the crew are saying your name. Captain ${last} says it from the hatch, and then asks for the medic, and it is already late for that.`,
-  bridge: last => `You are laid up in the corridor, where the first hit left you, when they come through the last hatch. You do not get up. Captain ${last} gives them the code to the strongbox, and the crew carry you below before the lock cycles.`,
-};
 function handDeathScene(how) {
-  const cap = person(hired().captain), last = cap.last;
+  const cap = person(hired().captain), say = key => sceneSay('scene:hand-death', key, { last: cap.last });
   return {
-    title: 'The Last Run', personal: true,
-    text: [HAND_DEATH_TEXT[how](last), `Captain ${last} writes it in the log: the day, the place, your name. The ship goes on without you.`, chapterRecap().text].join('</p><p>'),
-    choices: [{ label: 'Begin again', run: beginAgain }],
+    title: say('title'), personal: true,
+    text: [say(`text.${how}`), say('log'), chapterRecap().text].join('</p><p>'),
+    choices: [{ label: say('c0.label'), run: beginAgain }],
   };
 }
 // A new hand, in the same slot and under the same name, with another captain if there is one and nothing carried but a line on the dock.
@@ -75,11 +71,11 @@ function beginAgain() {
 
 // The captain is lost on the bridge (#357): the articles end with the captain, so the hand goes ashore as when put off, with the same things kept.
 function captainLostScene() {
-  const last = person(hired().captain).last;
+  const say = key => sceneSay('scene:captain-lost', key, { last: person(hired().captain).last });
   return {
-    title: 'Without a Captain', personal: true,
-    text: `The ship makes the next port on the pilot's hands. The articles were Captain ${last}'s, and the articles end with the captain. The owner's agent comes aboard, reads the log, and pays you to the day. "There is no berth," the agent says. "There is no ship until somebody is found to sign for her." Your bag is on the dock before the lock has cycled.`,
-    choices: [{ label: 'Take the bag', run: () => putAshore(true) }],
+    title: say('title'), personal: true,
+    text: say('text'),
+    choices: [{ label: say('c0.label'), run: () => putAshore(true) }],
   };
 }
 
@@ -120,16 +116,16 @@ function splitPair() {
 function splitScene() {
   const st = G.state, h = hired(), cap = person(h.captain), worst = splitPair();
   if (!worst) return null;
-  const { a, b, movable } = worst, A = a.p.first, B = b.p.first;
+  const { a, b, movable } = worst, A = a.p.first, B = b.p.first, say = (key, vars) => sceneSay('scene:split', key, { A, B, last: cap.last, ...vars });
   (st.relAt = st.relAt || {}).split = st.day;
-  const choices = movable.map(x => ({ label: `Let ${x.p.first} go`, run: () => letGo(x, x === a ? b : a) }));
+  const choices = movable.map(x => ({ label: say('let.label', { name: x.p.first }), run: () => letGo(x, x === a ? b : a) }));
   choices.push({
-    label: 'Keep both',
-    run() { addBond(a, b, -1); like(a.p, -1, 'You made me stay on a ship with ' + B + '.'); like(b.p, -1, 'You made me stay on a ship with ' + A + '.'); return '"Then we all sail," you say. Neither of them answers. At the next watch they take opposite ends of the galley.'; }
+    label: say('keep.label'),
+    run() { addBond(a, b, -1); like(a.p, -1, 'You made me stay on a ship with ' + B + '.'); like(b.p, -1, 'You made me stay on a ship with ' + A + '.'); return say('keep.result'); }
   });
   return {
-    title: 'Not on the Same Ship', personal: true,
-    text: `${A} and ${B} are both on the dock when you come down the ramp, a few meters apart. "One of us gets off here," ${A} says. "I will not stand another burn with that." ${B} says nothing.${hired() ? ` Captain ${cap.last} has put it to you: "They both talk to you. Who stays?"` : ''}`,
+    title: say('title'), personal: true,
+    text: `${say('text')}${hired() ? ` ${say('ask')}` : ''}`,
     choices,
   };
 }
@@ -145,7 +141,7 @@ function letGo(x, y) {
   rep.role = role; rep.skill = Math.max(1, skill - 1); rep.job = ROLE_NAMES[role] ? ROLE_NAMES[role].toLowerCase() : 'hand'; rep.mood = null;
   registerPerson(rep); st.crew.push(rep.id);
   homeLog(`${x.p.first} ${x.p.last} left the ship at ${st.planet}.`);
-  return `${x.p.first} takes a bag and goes down the ramp without looking round. ${y.p.first} watches the ramp until it is clear. By the next watch bell a new ${rep.job}, ${rep.first}, has signed on for the berth.`;
+  return sceneSay('scene:split', 'let.result', { gone: x.p.first, stays: y.p.first, job: rep.job, new: rep.first });
 }
 
 Mods.register({

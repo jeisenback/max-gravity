@@ -87,7 +87,7 @@ function memorialNote() {
 // a scene. A person with no `farewell`, or no true fact, gets none.
 function farewellFacts(key) {
   const d = CAST[key] && CAST[key].farewell, flags = (G.state.cast && G.state.cast[key] && G.state.cast[key].flags) || {};
-  return d ? d.facts.filter(([id]) => flags[id]).slice(0, 2).map(f => f[1]) : [];
+  return d ? d.facts.filter(([id]) => flags[id]).slice(0, 2).map(f => lineWords('scene:walk-off', `fact.${key}.${f[0]}`, f[1])) : [];
 }
 
 // They walk off at a port (game.js): their own leaving line, then the facts, and a record of it for the soak and the look back.
@@ -95,8 +95,8 @@ function walkOffScene(c, planet) {
   const st = G.state, d = CAST[c.cast].farewell;
   (st.departed = st.departed || []).push({ key: c.cast, day: st.day, place: planet.name, why: 'opinion' });
   return {
-    title: 'Gone Ashore', personal: true,
-    text: [d.walk.replace('{planet}', planet.name), ...farewellFacts(c.cast)].join('</p><p>'),
-    choices: [{ label: 'Close the hatch', run: () => 'The berth is empty.' }],
+    title: sceneSay('scene:walk-off', 'title'), personal: true,
+    text: [lineWords('scene:walk-off', `walk.${c.cast}`, d.walk).replace('{planet}', planet.name), ...farewellFacts(c.cast)].join('</p><p>'),
+    choices: [{ label: sceneSay('scene:walk-off', 'c0.label'), run: () => sceneSay('scene:walk-off', 'c0.result') }],
   };
 }
