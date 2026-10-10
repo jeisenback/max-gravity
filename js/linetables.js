@@ -43,3 +43,10 @@ const traitChatter = trait => [].concat(linedText('lines:trait-chatter', TRAITS[
 function lineTableRegistry() {
   return LINE_TABLES.map(t => ({ id: t.id, kind: 'lines', title: t.title, file: t.file, where: t.where || 'port', scene: { title: t.title, choices: [], parts: flatLines(t.table()), noTitle: true } }));
 }
+
+// The passenger events (#457): the words of each are in PEOPLE_LINES (peopletext.js), by the name each line has, and the event reads them through peopleSay. A line may use
+// only the {words} the shipped line has; what the event builds from the game (a sum of hull, a tip) is passed in as a word.
+const peopleSay = (id, key, vars = {}) => lineWords(id, key, PEOPLE_LINES[id][key]).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
+function peopleEventRegistry() {
+  return PAX_EVENTS.map(e => ({ id: `people:pax:${e.id}`, kind: 'people', title: PEOPLE_LINES[`people:pax:${e.id}`].title, file: 'js/people.js', where: 'transit', event: e, scene: { title: PEOPLE_LINES[`people:pax:${e.id}`].title, choices: [], parts: PEOPLE_LINES[`people:pax:${e.id}`], noTitle: true } }));
+}

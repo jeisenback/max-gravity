@@ -151,6 +151,10 @@
       add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: 'line tables', conditionsNote: 'A pool of lines the game picks from at random, in the bar or in a burn.', pacing: { tier: null, weight: null, cooldown: 'none', trigger: 'Picked at random from the pool when the line is needed.', editable: false },
         ...beatRow(e.scene), lines: true, codeNote: LINES_NOTE });
     }
+    for (const e of peopleEventRegistry()) {  // the passenger events (#457): written in code, with their words as lines
+      add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: 'passenger events', conditionsNote: 'A passenger aboard whom the event is about (their secret, goal or traits); one event is drawn for a passenger by weight.', pacing: { tier: null, weight: e.event.weight, cooldown: 'one per passenger', trigger: 'Drawn by weight among the events that fit the passenger, on a burn.', editable: false },
+        ...beatRow(e.scene), codeNote: SCENE_NOTE });
+    }
     return rows;
   }
 
@@ -297,17 +301,23 @@
 
   function play(m) {
     useNewScenes(m.newScenes);  // the scenes written in the editor, not saved yet
-    const s = STORYLETS.find(x => x.id === m.id), reg = s ? null : hiredSceneRegistry().find(x => x.id === m.id && ((x.kind === 'cast' || x.kind === 'captain') || x.kind === 'hand' && x.scene || x.kind === 'function' && x.scene || x.kind === 'work' || x.kind === 'ice'));
-    if (!s && !reg) return { error: `The game has no scene "${m.id}".` };
+    const s = STORYLETS.find(x => x.id === m.id), pe = s ? null : peopleEventRegistry().find(x => x.id === m.id), reg = s || pe ? null : hiredSceneRegistry().find(x => x.id === m.id && ((x.kind === 'cast' || x.kind === 'captain') || x.kind === 'hand' && x.scene || x.kind === 'function' && x.scene || x.kind === 'work' || x.kind === 'ice'));
+    if (!s && !reg && !pe) return { error: `The game has no scene "${m.id}".` };
     useOverrides(m.overrides);  // the unsaved edits, through the same layer the game reads (storylets.js)
     const o = m.setup || {};
     const place = planetNamed(o.place) ? o.place : 'Earth', at = planetNamed(place);
     const meeting = !!reg && reg.kind === 'cast' && reg.name === 'meet';  // an owner meets a main character at a port bar; a hired hand never does
-    beginGame(meeting ? { ...o, as: 'owner' } : o, !!reg && !meeting);
+    beginGame(meeting || pe ? { ...o, as: 'owner' } : o, !!reg && !meeting);
     // A scene in a burn is played on the way to the place (its `at` is the destination); one at a port, landed there.
-    const where = s ? s.where : reg.name === 'meet' || reg.name === 'goodbye' ? 'port' : 'transit';
+    const where = s ? s.where : pe ? 'transit' : reg.name === 'meet' || reg.name === 'goodbye' ? 'port' : 'transit';
     if (where === 'transit') uatBurn(at.sid === 'earth' ? 'Mars' : 'Earth', at.sid); else uatLand(place);
     tweakState(o);
+    if (pe) {  // a passenger event: a passenger it is about is aboard, bound for where the burn goes
+      const person = uatPassenger(), mission = G.state.missions.find(x => x.pid === person.id);
+      Object.assign(person, { secret: null, goal: 'home', traits: ['kind'] }, pe.event.sample);
+      openEvent(pe.event.make(person, mission));
+      return { type: 'played', failing: [], chained: false, shut: [], note: 'A passenger event is drawn for a passenger it fits, so no condition is checked here.' };
+    }
     if (reg) {  // a hired scene is played by its days and its place in the story: the preview opens it, with the regard that picks its reading
       if (reg.kind === 'work') openEvent(workEvent(reg.def));  // a problem at the hand's post, played by the shared template from its table
       else if (reg.kind === 'ice') { hired().run = { tons: 40, ice: { edge: 0, round: 0 } }; openEvent(iceStageScene(Number(reg.id.slice(4)) - 1)); }  // the first opening of an ice run's scene

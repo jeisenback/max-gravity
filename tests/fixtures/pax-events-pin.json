@@ -1,0 +1,1417 @@
+[
+ {
+  "id": "0",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Inspection, the hold scanner has a fault,\" you say, and then you have the fault's maintenance log, and three forms in the wrong order that she has to send back. \"That is your problem, captain,\" the officer says. \"It will be mine when I log it,\" you say. It takes forty-one minutes. Her intercept window closes at forty-two, and the cutter peels away with a burst of static. Sam sits down on a crate. At the airlock Sam puts a folded note in your hand and does not say what it is for.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 3000,
+     "onboard": true,
+     "opinion": 3,
+     "owes": 0
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"That is the second form I have asked for,\" the officer says. \"For the third I come aboard.\" She comes aboard. They find Sam's stash behind a false panel in the second bay, in under ten minutes. \"Negligent inspection,\" she says, writing it, \"two thousand credits.\" You pay it. At supper the only sound in the galley is cutlery.",
+    "d": {
+     "credits": -2000,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 1,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "{crew} sits down at the console. \"Ninety seconds,\" {crew} says, \"and do not talk to me.\" In ninety seconds the manifest, the cargo record and the ship's last six ports are rewritten. The scan crosses the hold and reads tidy crates and honest paperwork. Sam watches from the hatch, looks at you, and then at {crew}.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 3000,
+     "onboard": true,
+     "opinion": 3,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "{crew}'s spoof fails a checksum on one line of the manifest, and the scanner lights. You pay a 2,000 cr fine. \"One digit,\" {crew} says, for the next hour. \"It was one digit.\"",
+    "d": {
+     "credits": -2000,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 0,
+     "owes": 0
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "\"Sam Vale,\" the officer says, once, to be sure, and customs takes Sam off in cuffs with one hand on their shoulder. Sam does not look back. The airlock cycles. At the galley table a cup is left half full, and nobody clears it.",
+    "d": {
+     "credits": 1500,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": null,
+     "onboard": false,
+     "opinion": -6,
+     "owes": 0
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "\"Sam Vale,\" the officer says, once, to be sure, and customs takes Sam off in cuffs with one hand on their shoulder. Sam does not look back. The airlock cycles. At the galley table a cup is left half full, and nobody clears it.",
+    "d": {
+     "credits": 1500,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": null,
+     "onboard": false,
+     "opinion": -6,
+     "owes": 0
+    }
+   }
+  ],
+  "title": "Customs Inspection",
+  "text": "The customs cutter's searchlight comes across the hull plate by plate. \"Ship, this is Inspection,\" says the voice on the open band. \"Hold your burn and open the hold to a scan. It takes a quarter hour, and we do it twice if there is a reason to.\" Sam is at the hold hatch with one hand on the frame. \"Captain.\" Sam says it low. \"Whatever you can do. Stall them. I will explain at the next port, and you will not like it, but I will explain.\"",
+  "labels": [
+   "Stall them",
+   "[{crew}] Spoof the cargo manifest",
+   "Turn Sam in (+1,500 cr reward)"
+  ]
+ },
+ {
+  "id": "1",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Dock at my lock,\" the hunter says, \"and keep your hands off the panel.\" Sam goes across with one bag. At the lock Sam looks back once. The credits arrive before the lock finishes cycling.",
+    "d": {
+     "credits": 5000,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": null,
+     "onboard": false,
+     "opinion": -8,
+     "owes": 0
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Dock at my lock,\" the hunter says, \"and keep your hands off the panel.\" Sam goes across with one bag. At the lock Sam looks back once. The credits arrive before the lock finishes cycling.",
+    "d": {
+     "credits": 5000,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": null,
+     "onboard": false,
+     "opinion": -8,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "{crew} puts a burst of tracer across the hunter's bow, a line of light that picks out the hull number. \"That was the warning,\" {crew} says on the channel. \"The next one has a number on it.\" The hunter reconsiders. One wild shot comes back and costs you 26 points of armor. At the airlock Sam pays you extra and shakes your hand hard enough to hurt.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": -26,
+     "left": 0,
+     "bonus": 2000,
+     "onboard": true,
+     "opinion": 4,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "{crew} puts a burst of tracer across the hunter's bow, a line of light that picks out the hull number. \"That was the warning,\" {crew} says on the channel. \"The next one has a number on it.\" The hunter reconsiders. One wild shot comes back and costs you 26 points of armor. At the airlock Sam pays you extra and shakes your hand hard enough to hurt.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": -26,
+     "left": 0,
+     "bonus": 2000,
+     "onboard": true,
+     "opinion": 4,
+     "owes": 0
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "It takes a long, ugly exchange to drive the hunter off, and it costs you 52 points of armor and an antenna. That night in the galley, over a bulb of something strong, Sam tells you their side of it. \"A bad partner and a worse lawyer,\" Sam says, \"and I did not do half of what is on the sheet.\" The bulb is empty before the other half.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": -52,
+     "left": 0,
+     "bonus": 2000,
+     "onboard": true,
+     "opinion": 4,
+     "owes": 0
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "The hunter hammers the hull for three minutes, 104 points of armor, and then breaks off with a curse on the channel. Sam, gray in the face, holds the patch plate. \"Hold it flat,\" you say, and Sam does, while you seal the worst of the breaches.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": -104,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 3,
+     "owes": 0
+    }
+   }
+  ],
+  "title": "Bounty Hunter",
+  "text": "A bounty hunter matches your burn, dark, with one running light that winks on and off. \"You are carrying Sam Vale,\" says the voice on the channel, low and unhurried. \"Wanted on Mars for fraud. Five thousand for the handover. Or I come and take them, and that costs everyone aboard.\" In the galley Sam sets a cup on the table and turns it a quarter turn, so that the handle faces away.",
+  "labels": [
+   "Hand them over (+5,000 cr)",
+   "[{crew}] Make them reconsider",
+   "Refuse, and fight if you must"
+  ]
+ },
+ {
+  "id": "2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "{crew} works through the night with a lamp and a case of instruments and does not leave the bunk. By morning Sam is sitting up, pale, asking for coffee in a cracked voice. {crew} is asleep in the corridor with a blanket over their shoulders, and nobody steps over them.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 1000,
+     "onboard": true,
+     "opinion": 4,
+     "owes": 0
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "{crew} works through the night with a lamp and a case of instruments and does not leave the bunk. By morning Sam is sitting up, pale, asking for coffee in a cracked voice. {crew} is asleep in the corridor with a blanket over their shoulders, and nobody steps over them.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 1000,
+     "onboard": true,
+     "opinion": 4,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You sit up with them through the night, working from the manual, with a bulb of water and a flashlight in your teeth. The fever breaks in the small hours, and they sleep for the first time in days.",
+    "d": {
+     "credits": -500,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 800,
+     "onboard": true,
+     "opinion": 3,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You do everything the medkit and the manual allow, and it holds them stable. They need a real doctor. For the rest of the burn you take their pulse every twenty minutes, in the dark.",
+    "d": {
+     "credits": -500,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 3,
+     "owes": 0
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You push the drive until the frame ticks. Sam lies pinned to a bunk with a wet cloth on their forehead and asks, every hour, how many hours you have saved. When the doctors take them at the dock, they say something you do not catch. It might be thanks.",
+    "d": {
+     "credits": 0,
+     "fuel": -40,
+     "armor": 0,
+     "left": -10,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 2,
+     "owes": 0
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You push the drive until the frame ticks. Sam lies pinned to a bunk with a wet cloth on their forehead and asks, every hour, how many hours you have saved. When the doctors take them at the dock, they say something you do not catch. It might be thanks.",
+    "d": {
+     "credits": 0,
+     "fuel": -40,
+     "armor": 0,
+     "left": -10,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 2,
+     "owes": 0
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "Sam recovers over three days, on their own, in a cold bunk. They ask you for nothing, and they do not speak to you for the rest of the trip. At the dock they go down the ramp without turning round.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": -500,
+     "onboard": true,
+     "opinion": -2,
+     "owes": 0
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "Sam recovers over three days, on their own, in a cold bunk. They ask you for nothing, and they do not speak to you for the rest of the trip. At the dock they go down the ramp without turning round.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": -500,
+     "onboard": true,
+     "opinion": -2,
+     "owes": 0
+    }
+   }
+  ],
+  "title": "Medical Emergency",
+  "text": "Sam goes down in the galley, dropping a cup, and slides to the deck with their back against a cabinet. Their breathing is shallow and fast. Between breaths they say they have hidden an illness for weeks and did not want to be a burden. Everyone in the room has stopped moving. They look at you.",
+  "labels": [
+   "[{crew}] Treat them",
+   "Use the ship's medkit (500 cr of supplies)",
+   "Burn harder to get them help (40 reaction mass)",
+   "There is nothing you can do"
+  ]
+ },
+ {
+  "id": "2:medical",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "{crew} works through the night with a lamp and a case of instruments and does not leave the bunk. By morning Sam is sitting up, pale, asking for coffee in a cracked voice. {crew} is asleep in the corridor with a blanket over their shoulders, and nobody steps over them.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 1000,
+     "onboard": true,
+     "opinion": 4,
+     "owes": 0
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "{crew} works through the night with a lamp and a case of instruments and does not leave the bunk. By morning Sam is sitting up, pale, asking for coffee in a cracked voice. {crew} is asleep in the corridor with a blanket over their shoulders, and nobody steps over them.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 1000,
+     "onboard": true,
+     "opinion": 4,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You sit up with them through the night, working from the manual, with a bulb of water and a flashlight in your teeth. The fever breaks in the small hours, and they sleep for the first time in days.",
+    "d": {
+     "credits": -500,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 800,
+     "onboard": true,
+     "opinion": 3,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You do everything the medkit and the manual allow, and it holds them stable. They need a real doctor. For the rest of the burn you take their pulse every twenty minutes, in the dark.",
+    "d": {
+     "credits": -500,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 3,
+     "owes": 0
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You push the drive until the frame ticks. Sam lies pinned to a bunk with a wet cloth on their forehead and asks, every hour, how many hours you have saved. When the doctors take them at the dock, they say something you do not catch. It might be thanks.",
+    "d": {
+     "credits": 0,
+     "fuel": -40,
+     "armor": 0,
+     "left": -10,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 2,
+     "owes": 0
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You push the drive until the frame ticks. Sam lies pinned to a bunk with a wet cloth on their forehead and asks, every hour, how many hours you have saved. When the doctors take them at the dock, they say something you do not catch. It might be thanks.",
+    "d": {
+     "credits": 0,
+     "fuel": -40,
+     "armor": 0,
+     "left": -10,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 2,
+     "owes": 0
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "Sam recovers over three days, on their own, in a cold bunk. They ask you for nothing, and they do not speak to you for the rest of the trip. At the dock they go down the ramp without turning round.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": -500,
+     "onboard": true,
+     "opinion": -2,
+     "owes": 0
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "Sam recovers over three days, on their own, in a cold bunk. They ask you for nothing, and they do not speak to you for the rest of the trip. At the dock they go down the ramp without turning round.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": -500,
+     "onboard": true,
+     "opinion": -2,
+     "owes": 0
+    }
+   }
+  ],
+  "title": "Medical Emergency",
+  "text": "Sam goes down in the galley, dropping a cup, and slides to the deck with their back against a cabinet. Their breathing is shallow and fast. The condition they were traveling to get treated has taken a turn. Everyone in the room has stopped moving. They look at you.",
+  "labels": [
+   "[{crew}] Treat them",
+   "Use the ship's medkit (500 cr of supplies)",
+   "Burn harder to get them help (40 reaction mass)",
+   "There is nothing you can do"
+  ]
+ },
+ {
+  "id": "3",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Sam sighs, looks at you, and transfers 2,500 cr \"for your discretion\". \"I like you, captain,\" they say. \"I would rather not have to like you less.\"",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 2500,
+     "onboard": true,
+     "opinion": 1,
+     "owes": 0
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Sam tells you, evenly, that it is none of your business. They do not raise their voice and they do not threaten you. They stand there until you leave.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": -3,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "{crew} cracks it over a long evening. Someone is paying for market numbers from every port you touch, in tidy weekly reports. Nothing dangerous: a patient stranger who wants to know what everything costs. Among the bursts is one line you can use: \"Word is that the governor of Juno Commons is stockpiling Food for a party, and will pay well over the odds.\"",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 0,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "{crew} cracks it over a long evening. Someone is paying for market numbers from every port you touch, in tidy weekly reports. Nothing dangerous: a patient stranger who wants to know what everything costs. Among the bursts is one line you can use: \"A strike ended on Ring Nine, and every dock in town is suddenly flooded with Food.\"",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 0,
+     "owes": 0
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You let it go. The bursts keep coming every night at the same hour. Once, in the corridor, Sam meets your eye and keeps walking.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 2,
+     "owes": 0
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You let it go. The bursts keep coming every night at the same hour. Once, in the corridor, Sam meets your eye and keeps walking.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 2,
+     "owes": 0
+    }
+   }
+  ],
+  "title": "Encrypted Bursts",
+  "text": "Your comms log shows Sam sending tight-beam bursts between the second and third watch, short pulses aimed at no port you know. They send them from the observation blister, alone, with the lights off. You have started to count how many times a shift Sam looks at the door.",
+  "labels": [
+   "Confront them",
+   "[{crew}] Quietly decrypt the traffic",
+   "Not your business"
+  ]
+ },
+ {
+  "id": "4",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Sam opens their mouth and nothing comes out. Then they say, low, that they will pay you back with interest, every credit, if it takes the rest of their life. They do not sit down until you have.",
+    "d": {
+     "credits": -1500,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 5,
+     "owes": 1500
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Sam opens their mouth and nothing comes out. Then they say, low, that they will pay you back with interest, every credit, if it takes the rest of their life. They do not sit down until you have.",
+    "d": {
+     "credits": -1500,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 5,
+     "owes": 1500
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "They threaten legal action at length and cut the channel. Nothing comes of it. Sam looks at you across the galley. Later there is a cup of tea at your elbow that you did not ask for.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 1,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "They threaten legal action at length and cut the channel. Nothing comes of it. Sam looks at you across the galley. Later there is a cup of tea at your elbow that you did not ask for.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 1,
+     "owes": 0
+    }
+   }
+  ],
+  "title": "Collectors",
+  "text": "A collection agency hails and reads from a script: Sam owes 1,500 credits and they want it now, \"or we flag your ship as an accessory\". In the corner of the galley Sam has gone the color of old paper and is looking at the deck. The agent adds, pleasantly, that they have \"a great deal of patience, and a great many lawyers.\"",
+  "labels": [
+   "Pay it for them (1,500 cr)",
+   "Tell the collectors to get lost"
+  ]
+ },
+ {
+  "id": "5",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "{crew} bends over the nav display, muttering, and finds a gravity assist nobody else would try, a long swoop round a moon that barely shows on the charts. It works. Sam arrives with an hour to spare, freshly ironed, and at the dock hugs {crew} before {crew} can step back.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 800,
+     "onboard": true,
+     "opinion": 3,
+     "owes": 0
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "{crew} bends over the nav display, muttering, and finds a gravity assist nobody else would try, a long swoop round a moon that barely shows on the charts. It works. Sam arrives with an hour to spare, freshly ironed, and at the dock hugs {crew} before {crew} can step back.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 800,
+     "onboard": true,
+     "opinion": 3,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You push the drive, and Sam spends the burn on a crash couch, running answers through their teeth. They arrive on time, rumpled and out of breath, with no time to thank you. You watch them run for the concourse, straightening their collar.",
+    "d": {
+     "credits": 0,
+     "fuel": -40,
+     "armor": 0,
+     "left": 0,
+     "bonus": 800,
+     "onboard": true,
+     "opinion": 3,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You push the drive, and Sam spends the burn on a crash couch, running answers through their teeth. They arrive on time, rumpled and out of breath, with no time to thank you. You watch them run for the concourse, straightening their collar.",
+    "d": {
+     "credits": 0,
+     "fuel": -40,
+     "armor": 0,
+     "left": 0,
+     "bonus": 800,
+     "onboard": true,
+     "opinion": 3,
+     "owes": 0
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "They say all right and go back to their bunk. For the rest of the trip you can hear them through the bulkhead, running their answers again and again. You never learn whether they made the interview.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": -1,
+     "owes": 0
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "They say all right and go back to their bunk. For the rest of the trip you can hear them through the bulkhead, running their answers again and again. You never learn whether they made the interview.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": -1,
+     "owes": 0
+    }
+   }
+  ],
+  "title": "Running Late",
+  "text": "Sam has a job interview on Olympus Dome, and the schedule is tighter than they thought. They have ironed their good shirt three times in the galley and run their answers at the mirror. Now they stand at the cockpit hatch, twisting their hands. \"Captain, I hate to ask. Is there any way to go faster?\"",
+  "labels": [
+   "[{crew}] Find a faster line",
+   "Hard burn (40 reaction mass)",
+   "\"Physics does not negotiate.\""
+  ]
+ },
+ {
+  "id": "6",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Sam spends six hours in a vac suit on the rock, tethered to your hull, giggling into the radio and chipping at the crust with a tiny hammer. When they come back in, frosted and shaking, they hold a vial up to the light. They promise to name something after you.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 20,
+     "bonus": 2000,
+     "onboard": true,
+     "opinion": 3,
+     "owes": 0
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Sam spends six hours in a vac suit on the rock, tethered to your hull, giggling into the radio and chipping at the crust with a tiny hammer. When they come back in, frosted and shaking, they hold a vial up to the light. They promise to name something after you.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 20,
+     "bonus": 2000,
+     "onboard": true,
+     "opinion": 3,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "They watch it slide past the window, a pale point in the dark, and stay at the glass until it is gone. Later you see them write something in the notebook: the date, and a line you cannot read. They are polite for the rest of the trip. When they disembark they leave a folded drawing on the galley table, of a rock, and a ship, and a long distance.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": -1,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "They watch it slide past the window, a pale point in the dark, and stay at the glass until it is gone. Later you see them write something in the notebook: the date, and a line you cannot read. They are polite for the rest of the trip. When they disembark they leave a folded drawing on the galley table, of a rock, and a ship, and a long distance.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": -1,
+     "owes": 0
+    }
+   }
+  ],
+  "title": "Sample Opportunity",
+  "text": "Sam has been at the observation blister for hours with a battered notebook and a pair of binoculars. Now they appear at the cockpit hatch, out of breath, hair on end. They have spotted a rock a few hours off your trajectory, pale, with a bright glint in the sun. \"A sample from that could make my career,\" they say. \"I will pay for the detour. Please. I have waited my whole life for something like this.\"",
+  "labels": [
+   "Match orbits and take a sample (costs time)",
+   "Stay on course"
+  ]
+ },
+ {
+  "id": "7",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "The drive falls silent. They drift through the cargo bay in a slow circle, singing in a language older than any port, and one by one other passengers and crew drift in to listen. When it is over they press a donation on you, in small folded notes, and touch the bulkhead once.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 12,
+     "bonus": 800,
+     "onboard": true,
+     "opinion": 3,
+     "owes": 0
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "The drive falls silent. They drift through the cargo bay in a slow circle, singing in a language older than any port, and one by one other passengers and crew drift in to listen. When it is over they press a donation on you, in small folded notes, and touch the bulkhead once.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 12,
+     "bonus": 800,
+     "onboard": true,
+     "opinion": 3,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "They thank you for hearing them. They pray at one g instead, kneeling on the cold deck of the cargo bay.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": -1,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "They thank you for hearing them. They pray at one g instead, kneeling on the cold deck of the cargo bay.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": -1,
+     "owes": 0
+    }
+   }
+  ],
+  "title": "A Request for Stillness",
+  "text": "Sam comes to the cockpit hatch holding a worn book. They ask whether you might cut the drive for a few hours, so that they can hold a prayer service in zero g. It is a holy day for them, and the old prayers say that in weightlessness a person is closest to whatever is out there. They do not press. They wait with their hands folded, and the book shakes in their grip.",
+  "labels": [
+   "Cut thrust for them (costs time)",
+   "Decline politely"
+  ]
+ },
+ {
+  "id": "8",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You listen for an hour, and then another. Near the end, between the bakery and the bees, is something you can use: \"A fire in a warehouse on The Rook took most of the local stock of Medical Supplies, and nobody is saying how it started.\" Sam gives you a shy smile.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 1,
+     "owes": 0
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You listen for an hour, and then another. Near the end, between the bakery and the bees, is something you can use: \"A fire in a warehouse on Mars took most of the local stock of Medical Supplies, and nobody is saying how it started.\" Sam gives you a shy smile.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 1,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You escape to the cockpit with a muttered excuse and check the instruments. Sam finds someone else to talk to. Through the hatch, for the next hour, you hear the stories moving from bunk to bunk.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": -1,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You escape to the cockpit with a muttered excuse and check the instruments. Sam finds someone else to talk to. Through the hatch, for the next hour, you hear the stories moving from bunk to bunk.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": -1,
+     "owes": 0
+    }
+   }
+  ],
+  "title": "Long Stories",
+  "text": "Sam corners you in the galley with a bulb of coffee and begins to talk before you can leave. They talk about Mars: the streets, the smells, the bakery at the corner, the neighbor who kept bees, the long evenings. Every story is longer than the last, and every one ends with \"and then, of course, I left.\"",
+  "labels": [
+   "Listen",
+   "Excuse yourself to the cockpit"
+  ]
+ },
+ {
+  "id": "9",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You sit beside them and explain flip-and-burn three times, slowly, with a hand on their shoulder and a cup of water. The third time you draw it on the bulkhead with a finger. The trembling slows, and they laugh once, wetly. Sam apologizes. You tell them there is nothing to apologize for.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 2,
+     "owes": 0
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You sit beside them and explain flip-and-burn three times, slowly, with a hand on their shoulder and a cup of water. The third time you draw it on the bulkhead with a finger. The trembling slows, and they laugh once, wetly. Sam apologizes. You tell them there is nothing to apologize for.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 2,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Sam takes the sedative with a shaking hand and lies back on the bunk. Within minutes they are breathing slow. They sleep through the rest of the burn and wake at the dock with no memory of what frightened them.",
+    "d": {
+     "credits": -200,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 1,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "Sam takes the sedative with a shaking hand and lies back on the bunk. Within minutes they are breathing slow. They sleep through the rest of the burn and wake at the dock with no memory of what frightened them.",
+    "d": {
+     "credits": -200,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 1,
+     "owes": 0
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "Sam flinches and goes quiet. They spend the rest of the trip in their bunk with the curtain drawn, eating little, speaking to no one. Sometimes, in the night, you can hear them.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": -300,
+     "onboard": true,
+     "opinion": -2,
+     "owes": 0
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "Sam flinches and goes quiet. They spend the rest of the trip in their bunk with the curtain drawn, eating little, speaking to no one. Sometimes, in the night, you can hear them.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": -300,
+     "onboard": true,
+     "opinion": -2,
+     "owes": 0
+    }
+   }
+  ],
+  "title": "Panic at the Flip",
+  "text": "Sam panics when the drive cuts for the flip. The silence and the sudden lightness come at once, and they are sure the reactor has failed. They grip the edge of the bunk, breathing in short gasps, and a low moan starts in their throat. The others look at you.",
+  "labels": [
+   "Talk them through it",
+   "Give them a sedative (200 cr)",
+   "Tell them to pull themselves together"
+  ]
+ },
+ {
+  "id": "10",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Sam touches something. A hiss goes up, and a valve you did not know existed blows its seal. You vent 20 units of reaction mass into the black before you can shut it. Sam apologizes for the next hour, fast and stammering, until you laugh.",
+    "d": {
+     "credits": 0,
+     "fuel": -20,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 2,
+     "owes": 0
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Sam asks questions for an hour, about coolant loops and injector timing and why the drive hums at that note. You find yourself explaining, and enjoying it. By the end you are both leaning on a pipe with the drive humming around you.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 2,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "They say they understand and are sorry to have asked. That evening you find them at the observation blister with an ear against the wall, listening to the drive. When they see you, they go on listening.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": -1,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "They say they understand and are sorry to have asked. That evening you find them at the observation blister with an ear against the wall, listening to the drive. When they see you, they go on listening.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": -1,
+     "owes": 0
+    }
+   }
+  ],
+  "title": "Engine Room Tour",
+  "text": "Sam has been hovering near the engine room hatch for two days, with an ear pressed to the bulkhead. Now they come to you. \"Captain, I would love to see the drive room. Just a quick look. I will not touch anything. I promise. I have always wanted to know how it works.\"",
+  "labels": [
+   "Show them around",
+   "Crew only, sorry"
+  ]
+ },
+ {
+  "id": "11",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Sam grumbles, studies the deck, and says \"unreasonable\" to nobody. They stay out of the galley for the rest of the trip, and at the dock they pay in full, in small folded notes.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 400,
+     "onboard": true,
+     "opinion": -2,
+     "owes": 0
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Sam grumbles, studies the deck, and says \"unreasonable\" to nobody. They stay out of the galley for the rest of the trip, and at the dock they pay in full, in small folded notes.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 400,
+     "onboard": true,
+     "opinion": -2,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Sam goes deep red. They clean the galley themselves, top to bottom, all night, with a toothbrush, and in the morning it is the cleanest room on the ship. There is a note on the door in pencil: \"Sorry. Thank you. Never again.\"",
+    "d": {
+     "credits": -400,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 2,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "Sam goes deep red. They clean the galley themselves, top to bottom, all night, with a toothbrush, and in the morning it is the cleanest room on the ship. There is a note on the door in pencil: \"Sorry. Thank you. Never again.\"",
+    "d": {
+     "credits": -400,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 2,
+     "owes": 0
+    }
+   }
+  ],
+  "title": "Galley Incident",
+  "text": "Sam got into the good whiskey, the bottle you were saving, and somewhere around the third glass decided to give the galley water recycler \"a bit of a fix\", with a spoon and a fork. There is a gap in the wall and a fine mist in the air. Sam is sitting in the middle of the galley, wet through, holding the spoon upright. Repairs will run about 400 credits.",
+  "labels": [
+   "Add it to their fare",
+   "Let it slide (400 cr)"
+  ]
+ },
+ {
+  "id": "12",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You clean Sam out in one long quiet hand. Sam looks at the table for ten seconds. \"Luck,\" Sam says. For the rest of the trip Sam sits in a corner and mutters it at the deck.",
+    "d": {
+     "credits": 500,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": -1,
+     "owes": 0
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Sam wins in one slow hand, turning a single card over at the end. \"Well,\" Sam says, and gathers the money. \"That was friendly.\" For the rest of the trip Sam hums in the corridors and shuffles the deck where you can see it.",
+    "d": {
+     "credits": -500,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 1,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"Suit yourself,\" Sam says, and deals a hand of solitaire, slowly. You hear each card click down. Sam plays it out, loses, and begins again.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 0,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"Suit yourself,\" Sam says, and deals a hand of solitaire, slowly. You hear each card click down. Sam plays it out, loses, and begins again.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 0,
+     "owes": 0
+    }
+   }
+  ],
+  "title": "Card Game",
+  "text": "Sam produces a deck worn soft at the corners and shuffles it with a flourish. \"A friendly game, captain,\" Sam says. \"With a little money on it, just to make things interesting. It is a long burn, and a man gets bored.\" The deck is not yet square, and Sam is already smiling.",
+  "labels": [
+   "Play (500 cr stake)",
+   "Decline"
+  ]
+ },
+ {
+  "id": "13",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You take the notes, and sit at the long table with the crew, elbow to elbow, passing dishes. It is the best meal the ship has had in months, and for an hour nobody talks about anything else. Somebody starts to sing, and the table joins in.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 600,
+     "onboard": true,
+     "opinion": 1,
+     "owes": 0
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You take the notes, and sit at the long table with the crew, elbow to elbow, passing dishes. It is the best meal the ship has had in months, and for an hour nobody talks about anything else. Somebody starts to sing, and the table joins in.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 600,
+     "onboard": true,
+     "opinion": 1,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Sam cannot speak for a moment. They take your hand in both of theirs, and then they write out the recipe on a napkin, every step, with a sketch of the pot. You will cook it, badly, for years.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 3,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "Sam cannot speak for a moment. They take your hand in both of theirs, and then they write out the recipe on a napkin, every step, with a sketch of the pot. You will cook it, badly, for years.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 3,
+     "owes": 0
+    }
+   }
+  ],
+  "title": "Gratitude",
+  "text": "Sam takes over the galley for an afternoon and cooks a dinner for everyone aboard, with spices they brought from Mars, wrapped in twists of paper in a hidden pouch. The ship fills with the smell of cumin and roasted peppers, and the crew drift in one by one. At the end they insist on tipping you for a smooth trip, pressing the notes into your palm.",
+  "labels": [
+   "Accept graciously",
+   "Refuse the money, keep the dinner"
+  ]
+ },
+ {
+  "id": "14",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Item one,\" you say, and write it in a book. \"The bunk.\" Sam reads the list again, slower, so that you can keep up. By the end of the hour Sam has run out. \"Is there any more tea?\" Sam asks.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 1,
+     "owes": 0
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Item one,\" you say, and write it in a book. \"The bunk.\" Sam reads the list again, slower, so that you can keep up. By the end of the hour Sam has run out. \"Is there any more tea?\" Sam asks.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": 0,
+     "onboard": true,
+     "opinion": 1,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"I have read your list,\" you say, in a level voice, \"and here is what I think of it.\" You go item by item: the bunk is the bunk you were given, the food is the food you eat, and the gravity is the only gravity the drive makes. Sam goes pale, then red, then still. A formal complaint arrives that evening, in triplicate, and the fee comes out of your fare. The rest of the trip is quiet, and at night you can hear the drive again.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": -300,
+     "onboard": true,
+     "opinion": -2,
+     "owes": 0
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"I have read your list,\" you say, in a level voice, \"and here is what I think of it.\" You go item by item: the bunk is the bunk you were given, the food is the food you eat, and the gravity is the only gravity the drive makes. Sam goes pale, then red, then still. A formal complaint arrives that evening, in triplicate, and the fee comes out of your fare. The rest of the trip is quiet, and at night you can hear the drive again.",
+    "d": {
+     "credits": 0,
+     "fuel": 0,
+     "armor": 0,
+     "left": 0,
+     "bonus": -300,
+     "onboard": true,
+     "opinion": -2,
+     "owes": 0
+    }
+   }
+  ],
+  "title": "Complaints",
+  "text": "Sam has a list in a neat notebook, and reads it to you at the cockpit hatch, in order. \"The bunk is too hard. The food is a crime. The gravity is insufficiently serious. The coffee tastes of pipe.\" Sam turns a page. \"And frankly, captain, your face is not one I would choose to look at for so long.\"",
+  "labels": [
+   "Humor them",
+   "Put them in their place"
+  ]
+ }
+]
