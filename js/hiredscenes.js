@@ -58,7 +58,7 @@ const SCENE_LINES = {
     text: 'Captain {last} waits until the hold is shut and the others have gone ashore. "I will say this once," the captain says. "I have had enough of the last few weeks. The next port like this one, the berth goes to somebody else."',
     'c0.label': 'Say you will do better', 'c0.result': '"Then do," the captain says, and goes down the ramp.',
     'c1.label': 'Apologize for the worst of it', 'c1.result': 'You name two things, the log and the order, and say you were wrong in both. The captain listens to the end. "That is said, then," the captain says.',
-    'c2.label': 'Say the captain has been unfair', 'c2.result': '"Unfair," the captain says. The captain looks at you for some time. "We will see," the captain says.',
+    'c2.label': 'Say the captain has been unfair', 'c2.result': '"Unfair," the captain says. The captain looks at you across the hold. "We will see," the captain says.',
   },
   'scene:put-ashore': {
     title: 'Put Ashore',
@@ -67,7 +67,7 @@ const SCENE_LINES = {
   },
   'scene:hand-death': {
     title: 'The Last Run',
-    'text.hurt': 'The first hurt was not mended when the second one came. You are on the deck, with the cold of it against your cheek, and the crew are saying your name. Captain {last} says it from the hatch, and then asks for the medic, and it is already late for that.',
+    'text.hurt': 'The first hurt was not mended when the second one came. You are on the deck, with the cold of it against your cheek, and the crew are saying your name. Captain {last} says it from the hatch, and then asks for the medic.',
     'text.bridge': 'You are laid up in the corridor, where the first hit left you, when they come through the last hatch. You do not get up. Captain {last} gives them the code to the strongbox, and the crew carry you below before the lock cycles.',
     log: 'Captain {last} writes it in the log: the day, the place, your name. The ship goes on without you.',
     'c0.label': 'Begin again',
@@ -100,7 +100,7 @@ const SCENE_LINES = {
     'tomas.tell.bad': '{price} cr, and I am not going to pretend it is a favor.',
     'tomas.tell.plain': '{price} cr.',
     'tomas.c0.label': 'Walk her with him',
-    'tomas.c0.result': 'He shows you the drive housing, the patched coolant line and the place where the fire control cable has been spliced twice. He talks the whole way, and does not once sound like he is selling. The ship is on the yard list now, as the used Ore Runner, until about day {until}.',
+    'tomas.c0.result': 'He shows you the drive housing, the patched coolant line and the place where the fire control cable has been spliced twice. He talks the whole way, about the ship and not the price. The ship is on the yard list now, as the used Ore Runner, until about day {until}.',
     'broker.title': 'A Used Ore Runner',
     'broker.text': 'A broker at the yard office has been watching the board for someone with savings. "There is a used Ore Runner on the apron," the broker says. "Three owners, a lot of repairs, and the last one let her go. Her fire control is poor and her life support is tired. The yard will not warrant either. {price} cr, as she stands. Give it a few weeks and somebody else will have her."',
     'broker.c0.label': 'Look her over',

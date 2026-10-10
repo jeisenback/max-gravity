@@ -307,7 +307,7 @@ const ERRANDS = [
   ['a sealed parcel', 'A courier bag with a wax seal, and a receipt to bring back signed. It weighs about as much as a lunch.'],
   ['a message on a chip', 'A hand-written note on a data chip: somebody does not trust the public bands with it.'],
   ['a set of spare keys', 'A ring of keys for a flat somebody has not seen in years. They want them back before the lease runs out.'],
-  ['a box of medicine', 'A small insulated box with a cold-chain tag. The label says to keep it upright and out of the sun.'],
+  ['a box of medicine', 'An insulated box with a cold-chain tag. The label says to keep it upright and out of the sun.'],
   ['a crate of seedlings', 'A tray of green shoots under a grow light that has to stay on. You carry it in your bunk.'],
 ];
 
@@ -474,7 +474,7 @@ const CHAPTER_ENDINGS = [
       `You came aboard the ${r.oldName} ${r.days} days ago with ${fmt(HIRED_SAVINGS)} cr and a post to learn, and you leave a hand's width of tape clear under the last name.`) },
   { id: 'empty-berths', group: 'Loss', title: 'The Empty Berths', when: r => !r.friends.length,
     text: r => (`Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has ${r.berths} berths, and each has its mattress folded to the wall. ` +
-      `You walk the length of the passage once and close the hatch of each, and the sound goes on a little after you do. You came aboard the ${r.oldName} ${r.days} days ago ` +
+      `You walk the length of the passage once and close the hatch of each, and the sound goes on after you do. You came aboard the ${r.oldName} ${r.days} days ago ` +
       `with ${fmt(HIRED_SAVINGS)} cr and a post to learn.${memorialNote()}`) },
   { id: 'ten-years', group: 'Crew', title: 'Ten Years, One Ship', when: r => r.promised.length > 0,
     text: r => (`${namesOf(r.friends)} ${r.friends.length > 1 ? 'go' : 'goes'} up the ramp ahead of you with ${r.friends.length > 1 ? 'their bags' : 'a bag'}. ` +
@@ -565,7 +565,7 @@ const runHtml = () => {
 // The captain's own habits, now and then, among the crew's chatter. The captain is not crew, so the crew's lines never name them.
 const CAPTAIN_CHATTER = [
   '{cap} is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch.',
-  '{cap} stops at the hatch of the {post}, looks in, and leaves without saying a word. It is somehow reassuring.',
+  '{cap} stops at the hatch of the {post}, looks in, and leaves without saying a word.',
   '{cap} is in the galley with the ledger open, lips moving over the sums.',
   '{cap}: "Fuel is money, and money is fuel. Remember that when somebody wants to go faster."',
   '{cap} is checking the manifest against the hold, line by line, for the second time.',
