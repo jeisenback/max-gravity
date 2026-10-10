@@ -556,7 +556,7 @@ test('the Gunner\'s line and the GUNS tab match how contacts play for a hired ha
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('gunner');
-    const hand = { sign: SIGN_POSTS.gunner('Captain X'), weapons: weaponsPanel(), projects: projectsHtml('gunner') };
+    const hand = { sign: sceneSay('scene:sign-on', 'post.gunner', { cap: 'Captain X' }), weapons: weaponsPanel(), projects: projectsHtml('gunner') };
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'owner' });
     const owner = { weapons: weaponsPanel(), projects: projectsHtml('gunner') };
     return { hand, owner, hiredNow: !!hired() };

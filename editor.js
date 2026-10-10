@@ -83,6 +83,7 @@
     const row = registryRow({ title: s.title, text: '', choices: [] });
     return { ...row, text: Object.entries(s.parts).map(([k, t]) => `[${k}] ${t}`).join('\n'), parts: s.parts, noTitle: true, edit: { ...row.edit, text: false } };
   }
+  const SCENE_NOTE = 'Its words are the lines it is built from, named by what each is for. A {word} in a line is filled from the game when the scene plays, and is kept as typed. What a choice does, the experience it teaches and what the scene builds from the game state (a recap, who has gone, a sum) are in code.';
   const BEAT_NOTE = 'Its words are the lines of the tables the beats read, named by where each sits. Odds, damage and the roll are in code, and so are the lines built from the game state (a casualty, a name, a count, the armor) and the dead-in-space scene.';
 
   // A scene whose words live in a table one template plays (a work event, an ice run scene; #462) as the editor's row: its words are edited, and what it does is in code. A choice
@@ -135,12 +136,12 @@
         add({ id: e.id, file: fileOf.work, belongs: `${d.post} (post)`, on: postOn(d.post), post: d.post, pacing: pacingOf.work(d), conditionsNote: `A problem at the ${d.post} post, for a hand who works it; not repeated within ${WORK_SEEN_DAYS} days.`, ...tableRow(tableScene(e.id)) });
       } else if (e.kind === 'hand') {
         const d = e.def, note = `A ${d.group} event for a hired hand${d.post ? ` at the ${d.post} post` : ''}; its own conditions are written in code.`;
-        if (e.scene) add({ id: e.id, file: fileOf.hand, belongs: `${d.group} (hired event)`, on: postOn(d.post), pacing: pacingOf.hand(d), conditionsNote: note, ...registryRow(e.scene) });  // written as data (#473)
+        if (e.scene) add({ id: e.id, file: fileOf.hand, belongs: `${d.group} (hired event)`, on: postOn(d.post), pacing: pacingOf.hand(d), conditionsNote: note, ...(e.scene.parts ? { ...beatRow(e.scene), codeNote: SCENE_NOTE } : registryRow(e.scene)) });  // written as data (#473), or as lines (#463)
         else add({ id: e.id, title: d.id, file: fileOf.hand, belongs: `${d.group} (hired event)`, on: postOn(d.post), text: '', choices: [], codeNote: CODE_ALL, pacing: pacingOf.hand(d), conditionsNote: note });
       } else if (e.kind === 'ice') {
         add({ id: e.id, file: fileOf.ice, belongs: 'ice run', pacing: pacingOf.ice(), conditionsNote: `Scene ${Number(e.id.slice(4))} of 3 on an ice run, once the captain takes one.`, ...tableRow(tableScene(e.id)) });
       } else if (e.scene) {  // a beat of the raid, the ambush or the boarding fights (#478): its lines, by name
-        add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: 'beats', conditionsNote: e.when, pacing: { tier: null, weight: null, cooldown: 'by its own rule', trigger: e.when, editable: false }, ...beatRow(e.scene), codeNote: BEAT_NOTE });
+        add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: 'beats', conditionsNote: e.when, pacing: { tier: null, weight: null, cooldown: 'by its own rule', trigger: e.when, editable: false }, ...beatRow(e.scene), codeNote: e.id.startsWith('beats:') ? BEAT_NOTE : SCENE_NOTE });
       } else {  // built by a function: no text to read, only what it is and when it plays
         add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: e.id.startsWith('beats:') ? 'beats' : 'hired chapter', text: '', choices: [], codeNote: CODE_ALL, conditionsNote: e.when, pacing: { tier: null, weight: null, cooldown: 'by its own rule', trigger: e.when, editable: false } });
       }
@@ -312,6 +313,17 @@
         const sc = CAST[reg.key].scenes[reg.name];
         if (sc.closed) castPerson(reg.key).opinion = reg.closed ? OPINION.FRIEND - 1 : OPINION.FRIEND;
         openEvent(castScene(reg.key, sc));
+      } else if (reg.kind === 'function' && !reg.id.startsWith('beats:')) {  // a scene built by a function (#463), with what it needs about
+        const crew = folk().filter(f => f.crew && !f.p.cast), st = G.state;
+        const build = {
+          'scene:sign-on': () => { st.carried = null; return signOnEvent(); }, 'scene:warning': warningScene, 'scene:put-ashore': putAshoreScene, 'scene:hand-death': () => handDeathScene('hurt'),
+          'scene:captain-lost': captainLostScene, 'scene:used-ship-offer': () => dealScene(currentPlanet()), 'scene:yard-office': () => yardScene(USED_ID),
+          'scene:split': () => { if (crew.length > 1) { addBond(crew[0], crew[1], -9); st.feuds = { [bondKey(crew[0], crew[1])]: 1 }; st.relAt = {}; } return splitScene(); },
+          'scene:walk-off': () => { const c = castAboard().find(x => CAST[x.cast].farewell); return c ? walkOffScene(c, currentPlanet()) : null; },
+        }[reg.id];
+        const ev = build && build();
+        if (!ev) return { error: 'This scene needs people the test game does not have aboard. Choose another captain or start.' };
+        openEvent(ev);
       } else if (reg.kind === 'function') {  // a beat of the raid, the ambush or the boarding fights: it needs a foe, and the first-raid explanation is out of the way
         hired().raidTold = true;
         const foe = makeEnemy({ kind: 'pirate' });
@@ -601,12 +613,12 @@
 
   // The {words} of a text that the game would not replace, by the rule the game sent (storylets.js PLACEHOLDER): the same check, run here.
   let rule = null, onPreview = () => {}, newDefs = () => [], pendingNotice = '';
-  function badPlaceholders(text) {
+  function badPlaceholders(text, shipped = '') {
     if (!rule) return [];
-    const known = new RegExp(rule.source);
-    return (String(text).match(/\{[^{}]*\}/g) || []).filter(t => { const m = known.exec(t); return !m || !!(m[1] && !rule.roles.includes(m[1])); });
+    const known = new RegExp(rule.source), taken = String(shipped).match(/\{\w+\}/g) || [];  // a scene built by a function fills the {words} its own line has (#463)
+    return (String(text).match(/\{[^{}]*\}/g) || []).filter(t => { const m = known.exec(t); return !taken.includes(t) && (!m || !!(m[1] && !rule.roles.includes(m[1]))); });
   }
-  const flagOf = v => (!v.trim() ? 'Empty: the shipped words are used.' : badPlaceholders(v).length ? `Not a placeholder the game replaces: ${badPlaceholders(v).join(' ')}` : '');
+  const flagOf = (v, shipped) => (!v.trim() ? 'Empty: the shipped words are used.' : badPlaceholders(v, shipped).length ? `Not a placeholder the game replaces: ${badPlaceholders(v, shipped).join(' ')}` : '');
 
   const paragraphs = text => text.split('\n').filter(Boolean).map(p => `<p>${esc(p)}</p>`).join('');
   const tableHtml = (rows, selected = '', edited = new Set()) => (rows.length ? `<table>
@@ -622,9 +634,9 @@
       <label for="f-${esc(path)}">${esc(label)}</label>
       <div class="shipped"><span class="hint">Shipped</span>${shipped ? paragraphs(shipped) : '<p class="hint">(none)</p>'}</div>
       ${editable ? `<textarea id="f-${esc(path)}" data-path="${esc(path)}" rows="${Math.max(2, Math.ceil((value || shipped || '').length / 60))}">${esc(value === undefined ? shipped : value)}</textarea>
-        <div class="warn" data-warn="${esc(path)}" role="status">${esc(value === undefined ? '' : flagOf(value))}</div>`
+        <div class="warn" data-warn="${esc(path)}" role="status">${esc(value === undefined ? '' : flagOf(value, shipped))}</div>`
         : r.registry ? '<p class="hint">Its text is built from the game state when it plays, so it is edited in code.</p>' : '<p class="hint">This one has parts that depend on conditions. It is edited in code until the conditions can be edited (story 4).</p>'}
-      ${editable && r.registry && !r.table && /\.result$/.test(path) && !effectsEditable(r, Number(/^c(\d+)/.exec(path)[1])) ? '<p class="hint">This choice runs code. A result written here replaces the line it returns.</p>' : ''}
+      ${editable && r.registry && !r.table && !r.parts && /\.result$/.test(path) && !effectsEditable(r, Number(/^c(\d+)/.exec(path)[1])) ? '<p class="hint">This choice runs code. A result written here replaces the line it returns.</p>' : ''}
     </div>`;
   }
 
@@ -1225,7 +1237,7 @@
       else if (d.pvRep) setup.rep[d.pvRep] = t.value;
       else if (d.path) {  // a field of the form: keep the focus, so only its flag and the changes are redrawn
         (values[state.id] = values[state.id] || dict())[d.path] = t.value;
-        app.querySelector(`[data-warn="${d.path}"]`).textContent = flagOf(t.value);
+        app.querySelector(`[data-warn="${d.path}"]`).textContent = flagOf(t.value, shippedOf(here(), d.path));
         refresh();
       } else if (d.rpath) {  // a condition or effect's value
         const entry = touch(here(), d.rpath, struct)[d.rpath].find(x => x[0] === d.rkey);
