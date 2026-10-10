@@ -161,312 +161,281 @@ function dropPassenger(m, location) {
 
 // Transit events built from a passenger's secret, goal, and traits.
 // Each entry: when(p) says whether it fits, make(p, m) builds the event.
+// The words of each event are in PEOPLE_LINES (peopletext.js), read through peopleSay (linetables.js) so the scene editor can change them; `say` fills a line's {words} from
+// the passenger and the trip. What a choice does is here. `sample` is a passenger the event is about, for the scene editor's preview.
+const paxSay = (id, p, m) => (key, vars) => peopleSay(`people:pax:${id}`, key, { first: p.first, last: p.last, home: p.home, crime: p.crime, dest: m.destPlanet, ...vars });
 const PAX_EVENTS = [
-  { weight: 3, when: p => p.secret === 'contraband', make: (p, m) => ({
-    title: 'Customs Inspection',
-    text: (`The customs cutter's searchlight comes across the hull plate by plate. "Ship, this is Inspection," says the voice on the open band. "Hold your ` +
-        `burn and open the hold to a scan. It takes a quarter hour, and we do it twice if there is a reason to." ${p.first} is at the hold hatch with one hand ` +
-        `on the frame. "Captain." ${p.first} says it low. "Whatever you can do. Stall them. I will explain at the next port, and you will not like it, but I will explain."`),
+  { id: 'contraband', sample: { secret: 'contraband' }, weight: 3, when: p => p.secret === 'contraband', make: (p, m) => { const say = paxSay('contraband', p, m); return ({
+    title: say('title'),
+    text: say('text'),
     choices: [
-      { label: 'Stall them', run() {
+      { label: say('c0.label'), run() {
         if (Math.random() < 0.6) {
           m.bonus += 1500 * p.wealth;
           like(p, 3, 'You covered for me with customs.');
-          return (`"Inspection, the hold scanner has a fault," you say, and then you have the fault's maintenance log, and three forms in the wrong order that she has ` +
-              `to send back. "That is your problem, captain," the officer says. "It will be mine when I log it," you say. It takes forty-one minutes. Her intercept ` +
-              `window closes at forty-two, and the cutter peels away with a burst of static. ${p.first} sits down on a crate. At the airlock ${p.first} puts a folded ` +
-              `note in your hand and does not say what it is for.`);
+          return say('c0.win');
         }
         G.state.credits = Math.max(0, G.state.credits - 2000);
         changeRep(localGov(), -5);
         like(p, 1, 'You tried to cover for me with customs.');
-        return (`"That is the second form I have asked for," the officer says. "For the third I come aboard." She comes aboard. They find ${p.first}'s stash ` +
-            `behind a false panel in the second bay, in under ten minutes. "Negligent inspection," she says, writing it, "two thousand credits." You pay it. At ` +
-            `supper the only sound in the galley is cutlery.`);
+        return say('c0.lose');
       } },
-      { role: 'slicer', label: '[{crew}] Spoof the cargo manifest', run() {
+      { role: 'slicer', label: say('c1.label'), run() {
         if (Math.random() < slicerOdds()) {
           m.bonus += 1500 * p.wealth;
           like(p, 3, 'Your slicer hid me from customs.');
-          return `{crew} sits down at the console. "Ninety seconds," {crew} says, "and do not talk to me." In ninety seconds the manifest, the cargo record and the ship's last six ports are rewritten. The scan crosses the hold and reads tidy crates and honest paperwork. ${p.first} watches from the hatch, looks at you, and then at {crew}.`;
+          return say('c1.win');
         }
         G.state.credits = Math.max(0, G.state.credits - 2000);
-        return '{crew}\'s spoof fails a checksum on one line of the manifest, and the scanner lights. You pay a 2,000 cr fine. "One digit," {crew} says, for the next hour. "It was one digit."';
+        return say('c1.lose');
       } },
-      { label: `Turn ${p.first} in (+1,500 cr reward)`, run() {
+      { label: say('c2.label'), run() {
         G.state.credits += 1500;
         dropPassenger(m, null);
         changeRep(localGov(), 3);
         like(p, -6, 'You turned me in to customs.');
-        return `"${p.first} ${p.last}," the officer says, once, to be sure, and customs takes ${p.first} off in cuffs with one hand on their shoulder. ${p.first} does not look back. The airlock cycles. At the galley table a cup is left half full, and nobody clears it.`;
+        return say('c2.result');
       } },
-    ] }) },
-  { weight: 3, when: p => p.secret === 'wanted', make: (p, m) => ({
-    title: 'Bounty Hunter',
-    text: (`A bounty hunter matches your burn, dark, with one running light that winks on and off. "You are carrying ${p.first} ${p.last}," says the voice on ` +
-        `the channel, low and unhurried. "Wanted on ${p.home} for ${p.crime}. Five thousand for the handover. Or I come and take them, and that costs everyone ` +
-        `aboard." In the galley ${p.first} sets a cup on the table and turns it a quarter turn, so that the handle faces away.`),
+    ] }); } },
+  { id: 'wanted', sample: { secret: 'wanted' }, weight: 3, when: p => p.secret === 'wanted', make: (p, m) => { const say = paxSay('wanted', p, m); return ({
+    title: say('title'),
+    text: say('text'),
     choices: [
-      { label: 'Hand them over (+5,000 cr)', run() {
+      { label: say('c0.label'), run() {
         G.state.credits += 5000;
         dropPassenger(m, null);
         like(p, -8, 'You sold me to a bounty hunter.');
-        return `"Dock at my lock," the hunter says, "and keep your hands off the panel." ${p.first} goes across with one bag. At the lock ${p.first} looks back once. The credits arrive before the lock finishes cycling.`;
+        return say('c0.result');
       } },
-      { role: 'gunner', label: '[{crew}] Make them reconsider', run() {
+      { role: 'gunner', label: say('c1.label'), run() {
         m.bonus += 2000;
         like(p, 4, 'You fought off a bounty hunter for me.');
-        return `{crew} puts a burst of tracer across the hunter's bow, a line of light that picks out the hull number. "That was the warning," {crew} says on the channel. "The next one has a number on it." The hunter reconsiders. One wild shot comes back and costs you ${hurt(0.1)} points of armor. At the airlock ${p.first} pays you extra and shakes your hand hard enough to hurt.`;
+        return say('c1.result', { armor: hurt(0.1) });
       } },
-      { label: 'Refuse, and fight if you must', run() {
+      { label: say('c2.label'), run() {
         if (Math.random() < fightOdds()) {
           m.bonus += 2000;
           like(p, 4, 'You fought off a bounty hunter for me.');
-          return `It takes a long, ugly exchange to drive the hunter off, and it costs you ${hurt(0.2)} points of armor and an antenna. That night in the galley, over a bulb of something strong, ${p.first} tells you their side of it. "A bad partner and a worse lawyer," ${p.first} says, "and I did not do half of what is on the sheet." The bulb is empty before the other half.`;
+          return say('c2.win', { armor: hurt(0.2) });
         }
         like(p, 3, 'You risked your ship for me.');
-        return `The hunter hammers the hull for three minutes, ${hurt(0.4)} points of armor, and then breaks off with a curse on the channel. ${p.first}, gray in the face, holds the patch plate. "Hold it flat," you say, and ${p.first} does, while you seal the worst of the breaches.`;
+        return say('c2.lose', { armor: hurt(0.4) });
       } },
-    ] }) },
-  { weight: 3, when: p => p.secret === 'ill' || p.goal === 'medical', make: (p, m) => ({
-    title: 'Medical Emergency',
-    text: (`${p.first} goes down in the galley, dropping a cup, and slides to the deck with their back against a cabinet. Their breathing is shallow and fast. ` +
-        `${p.goal === 'medical' ? 'The condition they were traveling to get treated has taken a turn.' : 'Between breaths they say they have hidden an illness for weeks and did not want to be a burden.'} ` +
-        `Everyone in the room has stopped moving. They look at you.`),
+    ] }); } },
+  { id: 'ill', sample: { secret: 'ill' }, weight: 3, when: p => p.secret === 'ill' || p.goal === 'medical', make: (p, m) => { const say = paxSay('ill', p, m); return ({
+    title: say('title'),
+    text: say('text', { reason: say(p.goal === 'medical' ? 'reason.medical' : 'reason.ill') }),
     choices: [
-      { role: 'medic', label: '[{crew}] Treat them', run() {
+      { role: 'medic', label: say('c0.label'), run() {
         m.bonus += 1000;
         like(p, 4, 'Your medic saved my life.');
-        return `{crew} works through the night with a lamp and a case of instruments and does not leave the bunk. By morning ${p.first} is sitting up, pale, asking for coffee in a cracked voice. {crew} is asleep in the corridor with a blanket over their shoulders, and nobody steps over them.`;
+        return say('c0.result');
       } },
-      { label: "Use the ship's medkit (500 cr of supplies)", ...gated(needCr(500)), run() {
+      { label: say('c1.label'), ...gated(needCr(500)), run() {
         G.state.credits -= 500;
         like(p, 3, 'You spent your medical supplies on me.');
-        if (Math.random() < 0.75) { m.bonus += 800; return 'You sit up with them through the night, working from the manual, with a bulb of water and a flashlight in your teeth. The fever breaks in the small hours, and they sleep for the first time in days.'; }
-        return 'You do everything the medkit and the manual allow, and it holds them stable. They need a real doctor. For the rest of the burn you take their pulse every twenty minutes, in the dark.';
+        if (Math.random() < 0.75) { m.bonus += 800; return say('c1.win'); }
+        return say('c1.lose');
       } },
-      { label: 'Burn harder to get them help (40 reaction mass)', ...gated(needMass(40)), run() {
+      { label: say('c2.label'), ...gated(needMass(40)), run() {
         G.state.fuel -= 40;
         delay(-10);
         like(p, 2, 'You burned hard to get me to a doctor.');
-        return `You push the drive until the frame ticks. ${p.first} lies pinned to a bunk with a wet cloth on their forehead and asks, every hour, how many hours you have saved. When the doctors take them at the dock, they say something you do not catch. It might be thanks.`;
+        return say('c2.result');
       } },
-      { label: 'There is nothing you can do', run() {
+      { label: say('c3.label'), run() {
         m.bonus -= 500;
         like(p, -2, 'You left me to suffer.');
-        return `${p.first} recovers over three days, on their own, in a cold bunk. They ask you for nothing, and they do not speak to you for the rest of the trip. At the dock they go down the ramp without turning round.`;
+        return say('c3.result');
       } },
-    ] }) },
-  { weight: 3, when: p => p.secret === 'spy', make: (p, m) => ({
-    title: 'Encrypted Bursts',
-    text: (`Your comms log shows ${p.first} sending tight-beam bursts between the second and third watch, short pulses aimed at no port you know. They send ` +
-        `them from the observation blister, alone, with the lights off. You have started to count how many times a shift ${p.first} looks at the door.`),
+    ] }); } },
+  { id: 'spy', sample: { secret: 'spy' }, weight: 3, when: p => p.secret === 'spy', make: (p, m) => { const say = paxSay('spy', p, m); return ({
+    title: say('title'),
+    text: say('text'),
     choices: [
-      { label: 'Confront them', run() {
+      { label: say('c0.label'), run() {
         if (Math.random() < 0.5) {
           m.bonus += 2500;
           like(p, 1, 'You caught me, and took money to keep quiet.');
-          return `${p.first} sighs, looks at you, and transfers 2,500 cr "for your discretion". "I like you, captain," they say. "I would rather not have to like you less."`;
+          return say('c0.win');
         }
         like(p, -3, 'You pried into my business.');
-        return `${p.first} tells you, evenly, that it is none of your business. They do not raise their voice and they do not threaten you. They stand there until you leave.`;
+        return say('c0.lose');
       } },
-      { role: 'slicer', label: '[{crew}] Quietly decrypt the traffic', run() {
-        return `{crew} cracks it over a long evening. Someone is paying for market numbers from every port you touch, in tidy weekly reports. Nothing dangerous: a patient stranger who wants to know what everything costs. Among the bursts is one line you can use: "${addRumor()}"`;
+      { role: 'slicer', label: say('c1.label'), run() {
+        return say('c1.result', { rumor: addRumor() });
       } },
-      { label: 'Not your business', run() {
+      { label: say('c2.label'), run() {
         like(p, 2, 'You respected my privacy.');
-        return `You let it go. The bursts keep coming every night at the same hour. Once, in the corridor, ${p.first} meets your eye and keeps walking.`;
+        return say('c2.result');
       } },
-    ] }) },
-  { weight: 3, when: p => p.secret === 'debt', make: (p, m) => ({
-    title: 'Collectors',
-    text: (`A collection agency hails and reads from a script: ${p.first} owes 1,500 credits and they want it now, "or we flag your ship as an accessory". ` +
-        `In the corner of the galley ${p.first} has gone the color of old paper and is looking at the deck. The agent adds, pleasantly, that they have ` +
-        `"a great deal of patience, and a great many lawyers."`),
+    ] }); } },
+  { id: 'debt', sample: { secret: 'debt' }, weight: 3, when: p => p.secret === 'debt', make: (p, m) => { const say = paxSay('debt', p, m); return ({
+    title: say('title'),
+    text: say('text'),
     choices: [
-      { label: 'Pay it for them (1,500 cr)', ...gated(needCr(1500)), run() {
+      { label: say('c0.label'), ...gated(needCr(1500)), run() {
         G.state.credits -= 1500;
         p.owes = 1500;
         like(p, 5, 'You paid off my debt. I will pay you back.');
-        return `${p.first} opens their mouth and nothing comes out. Then they say, low, that they will pay you back with interest, every credit, if it takes the rest of their life. They do not sit down until you have.`;
+        return say('c0.result');
       } },
-      { label: 'Tell the collectors to get lost', run() {
+      { label: say('c1.label'), run() {
         like(p, 1, 'You stood up to my collectors.');
-        return `They threaten legal action at length and cut the channel. Nothing comes of it. ${p.first} looks at you across the galley. Later there is a cup of tea at your elbow that you did not ask for.`;
+        return say('c1.result');
       } },
-    ] }) },
-  { weight: 2, when: p => p.goal === 'job', make: (p, m) => ({
-    title: 'Running Late',
-    text: (`${p.first} has a job interview on ${m.destPlanet}, and the schedule is tighter than they thought. They have ironed their good shirt three times ` +
-        `in the galley and run their answers at the mirror. Now they stand at the cockpit hatch, twisting their hands. "Captain, I hate to ask. Is there ` +
-        `any way to go faster?"`),
+    ] }); } },
+  { id: 'job', sample: { goal: 'job' }, weight: 2, when: p => p.goal === 'job', make: (p, m) => { const say = paxSay('job', p, m); return ({
+    title: say('title'),
+    text: say('text'),
     choices: [
-      { role: 'pilot', label: '[{crew}] Find a faster line', run() {
+      { role: 'pilot', label: say('c0.label'), run() {
         m.bonus += 800;
         like(p, 3, 'You got me to my interview on time.');
-        return `{crew} bends over the nav display, muttering, and finds a gravity assist nobody else would try, a long swoop round a moon that barely shows on the charts. It works. ${p.first} arrives with an hour to spare, freshly ironed, and at the dock hugs {crew} before {crew} can step back.`;
+        return say('c0.result');
       } },
-      { label: 'Hard burn (40 reaction mass)', ...gated(needMass(40)), run() {
+      { label: say('c1.label'), ...gated(needMass(40)), run() {
         G.state.fuel -= 40;
         m.bonus += 800;
         like(p, 3, 'You got me to my interview on time.');
-        return `You push the drive, and ${p.first} spends the burn on a crash couch, running answers through their teeth. They arrive on time, rumpled and out of breath, with no time to thank you. You watch them run for the concourse, straightening their collar.`;
+        return say('c1.result');
       } },
-      { label: '"Physics does not negotiate."', run() {
+      { label: say('c2.label'), run() {
         like(p, -1, 'You would not hurry for my interview.');
-        return `They say all right and go back to their bunk. For the rest of the trip you can hear them through the bulkhead, running their answers again and again. You never learn whether they made the interview.`;
+        return say('c2.result');
       } },
-    ] }) },
-  { weight: 2, when: p => p.goal === 'research', make: (p, m) => ({
-    title: 'Sample Opportunity',
-    text: (`${p.first} has been at the observation blister for hours with a battered notebook and a pair of binoculars. Now they appear at the cockpit hatch, ` +
-        `out of breath, hair on end. They have spotted a rock a few hours off your trajectory, pale, with a bright glint in the sun. "A sample from that ` +
-        `could make my career," they say. "I will pay for the detour. Please. I have waited my whole life for something like this."`),
+    ] }); } },
+  { id: 'research', sample: { goal: 'research' }, weight: 2, when: p => p.goal === 'research', make: (p, m) => { const say = paxSay('research', p, m); return ({
+    title: say('title'),
+    text: say('text'),
     choices: [
-      { label: 'Match orbits and take a sample (costs time)', run() {
+      { label: say('c0.label'), run() {
         delay(20);
         m.bonus += 1000 * p.wealth;
         like(p, 3, 'You made a detour for my research.');
-        return (`${p.first} spends six hours in a vac suit on the rock, tethered to your hull, giggling into the radio and chipping at the crust with a ` +
-            `tiny hammer. When they come back in, frosted and shaking, they hold a vial up to the light. They promise to name something after you.`);
+        return say('c0.result');
       } },
-      { label: 'Stay on course', run() {
+      { label: say('c1.label'), run() {
         like(p, -1, 'You would not stop for my research.');
-        return (`They watch it slide past the window, a pale point in the dark, and stay at the glass until it is gone. Later you see them write ` +
-            `something in the notebook: the date, and a line you cannot read. They are polite for the rest of the trip. When they disembark they leave ` +
-            `a folded drawing on the galley table, of a rock, and a ship, and a long distance.`);
+        return say('c1.result');
       } },
-    ] }) },
-  { weight: 2, when: p => p.goal === 'pilgrim' || p.traits.includes('pious'), make: (p, m) => ({
-    title: 'A Request for Stillness',
-    text: (`${p.first} comes to the cockpit hatch holding a worn book. They ask whether you might cut the drive for a few hours, so that they can hold a ` +
-        `prayer service in zero g. It is a holy day for them, and the old prayers say that in weightlessness a person is closest to whatever is out ` +
-        `there. They do not press. They wait with their hands folded, and the book shakes in their grip.`),
+    ] }); } },
+  { id: 'pilgrim', sample: { goal: 'pilgrim' }, weight: 2, when: p => p.goal === 'pilgrim' || p.traits.includes('pious'), make: (p, m) => { const say = paxSay('pilgrim', p, m); return ({
+    title: say('title'),
+    text: say('text'),
     choices: [
-      { label: 'Cut thrust for them (costs time)', run() {
+      { label: say('c0.label'), run() {
         delay(12);
         m.bonus += 400 * m.pax;
         like(p, 3, 'You stilled your ship for our prayers.');
-        return 'The drive falls silent. They drift through the cargo bay in a slow circle, singing in a language older than any port, and one by one other passengers and crew drift in to listen. When it is over they press a donation on you, in small folded notes, and touch the bulkhead once.';
+        return say('c0.result');
       } },
-      { label: 'Decline politely', run() {
+      { label: say('c1.label'), run() {
         like(p, -1, null);
-        return 'They thank you for hearing them. They pray at one g instead, kneeling on the cold deck of the cargo bay.';
+        return say('c1.result');
       } },
-    ] }) },
-  { weight: 1, when: p => p.traits.includes('talkative') || p.traits.includes('homesick'), make: (p, m) => ({
-    title: 'Long Stories',
-    text: (`${p.first} corners you in the galley with a bulb of coffee and begins to talk before you can leave. They talk about ${p.home}: the streets, the ` +
-        `smells, the bakery at the corner, the neighbor who kept bees, the long evenings. Every story is longer than the last, and every one ends with ` +
-        `"and then, of course, I left."`),
+    ] }); } },
+  { id: 'talkative', sample: { traits: ['talkative'] }, weight: 1, when: p => p.traits.includes('talkative') || p.traits.includes('homesick'), make: (p, m) => { const say = paxSay('talkative', p, m); return ({
+    title: say('title'),
+    text: say('text'),
     choices: [
-      { label: 'Listen', run() {
+      { label: say('c0.label'), run() {
         like(p, 1, 'You listened to my stories.');
-        return `You listen for an hour, and then another. Near the end, between the bakery and the bees, is something you can use: "${addRumor()}" ${p.first} gives you a shy smile.`;
+        return say('c0.result', { rumor: addRumor() });
       } },
-      { label: 'Excuse yourself to the cockpit', run() {
+      { label: say('c1.label'), run() {
         like(p, -1, null);
-        return `You escape to the cockpit with a muttered excuse and check the instruments. ${p.first} finds someone else to talk to. Through the hatch, for the next hour, you hear the stories moving from bunk to bunk.`;
+        return say('c1.result');
       } },
-    ] }) },
-  { weight: 1, when: p => p.traits.includes('nervous'), make: (p, m) => ({
-    title: 'Panic at the Flip',
-    text: `${p.first} panics when the drive cuts for the flip. The silence and the sudden lightness come at once, and they are sure the reactor has failed. They grip the edge of the bunk, breathing in short gasps, and a low moan starts in their throat. The others look at you.`,
+    ] }); } },
+  { id: 'nervous', sample: { traits: ['nervous'] }, weight: 1, when: p => p.traits.includes('nervous'), make: (p, m) => { const say = paxSay('nervous', p, m); return ({
+    title: say('title'),
+    text: say('text'),
     choices: [
-      { label: 'Talk them through it', run() {
+      { label: say('c0.label'), run() {
         like(p, 2, 'You talked me through a panic attack.');
-        return (`You sit beside them and explain flip-and-burn three times, slowly, with a hand on their shoulder and a cup of water. The third time you ` +
-            `draw it on the bulkhead with a finger. The trembling slows, and they laugh once, wetly. ${p.first} apologizes. You tell them there is ` +
-            `nothing to apologize for.`);
+        return say('c0.result');
       } },
-      { label: 'Give them a sedative (200 cr)', ...gated(needCr(200)), run() {
+      { label: say('c1.label'), ...gated(needCr(200)), run() {
         G.state.credits -= 200;
         like(p, 1, null);
-        return `${p.first} takes the sedative with a shaking hand and lies back on the bunk. Within minutes they are breathing slow. They sleep through the rest of the burn and wake at the dock with no memory of what frightened them.`;
+        return say('c1.result');
       } },
-      { label: 'Tell them to pull themselves together', run() {
+      { label: say('c2.label'), run() {
         m.bonus -= 300;
         like(p, -2, 'You mocked me when I was scared.');
-        return `${p.first} flinches and goes quiet. They spend the rest of the trip in their bunk with the curtain drawn, eating little, speaking to no one. Sometimes, in the night, you can hear them.`;
+        return say('c2.result');
       } },
-    ] }) },
-  { weight: 1, when: p => p.traits.includes('curious'), make: (p, m) => ({
-    title: 'Engine Room Tour',
-    text: (`${p.first} has been hovering near the engine room hatch for two days, with an ear pressed to the bulkhead. Now they come to you. "Captain, I would ` +
-        `love to see the drive room. Just a quick look. I will not touch anything. I promise. I have always wanted to know how it works."`),
+    ] }); } },
+  { id: 'curious', sample: { traits: ['curious'] }, weight: 1, when: p => p.traits.includes('curious'), make: (p, m) => { const say = paxSay('curious', p, m); return ({
+    title: say('title'),
+    text: say('text'),
     choices: [
-      { label: 'Show them around', run() {
+      { label: say('c0.label'), run() {
         like(p, 2, 'You showed me the drive room.');
         if (Math.random() < 0.25) {
           G.state.fuel = Math.max(0, G.state.fuel - 20);
-          return `${p.first} touches something. A hiss goes up, and a valve you did not know existed blows its seal. You vent 20 units of reaction mass into the black before you can shut it. ${p.first} apologizes for the next hour, fast and stammering, until you laugh.`;
+          return say('c0.spill');
         }
-        return `${p.first} asks questions for an hour, about coolant loops and injector timing and why the drive hums at that note. You find yourself explaining, and enjoying it. By the end you are both leaning on a pipe with the drive humming around you.`;
+        return say('c0.fine');
       } },
-      { label: 'Crew only, sorry', run() {
+      { label: say('c1.label'), run() {
         like(p, -1, null);
-        return 'They say they understand and are sorry to have asked. That evening you find them at the observation blister with an ear against the wall, listening to the drive. When they see you, they go on listening.';
+        return say('c1.result');
       } },
-    ] }) },
-  { weight: 1, when: p => p.traits.includes('drunk'), make: (p, m) => ({
-    title: 'Galley Incident',
-    text: (`${p.first} got into the good whiskey, the bottle you were saving, and somewhere around the third glass decided to give the galley water ` +
-        `recycler "a bit of a fix", with a spoon and a fork. There is a gap in the wall and a fine mist in the air. ${p.first} is sitting in the middle of ` +
-        `the galley, wet through, holding the spoon upright. Repairs will run about 400 credits.`),
+    ] }); } },
+  { id: 'drunk', sample: { traits: ['drunk'] }, weight: 1, when: p => p.traits.includes('drunk'), make: (p, m) => { const say = paxSay('drunk', p, m); return ({
+    title: say('title'),
+    text: say('text'),
     choices: [
-      { label: 'Add it to their fare', run() {
+      { label: say('c0.label'), run() {
         m.bonus += 400;
         like(p, -2, 'You charged me for the recycler.');
-        return `${p.first} grumbles, studies the deck, and says "unreasonable" to nobody. They stay out of the galley for the rest of the trip, and at the dock they pay in full, in small folded notes.`;
+        return say('c0.result');
       } },
-      { label: 'Let it slide (400 cr)', run() {
+      { label: say('c1.label'), run() {
         G.state.credits = Math.max(0, G.state.credits - 400);
         like(p, 2, 'You let the recycler thing slide.');
-        return `${p.first} goes deep red. They clean the galley themselves, top to bottom, all night, with a toothbrush, and in the morning it is the cleanest room on the ship. There is a note on the door in pencil: "Sorry. Thank you. Never again."`;
+        return say('c1.result');
       } },
-    ] }) },
-  { weight: 1, when: p => p.traits.includes('greedy'), make: (p, m) => ({
-    title: 'Card Game',
-    text: `${p.first} produces a deck worn soft at the corners and shuffles it with a flourish. "A friendly game, captain," ${p.first} says. "With a little money on it, just to make things interesting. It is a long burn, and a man gets bored." The deck is not yet square, and ${p.first} is already smiling.`,
+    ] }); } },
+  { id: 'greedy', sample: { traits: ['greedy'] }, weight: 1, when: p => p.traits.includes('greedy'), make: (p, m) => { const say = paxSay('greedy', p, m); return ({
+    title: say('title'),
+    text: say('text'),
     choices: [
-      { label: `Play (500 cr stake)`, ...gated(needCr(500)), run() {
-        if (Math.random() < 0.5) { G.state.credits += 500; like(p, -1, 'You beat me at cards.'); return `You clean ${p.first} out in one long quiet hand. ${p.first} looks at the table for ten seconds. "Luck," ${p.first} says. For the rest of the trip ${p.first} sits in a corner and mutters it at the deck.`; }
+      { label: say('c0.label'), ...gated(needCr(500)), run() {
+        if (Math.random() < 0.5) { G.state.credits += 500; like(p, -1, 'You beat me at cards.'); return say('c0.win'); }
         G.state.credits -= 500;
         like(p, 1, null);
-        return `${p.first} wins in one slow hand, turning a single card over at the end. "Well," ${p.first} says, and gathers the money. "That was friendly." For the rest of the trip ${p.first} hums in the corridors and shuffles the deck where you can see it.`;
+        return say('c0.lose');
       } },
-      { label: 'Decline', run: () => `"Suit yourself," ${p.first} says, and deals a hand of solitaire, slowly. You hear each card click down. ${p.first} plays it out, loses, and begins again.` },
-    ] }) },
-  { weight: 1, when: p => p.traits.includes('generous') || p.traits.includes('kind'), make: (p, m) => ({
-    title: 'Gratitude',
-    text: (`${p.first} takes over the galley for an afternoon and cooks a dinner for everyone aboard, with spices they brought from ${p.home}, wrapped in ` +
-        `twists of paper in a hidden pouch. The ship fills with the smell of cumin and roasted peppers, and the crew drift in one by one. At the end they ` +
-        `insist on tipping you for a smooth trip, pressing the notes into your palm.`),
+      { label: say('c1.label'), run: () => say('c1.result') },
+    ] }); } },
+  { id: 'generous', sample: { traits: ['generous'] }, weight: 1, when: p => p.traits.includes('generous') || p.traits.includes('kind'), make: (p, m) => { const say = paxSay('generous', p, m); return ({
+    title: say('title'),
+    text: say('text'),
     choices: [
-      { label: 'Accept graciously', run() {
+      { label: say('c0.label'), run() {
         m.bonus += 300 * p.wealth;
         like(p, 1, null);
-        return 'You take the notes, and sit at the long table with the crew, elbow to elbow, passing dishes. It is the best meal the ship has had in months, and for an hour nobody talks about anything else. Somebody starts to sing, and the table joins in.';
+        return say('c0.result');
       } },
-      { label: 'Refuse the money, keep the dinner', run() {
+      { label: say('c1.label'), run() {
         like(p, 3, 'You would not take my money.');
-        return `${p.first} cannot speak for a moment. They take your hand in both of theirs, and then they write out the recipe on a napkin, every step, with a sketch of the pot. You will cook it, badly, for years.`;
+        return say('c1.result');
       } },
-    ] }) },
-  { weight: 1, when: p => p.traits.includes('rude'), make: (p, m) => ({
-    title: 'Complaints',
-    text: (`${p.first} has a list in a neat notebook, and reads it to you at the cockpit hatch, in order. "The bunk is too hard. The food is a crime. The ` +
-        `gravity is insufficiently serious. The coffee tastes of pipe." ${p.first} turns a page. "And frankly, captain, your face is not one I would choose ` +
-        `to look at for so long."`),
+    ] }); } },
+  { id: 'rude', sample: { traits: ['rude'] }, weight: 1, when: p => p.traits.includes('rude'), make: (p, m) => { const say = paxSay('rude', p, m); return ({
+    title: say('title'),
+    text: say('text'),
     choices: [
-      { label: 'Humor them', run() { like(p, 1, null); return `"Item one," you say, and write it in a book. "The bunk." ${p.first} reads the list again, slower, so that you can keep up. By the end of the hour ${p.first} has run out. "Is there any more tea?" ${p.first} asks.`; } },
-      { label: 'Put them in their place', run() {
+      { label: say('c0.label'), run() { like(p, 1, null); return say('c0.result'); } },
+      { label: say('c1.label'), run() {
         m.bonus -= 300;
         like(p, -2, 'You put me in my place.');
-        return `"I have read your list," you say, in a level voice, "and here is what I think of it." You go item by item: the bunk is the bunk you were given, the food is the food you eat, and the gravity is the only gravity the drive makes. ${p.first} goes pale, then red, then still. A formal complaint arrives that evening, in triplicate, and the fee comes out of your fare. The rest of the trip is quiet, and at night you can hear the drive again.`;
+        return say('c1.result');
       } },
-    ] }) },
+    ] }); } },
 ];
 
 function passengerEvent(m) {
