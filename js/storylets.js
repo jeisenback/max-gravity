@@ -224,6 +224,7 @@ function cleanOverrides(raw) {
     const mine = {}, pre = `"${id}"`;
     for (const [k, v] of Object.entries(o)) {
       if (k === 'text' && rs && rs.goodbye) bad.push(`${pre} text is built from parts, so a file gives "parts"`);
+      else if (rs && rs.noTitle && (k === 'text' || k === 'title')) bad.push(`${pre} has no "${k}" (its words are in parts)`);
       else if ((k === 'title' || k === 'text') && text(`${pre}.${k}`, v)) mine[k] = v;
       else if (k === 'weight' || k === 'every' || k === 'off') {
         const why = rs ? 'a hired scene is drawn by its days and the story, not by weight' : s.priority > 0 ? 'a story scene is picked by priority, not by weight'
@@ -255,7 +256,7 @@ function cleanOverrides(raw) {
           }
         }
       } else if (k === 'parts') {  // a captain's goodbye is built from parts (cold, neutral, warm, crew, secret, xo, xoDead, repaid, parting)
-        const names = rs && rs.goodbye ? Object.keys(rs.goodbye).filter(n => PART_NAMES.includes(n)) : [];
+        const names = rs && rs.noTitle ? Object.keys(rs.parts) : rs && rs.goodbye ? Object.keys(rs.goodbye).filter(n => PART_NAMES.includes(n)) : [];  // a beat's lines are named in its `parts` (#478)
         if (!names.length) bad.push(`${pre} has no "parts"`);
         else if (!isObj(v)) bad.push(`${pre}.parts is not an object`);
         else for (const [n, t] of Object.entries(v)) { if (!names.includes(n)) bad.push(`${pre}.parts has no "${n}"`); else if (text(`${pre}.parts.${n}`, t)) (mine.parts = mine.parts || {})[n] = t; }
@@ -300,7 +301,7 @@ function sceneRate(s) {
 // A scene of the hired chapter that is not a storylet (a main character's, a first officer's or a captain's, or a hired event written as data), by its id in js/hiredscenes.js.
 // The parts a captain's goodbye is built from (captains.js captainGoodbye), by the name each has in the captain's `goodbye` entry.
 const PART_NAMES = ['cold', 'neutral', 'warm', 'crew', 'secret', 'repaid', 'xoDead', 'xo', 'parting'];  // in the order the text is put together
-const registryScene = id => { const e = /^(cast|captain|hired):/.test(id) && hiredSceneRegistry().find(x => x.id === id); return e && e.scene ? e.scene : tableScene(id); };
+const registryScene = id => { const e = /^(cast|captain|hired|beats):/.test(id) && hiredSceneRegistry().find(x => x.id === id); return e && e.scene ? e.scene : tableScene(id); };
 
 // A scene whose words live in a table that one template plays (#462): a work event (WORK_EVENTS, hiredevents.js workEvent) or an ice run scene (ICE_STAGES,
 // icerun.js iceStageScene). Its words are the title, the text (an ice scene has two openings: `text` and `text2`) and, for each choice, the label and either one
@@ -332,6 +333,13 @@ function sceneWords(id, scene) {
       return out;
     }),
   };
+}
+
+// One line of a raid, ambush or boarding beat (#478): the editor's words for it, if the file has any, else the line the table holds. `key` names the line within the
+// beat (hiredscenes.js lists them). A title and a label are escaped by the dialog; a text is not, so an override's is escaped here.
+function lineWords(id, key, shipped) {
+  const t = (sceneOverride(id).parts || {})[key];
+  return t === undefined ? shipped : /^title\.|\.label$/.test(key) ? t : esc(t);
 }
 
 // Cleaned once, on the first scene built or the first game started, so a mod's scenes are there to be named.

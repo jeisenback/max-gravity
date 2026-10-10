@@ -52,7 +52,7 @@ test('the converted scenes are data rows of the registry, and the rest are code 
   assert.equal(r.effects.castLike.who, 'ansel');
   assert.ok(r.edit.length > 0 && r.edit.every(e => e === false), 'code choices keep their effects in code');
   assert.ok(r.goodbye && !r.signon, 'the goodbye is a row of the registry; the function-built scenes are not edited yet');
-  assert.equal(r.dataRegistry, 95);
+  assert.equal(r.dataRegistry, 99);
 });
 
 test('a converted scene\'s effects are in forms, checked as typed, and changing one is a change to the file', async () => {
@@ -296,4 +296,32 @@ test('the chain view leaves the hired scenes out: they are played by their days,
   const groups = await page.locator('#group option').allTextContents();
   assert.ok(groups.length > 5);
   assert.ok(!groups.some(g => /first officer|captain\)|main character/.test(g)), groups.join(', '));
+});
+
+test('the raid, ambush and boarding beats are edited line by line, the lines go to and from the file, and each plays in the preview (#478)', async () => {
+  await reload(); await select('beats:raid');
+  const r = await page.evaluate(() => {
+    const row = id => SceneIndex.rows.find(x => x.id === id), raid = row('beats:raid'), values = { [raid.id]: { 'part.open.gun.0': 'A new opening.', 'part.close.standoff': raid.parts['close.standoff'] } };
+    const out = SceneIndex.overridesFrom(SceneIndex.rows, values);
+    return {
+      kinds: ['beats:raid', 'beats:ambush', 'beats:repel', 'beats:assault'].map(id => [row(id).kind, row(id).noTitle, Object.keys(row(id).parts).length > 10]), dead: row('beats:dead-in-space').kind,
+      out: out[raid.id], back: SceneIndex.valuesFrom(out)[raid.id],
+      plan: SceneIndex.planImport({ overrides: { 'beats:raid': { title: 'No', parts: { 'open.gun.1': 'Ok.', nope: 'x' } } } }, SceneIndex.rows).items.map(i => i[0] === undefined ? i.ok : i.ok),
+    };
+  });
+  assert.deepEqual(r.kinds, [['data', true, true], ['data', true, true], ['data', true, true], ['data', true, true]]);
+  assert.equal(r.dead, 'code', 'the dead-in-space scene has no table to read');
+  assert.deepEqual(r.out, { parts: { 'open.gun.0': 'A new opening.' } }, 'only what differs');
+  assert.deepEqual(r.back, { 'part.open.gun.0': 'A new opening.' });
+  assert.deepEqual(r.plan, [false, false, true], 'the title and the unknown line are refused');
+  assert.equal(await page.locator('#detail #f-title').count(), 0, 'a beat has no title to change');
+  assert.ok(await page.locator('#detail textarea[data-path^="part."]').count() > 60, 'a field for every line');
+  assert.ok(await page.locator('#detail h4', { hasText: /^exchange$/ }).count() === 1, 'the lines are grouped');
+  for (const [id, lines] of [['beats:raid', ['open.grapple.0', 'open.torpedo.0', 'open.gun.0']], ['beats:repel', ['open.1.0']], ['beats:assault', ['open.1.0']], ['beats:ambush', ['read.gunner.label']]]) {  // the raid's foe is drawn, so any style's opening
+    await select(id);
+    for (const line of lines) await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${id}.`);
+    const f = await play();
+    const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.event.text, G.dialog.choices.map(c => c.label)]));
+    assert.ok(seen.includes(`Typed ${id}.`), `${id} plays the typed line: ${seen.slice(0, 200)}`);
+  }
 });

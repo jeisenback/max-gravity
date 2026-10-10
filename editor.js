@@ -77,6 +77,14 @@
     };
   }
 
+  // A beat of the raid, the ambush or the boarding fights (#478): its words are the lines of the tables it reads, named in `parts`, and it has no title of its own to change
+  // and no choices of its own (they come from the tables).
+  function beatRow(s) {
+    const row = registryRow({ title: s.title, text: '', choices: [] });
+    return { ...row, text: Object.entries(s.parts).map(([k, t]) => `[${k}] ${t}`).join('\n'), parts: s.parts, noTitle: true, edit: { ...row.edit, text: false } };
+  }
+  const BEAT_NOTE = 'Its words are the lines of the tables the beats read, named by where each sits. Odds, damage and the roll are in code, and so are the lines built from the game state (a casualty, a name, a count, the armor) and the dead-in-space scene.';
+
   // A scene whose words live in a table one template plays (a work event, an ice run scene; #462) as the editor's row: its words are edited, and what it does is in code. A choice
   // has a label and either a result or the lines for a win and a lose; the odds and what each does are the table's.
   function tableRow(s) {
@@ -131,6 +139,8 @@
         else add({ id: e.id, title: d.id, file: fileOf.hand, belongs: `${d.group} (hired event)`, on: postOn(d.post), text: '', choices: [], codeNote: CODE_ALL, pacing: pacingOf.hand(d), conditionsNote: note });
       } else if (e.kind === 'ice') {
         add({ id: e.id, file: fileOf.ice, belongs: 'ice run', pacing: pacingOf.ice(), conditionsNote: `Scene ${Number(e.id.slice(4))} of 3 on an ice run, once the captain takes one.`, ...tableRow(tableScene(e.id)) });
+      } else if (e.scene) {  // a beat of the raid, the ambush or the boarding fights (#478): its lines, by name
+        add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: 'beats', conditionsNote: e.when, pacing: { tier: null, weight: null, cooldown: 'by its own rule', trigger: e.when, editable: false }, ...beatRow(e.scene), codeNote: BEAT_NOTE });
       } else {  // built by a function: no text to read, only what it is and when it plays
         add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: e.id.startsWith('beats:') ? 'beats' : 'hired chapter', text: '', choices: [], codeNote: CODE_ALL, conditionsNote: e.when, pacing: { tier: null, weight: null, cooldown: 'by its own rule', trigger: e.when, editable: false } });
       }
@@ -281,7 +291,7 @@
 
   function play(m) {
     useNewScenes(m.newScenes);  // the scenes written in the editor, not saved yet
-    const s = STORYLETS.find(x => x.id === m.id), reg = s ? null : hiredSceneRegistry().find(x => x.id === m.id && ((x.kind === 'cast' || x.kind === 'captain') || x.kind === 'hand' && x.scene || x.kind === 'work' || x.kind === 'ice'));
+    const s = STORYLETS.find(x => x.id === m.id), reg = s ? null : hiredSceneRegistry().find(x => x.id === m.id && ((x.kind === 'cast' || x.kind === 'captain') || x.kind === 'hand' && x.scene || x.kind === 'function' && x.scene || x.kind === 'work' || x.kind === 'ice'));
     if (!s && !reg) return { error: `The game has no scene "${m.id}".` };
     useOverrides(m.overrides);  // the unsaved edits, through the same layer the game reads (storylets.js)
     const o = m.setup || {};
@@ -302,6 +312,12 @@
         const sc = CAST[reg.key].scenes[reg.name];
         if (sc.closed) castPerson(reg.key).opinion = reg.closed ? OPINION.FRIEND - 1 : OPINION.FRIEND;
         openEvent(castScene(reg.key, sc));
+      } else if (reg.kind === 'function') {  // a beat of the raid, the ambush or the boarding fights: it needs a foe, and the first-raid explanation is out of the way
+        hired().raidTold = true;
+        const foe = makeEnemy({ kind: 'pirate' });
+        if (reg.id === 'beats:raid') { startDuel({ kind: 'pirate' }, false); const first = G.nextEvent; G.nextEvent = null; openEvent(first); }
+        else if (reg.id === 'beats:ambush') openEvent(ambushScene());
+        else openEvent(repelScene(reg.id === 'beats:assault' ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full')));
       } else if (reg.name === 'goodbye') {  // leaving the ship: with the secret learned, so every choice shows
         captainFlag('secretKnown');
         openEvent(captainGoodbye());
@@ -361,7 +377,7 @@
   const pathsOf = r => ['title', ...(r.parts ? [] : ['text']), ...(r.text2 !== undefined ? ['text2'] : []), ...Object.keys(r.parts || {}).map(n => `part.${n}`), ...r.choices.flatMap((c, i) => CHOICE_FIELDS.filter(f => c[f] !== undefined).map(f => `c${i}.${f}`))];
   const CHOICE_PATH = /^c(\d+)\.(label|result|win|lose)$/;
   const shippedOf = (r, path) => { const m = CHOICE_PATH.exec(path); return m ? r.choices[m[1]][m[2]] : path.startsWith('part.') ? (r.parts || {})[path.slice(5)] : r[path]; };
-  const editableOf = (r, path) => { const m = CHOICE_PATH.exec(path); return !r.edit ? false : m ? r.edit.choices[m[1]][m[2]] : path === 'title' || (path.startsWith('part.') ? !!r.parts : r.edit[path]); };
+  const editableOf = (r, path) => { const m = CHOICE_PATH.exec(path); return !r.edit ? false : m ? r.edit.choices[m[1]][m[2]] : path === 'title' ? !r.noTitle : (path.startsWith('part.') ? !!r.parts : r.edit[path]); };
 
   // What js/overrides.js would hold for the values typed: only what differs from the shipped words, an empty field counting as not changed.
   // values: { sceneId: { path: text } }.
@@ -643,10 +659,18 @@
     ${rulesHtml(r, 'when', 'The scene appears when', struct)}
     ${r.choices.map((c, i) => `<h4>Choice ${i + 1}: ${esc(c.label)}</h4>${rulesHtml(r, `c${i}.when`, 'It can be taken when', struct)}${rulesHtml(r, `c${i}.effects`, 'It does', struct)}${nextHtml(r, `c${i}.next`, struct)}`).join('')}`);
 
+  // A scene's lines, one field each, under a heading for each group of them (the first word of a beat's line names: open, pass, closing, exchange, post, close, read, title, tactic) (#478).
+  function partsHtml(r, mine) {
+    let group = null;
+    return Object.keys(r.parts).map(n => {
+      const g = n.includes('.') ? n.split('.')[0] : null, head = g !== group ? (group = g, g ? `<h4>${esc(g)}</h4>` : '') : '';
+      return `${head}${fieldHtml(r, `part.${n}`, PART_LABEL[n] || n, mine[`part.${n}`])}`;
+    }).join('');
+  }
   function formHtml(r, values = {}) {
     const mine = values[r.id] || {};
     return `<h3>Your words</h3><div class="form" data-form="${esc(r.id)}">
-      ${fieldHtml(r, 'title', 'Title', mine.title)}${r.parts ? '' : fieldHtml(r, 'text', r.text2 !== undefined ? 'Opening 1' : 'Text', mine.text)}${Object.keys(r.parts || {}).map(n => fieldHtml(r, `part.${n}`, PART_LABEL[n] || n, mine[`part.${n}`])).join('')}${r.text2 !== undefined ? fieldHtml(r, 'text2', 'Opening 2', mine.text2) : ''}
+      ${r.noTitle ? '' : fieldHtml(r, 'title', 'Title', mine.title)}${r.parts ? partsHtml(r, mine) : fieldHtml(r, 'text', r.text2 !== undefined ? 'Opening 1' : 'Text', mine.text)}${r.text2 !== undefined ? fieldHtml(r, 'text2', 'Opening 2', mine.text2) : ''}
       ${r.choices.map((c, i) => `<h4>Choice ${i + 1}${c.post ? ` (${esc(c.post)}'s own)` : ''}</h4>${fieldHtml(r, `c${i}.label`, 'Label', mine[`c${i}.label`])}${[['result', 'Result'], ['win', 'If it works'], ['lose', 'If it fails']].filter(([f]) => c[f] !== undefined).map(([f, name]) => fieldHtml(r, `c${i}.${f}`, name, mine[`c${i}.${f}`])).join('')}`).join('')}
     </div>`;
   }
@@ -797,7 +821,8 @@
             else if (!words(v)) refuse(`${id} text2: needs some text of up to ${LIMIT.text} characters`);
             else { keep.text2 = v; what.push('text2'); }
           } else if (k === 'title' || k === 'text') {
-            if (k === 'text' && !r.edit.text) refuse(`${id} text: it has parts that depend on conditions, so it is edited in code`);
+            if (k === 'title' && r.noTitle) refuse(`${id} title: this scene has no title of its own`);
+            else if (k === 'text' && !r.edit.text) refuse(`${id} text: it has parts that depend on conditions, so it is edited in code`);
             else if (!words(v)) refuse(`${id} ${k}: needs some text of up to ${LIMIT.text} characters`);
             else { keep[k] = v; what.push(k); }
           } else if (k === 'weight' || k === 'every' || k === 'off') {
