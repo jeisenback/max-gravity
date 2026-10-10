@@ -1,0 +1,23 @@
+name: Set up the tests
+description: Node, the npm packages and the browser the tests drive.
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 22
+        cache: npm
+    - run: npm ci
+      shell: bash
+    # The browser is cached by the lockfile (it pins Playwright's version). The system libraries it needs are not part of the cache, so they are installed either way.
+    - uses: actions/cache@v4
+      id: browser
+      with:
+        path: ~/.cache/ms-playwright
+        key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+    - if: steps.browser.outputs.cache-hit != 'true'
+      run: npx playwright install --with-deps chromium
+      shell: bash
+    - if: steps.browser.outputs.cache-hit == 'true'
+      run: npx playwright install-deps chromium
+      shell: bash

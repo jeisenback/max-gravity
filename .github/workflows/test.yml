@@ -1,30 +1,42 @@
 name: Tests
-on: [push, pull_request]
-# The job checks out the code and runs the tests, so it needs to read the repository and nothing else.
+# A pull request runs once per push (not once for the push and again for the pull request), and a newer push cancels the run it replaces. The default branch runs on every push
+# and is never cancelled.
+on:
+  pull_request:
+  push:
+    branches: [main]
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+# The jobs check out the code and run the tests, so they need to read the repository and nothing else.
 permissions:
   contents: read
 jobs:
-  test:
+  # The suite in four parts (node --test --test-shard), each on its own runner: the test files are separate processes, so a part needs nothing from the others.
+  shard:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: ['1/4', '2/4', '3/4', '4/4']
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: npx playwright install --with-deps chromium
-      - run: npm test
+      - uses: ./.github/actions/setup
+      - run: npm run test:shard
+        env:
+          SHARD: ${{ matrix.shard }}
+  # One check for the four parts, under the name the suite has always had here, so a rule that requires "test" still has a check to wait for.
+  test:
+    needs: shard
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: test "${{ needs.shard.result }}" = success
   # The coverage floor (tools/coverage-floor.json) is its own job, beside the tests: it runs the suite again under the browser's coverage,
   # so the tests job stays as long as it was. Its own result is the floor, not the tests (the bundle test cannot pass in a coverage run).
   coverage:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: npx playwright install --with-deps chromium
+      - uses: ./.github/actions/setup
       - run: npm run coverage -- --check
