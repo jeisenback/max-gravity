@@ -16,7 +16,7 @@ function atTheReactor(backup) {
     like(cap, -1, 'We lost Ilsa at the reactor.'); cap.mood = { kind: 'low', until: G.state.day + 30 };
     return lead + ('She goes in first, as she said she would, and the door closes behind her. The reactor board drops to nothing, and then, for a ' +
         'moment, to everything. You wait at the door for a long time after it is quiet. Captain Adair is the first one there. He does not speak. He ' +
-        'puts his hand on the shielded door .')
+        'puts his hand on the shielded door.')
       + (asked ? ' You asked her what she needed. She did not get to answer.' : '');
   }
   castLike('ilsa', 2, 'You let me go into the reactor, and I came out.');
@@ -52,7 +52,7 @@ CAST.ilsa = {
     'Ilsa has fixed the recycler again, and put it down in the log as routine.',
     'Ilsa: "The captain is in the galley. The captain is always in the galley. That is how the ship is happy."',
     'Ilsa is asleep standing up against the bulkhead, mug still in hand, and has been for a minute and a half.',
-    'Ilsa is correcting a fuel order the captain placed, quietly, in the margin of the form.',
+    'Ilsa is correcting a fuel order the captain placed, in the margin of the form.',
     'Ilsa: "I do not mind. I want that on the record. I do not mind."',
   ],
   scenes: {
@@ -66,7 +66,7 @@ CAST.ilsa = {
         {
           label: 'Ask how long she has had the night watch',
           effects: { castLike: { who: 'ilsa', n: 2, memory: 'You asked how long I had had the night watch.' } },
-          result: '"Four years," she says. "Six months of it by choice." She almost laughs, and does not.',
+          result: '"Four years," she says. "Six months of it by choice."',
         },
         {
           label: 'Offer to take an hour of it',
@@ -111,15 +111,15 @@ CAST.ilsa = {
         {
           label: 'Keep the cabin shut, as Ilsa said',
           effects: { castLike: { who: 'ilsa', n: 2, memory: 'You kept the cabin shut on my word.' }, captainLike: { n: -1, memory: 'You kept the second cabin shut against my order.' } },
-          result: 'You keep the cabin shut. The family sleeps in the galley, and the child is delighted, and the captain is the opposite of angry. ' +
-              '"Of course," he says. "Of course. The air." He tells the galley, and by midnight it has become a story about Ilsa, with a good ending. ' +
-              'She does not look pleased.',
+          result: 'You keep the cabin shut. The family sleeps in the galley, the child on the bench seat and the cat on the child. ' +
+              '"Of course," the captain says. "Of course. The air." He tells the galley, and by midnight it has become a story about Ilsa, with a good ending. ' +
+              'Ilsa goes back to the board.',
         },
       ],
     },
     late: {
       days: 55, title: 'What Ilsa Knows',
-      text: ('Ilsa has the fund book open, and you can tell from the way she holds it that she has been holding it a long time. "I will say this ' +
+      text: ('Ilsa has the fund book open, and she holds it with both hands. "I will say this ' +
           'once," she says. "The fund has been short every quarter for two years. He takes it out for people. He is not a thief. He is a man who ' +
           'cannot say no. I put it back, from my pay, a day before the audit. He knows the books balance and has never asked how. If he asked, I would ' +
           'stop. If he does not, I cannot." She closes it. "I am not asking you to do anything. I am telling you, because somebody ought to know who ' +
@@ -129,12 +129,12 @@ CAST.ilsa = {
           label: 'Offer to put something in',
           when: { credits: 200 },
           effects: { credits: -200, castLike: { who: 'ilsa', n: 2, memory: 'You offered to put something into the fund.' } },
-          result: 'She looks at the two hundred for a long time. "No," she says. Then: "Yes. Not for him. For me. So that it is not only me." She writes it in the book, in a column of its own.',
+          result: 'She counts the two hundred. "No," she says. Then: "Yes. Not for him. For me. So that it is not only me." She writes it in the book, in a column of its own.',
         },
         {
           label: 'Ask what she needs',
           effects: { castLike: { who: 'ilsa', n: 2, memory: 'You asked me what I needed.' }, castFlag: { who: 'ilsa', flag: 'asked' } },
-          result: 'Her face does something complicated. "Nobody has asked me that in four years," she says. "I do not know. I will tell you when I do."',
+          result: '"Nobody has asked me that in four years," she says. "I do not know. I will tell you when I do."',
         },
       ],
       // Below friendly she keeps it to herself, and the confidence (the `asked` flag) is not offered.

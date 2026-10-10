@@ -3321,7 +3321,7 @@
   "id": "cast:ilsa:intro",
   "i": 0,
   "label": "Ask how long she has had the night watch",
-  "result": "\"Four years,\" she says. \"Six months of it by choice.\" She almost laughs, and does not.",
+  "result": "\"Four years,\" she says. \"Six months of it by choice.\"",
   "changes": [
    "s.people.c:ilsa.liftedAt: undefined -> 1",
    "s.people.c:ilsa.memories: [] -> undefined",
@@ -3502,7 +3502,7 @@
   "id": "cast:ilsa:mid2",
   "i": 1,
   "label": "Keep the cabin shut, as Ilsa said",
-  "result": "You keep the cabin shut. The family sleeps in the galley, and the child is delighted, and the captain is the opposite of angry. \"Of course,\" he says. \"Of course. The air.\" He tells the galley, and by midnight it has become a story about Ilsa, with a good ending. She does not look pleased.",
+  "result": "You keep the cabin shut. The family sleeps in the galley, the child on the bench seat and the cat on the child. \"Of course,\" the captain says. \"Of course. The air.\" He tells the galley, and by midnight it has become a story about Ilsa, with a good ending. Ilsa goes back to the board.",
   "changes": [
    "s.people.c:ilsa.liftedAt: undefined -> 1",
    "s.people.c:ilsa.memories: [] -> undefined",
@@ -3541,7 +3541,7 @@
   "id": "cast:ilsa:late",
   "i": 0,
   "label": "Offer to put something in",
-  "result": "She looks at the two hundred for a long time. \"No,\" she says. Then: \"Yes. Not for him. For me. So that it is not only me.\" She writes it in the book, in a column of its own.",
+  "result": "She counts the two hundred. \"No,\" she says. Then: \"Yes. Not for him. For me. So that it is not only me.\" She writes it in the book, in a column of its own.",
   "changes": [
    "s.credits: 5000 -> 4800",
    "s.people.c:ilsa.liftedAt: undefined -> 1",
@@ -3577,7 +3577,7 @@
   "id": "cast:ilsa:late",
   "i": 1,
   "label": "Ask what she needs",
-  "result": "Her face does something complicated. \"Nobody has asked me that in four years,\" she says. \"I do not know. I will tell you when I do.\"",
+  "result": "\"Nobody has asked me that in four years,\" she says. \"I do not know. I will tell you when I do.\"",
   "changes": [
    "s.cast.ilsa.flags: {} -> undefined",
    "s.cast.ilsa.flags.asked: undefined -> true",
@@ -4644,7 +4644,7 @@
   "id": "captain:hester:trouble",
   "i": 0,
   "label": "Lend her four hundred",
-  "result": "You push four hundred across the table. She looks at it for a long time, and then writes it in the notebook, with the date and a figure beside it. \"Four hundred and ten,\" she says, \"the day you leave this ship.\"",
+  "result": "You push four hundred across the table. She counts it, and then writes it in the notebook, with the date and a figure beside it. \"Four hundred and ten,\" she says, \"the day you leave this ship.\"",
   "changes": [
    "s.credits: 5000 -> 4600",
    "s.hired.flags.lent: undefined -> true",
@@ -4681,7 +4681,7 @@
   "id": "captain:hester:trouble",
   "i": 1,
   "label": "Tell her it is not your place",
-  "result": "\"It is not,\" she says, and for a moment she looks almost relieved. \"Thank you for knowing it.\" She turns the notebook round and goes on with the figures, and you go back to your watch. The payment is made on the first. You never learn how.",
+  "result": "\"It is not,\" she says. \"Thank you for knowing it.\" She turns the notebook round and goes on with the figures, and you go back to your watch. The payment is made on the first. You never learn how.",
   "changes": [
    "s.people.p1.memories: [] -> undefined",
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said it was not your place to lend."
@@ -4858,7 +4858,7 @@
   "id": "captain:hester:goodbye",
   "i": 0,
   "label": "Thank her for the work",
-  "result": "You thank her. She nods once, and writes nothing down.",
+  "result": "You thank her. She writes nothing in the notebook.",
   "changes": [
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
@@ -4893,7 +4893,7 @@
   "id": "captain:hester:goodbye",
   "i": 1,
   "label": "Wish her the ship",
-  "result": "\"I will keep her,\" she says. She almost smiles.",
+  "result": "\"I will keep her,\" she says, and opens the notebook.",
   "changes": [
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
@@ -4961,7 +4961,7 @@
   "id": "captain:dov:trouble",
   "i": 0,
   "label": "Vouch for him",
-  "result": "You say it. Your voice is steadier than you expected. She looks at the captain, and at the fund board, and at you, and puts the stamp on the form. \"Once,\" she says. He is crying, and laughing at himself for it. He does not forget it.",
+  "result": "You say it. She looks at the captain, and at the fund board, and at you, and puts the stamp on the form. \"Once,\" she says. He is crying, and laughing at himself for it.",
   "changes": [
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
@@ -5069,7 +5069,7 @@
   "id": "captain:dov:secret:confide",
   "i": 1,
   "label": "Say you will say nothing",
-  "result": "You say you will. He closes the box and holds it in both hands for a while, like something warm. \"Thank you,\" he says. For once he does not follow it with a story.",
+  "result": "You say you will. He closes the box and holds it in both hands. \"Thank you,\" he says. For once he does not follow it with a story.",
   "changes": [
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
@@ -5105,7 +5105,7 @@
   "id": "captain:dov:secret:found",
   "i": 0,
   "label": "Close the book and say nothing",
-  "result": "You close it, and put it where you found it. He watches you do it. \"Thank you,\" he says, quietly, and goes out. You hear him in the galley a minute later, talking to someone, too brightly.",
+  "result": "You close it, and put it where you found it. He watches you do it. \"Thank you,\" he says, and goes out. You hear him in the galley a minute later, talking to someone.",
   "changes": [
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.memories: [] -> undefined",
@@ -5139,7 +5139,7 @@
   "id": "captain:dov:secret:found",
   "i": 1,
   "label": "Ask him what the initials are",
-  "result": "\"Ilsa,\" he says, with difficulty. \"Ask Ilsa. Please. Do not ask me.\" He is not angry. He looks like a man who has been found in a room he thought was empty, and does not know where to put his hands.",
+  "result": "\"Ilsa,\" he says. \"Ask Ilsa. Please. Do not ask me.\" He puts his hands in his pockets, and takes them out again.",
   "changes": [
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
@@ -5210,7 +5210,7 @@
   "id": "captain:dov:goodbye",
   "i": 1,
   "label": "Tell him to ask Ilsa for help",
-  "result": "He nods slowly. \"I will,\" he says. \"I will ask her to dinner. That is a start.\" He tries to make a story of it, and finds he does not need to.",
+  "result": "He takes out a card and begins to write. \"I will,\" he says. \"I will ask her to dinner. That is a start.\" He does not tell the story of it.",
   "changes": [
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
@@ -5245,7 +5245,7 @@
   "id": "captain:dov:goodbye",
   "i": 2,
   "label": "Take the bread and go",
-  "result": "You take the bread and go. You look back from the end of the dock, and he is still at the foot of the ramp, waving, a small figure on a lit dock with nobody to tell.",
+  "result": "You take the bread and go. You look back from the end of the dock, and he is still at the foot of the ramp, waving, alone on the lit dock.",
   "changes": [
    "s.people.p1.memories: [] -> undefined",
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the bread and went."
@@ -5278,7 +5278,7 @@
   "id": "captain:imre:trouble",
   "i": 0,
   "label": "Say you took the form to the wrong office",
-  "result": "You say it. Captain Sato looks at you, and then at the form, and enters it, because it is what has been said. The correction order is yours. Pilar says nothing until the inspector has gone, and then says, quietly, \"I will not forget that.\" Captain Sato says nothing at all, and you suspect that is because Captain Sato knows.",
+  "result": "You say it. Captain Sato looks at you, and then at the form, and enters it, because it is what has been said. The correction order is yours. Pilar says nothing until the inspector has gone, and then says, \"I will not forget that.\" Captain Sato says nothing at all.",
   "changes": [
    "s.hired.flags.covered: undefined -> true",
    "s.people.c:pilar.liftedAt: undefined -> 1",
@@ -5318,7 +5318,7 @@
   "id": "captain:imre:trouble",
   "i": 1,
   "label": "Let the captain answer",
-  "result": "You say nothing. Captain Sato takes the correction order, and signs for it, and the inspector goes. \"The renewal was filed at the wrong office,\" Captain Sato says to the empty galley, in the voice of a person reading it into the record. \"It is entered as an error of the ship. It is not entered by whom.\" Pilar looks at the deck for some time.",
+  "result": "You say nothing. Captain Sato takes the correction order, and signs for it, and the inspector goes. \"The renewal was filed at the wrong office,\" Captain Sato says to the empty galley, in the voice of a person reading it into the record. \"It is entered as an error of the ship. It is not entered by whom.\" Pilar looks at the deck.",
   "changes": [
    "s.people.c:pilar.liftedAt: undefined -> 1",
    "s.people.c:pilar.memories: [] -> undefined",
@@ -5357,7 +5357,7 @@
   "id": "captain:imre:secret:confide",
   "i": 0,
   "label": "Say it is noted",
-  "result": "\"Noted,\" you say. Captain Sato looks at you, and the corner of their mouth moves once. They put the jacket back on. It is the same jacket, and it is not.",
+  "result": "\"Noted,\" you say. Captain Sato looks at you, and the corner of their mouth moves once. They put the jacket back on.",
   "changes": [
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
@@ -5393,7 +5393,7 @@
   "id": "captain:imre:secret:confide",
   "i": 1,
   "label": "Ask what the order was",
-  "result": "They tell you, in order, with the date and the hour and the name of the officer who gave it. It takes four minutes. It is the longest you have heard them speak. At the end of it they say, \"That is the whole of it,\" and it is.",
+  "result": "They tell you, in order, with the date and the hour and the name of the officer who gave it. It takes four minutes. It is the longest you have heard them speak. At the end of it they say, \"That is the whole of it.\"",
   "changes": [
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
@@ -5466,7 +5466,7 @@
   "id": "captain:imre:secret:found",
   "i": 1,
   "label": "Say you will not mention it",
-  "result": "Captain Sato does not move. \"It is not a secret,\" they say. \"It is a record. It is accurate.\" They close the drawer. \"Noted that you will not mention it.\" The jacket, on its hook, is the only thing in the locker that has not moved.",
+  "result": "Captain Sato does not move. \"It is not a secret,\" they say. \"It is a record. It is accurate.\" They close the drawer. \"Noted that you will not mention it.\"",
   "changes": [
    "s.hired.flags.secretAngry: undefined -> true",
    "s.hired.flags.secretKnown: undefined -> true",
@@ -5604,7 +5604,7 @@
   "id": "captain:zoya:trouble",
   "i": 0,
   "label": "Tell him the captain is out",
-  "result": "You go down, and tell him. He nods, and leaves the folder with you. \"Tell her Tuesday,\" he says. It is Thursday. When you come back up, Pell is whistling at the nav console and has not turned a page of the thing she is reading.",
+  "result": "You go down, and tell him. He leaves the folder with you. \"Tell her Tuesday,\" he says. It is Thursday. When you come back up, Pell is whistling at the nav console and has not turned a page of the thing she is reading.",
   "changes": [
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
@@ -5639,7 +5639,7 @@
   "id": "captain:zoya:trouble",
   "i": 1,
   "label": "Give him a hundred to wait a week",
-  "result": "He counts it twice, in front of you, and goes, and you are not sure he is done. Pell laughs when she hears, which is the worst possible response, and then hugs you, unexpectedly, hard, and lets go at once. \"A hundred,\" she says. \"I will pay you a hundred and a quarter, and that is a bet I will not lose.\"",
+  "result": "He counts it twice, in front of you, and goes, and you are not sure he is done. Pell laughs when she hears, and then hugs you, hard, and lets go at once. \"A hundred,\" she says. \"I will pay you a hundred and a quarter, and that is a bet I will not lose.\"",
   "changes": [
    "s.credits: 5000 -> 4900",
    "s.hired.flags.lent: undefined -> true",
@@ -5676,7 +5676,7 @@
   "id": "captain:zoya:secret:confide",
   "i": 0,
   "label": "Ask what one good run would have to be",
-  "result": "She tells you, to the figure, and it is not an absurd one. That is the worst part. \"Eleven percent over the best I have ever done,\" she says. \"I could do it on a Tuesday. I have not done it on a Tuesday.\" She gathers the cards. \"Do not tell the galley. They like me better when I am lucky.\"",
+  "result": "She tells you, to the figure, and it is not an absurd one. \"Eleven percent over the best I have ever done,\" she says. \"I could do it on a Tuesday. I have not done it on a Tuesday.\" She gathers the cards. \"Do not tell the galley. They like me better when I am lucky.\"",
   "changes": [
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
@@ -5712,7 +5712,7 @@
   "id": "captain:zoya:secret:confide",
   "i": 1,
   "label": "Say you will stay till it is done",
-  "result": "\"Till it is done,\" she says, and for once she is not whistling, and not smiling, and it is a plain, tired, hopeful face. \"That is a promise with no end date. I will hold you to it, and I will let you off it, both. Do not tell me which.\"",
+  "result": "\"Till it is done,\" she says, and for once she is not whistling, and not smiling. \"That is a promise with no end date. I will hold you to it, and I will let you off it, both. Do not tell me which.\"",
   "changes": [
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
@@ -5748,7 +5748,7 @@
   "id": "captain:zoya:secret:found",
   "i": 0,
   "label": "Put it back and say nothing",
-  "result": "You put it back, and close the locker, and say nothing, and she watches you do it. \"Thank you,\" she says, lightly. She starts to whistle. It is the same four bars. It is a little flat.",
+  "result": "You put it back, and close the locker, and say nothing, and she watches you do it. \"Thank you,\" she says, lightly. She starts to whistle. It is the same four bars, flat.",
   "changes": [
    "s.hired.flags.secretAngry: undefined -> true",
    "s.hired.flags.secretKnown: undefined -> true",
@@ -5783,7 +5783,7 @@
   "id": "captain:zoya:secret:found",
   "i": 1,
   "label": "Ask her if it is true",
-  "result": "\"Every line,\" she says, and the smile is on, perfectly, like a coat. \"And the last one is wrong. I have been wrong about the last one for six years. It is the only thing I am good at.\" She takes the sheet out of your hand, gently, and puts it in the locker, and shuts it.",
+  "result": "\"Every line,\" she says, smiling. \"And the last one is wrong. I have been wrong about the last one for six years. It is the only thing I am good at.\" She takes the sheet out of your hand, and puts it in the locker, and shuts it.",
   "changes": [
    "s.hired.flags.secretAngry: undefined -> true",
    "s.hired.flags.secretKnown: undefined -> true",
@@ -5820,7 +5820,7 @@
   "id": "captain:zoya:goodbye",
   "i": 0,
   "label": "Wish her the good run",
-  "result": "\"From your mouth,\" she says, and crosses two fingers on each hand, and holds them up, and laughs. It is the best laugh you have heard from her, and the shortest.",
+  "result": "\"From your mouth,\" she says, and crosses two fingers on each hand, and holds them up, and laughs.",
   "changes": [
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
@@ -5855,7 +5855,7 @@
   "id": "captain:zoya:goodbye",
   "i": 1,
   "label": "Tell her to stop",
-  "result": "She laughs, and means it, and does not. \"I will think about it,\" she says. \"On a Tuesday.\" She does not say which one.",
+  "result": "She laughs, and does not. \"I will think about it,\" she says. \"On a Tuesday.\" She does not say which one.",
   "changes": [
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
@@ -5962,7 +5962,7 @@
   "id": "hired:cap-order",
   "i": 1,
   "label": "Say what you think",
-  "result": "\"I did not ask what you thought of the sum,\" she says, not unkindly. \"I asked for the burn.\" You run it hot, and it works, which does not help.",
+  "result": "\"I did not ask what you thought of the sum,\" she says. \"I asked for the burn.\" You run it hot, and it works.",
   "changes": [
    "s.journal.0.day: undefined -> 1",
    "s.journal.0.text: undefined -> Argued the hot burn with Captain Vance and lost.",
@@ -6117,7 +6117,7 @@
   "id": "hired:cap-praise",
   "i": 0,
   "label": "Take it modestly",
-  "result": "\"The crew make it easy,\" you say. She nods once and turns a page. You stand straighter for the rest of the watch. (+1 experience at the gunner post.)",
+  "result": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the gunner post.)",
   "changes": [
    "s.hired.skill.gunner: 12 -> 13",
    "s.journal.0.day: undefined -> 1",
@@ -6156,7 +6156,7 @@
   "id": "hired:cap-praise",
   "i": 1,
   "label": "Ask if it is worth a bonus",
-  "result": "\"When it is a word, it is free,\" she says. \"When it is a bonus, it has to be earned. I have a column for each.\" You have the feeling of having spent something you did not have.",
+  "result": "\"When it is a word, it is free,\" she says. \"When it is a bonus, it has to be earned. I have a column for each.\"",
   "changes": [
    "s.journal.0.day: undefined -> 1",
    "s.journal.0.text: undefined -> Asked Captain Vance for a bonus before I had earned one.",
@@ -6373,7 +6373,7 @@
   "id": "hired:cap-favour",
   "i": 2,
   "label": "Beg off",
-  "result": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. You feel the number go into the book anyway.",
+  "result": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
   "changes": [
    "s.journal.0.day: undefined -> 1",
    "s.journal.0.text: undefined -> Would not stand an extra watch for Captain Vance.",
