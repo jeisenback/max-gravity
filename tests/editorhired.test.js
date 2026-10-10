@@ -319,7 +319,7 @@ test('the raid, ambush and boarding beats are edited line by line, the lines go 
   assert.ok(await page.locator('#detail h4', { hasText: /^exchange$/ }).count() === 1, 'the lines are grouped');
   for (const [id, lines] of [['beats:raid', ['open.grapple.0', 'open.torpedo.0', 'open.gun.0']], ['beats:repel', ['open.1.0']], ['beats:assault', ['open.1.0']], ['beats:ambush', ['read.gunner.label']]]) {  // the raid's foe is drawn, so any style's opening
     await select(id);
-    for (const line of lines) await page.fill(`#f-part\\.${line.replace(/\./g, '\\.')}`, `Typed ${id}.`);
+    for (const line of lines) await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${id}.`);
     const f = await play();
     const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.event.text, G.dialog.choices.map(c => c.label)]));
     assert.ok(seen.includes(`Typed ${id}.`), `${id} plays the typed line: ${seen.slice(0, 200)}`);
