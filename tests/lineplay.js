@@ -46,6 +46,23 @@ const playLines = () => {
     __seed(seed * 7); const c = makeCrewCandidate(st.systemId); c.role = role; c.first = 'Sam'; registerPerson(c); st.crew = [c.id];
     note(`crewbar:${role}:${seed}`, roomLines(currentPlanet()).filter(l => /data-action="person"/.test(l)).join(' | '));
   }
+  // the topics the cases above do not reach whole (#457): what they have heard (the secretive, the talkative, the rest, the friend), the offer of passage (with a lane and with none),
+  // the same drink and cards over more dice, the fight (with and without a gunner among us), the peace, and the goal help for the homesick (whom a gift and a listen move)
+  const run1 = (id, p, seed, pat = {}) => { __seed(seed); st.credits = 5000; return BAR_TOPICS.find(t => t.id === id).make(p, { p, known: false, ...pat }, ctx).run(); };
+  traits.forEach((t, i) => { for (const seed of [1, 2, 3, 4]) { note(`heard2:${t}:${seed}`, run1('heard', person([t, 'kind'], { goal: 'vague' }), 700 + seed * 10 + i)); note(`heard3:${t}:${seed}`, run1('heard', person([t, 'kind'], { goal: 'home', opinion: 3 }), 800 + seed * 10 + i)); } });
+  for (const seed of [1, 2, 3, 4, 5, 6]) note(`passage:${seed}`, run1('passage', person(['kind', 'brave']), 900 + seed));
+  { const real2 = window.travelOffer; window.travelOffer = () => null; note('passage:none', run1('passage', person(['kind', 'brave']), 950)); window.travelOffer = real2; }
+  for (const seed of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]) { note(`drink2:${seed}`, run1('drink', person(['kind', 'brave']), 1000 + seed)); for (const t of ['rude', 'kind']) note(`cards2:${t}:${seed}`, run1('cards', person([t, 'brave']), 1100 + seed)); }
+  for (const post of ['gunner', 'pilot']) for (const seed of [1, 2, 3, 4]) { const was = hired().post; hired().post = post; note(`fight:${post}:${seed}`, run1('fight', person(['rude', 'kind']), 1200 + seed)); hired().post = was; }
+  { const gun = makeCrewCandidate(st.systemId); Object.assign(gun, { role: 'gunner', skill: 2, first: 'Rhea' }); registerPerson(gun); const crew0 = [...st.crew]; st.crew.push(gun.id);  // a gunner among us steps in
+    for (const seed of [1, 2]) note(`fight:crew:${seed}`, run1('fight', person(['rude', 'kind']), 1250 + seed)); st.crew = crew0; }
+  note('peace', run1('peace', person(['kind', 'brave'], { opinion: -3 }), 1300, { known: true }));
+  Object.keys(GOAL_HELP).forEach((goal, i) => {
+    __seed(350 + i); st.credits = 5000;
+    const p = person(['homesick'], { goal, secret: 'spy' }), o = BAR_TOPICS.find(t => t.id === 'goal').make(p, { p, known: false }, ctx);
+    G.nextEvent = null; o.run(); const ev = G.nextEvent; G.nextEvent = null;
+    ev.choices.forEach((c, k) => { st.credits = 5000; __seed(450 + i * 10 + k); note(`goalhelp2:${goal}:${k}`, c.run()); });
+  });
   return out;
 };
 
