@@ -1245,7 +1245,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You try to show them, and it goes wrong at the worst moment, in front of an audience, and Ines is kind enough not to say anything, and that is the cruelest part. (+1 experience at the gunner post.)",
+    "text": "You try to show them, and it goes wrong at the worst moment, in front of an audience, and Ines does not say anything. (+1 experience at the gunner post.)",
     "next": null
    },
    {
@@ -1263,13 +1263,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You let it go, and finish your tea, and the table moves on. Ines looks, for a moment, almost disappointed.",
+    "text": "You let it go, and finish your tea, and the table moves on.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You let it go, and finish your tea, and the table moves on. Ines looks, for a moment, almost disappointed.",
+    "text": "You let it go, and finish your tea, and the table moves on.",
     "next": null
    }
   ],
@@ -1293,7 +1293,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You lose the hand, and lose it cheerfully, and Ines pushes your last coin back across the felt with a grin. \"Come again,\" they say. You are fifty credits poorer.",
+    "text": "You lose the hand, and Ines pushes your last coin back across the felt with a grin. \"Come again,\" they say. You are fifty credits poorer.",
     "next": null
    },
    {
@@ -1392,13 +1392,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You pass, and spend the time ashore as you like, The broker nods and finds somebody else.",
+    "text": "You pass, and spend the time ashore as you like. The broker finds somebody else.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You pass, and spend the time ashore as you like, The broker nods and finds somebody else.",
+    "text": "You pass, and spend the time ashore as you like. The broker finds somebody else.",
     "next": null
    }
   ],
@@ -1415,37 +1415,37 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again, and a good deal more than that in other ways.",
+    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again, and a good deal more than that in other ways.",
+    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0,
-    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered, and means it, mostly.",
+    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered, and means it, mostly.",
+    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again, and the not asking is its own sort of silence.",
+    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again, and the not asking is its own sort of silence.",
+    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
     "next": null
    }
   ],
@@ -1475,13 +1475,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You raise it, loudly, in the galley, and the captain pays it, with ice in the voice. You are 35 cr up. The captain is colder to you for a while.",
+    "text": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 35 cr up.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You raise it, loudly, in the galley, and the captain pays it, with ice in the voice. You are 35 cr up. The captain is colder to you for a while.",
+    "text": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 35 cr up.",
     "next": null
    },
    {
@@ -1534,12 +1534,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
      }
     ]
    },
@@ -1569,12 +1569,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
      }
     ]
    },
@@ -1938,7 +1938,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You try to show them, and it goes wrong at the worst moment, in front of an audience, and Ines is kind enough not to say anything, and that is the cruelest part. (+1 experience at the pilot post.)",
+    "text": "You try to show them, and it goes wrong at the worst moment, in front of an audience, and Ines does not say anything. (+1 experience at the pilot post.)",
     "next": null
    },
    {
@@ -1956,13 +1956,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You let it go, and finish your tea, and the table moves on. Ines looks, for a moment, almost disappointed.",
+    "text": "You let it go, and finish your tea, and the table moves on.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You let it go, and finish your tea, and the table moves on. Ines looks, for a moment, almost disappointed.",
+    "text": "You let it go, and finish your tea, and the table moves on.",
     "next": null
    }
   ],
@@ -1986,7 +1986,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You lose the hand, and lose it cheerfully, and Ines pushes your last coin back across the felt with a grin. \"Come again,\" they say. You are fifty credits poorer.",
+    "text": "You lose the hand, and Ines pushes your last coin back across the felt with a grin. \"Come again,\" they say. You are fifty credits poorer.",
     "next": null
    },
    {
@@ -2085,13 +2085,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You pass, and spend the time ashore as you like, The broker nods and finds somebody else.",
+    "text": "You pass, and spend the time ashore as you like. The broker finds somebody else.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You pass, and spend the time ashore as you like, The broker nods and finds somebody else.",
+    "text": "You pass, and spend the time ashore as you like. The broker finds somebody else.",
     "next": null
    }
   ],
@@ -2108,37 +2108,37 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again, and a good deal more than that in other ways.",
+    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again, and a good deal more than that in other ways.",
+    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0,
-    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered, and means it, mostly.",
+    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered, and means it, mostly.",
+    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again, and the not asking is its own sort of silence.",
+    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again, and the not asking is its own sort of silence.",
+    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
     "next": null
    }
   ],
@@ -2168,13 +2168,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You raise it, loudly, in the galley, and the captain pays it, with ice in the voice. You are 35 cr up. The captain is colder to you for a while.",
+    "text": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 35 cr up.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You raise it, loudly, in the galley, and the captain pays it, with ice in the voice. You are 35 cr up. The captain is colder to you for a while.",
+    "text": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 35 cr up.",
     "next": null
    },
    {
@@ -2227,12 +2227,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the pilot post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the pilot post.)"
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the pilot post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the pilot post.)"
      }
     ]
    },
@@ -2262,12 +2262,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the pilot post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the pilot post.)"
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the pilot post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the pilot post.)"
      }
     ]
    },
@@ -2631,7 +2631,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You try to show them, and it goes wrong at the worst moment, in front of an audience, and Ines is kind enough not to say anything, and that is the cruelest part. (+1 experience at the engineer post.)",
+    "text": "You try to show them, and it goes wrong at the worst moment, in front of an audience, and Ines does not say anything. (+1 experience at the engineer post.)",
     "next": null
    },
    {
@@ -2649,13 +2649,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You let it go, and finish your tea, and the table moves on. Ines looks, for a moment, almost disappointed.",
+    "text": "You let it go, and finish your tea, and the table moves on.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You let it go, and finish your tea, and the table moves on. Ines looks, for a moment, almost disappointed.",
+    "text": "You let it go, and finish your tea, and the table moves on.",
     "next": null
    }
   ],
@@ -2679,7 +2679,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You lose the hand, and lose it cheerfully, and Ines pushes your last coin back across the felt with a grin. \"Come again,\" they say. You are fifty credits poorer.",
+    "text": "You lose the hand, and Ines pushes your last coin back across the felt with a grin. \"Come again,\" they say. You are fifty credits poorer.",
     "next": null
    },
    {
@@ -2778,13 +2778,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You pass, and spend the time ashore as you like, The broker nods and finds somebody else.",
+    "text": "You pass, and spend the time ashore as you like. The broker finds somebody else.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You pass, and spend the time ashore as you like, The broker nods and finds somebody else.",
+    "text": "You pass, and spend the time ashore as you like. The broker finds somebody else.",
     "next": null
    }
   ],
@@ -2801,37 +2801,37 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again, and a good deal more than that in other ways.",
+    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again, and a good deal more than that in other ways.",
+    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0,
-    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered, and means it, mostly.",
+    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered, and means it, mostly.",
+    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again, and the not asking is its own sort of silence.",
+    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again, and the not asking is its own sort of silence.",
+    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
     "next": null
    }
   ],
@@ -2861,13 +2861,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You raise it, loudly, in the galley, and the captain pays it, with ice in the voice. You are 35 cr up. The captain is colder to you for a while.",
+    "text": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 35 cr up.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You raise it, loudly, in the galley, and the captain pays it, with ice in the voice. You are 35 cr up. The captain is colder to you for a while.",
+    "text": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 35 cr up.",
     "next": null
    },
    {
@@ -2920,12 +2920,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the engineer post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the engineer post.)"
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the engineer post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the engineer post.)"
      }
     ]
    },
@@ -2955,12 +2955,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the engineer post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the engineer post.)"
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the engineer post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the engineer post.)"
      }
     ]
    },
@@ -3324,7 +3324,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You try to show them, and it goes wrong at the worst moment, in front of an audience, and Ines is kind enough not to say anything, and that is the cruelest part. (+1 experience at the comms post.)",
+    "text": "You try to show them, and it goes wrong at the worst moment, in front of an audience, and Ines does not say anything. (+1 experience at the comms post.)",
     "next": null
    },
    {
@@ -3342,13 +3342,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You let it go, and finish your tea, and the table moves on. Ines looks, for a moment, almost disappointed.",
+    "text": "You let it go, and finish your tea, and the table moves on.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You let it go, and finish your tea, and the table moves on. Ines looks, for a moment, almost disappointed.",
+    "text": "You let it go, and finish your tea, and the table moves on.",
     "next": null
    }
   ],
@@ -3372,7 +3372,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You lose the hand, and lose it cheerfully, and Ines pushes your last coin back across the felt with a grin. \"Come again,\" they say. You are fifty credits poorer.",
+    "text": "You lose the hand, and Ines pushes your last coin back across the felt with a grin. \"Come again,\" they say. You are fifty credits poorer.",
     "next": null
    },
    {
@@ -3471,13 +3471,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You pass, and spend the time ashore as you like, The broker nods and finds somebody else.",
+    "text": "You pass, and spend the time ashore as you like. The broker finds somebody else.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You pass, and spend the time ashore as you like, The broker nods and finds somebody else.",
+    "text": "You pass, and spend the time ashore as you like. The broker finds somebody else.",
     "next": null
    }
   ],
@@ -3494,37 +3494,37 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again, and a good deal more than that in other ways.",
+    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again, and a good deal more than that in other ways.",
+    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0,
-    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered, and means it, mostly.",
+    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered, and means it, mostly.",
+    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again, and the not asking is its own sort of silence.",
+    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again, and the not asking is its own sort of silence.",
+    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
     "next": null
    }
   ],
@@ -3554,13 +3554,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You raise it, loudly, in the galley, and the captain pays it, with ice in the voice. You are 35 cr up. The captain is colder to you for a while.",
+    "text": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 35 cr up.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You raise it, loudly, in the galley, and the captain pays it, with ice in the voice. You are 35 cr up. The captain is colder to you for a while.",
+    "text": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 35 cr up.",
     "next": null
    },
    {
@@ -3613,12 +3613,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the comms post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the comms post.)"
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the comms post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the comms post.)"
      }
     ]
    },
@@ -3648,12 +3648,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the comms post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the comms post.)"
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the comms post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the comms post.)"
      }
     ]
    },
@@ -4017,7 +4017,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You try to show them, and it goes wrong at the worst moment, in front of an audience, and Ines is kind enough not to say anything, and that is the cruelest part. (+1 experience at the gunner post.)",
+    "text": "You try to show them, and it goes wrong at the worst moment, in front of an audience, and Ines does not say anything. (+1 experience at the gunner post.)",
     "next": null
    },
    {
@@ -4035,13 +4035,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You let it go, and finish your tea, and the table moves on. Ines looks, for a moment, almost disappointed.",
+    "text": "You let it go, and finish your tea, and the table moves on.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You let it go, and finish your tea, and the table moves on. Ines looks, for a moment, almost disappointed.",
+    "text": "You let it go, and finish your tea, and the table moves on.",
     "next": null
    }
   ],
@@ -4065,7 +4065,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You lose the hand, and lose it cheerfully, and Ines pushes your last coin back across the felt with a grin. \"Come again,\" they say. You are fifty credits poorer.",
+    "text": "You lose the hand, and Ines pushes your last coin back across the felt with a grin. \"Come again,\" they say. You are fifty credits poorer.",
     "next": null
    },
    {
@@ -4164,13 +4164,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You pass, and spend the time ashore as you like, The broker nods and finds somebody else.",
+    "text": "You pass, and spend the time ashore as you like. The broker finds somebody else.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You pass, and spend the time ashore as you like, The broker nods and finds somebody else.",
+    "text": "You pass, and spend the time ashore as you like. The broker finds somebody else.",
     "next": null
    }
   ],
@@ -4187,37 +4187,37 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again, and a good deal more than that in other ways.",
+    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again, and a good deal more than that in other ways.",
+    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0,
-    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered, and means it, mostly.",
+    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered, and means it, mostly.",
+    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again, and the not asking is its own sort of silence.",
+    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again, and the not asking is its own sort of silence.",
+    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
     "next": null
    }
   ],
@@ -4247,13 +4247,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You raise it, loudly, in the galley, and the captain pays it, with ice in the voice. You are 50 cr up. The captain is colder to you for a while.",
+    "text": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 50 cr up.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You raise it, loudly, in the galley, and the captain pays it, with ice in the voice. You are 50 cr up. The captain is colder to you for a while.",
+    "text": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 50 cr up.",
     "next": null
    },
    {
@@ -4306,12 +4306,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
      }
     ]
    },
@@ -4341,12 +4341,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
      }
     ]
    },
@@ -4710,7 +4710,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You try to show them, and it goes wrong at the worst moment, in front of an audience, and Ines is kind enough not to say anything, and that is the cruelest part. (+1 experience at the gunner post.)",
+    "text": "You try to show them, and it goes wrong at the worst moment, in front of an audience, and Ines does not say anything. (+1 experience at the gunner post.)",
     "next": null
    },
    {
@@ -4728,13 +4728,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You let it go, and finish your tea, and the table moves on. Ines looks, for a moment, almost disappointed.",
+    "text": "You let it go, and finish your tea, and the table moves on.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You let it go, and finish your tea, and the table moves on. Ines looks, for a moment, almost disappointed.",
+    "text": "You let it go, and finish your tea, and the table moves on.",
     "next": null
    }
   ],
@@ -4758,7 +4758,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You lose the hand, and lose it cheerfully, and Ines pushes your last coin back across the felt with a grin. \"Come again,\" they say. You are fifty credits poorer.",
+    "text": "You lose the hand, and Ines pushes your last coin back across the felt with a grin. \"Come again,\" they say. You are fifty credits poorer.",
     "next": null
    },
    {
@@ -4857,13 +4857,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You pass, and spend the time ashore as you like, The broker nods and finds somebody else.",
+    "text": "You pass, and spend the time ashore as you like. The broker finds somebody else.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You pass, and spend the time ashore as you like, The broker nods and finds somebody else.",
+    "text": "You pass, and spend the time ashore as you like. The broker finds somebody else.",
     "next": null
    }
   ],
@@ -4880,37 +4880,37 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again, and a good deal more than that in other ways.",
+    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again, and a good deal more than that in other ways.",
+    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0,
-    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered, and means it, mostly.",
+    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered, and means it, mostly.",
+    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again, and the not asking is its own sort of silence.",
+    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again, and the not asking is its own sort of silence.",
+    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
     "next": null
    }
   ],
@@ -4940,13 +4940,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You raise it, loudly, in the galley, and the captain pays it, with ice in the voice. You are 45 cr up. The captain is colder to you for a while.",
+    "text": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 45 cr up.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You raise it, loudly, in the galley, and the captain pays it, with ice in the voice. You are 45 cr up. The captain is colder to you for a while.",
+    "text": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 45 cr up.",
     "next": null
    },
    {
@@ -4999,12 +4999,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
      }
     ]
    },
@@ -5034,12 +5034,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
      }
     ]
    },
@@ -5403,7 +5403,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You try to show them, and it goes wrong at the worst moment, in front of an audience, and Ines is kind enough not to say anything, and that is the cruelest part. (+1 experience at the gunner post.)",
+    "text": "You try to show them, and it goes wrong at the worst moment, in front of an audience, and Ines does not say anything. (+1 experience at the gunner post.)",
     "next": null
    },
    {
@@ -5421,13 +5421,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You let it go, and finish your tea, and the table moves on. Ines looks, for a moment, almost disappointed.",
+    "text": "You let it go, and finish your tea, and the table moves on.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You let it go, and finish your tea, and the table moves on. Ines looks, for a moment, almost disappointed.",
+    "text": "You let it go, and finish your tea, and the table moves on.",
     "next": null
    }
   ],
@@ -5451,7 +5451,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You lose the hand, and lose it cheerfully, and Ines pushes your last coin back across the felt with a grin. \"Come again,\" they say. You are fifty credits poorer.",
+    "text": "You lose the hand, and Ines pushes your last coin back across the felt with a grin. \"Come again,\" they say. You are fifty credits poorer.",
     "next": null
    },
    {
@@ -5550,13 +5550,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You pass, and spend the time ashore as you like, The broker nods and finds somebody else.",
+    "text": "You pass, and spend the time ashore as you like. The broker finds somebody else.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You pass, and spend the time ashore as you like, The broker nods and finds somebody else.",
+    "text": "You pass, and spend the time ashore as you like. The broker finds somebody else.",
     "next": null
    }
   ],
@@ -5573,37 +5573,37 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again, and a good deal more than that in other ways.",
+    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again, and a good deal more than that in other ways.",
+    "text": "You lend it, no questions, and Ines takes it with both hands and cannot find the words. It is a hundred credits you may or may not see again.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0,
-    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered, and means it, mostly.",
+    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered, and means it, mostly.",
+    "text": "\"It is what I can spare,\" you say, and Ines says that is fine, that it is more than anyone else offered.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again, and the not asking is its own sort of silence.",
+    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again, and the not asking is its own sort of silence.",
+    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
     "next": null
    }
   ],
@@ -5633,13 +5633,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You raise it, loudly, in the galley, and the captain pays it, with ice in the voice. You are 25 cr up. The captain is colder to you for a while.",
+    "text": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 25 cr up.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You raise it, loudly, in the galley, and the captain pays it, with ice in the voice. You are 25 cr up. The captain is colder to you for a while.",
+    "text": "You raise it, loudly, in the galley, and the captain pays it without looking up. You are 25 cr up.",
     "next": null
    },
    {
@@ -5692,12 +5692,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
      }
     ]
    },
@@ -5727,12 +5727,12 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says, kindly, that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
+      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)"
      }
     ]
    },

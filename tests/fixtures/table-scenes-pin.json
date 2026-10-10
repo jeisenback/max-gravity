@@ -2,7 +2,7 @@
  {
   "id": "hired:pilot-drift",
   "title": "Drift on the Helm",
-  "text": "The nav plot and the stars disagree by a hair, and the hair is growing. Somewhere in the gyro stack a reading has gone stale, and the ship is sliding a little further off her line every hour.",
+  "text": "The nav plot and the stars disagree by a hair, and the hair is growing. Somewhere in the gyro stack a reading has gone stale, and the ship is sliding further off her line every hour.",
   "labels": [
    "Re-fix the plot against three stars",
    "Nudge the trim until it looks right <span class=\"hint\">[if it fails: you learn less, and the captain marks it]</span>"
@@ -55,11 +55,11 @@
   ],
   "plays": [
    {
-    "text": "You fly it five times, slowly, with the numbers up on the second screen, until the approach is clean in your hands. The initials at the bottom do not move, but you know why now. (+3 experience at the pilot post.)",
+    "text": "You fly it five times, slowly, with the numbers up on the second screen, until the approach is clean in your hands. The fifth run is four-tenths of a second off the initials at the bottom. (+3 experience at the pilot post.)",
     "xp": 3
    },
    {
-    "text": "You fly it hot, and it works, which surprises you more than anyone. The score is not the best, but it is close. (+4 experience at the pilot post.)",
+    "text": "You fly it hot, and it works. The score is not the best, but it is close. (+4 experience at the pilot post.)",
     "xp": 4
    },
    {
@@ -82,7 +82,7 @@
     "xp": 3
    },
    {
-    "text": "You flip at the sheet's mark and trim the brake by eye. The ship settles on the line with a little more fuel burned than you wanted. (+4 experience at the pilot post.)",
+    "text": "You flip at the sheet's mark and trim the brake by eye. The ship settles on the line with more fuel burned than you wanted. (+4 experience at the pilot post.)",
     "xp": 4
    },
    {
@@ -94,7 +94,7 @@
  {
   "id": "hired:pilot-debris",
   "title": "A Return on the Plot",
-  "text": "A faint return has been showing on the plot for an hour, small and slow, a little to port of the line. It could be a rock. It could be a ship running dark. Nobody else has mentioned it.",
+  "text": "A faint return has been showing on the plot for an hour, small and slow, two degrees to port of the line. It could be a rock. It could be a ship running dark. Nobody else has mentioned it.",
   "labels": [
    "Track it for another hour before you say anything",
    "Call it a rock and let the plot go <span class=\"hint\">[if it fails: you learn less, and the captain marks it]</span>"
@@ -220,7 +220,7 @@
     "xp": 3
    },
    {
-    "text": "You burst it, and the drone tumbles apart in a spray of orange. The captain gets the bill in the log. It was a good burst. (+4 experience at the gunner post.)",
+    "text": "You burst it, and the drone tumbles apart in a spray of orange. The captain gets the bill in the log. (+4 experience at the gunner post.)",
     "xp": 4
    },
    {
@@ -270,7 +270,7 @@
     "xp": 4
    },
    {
-    "text": "The spare is the wrong size and takes a gasket to seat it. By the time it runs, you have lost the afternoon and a good deal of temper. (+1 experience at the engineer post.)",
+    "text": "The spare is the wrong size and takes a gasket to seat it. By the time it runs, you have lost the afternoon. (+1 experience at the engineer post.)",
     "xp": 1
    }
   ]
@@ -278,7 +278,7 @@
  {
   "id": "hired:engineer-coolant",
   "title": "Warm Coolant",
-  "text": "The coolant loop is running a few degrees warm. It is nowhere near a limit, but the trend is wrong, and you know a trend like that is a leak, or a pump, or a thing you have not thought of yet.",
+  "text": "The coolant loop is running a few degrees warm. It is nowhere near a limit, but the trend is wrong, and a trend like that is a leak, or a pump, or a thing nobody has thought of yet.",
   "labels": [
    "Chase it from the pump to the radiator",
    "Bleed the loop and hope <span class=\"hint\">[if it fails: you learn less, and the captain marks it]</span>"
@@ -289,7 +289,7 @@
     "xp": 3
    },
    {
-    "text": "You bleed the loop and top it up, and the temperature drops back. It does not feel like an answer, but it is a good enough one for now. (+4 experience at the engineer post.)",
+    "text": "You bleed the loop and top it up, and the temperature drops back. You write \"bled, topped up\" in the log and nothing else. (+4 experience at the engineer post.)",
     "xp": 4
    },
    {
@@ -358,7 +358,7 @@
     "xp": 3
    },
    {
-    "text": "You re-tune the filters, and the hiss drops out of the speech band like a stone out of a bucket. Good enough, you think, for now. (+4 experience at the comms post.)",
+    "text": "You re-tune the filters, and the hiss drops out of the speech band like a stone out of a bucket. (+4 experience at the comms post.)",
     "xp": 4
    },
    {
@@ -400,11 +400,11 @@
   ],
   "plays": [
    {
-    "text": "You work through it in order, and answer what needs answering, and file the rest. By the end you know the traffic in this part of the lane better than you did, and the log is clean. (+3 experience at the comms post.)",
+    "text": "You work through it in order, and answer what needs answering, and file the rest. By the end the log is empty, and you have a list of the stations that changed their codes. (+3 experience at the comms post.)",
     "xp": 3
    },
    {
-    "text": "You answer the urgent ones and skim the rest, and nothing in the skim bites. A shortcut, and it holds. (+4 experience at the comms post.)",
+    "text": "You answer the urgent ones and skim the rest, and nothing in the skim bites. (+4 experience at the comms post.)",
     "xp": 4
    },
    {
@@ -464,7 +464,7 @@
   "post": "pilot",
   "title": "The Rock",
   "text": [
-   "She is a dark lump on the board for three days, and then she is a mountain. A comet that lost its way, or a piece of one: black, pitted, with a white seam through it where the ice shows. There is no beacon, no berth, and nobody to ask. The captain brings the ship in to three kilometers and says what everyone is thinking, that you cannot dock with something that is tumbling.</p><p>The haul so far: even. Armor 260/260.",
+   "She is a dark lump on the board for three days, and then she is a mountain. A comet that lost its way, or a piece of one: black, pitted, with a white seam through it where the ice shows. There is no beacon, no berth, and nobody to ask. The captain brings the ship in to three kilometers and says that you cannot dock with something that is tumbling.</p><p>The haul so far: even. Armor 260/260.",
    "The rock is bigger than the charts said, and it is turning, a long slow roll that takes eleven minutes. The ice is on the shadow side, a pale band between slabs of dust and rock. The captain has the ship stationed and the crew are at their suits. \"Somebody tell me how we get close,\" the captain says.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
@@ -513,13 +513,13 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "You fly it by hand, with the drive cold, on the thrusters alone, in the shadow of the rock. The ship settles against the ice like something that belongs there.",
+    "text": "You fly it by hand, with the drive cold, on the thrusters alone, in the shadow of the rock. The ship settles against the ice.",
     "xp": 4
    },
    {
     "i": 3,
     "roll": 0.999,
-    "text": "The thrusters are not enough, and the rock turns into the ship. The paint will not forgive you. Armor -16.",
+    "text": "The thrusters are not enough, and the rock turns into the ship. The paint is gone along the port side. Armor -16.",
     "xp": 1
    }
   ]
@@ -529,7 +529,7 @@
   "post": "engineer",
   "title": "The Rock",
   "text": [
-   "She is a dark lump on the board for three days, and then she is a mountain. A comet that lost its way, or a piece of one: black, pitted, with a white seam through it where the ice shows. There is no beacon, no berth, and nobody to ask. The captain brings the ship in to three kilometers and says what everyone is thinking, that you cannot dock with something that is tumbling.</p><p>The haul so far: even. Armor 260/260.",
+   "She is a dark lump on the board for three days, and then she is a mountain. A comet that lost its way, or a piece of one: black, pitted, with a white seam through it where the ice shows. There is no beacon, no berth, and nobody to ask. The captain brings the ship in to three kilometers and says that you cannot dock with something that is tumbling.</p><p>The haul so far: even. Armor 260/260.",
    "The rock is bigger than the charts said, and it is turning, a long slow roll that takes eleven minutes. The ice is on the shadow side, a pale band between slabs of dust and rock. The captain has the ship stationed and the crew are at their suits. \"Somebody tell me how we get close,\" the captain says.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
@@ -558,7 +558,7 @@
   "post": "gunner",
   "title": "The Rock",
   "text": [
-   "She is a dark lump on the board for three days, and then she is a mountain. A comet that lost its way, or a piece of one: black, pitted, with a white seam through it where the ice shows. There is no beacon, no berth, and nobody to ask. The captain brings the ship in to three kilometers and says what everyone is thinking, that you cannot dock with something that is tumbling.</p><p>The haul so far: even. Armor 260/260.",
+   "She is a dark lump on the board for three days, and then she is a mountain. A comet that lost its way, or a piece of one: black, pitted, with a white seam through it where the ice shows. There is no beacon, no berth, and nobody to ask. The captain brings the ship in to three kilometers and says that you cannot dock with something that is tumbling.</p><p>The haul so far: even. Armor 260/260.",
    "The rock is bigger than the charts said, and it is turning, a long slow roll that takes eleven minutes. The ice is on the shadow side, a pale band between slabs of dust and rock. The captain has the ship stationed and the crew are at their suits. \"Somebody tell me how we get close,\" the captain says.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
@@ -571,7 +571,7 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "You put three shots into the dust at the rim, and the rock gives up a flat ledge with room for the ship. The captain says nothing, which is praise.",
+    "text": "You put three shots into the dust at the rim, and the rock gives up a flat ledge with room for the ship. The captain writes the ledge's position in the log.",
     "xp": 4
    },
    {
@@ -587,7 +587,7 @@
   "post": "comms",
   "title": "The Rock",
   "text": [
-   "She is a dark lump on the board for three days, and then she is a mountain. A comet that lost its way, or a piece of one: black, pitted, with a white seam through it where the ice shows. There is no beacon, no berth, and nobody to ask. The captain brings the ship in to three kilometers and says what everyone is thinking, that you cannot dock with something that is tumbling.</p><p>The haul so far: even. Armor 260/260.",
+   "She is a dark lump on the board for three days, and then she is a mountain. A comet that lost its way, or a piece of one: black, pitted, with a white seam through it where the ice shows. There is no beacon, no berth, and nobody to ask. The captain brings the ship in to three kilometers and says that you cannot dock with something that is tumbling.</p><p>The haul so far: even. Armor 260/260.",
    "The rock is bigger than the charts said, and it is turning, a long slow roll that takes eleven minutes. The ice is on the shadow side, a pale band between slabs of dust and rock. The captain has the ship stationed and the crew are at their suits. \"Somebody tell me how we get close,\" the captain says.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
@@ -647,7 +647,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "A big block shifts on the lift and takes the edge off the hold door. Nobody is under it, which is luck. Armor -21. The hold takes 18 tons of ice.",
+    "text": "A big block shifts on the lift and takes the edge off the hold door. Nobody is under it. Armor -21. The hold takes 18 tons of ice.",
     "xp": 1
    },
    {
@@ -758,7 +758,7 @@
    {
     "i": 3,
     "roll": 0.999,
-    "text": "You lose a shift in the schedule and two people on the ice at once. It is sorted out, and it is not forgotten. Armor -8. The hold takes 18 tons of ice.",
+    "text": "You lose a shift in the schedule and two people on the ice at once. It is sorted out in forty minutes. Armor -8. The hold takes 18 tons of ice.",
     "xp": 1
    }
   ]
@@ -769,7 +769,7 @@
   "title": "Home With the Ice",
   "text": [
    "The hold is full, and the ship is heavy, and she burns like it. Every maneuver is slower, and every vibration matters, because there is a hundred tons of ice in the hold that is the only cargo you are being paid for. The captain has set a course for the buyer and a limit on the thrust, and has asked everyone to keep it in mind.</p><p>The haul so far: even. Armor 260/260.",
-   "The rock is a pale dot astern, and then it is not. Nobody says anything for a while. The hold is full of water that will keep a dome alive for a month. It is a long way home, and the ship has never felt so slow.</p><p>The haul so far: even. Armor 260/260."
+   "The rock is a pale dot astern, and then it is not. The hold is full of water that will keep a dome alive for a month. The burn is limited, and it is a long way home.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
    "Keep the burn gentle and the hold cold",
@@ -787,7 +787,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "A gentle burn is a long one. The ice softens a little at the edges, and you lose a ton to the drains.",
+    "text": "A gentle burn is a long one. The ice softens at the edges, and you lose a ton to the drains.",
     "xp": 1
    },
    {
@@ -834,7 +834,7 @@
   "title": "Home With the Ice",
   "text": [
    "The hold is full, and the ship is heavy, and she burns like it. Every maneuver is slower, and every vibration matters, because there is a hundred tons of ice in the hold that is the only cargo you are being paid for. The captain has set a course for the buyer and a limit on the thrust, and has asked everyone to keep it in mind.</p><p>The haul so far: even. Armor 260/260.",
-   "The rock is a pale dot astern, and then it is not. Nobody says anything for a while. The hold is full of water that will keep a dome alive for a month. It is a long way home, and the ship has never felt so slow.</p><p>The haul so far: even. Armor 260/260."
+   "The rock is a pale dot astern, and then it is not. The hold is full of water that will keep a dome alive for a month. The burn is limited, and it is a long way home.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
    "Keep the burn gentle and the hold cold",
@@ -863,7 +863,7 @@
   "title": "Home With the Ice",
   "text": [
    "The hold is full, and the ship is heavy, and she burns like it. Every maneuver is slower, and every vibration matters, because there is a hundred tons of ice in the hold that is the only cargo you are being paid for. The captain has set a course for the buyer and a limit on the thrust, and has asked everyone to keep it in mind.</p><p>The haul so far: even. Armor 260/260.",
-   "The rock is a pale dot astern, and then it is not. Nobody says anything for a while. The hold is full of water that will keep a dome alive for a month. It is a long way home, and the ship has never felt so slow.</p><p>The haul so far: even. Armor 260/260."
+   "The rock is a pale dot astern, and then it is not. The hold is full of water that will keep a dome alive for a month. The burn is limited, and it is a long way home.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
    "Keep the burn gentle and the hold cold",
@@ -875,7 +875,7 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "You keep the guns warm and watch the dark for two days. Nothing comes, and everyone sleeps better because you did.",
+    "text": "You keep the guns warm and watch the dark for two days. Nothing comes, and the crew sleep through both nights.",
     "xp": 4
    },
    {
@@ -892,7 +892,7 @@
   "title": "Home With the Ice",
   "text": [
    "The hold is full, and the ship is heavy, and she burns like it. Every maneuver is slower, and every vibration matters, because there is a hundred tons of ice in the hold that is the only cargo you are being paid for. The captain has set a course for the buyer and a limit on the thrust, and has asked everyone to keep it in mind.</p><p>The haul so far: even. Armor 260/260.",
-   "The rock is a pale dot astern, and then it is not. Nobody says anything for a while. The hold is full of water that will keep a dome alive for a month. It is a long way home, and the ship has never felt so slow.</p><p>The haul so far: even. Armor 260/260."
+   "The rock is a pale dot astern, and then it is not. The hold is full of water that will keep a dome alive for a month. The burn is limited, and it is a long way home.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
    "Keep the burn gentle and the hold cold",

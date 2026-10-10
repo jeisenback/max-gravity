@@ -104,8 +104,8 @@ const RAID_CLOSE = {
       'She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she ' +
       'is not.'), torpedo: 'She does not fire the third torpedo. The bay doors close and she turns away, and the range opens.' },
   crippled: { gun: ('Your last burst takes her drive, and the cutter yaws and goes quiet. She will have a tow in a day. A beacon on her hull is ' +
-      'already calling for it.'), grapple: 'Your last burst takes her drive, and the plume goes out. She turns over and drifts, with the grapple arms hanging.', torpedo: 'Your last burst reaches her torpedo bay and not the torpedoes, which is lucky for everyone. Her plume goes out.' },
-  standoff: 'She breaks off at long range, out of ammunition or out of patience, and throws one last burst as she goes. It clips the hull aft.',
+      'already calling for it.'), grapple: 'Your last burst takes her drive, and the plume goes out. She turns over and drifts, with the grapple arms hanging.', torpedo: 'Your last burst reaches her torpedo bay and not the torpedoes, Her plume goes out.' },
+  standoff: 'She breaks off at long range and throws one last burst as she goes. It clips the hull aft.',
   boarded: { gun: ('She is alongside, and not with grapples: a boarding party in navy gray comes across with the lock cutter. They are coming aboard, ' +
       'by the book.'), grapple: 'She is alongside. The grapples bang on the hull in four places and the lock alarm goes. They are coming aboard.', torpedo: 'A torpedo takes your drive housing and she closes while you are slow. The grapples bang on the hull, and the lock alarm goes.' },
 };
@@ -283,7 +283,7 @@ function ambushChoice(a, cap, h, post, spec) {
       `more come off the rock behind her, and the call stops.`), (
       `They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they are inside the range, and ` +
       `your position is already bad.`));
-  const real = () => { h.fund += 500; like(cap, 1, 'You stopped for a real distress call.'); return `She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund, which is more than you asked.`; };
+  const real = () => { h.fund += 500; like(cap, 1, 'You stopped for a real distress call.'); return `She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.`; };
   const choices = [];
   if (a.known) {
     if (a.trap) {

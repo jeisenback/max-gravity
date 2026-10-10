@@ -63,7 +63,7 @@ const ASSAULT_POST = {
   gunner: { label: 'Put fire down the corridor', win: 'You put three rounds down the corridor at the crate, one at a time. The one behind it stops firing and the others pull back.', lose: 'You fire, and the rounds go into the deck. They use the noise to move up.' },
   engineer: { label: 'Cut her power', win: 'You find her breaker panel by the lock and pull it. Every light in the section goes out, and you have your helmet lamps and they do not.', lose: 'You pull the wrong breaker and her emergency lights come on instead, all of them, in your eyes.' },
   pilot: { label: 'Bring the ship round to her hatch', win: ('You take the cutter along her side to the hatch by the bridge. The crew go out of the ' +
-      'second lock behind them and the corridor is a pincer.'), lose: 'You bring her round and misjudge it by a meter. The hull scrapes and the crew in the lock go over like skittles.' },
+      'second lock behind them and the corridor is a pincer.'), lose: 'You bring her round and misjudge it by a meter. The hull scrapes and the crew in the lock go over.' },
   comms: { label: 'Take her intercom', win: 'You find her intercom and put the captain on it, calmly, telling her people the ship is lost and the lock is open. Some of them go.', lose: 'You find her intercom and it is a recording, which says something unrepeatable about your mother.' },
 };
 
@@ -176,7 +176,7 @@ function hurtHand(s) {
   st.credits -= bill;
   const pay = bill ? ` The clinic is ${fmt(bill)} cr of your own, with no medic aboard.` : '';
   if (again && Math.random() < handDeathOdds()) handDies(s, 'hurt');
-  return `${again ? 'You are hurt again, and you stay down. It will be some time before you are any use.' : 'You are hurt. For a while your work will be a level worse.'}${pay}`;
+  return `${again ? 'You are hurt again, and you stay down.' : 'You are hurt. Your work counts a level lower until the clinic clears you.'}${pay}`;
 }
 
 // Someone goes down. The hand can be hurt but not killed. A crew member hurt twice in one fight is dead, and so is a named person marked before; where a floor of main

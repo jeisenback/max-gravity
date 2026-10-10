@@ -9,7 +9,7 @@ const WORK_EVENTS = [
     id: 'pilot-drift',
     post: 'pilot',
     title: 'Drift on the Helm',
-    text: 'The nav plot and the stars disagree by a hair, and the hair is growing. Somewhere in the gyro stack a reading has gone stale, and the ship is sliding a little further off her line every hour.',
+    text: 'The nav plot and the stars disagree by a hair, and the hair is growing. Somewhere in the gyro stack a reading has gone stale, and the ship is sliding further off her line every hour.',
     careful: [
       'Re-fix the plot against three stars',
       'You shoot three stars, and then three more, and work the sums twice on paper before you trust them. The drift is a stale gyro, and you zero it. It takes most of a watch.'
@@ -42,11 +42,11 @@ const WORK_EVENTS = [
     text: 'The captain has left the approach for the next port on the sim, and said nothing about it. It is a hard one: a tight berth, a crosswind of station spin, and a score at the bottom of the screen with someone else\'s initials.',
     careful: [
       'Fly it slowly, until it is clean',
-      'You fly it five times, slowly, with the numbers up on the second screen, until the approach is clean in your hands. The initials at the bottom do not move, but you know why now.'
+      'You fly it five times, slowly, with the numbers up on the second screen, until the approach is clean in your hands. The fifth run is four-tenths of a second off the initials at the bottom.'
     ],
     quick: [
       'Fly it at speed and see what happens',
-      'You fly it hot, and it works, which surprises you more than anyone. The score is not the best, but it is close.',
+      'You fly it hot, and it works. The score is not the best, but it is close.',
       'You fly it hot and hit the berth wall, and the sim sounds a rude tone. You reset it and do not look at the score.'
     ]
   },
@@ -61,7 +61,7 @@ const WORK_EVENTS = [
     ],
     quick: [
       'Flip where the sheet says and correct on the brake',
-      'You flip at the sheet\'s mark and trim the brake by eye. The ship settles on the line with a little more fuel burned than you wanted.',
+      'You flip at the sheet\'s mark and trim the brake by eye. The ship settles on the line with more fuel burned than you wanted.',
       'You flip at the sheet\'s mark and overshoot the brake. You spend a long watch correcting, and the captain asks for the numbers.'
     ]
   },
@@ -69,7 +69,7 @@ const WORK_EVENTS = [
     id: 'pilot-debris',
     post: 'pilot',
     title: 'A Return on the Plot',
-    text: 'A faint return has been showing on the plot for an hour, small and slow, a little to port of the line. It could be a rock. It could be a ship running dark. Nobody else has mentioned it.',
+    text: 'A faint return has been showing on the plot for an hour, small and slow, two degrees to port of the line. It could be a rock. It could be a ship running dark. Nobody else has mentioned it.',
     careful: [
       'Track it for another hour before you say anything',
       'You track it for an hour, logging bearing and range every five minutes. It is a rock, tumbling, and it passes well clear. You write down the figures anyway.'
@@ -151,7 +151,7 @@ const WORK_EVENTS = [
     ],
     quick: [
       'Burst it and see what is left',
-      'You burst it, and the drone tumbles apart in a spray of orange. The captain gets the bill in the log. It was a good burst.',
+      'You burst it, and the drone tumbles apart in a spray of orange. The captain gets the bill in the log.',
       'You burst it and miss with every round. The drone coasts on, unharmed, and the range clock runs out.'
     ]
   },
@@ -182,21 +182,21 @@ const WORK_EVENTS = [
     quick: [
       'Swap in the spare cartridge',
       'You swap in the spare, and the smell clears at once. The old one goes in the bin with a tag that says "check later".',
-      'The spare is the wrong size and takes a gasket to seat it. By the time it runs, you have lost the afternoon and a good deal of temper.'
+      'The spare is the wrong size and takes a gasket to seat it. By the time it runs, you have lost the afternoon.'
     ]
   },
   {
     id: 'engineer-coolant',
     post: 'engineer',
     title: 'Warm Coolant',
-    text: 'The coolant loop is running a few degrees warm. It is nowhere near a limit, but the trend is wrong, and you know a trend like that is a leak, or a pump, or a thing you have not thought of yet.',
+    text: 'The coolant loop is running a few degrees warm. It is nowhere near a limit, but the trend is wrong, and a trend like that is a leak, or a pump, or a thing nobody has thought of yet.',
     careful: [
       'Chase it from the pump to the radiator',
       'You walk the loop from the pump to the radiator with a meter, and find a partly closed valve that someone, some time, nudged. You open it, and the loop settles.'
     ],
     quick: [
       'Bleed the loop and hope',
-      'You bleed the loop and top it up, and the temperature drops back. It does not feel like an answer, but it is a good enough one for now.',
+      'You bleed the loop and top it up, and the temperature drops back. You write "bled, topped up" in the log and nothing else.',
       'The bleed hisses and takes more than you wanted. The temperature drops, and so does the coolant level, and you spend an hour topping it up.'
     ]
   },
@@ -241,7 +241,7 @@ const WORK_EVENTS = [
     ],
     quick: [
       'Re-tune the filters and see',
-      'You re-tune the filters, and the hiss drops out of the speech band like a stone out of a bucket. Good enough, you think, for now.',
+      'You re-tune the filters, and the hiss drops out of the speech band like a stone out of a bucket.',
       'You re-tune the filters and notch out half of someone\'s voice with the noise. You have to start again.'
     ]
   },
@@ -267,11 +267,11 @@ const WORK_EVENTS = [
     text: 'The log has built up: forty unread messages, six unanswered hails, and a list of stations that have, since the last port, changed their transponder codes without telling anyone.',
     careful: [
       'Go through it all, in order',
-      'You work through it in order, and answer what needs answering, and file the rest. By the end you know the traffic in this part of the lane better than you did, and the log is clean.'
+      'You work through it in order, and answer what needs answering, and file the rest. By the end the log is empty, and you have a list of the stations that changed their codes.'
     ],
     quick: [
       'Answer the urgent ones and skim the rest',
-      'You answer the urgent ones and skim the rest, and nothing in the skim bites. A shortcut, and it holds.',
+      'You answer the urgent ones and skim the rest, and nothing in the skim bites.',
       'You skim past a notice that turns out to matter, and spend an hour working out what it said.'
     ]
   },
