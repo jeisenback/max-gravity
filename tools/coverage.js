@@ -2,9 +2,11 @@
 
 // Line and function coverage of the game's scripts (js/**) over the whole test suite, from the browser's own V8 coverage
 // (Playwright's page.coverage), since the game is classic scripts in one page and Node coverage tools do not see it.
-//   node tools/coverage.js [--files tests/shell.test.js,tests/ui.test.js] [--top 40] [--keep] [--from DIR] [--all] [--check]
+//   node tools/coverage.js [--files tests/shell.test.js,tests/ui.test.js] [--shard 1/4] [--into DIR] [--top 40] [--keep] [--from DIR] [--all] [--check]
 //   --check fails (exit 1) when a file in tools/coverage-floor.json is under its minimum, and says which and by how many lines (tools/floor.js).
 //   --keep leaves the per-page coverage in a temp directory, and --from DIR merges one again without re-running the tests.
+//   --shard N/M runs one part of the suite (node --test --test-shard) and --into DIR keeps its coverage in DIR, so CI can run the parts on separate runners and merge their
+//   directories (all the files in one) with --from.
 //   npm run coverage
 // Runs the tests with COVERAGE_DIR set (tests/helpers.js writes each page's coverage there), merges every page by script, and
 // prints: coverage per file, the functions never called, and the totals. A line counts as covered when any code on it ran.
@@ -82,13 +84,13 @@ function report({ byUrl, calls }, top) {
 }
 
 const from = arg('from');
-const dir = from || fs.mkdtempSync(path.join(os.tmpdir(), 'coverage-'));
+const into = arg('into'), dir = from || (into ? fs.mkdirSync(into, { recursive: true }) || into : fs.mkdtempSync(path.join(os.tmpdir(), 'coverage-')));
 const files = (arg('files') || '').split(',').filter(Boolean);
-const run = from ? { stdout: '' } : spawnSync(process.execPath, ['--test', '--test-concurrency=4', ...(files.length ? files : [path.join(root, 'tests') + '/*.test.js'])].flatMap(a => (a.includes('*') ? fs.readdirSync(path.dirname(a)).filter(x => x.endsWith('.test.js')).map(x => path.join(path.dirname(a), x)) : [a])), { cwd: root, env: { ...process.env, COVERAGE_DIR: dir }, stdio: ['ignore', 'pipe', 'inherit'], encoding: 'utf8', maxBuffer: 1 << 28 });
+const run = from ? { stdout: '' } : spawnSync(process.execPath, ['--test', '--test-concurrency=4', ...(arg('shard') ? [`--test-shard=${arg('shard')}`] : []), ...(files.length ? files : [path.join(root, 'tests') + '/*.test.js'])].flatMap(a => (a.includes('*') ? fs.readdirSync(path.dirname(a)).filter(x => x.endsWith('.test.js')).map(x => path.join(path.dirname(a), x)) : [a])), { cwd: root, env: { ...process.env, COVERAGE_DIR: dir }, stdio: ['ignore', 'pipe', 'inherit'], encoding: 'utf8', maxBuffer: 1 << 28 });
 const tap = run.stdout || '';
 console.log(`tests: ${(tap.match(/^# pass (\d+)/m) || [])[1] || '?'} passed, ${(tap.match(/^# fail (\d+)/m) || [])[1] || '?'} failed`);
 const rows = report(merge(dir), Number(arg('top') || 40));
-if (!from && !process.argv.includes('--keep')) fs.rmSync(dir, { recursive: true, force: true });
+if (!from && !into && !process.argv.includes('--keep')) fs.rmSync(dir, { recursive: true, force: true });
 if (process.argv.includes('--check')) {  // the floor (tools/coverage-floor.json): exit non-zero when a listed file has fallen under it
   const { checkFloor, describe } = require('./floor');
   const onDisk = [...fs.readdirSync(path.join(root, 'js')).filter(f => f.endsWith('.js')).map(f => `js/${f}`), ...fs.readdirSync(path.join(root, 'js/captains')).filter(f => f.endsWith('.js')).map(f => `js/captains/${f}`)];
