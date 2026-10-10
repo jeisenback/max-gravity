@@ -434,46 +434,101 @@ function coverWatchScene(p) {
   };
 }
 
-function relationshipScene() {
-  const list = folk(), st = G.state;
-  if (list.length < 2) return null;
-  const all = pairs(list), scenes = [];
-  for (const [a, b] of all) {
-    const n = bond(a, b), A = a.p.first, B = b.p.first;
-    if (!hired() && n >= 6 && a.crew && b.crew) scenes.push(() => !stamped(a, b, 'together') && {
-      title: 'Ship\'s Rules', text: (`${A} and ${B} find you on the bridge at the end of the watch, standing a little closer together than they need ` +
-          `to. ${A} clears their throat twice. ${B} studies the ceiling. Finally, in a rush, ${A} says: "Captain. Does the ship have rules about crew ` +
-          `who are, um. Together?" They both look at you. Their hands are very nearly touching.`),
+// The scenes two people aboard can have, one function each, so that a scene can be built on its own: the scene editor plays one (#457), and relationshipScene picks among them.
+function galleyDuty(a, b, ta, tb) {
+  const st = G.state;
+  return {
+      title: 'Galley Duty', text: pick([
+        (`The galley rota is a sheet taped to the cabinet door. ${a.p.first} has written ${b.p.first}'s name on every day of next week, ` +
+            `and ${b.p.first} has written ${a.p.first}'s name over it. ${a.p.first} backs ${ta}. ${b.p.first} backs ${tb}. Whoever's team loses ` +
+            `tonight does the dishes. Both of them have initialed it.`),
+        `"A week," ${b.p.first} says. "Dishes, filters, the lot." "Done," ${a.p.first} says, and they shake on it across the table. ${a.p.first} has ${ta}. ${b.p.first} has ${tb}. The match is tonight.`,
+        `${a.p.first} (${ta}) and ${b.p.first} (${tb}) have put the galley rota on the match. The loser takes all of it for a week. It is written on the cabinet door in ${a.p.first}'s handwriting. ${b.p.first} has added "and no complaints" and underlined it twice.`,
+        `The ship's feed has ${ta} against ${tb} at the end of watch. ${a.p.first} and ${b.p.first} have turned the chairs to face the screen. A week of galley duty, loser's. They have not spoken since they agreed it.`,
+      ]),
       choices: [
-        { label: '"No rules. Be happy."', run() { like(a.p, 2, `You gave ${B} and me your blessing.`); like(b.p, 2, `You gave ${A} and me your blessing.`); return (
-            'They leave hand in hand, smiling at the deck. By dinner the whole ship knows, and that night someone hangs a string of fairy lights ' +
-            'outside their berth without a word.'); } },
-        { label: '"Keep it off the bridge."', run() { like(a.p, 1, null); like(b.p, 1, null); return (`"Deal," says ${A}, at once, and ${B} laughs, ` +
-            `and the two of them leave the cockpit fast. For the next few days they are very professional on the bridge, and, every so often, when ` +
-            `they think you are not looking, one of them smiles at a console.`); } },
-        { label: '"It stays professional."', run() { addBond(a, b, -2); like(a.p, -2, `You told ${B} and me to keep it professional.`); like(b.p, -2, `You told ${A} and me to keep it professional.`); return (
-            `They nod, stiffly, in unison, and thank you for your time. The ship gets a lot quieter. In the days after, they keep to opposite sides ` +
-            `of the corridor, and ${A} eats alone, and ${B} stands at the viewport with an untouched mug.`); } },
-      ] });
-    else if (!hired() && n >= 3 && !isCooled(a, b, 'close', 40)) scenes.push(() => cool(a, b, 'close') || ({
-      title: 'Close Quarters', text: (`${A} and ${B} keep finding reasons to share the same watch. It started as a coincidence, then a scheduling ` +
-          `quirk, and now it is a system of trades and favors and carefully-timed sick days. They talk through the long quiet hours, in low voices, ` +
-          `and, when someone else comes in, they both stop, and look at nothing at all.`),
+        { label: 'Stream it for everyone', run() {
+          const m = playMatch(leagueOf(ta), ta, tb), [w, l] = m.winner === ta ? [a, b] : [b, a];
+          addBond(a, b, has(l, 'rude') ? -1 : 1);
+          like(w.p, 1, null);
+          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${l.p.first} does the week of galley duty${has(l, 'rude') ? `. Every pan goes into the rack hard, and for four days ${l.p.first} goes through what the referee did.` : ' in an apron two sizes too small, and does not mention the score.'}`;
+        } },
+        { label: `Put 300 cr on the ${ta} yourself`, can: () => st.credits >= 300, run() {
+          const m = playMatch(leagueOf(ta), ta, tb), won = m.winner === ta;
+          st.credits += won ? 300 : -300;
+          like(a.p, won ? 1 : 0, null); like(b.p, won ? -1 : 1, null);
+          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${won ? `You collect 300 cr. ${a.p.first} wants to buy a round with it.` : `You lose 300 cr. ${b.p.first} brings it up at every meal until the next match.`}`;
+        } },
+        { label: 'Stay out of it', run: () => 'You hear the result through the bulkhead: cheering, then a groan, then someone banging a pan.' },
+    ],
+  };
+}
+
+function wordScene(a, b, n) {
+  return {
+      title: hired() ? 'A Word' : 'A Word, Captain', text: (`${a.p.first} catches you ` +
+          `alone, ${hired() ? ('by the lockers while you are stowing your ' +
+          'kit, one shoulder against the bulkhead. "Hey. Can I ask you something about') : ('in the corridor outside the cockpit, one shoulder ' +
+              'against the bulkhead. "Captain. Can I ask you something about')} ${b.p.first}?" ${n > 0 ? 'Their voice is casual, and their ears have gone pink.' : 'Their voice is level, and tight at the edges.'} ` +
+          `They wait, and watch your face, and their hands, at their sides, are very still.`),
       choices: [
-        { label: 'Put them on the same rotation', run() { addBond(a, b, 2); like(a.p, 1, null); like(b.p, 1, null); return (
-            `You pencil them onto the same rotation, and hand over the new roster, without comment. ${A} pretends not to be pleased, and studies the ` +
-            `paper as if it were a contract. ${B} does not bother pretending, and grins, and squeezes ${A}'s arm, and then examines the ceiling.`); } },
-        { label: 'Leave the rotation alone', run: () => ('You leave the roster as it is, and say nothing, and, by the end of the week, they have ' +
-            'found each other on the same watch anyway, by a route that involves three trades and a forged note. At the next meal you pretend not to notice, and everyone at the table pretends with you, at some length.') },
-      ] }));
-    if ((n <= -2 || clash(a, b)) && !isCooled(a, b, 'feud', 45) && relReady('feud')) scenes.push(() => {
-      cool(a, b, 'feud'); relMark('feud');
-      const fk = bondKey(a, b); (st.feuds = st.feuds || {})[fk] = (st.feuds[fk] || 0) + 1;  // a feud that is seen can split the ship (stakes.js)
-      const shape = pick(['galley', 'handover', 'shoulders']);
-      if (shape === 'handover') return feudHandover(a, b, A, B);
-      if (shape === 'shoulders') return feudShoulders(a, b, A, B);
-      const cause = pick(CAUSES);
-      return {
+        { label: `"Talk to ${b.p.first}, not me."`, run() { addBond(a, b, n > 0 ? 2 : 1.5); return n > 0 ? (`${a.p.first} takes a deep breath, and ` +
+            `nods, and goes, and, later, you see the two of them in the galley, heads close together, talking quietly, over two untouched cups of tea. ` +
+            `Good. When they notice you, they both look up, and neither looks away.`) : (
+            `${a.p.first} takes a deep breath, and nods, and goes. They do. It is loud for a while, behind a closed door, and then it is quieter. ` +
+            `When they come out, both are red-eyed, and neither is leaving.`); } },
+        hired() ? { label: '"That is between the two of you."', run() { like(a.p, -1, null); return `${a.p.first} nods, and says, "Right. Sorry," and goes. An hour later you hear them ask the cook the same question, in a lower voice.`; } }
+          : { label: '"Keep your head down and do your job."', run() { like(a.p, -1, null); return `${a.p.first} nods, and says, "Aye, captain," and goes. For a while, ${a.p.first} is brisk and correct, and answers in single words.`; } },
+        { label: `"What's ${b.p.first} really like?"`, run() { like(a.p, 1, null); return (`"${b.p.first}? ${(b.p.traits || []).length ? `${TRAITS[b.p.traits[0]].adj[0].toUpperCase()}${TRAITS[b.p.traits[0]].adj.slice(1)}, mostly. ` : ''}Watches ` +
+            `too much ${GENRES[tastes(b).genre]}. Would go down with the ship for you, though." ${a.p.first} stops, and blinks, and looks at the deck. "Anyway," they say. "That is what ${b.p.first} is like."`); } },
+      ] };
+}
+
+function grandTour(c, p) {
+  return {
+        title: 'The Grand Tour', text: (`${c.p.first} has been showing ${p.p.first} how the ship works, starting at the cargo bay and working slowly ` +
+            `aft, with a running commentary on every ` +
+            `valve. ${has(p, 'nervous') ? `${p.p.first} jumps at every clank, and holds a handrail with both hands, and, every so often, asks a careful question.` : `${p.p.first} has a hundred questions, and asks all of them, at speed, and, at each answer, nods and writes something down.`} ` +
+            `The two of them keep vanishing around corners together, and reappearing, talking.`),
+        choices: [
+          { label: 'Let them', run() { addBond(c, p, 2.5); like(p.p, 1, `${c.p.first} showed me around the ship.`); return (
+              `By the end of the burn ${p.p.first} can name every valve on the ship, and knows which pipe rattles in which key, and has, in a small ` +
+              `notebook, a hand-drawn diagram of the whole drive. At the end of the last watch ${c.p.first} catches your eye across the galley, and ` +
+              `nods once.`); } },
+          { label: 'Passengers stay out of the engine room', run() { addBond(c, p, -0.5); return (`Rules are rules, and you say so, ` +
+              `gently. ${c.p.first} nods, without protest, and steers ${p.p.first} back to the galley, and the tour ends mid-sentence. For the rest of ` +
+              `the burn, ${p.p.first} keeps glancing at the engine room hatch, and ${c.p.first} does not look at you.`); } },
+      ] };
+}
+
+function smallSystem(a, b, A, B) {
+  const st = G.state;
+  return {
+      title: 'Small System', text: a.p.home === b.p.home
+        ? pick([
+          (`${A} and ${B} are arguing about coffee at the galley table when ${B} says the name of a street on ${a.p.home}. ${A} stops with the cup ` +
+              `halfway up. "Which end?" ${A} says. "The water end." "Then you know the baker." They were a few decks apart on ${a.p.home} for twelve ` +
+              `years and never met. The coffee goes cold. They compare teachers, bars and the ${tastes(a).team} seasons.`),
+          (`${A} hears ${B} humming in the corridor. It is a tune from ${a.p.home}, a bad one, from a bar ${A} knows. "That is a ${a.p.home} ` +
+              `tune," ${A} says. ${B} puts the filter down. "Where were you?" By the end of the watch they have named three people they both know and ` +
+              `one they both owe money.`),
+        ])
+        : pick([
+          `${A} and ${B} have spent the morning trading rhymes and sayings from home, fast and low, in the same slang. The rest of the crew understands one word in three. Someone asks what a word means. They both try to say, and both stop.`,
+          `${B} says something in the old slang at the galley table and ${A} answers without thinking, in the same words. They look at each other. "My grandmother used to say that," ${A} says. "So did mine," ${B} says. They are still going when the watch changes.`,
+        ]),
+      choices: [
+        { label: 'Break out something to toast with (200 cr)', can: () => st.credits >= 200, run() { st.credits -= 200; addBond(a, b, 3); like(a.p, 1, null); like(b.p, 1, null); return (
+            `You open a bottle from the locker. They toast ${a.p.home === b.p.home ? a.p.home : 'home'}, the old teachers, and the people who did not ` +
+            `get out. Somebody starts a song, and the others know it. It is late when it ends. ${A} and ${B} go to their bunks together, not quite ` +
+            `steady.`); } },
+        { label: 'Leave them to it', run() { addBond(a, b, 1.5); return 'You leave them the galley and go up to the bridge and shut the hatch. You can hear them through the deck for a long time.'; } },
+      ] };
+}
+
+function smallShip(a, b, A, B) {
+  const cause = pick(CAUSES);
+  return {
         title: 'A Small Ship', text: pick([
           `${A} and ${B} are on their feet in the galley. The galley is eleven feet across, and everyone who is not on watch is in it. They are arguing about ${cause}. "If you'd said something," ${B} says. "I said something," ${A} says. "Tuesday. Ask anyone." Nobody at the table answers.`,
           `${A} has ${B} backed against the coffee dispenser. They are arguing about ${cause}. "Do not tell me it's the principle," ${B} says. "It is the principle," ${A} says. Someone at the table has a spoon halfway to their mouth and has not moved it.`,
@@ -500,68 +555,68 @@ function relationshipScene() {
               `The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler ` +
               `runs. ${w} takes the last hand, and ${l} washes the dishes. Over the sink ${l} goes through what is wrong with the rules, the deck, the ` +
               `lighting and ${w}'s mother. ${w} drinks the last of the coffee.`); } },
-        ],
-      };
-    });
-    if ((a.p.home === b.p.home || (a.p.culture && a.p.culture === b.p.culture)) && n < 3 && relReady('roots')) scenes.push(() => !stamped(a, b, 'roots') && (relMark('roots'), Math.random() < 0.4 ? rootsRecipe(a, b, A, B) : {
-      title: 'Small System', text: a.p.home === b.p.home
-        ? pick([
-          (`${A} and ${B} are arguing about coffee at the galley table when ${B} says the name of a street on ${a.p.home}. ${A} stops with the cup ` +
-              `halfway up. "Which end?" ${A} says. "The water end." "Then you know the baker." They were a few decks apart on ${a.p.home} for twelve ` +
-              `years and never met. The coffee goes cold. They compare teachers, bars and the ${tastes(a).team} seasons.`),
-          (`${A} hears ${B} humming in the corridor. It is a tune from ${a.p.home}, a bad one, from a bar ${A} knows. "That is a ${a.p.home} ` +
-              `tune," ${A} says. ${B} puts the filter down. "Where were you?" By the end of the watch they have named three people they both know and ` +
-              `one they both owe money.`),
-        ])
-        : pick([
-          `${A} and ${B} have spent the morning trading rhymes and sayings from home, fast and low, in the same slang. The rest of the crew understands one word in three. Someone asks what a word means. They both try to say, and both stop.`,
-          `${B} says something in the old slang at the galley table and ${A} answers without thinking, in the same words. They look at each other. "My grandmother used to say that," ${A} says. "So did mine," ${B} says. They are still going when the watch changes.`,
-        ]),
+      ],
+  };
+}
+
+function closeQuarters(a, b, A, B) {
+  return {
+      title: 'Close Quarters', text: (`${A} and ${B} keep finding reasons to share the same watch. It started as a coincidence, then a scheduling ` +
+          `quirk, and now it is a system of trades and favors and carefully-timed sick days. They talk through the long quiet hours, in low voices, ` +
+          `and, when someone else comes in, they both stop, and look at nothing at all.`),
       choices: [
-        { label: 'Break out something to toast with (200 cr)', can: () => st.credits >= 200, run() { st.credits -= 200; addBond(a, b, 3); like(a.p, 1, null); like(b.p, 1, null); return (
-            `You open a bottle from the locker. They toast ${a.p.home === b.p.home ? a.p.home : 'home'}, the old teachers, and the people who did not ` +
-            `get out. Somebody starts a song, and the others know it. It is late when it ends. ${A} and ${B} go to their bunks together, not quite ` +
-            `steady.`); } },
-        { label: 'Leave them to it', run() { addBond(a, b, 1.5); return 'You leave them the galley and go up to the bridge and shut the hatch. You can hear them through the deck for a long time.'; } },
-      ] }));
+        { label: 'Put them on the same rotation', run() { addBond(a, b, 2); like(a.p, 1, null); like(b.p, 1, null); return (
+            `You pencil them onto the same rotation, and hand over the new roster, without comment. ${A} pretends not to be pleased, and studies the ` +
+            `paper as if it were a contract. ${B} does not bother pretending, and grins, and squeezes ${A}'s arm, and then examines the ceiling.`); } },
+        { label: 'Leave the rotation alone', run: () => ('You leave the roster as it is, and say nothing, and, by the end of the week, they have ' +
+            'found each other on the same watch anyway, by a route that involves three trades and a forged note. At the next meal you pretend not to notice, and everyone at the table pretends with you, at some length.') },
+      ] };
+}
+
+function shipsRules(a, b, A, B) {
+  return {
+      title: 'Ship\'s Rules', text: (`${A} and ${B} find you on the bridge at the end of the watch, standing a little closer together than they need ` +
+          `to. ${A} clears their throat twice. ${B} studies the ceiling. Finally, in a rush, ${A} says: "Captain. Does the ship have rules about crew ` +
+          `who are, um. Together?" They both look at you. Their hands are very nearly touching.`),
+      choices: [
+        { label: '"No rules. Be happy."', run() { like(a.p, 2, `You gave ${B} and me your blessing.`); like(b.p, 2, `You gave ${A} and me your blessing.`); return (
+            'They leave hand in hand, smiling at the deck. By dinner the whole ship knows, and that night someone hangs a string of fairy lights ' +
+            'outside their berth without a word.'); } },
+        { label: '"Keep it off the bridge."', run() { like(a.p, 1, null); like(b.p, 1, null); return (`"Deal," says ${A}, at once, and ${B} laughs, ` +
+            `and the two of them leave the cockpit fast. For the next few days they are very professional on the bridge, and, every so often, when ` +
+            `they think you are not looking, one of them smiles at a console.`); } },
+        { label: '"It stays professional."', run() { addBond(a, b, -2); like(a.p, -2, `You told ${B} and me to keep it professional.`); like(b.p, -2, `You told ${A} and me to keep it professional.`); return (
+            `They nod, stiffly, in unison, and thank you for your time. The ship gets a lot quieter. In the days after, they keep to opposite sides ` +
+            `of the corridor, and ${A} eats alone, and ${B} stands at the viewport with an untouched mug.`); } },
+      ] };
+}
+
+function relationshipScene() {
+  const list = folk(), st = G.state;
+  if (list.length < 2) return null;
+  const all = pairs(list), scenes = [];
+  for (const [a, b] of all) {
+    const n = bond(a, b), A = a.p.first, B = b.p.first;
+    if (!hired() && n >= 6 && a.crew && b.crew) scenes.push(() => !stamped(a, b, 'together') && shipsRules(a, b, A, B));
+    else if (!hired() && n >= 3 && !isCooled(a, b, 'close', 40)) scenes.push(() => cool(a, b, 'close') || closeQuarters(a, b, A, B));
+    if ((n <= -2 || clash(a, b)) && !isCooled(a, b, 'feud', 45) && relReady('feud')) scenes.push(() => {
+      cool(a, b, 'feud'); relMark('feud');
+      const fk = bondKey(a, b); (st.feuds = st.feuds || {})[fk] = (st.feuds[fk] || 0) + 1;  // a feud that is seen can split the ship (stakes.js)
+      const shape = pick(['galley', 'handover', 'shoulders']);
+      if (shape === 'handover') return feudHandover(a, b, A, B);
+      if (shape === 'shoulders') return feudShoulders(a, b, A, B);
+      return smallShip(a, b, A, B);
+    });
+    if ((a.p.home === b.p.home || (a.p.culture && a.p.culture === b.p.culture)) && n < 3 && relReady('roots')) scenes.push(() => !stamped(a, b, 'roots') && (relMark('roots'), Math.random() < 0.4 ? rootsRecipe(a, b, A, B) : smallSystem(a, b, A, B)));
     if (a.crew !== b.crew) {
       const [c, p] = a.crew ? [a, b] : [b, a];
-      scenes.push(() => !stamped(a, b, 'tour') && {
-        title: 'The Grand Tour', text: (`${c.p.first} has been showing ${p.p.first} how the ship works, starting at the cargo bay and working slowly ` +
-            `aft, with a running commentary on every ` +
-            `valve. ${has(p, 'nervous') ? `${p.p.first} jumps at every clank, and holds a handrail with both hands, and, every so often, asks a careful question.` : `${p.p.first} has a hundred questions, and asks all of them, at speed, and, at each answer, nods and writes something down.`} ` +
-            `The two of them keep vanishing around corners together, and reappearing, talking.`),
-        choices: [
-          { label: 'Let them', run() { addBond(c, p, 2.5); like(p.p, 1, `${c.p.first} showed me around the ship.`); return (
-              `By the end of the burn ${p.p.first} can name every valve on the ship, and knows which pipe rattles in which key, and has, in a small ` +
-              `notebook, a hand-drawn diagram of the whole drive. At the end of the last watch ${c.p.first} catches your eye across the galley, and ` +
-              `nods once.`); } },
-          { label: 'Passengers stay out of the engine room', run() { addBond(c, p, -0.5); return (`Rules are rules, and you say so, ` +
-              `gently. ${c.p.first} nods, without protest, and steers ${p.p.first} back to the galley, and the tour ends mid-sentence. For the rest of ` +
-              `the burn, ${p.p.first} keeps glancing at the engine room hatch, and ${c.p.first} does not look at you.`); } },
-        ] });
+      scenes.push(() => !stamped(a, b, 'tour') && grandTour(c, p));
     }
   }
   const crew = list.filter(f => f.crew);
   if (crew.length >= 2) {
     const [a, b] = pick(pairs(crew)), n = bond(a, b);
-    if (Math.abs(n) >= 1 && !isCooled(a, b, 'word', 30) && relReady('word')) scenes.push(() => (cool(a, b, 'word'), relMark('word'), {
-      title: hired() ? 'A Word' : 'A Word, Captain', text: (`${a.p.first} catches you ` +
-          `alone, ${hired() ? ('by the lockers while you are stowing your ' +
-          'kit, one shoulder against the bulkhead. "Hey. Can I ask you something about') : ('in the corridor outside the cockpit, one shoulder ' +
-              'against the bulkhead. "Captain. Can I ask you something about')} ${b.p.first}?" ${n > 0 ? 'Their voice is casual, and their ears have gone pink.' : 'Their voice is level, and tight at the edges.'} ` +
-          `They wait, and watch your face, and their hands, at their sides, are very still.`),
-      choices: [
-        { label: `"Talk to ${b.p.first}, not me."`, run() { addBond(a, b, n > 0 ? 2 : 1.5); return n > 0 ? (`${a.p.first} takes a deep breath, and ` +
-            `nods, and goes, and, later, you see the two of them in the galley, heads close together, talking quietly, over two untouched cups of tea. ` +
-            `Good. When they notice you, they both look up, and neither looks away.`) : (
-            `${a.p.first} takes a deep breath, and nods, and goes. They do. It is loud for a while, behind a closed door, and then it is quieter. ` +
-            `When they come out, both are red-eyed, and neither is leaving.`); } },
-        hired() ? { label: '"That is between the two of you."', run() { like(a.p, -1, null); return `${a.p.first} nods, and says, "Right. Sorry," and goes. An hour later you hear them ask the cook the same question, in a lower voice.`; } }
-          : { label: '"Keep your head down and do your job."', run() { like(a.p, -1, null); return `${a.p.first} nods, and says, "Aye, captain," and goes. For a while, ${a.p.first} is brisk and correct, and answers in single words.`; } },
-        { label: `"What's ${b.p.first} really like?"`, run() { like(a.p, 1, null); return (`"${b.p.first}? ${(b.p.traits || []).length ? `${TRAITS[b.p.traits[0]].adj[0].toUpperCase()}${TRAITS[b.p.traits[0]].adj.slice(1)}, mostly. ` : ''}Watches ` +
-            `too much ${GENRES[tastes(b).genre]}. Would go down with the ship for you, though." ${a.p.first} stops, and blinks, and looks at the deck. "Anyway," they say. "That is what ${b.p.first} is like."`); } },
-      ] }));
+    if (Math.abs(n) >= 1 && !isCooled(a, b, 'word', 30) && relReady('word')) scenes.push(() => (cool(a, b, 'word'), relMark('word'), wordScene(a, b, n)));
   }
   // A friend asks you to cover their watch: you learn their post for a night, and they owe you one.
   const askers = hired() && relReady('cover') ? crew.filter(f => f.p.opinion >= OPINION.CLOSE && postOfRole(f.p.role) && postOfRole(f.p.role) !== hired().post && !f.p.owes) : [];
@@ -571,31 +626,7 @@ function relationshipScene() {
     const [a, b] = fans, ta = tastes(a).team, tb = tastes(b).team;
     cool(a, b, 'match'); relMark('match');
     if (Math.random() < 0.4) return matchReplay(a, b, ta, tb);
-    return {
-      title: 'Galley Duty', text: pick([
-        (`The galley rota is a sheet taped to the cabinet door. ${a.p.first} has written ${b.p.first}'s name on every day of next week, ` +
-            `and ${b.p.first} has written ${a.p.first}'s name over it. ${a.p.first} backs ${ta}. ${b.p.first} backs ${tb}. Whoever's team loses ` +
-            `tonight does the dishes. Both of them have initialed it.`),
-        `"A week," ${b.p.first} says. "Dishes, filters, the lot." "Done," ${a.p.first} says, and they shake on it across the table. ${a.p.first} has ${ta}. ${b.p.first} has ${tb}. The match is tonight.`,
-        `${a.p.first} (${ta}) and ${b.p.first} (${tb}) have put the galley rota on the match. The loser takes all of it for a week. It is written on the cabinet door in ${a.p.first}'s handwriting. ${b.p.first} has added "and no complaints" and underlined it twice.`,
-        `The ship's feed has ${ta} against ${tb} at the end of watch. ${a.p.first} and ${b.p.first} have turned the chairs to face the screen. A week of galley duty, loser's. They have not spoken since they agreed it.`,
-      ]),
-      choices: [
-        { label: 'Stream it for everyone', run() {
-          const m = playMatch(leagueOf(ta), ta, tb), [w, l] = m.winner === ta ? [a, b] : [b, a];
-          addBond(a, b, has(l, 'rude') ? -1 : 1);
-          like(w.p, 1, null);
-          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${l.p.first} does the week of galley duty${has(l, 'rude') ? `. Every pan goes into the rack hard, and for four days ${l.p.first} goes through what the referee did.` : ' in an apron two sizes too small, and does not mention the score.'}`;
-        } },
-        { label: `Put 300 cr on the ${ta} yourself`, can: () => st.credits >= 300, run() {
-          const m = playMatch(leagueOf(ta), ta, tb), won = m.winner === ta;
-          st.credits += won ? 300 : -300;
-          like(a.p, won ? 1 : 0, null); like(b.p, won ? -1 : 1, null);
-          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${won ? `You collect 300 cr. ${a.p.first} wants to buy a round with it.` : `You lose 300 cr. ${b.p.first} brings it up at every meal until the next match.`}`;
-        } },
-        { label: 'Stay out of it', run: () => 'You hear the result through the bulkhead: cheering, then a groan, then someone banging a pan.' },
-      ],
-    };
+    return galleyDuty(a, b, ta, tb);
   });
   if (askers.length && Math.random() < 0.4) return coverWatchScene(pick(askers).p);  // a friend's ask is not one among a hundred pairs' scenes
   const options = scenes.map(f => f).sort(() => Math.random() - 0.5);
