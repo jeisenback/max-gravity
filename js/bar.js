@@ -344,7 +344,7 @@ function roomLines(planet) {
     'A child is asleep in a booth with her head on a rolled-up coat. Her parents are talking in low voices over a bottle.',
   ]));
   for (const cm of crewMembers()) {
-    const lines = CREW_AT_BAR[cm.role];
+    const lines = barLines('crew')[cm.role];
     if (lines && Math.random() < 0.6) out.push(pick(lines).replace(/\{n\}/g, `<button class="link" data-action="person" data-arg="${esc(cm.id)}">${esc(cm.first)}</button>`));  // the name opens their page
   }
   return out;
@@ -360,14 +360,14 @@ function travelOffer(p) {
 
 function talkEvent(pat) {
   if (pat.cast) return castBarEvent(pat);
-  const p = pat.p, st = G.state, bar = G.barState.name, t0 = p.traits[0];
+  const p = pat.p, st = G.state, bar = G.barState.name, t0 = p.traits[0], opener = barLines('openers');
   const mem = p.memories.length ? p.memories[p.memories.length - 1].replace(/^(Day \d+|\d+ \w+ \d+): /, '') : null;
   const text = pat.known
     ? `${p.first} ${p.last} ${p.opinion >= OPINION.FRIEND ? 'waves you over' : p.opinion <= OPINION.ENEMY ? 'sees you and scowls into their drink' : 'nods at you'}.${pat.regular && p.gossip ? ` Since you were last here, ${p.first} ${p.gossip}` : ''}${mem ? ` Last time: "${mem}"` : ''}`
     : [
-      `${p.first} ${p.last}: a ${TRAITS[p.traits[0]].adj}, ${TRAITS[p.traits[1]].adj} ${p.job} from ${p.home}, ${GOALS[p.goal]}. ${pick(OPENERS[t0])}`,
-      `${pick(OPENERS[t0])} It is ${p.first} ${p.last}, ${GOALS[p.goal]}: a ${p.job} from ${p.home}, and ${TRAITS[p.traits[1]].adj}, you would say, if you had to.`,
-      `Somebody has taken the other stool. ${p.first} ${p.last} is a ${p.job} from ${p.home}, ${TRAITS[p.traits[0]].adj} and ${TRAITS[p.traits[1]].adj}, and ${GOALS[p.goal]}. ${pick(OPENERS[t0])}`,
+      `${p.first} ${p.last}: a ${TRAITS[p.traits[0]].adj}, ${TRAITS[p.traits[1]].adj} ${p.job} from ${p.home}, ${GOALS[p.goal]}. ${pick(opener[t0])}`,
+      `${pick(opener[t0])} It is ${p.first} ${p.last}, ${GOALS[p.goal]}: a ${p.job} from ${p.home}, and ${TRAITS[p.traits[1]].adj}, you would say, if you had to.`,
+      `Somebody has taken the other stool. ${p.first} ${p.last} is a ${p.job} from ${p.home}, ${TRAITS[p.traits[0]].adj} and ${TRAITS[p.traits[1]].adj}, and ${GOALS[p.goal]}. ${pick(opener[t0])}`,
     ][byName(p, 'intro', 3)];
   const choices = barMenu(pat, p, { st, bar });  // a rotating few from the pool in bartopics.js
   choices.push({ label: 'Leave them to their drink', run: () => barSays(barTrait('leave', p, barLines('leave')), p) + barTone(pat, p) });

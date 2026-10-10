@@ -17,6 +17,11 @@ const LINE_TABLES = [
   { id: 'lines:bar-work', title: 'Bar: talk of work, by kind of work', file: 'js/bar.js', table: () => BAR_WORK },
   { id: 'lines:bar-trait', title: 'Bar: a line for each trait', file: 'js/bar.js', table: () => BAR_TRAIT },
   { id: 'lines:bar-goal', title: 'Bar: what they are traveling for', file: 'js/bar.js', table: () => BAR_GOAL },
+  { id: 'lines:bar-openers', title: 'Bar: how a stranger opens, by trait', file: 'js/bar.js', table: () => OPENERS },
+  { id: 'lines:bar-secret-talk', title: 'Bar: what a secret lets slip', file: 'js/bar.js', table: () => SECRET_TALK },
+  { id: 'lines:bar-crew', title: 'Bar: the crew in the room, by post', file: 'js/bar.js', table: () => CREW_AT_BAR },
+  { id: 'lines:bar-goal-help', title: 'Bar: helping with what they are traveling for', file: 'js/bartopics.js', plainKey: /(^|\.)(ask|gift|advice|listen)$/, table: () => GOAL_HELP },
+  { id: 'lines:bar-secret-help', title: 'Bar: helping with a secret', file: 'js/bartopics.js', table: () => SECRET_HELP },
   { id: 'lines:bar-react', title: 'Bar: how a trait takes what you did', file: 'js/bartopics.js', table: () => BAR_REACT },
   { id: 'lines:trait-chatter', title: 'Crew chatter, by trait', file: 'js/peopletext.js', plain: true, where: 'transit', table: () => Object.fromEntries(Object.entries(TRAITS).map(([t, d]) => [t, d.chatter])) },
 ];
