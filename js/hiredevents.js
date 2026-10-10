@@ -126,7 +126,7 @@ const HAND_EVENTS = [
         {
           label: 'Not tonight',
           effects: { remember: 'cover', later: { 'h-cover-cold': 5 }, log: 'Would not cover for {thread:cover}.', mateLike: { n: -1, memory: 'You would not cover an hour of my watch.' } },
-          result: '{mate} nods and says it is fine. For a day or two the galley table is colder.',
+          result: '{mate} says it is fine. For a day or two {mate} takes the other end of the galley table.',
         },
       ],
     },
@@ -164,8 +164,7 @@ const HAND_EVENTS = [
         {
           label: 'Read her the numbers',
           effects: { castLike: { who: 'ines', n: 1, memory: 'You read me the numbers on a hard approach and did not try to be clever.' }, learn: 3 },
-          result: 'You read her the numbers one by one, plainly, and she flies them, and the ship settles onto the line. "Good," says Ines. You have learned ' +
-            'more in ten minutes than in the last week.',
+          result: 'You read her the numbers one by one, plainly, and she flies them, and the ship settles onto the line. "Good," says Ines.',
         },
         {
           label: '[Pilot 2] Check her numbers against your own',
@@ -203,7 +202,7 @@ const HAND_EVENTS = [
           label: 'Sit and listen',
           effects: { castLike: { who: 'tomas', n: 1, memory: 'You sat with me in the engine room and listened.' }, learn: 2 },
           result: 'He tells you about the loop, and the mounts, and the three hulls he has rebuilt, with unhurried pride, and you listen, and the flask goes ' +
-            'round twice. By the end you know something about machines you did not before.',
+            'round twice.',
         },
         {
           label: '[Engineer 2] Tell him what you hear in the loop',
@@ -224,7 +223,7 @@ const HAND_EVENTS = [
         {
           label: 'Say you have work to do',
           effects: { castLike: { who: 'tomas', n: 0, memory: 'You had work to do and did not stay.' } },
-          result: '"Of course," he says, and caps the flask, and turns back to the loop. He goes back to the loop.',
+          result: '"Of course," he says, and caps the flask, and turns back to the loop.',
         },
       ],
     },
@@ -278,7 +277,7 @@ const HAND_EVENTS = [
           label: 'Help him sort',
           effects: { castLike: { who: 'ruben', n: 1, memory: 'You helped me sort the intercepts and did not mind the stories.' }, learn: 2 },
           result: 'You sort, and he talks, and by the end of the stack you have learned which dome is short of what, who is lying about it, and a good deal ' +
-            'about how to listen to a lane. It is the best hour of the burn.',
+            'about how to listen to a lane.',
         },
         {
           label: '[Comms 2] Tell him which pile is true',
@@ -315,8 +314,8 @@ const HAND_EVENTS = [
         {
           label: 'Ask about the first name',
           effects: { castLike: { who: 'bexa', n: 2, memory: 'You asked about the list the right way, and listened.' }, learn: 2 },
-          result: 'You ask about the first name, quietly, and she tells you: a ship, a year, a crew of six, and what was left. She talks for a long time. ' +
-            'When she stops, she closes the book and nods at the helm. "Sit. I will show you how I would have brought them in."',
+          result: 'You ask about the first name, and she tells you: a ship, a year, a crew of six, and what was left. She talks for a long time. ' +
+            'When she stops, she closes the book and points it at the helm. "Sit. I will show you how I would have brought them in."',
         },
         {
           label: 'Look away',
@@ -358,7 +357,7 @@ const HAND_EVENTS = [
         {
           label: 'Tell them it is fine',
           effects: { castLike: { who: 'pax', n: 0, memory: 'You told me the coupling was fine.' } },
-          result: '"I know it is fine," says Pax. "That is not the point." They go back to it, and you leave them to it, feeling that you have said the true thing in the wrong way.',
+          result: '"I know it is fine," says Pax. "That is not the point." They go back to it, and you leave them to it.',
         },
       ],
     },
