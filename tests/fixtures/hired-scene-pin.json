@@ -2892,7 +2892,7 @@
   "id": "cast:cato:intro",
   "i": 0,
   "label": "Tell him what you need",
-  "result": "You tell him you would rather have the middle watch than the cold one, and that you sleep badly after a hard burn. He writes it on the back of his hand with a stub of pencil. \"Done,\" he says. Nobody has asked you that on a ship before, and it takes you a moment to find the rest of your coffee.",
+  "result": "You tell him you would rather have the middle watch than the cold one, and that you sleep badly after a hard burn. He writes it on the back of his hand with a stub of pencil. \"Done,\" he says. It takes you a moment to find the rest of your coffee.",
   "changes": [
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
@@ -2927,7 +2927,7 @@
   "id": "cast:cato:intro",
   "i": 1,
   "label": "Say you are fine",
-  "result": "You say you are fine. \"Good,\" he says, and means it, and does not believe it. He leaves the mug on the rail beside you, and the offer with it, and goes aft to see about somebody else's watch.",
+  "result": "You say you are fine. \"Good,\" he says. He leaves the mug on the rail beside you, and the offer with it, and goes aft to see about somebody else's watch.",
   "changes": [
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
@@ -2962,7 +2962,7 @@
   "id": "cast:cato:mid1",
   "i": 0,
   "label": "Ask which ship has the question mark",
-  "result": "He tells you, and it is a hull you have seen on the lanes: old, slow, honest. \"Her owner wants out in two years,\" he says. \"I have been watching her price like the weather.\" He talks about her for ten minutes without stopping, and when he is done he looks slightly embarrassed, and slightly lighter.",
+  "result": "He tells you, and it is a hull you have seen on the lanes: old, slow, honest. \"Her owner wants out in two years,\" he says. \"I have been watching her price like the weather.\" He talks about her for ten minutes without stopping, and when he is done the mug in his hand has gone cold.",
   "changes": [
    "s.cast.cato.flags: {} -> undefined",
    "s.cast.cato.flags.share: undefined -> true",
@@ -3034,7 +3034,7 @@
   "id": "cast:cato:mid2",
   "i": 0,
   "label": "Hold the deck, as the captain wrote it",
-  "result": "You hold the deck. The count comes out right the second time and wrong by one crate the first. Captain Vance writes it in the notebook and does not look up. Cato says nothing at all, and takes the cold watch himself the next night, without being asked, which is worse.",
+  "result": "You hold the deck. The count comes out right the second time and wrong by one crate the first. Captain Vance writes it in the notebook and does not look up. Cato says nothing at all, and takes the cold watch himself the next night, without being asked.",
   "changes": [
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
@@ -3112,7 +3112,7 @@
   "id": "cast:cato:late",
   "i": 0,
   "label": "Ask him to tell you if it goes badly",
-  "result": "He nods slowly. \"I will,\" he says. \"I will put it on the bill.\" He tries to smile at it, and it does not quite come. \"It is something, to have somebody to tell.\"",
+  "result": "He writes it on the back of his hand. \"I will,\" he says. \"I will put it on the bill. It is something, to have somebody to tell.\"",
   "changes": [
    "s.cast.cato.flags: {} -> undefined",
    "s.cast.cato.flags.told: undefined -> true",
@@ -3149,7 +3149,7 @@
   "id": "cast:cato:late",
   "i": 1,
   "label": "Tell him it is not yours to carry",
-  "result": "\"No,\" he says. \"It is not.\" He sounds relieved, and sorry to be. \"I wanted somebody to hear it said, that is all. It is a lot to carry in the hold.\"",
+  "result": "\"No,\" he says. \"It is not.\" He squares the watch bill on the table. \"I wanted somebody to hear it said, that is all. It is a lot to carry in the hold.\"",
   "changes": [
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
@@ -3284,7 +3284,7 @@
   "id": "cast:cato:pivot",
   "i": 2,
   "label": "Seal the hold and let the ice go",
-  "result": "You tell him no, and shut the hatch. The ice goes where ice goes, and the pod will not be the same. Cato stands at the hatch with the strap in his hands and says nothing for a while. \"It is your call,\" he says at last, and means it, and it costs you.",
+  "result": "You tell him no, and shut the hatch. The ice goes where ice goes, and the pod will not be the same. Cato stands at the hatch with the strap in his hands and says nothing until the lock indicator goes green. \"It is your call,\" he says.",
   "changes": [
    "s.cast.cato.flags: {} -> undefined",
    "s.cast.cato.flags.benched: undefined -> true",
@@ -3869,7 +3869,7 @@
   "id": "cast:pilar:mid1",
   "i": 1,
   "label": "Tell her the helm matters more than the paper",
-  "result": "\"It does,\" she says. \"It matters more to everybody but the ones who issue the paper.\" She almost laughs. \"That is not a complaint. That is the whole of the trade.\"",
+  "result": "\"It does,\" she says. \"It matters more to everybody but the ones who issue the paper. That is not a complaint. That is the whole of the trade.\"",
   "changes": [
    "s.people.c:pilar.liftedAt: undefined -> 1",
    "s.people.c:pilar.memories: [] -> undefined",
@@ -3904,7 +3904,7 @@
   "id": "cast:pilar:mid2",
   "i": 0,
   "label": "Follow the posted rate, as the captain wrote it",
-  "result": "You run the full checklist. The ship misses the window and waits at the gate for forty minutes, in the correct order, with the correct lights on. Captain Sato enters it. Pilar, on the bridge, stands with her arms folded and says nothing, and the nothing is a lot.",
+  "result": "You run the full checklist. The ship misses the window and waits at the gate for forty minutes, in the correct order, with the correct lights on. Captain Sato enters it. Pilar, on the bridge, stands with her arms folded and says nothing.",
   "changes": [
    "s.people.c:pilar.liftedAt: undefined -> 1",
    "s.people.c:pilar.memories: [] -> undefined",
@@ -3982,7 +3982,7 @@
   "id": "cast:pilar:late",
   "i": 0,
   "label": "Offer to speak to the captain",
-  "result": "\"Do,\" she says. \"Not about me. About the rule.\" She holds your eye. \"They will hear it better from somebody with a certificate.\" She says the last word slowly.",
+  "result": "\"Do,\" she says. \"Not about me. About the rule. They will hear it better from somebody with a certificate.\" She holds your eye on the last word.",
   "changes": [
    "s.cast.pilar.flags: {} -> undefined",
    "s.cast.pilar.flags.spoke: undefined -> true",
@@ -4237,7 +4237,7 @@
   "id": "cast:ansel:intro",
   "i": 1,
   "label": "Ask him why he stays",
-  "result": "\"Habit, or loyalty,\" he says, after a moment. \"I have not decided which, and I have been deciding for six years.\" He seems surprised to have been asked. \"I would say it was the pay, but I have seen the pay.\"",
+  "result": "\"Habit, or loyalty,\" he says, after a moment. \"I have not decided which, and I have been deciding for six years. I would say it was the pay, but I have seen the pay.\"",
   "changes": [
    "s.people.c:ansel.liftedAt: undefined -> 1",
    "s.people.c:ansel.memories: [] -> undefined",
@@ -4271,8 +4271,8 @@
  {
   "id": "cast:ansel:mid1",
   "i": 0,
-  "label": "Tell him it is not a small ambition",
-  "result": "\"It is the largest there is,\" he says, thoughtfully. \"Everyone else wants the number to go up. I want it to stay.\" He folds the letter and puts it in the inside pocket, over the heart, where, you suspect, it has been for some time.",
+  "label": "Tell him it is not a modest ambition",
+  "result": "\"It is the largest there is,\" he says. \"Everyone else wants the number to go up. I want it to stay.\" He folds the letter and puts it in the inside pocket, over the heart.",
   "changes": [
    "s.cast.ansel.flags: {} -> undefined",
    "s.cast.ansel.flags.annuity: undefined -> true",
@@ -4284,22 +4284,22 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Tell him it is not a small ambition",
+    "label": "Tell him it is not a modest ambition",
     "open": true,
     "why": ""
    },
    "poor": {
-    "label": "Tell him it is not a small ambition",
+    "label": "Tell him it is not a modest ambition",
     "open": true,
     "why": ""
    },
    "liked": {
-    "label": "Tell him it is not a small ambition",
+    "label": "Tell him it is not a modest ambition",
     "open": true,
     "why": ""
    },
    "full": {
-    "label": "Tell him it is not a small ambition",
+    "label": "Tell him it is not a modest ambition",
     "open": true,
     "why": ""
    }
@@ -4309,7 +4309,7 @@
   "id": "cast:ansel:mid1",
   "i": 1,
   "label": "Ask how close he is",
-  "result": "He tells you, to the credit, and it is a good deal further than you hoped. He does not seem troubled by it. \"That is the nice thing about a number,\" he says. \"It does not pretend.\"",
+  "result": "He tells you, to the credit, and it is less than half of eleven thousand. \"That is the nice thing about a number,\" he says. \"It does not pretend.\"",
   "changes": [
    "s.people.c:ansel.liftedAt: undefined -> 1",
    "s.people.c:ansel.memories: [] -> undefined",
@@ -4344,7 +4344,7 @@
   "id": "cast:ansel:mid2",
   "i": 0,
   "label": "Take the cargo, as the captain said",
-  "result": "You load it. The crates are heavier than they look, and the man is gone before the lock cycles, and the pay is, as promised, triple. Captain Pell kisses the roll of notes. Ansel writes the date and the weight on his sheet, and closes the cover on it, quietly, like a lid.",
+  "result": "You load it. The crates are heavier than they look, and the man is gone before the lock cycles, and the pay is, as promised, triple. Captain Pell kisses the roll of notes. Ansel writes the date and the weight on his sheet, and closes the cover on it.",
   "changes": [
    "s.people.c:ansel.liftedAt: undefined -> 1",
    "s.people.c:ansel.memories: [] -> undefined",
@@ -4383,7 +4383,7 @@
   "id": "cast:ansel:mid2",
   "i": 1,
   "label": "Refuse it, as Ansel said",
-  "result": "You refuse. The man shrugs, and takes the crates to the next ship, and the next ship is gone by morning with a cheerful crew. Captain Pell takes it well, which is to say loudly. \"Triple!\" she says, to the galley. \"He made me refuse triple!\" Ansel does not look up from the sheet, and his pencil is not quite steady.",
+  "result": "You refuse. The man shrugs, and takes the crates to the next ship, and the next ship is gone by morning with a cheerful crew. Captain Pell takes it loudly, to the galley. \"Triple!\" she says. \"He made me refuse triple!\" Ansel does not look up from the sheet, and his pencil is not quite steady.",
   "changes": [
    "s.people.c:ansel.liftedAt: undefined -> 1",
    "s.people.c:ansel.memories: [] -> undefined",
@@ -4422,7 +4422,7 @@
   "id": "cast:ansel:late",
   "i": 0,
   "label": "Ask him what the odds are",
-  "result": "He tells you, and you wish he had not. It is not a small figure and it is not a large one, and it is somewhere you could stand to lose, if it were only you. \"That is the part I cannot do anything with,\" he says. \"It is never only you.\"",
+  "result": "He tells you: one in four. \"You could stand to lose at one in four, if it were only you,\" he says. \"That is the part I cannot do anything with. It is never only you.\"",
   "changes": [
    "s.people.c:ansel.liftedAt: undefined -> 1",
    "s.people.c:ansel.memories: [] -> undefined",
@@ -4457,7 +4457,7 @@
   "id": "cast:ansel:late",
   "i": 1,
   "label": "Tell him you will stop her if you can",
-  "result": "He looks at you for a long time. \"You cannot,\" he says, gently. \"But thank you for saying it as if you could. That is more than I have had in six years.\" He turns the sheet over, face down, for the first time since you have known him.",
+  "result": "He looks at you across the sheet. \"You cannot,\" he says. \"But thank you for saying it. That is more than I have had in six years.\" He turns the sheet over, face down, for the first time since you have known him.",
   "changes": [
    "s.cast.ansel.flags: {} -> undefined",
    "s.cast.ansel.flags.told: undefined -> true",
