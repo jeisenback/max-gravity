@@ -322,7 +322,7 @@ const SHIP_WORDS = {
 
 // The words of the passenger events (PAX_EVENTS) and the crew events (CREW_EVENTS) of js/people.js (#457), by the id of each event and the name each line has: `title`, `text`, and for each choice `c0.label` and
 // its result (`c0.result`, or `c0.win` and `c0.lose` where the choice rolls). A {word} is filled from the game when the event plays: {first}, {last}, {home} and {crime} are
-// the passenger's, {dest} the port they are bound for, {armor} the hull the event takes and {rumor} the tip it gives; {crew} is the shipmate who does the work, and the dialog fills it. A crew event's {first}, {last} and {home} are the shipmate's, and {raise} the new wage.
+// the passenger's, {dest} the port they are bound for, {armor} the hull the event takes and {rumor} the tip it gives; {crew} is the shipmate who does the work, and the dialog fills it. A crew event's {first}, {last} and {home} are the shipmate's, and {raise} the new wage. The bar topics' lines (`bar:<topic>`, js/bartopics.js) have {first}, {home} and the like, and the words the topic builds: {rumor} (a tip), {react} (how they took it), {slip} (what a secret lets slip), {cr} and {cost} (the stake).
 // What a choice does (credits, regard, time, who stays aboard) is in code. tests/peoplelines.test.js plays every event and checks that each name here is read.
 const PEOPLE_LINES = {
   'people:pax:contraband': {
@@ -561,5 +561,90 @@ const PEOPLE_LINES = {
     'c0.lose': 'A tether snaps. For one second {first} drifts, arms out, into the black, until a gloved hand catches a handhold and holds. They make it back, shaking and gasping. The ship takes {armor} points of damage from the loose mast, and nobody sleeps that night.',
     'c1.label': 'Go yourself',
     'c1.result': 'You go out through the lock yourself, with the tether at your belt, and fix it in the cold and the silence with the ship turning slowly below your boots. It takes forty minutes. {first} watched through the port, and when you come in {first} hands you a cup and says nothing.',
+  },
+  'bar:drink': {
+    label: 'Buy {first} a drink ({cost} cr)',
+    gate: 'You have bought them a drink already.',
+    generous: '{first} will not hear of it, and slides the credits back across the bar, and buys the next one too. {react}',
+    rumor: '{first} looks around and leans in. "Here\'s something you can use," they say, low and fast: "{rumor}" Then they sit back and finish their drink. {react}',
+  },
+  'bar:heard': {
+    label: 'Ask what they have heard',
+    gate: 'You have done that already tonight.',
+    secretive: '"Nothing worth repeating," {first} says, and smiles. "And you? How long have you had the ship?"',
+    heard: '{first} thinks about it, then says: "{rumor}"',
+    more: '{first} adds, before you can answer: "{rumor}"',
+  },
+  'bar:passage': {
+    label: 'Offer {first} passage',
+    gate: 'You have offered already.',
+    none: '{first} counts on their fingers, then shakes their head. "Nowhere you can reach from here," they say. "Ask me again when you have a longer tank."',
+    set: '"{dest}?" {first} says. "That\'s where I need to be." They name a fare and shake on it with both hands. The job is on the mission board.',
+  },
+  'bar:cards': {
+    label: 'Play {first} at cards ({cr} cr)',
+    gate: 'You have played already tonight.',
+    'win.rude': '{first} stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.',
+    'win.end.0': '{first} buys you a drink with your own money.',
+    'win.end.1': '{first} shakes your hand and means it.',
+    'win.end.2': '{first} tells the story of it to the next table, with you as the villain.',
+    'lose.end': 'By the end of the glass you are laughing.',
+  },
+  'bar:work': {
+    label: 'Ask {first} about their work',
+    gate: 'You have done that already tonight.',
+    post: 'You come away knowing something new about the {post}. (Experience gained.)',
+    hands: 'Then {first} tells you what they are hearing on the docks: "{rumor}"',
+  },
+  'bar:place': {
+    label: 'Ask {first} about this place',
+    gate: 'You have done that already tonight.',
+  },
+  'bar:quiet': {
+    label: 'Sit with {first} and say nothing',
+    gate: 'You have done that already tonight.',
+  },
+  'bar:goal': {
+    gate: 'You have done that already tonight.',
+    result: 'You ask, and {first} puts down the glass.',
+  },
+  'bar:secret': {
+    label: 'Ask {first} what is weighing on them',
+    gate: 'You have done that already tonight.',
+    result: '{first} looks at you, and takes their time deciding.',
+  },
+  'bar:home': {
+    label: 'Ask about {home}',
+    gate: 'You have done that already tonight.',
+  },
+  'bar:bless': {
+    label: 'Ask for a blessing on your ship',
+    'label.hired': 'Ask for a blessing on the ship',
+    gate: 'You have done that already tonight.',
+  },
+  'bar:fight': {
+    label: 'Tell them what you think of their manners',
+    gate: 'You have done that already tonight.',
+    win: 'It is short and loud. {step}{first} ends up on the floor, and the whole bar cheers. Someone starts a chant. The bartender charges you for the stool anyway.',
+    'win.step': '{gunner} steps in and',
+    lose: 'It is short, and it does not go your way. There is a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 150 cr bill for the mirror. The bartender is standing over you with a wet cloth. "You were doing so well," the bartender says.',
+  },
+  'bar:peace': {
+    label: 'Make peace (buy them a bottle, 300 cr)',
+    gate: 'You have made peace already tonight.',
+    result: '{first} looks at the bottle a long time before taking it, turning it in the light to read the label. Then they set it between you on the table and pour two glasses. "It\'s a start," they say.',
+  },
+  'bar:goal-help': {
+    'gift.result': 'You put it on the table and push it across.',
+    'advice.result': 'You tell them what you know, plainly.',
+    'listen.result': 'You sit back, and ask, and for an hour that is all there is.',
+    thanks: 'As thanks {first} leans in. "Here\'s something you can use," they say: "{rumor}"',
+    quiet: 'In the quiet after, {first} {slip}',
+    'close.label': 'Say you hope it goes well',
+    'close.result': '{first} thanks you, and that is the end of it.',
+  },
+  'bar:secret-help': {
+    'close.label': 'Let it be',
+    'close.result': 'You let it be, and the talk goes somewhere easier.',
   },
 };

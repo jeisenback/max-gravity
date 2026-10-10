@@ -152,10 +152,10 @@
         ...beatRow(e.scene), lines: true, codeNote: LINES_NOTE });
     }
     for (const e of peopleEventRegistry()) {  // the passenger and crew events (#457): written in code, with their words as lines
-      const pax = !!e.event;
-      add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: pax ? 'passenger events' : 'crew events',
-        conditionsNote: pax ? 'A passenger aboard whom the event is about (their secret, goal or traits); one event is drawn for a passenger by weight.' : 'A shipmate with the trait the event is about: one of the crew is picked on a burn, then one of their traits.',
-        pacing: { tier: null, weight: pax ? e.event.weight : null, cooldown: pax ? 'one per passenger' : 'by its own rule', trigger: pax ? 'Drawn by weight among the events that fit the passenger, on a burn.' : 'Picked at random among the crew and their traits, on a burn.', editable: false },
+      const pax = !!e.event, crew = !!e.make, kind = pax ? 'passenger events' : crew ? 'crew events' : 'bar topics';
+      add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: kind,
+        conditionsNote: pax ? 'A passenger aboard whom the event is about (their secret, goal or traits); one event is drawn for a passenger by weight.' : crew ? 'A shipmate with the trait the event is about: one of the crew is picked on a burn, then one of their traits.' : 'One of the few things you can do at a table with a stranger at a bar, offered by who they are; or, for a help scene, what follows when you take up their goal or their secret.',
+        pacing: { tier: null, weight: pax ? e.event.weight : null, cooldown: pax ? 'one per passenger' : 'by its own rule', trigger: pax ? 'Drawn by weight among the events that fit the passenger, on a burn.' : crew ? 'Picked at random among the crew and their traits, on a burn.' : 'Offered at a bar table by the person\'s traits, goal and secret, three at a time.', editable: false },
         ...beatRow(e.scene), codeNote: SCENE_NOTE });
     }
     return rows;
@@ -312,9 +312,17 @@
     const meeting = !!reg && reg.kind === 'cast' && reg.name === 'meet';  // an owner meets a main character at a port bar; a hired hand never does
     beginGame(meeting || pe ? { ...o, as: 'owner' } : o, !!reg && !meeting);
     // A scene in a burn is played on the way to the place (its `at` is the destination); one at a port, landed there.
-    const where = s ? s.where : pe ? 'transit' : reg.name === 'meet' || reg.name === 'goodbye' ? 'port' : 'transit';
+    const where = s ? s.where : pe ? pe.where : reg.name === 'meet' || reg.name === 'goodbye' ? 'port' : 'transit';
     if (where === 'transit') uatBurn(at.sid === 'earth' ? 'Mars' : 'Earth', at.sid); else uatLand(place);
     tweakState(o);
+    if (pe && (pe.topic || pe.help)) {  // a bar topic: a person it is about across the table, and the topic as a choice (or the help scene it leads to)
+      const person = Object.assign(makePerson('earth'), { secret: null, goal: 'home', traits: ['kind', 'brave'], opinion: 0 }, pe.topic ? pe.topic.sample : { traits: ['homesick', 'kind'], secret: 'debt', opinion: OPINION.CLOSE });
+      fillBar(currentPlanet()); registerPerson(person);
+      const pat = { p: person, known: false }, ctx = { st: G.state, bar: G.barState.name };
+      if (pe.help) openEvent(pe.help === 'goal' ? helpScene(person, pat, ctx) : secretScene(person, pat, ctx));
+      else openEvent({ title: `${ctx.bar}: ${person.first} ${person.last}`, text: `${person.first} ${person.last} is across the table.`, choices: [pe.topic.make(person, pat, ctx), { label: 'Leave them to their drink', run: () => '' }] });
+      return { type: 'played', failing: [], chained: false, shut: [], note: 'A bar topic is offered by who the person is, so no condition is checked here.' };
+    }
     if (pe && pe.make) {  // a crew event: a shipmate with the trait is aboard
       const mate = makeCrewCandidate(G.state.systemId); registerPerson(mate); mate.traits = [pe.trait]; G.state.crew.push(mate.id);
       openEvent(pe.make(mate));

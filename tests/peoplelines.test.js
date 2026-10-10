@@ -14,15 +14,15 @@ test('every passenger and crew event has an id and lines, and every line is read
   const g = await open({ scope: 'full' });
   const r = await g.ev(arg => {
     const playP = (0, eval)(`(${arg.pax})`), playC = (0, eval)(`(${arg.crew})`), play = () => [...playP(), ...playC()];
-    const ids = PAX_EVENTS.map(e => e.id), crewIds = Object.keys(CREW_EVENTS), registry = peopleEventRegistry().map(e => e.id);
+    const ids = PAX_EVENTS.map(e => e.id), crewIds = Object.keys(CREW_EVENTS), registry = peopleEventRegistry().map(e => e.id).filter(id => id.startsWith('people:'));  // the bar topics have a test of their own (linetables.test.js)
     const mark = (id, key) => `@@${id}|${key}@@${(PEOPLE_LINES[id][key].match(/\{\w+\}/g) || []).join('')}`;  // a line keeps the {words} it has, so the lines it leads to are still read
-    const overrides = Object.fromEntries(Object.keys(PEOPLE_LINES).map(id => [id, { parts: Object.fromEntries(Object.keys(PEOPLE_LINES[id]).map(k => [k, mark(id, k)])) }]));
+    const overrides = Object.fromEntries(Object.keys(PEOPLE_LINES).filter(id => id.startsWith('people:')).map(id => [id, { parts: Object.fromEntries(Object.keys(PEOPLE_LINES[id]).map(k => [k, mark(id, k)])) }]));
     const base = play();
     const warned = []; const warn = console.warn; console.warn = m => warned.push(m);
     useOverrides(overrides);
     console.warn = warn;
     const changed = play();
-    return { base, changed, warned, ids, crewIds, registry, lineIds: Object.keys(PEOPLE_LINES), keys: Object.fromEntries(Object.entries(PEOPLE_LINES).map(([id, l]) => [id, Object.keys(l)])) };
+    return { base, changed, warned, ids, crewIds, registry, lineIds: Object.keys(PEOPLE_LINES).filter(id => id.startsWith('people:')), keys: Object.fromEntries(Object.entries(PEOPLE_LINES).filter(([id]) => id.startsWith('people:')).map(([id, l]) => [id, Object.keys(l)])) };
   }, { pax: playPax.toString(), crew: playCrew.toString() });
   await g.done();
   assert.equal(new Set(r.ids).size, r.ids.length, 'ids are unique');

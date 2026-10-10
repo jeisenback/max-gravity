@@ -2050,5 +2050,825 @@
  {
   "key": "crewbar:medic:6",
   "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p340\">Sam</button> has been cornered by a stranger with a rash."
+ },
+ {
+  "key": "heard2:talkative:1",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A company on Hermes Foundry has folded, and its whole stock of Machine Parts is being sold off at auction.\" Sam adds, before you can answer: \"A big contract on Eros Old Town has swallowed the whole local supply of Water, and the bidding has gone wild.\""
+ },
+ {
+  "key": "heard3:talkative:1",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Three haulers just unloaded Medical Supplies on Boneyard. Prices there are collapsing.\" Sam adds, before you can answer: \"Customs on The Hollows seized a shipment of Food. Buyers there are desperate.\""
+ },
+ {
+  "key": "heard2:talkative:2",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A fire in a warehouse on Earth took most of the local stock of Refined Metals, and nobody is saying how it started.\" Sam adds, before you can answer: \"Dockworkers on Earth have gone on strike. Water is suddenly scarce there.\""
+ },
+ {
+  "key": "heard3:talkative:2",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A corporate buying spree on Titan has cleared the shelves of Luxury Goods.\" Sam adds, before you can answer: \"A ship carrying Electronics to Eros Old Town was hijacked two weeks ago, and the shelves are getting bare.\""
+ },
+ {
+  "key": "heard2:talkative:3",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A disease scare on Juno Commons has everyone hoarding Medical Supplies.\" Sam adds, before you can answer: \"A ship carrying Food to Ironheart was hijacked two weeks ago, and the shelves are getting bare.\""
+ },
+ {
+  "key": "heard3:talkative:3",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A fire in a warehouse on Ironheart took most of the local stock of Machine Parts, and nobody is saying how it started.\" Sam adds, before you can answer: \"A warehouse on Mars has been cleared out in a hurry, and the Refined Metals is going, quite literally, for whatever anyone will pay.\""
+ },
+ {
+  "key": "heard2:talkative:4",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A fire in a warehouse on Ironheart took most of the local stock of Refined Metals, and nobody is saying how it started.\" Sam adds, before you can answer: \"A warehouse on Mars has been cleared out in a hurry, and the Electronics is going, quite literally, for whatever anyone will pay.\""
+ },
+ {
+  "key": "heard3:talkative:4",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A strike ended on The Rook, and every dock in town is suddenly flooded with Electronics.\" Sam adds, before you can answer: \"Dockworkers on Europa have gone on strike. Water is suddenly scarce there.\""
+ },
+ {
+  "key": "heard2:nervous:1",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"Warehouses on Juno Commons are overflowing with Electronics. Sellers are dumping it cheap.\""
+ },
+ {
+  "key": "heard3:nervous:1",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A strike ended on Triton Outpost, and every dock in town is suddenly flooded with Electronics.\""
+ },
+ {
+  "key": "heard2:nervous:2",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A cold snap on Ironheart has made Luxury Goods the only thing anyone wants to talk about.\""
+ },
+ {
+  "key": "heard3:nervous:2",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A disease scare on Hermes Foundry has everyone hoarding Machine Parts.\""
+ },
+ {
+  "key": "heard2:nervous:3",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A new tax on Water at Ring Nine has, for reasons no one can explain, made it more valuable, not less.\""
+ },
+ {
+  "key": "heard3:nervous:3",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Three haulers just unloaded Medical Supplies on Juno Commons. Prices there are collapsing.\""
+ },
+ {
+  "key": "heard2:nervous:4",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A bumper output of Food on Earth has the markets swamped.\""
+ },
+ {
+  "key": "heard3:nervous:4",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A bumper output of Refined Metals on Eros Old Town has the markets swamped.\""
+ },
+ {
+  "key": "heard2:generous:1",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A corporate buying spree on Titan has cleared the shelves of Electronics.\""
+ },
+ {
+  "key": "heard3:generous:1",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Warehouses on Ironheart are overflowing with Food. Sellers are dumping it cheap.\""
+ },
+ {
+  "key": "heard2:generous:2",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A rumor that Luxury Goods on Ganymede is contaminated has, for the moment, cratered the price, though everyone knows it is nonsense.\""
+ },
+ {
+  "key": "heard3:generous:2",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Customs on Mars seized a shipment of Water. Buyers there are desperate.\""
+ },
+ {
+  "key": "heard2:generous:3",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A ship carrying Water to Europa was hijacked two weeks ago, and the shelves are getting bare.\""
+ },
+ {
+  "key": "heard3:generous:3",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A warehouse on The Rook has been cleared out in a hurry, and the Medical Supplies is going, quite literally, for whatever anyone will pay.\""
+ },
+ {
+  "key": "heard2:generous:4",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A new tax on Machine Parts at Ironheart has, for reasons no one can explain, made it more valuable, not less.\""
+ },
+ {
+  "key": "heard3:generous:4",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A rumor that Water on The Hollows is contaminated has, for the moment, cratered the price, though everyone knows it is nonsense.\""
+ },
+ {
+  "key": "heard2:greedy:1",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A strike ended on The Hollows, and every dock in town is suddenly flooded with Water.\""
+ },
+ {
+  "key": "heard3:greedy:1",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Customs on Enceladus seized a shipment of Water. Buyers there are desperate.\""
+ },
+ {
+  "key": "heard2:greedy:2",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A shipping delay has stranded a convoy of Medical Supplies on the way to Ironheart, and buyers are getting anxious.\""
+ },
+ {
+  "key": "heard3:greedy:2",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Customs on The Hollows seized a shipment of Water. Buyers there are desperate.\""
+ },
+ {
+  "key": "heard2:greedy:3",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A trade fair on Titan has brought in a great many merchants, and Luxury Goods is going for a song.\""
+ },
+ {
+  "key": "heard3:greedy:3",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A trade fair on Boneyard has brought in a great many merchants, and Medical Supplies is going for a song.\""
+ },
+ {
+  "key": "heard2:greedy:4",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A cold snap on Eros Old Town has made Electronics the only thing anyone wants to talk about.\""
+ },
+ {
+  "key": "heard3:greedy:4",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A ceremonial feast on The Hollows has drained every last ounce of Water, and the cooks are frantic.\""
+ },
+ {
+  "key": "heard2:pious:1",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"Three haulers just unloaded Water on Europa. Prices there are collapsing.\""
+ },
+ {
+  "key": "heard3:pious:1",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Dockworkers on The Rook have gone on strike. Luxury Goods is suddenly scarce there.\""
+ },
+ {
+  "key": "heard2:pious:2",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A cold snap on Boneyard has made Food the only thing anyone wants to talk about.\""
+ },
+ {
+  "key": "heard3:pious:2",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A cold snap on Juno Commons has made Medical Supplies the only thing anyone wants to talk about.\""
+ },
+ {
+  "key": "heard2:pious:3",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A big contract on Europa has swallowed the whole local supply of Machine Parts, and the bidding has gone wild.\""
+ },
+ {
+  "key": "heard3:pious:3",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Three haulers just unloaded Food on Enceladus. Prices there are collapsing.\""
+ },
+ {
+  "key": "heard2:pious:4",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A disease scare on Triton Outpost has everyone hoarding Water.\""
+ },
+ {
+  "key": "heard3:pious:4",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A strike ended on The Hollows, and every dock in town is suddenly flooded with Food.\""
+ },
+ {
+  "key": "heard2:rude:1",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A shipping delay has stranded a convoy of Refined Metals on the way to Ceres Station, and buyers are getting anxious.\""
+ },
+ {
+  "key": "heard3:rude:1",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Customs on Ring Nine seized a shipment of Water. Buyers there are desperate.\""
+ },
+ {
+  "key": "heard2:rude:2",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A rumor that Luxury Goods on Ironheart is contaminated has, for the moment, cratered the price, though everyone knows it is nonsense.\""
+ },
+ {
+  "key": "heard3:rude:2",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A ceremonial feast on Eros Old Town has drained every last ounce of Refined Metals, and the cooks are frantic.\""
+ },
+ {
+  "key": "heard2:rude:3",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A corporate buying spree on Ganymede has cleared the shelves of Medical Supplies.\""
+ },
+ {
+  "key": "heard3:rude:3",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Three haulers just unloaded Luxury Goods on Hermes Foundry. Prices there are collapsing.\""
+ },
+ {
+  "key": "heard2:rude:4",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A trade fair on Eros Old Town has brought in a great many merchants, and Luxury Goods is going for a song.\""
+ },
+ {
+  "key": "heard3:rude:4",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A corporate buying spree on Ceres Station has cleared the shelves of Food.\""
+ },
+ {
+  "key": "heard2:curious:1",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A disease scare on Eros Old Town has everyone hoarding Water.\" Sam adds, before you can answer: \"A new tax on Water at Mars has, for reasons no one can explain, made it more valuable, not less.\""
+ },
+ {
+  "key": "heard3:curious:1",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A shipping delay has stranded a convoy of Food on the way to Mars, and buyers are getting anxious.\" Sam adds, before you can answer: \"A shipping delay has stranded a convoy of Refined Metals on the way to Hermes Foundry, and buyers are getting anxious.\""
+ },
+ {
+  "key": "heard2:curious:2",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A trade fair on Boneyard has brought in a great many merchants, and Medical Supplies is going for a song.\" Sam adds, before you can answer: \"A big contract on Triton Outpost has swallowed the whole local supply of Food, and the bidding has gone wild.\""
+ },
+ {
+  "key": "heard3:curious:2",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A cold snap on Enceladus has made Refined Metals the only thing anyone wants to talk about.\" Sam adds, before you can answer: \"Word is that the governor of Triton Outpost is stockpiling Electronics for a party, and will pay well over the odds.\""
+ },
+ {
+  "key": "heard2:curious:3",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A strike ended on Ring Nine, and every dock in town is suddenly flooded with Food.\" Sam adds, before you can answer: \"A fire in a warehouse on Triton Outpost took most of the local stock of Water, and nobody is saying how it started.\""
+ },
+ {
+  "key": "heard3:curious:3",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A cold snap on Mars has made Refined Metals the only thing anyone wants to talk about.\" Sam adds, before you can answer: \"A strike ended on Eros Old Town, and every dock in town is suddenly flooded with Electronics.\""
+ },
+ {
+  "key": "heard2:curious:4",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A fire in a warehouse on The Rook took most of the local stock of Food, and nobody is saying how it started.\" Sam adds, before you can answer: \"A new tax on Food at Mars has, for reasons no one can explain, made it more valuable, not less.\""
+ },
+ {
+  "key": "heard3:curious:4",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A bumper output of Electronics on Ceres Station has the markets swamped.\" Sam adds, before you can answer: \"A ceremonial feast on Mars has drained every last ounce of Electronics, and the cooks are frantic.\""
+ },
+ {
+  "key": "heard2:drunk:1",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A warehouse on Boneyard has been cleared out in a hurry, and the Food is going, quite literally, for whatever anyone will pay.\" Sam adds, before you can answer: \"A trade fair on Pallas Refinery has brought in a great many merchants, and Electronics is going for a song.\""
+ },
+ {
+  "key": "heard3:drunk:1",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A bumper output of Electronics on Hermes Foundry has the markets swamped.\" Sam adds, before you can answer: \"A trade fair on Earth has brought in a great many merchants, and Water is going for a song.\""
+ },
+ {
+  "key": "heard2:drunk:2",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"Three haulers just unloaded Refined Metals on Earth. Prices there are collapsing.\" Sam adds, before you can answer: \"A company on Juno Commons has folded, and its whole stock of Food is being sold off at auction.\""
+ },
+ {
+  "key": "heard3:drunk:2",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A company on Titan has folded, and its whole stock of Medical Supplies is being sold off at auction.\" Sam adds, before you can answer: \"Dockworkers on Hermes Foundry have gone on strike. Electronics is suddenly scarce there.\""
+ },
+ {
+  "key": "heard2:drunk:3",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A fire in a warehouse on Boneyard took most of the local stock of Medical Supplies, and nobody is saying how it started.\" Sam adds, before you can answer: \"Word is that the governor of Earth is stockpiling Luxury Goods for a party, and will pay well over the odds.\""
+ },
+ {
+  "key": "heard3:drunk:3",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A corporate buying spree on Ring Nine has cleared the shelves of Water.\" Sam adds, before you can answer: \"A rumor that Machine Parts on Mars is contaminated has, for the moment, cratered the price, though everyone knows it is nonsense.\""
+ },
+ {
+  "key": "heard2:drunk:4",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A disease scare on Hermes Foundry has everyone hoarding Machine Parts.\" Sam adds, before you can answer: \"A strike ended on Eros Old Town, and every dock in town is suddenly flooded with Luxury Goods.\""
+ },
+ {
+  "key": "heard3:drunk:4",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A cold snap on Ganymede has made Medical Supplies the only thing anyone wants to talk about.\" Sam adds, before you can answer: \"A ship carrying Medical Supplies to Earth was hijacked two weeks ago, and the shelves are getting bare.\""
+ },
+ {
+  "key": "heard2:secretive:1",
+  "text": "\"Nothing worth repeating,\" Sam says, and smiles. \"And you? How long have you had the ship?\""
+ },
+ {
+  "key": "heard3:secretive:1",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A shipping delay has stranded a convoy of Food on the way to Enceladus, and buyers are getting anxious.\""
+ },
+ {
+  "key": "heard2:secretive:2",
+  "text": "\"Nothing worth repeating,\" Sam says, and smiles. \"And you? How long have you had the ship?\""
+ },
+ {
+  "key": "heard3:secretive:2",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Customs on Boneyard seized a shipment of Food. Buyers there are desperate.\""
+ },
+ {
+  "key": "heard2:secretive:3",
+  "text": "\"Nothing worth repeating,\" Sam says, and smiles. \"And you? How long have you had the ship?\""
+ },
+ {
+  "key": "heard3:secretive:3",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A company on Earth has folded, and its whole stock of Refined Metals is being sold off at auction.\""
+ },
+ {
+  "key": "heard2:secretive:4",
+  "text": "\"Nothing worth repeating,\" Sam says, and smiles. \"And you? How long have you had the ship?\""
+ },
+ {
+  "key": "heard3:secretive:4",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A disease scare on Ceres Station has everyone hoarding Water.\""
+ },
+ {
+  "key": "heard2:kind:1",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A ship carrying Refined Metals to Ironheart was hijacked two weeks ago, and the shelves are getting bare.\""
+ },
+ {
+  "key": "heard3:kind:1",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A corporate buying spree on Hermes Foundry has cleared the shelves of Food.\""
+ },
+ {
+  "key": "heard2:kind:2",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"Word is that the governor of Enceladus is stockpiling Refined Metals for a party, and will pay well over the odds.\""
+ },
+ {
+  "key": "heard3:kind:2",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A cold snap on Europa has made Water the only thing anyone wants to talk about.\""
+ },
+ {
+  "key": "heard2:kind:3",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"Dockworkers on Triton Outpost have gone on strike. Luxury Goods is suddenly scarce there.\""
+ },
+ {
+  "key": "heard3:kind:3",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A cold snap on Boneyard has made Food the only thing anyone wants to talk about.\""
+ },
+ {
+  "key": "heard2:kind:4",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A new tax on Food at Triton Outpost has, for reasons no one can explain, made it more valuable, not less.\""
+ },
+ {
+  "key": "heard3:kind:4",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Three haulers just unloaded Water on Ring Nine. Prices there are collapsing.\""
+ },
+ {
+  "key": "heard2:brave:1",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A fire in a warehouse on Earth took most of the local stock of Refined Metals, and nobody is saying how it started.\""
+ },
+ {
+  "key": "heard3:brave:1",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A corporate buying spree on Titan has cleared the shelves of Luxury Goods.\""
+ },
+ {
+  "key": "heard2:brave:2",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A disease scare on Juno Commons has everyone hoarding Medical Supplies.\""
+ },
+ {
+  "key": "heard3:brave:2",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A fire in a warehouse on Ironheart took most of the local stock of Machine Parts, and nobody is saying how it started.\""
+ },
+ {
+  "key": "heard2:brave:3",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A fire in a warehouse on Ironheart took most of the local stock of Refined Metals, and nobody is saying how it started.\""
+ },
+ {
+  "key": "heard3:brave:3",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A strike ended on The Rook, and every dock in town is suddenly flooded with Electronics.\""
+ },
+ {
+  "key": "heard2:brave:4",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A ceremonial feast on The Hollows has drained every last ounce of Water, and the cooks are frantic.\""
+ },
+ {
+  "key": "heard3:brave:4",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A trade fair on Earth has brought in a great many merchants, and Food is going for a song.\""
+ },
+ {
+  "key": "heard2:homesick:1",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A cold snap on Ironheart has made Luxury Goods the only thing anyone wants to talk about.\""
+ },
+ {
+  "key": "heard3:homesick:1",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A disease scare on Hermes Foundry has everyone hoarding Machine Parts.\""
+ },
+ {
+  "key": "heard2:homesick:2",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A new tax on Water at Ring Nine has, for reasons no one can explain, made it more valuable, not less.\""
+ },
+ {
+  "key": "heard3:homesick:2",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"Three haulers just unloaded Medical Supplies on Juno Commons. Prices there are collapsing.\""
+ },
+ {
+  "key": "heard2:homesick:3",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"A bumper output of Food on Earth has the markets swamped.\""
+ },
+ {
+  "key": "heard3:homesick:3",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A bumper output of Refined Metals on Eros Old Town has the markets swamped.\""
+ },
+ {
+  "key": "heard2:homesick:4",
+  "text": "Sam says they are traveling for reasons, and leaves it there, and orders another. Sam thinks about it, then says: \"Customs on The Rook seized a shipment of Water. Buyers there are desperate.\""
+ },
+ {
+  "key": "heard3:homesick:4",
+  "text": "Sam is going home, and keeps looking at the clock. \"Three more ports,\" they say, to nobody in particular. Sam thinks about it, then says: \"A new tax on Electronics at Mars has, for reasons no one can explain, made it more valuable, not less.\""
+ },
+ {
+  "key": "passage:1",
+  "text": "\"Hermes Foundry?\" Sam says. \"That's where I need to be.\" They name a fare and shake on it with both hands. The job is on the mission board."
+ },
+ {
+  "key": "passage:2",
+  "text": "\"Enceladus?\" Sam says. \"That's where I need to be.\" They name a fare and shake on it with both hands. The job is on the mission board."
+ },
+ {
+  "key": "passage:3",
+  "text": "\"The Hollows?\" Sam says. \"That's where I need to be.\" They name a fare and shake on it with both hands. The job is on the mission board."
+ },
+ {
+  "key": "passage:4",
+  "text": "\"Triton Outpost?\" Sam says. \"That's where I need to be.\" They name a fare and shake on it with both hands. The job is on the mission board."
+ },
+ {
+  "key": "passage:5",
+  "text": "\"Boneyard?\" Sam says. \"That's where I need to be.\" They name a fare and shake on it with both hands. The job is on the mission board."
+ },
+ {
+  "key": "passage:6",
+  "text": "\"Ironheart?\" Sam says. \"That's where I need to be.\" They name a fare and shake on it with both hands. The job is on the mission board."
+ },
+ {
+  "key": "passage:none",
+  "text": "Sam counts on their fingers, then shakes their head. \"Nowhere you can reach from here,\" they say. \"Ask me again when you have a longer tank.\""
+ },
+ {
+  "key": "drink2:1",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A company on Earth has folded, and its whole stock of Machine Parts is being sold off at auction.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "cards2:rude:1",
+  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 200 cr to you in the end. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it."
+ },
+ {
+  "key": "cards2:kind:1",
+  "text": "The cards run for you all night. Sam tries a different seat, a different deck, a different luck charm. 200 cr to you in the end. Sam tells the story of it to the next table, with you as the villain."
+ },
+ {
+  "key": "drink2:2",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A new tax on Electronics at The Rook has, for reasons no one can explain, made it more valuable, not less.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "cards2:rude:2",
+  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 200 cr, and they laugh about it. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it."
+ },
+ {
+  "key": "cards2:kind:2",
+  "text": "You play it quiet and let Sam talk. They talk themselves into a bad bet. 200 cr, and they laugh about it. Sam tells the story of it to the next table, with you as the villain."
+ },
+ {
+  "key": "drink2:3",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A cold snap on Enceladus has made Refined Metals the only thing anyone wants to talk about.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "cards2:rude:3",
+  "text": "Sam wins 200 cr, and says it was not even close. You do not argue. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards2:kind:3",
+  "text": "Sam wins 200 cr and feels bad about it at once, and buys you a drink, and says it is nothing. By the end of the glass you are laughing."
+ },
+ {
+  "key": "drink2:4",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Dockworkers on The Rook have gone on strike. Food is suddenly scarce there.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "cards2:rude:4",
+  "text": "Sam bets everything on the last hand with a grin and loses 200 cr to you, and offers a rematch, double or nothing, before the cards are down. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it."
+ },
+ {
+  "key": "cards2:kind:4",
+  "text": "Sam bets everything on the last hand with a grin and loses 200 cr to you, and offers a rematch, double or nothing, before the cards are down. Sam buys you a drink with your own money."
+ },
+ {
+  "key": "drink2:5",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A bumper output of Water on Ironheart has the markets swamped.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "cards2:rude:5",
+  "text": "Sam bets everything on the last hand with a grin and loses 200 cr to you, and offers a rematch, double or nothing, before the cards are down. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it."
+ },
+ {
+  "key": "cards2:kind:5",
+  "text": "Sam bets everything on the last hand with a grin and loses 200 cr to you, and offers a rematch, double or nothing, before the cards are down. Sam shakes your hand and means it."
+ },
+ {
+  "key": "drink2:6",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A company on Enceladus has folded, and its whole stock of Refined Metals is being sold off at auction.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "cards2:rude:6",
+  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 200 cr. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it."
+ },
+ {
+  "key": "cards2:kind:6",
+  "text": "Sam deals fast and cheats badly, and you let them think they are getting away with it for two hands, and take the third. 200 cr. Sam buys you a drink with your own money."
+ },
+ {
+  "key": "drink2:7",
+  "text": "Sam asks about you, and means it. By the end of the glass you have said something true that you had not planned to say to anyone. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "cards2:rude:7",
+  "text": "Three hands, slow and close. On the last card you take 200 cr off Sam, who groans and says you were counting. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it."
+ },
+ {
+  "key": "cards2:kind:7",
+  "text": "Three hands, slow and close. On the last card you take 200 cr off Sam, who groans and says you were counting. Sam tells the story of it to the next table, with you as the villain."
+ },
+ {
+  "key": "drink2:8",
+  "text": "Sam asks about you, and listens, and says nothing useful, and the drink is gone before you notice. It is the most relaxing hour of the week. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "cards2:rude:8",
+  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards2:kind:8",
+  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish. By the end of the glass you are laughing."
+ },
+ {
+  "key": "drink2:9",
+  "text": "Sam asks about you, and means it. By the end of the glass you have said something true that you had not planned to say to anyone. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "cards2:rude:9",
+  "text": "Sam puts down the last card and says, in a level voice, that it was a dishonest deck. You take 200 cr off them anyway. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it."
+ },
+ {
+  "key": "cards2:kind:9",
+  "text": "Sam loses gracefully, and as you take 200 cr they ask if you are all right, because you looked tired. You were. Sam buys you a drink with your own money."
+ },
+ {
+  "key": "drink2:10",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A corporate buying spree on Enceladus has cleared the shelves of Food.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "cards2:rude:10",
+  "text": "Sam plays like someone who learned on a long watch: patient, quiet, unrattled. 200 cr, and you cannot find the mistake you made. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards2:kind:10",
+  "text": "Sam plays like someone who learned on a long watch: patient, quiet, unrattled. 200 cr, and you cannot find the mistake you made. By the end of the glass you are laughing."
+ },
+ {
+  "key": "drink2:11",
+  "text": "Sam tells you about a bad moment and what they did in it, and does not make it sound better than it was. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "cards2:rude:11",
+  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. Fair is fair. By the end of the glass you are laughing."
+ },
+ {
+  "key": "cards2:kind:11",
+  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. Fair is fair. By the end of the glass you are laughing."
+ },
+ {
+  "key": "drink2:12",
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A bumper output of Food on Boneyard has the markets swamped.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything."
+ },
+ {
+  "key": "cards2:rude:12",
+  "text": "Three hands, slow and close. On the last card you take 200 cr off Sam, who groans and says you were counting. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it."
+ },
+ {
+  "key": "cards2:kind:12",
+  "text": "Three hands, slow and close. On the last card you take 200 cr off Sam, who groans and says you were counting. Sam shakes your hand and means it."
+ },
+ {
+  "key": "fight:gunner:1",
+  "text": "It is short and loud. Sam ends up on the floor, and the whole bar cheers. Someone starts a chant. The bartender charges you for the stool anyway."
+ },
+ {
+  "key": "fight:gunner:2",
+  "text": "It is short, and it does not go your way. There is a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 150 cr bill for the mirror. The bartender is standing over you with a wet cloth. \"You were doing so well,\" the bartender says."
+ },
+ {
+  "key": "fight:gunner:3",
+  "text": "It is short, and it does not go your way. There is a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 150 cr bill for the mirror. The bartender is standing over you with a wet cloth. \"You were doing so well,\" the bartender says."
+ },
+ {
+  "key": "fight:gunner:4",
+  "text": "It is short and loud. Sam ends up on the floor, and the whole bar cheers. Someone starts a chant. The bartender charges you for the stool anyway."
+ },
+ {
+  "key": "fight:pilot:1",
+  "text": "It is short and loud. Sam ends up on the floor, and the whole bar cheers. Someone starts a chant. The bartender charges you for the stool anyway."
+ },
+ {
+  "key": "fight:pilot:2",
+  "text": "It is short, and it does not go your way. There is a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 150 cr bill for the mirror. The bartender is standing over you with a wet cloth. \"You were doing so well,\" the bartender says."
+ },
+ {
+  "key": "fight:pilot:3",
+  "text": "It is short, and it does not go your way. There is a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 150 cr bill for the mirror. The bartender is standing over you with a wet cloth. \"You were doing so well,\" the bartender says."
+ },
+ {
+  "key": "fight:pilot:4",
+  "text": "It is short and loud. Sam ends up on the floor, and the whole bar cheers. Someone starts a chant. The bartender charges you for the stool anyway."
+ },
+ {
+  "key": "fight:crew:1",
+  "text": "It is short and loud. Rhea steps in and Sam ends up on the floor, and the whole bar cheers. Someone starts a chant. The bartender charges you for the stool anyway."
+ },
+ {
+  "key": "fight:crew:2",
+  "text": "It is short and loud. Rhea steps in and Sam ends up on the floor, and the whole bar cheers. Someone starts a chant. The bartender charges you for the stool anyway."
+ },
+ {
+  "key": "peace",
+  "text": "Sam looks at the bottle a long time before taking it, turning it in the light to read the label. Then they set it between you on the table and pour two glasses. \"It's a start,\" they say."
+ },
+ {
+  "key": "goalhelp2:home:0",
+  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first of the night. As thanks Sam leans in. \"Here's something you can use,\" they say: \"A shipping delay has stranded a convoy of Luxury Goods on the way to Juno Commons, and buyers are getting anxious.\""
+ },
+ {
+  "key": "goalhelp2:home:1",
+  "text": "You tell them what you know, plainly."
+ },
+ {
+  "key": "goalhelp2:home:2",
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first of the night. In the quiet after, Sam asks a lot of questions about your routes and answers none about theirs."
+ },
+ {
+  "key": "goalhelp2:home:3",
+  "text": "Sam thanks you, and that is the end of it."
+ },
+ {
+  "key": "goalhelp2:family:0",
+  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first of the night. As thanks Sam leans in. \"Here's something you can use,\" they say: \"Word is that the governor of Earth is stockpiling Water for a party, and will pay well over the odds.\""
+ },
+ {
+  "key": "goalhelp2:family:1",
+  "text": "You tell them what you know, plainly."
+ },
+ {
+  "key": "goalhelp2:family:2",
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first of the night. In the quiet after, Sam is pleasant and asks small, exact things about ports and times, and gives you nothing."
+ },
+ {
+  "key": "goalhelp2:family:3",
+  "text": "Sam thanks you, and that is the end of it."
+ },
+ {
+  "key": "goalhelp2:job:0",
+  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first of the night. As thanks Sam leans in. \"Here's something you can use,\" they say: \"A strike ended on Juno Commons, and every dock in town is suddenly flooded with Water.\""
+ },
+ {
+  "key": "goalhelp2:job:1",
+  "text": "You tell them what you know, plainly."
+ },
+ {
+  "key": "goalhelp2:job:2",
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first of the night. In the quiet after, Sam is pleasant and asks small, exact things about ports and times, and gives you nothing."
+ },
+ {
+  "key": "goalhelp2:job:3",
+  "text": "Sam thanks you, and that is the end of it."
+ },
+ {
+  "key": "goalhelp2:fresh:0",
+  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first of the night. As thanks Sam leans in. \"Here's something you can use,\" they say: \"Warehouses on The Hollows are overflowing with Water. Sellers are dumping it cheap.\""
+ },
+ {
+  "key": "goalhelp2:fresh:1",
+  "text": "You tell them what you know, plainly."
+ },
+ {
+  "key": "goalhelp2:fresh:2",
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first of the night. In the quiet after, Sam asks a lot of questions about your routes and answers none about theirs."
+ },
+ {
+  "key": "goalhelp2:fresh:3",
+  "text": "Sam thanks you, and that is the end of it."
+ },
+ {
+  "key": "goalhelp2:research:0",
+  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first of the night. As thanks Sam leans in. \"Here's something you can use,\" they say: \"A ship carrying Medical Supplies to Ganymede was hijacked two weeks ago, and the shelves are getting bare.\""
+ },
+ {
+  "key": "goalhelp2:research:1",
+  "text": "You tell them what you know, plainly."
+ },
+ {
+  "key": "goalhelp2:research:2",
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first of the night. In the quiet after, Sam asks a lot of questions about your routes and answers none about theirs."
+ },
+ {
+  "key": "goalhelp2:research:3",
+  "text": "Sam thanks you, and that is the end of it."
+ },
+ {
+  "key": "goalhelp2:pilgrim:0",
+  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first of the night. As thanks Sam leans in. \"Here's something you can use,\" they say: \"A company on Ganymede has folded, and its whole stock of Medical Supplies is being sold off at auction.\""
+ },
+ {
+  "key": "goalhelp2:pilgrim:1",
+  "text": "You tell them what you know, plainly."
+ },
+ {
+  "key": "goalhelp2:pilgrim:2",
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first of the night. In the quiet after, Sam asks a lot of questions about your routes and answers none about theirs."
+ },
+ {
+  "key": "goalhelp2:pilgrim:3",
+  "text": "Sam thanks you, and that is the end of it."
+ },
+ {
+  "key": "goalhelp2:medical:0",
+  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first of the night. As thanks Sam leans in. \"Here's something you can use,\" they say: \"A disease scare on Ring Nine has everyone hoarding Food.\""
+ },
+ {
+  "key": "goalhelp2:medical:1",
+  "text": "You tell them what you know, plainly."
+ },
+ {
+  "key": "goalhelp2:medical:2",
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first of the night. In the quiet after, Sam is pleasant and asks small, exact things about ports and times, and gives you nothing."
+ },
+ {
+  "key": "goalhelp2:medical:3",
+  "text": "Sam thanks you, and that is the end of it."
+ },
+ {
+  "key": "label:drink",
+  "text": "Buy Sam a drink (20 cr)"
+ },
+ {
+  "key": "gate:drink",
+  "text": "You have bought them a drink already."
+ },
+ {
+  "key": "label:heard",
+  "text": "Ask what they have heard"
+ },
+ {
+  "key": "gate:heard",
+  "text": "You have done that already tonight."
+ },
+ {
+  "key": "label:passage",
+  "text": "Offer Sam passage"
+ },
+ {
+  "key": "gate:passage",
+  "text": "You have offered already."
+ },
+ {
+  "key": "label:cards",
+  "text": "Play Sam at cards (200 cr)"
+ },
+ {
+  "key": "gate:cards",
+  "text": "You have played already tonight."
+ },
+ {
+  "key": "label:work",
+  "text": "Ask Sam about their work"
+ },
+ {
+  "key": "gate:work",
+  "text": "You have done that already tonight."
+ },
+ {
+  "key": "label:place",
+  "text": "Ask Sam about this place"
+ },
+ {
+  "key": "gate:place",
+  "text": "You have done that already tonight."
+ },
+ {
+  "key": "label:quiet",
+  "text": "Sit with Sam and say nothing"
+ },
+ {
+  "key": "gate:quiet",
+  "text": "You have done that already tonight."
+ },
+ {
+  "key": "label:goal",
+  "text": "Ask about the way home"
+ },
+ {
+  "key": "gate:goal",
+  "text": "You have done that already tonight."
+ },
+ {
+  "key": "label:secret",
+  "text": "Ask Sam what is weighing on them"
+ },
+ {
+  "key": "gate:secret",
+  "text": "You have done that already tonight."
+ },
+ {
+  "key": "label:home",
+  "text": "Ask about Mars"
+ },
+ {
+  "key": "gate:home",
+  "text": "You have done that already tonight."
+ },
+ {
+  "key": "label:bless",
+  "text": "Ask for a blessing on the ship"
+ },
+ {
+  "key": "gate:bless",
+  "text": "You have done that already tonight."
+ },
+ {
+  "key": "label:fight",
+  "text": "Tell them what you think of their manners"
+ },
+ {
+  "key": "gate:fight",
+  "text": "You have done that already tonight."
+ },
+ {
+  "key": "label:peace",
+  "text": "Make peace (buy them a bottle, 300 cr)"
+ },
+ {
+  "key": "gate:peace",
+  "text": "You have made peace already tonight."
+ },
+ {
+  "key": "label:bless:owner",
+  "text": "Ask for a blessing on your ship"
  }
 ]

@@ -52,20 +52,20 @@ const GOAL_HELP = {
   medical: { ask: 'Ask what is wrong', text: '{n} presses a hand to their side, and says it is the reason for the trip: a specialist, a long way out.', gift: 'Pay toward the specialist (60 cr)', advice: 'Tell them where the medics are on the way', listen: 'Ask them to tell you about it' },
 };
 function helpScene(p, pat, ctx) {
-  const g = barLines('goal-help')[p.goal];
+  const g = barLines('goal-help')[p.goal], say = barSay('goal-help', p);
   const act = (kind, label, line) => ({ label, ...(kind === 'gift' ? gated(needCr(HELP_TASTE.gift.cost)) : {}), run() {
     const t = HELP_TASTE[kind], r = barWarm(p, t, kind === 'gift' ? `The captain helped me on my way (${GOALS[p.goal]}).` : kind === 'advice' ? 'The captain gave me good advice.' : 'The captain let me talk it through.');
     if (t.cost) ctx.st.credits -= t.cost;
     let extra = '';
-    if (kind === 'gift' && r.n >= 2) extra = ` As thanks ${p.first} leans in. "Here's something you can use," they say: "${addRumor()}"`;
-    if (kind === 'listen' && r.n >= 2 && p.secret) extra = ` In the quiet after, ${p.first} ${pick(barLines('secret-talk')[p.secret])}`;
+    if (kind === 'gift' && r.n >= 2) extra = ` ${say('thanks', { rumor: addRumor() })}`;
+    if (kind === 'listen' && r.n >= 2 && p.secret) extra = ` ${say('quiet', { slip: pick(barLines('secret-talk')[p.secret]) })}`;
     return `${line.replace(/\{n\}/g, p.first)} ${r.line}${extra}`.replace(/\s+/g, ' ').trim();
   } });
   return { title: `${ctx.bar}: ${p.first} ${p.last}`, text: barSays(g.text, p), choices: [
-    act('gift', g.gift, 'You put it on the table and push it across.'),
-    act('advice', g.advice, 'You tell them what you know, plainly.'),
-    act('listen', g.listen, 'You sit back, and ask, and for an hour that is all there is.'),
-    { label: 'Say you hope it goes well', run: () => `${p.first} thanks you, and that is the end of it.` },
+    act('gift', g.gift, say('gift.result')),
+    act('advice', g.advice, say('advice.result')),
+    act('listen', g.listen, say('listen.result')),
+    { label: say('close.label'), run: () => say('close.result') },
   ] };
 }
 
@@ -110,113 +110,97 @@ const SECRET_HELP = {
   },
 };
 function secretScene(p, pat, ctx) {
-  const d = barLines('secret-help')[p.secret];
+  const d = barLines('secret-help')[p.secret], say = barSay('secret-help', p);
   return { title: `${ctx.bar}: ${p.first} ${p.last}`, text: barSays(d.text, p), choices: [
     ...d.opts.map(({ label, cost, n, line }) => ({ label, ...gated(needCr(cost)), run() { ctx.st.credits -= cost; like(p, n, n > 0 ? `The captain stood by me when I told them my trouble (${p.secret}).` : null); return barSays(line, p); } })),
-    { label: 'Let it be', run: () => `You let it be, and the talk goes somewhere easier.` },
+    { label: say('close.label'), run: () => say('close.result') },
   ] };
 }
 
 // ---------- the pool ----------
 // w: how likely the person is to offer it (0 is never); must: always offered when it applies; make: the option itself.
 const topicSkill = p => { const h = hired(), g = workGroup(p.job); return h && ({ tech: 'engineer', service: ['gunner', 'pilot'] }[g] || []).includes(h.post) ? h.post : null; };
+// The words of each topic are in PEOPLE_LINES (peopletext.js) under `bar:<id>`, read through barSay (linetables.js) so the scene editor can change them: the button, the reason it is
+// shut, and the lines the topic ends on. A line the topic builds from the game (a tip, a line from the tables above, a name) is passed in as a word. What a topic does is here.
+// `sample` is a person the topic is about, for the editor's preview.
+const barSay = (topic, p, c) => (key, vars) => peopleSay(`bar:${topic}`, key, { first: p.first, last: p.last, home: p.home, ...vars });
 const BAR_TOPICS = [
-  { id: 'drink', w: () => 3, make: (p, pat, c) => ({ label: `Buy ${p.first} a drink (${DRINK} cr)`, ...gated(needCr(DRINK), notYet(() => pat.drank, 'You have bought them a drink already.')), run() {
+  { id: 'drink', sample: { traits: ['kind', 'brave'] }, w: () => 3, make: (p, pat, c) => { const say = barSay('drink', p, c); return ({ label: say('label', { cost: DRINK }), ...gated(needCr(DRINK), notYet(() => pat.drank, say('gate'))), run() {
     pat.drank = true; c.st.credits -= DRINK; met(pat);
     const r = barWarm(p, { loves: ['generous', 'drunk', 'greedy', 'kind'], hates: ['pious'] }, `The captain bought me a drink at ${c.bar}.`);
-    if (barHas(p, 'generous')) { c.st.credits += DRINK; return `${p.first} will not hear of it, and slides the credits back across the bar, and buys the next one too. ${r.line}`; }
+    if (barHas(p, 'generous')) { c.st.credits += DRINK; return say('generous', { react: r.line }); }
     if (p.secret && (barHas(p, 'talkative', 'drunk') || Math.random() < 0.3)) return `${p.first} ${pick(barLines('secret-talk')[p.secret])}`;
-    if (Math.random() < 0.5) return `${p.first} looks around and leans in. "Here's something you can use," they say, low and fast: "${addRumor()}" Then they sit back and finish their drink. ${r.line}`;
+    if (Math.random() < 0.5) return say('rumor', { rumor: addRumor(), react: r.line });
     return `${barSays(barTrait('drink', p, barLines('drink-talk')), p)} ${r.line}`.trim();
-  } }) },
-  { id: 'heard', w: p => (barHas(p, 'secretive') ? 1 : 3), make: (p, pat, c) => ({ label: 'Ask what they have heard', ...gated(notYet(() => pat.asked, 'You have done that already tonight.')), run() {
+  } }); } },
+  { id: 'heard', sample: { traits: ['talkative', 'kind'], goal: 'home' }, w: p => (barHas(p, 'secretive') ? 1 : 3), make: (p, pat, c) => { const say = barSay('heard', p, c); return ({ label: say('label'), ...gated(notYet(() => pat.asked, say('gate'))), run() {
     pat.asked = true; met(pat);
-    if (barHas(p, 'secretive') && p.opinion < OPINION.FRIEND) return `"Nothing worth repeating," ${p.first} says, and smiles. "And you? How long have you had the ship?"`;
+    if (barHas(p, 'secretive') && p.opinion < OPINION.FRIEND) return say('secretive');
     const aside = barSays(barLines('goal')[p.goal] || '', p), more = barHas(p, 'talkative', 'drunk', 'curious');
-    const heard = `${p.first} thinks about it, then says: "${addRumor()}"${more ? ` ${p.first} adds, before you can answer: "${addRumor()}"` : ''}`;
+    const heard = `${say('heard', { rumor: addRumor() })}${more ? ` ${say('more', { rumor: addRumor() })}` : ''}`;
     return aside ? `${aside} ${heard}` : heard;
-  } }) },
-  { id: 'passage', w: (p, pat) => (!hired() && (!pat.known || p.opinion >= 0) && p.goal !== 'fresh' ? 2 : 0), make: (p, pat) => ({ label: `Offer ${p.first} passage`, ...gated(notYet(() => pat.offered, 'You have offered already.'), needBerth), run() {
+  } }); } },
+  { id: 'passage', sample: { traits: ['kind', 'brave'] }, w: (p, pat) => (!hired() && (!pat.known || p.opinion >= 0) && p.goal !== 'fresh' ? 2 : 0), make: (p, pat, c) => { const say = barSay('passage', p, c); return ({ label: say('label'), ...gated(notYet(() => pat.offered, say('gate')), needBerth), run() {
     pat.offered = true; met(pat);
     const o = travelOffer(p);
-    if (!o) return `${p.first} counts on their fingers, then shakes their head. "Nowhere you can reach from here," they say. "Ask me again when you have a longer tank."`;
+    if (!o) return say('none');
     G.offers.unshift(o);
-    return `"${o.destPlanet}?" ${p.first} says. "That's where I need to be." They name a fare and shake on it with both hands. The job is on the mission board.`;
-  } }) },
-  { id: 'cards', w: p => (barHas(p, 'greedy', 'brave') ? 4 : barHas(p, 'pious') ? 1 : 2), make: (p, pat, c) => ({ label: `Play ${p.first} at cards (${CARDS} cr)`, ...gated(needCr(CARDS), notYet(() => pat.played, 'You have played already tonight.')), run() {
+    return say('set', { dest: o.destPlanet });
+  } }); } },
+  { id: 'cards', sample: { traits: ['greedy', 'brave'] }, w: p => (barHas(p, 'greedy', 'brave') ? 4 : barHas(p, 'pious') ? 1 : 2), make: (p, pat, c) => { const say = barSay('cards', p, c); return ({ label: say('label', { cr: CARDS }), ...gated(needCr(CARDS), notYet(() => pat.played, say('gate'))), run() {
     pat.played = true; met(pat);
     if (Math.random() < 0.5) {
       c.st.credits += CARDS;
       like(p, barHas(p, 'greedy', 'rude') ? -1 : barHas(p, 'brave') ? 1 : 0, 'The captain took my money at cards.');
-      return `${barSays(barTrait('win', p, barLines('card-win')), p, { cr: fmt(CARDS) })} ${barHas(p, 'rude') ? (`${p.first} stands up and says, in a level voice, that you cheated, ` +
-          `and the whole bar turns to look. You leave them to it.`) : pick([`${p.first} buys you a drink with your own money.`, `${p.first} shakes your hand and means it.`, `${p.first} tells the story of it to the next table, with you as the villain.`])}`;
+      return `${barSays(barTrait('win', p, barLines('card-win')), p, { cr: fmt(CARDS) })} ${barHas(p, 'rude') ? say('win.rude') : pick([say('win.end.0'), say('win.end.1'), say('win.end.2')])}`;
     }
     c.st.credits -= CARDS; like(p, 1, null);
-    return `${barSays(barTrait('lose', p, barLines('card-lose')), p, { cr: fmt(CARDS) })} By the end of the glass you are laughing.${barTone(pat, p)}`;
-  } }) },
-  { id: 'work', w: () => 3, make: (p, pat) => ({ label: `Ask ${p.first} about their work`, ...gated(notYet(() => pat.work, 'You have done that already tonight.')), run() {
+    return `${barSays(barTrait('lose', p, barLines('card-lose')), p, { cr: fmt(CARDS) })} ${say('lose.end')}${barTone(pat, p)}`;
+  } }); } },
+  { id: 'work', sample: { traits: ['kind', 'brave'] }, w: () => 3, make: (p, pat, c) => { const say = barSay('work', p, c); return ({ label: say('label'), ...gated(notYet(() => pat.work, say('gate'))), run() {
     pat.work = true; met(pat);
     const text = barSays(pick(barLines('work')[workGroup(p.job)]), p), post = topicSkill(p);
-    if (post) { gainSkill(post, 3); return `${text} You come away knowing something new about the ${POSTS[post].name.toLowerCase()}. (Experience gained.)`; }
-    if (workGroup(p.job) === 'hands') return `${text} Then ${p.first} tells you what they are hearing on the docks: "${addRumor()}"`;
+    if (post) { gainSkill(post, 3); return `${text} ${say('post', { post: POSTS[post].name.toLowerCase() })}`; }
+    if (workGroup(p.job) === 'hands') return `${text} ${say('hands', { rumor: addRumor() })}`;
     const r = barWarm(p, { loves: ['curious', 'talkative'], hates: [] }, 'The captain asked about my work and listened.');
     return `${text} ${r.line}`.trim();
-  } }) },
-  {
-    id: 'place',
-    w: () => 1.5,
-    make: (p, pat) => ({
-    label: `Ask ${p.first} about this place`,
-    ...gated(notYet(() => pat.place, 'You have done that already tonight.')),
-    run() { pat.place = true; met(pat); const r = barWarm(p, {
-    loves: [
-    'talkative',
-    'homesick',
-    'curious'
-  ],
-    hates: []
-  }, 'The captain asked about the place and listened.'); return `${barSays(pick(barLines('place')), p)} ${r.line}`.trim(); }
-  })
-  },
-  { id: 'quiet', w: p => (barHas(p, 'nervous', 'secretive', 'homesick', 'kind') ? 4 : 1.5), make: (p, pat) => ({ label: `Sit with ${p.first} and say nothing`, ...gated(notYet(() => pat.quiet, 'You have done that already tonight.')), run() {
+  } }); } },
+  { id: 'place', sample: { traits: ['talkative', 'kind'] }, w: () => 1.5, make: (p, pat, c) => { const say = barSay('place', p, c); return ({ label: say('label'), ...gated(notYet(() => pat.place, say('gate'))),
+    run() { pat.place = true; met(pat); const r = barWarm(p, { loves: ['talkative', 'homesick', 'curious'], hates: [] }, 'The captain asked about the place and listened.'); return `${barSays(pick(barLines('place')), p)} ${r.line}`.trim(); }
+  }); } },
+  { id: 'quiet', sample: { traits: ['nervous', 'kind'] }, w: p => (barHas(p, 'nervous', 'secretive', 'homesick', 'kind') ? 4 : 1.5), make: (p, pat, c) => { const say = barSay('quiet', p, c); return ({ label: say('label'), ...gated(notYet(() => pat.quiet, say('gate'))), run() {
     pat.quiet = true; met(pat);
     const r = barWarm(p, { loves: ['nervous', 'secretive', 'homesick', 'kind'], hates: ['talkative', 'drunk'] }, 'The captain sat with me and did not make me talk.');
     return `${barSays(barTrait('quiet', p, barLines('silence')), p)} ${r.line}`.trim();
-  } }) },
-  { id: 'goal', w: p => (GOAL_HELP[p.goal] ? 3 : 0), make: (p, pat, c) => ({ label: barLines('goal-help')[p.goal].ask, ...gated(notYet(() => pat.goal,
-    'You have done that already tonight.')), run() { pat.goal = true; met(pat); G.nextEvent = helpScene(p, pat, c);
-    return `You ask, and ${p.first} puts down the glass.`; } }) },
-  {
-    id: 'secret',
-    w: (p, pat) => (p.secret && SECRET_HELP[p.secret] && (pat.drank || p.opinion >= OPINION.CLOSE) ? 4 : 0),
-    make: (p, pat, c) => ({
-    label: `Ask ${p.first} what is weighing on them`,
-    ...gated(notYet(() => pat.troubled, 'You have done that already tonight.')),
-    run() { pat.troubled = true; met(pat); G.nextEvent = secretScene(p, pat, c); return `${p.first} looks at you, and takes their time deciding.`; }
-  })
-  },
-  { id: 'home', w: p => (barHas(p, 'homesick') ? 4 : 0), make: (p, pat) => ({ label: `Ask about ${p.home}`, ...gated(notYet(() => pat.home,
-    'You have done that already tonight.')), run() { pat.home = true; met(pat); like(p, 2, `The captain let me talk about ${p.home}.`);
-    return barSays(pick(barLines('home-talk')), p); } }) },
-  {
-    id: 'bless',
-    w: p => (barHas(p, 'pious') ? 4 : 0),
-    make: (p, pat) => ({
-    label: hired() ? 'Ask for a blessing on the ship' : 'Ask for a blessing on your ship',
-    ...gated(notYet(() => pat.blessed, 'You have done that already tonight.')),
+  } }); } },
+  { id: 'goal', sample: { traits: ['homesick', 'kind'], goal: 'home' }, w: p => (GOAL_HELP[p.goal] ? 3 : 0), make: (p, pat, c) => { const say = barSay('goal', p, c); return ({ label: barLines('goal-help')[p.goal].ask, ...gated(notYet(() => pat.goal, say('gate'))), run() {
+    pat.goal = true; met(pat); G.nextEvent = helpScene(p, pat, c);
+    return say('result');
+  } }); } },
+  { id: 'secret', sample: { traits: ['kind', 'brave'], secret: 'debt', opinion: OPINION.CLOSE }, w: (p, pat) => (p.secret && SECRET_HELP[p.secret] && (pat.drank || p.opinion >= OPINION.CLOSE) ? 4 : 0), make: (p, pat, c) => { const say = barSay('secret', p, c); return ({
+    label: say('label'),
+    ...gated(notYet(() => pat.troubled, say('gate'))),
+    run() { pat.troubled = true; met(pat); G.nextEvent = secretScene(p, pat, c); return say('result'); }
+  }); } },
+  { id: 'home', sample: { traits: ['homesick', 'kind'] }, w: p => (barHas(p, 'homesick') ? 4 : 0), make: (p, pat, c) => { const say = barSay('home', p, c); return ({ label: say('label'), ...gated(notYet(() => pat.home, say('gate'))), run() {
+    pat.home = true; met(pat); like(p, 2, `The captain let me talk about ${p.home}.`);
+    return barSays(pick(barLines('home-talk')), p);
+  } }); } },
+  { id: 'bless', sample: { traits: ['pious', 'kind'] }, w: p => (barHas(p, 'pious') ? 4 : 0), make: (p, pat, c) => { const say = barSay('bless', p, c); return ({
+    label: say(hired() ? 'label.hired' : 'label'),
+    ...gated(notYet(() => pat.blessed, say('gate'))),
     run() { pat.blessed = true; met(pat); like(p, 1, 'I blessed the captain\'s ship.'); return barSays(pick(barLines('bless')), p); }
-  })
-  },
-  { id: 'fight', w: (p, pat) => (barHas(p, 'rude') && !pat.known ? 3 : 0), make: (p, pat, c) => ({ label: 'Tell them what you think of their manners', ...gated(notYet(() => pat.fought, 'You have done that already tonight.')), run() {
+  }); } },
+  { id: 'fight', sample: { traits: ['rude', 'kind'] }, w: (p, pat) => (barHas(p, 'rude') && !pat.known ? 3 : 0), make: (p, pat, c) => { const say = barSay('fight', p, c); return ({ label: say('label'), ...gated(notYet(() => pat.fought, say('gate'))), run() {
     pat.fought = true; met(pat); like(p, -2, 'The captain started a fight with me.');
-    if (roleSkill('gunner') || Math.random() < 0.4) return `It is short and loud. ${roleSkill('gunner') ? `${roleName('gunner')} steps in and ` : ''}${p.first} ends up on the floor, and the whole bar cheers. Someone starts a chant. The bartender charges you for the stool anyway.`;
+    if (roleSkill('gunner') || Math.random() < 0.4) return say('win', { step: roleSkill('gunner') ? `${say('win.step', { gunner: roleName('gunner') })} ` : '' });
     c.st.credits = Math.max(0, c.st.credits - 150);
-    return 'It is short, and it does not go your way. There is a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 150 cr bill for the mirror. The bartender is standing over you with a wet cloth. "You were doing so well," the bartender says.';
-  } }) },
-  { id: 'peace', must: true, w: (p, pat) => (pat.known && p.opinion <= OPINION.GRUDGE ? 1 : 0), make: (p, pat, c) => ({ label: 'Make peace (buy them a bottle, 300 cr)', ...gated(needCr(300), notYet(() => pat.peace, 'You have made peace already tonight.')), run() {
+    return say('lose');
+  } }); } },
+  { id: 'peace', sample: { traits: ['kind', 'brave'], opinion: -3 }, must: true, w: (p, pat) => (pat.known && p.opinion <= OPINION.GRUDGE ? 1 : 0), make: (p, pat, c) => { const say = barSay('peace', p, c); return ({ label: say('label'), ...gated(needCr(300), notYet(() => pat.peace, say('gate'))), run() {
     pat.peace = true; c.st.credits -= 300; like(p, 3, 'The captain bought me a bottle and apologized.');
-    return `${p.first} looks at the bottle a long time before taking it, turning it in the light to read the label. Then they set it between you on the table and pour two glasses. "It's a start," they say.`;
-  } }) },
+    return say('result');
+  } }); } },
 ];
 
 // Three topics for this person, tonight: by their weights, less likely if you went over it with them lately or it was offered last

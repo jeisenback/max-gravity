@@ -44,7 +44,7 @@ test('the converted scenes are data rows of the registry, and the rest are code 
     const row = id => SceneIndex.rows.find(x => x.id === id);
     return { ansel: ['kind', 'registry'].map(k => row('cast:ansel:intro')[k]), closed: ['kind', 'registry'].map(k => row('cast:cato:late:closed')[k]), ilsa: ['kind', 'registry'].map(k => row('cast:ruben:mid1')[k]),
       effects: row('cast:ansel:intro').choices[0].effects, edit: row('cast:ines:pivot').edit.choices.map(c => c.effects), goodbye: row('captain:hester:goodbye').registry, signon: row('scene:sign-on').registry,
-      storylets: SceneIndex.rows.filter(x => x.kind === 'data' && !x.registry).length, dataRegistry: SceneIndex.rows.filter(x => x.kind === 'data' && x.registry && !/^(lines|people):/.test(x.id)).length };  // the hired chapter's scenes; the line tables and the passenger events are counted in their own tests (#457)
+      storylets: SceneIndex.rows.filter(x => x.kind === 'data' && !x.registry).length, dataRegistry: SceneIndex.rows.filter(x => x.kind === 'data' && x.registry && !/^(lines|people|bar):/.test(x.id)).length };  // the hired chapter's scenes; the line tables and the passenger events are counted in their own tests (#457)
   });
   assert.deepEqual(r.ansel, ['data', true]);
   assert.deepEqual(r.closed, ['data', true]);
@@ -379,6 +379,32 @@ test('the passenger and crew events are rows with a field for every line, the li
     const f = await play();
     const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.event.text, G.dialog.choices.map(c => c.label)]));
     assert.ok(seen.includes(`Typed ${id}.`), `${id} plays the typed line: ${seen.slice(0, 200)}`);
+  }
+});
+
+test('the bar topics are rows with a field for every line, and each plays at a bar table with a person it is about (#457)', async () => {
+  await reload(); await select('bar:drink');
+  const r = await page.evaluate(() => {
+    const rows = SceneIndex.rows.filter(x => x.id.startsWith('bar:'));
+    return { ids: rows.map(x => x.id), shape: rows.every(x => x.kind === 'data' && x.noTitle && x.where === 'port'), drink: Object.keys(SceneIndex.rows.find(x => x.id === 'bar:drink').parts) };
+  });
+  assert.equal(r.ids.length, 15, 'thirteen topics and the two help scenes');
+  assert.ok(r.shape, 'each is lines, at a port');
+  assert.deepEqual(r.drink, ['label', 'gate', 'generous', 'rumor']);
+  assert.equal(await page.locator('#detail textarea[data-path^="part."]').count(), 4);
+  for (const id of ['bar:drink', 'bar:cards', 'bar:bless', 'bar:fight']) {
+    await select(id);
+    await page.fill('textarea[data-path="part.label"]', `Typed ${id}.`);
+    const f = await play();
+    const seen = await f.evaluate(() => JSON.stringify(G.dialog.choices.map(c => c.label)));
+    assert.ok(seen.includes(`Typed ${id}.`), `${id} plays the typed button: ${seen.slice(0, 200)}`);
+  }
+  for (const id of ['bar:goal-help', 'bar:secret-help']) {
+    await select(id);
+    await page.fill('textarea[data-path="part.close.label"]', `Typed ${id}.`);
+    const f = await play();
+    const seen = await f.evaluate(() => JSON.stringify(G.dialog.choices.map(c => c.label)));
+    assert.ok(seen.includes(`Typed ${id}.`), `${id} plays the typed closing button: ${seen.slice(0, 200)}`);
   }
 });
 
