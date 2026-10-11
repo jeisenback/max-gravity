@@ -447,41 +447,33 @@ function hiredEvent(group) {
 const mates = () => procedural().map(f => f.p);
 const postOfRole = role => Object.keys(POSTS).find(k => POSTS[k].role === role);
 const shadowable = () => mates().filter(m => postOfRole(m.role) && postOfRole(m.role) !== hired().post);
-const learnAt = (post, n) => { gainSkill(post, n); return ` (+${n} experience at the ${POSTS[post].name.toLowerCase()} post.)`; };
-const castDowntime = (key, label, post, text) => ({
-  cast: true, label, can: () => castKeys().includes(key),
-  run() { castLike(key, 1, 'We spent some downtime together.'); return text(castPerson(key)) + learnAt(post, 3); },
+const downSay = (key, vars) => sceneSay('scene:downtime', key, vars);  // the words of these are the lines of scene:downtime (hiredscenes.js)
+const learnAt = (post, n) => { gainSkill(post, n); return ` ${downSay('learn', { n, post: POSTS[post].name.toLowerCase() })}`; };
+const castDowntime = (key, post) => ({
+  cast: true, get label() { return downSay(`${key}.label`); }, can: () => castKeys().includes(key),
+  run() { castLike(key, 1, downSay('cast.memory')); return downSay(`${key}.result`) + learnAt(post, 3); },
 });
+const downtime = (key, can, run) => ({ get label() { return downSay(`${key}.label`); }, can, run });
 
 const HAND_DOWNTIME = [
-  { label: 'Ask the captain for advice', can: () => !!hired(),
-    run() { const cap = person(hired().captain); like(cap, 1, 'You asked me for advice.'); return (`You find Captain ${cap.last} in the galley, and ` +
-        `ask how the captain would do your job, and the captain tells you, at length and with surprising warmth, what went wrong at your ` +
-        `age.${learnAt(hired().post, 2)}`); } },
-  { label: 'Shadow a shipmate at their post', can: () => !!hired() && shadowable().length > 0,
-    run() { const m = pick(shadowable()), post = postOfRole(m.role); like(m, 1, 'You spent a watch at my post to learn it.'); return (
-        `You spend a watch at ${m.first}'s elbow, at the ${POSTS[post].name.toLowerCase()}, asking the questions a beginner asks, and ${m.first} ` +
-        `answers every one.${learnAt(post, 3)}`); } },
-  { label: 'Mend a shipmate\'s gear for pay', can: () => !!hired() && mates().length > 0,
-    run() { const m = pick(mates()), n = randInt(3, 6) * 10; G.state.credits += n; like(m, 1, 'You mended my gear and would not take too much.'); return (
-        `You spend the watch re-seating ${m.first}'s suit seals and re-soldering a handlamp, and ${m.first} pays you ${fmt(n)} cr and says it is the ` +
-        `best job anyone has done on the ship.`); } },
-  { label: 'Stand a spare watch for the captain', can: () => !!hired(),
-    run() { const cap = person(hired().captain); G.state.credits += 40; like(cap, 1, 'You stood a spare watch for me.'); return (
-        `You stand a watch the captain would otherwise have stood, and ${fmt(40)} cr arrives in your account with no note attached. The captain's ` +
-        `door is open when you pass.${learnAt(hired().post, 1)}`); } },
-  { label: 'Teach a shipmate what you know', can: () => !!hired() && mates().length > 0,
-    run() { const m = pick(mates()); like(m, 2, 'You spent a watch teaching me your post.'); return (`You spend a watch showing ${m.first} ` +
-        `the ${POSTS[hired().post].name.toLowerCase()}, from the bottom, and teaching it turns out to be the best way to find the gaps in your own ` +
-        `understanding.${learnAt(hired().post, 1)}`); } },
-  { label: 'Swap stories in the galley', can: () => !!hired() && mates().length > 0,
-    run() { for (const m of mates()) like(m, 1, 'We swapped stories in the galley.'); return 'You sit in the galley until the small hours, and everybody has a story, and somebody has a better one. By the end, nobody is a stranger.'; } },
-  castDowntime('ines', 'Fly a sim with Ines', 'pilot', c => `Ines puts you on the second seat of the sim and runs you through a bad approach until it is a good one, correcting without being asked, in the voice of a woman who has waited a long time to be asked.`),
-  castDowntime('tomas', 'Learn the loop from Tomas', 'engineer', c => 'Tomas takes you down the coolant loop on a slow watch, valve by valve, talking to the pipes as he goes, and explains what each of them is for, and what each is telling him.'),
-  castDowntime('yelena', 'Spar on the range with Yelena', 'gunner', c => 'Yelena runs the range sim and you take the second console, and she explains, between rounds and with great impatience, where a gun is going to be, and why you were looking at where it was.'),
-  castDowntime('ruben', 'Sort intercepts with Ruben', 'comms', c => 'Ruben hands you a thermos and half a stack of intercepts, and the two of you work through them until the piles marked TRUE and FALSE and LOVELY are all neat, and you have learned how to tell them apart.'),
-  castDowntime('bexa', 'Fly a tug approach with Bexa', 'pilot', c => 'Bexa runs the sim as a salvage approach, slowly, on a ship with no power and no cooperation, and talks you through each thing she would check before she put a line across.'),
-  castDowntime('pax', 'Run the range with Pax', 'gunner', c => 'Pax sets up the range sim, and the two of you take it in turns, calling the numbers to each other, and Pax, to their evident surprise, relaxes about halfway through.'),
+  downtime('advice', () => !!hired(),
+    () => { const cap = person(hired().captain); like(cap, 1, downSay('advice.memory')); return downSay('advice.result', { cap: cap.last }) + learnAt(hired().post, 2); }),
+  downtime('shadow', () => !!hired() && shadowable().length > 0,
+    () => { const m = pick(shadowable()), post = postOfRole(m.role); like(m, 1, downSay('shadow.memory')); return downSay('shadow.result', { first: m.first, post: POSTS[post].name.toLowerCase() }) + learnAt(post, 3); }),
+  downtime('mend', () => !!hired() && mates().length > 0,
+    () => { const m = pick(mates()), n = randInt(3, 6) * 10; G.state.credits += n; like(m, 1, downSay('mend.memory')); return downSay('mend.result', { first: m.first, n: fmt(n) }); }),
+  downtime('spare', () => !!hired(),
+    () => { const cap = person(hired().captain); G.state.credits += 40; like(cap, 1, downSay('spare.memory')); return downSay('spare.result', { n: fmt(40) }) + learnAt(hired().post, 1); }),
+  downtime('teach', () => !!hired() && mates().length > 0,
+    () => { const m = pick(mates()); like(m, 2, downSay('teach.memory')); return downSay('teach.result', { first: m.first, post: POSTS[hired().post].name.toLowerCase() }) + learnAt(hired().post, 1); }),
+  downtime('stories', () => !!hired() && mates().length > 0,
+    () => { for (const m of mates()) like(m, 1, downSay('stories.memory')); return downSay('stories.result'); }),
+  castDowntime('ines', 'pilot'),
+  castDowntime('tomas', 'engineer'),
+  castDowntime('yelena', 'gunner'),
+  castDowntime('ruben', 'comms'),
+  castDowntime('bexa', 'pilot'),
+  castDowntime('pax', 'gunner'),
 ];
 
 function handDowntime() {

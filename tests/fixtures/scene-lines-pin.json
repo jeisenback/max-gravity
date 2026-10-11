@@ -2006,6 +2006,557 @@
   ]
  },
  {
+  "id": "downtime:hand",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.1,
+    "text": "You find Captain Vance in the galley, and ask how the captain would do your job, and the captain tells you, at length and with surprising warmth, what went wrong at your age. (+2 experience at the gunner post.)",
+    "mem": [
+     "9 Jul 2214: You asked me for advice."
+    ],
+    "fx": {
+     "p1": 1
+    },
+    "x": {
+     "gunner": 14
+    },
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.9,
+    "text": "You find Captain Vance in the galley, and ask how the captain would do your job, and the captain tells you, at length and with surprising warmth, what went wrong at your age. (+2 experience at the gunner post.)",
+    "mem": [
+     "9 Jul 2214: You asked me for advice."
+    ],
+    "fx": {
+     "p1": 1
+    },
+    "x": {
+     "gunner": 14
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.1,
+    "text": "You spend a watch at Mate0's elbow, at the engineer, asking the questions a beginner asks, and Mate0 answers every one. (+3 experience at the engineer post.)",
+    "mem": [
+     "9 Jul 2214: You spent a watch at my post to learn it."
+    ],
+    "fx": {
+     "p10": 1
+    },
+    "x": {
+     "gunner": 12,
+     "engineer": 3
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.9,
+    "text": "You spend a watch at Mate3's elbow, at the comms, asking the questions a beginner asks, and Mate3 answers every one. (+3 experience at the comms post.)",
+    "mem": [
+     "9 Jul 2214: You spent a watch at my post to learn it."
+    ],
+    "fx": {
+     "p13": 1
+    },
+    "x": {
+     "gunner": 12,
+     "comms": 3
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.1,
+    "text": "You spend the watch re-seating Mate0's suit seals and re-soldering a handlamp, and Mate0 pays you 60 cr and says it is the best job anyone has done on the ship.",
+    "mem": [
+     "9 Jul 2214: You mended my gear and would not take too much."
+    ],
+    "fx": {
+     "credits": 60,
+     "p10": 1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.9,
+    "text": "You spend the watch re-seating Mate3's suit seals and re-soldering a handlamp, and Mate3 pays you 40 cr and says it is the best job anyone has done on the ship.",
+    "mem": [
+     "9 Jul 2214: You mended my gear and would not take too much."
+    ],
+    "fx": {
+     "credits": 40,
+     "p13": 1
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.1,
+    "text": "You stand a watch the captain would otherwise have stood, and 40 cr arrives in your account with no note attached. The captain's door is open when you pass. (+1 experience at the gunner post.)",
+    "mem": [
+     "9 Jul 2214: You stood a spare watch for me."
+    ],
+    "fx": {
+     "credits": 40,
+     "p1": 1
+    },
+    "x": {
+     "gunner": 13
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.9,
+    "text": "You stand a watch the captain would otherwise have stood, and 40 cr arrives in your account with no note attached. The captain's door is open when you pass. (+1 experience at the gunner post.)",
+    "mem": [
+     "9 Jul 2214: You stood a spare watch for me."
+    ],
+    "fx": {
+     "credits": 40,
+     "p1": 1
+    },
+    "x": {
+     "gunner": 13
+    },
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.1,
+    "text": "You spend a watch showing Mate0 the gunner, from the bottom, and teaching it turns out to be the best way to find the gaps in your own understanding. (+1 experience at the gunner post.)",
+    "mem": [
+     "9 Jul 2214: You spent a watch teaching me your post."
+    ],
+    "fx": {
+     "p10": 2
+    },
+    "x": {
+     "gunner": 13
+    },
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.9,
+    "text": "You spend a watch showing Mate3 the gunner, from the bottom, and teaching it turns out to be the best way to find the gaps in your own understanding. (+1 experience at the gunner post.)",
+    "mem": [
+     "9 Jul 2214: You spent a watch teaching me your post."
+    ],
+    "fx": {
+     "p13": 2
+    },
+    "x": {
+     "gunner": 13
+    },
+    "next": null
+   },
+   {
+    "i": 5,
+    "roll": 0.1,
+    "text": "You sit in the galley until the small hours, and everybody has a story, and somebody has a better one. By the end, nobody is a stranger.",
+    "mem": [
+     "9 Jul 2214: We swapped stories in the galley.",
+     "9 Jul 2214: We swapped stories in the galley.",
+     "9 Jul 2214: We swapped stories in the galley.",
+     "9 Jul 2214: We swapped stories in the galley."
+    ],
+    "fx": {
+     "p10": 1,
+     "p11": 1,
+     "p12": 1,
+     "p13": 1
+    },
+    "next": null
+   },
+   {
+    "i": 5,
+    "roll": 0.9,
+    "text": "You sit in the galley until the small hours, and everybody has a story, and somebody has a better one. By the end, nobody is a stranger.",
+    "mem": [
+     "9 Jul 2214: We swapped stories in the galley.",
+     "9 Jul 2214: We swapped stories in the galley.",
+     "9 Jul 2214: We swapped stories in the galley.",
+     "9 Jul 2214: We swapped stories in the galley."
+    ],
+    "fx": {
+     "p10": 1,
+     "p11": 1,
+     "p12": 1,
+     "p13": 1
+    },
+    "next": null
+   },
+   {
+    "i": 6,
+    "roll": 0.1,
+    "text": "Ines puts you on the second seat of the sim and runs you through a bad approach until it is a good one, correcting without being asked, in the voice of a woman who has waited a long time to be asked. (+3 experience at the pilot post.)",
+    "mem": [
+     "9 Jul 2214: We spent some downtime together."
+    ],
+    "fx": {
+     "c:ines": 1
+    },
+    "x": {
+     "gunner": 12,
+     "pilot": 3
+    },
+    "next": null
+   },
+   {
+    "i": 6,
+    "roll": 0.9,
+    "text": "Ines puts you on the second seat of the sim and runs you through a bad approach until it is a good one, correcting without being asked, in the voice of a woman who has waited a long time to be asked. (+3 experience at the pilot post.)",
+    "mem": [
+     "9 Jul 2214: We spent some downtime together."
+    ],
+    "fx": {
+     "c:ines": 1
+    },
+    "x": {
+     "gunner": 12,
+     "pilot": 3
+    },
+    "next": null
+   },
+   {
+    "i": 7,
+    "roll": 0.1,
+    "text": "Tomas takes you down the coolant loop on a slow watch, valve by valve, talking to the pipes as he goes, and explains what each of them is for, and what each is telling him. (+3 experience at the engineer post.)",
+    "mem": [
+     "9 Jul 2214: We spent some downtime together."
+    ],
+    "fx": {
+     "c:tomas": 1
+    },
+    "x": {
+     "gunner": 12,
+     "engineer": 3
+    },
+    "next": null
+   },
+   {
+    "i": 7,
+    "roll": 0.9,
+    "text": "Tomas takes you down the coolant loop on a slow watch, valve by valve, talking to the pipes as he goes, and explains what each of them is for, and what each is telling him. (+3 experience at the engineer post.)",
+    "mem": [
+     "9 Jul 2214: We spent some downtime together."
+    ],
+    "fx": {
+     "c:tomas": 1
+    },
+    "x": {
+     "gunner": 12,
+     "engineer": 3
+    },
+    "next": null
+   },
+   {
+    "i": 8,
+    "roll": 0.1,
+    "text": "Yelena runs the range sim and you take the second console, and she explains, between rounds and with great impatience, where a gun is going to be, and why you were looking at where it was. (+3 experience at the gunner post.)",
+    "mem": [
+     "9 Jul 2214: We spent some downtime together."
+    ],
+    "fx": {
+     "c:yelena": 1
+    },
+    "x": {
+     "gunner": 15
+    },
+    "next": null
+   },
+   {
+    "i": 8,
+    "roll": 0.9,
+    "text": "Yelena runs the range sim and you take the second console, and she explains, between rounds and with great impatience, where a gun is going to be, and why you were looking at where it was. (+3 experience at the gunner post.)",
+    "mem": [
+     "9 Jul 2214: We spent some downtime together."
+    ],
+    "fx": {
+     "c:yelena": 1
+    },
+    "x": {
+     "gunner": 15
+    },
+    "next": null
+   },
+   {
+    "i": 9,
+    "roll": 0.1,
+    "text": "Ruben hands you a thermos and half a stack of intercepts, and the two of you work through them until the piles marked TRUE and FALSE and LOVELY are all neat, and you have learned how to tell them apart. (+3 experience at the comms post.)",
+    "mem": [
+     "9 Jul 2214: We spent some downtime together."
+    ],
+    "fx": {
+     "c:ruben": 1
+    },
+    "x": {
+     "gunner": 12,
+     "comms": 3
+    },
+    "next": null
+   },
+   {
+    "i": 9,
+    "roll": 0.9,
+    "text": "Ruben hands you a thermos and half a stack of intercepts, and the two of you work through them until the piles marked TRUE and FALSE and LOVELY are all neat, and you have learned how to tell them apart. (+3 experience at the comms post.)",
+    "mem": [
+     "9 Jul 2214: We spent some downtime together."
+    ],
+    "fx": {
+     "c:ruben": 1
+    },
+    "x": {
+     "gunner": 12,
+     "comms": 3
+    },
+    "next": null
+   },
+   {
+    "i": 10,
+    "roll": 0.1,
+    "text": "Bexa runs the sim as a salvage approach, slowly, on a ship with no power and no cooperation, and talks you through each thing she would check before she put a line across. (+3 experience at the pilot post.)",
+    "mem": [
+     "9 Jul 2214: We spent some downtime together."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "x": {
+     "gunner": 12,
+     "pilot": 3
+    },
+    "next": null
+   },
+   {
+    "i": 10,
+    "roll": 0.9,
+    "text": "Bexa runs the sim as a salvage approach, slowly, on a ship with no power and no cooperation, and talks you through each thing she would check before she put a line across. (+3 experience at the pilot post.)",
+    "mem": [
+     "9 Jul 2214: We spent some downtime together."
+    ],
+    "fx": {
+     "c:bexa": 1
+    },
+    "x": {
+     "gunner": 12,
+     "pilot": 3
+    },
+    "next": null
+   },
+   {
+    "i": 11,
+    "roll": 0.1,
+    "text": "Pax sets up the range sim, and the two of you take it in turns, calling the numbers to each other, and Pax, to their evident surprise, relaxes about halfway through. (+3 experience at the gunner post.)",
+    "mem": [
+     "9 Jul 2214: We spent some downtime together."
+    ],
+    "fx": {
+     "c:pax": 1
+    },
+    "x": {
+     "gunner": 15
+    },
+    "next": null
+   },
+   {
+    "i": 11,
+    "roll": 0.9,
+    "text": "Pax sets up the range sim, and the two of you take it in turns, calling the numbers to each other, and Pax, to their evident surprise, relaxes about halfway through. (+3 experience at the gunner post.)",
+    "mem": [
+     "9 Jul 2214: We spent some downtime together."
+    ],
+    "fx": {
+     "c:pax": 1
+    },
+    "x": {
+     "gunner": 15
+    },
+    "next": null
+   }
+  ],
+  "title": "Downtime",
+  "text": "",
+  "labels": [
+   "Ask the captain for advice",
+   "Shadow a shipmate at their post",
+   "Mend a shipmate's gear for pay",
+   "Stand a spare watch for the captain",
+   "Teach a shipmate what you know",
+   "Swap stories in the galley",
+   "Fly a sim with Ines",
+   "Learn the loop from Tomas",
+   "Spar on the range with Yelena",
+   "Sort intercepts with Ruben",
+   "Fly a tug approach with Bexa",
+   "Run the range with Pax"
+  ]
+ },
+ {
+  "id": "ties:reacts:Arcology Compact:5",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "mem": [
+     "9 Jul 2214: You stood with the Compact.",
+     "9 Jul 2214: You stood with the Compact.",
+     "9 Jul 2214: You stood with the Compact.",
+     "9 Jul 2214: You stood with the Compact.",
+     "9 Jul 2214: You stood with the Compact.",
+     "9 Jul 2214: You stood with the Compact.",
+     "9 Jul 2214: You stood with the Compact."
+    ],
+    "fx": {
+     "p10": 1,
+     "p11": -1,
+     "p13": 1,
+     "p15": 1,
+     "p16": -1,
+     "p17": 1,
+     "p19": -1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "ties:reacts:Arcology Compact:-5",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "mem": [
+     "9 Jul 2214: You set yourself against the Compact.",
+     "9 Jul 2214: You set yourself against the Compact.",
+     "9 Jul 2214: You set yourself against the Compact.",
+     "9 Jul 2214: You set yourself against the Compact.",
+     "9 Jul 2214: You set yourself against the Compact.",
+     "9 Jul 2214: You set yourself against the Compact.",
+     "9 Jul 2214: You set yourself against the Compact."
+    ],
+    "fx": {
+     "p10": -1,
+     "p11": 1,
+     "p13": -1,
+     "p15": -1,
+     "p16": 1,
+     "p17": -1,
+     "p19": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "ties:reacts:Dome Concord:12",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "mem": [
+     "9 Jul 2214: You stood with the Concord.",
+     "9 Jul 2214: You stood with the Concord.",
+     "9 Jul 2214: You stood with the Concord.",
+     "9 Jul 2214: You stood with the Concord.",
+     "9 Jul 2214: You stood with the Concord.",
+     "9 Jul 2214: You stood with the Concord.",
+     "9 Jul 2214: You stood with the Concord.",
+     "9 Jul 2214: You stood with the Concord."
+    ],
+    "fx": {
+     "p11": 2,
+     "p12": 2,
+     "p14": 2,
+     "p15": -2,
+     "p16": -2,
+     "p17": 2,
+     "p18": -2,
+     "p19": -2
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "ties:reacts:Dome Concord:-12",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "mem": [
+     "9 Jul 2214: You set yourself against the Concord.",
+     "9 Jul 2214: You set yourself against the Concord.",
+     "9 Jul 2214: You set yourself against the Concord.",
+     "9 Jul 2214: You set yourself against the Concord.",
+     "9 Jul 2214: You set yourself against the Concord.",
+     "9 Jul 2214: You set yourself against the Concord.",
+     "9 Jul 2214: You set yourself against the Concord.",
+     "9 Jul 2214: You set yourself against the Concord."
+    ],
+    "fx": {
+     "p11": -2,
+     "p12": -2,
+     "p14": -2,
+     "p15": 2,
+     "p16": 2,
+     "p17": -2,
+     "p18": 2,
+     "p19": 2
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "ties:reacts:Arcology Compact:2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
   "id": "scene:yard-office:used:gunner:un",
   "plays": [
    {

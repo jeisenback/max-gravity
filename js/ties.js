@@ -62,12 +62,12 @@ function factionReason(a, b) {
 // What you do with a faction changes what the crew think of you, by what each of them thinks of it.
 function crewReacts(gov, amount) {
   if (!amount || Math.abs(amount) < 3 || !G.state.crew) return;
-  const n = Math.abs(amount) >= 10 ? 2 : 1, deed = amount > 0 ? `stood with ${shortFaction(gov)}` : `set yourself against ${shortFaction(gov)}`;
+  const n = Math.abs(amount) >= 10 ? 2 : 1, deed = sceneSay('scene:customs', amount > 0 ? 'reacts.for.memory' : 'reacts.against.memory', { faction: shortFaction(gov) });
   for (const id of G.state.crew) {
     const p = person(id);
     if (!p || !p.memories) continue;
     const r = tiesOf(p).regard[gov];
-    if (r && Math.abs(r) >= 1) like(p, Math.sign(amount) * Math.sign(r) * n, `You ${deed}.`);
+    if (r && Math.abs(r) >= 1) like(p, Math.sign(amount) * Math.sign(r) * n, deed);
   }
 }
 

@@ -20,7 +20,7 @@ const playScenes = () => {
   const gained = lens => Object.values(G.state.people).flatMap(p => (p.memories || []).slice(lens[p.id] === undefined ? 0 : lens[p.id]));  // the memories a choice leaves
   const look = ev => (ev ? { title: ev.title, text: ev.text, labels: ev.choices.map(c => String(c.label)) } : null);
   // One case: `make` builds the scene (in a game `opts` started); each choice not in `skip` is played on a copy of that game's state, once for each of the rolls.
-  const run = (id, opts, make, { rolls = [0.5], skip = [], prep = null } = {}) => {
+  const run = (id, opts, make, { rolls = [0.5], skip = [], prep = null, extra = null } = {}) => {
     if (window.__only && !new RegExp(window.__only).test(id)) return;
     const rec = { id, plays: [] };
     try {
@@ -30,11 +30,11 @@ const playScenes = () => {
       for (let i = 0; i < ev.choices.length; i++) {
         if (skip.includes(i)) continue;
         for (const roll of rolls) {
-          again(); const e2 = make(); G.nextEvent = null; const lens = memLens(), before = standing();
+          again(); const e2 = make(); G.nextEvent = null; const lens = memLens(), before = standing(), x0 = extra ? JSON.stringify(extra()) : null;
           seq([roll]);
-          const text = e2.choices[i].run(); const mem = gained(lens), fx = moved(before, standing());
+          const text = e2.choices[i].run(); const mem = gained(lens), fx = moved(before, standing()), x1 = extra ? JSON.stringify(extra()) : null;
           const next = G.nextEvent; G.nextEvent = null;
-          const play = { i, roll, text: text === null || text === undefined ? null : String(text), ...(mem.length ? { mem } : {}), ...(Object.keys(fx).length ? { fx } : {}), next: look(next) };
+          const play = { i, roll, text: text === null || text === undefined ? null : String(text), ...(mem.length ? { mem } : {}), ...(Object.keys(fx).length ? { fx } : {}), ...(x1 !== x0 ? { x: JSON.parse(x1) } : {}), next: look(next) };
           if (next) {  // a scene queued by the choice: its own choices, once for each roll
             play.nextPlays = [];
             for (let j = 0; j < next.choices.length; j++) for (const r2 of rolls) {
@@ -117,6 +117,13 @@ const playScenes = () => {
   }
   window.tiesOf = realTies; window.youTies = realYou; window.factionState = realWar;
 
+  // ---------- the downtime a hired hand can add, and what the crew make of what you do with a faction ----------
+  const crewOf = n => { for (let i = 0; i < n; i++) { const c = makeCrewCandidate(G.state.systemId); Object.assign(c, { first: `Mate${i}`, last: 'Vale', role: ['engineer', 'pilot', 'comms', 'slicer'][i % 4], opinion: 0 }); registerPerson(c); G.state.crew.push(c.id); } };
+  run('downtime:hand', {}, () => ({ title: 'Downtime', text: '', choices: HAND_DOWNTIME.map(d => ({ label: d.label, run: d.run })) }), { rolls: [0.1, 0.9], prep() { G.state.crew = []; crewOf(4); }, extra: () => hired().skill });
+  const GOVT = FACTIONS.find(f => f !== 'Pirate'), GOVT2 = FACTIONS.find(f => f !== 'Pirate' && f !== GOVT);
+  for (const [gov, amount] of [[GOVT, 5], [GOVT, -5], [GOVT2, 12], [GOVT2, -12], [GOVT, 2]]) {
+    run(`ties:reacts:${gov}:${amount}`, {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { crewReacts(gov, amount); return ''; } }] }), { prep() { G.state.crew = []; crewOf(10); } });
+  }
   // ---------- the yard office ----------
   for (const [ship, post, trusted, skilled] of [['used', 'gunner', false, false], ['used', 'engineer', true, true], ['lightfreighter', 'gunner', true, false], ['lightfreighter', 'pilot', false, true]]) {
     run(`scene:yard-office:${ship}:${post}:${trusted ? 't' : 'u'}${skilled ? 's' : 'n'}`, { post, credits: 60000 }, () => {
