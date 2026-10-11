@@ -2909,6 +2909,163 @@
   ]
  },
  {
+  "id": "bar:round",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Buy a round for the house (250 cr) | You buy a round for the house. The room raises a glass to your ship, and someone at the bar tells you: \"A big contract on Pallas Refinery has swallowed the whole local supply of Food, and the bidding has gone wild.\" | You bought a round",
+    "mem": [
+     "9 Jul 2214: The captain bought a round at The Warren.",
+     "9 Jul 2214: The captain bought a round at The Warren.",
+     "9 Jul 2214: The captain bought a round at The Warren.",
+     "9 Jul 2214: The captain bought a round at The Warren."
+    ],
+    "fx": {
+     "credits": -250,
+     "p13": 1,
+     "p14": 1,
+     "p15": 1,
+     "p16": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "bar:round-poor",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "Buy a round for the house (250 cr)",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "cast:join:ines",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "They come aboard.",
+    "mem": [
+     "9 Jul 2214: I signed on with the Iron Anvil."
+    ],
+    "fx": {
+     "c:ines": 2
+    },
+    "x": [
+     {
+      "day": 31,
+      "text": "Ines Ferreira came aboard as a pilot."
+     }
+    ],
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "cast:join:tomas",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "They come aboard.",
+    "mem": [
+     "9 Jul 2214: I signed on with the Iron Anvil."
+    ],
+    "fx": {
+     "c:tomas": 2
+    },
+    "x": [
+     {
+      "day": 31,
+      "text": "Tomas Achebe came aboard as an engineer."
+     }
+    ],
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "cast:join:yelena",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "They come aboard.",
+    "mem": [
+     "9 Jul 2214: I signed on with the Iron Anvil."
+    ],
+    "fx": {
+     "c:yelena": 2
+    },
+    "x": [
+     {
+      "day": 31,
+      "text": "Yelena Quint came aboard as a gunner."
+     }
+    ],
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "cast:join:ruben",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "They come aboard.",
+    "mem": [
+     "9 Jul 2214: I signed on with the Iron Anvil."
+    ],
+    "fx": {
+     "c:ruben": 2
+    },
+    "x": [
+     {
+      "day": 31,
+      "text": "Ruben Castellanos came aboard as a slicer."
+     }
+    ],
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
   "id": "scene:yard-office:used:gunner:un",
   "plays": [
    {

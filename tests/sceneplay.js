@@ -135,6 +135,15 @@ const playScenes = () => {
     }
     window.pick = realPick;
   }
+  // ---------- the round for the house at the bar, and a main character coming aboard ----------
+  { // the button's words before and after, and what the room says and remembers
+    const button = () => (barHtml().match(/<button data-action="barRound"[^>]*>([^<]*)<\/button>/) || [])[1];
+    run('bar:round', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { const before = button(); Mods.actions.barRound.fn(); return `${before} | ${G.barState.note} | ${button()}`; } }] }), { prep() { G.state.credits = 5000; const st = G.state; st.systemId = 'ceres'; st.planet = 'Ceres Station'; G.transit = null; fillBar(currentPlanet()); } });
+    run('bar:round-poor', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { return button(); } }] }), { prep() { G.state.credits = 10; const st = G.state; st.systemId = 'ceres'; st.planet = 'Ceres Station'; G.transit = null; fillBar(currentPlanet()); } });
+  }
+  for (const key of ['ines', 'tomas', 'yelena', 'ruben']) {
+    run(`cast:join:${key}`, {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run: () => castJoin(key, 'They come aboard.') }] }), { extra: () => (G.state.home || {}).log });
+  }
   // ---------- the yard office ----------
   for (const [ship, post, trusted, skilled] of [['used', 'gunner', false, false], ['used', 'engineer', true, true], ['lightfreighter', 'gunner', true, false], ['lightfreighter', 'pilot', false, true]]) {
     run(`scene:yard-office:${ship}:${post}:${trusted ? 't' : 'u'}${skilled ? 's' : 'n'}`, { post, credits: 60000 }, () => {

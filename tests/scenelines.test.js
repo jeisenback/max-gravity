@@ -99,3 +99,10 @@ test('the memories of the ship\'s own downtime activities are lines, and none is
   const src = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'js', 'shiplife.js'), 'utf8');
   assert.deepEqual([...src.matchAll(/\blike(?:Ambient)?\([^;\n]*?, *['"`][A-Z]/g)].map(m => m[0].slice(0, 60)), [], 'a memory in code in shiplife.js');
 });
+
+test('the memories and the log line of the round and of a main character coming aboard are lines, and none is left in code in js/bar.js or js/cast.js', async () => {
+  const fs = require('node:fs'), path = require('node:path');
+  for (const [f, re] of [['bar.js', /\blike\([^;\n]*?, *`The captain bought/g], ['cast.js', /\blike\([^;\n]*?, *`I signed on/g], ['cast.js', /homeLog\(`[^`]*came aboard as/g]]) {
+    assert.deepEqual([...fs.readFileSync(path.join(__dirname, '..', 'js', f), 'utf8').matchAll(re)].map(m => m[0].slice(0, 60)), [], `a line in code in ${f}`);
+  }
+});

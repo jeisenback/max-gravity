@@ -384,6 +384,8 @@
           'scene:war-call': () => tiesPreview(() => warCallScene(currentPlanet()), 'member', true),
           'scene:downtime': () => { if (!crew.length) { const m = makeCrewCandidate(st.systemId); registerPerson(m); st.crew.push(m.id); } return { title: 'Downtime', text: 'What a hired hand can add to the downtime menu:', personal: true, choices: HAND_DOWNTIME.map(d => ({ label: d.label, run: d.run })) }; },
           'scene:shiplife': () => downtimeEvent(true),
+          'scene:bar-round': () => { fillBar(currentPlanet()); st.credits = Math.max(st.credits, 5000); Mods.actions.barRound.fn(); return { title: 'A Round for the House', text: G.barState.note, personal: true, choices: [{ label: sceneSay('scene:bar-round', 'label.done'), run: () => '' }] }; },
+          'scene:cast-join': () => { const key = Object.keys(CAST)[0], text = castJoin(key, `${castPerson(key).first} comes aboard.`); return { title: 'A Main Character Comes Aboard', text: `${text} ${castPerson(key).memories.slice(-1)[0]} ${home().log.slice(-1)[0].text}`, personal: true, choices: [{ label: 'Welcome aboard', run: () => '' }] }; },
           'scene:captain-lost': captainLostScene, 'scene:used-ship-offer': () => dealScene(currentPlanet()), 'scene:yard-office': () => yardScene(USED_ID),
           'scene:split': () => { if (crew.length > 1) { addBond(crew[0], crew[1], -9); st.feuds = { [bondKey(crew[0], crew[1])]: 1 }; st.relAt = {}; } return splitScene(); },
           'scene:walk-off': () => { const c = castAboard().find(x => CAST[x.cast].farewell); return c ? walkOffScene(c, currentPlanet()) : null; },

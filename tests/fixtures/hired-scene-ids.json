@@ -142,6 +142,8 @@
  "scene:war-call",
  "scene:downtime",
  "scene:shiplife",
+ "scene:bar-round",
+ "scene:cast-join",
  "scene:put-ashore",
  "scene:hand-death",
  "scene:captain-lost",

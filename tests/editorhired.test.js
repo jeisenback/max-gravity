@@ -52,7 +52,7 @@ test('the converted scenes are data rows of the registry, and the rest are code 
   assert.equal(r.effects.castLike.who, 'ansel');
   assert.ok(r.edit.length > 0 && r.edit.every(e => e === false), 'code choices keep their effects in code');
   assert.ok(r.goodbye && r.signon, 'the goodbye and the sign-on are rows of the registry');
-  assert.equal(r.dataRegistry, 124);
+  assert.equal(r.dataRegistry, 126);
 });
 
 test('a converted scene\'s effects are in forms, checked as typed, and changing one is a change to the file', async () => {
@@ -516,6 +516,23 @@ test('the downtime menu and the ship\'s own activities have their lines in the f
   const f = await play();
   const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.choices.map(c => c.label)]));
   assert.ok(seen.includes('Time Off') && seen.includes('Skip it'), seen.slice(0, 300));
+});
+
+test('the round for the house and a main character coming aboard have their lines in the form and play in the preview (#508)', async () => {
+  await reload(); await select('scene:bar-round');
+  let paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
+  for (const k of ['part.label', 'part.label.done', 'part.memory', 'part.note']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
+  await page.fill('textarea[data-path="part.label.done"]', 'Round bought');
+  let f = await play();
+  let seen = await f.evaluate(() => JSON.stringify([G.dialog.event.text, G.dialog.choices.map(c => c.label)]));
+  assert.ok(seen.includes('You buy a round for the house') && seen.includes('Round bought'), seen.slice(0, 300));
+  await reload(); await select('scene:cast-join');
+  paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
+  for (const k of ['part.memory', 'part.log']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
+  await page.fill('textarea[data-path="part.log"]', '{first} signed the articles as {article} {role}.');
+  f = await play();
+  seen = await f.evaluate(() => G.dialog.event.text);
+  assert.ok(/signed the articles as an? \w+\./.test(seen) && seen.includes('I signed on with'), seen.slice(0, 300));
 });
 
 test('the function-built scenes and the code-written hired events are edited line by line, and each plays in the preview (#463)', async () => {

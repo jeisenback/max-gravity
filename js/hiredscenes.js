@@ -15,6 +15,8 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:war-call', fn: 'warCallScene', file: 'js/ties.js', title: 'Word From Home', where: 'port', when: 'A member or officer aboard whose side has gone to war is called home.' },
   { id: 'scene:downtime', fn: 'handDowntime', file: 'js/hiredevents.js', title: 'Downtime Activities', where: 'transit', when: 'What a hired hand can add to the downtime menu: with the captain, a shipmate or a main character aboard.' },
   { id: 'scene:shiplife', fn: 'downtimeEvent', file: 'js/shiplife.js', title: 'Downtime on a Burn', where: 'transit', when: 'Once before the flip and once after: the ship\'s own activities (a meal, drills, maintenance, a round of the berths) among the others on the menu.' },
+  { id: 'scene:bar-round', fn: 'barHtml', file: 'js/bar.js', title: 'A Round for the House', where: 'port', when: 'The button on the bar page: what it says before and after, what the room remembers, and what you are told.' },
+  { id: 'scene:cast-join', fn: 'castJoin', file: 'js/cast.js', title: 'A Main Character Comes Aboard', where: 'port', when: 'When a main character or first officer signs on: what they remember, and the line in the ship\'s log.' },
   { id: 'scene:put-ashore', fn: 'putAshoreScene', file: 'js/stakes.js', title: 'Put Ashore', where: 'port', when: 'When the captain\'s opinion of you falls to -3, at a later port.' },
   { id: 'scene:hand-death', fn: 'handDeathScene', file: 'js/stakes.js', title: 'The Last Run', where: 'transit', when: 'When the hand is lost in a fight.' },
   { id: 'scene:captain-lost', fn: 'captainLostScene', file: 'js/stakes.js', title: 'Without a Captain', where: 'transit', when: 'When the captain is lost on a pirate bridge.' },
@@ -169,6 +171,13 @@ const SCENE_LINES = {
     'visit.label': 'Check on passengers', 'visit.memory': 'The captain came to check on us.',
     'visit.result.0': 'You make the rounds of the berths, knocking on each door in turn. You hear out a complaint about the air recycler, a story about a cousin, a request for an extra blanket, and, from one quiet passenger, a long question about whether it is normal to feel this far from everything. You promise to look into the recycler. You tell them it is.',
     'visit.result.1': 'You go from bunk to bunk and sit on the edge of each mattress for a few minutes. You hear a complaint about the air recycler, another about the coffee, and a longer one about the silence. You promise to look into it.',
+  },
+  'scene:bar-round': {  // the round for the house on the bar page (bar.js): the button, before and after, what each patron remembers, and what you are told (the room's note is drawn as typed)
+    label: 'Buy a round for the house ({cost} cr)', 'label.done': 'You bought a round', memory: 'The captain bought a round at {bar}.',
+    note: 'You buy a round for the house. The room raises a glass to your ship, and someone at the bar tells you: "{rumor}"',
+  },
+  'scene:cast-join': {  // a main character or first officer signs on (cast.js)
+    memory: 'I signed on with {ship}.', log: '{first} {last} came aboard as {article} {role}.',
   },
   'scene:put-ashore': {
     title: 'Put Ashore',

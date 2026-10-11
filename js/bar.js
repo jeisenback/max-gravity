@@ -394,7 +394,7 @@ function barHtml() {
     ${matchNight() ? h`<div class="hint">${raw(matchNight().text)}</div>` : ''}
     ${(G.barState.lines = G.barState.lines || roomLines(planet)).map(l => h`<div class="hint">${raw(l)}</div>`)}
     ${G.barState.note ? h`<p class="desc">${raw(G.barState.note)}</p>` : ''}
-    <div class="row"><button data-action="barRound" ${st.credits >= round && !G.barState.round ? '' : 'disabled'}>${G.barState.round ? 'You bought a round' : `Buy a round for the house (${fmt(round)} cr)`}</button></div>
+    <div class="row"><button data-action="barRound" ${st.credits >= round && !G.barState.round ? '' : 'disabled'}>${G.barState.round ? sceneSay('scene:bar-round', 'label.done') : sceneSay('scene:bar-round', 'label', { cost: fmt(round) })}</button></div>
     ${raw(barWorkHtml())}
     <h3>Tonight</h3>
     ${G.patrons.length ? rows : raw('<p class="hint">Just you and the bartender.</p>')}
@@ -412,9 +412,9 @@ Mods.register({
       if (G.barState.round || st.credits < cost) return;
       G.barState.round = true;
       st.credits -= cost;
-      for (const pat of G.patrons.filter(x => !x.cast)) { met(pat); like(pat.p, 1, `The captain bought a round at ${G.barState.name}.`); }
+      for (const pat of G.patrons.filter(x => !x.cast)) { met(pat); like(pat.p, 1, sceneSay('scene:bar-round', 'memory', { bar: G.barState.name })); }
       if (isFaction(localGov())) changeRep(localGov(), 1);
-      G.barState.note = (`You buy a round for the house. The room raises a glass to your ship, and someone at the bar tells you: "${addRumor()}"`);
+      G.barState.note = sceneSay('scene:bar-round', 'note', { rumor: addRumor() });
     });
   },
 });
