@@ -1,0 +1,3206 @@
+[
+ {
+  "key": "feed:600:1",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:600:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Cold Harbor Blues\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:600:3",
+  "text": "[Feed] \"A Garden at Hellas\" by Pilar Nakamura tops the reading lists again."
+ },
+ {
+  "key": "feed:600:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:600:5",
+  "text": "[Feed] The Ring-ball League is back in a few weeks, and the Pallas Smelters have signed a new striker, or so they say."
+ },
+ {
+  "key": "feed:600:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:600:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:600:8",
+  "text": "[Feed] Weather on Earth: rain for the ninth day running. The feeds, by popular demand, have started a rain channel, and it is astonishingly popular in the Belt."
+ },
+ {
+  "key": "feed:600:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:600:10",
+  "text": "[Feed] Episode 4 of \"Cold Harbor Blues\" ends on a cliffhanger. Half the Belt is furious."
+ },
+ {
+  "key": "feed:600:11",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:600:12",
+  "text": "[Feed] Somebody on Mars has started a podcast that only discusses one chapter of \"Borrowed Water\", and it is somehow already on its ninth season."
+ },
+ {
+  "key": "headlines:600",
+  "text": "Watching: \"Cold Harbor Blues\", a Warren noir, episode 4 of 10. | Watching: \"Letters from Luna\", a romance, episode 9 of 10. | Reading: \"The Salt Orbit\" by Imre Vallis. | Reading: \"Borrowed Water\" by Dunya Okafor. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: preseason. | Dome League: off-season. | Lunar Cup: The season has just started."
+ },
+ {
+  "key": "crewtalk:600",
+  "text": "Ana: \"Lagos Orbitals, 3 to 1!\" | Ben is rewatching \"Letters from Luna\" in their bunk. Again. | Ben is halfway through \"A Garden at Hellas\" and keeps reading bits aloud. | Cora is halfway through \"Borrowed Water\" and keeps reading bits aloud. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Ana is humming the theme from \"Letters from Luna\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"A Garden at Hellas\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:600",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:600:0:label",
+  "text": "Watch \"Cold Harbor Blues\", episode 4"
+ },
+ {
+  "key": "on:600:0:run:1",
+  "text": "You crowd into the galley for episode 4 of \"Cold Harbor Blues\", a Warren noir. Nobody is a fan. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:600:0:run:2",
+  "text": "You crowd into the galley for episode 4 of \"Cold Harbor Blues\", a Warren noir. Nobody is a fan. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:600:1:label",
+  "text": "Stream the Lunar Cup match"
+ },
+ {
+  "key": "on:600:1:run:1",
+  "text": "The lagged stream from Europa comes in: Lagos Orbitals against Tycho Wanderers, low-g football. Final score 1 to 2. Ana takes it with some grace."
+ },
+ {
+  "key": "on:600:1:run:2",
+  "text": "The lagged stream from Ceres comes in: Lagos Orbitals against Titan Frost, low-g football. Final score 5 to 1. Ana is unbearable for the rest of the day."
+ },
+ {
+  "key": "on:600:2:label",
+  "text": "Pass around \"The Salt Orbit\""
+ },
+ {
+  "key": "on:600:2:run:1",
+  "text": "The ship's one printed copy of \"The Salt Orbit\" by Imre Vallis does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:600:2:run:2",
+  "text": "The ship's one printed copy of \"The Salt Orbit\" by Imre Vallis does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:612:1",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:612:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Cold Harbor Blues\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:612:3",
+  "text": "[Feed] \"A Garden at Hellas\" by Pilar Nakamura tops the reading lists again."
+ },
+ {
+  "key": "feed:612:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:612:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Hellas Station\" finale."
+ },
+ {
+  "key": "feed:612:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:612:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:612:8",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:612:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:612:10",
+  "text": "[Feed] \"Iron Promise\" by Teo Marchetti tops the reading lists again."
+ },
+ {
+  "key": "feed:612:11",
+  "text": "[Feed] Critics on Luna call \"Hellas Station\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:612:12",
+  "text": "[Feed] Somebody on Mars has started a podcast that only discusses one chapter of \"Borrowed Water\", and it is somehow already on its ninth season."
+ },
+ {
+  "key": "headlines:612",
+  "text": "Watching: \"Cold Harbor Blues\", a Warren noir, episode 6 of 10. | Watching: \"Hellas Station\", a station soap, the premiere. | Reading: \"The Salt Orbit\" by Imre Vallis. | Reading: \"Borrowed Water\" by Dunya Okafor. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: The season has just started. | Dome League: off-season. | Lunar Cup: The season has just started."
+ },
+ {
+  "key": "crewtalk:612",
+  "text": "Ben is halfway through \"A Garden at Hellas\" and keeps reading bits aloud. | Cora is rewatching \"Hellas Station\" in their bunk. Again. | Cora is halfway through \"Borrowed Water\" and keeps reading bits aloud. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Cora is humming the theme from \"Cold Harbor Blues\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"A Garden at Hellas\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:612",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:612:0:label",
+  "text": "Watch \"Cold Harbor Blues\", episode 6"
+ },
+ {
+  "key": "on:612:0:run:1",
+  "text": "You crowd into the galley for episode 6 of \"Cold Harbor Blues\", a Warren noir. Nobody is a fan. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:612:0:run:2",
+  "text": "You crowd into the galley for episode 6 of \"Cold Harbor Blues\", a Warren noir. Nobody is a fan. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:612:1:label",
+  "text": "Stream the Ring-ball League match"
+ },
+ {
+  "key": "on:612:1:run:1",
+  "text": "The lagged stream from Europa comes in: Ceres Breakers against Vesta Hammers, ring-ball. Final score 1 to 2. Ben takes it with some grace."
+ },
+ {
+  "key": "on:612:1:run:2",
+  "text": "The lagged stream from Titan comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 3 to 5. Ben takes it with some grace."
+ },
+ {
+  "key": "on:612:2:label",
+  "text": "Pass around \"The Salt Orbit\""
+ },
+ {
+  "key": "on:612:2:run:1",
+  "text": "The ship's one printed copy of \"The Salt Orbit\" by Imre Vallis does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:612:2:run:2",
+  "text": "The ship's one printed copy of \"The Salt Orbit\" by Imre Vallis does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:624:1",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:624:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Cold Harbor Blues\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:624:3",
+  "text": "[Feed] \"A Garden at Hellas\" by Pilar Nakamura tops the reading lists again."
+ },
+ {
+  "key": "feed:624:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:624:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Hellas Station\" finale."
+ },
+ {
+  "key": "feed:624:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:624:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:624:8",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:624:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:624:10",
+  "text": "[Feed] \"Iron Promise\" by Teo Marchetti tops the reading lists again."
+ },
+ {
+  "key": "feed:624:11",
+  "text": "[Feed] Critics on Luna call \"Hellas Station\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:624:12",
+  "text": "[Feed] Somebody on Mars has started a podcast that only discusses one chapter of \"Borrowed Water\", and it is somehow already on its ninth season."
+ },
+ {
+  "key": "headlines:624",
+  "text": "Watching: \"Cold Harbor Blues\", a Warren noir, episode 7 of 10. | Watching: \"Hellas Station\", a station soap, episode 3 of 12. | Reading: \"The Salt Orbit\" by Imre Vallis. | Reading: \"Borrowed Water\" by Dunya Okafor. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: The season has just started. | Dome League: off-season. | Lunar Cup: The season has just started."
+ },
+ {
+  "key": "crewtalk:624",
+  "text": "Ben is halfway through \"A Garden at Hellas\" and keeps reading bits aloud. | Cora is rewatching \"Hellas Station\" in their bunk. Again. | Cora is halfway through \"Borrowed Water\" and keeps reading bits aloud. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Cora is humming the theme from \"Cold Harbor Blues\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"A Garden at Hellas\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:624",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:624:0:label",
+  "text": "Watch \"Cold Harbor Blues\", episode 7"
+ },
+ {
+  "key": "on:624:0:run:1",
+  "text": "You crowd into the galley for episode 7 of \"Cold Harbor Blues\", a Warren noir. Nobody is a fan. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:624:0:run:2",
+  "text": "You crowd into the galley for episode 7 of \"Cold Harbor Blues\", a Warren noir. Nobody is a fan. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:624:1:label",
+  "text": "Stream the Ring-ball League match"
+ },
+ {
+  "key": "on:624:1:run:1",
+  "text": "The lagged stream from Europa comes in: Ceres Breakers against Vesta Hammers, ring-ball. Final score 1 to 2. Ben takes it with some grace."
+ },
+ {
+  "key": "on:624:1:run:2",
+  "text": "The lagged stream from Titan comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 3 to 5. Ben takes it with some grace."
+ },
+ {
+  "key": "on:624:2:label",
+  "text": "Pass around \"The Salt Orbit\""
+ },
+ {
+  "key": "on:624:2:run:1",
+  "text": "The ship's one printed copy of \"The Salt Orbit\" by Imre Vallis does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:624:2:run:2",
+  "text": "The ship's one printed copy of \"The Salt Orbit\" by Imre Vallis does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:636:1",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:636:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Hellas Station\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:636:3",
+  "text": "[Feed] \"A Garden at Hellas\" by Pilar Nakamura tops the reading lists again."
+ },
+ {
+  "key": "feed:636:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:636:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"The Long Burn\" finale."
+ },
+ {
+  "key": "feed:636:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:636:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:636:8",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:636:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:636:10",
+  "text": "[Feed] \"Iron Promise\" by Teo Marchetti tops the reading lists again."
+ },
+ {
+  "key": "feed:636:11",
+  "text": "[Feed] Critics on Luna call \"The Long Burn\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:636:12",
+  "text": "[Feed] Somebody on Mars has started a podcast that only discusses one chapter of \"Borrowed Water\", and it is somehow already on its ninth season."
+ },
+ {
+  "key": "headlines:636",
+  "text": "Watching: \"Cold Harbor Blues\", a Warren noir, episode 9 of 10. | Watching: \"Hellas Station\", a station soap, episode 5 of 12. | Watching: \"The Long Burn\", a action serial, the premiere. | Reading: \"The Salt Orbit\" by Imre Vallis. | Reading: \"Borrowed Water\" by Dunya Okafor. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: The season has just started. | Dome League: off-season. | Lunar Cup: The season has just started."
+ },
+ {
+  "key": "crewtalk:636",
+  "text": "Ben is halfway through \"A Garden at Hellas\" and keeps reading bits aloud. | Cora is rewatching \"Hellas Station\" in their bunk. Again. | Cora is halfway through \"Borrowed Water\" and keeps reading bits aloud. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Cora is humming the theme from \"Hellas Station\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"A Garden at Hellas\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:636",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:636:0:label",
+  "text": "Watch \"Cold Harbor Blues\", episode 9"
+ },
+ {
+  "key": "on:636:0:run:1",
+  "text": "You crowd into the galley for episode 9 of \"Cold Harbor Blues\", a Warren noir. Nobody is a fan. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:636:0:run:2",
+  "text": "You crowd into the galley for episode 9 of \"Cold Harbor Blues\", a Warren noir. Nobody is a fan. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:636:1:label",
+  "text": "Stream the Ring-ball League match"
+ },
+ {
+  "key": "on:636:1:run:1",
+  "text": "The lagged stream from Europa comes in: Ceres Breakers against Vesta Hammers, ring-ball. Final score 1 to 2. Ben takes it with some grace."
+ },
+ {
+  "key": "on:636:1:run:2",
+  "text": "The lagged stream from Titan comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 3 to 5. Ben takes it with some grace."
+ },
+ {
+  "key": "on:636:2:label",
+  "text": "Pass around \"The Salt Orbit\""
+ },
+ {
+  "key": "on:636:2:run:1",
+  "text": "The ship's one printed copy of \"The Salt Orbit\" by Imre Vallis does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:636:2:run:2",
+  "text": "The ship's one printed copy of \"The Salt Orbit\" by Imre Vallis does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:648:1",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:648:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Hellas Station\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:648:3",
+  "text": "[Feed] \"A Garden at Hellas\" by Pilar Nakamura tops the reading lists again."
+ },
+ {
+  "key": "feed:648:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:648:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"The Long Burn\" finale."
+ },
+ {
+  "key": "feed:648:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:648:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:648:8",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:648:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:648:10",
+  "text": "[Feed] \"Iron Promise\" by Teo Marchetti tops the reading lists again."
+ },
+ {
+  "key": "feed:648:11",
+  "text": "[Feed] Critics on Luna call \"The Long Burn\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:648:12",
+  "text": "[Feed] Somebody on Mars has started a podcast that only discusses one chapter of \"Borrowed Water\", and it is somehow already on its ninth season."
+ },
+ {
+  "key": "headlines:648",
+  "text": "Watching: \"Hellas Station\", a station soap, episode 6 of 12. | Watching: \"The Long Burn\", a action serial, episode 3 of 10. | Reading: \"The Salt Orbit\" by Imre Vallis. | Reading: \"Borrowed Water\" by Dunya Okafor. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: The season has just started. | Dome League: off-season. | Lunar Cup: The season has just started."
+ },
+ {
+  "key": "crewtalk:648",
+  "text": "Ben is halfway through \"A Garden at Hellas\" and keeps reading bits aloud. | Cora is rewatching \"Hellas Station\" in their bunk. Again. | Cora is halfway through \"Borrowed Water\" and keeps reading bits aloud. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Cora is humming the theme from \"Hellas Station\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"A Garden at Hellas\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:648",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:648:0:label",
+  "text": "Watch \"Hellas Station\", episode 6"
+ },
+ {
+  "key": "on:648:0:run:1",
+  "text": "You crowd into the galley for episode 6 of \"Hellas Station\", a station soap. Cora knows every line. Ana falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:648:0:run:2",
+  "text": "You crowd into the galley for episode 6 of \"Hellas Station\", a station soap. Cora knows every line. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:648:1:label",
+  "text": "Stream the Ring-ball League match"
+ },
+ {
+  "key": "on:648:1:run:1",
+  "text": "The lagged stream from Europa comes in: Ceres Breakers against Vesta Hammers, ring-ball. Final score 1 to 2. Ben takes it with some grace."
+ },
+ {
+  "key": "on:648:1:run:2",
+  "text": "The lagged stream from Titan comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 3 to 5. Ben takes it with some grace."
+ },
+ {
+  "key": "on:648:2:label",
+  "text": "Pass around \"The Salt Orbit\""
+ },
+ {
+  "key": "on:648:2:run:1",
+  "text": "The ship's one printed copy of \"The Salt Orbit\" by Imre Vallis does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:648:2:run:2",
+  "text": "The ship's one printed copy of \"The Salt Orbit\" by Imre Vallis does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:660:1",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:660:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Hellas Station\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:660:3",
+  "text": "[Feed] \"A Garden at Hellas\" by Pilar Nakamura tops the reading lists again."
+ },
+ {
+  "key": "feed:660:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:660:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"The Long Burn\" finale."
+ },
+ {
+  "key": "feed:660:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:660:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:660:8",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:660:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:660:10",
+  "text": "[Feed] \"Iron Promise\" by Teo Marchetti tops the reading lists again."
+ },
+ {
+  "key": "feed:660:11",
+  "text": "[Feed] Critics on Luna call \"The Long Burn\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:660:12",
+  "text": "[Feed] Somebody on Mars has started a podcast that only discusses one chapter of \"Borrowed Water\", and it is somehow already on its ninth season."
+ },
+ {
+  "key": "headlines:660",
+  "text": "Watching: \"Hellas Station\", a station soap, episode 8 of 12. | Watching: \"The Long Burn\", a action serial, episode 5 of 10. | Reading: \"The Salt Orbit\" by Imre Vallis. | Reading: \"Borrowed Water\" by Dunya Okafor. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: The season has just started. | Dome League: off-season. | Lunar Cup: The season has just started."
+ },
+ {
+  "key": "crewtalk:660",
+  "text": "Ben is halfway through \"A Garden at Hellas\" and keeps reading bits aloud. | Cora is rewatching \"Hellas Station\" in their bunk. Again. | Cora is halfway through \"Borrowed Water\" and keeps reading bits aloud. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Cora is humming the theme from \"Hellas Station\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"A Garden at Hellas\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:660",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:660:0:label",
+  "text": "Watch \"Hellas Station\", episode 8"
+ },
+ {
+  "key": "on:660:0:run:1",
+  "text": "You crowd into the galley for episode 8 of \"Hellas Station\", a station soap. Cora knows every line. Ana falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:660:0:run:2",
+  "text": "You crowd into the galley for episode 8 of \"Hellas Station\", a station soap. Cora knows every line. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:660:1:label",
+  "text": "Stream the Ring-ball League match"
+ },
+ {
+  "key": "on:660:1:run:1",
+  "text": "The lagged stream from Europa comes in: Ceres Breakers against Vesta Hammers, ring-ball. Final score 1 to 2. Ben takes it with some grace."
+ },
+ {
+  "key": "on:660:1:run:2",
+  "text": "The lagged stream from Titan comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 3 to 5. Ben takes it with some grace."
+ },
+ {
+  "key": "on:660:2:label",
+  "text": "Pass around \"The Salt Orbit\""
+ },
+ {
+  "key": "on:660:2:run:1",
+  "text": "The ship's one printed copy of \"The Salt Orbit\" by Imre Vallis does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:660:2:run:2",
+  "text": "The ship's one printed copy of \"The Salt Orbit\" by Imre Vallis does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:672:1",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:672:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"The Long Burn\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:672:3",
+  "text": "[Feed] \"The Long Horizon\" by Jabari Quill tops the reading lists again."
+ },
+ {
+  "key": "feed:672:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:672:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Belt Wars\" finale."
+ },
+ {
+  "key": "feed:672:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:672:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:672:8",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:672:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:672:10",
+  "text": "[Feed] \"Ice Lanes\" by Hanne Roka tops the reading lists again."
+ },
+ {
+  "key": "feed:672:11",
+  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:672:12",
+  "text": "[Feed] Somebody on Mars has started a podcast that only discusses one chapter of \"Rations and Other Lies\", and it is somehow already on its ninth season."
+ },
+ {
+  "key": "headlines:672",
+  "text": "Watching: \"Hellas Station\", a station soap, episode 10 of 12. | Watching: \"The Long Burn\", a action serial, episode 6 of 10. | Watching: \"Belt Wars\", a war drama, episode 2 of 12. | Reading: \"The Quiet Crown\" by Olu Brandt. | Reading: \"Rations and Other Lies\" by Mina Costa. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: The season has just started. | Dome League: off-season. | Lunar Cup: The season has just started."
+ },
+ {
+  "key": "crewtalk:672",
+  "text": "Ana is halfway through \"Rations and Other Lies\" and keeps reading bits aloud. | Cora is rewatching \"Hellas Station\" in their bunk. Again. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Cora is humming the theme from \"The Long Burn\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"The Long Horizon\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:672",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:672:0:label",
+  "text": "Watch \"Hellas Station\", episode 10"
+ },
+ {
+  "key": "on:672:0:run:1",
+  "text": "You crowd into the galley for episode 10 of \"Hellas Station\", a station soap. Cora knows every line. Ana falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:672:0:run:2",
+  "text": "You crowd into the galley for episode 10 of \"Hellas Station\", a station soap. Cora knows every line. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:672:1:label",
+  "text": "Stream the Ring-ball League match"
+ },
+ {
+  "key": "on:672:1:run:1",
+  "text": "The lagged stream from Europa comes in: Ceres Breakers against Vesta Hammers, ring-ball. Final score 1 to 2. Ben takes it with some grace."
+ },
+ {
+  "key": "on:672:1:run:2",
+  "text": "The lagged stream from Titan comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 3 to 5. Ben takes it with some grace."
+ },
+ {
+  "key": "on:672:2:label",
+  "text": "Pass around \"The Quiet Crown\""
+ },
+ {
+  "key": "on:672:2:run:1",
+  "text": "The ship's one printed copy of \"The Quiet Crown\" by Olu Brandt does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:672:2:run:2",
+  "text": "The ship's one printed copy of \"The Quiet Crown\" by Olu Brandt does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:684:1",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:684:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"The Long Burn\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:684:3",
+  "text": "[Feed] Jabari Quill denies that \"The Long Horizon\" is about a real Compact admiral."
+ },
+ {
+  "key": "feed:684:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:684:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Belt Wars\" finale."
+ },
+ {
+  "key": "feed:684:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:684:7",
+  "text": "[Feed] Lunar Cup playoffs: the Luna Grays and the Lagos Orbitals are through, and everyone else is pretending to be fine."
+ },
+ {
+  "key": "feed:684:8",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:684:9",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:684:10",
+  "text": "[Feed] \"Ice Lanes\" by Hanne Roka tops the reading lists again."
+ },
+ {
+  "key": "feed:684:11",
+  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:684:12",
+  "text": "[Feed] Kez Ghosh Trio play a surprise show at a smelter on Pallas, and the crowd sings every word back. The refinery has the footage."
+ },
+ {
+  "key": "headlines:684",
+  "text": "Watching: \"Hellas Station\", a station soap, the finale. | Watching: \"The Long Burn\", a action serial, episode 8 of 10. | Watching: \"Belt Wars\", a war drama, episode 4 of 12. | Reading: \"The Quiet Crown\" by Olu Brandt. | Reading: \"Rations and Other Lies\" by Mina Costa. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: The season has just started. | Dome League: off-season. | Lunar Cup: Playoffs: Luna Grays and Lagos Orbitals."
+ },
+ {
+  "key": "crewtalk:684",
+  "text": "Ana: \"Lagos Orbitals, 4 to 3!\" | Ana is halfway through \"Rations and Other Lies\" and keeps reading bits aloud. | Cora is dreading the finale of \"Hellas Station\" in their bunk. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Ben is humming the theme from \"Hellas Station\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"Ice Lanes\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:684",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:684:0:label",
+  "text": "Watch \"Hellas Station\", the finale"
+ },
+ {
+  "key": "on:684:0:run:1",
+  "text": "You crowd into the galley for the finale of \"Hellas Station\", a station soap. Cora knows every line. Ana falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:684:0:run:2",
+  "text": "You crowd into the galley for the finale of \"Hellas Station\", a station soap. Cora knows every line. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:684:1:label",
+  "text": "Stream the Ring-ball League match"
+ },
+ {
+  "key": "on:684:1:run:1",
+  "text": "The lagged stream from Europa comes in: Ceres Breakers against Vesta Hammers, ring-ball. Final score 1 to 2. Ben takes it with some grace."
+ },
+ {
+  "key": "on:684:1:run:2",
+  "text": "The lagged stream from Titan comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 3 to 5. Ben takes it with some grace."
+ },
+ {
+  "key": "on:684:2:label",
+  "text": "Pass around \"The Quiet Crown\""
+ },
+ {
+  "key": "on:684:2:run:1",
+  "text": "The ship's one printed copy of \"The Quiet Crown\" by Olu Brandt does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:684:2:run:2",
+  "text": "The ship's one printed copy of \"The Quiet Crown\" by Olu Brandt does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:696:1",
+  "text": "[Feed] \"Beyond Ceres\" by Hollow Moons is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:696:2",
+  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"the best thing since the Belt Wars series\"."
+ },
+ {
+  "key": "feed:696:3",
+  "text": "[Feed] Jabari Quill denies that \"The Long Horizon\" is about a real Compact admiral."
+ },
+ {
+  "key": "feed:696:4",
+  "text": "[Feed] Episode 5 of \"Belt Wars\" ends on a cliffhanger. Half the Belt is furious."
+ },
+ {
+  "key": "feed:696:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Thin Air\" finale."
+ },
+ {
+  "key": "feed:696:6",
+  "text": "[Feed] Noor Ibarra, star of \"Thin Air\", was spotted on the Belt with Dru Tembo. Nobody is confirming anything."
+ },
+ {
+  "key": "feed:696:7",
+  "text": "[Feed] Lunar Cup playoffs: the Luna Grays and the Lagos Orbitals are through, and everyone else is pretending to be fine."
+ },
+ {
+  "key": "feed:696:8",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:696:9",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:696:10",
+  "text": "[Feed] \"Ice Lanes\" by Hanne Roka tops the reading lists again."
+ },
+ {
+  "key": "feed:696:11",
+  "text": "[Feed] Critics on Luna call \"Thin Air\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:696:12",
+  "text": "[Feed] Ravi Petrov, star of \"The Long Burn\", was spotted on Luna with Yuri Esteban-Li. Nobody is confirming anything."
+ },
+ {
+  "key": "headlines:696",
+  "text": "Watching: \"The Long Burn\", a action serial, the finale. | Watching: \"Belt Wars\", a war drama, episode 5 of 12. | Watching: \"Thin Air\", a horror, the premiere. | Reading: \"The Quiet Crown\" by Olu Brandt. | Reading: \"Rations and Other Lies\" by Mina Costa. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: The season has just started. | Dome League: preseason. | Lunar Cup: Playoffs: Luna Grays and Lagos Orbitals."
+ },
+ {
+  "key": "crewtalk:696",
+  "text": "Ana: \"Lagos Orbitals, 4 to 3!\" | Ana is halfway through \"Rations and Other Lies\" and keeps reading bits aloud. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Ben is humming the theme from \"The Long Burn\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"Ice Lanes\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:696",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:696:0:label",
+  "text": "Watch \"The Long Burn\", the finale"
+ },
+ {
+  "key": "on:696:0:run:1",
+  "text": "You crowd into the galley for the finale of \"The Long Burn\", a action serial. Nobody is a fan. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:696:0:run:2",
+  "text": "You crowd into the galley for the finale of \"The Long Burn\", a action serial. Nobody is a fan. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:696:1:label",
+  "text": "Stream the Ring-ball League match"
+ },
+ {
+  "key": "on:696:1:run:1",
+  "text": "The lagged stream from Europa comes in: Ceres Breakers against Vesta Hammers, ring-ball. Final score 1 to 2. Ben takes it with some grace."
+ },
+ {
+  "key": "on:696:1:run:2",
+  "text": "The lagged stream from Titan comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 3 to 5. Ben takes it with some grace."
+ },
+ {
+  "key": "on:696:2:label",
+  "text": "Pass around \"The Quiet Crown\""
+ },
+ {
+  "key": "on:696:2:run:1",
+  "text": "The ship's one printed copy of \"The Quiet Crown\" by Olu Brandt does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:696:2:run:2",
+  "text": "The ship's one printed copy of \"The Quiet Crown\" by Olu Brandt does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:708:1",
+  "text": "[Feed] \"Beyond Ceres\" by Hollow Moons is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:708:2",
+  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"the best thing since the Belt Wars series\"."
+ },
+ {
+  "key": "feed:708:3",
+  "text": "[Feed] \"The Long Horizon\" by Jabari Quill tops the reading lists again."
+ },
+ {
+  "key": "feed:708:4",
+  "text": "[Feed] Episode 7 of \"Belt Wars\" ends on a cliffhanger. Half the Belt is furious."
+ },
+ {
+  "key": "feed:708:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Thin Air\" finale."
+ },
+ {
+  "key": "feed:708:6",
+  "text": "[Feed] Noor Ibarra, star of \"Thin Air\", was spotted on the Belt with Dru Tembo. Nobody is confirming anything."
+ },
+ {
+  "key": "feed:708:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:708:8",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:708:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:708:10",
+  "text": "[Feed] \"Ice Lanes\" by Hanne Roka tops the reading lists again."
+ },
+ {
+  "key": "feed:708:11",
+  "text": "[Feed] Critics on Luna call \"Thin Air\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:708:12",
+  "text": "[Feed] Ravi Petrov, star of \"Belt Wars\", was spotted on Luna with Yuri Esteban-Li. Nobody is confirming anything."
+ },
+ {
+  "key": "headlines:708",
+  "text": "Watching: \"Belt Wars\", a war drama, episode 7 of 12. | Watching: \"Thin Air\", a horror, episode 3 of 8. | Reading: \"The Quiet Crown\" by Olu Brandt. | Reading: \"Rations and Other Lies\" by Mina Costa. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: The season has just started. | Dome League: preseason. | Lunar Cup: off-season."
+ },
+ {
+  "key": "crewtalk:708",
+  "text": "Ana is halfway through \"Rations and Other Lies\" and keeps reading bits aloud. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Ana is humming the theme from \"Thin Air\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"The Long Horizon\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:708",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:708:0:label",
+  "text": "Watch \"Belt Wars\", episode 7"
+ },
+ {
+  "key": "on:708:0:run:1",
+  "text": "You crowd into the galley for episode 7 of \"Belt Wars\", a war drama. Nobody is a fan. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:708:0:run:2",
+  "text": "You crowd into the galley for episode 7 of \"Belt Wars\", a war drama. Nobody is a fan. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:708:1:label",
+  "text": "Stream the Ring-ball League match"
+ },
+ {
+  "key": "on:708:1:run:1",
+  "text": "The lagged stream from Europa comes in: Ceres Breakers against Vesta Hammers, ring-ball. Final score 1 to 2. Ben takes it with some grace."
+ },
+ {
+  "key": "on:708:1:run:2",
+  "text": "The lagged stream from Titan comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 3 to 5. Ben takes it with some grace."
+ },
+ {
+  "key": "on:708:2:label",
+  "text": "Pass around \"The Quiet Crown\""
+ },
+ {
+  "key": "on:708:2:run:1",
+  "text": "The ship's one printed copy of \"The Quiet Crown\" by Olu Brandt does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:708:2:run:2",
+  "text": "The ship's one printed copy of \"The Quiet Crown\" by Olu Brandt does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:720:1",
+  "text": "[Feed] \"Beyond Ceres\" by Hollow Moons is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:720:2",
+  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"the best thing since the Belt Wars series\"."
+ },
+ {
+  "key": "feed:720:3",
+  "text": "[Feed] \"The Long Horizon\" by Jabari Quill tops the reading lists again."
+ },
+ {
+  "key": "feed:720:4",
+  "text": "[Feed] Episode 9 of \"Belt Wars\" ends on a cliffhanger. Half the Belt is furious."
+ },
+ {
+  "key": "feed:720:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Thin Air\" finale."
+ },
+ {
+  "key": "feed:720:6",
+  "text": "[Feed] Noor Ibarra, star of \"Thin Air\", was spotted on the Belt with Dru Tembo. Nobody is confirming anything."
+ },
+ {
+  "key": "feed:720:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:720:8",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:720:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:720:10",
+  "text": "[Feed] \"Ice Lanes\" by Hanne Roka tops the reading lists again."
+ },
+ {
+  "key": "feed:720:11",
+  "text": "[Feed] Critics on Luna call \"Thin Air\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:720:12",
+  "text": "[Feed] Ravi Petrov, star of \"Belt Wars\", was spotted on Luna with Yuri Esteban-Li. Nobody is confirming anything."
+ },
+ {
+  "key": "headlines:720",
+  "text": "Watching: \"Belt Wars\", a war drama, episode 9 of 12. | Watching: \"Thin Air\", a horror, episode 5 of 8. | Reading: \"The Quiet Crown\" by Olu Brandt. | Reading: \"Rations and Other Lies\" by Mina Costa. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: The season has just started. | Dome League: preseason. | Lunar Cup: off-season."
+ },
+ {
+  "key": "crewtalk:720",
+  "text": "Ana is halfway through \"Rations and Other Lies\" and keeps reading bits aloud. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Ana is humming the theme from \"Thin Air\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"The Long Horizon\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:720",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:720:0:label",
+  "text": "Watch \"Belt Wars\", episode 9"
+ },
+ {
+  "key": "on:720:0:run:1",
+  "text": "You crowd into the galley for episode 9 of \"Belt Wars\", a war drama. Nobody is a fan. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:720:0:run:2",
+  "text": "You crowd into the galley for episode 9 of \"Belt Wars\", a war drama. Nobody is a fan. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:720:1:label",
+  "text": "Stream the Ring-ball League match"
+ },
+ {
+  "key": "on:720:1:run:1",
+  "text": "The lagged stream from Europa comes in: Ceres Breakers against Vesta Hammers, ring-ball. Final score 1 to 2. Ben takes it with some grace."
+ },
+ {
+  "key": "on:720:1:run:2",
+  "text": "The lagged stream from Titan comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 3 to 5. Ben takes it with some grace."
+ },
+ {
+  "key": "on:720:2:label",
+  "text": "Pass around \"The Quiet Crown\""
+ },
+ {
+  "key": "on:720:2:run:1",
+  "text": "The ship's one printed copy of \"The Quiet Crown\" by Olu Brandt does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:720:2:run:2",
+  "text": "The ship's one printed copy of \"The Quiet Crown\" by Olu Brandt does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:732:1",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:732:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Thin Air\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:732:3",
+  "text": "[Feed] \"The Long Horizon\" by Jabari Quill tops the reading lists again."
+ },
+ {
+  "key": "feed:732:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:732:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Seven Decks\" finale."
+ },
+ {
+  "key": "feed:732:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:732:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:732:8",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:732:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:732:10",
+  "text": "[Feed] \"Ice Lanes\" by Hanne Roka tops the reading lists again."
+ },
+ {
+  "key": "feed:732:11",
+  "text": "[Feed] Critics on Luna call \"Seven Decks\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:732:12",
+  "text": "[Feed] Somebody on Mars has started a podcast that only discusses one chapter of \"Rations and Other Lies\", and it is somehow already on its ninth season."
+ },
+ {
+  "key": "headlines:732",
+  "text": "Watching: \"Belt Wars\", a war drama, episode 11 of 12. | Watching: \"Thin Air\", a horror, episode 6 of 8. | Watching: \"Seven Decks\", a comedy, episode 2 of 12. | Reading: \"The Quiet Crown\" by Olu Brandt. | Reading: \"Rations and Other Lies\" by Mina Costa. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: The season has just started. | Dome League: The season has just started. | Lunar Cup: off-season."
+ },
+ {
+  "key": "crewtalk:732",
+  "text": "Ana is rewatching \"Seven Decks\" in their bunk. Again. | Ana is halfway through \"Rations and Other Lies\" and keeps reading bits aloud. | Cora: \"Valles Runners, 4 to 1!\" | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Cora is humming the theme from \"Thin Air\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"The Long Horizon\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:732",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:732:0:label",
+  "text": "Watch \"Belt Wars\", episode 11"
+ },
+ {
+  "key": "on:732:0:run:1",
+  "text": "You crowd into the galley for episode 11 of \"Belt Wars\", a war drama. Nobody is a fan. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:732:0:run:2",
+  "text": "You crowd into the galley for episode 11 of \"Belt Wars\", a war drama. Nobody is a fan. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:732:1:label",
+  "text": "Stream the Ring-ball League match"
+ },
+ {
+  "key": "on:732:1:run:1",
+  "text": "The lagged stream from Europa comes in: Ceres Breakers against Vesta Hammers, ring-ball. Final score 1 to 2. Ben takes it with some grace."
+ },
+ {
+  "key": "on:732:1:run:2",
+  "text": "The lagged stream from Titan comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 3 to 5. Ben takes it with some grace."
+ },
+ {
+  "key": "on:732:2:label",
+  "text": "Pass around \"The Quiet Crown\""
+ },
+ {
+  "key": "on:732:2:run:1",
+  "text": "The ship's one printed copy of \"The Quiet Crown\" by Olu Brandt does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:732:2:run:2",
+  "text": "The ship's one printed copy of \"The Quiet Crown\" by Olu Brandt does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:744:1",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:744:2",
+  "text": "[Feed] Mei Brandvold and Zara Laszlo are feuding on the feeds again. It is the best thing on."
+ },
+ {
+  "key": "feed:744:3",
+  "text": "[Feed] Jabari Quill denies that \"The Long Horizon\" is about a real Compact admiral."
+ },
+ {
+  "key": "feed:744:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:744:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Seven Decks\" finale."
+ },
+ {
+  "key": "feed:744:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:744:7",
+  "text": "[Feed] The finale of \"Belt Wars\" is on this week. Half the system has cleared its schedule."
+ },
+ {
+  "key": "feed:744:8",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:744:9",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:744:10",
+  "text": "[Feed] \"Ice Lanes\" by Hanne Roka tops the reading lists again."
+ },
+ {
+  "key": "feed:744:11",
+  "text": "[Feed] Critics on Luna call \"Seven Decks\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:744:12",
+  "text": "[Feed] Kez Ghosh Trio play a surprise show at a smelter on Pallas, and the crowd sings every word back. The refinery has the footage."
+ },
+ {
+  "key": "headlines:744",
+  "text": "Watching: \"Belt Wars\", a war drama, the finale. | Watching: \"Thin Air\", a horror, the finale. | Watching: \"Seven Decks\", a comedy, episode 4 of 12. | Reading: \"The Quiet Crown\" by Olu Brandt. | Reading: \"Rations and Other Lies\" by Mina Costa. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: The season has just started. | Dome League: The season has just started. | Lunar Cup: off-season."
+ },
+ {
+  "key": "crewtalk:744",
+  "text": "Ana is rewatching \"Seven Decks\" in their bunk. Again. | Ana is halfway through \"Rations and Other Lies\" and keeps reading bits aloud. | Cora: \"Valles Runners, 4 to 1!\" | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Cora is humming the theme from \"Thin Air\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"The Long Horizon\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:744",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:744:0:label",
+  "text": "Watch \"Belt Wars\", the finale"
+ },
+ {
+  "key": "on:744:0:run:1",
+  "text": "You crowd into the galley for the finale of \"Belt Wars\", a war drama. Nobody is a fan. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:744:0:run:2",
+  "text": "You crowd into the galley for the finale of \"Belt Wars\", a war drama. Nobody is a fan. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:744:1:label",
+  "text": "Stream the Ring-ball League match"
+ },
+ {
+  "key": "on:744:1:run:1",
+  "text": "The lagged stream from Europa comes in: Ceres Breakers against Vesta Hammers, ring-ball. Final score 1 to 2. Ben takes it with some grace."
+ },
+ {
+  "key": "on:744:1:run:2",
+  "text": "The lagged stream from Titan comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 3 to 5. Ben takes it with some grace."
+ },
+ {
+  "key": "on:744:2:label",
+  "text": "Pass around \"The Quiet Crown\""
+ },
+ {
+  "key": "on:744:2:run:1",
+  "text": "The ship's one printed copy of \"The Quiet Crown\" by Olu Brandt does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:744:2:run:2",
+  "text": "The ship's one printed copy of \"The Quiet Crown\" by Olu Brandt does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:756:1",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:756:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Seven Decks\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:756:3",
+  "text": "[Feed] \"Letters to Pallas\" by Ada Kessel tops the reading lists again."
+ },
+ {
+  "key": "feed:756:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:756:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Seven Decks\" finale."
+ },
+ {
+  "key": "feed:756:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:756:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:756:8",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:756:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:756:10",
+  "text": "[Feed] \"Bright Station\" by Lio Parvez tops the reading lists again."
+ },
+ {
+  "key": "feed:756:11",
+  "text": "[Feed] Critics on Luna call \"Seven Decks\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:756:12",
+  "text": "[Feed] Somebody on Mars has started a podcast that only discusses one chapter of \"The Hollow Tide\", and it is somehow already on its ninth season."
+ },
+ {
+  "key": "headlines:756",
+  "text": "Watching: \"Seven Decks\", a comedy, episode 5 of 12. | Reading: \"Broken Signal\" by Sef Anders. | Reading: \"The Hollow Tide\" by Ruth Imanov. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: The season has just started. | Dome League: The season has just started. | Lunar Cup: off-season."
+ },
+ {
+  "key": "crewtalk:756",
+  "text": "Ana is rewatching \"Seven Decks\" in their bunk. Again. | Ana is halfway through \"Bright Station\" and keeps reading bits aloud. | Ben is halfway through \"Letters to Pallas\" and keeps reading bits aloud. | Cora: \"Valles Runners, 4 to 1!\" | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Cora is humming the theme from \"Seven Decks\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"Letters to Pallas\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:756",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:756:0:label",
+  "text": "Watch \"Seven Decks\", episode 5"
+ },
+ {
+  "key": "on:756:0:run:1",
+  "text": "You crowd into the galley for episode 5 of \"Seven Decks\", a comedy. Ana knows every line. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:756:0:run:2",
+  "text": "You crowd into the galley for episode 5 of \"Seven Decks\", a comedy. Ana knows every line. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:756:1:label",
+  "text": "Stream the Ring-ball League match"
+ },
+ {
+  "key": "on:756:1:run:1",
+  "text": "The lagged stream from Europa comes in: Ceres Breakers against Vesta Hammers, ring-ball. Final score 1 to 2. Ben takes it with some grace."
+ },
+ {
+  "key": "on:756:1:run:2",
+  "text": "The lagged stream from Titan comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 3 to 5. Ben takes it with some grace."
+ },
+ {
+  "key": "on:756:2:label",
+  "text": "Pass around \"Broken Signal\""
+ },
+ {
+  "key": "on:756:2:run:1",
+  "text": "The ship's one printed copy of \"Broken Signal\" by Sef Anders does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:756:2:run:2",
+  "text": "The ship's one printed copy of \"Broken Signal\" by Sef Anders does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:768:1",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:768:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Seven Decks\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:768:3",
+  "text": "[Feed] \"Letters to Pallas\" by Ada Kessel tops the reading lists again."
+ },
+ {
+  "key": "feed:768:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:768:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Ice Hauler Diaries\" finale."
+ },
+ {
+  "key": "feed:768:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:768:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:768:8",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:768:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:768:10",
+  "text": "[Feed] \"Bright Station\" by Lio Parvez tops the reading lists again."
+ },
+ {
+  "key": "feed:768:11",
+  "text": "[Feed] Critics on Luna call \"Ice Hauler Diaries\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:768:12",
+  "text": "[Feed] Somebody on Mars has started a podcast that only discusses one chapter of \"The Hollow Tide\", and it is somehow already on its ninth season."
+ },
+ {
+  "key": "headlines:768",
+  "text": "Watching: \"Seven Decks\", a comedy, episode 7 of 12. | Watching: \"Ice Hauler Diaries\", a documentary, episode 2 of 8. | Reading: \"Broken Signal\" by Sef Anders. | Reading: \"The Hollow Tide\" by Ruth Imanov. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: The season has just started. | Dome League: The season has just started. | Lunar Cup: off-season."
+ },
+ {
+  "key": "crewtalk:768",
+  "text": "Ana is rewatching \"Seven Decks\" in their bunk. Again. | Ana is halfway through \"Bright Station\" and keeps reading bits aloud. | Ben is halfway through \"Letters to Pallas\" and keeps reading bits aloud. | Cora: \"Valles Runners, 4 to 1!\" | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Cora is humming the theme from \"Seven Decks\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"Letters to Pallas\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:768",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:768:0:label",
+  "text": "Watch \"Seven Decks\", episode 7"
+ },
+ {
+  "key": "on:768:0:run:1",
+  "text": "You crowd into the galley for episode 7 of \"Seven Decks\", a comedy. Ana knows every line. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:768:0:run:2",
+  "text": "You crowd into the galley for episode 7 of \"Seven Decks\", a comedy. Ana knows every line. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:768:1:label",
+  "text": "Stream the Ring-ball League match"
+ },
+ {
+  "key": "on:768:1:run:1",
+  "text": "The lagged stream from Europa comes in: Ceres Breakers against Vesta Hammers, ring-ball. Final score 1 to 2. Ben takes it with some grace."
+ },
+ {
+  "key": "on:768:1:run:2",
+  "text": "The lagged stream from Titan comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 3 to 5. Ben takes it with some grace."
+ },
+ {
+  "key": "on:768:2:label",
+  "text": "Pass around \"Broken Signal\""
+ },
+ {
+  "key": "on:768:2:run:1",
+  "text": "The ship's one printed copy of \"Broken Signal\" by Sef Anders does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:768:2:run:2",
+  "text": "The ship's one printed copy of \"Broken Signal\" by Sef Anders does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:780:1",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:780:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Seven Decks\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:780:3",
+  "text": "[Feed] \"Letters to Pallas\" by Ada Kessel tops the reading lists again."
+ },
+ {
+  "key": "feed:780:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:780:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Ice Hauler Diaries\" finale."
+ },
+ {
+  "key": "feed:780:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:780:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:780:8",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:780:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:780:10",
+  "text": "[Feed] \"Bright Station\" by Lio Parvez tops the reading lists again."
+ },
+ {
+  "key": "feed:780:11",
+  "text": "[Feed] Critics on Luna call \"Ice Hauler Diaries\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:780:12",
+  "text": "[Feed] Somebody on Mars has started a podcast that only discusses one chapter of \"The Hollow Tide\", and it is somehow already on its ninth season."
+ },
+ {
+  "key": "headlines:780",
+  "text": "Watching: \"Seven Decks\", a comedy, episode 9 of 12. | Watching: \"Ice Hauler Diaries\", a documentary, episode 4 of 8. | Reading: \"Broken Signal\" by Sef Anders. | Reading: \"The Hollow Tide\" by Ruth Imanov. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: The season has just started. | Dome League: The season has just started. | Lunar Cup: off-season."
+ },
+ {
+  "key": "crewtalk:780",
+  "text": "Ana is rewatching \"Seven Decks\" in their bunk. Again. | Ana is halfway through \"Bright Station\" and keeps reading bits aloud. | Ben is halfway through \"Letters to Pallas\" and keeps reading bits aloud. | Cora: \"Valles Runners, 4 to 1!\" | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Cora is humming the theme from \"Seven Decks\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"Letters to Pallas\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:780",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:780:0:label",
+  "text": "Watch \"Seven Decks\", episode 9"
+ },
+ {
+  "key": "on:780:0:run:1",
+  "text": "You crowd into the galley for episode 9 of \"Seven Decks\", a comedy. Ana knows every line. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:780:0:run:2",
+  "text": "You crowd into the galley for episode 9 of \"Seven Decks\", a comedy. Ana knows every line. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:780:1:label",
+  "text": "Stream the Ring-ball League match"
+ },
+ {
+  "key": "on:780:1:run:1",
+  "text": "The lagged stream from Europa comes in: Ceres Breakers against Vesta Hammers, ring-ball. Final score 1 to 2. Ben takes it with some grace."
+ },
+ {
+  "key": "on:780:1:run:2",
+  "text": "The lagged stream from Titan comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 3 to 5. Ben takes it with some grace."
+ },
+ {
+  "key": "on:780:2:label",
+  "text": "Pass around \"Broken Signal\""
+ },
+ {
+  "key": "on:780:2:run:1",
+  "text": "The ship's one printed copy of \"Broken Signal\" by Sef Anders does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:780:2:run:2",
+  "text": "The ship's one printed copy of \"Broken Signal\" by Sef Anders does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:792:1",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:792:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Ice Hauler Diaries\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:792:3",
+  "text": "[Feed] \"Letters to Pallas\" by Ada Kessel tops the reading lists again."
+ },
+ {
+  "key": "feed:792:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:792:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Tharsis Heights\" finale."
+ },
+ {
+  "key": "feed:792:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:792:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:792:8",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:792:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:792:10",
+  "text": "[Feed] \"Bright Station\" by Lio Parvez tops the reading lists again."
+ },
+ {
+  "key": "feed:792:11",
+  "text": "[Feed] Critics on Luna call \"Tharsis Heights\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:792:12",
+  "text": "[Feed] Somebody on Mars has started a podcast that only discusses one chapter of \"The Hollow Tide\", and it is somehow already on its ninth season."
+ },
+ {
+  "key": "headlines:792",
+  "text": "Watching: \"Seven Decks\", a comedy, episode 11 of 12. | Watching: \"Ice Hauler Diaries\", a documentary, episode 6 of 8. | Watching: \"Tharsis Heights\", a station soap, the premiere. | Reading: \"Broken Signal\" by Sef Anders. | Reading: \"The Hollow Tide\" by Ruth Imanov. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: The season has just started. | Dome League: The season has just started. | Lunar Cup: off-season."
+ },
+ {
+  "key": "crewtalk:792",
+  "text": "Ana is rewatching \"Seven Decks\" in their bunk. Again. | Ana is halfway through \"Bright Station\" and keeps reading bits aloud. | Ben is halfway through \"Letters to Pallas\" and keeps reading bits aloud. | Cora: \"Valles Runners, 4 to 1!\" | Cora is rewatching \"Tharsis Heights\" in their bunk. Again. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Cora is humming the theme from \"Ice Hauler Diaries\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"Letters to Pallas\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:792",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:792:0:label",
+  "text": "Watch \"Seven Decks\", episode 11"
+ },
+ {
+  "key": "on:792:0:run:1",
+  "text": "You crowd into the galley for episode 11 of \"Seven Decks\", a comedy. Ana knows every line. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:792:0:run:2",
+  "text": "You crowd into the galley for episode 11 of \"Seven Decks\", a comedy. Ana knows every line. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:792:1:label",
+  "text": "Stream the Ring-ball League match"
+ },
+ {
+  "key": "on:792:1:run:1",
+  "text": "The lagged stream from Europa comes in: Ceres Breakers against Vesta Hammers, ring-ball. Final score 1 to 2. Ben takes it with some grace."
+ },
+ {
+  "key": "on:792:1:run:2",
+  "text": "The lagged stream from Titan comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 3 to 5. Ben takes it with some grace."
+ },
+ {
+  "key": "on:792:2:label",
+  "text": "Pass around \"Broken Signal\""
+ },
+ {
+  "key": "on:792:2:run:1",
+  "text": "The ship's one printed copy of \"Broken Signal\" by Sef Anders does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:792:2:run:2",
+  "text": "The ship's one printed copy of \"Broken Signal\" by Sef Anders does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:804:1",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:804:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Ice Hauler Diaries\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:804:3",
+  "text": "[Feed] Ada Kessel denies that \"Letters to Pallas\" is about a real Compact admiral."
+ },
+ {
+  "key": "feed:804:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:804:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Tharsis Heights\" finale."
+ },
+ {
+  "key": "feed:804:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:804:7",
+  "text": "[Feed] The finale of \"Seven Decks\" is on this week. Half the system has cleared its schedule."
+ },
+ {
+  "key": "feed:804:8",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:804:9",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:804:10",
+  "text": "[Feed] \"Bright Station\" by Lio Parvez tops the reading lists again."
+ },
+ {
+  "key": "feed:804:11",
+  "text": "[Feed] Critics on Luna call \"Tharsis Heights\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:804:12",
+  "text": "[Feed] Kez Ghosh Trio play a surprise show at a smelter on Pallas, and the crowd sings every word back. The refinery has the footage."
+ },
+ {
+  "key": "headlines:804",
+  "text": "Watching: \"Seven Decks\", a comedy, the finale. | Watching: \"Ice Hauler Diaries\", a documentary, episode 7 of 8. | Watching: \"Tharsis Heights\", a station soap, episode 3 of 12. | Reading: \"Broken Signal\" by Sef Anders. | Reading: \"The Hollow Tide\" by Ruth Imanov. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: Playoffs: Ceres Breakers and Pallas Smelters. | Dome League: The season has just started. | Lunar Cup: off-season."
+ },
+ {
+  "key": "crewtalk:804",
+  "text": "Ana is dreading the finale of \"Seven Decks\" in their bunk. | Ana is halfway through \"Bright Station\" and keeps reading bits aloud. | Ben is halfway through \"Letters to Pallas\" and keeps reading bits aloud. | Cora is rewatching \"Tharsis Heights\" in their bunk. Again. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Ben is humming the theme from \"Seven Decks\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"Bright Station\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:804",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:804:0:label",
+  "text": "Watch \"Seven Decks\", the finale"
+ },
+ {
+  "key": "on:804:0:run:1",
+  "text": "You crowd into the galley for the finale of \"Seven Decks\", a comedy. Ana knows every line. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:804:0:run:2",
+  "text": "You crowd into the galley for the finale of \"Seven Decks\", a comedy. Ana knows every line. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:804:1:label",
+  "text": "Stream the Ring-ball League playoffs"
+ },
+ {
+  "key": "on:804:1:run:1",
+  "text": "The lagged stream from Luna comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 4 to 1. Ben is unbearable for the rest of the day."
+ },
+ {
+  "key": "on:804:1:run:2",
+  "text": "The lagged stream from Ceres comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 2 to 3. Ben takes it with some grace."
+ },
+ {
+  "key": "on:804:2:label",
+  "text": "Pass around \"Broken Signal\""
+ },
+ {
+  "key": "on:804:2:run:1",
+  "text": "The ship's one printed copy of \"Broken Signal\" by Sef Anders does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:804:2:run:2",
+  "text": "The ship's one printed copy of \"Broken Signal\" by Sef Anders does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:816:1",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:816:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Tharsis Heights\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:816:3",
+  "text": "[Feed] Ruo Faro and Leila Kowalski are feuding on the feeds again. It is the best thing on."
+ },
+ {
+  "key": "feed:816:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:816:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Tharsis Heights\" finale."
+ },
+ {
+  "key": "feed:816:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:816:7",
+  "text": "[Feed] Vesna and the Welders play a surprise show at a smelter on Pallas, and the crowd sings every word back. The refinery has the footage."
+ },
+ {
+  "key": "feed:816:8",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:816:9",
+  "text": "[Feed] \"The Drifting Harbor\" by The Ration Cards is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:816:10",
+  "text": "[Feed] \"Bright Station\" by Lio Parvez tops the reading lists again."
+ },
+ {
+  "key": "feed:816:11",
+  "text": "[Feed] Critics on Luna call \"Tharsis Heights\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:816:12",
+  "text": "[Feed] Somebody on Mars has started a podcast that only discusses one chapter of \"The Hollow Tide\", and it is somehow already on its ninth season."
+ },
+ {
+  "key": "headlines:816",
+  "text": "Watching: \"Tharsis Heights\", a station soap, episode 5 of 12. | Reading: \"Broken Signal\" by Sef Anders. | Reading: \"The Hollow Tide\" by Ruth Imanov. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: Playoffs: Ceres Breakers and Pallas Smelters. | Dome League: The season has just started. | Lunar Cup: preseason."
+ },
+ {
+  "key": "crewtalk:816",
+  "text": "Ana is halfway through \"Bright Station\" and keeps reading bits aloud. | Ben is halfway through \"Letters to Pallas\" and keeps reading bits aloud. | Cora is rewatching \"Tharsis Heights\" in their bunk. Again. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Ben is humming the theme from \"Tharsis Heights\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"Bright Station\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:816",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:816:0:label",
+  "text": "Watch \"Tharsis Heights\", episode 5"
+ },
+ {
+  "key": "on:816:0:run:1",
+  "text": "You crowd into the galley for episode 5 of \"Tharsis Heights\", a station soap. Cora knows every line. Ana falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:816:0:run:2",
+  "text": "You crowd into the galley for episode 5 of \"Tharsis Heights\", a station soap. Cora knows every line. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:816:1:label",
+  "text": "Stream the Ring-ball League playoffs"
+ },
+ {
+  "key": "on:816:1:run:1",
+  "text": "The lagged stream from Luna comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 4 to 1. Ben is unbearable for the rest of the day."
+ },
+ {
+  "key": "on:816:1:run:2",
+  "text": "The lagged stream from Ceres comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 2 to 3. Ben takes it with some grace."
+ },
+ {
+  "key": "on:816:2:label",
+  "text": "Pass around \"Broken Signal\""
+ },
+ {
+  "key": "on:816:2:run:1",
+  "text": "The ship's one printed copy of \"Broken Signal\" by Sef Anders does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:816:2:run:2",
+  "text": "The ship's one printed copy of \"Broken Signal\" by Sef Anders does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:828:1",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:828:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Tharsis Heights\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:828:3",
+  "text": "[Feed] Ruo Faro and Leila Kowalski are feuding on the feeds again. It is the best thing on."
+ },
+ {
+  "key": "feed:828:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:828:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Lagrange\" finale."
+ },
+ {
+  "key": "feed:828:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:828:7",
+  "text": "[Feed] Vesna and the Welders play a surprise show at a smelter on Pallas, and the crowd sings every word back. The refinery has the footage."
+ },
+ {
+  "key": "feed:828:8",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:828:9",
+  "text": "[Feed] \"The Drifting Harbor\" by The Ration Cards is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:828:10",
+  "text": "[Feed] \"Bright Station\" by Lio Parvez tops the reading lists again."
+ },
+ {
+  "key": "feed:828:11",
+  "text": "[Feed] Critics on Luna call \"Lagrange\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:828:12",
+  "text": "[Feed] Somebody on Mars has started a podcast that only discusses one chapter of \"The Hollow Tide\", and it is somehow already on its ninth season."
+ },
+ {
+  "key": "headlines:828",
+  "text": "Watching: \"Tharsis Heights\", a station soap, episode 6 of 12. | Watching: \"Lagrange\", a romance, episode 2 of 10. | Reading: \"Broken Signal\" by Sef Anders. | Reading: \"The Hollow Tide\" by Ruth Imanov. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: Playoffs: Ceres Breakers and Pallas Smelters. | Dome League: The season has just started. | Lunar Cup: preseason."
+ },
+ {
+  "key": "crewtalk:828",
+  "text": "Ana is halfway through \"Bright Station\" and keeps reading bits aloud. | Ben is rewatching \"Lagrange\" in their bunk. Again. | Ben is halfway through \"Letters to Pallas\" and keeps reading bits aloud. | Cora is rewatching \"Tharsis Heights\" in their bunk. Again. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Ben is humming the theme from \"Tharsis Heights\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"Bright Station\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:828",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:828:0:label",
+  "text": "Watch \"Tharsis Heights\", episode 6"
+ },
+ {
+  "key": "on:828:0:run:1",
+  "text": "You crowd into the galley for episode 6 of \"Tharsis Heights\", a station soap. Cora knows every line. Ana falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:828:0:run:2",
+  "text": "You crowd into the galley for episode 6 of \"Tharsis Heights\", a station soap. Cora knows every line. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:828:1:label",
+  "text": "Stream the Ring-ball League playoffs"
+ },
+ {
+  "key": "on:828:1:run:1",
+  "text": "The lagged stream from Luna comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 4 to 1. Ben is unbearable for the rest of the day."
+ },
+ {
+  "key": "on:828:1:run:2",
+  "text": "The lagged stream from Ceres comes in: Ceres Breakers against Pallas Smelters, ring-ball. Final score 2 to 3. Ben takes it with some grace."
+ },
+ {
+  "key": "on:828:2:label",
+  "text": "Pass around \"Broken Signal\""
+ },
+ {
+  "key": "on:828:2:run:1",
+  "text": "The ship's one printed copy of \"Broken Signal\" by Sef Anders does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:828:2:run:2",
+  "text": "The ship's one printed copy of \"Broken Signal\" by Sef Anders does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:840:1",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:840:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Tharsis Heights\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:840:3",
+  "text": "[Feed] Ruo Faro and Leila Kowalski are feuding on the feeds again. It is the best thing on."
+ },
+ {
+  "key": "feed:840:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:840:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Lagrange\" finale."
+ },
+ {
+  "key": "feed:840:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:840:7",
+  "text": "[Feed] Vesna and the Welders play a surprise show at a smelter on Pallas, and the crowd sings every word back. The refinery has the footage."
+ },
+ {
+  "key": "feed:840:8",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:840:9",
+  "text": "[Feed] \"The Drifting Harbor\" by The Ration Cards is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:840:10",
+  "text": "[Feed] \"Bright Station\" by Lio Parvez tops the reading lists again."
+ },
+ {
+  "key": "feed:840:11",
+  "text": "[Feed] Critics on Luna call \"Lagrange\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:840:12",
+  "text": "[Feed] Somebody on Mars has started a podcast that only discusses one chapter of \"The Hollow Tide\", and it is somehow already on its ninth season."
+ },
+ {
+  "key": "headlines:840",
+  "text": "Watching: \"Tharsis Heights\", a station soap, episode 8 of 12. | Watching: \"Lagrange\", a romance, episode 4 of 10. | Reading: \"Broken Signal\" by Sef Anders. | Reading: \"The Hollow Tide\" by Ruth Imanov. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: off-season. | Dome League: The season has just started. | Lunar Cup: preseason."
+ },
+ {
+  "key": "crewtalk:840",
+  "text": "Ana is halfway through \"Bright Station\" and keeps reading bits aloud. | Ben is rewatching \"Lagrange\" in their bunk. Again. | Ben is halfway through \"Letters to Pallas\" and keeps reading bits aloud. | Cora does not want to talk about the Valles Runners game. | Cora is rewatching \"Tharsis Heights\" in their bunk. Again. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Ana is humming the theme from \"Lagrange\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"Letters to Pallas\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:840",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:840:0:label",
+  "text": "Watch \"Tharsis Heights\", episode 8"
+ },
+ {
+  "key": "on:840:0:run:1",
+  "text": "You crowd into the galley for episode 8 of \"Tharsis Heights\", a station soap. Cora knows every line. Ana falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:840:0:run:2",
+  "text": "You crowd into the galley for episode 8 of \"Tharsis Heights\", a station soap. Cora knows every line. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:840:1:label",
+  "text": "Stream the Dome League match"
+ },
+ {
+  "key": "on:840:1:run:1",
+  "text": "The lagged stream from Europa comes in: Valles Runners against Hellas Diggers, dome hockey. Final score 1 to 3. Cora takes it with some grace."
+ },
+ {
+  "key": "on:840:1:run:2",
+  "text": "The lagged stream from Titan comes in: Valles Runners against Hellas Diggers, dome hockey. Final score 3 to 5. Cora takes it with some grace."
+ },
+ {
+  "key": "on:840:2:label",
+  "text": "Pass around \"Broken Signal\""
+ },
+ {
+  "key": "on:840:2:run:1",
+  "text": "The ship's one printed copy of \"Broken Signal\" by Sef Anders does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:840:2:run:2",
+  "text": "The ship's one printed copy of \"Broken Signal\" by Sef Anders does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:852:1",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:852:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Lagrange\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:852:3",
+  "text": "[Feed] \"Last Burn to Titan\" by Marek Oyelaran tops the reading lists again."
+ },
+ {
+  "key": "feed:852:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:852:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Dust Marshals\" finale."
+ },
+ {
+  "key": "feed:852:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:852:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:852:8",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:852:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:852:10",
+  "text": "[Feed] \"Drifting Rations\" by Cleo Brandt tops the reading lists again."
+ },
+ {
+  "key": "feed:852:11",
+  "text": "[Feed] Critics on Luna call \"Dust Marshals\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:852:12",
+  "text": "[Feed] Somebody on Mars has started a podcast that only discusses one chapter of \"What the Smelter Knew\", and it is somehow already on its ninth season."
+ },
+ {
+  "key": "headlines:852",
+  "text": "Watching: \"Tharsis Heights\", a station soap, episode 10 of 12. | Watching: \"Lagrange\", a romance, episode 6 of 10. | Watching: \"Dust Marshals\", a action serial, the premiere. | Reading: \"The Red Line\" by Tomas Eze. | Reading: \"What the Smelter Knew\" by Wen Halloran. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: off-season. | Dome League: The season has just started. | Lunar Cup: The season has just started."
+ },
+ {
+  "key": "crewtalk:852",
+  "text": "Ben is rewatching \"Lagrange\" in their bunk. Again. | Cora is rewatching \"Tharsis Heights\" in their bunk. Again. | Cora is halfway through \"Drifting Rations\" and keeps reading bits aloud. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Cora is humming the theme from \"Lagrange\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"Last Burn to Titan\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:852",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:852:0:label",
+  "text": "Watch \"Tharsis Heights\", episode 10"
+ },
+ {
+  "key": "on:852:0:run:1",
+  "text": "You crowd into the galley for episode 10 of \"Tharsis Heights\", a station soap. Cora knows every line. Ana falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:852:0:run:2",
+  "text": "You crowd into the galley for episode 10 of \"Tharsis Heights\", a station soap. Cora knows every line. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:852:1:label",
+  "text": "Stream the Dome League match"
+ },
+ {
+  "key": "on:852:1:run:1",
+  "text": "The lagged stream from Europa comes in: Valles Runners against Hellas Diggers, dome hockey. Final score 1 to 3. Cora takes it with some grace."
+ },
+ {
+  "key": "on:852:1:run:2",
+  "text": "The lagged stream from Titan comes in: Valles Runners against Hellas Diggers, dome hockey. Final score 3 to 5. Cora takes it with some grace."
+ },
+ {
+  "key": "on:852:2:label",
+  "text": "Pass around \"The Red Line\""
+ },
+ {
+  "key": "on:852:2:run:1",
+  "text": "The ship's one printed copy of \"The Red Line\" by Tomas Eze does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:852:2:run:2",
+  "text": "The ship's one printed copy of \"The Red Line\" by Tomas Eze does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:864:1",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:864:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Lagrange\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:864:3",
+  "text": "[Feed] Marek Oyelaran denies that \"Last Burn to Titan\" is about a real Compact admiral."
+ },
+ {
+  "key": "feed:864:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:864:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Dust Marshals\" finale."
+ },
+ {
+  "key": "feed:864:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:864:7",
+  "text": "[Feed] The finale of \"Tharsis Heights\" is on this week. Half the system has cleared its schedule."
+ },
+ {
+  "key": "feed:864:8",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:864:9",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:864:10",
+  "text": "[Feed] \"Drifting Rations\" by Cleo Brandt tops the reading lists again."
+ },
+ {
+  "key": "feed:864:11",
+  "text": "[Feed] Critics on Luna call \"Dust Marshals\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:864:12",
+  "text": "[Feed] Kez Ghosh Trio play a surprise show at a smelter on Pallas, and the crowd sings every word back. The refinery has the footage."
+ },
+ {
+  "key": "headlines:864",
+  "text": "Watching: \"Tharsis Heights\", a station soap, the finale. | Watching: \"Lagrange\", a romance, episode 7 of 10. | Watching: \"Dust Marshals\", a action serial, episode 3 of 10. | Reading: \"The Red Line\" by Tomas Eze. | Reading: \"What the Smelter Knew\" by Wen Halloran. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: off-season. | Dome League: The season has just started. | Lunar Cup: The season has just started."
+ },
+ {
+  "key": "crewtalk:864",
+  "text": "Ben is rewatching \"Lagrange\" in their bunk. Again. | Cora is dreading the finale of \"Tharsis Heights\" in their bunk. | Cora is halfway through \"Drifting Rations\" and keeps reading bits aloud. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Cora is humming the theme from \"Lagrange\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"Last Burn to Titan\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:864",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:864:0:label",
+  "text": "Watch \"Tharsis Heights\", the finale"
+ },
+ {
+  "key": "on:864:0:run:1",
+  "text": "You crowd into the galley for the finale of \"Tharsis Heights\", a station soap. Cora knows every line. Ana falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:864:0:run:2",
+  "text": "You crowd into the galley for the finale of \"Tharsis Heights\", a station soap. Cora knows every line. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:864:1:label",
+  "text": "Stream the Dome League match"
+ },
+ {
+  "key": "on:864:1:run:1",
+  "text": "The lagged stream from Europa comes in: Valles Runners against Hellas Diggers, dome hockey. Final score 1 to 3. Cora takes it with some grace."
+ },
+ {
+  "key": "on:864:1:run:2",
+  "text": "The lagged stream from Titan comes in: Valles Runners against Hellas Diggers, dome hockey. Final score 3 to 5. Cora takes it with some grace."
+ },
+ {
+  "key": "on:864:2:label",
+  "text": "Pass around \"The Red Line\""
+ },
+ {
+  "key": "on:864:2:run:1",
+  "text": "The ship's one printed copy of \"The Red Line\" by Tomas Eze does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:864:2:run:2",
+  "text": "The ship's one printed copy of \"The Red Line\" by Tomas Eze does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:876:1",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:876:2",
+  "text": "[Feed] Mei Brandvold and Zara Laszlo are feuding on the feeds again. It is the best thing on."
+ },
+ {
+  "key": "feed:876:3",
+  "text": "[Feed] Marek Oyelaran denies that \"Last Burn to Titan\" is about a real Compact admiral."
+ },
+ {
+  "key": "feed:876:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:876:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Dust Marshals\" finale."
+ },
+ {
+  "key": "feed:876:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:876:7",
+  "text": "[Feed] Tonight on every feed: \"Night of Dead Air\". Every channel goes to static at midnight, and then something comes through."
+ },
+ {
+  "key": "feed:876:8",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:876:9",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:876:10",
+  "text": "[Feed] \"Drifting Rations\" by Cleo Brandt tops the reading lists again."
+ },
+ {
+  "key": "feed:876:11",
+  "text": "[Feed] Critics on Luna call \"Dust Marshals\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:876:12",
+  "text": "[Feed] Kez Ghosh Trio play a surprise show at a smelter on Pallas, and the crowd sings every word back. The refinery has the footage."
+ },
+ {
+  "key": "headlines:876",
+  "text": "Tonight only: \"Night of Dead Air\". | Watching: \"Lagrange\", a romance, episode 9 of 10. | Watching: \"Dust Marshals\", a action serial, episode 5 of 10. | Reading: \"The Red Line\" by Tomas Eze. | Reading: \"What the Smelter Knew\" by Wen Halloran. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: off-season. | Dome League: The season has just started. | Lunar Cup: The season has just started."
+ },
+ {
+  "key": "crewtalk:876",
+  "text": "Ben is rewatching \"Lagrange\" in their bunk. Again. | Cora is halfway through \"Drifting Rations\" and keeps reading bits aloud. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Cora is humming the theme from \"Lagrange\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"Last Burn to Titan\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:876",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:876:0:label",
+  "text": "Watch \"Night of Dead Air\", tonight only"
+ },
+ {
+  "key": "on:876:0:run:1",
+  "text": "Everyone crowds into the galley for \"Night of Dead Air\". Every channel goes to static at midnight, and then something comes through. Nobody aboard is a fan, but nobody leaves, either. Ben complains the whole way through, and stays to the end."
+ },
+ {
+  "key": "on:876:0:run:2",
+  "text": "Everyone crowds into the galley for \"Night of Dead Air\". Every channel goes to static at midnight, and then something comes through. Nobody aboard is a fan, but nobody leaves, either. Cora complains the whole way through, and stays to the end."
+ },
+ {
+  "key": "on:876:1:label",
+  "text": "Watch \"Lagrange\", episode 9"
+ },
+ {
+  "key": "on:876:1:run:1",
+  "text": "You crowd into the galley for episode 9 of \"Lagrange\", a romance. Ben knows every line. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:876:1:run:2",
+  "text": "You crowd into the galley for episode 9 of \"Lagrange\", a romance. Ben knows every line. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:876:2:label",
+  "text": "Stream the Dome League match"
+ },
+ {
+  "key": "on:876:2:run:1",
+  "text": "The lagged stream from Europa comes in: Valles Runners against Hellas Diggers, dome hockey. Final score 1 to 3. Cora takes it with some grace."
+ },
+ {
+  "key": "on:876:2:run:2",
+  "text": "The lagged stream from Titan comes in: Valles Runners against Hellas Diggers, dome hockey. Final score 3 to 5. Cora takes it with some grace."
+ },
+ {
+  "key": "feed:888:1",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:888:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Dust Marshals\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:888:3",
+  "text": "[Feed] \"Last Burn to Titan\" by Marek Oyelaran tops the reading lists again."
+ },
+ {
+  "key": "feed:888:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:888:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Night Shift on Ceres\" finale."
+ },
+ {
+  "key": "feed:888:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:888:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:888:8",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:888:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:888:10",
+  "text": "[Feed] \"Drifting Rations\" by Cleo Brandt tops the reading lists again."
+ },
+ {
+  "key": "feed:888:11",
+  "text": "[Feed] Critics on Luna call \"Night Shift on Ceres\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:888:12",
+  "text": "[Feed] Somebody on Mars has started a podcast that only discusses one chapter of \"What the Smelter Knew\", and it is somehow already on its ninth season."
+ },
+ {
+  "key": "headlines:888",
+  "text": "Watching: \"Dust Marshals\", a action serial, episode 6 of 10. | Watching: \"Night Shift on Ceres\", a Warren noir, episode 2 of 12. | Reading: \"The Red Line\" by Tomas Eze. | Reading: \"What the Smelter Knew\" by Wen Halloran. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: off-season. | Dome League: The season has just started. | Lunar Cup: The season has just started."
+ },
+ {
+  "key": "crewtalk:888",
+  "text": "Cora is halfway through \"Drifting Rations\" and keeps reading bits aloud. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Cora is humming the theme from \"Dust Marshals\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"Last Burn to Titan\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:888",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:888:0:label",
+  "text": "Watch \"Dust Marshals\", episode 6"
+ },
+ {
+  "key": "on:888:0:run:1",
+  "text": "You crowd into the galley for episode 6 of \"Dust Marshals\", a action serial. Nobody is a fan. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:888:0:run:2",
+  "text": "You crowd into the galley for episode 6 of \"Dust Marshals\", a action serial. Nobody is a fan. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:888:1:label",
+  "text": "Stream the Dome League match"
+ },
+ {
+  "key": "on:888:1:run:1",
+  "text": "The lagged stream from Europa comes in: Valles Runners against Hellas Diggers, dome hockey. Final score 1 to 3. Cora takes it with some grace."
+ },
+ {
+  "key": "on:888:1:run:2",
+  "text": "The lagged stream from Titan comes in: Valles Runners against Hellas Diggers, dome hockey. Final score 3 to 5. Cora takes it with some grace."
+ },
+ {
+  "key": "on:888:2:label",
+  "text": "Pass around \"The Red Line\""
+ },
+ {
+  "key": "on:888:2:run:1",
+  "text": "The ship's one printed copy of \"The Red Line\" by Tomas Eze does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:888:2:run:2",
+  "text": "The ship's one printed copy of \"The Red Line\" by Tomas Eze does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:900:1",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:900:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Dust Marshals\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:900:3",
+  "text": "[Feed] \"Last Burn to Titan\" by Marek Oyelaran tops the reading lists again."
+ },
+ {
+  "key": "feed:900:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:900:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Night Shift on Ceres\" finale."
+ },
+ {
+  "key": "feed:900:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:900:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:900:8",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:900:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:900:10",
+  "text": "[Feed] \"Drifting Rations\" by Cleo Brandt tops the reading lists again."
+ },
+ {
+  "key": "feed:900:11",
+  "text": "[Feed] Critics on Luna call \"Night Shift on Ceres\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:900:12",
+  "text": "[Feed] Somebody on Mars has started a podcast that only discusses one chapter of \"What the Smelter Knew\", and it is somehow already on its ninth season."
+ },
+ {
+  "key": "headlines:900",
+  "text": "Watching: \"Dust Marshals\", a action serial, episode 8 of 10. | Watching: \"Night Shift on Ceres\", a Warren noir, episode 4 of 12. | Reading: \"The Red Line\" by Tomas Eze. | Reading: \"What the Smelter Knew\" by Wen Halloran. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: off-season. | Dome League: The season has just started. | Lunar Cup: The season has just started."
+ },
+ {
+  "key": "crewtalk:900",
+  "text": "Cora is halfway through \"Drifting Rations\" and keeps reading bits aloud. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Cora is humming the theme from \"Dust Marshals\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"Last Burn to Titan\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:900",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:900:0:label",
+  "text": "Watch \"Dust Marshals\", episode 8"
+ },
+ {
+  "key": "on:900:0:run:1",
+  "text": "You crowd into the galley for episode 8 of \"Dust Marshals\", a action serial. Nobody is a fan. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:900:0:run:2",
+  "text": "You crowd into the galley for episode 8 of \"Dust Marshals\", a action serial. Nobody is a fan. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:900:1:label",
+  "text": "Stream the Dome League match"
+ },
+ {
+  "key": "on:900:1:run:1",
+  "text": "The lagged stream from Europa comes in: Valles Runners against Hellas Diggers, dome hockey. Final score 1 to 3. Cora takes it with some grace."
+ },
+ {
+  "key": "on:900:1:run:2",
+  "text": "The lagged stream from Titan comes in: Valles Runners against Hellas Diggers, dome hockey. Final score 3 to 5. Cora takes it with some grace."
+ },
+ {
+  "key": "on:900:2:label",
+  "text": "Pass around \"The Red Line\""
+ },
+ {
+  "key": "on:900:2:run:1",
+  "text": "The ship's one printed copy of \"The Red Line\" by Tomas Eze does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:900:2:run:2",
+  "text": "The ship's one printed copy of \"The Red Line\" by Tomas Eze does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:912:1",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:912:2",
+  "text": "[Feed] Zara Laszlo walked off the set of \"Night Shift on Ceres\" after a fight about the lighting."
+ },
+ {
+  "key": "feed:912:3",
+  "text": "[Feed] Marek Oyelaran denies that \"Last Burn to Titan\" is about a real Compact admiral."
+ },
+ {
+  "key": "feed:912:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:912:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Letters from Luna\" finale."
+ },
+ {
+  "key": "feed:912:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:912:7",
+  "text": "[Feed] The finale of \"Dust Marshals\" is on this week. Half the system has cleared its schedule."
+ },
+ {
+  "key": "feed:912:8",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:912:9",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:912:10",
+  "text": "[Feed] \"Drifting Rations\" by Cleo Brandt tops the reading lists again."
+ },
+ {
+  "key": "feed:912:11",
+  "text": "[Feed] Critics on Luna call \"Letters from Luna\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:912:12",
+  "text": "[Feed] Kez Ghosh Trio play a surprise show at a smelter on Pallas, and the crowd sings every word back. The refinery has the footage."
+ },
+ {
+  "key": "headlines:912",
+  "text": "Watching: \"Dust Marshals\", a action serial, the finale. | Watching: \"Night Shift on Ceres\", a Warren noir, episode 6 of 12. | Watching: \"Letters from Luna\", a romance, the premiere. | Reading: \"The Red Line\" by Tomas Eze. | Reading: \"What the Smelter Knew\" by Wen Halloran. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: off-season. | Dome League: The season has just started. | Lunar Cup: The season has just started."
+ },
+ {
+  "key": "crewtalk:912",
+  "text": "Ben is rewatching \"Letters from Luna\" in their bunk. Again. | Cora is halfway through \"Drifting Rations\" and keeps reading bits aloud. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Cora is humming the theme from \"Night Shift on Ceres\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"Last Burn to Titan\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:912",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:912:0:label",
+  "text": "Watch \"Dust Marshals\", the finale"
+ },
+ {
+  "key": "on:912:0:run:1",
+  "text": "You crowd into the galley for the finale of \"Dust Marshals\", a action serial. Nobody is a fan. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:912:0:run:2",
+  "text": "You crowd into the galley for the finale of \"Dust Marshals\", a action serial. Nobody is a fan. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:912:1:label",
+  "text": "Stream the Dome League match"
+ },
+ {
+  "key": "on:912:1:run:1",
+  "text": "The lagged stream from Europa comes in: Valles Runners against Hellas Diggers, dome hockey. Final score 1 to 3. Cora takes it with some grace."
+ },
+ {
+  "key": "on:912:1:run:2",
+  "text": "The lagged stream from Titan comes in: Valles Runners against Hellas Diggers, dome hockey. Final score 3 to 5. Cora takes it with some grace."
+ },
+ {
+  "key": "on:912:2:label",
+  "text": "Pass around \"The Red Line\""
+ },
+ {
+  "key": "on:912:2:run:1",
+  "text": "The ship's one printed copy of \"The Red Line\" by Tomas Eze does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:912:2:run:2",
+  "text": "The ship's one printed copy of \"The Red Line\" by Tomas Eze does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:924:1",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:924:2",
+  "text": "[Feed] Mei Brandvold and Zara Laszlo are feuding on the feeds again. It is the best thing on."
+ },
+ {
+  "key": "feed:924:3",
+  "text": "[Feed] \"Last Burn to Titan\" by Marek Oyelaran tops the reading lists again."
+ },
+ {
+  "key": "feed:924:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:924:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Letters from Luna\" finale."
+ },
+ {
+  "key": "feed:924:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:924:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:924:8",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:924:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:924:10",
+  "text": "[Feed] \"Drifting Rations\" by Cleo Brandt tops the reading lists again."
+ },
+ {
+  "key": "feed:924:11",
+  "text": "[Feed] Critics on Luna call \"Letters from Luna\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:924:12",
+  "text": "[Feed] Kez Ghosh Trio play a surprise show at a smelter on Pallas, and the crowd sings every word back. The refinery has the footage."
+ },
+ {
+  "key": "headlines:924",
+  "text": "Watching: \"Night Shift on Ceres\", a Warren noir, episode 7 of 12. | Watching: \"Letters from Luna\", a romance, episode 3 of 10. | Reading: \"The Red Line\" by Tomas Eze. | Reading: \"What the Smelter Knew\" by Wen Halloran. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: off-season. | Dome League: Playoffs: Tharsis Red Tide and Hellas Diggers. | Lunar Cup: The season has just started."
+ },
+ {
+  "key": "crewtalk:924",
+  "text": "Ben is rewatching \"Letters from Luna\" in their bunk. Again. | Cora is halfway through \"Drifting Rations\" and keeps reading bits aloud. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Ben is humming the theme from \"Night Shift on Ceres\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"Drifting Rations\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:924",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:924:0:label",
+  "text": "Watch \"Night Shift on Ceres\", episode 7"
+ },
+ {
+  "key": "on:924:0:run:1",
+  "text": "You crowd into the galley for episode 7 of \"Night Shift on Ceres\", a Warren noir. Nobody is a fan. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:924:0:run:2",
+  "text": "You crowd into the galley for episode 7 of \"Night Shift on Ceres\", a Warren noir. Nobody is a fan. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:924:1:label",
+  "text": "Stream the Dome League playoffs"
+ },
+ {
+  "key": "on:924:1:run:1",
+  "text": "The lagged stream from Luna comes in: Tharsis Red Tide against Hellas Diggers, dome hockey. Final score 4 to 1. Nobody aboard cares who wins, so everyone picks a side for the fun of it."
+ },
+ {
+  "key": "on:924:1:run:2",
+  "text": "The lagged stream from Ceres comes in: Tharsis Red Tide against Hellas Diggers, dome hockey. Final score 2 to 3. Nobody aboard cares who wins, so everyone picks a side for the fun of it."
+ },
+ {
+  "key": "on:924:2:label",
+  "text": "Pass around \"The Red Line\""
+ },
+ {
+  "key": "on:924:2:run:1",
+  "text": "The ship's one printed copy of \"The Red Line\" by Tomas Eze does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:924:2:run:2",
+  "text": "The ship's one printed copy of \"The Red Line\" by Tomas Eze does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:936:1",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:936:2",
+  "text": "[Feed] Mei Brandvold and Zara Laszlo are feuding on the feeds again. It is the best thing on."
+ },
+ {
+  "key": "feed:936:3",
+  "text": "[Feed] \"Last Burn to Titan\" by Marek Oyelaran tops the reading lists again."
+ },
+ {
+  "key": "feed:936:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:936:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Letters from Luna\" finale."
+ },
+ {
+  "key": "feed:936:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:936:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:936:8",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:936:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:936:10",
+  "text": "[Feed] \"Drifting Rations\" by Cleo Brandt tops the reading lists again."
+ },
+ {
+  "key": "feed:936:11",
+  "text": "[Feed] Critics on Luna call \"Letters from Luna\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:936:12",
+  "text": "[Feed] Kez Ghosh Trio play a surprise show at a smelter on Pallas, and the crowd sings every word back. The refinery has the footage."
+ },
+ {
+  "key": "headlines:936",
+  "text": "Watching: \"Night Shift on Ceres\", a Warren noir, episode 9 of 12. | Watching: \"Letters from Luna\", a romance, episode 5 of 10. | Reading: \"The Red Line\" by Tomas Eze. | Reading: \"What the Smelter Knew\" by Wen Halloran. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: off-season. | Dome League: Playoffs: Tharsis Red Tide and Hellas Diggers. | Lunar Cup: The season has just started."
+ },
+ {
+  "key": "crewtalk:936",
+  "text": "Ben is rewatching \"Letters from Luna\" in their bunk. Again. | Cora is halfway through \"Drifting Rations\" and keeps reading bits aloud. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Ben is humming the theme from \"Night Shift on Ceres\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"Drifting Rations\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:936",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:936:0:label",
+  "text": "Watch \"Night Shift on Ceres\", episode 9"
+ },
+ {
+  "key": "on:936:0:run:1",
+  "text": "You crowd into the galley for episode 9 of \"Night Shift on Ceres\", a Warren noir. Nobody is a fan. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:936:0:run:2",
+  "text": "You crowd into the galley for episode 9 of \"Night Shift on Ceres\", a Warren noir. Nobody is a fan. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:936:1:label",
+  "text": "Stream the Dome League playoffs"
+ },
+ {
+  "key": "on:936:1:run:1",
+  "text": "The lagged stream from Luna comes in: Tharsis Red Tide against Hellas Diggers, dome hockey. Final score 4 to 1. Nobody aboard cares who wins, so everyone picks a side for the fun of it."
+ },
+ {
+  "key": "on:936:1:run:2",
+  "text": "The lagged stream from Ceres comes in: Tharsis Red Tide against Hellas Diggers, dome hockey. Final score 2 to 3. Nobody aboard cares who wins, so everyone picks a side for the fun of it."
+ },
+ {
+  "key": "on:936:2:label",
+  "text": "Pass around \"The Red Line\""
+ },
+ {
+  "key": "on:936:2:run:1",
+  "text": "The ship's one printed copy of \"The Red Line\" by Tomas Eze does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:936:2:run:2",
+  "text": "The ship's one printed copy of \"The Red Line\" by Tomas Eze does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:948:1",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:948:2",
+  "text": "[Feed] Mei Brandvold and Zara Laszlo are feuding on the feeds again. It is the best thing on."
+ },
+ {
+  "key": "feed:948:3",
+  "text": "[Feed] Pilar Nakamura denies that \"A Garden at Hellas\" is about a real Compact admiral."
+ },
+ {
+  "key": "feed:948:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:948:5",
+  "text": "[Feed] The Ring-ball League is back in a few weeks, and the Pallas Smelters have signed a new striker, or so they say."
+ },
+ {
+  "key": "feed:948:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:948:7",
+  "text": "[Feed] \"Cold Harbor Blues\" premieres this week, and the feeds are already calling it the show of the year."
+ },
+ {
+  "key": "feed:948:8",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:948:9",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:948:10",
+  "text": "[Feed] Episode 1 of \"Cold Harbor Blues\" ends on a cliffhanger. Half the Belt is furious."
+ },
+ {
+  "key": "feed:948:11",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:948:12",
+  "text": "[Feed] Kez Ghosh Trio play a surprise show at a smelter on Pallas, and the crowd sings every word back. The refinery has the footage."
+ },
+ {
+  "key": "headlines:948",
+  "text": "Watching: \"Cold Harbor Blues\", a Warren noir, the premiere. | Watching: \"Night Shift on Ceres\", a Warren noir, episode 11 of 12. | Watching: \"Letters from Luna\", a romance, episode 6 of 10. | Reading: \"The Salt Orbit\" by Imre Vallis. | Reading: \"Borrowed Water\" by Dunya Okafor. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: preseason. | Dome League: Playoffs: Tharsis Red Tide and Hellas Diggers. | Lunar Cup: The season has just started."
+ },
+ {
+  "key": "crewtalk:948",
+  "text": "Ben is rewatching \"Letters from Luna\" in their bunk. Again. | Ben is halfway through \"A Garden at Hellas\" and keeps reading bits aloud. | Cora is halfway through \"Borrowed Water\" and keeps reading bits aloud. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Ben is humming the theme from \"Cold Harbor Blues\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"Iron Promise\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:948",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:948:0:label",
+  "text": "Watch \"Cold Harbor Blues\", the premiere"
+ },
+ {
+  "key": "on:948:0:run:1",
+  "text": "You crowd into the galley for the premiere of \"Cold Harbor Blues\", a Warren noir. Nobody is a fan. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:948:0:run:2",
+  "text": "You crowd into the galley for the premiere of \"Cold Harbor Blues\", a Warren noir. Nobody is a fan. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:948:1:label",
+  "text": "Stream the Dome League playoffs"
+ },
+ {
+  "key": "on:948:1:run:1",
+  "text": "The lagged stream from Luna comes in: Tharsis Red Tide against Hellas Diggers, dome hockey. Final score 4 to 1. Nobody aboard cares who wins, so everyone picks a side for the fun of it."
+ },
+ {
+  "key": "on:948:1:run:2",
+  "text": "The lagged stream from Ceres comes in: Tharsis Red Tide against Hellas Diggers, dome hockey. Final score 2 to 3. Nobody aboard cares who wins, so everyone picks a side for the fun of it."
+ },
+ {
+  "key": "on:948:2:label",
+  "text": "Pass around \"The Salt Orbit\""
+ },
+ {
+  "key": "on:948:2:run:1",
+  "text": "The ship's one printed copy of \"The Salt Orbit\" by Imre Vallis does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:948:2:run:2",
+  "text": "The ship's one printed copy of \"The Salt Orbit\" by Imre Vallis does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:960:1",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:960:2",
+  "text": "[Feed] Mei Brandvold and Zara Laszlo are feuding on the feeds again. It is the best thing on."
+ },
+ {
+  "key": "feed:960:3",
+  "text": "[Feed] \"A Garden at Hellas\" by Pilar Nakamura tops the reading lists again."
+ },
+ {
+  "key": "feed:960:4",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:960:5",
+  "text": "[Feed] The Ring-ball League is back in a few weeks, and the Pallas Smelters have signed a new striker, or so they say."
+ },
+ {
+  "key": "feed:960:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:960:7",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:960:8",
+  "text": "[Feed] Weather on Earth: rain for the ninth day running. The feeds, by popular demand, have started a rain channel, and it is astonishingly popular in the Belt."
+ },
+ {
+  "key": "feed:960:9",
+  "text": "[Feed] A cover of \"The Drifting Harbor\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:960:10",
+  "text": "[Feed] Episode 3 of \"Cold Harbor Blues\" ends on a cliffhanger. Half the Belt is furious."
+ },
+ {
+  "key": "feed:960:11",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:960:12",
+  "text": "[Feed] Somebody on Mars has started a podcast that only discusses one chapter of \"Borrowed Water\", and it is somehow already on its ninth season."
+ },
+ {
+  "key": "headlines:960",
+  "text": "Watching: \"Cold Harbor Blues\", a Warren noir, episode 3 of 10. | Watching: \"Night Shift on Ceres\", a Warren noir, the finale. | Watching: \"Letters from Luna\", a romance, episode 8 of 10. | Reading: \"The Salt Orbit\" by Imre Vallis. | Reading: \"Borrowed Water\" by Dunya Okafor. | Listening: \"Beyond Ceres\" by Hollow Moons. | Ring-ball League: preseason. | Dome League: off-season. | Lunar Cup: The season has just started."
+ },
+ {
+  "key": "crewtalk:960",
+  "text": "Ana: \"Lagos Orbitals, 3 to 1!\" | Ben is rewatching \"Letters from Luna\" in their bunk. Again. | Ben is halfway through \"A Garden at Hellas\" and keeps reading bits aloud. | Cora is halfway through \"Borrowed Water\" and keeps reading bits aloud. | Someone has had \"Beyond Ceres\" stuck in their head since the last port, and now so does everyone. | Ana is humming the theme from \"Night Shift on Ceres\" in the corridor, and does not know they are doing it. | The galley wall now has a hand-lettered ring-ball league table, and it is being updated with a great deal of feeling. | There is a heated, low-voiced debate in the galley about whether \"A Garden at Hellas\" is better than the vid. It has been going on since breakfast. | Somebody has left a mug of cold tea on every flat surface in the ship, and nobody will admit to it. | Ana and Ben have pushed their bunks together. Nobody says anything. | Ana saved Ben the last of the good coffee. | Ana and Cora are laughing at something on Ana's terminal. | Ana is teaching Cora a card game from Luna. | Ben and Cora are not speaking. It is a small ship. | Ben ate Cora's labeled rations. On purpose, according to Cora."
+ },
+ {
+  "key": "bonds:960",
+  "text": "<h3>Aboard</h3><div class=\"hint\">Ana and Ben: close</div><div class=\"hint\">Ana and Cora: friends</div><div class=\"hint\">Ben and Cora: rivals</div><p class=\"hint\">Likes: Ana (comedy, Lagos Orbitals); Ben (romance, Ceres Breakers); Cora (station soap, Valles Runners).</p>"
+ },
+ {
+  "key": "on:960:0:label",
+  "text": "Watch \"Cold Harbor Blues\", episode 3"
+ },
+ {
+  "key": "on:960:0:run:1",
+  "text": "You crowd into the galley for episode 3 of \"Cold Harbor Blues\", a Warren noir. Nobody is a fan. Ben falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:960:0:run:2",
+  "text": "You crowd into the galley for episode 3 of \"Cold Harbor Blues\", a Warren noir. Nobody is a fan. Cora falls asleep before the first act break. Ben and Cora argue about the ending for an hour, which is almost friendly."
+ },
+ {
+  "key": "on:960:1:label",
+  "text": "Stream the Lunar Cup match"
+ },
+ {
+  "key": "on:960:1:run:1",
+  "text": "The lagged stream from Europa comes in: Lagos Orbitals against Tycho Wanderers, low-g football. Final score 1 to 2. Ana takes it with some grace."
+ },
+ {
+  "key": "on:960:1:run:2",
+  "text": "The lagged stream from Ceres comes in: Lagos Orbitals against Titan Frost, low-g football. Final score 5 to 1. Ana is unbearable for the rest of the day."
+ },
+ {
+  "key": "on:960:2:label",
+  "text": "Pass around \"The Salt Orbit\""
+ },
+ {
+  "key": "on:960:2:run:1",
+  "text": "The ship's one printed copy of \"The Salt Orbit\" by Imre Vallis does the rounds. Ben leaves pointed notes in the margins."
+ },
+ {
+  "key": "on:960:2:run:2",
+  "text": "The ship's one printed copy of \"The Salt Orbit\" by Imre Vallis does the rounds. Cora leaves pointed notes in the margins."
+ },
+ {
+  "key": "feed:war:1",
+  "text": "[Feed] \"Beyond Ceres\" by Hollow Moons is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:war:2",
+  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"the best thing since the Belt Wars series\"."
+ },
+ {
+  "key": "feed:war:3",
+  "text": "[Feed] Jabari Quill denies that \"The Long Horizon\" is about a real Compact admiral."
+ },
+ {
+  "key": "feed:war:4",
+  "text": "[Feed] Episode 6 of \"Belt Wars\" ends on a cliffhanger. Half the Belt is furious."
+ },
+ {
+  "key": "feed:war:5",
+  "text": "[Feed] A leaked script says Ruo Jansen-Ruiz's character dies in the \"Thin Air\" finale."
+ },
+ {
+  "key": "feed:war:6",
+  "text": "[Feed] Noor Ibarra, star of \"Thin Air\", was spotted on the Belt with Dru Tembo. Nobody is confirming anything."
+ },
+ {
+  "key": "feed:war:7",
+  "text": "[Feed] War dramas are all anyone in Mars space watches now, and the Belt feeds are no better."
+ },
+ {
+  "key": "feed:war:8",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:war:9",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:war:10",
+  "text": "[Feed] \"Ice Lanes\" by Hanne Roka tops the reading lists again."
+ },
+ {
+  "key": "feed:war:11",
+  "text": "[Feed] Critics on Luna call \"Thin Air\" \"two hours I want back\"."
+ },
+ {
+  "key": "feed:war:12",
+  "text": "[Feed] Ravi Petrov, star of \"The Long Burn\", was spotted on Luna with Yuri Esteban-Li. Nobody is confirming anything."
+ },
+ {
+  "key": "feed:war:13",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:war:14",
+  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"a triumph\"."
+ },
+ {
+  "key": "feed:war:15",
+  "text": "[Feed] The feeds report that the water price on Ceres has become, once more, the only story anyone wants to talk about."
+ },
+ {
+  "key": "feed:war:16",
+  "text": "[Feed] A new food craze sweeps the outer stations: it is noodles, again, but this time with, of all things, cheese."
+ },
+ {
+  "key": "feed:war:17",
+  "text": "[Feed] Hollow Moons cancel their Ceres concert, citing \"water ration reasons\"."
+ },
+ {
+  "key": "feed:war:18",
+  "text": "[Feed] A leaked script says Esa Chu-Okoro's character dies in the \"The Long Burn\" finale."
+ },
+ {
+  "key": "feed:war:19",
+  "text": "[Feed] Lolo Kalu, star of \"Thin Air\", was spotted on Hygiea with Kwame Novak. Nobody is confirming anything."
+ },
+ {
+  "key": "feed:war:20",
+  "text": "[Feed] Hollow Moons cancel their Ceres concert, citing \"water ration reasons\"."
+ },
+ {
+  "key": "feed:gossip:1",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:gossip:2",
+  "text": "[Feed] Hanne Roka announces a sequel to \"Ice Lanes\", and a small riot breaks out in a bookshop on Luna."
+ },
+ {
+  "key": "feed:gossip:3",
+  "text": "[Feed] A leaked script says Leila Kowalski's character dies in the \"The Long Burn\" finale."
+ },
+ {
+  "key": "feed:gossip:4",
+  "text": "[Feed] Somebody in the Compact's press office accidentally posts the wrong file, and spends an afternoon being the most-quoted person in the system."
+ },
+ {
+  "key": "feed:gossip:5",
+  "text": "[Feed] Dock gossip from Mars: Pia Rowe is still telling anyone who listens, \"You lent me a coat.\""
+ },
+ {
+  "key": "feed:gossip:6",
+  "text": "[Feed] \"Cold Station\" by Dust Choir is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:gossip:7",
+  "text": "[Feed] A cover of \"The Cold Water\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:gossip:8",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:gossip:9",
+  "text": "[Feed] \"The Drifting Harbor\" by The Ration Cards is on every station playlist from Mercury to Titan."
+ },
+ {
+  "key": "feed:gossip:10",
+  "text": "[Feed] Episode 10 of \"The Long Burn\" ends on a cliffhanger. Half the Belt is furious."
+ },
+ {
+  "key": "feed:gossip:11",
+  "text": "[Feed] An old Belt comedian retires, after fifty years, with a last show that ends with a joke about recyclers. Every station stops to watch."
+ },
+ {
+  "key": "feed:gossip:12",
+  "text": "[Feed] Mina Costa announces a sequel to \"Rations and Other Lies\", and a small riot breaks out in a bookshop on Luna."
+ },
+ {
+  "key": "feed:gossip:13",
+  "text": "[Feed] Priya Osei and Samuel Petrov are feuding on the feeds again. It is the best thing on."
+ },
+ {
+  "key": "feed:gossip:14",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:gossip:15",
+  "text": "[Feed] Hanne Roka denies that \"Ice Lanes\" is about a real Compact admiral."
+ },
+ {
+  "key": "feed:gossip:16",
+  "text": "[Feed] \"The Long Horizon\" by Jabari Quill tops the reading lists again."
+ },
+ {
+  "key": "feed:gossip:17",
+  "text": "[Feed] Somebody in the Compact's press office accidentally posts the wrong file, and spends an afternoon being the most-quoted person in the system."
+ },
+ {
+  "key": "feed:gossip:18",
+  "text": "[Feed] The finale of \"The Long Burn\" is on this week. Half the system has cleared its schedule."
+ },
+ {
+  "key": "feed:gossip:19",
+  "text": "[Feed] A long, gentle documentary about the ice haulers of Europa is being watched on every ship in the outer system. It has no plot. People are crying anyway."
+ },
+ {
+  "key": "feed:gossip:20",
+  "text": "[Feed] A bootleg cut of \"Thin Air\" is doing the rounds on the Belt stations, with a much better ending and a much worse soundtrack."
+ },
+ {
+  "key": "cards:1",
+  "text": "Cora takes the pot, and 200 cr of yours with it. Over the last hand you hear the ship's gossip: Ben is humming the theme from \"The Long Burn\" in the corridor, and does not know they are doing it."
+ },
+ {
+  "key": "cards:2",
+  "text": "Ben takes the pot, and 200 cr of yours with it. Over the last hand you hear the ship's gossip: Ana and Cora are laughing at something on Ana's terminal."
+ },
+ {
+  "key": "cards:3",
+  "text": "Ben takes the pot, and 200 cr of yours with it. Over the last hand you hear the ship's gossip: Ana and Cora are laughing at something on Ana's terminal."
+ },
+ {
+  "key": "cards:4",
+  "text": "You clean everyone out for 400 cr. Ana swears the deck is marked. It isn't. Probably."
+ },
+ {
+  "key": "cards:5",
+  "text": "You clean everyone out for 400 cr. Cora swears the deck is marked. It isn't. Probably."
+ },
+ {
+  "key": "cards:6",
+  "text": "Ana takes the pot, and 100 cr of yours with it. Over the last hand you hear the ship's gossip: Ben and Cora are not speaking. It is a small ship."
+ },
+ {
+  "key": "cards:7",
+  "text": "Ben takes the pot, and 200 cr of yours with it. Over the last hand you hear the ship's gossip: Ana is halfway through \"Rations and Other Lies\" and keeps reading bits aloud."
+ },
+ {
+  "key": "cards:8",
+  "text": "Ben takes the pot, and 400 cr of yours with it. Over the last hand you hear the ship's gossip: Ana and Cora are laughing at something on Ana's terminal."
+ },
+ {
+  "key": "bondword:-8",
+  "text": "can't stand each other"
+ },
+ {
+  "key": "bondword:-4",
+  "text": "rivals"
+ },
+ {
+  "key": "bondword:-2",
+  "text": "prickly"
+ },
+ {
+  "key": "bondword:-0.5",
+  "text": null
+ },
+ {
+  "key": "bondword:0",
+  "text": null
+ },
+ {
+  "key": "bondword:0.5",
+  "text": null
+ },
+ {
+  "key": "bondword:1.5",
+  "text": "friendly"
+ },
+ {
+  "key": "bondword:4",
+  "text": "friends"
+ },
+ {
+  "key": "bondword:7",
+  "text": "close"
+ }
+]
