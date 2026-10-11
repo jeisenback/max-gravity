@@ -400,7 +400,7 @@ function dealScene(planet) {
   return tomas ? {
     title: say('tomas.title'), personal: true,
     text: say('tomas.text', { fault: say('tomas.fault'), debt: h.debt > 0 ? say('tomas.debt.owed', { debt: fmt(h.debt) }) : say('tomas.debt.clear'), tell: say(`tomas.tell.${tellKey}`) }),
-    choices: [{ label: say('tomas.c0.label'), run() { like(tomas, 1, 'The captain walked the Ore Runner with me, and listened.'); return say('tomas.c0.result'); } }],
+    choices: [{ label: say('tomas.c0.label'), run() { like(tomas, 1, say('tomas.c0.memory')); return say('tomas.c0.result'); } }],
   } : {
     title: say('broker.title'), personal: true,
     text: say('broker.text'),

@@ -59,6 +59,9 @@ const SCENE_LINES = {
     'c0.label': 'Say you will do better', 'c0.result': '"Then do," the captain says, and goes down the ramp.',
     'c1.label': 'Apologize for the worst of it', 'c1.result': 'You name two things, the log and the order, and say you were wrong in both. The captain listens to the end. "That is said, then," the captain says.',
     'c2.label': 'Say the captain has been unfair', 'c2.result': '"Unfair," the captain says. The captain looks at you across the hold. "We will see," the captain says.',
+    'c0.memory': 'You said you would do better, and said it plainly.',
+    'c1.memory': 'You named what you got wrong and apologized for it.',
+    'c2.memory': 'You told me I had been unfair.',
   },
   'scene:put-ashore': {
     title: 'Put Ashore',
@@ -85,6 +88,9 @@ const SCENE_LINES = {
     'let.result': '{gone} takes a bag and goes down the ramp without looking round. {stays} watches the ramp until it is clear. By the next watch bell a new {job}, {new}, has signed on for the berth.',
     'keep.label': 'Keep both',
     'keep.result': '"Then we all sail," you say. Neither of them answers. At the next watch they take opposite ends of the galley.',
+    'keep.memory': 'You made me stay on a ship with {other}.',
+    'let.memory': '{other} and I could not share a ship, and you let me go.',
+    'kept.memory': 'You kept me aboard when {other} and I could not share a ship.',
   },
   'scene:walk-off': {  // the lines each person leaves are in their own entry (cast.js, captains/cato.js), and are listed with these (walkOffLines)
     title: 'Gone Ashore',
@@ -105,6 +111,7 @@ const SCENE_LINES = {
     'broker.text': 'A broker at the yard office has been watching the board for someone with savings. "There is a used Ore Runner on the apron," the broker says. "Three owners, a lot of repairs, and the last one let her go. Her fire control is poor and her life support is tired. The yard will not warrant either. {price} cr, as she stands. Give it a few weeks and somebody else will have her."',
     'broker.c0.label': 'Look her over',
     'broker.c0.result': 'You walk the apron with the broker and look her over. She is worn, and she is a ship. She is on the yard list now, as the used Ore Runner, until about day {until}.',
+    'tomas.c0.memory': 'The captain walked the Ore Runner with me, and listened.',
   },
   'scene:yard-office': {
     title: 'The Yard Office',
@@ -217,6 +224,10 @@ const SCENE_LINES = {
     'c1.result': 'You take {mate} through a full watch at your post and say each step before you do it. By the end they have stopped saying soft.',
     'c2.label': 'Let it go',
     'c2.result': 'You let it go, and finish your tea, and the table moves on.',
+    'c2.result.memory': 'You let a needling go.',
+    'c1.result.memory': 'You took me through your post, one step at a time.',
+    'c0.lose.memory': 'You tried to prove a point about your post and it went badly.',
+    'c0.win.memory': 'You showed me what the post is really like.',
   },
   'hired:crew-cards': {
     title: 'Card Night',
@@ -226,6 +237,9 @@ const SCENE_LINES = {
     'c0.lose': 'You lose the hand, and {mate} pushes your last coin back across the felt with a grin. "Come again," they say. You are fifty credits poorer.',
     'c1.label': 'Watch from the side',
     'c1.result': 'You watch from the end of the bench, with your tea, and enjoy the argument more than the cards.',
+    'c1.result.memory': 'You watched the card game and kept your credits.',
+    'c0.lose.memory': 'You sat in at cards and lost like a good sport.',
+    'c0.win.memory': 'You took the pot off me fair and square.',
   },
   'hired:money-side': {
     title: 'Work on the Side',
@@ -250,6 +264,9 @@ const SCENE_LINES = {
     'c1.result': '"It is what I can spare," you say, and {mate} says that is fine, that it is more than anyone else offered.',
     'c2.label': 'Say no',
     'c2.result': 'You say you cannot, and it is true, or true enough. {mate} nods and does not ask again.',
+    'c2.result.memory': 'You would not lend me anything.',
+    'c1.result.memory': 'You lent me fifty credits, which was what you could spare.',
+    'c0.result.memory': 'You lent me a hundred credits when I needed it.',
   },
   'hired:money-short': {
     title: 'Short on the Pay',

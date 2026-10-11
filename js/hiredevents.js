@@ -136,23 +136,23 @@ const HAND_EVENTS = [
     say('text'), [
       { label: say('c0.label'), run() {
         remember('needle', c.mate);
-        if (Math.random() < soloOdds(hired().post)) { setLater('h-needle-ally', 8, 'Showed {thread:needle} my post, and they came round.'); like(c.mate, 1, 'You showed me what the post is really like.'); return `${say('c0.win')}${learn(2)}`; }
-        setLater('h-needle-worse', 6, 'Tried to prove a point to {thread:needle} and it went badly.'); like(c.mate, -1, 'You tried to prove a point about your post and it went badly.');
+        if (Math.random() < soloOdds(hired().post)) { setLater('h-needle-ally', 8, 'Showed {thread:needle} my post, and they came round.'); like(c.mate, 1, say('c0.win.memory')); return `${say('c0.win')}${learn(2)}`; }
+        setLater('h-needle-worse', 6, 'Tried to prove a point to {thread:needle} and it went badly.'); like(c.mate, -1, say('c0.lose.memory'));
         return `${say('c0.lose')}${learn(1)}`;
       } },
-      { label: say('c1.label'), skill: 2, run() { remember('needle', c.mate); like(c.mate, 2, 'You took me through your post, one step at a time.'); return `${say('c1.result')}${learn(1)}`; } },
-      { label: say('c2.label'), run() { like(c.mate, 0, 'You let a needling go.'); return say('c2.result'); } },
+      { label: say('c1.label'), skill: 2, run() { remember('needle', c.mate); like(c.mate, 2, say('c1.result.memory')); return `${say('c1.result')}${learn(1)}`; } },
+      { label: say('c2.label'), run() { like(c.mate, 0, say('c2.result.memory')); return say('c2.result'); } },
     ]); } },
 
   { id: 'crew-cards', mate: true, group: 'crew', make: c => { const say = (key, vars) => eventSay('crew-cards', key, { mate: c.mate.first, ...vars }); return handEvent(say('title'),
     say('text'), [
       { label: say('c0.label'), ...gated(needCr(50)), run() {
         remember('cards', c.mate); setLater('h-cards-rematch', 7, 'Played cards with {thread:cards}. They want a rematch.');
-        if (Math.random() < 0.45) { G.state.credits += 100; like(c.mate, 1, 'You took the pot off me fair and square.'); return say('c0.win', { net: fmt(50) }); }
-        G.state.credits -= 50; like(c.mate, 1, 'You sat in at cards and lost like a good sport.');
+        if (Math.random() < 0.45) { G.state.credits += 100; like(c.mate, 1, say('c0.win.memory')); return say('c0.win', { net: fmt(50) }); }
+        G.state.credits -= 50; like(c.mate, 1, say('c0.lose.memory'));
         return say('c0.lose');
       } },
-      { label: say('c1.label'), run() { like(c.mate, 0, 'You watched the card game and kept your credits.'); return say('c1.result'); } },
+      { label: say('c1.label'), run() { like(c.mate, 0, say('c1.result.memory')); return say('c1.result'); } },
     ]); } },
 
   dataEvent({
@@ -380,13 +380,13 @@ const HAND_EVENTS = [
     say('text'), [
       { label: say('c0.label'),
       ...gated(needCr(100)),
-      run() { G.state.credits -= 100; remember('loan', c.mate); setLater(Math.random() < 0.7 ? 'h-loan-repaid' : 'h-loan-default', 12, 'Lent {thread:loan} a hundred credits.'); like(c.mate, 3, 'You lent me a hundred credits when I needed it.'); return say('c0.result'); } },
+      run() { G.state.credits -= 100; remember('loan', c.mate); setLater(Math.random() < 0.7 ? 'h-loan-repaid' : 'h-loan-default', 12, 'Lent {thread:loan} a hundred credits.'); like(c.mate, 3, say('c0.result.memory')); return say('c0.result'); } },
       {
         label: say('c1.label'),
         ...gated(needCr(50)),
-        run() { G.state.credits -= 50; remember('loan', c.mate); setLater('h-loan-small', 12, 'Lent {thread:loan} fifty credits.'); like(c.mate, 1, 'You lent me fifty credits, which was what you could spare.'); return say('c1.result'); }
+        run() { G.state.credits -= 50; remember('loan', c.mate); setLater('h-loan-small', 12, 'Lent {thread:loan} fifty credits.'); like(c.mate, 1, say('c1.result.memory')); return say('c1.result'); }
       },
-      { label: say('c2.label'), run() { like(c.mate, -1, 'You would not lend me anything.'); return say('c2.result'); } },
+      { label: say('c2.label'), run() { like(c.mate, -1, say('c2.result.memory')); return say('c2.result'); } },
     ]); } },
 
   { id: 'money-short', group: 'money', make: c => { const say = (key, vars) => eventSay('money-short', key, { wage: fmt(hired().wage), ...vars }); return handEvent(say('title'),

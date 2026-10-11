@@ -66,3 +66,17 @@ test('an override fills the {words} its line has, is escaped in a text and plain
   assert.equal(r.other, 'Apologize for the worst of it');
   assert.equal(r.order, `Captain ${r.last} says &lt;b&gt;no&lt;/b&gt;.`);
 });
+
+test('the memories of the scenes in js/stakes.js and of the hired events with lines are lines, drawn as plain text, and none is left in code there', async () => {
+  const src = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'js', 'stakes.js'), 'utf8');
+  assert.deepEqual([...src.matchAll(/\blike\([^;\n]*?, *['"`][A-Z]/g)].map(m => m[0].slice(0, 60)), [], 'a memory in code in stakes.js');
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    useOverrides({ 'scene:warning': { parts: { 'c0.memory': 'You said <b>so</b> & meant it' } } });
+    const out = sceneSay('scene:warning', 'c0.memory');
+    useOverrides({});
+    return out;
+  });
+  await g.done();
+  assert.equal(r, 'You said <b>so</b> & meant it');
+});
