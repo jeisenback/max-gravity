@@ -39,7 +39,7 @@ const playPax = () => {
           __seed(7); const ev = make(); const before = seen(); G.player.armor = G.player.maxArmor; const armor0 = G.player.armor; G.transit.left = 100;
           seq([roll]); const text = ev.choices[i].run();
           const after = seen();
-          rec.plays.push({ i, roll, text: text === null || text === undefined ? null : String(text), d: { credits: after.credits - before.credits, fuel: after.fuel - before.fuel, armor: after.armor - armor0, left: after.left - 100, bonus: after.bonus === null ? null : after.bonus - before.bonus, onboard: after.onboard, opinion: after.opinion - before.opinion, owes: after.owes - before.owes } });
+          rec.plays.push({ i, roll, text: text === null || text === undefined ? null : String(text), mem: (G.state.people[PID].memories || []).slice(-1)[0] || null, d: { credits: after.credits - before.credits, fuel: after.fuel - before.fuel, armor: after.armor - armor0, left: after.left - 100, bonus: after.bonus === null ? null : after.bonus - before.bonus, onboard: after.onboard, opinion: after.opinion - before.opinion, owes: after.owes - before.owes } });
         }
       } catch (err) { rec.error = String(err && err.message || err); }
       out.push(rec);
@@ -77,7 +77,7 @@ const playCrew = () => {
       for (let i = 0; i < first.choices.length; i++) for (const roll of [0, 0.999]) {
         __seed(7); const { c, ev } = make(); const before = { credits: G.state.credits, fuel: G.state.fuel, wage: c.wage, opinion: c.opinion }; G.player.armor = G.player.maxArmor; const armor0 = G.player.armor;
         seq([roll]); const text = ev.choices[i].run();
-        rec.plays.push({ i, roll, text: text === null || text === undefined ? null : String(text), d: { credits: G.state.credits - before.credits, fuel: G.state.fuel - before.fuel, armor: G.player.armor - armor0, wage: c.wage - before.wage, opinion: c.opinion - before.opinion } });
+        rec.plays.push({ i, roll, text: text === null || text === undefined ? null : String(text), mem: (c.memories || []).slice(-1)[0] || null, d: { credits: G.state.credits - before.credits, fuel: G.state.fuel - before.fuel, armor: G.player.armor - armor0, wage: c.wage - before.wage, opinion: c.opinion - before.opinion } });
       }
     } catch (err) { rec.error = String(err && err.message || err); }
     out.push(rec);

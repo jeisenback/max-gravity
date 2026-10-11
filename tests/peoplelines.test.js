@@ -59,3 +59,18 @@ test('an override is escaped, a title and a label are left plain, and a bad one 
   assert.equal(r.label, 'Pay <it>', 'a label is left to the dialog to escape');
   assert.equal(r.other, 'Tell the collectors to get lost');
 });
+
+test('the memories the events leave are lines, drawn as the plain text the character view escapes, and none is written in code', async () => {
+  const src = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'js', 'people.js'), 'utf8');
+  assert.deepEqual([...src.matchAll(/\blike\([^;\n]*?, *['"`][A-Z]/g)].map(m => m[0].slice(0, 60)), [], 'a memory in code');
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    useOverrides({ 'people:pax:debt': { parts: { 'c0.result.memory': 'You paid <up> & more' } } });
+    const say = paxSay('debt', { first: 'Sam', last: 'Vale', home: 'Mars', crime: 'x' }, { destPlanet: 'Mars' });
+    const out = say('c0.result.memory');
+    useOverrides({});
+    return out;
+  });
+  await g.done();
+  assert.equal(r, 'You paid <up> & more');
+});

@@ -172,18 +172,18 @@ const PAX_EVENTS = [
       { label: say('c0.label'), run() {
         if (Math.random() < 0.6) {
           m.bonus += 1500 * p.wealth;
-          like(p, 3, 'You covered for me with customs.');
+          like(p, 3, say('c0.win.memory'));
           return say('c0.win');
         }
         G.state.credits = Math.max(0, G.state.credits - 2000);
         changeRep(localGov(), -5);
-        like(p, 1, 'You tried to cover for me with customs.');
+        like(p, 1, say('c0.lose.memory'));
         return say('c0.lose');
       } },
       { role: 'slicer', label: say('c1.label'), run() {
         if (Math.random() < slicerOdds()) {
           m.bonus += 1500 * p.wealth;
-          like(p, 3, 'Your slicer hid me from customs.');
+          like(p, 3, say('c1.win.memory'));
           return say('c1.win');
         }
         G.state.credits = Math.max(0, G.state.credits - 2000);
@@ -193,7 +193,7 @@ const PAX_EVENTS = [
         G.state.credits += 1500;
         dropPassenger(m, null);
         changeRep(localGov(), 3);
-        like(p, -6, 'You turned me in to customs.');
+        like(p, -6, say('c2.result.memory'));
         return say('c2.result');
       } },
     ] }); } },
@@ -204,21 +204,21 @@ const PAX_EVENTS = [
       { label: say('c0.label'), run() {
         G.state.credits += 5000;
         dropPassenger(m, null);
-        like(p, -8, 'You sold me to a bounty hunter.');
+        like(p, -8, say('c0.result.memory'));
         return say('c0.result');
       } },
       { role: 'gunner', label: say('c1.label'), run() {
         m.bonus += 2000;
-        like(p, 4, 'You fought off a bounty hunter for me.');
+        like(p, 4, say('c1.result.memory'));
         return say('c1.result', { armor: hurt(0.1) });
       } },
       { label: say('c2.label'), run() {
         if (Math.random() < fightOdds()) {
           m.bonus += 2000;
-          like(p, 4, 'You fought off a bounty hunter for me.');
+          like(p, 4, say('c2.win.memory'));
           return say('c2.win', { armor: hurt(0.2) });
         }
-        like(p, 3, 'You risked your ship for me.');
+        like(p, 3, say('c2.lose.memory'));
         return say('c2.lose', { armor: hurt(0.4) });
       } },
     ] }); } },
@@ -228,24 +228,24 @@ const PAX_EVENTS = [
     choices: [
       { role: 'medic', label: say('c0.label'), run() {
         m.bonus += 1000;
-        like(p, 4, 'Your medic saved my life.');
+        like(p, 4, say('c0.result.memory'));
         return say('c0.result');
       } },
       { label: say('c1.label'), ...gated(needCr(500)), run() {
         G.state.credits -= 500;
-        like(p, 3, 'You spent your medical supplies on me.');
+        like(p, 3, say('c1.memory'));
         if (Math.random() < 0.75) { m.bonus += 800; return say('c1.win'); }
         return say('c1.lose');
       } },
       { label: say('c2.label'), ...gated(needMass(40)), run() {
         G.state.fuel -= 40;
         delay(-10);
-        like(p, 2, 'You burned hard to get me to a doctor.');
+        like(p, 2, say('c2.result.memory'));
         return say('c2.result');
       } },
       { label: say('c3.label'), run() {
         m.bonus -= 500;
-        like(p, -2, 'You left me to suffer.');
+        like(p, -2, say('c3.result.memory'));
         return say('c3.result');
       } },
     ] }); } },
@@ -256,17 +256,17 @@ const PAX_EVENTS = [
       { label: say('c0.label'), run() {
         if (Math.random() < 0.5) {
           m.bonus += 2500;
-          like(p, 1, 'You caught me, and took money to keep quiet.');
+          like(p, 1, say('c0.win.memory'));
           return say('c0.win');
         }
-        like(p, -3, 'You pried into my business.');
+        like(p, -3, say('c0.lose.memory'));
         return say('c0.lose');
       } },
       { role: 'slicer', label: say('c1.label'), run() {
         return say('c1.result', { rumor: addRumor() });
       } },
       { label: say('c2.label'), run() {
-        like(p, 2, 'You respected my privacy.');
+        like(p, 2, say('c2.result.memory'));
         return say('c2.result');
       } },
     ] }); } },
@@ -277,11 +277,11 @@ const PAX_EVENTS = [
       { label: say('c0.label'), ...gated(needCr(1500)), run() {
         G.state.credits -= 1500;
         p.owes = 1500;
-        like(p, 5, 'You paid off my debt. I will pay you back.');
+        like(p, 5, say('c0.result.memory'));
         return say('c0.result');
       } },
       { label: say('c1.label'), run() {
-        like(p, 1, 'You stood up to my collectors.');
+        like(p, 1, say('c1.result.memory'));
         return say('c1.result');
       } },
     ] }); } },
@@ -291,17 +291,17 @@ const PAX_EVENTS = [
     choices: [
       { role: 'pilot', label: say('c0.label'), run() {
         m.bonus += 800;
-        like(p, 3, 'You got me to my interview on time.');
+        like(p, 3, say('c0.result.memory'));
         return say('c0.result');
       } },
       { label: say('c1.label'), ...gated(needMass(40)), run() {
         G.state.fuel -= 40;
         m.bonus += 800;
-        like(p, 3, 'You got me to my interview on time.');
+        like(p, 3, say('c1.result.memory'));
         return say('c1.result');
       } },
       { label: say('c2.label'), run() {
-        like(p, -1, 'You would not hurry for my interview.');
+        like(p, -1, say('c2.result.memory'));
         return say('c2.result');
       } },
     ] }); } },
@@ -312,11 +312,11 @@ const PAX_EVENTS = [
       { label: say('c0.label'), run() {
         delay(20);
         m.bonus += 1000 * p.wealth;
-        like(p, 3, 'You made a detour for my research.');
+        like(p, 3, say('c0.result.memory'));
         return say('c0.result');
       } },
       { label: say('c1.label'), run() {
-        like(p, -1, 'You would not stop for my research.');
+        like(p, -1, say('c1.result.memory'));
         return say('c1.result');
       } },
     ] }); } },
@@ -327,7 +327,7 @@ const PAX_EVENTS = [
       { label: say('c0.label'), run() {
         delay(12);
         m.bonus += 400 * m.pax;
-        like(p, 3, 'You stilled your ship for our prayers.');
+        like(p, 3, say('c0.result.memory'));
         return say('c0.result');
       } },
       { label: say('c1.label'), run() {
@@ -340,7 +340,7 @@ const PAX_EVENTS = [
     text: say('text'),
     choices: [
       { label: say('c0.label'), run() {
-        like(p, 1, 'You listened to my stories.');
+        like(p, 1, say('c0.result.memory'));
         return say('c0.result', { rumor: addRumor() });
       } },
       { label: say('c1.label'), run() {
@@ -353,7 +353,7 @@ const PAX_EVENTS = [
     text: say('text'),
     choices: [
       { label: say('c0.label'), run() {
-        like(p, 2, 'You talked me through a panic attack.');
+        like(p, 2, say('c0.result.memory'));
         return say('c0.result');
       } },
       { label: say('c1.label'), ...gated(needCr(200)), run() {
@@ -363,7 +363,7 @@ const PAX_EVENTS = [
       } },
       { label: say('c2.label'), run() {
         m.bonus -= 300;
-        like(p, -2, 'You mocked me when I was scared.');
+        like(p, -2, say('c2.result.memory'));
         return say('c2.result');
       } },
     ] }); } },
@@ -372,7 +372,7 @@ const PAX_EVENTS = [
     text: say('text'),
     choices: [
       { label: say('c0.label'), run() {
-        like(p, 2, 'You showed me the drive room.');
+        like(p, 2, say('c0.memory'));
         if (Math.random() < 0.25) {
           G.state.fuel = Math.max(0, G.state.fuel - 20);
           return say('c0.spill');
@@ -390,12 +390,12 @@ const PAX_EVENTS = [
     choices: [
       { label: say('c0.label'), run() {
         m.bonus += 400;
-        like(p, -2, 'You charged me for the recycler.');
+        like(p, -2, say('c0.result.memory'));
         return say('c0.result');
       } },
       { label: say('c1.label'), run() {
         G.state.credits = Math.max(0, G.state.credits - 400);
-        like(p, 2, 'You let the recycler thing slide.');
+        like(p, 2, say('c1.result.memory'));
         return say('c1.result');
       } },
     ] }); } },
@@ -404,7 +404,7 @@ const PAX_EVENTS = [
     text: say('text'),
     choices: [
       { label: say('c0.label'), ...gated(needCr(500)), run() {
-        if (Math.random() < 0.5) { G.state.credits += 500; like(p, -1, 'You beat me at cards.'); return say('c0.win'); }
+        if (Math.random() < 0.5) { G.state.credits += 500; like(p, -1, say('c0.win.memory')); return say('c0.win'); }
         G.state.credits -= 500;
         like(p, 1, null);
         return say('c0.lose');
@@ -421,7 +421,7 @@ const PAX_EVENTS = [
         return say('c0.result');
       } },
       { label: say('c1.label'), run() {
-        like(p, 3, 'You would not take my money.');
+        like(p, 3, say('c1.result.memory'));
         return say('c1.result');
       } },
     ] }); } },
@@ -432,7 +432,7 @@ const PAX_EVENTS = [
       { label: say('c0.label'), run() { like(p, 1, null); return say('c0.result'); } },
       { label: say('c1.label'), run() {
         m.bonus -= 300;
-        like(p, -2, 'You put me in my place.');
+        like(p, -2, say('c1.result.memory'));
         return say('c1.result');
       } },
     ] }); } },
@@ -455,36 +455,36 @@ const crewSay = (trait, c) => (key, vars) => peopleSay(`people:crew:${trait}`, k
 const CREW_EVENTS = {
   greedy: c => { const say = crewSay('greedy', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: say('c0.label', { raise: fmt(c.wage * 1.25) }), run() { c.wage = Math.round(c.wage * 1.25); like(c, 3, 'You gave me a raise.'); return say('c0.result'); } },
-      { label: say('c1.label'), run() { like(c, -2, 'You refused me a raise.'); return say('c1.result'); } },
+      { label: say('c0.label', { raise: fmt(c.wage * 1.25) }), run() { c.wage = Math.round(c.wage * 1.25); like(c, 3, say('c0.result.memory')); return say('c0.result'); } },
+      { label: say('c1.label'), run() { like(c, -2, say('c1.result.memory')); return say('c1.result'); } },
     ] }); },
   drunk: c => { const say = crewSay('drunk', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: say('c0.label'), run() { like(c, -2, 'You docked my pay.'); return say('c0.result'); } },
-      { label: say('c1.label'), run() { G.state.credits = Math.max(0, G.state.credits - 300); like(c, 2, 'You let the brawl go.'); return say('c1.result'); } },
+      { label: say('c0.label'), run() { like(c, -2, say('c0.result.memory')); return say('c0.result'); } },
+      { label: say('c1.label'), run() { G.state.credits = Math.max(0, G.state.credits - 300); like(c, 2, say('c1.result.memory')); return say('c1.result'); } },
     ] }); },
   homesick: c => { const say = crewSay('homesick', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: say('c0.label'), ...gated(needCr(500)), run() { G.state.credits -= 500; like(c, 3, 'You paid for my call home.'); return say('c0.result'); } },
+      { label: say('c0.label'), ...gated(needCr(500)), run() { G.state.credits -= 500; like(c, 3, say('c0.result.memory')); return say('c0.result'); } },
       { label: say('c1.label'), run() { like(c, 1, null); return say('c1.result'); } },
       { label: say('c2.label'), run() { like(c, -1, null); return say('c2.result'); } },
     ] }); },
   nervous: c => { const say = crewSay('nervous', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: say('c0.label'), run() { like(c, 2, 'You helped me through the nightmares.'); return say('c0.result'); } },
-      { label: say('c1.label'), run() { like(c, -2, 'You told me to toughen up.'); return say('c1.result'); } },
+      { label: say('c0.label'), run() { like(c, 2, say('c0.result.memory')); return say('c0.result'); } },
+      { label: say('c1.label'), run() { like(c, -2, say('c1.result.memory')); return say('c1.result'); } },
     ] }); },
   talkative: c => { const say = crewSay('talkative', c); return ({ title: say('title'), text: say('text'),
     choices: [{ label: say('c0.label'), run() { like(c, 1, null); return say('c0.result', { rumor: addRumor() }); } }] }); },
   secretive: c => { const say = crewSay('secretive', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: say('c0.label'), run() { like(c, -2, 'You pried into my locker.'); return say('c0.result'); } },
-      { label: say('c1.label'), run() { like(c, 2, 'You respected my privacy.'); return say('c1.result'); } },
+      { label: say('c0.label'), run() { like(c, -2, say('c0.result.memory')); return say('c0.result'); } },
+      { label: say('c1.label'), run() { like(c, 2, say('c1.result.memory')); return say('c1.result'); } },
     ] }); },
   curious: c => { const say = crewSay('curious', c); return ({ title: say('title'), text: say('text'),
     choices: [
       { label: say('c0.label'), run() {
-        like(c, 2, 'You let me tinker.');
+        like(c, 2, say('c0.memory'));
         if (Math.random() < 0.6) { G.state.fuel = Math.min(ship().fuel, G.state.fuel + 25); return say('c0.win'); }
         G.state.fuel = Math.max(0, G.state.fuel - 20);
         return say('c0.lose');
@@ -493,22 +493,22 @@ const CREW_EVENTS = {
     ] }); },
   pious: c => { const say = crewSay('pious', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: say('c0.label'), run() { like(c, 2, 'You prayed with me.'); return say('c0.result'); } },
+      { label: say('c0.label'), run() { like(c, 2, say('c0.result.memory')); return say('c0.result'); } },
       { label: say('c1.label'), run() { like(c, 0, null); return say('c1.result'); } },
     ] }); },
   rude: c => { const say = crewSay('rude', c); return ({ title: say('title'), text: say('text'),
     choices: [
-      { label: say('c0.label'), run() { like(c, -2, 'You reprimanded me in front of everyone.'); return say('c0.result'); } },
+      { label: say('c0.label'), run() { like(c, -2, say('c0.result.memory')); return say('c0.result'); } },
       { label: say('c1.label'), run() { like(c, 1, null); return say('c1.result', { armor: hurt(0.03) }); } },
     ] }); },
   kind: c => { const say = crewSay('kind', c); return ({ title: say('title'), text: say('text'),
     choices: [{ label: say('c0.label'), run() { like(c, 1, null); return say('c0.result'); } }] }); },
   generous: c => { const say = crewSay('generous', c); return ({ title: say('title'), text: say('text'),
-    choices: [{ label: say('c0.label'), run() { like(c, 1, 'We shared a bottle.'); return say('c0.result'); } }] }); },
+    choices: [{ label: say('c0.label'), run() { like(c, 1, say('c0.result.memory')); return say('c0.result'); } }] }); },
   brave: c => { const say = crewSay('brave', c); return ({ title: say('title'), text: say('text'),
     choices: [
       { label: say('c0.label'), run() { like(c, 1, null); return Math.random() < 0.85 ? say('c0.win') : say('c0.lose', { armor: hurt(0.05) }); } },
-      { label: say('c1.label'), run() { like(c, 2, 'You took the risky EVA yourself.'); return say('c1.result'); } },
+      { label: say('c1.label'), run() { like(c, 2, say('c1.result.memory')); return say('c1.result'); } },
     ] }); },
 };
 
