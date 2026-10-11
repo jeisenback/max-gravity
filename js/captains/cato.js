@@ -14,13 +14,13 @@ function inTheIceHold(backup) {
   const outcome = castFate('cato', points >= 3 ? 'live' : points === 2 ? 'mark' : 'die', `Lost in the ice hold near ${system().name}.`, 'Left hand does not close properly.', 'xo');
   const lead = backup ? 'You send an ice hand in with him. ' : '';
   if (outcome === 'die') {
-    like(cap, -1, 'We lost Cato in the ice hold.'); cap.mood = { kind: 'low', until: G.state.day + 30 };
+    like(cap, -1, sceneSay('scene:memories', 'cato.lost.memory')); cap.mood = { kind: 'low', until: G.state.day + 30 };
     return lead + ('He goes in first, as he said he would. The strap holds, and the pod does not, and for a moment the board shows nothing you can ' +
         'read. You get the hatch open from your side. By then the hold is quiet. Captain Vance is at the hatch before you have finished. She looks for ' +
         'a while, and then she closes the notebook. "Take him out," she says, in a voice you have not heard her use.')
       + (told ? ' He asked you to find him if it went badly. It is the other way round now.' : '');
   }
-  castLike('cato', 2, 'You let me go into the hold, and I came out.');
+  castLike('cato', 2, sceneSay('scene:memories', 'cato.lived.memory'));
   if (outcome === 'mark') {
     cap.mood = { kind: 'low', until: G.state.day + 15 };
     return lead + ('He goes in first, and it goes wrong at the number two strap, and for a long minute the hold is nothing but ice and shouting. He ' +

@@ -14,13 +14,13 @@ function atTheHelm(backup) {
   const outcome = castFate('pilar', points >= 3 ? 'live' : points === 2 ? 'mark' : 'die', `Lost at the helm near ${system().name}.`, 'Right hand does not close properly.', 'xo');
   const lead = backup ? 'You put a second hand on the console beside her. ' : '';
   if (outcome === 'die') {
-    like(cap, -1, 'We lost Pilar at the helm.'); cap.mood = { kind: 'low', until: G.state.day + 30 };
+    like(cap, -1, sceneSay('scene:memories', 'pilar.lost.memory')); cap.mood = { kind: 'low', until: G.state.day + 30 };
     return lead + ('She brings her in by hand. The crosswind takes the ship at the last moment, and for a long second the bridge is the sound of the ' +
         'stick in her hands. The gate crew say afterwards it was the cleanest approach they had seen, until the last four meters. Captain Sato enters ' +
         'it in the log, in the same hand as every other entry, and then sits for a long time with the pen over the next line.')
       + (spoke ? ' You spoke to the captain about the rule. It was not in time.' : '');
   }
-  castLike('pilar', 2, 'You let me fly the approach by hand, and I came out.');
+  castLike('pilar', 2, sceneSay('scene:memories', 'pilar.lived.memory'));
   if (outcome === 'mark') {
     cap.mood = { kind: 'low', until: G.state.day + 15 };
     return lead + 'She brings her in by hand, and the crosswind catches the ship at the last four meters, and the stick kicks. She lands her by main strength and nothing else, and the hand that held the stick does not close properly, and will not. "It is in the berth," she says. "Enter that."';
@@ -158,8 +158,8 @@ CAST.pilar = {
       choices: [
         { label: 'Let her fly it', run: () => atTheHelm(false) },
         { label: 'Put a second hand on the console with her', ...gated(needCrew(2)), run: () => atTheHelm(true) },
-        { label: 'Take the ship off the approach and go round', run() {
-          castFlag('pilar', 'benched'); castLike('pilar', -3, 'You took the ship off the approach on me.'); G.state.fuel = Math.round(G.state.fuel * 0.8);
+        { label: 'Take the ship off the approach and go round', memory: 'You took the ship off the approach on me.', run() {
+          castFlag('pilar', 'benched'); castLike('pilar', -3, this.memory); G.state.fuel = Math.round(G.state.fuel * 0.8);
           return 'You tell her no, and call the go-round. The ship stands off from the gate, and the ice sits in the hold, and the cells burn for the second pass. Pilar takes her hands off the stick one at a time. "It is your call," she says. "It was always going to be somebody\'s."';
         } },
       ],
