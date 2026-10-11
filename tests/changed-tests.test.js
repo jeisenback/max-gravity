@@ -83,3 +83,12 @@ test('a pin is selected by the scripts its harness plays, though its test file n
   assert.deepEqual(select(['js/duel.js'], { tests: pins, sources: { 'js/duel.js': 'function startDuel() {}' } }).full, true, 'without the harness it is not found');
   assert.equal(merged['tests/other.test.js'], pins['tests/other.test.js'], 'a test with no harness is unchanged');
 });
+
+test('a text file runs every pin, since the pins play it through other scripts (#515)', () => {
+  const pins = { 'tests/apin.test.js': '', 'tests/bpin.test.js': '', 'tests/other.test.js': 'test("other", () => { market(); })' };
+  const r = select(['js/peopletext.js'], { tests: pins, sources: { 'js/peopletext.js': 'const TRAITS = {};' } });
+  assert.equal(r.full, false);
+  assert.deepEqual(r.files, ['tests/apin.test.js', 'tests/bpin.test.js']);
+  const plain = select(['js/people.js'], { tests: pins, sources: { 'js/people.js': 'function market() {}' } });
+  assert.deepEqual(plain.files, ['tests/other.test.js'], 'a script that is not a text file does not run them all');
+});

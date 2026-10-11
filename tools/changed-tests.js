@@ -14,6 +14,7 @@ const path = require('node:path');
 
 const LAYOUT = ['tests/layout.test.js', 'tests/shell.test.js', 'tests/ui.test.js'];
 const GLOBALS = 'tests/globals.test.js';
+const TEXT_FILE = /^js\/(?:\w+text|bartopics)\.js$/;  // data-only words that the pins play through other scripts, so no harness names them: a change runs every pin
 const EDITOR = ['tests/editor.test.js', 'tests/editorforms.test.js', 'tests/editorfreq.test.js', 'tests/editornew.test.js', 'tests/editorpreview.test.js', 'tests/editorsave.test.js', 'tests/editorhired.test.js'];
 
 const declared = src => [...src.matchAll(/^(?:async\s+)?(?:const|let|var|function|class)\s+([A-Za-z_$][\w$]*)/gm)].map(m => m[1]).filter(n => n.length >= 3);
@@ -45,8 +46,10 @@ function select(changed, { tests, sources }) {
         const used = names.find(n => new RegExp(`\\b${esc(n)}\\b`).test(src)) || (src.includes(base) ? base : null);
         if (used) hits.set(t, used);
       }
-      if (!hits.size && f !== 'js/shell.js') return everything(`${f}: no test uses its names, so everything`);
+      const pinned = TEXT_FILE.test(f) ? Object.keys(tests).filter(t => /pin\.test\.js$/.test(t)) : [];
+      if (!hits.size && !pinned.length && f !== 'js/shell.js') return everything(`${f}: no test uses its names, so everything`);
       for (const [t, name] of hits) { files.add(t); why.push(`${f}: ${name} is used by ${t}`); }
+      add(pinned, `${f}: a text file, so every pin`);
       add([GLOBALS], `${f}: the globals check`);
       continue;
     }
