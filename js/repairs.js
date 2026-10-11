@@ -42,7 +42,7 @@ function repairScene(planet) {
   choices.push({ label: 'Stand by while the work is done', run: finish(days, 'You stand by, and the work gets done around you.') });
   choices.push({ label: 'Help with the repair', run() {
     const faster = Math.max(1, days - 1);
-    if (h.post === 'engineer') gainSkill('engineer', 3); else like(cap, 1, 'You pitched in on the hull.');
+    if (h.post === 'engineer') gainSkill('engineer', 3); else like(cap, 1, sceneSay('scene:memories', 'repair.memory'));
     return finish(faster, h.post === 'engineer' ? 'You work the plate beside the yard crew, and learn from them. (Experience gained.)' : 'You carry plate and hold the light, and the work goes faster for it.')();
   } });
   choices.push({ label: 'Work the dock for pay', run() {

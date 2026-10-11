@@ -466,7 +466,7 @@ function land(planet) {
       if (m.pid) {
         const p = st.people[m.pid];
         p.location = planet.name;
-        like(p, 1, `You got me to ${planet.name}.`);
+        like(p, 1, sceneSay('scene:memories', 'landing.memory', { planet: planet.name }));
       }
       const fare = Math.max(0, m.pay + m.bonus);
       st.credits += fare;
@@ -519,7 +519,7 @@ function expireMissions() {
     msg(`Mission failed (deadline passed): ${m.title}`);
     Mods.emit('missionFailed', m);
     if (m.pid) {
-      like(st.people[m.pid], -3, 'You never got me where I was going.');
+      like(st.people[m.pid], -3, sceneSay('scene:memories', 'lapsed.memory'));
       st.people[m.pid].location = st.planet;
     }
     return false;

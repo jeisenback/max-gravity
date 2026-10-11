@@ -51,7 +51,7 @@ function takeControl(id) {
   ps.strain += 1;
   if (ps.strain >= 3) {  // overruled once too often
     ps.strain = 1;
-    like(h, -1, 'The captain keeps taking my controls.');
+    like(h, -1, sceneSay('scene:memories', 'strain.memory'));
   }
 }
 

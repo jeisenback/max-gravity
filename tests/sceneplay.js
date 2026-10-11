@@ -168,6 +168,14 @@ const playScenes = () => {
     run(`hand:practise:${post}`, { post }, () => ({ ...alone(), choices: [{ label: ACTIVITIES.practise.label, run: () => String(ACTIVITIES.practise.run()) }] }), { extra: () => hired().skill });
   }
   run('hand:practise:owner', { mode: undefined }, () => ({ ...alone(), choices: [{ label: 'x', run: () => String(ACTIVITIES.practise.run()) }] }));
+  // ---------- the memories left by a fine, a landing, a mission lapsed, ice brought home, a loss mourned, a repair and a post taken over ----------
+  run('memory:patrol-fine', {}, () => { const ev = contactEvent({ kind: 'patrol', gov: GOVT }); return { ...ev, choices: ev.choices.filter(c => /^Heave to/.test(c.label)) }; });
+  run('memory:landing', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { land(currentPlanet()); G.dialog = null; G.nextEvent = null; return ''; } }] }), { prep() { G.state.crew = []; G.player = G.player || { armor: ship().armor, x: 0, y: 0, vx: 0, vy: 0 }; uatPassenger('earth', G.state.planet); } });
+  run('memory:lapsed', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { expireMissions(); return ''; } }] }), { prep() { uatPassenger('mars', 'Mars'); G.state.missions[0].deadline = G.state.day - 1; } });
+  for (const edge of [3, -2, 0]) run(`memory:ice:${edge}`, {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run: () => iceHome(edge) }] }));
+  for (const post of ['gunner', 'engineer']) run(`memory:repair:${post}`, { post }, () => { const ev = repairScene(currentPlanet()); return { ...ev, choices: ev.choices.filter(c => c.label === 'Help with the repair') }; }, { prep() { G.state.armor = Math.max(1, ship().armor - 40); } });
+  run('memory:mourn', {}, () => mournScene({ first: 'Mara', last: 'Quill', role: 'engineer' }), { prep() { G.state.crew = []; crewOf(8); G.state.credits = 5000; } });
+  run('memory:strain', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { for (let i = 0; i < 3; i++) { takeControl('pilot'); handBack('pilot'); } return ''; } }] }), { prep() { G.state.crew = []; crewOf(4); G.state.crew.map(person).forEach(c => { c.role = 'pilot'; }); } });
   // ---------- the yard office ----------
   for (const [ship, post, trusted, skilled] of [['used', 'gunner', false, false], ['used', 'engineer', true, true], ['lightfreighter', 'gunner', true, false], ['lightfreighter', 'pilot', false, true]]) {
     run(`scene:yard-office:${ship}:${post}:${trusted ? 't' : 'u'}${skilled ? 's' : 'n'}`, { post, credits: 60000 }, () => {
