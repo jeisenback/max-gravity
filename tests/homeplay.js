@@ -17,7 +17,7 @@ const playHome = () => {
   st.crew = [base.id, ana.id, ben.id];
   const snap = JSON.stringify(G.state), PID = base.id, AID = ana.id;
   const seen = (p, s) => ({ op: p.opinion, mem: p.memories.slice(-1)[0] || null, until: p.mood ? p.mood.until - s.day : null, credits: s.credits, luxury: (s.cargo || {}).luxury || 0, crew: s.crew.length, bonds: s.bonds || null, log: s.home ? s.home.log.map(l => l.text) : null, traditions: s.home ? s.home.traditions : null, cat: s.home ? s.home.cat : null, role: p.role, wage: p.wage || 0, ana: s.people[AID].opinion });
-  const play = (key, setup, build, dice = 4) => {
+  const play = (key, setup, build, dice = 4, norm = x => x) => {
     const fresh = () => { G.state = JSON.parse(snap); st = G.state; const p = st.people[PID]; setup(p, st); return p; };
     __seed(7); const p0 = fresh(), ev0 = build(p0);
     const rec = { title: ev0.title, text: ev0.text, labels: ev0.choices.map(c => String(c.label)), runs: [] };
@@ -25,7 +25,7 @@ const playHome = () => {
       __seed(d * 31 + i); const p = fresh(), ev = build(p); st.credits = 20000; st.cargo = st.cargo || {}; st.cargo.luxury = 3; G.shifts = null;
       const line = ev.choices[i].run(); rec.runs.push([i, d, String(line), seen(p, st)]);
     }
-    out.push({ key, text: JSON.stringify(rec) });
+    out.push({ key, text: norm(JSON.stringify(rec)) });
   };
   const note = (key, v) => out.push({ key, text: JSON.stringify(v) });
   const reset = () => { G.state = JSON.parse(snap); st = G.state; return st.people[PID]; };
@@ -44,7 +44,8 @@ const playHome = () => {
   // the touches: each one for a shipmate
   { const p = reset(); TOUCHES.forEach((t, i) => { __seed(80 + i); note(`touch:${i}`, t({ id: p.id, p })); }); }
   // the cat: the three names it can have, and the dock
-  play('cat', () => {}, () => catEvent(), 6);
+  // the names are shuffled with a sort on a random comparator, which engines order differently: so the record says CAT for the name
+  play('cat', () => {}, () => catEvent(), 6, x => x.replace(new RegExp(CAT_NAMES.join('|'), 'g'), 'CAT'));
   // the offer to stay, for a role given and for a job
   for (const role of ['engineer', 'medic']) play(`join:${role}`, p => { p.role = role; }, p => joinEvent(p), 3);
   for (const job of ['nurse', 'welder', 'sales', 'miner', 'journalist']) play(`join:job:${job}`, p => { p.role = null; p.job = job; }, p => joinEvent(p), 2);
