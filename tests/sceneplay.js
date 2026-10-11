@@ -79,6 +79,13 @@ const playScenes = () => {
     hired().debt = debt; return dealScene(currentPlanet());
   });
   deal('scene:used-ship-offer:friend', true, 0, OPINION.FRIEND); deal('scene:used-ship-offer:plain-debt', true, 1500, 1); deal('scene:used-ship-offer:cold', true, 0, -1); deal('scene:used-ship-offer:broker', false, 0, 0);
+  // ---------- putting work further away to the captain ----------
+  // a captain who loves, hates or shrugs at each way of putting it (by trait), for each of the four pitches, on a good roll and a bad one
+  for (const trait of ['greedy', 'pious', 'brave', 'generous', 'rude', 'nervous', 'kind']) run(`scene:pitch:${trait}`, {}, () => {
+    hiredCaptain().traits = [trait];
+    const dest = SYSTEMS.mars.planets[0].name;
+    return pitchScene({ tpl: 'package', ctx: { dest, from: 'Titan', who: 'Mrs. Adeyemi', system: SYSTEMS.mars.name, scale: 1.2 }, sid: 'mars', planet: dest, days: 5, until: G.state.day + 20, pitched: null, booked: false });
+  }, { rolls: [0, 0.999] });
   // ---------- the yard office ----------
   for (const [ship, post, trusted, skilled] of [['used', 'gunner', false, false], ['used', 'engineer', true, true], ['lightfreighter', 'gunner', true, false], ['lightfreighter', 'pilot', false, true]]) {
     run(`scene:yard-office:${ship}:${post}:${trusted ? 't' : 'u'}${skilled ? 's' : 'n'}`, { post, credits: 60000 }, () => {

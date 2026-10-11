@@ -343,6 +343,608 @@
   ]
  },
  {
+  "id": "scene:pitch:greedy",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester looks at the figure, and at the route, and does the sum. Hester counts it, tells you the total, and decides you are worth knowing. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester counts it, tells you the total, and decides you are worth knowing. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester asks what it would fetch, and does not like the figure. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester does not like being reminded of what they owe. Hester asks what it would fetch, and does not like the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester asks what it would fetch, and does not like the figure. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester says the ship is not a charity. Hester asks what it would fetch, and does not like the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.999,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   }
+  ],
+  "title": "Putting It to the Captain",
+  "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and does not trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
+  "labels": [
+   "Put the fee in front of them (it pays about 900 cr, all told) [even odds]",
+   "Call in what the captain owes you [long odds]",
+   "Say it is the right thing to do [long odds]",
+   "Dare them to take it [long odds]",
+   "Never mind"
+  ]
+ },
+ {
+  "id": "scene:pitch:pious",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester turns the cord at their wrist and says nothing. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester does not look at the figure. Hester turns the cord at their wrist and says nothing. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester hears it out, and does not look away. Hester says a short word over you, and means it. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester says a short word over you, and means it. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester turns the cord at their wrist and says nothing. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester does not take the bait. Hester turns the cord at their wrist and says nothing. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.999,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   }
+  ],
+  "title": "Putting It to the Captain",
+  "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and does not trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
+  "labels": [
+   "Put the fee in front of them (it pays about 900 cr, all told) [long odds]",
+   "Call in what the captain owes you [long odds]",
+   "Say it is the right thing to do [even odds]",
+   "Dare them to take it [long odds]",
+   "Never mind"
+  ]
+ },
+ {
+  "id": "scene:pitch:brave",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester goes quiet, because it is true. Hester claps you on the shoulder, hard. You will have a bruise. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester claps you on the shoulder, hard. You will have a bruise. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester hears it out, and does not look away. Hester claps you on the shoulder, hard. You will have a bruise. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester claps you on the shoulder, hard. You will have a bruise. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester laughs, short and sharp, and lets it stand. Hester claps you on the shoulder, hard. You will have a bruise. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester claps you on the shoulder, hard. You will have a bruise. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.999,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   }
+  ],
+  "title": "Putting It to the Captain",
+  "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and does not trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
+  "labels": [
+   "Put the fee in front of them (it pays about 900 cr, all told) [long odds]",
+   "Call in what the captain owes you [even odds]",
+   "Say it is the right thing to do [even odds]",
+   "Dare them to take it [even odds]",
+   "Never mind"
+  ]
+ },
+ {
+  "id": "scene:pitch:generous",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester waves it away, and asks whether you have eaten. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester does not look at the figure. Hester waves it away, and asks whether you have eaten. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester goes quiet, because it is true. Hester says to have the rest, and means a bottle at the next port. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester says to have the rest, and means a bottle at the next port. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.999,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   }
+  ],
+  "title": "Putting It to the Captain",
+  "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and does not trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
+  "labels": [
+   "Put the fee in front of them (it pays about 900 cr, all told) [long odds]",
+   "Call in what the captain owes you [even odds]",
+   "Say it is the right thing to do [long odds]",
+   "Dare them to take it [long odds]",
+   "Never mind"
+  ]
+ },
+ {
+  "id": "scene:pitch:rude",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester says what they think of that, in order, from the list, and does not raise their voice. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester does not like being reminded of what they owe. Hester says what they think of that, in order, from the list, and does not raise their voice. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester says what they think of that, in order, from the list, and does not raise their voice. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester says the ship is not a charity. Hester says what they think of that, in order, from the list, and does not raise their voice. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.999,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   }
+  ],
+  "title": "Putting It to the Captain",
+  "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and does not trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
+  "labels": [
+   "Put the fee in front of them (it pays about 900 cr, all told) [long odds]",
+   "Call in what the captain owes you [long odds]",
+   "Say it is the right thing to do [long odds]",
+   "Dare them to take it [long odds]",
+   "Never mind"
+  ]
+ },
+ {
+  "id": "scene:pitch:nervous",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester flinches, and checks the seal on the nearest hatch. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester does not take the bait. Hester flinches, and checks the seal on the nearest hatch. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.999,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   }
+  ],
+  "title": "Putting It to the Captain",
+  "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and does not trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
+  "labels": [
+   "Put the fee in front of them (it pays about 900 cr, all told) [long odds]",
+   "Call in what the captain owes you [long odds]",
+   "Say it is the right thing to do [long odds]",
+   "Dare them to take it [long odds]",
+   "Never mind"
+  ]
+ },
+ {
+  "id": "scene:pitch:kind",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester goes quiet, because it is true. Hester takes your hand for a moment and does not say anything. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester takes your hand for a moment and does not say anything. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester hears it out, and does not look away. Hester takes your hand for a moment and does not say anything. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester takes your hand for a moment and does not say anything. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.999,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   }
+  ],
+  "title": "Putting It to the Captain",
+  "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and does not trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
+  "labels": [
+   "Put the fee in front of them (it pays about 900 cr, all told) [long odds]",
+   "Call in what the captain owes you [even odds]",
+   "Say it is the right thing to do [even odds]",
+   "Dare them to take it [long odds]",
+   "Never mind"
+  ]
+ },
+ {
   "id": "scene:yard-office:used:gunner:un",
   "plays": [
    {
