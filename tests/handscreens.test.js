@@ -184,7 +184,7 @@ test('a long scene says it continues, the Port heading keeps one case, and a shu
   const first = await cue();
   assert.ok(first.more, 'the cue shows while text remains'); assert.match(first.text, /The scene continues/);
   await page.evaluate(() => { const p = document.querySelector('#panel'); p.scrollTop = p.scrollHeight; });
-  await page.waitForTimeout(100);
+  await page.waitForFunction(() => !document.querySelector('#panel').classList.contains('more'), null, { timeout: 5000 }).catch(() => {});  // the cue is set on the next frame, so wait for it rather than for a fixed time
   assert.equal((await cue()).more, false, 'and goes at the end of the text');
   // The Port heading: the captain's name inherits the heading's case.
   await ev(() => { while (G.dialog) finishEvent(); G.state.tutorial = null; G.mode = 'landed'; UI.render(); });
