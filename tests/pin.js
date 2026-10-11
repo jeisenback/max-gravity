@@ -19,12 +19,12 @@ function pinTests({ name, fixture, play, min = 1, broken = /undefined|\[object|N
   const file = path.join(__dirname, 'fixtures', fixture);
   const text = r => (typeof r.text === 'string' ? r.text : JSON.stringify(r));
 
-  test(`${name} play the words they always did`, async () => {
+  test(`${name} play as they always did`, async () => {
     const g = await open({ scope: 'full' });
     const got = await g.ev(play);
     await g.done();
     assert.ok(got.length >= min, `${got.length} cases`);
-    assert.deepEqual(got.filter(r => broken.test(text(r))).map(r => r.key || r.id), [], 'no broken line');
+    assert.deepEqual(got.filter(r => broken.test(text(r))).map(r => r.key || r.id), [], 'no broken record');
     if (process.env.PIN_WRITE) fs.writeFileSync(file, JSON.stringify(got, null, 1) + '\n');
     const want = JSON.parse(fs.readFileSync(file, 'utf8'));
     assert.equal(got.length, want.length);

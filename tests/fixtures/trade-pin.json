@@ -1,0 +1,9255 @@
+[
+ {
+  "key": "price:1:Hermes Foundry",
+  "v": {
+   "industrial": 161,
+   "equipment": 266,
+   "metal": 159,
+   "food": 139,
+   "water": 99,
+   "luxury": 486
+  }
+ },
+ {
+  "key": "price:1:Earth",
+  "v": {
+   "water": 74,
+   "food": 106,
+   "industrial": 138,
+   "medical": 243,
+   "luxury": 539,
+   "metal": 210,
+   "equipment": 242
+  }
+ },
+ {
+  "key": "price:1:Luna",
+  "v": {}
+ },
+ {
+  "key": "price:1:Mars",
+  "v": {
+   "equipment": 422,
+   "food": 129,
+   "water": 98,
+   "medical": 284,
+   "industrial": 187,
+   "metal": 120,
+   "luxury": 422
+  }
+ },
+ {
+  "key": "price:1:Phobos Yards",
+  "v": {}
+ },
+ {
+  "key": "price:1:Ceres Station",
+  "v": {
+   "water": 108,
+   "food": 123,
+   "medical": 416,
+   "metal": 110,
+   "luxury": 424,
+   "equipment": 374,
+   "industrial": 197
+  }
+ },
+ {
+  "key": "price:1:Ring Nine",
+  "v": {
+   "water": 109,
+   "food": 140,
+   "medical": 393
+  }
+ },
+ {
+  "key": "price:1:Pallas Refinery",
+  "v": {
+   "metal": 116,
+   "industrial": 264,
+   "food": 120,
+   "water": 100,
+   "equipment": 479
+  }
+ },
+ {
+  "key": "price:1:The Hollows",
+  "v": {
+   "food": 120,
+   "water": 105
+  }
+ },
+ {
+  "key": "price:1:The Rook",
+  "v": {
+   "luxury": 324,
+   "equipment": 444,
+   "medical": 420,
+   "food": 122,
+   "water": 86
+  }
+ },
+ {
+  "key": "price:1:Boneyard",
+  "v": {
+   "medical": 359,
+   "food": 135
+  }
+ },
+ {
+  "key": "price:1:Ironheart",
+  "v": {
+   "metal": 107,
+   "industrial": 138,
+   "food": 130,
+   "water": 108,
+   "luxury": 584,
+   "medical": 285
+  }
+ },
+ {
+  "key": "price:1:Juno Commons",
+  "v": {
+   "food": 69,
+   "luxury": 631,
+   "equipment": 422,
+   "medical": 406,
+   "water": 74
+  }
+ },
+ {
+  "key": "price:1:Eros Old Town",
+  "v": {
+   "metal": 138,
+   "water": 112,
+   "industrial": 239,
+   "luxury": 330,
+   "equipment": 378
+  }
+ },
+ {
+  "key": "price:1:Ganymede",
+  "v": {
+   "food": 74,
+   "medical": 303,
+   "luxury": 595,
+   "equipment": 464
+  }
+ },
+ {
+  "key": "price:1:Europa",
+  "v": {
+   "water": 60,
+   "industrial": 239
+  }
+ },
+ {
+  "key": "price:1:Titan",
+  "v": {
+   "medical": 236,
+   "luxury": 426,
+   "equipment": 428,
+   "industrial": 267
+  }
+ },
+ {
+  "key": "price:1:Enceladus",
+  "v": {
+   "water": 63,
+   "food": 135,
+   "metal": 188
+  }
+ },
+ {
+  "key": "price:1:Triton Outpost",
+  "v": {
+   "medical": 359,
+   "equipment": 421,
+   "luxury": 596,
+   "metal": 115,
+   "water": 60,
+   "food": 107
+  }
+ },
+ {
+  "key": "price:8:Hermes Foundry",
+  "v": {
+   "industrial": 161,
+   "equipment": 267,
+   "metal": 159,
+   "food": 139,
+   "water": 98,
+   "luxury": 486
+  }
+ },
+ {
+  "key": "price:8:Earth",
+  "v": {
+   "water": 74,
+   "food": 106,
+   "industrial": 138,
+   "medical": 243,
+   "luxury": 539,
+   "metal": 210,
+   "equipment": 242
+  }
+ },
+ {
+  "key": "price:8:Luna",
+  "v": {}
+ },
+ {
+  "key": "price:8:Mars",
+  "v": {
+   "equipment": 422,
+   "food": 129,
+   "water": 98,
+   "medical": 284,
+   "industrial": 187,
+   "metal": 120,
+   "luxury": 422
+  }
+ },
+ {
+  "key": "price:8:Phobos Yards",
+  "v": {}
+ },
+ {
+  "key": "price:8:Ceres Station",
+  "v": {
+   "water": 108,
+   "food": 123,
+   "medical": 416,
+   "metal": 110,
+   "luxury": 423,
+   "equipment": 374,
+   "industrial": 196
+  }
+ },
+ {
+  "key": "price:8:Ring Nine",
+  "v": {
+   "water": 109,
+   "food": 140,
+   "medical": 393
+  }
+ },
+ {
+  "key": "price:8:Pallas Refinery",
+  "v": {
+   "metal": 116,
+   "industrial": 264,
+   "food": 120,
+   "water": 100,
+   "equipment": 479
+  }
+ },
+ {
+  "key": "price:8:The Hollows",
+  "v": {
+   "food": 120,
+   "water": 105
+  }
+ },
+ {
+  "key": "price:8:The Rook",
+  "v": {
+   "luxury": 325,
+   "equipment": 445,
+   "medical": 420,
+   "food": 122,
+   "water": 86
+  }
+ },
+ {
+  "key": "price:8:Boneyard",
+  "v": {
+   "medical": 359,
+   "food": 136
+  }
+ },
+ {
+  "key": "price:8:Ironheart",
+  "v": {
+   "metal": 107,
+   "industrial": 138,
+   "food": 130,
+   "water": 108,
+   "luxury": 584,
+   "medical": 286
+  }
+ },
+ {
+  "key": "price:8:Juno Commons",
+  "v": {
+   "food": 69,
+   "luxury": 631,
+   "equipment": 422,
+   "medical": 406,
+   "water": 74
+  }
+ },
+ {
+  "key": "price:8:Eros Old Town",
+  "v": {
+   "metal": 138,
+   "water": 112,
+   "industrial": 239,
+   "luxury": 330,
+   "equipment": 378
+  }
+ },
+ {
+  "key": "price:8:Ganymede",
+  "v": {
+   "food": 74,
+   "medical": 303,
+   "luxury": 596,
+   "equipment": 464
+  }
+ },
+ {
+  "key": "price:8:Europa",
+  "v": {
+   "water": 60,
+   "industrial": 239
+  }
+ },
+ {
+  "key": "price:8:Titan",
+  "v": {
+   "medical": 236,
+   "luxury": 426,
+   "equipment": 428,
+   "industrial": 267
+  }
+ },
+ {
+  "key": "price:8:Enceladus",
+  "v": {
+   "water": 63,
+   "food": 135,
+   "metal": 188
+  }
+ },
+ {
+  "key": "price:8:Triton Outpost",
+  "v": {
+   "medical": 359,
+   "equipment": 420,
+   "luxury": 597,
+   "metal": 115,
+   "water": 59,
+   "food": 107
+  }
+ },
+ {
+  "key": "price:30:Hermes Foundry",
+  "v": {
+   "industrial": 152,
+   "equipment": 282,
+   "metal": 162,
+   "food": 132,
+   "water": 96,
+   "luxury": 469
+  }
+ },
+ {
+  "key": "price:30:Earth",
+  "v": {
+   "water": 77,
+   "food": 108,
+   "industrial": 145,
+   "medical": 238,
+   "luxury": 567,
+   "metal": 200,
+   "equipment": 251
+  }
+ },
+ {
+  "key": "price:30:Luna",
+  "v": {}
+ },
+ {
+  "key": "price:30:Mars",
+  "v": {
+   "equipment": 424,
+   "food": 121,
+   "water": 96,
+   "medical": 306,
+   "industrial": 200,
+   "metal": 121,
+   "luxury": 416
+  }
+ },
+ {
+  "key": "price:30:Phobos Yards",
+  "v": {}
+ },
+ {
+  "key": "price:30:Ceres Station",
+  "v": {
+   "water": 100,
+   "food": 133,
+   "medical": 419,
+   "metal": 118,
+   "luxury": 415,
+   "equipment": 375,
+   "industrial": 185
+  }
+ },
+ {
+  "key": "price:30:Ring Nine",
+  "v": {
+   "water": 112,
+   "food": 138,
+   "medical": 366
+  }
+ },
+ {
+  "key": "price:30:Pallas Refinery",
+  "v": {
+   "metal": 108,
+   "industrial": 279,
+   "food": 128,
+   "water": 107,
+   "equipment": 491
+  }
+ },
+ {
+  "key": "price:30:The Hollows",
+  "v": {
+   "food": 122,
+   "water": 98
+  }
+ },
+ {
+  "key": "price:30:The Rook",
+  "v": {
+   "luxury": 349,
+   "equipment": 477,
+   "medical": 414,
+   "food": 130,
+   "water": 86
+  }
+ },
+ {
+  "key": "price:30:Boneyard",
+  "v": {
+   "medical": 372,
+   "food": 140
+  }
+ },
+ {
+  "key": "price:30:Ironheart",
+  "v": {
+   "metal": 104,
+   "industrial": 141,
+   "food": 139,
+   "water": 112,
+   "luxury": 623,
+   "medical": 307
+  }
+ },
+ {
+  "key": "price:30:Juno Commons",
+  "v": {
+   "food": 73,
+   "luxury": 616,
+   "equipment": 449,
+   "medical": 421,
+   "water": 75
+  }
+ },
+ {
+  "key": "price:30:Eros Old Town",
+  "v": {
+   "metal": 141,
+   "water": 111,
+   "industrial": 248,
+   "luxury": 355,
+   "equipment": 363
+  }
+ },
+ {
+  "key": "price:30:Ganymede",
+  "v": {
+   "food": 70,
+   "medical": 321,
+   "luxury": 628,
+   "equipment": 431
+  }
+ },
+ {
+  "key": "price:30:Europa",
+  "v": {
+   "water": 56,
+   "industrial": 246
+  }
+ },
+ {
+  "key": "price:30:Titan",
+  "v": {
+   "medical": 220,
+   "luxury": 414,
+   "equipment": 420,
+   "industrial": 280
+  }
+ },
+ {
+  "key": "price:30:Enceladus",
+  "v": {
+   "water": 58,
+   "food": 140,
+   "metal": 203
+  }
+ },
+ {
+  "key": "price:30:Triton Outpost",
+  "v": {
+   "medical": 371,
+   "equipment": 426,
+   "luxury": 629,
+   "metal": 121,
+   "water": 56,
+   "food": 100
+  }
+ },
+ {
+  "key": "trade:Hermes Foundry:industrial",
+  "v": {
+   "buy1": 161,
+   "buy10": 1620,
+   "buy50": 8450,
+   "sell1": 161,
+   "sell10": 1590,
+   "sell50": 7650,
+   "rumor": 289,
+   "afterBuys": [
+    0.24,
+    199,
+    1980
+   ],
+   "afterSells": [
+    -0.4,
+    96
+   ]
+  }
+ },
+ {
+  "key": "trade:Hermes Foundry:equipment",
+  "v": {
+   "buy1": 267,
+   "buy10": 2690,
+   "buy50": 14000,
+   "sell1": 266,
+   "sell10": 2640,
+   "sell50": 12650,
+   "rumor": 480,
+   "afterBuys": [
+    0.24,
+    331,
+    3280
+   ],
+   "afterSells": [
+    -0.4,
+    160
+   ]
+  }
+ },
+ {
+  "key": "trade:Hermes Foundry:metal",
+  "v": {
+   "buy1": 160,
+   "buy10": 1610,
+   "buy50": 8350,
+   "sell1": 159,
+   "sell10": 1580,
+   "sell50": 7550,
+   "rumor": 287,
+   "afterBuys": [
+    0.24,
+    198,
+    1960
+   ],
+   "afterSells": [
+    -0.4,
+    96
+   ]
+  }
+ },
+ {
+  "key": "trade:Ceres Station:water",
+  "v": {
+   "buy1": 108,
+   "buy10": 1090,
+   "buy50": 5650,
+   "sell1": 107,
+   "sell10": 1060,
+   "sell50": 5100,
+   "rumor": 194,
+   "afterBuys": [
+    0.24,
+    133,
+    1320
+   ],
+   "afterSells": [
+    -0.4,
+    65
+   ]
+  }
+ },
+ {
+  "key": "trade:Ceres Station:food",
+  "v": {
+   "buy1": 123,
+   "buy10": 1250,
+   "buy50": 6450,
+   "sell1": 123,
+   "sell10": 1220,
+   "sell50": 5850,
+   "rumor": 222,
+   "afterBuys": [
+    0.24,
+    153,
+    1520
+   ],
+   "afterSells": [
+    -0.4,
+    74
+   ]
+  }
+ },
+ {
+  "key": "trade:Ceres Station:medical",
+  "v": {
+   "buy1": 417,
+   "buy10": 4200,
+   "buy50": 21850,
+   "sell1": 416,
+   "sell10": 4120,
+   "sell50": 19750,
+   "rumor": 749,
+   "afterBuys": [
+    0.24,
+    516,
+    5120
+   ],
+   "afterSells": [
+    -0.4,
+    250
+   ]
+  }
+ },
+ {
+  "key": "trade:Boneyard:medical",
+  "v": {
+   "buy1": 359,
+   "buy10": 3620,
+   "buy50": 18850,
+   "sell1": 358,
+   "sell10": 3550,
+   "sell50": 17050,
+   "rumor": 646,
+   "afterBuys": [
+    0.24,
+    445,
+    4410
+   ],
+   "afterSells": [
+    -0.4,
+    215
+   ]
+  }
+ },
+ {
+  "key": "trade:Boneyard:food",
+  "v": {
+   "buy1": 136,
+   "buy10": 1370,
+   "buy50": 7100,
+   "sell1": 135,
+   "sell10": 1340,
+   "sell50": 6450,
+   "rumor": 244,
+   "afterBuys": [
+    0.24,
+    168,
+    1670
+   ],
+   "afterSells": [
+    -0.4,
+    81
+   ]
+  }
+ },
+ {
+  "key": "trade:Europa:water",
+  "v": {
+   "buy1": 60,
+   "buy10": 600,
+   "buy50": 3150,
+   "sell1": 60,
+   "sell10": 590,
+   "sell50": 2850,
+   "rumor": 108,
+   "afterBuys": [
+    0.24,
+    74,
+    740
+   ],
+   "afterSells": [
+    -0.4,
+    36
+   ]
+  }
+ },
+ {
+  "key": "trade:Europa:industrial",
+  "v": {
+   "buy1": 240,
+   "buy10": 2420,
+   "buy50": 12550,
+   "sell1": 239,
+   "sell10": 2370,
+   "sell50": 11350,
+   "rumor": 431,
+   "afterBuys": [
+    0.24,
+    297,
+    2940
+   ],
+   "afterSells": [
+    -0.4,
+    144
+   ]
+  }
+ },
+ {
+  "key": "bestSale:Hermes Foundry",
+  "v": {
+   "industrial": [
+    "Eros Old Town",
+    5,
+    78,
+    15.6
+   ],
+   "equipment": [
+    "Pallas Refinery",
+    9,
+    212,
+    23.5556
+   ],
+   "metal": [
+    "Earth",
+    6,
+    51,
+    8.5
+   ],
+   "food": [
+    "Ring Nine",
+    8,
+    1,
+    0.125
+   ],
+   "water": [
+    "Eros Old Town",
+    5,
+    14,
+    2.8
+   ],
+   "luxury": [
+    "Juno Commons",
+    9,
+    145,
+    16.1111
+   ]
+  }
+ },
+ {
+  "key": "bestSale:Ceres Station",
+  "v": {
+   "water": [
+    "Ring Nine",
+    0,
+    1,
+    1
+   ],
+   "food": [
+    "Ring Nine",
+    0,
+    17,
+    17
+   ],
+   "medical": [
+    "The Rook",
+    11,
+    4,
+    0.3636
+   ],
+   "metal": [
+    "Earth",
+    7,
+    100,
+    14.2857
+   ],
+   "luxury": [
+    "Juno Commons",
+    8,
+    208,
+    26
+   ],
+   "equipment": [
+    "Ganymede",
+    9,
+    90,
+    10
+   ],
+   "industrial": [
+    "Pallas Refinery",
+    11,
+    68,
+    6.1818
+   ]
+  }
+ },
+ {
+  "key": "bestSale:Boneyard",
+  "v": {
+   "medical": [
+    "The Rook",
+    0,
+    61,
+    61
+   ],
+   "food": [
+    "Hermes Foundry",
+    8,
+    3,
+    0.375
+   ]
+  }
+ },
+ {
+  "key": "bestSale:Europa",
+  "v": {
+   "water": [
+    "Ring Nine",
+    9,
+    49,
+    5.4444
+   ],
+   "industrial": [
+    "Titan",
+    14,
+    28,
+    2
+   ]
+  }
+ },
+ {
+  "key": "world:5",
+  "v": {
+   "market": {
+    "Boneyard|food": 0.067,
+    "Boneyard|medical": 0.095,
+    "Ceres Station|equipment": 0.0437,
+    "Ceres Station|food": 0.025,
+    "Ceres Station|luxury": 0.0666,
+    "Ceres Station|medical": 0.025,
+    "Ceres Station|water": 0.025,
+    "Earth|equipment": 0.072,
+    "Earth|food": 0.0396,
+    "Earth|industrial": 0.031,
+    "Earth|luxury": 0.025,
+    "Earth|medical": 0.019,
+    "Earth|metal": 0.025,
+    "Earth|water": 0.068,
+    "Enceladus|food": 0.095,
+    "Enceladus|metal": 0.025,
+    "Enceladus|water": 0.105,
+    "Eros Old Town|equipment": 0.0381,
+    "Eros Old Town|industrial": 0.025,
+    "Eros Old Town|luxury": 0.089,
+    "Eros Old Town|water": 0.025,
+    "Europa|industrial": 0.025,
+    "Europa|water": 0.077,
+    "Ganymede|equipment": 0.025,
+    "Ganymede|food": 0.029,
+    "Ganymede|luxury": 0.025,
+    "Ganymede|medical": 0.0373,
+    "Hermes Foundry|equipment": 0.021,
+    "Hermes Foundry|food": 0.025,
+    "Hermes Foundry|industrial": 0.027,
+    "Hermes Foundry|luxury": 0.0408,
+    "Hermes Foundry|water": 0.025,
+    "Ironheart|food": 0.025,
+    "Ironheart|industrial": 0.033,
+    "Ironheart|luxury": 0.025,
+    "Ironheart|medical": 0.0486,
+    "Ironheart|metal": 0.023,
+    "Ironheart|water": 0.025,
+    "Juno Commons|equipment": 0.025,
+    "Juno Commons|food": 0.053,
+    "Juno Commons|luxury": 0.025,
+    "Juno Commons|medical": 0.025,
+    "Mars|equipment": 0.025,
+    "Mars|food": 0.025,
+    "Mars|industrial": 0.063,
+    "Mars|luxury": 0.0702,
+    "Mars|metal": 0.011,
+    "Mars|water": 0.025,
+    "Pallas Refinery|equipment": 0.093,
+    "Pallas Refinery|food": 0.025,
+    "Pallas Refinery|industrial": 0.025,
+    "Pallas Refinery|metal": 0.033,
+    "Pallas Refinery|water": 0.025,
+    "Ring Nine|food": 0.025,
+    "Ring Nine|medical": 0.025,
+    "Ring Nine|water": 0.025,
+    "The Hollows|food": 0.025,
+    "The Hollows|water": 0.025,
+    "The Rook|equipment": 0.077,
+    "The Rook|food": 0.087,
+    "The Rook|luxury": 0.013,
+    "The Rook|medical": 0.025,
+    "The Rook|water": 0.08,
+    "Titan|equipment": 0.091,
+    "Titan|industrial": 0.087,
+    "Titan|luxury": 0.0414,
+    "Titan|medical": 0.074,
+    "Triton Outpost|equipment": 0.123,
+    "Triton Outpost|food": 0.1885,
+    "Triton Outpost|luxury": 0.175,
+    "Triton Outpost|medical": 0.149,
+    "Triton Outpost|metal": 0.081,
+    "Triton Outpost|water": 0.151
+   },
+   "haul": [
+    [
+     "luxury",
+     29,
+     "The Rook",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "water",
+     33,
+     "Triton Outpost",
+     "Eros Old Town",
+     38
+    ],
+    [
+     "food",
+     23,
+     "Triton Outpost",
+     "The Rook",
+     39
+    ],
+    [
+     "equipment",
+     33,
+     "Hermes Foundry",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "equipment",
+     20,
+     "Triton Outpost",
+     "The Rook",
+     39
+    ],
+    [
+     "medical",
+     23,
+     "Triton Outpost",
+     "The Rook",
+     39
+    ],
+    [
+     "medical",
+     35,
+     "Boneyard",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "medical",
+     39,
+     "Triton Outpost",
+     "Boneyard",
+     39
+    ],
+    [
+     "medical",
+     32,
+     "Earth",
+     "Triton Outpost",
+     36
+    ],
+    [
+     "metal",
+     27,
+     "Triton Outpost",
+     "Earth",
+     36
+    ],
+    [
+     "medical",
+     37,
+     "Ironheart",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "equipment",
+     29,
+     "Eros Old Town",
+     "Triton Outpost",
+     38
+    ],
+    [
+     "luxury",
+     35,
+     "Triton Outpost",
+     "Ironheart",
+     38
+    ],
+    [
+     "luxury",
+     30,
+     "Eros Old Town",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "food",
+     22,
+     "Triton Outpost",
+     "Boneyard",
+     40
+    ],
+    [
+     "water",
+     22,
+     "Triton Outpost",
+     "Hermes Foundry",
+     38
+    ],
+    [
+     "luxury",
+     28,
+     "Hermes Foundry",
+     "Triton Outpost",
+     38
+    ],
+    [
+     "equipment",
+     29,
+     "Triton Outpost",
+     "Pallas Refinery",
+     36
+    ],
+    [
+     "equipment",
+     24,
+     "Earth",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "water",
+     40,
+     "Enceladus",
+     "Ironheart",
+     22
+    ],
+    [
+     "industrial",
+     39,
+     "Ironheart",
+     "Titan",
+     22
+    ],
+    [
+     "metal",
+     34,
+     "Ironheart",
+     "Enceladus",
+     22
+    ],
+    [
+     "medical",
+     23,
+     "Titan",
+     "Boneyard",
+     22
+    ],
+    [
+     "equipment",
+     26,
+     "The Rook",
+     "Triton Outpost",
+     40
+    ],
+    [
+     "food",
+     37,
+     "Ganymede",
+     "Ironheart",
+     19
+    ],
+    [
+     "food",
+     23,
+     "Triton Outpost",
+     "Hermes Foundry",
+     39
+    ],
+    [
+     "food",
+     21,
+     "Juno Commons",
+     "Triton Outpost",
+     36
+    ],
+    [
+     "water",
+     37,
+     "Europa",
+     "Pallas Refinery",
+     18
+    ],
+    [
+     "equipment",
+     33,
+     "Titan",
+     "The Rook",
+     23
+    ],
+    [
+     "equipment",
+     27,
+     "Ceres Station",
+     "Titan",
+     18
+    ],
+    [
+     "medical",
+     23,
+     "Ganymede",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "metal",
+     36,
+     "Triton Outpost",
+     "Earth",
+     38
+    ],
+    [
+     "metal",
+     28,
+     "Mars",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "water",
+     20,
+     "Triton Outpost",
+     "Ceres Station",
+     38
+    ],
+    [
+     "equipment",
+     34,
+     "Pallas Refinery",
+     "Titan",
+     21
+    ],
+    [
+     "industrial",
+     36,
+     "Hermes Foundry",
+     "Europa",
+     15
+    ],
+    [
+     "luxury",
+     40,
+     "Triton Outpost",
+     "Earth",
+     39
+    ],
+    [
+     "luxury",
+     37,
+     "Ceres Station",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "industrial",
+     38,
+     "Earth",
+     "Pallas Refinery",
+     13
+    ],
+    [
+     "food",
+     22,
+     "Earth",
+     "Enceladus",
+     20
+    ],
+    [
+     "luxury",
+     23,
+     "Titan",
+     "Juno Commons",
+     19
+    ],
+    [
+     "industrial",
+     31,
+     "Titan",
+     "Eros Old Town",
+     23
+    ],
+    [
+     "luxury",
+     39,
+     "Mars",
+     "Triton Outpost",
+     38
+    ],
+    [
+     "food",
+     35,
+     "Enceladus",
+     "Pallas Refinery",
+     22
+    ],
+    [
+     "food",
+     21,
+     "Boneyard",
+     "Enceladus",
+     24
+    ],
+    [
+     "food",
+     25,
+     "Triton Outpost",
+     "Boneyard",
+     42
+    ],
+    [
+     "food",
+     28,
+     "Juno Commons",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "industrial",
+     35,
+     "Mars",
+     "Titan",
+     21
+    ],
+    [
+     "medical",
+     37,
+     "Titan",
+     "Ceres Station",
+     20
+    ],
+    [
+     "water",
+     23,
+     "Triton Outpost",
+     "Ring Nine",
+     40
+    ],
+    [
+     "water",
+     24,
+     "Europa",
+     "Triton Outpost",
+     41
+    ],
+    [
+     "metal",
+     39,
+     "Pallas Refinery",
+     "Enceladus",
+     23
+    ],
+    [
+     "water",
+     40,
+     "The Rook",
+     "The Hollows",
+     18
+    ],
+    [
+     "water",
+     34,
+     "Earth",
+     "The Rook",
+     16
+    ],
+    [
+     "equipment",
+     36,
+     "Earth",
+     "Ganymede",
+     17
+    ],
+    [
+     "food",
+     31,
+     "The Rook",
+     "Enceladus",
+     25
+    ],
+    [
+     "food",
+     22,
+     "Triton Outpost",
+     "The Rook",
+     43
+    ],
+    [
+     "metal",
+     24,
+     "Ceres Station",
+     "Pallas Refinery",
+     17
+    ],
+    [
+     "water",
+     35,
+     "Enceladus",
+     "Mars",
+     22
+    ],
+    [
+     "luxury",
+     37,
+     "Eros Old Town",
+     "Ganymede",
+     18
+    ]
+   ],
+   "unrest": {
+    "mercury": 0,
+    "earth": 0,
+    "mars": 0.05,
+    "ceres": 0.2,
+    "pallas": 0.3,
+    "hygiea": 0.8,
+    "psyche": 0.25,
+    "juno": 0.15,
+    "eros": 0.1,
+    "jupiter": 0.2,
+    "saturn": 0.35,
+    "neptune": 0.45
+   },
+   "news": []
+  }
+ },
+ {
+  "key": "world:10",
+  "v": {
+   "market": {
+    "Boneyard|food": 0.092,
+    "Boneyard|medical": 0.12,
+    "Ceres Station|equipment": 0.0812,
+    "Ceres Station|food": 0.05,
+    "Ceres Station|luxury": 0.0393,
+    "Ceres Station|medical": 0.05,
+    "Ceres Station|metal": 0.033,
+    "Ceres Station|water": 0.05,
+    "Earth|equipment": 0.101,
+    "Earth|food": 0.0234,
+    "Earth|industrial": 0.022,
+    "Earth|luxury": 0.05,
+    "Earth|medical": 0.044,
+    "Earth|metal": 0.05,
+    "Earth|water": 0.0402,
+    "Enceladus|food": 0.12,
+    "Enceladus|metal": 0.05,
+    "Enceladus|water": 0.06,
+    "Eros Old Town|equipment": 0.075,
+    "Eros Old Town|industrial": 0.05,
+    "Eros Old Town|luxury": 0.044,
+    "Eros Old Town|water": 0.05,
+    "Europa|industrial": 0.05,
+    "Europa|water": 0.074,
+    "Ganymede|equipment": 0.116,
+    "Ganymede|food": 0.078,
+    "Ganymede|luxury": 0.05,
+    "Ganymede|medical": 0.0653,
+    "Hermes Foundry|equipment": 0.068,
+    "Hermes Foundry|food": 0.05,
+    "Hermes Foundry|industrial": 0.05,
+    "Hermes Foundry|luxury": 0.0701,
+    "Hermes Foundry|water": 0.05,
+    "Ironheart|food": 0.104,
+    "Ironheart|industrial": 0.045,
+    "Ironheart|luxury": 0.05,
+    "Ironheart|medical": 0.0693,
+    "Ironheart|metal": -0.018,
+    "Ironheart|water": 0.05,
+    "Juno Commons|equipment": 0.05,
+    "Juno Commons|food": 0.058,
+    "Juno Commons|luxury": 0.05,
+    "Juno Commons|medical": 0.05,
+    "Juno Commons|water": 0.0407,
+    "Mars|equipment": 0.1,
+    "Mars|food": 0.05,
+    "Mars|industrial": 0.0372,
+    "Mars|luxury": 0.0415,
+    "Mars|medical": 0.0709,
+    "Mars|metal": 0.044,
+    "Mars|water": 0.05,
+    "Pallas Refinery|equipment": 0.118,
+    "Pallas Refinery|food": 0.09,
+    "Pallas Refinery|industrial": 0.05,
+    "Pallas Refinery|metal": 0.035,
+    "Pallas Refinery|water": 0.05,
+    "Ring Nine|food": 0.05,
+    "Ring Nine|medical": 0.05,
+    "Ring Nine|water": 0.05,
+    "The Hollows|food": 0.05,
+    "The Hollows|water": 0.05,
+    "The Rook|equipment": 0.102,
+    "The Rook|food": 0.112,
+    "The Rook|luxury": 0.04,
+    "The Rook|medical": 0.05,
+    "The Rook|water": 0.0472,
+    "Titan|equipment": 0.116,
+    "Titan|industrial": 0.112,
+    "Titan|luxury": 0.0744,
+    "Titan|medical": 0.081,
+    "Triton Outpost|equipment": 0.148,
+    "Triton Outpost|food": 0.1632,
+    "Triton Outpost|luxury": 0.2,
+    "Triton Outpost|medical": 0.174,
+    "Triton Outpost|metal": 0.114,
+    "Triton Outpost|water": 0.172
+   },
+   "haul": [
+    [
+     "luxury",
+     29,
+     "The Rook",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "water",
+     33,
+     "Triton Outpost",
+     "Eros Old Town",
+     38
+    ],
+    [
+     "food",
+     23,
+     "Triton Outpost",
+     "The Rook",
+     39
+    ],
+    [
+     "equipment",
+     33,
+     "Hermes Foundry",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "equipment",
+     20,
+     "Triton Outpost",
+     "The Rook",
+     39
+    ],
+    [
+     "medical",
+     23,
+     "Triton Outpost",
+     "The Rook",
+     39
+    ],
+    [
+     "medical",
+     35,
+     "Boneyard",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "medical",
+     39,
+     "Triton Outpost",
+     "Boneyard",
+     39
+    ],
+    [
+     "medical",
+     32,
+     "Earth",
+     "Triton Outpost",
+     36
+    ],
+    [
+     "metal",
+     27,
+     "Triton Outpost",
+     "Earth",
+     36
+    ],
+    [
+     "medical",
+     37,
+     "Ironheart",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "equipment",
+     29,
+     "Eros Old Town",
+     "Triton Outpost",
+     38
+    ],
+    [
+     "luxury",
+     35,
+     "Triton Outpost",
+     "Ironheart",
+     38
+    ],
+    [
+     "luxury",
+     30,
+     "Eros Old Town",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "food",
+     22,
+     "Triton Outpost",
+     "Boneyard",
+     40
+    ],
+    [
+     "water",
+     22,
+     "Triton Outpost",
+     "Hermes Foundry",
+     38
+    ],
+    [
+     "luxury",
+     28,
+     "Hermes Foundry",
+     "Triton Outpost",
+     38
+    ],
+    [
+     "equipment",
+     29,
+     "Triton Outpost",
+     "Pallas Refinery",
+     36
+    ],
+    [
+     "equipment",
+     24,
+     "Earth",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "water",
+     40,
+     "Enceladus",
+     "Ironheart",
+     22
+    ],
+    [
+     "industrial",
+     39,
+     "Ironheart",
+     "Titan",
+     22
+    ],
+    [
+     "metal",
+     34,
+     "Ironheart",
+     "Enceladus",
+     22
+    ],
+    [
+     "medical",
+     23,
+     "Titan",
+     "Boneyard",
+     22
+    ],
+    [
+     "equipment",
+     26,
+     "The Rook",
+     "Triton Outpost",
+     40
+    ],
+    [
+     "food",
+     37,
+     "Ganymede",
+     "Ironheart",
+     19
+    ],
+    [
+     "food",
+     23,
+     "Triton Outpost",
+     "Hermes Foundry",
+     39
+    ],
+    [
+     "food",
+     21,
+     "Juno Commons",
+     "Triton Outpost",
+     36
+    ],
+    [
+     "water",
+     37,
+     "Europa",
+     "Pallas Refinery",
+     18
+    ],
+    [
+     "equipment",
+     33,
+     "Titan",
+     "The Rook",
+     23
+    ],
+    [
+     "equipment",
+     27,
+     "Ceres Station",
+     "Titan",
+     18
+    ],
+    [
+     "medical",
+     23,
+     "Ganymede",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "metal",
+     36,
+     "Triton Outpost",
+     "Earth",
+     38
+    ],
+    [
+     "metal",
+     28,
+     "Mars",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "water",
+     20,
+     "Triton Outpost",
+     "Ceres Station",
+     38
+    ],
+    [
+     "equipment",
+     34,
+     "Pallas Refinery",
+     "Titan",
+     21
+    ],
+    [
+     "industrial",
+     36,
+     "Hermes Foundry",
+     "Europa",
+     15
+    ],
+    [
+     "luxury",
+     40,
+     "Triton Outpost",
+     "Earth",
+     39
+    ],
+    [
+     "luxury",
+     37,
+     "Ceres Station",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "industrial",
+     38,
+     "Earth",
+     "Pallas Refinery",
+     13
+    ],
+    [
+     "food",
+     22,
+     "Earth",
+     "Enceladus",
+     20
+    ],
+    [
+     "luxury",
+     23,
+     "Titan",
+     "Juno Commons",
+     19
+    ],
+    [
+     "industrial",
+     31,
+     "Titan",
+     "Eros Old Town",
+     23
+    ],
+    [
+     "luxury",
+     39,
+     "Mars",
+     "Triton Outpost",
+     38
+    ],
+    [
+     "food",
+     35,
+     "Enceladus",
+     "Pallas Refinery",
+     22
+    ],
+    [
+     "food",
+     21,
+     "Boneyard",
+     "Enceladus",
+     24
+    ],
+    [
+     "food",
+     25,
+     "Triton Outpost",
+     "Boneyard",
+     42
+    ],
+    [
+     "food",
+     28,
+     "Juno Commons",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "industrial",
+     35,
+     "Mars",
+     "Titan",
+     21
+    ],
+    [
+     "medical",
+     37,
+     "Titan",
+     "Ceres Station",
+     20
+    ],
+    [
+     "water",
+     23,
+     "Triton Outpost",
+     "Ring Nine",
+     40
+    ],
+    [
+     "water",
+     24,
+     "Europa",
+     "Triton Outpost",
+     41
+    ],
+    [
+     "metal",
+     39,
+     "Pallas Refinery",
+     "Enceladus",
+     23
+    ],
+    [
+     "water",
+     40,
+     "The Rook",
+     "The Hollows",
+     18
+    ],
+    [
+     "water",
+     34,
+     "Earth",
+     "The Rook",
+     16
+    ],
+    [
+     "equipment",
+     36,
+     "Earth",
+     "Ganymede",
+     17
+    ],
+    [
+     "food",
+     31,
+     "The Rook",
+     "Enceladus",
+     25
+    ],
+    [
+     "food",
+     22,
+     "Triton Outpost",
+     "The Rook",
+     43
+    ],
+    [
+     "metal",
+     24,
+     "Ceres Station",
+     "Pallas Refinery",
+     17
+    ],
+    [
+     "water",
+     35,
+     "Enceladus",
+     "Mars",
+     22
+    ],
+    [
+     "luxury",
+     37,
+     "Eros Old Town",
+     "Ganymede",
+     18
+    ],
+    [
+     "food",
+     24,
+     "Ganymede",
+     "The Hollows",
+     21
+    ],
+    [
+     "luxury",
+     38,
+     "The Rook",
+     "Eros Old Town",
+     14
+    ],
+    [
+     "equipment",
+     25,
+     "Hermes Foundry",
+     "Pallas Refinery",
+     16
+    ],
+    [
+     "medical",
+     20,
+     "Mars",
+     "Ring Nine",
+     15
+    ],
+    [
+     "water",
+     31,
+     "Juno Commons",
+     "Earth",
+     14
+    ],
+    [
+     "medical",
+     35,
+     "Earth",
+     "Triton Outpost",
+     41
+    ],
+    [
+     "food",
+     27,
+     "Ironheart",
+     "Ring Nine",
+     19
+    ],
+    [
+     "medical",
+     33,
+     "Ganymede",
+     "Juno Commons",
+     19
+    ],
+    [
+     "medical",
+     34,
+     "Mars",
+     "Ganymede",
+     19
+    ],
+    [
+     "medical",
+     31,
+     "Ironheart",
+     "Mars",
+     16
+    ],
+    [
+     "equipment",
+     36,
+     "Eros Old Town",
+     "Triton Outpost",
+     44
+    ],
+    [
+     "equipment",
+     38,
+     "Ceres Station",
+     "Eros Old Town",
+     18
+    ],
+    [
+     "equipment",
+     21,
+     "Hermes Foundry",
+     "Ceres Station",
+     16
+    ],
+    [
+     "food",
+     20,
+     "Pallas Refinery",
+     "Ceres Station",
+     19
+    ],
+    [
+     "food",
+     32,
+     "Triton Outpost",
+     "Mars",
+     42
+    ],
+    [
+     "food",
+     25,
+     "Juno Commons",
+     "Triton Outpost",
+     41
+    ],
+    [
+     "equipment",
+     33,
+     "Ganymede",
+     "Juno Commons",
+     21
+    ],
+    [
+     "equipment",
+     25,
+     "Mars",
+     "Ganymede",
+     21
+    ],
+    [
+     "equipment",
+     37,
+     "Earth",
+     "Mars",
+     14
+    ],
+    [
+     "water",
+     33,
+     "Triton Outpost",
+     "Hermes Foundry",
+     45
+    ],
+    [
+     "water",
+     21,
+     "Europa",
+     "Triton Outpost",
+     45
+    ],
+    [
+     "food",
+     23,
+     "Ganymede",
+     "Ironheart",
+     25
+    ],
+    [
+     "medical",
+     26,
+     "Titan",
+     "The Rook",
+     29
+    ],
+    [
+     "industrial",
+     27,
+     "Ironheart",
+     "Titan",
+     29
+    ],
+    [
+     "industrial",
+     34,
+     "Hermes Foundry",
+     "Ironheart",
+     18
+    ],
+    [
+     "industrial",
+     20,
+     "Earth",
+     "Mars",
+     15
+    ],
+    [
+     "metal",
+     39,
+     "Triton Outpost",
+     "Earth",
+     45
+    ],
+    [
+     "metal",
+     39,
+     "Ceres Station",
+     "Triton Outpost",
+     45
+    ],
+    [
+     "metal",
+     40,
+     "Mars",
+     "Ceres Station",
+     19
+    ],
+    [
+     "metal",
+     22,
+     "Pallas Refinery",
+     "Mars",
+     18
+    ],
+    [
+     "luxury",
+     25,
+     "Titan",
+     "Ironheart",
+     30
+    ],
+    [
+     "luxury",
+     23,
+     "Hermes Foundry",
+     "Titan",
+     28
+    ]
+   ],
+   "unrest": {
+    "mercury": 0,
+    "earth": 0,
+    "mars": 0.05,
+    "ceres": 0.2,
+    "pallas": 0.3,
+    "hygiea": 0.8,
+    "psyche": 0.25,
+    "juno": 0.15,
+    "eros": 0.1,
+    "jupiter": 0.2,
+    "saturn": 0.35,
+    "neptune": 0.45
+   },
+   "news": []
+  }
+ },
+ {
+  "key": "world:15",
+  "v": {
+   "market": {
+    "Boneyard|food": 0.117,
+    "Boneyard|medical": 0.145,
+    "Ceres Station|equipment": 0.064,
+    "Ceres Station|food": 0.075,
+    "Ceres Station|industrial": 0.0525,
+    "Ceres Station|luxury": 0.0232,
+    "Ceres Station|medical": 0.075,
+    "Ceres Station|metal": -0.009,
+    "Ceres Station|water": 0.075,
+    "Earth|equipment": 0.056,
+    "Earth|food": 0.0473,
+    "Earth|industrial": 0.017,
+    "Earth|luxury": 0.075,
+    "Earth|medical": 0.039,
+    "Earth|metal": 0.075,
+    "Earth|water": 0.0977,
+    "Enceladus|food": 0.145,
+    "Enceladus|metal": 0.075,
+    "Enceladus|water": 0.057,
+    "Eros Old Town|equipment": 0.0443,
+    "Eros Old Town|industrial": 0.075,
+    "Eros Old Town|luxury": 0.069,
+    "Eros Old Town|water": 0.075,
+    "Europa|industrial": 0.079,
+    "Europa|water": 0.069,
+    "Ganymede|equipment": 0.141,
+    "Ganymede|food": 0.099,
+    "Ganymede|luxury": 0.075,
+    "Ganymede|medical": 0.0386,
+    "Hermes Foundry|equipment": 0.085,
+    "Hermes Foundry|food": 0.075,
+    "Hermes Foundry|industrial": 0.005,
+    "Hermes Foundry|luxury": 0.0414,
+    "Hermes Foundry|water": 0.075,
+    "Ironheart|food": 0.129,
+    "Ironheart|luxury": 0.075,
+    "Ironheart|medical": 0.0409,
+    "Ironheart|metal": -0.018,
+    "Ironheart|water": 0.075,
+    "Juno Commons|equipment": 0.075,
+    "Juno Commons|food": 0.057,
+    "Juno Commons|luxury": 0.075,
+    "Juno Commons|medical": 0.075,
+    "Juno Commons|water": 0.078,
+    "Mars|equipment": 0.051,
+    "Mars|food": 0.075,
+    "Mars|industrial": 0.0274,
+    "Mars|luxury": 0.0245,
+    "Mars|medical": 0.0358,
+    "Mars|water": 0.075,
+    "Pallas Refinery|equipment": 0.093,
+    "Pallas Refinery|food": 0.115,
+    "Pallas Refinery|industrial": 0.057,
+    "Pallas Refinery|metal": -0.009,
+    "Pallas Refinery|water": 0.075,
+    "Ring Nine|food": 0.075,
+    "Ring Nine|medical": 0.035,
+    "Ring Nine|water": 0.075,
+    "The Hollows|food": 0.075,
+    "The Hollows|water": 0.075,
+    "The Rook|equipment": 0.127,
+    "The Rook|food": 0.137,
+    "The Rook|luxury": 0.075,
+    "The Rook|medical": 0.075,
+    "The Rook|water": 0.0759,
+    "Titan|equipment": 0.141,
+    "Titan|industrial": 0.137,
+    "Titan|luxury": 0.044,
+    "Titan|medical": 0.1,
+    "Triton Outpost|equipment": 0.173,
+    "Triton Outpost|food": 0.2183,
+    "Triton Outpost|luxury": 0.225,
+    "Triton Outpost|medical": 0.199,
+    "Triton Outpost|metal": 0.069,
+    "Triton Outpost|water": 0.181
+   },
+   "haul": [
+    [
+     "luxury",
+     29,
+     "The Rook",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "water",
+     33,
+     "Triton Outpost",
+     "Eros Old Town",
+     38
+    ],
+    [
+     "food",
+     23,
+     "Triton Outpost",
+     "The Rook",
+     39
+    ],
+    [
+     "equipment",
+     33,
+     "Hermes Foundry",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "equipment",
+     20,
+     "Triton Outpost",
+     "The Rook",
+     39
+    ],
+    [
+     "medical",
+     23,
+     "Triton Outpost",
+     "The Rook",
+     39
+    ],
+    [
+     "medical",
+     35,
+     "Boneyard",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "medical",
+     39,
+     "Triton Outpost",
+     "Boneyard",
+     39
+    ],
+    [
+     "medical",
+     32,
+     "Earth",
+     "Triton Outpost",
+     36
+    ],
+    [
+     "metal",
+     27,
+     "Triton Outpost",
+     "Earth",
+     36
+    ],
+    [
+     "medical",
+     37,
+     "Ironheart",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "equipment",
+     29,
+     "Eros Old Town",
+     "Triton Outpost",
+     38
+    ],
+    [
+     "luxury",
+     35,
+     "Triton Outpost",
+     "Ironheart",
+     38
+    ],
+    [
+     "luxury",
+     30,
+     "Eros Old Town",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "food",
+     22,
+     "Triton Outpost",
+     "Boneyard",
+     40
+    ],
+    [
+     "water",
+     22,
+     "Triton Outpost",
+     "Hermes Foundry",
+     38
+    ],
+    [
+     "luxury",
+     28,
+     "Hermes Foundry",
+     "Triton Outpost",
+     38
+    ],
+    [
+     "equipment",
+     29,
+     "Triton Outpost",
+     "Pallas Refinery",
+     36
+    ],
+    [
+     "equipment",
+     24,
+     "Earth",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "water",
+     40,
+     "Enceladus",
+     "Ironheart",
+     22
+    ],
+    [
+     "industrial",
+     39,
+     "Ironheart",
+     "Titan",
+     22
+    ],
+    [
+     "metal",
+     34,
+     "Ironheart",
+     "Enceladus",
+     22
+    ],
+    [
+     "medical",
+     23,
+     "Titan",
+     "Boneyard",
+     22
+    ],
+    [
+     "equipment",
+     26,
+     "The Rook",
+     "Triton Outpost",
+     40
+    ],
+    [
+     "food",
+     37,
+     "Ganymede",
+     "Ironheart",
+     19
+    ],
+    [
+     "food",
+     23,
+     "Triton Outpost",
+     "Hermes Foundry",
+     39
+    ],
+    [
+     "food",
+     21,
+     "Juno Commons",
+     "Triton Outpost",
+     36
+    ],
+    [
+     "water",
+     37,
+     "Europa",
+     "Pallas Refinery",
+     18
+    ],
+    [
+     "equipment",
+     33,
+     "Titan",
+     "The Rook",
+     23
+    ],
+    [
+     "equipment",
+     27,
+     "Ceres Station",
+     "Titan",
+     18
+    ],
+    [
+     "medical",
+     23,
+     "Ganymede",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "metal",
+     36,
+     "Triton Outpost",
+     "Earth",
+     38
+    ],
+    [
+     "metal",
+     28,
+     "Mars",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "water",
+     20,
+     "Triton Outpost",
+     "Ceres Station",
+     38
+    ],
+    [
+     "equipment",
+     34,
+     "Pallas Refinery",
+     "Titan",
+     21
+    ],
+    [
+     "luxury",
+     40,
+     "Triton Outpost",
+     "Earth",
+     39
+    ],
+    [
+     "luxury",
+     37,
+     "Ceres Station",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "food",
+     22,
+     "Earth",
+     "Enceladus",
+     20
+    ],
+    [
+     "luxury",
+     23,
+     "Titan",
+     "Juno Commons",
+     19
+    ],
+    [
+     "industrial",
+     31,
+     "Titan",
+     "Eros Old Town",
+     23
+    ],
+    [
+     "luxury",
+     39,
+     "Mars",
+     "Triton Outpost",
+     38
+    ],
+    [
+     "food",
+     35,
+     "Enceladus",
+     "Pallas Refinery",
+     22
+    ],
+    [
+     "food",
+     21,
+     "Boneyard",
+     "Enceladus",
+     24
+    ],
+    [
+     "food",
+     25,
+     "Triton Outpost",
+     "Boneyard",
+     42
+    ],
+    [
+     "food",
+     28,
+     "Juno Commons",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "industrial",
+     35,
+     "Mars",
+     "Titan",
+     21
+    ],
+    [
+     "medical",
+     37,
+     "Titan",
+     "Ceres Station",
+     20
+    ],
+    [
+     "water",
+     23,
+     "Triton Outpost",
+     "Ring Nine",
+     40
+    ],
+    [
+     "water",
+     24,
+     "Europa",
+     "Triton Outpost",
+     41
+    ],
+    [
+     "metal",
+     39,
+     "Pallas Refinery",
+     "Enceladus",
+     23
+    ],
+    [
+     "water",
+     40,
+     "The Rook",
+     "The Hollows",
+     18
+    ],
+    [
+     "equipment",
+     36,
+     "Earth",
+     "Ganymede",
+     17
+    ],
+    [
+     "food",
+     31,
+     "The Rook",
+     "Enceladus",
+     25
+    ],
+    [
+     "food",
+     22,
+     "Triton Outpost",
+     "The Rook",
+     43
+    ],
+    [
+     "metal",
+     24,
+     "Ceres Station",
+     "Pallas Refinery",
+     17
+    ],
+    [
+     "water",
+     35,
+     "Enceladus",
+     "Mars",
+     22
+    ],
+    [
+     "luxury",
+     37,
+     "Eros Old Town",
+     "Ganymede",
+     18
+    ],
+    [
+     "food",
+     24,
+     "Ganymede",
+     "The Hollows",
+     21
+    ],
+    [
+     "medical",
+     35,
+     "Earth",
+     "Triton Outpost",
+     41
+    ],
+    [
+     "food",
+     27,
+     "Ironheart",
+     "Ring Nine",
+     19
+    ],
+    [
+     "medical",
+     33,
+     "Ganymede",
+     "Juno Commons",
+     19
+    ],
+    [
+     "medical",
+     34,
+     "Mars",
+     "Ganymede",
+     19
+    ],
+    [
+     "equipment",
+     36,
+     "Eros Old Town",
+     "Triton Outpost",
+     44
+    ],
+    [
+     "equipment",
+     38,
+     "Ceres Station",
+     "Eros Old Town",
+     18
+    ],
+    [
+     "food",
+     20,
+     "Pallas Refinery",
+     "Ceres Station",
+     19
+    ],
+    [
+     "food",
+     32,
+     "Triton Outpost",
+     "Mars",
+     42
+    ],
+    [
+     "food",
+     25,
+     "Juno Commons",
+     "Triton Outpost",
+     41
+    ],
+    [
+     "equipment",
+     33,
+     "Ganymede",
+     "Juno Commons",
+     21
+    ],
+    [
+     "equipment",
+     25,
+     "Mars",
+     "Ganymede",
+     21
+    ],
+    [
+     "water",
+     33,
+     "Triton Outpost",
+     "Hermes Foundry",
+     45
+    ],
+    [
+     "water",
+     21,
+     "Europa",
+     "Triton Outpost",
+     45
+    ],
+    [
+     "food",
+     23,
+     "Ganymede",
+     "Ironheart",
+     25
+    ],
+    [
+     "medical",
+     26,
+     "Titan",
+     "The Rook",
+     29
+    ],
+    [
+     "industrial",
+     27,
+     "Ironheart",
+     "Titan",
+     29
+    ],
+    [
+     "industrial",
+     34,
+     "Hermes Foundry",
+     "Ironheart",
+     18
+    ],
+    [
+     "metal",
+     39,
+     "Triton Outpost",
+     "Earth",
+     45
+    ],
+    [
+     "metal",
+     39,
+     "Ceres Station",
+     "Triton Outpost",
+     45
+    ],
+    [
+     "metal",
+     40,
+     "Mars",
+     "Ceres Station",
+     19
+    ],
+    [
+     "metal",
+     22,
+     "Pallas Refinery",
+     "Mars",
+     18
+    ],
+    [
+     "luxury",
+     25,
+     "Titan",
+     "Ironheart",
+     30
+    ],
+    [
+     "luxury",
+     23,
+     "Hermes Foundry",
+     "Titan",
+     28
+    ],
+    [
+     "food",
+     35,
+     "Triton Outpost",
+     "The Rook",
+     49
+    ],
+    [
+     "industrial",
+     29,
+     "Pallas Refinery",
+     "Europa",
+     27
+    ],
+    [
+     "industrial",
+     36,
+     "Ceres Station",
+     "Pallas Refinery",
+     24
+    ],
+    [
+     "industrial",
+     22,
+     "Earth",
+     "Ceres Station",
+     20
+    ],
+    [
+     "luxury",
+     40,
+     "The Rook",
+     "Juno Commons",
+     25
+    ],
+    [
+     "luxury",
+     37,
+     "Eros Old Town",
+     "The Rook",
+     20
+    ],
+    [
+     "food",
+     23,
+     "Earth",
+     "Pallas Refinery",
+     21
+    ],
+    [
+     "water",
+     31,
+     "Earth",
+     "Ceres Station",
+     21
+    ],
+    [
+     "metal",
+     23,
+     "Ironheart",
+     "Enceladus",
+     33
+    ],
+    [
+     "water",
+     21,
+     "Enceladus",
+     "Ring Nine",
+     28
+    ],
+    [
+     "luxury",
+     36,
+     "Eros Old Town",
+     "Triton Outpost",
+     50
+    ],
+    [
+     "equipment",
+     31,
+     "Hermes Foundry",
+     "Titan",
+     31
+    ],
+    [
+     "medical",
+     32,
+     "Titan",
+     "Boneyard",
+     33
+    ],
+    [
+     "medical",
+     20,
+     "Earth",
+     "Titan",
+     29
+    ],
+    [
+     "industrial",
+     37,
+     "Europa",
+     "Eros Old Town",
+     27
+    ],
+    [
+     "industrial",
+     23,
+     "Mars",
+     "Europa",
+     27
+    ],
+    [
+     "food",
+     22,
+     "Juno Commons",
+     "Boneyard",
+     27
+    ],
+    [
+     "water",
+     23,
+     "The Rook",
+     "Pallas Refinery",
+     28
+    ],
+    [
+     "medical",
+     28,
+     "Mars",
+     "Ring Nine",
+     24
+    ],
+    [
+     "equipment",
+     29,
+     "Ceres Station",
+     "Mars",
+     24
+    ],
+    [
+     "food",
+     33,
+     "Ganymede",
+     "The Hollows",
+     30
+    ],
+    [
+     "food",
+     38,
+     "Triton Outpost",
+     "Ceres Station",
+     50
+    ],
+    [
+     "water",
+     27,
+     "Triton Outpost",
+     "Eros Old Town",
+     52
+    ],
+    [
+     "water",
+     20,
+     "Europa",
+     "Triton Outpost",
+     51
+    ],
+    [
+     "water",
+     35,
+     "The Rook",
+     "Mars",
+     27
+    ],
+    [
+     "water",
+     37,
+     "Earth",
+     "The Rook",
+     26
+    ],
+    [
+     "water",
+     27,
+     "Juno Commons",
+     "Earth",
+     23
+    ]
+   ],
+   "unrest": {
+    "mercury": 0,
+    "earth": 0,
+    "mars": 0.05,
+    "ceres": 0.2,
+    "pallas": 0.3,
+    "hygiea": 0.8,
+    "psyche": 0.25,
+    "juno": 0.15,
+    "eros": 0.1,
+    "jupiter": 0.2,
+    "saturn": 0.35,
+    "neptune": 0.45
+   },
+   "news": []
+  }
+ },
+ {
+  "key": "world:20",
+  "v": {
+   "market": {
+    "Boneyard|food": 0.142,
+    "Boneyard|medical": 0.17,
+    "Ceres Station|equipment": 0.0378,
+    "Ceres Station|food": 0.06,
+    "Ceres Station|industrial": -0.0086,
+    "Ceres Station|luxury": 0.0531,
+    "Ceres Station|medical": 0.026,
+    "Ceres Station|metal": -0.056,
+    "Ceres Station|water": 0.038,
+    "Earth|equipment": 0.079,
+    "Earth|food": 0.0604,
+    "Earth|industrial": 0.045,
+    "Earth|luxury": 0.1,
+    "Earth|medical": 0.065,
+    "Earth|metal": 0.1,
+    "Earth|water": 0.0577,
+    "Enceladus|food": 0.126,
+    "Enceladus|metal": 0.1,
+    "Enceladus|water": 0.062,
+    "Eros Old Town|equipment": 0.0481,
+    "Eros Old Town|industrial": 0.1,
+    "Eros Old Town|luxury": 0.024,
+    "Eros Old Town|water": 0.1,
+    "Europa|industrial": 0.104,
+    "Europa|water": 0.024,
+    "Ganymede|equipment": 0.044,
+    "Ganymede|food": 0.054,
+    "Ganymede|luxury": 0.026,
+    "Ganymede|medical": 0.0735,
+    "Hermes Foundry|equipment": 0.04,
+    "Hermes Foundry|food": 0.1,
+    "Hermes Foundry|industrial": 0.024,
+    "Hermes Foundry|luxury": 0.0244,
+    "Hermes Foundry|water": 0.1,
+    "Ironheart|food": 0.08,
+    "Ironheart|industrial": 0.048,
+    "Ironheart|luxury": 0.1,
+    "Ironheart|medical": 0.08,
+    "Ironheart|metal": -0.009,
+    "Ironheart|water": 0.1,
+    "Juno Commons|equipment": 0.034,
+    "Juno Commons|food": 0.092,
+    "Juno Commons|luxury": 0.054,
+    "Juno Commons|medical": 0.034,
+    "Juno Commons|water": 0.0461,
+    "Mars|equipment": 0.076,
+    "Mars|food": 0.1,
+    "Mars|industrial": 0.0162,
+    "Mars|luxury": 0.0655,
+    "Mars|medical": 0.0896,
+    "Mars|metal": -0.041,
+    "Mars|water": 0.1,
+    "Pallas Refinery|equipment": 0.1549,
+    "Pallas Refinery|food": 0.1309,
+    "Pallas Refinery|industrial": 0.1189,
+    "Pallas Refinery|metal": -0.0949,
+    "Pallas Refinery|water": 0.0629,
+    "Ring Nine|food": 0.046,
+    "Ring Nine|medical": 0.06,
+    "Ring Nine|water": 0.1,
+    "The Hollows|food": 0.0889,
+    "The Hollows|water": 0.0569,
+    "The Rook|equipment": 0.152,
+    "The Rook|food": 0.162,
+    "The Rook|luxury": 0.016,
+    "The Rook|medical": 0.1,
+    "The Rook|water": 0.0448,
+    "Titan|equipment": 0.044,
+    "Titan|industrial": 0.092,
+    "Titan|luxury": 0.0584,
+    "Titan|medical": 0.055,
+    "Triton Outpost|equipment": 0.198,
+    "Triton Outpost|food": 0.2213,
+    "Triton Outpost|luxury": 0.25,
+    "Triton Outpost|medical": 0.224,
+    "Triton Outpost|metal": 0.024,
+    "Triton Outpost|water": 0.136
+   },
+   "haul": [
+    [
+     "luxury",
+     29,
+     "The Rook",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "water",
+     33,
+     "Triton Outpost",
+     "Eros Old Town",
+     38
+    ],
+    [
+     "food",
+     23,
+     "Triton Outpost",
+     "The Rook",
+     39
+    ],
+    [
+     "equipment",
+     33,
+     "Hermes Foundry",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "equipment",
+     20,
+     "Triton Outpost",
+     "The Rook",
+     39
+    ],
+    [
+     "medical",
+     23,
+     "Triton Outpost",
+     "The Rook",
+     39
+    ],
+    [
+     "medical",
+     35,
+     "Boneyard",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "medical",
+     39,
+     "Triton Outpost",
+     "Boneyard",
+     39
+    ],
+    [
+     "medical",
+     32,
+     "Earth",
+     "Triton Outpost",
+     36
+    ],
+    [
+     "metal",
+     27,
+     "Triton Outpost",
+     "Earth",
+     36
+    ],
+    [
+     "medical",
+     37,
+     "Ironheart",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "equipment",
+     29,
+     "Eros Old Town",
+     "Triton Outpost",
+     38
+    ],
+    [
+     "luxury",
+     35,
+     "Triton Outpost",
+     "Ironheart",
+     38
+    ],
+    [
+     "luxury",
+     30,
+     "Eros Old Town",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "food",
+     22,
+     "Triton Outpost",
+     "Boneyard",
+     40
+    ],
+    [
+     "water",
+     22,
+     "Triton Outpost",
+     "Hermes Foundry",
+     38
+    ],
+    [
+     "luxury",
+     28,
+     "Hermes Foundry",
+     "Triton Outpost",
+     38
+    ],
+    [
+     "equipment",
+     29,
+     "Triton Outpost",
+     "Pallas Refinery",
+     36
+    ],
+    [
+     "equipment",
+     24,
+     "Earth",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "water",
+     40,
+     "Enceladus",
+     "Ironheart",
+     22
+    ],
+    [
+     "industrial",
+     39,
+     "Ironheart",
+     "Titan",
+     22
+    ],
+    [
+     "metal",
+     34,
+     "Ironheart",
+     "Enceladus",
+     22
+    ],
+    [
+     "medical",
+     23,
+     "Titan",
+     "Boneyard",
+     22
+    ],
+    [
+     "equipment",
+     26,
+     "The Rook",
+     "Triton Outpost",
+     40
+    ],
+    [
+     "food",
+     23,
+     "Triton Outpost",
+     "Hermes Foundry",
+     39
+    ],
+    [
+     "food",
+     21,
+     "Juno Commons",
+     "Triton Outpost",
+     36
+    ],
+    [
+     "equipment",
+     33,
+     "Titan",
+     "The Rook",
+     23
+    ],
+    [
+     "medical",
+     23,
+     "Ganymede",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "metal",
+     36,
+     "Triton Outpost",
+     "Earth",
+     38
+    ],
+    [
+     "metal",
+     28,
+     "Mars",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "water",
+     20,
+     "Triton Outpost",
+     "Ceres Station",
+     38
+    ],
+    [
+     "luxury",
+     40,
+     "Triton Outpost",
+     "Earth",
+     39
+    ],
+    [
+     "luxury",
+     37,
+     "Ceres Station",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "industrial",
+     31,
+     "Titan",
+     "Eros Old Town",
+     23
+    ],
+    [
+     "luxury",
+     39,
+     "Mars",
+     "Triton Outpost",
+     38
+    ],
+    [
+     "food",
+     35,
+     "Enceladus",
+     "Pallas Refinery",
+     22
+    ],
+    [
+     "food",
+     21,
+     "Boneyard",
+     "Enceladus",
+     24
+    ],
+    [
+     "food",
+     25,
+     "Triton Outpost",
+     "Boneyard",
+     42
+    ],
+    [
+     "food",
+     28,
+     "Juno Commons",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "water",
+     23,
+     "Triton Outpost",
+     "Ring Nine",
+     40
+    ],
+    [
+     "water",
+     24,
+     "Europa",
+     "Triton Outpost",
+     41
+    ],
+    [
+     "metal",
+     39,
+     "Pallas Refinery",
+     "Enceladus",
+     23
+    ],
+    [
+     "food",
+     31,
+     "The Rook",
+     "Enceladus",
+     25
+    ],
+    [
+     "food",
+     22,
+     "Triton Outpost",
+     "The Rook",
+     43
+    ],
+    [
+     "water",
+     35,
+     "Enceladus",
+     "Mars",
+     22
+    ],
+    [
+     "medical",
+     35,
+     "Earth",
+     "Triton Outpost",
+     41
+    ],
+    [
+     "equipment",
+     36,
+     "Eros Old Town",
+     "Triton Outpost",
+     44
+    ],
+    [
+     "food",
+     32,
+     "Triton Outpost",
+     "Mars",
+     42
+    ],
+    [
+     "food",
+     25,
+     "Juno Commons",
+     "Triton Outpost",
+     41
+    ],
+    [
+     "water",
+     33,
+     "Triton Outpost",
+     "Hermes Foundry",
+     45
+    ],
+    [
+     "water",
+     21,
+     "Europa",
+     "Triton Outpost",
+     45
+    ],
+    [
+     "food",
+     23,
+     "Ganymede",
+     "Ironheart",
+     25
+    ],
+    [
+     "medical",
+     26,
+     "Titan",
+     "The Rook",
+     29
+    ],
+    [
+     "industrial",
+     27,
+     "Ironheart",
+     "Titan",
+     29
+    ],
+    [
+     "metal",
+     39,
+     "Triton Outpost",
+     "Earth",
+     45
+    ],
+    [
+     "metal",
+     39,
+     "Ceres Station",
+     "Triton Outpost",
+     45
+    ],
+    [
+     "luxury",
+     25,
+     "Titan",
+     "Ironheart",
+     30
+    ],
+    [
+     "luxury",
+     23,
+     "Hermes Foundry",
+     "Titan",
+     28
+    ],
+    [
+     "food",
+     35,
+     "Triton Outpost",
+     "The Rook",
+     49
+    ],
+    [
+     "industrial",
+     29,
+     "Pallas Refinery",
+     "Europa",
+     27
+    ],
+    [
+     "industrial",
+     36,
+     "Ceres Station",
+     "Pallas Refinery",
+     24
+    ],
+    [
+     "luxury",
+     40,
+     "The Rook",
+     "Juno Commons",
+     25
+    ],
+    [
+     "metal",
+     23,
+     "Ironheart",
+     "Enceladus",
+     33
+    ],
+    [
+     "water",
+     21,
+     "Enceladus",
+     "Ring Nine",
+     28
+    ],
+    [
+     "luxury",
+     36,
+     "Eros Old Town",
+     "Triton Outpost",
+     50
+    ],
+    [
+     "equipment",
+     31,
+     "Hermes Foundry",
+     "Titan",
+     31
+    ],
+    [
+     "medical",
+     32,
+     "Titan",
+     "Boneyard",
+     33
+    ],
+    [
+     "medical",
+     20,
+     "Earth",
+     "Titan",
+     29
+    ],
+    [
+     "industrial",
+     37,
+     "Europa",
+     "Eros Old Town",
+     27
+    ],
+    [
+     "industrial",
+     23,
+     "Mars",
+     "Europa",
+     27
+    ],
+    [
+     "food",
+     22,
+     "Juno Commons",
+     "Boneyard",
+     27
+    ],
+    [
+     "water",
+     23,
+     "The Rook",
+     "Pallas Refinery",
+     28
+    ],
+    [
+     "medical",
+     28,
+     "Mars",
+     "Ring Nine",
+     24
+    ],
+    [
+     "equipment",
+     29,
+     "Ceres Station",
+     "Mars",
+     24
+    ],
+    [
+     "food",
+     33,
+     "Ganymede",
+     "The Hollows",
+     30
+    ],
+    [
+     "food",
+     38,
+     "Triton Outpost",
+     "Ceres Station",
+     50
+    ],
+    [
+     "water",
+     27,
+     "Triton Outpost",
+     "Eros Old Town",
+     52
+    ],
+    [
+     "water",
+     20,
+     "Europa",
+     "Triton Outpost",
+     51
+    ],
+    [
+     "water",
+     35,
+     "The Rook",
+     "Mars",
+     27
+    ],
+    [
+     "water",
+     37,
+     "Earth",
+     "The Rook",
+     26
+    ],
+    [
+     "water",
+     27,
+     "Juno Commons",
+     "Earth",
+     23
+    ],
+    [
+     "metal",
+     22,
+     "Pallas Refinery",
+     "Hermes Foundry",
+     25
+    ],
+    [
+     "industrial",
+     20,
+     "Ironheart",
+     "Europa",
+     32
+    ],
+    [
+     "equipment",
+     23,
+     "Eros Old Town",
+     "Pallas Refinery",
+     27
+    ],
+    [
+     "equipment",
+     33,
+     "Eros Old Town",
+     "Ganymede",
+     30
+    ],
+    [
+     "industrial",
+     30,
+     "Ironheart",
+     "Titan",
+     37
+    ],
+    [
+     "metal",
+     24,
+     "Mars",
+     "Eros Old Town",
+     26
+    ],
+    [
+     "water",
+     25,
+     "Enceladus",
+     "Ironheart",
+     37
+    ],
+    [
+     "luxury",
+     35,
+     "Mars",
+     "Ganymede",
+     30
+    ],
+    [
+     "luxury",
+     27,
+     "Ceres Station",
+     "Mars",
+     26
+    ],
+    [
+     "medical",
+     32,
+     "Ganymede",
+     "Juno Commons",
+     31
+    ],
+    [
+     "metal",
+     39,
+     "Ceres Station",
+     "Mars",
+     27
+    ],
+    [
+     "food",
+     20,
+     "Triton Outpost",
+     "Hermes Foundry",
+     54
+    ],
+    [
+     "luxury",
+     20,
+     "Titan",
+     "Earth",
+     34
+    ],
+    [
+     "food",
+     20,
+     "Earth",
+     "Enceladus",
+     34
+    ],
+    [
+     "equipment",
+     34,
+     "Earth",
+     "The Rook",
+     28
+    ],
+    [
+     "luxury",
+     30,
+     "The Rook",
+     "Ceres Station",
+     31
+    ],
+    [
+     "medical",
+     37,
+     "Earth",
+     "Triton Outpost",
+     54
+    ],
+    [
+     "food",
+     40,
+     "Juno Commons",
+     "Ironheart",
+     31
+    ],
+    [
+     "medical",
+     31,
+     "Ironheart",
+     "Ceres Station",
+     32
+    ],
+    [
+     "medical",
+     30,
+     "Ganymede",
+     "Ironheart",
+     35
+    ],
+    [
+     "medical",
+     38,
+     "Mars",
+     "Ganymede",
+     32
+    ],
+    [
+     "metal",
+     29,
+     "Ironheart",
+     "Enceladus",
+     39
+    ],
+    [
+     "industrial",
+     30,
+     "Hermes Foundry",
+     "Europa",
+     33
+    ],
+    [
+     "food",
+     30,
+     "Triton Outpost",
+     "Ring Nine",
+     55
+    ],
+    [
+     "industrial",
+     36,
+     "Earth",
+     "Hermes Foundry",
+     27
+    ],
+    [
+     "industrial",
+     33,
+     "Ironheart",
+     "Earth",
+     31
+    ]
+   ],
+   "unrest": {
+    "mercury": 0,
+    "earth": 0,
+    "mars": 0.05,
+    "ceres": 0.2,
+    "pallas": 0.6145,
+    "hygiea": 0.8,
+    "psyche": 0.25,
+    "juno": 0.15,
+    "eros": 0.1,
+    "jupiter": 0.2,
+    "saturn": 0.35,
+    "neptune": 0.45
+   },
+   "news": [
+    "Pirate raiders are reported at Pallas: two freighters missing, and the navy is \"looking into it\"."
+   ]
+  }
+ },
+ {
+  "key": "world:25",
+  "v": {
+   "market": {
+    "Boneyard|food": 0.167,
+    "Boneyard|medical": 0.149,
+    "Ceres Station|equipment": 0.0628,
+    "Ceres Station|food": 0.085,
+    "Ceres Station|industrial": -0.0051,
+    "Ceres Station|luxury": 0.0313,
+    "Ceres Station|medical": 0.051,
+    "Ceres Station|metal": -0.059,
+    "Ceres Station|water": 0.063,
+    "Earth|equipment": 0.034,
+    "Earth|food": 0.0806,
+    "Earth|luxury": 0.125,
+    "Earth|medical": 0.02,
+    "Earth|metal": 0.125,
+    "Earth|water": 0.037,
+    "Enceladus|food": 0.089,
+    "Enceladus|metal": -0.021,
+    "Enceladus|water": 0.075,
+    "Eros Old Town|equipment": 0.0916,
+    "Eros Old Town|industrial": 0.063,
+    "Eros Old Town|luxury": 0.046,
+    "Eros Old Town|metal": -0.048,
+    "Eros Old Town|water": 0.125,
+    "Europa|industrial": 0.129,
+    "Europa|water": 0.053,
+    "Ganymede|equipment": 0.069,
+    "Ganymede|food": 0.049,
+    "Ganymede|luxury": 0.051,
+    "Ganymede|medical": 0.0434,
+    "Hermes Foundry|equipment": 0.047,
+    "Hermes Foundry|food": 0.125,
+    "Hermes Foundry|industrial": -0.018,
+    "Hermes Foundry|luxury": 0.0144,
+    "Hermes Foundry|metal": -0.0396,
+    "Hermes Foundry|water": 0.125,
+    "Ironheart|food": 0.059,
+    "Ironheart|luxury": 0.125,
+    "Ironheart|medical": 0.0472,
+    "Ironheart|metal": -0.054,
+    "Ironheart|water": 0.045,
+    "Juno Commons|equipment": 0.1177,
+    "Juno Commons|food": -0.0117,
+    "Juno Commons|luxury": 0.0577,
+    "Juno Commons|medical": 0.1177,
+    "Juno Commons|water": 0.0272,
+    "Mars|equipment": 0.043,
+    "Mars|food": 0.125,
+    "Mars|industrial": 0.0095,
+    "Mars|luxury": 0.0487,
+    "Mars|medical": 0.0529,
+    "Mars|metal": -0.086,
+    "Mars|water": 0.055,
+    "Pallas Refinery|equipment": 0.2307,
+    "Pallas Refinery|food": 0.1367,
+    "Pallas Refinery|industrial": 0.1227,
+    "Pallas Refinery|metal": -0.1907,
+    "Pallas Refinery|water": 0.1387,
+    "Ring Nine|food": 0.071,
+    "Ring Nine|medical": 0.029,
+    "Ring Nine|water": 0.125,
+    "The Hollows|food": 0.1647,
+    "The Hollows|water": 0.1327,
+    "The Rook|equipment": 0.111,
+    "The Rook|food": 0.187,
+    "The Rook|luxury": 0.041,
+    "The Rook|medical": 0.125,
+    "The Rook|water": 0.0205,
+    "Titan|equipment": 0.069,
+    "Titan|industrial": 0.039,
+    "Titan|luxury": 0.0903,
+    "Titan|medical": 0.07,
+    "Triton Outpost|equipment": 0.223,
+    "Triton Outpost|food": 0.1955,
+    "Triton Outpost|luxury": 0.275,
+    "Triton Outpost|medical": 0.249,
+    "Triton Outpost|metal": 0.021,
+    "Triton Outpost|water": 0.165
+   },
+   "haul": [
+    [
+     "luxury",
+     29,
+     "The Rook",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "water",
+     33,
+     "Triton Outpost",
+     "Eros Old Town",
+     38
+    ],
+    [
+     "food",
+     23,
+     "Triton Outpost",
+     "The Rook",
+     39
+    ],
+    [
+     "equipment",
+     33,
+     "Hermes Foundry",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "equipment",
+     20,
+     "Triton Outpost",
+     "The Rook",
+     39
+    ],
+    [
+     "medical",
+     23,
+     "Triton Outpost",
+     "The Rook",
+     39
+    ],
+    [
+     "medical",
+     35,
+     "Boneyard",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "medical",
+     39,
+     "Triton Outpost",
+     "Boneyard",
+     39
+    ],
+    [
+     "medical",
+     32,
+     "Earth",
+     "Triton Outpost",
+     36
+    ],
+    [
+     "metal",
+     27,
+     "Triton Outpost",
+     "Earth",
+     36
+    ],
+    [
+     "medical",
+     37,
+     "Ironheart",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "equipment",
+     29,
+     "Eros Old Town",
+     "Triton Outpost",
+     38
+    ],
+    [
+     "luxury",
+     35,
+     "Triton Outpost",
+     "Ironheart",
+     38
+    ],
+    [
+     "luxury",
+     30,
+     "Eros Old Town",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "food",
+     22,
+     "Triton Outpost",
+     "Boneyard",
+     40
+    ],
+    [
+     "water",
+     22,
+     "Triton Outpost",
+     "Hermes Foundry",
+     38
+    ],
+    [
+     "luxury",
+     28,
+     "Hermes Foundry",
+     "Triton Outpost",
+     38
+    ],
+    [
+     "equipment",
+     29,
+     "Triton Outpost",
+     "Pallas Refinery",
+     36
+    ],
+    [
+     "equipment",
+     24,
+     "Earth",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "equipment",
+     26,
+     "The Rook",
+     "Triton Outpost",
+     40
+    ],
+    [
+     "food",
+     23,
+     "Triton Outpost",
+     "Hermes Foundry",
+     39
+    ],
+    [
+     "food",
+     21,
+     "Juno Commons",
+     "Triton Outpost",
+     36
+    ],
+    [
+     "medical",
+     23,
+     "Ganymede",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "metal",
+     36,
+     "Triton Outpost",
+     "Earth",
+     38
+    ],
+    [
+     "metal",
+     28,
+     "Mars",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "water",
+     20,
+     "Triton Outpost",
+     "Ceres Station",
+     38
+    ],
+    [
+     "luxury",
+     40,
+     "Triton Outpost",
+     "Earth",
+     39
+    ],
+    [
+     "luxury",
+     37,
+     "Ceres Station",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "luxury",
+     39,
+     "Mars",
+     "Triton Outpost",
+     38
+    ],
+    [
+     "food",
+     25,
+     "Triton Outpost",
+     "Boneyard",
+     42
+    ],
+    [
+     "food",
+     28,
+     "Juno Commons",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "water",
+     23,
+     "Triton Outpost",
+     "Ring Nine",
+     40
+    ],
+    [
+     "water",
+     24,
+     "Europa",
+     "Triton Outpost",
+     41
+    ],
+    [
+     "food",
+     22,
+     "Triton Outpost",
+     "The Rook",
+     43
+    ],
+    [
+     "medical",
+     35,
+     "Earth",
+     "Triton Outpost",
+     41
+    ],
+    [
+     "equipment",
+     36,
+     "Eros Old Town",
+     "Triton Outpost",
+     44
+    ],
+    [
+     "food",
+     32,
+     "Triton Outpost",
+     "Mars",
+     42
+    ],
+    [
+     "food",
+     25,
+     "Juno Commons",
+     "Triton Outpost",
+     41
+    ],
+    [
+     "water",
+     33,
+     "Triton Outpost",
+     "Hermes Foundry",
+     45
+    ],
+    [
+     "water",
+     21,
+     "Europa",
+     "Triton Outpost",
+     45
+    ],
+    [
+     "medical",
+     26,
+     "Titan",
+     "The Rook",
+     29
+    ],
+    [
+     "industrial",
+     27,
+     "Ironheart",
+     "Titan",
+     29
+    ],
+    [
+     "metal",
+     39,
+     "Triton Outpost",
+     "Earth",
+     45
+    ],
+    [
+     "metal",
+     39,
+     "Ceres Station",
+     "Triton Outpost",
+     45
+    ],
+    [
+     "luxury",
+     25,
+     "Titan",
+     "Ironheart",
+     30
+    ],
+    [
+     "luxury",
+     23,
+     "Hermes Foundry",
+     "Titan",
+     28
+    ],
+    [
+     "food",
+     35,
+     "Triton Outpost",
+     "The Rook",
+     49
+    ],
+    [
+     "industrial",
+     29,
+     "Pallas Refinery",
+     "Europa",
+     27
+    ],
+    [
+     "metal",
+     23,
+     "Ironheart",
+     "Enceladus",
+     33
+    ],
+    [
+     "water",
+     21,
+     "Enceladus",
+     "Ring Nine",
+     28
+    ],
+    [
+     "luxury",
+     36,
+     "Eros Old Town",
+     "Triton Outpost",
+     50
+    ],
+    [
+     "equipment",
+     31,
+     "Hermes Foundry",
+     "Titan",
+     31
+    ],
+    [
+     "medical",
+     32,
+     "Titan",
+     "Boneyard",
+     33
+    ],
+    [
+     "medical",
+     20,
+     "Earth",
+     "Titan",
+     29
+    ],
+    [
+     "industrial",
+     37,
+     "Europa",
+     "Eros Old Town",
+     27
+    ],
+    [
+     "industrial",
+     23,
+     "Mars",
+     "Europa",
+     27
+    ],
+    [
+     "food",
+     22,
+     "Juno Commons",
+     "Boneyard",
+     27
+    ],
+    [
+     "water",
+     23,
+     "The Rook",
+     "Pallas Refinery",
+     28
+    ],
+    [
+     "food",
+     33,
+     "Ganymede",
+     "The Hollows",
+     30
+    ],
+    [
+     "food",
+     38,
+     "Triton Outpost",
+     "Ceres Station",
+     50
+    ],
+    [
+     "water",
+     27,
+     "Triton Outpost",
+     "Eros Old Town",
+     52
+    ],
+    [
+     "water",
+     20,
+     "Europa",
+     "Triton Outpost",
+     51
+    ],
+    [
+     "water",
+     35,
+     "The Rook",
+     "Mars",
+     27
+    ],
+    [
+     "industrial",
+     20,
+     "Ironheart",
+     "Europa",
+     32
+    ],
+    [
+     "equipment",
+     23,
+     "Eros Old Town",
+     "Pallas Refinery",
+     27
+    ],
+    [
+     "equipment",
+     33,
+     "Eros Old Town",
+     "Ganymede",
+     30
+    ],
+    [
+     "industrial",
+     30,
+     "Ironheart",
+     "Titan",
+     37
+    ],
+    [
+     "water",
+     25,
+     "Enceladus",
+     "Ironheart",
+     37
+    ],
+    [
+     "luxury",
+     35,
+     "Mars",
+     "Ganymede",
+     30
+    ],
+    [
+     "medical",
+     32,
+     "Ganymede",
+     "Juno Commons",
+     31
+    ],
+    [
+     "metal",
+     39,
+     "Ceres Station",
+     "Mars",
+     27
+    ],
+    [
+     "food",
+     20,
+     "Triton Outpost",
+     "Hermes Foundry",
+     54
+    ],
+    [
+     "luxury",
+     20,
+     "Titan",
+     "Earth",
+     34
+    ],
+    [
+     "food",
+     20,
+     "Earth",
+     "Enceladus",
+     34
+    ],
+    [
+     "equipment",
+     34,
+     "Earth",
+     "The Rook",
+     28
+    ],
+    [
+     "luxury",
+     30,
+     "The Rook",
+     "Ceres Station",
+     31
+    ],
+    [
+     "medical",
+     37,
+     "Earth",
+     "Triton Outpost",
+     54
+    ],
+    [
+     "food",
+     40,
+     "Juno Commons",
+     "Ironheart",
+     31
+    ],
+    [
+     "medical",
+     31,
+     "Ironheart",
+     "Ceres Station",
+     32
+    ],
+    [
+     "medical",
+     30,
+     "Ganymede",
+     "Ironheart",
+     35
+    ],
+    [
+     "medical",
+     38,
+     "Mars",
+     "Ganymede",
+     32
+    ],
+    [
+     "metal",
+     29,
+     "Ironheart",
+     "Enceladus",
+     39
+    ],
+    [
+     "industrial",
+     30,
+     "Hermes Foundry",
+     "Europa",
+     33
+    ],
+    [
+     "food",
+     30,
+     "Triton Outpost",
+     "Ring Nine",
+     55
+    ],
+    [
+     "industrial",
+     36,
+     "Earth",
+     "Hermes Foundry",
+     27
+    ],
+    [
+     "industrial",
+     33,
+     "Ironheart",
+     "Earth",
+     31
+    ],
+    [
+     "water",
+     37,
+     "Triton Outpost",
+     "Ring Nine",
+     56
+    ],
+    [
+     "food",
+     20,
+     "Ganymede",
+     "Mars",
+     34
+    ],
+    [
+     "metal",
+     21,
+     "Triton Outpost",
+     "Earth",
+     56
+    ],
+    [
+     "medical",
+     30,
+     "Titan",
+     "The Rook",
+     41
+    ],
+    [
+     "water",
+     37,
+     "Europa",
+     "Triton Outpost",
+     57
+    ],
+    [
+     "equipment",
+     26,
+     "Hermes Foundry",
+     "Triton Outpost",
+     57
+    ],
+    [
+     "water",
+     29,
+     "Earth",
+     "Ceres Station",
+     30
+    ],
+    [
+     "luxury",
+     34,
+     "The Rook",
+     "Triton Outpost",
+     61
+    ],
+    [
+     "luxury",
+     32,
+     "Eros Old Town",
+     "The Rook",
+     31
+    ],
+    [
+     "water",
+     29,
+     "Enceladus",
+     "Hermes Foundry",
+     41
+    ],
+    [
+     "equipment",
+     39,
+     "Eros Old Town",
+     "Titan",
+     42
+    ],
+    [
+     "equipment",
+     25,
+     "Ceres Station",
+     "Eros Old Town",
+     34
+    ],
+    [
+     "food",
+     21,
+     "Enceladus",
+     "Boneyard",
+     44
+    ],
+    [
+     "food",
+     25,
+     "Earth",
+     "Enceladus",
+     40
+    ],
+    [
+     "food",
+     36,
+     "Triton Outpost",
+     "Hermes Foundry",
+     60
+    ],
+    [
+     "luxury",
+     31,
+     "Titan",
+     "Ironheart",
+     44
+    ],
+    [
+     "water",
+     34,
+     "The Rook",
+     "Ironheart",
+     36
+    ],
+    [
+     "metal",
+     21,
+     "Ceres Station",
+     "Hermes Foundry",
+     35
+    ],
+    [
+     "luxury",
+     32,
+     "Mars",
+     "Titan",
+     41
+    ]
+   ],
+   "unrest": {
+    "mercury": 0,
+    "earth": 0,
+    "mars": 0.05,
+    "ceres": 0.2,
+    "pallas": 0.5632,
+    "hygiea": 0.8,
+    "psyche": 0.25,
+    "juno": 0.4429,
+    "eros": 0.1,
+    "jupiter": 0.2,
+    "saturn": 0.35,
+    "neptune": 0.45
+   },
+   "news": [
+    "A string of pirate attacks near Juno has haulers taking the long way round.",
+    "Pirate raiders are reported at Pallas: two freighters missing, and the navy is \"looking into it\"."
+   ]
+  }
+ },
+ {
+  "key": "world:30",
+  "v": {
+   "market": {
+    "Boneyard|food": 0.148,
+    "Boneyard|medical": 0.174,
+    "Ceres Station|equipment": 0.0771,
+    "Ceres Station|food": 0.11,
+    "Ceres Station|luxury": 0.0225,
+    "Ceres Station|medical": 0.076,
+    "Ceres Station|metal": -0.104,
+    "Ceres Station|water": 0.03,
+    "Earth|equipment": 0.063,
+    "Earth|food": 0.0476,
+    "Earth|industrial": 0.023,
+    "Earth|luxury": 0.15,
+    "Earth|medical": 0.037,
+    "Earth|metal": 0.15,
+    "Earth|water": 0.0218,
+    "Enceladus|food": 0.114,
+    "Enceladus|metal": 0.005,
+    "Enceladus|water": 0.03,
+    "Eros Old Town|equipment": 0.1153,
+    "Eros Old Town|industrial": 0.015,
+    "Eros Old Town|metal": -0.0283,
+    "Eros Old Town|water": 0.15,
+    "Europa|industrial": 0.05,
+    "Europa|water": 0.078,
+    "Ganymede|equipment": 0.104,
+    "Ganymede|food": 0.066,
+    "Ganymede|luxury": 0.005,
+    "Ganymede|medical": 0.0256,
+    "Hermes Foundry|equipment": 0.058,
+    "Hermes Foundry|food": 0.15,
+    "Hermes Foundry|luxury": 0.0085,
+    "Hermes Foundry|metal": -0.0234,
+    "Hermes Foundry|water": 0.15,
+    "Ironheart|food": 0.084,
+    "Ironheart|industrial": 0.033,
+    "Ironheart|luxury": 0.1,
+    "Ironheart|medical": 0.0279,
+    "Ironheart|metal": -0.099,
+    "Ironheart|water": 0.07,
+    "Juno Commons|equipment": 0.1886,
+    "Juno Commons|food": -0.1026,
+    "Juno Commons|luxury": 0.1286,
+    "Juno Commons|medical": 0.1246,
+    "Juno Commons|water": 0.0161,
+    "Mars|equipment": 0.068,
+    "Mars|food": 0.15,
+    "Mars|industrial": 0.0056,
+    "Mars|luxury": 0.0287,
+    "Mars|medical": 0.0312,
+    "Mars|metal": -0.087,
+    "Mars|water": 0.068,
+    "Pallas Refinery|equipment": 0.2489,
+    "Pallas Refinery|food": 0.2009,
+    "Pallas Refinery|industrial": 0.1869,
+    "Pallas Refinery|metal": -0.2749,
+    "Pallas Refinery|water": 0.1569,
+    "Ring Nine|food": 0.096,
+    "Ring Nine|medical": 0.054,
+    "Ring Nine|water": 0.108,
+    "The Hollows|food": 0.1629,
+    "The Hollows|water": 0.1969,
+    "The Rook|equipment": 0.068,
+    "The Rook|food": 0.212,
+    "The Rook|luxury": -0.012,
+    "The Rook|medical": 0.098,
+    "The Rook|water": 0.0501,
+    "Titan|equipment": 0.106,
+    "Titan|industrial": 0.01,
+    "Titan|luxury": 0.0693,
+    "Titan|medical": 0.047,
+    "Triton Outpost|equipment": 0.248,
+    "Triton Outpost|food": 0.2112,
+    "Triton Outpost|luxury": 0.3,
+    "Triton Outpost|medical": 0.274,
+    "Triton Outpost|metal": 0.051,
+    "Triton Outpost|water": 0.12
+   },
+   "haul": [
+    [
+     "luxury",
+     29,
+     "The Rook",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "water",
+     33,
+     "Triton Outpost",
+     "Eros Old Town",
+     38
+    ],
+    [
+     "food",
+     23,
+     "Triton Outpost",
+     "The Rook",
+     39
+    ],
+    [
+     "equipment",
+     33,
+     "Hermes Foundry",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "equipment",
+     20,
+     "Triton Outpost",
+     "The Rook",
+     39
+    ],
+    [
+     "medical",
+     23,
+     "Triton Outpost",
+     "The Rook",
+     39
+    ],
+    [
+     "medical",
+     35,
+     "Boneyard",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "medical",
+     39,
+     "Triton Outpost",
+     "Boneyard",
+     39
+    ],
+    [
+     "medical",
+     32,
+     "Earth",
+     "Triton Outpost",
+     36
+    ],
+    [
+     "metal",
+     27,
+     "Triton Outpost",
+     "Earth",
+     36
+    ],
+    [
+     "medical",
+     37,
+     "Ironheart",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "equipment",
+     29,
+     "Eros Old Town",
+     "Triton Outpost",
+     38
+    ],
+    [
+     "luxury",
+     35,
+     "Triton Outpost",
+     "Ironheart",
+     38
+    ],
+    [
+     "luxury",
+     30,
+     "Eros Old Town",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "food",
+     22,
+     "Triton Outpost",
+     "Boneyard",
+     40
+    ],
+    [
+     "water",
+     22,
+     "Triton Outpost",
+     "Hermes Foundry",
+     38
+    ],
+    [
+     "luxury",
+     28,
+     "Hermes Foundry",
+     "Triton Outpost",
+     38
+    ],
+    [
+     "equipment",
+     29,
+     "Triton Outpost",
+     "Pallas Refinery",
+     36
+    ],
+    [
+     "equipment",
+     24,
+     "Earth",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "equipment",
+     26,
+     "The Rook",
+     "Triton Outpost",
+     40
+    ],
+    [
+     "food",
+     23,
+     "Triton Outpost",
+     "Hermes Foundry",
+     39
+    ],
+    [
+     "food",
+     21,
+     "Juno Commons",
+     "Triton Outpost",
+     36
+    ],
+    [
+     "medical",
+     23,
+     "Ganymede",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "metal",
+     36,
+     "Triton Outpost",
+     "Earth",
+     38
+    ],
+    [
+     "metal",
+     28,
+     "Mars",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "water",
+     20,
+     "Triton Outpost",
+     "Ceres Station",
+     38
+    ],
+    [
+     "luxury",
+     40,
+     "Triton Outpost",
+     "Earth",
+     39
+    ],
+    [
+     "luxury",
+     37,
+     "Ceres Station",
+     "Triton Outpost",
+     39
+    ],
+    [
+     "luxury",
+     39,
+     "Mars",
+     "Triton Outpost",
+     38
+    ],
+    [
+     "food",
+     25,
+     "Triton Outpost",
+     "Boneyard",
+     42
+    ],
+    [
+     "food",
+     28,
+     "Juno Commons",
+     "Triton Outpost",
+     37
+    ],
+    [
+     "water",
+     23,
+     "Triton Outpost",
+     "Ring Nine",
+     40
+    ],
+    [
+     "water",
+     24,
+     "Europa",
+     "Triton Outpost",
+     41
+    ],
+    [
+     "food",
+     22,
+     "Triton Outpost",
+     "The Rook",
+     43
+    ],
+    [
+     "medical",
+     35,
+     "Earth",
+     "Triton Outpost",
+     41
+    ],
+    [
+     "equipment",
+     36,
+     "Eros Old Town",
+     "Triton Outpost",
+     44
+    ],
+    [
+     "food",
+     32,
+     "Triton Outpost",
+     "Mars",
+     42
+    ],
+    [
+     "food",
+     25,
+     "Juno Commons",
+     "Triton Outpost",
+     41
+    ],
+    [
+     "water",
+     33,
+     "Triton Outpost",
+     "Hermes Foundry",
+     45
+    ],
+    [
+     "water",
+     21,
+     "Europa",
+     "Triton Outpost",
+     45
+    ],
+    [
+     "metal",
+     39,
+     "Triton Outpost",
+     "Earth",
+     45
+    ],
+    [
+     "metal",
+     39,
+     "Ceres Station",
+     "Triton Outpost",
+     45
+    ],
+    [
+     "food",
+     35,
+     "Triton Outpost",
+     "The Rook",
+     49
+    ],
+    [
+     "metal",
+     23,
+     "Ironheart",
+     "Enceladus",
+     33
+    ],
+    [
+     "luxury",
+     36,
+     "Eros Old Town",
+     "Triton Outpost",
+     50
+    ],
+    [
+     "medical",
+     32,
+     "Titan",
+     "Boneyard",
+     33
+    ],
+    [
+     "food",
+     38,
+     "Triton Outpost",
+     "Ceres Station",
+     50
+    ],
+    [
+     "water",
+     27,
+     "Triton Outpost",
+     "Eros Old Town",
+     52
+    ],
+    [
+     "water",
+     20,
+     "Europa",
+     "Triton Outpost",
+     51
+    ],
+    [
+     "industrial",
+     20,
+     "Ironheart",
+     "Europa",
+     32
+    ],
+    [
+     "industrial",
+     30,
+     "Ironheart",
+     "Titan",
+     37
+    ],
+    [
+     "water",
+     25,
+     "Enceladus",
+     "Ironheart",
+     37
+    ],
+    [
+     "food",
+     20,
+     "Triton Outpost",
+     "Hermes Foundry",
+     54
+    ],
+    [
+     "luxury",
+     20,
+     "Titan",
+     "Earth",
+     34
+    ],
+    [
+     "food",
+     20,
+     "Earth",
+     "Enceladus",
+     34
+    ],
+    [
+     "medical",
+     37,
+     "Earth",
+     "Triton Outpost",
+     54
+    ],
+    [
+     "medical",
+     31,
+     "Ironheart",
+     "Ceres Station",
+     32
+    ],
+    [
+     "medical",
+     30,
+     "Ganymede",
+     "Ironheart",
+     35
+    ],
+    [
+     "medical",
+     38,
+     "Mars",
+     "Ganymede",
+     32
+    ],
+    [
+     "metal",
+     29,
+     "Ironheart",
+     "Enceladus",
+     39
+    ],
+    [
+     "industrial",
+     30,
+     "Hermes Foundry",
+     "Europa",
+     33
+    ],
+    [
+     "food",
+     30,
+     "Triton Outpost",
+     "Ring Nine",
+     55
+    ],
+    [
+     "water",
+     37,
+     "Triton Outpost",
+     "Ring Nine",
+     56
+    ],
+    [
+     "food",
+     20,
+     "Ganymede",
+     "Mars",
+     34
+    ],
+    [
+     "metal",
+     21,
+     "Triton Outpost",
+     "Earth",
+     56
+    ],
+    [
+     "medical",
+     30,
+     "Titan",
+     "The Rook",
+     41
+    ],
+    [
+     "water",
+     37,
+     "Europa",
+     "Triton Outpost",
+     57
+    ],
+    [
+     "equipment",
+     26,
+     "Hermes Foundry",
+     "Triton Outpost",
+     57
+    ],
+    [
+     "luxury",
+     34,
+     "The Rook",
+     "Triton Outpost",
+     61
+    ],
+    [
+     "water",
+     29,
+     "Enceladus",
+     "Hermes Foundry",
+     41
+    ],
+    [
+     "equipment",
+     39,
+     "Eros Old Town",
+     "Titan",
+     42
+    ],
+    [
+     "equipment",
+     25,
+     "Ceres Station",
+     "Eros Old Town",
+     34
+    ],
+    [
+     "food",
+     21,
+     "Enceladus",
+     "Boneyard",
+     44
+    ],
+    [
+     "food",
+     25,
+     "Earth",
+     "Enceladus",
+     40
+    ],
+    [
+     "food",
+     36,
+     "Triton Outpost",
+     "Hermes Foundry",
+     60
+    ],
+    [
+     "luxury",
+     31,
+     "Titan",
+     "Ironheart",
+     44
+    ],
+    [
+     "water",
+     34,
+     "The Rook",
+     "Ironheart",
+     36
+    ],
+    [
+     "metal",
+     21,
+     "Ceres Station",
+     "Hermes Foundry",
+     35
+    ],
+    [
+     "luxury",
+     32,
+     "Mars",
+     "Titan",
+     41
+    ],
+    [
+     "metal",
+     35,
+     "Mars",
+     "Eros Old Town",
+     35
+    ],
+    [
+     "industrial",
+     30,
+     "Hermes Foundry",
+     "Eros Old Town",
+     32
+    ],
+    [
+     "water",
+     29,
+     "Mars",
+     "Eros Old Town",
+     35
+    ],
+    [
+     "water",
+     29,
+     "The Rook",
+     "Mars",
+     38
+    ],
+    [
+     "medical",
+     31,
+     "Earth",
+     "Ring Nine",
+     34
+    ],
+    [
+     "metal",
+     26,
+     "Mars",
+     "Enceladus",
+     42
+    ],
+    [
+     "industrial",
+     40,
+     "Hermes Foundry",
+     "Titan",
+     44
+    ],
+    [
+     "food",
+     31,
+     "Ganymede",
+     "The Rook",
+     39
+    ],
+    [
+     "luxury",
+     34,
+     "Titan",
+     "Earth",
+     44
+    ],
+    [
+     "equipment",
+     37,
+     "Earth",
+     "Mars",
+     33
+    ],
+    [
+     "equipment",
+     28,
+     "Hermes Foundry",
+     "Earth",
+     34
+    ],
+    [
+     "medical",
+     31,
+     "Titan",
+     "Boneyard",
+     47
+    ],
+    [
+     "metal",
+     39,
+     "Triton Outpost",
+     "Earth",
+     62
+    ],
+    [
+     "food",
+     27,
+     "Triton Outpost",
+     "Mars",
+     62
+    ],
+    [
+     "equipment",
+     38,
+     "Ganymede",
+     "The Rook",
+     42
+    ],
+    [
+     "equipment",
+     34,
+     "Eros Old Town",
+     "Ganymede",
+     42
+    ],
+    [
+     "industrial",
+     39,
+     "Ironheart",
+     "Europa",
+     45
+    ],
+    [
+     "industrial",
+     30,
+     "Earth",
+     "Ironheart",
+     40
+    ],
+    [
+     "luxury",
+     28,
+     "The Rook",
+     "Ganymede",
+     42
+    ],
+    [
+     "food",
+     20,
+     "Ironheart",
+     "Enceladus",
+     50
+    ],
+    [
+     "equipment",
+     37,
+     "Titan",
+     "Ganymede",
+     45
+    ],
+    [
+     "luxury",
+     32,
+     "Ceres Station",
+     "Mars",
+     39
+    ],
+    [
+     "water",
+     35,
+     "Europa",
+     "Mars",
+     43
+    ],
+    [
+     "equipment",
+     20,
+     "Ceres Station",
+     "Titan",
+     45
+    ],
+    [
+     "industrial",
+     37,
+     "Earth",
+     "Mars",
+     36
+    ],
+    [
+     "food",
+     26,
+     "Triton Outpost",
+     "Ironheart",
+     66
+    ],
+    [
+     "food",
+     22,
+     "Ironheart",
+     "Ceres Station",
+     43
+    ]
+   ],
+   "unrest": {
+    "mercury": 0,
+    "earth": 0,
+    "mars": 0.05,
+    "ceres": 0.2,
+    "pallas": 0.5203,
+    "hygiea": 0.8,
+    "psyche": 0.25,
+    "juno": 0.3951,
+    "eros": 0.1,
+    "jupiter": 0.2,
+    "saturn": 0.35,
+    "neptune": 0.45
+   },
+   "news": [
+    "A string of pirate attacks near Juno has haulers taking the long way round.",
+    "Pirate raiders are reported at Pallas: two freighters missing, and the navy is \"looking into it\"."
+   ]
+  }
+ },
+ {
+  "key": "missions:Hermes Foundry:1",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Kwame",
+     "last": "Kaur",
+     "culture": "earth",
+     "home": "Hermes Foundry",
+     "job": "schoolteacher",
+     "traits": [
+      "curious",
+      "greedy"
+     ],
+     "goal": "pilgrim",
+     "wealth": 3,
+     "secret": "ill",
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Kwame Kaur",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Carry Kwame Kaur (1) to Phobos Yards",
+    "blurb": "Kwame Kaur, a curious, money-minded schoolteacher from Hermes Foundry, on a pilgrimage.",
+    "pay": 6020,
+    "deadline": 14
+   },
+   {
+    "type": "passenger",
+    "passenger": "hale",
+    "who": "Undersecretary Hale",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "psyche",
+    "destPlanet": "Ironheart",
+    "title": "Carry Undersecretary Hale (1) to Ironheart",
+    "pay": 7650,
+    "deadline": 19
+   },
+   {
+    "type": "delivery",
+    "good": "hydroponics kits",
+    "tons": 8,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Deliver 8t of hydroponics kits to Ganymede",
+    "pay": 5650,
+    "deadline": 23
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 4,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Deliver 4t of scientific samples to Phobos Yards",
+    "pay": 3850,
+    "deadline": 15
+   }
+  ]
+ },
+ {
+  "key": "missions:Hermes Foundry:2",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Hector",
+     "last": "Brandvold",
+     "culture": "mars",
+     "home": "Mars",
+     "job": "research scientist",
+     "traits": [
+      "kind",
+      "generous"
+     ],
+     "goal": "research",
+     "wealth": 2,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Dr. Brandvold's survey team",
+    "pax": 2,
+    "bonus": 0,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Carry Dr. Brandvold's survey team (2) to Ganymede",
+    "blurb": "Hector Brandvold, a kind, generous research scientist from Mars, taking up a research posting.",
+    "pay": 9204,
+    "deadline": 21
+   },
+   {
+    "type": "delivery",
+    "good": "medical crates",
+    "tons": 15,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Deliver 15t of medical crates to Mars",
+    "pay": 4950,
+    "deadline": 16
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Mika",
+     "last": "Jansen-Ruiz",
+     "culture": "belt",
+     "home": "Europa",
+     "job": "refinery welder",
+     "traits": [
+      "pious",
+      "homesick"
+     ],
+     "goal": "vague",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Mika Jansen-Ruiz",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Carry Mika Jansen-Ruiz (1) to Mars",
+    "blurb": "Mika Jansen-Ruiz, a devout, homesick refinery welder from Europa, traveling for reasons they keep vague.",
+    "pay": 6020,
+    "deadline": 15
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 13,
+    "destSystem": "juno",
+    "destPlanet": "Juno Commons",
+    "title": "Deliver 13t of scientific samples to Juno Commons",
+    "pay": 5100,
+    "deadline": 16
+   }
+  ]
+ },
+ {
+  "key": "missions:Hermes Foundry:3",
+  "v": [
+   {
+    "type": "delivery",
+    "good": "reactor parts",
+    "tons": 9,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Deliver 9t of reactor parts to Mars",
+    "pay": 4350,
+    "deadline": 18
+   },
+   {
+    "type": "bounty",
+    "targetSystem": "pallas",
+    "targetName": "Old Iron Tess",
+    "issuer": "Independent",
+    "title": "Bounty: destroy Old Iron Tess near Pallas",
+    "pay": 13000,
+    "deadline": 29
+   }
+  ]
+ },
+ {
+  "key": "missions:Earth:1",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Kwame",
+     "last": "Kaur",
+     "culture": "earth",
+     "home": "Hermes Foundry",
+     "job": "schoolteacher",
+     "traits": [
+      "curious",
+      "greedy"
+     ],
+     "goal": "pilgrim",
+     "wealth": 3,
+     "secret": "ill",
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Kwame Kaur",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Carry Kwame Kaur (1) to Phobos Yards",
+    "blurb": "Kwame Kaur, a curious, money-minded schoolteacher from Hermes Foundry, on a pilgrimage.",
+    "pay": 4900,
+    "deadline": 11
+   },
+   {
+    "type": "passenger",
+    "passenger": "hale",
+    "who": "Undersecretary Hale",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "psyche",
+    "destPlanet": "Ironheart",
+    "title": "Carry Undersecretary Hale (1) to Ironheart",
+    "pay": 8250,
+    "deadline": 20
+   },
+   {
+    "type": "delivery",
+    "good": "hydroponics kits",
+    "tons": 8,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Deliver 8t of hydroponics kits to Ganymede",
+    "pay": 5650,
+    "deadline": 23
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 4,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Deliver 4t of scientific samples to Phobos Yards",
+    "pay": 3150,
+    "deadline": 12
+   }
+  ]
+ },
+ {
+  "key": "missions:Earth:2",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Hector",
+     "last": "Brandvold",
+     "culture": "mars",
+     "home": "Mars",
+     "job": "research scientist",
+     "traits": [
+      "kind",
+      "generous"
+     ],
+     "goal": "research",
+     "wealth": 2,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Dr. Brandvold's survey team",
+    "pax": 2,
+    "bonus": 0,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Carry Dr. Brandvold's survey team (2) to Ganymede",
+    "blurb": "Hector Brandvold, a kind, generous research scientist from Mars, taking up a research posting.",
+    "pay": 9204,
+    "deadline": 21
+   },
+   {
+    "type": "delivery",
+    "good": "medical crates",
+    "tons": 15,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Deliver 15t of medical crates to Mars",
+    "pay": 4250,
+    "deadline": 13
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Mika",
+     "last": "Jansen-Ruiz",
+     "culture": "belt",
+     "home": "Europa",
+     "job": "refinery welder",
+     "traits": [
+      "pious",
+      "homesick"
+     ],
+     "goal": "vague",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Mika Jansen-Ruiz",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Carry Mika Jansen-Ruiz (1) to Mars",
+    "blurb": "Mika Jansen-Ruiz, a devout, homesick refinery welder from Europa, traveling for reasons they keep vague.",
+    "pay": 4900,
+    "deadline": 12
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 13,
+    "destSystem": "juno",
+    "destPlanet": "Juno Commons",
+    "title": "Deliver 13t of scientific samples to Juno Commons",
+    "pay": 4750,
+    "deadline": 15
+   }
+  ]
+ },
+ {
+  "key": "missions:Earth:3",
+  "v": [
+   {
+    "type": "delivery",
+    "good": "reactor parts",
+    "tons": 4,
+    "destSystem": "mercury",
+    "destPlanet": "Hermes Foundry",
+    "title": "Deliver 4t of reactor parts to Hermes Foundry",
+    "pay": 3150,
+    "deadline": 12
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Esa",
+     "last": "Rourke",
+     "culture": "belt",
+     "home": "Juno Commons",
+     "job": "ore assayer",
+     "traits": [
+      "nervous",
+      "talkative"
+     ],
+     "goal": "family",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "the Rourke family",
+    "pax": 4,
+    "bonus": 0,
+    "destSystem": "ceres",
+    "destPlanet": "Ring Nine",
+    "title": "Carry the Rourke family (4) to Ring Nine",
+    "blurb": "Esa Rourke, a nervous, talkative ore assayer from Juno Commons, visiting family.",
+    "pay": 11438,
+    "deadline": 18
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 6,
+    "destSystem": "eros",
+    "destPlanet": "Eros Old Town",
+    "title": "Deliver 6t of scientific samples to Eros Old Town",
+    "pay": 4050,
+    "deadline": 17
+   },
+   {
+    "type": "delivery",
+    "good": "prefab habitat panels",
+    "tons": 8,
+    "destSystem": "juno",
+    "destPlanet": "Juno Commons",
+    "title": "Deliver 8t of prefab habitat panels to Juno Commons",
+    "pay": 4250,
+    "deadline": 14
+   }
+  ]
+ },
+ {
+  "key": "missions:Luna:1",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Kwame",
+     "last": "Kaur",
+     "culture": "earth",
+     "home": "Hermes Foundry",
+     "job": "schoolteacher",
+     "traits": [
+      "curious",
+      "greedy"
+     ],
+     "goal": "pilgrim",
+     "wealth": 3,
+     "secret": "ill",
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Kwame Kaur",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Carry Kwame Kaur (1) to Phobos Yards",
+    "blurb": "Kwame Kaur, a curious, money-minded schoolteacher from Hermes Foundry, on a pilgrimage.",
+    "pay": 4900,
+    "deadline": 11
+   },
+   {
+    "type": "passenger",
+    "passenger": "hale",
+    "who": "Undersecretary Hale",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "psyche",
+    "destPlanet": "Ironheart",
+    "title": "Carry Undersecretary Hale (1) to Ironheart",
+    "pay": 8250,
+    "deadline": 20
+   },
+   {
+    "type": "delivery",
+    "good": "hydroponics kits",
+    "tons": 8,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Deliver 8t of hydroponics kits to Ganymede",
+    "pay": 5650,
+    "deadline": 23
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 4,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Deliver 4t of scientific samples to Phobos Yards",
+    "pay": 3150,
+    "deadline": 12
+   }
+  ]
+ },
+ {
+  "key": "missions:Luna:2",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Hector",
+     "last": "Brandvold",
+     "culture": "mars",
+     "home": "Mars",
+     "job": "research scientist",
+     "traits": [
+      "kind",
+      "generous"
+     ],
+     "goal": "research",
+     "wealth": 2,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Dr. Brandvold's survey team",
+    "pax": 2,
+    "bonus": 0,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Carry Dr. Brandvold's survey team (2) to Ganymede",
+    "blurb": "Hector Brandvold, a kind, generous research scientist from Mars, taking up a research posting.",
+    "pay": 9204,
+    "deadline": 21
+   },
+   {
+    "type": "delivery",
+    "good": "medical crates",
+    "tons": 15,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Deliver 15t of medical crates to Mars",
+    "pay": 4250,
+    "deadline": 13
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Mika",
+     "last": "Jansen-Ruiz",
+     "culture": "belt",
+     "home": "Europa",
+     "job": "refinery welder",
+     "traits": [
+      "pious",
+      "homesick"
+     ],
+     "goal": "vague",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Mika Jansen-Ruiz",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Carry Mika Jansen-Ruiz (1) to Mars",
+    "blurb": "Mika Jansen-Ruiz, a devout, homesick refinery welder from Europa, traveling for reasons they keep vague.",
+    "pay": 4900,
+    "deadline": 12
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 13,
+    "destSystem": "juno",
+    "destPlanet": "Juno Commons",
+    "title": "Deliver 13t of scientific samples to Juno Commons",
+    "pay": 4750,
+    "deadline": 15
+   }
+  ]
+ },
+ {
+  "key": "missions:Luna:3",
+  "v": [
+   {
+    "type": "delivery",
+    "good": "reactor parts",
+    "tons": 4,
+    "destSystem": "mercury",
+    "destPlanet": "Hermes Foundry",
+    "title": "Deliver 4t of reactor parts to Hermes Foundry",
+    "pay": 3150,
+    "deadline": 12
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Esa",
+     "last": "Rourke",
+     "culture": "belt",
+     "home": "Juno Commons",
+     "job": "ore assayer",
+     "traits": [
+      "nervous",
+      "talkative"
+     ],
+     "goal": "family",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "the Rourke family",
+    "pax": 4,
+    "bonus": 0,
+    "destSystem": "ceres",
+    "destPlanet": "Ring Nine",
+    "title": "Carry the Rourke family (4) to Ring Nine",
+    "blurb": "Esa Rourke, a nervous, talkative ore assayer from Juno Commons, visiting family.",
+    "pay": 11438,
+    "deadline": 18
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 6,
+    "destSystem": "eros",
+    "destPlanet": "Eros Old Town",
+    "title": "Deliver 6t of scientific samples to Eros Old Town",
+    "pay": 4050,
+    "deadline": 17
+   },
+   {
+    "type": "delivery",
+    "good": "prefab habitat panels",
+    "tons": 8,
+    "destSystem": "juno",
+    "destPlanet": "Juno Commons",
+    "title": "Deliver 8t of prefab habitat panels to Juno Commons",
+    "pay": 4250,
+    "deadline": 14
+   }
+  ]
+ },
+ {
+  "key": "missions:Mars:1",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Kwame",
+     "last": "Kaur",
+     "culture": "earth",
+     "home": "Hermes Foundry",
+     "job": "schoolteacher",
+     "traits": [
+      "curious",
+      "greedy"
+     ],
+     "goal": "pilgrim",
+     "wealth": 3,
+     "secret": "ill",
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Kwame Kaur",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Carry Kwame Kaur (1) to Phobos Yards",
+    "blurb": "Kwame Kaur, a curious, money-minded schoolteacher from Hermes Foundry, on a pilgrimage.",
+    "pay": 2660,
+    "deadline": 5
+   },
+   {
+    "type": "passenger",
+    "passenger": "hale",
+    "who": "Undersecretary Hale",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "psyche",
+    "destPlanet": "Ironheart",
+    "title": "Carry Undersecretary Hale (1) to Ironheart",
+    "pay": 7650,
+    "deadline": 19
+   },
+   {
+    "type": "delivery",
+    "good": "hydroponics kits",
+    "tons": 8,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Deliver 8t of hydroponics kits to Ganymede",
+    "pay": 6000,
+    "deadline": 24
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 4,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Deliver 4t of scientific samples to Phobos Yards",
+    "pay": 1750,
+    "deadline": 6
+   }
+  ]
+ },
+ {
+  "key": "missions:Mars:2",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Hector",
+     "last": "Brandvold",
+     "culture": "mars",
+     "home": "Mars",
+     "job": "research scientist",
+     "traits": [
+      "kind",
+      "generous"
+     ],
+     "goal": "research",
+     "wealth": 2,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Dr. Brandvold's survey team",
+    "pax": 2,
+    "bonus": 0,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Carry Dr. Brandvold's survey team (2) to Ganymede",
+    "blurb": "Hector Brandvold, a kind, generous research scientist from Mars, taking up a research posting.",
+    "pay": 9828,
+    "deadline": 22
+   },
+   {
+    "type": "bounty",
+    "targetSystem": "mars",
+    "targetName": "The Widow Kade",
+    "issuer": "Dome Concord",
+    "title": "Bounty: destroy The Widow Kade near Mars",
+    "pay": 13000,
+    "deadline": 13
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 11,
+    "destSystem": "hygiea",
+    "destPlanet": "The Rook",
+    "title": "Deliver 11t of scientific samples to The Rook",
+    "pay": 5950,
+    "deadline": 24
+   }
+  ]
+ },
+ {
+  "key": "missions:Mars:3",
+  "v": [
+   {
+    "type": "delivery",
+    "good": "reactor parts",
+    "tons": 4,
+    "destSystem": "mercury",
+    "destPlanet": "Hermes Foundry",
+    "title": "Deliver 4t of reactor parts to Hermes Foundry",
+    "pay": 3850,
+    "deadline": 15
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Esa",
+     "last": "Rourke",
+     "culture": "belt",
+     "home": "Juno Commons",
+     "job": "ore assayer",
+     "traits": [
+      "nervous",
+      "talkative"
+     ],
+     "goal": "family",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "the Rourke family",
+    "pax": 4,
+    "bonus": 0,
+    "destSystem": "ceres",
+    "destPlanet": "Ring Nine",
+    "title": "Carry the Rourke family (4) to Ring Nine",
+    "blurb": "Esa Rourke, a nervous, talkative ore assayer from Juno Commons, visiting family.",
+    "pay": 12502,
+    "deadline": 19
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 6,
+    "destSystem": "eros",
+    "destPlanet": "Eros Old Town",
+    "title": "Deliver 6t of scientific samples to Eros Old Town",
+    "pay": 4400,
+    "deadline": 18
+   },
+   {
+    "type": "delivery",
+    "good": "prefab habitat panels",
+    "tons": 8,
+    "destSystem": "juno",
+    "destPlanet": "Juno Commons",
+    "title": "Deliver 8t of prefab habitat panels to Juno Commons",
+    "pay": 3900,
+    "deadline": 12
+   }
+  ]
+ },
+ {
+  "key": "missions:Ceres Station:1",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Kwame",
+     "last": "Kaur",
+     "culture": "earth",
+     "home": "Hermes Foundry",
+     "job": "schoolteacher",
+     "traits": [
+      "curious",
+      "greedy"
+     ],
+     "goal": "pilgrim",
+     "wealth": 3,
+     "secret": "ill",
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Kwame Kaur",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Carry Kwame Kaur (1) to Phobos Yards",
+    "blurb": "Kwame Kaur, a curious, money-minded schoolteacher from Hermes Foundry, on a pilgrimage.",
+    "pay": 6580,
+    "deadline": 15
+   },
+   {
+    "type": "passenger",
+    "passenger": "hale",
+    "who": "Undersecretary Hale",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "psyche",
+    "destPlanet": "Ironheart",
+    "title": "Carry Undersecretary Hale (1) to Ironheart",
+    "pay": 9450,
+    "deadline": 23
+   },
+   {
+    "type": "delivery",
+    "good": "hydroponics kits",
+    "tons": 8,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Deliver 8t of hydroponics kits to Ganymede",
+    "pay": 4950,
+    "deadline": 20
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 4,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Deliver 4t of scientific samples to Phobos Yards",
+    "pay": 4200,
+    "deadline": 16
+   }
+  ]
+ },
+ {
+  "key": "missions:Ceres Station:2",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Hector",
+     "last": "Brandvold",
+     "culture": "mars",
+     "home": "Mars",
+     "job": "research scientist",
+     "traits": [
+      "kind",
+      "generous"
+     ],
+     "goal": "research",
+     "wealth": 2,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Dr. Brandvold's survey team",
+    "pax": 2,
+    "bonus": 0,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Carry Dr. Brandvold's survey team (2) to Ganymede",
+    "blurb": "Hector Brandvold, a kind, generous research scientist from Mars, taking up a research posting.",
+    "pay": 7956,
+    "deadline": 18
+   },
+   {
+    "type": "delivery",
+    "good": "medical crates",
+    "tons": 15,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Deliver 15t of medical crates to Mars",
+    "pay": 5300,
+    "deadline": 17
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Mika",
+     "last": "Jansen-Ruiz",
+     "culture": "belt",
+     "home": "Europa",
+     "job": "refinery welder",
+     "traits": [
+      "pious",
+      "homesick"
+     ],
+     "goal": "vague",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Mika Jansen-Ruiz",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Carry Mika Jansen-Ruiz (1) to Mars",
+    "blurb": "Mika Jansen-Ruiz, a devout, homesick refinery welder from Europa, traveling for reasons they keep vague.",
+    "pay": 6580,
+    "deadline": 16
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 13,
+    "destSystem": "juno",
+    "destPlanet": "Juno Commons",
+    "title": "Deliver 13t of scientific samples to Juno Commons",
+    "pay": 5100,
+    "deadline": 16
+   }
+  ]
+ },
+ {
+  "key": "missions:Ceres Station:3",
+  "v": [
+   {
+    "type": "delivery",
+    "good": "reactor parts",
+    "tons": 4,
+    "destSystem": "mercury",
+    "destPlanet": "Hermes Foundry",
+    "title": "Deliver 4t of reactor parts to Hermes Foundry",
+    "pay": 4200,
+    "deadline": 16
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Esa",
+     "last": "Rourke",
+     "culture": "belt",
+     "home": "Juno Commons",
+     "job": "ore assayer",
+     "traits": [
+      "nervous",
+      "talkative"
+     ],
+     "goal": "family",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "the Rourke family",
+    "pax": 4,
+    "bonus": 0,
+    "destSystem": "ceres",
+    "destPlanet": "Ring Nine",
+    "title": "Carry the Rourke family (4) to Ring Nine",
+    "blurb": "Esa Rourke, a nervous, talkative ore assayer from Juno Commons, visiting family.",
+    "pay": 5054,
+    "deadline": 9
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 6,
+    "destSystem": "eros",
+    "destPlanet": "Eros Old Town",
+    "title": "Deliver 6t of scientific samples to Eros Old Town",
+    "pay": 5100,
+    "deadline": 21
+   },
+   {
+    "type": "delivery",
+    "good": "prefab habitat panels",
+    "tons": 8,
+    "destSystem": "juno",
+    "destPlanet": "Juno Commons",
+    "title": "Deliver 8t of prefab habitat panels to Juno Commons",
+    "pay": 4600,
+    "deadline": 15
+   }
+  ]
+ },
+ {
+  "key": "missions:Pallas Refinery:1",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Kwame",
+     "last": "Kaur",
+     "culture": "earth",
+     "home": "Hermes Foundry",
+     "job": "schoolteacher",
+     "traits": [
+      "curious",
+      "greedy"
+     ],
+     "goal": "pilgrim",
+     "wealth": 3,
+     "secret": "ill",
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Kwame Kaur",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Carry Kwame Kaur (1) to Phobos Yards",
+    "blurb": "Kwame Kaur, a curious, money-minded schoolteacher from Hermes Foundry, on a pilgrimage.",
+    "pay": 6020,
+    "deadline": 14
+   },
+   {
+    "type": "passenger",
+    "passenger": "hale",
+    "who": "Undersecretary Hale",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "psyche",
+    "destPlanet": "Ironheart",
+    "title": "Carry Undersecretary Hale (1) to Ironheart",
+    "pay": 7050,
+    "deadline": 17
+   },
+   {
+    "type": "delivery",
+    "good": "hydroponics kits",
+    "tons": 8,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Deliver 8t of hydroponics kits to Ganymede",
+    "pay": 6700,
+    "deadline": 27
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 4,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Deliver 4t of scientific samples to Phobos Yards",
+    "pay": 3850,
+    "deadline": 15
+   }
+  ]
+ },
+ {
+  "key": "missions:Pallas Refinery:2",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Hector",
+     "last": "Brandvold",
+     "culture": "mars",
+     "home": "Mars",
+     "job": "research scientist",
+     "traits": [
+      "kind",
+      "generous"
+     ],
+     "goal": "research",
+     "wealth": 2,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Dr. Brandvold's survey team",
+    "pax": 2,
+    "bonus": 0,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Carry Dr. Brandvold's survey team (2) to Ganymede",
+    "blurb": "Hector Brandvold, a kind, generous research scientist from Mars, taking up a research posting.",
+    "pay": 11076,
+    "deadline": 25
+   },
+   {
+    "type": "delivery",
+    "good": "medical crates",
+    "tons": 15,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Deliver 15t of medical crates to Mars",
+    "pay": 4950,
+    "deadline": 16
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Mika",
+     "last": "Jansen-Ruiz",
+     "culture": "belt",
+     "home": "Europa",
+     "job": "refinery welder",
+     "traits": [
+      "pious",
+      "homesick"
+     ],
+     "goal": "vague",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Mika Jansen-Ruiz",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Carry Mika Jansen-Ruiz (1) to Mars",
+    "blurb": "Mika Jansen-Ruiz, a devout, homesick refinery welder from Europa, traveling for reasons they keep vague.",
+    "pay": 6020,
+    "deadline": 15
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 13,
+    "destSystem": "juno",
+    "destPlanet": "Juno Commons",
+    "title": "Deliver 13t of scientific samples to Juno Commons",
+    "pay": 5100,
+    "deadline": 16
+   }
+  ]
+ },
+ {
+  "key": "missions:Pallas Refinery:3",
+  "v": [
+   {
+    "type": "delivery",
+    "good": "reactor parts",
+    "tons": 4,
+    "destSystem": "mercury",
+    "destPlanet": "Hermes Foundry",
+    "title": "Deliver 4t of reactor parts to Hermes Foundry",
+    "pay": 4550,
+    "deadline": 18
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Esa",
+     "last": "Rourke",
+     "culture": "belt",
+     "home": "Juno Commons",
+     "job": "ore assayer",
+     "traits": [
+      "nervous",
+      "talkative"
+     ],
+     "goal": "family",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "the Rourke family",
+    "pax": 4,
+    "bonus": 0,
+    "destSystem": "ceres",
+    "destPlanet": "Ring Nine",
+    "title": "Carry the Rourke family (4) to Ring Nine",
+    "blurb": "Esa Rourke, a nervous, talkative ore assayer from Juno Commons, visiting family.",
+    "pay": 15694,
+    "deadline": 24
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 6,
+    "destSystem": "eros",
+    "destPlanet": "Eros Old Town",
+    "title": "Deliver 6t of scientific samples to Eros Old Town",
+    "pay": 5100,
+    "deadline": 21
+   },
+   {
+    "type": "delivery",
+    "good": "prefab habitat panels",
+    "tons": 8,
+    "destSystem": "juno",
+    "destPlanet": "Juno Commons",
+    "title": "Deliver 8t of prefab habitat panels to Juno Commons",
+    "pay": 4600,
+    "deadline": 15
+   }
+  ]
+ },
+ {
+  "key": "missions:The Rook:1",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Kwame",
+     "last": "Kaur",
+     "culture": "earth",
+     "home": "Hermes Foundry",
+     "job": "schoolteacher",
+     "traits": [
+      "curious",
+      "greedy"
+     ],
+     "goal": "pilgrim",
+     "wealth": 3,
+     "secret": "ill",
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Kwame Kaur",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Carry Kwame Kaur (1) to Phobos Yards",
+    "blurb": "Kwame Kaur, a curious, money-minded schoolteacher from Hermes Foundry, on a pilgrimage.",
+    "pay": 8260,
+    "deadline": 20
+   },
+   {
+    "type": "passenger",
+    "passenger": "hale",
+    "who": "Undersecretary Hale",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "psyche",
+    "destPlanet": "Ironheart",
+    "title": "Carry Undersecretary Hale (1) to Ironheart",
+    "pay": 8250,
+    "deadline": 20
+   },
+   {
+    "type": "delivery",
+    "good": "hydroponics kits",
+    "tons": 8,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Deliver 8t of hydroponics kits to Ganymede",
+    "pay": 5650,
+    "deadline": 23
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 4,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Deliver 4t of scientific samples to Phobos Yards",
+    "pay": 5250,
+    "deadline": 21
+   }
+  ]
+ },
+ {
+  "key": "missions:The Rook:2",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Hector",
+     "last": "Brandvold",
+     "culture": "mars",
+     "home": "Mars",
+     "job": "research scientist",
+     "traits": [
+      "kind",
+      "generous"
+     ],
+     "goal": "research",
+     "wealth": 2,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Dr. Brandvold's survey team",
+    "pax": 2,
+    "bonus": 0,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Carry Dr. Brandvold's survey team (2) to Ganymede",
+    "blurb": "Hector Brandvold, a kind, generous research scientist from Mars, taking up a research posting.",
+    "pay": 9204,
+    "deadline": 21
+   },
+   {
+    "type": "delivery",
+    "good": "medical crates",
+    "tons": 15,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Deliver 15t of medical crates to Mars",
+    "pay": 6350,
+    "deadline": 22
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Mika",
+     "last": "Jansen-Ruiz",
+     "culture": "belt",
+     "home": "Europa",
+     "job": "refinery welder",
+     "traits": [
+      "pious",
+      "homesick"
+     ],
+     "goal": "vague",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Mika Jansen-Ruiz",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Carry Mika Jansen-Ruiz (1) to Mars",
+    "blurb": "Mika Jansen-Ruiz, a devout, homesick refinery welder from Europa, traveling for reasons they keep vague.",
+    "pay": 8260,
+    "deadline": 21
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 13,
+    "destSystem": "juno",
+    "destPlanet": "Juno Commons",
+    "title": "Deliver 13t of scientific samples to Juno Commons",
+    "pay": 6500,
+    "deadline": 22
+   }
+  ]
+ },
+ {
+  "key": "missions:The Rook:3",
+  "v": [
+   {
+    "type": "delivery",
+    "good": "reactor parts",
+    "tons": 4,
+    "destSystem": "mercury",
+    "destPlanet": "Hermes Foundry",
+    "title": "Deliver 4t of reactor parts to Hermes Foundry",
+    "pay": 4200,
+    "deadline": 16
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Esa",
+     "last": "Rourke",
+     "culture": "belt",
+     "home": "Juno Commons",
+     "job": "ore assayer",
+     "traits": [
+      "nervous",
+      "talkative"
+     ],
+     "goal": "family",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "the Rourke family",
+    "pax": 4,
+    "bonus": 0,
+    "destSystem": "ceres",
+    "destPlanet": "Ring Nine",
+    "title": "Carry the Rourke family (4) to Ring Nine",
+    "blurb": "Esa Rourke, a nervous, talkative ore assayer from Juno Commons, visiting family.",
+    "pay": 15694,
+    "deadline": 24
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 6,
+    "destSystem": "eros",
+    "destPlanet": "Eros Old Town",
+    "title": "Deliver 6t of scientific samples to Eros Old Town",
+    "pay": 4050,
+    "deadline": 17
+   },
+   {
+    "type": "delivery",
+    "good": "prefab habitat panels",
+    "tons": 8,
+    "destSystem": "juno",
+    "destPlanet": "Juno Commons",
+    "title": "Deliver 8t of prefab habitat panels to Juno Commons",
+    "pay": 6000,
+    "deadline": 21
+   }
+  ]
+ },
+ {
+  "key": "missions:Ironheart:1",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Kwame",
+     "last": "Kaur",
+     "culture": "earth",
+     "home": "Hermes Foundry",
+     "job": "schoolteacher",
+     "traits": [
+      "curious",
+      "greedy"
+     ],
+     "goal": "pilgrim",
+     "wealth": 3,
+     "secret": "ill",
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Kwame Kaur",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Carry Kwame Kaur (1) to Phobos Yards",
+    "blurb": "Kwame Kaur, a curious, money-minded schoolteacher from Hermes Foundry, on a pilgrimage.",
+    "pay": 7140,
+    "deadline": 17
+   },
+   {
+    "type": "delivery",
+    "good": "reactor parts",
+    "tons": 14,
+    "destSystem": "mercury",
+    "destPlanet": "Hermes Foundry",
+    "title": "Deliver 14t of reactor parts to Hermes Foundry",
+    "pay": 5550,
+    "deadline": 19
+   }
+  ]
+ },
+ {
+  "key": "missions:Ironheart:2",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Hector",
+     "last": "Brandvold",
+     "culture": "mars",
+     "home": "Mars",
+     "job": "research scientist",
+     "traits": [
+      "kind",
+      "generous"
+     ],
+     "goal": "research",
+     "wealth": 2,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Dr. Brandvold's survey team",
+    "pax": 2,
+    "bonus": 0,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Carry Dr. Brandvold's survey team (2) to Ganymede",
+    "blurb": "Hector Brandvold, a kind, generous research scientist from Mars, taking up a research posting.",
+    "pay": 11700,
+    "deadline": 27
+   },
+   {
+    "type": "delivery",
+    "good": "medical crates",
+    "tons": 15,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Deliver 15t of medical crates to Mars",
+    "pay": 5650,
+    "deadline": 19
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Mika",
+     "last": "Jansen-Ruiz",
+     "culture": "belt",
+     "home": "Europa",
+     "job": "refinery welder",
+     "traits": [
+      "pious",
+      "homesick"
+     ],
+     "goal": "vague",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Mika Jansen-Ruiz",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Carry Mika Jansen-Ruiz (1) to Mars",
+    "blurb": "Mika Jansen-Ruiz, a devout, homesick refinery welder from Europa, traveling for reasons they keep vague.",
+    "pay": 7140,
+    "deadline": 18
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 13,
+    "destSystem": "juno",
+    "destPlanet": "Juno Commons",
+    "title": "Deliver 13t of scientific samples to Juno Commons",
+    "pay": 6150,
+    "deadline": 21
+   }
+  ]
+ },
+ {
+  "key": "missions:Ironheart:3",
+  "v": [
+   {
+    "type": "delivery",
+    "good": "reactor parts",
+    "tons": 4,
+    "destSystem": "mercury",
+    "destPlanet": "Hermes Foundry",
+    "title": "Deliver 4t of reactor parts to Hermes Foundry",
+    "pay": 4550,
+    "deadline": 18
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Esa",
+     "last": "Rourke",
+     "culture": "belt",
+     "home": "Juno Commons",
+     "job": "ore assayer",
+     "traits": [
+      "nervous",
+      "talkative"
+     ],
+     "goal": "family",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "the Rourke family",
+    "pax": 4,
+    "bonus": 0,
+    "destSystem": "ceres",
+    "destPlanet": "Ring Nine",
+    "title": "Carry the Rourke family (4) to Ring Nine",
+    "blurb": "Esa Rourke, a nervous, talkative ore assayer from Juno Commons, visiting family.",
+    "pay": 16758,
+    "deadline": 25
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 6,
+    "destSystem": "eros",
+    "destPlanet": "Eros Old Town",
+    "title": "Deliver 6t of scientific samples to Eros Old Town",
+    "pay": 4400,
+    "deadline": 18
+   },
+   {
+    "type": "delivery",
+    "good": "prefab habitat panels",
+    "tons": 8,
+    "destSystem": "juno",
+    "destPlanet": "Juno Commons",
+    "title": "Deliver 8t of prefab habitat panels to Juno Commons",
+    "pay": 5650,
+    "deadline": 20
+   }
+  ]
+ },
+ {
+  "key": "missions:Juno Commons:1",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Kwame",
+     "last": "Kaur",
+     "culture": "earth",
+     "home": "Hermes Foundry",
+     "job": "schoolteacher",
+     "traits": [
+      "curious",
+      "greedy"
+     ],
+     "goal": "pilgrim",
+     "wealth": 3,
+     "secret": "ill",
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Kwame Kaur",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Carry Kwame Kaur (1) to Phobos Yards",
+    "blurb": "Kwame Kaur, a curious, money-minded schoolteacher from Hermes Foundry, on a pilgrimage.",
+    "pay": 5460,
+    "deadline": 12
+   },
+   {
+    "type": "passenger",
+    "passenger": "hale",
+    "who": "Undersecretary Hale",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "psyche",
+    "destPlanet": "Ironheart",
+    "title": "Carry Undersecretary Hale (1) to Ironheart",
+    "pay": 8850,
+    "deadline": 22
+   },
+   {
+    "type": "delivery",
+    "good": "hydroponics kits",
+    "tons": 8,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Deliver 8t of hydroponics kits to Ganymede",
+    "pay": 6000,
+    "deadline": 24
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 4,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Deliver 4t of scientific samples to Phobos Yards",
+    "pay": 3500,
+    "deadline": 13
+   }
+  ]
+ },
+ {
+  "key": "missions:Juno Commons:2",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Hector",
+     "last": "Brandvold",
+     "culture": "mars",
+     "home": "Mars",
+     "job": "research scientist",
+     "traits": [
+      "kind",
+      "generous"
+     ],
+     "goal": "research",
+     "wealth": 2,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Dr. Brandvold's survey team",
+    "pax": 2,
+    "bonus": 0,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Carry Dr. Brandvold's survey team (2) to Ganymede",
+    "blurb": "Hector Brandvold, a kind, generous research scientist from Mars, taking up a research posting.",
+    "pay": 9828,
+    "deadline": 22
+   },
+   {
+    "type": "delivery",
+    "good": "medical crates",
+    "tons": 15,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Deliver 15t of medical crates to Mars",
+    "pay": 4600,
+    "deadline": 14
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Mika",
+     "last": "Jansen-Ruiz",
+     "culture": "belt",
+     "home": "Europa",
+     "job": "refinery welder",
+     "traits": [
+      "pious",
+      "homesick"
+     ],
+     "goal": "vague",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Mika Jansen-Ruiz",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Carry Mika Jansen-Ruiz (1) to Mars",
+    "blurb": "Mika Jansen-Ruiz, a devout, homesick refinery welder from Europa, traveling for reasons they keep vague.",
+    "pay": 5460,
+    "deadline": 13
+   }
+  ]
+ },
+ {
+  "key": "missions:Juno Commons:3",
+  "v": [
+   {
+    "type": "delivery",
+    "good": "reactor parts",
+    "tons": 4,
+    "destSystem": "mercury",
+    "destPlanet": "Hermes Foundry",
+    "title": "Deliver 4t of reactor parts to Hermes Foundry",
+    "pay": 4200,
+    "deadline": 16
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Esa",
+     "last": "Rourke",
+     "culture": "belt",
+     "home": "Juno Commons",
+     "job": "ore assayer",
+     "traits": [
+      "nervous",
+      "talkative"
+     ],
+     "goal": "family",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "the Rourke family",
+    "pax": 4,
+    "bonus": 0,
+    "destSystem": "ceres",
+    "destPlanet": "Ring Nine",
+    "title": "Carry the Rourke family (4) to Ring Nine",
+    "blurb": "Esa Rourke, a nervous, talkative ore assayer from Juno Commons, visiting family.",
+    "pay": 12502,
+    "deadline": 19
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 6,
+    "destSystem": "eros",
+    "destPlanet": "Eros Old Town",
+    "title": "Deliver 6t of scientific samples to Eros Old Town",
+    "pay": 5100,
+    "deadline": 21
+   }
+  ]
+ },
+ {
+  "key": "missions:Eros Old Town:1",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Kwame",
+     "last": "Kaur",
+     "culture": "earth",
+     "home": "Hermes Foundry",
+     "job": "schoolteacher",
+     "traits": [
+      "curious",
+      "greedy"
+     ],
+     "goal": "pilgrim",
+     "wealth": 3,
+     "secret": "ill",
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Kwame Kaur",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Carry Kwame Kaur (1) to Phobos Yards",
+    "blurb": "Kwame Kaur, a curious, money-minded schoolteacher from Hermes Foundry, on a pilgrimage.",
+    "pay": 6580,
+    "deadline": 15
+   },
+   {
+    "type": "passenger",
+    "passenger": "hale",
+    "who": "Undersecretary Hale",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "psyche",
+    "destPlanet": "Ironheart",
+    "title": "Carry Undersecretary Hale (1) to Ironheart",
+    "pay": 7050,
+    "deadline": 17
+   },
+   {
+    "type": "delivery",
+    "good": "hydroponics kits",
+    "tons": 8,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Deliver 8t of hydroponics kits to Ganymede",
+    "pay": 6000,
+    "deadline": 24
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 4,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Deliver 4t of scientific samples to Phobos Yards",
+    "pay": 4200,
+    "deadline": 16
+   }
+  ]
+ },
+ {
+  "key": "missions:Eros Old Town:2",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Hector",
+     "last": "Brandvold",
+     "culture": "mars",
+     "home": "Mars",
+     "job": "research scientist",
+     "traits": [
+      "kind",
+      "generous"
+     ],
+     "goal": "research",
+     "wealth": 2,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Dr. Brandvold's survey team",
+    "pax": 2,
+    "bonus": 0,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Carry Dr. Brandvold's survey team (2) to Ganymede",
+    "blurb": "Hector Brandvold, a kind, generous research scientist from Mars, taking up a research posting.",
+    "pay": 9828,
+    "deadline": 22
+   },
+   {
+    "type": "delivery",
+    "good": "medical crates",
+    "tons": 15,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Deliver 15t of medical crates to Mars",
+    "pay": 5300,
+    "deadline": 17
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Mika",
+     "last": "Jansen-Ruiz",
+     "culture": "belt",
+     "home": "Europa",
+     "job": "refinery welder",
+     "traits": [
+      "pious",
+      "homesick"
+     ],
+     "goal": "vague",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Mika Jansen-Ruiz",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Carry Mika Jansen-Ruiz (1) to Mars",
+    "blurb": "Mika Jansen-Ruiz, a devout, homesick refinery welder from Europa, traveling for reasons they keep vague.",
+    "pay": 6580,
+    "deadline": 16
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 13,
+    "destSystem": "juno",
+    "destPlanet": "Juno Commons",
+    "title": "Deliver 13t of scientific samples to Juno Commons",
+    "pay": 5800,
+    "deadline": 19
+   }
+  ]
+ },
+ {
+  "key": "missions:Eros Old Town:3",
+  "v": [
+   {
+    "type": "delivery",
+    "good": "reactor parts",
+    "tons": 4,
+    "destSystem": "mercury",
+    "destPlanet": "Hermes Foundry",
+    "title": "Deliver 4t of reactor parts to Hermes Foundry",
+    "pay": 3150,
+    "deadline": 12
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Esa",
+     "last": "Rourke",
+     "culture": "belt",
+     "home": "Juno Commons",
+     "job": "ore assayer",
+     "traits": [
+      "nervous",
+      "talkative"
+     ],
+     "goal": "family",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "the Rourke family",
+    "pax": 4,
+    "bonus": 0,
+    "destSystem": "ceres",
+    "destPlanet": "Ring Nine",
+    "title": "Carry the Rourke family (4) to Ring Nine",
+    "blurb": "Esa Rourke, a nervous, talkative ore assayer from Juno Commons, visiting family.",
+    "pay": 14630,
+    "deadline": 22
+   },
+   {
+    "type": "delivery",
+    "good": "prefab habitat panels",
+    "tons": 4,
+    "destSystem": "saturn",
+    "destPlanet": "Enceladus",
+    "title": "Deliver 4t of prefab habitat panels to Enceladus",
+    "pay": 7700,
+    "deadline": 32
+   }
+  ]
+ },
+ {
+  "key": "missions:Ganymede:1",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Kwame",
+     "last": "Kaur",
+     "culture": "earth",
+     "home": "Hermes Foundry",
+     "job": "schoolteacher",
+     "traits": [
+      "curious",
+      "greedy"
+     ],
+     "goal": "pilgrim",
+     "wealth": 3,
+     "secret": "ill",
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Kwame Kaur",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Carry Kwame Kaur (1) to Phobos Yards",
+    "blurb": "Kwame Kaur, a curious, money-minded schoolteacher from Hermes Foundry, on a pilgrimage.",
+    "pay": 8820,
+    "deadline": 21
+   },
+   {
+    "type": "passenger",
+    "passenger": "hale",
+    "who": "Undersecretary Hale",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "psyche",
+    "destPlanet": "Ironheart",
+    "title": "Carry Undersecretary Hale (1) to Ironheart",
+    "pay": 11250,
+    "deadline": 28
+   },
+   {
+    "type": "delivery",
+    "good": "reactor parts",
+    "tons": 3,
+    "destSystem": "psyche",
+    "destPlanet": "Ironheart",
+    "title": "Deliver 3t of reactor parts to Ironheart",
+    "pay": 6550,
+    "deadline": 30
+   }
+  ]
+ },
+ {
+  "key": "missions:Ganymede:2",
+  "v": [
+   {
+    "type": "delivery",
+    "good": "reactor parts",
+    "tons": 12,
+    "destSystem": "eros",
+    "destPlanet": "Eros Old Town",
+    "title": "Deliver 12t of reactor parts to Eros Old Town",
+    "pay": 6400,
+    "deadline": 22
+   },
+   {
+    "type": "bounty",
+    "targetSystem": "pallas",
+    "targetName": "Red Mag Varga",
+    "issuer": "Independent",
+    "title": "Bounty: destroy Red Mag Varga near Pallas",
+    "pay": 9000,
+    "deadline": 39
+   },
+   {
+    "type": "delivery",
+    "good": "reactor parts",
+    "tons": 8,
+    "destSystem": "hygiea",
+    "destPlanet": "Boneyard",
+    "title": "Deliver 8t of reactor parts to Boneyard",
+    "pay": 5650,
+    "deadline": 20
+   }
+  ]
+ },
+ {
+  "key": "missions:Ganymede:3",
+  "v": [
+   {
+    "type": "delivery",
+    "good": "reactor parts",
+    "tons": 4,
+    "destSystem": "mercury",
+    "destPlanet": "Hermes Foundry",
+    "title": "Deliver 4t of reactor parts to Hermes Foundry",
+    "pay": 5250,
+    "deadline": 21
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Esa",
+     "last": "Rourke",
+     "culture": "belt",
+     "home": "Juno Commons",
+     "job": "ore assayer",
+     "traits": [
+      "nervous",
+      "talkative"
+     ],
+     "goal": "family",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "the Rourke family",
+    "pax": 4,
+    "bonus": 0,
+    "destSystem": "ceres",
+    "destPlanet": "Ring Nine",
+    "title": "Carry the Rourke family (4) to Ring Nine",
+    "blurb": "Esa Rourke, a nervous, talkative ore assayer from Juno Commons, visiting family.",
+    "pay": 13566,
+    "deadline": 21
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 6,
+    "destSystem": "eros",
+    "destPlanet": "Eros Old Town",
+    "title": "Deliver 6t of scientific samples to Eros Old Town",
+    "pay": 5800,
+    "deadline": 24
+   },
+   {
+    "type": "delivery",
+    "good": "prefab habitat panels",
+    "tons": 8,
+    "destSystem": "juno",
+    "destPlanet": "Juno Commons",
+    "title": "Deliver 8t of prefab habitat panels to Juno Commons",
+    "pay": 6000,
+    "deadline": 21
+   }
+  ]
+ },
+ {
+  "key": "missions:Titan:1",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Kwame",
+     "last": "Kaur",
+     "culture": "earth",
+     "home": "Hermes Foundry",
+     "job": "schoolteacher",
+     "traits": [
+      "curious",
+      "greedy"
+     ],
+     "goal": "pilgrim",
+     "wealth": 3,
+     "secret": "ill",
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Kwame Kaur",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Carry Kwame Kaur (1) to Phobos Yards",
+    "blurb": "Kwame Kaur, a curious, money-minded schoolteacher from Hermes Foundry, on a pilgrimage.",
+    "pay": 11060,
+    "deadline": 27
+   },
+   {
+    "type": "passenger",
+    "passenger": "hale",
+    "who": "Undersecretary Hale",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "psyche",
+    "destPlanet": "Ironheart",
+    "title": "Carry Undersecretary Hale (1) to Ironheart",
+    "pay": 13650,
+    "deadline": 34
+   },
+   {
+    "type": "delivery",
+    "good": "hydroponics kits",
+    "tons": 8,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Deliver 8t of hydroponics kits to Ganymede",
+    "pay": 6700,
+    "deadline": 27
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 4,
+    "destSystem": "mars",
+    "destPlanet": "Phobos Yards",
+    "title": "Deliver 4t of scientific samples to Phobos Yards",
+    "pay": 7000,
+    "deadline": 28
+   }
+  ]
+ },
+ {
+  "key": "missions:Titan:2",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Hector",
+     "last": "Brandvold",
+     "culture": "mars",
+     "home": "Mars",
+     "job": "research scientist",
+     "traits": [
+      "kind",
+      "generous"
+     ],
+     "goal": "research",
+     "wealth": 2,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Dr. Brandvold's survey team",
+    "pax": 2,
+    "bonus": 0,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Carry Dr. Brandvold's survey team (2) to Ganymede",
+    "blurb": "Hector Brandvold, a kind, generous research scientist from Mars, taking up a research posting.",
+    "pay": 11076,
+    "deadline": 25
+   },
+   {
+    "type": "delivery",
+    "good": "medical crates",
+    "tons": 15,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Deliver 15t of medical crates to Mars",
+    "pay": 8100,
+    "deadline": 29
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Mika",
+     "last": "Jansen-Ruiz",
+     "culture": "belt",
+     "home": "Europa",
+     "job": "refinery welder",
+     "traits": [
+      "pious",
+      "homesick"
+     ],
+     "goal": "vague",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Mika Jansen-Ruiz",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Carry Mika Jansen-Ruiz (1) to Mars",
+    "blurb": "Mika Jansen-Ruiz, a devout, homesick refinery welder from Europa, traveling for reasons they keep vague.",
+    "pay": 11060,
+    "deadline": 28
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 13,
+    "destSystem": "juno",
+    "destPlanet": "Juno Commons",
+    "title": "Deliver 13t of scientific samples to Juno Commons",
+    "pay": 7200,
+    "deadline": 25
+   }
+  ]
+ },
+ {
+  "key": "missions:Titan:3",
+  "v": [
+   {
+    "type": "delivery",
+    "good": "reactor parts",
+    "tons": 4,
+    "destSystem": "mercury",
+    "destPlanet": "Hermes Foundry",
+    "title": "Deliver 4t of reactor parts to Hermes Foundry",
+    "pay": 7350,
+    "deadline": 30
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Esa",
+     "last": "Rourke",
+     "culture": "belt",
+     "home": "Juno Commons",
+     "job": "ore assayer",
+     "traits": [
+      "nervous",
+      "talkative"
+     ],
+     "goal": "family",
+     "wealth": 3,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "the Rourke family",
+    "pax": 4,
+    "bonus": 0,
+    "destSystem": "ceres",
+    "destPlanet": "Ring Nine",
+    "title": "Carry the Rourke family (4) to Ring Nine",
+    "blurb": "Esa Rourke, a nervous, talkative ore assayer from Juno Commons, visiting family.",
+    "pay": 18886,
+    "deadline": 28
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 6,
+    "destSystem": "eros",
+    "destPlanet": "Eros Old Town",
+    "title": "Deliver 6t of scientific samples to Eros Old Town",
+    "pay": 7900,
+    "deadline": 33
+   },
+   {
+    "type": "delivery",
+    "good": "prefab habitat panels",
+    "tons": 8,
+    "destSystem": "juno",
+    "destPlanet": "Juno Commons",
+    "title": "Deliver 8t of prefab habitat panels to Juno Commons",
+    "pay": 6700,
+    "deadline": 24
+   }
+  ]
+ },
+ {
+  "key": "missions:Triton Outpost:1",
+  "v": []
+ },
+ {
+  "key": "missions:Triton Outpost:2",
+  "v": [
+   {
+    "type": "bounty",
+    "targetSystem": "neptune",
+    "targetName": "Silas Thorn",
+    "issuer": "Independent",
+    "title": "Bounty: destroy Silas Thorn near Neptune",
+    "pay": 16000,
+    "deadline": 13
+   }
+  ]
+ },
+ {
+  "key": "missions:Triton Outpost:3",
+  "v": []
+ },
+ {
+  "key": "missions:trusted:1",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Kwame",
+     "last": "Ferreira",
+     "culture": "earth",
+     "home": "Luna",
+     "job": "journalist",
+     "traits": [
+      "homesick",
+      "kind"
+     ],
+     "goal": "pilgrim",
+     "wealth": 1,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Kwame Ferreira",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "jupiter",
+    "destPlanet": "Europa",
+    "title": "Carry Kwame Ferreira (1) to Europa",
+    "blurb": "Kwame Ferreira, a homesick, kind journalist from Luna, on a pilgrimage.",
+    "pay": 5900,
+    "deadline": 20
+   },
+   {
+    "type": "bounty",
+    "targetSystem": "pallas",
+    "targetName": "Old Iron Tess",
+    "issuer": "Arcology Compact",
+    "title": "Bounty: destroy Old Iron Tess near Pallas",
+    "pay": 15000,
+    "deadline": 27
+   },
+   {
+    "type": "bounty",
+    "targetSystem": "jupiter",
+    "targetName": "Captain Ruin",
+    "issuer": "Arcology Compact",
+    "title": "Bounty: destroy Captain Ruin near Jupiter",
+    "pay": 13000,
+    "deadline": 33
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Sofia",
+     "last": "Novak",
+     "culture": "earth",
+     "home": "Luna",
+     "job": "insurance adjuster",
+     "traits": [
+      "secretive",
+      "drunk"
+     ],
+     "goal": "fresh",
+     "wealth": 2,
+     "secret": "debt",
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Sofia Novak and their partner",
+    "pax": 2,
+    "bonus": 0,
+    "destSystem": "mercury",
+    "destPlanet": "Hermes Foundry",
+    "title": "Carry Sofia Novak and their partner (2) to Hermes Foundry",
+    "blurb": "Sofia Novak, a guarded, hard-drinking insurance adjuster from Luna, starting over after a bad divorce.",
+    "pay": 5460,
+    "deadline": 11
+   }
+  ]
+ },
+ {
+  "key": "missions:trusted:2",
+  "v": [
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Gaz",
+     "last": "Marsh",
+     "culture": "belt",
+     "home": "Ironheart",
+     "job": "hydroponics tech",
+     "traits": [
+      "homesick",
+      "kind"
+     ],
+     "goal": "fresh",
+     "wealth": 2,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Gaz Marsh",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Carry Gaz Marsh (1) to Mars",
+    "blurb": "Gaz Marsh, a homesick, kind hydroponics tech from Ironheart, starting over after a bad divorce.",
+    "pay": 4200,
+    "deadline": 13
+   },
+   {
+    "type": "delivery",
+    "good": "scientific samples",
+    "tons": 15,
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "title": "Arcology Compact contract: deliver 15t of scientific samples to mars",
+    "pay": 6800,
+    "deadline": 11,
+    "contract": true
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Ingrid",
+     "last": "Achterberg",
+     "culture": "mars",
+     "home": "Phobos Yards",
+     "job": "soil chemist",
+     "traits": [
+      "pious",
+      "kind"
+     ],
+     "goal": "vague",
+     "wealth": 1,
+     "secret": "contraband",
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Ingrid Achterberg",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "earth",
+    "destPlanet": "Luna",
+    "title": "Carry Ingrid Achterberg (1) to Luna",
+    "blurb": "Ingrid Achterberg, a devout, kind soil chemist from Phobos Yards, traveling for reasons they keep vague.",
+    "pay": 1900,
+    "deadline": 5
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Samuel",
+     "last": "Osei",
+     "culture": "earth",
+     "home": "Earth",
+     "job": "software auditor",
+     "traits": [
+      "talkative",
+      "greedy"
+     ],
+     "goal": "home",
+     "wealth": 3,
+     "secret": "spy",
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Samuel Osei",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "jupiter",
+    "destPlanet": "Ganymede",
+    "title": "Carry Samuel Osei (1) to Ganymede",
+    "blurb": "Samuel Osei, a talkative, money-minded software auditor from Earth, going home.",
+    "pay": 8260,
+    "deadline": 23
+   }
+  ]
+ },
+ {
+  "key": "missions:trusted:3",
+  "v": [
+   {
+    "type": "delivery",
+    "good": "prefab habitat panels",
+    "tons": 13,
+    "destSystem": "pallas",
+    "destPlanet": "The Hollows",
+    "title": "Arcology Compact contract: deliver 13t of prefab habitat panels to the hollows",
+    "pay": 8160,
+    "deadline": 17,
+    "contract": true
+   },
+   {
+    "type": "delivery",
+    "good": "reactor parts",
+    "tons": 3,
+    "destSystem": "saturn",
+    "destPlanet": "Enceladus",
+    "title": "Deliver 3t of reactor parts to Enceladus",
+    "pay": 6550,
+    "deadline": 29
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Dru",
+     "last": "Oyelaran",
+     "culture": "belt",
+     "home": "Ironheart",
+     "job": "research scientist",
+     "traits": [
+      "pious",
+      "talkative"
+     ],
+     "goal": "family",
+     "wealth": 2,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "the Oyelaran family",
+    "pax": 4,
+    "bonus": 0,
+    "destSystem": "ceres",
+    "destPlanet": "Ring Nine",
+    "title": "Carry the Oyelaran family (4) to Ring Nine",
+    "blurb": "Dru Oyelaran, a devout, talkative research scientist from Ironheart, visiting family.",
+    "pay": 9804,
+    "deadline": 16
+   },
+   {
+    "type": "passenger",
+    "passenger": "pilgrims",
+    "who": "pilgrims of the Long Walk",
+    "pax": 4,
+    "bonus": 0,
+    "destSystem": "eros",
+    "destPlanet": "Eros Old Town",
+    "title": "Carry pilgrims of the Long Walk (4) to Eros Old Town",
+    "pay": 3870,
+    "deadline": 15
+   }
+  ]
+ },
+ {
+  "key": "missions:trusted:4",
+  "v": [
+   {
+    "type": "bounty",
+    "targetSystem": "pallas",
+    "targetName": "The Widow Kade",
+    "issuer": "Arcology Compact",
+    "title": "Bounty: destroy The Widow Kade near Pallas",
+    "pay": 13000,
+    "deadline": 27
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Ravi",
+     "last": "Osei",
+     "culture": "earth",
+     "home": "Hermes Foundry",
+     "job": "accountant",
+     "traits": [
+      "talkative",
+      "generous"
+     ],
+     "goal": "medical",
+     "wealth": 2,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Ravi Osei",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "ceres",
+    "destPlanet": "Ring Nine",
+    "title": "Carry Ravi Osei (1) to Ring Nine",
+    "blurb": "Ravi Osei, a talkative, generous accountant from Hermes Foundry, traveling for medical treatment.",
+    "pay": 5160,
+    "deadline": 18
+   },
+   {
+    "type": "delivery",
+    "good": "medical crates",
+    "tons": 13,
+    "destSystem": "hygiea",
+    "destPlanet": "The Rook",
+    "title": "Arcology Compact contract: deliver 13t of medical crates to the rook",
+    "pay": 9280,
+    "deadline": 20,
+    "contract": true
+   },
+   {
+    "type": "passenger",
+    "person": {
+     "id": null,
+     "first": "Ruo",
+     "last": "Kalu",
+     "culture": "belt",
+     "home": "Eros Old Town",
+     "job": "dockworker",
+     "traits": [
+      "kind",
+      "talkative"
+     ],
+     "goal": "medical",
+     "wealth": 1,
+     "secret": null,
+     "opinion": 0,
+     "memories": [],
+     "location": null
+    },
+    "who": "Ruo Kalu",
+    "pax": 1,
+    "bonus": 0,
+    "destSystem": "mercury",
+    "destPlanet": "Hermes Foundry",
+    "title": "Carry Ruo Kalu (1) to Hermes Foundry",
+    "blurb": "Ruo Kalu, a kind, talkative dockworker from Eros Old Town, traveling for medical treatment.",
+    "pay": 3500,
+    "deadline": 15
+   }
+  ]
+ },
+ {
+  "key": "missions:carrying:1",
+  "v": [
+   [
+    "bounty",
+    null,
+    "Bounty: destroy Jax Morrow near Pallas"
+   ],
+   [
+    "delivery",
+    null,
+    "Deliver 3t of scientific samples to Eros Old Town"
+   ],
+   [
+    "delivery",
+    null,
+    "Deliver 3t of sealed diplomatic pouches to Europa"
+   ],
+   [
+    "delivery",
+    null,
+    "Deliver 15t of reactor parts to Juno Commons"
+   ]
+  ]
+ },
+ {
+  "key": "missions:carrying:2",
+  "v": [
+   [
+    "delivery",
+    null,
+    "Deliver 13t of sealed diplomatic pouches to Enceladus"
+   ],
+   [
+    "delivery",
+    null,
+    "Deliver 12t of medical crates to Eros Old Town"
+   ],
+   [
+    "passenger",
+    null,
+    "Carry Kwame Mendoza (1) to Ceres Station"
+   ],
+   [
+    "delivery",
+    null,
+    "Deliver 9t of medical crates to Eros Old Town"
+   ]
+  ]
+ },
+ {
+  "key": "missions:carrying:3",
+  "v": [
+   [
+    "delivery",
+    null,
+    "Deliver 9t of sealed diplomatic pouches to Phobos Yards"
+   ],
+   [
+    "delivery",
+    null,
+    "Deliver 10t of prefab habitat panels to Juno Commons"
+   ],
+   [
+    "passenger",
+    null,
+    "Carry Daniel Okonjo (1) to The Hollows"
+   ],
+   [
+    "delivery",
+    null,
+    "Deliver 4t of prefab habitat panels to Eros Old Town"
+   ]
+  ]
+ },
+ {
+  "key": "missions:carrying:4",
+  "v": [
+   [
+    "delivery",
+    null,
+    "Deliver 9t of reactor parts to Hermes Foundry"
+   ],
+   [
+    "delivery",
+    null,
+    "Deliver 13t of reactor parts to Hermes Foundry"
+   ],
+   [
+    "passenger",
+    null,
+    "Carry Felix Weller (1) to Juno Commons"
+   ],
+   [
+    "bounty",
+    null,
+    "Bounty: destroy Jax Morrow near Eros"
+   ]
+  ]
+ },
+ {
+  "key": "missions:carrying:5",
+  "v": [
+   [
+    "delivery",
+    null,
+    "Deliver 15t of medical crates to Eros Old Town"
+   ],
+   [
+    "delivery",
+    null,
+    "Deliver 7t of sealed diplomatic pouches to Ring Nine"
+   ],
+   [
+    "delivery",
+    null,
+    "Deliver 11t of prefab habitat panels to Hermes Foundry"
+   ],
+   [
+    "bounty",
+    null,
+    "Bounty: destroy Captain Ruin near Ceres"
+   ]
+  ]
+ },
+ {
+  "key": "missions:carrying:6",
+  "v": [
+   [
+    "bounty",
+    null,
+    "Bounty: destroy Captain Ruin near Psyche"
+   ],
+   [
+    "passenger",
+    null,
+    "Carry Tariq Kerr (1) to The Hollows"
+   ],
+   [
+    "delivery",
+    null,
+    "Deliver 4t of reactor parts to Titan"
+   ],
+   [
+    "delivery",
+    null,
+    "Deliver 14t of reactor parts to Mars"
+   ]
+  ]
+ },
+ {
+  "key": "board:Hermes Foundry:3",
+  "v": [
+   "escort",
+   "ration"
+  ]
+ },
+ {
+  "key": "board:Hermes Foundry:9",
+  "v": [
+   "lock",
+   "message"
+  ]
+ },
+ {
+  "key": "board:Hermes Foundry:20",
+  "v": [
+   "ration",
+   "lock"
+  ]
+ },
+ {
+  "key": "board:Phobos Yards:3",
+  "v": [
+   "ration",
+   "lock"
+  ]
+ },
+ {
+  "key": "board:Phobos Yards:9",
+  "v": [
+   "message",
+   "escort"
+  ]
+ },
+ {
+  "key": "board:Phobos Yards:20",
+  "v": [
+   "escort",
+   "ration"
+  ]
+ },
+ {
+  "key": "board:The Hollows:3",
+  "v": [
+   "lock",
+   "message"
+  ]
+ },
+ {
+  "key": "board:The Hollows:9",
+  "v": [
+   "escort",
+   "ration"
+  ]
+ },
+ {
+  "key": "board:The Hollows:20",
+  "v": [
+   "ration",
+   "lock"
+  ]
+ },
+ {
+  "key": "board:Juno Commons:3",
+  "v": [
+   "message",
+   "escort"
+  ]
+ },
+ {
+  "key": "board:Juno Commons:9",
+  "v": [
+   "ration",
+   "lock"
+  ]
+ },
+ {
+  "key": "board:Juno Commons:20",
+  "v": [
+   "escort",
+   "ration"
+  ]
+ },
+ {
+  "key": "board:Titan:3",
+  "v": [
+   "ration",
+   "lock"
+  ]
+ },
+ {
+  "key": "board:Titan:9",
+  "v": [
+   "message",
+   "escort"
+  ]
+ },
+ {
+  "key": "board:Titan:20",
+  "v": [
+   "escort",
+   "ration"
+  ]
+ },
+ {
+  "key": "odds",
+  "v": {
+   "pilot:true": 0.45,
+   "pilot:false": 0.48,
+   "gunner:true": 0.47,
+   "gunner:false": 0.47,
+   "engineer:true": 0.45,
+   "engineer:false": 0.48,
+   "comms:true": 0.45,
+   "comms:false": 0.48
+  }
+ },
+ {
+  "key": "job:lock:0",
+  "v": {
+   "title": "A Jammed Freight Lock",
+   "text": "A crowd has gathered at Lock Six, and a woman in a dockmaster's vest is shouting into a handset. The outer door has jammed half open, the inner door will not cycle, and somewhere in the gap four loaders are sealed in with an hour of air in their suits. \"Anyone,\" the dockmaster says, to the crowd and to you. \"Anyone who knows a lock.\"",
+   "labels": [
+    "Cut the manual release [Engineer, long odds]",
+    "Talk the controller into an override [Comms, long odds]",
+    "Put your shoulder to the wheel [Gunner, long odds]",
+    "Fetch the dockmaster the crew chief and stay out of it"
+   ]
+  }
+ },
+ {
+  "key": "job:lock:0:0:0",
+  "v": {
+   "text": "You find the release behind a panel nobody has opened in years, and cut the seized pin with a torch while the dockmaster counts the minutes aloud. The door goes with a bang. Four loaders come out into the light, and one of them sits down on the deck and laughs. (+300 cr)",
+   "credits": 300,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": [
+    "A Jammed Freight Lock",
+    "The foreman of the loader crew finds you afterwards, still shaking, with his hel"
+   ]
+  }
+ },
+ {
+  "key": "job:lock:0:0:0.999",
+  "v": {
+   "text": "The pin is harder than it looked. You are still cutting when the inner door cycles on its own, and the edge of it catches you across the shoulder. The loaders get out by the other lock. You get a medic and a bandage. (+50 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
+   "credits": 50,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lock:0:1:0",
+  "v": {
+   "text": "The lock controller is a tired man in a booth who has been told no by every system on the board. You give him the override sequence he did not know he had, and a reason to try it. The lock shudders and cycles, and the loaders come out coughing. (+300 cr)",
+   "credits": 300,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": [
+    "A Jammed Freight Lock",
+    "The foreman of the loader crew finds you afterwards, still shaking, with his hel"
+   ]
+  }
+ },
+ {
+  "key": "job:lock:0:1:0.999",
+  "v": {
+   "text": "The controller will not hear you, or cannot, and by the time somebody senior arrives the loaders are out and the dockmaster has already written down who was in the way. It was you.",
+   "credits": 0,
+   "rep": {},
+   "xp": false,
+   "mem": [
+    "28 Jun 2214: You made a mess ashore."
+   ],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lock:0:2:0",
+  "v": {
+   "text": "Six of you on the wheel, and the seized door gives a hand at a time. It is not clever and it is not quick, but it opens, and the dockmaster remembers the hand at the end of the bar. (+180 cr)",
+   "credits": 180,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": [
+    "A Jammed Freight Lock",
+    "The foreman of the loader crew finds you afterwards, still shaking, with his hel"
+   ]
+  }
+ },
+ {
+  "key": "job:lock:0:2:0.999",
+  "v": {
+   "text": "The wheel kicks back when the pin lets go and takes you across the ribs. Somebody else gets the door open. You get a bruise the shape of a handle, and nothing else. You are hurt. Your work counts a level lower until the clinic clears you.",
+   "credits": 0,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lock:0:3:0",
+  "v": {
+   "text": "You run for the crew chief and bring her back, and the dockmaster takes it from there. It is the right call for someone who does not know locks, and nobody thanks you for it, which is also right. (+40 cr)",
+   "credits": 40,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lock:0:3:0.999",
+  "v": {
+   "text": "You run for the crew chief and bring her back, and the dockmaster takes it from there. It is the right call for someone who does not know locks, and nobody thanks you for it, which is also right. (+40 cr)",
+   "credits": 40,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lock:1",
+  "v": {
+   "title": "A Jammed Freight Lock",
+   "text": "The foreman of the loader crew finds you afterwards, still shaking, with his helmet under his arm. \"I owe you,\" he says. \"I do not have much. I have this, or I have a word with the dockmaster, and that is worth more than you think on this pad.\"",
+   "labels": [
+    "Take the credits (200 cr)",
+    "Take the word with the dockmaster"
+   ]
+  }
+ },
+ {
+  "key": "job:lock:1:0:0",
+  "v": {
+   "text": "He counts it out of a pocket on his suit, in coins and chits, and does not look at the number. \"It is not enough,\" he says. It is more than enough, and you both know it. (+240 cr)",
+   "credits": 240,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lock:1:0:0.999",
+  "v": {
+   "text": "He counts it out of a pocket on his suit, in coins and chits, and does not look at the number. \"It is not enough,\" he says. It is more than enough, and you both know it. (+240 cr)",
+   "credits": 240,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lock:1:1:0",
+  "v": {
+   "text": "The dockmaster writes your ship's name in a book behind the counter. \"Berth discount,\" she says, \"and a second look when you want to lift in a hurry.\" It is not cash, and it will be worth something.",
+   "credits": 0,
+   "rep": {
+    "Charter League": 4
+   },
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:lock:1:1:0.999",
+  "v": {
+   "text": "The dockmaster writes your ship's name in a book behind the counter. \"Berth discount,\" she says, \"and a second look when you want to lift in a hurry.\" It is not cash, and it will be worth something.",
+   "credits": 0,
+   "rep": {
+    "Charter League": 4
+   },
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:message:0",
+  "v": {
+   "title": "A Message That Has to Go Quietly",
+   "text": "The clerk finds you at the back of the comms office, twisting a ring on a finger. \"It is not illegal,\" she says. \"It is just that if it goes through the port's relay, it will be read by somebody who has a reason not to like it.\" She slides a chip across the counter. \"I need it on the long bands to a ship that is six days out, and I need nobody to know I asked.\"",
+   "labels": [
+    "Put it on a ship's relay under a cargo header [Comms, long odds]",
+    "Carry it to a ship that is about to sail [Pilot, even odds]",
+    "Refuse, politely"
+   ]
+  }
+ },
+ {
+  "key": "job:message:0:0:0",
+  "v": {
+   "text": "You put it in a manifest packet, in the part of the header that nobody reads, and send it with the evening cargo burst. A relay six days out opens it and sends back a receipt. The clerk reads the receipt twice and puts it in her mouth. (+260 cr)",
+   "credits": 260,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:message:0:0:0.999",
+  "v": {
+   "text": "The packet is flagged at the relay for a malformed header. A customs clerk reads it before you can pull it back, and there is a visit to your ship the next morning, polite and thorough. Nothing is found, and nothing is forgotten. (-60 cr)",
+   "credits": -60,
+   "rep": {
+    "Charter League": -4
+   },
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:message:0:1:0",
+  "v": {
+   "text": "You know a hauler in the next berth that is lifting within the hour, with a captain who owes nobody anything. She takes the chip and the fee without a question. The clerk gets a name in return, and no more. (+220 cr)",
+   "credits": 220,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:message:0:1:0.999",
+  "v": {
+   "text": "The hauler lifts early, and you are left holding the chip on an empty berth, with the clerk watching from the gallery. She does not say anything. She does not pay either. (-20 cr)",
+   "credits": -20,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:message:0:2:0",
+  "v": {
+   "text": "You hand the chip back. \"I understand,\" the clerk says, and she does, and goes to find somebody less careful. You do not find out who.",
+   "credits": 0,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:message:0:2:0.999",
+  "v": {
+   "text": "You hand the chip back. \"I understand,\" the clerk says, and she does, and goes to find somebody less careful. You do not find out who.",
+   "credits": 0,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:escort:0",
+  "v": {
+   "title": "Escort on the Lower Decks",
+   "text": "The courier is a thin man in a good coat who keeps both hands on a case. \"It is not far,\" he says. \"Three decks down, a lock, and a door with a lamp over it. There are people who would like what is in this case, and I would like them not to have it.\" He looks at your boots. \"I pay for people who walk quietly.\"",
+   "labels": [
+    "Walk the lower decks ahead of him [Gunner, long odds]",
+    "Take him down a service route [Pilot, long odds]",
+    "Tell him you will not go down there tonight"
+   ]
+  }
+ },
+ {
+  "key": "job:escort:0:0:0",
+  "v": {
+   "text": "You see the two at the second junction before they see you, and they decide to see something else. At the door with the lamp the courier hands you the pay without a word and goes in. The door shuts. You walk back up alone, and nothing follows. (+360 cr)",
+   "credits": 360,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": [
+    "Escort on the Lower Decks",
+    "At the door with the lamp the courier turns. \"There is a second case,\" he says. "
+   ]
+  }
+ },
+ {
+  "key": "job:escort:0:0:0.999",
+  "v": {
+   "text": "They are three, not two, and the third has a length of pipe. It is short and ugly in a narrow passage. The courier gets through to the lamp; you get through to a medic, with a split lip and a broken finger, and a handful of what he left you. (+140 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
+   "credits": 140,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:escort:0:1:0",
+  "v": {
+   "text": "You know the service crawls better than the people who watch the main passages, and you take him through the ducts with a flashlight in your teeth. He is covered in dust at the other end and says nothing, and pays well for it. (+310 cr)",
+   "credits": 310,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": [
+    "Escort on the Lower Decks",
+    "At the door with the lamp the courier turns. \"There is a second case,\" he says. "
+   ]
+  }
+ },
+ {
+  "key": "job:escort:0:1:0.999",
+  "v": {
+   "text": "The service route is blocked by a pallet somebody has left across it, and the detour puts you in the open on the wrong deck. You get him out, but not unseen, and the pay is smaller for it. (+110 cr)",
+   "credits": 110,
+   "rep": {
+    "Charter League": -2
+   },
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:escort:0:2:0",
+  "v": {
+   "text": "\"I understand,\" the courier says, and goes down alone. You hear on the dock the next day that he made it. You hear on the dock a few days later that he did not make the way back.",
+   "credits": 0,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:escort:0:2:0.999",
+  "v": {
+   "text": "\"I understand,\" the courier says, and goes down alone. You hear on the dock the next day that he made it. You hear on the dock a few days later that he did not make the way back.",
+   "credits": 0,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:escort:1",
+  "v": {
+   "title": "Escort on the Lower Decks",
+   "text": "At the door with the lamp the courier turns. \"There is a second case,\" he says. \"It is not mine, and I do not know what is in it, and I would be grateful if somebody took it off the deck before tonight is over.\"",
+   "labels": [
+    "Take it (and a half day more of your time)",
+    "Leave it, and say you did not see it"
+   ]
+  }
+ },
+ {
+  "key": "job:escort:1:0:0",
+  "v": {
+   "text": "You carry it up through the passages and leave it with a woman at the top who does not ask who you are. The courier's thanks arrives that night in the form of a chit. You never learn what was in it. (+220 cr)",
+   "credits": 220,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:escort:1:0:0.999",
+  "v": {
+   "text": "You carry it up through the passages and leave it with a woman at the top who does not ask who you are. The courier's thanks arrives that night in the form of a chit. You never learn what was in it. (+220 cr)",
+   "credits": 220,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:escort:1:1:0",
+  "v": {
+   "text": "You say you did not see it, and the courier says that is what he thought. You go back up with the pay he owes, and the second case stays in the dark with the lamp.",
+   "credits": 0,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:escort:1:1:0.999",
+  "v": {
+   "text": "You say you did not see it, and the courier says that is what he thought. You go back up with the pay he owes, and the second case stays in the dark with the lamp.",
+   "credits": 0,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:ration:0",
+  "v": {
+   "title": "Trouble in the Ration Line",
+   "text": "The line for the day's water runs around the corner and back, and at the head of it two families are shouting at the clerk, and at each other, over a ration chit that was issued twice. The warden catches your sleeve. \"You are not from here,\" she says, \"which is what I need. Somebody they both will not mind listening to.\"",
+   "labels": [
+    "Talk them down [Comms, long odds]",
+    "Step between them [Gunner, long odds]",
+    "Get the warden and let her handle it"
+   ]
+  }
+ },
+ {
+  "key": "job:ration:0:0:0",
+  "v": {
+   "text": "You find out whose chit it is by asking whose child is whose, and the thing falls apart into a conversation about names. By the end both families are sharing a bench and the clerk is stamping new chits as fast as she can. (+190 cr)",
+   "credits": 190,
+   "rep": {
+    "Charter League": 3
+   },
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:ration:0:0:0.999",
+  "v": {
+   "text": "You make it worse. Somebody says you are taking a side, and somebody else says which, and the shouting turns to shoving. You get out before the first real blow, with a cuff in the ear and the warden's eyes on your back. You are hurt. Your work counts a level lower until the clinic clears you.",
+   "credits": 0,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:ration:0:1:0",
+  "v": {
+   "text": "You put yourself in the gap with your hands open and do not move. For a while nobody does. Then the louder of the two men looks at you, and at the child on his hip, and steps back, and the line breathes out. (+170 cr)",
+   "credits": 170,
+   "rep": {
+    "Charter League": 2
+   },
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:ration:0:1:0.999",
+  "v": {
+   "text": "Somebody does not step back. It is a short, shapeless scuffle, and you come out of it with a cut over the eye and a ration chit nobody will own. You are hurt. Your work counts a level lower until the clinic clears you.",
+   "credits": 0,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:ration:0:2:0",
+  "v": {
+   "text": "You bring the warden her own people, and she finds a way. You keep out of the line itself, and she gives you a half ration of thanks, which is the right size. (+50 cr)",
+   "credits": 50,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "job:ration:0:2:0.999",
+  "v": {
+   "text": "You bring the warden her own people, and she finds a way. You keep out of the line itself, and she gives you a half ration of thanks, which is the right size. (+50 cr)",
+   "credits": 50,
+   "rep": {},
+   "xp": false,
+   "mem": [],
+   "next": null
+  }
+ },
+ {
+  "key": "away:Hermes Foundry:1",
+  "v": {
+   "tpl": "package",
+   "ctx": {
+    "dest": "The Rook",
+    "from": "Hermes Foundry",
+    "who": "Mrs. Adeyemi",
+    "system": "Hygiea",
+    "scale": 1.5
+   },
+   "sid": "hygiea",
+   "planet": "The Rook",
+   "days": 6,
+   "until": 46,
+   "pitched": null,
+   "booked": false
+  }
+ },
+ {
+  "key": "away:Hermes Foundry:2",
+  "v": {
+   "tpl": "stranded",
+   "ctx": {
+    "dest": "Boneyard",
+    "from": "Hermes Foundry",
+    "who": "Mrs. Adeyemi",
+    "system": "Hygiea",
+    "scale": 1.5
+   },
+   "sid": "hygiea",
+   "planet": "Boneyard",
+   "days": 6,
+   "until": 46,
+   "pitched": null,
+   "booked": false
+  }
+ },
+ {
+  "key": "away:Hermes Foundry:3",
+  "v": {
+   "tpl": "stranded",
+   "ctx": {
+    "dest": "Luna",
+    "from": "Hermes Foundry",
+    "who": "Mrs. Adeyemi",
+    "system": "Earth",
+    "scale": 1.25
+   },
+   "sid": "earth",
+   "planet": "Luna",
+   "days": 5,
+   "until": 44,
+   "pitched": null,
+   "booked": false
+  }
+ },
+ {
+  "key": "away:Ring Nine:1",
+  "v": {
+   "tpl": "package",
+   "ctx": {
+    "dest": "Mars",
+    "from": "Ring Nine",
+    "who": "Mrs. Adeyemi",
+    "system": "Mars",
+    "scale": 1.5
+   },
+   "sid": "mars",
+   "planet": "Mars",
+   "days": 6,
+   "until": 46,
+   "pitched": null,
+   "booked": false
+  }
+ },
+ {
+  "key": "away:Ring Nine:2",
+  "v": {
+   "tpl": "stranded",
+   "ctx": {
+    "dest": "Mars",
+    "from": "Ring Nine",
+    "who": "Mrs. Adeyemi",
+    "system": "Mars",
+    "scale": 1.5
+   },
+   "sid": "mars",
+   "planet": "Mars",
+   "days": 6,
+   "until": 46,
+   "pitched": null,
+   "booked": false
+  }
+ },
+ {
+  "key": "away:Ring Nine:3",
+  "v": {
+   "tpl": "stranded",
+   "ctx": {
+    "dest": "Luna",
+    "from": "Ring Nine",
+    "who": "Mrs. Adeyemi",
+    "system": "Earth",
+    "scale": 1.5
+   },
+   "sid": "earth",
+   "planet": "Luna",
+   "days": 6,
+   "until": 46,
+   "pitched": null,
+   "booked": false
+  }
+ },
+ {
+  "key": "away:Juno Commons:1",
+  "v": {
+   "tpl": "package",
+   "ctx": {
+    "dest": "Ceres Station",
+    "from": "Juno Commons",
+    "who": "Mrs. Adeyemi",
+    "system": "Ceres",
+    "scale": 1.5
+   },
+   "sid": "ceres",
+   "planet": "Ceres Station",
+   "days": 6,
+   "until": 46,
+   "pitched": null,
+   "booked": false
+  }
+ },
+ {
+  "key": "away:Juno Commons:2",
+  "v": {
+   "tpl": "stranded",
+   "ctx": {
+    "dest": "Ring Nine",
+    "from": "Juno Commons",
+    "who": "Mrs. Adeyemi",
+    "system": "Ceres",
+    "scale": 1.5
+   },
+   "sid": "ceres",
+   "planet": "Ring Nine",
+   "days": 6,
+   "until": 46,
+   "pitched": null,
+   "booked": false
+  }
+ },
+ {
+  "key": "away:Juno Commons:3",
+  "v": {
+   "tpl": "stranded",
+   "ctx": {
+    "dest": "Luna",
+    "from": "Juno Commons",
+    "who": "Mrs. Adeyemi",
+    "system": "Earth",
+    "scale": 1.5
+   },
+   "sid": "earth",
+   "planet": "Luna",
+   "days": 6,
+   "until": 46,
+   "pitched": null,
+   "booked": false
+  }
+ },
+ {
+  "key": "away:Triton Outpost:1",
+  "v": {
+   "tpl": "package",
+   "ctx": {
+    "dest": "Ironheart",
+    "from": "Triton Outpost",
+    "who": "Mrs. Adeyemi",
+    "system": "Psyche",
+    "scale": 1.6
+   },
+   "sid": "psyche",
+   "planet": "Ironheart",
+   "days": 28,
+   "until": 90,
+   "pitched": null,
+   "booked": false
+  }
+ },
+ {
+  "key": "away:Triton Outpost:2",
+  "v": {
+   "tpl": "stranded",
+   "ctx": {
+    "dest": "Boneyard",
+    "from": "Triton Outpost",
+    "who": "Mrs. Adeyemi",
+    "system": "Hygiea",
+    "scale": 1.6
+   },
+   "sid": "hygiea",
+   "planet": "Boneyard",
+   "days": 29,
+   "until": 92,
+   "pitched": null,
+   "booked": false
+  }
+ },
+ {
+  "key": "away:Triton Outpost:3",
+  "v": {
+   "tpl": "stranded",
+   "ctx": {
+    "dest": "Hermes Foundry",
+    "from": "Triton Outpost",
+    "who": "Mrs. Adeyemi",
+    "system": "Mercury",
+    "scale": 1.6
+   },
+   "sid": "mercury",
+   "planet": "Hermes Foundry",
+   "days": 28,
+   "until": 90,
+   "pitched": null,
+   "booked": false
+  }
+ }
+]
