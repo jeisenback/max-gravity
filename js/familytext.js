@@ -174,7 +174,14 @@ const SHIP_LINES = {
   touch: '[Ship] {text}.',
   loyal: '{first} {last} will follow {ship} anywhere now.',
   rename: 'Named the ship {ship}.',
-  returned: 'The captain took me home to see my {rel}.'
+  returned: 'The captain took me home to see my {rel}.',
+  // the port page (family.js homeHtml): what is said of a shipmate, the traditions and the cat
+  'page.loyal': 'loyal',
+  'page.low': 'having a hard time',
+  'page.high': 'in high spirits',
+  'page.favor': 'has a favor to ask',
+  'page.traditions': 'Traditions: {list}.',
+  'page.cat': '{cat} the cat lives aboard.'
 };
 
 // The names: of the holidays (their titles), the traditions, the burns and the cat (#457). A holiday is found by its name here; its lines are under the same key.
