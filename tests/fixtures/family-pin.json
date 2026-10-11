@@ -1,0 +1,674 @@
+[
+ {
+  "key": "story:0",
+  "text": "[\"a sister who went first and wrote home about it\",\"to find out what happened to their father's old ship\",\"daughter\"]"
+ },
+ {
+  "key": "story:1",
+  "text": "[\"a mine closure that emptied half the town\",\"to finish the engineering license they started years ago\",\"brother\"]"
+ },
+ {
+  "key": "story:2",
+  "text": "[\"wanting to see a sky that wasn't painted on a dome\",\"to find out what happened to their father's old ship\",\"old crew chief\"]"
+ },
+ {
+  "key": "story:3",
+  "text": "[\"a sister who went first and wrote home about it\",\"to finish the engineering license they started years ago\",\"mother\"]"
+ },
+ {
+  "key": "story:4",
+  "text": "[\"a marriage that ended badly\",\"to finish the engineering license they started years ago\",\"daughter\"]"
+ },
+ {
+  "key": "story:5",
+  "text": "[\"a mine closure that emptied half the town\",\"to finish the engineering license they started years ago\",\"grandmother\"]"
+ },
+ {
+  "key": "story:6",
+  "text": "[\"a debt to the wrong people\",\"to see one of Earth's oceans, just once\",\"old crew chief\"]"
+ },
+ {
+  "key": "story:7",
+  "text": "[\"a marriage that ended badly\",\"to finish the engineering license they started years ago\",\"daughter\"]"
+ },
+ {
+  "key": "story:8",
+  "text": "[\"a scholarship that fell through at the last minute\",\"to open a noodle stand somewhere with real gravity\",\"grandmother\"]"
+ },
+ {
+  "key": "story:9",
+  "text": "[\"a sister who went first and wrote home about it\",\"to be somewhere long enough to grow something\",\"brother\"]"
+ },
+ {
+  "key": "story:10",
+  "text": "[\"an accident at work they still blame themselves for\",\"to finish the engineering license they started years ago\",\"father\"]"
+ },
+ {
+  "key": "story:11",
+  "text": "[\"a mine closure that emptied half the town\",\"to finish the engineering license they started years ago\",\"son\"]"
+ },
+ {
+  "key": "story:12",
+  "text": "[\"a debt to the wrong people\",\"to be somewhere long enough to grow something\",\"mother\"]"
+ },
+ {
+  "key": "story:13",
+  "text": "[\"the rationing, and being tired of being thirsty\",\"to be somewhere long enough to grow something\",\"grandmother\"]"
+ },
+ {
+  "key": "story:14",
+  "text": "[\"a scholarship that fell through at the last minute\",\"to find out what happened to their father's old ship\",\"old crew chief\"]"
+ },
+ {
+  "key": "story:15",
+  "text": "[\"the rationing, and being tired of being thirsty\",\"to see one of Earth's oceans, just once\",\"grandmother\"]"
+ },
+ {
+  "key": "story:16",
+  "text": "[\"a scholarship that fell through at the last minute\",\"to open a noodle stand somewhere with real gravity\",\"best friend\"]"
+ },
+ {
+  "key": "story:17",
+  "text": "[\"an accident at work they still blame themselves for\",\"a berth on a ship of their own someday\",\"old crew chief\"]"
+ },
+ {
+  "key": "story:18",
+  "text": "[\"wanting to see a sky that wasn't painted on a dome\",\"to finish the engineering license they started years ago\",\"son\"]"
+ },
+ {
+  "key": "story:19",
+  "text": "[\"a sister who went first and wrote home about it\",\"to get their family off Ceres Station\",\"grandmother\"]"
+ },
+ {
+  "key": "story:20",
+  "text": "[\"an accident at work they still blame themselves for\",\"to be somewhere long enough to grow something\",\"grandmother\"]"
+ },
+ {
+  "key": "story:21",
+  "text": "[\"a debt to the wrong people\",\"to finish the engineering license they started years ago\",\"mother\"]"
+ },
+ {
+  "key": "story:22",
+  "text": "[\"a debt to the wrong people\",\"a berth on a ship of their own someday\",\"best friend\"]"
+ },
+ {
+  "key": "story:23",
+  "text": "[\"a marriage that ended badly\",\"a berth on a ship of their own someday\",\"daughter\"]"
+ },
+ {
+  "key": "story:24",
+  "text": "[\"a scholarship that fell through at the last minute\",\"a berth on a ship of their own someday\",\"brother\"]"
+ },
+ {
+  "key": "story:25",
+  "text": "[\"a marriage that ended badly\",\"to open a noodle stand somewhere with real gravity\",\"grandmother\"]"
+ },
+ {
+  "key": "story:26",
+  "text": "[\"the rationing, and being tired of being thirsty\",\"to find out what happened to their father's old ship\",\"mother\"]"
+ },
+ {
+  "key": "story:27",
+  "text": "[\"an accident at work they still blame themselves for\",\"to be somewhere long enough to grow something\",\"son\"]"
+ },
+ {
+  "key": "story:28",
+  "text": "[\"a mine closure that emptied half the town\",\"to be somewhere long enough to grow something\",\"father\"]"
+ },
+ {
+  "key": "story:29",
+  "text": "[\"a scholarship that fell through at the last minute\",\"to get their family off Earth\",\"son\"]"
+ },
+ {
+  "key": "story:30",
+  "text": "[\"a sister who went first and wrote home about it\",\"to find out what happened to their father's old ship\",\"brother\"]"
+ },
+ {
+  "key": "story:31",
+  "text": "[\"a marriage that ended badly\",\"to see one of Earth's oceans, just once\",\"mother\"]"
+ },
+ {
+  "key": "story:32",
+  "text": "[\"a debt to the wrong people\",\"to open a noodle stand somewhere with real gravity\",\"daughter\"]"
+ },
+ {
+  "key": "story:33",
+  "text": "[\"a marriage that ended badly\",\"to get their family off Mars\",\"daughter\"]"
+ },
+ {
+  "key": "story:34",
+  "text": "[\"the rationing, and being tired of being thirsty\",\"to finish the engineering license they started years ago\",\"son\"]"
+ },
+ {
+  "key": "story:35",
+  "text": "[\"a debt to the wrong people\",\"to see one of Earth's oceans, just once\",\"sister\"]"
+ },
+ {
+  "key": "story:36",
+  "text": "[\"a sister who went first and wrote home about it\",\"to find out what happened to their father's old ship\",\"best friend\"]"
+ },
+ {
+  "key": "story:37",
+  "text": "[\"a debt to the wrong people\",\"a berth on a ship of their own someday\",\"brother\"]"
+ },
+ {
+  "key": "story:38",
+  "text": "[\"a mine closure that emptied half the town\",\"a berth on a ship of their own someday\",\"sister\"]"
+ },
+ {
+  "key": "story:39",
+  "text": "[\"a marriage that ended badly\",\"to see one of Earth's oceans, just once\",\"sister\"]"
+ },
+ {
+  "key": "story:40",
+  "text": "[\"wanting to see a sky that wasn't painted on a dome\",\"to be somewhere long enough to grow something\",\"grandmother\"]"
+ },
+ {
+  "key": "story:41",
+  "text": "[\"a marriage that ended badly\",\"to finish the engineering license they started years ago\",\"daughter\"]"
+ },
+ {
+  "key": "story:42",
+  "text": "[\"wanting to see a sky that wasn't painted on a dome\",\"to find out what happened to their father's old ship\",\"best friend\"]"
+ },
+ {
+  "key": "story:43",
+  "text": "[\"a marriage that ended badly\",\"to open a noodle stand somewhere with real gravity\",\"old crew chief\"]"
+ },
+ {
+  "key": "story:44",
+  "text": "[\"a marriage that ended badly\",\"to be somewhere long enough to grow something\",\"grandmother\"]"
+ },
+ {
+  "key": "story:45",
+  "text": "[\"a scholarship that fell through at the last minute\",\"to see one of Earth's oceans, just once\",\"old crew chief\"]"
+ },
+ {
+  "key": "story:46",
+  "text": "[\"a scholarship that fell through at the last minute\",\"a berth on a ship of their own someday\",\"daughter\"]"
+ },
+ {
+  "key": "story:47",
+  "text": "[\"an accident at work they still blame themselves for\",\"to finish the engineering license they started years ago\",\"grandmother\"]"
+ },
+ {
+  "key": "story:48",
+  "text": "[\"a sister who went first and wrote home about it\",\"to finish the engineering license they started years ago\",\"mother\"]"
+ },
+ {
+  "key": "story:49",
+  "text": "[\"a marriage that ended badly\",\"to finish the engineering license they started years ago\",\"brother\"]"
+ },
+ {
+  "key": "story:50",
+  "text": "[\"a mine closure that emptied half the town\",\"to finish the engineering license they started years ago\",\"mother\"]"
+ },
+ {
+  "key": "story:51",
+  "text": "[\"wanting to see a sky that wasn't painted on a dome\",\"to get their family off Mars\",\"brother\"]"
+ },
+ {
+  "key": "story:52",
+  "text": "[\"the rationing, and being tired of being thirsty\",\"to finish the engineering license they started years ago\",\"father\"]"
+ },
+ {
+  "key": "story:53",
+  "text": "[\"a sister who went first and wrote home about it\",\"a berth on a ship of their own someday\",\"father\"]"
+ },
+ {
+  "key": "story:54",
+  "text": "[\"a sister who went first and wrote home about it\",\"to find out what happened to their father's old ship\",\"grandmother\"]"
+ },
+ {
+  "key": "story:55",
+  "text": "[\"a marriage that ended badly\",\"a berth on a ship of their own someday\",\"daughter\"]"
+ },
+ {
+  "key": "story:56",
+  "text": "[\"a marriage that ended badly\",\"to find out what happened to their father's old ship\",\"father\"]"
+ },
+ {
+  "key": "story:57",
+  "text": "[\"the rationing, and being tired of being thirsty\",\"to finish the engineering license they started years ago\",\"father\"]"
+ },
+ {
+  "key": "story:58",
+  "text": "[\"a scholarship that fell through at the last minute\",\"to get their family off Ceres Station\",\"sister\"]"
+ },
+ {
+  "key": "story:59",
+  "text": "[\"a sister who went first and wrote home about it\",\"to finish the engineering license they started years ago\",\"old crew chief\"]"
+ },
+ {
+  "key": "story:60",
+  "text": "[\"a mine closure that emptied half the town\",\"to open a noodle stand somewhere with real gravity\",\"father\"]"
+ },
+ {
+  "key": "story:61",
+  "text": "[\"a sister who went first and wrote home about it\",\"to open a noodle stand somewhere with real gravity\",\"sister\"]"
+ },
+ {
+  "key": "story:62",
+  "text": "[\"a marriage that ended badly\",\"a berth on a ship of their own someday\",\"father\"]"
+ },
+ {
+  "key": "story:63",
+  "text": "[\"a scholarship that fell through at the last minute\",\"to be somewhere long enough to grow something\",\"sister\"]"
+ },
+ {
+  "key": "story:64",
+  "text": "[\"a marriage that ended badly\",\"to see one of Earth's oceans, just once\",\"father\"]"
+ },
+ {
+  "key": "story:65",
+  "text": "[\"a scholarship that fell through at the last minute\",\"to be somewhere long enough to grow something\",\"mother\"]"
+ },
+ {
+  "key": "story:66",
+  "text": "[\"an accident at work they still blame themselves for\",\"to be somewhere long enough to grow something\",\"old crew chief\"]"
+ },
+ {
+  "key": "story:67",
+  "text": "[\"a mine closure that emptied half the town\",\"to see one of Earth's oceans, just once\",\"old crew chief\"]"
+ },
+ {
+  "key": "story:68",
+  "text": "[\"a debt to the wrong people\",\"to finish the engineering license they started years ago\",\"old crew chief\"]"
+ },
+ {
+  "key": "story:69",
+  "text": "[\"the rationing, and being tired of being thirsty\",\"to be somewhere long enough to grow something\",\"mother\"]"
+ },
+ {
+  "key": "story:70",
+  "text": "[\"an accident at work they still blame themselves for\",\"to see one of Earth's oceans, just once\",\"old crew chief\"]"
+ },
+ {
+  "key": "story:71",
+  "text": "[\"a scholarship that fell through at the last minute\",\"to finish the engineering license they started years ago\",\"mother\"]"
+ },
+ {
+  "key": "story:72",
+  "text": "[\"a mine closure that emptied half the town\",\"to finish the engineering license they started years ago\",\"son\"]"
+ },
+ {
+  "key": "story:73",
+  "text": "[\"a scholarship that fell through at the last minute\",\"to get their family off Ceres Station\",\"best friend\"]"
+ },
+ {
+  "key": "story:74",
+  "text": "[\"a debt to the wrong people\",\"a berth on a ship of their own someday\",\"best friend\"]"
+ },
+ {
+  "key": "story:75",
+  "text": "[\"a debt to the wrong people\",\"a berth on a ship of their own someday\",\"grandmother\"]"
+ },
+ {
+  "key": "story:76",
+  "text": "[\"a scholarship that fell through at the last minute\",\"a berth on a ship of their own someday\",\"sister\"]"
+ },
+ {
+  "key": "story:77",
+  "text": "[\"a marriage that ended badly\",\"to finish the engineering license they started years ago\",\"daughter\"]"
+ },
+ {
+  "key": "story:78",
+  "text": "[\"a scholarship that fell through at the last minute\",\"to get their family off Mars\",\"daughter\"]"
+ },
+ {
+  "key": "story:79",
+  "text": "[\"a mine closure that emptied half the town\",\"to find out what happened to their father's old ship\",\"brother\"]"
+ },
+ {
+  "key": "beat0:belt",
+  "text": "[\"With Sam\",\"Sam tells you about Mars: the hum of the recyclers, the tunnel markets, spin gravity you could argue with. They turn their mug a quarter turn on the table as they say it. Then, unprompted, they say they left because of a scholarship that fell through at the last minute, and stop, and drink, and look at you.\",[\"Listen\",\"Tell them about where you came from\"]]"
+ },
+ {
+  "key": "beat0:mars",
+  "text": "[\"With Sam\",\"Sam tells you about Mars: dust storms that last a month, dome lights at dusk, everyone arguing about the future. They turn their mug a quarter turn on the table as they say it. Then, unprompted, they say they left because of a mine closure that emptied half the town, and stop, and drink, and look at you.\",[\"Listen\",\"Tell them about where you came from\"]]"
+ },
+ {
+  "key": "beat0:earth",
+  "text": "[\"With Sam\",\"Sam tells you about Mars: too many people, real rain, and an ocean you could hear from the arcology at night. They turn their mug a quarter turn on the table as they say it. Then, unprompted, they say they left because of wanting to see a sky that wasn't painted on a dome, and stop, and drink, and look at you.\",[\"Listen\",\"Tell them about where you came from\"]]"
+ },
+ {
+  "key": "beat0:detail",
+  "text": "Sam tells you about Mars: a hand-picked detail. They turn their mug a quarter turn on the table as they say it. Then, unprompted, they say they left because of a debt to the wrong people, and stop, and drink, and look at you."
+ },
+ {
+  "key": "idle:talkative",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam is already telling you about something that happened at the last port, and by the second mug has told you about two more. The drive hums. A pipe ticks.\"]"
+ },
+ {
+  "key": "idle:nervous",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam keeps glancing at the corridor, and relaxes a little when you stay. The drive hums. A pipe ticks.\"]"
+ },
+ {
+  "key": "idle:generous",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam has saved you the good end of the loaf, and does not mention it. The drive hums. A pipe ticks.\"]"
+ },
+ {
+  "key": "idle:greedy",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam is working out, aloud and not quite to you, what the next run should clear. The drive hums. A pipe ticks.\"]"
+ },
+ {
+  "key": "idle:pious",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam sits with a hand around the cord at their wrist and says nothing for a long time, comfortably. The drive hums. A pipe ticks.\"]"
+ },
+ {
+  "key": "idle:rude",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam has a view on the galley, the rota, and the way you hold a mug, and shares them. The drive hums. A pipe ticks.\"]"
+ },
+ {
+  "key": "idle:curious",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam wants to know how the drive works, what you do on watch, and whether you have ever been to Titan. The drive hums. A pipe ticks.\"]"
+ },
+ {
+  "key": "idle:drunk",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam is on water tonight, and says so with an effort that is its own kind of story. The drive hums. A pipe ticks.\"]"
+ },
+ {
+  "key": "idle:secretive",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam answers a question about the weather with a question about you. The drive hums. A pipe ticks.\"]"
+ },
+ {
+  "key": "idle:kind",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam asks if you have slept, and does not take \\\"fine\\\" for an answer. The drive hums. A pipe ticks.\"]"
+ },
+ {
+  "key": "idle:brave",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam tells you about the worst day they have had on a ship, quietly, as if it were a recipe. The drive hums. A pipe ticks.\"]"
+ },
+ {
+  "key": "idle:homesick",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam has a photograph out, and puts it away when you come in, and then takes it out again. The drive hums. A pipe ticks.\"]"
+ },
+ {
+  "key": "idle:two",
+  "text": "You sit with Sam in the galley, over two mugs. Sam asks if you have slept, and does not take \"fine\" for an answer. The drive hums. A pipe ticks."
+ },
+ {
+  "key": "idle:none",
+  "text": "You sit with Sam in the galley, over two mugs. Sam is easy company. The drive hums. A pipe ticks."
+ },
+ {
+  "key": "letter:good:0",
+  "text": "[[\"A message for Sam at Ceres Station: their best friend Ruo got into the engineering academy on Ceres.\"],\"their best friend Ruo got into the engineering academy on Ceres\",{\"good\":true,\"text\":\"their best friend Ruo got into the engineering academy on Ceres\"}]"
+ },
+ {
+  "key": "news:good:0",
+  "text": "[\"Good News\",\"Over the intercom, Sam: \\\"Captain, can you come aft? It is not an emergency.\\\" You find Sam at the engine room hatch with the terminal. The message: their best fr\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+ },
+ {
+  "key": "letter:good:1",
+  "text": "[[\"A message for Sam at Ceres Station: their father Vesna had a baby, a girl, healthy and loud.\"],\"their father Vesna had a baby, a girl, healthy and loud\",{\"good\":true,\"text\":\"their father Vesna had a baby, a girl, healthy and loud\"}]"
+ },
+ {
+  "key": "news:good:1",
+  "text": "[\"Good News\",\"Sam comes into the galley fast, holding the terminal out in front of them. \\\"Listen,\\\" Sam says. \\\"Listen to this.\\\" The message reads: their father Vesna had a bab\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+ },
+ {
+  "key": "letter:good:2",
+  "text": "[[\"A message for Sam at Ceres Station: their grandmother Sabe finally paid off the family's water debt.\"],\"their grandmother Sabe finally paid off the family's water debt\",{\"good\":true,\"text\":\"their grandmother Sabe finally paid off the family's water debt\"}]"
+ },
+ {
+  "key": "news:good:2",
+  "text": "[\"Good News\",\"Sam slides the terminal across the galley table without a word and watches you read it. The message: their grandmother Sabe finally paid off the family's water \",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+ },
+ {
+  "key": "letter:good:3",
+  "text": "[[\"A message for Sam at Ceres Station: their father Jo sent a photo of the whole family at one table, laughing.\"],\"their father Jo sent a photo of the whole family at one table, laughing\",{\"good\":true,\"text\":\"their father Jo sent a photo of the whole family at one table, laughing\"}]"
+ },
+ {
+  "key": "news:good:3",
+  "text": "[\"Good News\",\"Sam is waiting for you at the end of the watch, rocking on their heels. \\\"Captain, do you have a minute?\\\" The terminal is already out: their father Jo sent a pho\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+ },
+ {
+  "key": "letter:good:4",
+  "text": "[[\"A message for Sam at Ceres Station: their mother Jo was promoted, after nine years, to shift foreman.\"],\"their mother Jo was promoted, after nine years, to shift foreman\",{\"good\":true,\"text\":\"their mother Jo was promoted, after nine years, to shift foreman\"}]"
+ },
+ {
+  "key": "news:good:4",
+  "text": "[\"Good News\",\"Sam is waiting for you at the end of the watch, rocking on their heels. \\\"Captain, do you have a minute?\\\" The terminal is already out: their mother Jo was promot\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+ },
+ {
+  "key": "letter:good:5",
+  "text": "[[\"A message for Sam at Ceres Station: their mother Gaz planted the first real tomatoes in the family's section, and they came up red.\"],\"their mother Gaz planted the first real tomatoes in the family's section, and they came up red\",{\"good\":true,\"text\":\"their mother Gaz planted the first real tomatoes in the family's section, and they came up red\"}]"
+ },
+ {
+  "key": "news:good:5",
+  "text": "[\"Good News\",\"You find Sam in the corridor with the terminal pressed flat against their chest and their eyes shut. Then they hold it out to you: their mother Gaz planted the \",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+ },
+ {
+  "key": "letter:good:6",
+  "text": "[[\"A message for Sam at Ceres Station: their grandmother Kez got a berth on a ship bound for the outer moons, and is thrilled.\"],\"their grandmother Kez got a berth on a ship bound for the outer moons, and is thrilled\",{\"good\":true,\"text\":\"their grandmother Kez got a berth on a ship bound for the outer moons, and is thrilled\"}]"
+ },
+ {
+  "key": "news:good:6",
+  "text": "[\"Good News\",\"Sam slides the terminal across the galley table without a word and watches you read it. The message: their grandmother Kez got a berth on a ship bound for the o\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+ },
+ {
+  "key": "letter:good:7",
+  "text": "[[\"A message for Sam at Ceres Station: their father Jo recovered from a long illness, and is walking again.\"],\"their father Jo recovered from a long illness, and is walking again\",{\"good\":true,\"text\":\"their father Jo recovered from a long illness, and is walking again\"}]"
+ },
+ {
+  "key": "news:good:7",
+  "text": "[\"Good News\",\"Over the intercom, Sam: \\\"Captain, can you come aft? It is not an emergency.\\\" You find Sam at the engine room hatch with the terminal. The message: their father \",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+ },
+ {
+  "key": "letter:good:8",
+  "text": "[[\"A message for Sam at Ceres Station: their daughter Tiko won a little money on the ring-ball pool, and is buying everyone a round.\"],\"their daughter Tiko won a little money on the ring-ball pool, and is buying everyone a round\",{\"good\":true,\"text\":\"their daughter Tiko won a little money on the ring-ball pool, and is buying everyone a round\"}]"
+ },
+ {
+  "key": "news:good:8",
+  "text": "[\"Good News\",\"Sam has been humming since the start of watch. You ask why, and Sam hands you the terminal: their daughter Tiko won a little money on the ring-ball pool, and is\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+ },
+ {
+  "key": "letter:good:9",
+  "text": "[[\"A message for Sam at Ceres Station: their daughter Tiko sent a letter that said only \\\"I am proud of you,\\\" and nothing else.\"],\"their daughter Tiko sent a letter that said only \\\"I am proud of you,\\\" and nothing else\",{\"good\":true,\"text\":\"their daughter Tiko sent a letter that said only \\\"I am proud of you,\\\" and nothing else\"}]"
+ },
+ {
+  "key": "news:good:9",
+  "text": "[\"Good News\",\"Sam is waiting for you at the end of the watch, rocking on their heels. \\\"Captain, do you have a minute?\\\" The terminal is already out: their daughter Tiko sent a\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+ },
+ {
+  "key": "letter:good:10",
+  "text": "[[\"A message for Sam at Ceres Station: their grandmother Mika passed the pilot exam on the third try.\"],\"their grandmother Mika passed the pilot exam on the third try\",{\"good\":true,\"text\":\"their grandmother Mika passed the pilot exam on the third try\"}]"
+ },
+ {
+  "key": "news:good:10",
+  "text": "[\"Good News\",\"Sam has been humming since the start of watch. You ask why, and Sam hands you the terminal: their grandmother Mika passed the pilot exam on the third try. Sam s\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+ },
+ {
+  "key": "letter:good:11",
+  "text": "[[\"A message for Sam at Ceres Station: their mother Wim moved into a bigger section, with a window.\"],\"their mother Wim moved into a bigger section, with a window\",{\"good\":true,\"text\":\"their mother Wim moved into a bigger section, with a window\"}]"
+ },
+ {
+  "key": "news:good:11",
+  "text": "[\"Good News\",\"Sam has been humming since the start of watch. You ask why, and Sam hands you the terminal: their mother Wim moved into a bigger section, with a window. Sam sta\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+ },
+ {
+  "key": "letter:good:12",
+  "text": "[[\"A message for Sam at Ceres Station: their son Dru got the loan for the shop, and the sign goes up on Monday.\"],\"their son Dru got the loan for the shop, and the sign goes up on Monday\",{\"good\":true,\"text\":\"their son Dru got the loan for the shop, and the sign goes up on Monday\"}]"
+ },
+ {
+  "key": "news:good:12",
+  "text": "[\"Good News\",\"Sam stops you at the hatch. \\\"Captain. Listen to this.\\\" The message is open on the terminal: their son Dru got the loan for the shop, and the sign goes up on Mon\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+ },
+ {
+  "key": "letter:good:13",
+  "text": "[[\"A message for Sam at Ceres Station: their best friend Tiko sent the first picture of a new dog, a brown one, asleep on a boot.\"],\"their best friend Tiko sent the first picture of a new dog, a brown one, asleep on a boot\",{\"good\":true,\"text\":\"their best friend Tiko sent the first picture of a new dog, a brown one, asleep on a boot\"}]"
+ },
+ {
+  "key": "news:good:13",
+  "text": "[\"Good News\",\"Sam has been humming since the start of watch. You ask why, and Sam hands you the terminal: their best friend Tiko sent the first picture of a new dog, a brown \",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+ },
+ {
+  "key": "letter:good:14",
+  "text": "[[\"A message for Sam at Ceres Station: the strike at the foundry on Mars is over, and their mother Vesna is back on full shifts.\"],\"the strike at the foundry on Mars is over, and their mother Vesna is back on full shifts\",{\"good\":true,\"text\":\"the strike at the foundry on Mars is over, and their mother Vesna is back on full shifts\"}]"
+ },
+ {
+  "key": "news:good:14",
+  "text": "[\"Good News\",\"Sam stops you at the hatch. \\\"Captain. Listen to this.\\\" The message is open on the terminal: the strike at the foundry on Mars is over, and their mother Vesna is\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+ },
+ {
+  "key": "letter:good:15",
+  "text": "[[\"A message for Sam at Ceres Station: the water ration on Mars was lifted.\"],\"the water ration on Mars was lifted\",{\"good\":true,\"text\":\"the water ration on Mars was lifted\"}]"
+ },
+ {
+  "key": "news:good:15",
+  "text": "[\"Good News\",\"Sam stops you at the hatch. \\\"Captain. Listen to this.\\\" The message is open on the terminal: the water ration on Mars was lifted. Sam reads it aloud twice. The s\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+ },
+ {
+  "key": "letter:bad:0",
+  "text": "[[\"A message for Sam at Ceres Station: their best friend Ruo is sick, and the clinic on Mars wants money up front.\"],\"their best friend Ruo is sick, and the clinic on Mars wants money up front\",{\"good\":false,\"text\":\"their best friend Ruo is sick, and the clinic on Mars wants money up front\"}]"
+ },
+ {
+  "key": "news:bad:0",
+  "text": "[\"Bad News\",\"Sam does the whole shift without a word and checks every gauge twice. Late, in the corridor, Sam tells you: their best friend Ruo is sick, and the clinic on Mar\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+ },
+ {
+  "key": "letter:bad:1",
+  "text": "[[\"A message for Sam at Ceres Station: their father Vesna lost their job when the mine cut shifts.\"],\"their father Vesna lost their job when the mine cut shifts\",{\"good\":false,\"text\":\"their father Vesna lost their job when the mine cut shifts\"}]"
+ },
+ {
+  "key": "news:bad:1",
+  "text": "[\"Bad News\",\"Sam has been quiet since the last port. Sam stands the watch and eats, and twice has stopped with the fork halfway up. A message came in at the last port: their\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+ },
+ {
+  "key": "letter:bad:2",
+  "text": "[[\"A message for Sam at Ceres Station: the section where their grandmother Sabe lives is on emergency rationing.\"],\"the section where their grandmother Sabe lives is on emergency rationing\",{\"good\":false,\"text\":\"the section where their grandmother Sabe lives is on emergency rationing\"}]"
+ },
+ {
+  "key": "news:bad:2",
+  "text": "[\"Bad News\",\"Sam does the whole shift without a word and checks every gauge twice. Late, in the corridor, Sam tells you: the section where their grandmother Sabe lives is on\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+ },
+ {
+  "key": "letter:bad:3",
+  "text": "[[\"A message for Sam at Ceres Station: their father Jo has stopped answering messages, and nobody at home will say why.\"],\"their father Jo has stopped answering messages, and nobody at home will say why\",{\"good\":false,\"text\":\"their father Jo has stopped answering messages, and nobody at home will say why\"}]"
+ },
+ {
+  "key": "news:bad:3",
+  "text": "[\"Bad News\",\"Sam has been at the comms station for an hour, sending messages and waiting out the lag. When you come in, Sam turns the screen toward you: their father Jo has \",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+ },
+ {
+  "key": "letter:bad:4",
+  "text": "[[\"A message for Sam at Ceres Station: their mother Jo was hurt in an accident at work, and it is not clear how badly.\"],\"their mother Jo was hurt in an accident at work, and it is not clear how badly\",{\"good\":false,\"text\":\"their mother Jo was hurt in an accident at work, and it is not clear how badly\"}]"
+ },
+ {
+  "key": "news:bad:4",
+  "text": "[\"Bad News\",\"Sam has not touched their plate. Nobody at the galley table has said anything. The message is on the terminal by Sam's elbow: their mother Jo was hurt in an acc\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+ },
+ {
+  "key": "letter:bad:5",
+  "text": "[[\"A message for Sam at Ceres Station: the family's cabin was flooded when a pipe burst, and everything is gone.\"],\"the family's cabin was flooded when a pipe burst, and everything is gone\",{\"good\":false,\"text\":\"the family's cabin was flooded when a pipe burst, and everything is gone\"}]"
+ },
+ {
+  "key": "news:bad:5",
+  "text": "[\"Bad News\",\"Sam missed the start of the watch briefing. You find Sam on a crate in the cargo bay with the terminal dark in their lap. The last message on it reads: the fami\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+ },
+ {
+  "key": "letter:bad:6",
+  "text": "[[\"A message for Sam at Ceres Station: their grandmother Kez is being evicted, and has nowhere to go.\"],\"their grandmother Kez is being evicted, and has nowhere to go\",{\"good\":false,\"text\":\"their grandmother Kez is being evicted, and has nowhere to go\"}]"
+ },
+ {
+  "key": "news:bad:6",
+  "text": "[\"Bad News\",\"Sam has been quiet since the last port. Sam stands the watch and eats, and twice has stopped with the fork halfway up. A message came in at the last port: their\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+ },
+ {
+  "key": "letter:bad:7",
+  "text": "[[\"A message for Sam at Ceres Station: their father Jo has been arrested at a protest, and nobody knows for how long.\"],\"their father Jo has been arrested at a protest, and nobody knows for how long\",{\"good\":false,\"text\":\"their father Jo has been arrested at a protest, and nobody knows for how long\"}]"
+ },
+ {
+  "key": "news:bad:7",
+  "text": "[\"Bad News\",\"Sam does the whole shift without a word and checks every gauge twice. Late, in the corridor, Sam tells you: their father Jo has been arrested at a protest, and \",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+ },
+ {
+  "key": "letter:bad:8",
+  "text": "[[\"A message for Sam at Ceres Station: an old friend of their daughter Tiko's passed away, and the funeral is next week.\"],\"an old friend of their daughter Tiko's passed away, and the funeral is next week\",{\"good\":false,\"text\":\"an old friend of their daughter Tiko's passed away, and the funeral is next week\"}]"
+ },
+ {
+  "key": "news:bad:8",
+  "text": "[\"Bad News\",\"Sam asks to speak to you in the cargo bay, where the hull carries the noise. Sam says it flat, without the terminal: an old friend of their daughter Tiko's pass\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+ },
+ {
+  "key": "letter:bad:9",
+  "text": "[[\"A message for Sam at Ceres Station: their daughter Tiko says the recyclers on Mars are failing, and the water tastes wrong.\"],\"their daughter Tiko says the recyclers on Mars are failing, and the water tastes wrong\",{\"good\":false,\"text\":\"their daughter Tiko says the recyclers on Mars are failing, and the water tastes wrong\"}]"
+ },
+ {
+  "key": "news:bad:9",
+  "text": "[\"Bad News\",\"Sam has been at the comms station for an hour, sending messages and waiting out the lag. When you come in, Sam turns the screen toward you: their daughter Tiko \",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+ },
+ {
+  "key": "letter:bad:10",
+  "text": "[[\"A message for Sam at Ceres Station: the clinic on Mars is closing, and their grandmother Mika has to travel two days for treatment.\"],\"the clinic on Mars is closing, and their grandmother Mika has to travel two days for treatment\",{\"good\":false,\"text\":\"the clinic on Mars is closing, and their grandmother Mika has to travel two days for treatment\"}]"
+ },
+ {
+  "key": "news:bad:10",
+  "text": "[\"Bad News\",\"Sam has not touched their plate. Nobody at the galley table has said anything. The message is on the terminal by Sam's elbow: the clinic on Mars is closing, and\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+ },
+ {
+  "key": "letter:bad:11",
+  "text": "[[\"A message for Sam at Ceres Station: their mother Wim broke a leg in the market and cannot work for six weeks.\"],\"their mother Wim broke a leg in the market and cannot work for six weeks\",{\"good\":false,\"text\":\"their mother Wim broke a leg in the market and cannot work for six weeks\"}]"
+ },
+ {
+  "key": "news:bad:11",
+  "text": "[\"Bad News\",\"Sam missed the start of the watch briefing. You find Sam on a crate in the cargo bay with the terminal dark in their lap. The last message on it reads: their mo\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+ },
+ {
+  "key": "letter:bad:12",
+  "text": "[[\"A message for Sam at Ceres Station: there was a fire in the section where their son Dru lives, and they are in a shelter.\"],\"there was a fire in the section where their son Dru lives, and they are in a shelter\",{\"good\":false,\"text\":\"there was a fire in the section where their son Dru lives, and they are in a shelter\"}]"
+ },
+ {
+  "key": "news:bad:12",
+  "text": "[\"Bad News\",\"The terminal pings in the galley and Sam reads it standing, then sits down. The message: there was a fire in the section where their son Dru lives, and they are\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+ },
+ {
+  "key": "letter:bad:13",
+  "text": "[[\"A message for Sam at Ceres Station: their best friend Tiko has been laid off, and the severance has not come.\"],\"their best friend Tiko has been laid off, and the severance has not come\",{\"good\":false,\"text\":\"their best friend Tiko has been laid off, and the severance has not come\"}]"
+ },
+ {
+  "key": "news:bad:13",
+  "text": "[\"Bad News\",\"Sam asks to speak to you in the cargo bay, where the hull carries the noise. Sam says it flat, without the terminal: their best friend Tiko has been laid off, a\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+ },
+ {
+  "key": "letter:bad:14",
+  "text": "[[\"A message for Sam at Ceres Station: the school where their mother Vesna teaches is closing at the end of the term.\"],\"the school where their mother Vesna teaches is closing at the end of the term\",{\"good\":false,\"text\":\"the school where their mother Vesna teaches is closing at the end of the term\"}]"
+ },
+ {
+  "key": "news:bad:14",
+  "text": "[\"Bad News\",\"Sam has been at the comms station for an hour, sending messages and waiting out the lag. When you come in, Sam turns the screen toward you: the school where the\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+ },
+ {
+  "key": "letter:bad:15",
+  "text": "[[\"A message for Sam at Ceres Station: their son Yuri left a message that says only \\\"call when you can,\\\" and the line does not connect.\"],\"their son Yuri left a message that says only \\\"call when you can,\\\" and the line does not connect\",{\"good\":false,\"text\":\"their son Yuri left a message that says only \\\"call when you can,\\\" and the line does not connect\"}]"
+ },
+ {
+  "key": "news:bad:15",
+  "text": "[\"Bad News\",\"Sam missed the start of the watch briefing. You find Sam on a crate in the cargo bay with the terminal dark in their lap. The last message on it reads: their so\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+ },
+ {
+  "key": "holiday:0",
+  "text": "[\"Landing Day\",\"Sam is up before the watch change, kneading dough with a fierce, focused joy, and the galley smells of hot, spiced, red-tinted bread. It is Landing Day, when the first colonists set down on Mars, and Sam has been baking for it every year of their life, from a recipe that came from a grandmother they can barely remember. They are already arguing with nobody in particular about the terraforming schedule, jabbing a floury finger at the air.\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"The bread is dense and far too spicy, and everyone eats it anyway, with tears in their eyes and hands out for more. The argument about the terraforming schedule lasts until the flip, with three factions and one point of order, and everyone has a side, and nobody, in the end, wins.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they are cheerful, and nobody asks.\"]"
+ },
+ {
+  "key": "holiday:1",
+  "text": "[\"Tranquility Night\",\"Sam has the old footage of the first Moon landing queued up on the galley screen, the grainy black-and-white version, with the crackle of the old radio. On Earth and Luna everyone watches it tonight, all together, at the same hour, even though they have all seen it a hundred times. Sam sets out cups of something warm, dims the lights, and says that it is not the same without company.\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"Two people in bulky suits bounce across gray dust, centuries ago, and a voice, tiny and tinny and calm, says the words. Nobody on the ship says anything for a while. When the picture fades, Sam wipes their eyes. In the dark someone begins to hum.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they are cheerful, and nobody asks.\"]"
+ },
+ {
+  "key": "holiday:2",
+  "text": "[\"First Water\",\"It is First Water, the day the first ice reached Ceres, and the oldest, quietest holiday in the Belt. Sam fills a cup from the ship's tank, slowly, without spilling a drop, and sets it on the galley table, and passes it around: each person drinks, and says the name of someone they have lost. It is not a happy day. It is not meant to be. It is the day that a people remember what they nearly did not survive.\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"The cup goes around twice, in silence, warm from many hands. Some of the names you know. Most you don't. When it is your turn, you find you have a name, too, after all, and you say it aloud, and the room, which was waiting, lets out a breath.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they are cheerful, and nobody asks.\"]"
+ },
+ {
+  "key": "holiday:3",
+  "text": "[\"Year's End\",\"It is the last night of 2214. Sam has strung lights across the galley, and cobbled together a table out of crates, and set out every bottle on the ship, and, in the middle, a single cake made of ration bars and hope. They are counting down to a midnight that means nothing out here, where there is no sunrise and no season, and everything, in the way that small bright rituals do.\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"Everyone counts down together, in a ragged, cheerful roar, with the last ten seconds shouted in unison. At zero, somebody cries, somebody laughs, somebody kisses somebody, and the ship hums on, warm and steady, into the new year, carrying you all.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they are cheerful, and nobody asks.\"]"
+ },
+ {
+  "key": "holiday:4",
+  "text": "[\"The Long Night\",\"Sam tells you that, back on Earth, it is the longest night of the year, and that, where they grew up, the old people stayed up all through it, with candles, telling stories to keep the dark at bay. They have set out a single candle, real wax, saved for the purpose, in a jar in the middle of the galley table. \\\"It is silly out here,\\\" they say, \\\"where every night is the longest. But I would like to keep it.\\\"\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"You sit, all of you, in a ring around the candle, and, one by one, tell a story. Some are funny. Some are sad. Some are not stories at all, just a few careful sentences about a place or a person. The candle burns down, and nobody moves. It gutters.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they are cheerful, and nobody asks.\"]"
+ },
+ {
+  "key": "holiday:5",
+  "text": "[\"Dome Day\",\"Sam is polishing a small brass plaque, worn smooth at the edges, that was, they say, cut from the first dome on Mars, three hundred years ago. It is Dome Day, and They have hung a strip of red-dyed cloth over the galley hatch, and there is, for some reason, a small potted fern on the table.\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"You raise a glass to the domes, and to the people who built them, and to the fools who thought a dead world could be made to breathe. Sam makes a short, awkward, moving speech, and forgets the end of it, and everyone claps anyway. The fern is declared the ship's mascot.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they are cheerful, and nobody asks.\"]"
+ }
+]

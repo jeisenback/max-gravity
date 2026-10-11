@@ -45,7 +45,7 @@ function storyOf(p) {
   if (own && !(p.story && p.story.authored)) p.story = { ...own, authored: true, beat: p.story ? p.story.beat : 0 };
   if (!p.story) {
     const rel = pick(RELATIONS), who = makePerson(cultureOfPerson(p));
-    p.story = { left: pick(LEFT), rel, name: who.first, hope: pick(HOPES).replace('{home}', p.home), favor: planetNamed(p.home) ? 'visit' : 'debt', debt: randInt(8, 25) * 100, beat: 0 };
+    p.story = { left: pick(familyLines('left')), rel, name: who.first, hope: pick(familyLines('hopes')).replace('{home}', p.home), favor: planetNamed(p.home) ? 'visit' : 'debt', debt: randInt(8, 25) * 100, beat: 0 };
   }
   return p.story;
 }
@@ -91,7 +91,7 @@ function talkTopics(p) {
 function ordinaryTalk(p) {
   const n = p.first, topics = talkTopics(p), tp = topics.length ? pick(topics) : null;
   if (tp) return { title: `With ${n}`, text: tp.open, choices: tp.choices };
-  const idle = (p.traits || []).map(t => TALK_IDLE[t]).filter(Boolean);
+  const idle = (p.traits || []).map(t => familyLines('idle')[t]).filter(Boolean);
   return { title: `With ${n}`, text: `You sit with ${n} in the galley, over two mugs. ${n} ${idle.length ? pick(idle) : 'is easy company'}. The drive hums. A pipe ticks.`,
     choices: [
       { label: 'Stay a while', run() { like(p, 1, null); if (moodLow(p)) p.mood.until -= 5; return pick([(`The ship hums around you both, steady and ` +
@@ -123,7 +123,7 @@ function sitBeat(p, isCrew) {
       choices: [{ label: 'That\'s all right', run() { like(p, 1, null); return (`You let it be, and finish your coffee, and say nothing about the ` +
           `hole in the floor. Some people take longer, and that is all right too. When you get up to go, ${n} looks up quickly and says, "Thanks for the company." It is more than they have said all week.`); } }] };
   }
-  if (s.beat === 0) return { title: `With ${n}`, text: (`${n} tells you about ${p.home}: ${s.homeDetail || HOME_DETAIL[cultureOfPerson(p)]}. They ` +
+  if (s.beat === 0) return { title: `With ${n}`, text: (`${n} tells you about ${p.home}: ${s.homeDetail || familyLines('home')[cultureOfPerson(p)]}. They ` +
       `turn their mug a quarter turn on the table as they say it. Then, unprompted, they say they left because of ${s.left}, and stop, and drink, and ` +
       `look at you.`),
     choices: [
@@ -260,11 +260,11 @@ function occasionEvent(o) {
       ],
     };
   }
-  const h = o.h, fillH = t => t.replace(/\{n\}/g, n).replace(/\{year\}/g, o.year);
+  const h = o.h, said = familyLines('holidays')[holidayKey(h)], fillH = t => t.replace(/\{n\}/g, n).replace(/\{year\}/g, o.year);
   return {
-    title: h.name, text: fillH(h.text),
+    title: h.name, text: fillH(said.text),
     choices: [
-      { label: 'Everyone joins in', run() { like(p, 2, `We kept ${h.name} aboard ${shipTitle()}.`); homeLog(`Kept ${h.name} aboard.`); return warm(1.2, fillH(h.join))(); } },
+      { label: 'Everyone joins in', run() { like(p, 2, `We kept ${h.name} aboard ${shipTitle()}.`); homeLog(`Kept ${h.name} aboard.`); return warm(1.2, fillH(said.join))(); } },
       { label: `Let ${n} mark it their own way`, run: () => `${n} nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they are cheerful, and nobody asks.` },
     ],
   };
@@ -281,7 +281,7 @@ function letters(planet) {
     if (Math.random() > 0.2 || (p.letterDay || -99) > st.day - 30) continue;
     p.letterDay = st.day;
     const good = Math.random() < 0.55;
-    const news = storyOf(p).news, pool = news ? (good ? news.good : news.bad) : (good ? GOOD_NEWS : BAD_NEWS);  // an authored person's own news, or the generic
+    const news = storyOf(p).news, pool = news ? (good ? news.good : news.bad) : (good ? familyLines('good-news') : familyLines('bad-news'));  // an authored person's own news, or the generic
     const text = pick(pool).replace('{who}', `their ${missed(p)}`).replace('{home}', p.home);
     p.mood = { kind: good ? 'high' : 'low', until: st.day + (good ? 10 : 25), text };
     p.news = { good, text };
