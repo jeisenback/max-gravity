@@ -2557,6 +2557,358 @@
   ]
  },
  {
+  "id": "shiplife:acts:0:solo",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You cook something real for once, out of the good stores, with garlic and a little stolen butter, and everyone crowds into the galley, elbow to elbow, passing bowls. Somebody produces a bottle. Somebody else tells a story. When the last bowl is scraped clean, nobody is the first to leave.",
+    "mem": [
+     "9 Jul 2214: The captain shared a meal with us."
+    ],
+    "fx": {
+     "p5": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You call it, and the klaxon sounds, and the whole ship jumps. Damage control, then gunnery, then damage control again, against a stopwatch, with a great deal of muttering and one argument about whose fault the fire in the galley was. Nobody enjoys it. When it is done the crew sits on the deck, breathing hard. (Better odds in a fight for the rest of this burn.)",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "You spend a watch patching and sealing, with a heat gun and a tin of compound, crawling along the frame with a flashlight in your teeth, filling the scars of old fights. Hull 40 to 50 of 50. It is slow work. At the end you sit against the wall with your hands black to the wrist.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "You make the rounds of the berths, knocking on each door in turn. You hear out a complaint about the air recycler, a story about a cousin, a request for an extra blanket, and, from one quiet passenger, a long question about whether it is normal to feel this far from everything. You promise to look into the recycler. You tell them it is.",
+    "mem": [
+     "9 Jul 2214: The captain came to check on us."
+    ],
+    "fx": {
+     "p5": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "Share a meal",
+   "Run drills",
+   "Maintenance",
+   "Check on passengers"
+  ]
+ },
+ {
+  "id": "shiplife:acts:0:eng",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You cook, badly, and it works. The whole ship crowds around the table. The steam fogs the lamp. There is a toast, and a second, and an unplanned song.",
+    "mem": [
+     "9 Jul 2214: The captain shared a meal with us.",
+     "9 Jul 2214: We shared a meal on a long burn."
+    ],
+    "fx": {
+     "p5": 1,
+     "p6": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You call it, and the klaxon sounds, and the whole ship jumps. Damage control, then gunnery, then damage control again, against a stopwatch, with a great deal of muttering and one argument about whose fault the fire in the galley was. Nobody enjoys it. When it is done the crew sits on the deck, breathing hard. (Better odds in a fight for the rest of this burn.)",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "You spend a watch patching and sealing, with a heat gun and a tin of compound, crawling along the frame with a flashlight in your teeth, filling the scars of old fights. Hull 40 to 50 of 50. Mate0 does the hard parts, and when it is done pats the bulkhead once.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "You go from bunk to bunk and sit on the edge of each mattress for a few minutes. You hear a complaint about the air recycler, another about the coffee, and a longer one about the silence. You promise to look into it.",
+    "mem": [
+     "9 Jul 2214: The captain came to check on us."
+    ],
+    "fx": {
+     "p5": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "Share a meal",
+   "Run drills",
+   "Maintenance",
+   "Check on passengers"
+  ]
+ },
+ {
+  "id": "shiplife:acts:1:solo",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You cook, badly, and it works. The whole ship crowds around the table. The steam fogs the lamp. There is a toast, and a second, and an unplanned song.",
+    "mem": [
+     "9 Jul 2214: The captain shared a meal with us."
+    ],
+    "fx": {
+     "p5": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You call it, and the klaxon sounds, and the whole ship jumps. Damage control, then gunnery, then damage control again, against a stopwatch, with a great deal of muttering and one argument about whose fault the fire in the galley was. Nobody enjoys it. When it is done the crew sits on the deck, breathing hard. (Better odds in a fight for the rest of this burn.)",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "You spend a watch patching and sealing, with a heat gun and a tin of compound, crawling along the frame with a flashlight in your teeth, filling the scars of old fights. Hull 40 to 50 of 50. It is slow work. At the end you sit against the wall with your hands black to the wrist.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "You go from bunk to bunk and sit on the edge of each mattress for a few minutes. You hear a complaint about the air recycler, another about the coffee, and a longer one about the silence. You promise to look into it.",
+    "mem": [
+     "9 Jul 2214: The captain came to check on us."
+    ],
+    "fx": {
+     "p5": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "Share a meal",
+   "Run drills",
+   "Maintenance",
+   "Check on passengers"
+  ]
+ },
+ {
+  "id": "shiplife:acts:1:eng",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You cook something real for once, out of the good stores, with garlic and a little stolen butter, and everyone crowds into the galley, elbow to elbow, passing bowls. Somebody produces a bottle. Somebody else tells a story. When the last bowl is scraped clean, nobody is the first to leave.",
+    "mem": [
+     "9 Jul 2214: The captain shared a meal with us.",
+     "9 Jul 2214: We shared a meal on a long burn."
+    ],
+    "fx": {
+     "p5": 1,
+     "p6": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "You call it, and the klaxon sounds, and the whole ship jumps. Damage control, then gunnery, then damage control again, against a stopwatch, with a great deal of muttering and one argument about whose fault the fire in the galley was. Nobody enjoys it. When it is done the crew sits on the deck, breathing hard. (Better odds in a fight for the rest of this burn.)",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "You spend a watch patching and sealing, with a heat gun and a tin of compound, crawling along the frame with a flashlight in your teeth, filling the scars of old fights. Hull 40 to 50 of 50. Mate0 does the hard parts, and when it is done pats the bulkhead once.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "You go from bunk to bunk and sit on the edge of each mattress for a few minutes. You hear a complaint about the air recycler, another about the coffee, and a longer one about the silence. You promise to look into it.",
+    "mem": [
+     "9 Jul 2214: The captain came to check on us."
+    ],
+    "fx": {
+     "p5": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "Share a meal",
+   "Run drills",
+   "Maintenance",
+   "Check on passengers"
+  ]
+ },
+ {
+  "id": "shiplife:menu:hired",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You cook, badly, and it works. The whole ship crowds around the table. The steam fogs the lamp. There is a toast, and a second, and an unplanned song.",
+    "mem": [
+     "9 Jul 2214: We shared a meal on a long burn.",
+     "9 Jul 2214: We shared a meal on a long burn.",
+     "9 Jul 2214: We shared a meal on a long burn.",
+     "9 Jul 2214: We shared a meal on a long burn.",
+     "9 Jul 2214: We shared a meal on a long burn.",
+     "9 Jul 2214: We shared a meal on a long burn.",
+     "9 Jul 2214: We shared a meal on a long burn.",
+     "9 Jul 2214: We shared a meal on a long burn.",
+     "9 Jul 2214: We shared a meal on a long burn.",
+     "9 Jul 2214: The captain shared a meal with us."
+    ],
+    "fx": {
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": 1,
+     "c:cato": 1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1,
+     "p13": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "Everyone goes back to their own business.",
+    "next": null
+   }
+  ],
+  "title": "Downtime",
+  "text": "A long burn and nowhere to go. What do you do with the time before the flip?",
+  "labels": [
+   "Share a meal",
+   "Not now"
+  ]
+ },
+ {
+  "id": "shiplife:menu:hired-flipped",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You cook something real for once, out of the good stores, with garlic and a little stolen butter, and everyone crowds into the galley, elbow to elbow, passing bowls. Somebody produces a bottle. Somebody else tells a story. When the last bowl is scraped clean, nobody is the first to leave.",
+    "mem": [
+     "9 Jul 2214: We shared a meal on a long burn.",
+     "9 Jul 2214: We shared a meal on a long burn.",
+     "9 Jul 2214: We shared a meal on a long burn.",
+     "9 Jul 2214: We shared a meal on a long burn.",
+     "9 Jul 2214: We shared a meal on a long burn.",
+     "9 Jul 2214: We shared a meal on a long burn.",
+     "9 Jul 2214: We shared a meal on a long burn.",
+     "9 Jul 2214: We shared a meal on a long burn.",
+     "9 Jul 2214: We shared a meal on a long burn.",
+     "9 Jul 2214: The captain shared a meal with us."
+    ],
+    "fx": {
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": 1,
+     "c:cato": 1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1,
+     "p13": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "Everyone goes back to their own business.",
+    "next": null
+   }
+  ],
+  "title": "Downtime",
+  "text": "A long burn and nowhere to go. What do you do with the rest of the trip?",
+  "labels": [
+   "Share a meal",
+   "Not now"
+  ]
+ },
+ {
+  "id": "shiplife:menu:owner",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You cook, badly, and it works. The whole ship crowds around the table. The steam fogs the lamp. There is a toast, and a second, and an unplanned song.",
+    "mem": [
+     "9 Jul 2214: The captain shared a meal with us."
+    ],
+    "fx": {
+     "p5": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "Everyone goes back to their own business.",
+    "next": null
+   }
+  ],
+  "title": "Downtime",
+  "text": "A long burn and nowhere to go. What does the ship do with the time before the flip?",
+  "labels": [
+   "Share a meal",
+   "Not now"
+  ]
+ },
+ {
+  "id": "shiplife:menu:owner-flipped",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You cook something real for once, out of the good stores, with garlic and a little stolen butter, and everyone crowds into the galley, elbow to elbow, passing bowls. Somebody produces a bottle. Somebody else tells a story. When the last bowl is scraped clean, nobody is the first to leave.",
+    "mem": [
+     "9 Jul 2214: The captain shared a meal with us."
+    ],
+    "fx": {
+     "p5": 1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "Everyone goes back to their own business.",
+    "next": null
+   }
+  ],
+  "title": "Downtime",
+  "text": "A long burn and nowhere to go. What does the ship do with the rest of the trip?",
+  "labels": [
+   "Share a meal",
+   "Not now"
+  ]
+ },
+ {
   "id": "scene:yard-office:used:gunner:un",
   "plays": [
    {

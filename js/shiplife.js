@@ -440,52 +440,41 @@ function drawCutaway(cx, cy, maxL) {
 }
 
 // ---------- downtime activities ----------
+const lifeSay = (key, vars) => sceneSay('scene:shiplife', key, vars);  // the words of these are the lines of scene:shiplife (hiredscenes.js)
 const ACTIVITIES = {
   meal: {
-    label: 'Share a meal', can: () => true,
+    get label() { return lifeSay('meal.label'); }, can: () => true,
     run() {
       for (const p of shipPeople()) if (p.role !== 'you') goTo(p, 'galley');
       goTo(shipPeople()[0], 'galley');
-      for (const id of G.state.crew) if (G.state.people[id]) likeAmbient(G.state.people[id], 1, 'We shared a meal on a long burn.');
-      for (const m of paxAboard()) if (m.pid) likeAmbient(G.state.people[m.pid], 1, 'The captain shared a meal with us.');
-      return pick([('You cook something real for once, out of the good stores, with garlic and a little stolen butter, and everyone crowds into the ' +
-          'galley, elbow to elbow, passing bowls. Somebody produces a bottle. Somebody else tells a story. When the last bowl is scraped clean, nobody ' +
-          'is the first to leave.'), (
-          'You cook, badly, and it works. The whole ship crowds around the table. The steam fogs the lamp. There is a toast, and a second, and an ' +
-          'unplanned song.')]);
+      for (const id of G.state.crew) if (G.state.people[id]) likeAmbient(G.state.people[id], 1, lifeSay('meal.crew.memory'));
+      for (const m of paxAboard()) if (m.pid) likeAmbient(G.state.people[m.pid], 1, lifeSay('meal.pax.memory'));
+      return pick([lifeSay('meal.result.0'), lifeSay('meal.result.1')]);
     },
   },
   drills: {
-    label: 'Run drills', can: () => !G.transit.drilled,
+    get label() { return lifeSay('drills.label'); }, can: () => !G.transit.drilled,
     run() {
       G.transit.drilled = true;
       for (const p of shipPeople()) goTo(p, p.role === 'you' ? 'bridge' : pick(['hold', 'bridge', 'engine']));
-      return ('You call it, and the klaxon sounds, and the whole ship jumps. Damage control, then gunnery, then damage control again, against a ' +
-          'stopwatch, with a great deal of muttering and one argument about whose fault the fire in the galley was. Nobody enjoys it. When it is done ' +
-          'the crew sits on the deck, breathing hard. (Better odds in a fight for the rest of this burn.)');
+      return lifeSay('drills.result');
     },
   },
   repair: {
-    label: 'Maintenance', can: () => G.state.armor < ship().armor,
+    get label() { return lifeSay('repair.label'); }, can: () => G.state.armor < ship().armor,
     run() {
       const max = ship().armor, amount = Math.round(max * (roleSkill('engineer') ? 0.4 : 0.2)), before = G.state.armor;
       G.state.armor = Math.min(max, before + amount);
       for (const p of shipPeople()) goTo(p, p.role === 'passenger' ? 'galley' : pick(['engine', 'hold']));
-      return (`You spend a watch patching and sealing, with a heat gun and a tin of compound, crawling along the frame with a flashlight in your ` +
-          `teeth, filling the scars of old fights. Hull ${before} to ${G.state.armor} ` +
-          `of ${max}.${roleSkill('engineer') ? ` ${roleName('engineer')} does the hard parts, and when it is done pats the bulkhead once.` : ' It is slow work. At the end you sit against the wall with your hands black to the wrist.'}`);
+      return `${lifeSay('repair.result', { before, after: G.state.armor, max })} ${roleSkill('engineer') ? lifeSay('repair.skilled', { name: roleName('engineer') }) : lifeSay('repair.alone')}`;
     },
   },
   visit: {
-    label: 'Check on passengers', can: () => paxAboard().length > 0,
+    get label() { return lifeSay('visit.label'); }, can: () => paxAboard().length > 0,
     run() {
       goTo(shipPeople()[0], 'berths');
-      for (const m of paxAboard()) if (m.pid) like(G.state.people[m.pid], 1, 'The captain came to check on us.');
-      return pick([('You make the rounds of the berths, knocking on each door in turn. You hear out a complaint about the air recycler, a story about ' +
-          'a cousin, a request for an extra blanket, and, from one quiet passenger, a long question about whether it is normal to feel this far from ' +
-          'everything. You promise to look into the recycler. You tell them it is.'), (
-          'You go from bunk to bunk and sit on the edge of each mattress for a few minutes. You hear a complaint about the air recycler, another ' +
-          'about the coffee, and a longer one about the silence. You promise to look into it.')]);
+      for (const m of paxAboard()) if (m.pid) like(G.state.people[m.pid], 1, lifeSay('visit.memory'));
+      return pick([lifeSay('visit.result.0'), lifeSay('visit.result.1')]);
     },
   },
 };
@@ -519,8 +508,8 @@ function downtimeFive() {
 function downtimeEvent(all) {
   const t = G.transit;
   return {
-    title: 'Downtime', personal: true,  // a hand's savings are their own, not the ship's purse
-    text: hired() ? `A long burn and nowhere to go. What do you do with ${t.flipped ? 'the rest of the trip' : 'the time before the flip'}?` : `A long burn and nowhere to go. What does the ship do with ${t.flipped ? 'the rest of the trip' : 'the time before the flip'}?`,
+    title: lifeSay('title'), personal: true,  // a hand's savings are their own, not the ship's purse
+    text: lifeSay(hired() ? 'text.hired' : 'text', { when: lifeSay(t.flipped ? 'when.after' : 'when.before') }),
     choices: [
       ...(all ? [...baseActivities(), ...handDowntime(), ...onNow()] : downtimeFive()).map(a => ({
         label: activityLabel(a), can: a.can,
@@ -533,7 +522,7 @@ function downtimeEvent(all) {
           return text;
         },
       })),
-      { label: 'Not now', run: () => 'Everyone goes back to their own business.' },
+      { label: lifeSay('none.label'), run: () => lifeSay('none.result') },
     ],
   };
 }
