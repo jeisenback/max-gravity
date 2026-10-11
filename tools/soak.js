@@ -2,7 +2,10 @@
 
 // Sails the hired hand's captain for N runs with random answers and reports runs, days and pay: the tuning tool for the
 // chapter's economy (HIRED_FUND, HIRED_WAGE, HIRED_SHARE, HIRED_TARGET in js/hired.js).
-//   node tools/soak.js --seeds 1,2,3 --legs 40 [--captain hester] [--real-draw] [--post engineer] [--frames] [--engineer favor-drive]
+//   node tools/soak.js --seeds 1,2,3 --legs 40 [--captain hester] [--real-draw] [--post engineer] [--frames] [--engineer favor-drive] [--scenes]
+// --scenes adds a report of which scenes played over the seeds (#512): each scene of the editor's index that the narrow build keeps, with its plays and the seeds it
+// played in; the ones that never played; and the titles with the largest share of all plays. A scene is matched to a play by its title, so scenes that share a title
+// share a count. It reports and sets no threshold.
 // --frames plays each burn's seconds (the drive's speed, the reactor's heat and the reaction mass, engineering.js) and the burn's contact, which the
 // per-frame loop raises in play, and reports raids, scrams, hull lost and extra reaction mass; without it a burn is one jump, as before.
 // --engineer ORDER gives the Engineer post that order (a key of POWER_PRESETS) before every sail (#292); it needs --post engineer and --frames to show.
@@ -18,6 +21,8 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
   const r = await ev(([maxLegs, key, real, postKey, play, order]) => {
     if (real) window.drawCastPair = realDrawCastPair;
     const scenes = {}, bad = [], paid = [], losses = [], ending = { v: null };
+    const byId = {}, byTitle = {};  // the plays of a storylet by its id, and of every other scene by its title (the report of --scenes)
+    { const real = window.storyletEvent; window.storyletEvent = s => { const e = real(s); e.soakId = s.id; return e; }; }
     const odd = t => /undefined|NaN|\[object|\{[a-z]+\}/.test(String(t));
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: postKey, captainKey: key });
     const st = G.state;
@@ -29,6 +34,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         const d = G.dialog;
         if (/^(The Last Run|Without a Captain)$/.test(d.event.title)) { ending.v = { day: G.state.day - hired().since, title: d.event.title, how: (hired().died || hired().captainLost || {}).how }; G.dialog = null; return; }  // the endings start a new game: the chapter is over
         scenes[d.event.title] = (scenes[d.event.title] || 0) + 1;
+        if (d.event.soakId) byId[d.event.soakId] = (byId[d.event.soakId] || 0) + 1; else byTitle[d.event.title] = (byTitle[d.event.title] || 0) + 1;
         if (odd(d.event.title + d.event.text)) bad.push('text: ' + d.event.title);
         const ok = d.choices.map((c, i) => i).filter(i => !d.choices[i].can || d.choices[i].can());
         if (ok.length) { const res = chooseEvent(pick(ok)); if (odd(res)) bad.push('result: ' + String(res).slice(0, 80)); }
@@ -108,7 +114,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     }
     const avg = (a, n) => Math.round(a / Math.max(1, n));
     if (!ending.v) tally();
-    return { frames: fr, losses, ending: ending.v, runs, days: st.day, credits: st.credits, reached, stuck, scenes, bad, beatDays, xoDays, waits, burns, introRun, firstOfficers: Object.keys(CAST).filter(k => CAST[k].xo), offerDay,
+    return { frames: fr, losses, ending: ending.v, runs, days: st.day, credits: st.credits, reached, stuck, scenes, byId, byTitle, bad, beatDays, xoDays, waits, burns, introRun, firstOfficers: Object.keys(CAST).filter(k => CAST[k].xo), offerDay,
       avgPayPerRun: avg(paid.reduce((a, b) => a + b, 0), paid.length), avgDaysPerRun: Math.round(10 * st.day / Math.max(1, runs)) / 10 };
   }, [legs, captainKey, realDraw, post, frames, engineer]);
   await ctx.close();
@@ -140,7 +146,38 @@ function report(runs) {
   console.log(`${runs.length} chapters, chapters with: ${Object.entries(total).sort().map(([k, v]) => `${k} ${v}`).join(', ') || 'no losses'}`);
 }
 
-module.exports = { soak, report, framesReport };
+// The scene index the editor shows (editor.html), as { id, title, off, storylet } for each scene with a title; off is a scene the narrow build leaves out, storylet one that is data outside the hired chapter's registry.
+async function sceneRows() {
+  const { ctx, url } = await open({ scope: 'full' });
+  const page = await ctx.newPage();
+  await page.goto(url.replace(/index\.html$/, 'editor.html'));
+  await page.waitForFunction(() => window.SceneIndex && SceneIndex.rows, null, { timeout: 60000 });
+  const rows = await page.evaluate(() => SceneIndex.rows.filter(r => r.title).map(r => ({ id: r.id, title: r.title, off: !!r.off, storylet: r.kind === 'data' && !r.registry })));
+  await ctx.close();
+  return rows;
+}
+
+// Which scenes played over the chapters, as lines to print (#512). `runs` are soak results (each holds `byId`, the plays of a storylet by its id, and `byTitle`, the plays of every other
+// scene by its title) and `rows` the index (sceneRows). A storylet is found by its id; any other scene is matched by its title, so scenes that share a title share a count.
+function scenesReport(runs, rows, legs, top = 10) {
+  const played = new Map(), add = (key, label, n) => { const p = played.get(key) || { label, plays: 0, seeds: 0 }; p.plays += n; p.seeds++; played.set(key, p); };
+  for (const r of runs) { for (const [id, n] of Object.entries(r.byId)) add(`id:${id}`, id, n); for (const [title, n] of Object.entries(r.byTitle)) add(`title:${title}`, title, n); }
+  const total = [...played.values()].reduce((t, p) => t + p.plays, 0), kept = rows.filter(r => !r.off), shared = new Map(), none = { plays: 0, seeds: 0 };
+  const keyOf = r => (r.storylet ? `id:${r.id}` : `title:${r.title}`);
+  for (const r of kept.filter(r => !r.storylet)) shared.set(r.title, (shared.get(r.title) || 0) + 1);
+  const line = r => { const p = played.get(keyOf(r)) || none; return `  ${r.id}  ${r.title}${shared.get(r.title) > 1 && !r.storylet ? ' (title shared)' : ''}: ${p.plays} plays, ${p.seeds} of ${runs.length} seeds`; };
+  const dead = kept.filter(r => !played.has(keyOf(r)));
+  const out = [`scenes: ${total} plays over ${runs.length} seeds (${runs.map(r => r.seed).join(', ')}), up to ${legs} legs each; a storylet is found by its id, any other scene by its title`];
+  out.push(`${kept.length} scenes in the narrow build (${rows.length - kept.length} left out of it are not counted):`, ...kept.map(line));
+  out.push(`never played in this sample: ${dead.length} of ${kept.length}`, ...dead.map(r => `  ${r.id}  ${r.title}`));
+  const label = ([key, p]) => (key.startsWith('id:') ? `${(rows.find(r => r.id === p.label) || {}).title || p.label} (${p.label})` : p.label);
+  out.push(`largest share of all plays:`, ...[...played].sort((a, b) => b[1].plays - a[1].plays || (a[0] < b[0] ? -1 : 1)).slice(0, top).map(e => `  ${label(e)}: ${e[1].plays} plays, ${Math.round(1000 * e[1].plays / Math.max(1, total)) / 10} percent, ${e[1].seeds} of ${runs.length} seeds`));
+  const listed = new Set(rows.map(r => (r.storylet ? `id:${r.id}` : `title:${r.title}`))), unknown = [...played].filter(([key]) => !listed.has(key)).map(e => label(e));
+  out.push(`played but not listed in the index: ${unknown.length}${unknown.length ? ` (${unknown.sort().slice(0, 8).join('; ')}${unknown.length > 8 ? '; ...' : ''})` : ''}`);
+  return out;
+}
+
+module.exports = { soak, report, framesReport, sceneRows, scenesReport };
 
 if (require.main === module) {
   const arg = n => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : null; };
@@ -154,6 +191,7 @@ if (require.main === module) {
     }
     report(all);
     if (frames) framesReport(all, engineer ? `${post} with ${engineer}: ` : `${post}: `);
+    if (process.argv.includes('--scenes')) console.log(scenesReport(all, await sceneRows(), legs).join('\n'));
     await closeBrowser();
   })();
 }
