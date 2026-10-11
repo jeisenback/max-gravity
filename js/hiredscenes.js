@@ -44,6 +44,7 @@ function ambushLines() {
   const out = {};
   for (const [post, c] of Object.entries(AMBUSH_READ)) for (const k of ['label', 'trap', 'real']) out[`read.${post}.${k}`] = c[k];
   for (const [k, t] of Object.entries(AMBUSH_MEMORY)) out[`memory.${k}`] = t;
+  Object.assign(out, AMBUSH_TEXT);
   return out;
 }
 function repelLines(assault) {

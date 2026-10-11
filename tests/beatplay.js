@@ -80,9 +80,9 @@ const playBeats = () => {
     for (let i = 0; i < ev.choices.length; i++) for (const roll of [0, 0.999]) {
       fresh(post, 'raider');
       const h2 = hired(), cap2 = person(h2.captain), e2 = ambushChoice({ trap, read: known, tried: known, known }, cap2, h2, post, AMBUSH_READ[post]);
-      seq([roll]); const b0 = stand(); G.nextEvent = null;
+      seq([roll]); const b0 = stand(); const m0 = (cap2.memories || []).length; G.nextEvent = null;
       const text = e2.choices[i].run();
-      rec.plays.push({ i, roll, text: String(text), next: G.nextEvent ? [G.nextEvent.title, String(G.nextEvent.text).slice(0, 100)] : null, ...left(b0) });
+      rec.plays.push({ i, roll, text: String(text), next: G.nextEvent ? [G.nextEvent.title, String(G.nextEvent.text)] : null, mem: (cap2.memories || []).slice(m0), ...left(b0) });
       G.nextEvent = null; G.duel = null;
     }
     out.push(rec);
