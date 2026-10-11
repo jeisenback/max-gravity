@@ -11,7 +11,7 @@ const { playHome } = require('./homeplay');
 
 after(closeBrowser);
 
-const IDS = ['left', 'hopes', 'home', 'idle', 'good-news', 'bad-news', 'holidays', 'touches', 'chatter', 'ship'].map(x => `lines:family-${x}`);
+const IDS = ['left', 'hopes', 'home', 'idle', 'good-news', 'bad-news', 'holidays', 'touches', 'chatter', 'ship', 'names'].map(x => `lines:family-${x}`);
 
 test('every line of the family tables is read: an override for each shows in what the scenes play, and nothing else changes', async () => {
   const g = await open({ scope: 'full' });
@@ -34,7 +34,7 @@ test('every line of the family tables is read: an override for each shows in wha
   for (const id of IDS) {
     const keys = Object.keys(r.lines[id]);
     assert.ok(keys.length >= 3, `${id} has lines`);
-    for (const k of keys) if (!all.includes(`@@${id}|${k}@@`)) unread.push(`${id}|${k}`);
+    for (const k of keys) if (!all.includes(`@@${id}|${k}@@`) && !(id === 'lines:family-names' && k.startsWith('cats.'))) unread.push(`${id}|${k}`);  // the cat's three names are drawn from nine by a shuffle: read in the next test
   }
   assert.deepEqual(unread, [], 'a line the scenes never read through its id');
   assert.equal(r.base.length, r.changed.length);
@@ -61,7 +61,27 @@ test('the family tables show in the editor, one row each, with no play', async (
   const g = await open({ scope: 'full' });
   const r = await g.ev(() => lineTableRegistry().filter(e => e.id.startsWith('lines:family-')).map(e => [e.id, e.kind, e.where, Object.keys(e.scene.parts).length]));
   await g.done();
-  assert.equal(r.length, 10);
+  assert.equal(r.length, 11);
   assert.deepEqual(r.find(x => x[0] === 'lines:family-holidays'), ['lines:family-holidays', 'lines', 'transit', 12]);
   assert.deepEqual(r.find(x => x[0] === 'lines:family-idle').slice(3), [12]);
+});
+
+test('the names of the cat are drawn from the table, and the memories and the log take their words from the lines as text', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent();
+    const st = G.state, p = makePerson('mars'); p.first = 'Sam'; p.memories = []; registerPerson(p); st.crew = [p.id];
+    useOverrides({ 'lines:family-names': { parts: Object.fromEntries(CAT_NAMES.map((n, i) => [`cats.${i}`, `Cat${i}`])) },
+      'family:birthday': { parts: { 'c0.memory': 'A <b>party</b> & more', 'c0.log': 'Party for {n} & more' } } });
+    const labels = catEvent().choices.map(c => String(c.label));
+    const e = occasionEvent({ kind: 'birthday', id: p.id, day: st.day + 1 });
+    e.choices[0].run();
+    const out = { labels, mem: p.memories[0], log: home().log[0].text };
+    useOverrides({});
+    return out;
+  });
+  await g.done();
+  assert.equal(r.labels.filter(l => /Cat\d/.test(l)).length, 3, 'three names, from the table');
+  assert.ok(r.mem.endsWith(': A <b>party</b> & more'), 'a memory is plain text, as the character view draws it');
+  assert.equal(r.log, 'Party for Sam & more', 'and so is a line of the log');
 });

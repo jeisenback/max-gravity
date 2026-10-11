@@ -58,7 +58,9 @@ const playHome = () => {
   // the line for the epilogue, with nothing and with a cat and two traditions
   { reset(); note('homeLine:bare', homeLine()); home().cat = 'Rivet'; home().traditions = ['flip-toast', 'first-meal']; note('homeLine:full', homeLine()); }
   // the favor's return: a shipmate goes ashore to see their family
-  { const p = reset(); storyOf(p); G.messages = []; Mods.emit('missionDone', { favorPid: p.id }); note('favor:done', [G.messages.map(m => m.text), p.loyal, home().log.map(l => l.text)]); }
+  { const p = reset(); storyOf(p); G.messages = []; Mods.emit('missionDone', { favorPid: p.id }); note('favor:done', [G.messages.map(m => m.text), p.loyal, home().log.map(l => l.text), p.memories.slice(-1)[0]]); }
+  // naming the ship, from the port page
+  { reset(); const el = document.createElement('input'); el.id = 'shipName'; el.value = 'the Nimbus'; document.body.appendChild(el); Mods.actions.renameShip.fn(); el.remove(); note('rename', [home().name, home().log.map(l => l.text)]); }
   // a letter, what it says to the player in the note and in the log of the port
   { const p = reset(); const s = G.state; storyOf(p); s.crew = [p.id]; s.letterAt = undefined; p.letterDay = undefined; seq([0.1, 0.1, 0.5]); note('letter:note', letters(currentPlanet())); Math.random = real; }
   // a birthday with nothing in the hold to give: the reason the gift is shut
@@ -75,6 +77,8 @@ const playHome = () => {
   for (const i of [0, 1]) forceRun('force:good', withNews(true), 3, p => newsEvent(p), i);
   for (const i of [0, 1, 2]) forceRun('force:bad', withNews(false), 3, p => newsEvent(p), i === 2 ? 2 : i);
   { const bonded = (p, s) => { withNews(false)(p, s); for (let i = 0; i < 4; i++) addBond({ id: p.id, p }, { id: AID, p: s.people[AID] }, 2); }; forceRun('force:bad:friend', bonded, 3, p => newsEvent(p), 2); }
+  // every name a burn can be given, by forcing the dice
+  for (let k = 0; k < 8; k++) { reset(); seq([(k + 0.5) / 8]); const line = TRADITIONS['burn-name'].line(); Math.random = real; note(`force:burn:${k}`, line); }
   return out;
 };
 

@@ -925,6 +925,8 @@ const PEOPLE_LINES = {
     'c1.result': '{n} starts to say no, and then does not. "Just the one," {n} says. A corner of their mouth goes up.',
     'c2.label': '"It will pass."',
     'c2.result': '{n} nods. "It does," they say. "It just takes its time." You both drink your coffee.',
+    'c0.memory': 'You sat with me while I was having a hard time.',
+    'c1.memory': 'You offered to cover for me when I was having a hard time.',
   },
   'family:hurt': {
     title: 'With {n}',
@@ -933,6 +935,8 @@ const PEOPLE_LINES = {
     'c0.result': '"It is fine," {n} says, and then, when you wait, "It is not fine. It is getting better." You nod. {n} lowers themselves onto the bench, bad side last.',
     'c1.label': 'Tell them to rest',
     'c1.result': '{n} argues for a minute and then goes to their bunk. You can hear them let out a long breath through the bulkhead.',
+    'c0.memory': 'You asked how I was, and meant it.',
+    'c1.memory': 'You told me to rest, and I did.',
   },
   'family:war': {
     title: 'With {n}',
@@ -943,6 +947,8 @@ const PEOPLE_LINES = {
     'c1.result': '"Every day," {n} says. "And then I look at what is on the screen and I think, not like this."',
     'c2.label': 'Change the subject',
     'c2.result': 'You ask about the food at the last port. {n} is grateful for that, and says so by going on about it for ten minutes.',
+    'c0.memory': 'You asked what I thought about the war.',
+    'c1.memory': 'You asked if I wanted to go home during the war.',
   },
   'family:rift': {
     title: 'With {n}',
@@ -951,6 +957,7 @@ const PEOPLE_LINES = {
     'c0.result': '{n} says it was nothing, and then says it was the thing at the rota, and then the thing from before. "I do not even like being angry," {n} says. "It is just there."',
     'c1.label': 'Stay out of it',
     'c1.result': 'You say you will not take sides. {n} nods, a little disappointed, and you finish the coffee talking about something else.',
+    'c0.memory': 'You asked what was wrong between me and {other}.',
   },
   'family:friend': {
     title: 'With {n}',
@@ -959,6 +966,7 @@ const PEOPLE_LINES = {
     'c0.result': '{n} talks about {other} for a long time: how they met, what {other} is like on a bad day, the one thing {n} would never say to their face. It is the warmest part of the watch.',
     'c1.label': 'Say you can tell',
     'c1.result': '"You can tell?" {n} says. They glance past you at the corridor. "Do not say anything." You will not.',
+    'c0.memory': 'You asked about {other}, and I told you.',
   },
   'family:memory': {
     title: 'With {n}',
@@ -967,6 +975,7 @@ const PEOPLE_LINES = {
     'c0.result': 'You say you remember it too. {n} looks up. "I did not think you would," {n} says. It is quiet for a moment, and then it is easy.',
     'c1.label': 'Let it lie',
     'c1.result': 'You let it lie. {n} nods, and after a minute the talk turns to the next port, and you both pretend that was the point.',
+    'c0.memory': 'You brought it up, and I was glad.',
   },
   'family:idle': {
     title: 'With {n}',
@@ -1017,6 +1026,7 @@ const PEOPLE_LINES = {
     'c0.result': '{n} does not say anything. For a moment, you are afraid they will cry. Instead, they put a hand on the back of your seat, and squeeze, once, hard, and go out. That night the whole ship smells of something baking, and nobody says why. (It\'s on your missions list.)',
     'c1.label': '"Not yet. But soon."',
     'c1.result': '{n} nods. "Soon, then," they say. "I can wait. I have gotten good at it." They do not bring it up again.',
+    'c0.memory': 'The captain promised to take me home.',
   },
   'family:favor-debt': {
     title: 'A Favor',
@@ -1025,6 +1035,7 @@ const PEOPLE_LINES = {
     'c0.result': '{n} reads the confirmation three times, with their lips moving, and puts the screen face-down on the table, and goes to their bunk. After a while you hear them crying through the bulkhead, and, after a longer while, laughing. In the morning they are making everyone breakfast. They will not look you in the eye, and they will not stop smiling.',
     'c1.label': '"I can\'t, not now."',
     'c1.result': '"I know," {n} says. "I did not expect you to." They stand, touch the table once, and go back to work.',
+    'c0.memory': 'The captain paid off my debt.',
   },
   'family:picker': {
     title: 'Sit With Someone',
@@ -1034,6 +1045,10 @@ const PEOPLE_LINES = {
     'text.3': 'The ship is quiet tonight. You could use the company yourself, and so, maybe, could someone else.',
     'text.4': 'You are carrying a plate of the good biscuits down the corridor. Who is it for?',
     go: 'You find {first} in the galley.',
+    label: '{first} ({kind}){state}',
+    'label.passenger': 'passenger',
+    'label.low': ', having a hard time',
+    'label.hurt': ', hurt',
   },
   // The rest of the found-family scenes of js/family.js (#457): the birthday and the holidays, the letters' scenes, the traditions, the cat and the offer to stay.
   'family:birthday': {
@@ -1050,11 +1065,16 @@ const PEOPLE_LINES = {
     'c1.result': '{n} unwraps it slowly, saving the paper. When they see what it is, they go still. They do not say anything for a moment. Then they set it on the shelf by their bunk, and keep it there for the rest of the trip. More than once you see them stop and look at it.',
     'c2.label': 'A quiet word and a drink',
     'c2.result': 'You find {n} alone in the galley, and set down two cups, and say the words, plainly. "You remembered," they say, and look at the cup. You sit together and drink and say little.',
+    'c0.memory': 'The crew threw me a birthday party aboard {ship}.',
+    'c0.log': 'A birthday party for {n}.',
+    'c1.memory': 'The captain remembered my birthday.',
   },
   'family:holiday': {  // the words of each holiday are in the table lines:family-holidays; these are the choices every holiday has
     'c0.label': 'Everyone joins in',
     'c1.label': 'Let {n} mark it their own way',
     'c1.result': '{n} nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they are cheerful, and nobody asks.',
+    'c0.memory': 'We kept {holiday} aboard {ship}.',
+    'c0.log': 'Kept {holiday} aboard.',
   },
   'family:news-good': {
     title: 'Good News',
@@ -1100,6 +1120,8 @@ const PEOPLE_LINES = {
     'space.label': 'Give them space',
     'space.result.0': '{n} goes to their bunk. You hear the terminal, faintly, and later nothing. Their work suffers for a time: a missed step, a cold cup. (Their skill counts one lower until they feel better.)',
     'space.result.1': '{n} takes the cargo bay for the rest of the watch and does the manifest twice. You leave the door open. A missed step shows up in the log the next day, and {n} corrects it before anyone asks. (Their skill counts one lower until they feel better.)',
+    'sit.memory': 'The captain sat with me when the news from home was bad.',
+    'advance.memory': 'The captain advanced me money to send home.',
   },
   'family:tradition': {  // the name of each tradition is in code; its proposal and the line it gives in a burn are here
     title: 'A New Tradition',
@@ -1121,6 +1143,7 @@ const PEOPLE_LINES = {
     'docking-song.line.0': '[Ship] Final approach, and everyone is singing the docking song, badly and with feeling.',
     'docking-song.line.1': '[Ship] The docking song starts up in the galley, and spreads through the ship, verse by verse, like weather.',
     'docking-song.line.2': '[Ship] Somebody starts the docking song, and, in the cockpit, the pilot, who swore he would not, is humming along.',
+    'c0.log': 'Started {name}.',
   },
   'family:cat': {
     title: 'Stowaway',
@@ -1129,6 +1152,7 @@ const PEOPLE_LINES = {
     'name.result': '{name} it is. The cat, for its part, does not acknowledge the name, or the vote, or the existence of the arrangement. By the time you take off, {name} has found the warmest spot on the ship, which is on the reactor housing, and has curled into a perfect gray circle, one ear twitching. Somebody puts a saucer of milk down, and somebody else makes a small bed out of a folded jacket.',
     'dock.label': 'Put it back on the dock',
     'dock.result': 'You carry it back down the ramp, in both hands, and set it on the dock, and it gives you a look you will remember for a long time, a long, level, wholly unsurprised stare, and walks off, with its tail high. Nobody on the crew speaks to you for an hour. Somewhere, in the distance, a small, imperious meow.',
+    'name.log': '{cat} the cat came aboard at {planet}.',
   },
   'family:join': {
     title: 'One More Berth',
@@ -1137,5 +1161,7 @@ const PEOPLE_LINES = {
     'c0.result': '{first} lets out a breath so long it is almost a laugh, and drops their bag in the same bunk as before, with a thump. "Same one," they say. "It\'s lucky." Somebody, in the galley, starts to clap. (They join as your {role}.)',
     'c1.label': '"Not this time."',
     'c1.result': '"I understand," {first} says, quickly. "Really. If you ever need someone..." They write their contact code on the back of your hand, in pen, since they do not seem to have paper, wave, shoulder their bag, and go down the ramp. You watch them all the way to the end of the dock, and, at the corner, they turn, and lift a hand, and are gone.',
+    'c0.memory': 'I signed on with {ship}.',
+    'c0.log': '{first} {last} came aboard as a passenger and stayed as crew.',
   },
 };

@@ -40,7 +40,7 @@ const playFamily = () => {
   HOLIDAYS.forEach((h, i) => {
     reset(); __seed(500 + i); const p = mk(h.culture || 'earth'); st.crew = [p.id];
     const e = occasionEvent({ kind: 'holiday', h, id: p.id, day: st.day + 1, year: 2214 });
-    __seed(510 + i); note(`holiday:${i}`, [e.title, e.text, e.choices.map(c => String(c.label)), e.choices[0].run(), e.choices[1].run()]);
+    __seed(510 + i); const kept = e.choices[0].run(); note(`holiday:${i}`, [e.title, e.text, e.choices.map(c => String(c.label)), kept, e.choices[1].run(), p.memories.slice(-1)[0], home().log.map(l => l.text)]);  // the memory and the ship's log of keeping it
   });
   return out;
 };

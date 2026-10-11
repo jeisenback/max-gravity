@@ -34,7 +34,8 @@ const LINE_TABLES = [
   { id: 'lines:family-holidays', title: 'Holidays from home: the scene and keeping it', file: 'js/familytext.js', where: 'transit', table: () => holidayLines() },
   { id: 'lines:family-touches', title: 'What a crew member puts up on the ship', file: 'js/familytext.js', where: 'transit', table: () => TOUCH_LINES },
   { id: 'lines:family-chatter', title: 'What the crew say of a shipmate down or up, the cat and the touches', file: 'js/familytext.js', where: 'transit', table: () => CHATTER_LINES },
-  { id: 'lines:family-ship', title: 'The ship as home: the epilogue line, a favor done, a letter, a touch', file: 'js/familytext.js', where: 'transit', table: () => SHIP_LINES },
+  { id: 'lines:family-ship', title: 'The ship as home: the epilogue line, a favor done, a letter, a touch, and what the log and the memories say', file: 'js/familytext.js', where: 'transit', plainKey: /^(loyal|rename|returned)$/, table: () => SHIP_LINES },
+  { id: 'lines:family-names', title: 'Names: the holidays, the traditions, the burns and the cat', file: 'js/familytext.js', where: 'transit', plainKey: /^holidays\./, table: () => ({ holidays: Object.fromEntries(HOLIDAYS.map(h => [holidayKey(h), h.name])), traditions: TRADITION_NAMES, burns: BURN_NAMES, cats: CAT_NAMES }) },
   { id: 'lines:trait-chatter', title: 'Crew chatter, by trait', file: 'js/peopletext.js', plain: true, where: 'transit', table: () => Object.fromEntries(Object.entries(TRAITS).map(([t, d]) => [t, d.chatter])) },
 ];
 const lineTable = id => LINE_TABLES.find(t => t.id === id);
@@ -58,6 +59,7 @@ const barLines = name => linedText(`lines:bar-${name}`, lineTable(`lines:bar-${n
 const familyLines = name => linedText(`lines:family-${name}`, lineTable(`lines:family-${name}`).table());  // the tables of js/familytext.js (#457)
 const fillLine = (t, vars) => t.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));  // a line of a table with its {words} filled
 const holidayKey = h => h.name.toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-|-$/g, '');  // the key of a holiday's lines: its name ('landing-day')
+const holidayName = h => familyLines('names').holidays[holidayKey(h)];  // the holiday's title
 const holidayLines = () => Object.fromEntries(HOLIDAYS.map(h => [holidayKey(h), { text: h.text, join: h.join }]));
 const traitChatter = trait => [].concat(linedText('lines:trait-chatter', TRAITS[trait].chatter, trait));
 

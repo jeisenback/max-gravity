@@ -92,6 +92,10 @@
   "text": "{\"title\":\"Sit With Someone\",\"text\":\"The ship is quiet tonight. You could use the company yourself, and so, maybe, could someone else.\",\"labels\":[\"Sam (engineer), having a hard time\",\"Ana (pilot), hurt\"],\"runs\":[[0,1,\"You find Sam in the galley.\",{\"op\":0,\"mem\":null,\"until\":40,\"beat\":0,\"promised\":false,\"loyal\":false,\"credits\":20000,\"missions\":[],\"pressed\":\"mood:x\",\"log\":[]}],[1,1,\"You find Ana in the galley.\",{\"op\":0,\"mem\":null,\"until\":40,\"beat\":null,\"promised\":null,\"loyal\":false,\"credits\":20000,\"missions\":[],\"pressed\":null,\"log\":[]}]]}"
  },
  {
+  "key": "picker:pax",
+  "text": "{\"title\":\"Sit With Someone\",\"text\":\"The ship is quiet tonight. You could use the company yourself, and so, maybe, could someone else.\",\"labels\":[\"Sam (engineer)\",\"Pia (passenger)\"],\"runs\":[[0,1,\"You find Sam in the galley.\",{\"op\":0,\"mem\":null,\"until\":null,\"beat\":0,\"promised\":false,\"loyal\":false,\"credits\":20000,\"missions\":[\"Carry\"],\"pressed\":null,\"log\":[]}],[1,1,\"You find Pia in the galley.\",{\"op\":0,\"mem\":null,\"until\":null,\"beat\":null,\"promised\":null,\"loyal\":false,\"credits\":20000,\"missions\":[\"Carry\"],\"pressed\":null,\"log\":[]}]]}"
+ },
+ {
   "key": "picker:texts",
   "text": "[\"Between watches, you find yourself with an hour and two mugs. Who gets the second one?\",\"The galley is empty, and the kettle has just clicked off. Somebody aboard might like a cup.\",\"The ship is quiet tonight. You could use the company yourself, and so, maybe, could someone else.\",\"You are carrying a plate of the good biscuits down the corridor. Who is it for?\",\"You make two mugs of coffee. Who could use the company?\"]"
  },
