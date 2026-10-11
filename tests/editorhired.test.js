@@ -337,7 +337,7 @@ test('the line tables of the generated people are rows with a field for every li
       plan: SceneIndex.planImport({ overrides: { 'lines:bar-leave': { title: 'No', parts: { 1: 'Ok.', 7: 'x' } } } }, SceneIndex.rows).items.map(i => i.ok),
     };
   });
-  assert.equal(r.tables.length, 27);  // the 18 of the bar and the chatter, the causes and the critics of js/social.js, and the 7 of js/familytext.js
+  assert.equal(r.tables.length, 30);  // the 18 of the bar and the chatter, the causes and the critics of js/social.js, and the 10 of js/familytext.js
   assert.ok(r.tables.every(([, kind, noTitle]) => kind === 'data' && noTitle), 'each is lines and no title');
   assert.deepEqual(r.tables.find(t => t[0] === 'lines:trait-chatter'), ['lines:trait-chatter', 'data', true, 'transit', 'js/peopletext.js']);
   assert.deepEqual(r.out, { parts: { 1: 'A new goodbye, {n}.' } }, 'only what differs');
@@ -432,14 +432,15 @@ test('the talk scenes are rows with a field for every line, and each plays in a 
     const rows = SceneIndex.rows.filter(x => x.id.startsWith('family:'));
     return { ids: rows.map(x => x.id), shape: rows.every(x => x.kind === 'data' && x.noTitle && x.where === 'transit' && x.file === 'js/family.js') };
   });
-  assert.equal(r.ids.length, 14, 'twelve scenes, the idle talk and the picker');
+  assert.equal(r.ids.length, 21, 'the talk scenes, the picker, the birthday and holidays, the news, the traditions, the cat and the offer to stay');
   assert.ok(r.shape, 'each is lines, in a burn, in js/family.js');
   for (const id of r.ids) {
     await select(id);
-    await page.fill('textarea[data-path="part.title"]', `Typed ${id}.`);
+    const line = id === 'family:holiday' ? 'c0.label' : 'title';  // the holidays take their titles from their names
+    await page.fill(`textarea[data-path="part.${line}"]`, `Typed ${id}.`);
     const f = await play();
     const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.choices.map(c => c.label)]));
-    assert.ok(seen.includes(`Typed ${id}.`), `${id} plays the typed title: ${seen.slice(0, 200)}`);
+    assert.ok(seen.includes(`Typed ${id}.`), `${id} plays the typed ${line}: ${seen.slice(0, 200)}`);
   }
 });
 
