@@ -135,6 +135,10 @@
       } else if (e.kind === 'work') {
         const d = e.def;
         add({ id: e.id, file: fileOf.work, belongs: `${d.post} (post)`, on: postOn(d.post), post: d.post, pacing: pacingOf.work(d), conditionsNote: `A problem at the ${d.post} post, for a hand who works it; not repeated within ${WORK_SEEN_DAYS} days.`, ...tableRow(tableScene(e.id)) });
+      } else if (e.kind === 'job') {  // a job on the station or further away (#457): the job (its title and blurb) or one of its stages
+        const away = e.id.startsWith('away:'), j = e.job;
+        add({ id: e.id, where: 'port', file: away ? fileOf.away : fileOf.job, belongs: away ? 'work elsewhere' : 'jobs on the station', pacing: { tier: null, weight: null, cooldown: away ? 'once a stop for each' : 'one job a visit', trigger: away ? 'A contact at a port with a board offers it now and then; it is worked at the port it names, once the captain flies you there.' : 'Two jobs are on the board each landing, picked by the port and the day.', editable: false },
+          conditionsNote: e.entry ? 'The title and the blurb shown on the Missions page; a stage with no title of its own takes the title.' : `Stage ${e.stage + 1} of ${j.stages.length}: the odds, the pay and what a choice does are in code.`, ...tableRow(tableScene(e.id)) });
       } else if (e.kind === 'hand') {
         const d = e.def, note = `A ${d.group} event for a hired hand${d.post ? ` at the ${d.post} post` : ''}; its own conditions are written in code.`;
         if (e.scene) add({ id: e.id, file: fileOf.hand, belongs: `${d.group} (hired event)`, on: postOn(d.post), pacing: pacingOf.hand(d), conditionsNote: note, ...(e.scene.parts ? { ...beatRow(e.scene), codeNote: SCENE_NOTE } : registryRow(e.scene)) });  // written as data (#473), or as lines (#463)
@@ -189,6 +193,8 @@
       if (typeof CAST !== 'undefined') for (const k of Object.keys(CAST)) if (!cast.has(k)) { cast.add(k); fileOf['cast:' + k] = src; }
       if (typeof CAPTAINS !== 'undefined') for (const k of Object.keys(CAPTAINS)) if (!captains.has(k)) { captains.add(k); fileOf['captain:' + k] = src; }
       if (typeof WORK_EVENTS !== 'undefined' && !fileOf.work) fileOf.work = src;
+      if (typeof JOBS !== 'undefined' && !fileOf.job) fileOf.job = src;
+      if (typeof AWAY !== 'undefined' && !fileOf.away) fileOf.away = src;
       if (typeof HAND_EVENTS !== 'undefined' && !fileOf.hand) fileOf.hand = src;
       if (typeof ICE_STAGES !== 'undefined' && !fileOf.ice) fileOf.ice = src;
     }
@@ -304,7 +310,7 @@
 
   function play(m) {
     useNewScenes(m.newScenes);  // the scenes written in the editor, not saved yet
-    const s = STORYLETS.find(x => x.id === m.id), pe = s ? null : peopleEventRegistry().find(x => x.id === m.id), reg = s || pe ? null : hiredSceneRegistry().find(x => x.id === m.id && ((x.kind === 'cast' || x.kind === 'captain') || x.kind === 'hand' && x.scene || x.kind === 'function' && x.scene || x.kind === 'work' || x.kind === 'ice'));
+    const s = STORYLETS.find(x => x.id === m.id), pe = s ? null : peopleEventRegistry().find(x => x.id === m.id), reg = s || pe ? null : hiredSceneRegistry().find(x => x.id === m.id && ((x.kind === 'cast' || x.kind === 'captain') || x.kind === 'hand' && x.scene || x.kind === 'function' && x.scene || x.kind === 'work' || x.kind === 'ice' || x.kind === 'job'));
     if (!s && !reg && !pe) return { error: `The game has no scene "${m.id}".` };
     useOverrides(m.overrides);  // the unsaved edits, through the same layer the game reads (storylets.js)
     const o = m.setup || {};
@@ -312,7 +318,7 @@
     const meeting = !!reg && reg.kind === 'cast' && reg.name === 'meet';  // an owner meets a main character at a port bar; a hired hand never does
     beginGame(meeting || pe ? { ...o, as: 'owner' } : o, !!reg && !meeting);
     // A scene in a burn is played on the way to the place (its `at` is the destination); one at a port, landed there.
-    const where = s ? s.where : pe ? pe.where : reg.name === 'meet' || reg.name === 'goodbye' ? 'port' : 'transit';
+    const where = s ? s.where : pe ? pe.where : reg.name === 'meet' || reg.name === 'goodbye' || reg.kind === 'job' ? 'port' : 'transit';
     if (where === 'transit') uatBurn(at.sid === 'earth' ? 'Mars' : 'Earth', at.sid); else uatLand(place);
     tweakState(o);
     if (pe && (pe.topic || pe.help)) {  // a bar topic: a person it is about across the table, and the topic as a choice (or the help scene it leads to)
@@ -351,7 +357,8 @@
       return { type: 'played', failing: [], chained: false, shut: [], note: 'A passenger event is drawn for a passenger it fits, so no condition is checked here.' };
     }
     if (reg) {  // a hired scene is played by its days and its place in the story: the preview opens it, with the regard that picks its reading
-      if (reg.kind === 'work') openEvent(workEvent(reg.def));  // a problem at the hand's post, played by the shared template from its table
+      if (reg.kind === 'job') openEvent(jobStage(reg.job, reg.stage, reg.id.startsWith('away:') ? { dest: 'Ironheart', from: place, who: 'Mrs. Adeyemi', system: 'Psyche', scale: 1.3 } : { scale: 1.2, who: 'Mrs. Adeyemi' }));  // a stage of a job, with the people and places an offer carries
+      else if (reg.kind === 'work') openEvent(workEvent(reg.def));  // a problem at the hand's post, played by the shared template from its table
       else if (reg.kind === 'ice') { hired().run = { tons: 40, ice: { edge: 0, round: 0 } }; openEvent(iceStageScene(Number(reg.id.slice(4)) - 1)); }  // the first opening of an ice run's scene
       else if (reg.kind === 'hand') {  // a hired event is about a shipmate, so one is aboard
         const mate = makeCrewCandidate(G.state.systemId); registerPerson(mate); G.state.crew.push(mate.id);

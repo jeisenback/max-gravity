@@ -116,13 +116,19 @@ function applyJob(o, scale = 1) {
   const hurt = o.hurt ? hurtHand({}) : '';
   return `${o.text}${bits.length ? ` (${bits.join(', ')})` : ''}${hurt ? ` ${hurt}` : ''}`;
 }
+// The editor's words for a job (#457): the job itself, `job:lock` or `away:package`, has its title and its blurb on the board (the override's `title` and `text`); each stage,
+// `job:lock:0`, has its own title (else the job's), its text, and for each choice its label and the lines for a win and a lose. The odds, the pay and what a choice does are in code.
+const jobId = job => `${typeof AWAY !== 'undefined' && AWAY.includes(job) ? 'away' : 'job'}:${job.id}`;
+const jobTitle = job => sceneOverride(jobId(job)).title || job.title;  // plain, like any title: the page that shows it escapes it
+const jobBlurb = (job, html) => { const t = sceneOverride(jobId(job)).text; return t === undefined ? job.blurb : html ? esc(t) : t; };  // plain on the board (which escapes it), escaped in a scene's text
 function jobStage(job, i, ctx = {}) {
   const h = hired(), stage = job.stages[i], fill = t => t.replace(/\{(\w+)\}/g, (m, k) => (ctx[k] !== undefined ? ctx[k] : m));
-  return { title: fill(job.title), text: fill(stage.text), personal: true, via: 'station', owner: 'you',
-    choices: stage.choices.filter(c => !c.when || h.post === c.when.post).map(c => {
+  const so = sceneOverride(`${jobId(job)}:${i}`), co = k => (so.choices || {})[k] || {};
+  return { title: fill(so.title || jobTitle(job)), text: fill(so.text ? esc(so.text) : stage.text), personal: true, via: 'station', owner: 'you',
+    choices: stage.choices.map((c, k) => ({ c, k })).filter(({ c }) => !c.when || h.post === c.when.post).map(({ c, k }) => {
       const odds = c.check ? jobOdds(c.check) : 1, tag = c.check ? ` [${POSTS[c.check.post].name}, ${jobOddsWord(odds)}]` : '';
-      return { label: fill(`${c.label}${tag}`), run() {
-        const won = !c.check || Math.random() < odds, o = won ? c.win : (c.lose || c.win);
+      return { label: fill(`${co(k).label || c.label}${tag}`), run() {
+        const won = !c.check || Math.random() < odds, base = won ? c.win : (c.lose || c.win), mine = won || !c.lose ? co(k).win : co(k).lose, o = mine ? { ...base, text: esc(mine) } : base;
         const text = fill(applyJob(o, ctx.scale || 1));
         if (won && o.next !== undefined && job.stages[o.next]) G.nextEvent = jobStage(job, o.next, ctx);
         else { repairDays(JOB_DAYS); }
@@ -134,7 +140,7 @@ function jobStage(job, i, ctx = {}) {
 function jobsHtml() {
   const h = hired(), board = jobBoard();
   return `<div class="post"><div class="eyebrow">Jobs on the station &middot; for your own savings</div>
-    ${board.ids.map(id => { const j = JOBS.find(x => x.id === id); return `<div class="row"><span><b>${esc(j.title)}</b> <span class="hint">${esc(j.blurb)}</span></span>
+    ${board.ids.map(id => { const j = JOBS.find(x => x.id === id); return `<div class="row"><span><b>${esc(jobTitle(j))}</b> <span class="hint">${esc(jobBlurb(j))}</span></span>
       <button data-action="takeJob" data-arg="${id}" ${board.done ? 'disabled' : ''}>Take it</button></div>`; }).join('')}
     <p class="hint">${board.done ? 'You have worked a job here already this visit.' : 'One job a visit. It takes the day, and the pay is yours.'}</p></div>`;
 }

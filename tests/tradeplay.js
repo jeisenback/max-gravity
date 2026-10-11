@@ -88,18 +88,24 @@ const playTrade = () => {
     note('odds', odds);
     hired().post = 'gunner';
     const snap = JSON.stringify(G.state);
-    JOBS.forEach(job => job.stages.forEach((stage, si) => {
-      const ctx = { scale: 1.2, who: 'Mrs. Adeyemi' };
+    // every stage of a job, and what each of its choices does on a good roll and on a bad one
+    const playJobs = (list, prefix, ctx) => list.forEach(job => job.stages.forEach((stage, si) => {
       const labels = jobStage(job, si, ctx).choices.map(c => String(c.label));
-      note(`job:${job.id}:${si}`, { title: jobStage(job, si, ctx).title, text: jobStage(job, si, ctx).text, labels });
+      note(`${prefix}:${job.id}:${si}`, { title: jobStage(job, si, ctx).title, text: jobStage(job, si, ctx).text, labels, ...(si === 0 && prefix !== 'job' ? { blurb: job.blurb } : {}) });
       labels.forEach((label, ci) => { for (const roll of [0, 0.999]) {
         G.state = JSON.parse(snap); G.nextEvent = null; const before = { credits: G.state.credits, rep: { ...G.state.rep }, xp: JSON.stringify(hired().xp || {}), mem: (hiredCaptain().memories || []).length };
         __seed(7 + ci); const ev = jobStage(job, si, ctx); seq([roll, 0.3, 0.6]);
         const text = ev.choices[ci].run(); Math.random = real;
         const next = G.nextEvent; G.nextEvent = null;
-        note(`job:${job.id}:${si}:${ci}:${roll}`, { text, credits: G.state.credits - before.credits, rep: Object.fromEntries(Object.entries(G.state.rep).filter(([k, v]) => v !== (before.rep[k] || 0)).map(([k, v]) => [k, v - (before.rep[k] || 0)])), xp: JSON.stringify(hired().xp || {}) !== before.xp, mem: (hiredCaptain().memories || []).slice(before.mem), next: next ? [next.title, next.text.slice(0, 80)] : null });
+        note(`${prefix}:${job.id}:${si}:${ci}:${roll}`, { text, credits: G.state.credits - before.credits, rep: Object.fromEntries(Object.entries(G.state.rep).filter(([k, v]) => v !== (before.rep[k] || 0)).map(([k, v]) => [k, v - (before.rep[k] || 0)])), xp: JSON.stringify(hired().xp || {}) !== before.xp, mem: (hiredCaptain().memories || []).slice(before.mem), next: next ? [next.title, next.text.slice(0, 80)] : null });
       } });
     }));
+    playJobs(JOBS, 'job', { scale: 1.2, who: 'Mrs. Adeyemi' });
+    // the jobs that are worked further away are played the same way, with the people and places an offer carries
+    playJobs(AWAY, 'awayjob', { dest: 'Ironheart', from: 'Titan', who: 'Mrs. Adeyemi', system: 'Psyche', scale: 1.3 });
+    // the page of the jobs on the station, and of the work elsewhere
+    for (const { sid, pl } of planets().filter((m, i) => i % 7 === 0).slice(0, 3)) { G.state = JSON.parse(snap); at(G.state, sid, pl); G.state.day = 12; hired().board = null; note(`jobsHtml:${pl.name}`, jobsHtml()); }
+    { G.state = JSON.parse(snap); __seed(5); hired().away = [awayOffer(), awayOffer()].filter(Boolean); note('awayHtml', awayHtml()); }
     // the work further away
     for (const { sid, pl } of planets().filter((m, i) => i % 6 === 0).slice(0, 8)) for (const seed of [1, 2, 3]) { G.state = JSON.parse(snap); at(G.state, sid, pl); __seed(seed * 13); note(`away:${pl.name}:${seed}`, awayOffer()); }  // from several ports, so that the work is near and far
   }

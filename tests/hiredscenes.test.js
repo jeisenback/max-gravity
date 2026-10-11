@@ -19,7 +19,7 @@ test('every hired scene has an id, the ids are unique, and the list is the one p
   const ids = await g.ev(() => hiredSceneRegistry().map(e => e.id));
   await g.done();
   assert.equal(new Set(ids).size, ids.length, 'ids are unique');
-  for (const id of ids) assert.match(id, /^(cast|captain|hired|ice|scene|beats):[\w:.-]+$/, id);
+  for (const id of ids) assert.match(id, /^(cast|captain|hired|ice|scene|beats|job|away):[\w:.-]+$/, id);
   if (process.env.PIN_WRITE) fs.writeFileSync(FIXTURE, JSON.stringify(ids, null, 1) + '\n');
   assert.deepEqual(ids, JSON.parse(fs.readFileSync(FIXTURE, 'utf8')));
 });
@@ -52,7 +52,7 @@ test('the editor\'s index shows every id in the registry', async () => {
     const page = await browser.newPage();
     await page.goto('file://' + path.resolve(__dirname, '..', 'editor.html'));
     await page.waitForFunction(() => SceneIndex.rows, null, { timeout: 30000 });
-    const rows = await page.evaluate(() => SceneIndex.rows.filter(r => r.kind === 'code' || /^(cast|captain|hired|ice|scene|beats):/.test(r.id)).map(r => r.id));
+    const rows = await page.evaluate(() => SceneIndex.rows.filter(r => r.kind === 'code' || /^(cast|captain|hired|ice|scene|beats|job|away):/.test(r.id)).map(r => r.id));
     const pinned = JSON.parse(fs.readFileSync(FIXTURE, 'utf8'));
     assert.deepEqual(pinned.filter(id => !rows.includes(id)), [], 'in the registry, missing from the index');
   } finally { await browser.close(); }

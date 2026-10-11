@@ -306,7 +306,7 @@ function sceneRate(s) {
 const PART_NAMES = ['cold', 'neutral', 'warm', 'crew', 'secret', 'repaid', 'xoDead', 'xo', 'parting'];  // in the order the text is put together
 const registryScene = id => { const e = /^(cast|captain|hired|beats|scene):/.test(id) ? hiredSceneRegistry().find(x => x.id === id) : /^lines:/.test(id) ? lineTableRegistry().find(x => x.id === id) : /^(people|bar|social|family):/.test(id) && peopleEventRegistry().find(x => x.id === id); return e && e.scene ? e.scene : tableScene(id); };
 
-// A scene whose words live in a table that one template plays (#462): a work event (WORK_EVENTS, hiredevents.js workEvent) or an ice run scene (ICE_STAGES,
+// A scene whose words live in a table that one template plays (#462, and the jobs of #457): a work event (WORK_EVENTS, hiredevents.js workEvent) or an ice run scene (ICE_STAGES,
 // icerun.js iceStageScene). Its words are the title, the text (an ice scene has two openings: `text` and `text2`) and, for each choice, the label and either one
 // result or the lines for a win and a lose. The odds, what a win or a lose does and the roll are in code and are not in the override layer.
 function tableScene(id) {
@@ -314,6 +314,9 @@ function tableScene(id) {
   if (w) return { table: true, title: w.title, text: w.text, choices: [{ table: true, label: w.careful[0], result: w.careful[1] }, { table: true, label: w.quick[0], win: w.quick[1], lose: w.quick[2] }] };
   const m = /^ice:(\d+)$/.exec(id), st = m && ICE_STAGES[Number(m[1]) - 1];
   if (st) return { table: true, title: st.title, text: st.open[0], text2: st.open[1], choices: [...st.general.map(c => [c, null]), ...Object.entries(st.post).map(([post, c]) => [c, post])].map(([c, post]) => ({ table: true, label: c.label, win: c.win[2], ...(c.lose ? { lose: c.lose[2] } : {}), ...(post ? { post } : {}) })) };
+  const jm = /^(job|away):([\w-]+)(?::(\d+))?$/.exec(id), job = jm && (jm[1] === 'job' ? JOBS : AWAY).find(j => j.id === jm[2]);  // a job on the station or further away (#457): the job (its title and blurb), or one of its stages
+  if (job && jm[3] === undefined) return { table: true, title: job.title, text: job.blurb, choices: [] };
+  if (job && job.stages[Number(jm[3])]) { const stage = job.stages[Number(jm[3])]; return { table: true, title: job.title, text: stage.text, choices: stage.choices.map(c => ({ table: true, label: c.label, win: c.win.text, ...(c.lose ? { lose: c.lose.text } : {}), ...(c.when ? { post: c.when.post } : {}) })) }; }
   return null;
 }
 

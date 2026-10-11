@@ -336,6 +336,9 @@ function hiredSceneRegistry() {
     if (c.goodbye) out.push({ id: `captain:${key}:goodbye`, kind: 'captain', key, name: 'goodbye', scene: { title: c.goodbye.title, choices: c.goodbye.choices, goodbye: c.goodbye } });
   }
   for (const d of WORK_EVENTS) out.push({ id: `hired:${d.id}`, kind: 'work', def: d });
+  if (typeof JOBS !== 'undefined' && typeof AWAY !== 'undefined') {  // the jobs on the station and further away (#457): the job (its title and blurb) and each of its stages
+    for (const [pre, list] of [['job', JOBS], ['away', AWAY]]) for (const job of list) { out.push({ id: `${pre}:${job.id}`, kind: 'job', job, stage: 0, entry: true }); job.stages.forEach((st, i) => out.push({ id: `${pre}:${job.id}:${i}`, kind: 'job', job, stage: i })); }
+  }
   for (const d of HAND_EVENTS.filter(x => x.group !== 'work')) out.push({ id: `hired:${d.id}`, kind: 'hand', def: d, ...(d.data ? { scene: d.data } : linesOf(`hired:${d.id}`) ? { scene: { title: linesOf(`hired:${d.id}`).title, choices: [], parts: linesOf(`hired:${d.id}`), noTitle: true } } : {}) });  // written as data, or as lines (#463)
   ICE_STAGES.forEach((stage, i) => out.push({ id: `ice:${i + 1}`, kind: 'ice', stage }));
   for (const f of HIRED_FUNCTION_SCENES) out.push({ ...f, kind: 'function', ...(linesOf(f.id) ? { scene: { title: f.title, choices: [], parts: linesOf(f.id), noTitle: true } } : {}) });  // a beat's or a function's words, line by line (#478, #463)
