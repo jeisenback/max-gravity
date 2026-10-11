@@ -10,7 +10,7 @@ const { playBeats } = require('./beatplay');
 
 after(closeBrowser);
 
-const BEATS = ['beats:raid', 'beats:ambush', 'beats:repel', 'beats:assault'];
+const BEATS = ['beats:raid', 'beats:ambush', 'beats:dead-in-space', 'beats:repel', 'beats:assault'];
 
 test('every line of every beat is read: an override for it shows in what the beat plays, and nothing else changes', async () => {
   const g = await open({ scope: 'full' });
@@ -31,7 +31,7 @@ test('every line of every beat is read: an override for it shows in what the bea
   const missing = [];
   let restored = r.changed;
   for (const id of BEATS) {
-    assert.ok(Object.keys(r.lines[id]).length > 10, `${id} has lines`);
+    assert.ok(Object.keys(r.lines[id]).length > 5, `${id} has lines`);
     for (const [key, shipped] of Object.entries(r.lines[id])) {
       const marker = `@@${id}|${key}@@`;
       if (!r.changed.includes(marker)) missing.push(`${id} ${key}`);

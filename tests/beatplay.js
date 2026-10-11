@@ -87,6 +87,20 @@ const playBeats = () => {
     }
     out.push(rec);
   }
+  // the crippled raider that drifts beside you: its words, and both choices (boarding her opens the assault fight)
+  for (const shipId of ['raider', 'corsair', 'cutter']) for (const post of POSTS_ALL) {
+    fresh(post, shipId);
+    const foe = makeEnemy({ kind: 'pirate' }), ev = deadInSpaceScene({ foe }), rec = { id: `dead:${shipId}:${post}`, title: ev.title, text: ev.text, labels: labelsOf(ev), plays: [] };
+    for (let i = 0; i < ev.choices.length; i++) {
+      fresh(post, shipId);
+      const f2 = makeEnemy({ kind: 'pirate' }), e2 = deadInSpaceScene({ foe: f2 });
+      seq([0]); const b0 = stand(); G.nextEvent = null;
+      const text = e2.choices[i].run();
+      rec.plays.push({ i, text: String(text), next: G.nextEvent ? [G.nextEvent.title, String(G.nextEvent.text)] : null, ...left(b0) });
+      G.nextEvent = null; G.duel = null;
+    }
+    out.push(rec);
+  }
   // how a boarding ends: the boarders turned back or the bridge taken, you aboard her or driven back, with the crew hurt or not
   for (const assault of [false, true]) for (const post of ['gunner', 'engineer']) for (const won of [true, false]) for (const round of [1, 3]) {
     fresh(post, 'raider');
