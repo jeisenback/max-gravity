@@ -120,9 +120,9 @@
     // The hired chapter's scenes, as the game's own registry lists them (js/hiredscenes.js): each has its id there.
     for (const e of hiredSceneRegistry()) {
       if (e.kind === 'cast') {
-        const c = CAST[e.key], sc = c.scenes[e.name];
-        add({ id: e.id, where: e.name === 'meet' ? 'port' : 'transit', file: fileOf['cast:' + e.key], belongs: `${e.key} (${c.xo ? 'first officer' : 'main character'})`, on: castOn(e.key),
-          conditionsNote: e.name === 'meet' ? 'Offered at a port bar when a main character is due.' : `Plays ${sc.days || 0} days after they join, after their earlier scenes${e.closed ? '; this reading plays in its place when their opinion of you is below friendly' : ''}.`, pacing: pacingOf.cast(e.name, sc, e.closed), ...registryRow(e.scene) });
+        const c = CAST[e.key], sc = e.bar ? e.scene : c.scenes[e.name], barNote = e.bar ? `Offered at a port bar ${sc.days} days after they join, as the first port with a bar after that day.` : '';
+        add({ id: e.id, where: e.name === 'meet' || e.bar ? 'port' : 'transit', file: fileOf['cast:' + e.key], belongs: `${e.key} (${c.xo ? 'first officer' : 'main character'})`, on: castOn(e.key),
+          conditionsNote: e.bar ? barNote : e.name === 'meet' ? 'Offered at a port bar when a main character is due.' : `Plays ${sc.days || 0} days after they join, after their earlier scenes${e.closed ? '; this reading plays in its place when their opinion of you is below friendly' : ''}.`, pacing: e.bar ? { tier: null, weight: null, cooldown: 'plays once', trigger: barNote, editable: false } : pacingOf.cast(e.name, sc, e.closed), ...registryRow(e.scene) });
       } else if (e.kind === 'captain' && e.name !== 'goodbye') {
         const note = e.name === 'trouble' ? `${CAPTAIN_BEAT_DAYS.trouble} days after you sign on, on a burn.` : e.name === 'secret:confide' ? `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is ${SECRET_TRUST} or more.` : `${CAPTAIN_BEAT_DAYS.secret} days after you sign on, when their opinion of you is below ${SECRET_TRUST}.`;
         add({ id: e.id, where: 'transit', file: fileOf['captain:' + e.key], belongs: `${e.key} (captain)`, on: captainOn(e.key), conditionsNote: note, pacing: pacingOf.captain(e.name.split(':')[0]), ...registryRow(e.scene) });
@@ -318,7 +318,7 @@
     const meeting = !!reg && reg.kind === 'cast' && reg.name === 'meet';  // an owner meets a main character at a port bar; a hired hand never does
     beginGame(meeting || pe ? { ...o, as: 'owner' } : o, !!reg && !meeting);
     // A scene in a burn is played on the way to the place (its `at` is the destination); one at a port, landed there.
-    const where = s ? s.where : pe ? pe.where : reg.name === 'meet' || reg.name === 'goodbye' || reg.kind === 'job' ? 'port' : 'transit';
+    const where = s ? s.where : pe ? pe.where : reg.name === 'meet' || reg.name === 'goodbye' || reg.kind === 'job' || reg.bar ? 'port' : 'transit';
     if (where === 'transit') uatBurn(at.sid === 'earth' ? 'Mars' : 'Earth', at.sid); else uatLand(place);
     tweakState(o);
     if (pe && (pe.topic || pe.help)) {  // a bar topic: a person it is about across the table, and the topic as a choice (or the help scene it leads to)
@@ -363,6 +363,9 @@
       else if (reg.kind === 'hand') {  // a hired event is about a shipmate, so one is aboard
         const mate = makeCrewCandidate(G.state.systemId); registerPerson(mate); G.state.crew.push(mate.id);
         openEvent(reg.def.make(handContext()));
+      } else if (reg.bar) {  // a main character's talk at a port bar (castbar.js)
+        castPerson(reg.key);
+        openEvent(sceneWords(reg.id, { title: reg.scene.title, text: reg.scene.text, personal: true, choices: reg.scene.choices }));
       } else if (reg.kind === 'cast') {
         const sc = CAST[reg.key].scenes[reg.name];
         if (sc.closed) castPerson(reg.key).opinion = reg.closed ? OPINION.FRIEND - 1 : OPINION.FRIEND;
