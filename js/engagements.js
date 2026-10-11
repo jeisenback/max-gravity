@@ -185,11 +185,11 @@ function startRaid(spec, flee, o = {}) {
 // What a choice can cost, said before it is picked (#293, #364): its worst outcome in a few words, built from what the choice declares, never
 // the odds. `hull`: a lost roll costs hull, and with it a crew casualty; `casualty`: a lost exchange can cost one without hull; `hand`: you may
 // be hurt; `xp`: you learn less; `marks`: the captain marks the call (a bold or risky one). A sure choice, or one with nothing at stake,
-// carries no note. The raids, the boarding scenes, the ice run and the work events all say it through this.
+// carries no note. The raids, the boarding scenes, the ice run and the work events all say it through this. Plain text: a label is escaped where the button is drawn (views.js).
 function costNote(c) {
   const costs = [...(c.hull || c.casualty ? [...(c.hull ? ['hull damage'] : []), 'a crew casualty'] : []), ...(c.hand ? ['you may be hurt'] : []), ...(c.xp ? ['you learn less'] : [])];
   const text = c.marks ? [...(costs.length ? [`${costs.join(', ')}, and`] : []), 'the captain marks it'].join(' ') : costs.join(', ');
-  return text ? ` <span class="hint">[if it fails: ${text}]</span>` : '';
+  return text ? ` [if it fails: ${text}]` : '';
 }
 function raidCostNote(c, style) {
   if (c.odds(style) >= 1) return '';

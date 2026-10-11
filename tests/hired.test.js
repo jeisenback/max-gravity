@@ -482,7 +482,7 @@ test('burn events for a hired hand: the captain takes the ship\'s calls, with th
   await done();
 });
 
-test('the captain\'s call quotes the option without its cost note markup', async () => {
+test('the captain\'s call quotes the option without its cost note', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   const r = await ev(() => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'pilot' }); while (G.dialog) finishEvent();
@@ -491,7 +491,7 @@ test('the captain\'s call quotes the option without its cost note markup', async
     const out = hiredCall({ title: 'Raiders', text: 'A pirate hails.', via: 'ship', choices: [{ label, run: () => 'ok' }] });
     return { label, text: out.text };
   });
-  assert.match(r.label, /<span class="hint">/, 'the label itself carries the markup');
+  assert.match(r.label, /\[if it fails: /, 'the label itself carries the note');
   assert.doesNotMatch(r.text, /[<>]|class=|if it fails/, 'the quoted call does not');
   assert.match(r.text, /takes the call: "Fire a warning shot\."/);
   await done();

@@ -526,3 +526,26 @@ test('the ice run, the work events and the lock fights say what an option can co
   for (const labels of r.lock) { assert.equal(labels.length, 4); for (const l of labels) assert.ok(l.endsWith('[if it fails: a crew casualty, you may be hurt]'), l); }
   await done();
 });
+
+// ---------- the note on the button (#491) ----------
+
+test('the cost note shows on the rendered button as text, with no markup, in a raid, a lock fight, an ice run scene and a work event', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const buttons = choices => { const d = document.createElement('div'); d.innerHTML = choiceBlockHtml(choices); return [...d.querySelectorAll('button')].map(b => b.textContent); };
+    raid('gunner'); startDuel({ kind: 'pirate' }, false); const first = G.nextEvent; G.nextEvent = null;
+    hired().run = { ice: { edge: 0 } };
+    return {
+      raid: buttons(first.choices),
+      lock: buttons(repelScene(repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full')).choices),
+      ice: buttons(iceStageScene(0).choices),
+      work: buttons(workEvent(WORK_EVENTS[0]).choices),
+    };
+  });
+  for (const [name, labels] of Object.entries(r)) {
+    assert.ok(labels.some(l => l.includes('[if it fails:')), `${name}: a button carries the note`);
+    for (const l of labels) assert.doesNotMatch(l, /[<>]|class=/, `${name}: ${l}`);
+  }
+  await done();
+});
