@@ -94,3 +94,8 @@ test('the memories of the scenes of faction ties are lines, and none is left in 
   await g.done();
   assert.equal(r, 'You let <b>me</b> ask');
 });
+
+test('the memories of the ship\'s own downtime activities are lines, and none is left in code in js/shiplife.js', async () => {
+  const src = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'js', 'shiplife.js'), 'utf8');
+  assert.deepEqual([...src.matchAll(/\blike(?:Ambient)?\([^;\n]*?, *['"`][A-Z]/g)].map(m => m[0].slice(0, 60)), [], 'a memory in code in shiplife.js');
+});

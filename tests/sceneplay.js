@@ -124,6 +124,17 @@ const playScenes = () => {
   for (const [gov, amount] of [[GOVT, 5], [GOVT, -5], [GOVT2, 12], [GOVT2, -12], [GOVT, 2]]) {
     run(`ties:reacts:${gov}:${amount}`, {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { crewReacts(gov, amount); return ''; } }] }), { prep() { G.state.crew = []; crewOf(10); } });
   }
+  // ---------- downtime on a burn: the ship's own activities, and the menu they are offered in ----------
+  { // the pick of one of two lines is set (not drawn), so that both are played; the dice are used by where everyone walks to
+    const realPick = window.pick, burn = (v, o = {}) => () => { uatBurn('Ceres Station', 'pallas'); uatPassenger(); window.pick = a => a[v % a.length]; G.state.armor = Math.max(1, ship().armor - 10); if (o.engineer) { G.state.crew = []; crewOf(1); } if (o.flipped) G.transit.flipped = true; };
+    for (const v of [0, 1]) for (const engineer of [false, true]) {
+      run(`shiplife:acts:${v}:${engineer ? 'eng' : 'solo'}`, { mode: undefined }, () => ({ title: 'x', text: '', choices: ['meal', 'drills', 'repair', 'visit'].map(id => ({ label: ACTIVITIES[id].label, run: ACTIVITIES[id].run })) }), { prep: burn(v, { engineer }) });
+    }
+    for (const [name, opts, flipped] of [['hired', {}, false], ['hired-flipped', {}, true], ['owner', { mode: undefined }, false], ['owner-flipped', { mode: undefined }, true]]) {
+      run(`shiplife:menu:${name}`, opts, () => { const ev = downtimeEvent(true); return { ...ev, choices: ev.choices.filter((c, i, all) => c.label === ACTIVITIES.meal.label || i === all.length - 1) }; }, { prep: burn(0, { flipped }) });
+    }
+    window.pick = realPick;
+  }
   // ---------- the yard office ----------
   for (const [ship, post, trusted, skilled] of [['used', 'gunner', false, false], ['used', 'engineer', true, true], ['lightfreighter', 'gunner', true, false], ['lightfreighter', 'pilot', false, true]]) {
     run(`scene:yard-office:${ship}:${post}:${trusted ? 't' : 'u'}${skilled ? 's' : 'n'}`, { post, credits: 60000 }, () => {
