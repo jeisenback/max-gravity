@@ -187,5 +187,206 @@
    "Arrived at Mercury (Independent). 12 Jun 2214."
   ],
   "credits": 0
+ },
+ {
+  "key": "hail:demand:paid",
+  "text": [
+   "Rook: \"Nothing personal, captain. Mara Quill paid good money for your ship.\" (H to answer)"
+  ],
+  "credits": 0
+ },
+ {
+  "key": "hail:demand:grudge",
+  "text": [
+   "Rook: \"You again. No deals this time. This is personal.\" (H to answer)"
+  ],
+  "credits": 0
+ },
+ {
+  "key": "hail:demand:tribute",
+  "text": [
+   "Rook: \"You again! Same deal as last time, only the price has gone up.\" (H to answer)"
+  ],
+  "credits": 0
+ },
+ {
+  "key": "hail:demand:kind:0",
+  "text": [
+   "Rook: \"I really do hate to do this. Cargo, please, and nobody has to get hurt.\" (H to answer)"
+  ],
+  "credits": 0
+ },
+ {
+  "key": "hail:demand:kind:1",
+  "text": [
+   "Rook: \"I am sorry, truly, but times are hard. Your cargo, and we will leave your crew alone.\" (H to answer)"
+  ],
+  "credits": 0
+ },
+ {
+  "key": "hail:demand:kind:2",
+  "text": [
+   "Rook: \"I am sorry, truly, but times are hard. Your cargo, and we will leave your crew alone.\" (H to answer)"
+  ],
+  "credits": 0
+ },
+ {
+  "key": "hail:demand:brave:0",
+  "text": [
+   "Rook: \"This is a boarding action. Cut your drive, and I promise we will be quick, and, mostly, gentle.\" (H to answer)"
+  ],
+  "credits": 0
+ },
+ {
+  "key": "hail:demand:brave:1",
+  "text": [
+   "Rook: \"We are going to take what we came for. You can fight, but I would not.\" (H to answer)"
+  ],
+  "credits": 0
+ },
+ {
+  "key": "hail:demand:brave:2",
+  "text": [
+   "Rook: \"We are going to take what we came for. You can fight, but I would not.\" (H to answer)"
+  ],
+  "credits": 0
+ },
+ {
+  "key": "hail:demand:greedy:0",
+  "text": [
+   "Rook: \"Everything has a price, including your ship. Let us negotiate.\" (H to answer)"
+  ],
+  "credits": 0
+ },
+ {
+  "key": "hail:demand:greedy:1",
+  "text": [
+   "Rook: \"I am prepared to be very reasonable. Everything you have, for the privilege of continuing to breathe.\" (H to answer)"
+  ],
+  "credits": 0
+ },
+ {
+  "key": "hail:demand:greedy:2",
+  "text": [
+   "Rook: \"Consider this a tax. A large one. Payable now.\" (H to answer)"
+  ],
+  "credits": 0
+ },
+ {
+  "key": "hail:demand:cold:0",
+  "text": [
+   "Rook: \"This is Rook. Cut your drive and prepare to be boarded.\" (H to answer)"
+  ],
+  "credits": 0
+ },
+ {
+  "key": "hail:demand:cold:1",
+  "text": [
+   "Rook: \"This is Rook. You are in our space. Cut your drive, and this will go easily.\" (H to answer)"
+  ],
+  "credits": 0
+ },
+ {
+  "key": "hail:demand:cold:2",
+  "text": [
+   "Rook: \"Attention, freighter. This is Rook. Heave to and prepare to be boarded.\" (H to answer)"
+  ],
+  "credits": 0
+ },
+ {
+  "key": "hail:demand:again",
+  "text": [],
+  "credits": 0
+ },
+ {
+  "key": "hail:none",
+  "text": [
+   "No ships in comms range."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "hail:escort",
+  "text": [
+   "Wing: \"Holding formation, captain.\""
+  ],
+  "credits": 0
+ },
+ {
+  "key": "hail:far",
+  "text": [
+   "Wren is out of comms range."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "story:fight:recovery:won",
+  "text": [
+   "Aquilon recovery ship \"Quiet Ledger\" breaks up. Aquilon will not be happy."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "story:fight:recovery:escaped",
+  "text": [
+   "Aquilon recovery ship \"Quiet Ledger\" breaks off, for now."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "story:fight:ambush:won",
+  "text": [
+   "Aquilon security \"Due Diligence\" and \"Hostile Takeover\" breaks up. Aquilon will not be happy."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "story:fight:ambush:escaped",
+  "text": [
+   "Aquilon security \"Due Diligence\" and \"Hostile Takeover\" breaks off, for now."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "story:blockade:belt:holds",
+  "text": [
+   "The blockade holds. Fall back, or try again when you are ready."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "story:blockade:belt:won",
+  "text": [
+   "The blockade breaks. Ceres Station clears you to dock."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "story:blockade:belt:cold",
+  "text": [
+   "The blockade breaks. Ceres Station clears you to dock."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "story:blockade:aquilon:holds",
+  "text": [
+   "The blockade holds. Fall back, or try again when you are ready."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "story:blockade:aquilon:won",
+  "text": [
+   "The blockade breaks. Ceres Station clears you to dock."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "story:blockade:aquilon:cold",
+  "text": [
+   "The blockade breaks. Ceres Station clears you to dock."
+  ],
+  "credits": 0
  }
 ]
