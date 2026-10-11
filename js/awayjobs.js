@@ -136,7 +136,7 @@ function pitchScene(a) {
     } };
   });
   choices.push({ label: 'Never mind', run: () => 'You let it lie. The job will keep, for a while.' });
-  return { title: 'Putting It to the Captain', personal: true, text: `${fill2(job.blurb, a.ctx)} It is ${a.ctx.dest}, ${a.ctx.system}: ${a.days} days out, and the captain has other runs in mind. How do you put it?`, choices };
+  return { title: 'Putting It to the Captain', personal: true, text: `${fill2(jobBlurb(job, true), a.ctx)} It is ${a.ctx.dest}, ${a.ctx.system}: ${a.days} days out, and the captain has other runs in mind. How do you put it?`, choices };
 }
 const fill2 = (t, ctx) => t.replace(/\{(\w+)\}/g, (m, k) => (ctx[k] !== undefined ? ctx[k] : m));
 const pitchedNow = a => a.pitched === `${G.state.day}@${G.state.planet}`;
@@ -146,7 +146,7 @@ function awayHtml() {
   const h = hired(), list = h.away || [];
   if (!list.length) return '';
   return `<div class="post"><div class="eyebrow">Work elsewhere &middot; you would need the captain to fly you there</div>
-    ${list.map((a, i) => `<div class="row"><span><b>${esc(fill2(awayJob(a).title, a.ctx))}</b> <span class="hint">${esc(fill2(awayJob(a).blurb, a.ctx))} ${esc(a.ctx.dest)}, ${esc(a.ctx.system)}, ${a.days} days. Until day ${a.until}.</span></span>
+    ${list.map((a, i) => `<div class="row"><span><b>${esc(fill2(jobTitle(awayJob(a)), a.ctx))}</b> <span class="hint">${esc(fill2(jobBlurb(awayJob(a)), a.ctx))} ${esc(a.ctx.dest)}, ${esc(a.ctx.system)}, ${a.days} days. Until day ${a.until}.</span></span>
       ${a.booked ? '<span class="tag good">the captain is flying you there</span>' : `<button data-action="pitchJob" data-arg="${i}" ${pitchedNow(a) ? 'disabled' : ''}>Put it to the captain</button>`}</div>`).join('')}
     <p class="hint">Once a stop for each. The captain decides, by who they are and how they feel about you.</p></div>`;
 }

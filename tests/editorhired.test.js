@@ -44,7 +44,7 @@ test('the converted scenes are data rows of the registry, and the rest are code 
     const row = id => SceneIndex.rows.find(x => x.id === id);
     return { ansel: ['kind', 'registry'].map(k => row('cast:ansel:intro')[k]), closed: ['kind', 'registry'].map(k => row('cast:cato:late:closed')[k]), ilsa: ['kind', 'registry'].map(k => row('cast:ruben:mid1')[k]),
       effects: row('cast:ansel:intro').choices[0].effects, edit: row('cast:ines:pivot').edit.choices.map(c => c.effects), goodbye: row('captain:hester:goodbye').registry, signon: row('scene:sign-on').registry,
-      storylets: SceneIndex.rows.filter(x => x.kind === 'data' && !x.registry).length, dataRegistry: SceneIndex.rows.filter(x => x.kind === 'data' && x.registry && !/^(lines|people|bar|social|family):/.test(x.id)).length };  // the hired chapter's scenes; the line tables and the passenger events are counted in their own tests (#457)
+      storylets: SceneIndex.rows.filter(x => x.kind === 'data' && !x.registry).length, dataRegistry: SceneIndex.rows.filter(x => x.kind === 'data' && x.registry && !/^(lines|people|bar|social|family|job|away):/.test(x.id)).length };  // the hired chapter's scenes; the line tables and the passenger events are counted in their own tests (#457)
   });
   assert.deepEqual(r.ansel, ['data', true]);
   assert.deepEqual(r.closed, ['data', true]);
@@ -442,6 +442,32 @@ test('the talk scenes are rows with a field for every line, and each plays in a 
     const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.choices.map(c => c.label)]));
     assert.ok(seen.includes(`Typed ${id}.`), `${id} plays the typed ${line}: ${seen.slice(0, 200)}`);
   }
+});
+
+test('the jobs on the station and further away are rows (the job, then each stage) with the words in the form, and each stage plays in the preview (#457)', async () => {
+  await reload(); await select('job:lock:0');
+  const r = await page.evaluate(() => ({ ids: SceneIndex.rows.filter(x => /^(job|away):/.test(x.id)).map(x => x.id), shape: SceneIndex.rows.filter(x => /^(job|away):/.test(x.id)).every(x => x.kind === 'data' && x.table && x.where === 'port') }));
+  assert.equal(r.ids.length, 19, 'eight jobs, and their stages');
+  assert.ok(r.shape, 'each is a table scene, at a port');
+  assert.ok(['job:lock', 'job:lock:1', 'job:ration:0', 'away:package', 'away:package:1', 'away:witness:0'].every(id => r.ids.includes(id)), r.ids.join());
+  const lock = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
+  assert.deepEqual(lock, ['title', 'text', 'c0.label', 'c0.win', 'c0.lose', 'c1.label', 'c1.win', 'c1.lose', 'c2.label', 'c2.win', 'c2.lose', 'c3.label', 'c3.win'], 'a choice that cannot be lost has no line for it');
+  assert.equal(await page.locator('#detail [data-add]').count(), 0, 'no conditions or effects to edit: the odds and the pay are in code');
+  await page.fill('#f-title', 'The Lock, edited');
+  await page.fill('#f-c0\\.win', 'You cut the pin, the editor\'s way.');
+  assert.deepEqual(await changes(), { 'job:lock:0': { title: 'The Lock, edited', choices: { 0: { win: 'You cut the pin, the editor\'s way.' } } } });
+  const f = await play();
+  assert.equal(await f.evaluate(() => G.dialog.event.title), 'The Lock, edited');
+  assert.ok((await f.evaluate(() => G.dialog.choices.length)) >= 3);
+  // the job itself: its title and blurb, as the Missions page shows them; and a job further away
+  await reload(); await select('job:message');
+  assert.deepEqual(await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path)), ['title', 'text']);
+  await page.fill('#f-text', 'A new blurb for the board.');
+  assert.deepEqual(await changes(), { 'job:message': { text: 'A new blurb for the board.' } });
+  await reload(); await select('away:package:0');
+  await page.fill('#f-title', 'Away, edited');
+  const a = await play();
+  assert.equal(await a.evaluate(() => G.dialog.event.title), 'Away, edited');
 });
 
 test('the function-built scenes and the code-written hired events are edited line by line, and each plays in the preview (#463)', async () => {
