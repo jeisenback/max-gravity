@@ -993,8 +993,9 @@ function castJoin(key, text) {
   p.role = CAST[key].role; p.skill = p.skills[p.role];
   st.crew.push(p.id);
   rec.since = st.day;
-  like(p, 2, `I signed on with ${shipTitle()}.`);
-  homeLog(`${p.first} ${p.last} came aboard as ${ROLE_NAMES[p.role].toLowerCase() === 'engineer' ? 'an' : 'a'} ${ROLE_NAMES[p.role].toLowerCase()}.`);
+  const role = ROLE_NAMES[p.role].toLowerCase(), say = key => sceneSay('scene:cast-join', key, { ship: shipTitle(), first: p.first, last: p.last, article: role === 'engineer' ? 'an' : 'a', role });  // the words are the lines of scene:cast-join (hiredscenes.js)
+  like(p, 2, say('memory'));
+  homeLog(say('log'));
   return text;
 }
 function castLater(key, text) {
