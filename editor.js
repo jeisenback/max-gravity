@@ -72,8 +72,8 @@
     return {
       kind: data ? 'data' : 'code', registry: true, title: s.title, text: getter ? '' : plain(s.text), when: {},
       codeNote: getter ? CODE_TEXT : data ? '' : 'Some of its choices run code. Their effects stay in code; a result written for one replaces the line it returns.',
-      choices: s.choices.map(c => ({ label: plain(c.label), result: c.run ? '' : plain(c.result), when: c.run ? {} : c.when || {}, effects: c.effects || {}, next: '' })),
-      edit: { text: !getter && typeof s.text === 'string', choices: s.choices.map(c => ({ label: typeof c.label === 'string', result: true, effects: !c.run })) },
+      choices: s.choices.map(c => ({ label: plain(c.label), result: c.run ? '' : plain(c.result), ...(typeof c.memory === 'string' ? { memory: c.memory } : {}), when: c.run ? {} : c.when || {}, effects: c.effects || {}, next: '' })),
+      edit: { text: !getter && typeof s.text === 'string', choices: s.choices.map(c => ({ label: typeof c.label === 'string', result: true, ...(typeof c.memory === 'string' ? { memory: true } : {}), effects: !c.run })) },
     };
   }
 
@@ -457,9 +457,9 @@
 
   // The fields of a data scene's form, named by a path: 'title', 'text', and 'c0.label' and 'c0.result' for the first choice.
   const PART_LABEL = { cold: 'Opening, when they think little of you', neutral: 'Opening, when they think plainly of you', warm: 'Opening, when they think well of you', crew: 'If crew go with you ({names} is who)', secret: 'If you learned their secret', repaid: 'If a loan you made is repaid', xoDead: 'If the first officer is dead', xo: 'If the first officer is there', parting: 'The parting' };
-  const CHOICE_FIELDS = ['label', 'result', 'win', 'lose'];  // a table scene's choice has a win and a lose line in place of a result (#462)
+  const CHOICE_FIELDS = ['label', 'result', 'win', 'lose', 'memory'];  // a table scene's choice has a win and a lose line in place of a result (#462)
   const pathsOf = r => ['title', ...(r.parts ? [] : ['text']), ...(r.text2 !== undefined ? ['text2'] : []), ...Object.keys(r.parts || {}).map(n => `part.${n}`), ...r.choices.flatMap((c, i) => CHOICE_FIELDS.filter(f => c[f] !== undefined).map(f => `c${i}.${f}`))];
-  const CHOICE_PATH = /^c(\d+)\.(label|result|win|lose)$/;
+  const CHOICE_PATH = /^c(\d+)\.(label|result|win|lose|memory)$/;
   const shippedOf = (r, path) => { const m = CHOICE_PATH.exec(path); return m ? r.choices[m[1]][m[2]] : path.startsWith('part.') ? (r.parts || {})[path.slice(5)] : r[path]; };
   const editableOf = (r, path) => { const m = CHOICE_PATH.exec(path); return !r.edit ? false : m ? r.edit.choices[m[1]][m[2]] : path === 'title' ? !r.noTitle : (path.startsWith('part.') ? !!r.parts : r.edit[path]); };
 
@@ -755,7 +755,7 @@
     const mine = values[r.id] || {};
     return `<h3>Your words</h3><div class="form" data-form="${esc(r.id)}">
       ${r.noTitle ? '' : fieldHtml(r, 'title', 'Title', mine.title)}${r.parts ? partsHtml(r, mine) : fieldHtml(r, 'text', r.text2 !== undefined ? 'Opening 1' : 'Text', mine.text)}${r.text2 !== undefined ? fieldHtml(r, 'text2', 'Opening 2', mine.text2) : ''}
-      ${r.choices.map((c, i) => `<h4>Choice ${i + 1}${c.post ? ` (${esc(c.post)}'s own)` : ''}</h4>${fieldHtml(r, `c${i}.label`, 'Label', mine[`c${i}.label`])}${[['result', 'Result'], ['win', 'If it works'], ['lose', 'If it fails']].filter(([f]) => c[f] !== undefined).map(([f, name]) => fieldHtml(r, `c${i}.${f}`, name, mine[`c${i}.${f}`])).join('')}`).join('')}
+      ${r.choices.map((c, i) => `<h4>Choice ${i + 1}${c.post ? ` (${esc(c.post)}'s own)` : ''}</h4>${fieldHtml(r, `c${i}.label`, 'Label', mine[`c${i}.label`])}${[['result', 'Result'], ['win', 'If it works'], ['lose', 'If it fails'], ['memory', 'What they remember']].filter(([f]) => c[f] !== undefined).map(([f, name]) => fieldHtml(r, `c${i}.${f}`, name, mine[`c${i}.${f}`])).join('')}`).join('')}
     </div>`;
   }
 
@@ -922,7 +922,7 @@
               if (!isObj(c)) { refuse(`${at}: is not an object`); continue; }
               for (const [f, x] of Object.entries(c)) {
                 let bad = '';
-                if (f === 'label' || f === 'result' || f === 'win' || f === 'lose') bad = r.edit.choices[i][f] === undefined ? 'is not something this choice has' : !r.edit.choices[i][f] ? 'has parts that depend on conditions, so it is edited in code' : words(x) ? '' : `needs some text of up to ${LIMIT.text} characters`;
+                if (f === 'label' || f === 'result' || f === 'win' || f === 'lose' || f === 'memory') bad = r.edit.choices[i][f] === undefined ? 'is not something this choice has' : !r.edit.choices[i][f] ? 'has parts that depend on conditions, so it is edited in code' : words(x) ? '' : `needs some text of up to ${LIMIT.text} characters`;
                 else if (f === 'when') bad = r.registry && !effectsEditable(r, Number(i)) ? 'this choice runs code, so its conditions are not edited' : rulesError(x, CONDITION_SPEC, lists.conditions);
                 else if (f === 'effects') bad = r.registry && !effectsEditable(r, Number(i)) ? 'this choice runs code, so its effects are not edited' : rulesError(x, EFFECT_SPEC, lists.effects);
                 else if (f === 'next') bad = r.registry ? 'a hired scene plays by its days, not by conditions' : x === null || (typeof x === 'string' && storylets.has(x)) ? '' : 'leads to a scene that is not there';

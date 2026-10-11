@@ -168,8 +168,8 @@ const CAST = {
         choices: [
           { label: 'Let her fly it', run: () => coldThrusters(false) },
           { label: 'Put a second hand at the cutoff', ...gated(needCrew(2)), run: () => coldThrusters(true) },
-          { label: 'Order her to ditch', run() {
-            castLike('ines', -3, 'You ordered me to ditch the ship, as the tower did.');
+          { label: 'Order her to ditch', memory: 'You ordered me to ditch the ship, as the tower did.', run() {
+            castLike('ines', -3, this.memory);
             return 'You order the ditch. She does it by the book, and the book is correct, and neither of you says that she would have made the pad.';
           } },
         ],
@@ -332,8 +332,8 @@ const CAST = {
         choices: [
           { label: 'Let him go in', run: () => thePlant(false) },
           { label: 'Send a second person in with him', ...gated(needCrew(2)), run: () => thePlant(true) },
-          { label: 'Tell him to vent the plant', run() {
-            castLike('tomas', -3, 'You told me to vent the plant.');
+          { label: 'Tell him to vent the plant', memory: 'You told me to vent the plant.', run() {
+            castLike('tomas', -3, this.memory);
             return 'You tell him to vent her. He stands at the door for a moment, and then he does it, and the plant dies with a sound like a long breath. He does not look at you. He goes below to tell her he is sorry.';
           } },
         ],
@@ -465,8 +465,8 @@ const CAST = {
         choices: [
           { label: 'Let her lead', run: () => overTheHull(false) },
           { label: 'Send her with a second person', ...gated(needCrew(2)), run: () => overTheHull(true) },
-          { label: 'Call it off', run() {
-            castFlag('yelena', 'benched'); castLike('yelena', -3, 'You called off the boarding and put me on the bench.');
+          { label: 'Call it off', memory: 'You called off the boarding and put me on the bench.', run() {
+            castFlag('yelena', 'benched'); castLike('yelena', -3, this.memory);
             return ('You tell her no, and cut the channel, and the drifting ship goes on drifting. Yelena stands at the hatch for a while with her ' +
                 'helmet in her hand. "Fine," she says. She sits down on the bench by the airlock, straight, and does not say another word to you for ' +
                 'the rest of the burn.');
@@ -542,7 +542,7 @@ const CAST = {
             'who thinks his channel is private. He is quite wrong. I have something, and I will tell you, but I should say that it was heard, not, ' +
             'strictly, asked for." He lowers his voice. "It is worth money. The way a favor is worth money."'),
         choices: [
-          { label: 'Act on the tip', run() { castLike('ruben', 2, 'You acted on what I heard.'); castXp('ruben', 'slicer', 2); const tip = addRumor(); return (
+          { label: 'Act on the tip', memory: 'You acted on what I heard.', run() { castLike('ruben', 2, this.memory); castXp('ruben', 'slicer', 2); const tip = addRumor(); return (
               `He tells you, and he is right to be careful: ${tip} He watches your face while you take it in, fiddling with the lid of the thermos. ` +
               `"Not a word," he says, delighted, "about where you heard it. A good listener has no name."`); } },
           {
@@ -601,8 +601,8 @@ const CAST = {
         choices: [
           { label: 'Let him go out to the mast', run: () => theMast(false) },
           { label: 'Send a second person out with him', ...gated(needCrew(2)), run: () => theMast(true) },
-          { label: 'Tell him to hold the band from the console', run() {
-            castFlag('ruben', 'benched'); castLike('ruben', -3, 'You kept me off the mast.');
+          { label: 'Tell him to hold the band from the console', memory: 'You kept me off the mast.', run() {
+            castFlag('ruben', 'benched'); castLike('ruben', -3, this.memory);
             return 'You tell him no, and put your hand on the console. The north mast stays dark, and the voice on the open band asks its question twice more and then stops asking. Ruben sits down at the comms post with the thermos untouched. "It is your ship," he says quietly. "I will keep the band open anyway. Somebody should be listening."';
           } },
         ],
@@ -742,8 +742,8 @@ const CAST = {
         choices: [
           { label: 'Let her go out on the line', run: () => theTow(false) },
           { label: 'Send a second hand out with her', ...gated(needCrew(2)), run: () => theTow(true) },
-          { label: 'Cut the line and let the hulk go', run() {
-            castFlag('bexa', 'benched'); castLike('bexa', -3, 'You cut the tow on me.');
+          { label: 'Cut the line and let the hulk go', memory: 'You cut the tow on me.', run() {
+            castFlag('bexa', 'benched'); castLike('bexa', -3, this.memory);
             return 'You tell her to cut the line, and she does, with her own hand on the release. The hulk goes on turning, slowly, its beacon calling every four seconds until it is too faint to hear. Bexa sits at the stick for a long while with the tag in her fist. "It is your call," she says at last. "I will put her on the list as lost."';
           } },
         ],
@@ -885,8 +885,8 @@ const CAST = {
         choices: [
           { label: 'Let Pax clear it alone', run: () => theCoupling(false) },
           { label: 'Put a second hand at the rack beside Pax', ...gated(needCrew(2)), run: () => theCoupling(true) },
-          { label: 'Tell Pax to cut the power and let the mount drop', run() {
-            castFlag('pax', 'benched'); castLike('pax', -3, 'You told me to cut the power on the mount.');
+          { label: 'Tell Pax to cut the power and let the mount drop', memory: 'You told me to cut the power on the mount.', run() {
+            castFlag('pax', 'benched'); castLike('pax', -3, this.memory);
             return 'You tell Pax to cut the power, and Pax does, at once, with a hand on the switch. The mount drops onto the rack with a sound you feel in the deck, and the hand beside it is unhurt. Pax stands at the controls with the wrench held out in front of them like something hot. "I could have held it," Pax says. "I think I could have." The coupling is the only thing in the bay that does not move.';
           } },
         ],

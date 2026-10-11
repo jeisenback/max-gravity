@@ -566,6 +566,20 @@ test('the memories play leaves where no scene is its own have their lines in the
   assert.ok(seen.includes('You brought me to Mars.') && seen.includes('You brought the ice in.'), seen.slice(0, 300));
 });
 
+test('a cast scene\'s code choice that leaves a memory has a field for it in the form, and the file keeps what is typed (#508)', async () => {
+  await reload();
+  const hit = await page.evaluate(() => { const r = SceneIndex.rows.find(x => x.choices.some(c => c.label === 'Order her to ditch')); return { id: r.id, i: r.choices.findIndex(c => c.label === 'Order her to ditch') }; });
+  await select(hit.id);
+  const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
+  assert.ok(paths.includes(`c${hit.i}.memory`), `${hit.i} in ${paths.join()}`);
+  assert.ok(!paths.includes('c0.memory'), 'a choice that leaves no memory has no field');
+  await page.fill(`textarea[data-path="c${hit.i}.memory"]`, 'You made the call.');
+  const out = await page.evaluate(h => SceneIndex.overridesFrom(SceneIndex.rows, { [h.id]: { [`c${h.i}.memory`]: 'You made the call.' } }), hit);
+  assert.deepEqual(out[hit.id], { choices: { [hit.i]: { memory: 'You made the call.' } } });
+  const back = await page.evaluate(o => SceneIndex.valuesFrom(o), out);
+  assert.deepEqual(back[hit.id], { [`c${hit.i}.memory`]: 'You made the call.' });
+});
+
 test('the function-built scenes and the code-written hired events are edited line by line, and each plays in the preview (#463)', async () => {
   await reload(); await select('scene:warning');
   const r = await page.evaluate(() => {
