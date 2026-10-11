@@ -372,7 +372,7 @@ test('the passenger and crew events are rows with a field for every line, the li
   assert.deepEqual(r.ill, ['reason.ill', 'reason.medical'], 'a line the text leads to is a line of its own');
   assert.deepEqual(r.plan, [false, false, true], 'the title and the unknown line are refused');
   assert.equal(await page.locator('#detail #f-title').count(), 0, 'an event has no title to change');
-  assert.equal(await page.locator('#detail textarea[data-path^="part."]').count(), 6, 'a field for every line');
+  assert.equal(await page.locator('#detail textarea[data-path^="part."]').count(), 8, 'a field for every line, the memories it leaves too');
   for (const id of ['people:pax:debt', 'people:pax:contraband', 'people:pax:ill', 'people:pax:curious', 'people:crew:greedy', 'people:crew:brave']) {
     await select(id);
     await page.fill('textarea[data-path="part.text"]', `Typed ${id}.`);

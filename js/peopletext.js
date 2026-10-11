@@ -336,6 +336,10 @@ const PEOPLE_LINES = {
     'c1.lose': '{crew}\'s spoof fails a checksum on one line of the manifest, and the scanner lights. You pay a 2,000 cr fine. "One digit," {crew} says, for the next hour. "It was one digit."',
     'c2.label': 'Turn {first} in (+1,500 cr reward)',
     'c2.result': '"{first} {last}," the officer says, once, to be sure, and customs takes {first} off in cuffs with one hand on their shoulder. {first} does not look back. The airlock cycles. At the galley table a cup is left half full, and nobody clears it.',
+    'c0.win.memory': 'You covered for me with customs.',
+    'c0.lose.memory': 'You tried to cover for me with customs.',
+    'c1.win.memory': 'Your slicer hid me from customs.',
+    'c2.result.memory': 'You turned me in to customs.',
   },
   'people:pax:wanted': {
     title: 'Bounty Hunter',
@@ -347,6 +351,10 @@ const PEOPLE_LINES = {
     'c2.label': 'Refuse, and fight if you must',
     'c2.win': 'It takes a long, ugly exchange to drive the hunter off, and it costs you {armor} points of armor and an antenna. That night in the galley, over a bulb of something strong, {first} tells you their side of it. "A bad partner and a worse lawyer," {first} says, "and I did not do half of what is on the sheet." The bulb is empty before the other half.',
     'c2.lose': 'The hunter hammers the hull for three minutes, {armor} points of armor, and then breaks off with a curse on the channel. {first}, gray in the face, holds the patch plate. "Hold it flat," you say, and {first} does, while you seal the worst of the breaches.',
+    'c0.result.memory': 'You sold me to a bounty hunter.',
+    'c1.result.memory': 'You fought off a bounty hunter for me.',
+    'c2.win.memory': 'You fought off a bounty hunter for me.',
+    'c2.lose.memory': 'You risked your ship for me.',
   },
   'people:pax:ill': {
     title: 'Medical Emergency',
@@ -362,6 +370,10 @@ const PEOPLE_LINES = {
     'c2.result': 'You push the drive until the frame ticks. {first} lies pinned to a bunk with a wet cloth on their forehead and asks, every hour, how many hours you have saved. When the doctors take them at the dock, they say something you do not catch. It might be thanks.',
     'c3.label': 'There is nothing you can do',
     'c3.result': '{first} recovers over three days, on their own, in a cold bunk. They ask you for nothing, and they do not speak to you for the rest of the trip. At the dock they go down the ramp without turning round.',
+    'c0.result.memory': 'Your medic saved my life.',
+    'c1.memory': 'You spent your medical supplies on me.',
+    'c2.result.memory': 'You burned hard to get me to a doctor.',
+    'c3.result.memory': 'You left me to suffer.',
   },
   'people:pax:spy': {
     title: 'Encrypted Bursts',
@@ -373,6 +385,9 @@ const PEOPLE_LINES = {
     'c1.result': '{crew} cracks it over a long evening. Someone is paying for market numbers from every port you touch, in tidy weekly reports. Nothing dangerous: a patient stranger who wants to know what everything costs. Among the bursts is one line you can use: "{rumor}"',
     'c2.label': 'Not your business',
     'c2.result': 'You let it go. The bursts keep coming every night at the same hour. Once, in the corridor, {first} meets your eye and keeps walking.',
+    'c0.win.memory': 'You caught me, and took money to keep quiet.',
+    'c0.lose.memory': 'You pried into my business.',
+    'c2.result.memory': 'You respected my privacy.',
   },
   'people:pax:debt': {
     title: 'Collectors',
@@ -381,6 +396,8 @@ const PEOPLE_LINES = {
     'c0.result': '{first} opens their mouth and nothing comes out. Then they say, low, that they will pay you back with interest, every credit, if it takes the rest of their life. They do not sit down until you have.',
     'c1.label': 'Tell the collectors to get lost',
     'c1.result': 'They threaten legal action at length and cut the channel. Nothing comes of it. {first} looks at you across the galley. Later there is a cup of tea at your elbow that you did not ask for.',
+    'c0.result.memory': 'You paid off my debt. I will pay you back.',
+    'c1.result.memory': 'You stood up to my collectors.',
   },
   'people:pax:job': {
     title: 'Running Late',
@@ -391,6 +408,9 @@ const PEOPLE_LINES = {
     'c1.result': 'You push the drive, and {first} spends the burn on a crash couch, running answers through their teeth. They arrive on time, rumpled and out of breath, with no time to thank you. You watch them run for the concourse, straightening their collar.',
     'c2.label': '"Physics does not negotiate."',
     'c2.result': 'They say all right and go back to their bunk. For the rest of the trip you can hear them through the bulkhead, running their answers again and again. You never learn whether they made the interview.',
+    'c0.result.memory': 'You got me to my interview on time.',
+    'c1.result.memory': 'You got me to my interview on time.',
+    'c2.result.memory': 'You would not hurry for my interview.',
   },
   'people:pax:research': {
     title: 'Sample Opportunity',
@@ -399,6 +419,8 @@ const PEOPLE_LINES = {
     'c0.result': '{first} spends six hours in a vac suit on the rock, tethered to your hull, giggling into the radio and chipping at the crust with a tiny hammer. When they come back in, frosted and shaking, they hold a vial up to the light. They promise to name something after you.',
     'c1.label': 'Stay on course',
     'c1.result': 'They watch it slide past the window, a pale point in the dark, and stay at the glass until it is gone. Later you see them write something in the notebook: the date, and a line you cannot read. They are polite for the rest of the trip. When they disembark they leave a folded drawing on the galley table, of a rock, and a ship, and a long distance.',
+    'c0.result.memory': 'You made a detour for my research.',
+    'c1.result.memory': 'You would not stop for my research.',
   },
   'people:pax:pilgrim': {
     title: 'A Request for Stillness',
@@ -407,6 +429,7 @@ const PEOPLE_LINES = {
     'c0.result': 'The drive falls silent. They drift through the cargo bay in a slow circle, singing in a language older than any port, and one by one other passengers and crew drift in to listen. When it is over they press a donation on you, in small folded notes, and touch the bulkhead once.',
     'c1.label': 'Decline politely',
     'c1.result': 'They thank you for hearing them. They pray at one g instead, kneeling on the cold deck of the cargo bay.',
+    'c0.result.memory': 'You stilled your ship for our prayers.',
   },
   'people:pax:talkative': {
     title: 'Long Stories',
@@ -415,6 +438,7 @@ const PEOPLE_LINES = {
     'c0.result': 'You listen for an hour, and then another. Near the end, between the bakery and the bees, is something you can use: "{rumor}" {first} gives you a shy smile.',
     'c1.label': 'Excuse yourself to the cockpit',
     'c1.result': 'You escape to the cockpit with a muttered excuse and check the instruments. {first} finds someone else to talk to. Through the hatch, for the next hour, you hear the stories moving from bunk to bunk.',
+    'c0.result.memory': 'You listened to my stories.',
   },
   'people:pax:nervous': {
     title: 'Panic at the Flip',
@@ -425,6 +449,8 @@ const PEOPLE_LINES = {
     'c1.result': '{first} takes the sedative with a shaking hand and lies back on the bunk. Within minutes they are breathing slow. They sleep through the rest of the burn and wake at the dock with no memory of what frightened them.',
     'c2.label': 'Tell them to pull themselves together',
     'c2.result': '{first} flinches and goes quiet. They spend the rest of the trip in their bunk with the curtain drawn, eating little, speaking to no one. Sometimes, in the night, you can hear them.',
+    'c0.result.memory': 'You talked me through a panic attack.',
+    'c2.result.memory': 'You mocked me when I was scared.',
   },
   'people:pax:curious': {
     title: 'Engine Room Tour',
@@ -434,6 +460,7 @@ const PEOPLE_LINES = {
     'c0.fine': '{first} asks questions for an hour, about coolant loops and injector timing and why the drive hums at that note. You find yourself explaining, and enjoying it. By the end you are both leaning on a pipe with the drive humming around you.',
     'c1.label': 'Crew only, sorry',
     'c1.result': 'They say they understand and are sorry to have asked. That evening you find them at the observation blister with an ear against the wall, listening to the drive. When they see you, they go on listening.',
+    'c0.memory': 'You showed me the drive room.',
   },
   'people:pax:drunk': {
     title: 'Galley Incident',
@@ -442,6 +469,8 @@ const PEOPLE_LINES = {
     'c0.result': '{first} grumbles, studies the deck, and says "unreasonable" to nobody. They stay out of the galley for the rest of the trip, and at the dock they pay in full, in small folded notes.',
     'c1.label': 'Let it slide (400 cr)',
     'c1.result': '{first} goes deep red. They clean the galley themselves, top to bottom, all night, with a toothbrush, and in the morning it is the cleanest room on the ship. There is a note on the door in pencil: "Sorry. Thank you. Never again."',
+    'c0.result.memory': 'You charged me for the recycler.',
+    'c1.result.memory': 'You let the recycler thing slide.',
   },
   'people:pax:greedy': {
     title: 'Card Game',
@@ -451,6 +480,7 @@ const PEOPLE_LINES = {
     'c0.lose': '{first} wins in one slow hand, turning a single card over at the end. "Well," {first} says, and gathers the money. "That was friendly." For the rest of the trip {first} hums in the corridors and shuffles the deck where you can see it.',
     'c1.label': 'Decline',
     'c1.result': '"Suit yourself," {first} says, and deals a hand of solitaire, slowly. You hear each card click down. {first} plays it out, loses, and begins again.',
+    'c0.win.memory': 'You beat me at cards.',
   },
   'people:pax:generous': {
     title: 'Gratitude',
@@ -459,6 +489,7 @@ const PEOPLE_LINES = {
     'c0.result': 'You take the notes, and sit at the long table with the crew, elbow to elbow, passing dishes. It is the best meal the ship has had in months, and for an hour nobody talks about anything else. Somebody starts to sing, and the table joins in.',
     'c1.label': 'Refuse the money, keep the dinner',
     'c1.result': '{first} cannot speak for a moment. They take your hand in both of theirs, and then they write out the recipe on a napkin, every step, with a sketch of the pot. You will cook it, badly, for years.',
+    'c1.result.memory': 'You would not take my money.',
   },
   'people:pax:rude': {
     title: 'Complaints',
@@ -467,6 +498,7 @@ const PEOPLE_LINES = {
     'c0.result': '"Item one," you say, and write it in a book. "The bunk." {first} reads the list again, slower, so that you can keep up. By the end of the hour {first} has run out. "Is there any more tea?" {first} asks.',
     'c1.label': 'Put them in their place',
     'c1.result': '"I have read your list," you say, in a level voice, "and here is what I think of it." You go item by item: the bunk is the bunk you were given, the food is the food you eat, and the gravity is the only gravity the drive makes. {first} goes pale, then red, then still. A formal complaint arrives that evening, in triplicate, and the fee comes out of your fare. The rest of the trip is quiet, and at night you can hear the drive again.',
+    'c1.result.memory': 'You put me in my place.',
   },
   'people:crew:greedy': {
     title: '{first} Wants a Raise',
@@ -475,6 +507,8 @@ const PEOPLE_LINES = {
     'c0.result': '{first} hums through the rest of the week and calls you "boss". Unasked, they tidy the corner of the cockpit.',
     'c1.label': 'No',
     'c1.result': '{first} goes back to work. For the next few days they do exactly what is asked and nothing more, and their tools are always where they were left. They have stopped smiling.',
+    'c0.result.memory': 'You gave me a raise.',
+    'c1.result.memory': 'You refused me a raise.',
   },
   'people:crew:drunk': {
     title: 'Galley Brawl',
@@ -483,6 +517,8 @@ const PEOPLE_LINES = {
     'c0.result': '{first} spends the week in a corner of the engine room with their back to the ship, and does the work in silence.',
     'c1.label': 'Pay for it and let it go (300 cr)',
     'c1.result': '{first} stares at the floor, then swears off drink. For now. They take the next three galley shifts. You find them scrubbing the bulkhead, and they do not look up. The dent is polished.',
+    'c0.result.memory': 'You docked my pay.',
+    'c1.result.memory': 'You let the brawl go.',
   },
   'people:crew:homesick': {
     title: 'Homesick',
@@ -493,6 +529,7 @@ const PEOPLE_LINES = {
     'c1.result': 'You pour two cups of something strong and sit on a crate beside them. For an hour they talk about {home}: the weather, the food, the quiet places. You say almost nothing. When they go to bed, they put a hand on your shoulder on the way out.',
     'c2.label': '"We all miss somewhere."',
     'c2.result': '{first} goes back to work. That night you see them at the viewport again, alone, and you leave them to it.',
+    'c0.result.memory': 'You paid for my call home.',
   },
   'people:crew:nervous': {
     title: 'Bad Dreams',
@@ -501,6 +538,8 @@ const PEOPLE_LINES = {
     'c0.result': 'You sit with them in the galley at three in the morning with a pot of tea between you, and talk about nothing in particular. {first} sleeps through the night for the first time in a week. In the morning they bring you a cup of coffee and spill half of it.',
     'c1.label': 'Tell them to toughen up',
     'c1.result': '{first} flinches, and stops mentioning it. In the days after, the shadows under their eyes get darker. They check the seals on every hatch they pass.',
+    'c0.result.memory': 'You helped me through the nightmares.',
+    'c1.result.memory': 'You told me to toughen up.',
   },
   'people:crew:talkative': {
     title: 'Gossip',
@@ -515,6 +554,8 @@ const PEOPLE_LINES = {
     'c0.result': '{first} looks at you. "Family business," {first} says. That is all you get. Afterward {first} takes meals in the bunk and locks the door to sleep.',
     'c1.label': 'Respect their privacy',
     'c1.result': 'You say nothing and turn to go. Behind you their shoulders come down. That evening {first} brings you a cup of tea you did not ask for, stands in the doorway, and goes.',
+    'c0.result.memory': 'You pried into my locker.',
+    'c1.result.memory': 'You respected my privacy.',
   },
   'people:crew:curious': {
     title: 'Tinkering',
@@ -524,6 +565,7 @@ const PEOPLE_LINES = {
     'c0.lose': 'Something goes pop. A thin jet of reaction mass hisses out of the open housing before you can shut it, and you lose 20 units. {first} looks at the empty housing. "Ah," {first} says.',
     'c1.label': 'Put it back together. Now.',
     'c1.result': 'They reassemble every part, muttering, and the pumps run as before. {first} tightens the last bolt without looking at you.',
+    'c0.memory': 'You let me tinker.',
   },
   'people:crew:pious': {
     title: 'Quiet Prayer',
@@ -532,6 +574,7 @@ const PEOPLE_LINES = {
     'c0.result': 'You kneel beside them in the dim light. For a few minutes nobody speaks. The drive hums. A pipe ticks. When it ends, you both sit a moment. "Thank you," {first} says.',
     'c1.label': 'Politely decline',
     'c1.result': '{first} goes to their corner. Through the thin wall you hear the low murmur of their prayer. {first} prays for you anyway. You listen until it stops.',
+    'c0.result.memory': 'You prayed with me.',
   },
   'people:crew:rude': {
     title: 'Friction',
@@ -540,6 +583,7 @@ const PEOPLE_LINES = {
     'c0.result': 'You step between them. "Sit," you say. "Both of you." The room goes still. "You do not talk about a shipmate\'s humming at my table," you say to {first}, "or anywhere I can hear it." {first} goes red, then pale, and leaves. For days {first} eats alone.',
     'c1.label': 'Let them sort it out',
     'c1.result': 'You lean in the doorway with your arms folded and let them. It is short, loud and untidy, and involves a soup pot. {armor} points of hull damage later they are sitting side by side on the deck, breathing hard, sharing a cloth for a bloody lip. "It was flat," {first} says. "It was flat," says the other, and they both laugh.',
+    'c0.result.memory': 'You reprimanded me in front of everyone.',
   },
   'people:crew:kind': {
     title: 'Small Kindnesses',
@@ -552,6 +596,7 @@ const PEOPLE_LINES = {
     text: '{first} comes into the galley at the end of a long shift with a dusty bottle wrapped in a shirt. They have carried it in the bottom of their bag since they left {home}. They set it on the table and take down every cup in the cupboard. "I was saving it for a special occasion," they say. "But I think we are the occasion."',
     'c0.label': 'Raise a glass',
     'c0.result': 'You raise a glass, and so does everyone else, in a ring around the table. The bottle tastes of {home}: sweet, smoky, with something bitter under it. To the ship. To the crew. To not dying. Somebody laughs, then everyone does, and the bottle goes round twice before it is empty.',
+    'c0.result.memory': 'We shared a bottle.',
   },
   'people:crew:brave': {
     title: 'Volunteer',
@@ -561,6 +606,7 @@ const PEOPLE_LINES = {
     'c0.lose': 'A tether snaps. For one second {first} drifts, arms out, into the black, until a gloved hand catches a handhold and holds. They make it back, shaking and gasping. The ship takes {armor} points of damage from the loose mast, and nobody sleeps that night.',
     'c1.label': 'Go yourself',
     'c1.result': 'You go out through the lock yourself, with the tether at your belt, and fix it in the cold and the silence with the ship turning slowly below your boots. It takes forty minutes. {first} watched through the port, and when you come in {first} hands you a cup and says nothing.',
+    'c1.result.memory': 'You took the risky EVA yourself.',
   },
   'bar:drink': {
     label: 'Buy {first} a drink ({cost} cr)',
