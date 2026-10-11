@@ -81,28 +81,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -33."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -33.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You put the fire control on her drive bloom and hold it. The lock tone sounds and does not drop. Whatever she does next, you have her."
+    "text": "You put the fire control on her drive bloom and hold it. The lock tone sounds and does not drop. Whatever she does next, you have her.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The lock will not hold. She jinks, and your reticle goes to the stars."
+    "text": "The lock will not hold. She jinks, and your reticle goes to the stars.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 0,
@@ -137,28 +162,53 @@
     "round": 1,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -33."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -33.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0,
-    "text": "You put the fire control on her drive bloom and hold it. The lock tone sounds and does not drop. Whatever she does next, you have her."
+    "text": "You put the fire control on her drive bloom and hold it. The lock tone sounds and does not drop. Whatever she does next, you have her.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0.999,
-    "text": "The lock will not hold. She jinks, and your reticle goes to the stars."
+    "text": "The lock will not hold. She jinks, and your reticle goes to the stars.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 1,
@@ -193,28 +243,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches."
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle."
+    "text": "You fire and miss. The recoil costs you your own angle.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You walk the burst along her line, a hand at a time. The last round hits her gun housing, and she stops firing."
+    "text": "You walk the burst along her line, a hand at a time. The last round hits her gun housing, and she stops firing.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You walk it wrong. The burst goes ahead of her."
+    "text": "You walk it wrong. The burst goes ahead of her.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 2,
@@ -249,28 +324,91 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)"
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You walk the burst along her line, a hand at a time. The last round hits her gun housing, and she stops firing. She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)"
+    "text": "You walk the burst along her line, a hand at a time. The last round hits her gun housing, and she stops firing. She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You walk it wrong. The burst goes ahead of her. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You walk it wrong. The burst goes ahead of her. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    }
   ],
   "closes": [
@@ -280,7 +418,31 @@
    },
    {
     "edge": 2,
-    "text": "She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)"
+    "text": "She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "edge": 0,
@@ -374,28 +536,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -34."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -34.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You swing the ship so the sun sits behind you and she has to fly into it. Her sensors wash out. She comes on blind for a minute."
+    "text": "You swing the ship so the sun sits behind you and she has to fly into it. Her sensors wash out. She comes on blind for a minute.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You bring the sun around, and she is already on the other side of it."
+    "text": "You bring the sun around, and she is already on the other side of it.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 0,
@@ -430,28 +617,53 @@
     "round": 1,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -34."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -34.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0,
-    "text": "You swing the ship so the sun sits behind you and she has to fly into it. Her sensors wash out. She comes on blind for a minute."
+    "text": "You swing the ship so the sun sits behind you and she has to fly into it. Her sensors wash out. She comes on blind for a minute.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0.999,
-    "text": "You bring the sun around, and she is already on the other side of it."
+    "text": "You bring the sun around, and she is already on the other side of it.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 1,
@@ -486,28 +698,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches."
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle."
+    "text": "You fire and miss. The recoil costs you your own angle.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You flip and burn across her path. She has to break to avoid you, and her run goes wide."
+    "text": "You flip and burn across her path. She has to break to avoid you, and her run goes wide.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You flip, and she has led you. The burst takes the aft section. Armor -34."
+    "text": "You flip, and she has led you. The burst takes the aft section. Armor -34.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 2,
@@ -542,28 +779,91 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)"
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You flip and burn across her path. She has to break to avoid you, and her run goes wide. She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)"
+    "text": "You flip and burn across her path. She has to break to avoid you, and her run goes wide. She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You flip, and she has led you. The burst takes the aft section. Armor -34. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You flip, and she has led you. The burst takes the aft section. Armor -34. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    }
   ],
   "closes": [
@@ -573,7 +873,31 @@
    },
    {
     "edge": 2,
-    "text": "She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)"
+    "text": "She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "edge": 0,
@@ -667,28 +991,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -33."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -33.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You push the drive past the line you would normally keep. The range opens, a kilometer a minute. She is a long way behind when the coolant temperature comes back down."
+    "text": "You push the drive past the line you would normally keep. The range opens, a kilometer a minute. She is a long way behind when the coolant temperature comes back down.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The drive coughs at the top of the climb and the range closes again. You lose a minute to the coolant."
+    "text": "The drive coughs at the top of the climb and the range closes again. You lose a minute to the coolant.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 0,
@@ -723,28 +1072,53 @@
     "round": 1,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -33."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -33.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0,
-    "text": "You push the drive past the line you would normally keep. The range opens, a kilometer a minute. She is a long way behind when the coolant temperature comes back down."
+    "text": "You push the drive past the line you would normally keep. The range opens, a kilometer a minute. She is a long way behind when the coolant temperature comes back down.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0.999,
-    "text": "The drive coughs at the top of the climb and the range closes again. You lose a minute to the coolant."
+    "text": "The drive coughs at the top of the climb and the range closes again. You lose a minute to the coolant.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 1,
@@ -779,28 +1153,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches."
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle."
+    "text": "You fire and miss. The recoil costs you your own angle.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You move the power from the drive into the screens, and the next hit goes into them and stops. The shield board goes amber and holds."
+    "text": "You move the power from the drive into the screens, and the next hit goes into them and stops. The shield board goes amber and holds.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -33."
+    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -33.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 2,
@@ -835,28 +1234,91 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)"
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You move the power from the drive into the screens, and the next hit goes into them and stops. The shield board goes amber and holds. She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)"
+    "text": "You move the power from the drive into the screens, and the next hit goes into them and stops. The shield board goes amber and holds. She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -33. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -33. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    }
   ],
   "closes": [
@@ -866,7 +1328,31 @@
    },
    {
     "edge": 2,
-    "text": "She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)"
+    "text": "She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "edge": 0,
@@ -960,28 +1446,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -33."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -33.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You hail her on the band the pirates use and say the navy is a day behind, with a patrol number. She goes quiet and hangs back for a minute."
+    "text": "You hail her on the band the pirates use and say the navy is a day behind, with a patrol number. She goes quiet and hangs back for a minute.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You hail her and she laughs on the open band. The next thing you hear is her fire control painting you."
+    "text": "You hail her and she laughs on the open band. The next thing you hear is her fire control painting you.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 0,
@@ -1016,28 +1527,53 @@
     "round": 1,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -33."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -33.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0,
-    "text": "You hail her on the band the pirates use and say the navy is a day behind, with a patrol number. She goes quiet and hangs back for a minute."
+    "text": "You hail her on the band the pirates use and say the navy is a day behind, with a patrol number. She goes quiet and hangs back for a minute.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0.999,
-    "text": "You hail her and she laughs on the open band. The next thing you hear is her fire control painting you."
+    "text": "You hail her and she laughs on the open band. The next thing you hear is her fire control painting you.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 1,
@@ -1072,28 +1608,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches."
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle."
+    "text": "You fire and miss. The recoil costs you your own angle.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You put noise across her fire control band. Her round goes wide, and the next one."
+    "text": "You put noise across her fire control band. Her round goes wide, and the next one.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You find the wrong band. The jammer works on nothing."
+    "text": "You find the wrong band. The jammer works on nothing.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 2,
@@ -1128,28 +1689,91 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)"
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You put noise across her fire control band. Her round goes wide, and the next one. She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)"
+    "text": "You put noise across her fire control band. Her round goes wide, and the next one. She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You find the wrong band. The jammer works on nothing. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You find the wrong band. The jammer works on nothing. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    }
   ],
   "closes": [
@@ -1159,7 +1783,31 @@
    },
    {
     "edge": 2,
-    "text": "She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)"
+    "text": "She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she is not. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "edge": 0,
@@ -1253,28 +1901,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You put the fire control on her drive bloom and hold it. The lock tone sounds and does not drop. Whatever she does next, you have her."
+    "text": "You put the fire control on her drive bloom and hold it. The lock tone sounds and does not drop. Whatever she does next, you have her.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The lock will not hold. She jinks, and your reticle goes to the stars."
+    "text": "The lock will not hold. She jinks, and your reticle goes to the stars.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 0,
@@ -1309,28 +1982,53 @@
     "round": 1,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0,
-    "text": "You put the fire control on her drive bloom and hold it. The lock tone sounds and does not drop. Whatever she does next, you have her."
+    "text": "You put the fire control on her drive bloom and hold it. The lock tone sounds and does not drop. Whatever she does next, you have her.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0.999,
-    "text": "The lock will not hold. She jinks, and your reticle goes to the stars."
+    "text": "The lock will not hold. She jinks, and your reticle goes to the stars.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 1,
@@ -1365,28 +2063,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches."
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle."
+    "text": "You fire and miss. The recoil costs you your own angle.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You walk the burst along her line, a hand at a time. The last round hits her gun housing, and she stops firing."
+    "text": "You walk the burst along her line, a hand at a time. The last round hits her gun housing, and she stops firing.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You walk it wrong. The burst goes ahead of her."
+    "text": "You walk it wrong. The burst goes ahead of her.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 2,
@@ -1421,28 +2144,91 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)"
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You walk the burst along her line, a hand at a time. The last round hits her gun housing, and she stops firing. She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)"
+    "text": "You walk the burst along her line, a hand at a time. The last round hits her gun housing, and she stops firing. She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You walk it wrong. The burst goes ahead of her. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You walk it wrong. The burst goes ahead of her. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    }
   ],
   "closes": [
@@ -1452,7 +2238,31 @@
    },
    {
     "edge": 2,
-    "text": "She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)"
+    "text": "She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "edge": 0,
@@ -1546,28 +2356,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -41."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -41.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You swing the ship so the sun sits behind you and she has to fly into it. Her sensors wash out. She comes on blind for a minute."
+    "text": "You swing the ship so the sun sits behind you and she has to fly into it. Her sensors wash out. She comes on blind for a minute.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You bring the sun around, and she is already on the other side of it."
+    "text": "You bring the sun around, and she is already on the other side of it.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 0,
@@ -1602,28 +2437,53 @@
     "round": 1,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -41."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -41.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0,
-    "text": "You swing the ship so the sun sits behind you and she has to fly into it. Her sensors wash out. She comes on blind for a minute."
+    "text": "You swing the ship so the sun sits behind you and she has to fly into it. Her sensors wash out. She comes on blind for a minute.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0.999,
-    "text": "You bring the sun around, and she is already on the other side of it."
+    "text": "You bring the sun around, and she is already on the other side of it.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 1,
@@ -1658,28 +2518,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches."
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle."
+    "text": "You fire and miss. The recoil costs you your own angle.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You flip and burn across her path. She has to break to avoid you, and her run goes wide."
+    "text": "You flip and burn across her path. She has to break to avoid you, and her run goes wide.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You flip, and she has led you. The burst takes the aft section. Armor -41."
+    "text": "You flip, and she has led you. The burst takes the aft section. Armor -41.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 2,
@@ -1714,28 +2599,91 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)"
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You flip and burn across her path. She has to break to avoid you, and her run goes wide. She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)"
+    "text": "You flip and burn across her path. She has to break to avoid you, and her run goes wide. She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You flip, and she has led you. The burst takes the aft section. Armor -41. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You flip, and she has led you. The burst takes the aft section. Armor -41. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    }
   ],
   "closes": [
@@ -1745,7 +2693,31 @@
    },
    {
     "edge": 2,
-    "text": "She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)"
+    "text": "She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "edge": 0,
@@ -1839,28 +2811,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You push the drive past the line you would normally keep. The range opens, a kilometer a minute. She is a long way behind when the coolant temperature comes back down."
+    "text": "You push the drive past the line you would normally keep. The range opens, a kilometer a minute. She is a long way behind when the coolant temperature comes back down.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The drive coughs at the top of the climb and the range closes again. You lose a minute to the coolant."
+    "text": "The drive coughs at the top of the climb and the range closes again. You lose a minute to the coolant.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 0,
@@ -1895,28 +2892,53 @@
     "round": 1,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0,
-    "text": "You push the drive past the line you would normally keep. The range opens, a kilometer a minute. She is a long way behind when the coolant temperature comes back down."
+    "text": "You push the drive past the line you would normally keep. The range opens, a kilometer a minute. She is a long way behind when the coolant temperature comes back down.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0.999,
-    "text": "The drive coughs at the top of the climb and the range closes again. You lose a minute to the coolant."
+    "text": "The drive coughs at the top of the climb and the range closes again. You lose a minute to the coolant.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 1,
@@ -1951,28 +2973,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches."
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle."
+    "text": "You fire and miss. The recoil costs you your own angle.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You move the power from the drive into the screens, and the next hit goes into them and stops. The shield board goes amber and holds."
+    "text": "You move the power from the drive into the screens, and the next hit goes into them and stops. The shield board goes amber and holds.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -31."
+    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -31.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 2,
@@ -2007,28 +3054,91 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)"
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You move the power from the drive into the screens, and the next hit goes into them and stops. The shield board goes amber and holds. She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)"
+    "text": "You move the power from the drive into the screens, and the next hit goes into them and stops. The shield board goes amber and holds. She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -31. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -31. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    }
   ],
   "closes": [
@@ -2038,7 +3148,31 @@
    },
    {
     "edge": 2,
-    "text": "She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)"
+    "text": "She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "edge": 0,
@@ -2132,28 +3266,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You hail her on the band the pirates use and say the navy is a day behind, with a patrol number. She goes quiet and hangs back for a minute."
+    "text": "You hail her on the band the pirates use and say the navy is a day behind, with a patrol number. She goes quiet and hangs back for a minute.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You hail her and she laughs on the open band. The next thing you hear is her fire control painting you."
+    "text": "You hail her and she laughs on the open band. The next thing you hear is her fire control painting you.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 0,
@@ -2188,28 +3347,53 @@
     "round": 1,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0,
-    "text": "You hail her on the band the pirates use and say the navy is a day behind, with a patrol number. She goes quiet and hangs back for a minute."
+    "text": "You hail her on the band the pirates use and say the navy is a day behind, with a patrol number. She goes quiet and hangs back for a minute.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0.999,
-    "text": "You hail her and she laughs on the open band. The next thing you hear is her fire control painting you."
+    "text": "You hail her and she laughs on the open band. The next thing you hear is her fire control painting you.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 1,
@@ -2244,28 +3428,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches."
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle."
+    "text": "You fire and miss. The recoil costs you your own angle.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You put noise across her fire control band. Her round goes wide, and the next one."
+    "text": "You put noise across her fire control band. Her round goes wide, and the next one.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You find the wrong band. The jammer works on nothing."
+    "text": "You find the wrong band. The jammer works on nothing.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 2,
@@ -2300,28 +3509,91 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)"
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You put noise across her fire control band. Her round goes wide, and the next one. She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)"
+    "text": "You put noise across her fire control band. Her round goes wide, and the next one. She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You find the wrong band. The jammer works on nothing. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You find the wrong band. The jammer works on nothing. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    }
   ],
   "closes": [
@@ -2331,7 +3603,31 @@
    },
    {
     "edge": 2,
-    "text": "She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)"
+    "text": "She does not fire the third torpedo. The bay doors close and she turns away, and the range opens. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "edge": 0,
@@ -2425,28 +3721,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You put the fire control on her drive bloom and hold it. The lock tone sounds and does not drop. Whatever she does next, you have her."
+    "text": "You put the fire control on her drive bloom and hold it. The lock tone sounds and does not drop. Whatever she does next, you have her.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The lock will not hold. She jinks, and your reticle goes to the stars."
+    "text": "The lock will not hold. She jinks, and your reticle goes to the stars.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 0,
@@ -2481,28 +3802,53 @@
     "round": 1,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0,
-    "text": "You put the fire control on her drive bloom and hold it. The lock tone sounds and does not drop. Whatever she does next, you have her."
+    "text": "You put the fire control on her drive bloom and hold it. The lock tone sounds and does not drop. Whatever she does next, you have her.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0.999,
-    "text": "The lock will not hold. She jinks, and your reticle goes to the stars."
+    "text": "The lock will not hold. She jinks, and your reticle goes to the stars.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 1,
@@ -2537,28 +3883,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches."
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle."
+    "text": "You fire and miss. The recoil costs you your own angle.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You walk the burst along her line, a hand at a time. The last round hits her gun housing, and she stops firing."
+    "text": "You walk the burst along her line, a hand at a time. The last round hits her gun housing, and she stops firing.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You walk it wrong. The burst goes ahead of her."
+    "text": "You walk it wrong. The burst goes ahead of her.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 2,
@@ -2593,28 +3964,91 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)"
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You walk the burst along her line, a hand at a time. The last round hits her gun housing, and she stops firing. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)"
+    "text": "You walk the burst along her line, a hand at a time. The last round hits her gun housing, and she stops firing. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You walk it wrong. The burst goes ahead of her. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You walk it wrong. The burst goes ahead of her. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    }
   ],
   "closes": [
@@ -2624,7 +4058,31 @@
    },
    {
     "edge": 2,
-    "text": "She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)"
+    "text": "She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "edge": 0,
@@ -2718,28 +4176,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -41."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -41.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You swing the ship so the sun sits behind you and she has to fly into it. Her sensors wash out. She comes on blind for a minute."
+    "text": "You swing the ship so the sun sits behind you and she has to fly into it. Her sensors wash out. She comes on blind for a minute.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You bring the sun around, and she is already on the other side of it."
+    "text": "You bring the sun around, and she is already on the other side of it.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 0,
@@ -2774,28 +4257,53 @@
     "round": 1,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -41."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -41.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0,
-    "text": "You swing the ship so the sun sits behind you and she has to fly into it. Her sensors wash out. She comes on blind for a minute."
+    "text": "You swing the ship so the sun sits behind you and she has to fly into it. Her sensors wash out. She comes on blind for a minute.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0.999,
-    "text": "You bring the sun around, and she is already on the other side of it."
+    "text": "You bring the sun around, and she is already on the other side of it.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 1,
@@ -2830,28 +4338,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches."
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle."
+    "text": "You fire and miss. The recoil costs you your own angle.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You flip and burn across her path. She has to break to avoid you, and her run goes wide."
+    "text": "You flip and burn across her path. She has to break to avoid you, and her run goes wide.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You flip, and she has led you. The burst takes the aft section. Armor -41."
+    "text": "You flip, and she has led you. The burst takes the aft section. Armor -41.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 2,
@@ -2886,28 +4419,91 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)"
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You flip and burn across her path. She has to break to avoid you, and her run goes wide. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)"
+    "text": "You flip and burn across her path. She has to break to avoid you, and her run goes wide. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You flip, and she has led you. The burst takes the aft section. Armor -41. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You flip, and she has led you. The burst takes the aft section. Armor -41. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    }
   ],
   "closes": [
@@ -2917,7 +4513,31 @@
    },
    {
     "edge": 2,
-    "text": "She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)"
+    "text": "She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "edge": 0,
@@ -3011,28 +4631,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You push the drive past the line you would normally keep. The range opens, a kilometer a minute. She is a long way behind when the coolant temperature comes back down."
+    "text": "You push the drive past the line you would normally keep. The range opens, a kilometer a minute. She is a long way behind when the coolant temperature comes back down.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The drive coughs at the top of the climb and the range closes again. You lose a minute to the coolant."
+    "text": "The drive coughs at the top of the climb and the range closes again. You lose a minute to the coolant.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 0,
@@ -3067,28 +4712,53 @@
     "round": 1,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0,
-    "text": "You push the drive past the line you would normally keep. The range opens, a kilometer a minute. She is a long way behind when the coolant temperature comes back down."
+    "text": "You push the drive past the line you would normally keep. The range opens, a kilometer a minute. She is a long way behind when the coolant temperature comes back down.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0.999,
-    "text": "The drive coughs at the top of the climb and the range closes again. You lose a minute to the coolant."
+    "text": "The drive coughs at the top of the climb and the range closes again. You lose a minute to the coolant.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 1,
@@ -3123,28 +4793,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches."
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle."
+    "text": "You fire and miss. The recoil costs you your own angle.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You move the power from the drive into the screens, and the next hit goes into them and stops. The shield board goes amber and holds."
+    "text": "You move the power from the drive into the screens, and the next hit goes into them and stops. The shield board goes amber and holds.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -31."
+    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -31.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 2,
@@ -3179,28 +4874,91 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)"
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You move the power from the drive into the screens, and the next hit goes into them and stops. The shield board goes amber and holds. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)"
+    "text": "You move the power from the drive into the screens, and the next hit goes into them and stops. The shield board goes amber and holds. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -31. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "The transfer takes a second too long. The hit arrives in the gap. Armor -31. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    }
   ],
   "closes": [
@@ -3210,7 +4968,31 @@
    },
    {
     "edge": 2,
-    "text": "She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)"
+    "text": "She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "edge": 0,
@@ -3304,28 +5086,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You hail her on the band the pirates use and say the navy is a day behind, with a patrol number. She goes quiet and hangs back for a minute."
+    "text": "You hail her on the band the pirates use and say the navy is a day behind, with a patrol number. She goes quiet and hangs back for a minute.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You hail her and she laughs on the open band. The next thing you hear is her fire control painting you."
+    "text": "You hail her and she laughs on the open band. The next thing you hear is her fire control painting you.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 0,
@@ -3360,28 +5167,53 @@
     "round": 1,
     "i": 2,
     "roll": 0,
-    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle."
+    "text": "You turn into her and close the range at twice her speed. Her first burst goes behind you, and you have the angle.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 2,
     "roll": 0.999,
-    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31."
+    "text": "You turn into her and she is ready. The first burst takes the dorsal plating, and the deck shudders under your feet. Armor -31.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0,
-    "text": "You hail her on the band the pirates use and say the navy is a day behind, with a patrol number. She goes quiet and hangs back for a minute."
+    "text": "You hail her on the band the pirates use and say the navy is a day behind, with a patrol number. She goes quiet and hangs back for a minute.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 0,
     "round": 1,
     "i": 3,
     "roll": 0.999,
-    "text": "You hail her and she laughs on the open band. The next thing you hear is her fire control painting you."
+    "text": "You hail her and she laughs on the open band. The next thing you hear is her fire control painting you.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 1,
@@ -3416,28 +5248,53 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches."
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle."
+    "text": "You fire and miss. The recoil costs you your own angle.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You put noise across her fire control band. Her round goes wide, and the next one."
+    "text": "You put noise across her fire control band. Her round goes wide, and the next one.",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid."
+    ],
+    "fx": {
+     "p1": 1
+    }
    },
    {
     "beat": 1,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You find the wrong band. The jammer works on nothing."
+    "text": "You find the wrong band. The jammer works on nothing.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    },
    {
     "beat": 2,
@@ -3472,28 +5329,91 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)"
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 2,
     "roll": 0.999,
-    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You fire and miss. The recoil costs you your own angle. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -2
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You put noise across her fire control band. Her round goes wide, and the next one. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)"
+    "text": "You put noise across her fire control band. Her round goes wide, and the next one. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+    "mem": [
+     "9 Jul 2214: You made the call that turned a raid.",
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 2,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "beat": 2,
     "round": 0,
     "i": 3,
     "roll": 0.999,
-    "text": "You find the wrong band. The jammer works on nothing. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13."
+    "text": "You find the wrong band. The jammer works on nothing. She breaks off at long range and throws one last burst as she goes. It clips the hull aft. Armor -13.",
+    "mem": [
+     "9 Jul 2214: You made a call in a raid and it went wrong."
+    ],
+    "fx": {
+     "p1": -1
+    }
    }
   ],
   "closes": [
@@ -3503,7 +5423,31 @@
    },
    {
     "edge": 2,
-    "text": "She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)"
+    "text": "She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
    },
    {
     "edge": 0,
@@ -3554,6 +5498,1262 @@
   ],
   "real": "You check the transponder against the registry. The hull number is current, and her last port was two days ago. The call is genuine.",
   "trap": "You check the transponder against the registry. The hull number belongs to a freighter that was scrapped two years ago. The call is a lie."
+ },
+ {
+  "id": "ambush:gunner:blind:real",
+  "text": "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain Vance looks at the plot, then at the crew.",
+  "labels": [
+   "Go to her",
+   "Leave it",
+   "[Gunner] Scan her hull for weapons"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stopped for a real distress call."
+    ],
+    "fx": {
+     "fund": 500,
+     "p1": 1
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stopped for a real distress call."
+    ],
+    "fx": {
+     "fund": 500,
+     "p1": 1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You let the call play out and burn on. It might have been real.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You let the call play out and burn on. It might have been real.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You hold the fire control on her and look for a gun housing, a torpedo bay, anything. There is a cargo door hanging open and nothing else. She is a freighter.",
+    "next": [
+     "A Freighter in Trouble",
+     "The readings are clean. She is real, and she is asking again."
+    ]
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You try, and the readings will not settle. The call keeps repeating, and you are no wiser.",
+    "next": [
+     "A Freighter in Trouble",
+     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ah"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "ambush:gunner:blind:trap",
+  "text": "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain Vance looks at the plot, then at the crew.",
+  "labels": [
+   "Go to her",
+   "Leave it",
+   "[Gunner] Scan her hull for weapons"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two more come off the rock behind her, and the call stops. She is flown by a hard crew, with a captain who has done it for years.",
+    "next": [
+     "The Closing",
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors "
+    ]
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two more come off the rock behind her, and the call stops.",
+    "next": [
+     "The Closing",
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors "
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You hold the fire control on her and watch the hull. There is a gun housing under the freighter plating, and the plating has been cut to let it traverse. She is not a freighter.",
+    "next": [
+     "A Freighter in Trouble",
+     "You know what is out there. They have not lit their drives, and they do not know you know."
+    ]
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You try, and the readings will not settle. The call keeps repeating, and you are no wiser.",
+    "next": [
+     "A Freighter in Trouble",
+     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ah"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "ambush:gunner:known:real",
+  "text": "The readings are clean. She is real, and she is asking again.",
+  "labels": [
+   "Go to her",
+   "Leave her"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stopped for a real distress call."
+    ],
+    "fx": {
+     "fund": 500,
+     "p1": 1
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stopped for a real distress call."
+    ],
+    "fx": {
+     "fund": 500,
+     "p1": 1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You leave her to call for someone else. Captain Vance says nothing, and does not look up from the plot.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You left a real distress call."
+    ],
+    "fx": {
+     "p1": -1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You leave her to call for someone else. Captain Vance says nothing, and does not look up from the plot.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You left a real distress call."
+    ],
+    "fx": {
+     "p1": -1
+    }
+   }
+  ]
+ },
+ {
+  "id": "ambush:gunner:known:trap",
+  "text": "You know what is out there. They have not lit their drives, and they do not know you know.",
+  "labels": [
+   "Hit them before they are ready",
+   "Turn away and leave it"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You come in hot with the drive cold, and light it at three kilometers. They are not ready. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
+    "next": [
+     "The Closing",
+     "They are in position behind the freighter, with their drives cold, and they have not lit them. You h"
+    ]
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You come in hot with the drive cold, and light it at three kilometers. They are not ready. Battle stations.",
+    "next": [
+     "The Closing",
+     "They are in position behind the freighter, with their drives cold, and they have not lit them. You h"
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You turn away and burn for the lane. At four kilometers the freighter's drive lights, the real one, and she comes after you for twenty minutes before she gives it up. (+2 experience at the gunner post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You saw a trap before it closed."
+    ],
+    "fx": {
+     "p1": 1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You turn away and burn for the lane. At four kilometers the freighter's drive lights, the real one, and she comes after you for twenty minutes before she gives it up. (+2 experience at the gunner post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You saw a trap before it closed."
+    ],
+    "fx": {
+     "p1": 1
+    }
+   }
+  ]
+ },
+ {
+  "id": "ambush:pilot:blind:real",
+  "text": "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain Vance looks at the plot, then at the crew.",
+  "labels": [
+   "Go to her",
+   "Leave it",
+   "[Pilot] Match her tumble"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stopped for a real distress call."
+    ],
+    "fx": {
+     "fund": 500,
+     "p1": 1
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stopped for a real distress call."
+    ],
+    "fx": {
+     "fund": 500,
+     "p1": 1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You let the call play out and burn on. It might have been real.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You let the call play out and burn on. It might have been real.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You match her tumble and it fits: a hull with its drive out, spinning slow, the way an uncontrolled one does. She is real.",
+    "next": [
+     "A Freighter in Trouble",
+     "The readings are clean. She is real, and she is asking again."
+    ]
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You try, and the readings will not settle. The call keeps repeating, and you are no wiser.",
+    "next": [
+     "A Freighter in Trouble",
+     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ah"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "ambush:pilot:blind:trap",
+  "text": "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain Vance looks at the plot, then at the crew.",
+  "labels": [
+   "Go to her",
+   "Leave it",
+   "[Pilot] Match her tumble"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two more come off the rock behind her, and the call stops. She is flown by a hard crew, with a captain who has done it for years.",
+    "next": [
+     "The Closing",
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors "
+    ]
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two more come off the rock behind her, and the call stops.",
+    "next": [
+     "The Closing",
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors "
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You match her tumble in your head and it is wrong. A hull with its drive out spins slower than that, and she is spinning on a clock. She is not dead in space, she is playing it.",
+    "next": [
+     "A Freighter in Trouble",
+     "You know what is out there. They have not lit their drives, and they do not know you know."
+    ]
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You try, and the readings will not settle. The call keeps repeating, and you are no wiser.",
+    "next": [
+     "A Freighter in Trouble",
+     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ah"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "ambush:pilot:known:real",
+  "text": "The readings are clean. She is real, and she is asking again.",
+  "labels": [
+   "Go to her",
+   "Leave her"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stopped for a real distress call."
+    ],
+    "fx": {
+     "fund": 500,
+     "p1": 1
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stopped for a real distress call."
+    ],
+    "fx": {
+     "fund": 500,
+     "p1": 1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You leave her to call for someone else. Captain Vance says nothing, and does not look up from the plot.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You left a real distress call."
+    ],
+    "fx": {
+     "p1": -1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You leave her to call for someone else. Captain Vance says nothing, and does not look up from the plot.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You left a real distress call."
+    ],
+    "fx": {
+     "p1": -1
+    }
+   }
+  ]
+ },
+ {
+  "id": "ambush:pilot:known:trap",
+  "text": "You know what is out there. They have not lit their drives, and they do not know you know.",
+  "labels": [
+   "Hit them before they are ready",
+   "Turn away and leave it"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You come in hot with the drive cold, and light it at three kilometers. They are not ready. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
+    "next": [
+     "The Closing",
+     "They are in position behind the freighter, with their drives cold, and they have not lit them. You h"
+    ]
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You come in hot with the drive cold, and light it at three kilometers. They are not ready. Battle stations.",
+    "next": [
+     "The Closing",
+     "They are in position behind the freighter, with their drives cold, and they have not lit them. You h"
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You turn away and burn for the lane. At four kilometers the freighter's drive lights, the real one, and she comes after you for twenty minutes before she gives it up. (+2 experience at the pilot post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You saw a trap before it closed."
+    ],
+    "fx": {
+     "p1": 1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You turn away and burn for the lane. At four kilometers the freighter's drive lights, the real one, and she comes after you for twenty minutes before she gives it up. (+2 experience at the pilot post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You saw a trap before it closed."
+    ],
+    "fx": {
+     "p1": 1
+    }
+   }
+  ]
+ },
+ {
+  "id": "ambush:engineer:blind:real",
+  "text": "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain Vance looks at the plot, then at the crew.",
+  "labels": [
+   "Go to her",
+   "Leave it",
+   "[Engineer] Read her drive signature"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stopped for a real distress call."
+    ],
+    "fx": {
+     "fund": 500,
+     "p1": 1
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stopped for a real distress call."
+    ],
+    "fx": {
+     "fund": 500,
+     "p1": 1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You let the call play out and burn on. It might have been real.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You let the call play out and burn on. It might have been real.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You put the drive plume on the analyzer. It is a freighter's drive and it is failing in the way that they fail, a coolant fault on the second bank. She is real.",
+    "next": [
+     "A Freighter in Trouble",
+     "The readings are clean. She is real, and she is asking again."
+    ]
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You try, and the readings will not settle. The call keeps repeating, and you are no wiser.",
+    "next": [
+     "A Freighter in Trouble",
+     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ah"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "ambush:engineer:blind:trap",
+  "text": "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain Vance looks at the plot, then at the crew.",
+  "labels": [
+   "Go to her",
+   "Leave it",
+   "[Engineer] Read her drive signature"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two more come off the rock behind her, and the call stops. She is flown by a hard crew, with a captain who has done it for years.",
+    "next": [
+     "The Closing",
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors "
+    ]
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two more come off the rock behind her, and the call stops.",
+    "next": [
+     "The Closing",
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors "
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You put the drive plume on the analyzer. It is a freighter's hull with a corsair's drive, and a freighter that is dying does not burn like that. She is bait.",
+    "next": [
+     "A Freighter in Trouble",
+     "You know what is out there. They have not lit their drives, and they do not know you know."
+    ]
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You try, and the readings will not settle. The call keeps repeating, and you are no wiser.",
+    "next": [
+     "A Freighter in Trouble",
+     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ah"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "ambush:engineer:known:real",
+  "text": "The readings are clean. She is real, and she is asking again.",
+  "labels": [
+   "Go to her",
+   "Leave her"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stopped for a real distress call."
+    ],
+    "fx": {
+     "fund": 500,
+     "p1": 1
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stopped for a real distress call."
+    ],
+    "fx": {
+     "fund": 500,
+     "p1": 1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You leave her to call for someone else. Captain Vance says nothing, and does not look up from the plot.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You left a real distress call."
+    ],
+    "fx": {
+     "p1": -1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You leave her to call for someone else. Captain Vance says nothing, and does not look up from the plot.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You left a real distress call."
+    ],
+    "fx": {
+     "p1": -1
+    }
+   }
+  ]
+ },
+ {
+  "id": "ambush:engineer:known:trap",
+  "text": "You know what is out there. They have not lit their drives, and they do not know you know.",
+  "labels": [
+   "Hit them before they are ready",
+   "Turn away and leave it"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You come in hot with the drive cold, and light it at three kilometers. They are not ready. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
+    "next": [
+     "The Closing",
+     "They are in position behind the freighter, with their drives cold, and they have not lit them. You h"
+    ]
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You come in hot with the drive cold, and light it at three kilometers. They are not ready. Battle stations.",
+    "next": [
+     "The Closing",
+     "They are in position behind the freighter, with their drives cold, and they have not lit them. You h"
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You turn away and burn for the lane. At four kilometers the freighter's drive lights, the real one, and she comes after you for twenty minutes before she gives it up. (+2 experience at the engineer post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You saw a trap before it closed."
+    ],
+    "fx": {
+     "p1": 1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You turn away and burn for the lane. At four kilometers the freighter's drive lights, the real one, and she comes after you for twenty minutes before she gives it up. (+2 experience at the engineer post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You saw a trap before it closed."
+    ],
+    "fx": {
+     "p1": 1
+    }
+   }
+  ]
+ },
+ {
+  "id": "ambush:comms:blind:real",
+  "text": "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain Vance looks at the plot, then at the crew.",
+  "labels": [
+   "Go to her",
+   "Leave it",
+   "[Comms] Check her call against the registry"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stopped for a real distress call."
+    ],
+    "fx": {
+     "fund": 500,
+     "p1": 1
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stopped for a real distress call."
+    ],
+    "fx": {
+     "fund": 500,
+     "p1": 1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You let the call play out and burn on. It might have been real.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You let the call play out and burn on. It might have been real.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You check the transponder against the registry. The hull number is current, and her last port was two days ago. The call is genuine.",
+    "next": [
+     "A Freighter in Trouble",
+     "The readings are clean. She is real, and she is asking again."
+    ]
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You try, and the readings will not settle. The call keeps repeating, and you are no wiser.",
+    "next": [
+     "A Freighter in Trouble",
+     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ah"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "ambush:comms:blind:trap",
+  "text": "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain Vance looks at the plot, then at the crew.",
+  "labels": [
+   "Go to her",
+   "Leave it",
+   "[Comms] Check her call against the registry"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two more come off the rock behind her, and the call stops. She is flown by a hard crew, with a captain who has done it for years.",
+    "next": [
+     "The Closing",
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors "
+    ]
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two more come off the rock behind her, and the call stops.",
+    "next": [
+     "The Closing",
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors "
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You check the transponder against the registry. The hull number belongs to a freighter that was scrapped two years ago. The call is a lie.",
+    "next": [
+     "A Freighter in Trouble",
+     "You know what is out there. They have not lit their drives, and they do not know you know."
+    ]
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You try, and the readings will not settle. The call keeps repeating, and you are no wiser.",
+    "next": [
+     "A Freighter in Trouble",
+     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ah"
+    ]
+   }
+  ]
+ },
+ {
+  "id": "ambush:comms:known:real",
+  "text": "The readings are clean. She is real, and she is asking again.",
+  "labels": [
+   "Go to her",
+   "Leave her"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stopped for a real distress call."
+    ],
+    "fx": {
+     "fund": 500,
+     "p1": 1
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stopped for a real distress call."
+    ],
+    "fx": {
+     "fund": 500,
+     "p1": 1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You leave her to call for someone else. Captain Vance says nothing, and does not look up from the plot.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You left a real distress call."
+    ],
+    "fx": {
+     "p1": -1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You leave her to call for someone else. Captain Vance says nothing, and does not look up from the plot.",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You left a real distress call."
+    ],
+    "fx": {
+     "p1": -1
+    }
+   }
+  ]
+ },
+ {
+  "id": "ambush:comms:known:trap",
+  "text": "You know what is out there. They have not lit their drives, and they do not know you know.",
+  "labels": [
+   "Hit them before they are ready",
+   "Turn away and leave it"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You come in hot with the drive cold, and light it at three kilometers. They are not ready. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
+    "next": [
+     "The Closing",
+     "They are in position behind the freighter, with their drives cold, and they have not lit them. You h"
+    ]
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You come in hot with the drive cold, and light it at three kilometers. They are not ready. Battle stations.",
+    "next": [
+     "The Closing",
+     "They are in position behind the freighter, with their drives cold, and they have not lit them. You h"
+    ]
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You turn away and burn for the lane. At four kilometers the freighter's drive lights, the real one, and she comes after you for twenty minutes before she gives it up. (+2 experience at the comms post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You saw a trap before it closed."
+    ],
+    "fx": {
+     "p1": 1
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You turn away and burn for the lane. At four kilometers the freighter's drive lights, the real one, and she comes after you for twenty minutes before she gives it up. (+2 experience at the comms post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You saw a trap before it closed."
+    ],
+    "fx": {
+     "p1": 1
+    }
+   }
+  ]
+ },
+ {
+  "id": "settle:repel:gunner:won:1",
+  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Knife\" lights, and she breaks away from the hull.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came."
+  ],
+  "fx": {
+   "p1": 1
+  }
+ },
+ {
+  "id": "settle:repel:gunner:won:3",
+  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Knife\" lights, and she breaks away from the hull.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came.",
+   "9 Jul 2214: We held the ship together.",
+   "9 Jul 2214: We held the ship together.",
+   "9 Jul 2214: We held the ship together.",
+   "9 Jul 2214: We held the ship together.",
+   "9 Jul 2214: We held the ship together.",
+   "9 Jul 2214: We held the ship together.",
+   "9 Jul 2214: We held the ship together.",
+   "9 Jul 2214: We held the ship together.",
+   "9 Jul 2214: We held the ship together."
+  ],
+  "fx": {
+   "p1": 1,
+   "c:ines": 1,
+   "c:tomas": 1,
+   "p2": 1,
+   "c:cato": 1,
+   "p3": 1,
+   "p4": 1,
+   "p5": 1,
+   "p6": 1,
+   "p7": 1
+  }
+ },
+ {
+  "id": "settle:repel:gunner:lost:1",
+  "text": "They are on the bridge. Captain Vance gives them the code to the strongbox because there is no choice, and they take 3,600 cr of the ship's fund and go. The ship still flies.",
+  "mem": [
+   "9 Jul 2214: The bridge was taken on your watch."
+  ],
+  "fx": {
+   "fund": -3600,
+   "p1": -1
+  }
+ },
+ {
+  "id": "settle:repel:gunner:lost:3",
+  "text": "They are on the bridge. Captain Vance gives them the code to the strongbox because there is no choice, and they take 3,600 cr of the ship's fund and go. The ship still flies.",
+  "mem": [
+   "9 Jul 2214: The bridge was taken on your watch."
+  ],
+  "fx": {
+   "fund": -3600,
+   "p1": -1
+  }
+ },
+ {
+  "id": "settle:repel:engineer:won:1",
+  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Knife\" lights, and she breaks away from the hull.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came."
+  ],
+  "fx": {
+   "p1": 1
+  }
+ },
+ {
+  "id": "settle:repel:engineer:won:3",
+  "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Knife\" lights, and she breaks away from the hull.",
+  "mem": [
+   "9 Jul 2214: You held the ship when boarders came.",
+   "9 Jul 2214: We held the ship together.",
+   "9 Jul 2214: We held the ship together.",
+   "9 Jul 2214: We held the ship together.",
+   "9 Jul 2214: We held the ship together.",
+   "9 Jul 2214: We held the ship together.",
+   "9 Jul 2214: We held the ship together.",
+   "9 Jul 2214: We held the ship together.",
+   "9 Jul 2214: We held the ship together.",
+   "9 Jul 2214: We held the ship together."
+  ],
+  "fx": {
+   "p1": 1,
+   "c:ines": 1,
+   "c:tomas": 1,
+   "p2": 1,
+   "c:cato": 1,
+   "p3": 1,
+   "p4": 1,
+   "p5": 1,
+   "p6": 1,
+   "p7": 1
+  }
+ },
+ {
+  "id": "settle:repel:engineer:lost:1",
+  "text": "They are on the bridge. Captain Vance gives them the code to the strongbox because there is no choice, and they take 3,600 cr of the ship's fund and go. The ship still flies.",
+  "mem": [
+   "9 Jul 2214: The bridge was taken on your watch."
+  ],
+  "fx": {
+   "fund": -3600,
+   "p1": -1
+  }
+ },
+ {
+  "id": "settle:repel:engineer:lost:3",
+  "text": "They are on the bridge. Captain Vance gives them the code to the strongbox because there is no choice, and they take 3,600 cr of the ship's fund and go. The ship still flies.",
+  "mem": [
+   "9 Jul 2214: The bridge was taken on your watch."
+  ],
+  "fx": {
+   "fund": -3600,
+   "p1": -1
+  }
+ },
+ {
+  "id": "settle:assault:gunner:won:1",
+  "text": "Her captain puts the weapon down. Her strongbox is under the plot table, and 3,000 cr of it goes into the ship's fund. Captain Vance has the cutter cast off while her people are still being counted. (+5 experience at the gunner post.)",
+  "mem": [
+   "9 Jul 2214: You took a ship for us.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates."
+  ],
+  "fx": {
+   "fund": 3000,
+   "p1": 2,
+   "c:ines": 2,
+   "c:tomas": 2,
+   "p3": 2,
+   "p4": 2,
+   "p5": 2,
+   "p6": 2,
+   "p7": 2
+  }
+ },
+ {
+  "id": "settle:assault:gunner:won:3",
+  "text": "Her captain puts the weapon down. Her strongbox is under the plot table, and 3,000 cr of it goes into the ship's fund. Captain Vance has the cutter cast off while her people are still being counted. (+5 experience at the gunner post.)",
+  "mem": [
+   "9 Jul 2214: You took a ship for us.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates."
+  ],
+  "fx": {
+   "fund": 3000,
+   "p1": 2,
+   "c:ines": 2,
+   "c:tomas": 2,
+   "p3": 2,
+   "p4": 2,
+   "p5": 2,
+   "p6": 2,
+   "p7": 2
+  }
+ },
+ {
+  "id": "settle:assault:gunner:lost:1",
+  "text": "You are driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she is still drifting. Armor -13.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
+ },
+ {
+  "id": "settle:assault:gunner:lost:3",
+  "text": "You are driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she is still drifting. Armor -13.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
+ },
+ {
+  "id": "settle:assault:engineer:won:1",
+  "text": "Her captain puts the weapon down. Her strongbox is under the plot table, and 3,000 cr of it goes into the ship's fund. Captain Vance has the cutter cast off while her people are still being counted. (+5 experience at the engineer post.)",
+  "mem": [
+   "9 Jul 2214: You took a ship for us.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates."
+  ],
+  "fx": {
+   "fund": 3000,
+   "p1": 2,
+   "c:ines": 2,
+   "c:tomas": 2,
+   "p3": 2,
+   "p4": 2,
+   "p5": 2,
+   "p6": 2,
+   "p7": 2
+  }
+ },
+ {
+  "id": "settle:assault:engineer:won:3",
+  "text": "Her captain puts the weapon down. Her strongbox is under the plot table, and 3,000 cr of it goes into the ship's fund. Captain Vance has the cutter cast off while her people are still being counted. (+5 experience at the engineer post.)",
+  "mem": [
+   "9 Jul 2214: You took a ship for us.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates.",
+   "9 Jul 2214: We took her bridge together.",
+   "9 Jul 2214: You set yourself against the pirates."
+  ],
+  "fx": {
+   "fund": 3000,
+   "p1": 2,
+   "c:ines": 2,
+   "c:tomas": 2,
+   "p3": 2,
+   "p4": 2,
+   "p5": 2,
+   "p6": 2,
+   "p7": 2
+  }
+ },
+ {
+  "id": "settle:assault:engineer:lost:1",
+  "text": "You are driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she is still drifting. Armor -13.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
+ },
+ {
+  "id": "settle:assault:engineer:lost:3",
+  "text": "You are driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she is still drifting. Armor -13.",
+  "mem": [
+   "9 Jul 2214: You went onto a crippled ship and came back without it."
+  ],
+  "fx": {
+   "p1": -1
+  }
  },
  {
   "id": "repel:gunner",

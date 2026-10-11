@@ -18,6 +18,15 @@ const playBeats = () => {
     return st;
   };
   const labelsOf = ev => ev.choices.map(c => c.label);
+  const stand = () => ({ credits: G.state.credits, fund: hired().fund, opinion: Object.fromEntries(Object.values(G.state.people).map(p => [p.id, p.opinion])), mem: Object.fromEntries(Object.values(G.state.people).map(p => [p.id, (p.memories || []).length])) });
+  // what a step left behind: the memories gained and what moved (the money, the ship's fund, each person's regard); nothing, if nothing did
+  const left = (b) => {
+    const a = stand(), fx = {}, mem = Object.values(G.state.people).flatMap(p => (p.memories || []).slice(b.mem[p.id] === undefined ? 0 : b.mem[p.id]));
+    if (a.credits !== b.credits) fx.credits = a.credits - b.credits;
+    if (a.fund !== b.fund) fx.fund = a.fund - b.fund;
+    for (const [id, v] of Object.entries(a.opinion)) if (v !== (b.opinion[id] === undefined ? v : b.opinion[id])) fx[id] = v - b.opinion[id];
+    return { ...(mem.length ? { mem } : {}), ...(Object.keys(fx).length ? { fx } : {}) };
+  };
   const origRaid = window.raidScene;
   let grabbed = null;
   window.raidScene = s => { grabbed = s; return origRaid(s); };
@@ -34,16 +43,16 @@ const playBeats = () => {
           for (let i = 0; i < ev.choices.length; i++) {
             for (const roll of [0, 0.999]) {
               s.beat = beat; s.round = round; s.edge = 0; s.hurt = new Set(); s.dead = []; s.marked = []; s.youHurt = false; s.handDied = false; st.armor = full;
-              seq([roll]);
+              seq([roll]); const b0 = stand();
               const text = ev.choices[i].run();
-              rec.plays.push({ beat, round, i, roll, text: String(text) });
+              rec.plays.push({ beat, round, i, roll, text: String(text), ...left(b0) });
               G.nextEvent = null;
             }
           }
         }
         for (const edge of [4, 2, 0, -2]) {
-          s.beat = 3; s.edge = edge; s.hurt = new Set(); st.armor = full; seq([]);
-          rec.closes.push({ edge, text: String(raidClose(s)) });
+          s.beat = 3; s.edge = edge; s.hurt = new Set(); st.armor = full; seq([]); const b0 = stand();
+          rec.closes.push({ edge, text: String(raidClose(s)), ...left(b0) });
           G.nextEvent = null;
         }
         out.push(rec);
@@ -63,6 +72,30 @@ const playBeats = () => {
     }
     out.push(rec);
   }
+  // the ambush, every choice of it: blind or after a read, to a trap or to a real call
+  for (const post of POSTS_ALL) for (const known of [false, true]) for (const trap of [false, true]) {
+    fresh(post, 'raider');
+    const h = hired(), cap = person(h.captain), ev = ambushChoice({ trap, read: known, tried: known, known }, cap, h, post, AMBUSH_READ[post]);
+    const rec = { id: `ambush:${post}:${known ? 'known' : 'blind'}:${trap ? 'trap' : 'real'}`, text: ev.text, labels: labelsOf(ev), plays: [] };
+    for (let i = 0; i < ev.choices.length; i++) for (const roll of [0, 0.999]) {
+      fresh(post, 'raider');
+      const h2 = hired(), cap2 = person(h2.captain), e2 = ambushChoice({ trap, read: known, tried: known, known }, cap2, h2, post, AMBUSH_READ[post]);
+      seq([roll]); const b0 = stand(); G.nextEvent = null;
+      const text = e2.choices[i].run();
+      rec.plays.push({ i, roll, text: String(text), next: G.nextEvent ? [G.nextEvent.title, String(G.nextEvent.text).slice(0, 100)] : null, ...left(b0) });
+      G.nextEvent = null; G.duel = null;
+    }
+    out.push(rec);
+  }
+  // how a boarding ends: the boarders turned back or the bridge taken, you aboard her or driven back, with the crew hurt or not
+  for (const assault of [false, true]) for (const post of ['gunner', 'engineer']) for (const won of [true, false]) for (const round of [1, 3]) {
+    fresh(post, 'raider');
+    const foe = makeEnemy({ kind: 'pirate' }), s = assault ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full');
+    s.round = round; s.pos = won ? -1 : 3; s.hurt = new Set(); seq([0.99, 0.99, 0.99]); const b0 = stand();
+    const text = assault ? assaultSettle(s, won, '') : repelSettle(s);
+    out.push({ id: `settle:${assault ? 'assault' : 'repel'}:${post}:${won ? 'won' : 'lost'}:${round}`, text: String(text), ...left(b0) });
+    G.nextEvent = null; G.duel = null;
+  }
   for (const assault of [false, true]) {
     for (const post of POSTS_ALL) {
       fresh(post, 'raider');
@@ -77,9 +110,9 @@ const playBeats = () => {
         for (const roll of kind === 'post' ? [0.01, 0.99] : [0.01, 0.5, 0.99]) {
           for (const delta of kind === 'post' ? [0] : [-1, 0, 1]) {
             const s = start(); s.pos = 1; s.round = 0; s.boarders = repelStanding(s) + delta;
-            seq([roll]);
+            seq([roll]); const b0 = stand();
             const text = repelStep(s, kind);
-            rec.steps.push({ kind, roll, delta, text: String(text) });
+            rec.steps.push({ kind, roll, delta, text: String(text), ...left(b0) });
             G.nextEvent = null;
           }
         }

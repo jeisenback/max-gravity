@@ -67,3 +67,20 @@ test('an override is escaped in a text and left plain in a label and a title, an
   assert.equal(r.title, 'The <i>Lock</i>');
   assert.equal(r.other, 'shipped');
 });
+
+test('the memories the beats leave are lines of the beats, drawn as plain text, and none is left in code', async () => {
+  const fs = require('node:fs'), path = require('node:path');
+  for (const f of ['engagements.js', 'boarders.js']) {
+    const src = fs.readFileSync(path.join(__dirname, '..', 'js', f), 'utf8');
+    assert.deepEqual([...src.matchAll(/\blike\([^;\n]*?, *['"`][A-Z]/g)].map(m => m[0].slice(0, 60)), [], `a memory in code in ${f}`);
+  }
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    useOverrides({ 'beats:raid': { parts: { 'memory.wrong': 'A <b>bad</b> call & more' } } });
+    const out = raidWords('memory.wrong', RAID_MEMORY.wrong);
+    useOverrides({});
+    return out;
+  });
+  await g.done();
+  assert.equal(r, 'A <b>bad</b> call & more');
+});

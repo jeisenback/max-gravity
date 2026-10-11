@@ -98,6 +98,8 @@ const RAID_POST = {
     comms: { label: 'Jam her fire control', win: [2, 0, 'You put noise across her fire control band. Her round goes wide, and the next one.'], lose: [-1, 0, 'You find the wrong band. The jammer works on nothing.'] },
   },
 };
+// What the captain remembers of a raid (the character view shows it), read as lines of the beat: `memory.<name>` (hiredscenes.js raidLines).
+const RAID_MEMORY = { wrong: 'You made a call in a raid and it went wrong.', turned: 'You made the call that turned a raid.', stood: 'You stood us up to a raid and she broke off.' };
 const RAID_CLOSE = {
   off: { gun: ('She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and ' +
       'the next stop will not be a conversation.'), grapple: (
@@ -120,7 +122,7 @@ function deadInSpaceScene(s) {
         `be ${repelStanding(assaultStart(s.foe)) - 1} of yours against ${assaultStart(s.foe).boarders} of hers.`),
     choices: [
       { label: 'Board her', run() { G.nextEvent = repelScene(assaultStart(s.foe, s)); return `The cutter goes out of the lock. It is a short crossing.`; } },
-      { label: 'Let her drift', run() { like(cap, 1, 'You stood us up to a raid and she broke off.'); changeRep('Pirate', -3); gainSkill(h.post, 3); return (
+      { label: 'Let her drift', run() { like(cap, 1, raidWords('memory.stood', RAID_MEMORY.stood)); changeRep('Pirate', -3); gainSkill(h.post, 3); return (
           `You leave her turning in the dark. Captain ${cap.last} writes it in the log and nothing else. (+3 experience at ` +
           `the ${POSTS[h.post].name.toLowerCase()} post.)`); } },
     ],
@@ -212,8 +214,8 @@ function raidStep(s, c, post) {
   if (!won && risk && Math.random() < risk) out += ` ${hurtHand(s)}`;  // your own call, and it went wrong on you
   if (c.bold) boldWithCaptain(won);  // the captain's nerve (captains.js)
   if (risk >= 0.35) {
-    if (!won) like(cap, -1, 'You made a call in a raid and it went wrong.');
-    else if (edge >= 2) like(cap, 1, 'You made the call that turned a raid.');
+    if (!won) like(cap, -1, raidWords('memory.wrong', RAID_MEMORY.wrong));
+    else if (edge >= 2) like(cap, 1, raidWords('memory.turned', RAID_MEMORY.turned));
   }
   if (hull) { const pts = Math.round(ship().armor * hull * foePunch(s)); st.armor = Math.max(1, st.armor - pts); out += ` Armor -${pts}.`; if (!won && Math.random() < CASUALTY_ODDS * (1 + 0.15 * s.grade + (s.pack ? 0.25 : 0))) out += ` ${repelCasualty(s)}`; }
   if (s.handDied) return out;  // the hand is dead: the ending is queued, and the raid does not go on
@@ -231,7 +233,7 @@ function raidClose(s) {
     return raidWords(`close.crippled.${s.style}`, RAID_CLOSE.crippled[s.style]);
   }
   if (s.edge >= 2 && !weak) {
-    like(cap, 1, 'You stood us up to a raid and she broke off.');
+    like(cap, 1, raidWords('memory.stood', RAID_MEMORY.stood));
     if (s.spec.kind !== 'patrol') changeRep('Pirate', -3);
     gainSkill(h.post, 3);
     return `${raidWords(`close.off.${s.style}`, RAID_CLOSE.off[s.style])} Captain ${cap.last} writes it in the log and nothing else. (+3 experience at the ${POSTS[h.post].name.toLowerCase()} post.)`;
@@ -250,6 +252,8 @@ function raidClose(s) {
 // way of reading the call, and a good read tells you which it is before you commit. A trap that springs on you starts the
 // raid two behind, and one you saw coming starts it one ahead. Offered for a burn through unsettled space (hired hand only).
 const AMBUSH_GAP = 60, AMBUSH_DANGER = 0.25, AMBUSH_TRAP = 0.7;
+// What the captain remembers of an ambush, as lines of the beat: `memory.<name>` (hiredscenes.js ambushLines).
+const AMBUSH_MEMORY = { real: 'You stopped for a real distress call.', trap: 'You saw a trap before it closed.', left: 'You left a real distress call.' };
 const AMBUSH_READ = {
   gunner: { label: 'Scan her hull for weapons', trap: ('You hold the fire control on her and watch the hull. There is a gun housing under the ' +
       'freighter plating, and the plating has been cut to let it traverse. She is not a freighter.'), real: (
@@ -283,18 +287,18 @@ function ambushChoice(a, cap, h, post, spec) {
       `more come off the rock behind her, and the call stops.`), (
       `They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they are inside the range, and ` +
       `your position is already bad.`));
-  const real = () => { h.fund += 500; like(cap, 1, 'You stopped for a real distress call.'); return `She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.`; };
+  const real = () => { h.fund += 500; like(cap, 1, lineWords('beats:ambush', 'memory.real', AMBUSH_MEMORY.real)); return `She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.`; };
   const choices = [];
   if (a.known) {
     if (a.trap) {
       choices.push({ label: 'Hit them before they are ready', run: () => springs(1, (`You come in hot with the drive cold, and light it at three ` +
           `kilometers. They are not ready. Battle stations.`), `They are in position behind the freighter, with their drives cold, and they have not lit them. You have the range, and the first move.`) });
-      choices.push({ label: 'Turn away and leave it', run() { like(cap, 1, 'You saw a trap before it closed.'); gainSkill(post, 2); return (
+      choices.push({ label: 'Turn away and leave it', run() { like(cap, 1, lineWords('beats:ambush', 'memory.trap', AMBUSH_MEMORY.trap)); gainSkill(post, 2); return (
           `You turn away and burn for the lane. At four kilometers the freighter's drive lights, the real one, and she comes after you for twenty ` +
           `minutes before she gives it up. (+2 experience at the ${POSTS[post].name.toLowerCase()} post.)`); } });
     } else {
       choices.push({ label: 'Go to her', run: real });
-      choices.push({ label: 'Leave her', run() { like(cap, -1, 'You left a real distress call.'); return `You leave her to call for someone else. Captain ${cap.last} says nothing, and does not look up from the plot.`; } });
+      choices.push({ label: 'Leave her', run() { like(cap, -1, lineWords('beats:ambush', 'memory.left', AMBUSH_MEMORY.left)); return `You leave her to call for someone else. Captain ${cap.last} says nothing, and does not look up from the plot.`; } });
     }
   } else {
     choices.push({ label: 'Go to her', run: () => (a.trap ? sprung() : real()) });
