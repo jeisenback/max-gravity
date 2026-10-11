@@ -52,7 +52,7 @@ test('the converted scenes are data rows of the registry, and the rest are code 
   assert.equal(r.effects.castLike.who, 'ansel');
   assert.ok(r.edit.length > 0 && r.edit.every(e => e === false), 'code choices keep their effects in code');
   assert.ok(r.goodbye && r.signon, 'the goodbye and the sign-on are rows of the registry');
-  assert.equal(r.dataRegistry, 119);
+  assert.equal(r.dataRegistry, 122);
 });
 
 test('a converted scene\'s effects are in forms, checked as typed, and changing one is a change to the file', async () => {
@@ -479,6 +479,22 @@ test('the pitch for work further away has its lines in the form and plays in the
   const f = await play();
   const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.choices.map(c => c.label)]));
   assert.ok(seen.includes('Asking the Captain') && seen.includes('Forget it'), seen.slice(0, 300));
+});
+
+test('the scenes of faction ties have their lines in the form and play in the preview (#508)', async () => {
+  for (const [id, keys, label] of [
+    ['scene:customs', ['part.title', 'part.title.patrol', 'part.charge.wanted', 'part.text.patrol', 'part.silent.gone', 'part.hand.others.memory', 'part.signs'], 'Slip the officer a note'],
+    ['scene:dock-friend', ['part.title', 'part.text', 'part.c0.memory', 'part.c1.result'], 'Let them ask'],
+    ['scene:war-call', ['part.text.officer', 'part.go.liaison', 'part.refuse.memory', 'part.stay.far.memory'], 'Let them leave'],
+  ]) {
+    await reload(); await select(id);
+    const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
+    for (const k of keys) assert.ok(paths.includes(k), `${id} ${k} in ${paths.join()}`);
+    await page.fill(`textarea[data-path="part.${id === 'scene:customs' ? 'pay' : id === 'scene:dock-friend' ? 'c0' : 'go'}.label"]`, label);
+    const f = await play();
+    const seen = await f.evaluate(() => JSON.stringify(G.dialog.choices.map(c => c.label)));
+    assert.ok(seen.includes(label), `${id} ${seen.slice(0, 300)}`);
+  }
 });
 
 test('the function-built scenes and the code-written hired events are edited line by line, and each plays in the preview (#463)', async () => {

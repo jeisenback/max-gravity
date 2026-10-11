@@ -368,10 +368,20 @@
         if (sc.closed) castPerson(reg.key).opinion = reg.closed ? OPINION.FRIEND - 1 : OPINION.FRIEND;
         openEvent(castScene(reg.key, sc));
       } else if (reg.kind === 'function' && !reg.id.startsWith('beats:')) {  // a scene built by a function (#463), with what it needs about
+        const tiesPreview = (make, status, war) => {  // a shipmate of a faction in the state the scene reads (wanted, an officer, or at war), for the time it is built
+          const gov = FACTIONS.find(f => f !== 'Pirate'), foe = FACTIONS.find(f => f !== 'Pirate' && f !== gov), mate = makeCrewCandidate(G.state.systemId);
+          registerPerson(mate); G.state.crew.push(mate.id);
+          const realTies = tiesOf, realWar = factionState;
+          tiesOf = q => { const t = realTies(q); return q.id === mate.id ? { ...t, aff: gov, status: { ...t.status, [gov]: status } } : t; };
+          if (war) factionState = () => ({ ...realWar(), war: { a: gov, b: foe, start: G.state.day } });
+          try { return make(gov); } finally { tiesOf = realTies; factionState = realWar; }
+        };
         const crew = folk().filter(f => f.crew && !f.p.cast), st = G.state;
         const build = {
           'scene:sign-on': () => { st.carried = null; return signOnEvent(); }, 'scene:warning': warningScene, 'scene:put-ashore': putAshoreScene, 'scene:hand-death': () => handDeathScene('hurt'),
           'scene:pitch': () => { const dest = SYSTEMS.mars.planets[0].name; return pitchScene({ tpl: 'package', ctx: { dest, from: G.state.planet, who: 'Mrs. Adeyemi', system: SYSTEMS.mars.name, scale: 1.2 }, sid: 'mars', planet: dest, days: 5, until: G.state.day + 20, pitched: null, booked: false }); },
+          'scene:customs': () => tiesPreview(gov => customsScene(gov, currentPlanet(), false), 'wanted'), 'scene:dock-friend': () => tiesPreview(gov => dockFriendScene(gov, currentPlanet()), 'officer'),
+          'scene:war-call': () => tiesPreview(() => warCallScene(currentPlanet()), 'member', true),
           'scene:captain-lost': captainLostScene, 'scene:used-ship-offer': () => dealScene(currentPlanet()), 'scene:yard-office': () => yardScene(USED_ID),
           'scene:split': () => { if (crew.length > 1) { addBond(crew[0], crew[1], -9); st.feuds = { [bondKey(crew[0], crew[1])]: 1 }; st.relAt = {}; } return splitScene(); },
           'scene:walk-off': () => { const c = castAboard().find(x => CAST[x.cast].farewell); return c ? walkOffScene(c, currentPlanet()) : null; },

@@ -82,13 +82,13 @@ function dockPeople(gov, status) {
 function customsDue(patrol) { const st = G.state; return !((st.customs || {})[patrol ? 'patrolLast' : 'last'] > st.day - 120); }
 
 // The same stop in flight is a patrol cutter alongside, and `planet` is then only a name for where the crew member is left.
-// A crew member leaves the ship, and someone from the dock signs on for the berth.
+// A crew member leaves the ship, and someone from the dock signs on for the berth. The words are the lines of scene:customs (hiredscenes.js).
 function signReplacement(p, planet) {
   const st = G.state;
   st.crew = st.crew.filter(id => id !== p.id); p.location = planet.name;
   const rep = makeCrewCandidate(st.systemId); rep.role = p.role; rep.skill = Math.max(1, (p.skill || 1) - 1); rep.job = ROLE_NAMES[p.role] ? ROLE_NAMES[p.role].toLowerCase() : 'hand'; rep.mood = null;
   registerPerson(rep); st.crew.push(rep.id);
-  return ` ${rep.first} signs on for the berth.`;
+  return ` ${sceneSay('scene:customs', 'signs', { first: rep.first })}`;
 }
 
 function customsScene(gov, planet, patrol) {
@@ -100,39 +100,26 @@ function customsScene(gov, planet, patrol) {
   (st.customs[`${p.id}:${gov}:${status}`] = st.day);
   const weight = status === 'wanted' ? 0.55 : 0.8;  // an exile is turned back less often than a wanted one is held
   const gone = () => signReplacement(p, planet);
+  const faction = shortFaction(gov), say = (key, vars) => sceneSay('scene:customs', key, { n, faction, gov, planet: planet.name, first: p.first, last: p.last, ...vars });
   const choices = [];
-  if (officer) choices.push({ label: `[${officer.first}, a ${shortFaction(gov)} officer] Let ${officer.first} answer the hail`, run() { like(officer, 1, `You let me answer a ${shortFaction(gov)} patrol.`); return (
-      `${officer.first} takes the open band and gives a rank and a unit. The cutter's captain asks one question, gets the right answer, and does not ` +
-      `ask for the crew list.`); } });
-  if (papers) choices.push({ label: `[${gov} papers] Vouch for ${n} as a member`, run() { like(p, 2, patrol ? `You vouched for me to a patrol.` : `You vouched for me at customs on ${planet.name}.`); return (
-      `You give the officer your papers and say ${n} is signed on the ship's articles. The officer reads the date, stamps the manifest, and does not ` +
-      `look at ${n}.`); } });
-  choices.push({ label: `Pay the officer (400 cr from the ship's fund)`, ...gated(needFunds(400)), run() { h.fund -= 400; like(cap, -1, `You paid a customs officer from the fund.`); return (
-      `The envelope goes across the counter. The officer takes the manifest into the back and brings it out stamped, and the number on it is not the ` +
-      `number it was.`); } });
-  choices.push({ label: `Say nothing and keep ${n} below`, run() {
-    if (Math.random() < weight) return `The officer checks the crew list against the register for ten minutes. The ship is cleared, and ${n} is in the engine room the whole time.`;
-    const fine = Math.min(h.fund, 800); h.fund -= fine; like(cap, -1, `A wanted crew member was found aboard.`); like(p, -1, `You kept me aboard and I was found.`);
-    if (p.cast) return `They search the ship and find ${n}. The fine is ${fmt(fine)} cr from the ship's fund. ${n} is released at the foot of the ramp, and walks back up it.`;  // a main character does not leave
-    return `They search the ship and find ${n}. The fine is ${fmt(fine)} cr from the ship's fund, and ${n} goes ashore under escort.${gone()}`;
+  if (officer) choices.push({ label: say('officer.label', { officer: officer.first }), run() { like(officer, 1, say('officer.memory')); return say('officer.result', { officer: officer.first }); } });
+  if (papers) choices.push({ label: say('papers.label'), run() { like(p, 2, say(patrol ? 'papers.patrol.memory' : 'papers.memory')); return say('papers.result'); } });
+  choices.push({ label: say('pay.label'), ...gated(needFunds(400)), run() { h.fund -= 400; like(cap, -1, say('pay.memory')); return say('pay.result'); } });
+  choices.push({ label: say('silent.label'), run() {
+    if (Math.random() < weight) return say('silent.clear');
+    const fine = Math.min(h.fund, 800); h.fund -= fine; like(cap, -1, say('silent.captain.memory')); like(p, -1, say('silent.memory'));
+    if (p.cast) return say('silent.stay', { fine: fmt(fine) });  // a main character does not leave
+    return say('silent.gone', { fine: fmt(fine) }) + gone();
   } });
   if (!p.cast) choices.push({
-    label: patrol ? `Hand ${n} over to the cutter` : `Put ${n} ashore`,
-    run() { like(p, -3, patrol ? `You handed me to a ${shortFaction(gov)} patrol.` : `You put me ashore at customs on ${planet.name}.`);
-      for (const id of st.crew) { const q = person(id); if (q && q !== p && q.memories && tiesOf(q).aff === tiesOf(p).aff) like(q, -1, `You ${patrol ? 'handed' :
-      'put'} ${n} ${patrol ? 'over to a patrol' : 'ashore at customs'}.`); } return patrol ?
-      `${n} goes across in the cutter's launch without a word. The cutter's captain thanks you for your cooperation and breaks off.${gone()}` :
-      `${n} takes a bag down the ramp. They do not say anything, and the officer clears the ship.${gone()}`; }
+    label: say(patrol ? 'hand.label' : 'ashore.label'),
+    run() { like(p, -3, say(patrol ? 'hand.memory' : 'ashore.memory'));
+      for (const id of st.crew) { const q = person(id); if (q && q !== p && q.memories && tiesOf(q).aff === tiesOf(p).aff) like(q, -1, say(patrol ? 'hand.others.memory' : 'ashore.others.memory')); }
+      return say(patrol ? 'hand.result' : 'ashore.result') + gone(); }
   });
   return {
-    title: patrol ? 'A Patrol Cutter' : 'The Customs Officer', personal: true, via: patrol ? 'ship' : 'crew', owner: 'you',
-    text: patrol ? (`A ${shortFaction(gov)} patrol cutter matches your course and asks for the crew list. Its captain reads it aloud, slowly, and ` +
-        `stops at ${p.first} ${p.last}. ` +
-        `"${status === 'wanted' ? `This one is wanted by ${shortFaction(gov)}` : `This one left ${shortFaction(gov)} with a mark against them`}," the ` +
-        `captain says, and waits.`) : (
-        `The customs officer at ${planet.name} runs the crew list against the ${gov} register and stops at ${p.first} ${p.last}. ` +
-        `"${status === 'wanted' ? `This one is wanted by ${shortFaction(gov)}` : `This one left ${shortFaction(gov)} with a mark against them`}," the ` +
-        `officer says, and waits.`),
+    title: say(patrol ? 'title.patrol' : 'title'), personal: true, via: patrol ? 'ship' : 'crew', owner: 'you',
+    text: say(patrol ? 'text.patrol' : 'text', { charge: say(status === 'wanted' ? 'charge.wanted' : 'charge.exile') }),
     choices,
   };
 }
@@ -141,13 +128,13 @@ function dockFriendScene(gov, planet) {
   const st = G.state, h = hired(), p = dockPeople(gov, 'officer')[0];
   if (!p) return null;
   st.customs[`${p.id}:${gov}:officer`] = st.day;
-  const n = p.first;
+  const say = (key, vars) => sceneSay('scene:dock-friend', key, { n: p.first, planet: planet.name, faction: shortFaction(gov), ...vars });
   return {
-    title: 'A Friend at the Dock', personal: true, via: 'crew', owner: 'you',
-    text: `${n} stops at the foot of the ramp. The harbor master at ${planet.name} is in ${shortFaction(gov)}'s uniform, and served under ${n} once. They are shaking hands. "${n} says you can have the berth at the old rate," the harbor master says to you, "if ${n} asks."`,
+    title: say('title'), personal: true, via: 'crew', owner: 'you',
+    text: say('text'),
     choices: [
-      { label: `Let ${n} ask`, run() { h.fund += 150; like(p, 1, `You let me call in a favor at ${planet.name}.`); return `${n} asks. The harbor master writes a lower number on the berth slip. It saves the fund 150 cr, and ${n} is quiet about it for the rest of the watch.`; } },
-      { label: 'Pay the full rate', run() { like(p, 1, `You would not use my old unit's name.`); return `You pay the full rate. ${n} nods and says nothing.`; } },
+      { label: say('c0.label'), run() { h.fund += 150; like(p, 1, say('c0.memory')); return say('c0.result'); } },
+      { label: say('c1.label'), run() { like(p, 1, say('c1.memory')); return say('c1.result'); } },
     ],
   };
 }
@@ -178,29 +165,22 @@ function warCallScene(planet) {
   if (!p) return null;
   (st.warCalled = st.warCalled || {})[p.id] = w.start; st.warCalled.last = st.day;
   const side = warSide(p, w), foe = side === w.a ? w.b : w.a, n = p.first, officer = tiesOf(p).status[side] === 'officer', cap = person(hired().captain);
-  const choices = [{ label: `Let ${n} go`, run() {
-    like(p, officer ? 1 : 2, `You let me go when ${shortFaction(side)} went to war.`); if (officer) changeRep(side, 3);
-    return `${n} shakes every hand aboard and takes a bag down the ramp. ${officer ? `A ${shortFaction(side)} liaison is waiting at the foot of it with orders. ` : ''}${signReplacement(p, planet).trim()}`;
+  const bare = f => shortFaction(f).replace('the ', '');
+  const say = (key, vars) => sceneSay('scene:war-call', key, { n, faction: shortFaction(side), side: bare(side), foe: bare(foe), planet: planet.name, first: p.first, last: p.last, cap: cap.last, ...vars });
+  const choices = [{ label: say('go.label'), run() {
+    like(p, officer ? 1 : 2, say('go.memory')); if (officer) changeRep(side, 3);
+    return `${say('go.result')} ${officer ? `${say('go.liaison')} ` : ''}${signReplacement(p, planet).trim()}`;
   } }];
-  if (officer) choices.push({ label: `Refuse to release ${n}`, run() {
-    like(p, -3, `You would not release me when I was recalled.`); changeRep(side, -4);
-    return `${n} reads the recall order twice and puts it away. ${n} does not leave. The liaison logs the ship as having obstructed a recall, and ${n} does not speak to you for the rest of the watch.`;
+  if (officer) choices.push({ label: say('refuse.label'), run() {
+    like(p, -3, say('refuse.memory')); changeRep(side, -4);
+    return say('refuse.result');
   } });
-  else choices.push({ label: `Ask ${n} to stay`, run() {
-    if (p.opinion >= OPINION.CLOSE) { like(p, 1, `You asked me to stay and I did, because of you.`); return `${n} thinks about it for a long minute. "I would rather be here," ${n} says, and means it. It is not the same as being glad.`; }
-    like(p, -2, `You asked me to stay when my people were at war.`);
-    return `${n} hears you out and goes anyway, because it is not the sort of thing a person can be talked out of. ${signReplacement(p, planet).trim()}`;
+  else choices.push({ label: say('stay.label'), run() {
+    if (p.opinion >= OPINION.CLOSE) { like(p, 1, say('stay.close.memory')); return say('stay.close'); }
+    like(p, -2, say('stay.far.memory'));
+    return `${say('stay.far')} ${signReplacement(p, planet).trim()}`;
   } });
-  return {
-    title: 'Word From Home', personal: true, via: 'crew', owner: 'you',
-    text: officer ? (`A courier from the ${shortFaction(side).replace('the ', '')} navy is waiting at the foot of the ramp on ${planet.name} with a ` +
-        `recall for ${p.first} ${p.last}. The ${shortFaction(side).replace('the ', '')} are at war with the ${shortFaction(foe).replace('the ', '')}, ` +
-        `and an officer's leave is over. Captain ${cap.last} says it is your call.`) : (
-        `${p.first} has been at the news feed in the galley since the war began between the ${shortFaction(side).replace('the ', '')} and ` +
-        `the ${shortFaction(foe).replace('the ', '')}. At ${planet.name} ${p.first} finds you. "My people are in it," ${p.first} says. "I would like ` +
-        `to go home and see if I can help. I will understand if you say no."`),
-    choices,
-  };
+  return { title: say('title'), personal: true, via: 'crew', owner: 'you', text: say(officer ? 'text.officer' : 'text.member'), choices };
 }
 
 Mods.register({
