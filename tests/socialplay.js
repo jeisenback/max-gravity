@@ -4,7 +4,7 @@
 // two or three people aboard (their bond, homes, traits, who is crew and who is a passenger, an owner's game or a hired one) so that some scenes can come up, and
 // relationshipScene is called from each of several seeds; for each scene that comes, the title, text and labels are recorded, and the line each choice returns on a good roll and on a
 // bad one, with what it changed (credits, hull, the bond, each person's regard). welcomeBack is played the same way.
-const playSocial = () => {
+const playSocial = raw => {  // raw: every case, with the scenes that repeat (the pin keeps the first of each)
   const out = [];
   const real = Math.random;
   const seq = list => { const l = [...list]; Math.random = () => (l.length ? l.shift() : real()); };
@@ -20,7 +20,7 @@ const playSocial = () => {
   const guest = (st, first, over = {}, mission = {}) => { const c = makeCrewCandidate(st.systemId); Object.assign(c, { first, last: 'Rowe', traits: ['kind', 'brave'], home: 'Mars', culture: 'mars', opinion: 0 }, over); registerPerson(c); st.missions.push({ type: 'passenger', id: st.nextId++, pid: c.id, who: `${c.first} ${c.last}`, pax: 1, bonus: 0, destSystem: 'mars', destPlanet: 'Olympus Dome', title: 'Carry', pay: 1000, deadline: 99, ...mission }); return c; };
   const setBond = (st, a, b, n) => { st.bonds[[a.id, b.id].sort().join('|')] = n; };
   // two people of different teams in one league, found by looking: the match scenes need them
-  const rivals = st => { for (let i = 0; i < 40; i++) { const a = mate(st, 'Ana', { home: 'Ceres Station', culture: 'belt' }), b = mate(st, 'Ben', { home: 'Ceres Station', culture: 'belt' }); const ta = tastes({ id: a.id, p: a }).team, tb = tastes({ id: b.id, p: b }).team; if (ta !== tb && leagueOf(ta) === leagueOf(tb)) return [a, b]; st.crew.length -= 2; } return null; };
+  const rivals = (st, traits = ['kind', 'brave']) => { for (let i = 0; i < 40; i++) { const a = mate(st, 'Ana', { home: 'Ceres Station', culture: 'belt', traits }), b = mate(st, 'Ben', { home: 'Ceres Station', culture: 'belt', traits }); const ta = tastes({ id: a.id, p: a }).team, tb = tastes({ id: b.id, p: b }).team; if (ta !== tb && leagueOf(ta) === leagueOf(tb)) return [a, b]; st.crew.length -= 2; } return null; };
   const SETUPS = {
     close7: st => { const a = mate(st, 'Ana'), b = mate(st, 'Ben', { culture: 'belt', home: 'Ceres Station' }); setBond(st, a, b, 7); },
     close3: st => { const a = mate(st, 'Ana'), b = mate(st, 'Ben', { culture: 'belt', home: 'Ceres Station' }); setBond(st, a, b, 3.5); },
@@ -31,6 +31,7 @@ const playSocial = () => {
     tour: st => { mate(st, 'Ana', { home: 'Luna', culture: 'earth' }); guest(st, 'Ben', { home: 'Ceres Station', culture: 'belt' }); },
     tourNervous: st => { mate(st, 'Ana', { home: 'Luna', culture: 'earth' }); guest(st, 'Ben', { traits: ['nervous', 'kind'], home: 'Ceres Station', culture: 'belt' }); },
     match: st => { rivals(st); },
+    matchRude: st => { rivals(st, ['rude', 'brave']); },
     word: st => { const a = mate(st, 'Ana', { home: 'Luna', culture: 'earth' }), b = mate(st, 'Ben', { home: 'Ceres Station', culture: 'belt' }); setBond(st, a, b, 1.5); },
     wordCold: st => { const a = mate(st, 'Ana', { home: 'Luna', culture: 'earth', traits: [] }), b = mate(st, 'Ben', { home: 'Ceres Station', culture: 'belt' }); setBond(st, a, b, -1.5); },
     hiredWord: st => { const a = mate(st, 'Ana', { home: 'Luna', culture: 'earth' }), b = mate(st, 'Ben', { home: 'Ceres Station', culture: 'belt' }); setBond(st, a, b, 1.5); },
@@ -69,6 +70,7 @@ const playSocial = () => {
   play('back:friends', false, st => regular(st, true, true), () => welcomeBack(), [1]);
   Math.random = real;
   // a scene that came up again as the same words with the same results adds nothing to the pin: keep the first of each (the seed and the setup say where it came from)
+  if (raw) return out;
   const seen = new Set();
   return out.filter(r => { if (r.title === undefined) return true; const k = JSON.stringify([r.title, r.text, r.labels, r.plays]); if (seen.has(k)) return false; seen.add(k); return true; });
 };

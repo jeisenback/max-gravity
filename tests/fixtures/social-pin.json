@@ -7316,6 +7316,850 @@
   ]
  },
  {
+  "id": "matchRude",
+  "seed": 1,
+  "title": "Galley Duty",
+  "text": "The ship's feed has Pallas Smelters against Ceres Breakers at the end of watch. Ana and Ben have turned the chairs to face the screen. A week of galley duty, loser's. They have not spoken since they agreed it.",
+  "labels": [
+   "Stream it for everyone",
+   "Put 300 cr on the Pallas Smelters yourself",
+   "Stay out of it"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Pallas Smelters 3, Ceres Breakers 2. Ben does the week of galley duty. Every pan goes into the rack hard, and for four days Ben goes through what the referee did.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Pallas Smelters 4, Ceres Breakers 5. Ana does the week of galley duty. Every pan goes into the rack hard, and for four days Ana goes through what the referee did.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Pallas Smelters 4, Ceres Breakers 3. You collect 300 cr. Ana wants to buy a round with it.",
+    "d": {
+     "credits": 300,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {
+      "Ana": 1,
+      "Ben": -1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "Pallas Smelters 3, Ceres Breakers 4. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "d": {
+     "credits": -300,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You hear the result through the bulkhead: cheering, then a groan, then someone banging a pan.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You hear the result through the bulkhead: cheering, then a groan, then someone banging a pan.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "matchRude",
+  "seed": 2,
+  "title": "The Replay",
+  "text": "Ana (Pallas Smelters) and Ben (Ceres Breakers) have had the same argument for an hour: a famous fixture between their sides, a disputed call, a goal that stood or did not. Ana has the date. Ben has a cousin who was in the stand. The archive is one command away.",
+  "labels": [
+   "Play the old fixture from the archive",
+   "Rule on the disputed call yourself",
+   "Mute the feed"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Pallas Smelters 1, Ceres Breakers 0. Ana says it is what they said all along. Ben says the archive has the wrong referee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Pallas Smelters 2, Ceres Breakers 1. Ana says it is what they said all along. Ben says the archive has the wrong referee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You rule that the goal stood. Ana stands up and shakes your hand. Ben says nobody asked you, and then asks you to say it again.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {
+      "Ana": 1,
+      "Ben": -1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You rule that the goal stood. Ben stands up and shakes your hand. Ana says nobody asked you, and then asks you to say it again.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {
+      "Ana": -1,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You turn the sound down on the galley screen. They go on arguing for another ten minutes, with their hands, and then they go quiet and put the sound back up to watch something else.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 0.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You turn the sound down on the galley screen. They go on arguing for another ten minutes, with their hands, and then they go quiet and put the sound back up to watch something else.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 0.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "matchRude",
+  "seed": 3,
+  "title": "Galley Duty",
+  "text": "The galley rota is a sheet taped to the cabinet door. Ana has written Ben's name on every day of next week, and Ben has written Ana's name over it. Ana backs Pallas Smelters. Ben backs Ceres Breakers. Whoever's team loses tonight does the dishes. Both of them have initialed it.",
+  "labels": [
+   "Stream it for everyone",
+   "Put 300 cr on the Pallas Smelters yourself",
+   "Stay out of it"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Pallas Smelters 4, Ceres Breakers 0. Ben does the week of galley duty. Every pan goes into the rack hard, and for four days Ben goes through what the referee did.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Pallas Smelters 5, Ceres Breakers 2. Ben does the week of galley duty. Every pan goes into the rack hard, and for four days Ben goes through what the referee did.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Pallas Smelters 4, Ceres Breakers 5. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "d": {
+     "credits": -300,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "Pallas Smelters 0, Ceres Breakers 5. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "d": {
+     "credits": -300,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You hear the result through the bulkhead: cheering, then a groan, then someone banging a pan.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You hear the result through the bulkhead: cheering, then a groan, then someone banging a pan.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "matchRude",
+  "seed": 4,
+  "title": "The Replay",
+  "text": "Ana (Pallas Smelters) and Ben (Ceres Breakers) have had the same argument for an hour: a famous fixture between their sides, a disputed call, a goal that stood or did not. Ana has the date. Ben has a cousin who was in the stand. The archive is one command away.",
+  "labels": [
+   "Play the old fixture from the archive",
+   "Rule on the disputed call yourself",
+   "Mute the feed"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Pallas Smelters 3, Ceres Breakers 5. Ben says it is what they said all along. Ana says the archive has the wrong referee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Pallas Smelters 3, Ceres Breakers 2. Ana says it is what they said all along. Ben says the archive has the wrong referee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You rule that the goal stood. Ana stands up and shakes your hand. Ben says nobody asked you, and then asks you to say it again.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {
+      "Ana": 1,
+      "Ben": -1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You rule that the goal stood. Ben stands up and shakes your hand. Ana says nobody asked you, and then asks you to say it again.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {
+      "Ana": -1,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You turn the sound down on the galley screen. They go on arguing for another ten minutes, with their hands, and then they go quiet and put the sound back up to watch something else.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 0.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You turn the sound down on the galley screen. They go on arguing for another ten minutes, with their hands, and then they go quiet and put the sound back up to watch something else.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 0.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "matchRude",
+  "seed": 6,
+  "title": "Galley Duty",
+  "text": "The galley rota is a sheet taped to the cabinet door. Ana has written Ben's name on every day of next week, and Ben has written Ana's name over it. Ana backs Pallas Smelters. Ben backs Ceres Breakers. Whoever's team loses tonight does the dishes. Both of them have initialed it.",
+  "labels": [
+   "Stream it for everyone",
+   "Put 300 cr on the Pallas Smelters yourself",
+   "Stay out of it"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Pallas Smelters 5, Ceres Breakers 4. Ben does the week of galley duty. Every pan goes into the rack hard, and for four days Ben goes through what the referee did.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Pallas Smelters 2, Ceres Breakers 1. Ben does the week of galley duty. Every pan goes into the rack hard, and for four days Ben goes through what the referee did.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Pallas Smelters 0, Ceres Breakers 3. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "d": {
+     "credits": -300,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "Pallas Smelters 0, Ceres Breakers 5. You lose 300 cr. Ben brings it up at every meal until the next match.",
+    "d": {
+     "credits": -300,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You hear the result through the bulkhead: cheering, then a groan, then someone banging a pan.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You hear the result through the bulkhead: cheering, then a groan, then someone banging a pan.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "matchRude",
+  "seed": 7,
+  "title": "Galley Duty",
+  "text": "Ana (Pallas Smelters) and Ben (Ceres Breakers) have put the galley rota on the match. The loser takes all of it for a week. It is written on the cabinet door in Ana's handwriting. Ben has added \"and no complaints\" and underlined it twice.",
+  "labels": [
+   "Stream it for everyone",
+   "Put 300 cr on the Pallas Smelters yourself",
+   "Stay out of it"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Pallas Smelters 0, Ceres Breakers 3. Ana does the week of galley duty. Every pan goes into the rack hard, and for four days Ana goes through what the referee did.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Pallas Smelters 5, Ceres Breakers 1. Ben does the week of galley duty. Every pan goes into the rack hard, and for four days Ben goes through what the referee did.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Pallas Smelters 2, Ceres Breakers 1. You collect 300 cr. Ana wants to buy a round with it.",
+    "d": {
+     "credits": 300,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {
+      "Ana": 1,
+      "Ben": -1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "Pallas Smelters 5, Ceres Breakers 0. You collect 300 cr. Ana wants to buy a round with it.",
+    "d": {
+     "credits": 300,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {
+      "Ana": 1,
+      "Ben": -1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You hear the result through the bulkhead: cheering, then a groan, then someone banging a pan.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You hear the result through the bulkhead: cheering, then a groan, then someone banging a pan.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "matchRude",
+  "seed": 12,
+  "title": "Galley Duty",
+  "text": "The ship's feed has Pallas Smelters against Ceres Breakers at the end of watch. Ana and Ben have turned the chairs to face the screen. A week of galley duty, loser's. They have not spoken since they agreed it.",
+  "labels": [
+   "Stream it for everyone",
+   "Put 300 cr on the Pallas Smelters yourself",
+   "Stay out of it"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Pallas Smelters 2, Ceres Breakers 5. Ana does the week of galley duty. Every pan goes into the rack hard, and for four days Ana goes through what the referee did.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Pallas Smelters 0, Ceres Breakers 1. Ana does the week of galley duty. Every pan goes into the rack hard, and for four days Ana goes through what the referee did.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Pallas Smelters 5, Ceres Breakers 2. You collect 300 cr. Ana wants to buy a round with it.",
+    "d": {
+     "credits": 300,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {
+      "Ana": 1,
+      "Ben": -1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "Pallas Smelters 2, Ceres Breakers 0. You collect 300 cr. Ana wants to buy a round with it.",
+    "d": {
+     "credits": 300,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {
+      "Ana": 1,
+      "Ben": -1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You hear the result through the bulkhead: cheering, then a groan, then someone banging a pan.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You hear the result through the bulkhead: cheering, then a groan, then someone banging a pan.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "matchRude",
+  "seed": 13,
+  "title": "The Replay",
+  "text": "Ana (Pallas Smelters) and Ben (Ceres Breakers) have had the same argument for an hour: a famous fixture between their sides, a disputed call, a goal that stood or did not. Ana has the date. Ben has a cousin who was in the stand. The archive is one command away.",
+  "labels": [
+   "Play the old fixture from the archive",
+   "Rule on the disputed call yourself",
+   "Mute the feed"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Pallas Smelters 2, Ceres Breakers 4. Ben says it is what they said all along. Ana says the archive has the wrong referee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Pallas Smelters 1, Ceres Breakers 2. Ben says it is what they said all along. Ana says the archive has the wrong referee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You rule that the goal stood. Ana stands up and shakes your hand. Ben says nobody asked you, and then asks you to say it again.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {
+      "Ana": 1,
+      "Ben": -1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You rule that the goal stood. Ben stands up and shakes your hand. Ana says nobody asked you, and then asks you to say it again.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {
+      "Ana": -1,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You turn the sound down on the galley screen. They go on arguing for another ten minutes, with their hands, and then they go quiet and put the sound back up to watch something else.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 0.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You turn the sound down on the galley screen. They go on arguing for another ten minutes, with their hands, and then they go quiet and put the sound back up to watch something else.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 0.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "matchRude",
+  "seed": 14,
+  "title": "Galley Duty",
+  "text": "\"A week,\" Ben says. \"Dishes, filters, the lot.\" \"Done,\" Ana says, and they shake on it across the table. Ana has Pallas Smelters. Ben has Ceres Breakers. The match is tonight.",
+  "labels": [
+   "Stream it for everyone",
+   "Put 300 cr on the Pallas Smelters yourself",
+   "Stay out of it"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Pallas Smelters 5, Ceres Breakers 6. Ana does the week of galley duty. Every pan goes into the rack hard, and for four days Ana goes through what the referee did.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Pallas Smelters 3, Ceres Breakers 5. Ana does the week of galley duty. Every pan goes into the rack hard, and for four days Ana goes through what the referee did.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "Pallas Smelters 2, Ceres Breakers 0. You collect 300 cr. Ana wants to buy a round with it.",
+    "d": {
+     "credits": 300,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {
+      "Ana": 1,
+      "Ben": -1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "Pallas Smelters 5, Ceres Breakers 4. You collect 300 cr. Ana wants to buy a round with it.",
+    "d": {
+     "credits": 300,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {
+      "Ana": 1,
+      "Ben": -1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You hear the result through the bulkhead: cheering, then a groan, then someone banging a pan.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You hear the result through the bulkhead: cheering, then a groan, then someone banging a pan.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {},
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
   "id": "word",
   "seed": 1,
   "title": "A Word, Captain",

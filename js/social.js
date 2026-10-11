@@ -352,244 +352,212 @@ const relMark = kind => { (G.state.relAt = G.state.relAt || {})[kind] = G.state.
 // More shapes for the scenes that came up most, so the same four titles do not carry most of the talk: a feud over the watch log
 // or in silence as well as in the galley, a match argued over after the fact, and a dish from home.
 function feudHandover(a, b, A, B) {
+  const say = socialSay('handover');
   return {
-    title: 'The Handover', text: (`${A} is at the engine room hatch with the watch log open, and ${B} is on the other side of the panel with their ` +
-        `coat already on. "You wrote 'not done'," ${B} says. "It was not done," ${A} says. "It was done at four." Somebody coming off watch turns ` +
-        `round in the corridor and goes the long way.`),
+    title: say('title'), text: say('text', { A, B }),
     choices: [
-      { label: 'Read the log and rule on it', run() { const [w, l] = pick([[a, b], [b, a]]); like(w.p, 1, null); like(l.p, -1, `You ruled against me on the log.`); addBond(a, b, -0.5); return (
-          `You read the entries and the timestamps. ${w.p.first} is right, by eleven minutes. ${l.p.first} takes the log back, reads the line, and ` +
-          `does not say anything that would go in it.`); } },
-      { label: 'Split their watches so they do not meet', run() { addBond(a, b, -0.5); return `You rewrite the rota so that ${A} and ${B} are never on the same changeover. It works. The handovers go quiet, and the log is a little cleaner, and neither of them thanks you.`; } },
-      { label: 'Make them do the handover together, standing up', run() {
-        if (Math.random() < 0.5) { addBond(a, b, 2); return `They go through it line by line, standing at the panel. Halfway down the page ${B} says the four o'clock entry was theirs, and ${A} says it was a close call. It is not warm, but it is a handover.`; }
-        addBond(a, b, -1); return `They do the handover standing, and they do not look at each other, and when it is finished each of them writes their own initials in a different ink.`;
+      { label: say('c0.label'), run() { const [w, l] = pick([[a, b], [b, a]]); like(w.p, 1, null); like(l.p, -1, `You ruled against me on the log.`); addBond(a, b, -0.5); return say('c0.result', { winner: w.p.first, loser: l.p.first }); } },
+      { label: say('c1.label'), run() { addBond(a, b, -0.5); return say('c1.result', { A, B }); } },
+      { label: say('c2.label'), run() {
+        if (Math.random() < 0.5) { addBond(a, b, 2); return say('c2.win', { B, A }); }
+        addBond(a, b, -1); return say('c2.lose');
       } },
     ],
   };
 }
 
 function feudShoulders(a, b, A, B) {
+  const say = socialSay('cold-shoulders');
   const cook = G.state.crew.map(person).find(c => c && c.role === 'cook' && c !== a.p && c !== b.p);
   return {
-    title: 'Cold Shoulders', text: (`${A} and ${B} have not spoken in three days, and the ship has noticed. Messages go ` +
-        `through ${cook ? cook.first : 'whoever is nearest'}: "tell them the filter is changed", "tell them I heard". At dinner they sit at opposite ` +
-        `ends of the table and the talk goes quiet, and then starts again, a little too loud.`),
+    title: say('title'), text: say('text', { A, B, via: cook ? cook.first : 'whoever is nearest' }),
     choices: [
-      { label: 'Put them on the same job', run() {
-        if (Math.random() < 0.55) { addBond(a, b, 2); return `You give them the cargo bay inventory, two of them, one list. For the first hour they count in silence. By the second hour one of them says a number out loud and the other repeats it back, and that is a start.`; }
-        addBond(a, b, -1); return `You give them the cargo bay inventory. They finish it in half the time, by splitting the bay down the middle and not crossing the line.`;
+      { label: say('c0.label'), run() {
+        if (Math.random() < 0.55) { addBond(a, b, 2); return say('c0.win'); }
+        addBond(a, b, -1); return say('c0.lose');
       } },
-      { label: 'Talk to each of them alone', run() { addBond(a, b, 0.5); like(a.p, 1, null); like(b.p, 1, null); return `You hear ${A} out for twenty minutes over a cup of tea, then ${B} for the same. Both of them leave a little lighter, and neither agrees to go first.`; } },
-      { label: 'Let it run', run() { addBond(a, b, -1); return `You leave it. By the end of the week the messages have stopped going through ${cook ? cook.first : 'anyone'}, because it is quicker not to send them.`; } },
+      { label: say('c1.label'), run() { addBond(a, b, 0.5); like(a.p, 1, null); like(b.p, 1, null); return say('c1.result', { A, B }); } },
+      { label: say('c2.label'), run() { addBond(a, b, -1); return say('c2.result', { via2: cook ? cook.first : 'anyone' }); } },
     ],
   };
 }
 
 function matchReplay(a, b, ta, tb) {
+  const say = socialSay('replay');
   return {
-    title: 'The Replay', text: (`${a.p.first} (${ta}) and ${b.p.first} (${tb}) have had the same argument for an hour: a famous fixture between their ` +
-        `sides, a disputed call, a goal that stood or did not. ${a.p.first} has the date. ${b.p.first} has a cousin who was in the stand. The archive ` +
-        `is one command away.`),
+    title: say('title'), text: say('text', { A: a.p.first, ta, B: b.p.first, tb }),
     choices: [
-      { label: 'Play the old fixture from the archive', run() {
+      { label: say('c0.label'), run() {
         const m = playMatch(leagueOf(ta), ta, tb), [w, l] = m.winner === ta ? [a, b] : [b, a];
         like(w.p, 1, null); addBond(a, b, has(l, 'rude') ? -1 : 0.5);
-        return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${w.p.first} says it is what they said all along. ${l.p.first} says the archive has the wrong referee.`;
+        return say('c0.result', { ma: m.a, msa: m.sa, mb: m.b, msb: m.sb, winner: w.p.first, loser: l.p.first });
       } },
-      { label: 'Rule on the disputed call yourself', run() { const [w, l] = pick([[a, b], [b, a]]); like(w.p, 1, null); like(l.p, -1, `You ruled against my side on the old call.`); return (
-          `You rule that the goal stood. ${w.p.first} stands up and shakes your hand. ${l.p.first} says nobody asked you, and then asks you to say it ` +
-          `again.`); } },
-      { label: 'Mute the feed', run() { addBond(a, b, 0.5); return `You turn the sound down on the galley screen. They go on arguing for another ten minutes, with their hands, and then they go quiet and put the sound back up to watch something else.`; } },
+      { label: say('c1.label'), run() { const [w, l] = pick([[a, b], [b, a]]); like(w.p, 1, null); like(l.p, -1, `You ruled against my side on the old call.`); return say('c1.result', { winner: w.p.first, loser: l.p.first }); } },
+      { label: say('c2.label'), run() { addBond(a, b, 0.5); return say('c2.result'); } },
     ],
   };
 }
 
 function rootsRecipe(a, b, A, B) {
+  const say = socialSay('recipe');
   const home = a.p.home === b.p.home ? a.p.home : 'home';
   return {
-    title: 'The Recipe', text: `${A} and ${B} are in the galley, working out a dish from ${home}. They disagree about the spice, the pan and the order, and agree entirely about how it should taste. There is a list on the cabinet door and a space after "chili" with a question mark.`,
+    title: say('title'), text: say('text', { A, B, home }),
     choices: [
-      { label: 'Pay for the missing ingredients (150 cr)', can: () => G.state.credits >= 150, run() { G.state.credits -= 150; addBond(a, b, 3); like(a.p, 1, null); like(b.p, 1, null); return (
-          `You find them at the next port stall for 150 cr. The dish takes two hours and the whole ship smells of it. ${A} and ${B} eat theirs ` +
-          `standing up, without talking, and then wash up together.`); } },
-      { label: 'Let them make do', run() { addBond(a, b, 1.5); return `They make do. It is not the dish. They eat it and say so, and then say what the real one tastes like, for the rest of the watch.`; } },
+      { label: say('c0.label'), can: () => G.state.credits >= 150, run() { G.state.credits -= 150; addBond(a, b, 3); like(a.p, 1, null); like(b.p, 1, null); return say('c0.result', { A, B }); } },
+      { label: say('c1.label'), run() { addBond(a, b, 1.5); return say('c1.result'); } },
     ],
   };
 }
 
 function coverWatchScene(p) {
+  const say = socialSay('cover-watch');
   const post = postOfRole(p.role), n = p.first;
   relMark('cover');
   return {
-    title: 'Cover My Watch', text: (`${n} catches you at the end of your shift, a little too casually. "I have got ` +
-        `the ${POSTS[post].name.toLowerCase()} watch tonight," ${n} says, "and there is somebody I would like to talk to on the long link while it is ` +
-        `still early where they are. Could you take it? I will show you what to do. It is not hard. I would owe you one."`),
+    title: say('title'), text: say('text', { n, post: POSTS[post].name.toLowerCase() }),
     choices: [
-      { label: `Take ${n}'s watch`, run() { like(p, 2, `You covered my watch so I could make a call.`); p.owes = G.state.day; return (
-          `${n} walks you through the board in ten minutes and goes off with a face you have not seen on them before. The watch is long, and quiet, ` +
-          `and you learn more about the ${POSTS[post].name.toLowerCase()} post than you expected.${learnAt(post, 3)}`); } },
-      { label: 'Say you have your own watch to keep', run() { return `${n} nods and says it is no trouble. They find somebody else, and you can hear, from the corridor, the second person saying yes.`; } },
+      { label: say('c0.label', { n }), run() { like(p, 2, `You covered my watch so I could make a call.`); p.owes = G.state.day; return say('c0.result', { n, post: POSTS[post].name.toLowerCase(), learn: learnAt(post, 3) }); } },
+      { label: say('c1.label'), run() { return say('c1.result', { n }); } },
     ],
   };
 }
 
 // The scenes two people aboard can have, one function each, so that a scene can be built on its own: the scene editor plays one (#457), and relationshipScene picks among them.
 function galleyDuty(a, b, ta, tb) {
+  const say = socialSay('galley-duty');
   const st = G.state;
   return {
-      title: 'Galley Duty', text: pick([
-        (`The galley rota is a sheet taped to the cabinet door. ${a.p.first} has written ${b.p.first}'s name on every day of next week, ` +
-            `and ${b.p.first} has written ${a.p.first}'s name over it. ${a.p.first} backs ${ta}. ${b.p.first} backs ${tb}. Whoever's team loses ` +
-            `tonight does the dishes. Both of them have initialed it.`),
-        `"A week," ${b.p.first} says. "Dishes, filters, the lot." "Done," ${a.p.first} says, and they shake on it across the table. ${a.p.first} has ${ta}. ${b.p.first} has ${tb}. The match is tonight.`,
-        `${a.p.first} (${ta}) and ${b.p.first} (${tb}) have put the galley rota on the match. The loser takes all of it for a week. It is written on the cabinet door in ${a.p.first}'s handwriting. ${b.p.first} has added "and no complaints" and underlined it twice.`,
-        `The ship's feed has ${ta} against ${tb} at the end of watch. ${a.p.first} and ${b.p.first} have turned the chairs to face the screen. A week of galley duty, loser's. They have not spoken since they agreed it.`,
+      title: say('title'), text: pick([
+        say('text.0', { A: a.p.first, B: b.p.first, ta, tb }),
+        say('text.1', { B: b.p.first, A: a.p.first, ta, tb }),
+        say('text.2', { A: a.p.first, ta, B: b.p.first, tb }),
+        say('text.3', { ta, tb, A: a.p.first, B: b.p.first }),
       ]),
       choices: [
-        { label: 'Stream it for everyone', run() {
+        { label: say('c0.label'), run() {
           const m = playMatch(leagueOf(ta), ta, tb), [w, l] = m.winner === ta ? [a, b] : [b, a];
           addBond(a, b, has(l, 'rude') ? -1 : 1);
           like(w.p, 1, null);
-          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${l.p.first} does the week of galley duty${has(l, 'rude') ? `. Every pan goes into the rack hard, and for four days ${l.p.first} goes through what the referee did.` : ' in an apron two sizes too small, and does not mention the score.'}`;
+          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${say(has(l, 'rude') ? 'c0.rude' : 'c0.easy', { loser: l.p.first })}`;
         } },
-        { label: `Put 300 cr on the ${ta} yourself`, can: () => st.credits >= 300, run() {
+        { label: say('c1.label', { ta }), can: () => st.credits >= 300, run() {
           const m = playMatch(leagueOf(ta), ta, tb), won = m.winner === ta;
           st.credits += won ? 300 : -300;
           like(a.p, won ? 1 : 0, null); like(b.p, won ? -1 : 1, null);
-          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${won ? `You collect 300 cr. ${a.p.first} wants to buy a round with it.` : `You lose 300 cr. ${b.p.first} brings it up at every meal until the next match.`}`;
+          return `${m.a} ${m.sa}, ${m.b} ${m.sb}. ${say(won ? 'c1.win' : 'c1.lose', { A: a.p.first, B: b.p.first })}`;
         } },
-        { label: 'Stay out of it', run: () => 'You hear the result through the bulkhead: cheering, then a groan, then someone banging a pan.' },
+        { label: say('c2.label'), run: () => say('c2.result') },
     ],
   };
 }
 
 function wordScene(a, b, n) {
+  const say = socialSay('word');
   return {
-      title: hired() ? 'A Word' : 'A Word, Captain', text: (`${a.p.first} catches you ` +
-          `alone, ${hired() ? ('by the lockers while you are stowing your ' +
-          'kit, one shoulder against the bulkhead. "Hey. Can I ask you something about') : ('in the corridor outside the cockpit, one shoulder ' +
-              'against the bulkhead. "Captain. Can I ask you something about')} ${b.p.first}?" ${n > 0 ? 'Their voice is casual, and their ears have gone pink.' : 'Their voice is level, and tight at the edges.'} ` +
-          `They wait, and watch your face, and their hands, at their sides, are very still.`),
-      choices: [
-        { label: `"Talk to ${b.p.first}, not me."`, run() { addBond(a, b, n > 0 ? 2 : 1.5); return n > 0 ? (`${a.p.first} takes a deep breath, and ` +
-            `nods, and goes, and, later, you see the two of them in the galley, heads close together, talking quietly, over two untouched cups of tea. ` +
-            `Good. When they notice you, they both look up, and neither looks away.`) : (
-            `${a.p.first} takes a deep breath, and nods, and goes. They do. It is loud for a while, behind a closed door, and then it is quieter. ` +
-            `When they come out, both are red-eyed, and neither is leaving.`); } },
-        hired() ? { label: '"That is between the two of you."', run() { like(a.p, -1, null); return `${a.p.first} nods, and says, "Right. Sorry," and goes. An hour later you hear them ask the cook the same question, in a lower voice.`; } }
-          : { label: '"Keep your head down and do your job."', run() { like(a.p, -1, null); return `${a.p.first} nods, and says, "Aye, captain," and goes. For a while, ${a.p.first} is brisk and correct, and answers in single words.`; } },
-        { label: `"What's ${b.p.first} really like?"`, run() { like(a.p, 1, null); return (`"${b.p.first}? ${(b.p.traits || []).length ? `${TRAITS[b.p.traits[0]].adj[0].toUpperCase()}${TRAITS[b.p.traits[0]].adj.slice(1)}, mostly. ` : ''}Watches ` +
-            `too much ${GENRES[tastes(b).genre]}. Would go down with the ship for you, though." ${a.p.first} stops, and blinks, and looks at the deck. "Anyway," they say. "That is what ${b.p.first} is like."`); } },
-      ] };
+    title: say(hired() ? 'title.hired' : 'title'), text: say(hired() ? 'text.hired' : 'text', { A: a.p.first, B: b.p.first, mood: say(n > 0 ? 'mood.warm' : 'mood.tight') }),
+    choices: [
+      { label: say('c0.label', { B: b.p.first }), run() { addBond(a, b, n > 0 ? 2 : 1.5); return say(n > 0 ? 'c0.warm' : 'c0.tight', { A: a.p.first }); } },
+      hired() ? { label: say('c1.hired.label'), run() { like(a.p, -1, null); return say('c1.hired.result', { A: a.p.first }); } }
+        : { label: say('c1.label'), run() { like(a.p, -1, null); return say('c1.result', { A: a.p.first }); } },
+      { label: say('c2.label', { B: b.p.first }), run() {
+        like(a.p, 1, null);
+        const adj = (b.p.traits || []).length ? TRAITS[b.p.traits[0]].adj : '';
+        return say('c2.result', { A: a.p.first, B: b.p.first, trait: adj ? `${adj[0].toUpperCase()}${adj.slice(1)}, mostly. ` : '', genre: GENRES[tastes(b).genre] });
+      } },
+    ],
+  };
 }
 
 function grandTour(c, p) {
+  const say = socialSay('grand-tour');
   return {
-        title: 'The Grand Tour', text: (`${c.p.first} has been showing ${p.p.first} how the ship works, starting at the cargo bay and working slowly ` +
-            `aft, with a running commentary on every ` +
-            `valve. ${has(p, 'nervous') ? `${p.p.first} jumps at every clank, and holds a handrail with both hands, and, every so often, asks a careful question.` : `${p.p.first} has a hundred questions, and asks all of them, at speed, and, at each answer, nods and writes something down.`} ` +
-            `The two of them keep vanishing around corners together, and reappearing, talking.`),
+        title: say('title'), text: say('text', { host: c.p.first, guest: p.p.first, visitor: say(has(p, 'nervous') ? 'visitor.nervous' : 'visitor.keen', { guest: p.p.first }) }),
         choices: [
-          { label: 'Let them', run() { addBond(c, p, 2.5); like(p.p, 1, `${c.p.first} showed me around the ship.`); return (
-              `By the end of the burn ${p.p.first} can name every valve on the ship, and knows which pipe rattles in which key, and has, in a small ` +
-              `notebook, a hand-drawn diagram of the whole drive. At the end of the last watch ${c.p.first} catches your eye across the galley, and ` +
-              `nods once.`); } },
-          { label: 'Passengers stay out of the engine room', run() { addBond(c, p, -0.5); return (`Rules are rules, and you say so, ` +
-              `gently. ${c.p.first} nods, without protest, and steers ${p.p.first} back to the galley, and the tour ends mid-sentence. For the rest of ` +
-              `the burn, ${p.p.first} keeps glancing at the engine room hatch, and ${c.p.first} does not look at you.`); } },
+          { label: say('c0.label'), run() { addBond(c, p, 2.5); like(p.p, 1, `${c.p.first} showed me around the ship.`); return say('c0.result', { guest: p.p.first, host: c.p.first }); } },
+          { label: say('c1.label'), run() { addBond(c, p, -0.5); return say('c1.result', { host: c.p.first, guest: p.p.first }); } },
       ] };
 }
 
 function smallSystem(a, b, A, B) {
+  const say = socialSay('small-system');
   const st = G.state;
   return {
-      title: 'Small System', text: a.p.home === b.p.home
+      title: say('title'), text: a.p.home === b.p.home
         ? pick([
-          (`${A} and ${B} are arguing about coffee at the galley table when ${B} says the name of a street on ${a.p.home}. ${A} stops with the cup ` +
-              `halfway up. "Which end?" ${A} says. "The water end." "Then you know the baker." They were a few decks apart on ${a.p.home} for twelve ` +
-              `years and never met. The coffee goes cold. They compare teachers, bars and the ${tastes(a).team} seasons.`),
-          (`${A} hears ${B} humming in the corridor. It is a tune from ${a.p.home}, a bad one, from a bar ${A} knows. "That is a ${a.p.home} ` +
-              `tune," ${A} says. ${B} puts the filter down. "Where were you?" By the end of the watch they have named three people they both know and ` +
-              `one they both owe money.`),
+          say('text.home.0', { A, B, home: a.p.home, team: tastes(a).team }),
+          say('text.home.1', { A, B, home: a.p.home }),
         ])
         : pick([
-          `${A} and ${B} have spent the morning trading rhymes and sayings from home, fast and low, in the same slang. The rest of the crew understands one word in three. Someone asks what a word means. They both try to say, and both stop.`,
-          `${B} says something in the old slang at the galley table and ${A} answers without thinking, in the same words. They look at each other. "My grandmother used to say that," ${A} says. "So did mine," ${B} says. They are still going when the watch changes.`,
+          say('text.culture.0', { A, B }),
+          say('text.culture.1', { B, A }),
         ]),
       choices: [
-        { label: 'Break out something to toast with (200 cr)', can: () => st.credits >= 200, run() { st.credits -= 200; addBond(a, b, 3); like(a.p, 1, null); like(b.p, 1, null); return (
-            `You open a bottle from the locker. They toast ${a.p.home === b.p.home ? a.p.home : 'home'}, the old teachers, and the people who did not ` +
-            `get out. Somebody starts a song, and the others know it. It is late when it ends. ${A} and ${B} go to their bunks together, not quite ` +
-            `steady.`); } },
-        { label: 'Leave them to it', run() { addBond(a, b, 1.5); return 'You leave them the galley and go up to the bridge and shut the hatch. You can hear them through the deck for a long time.'; } },
+        { label: say('c0.label'), can: () => st.credits >= 200, run() { st.credits -= 200; addBond(a, b, 3); like(a.p, 1, null); like(b.p, 1, null); return say('c0.result', { where: a.p.home === b.p.home ? a.p.home : 'home', A, B }); } },
+        { label: say('c1.label'), run() { addBond(a, b, 1.5); return say('c1.result'); } },
       ] };
 }
 
 function smallShip(a, b, A, B) {
+  const say = socialSay('small-ship');
   const cause = pick(CAUSES);
   return {
-        title: 'A Small Ship', text: pick([
-          `${A} and ${B} are on their feet in the galley. The galley is eleven feet across, and everyone who is not on watch is in it. They are arguing about ${cause}. "If you'd said something," ${B} says. "I said something," ${A} says. "Tuesday. Ask anyone." Nobody at the table answers.`,
-          `${A} has ${B} backed against the coffee dispenser. They are arguing about ${cause}. "Do not tell me it's the principle," ${B} says. "It is the principle," ${A} says. Someone at the table has a spoon halfway to their mouth and has not moved it.`,
-          `${A} and ${B} are arguing about ${cause}, standing, leaning across the table. "Say it again," ${B} says. "Every day until we dock," ${A} says. Someone at the end of the table says, to their plate, that it is a long way to dock.`,
-          `Third watch, the galley light on low. ${A} and ${B} are arguing about ${cause} in whispers. The berths are behind a thin bulkhead. "Outside," ${B} says. "No," ${A} says. "Here. I want it witnessed."`,
+        title: say('title'), text: pick([
+          say('text.0', { A, B, cause }),
+          say('text.1', { A, B, cause }),
+          say('text.2', { A, B, cause }),
+          say('text.3', { A, B, cause }),
         ]),
         choices: [
-          { label: `Side with ${A}`, run() { like(a.p, 1, null); like(b.p, -2, `You sided with ${A} against me.`); addBond(a, b, -1); return (
-              `"${A} has the right of it," you say. ${B} looks at you, then at ${A}, and leaves. The bunk door is on a pneumatic closer and does not ` +
-              `slam; it hisses shut. "Thanks, Captain," ${A} says to the table. Nobody answers.`); } },
-          { label: `Side with ${B}`, run() { like(b.p, 1, null); like(a.p, -2, `You sided with ${B} against me.`); addBond(a, b, -1); return (
-              `"${B} has the right of it," you say. ${A} looks at you, then at ${B}, and leaves. The bunk door is on a pneumatic closer and does not ` +
-              `slam; it hisses shut. "Thanks, Captain," ${B} says to the table. Nobody answers.`); } },
-          { label: 'Lock them in the galley until they sort it out', run() {
-            if (Math.random() < 0.55) { addBond(a, b, 3); return (`You dog the hatch from the outside and sit on the deck with your back to it. There ` +
-                `is shouting for twenty minutes. Then there is only the air handler. Then ${A} laughs, once. An hour and a half later you open the ` +
-                `hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.`); }
+          { label: say('c0.label', { A }), run() { like(a.p, 1, null); like(b.p, -2, `You sided with ${A} against me.`); addBond(a, b, -1); return say('c0.result', { A, B }); } },
+          { label: say('c1.label', { B }), run() { like(b.p, 1, null); like(a.p, -2, `You sided with ${B} against me.`); addBond(a, b, -1); return say('c1.result', { B, A }); } },
+          { label: say('c2.label'), run() {
+            if (Math.random() < 0.55) { addBond(a, b, 3); return say('c2.win', { A }); }
             addBond(a, b, -1);
-            return (`You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past ` +
-                `you one at a time without speaking. A cupboard door is hanging by its top hinge (${hurt(0.01)} points of hull). At dinner someone ` +
-                `sits between them with a tray. The talk is about the water ration.`);
+            return say('c2.lose', { armor: hurt(0.01) });
           } },
-          { label: 'Settle it over cards', run() { addBond(a, b, 1.5); const [w, l] = pick([[A, B], [B, A]]); return (
-              `The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler ` +
-              `runs. ${w} takes the last hand, and ${l} washes the dishes. Over the sink ${l} goes through what is wrong with the rules, the deck, the ` +
-              `lighting and ${w}'s mother. ${w} drinks the last of the coffee.`); } },
+          { label: say('c3.label'), run() { addBond(a, b, 1.5); const [w, l] = pick([[A, B], [B, A]]); return say('c3.result', { winner: w, loser: l }); } },
       ],
   };
 }
 
 function closeQuarters(a, b, A, B) {
+  const say = socialSay('close-quarters');
   return {
-      title: 'Close Quarters', text: (`${A} and ${B} keep finding reasons to share the same watch. It started as a coincidence, then a scheduling ` +
-          `quirk, and now it is a system of trades and favors and carefully-timed sick days. They talk through the long quiet hours, in low voices, ` +
-          `and, when someone else comes in, they both stop, and look at nothing at all.`),
+      title: say('title'), text: say('text', { A, B }),
       choices: [
-        { label: 'Put them on the same rotation', run() { addBond(a, b, 2); like(a.p, 1, null); like(b.p, 1, null); return (
-            `You pencil them onto the same rotation, and hand over the new roster, without comment. ${A} pretends not to be pleased, and studies the ` +
-            `paper as if it were a contract. ${B} does not bother pretending, and grins, and squeezes ${A}'s arm, and then examines the ceiling.`); } },
-        { label: 'Leave the rotation alone', run: () => ('You leave the roster as it is, and say nothing, and, by the end of the week, they have ' +
-            'found each other on the same watch anyway, by a route that involves three trades and a forged note. At the next meal you pretend not to notice, and everyone at the table pretends with you, at some length.') },
+        { label: say('c0.label'), run() { addBond(a, b, 2); like(a.p, 1, null); like(b.p, 1, null); return say('c0.result', { A, B }); } },
+        { label: say('c1.label'), run: () => say('c1.result') },
       ] };
 }
 
 function shipsRules(a, b, A, B) {
+  const say = socialSay('ships-rules');
   return {
-      title: 'Ship\'s Rules', text: (`${A} and ${B} find you on the bridge at the end of the watch, standing a little closer together than they need ` +
-          `to. ${A} clears their throat twice. ${B} studies the ceiling. Finally, in a rush, ${A} says: "Captain. Does the ship have rules about crew ` +
-          `who are, um. Together?" They both look at you. Their hands are very nearly touching.`),
+      title: say('title'), text: say('text', { A, B }),
       choices: [
-        { label: '"No rules. Be happy."', run() { like(a.p, 2, `You gave ${B} and me your blessing.`); like(b.p, 2, `You gave ${A} and me your blessing.`); return (
-            'They leave hand in hand, smiling at the deck. By dinner the whole ship knows, and that night someone hangs a string of fairy lights ' +
-            'outside their berth without a word.'); } },
-        { label: '"Keep it off the bridge."', run() { like(a.p, 1, null); like(b.p, 1, null); return (`"Deal," says ${A}, at once, and ${B} laughs, ` +
-            `and the two of them leave the cockpit fast. For the next few days they are very professional on the bridge, and, every so often, when ` +
-            `they think you are not looking, one of them smiles at a console.`); } },
-        { label: '"It stays professional."', run() { addBond(a, b, -2); like(a.p, -2, `You told ${B} and me to keep it professional.`); like(b.p, -2, `You told ${A} and me to keep it professional.`); return (
-            `They nod, stiffly, in unison, and thank you for your time. The ship gets a lot quieter. In the days after, they keep to opposite sides ` +
-            `of the corridor, and ${A} eats alone, and ${B} stands at the viewport with an untouched mug.`); } },
+        { label: say('c0.label'), run() { like(a.p, 2, `You gave ${B} and me your blessing.`); like(b.p, 2, `You gave ${A} and me your blessing.`); return say('c0.result'); } },
+        { label: say('c1.label'), run() { like(a.p, 1, null); like(b.p, 1, null); return say('c1.result', { A, B }); } },
+        { label: say('c2.label'), run() { addBond(a, b, -2); like(a.p, -2, `You told ${B} and me to keep it professional.`); like(b.p, -2, `You told ${A} and me to keep it professional.`); return say('c2.result', { A, B }); } },
       ] };
 }
+
+// The relationship scenes by id (#457), each built for two people aboard (as folk() lists them): the scene editor plays one this way. Their words are lines (peopletext.js).
+const SOCIAL_SCENES = {
+  'handover': (a, b) => feudHandover(a, b, a.p.first, b.p.first),
+  'cold-shoulders': (a, b) => feudShoulders(a, b, a.p.first, b.p.first),
+  'replay': (a, b) => matchReplay(a, b, tastes(a).team, tastes(b).team),
+  'recipe': (a, b) => rootsRecipe(a, b, a.p.first, b.p.first),
+  'cover-watch': a => coverWatchScene(a.p),
+  'ships-rules': (a, b) => shipsRules(a, b, a.p.first, b.p.first),
+  'close-quarters': (a, b) => closeQuarters(a, b, a.p.first, b.p.first),
+  'small-ship': (a, b) => smallShip(a, b, a.p.first, b.p.first),
+  'small-system': (a, b) => smallSystem(a, b, a.p.first, b.p.first),
+  'grand-tour': (a, b) => grandTour(a, b),
+  'word': (a, b) => wordScene(a, b, 1.5),
+  'galley-duty': (a, b) => galleyDuty(a, b, tastes(a).team, tastes(b).team),
+  'welcome-back': () => welcomeBack(),
+};
 
 function relationshipScene() {
   const list = folk(), st = G.state;
@@ -639,13 +607,13 @@ function welcomeBack() {
   const m = paxAboard().find(x => x.regular && !x.welcomed);
   if (!m) return null;
   m.welcomed = true;
-  const p = G.state.people[m.pid], me = { id: m.pid, p };
+  const p = G.state.people[m.pid], me = { id: m.pid, p }, say = socialSay('welcome-back');
   const friends = folk().filter(f => f.crew && bond(f, me) >= 2);
   const mem = p.memories.length ? p.memories[p.memories.length - 1].replace(/^(Day \d+|\d+ \w+ \d+): /, '') : null;
   return {
-    title: 'Welcome Back', text: `${p.first} ${p.last} settles into the same berth as last time.${mem ? ` "Last time, ${mem.charAt(0).toLowerCase()}${mem.slice(1)}"` : ''}${friends.length ? ` ${names(friends)} ${friends.length > 1 ? 'have' : 'has'} saved them the good mug.` : ''}`,
+    title: say('title'), text: [say('text', { first: p.first, last: p.last }), mem ? say('text.memory', { memory: `${mem.charAt(0).toLowerCase()}${mem.slice(1)}` }) : '', friends.length ? say(friends.length > 1 ? 'text.friends' : 'text.friend', { names: names(friends) }) : ''].filter(Boolean).join(' '),
     choices: [
-      { label: '"Good to have you aboard again."', run() { like(p, 1, 'The captain welcomed me back.'); for (const f of friends) addBond(f, me, 1); return `${p.first} grins and goes straight for the good mug.`; } },
+      { label: say('c0.label'), run() { like(p, 1, 'The captain welcomed me back.'); for (const f of friends) addBond(f, me, 1); return say('c0.result', { first: p.first }); } },
     ],
   };
 }
