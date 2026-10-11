@@ -9,7 +9,8 @@
     "coverage":"node tools/coverage.js",
     "soak": "node --test --test-concurrency=4 \"tests/distribution/*.test.js\"",
     "fights": "node tools/fights.js --seeds 1,2,3,4,5 --n 200",
-    "prose": "node tools/prose-lint.js"
+    "prose": "node tools/prose-lint.js",
+    "pin:from": "node tools/pin-from.js"
   },
   "devDependencies": {
     "playwright": "^1.63.0"
