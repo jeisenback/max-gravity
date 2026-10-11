@@ -430,5 +430,17 @@
  {
   "key": "force:burn:7",
   "text": "\"[Ship] By unanimous vote, this burn is called \\\"Hold My Drink\\\".\""
+ },
+ {
+  "key": "homeHtml:bare",
+  "text": "\"<h3>Second Chance</h3>\\n    <div class=\\\"row\\\"><input type=\\\"text\\\" id=\\\"shipName\\\" maxlength=\\\"30\\\" placeholder=\\\"A new name for the ship\\\"><button data-action=\\\"renameShip\\\">Rename the ship</button></div>\\n    \\n    \\n    \\n    \\n    \""
+ },
+ {
+  "key": "homeHtml:full",
+  "text": "\"<h3>Second Chance</h3>\\n    <div class=\\\"row\\\"><input type=\\\"text\\\" id=\\\"shipName\\\" maxlength=\\\"30\\\" placeholder=\\\"A new name for the ship\\\"><button data-action=\\\"renameShip\\\">Rename the ship</button></div>\\n    <div class=\\\"hint\\\">Sam: loyal, having a hard time, has a favor to ask</div><div class=\\\"hint\\\">Ana: in high spirits</div>\\n    <p class=\\\"hint\\\">Traditions: the flip toast, first-night noodles.</p>\\n    <p class=\\\"hint\\\">Rivet the cat lives aboard.</p>\\n    <div class=\\\"hint\\\">Sam hung a pennant in the galley.</div>\\n    \""
+ },
+ {
+  "key": "homeHtml:loyal",
+  "text": "\"<h3>Second Chance</h3>\\n    <div class=\\\"row\\\"><input type=\\\"text\\\" id=\\\"shipName\\\" maxlength=\\\"30\\\" placeholder=\\\"A new name for the ship\\\"><button data-action=\\\"renameShip\\\">Rename the ship</button></div>\\n    <div class=\\\"hint\\\">Sam: loyal, has a favor to ask</div><div class=\\\"hint\\\">Ana: in high spirits</div>\\n    <p class=\\\"hint\\\">Traditions: the flip toast, first-night noodles.</p>\\n    <p class=\\\"hint\\\">Rivet the cat lives aboard.</p>\\n    <div class=\\\"hint\\\">Sam hung a pennant in the galley.</div>\\n    \""
  }
 ]

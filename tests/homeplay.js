@@ -79,6 +79,11 @@ const playHome = () => {
   { const bonded = (p, s) => { withNews(false)(p, s); for (let i = 0; i < 4; i++) addBond({ id: p.id, p }, { id: AID, p: s.people[AID] }, 2); }; forceRun('force:bad:friend', bonded, 3, p => newsEvent(p), 2); }
   // every name a burn can be given, by forcing the dice
   for (let k = 0; k < 8; k++) { reset(); seq([(k + 0.5) / 8]); const line = TRADITIONS['burn-name'].line(); Math.random = real; note(`force:burn:${k}`, line); }
+  // the port page: bare, and with a shipmate loyal, down and asking a favor, another up, two traditions, the cat, a touch and the log (last, so that the dice of the records above are as they were)
+  { const p = reset(), s = G.state; note('homeHtml:bare', homeHtml());
+    p.loyal = true; p.mood = { kind: 'low', until: s.day + 20, text: 'x' }; storyOf(p).beat = 3; s.people[AID].mood = { kind: 'high', until: s.day + 20, text: 'y' };
+    home().cat = 'Rivet'; home().traditions = ['flip-toast', 'first-meal']; home().touches = ['Sam hung a pennant in the galley']; note('homeHtml:full', homeHtml());
+    p.mood = null; note('homeHtml:loyal', homeHtml()); }
   return out;
 };
 
