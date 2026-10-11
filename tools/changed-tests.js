@@ -14,6 +14,7 @@ const path = require('node:path');
 
 const LAYOUT = ['tests/layout.test.js', 'tests/shell.test.js', 'tests/ui.test.js'];
 const GLOBALS = 'tests/globals.test.js';
+const TEXT_FILE = /^js\/(?:\w+text|bartopics)\.js$/;  // data-only words that the pins play through other scripts, so no harness names them: a change runs every pin
 const EDITOR = ['tests/editor.test.js', 'tests/editorforms.test.js', 'tests/editorfreq.test.js', 'tests/editornew.test.js', 'tests/editorpreview.test.js', 'tests/editorsave.test.js', 'tests/editorhired.test.js'];
 
 const declared = src => [...src.matchAll(/^(?:async\s+)?(?:const|let|var|function|class)\s+([A-Za-z_$][\w$]*)/gm)].map(m => m[1]).filter(n => n.length >= 3);
@@ -45,14 +46,25 @@ function select(changed, { tests, sources }) {
         const used = names.find(n => new RegExp(`\\b${esc(n)}\\b`).test(src)) || (src.includes(base) ? base : null);
         if (used) hits.set(t, used);
       }
-      if (!hits.size && f !== 'js/shell.js') return everything(`${f}: no test uses its names, so everything`);
+      const pinned = TEXT_FILE.test(f) ? Object.keys(tests).filter(t => /pin\.test\.js$/.test(t)) : [];
+      if (!hits.size && !pinned.length && f !== 'js/shell.js') return everything(`${f}: no test uses its names, so everything`);
       for (const [t, name] of hits) { files.add(t); why.push(`${f}: ${name} is used by ${t}`); }
+      add(pinned, `${f}: a text file, so every pin`);
       add([GLOBALS], `${f}: the globals check`);
       continue;
     }
     return everything(`${f}: not mapped to a test, so everything`);
   }
   return { files: [...files].sort(), full: false, why };
+}
+
+// A pin's test file is a few lines; the scripts it plays are named in the harness it requires (tests/xxxplay.js, docs/pins.md). Add each harness's text
+// to the test that requires it, so that a change to a script selects the pins that play it. harnesses: { path: source } of tests/*play.js.
+function withHarnesses(tests, harnesses) {
+  return Object.fromEntries(Object.entries(tests).map(([t, src]) => {
+    const extra = [...src.matchAll(/require\('\.\/(\w+play)'\)/g)].map(m => harnesses[`tests/${m[1]}.js`] || '');
+    return [t, [src, ...extra].join('\n')];
+  }));
 }
 
 function main() {
@@ -62,7 +74,7 @@ function main() {
   const changed = given > 0 ? process.argv[given + 1].split(',') : [...new Set([...git('diff', '--name-only', 'origin/main'), ...git('ls-files', '--others', '--exclude-standard')])];
   const read = (dir, suffix) => Object.fromEntries(fs.readdirSync(path.join(root, dir)).filter(f => f.endsWith(suffix))
     .map(f => [`${dir}/${f}`, fs.readFileSync(path.join(root, dir, f), 'utf8')]));
-  const r = select(changed, { tests: read('tests', '.test.js'), sources: read('js', '.js') });
+  const r = select(changed, { tests: withHarnesses(read('tests', '.test.js'), read('tests', 'play.js')), sources: read('js', '.js') });
   console.log(`changed: ${changed.length} file(s)`);
   r.why.forEach(w => console.log(`  ${w}`));
   if (process.argv.includes('--list')) { console.log(r.full ? 'run: the full suite' : `run: ${r.files.join(' ') || 'nothing'}`); return; }
@@ -73,4 +85,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { select };
+module.exports = { select, withHarnesses };
