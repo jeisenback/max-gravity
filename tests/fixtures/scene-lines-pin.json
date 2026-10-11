@@ -4303,6 +4303,338 @@
   ]
  },
  {
+  "id": "officer:ilsa:live",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "She goes in, and the scram goes home, and the alarm winds down through its notes into silence. She comes out with her sleeves burnt through and her hands steady, and sits on the deck for a minute. \"Routine,\" she says, and writes it in the log. Captain Adair has come down the passage without any of his speeches, and stands at the door.",
+    "mem": [
+     "9 Jul 2214: You let me go into the reactor, and I came out."
+    ],
+    "fx": {
+     "c:ilsa": 2
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "officer:ilsa:mark",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "She goes in first, and the housing is hotter than the board said, and for three minutes the only sound on the bridge is the alarm. She comes out held up between two crew, and the hand that found the scram does not close properly, and will not. She sits down on the deck by the door. \"It is off,\" she says. \"Tell him the plant is off. He will want to know it is all right.\"",
+    "mem": [
+     "9 Jul 2214: You let me go into the reactor, and I came out."
+    ],
+    "fx": {
+     "c:ilsa": 2
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "officer:ilsa:die",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "She goes in first, as she said she would, and the door closes behind her. The reactor board drops to nothing, and then, for a moment, to everything. You wait at the door for a long time after it is quiet. Captain Adair is the first one there. He does not speak. He puts his hand on the shielded door.",
+    "mem": [
+     "9 Jul 2214: We lost Ilsa at the reactor."
+    ],
+    "fx": {
+     "p1": -1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "officer:ansel:live",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "He goes to the lock with the sheet in his hand, and talks for eleven minutes, in a level voice, about the odds. The long ship backs off. He comes back with his coat buttoned wrong and says, \"They have agreed to wait,\" and sits down on the lock coaming and does not say anything else for a while. Captain Pell does not make a joke. She puts a hand on his shoulder, and takes it off again.",
+    "mem": [
+     "9 Jul 2214: You let me go to the lock, and I came back."
+    ],
+    "fx": {
+     "c:ansel": 2
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "officer:ansel:mark",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "He goes to the lock with the sheet, and it goes wrong at the second sentence, and for a minute the only sound is shouting through a hatch. He comes back carried, with a cut over one eye, and the hand that held the sheet is closed round it and will not open properly. \"They have agreed to wait,\" he says. \"I told them the odds.\"",
+    "mem": [
+     "9 Jul 2214: You let me go to the lock, and I came back."
+    ],
+    "fx": {
+     "c:ansel": 2
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "officer:ansel:die",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "He goes to the lock alone, with the sheet in his hand, and the lock cycles, and what the people on the other side do is not something the board can tell you. When the lock opens again, he is not what is in it. Captain Pell comes down from the guns slowly, with the grin gone, and stands at the lock without moving. \"He told me,\" she says. \"Every time. He told me.\"",
+    "mem": [
+     "9 Jul 2214: We lost Ansel at the lock."
+    ],
+    "fx": {
+     "p1": -1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "officer:pilar:live",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "She brings her in by hand, and the ship settles into the berth like a coin into a slot. Pilar lets go of the stick and flexes her fingers. \"Four minutes,\" she says. \"Enter that.\" Captain Sato enters it, word for word, and under it, in their own hand, writes: Correct.",
+    "mem": [
+     "9 Jul 2214: You let me fly the approach by hand, and I came out."
+    ],
+    "fx": {
+     "c:pilar": 2
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "officer:pilar:mark",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "She brings her in by hand, and the crosswind catches the ship at the last four meters, and the stick kicks. She lands her by main strength and nothing else, and the hand that held the stick does not close properly, and will not. \"It is in the berth,\" she says. \"Enter that.\"",
+    "mem": [
+     "9 Jul 2214: You let me fly the approach by hand, and I came out."
+    ],
+    "fx": {
+     "c:pilar": 2
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "officer:pilar:die",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "She brings her in by hand. The crosswind takes the ship at the last moment, and for a long second the bridge is the sound of the stick in her hands. The gate crew say afterwards it was the cleanest approach they had seen, until the last four meters. Captain Sato enters it in the log, in the same hand as every other entry, and then sits for a long time with the pen over the next line.",
+    "mem": [
+     "9 Jul 2214: We lost Pilar at the helm."
+    ],
+    "fx": {
+     "p1": -1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "officer:cato:live",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "He goes in, and the pod is lashed, and the load stops. He comes out with ice in his beard and a cut across one knuckle, and sits down on the hatch coaming to get his breath. \"That is where it goes,\" he says. Captain Vance looks at the hold, and at him, and says nothing, and writes it down.",
+    "mem": [
+     "9 Jul 2214: You let me go into the hold, and I came out."
+    ],
+    "fx": {
+     "c:cato": 2
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "officer:cato:mark",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "He goes in first, and it goes wrong at the number two strap, and for a long minute the hold is nothing but ice and shouting. He comes out carried, and the hand that held the strap does not close properly, and will not. The med kit is already open. He says, from the deck, \"It is in the right place now.\"",
+    "mem": [
+     "9 Jul 2214: You let me go into the hold, and I came out."
+    ],
+    "fx": {
+     "c:cato": 2
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "officer:cato:die",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "He goes in first, as he said he would. The strap holds, and the pod does not, and for a moment the board shows nothing you can read. You get the hatch open from your side. By then the hold is quiet. Captain Vance is at the hatch before you have finished. She looks for a while, and then she closes the notebook. \"Take him out,\" she says, in a voice you have not heard her use.",
+    "mem": [
+     "9 Jul 2214: We lost Cato in the ice hold."
+    ],
+    "fx": {
+     "p1": -1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "officer:ilsa:benched",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You tell her no, and hit the vent. The pile cools, and the ship coasts for two days on what is left of the cells. Ilsa stands at the shielded door with the gloves on and does not say a word. \"It is your call,\" she says at last, and takes the gloves off one finger at a time.",
+    "mem": [
+     "9 Jul 2214: You vented the plant on me."
+    ],
+    "fx": {
+     "c:ilsa": -3
+    },
+    "next": null
+   }
+  ],
+  "title": "At the Reactor",
+  "text": "The reactor alarm is a rising note that you feel in the deck before you hear it. The coolant loop has lost pressure, and the board shows the pile heating faster than the pumps can carry it. Ilsa is already at the shielded door, pulling on gloves. \"There is a manual scram at the back of the housing,\" she says. \"I know where it is. Nobody else does. Give me three minutes.\" She says it to the bridge, item by item. The plant is in good order, which is something. Kwame has the med kit open at the door. The engineer is suiting up behind her. She waits for your answer, and has already started on the second glove.",
+  "labels": [
+   "Vent the plant and let the ship coast"
+  ]
+ },
+ {
+  "id": "officer:ansel:benched",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You give the word, and the guns speak, and the long ship answers, and for a minute it is loud and bright and Pell is laughing. The hull takes what it takes. Ansel stands at the lock with the sheet and does not say anything. When it is over he writes a number on it, and puts it in his pocket, and does not show it to anyone.",
+    "mem": [
+     "9 Jul 2214: You backed me when I picked the fight.",
+     "9 Jul 2214: You opened fire on Dobrescu's ship against my word."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ansel": -3
+    },
+    "next": null
+   }
+  ],
+  "title": "The Fight She Should Not Have Picked",
+  "text": "A ship has come up on your stern, long and dark, and it is one of Dobrescu's. Captain Pell has seen it on the board and is already at the guns, laughing, with a figure in her head. \"We can take her,\" she says. \"We could take her.\" Ansel is at the boarding lock with his coat on and the sheet in one hand. \"I would like to speak to them,\" he says. \"Give me ten minutes, and the lock, and do not fire.\" He says it flat. Your hull is sound, which is something. Kwame has the med kit open at the lock. Nobody else is on the guns. He waits for your answer, and has already put a hand on the lock.",
+  "labels": [
+   "Back the captain, and open fire"
+  ]
+ },
+ {
+  "id": "officer:pilar:benched",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You tell her no, and call the go-round. The ship stands off from the gate, and the ice sits in the hold, and the cells burn for the second pass. Pilar takes her hands off the stick one at a time. \"It is your call,\" she says. \"It was always going to be somebody's.\"",
+    "mem": [
+     "9 Jul 2214: You took the ship off the approach on me."
+    ],
+    "fx": {
+     "c:pilar": -3
+    },
+    "next": null
+   }
+  ],
+  "title": "The Docking Emergency",
+  "text": "The gate's tractor beam fails twenty seconds out, and the ship is carrying forty tonnes of ice at a closing speed the berth was never meant for. The nav display is lagging. Captain Sato, on the bridge, has the checklist open. Pilar has the stick. \"I can bring her in by hand,\" she says, \"if you let me, and if you do not put anything on the display.\" She says it item by item. The hull is sound, which is something. The drive is in good order. Kwame has the med kit open at the hatch. She waits for your answer, and her hands are already light on the stick.",
+  "labels": [
+   "Take the ship off the approach and go round"
+  ]
+ },
+ {
   "id": "scene:yard-office:used:gunner:un",
   "plays": [
    {

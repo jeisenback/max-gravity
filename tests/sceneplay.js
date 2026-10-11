@@ -184,6 +184,18 @@ const playScenes = () => {
       return castBarEvent({ p, known: true, cast: key });
     }, { prep() { G.state.day = 200; G.state.credits = 5000; }, extra: () => [castRec(key).flags, castPerson(key).xp] });
   });
+  // ---------- the first officers' scenes of danger, in each way they can end ----------
+  for (const [who, go] of Object.entries({ ilsa: () => atTheReactor(false), ansel: () => atTheLock(false), pilar: () => atTheHelm(false), cato: () => inTheIceHold(false) })) for (const outcome of ['live', 'mark', 'die']) {
+    run(`officer:${who}:${outcome}`, {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { const real = window.castFate; window.castFate = () => outcome; try { return go(); } finally { window.castFate = real; } } }] }), { prep() { castPerson(who); } });
+  }
+  // and the call that benches a first officer, in the scene it is made in
+  for (const [who, label] of [['ilsa', 'Vent the plant and let the ship coast'], ['ansel', 'Back the captain, and open fire'], ['pilar', null]]) {
+    run(`officer:${who}:benched`, {}, () => {
+      const sc = Object.values(CAST[who].scenes).find(x => (x.choices || []).some(c => (label ? c.label === label : /benched/.test(String(c.run)))));
+      const ev = castScene(who, sc), i = ev.choices.findIndex(c => (label ? c.label === label : /benched/.test(String(c.run))));
+      return { ...ev, choices: [ev.choices[i]] };
+    }, { prep() { castPerson(who); } });
+  }
   // ---------- the yard office ----------
   for (const [ship, post, trusted, skilled] of [['used', 'gunner', false, false], ['used', 'engineer', true, true], ['lightfreighter', 'gunner', true, false], ['lightfreighter', 'pilot', false, true]]) {
     run(`scene:yard-office:${ship}:${post}:${trusted ? 't' : 'u'}${skilled ? 's' : 'n'}`, { post, credits: 60000 }, () => {
