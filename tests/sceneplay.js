@@ -88,6 +88,35 @@ const playScenes = () => {
     const dest = SYSTEMS.mars.planets[0].name;
     return pitchScene({ tpl: 'package', ctx: { dest, from: 'Titan', who: 'Mrs. Adeyemi', system: SYSTEMS.mars.name, scale: 1.2 }, sid: 'mars', planet: dest, days: 5, until: G.state.day + 20, pitched: null, booked: false });
   }, { rolls: [0, 0.999] });
+  // ---------- the faction ties: customs, a patrol, a friend at the dock, a recall in a war ----------
+  // who is wanted, an exile, an officer or a member of what is stubbed for the crew (tiesOf), as is the faction at war and the papers the captain holds; the stubs are put back for each case
+  const realTies = window.tiesOf, realYou = window.youTies, realWar = window.factionState;
+  const GOV = FACTIONS.find(f => f !== 'Pirate'), GOV2 = FACTIONS.find(f => f !== 'Pirate' && f !== GOV);
+  const mateOf = (first, over = {}) => { const c = makeCrewCandidate(G.state.systemId); Object.assign(c, { first, last: 'Vale', role: 'engineer', opinion: 0, ...over }); registerPerson(c); G.state.crew.push(c.id); return c; };
+  const stubTies = map => { window.tiesOf = q => { const r = realTies(q), m = map[q.first]; return m ? { ...r, ...m, status: { ...r.status, ...(m.status || {}) }, regard: { ...r.regard, ...(m.regard || {}) } } : r; }; };
+  const tiesCase = (id, prep, make, o = {}) => run(id, { credits: 5000, ...(o.opts || {}) }, make, { rolls: [0, 0.999], prep() {
+    window.tiesOf = realTies; window.youTies = realYou; window.factionState = realWar; G.state.crew = []; G.state.customs = {}; G.state.warCalled = {};
+    prep();
+  } });
+  const wanted = { aff: GOV, status: { [GOV]: 'wanted' } };
+  for (const [name, patrol, status, extra] of [['customs:wanted', false, 'wanted'], ['customs:exile', false, 'exile'], ['patrol:wanted', true, 'wanted'], ['patrol:officer', true, 'wanted', 'officer'], ['customs:papers', false, 'wanted', 'papers'], ['customs:cast', false, 'wanted', 'cast'], ['patrol:cast', true, 'exile', 'cast']]) {
+    tiesCase(`scene:${name}`, () => {
+      mateOf('Sam', extra === 'cast' ? { cast: 'ines' } : {}); mateOf('Cora');
+      const map = { Sam: { aff: GOV, status: { [GOV]: status } }, Cora: { aff: GOV, status: {} } };
+      if (extra === 'officer') { mateOf('Ben'); map.Ben = { aff: GOV, status: { [GOV]: 'officer' } }; }
+      stubTies(map);
+      if (extra === 'papers') window.youTies = () => ({ aff: GOV, status: { [GOV]: 'member' }, regard: {} });
+    }, () => customsScene(GOV, currentPlanet(), patrol));
+  }
+  tiesCase('scene:dock-friend', () => { mateOf('Sam'); stubTies({ Sam: { aff: GOV, status: { [GOV]: 'officer' } } }); }, () => dockFriendScene(GOV, currentPlanet()));
+  for (const [name, status, opinion] of [['officer', 'officer', 0], ['member:close', 'member', OPINION.CLOSE], ['member:far', 'member', 0]]) {
+    tiesCase(`scene:war-call:${name}`, () => {
+      mateOf('Sam', { opinion }); mateOf('Cora'); stubTies({ Sam: { aff: GOV, status: { [GOV]: status } }, Cora: { aff: GOV2, status: {} } });
+      window.factionState = () => ({ ...realWar(), war: { a: GOV, b: GOV2, start: 5 } });
+    }, () => warCallScene(currentPlanet()));
+  }
+  window.tiesOf = realTies; window.youTies = realYou; window.factionState = realWar;
+
   // ---------- the yard office ----------
   for (const [ship, post, trusted, skilled] of [['used', 'gunner', false, false], ['used', 'engineer', true, true], ['lightfreighter', 'gunner', true, false], ['lightfreighter', 'pilot', false, true]]) {
     run(`scene:yard-office:${ship}:${post}:${trusted ? 't' : 'u'}${skilled ? 's' : 'n'}`, { post, credits: 60000 }, () => {
