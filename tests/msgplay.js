@@ -15,7 +15,7 @@ const playMessages = () => {
     takeOff();
     return st;
   };
-  const says = (key, seed, setup, act, hired = false) => {
+  const says = (key, seed, setup, act, hired = false, extra = null) => {
     if (window.__only && !new RegExp(window.__only).test(key)) return;
     const rec = { key };
     try {
@@ -24,6 +24,7 @@ const playMessages = () => {
       act(st, ctx);
       rec.text = G.messages.map(m => m.text);
       rec.credits = st.credits - c0;
+      if (extra) rec.x = extra(st);
     } catch (err) { rec.error = String(err && err.message || err); }
     out.push(rec);
   };
@@ -82,6 +83,16 @@ const playMessages = () => {
     says(`story:blockade:${side}:won`, 1, () => blockade(side), () => { blockadeScene().choices[0].run(); G.storyFight.onEnd('won'); G.storyFight.onEnd('won'); });
     says(`story:blockade:${side}:cold`, 1, () => blockade(side), () => { const sc = blockadeScene(); seq([0]); sc.choices[1].run(); });
   }
+  // ---------- the crew and the boarding ----------
+  const crewman = (st, role = 'pilot') => { const c = makeCrewCandidate('earth'); c.role = role; c.first = 'Mara'; c.last = 'Quill'; registerPerson(c); st.crew = [c.id]; return c; };
+  says('crew:wages', 1, st => { crewman(st); }, () => payCrew(10));
+  says('crew:quits', 1, st => { crewman(st); st.credits = 1; }, () => payCrew(10));
+  const drifter = () => ({ name: 'Wren', kind: 'trader', armor: 1, maxArmor: 100, disabled: false });
+  for (const touch of [false, true]) says(`boarding:disabled:${touch ? 'touch' : 'keys'}`, 1, () => { Touch.on = touch; }, () => { onDamage(drifter(), false, true, 5); Touch.on = false; });
+  says('boarding:hurt:crew', 1, st => { crewman(st, 'gunner'); }, () => hurtCrew());
+  says('boarding:hurt:cast', 1, st => { st.crew = [castPerson('tomas').id]; }, () => hurtCrew());
+  says('boarding:marked', 1, st => { st.crew = [castPerson('tomas').id]; castFate('tomas', 'mark', 'Hurt.', 'Marked once.'); }, () => hurtCrew(), true, () => (G.state.cast.tomas.fate || {}));
+  says('boarding:dead:crew', 1, st => { crewman(st); }, () => { seq([0, 0]); hurtCrew(true); }, true, st => st.memorial);
   return out;
 };
 

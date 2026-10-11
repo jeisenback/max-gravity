@@ -63,7 +63,7 @@ function castShipLoss(cause) {
 // The ladder before a loss (#357): hurt, then marked, then dead. A named person (a main character or the first officer) who is already marked
 // and is hit again dies, and the first hurt says so, so that nobody is lost without a warning.
 const secondStrike = c => !!(c && c.cast && marksOf(c).length);
-const hurtWarning = c => (c && c.cast ? ` Another hit like that could kill ${c.first}.` : '');
+const hurtWarning = c => (c && c.cast ? ` ${sceneSay('scene:crew-notes', 'hurt.warning', { first: c.first })}` : '');
 
 // ---------- what the player sees ----------
 // A character's marks beside them, the memorial as a list, and a line in the chapter's goodbye. Everything from a record is
