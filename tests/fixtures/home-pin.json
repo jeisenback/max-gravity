@@ -229,7 +229,11 @@
  },
  {
   "key": "favor:done",
-  "text": "[[\"Sam goes ashore to see their daughter Noor, and comes back the next morning with red eyes and a bag of home cooking for everyone.\"],true,[\"Sam Vale will follow the Second Chance anywhere now.\"]]"
+  "text": "[[\"Sam goes ashore to see their daughter Noor, and comes back the next morning with red eyes and a bag of home cooking for everyone.\"],true,[\"Sam Vale will follow the Second Chance anywhere now.\"],\"9 Jun 2214: The captain took me home to see my daughter.\"]"
+ },
+ {
+  "key": "rename",
+  "text": "[\"Nimbus\",[\"Named the ship the Nimbus.\"]]"
  },
  {
   "key": "letter:note",
