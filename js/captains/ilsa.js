@@ -13,13 +13,13 @@ function atTheReactor(backup) {
   const outcome = castFate('ilsa', points >= 3 ? 'live' : points === 2 ? 'mark' : 'die', `Lost at the reactor near ${system().name}.`, 'Right hand does not close properly.', 'xo');
   const lead = backup ? 'You send the engineer in with her. ' : '';
   if (outcome === 'die') {
-    like(cap, -1, 'We lost Ilsa at the reactor.'); cap.mood = { kind: 'low', until: G.state.day + 30 };
+    like(cap, -1, sceneSay('scene:memories', 'ilsa.lost.memory')); cap.mood = { kind: 'low', until: G.state.day + 30 };
     return lead + ('She goes in first, as she said she would, and the door closes behind her. The reactor board drops to nothing, and then, for a ' +
         'moment, to everything. You wait at the door for a long time after it is quiet. Captain Adair is the first one there. He does not speak. He ' +
         'puts his hand on the shielded door.')
       + (asked ? ' You asked her what she needed. She did not get to answer.' : '');
   }
-  castLike('ilsa', 2, 'You let me go into the reactor, and I came out.');
+  castLike('ilsa', 2, sceneSay('scene:memories', 'ilsa.lived.memory'));
   if (outcome === 'mark') {
     cap.mood = { kind: 'low', until: G.state.day + 15 };
     return lead + ('She goes in first, and the housing is hotter than the board said, and for three minutes the only sound on the bridge is the ' +
@@ -168,8 +168,8 @@ CAST.ilsa = {
       choices: [
         { label: 'Let her go in', run: () => atTheReactor(false) },
         { label: 'Send the engineer in with her', ...gated([() => !!roleHolder('engineer'), () => 'There is no engineer aboard.']), run: () => atTheReactor(true) },
-        { label: 'Vent the plant and let the ship coast', run() {
-          castFlag('ilsa', 'benched'); castLike('ilsa', -3, 'You vented the plant on me.'); G.state.fuel = Math.round(G.state.fuel * 0.8);
+        { label: 'Vent the plant and let the ship coast', memory: 'You vented the plant on me.', run() {
+          castFlag('ilsa', 'benched'); castLike('ilsa', -3, this.memory); G.state.fuel = Math.round(G.state.fuel * 0.8);
           return 'You tell her no, and hit the vent. The pile cools, and the ship coasts for two days on what is left of the cells. Ilsa stands at the shielded door with the gloves on and does not say a word. "It is your call," she says at last, and takes the gloves off one finger at a time.';
         } },
       ],

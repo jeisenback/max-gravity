@@ -13,13 +13,13 @@ function atTheLock(backup) {
   const outcome = castFate('ansel', points >= 3 ? 'live' : points === 2 ? 'mark' : 'die', `Lost at the boarding lock near ${system().name}.`, 'The hand that held the sheet does not close properly.', 'xo');
   const lead = backup ? 'You send a second person to the lock with him. ' : '';
   if (outcome === 'die') {
-    like(cap, -1, 'We lost Ansel at the lock.'); cap.mood = { kind: 'low', until: G.state.day + 30 };
+    like(cap, -1, sceneSay('scene:memories', 'ansel.lost.memory')); cap.mood = { kind: 'low', until: G.state.day + 30 };
     return lead + ('He goes to the lock alone, with the sheet in his hand, and the lock cycles, and what the people on the other side do is not ' +
         'something the board can tell you. When the lock opens again, he is not what is in it. Captain Pell comes down from the guns slowly, with the ' +
         'grin gone, and stands at the lock without moving. "He told me," she says. "Every time. He told me."')
       + (told ? ' You said you would stop her if you could. It was not in time.' : '');
   }
-  castLike('ansel', 2, 'You let me go to the lock, and I came back.');
+  castLike('ansel', 2, sceneSay('scene:memories', 'ansel.lived.memory'));
   if (outcome === 'mark') {
     cap.mood = { kind: 'low', until: G.state.day + 15 };
     return lead + ('He goes to the lock with the sheet, and it goes wrong at the second sentence, and for a minute the only sound is shouting through ' +
@@ -161,8 +161,8 @@ CAST.ansel = {
       choices: [
         { label: 'Let him go to the lock', run: () => atTheLock(false) },
         { label: 'Send a second person with him', ...gated(needCrew(2)), run: () => atTheLock(true) },
-        { label: 'Back the captain, and open fire', run() {
-          castFlag('ansel', 'benched'); castLike('ansel', -3, 'You opened fire on Dobrescu\'s ship against my word.'); captainLike(1, 'You backed me when I picked the fight.'); G.state.armor = Math.round(G.state.armor * 0.7);
+        { label: 'Back the captain, and open fire', memory: 'You opened fire on Dobrescu\'s ship against my word.', run() {
+          castFlag('ansel', 'benched'); castLike('ansel', -3, this.memory); captainLike(1, sceneSay('scene:memories', 'ansel.backed.memory')); G.state.armor = Math.round(G.state.armor * 0.7);
           return ('You give the word, and the guns speak, and the long ship answers, and for a minute it is loud and bright and Pell is laughing. The ' +
               'hull takes what it takes. Ansel stands at the lock with the sheet and does not say anything. When it is over he writes a number on it, ' +
               'and puts it in his pocket, and does not show it to anyone.');
