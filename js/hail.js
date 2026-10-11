@@ -46,18 +46,20 @@ function voice(n, table, fallback) {
 }
 
 // Pirates announce themselves when they first close in.
+const hailSay = (key, vars) => sceneSay('scene:hail-notes', key, vars);  // the notes of a hail are in the text layer (js/hiredscenes.js)
+
 function demandLine(n) {
   const c = n.persona;
-  if (n.payer) return `Nothing personal, captain. ${n.payer} paid good money for your ship.`;
-  if (c.id && c.opinion <= OPINION.GRUDGE) return 'You again. No deals this time. This is personal.';
-  if (c.tributes) return 'You again! Same deal as last time, only the price has gone up.';
+  if (n.payer) return hailSay('demand.paid', { payer: n.payer });
+  if (c.id && c.opinion <= OPINION.GRUDGE) return hailSay('demand.grudge');
+  if (c.tributes) return hailSay('demand.tribute');
   return voice(n, PIRATE_DEMANDS, PIRATE_DEMAND);
 }
 
 function pirateDemand(n) {
   if (n.hailed || n.bountyId) return;
   n.hailed = true;
-  msg(`${n.name}: "${demandLine(n)}" (H to answer)`);
+  msg(hailSay('say', { name: n.name, line: demandLine(n) }));
 }
 
 function tryHail() {
@@ -65,9 +67,9 @@ function tryHail() {
   if (!G.target || G.target.dead) {
     G.target = G.npcs.filter(n => n.kind !== 'escort' && dist(n, p) < HAIL_RANGE).sort((a, b) => dist(a, p) - dist(b, p))[0] || null;
   }
-  if (!G.target) return msg('No ships in comms range.');
-  if (G.target.kind === 'escort') return msg(`${G.target.name}: "Holding formation, captain."`);
-  if (dist(G.target, p) > HAIL_RANGE) return msg(`${G.target.name} is out of comms range.`);
+  if (!G.target) return msg(hailSay('none'));
+  if (G.target.kind === 'escort') return msg(hailSay('escort', { name: G.target.name }));
+  if (dist(G.target, p) > HAIL_RANGE) return msg(hailSay('far', { name: G.target.name }));
   G.mode = 'hail';
   openEvent(hailEvent(G.target));
 }

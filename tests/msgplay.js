@@ -65,6 +65,23 @@ const playMessages = () => {
   says('burn:near', 1, st => { st.dest = Object.keys(SYSTEMS).find(id => id !== st.systemId); st.fuel = 1e6; G.player.x = 0; G.player.y = 0; }, () => tryBurn());
   says('burn:ok', 1, st => { st.dest = Object.keys(SYSTEMS).find(id => id !== st.systemId); st.fuel = 1e6; G.player.x = 1e6; G.player.y = 0; }, () => tryBurn());
   says('arrive', 1, st => { const to = Object.keys(SYSTEMS).find(id => id !== st.systemId); G.burnAngle = 0; G.transit = { to, days: 3, total: 10, left: 0, times: [], seen: [], comms: [] }; }, () => arrive());
+  // ---------- hails and the story at sea ----------
+  const pirate = over => ({ name: 'Rook', kind: 'pirate', hailed: false, persona: { traits: ['kind'], home: 'Mars', id: '', opinion: 0, ...(over.persona || {}) }, ...over, persona: { traits: ['kind'], home: 'Mars', id: '', opinion: 0, ...(over.persona || {}) } });
+  says('hail:demand:paid', 1, null, () => pirateDemand(pirate({ payer: 'Mara Quill' })));
+  says('hail:demand:grudge', 1, null, () => pirateDemand(pirate({ persona: { id: 'p1', opinion: OPINION.GRUDGE } })));
+  says('hail:demand:tribute', 1, null, () => pirateDemand(pirate({ persona: { tributes: 2 } })));
+  for (const t of ['kind', 'brave', 'greedy', 'cold']) for (const [i, r] of [0, 0.5, 0.99].entries()) says(`hail:demand:${t}:${i}`, 1, null, () => { seq([r]); pirateDemand(pirate({ persona: { traits: [t] } })); });
+  says('hail:demand:again', 1, null, () => pirateDemand(pirate({ hailed: true })));
+  says('hail:none', 1, () => { G.target = null; G.npcs = []; }, () => tryHail());
+  says('hail:escort', 1, () => { G.target = { kind: 'escort', name: 'Wing', x: 0, y: 0 }; }, () => tryHail());
+  says('hail:far', 1, () => { G.target = { kind: 'trader', name: 'Wren', x: 1e7, y: 0 }; }, () => tryHail());
+  for (const ambush of [false, true]) for (const r of ['won', 'escaped']) says(`story:fight:${ambush ? 'ambush' : 'recovery'}:${r}`, 1, () => { story().stage = ambush ? 'belt2' : 2; }, () => { agentConsoleEvent(ambush).choices.find(c => /^Battle stations/.test(c.label)).run(); G.storyFight.onEnd(r); });
+  const blockade = side => { const s = story(); s.stage = 'act3'; s.side = side; };
+  for (const side of ['belt', 'aquilon']) {
+    says(`story:blockade:${side}:holds`, 1, () => blockade(side), () => { blockadeScene().choices[0].run(); G.storyFight.onEnd('escaped'); });
+    says(`story:blockade:${side}:won`, 1, () => blockade(side), () => { blockadeScene().choices[0].run(); G.storyFight.onEnd('won'); G.storyFight.onEnd('won'); });
+    says(`story:blockade:${side}:cold`, 1, () => blockade(side), () => { const sc = blockadeScene(); seq([0]); sc.choices[1].run(); });
+  }
   return out;
 };
 

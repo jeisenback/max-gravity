@@ -193,7 +193,7 @@ function agentConsoleEvent(ambush) {
   const spec = ambush
     ? { kind: 'pirate', story: true, shipId: 'corsair', armorMult: 1.8, name: 'Aquilon security "Due Diligence" and "Hostile Takeover"' }
     : { kind: 'pirate', story: true, shipId: 'corsair', armorMult: 1.3, name: 'Aquilon recovery ship "Quiet Ledger"' };
-  const fight = flee => () => storyFight(spec, { flee, onEnd: r => msg(r === 'won' ? `${spec.name} breaks up. Aquilon will not be happy.` : `${spec.name} breaks off, for now.`) });
+  const fight = flee => () => storyFight(spec, { flee, onEnd: r => msg(sceneSay('scene:hail-notes', r === 'won' ? 'fight.won' : 'fight.lost', { name: spec.name })) });
   const choices = [];
   if (!ambush) choices.push({ label: s.copied ? 'Hand over the copy' : 'Hand over the book', run() {
     s.stage = 'sold';
@@ -224,12 +224,12 @@ function blockadeForces() {
 
 function blockadeScene() {
   const { foes, allies, coalitionBlocks } = blockadeForces(), s = story();
-  const clear = how => { s.blockadeCleared = true; msg('The blockade breaks. Ceres Station clears you to dock.'); return how; };
+  const clear = how => { s.blockadeCleared = true; msg(sceneSay('scene:hail-notes', 'blockade.clear')); return how; };
   // The first fight starts from a choice (its first round follows the result); the second from the frame hook.
   const gauntlet = (i, fromChoice) => {
     const spec = foes[i], assist = Math.max(0, Math.round(allies / 2)), open = fromChoice ? storyFight : (...a) => openStoryFight('The Blockade', ...a);
     return open(spec, { allies: assist, onEnd: r => {
-      if (r !== 'won') { msg('The blockade holds. Fall back, or try again when you are ready.'); return; }
+      if (r !== 'won') { msg(sceneSay('scene:hail-notes', 'blockade.holds')); return; }
       if (i + 1 < foes.length) return gauntlet(i + 1, false);
       clear();
       G.mode = 'hail';

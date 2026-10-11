@@ -158,6 +158,7 @@
  "scene:cast-join",
  "scene:ship-log",
  "scene:flight-notes",
+ "scene:hail-notes",
  "scene:screens",
  "scene:memories",
  "scene:chapter-end",
