@@ -52,7 +52,7 @@ test('the converted scenes are data rows of the registry, and the rest are code 
   assert.equal(r.effects.castLike.who, 'ansel');
   assert.ok(r.edit.length > 0 && r.edit.every(e => e === false), 'code choices keep their effects in code');
   assert.ok(r.goodbye && r.signon, 'the goodbye and the sign-on are rows of the registry');
-  assert.equal(r.dataRegistry, 122);
+  assert.equal(r.dataRegistry, 123);
 });
 
 test('a converted scene\'s effects are in forms, checked as typed, and changing one is a change to the file', async () => {
@@ -495,6 +495,16 @@ test('the scenes of faction ties have their lines in the form and play in the pr
     const seen = await f.evaluate(() => JSON.stringify(G.dialog.choices.map(c => c.label)));
     assert.ok(seen.includes(label), `${id} ${seen.slice(0, 300)}`);
   }
+});
+
+test('the downtime a hired hand can add has its lines in the form and plays in the preview (#508)', async () => {
+  await reload(); await select('scene:downtime');
+  const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
+  for (const k of ['part.learn', 'part.cast.memory', 'part.advice.label', 'part.mend.result', 'part.stories.memory', 'part.pax.result']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
+  await page.fill('textarea[data-path="part.advice.label"]', 'Ask for advice');
+  const f = await play();
+  const seen = await f.evaluate(() => JSON.stringify(G.dialog.choices.map(c => c.label)));
+  assert.ok(seen.includes('Ask for advice') && seen.includes('Swap stories in the galley'), seen.slice(0, 300));
 });
 
 test('the function-built scenes and the code-written hired events are edited line by line, and each plays in the preview (#463)', async () => {

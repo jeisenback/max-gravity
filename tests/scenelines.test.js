@@ -81,9 +81,9 @@ test('the memories of the scenes in js/stakes.js and of the hired events with li
   assert.equal(r, 'You said <b>so</b> & meant it');
 });
 
-test('the memories of the scenes of faction ties are lines, and none is left in code in js/ties.js apart from the one the crew take from what you do with a faction', async () => {
+test('the memories of the scenes of faction ties are lines, and none is left in code in js/ties.js', async () => {
   const src = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', 'js', 'ties.js'), 'utf8');
-  assert.deepEqual([...src.matchAll(/\blike\([^;\n]*?, *['"`][A-Z]/g)].map(m => m[0].slice(0, 60)), ['like(p, Math.sign(amount) * Math.sign(r) * n, `Y'], 'a memory in code in ties.js');
+  assert.deepEqual([...src.matchAll(/\blike\([^;\n]*?, *['"`][A-Z]/g)].map(m => m[0].slice(0, 60)), [], 'a memory in code in ties.js');
   const g = await open({ scope: 'full' });
   const r = await g.ev(() => {
     useOverrides({ 'scene:dock-friend': { parts: { 'c0.memory': 'You let <b>me</b> ask' } } });

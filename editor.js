@@ -382,6 +382,7 @@
           'scene:pitch': () => { const dest = SYSTEMS.mars.planets[0].name; return pitchScene({ tpl: 'package', ctx: { dest, from: G.state.planet, who: 'Mrs. Adeyemi', system: SYSTEMS.mars.name, scale: 1.2 }, sid: 'mars', planet: dest, days: 5, until: G.state.day + 20, pitched: null, booked: false }); },
           'scene:customs': () => tiesPreview(gov => customsScene(gov, currentPlanet(), false), 'wanted'), 'scene:dock-friend': () => tiesPreview(gov => dockFriendScene(gov, currentPlanet()), 'officer'),
           'scene:war-call': () => tiesPreview(() => warCallScene(currentPlanet()), 'member', true),
+          'scene:downtime': () => { if (!crew.length) { const m = makeCrewCandidate(st.systemId); registerPerson(m); st.crew.push(m.id); } return { title: 'Downtime', text: 'What a hired hand can add to the downtime menu:', personal: true, choices: HAND_DOWNTIME.map(d => ({ label: d.label, run: d.run })) }; },
           'scene:captain-lost': captainLostScene, 'scene:used-ship-offer': () => dealScene(currentPlanet()), 'scene:yard-office': () => yardScene(USED_ID),
           'scene:split': () => { if (crew.length > 1) { addBond(crew[0], crew[1], -9); st.feuds = { [bondKey(crew[0], crew[1])]: 1 }; st.relAt = {}; } return splitScene(); },
           'scene:walk-off': () => { const c = castAboard().find(x => CAST[x.cast].farewell); return c ? walkOffScene(c, currentPlanet()) : null; },
