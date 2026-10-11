@@ -4650,6 +4650,9 @@
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
+    "x": [
+     "Ran the drive hot on Captain Vance's order."
+    ],
     "next": null
    },
    {
@@ -4659,6 +4662,9 @@
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
+    "x": [
+     "Ran the drive hot on Captain Vance's order."
+    ],
     "next": null
    },
    {
@@ -4671,6 +4677,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Told Captain Vance what I thought of the hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -4683,6 +4692,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Told Captain Vance what I thought of the hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -4695,6 +4707,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Offered Captain Vance ninety and the minutes on the approach, and was heard."
+    ],
     "next": null
    },
    {
@@ -4707,6 +4722,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Offered Captain Vance ninety and the minutes on the approach, and was heard."
+    ],
     "next": null
    },
    {
@@ -4719,6 +4737,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Showed Captain Vance the heat figures on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -4731,6 +4752,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Showed Captain Vance the heat figures on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -4743,6 +4767,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Replotted the approach on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -4755,6 +4782,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Replotted the approach on a hot burn, and was heard."
+    ],
     "next": null
    }
   ],
@@ -4778,6 +4808,9 @@
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
     ],
+    "x": [
+     "Captain Vance said something kind and I did not make a thing of it."
+    ],
     "next": null
    },
    {
@@ -4786,6 +4819,9 @@
     "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
+    ],
+    "x": [
+     "Captain Vance said something kind and I did not make a thing of it."
     ],
     "next": null
    },
@@ -4856,6 +4892,9 @@
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
     ],
+    "x": [
+     "Owned a gap in the ship's log without being made to."
+    ],
     "next": null
    },
    {
@@ -4864,6 +4903,9 @@
     "text": "\"That was mine,\" you say. \"I will fix it tonight.\" She looks at you a moment longer, and takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
+    ],
+    "x": [
+     "Owned a gap in the ship's log without being made to."
     ],
     "next": null
    },
@@ -4982,6 +5024,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Stood an extra watch for Captain Vance."
+    ],
     "next": null
    },
    {
@@ -4994,6 +5039,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Stood an extra watch for Captain Vance."
+    ],
     "next": null
    },
    {
@@ -5030,6 +5078,9 @@
     "fx": {
      "p1": -1
     },
+    "x": [
+     "Would not stand an extra watch for Captain Vance."
+    ],
     "next": null
    },
    {
@@ -5042,6 +5093,9 @@
     "fx": {
      "p1": -1
     },
+    "x": [
+     "Would not stand an extra watch for Captain Vance."
+    ],
     "next": null
    }
   ],
@@ -5066,6 +5120,9 @@
     "fx": {
      "c:ines": 1
     },
+    "x": [
+     "Showed Ines my post, and they came round."
+    ],
     "next": null
    },
    {
@@ -5078,6 +5135,9 @@
     "fx": {
      "c:ines": -1
     },
+    "x": [
+     "Tried to prove a point to Ines and it went badly."
+    ],
     "next": null
    },
    {
@@ -5145,6 +5205,9 @@
      "credits": 100,
      "c:ines": 1
     },
+    "x": [
+     "Played cards with Ines. They want a rematch."
+    ],
     "next": null
    },
    {
@@ -5158,6 +5221,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Played cards with Ines. They want a rematch."
+    ],
     "next": null
    },
    {
@@ -5215,12 +5281,18 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      }
     ]
    },
@@ -5250,12 +5322,18 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      }
     ]
    },
@@ -5293,6 +5371,9 @@
      "credits": -100,
      "c:ines": 3
     },
+    "x": [
+     "Lent Ines a hundred credits."
+    ],
     "next": null
    },
    {
@@ -5306,6 +5387,9 @@
      "credits": -100,
      "c:ines": 3
     },
+    "x": [
+     "Lent Ines a hundred credits."
+    ],
     "next": null
    },
    {
@@ -5319,6 +5403,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Lent Ines fifty credits."
+    ],
     "next": null
    },
    {
@@ -5332,6 +5419,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Lent Ines fifty credits."
+    ],
     "next": null
    },
    {
@@ -5380,6 +5470,9 @@
     "fx": {
      "credits": 35
     },
+    "x": [
+     "Raised a short pay statement quietly with Captain Vance."
+    ],
     "next": null
    },
    {
@@ -5392,6 +5485,9 @@
     "fx": {
      "credits": 35
     },
+    "x": [
+     "Raised a short pay statement quietly with Captain Vance."
+    ],
     "next": null
    },
    {
@@ -5405,6 +5501,9 @@
      "credits": 35,
      "p1": -2
     },
+    "x": [
+     "Made a scene about my pay statement."
+    ],
     "next": null
    },
    {
@@ -5418,6 +5517,9 @@
      "credits": 35,
      "p1": -2
     },
+    "x": [
+     "Made a scene about my pay statement."
+    ],
     "next": null
    },
    {
@@ -5463,12 +5565,18 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 1,
@@ -5476,6 +5584,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      },
      {
@@ -5484,6 +5595,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      }
     ]
@@ -5507,12 +5621,18 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 1,
@@ -5520,6 +5640,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      },
      {
@@ -5528,6 +5651,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      }
     ]
@@ -5560,6 +5686,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Plotted something off the lane and gave a course round it."
+    ],
     "next": null
    },
    {
@@ -5572,6 +5701,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Plotted something off the lane and gave a course round it."
+    ],
     "next": null
    },
    {
@@ -5584,6 +5716,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Put a passive lock on something off the lane."
+    ],
     "next": null
    },
    {
@@ -5596,6 +5731,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Put a passive lock on something off the lane."
+    ],
     "next": null
    },
    {
@@ -5608,6 +5746,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Read a drive signature off something on the lane."
+    ],
     "next": null
    },
    {
@@ -5620,6 +5761,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Read a drive signature off something on the lane."
+    ],
     "next": null
    },
    {
@@ -5632,6 +5776,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Listened to the transponder of something off the lane."
+    ],
     "next": null
    },
    {
@@ -5644,18 +5791,27 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Listened to the transponder of something off the lane."
+    ],
     "next": null
    },
    {
     "i": 6,
     "roll": 0,
     "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "x": [
+     "Saw something off the lane and said nothing."
+    ],
     "next": null
    },
    {
     "i": 6,
     "roll": 0.999,
     "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "x": [
+     "Saw something off the lane and said nothing."
+    ],
     "next": null
    }
   ],
@@ -5681,6 +5837,9 @@
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
+    "x": [
+     "Ran the drive hot on Captain Vance's order."
+    ],
     "next": null
    },
    {
@@ -5690,6 +5849,9 @@
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
+    "x": [
+     "Ran the drive hot on Captain Vance's order."
+    ],
     "next": null
    },
    {
@@ -5702,6 +5864,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Told Captain Vance what I thought of the hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -5714,6 +5879,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Told Captain Vance what I thought of the hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -5726,6 +5894,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Offered Captain Vance ninety and the minutes on the approach, and was heard."
+    ],
     "next": null
    },
    {
@@ -5738,6 +5909,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Offered Captain Vance ninety and the minutes on the approach, and was heard."
+    ],
     "next": null
    },
    {
@@ -5750,6 +5924,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Showed Captain Vance the heat figures on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -5762,6 +5939,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Showed Captain Vance the heat figures on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -5774,6 +5954,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Replotted the approach on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -5786,6 +5969,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Replotted the approach on a hot burn, and was heard."
+    ],
     "next": null
    }
   ],
@@ -5809,6 +5995,9 @@
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
     ],
+    "x": [
+     "Captain Vance said something kind and I did not make a thing of it."
+    ],
     "next": null
    },
    {
@@ -5817,6 +6006,9 @@
     "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
+    ],
+    "x": [
+     "Captain Vance said something kind and I did not make a thing of it."
     ],
     "next": null
    },
@@ -5887,6 +6079,9 @@
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
     ],
+    "x": [
+     "Owned a gap in the ship's log without being made to."
+    ],
     "next": null
    },
    {
@@ -5895,6 +6090,9 @@
     "text": "\"That was mine,\" you say. \"I will fix it tonight.\" She looks at you a moment longer, and takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
+    ],
+    "x": [
+     "Owned a gap in the ship's log without being made to."
     ],
     "next": null
    },
@@ -6013,6 +6211,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Stood an extra watch for Captain Vance."
+    ],
     "next": null
    },
    {
@@ -6025,6 +6226,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Stood an extra watch for Captain Vance."
+    ],
     "next": null
    },
    {
@@ -6061,6 +6265,9 @@
     "fx": {
      "p1": -1
     },
+    "x": [
+     "Would not stand an extra watch for Captain Vance."
+    ],
     "next": null
    },
    {
@@ -6073,6 +6280,9 @@
     "fx": {
      "p1": -1
     },
+    "x": [
+     "Would not stand an extra watch for Captain Vance."
+    ],
     "next": null
    }
   ],
@@ -6097,6 +6307,9 @@
     "fx": {
      "c:ines": 1
     },
+    "x": [
+     "Showed Ines my post, and they came round."
+    ],
     "next": null
    },
    {
@@ -6109,6 +6322,9 @@
     "fx": {
      "c:ines": -1
     },
+    "x": [
+     "Tried to prove a point to Ines and it went badly."
+    ],
     "next": null
    },
    {
@@ -6176,6 +6392,9 @@
      "credits": 100,
      "c:ines": 1
     },
+    "x": [
+     "Played cards with Ines. They want a rematch."
+    ],
     "next": null
    },
    {
@@ -6189,6 +6408,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Played cards with Ines. They want a rematch."
+    ],
     "next": null
    },
    {
@@ -6246,12 +6468,18 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      }
     ]
    },
@@ -6281,12 +6509,18 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      }
     ]
    },
@@ -6324,6 +6558,9 @@
      "credits": -100,
      "c:ines": 3
     },
+    "x": [
+     "Lent Ines a hundred credits."
+    ],
     "next": null
    },
    {
@@ -6337,6 +6574,9 @@
      "credits": -100,
      "c:ines": 3
     },
+    "x": [
+     "Lent Ines a hundred credits."
+    ],
     "next": null
    },
    {
@@ -6350,6 +6590,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Lent Ines fifty credits."
+    ],
     "next": null
    },
    {
@@ -6363,6 +6606,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Lent Ines fifty credits."
+    ],
     "next": null
    },
    {
@@ -6411,6 +6657,9 @@
     "fx": {
      "credits": 35
     },
+    "x": [
+     "Raised a short pay statement quietly with Captain Vance."
+    ],
     "next": null
    },
    {
@@ -6423,6 +6672,9 @@
     "fx": {
      "credits": 35
     },
+    "x": [
+     "Raised a short pay statement quietly with Captain Vance."
+    ],
     "next": null
    },
    {
@@ -6436,6 +6688,9 @@
      "credits": 35,
      "p1": -2
     },
+    "x": [
+     "Made a scene about my pay statement."
+    ],
     "next": null
    },
    {
@@ -6449,6 +6704,9 @@
      "credits": 35,
      "p1": -2
     },
+    "x": [
+     "Made a scene about my pay statement."
+    ],
     "next": null
    },
    {
@@ -6494,12 +6752,18 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the pilot post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the pilot post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the pilot post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the pilot post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 1,
@@ -6507,6 +6771,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the pilot post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      },
      {
@@ -6515,6 +6782,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the pilot post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      }
     ]
@@ -6538,12 +6808,18 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the pilot post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the pilot post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the pilot post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the pilot post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 1,
@@ -6551,6 +6827,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the pilot post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      },
      {
@@ -6559,6 +6838,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the pilot post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      }
     ]
@@ -6591,6 +6873,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Plotted something off the lane and gave a course round it."
+    ],
     "next": null
    },
    {
@@ -6603,6 +6888,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Plotted something off the lane and gave a course round it."
+    ],
     "next": null
    },
    {
@@ -6615,6 +6903,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Put a passive lock on something off the lane."
+    ],
     "next": null
    },
    {
@@ -6627,6 +6918,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Put a passive lock on something off the lane."
+    ],
     "next": null
    },
    {
@@ -6639,6 +6933,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Read a drive signature off something on the lane."
+    ],
     "next": null
    },
    {
@@ -6651,6 +6948,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Read a drive signature off something on the lane."
+    ],
     "next": null
    },
    {
@@ -6663,6 +6963,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Listened to the transponder of something off the lane."
+    ],
     "next": null
    },
    {
@@ -6675,18 +6978,27 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Listened to the transponder of something off the lane."
+    ],
     "next": null
    },
    {
     "i": 6,
     "roll": 0,
     "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "x": [
+     "Saw something off the lane and said nothing."
+    ],
     "next": null
    },
    {
     "i": 6,
     "roll": 0.999,
     "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "x": [
+     "Saw something off the lane and said nothing."
+    ],
     "next": null
    }
   ],
@@ -6712,6 +7024,9 @@
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
+    "x": [
+     "Ran the drive hot on Captain Vance's order."
+    ],
     "next": null
    },
    {
@@ -6721,6 +7036,9 @@
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
+    "x": [
+     "Ran the drive hot on Captain Vance's order."
+    ],
     "next": null
    },
    {
@@ -6733,6 +7051,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Told Captain Vance what I thought of the hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -6745,6 +7066,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Told Captain Vance what I thought of the hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -6757,6 +7081,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Offered Captain Vance ninety and the minutes on the approach, and was heard."
+    ],
     "next": null
    },
    {
@@ -6769,6 +7096,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Offered Captain Vance ninety and the minutes on the approach, and was heard."
+    ],
     "next": null
    },
    {
@@ -6781,6 +7111,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Showed Captain Vance the heat figures on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -6793,6 +7126,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Showed Captain Vance the heat figures on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -6805,6 +7141,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Replotted the approach on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -6817,6 +7156,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Replotted the approach on a hot burn, and was heard."
+    ],
     "next": null
    }
   ],
@@ -6840,6 +7182,9 @@
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
     ],
+    "x": [
+     "Captain Vance said something kind and I did not make a thing of it."
+    ],
     "next": null
    },
    {
@@ -6848,6 +7193,9 @@
     "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
+    ],
+    "x": [
+     "Captain Vance said something kind and I did not make a thing of it."
     ],
     "next": null
    },
@@ -6918,6 +7266,9 @@
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
     ],
+    "x": [
+     "Owned a gap in the ship's log without being made to."
+    ],
     "next": null
    },
    {
@@ -6926,6 +7277,9 @@
     "text": "\"That was mine,\" you say. \"I will fix it tonight.\" She looks at you a moment longer, and takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
+    ],
+    "x": [
+     "Owned a gap in the ship's log without being made to."
     ],
     "next": null
    },
@@ -7044,6 +7398,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Stood an extra watch for Captain Vance."
+    ],
     "next": null
    },
    {
@@ -7056,6 +7413,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Stood an extra watch for Captain Vance."
+    ],
     "next": null
    },
    {
@@ -7092,6 +7452,9 @@
     "fx": {
      "p1": -1
     },
+    "x": [
+     "Would not stand an extra watch for Captain Vance."
+    ],
     "next": null
    },
    {
@@ -7104,6 +7467,9 @@
     "fx": {
      "p1": -1
     },
+    "x": [
+     "Would not stand an extra watch for Captain Vance."
+    ],
     "next": null
    }
   ],
@@ -7128,6 +7494,9 @@
     "fx": {
      "c:ines": 1
     },
+    "x": [
+     "Showed Ines my post, and they came round."
+    ],
     "next": null
    },
    {
@@ -7140,6 +7509,9 @@
     "fx": {
      "c:ines": -1
     },
+    "x": [
+     "Tried to prove a point to Ines and it went badly."
+    ],
     "next": null
    },
    {
@@ -7207,6 +7579,9 @@
      "credits": 100,
      "c:ines": 1
     },
+    "x": [
+     "Played cards with Ines. They want a rematch."
+    ],
     "next": null
    },
    {
@@ -7220,6 +7595,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Played cards with Ines. They want a rematch."
+    ],
     "next": null
    },
    {
@@ -7277,12 +7655,18 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      }
     ]
    },
@@ -7312,12 +7696,18 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      }
     ]
    },
@@ -7355,6 +7745,9 @@
      "credits": -100,
      "c:ines": 3
     },
+    "x": [
+     "Lent Ines a hundred credits."
+    ],
     "next": null
    },
    {
@@ -7368,6 +7761,9 @@
      "credits": -100,
      "c:ines": 3
     },
+    "x": [
+     "Lent Ines a hundred credits."
+    ],
     "next": null
    },
    {
@@ -7381,6 +7777,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Lent Ines fifty credits."
+    ],
     "next": null
    },
    {
@@ -7394,6 +7793,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Lent Ines fifty credits."
+    ],
     "next": null
    },
    {
@@ -7442,6 +7844,9 @@
     "fx": {
      "credits": 35
     },
+    "x": [
+     "Raised a short pay statement quietly with Captain Vance."
+    ],
     "next": null
    },
    {
@@ -7454,6 +7859,9 @@
     "fx": {
      "credits": 35
     },
+    "x": [
+     "Raised a short pay statement quietly with Captain Vance."
+    ],
     "next": null
    },
    {
@@ -7467,6 +7875,9 @@
      "credits": 35,
      "p1": -2
     },
+    "x": [
+     "Made a scene about my pay statement."
+    ],
     "next": null
    },
    {
@@ -7480,6 +7891,9 @@
      "credits": 35,
      "p1": -2
     },
+    "x": [
+     "Made a scene about my pay statement."
+    ],
     "next": null
    },
    {
@@ -7525,12 +7939,18 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the engineer post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the engineer post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the engineer post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the engineer post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 1,
@@ -7538,6 +7958,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the engineer post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      },
      {
@@ -7546,6 +7969,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the engineer post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      }
     ]
@@ -7569,12 +7995,18 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the engineer post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the engineer post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the engineer post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the engineer post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 1,
@@ -7582,6 +8014,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the engineer post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      },
      {
@@ -7590,6 +8025,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the engineer post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      }
     ]
@@ -7622,6 +8060,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Plotted something off the lane and gave a course round it."
+    ],
     "next": null
    },
    {
@@ -7634,6 +8075,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Plotted something off the lane and gave a course round it."
+    ],
     "next": null
    },
    {
@@ -7646,6 +8090,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Put a passive lock on something off the lane."
+    ],
     "next": null
    },
    {
@@ -7658,6 +8105,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Put a passive lock on something off the lane."
+    ],
     "next": null
    },
    {
@@ -7670,6 +8120,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Read a drive signature off something on the lane."
+    ],
     "next": null
    },
    {
@@ -7682,6 +8135,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Read a drive signature off something on the lane."
+    ],
     "next": null
    },
    {
@@ -7694,6 +8150,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Listened to the transponder of something off the lane."
+    ],
     "next": null
    },
    {
@@ -7706,18 +8165,27 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Listened to the transponder of something off the lane."
+    ],
     "next": null
    },
    {
     "i": 6,
     "roll": 0,
     "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "x": [
+     "Saw something off the lane and said nothing."
+    ],
     "next": null
    },
    {
     "i": 6,
     "roll": 0.999,
     "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "x": [
+     "Saw something off the lane and said nothing."
+    ],
     "next": null
    }
   ],
@@ -7743,6 +8211,9 @@
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
+    "x": [
+     "Ran the drive hot on Captain Vance's order."
+    ],
     "next": null
    },
    {
@@ -7752,6 +8223,9 @@
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
+    "x": [
+     "Ran the drive hot on Captain Vance's order."
+    ],
     "next": null
    },
    {
@@ -7764,6 +8238,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Told Captain Vance what I thought of the hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -7776,6 +8253,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Told Captain Vance what I thought of the hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -7788,6 +8268,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Offered Captain Vance ninety and the minutes on the approach, and was heard."
+    ],
     "next": null
    },
    {
@@ -7800,6 +8283,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Offered Captain Vance ninety and the minutes on the approach, and was heard."
+    ],
     "next": null
    },
    {
@@ -7812,6 +8298,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Showed Captain Vance the heat figures on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -7824,6 +8313,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Showed Captain Vance the heat figures on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -7836,6 +8328,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Replotted the approach on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -7848,6 +8343,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Replotted the approach on a hot burn, and was heard."
+    ],
     "next": null
    }
   ],
@@ -7871,6 +8369,9 @@
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
     ],
+    "x": [
+     "Captain Vance said something kind and I did not make a thing of it."
+    ],
     "next": null
    },
    {
@@ -7879,6 +8380,9 @@
     "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
+    ],
+    "x": [
+     "Captain Vance said something kind and I did not make a thing of it."
     ],
     "next": null
    },
@@ -7949,6 +8453,9 @@
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
     ],
+    "x": [
+     "Owned a gap in the ship's log without being made to."
+    ],
     "next": null
    },
    {
@@ -7957,6 +8464,9 @@
     "text": "\"That was mine,\" you say. \"I will fix it tonight.\" She looks at you a moment longer, and takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
+    ],
+    "x": [
+     "Owned a gap in the ship's log without being made to."
     ],
     "next": null
    },
@@ -8075,6 +8585,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Stood an extra watch for Captain Vance."
+    ],
     "next": null
    },
    {
@@ -8087,6 +8600,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Stood an extra watch for Captain Vance."
+    ],
     "next": null
    },
    {
@@ -8123,6 +8639,9 @@
     "fx": {
      "p1": -1
     },
+    "x": [
+     "Would not stand an extra watch for Captain Vance."
+    ],
     "next": null
    },
    {
@@ -8135,6 +8654,9 @@
     "fx": {
      "p1": -1
     },
+    "x": [
+     "Would not stand an extra watch for Captain Vance."
+    ],
     "next": null
    }
   ],
@@ -8159,6 +8681,9 @@
     "fx": {
      "c:ines": 1
     },
+    "x": [
+     "Showed Ines my post, and they came round."
+    ],
     "next": null
    },
    {
@@ -8171,6 +8696,9 @@
     "fx": {
      "c:ines": -1
     },
+    "x": [
+     "Tried to prove a point to Ines and it went badly."
+    ],
     "next": null
    },
    {
@@ -8238,6 +8766,9 @@
      "credits": 100,
      "c:ines": 1
     },
+    "x": [
+     "Played cards with Ines. They want a rematch."
+    ],
     "next": null
    },
    {
@@ -8251,6 +8782,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Played cards with Ines. They want a rematch."
+    ],
     "next": null
    },
    {
@@ -8308,12 +8842,18 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      }
     ]
    },
@@ -8343,12 +8883,18 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      }
     ]
    },
@@ -8386,6 +8932,9 @@
      "credits": -100,
      "c:ines": 3
     },
+    "x": [
+     "Lent Ines a hundred credits."
+    ],
     "next": null
    },
    {
@@ -8399,6 +8948,9 @@
      "credits": -100,
      "c:ines": 3
     },
+    "x": [
+     "Lent Ines a hundred credits."
+    ],
     "next": null
    },
    {
@@ -8412,6 +8964,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Lent Ines fifty credits."
+    ],
     "next": null
    },
    {
@@ -8425,6 +8980,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Lent Ines fifty credits."
+    ],
     "next": null
    },
    {
@@ -8473,6 +9031,9 @@
     "fx": {
      "credits": 35
     },
+    "x": [
+     "Raised a short pay statement quietly with Captain Vance."
+    ],
     "next": null
    },
    {
@@ -8485,6 +9046,9 @@
     "fx": {
      "credits": 35
     },
+    "x": [
+     "Raised a short pay statement quietly with Captain Vance."
+    ],
     "next": null
    },
    {
@@ -8498,6 +9062,9 @@
      "credits": 35,
      "p1": -2
     },
+    "x": [
+     "Made a scene about my pay statement."
+    ],
     "next": null
    },
    {
@@ -8511,6 +9078,9 @@
      "credits": 35,
      "p1": -2
     },
+    "x": [
+     "Made a scene about my pay statement."
+    ],
     "next": null
    },
    {
@@ -8556,12 +9126,18 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the comms post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the comms post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the comms post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the comms post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 1,
@@ -8569,6 +9145,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the comms post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      },
      {
@@ -8577,6 +9156,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the comms post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      }
     ]
@@ -8600,12 +9182,18 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the comms post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the comms post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the comms post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the comms post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 1,
@@ -8613,6 +9201,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the comms post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      },
      {
@@ -8621,6 +9212,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the comms post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      }
     ]
@@ -8653,6 +9247,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Plotted something off the lane and gave a course round it."
+    ],
     "next": null
    },
    {
@@ -8665,6 +9262,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Plotted something off the lane and gave a course round it."
+    ],
     "next": null
    },
    {
@@ -8677,6 +9277,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Put a passive lock on something off the lane."
+    ],
     "next": null
    },
    {
@@ -8689,6 +9292,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Put a passive lock on something off the lane."
+    ],
     "next": null
    },
    {
@@ -8701,6 +9307,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Read a drive signature off something on the lane."
+    ],
     "next": null
    },
    {
@@ -8713,6 +9322,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Read a drive signature off something on the lane."
+    ],
     "next": null
    },
    {
@@ -8725,6 +9337,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Listened to the transponder of something off the lane."
+    ],
     "next": null
    },
    {
@@ -8737,18 +9352,27 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Listened to the transponder of something off the lane."
+    ],
     "next": null
    },
    {
     "i": 6,
     "roll": 0,
     "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "x": [
+     "Saw something off the lane and said nothing."
+    ],
     "next": null
    },
    {
     "i": 6,
     "roll": 0.999,
     "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "x": [
+     "Saw something off the lane and said nothing."
+    ],
     "next": null
    }
   ],
@@ -8774,6 +9398,9 @@
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
+    "x": [
+     "Ran the drive hot on Captain Adair's order."
+    ],
     "next": null
    },
    {
@@ -8783,6 +9410,9 @@
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
+    "x": [
+     "Ran the drive hot on Captain Adair's order."
+    ],
     "next": null
    },
    {
@@ -8795,6 +9425,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Told Captain Adair what I thought of the hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -8807,6 +9440,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Told Captain Adair what I thought of the hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -8819,6 +9455,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Offered Captain Adair ninety and the minutes on the approach, and was heard."
+    ],
     "next": null
    },
    {
@@ -8831,6 +9470,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Offered Captain Adair ninety and the minutes on the approach, and was heard."
+    ],
     "next": null
    },
    {
@@ -8843,6 +9485,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Showed Captain Adair the heat figures on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -8855,6 +9500,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Showed Captain Adair the heat figures on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -8867,6 +9515,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Replotted the approach on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -8879,6 +9530,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Replotted the approach on a hot burn, and was heard."
+    ],
     "next": null
    }
   ],
@@ -8902,6 +9556,9 @@
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
     ],
+    "x": [
+     "Captain Adair said something kind and I did not make a thing of it."
+    ],
     "next": null
    },
    {
@@ -8910,6 +9567,9 @@
     "text": "\"The crew make it easy,\" you say. He laughs, and says that is just what he tells people, and you both know he does. You stand straighter. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
+    ],
+    "x": [
+     "Captain Adair said something kind and I did not make a thing of it."
     ],
     "next": null
    },
@@ -8980,6 +9640,9 @@
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
     ],
+    "x": [
+     "Owned a gap in the ship's log without being made to."
+    ],
     "next": null
    },
    {
@@ -8988,6 +9651,9 @@
     "text": "\"That was mine,\" you say. \"It will be fixed tonight.\" \"Of course it will,\" he says. \"I only wanted to be sure you were all right.\" (+2 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
+    ],
+    "x": [
+     "Owned a gap in the ship's log without being made to."
     ],
     "next": null
    },
@@ -9106,6 +9772,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Stood an extra watch for Captain Adair."
+    ],
     "next": null
    },
    {
@@ -9118,6 +9787,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Stood an extra watch for Captain Adair."
+    ],
     "next": null
    },
    {
@@ -9154,6 +9826,9 @@
     "fx": {
      "p1": -1
     },
+    "x": [
+     "Would not stand an extra watch for Captain Adair."
+    ],
     "next": null
    },
    {
@@ -9166,6 +9841,9 @@
     "fx": {
      "p1": -1
     },
+    "x": [
+     "Would not stand an extra watch for Captain Adair."
+    ],
     "next": null
    }
   ],
@@ -9190,6 +9868,9 @@
     "fx": {
      "c:ines": 1
     },
+    "x": [
+     "Showed Ines my post, and they came round."
+    ],
     "next": null
    },
    {
@@ -9202,6 +9883,9 @@
     "fx": {
      "c:ines": -1
     },
+    "x": [
+     "Tried to prove a point to Ines and it went badly."
+    ],
     "next": null
    },
    {
@@ -9269,6 +9953,9 @@
      "credits": 100,
      "c:ines": 1
     },
+    "x": [
+     "Played cards with Ines. They want a rematch."
+    ],
     "next": null
    },
    {
@@ -9282,6 +9969,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Played cards with Ines. They want a rematch."
+    ],
     "next": null
    },
    {
@@ -9339,12 +10029,18 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      }
     ]
    },
@@ -9374,12 +10070,18 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      }
     ]
    },
@@ -9417,6 +10119,9 @@
      "credits": -100,
      "c:ines": 3
     },
+    "x": [
+     "Lent Ines a hundred credits."
+    ],
     "next": null
    },
    {
@@ -9430,6 +10135,9 @@
      "credits": -100,
      "c:ines": 3
     },
+    "x": [
+     "Lent Ines a hundred credits."
+    ],
     "next": null
    },
    {
@@ -9443,6 +10151,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Lent Ines fifty credits."
+    ],
     "next": null
    },
    {
@@ -9456,6 +10167,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Lent Ines fifty credits."
+    ],
     "next": null
    },
    {
@@ -9504,6 +10218,9 @@
     "fx": {
      "credits": 50
     },
+    "x": [
+     "Raised a short pay statement quietly with Captain Adair."
+    ],
     "next": null
    },
    {
@@ -9516,6 +10233,9 @@
     "fx": {
      "credits": 50
     },
+    "x": [
+     "Raised a short pay statement quietly with Captain Adair."
+    ],
     "next": null
    },
    {
@@ -9529,6 +10249,9 @@
      "credits": 50,
      "p1": -2
     },
+    "x": [
+     "Made a scene about my pay statement."
+    ],
     "next": null
    },
    {
@@ -9542,6 +10265,9 @@
      "credits": 50,
      "p1": -2
     },
+    "x": [
+     "Made a scene about my pay statement."
+    ],
     "next": null
    },
    {
@@ -9587,12 +10313,18 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 1,
@@ -9600,6 +10332,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      },
      {
@@ -9608,6 +10343,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      }
     ]
@@ -9631,12 +10369,18 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 1,
@@ -9644,6 +10388,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      },
      {
@@ -9652,6 +10399,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      }
     ]
@@ -9684,6 +10434,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Plotted something off the lane and gave a course round it."
+    ],
     "next": null
    },
    {
@@ -9696,6 +10449,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Plotted something off the lane and gave a course round it."
+    ],
     "next": null
    },
    {
@@ -9708,6 +10464,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Put a passive lock on something off the lane."
+    ],
     "next": null
    },
    {
@@ -9720,6 +10479,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Put a passive lock on something off the lane."
+    ],
     "next": null
    },
    {
@@ -9732,6 +10494,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Read a drive signature off something on the lane."
+    ],
     "next": null
    },
    {
@@ -9744,6 +10509,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Read a drive signature off something on the lane."
+    ],
     "next": null
    },
    {
@@ -9756,6 +10524,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Listened to the transponder of something off the lane."
+    ],
     "next": null
    },
    {
@@ -9768,18 +10539,27 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Listened to the transponder of something off the lane."
+    ],
     "next": null
    },
    {
     "i": 6,
     "roll": 0,
     "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "x": [
+     "Saw something off the lane and said nothing."
+    ],
     "next": null
    },
    {
     "i": 6,
     "roll": 0.999,
     "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "x": [
+     "Saw something off the lane and said nothing."
+    ],
     "next": null
    }
   ],
@@ -9805,6 +10585,9 @@
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
+    "x": [
+     "Ran the drive hot on Captain Sato's order."
+    ],
     "next": null
    },
    {
@@ -9814,6 +10597,9 @@
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
+    "x": [
+     "Ran the drive hot on Captain Sato's order."
+    ],
     "next": null
    },
    {
@@ -9826,6 +10612,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Told Captain Sato what I thought of the hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -9838,6 +10627,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Told Captain Sato what I thought of the hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -9850,6 +10642,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Offered Captain Sato ninety and the minutes on the approach, and was heard."
+    ],
     "next": null
    },
    {
@@ -9862,6 +10657,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Offered Captain Sato ninety and the minutes on the approach, and was heard."
+    ],
     "next": null
    },
    {
@@ -9874,6 +10672,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Showed Captain Sato the heat figures on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -9886,6 +10687,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Showed Captain Sato the heat figures on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -9898,6 +10702,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Replotted the approach on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -9910,6 +10717,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Replotted the approach on a hot burn, and was heard."
+    ],
     "next": null
    }
   ],
@@ -9933,6 +10743,9 @@
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
     ],
+    "x": [
+     "Captain Sato said something kind and I did not make a thing of it."
+    ],
     "next": null
    },
    {
@@ -9941,6 +10754,9 @@
     "text": "You thank them. \"Noted,\" they say, and file it. You find, an hour later, that you are still holding the slip. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
+    ],
+    "x": [
+     "Captain Sato said something kind and I did not make a thing of it."
     ],
     "next": null
    },
@@ -10011,6 +10827,9 @@
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
     ],
+    "x": [
+     "Owned a gap in the ship's log without being made to."
+    ],
     "next": null
    },
    {
@@ -10019,6 +10838,9 @@
     "text": "\"That was mine,\" you say. \"Noted,\" they say, and then, because it is you: \"Thank you for saying so. The tag stays on until it is corrected.\" (+2 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
+    ],
+    "x": [
+     "Owned a gap in the ship's log without being made to."
     ],
     "next": null
    },
@@ -10137,6 +10959,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Stood an extra watch for Captain Sato."
+    ],
     "next": null
    },
    {
@@ -10149,6 +10974,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Stood an extra watch for Captain Sato."
+    ],
     "next": null
    },
    {
@@ -10185,6 +11013,9 @@
     "fx": {
      "p1": -1
     },
+    "x": [
+     "Would not stand an extra watch for Captain Sato."
+    ],
     "next": null
    },
    {
@@ -10197,6 +11028,9 @@
     "fx": {
      "p1": -1
     },
+    "x": [
+     "Would not stand an extra watch for Captain Sato."
+    ],
     "next": null
    }
   ],
@@ -10221,6 +11055,9 @@
     "fx": {
      "c:ines": 1
     },
+    "x": [
+     "Showed Ines my post, and they came round."
+    ],
     "next": null
    },
    {
@@ -10233,6 +11070,9 @@
     "fx": {
      "c:ines": -1
     },
+    "x": [
+     "Tried to prove a point to Ines and it went badly."
+    ],
     "next": null
    },
    {
@@ -10300,6 +11140,9 @@
      "credits": 100,
      "c:ines": 1
     },
+    "x": [
+     "Played cards with Ines. They want a rematch."
+    ],
     "next": null
    },
    {
@@ -10313,6 +11156,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Played cards with Ines. They want a rematch."
+    ],
     "next": null
    },
    {
@@ -10370,12 +11216,18 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      }
     ]
    },
@@ -10405,12 +11257,18 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      }
     ]
    },
@@ -10448,6 +11306,9 @@
      "credits": -100,
      "c:ines": 3
     },
+    "x": [
+     "Lent Ines a hundred credits."
+    ],
     "next": null
    },
    {
@@ -10461,6 +11322,9 @@
      "credits": -100,
      "c:ines": 3
     },
+    "x": [
+     "Lent Ines a hundred credits."
+    ],
     "next": null
    },
    {
@@ -10474,6 +11338,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Lent Ines fifty credits."
+    ],
     "next": null
    },
    {
@@ -10487,6 +11354,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Lent Ines fifty credits."
+    ],
     "next": null
    },
    {
@@ -10535,6 +11405,9 @@
     "fx": {
      "credits": 45
     },
+    "x": [
+     "Raised a short pay statement quietly with Captain Sato."
+    ],
     "next": null
    },
    {
@@ -10547,6 +11420,9 @@
     "fx": {
      "credits": 45
     },
+    "x": [
+     "Raised a short pay statement quietly with Captain Sato."
+    ],
     "next": null
    },
    {
@@ -10560,6 +11436,9 @@
      "credits": 45,
      "p1": -2
     },
+    "x": [
+     "Made a scene about my pay statement."
+    ],
     "next": null
    },
    {
@@ -10573,6 +11452,9 @@
      "credits": 45,
      "p1": -2
     },
+    "x": [
+     "Made a scene about my pay statement."
+    ],
     "next": null
    },
    {
@@ -10618,12 +11500,18 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 1,
@@ -10631,6 +11519,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      },
      {
@@ -10639,6 +11530,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      }
     ]
@@ -10662,12 +11556,18 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 1,
@@ -10675,6 +11575,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      },
      {
@@ -10683,6 +11586,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      }
     ]
@@ -10715,6 +11621,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Plotted something off the lane and gave a course round it."
+    ],
     "next": null
    },
    {
@@ -10727,6 +11636,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Plotted something off the lane and gave a course round it."
+    ],
     "next": null
    },
    {
@@ -10739,6 +11651,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Put a passive lock on something off the lane."
+    ],
     "next": null
    },
    {
@@ -10751,6 +11666,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Put a passive lock on something off the lane."
+    ],
     "next": null
    },
    {
@@ -10763,6 +11681,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Read a drive signature off something on the lane."
+    ],
     "next": null
    },
    {
@@ -10775,6 +11696,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Read a drive signature off something on the lane."
+    ],
     "next": null
    },
    {
@@ -10787,6 +11711,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Listened to the transponder of something off the lane."
+    ],
     "next": null
    },
    {
@@ -10799,18 +11726,27 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Listened to the transponder of something off the lane."
+    ],
     "next": null
    },
    {
     "i": 6,
     "roll": 0,
     "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "x": [
+     "Saw something off the lane and said nothing."
+    ],
     "next": null
    },
    {
     "i": 6,
     "roll": 0.999,
     "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "x": [
+     "Saw something off the lane and said nothing."
+    ],
     "next": null
    }
   ],
@@ -10836,6 +11772,9 @@
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
+    "x": [
+     "Ran the drive hot on Captain Pell's order."
+    ],
     "next": null
    },
    {
@@ -10845,6 +11784,9 @@
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
+    "x": [
+     "Ran the drive hot on Captain Pell's order."
+    ],
     "next": null
    },
    {
@@ -10857,6 +11799,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Told Captain Pell what I thought of the hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -10869,6 +11814,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Told Captain Pell what I thought of the hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -10881,6 +11829,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Offered Captain Pell ninety and the minutes on the approach, and was heard."
+    ],
     "next": null
    },
    {
@@ -10893,6 +11844,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Offered Captain Pell ninety and the minutes on the approach, and was heard."
+    ],
     "next": null
    },
    {
@@ -10905,6 +11859,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Showed Captain Pell the heat figures on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -10917,6 +11874,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Showed Captain Pell the heat figures on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -10929,6 +11889,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Replotted the approach on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -10941,6 +11904,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Replotted the approach on a hot burn, and was heard."
+    ],
     "next": null
    }
   ],
@@ -10964,6 +11930,9 @@
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
     ],
+    "x": [
+     "Captain Pell said something kind and I did not make a thing of it."
+    ],
     "next": null
    },
    {
@@ -10972,6 +11941,9 @@
     "text": "\"The crew make it easy,\" you say. \"The crew make it a gamble,\" she says, \"and you make it a sure thing. That is the whole trick. Keep it.\" She winks, and goes. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
+    ],
+    "x": [
+     "Captain Pell said something kind and I did not make a thing of it."
     ],
     "next": null
    },
@@ -11042,6 +12014,9 @@
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
     ],
+    "x": [
+     "Owned a gap in the ship's log without being made to."
+    ],
     "next": null
    },
    {
@@ -11050,6 +12025,9 @@
     "text": "\"That was mine,\" you say. \"Good,\" she says, and tosses the log onto the table. \"Honest is cheaper. Do it again, but properly.\" (+2 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
+    ],
+    "x": [
+     "Owned a gap in the ship's log without being made to."
     ],
     "next": null
    },
@@ -11168,6 +12146,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Stood an extra watch for Captain Pell."
+    ],
     "next": null
    },
    {
@@ -11180,6 +12161,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Stood an extra watch for Captain Pell."
+    ],
     "next": null
    },
    {
@@ -11216,6 +12200,9 @@
     "fx": {
      "p1": -1
     },
+    "x": [
+     "Would not stand an extra watch for Captain Pell."
+    ],
     "next": null
    },
    {
@@ -11228,6 +12215,9 @@
     "fx": {
      "p1": -1
     },
+    "x": [
+     "Would not stand an extra watch for Captain Pell."
+    ],
     "next": null
    }
   ],
@@ -11252,6 +12242,9 @@
     "fx": {
      "c:ines": 1
     },
+    "x": [
+     "Showed Ines my post, and they came round."
+    ],
     "next": null
    },
    {
@@ -11264,6 +12257,9 @@
     "fx": {
      "c:ines": -1
     },
+    "x": [
+     "Tried to prove a point to Ines and it went badly."
+    ],
     "next": null
    },
    {
@@ -11331,6 +12327,9 @@
      "credits": 100,
      "c:ines": 1
     },
+    "x": [
+     "Played cards with Ines. They want a rematch."
+    ],
     "next": null
    },
    {
@@ -11344,6 +12343,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Played cards with Ines. They want a rematch."
+    ],
     "next": null
    },
    {
@@ -11401,12 +12403,18 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 160 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      }
     ]
    },
@@ -11436,12 +12444,18 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      },
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails."
+      "text": "You load them, without a word, and the broker pays double, in clean notes, and pats your arm. You are 320 cr richer by the time the ship sails.",
+      "x": [
+       "Loaded crates for a trading house and did not ask what was in them."
+      ]
      }
     ]
    },
@@ -11479,6 +12493,9 @@
      "credits": -100,
      "c:ines": 3
     },
+    "x": [
+     "Lent Ines a hundred credits."
+    ],
     "next": null
    },
    {
@@ -11492,6 +12509,9 @@
      "credits": -100,
      "c:ines": 3
     },
+    "x": [
+     "Lent Ines a hundred credits."
+    ],
     "next": null
    },
    {
@@ -11505,6 +12525,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Lent Ines fifty credits."
+    ],
     "next": null
    },
    {
@@ -11518,6 +12541,9 @@
      "credits": -50,
      "c:ines": 1
     },
+    "x": [
+     "Lent Ines fifty credits."
+    ],
     "next": null
    },
    {
@@ -11566,6 +12592,9 @@
     "fx": {
      "credits": 25
     },
+    "x": [
+     "Raised a short pay statement quietly with Captain Pell."
+    ],
     "next": null
    },
    {
@@ -11578,6 +12607,9 @@
     "fx": {
      "credits": 25
     },
+    "x": [
+     "Raised a short pay statement quietly with Captain Pell."
+    ],
     "next": null
    },
    {
@@ -11591,6 +12623,9 @@
      "credits": 25,
      "p1": -2
     },
+    "x": [
+     "Made a scene about my pay statement."
+    ],
     "next": null
    },
    {
@@ -11604,6 +12639,9 @@
      "credits": 25,
      "p1": -2
     },
+    "x": [
+     "Made a scene about my pay statement."
+    ],
     "next": null
    },
    {
@@ -11649,12 +12687,18 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 1,
@@ -11662,6 +12706,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      },
      {
@@ -11670,6 +12717,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      }
     ]
@@ -11693,12 +12743,18 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)"
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "x": [
+       "Reported something off the lane, in detail."
+      ]
      },
      {
       "j": 1,
@@ -11706,6 +12762,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      },
      {
@@ -11714,6 +12773,9 @@
       "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
+      ],
+      "x": [
+       "Reported something off the lane, but was not sure of it."
       ]
      }
     ]
@@ -11746,6 +12808,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Plotted something off the lane and gave a course round it."
+    ],
     "next": null
    },
    {
@@ -11758,6 +12823,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Plotted something off the lane and gave a course round it."
+    ],
     "next": null
    },
    {
@@ -11770,6 +12838,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Put a passive lock on something off the lane."
+    ],
     "next": null
    },
    {
@@ -11782,6 +12853,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Put a passive lock on something off the lane."
+    ],
     "next": null
    },
    {
@@ -11794,6 +12868,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Read a drive signature off something on the lane."
+    ],
     "next": null
    },
    {
@@ -11806,6 +12883,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Read a drive signature off something on the lane."
+    ],
     "next": null
    },
    {
@@ -11818,6 +12898,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Listened to the transponder of something off the lane."
+    ],
     "next": null
    },
    {
@@ -11830,18 +12913,27 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Listened to the transponder of something off the lane."
+    ],
     "next": null
    },
    {
     "i": 6,
     "roll": 0,
     "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "x": [
+     "Saw something off the lane and said nothing."
+    ],
     "next": null
    },
    {
     "i": 6,
     "roll": 0.999,
     "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "x": [
+     "Saw something off the lane and said nothing."
+    ],
     "next": null
    }
   ],
@@ -11870,6 +12962,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Ran the drive hot on Captain Vance's order."
+    ],
     "next": null
    },
    {
@@ -11882,6 +12977,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Ran the drive hot on Captain Vance's order."
+    ],
     "next": null
    },
    {
@@ -11894,6 +12992,9 @@
     "fx": {
      "p1": -1
     },
+    "x": [
+     "Argued the hot burn with Captain Vance and lost."
+    ],
     "next": null
    },
    {
@@ -11906,6 +13007,9 @@
     "fx": {
      "p1": -1
     },
+    "x": [
+     "Argued the hot burn with Captain Vance and lost."
+    ],
     "next": null
    },
    {
@@ -11918,6 +13022,9 @@
     "fx": {
      "p1": 2
     },
+    "x": [
+     "Offered Captain Vance ninety and the minutes on the approach, and was heard."
+    ],
     "next": null
    },
    {
@@ -11930,6 +13037,9 @@
     "fx": {
      "p1": 2
     },
+    "x": [
+     "Offered Captain Vance ninety and the minutes on the approach, and was heard."
+    ],
     "next": null
    },
    {
@@ -11942,6 +13052,9 @@
     "fx": {
      "p1": 2
     },
+    "x": [
+     "Showed Captain Vance the heat figures on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -11954,6 +13067,9 @@
     "fx": {
      "p1": 2
     },
+    "x": [
+     "Showed Captain Vance the heat figures on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -11966,6 +13082,9 @@
     "fx": {
      "p1": 2
     },
+    "x": [
+     "Replotted the approach on a hot burn, and was heard."
+    ],
     "next": null
    },
    {
@@ -11978,6 +13097,9 @@
     "fx": {
      "p1": 2
     },
+    "x": [
+     "Replotted the approach on a hot burn, and was heard."
+    ],
     "next": null
    }
   ],
@@ -12004,6 +13126,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Captain Vance said something kind and I did not make a thing of it."
+    ],
     "next": null
    },
    {
@@ -12016,6 +13141,9 @@
     "fx": {
      "p1": 1
     },
+    "x": [
+     "Captain Vance said something kind and I did not make a thing of it."
+    ],
     "next": null
    },
    {
@@ -12028,6 +13156,9 @@
     "fx": {
      "p1": -1
     },
+    "x": [
+     "Asked Captain Vance for a bonus before I had earned one."
+    ],
     "next": null
    },
    {
@@ -12040,6 +13171,9 @@
     "fx": {
      "p1": -1
     },
+    "x": [
+     "Asked Captain Vance for a bonus before I had earned one."
+    ],
     "next": null
    },
    {

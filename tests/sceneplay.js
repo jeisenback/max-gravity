@@ -39,8 +39,8 @@ const playScenes = () => {
             play.nextPlays = [];
             for (let j = 0; j < next.choices.length; j++) for (const r2 of rolls) {
               again(); const e3 = make(); G.nextEvent = null; seq([roll]); e3.choices[i].run(); const n3 = G.nextEvent; G.nextEvent = null; const lens3 = memLens(); seq([r2]);
-              const t3 = String(n3.choices[j].run()), m3 = gained(lens3);
-              play.nextPlays.push({ j, roll: r2, text: t3, ...(m3.length ? { mem: m3 } : {}) });
+              const x3a = extra ? JSON.stringify(extra()) : null, t3 = String(n3.choices[j].run()), m3 = gained(lens3), x3b = extra ? JSON.stringify(extra()) : null;
+              play.nextPlays.push({ j, roll: r2, text: t3, ...(m3.length ? { mem: m3 } : {}), ...(x3b !== x3a ? { x: JSON.parse(x3b) } : {}) });
               G.nextEvent = null;
             }
           }
@@ -201,14 +201,14 @@ const playScenes = () => {
         run(`hired:${id}:${captainKey}:${post}`, { captainKey, post, credits: 5000 }, () => {
           const c = handContext(); c.cap.opinion = 5;
           return d.make(c);
-        }, { rolls: [0, 0.999], prep: () => { if (!handContext().mate) { const m = makeCrewCandidate(G.state.systemId); registerPerson(m); G.state.crew.push(m.id); } } });
+        }, { rolls: [0, 0.999], extra: () => (G.state.journal || []).map(j => j.text), prep: () => { if (!handContext().mate) { const m = makeCrewCandidate(G.state.systemId); registerPerson(m); G.state.crew.push(m.id); } } });
       }
     }
   }
   // and a captain who thinks little of the hand, for the choices that go the other way
   for (const id of ['cap-order', 'cap-praise']) {
     const d = HAND_EVENTS.find(x => x.id === id);
-    run(`hired:${id}:low`, {}, () => { const c = handContext(); c.cap.opinion = -3; return d.make(c); }, { rolls: [0, 0.999] });
+    run(`hired:${id}:low`, {}, () => { const c = handContext(); c.cap.opinion = -3; return d.make(c); }, { rolls: [0, 0.999], extra: () => (G.state.journal || []).map(j => j.text) });
   }
   Math.random = real;
   return out;
