@@ -93,6 +93,30 @@ const playMessages = () => {
   says('boarding:hurt:cast', 1, st => { st.crew = [castPerson('tomas').id]; }, () => hurtCrew());
   says('boarding:marked', 1, st => { st.crew = [castPerson('tomas').id]; castFate('tomas', 'mark', 'Hurt.', 'Marked once.'); }, () => hurtCrew(), true, () => (G.state.cast.tomas.fate || {}));
   says('boarding:dead:crew', 1, st => { crewman(st); }, () => { seq([0, 0]); hurtCrew(true); }, true, st => st.memorial);
+  // ---------- the systems, the autopilot, the escorts and the war ----------
+  const armed = (st, n) => { st.outfits.launcher = 1; st.torpedoes = n; };
+  const foeNear = (hostile = true) => { const n = spawnNpc('pirate', false, true); Object.assign(n, { hostile, dead: false, disabled: false, x: G.player.x + 500, y: G.player.y }); G.npcs = [n]; return n; };
+  says('torp:none', 1, null, () => fireTorpedo());
+  says('torp:empty', 1, st => armed(st, 0), () => fireTorpedo());
+  says('torp:notarget', 1, st => { armed(st, 2); G.target = null; }, () => fireTorpedo());
+  says('torp:away', 1, st => { armed(st, 2); G.target = foeNear(); G.player.torpCd = 0; }, () => fireTorpedo());
+  says('torp:incoming', 1, () => { const n = foeNear(); Object.assign(n, { torps: 1, torpCd: 0, shipId: 'corsair' }); }, () => npcLaunches(0.016));
+  for (const [gov, by] of [['Arcology Compact', -60], ['Arcology Compact', 90], ['Pirate', -60]]) says(`standing:${gov}:${by}`, 1, null, () => changeRep(gov, by));
+  says('hail:blockade', 1, null, () => blockadeWarning({ name: 'Picket', hailed: false }));
+  says('hail:wanted', 1, null, () => patrolWarning({ name: 'Cutter', gov: 'Arcology Compact', hailed: false }));
+  const pilot = st => { crewman(st, 'pilot'); G.auto = { kind: 'dock', t: 0, care: 1 }; };
+  says('auto:control', 1, st => { pilot(st); G.keys.left = true; }, () => { updateAutopilot(0.016); G.keys.left = false; });
+  says('auto:contact', 1, st => { pilot(st); foeNear(); }, () => updateAutopilot(0.016));
+  says('auto:stuck', 1, st => { pilot(st); G.auto.t = 1e3; }, () => updateAutopilot(0.016));
+  says('auto:dock', 1, st => { crewman(st, 'pilot'); st.route = { go: true }; }, st => Mods.emit('arrive', st.systemId));
+  const escort = (st, credits) => { buyCompanyShip('courier'); fleet()[0].escort = true; st.credits = credits; };
+  const farthest = () => Object.keys(SYSTEMS).filter(id => id !== G.state.systemId).sort((a, b) => burnFuel(G.state.systemId, b) - burnFuel(G.state.systemId, a))[0];
+  says('escort:fuel', 1, st => escort(st, 0), st => escortBurn(farthest()));
+  says('escort:range', 1, st => escort(st, 1e9), st => { const real = SHIPS.courier.fuel; SHIPS.courier.fuel = 0; try { escortBurn(farthest()); } finally { SHIPS.courier.fuel = real; } });
+  says('escort:lost', 1, st => escort(st, 1e9), () => escortLost({ fleetId: fleet()[0].id, name: 'Wren' }));
+  says('escort:lost-unknown', 1, st => { escort(st, 1e9); delete st.people[fleet()[0].captain.pid]; }, () => escortLost({ fleetId: fleet()[0].id, name: 'Wren' }));
+  says('reactor:scram', 1, null, () => overload());
+  says('war', 1, st => { factionState().war = { a: 'Arcology Compact', b: 'Charter League', until: st.day + 10, score: {} }; }, () => warSkirmish());
   return out;
 };
 

@@ -21,6 +21,7 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:flight-notes', fn: 'tryLand', file: 'js/game.js', title: 'Notes in Flight and at the Dock', where: 'transit', when: 'The one-line notes the ship prints as you fly and dock: a ship destroyed, a bounty paid, a nav target set, a landing refused, a delivery made or a passenger set down, a mission lapsed, a burn begun or refused, an arrival.' },
   { id: 'scene:hail-notes', fn: 'pirateDemand', file: 'js/hail.js', title: 'Notes of a Hail and the Story at Sea', where: 'transit', when: 'What a pirate says when it closes in, what the ship hears when you hail one that is an escort or out of range or none, and the notes that end a fight with the Aquilon ships or the blockade of Ceres.' },
   { id: 'scene:crew-notes', fn: 'payCrew', file: 'js/crew.js', title: 'Notes about the Crew: Wages and Wounds', where: 'transit', when: 'The notes the ship prints about its people: the crew\'s wages paid and a hand who quits over them, a ship disabled in a fight, and a hand who is hurt or killed aboard.' },
+  { id: 'scene:systems-notes', fn: 'fireTorpedo', file: 'js/torpedoes.js', title: 'Notes from the Ship\'s Systems and the World', where: 'transit', when: 'What the ship says about its torpedoes, a change in your standing with a faction, the autopilot handing back the controls or bringing you in, an escort that cannot make a burn or is lost, a reactor scram, and a war breaking out in the space you arrive in.' },
   { id: 'scene:screens', fn: 'settleRun', file: 'js/hired.js', title: 'Notes and Memories at the Screens', where: 'port', when: 'What people remember and are told when you let a crew member go or drop a passenger, when a run is settled, a post is asked for, a ship is bought in, or you practice at your post.' },
   { id: 'scene:memories', fn: 'like', file: 'js/people.js', title: 'Memories Left by Play', where: 'transit', when: 'What a person keeps of a fine paid, a passenger landed or let down, ice brought in, a loss mourned, a hand in the yard, a post taken from them, or the first officers\' hour of danger (lost, or lived through).' },
   { id: 'scene:chapter-end', fn: 'chapterEnd', file: 'js/hired.js', title: 'Your Own Ship', where: 'port', when: 'When you buy your own ship: the close of the hired-hand chapter, by what the chapter held (those lost, who comes with you, a promise kept, a quiet fortune).' },
@@ -213,6 +214,7 @@ const SCENE_LINES = {
     'demand.tribute': 'You again! Same deal as last time, only the price has gone up.',
     'none': 'No ships in comms range.', 'escort': '{name}: "Holding formation, captain."', 'far': '{name} is out of comms range.',
     'fight.won': '{name} breaks up. Aquilon will not be happy.', 'fight.lost': '{name} breaks off, for now.',
+    'blockade': 'Ceres is closed by order of the blockade. Turn back or be fired upon.', 'wanted': 'You are wanted in {gov} space. Cut your drive and pay your fine.',
     'blockade.clear': 'The blockade breaks. Ceres Station clears you to dock.', 'blockade.holds': 'The blockade holds. Fall back, or try again when you are ready.',
   },
   'scene:crew-notes': {  // the notes about the crew's wages and wounds (js/crew.js, js/boarding.js, js/fate.js)
@@ -220,6 +222,17 @@ const SCENE_LINES = {
     'disabled.key': '{name} is disabled and drifting. Close in and hail it (H) to board.', 'disabled.tap': '{name} is disabled and drifting. Close in and tap Hail to board.',
     'hurt': '{name} is hurt. Their {role} work will suffer until they are treated.{warning}', 'hurt.warning': 'Another hit like that could kill {first}.',
     'dead': '{name} is dead.', 'accident': 'Killed in an accident near {system}.',
+  },
+  'scene:systems-notes': {  // the notes of the ship's systems and the world (js/torpedoes.js, js/factions.js, js/autopilot.js, js/company.js, js/engineering.js, js/world.js)
+    'torp.none': 'No torpedo launcher fitted. Outfitters sell them.', 'torp.empty': 'Torpedo tubes are empty. Load more at an outfitter.',
+    'torp.notarget': 'No target for the torpedo. Select one first (Tab, or tap a ship).', 'torp.away': 'Torpedo away: {left} left.', 'torp.incoming': '{name} launched a torpedo at you!',
+    'standing': 'Your standing with the {who} is now {word}.',
+    'auto.control': 'You take the controls.', 'auto.contact': '{pilot}: Contact, and they are not friendly. She\'s yours, captain.',
+    'auto.stuck': '{pilot}: I can\'t get us settled. Your ship, captain.', 'auto.dock': '{pilot} brings us in to {planet}.',
+    'escort.fuel': 'The "{name}" can\'t fuel up for that burn; it will wait for you at {at}.', 'escort.range': 'The "{name}" can\'t make that burn on one tank; it will wait for you at {at}.',
+    'escort.lost': 'Your escort {name} is destroyed. Capt. {captain} ejects safely.',
+    'reactor.scram': 'Reactor scram. The drive drops to {drive}% while the coolant catches up, and the hull takes a knock from the shock.',
+    'war': 'Warning: {foe} warships are engaging {gov} patrols in local space.',
   },
   'scene:screens': {  // what is remembered and said at the port screens and the hand's screens (ui.js, hired.js): letting go or dropping someone, a run settled, a swap of posts, a ship bought in, and practice at a post
     'dismiss.memory': 'You let me go at {planet}.', 'abort.memory': 'You dumped me at {planet}.',

@@ -198,7 +198,7 @@ function escortBurn(dest) {
     if (need > SHIPS[s.shipId].fuel || cost > st.credits) {
       s.escort = false;
       s.at = system().planets.find(pl => pl.services.includes('refuel')).name;
-      msg(`The "${s.name}" can't ${cost > st.credits ? 'fuel up for' : 'make'} that burn${cost > st.credits ? '' : ' on one tank'}; it will wait for you at ${s.at}.`);
+      msg(sceneSay('scene:systems-notes', cost > st.credits ? 'escort.fuel' : 'escort.range', { name: s.name, at: s.at }));
       continue;
     }
     st.credits -= cost;
@@ -229,7 +229,7 @@ function escortLost(n) {
   if (c) c.location = G.state.planet;
   if (c && c.cast) castReturn(c);
   fleet().splice(fleet().indexOf(s), 1);
-  msg(`Your escort ${n.name} is destroyed. Capt. ${c ? `${c.first} ${c.last}` : 'the captain'} ejects safely.`);
+  msg(sceneSay('scene:systems-notes', 'escort.lost', { name: n.name, captain: c ? `${c.first} ${c.last}` : 'the captain' }));
   companyLog(`The ${n.name} was destroyed flying escort near ${system().name}.`);
 }
 

@@ -263,7 +263,7 @@ function warSkirmish() {
   };
   spawn(gov, foe, 2);
   spawn(foe, gov, 2);
-  msg(`Warning: ${foe} warships are engaging ${gov} patrols in local space.`);
+  msg(sceneSay('scene:systems-notes', 'war', { foe, gov }));
 }
 
 function factionConditions(gov) {

@@ -28,10 +28,10 @@ function autoOff(text, taken) {
 
 function updateAutopilot(dt) {
   const p = G.player, a = G.auto, s = ship(), k = G.keys, st = G.state;
-  if (k.left || k.right || k.thrust || k.reverse || k.fire || Touch.stick) { autoOff('You take the controls.', true); return updatePlayer(dt); }
+  if (k.left || k.right || k.thrust || k.reverse || k.fire || Touch.stick) { autoOff(sceneSay('scene:systems-notes', 'auto.control'), true); return updatePlayer(dt); }
   if (postMode('pilot') !== 'crewed') { autoOff(); return updatePlayer(dt); }
-  if (G.npcs.some(n => n.hostile && !n.dead && dist(n, p) < AUTO_HAIL_RANGE)) { autoOff(`${pilotName()}: Contact, and they are not friendly. She's yours, captain.`); return updatePlayer(dt); }
-  if ((a.t += dt) > AUTO_LIMIT) { autoOff(`${pilotName()}: I can't get us settled. Your ship, captain.`); return updatePlayer(dt); }
+  if (G.npcs.some(n => n.hostile && !n.dead && dist(n, p) < AUTO_HAIL_RANGE)) { autoOff(sceneSay('scene:systems-notes', 'auto.contact', { pilot: pilotName() })); return updatePlayer(dt); }
+  if ((a.t += dt) > AUTO_LIMIT) { autoOff(sceneSay('scene:systems-notes', 'auto.stuck', { pilot: pilotName() })); return updatePlayer(dt); }
   if (a.kind === 'out') {
     const r = Math.hypot(p.x, p.y);
     if (r >= BURN_DIST + 40) { autoOff(); tryBurn(); return; }
@@ -88,7 +88,7 @@ Mods.register({
     M.on('arrive', () => {
       if (postMode('pilot') !== 'crewed' || !(G.state.route && G.state.route.go)) return;
       G.auto = { kind: 'dock', t: 0, care: pilotCare() };
-      msg(`${pilotName()} brings us in to ${dockTarget(G.state.systemId).name}.`);
+      msg(sceneSay('scene:systems-notes', 'auto.dock', { pilot: pilotName(), planet: dockTarget(G.state.systemId).name }));
     });
     for (const e of ['landed', 'stateReady']) M.on(e, () => { G.auto = null; if (G.state.route) G.state.route.go = false; });
     M.on('drawOverlay', W => {

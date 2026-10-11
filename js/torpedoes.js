@@ -27,16 +27,18 @@ function launch(owner, target) {
   if (G.player && dist(owner, G.player) < 1400) Sfx.hiss(1800, 250, 0.45, owner === G.player ? 0.2 : 0.1);
 }
 
+const torpSay = (key, vars) => sceneSay('scene:systems-notes', key, vars);  // the notes of the ship's systems are in the text layer (js/hiredscenes.js)
+
 function fireTorpedo() {
   const st = G.state, p = G.player;
-  if (!ship().launcher) return msg('No torpedo launcher fitted. Outfitters sell them.');
-  if (!(st.torpedoes > 0)) return msg('Torpedo tubes are empty. Load more at an outfitter.');
-  if (!G.target || G.target.dead) return msg('No target for the torpedo. Select one first (Tab, or tap a ship).');
+  if (!ship().launcher) return msg(torpSay('torp.none'));
+  if (!(st.torpedoes > 0)) return msg(torpSay('torp.empty'));
+  if (!G.target || G.target.dead) return msg(torpSay('torp.notarget'));
   if ((p.torpCd || 0) > 0) return;
   st.torpedoes--;
   p.torpCd = 0.8;
   launch(p, G.target);
-  msg(`Torpedo away: ${st.torpedoes} left.`);
+  msg(torpSay('torp.away', { left: st.torpedoes }));
 }
 
 // Hostile NPCs with torpedoes launch at you or your escorts now and then.
@@ -50,7 +52,7 @@ function npcLaunches(dt) {
     n.torps--;
     n.torpCd = rand(8, 12);
     launch(n, t);
-    if (t === G.player) msg(`${n.name} launched a torpedo at you!`);
+    if (t === G.player) msg(torpSay('torp.incoming', { name: n.name }));
   }
 }
 
