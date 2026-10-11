@@ -45,6 +45,9 @@ const ship = () => shipStats(G.state.shipId);  // the player's ship, outfits inc
 const statsOf = o => (o === G.player ? ship() : SHIPS[o.shipId]);
 const currentPlanet = () => system().planets.find(p => p.name === G.state.planet);
 
+// The one-line notes of flight and the dock are in the text layer ('scene:flight-notes', js/hiredscenes.js); this reads one.
+const flySay = (key, vars) => sceneSay('scene:flight-notes', key, vars);
+
 function msg(text) {
   G.messages.push({ text, t: G.time });
   if (G.messages.length > 30) G.messages.shift();
@@ -232,11 +235,11 @@ function settleKill(o, byPlayer) {
   const st = G.state;
   if (o.persona && o.persona.id) delete st.people[o.persona.id];  // a known captain, gone for good
   if (!byPlayer) {
-    if (o.kind === 'pirate' || o.enemy) msg(`${o.name} destroyed.`);
+    if (o.kind === 'pirate' || o.enemy) msg(flySay('kill', { name: o.name }));
     return;
   }
   if (o.story) {
-    msg(`${o.name} destroyed. Aquilon will not be happy.`);
+    msg(flySay('kill.story', { name: o.name }));
     return;
   }
   if (o.bountyId) {
@@ -246,21 +249,21 @@ function settleKill(o, byPlayer) {
       st.credits += m.pay;
       st.missions.splice(i, 1);
       Mods.emit('missionDone', m);
-      msg(`Bounty complete: ${m.targetName} destroyed. +${fmt(m.pay)} cr`);
+      msg(flySay('kill.bounty', { target: m.targetName, pay: fmt(m.pay) }));
       changeRep(m.issuer, 5);
       changeRep('Pirate', -3);
     }
   } else if (o.kind === 'pirate') {
     const b = randInt(2, 6) * 100;
     st.credits += b;
-    msg(`Pirate destroyed. Bounty +${b} cr`);
+    msg(flySay('kill.pirate', { pay: b }));
     if (localGov() !== 'Pirate') changeRep(localGov(), 1);
     changeRep('Pirate', -2);
   } else if (o.kind === 'patrol') {
-    msg(`${o.name} destroyed.`);
+    msg(flySay('kill', { name: o.name }));
     changeRep(o.gov, -25);
   } else {
-    msg(`${o.name} destroyed.`);
+    msg(flySay('kill', { name: o.name }));
     changeRep(localGov(), -10);
   }
 }
@@ -429,16 +432,16 @@ function tryLand() {
   const n = nearestPlanet();
   if (n.d > n.pl.r + 60) {
     G.navPlanet = n.index;
-    msg(`Nav target: ${n.pl.name}.`);
+    msg(flySay('nav', { planet: n.pl.name }));
     return;
   }
   if (Math.hypot(G.player.vx, G.player.vy) > LAND_SPEED) {
-    msg('Moving too fast to land. Slow down (S / Down turns you around).');
+    msg(flySay('fast'));
     return;
   }
   if (storyBlockadeGate(n.pl)) return;  // the blockade of Ceres, on the console
   if (!Mods.filter('canDock', repOf(localGov()) > -50, n.pl)) {
-    msg(`Docking denied. The ${localGov() === 'Pirate' ? 'pirates here' : localGov()} will not let your ship land.`);
+    msg(flySay('denied', { gov: localGov() === 'Pirate' ? 'pirates here' : localGov() }));
     return;
   }
   land(n.pl);
@@ -458,10 +461,10 @@ function land(planet) {
     if (m.type === 'errand') {
       st.credits += m.pay;
       if (st.hired) st.hired.fund += m.cut || 0;
-      msg(`Errand done: ${m.title.replace(/^Errand: carry /, '').replace(/ to .*/, '')} handed over. Fee ${fmt(m.pay)} cr.`);
+      msg(flySay('errand', { what: m.title.replace(/^Errand: carry /, '').replace(/ to .*/, ''), pay: fmt(m.pay) }));
     } else if (m.type === 'delivery') {
       st.credits += m.pay;
-      msg(`Delivered ${m.tons}t of ${m.good}. Payment received: ${fmt(m.pay)} cr.`);
+      msg(flySay('delivery', { tons: m.tons, good: m.good, pay: fmt(m.pay) }));
     } else {
       if (m.pid) {
         const p = st.people[m.pid];
@@ -470,7 +473,8 @@ function land(planet) {
       }
       const fare = Math.max(0, m.pay + m.bonus);
       st.credits += fare;
-      msg(`${m.who[0].toUpperCase()}${m.who.slice(1)} ${m.pax > 1 ? 'disembark' : 'disembarks'}.${fare ? ` Fare received: ${fmt(fare)} cr${m.bonus ? ` (${m.bonus > 0 ? '+' : '-'}${fmt(Math.abs(m.bonus))} for the trip)` : ''}.` : ''}`);
+      const trip = m.bonus ? flySay('pax.trip', { change: `${m.bonus > 0 ? '+' : '-'}${fmt(Math.abs(m.bonus))}` }) : '';
+      msg(flySay(m.pax > 1 ? 'pax.many' : 'pax.one', { who: m.who[0].toUpperCase() + m.who.slice(1), fare: fare ? flySay('pax.fare', { fare: fmt(fare), trip }) : '' }));
     }
     return false;
   });
@@ -480,7 +484,7 @@ function land(planet) {
     leaveCrew(c.id);
     c.location = planet.name;
     if (c.cast && CAST[c.cast].farewell) farewells.push(c);  // a scene, once they are in port
-    else msg(`${fullName(c)} has had enough of you and your ship, and walks off at ${planet.name}.`);
+    else msg(flySay('walkoff', { name: fullName(c), planet: planet.name }));
   }
   landAt(planet, G.messages.slice(before).map(m => m.text));
   for (const c of farewells) { const ev = walkOffScene(c, planet); if (G.dialog) G.nextEvent = G.nextEvent || ev; else openEvent(ev); }
@@ -516,7 +520,7 @@ function expireMissions() {
   const st = G.state;
   st.missions = st.missions.filter(m => {
     if (st.day <= m.deadline) return true;
-    msg(`Mission failed (deadline passed): ${m.title}`);
+    msg(flySay('lapsed', { title: m.title }));
     Mods.emit('missionFailed', m);
     if (m.pid) {
       like(st.people[m.pid], -3, sceneSay('scene:memories', 'lapsed.memory'));
@@ -534,16 +538,16 @@ function cycleTarget() {
 
 function tryBurn() {
   const st = G.state;
-  if (!st.dest) return msg('No destination. Press M to open the system map.');
+  if (!st.dest) return msg(flySay('burn.nodest'));
   const need = burnFuel(st.systemId, st.dest);
-  if (st.fuel < need) return msg(`Not enough reaction mass (need ${need}). Refuel or pick a closer destination.`);
-  if (Math.hypot(G.player.x, G.player.y) < BURN_DIST) return msg('Traffic control: clear local space before starting a long burn.');
+  if (st.fuel < need) return msg(flySay('burn.fuel', { need }));
+  if (Math.hypot(G.player.x, G.player.y) < BURN_DIST) return msg(flySay('burn.near'));
   const from = orbitPos(st.systemId), to = orbitPos(st.dest);
   G.burnAngle = Math.atan2(to.y - from.y, to.x - from.x);
   G.departTimer = 1.2;
   G.mode = 'departing';
   Mods.emit('burnStart', st.dest);
-  msg(`Burning for ${SYSTEMS[st.dest].name}.`);
+  msg(flySay('burn.go', { system: SYSTEMS[st.dest].name }));
 }
 
 function updateDeparture(dt) {
@@ -578,7 +582,7 @@ function arrive() {
   Mods.emit('arrive', st.systemId);
   G.navPlanet = null;
   const sys = system();
-  msg(`Arrived at ${sys.name} (${sys.gov}). ${dateOf()}.`);
+  msg(flySay('arrive', { system: sys.name, gov: sys.gov, date: dateOf() }));
   expireMissions();
   populateSystem();
 }
@@ -1236,7 +1240,7 @@ canvas.addEventListener('click', e => {
     const hit = G.npcs.find(n => dist(n, at) < SHIPS[n.shipId].size + 18);
     if (hit) { G.target = hit; return; }
     const i = system().planets.findIndex(pl => dist(pl, at) < pl.r + 10);
-    if (i >= 0) { G.navPlanet = i; msg(`Nav target: ${system().planets[i].name}.`); }
+    if (i >= 0) { G.navPlanet = i; msg(flySay('nav', { planet: system().planets[i].name })); }
     return;
   }
   // On a burn, tap or click someone in the cutaway to open their page, or a room to open its console.
@@ -1254,7 +1258,7 @@ canvas.addEventListener('click', e => {
   for (const id of Object.keys(SYSTEMS)) {
     const [x, y] = G.mapPos(id);
     if (Math.hypot(e.clientX - x, e.clientY - y) < (Touch.on ? 26 : 16)) {
-      if (hired()) { msg('The captain picks where she goes.'); return; }  // the map is for looking, to a hired hand
+      if (hired()) { msg(flySay('picks')); return; }  // the map is for looking, to a hired hand
       G.state.dest = id === (G.transit ? G.transit.to : G.state.systemId) ? null : id;
       return;
     }
