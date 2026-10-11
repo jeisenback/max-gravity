@@ -42,9 +42,7 @@ const reset = async () => {
   await page.selectOption('[data-pv=post]', 'gunner'); await page.selectOption('[data-pv=captain]', 'hester'); await page.selectOption('[data-pv=start]', 'earth'); await page.selectOption('[data-pv=as]', 'hired'); await page.selectOption('[data-pv=place]', '');
 };
 
-test('a scene built by a function with no lines to edit has nothing to play, and so does no scene until one is chosen', async () => {
-  assert.equal(await page.isDisabled('[data-action="play"]'), true);
-  await select('beats:dead-in-space');  // built by a function, with no table of lines and no scene to open
+test('no scene can be played until one is chosen', async () => {
   assert.equal(await page.isDisabled('[data-action="play"]'), true);
   await select('cast:ilsa:late');  // a hired scene of the registry opens
   assert.equal(await page.isDisabled('[data-action="play"]'), false);

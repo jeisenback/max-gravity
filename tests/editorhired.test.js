@@ -52,7 +52,7 @@ test('the converted scenes are data rows of the registry, and the rest are code 
   assert.equal(r.effects.castLike.who, 'ansel');
   assert.ok(r.edit.length > 0 && r.edit.every(e => e === false), 'code choices keep their effects in code');
   assert.ok(r.goodbye && r.signon, 'the goodbye and the sign-on are rows of the registry');
-  assert.equal(r.dataRegistry, 129);
+  assert.equal(r.dataRegistry, 130);
 });
 
 test('a converted scene\'s effects are in forms, checked as typed, and changing one is a change to the file', async () => {
@@ -304,13 +304,14 @@ test('the raid, ambush and boarding beats are edited line by line, the lines go 
     const row = id => SceneIndex.rows.find(x => x.id === id), raid = row('beats:raid'), values = { [raid.id]: { 'part.open.gun.0': 'A new opening.', 'part.close.standoff': raid.parts['close.standoff'] } };
     const out = SceneIndex.overridesFrom(SceneIndex.rows, values);
     return {
-      kinds: ['beats:raid', 'beats:ambush', 'beats:repel', 'beats:assault'].map(id => [row(id).kind, row(id).noTitle, Object.keys(row(id).parts).length > 10]), dead: row('beats:dead-in-space').kind,
+      kinds: ['beats:raid', 'beats:ambush', 'beats:repel', 'beats:assault', 'beats:dead-in-space'].map(id => [row(id).kind, row(id).noTitle, Object.keys(row(id).parts).length > 10]), dead: row('beats:dead-in-space').kind,
       out: out[raid.id], back: SceneIndex.valuesFrom(out)[raid.id],
       plan: SceneIndex.planImport({ overrides: { 'beats:raid': { title: 'No', parts: { 'open.gun.1': 'Ok.', nope: 'x' } } } }, SceneIndex.rows).items.map(i => i[0] === undefined ? i.ok : i.ok),
     };
   });
-  assert.deepEqual(r.kinds, [['data', true, true], ['data', true, true], ['data', true, true], ['data', true, true]]);
-  assert.equal(r.dead, 'code', 'the dead-in-space scene has no table to read');
+  assert.deepEqual(r.kinds.slice(0, 4), [['data', true, true], ['data', true, true], ['data', true, true], ['data', true, true]]);
+  assert.deepEqual(r.kinds[4].slice(0, 2), ['data', true], 'the dead-in-space scene has fewer lines');
+  assert.equal(r.dead, 'data', 'the dead-in-space scene is lines like the other beats');
   assert.deepEqual(r.out, { parts: { 'open.gun.0': 'A new opening.' } }, 'only what differs');
   assert.deepEqual(r.back, { 'part.open.gun.0': 'A new opening.' });
   assert.deepEqual(r.plan, [false, false, true], 'the title and the unknown line are refused');

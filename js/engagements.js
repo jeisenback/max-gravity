@@ -112,19 +112,28 @@ const RAID_CLOSE = {
       'by the book.'), grapple: 'She is alongside. The grapples bang on the hull in four places and the lock alarm goes. They are coming aboard.', torpedo: 'A torpedo takes your drive housing and she closes while you are slow. The grapples bang on the hull, and the lock alarm goes.' },
 };
 
+// The words of the scene below, as lines of the beat `beats:dead-in-space` (hiredscenes.js deadLines), with {ship}, {cap} (the captain's name), {ours} and {theirs} (the boarding
+// count) and {post} (the hand's post) filled in.
+const DEAD_TEXT = {
+  title: 'Dead in Space',
+  text: '{ship} is still. Her drive is out and she is turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain {cap} holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be {ours} of yours against {theirs} of hers.',
+  'board.label': 'Board her',
+  'board.result': 'The cutter goes out of the lock. It is a short crossing.',
+  'drift.label': 'Let her drift',
+  'drift.result': 'You leave her turning in the dark. Captain {cap} writes it in the log and nothing else. (+3 experience at the {post} post.)',
+};
+const deadWords = (key, vars = {}) => lineWords('beats:dead-in-space', key, DEAD_TEXT[key]).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
+
 // A crippled raider drifts beside you. Boarding her is the repel fight run the other way (boarders.js).
 function deadInSpaceScene(s) {
-  const h = hired(), cap = person(h.captain);
+  const h = hired(), cap = person(h.captain), assault = assaultStart(s.foe);
+  const say = key => deadWords(key, { ship: theShip(s.foe), cap: cap.last, ours: repelStanding(assault) - 1, theirs: assault.boarders, post: POSTS[h.post].name.toLowerCase() });
   return {
-    title: 'Dead in Space', personal: true, via: 'crew', owner: 'you',
-    text: (`${theShip(s.foe)} is still. Her drive is out and she is turning slowly on her axis, with her running lights flickering and her lock open ` +
-        `to vacuum. Captain ${cap.last} holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would ` +
-        `be ${repelStanding(assaultStart(s.foe)) - 1} of yours against ${assaultStart(s.foe).boarders} of hers.`),
+    title: say('title'), personal: true, via: 'crew', owner: 'you',
+    text: say('text'),
     choices: [
-      { label: 'Board her', run() { G.nextEvent = repelScene(assaultStart(s.foe, s)); return `The cutter goes out of the lock. It is a short crossing.`; } },
-      { label: 'Let her drift', run() { like(cap, 1, raidWords('memory.stood', RAID_MEMORY.stood)); changeRep('Pirate', -3); gainSkill(h.post, 3); return (
-          `You leave her turning in the dark. Captain ${cap.last} writes it in the log and nothing else. (+3 experience at ` +
-          `the ${POSTS[h.post].name.toLowerCase()} post.)`); } },
+      { label: say('board.label'), run() { G.nextEvent = repelScene(assaultStart(s.foe, s)); return say('board.result'); } },
+      { label: say('drift.label'), run() { like(cap, 1, raidWords('memory.stood', RAID_MEMORY.stood)); changeRep('Pirate', -3); gainSkill(h.post, 3); return say('drift.result'); } },
     ],
   };
 }

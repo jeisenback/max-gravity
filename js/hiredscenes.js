@@ -35,7 +35,7 @@ const HIRED_FUNCTION_SCENES = [
 ];
 
 // The words of the raid, ambush and boarding beats (#478), by the name each line has in its table: a line is found by where it sits, and the beat reads it through
-// lineWords (storylets.js) by the same name. A line the table does not hold (a casualty, a name, a count, the armor, the dead-in-space scene) is written in code and is not here.
+// lineWords (storylets.js) by the same name. A line the table does not hold (a casualty, a name, a count, the armor) is written in code and is not here.
 // Odds, damage and the roll are in code too. tests/beatlines.test.js plays every beat and checks that each name here is read.
 function raidLines() {
   const out = {}, text = (key, line) => { out[key] = Array.isArray(line) ? line[2] : line; };
@@ -54,6 +54,7 @@ function ambushLines() {
   Object.assign(out, AMBUSH_TEXT);
   return out;
 }
+function deadLines() { return { ...DEAD_TEXT }; }
 function repelLines(assault) {
   const out = {}, set = assault ? { titles: ASSAULT_TITLES, openings: ASSAULT_OPENINGS, tactics: ASSAULT_TACTICS, post: ASSAULT_POST } : { titles: REPEL_TITLES, openings: REPEL_OPENINGS, tactics: REPEL_TACTICS, post: REPEL_POST };
   set.titles.forEach((t, i) => { out[`title.${i}`] = t; });
@@ -542,7 +543,7 @@ function walkOffLines() {
   return out;
 }
 const linesOf = id => (BEAT_LINES[id] ? BEAT_LINES[id]() : id === 'scene:walk-off' ? walkOffLines() : SCENE_LINES[id] || null);
-const BEAT_LINES = { 'beats:raid': raidLines, 'beats:ambush': ambushLines, 'beats:repel': () => repelLines(false), 'beats:assault': () => repelLines(true) };
+const BEAT_LINES = { 'beats:raid': raidLines, 'beats:ambush': ambushLines, 'beats:dead-in-space': deadLines, 'beats:repel': () => repelLines(false), 'beats:assault': () => repelLines(true) };
 
 // Every id, with what it is and where its scene lives: { id, kind, key, name, scene } for a cast or captain scene (its scene object), { id, kind: 'work' |
 // 'hand', def } for a hired event (with its `scene` when it is written as data), { id, kind: 'ice', stage } for an ice run scene, and { id, kind: 'function', ...the entry above } for the rest (a beat of the raid, the ambush or the boarding fights has its `scene`, the lines it can be given).

@@ -76,10 +76,6 @@ test('the hired chapter\'s code-written scenes are listed as code, and say where
   assert.match(row('hired:pilot-drift').choices[1].lose, /overshoot/);
   assert.equal(row('ice:1').choices.at(-1).post, 'comms');
   assert.ok(row('ice:1').text2.length > 40 && row('ice:1').choices.every(c => c.win), 'both openings, and a win line for every choice');
-  // A scene built whole in code, with no table of lines to read, has an id and no text.
-  const built = rows.find(r => r.id === 'beats:dead-in-space');
-  assert.equal(built.text, '');
-  assert.match(built.codeNote, /built in code/);
 });
 
 test('a scene of conditional parts reads as plain text that says which parts are conditional', async () => {
@@ -141,13 +137,9 @@ test('the page shows the rows, opens a scene to read it, and filters as you type
   await page.fill('#q', '');
 });
 
-test('a code-written scene has no form, and a data scene\'s form edits only its words', async () => {
+test('a data scene\'s form edits only its words', async () => {
   const inputs = await page.locator('.controls input, .controls select').evaluateAll(list => list.map(e => e.id));
   assert.deepEqual(inputs, ['q', 'where', 'file', 'kind', 'view', 'group', 'import-file'], 'the controls above the list filter, choose a view and import a file');
-  await page.fill('#q', 'beats:dead-in-space');
-  await page.click('button[data-id="beats:dead-in-space"]');
-  assert.equal(await page.locator('#detail textarea').count(), 0);
-  assert.match(await page.textContent('#detail'), /cannot be edited here until its text has an id/);
   await page.fill('#q', 'port-mars-sky');
   await page.click('button[data-id="port-mars-sky"]');
   // Title, text, and a label and a result for each of three choices; the shipped words are beside each.

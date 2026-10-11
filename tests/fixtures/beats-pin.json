@@ -6500,6 +6500,582 @@
   ]
  },
  {
+  "id": "dead:raider:gunner",
+  "title": "Dead in Space",
+  "text": "The Pirate \"Hungry Knife\" is still. Her drive is out and she is turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 3 of hers.",
+  "labels": [
+   "Board her",
+   "Let her drift"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "text": "The cutter goes out of the lock. It is a short crossing.",
+    "next": [
+     "Her Corridor",
+     "You are in through her lock. It is a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody is behind a crate at the far end, and somebody else is calling to them.</p><p>Defenders: 3. With you: 5. Your ship is long, with room to go round and little room for a rush."
+    ]
+   },
+   {
+    "i": 1,
+    "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
+   }
+  ]
+ },
+ {
+  "id": "dead:raider:pilot",
+  "title": "Dead in Space",
+  "text": "The Pirate \"Crimson Vulture\" is still. Her drive is out and she is turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 3 of hers.",
+  "labels": [
+   "Board her",
+   "Let her drift"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "text": "The cutter goes out of the lock. It is a short crossing.",
+    "next": [
+     "Her Corridor",
+     "You are in through her lock. It is a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody is behind a crate at the far end, and somebody else is calling to them.</p><p>Defenders: 3. With you: 5. Your ship is long, with room to go round and little room for a rush."
+    ]
+   },
+   {
+    "i": 1,
+    "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
+   }
+  ]
+ },
+ {
+  "id": "dead:raider:engineer",
+  "title": "Dead in Space",
+  "text": "The Pirate \"Hungry Knife\" is still. Her drive is out and she is turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 3 of hers.",
+  "labels": [
+   "Board her",
+   "Let her drift"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "text": "The cutter goes out of the lock. It is a short crossing.",
+    "next": [
+     "Her Corridor",
+     "You are in through her lock. It is a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody is behind a crate at the far end, and somebody else is calling to them.</p><p>Defenders: 3. With you: 5. Your ship is long, with room to go round and little room for a rush."
+    ]
+   },
+   {
+    "i": 1,
+    "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
+   }
+  ]
+ },
+ {
+  "id": "dead:raider:comms",
+  "title": "Dead in Space",
+  "text": "The Pirate \"Hungry Knife\" is still. Her drive is out and she is turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 3 of hers.",
+  "labels": [
+   "Board her",
+   "Let her drift"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "text": "The cutter goes out of the lock. It is a short crossing.",
+    "next": [
+     "Her Corridor",
+     "You are in through her lock. It is a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody is behind a crate at the far end, and somebody else is calling to them.</p><p>Defenders: 3. With you: 5. Your ship is long, with room to go round and little room for a rush."
+    ]
+   },
+   {
+    "i": 1,
+    "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
+   }
+  ]
+ },
+ {
+  "id": "dead:corsair:gunner",
+  "title": "Dead in Space",
+  "text": "The Pirate \"Hungry Knife\" is still. Her drive is out and she is turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
+  "labels": [
+   "Board her",
+   "Let her drift"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "text": "The cutter goes out of the lock. It is a short crossing.",
+    "next": [
+     "Her Corridor",
+     "You are in through her lock. It is a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody is behind a crate at the far end, and somebody else is calling to them.</p><p>Defenders: 4. With you: 5. Your ship is long, with room to go round and little room for a rush."
+    ]
+   },
+   {
+    "i": 1,
+    "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
+   }
+  ]
+ },
+ {
+  "id": "dead:corsair:pilot",
+  "title": "Dead in Space",
+  "text": "The Pirate \"Crimson Vulture\" is still. Her drive is out and she is turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
+  "labels": [
+   "Board her",
+   "Let her drift"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "text": "The cutter goes out of the lock. It is a short crossing.",
+    "next": [
+     "Her Corridor",
+     "You are in through her lock. It is a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody is behind a crate at the far end, and somebody else is calling to them.</p><p>Defenders: 4. With you: 5. Your ship is long, with room to go round and little room for a rush."
+    ]
+   },
+   {
+    "i": 1,
+    "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
+   }
+  ]
+ },
+ {
+  "id": "dead:corsair:engineer",
+  "title": "Dead in Space",
+  "text": "The Pirate \"Hungry Knife\" is still. Her drive is out and she is turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
+  "labels": [
+   "Board her",
+   "Let her drift"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "text": "The cutter goes out of the lock. It is a short crossing.",
+    "next": [
+     "Her Corridor",
+     "You are in through her lock. It is a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody is behind a crate at the far end, and somebody else is calling to them.</p><p>Defenders: 4. With you: 5. Your ship is long, with room to go round and little room for a rush."
+    ]
+   },
+   {
+    "i": 1,
+    "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
+   }
+  ]
+ },
+ {
+  "id": "dead:corsair:comms",
+  "title": "Dead in Space",
+  "text": "The Pirate \"Hungry Knife\" is still. Her drive is out and she is turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 4 of hers.",
+  "labels": [
+   "Board her",
+   "Let her drift"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "text": "The cutter goes out of the lock. It is a short crossing.",
+    "next": [
+     "Her Corridor",
+     "You are in through her lock. It is a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody is behind a crate at the far end, and somebody else is calling to them.</p><p>Defenders: 4. With you: 5. Your ship is long, with room to go round and little room for a rush."
+    ]
+   },
+   {
+    "i": 1,
+    "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
+   }
+  ]
+ },
+ {
+  "id": "dead:cutter:gunner",
+  "title": "Dead in Space",
+  "text": "The Pirate \"Hungry Knife\" is still. Her drive is out and she is turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
+  "labels": [
+   "Board her",
+   "Let her drift"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "text": "The cutter goes out of the lock. It is a short crossing.",
+    "next": [
+     "Her Corridor",
+     "You are in through her lock. It is a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody is behind a crate at the far end, and somebody else is calling to them.</p><p>Defenders: 5. With you: 5. Your ship is long, with room to go round and little room for a rush."
+    ]
+   },
+   {
+    "i": 1,
+    "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
+   }
+  ]
+ },
+ {
+  "id": "dead:cutter:pilot",
+  "title": "Dead in Space",
+  "text": "The Pirate \"Crimson Vulture\" is still. Her drive is out and she is turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
+  "labels": [
+   "Board her",
+   "Let her drift"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "text": "The cutter goes out of the lock. It is a short crossing.",
+    "next": [
+     "Her Corridor",
+     "You are in through her lock. It is a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody is behind a crate at the far end, and somebody else is calling to them.</p><p>Defenders: 5. With you: 5. Your ship is long, with room to go round and little room for a rush."
+    ]
+   },
+   {
+    "i": 1,
+    "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
+   }
+  ]
+ },
+ {
+  "id": "dead:cutter:engineer",
+  "title": "Dead in Space",
+  "text": "The Pirate \"Hungry Knife\" is still. Her drive is out and she is turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
+  "labels": [
+   "Board her",
+   "Let her drift"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "text": "The cutter goes out of the lock. It is a short crossing.",
+    "next": [
+     "Her Corridor",
+     "You are in through her lock. It is a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody is behind a crate at the far end, and somebody else is calling to them.</p><p>Defenders: 5. With you: 5. Your ship is long, with room to go round and little room for a rush."
+    ]
+   },
+   {
+    "i": 1,
+    "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
+   }
+  ]
+ },
+ {
+  "id": "dead:cutter:comms",
+  "title": "Dead in Space",
+  "text": "The Pirate \"Hungry Knife\" is still. Her drive is out and she is turning slowly on her axis, with her running lights flickering and her lock open to vacuum. Captain Vance holds the ship forty meters off and asks the crew what they want to do. Her crew are armed. A boarding would be 5 of yours against 5 of hers.",
+  "labels": [
+   "Board her",
+   "Let her drift"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "text": "The cutter goes out of the lock. It is a short crossing.",
+    "next": [
+     "Her Corridor",
+     "You are in through her lock. It is a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody is behind a crate at the far end, and somebody else is calling to them.</p><p>Defenders: 5. With you: 5. Your ship is long, with room to go round and little room for a rush."
+    ]
+   },
+   {
+    "i": 1,
+    "text": "You leave her turning in the dark. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+    "next": null,
+    "mem": [
+     "9 Jul 2214: You stood us up to a raid and she broke off.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates.",
+     "9 Jul 2214: You set yourself against the pirates."
+    ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "p2": -1,
+     "c:cato": -1,
+     "p3": 1,
+     "p4": 1,
+     "p5": 1,
+     "p6": 1,
+     "p7": 1
+    }
+   }
+  ]
+ },
+ {
   "id": "settle:repel:gunner:won:1",
   "text": "The last of them go back through the lock. The outer door closes from the other side, and the drive of the Pirate \"Hungry Knife\" lights, and she breaks away from the hull.",
   "mem": [

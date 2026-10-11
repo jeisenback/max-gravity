@@ -85,7 +85,7 @@
   }
   const SCENE_NOTE = 'Its words are the lines it is built from, named by what each is for. A {word} in a line is filled from the game when the scene plays, and is kept as typed. What a choice does, the experience it teaches and what the scene builds from the game state (a recap, who has gone, a sum) are in code.';
   const LINES_NOTE = 'Its words are the lines of one pool, named by where each sits. The game picks one at random, so a change to a line changes how often its words come up and nothing else. A {word} in a line is filled from the game and is kept as typed.';
-  const BEAT_NOTE = 'Its words are the lines of the tables the beats read, named by where each sits. Odds, damage and the roll are in code, and so are the lines built from the game state (a casualty, a name, a count, the armor) and the dead-in-space scene.';
+  const BEAT_NOTE = 'Its words are the lines of the tables the beats read, named by where each sits. Odds, damage and the roll are in code, and so are the lines built from the game state (a casualty, a name, a count, the armor).';
 
   // A scene whose words live in a table one template plays (a work event, an ice run scene; #462) as the editor's row: its words are edited, and what it does is in code. A choice
   // has a label and either a result or the lines for a win and a lose; the odds and what each does are the table's.
@@ -404,6 +404,7 @@
         const foe = makeEnemy({ kind: 'pirate' });
         if (reg.id === 'beats:raid') { startDuel({ kind: 'pirate' }, false); const first = G.nextEvent; G.nextEvent = null; openEvent(first); }
         else if (reg.id === 'beats:ambush') openEvent(ambushScene());
+        else if (reg.id === 'beats:dead-in-space') openEvent(deadInSpaceScene({ foe }));
         else openEvent(repelScene(reg.id === 'beats:assault' ? assaultStart(foe) : repelStart({ foe, foeHp: 0 }, 'full')));
       } else if (reg.name === 'goodbye') {  // leaving the ship: with the secret learned, so every choice shows
         captainFlag('secretKnown');
