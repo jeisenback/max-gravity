@@ -106,3 +106,11 @@ test('the memories and the log line of the round and of a main character coming 
     assert.deepEqual([...fs.readFileSync(path.join(__dirname, '..', 'js', f), 'utf8').matchAll(re)].map(m => m[0].slice(0, 60)), [], `a line in code in ${f}`);
   }
 });
+
+test('the lines the ship\'s log keeps of a death, a departure, a retirement, a loss and a founding are lines, and none is left in code', async () => {
+  const fs = require('node:fs'), path = require('node:path');
+  for (const f of ['boarders.js', 'stakes.js', 'legacy.js', 'outpost.js']) {
+    const src = fs.readFileSync(path.join(__dirname, '..', 'js', f), 'utf8');
+    assert.deepEqual([...src.matchAll(/homeLog\(`/g)].map(m => m[0]), [], `a ship's log line in code in ${f}`);
+  }
+});

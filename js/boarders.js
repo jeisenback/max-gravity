@@ -218,7 +218,7 @@ function killCrew(c) {
   c.dead = true;
   (st.fallen = st.fallen || []).push({ name: fullName(c), role: c.role, day: st.day });
   (st.vacancies = st.vacancies || []).push(c.role);
-  homeLog(`${c.first} ${c.last} was killed when ${system().name}'s boarders came aboard.`);
+  homeLog(sceneSay('scene:ship-log', 'killed.log', { first: c.first, last: c.last, system: system().name }));
 }
 
 // How it ends: repelled (the duel goes on with the initiative yours), or the bridge taken (the ship's fund is stripped and they cut loose).

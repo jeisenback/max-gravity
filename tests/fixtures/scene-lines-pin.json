@@ -108,6 +108,12 @@
      "p3": 2,
      "p10": 0
     },
+    "x": [
+     {
+      "day": 31,
+      "text": "Mateo Castillo left the ship at Earth."
+     }
+    ],
     "next": null
    },
    {
@@ -123,6 +129,12 @@
      "p3": -3,
      "p10": 0
     },
+    "x": [
+     {
+      "day": 31,
+      "text": "Hana Kowalski left the ship at Earth."
+     }
+    ],
     "next": null
    },
    {
@@ -3054,6 +3066,130 @@
      {
       "day": 31,
       "text": "Ruben Castellanos came aboard as a slicer."
+     }
+    ],
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "log:killed",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "x": [
+     {
+      "day": 31,
+      "text": "Mate0 Vale was killed when Earth's boarders came aboard."
+     }
+    ],
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "log:legacy:retired:0",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "fx": {
+     "credits": -1500,
+     "p10": 0
+    },
+    "x": [
+     {
+      "day": 31,
+      "text": "Captain Sam Rowe retired. Mara Quill took command."
+     }
+    ],
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "log:legacy:died:0",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "fx": {
+     "credits": -2500
+    },
+    "x": [
+     {
+      "day": 31,
+      "text": "In memory of Captain Sam Rowe, lost with the Iron Anvil, Ice Hauler."
+     }
+    ],
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "log:legacy:died:2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "fx": {
+     "credits": -2500,
+     "p12": 0
+    },
+    "x": [
+     {
+      "day": 31,
+      "text": "In memory of Captain Sam Rowe and the crew, lost with the Iron Anvil, Ice Hauler."
+     }
+    ],
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "log:founded",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "fx": {
+     "credits": -40000
+    },
+    "x": [
+     {
+      "day": 31,
+      "text": "Founded Test Landing on Callisto."
      }
     ],
     "next": null
