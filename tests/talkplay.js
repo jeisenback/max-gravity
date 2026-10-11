@@ -58,6 +58,7 @@ const playTalk = () => {
   play('sit:3:passenger', p => { const s = storyOf(p); s.beat = 3; s.favor = 'debt'; s.debt = 1500; p.opinion = 3; }, p => sitBeat(p, false), 6);
   // the picker: who is aboard, how they are
   play('picker', (p, s) => { const o = mk('Ana', { role: 'pilot' }); s.crew.push(o.id); s.injured = { [o.id]: true }; p.mood = { kind: 'low', until: s.day + 40, text: 'x' }; }, p => sitPicker(), 1);
+  play('picker:pax', (p, s) => { const o = mk('Pia'); s.missions.push({ type: 'passenger', id: s.nextId++, pid: o.id, who: 'Pia Vale', pax: 1, bonus: 0, destSystem: 'mars', destPlanet: 'Olympus Dome', title: 'Carry', pay: 100, deadline: s.day + 99 }); }, p => sitPicker(), 1);
   { __seed(3); const seenText = new Set(); for (let d = 0; d < 40; d++) { __seed(d); G.state = JSON.parse(snap); seenText.add(sitPicker().text); } out.push({ key: 'picker:texts', text: JSON.stringify([...seenText].sort()) }); }
   { G.state = JSON.parse(snap); st = G.state; const e = sitPicker(); const c = e.choices[0]; G.nextEvent = null; out.push({ key: 'picker:go', text: JSON.stringify([c.run(), G.nextEvent && G.nextEvent.title]) }); G.nextEvent = null; }
   return out;
