@@ -7,15 +7,16 @@ const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { open, closeBrowser } = require('./helpers');
 const { playFamily } = require('./familyplay');
+const { playHome } = require('./homeplay');
 
 after(closeBrowser);
 
-const IDS = ['left', 'hopes', 'home', 'idle', 'good-news', 'bad-news', 'holidays'].map(x => `lines:family-${x}`);
+const IDS = ['left', 'hopes', 'home', 'idle', 'good-news', 'bad-news', 'holidays', 'touches', 'chatter', 'ship'].map(x => `lines:family-${x}`);
 
 test('every line of the family tables is read: an override for each shows in what the scenes play, and nothing else changes', async () => {
   const g = await open({ scope: 'full' });
   const r = await g.ev(arg => {
-    const play = (0, eval)(`(${arg.src})`);
+    const both = [(0, eval)(`(${arg.src})`), (0, eval)(`(${arg.home})`)], play = () => both.flatMap(f => f());  // the stories and letters, and the rest of the scenes
     const lines = Object.fromEntries(arg.ids.map(id => [id, lineTableRegistry().find(e => e.id === id).scene.parts]));
     const base = play();
     const overrides = Object.fromEntries(arg.ids.map(id => [id, { parts: Object.fromEntries(Object.keys(lines[id]).map(k => [k, `@@${id}|${k}@@${(lines[id][k].match(/\{\w+\}/g) || []).join('')}`])) }]));
@@ -24,7 +25,7 @@ test('every line of the family tables is read: an override for each shows in wha
     console.warn = warn;
     const changed = play();
     return { base, changed, lines, warned, registered: lineTableRegistry().map(e => e.id).filter(id => id.startsWith('lines:family-')) };
-  }, { src: playFamily.toString(), ids: IDS });
+  }, { src: playFamily.toString(), home: playHome.toString(), ids: IDS });
   await g.done();
   assert.deepEqual(r.registered, IDS, 'the registry holds the tables, in this order');
   assert.deepEqual(r.warned, [], 'the game keeps every line');
@@ -60,7 +61,7 @@ test('the family tables show in the editor, one row each, with no play', async (
   const g = await open({ scope: 'full' });
   const r = await g.ev(() => lineTableRegistry().filter(e => e.id.startsWith('lines:family-')).map(e => [e.id, e.kind, e.where, Object.keys(e.scene.parts).length]));
   await g.done();
-  assert.equal(r.length, 7);
+  assert.equal(r.length, 10);
   assert.deepEqual(r.find(x => x[0] === 'lines:family-holidays'), ['lines:family-holidays', 'lines', 'transit', 12]);
   assert.deepEqual(r.find(x => x[0] === 'lines:family-idle').slice(3), [12]);
 });

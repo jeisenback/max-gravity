@@ -230,6 +230,13 @@ const FAMILY_SCENES = {
   'favor-visit': p => visitFavor(p, Object.assign(storyOf(p), { favor: 'visit' })),
   'favor-debt': p => debtFavor(p, Object.assign(storyOf(p), { favor: 'debt', debt: 1500 })),
   picker: () => sitPicker(),
+  birthday: p => occasionEvent({ kind: 'birthday', id: p.id, day: G.state.day + 3 }),
+  holiday: p => occasionEvent({ kind: 'holiday', h: HOLIDAYS[0], id: p.id, day: G.state.day + 1, year: calOf(G.state.day + 1).y }),
+  'news-good': p => { p.news = { good: true, text: 'their sister got into the academy' }; return newsEvent(p); },
+  'news-bad': p => { p.news = { good: false, text: 'their father is sick' }; p.mood = { kind: 'low', until: G.state.day + 20, text: p.news.text }; return newsEvent(p); },
+  tradition: () => { home().proposed = []; return traditionEvent(); },
+  cat: () => catEvent(),
+  join: p => { p.role = p.role || 'engineer'; return joinEvent(p); },
 };
 
 // ---------- birthdays and holidays ----------
@@ -258,32 +265,26 @@ function occasionEvent(o) {
   const all = () => folk();
   const warm = (x, text) => () => { for (const [a, b] of pairs(all())) addBond(a, b, x); return text; };
   if (o.kind === 'birthday') {
+    const say = familySay('birthday');
     return {
-      title: `${n}'s Birthday`, text: (`It is ${dateOf(o.day)}, and it is ${n}'s ` +
-          `birthday. ${pick([(`${n} hasn't mentioned it. All week, ${n} has been ` +
-          `somewhere near the galley whenever anyone is in it.`), `${n} mentioned it once, weeks ago, in passing. At every meal since, ${n} has been busy with something on the far side of the galley.`, (
-          `${n} says birthdays are for dirtsiders. They have said it twice this morning, too loudly, and have, for some reason, put on their good ` +
-          `jacket.`), `${n} woke up early, and cleaned the galley, and is now sitting straight at the table, with a clean mug set out at every place.`])}`),
+      title: say('title', { n }), text: say('text', { date: dateOf(o.day), n, act: say(`act.${pick([0, 1, 2, 3])}`, { n }) }),
       choices: [
-        { label: 'Throw a party in the galley', run() { like(p, 2, `The crew threw me a birthday party aboard ${shipTitle()}.`); homeLog(`A birthday party for ${n}.`); return warm(1, (
-            `Somebody makes a cake out of ration bars and a candle out of a welding stub, and somebody else finds a bottle no one admits to hiding. ` +
-            `The whole ship crowds into the galley to sing, off-key and enthusiastically, and ${n}, who was going to be cool about it, laughs until ` +
-            `they cry, and blows out the welding stub on the third try.`))(); } },
-        { label: 'Give them something from the cargo (1t luxury goods)', ...gated([() => (st.cargo.luxury || 0) >= 1, () => 'There is no luxury cargo in the hold.']), run() {
+        { label: say('c0.label'), run() { like(p, 2, `The crew threw me a birthday party aboard ${shipTitle()}.`); homeLog(`A birthday party for ${n}.`); return warm(1, say('c0.result', { n }))(); } },
+        { label: say('c1.label'), ...gated([() => (st.cargo.luxury || 0) >= 1, () => say('c1.gate')]), run() {
           st.cargo.luxury -= 1;
           like(p, 3, 'The captain remembered my birthday.');
-          return `${n} unwraps it slowly, saving the paper. When they see what it is, they go still. They do not say anything for a moment. Then they set it on the shelf by their bunk, and keep it there for the rest of the trip. More than once you see them stop and look at it.`;
+          return say('c1.result', { n });
         } },
-        { label: 'A quiet word and a drink', run() { like(p, 1, null); return `You find ${n} alone in the galley, and set down two cups, and say the words, plainly. "You remembered," they say, and look at the cup. You sit together and drink and say little.`; } },
+        { label: say('c2.label'), run() { like(p, 1, null); return say('c2.result', { n }); } },
       ],
     };
   }
-  const h = o.h, said = familyLines('holidays')[holidayKey(h)], fillH = t => t.replace(/\{n\}/g, n).replace(/\{year\}/g, o.year);
+  const h = o.h, said = familyLines('holidays')[holidayKey(h)], say = familySay('holiday'), fillH = t => t.replace(/\{n\}/g, n).replace(/\{year\}/g, o.year);
   return {
     title: h.name, text: fillH(said.text),
     choices: [
-      { label: 'Everyone joins in', run() { like(p, 2, `We kept ${h.name} aboard ${shipTitle()}.`); homeLog(`Kept ${h.name} aboard.`); return warm(1.2, fillH(said.join))(); } },
-      { label: `Let ${n} mark it their own way`, run: () => `${n} nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they are cheerful, and nobody asks.` },
+      { label: say('c0.label'), run() { like(p, 2, `We kept ${h.name} aboard ${shipTitle()}.`); homeLog(`Kept ${h.name} aboard.`); return warm(1.2, fillH(said.join))(); } },
+      { label: say('c1.label', { n }), run: () => say('c1.result', { n }) },
     ],
   };
 }
@@ -303,7 +304,7 @@ function letters(planet) {
     const text = pick(pool).replace('{who}', `their ${missed(p)}`).replace('{home}', p.home);
     p.mood = { kind: good ? 'high' : 'low', until: st.day + (good ? 10 : 25), text };
     p.news = { good, text };
-    notes.push(noteFor(`A message for ${p.first} at ${planet.name}: ${text}.`, p.id));
+    notes.push(noteFor(fillLine(familyLines('ship').letter, { n: p.first, planet: planet.name, text }), p.id));
     break;  // one letter a landing: each one is a scene on the next burn, so three would be three scenes in a row
   }
   if (notes.length) st.letterAt = st.day;
@@ -314,98 +315,33 @@ function newsEvent(p) {
   const n = p.first, st = G.state, news = p.news;
   p.news = null;
   if (news.good) {
-    return { title: 'Good News', text: pick([
-      `${n} comes into the galley fast, holding the terminal out in front of them. "Listen," ${n} says. "Listen to this." The message reads: ${news.text}. ${n} reads it aloud, loses their place, and starts again.`,
-      `${n} stops you at the hatch. "Captain. Listen to this." The message is open on the terminal: ${news.text}. ${n} reads it aloud twice. The second time, ${n} has to stop partway through.`,
-      `You find ${n} in the corridor with the terminal pressed flat against their chest and their eyes shut. Then they hold it out to you: ${news.text}. "I had to tell somebody," ${n} says. "You were closest."`,
-      `${n} has been humming since the start of watch. You ask why, and ${n} hands you the terminal: ${news.text}. ${n} stands there while you read it.`,
-      `${n} slides the terminal across the galley table without a word and watches you read it. The message: ${news.text}. "Third time I have read it," ${n} says. "It still says that."`,
-      `Over the intercom, ${n}: "Captain, can you come aft? It is not an emergency." You find ${n} at the engine room hatch with the terminal. The message: ${news.text}. ${n} is grinning at the deck.`,
-      `The message came in at the last port, and ${n} carried it for a watch before saying anything. At the galley table ${n} says it: ${news.text}. Somebody at the table drops a spoon.`,
-      `${n} is waiting for you at the end of the watch, rocking on their heels. "Captain, do you have a minute?" The terminal is already out: ${news.text}. "That is all," ${n} says. "That is the whole thing."`,
-    ]),
+    const say = familySay('news-good');
+    return { title: say('title'), text: say(`open.${pick([0, 1, 2, 3, 4, 5, 6, 7])}`, { n, news: news.text }),
       choices: [
-        { label: 'Break out something to celebrate', run() { for (const [a, b] of pairs(folk())) addBond(a, b, 0.8); like(p, 1, null); return pick([(
-            'You break out the good bottle. Within the hour everyone who is not on watch is in the galley, and everyone has a toast. Someone finds ' +
-            'the guitar, which has two strings. It goes past midnight. Nobody mentions the watch bill.'), (
-            `You open the locker and put out whatever the ship has. Cards come out, and the cook brings tomorrow's noodles forward a day. ${n} tells ` +
-            `the story three times, and the story changes each time. The galley is full until the watch bell.`), (
-            `You call the galley to order with a spoon on a pot. Everyone off watch comes. The cook finds a cake mix at the back of the cupboard and ` +
-            `makes it in the pressure pan. It comes out flat. It is eaten.`)]); } },
-        { label: '"That\'s wonderful."', run() { like(p, 1, null); return pick([(`${n} shows you the picture. A minute later ${n} shows you again. "I ` +
-            `keep wanting to tell someone," ${n} says, and laughs.`), (
-            `"Tell me all of it," you say, and ${n} does, from the start, with the dates. At the end ${n} goes back to the part about the street and ` +
-            `tells that again.`), (
-            `You read it over ${n}'s shoulder. "Send them something," you say. ${n} sends a line from the bridge console and watches the relay clock ` +
-            `for the next hour.`)]); } },
+        { label: say('c0.label'), run() { for (const [a, b] of pairs(folk())) addBond(a, b, 0.8); like(p, 1, null); return say(`c0.result.${pick([0, 1, 2])}`, { n }); } },
+        { label: say('c1.label'), run() { like(p, 1, null); return say(`c1.result.${pick([0, 1, 2])}`, { n }); } },
       ] };
   }
-  const others = procedural().filter(f => f.p !== p && bond(f, { id: p.id }) >= 1);
+  const say = familySay('news-bad'), others = procedural().filter(f => f.p !== p && bond(f, { id: p.id }) >= 1);
   const choices = [
-    { label: 'Sit with them', run() { like(p, 2, 'The captain sat with me when the news from home was bad.'); p.mood.until -= 10; return pick([(
-        `You do not fix anything. You stay in the galley with a pot of tea going cold while ${n} looks at the wall. After a time ${n} starts talking, ` +
-        `low, about the person and the place and the years. When they get up, they touch your shoulder on the way out.`), (
-        `You bring two cups to the cargo bay and sit on a crate. ${n} does not talk for a while. When ${n} does, it is about the street they grew up ` +
-        `on and a night in the market. You stay until the watch bell, and ${n} says thank you at the hatch.`), (
-        `You sit on the other side of the galley table and do not look at the terminal. ${n} tells you what the section was like before the cuts. It ` +
-        `takes an hour. At the end ${n} washes both cups.`)]); } },
-    { label: 'Advance them 500 cr to send home', ...gated(needCr(500)), run() { st.credits -= 500; like(p, 3, 'The captain advanced me money to send home.'); p.mood.until = st.day; return pick([(
-        `${n} sends it at the next relay with a short message. For two days ${n} checks the terminal every few minutes. When the reply comes, ${n} ` +
-        `reads it aloud in the galley. "They are all right," ${n} says. "They are all right." They sit down.`), (
-        `${n} sends it from the bridge console with two lines. The reply is nine hours behind the question. When it comes, ${n} reads it standing at ` +
-        `the console and says nothing until the end. "They are all right," ${n} says. The next watch ${n} is early.`), (
-        `${n} will not take it at first. Then ${n} says it comes out of the pay, all of it, and sends it with the evening relay. Two days later the ` +
-        `reply comes. ${n} reads it twice in the galley and puts the terminal in a pocket. They stay for dinner.`)]); } },
+    { label: say('sit.label'), run() { like(p, 2, 'The captain sat with me when the news from home was bad.'); p.mood.until -= 10; return say(`sit.result.${pick([0, 1, 2])}`, { n }); } },
+    { label: say('advance.label'), ...gated(needCr(500)), run() { st.credits -= 500; like(p, 3, 'The captain advanced me money to send home.'); p.mood.until = st.day; return say(`advance.result.${pick([0, 1, 2])}`, { n }); } },
   ];
   if (others.length) {
     const o = pick(others);
-    choices.push({ label: `Ask ${o.p.first} to look in on them`, run() { addBond(o, { id: p.id, p }, 2); like(p, 1, null); p.mood.until -= 5; return pick([(
-        `${o.p.first} takes ${n} a mug of something hot and sits down beside them on the crate by the galley wall. ${o.p.first} does not speak. They ` +
-        `are still there two hours later. Through the hatch you see two heads close together. Once, ${n}'s shoulders shake.`), (
-        `${o.p.first} finds ${n} in the cargo bay, sits down on the next crate, opens a ration bar and hands half across. They eat without talking. ` +
-        `At the watch bell they go forward together.`), (
-        `${o.p.first} takes ${n}'s next hour at the console without being asked. ${n} sits with the terminal on their knees and does not look at it. ` +
-        `When ${o.p.first} comes back for the cup, ${n} says something, and ${o.p.first} nods.`)]); } });
+    choices.push({ label: say('ask.label', { other: o.p.first }), run() { addBond(o, { id: p.id, p }, 2); like(p, 1, null); p.mood.until -= 5; return say(`ask.result.${pick([0, 1, 2])}`, { n, other: o.p.first }); } });
   }
-  choices.push({ label: 'Give them space', run: () => pick([(`${n} goes to their bunk. You hear the terminal, faintly, and later nothing. Their work ` +
-      `suffers for a time: a missed step, a cold cup. (Their skill counts one lower until they feel better.)`), (
-      `${n} takes the cargo bay for the rest of the watch and does the manifest twice. You leave the door open. A missed step shows up in the log the ` +
-      `next day, and ${n} corrects it before anyone asks. (Their skill counts one lower until they feel better.)`)]) });
-  return { title: 'Bad News', text: pick([
-      `${n} has been quiet since the last port. ${n} stands the watch and eats, and twice has stopped with the fork halfway up. A message came in at the last port: ${news.text}. ${n} has told no one. You saw the screen over their shoulder in the corridor.`,
-      `${n} missed the start of the watch briefing. You find ${n} on a crate in the cargo bay with the terminal dark in their lap. The last message on it reads: ${news.text}.`,
-      `${n} has not touched their plate. Nobody at the galley table has said anything. The message is on the terminal by ${n}'s elbow: ${news.text}.`,
-      `${n} does the whole shift without a word and checks every gauge twice. Late, in the corridor, ${n} tells you: ${news.text}. "I'm fine," ${n} says.`,
-      `${n} asks to speak to you in the cargo bay, where the hull carries the noise. ${n} says it flat, without the terminal: ${news.text}. "I do not need anything," ${n} says. "I wanted you to know why I am slow."`,
-      `The terminal pings in the galley and ${n} reads it standing, then sits down. The message: ${news.text}. ${n} finishes the coffee. Nobody at the table asks.`,
-      `${n} has been at the comms station for an hour, sending messages and waiting out the lag. When you come in, ${n} turns the screen toward you: ${news.text}.`,
-      `You find ${n}'s tool roll closed on the bench, which it never is. ${n} is in the corridor with the terminal. ${n} says: ${news.text}. "I will be on my watch," ${n} says.`,
-    ]), choices };
+  choices.push({ label: say('space.label'), run: () => say(`space.result.${pick([0, 1])}`, { n }) });
+  return { title: say('title'), text: say(`open.${pick([0, 1, 2, 3, 4, 5, 6, 7])}`, { n, news: news.text }), choices };
 }
 
 // ---------- traditions ----------
 const BURN_NAMES = ['The Long Sulk', 'Operation Soup', 'Tuesday Forever', 'Nobody Touch Anything', 'The Great Coffee Shortage', 'Probably Fine', 'Second Breakfast', 'Hold My Drink'];
-const TRADITIONS = {
-  'flip-toast': { name: 'the flip toast', moment: 'flip', propose: '{n} raises a bulb of something strong as the ship turns end over end, and the stars wheel silently past the viewport, and says, in a clear voice: "To the flip. Halfway to somewhere." Everyone in the room looks at you.',
-    line: () => pick(['[Ship] The flip toast: "Halfway to somewhere." Everyone drinks.', ('[Ship] At the flip, cups go up all through the ship, and a ' +
-        'quiet, ragged chorus: "Halfway to somewhere."'), '[Ship] The flip comes, and the ship turns, and someone raises a bulb: "Halfway to somewhere." Nobody says no.']) },
-  'first-meal': { name: 'first-night noodles', moment: 'start', propose: ('{n} cooks for everyone on the first night out, a huge, clattering pot of ' +
-      'noodles and broth and chili, with the lid steaming and a small paper bag of scallions torn open on the counter. They ladle it out with a wooden ' +
-      'spoon, one bowl at a time, without a word. When the last bowl is full they look around the table and say: "Tradition. Starting now."'),
-    line: () => pick(['[Ship] First night out, and the galley smells of noodles. Tradition.', ('[Ship] The first-night noodles are on, and the whole ' +
-        'ship is queuing with bowls, in a cheerful, hungry line.'), '[Ship] Noodles again, first night out. Somebody says it wouldn\'t feel like a burn without them.']) },
-  'burn-name': { name: 'naming the burn', moment: 'start', propose: ('{n} says every burn deserves a name, in the way that every storm deserves a ' +
-      'name, and, ideally, every mistake. They have a marker, and a large sheet of paper taped to the galley wall. They write, in tall block letters, ' +
-      'and propose calling this one "{b}".'),
-    line: () => `[Ship] By unanimous vote, this burn is called "${pick(BURN_NAMES)}".` },
-  'docking-song': { name: 'the docking song', moment: 'end', propose: ('{n} starts singing an old work song from {home} on final approach, softly at ' +
-      'first, mostly to themselves, a slow, rolling tune about hauling, and home, and the long way round. By the second verse, someone is harmonizing, ' +
-      'and by the third, half the ship has joined in, off-key and untroubled, and somebody is keeping time on a pipe with a wrench.'),
-    line: () => pick([
-      '[Ship] Final approach, and everyone is singing the docking song, badly and with feeling.',
-      '[Ship] The docking song starts up in the galley, and spreads through the ship, verse by verse, like weather.',
-      '[Ship] Somebody starts the docking song, and, in the cockpit, the pilot, who swore he would not, is humming along.'
-    ]) },
+const TRADITIONS = {  // the name of each is here; its proposal and the line it gives in a burn are in PEOPLE_LINES (family:tradition)
+  'flip-toast': { name: 'the flip toast', moment: 'flip', line: () => familySay('tradition')(`flip-toast.line.${pick([0, 1, 2])}`) },
+  'first-meal': { name: 'first-night noodles', moment: 'start', line: () => familySay('tradition')(`first-meal.line.${pick([0, 1, 2])}`) },
+  'burn-name': { name: 'naming the burn', moment: 'start', line: () => familySay('tradition')('burn-name.line', { b: pick(BURN_NAMES) }) },
+  'docking-song': { name: 'the docking song', moment: 'end', line: () => familySay('tradition')(`docking-song.line.${pick([0, 1, 2])}`) },
 };
 
 function traditionEvent() {
@@ -413,14 +349,12 @@ function traditionEvent() {
   const id = Object.keys(TRADITIONS).find(k => !h.proposed.includes(k));
   if (!id || !crew.length) return null;
   h.proposed.push(id);
-  const T = TRADITIONS[id], f = pick(crew);
+  const say = familySay('tradition'), T = TRADITIONS[id], f = pick(crew);
   return {
-    title: 'A New Tradition', text: T.propose.replace('{n}', f.p.first).replace('{home}', f.p.home).replace('{b}', pick(BURN_NAMES)),
+    title: say('title'), text: say(`${id}.propose`, { n: f.p.first, home: f.p.home, b: pick(BURN_NAMES) }),
     choices: [
-      { label: 'Make it a tradition', run() { h.traditions.push(id); homeLog(`Started ${T.name}.`); for (const [a, b] of pairs(folk())) addBond(a, b, 1); like(f.p, 1, null); return (
-          `You say the words, and nobody speaks for a second, and then somebody laughs, and it is done. It sticks. From now on, ${T.name} is part of ` +
-          `life aboard ${shipTitle()}.`); } },
-      { label: 'Just this once', run: () => 'You say yes to the moment and no to the promise. Nobody makes a fuss, and the cups go round again.' },
+      { label: say('c0.label'), run() { h.traditions.push(id); homeLog(`Started ${T.name}.`); for (const [a, b] of pairs(folk())) addBond(a, b, 1); like(f.p, 1, null); return say('c0.result', { name: T.name, ship: shipTitle() }); } },
+      { label: say('c1.label'), run: () => say('c1.result') },
     ],
   };
 }
@@ -435,19 +369,20 @@ function traditionMoment(moment) {
 }
 
 // ---------- touches, and the cat ----------
+const touchSay = (i, vars) => fillLine(familyLines('touches')[i], vars);
 const TOUCHES = [
-  f => `${f.p.first} hung a ${tastes(f).team} pennant in the galley`,
-  f => `${f.p.first} is growing basil in a ration tin on the galley shelf`,
-  f => `${f.p.first} painted a small ${f.p.home} skyline on their bunk panel`,
-  f => `${f.p.first} rigged fairy lights along the berth corridor`,
-  f => `${f.p.first} put up a picture of their ${missed(f.p)} by the coffee maker`,
-  f => `${f.p.first} keeps a battered copy of "${pick(newBooks(cultureToday())).title}" in the galley for anyone to borrow`,
-  f => `${f.p.first} chalked a hopscotch grid on the cargo bay deck, and people use it`,
-  f => `${f.p.first} tied a small bell by the airlock, so you can hear who is coming and going`,
-  f => `${f.p.first} started a jar by the galley door for good news, and it already has three slips in it`,
-  f => `${f.p.first} taped a hand-drawn star chart to the cockpit bulkhead, with everybody's home marked in a different color`,
-  f => `${f.p.first} put a small potted succulent on the nav console, and named it, and refuses to say what`,
-  f => `${f.p.first} set up a board by the mess with everybody's birthday on it, in careful, curly writing`,
+  f => touchSay(0, { n: f.p.first, team: tastes(f).team }),
+  f => touchSay(1, { n: f.p.first }),
+  f => touchSay(2, { n: f.p.first, home: f.p.home }),
+  f => touchSay(3, { n: f.p.first }),
+  f => touchSay(4, { n: f.p.first, missed: missed(f.p) }),
+  f => touchSay(5, { n: f.p.first, book: pick(newBooks(cultureToday())).title }),
+  f => touchSay(6, { n: f.p.first }),
+  f => touchSay(7, { n: f.p.first }),
+  f => touchSay(8, { n: f.p.first }),
+  f => touchSay(9, { n: f.p.first }),
+  f => touchSay(10, { n: f.p.first }),
+  f => touchSay(11, { n: f.p.first }),
 ];
 function addTouches() {
   const h = home();
@@ -456,30 +391,24 @@ function addTouches() {
     f.p.touched = true;
     const text = pick(TOUCHES)(f);
     h.touches.push(text);
-    comm(`[Ship] ${text}.`);
+    comm(fillLine(familyLines('ship').touch, { text }));
   }
 }
 const CAT_NAMES = ['Rivet', 'Biscuit', 'Admiral', 'Dust', 'Pumpkin', 'Lug Nut', 'Orbit', 'Nine', 'Captain Whiskers'];
 function catEvent() {
-  const h = home(), crew = crewPeople();
+  const h = home(), crew = crewPeople(), say = familySay('cat');
   const names = [...CAT_NAMES].sort(() => Math.random() - 0.5).slice(0, 3);
   const voters = names.map((nm, i) => (crew[i] ? crew[i].p.first : 'You'));
   return {
-    title: 'Stowaway', text: (`There is a cat in the cargo lock: skinny, gray, one torn ear, a kinked tail, and completely unimpressed by you. It is ` +
-        `sitting on the top of a crate, washing one paw, with the air of a small, ancient, extremely tired landlord. When you open the inner hatch it ` +
-        `looks up, unhurried, and gives you a long, level stare, and goes back to its paw.`),
+    title: say('title'), text: say('text'),
     choices: [
-      ...names.map((nm, i) => ({ label: `"${nm}," suggests ${voters[i]}`, run() {
+      ...names.map((nm, i) => ({ label: say('name.label', { name: nm, voter: voters[i] }), run() {
         h.cat = nm;
         homeLog(`${nm} the cat came aboard at ${G.state.planet}.`);
         for (const f of crewPeople()) likeAmbient(f.p, 1, null);
-        return (`${nm} it is. The cat, for its part, does not acknowledge the name, or the vote, or the existence of the arrangement. By the time you ` +
-            `take off, ${nm} has found the warmest spot on the ship, which is on the reactor housing, and has curled into a perfect gray circle, one ` +
-            `ear twitching. Somebody puts a saucer of milk down, and somebody else makes a small bed out of a folded jacket.`);
+        return say('name.result', { name: nm });
       } })),
-      { label: 'Put it back on the dock', run: () => ('You carry it back down the ramp, in both hands, and set it on the dock, and it gives you a ' +
-          'look you will remember for a long time, a long, level, wholly unsurprised stare, and walks off, with its tail high. Nobody on the crew ' +
-          'speaks to you for an hour. Somewhere, in the distance, a small, imperious meow.') },
+      { label: say('dock.label'), run: () => say('dock.result') },
     ],
   };
 }
@@ -495,24 +424,19 @@ function jobRole(job) {
   return pick(HIREABLE_ROLES);
 }
 function joinEvent(p) {
-  const role = p.role || jobRole(p.job), st = G.state;
+  const role = p.role || jobRole(p.job), st = G.state, say = familySay('join'), roleName = ROLE_NAMES[role].toLowerCase();
   return {
-    title: 'One More Berth', text: (`The trip is over, and the other passengers have gone ashore, but ${p.first} ${p.last} lingers at the airlock ` +
-        `with their bag, a battered, over-stuffed thing that has, over the burn, become oddly familiar. They shift it from hand to hand. They look at ` +
-        `the deck, and at the hatch, and at you, and back at the deck. "I've been thinking," they say at last, in a rush. "I don't really have ` +
-        `anywhere I need to be. And I like it here. I like all of you. Could ${shipTitle()} use a ${ROLE_NAMES[role].toLowerCase()}?" They hold your eye and wait.`),
+    title: say('title'), text: say('text', { first: p.first, last: p.last, ship: shipTitle(), role: roleName }),
     choices: [
-      { label: 'Welcome aboard', ...gated(needBerth), run() {
+      { label: say('c0.label'), ...gated(needBerth), run() {
         Object.assign(p, { role, skill: randInt(1, 2), location: null });
         p.wage = Math.round(ROLE_WAGE[role] * (0.6 + 0.3 * p.skill));
         st.crew.push(p.id);
         like(p, 2, `I signed on with ${shipTitle()}.`);
         homeLog(`${p.first} ${p.last} came aboard as a passenger and stayed as crew.`);
-        return `${p.first} lets out a breath so long it is almost a laugh, and drops their bag in the same bunk as before, with a thump. "Same one," they say. "It's lucky." Somebody, in the galley, starts to clap. (They join as your ${ROLE_NAMES[role].toLowerCase()}.)`;
+        return say('c0.result', { first: p.first, role: roleName });
       } },
-      { label: '"Not this time."', run: () => (`"I understand," ${p.first} says, quickly. "Really. If you ever need someone..." They write their contact code on the back of your hand, in pen, since they do not seem to have paper, ` +
-          `wave, shoulder their bag, and go down the ramp. You watch them all the way to the end of the dock, and, at the corner, they turn, and lift ` +
-          `a hand, and are gone.`) },
+      { label: say('c1.label'), run: () => say('c1.result', { first: p.first }) },
     ],
   };
 }
@@ -539,9 +463,9 @@ function homeHtml() {
 
 // For the Cold Water epilogue.
 function homeLine() {
-  const h = home(), bits = [`${shipTitle()[0].toUpperCase()}${shipTitle().slice(1)} is still flying.`];
-  if (h.cat) bits.push(`${h.cat} still sleeps on the reactor housing.`);
-  if (h.traditions.length) bits.push(`Every burn still has ${h.traditions.map(id => TRADITIONS[id].name).join(' and ')}.`);
+  const h = home(), t = familyLines('ship'), ship = shipTitle(), bits = [fillLine(t.flying, { ship: `${ship[0].toUpperCase()}${ship.slice(1)}` })];
+  if (h.cat) bits.push(fillLine(t.cat, { cat: h.cat }));
+  if (h.traditions.length) bits.push(fillLine(t.traditions, { list: h.traditions.map(id => TRADITIONS[id].name).join(' and ') }));
   return bits.join(' ');
 }
 
@@ -572,14 +496,15 @@ Mods.register({
       if (t.left < t.total * 0.08 && !t.homeEnd) { t.homeEnd = true; traditionMoment('end'); }
     });
     M.filter('chatter', pool => {
-      const lines = [];
+      const lines = [], c = familyLines('chatter');
       for (const { p } of crewPeople()) {
-        if (moodLow(p)) lines.push(`${p.first} has been quiet all watch.`, `${p.first} is rereading an old message from their ${missed(p)}.`);
-        if (moodHigh(p)) lines.push(`${p.first} is humming. ${p.first} never hums.`);
+        const n = p.first;
+        if (moodLow(p)) lines.push(fillLine(c.low[0], { n }), fillLine(c.low[1], { n, missed: missed(p) }));
+        if (moodHigh(p)) lines.push(fillLine(c.high, { n }));
       }
       const h = home();
-      if (h.cat) lines.push(`${h.cat} is asleep on the reactor housing again.`, `${h.cat} knocked a wrench off the workbench, on purpose, while making eye contact.`, `Somebody has been feeding ${h.cat} from the good rations.`);
-      for (const t of h.touches) lines.push(`${t}, and it makes the ship feel more like home.`);
+      if (h.cat) lines.push(...c.cat.map(t => fillLine(t, { cat: h.cat })));
+      for (const t of h.touches) lines.push(fillLine(c.touch, { touch: t }));
       return lines.length && Math.random() < 0.3 ? lines : pool;
     });
     M.on('missionDone', m => {
@@ -587,7 +512,7 @@ Mods.register({
       if (m.favorPid && st.people[m.favorPid]) {
         const f = st.people[m.favorPid];
         becomeLoyal(f, `The captain took me home to see my ${storyOf(f).rel}.`);
-        msg(`${f.first} goes ashore to see their ${missed(f)}, and comes back the next morning with red eyes and a bag of home cooking for everyone.`);
+        msg(fillLine(familyLines('ship').ashore, { n: f.first, missed: missed(f) }));
       }
       if (p && m.type === 'passenger' && p.opinion >= OPINION.WELCOME && !st.crew.includes(p.id) && Math.random() < 0.6) G.joinOffer = p;
     });

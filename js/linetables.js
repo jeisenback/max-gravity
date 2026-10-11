@@ -32,6 +32,9 @@ const LINE_TABLES = [
   { id: 'lines:family-good-news', title: 'A letter from home: good news', file: 'js/familytext.js', where: 'transit', table: () => GOOD_NEWS },
   { id: 'lines:family-bad-news', title: 'A letter from home: bad news', file: 'js/familytext.js', where: 'transit', table: () => BAD_NEWS },
   { id: 'lines:family-holidays', title: 'Holidays from home: the scene and keeping it', file: 'js/familytext.js', where: 'transit', table: () => holidayLines() },
+  { id: 'lines:family-touches', title: 'What a crew member puts up on the ship', file: 'js/familytext.js', where: 'transit', table: () => TOUCH_LINES },
+  { id: 'lines:family-chatter', title: 'What the crew say of a shipmate down or up, the cat and the touches', file: 'js/familytext.js', where: 'transit', table: () => CHATTER_LINES },
+  { id: 'lines:family-ship', title: 'The ship as home: the epilogue line, a favor done, a letter, a touch', file: 'js/familytext.js', where: 'transit', table: () => SHIP_LINES },
   { id: 'lines:trait-chatter', title: 'Crew chatter, by trait', file: 'js/peopletext.js', plain: true, where: 'transit', table: () => Object.fromEntries(Object.entries(TRAITS).map(([t, d]) => [t, d.chatter])) },
 ];
 const lineTable = id => LINE_TABLES.find(t => t.id === id);
@@ -53,6 +56,7 @@ function linedText(id, node, path = '') {
 const socialTable = name => linedText(`lines:social-${name}`, lineTable(`lines:social-${name}`).table());  // the tables of js/social.js
 const barLines = name => linedText(`lines:bar-${name}`, lineTable(`lines:bar-${name}`).table());
 const familyLines = name => linedText(`lines:family-${name}`, lineTable(`lines:family-${name}`).table());  // the tables of js/familytext.js (#457)
+const fillLine = (t, vars) => t.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));  // a line of a table with its {words} filled
 const holidayKey = h => h.name.toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-|-$/g, '');  // the key of a holiday's lines: its name ('landing-day')
 const holidayLines = () => Object.fromEntries(HOLIDAYS.map(h => [holidayKey(h), { text: h.text, join: h.join }]));
 const traitChatter = trait => [].concat(linedText('lines:trait-chatter', TRAITS[trait].chatter, trait));
@@ -71,5 +75,5 @@ function peopleEventRegistry() {
   const row = (id, title, extra) => ({ id, kind: 'people', title, file: 'js/people.js', where: 'transit', scene: { title, choices: [], parts: PEOPLE_LINES[id], noTitle: true }, ...extra });
   const bar = (id, title, extra) => row(id, title, { file: 'js/bartopics.js', where: 'port', ...extra });
   return [...PAX_EVENTS.map(e => row(`people:pax:${e.id}`, PEOPLE_LINES[`people:pax:${e.id}`].title, { event: e })), ...Object.entries(CREW_EVENTS).map(([trait, make]) => row(`people:crew:${trait}`, PEOPLE_LINES[`people:crew:${trait}`].title, { trait, make })),
-    ...Object.keys(SOCIAL_SCENES).map(id => row(`social:${id}`, PEOPLE_LINES[`social:${id}`].title || `Social: ${id}`, { file: 'js/social.js', social: id })), ...Object.keys(FAMILY_SCENES).map(id => row(`family:${id}`, `Sit with a shipmate: ${id}`, { file: 'js/family.js', family: id })), ...BAR_TOPICS.map(t => bar(`bar:${t.id}`, `Bar topic: ${t.id}`, { topic: t })), bar('bar:goal-help', 'Bar topic: what they are traveling for (the help scene)', { help: 'goal' }), bar('bar:secret-help', 'Bar topic: a secret (the help scene)', { help: 'secret' })];
+    ...Object.keys(SOCIAL_SCENES).map(id => row(`social:${id}`, PEOPLE_LINES[`social:${id}`].title || `Social: ${id}`, { file: 'js/social.js', social: id })), ...Object.keys(FAMILY_SCENES).map(id => row(`family:${id}`, `Found family: ${id}`, { file: 'js/family.js', family: id })), ...BAR_TOPICS.map(t => bar(`bar:${t.id}`, `Bar topic: ${t.id}`, { topic: t })), bar('bar:goal-help', 'Bar topic: what they are traveling for (the help scene)', { help: 'goal' }), bar('bar:secret-help', 'Bar topic: a secret (the help scene)', { help: 'secret' })];
 }

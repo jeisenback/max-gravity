@@ -60,6 +60,20 @@ const playHome = () => {
   { const p = reset(); storyOf(p); G.messages = []; Mods.emit('missionDone', { favorPid: p.id }); note('favor:done', [G.messages.map(m => m.text), p.loyal, home().log.map(l => l.text)]); }
   // a letter, what it says to the player in the note and in the log of the port
   { const p = reset(); const s = G.state; storyOf(p); s.crew = [p.id]; s.letterAt = undefined; p.letterDay = undefined; seq([0.1, 0.1, 0.5]); note('letter:note', letters(currentPlanet())); Math.random = real; }
+  // a birthday with nothing in the hold to give: the reason the gift is shut
+  { const p = reset(); G.state.cargo.luxury = 0; const ev = occasionEvent({ kind: 'birthday', id: p.id, day: G.state.day + 3 }); note('birthday:gate', [ev.choices[1].can(), ev.choices[1].why()]); }
+  // the touches a crew member adds to the ship in a burn, with the line it makes on the comms
+  { const p = reset(), s = G.state; for (const id of s.crew) storyOf(s.people[id]); G.transit = G.transit || { comms: [], days: 3 }; const lines = [], was = window.comm; window.comm = t => lines.push(t);
+    seq([0.1, 0.1, 0.5, 0.1, 0.9, 0.1, 0.3]); addTouches(); Math.random = real; window.comm = was; note('touches:add', [lines, home().touches]); }
+  // every way a pick can go, by forcing the dice: the way they act on a birthday, the openings of the news, and what the choices give back
+  const forceBuild = (key, setup, n, build) => { for (let k = 0; k < n; k++) { const p = reset(); setup(p, G.state); seq([(k + 0.5) / n]); const ev = build(p); Math.random = real; note(`${key}:${k}`, ev.text); } };
+  const forceRun = (key, setup, n, build, i) => { for (let k = 0; k < n; k++) { const p = reset(); setup(p, G.state); const ev = build(p); G.state.credits = 20000; seq([(k + 0.5) / n]); const line = ev.choices[i].run(); Math.random = real; note(`${key}:${i}:${k}`, line); } };
+  forceBuild('force:birthday', () => {}, 4, p => occasionEvent({ kind: 'birthday', id: p.id, day: st.day + 3 }));
+  forceBuild('force:good:open', withNews(true), 8, p => newsEvent(p));
+  forceBuild('force:bad:open', withNews(false), 8, p => newsEvent(p));
+  for (const i of [0, 1]) forceRun('force:good', withNews(true), 3, p => newsEvent(p), i);
+  for (const i of [0, 1, 2]) forceRun('force:bad', withNews(false), 3, p => newsEvent(p), i === 2 ? 2 : i);
+  { const bonded = (p, s) => { withNews(false)(p, s); for (let i = 0; i < 4; i++) addBond({ id: p.id, p }, { id: AID, p: s.people[AID] }, 2); }; forceRun('force:bad:friend', bonded, 3, p => newsEvent(p), 2); }
   return out;
 };
 

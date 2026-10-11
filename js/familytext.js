@@ -141,3 +141,35 @@ const BAD_NEWS = [
   'the school where {who} teaches is closing at the end of the term',
   '{who} left a message that says only "call when you can," and the line does not connect'
 ];
+
+// What a crew member puts up on the ship, what the crew say of it, and the ship's own lines (#457). Words in {braces} are filled by family.js.
+const TOUCH_LINES = [
+  '{n} hung a {team} pennant in the galley',
+  '{n} is growing basil in a ration tin on the galley shelf',
+  '{n} painted a small {home} skyline on their bunk panel',
+  '{n} rigged fairy lights along the berth corridor',
+  '{n} put up a picture of their {missed} by the coffee maker',
+  '{n} keeps a battered copy of "{book}" in the galley for anyone to borrow',
+  '{n} chalked a hopscotch grid on the cargo bay deck, and people use it',
+  '{n} tied a small bell by the airlock, so you can hear who is coming and going',
+  '{n} started a jar by the galley door for good news, and it already has three slips in it',
+  '{n} taped a hand-drawn star chart to the cockpit bulkhead, with everybody\'s home marked in a different color',
+  '{n} put a small potted succulent on the nav console, and named it, and refuses to say what',
+  '{n} set up a board by the mess with everybody\'s birthday on it, in careful, curly writing'
+];
+
+const CHATTER_LINES = {
+  low: ['{n} has been quiet all watch.', '{n} is rereading an old message from their {missed}.'],
+  high: '{n} is humming. {n} never hums.',
+  cat: ['{cat} is asleep on the reactor housing again.', '{cat} knocked a wrench off the workbench, on purpose, while making eye contact.', 'Somebody has been feeding {cat} from the good rations.'],
+  touch: '{touch}, and it makes the ship feel more like home.'
+};
+
+const SHIP_LINES = {
+  flying: '{ship} is still flying.',
+  cat: '{cat} still sleeps on the reactor housing.',
+  traditions: 'Every burn still has {list}.',
+  ashore: '{n} goes ashore to see their {missed}, and comes back the next morning with red eyes and a bag of home cooking for everyone.',
+  letter: 'A message for {n} at {planet}: {text}.',
+  touch: '[Ship] {text}.'
+};

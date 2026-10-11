@@ -234,5 +234,165 @@
  {
   "key": "letter:note",
   "text": "[\"A message for Sam at Ceres Station: their sister Tariq won a little money on the ring-ball pool, and is buying everyone a round.\"]"
+ },
+ {
+  "key": "birthday:gate",
+  "text": "[false,\"There is no luxury cargo in the hold.\"]"
+ },
+ {
+  "key": "touches:add",
+  "text": "[[\"[Ship] Sam is growing basil in a ration tin on the galley shelf.\",\"[Ship] Ben put a small potted succulent on the nav console, and named it, and refuses to say what.\"],[\"Sam is growing basil in a ration tin on the galley shelf\",\"Ben put a small potted succulent on the nav console, and named it, and refuses to say what\"]]"
+ },
+ {
+  "key": "force:birthday:0",
+  "text": "\"It is 12 Jun 2214, and it is Sam's birthday. Sam hasn't mentioned it. All week, Sam has been somewhere near the galley whenever anyone is in it.\""
+ },
+ {
+  "key": "force:birthday:1",
+  "text": "\"It is 12 Jun 2214, and it is Sam's birthday. Sam mentioned it once, weeks ago, in passing. At every meal since, Sam has been busy with something on the far side of the galley.\""
+ },
+ {
+  "key": "force:birthday:2",
+  "text": "\"It is 12 Jun 2214, and it is Sam's birthday. Sam says birthdays are for dirtsiders. They have said it twice this morning, too loudly, and have, for some reason, put on their good jacket.\""
+ },
+ {
+  "key": "force:birthday:3",
+  "text": "\"It is 12 Jun 2214, and it is Sam's birthday. Sam woke up early, and cleaned the galley, and is now sitting straight at the table, with a clean mug set out at every place.\""
+ },
+ {
+  "key": "force:good:open:0",
+  "text": "\"Sam comes into the galley fast, holding the terminal out in front of them. \\\"Listen,\\\" Sam says. \\\"Listen to this.\\\" The message reads: their sister got into the academy. Sam reads it aloud, loses their place, and starts again.\""
+ },
+ {
+  "key": "force:good:open:1",
+  "text": "\"Sam stops you at the hatch. \\\"Captain. Listen to this.\\\" The message is open on the terminal: their sister got into the academy. Sam reads it aloud twice. The second time, Sam has to stop partway through.\""
+ },
+ {
+  "key": "force:good:open:2",
+  "text": "\"You find Sam in the corridor with the terminal pressed flat against their chest and their eyes shut. Then they hold it out to you: their sister got into the academy. \\\"I had to tell somebody,\\\" Sam says. \\\"You were closest.\\\"\""
+ },
+ {
+  "key": "force:good:open:3",
+  "text": "\"Sam has been humming since the start of watch. You ask why, and Sam hands you the terminal: their sister got into the academy. Sam stands there while you read it.\""
+ },
+ {
+  "key": "force:good:open:4",
+  "text": "\"Sam slides the terminal across the galley table without a word and watches you read it. The message: their sister got into the academy. \\\"Third time I have read it,\\\" Sam says. \\\"It still says that.\\\"\""
+ },
+ {
+  "key": "force:good:open:5",
+  "text": "\"Over the intercom, Sam: \\\"Captain, can you come aft? It is not an emergency.\\\" You find Sam at the engine room hatch with the terminal. The message: their sister got into the academy. Sam is grinning at the deck.\""
+ },
+ {
+  "key": "force:good:open:6",
+  "text": "\"The message came in at the last port, and Sam carried it for a watch before saying anything. At the galley table Sam says it: their sister got into the academy. Somebody at the table drops a spoon.\""
+ },
+ {
+  "key": "force:good:open:7",
+  "text": "\"Sam is waiting for you at the end of the watch, rocking on their heels. \\\"Captain, do you have a minute?\\\" The terminal is already out: their sister got into the academy. \\\"That is all,\\\" Sam says. \\\"That is the whole thing.\\\"\""
+ },
+ {
+  "key": "force:bad:open:0",
+  "text": "\"Sam has been quiet since the last port. Sam stands the watch and eats, and twice has stopped with the fork halfway up. A message came in at the last port: their father is sick. Sam has told no one. You saw the screen over their shoulder in the corridor.\""
+ },
+ {
+  "key": "force:bad:open:1",
+  "text": "\"Sam missed the start of the watch briefing. You find Sam on a crate in the cargo bay with the terminal dark in their lap. The last message on it reads: their father is sick.\""
+ },
+ {
+  "key": "force:bad:open:2",
+  "text": "\"Sam has not touched their plate. Nobody at the galley table has said anything. The message is on the terminal by Sam's elbow: their father is sick.\""
+ },
+ {
+  "key": "force:bad:open:3",
+  "text": "\"Sam does the whole shift without a word and checks every gauge twice. Late, in the corridor, Sam tells you: their father is sick. \\\"I'm fine,\\\" Sam says.\""
+ },
+ {
+  "key": "force:bad:open:4",
+  "text": "\"Sam asks to speak to you in the cargo bay, where the hull carries the noise. Sam says it flat, without the terminal: their father is sick. \\\"I do not need anything,\\\" Sam says. \\\"I wanted you to know why I am slow.\\\"\""
+ },
+ {
+  "key": "force:bad:open:5",
+  "text": "\"The terminal pings in the galley and Sam reads it standing, then sits down. The message: their father is sick. Sam finishes the coffee. Nobody at the table asks.\""
+ },
+ {
+  "key": "force:bad:open:6",
+  "text": "\"Sam has been at the comms station for an hour, sending messages and waiting out the lag. When you come in, Sam turns the screen toward you: their father is sick.\""
+ },
+ {
+  "key": "force:bad:open:7",
+  "text": "\"You find Sam's tool roll closed on the bench, which it never is. Sam is in the corridor with the terminal. Sam says: their father is sick. \\\"I will be on my watch,\\\" Sam says.\""
+ },
+ {
+  "key": "force:good:0:0",
+  "text": "\"You break out the good bottle. Within the hour everyone who is not on watch is in the galley, and everyone has a toast. Someone finds the guitar, which has two strings. It goes past midnight. Nobody mentions the watch bill.\""
+ },
+ {
+  "key": "force:good:0:1",
+  "text": "\"You open the locker and put out whatever the ship has. Cards come out, and the cook brings tomorrow's noodles forward a day. Sam tells the story three times, and the story changes each time. The galley is full until the watch bell.\""
+ },
+ {
+  "key": "force:good:0:2",
+  "text": "\"You call the galley to order with a spoon on a pot. Everyone off watch comes. The cook finds a cake mix at the back of the cupboard and makes it in the pressure pan. It comes out flat. It is eaten.\""
+ },
+ {
+  "key": "force:good:1:0",
+  "text": "\"Sam shows you the picture. A minute later Sam shows you again. \\\"I keep wanting to tell someone,\\\" Sam says, and laughs.\""
+ },
+ {
+  "key": "force:good:1:1",
+  "text": "\"\\\"Tell me all of it,\\\" you say, and Sam does, from the start, with the dates. At the end Sam goes back to the part about the street and tells that again.\""
+ },
+ {
+  "key": "force:good:1:2",
+  "text": "\"You read it over Sam's shoulder. \\\"Send them something,\\\" you say. Sam sends a line from the bridge console and watches the relay clock for the next hour.\""
+ },
+ {
+  "key": "force:bad:0:0",
+  "text": "\"You do not fix anything. You stay in the galley with a pot of tea going cold while Sam looks at the wall. After a time Sam starts talking, low, about the person and the place and the years. When they get up, they touch your shoulder on the way out.\""
+ },
+ {
+  "key": "force:bad:0:1",
+  "text": "\"You bring two cups to the cargo bay and sit on a crate. Sam does not talk for a while. When Sam does, it is about the street they grew up on and a night in the market. You stay until the watch bell, and Sam says thank you at the hatch.\""
+ },
+ {
+  "key": "force:bad:0:2",
+  "text": "\"You sit on the other side of the galley table and do not look at the terminal. Sam tells you what the section was like before the cuts. It takes an hour. At the end Sam washes both cups.\""
+ },
+ {
+  "key": "force:bad:1:0",
+  "text": "\"Sam sends it at the next relay with a short message. For two days Sam checks the terminal every few minutes. When the reply comes, Sam reads it aloud in the galley. \\\"They are all right,\\\" Sam says. \\\"They are all right.\\\" They sit down.\""
+ },
+ {
+  "key": "force:bad:1:1",
+  "text": "\"Sam sends it from the bridge console with two lines. The reply is nine hours behind the question. When it comes, Sam reads it standing at the console and says nothing until the end. \\\"They are all right,\\\" Sam says. The next watch Sam is early.\""
+ },
+ {
+  "key": "force:bad:1:2",
+  "text": "\"Sam will not take it at first. Then Sam says it comes out of the pay, all of it, and sends it with the evening relay. Two days later the reply comes. Sam reads it twice in the galley and puts the terminal in a pocket. They stay for dinner.\""
+ },
+ {
+  "key": "force:bad:2:0",
+  "text": "\"Sam goes to their bunk. You hear the terminal, faintly, and later nothing. Their work suffers for a time: a missed step, a cold cup. (Their skill counts one lower until they feel better.)\""
+ },
+ {
+  "key": "force:bad:2:1",
+  "text": "\"Sam takes the cargo bay for the rest of the watch and does the manifest twice. You leave the door open. A missed step shows up in the log the next day, and Sam corrects it before anyone asks. (Their skill counts one lower until they feel better.)\""
+ },
+ {
+  "key": "force:bad:2:2",
+  "text": "\"Sam takes the cargo bay for the rest of the watch and does the manifest twice. You leave the door open. A missed step shows up in the log the next day, and Sam corrects it before anyone asks. (Their skill counts one lower until they feel better.)\""
+ },
+ {
+  "key": "force:bad:friend:2:0",
+  "text": "\"Ana takes Sam a mug of something hot and sits down beside them on the crate by the galley wall. Ana does not speak. They are still there two hours later. Through the hatch you see two heads close together. Once, Sam's shoulders shake.\""
+ },
+ {
+  "key": "force:bad:friend:2:1",
+  "text": "\"Ana finds Sam in the cargo bay, sits down on the next crate, opens a ration bar and hands half across. They eat without talking. At the watch bell they go forward together.\""
+ },
+ {
+  "key": "force:bad:friend:2:2",
+  "text": "\"Ana takes Sam's next hour at the console without being asked. Sam sits with the terminal on their knees and does not look at it. When Ana comes back for the cup, Sam says something, and Ana nods.\""
  }
 ]
