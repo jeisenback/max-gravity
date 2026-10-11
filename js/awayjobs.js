@@ -95,15 +95,11 @@ function awayOffer() {
 const awayJob = a => AWAY.find(t => t.id === a.tpl);
 
 // ---------- putting it to the captain ----------
-const PITCH = [
-  { id: 'pay', label: a => `Put the fee in front of them (it pays about 900 cr, all told)`, loves: ['greedy', 'secretive'], hates: ['pious', 'generous'],
-    yes: 'looks at the figure, and at the route, and does the sum.', no: 'does not look at the figure.' },
-  { id: 'owed', label: () => 'Call in what the captain owes you', opinion: { who: 'captain', min: OPINION.FRIEND }, loves: ['generous', 'kind', 'brave'], hates: ['greedy', 'rude'],
-    yes: 'goes quiet, because it is true.', no: 'does not like being reminded of what they owe.' },
-  { id: 'right', label: () => 'Say it is the right thing to do', loves: ['kind', 'pious', 'brave', 'homesick'], hates: ['greedy', 'rude'],
-    yes: 'hears it out, and does not look away.', no: 'says the ship is not a charity.' },
-  { id: 'dare', label: () => 'Dare them to take it', loves: ['brave', 'drunk', 'talkative'], hates: ['nervous', 'pious'],
-    yes: 'laughs, short and sharp, and lets it stand.', no: 'does not take the bait.' },
+const PITCH = [  // the four ways of putting it; their words (the button, and what the captain does when it lands well or badly) are the lines of scene:pitch (hiredscenes.js)
+  { id: 'pay', loves: ['greedy', 'secretive'], hates: ['pious', 'generous'] },
+  { id: 'owed', opinion: { who: 'captain', min: OPINION.FRIEND }, loves: ['generous', 'kind', 'brave'], hates: ['greedy', 'rude'] },
+  { id: 'right', loves: ['kind', 'pious', 'brave', 'homesick'], hates: ['greedy', 'rude'] },
+  { id: 'dare', loves: ['brave', 'drunk', 'talkative'], hates: ['nervous', 'pious'] },
 ];
 function pitchOdds(arg, a) {
   const h = hired(), cap = hiredCaptain(), r = barReact(cap, arg.loves, arg.hates), plan = currentPlan();
@@ -121,22 +117,22 @@ function bookRun(a) {
   return h.plan.run;
 }
 function pitchScene(a) {
-  const h = hired(), st = G.state, cap = hiredCaptain(), job = awayJob(a);
+  const h = hired(), st = G.state, cap = hiredCaptain(), job = awayJob(a), say = (key, vars) => sceneSay('scene:pitch', key, { last: cap.last, first: cap.first, ...vars });
   const choices = PITCH.map(p => {
     const odds = pitchOdds(p, a);
-    return { label: `${p.label(a)} [${jobOddsWord(odds)}]`, opinion: p.opinion, run() {
+    return { label: `${say(`${p.id}.label`)} [${jobOddsWord(odds)}]`, opinion: p.opinion, run() {
       a.pitched = `${st.day}@${st.planet}`;
       const r = barReact(cap, p.loves, p.hates), ok = Math.random() < odds;
       if (ok) {
         bookRun(a); a.booked = true;
-        return `You put it to Captain ${cap.last}, and ${cap.first} ${r.n === 2 ? p.yes : 'listens, and weighs it'} ${r.line} "All right," ${cap.first} says. "${SYSTEMS[a.sid].name}, then. Do not make me regret it." The run is set for ${a.planet}.`.replace(/\s+/g, ' ');
+        return say('win', { react: r.n === 2 ? say(`${p.id}.yes`) : say('win.weighs'), line: r.line, system: SYSTEMS[a.sid].name, planet: a.planet }).replace(/\s+/g, ' ');
       }
-      like(cap, r.n < 0 ? -1 : 0, 'You pushed me to fly somewhere I did not want to go.');
-      return `You put it to Captain ${cap.last}, and ${cap.first} ${r.n < 0 ? p.no : 'listens, and shakes their head'} ${r.line} "Not this run," ${cap.first} says. "Ask me again at the next stop, if it is still worth asking."`.replace(/\s+/g, ' ');
+      like(cap, r.n < 0 ? -1 : 0, say('lose.memory'));
+      return say('lose', { react: r.n < 0 ? say(`${p.id}.no`) : say('lose.weighs'), line: r.line }).replace(/\s+/g, ' ');
     } };
   });
-  choices.push({ label: 'Never mind', run: () => 'You let it lie. The job will keep, for a while.' });
-  return { title: 'Putting It to the Captain', personal: true, text: `${fill2(jobBlurb(job, true), a.ctx)} It is ${a.ctx.dest}, ${a.ctx.system}: ${a.days} days out, and the captain has other runs in mind. How do you put it?`, choices };
+  choices.push({ label: say('never.label'), run: () => say('never.result') });
+  return { title: say('title'), personal: true, text: say('text', { blurb: fill2(jobBlurb(job, true), a.ctx), dest: a.ctx.dest, system: a.ctx.system, days: a.days }), choices };
 }
 const fill2 = (t, ctx) => t.replace(/\{(\w+)\}/g, (m, k) => (ctx[k] !== undefined ? ctx[k] : m));
 const pitchedNow = a => a.pitched === `${G.state.day}@${G.state.planet}`;

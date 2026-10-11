@@ -9,6 +9,9 @@
     "mem": [
      "9 Jul 2214: You said you would do better, and said it plainly."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -18,6 +21,9 @@
     "mem": [
      "9 Jul 2214: You named what you got wrong and apologized for it."
     ],
+    "fx": {
+     "p1": 2
+    },
     "next": null
    },
    {
@@ -27,6 +33,9 @@
     "mem": [
      "9 Jul 2214: You told me I had been unfair."
     ],
+    "fx": {
+     "p1": -2
+    },
     "next": null
    }
   ],
@@ -94,6 +103,11 @@
      "9 Jul 2214: Hana and I could not share a ship, and you let me go.",
      "9 Jul 2214: You kept me aboard when Mateo and I could not share a ship."
     ],
+    "fx": {
+     "p2": -3,
+     "p3": 2,
+     "p10": 0
+    },
     "next": null
    },
    {
@@ -104,6 +118,11 @@
      "9 Jul 2214: You kept me aboard when Hana and I could not share a ship.",
      "9 Jul 2214: Mateo and I could not share a ship, and you let me go."
     ],
+    "fx": {
+     "p2": 2,
+     "p3": -3,
+     "p10": 0
+    },
     "next": null
    },
    {
@@ -114,6 +133,10 @@
      "9 Jul 2214: You made me stay on a ship with Hana.",
      "9 Jul 2214: You made me stay on a ship with Mateo."
     ],
+    "fx": {
+     "p2": -1,
+     "p3": -1
+    },
     "next": null
    }
   ],
@@ -279,6 +302,9 @@
     "mem": [
      "9 Jul 2214: The captain walked the Ore Runner with me, and listened."
     ],
+    "fx": {
+     "c:tomas": 1
+    },
     "next": null
    }
   ],
@@ -298,6 +324,9 @@
     "mem": [
      "9 Jul 2214: The captain walked the Ore Runner with me, and listened."
     ],
+    "fx": {
+     "c:tomas": 1
+    },
     "next": null
    }
   ],
@@ -317,6 +346,9 @@
     "mem": [
      "9 Jul 2214: The captain walked the Ore Runner with me, and listened."
     ],
+    "fx": {
+     "c:tomas": 1
+    },
     "next": null
    }
   ],
@@ -343,6 +375,632 @@
   ]
  },
  {
+  "id": "scene:pitch:greedy",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester looks at the figure, and at the route, and does the sum. Hester counts it, tells you the total, and decides you are worth knowing. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester counts it, tells you the total, and decides you are worth knowing. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester asks what it would fetch, and does not like the figure. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester does not like being reminded of what they owe. Hester asks what it would fetch, and does not like the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "fx": {
+     "p1": -1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester asks what it would fetch, and does not like the figure. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester says the ship is not a charity. Hester asks what it would fetch, and does not like the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "fx": {
+     "p1": -1
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.999,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   }
+  ],
+  "title": "Putting It to the Captain",
+  "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and does not trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
+  "labels": [
+   "Put the fee in front of them (it pays about 900 cr, all told) [even odds]",
+   "Call in what the captain owes you [long odds]",
+   "Say it is the right thing to do [long odds]",
+   "Dare them to take it [long odds]",
+   "Never mind"
+  ]
+ },
+ {
+  "id": "scene:pitch:pious",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester turns the cord at their wrist and says nothing. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester does not look at the figure. Hester turns the cord at their wrist and says nothing. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "fx": {
+     "p1": -1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester hears it out, and does not look away. Hester says a short word over you, and means it. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester says a short word over you, and means it. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester turns the cord at their wrist and says nothing. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester does not take the bait. Hester turns the cord at their wrist and says nothing. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "fx": {
+     "p1": -1
+    },
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.999,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   }
+  ],
+  "title": "Putting It to the Captain",
+  "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and does not trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
+  "labels": [
+   "Put the fee in front of them (it pays about 900 cr, all told) [long odds]",
+   "Call in what the captain owes you [long odds]",
+   "Say it is the right thing to do [even odds]",
+   "Dare them to take it [long odds]",
+   "Never mind"
+  ]
+ },
+ {
+  "id": "scene:pitch:brave",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester goes quiet, because it is true. Hester claps you on the shoulder, hard. You will have a bruise. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester claps you on the shoulder, hard. You will have a bruise. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester hears it out, and does not look away. Hester claps you on the shoulder, hard. You will have a bruise. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester claps you on the shoulder, hard. You will have a bruise. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester laughs, short and sharp, and lets it stand. Hester claps you on the shoulder, hard. You will have a bruise. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester claps you on the shoulder, hard. You will have a bruise. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.999,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   }
+  ],
+  "title": "Putting It to the Captain",
+  "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and does not trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
+  "labels": [
+   "Put the fee in front of them (it pays about 900 cr, all told) [long odds]",
+   "Call in what the captain owes you [even odds]",
+   "Say it is the right thing to do [even odds]",
+   "Dare them to take it [even odds]",
+   "Never mind"
+  ]
+ },
+ {
+  "id": "scene:pitch:generous",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester waves it away, and asks whether you have eaten. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester does not look at the figure. Hester waves it away, and asks whether you have eaten. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "fx": {
+     "p1": -1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester goes quiet, because it is true. Hester says to have the rest, and means a bottle at the next port. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester says to have the rest, and means a bottle at the next port. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.999,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   }
+  ],
+  "title": "Putting It to the Captain",
+  "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and does not trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
+  "labels": [
+   "Put the fee in front of them (it pays about 900 cr, all told) [long odds]",
+   "Call in what the captain owes you [even odds]",
+   "Say it is the right thing to do [long odds]",
+   "Dare them to take it [long odds]",
+   "Never mind"
+  ]
+ },
+ {
+  "id": "scene:pitch:rude",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester says what they think of that, in order, from the list, and does not raise their voice. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester does not like being reminded of what they owe. Hester says what they think of that, in order, from the list, and does not raise their voice. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "fx": {
+     "p1": -1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester says what they think of that, in order, from the list, and does not raise their voice. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester says the ship is not a charity. Hester says what they think of that, in order, from the list, and does not raise their voice. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "fx": {
+     "p1": -1
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.999,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   }
+  ],
+  "title": "Putting It to the Captain",
+  "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and does not trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
+  "labels": [
+   "Put the fee in front of them (it pays about 900 cr, all told) [long odds]",
+   "Call in what the captain owes you [long odds]",
+   "Say it is the right thing to do [long odds]",
+   "Dare them to take it [long odds]",
+   "Never mind"
+  ]
+ },
+ {
+  "id": "scene:pitch:nervous",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester flinches, and checks the seal on the nearest hatch. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester does not take the bait. Hester flinches, and checks the seal on the nearest hatch. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "fx": {
+     "p1": -1
+    },
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.999,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   }
+  ],
+  "title": "Putting It to the Captain",
+  "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and does not trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
+  "labels": [
+   "Put the fee in front of them (it pays about 900 cr, all told) [long odds]",
+   "Call in what the captain owes you [long odds]",
+   "Say it is the right thing to do [long odds]",
+   "Dare them to take it [long odds]",
+   "Never mind"
+  ]
+ },
+ {
+  "id": "scene:pitch:kind",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester goes quiet, because it is true. Hester takes your hand for a moment and does not say anything. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester takes your hand for a moment and does not say anything. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester hears it out, and does not look away. Hester takes your hand for a moment and does not say anything. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester takes your hand for a moment and does not say anything. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "mem": [
+     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+    ],
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.999,
+    "text": "You let it lie. The job will keep, for a while.",
+    "next": null
+   }
+  ],
+  "title": "Putting It to the Captain",
+  "text": "Mrs. Adeyemi has a sealed package for a contact on Mars, and does not trust the post. It is Mars, Mars: 5 days out, and the captain has other runs in mind. How do you put it?",
+  "labels": [
+   "Put the fee in front of them (it pays about 900 cr, all told) [long odds]",
+   "Call in what the captain owes you [even odds]",
+   "Say it is the right thing to do [even odds]",
+   "Dare them to take it [long odds]",
+   "Never mind"
+  ]
+ },
+ {
   "id": "scene:yard-office:used:gunner:un",
   "plays": [
    {
@@ -361,6 +1019,9 @@
     "i": 2,
     "roll": 0.5,
     "text": "The inspector spends two hours in her with a light and a clipboard. Her drive is sound. Her life support is tired, and the fire control cable has been spliced where it should not be. You put the list in front of the broker, and 950 cr comes off the price.",
+    "fx": {
+     "credits": -150
+    },
     "next": null
    },
    {
@@ -435,6 +1096,9 @@
     "i": 2,
     "roll": 0.5,
     "text": "The inspector spends two hours in her with a light and a clipboard. She is sound, with a sticky valve in the coolant loop and a worn seal on the cargo hatch. You put the list in front of the broker, and 1,400 cr comes off the price.",
+    "fx": {
+     "credits": -150
+    },
     "next": null
    },
    {
@@ -472,6 +1136,9 @@
     "i": 2,
     "roll": 0.5,
     "text": "The inspector spends two hours in her with a light and a clipboard. She is sound, with a sticky valve in the coolant loop and a worn seal on the cargo hatch. You put the list in front of the broker, and 1,400 cr comes off the price.",
+    "fx": {
+     "credits": -150
+    },
     "next": null
    },
    {
@@ -515,6 +1182,12 @@
      "9 Jul 2214: You came aboard easy to get along with.",
      "9 Jul 2214: You came aboard easy to get along with."
     ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "c:cato": 1
+    },
     "next": null
    }
   ],
@@ -551,6 +1224,12 @@
      "9 Jul 2214: You came aboard easy to get along with.",
      "9 Jul 2214: You came aboard easy to get along with."
     ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "c:cato": 1
+    },
     "next": null
    }
   ],
@@ -587,6 +1266,12 @@
      "9 Jul 2214: You came aboard easy to get along with.",
      "9 Jul 2214: You came aboard easy to get along with."
     ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "c:cato": 1
+    },
     "next": null
    }
   ],
@@ -623,6 +1308,12 @@
      "9 Jul 2214: You came aboard easy to get along with.",
      "9 Jul 2214: You came aboard easy to get along with."
     ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "c:cato": 1
+    },
     "next": null
    }
   ],
@@ -659,6 +1350,12 @@
      "9 Jul 2214: You came aboard easy to get along with.",
      "9 Jul 2214: You came aboard easy to get along with."
     ],
+    "fx": {
+     "p1": 1,
+     "c:yelena": 1,
+     "c:ruben": 1,
+     "c:cato": 1
+    },
     "next": null
    }
   ],
@@ -695,6 +1392,12 @@
      "9 Jul 2214: You came aboard easy to get along with.",
      "9 Jul 2214: You came aboard easy to get along with."
     ],
+    "fx": {
+     "p1": 1,
+     "c:yelena": 1,
+     "c:ruben": 1,
+     "c:cato": 1
+    },
     "next": null
    }
   ],
@@ -731,6 +1434,12 @@
      "9 Jul 2214: You came aboard easy to get along with.",
      "9 Jul 2214: You came aboard easy to get along with."
     ],
+    "fx": {
+     "p1": 1,
+     "c:yelena": 1,
+     "c:ruben": 1,
+     "c:cato": 1
+    },
     "next": null
    }
   ],
@@ -767,6 +1476,12 @@
      "9 Jul 2214: You came aboard easy to get along with.",
      "9 Jul 2214: You came aboard easy to get along with."
     ],
+    "fx": {
+     "p1": 1,
+     "c:yelena": 1,
+     "c:ruben": 1,
+     "c:cato": 1
+    },
     "next": null
    }
   ],
@@ -803,6 +1518,12 @@
      "9 Jul 2214: You came aboard easy to get along with.",
      "9 Jul 2214: You came aboard easy to get along with."
     ],
+    "fx": {
+     "p1": 1,
+     "c:bexa": 1,
+     "c:pax": 1,
+     "c:cato": 1
+    },
     "next": null
    }
   ],
@@ -839,6 +1560,12 @@
      "9 Jul 2214: You came aboard easy to get along with.",
      "9 Jul 2214: You came aboard easy to get along with."
     ],
+    "fx": {
+     "p1": 1,
+     "c:bexa": 1,
+     "c:pax": 1,
+     "c:cato": 1
+    },
     "next": null
    }
   ],
@@ -875,6 +1602,12 @@
      "9 Jul 2214: You came aboard easy to get along with.",
      "9 Jul 2214: You came aboard easy to get along with."
     ],
+    "fx": {
+     "p1": 1,
+     "c:bexa": 1,
+     "c:pax": 1,
+     "c:cato": 1
+    },
     "next": null
    }
   ],
@@ -911,6 +1644,12 @@
      "9 Jul 2214: You came aboard easy to get along with.",
      "9 Jul 2214: You came aboard easy to get along with."
     ],
+    "fx": {
+     "p1": 1,
+     "c:bexa": 1,
+     "c:pax": 1,
+     "c:cato": 1
+    },
     "next": null
    }
   ],
@@ -947,6 +1686,12 @@
      "9 Jul 2214: You came aboard easy to get along with.",
      "9 Jul 2214: You came aboard easy to get along with."
     ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "c:cato": 1
+    },
     "next": null
    }
   ],
@@ -983,6 +1728,12 @@
      "9 Jul 2214: You came aboard easy to get along with.",
      "9 Jul 2214: You came aboard easy to get along with."
     ],
+    "fx": {
+     "p1": 1,
+     "c:ines": 1,
+     "c:tomas": 1,
+     "c:cato": 1
+    },
     "next": null
    }
   ],
@@ -1019,6 +1770,12 @@
      "9 Jul 2214: You came aboard easy to get along with.",
      "9 Jul 2214: You came aboard easy to get along with."
     ],
+    "fx": {
+     "p1": 1,
+     "c:yelena": 1,
+     "c:ruben": 1,
+     "c:ilsa": 1
+    },
     "next": null
    }
   ],
@@ -1055,6 +1812,12 @@
      "9 Jul 2214: You came aboard easy to get along with.",
      "9 Jul 2214: You came aboard easy to get along with."
     ],
+    "fx": {
+     "p1": 1,
+     "c:yelena": 1,
+     "c:ruben": 1,
+     "c:pilar": 1
+    },
     "next": null
    }
   ],
@@ -1091,6 +1854,12 @@
      "9 Jul 2214: You came aboard easy to get along with.",
      "9 Jul 2214: You came aboard easy to get along with."
     ],
+    "fx": {
+     "p1": 1,
+     "c:yelena": 1,
+     "c:ruben": 1,
+     "c:ansel": 1
+    },
     "next": null
    }
   ],
@@ -1130,6 +1899,9 @@
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -1139,6 +1911,9 @@
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -1148,6 +1923,9 @@
     "mem": [
      "9 Jul 2214: You gave me a figure and a plan, not a complaint."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -1157,6 +1935,9 @@
     "mem": [
      "9 Jul 2214: You gave me a figure and a plan, not a complaint."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -1166,6 +1947,9 @@
     "mem": [
      "9 Jul 2214: You showed me the figures on the hot burn, and they were right."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -1175,6 +1959,9 @@
     "mem": [
      "9 Jul 2214: You showed me the figures on the hot burn, and they were right."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -1184,6 +1971,9 @@
     "mem": [
      "9 Jul 2214: You replotted the burn so the window was made without the hot drive."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -1193,6 +1983,9 @@
     "mem": [
      "9 Jul 2214: You replotted the burn so the window was made without the hot drive."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    }
   ],
@@ -1234,6 +2027,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -1243,6 +2039,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -1252,6 +2051,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and brought the figures to show it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -1261,6 +2063,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and brought the figures to show it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    }
   ],
@@ -1405,6 +2210,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -1414,6 +2222,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -1423,6 +2234,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me for a fee."
     ],
+    "fx": {
+     "credits": 40
+    },
     "next": null
    },
    {
@@ -1432,6 +2246,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me for a fee."
     ],
+    "fx": {
+     "credits": 40
+    },
     "next": null
    },
    {
@@ -1441,6 +2258,9 @@
     "mem": [
      "9 Jul 2214: You would not stand an extra watch."
     ],
+    "fx": {
+     "p1": -1
+    },
     "next": null
    },
    {
@@ -1450,6 +2270,9 @@
     "mem": [
      "9 Jul 2214: You would not stand an extra watch."
     ],
+    "fx": {
+     "p1": -1
+    },
     "next": null
    }
   ],
@@ -1471,6 +2294,9 @@
     "mem": [
      "9 Jul 2214: You showed me what the post is really like."
     ],
+    "fx": {
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -1480,6 +2306,9 @@
     "mem": [
      "9 Jul 2214: You tried to prove a point about your post and it went badly."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    },
    {
@@ -1489,6 +2318,9 @@
     "mem": [
      "9 Jul 2214: You took me through your post, one step at a time."
     ],
+    "fx": {
+     "c:ines": 2
+    },
     "next": null
    },
    {
@@ -1498,6 +2330,9 @@
     "mem": [
      "9 Jul 2214: You took me through your post, one step at a time."
     ],
+    "fx": {
+     "c:ines": 2
+    },
     "next": null
    },
    {
@@ -1537,6 +2372,10 @@
     "mem": [
      "9 Jul 2214: You took the pot off me fair and square."
     ],
+    "fx": {
+     "credits": 100,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -1546,6 +2385,10 @@
     "mem": [
      "9 Jul 2214: You sat in at cards and lost like a good sport."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -1677,6 +2520,10 @@
     "mem": [
      "9 Jul 2214: You lent me a hundred credits when I needed it."
     ],
+    "fx": {
+     "credits": -100,
+     "c:ines": 3
+    },
     "next": null
    },
    {
@@ -1686,6 +2533,10 @@
     "mem": [
      "9 Jul 2214: You lent me a hundred credits when I needed it."
     ],
+    "fx": {
+     "credits": -100,
+     "c:ines": 3
+    },
     "next": null
    },
    {
@@ -1695,6 +2546,10 @@
     "mem": [
      "9 Jul 2214: You lent me fifty credits, which was what you could spare."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -1704,6 +2559,10 @@
     "mem": [
      "9 Jul 2214: You lent me fifty credits, which was what you could spare."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -1713,6 +2572,9 @@
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    },
    {
@@ -1722,6 +2584,9 @@
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    }
   ],
@@ -1743,6 +2608,9 @@
     "mem": [
      "9 Jul 2214: You raised a short statement politely."
     ],
+    "fx": {
+     "credits": 35
+    },
     "next": null
    },
    {
@@ -1752,6 +2620,9 @@
     "mem": [
      "9 Jul 2214: You raised a short statement politely."
     ],
+    "fx": {
+     "credits": 35
+    },
     "next": null
    },
    {
@@ -1761,6 +2632,10 @@
     "mem": [
      "9 Jul 2214: You made a scene about a short statement."
     ],
+    "fx": {
+     "credits": 35,
+     "p1": -2
+    },
     "next": null
    },
    {
@@ -1770,6 +2645,10 @@
     "mem": [
      "9 Jul 2214: You made a scene about a short statement."
     ],
+    "fx": {
+     "credits": 35,
+     "p1": -2
+    },
     "next": null
    },
    {
@@ -1909,6 +2788,9 @@
     "mem": [
      "9 Jul 2214: You brought me a track and a course round it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -1918,6 +2800,9 @@
     "mem": [
      "9 Jul 2214: You brought me a track and a course round it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -1927,6 +2812,9 @@
     "mem": [
      "9 Jul 2214: You watched something off the lane without it knowing."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -1936,6 +2824,9 @@
     "mem": [
      "9 Jul 2214: You watched something off the lane without it knowing."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -1945,6 +2836,9 @@
     "mem": [
      "9 Jul 2214: You read a drive signature that did not match its hull."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -1954,6 +2848,9 @@
     "mem": [
      "9 Jul 2214: You read a drive signature that did not match its hull."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -1963,6 +2860,9 @@
     "mem": [
      "9 Jul 2214: You listened to a transponder and brought me what was wrong with it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -1972,6 +2872,9 @@
     "mem": [
      "9 Jul 2214: You listened to a transponder and brought me what was wrong with it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2027,6 +2930,9 @@
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2036,6 +2942,9 @@
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2045,6 +2954,9 @@
     "mem": [
      "9 Jul 2214: You gave me a figure and a plan, not a complaint."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2054,6 +2966,9 @@
     "mem": [
      "9 Jul 2214: You gave me a figure and a plan, not a complaint."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2063,6 +2978,9 @@
     "mem": [
      "9 Jul 2214: You showed me the figures on the hot burn, and they were right."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2072,6 +2990,9 @@
     "mem": [
      "9 Jul 2214: You showed me the figures on the hot burn, and they were right."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2081,6 +3002,9 @@
     "mem": [
      "9 Jul 2214: You replotted the burn so the window was made without the hot drive."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2090,6 +3014,9 @@
     "mem": [
      "9 Jul 2214: You replotted the burn so the window was made without the hot drive."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    }
   ],
@@ -2131,6 +3058,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -2140,6 +3070,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -2149,6 +3082,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and brought the figures to show it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -2158,6 +3094,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and brought the figures to show it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    }
   ],
@@ -2302,6 +3241,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2311,6 +3253,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2320,6 +3265,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me for a fee."
     ],
+    "fx": {
+     "credits": 40
+    },
     "next": null
    },
    {
@@ -2329,6 +3277,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me for a fee."
     ],
+    "fx": {
+     "credits": 40
+    },
     "next": null
    },
    {
@@ -2338,6 +3289,9 @@
     "mem": [
      "9 Jul 2214: You would not stand an extra watch."
     ],
+    "fx": {
+     "p1": -1
+    },
     "next": null
    },
    {
@@ -2347,6 +3301,9 @@
     "mem": [
      "9 Jul 2214: You would not stand an extra watch."
     ],
+    "fx": {
+     "p1": -1
+    },
     "next": null
    }
   ],
@@ -2368,6 +3325,9 @@
     "mem": [
      "9 Jul 2214: You showed me what the post is really like."
     ],
+    "fx": {
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -2377,6 +3337,9 @@
     "mem": [
      "9 Jul 2214: You tried to prove a point about your post and it went badly."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    },
    {
@@ -2386,6 +3349,9 @@
     "mem": [
      "9 Jul 2214: You took me through your post, one step at a time."
     ],
+    "fx": {
+     "c:ines": 2
+    },
     "next": null
    },
    {
@@ -2395,6 +3361,9 @@
     "mem": [
      "9 Jul 2214: You took me through your post, one step at a time."
     ],
+    "fx": {
+     "c:ines": 2
+    },
     "next": null
    },
    {
@@ -2434,6 +3403,10 @@
     "mem": [
      "9 Jul 2214: You took the pot off me fair and square."
     ],
+    "fx": {
+     "credits": 100,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -2443,6 +3416,10 @@
     "mem": [
      "9 Jul 2214: You sat in at cards and lost like a good sport."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -2574,6 +3551,10 @@
     "mem": [
      "9 Jul 2214: You lent me a hundred credits when I needed it."
     ],
+    "fx": {
+     "credits": -100,
+     "c:ines": 3
+    },
     "next": null
    },
    {
@@ -2583,6 +3564,10 @@
     "mem": [
      "9 Jul 2214: You lent me a hundred credits when I needed it."
     ],
+    "fx": {
+     "credits": -100,
+     "c:ines": 3
+    },
     "next": null
    },
    {
@@ -2592,6 +3577,10 @@
     "mem": [
      "9 Jul 2214: You lent me fifty credits, which was what you could spare."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -2601,6 +3590,10 @@
     "mem": [
      "9 Jul 2214: You lent me fifty credits, which was what you could spare."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -2610,6 +3603,9 @@
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    },
    {
@@ -2619,6 +3615,9 @@
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    }
   ],
@@ -2640,6 +3639,9 @@
     "mem": [
      "9 Jul 2214: You raised a short statement politely."
     ],
+    "fx": {
+     "credits": 35
+    },
     "next": null
    },
    {
@@ -2649,6 +3651,9 @@
     "mem": [
      "9 Jul 2214: You raised a short statement politely."
     ],
+    "fx": {
+     "credits": 35
+    },
     "next": null
    },
    {
@@ -2658,6 +3663,10 @@
     "mem": [
      "9 Jul 2214: You made a scene about a short statement."
     ],
+    "fx": {
+     "credits": 35,
+     "p1": -2
+    },
     "next": null
    },
    {
@@ -2667,6 +3676,10 @@
     "mem": [
      "9 Jul 2214: You made a scene about a short statement."
     ],
+    "fx": {
+     "credits": 35,
+     "p1": -2
+    },
     "next": null
    },
    {
@@ -2806,6 +3819,9 @@
     "mem": [
      "9 Jul 2214: You brought me a track and a course round it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2815,6 +3831,9 @@
     "mem": [
      "9 Jul 2214: You brought me a track and a course round it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2824,6 +3843,9 @@
     "mem": [
      "9 Jul 2214: You watched something off the lane without it knowing."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2833,6 +3855,9 @@
     "mem": [
      "9 Jul 2214: You watched something off the lane without it knowing."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2842,6 +3867,9 @@
     "mem": [
      "9 Jul 2214: You read a drive signature that did not match its hull."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2851,6 +3879,9 @@
     "mem": [
      "9 Jul 2214: You read a drive signature that did not match its hull."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2860,6 +3891,9 @@
     "mem": [
      "9 Jul 2214: You listened to a transponder and brought me what was wrong with it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2869,6 +3903,9 @@
     "mem": [
      "9 Jul 2214: You listened to a transponder and brought me what was wrong with it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2924,6 +3961,9 @@
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2933,6 +3973,9 @@
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2942,6 +3985,9 @@
     "mem": [
      "9 Jul 2214: You gave me a figure and a plan, not a complaint."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2951,6 +3997,9 @@
     "mem": [
      "9 Jul 2214: You gave me a figure and a plan, not a complaint."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2960,6 +4009,9 @@
     "mem": [
      "9 Jul 2214: You showed me the figures on the hot burn, and they were right."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2969,6 +4021,9 @@
     "mem": [
      "9 Jul 2214: You showed me the figures on the hot burn, and they were right."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2978,6 +4033,9 @@
     "mem": [
      "9 Jul 2214: You replotted the burn so the window was made without the hot drive."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -2987,6 +4045,9 @@
     "mem": [
      "9 Jul 2214: You replotted the burn so the window was made without the hot drive."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    }
   ],
@@ -3028,6 +4089,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -3037,6 +4101,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -3046,6 +4113,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and brought the figures to show it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -3055,6 +4125,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and brought the figures to show it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    }
   ],
@@ -3199,6 +4272,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -3208,6 +4284,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -3217,6 +4296,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me for a fee."
     ],
+    "fx": {
+     "credits": 40
+    },
     "next": null
    },
    {
@@ -3226,6 +4308,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me for a fee."
     ],
+    "fx": {
+     "credits": 40
+    },
     "next": null
    },
    {
@@ -3235,6 +4320,9 @@
     "mem": [
      "9 Jul 2214: You would not stand an extra watch."
     ],
+    "fx": {
+     "p1": -1
+    },
     "next": null
    },
    {
@@ -3244,6 +4332,9 @@
     "mem": [
      "9 Jul 2214: You would not stand an extra watch."
     ],
+    "fx": {
+     "p1": -1
+    },
     "next": null
    }
   ],
@@ -3265,6 +4356,9 @@
     "mem": [
      "9 Jul 2214: You showed me what the post is really like."
     ],
+    "fx": {
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -3274,6 +4368,9 @@
     "mem": [
      "9 Jul 2214: You tried to prove a point about your post and it went badly."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    },
    {
@@ -3283,6 +4380,9 @@
     "mem": [
      "9 Jul 2214: You took me through your post, one step at a time."
     ],
+    "fx": {
+     "c:ines": 2
+    },
     "next": null
    },
    {
@@ -3292,6 +4392,9 @@
     "mem": [
      "9 Jul 2214: You took me through your post, one step at a time."
     ],
+    "fx": {
+     "c:ines": 2
+    },
     "next": null
    },
    {
@@ -3331,6 +4434,10 @@
     "mem": [
      "9 Jul 2214: You took the pot off me fair and square."
     ],
+    "fx": {
+     "credits": 100,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -3340,6 +4447,10 @@
     "mem": [
      "9 Jul 2214: You sat in at cards and lost like a good sport."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -3471,6 +4582,10 @@
     "mem": [
      "9 Jul 2214: You lent me a hundred credits when I needed it."
     ],
+    "fx": {
+     "credits": -100,
+     "c:ines": 3
+    },
     "next": null
    },
    {
@@ -3480,6 +4595,10 @@
     "mem": [
      "9 Jul 2214: You lent me a hundred credits when I needed it."
     ],
+    "fx": {
+     "credits": -100,
+     "c:ines": 3
+    },
     "next": null
    },
    {
@@ -3489,6 +4608,10 @@
     "mem": [
      "9 Jul 2214: You lent me fifty credits, which was what you could spare."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -3498,6 +4621,10 @@
     "mem": [
      "9 Jul 2214: You lent me fifty credits, which was what you could spare."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -3507,6 +4634,9 @@
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    },
    {
@@ -3516,6 +4646,9 @@
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    }
   ],
@@ -3537,6 +4670,9 @@
     "mem": [
      "9 Jul 2214: You raised a short statement politely."
     ],
+    "fx": {
+     "credits": 35
+    },
     "next": null
    },
    {
@@ -3546,6 +4682,9 @@
     "mem": [
      "9 Jul 2214: You raised a short statement politely."
     ],
+    "fx": {
+     "credits": 35
+    },
     "next": null
    },
    {
@@ -3555,6 +4694,10 @@
     "mem": [
      "9 Jul 2214: You made a scene about a short statement."
     ],
+    "fx": {
+     "credits": 35,
+     "p1": -2
+    },
     "next": null
    },
    {
@@ -3564,6 +4707,10 @@
     "mem": [
      "9 Jul 2214: You made a scene about a short statement."
     ],
+    "fx": {
+     "credits": 35,
+     "p1": -2
+    },
     "next": null
    },
    {
@@ -3703,6 +4850,9 @@
     "mem": [
      "9 Jul 2214: You brought me a track and a course round it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -3712,6 +4862,9 @@
     "mem": [
      "9 Jul 2214: You brought me a track and a course round it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -3721,6 +4874,9 @@
     "mem": [
      "9 Jul 2214: You watched something off the lane without it knowing."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -3730,6 +4886,9 @@
     "mem": [
      "9 Jul 2214: You watched something off the lane without it knowing."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -3739,6 +4898,9 @@
     "mem": [
      "9 Jul 2214: You read a drive signature that did not match its hull."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -3748,6 +4910,9 @@
     "mem": [
      "9 Jul 2214: You read a drive signature that did not match its hull."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -3757,6 +4922,9 @@
     "mem": [
      "9 Jul 2214: You listened to a transponder and brought me what was wrong with it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -3766,6 +4934,9 @@
     "mem": [
      "9 Jul 2214: You listened to a transponder and brought me what was wrong with it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -3821,6 +4992,9 @@
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -3830,6 +5004,9 @@
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -3839,6 +5016,9 @@
     "mem": [
      "9 Jul 2214: You gave me a figure and a plan, not a complaint."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -3848,6 +5028,9 @@
     "mem": [
      "9 Jul 2214: You gave me a figure and a plan, not a complaint."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -3857,6 +5040,9 @@
     "mem": [
      "9 Jul 2214: You showed me the figures on the hot burn, and they were right."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -3866,6 +5052,9 @@
     "mem": [
      "9 Jul 2214: You showed me the figures on the hot burn, and they were right."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -3875,6 +5064,9 @@
     "mem": [
      "9 Jul 2214: You replotted the burn so the window was made without the hot drive."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -3884,6 +5076,9 @@
     "mem": [
      "9 Jul 2214: You replotted the burn so the window was made without the hot drive."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    }
   ],
@@ -3925,6 +5120,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -3934,6 +5132,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -3943,6 +5144,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and brought the figures to show it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -3952,6 +5156,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and brought the figures to show it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    }
   ],
@@ -4096,6 +5303,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -4105,6 +5315,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -4114,6 +5327,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me for a fee."
     ],
+    "fx": {
+     "credits": 40
+    },
     "next": null
    },
    {
@@ -4123,6 +5339,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me for a fee."
     ],
+    "fx": {
+     "credits": 40
+    },
     "next": null
    },
    {
@@ -4132,6 +5351,9 @@
     "mem": [
      "9 Jul 2214: You would not stand an extra watch."
     ],
+    "fx": {
+     "p1": -1
+    },
     "next": null
    },
    {
@@ -4141,6 +5363,9 @@
     "mem": [
      "9 Jul 2214: You would not stand an extra watch."
     ],
+    "fx": {
+     "p1": -1
+    },
     "next": null
    }
   ],
@@ -4162,6 +5387,9 @@
     "mem": [
      "9 Jul 2214: You showed me what the post is really like."
     ],
+    "fx": {
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -4171,6 +5399,9 @@
     "mem": [
      "9 Jul 2214: You tried to prove a point about your post and it went badly."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    },
    {
@@ -4180,6 +5411,9 @@
     "mem": [
      "9 Jul 2214: You took me through your post, one step at a time."
     ],
+    "fx": {
+     "c:ines": 2
+    },
     "next": null
    },
    {
@@ -4189,6 +5423,9 @@
     "mem": [
      "9 Jul 2214: You took me through your post, one step at a time."
     ],
+    "fx": {
+     "c:ines": 2
+    },
     "next": null
    },
    {
@@ -4228,6 +5465,10 @@
     "mem": [
      "9 Jul 2214: You took the pot off me fair and square."
     ],
+    "fx": {
+     "credits": 100,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -4237,6 +5478,10 @@
     "mem": [
      "9 Jul 2214: You sat in at cards and lost like a good sport."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -4368,6 +5613,10 @@
     "mem": [
      "9 Jul 2214: You lent me a hundred credits when I needed it."
     ],
+    "fx": {
+     "credits": -100,
+     "c:ines": 3
+    },
     "next": null
    },
    {
@@ -4377,6 +5626,10 @@
     "mem": [
      "9 Jul 2214: You lent me a hundred credits when I needed it."
     ],
+    "fx": {
+     "credits": -100,
+     "c:ines": 3
+    },
     "next": null
    },
    {
@@ -4386,6 +5639,10 @@
     "mem": [
      "9 Jul 2214: You lent me fifty credits, which was what you could spare."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -4395,6 +5652,10 @@
     "mem": [
      "9 Jul 2214: You lent me fifty credits, which was what you could spare."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -4404,6 +5665,9 @@
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    },
    {
@@ -4413,6 +5677,9 @@
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    }
   ],
@@ -4434,6 +5701,9 @@
     "mem": [
      "9 Jul 2214: You raised a short statement politely."
     ],
+    "fx": {
+     "credits": 35
+    },
     "next": null
    },
    {
@@ -4443,6 +5713,9 @@
     "mem": [
      "9 Jul 2214: You raised a short statement politely."
     ],
+    "fx": {
+     "credits": 35
+    },
     "next": null
    },
    {
@@ -4452,6 +5725,10 @@
     "mem": [
      "9 Jul 2214: You made a scene about a short statement."
     ],
+    "fx": {
+     "credits": 35,
+     "p1": -2
+    },
     "next": null
    },
    {
@@ -4461,6 +5738,10 @@
     "mem": [
      "9 Jul 2214: You made a scene about a short statement."
     ],
+    "fx": {
+     "credits": 35,
+     "p1": -2
+    },
     "next": null
    },
    {
@@ -4600,6 +5881,9 @@
     "mem": [
      "9 Jul 2214: You brought me a track and a course round it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -4609,6 +5893,9 @@
     "mem": [
      "9 Jul 2214: You brought me a track and a course round it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -4618,6 +5905,9 @@
     "mem": [
      "9 Jul 2214: You watched something off the lane without it knowing."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -4627,6 +5917,9 @@
     "mem": [
      "9 Jul 2214: You watched something off the lane without it knowing."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -4636,6 +5929,9 @@
     "mem": [
      "9 Jul 2214: You read a drive signature that did not match its hull."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -4645,6 +5941,9 @@
     "mem": [
      "9 Jul 2214: You read a drive signature that did not match its hull."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -4654,6 +5953,9 @@
     "mem": [
      "9 Jul 2214: You listened to a transponder and brought me what was wrong with it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -4663,6 +5965,9 @@
     "mem": [
      "9 Jul 2214: You listened to a transponder and brought me what was wrong with it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -4718,6 +6023,9 @@
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -4727,6 +6035,9 @@
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -4736,6 +6047,9 @@
     "mem": [
      "9 Jul 2214: You gave me a figure and a plan, not a complaint."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -4745,6 +6059,9 @@
     "mem": [
      "9 Jul 2214: You gave me a figure and a plan, not a complaint."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -4754,6 +6071,9 @@
     "mem": [
      "9 Jul 2214: You showed me the figures on the hot burn, and they were right."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -4763,6 +6083,9 @@
     "mem": [
      "9 Jul 2214: You showed me the figures on the hot burn, and they were right."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -4772,6 +6095,9 @@
     "mem": [
      "9 Jul 2214: You replotted the burn so the window was made without the hot drive."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -4781,6 +6107,9 @@
     "mem": [
      "9 Jul 2214: You replotted the burn so the window was made without the hot drive."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    }
   ],
@@ -4822,6 +6151,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -4831,6 +6163,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -4840,6 +6175,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and brought the figures to show it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -4849,6 +6187,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and brought the figures to show it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    }
   ],
@@ -4993,6 +6334,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -5002,6 +6346,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -5011,6 +6358,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me for a fee."
     ],
+    "fx": {
+     "credits": 40
+    },
     "next": null
    },
    {
@@ -5020,6 +6370,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me for a fee."
     ],
+    "fx": {
+     "credits": 40
+    },
     "next": null
    },
    {
@@ -5029,6 +6382,9 @@
     "mem": [
      "9 Jul 2214: You would not stand an extra watch."
     ],
+    "fx": {
+     "p1": -1
+    },
     "next": null
    },
    {
@@ -5038,6 +6394,9 @@
     "mem": [
      "9 Jul 2214: You would not stand an extra watch."
     ],
+    "fx": {
+     "p1": -1
+    },
     "next": null
    }
   ],
@@ -5059,6 +6418,9 @@
     "mem": [
      "9 Jul 2214: You showed me what the post is really like."
     ],
+    "fx": {
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -5068,6 +6430,9 @@
     "mem": [
      "9 Jul 2214: You tried to prove a point about your post and it went badly."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    },
    {
@@ -5077,6 +6442,9 @@
     "mem": [
      "9 Jul 2214: You took me through your post, one step at a time."
     ],
+    "fx": {
+     "c:ines": 2
+    },
     "next": null
    },
    {
@@ -5086,6 +6454,9 @@
     "mem": [
      "9 Jul 2214: You took me through your post, one step at a time."
     ],
+    "fx": {
+     "c:ines": 2
+    },
     "next": null
    },
    {
@@ -5125,6 +6496,10 @@
     "mem": [
      "9 Jul 2214: You took the pot off me fair and square."
     ],
+    "fx": {
+     "credits": 100,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -5134,6 +6509,10 @@
     "mem": [
      "9 Jul 2214: You sat in at cards and lost like a good sport."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -5265,6 +6644,10 @@
     "mem": [
      "9 Jul 2214: You lent me a hundred credits when I needed it."
     ],
+    "fx": {
+     "credits": -100,
+     "c:ines": 3
+    },
     "next": null
    },
    {
@@ -5274,6 +6657,10 @@
     "mem": [
      "9 Jul 2214: You lent me a hundred credits when I needed it."
     ],
+    "fx": {
+     "credits": -100,
+     "c:ines": 3
+    },
     "next": null
    },
    {
@@ -5283,6 +6670,10 @@
     "mem": [
      "9 Jul 2214: You lent me fifty credits, which was what you could spare."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -5292,6 +6683,10 @@
     "mem": [
      "9 Jul 2214: You lent me fifty credits, which was what you could spare."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -5301,6 +6696,9 @@
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    },
    {
@@ -5310,6 +6708,9 @@
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    }
   ],
@@ -5331,6 +6732,9 @@
     "mem": [
      "9 Jul 2214: You raised a short statement politely."
     ],
+    "fx": {
+     "credits": 50
+    },
     "next": null
    },
    {
@@ -5340,6 +6744,9 @@
     "mem": [
      "9 Jul 2214: You raised a short statement politely."
     ],
+    "fx": {
+     "credits": 50
+    },
     "next": null
    },
    {
@@ -5349,6 +6756,10 @@
     "mem": [
      "9 Jul 2214: You made a scene about a short statement."
     ],
+    "fx": {
+     "credits": 50,
+     "p1": -2
+    },
     "next": null
    },
    {
@@ -5358,6 +6769,10 @@
     "mem": [
      "9 Jul 2214: You made a scene about a short statement."
     ],
+    "fx": {
+     "credits": 50,
+     "p1": -2
+    },
     "next": null
    },
    {
@@ -5497,6 +6912,9 @@
     "mem": [
      "9 Jul 2214: You brought me a track and a course round it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -5506,6 +6924,9 @@
     "mem": [
      "9 Jul 2214: You brought me a track and a course round it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -5515,6 +6936,9 @@
     "mem": [
      "9 Jul 2214: You watched something off the lane without it knowing."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -5524,6 +6948,9 @@
     "mem": [
      "9 Jul 2214: You watched something off the lane without it knowing."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -5533,6 +6960,9 @@
     "mem": [
      "9 Jul 2214: You read a drive signature that did not match its hull."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -5542,6 +6972,9 @@
     "mem": [
      "9 Jul 2214: You read a drive signature that did not match its hull."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -5551,6 +6984,9 @@
     "mem": [
      "9 Jul 2214: You listened to a transponder and brought me what was wrong with it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -5560,6 +6996,9 @@
     "mem": [
      "9 Jul 2214: You listened to a transponder and brought me what was wrong with it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -5615,6 +7054,9 @@
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -5624,6 +7066,9 @@
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -5633,6 +7078,9 @@
     "mem": [
      "9 Jul 2214: You gave me a figure and a plan, not a complaint."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -5642,6 +7090,9 @@
     "mem": [
      "9 Jul 2214: You gave me a figure and a plan, not a complaint."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -5651,6 +7102,9 @@
     "mem": [
      "9 Jul 2214: You showed me the figures on the hot burn, and they were right."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -5660,6 +7114,9 @@
     "mem": [
      "9 Jul 2214: You showed me the figures on the hot burn, and they were right."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -5669,6 +7126,9 @@
     "mem": [
      "9 Jul 2214: You replotted the burn so the window was made without the hot drive."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -5678,6 +7138,9 @@
     "mem": [
      "9 Jul 2214: You replotted the burn so the window was made without the hot drive."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    }
   ],
@@ -5719,6 +7182,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -5728,6 +7194,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -5737,6 +7206,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and brought the figures to show it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -5746,6 +7218,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and brought the figures to show it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    }
   ],
@@ -5890,6 +7365,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -5899,6 +7377,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -5908,6 +7389,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me for a fee."
     ],
+    "fx": {
+     "credits": 40
+    },
     "next": null
    },
    {
@@ -5917,6 +7401,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me for a fee."
     ],
+    "fx": {
+     "credits": 40
+    },
     "next": null
    },
    {
@@ -5926,6 +7413,9 @@
     "mem": [
      "9 Jul 2214: You would not stand an extra watch."
     ],
+    "fx": {
+     "p1": -1
+    },
     "next": null
    },
    {
@@ -5935,6 +7425,9 @@
     "mem": [
      "9 Jul 2214: You would not stand an extra watch."
     ],
+    "fx": {
+     "p1": -1
+    },
     "next": null
    }
   ],
@@ -5956,6 +7449,9 @@
     "mem": [
      "9 Jul 2214: You showed me what the post is really like."
     ],
+    "fx": {
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -5965,6 +7461,9 @@
     "mem": [
      "9 Jul 2214: You tried to prove a point about your post and it went badly."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    },
    {
@@ -5974,6 +7473,9 @@
     "mem": [
      "9 Jul 2214: You took me through your post, one step at a time."
     ],
+    "fx": {
+     "c:ines": 2
+    },
     "next": null
    },
    {
@@ -5983,6 +7485,9 @@
     "mem": [
      "9 Jul 2214: You took me through your post, one step at a time."
     ],
+    "fx": {
+     "c:ines": 2
+    },
     "next": null
    },
    {
@@ -6022,6 +7527,10 @@
     "mem": [
      "9 Jul 2214: You took the pot off me fair and square."
     ],
+    "fx": {
+     "credits": 100,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -6031,6 +7540,10 @@
     "mem": [
      "9 Jul 2214: You sat in at cards and lost like a good sport."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -6162,6 +7675,10 @@
     "mem": [
      "9 Jul 2214: You lent me a hundred credits when I needed it."
     ],
+    "fx": {
+     "credits": -100,
+     "c:ines": 3
+    },
     "next": null
    },
    {
@@ -6171,6 +7688,10 @@
     "mem": [
      "9 Jul 2214: You lent me a hundred credits when I needed it."
     ],
+    "fx": {
+     "credits": -100,
+     "c:ines": 3
+    },
     "next": null
    },
    {
@@ -6180,6 +7701,10 @@
     "mem": [
      "9 Jul 2214: You lent me fifty credits, which was what you could spare."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -6189,6 +7714,10 @@
     "mem": [
      "9 Jul 2214: You lent me fifty credits, which was what you could spare."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -6198,6 +7727,9 @@
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    },
    {
@@ -6207,6 +7739,9 @@
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    }
   ],
@@ -6228,6 +7763,9 @@
     "mem": [
      "9 Jul 2214: You raised a short statement politely."
     ],
+    "fx": {
+     "credits": 45
+    },
     "next": null
    },
    {
@@ -6237,6 +7775,9 @@
     "mem": [
      "9 Jul 2214: You raised a short statement politely."
     ],
+    "fx": {
+     "credits": 45
+    },
     "next": null
    },
    {
@@ -6246,6 +7787,10 @@
     "mem": [
      "9 Jul 2214: You made a scene about a short statement."
     ],
+    "fx": {
+     "credits": 45,
+     "p1": -2
+    },
     "next": null
    },
    {
@@ -6255,6 +7800,10 @@
     "mem": [
      "9 Jul 2214: You made a scene about a short statement."
     ],
+    "fx": {
+     "credits": 45,
+     "p1": -2
+    },
     "next": null
    },
    {
@@ -6394,6 +7943,9 @@
     "mem": [
      "9 Jul 2214: You brought me a track and a course round it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -6403,6 +7955,9 @@
     "mem": [
      "9 Jul 2214: You brought me a track and a course round it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -6412,6 +7967,9 @@
     "mem": [
      "9 Jul 2214: You watched something off the lane without it knowing."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -6421,6 +7979,9 @@
     "mem": [
      "9 Jul 2214: You watched something off the lane without it knowing."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -6430,6 +7991,9 @@
     "mem": [
      "9 Jul 2214: You read a drive signature that did not match its hull."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -6439,6 +8003,9 @@
     "mem": [
      "9 Jul 2214: You read a drive signature that did not match its hull."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -6448,6 +8015,9 @@
     "mem": [
      "9 Jul 2214: You listened to a transponder and brought me what was wrong with it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -6457,6 +8027,9 @@
     "mem": [
      "9 Jul 2214: You listened to a transponder and brought me what was wrong with it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -6512,6 +8085,9 @@
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -6521,6 +8097,9 @@
     "mem": [
      "9 Jul 2214: You told me plainly what you thought, and you were right to."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -6530,6 +8109,9 @@
     "mem": [
      "9 Jul 2214: You gave me a figure and a plan, not a complaint."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -6539,6 +8121,9 @@
     "mem": [
      "9 Jul 2214: You gave me a figure and a plan, not a complaint."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -6548,6 +8133,9 @@
     "mem": [
      "9 Jul 2214: You showed me the figures on the hot burn, and they were right."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -6557,6 +8145,9 @@
     "mem": [
      "9 Jul 2214: You showed me the figures on the hot burn, and they were right."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -6566,6 +8157,9 @@
     "mem": [
      "9 Jul 2214: You replotted the burn so the window was made without the hot drive."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -6575,6 +8169,9 @@
     "mem": [
      "9 Jul 2214: You replotted the burn so the window was made without the hot drive."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    }
   ],
@@ -6616,6 +8213,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -6625,6 +8225,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and had earned it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -6634,6 +8237,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and brought the figures to show it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    },
    {
@@ -6643,6 +8249,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and brought the figures to show it."
     ],
+    "fx": {
+     "credits": 60
+    },
     "next": null
    }
   ],
@@ -6787,6 +8396,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -6796,6 +8408,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me without being paid for it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -6805,6 +8420,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me for a fee."
     ],
+    "fx": {
+     "credits": 40
+    },
     "next": null
    },
    {
@@ -6814,6 +8432,9 @@
     "mem": [
      "9 Jul 2214: You stood a watch for me for a fee."
     ],
+    "fx": {
+     "credits": 40
+    },
     "next": null
    },
    {
@@ -6823,6 +8444,9 @@
     "mem": [
      "9 Jul 2214: You would not stand an extra watch."
     ],
+    "fx": {
+     "p1": -1
+    },
     "next": null
    },
    {
@@ -6832,6 +8456,9 @@
     "mem": [
      "9 Jul 2214: You would not stand an extra watch."
     ],
+    "fx": {
+     "p1": -1
+    },
     "next": null
    }
   ],
@@ -6853,6 +8480,9 @@
     "mem": [
      "9 Jul 2214: You showed me what the post is really like."
     ],
+    "fx": {
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -6862,6 +8492,9 @@
     "mem": [
      "9 Jul 2214: You tried to prove a point about your post and it went badly."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    },
    {
@@ -6871,6 +8504,9 @@
     "mem": [
      "9 Jul 2214: You took me through your post, one step at a time."
     ],
+    "fx": {
+     "c:ines": 2
+    },
     "next": null
    },
    {
@@ -6880,6 +8516,9 @@
     "mem": [
      "9 Jul 2214: You took me through your post, one step at a time."
     ],
+    "fx": {
+     "c:ines": 2
+    },
     "next": null
    },
    {
@@ -6919,6 +8558,10 @@
     "mem": [
      "9 Jul 2214: You took the pot off me fair and square."
     ],
+    "fx": {
+     "credits": 100,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -6928,6 +8571,10 @@
     "mem": [
      "9 Jul 2214: You sat in at cards and lost like a good sport."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -7059,6 +8706,10 @@
     "mem": [
      "9 Jul 2214: You lent me a hundred credits when I needed it."
     ],
+    "fx": {
+     "credits": -100,
+     "c:ines": 3
+    },
     "next": null
    },
    {
@@ -7068,6 +8719,10 @@
     "mem": [
      "9 Jul 2214: You lent me a hundred credits when I needed it."
     ],
+    "fx": {
+     "credits": -100,
+     "c:ines": 3
+    },
     "next": null
    },
    {
@@ -7077,6 +8732,10 @@
     "mem": [
      "9 Jul 2214: You lent me fifty credits, which was what you could spare."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -7086,6 +8745,10 @@
     "mem": [
      "9 Jul 2214: You lent me fifty credits, which was what you could spare."
     ],
+    "fx": {
+     "credits": -50,
+     "c:ines": 1
+    },
     "next": null
    },
    {
@@ -7095,6 +8758,9 @@
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    },
    {
@@ -7104,6 +8770,9 @@
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
+    "fx": {
+     "c:ines": -1
+    },
     "next": null
    }
   ],
@@ -7125,6 +8794,9 @@
     "mem": [
      "9 Jul 2214: You raised a short statement politely."
     ],
+    "fx": {
+     "credits": 25
+    },
     "next": null
    },
    {
@@ -7134,6 +8806,9 @@
     "mem": [
      "9 Jul 2214: You raised a short statement politely."
     ],
+    "fx": {
+     "credits": 25
+    },
     "next": null
    },
    {
@@ -7143,6 +8818,10 @@
     "mem": [
      "9 Jul 2214: You made a scene about a short statement."
     ],
+    "fx": {
+     "credits": 25,
+     "p1": -2
+    },
     "next": null
    },
    {
@@ -7152,6 +8831,10 @@
     "mem": [
      "9 Jul 2214: You made a scene about a short statement."
     ],
+    "fx": {
+     "credits": 25,
+     "p1": -2
+    },
     "next": null
    },
    {
@@ -7291,6 +8974,9 @@
     "mem": [
      "9 Jul 2214: You brought me a track and a course round it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -7300,6 +8986,9 @@
     "mem": [
      "9 Jul 2214: You brought me a track and a course round it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -7309,6 +8998,9 @@
     "mem": [
      "9 Jul 2214: You watched something off the lane without it knowing."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -7318,6 +9010,9 @@
     "mem": [
      "9 Jul 2214: You watched something off the lane without it knowing."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -7327,6 +9022,9 @@
     "mem": [
      "9 Jul 2214: You read a drive signature that did not match its hull."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -7336,6 +9034,9 @@
     "mem": [
      "9 Jul 2214: You read a drive signature that did not match its hull."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -7345,6 +9046,9 @@
     "mem": [
      "9 Jul 2214: You listened to a transponder and brought me what was wrong with it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -7354,6 +9058,9 @@
     "mem": [
      "9 Jul 2214: You listened to a transponder and brought me what was wrong with it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -7391,6 +9098,9 @@
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -7400,6 +9110,9 @@
     "mem": [
      "9 Jul 2214: You did as you were told on the hot burn."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -7409,6 +9122,9 @@
     "mem": [
      "9 Jul 2214: You argued the burn with me when I had decided."
     ],
+    "fx": {
+     "p1": -1
+    },
     "next": null
    },
    {
@@ -7418,6 +9134,9 @@
     "mem": [
      "9 Jul 2214: You argued the burn with me when I had decided."
     ],
+    "fx": {
+     "p1": -1
+    },
     "next": null
    },
    {
@@ -7427,6 +9146,9 @@
     "mem": [
      "9 Jul 2214: You gave me a figure and a plan, not a complaint."
     ],
+    "fx": {
+     "p1": 2
+    },
     "next": null
    },
    {
@@ -7436,6 +9158,9 @@
     "mem": [
      "9 Jul 2214: You gave me a figure and a plan, not a complaint."
     ],
+    "fx": {
+     "p1": 2
+    },
     "next": null
    },
    {
@@ -7445,6 +9170,9 @@
     "mem": [
      "9 Jul 2214: You showed me the figures on the hot burn, and they were right."
     ],
+    "fx": {
+     "p1": 2
+    },
     "next": null
    },
    {
@@ -7454,6 +9182,9 @@
     "mem": [
      "9 Jul 2214: You showed me the figures on the hot burn, and they were right."
     ],
+    "fx": {
+     "p1": 2
+    },
     "next": null
    },
    {
@@ -7463,6 +9194,9 @@
     "mem": [
      "9 Jul 2214: You replotted the burn so the window was made without the hot drive."
     ],
+    "fx": {
+     "p1": 2
+    },
     "next": null
    },
    {
@@ -7472,6 +9206,9 @@
     "mem": [
      "9 Jul 2214: You replotted the burn so the window was made without the hot drive."
     ],
+    "fx": {
+     "p1": 2
+    },
     "next": null
    }
   ],
@@ -7495,6 +9232,9 @@
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -7504,6 +9244,9 @@
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
     ],
+    "fx": {
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -7513,6 +9256,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus before you had earned one."
     ],
+    "fx": {
+     "p1": -1
+    },
     "next": null
    },
    {
@@ -7522,6 +9268,9 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus before you had earned one."
     ],
+    "fx": {
+     "p1": -1
+    },
     "next": null
    },
    {
@@ -7531,6 +9280,10 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and brought the figures to show it."
     ],
+    "fx": {
+     "credits": 60,
+     "p1": 1
+    },
     "next": null
    },
    {
@@ -7540,6 +9293,10 @@
     "mem": [
      "9 Jul 2214: You asked for a bonus and brought the figures to show it."
     ],
+    "fx": {
+     "credits": 60,
+     "p1": 1
+    },
     "next": null
    }
   ],

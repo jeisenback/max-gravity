@@ -14,6 +14,8 @@ const playScenes = () => {
     G.state.story.next = 1e9; G.state.day += 30; G.dialog = null; G.nextEvent = null;
     return G.state;
   };
+  const standing = () => ({ credits: G.state.credits, opinion: Object.fromEntries(Object.values(G.state.people).map(p => [p.id, p.opinion])) });
+  const moved = (b, a) => ({ ...(a.credits !== b.credits ? { credits: a.credits - b.credits } : {}), ...Object.fromEntries(Object.entries(a.opinion).filter(([id, v]) => v !== b.opinion[id]).map(([id, v]) => [id, v - (b.opinion[id] || 0)])) });  // what a choice did to the money and to each person's regard
   const memLens = () => Object.fromEntries(Object.values(G.state.people).map(p => [p.id, (p.memories || []).length]));
   const gained = lens => Object.values(G.state.people).flatMap(p => (p.memories || []).slice(lens[p.id] === undefined ? 0 : lens[p.id]));  // the memories a choice leaves
   const look = ev => (ev ? { title: ev.title, text: ev.text, labels: ev.choices.map(c => String(c.label)) } : null);
@@ -28,11 +30,11 @@ const playScenes = () => {
       for (let i = 0; i < ev.choices.length; i++) {
         if (skip.includes(i)) continue;
         for (const roll of rolls) {
-          again(); const e2 = make(); G.nextEvent = null; const lens = memLens();
+          again(); const e2 = make(); G.nextEvent = null; const lens = memLens(), before = standing();
           seq([roll]);
-          const text = e2.choices[i].run(); const mem = gained(lens);
+          const text = e2.choices[i].run(); const mem = gained(lens), fx = moved(before, standing());
           const next = G.nextEvent; G.nextEvent = null;
-          const play = { i, roll, text: text === null || text === undefined ? null : String(text), ...(mem.length ? { mem } : {}), next: look(next) };
+          const play = { i, roll, text: text === null || text === undefined ? null : String(text), ...(mem.length ? { mem } : {}), ...(Object.keys(fx).length ? { fx } : {}), next: look(next) };
           if (next) {  // a scene queued by the choice: its own choices, once for each roll
             play.nextPlays = [];
             for (let j = 0; j < next.choices.length; j++) for (const r2 of rolls) {
@@ -79,6 +81,13 @@ const playScenes = () => {
     hired().debt = debt; return dealScene(currentPlanet());
   });
   deal('scene:used-ship-offer:friend', true, 0, OPINION.FRIEND); deal('scene:used-ship-offer:plain-debt', true, 1500, 1); deal('scene:used-ship-offer:cold', true, 0, -1); deal('scene:used-ship-offer:broker', false, 0, 0);
+  // ---------- putting work further away to the captain ----------
+  // a captain who loves, hates or shrugs at each way of putting it (by trait), for each of the four pitches, on a good roll and a bad one
+  for (const trait of ['greedy', 'pious', 'brave', 'generous', 'rude', 'nervous', 'kind']) run(`scene:pitch:${trait}`, {}, () => {
+    hiredCaptain().traits = [trait];
+    const dest = SYSTEMS.mars.planets[0].name;
+    return pitchScene({ tpl: 'package', ctx: { dest, from: 'Titan', who: 'Mrs. Adeyemi', system: SYSTEMS.mars.name, scale: 1.2 }, sid: 'mars', planet: dest, days: 5, until: G.state.day + 20, pitched: null, booked: false });
+  }, { rolls: [0, 0.999] });
   // ---------- the yard office ----------
   for (const [ship, post, trusted, skilled] of [['used', 'gunner', false, false], ['used', 'engineer', true, true], ['lightfreighter', 'gunner', true, false], ['lightfreighter', 'pilot', false, true]]) {
     run(`scene:yard-office:${ship}:${post}:${trusted ? 't' : 'u'}${skilled ? 's' : 'n'}`, { post, credits: 60000 }, () => {
