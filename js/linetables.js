@@ -66,9 +66,10 @@ function lineTableRegistry() {
 // event reads them through peopleSay. A line may use only the {words} the shipped line has; what the event builds from the game (a sum of hull, a tip) is passed in as a word.
 const peopleSay = (id, key, vars = {}) => lineWords(id, key, PEOPLE_LINES[id][key]).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
 const socialSay = id => (key, vars) => peopleSay(`social:${id}`, key, vars);  // the relationship scenes of social.js (#457)
+const familySay = id => (key, vars) => peopleSay(`family:${id}`, key, vars);  // the "With {name}" scenes of family.js (#457)
 function peopleEventRegistry() {
   const row = (id, title, extra) => ({ id, kind: 'people', title, file: 'js/people.js', where: 'transit', scene: { title, choices: [], parts: PEOPLE_LINES[id], noTitle: true }, ...extra });
   const bar = (id, title, extra) => row(id, title, { file: 'js/bartopics.js', where: 'port', ...extra });
   return [...PAX_EVENTS.map(e => row(`people:pax:${e.id}`, PEOPLE_LINES[`people:pax:${e.id}`].title, { event: e })), ...Object.entries(CREW_EVENTS).map(([trait, make]) => row(`people:crew:${trait}`, PEOPLE_LINES[`people:crew:${trait}`].title, { trait, make })),
-    ...Object.keys(SOCIAL_SCENES).map(id => row(`social:${id}`, PEOPLE_LINES[`social:${id}`].title || `Social: ${id}`, { file: 'js/social.js', social: id })), ...BAR_TOPICS.map(t => bar(`bar:${t.id}`, `Bar topic: ${t.id}`, { topic: t })), bar('bar:goal-help', 'Bar topic: what they are traveling for (the help scene)', { help: 'goal' }), bar('bar:secret-help', 'Bar topic: a secret (the help scene)', { help: 'secret' })];
+    ...Object.keys(SOCIAL_SCENES).map(id => row(`social:${id}`, PEOPLE_LINES[`social:${id}`].title || `Social: ${id}`, { file: 'js/social.js', social: id })), ...Object.keys(FAMILY_SCENES).map(id => row(`family:${id}`, `Sit with a shipmate: ${id}`, { file: 'js/family.js', family: id })), ...BAR_TOPICS.map(t => bar(`bar:${t.id}`, `Bar topic: ${t.id}`, { topic: t })), bar('bar:goal-help', 'Bar topic: what they are traveling for (the help scene)', { help: 'goal' }), bar('bar:secret-help', 'Bar topic: a secret (the help scene)', { help: 'secret' })];
 }

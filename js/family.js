@@ -51,143 +51,148 @@ function storyOf(p) {
 }
 const missed = p => `${storyOf(p).rel} ${storyOf(p).name}`;
 
+// The "With {name}" scenes (#457). The words of each are in PEOPLE_LINES (peopletext.js) under `family:`, read through familySay; what a choice does stays here. Each is built for a
+// shipmate, and for who it is about, so that the editor can play it (FAMILY_SCENES below).
+const liftBy = (p, x, memory, text) => ({ run() { like(p, x, memory); if (moodLow(p)) p.mood.until -= x * 3; return text; } });
+const moodTopic = p => {
+  const say = familySay('mood'), n = p.first;
+  return { pressing: true, title: say('title', { n }), open: p.mood.text ? say('open.news', { n, news: p.mood.text }) : say('open.plain', { n }), choices: [
+    { label: say('c0.label'), ...liftBy(p, 1, 'You sat with me while I was having a hard time.', say('c0.result', { n, missed: missed(p) })) },
+    { label: say('c1.label'), ...liftBy(p, 2, 'You offered to cover for me when I was having a hard time.', say('c1.result', { n })) },
+    { label: say('c2.label'), ...liftBy(p, 0, null, say('c2.result', { n })) },
+  ] };
+};
+const hurtTopic = p => {
+  const say = familySay('hurt'), n = p.first;
+  return { pressing: true, title: say('title', { n }), open: say('open', { n }), choices: [
+    { label: say('c0.label'), ...liftBy(p, 1, 'You asked how I was, and meant it.', say('c0.result', { n })) },
+    { label: say('c1.label'), ...liftBy(p, 1, 'You told me to rest, and I did.', say('c1.result', { n })) },
+  ] };
+};
+const warTopic = (p, aff, foe) => {
+  const say = familySay('war'), n = p.first;
+  return { title: say('title', { n }), open: say('open', { n, aff, foe }), choices: [
+    { label: say('c0.label'), ...liftBy(p, 1, 'You asked what I thought about the war.', say('c0.result', { n })) },
+    { label: say('c1.label'), ...liftBy(p, 1, 'You asked if I wanted to go home during the war.', say('c1.result', { n })) },
+    { label: say('c2.label'), ...liftBy(p, 0, null, say('c2.result', { n })) },
+  ] };
+};
+const riftTopic = (p, other) => {
+  const say = familySay('rift'), n = p.first;
+  return { title: say('title', { n }), open: say('open', { n, other: other.first }), choices: [
+    { label: say('c0.label'), ...liftBy(p, 1, `You asked what was wrong between me and ${other.first}.`, say('c0.result', { n })) },
+    { label: say('c1.label'), ...liftBy(p, 0, null, say('c1.result', { n })) },
+  ] };
+};
+const friendTopic = (p, other) => {
+  const say = familySay('friend'), n = p.first;
+  return { title: say('title', { n }), open: say('open', { n, other: other.first }), choices: [
+    { label: say('c0.label', { other: other.first }), ...liftBy(p, 1, `You asked about ${other.first}, and I told you.`, say('c0.result', { n, other: other.first })) },
+    { label: say('c1.label'), ...liftBy(p, 1, null, say('c1.result', { n })) },
+  ] };
+};
+const memoryTopic = (p, mem) => {
+  const say = familySay('memory'), n = p.first;
+  return { title: say('title', { n }), open: say('open', { n, mem }), choices: [
+    { label: say('c0.label'), ...liftBy(p, 1, 'You brought it up, and I was glad.', say('c0.result', { n })) },
+    { label: say('c1.label'), ...liftBy(p, 0, null, say('c1.result', { n })) },
+  ] };
+};
 function talkTopics(p) {
-  const st = G.state, n = p.first, out = [];
-  const lift = (x, memory, text) => ({ run() { like(p, x, memory); if (moodLow(p)) p.mood.until -= x * 3; return text; } });
-  if (moodLow(p)) out.push({ pressing: true, open: `${n} is quiet, and has been since ${p.mood.text ? `the news: ${p.mood.text}` : 'the last message from home'}. A mug sits in front of them, untouched.`, choices: [
-    { label: 'Let them talk', ...lift(1, 'You sat with me while I was having a hard time.', `You say nothing, and ${n} talks, in pieces, about ${missed(p)}, and what they cannot do from here. By the end the mug is empty. They set the empty mug in the rack and say, to the rack, that it was a long watch.`) },
-    { label: 'Offer to take a watch off them', ...lift(2, 'You offered to cover for me when I was having a hard time.', `${n} starts to say no, and then does not. "Just the one," ${n} says. A corner of their mouth goes up.`) },
-    { label: '"It will pass."', ...lift(0, null, `${n} nods. "It does," they say. "It just takes its time." You both drink your coffee.`) },
-  ] });
-  if ((st.injured || {})[p.id]) out.push({ pressing: true, open: `${n} is favoring one side, and has been all watch. They have not asked for anything, and they have not sat down properly in two days.`, choices: [
-    { label: 'Ask how it is', ...lift(1, 'You asked how I was, and meant it.', `"It is fine," ${n} says, and then, when you wait, "It is not fine. It is getting better." You nod. ${n} lowers themselves onto the bench, bad side last.`) },
-    { label: 'Tell them to rest', ...lift(1, 'You told me to rest, and I did.', `${n} argues for a minute and then goes to their bunk. You can hear them let out a long breath through the bulkhead.`) },
-  ] });
+  const st = G.state, out = [];
+  if (moodLow(p)) out.push(moodTopic(p));
+  if ((st.injured || {})[p.id]) out.push(hurtTopic(p));
   const t = typeof tiesOf === 'function' ? tiesOf(p) : null, w = typeof factionState === 'function' ? factionState().war : null;
-  if (t && w && (t.aff === w.a || t.aff === w.b)) { const foe = t.aff === w.a ? w.b : w.a; out.push({ open: `${n} has had the war on the galley screen since it started, the ${t.aff} against the ${foe}, with the sound off. "Do not tell me it will be over soon," ${n} says.`, choices: [
-    { label: 'Ask what they think', ...lift(1, 'You asked what I thought about the war.', `${n} thinks about it for a while. "I think I would have stayed home," ${n} says, "and I think I would have been wrong." You do not have anything to add to that.`) },
-    { label: 'Ask if they want to go home', ...lift(1, 'You asked if I wanted to go home during the war.', `"Every day," ${n} says. "And then I look at what is on the screen and I think, not like this."`) },
-    { label: 'Change the subject', ...lift(0, null, `You ask about the food at the last port. ${n} is grateful for that, and says so by going on about it for ten minutes.`) },
-  ] }); }
+  if (t && w && (t.aff === w.a || t.aff === w.b)) out.push(warTopic(p, t.aff, t.aff === w.a ? w.b : w.a));
   const others = typeof bond === 'function' ? G.state.crew.filter(id => id !== p.id).map(id => ({ id, p: person(id) })).filter(f => f.p) : [], me = { id: p.id, p };
   const worst = others.map(f => ({ f, b: bond(me, f) })).sort((x, y) => x.b - y.b)[0], best = others.map(f => ({ f, b: bond(me, f) })).sort((x, y) => y.b - x.b)[0];
-  if (worst && worst.b <= -2) out.push({ open: `${n} is short with ${worst.f.p.first} all through the meal, and then pretends not to be.`, choices: [
-    { label: 'Ask what happened', ...lift(1, `You asked what was wrong between me and ${worst.f.p.first}.`, `${n} says it was nothing, and then says it was the thing at the rota, and then the thing from before. "I do not even like being angry," ${n} says. "It is just there."`) },
-    { label: 'Stay out of it', ...lift(0, null, `You say you will not take sides. ${n} nods, a little disappointed, and you finish the coffee talking about something else.`) },
-  ] });
-  if (best && best.b >= 6) out.push({ open: `${n} laughs at something ${best.f.p.first} said across the galley, and then catches you looking. "We have been through a lot," ${n} says, a little defensively.`, choices: [
-    { label: `Ask about ${best.f.p.first}`, ...lift(1, `You asked about ${best.f.p.first}, and I told you.`, (`${n} talks about ${best.f.p.first} for ` +
-        `a long time: how they met, what ${best.f.p.first} is like on a bad day, the one thing ${n} would never say to their face. It is the warmest ` +
-        `part of the watch.`)) },
-    { label: 'Say you can tell', ...lift(1, null, `"You can tell?" ${n} says. They glance past you at the corridor. "Do not say anything." You will not.`) },
-  ] });
+  if (worst && worst.b <= -2) out.push(riftTopic(p, worst.f.p));
+  if (best && best.b >= 6) out.push(friendTopic(p, best.f.p));
   const mem = p.memories && p.memories.length ? p.memories[p.memories.length - 1].replace(/^(Day \d+|\d+ \w+ \d+): /, '') : null;
-  if (mem) out.push({ open: `${n} says, without quite looking at you, that they have been thinking about something: "${mem}"`, choices: [
-    { label: 'Bring it up', ...lift(1, 'You brought it up, and I was glad.', `You say you remember it too. ${n} looks up. "I did not think you would," ${n} says. It is quiet for a moment, and then it is easy.`) },
-    { label: 'Let it lie', ...lift(0, null, `You let it lie. ${n} nods, and after a minute the talk turns to the next port, and you both pretend that was the point.`) },
-  ] });
+  if (mem) out.push(memoryTopic(p, mem));
   return out;
 }
 function ordinaryTalk(p) {
-  const n = p.first, topics = talkTopics(p), tp = topics.length ? pick(topics) : null;
-  if (tp) return { title: `With ${n}`, text: tp.open, choices: tp.choices };
-  const idle = (p.traits || []).map(t => familyLines('idle')[t]).filter(Boolean);
-  return { title: `With ${n}`, text: `You sit with ${n} in the galley, over two mugs. ${n} ${idle.length ? pick(idle) : 'is easy company'}. The drive hums. A pipe ticks.`,
+  const topics = talkTopics(p), tp = topics.length ? pick(topics) : null;
+  return tp ? { title: tp.title, text: tp.open, choices: tp.choices } : idleTalk(p);
+}
+function idleTalk(p) {
+  const say = familySay('idle'), n = p.first, idle = (p.traits || []).map(t => familyLines('idle')[t]).filter(Boolean);
+  return { title: say('title', { n }), text: say('text', { n, idle: idle.length ? pick(idle) : say('easy') }),
     choices: [
-      { label: 'Stay a while', run() { like(p, 1, null); if (moodLow(p)) p.mood.until -= 5; return pick([(`The ship hums around you both, steady and ` +
-          `warm. Somewhere aft, a door closes. You watch ${n}'s shoulders come down, one careful inch at a time.`), `You do not say much, and neither does ${n}. When you stand to go, ${n} says it was good, and the mug is still warm in your hand.`, (
-          `${n} tells you a story about the last ship they were on. It is a small one, and it goes nowhere, and when it ends you both look into your mugs.`)]); } },
-      { label: `Ask ${n} about ${p.home}`, run() { like(p, 1, null); return `${n} tells you what they miss about ${p.home}, and what they do not. By the end it is hard to say which list is longer.`; } },
+      { label: say('c0.label'), run() { like(p, 1, null); if (moodLow(p)) p.mood.until -= 5; return pick([say('c0.result.0', { n }), say('c0.result.1', { n }), say('c0.result.2', { n })]); } },
+      { label: say('c1.label', { n, home: p.home }), run() { like(p, 1, null); return say('c1.result', { n, home: p.home }); } },
     ] };
 }
 
+// The sittings of a story. `result` is what happens after: a line, or a list to pick from.
+const storyTalk = (p, s) => (label, likeBy, result, extra) => ({ label, run() {
+  like(p, likeBy, null); s.beat++; if (extra) extra();
+  const lines = [].concat(result);
+  return lines.length > 1 ? pick(lines) : lines[0];
+} });
+const politeScene = p => {
+  const say = familySay('polite'), n = p.first;
+  return { title: say('title', { n }), text: say('text', { n }), choices: [{ label: say('c0.label'), run() { like(p, 1, null); return say('c0.result', { n }); } }] };
+};
+const homeScene = (p, s) => {
+  const say = familySay('story-home'), n = p.first, talk = storyTalk(p, s);
+  return { title: say('title', { n }), text: say('text', { n, home: p.home, detail: s.homeDetail || familyLines('home')[cultureOfPerson(p)], left: s.left }),
+    choices: [talk(say('c0.label'), 1, [say('c0.result.0', { n }), say('c0.result.1', { n })]), talk(say('c1.label'), 2, say('c1.result', { n }))] };
+};
+const pictureScene = (p, s) => {
+  const say = familySay('story-picture'), n = p.first, talk = storyTalk(p, s);
+  return { title: say('title', { n }), text: say('text', { n, missed: missed(p) }),
+    choices: [talk(say('c0.label'), 1, say('c0.result', { n, rel: s.rel })), talk(say('c1.label'), 1, say('c1.result', { n }))] };
+};
+const hopeScene = (p, s) => {
+  const say = familySay('story-hope'), n = p.first, talk = storyTalk(p, s);
+  return { title: say('title', { n }), text: say('text', { n, hope: s.hope }),
+    choices: [talk(say('c0.label'), 1, say('c0.result', { n })), talk(say('c1.label'), 2, say('c1.result', { n }), () => { s.promised = true; })] };
+};
+// The favor at the end of it, for crew: to see their family (a mission home), or a debt to pay.
+const visitFavor = (p, s) => {
+  const say = familySay('favor-visit'), n = p.first, st = G.state, where = planetNamed(p.home);
+  return { title: say('title'), text: say('text', { n, home: p.home, missed: missed(p) }),
+    choices: [
+      { label: say('c0.label'), run() {
+        st.missions.push({ id: st.nextId++, type: 'favor', favorPid: p.id, good: 'a promise', tons: 0, destSystem: where.sid, destPlanet: p.home,
+          title: `Take ${n} home to ${p.home} to see their ${s.rel}`, pay: 0, deadline: st.day + 150 });
+        s.beat = 4;
+        like(p, 2, 'The captain promised to take me home.');
+        return say('c0.result', { n });
+      } },
+      { label: say('c1.label'), run: () => say('c1.result', { n }) },
+    ] };
+};
+const debtFavor = (p, s) => {
+  const say = familySay('favor-debt'), n = p.first, st = G.state;
+  return { title: say('title'), text: say('text', { n, debt: fmt(s.debt), home: p.home }),
+    choices: [
+      { label: say('c0.label', { debt: fmt(s.debt) }), ...gated(needCr(s.debt)), run() {
+        st.credits -= s.debt;
+        s.beat = 4;
+        becomeLoyal(p, 'The captain paid off my debt.');
+        return say('c0.result', { n });
+      } },
+      { label: say('c1.label'), run: () => say('c1.result', { n }) },
+    ] };
+};
+
 function sitBeat(p, isCrew) {
-  const s = storyOf(p), st = G.state, n = p.first;
+  const s = storyOf(p), st = G.state;
   // Someone in a bad way (a letter that hurt, an injury) is talked to about that first, once, and then the story goes on where it was.
   const pressKey = moodLow(p) ? `mood:${p.mood.text || p.mood.kind}` : (st.injured || {})[p.id] ? 'hurt' : null;
   if (!pressKey) p.pressed = null;
   else if (p.pressed !== pressKey) {
     const t = talkTopics(p).find(x => x.pressing);
-    if (t) { p.pressed = pressKey; return { title: `With ${n}`, text: t.open, choices: t.choices }; }
+    if (t) { p.pressed = pressKey; return { title: t.title, text: t.open, choices: t.choices }; }
   }
-  // `result` is what happens after: a line, or a list to pick from.
-  const talk = (label, likeBy, result, extra) => ({ label, run() {
-    like(p, likeBy, null); s.beat++; if (extra) extra();
-    const lines = [].concat(result);
-    return lines.length > 1 ? pick(lines) : lines[0];
-  } });
-  if (s.beat > (p.opinion + 1) && s.beat < 4) {
-    return { title: `With ${n}`, text: (`You sit with ${n} in the galley for a while, over two mugs going cold. They talk about the ship, the food, ` +
-        `the noise the recycler makes at night, the next port. It is easy and polite. Whenever the talk drifts toward anything real, ${n} asks about ` +
-        `the food, or the next port, or whether you have eaten. Nothing about themselves, not yet.`),
-      choices: [{ label: 'That\'s all right', run() { like(p, 1, null); return (`You let it be, and finish your coffee, and say nothing about the ` +
-          `hole in the floor. Some people take longer, and that is all right too. When you get up to go, ${n} looks up quickly and says, "Thanks for the company." It is more than they have said all week.`); } }] };
-  }
-  if (s.beat === 0) return { title: `With ${n}`, text: (`${n} tells you about ${p.home}: ${s.homeDetail || familyLines('home')[cultureOfPerson(p)]}. They ` +
-      `turn their mug a quarter turn on the table as they say it. Then, unprompted, they say they left because of ${s.left}, and stop, and drink, and ` +
-      `look at you.`),
-    choices: [
-      talk('Listen', 1, [(`You say nothing, and let the silence hold, and ${n} goes on about smaller things: a street, a smell, a name. It is a long ` +
-          `while before either of you looks at the clock. At the end ${n} says it is late, and does not get up.`), (
-          `${n} talks for most of an hour, and you mostly listen, and, when they run down, they let out a long breath. "I never told anyone that," ` +
-          `they say, quietly. "Not aloud."`)]),
-      talk('Tell them about where you came from', 2, (`You tell them something true and small about where you came from, and ${n} listens with their ` +
-          `whole face, laughs, and at one point reaches over and steals a bite off your plate. "Everybody out here is from somewhere they left," they ` +
-          `say. "It is a little bit of a comfort."`)),
-    ] };
-  if (s.beat === 1) return { title: `With ${n}`, text: (`${n} takes something out of a breast pocket, a small worn picture, soft at the edges from ` +
-      `handling, and slides it across the table. It shows their ${missed(p)}, squinting into the light, mid-laugh. "We used to talk every day," ${n} ` +
-      `says. "Now it is a message every few weeks, with a lag. Half of what I say is out of date before they hear it." They look at the picture for a ` +
-      `while. Then they put it back in the pocket and button the flap.`),
-    choices: [
-      talk('"Tell me about them."', 1, (`${n} does, and it takes a long time, and it is not a story so much as a list of small things: how ` +
-          `their ${s.rel} hums when they cook, what they say when they lose at cards, the particular way they pronounce the name of a place. By the ` +
-          `end, ${n} is smiling, and there are tears in it, and neither of you mentions them.`)),
-      talk('"You\'ll see them again."', 1, `${n} looks at you for a moment. "You cannot promise that," they say. They take the picture out again and prop it against the sugar tin. "No," they say. "But thank you for saying it."`),
-    ] };
-  if (s.beat === 2) return { title: `With ${n}`, text: (`Late in the watch, when the corridors are dim and the ship is quiet, ${n} admits what they ` +
-      `really want: ${s.hope}. They say it in a rush, looking at their hands, and as soon as it is out they laugh, a short laugh that asks you not to ` +
-      `laugh with them. Then they go still, and wait, with their shoulders braced.`),
-    choices: [
-      talk('"It\'s not a stupid thing to want."', 1, (`You tell them, plainly, that it is not, and ${n} lets out a long, slow breath. "Nobody has ` +
-          `ever said that to me," they say. "They say it is nice, or it is late. They never say it is not stupid." They are quiet for a bit. "I think ` +
-          `I needed someone to just say it."`)),
-      talk('"If I can help, I will."', 2, `You say it simply, and ${n} looks up. "You mean that," they say. Then: "I am going to remember you said it." They refill your mug without being asked.`, () => { s.promised = true; }),
-    ] };
-  if (s.beat === 3 && isCrew && s.favor) {
-    if (s.favor === 'visit') {
-      const where = planetNamed(p.home);
-      return { title: `A Favor`, text: (`${n} comes to find you in the cockpit, and stands in the hatch, twisting the hem of their sleeve, which is ` +
-          `not like them. "Could we put in at ${p.home} sometime?" they ask. "I want to see my ${missed(p)} while I still can. It has been too long. I ` +
-          `would work the whole trip for nothing, captain, I swear, I would work double, just to see them one time." They stop. Their voice has gone ` +
-          `thin. "I have never asked for anything before."`),
-        choices: [
-          { label: '"We\'ll go."', run() {
-            st.missions.push({ id: st.nextId++, type: 'favor', favorPid: p.id, good: 'a promise', tons: 0, destSystem: where.sid, destPlanet: p.home,
-              title: `Take ${n} home to ${p.home} to see their ${s.rel}`, pay: 0, deadline: st.day + 150 });
-            s.beat = 4;
-            like(p, 2, 'The captain promised to take me home.');
-            return `${n} does not say anything. For a moment, you are afraid they will cry. Instead, they put a hand on the back of your seat, and squeeze, once, hard, and go out. That night the whole ship smells of something baking, and nobody says why. (It's on your missions list.)`;
-          } },
-          { label: '"Not yet. But soon."', run: () => `${n} nods. "Soon, then," they say. "I can wait. I have gotten good at it." They do not bring it up again.` },
-        ] };
-    }
-    return { title: 'A Favor', text: (`${n} finds you alone, at the end of the watch, and sits down without being asked, hands flat on the table. "I ` +
-        `owe ${fmt(s.debt)} cr to people on ${p.home}," they say, all in one breath. "It is the real reason I left. They send messages. I do not open ` +
-        `them anymore. I just watch the little number go up." They look at you, at last, and do not look away. "I am not asking. I just wanted ` +
-        `you to know, before you decide whether I am worth what you pay me."`),
-      choices: [
-        { label: `Pay it off (${fmt(s.debt)} cr)`, ...gated(needCr(s.debt)), run() {
-          st.credits -= s.debt;
-          s.beat = 4;
-          becomeLoyal(p, 'The captain paid off my debt.');
-          return (`${n} reads the confirmation three times, with their lips moving, and puts the screen face-down on the table, and goes to their ` +
-              `bunk. After a while you hear them crying through the bulkhead, and, after a longer while, laughing. In the morning they are making ` +
-              `everyone breakfast. They will not look you in the eye, and they will not stop smiling.`);
-        } },
-        { label: '"I can\'t, not now."', run: () => `"I know," ${n} says. "I did not expect you to." They stand, touch the table once, and go back to work.` },
-      ] };
-  }
+  if (s.beat > (p.opinion + 1) && s.beat < 4) return politeScene(p);
+  if (s.beat === 0) return homeScene(p, s);
+  if (s.beat === 1) return pictureScene(p, s);
+  if (s.beat === 2) return hopeScene(p, s);
+  if (s.beat === 3 && isCrew && s.favor) return s.favor === 'visit' ? visitFavor(p, s) : debtFavor(p, s);
   return ordinaryTalk(p);
 }
 
@@ -198,21 +203,34 @@ function becomeLoyal(p, memory) {
 }
 
 function sitPicker() {
-  const aboard = [...procedural(), ...paxAboard().filter(m => m.pid && G.state.people[m.pid]).map(m => ({ id: m.pid, p: G.state.people[m.pid], pax: true }))];
+  const say = familySay('picker'), aboard = [...procedural(), ...paxAboard().filter(m => m.pid && G.state.people[m.pid]).map(m => ({ id: m.pid, p: G.state.people[m.pid], pax: true }))];
   return {
-    title: 'Sit With Someone', text: pick([
-      'You make two mugs of coffee. Who could use the company?',
-      'The galley is empty, and the kettle has just clicked off. Somebody aboard might like a cup.',
-      'Between watches, you find yourself with an hour and two mugs. Who gets the second one?',
-      'The ship is quiet tonight. You could use the company yourself, and so, maybe, could someone else.',
-      'You are carrying a plate of the good biscuits down the corridor. Who is it for?',
-    ]),
+    title: say('title'), text: say(`text.${pick([0, 1, 2, 3, 4])}`),
     choices: aboard.map(f => ({
       label: `${f.p.first} (${f.pax ? 'passenger' : ROLE_NAMES[f.p.role].toLowerCase()})${moodLow(f.p) ? ', having a hard time' : (G.state.injured || {})[f.p.id] ? ', hurt' : ''}`,
-      run() { G.nextEvent = sitBeat(f.p, !f.pax); return `You find ${f.p.first} in the galley.`; },
+      run() { G.nextEvent = sitBeat(f.p, !f.pax); return say('go', { first: f.p.first }); },
     })),
   };
 }
+
+// The scenes by the name of their lines (`family:` + the name), each built for a shipmate with what it needs about, for the editor to play (#457).
+const asTalk = t => ({ title: t.title, text: t.open, choices: t.choices });
+const FAMILY_SCENES = {
+  mood: p => { p.mood = { kind: 'low', until: G.state.day + 30, text: 'a message from home' }; return asTalk(moodTopic(p)); },
+  hurt: p => asTalk(hurtTopic(p)),
+  war: p => asTalk(warTopic(p, 'Mars Republic', 'Arcology Compact')),
+  rift: p => asTalk(riftTopic(p, { first: 'Ana' })),
+  friend: p => asTalk(friendTopic(p, { first: 'Ben' })),
+  memory: p => asTalk(memoryTopic(p, 'You sat with me when it was hard.')),
+  idle: p => idleTalk(p),
+  polite: p => politeScene(p),
+  'story-home': p => homeScene(p, storyOf(p)),
+  'story-picture': p => pictureScene(p, storyOf(p)),
+  'story-hope': p => hopeScene(p, storyOf(p)),
+  'favor-visit': p => visitFavor(p, Object.assign(storyOf(p), { favor: 'visit' })),
+  'favor-debt': p => debtFavor(p, Object.assign(storyOf(p), { favor: 'debt', debt: 1500 })),
+  picker: () => sitPicker(),
+};
 
 // ---------- birthdays and holidays ----------
 const calOf = day => { const d = new Date(START_DATE + (day - 1) * 864e5); return { m: d.getUTCMonth() + 1, d: d.getUTCDate(), y: d.getUTCFullYear() }; };

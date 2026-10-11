@@ -29,7 +29,7 @@ const playTalk = () => {
   const realTies = window.tiesOf, realWar = window.factionState;
   const calm = () => { window.tiesOf = realTies; window.factionState = realWar; };
   const topic = pick => p => ({ title: 'x', ...(talkTopics(p).find(pick) || talkTopics(p)[0]) });
-  const asEvent = t => ({ title: 'With ' + 'Sam', text: t.open, choices: t.choices });
+  const asEvent = t => ({ title: t.title || 'With Sam', text: t.open, choices: t.choices });  // the topics have a title of their own once their words are lines
   const first = p => asEvent(talkTopics(p)[0]);
   // the topics, each on its own: a hard time (with a message and without), an injury, the war, a rift, a friend, a memory
   play('talk:low:news', (p, s) => { p.mood = { kind: 'low', until: s.day + 40, text: 'their mother is ill' }; }, first);

@@ -152,10 +152,10 @@
         ...beatRow(e.scene), lines: true, codeNote: LINES_NOTE });
     }
     for (const e of peopleEventRegistry()) {  // the passenger and crew events (#457): written in code, with their words as lines
-      const pax = !!e.event, crew = !!e.make, rel = !!e.social, kind = pax ? 'passenger events' : crew ? 'crew events' : rel ? 'social life' : 'bar topics';
+      const pax = !!e.event, crew = !!e.make, rel = !!e.social, fam = !!e.family, kind = pax ? 'passenger events' : crew ? 'crew events' : rel ? 'social life' : fam ? 'found family' : 'bar topics';
       add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: kind,
-        conditionsNote: pax ? 'A passenger aboard whom the event is about (their secret, goal or traits); one event is drawn for a passenger by weight.' : crew ? 'A shipmate with the trait the event is about: one of the crew is picked on a burn, then one of their traits.' : rel ? 'Two people aboard, by the bond between them, where they come from, who is crew and who is a passenger, and what is on; a scene comes up now and then on a burn, each kind waiting its turn. The feeds and the downtime activities are what the ship hears and does with what is on.' : 'One of the few things you can do at a table with a stranger at a bar, offered by who they are; or, for a help scene, what follows when you take up their goal or their secret.',
-        pacing: { tier: null, weight: pax ? e.event.weight : null, cooldown: pax ? 'one per passenger' : 'by its own rule', trigger: pax ? 'Drawn by weight among the events that fit the passenger, on a burn.' : crew ? 'Picked at random among the crew and their traits, on a burn.' : rel ? 'Chosen among the scenes the pairs aboard can have, on a burn (relationshipScene, social.js); the feeds come up as chatter, and the activities are offered at the downtime screen.' : 'Offered at a bar table by the person\'s traits, goal and secret, three at a time.', editable: false },
+        conditionsNote: pax ? 'A passenger aboard whom the event is about (their secret, goal or traits); one event is drawn for a passenger by weight.' : crew ? 'A shipmate with the trait the event is about: one of the crew is picked on a burn, then one of their traits.' : fam ? 'Sitting with a shipmate in downtime (the picker, or the Sit with someone activity): what is on their mind decides the scene (a hard time, an injury, the war, a rift, a friend, a memory), and a story they tell in three sittings and a favor at the end of it.' : rel ? 'Two people aboard, by the bond between them, where they come from, who is crew and who is a passenger, and what is on; a scene comes up now and then on a burn, each kind waiting its turn. The feeds and the downtime activities are what the ship hears and does with what is on.' : 'One of the few things you can do at a table with a stranger at a bar, offered by who they are; or, for a help scene, what follows when you take up their goal or their secret.',
+        pacing: { tier: null, weight: pax ? e.event.weight : null, cooldown: pax ? 'one per passenger' : 'by its own rule', trigger: pax ? 'Drawn by weight among the events that fit the passenger, on a burn.' : crew ? 'Picked at random among the crew and their traits, on a burn.' : fam ? 'Offered at the downtime screen: who you sit with picks the scene.' : rel ? 'Chosen among the scenes the pairs aboard can have, on a burn (relationshipScene, social.js); the feeds come up as chatter, and the activities are offered at the downtime screen.' : 'Offered at a bar table by the person\'s traits, goal and secret, three at a time.', editable: false },
         ...beatRow(e.scene), codeNote: SCENE_NOTE });
     }
     return rows;
@@ -333,6 +333,11 @@
       if (!ev) return { error: 'This scene needs people the test game does not have aboard.' };
       openEvent(ev);
       return { type: 'played', failing: [], chained: false, shut: [], note: 'A relationship scene is chosen among what the pairs aboard can have, so no condition is checked here.' };
+    }
+    if (pe && pe.family) {  // a "With {name}" scene: a shipmate it is about is aboard
+      const mate = makeCrewCandidate(G.state.systemId); mate.home = 'Earth'; registerPerson(mate); G.state.crew.push(mate.id);
+      openEvent(FAMILY_SCENES[pe.family](mate));
+      return { type: 'played', failing: [], chained: false, shut: [], note: 'A talk scene is chosen by how the shipmate is, so no condition is checked here.' };
     }
     if (pe && pe.make) {  // a crew event: a shipmate with the trait is aboard
       const mate = makeCrewCandidate(G.state.systemId); registerPerson(mate); mate.traits = [pe.trait]; G.state.crew.push(mate.id);
