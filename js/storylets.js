@@ -246,6 +246,10 @@ function cleanOverrides(raw) {
               else bad.push(`${pre} choice ${i} is rolled by the game, so it has no "${f}"`);
               continue;
             }
+            if (f === 'memory') {  // the memory a code choice leaves, for the choices that declare one (a cast scene's, cast.js)
+              if (!rs || typeof rs.choices[i].memory !== 'string') bad.push(`${pre} choice ${i} leaves no memory of its own to change`); else if (text(`${pre} choice ${i} memory`, x)) slot().memory = x;
+              continue;
+            }
             if (rs && f === 'next') { bad.push(`${pre} choice ${i} has no "next" (a hired scene plays by its days, not by conditions)`); continue; }
             if (rs && f === 'when' && rs.choices[i].run) { bad.push(`${pre} choice ${i} runs code, so its conditions are not edited`); continue; }
             if (rs && f === 'effects' && rs.choices[i].run) { bad.push(`${pre} choice ${i} runs code, so its effects are not edited`); continue; }
@@ -333,6 +337,7 @@ function sceneWords(id, scene) {
       if (!co) return c;
       const out = { ...c };
       if (co.label) out.label = co.label;
+      if (co.memory && typeof c.memory === 'string') out.memory = co.memory;  // plain text, as every memory is
       if (co.effects && !c.run) out.effects = co.effects;
       if (co.when && !c.run) out.when = co.when;
       if (co.result) { const line = esc(co.result), run = c.run; if (run) out.run = function () { run.call(this); return line; }; else out.result = line; }
