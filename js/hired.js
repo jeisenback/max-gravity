@@ -174,13 +174,8 @@ function hiredCall(ev) {
 }
 
 // ---------- downtime ----------
-const PRACTICE = {
-  pilot: 'You take the helm through the drills the old hands swear by: a flip on the sim, a docking by the numbers, a dead-stick approach with the lights out.',
-  gunner: 'You spend a watch on the range sim, tracking and leading targets, until the fire control stops fighting you and starts finishing your sentences.',
-  engineer: 'You go through the plant one system at a time, with the manual open and a meter in your teeth, and find three things nobody had written down.',
-  comms: 'You sit on the bands for a watch, learning the rhythm of a dozen stations, and which of them are lying about their transponders.',
-};
-ACTIVITIES.practise = { hiredOnly: true, label: 'Practice at your post', can: () => !!hired(), run() { if (!hired()) return 'There is nothing to practice.'; gainSkill(hired().post, 3); return `${PRACTICE[hired().post]} (Experience at the ${POSTS[hired().post].name.toLowerCase()} post.)`; } };
+const practiceSay = (key, vars) => sceneSay('scene:screens', key, vars);  // the words are the lines of scene:screens (hiredscenes.js)
+ACTIVITIES.practise = { hiredOnly: true, get label() { return practiceSay('practise.label'); }, can: () => !!hired(), run() { if (!hired()) return practiceSay('practise.none'); gainSkill(hired().post, 3); return `${practiceSay(`practise.${hired().post}`)} ${practiceSay('practise.learn', { post: POSTS[hired().post].name.toLowerCase() })}`; } };
 // What a hired hand can do with downtime: not the captain's drills or rounds of the berths, and the hull is the engineer's.
 const hiredMay = (id, a) => a.hiredOnly ? !!hired() : !hired() || (!['drills', 'visit'].includes(id) && (id !== 'repair' || hired().post === 'engineer'));
 
@@ -290,7 +285,7 @@ function settleRun(planet) {
   h.run = null;
   h.plan = null;
   gainSkill(h.post, 2);  // a burn worked
-  like(st.people[h.captain], profit > 0 ? 1 : -1, profit > 0 ? 'Good run. You pull your weight.' : 'That run lost money.');
+  like(st.people[h.captain], profit > 0 ? 1 : -1, sceneSay('scene:screens', profit > 0 ? 'run.good.memory' : 'run.bad.memory'));
   const name = run.good ? COMMODITIES.find(c => c.id === run.good).name : null;
   if (settling) return;
   return (`${name ? (`The captain sold ${sold}t of ${name} for ${fmt(revenue)} cr (${profit >= 0 ? `profit ${fmt(profit)}` : `loss ${fmt(-profit)}`} ` +
@@ -340,12 +335,12 @@ function askSwap(post) {
   const holder = roleHolder(role) || st.crew.map(person).find(c => c.role === role);
   const who = cap.first;
   if (Math.random() >= swapOdds(post)) {
-    like(cap, 0, `You asked to move to ${POSTS[post].name.toLowerCase()} and I said not yet.`);
-    return M_NOTE(`${who}: "Not yet. Show me more on the ${POSTS[h.post].name.toLowerCase()} first, and ask me again after the next run."`);
+    like(cap, 0, sceneSay('scene:screens', 'swap.refused.memory', { post: POSTS[post].name.toLowerCase() }));
+    return M_NOTE(sceneSay('scene:screens', 'swap.refused', { who, mine: POSTS[h.post].name.toLowerCase() }));
   }
   if (holder) { holder.role = mine; holder.skill = Math.max(1, holder.skill - 1); holder.job = ROLE_NAMES[mine].toLowerCase(); }  // they take the post you leave
   h.post = post;
-  M_NOTE(`${who}: "All right. You are the ${POSTS[post].name.toLowerCase()} from here.${holder ? ` ${holder.first} will take the ${POSTS[Object.keys(POSTS).find(k => POSTS[k].role === mine)].name.toLowerCase()}.` : ''}"`);
+  M_NOTE(sceneSay('scene:screens', 'swap.yes', { who, post: POSTS[post].name.toLowerCase(), holder: holder ? ` ${sceneSay('scene:screens', 'swap.holder', { first: holder.first, mine: POSTS[Object.keys(POSTS).find(k => POSTS[k].role === mine)].name.toLowerCase() })}` : '' }));
 }
 let M_NOTE = () => {};
 
@@ -438,19 +433,17 @@ function buyIn(id) {
   st.cargo = {}; st.paid = {};  // what was in the hold was the captain's
   // The captain stays a contact, and a known captain on the lanes.
   Object.assign(cap, { ship: { name: oldName, shipId: 'freighter', kind: 'trader' }, haunt: st.systemId, location: planet.name });
-  like(cap, 2, 'You worked my ship, and then bought your own. Fair winds.');
+  like(cap, 2, sceneSay('scene:screens', 'buyin.captain.memory'));
   for (const c of st.crew.map(person)) if (!friends.includes(c)) c.location = planet.name;  // the rest stay with her
   st.crew = friends.map(c => c.id);
-  for (const f of friends) like(f, 2, `We left the ${oldName} together.`);
+  for (const f of friends) like(f, 2, sceneSay('scene:screens', 'buyin.friend.memory', { ship: oldName }));
   // A fresh ship: nothing of the old one's wear, refits or jobs comes with you.
   for (const k of ['condition', 'refits', 'projects', 'power', 'heat', 'tuned', 'route']) delete st[k];
   if (id === USED_ID) st.condition = { ...USED_CONDITION };  // but the used Ore Runner comes as she is
   home().name = shipName(false);
   st.hired = null;
   G.offers = generateMissions(planet);
-  return (`You bought the ${bought.name} for ${fmt(price)} cr and left the ${oldName}. Captain ${cap.first} ${cap.last} shakes your hand on the dock ` +
-      `and says they will keep an eye out for you on the lanes.${friends.length ? ` ${namesOf(friends)} came with you.` : ' You are on your own.'} She ` +
-      `is yours now: the exchange, the contracts and the yard are open to you, and the crew are your wages to pay.`);
+  return sceneSay('scene:screens', 'buyin.result', { ship: bought.name, price: fmt(price), old: oldName, first: cap.first, last: cap.last, company: ` ${friends.length ? sceneSay('scene:screens', 'buyin.with', { names: namesOf(friends) }) : sceneSay('scene:screens', 'buyin.alone')}` });
 }
 
 // The close of the hired-hand chapter (scope 'earth-hired', js/build.js): one scene at the foot of the new ship's ramp. It is read before

@@ -151,6 +151,23 @@ const playScenes = () => {
     run(`log:legacy:${fate}:${aboard}`, {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { succeed(fate, 'Mara Quill'); return ''; } }] }), { prep() { G.state.crew = []; crewOf(aboard); }, extra: logOf });
   }
   run('log:founded', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { found('Callisto', 'Test Landing'); return ''; } }] }), { prep() { Object.assign(G.state, { credits: 150000, cargo: { industrial: 30, equipment: 20, metal: 40 } }); }, extra: logOf });
+  // ---------- the memories and notes of dismissing, aborting, a run settled, a swap of posts, a ship bought in, and practice at a post ----------
+  const alone = () => ({ title: 'x', text: '', choices: [] });
+  run('hand:dismiss', { mode: undefined }, () => ({ ...alone(), choices: [{ label: 'x', run() { UI.act('dismiss', '0'); return ''; } }] }), { prep() { G.state.crew = []; crewOf(2); } });
+  run('hand:abort', { mode: undefined }, () => ({ ...alone(), choices: [{ label: 'x', run() { UI.act('abort', '0'); return ''; } }] }), { prep() { uatPassenger(); } });
+  for (const [name, cost] of [['good', -500], ['bad', 800]]) {
+    run(`hand:run:${name}`, {}, () => ({ ...alone(), choices: [{ label: 'x', run: () => String(settleRun(currentPlanet())) }] }), { prep() { const st = G.state; hired().run = { sid: st.systemId, planet: currentPlanet().name, day: st.day - 3, from: 'Mars', good: null, tons: 0, cost, ice: false, profit: 0 }; } });
+  }
+  for (const post of ['engineer', 'pilot']) {
+    run(`hand:swap:${post}`, {}, () => ({ ...alone(), choices: [{ label: 'x', run() { const real = M_NOTE, notes = []; M_NOTE = t => notes.push(t); try { askSwap(post); } finally { M_NOTE = real; } return notes.join(' | '); } }] }), { rolls: [0, 0.999] });
+  }
+  for (const [name, friends] of [['alone', 0], ['friends', 2]]) {
+    run(`hand:buyin:${name}`, { credits: 100000 }, () => ({ ...alone(), choices: [{ label: 'x', run: () => String(buyIn('courier')) }] }), { prep() { G.state.crew = []; crewOf(friends); for (const id of G.state.crew) G.state.people[id].opinion = 4; } });
+  }
+  for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
+    run(`hand:practise:${post}`, { post }, () => ({ ...alone(), choices: [{ label: ACTIVITIES.practise.label, run: () => String(ACTIVITIES.practise.run()) }] }), { extra: () => hired().skill });
+  }
+  run('hand:practise:owner', { mode: undefined }, () => ({ ...alone(), choices: [{ label: 'x', run: () => String(ACTIVITIES.practise.run()) }] }));
   // ---------- the yard office ----------
   for (const [ship, post, trusted, skilled] of [['used', 'gunner', false, false], ['used', 'engineer', true, true], ['lightfreighter', 'gunner', true, false], ['lightfreighter', 'pilot', false, true]]) {
     run(`scene:yard-office:${ship}:${post}:${trusted ? 't' : 'u'}${skilled ? 's' : 'n'}`, { post, credits: 60000 }, () => {
