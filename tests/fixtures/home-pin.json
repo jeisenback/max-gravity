@@ -398,5 +398,37 @@
  {
   "key": "force:bad:friend:2:2",
   "text": "\"Ana takes Sam's next hour at the console without being asked. Sam sits with the terminal on their knees and does not look at it. When Ana comes back for the cup, Sam says something, and Ana nods.\""
+ },
+ {
+  "key": "force:burn:0",
+  "text": "\"[Ship] By unanimous vote, this burn is called \\\"The Long Sulk\\\".\""
+ },
+ {
+  "key": "force:burn:1",
+  "text": "\"[Ship] By unanimous vote, this burn is called \\\"Operation Soup\\\".\""
+ },
+ {
+  "key": "force:burn:2",
+  "text": "\"[Ship] By unanimous vote, this burn is called \\\"Tuesday Forever\\\".\""
+ },
+ {
+  "key": "force:burn:3",
+  "text": "\"[Ship] By unanimous vote, this burn is called \\\"Nobody Touch Anything\\\".\""
+ },
+ {
+  "key": "force:burn:4",
+  "text": "\"[Ship] By unanimous vote, this burn is called \\\"The Great Coffee Shortage\\\".\""
+ },
+ {
+  "key": "force:burn:5",
+  "text": "\"[Ship] By unanimous vote, this burn is called \\\"Probably Fine\\\".\""
+ },
+ {
+  "key": "force:burn:6",
+  "text": "\"[Ship] By unanimous vote, this burn is called \\\"Second Breakfast\\\".\""
+ },
+ {
+  "key": "force:burn:7",
+  "text": "\"[Ship] By unanimous vote, this burn is called \\\"Hold My Drink\\\".\""
  }
 ]

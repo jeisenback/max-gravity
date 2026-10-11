@@ -77,6 +77,8 @@ const playHome = () => {
   for (const i of [0, 1]) forceRun('force:good', withNews(true), 3, p => newsEvent(p), i);
   for (const i of [0, 1, 2]) forceRun('force:bad', withNews(false), 3, p => newsEvent(p), i === 2 ? 2 : i);
   { const bonded = (p, s) => { withNews(false)(p, s); for (let i = 0; i < 4; i++) addBond({ id: p.id, p }, { id: AID, p: s.people[AID] }, 2); }; forceRun('force:bad:friend', bonded, 3, p => newsEvent(p), 2); }
+  // every name a burn can be given, by forcing the dice
+  for (let k = 0; k < 8; k++) { reset(); seq([(k + 0.5) / 8]); const line = TRADITIONS['burn-name'].line(); Math.random = real; note(`force:burn:${k}`, line); }
   return out;
 };
 
