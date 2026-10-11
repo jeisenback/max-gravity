@@ -70,6 +70,18 @@ const playLines = () => {
     __seed(1); const o = t.make(p, { p, known: false, ...done }, ctx); note(`label:${t.id}`, o.label); note(`gate:${t.id}`, o.why ? o.why() : '');
   }
   { const was = st.hired; st.hired = null; const p = person(['pious', 'kind']); note('label:bless:owner', BAR_TOPICS.find(t => t.id === 'bless').make(p, { p, known: false }, ctx).label); st.hired = was; }  // an owner's blessing is for 'your ship'
+  // what is seen of the people in the ship's rooms: every line of every pool, as the game draws it (a crowd of two in the room, so that a line for two can be drawn), and the lights
+  { const realRandom = Math.random, crowd = [{ name: 'Ana', role: 'pilot', room: 'galley' }, { name: 'Ben', role: 'gunner', room: 'galley' }];
+    for (const [room, pools] of Object.entries(LIFE_LINES)) for (const [role, list] of Object.entries(pools)) for (let i = 0; i < list.length; i++) {
+      Math.random = () => (i + 0.5) / list.length;  // the draw that picks line i of the pool
+      note(`life:${room}:${role}:${i}`, lifeLine({ name: 'Cass', role: role === 'any' ? 'cook' : role, room }, crowd.map(c => ({ ...c, room }))));
+    }
+    Math.random = realRandom;
+    uatBurn('Ceres Station', 'pallas');
+    const realComm = window.comm, heard = [];
+    window.comm = text => heard.push(text);
+    for (const [name, elapsed, dark] of [['dusk', 24, false], ['dawn', -2, true]]) { G.transit.elapsed = elapsed; G.transit.dark = dark; heard.length = 0; lifeTick(0.01); note(`lights:${name}`, heard.join(' | ')); }
+    window.comm = realComm; }
   return out;
 };
 

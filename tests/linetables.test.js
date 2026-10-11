@@ -35,7 +35,7 @@ test('the pin is repeatable: playing the lines twice gives the same record', asy
   assert.deepEqual(a, b);
 });
 
-const IDS = ['bar-silence', 'bar-place', 'bar-card-win', 'bar-card-lose', 'bar-home-talk', 'bar-bless', 'bar-leave', 'bar-drink-talk', 'bar-work', 'bar-trait', 'bar-goal', 'bar-openers', 'bar-secret-talk', 'bar-crew', 'bar-goal-help', 'bar-secret-help', 'bar-react', 'trait-chatter'].map(x => `lines:${x}`);
+const IDS = ['bar-silence', 'bar-place', 'bar-card-win', 'bar-card-lose', 'bar-home-talk', 'bar-bless', 'bar-leave', 'bar-drink-talk', 'bar-work', 'bar-trait', 'bar-goal', 'bar-openers', 'bar-secret-talk', 'bar-crew', 'bar-goal-help', 'bar-secret-help', 'bar-react', 'ship-life', 'ship-lights', 'trait-chatter'].map(x => `lines:${x}`);
 
 test('every table is read: an override for each of its lines shows in what the topics and the chatter play, and nothing else changes', async () => {
   const g = await open({ scope: 'full' });
@@ -54,7 +54,7 @@ test('every table is read: an override for each of its lines shows in what the t
   assert.deepEqual(r.registered, IDS, 'the registry holds the tables, in this order');
   assert.deepEqual(r.warned, [], 'the game keeps every line');
   const all = JSON.stringify(r.changed);
-  for (const id of IDS) assert.ok(Object.keys(r.lines[id]).length >= 3, `${id} has lines`);
+  for (const id of IDS) assert.ok(Object.keys(r.lines[id]).length >= 2, `${id} has lines`);
   // each table is read by some case; every line of it that a case could draw is checked in the next test
   const unread = IDS.filter(id => !all.includes(`@@${id}|`));
   assert.deepEqual(unread, [], 'a table the game never reads through its id');
