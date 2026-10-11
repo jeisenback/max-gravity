@@ -8,13 +8,15 @@ const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { open, closeBrowser } = require('./helpers');
 const { playScenes } = require('./sceneplay');
+const { playMessages } = require('./msgplay');
 
 after(closeBrowser);
 
 test('every line of every scene is read: an override for it shows in what the scene plays, and the scenes play as many choices as before', async () => {
   const g = await open({ scope: 'full' });
   const r = await g.ev(arg => {
-    const play = (0, eval)(`(${arg.src})`);
+    const scenes = (0, eval)(`(${arg.src})`), notes = (0, eval)(`(${arg.notes})`);
+    const play = () => [...scenes(), ...notes().map(x => ({ id: `notes:${x.key}`, plays: x.text || [], error: x.error }))];  // the notes of flight and the dock (msgplay.js) read their lines too
     const ids = Object.keys(SCENE_LINES);
     const lines = Object.fromEntries(ids.map(id => [id, linesOf(id)]));
     const base = play();
@@ -25,7 +27,7 @@ test('every line of every scene is read: an override for it shows in what the sc
     console.warn = warn;
     const changed = play();
     return { base: base.map(x => [x.id, x.plays.length, x.error || '']), changed: changed.map(x => [x.id, x.plays.length, x.error || '']), text: JSON.stringify(changed), lines, warned };
-  }, { src: playScenes.toString() });
+  }, { src: playScenes.toString(), notes: playMessages.toString() });
   await g.done();
   assert.deepEqual(r.warned, [], 'the game keeps every line');
   assert.deepEqual(r.changed.filter(x => x[2]), [], 'every case still plays');

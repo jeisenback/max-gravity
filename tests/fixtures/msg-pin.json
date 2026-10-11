@@ -1,0 +1,191 @@
+[
+ {
+  "key": "kill:ally",
+  "text": [
+   "Rook destroyed."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "kill:ally-enemy",
+  "text": [
+   "Rook destroyed."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "kill:story",
+  "text": [
+   "Voight destroyed. Aquilon will not be happy."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "kill:bounty",
+  "text": [
+   "Bounty complete: Harlan Voss destroyed. +1,200 cr"
+  ],
+  "credits": 1200
+ },
+ {
+  "key": "kill:pirate:0",
+  "text": [
+   "Pirate destroyed. Bounty +200 cr"
+  ],
+  "credits": 200
+ },
+ {
+  "key": "kill:pirate:1",
+  "text": [
+   "Pirate destroyed. Bounty +400 cr"
+  ],
+  "credits": 400
+ },
+ {
+  "key": "kill:pirate:2",
+  "text": [
+   "Pirate destroyed. Bounty +600 cr"
+  ],
+  "credits": 600
+ },
+ {
+  "key": "kill:patrol",
+  "text": [
+   "Patrol 4 destroyed."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "kill:trader",
+  "text": [
+   "Wren destroyed."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "land:nav",
+  "text": [
+   "Nav target: Luna."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "land:fast",
+  "text": [
+   "Moving too fast to land. Slow down (S / Down turns you around)."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "land:denied",
+  "text": [
+   "Docking denied. The Arcology Compact will not let your ship land."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "dock:errand",
+  "text": [
+   "Errand done: a sealed case handed over. Fee 300 cr."
+  ],
+  "credits": 300
+ },
+ {
+  "key": "dock:delivery",
+  "text": [
+   "Delivered 12t of water ice. Payment received: 900 cr."
+  ],
+  "credits": 900
+ },
+ {
+  "key": "dock:pax1",
+  "text": [
+   "A pilgrim disembarks. Fare received: 500 cr."
+  ],
+  "credits": 500
+ },
+ {
+  "key": "dock:pax2",
+  "text": [
+   "A survey crew disembark. Fare received: 800 cr."
+  ],
+  "credits": 800
+ },
+ {
+  "key": "dock:pax-bonus",
+  "text": [
+   "A pilgrim disembarks. Fare received: 650 cr (+150 for the trip)."
+  ],
+  "credits": 650
+ },
+ {
+  "key": "dock:pax-penalty",
+  "text": [
+   "A pilgrim disembarks. Fare received: 350 cr (-150 for the trip)."
+  ],
+  "credits": 350
+ },
+ {
+  "key": "dock:pax-nofare",
+  "text": [
+   "A pilgrim disembarks."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "dock:lapsed",
+  "text": [
+   "Mission failed (deadline passed): Ore run"
+  ],
+  "credits": 0
+ },
+ {
+  "key": "dock:walk-off",
+  "text": [
+   "Mateo Castillo has had enough of you and your ship, and walks off at Earth."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "map:hired",
+  "text": [
+   "The captain picks where she goes."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "burn:nodest",
+  "text": [
+   "No destination. Press M to open the system map."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "burn:fuel",
+  "text": [
+   "Not enough reaction mass (need 94). Refuel or pick a closer destination."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "burn:near",
+  "text": [
+   "Traffic control: clear local space before starting a long burn."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "burn:ok",
+  "text": [
+   "Burning for Mercury."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "arrive",
+  "text": [
+   "Arrived at Mercury (Independent). 12 Jun 2214."
+  ],
+  "credits": 0
+ }
+]
