@@ -4,7 +4,7 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { select } = require('../tools/changed-tests');
+const { select, withHarnesses } = require('../tools/changed-tests');
 
 const tests = {
   'tests/sound.test.js': 'test("sfx", () => { Sfx.toggle(); })',
@@ -73,4 +73,13 @@ test('one unmappable file among mapped ones still runs everything', () => {
 test('no change runs nothing', () => {
   const r = pick([]);
   assert.deepEqual(r.files, []); assert.equal(r.full, false);
+});
+
+test('a pin is selected by the scripts its harness plays, though its test file names none (#515)', () => {
+  const pins = { 'tests/beatpin.test.js': "const { playBeats } = require('./beatplay');", 'tests/other.test.js': 'test("other", () => { market(); })' };
+  const harnesses = { 'tests/beatplay.js': 'const playBeats = () => { startDuel(); raidScene(); };' };
+  const merged = withHarnesses(pins, harnesses);
+  assert.deepEqual(select(['js/duel.js'], { tests: merged, sources: { 'js/duel.js': 'function startDuel() {}' } }).files, ['tests/beatpin.test.js']);
+  assert.deepEqual(select(['js/duel.js'], { tests: pins, sources: { 'js/duel.js': 'function startDuel() {}' } }).full, true, 'without the harness it is not found');
+  assert.equal(merged['tests/other.test.js'], pins['tests/other.test.js'], 'a test with no harness is unchanged');
 });

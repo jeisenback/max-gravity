@@ -55,6 +55,15 @@ function select(changed, { tests, sources }) {
   return { files: [...files].sort(), full: false, why };
 }
 
+// A pin's test file is a few lines; the scripts it plays are named in the harness it requires (tests/xxxplay.js, docs/pins.md). Add each harness's text
+// to the test that requires it, so that a change to a script selects the pins that play it. harnesses: { path: source } of tests/*play.js.
+function withHarnesses(tests, harnesses) {
+  return Object.fromEntries(Object.entries(tests).map(([t, src]) => {
+    const extra = [...src.matchAll(/require\('\.\/(\w+play)'\)/g)].map(m => harnesses[`tests/${m[1]}.js`] || '');
+    return [t, [src, ...extra].join('\n')];
+  }));
+}
+
 function main() {
   const root = path.resolve(__dirname, '..');
   const git = (...a) => execFileSync('git', a, { cwd: root, encoding: 'utf8' }).split('\n').filter(Boolean);
@@ -62,7 +71,7 @@ function main() {
   const changed = given > 0 ? process.argv[given + 1].split(',') : [...new Set([...git('diff', '--name-only', 'origin/main'), ...git('ls-files', '--others', '--exclude-standard')])];
   const read = (dir, suffix) => Object.fromEntries(fs.readdirSync(path.join(root, dir)).filter(f => f.endsWith(suffix))
     .map(f => [`${dir}/${f}`, fs.readFileSync(path.join(root, dir, f), 'utf8')]));
-  const r = select(changed, { tests: read('tests', '.test.js'), sources: read('js', '.js') });
+  const r = select(changed, { tests: withHarnesses(read('tests', '.test.js'), read('tests', 'play.js')), sources: read('js', '.js') });
   console.log(`changed: ${changed.length} file(s)`);
   r.why.forEach(w => console.log(`  ${w}`));
   if (process.argv.includes('--list')) { console.log(r.full ? 'run: the full suite' : `run: ${r.files.join(' ') || 'nothing'}`); return; }
@@ -73,4 +82,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { select };
+module.exports = { select, withHarnesses };
