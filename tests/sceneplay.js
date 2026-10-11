@@ -14,6 +14,8 @@ const playScenes = () => {
     G.state.story.next = 1e9; G.state.day += 30; G.dialog = null; G.nextEvent = null;
     return G.state;
   };
+  const standing = () => ({ credits: G.state.credits, opinion: Object.fromEntries(Object.values(G.state.people).map(p => [p.id, p.opinion])) });
+  const moved = (b, a) => ({ ...(a.credits !== b.credits ? { credits: a.credits - b.credits } : {}), ...Object.fromEntries(Object.entries(a.opinion).filter(([id, v]) => v !== b.opinion[id]).map(([id, v]) => [id, v - (b.opinion[id] || 0)])) });  // what a choice did to the money and to each person's regard
   const memLens = () => Object.fromEntries(Object.values(G.state.people).map(p => [p.id, (p.memories || []).length]));
   const gained = lens => Object.values(G.state.people).flatMap(p => (p.memories || []).slice(lens[p.id] === undefined ? 0 : lens[p.id]));  // the memories a choice leaves
   const look = ev => (ev ? { title: ev.title, text: ev.text, labels: ev.choices.map(c => String(c.label)) } : null);
@@ -28,11 +30,11 @@ const playScenes = () => {
       for (let i = 0; i < ev.choices.length; i++) {
         if (skip.includes(i)) continue;
         for (const roll of rolls) {
-          again(); const e2 = make(); G.nextEvent = null; const lens = memLens();
+          again(); const e2 = make(); G.nextEvent = null; const lens = memLens(), before = standing();
           seq([roll]);
-          const text = e2.choices[i].run(); const mem = gained(lens);
+          const text = e2.choices[i].run(); const mem = gained(lens), fx = moved(before, standing());
           const next = G.nextEvent; G.nextEvent = null;
-          const play = { i, roll, text: text === null || text === undefined ? null : String(text), ...(mem.length ? { mem } : {}), next: look(next) };
+          const play = { i, roll, text: text === null || text === undefined ? null : String(text), ...(mem.length ? { mem } : {}), ...(Object.keys(fx).length ? { fx } : {}), next: look(next) };
           if (next) {  // a scene queued by the choice: its own choices, once for each roll
             play.nextPlays = [];
             for (let j = 0; j < next.choices.length; j++) for (const r2 of rolls) {
