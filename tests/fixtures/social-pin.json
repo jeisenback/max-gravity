@@ -1154,6 +1154,1306 @@
   ]
  },
  {
+  "id": "feud",
+  "seed": 32,
+  "title": "A Small Ship",
+  "text": "Ana and Ben are arguing about whether the cat is allowed on the console, standing, leaning across the table. \"Say it again,\" Ben says. \"Every day until we dock,\" Ana says. Someone at the end of the table says, to their plate, that it is a long way to dock.",
+  "labels": [
+   "Side with Ana",
+   "Side with Ben",
+   "Lock them in the galley until they sort it out",
+   "Settle it over cards"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You dog the hatch from the outside and sit on the deck with your back to it. There is shouting for twenty minutes. Then there is only the air handler. Then Ana laughs, once. An hour and a half later you open the hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 3
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge (1 points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.",
+    "d": {
+     "credits": 0,
+     "armor": -1,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ana takes the last hand, and Ben washes the dishes. Over the sink Ben goes through what is wrong with the rules, the deck, the lighting and Ana's mother. Ana drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ben takes the last hand, and Ana washes the dishes. Over the sink Ana goes through what is wrong with the rules, the deck, the lighting and Ben's mother. Ben drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "feud",
+  "seed": 34,
+  "title": "A Small Ship",
+  "text": "Ana and Ben are on their feet in the galley. The galley is eleven feet across, and everyone who is not on watch is in it. They are arguing about the thermostat. \"If you'd said something,\" Ben says. \"I said something,\" Ana says. \"Tuesday. Ask anyone.\" Nobody at the table answers.",
+  "labels": [
+   "Side with Ana",
+   "Side with Ben",
+   "Lock them in the galley until they sort it out",
+   "Settle it over cards"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You dog the hatch from the outside and sit on the deck with your back to it. There is shouting for twenty minutes. Then there is only the air handler. Then Ana laughs, once. An hour and a half later you open the hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 3
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge (1 points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.",
+    "d": {
+     "credits": 0,
+     "armor": -1,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ana takes the last hand, and Ben washes the dishes. Over the sink Ben goes through what is wrong with the rules, the deck, the lighting and Ana's mother. Ana drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ben takes the last hand, and Ana washes the dishes. Over the sink Ana goes through what is wrong with the rules, the deck, the lighting and Ben's mother. Ben drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "feud",
+  "seed": 36,
+  "title": "A Small Ship",
+  "text": "Third watch, the galley light on low. Ana and Ben are arguing about a ring-ball bet in whispers. The berths are behind a thin bulkhead. \"Outside,\" Ben says. \"No,\" Ana says. \"Here. I want it witnessed.\"",
+  "labels": [
+   "Side with Ana",
+   "Side with Ben",
+   "Lock them in the galley until they sort it out",
+   "Settle it over cards"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You dog the hatch from the outside and sit on the deck with your back to it. There is shouting for twenty minutes. Then there is only the air handler. Then Ana laughs, once. An hour and a half later you open the hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 3
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge (1 points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.",
+    "d": {
+     "credits": 0,
+     "armor": -1,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ana takes the last hand, and Ben washes the dishes. Over the sink Ben goes through what is wrong with the rules, the deck, the lighting and Ana's mother. Ana drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ben takes the last hand, and Ana washes the dishes. Over the sink Ana goes through what is wrong with the rules, the deck, the lighting and Ben's mother. Ben drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "feud",
+  "seed": 37,
+  "title": "A Small Ship",
+  "text": "Ana and Ben are on their feet in the galley. The galley is eleven feet across, and everyone who is not on watch is in it. They are arguing about a promise about a shift swap. \"If you'd said something,\" Ben says. \"I said something,\" Ana says. \"Tuesday. Ask anyone.\" Nobody at the table answers.",
+  "labels": [
+   "Side with Ana",
+   "Side with Ben",
+   "Lock them in the galley until they sort it out",
+   "Settle it over cards"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You dog the hatch from the outside and sit on the deck with your back to it. There is shouting for twenty minutes. Then there is only the air handler. Then Ana laughs, once. An hour and a half later you open the hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 3
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge (1 points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.",
+    "d": {
+     "credits": 0,
+     "armor": -1,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ana takes the last hand, and Ben washes the dishes. Over the sink Ben goes through what is wrong with the rules, the deck, the lighting and Ana's mother. Ana drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ben takes the last hand, and Ana washes the dishes. Over the sink Ana goes through what is wrong with the rules, the deck, the lighting and Ben's mother. Ben drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "feud",
+  "seed": 38,
+  "title": "A Small Ship",
+  "text": "Third watch, the galley light on low. Ana and Ben are arguing about the good pillow in whispers. The berths are behind a thin bulkhead. \"Outside,\" Ben says. \"No,\" Ana says. \"Here. I want it witnessed.\"",
+  "labels": [
+   "Side with Ana",
+   "Side with Ben",
+   "Lock them in the galley until they sort it out",
+   "Settle it over cards"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You dog the hatch from the outside and sit on the deck with your back to it. There is shouting for twenty minutes. Then there is only the air handler. Then Ana laughs, once. An hour and a half later you open the hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 3
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge (1 points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.",
+    "d": {
+     "credits": 0,
+     "armor": -1,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ana takes the last hand, and Ben washes the dishes. Over the sink Ben goes through what is wrong with the rules, the deck, the lighting and Ana's mother. Ana drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ben takes the last hand, and Ana washes the dishes. Over the sink Ana goes through what is wrong with the rules, the deck, the lighting and Ben's mother. Ben drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "feud",
+  "seed": 40,
+  "title": "A Small Ship",
+  "text": "Ana has Ben backed against the coffee dispenser. They are arguing about the way somebody chews. \"Do not tell me it's the principle,\" Ben says. \"It is the principle,\" Ana says. Someone at the table has a spoon halfway to their mouth and has not moved it.",
+  "labels": [
+   "Side with Ana",
+   "Side with Ben",
+   "Lock them in the galley until they sort it out",
+   "Settle it over cards"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You dog the hatch from the outside and sit on the deck with your back to it. There is shouting for twenty minutes. Then there is only the air handler. Then Ana laughs, once. An hour and a half later you open the hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 3
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge (1 points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.",
+    "d": {
+     "credits": 0,
+     "armor": -1,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ana takes the last hand, and Ben washes the dishes. Over the sink Ben goes through what is wrong with the rules, the deck, the lighting and Ana's mother. Ana drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ben takes the last hand, and Ana washes the dishes. Over the sink Ana goes through what is wrong with the rules, the deck, the lighting and Ben's mother. Ben drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "feud",
+  "seed": 48,
+  "title": "A Small Ship",
+  "text": "Ana has Ben backed against the coffee dispenser. They are arguing about the last of the coffee. \"Do not tell me it's the principle,\" Ben says. \"It is the principle,\" Ana says. Someone at the table has a spoon halfway to their mouth and has not moved it.",
+  "labels": [
+   "Side with Ana",
+   "Side with Ben",
+   "Lock them in the galley until they sort it out",
+   "Settle it over cards"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You dog the hatch from the outside and sit on the deck with your back to it. There is shouting for twenty minutes. Then there is only the air handler. Then Ana laughs, once. An hour and a half later you open the hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 3
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge (1 points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.",
+    "d": {
+     "credits": 0,
+     "armor": -1,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ana takes the last hand, and Ben washes the dishes. Over the sink Ben goes through what is wrong with the rules, the deck, the lighting and Ana's mother. Ana drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ben takes the last hand, and Ana washes the dishes. Over the sink Ana goes through what is wrong with the rules, the deck, the lighting and Ben's mother. Ben drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "feud",
+  "seed": 53,
+  "title": "A Small Ship",
+  "text": "Ana and Ben are on their feet in the galley. The galley is eleven feet across, and everyone who is not on watch is in it. They are arguing about a sock that has been in the corridor for a week. \"If you'd said something,\" Ben says. \"I said something,\" Ana says. \"Tuesday. Ask anyone.\" Nobody at the table answers.",
+  "labels": [
+   "Side with Ana",
+   "Side with Ben",
+   "Lock them in the galley until they sort it out",
+   "Settle it over cards"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You dog the hatch from the outside and sit on the deck with your back to it. There is shouting for twenty minutes. Then there is only the air handler. Then Ana laughs, once. An hour and a half later you open the hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 3
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge (1 points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.",
+    "d": {
+     "credits": 0,
+     "armor": -1,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ana takes the last hand, and Ben washes the dishes. Over the sink Ben goes through what is wrong with the rules, the deck, the lighting and Ana's mother. Ana drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ben takes the last hand, and Ana washes the dishes. Over the sink Ana goes through what is wrong with the rules, the deck, the lighting and Ben's mother. Ben drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "feud",
+  "seed": 54,
+  "title": "A Small Ship",
+  "text": "Ana has Ben backed against the coffee dispenser. They are arguing about who left the galley light on. \"Do not tell me it's the principle,\" Ben says. \"It is the principle,\" Ana says. Someone at the table has a spoon halfway to their mouth and has not moved it.",
+  "labels": [
+   "Side with Ana",
+   "Side with Ben",
+   "Lock them in the galley until they sort it out",
+   "Settle it over cards"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You dog the hatch from the outside and sit on the deck with your back to it. There is shouting for twenty minutes. Then there is only the air handler. Then Ana laughs, once. An hour and a half later you open the hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 3
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge (1 points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.",
+    "d": {
+     "credits": 0,
+     "armor": -1,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ana takes the last hand, and Ben washes the dishes. Over the sink Ben goes through what is wrong with the rules, the deck, the lighting and Ana's mother. Ana drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ben takes the last hand, and Ana washes the dishes. Over the sink Ana goes through what is wrong with the rules, the deck, the lighting and Ben's mother. Ben drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "feud",
+  "seed": 59,
+  "title": "A Small Ship",
+  "text": "Ana and Ben are on their feet in the galley. The galley is eleven feet across, and everyone who is not on watch is in it. They are arguing about a ring-ball bet. \"If you'd said something,\" Ben says. \"I said something,\" Ana says. \"Tuesday. Ask anyone.\" Nobody at the table answers.",
+  "labels": [
+   "Side with Ana",
+   "Side with Ben",
+   "Lock them in the galley until they sort it out",
+   "Settle it over cards"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You dog the hatch from the outside and sit on the deck with your back to it. There is shouting for twenty minutes. Then there is only the air handler. Then Ana laughs, once. An hour and a half later you open the hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 3
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge (1 points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.",
+    "d": {
+     "credits": 0,
+     "armor": -1,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ana takes the last hand, and Ben washes the dishes. Over the sink Ben goes through what is wrong with the rules, the deck, the lighting and Ana's mother. Ana drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ben takes the last hand, and Ana washes the dishes. Over the sink Ana goes through what is wrong with the rules, the deck, the lighting and Ben's mother. Ben drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
   "id": "cook",
   "seed": 1,
   "title": "The Handover",
@@ -2229,6 +3529,1046 @@
   "seed": 27,
   "title": "A Small Ship",
   "text": "Third watch, the galley light on low. Ana and Cora are arguing about a ring-ball bet in whispers. The berths are behind a thin bulkhead. \"Outside,\" Cora says. \"No,\" Ana says. \"Here. I want it witnessed.\"",
+  "labels": [
+   "Side with Ana",
+   "Side with Cora",
+   "Lock them in the galley until they sort it out",
+   "Settle it over cards"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Ana has the right of it,\" you say. Cora looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Cora": -2
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Ana has the right of it,\" you say. Cora looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Cora": -2
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"Cora has the right of it,\" you say. Ana looks at you, then at Cora, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Cora says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Cora": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"Cora has the right of it,\" you say. Ana looks at you, then at Cora, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Cora says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Cora": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You dog the hatch from the outside and sit on the deck with your back to it. There is shouting for twenty minutes. Then there is only the air handler. Then Ana laughs, once. An hour and a half later you open the hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": 3
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge (1 points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.",
+    "d": {
+     "credits": 0,
+     "armor": -1,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ana takes the last hand, and Cora washes the dishes. Over the sink Cora goes through what is wrong with the rules, the deck, the lighting and Ana's mother. Ana drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": 1.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Cora takes the last hand, and Ana washes the dishes. Over the sink Ana goes through what is wrong with the rules, the deck, the lighting and Cora's mother. Cora drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": 1.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "cook",
+  "seed": 44,
+  "title": "A Small Ship",
+  "text": "Ana and Cora are arguing about the good pillow, standing, leaning across the table. \"Say it again,\" Cora says. \"Every day until we dock,\" Ana says. Someone at the end of the table says, to their plate, that it is a long way to dock.",
+  "labels": [
+   "Side with Ana",
+   "Side with Cora",
+   "Lock them in the galley until they sort it out",
+   "Settle it over cards"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Ana has the right of it,\" you say. Cora looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Cora": -2
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Ana has the right of it,\" you say. Cora looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Cora": -2
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"Cora has the right of it,\" you say. Ana looks at you, then at Cora, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Cora says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Cora": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"Cora has the right of it,\" you say. Ana looks at you, then at Cora, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Cora says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Cora": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You dog the hatch from the outside and sit on the deck with your back to it. There is shouting for twenty minutes. Then there is only the air handler. Then Ana laughs, once. An hour and a half later you open the hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": 3
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge (1 points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.",
+    "d": {
+     "credits": 0,
+     "armor": -1,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ana takes the last hand, and Cora washes the dishes. Over the sink Cora goes through what is wrong with the rules, the deck, the lighting and Ana's mother. Ana drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": 1.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Cora takes the last hand, and Ana washes the dishes. Over the sink Ana goes through what is wrong with the rules, the deck, the lighting and Cora's mother. Cora drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": 1.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "cook",
+  "seed": 46,
+  "title": "A Small Ship",
+  "text": "Ana and Ben are arguing about whose turn it is to scrub the recycler, standing, leaning across the table. \"Say it again,\" Ben says. \"Every day until we dock,\" Ana says. Someone at the end of the table says, to their plate, that it is a long way to dock.",
+  "labels": [
+   "Side with Ana",
+   "Side with Ben",
+   "Lock them in the galley until they sort it out",
+   "Settle it over cards"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You dog the hatch from the outside and sit on the deck with your back to it. There is shouting for twenty minutes. Then there is only the air handler. Then Ana laughs, once. An hour and a half later you open the hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 3
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge (1 points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.",
+    "d": {
+     "credits": 0,
+     "armor": -1,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ana takes the last hand, and Ben washes the dishes. Over the sink Ben goes through what is wrong with the rules, the deck, the lighting and Ana's mother. Ana drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ben takes the last hand, and Ana washes the dishes. Over the sink Ana goes through what is wrong with the rules, the deck, the lighting and Ben's mother. Ben drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "cook",
+  "seed": 53,
+  "title": "A Small Ship",
+  "text": "Ana and Ben are on their feet in the galley. The galley is eleven feet across, and everyone who is not on watch is in it. They are arguing about a joke that went too far at breakfast. \"If you'd said something,\" Ben says. \"I said something,\" Ana says. \"Tuesday. Ask anyone.\" Nobody at the table answers.",
+  "labels": [
+   "Side with Ana",
+   "Side with Ben",
+   "Lock them in the galley until they sort it out",
+   "Settle it over cards"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Ana has the right of it,\" you say. Ben looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Ben": -2
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"Ben has the right of it,\" you say. Ana looks at you, then at Ben, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ben says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Ben": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You dog the hatch from the outside and sit on the deck with your back to it. There is shouting for twenty minutes. Then there is only the air handler. Then Ana laughs, once. An hour and a half later you open the hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 3
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge (1 points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.",
+    "d": {
+     "credits": 0,
+     "armor": -1,
+     "bonds": {
+      "p3|p4": -1
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ana takes the last hand, and Ben washes the dishes. Over the sink Ben goes through what is wrong with the rules, the deck, the lighting and Ana's mother. Ana drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ben takes the last hand, and Ana washes the dishes. Over the sink Ana goes through what is wrong with the rules, the deck, the lighting and Ben's mother. Ben drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p4": 1.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "cook",
+  "seed": 56,
+  "title": "A Small Ship",
+  "text": "Ana and Cora are arguing about who left the galley light on, standing, leaning across the table. \"Say it again,\" Cora says. \"Every day until we dock,\" Ana says. Someone at the end of the table says, to their plate, that it is a long way to dock.",
+  "labels": [
+   "Side with Ana",
+   "Side with Cora",
+   "Lock them in the galley until they sort it out",
+   "Settle it over cards"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Ana has the right of it,\" you say. Cora looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Cora": -2
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Ana has the right of it,\" you say. Cora looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Cora": -2
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"Cora has the right of it,\" you say. Ana looks at you, then at Cora, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Cora says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Cora": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"Cora has the right of it,\" you say. Ana looks at you, then at Cora, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Cora says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Cora": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You dog the hatch from the outside and sit on the deck with your back to it. There is shouting for twenty minutes. Then there is only the air handler. Then Ana laughs, once. An hour and a half later you open the hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": 3
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge (1 points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.",
+    "d": {
+     "credits": 0,
+     "armor": -1,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ana takes the last hand, and Cora washes the dishes. Over the sink Cora goes through what is wrong with the rules, the deck, the lighting and Ana's mother. Ana drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": 1.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Cora takes the last hand, and Ana washes the dishes. Over the sink Ana goes through what is wrong with the rules, the deck, the lighting and Cora's mother. Cora drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": 1.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "cook",
+  "seed": 57,
+  "title": "A Small Ship",
+  "text": "Ana has Cora backed against the coffee dispenser. They are arguing about a book that was never returned. \"Do not tell me it's the principle,\" Cora says. \"It is the principle,\" Ana says. Someone at the table has a spoon halfway to their mouth and has not moved it.",
+  "labels": [
+   "Side with Ana",
+   "Side with Cora",
+   "Lock them in the galley until they sort it out",
+   "Settle it over cards"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Ana has the right of it,\" you say. Cora looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Cora": -2
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Ana has the right of it,\" you say. Cora looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Cora": -2
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"Cora has the right of it,\" you say. Ana looks at you, then at Cora, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Cora says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Cora": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"Cora has the right of it,\" you say. Ana looks at you, then at Cora, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Cora says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Cora": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You dog the hatch from the outside and sit on the deck with your back to it. There is shouting for twenty minutes. Then there is only the air handler. Then Ana laughs, once. An hour and a half later you open the hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": 3
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge (1 points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.",
+    "d": {
+     "credits": 0,
+     "armor": -1,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ana takes the last hand, and Cora washes the dishes. Over the sink Cora goes through what is wrong with the rules, the deck, the lighting and Ana's mother. Ana drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": 1.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Cora takes the last hand, and Ana washes the dishes. Over the sink Ana goes through what is wrong with the rules, the deck, the lighting and Cora's mother. Cora drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": 1.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "cook",
+  "seed": 62,
+  "title": "A Small Ship",
+  "text": "Ana and Cora are on their feet in the galley. The galley is eleven feet across, and everyone who is not on watch is in it. They are arguing about the thermostat. \"If you'd said something,\" Cora says. \"I said something,\" Ana says. \"Tuesday. Ask anyone.\" Nobody at the table answers.",
+  "labels": [
+   "Side with Ana",
+   "Side with Cora",
+   "Lock them in the galley until they sort it out",
+   "Settle it over cards"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Ana has the right of it,\" you say. Cora looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Cora": -2
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Ana has the right of it,\" you say. Cora looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Cora": -2
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"Cora has the right of it,\" you say. Ana looks at you, then at Cora, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Cora says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Cora": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"Cora has the right of it,\" you say. Ana looks at you, then at Cora, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Cora says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Cora": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You dog the hatch from the outside and sit on the deck with your back to it. There is shouting for twenty minutes. Then there is only the air handler. Then Ana laughs, once. An hour and a half later you open the hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": 3
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge (1 points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.",
+    "d": {
+     "credits": 0,
+     "armor": -1,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ana takes the last hand, and Cora washes the dishes. Over the sink Cora goes through what is wrong with the rules, the deck, the lighting and Ana's mother. Ana drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": 1.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Cora takes the last hand, and Ana washes the dishes. Over the sink Ana goes through what is wrong with the rules, the deck, the lighting and Cora's mother. Cora drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": 1.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "cook",
+  "seed": 68,
+  "title": "A Small Ship",
+  "text": "Ana and Cora are on their feet in the galley. The galley is eleven feet across, and everyone who is not on watch is in it. They are arguing about a sock that has been in the corridor for a week. \"If you'd said something,\" Cora says. \"I said something,\" Ana says. \"Tuesday. Ask anyone.\" Nobody at the table answers.",
+  "labels": [
+   "Side with Ana",
+   "Side with Cora",
+   "Lock them in the galley until they sort it out",
+   "Settle it over cards"
+  ],
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "\"Ana has the right of it,\" you say. Cora looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Cora": -2
+     }
+    }
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "\"Ana has the right of it,\" you say. Cora looks at you, then at Ana, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Ana says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": 1,
+      "Cora": -2
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0,
+    "text": "\"Cora has the right of it,\" you say. Ana looks at you, then at Cora, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Cora says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Cora": 1
+     }
+    }
+   },
+   {
+    "i": 1,
+    "roll": 0.999,
+    "text": "\"Cora has the right of it,\" you say. Ana looks at you, then at Cora, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. \"Thanks, Captain,\" Cora says to the table. Nobody answers.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {
+      "Ana": -2,
+      "Cora": 1
+     }
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0,
+    "text": "You dog the hatch from the outside and sit on the deck with your back to it. There is shouting for twenty minutes. Then there is only the air handler. Then Ana laughs, once. An hour and a half later you open the hatch. Both of them are hoarse. They are arguing about somebody's brother-in-law.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": 3
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 2,
+    "roll": 0.999,
+    "text": "You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge (1 points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.",
+    "d": {
+     "credits": 0,
+     "armor": -1,
+     "bonds": {
+      "p3|p5": -1
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Ana takes the last hand, and Cora washes the dishes. Over the sink Cora goes through what is wrong with the rules, the deck, the lighting and Ana's mother. Ana drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": 1.5
+     },
+     "opinion": {}
+    }
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. Cora takes the last hand, and Ana washes the dishes. Over the sink Ana goes through what is wrong with the rules, the deck, the lighting and Cora's mother. Cora drinks the last of the coffee.",
+    "d": {
+     "credits": 0,
+     "armor": 0,
+     "bonds": {
+      "p3|p5": 1.5
+     },
+     "opinion": {}
+    }
+   }
+  ]
+ },
+ {
+  "id": "cook",
+  "seed": 70,
+  "title": "A Small Ship",
+  "text": "Third watch, the galley light on low. Ana and Cora are arguing about who left the galley light on in whispers. The berths are behind a thin bulkhead. \"Outside,\" Cora says. \"No,\" Ana says. \"Here. I want it witnessed.\"",
   "labels": [
    "Side with Ana",
    "Side with Cora",

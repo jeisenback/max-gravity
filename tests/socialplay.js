@@ -60,7 +60,7 @@ const playSocial = raw => {  // raw: every case, with the scenes that repeat (th
     }
   };
   const SEEDS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14];
-  const MORE = { feud: 30, cook: 30, rootsHome: 40, rootsCulture: 40 };  // the scenes with several openers or causes come up often enough to show them all
+  const MORE = { feud: 70, cook: 70, rootsHome: 40, rootsCulture: 40 };  // the scenes with several openers or causes come up often enough to show them all
   for (const [id, build] of Object.entries(SETUPS)) play(id, id.startsWith('hired'), build, () => relationshipScene(), MORE[id] ? Array.from({ length: MORE[id] }, (_, i) => i + 1) : SEEDS);
   // a regular back aboard: with nothing remembered, with a memory, and with friends among the crew
   const regular = (st, memory, friends) => { const g = guest(st, 'Pia', { memories: memory ? ['Day 3: You lent me a coat.'] : [] }, { regular: true }); if (friends) { const a = mate(st, 'Ana'), b = mate(st, 'Ben'); setBond(st, a, g, 3); setBond(st, b, g, 2); } else if (friends === false) mate(st, 'Ana'); };
