@@ -19,6 +19,7 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:cast-join', fn: 'castJoin', file: 'js/cast.js', title: 'A Main Character Comes Aboard', where: 'port', when: 'When a main character or first officer signs on: what they remember, and the line in the ship\'s log.' },
   { id: 'scene:ship-log', fn: 'homeLog', file: 'js/family.js', title: 'Lines in the Ship\'s Log', where: 'transit', when: 'What the log of the ship records when a crew member is killed or leaves, a captain retires or is lost, or a settlement is founded.' },
   { id: 'scene:screens', fn: 'settleRun', file: 'js/hired.js', title: 'Notes and Memories at the Screens', where: 'port', when: 'What people remember and are told when you let a crew member go or drop a passenger, when a run is settled, a post is asked for, a ship is bought in, or you practice at your post.' },
+  { id: 'scene:memories', fn: 'like', file: 'js/people.js', title: 'Memories Left by Play', where: 'transit', when: 'What a person keeps of a fine paid, a passenger landed or let down, ice brought in, a loss mourned, a hand in the yard, or a post taken from them.' },
   { id: 'scene:put-ashore', fn: 'putAshoreScene', file: 'js/stakes.js', title: 'Put Ashore', where: 'port', when: 'When the captain\'s opinion of you falls to -3, at a later port.' },
   { id: 'scene:hand-death', fn: 'handDeathScene', file: 'js/stakes.js', title: 'The Last Run', where: 'transit', when: 'When the hand is lost in a fight.' },
   { id: 'scene:captain-lost', fn: 'captainLostScene', file: 'js/stakes.js', title: 'Without a Captain', where: 'transit', when: 'When the captain is lost on a pirate bridge.' },
@@ -204,6 +205,13 @@ const SCENE_LINES = {
     'practise.engineer': 'You go through the plant one system at a time, with the manual open and a meter in your teeth, and find three things nobody had written down.',
     'practise.comms': 'You sit on the bands for a watch, learning the rhythm of a dozen stations, and which of them are lying about their transponders.',
   },
+  'scene:memories': {  // the memories that play leaves with people, for the places that have no scene of their own (engage.js, game.js, icerun.js, losses.js, repairs.js, stations.js)
+    'patrol-fine.memory': 'We were stopped by a patrol and it cost the fund.',
+    'landing.memory': 'You got me to {planet}.', 'lapsed.memory': 'You never got me where I was going.',
+    'ice.clean.memory': 'You brought the ice in.', 'ice.bad.memory': 'You made a mess of the ice.',
+    'mourn.honored.memory': 'The captain marked {first}\'s death the way {first} deserved.', 'mourn.slighted.memory': 'The captain did not give {first} their due.', 'mourn.wrote.memory': 'You wrote to {first}\'s family.',
+    'repair.memory': 'You pitched in on the hull.', 'strain.memory': 'The captain keeps taking my controls.',
+  },
   'scene:put-ashore': {
     title: 'Put Ashore',
     text: 'Captain {last} is at the foot of the ramp with the articles in one hand and your bag in the other. "I said I would say it once," the captain says. "I did. The berth is not yours after this port." Your pay is settled to the day.',
@@ -323,7 +331,7 @@ const SCENE_LINES = {
     why: 'Why did you sign on?',
     'c0.label': 'For the money',
     'c1.label': 'To learn the work',
-    'c2.label': 'To be somewhere else',
+    'c2.label': 'To be somewhere else', 'c2.memory': 'You came aboard easy to get along with.',
   },
   // The hired events written in code (#463). A part a captain can word for themselves (captains/*.js, `events`) has the part's name; the experience a choice teaches, the pay it
   // brings and the thread it starts are in code. {last} is the captain's last name, {mate} the shipmate's first name, {post} the hand's post.

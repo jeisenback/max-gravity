@@ -47,10 +47,9 @@ function mournScene(m) {
       if (o.cost) st.credits -= o.cost;
       if (o.fund && h) h.fund = Math.max(0, h.fund - o.fund);
       const lines = [];
-      for (const p of crew) { const r = barReact(p, o.loves, o.hates), n = r.n === 2 ? 1 : r.n === -1 ? -1 : 0; if (n) like(p, n, n > 0 ?
-        `The captain marked ${m.first}'s death the way ${m.first} deserved.` : `The captain did not give ${m.first} their due.`); if (r.line &&
+      for (const p of crew) { const r = barReact(p, o.loves, o.hates), n = r.n === 2 ? 1 : r.n === -1 ? -1 : 0; if (n) like(p, n, sceneSay('scene:memories', n > 0 ? 'mourn.honored.memory' : 'mourn.slighted.memory', { first: m.first })); if (r.line &&
         lines.length < 2) lines.push(r.line); }
-      if (cap && o.like === 'cap') like(cap, 1, `You wrote to ${m.first}'s family.`);
+      if (cap && o.like === 'cap') like(cap, 1, sceneSay('scene:memories', 'mourn.wrote.memory', { first: m.first }));
       return `${o.text} ${lines.join(' ')}`.trim();
     } })),
   };

@@ -100,7 +100,7 @@ function contactEvent(spec) {
     const fine = Math.round(st.credits * 0.25);  // st.credits is the ship's fund inside a hired hand's contact (hiredFunds)
     st.credits -= fine;
     st.rep[spec.gov] = Math.max(repOf(spec.gov), -10);
-    like(person(hired().captain), -1, 'We were stopped by a patrol and it cost the fund.');
+    like(person(hired().captain), -1, sceneSay('scene:memories', 'patrol-fine.memory'));
     return `You cut the drive and the cutter closes. The boarding officer reads the citation, and ${fmt(fine)} cr goes out of the ship's fund. The ship is logged as settled. For now.`;
   } });
   else if (spec.kind === 'patrol') choices.push({ label: 'Cut your drive and pay the fine (4,000 cr)', ...gated(needCr(4000)), run() {

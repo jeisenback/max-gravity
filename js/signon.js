@@ -31,7 +31,7 @@ function signOnEvent() {
     choices: [
       { label: say('c0.label'), run() { h.share = +(h.share + SIGN_SHARE_UP).toFixed(3); h.reason = 'money'; return say(`money.${bg}`); } },
       { label: say('c1.label'), run() { gainSkill(h.post, SIGN_LEARN_XP); h.reason = 'learn'; return say(`learn.${bg}`); } },
-      { label: say('c2.label'), run() { like(cap, 1, 'You came aboard easy to get along with.'); for (const c of pair) like(c, 1, 'You came aboard easy to get along with.'); h.reason = 'away'; return say(`away.${bg}`); } },
+      { label: say('c2.label'), run() { like(cap, 1, say('c2.memory')); for (const c of pair) like(c, 1, say('c2.memory')); h.reason = 'away'; return say(`away.${bg}`); } },
     ],
   };
   // The game was saved at the first landing, before this choice: save again, so quitting before the next dock keeps what it did.

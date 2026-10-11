@@ -3482,6 +3482,294 @@
   ]
  },
  {
+  "id": "memory:patrol-fine",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You cut the drive and the cutter closes. The boarding officer reads the citation, and 1,250 cr goes out of the ship's fund. The ship is logged as settled. For now.",
+    "mem": [
+     "9 Jul 2214: We were stopped by a patrol and it cost the fund."
+    ],
+    "fx": {
+     "credits": -1250,
+     "p1": -1
+    },
+    "next": null
+   }
+  ],
+  "title": "Contact",
+  "text": "Sensors: a drive plume at 3,400 km, on an intercept course. Transponder: Arcology Compact navy. You are wanted in their space.",
+  "labels": [
+   "Heave to and take the fine from the ship's fund"
+  ]
+ },
+ {
+  "id": "memory:landing",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "mem": [
+     "9 Jul 2214: You got me to Earth."
+    ],
+    "fx": {
+     "credits": 2000,
+     "p3": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "memory:lapsed",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "mem": [
+     "9 Jul 2214: You never got me where I was going."
+    ],
+    "fx": {
+     "p3": -3
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "memory:ice:3",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": " The captain writes it in the log: a clean haul.",
+    "mem": [
+     "9 Jul 2214: You brought the ice in."
+    ],
+    "fx": {
+     "p1": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "memory:ice:-2",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": " The captain does not write anything in the log.",
+    "mem": [
+     "9 Jul 2214: You made a mess of the ice."
+    ],
+    "fx": {
+     "p1": -1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "memory:ice:0",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "memory:repair:gunner",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You carry plate and hold the light, and the work goes faster for it. 2 days in the yard, and the hull is whole. Parts and labor came to 786 cr from the ship's fund, and will come out of the next run before the share is cut. Captain Vance paid you 35 cr standby.",
+    "mem": [
+     "9 Jul 2214: You pitched in on the hull."
+    ],
+    "fx": {
+     "credits": 35,
+     "p1": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "Hull Damage",
+  "text": "The ship has taken enough damage on the way in that she cannot sail as she is. The yard at Earth has a berth, and the estimate is 3 days. The plate is 2t of refined metals from the market here, at the yard's price: 486 cr. Labor is 300 cr. The captain does not like the sum, and does not say so. Until she is whole, the ship stays on the pad.",
+  "labels": [
+   "Help with the repair"
+  ]
+ },
+ {
+  "id": "memory:repair:engineer",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You work the plate beside the yard crew, and learn from them. (Experience gained.) 2 days in the yard, and the hull is whole. Parts and labor came to 786 cr from the ship's fund, and will come out of the next run before the share is cut. Captain Vance paid you 35 cr standby.",
+    "fx": {
+     "credits": 35
+    },
+    "next": null
+   }
+  ],
+  "title": "Hull Damage",
+  "text": "The ship has taken enough damage on the way in that she cannot sail as she is. The yard at Earth has a berth, and the estimate is 3 days. The plate is 2t of refined metals from the market here, at the yard's price: 486 cr. Labor is 300 cr. The captain does not like the sum, and does not say so. Until she is whole, the ship stays on the pad.",
+  "labels": [
+   "Help with the repair"
+  ]
+ },
+ {
+  "id": "memory:mourn",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You find the port's chapel, a plain room with a rail and a window, and the crew stand in it for a while with their hands at their sides. Afterward there is a meal, and nobody eats much, and everybody stays. Mate0 goes quiet, and then smiles, the first of the night. Mate2 takes your hand for a moment and does not say anything.",
+    "mem": [
+     "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
+     "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
+     "9 Jul 2214: The captain did not give Mara their due.",
+     "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
+     "9 Jul 2214: The captain did not give Mara their due.",
+     "9 Jul 2214: The captain did not give Mara their due."
+    ],
+    "fx": {
+     "p10": 1,
+     "p12": 1,
+     "p13": -1,
+     "p14": 1,
+     "p16": -1,
+     "p17": -1
+    },
+    "next": null
+   },
+   {
+    "i": 1,
+    "roll": 0.5,
+    "text": "It takes you an evening and four drafts. The letter says what they were like aboard, which was true, and that there is something enclosed, which is not enough. You send it on the next outbound packet. Mate0 goes quiet, and then smiles, the first of the night. Mate2 takes your hand for a moment and does not say anything.",
+    "mem": [
+     "9 Jul 2214: You wrote to Mara's family.",
+     "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
+     "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
+     "9 Jul 2214: The captain did not give Mara their due.",
+     "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
+     "9 Jul 2214: The captain did not give Mara their due."
+    ],
+    "fx": {
+     "credits": -100,
+     "p1": 1,
+     "p10": 1,
+     "p12": 1,
+     "p13": -1,
+     "p14": 1,
+     "p17": -1
+    },
+    "next": null
+   },
+   {
+    "i": 2,
+    "roll": 0.5,
+    "text": "You gather the crew in the galley and say what you can. It is short. Then everyone goes back to their post, and the berth stays empty at the table. Mate2 takes your hand for a moment and does not say anything. Mate4 claps you on the shoulder, hard. You will have a bruise.",
+    "mem": [
+     "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
+     "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
+     "9 Jul 2214: The captain marked Mara's death the way Mara deserved."
+    ],
+    "fx": {
+     "p12": 1,
+     "p14": 1,
+     "p15": 1
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.5,
+    "text": "There is a run to make and a clock on it. You do not mention it, and neither does anyone else for a while, which is its own kind of mention. Mate0 looks at the photograph, not at you. Mate2 says it is all right, and finds something to fix.",
+    "mem": [
+     "9 Jul 2214: The captain did not give Mara their due.",
+     "9 Jul 2214: The captain did not give Mara their due.",
+     "9 Jul 2214: The captain did not give Mara their due.",
+     "9 Jul 2214: The captain did not give Mara their due.",
+     "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
+     "9 Jul 2214: The captain marked Mara's death the way Mara deserved."
+    ],
+    "fx": {
+     "p10": -1,
+     "p12": -1,
+     "p13": -1,
+     "p14": -1,
+     "p16": 1,
+     "p17": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "After the Loss",
+  "text": "Mara Quill, the engineer, is on the ship's memorial now, and the ship is in port. There is a berth with a made bunk and a locker nobody has opened. The crew are waiting to see what you do.",
+  "labels": [
+   "Hold a service at the port, and stand the crew a meal (150 cr from the ship)",
+   "Write to their family, and send a month's savings (100 cr of yours)",
+   "Say a few words aboard, and go on",
+   "Say nothing, and keep working"
+  ]
+ },
+ {
+  "id": "memory:strain",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "mem": [
+     "9 Jul 2214: The captain keeps taking my controls."
+    ],
+    "fx": {
+     "p3": -1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
   "id": "scene:yard-office:used:gunner:un",
   "plays": [
    {
