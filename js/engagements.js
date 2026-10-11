@@ -254,6 +254,29 @@ function raidClose(s) {
 const AMBUSH_GAP = 60, AMBUSH_DANGER = 0.25, AMBUSH_TRAP = 0.7;
 // What the captain remembers of an ambush, as lines of the beat: `memory.<name>` (hiredscenes.js ambushLines).
 const AMBUSH_MEMORY = { real: 'You stopped for a real distress call.', trap: 'You saw a trap before it closed.', left: 'You left a real distress call.' };
+// The rest of the scene's words, as lines of the beat (`<key>` in hiredscenes.js ambushLines), with {cap} (the captain's name) and {post} (the post's name) filled in.
+const AMBUSH_TEXT = {
+  title: 'A Freighter in Trouble',
+  'text.call': 'A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain {cap} looks at the plot, then at the crew.',
+  'text.trap': 'You know what is out there. They have not lit their drives, and they do not know you know.',
+  'text.real': 'The readings are clean. She is real, and she is asking again.',
+  'go.label': 'Go to her',
+  'sprung.result': 'You alter course for her. At four kilometers the freighter lights a drive that is not a freighter\'s, and two more come off the rock behind her, and the call stops.',
+  'sprung.open': 'They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they are inside the range, and your position is already bad.',
+  'real.result': 'She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship\'s fund.',
+  'real.leave.label': 'Leave her',
+  'real.leave.result': 'You leave her to call for someone else. Captain {cap} says nothing, and does not look up from the plot.',
+  'trap.hit.label': 'Hit them before they are ready',
+  'trap.hit.result': 'You come in hot with the drive cold, and light it at three kilometers. They are not ready. Battle stations.',
+  'trap.hit.open': 'They are in position behind the freighter, with their drives cold, and they have not lit them. You have the range, and the first move.',
+  'trap.leave.label': 'Turn away and leave it',
+  'trap.leave.result': 'You turn away and burn for the lane. At four kilometers the freighter\'s drive lights, the real one, and she comes after you for twenty minutes before she gives it up. (+2 experience at the {post} post.)',
+  'blind.leave.label': 'Leave it',
+  'blind.leave.trap': 'You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.',
+  'blind.leave.real': 'You let the call play out and burn on. It might have been real.',
+  'read.fail': 'You try, and the readings will not settle. The call keeps repeating, and you are no wiser.',
+};
+const ambushSay = (key, vars = {}) => lineWords('beats:ambush', key, AMBUSH_TEXT[key]).replace(/\{(\w+)\}/g, (m, k) => (k in vars ? vars[k] : m));
 const AMBUSH_READ = {
   gunner: { label: 'Scan her hull for weapons', trap: ('You hold the fire control on her and watch the hull. There is a gun housing under the ' +
       'freighter plating, and the plating has been cut to let it traverse. She is not a freighter.'), real: (
@@ -282,38 +305,29 @@ function ambushScene() {
 
 // The call, before and after a read. `known` is set once a read has told you which it is.
 function ambushChoice(a, cap, h, post, spec) {
-  const springs = (edge, text, open) => startRaid({ kind: 'pirate' }, false, { edge, text, open });
-  const sprung = () => springs(-2, (`You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two ` +
-      `more come off the rock behind her, and the call stops.`), (
-      `They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they are inside the range, and ` +
-      `your position is already bad.`));
-  const real = () => { h.fund += 500; like(cap, 1, lineWords('beats:ambush', 'memory.real', AMBUSH_MEMORY.real)); return `She is real. Her second coolant bank has failed and her crew are tired and grateful, and you stand by while they restart. The owner sends 500 cr to the ship's fund.`; };
+  const springs = (edge, text, open) => startRaid({ kind: 'pirate' }, false, { edge, text, open }), say = key => ambushSay(key, { cap: cap.last, post: POSTS[post].name.toLowerCase() });
+  const sprung = () => springs(-2, say('sprung.result'), say('sprung.open'));
+  const real = () => { h.fund += 500; like(cap, 1, lineWords('beats:ambush', 'memory.real', AMBUSH_MEMORY.real)); return say('real.result'); };
   const choices = [];
   if (a.known) {
     if (a.trap) {
-      choices.push({ label: 'Hit them before they are ready', run: () => springs(1, (`You come in hot with the drive cold, and light it at three ` +
-          `kilometers. They are not ready. Battle stations.`), `They are in position behind the freighter, with their drives cold, and they have not lit them. You have the range, and the first move.`) });
-      choices.push({ label: 'Turn away and leave it', run() { like(cap, 1, lineWords('beats:ambush', 'memory.trap', AMBUSH_MEMORY.trap)); gainSkill(post, 2); return (
-          `You turn away and burn for the lane. At four kilometers the freighter's drive lights, the real one, and she comes after you for twenty ` +
-          `minutes before she gives it up. (+2 experience at the ${POSTS[post].name.toLowerCase()} post.)`); } });
+      choices.push({ label: say('trap.hit.label'), run: () => springs(1, say('trap.hit.result'), say('trap.hit.open')) });
+      choices.push({ label: say('trap.leave.label'), run() { like(cap, 1, lineWords('beats:ambush', 'memory.trap', AMBUSH_MEMORY.trap)); gainSkill(post, 2); return say('trap.leave.result'); } });
     } else {
-      choices.push({ label: 'Go to her', run: real });
-      choices.push({ label: 'Leave her', run() { like(cap, -1, lineWords('beats:ambush', 'memory.left', AMBUSH_MEMORY.left)); return `You leave her to call for someone else. Captain ${cap.last} says nothing, and does not look up from the plot.`; } });
+      choices.push({ label: say('go.label'), run: real });
+      choices.push({ label: say('real.leave.label'), run() { like(cap, -1, lineWords('beats:ambush', 'memory.left', AMBUSH_MEMORY.left)); return say('real.leave.result'); } });
     }
   } else {
-    choices.push({ label: 'Go to her', run: () => (a.trap ? sprung() : real()) });
-    choices.push({ label: 'Leave it', run: () => (a.trap ? `You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.` : `You let the call play out and burn on. It might have been real.`) });
+    choices.push({ label: say('go.label'), run: () => (a.trap ? sprung() : real()) });
+    choices.push({ label: say('blind.leave.label'), run: () => say(a.trap ? 'blind.leave.trap' : 'blind.leave.real') });
     if (!a.tried) choices.push({ label: `[${POSTS[post].name}] ${lineWords('beats:ambush', `read.${post}.label`, spec.label)}`, run() {
       a.tried = true;
       if (Math.random() < Math.min(0.85, 0.5 + 0.1 * skillLevel(post))) { a.known = true; G.nextEvent = ambushChoice(a, cap, h, post, spec); return a.trap ? lineWords('beats:ambush', `read.${post}.trap`, spec.trap) : lineWords('beats:ambush', `read.${post}.real`, spec.real); }
       G.nextEvent = ambushChoice(a, cap, h, post, spec);
-      return `You try, and the readings will not settle. The call keeps repeating, and you are no wiser.`;
+      return say('read.fail');
     } });
   }
-  const scene = { title: 'A Freighter in Trouble', personal: true, via: 'ship', owner: 'you', text: a.known ? (a.trap ? `You know what is out there. They have not lit their drives, and they do not know you know.` : `The readings are clean. She is real, and she is asking again.`) : (
-      `A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes ` +
-      `off your course. Captain ${cap.last} looks at the plot, then at the crew.`), choices };
-  return scene;
+  return { title: say('title'), personal: true, via: 'ship', owner: 'you', text: say(a.known ? (a.trap ? 'text.trap' : 'text.real') : 'text.call'), choices };
 }
 
 Mods.register({

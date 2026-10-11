@@ -18,7 +18,8 @@ test('every line of every beat is read: an override for it shows in what the bea
     const play = (0, eval)(`(${arg.src})`);
     const lines = Object.fromEntries(arg.ids.map(id => [id, BEAT_LINES[id]()]));
     const base = play();
-    const overrides = Object.fromEntries(arg.ids.map(id => [id, { parts: Object.fromEntries(Object.keys(lines[id]).map(k => [k, `@@${id}|${k}@@`])) }]));
+    // a line with {words} keeps them after its marker, so that what the beat fills in is read too
+    const overrides = Object.fromEntries(arg.ids.map(id => [id, { parts: Object.fromEntries(Object.entries(lines[id]).map(([k, t]) => [k, /\{\w+\}/.test(t) ? `@@${id}|${k}@@ ${t}` : `@@${id}|${k}@@`])) }]));
     const warned = []; const warn = console.warn; console.warn = m => warned.push(m);
     useOverrides(overrides);
     console.warn = warn;
@@ -34,7 +35,7 @@ test('every line of every beat is read: an override for it shows in what the bea
     for (const [key, shipped] of Object.entries(r.lines[id])) {
       const marker = `@@${id}|${key}@@`;
       if (!r.changed.includes(marker)) missing.push(`${id} ${key}`);
-      restored = restored.split(marker).join(JSON.stringify(shipped).slice(1, -1));
+      restored = restored.split(/\{\w+\}/.test(shipped) ? `${marker} ` : marker).join(/\{\w+\}/.test(shipped) ? '' : JSON.stringify(shipped).slice(1, -1));
     }
   }
   assert.deepEqual(missing, [], 'a line the beats never read');

@@ -5538,13 +5538,15 @@
     "i": 1,
     "roll": 0,
     "text": "You let the call play out and burn on. It might have been real.",
-    "next": null
+    "next": null,
+    "mem": []
    },
    {
     "i": 1,
     "roll": 0.999,
     "text": "You let the call play out and burn on. It might have been real.",
-    "next": null
+    "next": null,
+    "mem": []
    },
    {
     "i": 2,
@@ -5553,7 +5555,8 @@
     "next": [
      "A Freighter in Trouble",
      "The readings are clean. She is real, and she is asking again."
-    ]
+    ],
+    "mem": []
    },
    {
     "i": 2,
@@ -5561,8 +5564,9 @@
     "text": "You try, and the readings will not settle. The call keeps repeating, and you are no wiser.",
     "next": [
      "A Freighter in Trouble",
-     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ah"
-    ]
+     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain Vance looks at the plot, then at the crew."
+    ],
+    "mem": []
    }
   ]
  },
@@ -5581,8 +5585,9 @@
     "text": "You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two more come off the rock behind her, and the call stops. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "The Closing",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors "
-    ]
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they are inside the range, and your position is already bad.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: behind. Armor 260/260."
+    ],
+    "mem": []
    },
    {
     "i": 0,
@@ -5590,20 +5595,23 @@
     "text": "You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "The Closing",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors "
-    ]
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they are inside the range, and your position is already bad.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: behind. Armor 260/260."
+    ],
+    "mem": []
    },
    {
     "i": 1,
     "roll": 0,
     "text": "You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.",
-    "next": null
+    "next": null,
+    "mem": []
    },
    {
     "i": 1,
     "roll": 0.999,
     "text": "You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.",
-    "next": null
+    "next": null,
+    "mem": []
    },
    {
     "i": 2,
@@ -5612,7 +5620,8 @@
     "next": [
      "A Freighter in Trouble",
      "You know what is out there. They have not lit their drives, and they do not know you know."
-    ]
+    ],
+    "mem": []
    },
    {
     "i": 2,
@@ -5620,8 +5629,9 @@
     "text": "You try, and the readings will not settle. The call keeps repeating, and you are no wiser.",
     "next": [
      "A Freighter in Trouble",
-     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ah"
-    ]
+     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain Vance looks at the plot, then at the crew."
+    ],
+    "mem": []
    }
   ]
  },
@@ -5699,8 +5709,9 @@
     "text": "You come in hot with the drive cold, and light it at three kilometers. They are not ready. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "The Closing",
-     "They are in position behind the freighter, with their drives cold, and they have not lit them. You h"
-    ]
+     "They are in position behind the freighter, with their drives cold, and they have not lit them. You have the range, and the first move.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: ahead. Armor 260/260."
+    ],
+    "mem": []
    },
    {
     "i": 0,
@@ -5708,8 +5719,9 @@
     "text": "You come in hot with the drive cold, and light it at three kilometers. They are not ready. Battle stations.",
     "next": [
      "The Closing",
-     "They are in position behind the freighter, with their drives cold, and they have not lit them. You h"
-    ]
+     "They are in position behind the freighter, with their drives cold, and they have not lit them. You have the range, and the first move.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: ahead. Armor 260/260."
+    ],
+    "mem": []
    },
    {
     "i": 1,
@@ -5776,13 +5788,15 @@
     "i": 1,
     "roll": 0,
     "text": "You let the call play out and burn on. It might have been real.",
-    "next": null
+    "next": null,
+    "mem": []
    },
    {
     "i": 1,
     "roll": 0.999,
     "text": "You let the call play out and burn on. It might have been real.",
-    "next": null
+    "next": null,
+    "mem": []
    },
    {
     "i": 2,
@@ -5791,7 +5805,8 @@
     "next": [
      "A Freighter in Trouble",
      "The readings are clean. She is real, and she is asking again."
-    ]
+    ],
+    "mem": []
    },
    {
     "i": 2,
@@ -5799,8 +5814,9 @@
     "text": "You try, and the readings will not settle. The call keeps repeating, and you are no wiser.",
     "next": [
      "A Freighter in Trouble",
-     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ah"
-    ]
+     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain Vance looks at the plot, then at the crew."
+    ],
+    "mem": []
    }
   ]
  },
@@ -5819,8 +5835,9 @@
     "text": "You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two more come off the rock behind her, and the call stops. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "The Closing",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors "
-    ]
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they are inside the range, and your position is already bad.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: behind. Armor 260/260."
+    ],
+    "mem": []
    },
    {
     "i": 0,
@@ -5828,20 +5845,23 @@
     "text": "You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "The Closing",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors "
-    ]
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they are inside the range, and your position is already bad.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: behind. Armor 260/260."
+    ],
+    "mem": []
    },
    {
     "i": 1,
     "roll": 0,
     "text": "You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.",
-    "next": null
+    "next": null,
+    "mem": []
    },
    {
     "i": 1,
     "roll": 0.999,
     "text": "You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.",
-    "next": null
+    "next": null,
+    "mem": []
    },
    {
     "i": 2,
@@ -5850,7 +5870,8 @@
     "next": [
      "A Freighter in Trouble",
      "You know what is out there. They have not lit their drives, and they do not know you know."
-    ]
+    ],
+    "mem": []
    },
    {
     "i": 2,
@@ -5858,8 +5879,9 @@
     "text": "You try, and the readings will not settle. The call keeps repeating, and you are no wiser.",
     "next": [
      "A Freighter in Trouble",
-     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ah"
-    ]
+     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain Vance looks at the plot, then at the crew."
+    ],
+    "mem": []
    }
   ]
  },
@@ -5937,8 +5959,9 @@
     "text": "You come in hot with the drive cold, and light it at three kilometers. They are not ready. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "The Closing",
-     "They are in position behind the freighter, with their drives cold, and they have not lit them. You h"
-    ]
+     "They are in position behind the freighter, with their drives cold, and they have not lit them. You have the range, and the first move.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: ahead. Armor 260/260."
+    ],
+    "mem": []
    },
    {
     "i": 0,
@@ -5946,8 +5969,9 @@
     "text": "You come in hot with the drive cold, and light it at three kilometers. They are not ready. Battle stations.",
     "next": [
      "The Closing",
-     "They are in position behind the freighter, with their drives cold, and they have not lit them. You h"
-    ]
+     "They are in position behind the freighter, with their drives cold, and they have not lit them. You have the range, and the first move.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: ahead. Armor 260/260."
+    ],
+    "mem": []
    },
    {
     "i": 1,
@@ -6014,13 +6038,15 @@
     "i": 1,
     "roll": 0,
     "text": "You let the call play out and burn on. It might have been real.",
-    "next": null
+    "next": null,
+    "mem": []
    },
    {
     "i": 1,
     "roll": 0.999,
     "text": "You let the call play out and burn on. It might have been real.",
-    "next": null
+    "next": null,
+    "mem": []
    },
    {
     "i": 2,
@@ -6029,7 +6055,8 @@
     "next": [
      "A Freighter in Trouble",
      "The readings are clean. She is real, and she is asking again."
-    ]
+    ],
+    "mem": []
    },
    {
     "i": 2,
@@ -6037,8 +6064,9 @@
     "text": "You try, and the readings will not settle. The call keeps repeating, and you are no wiser.",
     "next": [
      "A Freighter in Trouble",
-     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ah"
-    ]
+     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain Vance looks at the plot, then at the crew."
+    ],
+    "mem": []
    }
   ]
  },
@@ -6057,8 +6085,9 @@
     "text": "You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two more come off the rock behind her, and the call stops. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "The Closing",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors "
-    ]
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they are inside the range, and your position is already bad.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: behind. Armor 260/260."
+    ],
+    "mem": []
    },
    {
     "i": 0,
@@ -6066,20 +6095,23 @@
     "text": "You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "The Closing",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors "
-    ]
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they are inside the range, and your position is already bad.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: behind. Armor 260/260."
+    ],
+    "mem": []
    },
    {
     "i": 1,
     "roll": 0,
     "text": "You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.",
-    "next": null
+    "next": null,
+    "mem": []
    },
    {
     "i": 1,
     "roll": 0.999,
     "text": "You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.",
-    "next": null
+    "next": null,
+    "mem": []
    },
    {
     "i": 2,
@@ -6088,7 +6120,8 @@
     "next": [
      "A Freighter in Trouble",
      "You know what is out there. They have not lit their drives, and they do not know you know."
-    ]
+    ],
+    "mem": []
    },
    {
     "i": 2,
@@ -6096,8 +6129,9 @@
     "text": "You try, and the readings will not settle. The call keeps repeating, and you are no wiser.",
     "next": [
      "A Freighter in Trouble",
-     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ah"
-    ]
+     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain Vance looks at the plot, then at the crew."
+    ],
+    "mem": []
    }
   ]
  },
@@ -6175,8 +6209,9 @@
     "text": "You come in hot with the drive cold, and light it at three kilometers. They are not ready. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "The Closing",
-     "They are in position behind the freighter, with their drives cold, and they have not lit them. You h"
-    ]
+     "They are in position behind the freighter, with their drives cold, and they have not lit them. You have the range, and the first move.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: ahead. Armor 260/260."
+    ],
+    "mem": []
    },
    {
     "i": 0,
@@ -6184,8 +6219,9 @@
     "text": "You come in hot with the drive cold, and light it at three kilometers. They are not ready. Battle stations.",
     "next": [
      "The Closing",
-     "They are in position behind the freighter, with their drives cold, and they have not lit them. You h"
-    ]
+     "They are in position behind the freighter, with their drives cold, and they have not lit them. You have the range, and the first move.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: ahead. Armor 260/260."
+    ],
+    "mem": []
    },
    {
     "i": 1,
@@ -6252,13 +6288,15 @@
     "i": 1,
     "roll": 0,
     "text": "You let the call play out and burn on. It might have been real.",
-    "next": null
+    "next": null,
+    "mem": []
    },
    {
     "i": 1,
     "roll": 0.999,
     "text": "You let the call play out and burn on. It might have been real.",
-    "next": null
+    "next": null,
+    "mem": []
    },
    {
     "i": 2,
@@ -6267,7 +6305,8 @@
     "next": [
      "A Freighter in Trouble",
      "The readings are clean. She is real, and she is asking again."
-    ]
+    ],
+    "mem": []
    },
    {
     "i": 2,
@@ -6275,8 +6314,9 @@
     "text": "You try, and the readings will not settle. The call keeps repeating, and you are no wiser.",
     "next": [
      "A Freighter in Trouble",
-     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ah"
-    ]
+     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain Vance looks at the plot, then at the crew."
+    ],
+    "mem": []
    }
   ]
  },
@@ -6295,8 +6335,9 @@
     "text": "You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two more come off the rock behind her, and the call stops. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "The Closing",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors "
-    ]
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they are inside the range, and your position is already bad.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: behind. Armor 260/260."
+    ],
+    "mem": []
    },
    {
     "i": 0,
@@ -6304,20 +6345,23 @@
     "text": "You alter course for her. At four kilometers the freighter lights a drive that is not a freighter's, and two more come off the rock behind her, and the call stops.",
     "next": [
      "The Closing",
-     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors "
-    ]
+     "They were waiting on the far side of the freighter, with their drives cold. By the time the sensors show them they are inside the range, and your position is already bad.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: behind. Armor 260/260."
+    ],
+    "mem": []
    },
    {
     "i": 1,
     "roll": 0,
     "text": "You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.",
-    "next": null
+    "next": null,
+    "mem": []
    },
    {
     "i": 1,
     "roll": 0.999,
     "text": "You let the call play out and burn on. Two days on, a feed item says a freighter was taken at that spot.",
-    "next": null
+    "next": null,
+    "mem": []
    },
    {
     "i": 2,
@@ -6326,7 +6370,8 @@
     "next": [
      "A Freighter in Trouble",
      "You know what is out there. They have not lit their drives, and they do not know you know."
-    ]
+    ],
+    "mem": []
    },
    {
     "i": 2,
@@ -6334,8 +6379,9 @@
     "text": "You try, and the readings will not settle. The call keeps repeating, and you are no wiser.",
     "next": [
      "A Freighter in Trouble",
-     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ah"
-    ]
+     "A distress call on the common band, short and weary: a freighter with a failed drive, in the lane ahead, asking anyone. She is forty minutes off your course. Captain Vance looks at the plot, then at the crew."
+    ],
+    "mem": []
    }
   ]
  },
@@ -6413,8 +6459,9 @@
     "text": "You come in hot with the drive cold, and light it at three kilometers. They are not ready. Battle stations. She is flown by a hard crew, with a captain who has done it for years.",
     "next": [
      "The Closing",
-     "They are in position behind the freighter, with their drives cold, and they have not lit them. You h"
-    ]
+     "They are in position behind the freighter, with their drives cold, and they have not lit them. You have the range, and the first move.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: ahead. Armor 260/260."
+    ],
+    "mem": []
    },
    {
     "i": 0,
@@ -6422,8 +6469,9 @@
     "text": "You come in hot with the drive cold, and light it at three kilometers. They are not ready. Battle stations.",
     "next": [
      "The Closing",
-     "They are in position behind the freighter, with their drives cold, and they have not lit them. You h"
-    ]
+     "They are in position behind the freighter, with their drives cold, and they have not lit them. You have the range, and the first move.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: ahead. Armor 260/260."
+    ],
+    "mem": []
    },
    {
     "i": 1,
