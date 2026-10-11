@@ -17,6 +17,7 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:shiplife', fn: 'downtimeEvent', file: 'js/shiplife.js', title: 'Downtime on a Burn', where: 'transit', when: 'Once before the flip and once after: the ship\'s own activities (a meal, drills, maintenance, a round of the berths) among the others on the menu.' },
   { id: 'scene:bar-round', fn: 'barHtml', file: 'js/bar.js', title: 'A Round for the House', where: 'port', when: 'The button on the bar page: what it says before and after, what the room remembers, and what you are told.' },
   { id: 'scene:cast-join', fn: 'castJoin', file: 'js/cast.js', title: 'A Main Character Comes Aboard', where: 'port', when: 'When a main character or first officer signs on: what they remember, and the line in the ship\'s log.' },
+  { id: 'scene:ship-log', fn: 'homeLog', file: 'js/family.js', title: 'Lines in the Ship\'s Log', where: 'transit', when: 'What the log of the ship records when a crew member is killed or leaves, a captain retires or is lost, or a settlement is founded.' },
   { id: 'scene:put-ashore', fn: 'putAshoreScene', file: 'js/stakes.js', title: 'Put Ashore', where: 'port', when: 'When the captain\'s opinion of you falls to -3, at a later port.' },
   { id: 'scene:hand-death', fn: 'handDeathScene', file: 'js/stakes.js', title: 'The Last Run', where: 'transit', when: 'When the hand is lost in a fight.' },
   { id: 'scene:captain-lost', fn: 'captainLostScene', file: 'js/stakes.js', title: 'Without a Captain', where: 'transit', when: 'When the captain is lost on a pirate bridge.' },
@@ -178,6 +179,14 @@ const SCENE_LINES = {
   },
   'scene:cast-join': {  // a main character or first officer signs on (cast.js)
     memory: 'I signed on with {ship}.', log: '{first} {last} came aboard as {article} {role}.',
+  },
+  'scene:ship-log': {  // the lines the ship's log keeps of what happens (boarders.js, stakes.js, legacy.js, outpost.js)
+    'killed.log': '{first} {last} was killed when {system}\'s boarders came aboard.',
+    'left.log': '{first} {last} left the ship at {planet}.',
+    'lost.log': 'In memory of Captain {captain}, lost with {ship}.',
+    'lost.crew.log': 'In memory of Captain {captain} and the crew, lost with {ship}.',
+    'retired.log': 'Captain {captain} retired. {heir} took command.',
+    'founded.log': 'Founded {outpost} on {site}.',
   },
   'scene:put-ashore': {
     title: 'Put Ashore',

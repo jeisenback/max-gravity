@@ -80,7 +80,7 @@ function found(site, name) {
   st.outpost = { site, name: name || `${site} Landing`, founded: st.day, pop: 40, built: ['habitat'], earned: 0, moments: [],
     stock: { food: 12, water: 12, medical: 3, equipment: 2 } };
   placeOutpost();
-  if (typeof homeLog === 'function') homeLog(`Founded ${outpostName(st.outpost)} on ${site}.`);
+  if (typeof homeLog === 'function') homeLog(sceneSay('scene:ship-log', 'founded.log', { outpost: outpostName(st.outpost), site }));
   worldNews(`A new settlement, ${outpostName(st.outpost)}, has been founded on ${site}.`);
 }
 

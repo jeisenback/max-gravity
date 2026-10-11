@@ -141,7 +141,7 @@ function letGo(x, y) {
   const rep = makeCrewCandidate(st.systemId);
   rep.role = role; rep.skill = Math.max(1, skill - 1); rep.job = ROLE_NAMES[role] ? ROLE_NAMES[role].toLowerCase() : 'hand'; rep.mood = null;
   registerPerson(rep); st.crew.push(rep.id);
-  homeLog(`${x.p.first} ${x.p.last} left the ship at ${st.planet}.`);
+  homeLog(sceneSay('scene:ship-log', 'left.log', { first: x.p.first, last: x.p.last, planet: st.planet }));
   return sceneSay('scene:split', 'let.result', { gone: x.p.first, stays: y.p.first, job: rep.job, new: rep.first });
 }
 

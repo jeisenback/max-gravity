@@ -52,7 +52,7 @@ test('the converted scenes are data rows of the registry, and the rest are code 
   assert.equal(r.effects.castLike.who, 'ansel');
   assert.ok(r.edit.length > 0 && r.edit.every(e => e === false), 'code choices keep their effects in code');
   assert.ok(r.goodbye && r.signon, 'the goodbye and the sign-on are rows of the registry');
-  assert.equal(r.dataRegistry, 126);
+  assert.equal(r.dataRegistry, 127);
 });
 
 test('a converted scene\'s effects are in forms, checked as typed, and changing one is a change to the file', async () => {
@@ -533,6 +533,16 @@ test('the round for the house and a main character coming aboard have their line
   f = await play();
   seen = await f.evaluate(() => G.dialog.event.text);
   assert.ok(/signed the articles as an? \w+\./.test(seen) && seen.includes('I signed on with'), seen.slice(0, 300));
+});
+
+test('the lines the ship\'s log keeps have their fields in the form and play in the preview (#508)', async () => {
+  await reload(); await select('scene:ship-log');
+  const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
+  for (const k of ['part.killed.log', 'part.left.log', 'part.lost.log', 'part.lost.crew.log', 'part.retired.log', 'part.founded.log']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
+  await page.fill('textarea[data-path="part.founded.log"]', 'Broke ground at {site}.');
+  const f = await play();
+  const seen = await f.evaluate(() => G.dialog.event.text);
+  assert.ok(seen.includes('Broke ground at Callisto.') && seen.includes('was killed when Ceres'), seen.slice(0, 300));
 });
 
 test('the function-built scenes and the code-written hired events are edited line by line, and each plays in the preview (#463)', async () => {

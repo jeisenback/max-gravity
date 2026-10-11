@@ -62,7 +62,7 @@ const playScenes = () => {
     const st = G.state, crew = folk().filter(f => f.crew && !f.p.cast), [a, b] = crew;
     addBond(a, b, -9); st.feuds = { [bondKey(a, b)]: 1 }; st.relAt = {};
     return splitScene();
-  });
+  }, { extra: () => (G.state.home || {}).log });
   // ---------- a main character walks off ----------
   for (const who of ['ines', 'tomas', 'cato']) run(`scene:walk-off:${who}`, who === 'cato' ? { captainKey: 'hester' } : {}, () => { if (!G.state.crew.includes(castPerson(who).id)) G.state.crew.push(castPerson(who).id); return walkOffScene(castPerson(who), currentPlanet()); });
   // the lines each fact leaves: the first two that are true are shown, so once with all of them true and once with the first one not
@@ -144,6 +144,13 @@ const playScenes = () => {
   for (const key of ['ines', 'tomas', 'yelena', 'ruben']) {
     run(`cast:join:${key}`, {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run: () => castJoin(key, 'They come aboard.') }] }), { extra: () => (G.state.home || {}).log });
   }
+  // ---------- the lines in the ship's log: a crew member killed, a captain retired or lost, a settlement founded ----------
+  const logOf = () => (G.state.home || {}).log;
+  run('log:killed', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { killCrew(person(G.state.crew[0])); return ''; } }] }), { prep() { G.state.crew = []; crewOf(2); }, extra: logOf });
+  for (const [fate, aboard] of [['retired', 0], ['died', 0], ['died', 2]]) {
+    run(`log:legacy:${fate}:${aboard}`, {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { succeed(fate, 'Mara Quill'); return ''; } }] }), { prep() { G.state.crew = []; crewOf(aboard); }, extra: logOf });
+  }
+  run('log:founded', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { found('Callisto', 'Test Landing'); return ''; } }] }), { prep() { Object.assign(G.state, { credits: 150000, cargo: { industrial: 30, equipment: 20, metal: 40 } }); }, extra: logOf });
   // ---------- the yard office ----------
   for (const [ship, post, trusted, skilled] of [['used', 'gunner', false, false], ['used', 'engineer', true, true], ['lightfreighter', 'gunner', true, false], ['lightfreighter', 'pilot', false, true]]) {
     run(`scene:yard-office:${ship}:${post}:${trusted ? 't' : 'u'}${skilled ? 's' : 'n'}`, { post, credits: 60000 }, () => {
