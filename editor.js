@@ -152,10 +152,10 @@
         ...beatRow(e.scene), lines: true, codeNote: LINES_NOTE });
     }
     for (const e of peopleEventRegistry()) {  // the passenger and crew events (#457): written in code, with their words as lines
-      const pax = !!e.event, crew = !!e.make, kind = pax ? 'passenger events' : crew ? 'crew events' : 'bar topics';
+      const pax = !!e.event, crew = !!e.make, rel = !!e.social, kind = pax ? 'passenger events' : crew ? 'crew events' : rel ? 'relationship scenes' : 'bar topics';
       add({ id: e.id, title: e.title, where: e.where, file: e.file, belongs: kind,
-        conditionsNote: pax ? 'A passenger aboard whom the event is about (their secret, goal or traits); one event is drawn for a passenger by weight.' : crew ? 'A shipmate with the trait the event is about: one of the crew is picked on a burn, then one of their traits.' : 'One of the few things you can do at a table with a stranger at a bar, offered by who they are; or, for a help scene, what follows when you take up their goal or their secret.',
-        pacing: { tier: null, weight: pax ? e.event.weight : null, cooldown: pax ? 'one per passenger' : 'by its own rule', trigger: pax ? 'Drawn by weight among the events that fit the passenger, on a burn.' : crew ? 'Picked at random among the crew and their traits, on a burn.' : 'Offered at a bar table by the person\'s traits, goal and secret, three at a time.', editable: false },
+        conditionsNote: pax ? 'A passenger aboard whom the event is about (their secret, goal or traits); one event is drawn for a passenger by weight.' : crew ? 'A shipmate with the trait the event is about: one of the crew is picked on a burn, then one of their traits.' : rel ? 'Two people aboard, by the bond between them, where they come from, who is crew and who is a passenger, and what is on; a scene comes up now and then on a burn, each kind waiting its turn.' : 'One of the few things you can do at a table with a stranger at a bar, offered by who they are; or, for a help scene, what follows when you take up their goal or their secret.',
+        pacing: { tier: null, weight: pax ? e.event.weight : null, cooldown: pax ? 'one per passenger' : 'by its own rule', trigger: pax ? 'Drawn by weight among the events that fit the passenger, on a burn.' : crew ? 'Picked at random among the crew and their traits, on a burn.' : rel ? 'Chosen among the scenes the pairs aboard can have, on a burn (relationshipScene, social.js).' : 'Offered at a bar table by the person\'s traits, goal and secret, three at a time.', editable: false },
         ...beatRow(e.scene), codeNote: SCENE_NOTE });
     }
     return rows;
@@ -322,6 +322,17 @@
       if (pe.help) openEvent(pe.help === 'goal' ? helpScene(person, pat, ctx) : secretScene(person, pat, ctx));
       else openEvent({ title: `${ctx.bar}: ${person.first} ${person.last}`, text: `${person.first} ${person.last} is across the table.`, choices: [pe.topic.make(person, pat, ctx), { label: 'Leave them to their drink', run: () => '' }] });
       return { type: 'played', failing: [], chained: false, shut: [], note: 'A bar topic is offered by who the person is, so no condition is checked here.' };
+    }
+    if (pe && pe.social) {  // a relationship scene: two people aboard (a passenger and a shipmate for the tour), or a regular back aboard
+      const st = G.state, mk = (first, over) => { const c = makeCrewCandidate(st.systemId); Object.assign(c, { first, ...over }); registerPerson(c); return c; };
+      st.crew = [];
+      const a = mk('Ana', { role: 'pilot', opinion: 4 }), b = mk('Ben', {});
+      if (pe.social === 'welcome-back') st.missions.push({ type: 'passenger', id: st.nextId++, pid: b.id, who: `${b.first} ${b.last}`, pax: 1, bonus: 0, regular: true, destSystem: 'mars', destPlanet: 'Olympus Dome', title: 'Carry', pay: 1000, deadline: st.day + 99 });
+      else { st.crew.push(a.id); if (pe.social === 'grand-tour') st.missions.push({ type: 'passenger', id: st.nextId++, pid: b.id, who: `${b.first} ${b.last}`, pax: 1, bonus: 0, destSystem: 'mars', destPlanet: 'Olympus Dome', title: 'Carry', pay: 1000, deadline: st.day + 99 }); else st.crew.push(b.id); }
+      const ev = SOCIAL_SCENES[pe.social](...folk());
+      if (!ev) return { error: 'This scene needs people the test game does not have aboard.' };
+      openEvent(ev);
+      return { type: 'played', failing: [], chained: false, shut: [], note: 'A relationship scene is chosen among what the pairs aboard can have, so no condition is checked here.' };
     }
     if (pe && pe.make) {  // a crew event: a shipmate with the trait is aboard
       const mate = makeCrewCandidate(G.state.systemId); registerPerson(mate); mate.traits = [pe.trait]; G.state.crew.push(mate.id);

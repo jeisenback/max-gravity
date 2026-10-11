@@ -44,7 +44,7 @@ test('the converted scenes are data rows of the registry, and the rest are code 
     const row = id => SceneIndex.rows.find(x => x.id === id);
     return { ansel: ['kind', 'registry'].map(k => row('cast:ansel:intro')[k]), closed: ['kind', 'registry'].map(k => row('cast:cato:late:closed')[k]), ilsa: ['kind', 'registry'].map(k => row('cast:ruben:mid1')[k]),
       effects: row('cast:ansel:intro').choices[0].effects, edit: row('cast:ines:pivot').edit.choices.map(c => c.effects), goodbye: row('captain:hester:goodbye').registry, signon: row('scene:sign-on').registry,
-      storylets: SceneIndex.rows.filter(x => x.kind === 'data' && !x.registry).length, dataRegistry: SceneIndex.rows.filter(x => x.kind === 'data' && x.registry && !/^(lines|people|bar):/.test(x.id)).length };  // the hired chapter's scenes; the line tables and the passenger events are counted in their own tests (#457)
+      storylets: SceneIndex.rows.filter(x => x.kind === 'data' && !x.registry).length, dataRegistry: SceneIndex.rows.filter(x => x.kind === 'data' && x.registry && !/^(lines|people|bar|social):/.test(x.id)).length };  // the hired chapter's scenes; the line tables and the passenger events are counted in their own tests (#457)
   });
   assert.deepEqual(r.ansel, ['data', true]);
   assert.deepEqual(r.closed, ['data', true]);
@@ -405,6 +405,24 @@ test('the bar topics are rows with a field for every line, and each plays at a b
     const f = await play();
     const seen = await f.evaluate(() => JSON.stringify(G.dialog.choices.map(c => c.label)));
     assert.ok(seen.includes(`Typed ${id}.`), `${id} plays the typed closing button: ${seen.slice(0, 200)}`);
+  }
+});
+
+test('the relationship scenes are rows with a field for every line, and each plays in a burn with the people it is about (#457)', async () => {
+  await reload(); await select('social:small-ship');
+  const r = await page.evaluate(() => {
+    const rows = SceneIndex.rows.filter(x => x.id.startsWith('social:'));
+    return { ids: rows.map(x => x.id), shape: rows.every(x => x.kind === 'data' && x.noTitle && x.where === 'transit' && x.file === 'js/social.js'), word: Object.keys(SceneIndex.rows.find(x => x.id === 'social:word').parts).includes('title.hired') };
+  });
+  assert.equal(r.ids.length, 13, 'twelve relationship scenes and the welcome back');
+  assert.ok(r.shape, 'each is lines, in a burn, in js/social.js');
+  assert.ok(r.word, 'the hired reading of a word is a line of its own');
+  for (const id of r.ids) {
+    await select(id);
+    await page.fill('textarea[data-path="part.title"]', `Typed ${id}.`);
+    const f = await play();
+    const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.choices.map(c => c.label)]));
+    assert.ok(seen.includes(`Typed ${id}.`), `${id} plays the typed title: ${seen.slice(0, 200)}`);
   }
 });
 
