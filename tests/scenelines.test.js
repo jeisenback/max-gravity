@@ -123,10 +123,10 @@ test('the memories at the port screens and the hand\'s screens are lines, and no
   }
 });
 
-test('no memory is left in code in js/ outside the lines of the scenes, apart from the first officers\' own scenes of a loss (js/captains/)', async () => {
+test('no memory or thread line of `like`, `likeAmbient`, `capLike` or `setLater` is left in code in js/ outside the lines of the scenes, apart from the first officers\' own scenes (js/captains/)', async () => {
   const fs = require('node:fs'), path = require('node:path'), dir = path.join(__dirname, '..', 'js');
   const found = [];
-  const walk = d => { for (const f of fs.readdirSync(d, { withFileTypes: true })) { if (f.isDirectory()) { if (f.name !== 'captains') walk(path.join(d, f.name)); } else if (f.name.endsWith('.js')) { const src = fs.readFileSync(path.join(d, f.name), 'utf8'); for (const m of src.matchAll(/\blike(?:Ambient)?\([^;\n]*?, *(?:`|'|")[A-Z]/g)) found.push(`${f.name}: ${m[0].slice(0, 60)}`); } } };
+  const walk = d => { for (const f of fs.readdirSync(d, { withFileTypes: true })) { if (f.isDirectory()) { if (f.name !== 'captains') walk(path.join(d, f.name)); } else if (f.name.endsWith('.js')) { const src = fs.readFileSync(path.join(d, f.name), 'utf8'); for (const m of src.matchAll(/\b(?:like|likeAmbient|capLike)\([^;\n]*?, *(?:`|'|")[A-Z]|\bsetLater\([^;\n]*?, *\d+, *(?:`|'|")/g)) found.push(`${f.name}: ${m[0].slice(0, 60)}`); } } };
   walk(dir);
   assert.deepEqual(found, [], 'a memory written in code');
 });

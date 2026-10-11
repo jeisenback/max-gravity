@@ -63,42 +63,42 @@ const HAND_EVENTS = [
 
   { id: 'cap-order', group: 'captain', make: c => { const say = (key, vars) => eventSay('cap-order', key, { last: c.cap.last, ...vars }); return handEvent(say('title'),
     say('text'), [
-      { label: say('c0.label'), run() { setLater(Math.random() < 0.5 ? 'h-hot-good' : 'h-hot-bad', 6, 'Ran the drive hot on {captain}\'s order.'); capLike(c, 1, 'You did as you were told on the hot burn.'); return `${say('ordered')}${learn(1)}`; } },
+      { label: say('c0.label'), run() { setLater(Math.random() < 0.5 ? 'h-hot-good' : 'h-hot-bad', 6, say('c0.log')); capLike(c, 1, say('c0.memory')); return `${say('ordered')}${learn(1)}`; } },
       { label: say('c1.label'), run() {
-        if (c.cap.opinion >= captainHears()) { setLater('h-ninety', 7, 'Told {captain} what I thought of the hot burn, and was heard.'); capLike(c, 2, 'You told me plainly what you thought, and you were right to.'); return `${say('heard')}${learn(2)}`; }
-        setLater('h-hot-bad', 6, 'Argued the hot burn with {captain} and lost.'); capLike(c, -1, 'You argued the burn with me when I had decided.');
+        if (c.cap.opinion >= captainHears()) { setLater('h-ninety', 7, say('c1.heard.log')); capLike(c, 2, say('c1.heard.memory')); return `${say('heard')}${learn(2)}`; }
+        setLater('h-hot-bad', 6, say('c1.notHeard.log')); capLike(c, -1, say('c1.notHeard.memory'));
         return say('notHeard');
       } },
       { label: say('c2.label'), opinion: {
         who: 'captain',
         min: captainHears()
-      }, run() { setLater('h-ninety', 7, 'Offered {captain} ninety and the minutes on the approach, and was heard.'); capLike(c, 2, 'You gave me a figure and a plan, not a complaint.'); return `${say('c2.result')}${learn(2)}`; } },
-      { label: say('c3.label'), post: 'engineer', skill: 2, run() { setLater('h-ninety', 7, 'Showed {captain} the heat figures on a hot burn, and was heard.'); capLike(c, 2, 'You showed me the figures on the hot burn, and they were right.'); return `${say('c3.result')}${learn(2)}`; } },
-      { label: say('c4.label'), post: 'pilot', skill: 2, run() { setLater('h-ninety', 7, 'Replotted the approach on a hot burn, and was heard.'); capLike(c, 2, 'You replotted the burn so the window was made without the hot drive.'); return `${say('c4.result')}${learn(2)}`; } },
+      }, run() { setLater('h-ninety', 7, say('c2.log')); capLike(c, 2, say('c2.memory')); return `${say('c2.result')}${learn(2)}`; } },
+      { label: say('c3.label'), post: 'engineer', skill: 2, run() { setLater('h-ninety', 7, say('c3.log')); capLike(c, 2, say('c3.memory')); return `${say('c3.result')}${learn(2)}`; } },
+      { label: say('c4.label'), post: 'pilot', skill: 2, run() { setLater('h-ninety', 7, say('c4.log')); capLike(c, 2, say('c4.memory')); return `${say('c4.result')}${learn(2)}`; } },
     ]); } },
 
   { id: 'cap-praise', group: 'captain', make: c => { const say = (key, vars) => eventSay('cap-praise', key, { last: c.cap.last, post: POSTS[hired().post].name.toLowerCase(), Post: POSTS[hired().post].name, ...vars }); return handEvent(say('title'),
     say('text'), [
-      { label: say('c0.label'), run() { setLater('h-praise-trust', 10, '{captain} said something kind and I did not make a thing of it.'); capLike(c, 1, 'You took my thanks without making a thing of it.'); return `${say('take')}${learn(1)}`; } },
+      { label: say('c0.label'), run() { setLater('h-praise-trust', 10, say('c0.log')); capLike(c, 1, say('c0.memory')); return `${say('take')}${learn(1)}`; } },
       { label: say('c1.label'), run() {
-        if (c.cap.opinion >= captainBonus()) { G.state.credits += 60; capLike(c, 0, 'You asked for a bonus and had earned it.'); return say('bonusYes'); }
-        setLater('h-owed', 8, 'Asked {captain} for a bonus before I had earned one.'); capLike(c, -1, 'You asked for a bonus before you had earned one.');
+        if (c.cap.opinion >= captainBonus()) { G.state.credits += 60; capLike(c, 0, say('c1.bonusYes.memory')); return say('bonusYes'); }
+        setLater('h-owed', 8, say('c1.bonusNo.log')); capLike(c, -1, say('c1.bonusNo.memory'));
         return say('bonusNo');
       } },
-      { label: say('c2.label'), skill: 3, run() { G.state.credits += 60; capLike(c, 1, 'You asked for a bonus and brought the figures to show it.'); return `${say('c2.result')}${learn(1)}`; } },
+      { label: say('c2.label'), skill: 3, run() { G.state.credits += 60; capLike(c, 1, say('c2.memory')); return `${say('c2.result')}${learn(1)}`; } },
     ]); } },
 
   { id: 'cap-dressing', group: 'captain', make: c => { const say = (key, vars) => eventSay('cap-dressing', key, { last: c.cap.last, ...vars }); return handEvent(say('title'),
     say('text'), [
-      { label: say('c0.label'), run() { setLater('h-log-trust', 12, 'Owned a gap in the ship\'s log without being made to.'); capLike(c, 1, 'You owned a mistake in the log without being made to.'); return `${say('own')}${learn(2)}`; } },
+      { label: say('c0.label'), run() { setLater('h-log-trust', 12, say('c0.log')); capLike(c, 1, say('c0.memory')); return `${say('own')}${learn(2)}`; } },
       { label: say('c1.label'), run() {
         G.nextEvent = handEvent(say('terminal.title'), say('terminal'), [
           { label: say('terminal.c0.label'), run() {
-            if (Math.random() < 0.4) { capLike(c, 1, 'The terminal really did drop an entry, and you showed me.'); return `${say('showWin')}${learn(1)}`; }
-            capLike(c, -2, 'You blamed the terminal and the terminal was fine.');
+            if (Math.random() < 0.4) { capLike(c, 1, say('terminal.c0.showWin.memory')); return `${say('showWin')}${learn(1)}`; }
+            capLike(c, -2, say('terminal.c0.showLose.memory'));
             return say('showLose');
           } },
-          { label: say('terminal.c1.label'), run() { capLike(c, 0, 'You admitted the gap in the log after blaming the terminal.'); return say('admit'); } },
+          { label: say('terminal.c1.label'), run() { capLike(c, 0, say('terminal.c1.memory')); return say('admit'); } },
         ]);
         return say('blame');
       } },
@@ -106,9 +106,9 @@ const HAND_EVENTS = [
 
   { id: 'cap-favour', group: 'captain', make: c => { const say = (key, vars) => eventSay('cap-favour', key, { last: c.cap.last, ...vars }); return handEvent(say('title'),
     say('text'), [
-      { label: say('c0.label'), run() { setLater('h-favour-back', 9, 'Stood an extra watch for {captain}.'); capLike(c, 2, 'You stood a watch for me without being paid for it.'); return `${say('stand')}${learn(2)}`; } },
-      { label: say('c1.label'), run() { G.state.credits += 40; capLike(c, 0, 'You stood a watch for me for a fee.'); return say('fee'); } },
-      { label: say('c2.label'), run() { setLater('h-favour-cold', 5, 'Would not stand an extra watch for {captain}.'); capLike(c, -1, 'You would not stand an extra watch.'); return say('beg'); } },
+      { label: say('c0.label'), run() { setLater('h-favour-back', 9, say('c0.log')); capLike(c, 2, say('c0.memory')); return `${say('stand')}${learn(2)}`; } },
+      { label: say('c1.label'), run() { G.state.credits += 40; capLike(c, 0, say('c1.memory')); return say('fee'); } },
+      { label: say('c2.label'), run() { setLater('h-favour-cold', 5, say('c2.log')); capLike(c, -1, say('c2.memory')); return say('beg'); } },
     ]); } },
 
   dataEvent({
@@ -136,8 +136,8 @@ const HAND_EVENTS = [
     say('text'), [
       { label: say('c0.label'), run() {
         remember('needle', c.mate);
-        if (Math.random() < soloOdds(hired().post)) { setLater('h-needle-ally', 8, 'Showed {thread:needle} my post, and they came round.'); like(c.mate, 1, say('c0.win.memory')); return `${say('c0.win')}${learn(2)}`; }
-        setLater('h-needle-worse', 6, 'Tried to prove a point to {thread:needle} and it went badly.'); like(c.mate, -1, say('c0.lose.memory'));
+        if (Math.random() < soloOdds(hired().post)) { setLater('h-needle-ally', 8, say('c0.win.log')); like(c.mate, 1, say('c0.win.memory')); return `${say('c0.win')}${learn(2)}`; }
+        setLater('h-needle-worse', 6, say('c0.lose.log')); like(c.mate, -1, say('c0.lose.memory'));
         return `${say('c0.lose')}${learn(1)}`;
       } },
       { label: say('c1.label'), skill: 2, run() { remember('needle', c.mate); like(c.mate, 2, say('c1.result.memory')); return `${say('c1.result')}${learn(1)}`; } },
@@ -147,7 +147,7 @@ const HAND_EVENTS = [
   { id: 'crew-cards', mate: true, group: 'crew', make: c => { const say = (key, vars) => eventSay('crew-cards', key, { mate: c.mate.first, ...vars }); return handEvent(say('title'),
     say('text'), [
       { label: say('c0.label'), ...gated(needCr(50)), run() {
-        remember('cards', c.mate); setLater('h-cards-rematch', 7, 'Played cards with {thread:cards}. They want a rematch.');
+        remember('cards', c.mate); setLater('h-cards-rematch', 7, say('c0.log'));
         if (Math.random() < 0.45) { G.state.credits += 100; like(c.mate, 1, say('c0.win.memory')); return say('c0.win', { net: fmt(50) }); }
         G.state.credits -= 50; like(c.mate, 1, say('c0.lose.memory'));
         return say('c0.lose');
@@ -369,7 +369,7 @@ const HAND_EVENTS = [
         const n = randInt(8, 16) * 10;
         G.nextEvent = handEvent(say('crates.title'), say('crates.text'), [
           { label: say('crates.c0.label'), run() { G.state.credits += n; return say('crates.c0.result', { n: fmt(n) }); } },
-          { label: say('crates.c1.label'), run() { G.state.credits += n * 2; setLater('h-side-trouble', 9, 'Loaded crates for a trading house and did not ask what was in them.'); return say('crates.c1.result', { n: fmt(n * 2) }); } },
+          { label: say('crates.c1.label'), run() { G.state.credits += n * 2; setLater('h-side-trouble', 9, say('crates.c1.log')); return say('crates.c1.result', { n: fmt(n * 2) }); } },
         ]);
         return say('c0.result');
       } },
@@ -380,19 +380,19 @@ const HAND_EVENTS = [
     say('text'), [
       { label: say('c0.label'),
       ...gated(needCr(100)),
-      run() { G.state.credits -= 100; remember('loan', c.mate); setLater(Math.random() < 0.7 ? 'h-loan-repaid' : 'h-loan-default', 12, 'Lent {thread:loan} a hundred credits.'); like(c.mate, 3, say('c0.result.memory')); return say('c0.result'); } },
+      run() { G.state.credits -= 100; remember('loan', c.mate); setLater(Math.random() < 0.7 ? 'h-loan-repaid' : 'h-loan-default', 12, say('c0.log')); like(c.mate, 3, say('c0.result.memory')); return say('c0.result'); } },
       {
         label: say('c1.label'),
         ...gated(needCr(50)),
-        run() { G.state.credits -= 50; remember('loan', c.mate); setLater('h-loan-small', 12, 'Lent {thread:loan} fifty credits.'); like(c.mate, 1, say('c1.result.memory')); return say('c1.result'); }
+        run() { G.state.credits -= 50; remember('loan', c.mate); setLater('h-loan-small', 12, say('c1.log')); like(c.mate, 1, say('c1.result.memory')); return say('c1.result'); }
       },
       { label: say('c2.label'), run() { like(c.mate, -1, say('c2.result.memory')); return say('c2.result'); } },
     ]); } },
 
   { id: 'money-short', group: 'money', make: c => { const say = (key, vars) => eventSay('money-short', key, { wage: fmt(hired().wage), ...vars }); return handEvent(say('title'),
     say('text'), [
-      { label: say('c0.label'), run() { setLater('h-short-audit', 10, 'Raised a short pay statement quietly with {captain}.'); G.state.credits += hired().wage; capLike(c, 0, 'You raised a short statement politely.'); return say('c0.result'); } },
-      { label: say('c1.label'), run() { setLater('h-scene-fallout', 6, 'Made a scene about my pay statement.'); G.state.credits += hired().wage; capLike(c, -2, 'You made a scene about a short statement.'); return say('c1.result'); } },
+      { label: say('c0.label'), run() { setLater('h-short-audit', 10, say('c0.log')); G.state.credits += hired().wage; capLike(c, 0, say('c0.memory')); return say('c0.result'); } },
+      { label: say('c1.label'), run() { setLater('h-scene-fallout', 6, say('c1.log')); G.state.credits += hired().wage; capLike(c, -2, say('c1.memory')); return say('c1.result'); } },
       { label: say('c2.label'), run: () => say('c2.result') },
     ]); } },
 
@@ -401,19 +401,19 @@ const HAND_EVENTS = [
     return handEvent(say('title'),
       say('text', { where: say(`where.${post}`) }), [
         { label: say('c0.label'), run() {
-          capLike(c, 1, 'You brought me something off the lane when you saw it.');
+          capLike(c, 1, say('c0.memory'));
           G.nextEvent = handEvent(say('see.title'), say('see.text'), [
-            { label: say('see.c0.label'), run() { setLater('h-lane-again', 9, 'Reported something off the lane, in detail.'); return `${say('see.c0.result')}${learn(2)}`; } },
-            { label: say('see.c1.label'), run() { capLike(c, -1, 'You were not sure what you saw.'); setLater('h-lane-again', 9, 'Reported something off the lane, but was not sure of it.'); return `${say('see.c1.result')}${learn(1)}`; } },
+            { label: say('see.c0.label'), run() { setLater('h-lane-again', 9, say('see.c0.log')); return `${say('see.c0.result')}${learn(2)}`; } },
+            { label: say('see.c1.label'), run() { capLike(c, -1, say('see.c1.memory')); setLater('h-lane-again', 9, say('see.c1.log')); return `${say('see.c1.result')}${learn(1)}`; } },
           ]);
           return say('c0.result');
         } },
-        { label: say('c1.label'), run() { capLike(c, 0, 'You logged something off the lane.'); return `${say('c1.result')}${learn(1)}`; } },
-        { label: say('c2.label'), post: 'pilot', skill: 2, run() { setLater('h-lane-again', 9, 'Plotted something off the lane and gave a course round it.'); capLike(c, 2, 'You brought me a track and a course round it.'); return `${say('c2.result')}${learn(2)}`; } },
-        { label: say('c3.label'), post: 'gunner', skill: 2, run() { setLater('h-lane-again', 9, 'Put a passive lock on something off the lane.'); capLike(c, 2, 'You watched something off the lane without it knowing.'); return `${say('c3.result')}${learn(2)}`; } },
-        { label: say('c4.label'), post: 'engineer', skill: 2, run() { setLater('h-lane-again', 9, 'Read a drive signature off something on the lane.'); capLike(c, 2, 'You read a drive signature that did not match its hull.'); return `${say('c4.result')}${learn(2)}`; } },
-        { label: say('c5.label'), post: 'comms', skill: 2, run() { setLater('h-lane-again', 9, 'Listened to the transponder of something off the lane.'); capLike(c, 2, 'You listened to a transponder and brought me what was wrong with it.'); return `${say('c5.result')}${learn(2)}`; } },
-        { label: say('c6.label'), run() { setLater('h-lane-trouble', 7, 'Saw something off the lane and said nothing.'); return say('c6.result'); } },
+        { label: say('c1.label'), run() { capLike(c, 0, say('c1.memory')); return `${say('c1.result')}${learn(1)}`; } },
+        { label: say('c2.label'), post: 'pilot', skill: 2, run() { setLater('h-lane-again', 9, say('c2.log')); capLike(c, 2, say('c2.memory')); return `${say('c2.result')}${learn(2)}`; } },
+        { label: say('c3.label'), post: 'gunner', skill: 2, run() { setLater('h-lane-again', 9, say('c3.log')); capLike(c, 2, say('c3.memory')); return `${say('c3.result')}${learn(2)}`; } },
+        { label: say('c4.label'), post: 'engineer', skill: 2, run() { setLater('h-lane-again', 9, say('c4.log')); capLike(c, 2, say('c4.memory')); return `${say('c4.result')}${learn(2)}`; } },
+        { label: say('c5.label'), post: 'comms', skill: 2, run() { setLater('h-lane-again', 9, say('c5.log')); capLike(c, 2, say('c5.memory')); return `${say('c5.result')}${learn(2)}`; } },
+        { label: say('c6.label'), run() { setLater('h-lane-trouble', 7, say('c6.log')); return say('c6.result'); } },
       ]);
   } },
 ];
