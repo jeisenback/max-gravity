@@ -34,11 +34,13 @@ function raidLines() {
   for (const [kind, list] of [['closing', RAID_CLOSING], ['exchange', RAID_EXCHANGE]]) for (const c of list) { text(`${kind}.${c.id}.label`, c.label); sides(`${kind}.${c.id}`, c); }
   for (const [kind, posts] of Object.entries(RAID_POST)) for (const [post, c] of Object.entries(posts)) { text(`post.${kind}.${post}.label`, c.label); sides(`post.${kind}.${post}`, c); }
   for (const [k, v] of Object.entries(RAID_CLOSE)) { if (typeof v === 'string') text(`close.${k}`, v); else for (const [style, t] of Object.entries(v)) text(`close.${k}.${style}`, t); }
+  for (const [k, t] of Object.entries(RAID_MEMORY)) text(`memory.${k}`, t);
   return out;
 }
 function ambushLines() {
   const out = {};
   for (const [post, c] of Object.entries(AMBUSH_READ)) for (const k of ['label', 'trap', 'real']) out[`read.${post}.${k}`] = c[k];
+  for (const [k, t] of Object.entries(AMBUSH_MEMORY)) out[`memory.${k}`] = t;
   return out;
 }
 function repelLines(assault) {
@@ -48,6 +50,7 @@ function repelLines(assault) {
   for (const [k, t] of Object.entries(set.tactics)) for (const f of ['label', 'win', 'lose']) out[`tactic.${k}.${f}`] = t[f];
   if (!assault) out.tie = REPEL_TIE;
   for (const [post, t] of Object.entries(set.post)) for (const f of ['label', 'win', 'lose']) out[`post.${post}.${f}`] = t[f];
+  for (const [k, t] of Object.entries(assault ? ASSAULT_MEMORY : REPEL_MEMORY)) out[`memory.${k}`] = t;
   return out;
 }
 // The lines of a scene built by a function, by the name each has (#463): sceneSay (storylets.js) reads them, and fills the {words} from what the scene knows. A line is the

@@ -29,6 +29,9 @@ const REPEL_TACTICS = {
     win: 'You go through the cargo bay and come out on their side. They turn too late, and the line goes back.',
     lose: 'You go round and find nobody there. When you come back they are two meters further in.' },
 };
+// What the captain and the crew remember of a boarding, as lines of the beat: `memory.<name>` (hiredscenes.js repelLines).
+const REPEL_MEMORY = { held: 'You held the ship when boarders came.', together: 'We held the ship together.', taken: 'The bridge was taken on your watch.' };
+const ASSAULT_MEMORY = { took: 'You took a ship for us.', together: 'We took her bridge together.', left: 'You went onto a crippled ship and came back without it.' };
 const REPEL_TIE = 'Neither side gives. The air handler runs, somebody coughs, and the fighting goes on in the same place.';
 const REPEL_POST = {
   gunner: { label: 'Fire down the line', win: ('You put three rounds down the line at the seam, one at a time, and the ones in front go down across ' +
@@ -224,15 +227,15 @@ function repelSettle(s) {
   const lost = s.dead.length ? ` ${listNames(s.dead.map(c => c.first))} ${s.dead.length > 1 ? 'are' : 'is'} dead.` : '';
   if (s.assault) return assaultSettle(s, repelled, lost);
   if (repelled) {
-    like(cap, 1, 'You held the ship when boarders came.');
-    for (const id of st.crew) { const c = person(id); if (c && !s.hurt.has(id) && s.round >= 3) like(c, 1, 'We held the ship together.'); }
+    like(cap, 1, repelWords(s, 'memory.held', REPEL_MEMORY.held));
+    for (const id of st.crew) { const c = person(id); if (c && !s.hurt.has(id) && s.round >= 3) like(c, 1, repelWords(s, 'memory.together', REPEL_MEMORY.together)); }
     d.init = 'me';
     G.nextEvent = d.foeHp > 0 ? duelEvent() : null;
     return `The last of them go back through the lock. The outer door closes from the other side, and the drive of the ${theShip(d.foe).replace(/^The /, '')} lights, and she breaks away from the hull.${lost}`;
   }
   const taken = Math.round(h.fund * 0.3);
   h.fund -= taken;
-  like(cap, -1, 'The bridge was taken on your watch.');
+  like(cap, -1, repelWords(s, 'memory.taken', REPEL_MEMORY.taken));
   st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.1));
   d.foeHp = -1; G.duel = null; G.nextEvent = null;
   if ((s.youHurt || handHurt()) && Math.random() < handDeathOdds()) handDies(s, 'bridge');  // laid up when they came through
@@ -251,14 +254,14 @@ function assaultSettle(s, won, lost) {
   if (won) {
     const take = lootFor(foe).credits || randInt(10, 30) * 100;
     h.fund += take;
-    like(cap, 2, 'You took a ship for us.');
-    for (const id of st.crew) { const c = person(id); if (c && !s.hurt.has(id)) like(c, 1, 'We took her bridge together.'); }
+    like(cap, 2, repelWords(s, 'memory.took', ASSAULT_MEMORY.took));
+    for (const id of st.crew) { const c = person(id); if (c && !s.hurt.has(id)) like(c, 1, repelWords(s, 'memory.together', ASSAULT_MEMORY.together)); }
     gainSkill(h.post, 5);
     changeRep('Pirate', -3);
     foe.dead = true;
     return `Her captain puts the weapon down. Her strongbox is under the plot table, and ${fmt(take)} cr of it goes into the ship's fund. Captain ${cap.last} has the cutter cast off while her people are still being counted. (+5 experience at the ${POSTS[h.post].name.toLowerCase()} post.)${lost}`;
   }
-  like(cap, -1, 'You went onto a crippled ship and came back without it.');
+  like(cap, -1, repelWords(s, 'memory.left', ASSAULT_MEMORY.left));
   st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.05));
   return `You are driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she is still drifting. Armor -${Math.round(ship().armor * 0.05)}.${lost}`;
 }
