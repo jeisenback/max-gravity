@@ -2623,7 +2623,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You cook, badly, and it works. The whole ship crowds around the table. The steam fogs the lamp. There is a toast, and a second, and an unplanned song.",
+    "text": "You cook something real for once, out of the good stores, with garlic and a little stolen butter, and everyone crowds into the galley, elbow to elbow, passing bowls. Somebody produces a bottle. Somebody else tells a story. When the last bowl is scraped clean, nobody is the first to leave.",
     "mem": [
      "9 Jul 2214: The captain shared a meal with us.",
      "9 Jul 2214: We shared a meal on a long burn."
@@ -2649,7 +2649,7 @@
    {
     "i": 3,
     "roll": 0.5,
-    "text": "You go from bunk to bunk and sit on the edge of each mattress for a few minutes. You hear a complaint about the air recycler, another about the coffee, and a longer one about the silence. You promise to look into it.",
+    "text": "You make the rounds of the berths, knocking on each door in turn. You hear out a complaint about the air recycler, a story about a cousin, a request for an extra blanket, and, from one quiet passenger, a long question about whether it is normal to feel this far from everything. You promise to look into the recycler. You tell them it is.",
     "mem": [
      "9 Jul 2214: The captain came to check on us."
     ],
@@ -2723,7 +2723,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You cook something real for once, out of the good stores, with garlic and a little stolen butter, and everyone crowds into the galley, elbow to elbow, passing bowls. Somebody produces a bottle. Somebody else tells a story. When the last bowl is scraped clean, nobody is the first to leave.",
+    "text": "You cook, badly, and it works. The whole ship crowds around the table. The steam fogs the lamp. There is a toast, and a second, and an unplanned song.",
     "mem": [
      "9 Jul 2214: The captain shared a meal with us.",
      "9 Jul 2214: We shared a meal on a long burn."
@@ -2774,7 +2774,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You cook, badly, and it works. The whole ship crowds around the table. The steam fogs the lamp. There is a toast, and a second, and an unplanned song.",
+    "text": "You cook something real for once, out of the good stores, with garlic and a little stolen butter, and everyone crowds into the galley, elbow to elbow, passing bowls. Somebody produces a bottle. Somebody else tells a story. When the last bowl is scraped clean, nobody is the first to leave.",
     "mem": [
      "9 Jul 2214: We shared a meal on a long burn.",
      "9 Jul 2214: We shared a meal on a long burn.",
@@ -2821,7 +2821,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You cook something real for once, out of the good stores, with garlic and a little stolen butter, and everyone crowds into the galley, elbow to elbow, passing bowls. Somebody produces a bottle. Somebody else tells a story. When the last bowl is scraped clean, nobody is the first to leave.",
+    "text": "You cook, badly, and it works. The whole ship crowds around the table. The steam fogs the lamp. There is a toast, and a second, and an unplanned song.",
     "mem": [
      "9 Jul 2214: We shared a meal on a long burn.",
      "9 Jul 2214: We shared a meal on a long burn.",
@@ -2926,7 +2926,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Buy a round for the house (250 cr) | You buy a round for the house. The room raises a glass to your ship, and someone at the bar tells you: \"A big contract on Pallas Refinery has swallowed the whole local supply of Food, and the bidding has gone wild.\" | You bought a round",
+    "text": "Buy a round for the house (250 cr) | You buy a round for the house. The room raises a glass to your ship, and someone at the bar tells you: \"A cold snap on Europa has made Machine Parts the only thing anyone wants to talk about.\" | You bought a round",
     "mem": [
      "9 Jul 2214: The captain bought a round at The Warren.",
      "9 Jul 2214: The captain bought a round at The Warren.",
@@ -4046,7 +4046,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: A warehouse on Titan has been cleared out in a hurry, and the Luxury Goods is going, quite literally, for whatever anyone will pay. Ruben puts the pencil behind his ear. \"A good listener has no name,\" he says. \"A good bartender has a hundred.\"",
+    "text": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: A bumper output of Luxury Goods on Ganymede has the markets swamped. Ruben puts the pencil behind his ear. \"A good listener has no name,\" he says. \"A good bartender has a hundred.\"",
     "mem": [
      "25 Dec 2214: You bought a round, and the bartender talked."
     ],
