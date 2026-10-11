@@ -171,5 +171,13 @@ const SHIP_LINES = {
   traditions: 'Every burn still has {list}.',
   ashore: '{n} goes ashore to see their {missed}, and comes back the next morning with red eyes and a bag of home cooking for everyone.',
   letter: 'A message for {n} at {planet}: {text}.',
-  touch: '[Ship] {text}.'
+  touch: '[Ship] {text}.',
+  loyal: '{first} {last} will follow {ship} anywhere now.',
+  rename: 'Named the ship {ship}.',
+  returned: 'The captain took me home to see my {rel}.'
 };
+
+// The names: of the holidays (their titles), the traditions, the burns and the cat (#457). A holiday is found by its name here; its lines are under the same key.
+const TRADITION_NAMES = { 'flip-toast': 'the flip toast', 'first-meal': 'first-night noodles', 'burn-name': 'naming the burn', 'docking-song': 'the docking song' };
+const BURN_NAMES = ['The Long Sulk', 'Operation Soup', 'Tuesday Forever', 'Nobody Touch Anything', 'The Great Coffee Shortage', 'Probably Fine', 'Second Breakfast', 'Hold My Drink'];
+const CAT_NAMES = ['Rivet', 'Biscuit', 'Admiral', 'Dust', 'Pumpkin', 'Lug Nut', 'Orbit', 'Nine', 'Captain Whiskers'];

@@ -57,44 +57,44 @@ const liftBy = (p, x, memory, text) => ({ run() { like(p, x, memory); if (moodLo
 const moodTopic = p => {
   const say = familySay('mood'), n = p.first;
   return { pressing: true, title: say('title', { n }), open: p.mood.text ? say('open.news', { n, news: p.mood.text }) : say('open.plain', { n }), choices: [
-    { label: say('c0.label'), ...liftBy(p, 1, 'You sat with me while I was having a hard time.', say('c0.result', { n, missed: missed(p) })) },
-    { label: say('c1.label'), ...liftBy(p, 2, 'You offered to cover for me when I was having a hard time.', say('c1.result', { n })) },
+    { label: say('c0.label'), ...liftBy(p, 1, say('c0.memory'), say('c0.result', { n, missed: missed(p) })) },
+    { label: say('c1.label'), ...liftBy(p, 2, say('c1.memory'), say('c1.result', { n })) },
     { label: say('c2.label'), ...liftBy(p, 0, null, say('c2.result', { n })) },
   ] };
 };
 const hurtTopic = p => {
   const say = familySay('hurt'), n = p.first;
   return { pressing: true, title: say('title', { n }), open: say('open', { n }), choices: [
-    { label: say('c0.label'), ...liftBy(p, 1, 'You asked how I was, and meant it.', say('c0.result', { n })) },
-    { label: say('c1.label'), ...liftBy(p, 1, 'You told me to rest, and I did.', say('c1.result', { n })) },
+    { label: say('c0.label'), ...liftBy(p, 1, say('c0.memory'), say('c0.result', { n })) },
+    { label: say('c1.label'), ...liftBy(p, 1, say('c1.memory'), say('c1.result', { n })) },
   ] };
 };
 const warTopic = (p, aff, foe) => {
   const say = familySay('war'), n = p.first;
   return { title: say('title', { n }), open: say('open', { n, aff, foe }), choices: [
-    { label: say('c0.label'), ...liftBy(p, 1, 'You asked what I thought about the war.', say('c0.result', { n })) },
-    { label: say('c1.label'), ...liftBy(p, 1, 'You asked if I wanted to go home during the war.', say('c1.result', { n })) },
+    { label: say('c0.label'), ...liftBy(p, 1, say('c0.memory'), say('c0.result', { n })) },
+    { label: say('c1.label'), ...liftBy(p, 1, say('c1.memory'), say('c1.result', { n })) },
     { label: say('c2.label'), ...liftBy(p, 0, null, say('c2.result', { n })) },
   ] };
 };
 const riftTopic = (p, other) => {
   const say = familySay('rift'), n = p.first;
   return { title: say('title', { n }), open: say('open', { n, other: other.first }), choices: [
-    { label: say('c0.label'), ...liftBy(p, 1, `You asked what was wrong between me and ${other.first}.`, say('c0.result', { n })) },
+    { label: say('c0.label'), ...liftBy(p, 1, say('c0.memory', { other: other.first }), say('c0.result', { n })) },
     { label: say('c1.label'), ...liftBy(p, 0, null, say('c1.result', { n })) },
   ] };
 };
 const friendTopic = (p, other) => {
   const say = familySay('friend'), n = p.first;
   return { title: say('title', { n }), open: say('open', { n, other: other.first }), choices: [
-    { label: say('c0.label', { other: other.first }), ...liftBy(p, 1, `You asked about ${other.first}, and I told you.`, say('c0.result', { n, other: other.first })) },
+    { label: say('c0.label', { other: other.first }), ...liftBy(p, 1, say('c0.memory', { other: other.first }), say('c0.result', { n, other: other.first })) },
     { label: say('c1.label'), ...liftBy(p, 1, null, say('c1.result', { n })) },
   ] };
 };
 const memoryTopic = (p, mem) => {
   const say = familySay('memory'), n = p.first;
   return { title: say('title', { n }), open: say('open', { n, mem }), choices: [
-    { label: say('c0.label'), ...liftBy(p, 1, 'You brought it up, and I was glad.', say('c0.result', { n })) },
+    { label: say('c0.label'), ...liftBy(p, 1, say('c0.memory'), say('c0.result', { n })) },
     { label: say('c1.label'), ...liftBy(p, 0, null, say('c1.result', { n })) },
   ] };
 };
@@ -159,7 +159,7 @@ const visitFavor = (p, s) => {
         st.missions.push({ id: st.nextId++, type: 'favor', favorPid: p.id, good: 'a promise', tons: 0, destSystem: where.sid, destPlanet: p.home,
           title: `Take ${n} home to ${p.home} to see their ${s.rel}`, pay: 0, deadline: st.day + 150 });
         s.beat = 4;
-        like(p, 2, 'The captain promised to take me home.');
+        like(p, 2, say('c0.memory'));
         return say('c0.result', { n });
       } },
       { label: say('c1.label'), run: () => say('c1.result', { n }) },
@@ -172,7 +172,7 @@ const debtFavor = (p, s) => {
       { label: say('c0.label', { debt: fmt(s.debt) }), ...gated(needCr(s.debt)), run() {
         st.credits -= s.debt;
         s.beat = 4;
-        becomeLoyal(p, 'The captain paid off my debt.');
+        becomeLoyal(p, say('c0.memory'));
         return say('c0.result', { n });
       } },
       { label: say('c1.label'), run: () => say('c1.result', { n }) },
@@ -199,7 +199,7 @@ function sitBeat(p, isCrew) {
 function becomeLoyal(p, memory) {
   p.loyal = true;
   like(p, 5, memory);
-  homeLog(`${p.first} ${p.last} will follow ${shipTitle()} anywhere now.`);
+  homeLog(fillLine(familyLines('ship').loyal, { first: p.first, last: p.last, ship: shipTitle() }));
 }
 
 function sitPicker() {
@@ -207,7 +207,7 @@ function sitPicker() {
   return {
     title: say('title'), text: say(`text.${pick([0, 1, 2, 3, 4])}`),
     choices: aboard.map(f => ({
-      label: `${f.p.first} (${f.pax ? 'passenger' : ROLE_NAMES[f.p.role].toLowerCase()})${moodLow(f.p) ? ', having a hard time' : (G.state.injured || {})[f.p.id] ? ', hurt' : ''}`,
+      label: say('label', { first: f.p.first, kind: f.pax ? say('label.passenger') : ROLE_NAMES[f.p.role].toLowerCase(), state: moodLow(f.p) ? say('label.low') : (G.state.injured || {})[f.p.id] ? say('label.hurt') : '' }),
       run() { G.nextEvent = sitBeat(f.p, !f.pax); return say('go', { first: f.p.first }); },
     })),
   };
@@ -269,21 +269,21 @@ function occasionEvent(o) {
     return {
       title: say('title', { n }), text: say('text', { date: dateOf(o.day), n, act: say(`act.${pick([0, 1, 2, 3])}`, { n }) }),
       choices: [
-        { label: say('c0.label'), run() { like(p, 2, `The crew threw me a birthday party aboard ${shipTitle()}.`); homeLog(`A birthday party for ${n}.`); return warm(1, say('c0.result', { n }))(); } },
+        { label: say('c0.label'), run() { like(p, 2, say('c0.memory', { ship: shipTitle() })); homeLog(say('c0.log', { n })); return warm(1, say('c0.result', { n }))(); } },
         { label: say('c1.label'), ...gated([() => (st.cargo.luxury || 0) >= 1, () => say('c1.gate')]), run() {
           st.cargo.luxury -= 1;
-          like(p, 3, 'The captain remembered my birthday.');
+          like(p, 3, say('c1.memory'));
           return say('c1.result', { n });
         } },
         { label: say('c2.label'), run() { like(p, 1, null); return say('c2.result', { n }); } },
       ],
     };
   }
-  const h = o.h, said = familyLines('holidays')[holidayKey(h)], say = familySay('holiday'), fillH = t => t.replace(/\{n\}/g, n).replace(/\{year\}/g, o.year);
+  const h = o.h, hn = holidayName(h), said = familyLines('holidays')[holidayKey(h)], say = familySay('holiday'), fillH = t => t.replace(/\{n\}/g, n).replace(/\{year\}/g, o.year);
   return {
-    title: h.name, text: fillH(said.text),
+    title: hn, text: fillH(said.text),
     choices: [
-      { label: say('c0.label'), run() { like(p, 2, `We kept ${h.name} aboard ${shipTitle()}.`); homeLog(`Kept ${h.name} aboard.`); return warm(1.2, fillH(said.join))(); } },
+      { label: say('c0.label'), run() { like(p, 2, say('c0.memory', { holiday: hn, ship: shipTitle() })); homeLog(say('c0.log', { holiday: hn })); return warm(1.2, fillH(said.join))(); } },
       { label: say('c1.label', { n }), run: () => say('c1.result', { n }) },
     ],
   };
@@ -324,8 +324,8 @@ function newsEvent(p) {
   }
   const say = familySay('news-bad'), others = procedural().filter(f => f.p !== p && bond(f, { id: p.id }) >= 1);
   const choices = [
-    { label: say('sit.label'), run() { like(p, 2, 'The captain sat with me when the news from home was bad.'); p.mood.until -= 10; return say(`sit.result.${pick([0, 1, 2])}`, { n }); } },
-    { label: say('advance.label'), ...gated(needCr(500)), run() { st.credits -= 500; like(p, 3, 'The captain advanced me money to send home.'); p.mood.until = st.day; return say(`advance.result.${pick([0, 1, 2])}`, { n }); } },
+    { label: say('sit.label'), run() { like(p, 2, say('sit.memory')); p.mood.until -= 10; return say(`sit.result.${pick([0, 1, 2])}`, { n }); } },
+    { label: say('advance.label'), ...gated(needCr(500)), run() { st.credits -= 500; like(p, 3, say('advance.memory')); p.mood.until = st.day; return say(`advance.result.${pick([0, 1, 2])}`, { n }); } },
   ];
   if (others.length) {
     const o = pick(others);
@@ -336,12 +336,11 @@ function newsEvent(p) {
 }
 
 // ---------- traditions ----------
-const BURN_NAMES = ['The Long Sulk', 'Operation Soup', 'Tuesday Forever', 'Nobody Touch Anything', 'The Great Coffee Shortage', 'Probably Fine', 'Second Breakfast', 'Hold My Drink'];
 const TRADITIONS = {  // the name of each is here; its proposal and the line it gives in a burn are in PEOPLE_LINES (family:tradition)
-  'flip-toast': { name: 'the flip toast', moment: 'flip', line: () => familySay('tradition')(`flip-toast.line.${pick([0, 1, 2])}`) },
-  'first-meal': { name: 'first-night noodles', moment: 'start', line: () => familySay('tradition')(`first-meal.line.${pick([0, 1, 2])}`) },
-  'burn-name': { name: 'naming the burn', moment: 'start', line: () => familySay('tradition')('burn-name.line', { b: pick(BURN_NAMES) }) },
-  'docking-song': { name: 'the docking song', moment: 'end', line: () => familySay('tradition')(`docking-song.line.${pick([0, 1, 2])}`) },
+  'flip-toast': { get name() { return familyLines('names').traditions['flip-toast']; }, moment: 'flip', line: () => familySay('tradition')(`flip-toast.line.${pick([0, 1, 2])}`) },
+  'first-meal': { get name() { return familyLines('names').traditions['first-meal']; }, moment: 'start', line: () => familySay('tradition')(`first-meal.line.${pick([0, 1, 2])}`) },
+  'burn-name': { get name() { return familyLines('names').traditions['burn-name']; }, moment: 'start', line: () => familySay('tradition')('burn-name.line', { b: pick(familyLines('names').burns) }) },
+  'docking-song': { get name() { return familyLines('names').traditions['docking-song']; }, moment: 'end', line: () => familySay('tradition')(`docking-song.line.${pick([0, 1, 2])}`) },
 };
 
 function traditionEvent() {
@@ -351,9 +350,9 @@ function traditionEvent() {
   h.proposed.push(id);
   const say = familySay('tradition'), T = TRADITIONS[id], f = pick(crew);
   return {
-    title: say('title'), text: say(`${id}.propose`, { n: f.p.first, home: f.p.home, b: pick(BURN_NAMES) }),
+    title: say('title'), text: say(`${id}.propose`, { n: f.p.first, home: f.p.home, b: pick(familyLines('names').burns) }),
     choices: [
-      { label: say('c0.label'), run() { h.traditions.push(id); homeLog(`Started ${T.name}.`); for (const [a, b] of pairs(folk())) addBond(a, b, 1); like(f.p, 1, null); return say('c0.result', { name: T.name, ship: shipTitle() }); } },
+      { label: say('c0.label'), run() { h.traditions.push(id); homeLog(say('c0.log', { name: T.name })); for (const [a, b] of pairs(folk())) addBond(a, b, 1); like(f.p, 1, null); return say('c0.result', { name: T.name, ship: shipTitle() }); } },
       { label: say('c1.label'), run: () => say('c1.result') },
     ],
   };
@@ -394,17 +393,16 @@ function addTouches() {
     comm(fillLine(familyLines('ship').touch, { text }));
   }
 }
-const CAT_NAMES = ['Rivet', 'Biscuit', 'Admiral', 'Dust', 'Pumpkin', 'Lug Nut', 'Orbit', 'Nine', 'Captain Whiskers'];
 function catEvent() {
   const h = home(), crew = crewPeople(), say = familySay('cat');
-  const names = [...CAT_NAMES].sort(() => Math.random() - 0.5).slice(0, 3);
+  const names = [...familyLines('names').cats].sort(() => Math.random() - 0.5).slice(0, 3);
   const voters = names.map((nm, i) => (crew[i] ? crew[i].p.first : 'You'));
   return {
     title: say('title'), text: say('text'),
     choices: [
       ...names.map((nm, i) => ({ label: say('name.label', { name: nm, voter: voters[i] }), run() {
         h.cat = nm;
-        homeLog(`${nm} the cat came aboard at ${G.state.planet}.`);
+        homeLog(say('name.log', { cat: nm, planet: G.state.planet }));
         for (const f of crewPeople()) likeAmbient(f.p, 1, null);
         return say('name.result', { name: nm });
       } })),
@@ -432,8 +430,8 @@ function joinEvent(p) {
         Object.assign(p, { role, skill: randInt(1, 2), location: null });
         p.wage = Math.round(ROLE_WAGE[role] * (0.6 + 0.3 * p.skill));
         st.crew.push(p.id);
-        like(p, 2, `I signed on with ${shipTitle()}.`);
-        homeLog(`${p.first} ${p.last} came aboard as a passenger and stayed as crew.`);
+        like(p, 2, say('c0.memory', { ship: shipTitle() }));
+        homeLog(say('c0.log', { first: p.first, last: p.last }));
         return say('c0.result', { first: p.first, role: roleName });
       } },
       { label: say('c1.label'), run: () => say('c1.result', { first: p.first }) },
@@ -511,7 +509,7 @@ Mods.register({
       const st = G.state, p = m.pid && st.people[m.pid];
       if (m.favorPid && st.people[m.favorPid]) {
         const f = st.people[m.favorPid];
-        becomeLoyal(f, `The captain took me home to see my ${storyOf(f).rel}.`);
+        becomeLoyal(f, fillLine(familyLines('ship').returned, { rel: storyOf(f).rel }));
         msg(fillLine(familyLines('ship').ashore, { n: f.first, missed: missed(f) }));
       }
       if (p && m.type === 'passenger' && p.opinion >= OPINION.WELCOME && !st.crew.includes(p.id) && Math.random() < 0.6) G.joinOffer = p;
@@ -524,7 +522,7 @@ Mods.register({
       if (!name || name === home().name) return;
       home().name = name.replace(/^the /i, '');
       home().named = G.state.day;
-      homeLog(`Named the ship ${shipTitle()}.`);
+      homeLog(fillLine(familyLines('ship').rename, { ship: shipTitle() }));
     });
   },
 });

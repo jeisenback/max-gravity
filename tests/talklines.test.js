@@ -37,7 +37,7 @@ test('every talk scene has an id and lines, and every line is read: an override 
   assert.deepEqual(missing, [], 'a line that is never read');
   assert.equal(r.changed.length, r.base.length);
   // what the choices change is the same: the pin's record of regard, memory, mood, the story and the missions, without the words
-  const effects = rec => { let j; try { j = JSON.parse(rec.text); } catch (e) { return null; } return Array.isArray(j) || !j.runs ? null : j.runs.map(x => JSON.stringify([x[0], x[1], x[3]])); };
+  const effects = rec => { let j; try { j = JSON.parse(rec.text); } catch (e) { return null; } return Array.isArray(j) || !j.runs ? null : j.runs.map(x => JSON.stringify([x[0], x[1], { ...x[3], mem: null, log: null }])); };  // the memory and the log are words
   for (let n = 0; n < r.base.length; n++) assert.deepEqual(effects(r.changed[n]), effects(r.base[n]), `${r.base[n].key}: what the choices change is the same`);
 });
 
@@ -45,7 +45,9 @@ test('the family scenes have no title or label written in code: a new scene must
   const src = fs.readFileSync(path.join(__dirname, '..', 'js', 'family.js'), 'utf8');
   const scenes = src.slice(src.indexOf('const liftBy'), src.indexOf('// The scenes by the name of their lines')) + src.slice(src.indexOf('function occasionEvent'), src.indexOf('// ---------- letters from home'))
     + src.slice(src.indexOf('function newsEvent'), src.indexOf('// ---------- traditions')) + src.slice(src.indexOf('function traditionEvent'), src.indexOf('function traditionMoment')) + src.slice(src.indexOf('function catEvent'), src.indexOf('// ---------- port pages'));
-  const CODE = ['title: `Take ${n} home', 'label: `${f.p.first} (${f.pax'];  // the mission's name on the missions list, and the picker's button, which is who they are and how
+  const CODE = ['title: `Take ${n} home'];  // the mission's name on the missions list
   assert.deepEqual([...scenes.matchAll(/\b(?:title|label|text|open): ['"`]/g)].map(m => scenes.slice(m.index, m.index + 40)).filter(x => !CODE.some(c => x.startsWith(c))), [], 'a title, label or text in code');
   assert.ok(src.includes('FAMILY_SCENES'), 'the scenes are listed by id');
+  // no memory and no line of the ship's log is written in code: each is a line of the scene that makes it
+  assert.deepEqual([...src.matchAll(/\b(?:like|likeAmbient|liftBy|becomeLoyal|homeLog)\([^;\n]*?(?:, *)?['"`][A-Z]/g)].map(m => m[0].slice(0, 60)), [], 'a memory or a log line in code');
 });
