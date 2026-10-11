@@ -4641,6 +4641,882 @@
   }
  },
  {
+  "id": "cast:ines:bar1",
+  "i": 0,
+  "label": "Watch the approach with her",
+  "result": "She talks you through it like a commentator: the flare a second too late, the crosswind he has not read, the thrust he will wish he had saved. He clips the gantry, gently, as she said he would, and she raises her glass to the screen. \"Eleven out of ten for effort,\" she says. By the end of the hour you know more about landing than you did.",
+  "changes": [
+   "s.people.c:ines.liftedAt: undefined -> 1",
+   "s.people.c:ines.memories: [] -> undefined",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You watched a bad landing with me, and I enjoyed the company.",
+   "s.people.c:ines.opinion: 0 -> 1",
+   "s.people.c:ines.xp.pilot: 110 -> 113"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Watch the approach with her",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Watch the approach with her",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Watch the approach with her",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Watch the approach with her",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:ines:bar1",
+  "i": 1,
+  "label": "Ask about Lisbon",
+  "result": "She turns from the screen. \"The ferry ran every forty minutes,\" she says. \"Nine years. I knew the regulars by their shoes. There was an old man who rode the 6:40 every morning to feed the pigeons on the Luna side. I never spoke to him once. I would give a great deal to know if he still does.\" She drinks. \"That is a route. You get fond of people you have only ever seen from the front.\"",
+  "changes": [
+   "s.cast.ines.flags: {} -> undefined",
+   "s.cast.ines.flags.lisbon: undefined -> true",
+   "s.people.c:ines.liftedAt: undefined -> 1",
+   "s.people.c:ines.memories: [] -> undefined",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You asked about Lisbon, and I told you.",
+   "s.people.c:ines.opinion: 0 -> 2"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask about Lisbon",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask about Lisbon",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask about Lisbon",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Ask about Lisbon",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:ines:bar2",
+  "i": 0,
+  "label": "Go over to them together",
+  "result": "You go together, and it takes her three tries to say her name. The controller hears all of it: the pad, the order, the forty-one. Then the controller says that they were on the desk that night, that it was not their call, and that everyone on the desk knew who had put that shuttle down. \"It was the best landing I have seen,\" they say. Ines says nothing. She shakes the controller's hand, and keeps hold of it.",
+  "changes": [
+   "s.cast.ines.flags: {} -> undefined",
+   "s.cast.ines.flags.tower: undefined -> true",
+   "s.people.c:ines.liftedAt: undefined -> 1",
+   "s.people.c:ines.memories: [] -> undefined",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You went over to the controller with me.",
+   "s.people.c:ines.opinion: 0 -> 3"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Go over to them together",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Go over to them together",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Go over to them together",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Go over to them together",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:ines:bar2",
+  "i": 1,
+  "label": "Let her decide",
+  "result": "You say nothing, and she does not go over. She finishes her drink and puts the glass down with a click. \"Not tonight,\" she says. On the way out she looks back once at the badge, and then straight ahead.",
+  "changes": [
+   "s.people.c:ines.liftedAt: undefined -> 1",
+   "s.people.c:ines.memories: [] -> undefined",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You let me decide about the controller.",
+   "s.people.c:ines.opinion: 0 -> 1"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Let her decide",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Let her decide",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Let her decide",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Let her decide",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:tomas:bar1",
+  "i": 0,
+  "label": "Buy a round for the dock crew (40 cr)",
+  "result": "A round for the dock crew turns into three hours. Tomas is shown the jig they use for the rail, and a trick for a seam that has given him trouble since the ring, and he shows them one of his own. He walks back to the ship with a notebook full of sketches. \"They talk to the work,\" he says. \"The same as me.\"",
+  "changes": [
+   "s.credits: 5000 -> 4960",
+   "s.people.c:tomas.liftedAt: undefined -> 1",
+   "s.people.c:tomas.memories: [] -> undefined",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You bought a round for the dock crew, and let me talk shop.",
+   "s.people.c:tomas.opinion: 0 -> 2",
+   "s.people.c:tomas.xp.engineer: 110 -> 112"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Buy a round for the dock crew (40 cr)",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Buy a round for the dock crew (40 cr)",
+    "open": false,
+    "why": "You have 0 cr; this costs 40 cr."
+   },
+   "liked": {
+    "label": "Buy a round for the dock crew (40 cr)",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Buy a round for the dock crew (40 cr)",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:tomas:bar1",
+  "i": 1,
+  "label": "Let him have his shop talk",
+  "result": "You take a stool at the other end of the bar and leave them to it. Every so often a burst of technical argument comes down the bar, with hand gestures. When Tomas finds you, hours later, he is hoarse and cheerful. \"Thank you,\" he says. \"I did not know how much I missed being a stranger among people who understood me.\"",
+  "changes": [
+   "s.people.c:tomas.liftedAt: undefined -> 1",
+   "s.people.c:tomas.memories: [] -> undefined",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You let me talk shop with a welder.",
+   "s.people.c:tomas.opinion: 0 -> 1"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Let him have his shop talk",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Let him have his shop talk",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Let him have his shop talk",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Let him have his shop talk",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:tomas:bar2",
+  "i": 0,
+  "label": "Say hello to his sister",
+  "result": "The delay is eleven seconds. You say your name and wait. A small voice says, in a rush, that she is glad he has people, that he never says, and that she hopes you are feeding him. Tomas looks at the floor. \"Eleven seconds,\" he says afterwards, quietly, \"and she heard every word.\"",
+  "changes": [
+   "s.cast.tomas.flags: {} -> undefined",
+   "s.cast.tomas.flags.sister: undefined -> true",
+   "s.people.c:tomas.liftedAt: undefined -> 1",
+   "s.people.c:tomas.memories: [] -> undefined",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You said hello to my sister.",
+   "s.people.c:tomas.opinion: 0 -> 3"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say hello to his sister",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say hello to his sister",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say hello to his sister",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Say hello to his sister",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:tomas:bar2",
+  "i": 1,
+  "label": "Wave from across the room",
+  "result": "You wave. He grins, holds the handset up to the glass, and says something to her in Igbo. When he comes out of the booth he does not talk for a while, and you leave him to it.",
+  "changes": [
+   "s.people.c:tomas.liftedAt: undefined -> 1",
+   "s.people.c:tomas.memories: [] -> undefined",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You waved to my sister from across the room.",
+   "s.people.c:tomas.opinion: 0 -> 1"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Wave from across the room",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Wave from across the room",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Wave from across the room",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Wave from across the room",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:yelena:bar1",
+  "i": 0,
+  "label": "Back her up",
+  "result": "She explains it to him with a fork, a beer mat and a great many examples, and you stand behind her with your arms folded. It does not come to blows. It comes to him buying a round and apologizing to the memory of number seven. At the end he asks for her autograph. She signs the beer mat. \"Ravens,\" she says to the room.",
+  "changes": [
+   "s.people.c:yelena.liftedAt: undefined -> 1",
+   "s.people.c:yelena.memories: [] -> undefined",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You backed me up when a stranger insulted the Ravens.",
+   "s.people.c:yelena.opinion: 0 -> 2",
+   "s.people.c:yelena.xp.gunner: 110 -> 112"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Back her up",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Back her up",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Back her up",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Back her up",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:yelena:bar1",
+  "i": 1,
+  "label": "Steer her to the door",
+  "result": "\"He is wrong,\" she says, all the way to the door and halfway down the dock. \"He is so wrong.\" She lets you take her arm. Halfway to the ship she stops, and laughs, and says it was probably for the best, because she would have hit him. \"Thank you,\" she says. \"I needed somebody to be the sensible one.\"",
+  "changes": [
+   "s.people.c:yelena.liftedAt: undefined -> 1",
+   "s.people.c:yelena.memories: [] -> undefined",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You steered me out before it turned into a thing.",
+   "s.people.c:yelena.opinion: 0 -> 1"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Steer her to the door",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Steer her to the door",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Steer her to the door",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Steer her to the door",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:yelena:bar2",
+  "i": 0,
+  "label": "Offer to take their picture together",
+  "result": "You say you will take it. The girl goes red, and Yelena crouches down and puts an arm around her. She asks the girl her name and her position. It is goalkeeper. \"Good,\" Yelena says. \"Nobody ever thanks the goalkeeper.\" When the picture is taken she signs the shirt in full, and says nothing about the knee.",
+  "changes": [
+   "s.people.c:yelena.liftedAt: undefined -> 1",
+   "s.people.c:yelena.memories: [] -> undefined",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You took a picture of me with a girl in my old shirt.",
+   "s.people.c:yelena.opinion: 0 -> 2"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Offer to take their picture together",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Offer to take their picture together",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Offer to take their picture together",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Offer to take their picture together",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:yelena:bar2",
+  "i": 1,
+  "label": "Give them room",
+  "result": "You look at the bar. When you look back, Yelena is in a booth with the girl, the shirt on the table between them, showing her something with a salt cellar and two beer mats. It goes on for forty minutes. When the girl leaves she is almost running. Yelena says nothing about it. She is humming the Ravens' song.",
+  "changes": [
+   "s.people.c:yelena.liftedAt: undefined -> 1",
+   "s.people.c:yelena.memories: [] -> undefined",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You gave me room with the girl in the old shirt.",
+   "s.people.c:yelena.opinion: 0 -> 1"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Give them room",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Give them room",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Give them room",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Give them room",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:ruben:bar1",
+  "i": 0,
+  "label": "Buy a round (30 cr)",
+  "result": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: A company on Ganymede has folded, and its whole stock of Luxury Goods is being sold off at auction. Ruben puts the pencil behind his ear. \"A good listener has no name,\" he says. \"A good bartender has a hundred.\"",
+  "changes": [
+   "s.credits: 5000 -> 4970",
+   "s.inbox.0.n: 1 -> 2",
+   "s.inbox.0.pid: c:ruben -> undefined",
+   "s.inbox.0.tag: undefined -> market",
+   "s.inbox.0.text: A message for Ruben at Earth: their daughter Viktor has been laid off, and the severance has not come. -> A company on Ganymede has folded, and its whole stock of Luxury Goods is being sold off at auction. (Jupiter)",
+   "s.inbox.0.via: message -> station",
+   "s.inbox.1.day: undefined -> 1",
+   "s.inbox.1.n: undefined -> 1",
+   "s.inbox.1.pid: undefined -> c:ruben",
+   "s.inbox.1.text: undefined -> A message for Ruben at Earth: their daughter Viktor has been laid off, and the severance has not come.",
+   "s.inbox.1.via: undefined -> message",
+   "s.inboxN: 1 -> 2",
+   "s.people.c:ruben.liftedAt: undefined -> 1",
+   "s.people.c:ruben.memories: [] -> undefined",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You bought a round, and the bartender talked.",
+   "s.people.c:ruben.opinion: 0 -> 2",
+   "s.people.c:ruben.xp.slicer: 110 -> 112",
+   "s.rumors: [] -> undefined",
+   "s.rumors.0.cid: undefined -> luxury",
+   "s.rumors.0.mult: undefined -> 0.6165445584454574",
+   "s.rumors.0.planet: undefined -> Ganymede",
+   "s.rumors.0.text: undefined -> A company on Ganymede has folded, and its whole stock of Luxury Goods is being sold off at auction. (Jupiter)",
+   "s.rumors.0.until: undefined -> 20"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Buy a round (30 cr)",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Buy a round (30 cr)",
+    "open": false,
+    "why": "You have 0 cr; this costs 30 cr."
+   },
+   "liked": {
+    "label": "Buy a round (30 cr)",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Buy a round (30 cr)",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:ruben:bar1",
+  "i": 1,
+  "label": "Just listen",
+  "result": "You sit with them and say little. The bartender talks about the dock office, a wedding, a shortage. Ruben nods. When you leave, he says, \"You have the gift. People tell you things.\"",
+  "changes": [
+   "s.people.c:ruben.liftedAt: undefined -> 1",
+   "s.people.c:ruben.memories: [] -> undefined",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You listened with me.",
+   "s.people.c:ruben.opinion: 0 -> 1"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Just listen",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Just listen",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Just listen",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Just listen",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:ruben:bar2",
+  "i": 0,
+  "label": "Introduce yourself to the councillor",
+  "result": "You walk over and say you work with a man who knows more about the dome network than anyone alive. The councillor goes still. \"Castellanos,\" she says. \"The relay in the kitchen.\" She looks past you at the menu. \"We lost eleven days of band because of what he did, and afterward we found out he had saved the north dome. I have been trying to find him for four years.\" Ruben lowers the menu all the way.",
+  "changes": [
+   "s.cast.ruben.flags: {} -> undefined",
+   "s.cast.ruben.flags.councillor: undefined -> true",
+   "s.people.c:ruben.liftedAt: undefined -> 1",
+   "s.people.c:ruben.memories: [] -> undefined",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You introduced yourself to the councillor who signed my notice.",
+   "s.people.c:ruben.opinion: 0 -> 3"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Introduce yourself to the councillor",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Introduce yourself to the councillor",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Introduce yourself to the councillor",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Introduce yourself to the councillor",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:ruben:bar2",
+  "i": 1,
+  "label": "Let him hide",
+  "result": "You do not move. Ruben stays behind the menu, and the councillor takes a table at the far end, orders, and does not look round. After twenty minutes she leaves. Ruben puts the menu down. \"Thank you,\" he says. \"I could not have said it. Another day.\" He picks up the thermos and offers it to you.",
+  "changes": [
+   "s.people.c:ruben.liftedAt: undefined -> 1",
+   "s.people.c:ruben.memories: [] -> undefined",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You let me hide behind the menu.",
+   "s.people.c:ruben.opinion: 0 -> 1"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Let him hide",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Let him hide",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Let him hide",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Let him hide",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:bexa:bar1",
+  "i": 0,
+  "label": "Ask about the crew",
+  "result": "She tells you, and it takes a while, and every name is in it: the engineer who sang, the child with the broken wrist, the captain, who would not leave the bridge until everyone else was off. \"She is for sale again,\" she says, looking at the card. \"They never fixed the port thruster. I told them about the port thruster.\" She says nothing else for a time.",
+  "changes": [
+   "s.people.c:bexa.liftedAt: undefined -> 1",
+   "s.people.c:bexa.memories: [] -> undefined",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You asked about the crew of the Honest Comet.",
+   "s.people.c:bexa.opinion: 0 -> 2"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask about the crew",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask about the crew",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask about the crew",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Ask about the crew",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:bexa:bar1",
+  "i": 1,
+  "label": "Buy her a drink and let her read",
+  "result": "You put a drink at her elbow and say nothing. She reads the board from one end to the other, card by card, saying a ship's name now and then under her breath. When she has finished she lifts the glass. \"Thank you,\" she says. \"It is good to be somewhere I can be quiet. It is better with someone who knows how.\"",
+  "changes": [
+   "s.people.c:bexa.liftedAt: undefined -> 1",
+   "s.people.c:bexa.memories: [] -> undefined",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You bought me a drink and let me read the board.",
+   "s.people.c:bexa.opinion: 0 -> 1"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Buy her a drink and let her read",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Buy her a drink and let her read",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Buy her a drink and let her read",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Buy her a drink and let her read",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:bexa:bar2",
+  "i": 0,
+  "label": "Leave them to talk",
+  "result": "You take a stool at the other end and watch, without listening. They talk for an hour. She listens, mostly, with her hand around her glass, and he talks with his hands, drawing the tug in the air. At the end she takes a pen on a chain from her jacket and signs the back of the postcard, small and even. She puts it in her jacket, where the list is.",
+  "changes": [
+   "s.people.c:bexa.liftedAt: undefined -> 1",
+   "s.people.c:bexa.memories: [] -> undefined",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You left me to talk to the boy from Pallas.",
+   "s.people.c:bexa.opinion: 0 -> 2"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Leave them to talk",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Leave them to talk",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Leave them to talk",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Leave them to talk",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:bexa:bar2",
+  "i": 1,
+  "label": "Sit with them",
+  "result": "You sit down beside her. Her shoulder comes to rest against yours. The boy tells it all: the dark, the cold, the drawing. He says she was the first person he ever saw who was not afraid. Bexa says, in a low voice, \"I was terrified.\" The boy laughs, startled. She smiles. It is the first time you have seen all of her face.",
+  "changes": [
+   "s.cast.bexa.flags: {} -> undefined",
+   "s.cast.bexa.flags.pallas: undefined -> true",
+   "s.people.c:bexa.liftedAt: undefined -> 1",
+   "s.people.c:bexa.memories: [] -> undefined",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You sat with me while the boy from Pallas talked.",
+   "s.people.c:bexa.opinion: 0 -> 3"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Sit with them",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Sit with them",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Sit with them",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Sit with them",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:pax:bar1",
+  "i": 0,
+  "label": "Tell Pax to take the shot",
+  "result": "You say, \"Take it,\" and Pax does, with the stranger a hand's width away and a crowd gathering. The first dart goes dead center. The second goes into the first. The stranger whistles low. Pax's hands have not shaken, and Pax looks at them. \"That,\" Pax says to you on the walk back, \"was not as bad as I thought.\"",
+  "changes": [
+   "s.people.c:pax.liftedAt: undefined -> 1",
+   "s.people.c:pax.memories: [] -> undefined",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You told me to take the shot, and I did.",
+   "s.people.c:pax.opinion: 0 -> 2",
+   "s.people.c:pax.xp.gunner: 110 -> 113"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell Pax to take the shot",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell Pax to take the shot",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell Pax to take the shot",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Tell Pax to take the shot",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:pax:bar1",
+  "i": 1,
+  "label": "Take the stranger's challenge yourself",
+  "result": "You step up and play badly and lose and pay. Pax watches from a stool, grinning. At the end Pax says, solemnly, \"Your stance is wrong,\" and corrects it, standing very close, without a flinch. The stranger gives a slow nod. Pax does not see it. You do.",
+  "changes": [
+   "s.people.c:pax.liftedAt: undefined -> 1",
+   "s.people.c:pax.memories: [] -> undefined",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You played the stranger so that I did not have to.",
+   "s.people.c:pax.opinion: 0 -> 1"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Take the stranger's challenge yourself",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Take the stranger's challenge yourself",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Take the stranger's challenge yourself",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Take the stranger's challenge yourself",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:pax:bar2",
+  "i": 0,
+  "label": "Read it and say it is good",
+  "result": "It is eleven lines, plain and exact: that Pax is sorry, that Pax is not sure what for, that Pax is learning to stand beside the thing. \"It is good,\" you say. Pax reads it once more, breathes in, and sends it fast, before changing their mind. Then Pax sits down on the nearest stool with the handheld on their knee, and shakes.",
+  "changes": [
+   "s.cast.pax.flags: {} -> undefined",
+   "s.cast.pax.flags.letter: undefined -> true",
+   "s.people.c:pax.liftedAt: undefined -> 1",
+   "s.people.c:pax.memories: [] -> undefined",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You read my letter to the foreman, and said it was good.",
+   "s.people.c:pax.opinion: 0 -> 2"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Read it and say it is good",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Read it and say it is good",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Read it and say it is good",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Read it and say it is good",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "cast:pax:bar2",
+  "i": 1,
+  "label": "Ask if they really want to send it",
+  "result": "\"I think so,\" Pax says. Pax reads it over twice. \"Yes. I think so. I am not good at saying it, and I would rather say it badly than not at all.\" Pax sends it. Afterward you have a glass of water together, and neither of you says much.",
+  "changes": [
+   "s.people.c:pax.liftedAt: undefined -> 1",
+   "s.people.c:pax.memories: [] -> undefined",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You asked me if I really wanted to send it.",
+   "s.people.c:pax.opinion: 0 -> 1"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Ask if they really want to send it",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Ask if they really want to send it",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Ask if they really want to send it",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Ask if they really want to send it",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
   "id": "captain:hester:trouble",
   "i": 0,
   "label": "Lend her four hundred",

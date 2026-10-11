@@ -580,6 +580,20 @@ test('a cast scene\'s code choice that leaves a memory has a field for it in the
   assert.deepEqual(back[hit.id], { [`c${hit.i}.memory`]: 'You made the call.' });
 });
 
+test('the main characters\' talks at a port bar are rows of the editor, with a field for what each choice leaves them remembering, and play at a port (#508)', async () => {
+  await reload();
+  const ids = await page.evaluate(() => SceneIndex.rows.filter(x => /^cast:\w+:bar\d+$/.test(x.id)).map(x => [x.id, x.where, x.choices.every(c => typeof c.memory === 'string')]));
+  assert.equal(ids.length, 12, 'two for each of the six');
+  assert.ok(ids.every(x => x[1] === 'port' && x[2]), JSON.stringify(ids));
+  await select('cast:ines:bar1');
+  const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
+  for (const k of ['title', 'text', 'c0.label', 'c0.result', 'c0.memory', 'c1.memory']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
+  await page.fill('textarea[data-path="title"]', 'A Bad Landing');
+  const f = await play();
+  const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.choices.map(c => c.label)]));
+  assert.ok(seen.includes('A Bad Landing') && seen.includes('Watch the approach with her'), seen.slice(0, 300));
+});
+
 test('the function-built scenes and the code-written hired events are edited line by line, and each plays in the preview (#463)', async () => {
   await reload(); await select('scene:warning');
   const r = await page.evaluate(() => {

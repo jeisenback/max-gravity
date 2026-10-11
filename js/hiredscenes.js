@@ -550,6 +550,7 @@ function hiredSceneRegistry() {
       if (scene.closed) out.push({ id: `cast:${key}:${name}:closed`, kind: 'cast', key, name, closed: true, scene: scene.closed });
     }
   }
+  if (typeof CAST_BAR !== 'undefined') for (const [key, list] of Object.entries(CAST_BAR)) list.forEach((scene, i) => out.push({ id: `cast:${key}:bar${i + 1}`, kind: 'cast', key, name: `bar${i + 1}`, bar: true, scene }));  // a main character's talk at a port bar (castbar.js)
   for (const [key, c] of Object.entries(CAPTAINS)) {
     const s = c.scenes || {};
     if (s.trouble) out.push({ id: `captain:${key}:trouble`, kind: 'captain', key, name: 'trouble', scene: s.trouble });
