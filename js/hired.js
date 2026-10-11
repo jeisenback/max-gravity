@@ -460,36 +460,30 @@ function chapterRecord(id) {
 }
 // The endings the chapter can close on, in priority order: loss first, then the crew, then the quiet ones. Each has a `group`, a `title`,
 // a `when(record)` and a `text(record)` for the middle of the scene; the foot of the ramp before it and the line after it are shared.
+const endSay = (key, vars) => sceneSay('scene:chapter-end', key, vars);  // the words of the closing scene are the lines of scene:chapter-end (hiredscenes.js)
+const endVars = r => ({ old: r.oldName, days: r.days, savings: fmt(HIRED_SAVINGS), berths: r.berths, left: fmt(r.left), memorial: memorialNote() });
+const endMany = (list, key, vars) => endSay(`${key}.${list.length > 1 ? 'many' : 'one'}`, vars);  // a line for one and a line for more, for the verb that follows
 const CHAPTER_ENDINGS = [
-  { id: 'memorial-wall', group: 'Loss', title: 'The Memorial Wall', when: r => r.dead.length >= 2,
-    text: r => (`Beside the hatch you put up a strip of tape and write the names on it in marker, one under another: ${chapterList(r.dead)}. Nobody asked you ` +
-      `to. ${r.friends.length ? `${namesOf(r.friends)} ${r.friends.length > 1 ? 'wait' : 'waits'} at the foot of the ramp until you have finished.` : 'Nobody is waiting at the foot of the ramp.'} ` +
-      `You came aboard the ${r.oldName} ${r.days} days ago with ${fmt(HIRED_SAVINGS)} cr and a post to learn, and you leave a hand's width of tape clear under the last name.`) },
-  { id: 'empty-berths', group: 'Loss', title: 'The Empty Berths', when: r => !r.friends.length,
-    text: r => (`Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has ${r.berths} berths, and each has its mattress folded to the wall. ` +
-      `You walk the length of the passage once and close the hatch of each, and the sound goes on after you do. You came aboard the ${r.oldName} ${r.days} days ago ` +
-      `with ${fmt(HIRED_SAVINGS)} cr and a post to learn.${memorialNote()}`) },
-  { id: 'ten-years', group: 'Crew', title: 'Ten Years, One Ship', when: r => r.promised.length > 0,
-    text: r => (`${namesOf(r.friends)} ${r.friends.length > 1 ? 'go' : 'goes'} up the ramp ahead of you with ${r.friends.length > 1 ? 'their bags' : 'a bag'}. ` +
-      `${chapterList(r.promised)} ${r.promised.length > 1 ? 'stop' : 'stops'} at the hatch and ${r.promised.length > 1 ? 'wait' : 'waits'} for you, and neither of you mentions what you said aboard the ${r.oldName}. ` +
-      `You count the berths. The first bag goes in the first, and the next in the second, and you leave the other hatches open.${memorialNote()}`) },
-  { id: 'quiet-fortune', group: 'Quiet', title: 'The Quiet Fortune', when: r => r.untouched && r.left >= QUIET_FORTUNE,
-    text: r => (`The yard clerk reads the balance twice: the ship paid for, and ${fmt(r.left)} cr still in the account. ` +
-      `${r.friends.length ? `${namesOf(r.friends)} ${r.friends.length > 1 ? 'are' : 'is'} already aboard, stowing a bag. ` : ''}No one aboard carries a mark, and no name is on a wall. ` +
-      `You came aboard the ${r.oldName} ${r.days} days ago with ${fmt(HIRED_SAVINGS)} cr and a post to learn, and you take the ramp at a walk, with nothing to carry but the ledger.`) },
+  { id: 'memorial-wall', group: 'Loss', get title() { return endSay('memorial-wall.title'); }, when: r => r.dead.length >= 2,
+    text: r => endSay('memorial-wall.text', { ...endVars(r), dead: chapterList(r.dead), waiting: r.friends.length ? endMany(r.friends, 'memorial-wall.wait', { names: namesOf(r.friends) }) : endSay('memorial-wall.alone') }) },
+  { id: 'empty-berths', group: 'Loss', get title() { return endSay('empty-berths.title'); }, when: r => !r.friends.length,
+    text: r => endSay('empty-berths.text', endVars(r)) },
+  { id: 'ten-years', group: 'Crew', get title() { return endSay('ten-years.title'); }, when: r => r.promised.length > 0,
+    text: r => `${endMany(r.friends, 'ten-years.go', { names: namesOf(r.friends) })} ${endMany(r.promised, 'ten-years.wait', { ...endVars(r), promised: chapterList(r.promised) })} ${endSay('ten-years.count', endVars(r))}` },
+  { id: 'quiet-fortune', group: 'Quiet', get title() { return endSay('quiet-fortune.title'); }, when: r => r.untouched && r.left >= QUIET_FORTUNE,
+    text: r => endSay('quiet-fortune.text', { ...endVars(r), aboard: r.friends.length ? `${endMany(r.friends, 'quiet-fortune.aboard', { names: namesOf(r.friends) })} ` : '' }) },
 ];
 const QUIET_FORTUNE = 10000;  // credits left after the ship is paid for, at which a clean chapter closes quietly rich (to be reviewed)
 const chapterList = names => (names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0]);
 function chapterEnd(id) {
   if (!scopeNarrow()) return null;
   const r = chapterRecord(id), e = CHAPTER_ENDINGS.find(x => x.when(r));
-  const foot = `The ${buyShip(id).name} is on the apron at ${currentPlanet().name} with her ramp down and the hold empty. The papers have your name on them.`;
-  const plain = (`You came aboard the ${r.oldName} ${r.days} days ago with ${fmt(HIRED_SAVINGS)} cr and a post to learn. ` +
-    `${captainEntry() ? '' : `Captain ${r.cap.last} shook your hand at the foot of the ramp and went back up it. `}${r.friends.length ? `${namesOf(r.friends)} ${r.friends.length > 1 ? 'are' : 'is'} already aboard, stowing a bag.` : 'Nobody came with you.'}${memorialNote()}`);
+  const foot = endSay('foot', { ship: buyShip(id).name, planet: currentPlanet().name });
+  const plain = endSay('plain', { ...endVars(r), captain: captainEntry() ? '' : `${endSay('plain.captain', { last: r.cap.last })} `, company: r.friends.length ? endMany(r.friends, 'plain.aboard', { names: namesOf(r.friends) }) : 'Nobody came with you.' });  // (with no one aboard the Empty Berths ending comes first, so the last words are not reached)
   return {
-    title: e ? e.title : 'Your Own Ship', personal: true,
-    text: [foot, e ? e.text(r) : plain, 'The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.'].join(' '),
-    choices: [{ label: 'Keep flying', run: () => 'You walk up the ramp and shut the hatch behind you.' }],
+    title: e ? e.title : endSay('plain.title'), personal: true,
+    text: [foot, e ? e.text(r) : plain, endSay('close')].join(' '),
+    choices: [{ label: endSay('keep.label'), run: () => endSay('keep.result') }],
   };
 }
 

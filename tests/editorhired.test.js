@@ -52,7 +52,7 @@ test('the converted scenes are data rows of the registry, and the rest are code 
   assert.equal(r.effects.castLike.who, 'ansel');
   assert.ok(r.edit.length > 0 && r.edit.every(e => e === false), 'code choices keep their effects in code');
   assert.ok(r.goodbye && r.signon, 'the goodbye and the sign-on are rows of the registry');
-  assert.equal(r.dataRegistry, 130);
+  assert.equal(r.dataRegistry, 131);
 });
 
 test('a converted scene\'s effects are in forms, checked as typed, and changing one is a change to the file', async () => {
@@ -593,6 +593,17 @@ test('the main characters\' talks at a port bar are rows of the editor, with a f
   const f = await play();
   const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.choices.map(c => c.label)]));
   assert.ok(seen.includes('A Bad Landing') && seen.includes('Watch the approach with her'), seen.slice(0, 300));
+});
+
+test('the close of the hired chapter has its lines in the form, a line for one and a line for more where a verb follows, and plays in the preview (#508)', async () => {
+  await reload(); await select('scene:chapter-end');
+  const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
+  for (const k of ['part.foot', 'part.close', 'part.keep.label', 'part.memorial-wall.wait.one', 'part.memorial-wall.wait.many', 'part.ten-years.go.many', 'part.quiet-fortune.title', 'part.plain.aboard.one']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
+  await page.fill('textarea[data-path="part.keep.label"]', 'Fly on');
+  await page.fill('textarea[data-path="part.close"]', 'The chapter closes here.');
+  const f = await play();
+  const seen = await f.evaluate(() => JSON.stringify([G.dialog.event.title, G.dialog.event.text, G.dialog.choices.map(c => c.label)]));
+  assert.ok(seen.includes('Fly on') && seen.includes('The chapter closes here.') && seen.includes('is on the apron at'), seen.slice(0, 400));
 });
 
 test('the function-built scenes and the code-written hired events are edited line by line, and each plays in the preview (#463)', async () => {
