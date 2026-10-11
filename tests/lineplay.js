@@ -12,9 +12,10 @@ const playLines = () => {
   const topic = (id, p, seed) => {
     __seed(seed); st.credits = 5000;
     const pat = { p, known: false }, o = BAR_TOPICS.find(t => t.id === id).make(p, pat, { st, bar: 'The Anchor' });
-    return o.run();
+    return withMem(p, o.run());
   };
   const note = (key, text) => out.push({ key, text: String(text) });
+  const withMem = (p, t) => `${t}|${p.memories.slice(-1)[0] || ''}`;  // what a topic says, and the memory it leaves
   traits.forEach((t, i) => { for (const id of ['drink', 'cards', 'quiet', 'place']) for (const seed of [1, 2, 3, 4]) note(`${id}:${t}:${seed}`, topic(id, person([t]), seed * 100 + i)); });  // a seed of its own for each case, so the dice differ from trait to trait
   for (const t of traits) for (const seed of [1, 2]) for (const id of ['home', 'bless']) note(`${id}:${t}:${seed}`, topic(id, person([t, 'homesick', 'pious']), seed));
   for (const goal of goals) for (const seed of [1, 2]) note(`heard:${goal}:${seed}`, topic('heard', person(['curious'], { goal }), seed));
@@ -31,15 +32,15 @@ const playLines = () => {
   secrets.forEach((sec, i) => {
     __seed(500 + i); st.credits = 5000;
     const p = person(['kind'], { secret: sec, opinion: OPINION.CLOSE }), o = BAR_TOPICS.find(t => t.id === 'secret').make(p, { p, known: false, drank: true }, ctx);
-    G.nextEvent = null; note(`secrethelp:${sec}:go`, o.run()); const ev = G.nextEvent; G.nextEvent = null; scene(`secrethelp:${sec}:scene`, ev);
-    ev.choices.forEach((c, k) => { st.credits = 5000; __seed(600 + i * 10 + k); note(`secrethelp:${sec}:${k}`, c.run()); });
+    G.nextEvent = null; note(`secrethelp:${sec}:go`, withMem(p, o.run())); const ev = G.nextEvent; G.nextEvent = null; scene(`secrethelp:${sec}:scene`, ev);
+    ev.choices.forEach((c, k) => { st.credits = 5000; __seed(600 + i * 10 + k); note(`secrethelp:${sec}:${k}`, withMem(p, c.run())); });
   });
   // what they are traveling for: the ask, the scene and each thing you can do (the person has a secret, for what the quiet after lets slip)
   Object.keys(GOAL_HELP).forEach((goal, i) => {
     __seed(300 + i); st.credits = 5000;
     const p = person(['talkative'], { goal, secret: 'debt' }), o = BAR_TOPICS.find(t => t.id === 'goal').make(p, { p, known: false }, ctx);
-    note(`goalask:${goal}`, o.label); G.nextEvent = null; note(`goalhelp:${goal}:go`, o.run()); const ev = G.nextEvent; G.nextEvent = null; scene(`goalhelp:${goal}:scene`, ev);
-    ev.choices.forEach((c, k) => { st.credits = 5000; __seed(400 + i * 10 + k); note(`goalhelp:${goal}:${k}`, c.run()); });
+    note(`goalask:${goal}`, o.label); G.nextEvent = null; note(`goalhelp:${goal}:go`, withMem(p, o.run())); const ev = G.nextEvent; G.nextEvent = null; scene(`goalhelp:${goal}:scene`, ev);
+    ev.choices.forEach((c, k) => { st.credits = 5000; __seed(400 + i * 10 + k); note(`goalhelp:${goal}:${k}`, withMem(p, c.run())); });
   });
   // the crew in the room: a shipmate of each role, and the lines about them that the room draws
   for (const role of ['engineer', 'pilot', 'gunner', 'quartermaster', 'slicer', 'medic']) for (const seed of [1, 2, 3, 4, 5, 6]) {
@@ -48,7 +49,7 @@ const playLines = () => {
   }
   // the topics the cases above do not reach whole (#457): what they have heard (the secretive, the talkative, the rest, the friend), the offer of passage (with a lane and with none),
   // the same drink and cards over more dice, the fight (with and without a gunner among us), the peace, and the goal help for the homesick (whom a gift and a listen move)
-  const run1 = (id, p, seed, pat = {}) => { __seed(seed); st.credits = 5000; return BAR_TOPICS.find(t => t.id === id).make(p, { p, known: false, ...pat }, ctx).run(); };
+  const run1 = (id, p, seed, pat = {}) => { __seed(seed); st.credits = 5000; return withMem(p, BAR_TOPICS.find(t => t.id === id).make(p, { p, known: false, ...pat }, ctx).run()); };
   traits.forEach((t, i) => { for (const seed of [1, 2, 3, 4]) { note(`heard2:${t}:${seed}`, run1('heard', person([t, 'kind'], { goal: 'vague' }), 700 + seed * 10 + i)); note(`heard3:${t}:${seed}`, run1('heard', person([t, 'kind'], { goal: 'home', opinion: 3 }), 800 + seed * 10 + i)); } });
   for (const seed of [1, 2, 3, 4, 5, 6]) note(`passage:${seed}`, run1('passage', person(['kind', 'brave']), 900 + seed));
   { const real2 = window.travelOffer; window.travelOffer = () => null; note('passage:none', run1('passage', person(['kind', 'brave']), 950)); window.travelOffer = real2; }
@@ -61,7 +62,7 @@ const playLines = () => {
     __seed(350 + i); st.credits = 5000;
     const p = person(['homesick'], { goal, secret: 'spy' }), o = BAR_TOPICS.find(t => t.id === 'goal').make(p, { p, known: false }, ctx);
     G.nextEvent = null; o.run(); const ev = G.nextEvent; G.nextEvent = null;
-    ev.choices.forEach((c, k) => { st.credits = 5000; __seed(450 + i * 10 + k); note(`goalhelp2:${goal}:${k}`, c.run()); });
+    ev.choices.forEach((c, k) => { st.credits = 5000; __seed(450 + i * 10 + k); note(`goalhelp2:${goal}:${k}`, withMem(p, c.run())); });
   });
   // the button of each topic and the reason it gives when it is shut (a topic done already tonight)
   for (const t of BAR_TOPICS) {
