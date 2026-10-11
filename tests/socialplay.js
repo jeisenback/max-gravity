@@ -39,8 +39,8 @@ const playSocial = raw => {  // raw: every case, with the scenes that repeat (th
     hiredCover: st => { mate(st, 'Ana', { home: 'Luna', culture: 'earth', role: 'pilot', opinion: 4 }); mate(st, 'Ben', { home: 'Ceres Station', culture: 'belt' }); },
   };
   const delta = (before, after) => { const d = {}; for (const k of new Set([...Object.keys(before), ...Object.keys(after)])) { const v = Math.round(((after[k] || 0) - (before[k] || 0)) * 1000) / 1000; if (v) d[k] = v; } return d; };
-  const snapshotOf = st => ({ credits: st.credits, armor: G.player.armor, bonds: { ...st.bonds }, opinion: Object.fromEntries(Object.values(st.people).map(p => [p.first, p.opinion || 0])) });
-  const effect = (b, a) => ({ credits: a.credits - b.credits, armor: a.armor - b.armor, bonds: delta(b.bonds, a.bonds), opinion: delta(b.opinion, a.opinion) });
+  const snapshotOf = st => ({ credits: st.credits, armor: G.player.armor, bonds: { ...st.bonds }, opinion: Object.fromEntries(Object.values(st.people).map(p => [p.first, p.opinion || 0])), memories: Object.fromEntries(Object.values(st.people).map(p => [p.first, (p.memories || []).slice()])) });
+  const effect = (b, a) => ({ credits: a.credits - b.credits, armor: a.armor - b.armor, bonds: delta(b.bonds, a.bonds), opinion: delta(b.opinion, a.opinion), memories: Object.fromEntries(Object.entries(a.memories).map(([k, v]) => [k, v.slice((b.memories[k] || []).length)]).filter(([, v]) => v.length)) });  // the memories each person gained
   const play = (id, hiredMode, build, call, seeds) => {
     if (window.__only && !new RegExp(window.__only).test(id)) return;
     for (const seed of seeds) {

@@ -54,7 +54,7 @@ const GOAL_HELP = {
 function helpScene(p, pat, ctx) {
   const g = barLines('goal-help')[p.goal], say = barSay('goal-help', p);
   const act = (kind, label, line) => ({ label, ...(kind === 'gift' ? gated(needCr(HELP_TASTE.gift.cost)) : {}), run() {
-    const t = HELP_TASTE[kind], r = barWarm(p, t, kind === 'gift' ? `The captain helped me on my way (${GOALS[p.goal]}).` : kind === 'advice' ? 'The captain gave me good advice.' : 'The captain let me talk it through.');
+    const t = HELP_TASTE[kind], r = barWarm(p, t, say(`${kind}.memory`, { goal: GOALS[p.goal] }));
     if (t.cost) ctx.st.credits -= t.cost;
     let extra = '';
     if (kind === 'gift' && r.n >= 2) extra = ` ${say('thanks', { rumor: addRumor() })}`;
@@ -127,7 +127,7 @@ const barSay = (topic, p, c) => (key, vars) => peopleSay(`bar:${topic}`, key, { 
 const BAR_TOPICS = [
   { id: 'drink', sample: { traits: ['kind', 'brave'] }, w: () => 3, make: (p, pat, c) => { const say = barSay('drink', p, c); return ({ label: say('label', { cost: DRINK }), ...gated(needCr(DRINK), notYet(() => pat.drank, say('gate'))), run() {
     pat.drank = true; c.st.credits -= DRINK; met(pat);
-    const r = barWarm(p, { loves: ['generous', 'drunk', 'greedy', 'kind'], hates: ['pious'] }, `The captain bought me a drink at ${c.bar}.`);
+    const r = barWarm(p, { loves: ['generous', 'drunk', 'greedy', 'kind'], hates: ['pious'] }, say('memory', { bar: c.bar }));
     if (barHas(p, 'generous')) { c.st.credits += DRINK; return say('generous', { react: r.line }); }
     if (p.secret && (barHas(p, 'talkative', 'drunk') || Math.random() < 0.3)) return `${p.first} ${pick(barLines('secret-talk')[p.secret])}`;
     if (Math.random() < 0.5) return say('rumor', { rumor: addRumor(), react: r.line });
@@ -151,7 +151,7 @@ const BAR_TOPICS = [
     pat.played = true; met(pat);
     if (Math.random() < 0.5) {
       c.st.credits += CARDS;
-      like(p, barHas(p, 'greedy', 'rude') ? -1 : barHas(p, 'brave') ? 1 : 0, 'The captain took my money at cards.');
+      like(p, barHas(p, 'greedy', 'rude') ? -1 : barHas(p, 'brave') ? 1 : 0, say('memory'));
       return `${barSays(barTrait('win', p, barLines('card-win')), p, { cr: fmt(CARDS) })} ${barHas(p, 'rude') ? say('win.rude') : pick([say('win.end.0'), say('win.end.1'), say('win.end.2')])}`;
     }
     c.st.credits -= CARDS; like(p, 1, null);
@@ -162,15 +162,15 @@ const BAR_TOPICS = [
     const text = barSays(pick(barLines('work')[workGroup(p.job)]), p), post = topicSkill(p);
     if (post) { gainSkill(post, 3); return `${text} ${say('post', { post: POSTS[post].name.toLowerCase() })}`; }
     if (workGroup(p.job) === 'hands') return `${text} ${say('hands', { rumor: addRumor() })}`;
-    const r = barWarm(p, { loves: ['curious', 'talkative'], hates: [] }, 'The captain asked about my work and listened.');
+    const r = barWarm(p, { loves: ['curious', 'talkative'], hates: [] }, say('memory'));
     return `${text} ${r.line}`.trim();
   } }); } },
   { id: 'place', sample: { traits: ['talkative', 'kind'] }, w: () => 1.5, make: (p, pat, c) => { const say = barSay('place', p, c); return ({ label: say('label'), ...gated(notYet(() => pat.place, say('gate'))),
-    run() { pat.place = true; met(pat); const r = barWarm(p, { loves: ['talkative', 'homesick', 'curious'], hates: [] }, 'The captain asked about the place and listened.'); return `${barSays(pick(barLines('place')), p)} ${r.line}`.trim(); }
+    run() { pat.place = true; met(pat); const r = barWarm(p, { loves: ['talkative', 'homesick', 'curious'], hates: [] }, say('memory')); return `${barSays(pick(barLines('place')), p)} ${r.line}`.trim(); }
   }); } },
   { id: 'quiet', sample: { traits: ['nervous', 'kind'] }, w: p => (barHas(p, 'nervous', 'secretive', 'homesick', 'kind') ? 4 : 1.5), make: (p, pat, c) => { const say = barSay('quiet', p, c); return ({ label: say('label'), ...gated(notYet(() => pat.quiet, say('gate'))), run() {
     pat.quiet = true; met(pat);
-    const r = barWarm(p, { loves: ['nervous', 'secretive', 'homesick', 'kind'], hates: ['talkative', 'drunk'] }, 'The captain sat with me and did not make me talk.');
+    const r = barWarm(p, { loves: ['nervous', 'secretive', 'homesick', 'kind'], hates: ['talkative', 'drunk'] }, say('memory'));
     return `${barSays(barTrait('quiet', p, barLines('silence')), p)} ${r.line}`.trim();
   } }); } },
   { id: 'goal', sample: { traits: ['homesick', 'kind'], goal: 'home' }, w: p => (GOAL_HELP[p.goal] ? 3 : 0), make: (p, pat, c) => { const say = barSay('goal', p, c); return ({ label: barLines('goal-help')[p.goal].ask, ...gated(notYet(() => pat.goal, say('gate'))), run() {
@@ -183,22 +183,22 @@ const BAR_TOPICS = [
     run() { pat.troubled = true; met(pat); G.nextEvent = secretScene(p, pat, c); return say('result'); }
   }); } },
   { id: 'home', sample: { traits: ['homesick', 'kind'] }, w: p => (barHas(p, 'homesick') ? 4 : 0), make: (p, pat, c) => { const say = barSay('home', p, c); return ({ label: say('label'), ...gated(notYet(() => pat.home, say('gate'))), run() {
-    pat.home = true; met(pat); like(p, 2, `The captain let me talk about ${p.home}.`);
+    pat.home = true; met(pat); like(p, 2, say('memory'));
     return barSays(pick(barLines('home-talk')), p);
   } }); } },
   { id: 'bless', sample: { traits: ['pious', 'kind'] }, w: p => (barHas(p, 'pious') ? 4 : 0), make: (p, pat, c) => { const say = barSay('bless', p, c); return ({
     label: say(hired() ? 'label.hired' : 'label'),
     ...gated(notYet(() => pat.blessed, say('gate'))),
-    run() { pat.blessed = true; met(pat); like(p, 1, 'I blessed the captain\'s ship.'); return barSays(pick(barLines('bless')), p); }
+    run() { pat.blessed = true; met(pat); like(p, 1, say('memory')); return barSays(pick(barLines('bless')), p); }
   }); } },
   { id: 'fight', sample: { traits: ['rude', 'kind'] }, w: (p, pat) => (barHas(p, 'rude') && !pat.known ? 3 : 0), make: (p, pat, c) => { const say = barSay('fight', p, c); return ({ label: say('label'), ...gated(notYet(() => pat.fought, say('gate'))), run() {
-    pat.fought = true; met(pat); like(p, -2, 'The captain started a fight with me.');
+    pat.fought = true; met(pat); like(p, -2, say('memory'));
     if (roleSkill('gunner') || Math.random() < 0.4) return say('win', { step: roleSkill('gunner') ? `${say('win.step', { gunner: roleName('gunner') })} ` : '' });
     c.st.credits = Math.max(0, c.st.credits - 150);
     return say('lose');
   } }); } },
   { id: 'peace', sample: { traits: ['kind', 'brave'], opinion: -3 }, must: true, w: (p, pat) => (pat.known && p.opinion <= OPINION.GRUDGE ? 1 : 0), make: (p, pat, c) => { const say = barSay('peace', p, c); return ({ label: say('label'), ...gated(needCr(300), notYet(() => pat.peace, say('gate'))), run() {
-    pat.peace = true; c.st.credits -= 300; like(p, 3, 'The captain bought me a bottle and apologized.');
+    pat.peace = true; c.st.credits -= 300; like(p, 3, say('memory'));
     return say('result');
   } }); } },
 ];

@@ -613,6 +613,7 @@ const PEOPLE_LINES = {
     gate: 'You have bought them a drink already.',
     generous: '{first} will not hear of it, and slides the credits back across the bar, and buys the next one too. {react}',
     rumor: '{first} looks around and leans in. "Here\'s something you can use," they say, low and fast: "{rumor}" Then they sit back and finish their drink. {react}',
+    'memory': 'The captain bought me a drink at {bar}.',
   },
   'bar:heard': {
     label: 'Ask what they have heard',
@@ -635,20 +636,24 @@ const PEOPLE_LINES = {
     'win.end.1': '{first} shakes your hand and means it.',
     'win.end.2': '{first} tells the story of it to the next table, with you as the villain.',
     'lose.end': 'By the end of the glass you are laughing.',
+    'memory': 'The captain took my money at cards.',
   },
   'bar:work': {
     label: 'Ask {first} about their work',
     gate: 'You have done that already tonight.',
     post: 'You come away knowing something new about the {post}. (Experience gained.)',
     hands: 'Then {first} tells you what they are hearing on the docks: "{rumor}"',
+    'memory': 'The captain asked about my work and listened.',
   },
   'bar:place': {
     label: 'Ask {first} about this place',
     gate: 'You have done that already tonight.',
+    'memory': 'The captain asked about the place and listened.',
   },
   'bar:quiet': {
     label: 'Sit with {first} and say nothing',
     gate: 'You have done that already tonight.',
+    'memory': 'The captain sat with me and did not make me talk.',
   },
   'bar:goal': {
     gate: 'You have done that already tonight.',
@@ -662,11 +667,13 @@ const PEOPLE_LINES = {
   'bar:home': {
     label: 'Ask about {home}',
     gate: 'You have done that already tonight.',
+    'memory': 'The captain let me talk about {home}.',
   },
   'bar:bless': {
     label: 'Ask for a blessing on your ship',
     'label.hired': 'Ask for a blessing on the ship',
     gate: 'You have done that already tonight.',
+    'memory': 'I blessed the captain\'s ship.',
   },
   'bar:fight': {
     label: 'Tell them what you think of their manners',
@@ -674,11 +681,13 @@ const PEOPLE_LINES = {
     win: 'It is short and loud. {step}{first} ends up on the floor, and the whole bar cheers. Someone starts a chant. The bartender charges you for the stool anyway.',
     'win.step': '{gunner} steps in and',
     lose: 'It is short, and it does not go your way. There is a light, and a loud noise, and then nothing. You wake up in the back with a black eye and a 150 cr bill for the mirror. The bartender is standing over you with a wet cloth. "You were doing so well," the bartender says.',
+    'memory': 'The captain started a fight with me.',
   },
   'bar:peace': {
     label: 'Make peace (buy them a bottle, 300 cr)',
     gate: 'You have made peace already tonight.',
     result: '{first} looks at the bottle a long time before taking it, turning it in the light to read the label. Then they set it between you on the table and pour two glasses. "It\'s a start," they say.',
+    'memory': 'The captain bought me a bottle and apologized.',
   },
   'bar:goal-help': {
     'gift.result': 'You put it on the table and push it across.',
@@ -688,6 +697,9 @@ const PEOPLE_LINES = {
     quiet: 'In the quiet after, {first} {slip}',
     'close.label': 'Say you hope it goes well',
     'close.result': '{first} thanks you, and that is the end of it.',
+    'gift.memory': 'The captain helped me on my way ({goal}).',
+    'advice.memory': 'The captain gave me good advice.',
+    'listen.memory': 'The captain let me talk it through.',
   },
   'bar:secret-help': {
     'close.label': 'Let it be',
@@ -703,6 +715,7 @@ const PEOPLE_LINES = {
     'c2.label': 'Make them do the handover together, standing up',
     'c2.win': 'They go through it line by line, standing at the panel. Halfway down the page {B} says the four o\'clock entry was theirs, and {A} says it was a close call. It is not warm, but it is a handover.',
     'c2.lose': 'They do the handover standing, and they do not look at each other, and when it is finished each of them writes their own initials in a different ink.',
+    'c0.memory': 'You ruled against me on the log.',
   },
   'social:cold-shoulders': {
     title: 'Cold Shoulders',
@@ -724,6 +737,7 @@ const PEOPLE_LINES = {
     'c1.result': 'You rule that the goal stood. {winner} stands up and shakes your hand. {loser} says nobody asked you, and then asks you to say it again.',
     'c2.label': 'Mute the feed',
     'c2.result': 'You turn the sound down on the galley screen. They go on arguing for another ten minutes, with their hands, and then they go quiet and put the sound back up to watch something else.',
+    'c1.memory': 'You ruled against my side on the old call.',
   },
   'social:recipe': {
     title: 'The Recipe',
@@ -740,6 +754,7 @@ const PEOPLE_LINES = {
     'c0.result': '{n} walks you through the board in ten minutes and goes off with a face you have not seen on them before. The watch is long, and quiet, and you learn more about the {post} post than you expected.{learn}',
     'c1.label': 'Say you have your own watch to keep',
     'c1.result': '{n} nods and says it is no trouble. They find somebody else, and you can hear, from the corridor, the second person saying yes.',
+    'c0.memory': 'You covered my watch so I could make a call.',
   },
   'social:ships-rules': {
     title: 'Ship\'s Rules',
@@ -750,6 +765,8 @@ const PEOPLE_LINES = {
     'c1.result': '"Deal," says {A}, at once, and {B} laughs, and the two of them leave the cockpit fast. For the next few days they are very professional on the bridge, and, every so often, when they think you are not looking, one of them smiles at a console.',
     'c2.label': '"It stays professional."',
     'c2.result': 'They nod, stiffly, in unison, and thank you for your time. The ship gets a lot quieter. In the days after, they keep to opposite sides of the corridor, and {A} eats alone, and {B} stands at the viewport with an untouched mug.',
+    'c0.memory': 'You gave {other} and me your blessing.',
+    'c2.memory': 'You told {other} and me to keep it professional.',
   },
   'social:close-quarters': {
     title: 'Close Quarters',
@@ -774,6 +791,8 @@ const PEOPLE_LINES = {
     'c2.lose': 'You dog the hatch. There is shouting, then a crash, then only the air handler. Two hours later you open it, and they walk past you one at a time without speaking. A cupboard door is hanging by its top hinge ({armor} points of hull). At dinner someone sits between them with a tray. The talk is about the water ration.',
     'c3.label': 'Settle it over cards',
     'c3.result': 'The deck is in the galley drawer, under the manual for a pump the ship does not have. You deal three hands. Nobody talks. The recycler runs. {winner} takes the last hand, and {loser} washes the dishes. Over the sink {loser} goes through what is wrong with the rules, the deck, the lighting and {winner}\'s mother. {winner} drinks the last of the coffee.',
+    'c0.memory': 'You sided with {A} against me.',
+    'c1.memory': 'You sided with {B} against me.',
   },
   'social:small-system': {
     title: 'Small System',
@@ -836,6 +855,7 @@ const PEOPLE_LINES = {
     'text.friend': '{names} has saved them the good mug.',
     'c0.label': '"Good to have you aboard again."',
     'c0.result': '{first} grins and goes straight for the good mug.',
+    'c0.memory': 'The captain welcomed me back.',
   },
   'social:feed': {
     'most-watched': '"{title}" is the most-watched {genre} on the Mars feeds this week.',

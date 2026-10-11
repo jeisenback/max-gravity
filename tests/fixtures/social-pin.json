@@ -20,7 +20,8 @@
      "bonds": {
       "p3|p4": 0.3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -33,7 +34,8 @@
      "bonds": {
       "p3|p4": 0.3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -46,7 +48,8 @@
      "bonds": {},
      "opinion": {
       "Ana": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -59,7 +62,8 @@
      "bonds": {},
      "opinion": {
       "Ana": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -72,7 +76,8 @@
      "bonds": {},
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -85,7 +90,8 @@
      "bonds": {},
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    }
   ]
@@ -112,6 +118,14 @@
      "opinion": {
       "Ana": 2,
       "Ben": 2
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You gave Ben and me your blessing."
+      ],
+      "Ben": [
+       "8 Aug 2214: You gave Ana and me your blessing."
+      ]
      }
     }
    },
@@ -126,6 +140,14 @@
      "opinion": {
       "Ana": 2,
       "Ben": 2
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You gave Ben and me your blessing."
+      ],
+      "Ben": [
+       "8 Aug 2214: You gave Ana and me your blessing."
+      ]
      }
     }
    },
@@ -140,7 +162,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -154,7 +177,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -170,6 +194,14 @@
      "opinion": {
       "Ana": -2,
       "Ben": -2
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You told Ben and me to keep it professional."
+      ],
+      "Ben": [
+       "8 Aug 2214: You told Ana and me to keep it professional."
+      ]
      }
     }
    },
@@ -186,6 +218,14 @@
      "opinion": {
       "Ana": -2,
       "Ben": -2
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You told Ben and me to keep it professional."
+      ],
+      "Ben": [
+       "8 Aug 2214: You told Ana and me to keep it professional."
+      ]
      }
     }
    }
@@ -212,7 +252,8 @@
      "bonds": {
       "p3|p4": 1.167
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -225,7 +266,8 @@
      "bonds": {
       "p3|p4": 1.167
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -238,7 +280,8 @@
      "bonds": {},
      "opinion": {
       "Ana": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -251,7 +294,8 @@
      "bonds": {},
      "opinion": {
       "Ana": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -264,7 +308,8 @@
      "bonds": {},
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -277,7 +322,8 @@
      "bonds": {},
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    }
   ]
@@ -305,7 +351,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -321,7 +368,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -332,7 +380,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -343,7 +392,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -369,7 +419,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -382,7 +433,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -395,7 +447,8 @@
      "bonds": {},
      "opinion": {
       "Ana": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -408,7 +461,8 @@
      "bonds": {},
      "opinion": {
       "Ana": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -421,7 +475,8 @@
      "bonds": {},
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -434,7 +489,8 @@
      "bonds": {},
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    }
   ]
@@ -464,6 +520,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -480,6 +541,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -496,6 +562,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -512,6 +583,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -525,7 +601,8 @@
      "bonds": {
       "p3|p4": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -538,7 +615,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -551,7 +629,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -564,7 +643,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -594,6 +674,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -610,6 +695,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -626,6 +716,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -642,6 +737,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -655,7 +755,8 @@
      "bonds": {
       "p3|p4": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -668,7 +769,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -681,7 +783,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -694,7 +797,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -724,6 +828,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -740,6 +849,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -756,6 +870,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -772,6 +891,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -785,7 +909,8 @@
      "bonds": {
       "p3|p4": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -798,7 +923,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -811,7 +937,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -824,7 +951,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -850,7 +978,8 @@
      "bonds": {
       "p3|p4": 2
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -863,7 +992,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -879,7 +1009,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -895,7 +1026,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -908,7 +1040,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -921,7 +1054,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -950,6 +1084,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against me on the log."
+      ]
      }
     }
    },
@@ -966,6 +1105,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against me on the log."
+      ]
      }
     }
    },
@@ -979,7 +1123,8 @@
      "bonds": {
       "p3|p4": -0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -992,7 +1137,8 @@
      "bonds": {
       "p3|p4": -0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1005,7 +1151,8 @@
      "bonds": {
       "p3|p4": 2
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1018,7 +1165,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -1048,6 +1196,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -1064,6 +1217,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -1080,6 +1238,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -1096,6 +1259,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -1109,7 +1277,8 @@
      "bonds": {
       "p3|p4": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1122,7 +1291,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1135,7 +1305,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1148,7 +1319,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -1178,6 +1350,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -1194,6 +1371,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -1210,6 +1392,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -1226,6 +1413,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -1239,7 +1431,8 @@
      "bonds": {
       "p3|p4": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1252,7 +1445,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1265,7 +1459,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1278,7 +1473,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -1308,6 +1504,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -1324,6 +1525,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -1340,6 +1546,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -1356,6 +1567,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -1369,7 +1585,8 @@
      "bonds": {
       "p3|p4": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1382,7 +1599,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1395,7 +1613,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1408,7 +1627,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -1438,6 +1658,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -1454,6 +1679,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -1470,6 +1700,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -1486,6 +1721,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -1499,7 +1739,8 @@
      "bonds": {
       "p3|p4": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1512,7 +1753,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1525,7 +1767,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1538,7 +1781,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -1568,6 +1812,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -1584,6 +1833,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -1600,6 +1854,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -1616,6 +1875,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -1629,7 +1893,8 @@
      "bonds": {
       "p3|p4": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1642,7 +1907,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1655,7 +1921,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1668,7 +1935,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -1698,6 +1966,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -1714,6 +1987,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -1730,6 +2008,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -1746,6 +2029,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -1759,7 +2047,8 @@
      "bonds": {
       "p3|p4": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1772,7 +2061,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1785,7 +2075,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1798,7 +2089,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -1828,6 +2120,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -1844,6 +2141,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -1860,6 +2162,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -1876,6 +2183,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -1889,7 +2201,8 @@
      "bonds": {
       "p3|p4": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1902,7 +2215,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1915,7 +2229,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -1928,7 +2243,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -1958,6 +2274,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -1974,6 +2295,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -1990,6 +2316,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -2006,6 +2337,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -2019,7 +2355,8 @@
      "bonds": {
       "p3|p4": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2032,7 +2369,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2045,7 +2383,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2058,7 +2397,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -2088,6 +2428,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -2104,6 +2449,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -2120,6 +2470,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -2136,6 +2491,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -2149,7 +2509,8 @@
      "bonds": {
       "p3|p4": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2162,7 +2523,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2175,7 +2537,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2188,7 +2551,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -2218,6 +2582,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -2234,6 +2603,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -2250,6 +2624,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -2266,6 +2645,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -2279,7 +2663,8 @@
      "bonds": {
       "p3|p4": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2292,7 +2677,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2305,7 +2691,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2318,7 +2705,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -2348,6 +2736,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -2364,6 +2757,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -2380,6 +2778,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -2396,6 +2799,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -2409,7 +2817,8 @@
      "bonds": {
       "p3|p4": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2422,7 +2831,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2435,7 +2845,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2448,7 +2859,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -2477,6 +2889,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -1
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You ruled against me on the log."
+      ]
      }
     }
    },
@@ -2493,6 +2910,11 @@
      "opinion": {
       "Ana": -1,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against me on the log."
+      ]
      }
     }
    },
@@ -2506,7 +2928,8 @@
      "bonds": {
       "p3|p5": -0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2519,7 +2942,8 @@
      "bonds": {
       "p3|p5": -0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2532,7 +2956,8 @@
      "bonds": {
       "p3|p5": 2
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2545,7 +2970,8 @@
      "bonds": {
       "p3|p5": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -2575,6 +3001,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -2591,6 +3022,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -2607,6 +3043,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -2623,6 +3064,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -2636,7 +3082,8 @@
      "bonds": {
       "p3|p5": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2649,7 +3096,8 @@
      "bonds": {
       "p3|p5": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2662,7 +3110,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2675,7 +3124,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -2705,6 +3155,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -2721,6 +3176,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -2737,6 +3197,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -2753,6 +3218,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -2766,7 +3236,8 @@
      "bonds": {
       "p3|p5": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2779,7 +3250,8 @@
      "bonds": {
       "p3|p5": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2792,7 +3264,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2805,7 +3278,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -2831,7 +3305,8 @@
      "bonds": {
       "p3|p5": 2
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2844,7 +3319,8 @@
      "bonds": {
       "p3|p5": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2860,7 +3336,8 @@
      "opinion": {
       "Ana": 1,
       "Cora": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -2876,7 +3353,8 @@
      "opinion": {
       "Ana": 1,
       "Cora": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -2889,7 +3367,8 @@
      "bonds": {
       "p3|p5": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2902,7 +3381,8 @@
      "bonds": {
       "p3|p5": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -2928,7 +3408,8 @@
      "bonds": {
       "p3|p4": 2
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2941,7 +3422,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2957,7 +3439,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -2973,7 +3456,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -2986,7 +3470,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -2999,7 +3484,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -3029,6 +3515,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -3045,6 +3536,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -3061,6 +3557,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -3077,6 +3578,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -3090,7 +3596,8 @@
      "bonds": {
       "p3|p5": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3103,7 +3610,8 @@
      "bonds": {
       "p3|p5": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3116,7 +3624,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3129,7 +3638,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -3159,6 +3669,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -3175,6 +3690,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -3191,6 +3711,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -3207,6 +3732,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -3220,7 +3750,8 @@
      "bonds": {
       "p3|p5": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3233,7 +3764,8 @@
      "bonds": {
       "p3|p5": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3246,7 +3778,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3259,7 +3792,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -3289,6 +3823,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -3305,6 +3844,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -3321,6 +3865,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -3337,6 +3886,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -3350,7 +3904,8 @@
      "bonds": {
       "p3|p5": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3363,7 +3918,8 @@
      "bonds": {
       "p3|p5": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3376,7 +3932,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3389,7 +3946,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -3419,6 +3977,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -3435,6 +3998,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -3451,6 +4019,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -3467,6 +4040,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -3480,7 +4058,8 @@
      "bonds": {
       "p3|p5": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3493,7 +4072,8 @@
      "bonds": {
       "p3|p5": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3506,7 +4086,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3519,7 +4100,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -3549,6 +4131,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -3565,6 +4152,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -3581,6 +4173,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -3597,6 +4194,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -3610,7 +4212,8 @@
      "bonds": {
       "p3|p5": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3623,7 +4226,8 @@
      "bonds": {
       "p3|p5": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3636,7 +4240,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3649,7 +4254,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -3679,6 +4285,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -3695,6 +4306,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -3711,6 +4327,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -3727,6 +4348,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -3740,7 +4366,8 @@
      "bonds": {
       "p3|p5": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3753,7 +4380,8 @@
      "bonds": {
       "p3|p5": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3766,7 +4394,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3779,7 +4408,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -3809,6 +4439,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -3825,6 +4460,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -3841,6 +4481,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -3857,6 +4502,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -3870,7 +4520,8 @@
      "bonds": {
       "p3|p4": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3883,7 +4534,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3896,7 +4548,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -3909,7 +4562,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -3939,6 +4593,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -3955,6 +4614,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -2
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -3971,6 +4635,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -3987,6 +4656,11 @@
      "opinion": {
       "Ana": -2,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Ben against me."
+      ]
      }
     }
    },
@@ -4000,7 +4674,8 @@
      "bonds": {
       "p3|p4": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4013,7 +4688,8 @@
      "bonds": {
       "p3|p4": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4026,7 +4702,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4039,7 +4716,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -4069,6 +4747,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -4085,6 +4768,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -4101,6 +4789,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -4117,6 +4810,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -4130,7 +4828,8 @@
      "bonds": {
       "p3|p5": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4143,7 +4842,8 @@
      "bonds": {
       "p3|p5": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4156,7 +4856,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4169,7 +4870,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -4199,6 +4901,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -4215,6 +4922,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -4231,6 +4943,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -4247,6 +4964,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -4260,7 +4982,8 @@
      "bonds": {
       "p3|p5": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4273,7 +4996,8 @@
      "bonds": {
       "p3|p5": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4286,7 +5010,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4299,7 +5024,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -4329,6 +5055,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -4345,6 +5076,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -4361,6 +5097,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -4377,6 +5118,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -4390,7 +5136,8 @@
      "bonds": {
       "p3|p5": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4403,7 +5150,8 @@
      "bonds": {
       "p3|p5": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4416,7 +5164,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4429,7 +5178,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -4459,6 +5209,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -4475,6 +5230,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -4491,6 +5251,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -4507,6 +5272,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -4520,7 +5290,8 @@
      "bonds": {
       "p3|p5": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4533,7 +5304,8 @@
      "bonds": {
       "p3|p5": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4546,7 +5318,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4559,7 +5332,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -4589,6 +5363,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -4605,6 +5384,11 @@
      "opinion": {
       "Ana": 1,
       "Cora": -2
+     },
+     "memories": {
+      "Cora": [
+       "8 Aug 2214: You sided with Ana against me."
+      ]
      }
     }
    },
@@ -4621,6 +5405,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -4637,6 +5426,11 @@
      "opinion": {
       "Ana": -2,
       "Cora": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You sided with Cora against me."
+      ]
      }
     }
    },
@@ -4650,7 +5444,8 @@
      "bonds": {
       "p3|p5": 3
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4663,7 +5458,8 @@
      "bonds": {
       "p3|p5": -1
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4676,7 +5472,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4689,7 +5486,8 @@
      "bonds": {
       "p3|p5": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -4717,7 +5515,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -4732,7 +5531,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -4745,7 +5545,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -4759,7 +5560,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -4770,7 +5572,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4781,7 +5584,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -4809,7 +5613,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -4824,7 +5629,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -4838,6 +5644,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -4852,6 +5663,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -4865,7 +5681,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4878,7 +5695,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -4906,7 +5724,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -4921,7 +5740,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -4934,7 +5754,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -4948,7 +5769,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -4959,7 +5781,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -4970,7 +5793,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -4998,7 +5822,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5013,7 +5838,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5027,6 +5853,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -5041,6 +5872,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -5054,7 +5890,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -5067,7 +5904,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -5095,7 +5933,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5111,7 +5950,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5124,7 +5964,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -5137,7 +5978,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -5165,7 +6007,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5180,7 +6023,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5193,7 +6037,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5206,7 +6051,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5217,7 +6063,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -5228,7 +6075,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -5256,7 +6104,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5271,7 +6120,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5285,7 +6135,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5298,7 +6149,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5309,7 +6161,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -5320,7 +6173,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -5348,7 +6202,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5364,7 +6219,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5377,7 +6233,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -5390,7 +6247,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -5418,7 +6276,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5433,7 +6292,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5446,7 +6306,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5459,7 +6320,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5470,7 +6332,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -5481,7 +6344,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -5509,7 +6373,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5524,7 +6389,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5538,6 +6404,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -5552,6 +6423,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -5565,7 +6441,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -5578,7 +6455,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -5606,7 +6484,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5621,7 +6500,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5634,7 +6514,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5647,7 +6528,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5658,7 +6540,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -5669,7 +6552,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -5697,7 +6581,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5712,7 +6597,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5725,7 +6611,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5739,7 +6626,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5750,7 +6638,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -5761,7 +6650,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -5789,7 +6679,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5804,7 +6695,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5817,7 +6709,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5831,7 +6724,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5842,7 +6736,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -5853,7 +6748,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -5881,7 +6777,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5896,7 +6793,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5909,7 +6807,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5923,7 +6822,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5934,7 +6834,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -5945,7 +6846,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -5973,7 +6875,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -5989,7 +6892,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6002,7 +6906,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -6015,7 +6920,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -6043,7 +6949,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6058,7 +6965,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6072,7 +6980,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6085,7 +6994,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6096,7 +7006,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -6107,7 +7018,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -6135,7 +7047,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6150,7 +7063,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6163,7 +7077,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6176,7 +7091,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6187,7 +7103,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -6198,7 +7115,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -6226,7 +7144,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6241,7 +7160,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6255,6 +7175,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -6269,6 +7194,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -6282,7 +7212,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -6295,7 +7226,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -6323,7 +7255,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6338,7 +7271,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6352,6 +7286,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -6366,6 +7305,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -6379,7 +7323,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -6392,7 +7337,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -6420,7 +7366,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6435,7 +7382,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6449,7 +7397,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6462,7 +7411,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6473,7 +7423,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -6484,7 +7435,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -6512,7 +7464,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6527,7 +7480,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6541,6 +7495,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -6555,6 +7514,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -6568,7 +7532,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -6581,7 +7546,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -6609,7 +7575,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6624,7 +7591,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6638,6 +7606,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -6652,6 +7625,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -6665,7 +7643,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -6678,7 +7657,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -6706,7 +7686,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6721,7 +7702,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6734,7 +7716,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6747,7 +7730,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6758,7 +7742,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -6769,7 +7754,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -6797,7 +7783,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6812,7 +7799,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6826,6 +7814,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -6840,6 +7833,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -6853,7 +7851,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -6866,7 +7865,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -6894,7 +7894,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6909,7 +7910,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6922,7 +7924,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6936,7 +7939,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -6947,7 +7951,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -6958,7 +7963,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -6986,7 +7992,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7001,7 +8008,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7015,6 +8023,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -7029,6 +8042,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -7042,7 +8060,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -7055,7 +8074,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -7083,7 +8103,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7099,7 +8120,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7112,7 +8134,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -7125,7 +8148,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -7153,7 +8177,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7168,7 +8193,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7181,7 +8207,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7194,7 +8221,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7205,7 +8233,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -7216,7 +8245,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -7244,7 +8274,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7259,7 +8290,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7272,7 +8304,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7285,7 +8318,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7296,7 +8330,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -7307,7 +8342,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -7335,7 +8371,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7351,7 +8388,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7364,7 +8402,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -7377,7 +8416,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -7405,7 +8445,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7420,7 +8461,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7434,7 +8476,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7448,7 +8491,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7459,7 +8503,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -7470,7 +8515,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -7498,7 +8544,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7513,7 +8560,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7527,6 +8575,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -7541,6 +8594,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -7554,7 +8612,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -7567,7 +8626,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -7595,7 +8655,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7610,7 +8671,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7624,7 +8686,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7638,7 +8701,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7649,7 +8713,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -7660,7 +8725,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -7688,7 +8754,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7703,7 +8770,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7717,7 +8785,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7730,7 +8799,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7741,7 +8811,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -7752,7 +8823,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -7780,7 +8852,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7795,7 +8868,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7809,7 +8883,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7822,7 +8897,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7833,7 +8909,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -7844,7 +8921,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -7872,7 +8950,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7887,7 +8966,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7901,7 +8981,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7915,7 +8996,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7926,7 +9008,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -7937,7 +9020,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -7965,7 +9049,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7981,7 +9066,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -7994,7 +9080,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -8007,7 +9094,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -8035,7 +9123,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8050,7 +9139,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8064,7 +9154,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8077,7 +9168,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8088,7 +9180,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -8099,7 +9192,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -8127,7 +9221,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8142,7 +9237,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8155,7 +9251,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8168,7 +9265,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8179,7 +9277,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -8190,7 +9289,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -8218,7 +9318,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8233,7 +9334,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8247,6 +9349,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -8261,6 +9368,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -8274,7 +9386,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -8287,7 +9400,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -8315,7 +9429,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8330,7 +9445,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8344,6 +9460,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -8358,6 +9479,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -8371,7 +9497,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -8384,7 +9511,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -8412,7 +9540,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8427,7 +9556,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8440,7 +9570,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8454,7 +9585,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8465,7 +9597,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -8476,7 +9609,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -8504,7 +9638,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8519,7 +9654,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8533,6 +9669,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -8547,6 +9688,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -8560,7 +9706,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -8573,7 +9720,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -8601,7 +9749,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8616,7 +9765,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8630,6 +9780,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -8644,6 +9799,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -8657,7 +9817,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -8670,7 +9831,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -8697,6 +9859,11 @@
      },
      "opinion": {
       "Ben": 1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: Ana showed me around the ship."
+      ]
      }
     }
    },
@@ -8712,6 +9879,11 @@
      },
      "opinion": {
       "Ben": 1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: Ana showed me around the ship."
+      ]
      }
     }
    },
@@ -8725,7 +9897,8 @@
      "bonds": {
       "p3|p4": -0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -8738,7 +9911,8 @@
      "bonds": {
       "p3|p4": -0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -8765,6 +9939,11 @@
      },
      "opinion": {
       "Ben": 1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: Ana showed me around the ship."
+      ]
      }
     }
    },
@@ -8780,6 +9959,11 @@
      },
      "opinion": {
       "Ben": 1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: Ana showed me around the ship."
+      ]
      }
     }
    },
@@ -8793,7 +9977,8 @@
      "bonds": {
       "p3|p4": -0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -8806,7 +9991,8 @@
      "bonds": {
       "p3|p4": -0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -8834,7 +10020,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8849,7 +10036,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8863,7 +10051,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8876,7 +10065,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8887,7 +10077,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -8898,7 +10089,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -8926,7 +10118,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8941,7 +10134,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -8955,6 +10149,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -8969,6 +10168,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -8982,7 +10186,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -8995,7 +10200,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -9023,7 +10229,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9038,7 +10245,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9051,7 +10259,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9064,7 +10273,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9075,7 +10285,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -9086,7 +10297,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -9114,7 +10326,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9129,7 +10342,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9143,6 +10357,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -9157,6 +10376,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -9170,7 +10394,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -9183,7 +10408,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -9211,7 +10437,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9226,7 +10453,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9239,7 +10467,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9253,7 +10482,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9264,7 +10494,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -9275,7 +10506,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -9303,7 +10535,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9318,7 +10551,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9331,7 +10565,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9345,7 +10580,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9356,7 +10592,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -9367,7 +10604,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -9395,7 +10633,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9410,7 +10649,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9424,7 +10664,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9438,7 +10679,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9449,7 +10691,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -9460,7 +10703,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -9488,7 +10732,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9503,7 +10748,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9517,6 +10763,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -9531,6 +10782,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -9544,7 +10800,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -9557,7 +10814,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -9585,7 +10843,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9600,7 +10859,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9614,7 +10874,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9628,7 +10889,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9639,7 +10901,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -9650,7 +10913,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -9678,7 +10942,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9693,7 +10958,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9707,7 +10973,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9720,7 +10987,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9731,7 +10999,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -9742,7 +11011,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -9770,7 +11040,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9785,7 +11056,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9799,6 +11071,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -9813,6 +11090,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -9826,7 +11108,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -9839,7 +11122,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -9867,7 +11151,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9882,7 +11167,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9895,7 +11181,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9908,7 +11195,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9919,7 +11207,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -9930,7 +11219,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -9958,7 +11248,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9973,7 +11264,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -9987,6 +11279,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -10001,6 +11298,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -10014,7 +11316,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -10027,7 +11330,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -10055,7 +11359,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10070,7 +11375,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10083,7 +11389,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10096,7 +11403,8 @@
      "bonds": {},
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10107,7 +11415,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -10118,7 +11427,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -10146,7 +11456,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10161,7 +11472,8 @@
      },
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10175,7 +11487,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10189,7 +11502,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10200,7 +11514,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -10211,7 +11526,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -10239,7 +11555,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10254,7 +11571,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10268,7 +11586,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10282,7 +11601,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10293,7 +11613,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -10304,7 +11625,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -10332,7 +11654,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10347,7 +11670,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10361,6 +11685,11 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
+     },
+     "memories": {
+      "Ben": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -10375,6 +11704,11 @@
      "opinion": {
       "Ana": -1,
       "Ben": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You ruled against my side on the old call."
+      ]
      }
     }
    },
@@ -10388,7 +11722,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -10401,7 +11736,8 @@
      "bonds": {
       "p3|p4": 0.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -10429,7 +11765,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10444,7 +11781,8 @@
      },
      "opinion": {
       "Ben": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10458,7 +11796,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10472,7 +11811,8 @@
      "opinion": {
       "Ana": 1,
       "Ben": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10483,7 +11823,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -10494,7 +11835,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -10520,7 +11862,8 @@
      "bonds": {
       "p3|p4": 1.833
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -10533,7 +11876,8 @@
      "bonds": {
       "p3|p4": 1.833
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -10546,7 +11890,8 @@
      "bonds": {},
      "opinion": {
       "Ana": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10559,7 +11904,8 @@
      "bonds": {},
      "opinion": {
       "Ana": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10572,7 +11918,8 @@
      "bonds": {},
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10585,7 +11932,8 @@
      "bonds": {},
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    }
   ]
@@ -10611,7 +11959,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -10624,7 +11973,8 @@
      "bonds": {
       "p3|p4": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -10637,7 +11987,8 @@
      "bonds": {},
      "opinion": {
       "Ana": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10650,7 +12001,8 @@
      "bonds": {},
      "opinion": {
       "Ana": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10663,7 +12015,8 @@
      "bonds": {},
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10676,7 +12029,8 @@
      "bonds": {},
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    }
   ]
@@ -10702,7 +12056,8 @@
      "bonds": {
       "p10|p11": 1.833
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -10715,7 +12070,8 @@
      "bonds": {
       "p10|p11": 1.833
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -10728,7 +12084,8 @@
      "bonds": {},
      "opinion": {
       "Ana": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10741,7 +12098,8 @@
      "bonds": {},
      "opinion": {
       "Ana": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10754,7 +12112,8 @@
      "bonds": {},
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10767,7 +12126,8 @@
      "bonds": {},
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    }
   ]
@@ -10793,7 +12153,8 @@
      "bonds": {
       "p10|p11": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -10806,7 +12167,8 @@
      "bonds": {
       "p10|p11": 1.5
      },
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -10819,7 +12181,8 @@
      "bonds": {},
      "opinion": {
       "Ana": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10832,7 +12195,8 @@
      "bonds": {},
      "opinion": {
       "Ana": -1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10845,7 +12209,8 @@
      "bonds": {},
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    },
    {
@@ -10858,7 +12223,8 @@
      "bonds": {},
      "opinion": {
       "Ana": 1
-     }
+     },
+     "memories": {}
     }
    }
   ]
@@ -10883,6 +12249,11 @@
      "bonds": {},
      "opinion": {
       "Ana": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You covered my watch so I could make a call."
+      ]
      }
     }
    },
@@ -10896,6 +12267,11 @@
      "bonds": {},
      "opinion": {
       "Ana": 1
+     },
+     "memories": {
+      "Ana": [
+       "8 Aug 2214: You covered my watch so I could make a call."
+      ]
      }
     }
    },
@@ -10907,7 +12283,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    },
    {
@@ -10918,7 +12295,8 @@
      "credits": 0,
      "armor": 0,
      "bonds": {},
-     "opinion": {}
+     "opinion": {},
+     "memories": {}
     }
    }
   ]
@@ -10972,6 +12350,11 @@
      "bonds": {},
      "opinion": {
       "Pia": 1
+     },
+     "memories": {
+      "Pia": [
+       "8 Aug 2214: The captain welcomed me back."
+      ]
      }
     }
    },
@@ -10985,6 +12368,11 @@
      "bonds": {},
      "opinion": {
       "Pia": 1
+     },
+     "memories": {
+      "Pia": [
+       "8 Aug 2214: The captain welcomed me back."
+      ]
      }
     }
    }
@@ -11009,6 +12397,11 @@
      "bonds": {},
      "opinion": {
       "Pia": 1
+     },
+     "memories": {
+      "Pia": [
+       "8 Aug 2214: The captain welcomed me back."
+      ]
      }
     }
    },
@@ -11022,6 +12415,11 @@
      "bonds": {},
      "opinion": {
       "Pia": 1
+     },
+     "memories": {
+      "Pia": [
+       "8 Aug 2214: The captain welcomed me back."
+      ]
      }
     }
    }
@@ -11048,6 +12446,11 @@
      },
      "opinion": {
       "Pia": 1
+     },
+     "memories": {
+      "Pia": [
+       "8 Aug 2214: The captain welcomed me back."
+      ]
      }
     }
    },
@@ -11063,6 +12466,11 @@
      },
      "opinion": {
       "Pia": 1
+     },
+     "memories": {
+      "Pia": [
+       "8 Aug 2214: The captain welcomed me back."
+      ]
      }
     }
    }
@@ -11090,6 +12498,11 @@
      },
      "opinion": {
       "Pia": 1
+     },
+     "memories": {
+      "Pia": [
+       "8 Aug 2214: The captain welcomed me back."
+      ]
      }
     }
    },
@@ -11106,6 +12519,11 @@
      },
      "opinion": {
       "Pia": 1
+     },
+     "memories": {
+      "Pia": [
+       "8 Aug 2214: The captain welcomed me back."
+      ]
      }
     }
    }

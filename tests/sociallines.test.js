@@ -39,7 +39,7 @@ test('every scene, feed and activity of js/social.js has an id and lines, and ev
   assert.deepEqual(missing.filter(m => !UNREACHABLE.includes(m)), [], 'a line that is never read');
   assert.equal(r.changed.a.length, r.base.a.length);
   assert.equal(r.changed.b.length, r.base.b.length);
-  const effects = rec => (rec.plays || []).map(p => p.d);
+  const effects = rec => (rec.plays || []).map(p => ({ ...p.d, memories: Object.keys(p.d.memories || {}) }));  // who gained a memory, not what it says
   for (let n = 0; n < r.base.a.length; n++) assert.deepEqual(effects(r.changed.a[n]), effects(r.base.a[n]), `${r.base.a[n].id} ${r.base.a[n].seed}: what the choices change is the same`);
 });
 
@@ -51,4 +51,11 @@ test('the scenes of js/social.js have no title or label written in code: a new s
   assert.ok(src.includes('SOCIAL_SCENES'), 'the scenes are listed by id');
   const ids = fs.readFileSync(path.join(__dirname, '..', 'js', 'linetables.js'), 'utf8');
   for (const t of ['CAUSES', 'CRITICS']) assert.ok(ids.includes(`table: () => ${t} }`), `${t} has an id in js/linetables.js`);
+});
+
+test('no memory is written in the code of the scenes of js/social.js or of the bar topics: each is a line (memory)', () => {
+  for (const f of ['social.js', 'bartopics.js']) {
+    const src = fs.readFileSync(path.join(__dirname, '..', 'js', f), 'utf8');
+    assert.deepEqual([...src.matchAll(/\b(?:like|barWarm)\([^;\n]*?, *['"`][A-Z]/g)].map(m => m[0].slice(0, 60)), [], `a memory in code in ${f}`);
+  }
 });
