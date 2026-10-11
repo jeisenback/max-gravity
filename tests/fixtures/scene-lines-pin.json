@@ -3202,6 +3202,286 @@
   ]
  },
  {
+  "id": "hand:dismiss",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "mem": [
+     "9 Jul 2214: You let me go at Earth."
+    ],
+    "fx": {
+     "p3": -1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "hand:abort",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "mem": [
+     "9 Jul 2214: You dumped me at Earth."
+    ],
+    "fx": {
+     "p3": -3
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "hand:run:good",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "undefined",
+    "mem": [
+     "9 Jul 2214: Good run. You pull your weight."
+    ],
+    "fx": {
+     "credits": 135,
+     "p1": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "hand:run:bad",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "undefined",
+    "mem": [
+     "9 Jul 2214: That run lost money."
+    ],
+    "fx": {
+     "credits": 105,
+     "p1": -1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "hand:swap:engineer",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Cato: \"All right. You are the engineer from here. Tomas will take the gunner.\"",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Cato: \"Not yet. Show me more on the gunner first, and ask me again after the next run.\"",
+    "mem": [
+     "9 Jul 2214: You asked to move to engineer and I said not yet."
+    ],
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "hand:swap:pilot",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0,
+    "text": "Cato: \"All right. You are the pilot from here. Ines will take the gunner.\"",
+    "next": null
+   },
+   {
+    "i": 0,
+    "roll": 0.999,
+    "text": "Cato: \"Not yet. Show me more on the gunner first, and ask me again after the next run.\"",
+    "mem": [
+     "9 Jul 2214: You asked to move to pilot and I said not yet."
+    ],
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "hand:buyin:alone",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You bought the Needle courier for 45,000 cr and left the Iron Anvil. Captain Hester Vance shakes your hand on the dock and says they will keep an eye out for you on the lanes. You are on your own. She is yours now: the exchange, the contracts and the yard are open to you, and the crew are your wages to pay.",
+    "mem": [
+     "9 Jul 2214: You worked my ship, and then bought your own. Fair winds."
+    ],
+    "fx": {
+     "credits": -45000,
+     "p1": 2
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "hand:buyin:friends",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You bought the Needle courier for 45,000 cr and left the Iron Anvil. Captain Hester Vance shakes your hand on the dock and says they will keep an eye out for you on the lanes. Mate0 Vale came with you. She is yours now: the exchange, the contracts and the yard are open to you, and the crew are your wages to pay.",
+    "mem": [
+     "9 Jul 2214: You worked my ship, and then bought your own. Fair winds.",
+     "9 Jul 2214: We left the Iron Anvil together."
+    ],
+    "fx": {
+     "credits": -45000,
+     "p1": 2,
+     "p10": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
+  "id": "hand:practise:pilot",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You take the helm through the drills the old hands swear by: a flip on the sim, a docking by the numbers, a dead-stick approach with the lights out. (Experience at the pilot post.)",
+    "x": {
+     "pilot": 15
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "Practice at your post"
+  ]
+ },
+ {
+  "id": "hand:practise:gunner",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You spend a watch on the range sim, tracking and leading targets, until the fire control stops fighting you and starts finishing your sentences. (Experience at the gunner post.)",
+    "x": {
+     "gunner": 15
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "Practice at your post"
+  ]
+ },
+ {
+  "id": "hand:practise:engineer",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You go through the plant one system at a time, with the manual open and a meter in your teeth, and find three things nobody had written down. (Experience at the engineer post.)",
+    "x": {
+     "engineer": 15
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "Practice at your post"
+  ]
+ },
+ {
+  "id": "hand:practise:comms",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You sit on the bands for a watch, learning the rhythm of a dozen stations, and which of them are lying about their transponders. (Experience at the comms post.)",
+    "x": {
+     "comms": 15
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "Practice at your post"
+  ]
+ },
+ {
+  "id": "hand:practise:owner",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "There is nothing to practice.",
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
   "id": "scene:yard-office:used:gunner:un",
   "plays": [
    {

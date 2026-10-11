@@ -409,7 +409,7 @@ const UI = {
         const [id] = st.crew.splice(Number(arg), 1);
         if (!CREW[id]) {
           st.people[id].location = p.name;
-          like(st.people[id], -1, `You let me go at ${p.name}.`);
+          like(st.people[id], -1, sceneSay('scene:screens', 'dismiss.memory', { planet: p.name }));
         }
         break;
       }
@@ -417,7 +417,7 @@ const UI = {
         const [m] = st.missions.splice(Number(arg), 1);
         if (m.pid) {
           st.people[m.pid].location = p.name;
-          like(st.people[m.pid], -3, `You dumped me at ${p.name}.`);
+          like(st.people[m.pid], -3, sceneSay('scene:screens', 'abort.memory', { planet: p.name }));
         }
         break;
       }

@@ -114,3 +114,11 @@ test('the lines the ship\'s log keeps of a death, a departure, a retirement, a l
     assert.deepEqual([...src.matchAll(/homeLog\(`/g)].map(m => m[0]), [], `a ship's log line in code in ${f}`);
   }
 });
+
+test('the memories at the port screens and the hand\'s screens are lines, and none is left in code in js/ui.js or js/hired.js', async () => {
+  const fs = require('node:fs'), path = require('node:path');
+  for (const f of ['ui.js', 'hired.js']) {
+    const src = fs.readFileSync(path.join(__dirname, '..', 'js', f), 'utf8');
+    assert.deepEqual([...src.matchAll(/\blike(?:Ambient)?\([^;\n]*?, *(?:`|'|")[A-Z]/g)].map(m => m[0].slice(0, 70)), [], `a memory in code in ${f}`);
+  }
+});
