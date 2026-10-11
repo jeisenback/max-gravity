@@ -388,5 +388,72 @@
    "The blockade breaks. Ceres Station clears you to dock."
   ],
   "credits": 0
+ },
+ {
+  "key": "crew:wages",
+  "text": [
+   "Crew wages for 10 days: 540 cr."
+  ],
+  "credits": -540
+ },
+ {
+  "key": "crew:quits",
+  "text": [
+   "Crew wages for 10 days: 540 cr.",
+   "Mara Quill quits over unpaid wages."
+  ],
+  "credits": -1
+ },
+ {
+  "key": "boarding:disabled:keys",
+  "text": [
+   "Wren is disabled and drifting. Close in and hail it (H) to board."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "boarding:disabled:touch",
+  "text": [
+   "Wren is disabled and drifting. Close in and tap Hail to board."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "boarding:hurt:crew",
+  "text": [
+   "Mara Quill is hurt. Their gunner work will suffer until they are treated."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "boarding:hurt:cast",
+  "text": [
+   "Tomas Achebe is hurt. Their engineer work will suffer until they are treated. Another hit like that could kill Tomas."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "boarding:marked",
+  "text": [
+   "Tomas Achebe is hurt. Their engineer work will suffer until they are treated. Another hit like that could kill Tomas."
+  ],
+  "credits": 0,
+  "x": {}
+ },
+ {
+  "key": "boarding:dead:crew",
+  "text": [
+   "Mara Quill is dead."
+  ],
+  "credits": 0,
+  "x": [
+   {
+    "key": "p10",
+    "name": "Mara Quill",
+    "day": 1,
+    "place": "Earth",
+    "cause": "Killed in an accident near Earth."
+   }
+  ]
  }
 ]

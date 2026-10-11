@@ -25,18 +25,20 @@ const fightOdds = () => 0.3 + playerGuns() * 0.15 + roleSkill('gunner') * 0.03 +
 const slicerOdds = () => 0.6 + roleSkill('slicer') * 0.1;
 const wage = id => person(id).wage * (id === 'rosa' && G.state.flags.rosaHalfWage ? 0.5 : 1);
 
+const wageSay = (key, vars) => sceneSay('scene:crew-notes', key, vars);  // the notes about the crew are in the text layer (js/hiredscenes.js)
+
 function payCrew(days) {
   const st = G.state;
   if (st.hired) return;  // the captain pays the crew
   const total = Math.round(st.crew.reduce((t, id) => t + wage(id), 0) * days);
   if (!total) return;
   st.credits -= total;
-  msg(`Crew wages for ${days} days: ${fmt(total)} cr.`);
+  msg(wageSay('wages', { days, total: fmt(total) }));
   if (st.credits < 0) {
     st.credits = 0;
     const id = st.crew.pop(), c = person(id);
     if (!CREW[id]) c.location = system().planets[0].name;
-    msg(`${fullName(c)} quits over unpaid wages.`);
+    msg(wageSay('quits', { name: fullName(c) }));
   }
 }
 
