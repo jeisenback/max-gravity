@@ -16,7 +16,7 @@ function changeRep(gov, amount) {
   const before = standingWord(repOf(gov));
   G.state.rep[gov] = Math.max(-100, Math.min(100, repOf(gov) + amount));
   const after = standingWord(repOf(gov));
-  if (after !== before) msg(`Your standing with the ${gov === 'Pirate' ? 'pirates' : gov} is now ${after}.`);
+  if (after !== before) msg(sceneSay('scene:systems-notes', 'standing', { who: gov === 'Pirate' ? 'pirates' : gov, word: after }));
   if (typeof crewReacts === 'function') crewReacts(gov, amount);  // what the crew make of it (ties.js)
   // Patrols turn on you once you are Distrusted.
   for (const n of G.npcs) if (n.kind === 'patrol' && n.gov === gov && repOf(gov) <= -15) n.hostile = true;
@@ -32,13 +32,13 @@ function fineFor(gov) {
 function blockadeWarning(n) {
   if (n.hailed) return;
   n.hailed = true;
-  msg(`${n.name}: "Ceres is closed by order of the blockade. Turn back or be fired upon." (H to answer)`);
+  msg(sceneSay('scene:hail-notes', 'say', { name: n.name, line: sceneSay('scene:hail-notes', 'blockade') }));
 }
 
 function patrolWarning(n) {
   if (n.hailed) return;
   n.hailed = true;
-  msg(`${n.name}: "You are wanted in ${n.gov} space. Cut your drive and pay your fine." (H to answer)`);
+  msg(sceneSay('scene:hail-notes', 'say', { name: n.name, line: sceneSay('scene:hail-notes', 'wanted', { gov: n.gov }) }));
 }
 
 function patrolHail(n) {

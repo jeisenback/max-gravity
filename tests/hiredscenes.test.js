@@ -41,7 +41,7 @@ test('the registry holds every scene the game\'s own registries hold', async () 
   await g.done();
   assert.deepEqual(r.missing, []);
   assert.deepEqual(r.gone, []);
-  assert.equal(r.functions, 29);
+  assert.equal(r.functions, 30);
   assert.ok(r.n >= 124, `${r.n} scenes`);
 });
 

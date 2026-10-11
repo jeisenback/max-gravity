@@ -60,7 +60,7 @@ function overload() {
   st.heat = 50;
   setPower('drive', POWER_MIN);
   st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.05));
-  const text = `Reactor scram. The drive drops to ${p.drive}% while the coolant catches up, and the hull takes a knock from the shock.`;
+  const text = sceneSay('scene:systems-notes', 'reactor.scram', { drive: p.drive });
   comm(`[Engineering] ${text}`);
   msg(text);
 }

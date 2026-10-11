@@ -455,5 +455,145 @@
     "cause": "Killed in an accident near Earth."
    }
   ]
+ },
+ {
+  "key": "torp:none",
+  "text": [
+   "No torpedo launcher fitted. Outfitters sell them."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "torp:empty",
+  "text": [
+   "Torpedo tubes are empty. Load more at an outfitter."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "torp:notarget",
+  "text": [
+   "No target for the torpedo. Select one first (Tab, or tap a ship)."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "torp:away",
+  "text": [
+   "Torpedo away: 1 left."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "torp:incoming",
+  "text": [
+   "Pirate \"Hungry Tooth\" launched a torpedo at you!"
+  ],
+  "credits": 0
+ },
+ {
+  "key": "standing:Arcology Compact:-60",
+  "text": [
+   "Your standing with the Arcology Compact is now Hostile."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "standing:Arcology Compact:90",
+  "text": [
+   "Your standing with the Arcology Compact is now Honored."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "standing:Pirate:-60",
+  "text": [
+   "Your standing with the pirates is now Hostile."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "hail:blockade",
+  "text": [
+   "Picket: \"Ceres is closed by order of the blockade. Turn back or be fired upon.\" (H to answer)"
+  ],
+  "credits": 0
+ },
+ {
+  "key": "hail:wanted",
+  "text": [
+   "Cutter: \"You are wanted in Arcology Compact space. Cut your drive and pay your fine.\" (H to answer)"
+  ],
+  "credits": 0
+ },
+ {
+  "key": "auto:control",
+  "text": [
+   "You take the controls."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "auto:contact",
+  "text": [
+   "Mara: Contact, and they are not friendly. She's yours, captain."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "auto:stuck",
+  "text": [
+   "Mara: I can't get us settled. Your ship, captain."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "auto:dock",
+  "text": [
+   "Mara brings us in to Earth."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "escort:fuel",
+  "text": [
+   "The \"Lucky Promise\" can't fuel up for that burn; it will wait for you at Earth."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "escort:range",
+  "text": [
+   "The \"Lucky Promise\" can't make that burn on one tank; it will wait for you at Earth."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "escort:lost",
+  "text": [
+   "Your escort Wren is destroyed. Capt. Jo Rourke ejects safely."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "escort:lost-unknown",
+  "text": [
+   "Your escort Wren is destroyed. Capt. the captain ejects safely."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "reactor:scram",
+  "text": [
+   "Reactor scram. The drive drops to 10% while the coolant catches up, and the hull takes a knock from the shock."
+  ],
+  "credits": 0
+ },
+ {
+  "key": "war",
+  "text": [
+   "Warning: Charter League warships are engaging Arcology Compact patrols in local space."
+  ],
+  "credits": 0
  }
 ]
