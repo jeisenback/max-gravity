@@ -337,7 +337,7 @@ test('the line tables of the generated people are rows with a field for every li
       plan: SceneIndex.planImport({ overrides: { 'lines:bar-leave': { title: 'No', parts: { 1: 'Ok.', 7: 'x' } } } }, SceneIndex.rows).items.map(i => i.ok),
     };
   });
-  assert.equal(r.tables.length, 18);
+  assert.equal(r.tables.length, 20);  // the 18 of the bar and the chatter, and the causes and the critics of js/social.js
   assert.ok(r.tables.every(([, kind, noTitle]) => kind === 'data' && noTitle), 'each is lines and no title');
   assert.deepEqual(r.tables.find(t => t[0] === 'lines:trait-chatter'), ['lines:trait-chatter', 'data', true, 'transit', 'js/peopletext.js']);
   assert.deepEqual(r.out, { parts: { 1: 'A new goodbye, {n}.' } }, 'only what differs');
@@ -414,10 +414,10 @@ test('the relationship scenes are rows with a field for every line, and each pla
     const rows = SceneIndex.rows.filter(x => x.id.startsWith('social:'));
     return { ids: rows.map(x => x.id), shape: rows.every(x => x.kind === 'data' && x.noTitle && x.where === 'transit' && x.file === 'js/social.js'), word: Object.keys(SceneIndex.rows.find(x => x.id === 'social:word').parts).includes('title.hired') };
   });
-  assert.equal(r.ids.length, 13, 'twelve relationship scenes and the welcome back');
+  assert.equal(r.ids.length, 21, 'twelve relationship scenes, the welcome back, the feeds and the activities');
   assert.ok(r.shape, 'each is lines, in a burn, in js/social.js');
   assert.ok(r.word, 'the hired reading of a word is a line of its own');
-  for (const id of r.ids) {
+  for (const id of r.ids.filter(x => !/feed|crew-talk|headlines|watch-|read-book|stream-match|card-night/.test(x))) {
     await select(id);
     await page.fill('textarea[data-path="part.title"]', `Typed ${id}.`);
     const f = await play();

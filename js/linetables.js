@@ -22,6 +22,8 @@ const LINE_TABLES = [
   { id: 'lines:bar-crew', title: 'Bar: the crew in the room, by post', file: 'js/bar.js', table: () => CREW_AT_BAR },
   { id: 'lines:bar-goal-help', title: 'Bar: helping with what they are traveling for', file: 'js/bartopics.js', plainKey: /(^|\.)(ask|gift|advice|listen)$/, table: () => GOAL_HELP },
   { id: 'lines:bar-secret-help', title: 'Bar: helping with a secret', file: 'js/bartopics.js', table: () => SECRET_HELP },
+  { id: 'lines:social-causes', title: 'What a small ship argues about', file: 'js/social.js', table: () => CAUSES },
+  { id: 'lines:social-critics', title: 'What the critics say of a show', file: 'js/social.js', table: () => CRITICS },
   { id: 'lines:bar-react', title: 'Bar: how a trait takes what you did', file: 'js/bartopics.js', table: () => BAR_REACT },
   { id: 'lines:trait-chatter', title: 'Crew chatter, by trait', file: 'js/peopletext.js', plain: true, where: 'transit', table: () => Object.fromEntries(Object.entries(TRAITS).map(([t, d]) => [t, d.chatter])) },
 ];
@@ -41,6 +43,7 @@ function linedText(id, node, path = '') {
   if (node && typeof node === 'object') return Object.fromEntries(Object.entries(node).map(([k, v]) => [k, linedText(id, v, path ? `${path}.${k}` : k)]));
   return node;
 }
+const socialTable = name => linedText(`lines:social-${name}`, lineTable(`lines:social-${name}`).table());  // the tables of js/social.js
 const barLines = name => linedText(`lines:bar-${name}`, lineTable(`lines:bar-${name}`).table());
 const traitChatter = trait => [].concat(linedText('lines:trait-chatter', TRAITS[trait].chatter, trait));
 
@@ -57,5 +60,5 @@ function peopleEventRegistry() {
   const row = (id, title, extra) => ({ id, kind: 'people', title, file: 'js/people.js', where: 'transit', scene: { title, choices: [], parts: PEOPLE_LINES[id], noTitle: true }, ...extra });
   const bar = (id, title, extra) => row(id, title, { file: 'js/bartopics.js', where: 'port', ...extra });
   return [...PAX_EVENTS.map(e => row(`people:pax:${e.id}`, PEOPLE_LINES[`people:pax:${e.id}`].title, { event: e })), ...Object.entries(CREW_EVENTS).map(([trait, make]) => row(`people:crew:${trait}`, PEOPLE_LINES[`people:crew:${trait}`].title, { trait, make })),
-    ...Object.keys(SOCIAL_SCENES).map(id => row(`social:${id}`, PEOPLE_LINES[`social:${id}`].title, { file: 'js/social.js', social: id })), ...BAR_TOPICS.map(t => bar(`bar:${t.id}`, `Bar topic: ${t.id}`, { topic: t })), bar('bar:goal-help', 'Bar topic: what they are traveling for (the help scene)', { help: 'goal' }), bar('bar:secret-help', 'Bar topic: a secret (the help scene)', { help: 'secret' })];
+    ...Object.keys(SOCIAL_SCENES).map(id => row(`social:${id}`, PEOPLE_LINES[`social:${id}`].title || `Social: ${id}`, { file: 'js/social.js', social: id })), ...BAR_TOPICS.map(t => bar(`bar:${t.id}`, `Bar topic: ${t.id}`, { topic: t })), bar('bar:goal-help', 'Bar topic: what they are traveling for (the help scene)', { help: 'goal' }), bar('bar:secret-help', 'Bar topic: a secret (the help scene)', { help: 'secret' })];
 }
