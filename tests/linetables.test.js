@@ -48,7 +48,7 @@ test('every table is read: an override for each of its lines shows in what the t
     useOverrides(overrides);
     console.warn = warn;
     const changed = play();
-    return { base, changed, lines, warned, registered: lineTableRegistry().map(e => e.id).filter(id => !id.startsWith('lines:social-')) };  // the tables of js/social.js are read in sociallines.test.js
+    return { base, changed, lines, warned, registered: lineTableRegistry().map(e => e.id).filter(id => !id.startsWith('lines:social-') && !id.startsWith('lines:family-')) };  // the tables of js/social.js and js/familytext.js are read in sociallines.test.js and familylines.test.js
   }, { src: playLines.toString(), ids: IDS });
   await g.done();
   assert.deepEqual(r.registered, IDS, 'the registry holds the tables, in this order');

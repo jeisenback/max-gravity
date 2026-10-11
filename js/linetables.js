@@ -25,6 +25,13 @@ const LINE_TABLES = [
   { id: 'lines:social-causes', title: 'What a small ship argues about', file: 'js/social.js', table: () => CAUSES },
   { id: 'lines:social-critics', title: 'What the critics say of a show', file: 'js/social.js', table: () => CRITICS },
   { id: 'lines:bar-react', title: 'Bar: how a trait takes what you did', file: 'js/bartopics.js', table: () => BAR_REACT },
+  { id: 'lines:family-left', title: 'A story: what they left behind', file: 'js/familytext.js', where: 'transit', table: () => LEFT },
+  { id: 'lines:family-hopes', title: 'A story: what they hope for', file: 'js/familytext.js', where: 'transit', table: () => HOPES },
+  { id: 'lines:family-home', title: 'A story: what home is like, by culture', file: 'js/family.js', where: 'transit', table: () => HOME_DETAIL },
+  { id: 'lines:family-idle', title: 'Sitting with a crew member with nothing on their mind, by trait', file: 'js/familytext.js', where: 'transit', table: () => TALK_IDLE },
+  { id: 'lines:family-good-news', title: 'A letter from home: good news', file: 'js/familytext.js', where: 'transit', table: () => GOOD_NEWS },
+  { id: 'lines:family-bad-news', title: 'A letter from home: bad news', file: 'js/familytext.js', where: 'transit', table: () => BAD_NEWS },
+  { id: 'lines:family-holidays', title: 'Holidays from home: the scene and keeping it', file: 'js/familytext.js', where: 'transit', table: () => holidayLines() },
   { id: 'lines:trait-chatter', title: 'Crew chatter, by trait', file: 'js/peopletext.js', plain: true, where: 'transit', table: () => Object.fromEntries(Object.entries(TRAITS).map(([t, d]) => [t, d.chatter])) },
 ];
 const lineTable = id => LINE_TABLES.find(t => t.id === id);
@@ -45,6 +52,9 @@ function linedText(id, node, path = '') {
 }
 const socialTable = name => linedText(`lines:social-${name}`, lineTable(`lines:social-${name}`).table());  // the tables of js/social.js
 const barLines = name => linedText(`lines:bar-${name}`, lineTable(`lines:bar-${name}`).table());
+const familyLines = name => linedText(`lines:family-${name}`, lineTable(`lines:family-${name}`).table());  // the tables of js/familytext.js (#457)
+const holidayKey = h => h.name.toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-|-$/g, '');  // the key of a holiday's lines: its name ('landing-day')
+const holidayLines = () => Object.fromEntries(HOLIDAYS.map(h => [holidayKey(h), { text: h.text, join: h.join }]));
 const traitChatter = trait => [].concat(linedText('lines:trait-chatter', TRAITS[trait].chatter, trait));
 
 // The tables as registry scenes, for the override layer and the editor: no title and no choices, only the lines (the shape the beats take, hiredscenes.js).
