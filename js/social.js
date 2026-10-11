@@ -374,7 +374,7 @@ function feudHandover(a, b, A, B) {
   return {
     title: say('title'), text: say('text', { A, B }),
     choices: [
-      { label: say('c0.label'), run() { const [w, l] = pick([[a, b], [b, a]]); like(w.p, 1, null); like(l.p, -1, `You ruled against me on the log.`); addBond(a, b, -0.5); return say('c0.result', { winner: w.p.first, loser: l.p.first }); } },
+      { label: say('c0.label'), run() { const [w, l] = pick([[a, b], [b, a]]); like(w.p, 1, null); like(l.p, -1, say('c0.memory')); addBond(a, b, -0.5); return say('c0.result', { winner: w.p.first, loser: l.p.first }); } },
       { label: say('c1.label'), run() { addBond(a, b, -0.5); return say('c1.result', { A, B }); } },
       { label: say('c2.label'), run() {
         if (Math.random() < 0.5) { addBond(a, b, 2); return say('c2.win', { B, A }); }
@@ -410,7 +410,7 @@ function matchReplay(a, b, ta, tb) {
         like(w.p, 1, null); addBond(a, b, has(l, 'rude') ? -1 : 0.5);
         return say('c0.result', { ma: m.a, msa: m.sa, mb: m.b, msb: m.sb, winner: w.p.first, loser: l.p.first });
       } },
-      { label: say('c1.label'), run() { const [w, l] = pick([[a, b], [b, a]]); like(w.p, 1, null); like(l.p, -1, `You ruled against my side on the old call.`); return say('c1.result', { winner: w.p.first, loser: l.p.first }); } },
+      { label: say('c1.label'), run() { const [w, l] = pick([[a, b], [b, a]]); like(w.p, 1, null); like(l.p, -1, say('c1.memory')); return say('c1.result', { winner: w.p.first, loser: l.p.first }); } },
       { label: say('c2.label'), run() { addBond(a, b, 0.5); return say('c2.result'); } },
     ],
   };
@@ -435,7 +435,7 @@ function coverWatchScene(p) {
   return {
     title: say('title'), text: say('text', { n, post: POSTS[post].name.toLowerCase() }),
     choices: [
-      { label: say('c0.label', { n }), run() { like(p, 2, `You covered my watch so I could make a call.`); p.owes = G.state.day; return say('c0.result', { n, post: POSTS[post].name.toLowerCase(), learn: learnAt(post, 3) }); } },
+      { label: say('c0.label', { n }), run() { like(p, 2, say('c0.memory')); p.owes = G.state.day; return say('c0.result', { n, post: POSTS[post].name.toLowerCase(), learn: learnAt(post, 3) }); } },
       { label: say('c1.label'), run() { return say('c1.result', { n }); } },
     ],
   };
@@ -527,8 +527,8 @@ function smallShip(a, b, A, B) {
           say('text.3', { A, B, cause }),
         ]),
         choices: [
-          { label: say('c0.label', { A }), run() { like(a.p, 1, null); like(b.p, -2, `You sided with ${A} against me.`); addBond(a, b, -1); return say('c0.result', { A, B }); } },
-          { label: say('c1.label', { B }), run() { like(b.p, 1, null); like(a.p, -2, `You sided with ${B} against me.`); addBond(a, b, -1); return say('c1.result', { B, A }); } },
+          { label: say('c0.label', { A }), run() { like(a.p, 1, null); like(b.p, -2, say('c0.memory', { A })); addBond(a, b, -1); return say('c0.result', { A, B }); } },
+          { label: say('c1.label', { B }), run() { like(b.p, 1, null); like(a.p, -2, say('c1.memory', { B })); addBond(a, b, -1); return say('c1.result', { B, A }); } },
           { label: say('c2.label'), run() {
             if (Math.random() < 0.55) { addBond(a, b, 3); return say('c2.win', { A }); }
             addBond(a, b, -1);
@@ -554,9 +554,9 @@ function shipsRules(a, b, A, B) {
   return {
       title: say('title'), text: say('text', { A, B }),
       choices: [
-        { label: say('c0.label'), run() { like(a.p, 2, `You gave ${B} and me your blessing.`); like(b.p, 2, `You gave ${A} and me your blessing.`); return say('c0.result'); } },
+        { label: say('c0.label'), run() { like(a.p, 2, say('c0.memory', { other: B })); like(b.p, 2, say('c0.memory', { other: A })); return say('c0.result'); } },
         { label: say('c1.label'), run() { like(a.p, 1, null); like(b.p, 1, null); return say('c1.result', { A, B }); } },
-        { label: say('c2.label'), run() { addBond(a, b, -2); like(a.p, -2, `You told ${B} and me to keep it professional.`); like(b.p, -2, `You told ${A} and me to keep it professional.`); return say('c2.result', { A, B }); } },
+        { label: say('c2.label'), run() { addBond(a, b, -2); like(a.p, -2, say('c2.memory', { other: B })); like(b.p, -2, say('c2.memory', { other: A })); return say('c2.result', { A, B }); } },
       ] };
 }
 
@@ -641,7 +641,7 @@ function welcomeBack() {
   return {
     title: say('title'), text: [say('text', { first: p.first, last: p.last }), mem ? say('text.memory', { memory: `${mem.charAt(0).toLowerCase()}${mem.slice(1)}` }) : '', friends.length ? say(friends.length > 1 ? 'text.friends' : 'text.friend', { names: names(friends) }) : ''].filter(Boolean).join(' '),
     choices: [
-      { label: say('c0.label'), run() { like(p, 1, 'The captain welcomed me back.'); for (const f of friends) addBond(f, me, 1); return say('c0.result', { first: p.first }); } },
+      { label: say('c0.label'), run() { like(p, 1, say('c0.memory')); for (const f of friends) addBond(f, me, 1); return say('c0.result', { first: p.first }); } },
     ],
   };
 }

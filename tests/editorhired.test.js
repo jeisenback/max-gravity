@@ -390,8 +390,8 @@ test('the bar topics are rows with a field for every line, and each plays at a b
   });
   assert.equal(r.ids.length, 15, 'thirteen topics and the two help scenes');
   assert.ok(r.shape, 'each is lines, at a port');
-  assert.deepEqual(r.drink, ['label', 'gate', 'generous', 'rumor']);
-  assert.equal(await page.locator('#detail textarea[data-path^="part."]').count(), 4);
+  assert.deepEqual(r.drink, ['label', 'gate', 'generous', 'rumor', 'memory']);
+  assert.equal(await page.locator('#detail textarea[data-path^="part."]').count(), 5);
   for (const id of ['bar:drink', 'bar:cards', 'bar:bless', 'bar:fight']) {
     await select(id);
     await page.fill('textarea[data-path="part.label"]', `Typed ${id}.`);
