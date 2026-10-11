@@ -773,12 +773,12 @@
   "next": null,
   "gate": {
    "rich": {
-    "label": "Ask him to write it down, so it does not go with the hull <span class=\"hint\">(needs Tomas's trust)</span>",
+    "label": "Ask him to write it down, so it does not go with the hull (needs Tomas's trust)",
     "open": false,
     "why": ""
    },
    "poor": {
-    "label": "Ask him to write it down, so it does not go with the hull <span class=\"hint\">(needs Tomas's trust)</span>",
+    "label": "Ask him to write it down, so it does not go with the hull (needs Tomas's trust)",
     "open": false,
     "why": ""
    },

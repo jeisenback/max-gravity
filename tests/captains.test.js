@@ -716,7 +716,8 @@ test('a choice that needs someone\'s regard is shown shut, with what it needs, u
     const probe = (who, p, min) => {
       p.opinion = min - 1;
       openEvent({ title: 'Probe', personal: true, text: 'x', choices: [{ label: 'Plain', run: () => 'a' }, { label: 'Gated', opinion: { who, min }, run: () => 'b' }] });
-      const shut = G.dialog.choices[1], below = { can: shut.can(), label: shut.label, count: G.dialog.choices.length };
+      const shut = G.dialog.choices[1], button = document.createElement('div'); button.innerHTML = choiceButtonHtml(shut, 1);
+      const below = { can: shut.can(), label: shut.label, button: button.textContent, count: G.dialog.choices.length };
       G.dialog = null; if (G.transit) G.transit.event = null;
       p.opinion = min;
       openEvent({ title: 'Probe', personal: true, text: 'x', choices: [{ label: 'Gated', opinion: { who, min }, run: () => 'b' }] });
@@ -733,6 +734,7 @@ test('a choice that needs someone\'s regard is shown shut, with what it needs, u
   assert.deepEqual([r.cap.below.can, r.cap.open.can], [false, true]); assert.ok(r.cap.below.label.includes(`needs ${c}'s friendship`)); assert.equal(r.cap.open.label, 'Gated', 'no reason once it is open');
   assert.deepEqual([r.xo.below.can, r.xo.open.can], [false, true]); assert.ok(r.xo.below.label.includes(`needs ${x}'s trust`));
   assert.deepEqual([r.cast.below.can, r.cast.open.can], [false, true]); assert.ok(r.cast.below.label.includes(`needs ${k} to listen`));
+  for (const who of [r.cap, r.xo, r.cast]) assert.doesNotMatch(who.below.button, /[<>]|class=/, 'the button shows the reason as text: ' + who.below.button);
   assert.equal(r.cap.below.count, 2, 'shut, never hidden');
 });
 

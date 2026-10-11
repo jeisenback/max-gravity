@@ -79,8 +79,8 @@ function opinionOf(who) {
 function opinionGate(c) {
   const p = opinionOf(c.opinion.who);
   if (!p) return null;
-  const min = c.opinion.min, open = () => p.opinion >= min, need = OPINION_NEEDS.find(([m]) => min >= m)[1](esc(p.first));
-  return { ...c, label: open() ? c.label : `${c.label} <span class="hint">(needs ${need})</span>`, can: () => open() && (!c.can || c.can()) };
+  const min = c.opinion.min, open = () => p.opinion >= min, need = OPINION_NEEDS.find(([m]) => min >= m)[1](p.first);
+  return { ...c, label: open() ? c.label : `${c.label} (needs ${need})`, can: () => open() && (!c.can || c.can()) };
 }
 
 // A choice marked `bold` (raid, ice run, a work event's quick option) moves the captain's opinion a little more by their nerve (the
