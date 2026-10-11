@@ -17,9 +17,9 @@ function warningScene() {
     title: say('title'), personal: true,
     text: say('text'),
     choices: [
-      { label: say('c0.label'), run() { like(cap, 1, 'You said you would do better, and said it plainly.'); return say('c0.result'); } },
-      { label: say('c1.label'), run() { like(cap, 2, 'You named what you got wrong and apologized for it.'); return say('c1.result'); } },
-      { label: say('c2.label'), run() { like(cap, -2, 'You told me I had been unfair.'); return say('c2.result'); } },
+      { label: say('c0.label'), run() { like(cap, 1, say('c0.memory')); return say('c0.result'); } },
+      { label: say('c1.label'), run() { like(cap, 2, say('c1.memory')); return say('c1.result'); } },
+      { label: say('c2.label'), run() { like(cap, -2, say('c2.memory')); return say('c2.result'); } },
     ],
   };
 }
@@ -121,7 +121,7 @@ function splitScene() {
   const choices = movable.map(x => ({ label: say('let.label', { name: x.p.first }), run: () => letGo(x, x === a ? b : a) }));
   choices.push({
     label: say('keep.label'),
-    run() { addBond(a, b, -1); like(a.p, -1, 'You made me stay on a ship with ' + B + '.'); like(b.p, -1, 'You made me stay on a ship with ' + A + '.'); return say('keep.result'); }
+    run() { addBond(a, b, -1); like(a.p, -1, say('keep.memory', { other: B })); like(b.p, -1, say('keep.memory', { other: A })); return say('keep.result'); }
   });
   return {
     title: say('title'), personal: true,
@@ -135,8 +135,9 @@ function letGo(x, y) {
   const st = G.state, role = x.p.role, skill = x.p.skill || 1;
   st.crew = st.crew.filter(id => id !== x.id);
   x.p.location = st.planet;
-  like(x.p, -3, `${y.p.first} and I could not share a ship, and you let me go.`);
-  like(y.p, 2, `You kept me aboard when ${x.p.first} and I could not share a ship.`);
+  const say = (key, vars) => sceneSay('scene:split', key, vars);
+  like(x.p, -3, say('let.memory', { other: y.p.first }));
+  like(y.p, 2, say('kept.memory', { other: x.p.first }));
   const rep = makeCrewCandidate(st.systemId);
   rep.role = role; rep.skill = Math.max(1, skill - 1); rep.job = ROLE_NAMES[role] ? ROLE_NAMES[role].toLowerCase() : 'hand'; rep.mood = null;
   registerPerson(rep); st.crew.push(rep.id);
