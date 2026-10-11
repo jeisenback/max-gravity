@@ -99,8 +99,12 @@ const LIFE_LINES = {
     any: ['{n} is staring out the forward window.', '{n} is standing at the viewport, watching the plume.', '{n} is leaning on the nav console, chin on their hands, watching the little green line crawl.'] },
 };
 
+// The lights going down and coming up, a line each, in the ship's log of the burn.
+const LIFE_NOTES = { dusk: 'The lights go down for the night.', dawn: 'The lights come up.' };
+
+// The pools are read through the editor's words (lines:ship-life, lines:ship-lights; js/linetables.js).
 function lifeLine(p, crowd) {
-  const room = LIFE_LINES[p.room], pool = room[p.role] || room.any;
+  const room = linedText('lines:ship-life', LIFE_LINES)[p.room], pool = room[p.role] || room.any;
   if (!pool) return null;
   const others = crowd.filter(o => o !== p && o.room === p.room && o.role !== 'you' && o.role !== 'cat');
   const line = pick(pool.filter(l => !l.includes('{m}') || others.length));
@@ -166,7 +170,7 @@ function lifeTick(dt) {
   const people = shipPeople(), ph = phase(), dark = isDark();
   if (dark !== !!G.transit.dark) {  // dusk or dawn
     G.transit.dark = dark;
-    comm(dark ? '[Ship] The lights go down for the night.' : '[Ship] The lights come up.');
+    comm(`[Ship] ${lineWords('lines:ship-lights', dark ? 'dusk' : 'dawn', LIFE_NOTES[dark ? 'dusk' : 'dawn'])}`);
     for (const p of people) if (!NIGHT_WATCH.includes(p.role)) p.wait = Math.min(p.wait, rand(0.2, 3));
   }
   for (const p of people) {

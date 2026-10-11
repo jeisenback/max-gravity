@@ -2870,5 +2870,313 @@
  {
   "key": "label:bless:owner",
   "text": "Ask for a blessing on your ship"
+ },
+ {
+  "key": "life:engine:cat:0",
+  "text": "Cass is asleep on the reactor housing, where it is warm."
+ },
+ {
+  "key": "life:engine:cat:1",
+  "text": "Cass is stretched full length along a warm pipe, purring in a key that matches the drive."
+ },
+ {
+  "key": "life:engine:cat:2",
+  "text": "Cass is watching a dripping valve without blinking."
+ },
+ {
+  "key": "life:engine:engineer:0",
+  "text": "Cass is elbow-deep in the reactor housing again."
+ },
+ {
+  "key": "life:engine:engineer:1",
+  "text": "Cass is rerunning the injector timing. It was fine. It is finer now."
+ },
+ {
+  "key": "life:engine:engineer:2",
+  "text": "Cass is lying on their back under the coolant manifold, telling a gasket a joke."
+ },
+ {
+  "key": "life:engine:engineer:3",
+  "text": "Cass is tapping a pipe with a wrench, listening to the note it makes, and frowning."
+ },
+ {
+  "key": "life:engine:any:0",
+  "text": "Cass is watching the reactor telltales like they owe money."
+ },
+ {
+  "key": "life:engine:any:1",
+  "text": "Cass is leaning on the engine room hatch, feeling the drive hum through the deck."
+ },
+ {
+  "key": "life:engine:any:2",
+  "text": "Cass is warming their hands on the coolant housing."
+ },
+ {
+  "key": "life:hold:cat:0",
+  "text": "Cass is stalking something between the crates."
+ },
+ {
+  "key": "life:hold:cat:1",
+  "text": "Cass has found a box and is asleep in it."
+ },
+ {
+  "key": "life:hold:cat:2",
+  "text": "Cass sits on the highest crate in the hold, upright, watching the hatch."
+ },
+ {
+  "key": "life:hold:quartermaster:0",
+  "text": "Cass re-straps the cargo and counts it twice."
+ },
+ {
+  "key": "life:hold:quartermaster:1",
+  "text": "Cass is arguing with the manifest."
+ },
+ {
+  "key": "life:hold:quartermaster:2",
+  "text": "Cass is walking the rows with a clipboard, tapping each crate in turn."
+ },
+ {
+  "key": "life:hold:quartermaster:3",
+  "text": "Cass is sniffing a crate of food and writing something down."
+ },
+ {
+  "key": "life:hold:gunner:0",
+  "text": "Cass is dry-firing at shadows in the hold."
+ },
+ {
+  "key": "life:hold:gunner:1",
+  "text": "Cass is cleaning a gun by feel in the half-dark."
+ },
+ {
+  "key": "life:hold:gunner:2",
+  "text": "Cass has set up a target on a crate and is losing to it."
+ },
+ {
+  "key": "life:hold:any:0",
+  "text": "Cass is checking the cargo straps."
+ },
+ {
+  "key": "life:hold:any:1",
+  "text": "Cass is standing among the crates with a hand on a lashing."
+ },
+ {
+  "key": "life:hold:any:2",
+  "text": "Cass is reading the labels on the cargo, one by one."
+ },
+ {
+  "key": "life:berths:cat:0",
+  "text": "Cass has claimed somebody's pillow. Nobody moves it."
+ },
+ {
+  "key": "life:berths:cat:1",
+  "text": "Cass is curled in the center of a freshly made bunk and watches whoever comes near."
+ },
+ {
+  "key": "life:berths:cat:2",
+  "text": "Cass is asleep on a pair of boots in a shaft of dim light, twitching."
+ },
+ {
+  "key": "life:berths:medic:0",
+  "text": "Cass is checking the sleeping faces in the berths."
+ },
+ {
+  "key": "life:berths:medic:1",
+  "text": "Cass stops at each bunk and listens for breathing."
+ },
+ {
+  "key": "life:berths:passenger:0",
+  "text": "Cass is writing letters in their bunk."
+ },
+ {
+  "key": "life:berths:passenger:1",
+  "text": "Cass is asleep, or pretending to be."
+ },
+ {
+  "key": "life:berths:passenger:2",
+  "text": "Cass is looking through a small pile of photographs, and putting them back, one at a time."
+ },
+ {
+  "key": "life:berths:passenger:3",
+  "text": "Cass is sitting on the edge of their bunk, looking at the wall."
+ },
+ {
+  "key": "life:berths:any:0",
+  "text": "Cass is catching a few hours in their bunk."
+ },
+ {
+  "key": "life:berths:any:1",
+  "text": "Cass is asleep with an arm thrown over their eyes and a small book open on their chest."
+ },
+ {
+  "key": "life:berths:any:2",
+  "text": "Cass is reading, by the light of a small lamp, with their lips moving."
+ },
+ {
+  "key": "life:galley:cat:0",
+  "text": "Cass is sitting by the food locker, staring at it."
+ },
+ {
+  "key": "life:galley:cat:1",
+  "text": "Cass is licking a drop of milk from the galley floor."
+ },
+ {
+  "key": "life:galley:cat:2",
+  "text": "Cass has taken a seat at the table. Nobody moves it."
+ },
+ {
+  "key": "life:galley:any:0",
+  "text": "Cass is making coffee that could strip paint."
+ },
+ {
+  "key": "life:galley:any:1",
+  "text": "Cass and Ana are playing cards in the galley, badly."
+ },
+ {
+  "key": "life:galley:any:2",
+  "text": "Cass is telling Ana a story that is only partly true."
+ },
+ {
+  "key": "life:galley:any:3",
+  "text": "Cass and Ben are washing up together without talking, passing each other cups."
+ },
+ {
+  "key": "life:galley:any:4",
+  "text": "Cass is trying to teach Ben a card trick, and the deck is on the floor."
+ },
+ {
+  "key": "life:galley:any:5",
+  "text": "Cass is cooking something unlabeled in a pan."
+ },
+ {
+  "key": "life:galley:any:6",
+  "text": "Cass is leaning on the counter with a mug, watching Ben argue with the recycler."
+ },
+ {
+  "key": "life:gunnery:cat:0",
+  "text": "Cass is asleep on the warm side of the fire-control cabinet."
+ },
+ {
+  "key": "life:gunnery:cat:1",
+  "text": "Cass is sitting in the gunner's seat with the harness hanging off it."
+ },
+ {
+  "key": "life:gunnery:gunner:0",
+  "text": "Cass is running the fire-control checks. Each one goes in the log."
+ },
+ {
+  "key": "life:gunnery:gunner:1",
+  "text": "Cass is wiping down the feed tray of the close-defense turret."
+ },
+ {
+  "key": "life:gunnery:gunner:2",
+  "text": "Cass is counting rounds in the magazine rack and writing the number on the rack."
+ },
+ {
+  "key": "life:gunnery:gunner:3",
+  "text": "Cass has a drill up on the targeting display and is tracking a dot across it."
+ },
+ {
+  "key": "life:gunnery:any:0",
+  "text": "Cass is reading the range tables taped above the console."
+ },
+ {
+  "key": "life:gunnery:any:1",
+  "text": "Cass is checking the latch on the weapons locker."
+ },
+ {
+  "key": "life:gunnery:any:2",
+  "text": "Cass is watching the tracking screen. It shows the sun and nothing else."
+ },
+ {
+  "key": "life:medbay:cat:0",
+  "text": "Cass is asleep on the exam bed, on a folded blanket."
+ },
+ {
+  "key": "life:medbay:cat:1",
+  "text": "Cass is sitting in front of the cabinet, looking at the lock."
+ },
+ {
+  "key": "life:medbay:medic:0",
+  "text": "Cass is counting the ampoules in the cabinet and writing the count on the door."
+ },
+ {
+  "key": "life:medbay:medic:1",
+  "text": "Cass is labeling vials in small, even handwriting."
+ },
+ {
+  "key": "life:medbay:medic:2",
+  "text": "Cass is wiping down the exam bed in long strokes."
+ },
+ {
+  "key": "life:medbay:medic:3",
+  "text": "Cass is reading the date stamped on each sterile pack."
+ },
+ {
+  "key": "life:medbay:any:0",
+  "text": "Cass is sitting on the edge of the exam bed with a cup of tea."
+ },
+ {
+  "key": "life:medbay:any:1",
+  "text": "Cass is reading the dosage chart on the wall."
+ },
+ {
+  "key": "life:medbay:any:2",
+  "text": "Cass is standing at the sink, running the water over their hands."
+ },
+ {
+  "key": "life:bridge:cat:0",
+  "text": "Cass is sitting on the nav console again."
+ },
+ {
+  "key": "life:bridge:cat:1",
+  "text": "Cass has settled directly on the flight controls, and looks at you."
+ },
+ {
+  "key": "life:bridge:cat:2",
+  "text": "Cass is watching the stars through the forward window, ears up."
+ },
+ {
+  "key": "life:bridge:pilot:0",
+  "text": "Cass is double-checking the flip solution."
+ },
+ {
+  "key": "life:bridge:pilot:1",
+  "text": "Cass is tracing a line on the nav chart with one finger, and nodding."
+ },
+ {
+  "key": "life:bridge:pilot:2",
+  "text": "Cass is flying with their hands off the controls and their eyes on every readout."
+ },
+ {
+  "key": "life:bridge:slicer:0",
+  "text": "Cass is combing through the comms traffic."
+ },
+ {
+  "key": "life:bridge:slicer:1",
+  "text": "Cass is reading a long stream of code, and smiling."
+ },
+ {
+  "key": "life:bridge:slicer:2",
+  "text": "Cass is listening to a dozen channels at once with their eyes closed, fingers moving."
+ },
+ {
+  "key": "life:bridge:any:0",
+  "text": "Cass is staring out the forward window."
+ },
+ {
+  "key": "life:bridge:any:1",
+  "text": "Cass is standing at the viewport, watching the plume."
+ },
+ {
+  "key": "life:bridge:any:2",
+  "text": "Cass is leaning on the nav console, chin on their hands, watching the little green line crawl."
+ },
+ {
+  "key": "lights:dusk",
+  "text": "[Ship] The lights go down for the night."
+ },
+ {
+  "key": "lights:dawn",
+  "text": "[Ship] The lights come up."
  }
 ]
