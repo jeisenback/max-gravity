@@ -2,8 +2,8 @@
 
 // Offline play for hosted copies of the game. Network first, so updates arrive the
 // next time you are online; every file the game loads is kept, so it runs offline
-// after one visit. Bump CACHE to drop old copies after a big change.
-const CACHE = 'max-gravity-v2';
+// after one visit. CACHE is named for the version in js/build.js (a worker cannot read BUILD, so tests/sw.test.js checks the two agree); a new version drops old copies.
+const CACHE = 'max-gravity-0.9.0-dev';
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(['./', 'index.html', 'style.css', 'manifest.webmanifest'])));

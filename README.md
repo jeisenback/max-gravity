@@ -183,11 +183,10 @@ Hosted on its own web address (GitHub Pages, itch.io, or any static host), the g
 
 ## Releasing
 
-Before the game goes public, three steps (nothing else holds them):
+Before the game goes public, two steps, and `tests/sw.test.js` fails until both agree:
 
-1. Set `dev: false` in `js/build.js`. The tester tools (`js/uat.js`: credits, time, scene jumping, opened with Shift+U or `#uat`) then stay hidden whatever the address or keys.
-2. Set `version` in `js/build.js`. It shows on the title screen and is stored with each save.
-3. Bump `CACHE` in `sw.js` (`max-gravity-v1`, then `v2`, and so on) after a big change, so installed copies drop their old files.
+1. In `js/build.js`, set `dev: false` and drop the `-dev` from `version` (`0.9.0-dev` becomes `0.9.0`). The tester tools (`js/uat.js`: credits, time, scene jumping, opened with Shift+U or `#uat`) then stay hidden whatever the address or keys, and the version is stored with each save.
+2. In `sw.js`, name `CACHE` for the version (`max-gravity-0.9.0`), so installed copies drop their old files. Do the same whenever the version changes.
 
 ## Automated tests
 
