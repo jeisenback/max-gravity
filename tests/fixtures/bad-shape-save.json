@@ -1,0 +1,13 @@
+{
+  "credits": 5000,
+  "systemId": "earth",
+  "planet": "Earth",
+  "missions": "x",
+  "people": 5,
+  "crew": {},
+  "flags": [],
+  "rumors": "none",
+  "cargo": 7,
+  "story": "begun",
+  "market": null
+}

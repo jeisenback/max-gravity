@@ -6,6 +6,7 @@
 //                    stateDefaults() (game.js). (Before #252 this passed Import and then threw on load.)
 //   v1-save.json     the first shape a save had (newState() in the first commit that has one): no v, no captain, no hired, no cast.
 //   v3-hired-save.json  a hired-hand game at the current version (see FIXTURES below for what it holds).
+//   bad-shape-save.json  fields of the wrong kind (a string for the missions, a number for the people, a list for the flags): migrate() puts the default back, so the slot still opens (#576).
 
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
@@ -17,7 +18,7 @@ after(closeBrowser);
 
 // v3-hired-save.json is a hired-hand game of version 3 (the Hester Vance captain, four runs, a captain's scene seen, a hurt crew member), played in the narrow build and saved as it was. Add a fixture
 // when stateDefaults() or setupHired() gains a field, so a save from before it still loads (#569).
-const FIXTURES = ['empty-save.json', 'v1-save.json', 'v3-hired-save.json'].map(name => ({ name, text: fs.readFileSync(path.join(__dirname, 'fixtures', name), 'utf8') }));
+const FIXTURES = ['empty-save.json', 'v1-save.json', 'v3-hired-save.json', 'bad-shape-save.json'].map(name => ({ name, text: fs.readFileSync(path.join(__dirname, 'fixtures', name), 'utf8') }));
 
 for (const scope of ['earth-hired', 'full']) {
   test(`an old save loads and plays in the ${scope} build`, async () => {
