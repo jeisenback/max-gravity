@@ -325,11 +325,11 @@ function met(pat) {
 function roomLines(planet) {
   const out = [], sid = G.state.systemId, c = culture(), day = cultureToday(), show = pick(airing(day)), book = pick(newBooks(day)), ls = pick(LEAGUES), last = season(ls).last;
   for (const x of conditions(sid)) {
-    if (/Shortage of Water/.test(x.text)) out.push(`The beer is watered down. A sign by the taps says the water ration on ${planet.name} is cut.`);
-    else if (/at war/.test(x.text)) out.push('A navy recruiter is buying drinks for anyone who will sit still.');
-    else if (/pirate/i.test(x.text) && x.bad) out.push('Half the pilots in here are talking about the raids. The other half are not talking.');
-    else if (/booming/.test(x.text)) out.push('Money is loose tonight. Somebody at the back is buying rounds for strangers.');
-    else if (/slump/.test(x.text)) out.push('The place is half empty. Everyone is nursing one drink.');
+    if (x.id === 'shortage-water') out.push(`The beer is watered down. A sign by the taps says the water ration on ${planet.name} is cut.`);
+    else if (x.id === 'war') out.push('A navy recruiter is buying drinks for anyone who will sit still.');
+    else if (x.id === 'raids') out.push('Half the pilots in here are talking about the raids. The other half are not talking.');
+    else if (x.id === 'boom') out.push('Money is loose tonight. Somebody at the back is buying rounds for strangers.');
+    else if (x.id === 'slump') out.push('The place is half empty. Everyone is nursing one drink.');
   }
   out.push(pick([
     `The screens over the bar are showing "${show.title}". Someone tells you to be quiet.`,

@@ -70,7 +70,7 @@ Mods.register({
         },
           result: 'You turn, and fire, and so do they, and the exchange is short and loud and ugly. You come out of it with the hull scarred and both raiders limping for the dark. The yacht\'s decoy transponder is still pinging from a lost position. You write it down.'
         },
-        { label: 'Pay them to leave (800 cr)', when: { credits: 800 }, effects: { credits: -800 }, result: 'You send the credits, and they take them, with a mock bow on the channel, and a "pleasure." They do not follow.' },
+        { label: 'Pay them to leave (800 cr)', cost: true, when: { credits: 800 }, effects: { credits: -800 }, result: 'You send the credits, and they take them, with a mock bow on the channel, and a "pleasure." They do not follow.' },
       ],
     });
     after({

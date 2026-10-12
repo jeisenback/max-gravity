@@ -60,7 +60,7 @@ function leadsHtml() {
 function troubleAhead() {
   const here = G.state.systemId;
   return Object.keys(SYSTEMS).filter(id => id !== here && inRange(here, id))
-    .flatMap(id => conditions(id).filter(c => c.bad && /pirate/i.test(c.text)).map(c => c.text));
+    .flatMap(id => conditions(id).filter(c => c.id === 'raids').map(c => c.text));
 }
 
 function ownerLeads(regular) {

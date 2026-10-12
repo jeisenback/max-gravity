@@ -200,7 +200,7 @@ function agentConsoleEvent(ambush) {
     storyLog('Surrendered the Persephone\'s book to an Aquilon recovery ship.');
     return '"Smart choice." They take it and break off. Somewhere on Ceres, another pump fails.';
   } });
-  choices.push({ label: `Battle stations (${gunnerLabel()})`, run: fight(false) }, { label: 'Burn hard to outrun them', run: fight(true) });
+  choices.push({ label: `Battle stations (${gunnerLabel()})`, fight: true, run: fight(false) }, { label: 'Burn hard to outrun them', run: fight(true) });
   return {
     title: ambush ? 'Aquilon Security' : 'Aquilon Recovery Ship', via: 'ship',
     text: ambush ? `Two Aquilon security ships come around the planet together, closing fast. Capt. ${c.first} ${c.last}: "Nothing personal, captain. Mr. Voight would like a word with your hull."`

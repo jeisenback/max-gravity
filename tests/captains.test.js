@@ -105,7 +105,7 @@ test('trade sets how close to the best run the captain plans', async () => {
 test('nerve sets how much a dangerous lane costs a run, and how often the captain fights', async () => {
   const r = await run(() => {
     const st = start(), out = {}, d = captainEntry();
-    const ev = { choices: [{ label: 'Pay them off' }, { label: 'Battle stations' }, { label: 'Run for it' }] };
+    const ev = { choices: [{ label: 'Pay them off', cost: true }, { label: 'Battle stations', fight: true }, { label: 'Run for it' }] };
     for (const nerve of [1, 5]) {
       d.captain.nerve = nerve; let fights = 0;
       for (let i = 0; i < 400; i++) if (captainPick(ev.choices).label === 'Battle stations') fights++;
@@ -121,7 +121,7 @@ test('nerve sets how much a dangerous lane costs a run, and how often the captai
 test('thrift sets the fund level below which costly choices are avoided', async () => {
   const r = await run(() => {
     const st = start(), d = captainEntry(), out = {};
-    const choices = [{ label: 'Pay the fine' }, { label: 'Run for it' }];
+    const choices = [{ label: 'Pay the fine', cost: true }, { label: 'Run for it' }];
     for (const thrift of [1, 5]) {
       d.captain.thrift = thrift; st.hired.fund = 3000; let pays = 0;
       for (let i = 0; i < 400; i++) if (captainPick(choices).label === 'Pay the fine') pays++;
