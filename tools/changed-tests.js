@@ -14,13 +14,13 @@ const path = require('node:path');
 
 const LAYOUT = ['tests/layout.test.js', 'tests/shell.test.js', 'tests/ui.test.js'];
 const GLOBALS = 'tests/globals.test.js';
-const TEXT_FILE = /^js\/(?:\w+text|bartopics)\.js$/;  // data-only words that the pins play through other scripts, so no harness names them: a change runs every pin
+const TEXT_FILE = /^js\/(?:(?:\w+text|bartopics)\.js|(?:captains|stories)\/[\w-]+\.js)$/;  // data-only words that the pins play through other scripts, so no harness names them: a change runs every pin
 const EDITOR = ['tests/editor.test.js', 'tests/editorforms.test.js', 'tests/editorfreq.test.js', 'tests/editornew.test.js', 'tests/editorpreview.test.js', 'tests/editorsave.test.js', 'tests/editorhired.test.js'];
 
 const declared = src => [...src.matchAll(/^(?:async\s+)?(?:const|let|var|function|class)\s+([A-Za-z_$][\w$]*)/gm)].map(m => m[1]).filter(n => n.length >= 3);
 const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-// changed: repo-relative paths. tests: { path: source } of the test files; sources: { path: source } of js/*.js.
+// changed: repo-relative paths. tests: { path: source } of the test files; sources: { path: source } of js/*.js, js/captains/*.js and js/stories/*.js.
 // Returns { files, full, why }: the test files to run, whether to run everything, and a line for each reason.
 function select(changed, { tests, sources }) {
   const files = new Set(), why = [];
@@ -38,9 +38,10 @@ function select(changed, { tests, sources }) {
       if (f === 'index.html') { add([GLOBALS], `${f}: the globals check`); add(EDITOR, `${f}: the scene editor reads the same script list`); }
       if (f !== 'js/shell.js') continue;
     }
-    if (/^js\/[\w-]+\.js$/.test(f)) {
+    if (/^js\/(?:[\w-]+\/)?[\w-]+\.js$/.test(f)) {  // js/ and one level below it (js/captains, js/stories)
       if (!sources[f]) return everything(`${f}: not found, so everything`);
       const base = path.basename(f), names = declared(sources[f]);
+      if (f.split('/').length > 2) names.push(path.basename(f, '.js'));  // a captain's or a story's file assigns into a table and declares nothing, so its name is the key tests use (hester, cold-water)
       const hits = new Map();
       for (const [t, src] of Object.entries(tests)) {
         const used = names.find(n => new RegExp(`\\b${esc(n)}\\b`).test(src)) || (src.includes(base) ? base : null);
@@ -74,7 +75,7 @@ function main() {
   const changed = given > 0 ? process.argv[given + 1].split(',') : [...new Set([...git('diff', '--name-only', 'origin/main'), ...git('ls-files', '--others', '--exclude-standard')])];
   const read = (dir, suffix) => Object.fromEntries(fs.readdirSync(path.join(root, dir)).filter(f => f.endsWith(suffix))
     .map(f => [`${dir}/${f}`, fs.readFileSync(path.join(root, dir, f), 'utf8')]));
-  const r = select(changed, { tests: withHarnesses(read('tests', '.test.js'), read('tests', 'play.js')), sources: read('js', '.js') });
+  const r = select(changed, { tests: withHarnesses(read('tests', '.test.js'), read('tests', 'play.js')), sources: { ...read('js', '.js'), ...read('js/captains', '.js'), ...read('js/stories', '.js') } });
   console.log(`changed: ${changed.length} file(s)`);
   r.why.forEach(w => console.log(`  ${w}`));
   if (process.argv.includes('--list')) { console.log(r.full ? 'run: the full suite' : `run: ${r.files.join(' ') || 'nothing'}`); return; }
