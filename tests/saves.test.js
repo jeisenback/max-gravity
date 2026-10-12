@@ -37,7 +37,7 @@ for (const scope of ['earth-hired', 'full']) {
         const st = G.state;
         const want = stateDefaults(), own = migrate(JSON.parse(text));
         out[name] = {
-          refused, mode: G.mode, v: st.v, current: SAVE_VERSION,
+          refused, mode: G.mode,
           chapter,
           missing: Object.keys(want).filter(k => st[k] === undefined || own[k] === undefined),
           wrongType: Object.keys(want).filter(k => want[k] !== null && (typeof st[k] !== typeof want[k] || Array.isArray(st[k]) !== Array.isArray(want[k]))),
@@ -49,7 +49,6 @@ for (const scope of ['earth-hired', 'full']) {
       const r = results[name];
       assert.equal(r.refused, null, `${name}: Import accepts it`);
       assert.equal(r.mode, 'landed', `${name}: it loads docked`);
-      assert.equal(r.v, r.current, `${name}: migrate() brings it to the current version`);
       assert.deepEqual(r.missing, [], `${name}: every field of stateDefaults() is there after migrate()`);
       assert.deepEqual(r.wrongType, [], `${name}: and each is the kind of thing the default is`);
     }

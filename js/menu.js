@@ -7,7 +7,7 @@
 // Automated test runs (navigator.webdriver) skip the title screen and start straight
 // into the last game. Loaded before game.js; only calls into it at runtime.
 
-const SLOTS = 5, SAVE_VERSION = 3;
+const SLOTS = 5;
 
 // ---------- settings ----------
 const Settings = Object.assign({ volume: 1, music: 0.6, textScale: 1, reduceMotion: false, wear: 'slow' }, store.get('maxGravity.settings', {}));
@@ -61,7 +61,7 @@ const dateOfState = st => { const d = new Date(START_DATE + ((st.day || 1) - 1) 
 const played = s => `${Math.floor(s / 3600)}h ${String(Math.floor(s / 60) % 60).padStart(2, '0')}m`;
 
 // Older saves get the fields later versions expect: every top-level field of stateDefaults() (game.js) that a save lacks or holds as the wrong kind of thing. Add a
-// field there, not here; add a step here only when an old value has to be rewritten, not just filled in.
+// field there, not here; add a step here (and a version in the save to tell old from new) only when an old value has to be rewritten, not just filled in.
 function migrate(st) {
   const defaults = stateDefaults(st.shipId);
   // A field that is missing, or present as a different kind of thing than its default (a string where a list goes, a number where an object goes), gets the default: a slot that crashes on
@@ -76,7 +76,6 @@ function migrate(st) {
   for (const m of st.memorial || []) m.cause = stripTags(m.cause);
   if (st.home) st.home.name = cleanName(st.home.name) || 'Second Chance';
   if (st.outpost) st.outpost.name = cleanName(st.outpost.name);
-  st.v = SAVE_VERSION;
   return st;
 }
 
@@ -99,7 +98,6 @@ function startGame(o) {
   st.systemId = b.at[0]; st.planet = b.at[1]; st.credits = b.credits;
   Object.assign(st.rep, b.rep || {});
   st.tutorial = o.background === 'earth' && o.tutorial ? 0 : null;
-  st.v = SAVE_VERSION;
   st.background = BACKGROUNDS[o.background] ? o.background : 'earth';  // who the main characters are (cast.js)
   Mods.emit('stateReady');
   if (cleanName(o.captain)) captain().name = cleanName(o.captain);
