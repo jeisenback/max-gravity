@@ -13,6 +13,7 @@ An Escape Velocity homage in vanilla JS and canvas. Static site, no build step. 
 - Classic scripts sharing one global scope. Load order is in `index.html`; `tests/globals.test.js` enforces unique top-level names and that every script is linked.
 - Keep it small: build what the issue asks for, nothing extra.
 - Every field a script keeps on `G` is declared, with a comment, in the literal in `js/game.js` (`tests/gfields.test.js` fails on one that is not). New logic takes the state it reads (`st`, and what else) as parameters and returns a value; the caller reads `G`. Such a module runs through `tests/nodecontext.js` without a browser. When a module is touched for another reason, move it that way if the change is small; do not open a module only for this.
+- The owner game is parked (`ROADMAP.md`), so new code is written for the hired hand with no `hired()` fork in the middle of its logic. Something only an owner does is a gate at its edge (`if (!hired()) return ...`), not a second branch inside the hand's code. Do not add a fork to make the owner path work; if the owner game comes back, the answer is a small role object (what the player may trade, decide and pay for), not more forks (#575).
 - No emojis anywhere (code, text, docs, commits).
 
 ## Tests
