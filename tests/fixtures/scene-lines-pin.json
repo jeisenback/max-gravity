@@ -458,13 +458,13 @@
    {
     "i": 4,
     "roll": 0,
-    "text": "You let it lie. The job will keep, for a while.",
+    "text": "You let it lie. The job will keep.",
     "next": null
    },
    {
     "i": 4,
     "roll": 0.999,
-    "text": "You let it lie. The job will keep, for a while.",
+    "text": "You let it lie. The job will keep.",
     "next": null
    }
   ],
@@ -550,13 +550,13 @@
    {
     "i": 4,
     "roll": 0,
-    "text": "You let it lie. The job will keep, for a while.",
+    "text": "You let it lie. The job will keep.",
     "next": null
    },
    {
     "i": 4,
     "roll": 0.999,
-    "text": "You let it lie. The job will keep, for a while.",
+    "text": "You let it lie. The job will keep.",
     "next": null
    }
   ],
@@ -636,13 +636,13 @@
    {
     "i": 4,
     "roll": 0,
-    "text": "You let it lie. The job will keep, for a while.",
+    "text": "You let it lie. The job will keep.",
     "next": null
    },
    {
     "i": 4,
     "roll": 0.999,
-    "text": "You let it lie. The job will keep, for a while.",
+    "text": "You let it lie. The job will keep.",
     "next": null
    }
   ],
@@ -725,13 +725,13 @@
    {
     "i": 4,
     "roll": 0,
-    "text": "You let it lie. The job will keep, for a while.",
+    "text": "You let it lie. The job will keep.",
     "next": null
    },
    {
     "i": 4,
     "roll": 0.999,
-    "text": "You let it lie. The job will keep, for a while.",
+    "text": "You let it lie. The job will keep.",
     "next": null
    }
   ],
@@ -817,13 +817,13 @@
    {
     "i": 4,
     "roll": 0,
-    "text": "You let it lie. The job will keep, for a while.",
+    "text": "You let it lie. The job will keep.",
     "next": null
    },
    {
     "i": 4,
     "roll": 0.999,
-    "text": "You let it lie. The job will keep, for a while.",
+    "text": "You let it lie. The job will keep.",
     "next": null
    }
   ],
@@ -906,13 +906,13 @@
    {
     "i": 4,
     "roll": 0,
-    "text": "You let it lie. The job will keep, for a while.",
+    "text": "You let it lie. The job will keep.",
     "next": null
    },
    {
     "i": 4,
     "roll": 0.999,
-    "text": "You let it lie. The job will keep, for a while.",
+    "text": "You let it lie. The job will keep.",
     "next": null
    }
   ],
@@ -992,13 +992,13 @@
    {
     "i": 4,
     "roll": 0,
-    "text": "You let it lie. The job will keep, for a while.",
+    "text": "You let it lie. The job will keep.",
     "next": null
    },
    {
     "i": 4,
     "roll": 0.999,
-    "text": "You let it lie. The job will keep, for a while.",
+    "text": "You let it lie. The job will keep.",
     "next": null
    }
   ],
@@ -1791,7 +1791,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You pay the full rate. Sam nods and says nothing.",
+    "text": "You pay the full rate. Sam says nothing.",
     "mem": [
      "9 Jul 2214: You would not use my old unit's name."
     ],
@@ -1803,7 +1803,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You pay the full rate. Sam nods and says nothing.",
+    "text": "You pay the full rate. Sam says nothing.",
     "mem": [
      "9 Jul 2214: You would not use my old unit's name."
     ],
@@ -2143,7 +2143,7 @@
    {
     "i": 4,
     "roll": 0.1,
-    "text": "You spend a watch showing Mate0 the gunner, from the bottom, and teaching it turns out to be the best way to find the gaps in your own understanding. (+1 experience at the gunner post.)",
+    "text": "You spend a watch showing Mate0 the gunner, from the bottom, and by the end you have found three gaps in your own understanding. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You spent a watch teaching me your post."
     ],
@@ -2158,7 +2158,7 @@
    {
     "i": 4,
     "roll": 0.9,
-    "text": "You spend a watch showing Mate3 the gunner, from the bottom, and teaching it turns out to be the best way to find the gaps in your own understanding. (+1 experience at the gunner post.)",
+    "text": "You spend a watch showing Mate3 the gunner, from the bottom, and by the end you have found three gaps in your own understanding. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You spent a watch teaching me your post."
     ],
@@ -2209,7 +2209,7 @@
    {
     "i": 6,
     "roll": 0.1,
-    "text": "Ines puts you on the second seat of the sim and runs you through a bad approach until it is a good one, correcting without being asked, in the voice of a woman who has waited a long time to be asked. (+3 experience at the pilot post.)",
+    "text": "Ines puts you on the second seat of the sim and runs you through a bad approach until it is a good one, correcting without being asked. (+3 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: We spent some downtime together."
     ],
@@ -2225,7 +2225,7 @@
    {
     "i": 6,
     "roll": 0.9,
-    "text": "Ines puts you on the second seat of the sim and runs you through a bad approach until it is a good one, correcting without being asked, in the voice of a woman who has waited a long time to be asked. (+3 experience at the pilot post.)",
+    "text": "Ines puts you on the second seat of the sim and runs you through a bad approach until it is a good one, correcting without being asked. (+3 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: We spent some downtime together."
     ],
@@ -7044,7 +7044,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
+    "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
@@ -7056,7 +7056,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
+    "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
@@ -7142,13 +7142,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You say nothing, and let it go, and the day passes. It was only a day, you tell yourself, and it was.",
+    "text": "You say nothing, and let it go, and the day passes. It was only a day.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say nothing, and let it go, and the day passes. It was only a day, you tell yourself, and it was.",
+    "text": "You say nothing, and let it go, and the day passes. It was only a day.",
     "next": null
    }
   ],
@@ -7166,7 +7166,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You report it, and Captain Vance nods, asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
+    "text": "You report it, and Captain Vance asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
     "mem": [
      "9 Jul 2214: You brought me something off the lane when you saw it."
     ],
@@ -7182,7 +7182,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -7190,7 +7190,7 @@
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -7198,7 +7198,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -7209,7 +7209,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -7222,7 +7222,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You report it, and Captain Vance nods, asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
+    "text": "You report it, and Captain Vance asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
     "mem": [
      "9 Jul 2214: You brought me something off the lane when you saw it."
     ],
@@ -7238,7 +7238,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -7246,7 +7246,7 @@
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -7254,7 +7254,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -7265,7 +7265,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -7416,7 +7416,7 @@
    {
     "i": 6,
     "roll": 0,
-    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know.",
     "x": [
      "Saw something off the lane and said nothing."
     ],
@@ -7425,7 +7425,7 @@
    {
     "i": 6,
     "roll": 0.999,
-    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know.",
     "x": [
      "Saw something off the lane and said nothing."
     ],
@@ -8231,7 +8231,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
+    "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
@@ -8243,7 +8243,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
+    "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
@@ -8329,13 +8329,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You say nothing, and let it go, and the day passes. It was only a day, you tell yourself, and it was.",
+    "text": "You say nothing, and let it go, and the day passes. It was only a day.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say nothing, and let it go, and the day passes. It was only a day, you tell yourself, and it was.",
+    "text": "You say nothing, and let it go, and the day passes. It was only a day.",
     "next": null
    }
   ],
@@ -8353,7 +8353,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You report it, and Captain Vance nods, asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
+    "text": "You report it, and Captain Vance asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
     "mem": [
      "9 Jul 2214: You brought me something off the lane when you saw it."
     ],
@@ -8369,7 +8369,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the pilot post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the pilot post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -8377,7 +8377,7 @@
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the pilot post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the pilot post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -8385,7 +8385,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the pilot post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the pilot post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -8396,7 +8396,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the pilot post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the pilot post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -8409,7 +8409,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You report it, and Captain Vance nods, asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
+    "text": "You report it, and Captain Vance asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
     "mem": [
      "9 Jul 2214: You brought me something off the lane when you saw it."
     ],
@@ -8425,7 +8425,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the pilot post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the pilot post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -8433,7 +8433,7 @@
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the pilot post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the pilot post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -8441,7 +8441,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the pilot post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the pilot post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -8452,7 +8452,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the pilot post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the pilot post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -8603,7 +8603,7 @@
    {
     "i": 6,
     "roll": 0,
-    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know.",
     "x": [
      "Saw something off the lane and said nothing."
     ],
@@ -8612,7 +8612,7 @@
    {
     "i": 6,
     "roll": 0.999,
-    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know.",
     "x": [
      "Saw something off the lane and said nothing."
     ],
@@ -9418,7 +9418,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
+    "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
@@ -9430,7 +9430,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
+    "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
@@ -9516,13 +9516,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You say nothing, and let it go, and the day passes. It was only a day, you tell yourself, and it was.",
+    "text": "You say nothing, and let it go, and the day passes. It was only a day.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say nothing, and let it go, and the day passes. It was only a day, you tell yourself, and it was.",
+    "text": "You say nothing, and let it go, and the day passes. It was only a day.",
     "next": null
    }
   ],
@@ -9540,7 +9540,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You report it, and Captain Vance nods, asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
+    "text": "You report it, and Captain Vance asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
     "mem": [
      "9 Jul 2214: You brought me something off the lane when you saw it."
     ],
@@ -9556,7 +9556,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the engineer post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the engineer post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -9564,7 +9564,7 @@
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the engineer post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the engineer post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -9572,7 +9572,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the engineer post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the engineer post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -9583,7 +9583,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the engineer post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the engineer post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -9596,7 +9596,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You report it, and Captain Vance nods, asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
+    "text": "You report it, and Captain Vance asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
     "mem": [
      "9 Jul 2214: You brought me something off the lane when you saw it."
     ],
@@ -9612,7 +9612,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the engineer post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the engineer post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -9620,7 +9620,7 @@
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the engineer post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the engineer post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -9628,7 +9628,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the engineer post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the engineer post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -9639,7 +9639,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the engineer post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the engineer post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -9790,7 +9790,7 @@
    {
     "i": 6,
     "roll": 0,
-    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know.",
     "x": [
      "Saw something off the lane and said nothing."
     ],
@@ -9799,7 +9799,7 @@
    {
     "i": 6,
     "roll": 0.999,
-    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know.",
     "x": [
      "Saw something off the lane and said nothing."
     ],
@@ -10605,7 +10605,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
+    "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
@@ -10617,7 +10617,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
+    "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
@@ -10703,13 +10703,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You say nothing, and let it go, and the day passes. It was only a day, you tell yourself, and it was.",
+    "text": "You say nothing, and let it go, and the day passes. It was only a day.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say nothing, and let it go, and the day passes. It was only a day, you tell yourself, and it was.",
+    "text": "You say nothing, and let it go, and the day passes. It was only a day.",
     "next": null
    }
   ],
@@ -10727,7 +10727,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You report it, and Captain Vance nods, asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
+    "text": "You report it, and Captain Vance asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
     "mem": [
      "9 Jul 2214: You brought me something off the lane when you saw it."
     ],
@@ -10743,7 +10743,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the comms post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the comms post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -10751,7 +10751,7 @@
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the comms post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the comms post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -10759,7 +10759,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the comms post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the comms post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -10770,7 +10770,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the comms post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the comms post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -10783,7 +10783,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You report it, and Captain Vance nods, asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
+    "text": "You report it, and Captain Vance asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
     "mem": [
      "9 Jul 2214: You brought me something off the lane when you saw it."
     ],
@@ -10799,7 +10799,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the comms post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the comms post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -10807,7 +10807,7 @@
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the comms post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the comms post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -10815,7 +10815,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the comms post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the comms post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -10826,7 +10826,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the comms post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the comms post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -10977,7 +10977,7 @@
    {
     "i": 6,
     "roll": 0,
-    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know.",
     "x": [
      "Saw something off the lane and said nothing."
     ],
@@ -10986,7 +10986,7 @@
    {
     "i": 6,
     "roll": 0.999,
-    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know.",
     "x": [
      "Saw something off the lane and said nothing."
     ],
@@ -11792,7 +11792,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
+    "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
@@ -11804,7 +11804,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
+    "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
@@ -11890,13 +11890,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You say nothing, and let it go, and the day passes. It was only a day, you tell yourself, and it was.",
+    "text": "You say nothing, and let it go, and the day passes. It was only a day.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say nothing, and let it go, and the day passes. It was only a day, you tell yourself, and it was.",
+    "text": "You say nothing, and let it go, and the day passes. It was only a day.",
     "next": null
    }
   ],
@@ -11914,7 +11914,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You report it, and Captain Adair nods, asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
+    "text": "You report it, and Captain Adair asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
     "mem": [
      "9 Jul 2214: You brought me something off the lane when you saw it."
     ],
@@ -11930,7 +11930,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -11938,7 +11938,7 @@
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -11946,7 +11946,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -11957,7 +11957,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -11970,7 +11970,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You report it, and Captain Adair nods, asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
+    "text": "You report it, and Captain Adair asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
     "mem": [
      "9 Jul 2214: You brought me something off the lane when you saw it."
     ],
@@ -11986,7 +11986,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -11994,7 +11994,7 @@
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -12002,7 +12002,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -12013,7 +12013,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -12164,7 +12164,7 @@
    {
     "i": 6,
     "roll": 0,
-    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know.",
     "x": [
      "Saw something off the lane and said nothing."
     ],
@@ -12173,7 +12173,7 @@
    {
     "i": 6,
     "roll": 0.999,
-    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know.",
     "x": [
      "Saw something off the lane and said nothing."
     ],
@@ -12979,7 +12979,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
+    "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
@@ -12991,7 +12991,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
+    "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
@@ -13077,13 +13077,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You say nothing, and let it go, and the day passes. It was only a day, you tell yourself, and it was.",
+    "text": "You say nothing, and let it go, and the day passes. It was only a day.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say nothing, and let it go, and the day passes. It was only a day, you tell yourself, and it was.",
+    "text": "You say nothing, and let it go, and the day passes. It was only a day.",
     "next": null
    }
   ],
@@ -13101,7 +13101,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You report it, and Captain Sato nods, asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
+    "text": "You report it, and Captain Sato asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
     "mem": [
      "9 Jul 2214: You brought me something off the lane when you saw it."
     ],
@@ -13117,7 +13117,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -13125,7 +13125,7 @@
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -13133,7 +13133,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -13144,7 +13144,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -13157,7 +13157,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You report it, and Captain Sato nods, asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
+    "text": "You report it, and Captain Sato asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
     "mem": [
      "9 Jul 2214: You brought me something off the lane when you saw it."
     ],
@@ -13173,7 +13173,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -13181,7 +13181,7 @@
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -13189,7 +13189,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -13200,7 +13200,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -13351,7 +13351,7 @@
    {
     "i": 6,
     "roll": 0,
-    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know.",
     "x": [
      "Saw something off the lane and said nothing."
     ],
@@ -13360,7 +13360,7 @@
    {
     "i": 6,
     "roll": 0.999,
-    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know.",
     "x": [
      "Saw something off the lane and said nothing."
     ],
@@ -14166,7 +14166,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
+    "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
@@ -14178,7 +14178,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say you cannot, and it is true, or true enough. Ines nods and does not ask again.",
+    "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
      "9 Jul 2214: You would not lend me anything."
     ],
@@ -14264,13 +14264,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You say nothing, and let it go, and the day passes. It was only a day, you tell yourself, and it was.",
+    "text": "You say nothing, and let it go, and the day passes. It was only a day.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You say nothing, and let it go, and the day passes. It was only a day, you tell yourself, and it was.",
+    "text": "You say nothing, and let it go, and the day passes. It was only a day.",
     "next": null
    }
   ],
@@ -14288,7 +14288,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You report it, and Captain Pell nods, asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
+    "text": "You report it, and Captain Pell asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
     "mem": [
      "9 Jul 2214: You brought me something off the lane when you saw it."
     ],
@@ -14304,7 +14304,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -14312,7 +14312,7 @@
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -14320,7 +14320,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -14331,7 +14331,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -14344,7 +14344,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You report it, and Captain Pell nods, asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
+    "text": "You report it, and Captain Pell asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
     "mem": [
      "9 Jul 2214: You brought me something off the lane when you saw it."
     ],
@@ -14360,7 +14360,7 @@
      {
       "j": 0,
       "roll": 0,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -14368,7 +14368,7 @@
      {
       "j": 0,
       "roll": 0.999,
-      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart and nods. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
+      "text": "You give them the transponder, the bearing and the speed, and the captain draws it on the chart. When you are done the captain says only: \"That is a report.\" (+2 experience at the gunner post.)",
       "x": [
        "Reported something off the lane, in detail."
       ]
@@ -14376,7 +14376,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -14387,7 +14387,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say you are not sure, and the captain puts the pencil down, and says that not being sure is allowed, and that next time the captain would rather you were, one way or the other. (+1 experience at the gunner post.)",
+      "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I would rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
        "9 Jul 2214: You were not sure what you saw."
       ],
@@ -14538,7 +14538,7 @@
    {
     "i": 6,
     "roll": 0,
-    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know.",
     "x": [
      "Saw something off the lane and said nothing."
     ],
@@ -14547,7 +14547,7 @@
    {
     "i": 6,
     "roll": 0.999,
-    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+    "text": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know.",
     "x": [
      "Saw something off the lane and said nothing."
     ],
