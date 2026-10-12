@@ -179,10 +179,10 @@ const INCIDENTS = [
   'The {b} accuses the {a} of arming pirates. The {a} denies it.',
   'Shots fired between {a} and {b} patrols near {s}. Nobody admits to firing first.',
   'The {a} closes a lane near {s} to {b} shipping, citing "security concerns". The {b} calls it an act of hostility.',
-  'A {a} survey ship is turned away from {s} by {b} patrols. Both sides release very different accounts.',
+  'A survey ship of the {a} is turned away from {s} by {b} patrols. Both sides release very different accounts.',
   'The {b} expels three {a} traders from {s} on charges of smuggling. The {a} calls it a fabrication.',
-  'An {a} envoy walks out of talks with the {b} at {s}, and refuses to say why.',
-  'A {b} cutter is found drifting near {s}, its crew unharmed and very quiet. The {a} says it knows nothing.',
+  'An envoy of the {a} walks out of talks with the {b} at {s}, and refuses to say why.',
+  'A cutter of the {b} is found drifting near {s}, its crew unharmed and very quiet. The {a} says it knows nothing.',
   'Feeds in both the {a} and the {b} are running clips of the standoff near {s}, and each is, of course, shot from a different angle.',
 ];
 

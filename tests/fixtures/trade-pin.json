@@ -8062,7 +8062,7 @@
     "tons": 15,
     "destSystem": "mars",
     "destPlanet": "Mars",
-    "title": "Arcology Compact contract: deliver 15t of scientific samples to mars",
+    "title": "Arcology Compact contract: deliver 15t of scientific samples to Mars",
     "pay": 6800,
     "deadline": 11,
     "contract": true
@@ -8138,7 +8138,7 @@
     "tons": 13,
     "destSystem": "pallas",
     "destPlanet": "The Hollows",
-    "title": "Arcology Compact contract: deliver 13t of prefab habitat panels to the hollows",
+    "title": "Arcology Compact contract: deliver 13t of prefab habitat panels to The Hollows",
     "pay": 8160,
     "deadline": 17,
     "contract": true
@@ -8245,7 +8245,7 @@
     "tons": 13,
     "destSystem": "hygiea",
     "destPlanet": "The Rook",
-    "title": "Arcology Compact contract: deliver 13t of medical crates to the rook",
+    "title": "Arcology Compact contract: deliver 13t of medical crates to The Rook",
     "pay": 9280,
     "deadline": 20,
     "contract": true
