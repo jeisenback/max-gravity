@@ -255,7 +255,7 @@ const HAND_EVENTS = [
           post: 'gunner',
           skill: 3,
           effects: { castFlag: { who: 'yelena', flag: 'trusted' }, castLike: { who: 'yelena', n: 3, memory: 'You beat my score on my own worst setting.' }, learn: 3 },
-          result: 'She sets the sim to the setting she keeps for herself. You beat her score by four points. Yelena looks at the number for a while, then ' +
+          result: 'She sets the sim to the setting she keeps for herself. You beat her score by four points. Yelena looks at the number, then ' +
             'writes it on the bulkhead over the console with a marker, under her own. "Again tomorrow," she says.',
         },
         {

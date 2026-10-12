@@ -7907,7 +7907,7 @@
   "id": "hired:crew-yelena",
   "i": 2,
   "label": "[Gunner 3] Ask for her own worst setting",
-  "result": "She sets the sim to the setting she keeps for herself. You beat her score by four points. Yelena looks at the number for a while, then writes it on the bulkhead over the console with a marker, under her own. \"Again tomorrow,\" she says. (+3 experience at the gunner post.)",
+  "result": "She sets the sim to the setting she keeps for herself. You beat her score by four points. Yelena looks at the number, then writes it on the bulkhead over the console with a marker, under her own. \"Again tomorrow,\" she says. (+3 experience at the gunner post.)",
   "changes": [
    "s.cast.yelena.flags: {} -> undefined",
    "s.cast.yelena.flags.trusted: undefined -> true",

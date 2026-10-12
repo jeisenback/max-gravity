@@ -70,8 +70,8 @@ const LIFE_LINES = {
     any: ['{n} is checking the cargo straps.', '{n} is standing among the crates with a hand on a lashing.', '{n} is reading the labels on the cargo, one by one.'] },
   berths: { cat: ['{n} has claimed somebody\'s pillow. Nobody moves it.', '{n} is curled in the center of a freshly made bunk and watches whoever comes near.', '{n} is asleep on a pair of boots in a shaft of dim light, twitching.'],
     medic: ['{n} is checking the sleeping faces in the berths.', '{n} stops at each bunk and listens for breathing.'],
-    passenger: ['{n} is writing letters in their bunk.', '{n} is asleep, or pretending to be.', '{n} is looking through a small pile of photographs, and putting them back, one at a time.', '{n} is sitting on the edge of their bunk, looking at the wall.'],
-    any: ['{n} is catching a few hours in their bunk.', '{n} is asleep with an arm thrown over their eyes and a small book open on their chest.', '{n} is reading, by the light of a small lamp, with their lips moving.'] },
+    passenger: ['{n} is writing letters in their bunk.', '{n} is asleep, or pretending to be.', '{n} is looking through a pile of photographs, and putting them back, one at a time.', '{n} is sitting on the edge of their bunk, looking at the wall.'],
+    any: ['{n} is catching a few hours in their bunk.', '{n} is asleep with an arm thrown over their eyes and a book open on their chest.', '{n} is reading, by the light of a small lamp, with their lips moving.'] },
   galley: { cat: ['{n} is sitting by the food locker, staring at it.', '{n} is licking a drop of milk from the galley floor.', '{n} has taken a seat at the table. Nobody moves it.'],
     any: [
       '{n} is making coffee that could strip paint.',
