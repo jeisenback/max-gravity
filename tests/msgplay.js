@@ -5,7 +5,7 @@
 const playMessages = () => {
   const out = [];
   const real = Math.random;
-  const seq = list => { const l = [...list]; Math.random = () => (l.length ? l.shift() : real()); };
+  const seq = list => { const l = [...list], base = Math.random; Math.random = () => (l.length ? l.shift() : base()); };  // the rolls given, then the seeded random the case started with
   const start = (seed, hired = false) => {
     __seed(seed);
     startGame(hired ? { slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 5000 } : { slot: 1, background: 'earth', captain: 'Sam Rowe', credits: 5000 });
@@ -134,6 +134,12 @@ const playMessages = () => {
   says('news:settlement', 1, st => { st.credits = 1e7; for (const cid of Object.keys(BUILDINGS.habitat.mat)) st.cargo[cid] = 1e3; }, () => found(Object.keys(OUTPOST_SITES)[0], 'Test Landing'));
   says('news:short', 1, st => { st.credits = 1e7; for (const cid of Object.keys(BUILDINGS.habitat.mat)) st.cargo[cid] = 1e3; found(Object.keys(OUTPOST_SITES)[0], 'Test Landing'); st.news = []; for (const cid of Object.keys(NEEDS)) outpost().stock[cid] = 0; }, () => outpostDay());
   says('news:league', 1, () => {}, () => crown({ id: 'belt', name: 'Belt League' }, {}, 'Ceres Miners'));
+  // ---------- the market rumors: the stored rumor, the line on the comms and the entry in the inbox ----------
+  const rumorOf = st => ({ rumor: st.rumors[st.rumors.length - 1].text, comm: (G.transit.comms || []).slice(-1)[0], inbox: st.inbox[0].text });
+  const rumor = (key, dice, setup) => says(key, 1, st => { G.transit = { comms: [] }; if (setup) setup(st); }, () => { seq(dice); addRumor(); }, false, rumorOf);
+  for (let k = 0; k < 12; k++) rumor(`rumor:up:${k}`, [0.5, 0, 0, 0.1, (k + 0.5) / 12]);
+  for (let k = 0; k < 8; k++) rumor(`rumor:down:${k}`, [0.5, 0, 0, 0.9, (k + 0.5) / 8]);
+  for (const [name, planetDraw] of [['ceres', 0], ['pallas', 0.99]]) rumor(`rumor:story:${name}`, [0.5, 0.1, planetDraw], () => { story().stage = 1; });
   return out;
 };
 

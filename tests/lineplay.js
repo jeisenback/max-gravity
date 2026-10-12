@@ -87,6 +87,12 @@ const playLines = () => {
     for (let k = 0; k < 4; k++) { __seed(2000 + k); st.news = []; drawn([0, (k + 0.5) / 4]); worldTick(); note(`news:flare:${k}`, st.news.map(n => n.text).join(' | ')); }
     for (let k = 0; k < 10; k++) { __seed(2100 + k); st.news = []; st.factions = null; drawn([0, k < 5 ? 0.2 : 0.7, (k + 0.5) / 10, 0.3]); factionTick(); note(`news:incident:${k}`, st.news.map(n => n.text).join(' | ')); }
     Math.random = realRandom; }
+  // the market rumors: every line of the pool of a rise and of a fall, as the game draws it (the days, the market and the good, whether it rises, then the line)
+  { const realRandom = Math.random, drawn = list => { const q = [...list]; Math.random = () => (q.length ? q.shift() : 0.99); };
+    const rumor = (key, dice) => { __seed(2200); st.rumors = []; drawn(dice); addRumor(); note(key, st.rumors[st.rumors.length - 1].text); };
+    for (let k = 0; k < 12; k++) rumor(`rumor:up:${k}`, [0.5, 0, 0, 0.1, (k + 0.5) / 12]);
+    for (let k = 0; k < 8; k++) rumor(`rumor:down:${k}`, [0.5, 0, 0, 0.9, (k + 0.5) / 8]);
+    Math.random = realRandom; }
   return out;
 };
 

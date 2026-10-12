@@ -126,7 +126,7 @@ function storyRumor() {
   const s = story();
   if (s.stage === 0 || Math.random() > 0.25) return null;
   const planet = pick(['Ceres Station', 'Pallas Refinery']);
-  return { planet, sid: planet === 'Ceres Station' ? 'ceres' : 'pallas', cid: 'water', up: true, text: `Another cistern failure on ${planet}. Water rationing is tightening.` };
+  return { planet, sid: planet === 'Ceres Station' ? 'ceres' : 'pallas', cid: 'water', up: true, text: sceneSay('scene:market-news', 'story.cistern', { planet }) };
 }
 
 // ==================== Act 2: who gets the proof ====================

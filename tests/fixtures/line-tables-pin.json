@@ -3234,5 +3234,85 @@
  {
   "key": "news:incident:9",
   "text": "Feeds in both the Dome Concord and the Arcology Compact are running clips of the standoff near Earth, and each is, of course, shot from a different angle."
+ },
+ {
+  "key": "rumor:up:0",
+  "text": "Dockworkers on Hermes Foundry have gone on strike. Machine Parts is suddenly scarce there. (Mercury)"
+ },
+ {
+  "key": "rumor:up:1",
+  "text": "A disease scare on Hermes Foundry has everyone hoarding Machine Parts. (Mercury)"
+ },
+ {
+  "key": "rumor:up:2",
+  "text": "Customs on Hermes Foundry seized a shipment of Machine Parts. Buyers there are desperate. (Mercury)"
+ },
+ {
+  "key": "rumor:up:3",
+  "text": "A corporate buying spree on Hermes Foundry has cleared the shelves of Machine Parts. (Mercury)"
+ },
+ {
+  "key": "rumor:up:4",
+  "text": "A fire in a warehouse on Hermes Foundry took most of the local stock of Machine Parts, and nobody is saying how it started. (Mercury)"
+ },
+ {
+  "key": "rumor:up:5",
+  "text": "A ceremonial feast on Hermes Foundry has drained every last ounce of Machine Parts, and the cooks are frantic. (Mercury)"
+ },
+ {
+  "key": "rumor:up:6",
+  "text": "A ship carrying Machine Parts to Hermes Foundry was hijacked two weeks ago, and the shelves are getting bare. (Mercury)"
+ },
+ {
+  "key": "rumor:up:7",
+  "text": "A new tax on Machine Parts at Hermes Foundry has, for reasons no one can explain, made it more valuable, not less. (Mercury)"
+ },
+ {
+  "key": "rumor:up:8",
+  "text": "A big contract on Hermes Foundry has swallowed the whole local supply of Machine Parts, and the bidding has gone wild. (Mercury)"
+ },
+ {
+  "key": "rumor:up:9",
+  "text": "A shipping delay has stranded a convoy of Machine Parts on the way to Hermes Foundry, and buyers are getting anxious. (Mercury)"
+ },
+ {
+  "key": "rumor:up:10",
+  "text": "A cold snap on Hermes Foundry has made Machine Parts the only thing anyone wants to talk about. (Mercury)"
+ },
+ {
+  "key": "rumor:up:11",
+  "text": "Word is that the governor of Hermes Foundry is stockpiling Machine Parts for a party, and will pay well over the odds. (Mercury)"
+ },
+ {
+  "key": "rumor:down:0",
+  "text": "Three haulers just unloaded Machine Parts on Hermes Foundry. Prices there are collapsing. (Mercury)"
+ },
+ {
+  "key": "rumor:down:1",
+  "text": "Warehouses on Hermes Foundry are overflowing with Machine Parts. Sellers are dumping it cheap. (Mercury)"
+ },
+ {
+  "key": "rumor:down:2",
+  "text": "A bumper output of Machine Parts on Hermes Foundry has the markets swamped. (Mercury)"
+ },
+ {
+  "key": "rumor:down:3",
+  "text": "A strike ended on Hermes Foundry, and every dock in town is suddenly flooded with Machine Parts. (Mercury)"
+ },
+ {
+  "key": "rumor:down:4",
+  "text": "A trade fair on Hermes Foundry has brought in a great many merchants, and Machine Parts is going for a song. (Mercury)"
+ },
+ {
+  "key": "rumor:down:5",
+  "text": "A warehouse on Hermes Foundry has been cleared out in a hurry, and the Machine Parts is going, quite literally, for whatever anyone will pay. (Mercury)"
+ },
+ {
+  "key": "rumor:down:6",
+  "text": "A rumor that Machine Parts on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it is nonsense. (Mercury)"
+ },
+ {
+  "key": "rumor:down:7",
+  "text": "A company on Hermes Foundry has folded, and its whole stock of Machine Parts is being sold off at auction. (Mercury)"
  }
 ]
