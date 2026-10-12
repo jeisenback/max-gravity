@@ -356,7 +356,7 @@ function updateTransit(dt) {
       ...crewMembers().flatMap(c => c.chatter || c.traits.map(t => fill(pick(traitChatter(t)), c))),
       ...paxAboard().filter(m => m.pid).map(m => G.state.people[m.pid]).flatMap(p => p.traits.map(t => `(passenger) ${fill(pick(traitChatter(t)), p)}`)),
     ];
-    const line = pick(Mods.filter('chatter', aboard.length && Math.random() < 0.6 ? aboard : CHATTER));
+    const line = pick(Mods.filter('chatter', aboard.length && Math.random() < 0.6 ? aboard : linedText('lines:comms-chatter', CHATTER)));
     if (!Settings.quiet.chatter) comm(line);
   }
   if (t.times.length && t.total - t.left >= t.times[0]) {

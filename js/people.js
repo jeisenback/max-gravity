@@ -529,16 +529,16 @@ function meetContacts(planet) {
     if (p.owes && !p.repaid) {
       p.repaid = p.thanked = true;
       st.credits += p.owes * 2;
-      notes.push(`${p.first} ${p.last} finds you at the dock and repays the ${fmt(p.owes)} cr you covered, with interest: ${fmt(p.owes * 2)} cr.`);
+      notes.push(noteSay('repaid', { first: p.first, last: p.last, owes: fmt(p.owes), back: fmt(p.owes * 2) }));
     } else if (p.opinion >= OPINION.TRUSTED && !p.thanked) {
       p.thanked = true;
       const roll = Math.random();
       if (roll < 0.4) {
         const c = p.wealth * randInt(5, 12) * 100;
         st.credits += c;
-        notes.push(`${p.first} ${p.last} spots you at the bar and insists on buying you dinner, and slips you ${fmt(c)} cr "for last time".`);
+        notes.push(noteSay('dinner', { first: p.first, last: p.last, gift: fmt(c) }));
       } else if (roll < 0.7) {
-        notes.push(`${p.first} ${p.last} buys you a drink and passes on a tip: "${addRumor()}"`);
+        notes.push(noteSay('tip', { first: p.first, last: p.last, rumor: addRumor() }));
       } else {
         const reachable = Object.keys(SYSTEMS).filter(id => id !== st.systemId && inRange(st.systemId, id));
         const sid = pick(reachable), dest = pick(SYSTEMS[sid].planets), days = baseDays(st.systemId, sid);
@@ -547,12 +547,12 @@ function meetContacts(planet) {
           title: jobSay('favor', { first: p.first, last: p.last, dest: dest.name }),
           pay: 3000 + days * 700, deadline: st.day + days * 2 + 5,
         });
-        notes.push(`${p.first} ${p.last} has a job for someone they trust. It is on the mission board.`);
+        notes.push(noteSay('favor', { first: p.first, last: p.last }));
       }
     } else if (p.opinion <= OPINION.BITTER && !p.avenged) {
       p.avenged = true;
       G.revenge = p;
-      notes.push(`Word on the docks: ${p.first} ${p.last} has been asking around about your ship, and paying people to listen. Watch yourself out there.`);
+      notes.push(noteSay('warning', { first: p.first, last: p.last }));
     }
   }
   return notes;

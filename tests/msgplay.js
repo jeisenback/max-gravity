@@ -147,6 +147,21 @@ const playMessages = () => {
     says('jobs:bar:both', 1, null, () => { seq([0, 0, 0.5, 0.1, 0, 0, 0.5]); got = ownerLeads(regular()); }, false, () => ({ notes: got, offers: offers() }));
     says('jobs:bar:delivery', 1, null, () => { seq([0, 0, 0.5, 0.9]); got = ownerLeads(regular()); }, false, () => ({ notes: got, offers: offers() }));
     says('jobs:favor', 1, st => { const p = makePerson('earth'); Object.assign(p, { first: 'Mara', last: 'Quill', opinion: OPINION.TRUSTED, thanked: false, location: st.planet }); registerPerson(p); }, () => { seq([0.9]); got = meetContacts(currentPlanet()); }, false, () => ({ notes: got, offers: offers() }));
+    const person = extra => st => { const p = makePerson('earth'); Object.assign(p, { first: 'Mara', last: 'Quill', thanked: false, location: st.planet }, extra); registerPerson(p); };
+    const met = rolls => () => { seq(rolls); got = meetContacts(currentPlanet()); };
+    says('notes:repaid', 1, person({ owes: 300, repaid: false }), met([0.9]), false, () => ({ notes: got }));
+    says('notes:dinner', 1, person({ opinion: OPINION.TRUSTED }), met([0.1]), false, () => ({ notes: got }));
+    says('notes:tip', 1, person({ opinion: OPINION.TRUSTED }), met([0.5]), false, () => ({ notes: got }));
+    says('notes:warning', 1, person({ opinion: OPINION.BITTER, avenged: false }), met([0.9]), false, () => ({ notes: got }));
+    says('notes:lead-hiring', 1, person({}), st => { const p = Object.values(st.people).find(x => x.first === 'Mara'); G.barState = G.barState || {}; G.patrons = [{ p, regular: true }]; seq([0.1]); barLeads(currentPlanet()); got = G.barState.leadLines; }, true, () => ({ notes: got }));
+    // the comms chatter: each line of the pool, drawn in turn on a burn with nobody aboard
+    says('chatter:pool', 1, null, () => {
+      uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null; got = [];
+      const n = CHATTER.length, filter = Mods.filter;
+      let k = 0;
+      Mods.filter = (key, list) => (key === 'chatter' ? [list[k]] : filter.call(Mods, key, list));  // the k-th line of the pool, without what the family mod adds to it
+      try { for (k = 0; k < n; k++) { G.transit.chatter = 0; G.transit.comms = []; updateTransit(0.01); got.push(G.transit.comms.slice(-1)[0]); } } finally { Mods.filter = filter; }
+    }, false, () => ({ lines: got }));
     for (let i = 1; i <= 4; i++) says(`jobs:board:${i}`, 31 * i, st => { st.rep[localGov()] = 40; }, () => { got = generateMissions(currentPlanet()); }, false, () => got.map(o => [o.type, o.title, o.good || null]));  // a captain a government trusts, whose delivery is a contract
     says('jobs:story-passenger', 1, null, () => storyPassenger('Mira Castellane', 1, 'jupiter', 'Europa', 3000, 'mira-europa'), false, st => st.missions.map(m => m.title)); }
   return out;

@@ -71,13 +71,13 @@ function ownerLeads(regular) {
     type: 'delivery', good: jobSay('bar.good', { first: regular.first }), tons, destSystem: sid, destPlanet: dest.name, regular: true, contact: regular.id,
     title: jobSay('bar.delivery', { first: regular.first, last: regular.last, tons, dest: dest.name }), pay: 1500 + days * 400 + tons * 100, deadline: st.day + days * 2 + 5,
   });
-  out.push(`${regular.first} has a job for someone they trust. It is on the mission board.`);
+  out.push(noteSay('lead.job', { first: regular.first }));
   const pirates = reachable.filter(id => SYSTEMS[id].pirates > 0), names = PIRATE_NAMES.filter(n => ![...G.offers, ...st.missions].some(m => m.targetName === n));
   if (pirates.length && names.length && Math.random() < 0.4) {
     const tsid = pick(pirates), name = pick(names);
     G.offers.unshift({ type: 'bounty', targetSystem: tsid, targetName: name, issuer: localGov(), contact: regular.id,
       title: jobSay('bar.bounty', { first: regular.first, target: name, system: SYSTEMS[tsid].name }), pay: randInt(8, 16) * 1000, deadline: st.day + baseDays(st.systemId, tsid) * 2 + 10 });
-    out.push(`${regular.first} says ${name} has been seen near ${SYSTEMS[tsid].name}, and that someone is paying for it. That is on the board too.`);
+    out.push(noteSay('lead.bounty', { first: regular.first, name, system: SYSTEMS[tsid].name }));
   }
   return out;
 }
@@ -93,7 +93,7 @@ function barLeads(planet) {
       st.leads = (st.leads || []).filter(l => st.people[l.pid]);
       if (st.leads.length >= MAX_LEADS) st.leads.shift();
       const l = makeLead(p); st.leads.push(l);
-      lines.push(`${p.first} knows of a ship that is hiring: the ${st.people[l.pid].ship.name}.`);
+      lines.push(noteSay('lead.hiring', { first: p.first, ship: st.people[l.pid].ship.name }));
     } else if (planet.services.includes('missions')) lines.push(...ownerLeads(p));
     break;
   }
@@ -101,7 +101,7 @@ function barLeads(planet) {
 }
 
 function barWorkHtml() {
-  const lines = (G.barState.leadLines || []).map(l => `<div class="hint">${l}</div>`).join('');
+  const lines = (G.barState.leadLines || []).map(l => `<div class="hint">${esc(l)}</div>`).join('');
   if (hired() && scopeOff('barwork')) return '';
   if (hired()) return `${lines}<h3>Work for yourself</h3>${Object.keys(SIDE_WORK).map(k => `<div class="row"><button data-action="sideWork" data-arg="${k}" ${SIDE_WORK[k].can() ? '' : 'disabled'}>${sideLabel(k)}</button></div>`).join('')}${leadsHtml()}`;
   const trouble = troubleAhead().slice(0, 2).map(t => `<div class="hint">Word on the lanes: ${t}.</div>`).join('');

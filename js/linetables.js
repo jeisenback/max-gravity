@@ -40,6 +40,8 @@ const LINE_TABLES = [
   { id: 'lines:market-rumors', title: 'Market rumors: a price rising and a price falling', file: 'js/transit.js', plain: true, where: 'transit', table: () => RUMORS },
   { id: 'lines:world-flares', title: 'News: pirates flaring up around a system', file: 'js/world.js', plain: true, where: 'transit', table: () => FLARE_NEWS },
   { id: 'lines:world-incidents', title: 'News: incidents between the factions', file: 'js/world.js', plain: true, where: 'transit', table: () => INCIDENTS },
+  { id: 'lines:comms-chatter', title: 'Comms chatter on a burn: voices on the band and the ship\'s own systems', file: 'js/transit.js', plain: true, where: 'transit', table: () => CHATTER },
+  { id: 'lines:captain-chatter', title: 'The captain\'s habits among the crew\'s chatter', file: 'js/hired.js', plain: true, where: 'transit', table: () => CAPTAIN_CHATTER },
   { id: 'lines:ship-life', title: 'On the ship: what each person is seen doing in each room', file: 'js/shiplife.js', plain: true, where: 'transit', table: () => LIFE_LINES },
   { id: 'lines:ship-lights', title: 'On the ship: the lights going down and coming up', file: 'js/shiplife.js', plain: true, where: 'transit', table: () => LIFE_NOTES },
   { id: 'lines:trait-chatter', title: 'Crew chatter, by trait', file: 'js/peopletext.js', plain: true, where: 'transit', table: () => Object.fromEntries(Object.entries(TRAITS).map(([t, d]) => [t, d.chatter])) },
