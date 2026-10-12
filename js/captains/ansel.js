@@ -114,7 +114,7 @@ CAST.ansel = {
       ],
     },
     late: {
-      days: 55, title: 'What Ansel Knows',
+      days: 55, title: 'What Ansel Knows', flag: 'secretKnown',
       text: ('Ansel has the sheet on the galley table, and he has not written on it. "I am going to say a number," he says. "It is what she owes, and ' +
           'what she has, and what she would need to win on a single run, and the odds of her winning it. I worked it out in a week, years ago. I have ' +
           'kept it up since. It comes out the same every time." He looks at you. "I do not want to be a person who knew. If the last big run comes, I ' +
