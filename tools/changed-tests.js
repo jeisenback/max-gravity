@@ -15,7 +15,7 @@ const path = require('node:path');
 const LAYOUT = ['tests/layout.test.js', 'tests/shell.test.js', 'tests/ui.test.js'];
 const GLOBALS = 'tests/globals.test.js';
 const TEXT_FILE = /^js\/(?:(?:\w+text|bartopics)\.js|(?:captains|stories)\/[\w-]+\.js)$/;  // data-only words that the pins play through other scripts, so no harness names them: a change runs every pin
-const EDITOR = ['tests/editor.test.js', 'tests/editorforms.test.js', 'tests/editorfreq.test.js', 'tests/editornew.test.js', 'tests/editorpreview.test.js', 'tests/editorsave.test.js', 'tests/editorhired.test.js'];
+const EDITOR_TEST = /^tests\/editor[\w-]*\.test\.js$/;  // the scene editor's test files, whatever their number (a long file is split into several, #583)
 
 const declared = src => [...src.matchAll(/^(?:async\s+)?(?:const|let|var|function|class)\s+([A-Za-z_$][\w$]*)/gm)].map(m => m[1]).filter(n => n.length >= 3);
 const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -25,6 +25,7 @@ const esc = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 function select(changed, { tests, sources }) {
   const files = new Set(), why = [];
   const add = (list, reason) => { const hit = list.filter(t => t in tests); hit.forEach(t => files.add(t)); if (hit.length) why.push(reason); };
+  const EDITOR = Object.keys(tests).filter(t => EDITOR_TEST.test(t));
   const everything = reason => ({ files: Object.keys(tests).sort(), full: true, why: [reason] });
 
   for (const f of changed) {
