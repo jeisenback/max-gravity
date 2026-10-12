@@ -36,6 +36,7 @@ const LINE_TABLES = [
   { id: 'lines:family-chatter', title: 'What the crew say of a shipmate down or up, the cat and the touches', file: 'js/familytext.js', where: 'transit', table: () => CHATTER_LINES },
   { id: 'lines:family-ship', title: 'The ship as home: the epilogue line, a favor done, a letter, a touch, and what the log and the memories say', file: 'js/familytext.js', where: 'transit', plainKey: /^(loyal|rename|returned|page\.rename\.(label|placeholder))$/, table: () => SHIP_LINES },
   { id: 'lines:family-names', title: 'Names: the holidays, the traditions, the burns and the cat', file: 'js/familytext.js', where: 'transit', plainKey: /^holidays\./, table: () => ({ holidays: Object.fromEntries(HOLIDAYS.map(h => [holidayKey(h), h.name])), traditions: TRADITION_NAMES, burns: BURN_NAMES, cats: CAT_NAMES }) },
+  { id: 'lines:errands', title: 'Errands a hand is offered: what is carried, and what is said of it', file: 'js/hired.js', plain: true, where: 'port', table: () => ERRANDS },
   { id: 'lines:market-rumors', title: 'Market rumors: a price rising and a price falling', file: 'js/transit.js', plain: true, where: 'transit', table: () => RUMORS },
   { id: 'lines:world-flares', title: 'News: pirates flaring up around a system', file: 'js/world.js', plain: true, where: 'transit', table: () => FLARE_NEWS },
   { id: 'lines:world-incidents', title: 'News: incidents between the factions', file: 'js/world.js', plain: true, where: 'transit', table: () => INCIDENTS },

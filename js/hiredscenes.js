@@ -25,6 +25,7 @@ const HIRED_FUNCTION_SCENES = [
   { id: 'scene:chapter-recap', fn: 'chapterRecap', file: 'js/hired.js', title: 'Looking Back', where: 'port', when: 'The look back at the chapter, read before you buy a ship of your own and when a hand is put ashore: the days and runs, why you signed on, who you got close to, who was lost, the ties between the crew and the marks left on the way.' },
   { id: 'scene:world-news', plain: true, fn: 'worldNews', file: 'js/world.js', title: 'The News of the World', where: 'transit', when: 'The items of news that appear in the journal and the inbox: a hauler that never arrived, a faction\'s economy booming, slumping or back to normal, a war and its ceasefire, a settlement founded or running short, a league won.' },
   { id: 'scene:market-news', plain: true, fn: 'addRumor', file: 'js/transit.js', title: 'Market Rumors: How a Tip Is Given', where: 'transit', when: 'The words around a market rumor picked up on the comms, which is kept in the journal and the inbox (the rumors themselves are the lines of Market Rumors), and the rumor the story plants when the water runs short.' },
+  { id: 'scene:job-titles', plain: true, fn: 'generateMissions', file: 'js/game.js', title: 'Job Titles on the Mission Board', where: 'port', when: 'The titles of the jobs offered at a port: carrying passengers, delivering cargo, a bounty, a contract for a captain a government trusts, an errand for the captain\'s port, a regular\'s work at the bar and a favor for a friend.' },
   { id: 'scene:screens', fn: 'settleRun', file: 'js/hired.js', title: 'Notes and Memories at the Screens', where: 'port', when: 'What people remember and are told when you let a crew member go or drop a passenger, when a run is settled, a post is asked for, a ship is bought in, or you practice at your post.' },
   { id: 'scene:memories', fn: 'like', file: 'js/people.js', title: 'Memories Left by Play', where: 'transit', when: 'What a person keeps of a fine paid, a passenger landed or let down, ice brought in, a loss mourned, a hand in the yard, a post taken from them, or the first officers\' hour of danger (lost, or lived through).' },
   { id: 'scene:chapter-end', fn: 'chapterEnd', file: 'js/hired.js', title: 'Your Own Ship', where: 'port', when: 'When you buy your own ship: the close of the hired-hand chapter, by what the chapter held (those lost, who comes with you, a promise kept, a quiet fortune).' },
@@ -259,6 +260,13 @@ const SCENE_LINES = {
   'scene:market-news': {  // the words around a market rumor (js/transit.js), and the story's own (js/story.js)
     'where': '{text} ({system})', 'comm': '[Market] {text} ({system}, for about {days} days)',
     'story.cistern': 'Another cistern failure on {planet}. Water rationing is tightening.',
+  },
+  'scene:job-titles': {  // the titles of the jobs offered (js/game.js, js/people.js, js/barwork.js, js/hired.js, js/story.js), shown on the mission board and kept in the journal as plain text
+    'carry': 'Carry {who} ({pax}) to {dest}', 'deliver': 'Deliver {tons}t of {good} to {dest}', 'bounty': 'Bounty: destroy {target} near {system}',
+    'contract': '{gov} contract: {job}',
+    'errand': 'Errand: carry {what} to {dest}', 'errand.cut': 'The captain keeps {cut} cr of the fee.',
+    'bar.delivery': '{first} {last} has a delivery: {tons}t to {dest}', 'bar.bounty': 'Bounty tip from {first}: destroy {target} near {system}', 'bar.good': 'goods for {first}\'s people',
+    'favor': 'Favor for {first} {last}: deliver a sealed case to {dest}', 'favor.good': 'a sealed case for {first}',
   },
   'scene:screens': {  // what is remembered and said at the port screens and the hand's screens (ui.js, hired.js): letting go or dropping someone, a run settled, a swap of posts, a ship bought in, and practice at a post
     'dismiss.memory': 'You let me go at {planet}.', 'abort.memory': 'You dumped me at {planet}.',

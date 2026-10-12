@@ -3314,5 +3314,25 @@
  {
   "key": "rumor:down:7",
   "text": "A company on Hermes Foundry has folded, and its whole stock of Machine Parts is being sold off at auction. (Mercury)"
+ },
+ {
+  "key": "errand:0",
+  "text": "Errand: carry a sealed parcel to Eros Old Town | A courier bag with a wax seal, and a receipt to bring back signed. It weighs about as much as a lunch. The captain keeps 216 cr of the fee."
+ },
+ {
+  "key": "errand:1",
+  "text": "Errand: carry a message on a chip to Eros Old Town | A hand-written note on a data chip: somebody does not trust the public bands with it. The captain keeps 216 cr of the fee."
+ },
+ {
+  "key": "errand:2",
+  "text": "Errand: carry a set of spare keys to Eros Old Town | A ring of keys for a flat somebody has not seen in years. They want them back before the lease runs out. The captain keeps 216 cr of the fee."
+ },
+ {
+  "key": "errand:3",
+  "text": "Errand: carry a box of medicine to Eros Old Town | An insulated box with a cold-chain tag. The label says to keep it upright and out of the sun. The captain keeps 216 cr of the fee."
+ },
+ {
+  "key": "errand:4",
+  "text": "Errand: carry a crate of seedlings to Eros Old Town | A tray of green shoots under a grow light that has to stay on. You carry it in your bunk. The captain keeps 216 cr of the fee."
  }
 ]

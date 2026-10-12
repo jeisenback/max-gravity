@@ -47,6 +47,7 @@ const currentPlanet = () => system().planets.find(p => p.name === G.state.planet
 
 // The one-line notes of flight and the dock are in the text layer ('scene:flight-notes', js/hiredscenes.js); this reads one.
 const flySay = (key, vars) => sceneSay('scene:flight-notes', key, vars);
+const jobSay = (key, vars) => sceneSay('scene:job-titles', key, vars);  // the titles of the jobs offered are in the text layer too
 
 function msg(text) {
   G.messages.push({ text, t: G.time });
@@ -461,7 +462,8 @@ function land(planet) {
     if (m.type === 'errand') {
       st.credits += m.pay;
       if (st.hired) st.hired.fund += m.cut || 0;
-      msg(flySay('errand', { what: m.title.replace(/^Errand: carry /, '').replace(/ to .*/, ''), pay: fmt(m.pay) }));
+      // what the errand carries is kept with it; a save from before has only its title
+      msg(flySay('errand', { what: m.what !== undefined ? m.what : m.title.replace(/^Errand: carry /, '').replace(/ to .*/, ''), pay: fmt(m.pay) }));
     } else if (m.type === 'delivery') {
       st.credits += m.pay;
       msg(flySay('delivery', { tons: m.tons, good: m.good, pay: fmt(m.pay) }));
@@ -629,7 +631,7 @@ function generateMissions(planet) {
       if (Math.random() < 0.2 && ![...offers, ...G.state.missions].some(m => m.passenger === pid)) {
         offers.push({
           type: 'passenger', passenger: pid, who: P.name, pax: P.pax, bonus: 0, destSystem, destPlanet: dest.name,
-          title: `Carry ${P.name} (${P.pax}) to ${dest.name}`,
+          title: jobSay('carry', { who: P.name, pax: P.pax, dest: dest.name }),
           pay: Math.round((1500 + days * 400) * P.fare), deadline,
         });
       } else {
@@ -642,7 +644,7 @@ function generateMissions(planet) {
       const days = daysTo(destSystem), tons = randInt(3, 15), good = pick(MISSION_GOODS);
       offers.push({
         type: 'delivery', good, tons, destSystem, destPlanet: dest.name,
-        title: `Deliver ${tons}t of ${good} to ${dest.name}`,
+        title: jobSay('deliver', { tons, good, dest: dest.name }),
         pay: 1000 + days * 350 + tons * 100,
         deadline: day + Math.ceil(days * 1.5) + randInt(2, 6),
       });
@@ -654,7 +656,7 @@ function generateMissions(planet) {
       const targetSystem = pick(options), targetName = pick(names);
       offers.push({
         type: 'bounty', targetSystem, targetName, issuer: localGov(),
-        title: `Bounty: destroy ${targetName} near ${SYSTEMS[targetSystem].name}`,
+        title: jobSay('bounty', { target: targetName, system: SYSTEMS[targetSystem].name }),
         pay: randInt(8, 16) * 1000,
         deadline: day + daysTo(targetSystem) * 2 + 10,
       });
@@ -663,7 +665,7 @@ function generateMissions(planet) {
   // Captains the local government trusts are offered a better-paid contract.
   const gov = localGov(), job = offers.find(o => o.type === 'delivery');
   if (job && gov !== 'Pirate' && repOf(gov) >= 15) {
-    Object.assign(job, { contract: true, pay: Math.round(job.pay * 1.6), title: `${gov} contract: ${job.title.toLowerCase()}` });
+    Object.assign(job, { contract: true, pay: Math.round(job.pay * 1.6), title: jobSay('contract', { gov, job: job.title.toLowerCase() }) });
   }
   for (const o of offers) o.pay = Math.round(Mods.filter('missionPay', o.pay, o, planet));
   return offers;
