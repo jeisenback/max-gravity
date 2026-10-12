@@ -209,7 +209,7 @@ const TRAITS = {
     adj: 'devout',
     chatter: [
       '{first} is praying quietly in the cargo bay.',
-      '{first} has tied a ribbon to a bulkhead, for luck, and blessed it.',
+      '{first} has tied a ribbon to a bulkhead, and blessed it.',
       '{first} murmurs a short blessing over the drive before each flip.',
       '{first} is reading, aloud and softly, from a worn book.',
       '{first} is lighting a very small, very safe candle in a jar, and shielding it from the draught with a hand.'
@@ -219,7 +219,7 @@ const TRAITS = {
     adj: 'abrasive',
     chatter: [
       '{first}: "Who designed this galley, and were they drunk?"',
-      '{first} is complaining about the coffee. The coffee, to be fair, deserves it.',
+      '{first} is complaining about the coffee.',
       '{first}: "In my last ship, we had a proper bunk. With a door."',
       '{first} has an opinion about the way you are flying, and shares it, generously, at every turn.',
       '{first} is glaring at the thermostat.'
@@ -230,7 +230,7 @@ const TRAITS = {
     chatter: [
       '{first} is asking the nav computer far too many questions.',
       '{first} has taken the panel off the galley clock to see what makes it tick.',
-      '{first} is following the plume readout with a notebook, and a look of pure joy.',
+      '{first} is following the plume readout with a notebook, and has filled four pages.',
       '{first}: "But why does it hum at that particular note? Has anybody ever asked?"',
       '{first} is pressing an ear to the bulkhead, listening to something nobody else can hear.'
     ]
@@ -271,7 +271,7 @@ const TRAITS = {
       '{first} volunteered for the next EVA before anyone asked.',
       '{first} is calmly checking the emergency hatches, one by one, whistling.',
       '{first} has a plain scar, and a plain refusal to talk about it.',
-      '{first}: "If anything goes wrong, I will be the one to go and look. That is what I am for."',
+      '{first}: "Hatch four is good. Hatch five is good. Hatch six is stiff, and I have oiled it."',
       '{first} is smiling, in the face of a very small, very real problem with the coolant.'
     ]
   },
@@ -380,7 +380,7 @@ const PEOPLE_LINES = {
     text: 'Your comms log shows {first} sending tight-beam bursts between the second and third watch, short pulses aimed at no port you know. They send them from the observation blister, alone, with the lights off. You have started to count how many times a shift {first} looks at the door.',
     'c0.label': 'Confront them',
     'c0.win': '{first} sighs, looks at you, and transfers 2,500 cr "for your discretion". "I like you, captain," they say. "I would rather not have to like you less."',
-    'c0.lose': '{first} tells you, evenly, that it is none of your business. They do not raise their voice and they do not threaten you. They stand there until you leave.',
+    'c0.lose': '{first} tells you that it is none of your business. They do not raise their voice and they do not threaten you. They stand there until you leave.',
     'c1.label': '[{crew}] Quietly decrypt the traffic',
     'c1.result': '{crew} cracks it over a long evening. Someone is paying for market numbers from every port you touch, in tidy weekly reports. Nothing dangerous: a patient stranger who wants to know what everything costs. Among the bursts is one line you can use: "{rumor}"',
     'c2.label': 'Not your business',
@@ -391,9 +391,9 @@ const PEOPLE_LINES = {
   },
   'people:pax:debt': {
     title: 'Collectors',
-    text: 'A collection agency hails and reads from a script: {first} owes 1,500 credits and they want it now, "or we flag your ship as an accessory". In the corner of the galley {first} has gone the color of old paper and is looking at the deck. The agent adds, pleasantly, that they have "a great deal of patience, and a great many lawyers."',
+    text: 'A collection agency hails and reads from a script: {first} owes 1,500 credits and they want it now, "or we flag your ship as an accessory". In the corner of the galley {first} has gone the color of old paper and is looking at the deck. The agent adds that they have "a great deal of patience, and a great many lawyers."',
     'c0.label': 'Pay it for them (1,500 cr)',
-    'c0.result': '{first} opens their mouth and nothing comes out. Then they say, low, that they will pay you back with interest, every credit, if it takes the rest of their life. They do not sit down until you have.',
+    'c0.result': '{first} opens their mouth and nothing comes out. Then they say, low, "Fifteen hundred. Every credit, with interest, if it takes the rest of my life." They do not sit down until you have.',
     'c1.label': 'Tell the collectors to get lost',
     'c1.result': 'They threaten legal action at length and cut the channel. Nothing comes of it. {first} looks at you across the galley. Later there is a cup of tea at your elbow that you did not ask for.',
     'c0.result.memory': 'You paid off my debt. I will pay you back.',
