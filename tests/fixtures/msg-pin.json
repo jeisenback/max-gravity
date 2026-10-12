@@ -188,7 +188,7 @@
   ],
   "credits": 0,
   "news": [
-   "A Charter League survey ship is turned away from Earth by Arcology Compact patrols. Both sides release very different accounts.",
+   "A survey ship of the Charter League is turned away from Earth by Arcology Compact patrols. Both sides release very different accounts.",
    "Pirate raids reported around Juno. Shipping there is thinning out.",
    "Insurance rates around Ceres have doubled after a run of raids, and some captains are refusing the lane."
   ]
@@ -731,7 +731,7 @@
   "credits": 0,
   "news": [
    "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
-   "A Dome Concord survey ship is turned away from Earth by Arcology Compact patrols. Both sides release very different accounts."
+   "A survey ship of the Dome Concord is turned away from Earth by Arcology Compact patrols. Both sides release very different accounts."
   ]
  },
  {
@@ -749,7 +749,7 @@
   "credits": 0,
   "news": [
    "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
-   "An Dome Concord envoy walks out of talks with the Arcology Compact at Earth, and refuses to say why."
+   "An envoy of the Dome Concord walks out of talks with the Arcology Compact at Earth, and refuses to say why."
   ]
  },
  {
@@ -758,7 +758,7 @@
   "credits": 0,
   "news": [
    "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
-   "A Arcology Compact cutter is found drifting near Earth, its crew unharmed and very quiet. The Dome Concord says it knows nothing."
+   "A cutter of the Arcology Compact is found drifting near Earth, its crew unharmed and very quiet. The Dome Concord says it knows nothing."
   ]
  },
  {
@@ -1353,7 +1353,7 @@
    ],
    [
     "delivery",
-    "Arcology Compact contract: deliver 15t of scientific samples to mars",
+    "Arcology Compact contract: deliver 15t of scientific samples to Mars",
     "scientific samples"
    ],
    [
@@ -1375,7 +1375,7 @@
   "x": [
    [
     "delivery",
-    "Arcology Compact contract: deliver 13t of prefab habitat panels to the hollows",
+    "Arcology Compact contract: deliver 13t of prefab habitat panels to The Hollows",
     "prefab habitat panels"
    ],
    [
@@ -1412,7 +1412,7 @@
    ],
    [
     "delivery",
-    "Arcology Compact contract: deliver 13t of medical crates to the rook",
+    "Arcology Compact contract: deliver 13t of medical crates to The Rook",
     "medical crates"
    ],
    [

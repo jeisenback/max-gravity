@@ -1313,7 +1313,7 @@
     "roll": 0,
     "text": "Sam goes across in the cutter's launch without a word. The cutter's captain thanks you for your cooperation and breaks off. Grace signs on for the berth.",
     "mem": [
-     "9 Jul 2214: You handed me to a the Compact patrol.",
+     "9 Jul 2214: You handed me to a patrol of the Compact.",
      "9 Jul 2214: You handed Sam over to a patrol."
     ],
     "fx": {
@@ -1328,7 +1328,7 @@
     "roll": 0.999,
     "text": "Sam goes across in the cutter's launch without a word. The cutter's captain thanks you for your cooperation and breaks off. Sofia signs on for the berth.",
     "mem": [
-     "9 Jul 2214: You handed me to a the Compact patrol.",
+     "9 Jul 2214: You handed me to a patrol of the Compact.",
      "9 Jul 2214: You handed Sam over to a patrol."
     ],
     "fx": {
@@ -1340,7 +1340,7 @@
    }
   ],
   "title": "A Patrol Cutter",
-  "text": "A the Compact patrol cutter matches your course and asks for the crew list. Its captain reads it aloud, slowly, and stops at Sam Vale. \"This one is wanted by the Compact,\" the captain says, and waits.",
+  "text": "A patrol cutter of the Compact matches your course and asks for the crew list. Its captain reads it aloud, slowly, and stops at Sam Vale. \"This one is wanted by the Compact,\" the captain says, and waits.",
   "labels": [
    "[Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (400 cr from the ship's fund)",
@@ -1356,7 +1356,7 @@
     "roll": 0,
     "text": "Ben takes the open band and gives a rank and a unit. The cutter's captain asks one question, gets the right answer, and does not ask for the crew list.",
     "mem": [
-     "9 Jul 2214: You let me answer a the Compact patrol."
+     "9 Jul 2214: You let me answer a patrol of the Compact."
     ],
     "fx": {
      "p12": 1
@@ -1368,7 +1368,7 @@
     "roll": 0.999,
     "text": "Ben takes the open band and gives a rank and a unit. The cutter's captain asks one question, gets the right answer, and does not ask for the crew list.",
     "mem": [
-     "9 Jul 2214: You let me answer a the Compact patrol."
+     "9 Jul 2214: You let me answer a patrol of the Compact."
     ],
     "fx": {
      "p12": 1
@@ -1449,7 +1449,7 @@
     "roll": 0,
     "text": "Sam goes across in the cutter's launch without a word. The cutter's captain thanks you for your cooperation and breaks off. Nadia signs on for the berth.",
     "mem": [
-     "9 Jul 2214: You handed me to a the Compact patrol.",
+     "9 Jul 2214: You handed me to a patrol of the Compact.",
      "9 Jul 2214: You handed Sam over to a patrol.",
      "9 Jul 2214: You handed Sam over to a patrol."
     ],
@@ -1466,7 +1466,7 @@
     "roll": 0.999,
     "text": "Sam goes across in the cutter's launch without a word. The cutter's captain thanks you for your cooperation and breaks off. Diego signs on for the berth.",
     "mem": [
-     "9 Jul 2214: You handed me to a the Compact patrol.",
+     "9 Jul 2214: You handed me to a patrol of the Compact.",
      "9 Jul 2214: You handed Sam over to a patrol.",
      "9 Jul 2214: You handed Sam over to a patrol."
     ],
@@ -1480,9 +1480,9 @@
    }
   ],
   "title": "A Patrol Cutter",
-  "text": "A the Compact patrol cutter matches your course and asks for the crew list. Its captain reads it aloud, slowly, and stops at Sam Vale. \"This one is wanted by the Compact,\" the captain says, and waits.",
+  "text": "A patrol cutter of the Compact matches your course and asks for the crew list. Its captain reads it aloud, slowly, and stops at Sam Vale. \"This one is wanted by the Compact,\" the captain says, and waits.",
   "labels": [
-   "[Ben, a the Compact officer] Let Ben answer the hail",
+   "[Ben, an officer of the Compact] Let Ben answer the hail",
    "[Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (400 cr from the ship's fund)",
    "Say nothing and keep Sam below",
@@ -1754,7 +1754,7 @@
    }
   ],
   "title": "A Patrol Cutter",
-  "text": "A the Compact patrol cutter matches your course and asks for the crew list. Its captain reads it aloud, slowly, and stops at Sam Vale. \"This one left the Compact with a mark against them,\" the captain says, and waits.",
+  "text": "A patrol cutter of the Compact matches your course and asks for the crew list. Its captain reads it aloud, slowly, and stops at Sam Vale. \"This one left the Compact with a mark against them,\" the captain says, and waits.",
   "labels": [
    "[Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (400 cr from the ship's fund)",
@@ -1826,7 +1826,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Sam shakes every hand aboard and takes a bag down the ramp. A the Compact liaison is waiting at the foot of it with orders. Grace signs on for the berth.",
+    "text": "Sam shakes every hand aboard and takes a bag down the ramp. A liaison of the Compact is waiting at the foot of it with orders. Grace signs on for the berth.",
     "mem": [
      "9 Jul 2214: You let me go when the Compact went to war.",
      "9 Jul 2214: You stood with the Compact.",
@@ -1842,7 +1842,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "Sam shakes every hand aboard and takes a bag down the ramp. A the Compact liaison is waiting at the foot of it with orders. Anton signs on for the berth.",
+    "text": "Sam shakes every hand aboard and takes a bag down the ramp. A liaison of the Compact is waiting at the foot of it with orders. Anton signs on for the berth.",
     "mem": [
      "9 Jul 2214: You let me go when the Compact went to war.",
      "9 Jul 2214: You stood with the Compact.",

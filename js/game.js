@@ -666,7 +666,7 @@ function generateMissions(planet) {
   // Captains the local government trusts are offered a better-paid contract.
   const gov = localGov(), job = offers.find(o => o.type === 'delivery');
   if (job && gov !== 'Pirate' && repOf(gov) >= 15) {
-    Object.assign(job, { contract: true, pay: Math.round(job.pay * 1.6), title: jobSay('contract', { gov, job: job.title.toLowerCase() }) });
+    Object.assign(job, { contract: true, pay: Math.round(job.pay * 1.6), title: jobSay('contract', { gov, job: job.title[0].toLowerCase() + job.title.slice(1) }) });
   }
   for (const o of offers) o.pay = Math.round(Mods.filter('missionPay', o.pay, o, planet));
   return offers;
