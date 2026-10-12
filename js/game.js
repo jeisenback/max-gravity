@@ -73,9 +73,12 @@ const cargoFree = () => ship().cargo - cargoUsed();
 
 // ---------- persistence ----------
 
-// The save's shape, written once: every top-level field a game has from the start, with the value it starts with. newState() is
-// this, and migrate() (menu.js) gives any field a loaded or imported save lacks the same value, so a field added here reaches old
-// saves too. A fresh object each call. `shipId` is the save's own ship, so a save without a full tank gets that ship's. A save
+// The save's shape at the start: every top-level field a game has from the first day, with the value it starts with. newState() is
+// this, and migrate() (menu.js) gives any field a loaded or imported save lacks, or holds as the wrong kind of thing, the same value, so
+// a field added here reaches old saves too. Fields that belong to one feature (the memorial, the outpost, the hired chapter and so on) are
+// not here: the module that owns one creates it on first use (`st.x = st.x || ...`), and every reader tolerates it being absent. Put a
+// field here when most games have it from the start; leave it lazy when only a feature needs it. There is no save version: no value has
+// needed rewriting yet, and the day one does, add a version then. A fresh object each call. `shipId` is the save's own ship, so a save without a full tank gets that ship's. A save
 // without a `tutorial` has none (null); a new game starts it.
 function stateDefaults(shipId) {
   const ship = SHIPS[shipId] || SHIPS.shuttle;
