@@ -6,4 +6,4 @@
 const { pinTests } = require('./pin');
 const { playMessages } = require('./msgplay');
 
-pinTests({ name: 'the messages of flight and the dock', fixture: 'msg-pin.json', play: playMessages, min: 20 });
+pinTests({ name: 'the messages of flight and the dock', fixture: 'msg-pin.json', play: playMessages, min: 20, words: ['text'] });
