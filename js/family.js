@@ -102,9 +102,9 @@ function talkTopics(p) {
   const st = G.state, out = [];
   if (moodLow(p)) out.push(moodTopic(p));
   if ((st.injured || {})[p.id]) out.push(hurtTopic(p));
-  const t = typeof tiesOf === 'function' ? tiesOf(p) : null, w = typeof factionState === 'function' ? factionState().war : null;
+  const t = tiesOf(p), w = factionState().war;
   if (t && w && (t.aff === w.a || t.aff === w.b)) out.push(warTopic(p, t.aff, t.aff === w.a ? w.b : w.a));
-  const others = typeof bond === 'function' ? G.state.crew.filter(id => id !== p.id).map(id => ({ id, p: person(id) })).filter(f => f.p) : [], me = { id: p.id, p };
+  const others = G.state.crew.filter(id => id !== p.id).map(id => ({ id, p: person(id) })).filter(f => f.p), me = { id: p.id, p };
   const worst = others.map(f => ({ f, b: bond(me, f) })).sort((x, y) => x.b - y.b)[0], best = others.map(f => ({ f, b: bond(me, f) })).sort((x, y) => y.b - x.b)[0];
   if (worst && worst.b <= -2) out.push(riftTopic(p, worst.f.p));
   if (best && best.b >= 6) out.push(friendTopic(p, best.f.p));

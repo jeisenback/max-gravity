@@ -191,7 +191,7 @@ function sceneFacesHtml(ev) {
 const CROSS_UP = [[OPINION.TRUSTED, 'trusts you now'], [OPINION.FRIEND, 'friendly now'], [OPINION.CLOSE, 'easy with you now']];
 const CROSS_DOWN = [[OPINION.GRUDGE, 'holds it against you now'], [OPINION.ENEMY, 'wary of you now']];
 function crossWord(p, n) {
-  const h = typeof hired === 'function' ? hired() : null, xo = h && hiredXo();
+  const h = hired(), xo = h && hiredXo();
   if (!h || !(p.id === h.captain || p.cast || (xo && p.id === xo.id))) return '';
   const before = p.opinion - n, hit = (n > 0 ? CROSS_UP : CROSS_DOWN).find(([c]) => (n > 0 ? before < c && p.opinion >= c : before > c && p.opinion <= c));
   if (!hit) return '';
