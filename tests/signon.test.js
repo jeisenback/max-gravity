@@ -10,7 +10,7 @@ const { open, closeBrowser } = require('./helpers');
 after(closeBrowser);
 
 test('every background and post opens with Signing On, naming the ship, the captain, the pair and the post', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   const r = await ev(() => {
     const out = [], marks = { earth: 'Earth is crowded', mars: 'domes of Tharsis', belt: 'Ceres Warren' }, lines = { pilot: 'the helm', gunner: 'the guns', engineer: 'the plant', comms: 'the bands' };
     for (const bg of ['earth', 'mars', 'belt']) {
@@ -62,7 +62,7 @@ test('each reason has its own small, permanent effect', async () => {
 });
 
 test('it works with any captain, and an owner does not get it', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   const r = await ev(() => {
     startGame({ slot: 1, background: 'belt', captain: 'Sam Rowe', mode: 'hired', post: 'comms' }); while (G.dialog) finishEvent();
     const st = G.state, cap = st.people[st.hired.captain], bad = [];

@@ -16,7 +16,7 @@ const helpers = () => {
 };
 
 test('side work is for a hand, pays from their savings and takes the visit', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     start('hired'); const st = G.state, out = {}; fillBar(currentPlanet());
@@ -41,7 +41,7 @@ test('side work is for a hand, pays from their savings and takes the visit', asy
 });
 
 test('a hand hears of a real ship that is hiring, and the lead persists', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     start('hired'); const st = G.state, out = {};
@@ -61,7 +61,7 @@ test('a hand hears of a real ship that is hiring, and the lead persists', async 
 });
 
 test('an owner gets a regular\'s contract on the board and trouble from the real world; a hand does not', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     start('owner'); const st = G.state, out = {};

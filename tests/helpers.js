@@ -70,11 +70,11 @@ function seedScript(seed) {
 //   viewport, mobile: page size and touch
 //   init: a function to run in the page before the game loads
 //   seed: the random seed
-//   scope: 'full' (the default here) or 'earth-hired', the narrow build the game ships with (js/build.js)
+//   scope: 'earth-hired' (the default here), the narrow build the game ships with (js/build.js), or 'full' for a test of what that build switches off (the owner game, the other starts, captains and storylines)
 //   bundle: false to load the scripts one by one as index.html lists them (the default serves them as one, bundleOf above)
 //   debt: true to start a hired hand owing the hiring hall's bond (js/hired.js, #280). It is off in tests, so the many that buy a ship or
 //         count a hand's pay start as they did before the bond; the soak and the tests of the bond turn it on.
-async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '', scope = 'full', debt = false, bundle = true } = {}) {
+async function open({ title = false, viewport = { width: 1280, height: 800 }, mobile = false, init = null, seed = 1, hash = '', scope = 'earth-hired', debt = false, bundle = true } = {}) {
   browser = browser || await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
   const ctx = await browser.newContext({ viewport, isMobile: mobile, hasTouch: mobile });
   await ctx.addInitScript(seedScript, seed);
@@ -92,7 +92,7 @@ async function open({ title = false, viewport = { width: 1280, height: 800 }, mo
   watch(page, errors);
   if (COVERAGE_DIR) await page.coverage.startJSCoverage({ resetOnNavigation: false });  // tools/coverage.js
   const query = [scope === 'full' ? 'scope=full' : ''].filter(Boolean).join('&');
-  await page.goto(URL + (query ? `?${query}` : '') + hash);  // the build's scope (js/build.js): tests run everything unless they ask for the narrow one
+  await page.goto(URL + (query ? `?${query}` : '') + hash);  // the build's scope (js/build.js): tests run the build the game ships unless they ask for the full one
   await page.waitForFunction(() => typeof G !== 'undefined' && (G.state || G.mode === 'title'));
   // The main characters are drawn from a pool (js/cast.js). A test starts from the pair it knew (by background) unless it asks for the draw: realDrawCastPair.
   await page.evaluate(() => { window.realDrawCastPair = drawCastPair; window.drawCastPair = bg => (CAST_PAIRS[bg] ? [...CAST_PAIRS[bg]] : []); });

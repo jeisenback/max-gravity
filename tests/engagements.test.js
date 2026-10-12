@@ -407,7 +407,7 @@ test('a hired Gunner has two orders: a drill that teaches, and boresighting that
 });
 
 test('an owner does not get the Gunner\'s orders', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   const r = await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'owner' }); return postOrders('gunner').map(o => o.id); });
   assert.deepEqual(r, []);
   await done();

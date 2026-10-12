@@ -46,7 +46,7 @@ test('the captain\'s screen has no post skills: what they pay you, and what you 
 });
 
 test('an owner is in command in the same places', async () => {
-  const { page, ev, done } = await open({});
+  const { page, ev, done } = await open({ scope: 'full' });
   await ev(() => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' }); while (G.dialog) finishEvent(); G.state.tutorial = null; UI.render(); });
   await goTo(page, 'crew');
   const first = await page.$$eval('#panel .con-read', rows => [rows[0].firstElementChild.textContent, rows[0].lastElementChild.textContent]);
@@ -60,7 +60,7 @@ test('an owner is in command in the same places', async () => {
 });
 
 test('the burn HUD names the captain, and the chatter gives the captain their own lines', async () => {
-  const { ev, done } = await open({});
+  const { ev, done } = await open({ scope: 'full' });
   await ev(`(${startHired})`);
   const r = await ev(() => {
     const out = {}, c = hiredCaptain(), spoken = [], real = ctx.fillText;

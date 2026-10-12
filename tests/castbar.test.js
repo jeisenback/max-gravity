@@ -42,7 +42,7 @@ test('they turn up at the bar when a scene is due, and not before, and not once 
 });
 
 test('only the pair aboard turn up, in every background', async () => {
-  const { ev, done } = await open({});
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     const out = {};

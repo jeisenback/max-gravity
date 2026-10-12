@@ -127,7 +127,7 @@ test('no screen overflows sideways at phone, landscape, and tablet sizes', async
 });
 
 test('keyboard focus survives the panel being rebuilt', async () => {
-  const { page, ev, done } = await open({ title: true });
+  const { page, ev, done } = await open({ scope: 'full', title: true });
   const focused = () => page.evaluate(() => { const a = document.activeElement; return a && a.dataset ? `${a.dataset.action}:${a.dataset.arg || ''}` : null; });
   await page.keyboard.press('Tab');
   assert.equal(await focused(), 'menuView:new');

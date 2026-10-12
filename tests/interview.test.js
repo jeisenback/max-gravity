@@ -14,7 +14,7 @@ const helpers = () => {
 };
 
 test('the screen shows the candidate, the answers match their traits, and hiring from it works', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     start(); const st = G.state, out = {};

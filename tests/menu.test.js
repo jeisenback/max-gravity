@@ -19,6 +19,7 @@ test('dates start on 9 Jun 2214 and show in the header', async () => {
 
 test('title, new game, pause, autosave, continue, slots, settings', async () => {
   const { page, ev, done } = await open({
+    scope: 'full',  // the Belt start and the choice of start are the full build's
     title: true,
     // A save from before slots existed; it should become slot 1.
     init: () => { if (!localStorage.getItem('maxGravity.slotMeta')) localStorage.setItem('maxGravity.save.v2', JSON.stringify({ credits: 4321, day: 20, systemId: 'mars', planet: 'Mars', shipId: 'shuttle', fuel: 300, armor: 50, cargo: {}, paid: {}, missions: [], rumors: [], dest: null, nextId: 1 })); },

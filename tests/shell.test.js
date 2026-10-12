@@ -54,7 +54,7 @@ test('a hired gunner\'s rail has the ship\'s pages and three Ashore pages, and n
 });
 
 test('an owner\'s rail keeps Exchange and Company in the Ashore group', async () => {
-  const { ev, done } = await open({});
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(([fn]) => { start({ mode: 'owner', post: undefined }); return (0, eval)(`(${fn})`)(); }, [railState.toString()]);
   assert.ok(r.names.includes('Exchange') && r.names.includes('Company'), 'both owner pages are on the rail');
