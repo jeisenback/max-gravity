@@ -519,7 +519,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "Sam tells you, evenly, that it is none of your business. They do not raise their voice and they do not threaten you. They stand there until you leave.",
+    "text": "Sam tells you that it is none of your business. They do not raise their voice and they do not threaten you. They stand there until you leave.",
     "mem": "9 Jun 2214: You pried into my business.",
     "d": {
      "credits": 0,
@@ -611,7 +611,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Sam opens their mouth and nothing comes out. Then they say, low, that they will pay you back with interest, every credit, if it takes the rest of their life. They do not sit down until you have.",
+    "text": "Sam opens their mouth and nothing comes out. Then they say, low, \"Fifteen hundred. Every credit, with interest, if it takes the rest of my life.\" They do not sit down until you have.",
     "mem": "9 Jun 2214: You paid off my debt. I will pay you back.",
     "d": {
      "credits": -1500,
@@ -627,7 +627,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "Sam opens their mouth and nothing comes out. Then they say, low, that they will pay you back with interest, every credit, if it takes the rest of their life. They do not sit down until you have.",
+    "text": "Sam opens their mouth and nothing comes out. Then they say, low, \"Fifteen hundred. Every credit, with interest, if it takes the rest of my life.\" They do not sit down until you have.",
     "mem": "9 Jun 2214: You paid off my debt. I will pay you back.",
     "d": {
      "credits": -1500,
@@ -674,7 +674,7 @@
    }
   ],
   "title": "Collectors",
-  "text": "A collection agency hails and reads from a script: Sam owes 1,500 credits and they want it now, \"or we flag your ship as an accessory\". In the corner of the galley Sam has gone the color of old paper and is looking at the deck. The agent adds, pleasantly, that they have \"a great deal of patience, and a great many lawyers.\"",
+  "text": "A collection agency hails and reads from a script: Sam owes 1,500 credits and they want it now, \"or we flag your ship as an accessory\". In the corner of the galley Sam has gone the color of old paper and is looking at the deck. The agent adds that they have \"a great deal of patience, and a great many lawyers.\"",
   "labels": [
    "Pay it for them (1,500 cr)",
    "Tell the collectors to get lost"
