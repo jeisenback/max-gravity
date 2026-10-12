@@ -649,7 +649,7 @@
   "id": "cast:tomas:mid1",
   "i": 0,
   "label": "Lend him 200 cr",
-  "result": "He takes it with both hands. \"Thank you,\" he says, and then, because it is not enough, he says it again in Igbo. By the second pay day the two hundred is in your account, with an extra: a ring of braided wire, on a note that says \"for luck, from a man who understands machines\".",
+  "result": "He takes it with both hands. \"Thank you,\" he says. It is not enough, and he says it again in Igbo. By the second pay day the two hundred is in your account, with an extra: a ring of braided wire, on a note that says \"for luck, from a man who understands machines\".",
   "changes": [
    "s.cast.tomas.flags: {} -> undefined",
    "s.cast.tomas.flags.loan: undefined -> true",
@@ -1300,7 +1300,7 @@
   "id": "cast:yelena:late",
   "i": 0,
   "label": "Promise her a ship, someday",
-  "result": "\"Someday,\" you say, \"and you will be asked.\" She puts the cloth down on the housing and, for once, does not pick anything up in its place. She says \"Good,\" to the fire control, in a low voice, and then, louder, to the whole housing, \"Did you hear that?\"",
+  "result": "\"Someday,\" you say, \"and you will be asked.\" She puts the cloth down on the housing and, for once, does not pick anything up in its place. She says \"Good\" to the fire control, in a low voice. Then, louder, to the whole housing: \"Did you hear that?\"",
   "changes": [
    "s.cast.yelena.flags: {} -> undefined",
    "s.cast.yelena.flags.promised: undefined -> true",
@@ -1442,7 +1442,7 @@
   "id": "cast:yelena:pivot",
   "i": 2,
   "label": "Call it off",
-  "result": "You tell her no, and cut the channel, and the drifting ship goes on drifting. Yelena stands at the hatch for a while with her helmet in her hand. \"Fine,\" she says. She sits down on the bench by the airlock, straight, and does not say another word to you for the rest of the burn.",
+  "result": "You tell her no, and cut the channel, and the drifting ship goes on drifting. Yelena stands at the hatch with her helmet in her hand until the drifting ship is a point of light. \"Fine,\" she says. She sits down on the bench by the airlock, straight, and does not say another word to you for the rest of the burn.",
   "changes": [
    "s.cast.yelena.flags: {} -> undefined",
    "s.cast.yelena.flags.benched: undefined -> true",
@@ -2104,7 +2104,7 @@
   "id": "cast:bexa:mid1",
   "i": 0,
   "label": "Take the detour",
-  "result": "She brings the ship in slow and gentle, the way you approach a frightened animal. The wreck is a hauler, dark and cold, her hatches sealed, her beacon the only living thing on her. Nobody aboard. Bexa stays on the scope until the beacon is a speck, and then, quietly, writes a name on a list you cannot see. \"She was called the Patient Wren,\" she says. \"I will tell the registry. She will be towed home.\" She flies the rest of the shift with two fingers on the stick.",
+  "result": "She brings the ship in slow and gentle, the way you approach a frightened animal. The wreck is a hauler, dark and cold, her hatches sealed, her beacon the only living thing on her. Nobody aboard. Bexa stays on the scope until the beacon is a speck. Quietly, she writes a name on a list you cannot see. \"She was called the Patient Wren,\" she says. \"I will tell the registry. She will be towed home.\" She flies the rest of the shift with two fingers on the stick.",
   "changes": [
    "s.people.c:bexa.liftedAt: undefined -> 1",
    "s.people.c:bexa.memories: [] -> undefined",
@@ -2425,7 +2425,7 @@
   "id": "cast:pax:meet",
   "i": 0,
   "label": "Offer them the guns",
-  "result": "The dart goes down, carefully. \"Really?\" Pax says, and then, because that sounded like asking for too much: \"I mean, thanks. Yes. I mean, I will try not to flinch.\" You tell them the flinching can come, too. Pax picks up a bag.",
+  "result": "The dart goes down, carefully. \"Really?\" Pax says. That sounded like asking for too much. \"I mean, thanks. Yes. I mean, I will try not to flinch.\" You tell them the flinching can come, too. Pax picks up a bag.",
   "changes": [
    "s.crew.9: undefined -> c:pax",
    "s.home.log: [] -> undefined",
@@ -2746,7 +2746,7 @@
   "id": "cast:pax:late",
   "i": 1,
   "label": "Make no promises",
-  "result": "\"I cannot promise that,\" you say, \"but I heard you.\" \"That is fair,\" Pax says. \"It would be strange to be promised. I am not used to it.\" They smile, a crooked one, and then, to your surprise, they say, \"Nine days is already a good thing, though. I will take that.\"",
+  "result": "\"I cannot promise that,\" you say, \"but I heard you.\" \"That is fair,\" Pax says. \"It would be strange to be promised. I am not used to it.\" They smile, a crooked one. To your surprise, they say, \"Nine days is already a good thing, though. I will take that.\"",
   "changes": [
    "s.people.c:pax.liftedAt: undefined -> 1",
    "s.people.c:pax.memories: [] -> undefined",
@@ -4898,7 +4898,7 @@
   "id": "cast:tomas:bar2",
   "i": 1,
   "label": "Wave from across the room",
-  "result": "You wave. He grins, holds the handset up to the glass, and says something to her in Igbo. When he comes out of the booth he does not talk for a while, and you leave him to it.",
+  "result": "You wave. He grins, holds the handset up to the glass, and says something to her in Igbo. When he comes out of the booth he does not talk for the rest of the evening, and you leave him to it.",
   "changes": [
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
@@ -5128,7 +5128,7 @@
   "id": "cast:ruben:bar1",
   "i": 1,
   "label": "Just listen",
-  "result": "You sit with them and say little. The bartender talks about the dock office, a wedding, a shortage. Ruben nods. When you leave, he says, \"You have the gift. People tell you things.\"",
+  "result": "You sit with them and say little. The bartender talks about the dock office, a wedding, a shortage. Ruben listens without a word. When you leave, he says, \"You have the gift. People tell you things.\"",
   "changes": [
    "s.people.c:ruben.liftedAt: undefined -> 1",
    "s.people.c:ruben.memories: [] -> undefined",

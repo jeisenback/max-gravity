@@ -3944,7 +3944,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You wave. He grins, holds the handset up to the glass, and says something to her in Igbo. When he comes out of the booth he does not talk for a while, and you leave him to it.",
+    "text": "You wave. He grins, holds the handset up to the glass, and says something to her in Igbo. When he comes out of the booth he does not talk for the rest of the evening, and you leave him to it.",
     "mem": [
      "25 Dec 2214: You waved to my sister from across the room."
     ],
@@ -4068,7 +4068,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You sit with them and say little. The bartender talks about the dock office, a wedding, a shortage. Ruben nods. When you leave, he says, \"You have the gift. People tell you things.\"",
+    "text": "You sit with them and say little. The bartender talks about the dock office, a wedding, a shortage. Ruben listens without a word. When you leave, he says, \"You have the gift. People tell you things.\"",
     "mem": [
      "25 Dec 2214: You listened with me."
     ],
