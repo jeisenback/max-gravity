@@ -60,11 +60,16 @@ const Saves = {
 const dateOfState = st => { const d = new Date(START_DATE + ((st.day || 1) - 1) * 864e5); return `${d.getUTCDate()} ${MONTHS[d.getUTCMonth()]} ${d.getUTCFullYear()}`; };
 const played = s => `${Math.floor(s / 3600)}h ${String(Math.floor(s / 60) % 60).padStart(2, '0')}m`;
 
-// Older saves get the fields later versions expect: every top-level field of stateDefaults() (game.js) that a save lacks. Add a
+// Older saves get the fields later versions expect: every top-level field of stateDefaults() (game.js) that a save lacks or holds as the wrong kind of thing. Add a
 // field there, not here; add a step here only when an old value has to be rewritten, not just filled in.
 function migrate(st) {
   const defaults = stateDefaults(st.shipId);
-  for (const key of Object.keys(defaults)) if (st[key] == null) st[key] = defaults[key];
+  // A field that is missing, or present as a different kind of thing than its default (a string where a list goes, a number where an object goes), gets the default: a slot that crashes on
+  // landing can never be opened again. A default of null stands for anything.
+  for (const key of Object.keys(defaults)) {
+    const d = defaults[key], v = st[key];
+    if (v == null || (d !== null && (typeof v !== typeof d || Array.isArray(v) !== Array.isArray(d)))) st[key] = d;
+  }
   for (const p of Object.values(st.people)) if (p && typeof p === 'object') { p.first = cleanName(p.first); p.last = cleanName(p.last); }  // an event title is built from a name, and a title ends up in an attribute
   if (st.captain) st.captain.name = cleanName(st.captain.name);
   for (const c of st.captains || []) { c.name = cleanName(c.name); c.fate = stripTags(c.fate); }
