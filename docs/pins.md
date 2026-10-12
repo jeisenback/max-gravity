@@ -15,6 +15,15 @@ A pin is a record of what some code plays, kept in `tests/fixtures/*-pin.json`. 
 
 3. Write the fixture once with `PIN_WRITE=1 node --test tests/xxxpin.test.js`, commit it, then change the code. The pin must pass with no change to the fixture.
 
+## Effects and words
+
+A pin that names `words` in `pinTests` (the keys that hold prose, at any depth) is compared twice:
+
+- **Effects** (`... do what they always did`): the record without its words, and without the `changes` of a memory or the home log. This is the refactor proof. It is sacred: it passes unchanged through a prose pass, and a commit that changes its fixture says why in its message.
+- **Words** (`... say what the fixture holds`): the whole record. A prose pass fails it on purpose. Write the fixture again with `PIN_WRITE=1` and read the diff as a proofread. If only this test fails, no behavior changed.
+
+Both read the same fixture, so one `PIN_WRITE=1` run updates both. A pin of nothing but words (`family-pin.json`, `line-tables-pin.json`) names no `words` and stays one test; the `*lines.test.js` checks that every line is read cover the same ground from the other side.
+
 ## Checks before you trust one
 
 - **Does it record what you are about to change?** A pin only protects what it records. Before a conversion, break the thing on purpose (change one word or one effect) and see the pin fail. If it does not, extend the harness.

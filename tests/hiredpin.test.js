@@ -6,15 +6,8 @@
 // recorded in tests/fixtures/hired-scene-pin.json. Turning a scene's code into data must leave this fixture as it is. After a change to what a scene does on
 // purpose, write it again with `PIN_WRITE=1 node --test tests/hiredpin.test.js` and read the diff.
 
-const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
-const fs = require('node:fs');
-const path = require('node:path');
-const { open, closeBrowser } = require('./helpers');
-
-after(closeBrowser);
-
-const FIXTURE = path.join(__dirname, 'fixtures', 'hired-scene-pin.json');
+const { pinTests } = require('./pin');
 
 // Runs in the page. Returns [{ id, i, label, result, changes, next, error }].
 const pinAll = () => {
@@ -90,22 +83,13 @@ const pinAll = () => {
   return out;
 };
 
-test('every choice of every cast and captain scene and every hired event does what it did', async () => {
-  const g = await open({ scope: 'full' });
-  const got = await g.ev(pinAll);
-  await g.done();
-  assert.ok(got.length > 200, `${got.length} choices`);
-  assert.deepEqual(got.filter(r => r.error), [], 'no choice throws in its own scene\'s state');
-  if (process.env.PIN_WRITE) fs.writeFileSync(FIXTURE, JSON.stringify(got, null, 1) + '\n');
-  const want = JSON.parse(fs.readFileSync(FIXTURE, 'utf8'));
-  assert.equal(got.length, want.length);
-  // Compared one by one, so a failure names the choice.
-  for (let n = 0; n < want.length; n++) assert.deepEqual(got[n], want[n], `${want[n].id} choice ${want[n].i}`);
-});
-
-test('the pin is repeatable: running it twice gives the same record', async () => {
-  const g = await open({ scope: 'full' });
-  const a = await g.ev(pinAll), b = await g.ev(pinAll);
-  await g.done();
-  assert.deepEqual(a, b);
+pinTests({
+  name: 'every choice of every cast and captain scene and every hired event',
+  fixture: 'hired-scene-pin.json',
+  play: pinAll,
+  min: 201,
+  broken: /(?!)/,  // a change reads "undefined -> 1" by design
+  words: ['label', 'result', 'why', 'next'],
+  label: r => `${r.id} choice ${r.i}`,
+  check: got => assert.deepEqual(got.filter(r => r.error), [], 'no choice throws in its own scene\'s state'),
 });
