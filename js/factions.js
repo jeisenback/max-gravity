@@ -17,7 +17,7 @@ function changeRep(gov, amount) {
   G.state.rep[gov] = Math.max(-100, Math.min(100, repOf(gov) + amount));
   const after = standingWord(repOf(gov));
   if (after !== before) msg(sceneSay('scene:systems-notes', 'standing', { who: gov === 'Pirate' ? 'pirates' : gov, word: after }));
-  if (typeof crewReacts === 'function') crewReacts(gov, amount);  // what the crew make of it (ties.js)
+  crewReacts(gov, amount);  // what the crew make of it (ties.js)
   // Patrols turn on you once you are Distrusted.
   for (const n of G.npcs) if (n.kind === 'patrol' && n.gov === gov && repOf(gov) <= -15) n.hostile = true;
 }

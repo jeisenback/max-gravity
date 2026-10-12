@@ -267,7 +267,7 @@ const Uat = {
     this.render();
   },
 };
-const alertNote = text => { if (typeof msg === 'function') msg(text); };
+const alertNote = text => msg(text);
 
 // A small UAT button once tester tools are on, so phones can reopen the panel.
 let uatOn = BUILD.dev && (() => { try { return localStorage.getItem('maxGravity.uat.on') === '1'; } catch (e) { return false; } })();

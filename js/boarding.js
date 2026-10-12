@@ -69,7 +69,7 @@ function consequences(n, taking) {
   if (n.kind === 'patrol') changeRep(n.gov, taking ? -25 : -12);
   else if (n.kind === 'trader') { changeRep(localGov(), taking ? -10 : -6); changeRep('Pirate', 2); }
   else if (n.kind === 'pirate') changeRep('Pirate', -3);
-  if (n.persona && typeof feel === 'function') feel(n, -5, taking ? 'You took my ship.' : 'You boarded and robbed my ship.');
+  if (n.persona) feel(n, -5, taking ? 'You took my ship.' : 'You boarded and robbed my ship.');
 }
 
 // A fight aboard, if they resist. Returns a failure message, or null on success.

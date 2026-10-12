@@ -209,7 +209,7 @@ function planRun() {
       }
     }
   }
-  const ice = !held && typeof iceOption === 'function' ? iceOption(here, from, reach, free) : null;  // the long run, when it is due (icerun.js)
+  const ice = !held ? iceOption(here, from, reach, free) : null;  // the long run, when it is due (icerun.js)
   if (ice) return ice;
   const score = o => (o.profit / o.days) * (wantYard && o.yard ? 4 : 1) * laneRisk(o.sid);
   const ranked = options.sort((a, b) => score(b) - score(a)).filter(o => o.profit > 0);
@@ -260,7 +260,7 @@ function sail() {
 function settleRun(planet) {
   const st = G.state, h = st.hired, run = h.run;
   if (!run || planet.name !== run.planet || st.systemId !== run.sid) return;
-  if (run.ice && typeof iceFinish === 'function') iceFinish();  // a burn that skipped the scenes comes home thin
+  if (run.ice) iceFinish();  // a burn that skipped the scenes comes home thin
   let revenue = 0, sold = 0;
   if (run.good && st.cargo[run.good] && price(planet, run.good) !== null) {
     sold = st.cargo[run.good];

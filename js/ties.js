@@ -20,7 +20,7 @@ const shortFaction = f => (f === 'Pirate' ? 'the pirates' : `the ${f.replace(/^(
 
 function tiesOf(p) {
   const id = String(p.id || p.name || `${p.first || ''}${p.last || ''}` || 'x'), h = s => Math.abs(hash(id + s)), note = TIE_NOTES[p.cast || p.captainKey];
-  const culture = p.culture || (typeof cultureOfPerson === 'function' ? cultureOfPerson(p) : 'earth'), home = CULTURE_FACTION[culture] || 'Arcology Compact';
+  const culture = p.culture || cultureOfPerson(p), home = CULTURE_FACTION[culture] || 'Arcology Compact';
   const others = FACTIONS.filter(f => f !== home && f !== 'Pirate'), roll = h('aff') % 100;
   const aff = note ? note.aff : roll < 70 ? home : roll < 82 ? others[h('other') % others.length] : roll < 90 ? 'Pirate' : null;
   const status = note ? { ...note.status } : {};
