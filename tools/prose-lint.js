@@ -179,7 +179,9 @@ function compare(base, now) {
 
 // ---------- the files and the command ----------
 
-const NARRATIVE_FILES = ['js/cast.js', 'js/castbar.js', 'js/people.js', 'js/peopletext.js', 'js/familytext.js', 'js/bartopics.js', 'js/hiredeventstext.js', 'js/social.js', 'js/family.js'];
+const NARRATIVE_FILES = ['js/cast.js', 'js/castbar.js', 'js/people.js', 'js/peopletext.js', 'js/familytext.js', 'js/bartopics.js', 'js/hiredeventstext.js', 'js/social.js', 'js/family.js',
+  // the hired chapter's scenes that are not in a file above (#468): the lines of the scenes built by a function, the raid, ambush and boarding beats, the ice run, the hired events, the ship's own downtime
+  'js/hiredscenes.js', 'js/engagements.js', 'js/boarders.js', 'js/icerun.js', 'js/hiredevents.js', 'js/hired.js', 'js/shiplife.js', 'js/signon.js', 'js/stakes.js', 'js/fate.js'];
 const NARRATIVE_DIRS = ['js/stories', 'js/captains'];
 
 // Repo-relative paths of the narrative files that exist under root, sorted.
