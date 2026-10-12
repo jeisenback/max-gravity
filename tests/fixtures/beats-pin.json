@@ -2234,7 +2234,7 @@
   "closes": [
    {
     "edge": 4,
-    "text": "Your last burst reaches her torpedo bay and not the torpedoes, Her plume goes out."
+    "text": "Your last burst reaches her torpedo bay and not the torpedoes. Her plume goes out."
    },
    {
     "edge": 2,
@@ -2689,7 +2689,7 @@
   "closes": [
    {
     "edge": 4,
-    "text": "Your last burst reaches her torpedo bay and not the torpedoes, Her plume goes out."
+    "text": "Your last burst reaches her torpedo bay and not the torpedoes. Her plume goes out."
    },
    {
     "edge": 2,
@@ -3144,7 +3144,7 @@
   "closes": [
    {
     "edge": 4,
-    "text": "Your last burst reaches her torpedo bay and not the torpedoes, Her plume goes out."
+    "text": "Your last burst reaches her torpedo bay and not the torpedoes. Her plume goes out."
    },
    {
     "edge": 2,
@@ -3599,7 +3599,7 @@
   "closes": [
    {
     "edge": 4,
-    "text": "Your last burst reaches her torpedo bay and not the torpedoes, Her plume goes out."
+    "text": "Your last burst reaches her torpedo bay and not the torpedoes. Her plume goes out."
    },
    {
     "edge": 2,
@@ -3964,7 +3964,7 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says, \"Your registry has been logged. The next stop will not be a conversation.\" Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You made the call that turned a raid.",
      "9 Jul 2214: You stood us up to a raid and she broke off.",
@@ -4010,7 +4010,7 @@
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You walk the burst along her line, a hand at a time. The last round hits her gun housing, and she stops firing. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+    "text": "You walk the burst along her line, a hand at a time. The last round hits her gun housing, and she stops firing. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says, \"Your registry has been logged. The next stop will not be a conversation.\" Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You made the call that turned a raid.",
      "9 Jul 2214: You stood us up to a raid and she broke off.",
@@ -4058,7 +4058,7 @@
    },
    {
     "edge": 2,
-    "text": "She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
+    "text": "She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says, \"Your registry has been logged. The next stop will not be a conversation.\" Captain Vance writes it in the log and nothing else. (+3 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You stood us up to a raid and she broke off.",
      "9 Jul 2214: You set yourself against the pirates.",
@@ -4419,7 +4419,7 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says, \"Your registry has been logged. The next stop will not be a conversation.\" Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You made the call that turned a raid.",
      "9 Jul 2214: You stood us up to a raid and she broke off.",
@@ -4465,7 +4465,7 @@
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You flip and burn across her path. She has to break to avoid you, and her run goes wide. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+    "text": "You flip and burn across her path. She has to break to avoid you, and her run goes wide. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says, \"Your registry has been logged. The next stop will not be a conversation.\" Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You made the call that turned a raid.",
      "9 Jul 2214: You stood us up to a raid and she broke off.",
@@ -4513,7 +4513,7 @@
    },
    {
     "edge": 2,
-    "text": "She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
+    "text": "She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says, \"Your registry has been logged. The next stop will not be a conversation.\" Captain Vance writes it in the log and nothing else. (+3 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You stood us up to a raid and she broke off.",
      "9 Jul 2214: You set yourself against the pirates.",
@@ -4874,7 +4874,7 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says, \"Your registry has been logged. The next stop will not be a conversation.\" Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You made the call that turned a raid.",
      "9 Jul 2214: You stood us up to a raid and she broke off.",
@@ -4920,7 +4920,7 @@
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You move the power from the drive into the screens, and the next hit goes into them and stops. The shield board goes amber and holds. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+    "text": "You move the power from the drive into the screens, and the next hit goes into them and stops. The shield board goes amber and holds. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says, \"Your registry has been logged. The next stop will not be a conversation.\" Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You made the call that turned a raid.",
      "9 Jul 2214: You stood us up to a raid and she broke off.",
@@ -4968,7 +4968,7 @@
    },
    {
     "edge": 2,
-    "text": "She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
+    "text": "She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says, \"Your registry has been logged. The next stop will not be a conversation.\" Captain Vance writes it in the log and nothing else. (+3 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You stood us up to a raid and she broke off.",
      "9 Jul 2214: You set yourself against the pirates.",
@@ -5329,7 +5329,7 @@
     "round": 0,
     "i": 2,
     "roll": 0,
-    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+    "text": "You put a burst into her as she crosses. Something on her hull goes out in a spray of sparks, and she flinches. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says, \"Your registry has been logged. The next stop will not be a conversation.\" Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You made the call that turned a raid.",
      "9 Jul 2214: You stood us up to a raid and she broke off.",
@@ -5375,7 +5375,7 @@
     "round": 0,
     "i": 3,
     "roll": 0,
-    "text": "You put noise across her fire control band. Her round goes wide, and the next one. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+    "text": "You put noise across her fire control band. Her round goes wide, and the next one. She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says, \"Your registry has been logged. The next stop will not be a conversation.\" Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You made the call that turned a raid.",
      "9 Jul 2214: You stood us up to a raid and she broke off.",
@@ -5423,7 +5423,7 @@
    },
    {
     "edge": 2,
-    "text": "She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and the next stop will not be a conversation. Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
+    "text": "She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says, \"Your registry has been logged. The next stop will not be a conversation.\" Captain Vance writes it in the log and nothing else. (+3 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You stood us up to a raid and she broke off.",
      "9 Jul 2214: You set yourself against the pirates.",
@@ -8458,7 +8458,7 @@
     "pos": 2,
     "round": 1,
     "title": "Her Lock",
-    "text": "Her lock is wide open and empty, and nobody has fired. That is the part that bothers you. Beyond the inner door there is a corridor, and in the corridor somebody is waiting.</p><p>Defenders: 3. With you: 5. Your ship is long, with room to go round and little room for a rush.",
+    "text": "Her lock is wide open and empty, and nobody has fired. Beyond the inner door there is a corridor, and in the corridor somebody is waiting.</p><p>Defenders: 3. With you: 5. Your ship is long, with room to go round and little room for a rush.",
     "labels": [
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
@@ -8711,7 +8711,7 @@
     "pos": 2,
     "round": 1,
     "title": "Her Lock",
-    "text": "Her lock is wide open and empty, and nobody has fired. That is the part that bothers you. Beyond the inner door there is a corridor, and in the corridor somebody is waiting.</p><p>Defenders: 3. With you: 5. Your ship is long, with room to go round and little room for a rush.",
+    "text": "Her lock is wide open and empty, and nobody has fired. Beyond the inner door there is a corridor, and in the corridor somebody is waiting.</p><p>Defenders: 3. With you: 5. Your ship is long, with room to go round and little room for a rush.",
     "labels": [
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
@@ -8964,7 +8964,7 @@
     "pos": 2,
     "round": 1,
     "title": "Her Lock",
-    "text": "Her lock is wide open and empty, and nobody has fired. That is the part that bothers you. Beyond the inner door there is a corridor, and in the corridor somebody is waiting.</p><p>Defenders: 3. With you: 5. Your ship is long, with room to go round and little room for a rush.",
+    "text": "Her lock is wide open and empty, and nobody has fired. Beyond the inner door there is a corridor, and in the corridor somebody is waiting.</p><p>Defenders: 3. With you: 5. Your ship is long, with room to go round and little room for a rush.",
     "labels": [
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
@@ -9217,7 +9217,7 @@
     "pos": 2,
     "round": 1,
     "title": "Her Lock",
-    "text": "Her lock is wide open and empty, and nobody has fired. That is the part that bothers you. Beyond the inner door there is a corridor, and in the corridor somebody is waiting.</p><p>Defenders: 3. With you: 5. Your ship is long, with room to go round and little room for a rush.",
+    "text": "Her lock is wide open and empty, and nobody has fired. Beyond the inner door there is a corridor, and in the corridor somebody is waiting.</p><p>Defenders: 3. With you: 5. Your ship is long, with room to go round and little room for a rush.",
     "labels": [
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
@@ -9393,7 +9393,7 @@
     "kind": "post",
     "roll": 0.01,
     "delta": 0,
-    "text": "You find her intercom and put the captain on it, calmly, telling her people the ship is lost and the lock is open. Some of them go."
+    "text": "You find her intercom and put the captain on it. \"Your ship is lost,\" the captain says, \"and the lock is open.\" Some of them go."
    },
    {
     "kind": "post",

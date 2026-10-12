@@ -257,7 +257,7 @@ const WORK_EVENTS = [
     quick: [
       'Guess at the gaps and answer',
       'You guess at the gaps and answer, and the voice on the other end relaxes at once. You guessed right.',
-      'You guess wrong, and the voice on the other end goes cold, and starts again, slower. Your face is hot.'
+      'You guess wrong, and the voice on the other end goes cold, and starts again, slower.'
     ]
   },
   {
