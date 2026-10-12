@@ -447,6 +447,7 @@ function storyletEvent(s) {
     title: fill(o.title || s.title), text: fill(o.text ? esc(o.text) : s.text), via: s.via, personal: s.personal,
     choices: view.choices.map((c, i) => [c, i]).filter(([c]) => present(c)).map(([c, i]) => ({
       label: fill(mine(i, 'label') || c.label),
+      cost: c.cost, fight: c.fight, self: c.self,  // what the captain's call reads (hired.js), kept off the label so rewording it changes nothing
       role: c.when && ROLE_NAMES[c.when.crew] ? c.when.crew : undefined,
       can: c.when ? () => meets(c.when) : undefined,
       run() {

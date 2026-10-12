@@ -146,18 +146,19 @@ const inbound = (pl, cid) => haul().filter(v => v.to === pl.name && v.cid === ci
 // What a captain would hear about a location: raids, quiet lanes, shortages, gluts.
 function conditions(sid) {
   const sys = SYSTEMS[sid], out = factionConditions(sys.gov), excess = excessUnrest(sid);
-  if (excess > 0.2) out.push({ bad: true, text: `Heavy pirate activity around ${sys.name}` });
-  else if (excess > 0.05) out.push({ bad: true, text: `Pirate raids around ${sys.name}` });
-  else if (sys.pirates >= 0.15 && danger(sid) < sys.pirates * 0.6) out.push({ bad: false, text: `Lanes around ${sys.name} are quiet` });
+  // Each condition has an id the code reads (the bar's room lines, the trouble ahead), so a change to its words changes nothing else.
+  if (excess > 0.2) out.push({ id: 'raids', bad: true, text: `Heavy pirate activity around ${sys.name}` });
+  else if (excess > 0.05) out.push({ id: 'raids', bad: true, text: `Pirate raids around ${sys.name}` });
+  else if (sys.pirates >= 0.15 && danger(sid) < sys.pirates * 0.6) out.push({ id: 'quiet', bad: false, text: `Lanes around ${sys.name} are quiet` });
   for (const pl of sys.planets) {
     for (const cid of Object.keys(pl.prices)) {
       const p = pressure(pl, cid), name = COMMODITIES.find(c => c.id === cid).name;
       if (p > 0.2) {
         const due = inbound(pl, cid), tons = due.reduce((t, v) => t + v.tons, 0);
         const eta = due.length ? `${tons}t inbound, first due ${dateOf(Math.min(...due.map(v => v.arrive)))}` : 'no haulers inbound';
-        out.push({ bad: true, text: `Shortage of ${name} at ${pl.name} (+${Math.round(p * 100)}%, ${eta})` });
+        out.push({ id: `shortage-${cid}`, bad: true, text: `Shortage of ${name} at ${pl.name} (+${Math.round(p * 100)}%, ${eta})` });
       }
-      else if (p < -0.2) out.push({ bad: false, text: `Glut of ${name} at ${pl.name} (${Math.round(p * 100)}%)` });
+      else if (p < -0.2) out.push({ id: `glut-${cid}`, bad: false, text: `Glut of ${name} at ${pl.name} (${Math.round(p * 100)}%)` });
     }
   }
   return out;
@@ -273,9 +274,9 @@ function warSkirmish() {
 
 function factionConditions(gov) {
   const out = [], w = atWar(gov), e = economy(gov);
-  if (w) out.push({ bad: true, text: `The ${gov} is at war with the ${warFoe(gov)} (since ${dateOf(w.start)}). Its markets want medical supplies, machine parts, and metal.` });
-  if (e === 'boom') out.push({ bad: false, text: `The ${gov} economy is booming: contracts pay 25% more.` });
-  if (e === 'bust') out.push({ bad: true, text: `The ${gov} economy is in a slump: contracts pay 25% less.` });
+  if (w) out.push({ id: 'war', bad: true, text: `The ${gov} is at war with the ${warFoe(gov)} (since ${dateOf(w.start)}). Its markets want medical supplies, machine parts, and metal.` });
+  if (e === 'boom') out.push({ id: 'boom', bad: false, text: `The ${gov} economy is booming: contracts pay 25% more.` });
+  if (e === 'bust') out.push({ id: 'slump', bad: true, text: `The ${gov} economy is in a slump: contracts pay 25% less.` });
   return out;
 }
 

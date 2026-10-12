@@ -1008,10 +1008,11 @@ test('an old save with no captain entry keeps the default hearing, bonus, lane r
     const h = G.state.hired, real = Math.random, out = {};
     h.captainKey = null;
     out.entry = captainEntry(); out.hears = captainHears(); out.bonus = captainBonus(); out.risk = laneRisk(G.state.systemId);
-    const choose = (fund, labels, roll) => { h.fund = fund; Math.random = () => roll; try { return captainPick(labels.map(label => ({ label }))).label; } finally { Math.random = real; } };
-    out.poor = choose(3000, ['Pay the fine', 'Run for it'], 0.1);  // under the 4,000 floor the costly choice is a fifth as likely
-    out.flush = choose(5000, ['Pay the fine', 'Run for it'], 0.1);
-    out.fight = choose(5000, ['Battle stations', 'Run for it'], 0.5);  // the fight weighs 3 against 2 for a captain of no recorded nerve
+    const choose = (fund, choices, roll) => { h.fund = fund; Math.random = () => roll; try { return captainPick(choices).label; } finally { Math.random = real; } };
+    const pay = { label: 'Pay the fine', cost: true }, fight = { label: 'Battle stations', fight: true }, run = { label: 'Run for it' };
+    out.poor = choose(3000, [pay, run], 0.1);  // under the 4,000 floor the costly choice is a fifth as likely
+    out.flush = choose(5000, [pay, run], 0.1);
+    out.fight = choose(5000, [fight, run], 0.5);  // the fight weighs 3 against 2 for a captain of no recorded nerve
     out.heard = OPINION.HEARD; out.bonusDefault = OPINION.BONUS;
     return out;
   });

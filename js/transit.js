@@ -157,7 +157,7 @@ const TRANSIT_EVENTS = [
         'and paints you with targeting lidar, a cold red pulse across your instruments. A voice on the open band, amused and very young: "Cargo or ' +
         'credits, hoser. Your choice." Behind it, in the noise, someone is laughing, and someone else is quietly counting.'),
     choices: [
-      { label: 'Pay them off (10% of your credits)', run() {
+      { label: 'Pay them off (10% of your credits)', cost: true, run() {
         const c = Math.min(G.state.credits, Math.max(500, Math.round(G.state.credits * 0.1)));
         G.state.credits -= c;
         applyEffects({ later: { 'pi-subscription': 20 } });
@@ -281,7 +281,7 @@ const TRANSIT_EVENTS = [
         'face, and a cup raised in greeting. "Market tip, friend?" the captain says, in a voice like a well-worn saddle. "I have been up and down ' +
         'these lanes forty years, and I hear things. Five hundred credits and it is yours. I promise you will not regret it. Usually."'),
     choices: [
-      { label: 'Buy the tip (500 cr)', ...gated(needCr(500)), run() {
+      { label: 'Buy the tip (500 cr)', cost: true, ...gated(needCr(500)), run() {
         G.state.credits -= 500;
         applyEffects({ later: { [Math.random() < 0.6 ? 'me-good' : 'me-bad']: 10 } });
         return `The captain clears their throat and says, solemnly: "${addRumor()}" There is a pause. "That is the good stuff," they add. "I would not sell it to just anyone." They sign off with a wink and a two-fingered salute, and in a few minutes their lights are a distant spark.`;

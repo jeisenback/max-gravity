@@ -147,11 +147,12 @@ const bossFor = kind => (kind === 'swap' || kind === 'crew' ? hiredXo() : null) 
 const bossName = p => (p.role === 'xo' ? p.first : `Captain ${p.last}`);
 
 // The captain leans cautious: the last way out is likelier, a fight is likelier when it comes to that,
-// and nothing costly is chosen unless the ship can afford it.
+// and nothing costly is chosen unless the ship can afford it. What a choice is comes from the tags on it (cost: it spends money, fight: it is a fight,
+// self: it needs the hand in person), not from its words: an event sets them where it builds the choice, and the words are free to change.
 function captainPick(choices) {
   const fund = hired().fund, d = captainEntry();
   const floor = 1000 * (d ? d.captain.thrift : 4), fight = d ? d.captain.nerve - 1 : 2;  // an older save's captain: 4,000 and a fight twice as likely
-  const weights = choices.map((c, i) => (/pay|fine|buy/i.test(c.label) && fund < floor ? 0.2 : 1 + (i === choices.length - 1 ? 1 : 0) + (/battle stations/i.test(c.label) ? fight : 0)));
+  const weights = choices.map((c, i) => (c.cost && fund < floor ? 0.2 : 1 + (i === choices.length - 1 ? 1 : 0) + (c.fight ? fight : 0)));
   let r = Math.random() * weights.reduce((a, b) => a + b, 0);
   for (let i = 0; i < choices.length; i++) if ((r -= weights[i]) < 0) return choices[i];
   return choices[choices.length - 1];
@@ -165,7 +166,7 @@ function hiredCall(ev) {
   const owner = ev.owner || (ev.via === 'ship' ? 'captain' : 'you');
   if (owner === 'you' || owner === h.post) return ev;
   const cap = ev.via === 'ship' || owner === 'captain' ? hiredCaptain() : bossFor('crew');
-  const usable = ev.choices.filter(c => hiredFunds(() => !c.can || c.can()) && (!c.role || roleSkill(c.role)) && !/yourself/i.test(c.label));
+  const usable = ev.choices.filter(c => hiredFunds(() => !c.can || c.can()) && (!c.role || roleSkill(c.role)) && !c.self);
   if (!usable.length) return ev;
   const c = captainPick(usable);
   const said = c.label.replace(/\s*<span class="hint">.*?<\/span>/g, '').replace(/\s*\[if it fails:[^\]]*\]/g, '').replace(/\s*\(.*?\)/g, '').replace(/\[\{crew\}\]\s*/, '').replace(/\{crew\}/g, 'the crew').replace(/\s+/g, ' ').trim();
