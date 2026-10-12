@@ -1,6 +1,6 @@
 # Voices for generated people
 
-Status: Draft for the owner to judge (#455).
+Status: Confirmed by the owner, 2026-10-12 (#455).
 
 The cards in this folder are for the authored characters. This file is for everyone else the game makes: passengers, hired hands, bar patrons (`makePerson` in `js/people.js`). They are made by the hundred, so the unit that repeats is the trait, and a card here is for a trait, a culture or a secret, never for one person. The rules in `dialogue.md` and the registers in `narrator.md` apply to them as to anyone.
 
