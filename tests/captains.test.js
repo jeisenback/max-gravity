@@ -818,6 +818,25 @@ test('Ilsa\'s, Pilar\'s and Ansel\'s "what they know" scenes open at friendly or
   assert.match(r.ansel.closedText, /keep it/); assert.match(r.ansel.openText, /I am going to say a number/);
 });
 
+test('a hand who got the closed reading from the first officer has no secret line in the goodbye (#283)', async () => {
+  const r = await run(() => {
+    const out = {};
+    for (const [cap, key] of [['hester', 'cato'], ['dov', 'ilsa'], ['imre', 'pilar'], ['zoya', 'ansel']]) {
+      const st = start({ captainKey: cap }), h = st.hired, d = captainEntry();
+      castPerson(key).opinion = OPINION.FRIEND - 1; castRec(key).flags = {};
+      const e = castScene(key, CAST[key].scenes.late); openEvent(e); G.dialog = null; if (G.transit) G.transit.event = null;
+      e.choices[0].run();
+      out[cap] = { flag: !!(h.flags && h.flags.secretKnown), hasLine: captainGoodbye().text.includes(d.goodbye.secret), opens: e.choices.length };
+    }
+    return out;
+  });
+  for (const cap of ['hester', 'dov', 'imre', 'zoya']) {
+    assert.equal(r[cap].opens, 1, `${cap}: the closed reading played`);
+    assert.equal(r[cap].flag, false, `${cap}: the closed reading leaves the secret unknown`);
+    assert.equal(r[cap].hasLine, false, `${cap}: no secret line in the goodbye`);
+  }
+});
+
 // ---------- what the hand lived through, for the goodbye and the look back (#275) ----------
 
 test('the ice run, an injury and a raid each set their flag when they happen, and a bad ice run and a clean one replace each other', async () => {
