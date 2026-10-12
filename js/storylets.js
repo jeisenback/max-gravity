@@ -348,9 +348,10 @@ function sceneWords(id, scene) {
 
 // One line of a raid, ambush or boarding beat (#478): the editor's words for it, if the file has any, else the line the table holds. `key` names the line within the
 // beat (hiredscenes.js lists them). A title and a label are escaped by the dialog; a text is not, so an override's is escaped here.
+const plainScene = id => typeof HIRED_FUNCTION_SCENES !== 'undefined' && HIRED_FUNCTION_SCENES.some(s => s.id === id && s.plain);  // a scene whose lines are drawn as plain text (the message log, the news), so an override is left as typed
 function lineWords(id, key, shipped) {
   const t = (sceneOverride(id).parts || {})[key];
-  return t === undefined ? shipped : /(^|\.)(title|label|gate|memory|log)(\.|$)/.test(key) || ((lineTable(id) || {}).plain || ((lineTable(id) || {}).plainKey || /$^/).test(key)) ? t : esc(t);  // a line drawn on the canvas or read aloud is plain text (js/linetables.js)
+  return t === undefined ? shipped : /(^|\.)(title|label|gate|memory|log)(\.|$)/.test(key) || plainScene(id) || ((lineTable(id) || {}).plain || ((lineTable(id) || {}).plainKey || /$^/).test(key)) ? t : esc(t);  // a line drawn on the canvas or read aloud is plain text (js/linetables.js)
 }
 
 // One line of a scene built by a function (#463): the editor's words for it, else the shipped line (SCENE_LINES, hiredscenes.js), with each {word} filled from `vars` (the names, sums
