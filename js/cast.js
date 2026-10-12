@@ -262,7 +262,7 @@ const CAST = {
             label: 'Lend him 200 cr',
             when: { credits: 200 },
             effects: { credits: -200, castLike: { who: 'tomas', n: 3, memory: 'You lent me two hundred credits for my sister\'s rent.' }, castFlag: { who: 'tomas', flag: 'loan' } },
-            result: 'He takes it with both hands. "Thank you," he says, and then, because it is not enough, he says it again in Igbo. By the second pay day ' +
+            result: 'He takes it with both hands. "Thank you," he says. It is not enough, and he says it again in Igbo. By the second pay day ' +
               'the two hundred is in your account, with an extra: a ring of braided wire, on a note that says "for luck, from a man who understands ' +
               'machines".',
           },
@@ -443,7 +443,7 @@ const CAST = {
             label: 'Promise her a ship, someday',
             effects: { castLike: { who: 'yelena', n: 2, memory: 'I told you I wanted a ship with no bench, and you promised.' }, castFlag: { who: 'yelena', flag: 'promised' } },
             result: '"Someday," you say, "and you will be asked." She puts the cloth down on the housing and, for once, does not pick anything up in its place. She says ' +
-              '"Good," to the fire control, in a low voice, and then, louder, to the whole housing, "Did you hear that?"',
+              '"Good" to the fire control, in a low voice. Then, louder, to the whole housing: "Did you hear that?"',
           },
           {
             label: 'Make no promises',
@@ -467,8 +467,8 @@ const CAST = {
           { label: 'Send her with a second person', ...gated(needCrew(2)), run: () => overTheHull(true) },
           { label: 'Call it off', memory: 'You called off the boarding and put me on the bench.', run() {
             castFlag('yelena', 'benched'); castLike('yelena', -3, this.memory);
-            return ('You tell her no, and cut the channel, and the drifting ship goes on drifting. Yelena stands at the hatch for a while with her ' +
-                'helmet in her hand. "Fine," she says. She sits down on the bench by the airlock, straight, and does not say another word to you for ' +
+            return ('You tell her no, and cut the channel, and the drifting ship goes on drifting. Yelena stands at the hatch with her ' +
+                'helmet in her hand until the drifting ship is a point of light. "Fine," she says. She sits down on the bench by the airlock, straight, and does not say another word to you for ' +
                 'the rest of the burn.');
           } },
         ],
@@ -675,8 +675,8 @@ const CAST = {
             label: 'Take the detour',
             effects: { castLike: { who: 'bexa', n: 2, memory: 'You took the detour to look at the wreck.' }, castXp: { who: 'bexa', role: 'pilot', n: 3 }, delay: 6 },
             result: 'She brings the ship in slow and gentle, the way you approach a frightened animal. The wreck is a hauler, dark and cold, her ' +
-              'hatches sealed, her beacon the only living thing on her. Nobody aboard. Bexa stays on the scope until the beacon is a speck, and then, ' +
-              'quietly, writes a name on a list you cannot see. "She was called the Patient Wren," she says. "I will tell the registry. She will be ' +
+              'hatches sealed, her beacon the only living thing on her. Nobody aboard. Bexa stays on the scope until the beacon is a speck. ' +
+              'Quietly, she writes a name on a list you cannot see. "She was called the Patient Wren," she says. "I will tell the registry. She will be ' +
               'towed home." She flies the rest of the shift with two fingers on the stick.',
           },
           {
@@ -776,7 +776,7 @@ const CAST = {
             when: { berths: 1 },
             effects: { castJoin: 'pax' },
             result: 'The dart goes down, carefully. "Really?" Pax ' +
-              'says, and then, because that sounded like asking for too much: "I mean, thanks. Yes. I mean, I will try not to flinch." You tell them ' +
+              'says. That sounded like asking for too much. "I mean, thanks. Yes. I mean, I will try not to flinch." You tell them ' +
               'the flinching can come, too. Pax picks up a bag.',
           },
           {
@@ -869,7 +869,7 @@ const CAST = {
             label: 'Make no promises',
             effects: { castLike: { who: 'pax', n: 1, memory: 'You would not promise a ship, but you listened.' } },
             result: '"I cannot promise that," you say, "but I heard you." "That is fair," Pax says. "It would be strange to be promised. I am not ' +
-              'used to it." They smile, a crooked one, and then, to your surprise, they say, "Nine days is already a good thing, though. I will ' +
+              'used to it." They smile, a crooked one. To your surprise, they say, "Nine days is already a good thing, though. I will ' +
               'take that."',
           },
         ],

@@ -70,7 +70,7 @@ const CAST_BAR = {
             'every word."'); } },
         { label: 'Wave from across the room', memory: 'You waved to my sister from across the room.', run() { castLike('tomas', 1, this.memory); return (
             'You wave. He grins, holds the handset up to the glass, and says something to her in Igbo. When he comes out of the booth he does not ' +
-            'talk for a while, and you leave him to it.'); } },
+            'talk for the rest of the evening, and you leave him to it.'); } },
       ],
     },
   ],
@@ -119,7 +119,7 @@ const CAST_BAR = {
             `A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of ` +
             `the night you have the news of three docks, and one item worth money: ${tip} Ruben puts the pencil behind his ear. "A good listener has ` +
             `no name," he says. "A good bartender has a hundred."`); } },
-        { label: 'Just listen', memory: 'You listened with me.', run() { castLike('ruben', 1, this.memory); return 'You sit with them and say little. The bartender talks about the dock office, a wedding, a shortage. Ruben nods. When you leave, he says, "You have the gift. People tell you things."'; } },
+        { label: 'Just listen', memory: 'You listened with me.', run() { castLike('ruben', 1, this.memory); return 'You sit with them and say little. The bartender talks about the dock office, a wedding, a shortage. Ruben listens without a word. When you leave, he says, "You have the gift. People tell you things."'; } },
       ],
     },
     {
@@ -221,7 +221,7 @@ function castPatrons() {
 // The talk with a main character at the bar is their scene. Having it removes them from the room.
 function castBarEvent(pat) {
   const rec = castRec(pat.cast), scene = castBarDue(pat.cast);
-  if (!scene) return { title: `${pat.p.first} ${pat.p.last}`, text: `${pat.p.first} is at the bar with a drink, and nods to you, and goes back to it.`, choices: [{ label: 'Leave them to it', run: () => `You leave ${pat.p.first} to the bar.` }] };
+  if (!scene) return { title: `${pat.p.first} ${pat.p.last}`, text: `${pat.p.first} is at the bar with a drink, lifts it to you, and goes back to it.`, choices: [{ label: 'Leave them to it', run: () => `You leave ${pat.p.first} to the bar.` }] };
   const id = `cast:${pat.cast}:bar${(rec.bar || 0) + 1}`;  // the scene's id in js/hiredscenes.js, for the editor's words
   rec.bar = (rec.bar || 0) + 1;
   G.patrons = (G.patrons || []).filter(x => x !== pat);
