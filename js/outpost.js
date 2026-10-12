@@ -69,7 +69,7 @@ function outpostDay() {
     st.companyWeek = (st.companyWeek || 0) + pay;
   } else {
     o.pop = Math.max(10, o.pop * (1 - 0.01 * short.length));
-    if (!o.warned || o.warned < st.day - 10) { o.warned = st.day; worldNews(`${outpostName(o)} is running short of ${short.map(cname).join(' and ')}. Settlers are leaving.`); }
+    if (!o.warned || o.warned < st.day - 10) { o.warned = st.day; worldNews(newsSay('short', { name: outpostName(o), goods: short.map(cname).join(' and ') })); }
   }
 }
 
@@ -81,7 +81,7 @@ function found(site, name) {
     stock: { food: 12, water: 12, medical: 3, equipment: 2 } };
   placeOutpost();
   if (typeof homeLog === 'function') homeLog(sceneSay('scene:ship-log', 'founded.log', { outpost: outpostName(st.outpost), site }));
-  worldNews(`A new settlement, ${outpostName(st.outpost)}, has been founded on ${site}.`);
+  worldNews(newsSay('settlement', { name: outpostName(st.outpost), site }));
 }
 
 function canBuild(id) {

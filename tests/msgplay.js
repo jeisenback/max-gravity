@@ -24,6 +24,7 @@ const playMessages = () => {
       act(st, ctx);
       rec.text = G.messages.map(m => m.text);
       rec.credits = st.credits - c0;
+      if ((st.news || []).length) rec.news = st.news.map(n => n.text);  // the world's news, the newest first
       if (extra) rec.x = extra(st);
     } catch (err) { rec.error = String(err && err.message || err); }
     out.push(rec);
@@ -117,6 +118,22 @@ const playMessages = () => {
   says('escort:lost-unknown', 1, st => { escort(st, 1e9); delete st.people[fleet()[0].captain.pid]; }, () => escortLost({ fleetId: fleet()[0].id, name: 'Wren' }));
   says('reactor:scram', 1, null, () => overload());
   says('war', 1, st => { factionState().war = { a: 'Arcology Compact', b: 'Charter League', until: st.day + 10, score: {} }; }, () => warSkirmish());
+  // ---------- the world's news ----------
+  const first = Object.keys(SYSTEMS).find(id => SYSTEMS[id].pirates > 0);
+  for (let k = 0; k < 4; k++) says(`news:flare:${k}`, 1, () => {}, () => { seq([0, (k + 0.5) / 4]); worldTick(); });
+  says('news:hauler', 1, st => { const v = { ship: 'Lark', tons: 12, cid: COMMODITIES[0].id, to: 'Mars' }; st.haul = [v]; return v; }, (st, v) => loseVoyage({ voyage: v }));
+  const Z = 'Arcology Compact', C = 'Charter League';
+  const prosper = (st, v) => { factionState().prosperity[Z] = v; };
+  says('news:slump', 1, st => { prosper(st, 0.2505); factionState().war = { a: Z, b: C, start: st.day, until: st.day + 50, score: { [Z]: 0, [C]: 0 } }; }, () => factionTick());
+  says('news:normal:from-boom', 1, st => prosper(st, 0.7501), () => factionTick());
+  says('news:normal:from-bust', 1, st => prosper(st, 0.2499), () => factionTick());
+  says('news:boom', 1, () => { let v = 0.74; Object.defineProperty(factionState().prosperity, Z, { get: () => v, set: () => { v = 0.8; }, configurable: true, enumerable: true }); }, () => factionTick());
+  for (const [k, side] of [[0, 0.2], [1, 0.2], [2, 0.2], [3, 0.2], [4, 0.2], [5, 0.7], [6, 0.7], [7, 0.7], [8, 0.7], [9, 0.7]]) says(`news:incident:${k}`, 1, () => {}, () => { seq([0, side, (k + 0.5) / 10, 0.3]); factionTick(); });
+  says('news:war', 1, st => { factionState().tension[pairKey(Z, C)] = 1.2; }, () => { seq([0.99, 0.99, 0.99]); factionTick(); });
+  says('news:ceasefire', 1, st => { factionState().war = { a: Z, b: C, start: st.day - 40, until: st.day, score: { [Z]: 3, [C]: 1 } }; }, () => factionTick());
+  says('news:settlement', 1, st => { st.credits = 1e7; for (const cid of Object.keys(BUILDINGS.habitat.mat)) st.cargo[cid] = 1e3; }, () => found(Object.keys(OUTPOST_SITES)[0], 'Test Landing'));
+  says('news:short', 1, st => { st.credits = 1e7; for (const cid of Object.keys(BUILDINGS.habitat.mat)) st.cargo[cid] = 1e3; found(Object.keys(OUTPOST_SITES)[0], 'Test Landing'); st.news = []; for (const cid of Object.keys(NEEDS)) outpost().stock[cid] = 0; }, () => outpostDay());
+  says('news:league', 1, () => {}, () => crown({ id: 'belt', name: 'Belt League' }, {}, 'Ceres Miners'));
   return out;
 };
 

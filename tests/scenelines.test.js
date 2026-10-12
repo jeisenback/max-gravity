@@ -16,7 +16,7 @@ test('every line of every scene is read: an override for it shows in what the sc
   const g = await open({ scope: 'full' });
   const r = await g.ev(arg => {
     const scenes = (0, eval)(`(${arg.src})`), notes = (0, eval)(`(${arg.notes})`);
-    const play = () => [...scenes(), ...notes().map(x => ({ id: `notes:${x.key}`, plays: (x.text || []).concat(x.x === undefined ? [] : [JSON.stringify(x.x)]), error: x.error }))];  // the notes of flight and the dock (msgplay.js) read their lines too, in what they say and in what they record
+    const play = () => [...scenes(), ...notes().map(x => ({ id: `notes:${x.key}`, plays: (x.text || []).concat(x.x === undefined ? [] : [JSON.stringify(x.x)], x.news || []), error: x.error }))];  // the notes of flight and the dock (msgplay.js) read their lines too, in what they say, in what they record and in the news they leave
     const ids = Object.keys(SCENE_LINES);
     const lines = Object.fromEntries(ids.map(id => [id, linesOf(id)]));
     const base = play();
@@ -172,7 +172,7 @@ test('the one-line notes are drawn as plain text, so an override is left as type
     return { ids, bad, screens: sceneSay('scene:screens', 'practise.comms') };
   });
   await g.done();
-  assert.deepEqual(r.ids.sort(), ['scene:crew-notes', 'scene:flight-notes', 'scene:hail-notes', 'scene:systems-notes']);
+  assert.deepEqual(r.ids.sort(), ['scene:crew-notes', 'scene:flight-notes', 'scene:hail-notes', 'scene:systems-notes', 'scene:world-news']);
   assert.deepEqual(r.bad, [], 'a line of a plain scene was escaped');
   assert.equal(r.screens, 'He said &quot;stop&quot; &amp; &lt;left&gt;', 'a scene drawn as markup escapes it');
 });

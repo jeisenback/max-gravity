@@ -3178,5 +3178,61 @@
  {
   "key": "lights:dawn",
   "text": "[Ship] The lights come up."
+ },
+ {
+  "key": "news:flare:0",
+  "text": "Pirate raids reported around Mars. Shipping there is thinning out."
+ },
+ {
+  "key": "news:flare:1",
+  "text": "A string of pirate attacks near Mars has haulers taking the long way round."
+ },
+ {
+  "key": "news:flare:2",
+  "text": "Insurance rates around Mars have doubled after a run of raids, and some captains are refusing the lane."
+ },
+ {
+  "key": "news:flare:3",
+  "text": "Pirate raiders are reported at Mars: two freighters missing, and the navy is \"looking into it\"."
+ },
+ {
+  "key": "news:incident:0",
+  "text": "The Arcology Compact and the Dome Concord trade accusations after a patrol standoff near Mars."
+ },
+ {
+  "key": "news:incident:1",
+  "text": "The Dome Concord impounds a freighter flagged to the Arcology Compact. Diplomats are recalled."
+ },
+ {
+  "key": "news:incident:2",
+  "text": "The Dome Concord accuses the Arcology Compact of arming pirates. The Arcology Compact denies it."
+ },
+ {
+  "key": "news:incident:3",
+  "text": "Shots fired between Arcology Compact and Dome Concord patrols near Mars. Nobody admits to firing first."
+ },
+ {
+  "key": "news:incident:4",
+  "text": "The Arcology Compact closes a lane near Mars to Dome Concord shipping, citing \"security concerns\". The Dome Concord calls it an act of hostility."
+ },
+ {
+  "key": "news:incident:5",
+  "text": "A Dome Concord survey ship is turned away from Earth by Arcology Compact patrols. Both sides release very different accounts."
+ },
+ {
+  "key": "news:incident:6",
+  "text": "The Arcology Compact expels three Dome Concord traders from Earth on charges of smuggling. The Dome Concord calls it a fabrication."
+ },
+ {
+  "key": "news:incident:7",
+  "text": "An Dome Concord envoy walks out of talks with the Arcology Compact at Earth, and refuses to say why."
+ },
+ {
+  "key": "news:incident:8",
+  "text": "A Arcology Compact cutter is found drifting near Earth, its crew unharmed and very quiet. The Dome Concord says it knows nothing."
+ },
+ {
+  "key": "news:incident:9",
+  "text": "Feeds in both the Dome Concord and the Arcology Compact are running clips of the standoff near Earth, and each is, of course, shot from a different angle."
  }
 ]
