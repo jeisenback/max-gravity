@@ -1,0 +1,2656 @@
+{
+ "credits": 6842,
+ "day": 51,
+ "systemId": "eros",
+ "planet": "Eros Old Town",
+ "shipId": "freighter",
+ "fuel": 450,
+ "armor": 260,
+ "cargo": {},
+ "paid": {},
+ "market": {
+  "Earth|equipment": {
+   "p": 0.06400000000000006,
+   "day": 51
+  },
+  "Hermes Foundry|equipment": {
+   "p": 0.08600000000000005,
+   "day": 51
+  },
+  "Hermes Foundry|food": {
+   "p": 0.10400000000000005,
+   "day": 51
+  },
+  "Earth|medical": {
+   "p": 0.07799999999999992,
+   "day": 51
+  },
+  "Earth|luxury": {
+   "p": 0.082,
+   "day": 51
+  },
+  "Mars|food": {
+   "p": 0.09888750000000004,
+   "day": 51
+  },
+  "Mars|water": {
+   "p": 0.1068875,
+   "day": 51
+  },
+  "Mars|metal": {
+   "p": -0.12288750000000001,
+   "day": 51
+  },
+  "Ceres Station|water": {
+   "p": 0.08,
+   "day": 51
+  },
+  "Ceres Station|food": {
+   "p": 0.10600000000000008,
+   "day": 51
+  },
+  "Ceres Station|medical": {
+   "p": 0.07400000000000001,
+   "day": 51
+  },
+  "Ring Nine|water": {
+   "p": 0.03,
+   "day": 51
+  },
+  "Ring Nine|food": {
+   "p": 0.08,
+   "day": 51
+  },
+  "Ring Nine|medical": {
+   "p": 0.14400000000000004,
+   "day": 51
+  },
+  "Pallas Refinery|equipment": {
+   "p": 0.1420000000000001,
+   "day": 51
+  },
+  "The Hollows|food": {
+   "p": 0.14,
+   "day": 51
+  },
+  "The Hollows|water": {
+   "p": 0.08,
+   "day": 51
+  },
+  "The Rook|equipment": {
+   "p": 0.13828105556144227,
+   "day": 51
+  },
+  "The Rook|medical": {
+   "p": 0.03828105556144224,
+   "day": 51
+  },
+  "The Rook|food": {
+   "p": 0.14028105556144227,
+   "day": 51
+  },
+  "Boneyard|medical": {
+   "p": 0.046281055561442276,
+   "day": 51
+  },
+  "Boneyard|food": {
+   "p": 0.10428105556144227,
+   "day": 51
+  },
+  "Ironheart|water": {
+   "p": 0.08600000000000002,
+   "day": 51
+  },
+  "Ironheart|luxury": {
+   "p": 0.12200000000000007,
+   "day": 51
+  },
+  "Juno Commons|food": {
+   "p": 0.09400000000000004,
+   "day": 51
+  },
+  "Juno Commons|luxury": {
+   "p": 0.037999999999999985,
+   "day": 51
+  },
+  "Juno Commons|equipment": {
+   "p": 0.14000000000000004,
+   "day": 51
+  },
+  "Juno Commons|medical": {
+   "p": 0.15000000000000002,
+   "day": 51
+  },
+  "Eros Old Town|water": {
+   "p": -0.09199999999999997,
+   "day": 51
+  },
+  "Ganymede|luxury": {
+   "p": 0.082,
+   "day": 51
+  },
+  "Ganymede|equipment": {
+   "p": 0.11000000000000008,
+   "day": 51
+  },
+  "Europa|water": {
+   "p": 0.09000000000000007,
+   "day": 51
+  },
+  "Titan|medical": {
+   "p": 0.10200000000000002,
+   "day": 51
+  },
+  "Titan|equipment": {
+   "p": 0.1380000000000001,
+   "day": 51
+  },
+  "Titan|industrial": {
+   "p": 0.09400000000000006,
+   "day": 51
+  },
+  "Enceladus|water": {
+   "p": 0.11400000000000007,
+   "day": 51
+  },
+  "Enceladus|food": {
+   "p": 0.1420000000000001,
+   "day": 51
+  },
+  "Enceladus|metal": {
+   "p": -0.07999999999999997,
+   "day": 51
+  },
+  "Triton Outpost|equipment": {
+   "p": 0.19400000000000012,
+   "day": 51
+  },
+  "Triton Outpost|luxury": {
+   "p": 0.1740000000000001,
+   "day": 51
+  },
+  "Triton Outpost|water": {
+   "p": 0.16799999999999982,
+   "day": 51
+  },
+  "Triton Outpost|food": {
+   "p": 0.2349972600414958,
+   "day": 51
+  },
+  "Eros Old Town|equipment": {
+   "p": 0.09149620521960858,
+   "day": 51
+  },
+  "Hermes Foundry|luxury": {
+   "p": 0.021069395166408066,
+   "day": 51
+  },
+  "Ceres Station|equipment": {
+   "p": 0.057099427133616015,
+   "day": 51
+  },
+  "Ganymede|medical": {
+   "p": 0.05813099550673135,
+   "day": 51
+  },
+  "Earth|food": {
+   "p": 0.08210082297435689,
+   "day": 51
+  },
+  "Ceres Station|luxury": {
+   "p": 0.04400772185796695,
+   "day": 51
+  },
+  "The Rook|water": {
+   "p": 0.03003192532245868,
+   "day": 51
+  },
+  "Mars|luxury": {
+   "p": 0.04053152368467415,
+   "day": 51
+  },
+  "Mars|equipment": {
+   "p": 0.11188750000000003,
+   "day": 51
+  },
+  "Mars|medical": {
+   "p": 0.06859784069451703,
+   "day": 51
+  },
+  "Juno Commons|water": {
+   "p": 0.04940032490871943,
+   "day": 51
+  },
+  "Earth|water": {
+   "p": 0.03300520192615112,
+   "day": 51
+  },
+  "Mars|industrial": {
+   "p": 0.007024428931899562,
+   "day": 51
+  },
+  "Ceres Station|metal": {
+   "p": -0.08099999999999995,
+   "day": 51
+  },
+  "Ironheart|metal": {
+   "p": -0.03199999999999996,
+   "day": 51
+  },
+  "Pallas Refinery|metal": {
+   "p": -0.08099999999999996,
+   "day": 51
+  },
+  "Hermes Foundry|metal": {
+   "p": -0.05971812113311104,
+   "day": 51
+  },
+  "Ironheart|food": {
+   "p": 0.12800000000000006,
+   "day": 51
+  },
+  "Pallas Refinery|food": {
+   "p": 0.12200000000000005,
+   "day": 51
+  },
+  "Ganymede|food": {
+   "p": 0.09600000000000004,
+   "day": 51
+  },
+  "Titan|luxury": {
+   "p": 0.04783057081031341,
+   "day": 51
+  },
+  "Eros Old Town|luxury": {
+   "p": 0.08900000000000002,
+   "day": 51
+  },
+  "Eros Old Town|industrial": {
+   "p": -0.005999999999999999,
+   "day": 51
+  },
+  "Ironheart|medical": {
+   "p": 0.08027960530284002,
+   "day": 51
+  },
+  "Pallas Refinery|industrial": {
+   "p": 0.05499999999999999,
+   "day": 51
+  },
+  "Triton Outpost|medical": {
+   "p": 0.16800000000000004,
+   "day": 51
+  },
+  "Hermes Foundry|water": {
+   "p": 0.04,
+   "day": 51
+  },
+  "Pallas Refinery|water": {
+   "p": 0.04,
+   "day": 51
+  },
+  "Europa|industrial": {
+   "p": 0.04,
+   "day": 51
+  },
+  "The Rook|luxury": {
+   "p": 0.028095769263690402,
+   "day": 51
+  },
+  "Eros Old Town|metal": {
+   "p": -0.041334300000000004,
+   "day": 51
+  },
+  "Ironheart|industrial": {
+   "p": 0.011000000000000005,
+   "day": 51
+  },
+  "Earth|industrial": {
+   "p": 0.018000000000000002,
+   "day": 51
+  },
+  "Triton Outpost|metal": {
+   "p": -0.036,
+   "day": 51
+  },
+  "Hermes Foundry|industrial": {
+   "p": -0.009,
+   "day": 51
+  },
+  "Earth|metal": {
+   "p": 0.005,
+   "day": 51
+  }
+ },
+ "rumors": [],
+ "missions": [],
+ "dest": null,
+ "nextId": 1,
+ "crew": [
+  "c:ines",
+  "c:tomas",
+  "p2",
+  "c:cato",
+  "p3",
+  "p4",
+  "p5",
+  "p6",
+  "p7"
+ ],
+ "flags": {
+  "classicCombat": true
+ },
+ "people": {
+  "p1": {
+   "captainKey": "hester",
+   "first": "Hester",
+   "last": "Vance",
+   "culture": "earth",
+   "home": "Rotterdam Arcology",
+   "job": "captain",
+   "role": "captain",
+   "age": 52,
+   "bio": "A hand on ore haulers for twenty years, and now the owner, on paper, of the ship she crews, which the bank owns most of. She keeps the books herself, in a notebook, and can tell you the cost of a watch to the credit.",
+   "traits": [
+    "greedy",
+    "secretive"
+   ],
+   "goal": "job",
+   "wealth": 2,
+   "secret": null,
+   "opinion": 4,
+   "memories": [
+    "13 Jun 2214: Good run. You pull your weight.",
+    "17 Jun 2214: Good run. You pull your weight.",
+    "23 Jun 2214: Good run. You pull your weight.",
+    "14 Jul 2214: You lent me four hundred when the fund was short.",
+    "29 Jul 2214: Good run. You pull your weight."
+   ],
+   "location": null,
+   "mood": null,
+   "captain": {
+    "trade": 4,
+    "nerve": 1,
+    "thrift": 5
+   },
+   "id": "p1",
+   "liftedAt": 50
+  },
+  "c:ines": {
+   "id": "c:ines",
+   "cast": "ines",
+   "first": "Ines",
+   "last": "Ferreira",
+   "culture": "earth",
+   "home": "Lisbon Arcology",
+   "job": "ferry pilot",
+   "age": 34,
+   "ambition": "Wants a ship she does not have to ask permission to land.",
+   "bio": "She flew the Lisbon to Luna ferry for nine years, until the night she put a failing shuttle down on an unlit pad instead of ditching it as the tower ordered. Forty-one people walked off. She lost her license for the way she did it, and she kept the logbook.",
+   "traits": [
+    "curious",
+    "brave"
+   ],
+   "goal": "job",
+   "wealth": 2,
+   "secret": null,
+   "opinion": 4,
+   "memories": [
+    "9 Jun 2214: I told you about the landing, and you did not look at me differently.",
+    "13 Jun 2214: You vouched for me to a patrol.",
+    "14 Jul 2214: You stood by the cutoff while I flew it dead.",
+    "14 Jul 2214: We kept Tranquility Night aboard the Silver Ember."
+   ],
+   "location": null,
+   "mood": {
+    "kind": "high",
+    "until": 11,
+    "text": "their old ferry chief Duarte has retired to a house with a garden and a view of the water"
+   },
+   "skills": {
+    "pilot": 3,
+    "gunner": 1,
+    "engineer": 1,
+    "slicer": 0
+   },
+   "xp": {
+    "pilot": 144,
+    "gunner": 12,
+    "engineer": 12,
+    "slicer": 0
+   },
+   "captain": {
+    "trade": 3,
+    "nerve": 4,
+    "thrift": 2
+   },
+   "role": "pilot",
+   "skill": 3,
+   "wage": 70,
+   "fee": 2100,
+   "letterDay": 1,
+   "story": {
+    "left": "a license lost over one landing",
+    "rel": "old ferry chief",
+    "name": "Duarte",
+    "hope": "her license back, with the Lisbon board's stamp on it",
+    "homeDetail": "the ferry pads at dawn, the harbor bell, and an ocean you could hear from the arcology at night",
+    "favor": null,
+    "news": {
+     "good": [
+      "{who} stood up for her at the license board",
+      "{who} sent the new ferry schedule with her old slot circled",
+      "{who} has retired to a house with a garden and a view of the water"
+     ],
+     "bad": [
+      "{who} is ill, and the old ferry crew are passing a hat",
+      "{who} wrote that the board has put her appeal back another season",
+      "{who} says the old ferry is being scrapped"
+     ]
+    },
+    "authored": true,
+    "beat": 0
+   },
+   "news": null,
+   "liftedAt": 50,
+   "touched": true
+  },
+  "c:tomas": {
+   "id": "c:tomas",
+   "cast": "tomas",
+   "first": "Tomas",
+   "last": "Achebe",
+   "culture": "earth",
+   "home": "Lagos Ring",
+   "job": "dockyard welder",
+   "age": 41,
+   "ambition": "Wants one ship kept running properly for ten years, with the same crew on her at the end of it.",
+   "bio": "A dockyard welder who has rebuilt the same hull three times for three owners who each sold her out from under him. He sends most of his wages to a sister on Lagos Ring, and talks to every machine he works on.",
+   "traits": [
+    "kind",
+    "homesick"
+   ],
+   "goal": "job",
+   "wealth": 2,
+   "secret": null,
+   "opinion": 1,
+   "memories": [
+    "9 Jun 2214: You helped me with the service on my own time."
+   ],
+   "location": null,
+   "mood": null,
+   "skills": {
+    "engineer": 3,
+    "slicer": 1,
+    "pilot": 1,
+    "gunner": 0
+   },
+   "xp": {
+    "engineer": 142,
+    "slicer": 12,
+    "pilot": 12,
+    "gunner": 0
+   },
+   "captain": {
+    "trade": 2,
+    "nerve": 2,
+    "thrift": 5
+   },
+   "role": "engineer",
+   "skill": 3,
+   "wage": 60,
+   "fee": 1800,
+   "liftedAt": 1
+  },
+  "p2": {
+   "id": "p2",
+   "first": "Vesna",
+   "last": "Esteban-Li",
+   "culture": "belt",
+   "home": "Eros Old Town",
+   "job": "slicer",
+   "traits": [
+    "pious",
+    "kind"
+   ],
+   "goal": "family",
+   "wealth": 1,
+   "secret": "contraband",
+   "opinion": 1,
+   "memories": [],
+   "location": null,
+   "role": "slicer",
+   "skill": 2,
+   "wage": 63,
+   "fee": 1890,
+   "mood": null,
+   "touched": true,
+   "liftedAt": 51
+  },
+  "c:cato": {
+   "id": "c:cato",
+   "cast": "cato",
+   "first": "Cato",
+   "last": "Rahman",
+   "culture": "earth",
+   "home": "Chittagong Arcology",
+   "job": "first officer",
+   "age": 44,
+   "ambition": "Wants a share of a ship, someday, so the crew he came up with could work one deck again.",
+   "bio": "He came up through the hold, and he knows every crew member by name and by family. He keeps the watch bill, and covers for the crew where the captain's rules would not.",
+   "traits": [
+    "kind",
+    "generous"
+   ],
+   "goal": "job",
+   "wealth": 2,
+   "secret": null,
+   "opinion": 2,
+   "memories": [
+    "13 Jun 2214: You told me what you needed, and I put it on the bill."
+   ],
+   "location": null,
+   "mood": {
+    "kind": "high",
+    "until": 61,
+    "text": "their mother Samira has a new lift technician, who actually comes when called"
+   },
+   "skills": {
+    "xo": 2,
+    "engineer": 1,
+    "pilot": 0,
+    "gunner": 1,
+    "slicer": 0
+   },
+   "xp": {
+    "xo": 45,
+    "engineer": 12,
+    "pilot": 0,
+    "gunner": 12,
+    "slicer": 0
+   },
+   "captain": {
+    "trade": 3,
+    "nerve": 3,
+    "thrift": 2
+   },
+   "role": "xo",
+   "skill": 2,
+   "wage": 65,
+   "fee": 1950,
+   "liftedAt": 5,
+   "letterDay": 51,
+   "story": {
+    "left": "a ship sold out from under her crew, and a hold gang scattered across three ports",
+    "rel": "mother",
+    "name": "Samira",
+    "hope": "a share of a ship, so the hold gang he came up with could work one deck again",
+    "homeDetail": "a flat above a cargo exchange where the lift ran all night and nobody in the building kept the same shift",
+    "favor": null,
+    "news": {
+     "good": [
+      "{who} sent a photo of the whole stairwell at a wedding",
+      "{who} has a new lift technician, who actually comes when called",
+      "{who} says the rent is frozen for another year"
+     ],
+     "bad": [
+      "{who} says the lift has been broken for a month",
+      "{who} is ill, and the clinic on {home} has a waiting list",
+      "{who} says the exchange is closing the flats for repairs"
+     ]
+    },
+    "authored": true,
+    "beat": 0
+   },
+   "news": {
+    "good": true,
+    "text": "their mother Samira has a new lift technician, who actually comes when called"
+   }
+  },
+  "p3": {
+   "id": "p3",
+   "first": "Arjun",
+   "last": "Lindqvist",
+   "culture": "earth",
+   "home": "Hermes Foundry",
+   "job": "quartermaster",
+   "traits": [
+    "curious",
+    "rude"
+   ],
+   "goal": "pilgrim",
+   "wealth": 3,
+   "secret": "debt",
+   "opinion": 1,
+   "memories": [],
+   "location": null,
+   "role": "quartermaster",
+   "skill": 2,
+   "wage": 72,
+   "fee": 2160,
+   "mood": null,
+   "touched": true,
+   "liftedAt": 51
+  },
+  "p4": {
+   "id": "p4",
+   "first": "Leila",
+   "last": "Mendoza",
+   "culture": "earth",
+   "home": "Luna",
+   "job": "medic",
+   "traits": [
+    "drunk",
+    "kind"
+   ],
+   "goal": "vague",
+   "wealth": 3,
+   "secret": "wanted",
+   "opinion": 1,
+   "memories": [],
+   "location": null,
+   "crime": "stealing a ship",
+   "role": "medic",
+   "skill": 2,
+   "wage": 84,
+   "fee": 2520,
+   "mood": null,
+   "liftedAt": 51
+  },
+  "p5": {
+   "id": "p5",
+   "first": "Hana",
+   "last": "Mendoza",
+   "culture": "earth",
+   "home": "Hermes Foundry",
+   "job": "cook",
+   "traits": [
+    "kind",
+    "brave"
+   ],
+   "goal": "fresh",
+   "wealth": 3,
+   "secret": null,
+   "opinion": 2,
+   "memories": [
+    "17 Jun 2214: The crew threw me a birthday party aboard the Silver Ember."
+   ],
+   "location": null,
+   "role": "cook",
+   "skill": 2,
+   "wage": 105,
+   "fee": 3150,
+   "mood": null,
+   "liftedAt": 9
+  },
+  "p6": {
+   "id": "p6",
+   "first": "Tuk",
+   "last": "Ashford-Kamau",
+   "culture": "belt",
+   "home": "Ironheart",
+   "job": "ice hand",
+   "traits": [
+    "drunk",
+    "pious"
+   ],
+   "goal": "family",
+   "wealth": 2,
+   "secret": null,
+   "opinion": 1,
+   "memories": [],
+   "location": null,
+   "role": "icehand",
+   "skill": 1,
+   "wage": 54,
+   "fee": 1620,
+   "mood": null,
+   "liftedAt": 51
+  },
+  "p7": {
+   "id": "p7",
+   "first": "Noor",
+   "last": "Kerr",
+   "culture": "mars",
+   "home": "Phobos Yards",
+   "job": "ice hand",
+   "traits": [
+    "talkative",
+    "drunk"
+   ],
+   "goal": "home",
+   "wealth": 2,
+   "secret": "spy",
+   "opinion": 1,
+   "memories": [],
+   "location": null,
+   "role": "icehand",
+   "skill": 1,
+   "wage": 90,
+   "fee": 2700,
+   "mood": null,
+   "liftedAt": 51
+  },
+  "p8": {
+   "id": "p8",
+   "first": "Kwame",
+   "last": "Lindqvist",
+   "culture": "earth",
+   "home": "Hermes Foundry",
+   "job": "research scientist",
+   "traits": [
+    "rude",
+    "curious"
+   ],
+   "goal": "research",
+   "wealth": 1,
+   "secret": null,
+   "opinion": 0,
+   "memories": [],
+   "location": "Earth",
+   "regular": "Earth",
+   "gossip": "is off the drink, and orders water loudly."
+  },
+  "p9": {
+   "id": "p9",
+   "first": "Diego",
+   "last": "Mendoza",
+   "culture": "earth",
+   "home": "Hermes Foundry",
+   "job": "insurance adjuster",
+   "traits": [
+    "secretive",
+    "nervous"
+   ],
+   "goal": "family",
+   "wealth": 2,
+   "secret": "spy",
+   "opinion": 0,
+   "memories": [],
+   "location": "Earth",
+   "regular": "Earth",
+   "gossip": "is learning the fiddle, and has been asked twice to practice elsewhere."
+  },
+  "p10": {
+   "id": "p10",
+   "first": "Marcus",
+   "last": "Holloway",
+   "culture": "mars",
+   "home": "Phobos Yards",
+   "job": "soil chemist",
+   "traits": [
+    "brave",
+    "pious"
+   ],
+   "goal": "vague",
+   "wealth": 2,
+   "secret": null,
+   "opinion": 0,
+   "memories": [],
+   "location": "Mars",
+   "regular": "Mars"
+  },
+  "p11": {
+   "id": "p11",
+   "first": "Tariq",
+   "last": "Kerr",
+   "culture": "mars",
+   "home": "Mars",
+   "job": "research scientist",
+   "traits": [
+    "talkative",
+    "rude"
+   ],
+   "goal": "research",
+   "wealth": 1,
+   "secret": "contraband",
+   "opinion": 0,
+   "memories": [],
+   "location": "Mars",
+   "regular": "Mars"
+  },
+  "p12": {
+   "id": "p12",
+   "first": "Imi",
+   "last": "Kalu",
+   "culture": "belt",
+   "home": "Ironheart",
+   "job": "water recycler tech",
+   "traits": [
+    "generous",
+    "homesick"
+   ],
+   "goal": "medical",
+   "wealth": 1,
+   "secret": null,
+   "opinion": 0,
+   "memories": [],
+   "location": "Juno Commons",
+   "regular": "Juno Commons"
+  },
+  "p13": {
+   "id": "p13",
+   "first": "Wim",
+   "last": "Ashford-Kamau",
+   "culture": "belt",
+   "home": "Ganymede",
+   "job": "water recycler tech",
+   "traits": [
+    "generous",
+    "nervous"
+   ],
+   "goal": "medical",
+   "wealth": 1,
+   "secret": "contraband",
+   "opinion": 0,
+   "memories": [],
+   "location": "Juno Commons",
+   "regular": "Juno Commons"
+  },
+  "p14": {
+   "id": "p14",
+   "first": "Yuri",
+   "last": "Pike",
+   "culture": "belt",
+   "home": "Juno Commons",
+   "job": "water recycler tech",
+   "traits": [
+    "homesick",
+    "talkative"
+   ],
+   "goal": "job",
+   "wealth": 3,
+   "secret": "spy",
+   "opinion": 0,
+   "memories": [],
+   "location": "Eros Old Town",
+   "regular": "Eros Old Town"
+  },
+  "p15": {
+   "id": "p15",
+   "first": "Jo",
+   "last": "Ashford-Kamau",
+   "culture": "belt",
+   "home": "Triton Outpost",
+   "job": "ice miner",
+   "traits": [
+    "pious",
+    "rude"
+   ],
+   "goal": "fresh",
+   "wealth": 3,
+   "secret": "debt",
+   "opinion": 0,
+   "memories": [],
+   "location": "Eros Old Town",
+   "regular": "Eros Old Town"
+  }
+ },
+ "nextPid": 16,
+ "rep": {
+  "Dome Concord": 1
+ },
+ "outfits": {},
+ "story": {
+  "stage": 0,
+  "next": 1000000000,
+  "log": []
+ },
+ "tutorial": null,
+ "tips": {
+  "burn": true,
+  "bar": true
+ },
+ "carried": null,
+ "v": 3,
+ "background": "earth",
+ "captain": {
+  "name": "Ines Okafor",
+  "since": 1
+ },
+ "captains": [],
+ "home": {
+  "name": "Silver Ember",
+  "named": 1,
+  "traditions": [],
+  "proposed": [],
+  "touches": [
+   "Arjun tied a small bell by the airlock, so you can hear who is coming and going",
+   "Ines set up a board by the mess with everybody's birthday on it, in careful, curly writing",
+   "Vesna taped a hand-drawn star chart to the cockpit bulkhead, with everybody's home marked in a different color"
+  ],
+  "cat": "Nine",
+  "log": [
+   {
+    "day": 51,
+    "text": "Nine the cat came aboard at Eros Old Town."
+   },
+   {
+    "day": 36,
+    "text": "Kept Tranquility Night aboard."
+   },
+   {
+    "day": 9,
+    "text": "A birthday party for Hana."
+   }
+  ],
+  "burns": 4
+ },
+ "castPair": [
+  "ines",
+  "tomas"
+ ],
+ "cast": {
+  "ines": {
+   "arc": 2,
+   "flags": {
+    "practiced": true
+   },
+   "next": 0,
+   "pid": "c:ines",
+   "since": 1,
+   "wait": 3
+  },
+  "tomas": {
+   "arc": 1,
+   "flags": {},
+   "next": 0,
+   "pid": "c:tomas",
+   "since": 1,
+   "wait": 5
+  },
+  "cato": {
+   "arc": 1,
+   "flags": {},
+   "next": 0,
+   "pid": "c:cato",
+   "since": 1,
+   "wait": 5
+  }
+ },
+ "hired": {
+  "captain": "p1",
+  "captainKey": "hester",
+  "post": "gunner",
+  "since": 1,
+  "wage": 35,
+  "share": 0.06,
+  "fund": 87343,
+  "run": null,
+  "ledger": [
+   {
+    "day": 51,
+    "from": "Juno Commons",
+    "to": "Eros Old Town",
+    "good": "water",
+    "tons": 90,
+    "cost": 0,
+    "revenue": 24975,
+    "profit": 24975,
+    "wage": 1050,
+    "share": 1499,
+    "hall": 0,
+    "days": 15,
+    "ice": true
+   },
+   {
+    "day": 15,
+    "from": "Earth",
+    "to": "Juno Commons",
+    "good": "medical",
+    "tons": 107,
+    "cost": 30281,
+    "revenue": 62274,
+    "profit": 31993,
+    "wage": 210,
+    "share": 1920,
+    "hall": 0,
+    "days": 6,
+    "ice": false
+   },
+   {
+    "day": 9,
+    "from": "Mars",
+    "to": "Earth",
+    "good": "metal",
+    "tons": 120,
+    "cost": 14400,
+    "revenue": 22200,
+    "profit": 7800,
+    "wage": 140,
+    "share": 468,
+    "hall": 0,
+    "days": 4,
+    "ice": false
+   },
+   {
+    "day": 5,
+    "from": "Earth",
+    "to": "Mars",
+    "good": "equipment",
+    "tons": 47,
+    "cost": 11891,
+    "revenue": 22466,
+    "profit": 10575,
+    "wage": 140,
+    "share": 635,
+    "hall": 0,
+    "days": 4,
+    "ice": false
+   }
+  ],
+  "skill": {
+   "gunner": 22,
+   "comms": 2
+  },
+  "asked": 0,
+  "raidTold": false,
+  "debt": 0,
+  "plan": {
+   "day": 51,
+   "at": "Eros Old Town",
+   "cargo": "{}",
+   "run": {
+    "sid": "psyche",
+    "planet": "Ironheart",
+    "yard": false,
+    "good": "luxury",
+    "tons": 120,
+    "cost": 51600,
+    "profit": 37560,
+    "days": 6,
+    "ballast": false
+   },
+   "alts": [
+    {
+     "sid": "earth",
+     "planet": "Earth",
+     "yard": true,
+     "good": "luxury",
+     "tons": 120,
+     "cost": 51600,
+     "profit": 27480,
+     "days": 6
+    },
+    {
+     "sid": "jupiter",
+     "planet": "Ganymede",
+     "yard": false,
+     "good": "luxury",
+     "tons": 120,
+     "cost": 51600,
+     "profit": 35280,
+     "days": 9
+    },
+    {
+     "sid": "juno",
+     "planet": "Juno Commons",
+     "yard": false,
+     "good": "luxury",
+     "tons": 120,
+     "cost": 51600,
+     "profit": 30120,
+     "days": 8
+    }
+   ]
+  },
+  "away": [
+   {
+    "tpl": "witness",
+    "ctx": {
+     "dest": "Hermes Foundry",
+     "from": "Eros Old Town",
+     "who": "Old Tomas Reyes",
+     "system": "Mercury",
+     "scale": 1.25
+    },
+    "sid": "mercury",
+    "planet": "Hermes Foundry",
+    "days": 5,
+    "until": 75,
+    "pitched": null,
+    "booked": false
+   }
+  ],
+  "warned": false,
+  "walked": true,
+  "bill": 0,
+  "runsDone": 4,
+  "earnedTotal": 6062,
+  "first": {
+   "good": "electronics",
+   "tons": 47,
+   "cost": 11891,
+   "revenue": 22466,
+   "profit": 10575,
+   "forecast": 8460,
+   "wage": 140,
+   "share": 635,
+   "hall": 0,
+   "owed": 0,
+   "days": 4,
+   "planet": "Mars"
+  },
+  "arrived": true,
+  "flags": {
+   "sawHull": true,
+   "lent": true
+  },
+  "iceAt": 36,
+  "beatWait": 0,
+  "beats": 1,
+  "beatRun": 3
+ },
+ "factions": {
+  "prosperity": {
+   "Arcology Compact": 0.5615523868230649,
+   "Dome Concord": 0.5182364683628926,
+   "Charter League": 0.5619570848827177
+  },
+  "tension": {
+   "Arcology Compact|Dome Concord": 0,
+   "Arcology Compact|Charter League": 0.22166337762532695,
+   "Charter League|Dome Concord": 0.24626871875
+  },
+  "war": null
+ },
+ "world": {
+  "mercury": {
+   "unrest": 0
+  },
+  "mars": {
+   "unrest": 0.38775
+  },
+  "ceres": {
+   "unrest": 0.2
+  },
+  "pallas": {
+   "unrest": 0.3
+  },
+  "hygiea": {
+   "unrest": 0.9214541565875549
+  },
+  "psyche": {
+   "unrest": 0.25
+  },
+  "juno": {
+   "unrest": 0.15
+  },
+  "eros": {
+   "unrest": 0.1
+  },
+  "jupiter": {
+   "unrest": 0.2
+  },
+  "saturn": {
+   "unrest": 0.35
+  },
+  "neptune": {
+   "unrest": 0.45
+  },
+  "earth": {
+   "unrest": 0
+  }
+ },
+ "fleet": [],
+ "companyLog": [],
+ "letterAt": 51,
+ "bars": {
+  "Earth": {
+   "ids": [
+    "p8",
+    "p9"
+   ],
+   "seen": 9
+  },
+  "Mars": {
+   "ids": [
+    "p10",
+    "p11"
+   ],
+   "seen": 5
+  },
+  "Juno Commons": {
+   "ids": [
+    "p12",
+    "p13"
+   ],
+   "seen": 15
+  },
+  "Eros Old Town": {
+   "ids": [
+    "p14",
+    "p15"
+   ],
+   "seen": 51
+  }
+ },
+ "injured": {
+  "c:tomas": true
+ },
+ "heat": 0,
+ "inbox": [
+  {
+   "n": 25,
+   "day": 51,
+   "via": "crew",
+   "text": "Stowaway"
+  },
+  {
+   "n": 24,
+   "day": 51,
+   "via": "message",
+   "text": "A message for Cato at Eros Old Town: their mother Samira has a new lift technician, who actually comes when called.",
+   "pid": "c:cato"
+  },
+  {
+   "n": 23,
+   "day": 51,
+   "via": "message",
+   "text": "Insurance rates around Mars have doubled after a run of raids, and some captains are refusing the lane."
+  },
+  {
+   "n": 22,
+   "day": 48,
+   "via": "message",
+   "text": "The Dome Concord and the Charter League trade accusations after a patrol standoff near Ceres."
+  },
+  {
+   "n": 21,
+   "day": 38,
+   "via": "message",
+   "text": "A string of pirate attacks near Hygiea has haulers taking the long way round."
+  },
+  {
+   "n": 20,
+   "day": 36,
+   "via": "crew",
+   "text": "Cutting Ice"
+  },
+  {
+   "n": 19,
+   "day": 36,
+   "via": "crew",
+   "text": "The Rock"
+  },
+  {
+   "n": 18,
+   "day": 36,
+   "via": "crew",
+   "text": "Tranquility Night"
+  },
+  {
+   "n": 17,
+   "day": 36,
+   "via": "crew",
+   "text": "Dead Stick"
+  },
+  {
+   "n": 16,
+   "day": 36,
+   "via": "crew",
+   "text": "The First of the Month"
+  },
+  {
+   "n": 15,
+   "day": 36,
+   "via": "station",
+   "text": "Customs on Enceladus seized a shipment of Refined Metals. Buyers there are desperate. (Saturn)",
+   "tag": "market"
+  },
+  {
+   "n": 14,
+   "day": 15,
+   "via": "crew",
+   "text": "The Customs Officer"
+  },
+  {
+   "n": 13,
+   "day": 9,
+   "via": "crew",
+   "text": "Hana's Birthday"
+  },
+  {
+   "n": 12,
+   "day": 9,
+   "via": "message",
+   "text": "Good News"
+  },
+  {
+   "n": 11,
+   "day": 9,
+   "via": "station",
+   "text": "A warehouse on Europa has been cleared out in a hurry, and the Water is going, quite literally, for whatever anyone will pay. (Jupiter)",
+   "tag": "market"
+  },
+  {
+   "n": 10,
+   "day": 7,
+   "via": "message",
+   "text": "A survey ship of the Charter League is turned away from Earth by Arcology Compact patrols. Both sides release very different accounts."
+  },
+  {
+   "n": 9,
+   "day": 5,
+   "via": "crew",
+   "text": "The Watch Bill"
+  },
+  {
+   "n": 8,
+   "day": 5,
+   "via": "ship",
+   "text": "A Patrol Cutter"
+  },
+  {
+   "n": 7,
+   "day": 5,
+   "via": "station",
+   "text": "Dockworkers on Juno Commons have gone on strike. Medical Supplies is suddenly scarce there. (Juno)",
+   "tag": "market"
+  },
+  {
+   "n": 6,
+   "day": 5,
+   "via": "station",
+   "text": "Memorial Day"
+  },
+  {
+   "n": 5,
+   "day": 1,
+   "via": "crew",
+   "text": "The Engine Room Door"
+  },
+  {
+   "n": 4,
+   "day": 1,
+   "via": "crew",
+   "text": "The Woman at the Helm"
+  },
+  {
+   "n": 3,
+   "day": 1,
+   "via": "crew",
+   "text": "The Round"
+  },
+  {
+   "n": 2,
+   "day": 1,
+   "via": "station",
+   "text": "Word is that the governor of Triton Outpost is stockpiling Refined Metals for a party, and will pay well over the odds. (Neptune)",
+   "tag": "market"
+  },
+  {
+   "n": 1,
+   "day": 1,
+   "via": "message",
+   "text": "A message for Ines at Earth: their old ferry chief Duarte has retired to a house with a garden and a view of the water.",
+   "pid": "c:ines"
+  }
+ ],
+ "inboxN": 25,
+ "dockMark": {
+  "prev": 13,
+  "cur": 24
+ },
+ "tuned": null,
+ "posts": {
+  "gunner": {
+   "manual": false,
+   "strain": 0,
+   "busy": false,
+   "note": null,
+   "sighted": false
+  },
+  "pilot": {
+   "manual": false,
+   "strain": 0,
+   "busy": false,
+   "note": null
+  },
+  "engineer": {
+   "manual": false,
+   "strain": 0,
+   "busy": false,
+   "note": null
+  }
+ },
+ "bonds": {
+  "c:ines|c:tomas": 3.593712792625583,
+  "c:ines|p2": 2.84,
+  "c:cato|c:ines": 2.84,
+  "c:ines|p3": 2.3159999999999994,
+  "c:ines|p4": 4.930755361509774,
+  "c:ines|p5": 3.593712792625583,
+  "c:ines|p6": 1.7919999999999994,
+  "c:ines|p7": 2.84,
+  "c:tomas|p2": 1.7919999999999994,
+  "c:cato|c:tomas": 1.7919999999999994,
+  "c:tomas|p3": -1.0600000000000005,
+  "c:tomas|p4": 3.593712792625583,
+  "c:tomas|p5": 3.593712792625583,
+  "c:tomas|p6": 2.84,
+  "c:tomas|p7": 2.84,
+  "c:cato|p2": 3.593712792625583,
+  "p2|p3": -3.9600000000000017,
+  "p2|p4": -3.9600000000000017,
+  "p2|p5": 2.84,
+  "p2|p6": -2.22,
+  "p2|p7": -3.9600000000000017,
+  "c:cato|p3": -3.9600000000000017,
+  "c:cato|p4": 3.2410276675996044,
+  "c:cato|p5": 2.84,
+  "c:cato|p6": 3.912237729182934,
+  "c:cato|p7": 1.7919999999999994,
+  "p3|p4": -2.8000000000000003,
+  "p3|p5": -3.9600000000000017,
+  "p3|p6": 3.593712792625583,
+  "p3|p7": 1.7919999999999994,
+  "p4|p5": 3.593712792625583,
+  "p4|p6": -2.8000000000000003,
+  "p4|p7": 2.84,
+  "p5|p6": 1.7919999999999994,
+  "p5|p7": 2.84,
+  "p6|p7": -3.9600000000000017
+ },
+ "route": {
+  "dock": "Eros Old Town",
+  "go": false
+ },
+ "haul": [
+  {
+   "ship": "\"Restless Anvil\"",
+   "cid": "equipment",
+   "tons": 40,
+   "from": "Titan",
+   "to": "The Rook",
+   "fromSid": "saturn",
+   "toSid": "hygiea",
+   "arrive": 56
+  },
+  {
+   "ship": "\"Wandering Heron\"",
+   "cid": "industrial",
+   "tons": 38,
+   "from": "Titan",
+   "to": "Pallas Refinery",
+   "fromSid": "saturn",
+   "toSid": "pallas",
+   "arrive": 54
+  },
+  {
+   "ship": "\"Iron Lantern\"",
+   "cid": "industrial",
+   "tons": 32,
+   "from": "Hermes Foundry",
+   "to": "Titan",
+   "fromSid": "mercury",
+   "toSid": "saturn",
+   "arrive": 54
+  },
+  {
+   "ship": "\"Iron Mule\"",
+   "cid": "food",
+   "tons": 29,
+   "from": "Ironheart",
+   "to": "Enceladus",
+   "fromSid": "psyche",
+   "toSid": "saturn",
+   "arrive": 56
+  },
+  {
+   "ship": "\"Patient Promise\"",
+   "cid": "food",
+   "tons": 27,
+   "from": "Enceladus",
+   "to": "Ironheart",
+   "fromSid": "saturn",
+   "toSid": "psyche",
+   "arrive": 56
+  },
+  {
+   "ship": "\"Brave Promise\"",
+   "cid": "equipment",
+   "tons": 32,
+   "from": "Triton Outpost",
+   "to": "Juno Commons",
+   "fromSid": "neptune",
+   "toSid": "juno",
+   "arrive": 70
+  },
+  {
+   "ship": "\"Iron Tortoise\"",
+   "cid": "medical",
+   "tons": 26,
+   "from": "Triton Outpost",
+   "to": "Juno Commons",
+   "fromSid": "neptune",
+   "toSid": "juno",
+   "arrive": 70
+  },
+  {
+   "ship": "\"Distant Horizon\"",
+   "cid": "medical",
+   "tons": 31,
+   "from": "Ganymede",
+   "to": "Triton Outpost",
+   "fromSid": "jupiter",
+   "toSid": "neptune",
+   "arrive": 72
+  },
+  {
+   "ship": "\"Restless Wager\"",
+   "cid": "food",
+   "tons": 21,
+   "from": "Triton Outpost",
+   "to": "Hermes Foundry",
+   "fromSid": "neptune",
+   "toSid": "mercury",
+   "arrive": 71
+  },
+  {
+   "ship": "\"Iron Horizon\"",
+   "cid": "luxury",
+   "tons": 35,
+   "from": "Ironheart",
+   "to": "Ganymede",
+   "fromSid": "psyche",
+   "toSid": "jupiter",
+   "arrive": 53
+  },
+  {
+   "ship": "\"Honest Comet\"",
+   "cid": "food",
+   "tons": 26,
+   "from": "Triton Outpost",
+   "to": "Mars",
+   "fromSid": "neptune",
+   "toSid": "mars",
+   "arrive": 71
+  },
+  {
+   "ship": "\"Silver Promise\"",
+   "cid": "luxury",
+   "tons": 23,
+   "from": "Titan",
+   "to": "Ironheart",
+   "fromSid": "saturn",
+   "toSid": "psyche",
+   "arrive": 57
+  },
+  {
+   "ship": "\"Honest Bargain\"",
+   "cid": "equipment",
+   "tons": 30,
+   "from": "Pallas Refinery",
+   "to": "Triton Outpost",
+   "fromSid": "pallas",
+   "toSid": "neptune",
+   "arrive": 71
+  },
+  {
+   "ship": "\"Stubborn Comet\"",
+   "cid": "equipment",
+   "tons": 23,
+   "from": "Triton Outpost",
+   "to": "Pallas Refinery",
+   "fromSid": "neptune",
+   "toSid": "pallas",
+   "arrive": 71
+  },
+  {
+   "ship": "\"Honest Tortoise\"",
+   "cid": "food",
+   "tons": 26,
+   "from": "Pallas Refinery",
+   "to": "Enceladus",
+   "fromSid": "pallas",
+   "toSid": "saturn",
+   "arrive": 55
+  },
+  {
+   "ship": "\"Distant Mule\"",
+   "cid": "food",
+   "tons": 39,
+   "from": "Ganymede",
+   "to": "Pallas Refinery",
+   "fromSid": "jupiter",
+   "toSid": "pallas",
+   "arrive": 52
+  },
+  {
+   "ship": "\"Iron Mule\"",
+   "cid": "industrial",
+   "tons": 32,
+   "from": "Ironheart",
+   "to": "Titan",
+   "fromSid": "psyche",
+   "toSid": "saturn",
+   "arrive": 57
+  },
+  {
+   "ship": "\"Second Pilgrim\"",
+   "cid": "equipment",
+   "tons": 24,
+   "from": "Titan",
+   "to": "Pallas Refinery",
+   "fromSid": "saturn",
+   "toSid": "pallas",
+   "arrive": 55
+  },
+  {
+   "ship": "\"Stubborn Ember\"",
+   "cid": "equipment",
+   "tons": 33,
+   "from": "Hermes Foundry",
+   "to": "Titan",
+   "fromSid": "mercury",
+   "toSid": "saturn",
+   "arrive": 55
+  },
+  {
+   "ship": "\"Lucky Heron\"",
+   "cid": "luxury",
+   "tons": 28,
+   "from": "Triton Outpost",
+   "to": "Earth",
+   "fromSid": "neptune",
+   "toSid": "earth",
+   "arrive": 73
+  },
+  {
+   "ship": "\"Restless Wager\"",
+   "cid": "water",
+   "tons": 25,
+   "from": "Triton Outpost",
+   "to": "Eros Old Town",
+   "fromSid": "neptune",
+   "toSid": "eros",
+   "arrive": 75
+  },
+  {
+   "ship": "\"Lucky Pilgrim\"",
+   "cid": "luxury",
+   "tons": 32,
+   "from": "Triton Outpost",
+   "to": "Ironheart",
+   "fromSid": "neptune",
+   "toSid": "psyche",
+   "arrive": 74
+  },
+  {
+   "ship": "\"Restless Pilgrim\"",
+   "cid": "luxury",
+   "tons": 27,
+   "from": "Eros Old Town",
+   "to": "Triton Outpost",
+   "fromSid": "eros",
+   "toSid": "neptune",
+   "arrive": 75
+  },
+  {
+   "ship": "\"Second Comet\"",
+   "cid": "metal",
+   "tons": 27,
+   "from": "Triton Outpost",
+   "to": "Earth",
+   "fromSid": "neptune",
+   "toSid": "earth",
+   "arrive": 73
+  },
+  {
+   "ship": "\"Quiet Ember\"",
+   "cid": "water",
+   "tons": 31,
+   "from": "Triton Outpost",
+   "to": "Ceres Station",
+   "fromSid": "neptune",
+   "toSid": "ceres",
+   "arrive": 73
+  },
+  {
+   "ship": "\"Lucky Bargain\"",
+   "cid": "water",
+   "tons": 38,
+   "from": "Europa",
+   "to": "Triton Outpost",
+   "fromSid": "jupiter",
+   "toSid": "neptune",
+   "arrive": 74
+  },
+  {
+   "ship": "\"Iron Comet\"",
+   "cid": "luxury",
+   "tons": 23,
+   "from": "Ironheart",
+   "to": "Triton Outpost",
+   "fromSid": "psyche",
+   "toSid": "neptune",
+   "arrive": 74
+  },
+  {
+   "ship": "\"Silver Promise\"",
+   "cid": "equipment",
+   "tons": 37,
+   "from": "Earth",
+   "to": "Triton Outpost",
+   "fromSid": "earth",
+   "toSid": "neptune",
+   "arrive": 73
+  },
+  {
+   "ship": "\"Honest Ember\"",
+   "cid": "luxury",
+   "tons": 21,
+   "from": "Triton Outpost",
+   "to": "Earth",
+   "fromSid": "neptune",
+   "toSid": "earth",
+   "arrive": 73
+  },
+  {
+   "ship": "\"Lucky Pilgrim\"",
+   "cid": "luxury",
+   "tons": 31,
+   "from": "Hermes Foundry",
+   "to": "Triton Outpost",
+   "fromSid": "mercury",
+   "toSid": "neptune",
+   "arrive": 73
+  },
+  {
+   "ship": "\"Honest Lantern\"",
+   "cid": "food",
+   "tons": 23,
+   "from": "Triton Outpost",
+   "to": "Ring Nine",
+   "fromSid": "neptune",
+   "toSid": "ceres",
+   "arrive": 74
+  },
+  {
+   "ship": "\"Brave Lantern\"",
+   "cid": "medical",
+   "tons": 38,
+   "from": "Ironheart",
+   "to": "Ring Nine",
+   "fromSid": "psyche",
+   "toSid": "ceres",
+   "arrive": 52
+  },
+  {
+   "ship": "\"Brave Anvil\"",
+   "cid": "metal",
+   "tons": 40,
+   "from": "Triton Outpost",
+   "to": "Earth",
+   "fromSid": "neptune",
+   "toSid": "earth",
+   "arrive": 74
+  },
+  {
+   "ship": "\"Patient Heron\"",
+   "cid": "metal",
+   "tons": 20,
+   "from": "Ceres Station",
+   "to": "Triton Outpost",
+   "fromSid": "ceres",
+   "toSid": "neptune",
+   "arrive": 74
+  },
+  {
+   "ship": "\"Quiet Horizon\"",
+   "cid": "water",
+   "tons": 31,
+   "from": "Enceladus",
+   "to": "The Hollows",
+   "fromSid": "saturn",
+   "toSid": "pallas",
+   "arrive": 57
+  },
+  {
+   "ship": "\"Restless Horizon\"",
+   "cid": "food",
+   "tons": 20,
+   "from": "Ceres Station",
+   "to": "Ironheart",
+   "fromSid": "ceres",
+   "toSid": "psyche",
+   "arrive": 52
+  },
+  {
+   "ship": "\"Patient Ember\"",
+   "cid": "food",
+   "tons": 22,
+   "from": "Triton Outpost",
+   "to": "Ceres Station",
+   "fromSid": "neptune",
+   "toSid": "ceres",
+   "arrive": 74
+  },
+  {
+   "ship": "\"Second Anvil\"",
+   "cid": "food",
+   "tons": 31,
+   "from": "Juno Commons",
+   "to": "Triton Outpost",
+   "fromSid": "juno",
+   "toSid": "neptune",
+   "arrive": 73
+  },
+  {
+   "ship": "\"Distant Horizon\"",
+   "cid": "equipment",
+   "tons": 40,
+   "from": "Eros Old Town",
+   "to": "Titan",
+   "fromSid": "eros",
+   "toSid": "saturn",
+   "arrive": 58
+  },
+  {
+   "ship": "\"Quiet Tortoise\"",
+   "cid": "medical",
+   "tons": 23,
+   "from": "Triton Outpost",
+   "to": "Ring Nine",
+   "fromSid": "neptune",
+   "toSid": "ceres",
+   "arrive": 75
+  },
+  {
+   "ship": "\"Brave Lantern\"",
+   "cid": "equipment",
+   "tons": 36,
+   "from": "Triton Outpost",
+   "to": "Ganymede",
+   "fromSid": "neptune",
+   "toSid": "jupiter",
+   "arrive": 76
+  },
+  {
+   "ship": "\"Wandering Comet\"",
+   "cid": "food",
+   "tons": 28,
+   "from": "Triton Outpost",
+   "to": "The Hollows",
+   "fromSid": "neptune",
+   "toSid": "pallas",
+   "arrive": 74
+  },
+  {
+   "ship": "\"Stubborn Bargain\"",
+   "cid": "equipment",
+   "tons": 24,
+   "from": "Juno Commons",
+   "to": "Triton Outpost",
+   "fromSid": "juno",
+   "toSid": "neptune",
+   "arrive": 74
+  },
+  {
+   "ship": "\"Honest Tortoise\"",
+   "cid": "medical",
+   "tons": 20,
+   "from": "Ganymede",
+   "to": "Triton Outpost",
+   "fromSid": "jupiter",
+   "toSid": "neptune",
+   "arrive": 76
+  },
+  {
+   "ship": "\"Quiet Mule\"",
+   "cid": "industrial",
+   "tons": 40,
+   "from": "Hermes Foundry",
+   "to": "Europa",
+   "fromSid": "mercury",
+   "toSid": "jupiter",
+   "arrive": 53
+  },
+  {
+   "ship": "\"Lucky Tortoise\"",
+   "cid": "food",
+   "tons": 28,
+   "from": "Earth",
+   "to": "Triton Outpost",
+   "fromSid": "earth",
+   "toSid": "neptune",
+   "arrive": 75
+  },
+  {
+   "ship": "\"Restless Anvil\"",
+   "cid": "metal",
+   "tons": 27,
+   "from": "Mars",
+   "to": "Triton Outpost",
+   "fromSid": "mars",
+   "toSid": "neptune",
+   "arrive": 74
+  },
+  {
+   "ship": "\"Patient Heron\"",
+   "cid": "medical",
+   "tons": 20,
+   "from": "Triton Outpost",
+   "to": "Ceres Station",
+   "fromSid": "neptune",
+   "toSid": "ceres",
+   "arrive": 76
+  },
+  {
+   "ship": "\"Distant Promise\"",
+   "cid": "medical",
+   "tons": 20,
+   "from": "Triton Outpost",
+   "to": "Ceres Station",
+   "fromSid": "neptune",
+   "toSid": "ceres",
+   "arrive": 76
+  },
+  {
+   "ship": "\"Honest Wager\"",
+   "cid": "medical",
+   "tons": 35,
+   "from": "Juno Commons",
+   "to": "Triton Outpost",
+   "fromSid": "juno",
+   "toSid": "neptune",
+   "arrive": 75
+  },
+  {
+   "ship": "\"Honest Promise\"",
+   "cid": "medical",
+   "tons": 25,
+   "from": "Triton Outpost",
+   "to": "Juno Commons",
+   "fromSid": "neptune",
+   "toSid": "juno",
+   "arrive": 75
+  },
+  {
+   "ship": "\"Lucky Horizon\"",
+   "cid": "medical",
+   "tons": 33,
+   "from": "Ring Nine",
+   "to": "Triton Outpost",
+   "fromSid": "ceres",
+   "toSid": "neptune",
+   "arrive": 76
+  },
+  {
+   "ship": "\"Wandering Heron\"",
+   "cid": "equipment",
+   "tons": 23,
+   "from": "Ganymede",
+   "to": "Triton Outpost",
+   "fromSid": "jupiter",
+   "toSid": "neptune",
+   "arrive": 77
+  },
+  {
+   "ship": "\"Stubborn Promise\"",
+   "cid": "luxury",
+   "tons": 40,
+   "from": "Eros Old Town",
+   "to": "Triton Outpost",
+   "fromSid": "eros",
+   "toSid": "neptune",
+   "arrive": 78
+  },
+  {
+   "ship": "\"Second Tortoise\"",
+   "cid": "water",
+   "tons": 36,
+   "from": "Triton Outpost",
+   "to": "Eros Old Town",
+   "fromSid": "neptune",
+   "toSid": "eros",
+   "arrive": 78
+  },
+  {
+   "ship": "\"Quiet Ember\"",
+   "cid": "equipment",
+   "tons": 28,
+   "from": "Triton Outpost",
+   "to": "Juno Commons",
+   "fromSid": "neptune",
+   "toSid": "juno",
+   "arrive": 76
+  },
+  {
+   "ship": "\"Wandering Tortoise\"",
+   "cid": "food",
+   "tons": 24,
+   "from": "Triton Outpost",
+   "to": "Boneyard",
+   "fromSid": "neptune",
+   "toSid": "hygiea",
+   "arrive": 80
+  },
+  {
+   "ship": "\"Honest Ember\"",
+   "cid": "equipment",
+   "tons": 27,
+   "from": "Hermes Foundry",
+   "to": "Triton Outpost",
+   "fromSid": "mercury",
+   "toSid": "neptune",
+   "arrive": 78
+  },
+  {
+   "ship": "\"Wandering Wager\"",
+   "cid": "medical",
+   "tons": 37,
+   "from": "Titan",
+   "to": "Juno Commons",
+   "fromSid": "saturn",
+   "toSid": "juno",
+   "arrive": 58
+  },
+  {
+   "ship": "\"Lucky Horizon\"",
+   "cid": "metal",
+   "tons": 36,
+   "from": "Pallas Refinery",
+   "to": "Enceladus",
+   "fromSid": "pallas",
+   "toSid": "saturn",
+   "arrive": 61
+  },
+  {
+   "ship": "\"Quiet Heron\"",
+   "cid": "luxury",
+   "tons": 32,
+   "from": "The Rook",
+   "to": "Eros Old Town",
+   "fromSid": "hygiea",
+   "toSid": "eros",
+   "arrive": 52
+  },
+  {
+   "ship": "\"Lucky Pilgrim\"",
+   "cid": "food",
+   "tons": 28,
+   "from": "Triton Outpost",
+   "to": "The Rook",
+   "fromSid": "neptune",
+   "toSid": "hygiea",
+   "arrive": 82
+  },
+  {
+   "ship": "\"Wandering Tortoise\"",
+   "cid": "luxury",
+   "tons": 22,
+   "from": "The Rook",
+   "to": "Juno Commons",
+   "fromSid": "hygiea",
+   "toSid": "juno",
+   "arrive": 57
+  },
+  {
+   "ship": "\"Distant Comet\"",
+   "cid": "water",
+   "tons": 24,
+   "from": "The Rook",
+   "to": "Pallas Refinery",
+   "fromSid": "hygiea",
+   "toSid": "pallas",
+   "arrive": 57
+  },
+  {
+   "ship": "\"Iron Promise\"",
+   "cid": "luxury",
+   "tons": 34,
+   "from": "Titan",
+   "to": "Ironheart",
+   "fromSid": "saturn",
+   "toSid": "psyche",
+   "arrive": 64
+  },
+  {
+   "ship": "\"Lucky Horizon\"",
+   "cid": "luxury",
+   "tons": 38,
+   "from": "Ceres Station",
+   "to": "Titan",
+   "fromSid": "ceres",
+   "toSid": "saturn",
+   "arrive": 59
+  },
+  {
+   "ship": "\"Brave Tortoise\"",
+   "cid": "luxury",
+   "tons": 34,
+   "from": "Mars",
+   "to": "Ceres Station",
+   "fromSid": "mars",
+   "toSid": "ceres",
+   "arrive": 52
+  },
+  {
+   "ship": "\"Brave Heron\"",
+   "cid": "equipment",
+   "tons": 30,
+   "from": "Ceres Station",
+   "to": "Mars",
+   "fromSid": "ceres",
+   "toSid": "mars",
+   "arrive": 52
+  },
+  {
+   "ship": "\"Restless Bargain\"",
+   "cid": "water",
+   "tons": 27,
+   "from": "Earth",
+   "to": "Ironheart",
+   "fromSid": "earth",
+   "toSid": "psyche",
+   "arrive": 55
+  },
+  {
+   "ship": "\"Iron Heron\"",
+   "cid": "food",
+   "tons": 31,
+   "from": "The Hollows",
+   "to": "The Rook",
+   "fromSid": "pallas",
+   "toSid": "hygiea",
+   "arrive": 57
+  },
+  {
+   "ship": "\"Honest Mule\"",
+   "cid": "food",
+   "tons": 23,
+   "from": "Ganymede",
+   "to": "The Hollows",
+   "fromSid": "jupiter",
+   "toSid": "pallas",
+   "arrive": 59
+  },
+  {
+   "ship": "\"Quiet Mule\"",
+   "cid": "industrial",
+   "tons": 23,
+   "from": "Earth",
+   "to": "Titan",
+   "fromSid": "earth",
+   "toSid": "saturn",
+   "arrive": 62
+  },
+  {
+   "ship": "\"Distant Tortoise\"",
+   "cid": "medical",
+   "tons": 22,
+   "from": "Earth",
+   "to": "Titan",
+   "fromSid": "earth",
+   "toSid": "saturn",
+   "arrive": 62
+  },
+  {
+   "ship": "\"Stubborn Ember\"",
+   "cid": "water",
+   "tons": 39,
+   "from": "Mars",
+   "to": "Hermes Foundry",
+   "fromSid": "mars",
+   "toSid": "mercury",
+   "arrive": 52
+  },
+  {
+   "ship": "\"Honest Horizon\"",
+   "cid": "water",
+   "tons": 23,
+   "from": "Ironheart",
+   "to": "Mars",
+   "fromSid": "psyche",
+   "toSid": "mars",
+   "arrive": 56
+  },
+  {
+   "ship": "\"Honest Wager\"",
+   "cid": "water",
+   "tons": 24,
+   "from": "Enceladus",
+   "to": "Ironheart",
+   "fromSid": "saturn",
+   "toSid": "psyche",
+   "arrive": 65
+  },
+  {
+   "ship": "\"Silver Pilgrim\"",
+   "cid": "water",
+   "tons": 20,
+   "from": "Europa",
+   "to": "Enceladus",
+   "fromSid": "jupiter",
+   "toSid": "saturn",
+   "arrive": 60
+  },
+  {
+   "ship": "\"Lucky Tortoise\"",
+   "cid": "metal",
+   "tons": 21,
+   "from": "Triton Outpost",
+   "to": "Earth",
+   "fromSid": "neptune",
+   "toSid": "earth",
+   "arrive": 81
+  },
+  {
+   "ship": "\"Wandering Wager\"",
+   "cid": "food",
+   "tons": 34,
+   "from": "Triton Outpost",
+   "to": "Ceres Station",
+   "fromSid": "neptune",
+   "toSid": "ceres",
+   "arrive": 82
+  },
+  {
+   "ship": "\"Stubborn Anvil\"",
+   "cid": "food",
+   "tons": 20,
+   "from": "Juno Commons",
+   "to": "Triton Outpost",
+   "fromSid": "juno",
+   "toSid": "neptune",
+   "arrive": 81
+  },
+  {
+   "ship": "\"Second Promise\"",
+   "cid": "luxury",
+   "tons": 38,
+   "from": "Triton Outpost",
+   "to": "Juno Commons",
+   "fromSid": "neptune",
+   "toSid": "juno",
+   "arrive": 81
+  },
+  {
+   "ship": "\"Distant Mule\"",
+   "cid": "luxury",
+   "tons": 27,
+   "from": "The Rook",
+   "to": "Triton Outpost",
+   "fromSid": "hygiea",
+   "toSid": "neptune",
+   "arrive": 85
+  },
+  {
+   "ship": "\"Stubborn Anvil\"",
+   "cid": "medical",
+   "tons": 35,
+   "from": "Ironheart",
+   "to": "Triton Outpost",
+   "fromSid": "psyche",
+   "toSid": "neptune",
+   "arrive": 83
+  },
+  {
+   "ship": "\"Stubborn Horizon\"",
+   "cid": "water",
+   "tons": 27,
+   "from": "Triton Outpost",
+   "to": "Mars",
+   "fromSid": "neptune",
+   "toSid": "mars",
+   "arrive": 81
+  },
+  {
+   "ship": "\"Stubborn Ember\"",
+   "cid": "water",
+   "tons": 31,
+   "from": "Europa",
+   "to": "Triton Outpost",
+   "fromSid": "jupiter",
+   "toSid": "neptune",
+   "arrive": 83
+  },
+  {
+   "ship": "\"Wandering Tortoise\"",
+   "cid": "food",
+   "tons": 25,
+   "from": "Earth",
+   "to": "Enceladus",
+   "fromSid": "earth",
+   "toSid": "saturn",
+   "arrive": 64
+  },
+  {
+   "ship": "\"Quiet Ember\"",
+   "cid": "medical",
+   "tons": 34,
+   "from": "Titan",
+   "to": "The Rook",
+   "fromSid": "saturn",
+   "toSid": "hygiea",
+   "arrive": 67
+  },
+  {
+   "ship": "\"Lucky Horizon\"",
+   "cid": "industrial",
+   "tons": 29,
+   "from": "Hermes Foundry",
+   "to": "Eros Old Town",
+   "fromSid": "mercury",
+   "toSid": "eros",
+   "arrive": 55
+  },
+  {
+   "ship": "\"Wandering Promise\"",
+   "cid": "medical",
+   "tons": 31,
+   "from": "Mars",
+   "to": "Boneyard",
+   "fromSid": "mars",
+   "toSid": "hygiea",
+   "arrive": 60
+  },
+  {
+   "ship": "\"Restless Heron\"",
+   "cid": "metal",
+   "tons": 25,
+   "from": "Ceres Station",
+   "to": "Eros Old Town",
+   "fromSid": "ceres",
+   "toSid": "eros",
+   "arrive": 59
+  },
+  {
+   "ship": "\"Restless Horizon\"",
+   "cid": "medical",
+   "tons": 21,
+   "from": "Ganymede",
+   "to": "Mars",
+   "fromSid": "jupiter",
+   "toSid": "mars",
+   "arrive": 60
+  },
+  {
+   "ship": "\"Second Bargain\"",
+   "cid": "industrial",
+   "tons": 28,
+   "from": "Ironheart",
+   "to": "Europa",
+   "fromSid": "psyche",
+   "toSid": "jupiter",
+   "arrive": 64
+  },
+  {
+   "ship": "\"Second Ember\"",
+   "cid": "water",
+   "tons": 26,
+   "from": "Juno Commons",
+   "to": "Ring Nine",
+   "fromSid": "juno",
+   "toSid": "ceres",
+   "arrive": 57
+  },
+  {
+   "ship": "\"Iron Pilgrim\"",
+   "cid": "equipment",
+   "tons": 20,
+   "from": "Eros Old Town",
+   "to": "Ganymede",
+   "fromSid": "eros",
+   "toSid": "jupiter",
+   "arrive": 62
+  },
+  {
+   "ship": "\"Brave Wager\"",
+   "cid": "equipment",
+   "tons": 37,
+   "from": "Eros Old Town",
+   "to": "Pallas Refinery",
+   "fromSid": "eros",
+   "toSid": "pallas",
+   "arrive": 59
+  },
+  {
+   "ship": "\"Wandering Anvil\"",
+   "cid": "equipment",
+   "tons": 28,
+   "from": "Hermes Foundry",
+   "to": "Eros Old Town",
+   "fromSid": "mercury",
+   "toSid": "eros",
+   "arrive": 56
+  },
+  {
+   "ship": "\"Quiet Bargain\"",
+   "cid": "medical",
+   "tons": 36,
+   "from": "Ironheart",
+   "to": "Ring Nine",
+   "fromSid": "psyche",
+   "toSid": "ceres",
+   "arrive": 62
+  },
+  {
+   "ship": "\"Wandering Heron\"",
+   "cid": "medical",
+   "tons": 28,
+   "from": "Earth",
+   "to": "Ironheart",
+   "fromSid": "earth",
+   "toSid": "psyche",
+   "arrive": 60
+  },
+  {
+   "ship": "\"Honest Lantern\"",
+   "cid": "food",
+   "tons": 22,
+   "from": "Ganymede",
+   "to": "Hermes Foundry",
+   "fromSid": "jupiter",
+   "toSid": "mercury",
+   "arrive": 62
+  },
+  {
+   "ship": "\"Patient Ember\"",
+   "cid": "food",
+   "tons": 26,
+   "from": "Juno Commons",
+   "to": "Ganymede",
+   "fromSid": "juno",
+   "toSid": "jupiter",
+   "arrive": 62
+  },
+  {
+   "ship": "\"Patient Bargain\"",
+   "cid": "equipment",
+   "tons": 32,
+   "from": "Ceres Station",
+   "to": "Triton Outpost",
+   "fromSid": "ceres",
+   "toSid": "neptune",
+   "arrive": 85
+  },
+  {
+   "ship": "\"Distant Horizon\"",
+   "cid": "food",
+   "tons": 33,
+   "from": "Earth",
+   "to": "Boneyard",
+   "fromSid": "earth",
+   "toSid": "hygiea",
+   "arrive": 60
+  },
+  {
+   "ship": "\"Stubborn Bargain\"",
+   "cid": "industrial",
+   "tons": 27,
+   "from": "Earth",
+   "to": "Pallas Refinery",
+   "fromSid": "earth",
+   "toSid": "pallas",
+   "arrive": 60
+  },
+  {
+   "ship": "\"Wandering Ember\"",
+   "cid": "luxury",
+   "tons": 36,
+   "from": "Eros Old Town",
+   "to": "Ganymede",
+   "fromSid": "eros",
+   "toSid": "jupiter",
+   "arrive": 63
+  },
+  {
+   "ship": "\"Brave Anvil\"",
+   "cid": "metal",
+   "tons": 38,
+   "from": "Ironheart",
+   "to": "Enceladus",
+   "fromSid": "psyche",
+   "toSid": "saturn",
+   "arrive": 70
+  },
+  {
+   "ship": "\"Lucky Wager\"",
+   "cid": "water",
+   "tons": 31,
+   "from": "Enceladus",
+   "to": "The Hollows",
+   "fromSid": "saturn",
+   "toSid": "pallas",
+   "arrive": 68
+  },
+  {
+   "ship": "\"Brave Tortoise\"",
+   "cid": "food",
+   "tons": 38,
+   "from": "Triton Outpost",
+   "to": "Pallas Refinery",
+   "fromSid": "neptune",
+   "toSid": "pallas",
+   "arrive": 84
+  }
+ ],
+ "power": {
+  "drive": 40,
+  "weapons": 30,
+  "shields": 30
+ },
+ "condition": {
+  "drive": 91.41999999999967,
+  "fire": 100,
+  "shields": 100,
+  "life": 97.13999999999854,
+  "sensors": 97.13999999999854
+ },
+ "projects": {},
+ "programs": {
+  "slots": 1,
+  "rules": [],
+  "writing": null
+ },
+ "played": 350.7333333333353,
+ "eventSeen": {},
+ "culture": {
+  "v": 2,
+  "lg": {
+   "ringball": {
+    "key": 2214,
+    "table": {
+     "Ceres Breakers": 1,
+     "Pallas Smelters": 4,
+     "Hygiea Ghosts": 2,
+     "Vesta Hammers": 1
+    },
+    "next": 53,
+    "champ": null,
+    "last": {
+     "league": "ringball",
+     "a": "Ceres Breakers",
+     "b": "Vesta Hammers",
+     "sa": 2,
+     "sb": 1,
+     "winner": "Ceres Breakers",
+     "loser": "Vesta Hammers",
+     "day": 49
+    }
+   },
+   "dome": {
+    "key": 2214,
+    "table": {
+     "Tharsis Red Tide": 2,
+     "Hellas Diggers": 1,
+     "Olympus Climbers": 2,
+     "Valles Runners": 3
+    },
+    "next": 53,
+    "champ": null,
+    "last": {
+     "league": "dome",
+     "a": "Valles Runners",
+     "b": "Olympus Climbers",
+     "sa": 3,
+     "sb": 2,
+     "winner": "Valles Runners",
+     "loser": "Olympus Climbers",
+     "day": 49
+    }
+   },
+   "lunar": {
+    "key": 2213,
+    "table": {
+     "Luna Grays": 0,
+     "Lagos Orbitals": 0,
+     "Titan Frost": 0,
+     "Tycho Wanderers": 0
+    },
+    "next": 2,
+    "champ": null,
+    "last": null
+   }
+  },
+  "last": {
+   "league": "dome",
+   "a": "Valles Runners",
+   "b": "Olympus Climbers",
+   "sa": 3,
+   "sb": 2,
+   "winner": "Valles Runners",
+   "loser": "Olympus Climbers",
+   "day": 49
+  },
+  "year": 2214,
+  "song": {
+   "title": "The Broken Horizon",
+   "band": "Nine Sector"
+  },
+  "stars": [
+   "Dru Pike",
+   "Jo Ashford-Kamau"
+  ]
+ },
+ "companyWeek": 0,
+ "stakes": {},
+ "customs": {
+  "patrolLast": 5,
+  "c:ines:Arcology Compact:exile": 5,
+  "last": 15,
+  "p2:Charter League:wanted": 15
+ },
+ "qualities": {},
+ "news": [
+  {
+   "day": 51,
+   "text": "Insurance rates around Mars have doubled after a run of raids, and some captains are refusing the lane."
+  },
+  {
+   "day": 48,
+   "text": "The Dome Concord and the Charter League trade accusations after a patrol standoff near Ceres."
+  },
+  {
+   "day": 38,
+   "text": "A string of pirate attacks near Hygiea has haulers taking the long way round."
+  },
+  {
+   "day": 7,
+   "text": "A survey ship of the Charter League is turned away from Earth by Arcology Compact patrols. Both sides release very different accounts."
+  }
+ ]
+}
