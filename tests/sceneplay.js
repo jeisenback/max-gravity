@@ -214,6 +214,22 @@ const playScenes = () => {
       });
     }
   }
+  // ---------- the look back at the chapter: the work, why you signed on, who you got close to, the loss, the ties and the marks ----------
+  { const grave = (name, i) => ({ key: `x${i}`, name, day: 5 + i, place: 'Ceres', cause: 'Lost on the way.' });
+    const recap = (label, setup) => run(`recap:${label}`, {}, () => { const st = G.state; setup(st, hired(), folk().filter(f => f.crew && !f.p.cast).map(f => f.p)); return chapterRecap(); });
+    recap('fresh', () => {});
+    for (const reason of ['money', 'learn', 'away']) for (const runs of [1, 3]) recap(`why:${reason}:${runs}`, (st, h) => { h.reason = reason; h.runsDone = runs; h.earnedTotal = 1234; });
+    recap('near:one', (st, h, [a]) => { a.opinion = OPINION.FRIEND; });
+    recap('near:three', (st, h, [a, b]) => { a.opinion = OPINION.ALLY; b.opinion = OPINION.FRIEND; st.people[h.captain].opinion = OPINION.FRIEND; });
+    recap('told:one', (st, h, [a]) => { a.story = { ...(a.story || {}), beat: 3 }; });
+    recap('told:two', (st, h, [a, b]) => { a.story = { ...(a.story || {}), beat: 4 }; b.story = { ...(b.story || {}), beat: 3 }; });
+    recap('loyal:two', (st, h, [a, b]) => { a.loyal = true; b.loyal = true; });
+    recap('trusted', st => { castPerson('ines'); st.cast = { ...(st.cast || {}), ines: { ...((st.cast || {}).ines || {}), flags: { trusted: true } } }; });
+    recap('lost:one', st => { st.memorial = [grave('Mara Quill', 0)]; });
+    recap('lost:three', st => { st.memorial = [grave('Mara Quill', 0), grave('Joss Ode', 1), grave('Teo Ruiz', 2)]; });
+    recap('ties', (st, h, [a, b]) => { addBond({ id: a.id, p: a }, { id: b.id, p: b }, 9); });
+    recap('marks', st => { castPerson('tomas'); st.crew.push(castPerson('tomas').id); castFate('tomas', 'mark', 'Hurt on the run.', 'Marked once.'); });
+  }
   // ---------- the yard office ----------
   for (const [ship, post, trusted, skilled] of [['used', 'gunner', false, false], ['used', 'engineer', true, true], ['lightfreighter', 'gunner', true, false], ['lightfreighter', 'pilot', false, true]]) {
     run(`scene:yard-office:${ship}:${post}:${trusted ? 't' : 'u'}${skilled ? 's' : 'n'}`, { post, credits: 60000 }, () => {

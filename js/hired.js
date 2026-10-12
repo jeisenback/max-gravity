@@ -489,26 +489,28 @@ function chapterEnd(id) {
 
 // The chapter in the ledger, read before buyIn takes the captain and the crew apart: the work, who you got close to, what
 // they told you, and the marks left on the way. A line appears only if there is something to say.
+const lookSay = (key, vars) => sceneSay('scene:chapter-recap', key, vars);  // the words of the look back are the lines of scene:chapter-recap (hiredscenes.js)
 function chapterRecap() {
   const st = G.state, h = hired(), cap = st.people[h.captain], crew = st.crew.map(person).filter(c => c && c.memories);
   const list = names => names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0];
   const t = runTotals(h), days = st.day - h.since;
-  const work = `${days} days aboard ${esc(shipTitle())}. ${t.runs} run${t.runs === 1 ? '' : 's'} with Captain ${cap.last}, and ${fmt(t.earned)} cr earned in wage and share. You worked the ${POSTS[h.post].name.toLowerCase()} and reached level ${skillLevel(h.post)}.`;
-  const why = { money: `You signed on for the money. You came with ${fmt(HIRED_SAVINGS)} cr and have ${fmt(st.credits)} cr now.`, learn: `You signed on to learn the work. The ${POSTS[h.post].name.toLowerCase()} post is at level ${skillLevel(h.post)}, ${t.runs} run${t.runs === 1 ? '' : 's'} in.`,
-    away: `You signed on to be somewhere else. It is ${days} days and ${t.runs} run${t.runs === 1 ? '' : 's'} from the dock you left.` }[h.reason] || '';
-  const near = [...(cap && cap.memories ? [{ c: cap, name: `Captain ${cap.last}` }] : []), ...crew.map(c => ({ c, name: c.first }))]
+  const runs = lookSay(t.runs === 1 ? 'runs.one' : 'runs.many', { n: t.runs }), post = POSTS[h.post].name.toLowerCase(), level = skillLevel(h.post);
+  const work = lookSay('work', { days, ship: esc(shipTitle()), runs, captain: cap.last, earned: fmt(t.earned), post, level });
+  const why = { money: lookSay('why.money', { savings: fmt(HIRED_SAVINGS), credits: fmt(st.credits) }), learn: lookSay('why.learn', { post, level, runs }),
+    away: lookSay('why.away', { days, runs }) }[h.reason] || '';
+  const near = [...(cap && cap.memories ? [{ c: cap, name: lookSay('near.captain', { last: cap.last }) }] : []), ...crew.map(c => ({ c, name: c.first }))]
     .filter(x => x.c.opinion >= OPINION.FRIEND).sort((a, b) => b.c.opinion - a.c.opinion).slice(0, 3);
   const told = crew.filter(c => c.story && c.story.beat >= 3).map(c => c.first), trusted = Object.keys(CAST).filter(k => ((st.cast[k] || {}).flags ||
     {}).trusted).map(k => castPerson(k).first), favor = crew.filter(c => c.story && c.story.beat >= 4).map(c => c.first), loyal = crew.filter(c => c.loyal).map(c => c.first);
-  const people = [near.length ? `Closest to you: ${near.map(x => `${x.name} (${opinionWord(x.c.opinion)})`).join(', ')}.` : 'Nobody aboard was a friend yet.',
-    told.length ? `Told you what they want: ${list(told)}.` : '', favor.length ? `You took on a favor for ${list(favor)}.` : '', loyal.length ? `Loyal to the ship: ${list(loyal)}.` : '', trusted.length ? `Let you do their work: ${list(trusted)}.` : ''].filter(Boolean).join(' ');
+  const people = [near.length ? lookSay('near', { list: near.map(x => lookSay('near.item', { name: x.name, word: opinionWord(x.c.opinion) })).join(', ') }) : lookSay('nobody'),
+    told.length ? lookSay('told', { list: list(told) }) : '', favor.length ? lookSay('favor', { list: list(favor) }) : '', loyal.length ? lookSay('loyal', { list: list(loyal) }) : '', trusted.length ? lookSay('trusted', { list: list(trusted) }) : ''].filter(Boolean).join(' ');
   const lived = goodbyeFacts(h.flags || {}).map(f => f.recap).join(' ');  // what the hand went through (captains.js)
-  const lost = (st.memorial || []).length ? `Lost on the way: ${list((st.memorial || []).map(m => memorialName(m)))}.` : '';
-  const ties = webTies(folk()).slice(0, 2).map(x => `${x.a.p.first} and ${x.b.p.first}: ${bondWord(x.n)}.`).join(' ');
+  const lost = (st.memorial || []).length ? lookSay('lost', { list: list((st.memorial || []).map(m => memorialName(m))) }) : '';
+  const ties = webTies(folk()).slice(0, 2).map(x => lookSay('ties', { a: x.a.p.first, b: x.b.p.first, word: bondWord(x.n) })).join(' ');
   const marks = [cap, ...crew].flatMap(c => (c ? marksOf(c) : [])).sort((a, b) => b.day - a.day).slice(0, 3).map(m => `${dateOf(m.day)}: ${m.text}`).join(' ');
   return {
-    title: 'Looking Back', personal: true, text: [work, why, lived, people, lost, ties, marks].filter(Boolean).join('</p><p>'),
-    choices: [{ label: 'Go on', run: () => 'You close the ledger.' }],
+    title: lookSay('title'), personal: true, text: [work, why, lived, people, lost, ties, marks].filter(Boolean).join('</p><p>'),
+    choices: [{ label: lookSay('label'), run: () => lookSay('result') }],
   };
 }
 
