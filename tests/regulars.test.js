@@ -56,7 +56,7 @@ test('match night shows only when a live league has played in the last day', asy
 });
 
 test('a regular who joins the crew does not have their bar gossip taken for a letter from home', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     start(); const st = G.state;

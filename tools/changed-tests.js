@@ -33,6 +33,7 @@ function select(changed, { tests, sources }) {
     if (f === 'tools/changed-tests.js') { add(['tests/changed-tests.test.js'], `${f}: its own test`); continue; }
     if (f === 'editor.html' || f === 'editor.js' || f === 'editor-preview.html') { add(EDITOR, `${f}: the scene editor's own tests`); continue; }
     if (f === 'tools/prose-lint.js') { add(['tests/prose-lint.test.js'], `${f}: its own test`); continue; }
+    if (f === 'tools/scopes.js') { add(['tests/scopes.test.js'], `${f}: its own test`); continue; }
     if (/^tests\/(?:distribution\/)?[\w-]+\.test\.js$/.test(f)) { add([f], `${f}: a test file runs itself`); continue; }
     if (f === 'style.css' || f === 'index.html' || f === 'js/shell.js') {
       add(LAYOUT, `${f}: the layout, shell and ui tests`);

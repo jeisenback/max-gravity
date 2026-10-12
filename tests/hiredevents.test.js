@@ -40,7 +40,7 @@ test('every post has work events of its own, all in one table of weights', async
 });
 
 test('a hand draws from a pool of its own, and never sees an owner-only event', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(hiredHelpers);
   for (const post of ['pilot', 'gunner', 'engineer', 'comms']) {
     const r = await ev(post => {
@@ -195,7 +195,7 @@ test('specific effects land: opinion of the captain, a shipmate, savings and exp
 });
 
 test('the main characters appear in a hand\'s events only when they are aboard', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(hiredHelpers);
   const seen = async background => ev(bg => {
     startGame({ slot: 1, background: bg, captain: 'Ines Okafor', mode: 'hired', post: 'pilot' }); while (G.dialog) finishEvent();
@@ -221,7 +221,7 @@ test('the main characters appear in a hand\'s events only when they are aboard',
 });
 
 test('downtime for a hired hand: a dozen additions, never for an owner, with the main characters when aboard', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(hiredHelpers);
   const r = await ev(() => {
     const out = {};
@@ -295,7 +295,7 @@ test('hired downtime lands its effects, in savings and not the ship\'s purse', a
 });
 
 test('a hand is not asked to rule on the crew, and the hints are for a hand', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(hiredHelpers);
   const r = await ev(() => {
     const CAPTAINS = ['A Word, Captain', 'Close Quarters', 'Ship\'s Rules'];

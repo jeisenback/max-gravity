@@ -72,7 +72,7 @@ test('every post but yours is held once', async () => {
 });
 
 test('an old hired save still plays', async () => {
-  const { ev, done } = await hauler();
+  const { ev, done } = await hauler({ scope: 'full' });  // the full build keeps the pair alive; the shipped build can lose one of the three in thirty events (the floor there is 0)
   const r = await ev(() => {
     const st = start(); st.shipId = 'lightfreighter'; st.crew = st.crew.filter(id => ['pilot', 'engineer', 'slicer'].includes(person(id).role));
     underway();

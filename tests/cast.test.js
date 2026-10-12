@@ -56,7 +56,7 @@ test('a hired hand on Earth finds the pair aboard, on posts that never double up
 });
 
 test('each background has its own pair, and the pairs do not cross', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     const out = {}, pairs = { earth: ['ines', 'tomas'], mars: ['ruben', 'yelena'], belt: ['bexa', 'pax'] };
@@ -135,7 +135,7 @@ test('every choice of every scene runs and says what happened', async () => {
 });
 
 test('an owner meets them at a port, in order, and a put-off meeting comes round again', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     start(); const st = G.state, out = {};
@@ -238,7 +238,7 @@ test('a buy-in: both come if both think well of you, otherwise the one who does,
 // ---------- life and loss (fate.js) ----------
 
 test('a death with only the pair becomes a mark', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     marsHired();
@@ -257,7 +257,7 @@ test('a death with only the pair becomes a mark', async () => {
 });
 
 test('a death with a third core character kills, once', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     marsHired(); addThird();
@@ -276,7 +276,7 @@ test('a death with a third core character kills, once', async () => {
 });
 
 test('a mark never takes a skill below zero', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     marsHired();
@@ -288,7 +288,7 @@ test('a mark never takes a skill below zero', async () => {
 });
 
 test('only core characters who have joined count as living', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => { marsHired(); return castLiving().sort(); });
   assert.deepEqual(r, ['ruben', 'yelena']);
@@ -324,7 +324,7 @@ test('an old save without the new fields behaves as alive', async () => {
 });
 
 test('a dead character is never offered a meeting, and the next one is not stuck behind them', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     start(); const st = G.state, out = {};
@@ -339,7 +339,7 @@ test('a dead character is never offered a meeting, and the next one is not stuck
 });
 
 test('a dead character is not returned to the crew', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     marsHired(); addThird();
@@ -352,7 +352,7 @@ test('a dead character is not returned to the crew', async () => {
 });
 
 test('a lost ship with only the pair aboard spares both', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     marsHired();
@@ -368,7 +368,7 @@ test('a lost ship with only the pair aboard spares both', async () => {
 });
 
 test('a lost ship with three core characters aboard kills at most one', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     marsHired(); castJoin('ines', '');
@@ -394,7 +394,7 @@ test('a lost ship with no core characters aboard is unchanged', async () => {
 });
 
 test('the pivot comes after late, after sixty days', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     marsHired();
@@ -410,7 +410,7 @@ test('the pivot comes after late, after sixty days', async () => {
 });
 
 test('the pivot outcome follows the state', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     const run = ({ medic = false, injured = false, hull = 'good', gunner = 3, third = true, backup = false }) => {
@@ -649,7 +649,7 @@ test('a main character lost outside their own pivot has what you did added to Af
 });
 
 test('calling off the boarding costs her the bench', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     marsHired(); addThird();
@@ -662,7 +662,7 @@ test('calling off the boarding costs her the bench', async () => {
 });
 
 test('a dead core character is not a contact, a blockade ally or a friend at the ending', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     const run = opinion => {
@@ -683,7 +683,7 @@ test('a dead core character is not a contact, a blockade ally or a friend at the
 });
 
 test('her mark takes a gunner point even when she is posted somewhere else', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     start({ background: 'mars', mode: 'hired', post: 'gunner' }); postsOnly(); addThird();
@@ -802,7 +802,7 @@ const fragileHelpers = () => {
 };
 
 test('a fragile character dies even when only the pair would be left', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers); await ev(fragileHelpers);
   const r = await ev(() => {
     marsHired(); const xo = addFragile(), st = G.state, out = {};
@@ -821,7 +821,7 @@ test('a fragile character dies even when only the pair would be left', async () 
 });
 
 test('a fragile character does not lift the floor for the pair', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers); await ev(fragileHelpers);
   const r = await ev(() => { marsHired(); addFragile(); return { result: castFate('yelena', 'die', 'x', 'x'), dead: castDead('yelena') }; });
   assert.deepEqual(r, { result: 'mark', dead: false });
@@ -829,7 +829,7 @@ test('a fragile character does not lift the floor for the pair', async () => {
 });
 
 test('a ship lost takes a fragile character and leaves the pair marked', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers); await ev(fragileHelpers);
   const r = await ev(() => {
     marsHired(); const xo = addFragile(); G.state.crew.push(xo.id);
@@ -842,7 +842,7 @@ test('a ship lost takes a fragile character and leaves the pair marked', async (
 });
 
 test('a fate for a character who never joined is ignored', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     start(); const st = G.state;
@@ -854,7 +854,7 @@ test('a fate for a character who never joined is ignored', async () => {
 });
 
 test('a dead character\'s record survives registry pruning', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     marsHired(); addThird();
@@ -867,7 +867,7 @@ test('a dead character\'s record survives registry pruning', async () => {
 });
 
 test('the memorial cause carries no markup, when written or when a save is loaded', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     marsHired(); addThird();
@@ -883,7 +883,7 @@ test('the memorial cause carries no markup, when written or when a save is loade
 // ---------- marks and the memorial, shown (#131) ----------
 
 test('a mark is shown on the crew screen and on the character sheet', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     marsHired();
@@ -898,7 +898,7 @@ test('a mark is shown on the crew screen and on the character sheet', async () =
 });
 
 test('the memorial lists who, when, where and the cause, and escapes all of it', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     marsHired(); addThird();

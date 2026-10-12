@@ -64,7 +64,7 @@ const helpers = () => {
 };
 
 test('Cold Water act 1: derelict, Voight, the agent, Mira, Europa', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     const o = {};
@@ -106,7 +106,7 @@ test('Cold Water act 1: derelict, Voight, the agent, Mira, Europa', async () => 
 });
 
 test('Cold Water act 2: every side can be chosen', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     const o = {};
@@ -139,7 +139,7 @@ test('Cold Water act 2: every side can be chosen', async () => {
 });
 
 test('Cold Water act 3: each side reaches its ending at Ceres', async () => {
-  const { page, ev, done } = await open();
+  const { page, ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   for (const [side, pick] of [['belt', 'Unload'], ['mars', 'Publish'], ['earth', 'Hand the water'], ['aquilon', 'Sell it']]) {
     const r = await ev(([side, pick]) => {
@@ -171,7 +171,7 @@ test('Cold Water act 3: each side reaches its ending at Ceres', async () => {
 });
 
 test("the Ice Haulers' Strike plays to its end", async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     S.reset(); const st = G.state; st.day = 12; st.story.next = 1e9; st.credits = 30000; st.shipId = 'shuttle';
@@ -191,7 +191,7 @@ test("the Ice Haulers' Strike plays to its end", async () => {
 });
 
 test('the Mars Navy commission runs start to finish', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     S.reset(); const st = G.state; st.story.next = 1e9; st.day = 20; st.rep['Dome Concord'] = 20; S.slicer('mars');
@@ -211,7 +211,7 @@ test('the Mars Navy commission runs start to finish', async () => {
 });
 
 test("the Rook's Crown by blood and by coin; Navy officers are never invited", async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   for (const path of ['blood', 'coin']) {
     const r = await ev(path => {
@@ -240,7 +240,7 @@ test("the Rook's Crown by blood and by coin; Navy officers are never invited", a
 });
 
 test('the Tethys Consortium, loyal and leaking', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   for (const loyal of [true, false]) {
     const r = await ev(loyal => {
@@ -297,7 +297,7 @@ test('every storylet opens and every choice plays, with no unfilled text', async
 });
 
 test('a story scene comes before anything else at a landing, and the cat waits', async () => {
-  const { ev, done } = await open();
+  const { ev, done } = await open({ scope: 'full' });
   await ev(helpers);
   const r = await ev(() => {
     S.reset(); const st = G.state; st.day = 12; st.story.next = 1e9; st.shipId = 'shuttle';

@@ -130,7 +130,7 @@ test('selling a ship, or losing an escort, brings a main character back to your 
 });
 
 test('the company tab offers them, and their screen says what ship they command', async () => {
-  const { page, ev, done } = await open({ viewport: { width: 390, height: 844 }, mobile: true });
+  const { page, ev, done } = await open({ scope: 'full', viewport: { width: 390, height: 844 }, mobile: true });
   await ev(helpers);
   await ev(() => { setup(); UI.render(); });
   await page.click('[data-action=tab][data-arg=company]');

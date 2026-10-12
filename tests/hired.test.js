@@ -10,7 +10,7 @@ const { open, closeBrowser, goTo } = require('./helpers');
 after(closeBrowser);
 
 test('new game offers a hired start, and the choice of post', async () => {
-  const { page, ev, done } = await open({ title: true });
+  const { page, ev, done } = await open({ scope: 'full', title: true });
   await page.click('[data-action=menuView][data-arg=new]');
   assert.equal(await page.$$eval('[data-action=menuMode]', b => b.length), 2);
   assert.ok(await page.$('#ngShip'), 'an owner names their ship');
@@ -41,7 +41,7 @@ test('new game offers a hired start, and the choice of post', async () => {
 });
 
 test('hired: the captain\'s business is not yours', async () => {
-  const { page, ev, done } = await open({ title: true });
+  const { page, ev, done } = await open({ scope: 'full', title: true });
   await page.click('[data-action=menuView][data-arg=new]');
   await page.click('[data-action=menuMode][data-arg=hired]');
   await page.click('[data-action=menuStart]');
@@ -174,7 +174,7 @@ test('the captain sails again from where she landed, and a manual pilot flies he
 });
 
 test('errands: small jobs for where she is going, paid less, with a cut to the captain', async () => {
-  const { page, ev, done } = await open({});
+  const { page, ev, done } = await open({ scope: 'full' });
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('engineer'); const st = G.state, plan = currentPlan(); Mods.emit('landed', currentPlanet());
@@ -200,7 +200,7 @@ test('errands: small jobs for where she is going, paid less, with a cut to the c
 });
 
 test('errands: delivered when she docks, the fee to you and the cut to the ship', async () => {
-  const { ev, done } = await open({});
+  const { ev, done } = await open({ scope: 'full' });
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('engineer'); const st = G.state, h = st.hired, plan = currentPlan();
@@ -224,7 +224,7 @@ test('errands: delivered when she docks, the fee to you and the cut to the ship'
 });
 
 test('posts: your own work teaches you, it is kept, and it improves your odds', async () => {
-  const { ev, done } = await open({});
+  const { ev, done } = await open({ scope: 'full' });
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('engineer'); const st = G.state, h = st.hired, out = {};
@@ -322,7 +322,7 @@ test('buying in: a ship of your own, one friend, and the captain as a contact', 
 });
 
 test('buying in: nobody comes if nobody likes you, and it needs the money and a yard', async () => {
-  const { ev, done } = await open({});
+  const { ev, done } = await open({ scope: 'full' });
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('engineer'); const st = G.state, out = {};
@@ -423,7 +423,7 @@ test('a hired hand is offered only what is theirs: their own post, and no owner\
 });
 
 test('downtime for a hired hand: not the captain\'s drills, and a chance to practice your post', async () => {
-  const { ev, done } = await open({});
+  const { ev, done } = await open({ scope: 'full' });
   await ev(hiredHelpers);
   const r = await ev(() => {
     const labels = () => { G.transit.lifeUsed = {}; return downtimeEvent(true).choices.map(c => c.label); };
@@ -520,7 +520,7 @@ test('a hired hand who is not the gunner watches the duel; the gunner picks the 
 });
 
 test('at the bar a hand cannot offer passage, because the berths are the captain\'s', async () => {
-  const { ev, done } = await open({});
+  const { ev, done } = await open({ scope: 'full' });
   await ev(hiredHelpers);
   const r = await ev(() => {
     const talk = () => { const p = makePerson('earth'); p.goal = 'home'; p.traits = ['pious', 'kind']; registerPerson(p); const seen = new Set(); for (let i = 0; i < 30; i++) talkEvent({ p, known: false }).choices.forEach(c => seen.add(c.label)); return [...seen]; };  // the menu rotates: look at several
@@ -552,7 +552,7 @@ test('a hired hand\'s own page shows their place on the ship and how the crew se
 });
 
 test('the Gunner\'s line and the GUNS tab match how contacts play for a hired hand: no card play, no projects that cannot start', async () => {
-  const { ev, done } = await open({});
+  const { ev, done } = await open({ scope: 'full' });
   await ev(hiredHelpers);
   const r = await ev(() => {
     startHired('gunner');
