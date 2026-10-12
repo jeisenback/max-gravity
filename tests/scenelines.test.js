@@ -159,3 +159,20 @@ test('a code choice that leaves a memory takes another one from the override lay
   assert.ok(r.changed.endsWith('You made the <b>call</b> & I took it.'), r.changed);
   assert.ok(r.shipped.endsWith('You ordered me to ditch the ship, as the tower did.'), r.shipped);
 });
+
+test('the one-line notes are drawn as plain text, so an override is left as typed; a scene drawn as markup still escapes it (#508)', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    const typed = 'He said "stop" & <left>';
+    const ids = HIRED_FUNCTION_SCENES.filter(s => s.plain).map(s => s.id);
+    const over = id => Object.fromEntries(Object.keys(SCENE_LINES[id]).map(k => [k, typed]));
+    useOverrides(Object.fromEntries([...ids, 'scene:screens'].map(id => [id, { parts: over(id) }])));
+    const bad = [];
+    for (const id of ids) for (const k of Object.keys(SCENE_LINES[id])) if (sceneSay(id, k) !== typed) bad.push(`${id} ${k}: ${sceneSay(id, k)}`);
+    return { ids, bad, screens: sceneSay('scene:screens', 'practise.comms') };
+  });
+  await g.done();
+  assert.deepEqual(r.ids.sort(), ['scene:crew-notes', 'scene:flight-notes', 'scene:hail-notes', 'scene:systems-notes']);
+  assert.deepEqual(r.bad, [], 'a line of a plain scene was escaped');
+  assert.equal(r.screens, 'He said &quot;stop&quot; &amp; &lt;left&gt;', 'a scene drawn as markup escapes it');
+});
