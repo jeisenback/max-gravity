@@ -181,7 +181,9 @@ const SHIP_LINES = {
   'page.high': 'in high spirits',
   'page.favor': 'has a favor to ask',
   'page.traditions': 'Traditions: {list}.',
-  'page.cat': '{cat} the cat lives aboard.'
+  'page.cat': '{cat} the cat lives aboard.',
+  'page.rename.label': 'Rename the ship',
+  'page.rename.placeholder': 'A new name for the ship'
 };
 
 // The names: of the holidays (their titles), the traditions, the burns and the cat (#457). A holiday is found by its name here; its lines are under the same key.

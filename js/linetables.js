@@ -34,7 +34,7 @@ const LINE_TABLES = [
   { id: 'lines:family-holidays', title: 'Holidays from home: the scene and keeping it', file: 'js/familytext.js', where: 'transit', table: () => holidayLines() },
   { id: 'lines:family-touches', title: 'What a crew member puts up on the ship', file: 'js/familytext.js', where: 'transit', table: () => TOUCH_LINES },
   { id: 'lines:family-chatter', title: 'What the crew say of a shipmate down or up, the cat and the touches', file: 'js/familytext.js', where: 'transit', table: () => CHATTER_LINES },
-  { id: 'lines:family-ship', title: 'The ship as home: the epilogue line, a favor done, a letter, a touch, and what the log and the memories say', file: 'js/familytext.js', where: 'transit', plainKey: /^(loyal|rename|returned)$/, table: () => SHIP_LINES },
+  { id: 'lines:family-ship', title: 'The ship as home: the epilogue line, a favor done, a letter, a touch, and what the log and the memories say', file: 'js/familytext.js', where: 'transit', plainKey: /^(loyal|rename|returned|page\.rename\.(label|placeholder))$/, table: () => SHIP_LINES },
   { id: 'lines:family-names', title: 'Names: the holidays, the traditions, the burns and the cat', file: 'js/familytext.js', where: 'transit', plainKey: /^holidays\./, table: () => ({ holidays: Object.fromEntries(HOLIDAYS.map(h => [holidayKey(h), h.name])), traditions: TRADITION_NAMES, burns: BURN_NAMES, cats: CAT_NAMES }) },
   { id: 'lines:ship-life', title: 'On the ship: what each person is seen doing in each room', file: 'js/shiplife.js', plain: true, where: 'transit', table: () => LIFE_LINES },
   { id: 'lines:ship-lights', title: 'On the ship: the lights going down and coming up', file: 'js/shiplife.js', plain: true, where: 'transit', table: () => LIFE_NOTES },

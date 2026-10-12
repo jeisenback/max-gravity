@@ -451,7 +451,7 @@ function homeHtml() {
     return bits.length ? `<div class="hint">${p.first}: ${bits.join(', ')}</div>` : '';
   }).join('');
   return `<h3>${esc(h.name[0].toUpperCase() + h.name.slice(1))}</h3>
-    ${hired() ? '' : '<div class="row"><input type="text" id="shipName" maxlength="30" placeholder="A new name for the ship"><button data-action="renameShip">Rename the ship</button></div>'}
+    ${hired() ? '' : `<div class="row"><input type="text" id="shipName" maxlength="30" placeholder="${esc(t['page.rename.placeholder'])}"><button data-action="renameShip">${esc(t['page.rename.label'])}</button></div>`}
     ${crew}
     ${h.traditions.length ? `<p class="hint">${fillLine(t['page.traditions'], { list: h.traditions.map(id => TRADITIONS[id].name).join(', ') })}</p>` : ''}
     ${h.cat ? `<p class="hint">${fillLine(t['page.cat'], { cat: h.cat })}</p>` : ''}
