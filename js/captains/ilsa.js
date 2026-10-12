@@ -118,7 +118,7 @@ CAST.ilsa = {
       ],
     },
     late: {
-      days: 55, title: 'What Ilsa Knows',
+      days: 55, title: 'What Ilsa Knows', flag: 'secretKnown',
       text: ('Ilsa has the fund book open, and she holds it with both hands. "I will say this ' +
           'once," she says. "The fund has been short every quarter for two years. He takes it out for people. He is not a thief. He is a man who ' +
           'cannot say no. I put it back, from my pay, a day before the audit. He knows the books balance and has never asked how. If he asked, I would ' +

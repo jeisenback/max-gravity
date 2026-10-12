@@ -1160,7 +1160,7 @@ function theTow(backup) {
 }
 
 // A scene with a `closed` reading plays it, in place of the scene itself, when the person's regard for the hand is below friendly
-// (the first officers' "what they know", cato.js): the same slot, so nothing is skipped.
+// (the first officers' "what they know", cato.js): the same slot, so nothing is skipped. The open reading of one that tells the captain's secret has a `flag`.
 // A choice written as data ({ label, result, effects }) is played as the closure the game always played: its effects, then its result (#342). A choice with
 // a run() is left as it is, so a scene can have both.
 // A hired event passes its context (the shipmate it is about) for the effects that need one, and a `learn` effect adds its line about experience to the result (#473).
@@ -1178,6 +1178,7 @@ const dataChoice = (c, ctx) => (c.run ? c : { ...c, ...(c.when ? choiceGate(c.wh
 const castSceneId = (key, sc, shown) => { const e = Object.entries(CAST[key].scenes).find(([, x]) => x === sc); return e ? `cast:${key}:${e[0]}${shown !== sc ? ':closed' : ''}` : null; };
 const castScene = (key, sc) => {
   const s = sc.closed && castPerson(key).opinion < OPINION.FRIEND ? sc.closed : sc;
+  if (s.flag) captainFlag(s.flag);  // a fact the open reading tells (the captain's secret, #283): the goodbye reads it, as it does when the captain tells it
   const scene = sceneWords(castSceneId(key, sc, s), { title: s.title, text: s.text, personal: true, choices: s.choices });  // the editor's words, if any (storylets.js)
   return { ...scene, choices: scene.choices.map(c => dataChoice(c)) };
 };
