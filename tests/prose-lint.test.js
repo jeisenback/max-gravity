@@ -76,7 +76,7 @@ test('compare names each difference, and says no change when there is none', () 
 test('narrativeFiles lists the real narrative files and nothing from tests', () => {
   const root = path.resolve(__dirname, '..');
   const files = narrativeFiles(root);
-  for (const f of ['js/cast.js', 'js/captains/hester.js', 'js/stories/aftermath.js', 'js/hiredscenes.js', 'js/engagements.js']) assert.ok(files.includes(f), f);
+  for (const f of ['js/cast.js', 'js/captains/hester.js', 'js/stories/aftermath.js', 'js/hiredscenes.js', 'js/engagements.js', 'js/world.js', 'js/transit.js', 'js/game.js', 'js/barwork.js']) assert.ok(files.includes(f), f);
   assert.ok(files.every(f => fs.existsSync(path.join(root, f)) && !f.startsWith('tests/')));
   assert.deepEqual(narrativeFiles(tmp({})), []);
 });
