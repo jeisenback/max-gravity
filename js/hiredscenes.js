@@ -480,7 +480,7 @@ const SCENE_LINES = {
     'terminal.title': 'The Terminal',
     terminal: '"Then we will see," Captain {last} says, and pulls the terminal across the table. The two of you watch the log for a minute while it does nothing at all.',
     'terminal.c0.label': 'Show how it drops entries',
-    showWin: 'Just as you open your mouth, it does: a line blinks out, and back, and is gone. The captain looks at it for a long time. "I will have it replaced," the captain says. "And I owe you an apology, which I am not good at."',
+    showWin: 'Just as you open your mouth, it does: a line blinks out, and back, and is gone. The captain looks at it for a long time. "I will have it replaced," the captain says. "And I owe you an apology for the one watch I wrote down as yours."',
     showLose: 'It does nothing. Not a flicker. The log sits there, clean and obedient, and the captain looks at it, and at you, and says, "Well."',
     'terminal.c1.label': 'Admit it was you',
     admit: 'You say it, late, and with your eyes on the table. "That is the second time you have told me the truth tonight," the captain says. "The first one cost you more." The captain turns the log round and initials the line.',
