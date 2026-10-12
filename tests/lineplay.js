@@ -93,6 +93,10 @@ const playLines = () => {
     for (let k = 0; k < 12; k++) rumor(`rumor:up:${k}`, [0.5, 0, 0, 0.1, (k + 0.5) / 12]);
     for (let k = 0; k < 8; k++) rumor(`rumor:down:${k}`, [0.5, 0, 0, 0.9, (k + 0.5) / 8]);
     Math.random = realRandom; }
+  // the errands a hand is offered: every item and what is said of it, as the game draws it
+  { const realRandom = Math.random, drawn = list => { const q = [...list]; Math.random = () => (q.length ? q.shift() : 0.99); };
+    for (let k = 0; k < 5; k++) { __seed(2300 + k); drawn([0, (k + 0.5) / 5]); const got = errandsFor(currentPlanet()); note(`errand:${k}`, got.map(o => `${o.title} | ${o.blurb}`).join(' || ')); }
+    Math.random = realRandom; }
   return out;
 };
 

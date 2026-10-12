@@ -311,9 +311,9 @@ function errandsFor(planet) {
   if (scopeOff('errands') || !planet.services.includes('missions') || !plan) return [];
   const dest = SYSTEMS[plan.sid].planets.find(p => p.name === plan.planet);
   return Array.from({ length: randInt(1, 3) }, () => {
-    const [what, blurb] = pick(ERRANDS), gross = randInt(2, 6) * 10 * Math.max(1, plan.days), cut = Math.round(gross * ERRAND_CUT);
+    const [what, blurb] = pick(linedText('lines:errands', ERRANDS)), gross = randInt(2, 6) * 10 * Math.max(1, plan.days), cut = Math.round(gross * ERRAND_CUT);
     return {
-      type: 'errand', title: `Errand: carry ${what} to ${dest.name}`, blurb: `${blurb} The captain keeps ${fmt(cut)} cr of the fee.`,
+      type: 'errand', what, title: jobSay('errand', { what, dest: dest.name }), blurb: `${blurb} ${jobSay('errand.cut', { cut: fmt(cut) })}`,
       destSystem: plan.sid, destPlanet: dest.name, pay: gross - cut, cut, deadline: st.day + plan.days * 2 + randInt(6, 12),
     };
   });

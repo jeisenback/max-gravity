@@ -1029,5 +1029,307 @@
    "comm": "[Market] Another cistern failure on Pallas Refinery. Water rationing is tightening. (Pallas, for about 21 days)",
    "inbox": "Another cistern failure on Pallas Refinery. Water rationing is tightening. (Pallas)"
   }
+ },
+ {
+  "key": "jobs:errand:0",
+  "text": [],
+  "credits": 0,
+  "x": [
+   {
+    "type": "errand",
+    "title": "Errand: carry a sealed parcel to Mars",
+    "blurb": "A courier bag with a wax seal, and a receipt to bring back signed. It weighs about as much as a lunch. The captain keeps 40 cr of the fee.",
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "pay": 160,
+    "cut": 40,
+    "deadline": 15
+   }
+  ]
+ },
+ {
+  "key": "jobs:errand:1",
+  "text": [],
+  "credits": 0,
+  "x": [
+   {
+    "type": "errand",
+    "title": "Errand: carry a message on a chip to Mars",
+    "blurb": "A hand-written note on a data chip: somebody does not trust the public bands with it. The captain keeps 40 cr of the fee.",
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "pay": 160,
+    "cut": 40,
+    "deadline": 15
+   }
+  ]
+ },
+ {
+  "key": "jobs:errand:2",
+  "text": [],
+  "credits": 0,
+  "x": [
+   {
+    "type": "errand",
+    "title": "Errand: carry a set of spare keys to Mars",
+    "blurb": "A ring of keys for a flat somebody has not seen in years. They want them back before the lease runs out. The captain keeps 40 cr of the fee.",
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "pay": 160,
+    "cut": 40,
+    "deadline": 15
+   }
+  ]
+ },
+ {
+  "key": "jobs:errand:3",
+  "text": [],
+  "credits": 0,
+  "x": [
+   {
+    "type": "errand",
+    "title": "Errand: carry a box of medicine to Mars",
+    "blurb": "An insulated box with a cold-chain tag. The label says to keep it upright and out of the sun. The captain keeps 40 cr of the fee.",
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "pay": 160,
+    "cut": 40,
+    "deadline": 15
+   }
+  ]
+ },
+ {
+  "key": "jobs:errand:4",
+  "text": [],
+  "credits": 0,
+  "x": [
+   {
+    "type": "errand",
+    "title": "Errand: carry a crate of seedlings to Mars",
+    "blurb": "A tray of green shoots under a grow light that has to stay on. You carry it in your bunk. The captain keeps 40 cr of the fee.",
+    "destSystem": "mars",
+    "destPlanet": "Mars",
+    "pay": 160,
+    "cut": 40,
+    "deadline": 15
+   }
+  ]
+ },
+ {
+  "key": "jobs:bar:both",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "notes": [
+    "Mara has a job for someone they trust. It is on the mission board.",
+    "Mara says Red Mag Varga has been seen near Mars, and that someone is paying for it. That is on the board too."
+   ],
+   "offers": [
+    [
+     "Bounty tip from Mara: destroy Red Mag Varga near Mars",
+     null
+    ],
+    [
+     "Mara Quill has a delivery: 8t to Hermes Foundry",
+     "goods for Mara's people"
+    ],
+    [
+     "Carry Dr. Ilse Varn (1) to The Rook",
+     null
+    ],
+    [
+     "Carry Hana Singh (1) to Hermes Foundry",
+     null
+    ],
+    [
+     "Bounty: destroy Silas Thorn near Saturn",
+     null
+    ],
+    [
+     "Deliver 6t of medical crates to Ceres Station",
+     "medical crates"
+    ]
+   ]
+  }
+ },
+ {
+  "key": "jobs:bar:delivery",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "notes": [
+    "Mara has a job for someone they trust. It is on the mission board."
+   ],
+   "offers": [
+    [
+     "Mara Quill has a delivery: 8t to Hermes Foundry",
+     "goods for Mara's people"
+    ],
+    [
+     "Carry Dr. Ilse Varn (1) to The Rook",
+     null
+    ],
+    [
+     "Carry Hana Singh (1) to Hermes Foundry",
+     null
+    ],
+    [
+     "Bounty: destroy Silas Thorn near Saturn",
+     null
+    ],
+    [
+     "Deliver 6t of medical crates to Ceres Station",
+     "medical crates"
+    ]
+   ]
+  }
+ },
+ {
+  "key": "jobs:favor",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "notes": [
+    "Mara Quill has a job for someone they trust. It is on the mission board."
+   ],
+   "offers": [
+    [
+     "Favor for Mara Quill: deliver a sealed case to Juno Commons",
+     "a sealed case for Mara"
+    ],
+    [
+     "Carry Dr. Ilse Varn (1) to The Rook",
+     null
+    ],
+    [
+     "Carry Hana Singh (1) to Hermes Foundry",
+     null
+    ],
+    [
+     "Bounty: destroy Silas Thorn near Saturn",
+     null
+    ],
+    [
+     "Deliver 6t of medical crates to Ceres Station",
+     "medical crates"
+    ]
+   ]
+  }
+ },
+ {
+  "key": "jobs:board:1",
+  "text": [],
+  "credits": 0,
+  "x": [
+   [
+    "passenger",
+    "Carry Kwame Ferreira (1) to Europa",
+    null
+   ],
+   [
+    "bounty",
+    "Bounty: destroy Old Iron Tess near Pallas",
+    null
+   ],
+   [
+    "bounty",
+    "Bounty: destroy Captain Ruin near Jupiter",
+    null
+   ],
+   [
+    "passenger",
+    "Carry Sofia Novak and their partner (2) to Hermes Foundry",
+    null
+   ]
+  ]
+ },
+ {
+  "key": "jobs:board:2",
+  "text": [],
+  "credits": 0,
+  "x": [
+   [
+    "passenger",
+    "Carry Gaz Marsh (1) to Mars",
+    null
+   ],
+   [
+    "delivery",
+    "Arcology Compact contract: deliver 15t of scientific samples to mars",
+    "scientific samples"
+   ],
+   [
+    "passenger",
+    "Carry Ingrid Achterberg (1) to Luna",
+    null
+   ],
+   [
+    "passenger",
+    "Carry Samuel Osei (1) to Ganymede",
+    null
+   ]
+  ]
+ },
+ {
+  "key": "jobs:board:3",
+  "text": [],
+  "credits": 0,
+  "x": [
+   [
+    "delivery",
+    "Arcology Compact contract: deliver 13t of prefab habitat panels to the hollows",
+    "prefab habitat panels"
+   ],
+   [
+    "delivery",
+    "Deliver 3t of reactor parts to Enceladus",
+    "reactor parts"
+   ],
+   [
+    "passenger",
+    "Carry the Oyelaran family (4) to Ring Nine",
+    null
+   ],
+   [
+    "passenger",
+    "Carry pilgrims of the Long Walk (4) to Eros Old Town",
+    null
+   ]
+  ]
+ },
+ {
+  "key": "jobs:board:4",
+  "text": [],
+  "credits": 0,
+  "x": [
+   [
+    "bounty",
+    "Bounty: destroy The Widow Kade near Pallas",
+    null
+   ],
+   [
+    "passenger",
+    "Carry Kwame Osei (1) to Ring Nine",
+    null
+   ],
+   [
+    "delivery",
+    "Arcology Compact contract: deliver 13t of medical crates to the rook",
+    "medical crates"
+   ],
+   [
+    "passenger",
+    "Carry Ruo Kalu (1) to Hermes Foundry",
+    null
+   ]
+  ]
+ },
+ {
+  "key": "jobs:story-passenger",
+  "text": [],
+  "credits": 0,
+  "x": [
+   "Carry Mira Castellane (1) to Europa"
+  ]
  }
 ]

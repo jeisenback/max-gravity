@@ -37,6 +37,17 @@ test('every line of every scene is read: an override for it shows in what the sc
   assert.deepEqual(missing, [], 'a line the scenes never read');
 });
 
+test('an errand done names what it carried from the errand itself, and from its title in a save that has none (#547)', async () => {
+  const g = await open({ scope: 'full' });
+  const r = await g.ev(() => {
+    const done = m => { startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', credits: 5000 }); while (G.dialog) finishEvent(); const st = G.state; const pl = currentPlanet(); takeOff(); st.missions.push({ id: st.nextId++, destSystem: st.systemId, destPlanet: pl.name, deadline: st.day + 10, pay: 300, type: 'errand', ...m }); G.messages.length = 0; land(pl); return G.messages.map(x => x.text); };
+    return { kept: done({ what: 'a sealed parcel', title: 'Courier run to Mars' }), old: done({ title: 'Errand: carry a box of medicine to Mars' }) };
+  });
+  await g.done();
+  assert.deepEqual(r.kept, ['Errand done: a sealed parcel handed over. Fee 300 cr.']);
+  assert.deepEqual(r.old, ['Errand done: a box of medicine handed over. Fee 300 cr.']);
+});
+
 test('an override fills the {words} its line has, is escaped in a text and plain in a label, and a bad one is left out with one warning', async () => {
   const g = await open({ scope: 'full' });
   const r = await g.ev(() => {
@@ -172,7 +183,7 @@ test('the one-line notes are drawn as plain text, so an override is left as type
     return { ids, bad, screens: sceneSay('scene:screens', 'practise.comms') };
   });
   await g.done();
-  assert.deepEqual(r.ids.sort(), ['scene:crew-notes', 'scene:flight-notes', 'scene:hail-notes', 'scene:market-news', 'scene:systems-notes', 'scene:world-news']);
+  assert.deepEqual(r.ids.sort(), ['scene:crew-notes', 'scene:flight-notes', 'scene:hail-notes', 'scene:job-titles', 'scene:market-news', 'scene:systems-notes', 'scene:world-news']);
   assert.deepEqual(r.bad, [], 'a line of a plain scene was escaped');
   assert.equal(r.screens, 'He said &quot;stop&quot; &amp; &lt;left&gt;', 'a scene drawn as markup escapes it');
 });

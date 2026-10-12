@@ -136,7 +136,7 @@ function storyPassenger(who, pax, destSystem, destPlanet, pay, storyWho) {
   st.missions.push({
     id: st.nextId++, type: 'passenger', story: true, storyWho, who, pax, bonus: 0,
     eventDone: storyWho === 'mira-ceres',  // she has already told her story
-    destSystem, destPlanet, title: `Carry ${who} (${pax}) to ${destPlanet}`, pay, deadline: st.day + 999,
+    destSystem, destPlanet, title: jobSay('carry', { who, pax, dest: destPlanet }), pay, deadline: st.day + 999,
   });
 }
 

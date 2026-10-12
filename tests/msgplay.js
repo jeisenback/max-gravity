@@ -140,6 +140,15 @@ const playMessages = () => {
   for (let k = 0; k < 12; k++) rumor(`rumor:up:${k}`, [0.5, 0, 0, 0.1, (k + 0.5) / 12]);
   for (let k = 0; k < 8; k++) rumor(`rumor:down:${k}`, [0.5, 0, 0, 0.9, (k + 0.5) / 8]);
   for (const [name, planetDraw] of [['ceres', 0], ['pallas', 0.99]]) rumor(`rumor:story:${name}`, [0.5, 0.1, planetDraw], () => { story().stage = 1; });
+  // ---------- the titles of the jobs offered: errands, a regular's work at the bar, a favor, a passenger of the story ----------
+  { let got;
+    for (let k = 0; k < 5; k++) says(`jobs:errand:${k}`, 1, null, () => { got = null; seq([0, (k + 0.5) / 5]); got = errandsFor(currentPlanet()); }, true, () => got && got.map(({ what, ...o }) => o));  // without `what`, the item the errand carries, which the old code did not keep
+    const regular = () => ({ id: 'reg1', first: 'Mara', last: 'Quill' }), offers = () => G.offers.map(o => [o.title, o.good || null]);
+    says('jobs:bar:both', 1, null, () => { seq([0, 0, 0.5, 0.1, 0, 0, 0.5]); got = ownerLeads(regular()); }, false, () => ({ notes: got, offers: offers() }));
+    says('jobs:bar:delivery', 1, null, () => { seq([0, 0, 0.5, 0.9]); got = ownerLeads(regular()); }, false, () => ({ notes: got, offers: offers() }));
+    says('jobs:favor', 1, st => { const p = makePerson('earth'); Object.assign(p, { first: 'Mara', last: 'Quill', opinion: OPINION.TRUSTED, thanked: false, location: st.planet }); registerPerson(p); }, () => { seq([0.9]); got = meetContacts(currentPlanet()); }, false, () => ({ notes: got, offers: offers() }));
+    for (let i = 1; i <= 4; i++) says(`jobs:board:${i}`, 31 * i, st => { st.rep[localGov()] = 40; }, () => { got = generateMissions(currentPlanet()); }, false, () => got.map(o => [o.type, o.title, o.good || null]));  // a captain a government trusts, whose delivery is a contract
+    says('jobs:story-passenger', 1, null, () => storyPassenger('Mira Castellane', 1, 'jupiter', 'Europa', 3000, 'mira-europa'), false, st => st.missions.map(m => m.title)); }
   return out;
 };
 

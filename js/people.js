@@ -132,7 +132,7 @@ function makePassengerOffer(here, destSystem, dest, days, deadline) {
   else if (roll < 0.45) { p.goal = 'research'; p.job = 'research scientist'; who = `Dr. ${p.last}'s survey team`; pax = randInt(2, 3); }
   return {
     type: 'passenger', person: p, who, pax, bonus: 0, destSystem, destPlanet: dest.name,
-    title: `Carry ${who} (${pax}) to ${dest.name}`, blurb: describe(p),
+    title: jobSay('carry', { who, pax, dest: dest.name }), blurb: describe(p),
     pay: Math.round((1500 + days * 400) * (0.8 + 0.2 * p.wealth) * (1 + 0.3 * (pax - 1))),
     deadline,
   };
@@ -543,8 +543,8 @@ function meetContacts(planet) {
         const reachable = Object.keys(SYSTEMS).filter(id => id !== st.systemId && inRange(st.systemId, id));
         const sid = pick(reachable), dest = pick(SYSTEMS[sid].planets), days = baseDays(st.systemId, sid);
         G.offers.unshift({
-          type: 'delivery', good: `a sealed case for ${p.first}`, tons: 1, destSystem: sid, destPlanet: dest.name,
-          title: `Favor for ${p.first} ${p.last}: deliver a sealed case to ${dest.name}`,
+          type: 'delivery', good: jobSay('favor.good', { first: p.first }), tons: 1, destSystem: sid, destPlanet: dest.name,
+          title: jobSay('favor', { first: p.first, last: p.last, dest: dest.name }),
           pay: 3000 + days * 700, deadline: st.day + days * 2 + 5,
         });
         notes.push(`${p.first} ${p.last} has a job for someone they trust. It is on the mission board.`);

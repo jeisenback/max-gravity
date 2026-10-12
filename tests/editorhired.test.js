@@ -52,7 +52,7 @@ test('the converted scenes are data rows of the registry, and the rest are code 
   assert.equal(r.effects.castLike.who, 'ansel');
   assert.ok(r.edit.length > 0 && r.edit.every(e => e === false), 'code choices keep their effects in code');
   assert.ok(r.goodbye && r.signon, 'the goodbye and the sign-on are rows of the registry');
-  assert.equal(r.dataRegistry, 138);
+  assert.equal(r.dataRegistry, 139);
 });
 
 test('a converted scene\'s effects are in forms, checked as typed, and changing one is a change to the file', async () => {
@@ -338,7 +338,7 @@ test('the line tables of the generated people are rows with a field for every li
       plan: SceneIndex.planImport({ overrides: { 'lines:bar-leave': { title: 'No', parts: { 1: 'Ok.', 7: 'x' } } } }, SceneIndex.rows).items.map(i => i.ok),
     };
   });
-  assert.equal(r.tables.length, 36);  // the 18 of the bar and the chatter, the two of the ship's rooms and lights, the three of the world's news and rumors, the causes and the critics of js/social.js, and the 11 of js/familytext.js
+  assert.equal(r.tables.length, 37);  // the 18 of the bar and the chatter, the two of the ship's rooms and lights, the four of the world's news, rumors and errands, the causes and the critics of js/social.js, and the 11 of js/familytext.js
   assert.ok(r.tables.every(([, kind, noTitle]) => kind === 'data' && noTitle), 'each is lines and no title');
   assert.deepEqual(r.tables.find(t => t[0] === 'lines:trait-chatter'), ['lines:trait-chatter', 'data', true, 'transit', 'js/peopletext.js']);
   assert.deepEqual(r.out, { parts: { 1: 'A new goodbye, {n}.' } }, 'only what differs');
@@ -620,6 +620,19 @@ test('the words around a market rumor have their lines in the form, and the rumo
   await select('lines:market-rumors');
   const rumors = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
   assert.ok(rumors.includes('part.up.0') && rumors.includes('part.up.11') && rumors.includes('part.down.7'), rumors.join());
+});
+
+test('the titles of the jobs on the mission board have their lines in the form, and the errands are a table with an item and a line for each', async () => {
+  await reload(); await select('scene:job-titles');
+  const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
+  for (const k of ['part.carry', 'part.deliver', 'part.bounty', 'part.contract', 'part.errand', 'part.errand.cut', 'part.bar.delivery', 'part.favor']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
+  await page.fill('textarea[data-path="part.deliver"]', 'Haul {tons}t of {good} to {dest}');
+  const f = await play();
+  const seen = await f.evaluate(() => G.dialog.event.text);
+  assert.ok(seen.includes('Haul 6t of water ice to Ceres Station'), seen.slice(0, 300));
+  await select('lines:errands');
+  const errands = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
+  assert.ok(errands.includes('part.0.0') && errands.includes('part.4.1'), errands.join());
 });
 
 test('the notes and memories at the port and the hand\'s screens have their lines in the form and play in the preview (#508)', async () => {

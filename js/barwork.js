@@ -68,15 +68,15 @@ function ownerLeads(regular) {
   if (!reachable.length) return out;
   const sid = pick(reachable), dest = pick(SYSTEMS[sid].planets), days = baseDays(st.systemId, sid), tons = randInt(3, 12);
   G.offers.unshift({
-    type: 'delivery', good: `goods for ${regular.first}'s people`, tons, destSystem: sid, destPlanet: dest.name, regular: true, contact: regular.id,
-    title: `${regular.first} ${regular.last} has a delivery: ${tons}t to ${dest.name}`, pay: 1500 + days * 400 + tons * 100, deadline: st.day + days * 2 + 5,
+    type: 'delivery', good: jobSay('bar.good', { first: regular.first }), tons, destSystem: sid, destPlanet: dest.name, regular: true, contact: regular.id,
+    title: jobSay('bar.delivery', { first: regular.first, last: regular.last, tons, dest: dest.name }), pay: 1500 + days * 400 + tons * 100, deadline: st.day + days * 2 + 5,
   });
   out.push(`${regular.first} has a job for someone they trust. It is on the mission board.`);
   const pirates = reachable.filter(id => SYSTEMS[id].pirates > 0), names = PIRATE_NAMES.filter(n => ![...G.offers, ...st.missions].some(m => m.targetName === n));
   if (pirates.length && names.length && Math.random() < 0.4) {
     const tsid = pick(pirates), name = pick(names);
     G.offers.unshift({ type: 'bounty', targetSystem: tsid, targetName: name, issuer: localGov(), contact: regular.id,
-      title: `Bounty tip from ${regular.first}: destroy ${name} near ${SYSTEMS[tsid].name}`, pay: randInt(8, 16) * 1000, deadline: st.day + baseDays(st.systemId, tsid) * 2 + 10 });
+      title: jobSay('bar.bounty', { first: regular.first, target: name, system: SYSTEMS[tsid].name }), pay: randInt(8, 16) * 1000, deadline: st.day + baseDays(st.systemId, tsid) * 2 + 10 });
     out.push(`${regular.first} says ${name} has been seen near ${SYSTEMS[tsid].name}, and that someone is paying for it. That is on the board too.`);
   }
   return out;
