@@ -33,6 +33,27 @@ const G = {
   transitStars: null,
   flash: 0, shake: 0, time: 0, spawnTimer: 0,
   stars: [], W: 0, H: 0, hudW: HUD_W, mapPos: null,
+  // Everything else a script keeps on G, declared here so the list is in one place (tests/gfields.test.js fails on a G.name this literal lacks).
+  paused: false,      // the menus are up and the game stands still, see menu.js
+  nextEvent: null,    // the scene to open when the current one closes; set by a choice that leads on, read by chooseEvent and the dialog
+  pendingScene: null, // a story scene that waits for the next landing or the end of a fight, see story.js
+  storyFight: null,   // a story fight in progress and what to do when it ends, see story.js
+  handled: false,     // a happening was taken by the comms officer, so the quiet-burn rumor is skipped, see happenings.js
+  joinOffer: null,    // a passenger who may ask to join the crew at the next happening, see family.js
+  viewPerson: null,   // whose sheet is open: a person id, or 'bar:<n>' for someone at the bar, see character.js
+  retireAsk: false,   // the retire dialog is showing, see legacy.js
+  shifts: null,       // opinion shifts gathered while a choice runs, shown with its result, see ui.js
+  auto: null,         // the autopilot's move in progress ({ kind: 'out' | 'dock', ... }), see autopilot.js
+  duel: null,         // the console fight in progress, see duel.js
+  torps: [],          // torpedoes in flight, see torpedoes.js
+  bridgeOpen: null,   // which sheet of the burn view is open ('person', a station), see bridge.js
+  barState: null,     // the bar being visited ({ round, name, planet, ... }), see bar.js
+  patrons: null,      // who is at the bar now, filled on arrival; null until a bar is opened, see bar.js
+  tutThrust: 0,       // seconds of thrust the tutorial has seen, see tutorial.js
+  cutHits: [], cutRooms: [],  // where the burn view drew the ship's rooms and what in them can be clicked, see transit.js and shiplife.js
+  burnBoxes: null,    // where each block of the burn view was drawn, for the tests, see transit.js
+  commsBox: null,     // where the comms log was drawn, for the tests, see transit.js
+  lifeY: null,        // the line below the ship cutaway where the downtime buttons sit, see transit.js
 };
 
 // ---------- helpers ----------
