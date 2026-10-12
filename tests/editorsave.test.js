@@ -86,7 +86,7 @@ test('discarding the restored edits starts again from js/overrides.js', async ()
   await reload();
   await page.click('[data-action="discard-saved"]');
   assert.equal(await notice(), '');
-  assert.equal(await page.textContent('#changes').catch(() => ''), '');
+  assert.equal(await page.$('#changes'), null);  // absent, so nothing to wait for (textContent would wait 30 s for it)
   await select('port-mars-sky');
   assert.equal(await page.inputValue('#f-title'), 'What Color the Sky Will Be');
   await reload();

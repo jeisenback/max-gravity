@@ -44,6 +44,8 @@ test('the scene editor runs its own tests, and so does a change to the script li
   for (const f of ['editor.js', 'editor.html', 'editor-preview.html']) assert.deepEqual(select([f], { tests: withEditor, sources }).files, both, f);
   const r = select(['index.html'], { tests: withEditor, sources });
   for (const t of both) assert.ok(r.files.includes(t), `index.html runs ${t}`);
+  const more = { ...withEditor, 'tests/editorlines.test.js': '' };
+  assert.ok(select(['editor.js'], { tests: more, sources }).files.includes('tests/editorlines.test.js'), 'a file added to the editor\'s tests is picked up without a list to edit (#583)');
 });
 
 test('the prose report runs its own test', () => {
