@@ -47,6 +47,7 @@ const currentPlanet = () => system().planets.find(p => p.name === G.state.planet
 
 // The one-line notes of flight and the dock are in the text layer ('scene:flight-notes', js/hiredscenes.js); this reads one.
 const flySay = (key, vars) => sceneSay('scene:flight-notes', key, vars);
+const noteSay = (key, vars) => sceneSay('scene:contact-notes', key, vars);  // what a contact or a regular at the bar says
 const jobSay = (key, vars) => sceneSay('scene:job-titles', key, vars);  // the titles of the jobs offered are in the text layer too
 
 function msg(text) {

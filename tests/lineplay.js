@@ -97,6 +97,12 @@ const playLines = () => {
   { const realRandom = Math.random, drawn = list => { const q = [...list]; Math.random = () => (q.length ? q.shift() : 0.99); };
     for (let k = 0; k < 5; k++) { __seed(2300 + k); drawn([0, (k + 0.5) / 5]); const got = errandsFor(currentPlanet()); note(`errand:${k}`, got.map(o => `${o.title} | ${o.blurb}`).join(' || ')); }
     Math.random = realRandom; }
+  // the comms chatter on a burn: each line of the pool, drawn in turn (the pool without what the family mod adds to it)
+  takeOff(); uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
+  { const filter = Mods.filter; let k = 0; const lines = [];
+    Mods.filter = (key, list) => { if (key !== 'chatter') return filter.call(Mods, key, list); if (list.length === CHATTER.length) lines.push(list[k]); return [list[k % list.length]]; };
+    const rnd = Math.random; try { for (k = 0; k < CHATTER.length; k++) { G.transit.chatter = 0; Math.random = () => 0.99; updateTransit(0.01); Math.random = rnd; } } finally { Mods.filter = filter; Math.random = rnd; }  // 0.99: the pool of the band, not what the crew say
+    note('comms-chatter', lines.join(' | ')); }
   return out;
 };
 
