@@ -53,6 +53,16 @@ jobs:
           name: coverage-${{ strategy.job-index }}
           path: coverage-data
           retention-days: 1
+  # The prose report (tools/prose-lint.js): the difference from docs/prose-baseline.json, printed and never failing (docs/writing-a-scene.md step 6). It reads text and needs no packages.
+  prose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tools/prose-lint.js --compare | tee -a "$GITHUB_STEP_SUMMARY"
   coverage:
     needs: coverage-shard
     runs-on: ubuntu-latest

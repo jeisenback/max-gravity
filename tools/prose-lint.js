@@ -181,7 +181,10 @@ function compare(base, now) {
 
 const NARRATIVE_FILES = ['js/cast.js', 'js/castbar.js', 'js/people.js', 'js/peopletext.js', 'js/familytext.js', 'js/bartopics.js', 'js/hiredeventstext.js', 'js/social.js', 'js/family.js',
   // the hired chapter's scenes that are not in a file above (#468): the lines of the scenes built by a function, the raid, ambush and boarding beats, the ice run, the hired events, the ship's own downtime
-  'js/hiredscenes.js', 'js/engagements.js', 'js/boarders.js', 'js/icerun.js', 'js/hiredevents.js', 'js/hired.js', 'js/shiplife.js', 'js/signon.js', 'js/stakes.js', 'js/fate.js'];
+  'js/hiredscenes.js', 'js/engagements.js', 'js/boarders.js', 'js/icerun.js', 'js/hiredevents.js', 'js/hired.js', 'js/shiplife.js', 'js/signon.js', 'js/stakes.js', 'js/fate.js',
+  // the text of the notes, news, chatter, rumors, job titles, hails and crew lines that is still written in these files (#564); js/linetables.js, js/storylets.js and the
+  // rest hold ids, tables of references and machinery, not prose
+  'js/world.js', 'js/transit.js', 'js/game.js', 'js/barwork.js', 'js/hail.js', 'js/crew.js', 'js/outpost.js', 'js/company.js', 'js/story.js', 'js/jobs.js', 'js/awayjobs.js'];
 const NARRATIVE_DIRS = ['js/stories', 'js/captains'];
 
 // Repo-relative paths of the narrative files that exist under root, sorted.

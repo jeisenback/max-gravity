@@ -1,5 +1,29 @@
 {
   "files": {
+    "js/awayjobs.js": {
+      "strings": 52,
+      "tics": {
+        "hedge": 2,
+        "nods": 0,
+        "andThen": 0,
+        "asIf": 0,
+        "forAWhile": 0,
+        "longMoment": 0,
+        "adverb": 1,
+        "aside": 1
+      },
+      "shape": {
+        "count": 116,
+        "mean": 12.24,
+        "sd": 7.52,
+        "shortShare": 0.17,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 18,
+        "reported": 0
+      }
+    },
     "js/bartopics.js": {
       "strings": 85,
       "tics": {
@@ -24,6 +48,30 @@
         "reported": 1
       }
     },
+    "js/barwork.js": {
+      "strings": 26,
+      "tics": {
+        "hedge": 2,
+        "nods": 0,
+        "andThen": 0,
+        "asIf": 0,
+        "forAWhile": 0,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 30,
+        "mean": 10.33,
+        "sd": 5.06,
+        "shortShare": 0.13,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 2,
+        "reported": 0
+      }
+    },
     "js/boarders.js": {
       "strings": 70,
       "tics": {
@@ -38,13 +86,13 @@
       },
       "shape": {
         "count": 139,
-        "mean": 10.6,
-        "sd": 5.66,
+        "mean": 10.54,
+        "sd": 5.56,
         "shortShare": 0.2,
         "shortRuns": 0
       },
       "speech": {
-        "quoted": 0,
+        "quoted": 2,
         "reported": 0
       }
     },
@@ -245,17 +293,17 @@
       "tics": {
         "hedge": 1,
         "nods": 0,
-        "andThen": 5,
+        "andThen": 0,
         "asIf": 0,
-        "forAWhile": 1,
+        "forAWhile": 0,
         "longMoment": 0,
         "adverb": 0,
         "aside": 0
       },
       "shape": {
-        "count": 967,
-        "mean": 10.8,
-        "sd": 7.59,
+        "count": 973,
+        "mean": 10.73,
+        "sd": 7.56,
         "shortShare": 0.28,
         "shortRuns": 3
       },
@@ -268,23 +316,71 @@
       "strings": 83,
       "tics": {
         "hedge": 2,
-        "nods": 2,
+        "nods": 0,
         "andThen": 0,
         "asIf": 0,
-        "forAWhile": 1,
+        "forAWhile": 0,
         "longMoment": 0,
         "adverb": 0,
         "aside": 0
       },
       "shape": {
         "count": 272,
-        "mean": 9.67,
-        "sd": 6.51,
+        "mean": 9.69,
+        "sd": 6.52,
         "shortShare": 0.31,
         "shortRuns": 2
       },
       "speech": {
         "quoted": 69,
+        "reported": 1
+      }
+    },
+    "js/company.js": {
+      "strings": 27,
+      "tics": {
+        "hedge": 0,
+        "nods": 0,
+        "andThen": 0,
+        "asIf": 0,
+        "forAWhile": 0,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 38,
+        "mean": 9.34,
+        "sd": 5.77,
+        "shortShare": 0.21,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 22,
+        "reported": 0
+      }
+    },
+    "js/crew.js": {
+      "strings": 131,
+      "tics": {
+        "hedge": 16,
+        "nods": 2,
+        "andThen": 3,
+        "asIf": 1,
+        "forAWhile": 2,
+        "longMoment": 2,
+        "adverb": 1,
+        "aside": 1
+      },
+      "shape": {
+        "count": 400,
+        "mean": 12.02,
+        "sd": 8.75,
+        "shortShare": 0.26,
+        "shortRuns": 2
+      },
+      "speech": {
+        "quoted": 80,
         "reported": 1
       }
     },
@@ -301,14 +397,14 @@
         "aside": 0
       },
       "shape": {
-        "count": 234,
-        "mean": 9.59,
-        "sd": 5.46,
+        "count": 236,
+        "mean": 9.5,
+        "sd": 5.32,
         "shortShare": 0.23,
         "shortRuns": 0
       },
       "speech": {
-        "quoted": 0,
+        "quoted": 1,
         "reported": 0
       }
     },
@@ -337,7 +433,7 @@
       }
     },
     "js/familytext.js": {
-      "strings": 102,
+      "strings": 103,
       "tics": {
         "hedge": 7,
         "nods": 0,
@@ -349,9 +445,9 @@
         "aside": 0
       },
       "shape": {
-        "count": 132,
-        "mean": 13.32,
-        "sd": 7.67,
+        "count": 133,
+        "mean": 13.26,
+        "sd": 7.66,
         "shortShare": 0.11,
         "shortRuns": 0
       },
@@ -384,8 +480,8 @@
         "reported": 0
       }
     },
-    "js/hired.js": {
-      "strings": 47,
+    "js/game.js": {
+      "strings": 35,
       "tics": {
         "hedge": 0,
         "nods": 0,
@@ -397,10 +493,58 @@
         "aside": 0
       },
       "shape": {
-        "count": 69,
-        "mean": 9,
-        "sd": 4.77,
-        "shortShare": 0.29,
+        "count": 46,
+        "mean": 6,
+        "sd": 3.01,
+        "shortShare": 0.65,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 14,
+        "reported": 0
+      }
+    },
+    "js/hail.js": {
+      "strings": 123,
+      "tics": {
+        "hedge": 5,
+        "nods": 0,
+        "andThen": 0,
+        "asIf": 0,
+        "forAWhile": 1,
+        "longMoment": 1,
+        "adverb": 1,
+        "aside": 0
+      },
+      "shape": {
+        "count": 266,
+        "mean": 7.8,
+        "sd": 6.47,
+        "shortShare": 0.47,
+        "shortRuns": 3
+      },
+      "speech": {
+        "quoted": 25,
+        "reported": 0
+      }
+    },
+    "js/hired.js": {
+      "strings": 32,
+      "tics": {
+        "hedge": 0,
+        "nods": 0,
+        "andThen": 0,
+        "asIf": 0,
+        "forAWhile": 0,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 49,
+        "mean": 9.86,
+        "sd": 5.17,
+        "shortShare": 0.27,
         "shortRuns": 0
       },
       "speech": {
@@ -415,15 +559,15 @@
         "nods": 0,
         "andThen": 0,
         "asIf": 0,
-        "forAWhile": 1,
+        "forAWhile": 0,
         "longMoment": 0,
         "adverb": 0,
         "aside": 0
       },
       "shape": {
         "count": 151,
-        "mean": 10.74,
-        "sd": 7.01,
+        "mean": 10.72,
+        "sd": 6.98,
         "shortShare": 0.27,
         "shortRuns": 0
       },
@@ -445,9 +589,9 @@
         "aside": 0
       },
       "shape": {
-        "count": 225,
-        "mean": 11.66,
-        "sd": 6.18,
+        "count": 224,
+        "mean": 11.69,
+        "sd": 6.17,
         "shortShare": 0.13,
         "shortRuns": 0
       },
@@ -457,27 +601,27 @@
       }
     },
     "js/hiredscenes.js": {
-      "strings": 512,
+      "strings": 563,
       "tics": {
-        "hedge": 4,
-        "nods": 4,
+        "hedge": 3,
+        "nods": 0,
         "andThen": 0,
         "asIf": 0,
-        "forAWhile": 1,
+        "forAWhile": 0,
         "longMoment": 0,
         "adverb": 0,
         "aside": 0
       },
       "shape": {
-        "count": 792,
-        "mean": 10.55,
-        "sd": 7.31,
-        "shortShare": 0.24,
+        "count": 859,
+        "mean": 10.45,
+        "sd": 7.42,
+        "shortShare": 0.25,
         "shortRuns": 0
       },
       "speech": {
-        "quoted": 74,
-        "reported": 3
+        "quoted": 78,
+        "reported": 2
       }
     },
     "js/icerun.js": {
@@ -504,8 +648,32 @@
         "reported": 1
       }
     },
-    "js/people.js": {
-      "strings": 27,
+    "js/jobs.js": {
+      "strings": 58,
+      "tics": {
+        "hedge": 0,
+        "nods": 0,
+        "andThen": 0,
+        "asIf": 0,
+        "forAWhile": 1,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 124,
+        "mean": 13.35,
+        "sd": 7.66,
+        "shortShare": 0.17,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 22,
+        "reported": 1
+      }
+    },
+    "js/outpost.js": {
+      "strings": 35,
       "tics": {
         "hedge": 0,
         "nods": 0,
@@ -517,14 +685,38 @@
         "aside": 0
       },
       "shape": {
-        "count": 30,
-        "mean": 7.5,
-        "sd": 4.49,
-        "shortShare": 0.4,
+        "count": 53,
+        "mean": 9.08,
+        "sd": 5.12,
+        "shortShare": 0.23,
         "shortRuns": 0
       },
       "speech": {
-        "quoted": 1,
+        "quoted": 16,
+        "reported": 0
+      }
+    },
+    "js/people.js": {
+      "strings": 19,
+      "tics": {
+        "hedge": 0,
+        "nods": 0,
+        "andThen": 0,
+        "asIf": 0,
+        "forAWhile": 0,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 20,
+        "mean": 5.85,
+        "sd": 2.15,
+        "shortShare": 0.45,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 0,
         "reported": 0
       }
     },
@@ -541,21 +733,21 @@
         "aside": 0
       },
       "shape": {
-        "count": 1429,
-        "mean": 10.19,
-        "sd": 6.53,
+        "count": 1430,
+        "mean": 10.17,
+        "sd": 6.52,
         "shortShare": 0.26,
         "shortRuns": 7
       },
       "speech": {
-        "quoted": 266,
-        "reported": 4
+        "quoted": 267,
+        "reported": 5
       }
     },
     "js/shiplife.js": {
       "strings": 81,
       "tics": {
-        "hedge": 3,
+        "hedge": 1,
         "nods": 0,
         "andThen": 0,
         "asIf": 0,
@@ -566,8 +758,8 @@
       },
       "shape": {
         "count": 87,
-        "mean": 10.08,
-        "sd": 3.85,
+        "mean": 10.06,
+        "sd": 3.81,
         "shortShare": 0.11,
         "shortRuns": 0
       },
@@ -601,7 +793,7 @@
       }
     },
     "js/social.js": {
-      "strings": 27,
+      "strings": 26,
       "tics": {
         "hedge": 0,
         "nods": 0,
@@ -613,9 +805,9 @@
         "aside": 0
       },
       "shape": {
-        "count": 32,
-        "mean": 5.63,
-        "sd": 2.43,
+        "count": 30,
+        "mean": 5.6,
+        "sd": 2.5,
         "shortShare": 0.5,
         "shortRuns": 0
       },
@@ -887,30 +1079,102 @@
         "quoted": 29,
         "reported": 0
       }
+    },
+    "js/story.js": {
+      "strings": 93,
+      "tics": {
+        "hedge": 0,
+        "nods": 0,
+        "andThen": 0,
+        "asIf": 0,
+        "forAWhile": 0,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 174,
+        "mean": 7.44,
+        "sd": 5.02,
+        "shortShare": 0.4,
+        "shortRuns": 1
+      },
+      "speech": {
+        "quoted": 18,
+        "reported": 0
+      }
+    },
+    "js/transit.js": {
+      "strings": 104,
+      "tics": {
+        "hedge": 4,
+        "nods": 0,
+        "andThen": 0,
+        "asIf": 0,
+        "forAWhile": 0,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 222,
+        "mean": 11.55,
+        "sd": 8.1,
+        "shortShare": 0.27,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 46,
+        "reported": 0
+      }
+    },
+    "js/world.js": {
+      "strings": 23,
+      "tics": {
+        "hedge": 0,
+        "nods": 0,
+        "andThen": 0,
+        "asIf": 0,
+        "forAWhile": 0,
+        "longMoment": 0,
+        "adverb": 0,
+        "aside": 0
+      },
+      "shape": {
+        "count": 32,
+        "mean": 9.56,
+        "sd": 5.24,
+        "shortShare": 0.28,
+        "shortRuns": 0
+      },
+      "speech": {
+        "quoted": 2,
+        "reported": 0
+      }
     }
   },
   "total": {
-    "strings": 3975,
+    "strings": 4710,
     "tics": {
-      "hedge": 81,
-      "nods": 29,
-      "andThen": 15,
-      "asIf": 16,
+      "hedge": 107,
+      "nods": 25,
+      "andThen": 13,
+      "asIf": 17,
       "forAWhile": 15,
-      "longMoment": 5,
-      "adverb": 3,
-      "aside": 3
+      "longMoment": 8,
+      "adverb": 6,
+      "aside": 5
     },
     "shape": {
-      "count": 8766,
-      "mean": 10.75,
-      "sd": 7.2,
-      "shortShare": 0.25,
-      "shortRuns": 25
+      "count": 10311,
+      "mean": 10.68,
+      "sd": 7.26,
+      "shortShare": 0.26,
+      "shortRuns": 31
     },
     "speech": {
-      "quoted": 1594,
-      "reported": 29
+      "quoted": 1866,
+      "reported": 31
     }
   }
 }
