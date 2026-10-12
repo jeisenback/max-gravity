@@ -8473,7 +8473,7 @@
   "id": "hired:money-loan",
   "i": 2,
   "label": "Say no",
-  "result": "You say you cannot, and it is true, or true enough. Priya nods and does not ask again.",
+  "result": "You say you cannot, and it is true, or true enough. Priya does not ask again.",
   "changes": [
    "s.people.p7.liftedAt: undefined -> 1",
    "s.people.p7.memories: [] -> undefined",
@@ -8584,7 +8584,7 @@
   "id": "hired:money-short",
   "i": 2,
   "label": "Say nothing",
-  "result": "You say nothing, and let it go, and the day passes. It was only a day, you tell yourself, and it was.",
+  "result": "You say nothing, and let it go, and the day passes. It was only a day.",
   "changes": [],
   "next": null,
   "gate": {
@@ -8614,7 +8614,7 @@
   "id": "hired:road-scope",
   "i": 0,
   "label": "Tell the captain at once",
-  "result": "You report it, and Captain Vance nods, asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
+  "result": "You report it, and Captain Vance asks two questions, and changes the burn by a few degrees without another word. An hour later the loiterer is a long way astern.",
   "changes": [
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
@@ -8839,7 +8839,7 @@
   "id": "hired:road-scope",
   "i": 6,
   "label": "Say nothing",
-  "result": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know, you tell yourself.",
+  "result": "You say nothing, and it goes away, and you will never know whether it mattered. It is not your job to know.",
   "changes": [
    "s.journal.0.day: undefined -> 1",
    "s.journal.0.text: undefined -> Saw something off the lane and said nothing.",
