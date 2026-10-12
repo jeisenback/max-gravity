@@ -23,12 +23,20 @@ function loadWorker(existing) {
   return { handlers, deleted, cache: vm.runInContext('CACHE', ctx) };
 }
 
+// js/build.js reads the address, so it is read as text here: the version and the dev flag.
+const BUILD_SRC = fs.readFileSync(path.join(__dirname, '..', 'js', 'build.js'), 'utf8');
+const [, VERSION, DEV] = BUILD_SRC.match(/version: '([^']+)', dev: (true|false)/);
+
 test('the cache is named for this version of the game', () => {
-  assert.equal(loadWorker([]).cache, 'max-gravity-v2');
+  assert.equal(loadWorker([]).cache, `max-gravity-${VERSION}`, 'a new version in js/build.js needs the same name in sw.js, or installed copies keep the old scripts (#578)');
+});
+
+test('a version ends in -dev while the tester tools are on, and not otherwise', () => {
+  assert.equal(DEV === 'true', /-dev$/.test(VERSION), `dev is ${DEV} and the version is ${VERSION}: a release sets dev to false and drops -dev, a work in progress keeps both (#578)`);
 });
 
 test('activating drops the old cache and keeps the current one', async () => {
-  const w = loadWorker(['max-gravity-v1', 'max-gravity-v2']);
+  const w = loadWorker(['max-gravity-v1', `max-gravity-${VERSION}`]);
   let waiting;
   w.handlers.activate({ waitUntil: p => { waiting = p; } });
   await waiting;

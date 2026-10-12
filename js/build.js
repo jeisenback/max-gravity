@@ -1,10 +1,10 @@
 'use strict';
 
 // Build settings. For a public release set `dev: false`: the tester tools (js/uat.js)
-// then stay hidden whatever the address or keys. `version` shows on the title screen
-// and is stored with each save.
+// then stay hidden whatever the address or keys. `version` is stored with each save; it ends
+// in `-dev` while `dev` is true and not otherwise (tests/sw.test.js), and sw.js names its cache for it.
 const BUILD = {
-  version: '0.9.0', dev: true,
+  version: '0.9.0-dev', dev: true,
   scope: /[?&]scope=full(&|$)/.test(location.search) ? 'full' : 'earth-hired',
 };
 
