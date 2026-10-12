@@ -172,7 +172,7 @@ test('the one-line notes are drawn as plain text, so an override is left as type
     return { ids, bad, screens: sceneSay('scene:screens', 'practise.comms') };
   });
   await g.done();
-  assert.deepEqual(r.ids.sort(), ['scene:crew-notes', 'scene:flight-notes', 'scene:hail-notes', 'scene:systems-notes', 'scene:world-news']);
+  assert.deepEqual(r.ids.sort(), ['scene:crew-notes', 'scene:flight-notes', 'scene:hail-notes', 'scene:market-news', 'scene:systems-notes', 'scene:world-news']);
   assert.deepEqual(r.bad, [], 'a line of a plain scene was escaped');
   assert.equal(r.screens, 'He said &quot;stop&quot; &amp; &lt;left&gt;', 'a scene drawn as markup escapes it');
 });

@@ -110,14 +110,15 @@ function addRumor() {
     ({ sid, p } = pick(markets));
     cid = pick(Object.keys(p.prices));
     up = Math.random() < 0.6;
-    text = pick(RUMORS[up ? 'up' : 'down'])
+    text = pick(linedText('lines:market-rumors', RUMORS)[up ? 'up' : 'down'])
       .replace('{p}', p.name)
       .replace('{c}', COMMODITIES.find(c => c.id === cid).name);
   }
   st.rumors = st.rumors.filter(r => !(r.planet === p.name && r.cid === cid));
-  st.rumors.push({ planet: p.name, cid, mult: up ? rand(1.35, 1.6) : rand(0.55, 0.7), until: st.day + days, text: `${text} (${SYSTEMS[sid].name})` });
-  comm(`[Market] ${text} (${SYSTEMS[sid].name}, for about ${days} days)`);
-  noteInbox('station', `${text} (${SYSTEMS[sid].name})`, null, 'market');
+  const system = SYSTEMS[sid].name, tipSay = (key, vars) => sceneSay('scene:market-news', key, { text, system, ...vars });  // the words around a rumor are in the text layer too
+  st.rumors.push({ planet: p.name, cid, mult: up ? rand(1.35, 1.6) : rand(0.55, 0.7), until: st.day + days, text: tipSay('where') });
+  comm(tipSay('comm', { days }));
+  noteInbox('station', tipSay('where'), null, 'market');
   return text;
 }
 

@@ -615,6 +615,7 @@
   "text": [],
   "credits": 0,
   "news": [
+   "Insurance rates around Pallas have doubled after a run of raids, and some captains are refusing the lane.",
    "A string of pirate attacks near Mars has haulers taking the long way round."
   ]
  },
@@ -623,6 +624,7 @@
   "text": [],
   "credits": 0,
   "news": [
+   "Insurance rates around Pallas have doubled after a run of raids, and some captains are refusing the lane.",
    "Insurance rates around Mars have doubled after a run of raids, and some captains are refusing the lane."
   ]
  },
@@ -631,6 +633,7 @@
   "text": [],
   "credits": 0,
   "news": [
+   "Insurance rates around Pallas have doubled after a run of raids, and some captains are refusing the lane.",
    "Pirate raiders are reported at Mars: two freighters missing, and the navy is \"looking into it\"."
   ]
  },
@@ -682,6 +685,7 @@
   "text": [],
   "credits": 0,
   "news": [
+   "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
    "The Arcology Compact and the Dome Concord trade accusations after a patrol standoff near Mars."
   ]
  },
@@ -690,6 +694,7 @@
   "text": [],
   "credits": 0,
   "news": [
+   "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
    "The Dome Concord impounds a freighter flagged to the Arcology Compact. Diplomats are recalled."
   ]
  },
@@ -698,6 +703,7 @@
   "text": [],
   "credits": 0,
   "news": [
+   "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
    "The Dome Concord accuses the Arcology Compact of arming pirates. The Arcology Compact denies it."
   ]
  },
@@ -706,6 +712,7 @@
   "text": [],
   "credits": 0,
   "news": [
+   "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
    "Shots fired between Arcology Compact and Dome Concord patrols near Mars. Nobody admits to firing first."
   ]
  },
@@ -714,6 +721,7 @@
   "text": [],
   "credits": 0,
   "news": [
+   "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
    "The Arcology Compact closes a lane near Mars to Dome Concord shipping, citing \"security concerns\". The Dome Concord calls it an act of hostility."
   ]
  },
@@ -722,6 +730,7 @@
   "text": [],
   "credits": 0,
   "news": [
+   "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
    "A Dome Concord survey ship is turned away from Earth by Arcology Compact patrols. Both sides release very different accounts."
   ]
  },
@@ -730,6 +739,7 @@
   "text": [],
   "credits": 0,
   "news": [
+   "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
    "The Arcology Compact expels three Dome Concord traders from Earth on charges of smuggling. The Dome Concord calls it a fabrication."
   ]
  },
@@ -738,6 +748,7 @@
   "text": [],
   "credits": 0,
   "news": [
+   "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
    "An Dome Concord envoy walks out of talks with the Arcology Compact at Earth, and refuses to say why."
   ]
  },
@@ -746,6 +757,7 @@
   "text": [],
   "credits": 0,
   "news": [
+   "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
    "A Arcology Compact cutter is found drifting near Earth, its crew unharmed and very quiet. The Dome Concord says it knows nothing."
   ]
  },
@@ -754,6 +766,7 @@
   "text": [],
   "credits": 0,
   "news": [
+   "Feeds in both the Charter League and the Dome Concord are running clips of the standoff near Mars, and each is, of course, shot from a different angle.",
    "Feeds in both the Dome Concord and the Arcology Compact are running clips of the standoff near Earth, and each is, of course, shot from a different angle."
   ]
  },
@@ -796,5 +809,225 @@
   "news": [
    "The Ceres Miners win the Belt League. Their fans will be unbearable for months."
   ]
+ },
+ {
+  "key": "rumor:up:0",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "Dockworkers on Hermes Foundry have gone on strike. Machine Parts is suddenly scarce there. (Mercury)",
+   "comm": "[Market] Dockworkers on Hermes Foundry have gone on strike. Machine Parts is suddenly scarce there. (Mercury, for about 21 days)",
+   "inbox": "Dockworkers on Hermes Foundry have gone on strike. Machine Parts is suddenly scarce there. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:up:1",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "A disease scare on Hermes Foundry has everyone hoarding Machine Parts. (Mercury)",
+   "comm": "[Market] A disease scare on Hermes Foundry has everyone hoarding Machine Parts. (Mercury, for about 21 days)",
+   "inbox": "A disease scare on Hermes Foundry has everyone hoarding Machine Parts. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:up:2",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "Customs on Hermes Foundry seized a shipment of Machine Parts. Buyers there are desperate. (Mercury)",
+   "comm": "[Market] Customs on Hermes Foundry seized a shipment of Machine Parts. Buyers there are desperate. (Mercury, for about 21 days)",
+   "inbox": "Customs on Hermes Foundry seized a shipment of Machine Parts. Buyers there are desperate. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:up:3",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "A corporate buying spree on Hermes Foundry has cleared the shelves of Machine Parts. (Mercury)",
+   "comm": "[Market] A corporate buying spree on Hermes Foundry has cleared the shelves of Machine Parts. (Mercury, for about 21 days)",
+   "inbox": "A corporate buying spree on Hermes Foundry has cleared the shelves of Machine Parts. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:up:4",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "A fire in a warehouse on Hermes Foundry took most of the local stock of Machine Parts, and nobody is saying how it started. (Mercury)",
+   "comm": "[Market] A fire in a warehouse on Hermes Foundry took most of the local stock of Machine Parts, and nobody is saying how it started. (Mercury, for about 21 days)",
+   "inbox": "A fire in a warehouse on Hermes Foundry took most of the local stock of Machine Parts, and nobody is saying how it started. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:up:5",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "A ceremonial feast on Hermes Foundry has drained every last ounce of Machine Parts, and the cooks are frantic. (Mercury)",
+   "comm": "[Market] A ceremonial feast on Hermes Foundry has drained every last ounce of Machine Parts, and the cooks are frantic. (Mercury, for about 21 days)",
+   "inbox": "A ceremonial feast on Hermes Foundry has drained every last ounce of Machine Parts, and the cooks are frantic. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:up:6",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "A ship carrying Machine Parts to Hermes Foundry was hijacked two weeks ago, and the shelves are getting bare. (Mercury)",
+   "comm": "[Market] A ship carrying Machine Parts to Hermes Foundry was hijacked two weeks ago, and the shelves are getting bare. (Mercury, for about 21 days)",
+   "inbox": "A ship carrying Machine Parts to Hermes Foundry was hijacked two weeks ago, and the shelves are getting bare. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:up:7",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "A new tax on Machine Parts at Hermes Foundry has, for reasons no one can explain, made it more valuable, not less. (Mercury)",
+   "comm": "[Market] A new tax on Machine Parts at Hermes Foundry has, for reasons no one can explain, made it more valuable, not less. (Mercury, for about 21 days)",
+   "inbox": "A new tax on Machine Parts at Hermes Foundry has, for reasons no one can explain, made it more valuable, not less. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:up:8",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "A big contract on Hermes Foundry has swallowed the whole local supply of Machine Parts, and the bidding has gone wild. (Mercury)",
+   "comm": "[Market] A big contract on Hermes Foundry has swallowed the whole local supply of Machine Parts, and the bidding has gone wild. (Mercury, for about 21 days)",
+   "inbox": "A big contract on Hermes Foundry has swallowed the whole local supply of Machine Parts, and the bidding has gone wild. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:up:9",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "A shipping delay has stranded a convoy of Machine Parts on the way to Hermes Foundry, and buyers are getting anxious. (Mercury)",
+   "comm": "[Market] A shipping delay has stranded a convoy of Machine Parts on the way to Hermes Foundry, and buyers are getting anxious. (Mercury, for about 21 days)",
+   "inbox": "A shipping delay has stranded a convoy of Machine Parts on the way to Hermes Foundry, and buyers are getting anxious. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:up:10",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "A cold snap on Hermes Foundry has made Machine Parts the only thing anyone wants to talk about. (Mercury)",
+   "comm": "[Market] A cold snap on Hermes Foundry has made Machine Parts the only thing anyone wants to talk about. (Mercury, for about 21 days)",
+   "inbox": "A cold snap on Hermes Foundry has made Machine Parts the only thing anyone wants to talk about. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:up:11",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "Word is that the governor of Hermes Foundry is stockpiling Machine Parts for a party, and will pay well over the odds. (Mercury)",
+   "comm": "[Market] Word is that the governor of Hermes Foundry is stockpiling Machine Parts for a party, and will pay well over the odds. (Mercury, for about 21 days)",
+   "inbox": "Word is that the governor of Hermes Foundry is stockpiling Machine Parts for a party, and will pay well over the odds. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:down:0",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "Three haulers just unloaded Machine Parts on Hermes Foundry. Prices there are collapsing. (Mercury)",
+   "comm": "[Market] Three haulers just unloaded Machine Parts on Hermes Foundry. Prices there are collapsing. (Mercury, for about 21 days)",
+   "inbox": "Three haulers just unloaded Machine Parts on Hermes Foundry. Prices there are collapsing. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:down:1",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "Warehouses on Hermes Foundry are overflowing with Machine Parts. Sellers are dumping it cheap. (Mercury)",
+   "comm": "[Market] Warehouses on Hermes Foundry are overflowing with Machine Parts. Sellers are dumping it cheap. (Mercury, for about 21 days)",
+   "inbox": "Warehouses on Hermes Foundry are overflowing with Machine Parts. Sellers are dumping it cheap. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:down:2",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "A bumper output of Machine Parts on Hermes Foundry has the markets swamped. (Mercury)",
+   "comm": "[Market] A bumper output of Machine Parts on Hermes Foundry has the markets swamped. (Mercury, for about 21 days)",
+   "inbox": "A bumper output of Machine Parts on Hermes Foundry has the markets swamped. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:down:3",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "A strike ended on Hermes Foundry, and every dock in town is suddenly flooded with Machine Parts. (Mercury)",
+   "comm": "[Market] A strike ended on Hermes Foundry, and every dock in town is suddenly flooded with Machine Parts. (Mercury, for about 21 days)",
+   "inbox": "A strike ended on Hermes Foundry, and every dock in town is suddenly flooded with Machine Parts. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:down:4",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "A trade fair on Hermes Foundry has brought in a great many merchants, and Machine Parts is going for a song. (Mercury)",
+   "comm": "[Market] A trade fair on Hermes Foundry has brought in a great many merchants, and Machine Parts is going for a song. (Mercury, for about 21 days)",
+   "inbox": "A trade fair on Hermes Foundry has brought in a great many merchants, and Machine Parts is going for a song. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:down:5",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "A warehouse on Hermes Foundry has been cleared out in a hurry, and the Machine Parts is going, quite literally, for whatever anyone will pay. (Mercury)",
+   "comm": "[Market] A warehouse on Hermes Foundry has been cleared out in a hurry, and the Machine Parts is going, quite literally, for whatever anyone will pay. (Mercury, for about 21 days)",
+   "inbox": "A warehouse on Hermes Foundry has been cleared out in a hurry, and the Machine Parts is going, quite literally, for whatever anyone will pay. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:down:6",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "A rumor that Machine Parts on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it is nonsense. (Mercury)",
+   "comm": "[Market] A rumor that Machine Parts on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it is nonsense. (Mercury, for about 21 days)",
+   "inbox": "A rumor that Machine Parts on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it is nonsense. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:down:7",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "A company on Hermes Foundry has folded, and its whole stock of Machine Parts is being sold off at auction. (Mercury)",
+   "comm": "[Market] A company on Hermes Foundry has folded, and its whole stock of Machine Parts is being sold off at auction. (Mercury, for about 21 days)",
+   "inbox": "A company on Hermes Foundry has folded, and its whole stock of Machine Parts is being sold off at auction. (Mercury)"
+  }
+ },
+ {
+  "key": "rumor:story:ceres",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "Another cistern failure on Ceres Station. Water rationing is tightening. (Ceres)",
+   "comm": "[Market] Another cistern failure on Ceres Station. Water rationing is tightening. (Ceres, for about 21 days)",
+   "inbox": "Another cistern failure on Ceres Station. Water rationing is tightening. (Ceres)"
+  }
+ },
+ {
+  "key": "rumor:story:pallas",
+  "text": [],
+  "credits": 0,
+  "x": {
+   "rumor": "Another cistern failure on Pallas Refinery. Water rationing is tightening. (Pallas)",
+   "comm": "[Market] Another cistern failure on Pallas Refinery. Water rationing is tightening. (Pallas, for about 21 days)",
+   "inbox": "Another cistern failure on Pallas Refinery. Water rationing is tightening. (Pallas)"
+  }
  }
 ]
