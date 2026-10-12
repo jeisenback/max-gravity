@@ -11,10 +11,12 @@ concurrency:
 # The jobs check out the code and run the tests, so they need to read the repository and nothing else.
 permissions:
   contents: read
+# Every job stops at five minutes (#560). A run takes about three; one that takes longer is a problem to look at, not a limit to raise.
 jobs:
   # The suite in four parts (node --test --test-shard), each on its own runner: the test files are separate processes, so a part needs nothing from the others.
   shard:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     strategy:
       fail-fast: false
       matrix:
@@ -30,12 +32,14 @@ jobs:
     needs: shard
     if: always()
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - run: test "${{ needs.shard.result }}" = success
   # The coverage floor (tools/coverage-floor.json): the suite again under the browser's coverage, in the same four parts, and then one job merges what the parts saw and
   # checks the floor. The merge job keeps the name `coverage`. Its own result is the floor, not the tests (the bundle test cannot pass in a coverage run).
   coverage-shard:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     strategy:
       fail-fast: false
       matrix:
@@ -52,6 +56,7 @@ jobs:
   coverage:
     needs: coverage-shard
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
