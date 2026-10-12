@@ -101,12 +101,12 @@ const RAID_POST = {
 // What the captain remembers of a raid (the character view shows it), read as lines of the beat: `memory.<name>` (hiredscenes.js raidLines).
 const RAID_MEMORY = { wrong: 'You made a call in a raid and it went wrong.', turned: 'You made the call that turned a raid.', stood: 'You stood us up to a raid and she broke off.' };
 const RAID_CLOSE = {
-  off: { gun: ('She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says your registry has been logged and ' +
-      'the next stop will not be a conversation.'), grapple: (
+  off: { gun: ('She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says, "Your registry has been logged. ' +
+      'The next stop will not be a conversation."'), grapple: (
       'She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she ' +
       'is not.'), torpedo: 'She does not fire the third torpedo. The bay doors close and she turns away, and the range opens.' },
   crippled: { gun: ('Your last burst takes her drive, and the cutter yaws and goes quiet. She will have a tow in a day. A beacon on her hull is ' +
-      'already calling for it.'), grapple: 'Your last burst takes her drive, and the plume goes out. She turns over and drifts, with the grapple arms hanging.', torpedo: 'Your last burst reaches her torpedo bay and not the torpedoes, Her plume goes out.' },
+      'already calling for it.'), grapple: 'Your last burst takes her drive, and the plume goes out. She turns over and drifts, with the grapple arms hanging.', torpedo: 'Your last burst reaches her torpedo bay and not the torpedoes. Her plume goes out.' },
   standoff: 'She breaks off at long range and throws one last burst as she goes. It clips the hull aft.',
   boarded: { gun: ('She is alongside, and not with grapples: a boarding party in navy gray comes across with the lock cutter. They are coming aboard, ' +
       'by the book.'), grapple: 'She is alongside. The grapples bang on the hull in four places and the lock alarm goes. They are coming aboard.', torpedo: 'A torpedo takes your drive housing and she closes while you are slow. The grapples bang on the hull, and the lock alarm goes.' },

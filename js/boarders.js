@@ -49,7 +49,7 @@ const ASSAULT_OPENINGS = [
   [`You are in through her lock. It is a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody is behind a crate at the far end, and somebody else is calling to them.`,
     `Her corridor is dark and the deck is tilted a few degrees, because her gravity plates are out. They are at the galley hatch. You can hear a gun being checked.`],
   [`The cutter has bitten through her outer lock and the inner door is open a hand's width. It is dark inside. A light comes on, and something small and metal skips across the deck toward you.`,
-    `Her lock is wide open and empty, and nobody has fired. That is the part that bothers you. Beyond the inner door there is a corridor, and in the corridor somebody is waiting.`],
+    `Her lock is wide open and empty, and nobody has fired. Beyond the inner door there is a corridor, and in the corridor somebody is waiting.`],
 ];
 const ASSAULT_TACTICS = {
   hold: { label: 'Cover and advance', beats: 'flank',
@@ -67,7 +67,7 @@ const ASSAULT_POST = {
   engineer: { label: 'Cut her power', win: 'You find her breaker panel by the lock and pull it. Every light in the section goes out, and you have your helmet lamps and they do not.', lose: 'You pull the wrong breaker and her emergency lights come on instead, all of them, in your eyes.' },
   pilot: { label: 'Bring the ship round to her hatch', win: ('You take the cutter along her side to the hatch by the bridge. The crew go out of the ' +
       'second lock behind them and the corridor is a pincer.'), lose: 'You bring her round and misjudge it by a meter. The hull scrapes and the crew in the lock go over.' },
-  comms: { label: 'Take her intercom', win: 'You find her intercom and put the captain on it, calmly, telling her people the ship is lost and the lock is open. Some of them go.', lose: 'You find her intercom and it is a recording, which says something unrepeatable about your mother.' },
+  comms: { label: 'Take her intercom', win: 'You find her intercom and put the captain on it. "Your ship is lost," the captain says, "and the lock is open." Some of them go.', lose: 'You find her intercom and it is a recording, which says something unrepeatable about your mother.' },
 };
 
 const REPEL_LEAN = { pirate: { rush: 0.38, hold: 0.3, flank: 0.32 }, patrol: { hold: 0.38, rush: 0.3, flank: 0.32 } };

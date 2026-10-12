@@ -476,7 +476,7 @@ const SCENE_LINES = {
     'c0.label': 'Own it',
     own: '"That was mine," you say. "I will fix it tonight." The captain looks at you a moment longer, and takes the log back.',
     'c1.label': 'Blame the old terminal',
-    blame: 'You mention the terminal, which does, in fairness, lose entries. "Then we will see," the captain says, quietly.',
+    blame: 'You mention the terminal, which does, in fairness, lose entries. "Then we will see," the captain says.',
     'terminal.title': 'The Terminal',
     terminal: '"Then we will see," Captain {last} says, and pulls the terminal across the table. The two of you watch the log for a minute while it does nothing at all.',
     'terminal.c0.label': 'Show how it drops entries',
