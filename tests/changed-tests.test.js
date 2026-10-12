@@ -92,3 +92,14 @@ test('a text file runs every pin, since the pins play it through other scripts (
   const plain = select(['js/people.js'], { tests: pins, sources: { 'js/people.js': 'function market() {}' } });
   assert.deepEqual(plain.files, ['tests/other.test.js'], 'a script that is not a text file does not run them all');
 });
+
+test('a captain\'s or a story\'s file is mapped by its key and runs every pin, not the whole suite (#568)', () => {
+  const pins = { 'tests/apin.test.js': '', 'tests/bpin.test.js': '', 'tests/cato.test.js': 'test("cato", () => { assert.ok(CAPTAINS.cato); })', 'tests/other.test.js': 'test("other", () => { market(); })' };
+  const sources = { 'js/captains/cato.js': 'CAPTAINS.cato = {};', 'js/stories/ports.js': 'STORIES.ports = {};' };
+  const r = select(['js/captains/cato.js'], { tests: pins, sources });
+  assert.equal(r.full, false);
+  assert.deepEqual(r.files, ['tests/apin.test.js', 'tests/bpin.test.js', 'tests/cato.test.js']);
+  assert.deepEqual(select(['js/stories/ports.js'], { tests: pins, sources }).files, ['tests/apin.test.js', 'tests/bpin.test.js'], 'a story no test names still runs the pins');
+  assert.equal(select(['js/captains/missing.js'], { tests: pins, sources }).full, true, 'a file it cannot read is still the whole suite');
+  assert.equal(select(['js/captains/a/b.js'], { tests: pins, sources }).full, true, 'two levels down is not mapped');
+});
