@@ -52,7 +52,7 @@ test('the converted scenes are data rows of the registry, and the rest are code 
   assert.equal(r.effects.castLike.who, 'ansel');
   assert.ok(r.edit.length > 0 && r.edit.every(e => e === false), 'code choices keep their effects in code');
   assert.ok(r.goodbye && r.signon, 'the goodbye and the sign-on are rows of the registry');
-  assert.equal(r.dataRegistry, 136);
+  assert.equal(r.dataRegistry, 137);
 });
 
 test('a converted scene\'s effects are in forms, checked as typed, and changing one is a change to the file', async () => {
@@ -338,7 +338,7 @@ test('the line tables of the generated people are rows with a field for every li
       plan: SceneIndex.planImport({ overrides: { 'lines:bar-leave': { title: 'No', parts: { 1: 'Ok.', 7: 'x' } } } }, SceneIndex.rows).items.map(i => i.ok),
     };
   });
-  assert.equal(r.tables.length, 33);  // the 18 of the bar and the chatter, the two of the ship's rooms and lights, the causes and the critics of js/social.js, and the 11 of js/familytext.js
+  assert.equal(r.tables.length, 35);  // the 18 of the bar and the chatter, the two of the ship's rooms and lights, the two of the world's news, the causes and the critics of js/social.js, and the 11 of js/familytext.js
   assert.ok(r.tables.every(([, kind, noTitle]) => kind === 'data' && noTitle), 'each is lines and no title');
   assert.deepEqual(r.tables.find(t => t[0] === 'lines:trait-chatter'), ['lines:trait-chatter', 'data', true, 'transit', 'js/peopletext.js']);
   assert.deepEqual(r.out, { parts: { 1: 'A new goodbye, {n}.' } }, 'only what differs');
@@ -594,6 +594,19 @@ test('the look back at the chapter has its lines in the form and plays in the pr
   const f = await play();
   const seen = await f.evaluate(() => G.dialog.event.text);
   assert.ok(seen.includes('You kept your own counsel.') && seen.includes('days aboard'), seen.slice(0, 300));
+});
+
+test('the news of the world has its lines in the form, the pools of news are tables, and the scene plays in the preview (#547)', async () => {
+  await reload(); await select('scene:world-news');
+  const paths = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
+  for (const k of ['part.hauler', 'part.boom', 'part.bust', 'part.normal', 'part.war', 'part.ceasefire', 'part.settlement', 'part.short', 'part.league']) assert.ok(paths.includes(k), `${k} in ${paths.join()}`);
+  await page.fill('textarea[data-path="part.war"]', 'War has come: {a} against {b}.');
+  const f = await play();
+  const seen = await f.evaluate(() => G.dialog.event.text);
+  assert.ok(seen.includes('War has come: Arcology Compact against Charter League.') && seen.includes('never arrived'), seen.slice(0, 300));
+  await select('lines:world-flares');
+  const flares = await page.locator('#detail [data-path]').evaluateAll(els => els.map(e => e.dataset.path));
+  assert.ok(flares.length >= 4 && flares.every(k => k.startsWith('part.')), flares.join());
 });
 
 test('the notes and memories at the port and the hand\'s screens have their lines in the form and play in the preview (#508)', async () => {

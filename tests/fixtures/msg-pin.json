@@ -186,7 +186,12 @@
   "text": [
    "Arrived at Mercury (Independent). 12 Jun 2214."
   ],
-  "credits": 0
+  "credits": 0,
+  "news": [
+   "A Charter League survey ship is turned away from Earth by Arcology Compact patrols. Both sides release very different accounts.",
+   "Pirate raids reported around Juno. Shipping there is thinning out.",
+   "Insurance rates around Ceres have doubled after a run of raids, and some captains are refusing the lane."
+  ]
  },
  {
   "key": "hail:demand:paid",
@@ -595,5 +600,201 @@
    "Warning: Charter League warships are engaging Arcology Compact patrols in local space."
   ],
   "credits": 0
+ },
+ {
+  "key": "news:flare:0",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "Insurance rates around Pallas have doubled after a run of raids, and some captains are refusing the lane.",
+   "Pirate raids reported around Mars. Shipping there is thinning out."
+  ]
+ },
+ {
+  "key": "news:flare:1",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "A string of pirate attacks near Mars has haulers taking the long way round."
+  ]
+ },
+ {
+  "key": "news:flare:2",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "Insurance rates around Mars have doubled after a run of raids, and some captains are refusing the lane."
+  ]
+ },
+ {
+  "key": "news:flare:3",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "Pirate raiders are reported at Mars: two freighters missing, and the navy is \"looking into it\"."
+  ]
+ },
+ {
+  "key": "news:hauler",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "The hauler Lark, carrying 12t of Water to Mars, never arrived."
+  ]
+ },
+ {
+  "key": "news:slump",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "The Arcology Compact economy is in a slump."
+  ]
+ },
+ {
+  "key": "news:normal:from-boom",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "Feeds in both the Charter League and the Arcology Compact are running clips of the standoff near Earth, and each is, of course, shot from a different angle.",
+   "The Arcology Compact economy is back to normal."
+  ]
+ },
+ {
+  "key": "news:normal:from-bust",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "Feeds in both the Charter League and the Arcology Compact are running clips of the standoff near Earth, and each is, of course, shot from a different angle.",
+   "The Arcology Compact economy is back to normal."
+  ]
+ },
+ {
+  "key": "news:boom",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "Feeds in both the Charter League and the Arcology Compact are running clips of the standoff near Earth, and each is, of course, shot from a different angle.",
+   "The Arcology Compact economy is booming."
+  ]
+ },
+ {
+  "key": "news:incident:0",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "The Arcology Compact and the Dome Concord trade accusations after a patrol standoff near Mars."
+  ]
+ },
+ {
+  "key": "news:incident:1",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "The Dome Concord impounds a freighter flagged to the Arcology Compact. Diplomats are recalled."
+  ]
+ },
+ {
+  "key": "news:incident:2",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "The Dome Concord accuses the Arcology Compact of arming pirates. The Arcology Compact denies it."
+  ]
+ },
+ {
+  "key": "news:incident:3",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "Shots fired between Arcology Compact and Dome Concord patrols near Mars. Nobody admits to firing first."
+  ]
+ },
+ {
+  "key": "news:incident:4",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "The Arcology Compact closes a lane near Mars to Dome Concord shipping, citing \"security concerns\". The Dome Concord calls it an act of hostility."
+  ]
+ },
+ {
+  "key": "news:incident:5",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "A Dome Concord survey ship is turned away from Earth by Arcology Compact patrols. Both sides release very different accounts."
+  ]
+ },
+ {
+  "key": "news:incident:6",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "The Arcology Compact expels three Dome Concord traders from Earth on charges of smuggling. The Dome Concord calls it a fabrication."
+  ]
+ },
+ {
+  "key": "news:incident:7",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "An Dome Concord envoy walks out of talks with the Arcology Compact at Earth, and refuses to say why."
+  ]
+ },
+ {
+  "key": "news:incident:8",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "A Arcology Compact cutter is found drifting near Earth, its crew unharmed and very quiet. The Dome Concord says it knows nothing."
+  ]
+ },
+ {
+  "key": "news:incident:9",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "Feeds in both the Dome Concord and the Arcology Compact are running clips of the standoff near Earth, and each is, of course, shot from a different angle."
+  ]
+ },
+ {
+  "key": "news:war",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "War: the Arcology Compact and the Charter League are fighting. Their navies are raiding each other's space."
+  ]
+ },
+ {
+  "key": "news:ceasefire",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "Ceasefire. The Arcology Compact came out ahead; the Charter League is counting its losses."
+  ]
+ },
+ {
+  "key": "news:settlement",
+  "text": [],
+  "credits": -40000,
+  "news": [
+   "A new settlement, Test Landing, has been founded on Callisto."
+  ]
+ },
+ {
+  "key": "news:short",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "Test Landing is running short of Food and Water and Medical Supplies and Electronics. Settlers are leaving."
+  ]
+ },
+ {
+  "key": "news:league",
+  "text": [],
+  "credits": 0,
+  "news": [
+   "The Ceres Miners win the Belt League. Their fans will be unbearable for months."
+  ]
  }
 ]

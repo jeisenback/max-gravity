@@ -35,7 +35,7 @@ test('the pin is repeatable: playing the lines twice gives the same record', asy
   assert.deepEqual(a, b);
 });
 
-const IDS = ['bar-silence', 'bar-place', 'bar-card-win', 'bar-card-lose', 'bar-home-talk', 'bar-bless', 'bar-leave', 'bar-drink-talk', 'bar-work', 'bar-trait', 'bar-goal', 'bar-openers', 'bar-secret-talk', 'bar-crew', 'bar-goal-help', 'bar-secret-help', 'bar-react', 'ship-life', 'ship-lights', 'trait-chatter'].map(x => `lines:${x}`);
+const IDS = ['bar-silence', 'bar-place', 'bar-card-win', 'bar-card-lose', 'bar-home-talk', 'bar-bless', 'bar-leave', 'bar-drink-talk', 'bar-work', 'bar-trait', 'bar-goal', 'bar-openers', 'bar-secret-talk', 'bar-crew', 'bar-goal-help', 'bar-secret-help', 'bar-react', 'world-flares', 'world-incidents', 'ship-life', 'ship-lights', 'trait-chatter'].map(x => `lines:${x}`);
 
 test('every table is read: an override for each of its lines shows in what the topics and the chatter play, and nothing else changes', async () => {
   const g = await open({ scope: 'full' });

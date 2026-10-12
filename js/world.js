@@ -33,8 +33,18 @@ function worldOf(sid) {
 
 // How dangerous a location is right now; pirates spawn and arm by this.
 const danger = sid => worldOf(sid).unrest;
+// What is reported when pirates flare up around a system, one line drawn at random ('lines:world-flares').
+const FLARE_NEWS = [
+  'Pirate raids reported around {system}. Shipping there is thinning out.',
+  'A string of pirate attacks near {system} has haulers taking the long way round.',
+  'Insurance rates around {system} have doubled after a run of raids, and some captains are refusing the lane.',
+  'Pirate raiders are reported at {system}: two freighters missing, and the navy is "looking into it".',
+];
+
 // Unrest beyond what is normal there, which is what drives NPC shipping away.
 const excessUnrest = sid => Math.max(0, danger(sid) - SYSTEMS[sid].pirates - 0.08);
+
+const newsSay = (key, vars) => sceneSay('scene:world-news', key, vars);  // the news of the world is in the text layer ('scene:world-news', js/hiredscenes.js)
 
 function worldNews(text) {
   const st = G.state;
@@ -56,12 +66,7 @@ function worldTick() {
     const w = worldOf(sid);
     if (sys.pirates > 0 && Math.random() < FLARE_CHANCE) {
       w.unrest = Math.min(1, w.unrest + FLARE_SIZE);
-      worldNews(pick([
-        `Pirate raids reported around ${sys.name}. Shipping there is thinning out.`,
-        `A string of pirate attacks near ${sys.name} has haulers taking the long way round.`,
-        `Insurance rates around ${sys.name} have doubled after a run of raids, and some captains are refusing the lane.`,
-        `Pirate raiders are reported at ${sys.name}: two freighters missing, and the navy is "looking into it".`
-      ]));
+      worldNews(pick(linedText('lines:world-flares', FLARE_NEWS)).replace('{system}', sys.name));
     }
     w.unrest += (sys.pirates - w.unrest) * UNREST_DRIFT;
     const raid = excessUnrest(sid) * SHORTAGE_RATE;
@@ -132,7 +137,7 @@ function loseVoyage(n) {
   const v = voyageOf(n);
   if (!v) return;
   G.state.haul = haul().filter(x => x !== v);
-  if (v.tons > 0) worldNews(`The hauler ${v.ship}, carrying ${v.tons}t of ${COMMODITIES.find(c => c.id === v.cid).name} to ${v.to}, never arrived.`);
+  if (v.tons > 0) worldNews(newsSay('hauler', { ship: v.ship, tons: v.tons, good: COMMODITIES.find(c => c.id === v.cid).name, to: v.to }));
 }
 
 // Deliveries on their way to a planet, for the Port's conditions.
@@ -204,7 +209,7 @@ function factionTick() {
     const before = economy(f);
     fs.prosperity[f] = Math.max(0, Math.min(1, p));
     const after = economy(f);
-    if (after !== before) worldNews(after === 'boom' ? `The ${f} economy is booming.` : after === 'bust' ? `The ${f} economy is in a slump.` : `The ${f} economy is back to normal.`);
+    if (after !== before) worldNews(newsSay(after === 'boom' ? 'boom' : after === 'bust' ? 'bust' : 'normal', { gov: f }));
   }
   // Tension: incidents now and then, cooling otherwise.
   for (let i = 0; i < STATE_FACTIONS.length; i++) {
@@ -214,13 +219,13 @@ function factionTick() {
       if (!fs.war && Math.random() < 0.016) {
         t += 0.25;
         const [x, y] = Math.random() < 0.5 ? [a, b] : [b, a];
-        worldNews(pick(INCIDENTS).replace(/\{a\}/g, x).replace(/\{b\}/g, y).replace('{s}', SYSTEMS[pick(systemsOf(y))].name));
+        worldNews(pick(linedText('lines:world-incidents', INCIDENTS)).replace(/\{a\}/g, x).replace(/\{b\}/g, y).replace('{s}', SYSTEMS[pick(systemsOf(y))].name));
       }
       fs.tension[k] = t;
       if (!fs.war && t >= 1) {
         fs.war = { a, b, start: st.day, until: st.day + randInt(30, 60), score: { [a]: 0, [b]: 0 } };
         fs.tension[k] = 0;
-        worldNews(`War: the ${a} and the ${b} are fighting. Their navies are raiding each other's space.`);
+        worldNews(newsSay('war', { a, b }));
       }
     }
   }
@@ -245,7 +250,7 @@ function factionTick() {
     fs.prosperity[lose] = Math.max(0, fs.prosperity[lose] - 0.25);
     for (const id of systemsOf(lose)) worldOf(id).unrest = Math.min(1, worldOf(id).unrest + 0.2);
     fs.war = null;
-    worldNews(`Ceasefire. The ${win} came out ahead; the ${lose} is counting its losses.`);
+    worldNews(newsSay('ceasefire', { win, lose }));
   }
 }
 

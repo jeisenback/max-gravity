@@ -74,7 +74,7 @@ function playMatch(l, a, b) {
 
 function crown(l, s, team) {
   s.champ = team;
-  worldNews(`The ${team} win the ${l.name}. Their fans will be unbearable for months.`);
+  worldNews(newsSay('league', { team, league: l.name }));
 }
 
 // The final between the top two; it is only played once.

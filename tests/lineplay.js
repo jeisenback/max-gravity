@@ -82,6 +82,11 @@ const playLines = () => {
     window.comm = text => heard.push(text);
     for (const [name, elapsed, dark] of [['dusk', 24, false], ['dawn', -2, true]]) { G.transit.elapsed = elapsed; G.transit.dark = dark; heard.length = 0; lifeTick(0.01); note(`lights:${name}`, heard.join(' | ')); }
     window.comm = realComm; }
+  // the world's news: every line of the pool of pirate raids and of the pool of incidents, as the game draws it (the dice that pick line k; the first draws of the tick are the chance and the sides)
+  { const realRandom = Math.random, drawn = list => { const q = [...list]; Math.random = () => (q.length ? q.shift() : 0.99); };  // the dice given, then dice that start nothing else
+    for (let k = 0; k < 4; k++) { __seed(2000 + k); st.news = []; drawn([0, (k + 0.5) / 4]); worldTick(); note(`news:flare:${k}`, st.news.map(n => n.text).join(' | ')); }
+    for (let k = 0; k < 10; k++) { __seed(2100 + k); st.news = []; st.factions = null; drawn([0, k < 5 ? 0.2 : 0.7, (k + 0.5) / 10, 0.3]); factionTick(); note(`news:incident:${k}`, st.news.map(n => n.text).join(' | ')); }
+    Math.random = realRandom; }
   return out;
 };
 
