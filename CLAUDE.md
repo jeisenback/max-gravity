@@ -12,6 +12,7 @@ An Escape Velocity homage in vanilla JS and canvas. Static site, no build step. 
 
 - Classic scripts sharing one global scope. Load order is in `index.html`; `tests/globals.test.js` enforces unique top-level names and that every script is linked.
 - Keep it small: build what the issue asks for, nothing extra.
+- Every field a script keeps on `G` is declared, with a comment, in the literal in `js/game.js` (`tests/gfields.test.js` fails on one that is not). New logic takes the state it reads (`st`, and what else) as parameters and returns a value; the caller reads `G`. Such a module runs through `tests/nodecontext.js` without a browser. When a module is touched for another reason, move it that way if the change is small; do not open a module only for this.
 - No emojis anywhere (code, text, docs, commits).
 
 ## Tests
