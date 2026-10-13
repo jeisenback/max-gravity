@@ -940,7 +940,7 @@ test('the chapter\'s closing scene reads the record: two losses close on The Mem
     return { none: { title: none.title, text: none.text }, one: { title: one.title, text: one.text }, two: { title: two.title, text: two.text, labels: two.choices.map(c => c.label) }, endings: CHAPTER_ENDINGS.map(e => e.id), firstTwo: CHAPTER_ENDINGS[0].when({ dead: ['a', 'b'] }), firstOne: CHAPTER_ENDINGS[0].when({ dead: ['a'] }) };
   });
   assert.equal(r.none.title, 'Your Own Ship'); assert.equal(r.one.title, 'Your Own Ship'); assert.match(r.one.text, /Ines Ferreira is not here to see it/, 'one loss is a line in the ordinary scene');
-  assert.equal(r.two.title, 'The Memorial Wall'); assert.match(r.two.text, /Ines Ferreira and Tomas Achebe/); assert.match(r.two.text, /hand's width of tape/);
+  assert.equal(r.two.title, 'The Memorial Wall'); assert.match(r.two.text, /Ines Ferreira and Tomas Achebe/); assert.match(r.two.text, /the tape is what you have to say it with/);
   for (const k of ['none', 'one', 'two']) { assert.match(r[k].text, /is on the apron at /, `${k}: the foot of the ramp is shared`); assert.match(r[k].text, /This is where the hired-hand chapter ends\.$/, `${k}: the closing line is shared`); }
   assert.deepEqual(r.two.labels, ['Keep flying']);
   assert.equal(r.endings[0], 'memorial-wall'); assert.equal(r.firstTwo, true); assert.equal(r.firstOne, false);

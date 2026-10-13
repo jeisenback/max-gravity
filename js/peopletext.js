@@ -870,7 +870,7 @@ const PEOPLE_LINES = {
     text: '{A} catches you alone, in the corridor outside the cockpit, one shoulder against the bulkhead. "Captain. Can I ask you something about {B}?" {mood} They wait, and watch your face, and their hands, at their sides, are very still.',
     'mood.warm': 'Their voice is casual, and their ears have gone pink.',
     'mood.tight': 'Their voice is level, and tight at the edges.',
-    'c0.warm': '{A} takes a deep breath, and nods, and goes, and, later, you see the two of them in the galley, heads close together, talking quietly, over two untouched cups of tea. Good. When they notice you, they both look up, and neither looks away.',
+    'c0.warm': '{A} takes a deep breath, and nods, and goes, and, later, you see the two of them in the galley, heads close together, talking quietly, over two untouched cups of tea. When they notice you, they both look up, and neither looks away.',
     'c0.tight': '{A} takes a deep breath, and nods, and goes. They do. It is loud for a while, behind a closed door, and then it is quieter. When they come out, both are red-eyed, and neither is leaving.',
     'c2.result': '"{B}? {trait}Watches too much {genre}. Would go down with the ship for you, though." {A} stops, and blinks, and looks at the deck. "Anyway," they say. "That is what {B} is like."',
   },
