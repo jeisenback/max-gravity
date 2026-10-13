@@ -9,35 +9,35 @@
  },
  {
   "key": "drink:talkative:3",
-  "text": "Sam starts a story, stops it for a better one, and starts the first again at the end. You learn the names of eleven people and the plot of none.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam starts a story about a bad berth, stops it for a better one about a worse cargo, and starts the first again at the end. You learn the names of eleven people and the plot of none.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:talkative:4",
-  "text": "Sam starts a story, stops it for a better one, and starts the first again at the end. You learn the names of eleven people and the plot of none.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam starts a story about a bad berth, stops it for a better one about a worse cargo, and starts the first again at the end. You learn the names of eleven people and the plot of none.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards:talkative:1",
-  "text": "Sam talks the whole way through the hand and loses the thread of the bet. You take 200 cr off them while they are explaining a cousin. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam talks through the whole hand about a tug pilot they once drank with, and loses the thread of the bet. You take 200 cr off them while they are still on the tug. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:talkative:2",
-  "text": "Sam talks the whole way through the hand and loses the thread of the bet. You take 200 cr off them while they are explaining a cousin. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam talks through the whole hand about a tug pilot they once drank with, and loses the thread of the bet. You take 200 cr off them while they are still on the tug. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:talkative:3",
-  "text": "Sam talks, and you talk back, and somewhere in it 200 cr leaves your pocket. You could not say which hand it was. By the end of the glass you are laughing.|"
+  "text": "Sam talks about the pilotage fee on Mars, you talk back, and somewhere in it 200 cr leaves your pocket. You could not say which hand it was. By the end of the glass you are laughing.|"
  },
  {
   "key": "cards:talkative:4",
-  "text": "Sam talks, and you talk back, and somewhere in it 200 cr leaves your pocket. You could not say which hand it was. By the end of the glass you are laughing.|"
+  "text": "Sam talks about the pilotage fee on Mars, you talk back, and somewhere in it 200 cr leaves your pocket. You could not say which hand it was. By the end of the glass you are laughing.|"
  },
  {
   "key": "quiet:talkative:1",
-  "text": "Sam lasts nearly a minute in the silence, and then they start on the bakery, and you let them. Sam talks over the answer and goes back to the story about the tug.|"
+  "text": "Sam lasts nearly a minute in the silence, and then they start on the water ration at their last berth, and you let them. Sam talks over the answer and goes back to the story about the tug.|"
  },
  {
   "key": "quiet:talkative:2",
-  "text": "Sam lasts nearly a minute in the silence, and then they start on the bakery, and you let them. Sam talks over the answer and goes back to the story about the tug.|"
+  "text": "Sam lasts nearly a minute in the silence, and then they start on the water ration at their last berth, and you let them. Sam talks over the answer and goes back to the story about the tug.|"
  },
  {
   "key": "quiet:talkative:3",
@@ -45,23 +45,23 @@
  },
  {
   "key": "quiet:talkative:4",
-  "text": "Sam lasts nearly a minute in the silence, and then they start on the bakery, and you let them. Sam talks over the answer and goes back to the story about the tug.|"
+  "text": "Sam lasts nearly a minute in the silence, and then they start on the water ration at their last berth, and you let them. Sam talks over the answer and goes back to the story about the tug.|"
  },
  {
   "key": "place:talkative:1",
-  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam is off again, and tells it to the next table too, and you are in it.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam is off again, and tells it to the next table too, tug pilots and all, and you are in it.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:talkative:2",
-  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam is off again, and tells it to the next table too, and you are in it.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam is off again, and tells it to the next table too, tug pilots and all, and you are in it.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:talkative:3",
-  "text": "\"They tried to close The Gravity Well twice,\" Sam says. \"The first time the regulars paid the rent. The second time nobody could find the owner.\" Sam is off again, and tells it to the next table too, and you are in it.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"They tried to close The Gravity Well twice,\" Sam says. \"The first time the regulars paid the rent. The second time nobody could find the owner.\" Sam is off again, and tells it to the next table too, tug pilots and all, and you are in it.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:talkative:4",
-  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list. Sam is off again, and tells it to the next table too, and you are in it.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list. Sam is off again, and tells it to the next table too, tug pilots and all, and you are in it.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "drink:nervous:1",
@@ -85,11 +85,11 @@
  },
  {
   "key": "cards:nervous:2",
-  "text": "Sam watches your hands the whole game and flinches at every card. You take 200 cr off them, and they thank you for it. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam watches your hands the whole game and flinches at every card, and at every clank from the dock outside. You take 200 cr off them, and they thank you for it. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:nervous:3",
-  "text": "Sam watches your hands the whole game and flinches at every card. You take 200 cr off them, and they thank you for it. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam watches your hands the whole game and flinches at every card, and at every clank from the dock outside. You take 200 cr off them, and they thank you for it. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:nervous:4",
@@ -97,19 +97,19 @@
  },
  {
   "key": "quiet:nervous:1",
-  "text": "Sam sits with their hands flat on the table. After ten minutes they stop moving. Sam lets out a breath, and for the first time sits back.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam sits with their hands flat on the table, listening to the dock pumps through the floor. After ten minutes they stop moving. Sam lets out a breath, and for the first time since the lock sits back.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:nervous:2",
-  "text": "Sam sits with their hands flat on the table. After ten minutes they stop moving. Sam lets out a breath, and for the first time sits back.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam sits with their hands flat on the table, listening to the dock pumps through the floor. After ten minutes they stop moving. Sam lets out a breath, and for the first time since the lock sits back.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:nervous:3",
-  "text": "Sam sits with their hands flat on the table. After ten minutes they stop moving. Sam lets out a breath, and for the first time sits back.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam sits with their hands flat on the table, listening to the dock pumps through the floor. After ten minutes they stop moving. Sam lets out a breath, and for the first time since the lock sits back.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:nervous:4",
-  "text": "Sam sits with their hands flat on the table. After ten minutes they stop moving. Sam lets out a breath, and for the first time sits back.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam sits with their hands flat on the table, listening to the dock pumps through the floor. After ten minutes they stop moving. Sam lets out a breath, and for the first time since the lock sits back.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "place:nervous:1",
@@ -129,23 +129,23 @@
  },
  {
   "key": "drink:generous:1",
-  "text": "Sam will not hear of it, and slides the credits back across the bar, and buys the next one too. Sam says to have the rest, and means a bottle at the next port.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam will not hear of it, and slides the credits back across the bar, and buys the next one too. Sam says to have the rest, and means a ration case and a bottle at the next port.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:generous:2",
-  "text": "Sam will not hear of it, and slides the credits back across the bar, and buys the next one too. Sam says to have the rest, and means a bottle at the next port.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam will not hear of it, and slides the credits back across the bar, and buys the next one too. Sam says to have the rest, and means a ration case and a bottle at the next port.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:generous:3",
-  "text": "Sam will not hear of it, and slides the credits back across the bar, and buys the next one too. Sam says to have the rest, and means a bottle at the next port.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam will not hear of it, and slides the credits back across the bar, and buys the next one too. Sam says to have the rest, and means a ration case and a bottle at the next port.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:generous:4",
-  "text": "Sam will not hear of it, and slides the credits back across the bar, and buys the next one too. Sam says to have the rest, and means a bottle at the next port.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam will not hear of it, and slides the credits back across the bar, and buys the next one too. Sam says to have the rest, and means a ration case and a bottle at the next port.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards:generous:1",
-  "text": "Sam wins 200 cr and tries to press half of it back into your hand. You refuse. They put it in the tip jar in your name. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr and tries to press half of it back into your hand. You refuse. They put it on your berth fee at the dock office, in your name, before you can stop them. By the end of the glass you are laughing.|"
  },
  {
   "key": "cards:generous:2",
@@ -161,11 +161,11 @@
  },
  {
   "key": "quiet:generous:1",
-  "text": "Sam pushes the bowl of beans across, and then the bread, and then a second glass of water, without a word.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam pushes the bowl of beans across, and then the bread, and then a second glass of water from their own ration, without a word.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:generous:2",
-  "text": "Sam pushes the bowl of beans across, and then the bread, and then a second glass of water, without a word.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam pushes the bowl of beans across, and then the bread, and then a second glass of water from their own ration, without a word.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:generous:3",
@@ -173,7 +173,7 @@
  },
  {
   "key": "quiet:generous:4",
-  "text": "Sam pushes the bowl of beans across, and then the bread, and then a second glass of water, without a word.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam pushes the bowl of beans across, and then the bread, and then a second glass of water from their own ration, without a word.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "place:generous:1",
@@ -193,19 +193,19 @@
  },
  {
   "key": "drink:greedy:1",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Customs on Mars seized a shipment of Luxury Goods. Buyers there are desperate.\" Then they sit back and finish their drink. Sam counts it, tells you the total, and decides you are worth knowing.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Customs on Mars seized a shipment of Luxury Goods. Buyers there are desperate.\" Then they sit back and finish their drink. Sam counts it, tells you the total, and decides you are worth a cut of the next run.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:greedy:2",
-  "text": "Sam has a price for everything: the drink, the stool, the gossip about the man two tables over. By the end you have heard a lot of figures and no stories. Sam counts it, tells you the total, and decides you are worth knowing.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam has a price for everything: the drink, the stool, the berth fee, the gossip about the pilot two tables over. By the end you have heard a lot of figures and no stories. Sam counts it, tells you the total, and decides you are worth a cut of the next run.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:greedy:3",
-  "text": "Sam spends the whole drink on a long story about a boss they hated and a ship they loved, and how the two are the same person. It is very funny. It teaches you nothing. Sam counts it, tells you the total, and decides you are worth knowing.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam spends the whole drink on a long story about a boss they hated and a ship they loved, and how the two are the same person. It is very funny. It teaches you nothing. Sam counts it, tells you the total, and decides you are worth a cut of the next run.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:greedy:4",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A bumper output of Water on Ring Nine has the markets swamped.\" Then they sit back and finish their drink. Sam counts it, tells you the total, and decides you are worth knowing.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A bumper output of Water on Ring Nine has the markets swamped.\" Then they sit back and finish their drink. Sam counts it, tells you the total, and decides you are worth a cut of the next run.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards:greedy:1",
@@ -213,7 +213,7 @@
  },
  {
   "key": "cards:greedy:2",
-  "text": "Sam takes the 200 cr, checks it against a coin they keep for the purpose. \"A pleasure,\" Sam says, and writes the figure on the napkin. By the end of the glass you are laughing.|"
+  "text": "Sam takes the 200 cr, checks it against a coin they keep for the purpose. \"A pleasure,\" Sam says, and writes the figure on the back of a freight slip. By the end of the glass you are laughing.|"
  },
  {
   "key": "cards:greedy:3",
@@ -221,11 +221,11 @@
  },
  {
   "key": "cards:greedy:4",
-  "text": "Sam counts the pot twice, then counts your 200 cr, and then counts it again as you take it. \"Beginner's luck,\" Sam says. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam counts the pot twice, then your 200 cr, then the margin on the tug fee they could have saved, and counts it again as you take it. \"Beginner's luck,\" Sam says. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "quiet:greedy:1",
-  "text": "Sam does sums on a napkin for twenty minutes, in silence, and at the end turns the napkin round for you to see. It is your ship's price, within a few percent.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam does sums on a freight slip for twenty minutes, in silence, and at the end turns it round for you to see. It is your ship's price, within a few percent.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:greedy:2",
@@ -237,7 +237,7 @@
  },
  {
   "key": "quiet:greedy:4",
-  "text": "Sam does sums on a napkin for twenty minutes, in silence, and at the end turns the napkin round for you to see. It is your ship's price, within a few percent.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam does sums on a freight slip for twenty minutes, in silence, and at the end turns it round for you to see. It is your ship's price, within a few percent.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "place:greedy:1",
@@ -257,19 +257,19 @@
  },
  {
   "key": "drink:pious:1",
-  "text": "Sam complains for an hour about the price of everything, with such precision and love that you leave feeling you have been to a very good concert. Sam turns the cord at their wrist and says nothing.|"
+  "text": "Sam complains for an hour about the price of everything, with such precision and love that you leave feeling you have been to a very good concert. Sam touches the cord at their wrist, once for each leg of the trip, and says nothing.|"
  },
  {
   "key": "drink:pious:2",
-  "text": "Sam speaks of the long road, and the long wait, and the small kindness that is worth more than either. It is not a sermon. Sam turns the cord at their wrist and says nothing.|"
+  "text": "Sam says what they say at the turn of the watch, quietly, and asks if you would rather not hear it. You stay. Sam touches the cord at their wrist, once for each leg of the trip, and says nothing.|"
  },
  {
   "key": "drink:pious:3",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A new tax on Luxury Goods at Ganymede has, for reasons no one can explain, made it more valuable, not less.\" Then they sit back and finish their drink. Sam turns the cord at their wrist and says nothing.|"
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A new tax on Luxury Goods at Ganymede has, for reasons no one can explain, made it more valuable, not less.\" Then they sit back and finish their drink. Sam touches the cord at their wrist, once for each leg of the trip, and says nothing.|"
  },
  {
   "key": "drink:pious:4",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A ship carrying Food to Mars was hijacked two weeks ago, and the shelves are getting bare.\" Then they sit back and finish their drink. Sam turns the cord at their wrist and says nothing.|"
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A ship carrying Food to Mars was hijacked two weeks ago, and the shelves are getting bare.\" Then they sit back and finish their drink. Sam touches the cord at their wrist, once for each leg of the trip, and says nothing.|"
  },
  {
   "key": "cards:pious:1",
@@ -277,11 +277,11 @@
  },
  {
   "key": "cards:pious:2",
-  "text": "Sam says a word over each card. You lose 200 cr, and Sam touches the charm at their throat and says it was not their doing. By the end of the glass you are laughing.|"
+  "text": "Sam says a word over each card. You lose 200 cr, and Sam touches the cord at their wrist and says it was not their doing. By the end of the glass you are laughing.|"
  },
  {
   "key": "cards:pious:3",
-  "text": "Sam says a short word over each card, and loses, and says one over the 200 cr as it leaves. \"What is lost is returned in another form,\" Sam says. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam says a short word over each card, as at the turn of the watch, and loses, and says one over the 200 cr as it leaves. \"What is lost is returned in another form,\" Sam says. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:pious:4",
@@ -293,15 +293,15 @@
  },
  {
   "key": "quiet:pious:2",
-  "text": "Sam bows their head, and you sit beside them, and for a while the bar is only glasses. When they lift it again they say it was good to have company.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam bows their head at the hour of the watch change, and you sit beside them, and for a while the bar is only glasses. When they lift it again they say it was good to have company.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:pious:3",
-  "text": "Sam bows their head, and you sit beside them, and for a while the bar is only glasses. When they lift it again they say it was good to have company.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam bows their head at the hour of the watch change, and you sit beside them, and for a while the bar is only glasses. When they lift it again they say it was good to have company.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:pious:4",
-  "text": "Sam bows their head, and you sit beside them, and for a while the bar is only glasses. When they lift it again they say it was good to have company.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam bows their head at the hour of the watch change, and you sit beside them, and for a while the bar is only glasses. When they lift it again they say it was good to have company.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "place:pious:1",
@@ -329,15 +329,15 @@
  },
  {
   "key": "drink:rude:3",
-  "text": "Sam insults the drink, the bar, the bartender, and the city, in that order, from a list.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam insults the drink, the bar, the bartender, and the dock fees, in that order, from a list.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:rude:4",
-  "text": "Sam insults the drink, the bar, the bartender, and the city, in that order, from a list.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam insults the drink, the bar, the bartender, and the dock fees, in that order, from a list.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards:rude:1",
-  "text": "Sam puts down the last card and says, in a level voice, that it was a dishonest deck. You take 200 cr off them anyway. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam puts down the last card and says, in a level voice, that it was a dishonest deck, and that this is the sort of port that stocks them. You take 200 cr off them anyway. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:rude:2",
@@ -345,23 +345,23 @@
  },
  {
   "key": "cards:rude:3",
-  "text": "Sam wins 200 cr, and says it was not even close. You do not argue. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr, and says it was not even close, and that the tug pilots at this dock play better. You do not argue. By the end of the glass you are laughing.|"
  },
  {
   "key": "cards:rude:4",
-  "text": "Sam wins 200 cr, and says it was not even close. You do not argue. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr, and says it was not even close, and that the tug pilots at this dock play better. You do not argue. By the end of the glass you are laughing.|"
  },
  {
   "key": "quiet:rude:1",
-  "text": "Sam says nothing for a long time, and then says, \"You are not as bad as I thought.\"|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam says nothing for a long time, and then says, \"You are not as bad as the last hand I flew with.\"|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:rude:2",
-  "text": "Sam says nothing for a long time, and then says, \"You are not as bad as I thought.\"|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam says nothing for a long time, and then says, \"You are not as bad as the last hand I flew with.\"|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:rude:3",
-  "text": "Sam says nothing for a long time, and then says, \"You are not as bad as I thought.\"|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam says nothing for a long time, and then says, \"You are not as bad as the last hand I flew with.\"|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:rude:4",
@@ -393,7 +393,7 @@
  },
  {
   "key": "drink:curious:3",
-  "text": "Sam asks about your ship, your home, your last port and the best thing you have eaten, and writes none of it down, and does not forget any of it.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam asks about your ship, your cargo, your last port and the best thing you have eaten on a long burn, and writes none of it down, and does not forget any of it.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:curious:4",
@@ -401,7 +401,7 @@
  },
  {
   "key": "cards:curious:1",
-  "text": "Sam asks how you knew, and what the odds were, and whether you count, and takes 200 cr off the table in questions before you take it in coin. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam asks how you knew, and what the odds were, and whether you count cards the way a pilot counts burn time, and takes 200 cr off the table in questions before you take it in coin. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:curious:2",
@@ -409,63 +409,63 @@
  },
  {
   "key": "cards:curious:3",
-  "text": "Sam plays a hand and then spends ten minutes asking how you lost it, and you are never sure whether it is a joke. 200 cr. By the end of the glass you are laughing.|"
+  "text": "Sam plays a hand and then spends ten minutes asking how you lost it, and whether your ship would have played it differently, and you are never sure whether it is a joke. 200 cr. By the end of the glass you are laughing.|"
  },
  {
   "key": "cards:curious:4",
-  "text": "Sam asks how you knew, and what the odds were, and whether you count, and takes 200 cr off the table in questions before you take it in coin. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam asks how you knew, and what the odds were, and whether you count cards the way a pilot counts burn time, and takes 200 cr off the table in questions before you take it in coin. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "quiet:curious:1",
-  "text": "Sam watches you not talking with open interest, and then tries it. They last four minutes.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam watches you not talking with open interest, like a gauge they have not seen before, and then tries it. They last four minutes.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:curious:2",
-  "text": "Sam watches you not talking with open interest, and then tries it. They last four minutes.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam watches you not talking with open interest, like a gauge they have not seen before, and then tries it. They last four minutes.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:curious:3",
-  "text": "Sam watches you not talking with open interest, and then tries it. They last four minutes.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam watches you not talking with open interest, like a gauge they have not seen before, and then tries it. They last four minutes.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:curious:4",
-  "text": "Sam watches you not talking with open interest, and then tries it. They last four minutes.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam watches you not talking with open interest, like a gauge they have not seen before, and then tries it. They last four minutes.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "place:curious:1",
-  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam asks the next question, and then the one after it.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam asks the next question, and then the one after it, about the burn profile.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:curious:2",
-  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list. Sam asks the next question, and then the one after it.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list. Sam asks the next question, and then the one after it, about the burn profile.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:curious:3",
-  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list. Sam asks the next question, and then the one after it.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "Sam tells you where to sit on a bad night (the corner, back to the wall), what not to order, and who to nod to on the way in. It is a short list. Sam asks the next question, and then the one after it, about the burn profile.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:curious:4",
-  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam asks the next question, and then the one after it.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam asks the next question, and then the one after it, about the burn profile.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "drink:drunk:1",
-  "text": "Sam tells you the same story three times, and each time it is about a different ship. You are not sure which one is true. You think none of them. Sam hugs you. It is a long hug, and not entirely stable.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam tells you the same story three times, and each time it is about a different ship. You are not sure which one is true. You think none of them. Sam hugs you, a long hug, and holds the rail with the other hand.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:drunk:2",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Word is that the governor of Titan is stockpiling Electronics for a party, and will pay well over the odds.\" Then they sit back and finish their drink. Sam hugs you. It is a long hug, and not entirely stable.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Word is that the governor of Titan is stockpiling Electronics for a party, and will pay well over the odds.\" Then they sit back and finish their drink. Sam hugs you, a long hug, and holds the rail with the other hand.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:drunk:3",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A warehouse on The Rook has been cleared out in a hurry, and the Medical Supplies is going, quite literally, for whatever anyone will pay.\" Then they sit back and finish their drink. Sam hugs you. It is a long hug, and not entirely stable.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A warehouse on The Rook has been cleared out in a hurry, and the Medical Supplies is going, quite literally, for whatever anyone will pay.\" Then they sit back and finish their drink. Sam hugs you, a long hug, and holds the rail with the other hand.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:drunk:4",
-  "text": "Sam tells you the same story three times, and each time it is about a different ship. You are not sure which one is true. You think none of them. Sam hugs you. It is a long hug, and not entirely stable.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam tells you the same story three times, and each time it is about a different ship. You are not sure which one is true. You think none of them. Sam hugs you, a long hug, and holds the rail with the other hand.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards:drunk:1",
-  "text": "Sam wins 200 cr and looks astonished, and wants it understood that it was skill, and then asks what game it was. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr and looks astonished, and wants it understood that it was pilotage, and then asks what game it was. By the end of the glass you are laughing.|"
  },
  {
   "key": "cards:drunk:2",
@@ -477,23 +477,23 @@
  },
  {
   "key": "cards:drunk:4",
-  "text": "Sam wins 200 cr and looks astonished, and wants it understood that it was skill, and then asks what game it was. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr and looks astonished, and wants it understood that it was pilotage, and then asks what game it was. By the end of the glass you are laughing.|"
  },
  {
   "key": "quiet:drunk:1",
-  "text": "You share the table. Sam reads something on a terminal, you watch the room, and it is the quietest twenty minutes you have had in a week. Sam agrees at once, and orders another.|"
+  "text": "You share the table. Sam reads something on a terminal, you watch the room, and it is the quietest twenty minutes you have had in a week. Sam agrees at once, and orders another round for the whole watch.|"
  },
  {
   "key": "quiet:drunk:2",
-  "text": "Sam falls asleep with their head on their arm, and you sit with them until the bartender comes over with a blanket. Sam agrees at once, and orders another.|"
+  "text": "Sam falls asleep with a cheek on the bar and a hand still round the glass. The bartender takes the glass out, a finger at a time. Sam agrees at once, and orders another round for the whole watch.|"
  },
  {
   "key": "quiet:drunk:3",
-  "text": "Sam falls asleep with their head on their arm, and you sit with them until the bartender comes over with a blanket. Sam agrees at once, and orders another.|"
+  "text": "Sam falls asleep with a cheek on the bar and a hand still round the glass. The bartender takes the glass out, a finger at a time. Sam agrees at once, and orders another round for the whole watch.|"
  },
  {
   "key": "quiet:drunk:4",
-  "text": "You share the table. Sam reads something on a terminal, you watch the room, and it is the quietest twenty minutes you have had in a week. Sam agrees at once, and orders another.|"
+  "text": "You share the table. Sam reads something on a terminal, you watch the room, and it is the quietest twenty minutes you have had in a week. Sam agrees at once, and orders another round for the whole watch.|"
  },
  {
   "key": "place:drunk:1",
@@ -525,11 +525,11 @@
  },
  {
   "key": "drink:secretive:4",
-  "text": "Sam answers every question with a question and gives you, as far as you can tell, nothing. On the way home you realize you told them a great deal.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam answers every question with a question and gives you, as far as you can tell, nothing. On the way back to the lock you realize you told them a great deal.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards:secretive:1",
-  "text": "Sam plays with an expression you cannot read and a hand you cannot guess. You take 200 cr, and Sam gives nothing away, and the only change is that they do not look at the door. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam plays with an expression you cannot read and a hand you cannot guess. You take 200 cr, and Sam gives nothing away, and the only change is that they turn their terminal face down. Sam tells the story of it to the next table, with you as the villain.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:secretive:2",
@@ -545,19 +545,19 @@
  },
  {
   "key": "quiet:secretive:1",
-  "text": "Sam relaxes in the silence, and does not ask you anything. Sam asks how long you have had the ship, and this time wants the answer.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam relaxes in the silence, closes the manifest on their terminal, and does not ask you anything. Sam asks which port you cleared last, and this time wants the answer.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:secretive:2",
-  "text": "Sam relaxes in the silence, and does not ask you anything. Sam asks how long you have had the ship, and this time wants the answer.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam relaxes in the silence, closes the manifest on their terminal, and does not ask you anything. Sam asks which port you cleared last, and this time wants the answer.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:secretive:3",
-  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up. Sam asks how long you have had the ship, and this time wants the answer.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up. Sam asks which port you cleared last, and this time wants the answer.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:secretive:4",
-  "text": "Sam relaxes in the silence, and does not ask you anything. Sam asks how long you have had the ship, and this time wants the answer.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam relaxes in the silence, closes the manifest on their terminal, and does not ask you anything. Sam asks which port you cleared last, and this time wants the answer.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "place:secretive:1",
@@ -577,19 +577,19 @@
  },
  {
   "key": "drink:kind:1",
-  "text": "Sam complains for an hour about the price of everything, with such precision and love that you leave feeling you have been to a very good concert. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam complains for an hour about the price of everything, with such precision and love that you leave feeling you have been to a very good concert. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:kind:2",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Dockworkers on Titan have gone on strike. Medical Supplies is suddenly scarce there.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Dockworkers on Titan have gone on strike. Medical Supplies is suddenly scarce there.\" Then they sit back and finish their drink. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:kind:3",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A trade fair on The Rook has brought in a great many merchants, and Food is going for a song.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A trade fair on The Rook has brought in a great many merchants, and Food is going for a song.\" Then they sit back and finish their drink. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:kind:4",
-  "text": "Sam asks about you, and means it. By the end of the glass you have said something true that you had not planned to say to anyone. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam asks about you, and means it. By the end of the glass you have said something true about your last watch that you had not planned to say to anyone. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards:kind:1",
@@ -605,23 +605,23 @@
  },
  {
   "key": "cards:kind:4",
-  "text": "Sam wins 200 cr and feels bad about it at once, and buys you a drink, and says it is nothing. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr, looks at how thin your coat is, and spends some of it on your soup, and says it is nothing. By the end of the glass you are laughing.|"
  },
  {
   "key": "quiet:kind:1",
-  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:kind:2",
-  "text": "Sam makes room on the bench, and then nothing else. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam makes room on the bench, and slides the hot cup of tea along it, and then nothing else. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:kind:3",
-  "text": "Sam makes room on the bench, and then nothing else. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam makes room on the bench, and slides the hot cup of tea along it, and then nothing else. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:kind:4",
-  "text": "Sam makes room on the bench, and then nothing else. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam makes room on the bench, and slides the hot cup of tea along it, and then nothing else. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "place:kind:1",
@@ -645,15 +645,15 @@
  },
  {
   "key": "drink:brave:2",
-  "text": "Sam tells you about a bad moment and what they did in it, and does not make it sound better than it was.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam tells you about a bad moment on a hull, and what they did in it, and does not make it sound better than it was.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:brave:3",
-  "text": "Sam tells you about a bad moment and what they did in it, and does not make it sound better than it was.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam tells you about a bad moment on a hull, and what they did in it, and does not make it sound better than it was.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:brave:4",
-  "text": "Sam tells you about a bad moment and what they did in it, and does not make it sound better than it was.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam tells you about a bad moment on a hull, and what they did in it, and does not make it sound better than it was.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards:brave:1",
@@ -661,19 +661,19 @@
  },
  {
   "key": "cards:brave:2",
-  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish, like a pilot showing a close pass. By the end of the glass you are laughing.|"
  },
  {
   "key": "cards:brave:3",
-  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish, like a pilot showing a close pass. By the end of the glass you are laughing.|"
  },
  {
   "key": "cards:brave:4",
-  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish, like a pilot showing a close pass. By the end of the glass you are laughing.|"
  },
  {
   "key": "quiet:brave:1",
-  "text": "Sam sits with their back to the door, as always, and for once does not watch it.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam sits with their back to the pressure door, as always, and for once does not watch it.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:brave:2",
@@ -713,7 +713,7 @@
  },
  {
   "key": "drink:homesick:3",
-  "text": "Sam talks about Mars, and then stops, and then talks about it again, and by the third time you could draw the street.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam talks about Mars and the day they signed onto a ship, and then stops, and then talks about it again, and by the third time you could draw the street.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:homesick:4",
@@ -725,11 +725,11 @@
  },
  {
   "key": "cards:homesick:2",
-  "text": "Sam plays absent-mindedly, thinking of somewhere else, and loses 200 cr to you without noticing. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam plays absent-mindedly, thinking of Mars, and loses 200 cr to you without noticing. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards:homesick:3",
-  "text": "Sam plays well, for someone whose mind is elsewhere. 200 cr, and a smile that is not about the game. By the end of the glass you are laughing.|"
+  "text": "Sam plays well, for someone whose mind is on Mars. 200 cr, and a smile that is not about the game. By the end of the glass you are laughing.|"
  },
  {
   "key": "cards:homesick:4",
@@ -737,35 +737,35 @@
  },
  {
   "key": "quiet:homesick:1",
-  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up. Sam goes quiet, and then smiles, the first of the night.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up. Sam goes quiet, and then smiles, the first since the last burn.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:homesick:2",
-  "text": "Sam takes out a creased photograph and sets it between you, and neither of you mentions it. You look at it for a while. Sam goes quiet, and then smiles, the first of the night.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam takes out a creased photograph of Mars and sets it between you, and neither of you mentions it. You look at it for a while. Sam goes quiet, and then smiles, the first since the last burn.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:homesick:3",
-  "text": "Sam takes out a creased photograph and sets it between you, and neither of you mentions it. You look at it for a while. Sam goes quiet, and then smiles, the first of the night.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam takes out a creased photograph of Mars and sets it between you, and neither of you mentions it. You look at it for a while. Sam goes quiet, and then smiles, the first since the last burn.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:homesick:4",
-  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up. Sam goes quiet, and then smiles, the first of the night.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, Sam lifts a hand without looking up. Sam goes quiet, and then smiles, the first since the last burn.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "place:homesick:1",
-  "text": "\"They tried to close The Gravity Well twice,\" Sam says. \"The first time the regulars paid the rent. The second time nobody could find the owner.\" Sam goes quiet, and then smiles, the first of the night.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"They tried to close The Gravity Well twice,\" Sam says. \"The first time the regulars paid the rent. The second time nobody could find the owner.\" Sam goes quiet, and then smiles, the first since the last burn.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:homesick:2",
-  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam goes quiet, and then smiles, the first of the night.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "Sam points out the table by the wall. \"A man died there in the first week. Heart. Nobody moved the table. We just stopped using it for a year, and then it was a table again.\" Sam goes quiet, and then smiles, the first since the last burn.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:homesick:3",
-  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\" Sam goes quiet, and then smiles, the first of the night.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"The bartender knows everyone's business,\" Sam says, \"and has never repeated any of it. That is why anyone trusts this place.\" Sam goes quiet, and then smiles, the first since the last burn.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "place:homesick:4",
-  "text": "\"They tried to close The Gravity Well twice,\" Sam says. \"The first time the regulars paid the rent. The second time nobody could find the owner.\" Sam goes quiet, and then smiles, the first of the night.|9 Jul 2214: The captain asked about the place and listened."
+  "text": "\"They tried to close The Gravity Well twice,\" Sam says. \"The first time the regulars paid the rent. The second time nobody could find the owner.\" Sam goes quiet, and then smiles, the first since the last burn.|9 Jul 2214: The captain asked about the place and listened."
  },
  {
   "key": "home:talkative:1",
@@ -1085,7 +1085,7 @@
  },
  {
   "key": "leave:nervous:1",
-  "text": "Sam half rises when you stand, and sits again, and says goodbye to the table."
+  "text": "Sam half rises when you stand, and sits again, and says goodbye to the table. They have counted the exits twice."
  },
  {
   "key": "leave:nervous:2",
@@ -1093,11 +1093,11 @@
  },
  {
   "key": "leave:nervous:3",
-  "text": "Sam half rises when you stand, and sits again, and says goodbye to the table."
+  "text": "Sam half rises when you stand, and sits again, and says goodbye to the table. They have counted the exits twice."
  },
  {
   "key": "leave:generous:1",
-  "text": "Sam puts a roll in your pocket as you go and does not mention it."
+  "text": "Sam slips two ration bars into your coat pocket at the door and says the galley will not miss them."
  },
  {
   "key": "leave:generous:2",
@@ -1125,7 +1125,7 @@
  },
  {
   "key": "leave:pious:2",
-  "text": "\"Fair winds,\" Sam says."
+  "text": "\"Fair winds and a soft landing,\" Sam says."
  },
  {
   "key": "leave:pious:3",
@@ -1149,11 +1149,11 @@
  },
  {
   "key": "leave:curious:2",
-  "text": "\"Where are you headed next?\" Sam asks, at the door, and writes it on their hand."
+  "text": "\"Which lane next?\" Sam asks, at the door, and writes it on their hand."
  },
  {
   "key": "leave:curious:3",
-  "text": "\"Where are you headed next?\" Sam asks, at the door, and writes it on their hand."
+  "text": "\"Which lane next?\" Sam asks, at the door, and writes it on their hand."
  },
  {
   "key": "leave:drunk:1",
@@ -1161,7 +1161,7 @@
  },
  {
   "key": "leave:drunk:2",
-  "text": "Sam waves, to the left of where you are, and says something warm that is not quite a word."
+  "text": "Sam waves, to the left of where you are, and says something warm that is not quite \"safe burn.\""
  },
  {
   "key": "leave:drunk:3",
@@ -1169,11 +1169,11 @@
  },
  {
   "key": "leave:secretive:1",
-  "text": "\"I never saw you,\" Sam says, without a smile."
+  "text": "\"I never saw you, and you were never at this dock,\" Sam says, without a smile."
  },
  {
   "key": "leave:secretive:2",
-  "text": "\"I never saw you,\" Sam says, without a smile."
+  "text": "\"I never saw you, and you were never at this dock,\" Sam says, without a smile."
  },
  {
   "key": "leave:secretive:3",
@@ -1189,11 +1189,11 @@
  },
  {
   "key": "leave:kind:3",
-  "text": "\"Any time,\" Sam says, \"and any place.\" It is an offer."
+  "text": "\"Any time,\" Sam says, \"any lane.\" It is an offer."
  },
  {
   "key": "leave:brave:1",
-  "text": "\"Any time,\" Sam says, \"and any place.\" It is an offer."
+  "text": "\"Any time,\" Sam says, \"any lane.\" It is an offer."
  },
  {
   "key": "leave:brave:2",
@@ -1313,15 +1313,15 @@
  },
  {
   "key": "chatter:secretive:1",
-  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance reads a message on the hand terminal and turns the screen to the wall."
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance closes the terminal window when the berth door hisses, and keeps a hand on the lid."
  },
  {
   "key": "chatter:secretive:2",
-  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance reads a message on the hand terminal and turns the screen to the wall."
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance closes the terminal window when the berth door hisses, and keeps a hand on the lid."
  },
  {
   "key": "chatter:secretive:3",
-  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance reads a message on the hand terminal and turns the screen to the wall."
+  "text": "Captain Vance is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch. | Captain Vance stops at the hatch of the gunner, looks in, and leaves without saying a word. | Captain Vance is in the galley with the ledger open, lips moving over the sums. | Captain Vance: \"Fuel is money, and money is fuel. Remember that when somebody wants to go faster.\" | Captain Vance is checking the manifest against the hold, line by line, for the second time. | Captain Vance: \"I was a hand once. I remember what it was like when the captain did not know my name.\" | Captain Vance is asleep in the captain's chair with the log open on the captain's chest. | Captain Vance: \"We make port on the day, or I owe somebody an explanation. I hate owing explanations.\" | Captain Vance closes the terminal window when the berth door hisses, and keeps a hand on the lid."
  },
  {
   "key": "chatter:kind:1",
@@ -1733,7 +1733,7 @@
  },
  {
   "key": "goalhelp:home:2",
-  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, and you are in it. In the quiet after, Sam says, three drinks in, that they owe the wrong people more than they will make in a year.|9 Jul 2214: The captain let me talk it through."
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, tug pilots and all, and you are in it. In the quiet after, Sam says, three drinks in, that they owe the wrong people more than they will make in a year.|9 Jul 2214: The captain let me talk it through."
  },
  {
   "key": "goalhelp:home:3",
@@ -1761,7 +1761,7 @@
  },
  {
   "key": "goalhelp:family:2",
-  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, and you are in it. In the quiet after, Sam says, three drinks in, that they owe the wrong people more than they will make in a year.|9 Jul 2214: The captain let me talk it through."
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, tug pilots and all, and you are in it. In the quiet after, Sam says, three drinks in, that they owe the wrong people more than they will make in a year.|9 Jul 2214: The captain let me talk it through."
  },
  {
   "key": "goalhelp:family:3",
@@ -1789,7 +1789,7 @@
  },
  {
   "key": "goalhelp:job:2",
-  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, and you are in it. In the quiet after, Sam says, three drinks in, that they owe the wrong people more than they will make in a year.|9 Jul 2214: The captain let me talk it through."
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, tug pilots and all, and you are in it. In the quiet after, Sam says, three drinks in, that they owe the wrong people more than they will make in a year.|9 Jul 2214: The captain let me talk it through."
  },
  {
   "key": "goalhelp:job:3",
@@ -1817,7 +1817,7 @@
  },
  {
   "key": "goalhelp:fresh:2",
-  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, and you are in it. In the quiet after, Sam looks into the bottom of their cup and says there are people looking for them, and it is mostly a question of time.|9 Jul 2214: The captain let me talk it through."
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, tug pilots and all, and you are in it. In the quiet after, Sam looks into the bottom of their cup and says there are people looking for them, and it is mostly a question of time.|9 Jul 2214: The captain let me talk it through."
  },
  {
   "key": "goalhelp:fresh:3",
@@ -1845,7 +1845,7 @@
  },
  {
   "key": "goalhelp:research:2",
-  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, and you are in it. In the quiet after, Sam looks into the bottom of their cup and says there are people looking for them, and it is mostly a question of time.|9 Jul 2214: The captain let me talk it through."
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, tug pilots and all, and you are in it. In the quiet after, Sam looks into the bottom of their cup and says there are people looking for them, and it is mostly a question of time.|9 Jul 2214: The captain let me talk it through."
  },
  {
   "key": "goalhelp:research:3",
@@ -1861,7 +1861,7 @@
  },
  {
   "key": "goalhelp:pilgrim:scene",
-  "text": "[\"The Anchor: Sam Vale\",\"Sam is bound for somewhere holy, a long way off, and says it more quietly than anything else tonight.\",[\"Pay a leg of the trip (60 cr)\",\"Tell them how to find a berth on the long haul\",\"Ask what the place means to them\",\"Say you hope it goes well\"]]"
+  "text": "[\"The Anchor: Sam Vale\",\"Sam is bound for somewhere holy, a long way off, and has booked the cheapest berth on every leg to get there.\",[\"Pay a leg of the trip (60 cr)\",\"Tell them how to find a berth on the long haul\",\"Ask what the place means to them\",\"Say you hope it goes well\"]]"
  },
  {
   "key": "goalhelp:pilgrim:0",
@@ -1873,7 +1873,7 @@
  },
  {
   "key": "goalhelp:pilgrim:2",
-  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, and you are in it. In the quiet after, Sam says, three drinks in, that they owe the wrong people more than they will make in a year.|9 Jul 2214: The captain let me talk it through."
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, tug pilots and all, and you are in it. In the quiet after, Sam says, three drinks in, that they owe the wrong people more than they will make in a year.|9 Jul 2214: The captain let me talk it through."
  },
  {
   "key": "goalhelp:pilgrim:3",
@@ -1901,7 +1901,7 @@
  },
  {
   "key": "goalhelp:medical:2",
-  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, and you are in it. In the quiet after, Sam looks into the bottom of their cup and says there are people looking for them, and it is mostly a question of time.|9 Jul 2214: The captain let me talk it through."
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam is off again, and tells it to the next table too, tug pilots and all, and you are in it. In the quiet after, Sam looks into the bottom of their cup and says there are people looking for them, and it is mostly a question of time.|9 Jul 2214: The captain let me talk it through."
  },
  {
   "key": "goalhelp:medical:3",
@@ -1977,7 +1977,7 @@
  },
  {
   "key": "crewbar:gunner:6",
-  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p322\">Sam</button> sits with their back to the wall and watches the room."
+  "text": "<button class=\"link\" data-action=\"person\" data-arg=\"p322\">Sam</button> sits with their back to the wall and watches hands, not faces."
  },
  {
   "key": "crewbar:quartermaster:1",
@@ -2465,7 +2465,7 @@
  },
  {
   "key": "drink2:1",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A company on Earth has folded, and its whole stock of Machine Parts is being sold off at auction.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A company on Earth has folded, and its whole stock of Machine Parts is being sold off at auction.\" Then they sit back and finish their drink. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:1",
@@ -2477,7 +2477,7 @@
  },
  {
   "key": "drink2:2",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A new tax on Electronics at The Rook has, for reasons no one can explain, made it more valuable, not less.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A new tax on Electronics at The Rook has, for reasons no one can explain, made it more valuable, not less.\" Then they sit back and finish their drink. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:2",
@@ -2489,43 +2489,43 @@
  },
  {
   "key": "drink2:3",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A cold snap on Enceladus has made Refined Metals the only thing anyone wants to talk about.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A cold snap on Enceladus has made Refined Metals the only thing anyone wants to talk about.\" Then they sit back and finish their drink. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:3",
-  "text": "Sam wins 200 cr, and says it was not even close. You do not argue. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr, and says it was not even close, and that the tug pilots at this dock play better. You do not argue. By the end of the glass you are laughing.|"
  },
  {
   "key": "cards2:kind:3",
-  "text": "Sam wins 200 cr and feels bad about it at once, and buys you a drink, and says it is nothing. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr, looks at how thin your coat is, and spends some of it on your soup, and says it is nothing. By the end of the glass you are laughing.|"
  },
  {
   "key": "drink2:4",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Dockworkers on The Rook have gone on strike. Food is suddenly scarce there.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Dockworkers on The Rook have gone on strike. Food is suddenly scarce there.\" Then they sit back and finish their drink. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:4",
-  "text": "Sam bets everything on the last hand with a grin and loses 200 cr to you, and offers a rematch, double or nothing, before the cards are down. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam bets everything on the last hand with a grin and loses 200 cr to you, and offers double or nothing, as if it were a docking run, before the cards are down. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards2:kind:4",
-  "text": "Sam bets everything on the last hand with a grin and loses 200 cr to you, and offers a rematch, double or nothing, before the cards are down. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam bets everything on the last hand with a grin and loses 200 cr to you, and offers double or nothing, as if it were a docking run, before the cards are down. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "drink2:5",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Warehouses on Ironheart are overflowing with Water. Sellers are dumping it cheap.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Warehouses on Ironheart are overflowing with Water. Sellers are dumping it cheap.\" Then they sit back and finish their drink. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:5",
-  "text": "Sam bets everything on the last hand with a grin and loses 200 cr to you, and offers a rematch, double or nothing, before the cards are down. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam bets everything on the last hand with a grin and loses 200 cr to you, and offers double or nothing, as if it were a docking run, before the cards are down. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards2:kind:5",
-  "text": "Sam bets everything on the last hand with a grin and loses 200 cr to you, and offers a rematch, double or nothing, before the cards are down. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam bets everything on the last hand with a grin and loses 200 cr to you, and offers double or nothing, as if it were a docking run, before the cards are down. Sam shakes your hand and means it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "drink2:6",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A rumor that Refined Metals on Enceladus is contaminated has, for the moment, cratered the price, though everyone knows it is nonsense.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A rumor that Refined Metals on Enceladus is contaminated has, for the moment, cratered the price, though everyone knows it is nonsense.\" Then they sit back and finish their drink. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:6",
@@ -2537,7 +2537,7 @@
  },
  {
   "key": "drink2:7",
-  "text": "Sam asks about you, and means it. By the end of the glass you have said something true that you had not planned to say to anyone. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam asks about you, and means it. By the end of the glass you have said something true about your last watch that you had not planned to say to anyone. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:7",
@@ -2549,31 +2549,31 @@
  },
  {
   "key": "drink2:8",
-  "text": "Sam asks about you, and listens, and says nothing useful, and the drink is gone before you notice. It is the most relaxing hour of the week. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam asks about you, and listens, and says nothing useful, and the drink is gone before you notice. It is the most relaxing hour of the week. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:8",
-  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish, like a pilot showing a close pass. By the end of the glass you are laughing.|"
  },
  {
   "key": "cards2:kind:8",
-  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish, like a pilot showing a close pass. By the end of the glass you are laughing.|"
  },
  {
   "key": "drink2:9",
-  "text": "Sam asks about you, and means it. By the end of the glass you have said something true that you had not planned to say to anyone. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam asks about you, and means it. By the end of the glass you have said something true about your last watch that you had not planned to say to anyone. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:9",
-  "text": "Sam puts down the last card and says, in a level voice, that it was a dishonest deck. You take 200 cr off them anyway. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam puts down the last card and says, in a level voice, that it was a dishonest deck, and that this is the sort of port that stocks them. You take 200 cr off them anyway. Sam stands up and says, in a level voice, that you cheated, and the whole bar turns to look. You leave them to it.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "cards2:kind:9",
-  "text": "Sam loses gracefully, and as you take 200 cr they ask if you are all right, because you looked tired. You were. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
+  "text": "Sam loses gracefully, and as you take 200 cr they ask if you are all right, because you looked tired after the long burn. You were. Sam buys you a drink with your own money.|9 Jul 2214: The captain took my money at cards."
  },
  {
   "key": "drink2:10",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A corporate buying spree on Enceladus has cleared the shelves of Food.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A corporate buying spree on Enceladus has cleared the shelves of Food.\" Then they sit back and finish their drink. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:10",
@@ -2585,7 +2585,7 @@
  },
  {
   "key": "drink2:11",
-  "text": "Sam tells you about a bad moment and what they did in it, and does not make it sound better than it was. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam tells you about a bad moment on a hull, and what they did in it, and does not make it sound better than it was. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:11",
@@ -2597,7 +2597,7 @@
  },
  {
   "key": "drink2:12",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A bumper output of Food on Boneyard has the markets swamped.\" Then they sit back and finish their drink. Sam takes your hand for a moment and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A bumper output of Food on Boneyard has the markets swamped.\" Then they sit back and finish their drink. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:12",
@@ -2653,7 +2653,7 @@
  },
  {
   "key": "goalhelp2:home:0",
-  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first of the night. As thanks Sam leans in. \"Here's something you can use,\" they say: \"A big contract on Juno Commons has swallowed the whole local supply of Luxury Goods, and the bidding has gone wild.\"|9 Jul 2214: The captain helped me on my way (going home)."
+  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first since the last burn. As thanks Sam leans in. \"Here's something you can use,\" they say: \"A big contract on Juno Commons has swallowed the whole local supply of Luxury Goods, and the bidding has gone wild.\"|9 Jul 2214: The captain helped me on my way (going home)."
  },
  {
   "key": "goalhelp2:home:1",
@@ -2661,7 +2661,7 @@
  },
  {
   "key": "goalhelp2:home:2",
-  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first of the night. In the quiet after, Sam asks a lot of questions about your routes and answers none about theirs.|9 Jul 2214: The captain let me talk it through."
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first since the last burn. In the quiet after, Sam asks a lot of questions about your routes and answers none about theirs.|9 Jul 2214: The captain let me talk it through."
  },
  {
   "key": "goalhelp2:home:3",
@@ -2669,7 +2669,7 @@
  },
  {
   "key": "goalhelp2:family:0",
-  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first of the night. As thanks Sam leans in. \"Here's something you can use,\" they say: \"Word is that the governor of Earth is stockpiling Water for a party, and will pay well over the odds.\"|9 Jul 2214: The captain helped me on my way (visiting family)."
+  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first since the last burn. As thanks Sam leans in. \"Here's something you can use,\" they say: \"Word is that the governor of Earth is stockpiling Water for a party, and will pay well over the odds.\"|9 Jul 2214: The captain helped me on my way (visiting family)."
  },
  {
   "key": "goalhelp2:family:1",
@@ -2677,7 +2677,7 @@
  },
  {
   "key": "goalhelp2:family:2",
-  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first of the night. In the quiet after, Sam is pleasant and asks small, exact things about ports and times, and gives you nothing.|9 Jul 2214: The captain let me talk it through."
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first since the last burn. In the quiet after, Sam is pleasant and asks small, exact things about ports and times, and gives you nothing.|9 Jul 2214: The captain let me talk it through."
  },
  {
   "key": "goalhelp2:family:3",
@@ -2685,7 +2685,7 @@
  },
  {
   "key": "goalhelp2:job:0",
-  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first of the night. As thanks Sam leans in. \"Here's something you can use,\" they say: \"A trade fair on Juno Commons has brought in a great many merchants, and Water is going for a song.\"|9 Jul 2214: The captain helped me on my way (heading to a job interview)."
+  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first since the last burn. As thanks Sam leans in. \"Here's something you can use,\" they say: \"A trade fair on Juno Commons has brought in a great many merchants, and Water is going for a song.\"|9 Jul 2214: The captain helped me on my way (heading to a job interview)."
  },
  {
   "key": "goalhelp2:job:1",
@@ -2693,7 +2693,7 @@
  },
  {
   "key": "goalhelp2:job:2",
-  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first of the night. In the quiet after, Sam is pleasant and asks small, exact things about ports and times, and gives you nothing.|9 Jul 2214: The captain let me talk it through."
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first since the last burn. In the quiet after, Sam is pleasant and asks small, exact things about ports and times, and gives you nothing.|9 Jul 2214: The captain let me talk it through."
  },
  {
   "key": "goalhelp2:job:3",
@@ -2701,7 +2701,7 @@
  },
  {
   "key": "goalhelp2:fresh:0",
-  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first of the night. As thanks Sam leans in. \"Here's something you can use,\" they say: \"Warehouses on The Hollows are overflowing with Water. Sellers are dumping it cheap.\"|9 Jul 2214: The captain helped me on my way (starting over after a bad divorce)."
+  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first since the last burn. As thanks Sam leans in. \"Here's something you can use,\" they say: \"Warehouses on The Hollows are overflowing with Water. Sellers are dumping it cheap.\"|9 Jul 2214: The captain helped me on my way (starting over after a bad divorce)."
  },
  {
   "key": "goalhelp2:fresh:1",
@@ -2709,7 +2709,7 @@
  },
  {
   "key": "goalhelp2:fresh:2",
-  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first of the night. In the quiet after, Sam asks a lot of questions about your routes and answers none about theirs.|9 Jul 2214: The captain let me talk it through."
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first since the last burn. In the quiet after, Sam asks a lot of questions about your routes and answers none about theirs.|9 Jul 2214: The captain let me talk it through."
  },
  {
   "key": "goalhelp2:fresh:3",
@@ -2717,7 +2717,7 @@
  },
  {
   "key": "goalhelp2:research:0",
-  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first of the night. As thanks Sam leans in. \"Here's something you can use,\" they say: \"A ceremonial feast on Ganymede has drained every last ounce of Medical Supplies, and the cooks are frantic.\"|9 Jul 2214: The captain helped me on my way (taking up a research posting)."
+  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first since the last burn. As thanks Sam leans in. \"Here's something you can use,\" they say: \"A ceremonial feast on Ganymede has drained every last ounce of Medical Supplies, and the cooks are frantic.\"|9 Jul 2214: The captain helped me on my way (taking up a research posting)."
  },
  {
   "key": "goalhelp2:research:1",
@@ -2725,7 +2725,7 @@
  },
  {
   "key": "goalhelp2:research:2",
-  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first of the night. In the quiet after, Sam asks a lot of questions about your routes and answers none about theirs.|9 Jul 2214: The captain let me talk it through."
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first since the last burn. In the quiet after, Sam asks a lot of questions about your routes and answers none about theirs.|9 Jul 2214: The captain let me talk it through."
  },
  {
   "key": "goalhelp2:research:3",
@@ -2733,7 +2733,7 @@
  },
  {
   "key": "goalhelp2:pilgrim:0",
-  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first of the night. As thanks Sam leans in. \"Here's something you can use,\" they say: \"A company on Ganymede has folded, and its whole stock of Medical Supplies is being sold off at auction.\"|9 Jul 2214: The captain helped me on my way (on a pilgrimage)."
+  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first since the last burn. As thanks Sam leans in. \"Here's something you can use,\" they say: \"A company on Ganymede has folded, and its whole stock of Medical Supplies is being sold off at auction.\"|9 Jul 2214: The captain helped me on my way (on a pilgrimage)."
  },
  {
   "key": "goalhelp2:pilgrim:1",
@@ -2741,7 +2741,7 @@
  },
  {
   "key": "goalhelp2:pilgrim:2",
-  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first of the night. In the quiet after, Sam asks a lot of questions about your routes and answers none about theirs.|9 Jul 2214: The captain let me talk it through."
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first since the last burn. In the quiet after, Sam asks a lot of questions about your routes and answers none about theirs.|9 Jul 2214: The captain let me talk it through."
  },
  {
   "key": "goalhelp2:pilgrim:3",
@@ -2749,7 +2749,7 @@
  },
  {
   "key": "goalhelp2:medical:0",
-  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first of the night. As thanks Sam leans in. \"Here's something you can use,\" they say: \"Dockworkers on Ring Nine have gone on strike. Food is suddenly scarce there.\"|9 Jul 2214: The captain helped me on my way (traveling for medical treatment)."
+  "text": "You put it on the table and push it across. Sam goes quiet, and then smiles, the first since the last burn. As thanks Sam leans in. \"Here's something you can use,\" they say: \"Dockworkers on Ring Nine have gone on strike. Food is suddenly scarce there.\"|9 Jul 2214: The captain helped me on my way (traveling for medical treatment)."
  },
  {
   "key": "goalhelp2:medical:1",
@@ -2757,7 +2757,7 @@
  },
  {
   "key": "goalhelp2:medical:2",
-  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first of the night. In the quiet after, Sam is pleasant and asks small, exact things about ports and times, and gives you nothing.|9 Jul 2214: The captain let me talk it through."
+  "text": "You sit back, and ask, and for an hour that is all there is. Sam goes quiet, and then smiles, the first since the last burn. In the quiet after, Sam is pleasant and asks small, exact things about ports and times, and gives you nothing.|9 Jul 2214: The captain let me talk it through."
  },
  {
   "key": "goalhelp2:medical:3",
@@ -3121,7 +3121,7 @@
  },
  {
   "key": "life:galley:cat:3",
-  "text": "Cass is following whoever carries the tray."
+  "text": "Cass walks at the heel of whoever carries the tray, hot plate to table, and sits under it."
  },
  {
   "key": "life:galley:cat:4",
@@ -3141,7 +3141,7 @@
  },
  {
   "key": "life:galley:any:2",
-  "text": "Cass and Ana are washing up together without talking, passing each other cups."
+  "text": "Cass and Ana are washing up at the galley tap, drawing the water ration cup by cup, and not talking."
  },
  {
   "key": "life:galley:any:3",
@@ -3157,7 +3157,7 @@
  },
  {
   "key": "life:galley:any:6",
-  "text": "Cass and Ben are washing up together without talking, passing each other cups."
+  "text": "Cass and Ben are washing up at the galley tap, drawing the water ration cup by cup, and not talking."
  },
  {
   "key": "life:gunnery:cat:0",
