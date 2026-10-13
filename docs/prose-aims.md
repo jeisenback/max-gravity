@@ -24,10 +24,12 @@ By a reader, on a sample, not by a count. Draw 40 strings from each layer below 
 | 2, pool lines | Does the line fit the trait, post, room or goal it is drawn for, so that a line written for another one would be out of place here? Break a card's "never says" and it fails. Not scored (null) when the table does not pick by one of those (a general pool such as news or a rumor), or the string is a bare label or fragment. The rater is given the table and key the line comes from. |
 | 3 | Is there a detail only this ship or this work would have? Does it contradict `docs/world/`? |
 | 4 | For a line that plays often: are there at least three versions of the moment? |
-| 5 | At a beat that matters: does it state the fact, and leave room? |
+| 5 | At a beat that matters: where a feeling is named, is it named once and plainly, with no narrator's reading of it and no verdict that tells the player how to feel? Not scored (null) when no feeling is named. |
 | 6 | Is it as short as it can be and still say the thing? |
 
 Q2 on pool lines was reworded after the first sample (#600): the old wording gave kappa 0.21 between two raters on the 40 pool lines, and the new gave 0.65 (96 percent agreement on the 25 lines both rated). It now passes nearly every line it applies to, so it finds only a line that fits any trait equally; "any kitchen" lines are Q3's.
+
+Q5 was reworded after the second sample (#602), 20 big beats (deaths, departures, farewells, pivots, chapter endings) with two raters. The old wording, "state the fact, and leave room", got 20 of 20 from one rater and 12 of 20 from the blind one (60 percent agreement, kappa 0 because one rater never failed a scene). The blind rater's 8 failures were of two kinds. Two (the Dov and Zoya goodbyes) were the narrator's knowing reading that the feeling rule forbids ("She does not need to.", "before it can be anything"); the other six were images standing in for a fact that the text does state elsewhere (a hand's width of tape, a folded mattress), where raters differ on whether an image counts. So "state the fact" is dropped as a per-string question, and what Q5 asks now is the feeling rule. On the feeling rule the raters agreed on the 3 scenes both scored as naming a feeling, and the blind rater found the 2 violations the other rater, who wrote the rule, missed. Only 6 of the 20 beats name a feeling at all, so the rule is thinly tested. The full table is in the pull request for #602.
 
 The tic report and the other counts stay as a smoke alarm. They find known habits; they do not show quality, and a pass is not done because a count fell.
 
