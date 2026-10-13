@@ -10,7 +10,7 @@ Status: draft for the owner to approve. Nothing in the repo points to this yet.
 2. **People are told apart.** With the tags hidden, two speakers are not interchangeable. Each talks in the idiom of their trade and their card.
 3. **The place is believed.** The detail comes from this ship, this work and this custom. A passage that could happen in any kitchen is not finished. The world is its own, with no names, terms or plot shapes from the Expanse.
 4. **It survives repetition.** A scene or line that plays often has enough versions that the player meets the same moment more than once without meeting the same words.
-5. **The big moments land.** Loss, partings and turning points get their facts and their room. Restraint is the default: say what is done, not what anyone feels. See the first open decision.
+5. **The big moments land.** Loss, partings and turning points get their facts and their room, and a feeling may be named plainly, once, by the person who has it or by the narration, when the scene is about it. This is not a book of things left unsaid. What stays out is the narrator's wry reading, a feeling that the player is told to share, and a feeling named on every beat.
 6. **It reads where it is read.** Labels and messages are short and plain. A scene fits a screen or two on a phone.
 
 ## How each is judged
@@ -44,6 +44,15 @@ The tic report and the other counts stay as a smoke alarm. They find known habit
 
 ## Open decisions for the owner
 
-1. **Restraint at the big beats.** The default is to state the act and leave the feeling out. For deaths, departures and farewells (#356, #357), should a scene ever say what someone feels, once, plainly?
+1. **Restraint at the big beats.** Decided by the owner: too much restraint is wrong. A feeling may be stated plainly where the scene is about it (deaths, departures, farewells, #356 and #357). `docs/prose-style.md` rules 3, 4, 8 and 9 were written for the opposite and need to be rewritten to match, as described below.
 2. **Repetition.** Aim 4 needs several versions of a scene or line that plays often. The engine has no variant pool yet. Is that in this pass (writing the versions) or a separate engine task first?
 3. **Status.** Does this replace "draft" on `docs/prose-style.md` as the stated purpose, with the style doc as the means?
+
+## What the first decision changes in the style doc
+
+Not yet done; for the owner to approve with this page.
+
+- **Rule 8 (report, do not color)** keeps its target, the narrator's wry aside and the simile that carries a feeling, and stops forbidding a stated feeling or a sentence about what someone knows.
+- **Rule 9 (do not tell the player how to feel)** keeps its target, a verdict on the moment ("Good.", "the most honest thing anyone has said to you"), and does not forbid naming what a character feels.
+- **Rules 3 and 4** stay for customs and objects, as a way to show them, and are no longer a ban on the feeling.
+- **A new limit instead:** a feeling is named where the scene is about it, and not on every beat. The count of feeling words is a smoke alarm for the second case.
