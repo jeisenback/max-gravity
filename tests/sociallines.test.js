@@ -17,7 +17,15 @@ test('every scene, feed and activity of js/social.js has an id and lines, and ev
   const g = await open({ scope: 'full' });
   const r = await g.ev(arg => {
     const social = (0, eval)(`(${arg.social})`), feeds = (0, eval)(`(${arg.feeds})`);
-    const play = () => { __seed(1); const a = social(true); __seed(1); const b = feeds(); return { a, b }; };
+    // Cover My Watch and A Word open one of four ways by who asks and which day, not by a draw (the pin's dice stay as they were), so they are played over a run of days.
+    const days = () => {
+      __seed(1);
+      startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester', credits: 5000 }); while (G.dialog) finishEvent();
+      const ps = Object.values(G.state.people).filter(p => p.first).slice(0, 2).map(p => ({ ...p, role: 'engineer' })), day = G.state.day, out = [];
+      for (let d = 0; d < 16; d++) { G.state.day = day + d; out.push(coverWatchScene(ps[0]).text, wordScene({ p: ps[0] }, { p: ps[1] }, 1).text, wordScene({ p: ps[0] }, { p: ps[1] }, -1).text); }
+      return out;
+    };
+    const play = () => { __seed(1); const a = social(true); __seed(1); const b = feeds(); return { a, b, c: days() }; };
     const ids = Object.keys(SOCIAL_SCENES).map(id => `social:${id}`), have = Object.keys(PEOPLE_LINES).filter(id => id.startsWith('social:')), tables = ['lines:social-causes', 'lines:social-critics'];
     const linesOf = id => (id.startsWith('lines:') ? flatLines(lineTable(id).table()) : PEOPLE_LINES[id]);
     const mark = (id, key) => `@@${id}|${key}@@${(linesOf(id)[key].match(/\{\w+\}/g) || []).join('')}`;  // a line keeps the {words} it has

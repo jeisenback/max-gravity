@@ -50,7 +50,7 @@ The tic report and the other counts stay as a smoke alarm. They find known habit
 ## Decisions
 
 1. **Restraint at the big beats.** Decided: too much restraint is wrong. A feeling may be stated plainly where the scene is about it (deaths, departures, farewells, #356 and #357). The style doc follows (below).
-2. **Repetition.** Decided: the work is in this pass, in three parts. A no-repeat memory for the busy line pools (`pickFresh`, #596), more lines for the pools the player meets most (#597), and more than one text for the few most-played scenes (not yet done). A full variant model in the scene engine and editor is not built, since the most-played scene comes up about three times a chapter.
+2. **Repetition.** Decided: the work is in this pass, in three parts. A no-repeat memory for the busy line pools (`pickFresh`, #596), more lines for the pools the player meets most (#597), and more than one text for the few most-played scenes (done: Galley Duty, Sit With Someone and Bad News already had four or five openings, and Cover My Watch and A Word now have four; an opening is chosen by who and which day, not by a draw, so the dice of the pinned plays are unchanged). A full variant model in the scene engine and editor is not built, since the most-played scene comes up about three times a chapter.
 3. **Status.** Decided: this is the stated purpose of the game's text, with the style doc as the means.
 
 ## What the first decision changed in the style doc
