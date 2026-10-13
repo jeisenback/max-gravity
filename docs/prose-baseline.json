@@ -22,7 +22,14 @@
       "speech": {
         "quoted": 18,
         "reported": 0
-      }
+      },
+      "unpriced": [
+        {
+          "id": "A Hauler Down on {dest}",
+          "label": "Tow her to the yard and argue the price down",
+          "why": "tag"
+        }
+      ]
     },
     "js/bartopics.js": {
       "strings": 85,
@@ -30,23 +37,24 @@
         "hedge": 0,
         "nods": 0,
         "andThen": 0,
-        "asIf": 0,
+        "asIf": 1,
         "forAWhile": 0,
         "longMoment": 0,
         "adverb": 0,
         "aside": 0
       },
       "shape": {
-        "count": 111,
-        "mean": 9.32,
-        "sd": 4.68,
-        "shortShare": 0.22,
+        "count": 110,
+        "mean": 10.26,
+        "sd": 5.45,
+        "shortShare": 0.21,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 19,
         "reported": 1
-      }
+      },
+      "unpriced": []
     },
     "js/barwork.js": {
       "strings": 26,
@@ -70,7 +78,8 @@
       "speech": {
         "quoted": 2,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/boarders.js": {
       "strings": 70,
@@ -94,7 +103,8 @@
       "speech": {
         "quoted": 2,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/captains/ansel.js": {
       "strings": 75,
@@ -118,7 +128,8 @@
       "speech": {
         "quoted": 47,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/captains/cato.js": {
       "strings": 93,
@@ -142,7 +153,8 @@
       "speech": {
         "quoted": 60,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/captains/dov.js": {
       "strings": 72,
@@ -166,7 +178,8 @@
       "speech": {
         "quoted": 60,
         "reported": 2
-      }
+      },
+      "unpriced": []
     },
     "js/captains/hester.js": {
       "strings": 75,
@@ -190,7 +203,8 @@
       "speech": {
         "quoted": 62,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/captains/ilsa.js": {
       "strings": 75,
@@ -214,7 +228,14 @@
       "speech": {
         "quoted": 43,
         "reported": 0
-      }
+      },
+      "unpriced": [
+        {
+          "id": "What Ilsa Knows",
+          "label": "Offer to put something in",
+          "why": "effect+gate"
+        }
+      ]
     },
     "js/captains/imre.js": {
       "strings": 73,
@@ -238,7 +259,8 @@
       "speech": {
         "quoted": 64,
         "reported": 2
-      }
+      },
+      "unpriced": []
     },
     "js/captains/pilar.js": {
       "strings": 74,
@@ -262,7 +284,8 @@
       "speech": {
         "quoted": 41,
         "reported": 1
-      }
+      },
+      "unpriced": []
     },
     "js/captains/zoya.js": {
       "strings": 74,
@@ -286,7 +309,8 @@
       "speech": {
         "quoted": 79,
         "reported": 2
-      }
+      },
+      "unpriced": []
     },
     "js/cast.js": {
       "strings": 376,
@@ -310,7 +334,8 @@
       "speech": {
         "quoted": 271,
         "reported": 3
-      }
+      },
+      "unpriced": []
     },
     "js/castbar.js": {
       "strings": 83,
@@ -334,7 +359,8 @@
       "speech": {
         "quoted": 69,
         "reported": 1
-      }
+      },
+      "unpriced": []
     },
     "js/company.js": {
       "strings": 27,
@@ -358,7 +384,8 @@
       "speech": {
         "quoted": 22,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/crew.js": {
       "strings": 131,
@@ -382,7 +409,8 @@
       "speech": {
         "quoted": 80,
         "reported": 1
-      }
+      },
+      "unpriced": []
     },
     "js/engagements.js": {
       "strings": 119,
@@ -406,7 +434,8 @@
       "speech": {
         "quoted": 1,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/family.js": {
       "strings": 10,
@@ -430,7 +459,8 @@
       "speech": {
         "quoted": 0,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/familytext.js": {
       "strings": 103,
@@ -446,7 +476,7 @@
       },
       "shape": {
         "count": 133,
-        "mean": 13.26,
+        "mean": 13.29,
         "sd": 7.66,
         "shortShare": 0.11,
         "shortRuns": 0
@@ -454,7 +484,8 @@
       "speech": {
         "quoted": 6,
         "reported": 3
-      }
+      },
+      "unpriced": []
     },
     "js/fate.js": {
       "strings": 3,
@@ -478,7 +509,8 @@
       "speech": {
         "quoted": 1,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/game.js": {
       "strings": 35,
@@ -502,7 +534,8 @@
       "speech": {
         "quoted": 14,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/hail.js": {
       "strings": 123,
@@ -526,7 +559,8 @@
       "speech": {
         "quoted": 25,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/hired.js": {
       "strings": 32,
@@ -550,7 +584,8 @@
       "speech": {
         "quoted": 16,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/hiredevents.js": {
       "strings": 84,
@@ -574,7 +609,8 @@
       "speech": {
         "quoted": 28,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/hiredeventstext.js": {
       "strings": 130,
@@ -598,7 +634,8 @@
       "speech": {
         "quoted": 2,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/hiredscenes.js": {
       "strings": 563,
@@ -622,7 +659,8 @@
       "speech": {
         "quoted": 78,
         "reported": 2
-      }
+      },
+      "unpriced": []
     },
     "js/icerun.js": {
       "strings": 74,
@@ -646,7 +684,8 @@
       "speech": {
         "quoted": 1,
         "reported": 1
-      }
+      },
+      "unpriced": []
     },
     "js/jobs.js": {
       "strings": 58,
@@ -670,7 +709,19 @@
       "speech": {
         "quoted": 22,
         "reported": 1
-      }
+      },
+      "unpriced": [
+        {
+          "id": "A Message That Has to Go Quietly",
+          "label": "Put it on a ship's relay under a cargo header",
+          "why": "tag"
+        },
+        {
+          "id": "A Message That Has to Go Quietly",
+          "label": "Carry it to a ship that is about to sail",
+          "why": "tag"
+        }
+      ]
     },
     "js/outpost.js": {
       "strings": 35,
@@ -694,7 +745,8 @@
       "speech": {
         "quoted": 16,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/people.js": {
       "strings": 19,
@@ -718,34 +770,36 @@
       "speech": {
         "quoted": 0,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/peopletext.js": {
-      "strings": 661,
+      "strings": 697,
       "tics": {
         "hedge": 18,
         "nods": 14,
         "andThen": 2,
-        "asIf": 1,
+        "asIf": 2,
         "forAWhile": 6,
         "longMoment": 0,
         "adverb": 2,
         "aside": 0
       },
       "shape": {
-        "count": 1430,
-        "mean": 10.17,
-        "sd": 6.52,
-        "shortShare": 0.26,
+        "count": 1473,
+        "mean": 10.37,
+        "sd": 6.55,
+        "shortShare": 0.25,
         "shortRuns": 7
       },
       "speech": {
-        "quoted": 267,
+        "quoted": 270,
         "reported": 5
-      }
+      },
+      "unpriced": []
     },
     "js/shiplife.js": {
-      "strings": 81,
+      "strings": 132,
       "tics": {
         "hedge": 1,
         "nods": 0,
@@ -757,16 +811,17 @@
         "aside": 0
       },
       "shape": {
-        "count": 87,
-        "mean": 10.06,
-        "sd": 3.81,
-        "shortShare": 0.11,
+        "count": 139,
+        "mean": 11,
+        "sd": 3.7,
+        "shortShare": 0.07,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 2,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/signon.js": {
       "strings": 2,
@@ -790,10 +845,11 @@
       "speech": {
         "quoted": 0,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/social.js": {
-      "strings": 26,
+      "strings": 30,
       "tics": {
         "hedge": 0,
         "nods": 0,
@@ -805,16 +861,17 @@
         "aside": 0
       },
       "shape": {
-        "count": 30,
-        "mean": 5.6,
-        "sd": 2.5,
-        "shortShare": 0.5,
+        "count": 34,
+        "mean": 5.76,
+        "sd": 2.43,
+        "shortShare": 0.44,
         "shortRuns": 0
       },
       "speech": {
-        "quoted": 4,
+        "quoted": 8,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/stakes.js": {
       "strings": 8,
@@ -838,7 +895,8 @@
       "speech": {
         "quoted": 0,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/stories/aftermath.js": {
       "strings": 139,
@@ -862,7 +920,14 @@
       "speech": {
         "quoted": 38,
         "reported": 1
-      }
+      },
+      "unpriced": [
+        {
+          "id": "A Customs Inquiry",
+          "label": "Answer the questions",
+          "why": "effect"
+        }
+      ]
     },
     "js/stories/cold-water.js": {
       "strings": 130,
@@ -886,7 +951,8 @@
       "speech": {
         "quoted": 101,
         "reported": 1
-      }
+      },
+      "unpriced": []
     },
     "js/stories/hired-aftermath.js": {
       "strings": 101,
@@ -910,7 +976,8 @@
       "speech": {
         "quoted": 34,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/stories/ice-strike.js": {
       "strings": 50,
@@ -934,7 +1001,8 @@
       "speech": {
         "quoted": 20,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/stories/landings.js": {
       "strings": 119,
@@ -958,7 +1026,19 @@
       "speech": {
         "quoted": 50,
         "reported": 1
-      }
+      },
+      "unpriced": [
+        {
+          "id": "Light Fingers",
+          "label": "Give chase",
+          "why": "effect"
+        },
+        {
+          "id": "Light Fingers",
+          "label": "Let it go",
+          "why": "effect"
+        }
+      ]
     },
     "js/stories/mars-navy.js": {
       "strings": 51,
@@ -982,7 +1062,8 @@
       "speech": {
         "quoted": 37,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/stories/on-the-road.js": {
       "strings": 83,
@@ -1006,7 +1087,8 @@
       "speech": {
         "quoted": 26,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/stories/ports.js": {
       "strings": 105,
@@ -1030,7 +1112,8 @@
       "speech": {
         "quoted": 16,
         "reported": 3
-      }
+      },
+      "unpriced": []
     },
     "js/stories/rook-crown.js": {
       "strings": 45,
@@ -1054,7 +1137,8 @@
       "speech": {
         "quoted": 27,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/stories/tethys.js": {
       "strings": 40,
@@ -1078,7 +1162,8 @@
       "speech": {
         "quoted": 29,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/story.js": {
       "strings": 93,
@@ -1102,10 +1187,11 @@
       "speech": {
         "quoted": 18,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/transit.js": {
-      "strings": 104,
+      "strings": 111,
       "tics": {
         "hedge": 4,
         "nods": 0,
@@ -1117,19 +1203,20 @@
         "aside": 0
       },
       "shape": {
-        "count": 222,
-        "mean": 11.55,
-        "sd": 8.1,
-        "shortShare": 0.27,
+        "count": 234,
+        "mean": 11.38,
+        "sd": 7.95,
+        "shortShare": 0.26,
         "shortRuns": 0
       },
       "speech": {
-        "quoted": 46,
+        "quoted": 53,
         "reported": 0
-      }
+      },
+      "unpriced": []
     },
     "js/world.js": {
-      "strings": 23,
+      "strings": 29,
       "tics": {
         "hedge": 0,
         "nods": 0,
@@ -1141,40 +1228,50 @@
         "aside": 0
       },
       "shape": {
-        "count": 32,
-        "mean": 9.56,
-        "sd": 5.24,
-        "shortShare": 0.28,
+        "count": 39,
+        "mean": 10.54,
+        "sd": 5.7,
+        "shortShare": 0.26,
         "shortRuns": 0
       },
       "speech": {
-        "quoted": 2,
+        "quoted": 3,
         "reported": 0
-      }
+      },
+      "unpriced": []
     }
   },
   "total": {
-    "strings": 4710,
+    "strings": 4814,
     "tics": {
       "hedge": 107,
       "nods": 25,
       "andThen": 13,
-      "asIf": 17,
+      "asIf": 19,
       "forAWhile": 15,
       "longMoment": 8,
       "adverb": 6,
       "aside": 5
     },
     "shape": {
-      "count": 10311,
-      "mean": 10.68,
-      "sd": 7.26,
+      "count": 10428,
+      "mean": 10.72,
+      "sd": 7.25,
       "shortShare": 0.26,
       "shortRuns": 31
     },
     "speech": {
-      "quoted": 1866,
+      "quoted": 1881,
       "reported": 31
-    }
+    },
+    "unpriced": [
+      "js/awayjobs.js  A Hauler Down on {dest}: Tow her to the yard and argue the price down [tag]",
+      "js/captains/ilsa.js  What Ilsa Knows: Offer to put something in [effect+gate]",
+      "js/jobs.js  A Message That Has to Go Quietly: Put it on a ship's relay under a cargo header [tag]",
+      "js/jobs.js  A Message That Has to Go Quietly: Carry it to a ship that is about to sail [tag]",
+      "js/stories/aftermath.js  A Customs Inquiry: Answer the questions [effect]",
+      "js/stories/landings.js  Light Fingers: Give chase [effect]",
+      "js/stories/landings.js  Light Fingers: Let it go [effect]"
+    ]
   }
 }
