@@ -392,13 +392,13 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester looks at the figure, and at the route, and does the sum. Hester counts it, tells you the total, and decides you are worth a cut of the next run. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester looks at the figure, and at the route, and does the sum. Hester counts it against the next run's margin, tells you the total, and decides you are worth a cut of the manifest. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester counts it, tells you the total, and decides you are worth a cut of the next run. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester counts it against the next run's margin, tells you the total, and decides you are worth a cut of the manifest. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
     ],
@@ -766,13 +766,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester says what they think of that, in order, from the list they keep for dock officials, and does not raise their voice. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester says what they think of that, in order, the way they read out a fuel invoice, and does not raise their voice. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester does not like being reminded of what they owe. Hester says what they think of that, in order, from the list they keep for dock officials, and does not raise their voice. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester does not like being reminded of what they owe. Hester says what they think of that, in order, the way they read out a fuel invoice, and does not raise their voice. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
     ],
@@ -784,13 +784,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester says what they think of that, in order, from the list they keep for dock officials, and does not raise their voice. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester says what they think of that, in order, the way they read out a fuel invoice, and does not raise their voice. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester says the ship is not a charity. Hester says what they think of that, in order, from the list they keep for dock officials, and does not raise their voice. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester says the ship is not a charity. Hester says what they think of that, in order, the way they read out a fuel invoice, and does not raise their voice. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
     ],

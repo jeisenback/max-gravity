@@ -170,10 +170,10 @@ const TRAITS = {
     chatter: [
       '{first}: "Did I ever tell you about the time the tug on {home} lost my cargo..."',
       '{first} is telling a long story in the galley, and, from the sound of it, has reached the good part for the third time.',
-      '{first}: "And that, I always say, is the whole trouble with the pilots on {home}. Oh, but that reminds me..."',
+      '{first}: "And that, I always say, is the whole trouble with the lane pilots on {home}, and the tug that never comes. Oh, but that reminds me..."',
       '{first} has been talking for an hour, and the galley hot plate has gone cold in sympathy.',
       '{first} is explaining, to nobody in particular, what they would do with a ship of their own, down to the paint on the hatch.',
-      '{first}: "Do not let me start on the docking fees on {home}. Too late. Where was I."',
+      '{first}: "Do not let me start on the pilotage fees on {home}, or the tug that never came. Too late. Where was I."',
       '{first} has told the same story to three watches, and each has been given a different ending.',
       '{first} is narrating the flip to the empty bridge as it happens.'
     ]
@@ -233,7 +233,7 @@ const TRAITS = {
   rude: {
     adj: 'abrasive',
     chatter: [
-      '{first}: "Who designed this galley, and were they drunk?"',
+      '{first}: "Who put the hot plate there, and were they drunk? Eleven feet across and one hot plate."',
       '{first} is complaining about the coffee, and the recycler that made the water.',
       '{first}: "In my last ship, we had a proper bunk. With a door."',
       '{first} has an opinion about the way you are flying, and shares it, generously, at every turn.',
@@ -272,7 +272,7 @@ const TRAITS = {
   secretive: {
     adj: 'guarded',
     chatter: [
-      '{first} closes the comms window on the hand terminal whenever you walk past.',
+      '{first} closes the comms window whenever you walk past, and leaves only the ship\'s log on the screen.',
       '{first} answers every question with a question, even the one about the cargo manifest, and does it very gracefully.',
       '{first} has a locked case, and a way of standing between it and everyone else.',
       '{first} is very quiet, and very watchful, and always knows which watch everyone is on.',
@@ -288,9 +288,9 @@ const TRAITS = {
       '{first} fixed the squeaky hatch without being asked.',
       '{first} noticed someone was tired, and quietly took the rest of their watch.',
       '{first} is sewing a torn flight-suit sleeve, by the berth lamp, for someone who is not going to ask.',
-      '{first} has left a note on the galley wall: "Ask me if you need anything. Anything at all."',
+      '{first} has pinned a note to the watch bill: "Ask me if you need anything. Anything at all."',
       '{first} is humming, softly, at the sink, washing everyone else\'s cups out of their own share of the water ration.',
-      '{first} stays at the table until the one who is late for supper has eaten.',
+      '{first} stays at the galley table after the change until the one coming off watch late has eaten.',
       '{first} has put a second blanket on whoever sleeps nearest the vent.',
       '{first} wrote everyone\'s birthday in the galley log, and has marked the next one.'
     ]
@@ -305,7 +305,7 @@ const TRAITS = {
       '{first} is smiling, in the face of a very small, very real problem with the coolant.',
       '{first} went out to check the antenna mount and came back in with a bolt.',
       '{first} says the drive sounds fine, and lays a hand flat on the deck to be sure.',
-      '{first}: "If it breaks, tell me where. I will go and look."'
+      '{first}: "If the coupling goes, tell me which deck. I will go and look."'
     ]
   },
   homesick: {
@@ -313,7 +313,7 @@ const TRAITS = {
     chatter: [
       '{first} is looking through old pictures of {home} on a hand terminal, with the screen dimmed to save charge.',
       '{first} has gone very quiet, and is watching the viewport.',
-      '{first} is making a dish from {home}, out of not-quite-right ingredients, and eating it with great seriousness.',
+      '{first} is making a dish from {home}, out of galley stores that are not quite right, and eating it with great seriousness.',
       '{first} is humming something from {home}, low and soft, over the sound of the drive, and does not seem to know.',
       '{first} keeps a stone from {home} tied in a sock, worn smooth, and takes it out at every flip.',
       '{first} has set a clock to the time on {home} and checks it at every watch change.',
