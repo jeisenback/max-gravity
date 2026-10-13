@@ -183,7 +183,7 @@ function lifeTick(dt) {
       p.x += Math.max(-step, Math.min(step, p.tx - p.x));
       if (Math.abs(p.tx - p.x) < 0.002) {
         p.tx = null; p.wait = rand(5, 12);
-        if (p.role !== 'you' && Math.random() < 0.1) {
+        if (p.role !== 'you' && Math.random() < 0.18) {
           const line = lifeLine(p, people);
           if (line) comm(`[Ship] ${line}`);
         }
