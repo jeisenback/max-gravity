@@ -407,13 +407,13 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester asks what it would fetch at the next port, and does not like the figure. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester asks what it would fetch at the next port, per ton, less the pilotage, and does not like the figure. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester does not like being reminded of what they owe. Hester asks what it would fetch at the next port, and does not like the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester does not like being reminded of what they owe. Hester asks what it would fetch at the next port, per ton, less the pilotage, and does not like the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
     ],
@@ -425,13 +425,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester asks what it would fetch at the next port, and does not like the figure. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
+    "text": "You put it to Captain Vance, and Hester listens, and weighs it Hester asks what it would fetch at the next port, per ton, less the pilotage, and does not like the figure. \"All right,\" Hester says. \"Mars, then. Do not make me regret it.\" The run is set for Mars.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You put it to Captain Vance, and Hester says the ship is not a charity. Hester asks what it would fetch at the next port, and does not like the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
+    "text": "You put it to Captain Vance, and Hester says the ship is not a charity. Hester asks what it would fetch at the next port, per ton, less the pilotage, and does not like the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it is still worth asking.\"",
     "mem": [
      "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
     ],
@@ -3718,7 +3718,7 @@
    {
     "i": 3,
     "roll": 0.5,
-    "text": "There is a run to make and a clock on it. You do not mention it, and neither does anyone else for a while, which is its own kind of mention. Mate0 looks at the photograph taped inside the lid of their kit bag, not at you. Mate2 says it is all right, and finds something on the booth to fix.",
+    "text": "There is a run to make and a clock on it. You do not mention it, and neither does anyone else for a while, which is its own kind of mention. Mate0 looks at the photograph taped inside their locker door, not at you. Mate2 says it is all right, and finds something on the booth to fix.",
     "mem": [
      "9 Jul 2214: The captain did not give Mara their due.",
      "9 Jul 2214: The captain did not give Mara their due.",

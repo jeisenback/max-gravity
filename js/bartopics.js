@@ -13,15 +13,15 @@ const BAR_REACT = {
   talkative: ['{n} is off again, and tells it to the next table too, tug pilots and all, and you are in it.', '{n} talks over the answer and goes back to the story about the tug.'],
   nervous: ['{n} lets out a breath, and for the first time since the lock sits back.', '{n} flinches, and checks the seal on the nearest hatch.'],
   generous: ['{n} says to have the rest, and means a ration case and a bottle at the next port.', '{n} waves it away, and asks whether you ate at the watch change.'],
-  greedy: ['{n} counts it against the next run\'s margin, tells you the total, and decides you are worth a cut of the manifest.', '{n} asks what it would fetch at the next port, and does not like the figure.'],
+  greedy: ['{n} counts it against the next run\'s margin, tells you the total, and decides you are worth a cut of the manifest.', '{n} asks what it would fetch at the next port, per ton, less the pilotage, and does not like the figure.'],
   pious: ['{n} says a short word over you, as at the turn of the watch, and means it.', '{n} touches the cord at their wrist, once for each leg of the trip, and says nothing.'],
   rude: ['{n} says the coffee here is almost as bad as the recycler\'s.', '{n} says what they think of that, in order, the way they read out a fuel invoice, and does not raise their voice.'],
   curious: ['{n} asks the next question, and then the one after it, about the burn profile.', '{n} says "Ah," and turns to see how the pressure door seals.'],
-  drunk: ['{n} hugs you, a long hug, and holds the rail with the other hand.', '{n} agrees at once, and orders another round for the whole watch.'],
+  drunk: ['{n} hugs you, a long hug, and holds the grab rail with the other hand, as if under thrust.', '{n} agrees at once, and orders another round for the whole watch.'],
   secretive: ['{n} asks which port you cleared last, and this time wants the answer.', '{n} asks which port you cleared last, and the rest of the glass is polite.'],
   kind: ['{n} takes your hand for a moment, the way you would steady a line, and does not say anything.', '{n} says it is all right, and finds something on the booth to fix.'],
   brave: ['{n} claps you on the shoulder, hard, like a hand after a docking. You will have a bruise.', '{n} looks at you, and then at the pressure door, and finishes the drink.'],
-  homesick: ['{n} goes quiet, and then smiles, the first since the last burn.', '{n} looks at the photograph taped inside the lid of their kit bag, not at you.'],
+  homesick: ['{n} goes quiet, and then smiles, the first since the last burn.', '{n} looks at the photograph taped inside their locker door, not at you.'],
 };
 const barHas = (p, ...ts) => ts.some(t => p.traits.includes(t));
 function barReact(p, loves = [], hates = []) {

@@ -172,7 +172,7 @@ const TRAITS = {
       '{first} is telling a long story in the galley, and, from the sound of it, has reached the good part for the third time.',
       '{first}: "And that, I always say, is the whole trouble with the lane pilots on {home}, and the tug that never comes. Oh, but that reminds me..."',
       '{first} has been talking for an hour, and the galley hot plate has gone cold in sympathy.',
-      '{first} is explaining, to nobody in particular, what they would do with a ship of their own, down to the paint on the hatch.',
+      '{first} is explaining, to nobody in particular, what they would do with a ship of their own, down to the pump rating on the recycler.',
       '{first}: "Do not let me start on the pilotage fees on {home}, or the tug that never came. Too late. Where was I."',
       '{first} has told the same story to three watches, and each has been given a different ending.',
       '{first} is narrating the flip to the empty bridge as it happens.'
@@ -235,7 +235,7 @@ const TRAITS = {
     chatter: [
       '{first}: "Who put the hot plate there, and were they drunk? Eleven feet across and one hot plate."',
       '{first} is complaining about the coffee, and the recycler that made the water.',
-      '{first}: "In my last ship, we had a proper bunk. With a door."',
+      '{first}: "In my last ship, we had a proper berth. With a door you could slam."',
       '{first} has an opinion about the way you are flying, and shares it, generously, at every turn.',
       '{first} is glaring at the cabin temperature readout, as if it had changed on purpose.',
       '{first}: "That is not how you stow a crate. That is how you lose a crate."',
@@ -250,10 +250,10 @@ const TRAITS = {
       '{first} has taken the panel off the galley clock to see what makes it tick.',
       '{first} is following the plume readout with a notebook, and has filled four pages.',
       '{first}: "But why does it hum at that particular note? Has anybody ever asked?"',
-      '{first} is pressing an ear to the bulkhead, listening to something nobody else can hear.',
+      '{first} is pressing an ear to the bulkhead, listening for a pump cycle nobody else can hear.',
       '{first} has asked the engineer what the third gauge is for, and is writing down the answer.',
       '{first} is timing how long a dropped spoon takes to reach the deck under thrust, and has a number.',
-      '{first} reads the label on every cabinet and asks about the ones in another language.'
+      '{first} reads the label on every cabinet in the stores locker and asks about the ones in another language.'
     ]
   },
   drunk: {
@@ -265,7 +265,7 @@ const TRAITS = {
       '{first} has made a toast to the ship, and is now, tenderly, toasting the coffee maker.',
       '{first} is cheerfully explaining the burn plan to a coaster.',
       '{first} has found a bottle nobody remembers stowing, and is being generous with it.',
-      '{first} is walking the corridor with a hand on each wall, sure that it is straight.',
+      '{first} is walking the passage between the berths with a hand on each wall, sure that it is straight.',
       '{first} is singing the one verse of a song from {home} that they know, off key, twice, down the ladder.'
     ]
   },

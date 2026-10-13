@@ -285,7 +285,7 @@ const BAR_TRAIT = {
     lose: '{n} wins {cr} cr, looks at how thin your coat is, and spends some of it on your soup, and says it is nothing.',
     drink: '{n} asks about you, and means it. By the end of the glass you have said something true about your last watch that you had not planned to say to anyone.',
     leave: '"Look after yourself," {n} says, and walks you down the dock to your lock, and waits until the seal light goes green.',
-    quiet: '{n} makes room on the bench, and slides the hot cup of tea along it, and then nothing else.'
+    quiet: '{n} makes room on the bench by the lock, and slides the tea from the dock urn along it, and then nothing else.'
   },
   brave: {
     win: '{n} bets everything on the last hand with a grin and loses {cr} cr to you, and offers double or nothing, as if it were a docking run, before the cards are down.',

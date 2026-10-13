@@ -449,19 +449,19 @@
  },
  {
   "key": "drink:drunk:1",
-  "text": "Sam tells you the same story three times, and each time it is about a different ship. You are not sure which one is true. You think none of them. Sam hugs you, a long hug, and holds the rail with the other hand.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam tells you the same story three times, and each time it is about a different ship. You are not sure which one is true. You think none of them. Sam hugs you, a long hug, and holds the grab rail with the other hand, as if under thrust.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:drunk:2",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Word is that the governor of Titan is stockpiling Electronics for a party, and will pay well over the odds.\" Then they sit back and finish their drink. Sam hugs you, a long hug, and holds the rail with the other hand.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"Word is that the governor of Titan is stockpiling Electronics for a party, and will pay well over the odds.\" Then they sit back and finish their drink. Sam hugs you, a long hug, and holds the grab rail with the other hand, as if under thrust.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:drunk:3",
-  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A warehouse on The Rook has been cleared out in a hurry, and the Medical Supplies is going, quite literally, for whatever anyone will pay.\" Then they sit back and finish their drink. Sam hugs you, a long hug, and holds the rail with the other hand.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam looks around and leans in. \"Here's something you can use,\" they say, low and fast: \"A warehouse on The Rook has been cleared out in a hurry, and the Medical Supplies is going, quite literally, for whatever anyone will pay.\" Then they sit back and finish their drink. Sam hugs you, a long hug, and holds the grab rail with the other hand, as if under thrust.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:drunk:4",
-  "text": "Sam tells you the same story three times, and each time it is about a different ship. You are not sure which one is true. You think none of them. Sam hugs you, a long hug, and holds the rail with the other hand.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam tells you the same story three times, and each time it is about a different ship. You are not sure which one is true. You think none of them. Sam hugs you, a long hug, and holds the grab rail with the other hand, as if under thrust.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards:drunk:1",
@@ -613,15 +613,15 @@
  },
  {
   "key": "quiet:kind:2",
-  "text": "Sam makes room on the bench, and slides the hot cup of tea along it, and then nothing else. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam makes room on the bench by the lock, and slides the tea from the dock urn along it, and then nothing else. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:kind:3",
-  "text": "Sam makes room on the bench, and slides the hot cup of tea along it, and then nothing else. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam makes room on the bench by the lock, and slides the tea from the dock urn along it, and then nothing else. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:kind:4",
-  "text": "Sam makes room on the bench, and slides the hot cup of tea along it, and then nothing else. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "Sam makes room on the bench by the lock, and slides the tea from the dock urn along it, and then nothing else. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "place:kind:1",
