@@ -2905,11 +2905,35 @@
  },
  {
   "key": "life:engine:engineer:2",
-  "text": "Cass is tapping a pipe with a wrench, listening to the note it makes, and frowning."
+  "text": "Cass is reading the coolant pressure off a gauge and writing it on the back of their hand."
  },
  {
   "key": "life:engine:engineer:3",
-  "text": "Cass is rerunning the injector timing. It was fine. It is finer now."
+  "text": "Cass is tightening a clamp a quarter turn and listening to the pump."
+ },
+ {
+  "key": "life:engine:engineer:4",
+  "text": "Cass is checking the reactor log against the board, line by line."
+ },
+ {
+  "key": "life:engine:engineer:5",
+  "text": "Cass is tapping a pipe with a wrench, listening to the note it makes, and frowning."
+ },
+ {
+  "key": "life:engine:engineer:6",
+  "text": "Cass has the injector cover off and is counting bolts back in."
+ },
+ {
+  "key": "life:engine:engineer:7",
+  "text": "Cass is wiping a drip from the coolant line and following it to the fitting."
+ },
+ {
+  "key": "life:engine:engineer:8",
+  "text": "Cass is checking the reactor log against the board, line by line."
+ },
+ {
+  "key": "life:engine:engineer:9",
+  "text": "Cass is holding a torch in their teeth and a wrench in each hand."
  },
  {
   "key": "life:engine:any:0",
@@ -2969,11 +2993,35 @@
  },
  {
   "key": "life:hold:quartermaster:2",
-  "text": "Cass is sniffing a crate of food and writing something down."
+  "text": "Cass is checking the seal numbers on a pallet against the manifest."
  },
  {
   "key": "life:hold:quartermaster:3",
-  "text": "Cass is arguing with the manifest."
+  "text": "Cass is weighing a crate on the hold scale and writing the figure in the margin."
+ },
+ {
+  "key": "life:hold:quartermaster:4",
+  "text": "Cass is re-tagging a drum of reaction mass with a new date."
+ },
+ {
+  "key": "life:hold:quartermaster:5",
+  "text": "Cass is sniffing a crate of food and writing something down."
+ },
+ {
+  "key": "life:hold:quartermaster:6",
+  "text": "Cass is shifting a pallet a hand's width to balance the load for the flip."
+ },
+ {
+  "key": "life:hold:quartermaster:7",
+  "text": "Cass is signing the hold log at the foot of the ladder."
+ },
+ {
+  "key": "life:hold:quartermaster:8",
+  "text": "Cass is re-tagging a drum of reaction mass with a new date."
+ },
+ {
+  "key": "life:hold:quartermaster:9",
+  "text": "Cass is prying the lid off a crate to check the count, then pressing it back down."
  },
  {
   "key": "life:hold:gunner:0",
@@ -3009,19 +3057,43 @@
  },
  {
   "key": "life:hold:any:2",
-  "text": "Cass is sitting on a crate with a mug, looking at the lashings."
- },
- {
-  "key": "life:hold:any:3",
   "text": "Cass is reading the stencil on a drum of reaction mass: tonnage, date, the yard."
  },
  {
-  "key": "life:hold:any:4",
+  "key": "life:hold:any:3",
   "text": "Cass is shifting a crate a hand's width to clear the walkway."
  },
  {
+  "key": "life:hold:any:4",
+  "text": "Cass is tightening a lashing a notch and testing it with a hand."
+ },
+ {
   "key": "life:hold:any:5",
-  "text": "Cass is reading the labels on the cargo, one by one."
+  "text": "Cass is sitting on a drum of reaction mass, eating from a ration pack."
+ },
+ {
+  "key": "life:hold:any:6",
+  "text": "Cass is reading the stencil on a drum of reaction mass: tonnage, date, the yard."
+ },
+ {
+  "key": "life:hold:any:7",
+  "text": "Cass is walking the aisle between the pallets with a hand trailing along the netting."
+ },
+ {
+  "key": "life:hold:any:8",
+  "text": "Cass is reading a seal tag aloud: the number, the yard, the date."
+ },
+ {
+  "key": "life:hold:any:9",
+  "text": "Cass is wiping frost from the inside of the hold hatch."
+ },
+ {
+  "key": "life:hold:any:10",
+  "text": "Cass is sitting on a drum of reaction mass, eating from a ration pack."
+ },
+ {
+  "key": "life:hold:any:11",
+  "text": "Cass is leaning on a crate with an ear against the hull."
  },
  {
   "key": "life:berths:cat:0",
@@ -3061,11 +3133,27 @@
  },
  {
   "key": "life:berths:medic:3",
-  "text": "Cass sets a cup of water on the shelf by a sleeper, and goes out."
+  "text": "Cass is replacing a sleeper's blanket and drawing the curtain across."
  },
  {
   "key": "life:berths:medic:4",
-  "text": "Cass stops at each bunk and listens for breathing."
+  "text": "Cass is checking a sleeper's pulse at the wrist without waking them."
+ },
+ {
+  "key": "life:berths:medic:5",
+  "text": "Cass sets a cup of water on the shelf by a sleeper, and goes out."
+ },
+ {
+  "key": "life:berths:medic:6",
+  "text": "Cass is hanging the kit bag on the bunk hook with the strap looped twice."
+ },
+ {
+  "key": "life:berths:medic:7",
+  "text": "Cass is stretching in the aisle between the berths with a hand on the bulkhead."
+ },
+ {
+  "key": "life:berths:medic:8",
+  "text": "Cass is checking a sleeper's pulse at the wrist without waking them."
  },
  {
   "key": "life:berths:passenger:0",
@@ -3093,19 +3181,67 @@
  },
  {
   "key": "life:berths:any:2",
-  "text": "Cass is lying awake, counting the rivets in the ceiling plate."
- },
- {
-  "key": "life:berths:any:3",
   "text": "Cass is mending a sock by the light of a handlamp."
  },
  {
-  "key": "life:berths:any:4",
+  "key": "life:berths:any:3",
   "text": "Cass is asleep with their boots still on."
  },
  {
+  "key": "life:berths:any:4",
+  "text": "Cass is writing a letter on a hand terminal with the brightness turned down."
+ },
+ {
   "key": "life:berths:any:5",
-  "text": "Cass is reading, by the light of a small lamp, with their lips moving."
+  "text": "Cass is sorting a kit bag on the bunk: socks, a razor, a folded photograph, a tin of tea."
+ },
+ {
+  "key": "life:berths:any:6",
+  "text": "Cass is pulling the berth door shut by the handle and letting the closer hiss it home."
+ },
+ {
+  "key": "life:berths:any:7",
+  "text": "Cass is asleep sitting up, one arm through the bunk strap."
+ },
+ {
+  "key": "life:berths:any:8",
+  "text": "Cass is taping a list of things to do at the next port inside the locker door."
+ },
+ {
+  "key": "life:berths:any:9",
+  "text": "Cass is sorting a kit bag on the bunk: socks, a razor, a folded photograph, a tin of tea."
+ },
+ {
+  "key": "life:berths:any:10",
+  "text": "Cass is lying on top of the blanket with boots on the rail, watching the ceiling plate."
+ },
+ {
+  "key": "life:berths:any:11",
+  "text": "Cass is passing a shift swap to a neighbor through the gap in the curtains, in whispers."
+ },
+ {
+  "key": "life:berths:any:12",
+  "text": "Cass is folding a shirt to fit the locker, and then folding it smaller."
+ },
+ {
+  "key": "life:berths:any:13",
+  "text": "Cass is asleep with a mug wedged between the mattress and the wall."
+ },
+ {
+  "key": "life:berths:any:14",
+  "text": "Cass is listening to the pumps through the pillow."
+ },
+ {
+  "key": "life:berths:any:15",
+  "text": "Cass is passing a shift swap to a neighbor through the gap in the curtains, in whispers."
+ },
+ {
+  "key": "life:berths:any:16",
+  "text": "Cass is reading the safety card on the berth door for the second time this burn."
+ },
+ {
+  "key": "life:berths:any:17",
+  "text": "Cass is holding a water cup a quarter full and taking small mouthfuls."
  },
  {
   "key": "life:galley:cat:0",
@@ -3141,7 +3277,7 @@
  },
  {
   "key": "life:galley:any:2",
-  "text": "Cass and Ana are washing up at the galley tap, drawing the water ration cup by cup, and not talking."
+  "text": "Cass is trying to teach Ana a card trick, and the deck is on the floor."
  },
  {
   "key": "life:galley:any:3",
@@ -3149,15 +3285,59 @@
  },
  {
   "key": "life:galley:any:4",
-  "text": "Cass is trying to teach Ben a card trick, and the deck is on the floor."
+  "text": "Cass is leaning on the counter with a mug, watching Ana argue with the recycler."
  },
  {
   "key": "life:galley:any:5",
-  "text": "Cass is leaning on the counter with a mug, watching Ben argue with the recycler."
+  "text": "Cass is wiping the hot plate down before the change, and Ana is waiting to use it."
  },
  {
   "key": "life:galley:any:6",
-  "text": "Cass and Ben are washing up at the galley tap, drawing the water ration cup by cup, and not talking."
+  "text": "Cass is reading the water ration off the sheet on the cabinet door, aloud."
+ },
+ {
+  "key": "life:galley:any:7",
+  "text": "Cass is eating at the table with the watch bill propped against the salt."
+ },
+ {
+  "key": "life:galley:any:8",
+  "text": "Cass and Ana are sharing the one hot plate, taking turns with the pan."
+ },
+ {
+  "key": "life:galley:any:9",
+  "text": "Cass is wiping the hot plate down before the change, and Ben is waiting to use it."
+ },
+ {
+  "key": "life:galley:any:10",
+  "text": "Cass is warming a ration pack in the steam, turning it by the corner."
+ },
+ {
+  "key": "life:galley:any:11",
+  "text": "Cass is drawing the day's water ration into a flask, one mark at a time."
+ },
+ {
+  "key": "life:galley:any:12",
+  "text": "Cass is stirring a pot that smells of onions while Ben holds the lid."
+ },
+ {
+  "key": "life:galley:any:13",
+  "text": "Cass is counting mugs on the shelf and finding one too many."
+ },
+ {
+  "key": "life:galley:any:14",
+  "text": "Cass is eating standing at the counter, boots braced against the thrust."
+ },
+ {
+  "key": "life:galley:any:15",
+  "text": "Cass is drawing the day's water ration into a flask, one mark at a time."
+ },
+ {
+  "key": "life:galley:any:16",
+  "text": "Cass is rinsing a mug under the tap and watching the gauge on the recycler."
+ },
+ {
+  "key": "life:galley:any:17",
+  "text": "Cass and Ben are splitting a dried fruit bar into two unequal halves."
  },
  {
   "key": "life:gunnery:cat:0",
@@ -3253,7 +3433,27 @@
  },
  {
   "key": "life:medbay:medic:3",
-  "text": "Cass is labeling vials in small, even handwriting."
+  "text": "Cass is rolling a bandage and setting it in the tray with the others."
+ },
+ {
+  "key": "life:medbay:medic:4",
+  "text": "Cass is reading the dosage chart taped inside the cabinet door."
+ },
+ {
+  "key": "life:medbay:medic:5",
+  "text": "Cass is checking the date on a bottle of antiseptic and putting it back on the shelf."
+ },
+ {
+  "key": "life:medbay:medic:6",
+  "text": "Cass is counting the sealed field dressings against the list on the wall."
+ },
+ {
+  "key": "life:medbay:medic:7",
+  "text": "Cass is strapping the kit bag shut and clipping it to the rail for the flip."
+ },
+ {
+  "key": "life:medbay:medic:8",
+  "text": "Cass is reading the dosage chart taped inside the cabinet door."
  },
  {
   "key": "life:medbay:any:0",
@@ -3313,19 +3513,35 @@
  },
  {
   "key": "life:bridge:pilot:2",
-  "text": "Cass is flying with one hand and eating with the other."
- },
- {
-  "key": "life:bridge:pilot:3",
   "text": "Cass is checking the burn clock against the nav chart, and again against the wall."
  },
  {
-  "key": "life:bridge:pilot:4",
+  "key": "life:bridge:pilot:3",
   "text": "Cass has the flip solution up on the display and is working it by hand to see if it agrees."
  },
  {
+  "key": "life:bridge:pilot:4",
+  "text": "Cass is reading the fuel margin aloud and writing it on the board."
+ },
+ {
   "key": "life:bridge:pilot:5",
-  "text": "Cass is flying with their hands off the controls and their eyes on every readout."
+  "text": "Cass is flying with one hand and eating with the other."
+ },
+ {
+  "key": "life:bridge:pilot:6",
+  "text": "Cass is holding the burn on the attitude readout with a finger above the trim switch."
+ },
+ {
+  "key": "life:bridge:pilot:7",
+  "text": "Cass is checking the transponder code against the traffic list."
+ },
+ {
+  "key": "life:bridge:pilot:8",
+  "text": "Cass is reading the fuel margin aloud and writing it on the board."
+ },
+ {
+  "key": "life:bridge:pilot:9",
+  "text": "Cass is logging the watch: the hour, the heading, the fuel."
  },
  {
   "key": "life:bridge:slicer:0",
@@ -3361,19 +3577,35 @@
  },
  {
   "key": "life:bridge:any:2",
-  "text": "Cass is reading the burn clock and working out the sum for arrival."
- },
- {
-  "key": "life:bridge:any:3",
   "text": "Cass is in the jump seat with their feet up on a locker."
  },
  {
-  "key": "life:bridge:any:4",
+  "key": "life:bridge:any:3",
   "text": "Cass is watching the pilot's hands and not saying anything."
  },
  {
+  "key": "life:bridge:any:4",
+  "text": "Cass is copying the burn clock figure onto a slip of paper."
+ },
+ {
   "key": "life:bridge:any:5",
-  "text": "Cass is leaning on the nav console, chin on their hands, watching the little green line crawl."
+  "text": "Cass is reading the burn clock and working out the sum for arrival."
+ },
+ {
+  "key": "life:bridge:any:6",
+  "text": "Cass is reading the nav chart upside down from the jump seat."
+ },
+ {
+  "key": "life:bridge:any:7",
+  "text": "Cass is checking the date on the watch bill against the board."
+ },
+ {
+  "key": "life:bridge:any:8",
+  "text": "Cass is copying the burn clock figure onto a slip of paper."
+ },
+ {
+  "key": "life:bridge:any:9",
+  "text": "Cass is holding a mug against the console rail with a hand over the top."
  },
  {
   "key": "lights:dusk",
