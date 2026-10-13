@@ -12,7 +12,7 @@ The rules for narration in `docs/prose-style.md` do not protect speech. A narrat
    See passage 3.
 4. **Tags are plain:** "says", in the present tense, placed before, inside or after a line, or left out where the speaker is clear. No adverbs on a tag and no "growls", "murmurs" or "snaps".
    See passages 1 and 5.
-5. **One beat per exchange, and it is an object or an act** (a spoon put down, a log handed over), never a reaction that names a feeling.
+5. **One beat per exchange, and it is an object or an act** (a spoon put down, a log handed over). A feeling is named only where the scene is about it, once, and not as the reaction that closes each exchange.
    See passage 3.
 6. **Length follows the person.** A line can run long when the speaker would; the card gives a usual range. No speech that explains the scene, states its theme or tells another character what they already know.
    See passages 1 and 2.
