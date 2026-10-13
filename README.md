@@ -183,10 +183,11 @@ Hosted on its own web address (GitHub Pages, itch.io, or any static host), the g
 
 ## Releasing
 
-Before the game goes public, two steps, and `tests/sw.test.js` fails until both agree:
+Before the game goes public, three steps, and `tests/sw.test.js` fails until the first two agree:
 
 1. In `js/build.js`, set `dev: false` and drop the `-dev` from `version` (`0.9.0-dev` becomes `0.9.0`). The tester tools (`js/uat.js`: credits, time, scene jumping, opened with Shift+U or `#uat`) then stay hidden whatever the address or keys, and the version is stored with each save.
 2. In `sw.js`, name `CACHE` for the version (`max-gravity-0.9.0`), so installed copies drop their old files. Do the same whenever the version changes.
+3. Run `node tools/bundle.js` and host `dist/` (git-ignored) instead of the repo root. It writes the page rewritten to load one script, `js/__bundle.js`, with copies of `style.css`, `sw.js`, `manifest.webmanifest`, `icons/` and `mods/`: a cold load fetches one script and not about 100 (#402, #577). There is no minifier and nothing to install, and development still loads the scripts one by one.
 
 ## Automated tests
 
