@@ -341,7 +341,7 @@
  },
  {
   "key": "idle:nervous",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam keeps glancing at the corridor, and relaxes a little when you stay. The drive hums. A pipe ticks.\"]"
+  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam listens for the pump to change its note, and relaxes a little when you stay. The drive hums. A pipe ticks.\"]"
  },
  {
   "key": "idle:generous",

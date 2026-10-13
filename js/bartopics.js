@@ -10,18 +10,18 @@ const BAR_MENU = 3, BAR_REPEAT = 45;  // topics offered at a table; days before 
 
 // What they feel about it: a line for each trait that loves it, or hates it.
 const BAR_REACT = {
-  talkative: ['{n} is off again, and tells it to the next table too, and you are in it.', '{n} talks over the answer and goes back to the story about the tug.'],
-  nervous: ['{n} lets out a breath, and for the first time sits back.', '{n} flinches, and checks the seal on the nearest hatch.'],
-  generous: ['{n} says to have the rest, and means a bottle at the next port.', '{n} waves it away, and asks whether you have eaten.'],
-  greedy: ['{n} counts it, tells you the total, and decides you are worth knowing.', '{n} asks what it would fetch, and does not like the figure.'],
-  pious: ['{n} says a short word over you, and means it.', '{n} turns the cord at their wrist and says nothing.'],
-  rude: ['{n} says the coffee here is almost drinkable.', '{n} says what they think of that, in order, from the list, and does not raise their voice.'],
-  curious: ['{n} asks the next question, and then the one after it.', '{n} says "Ah," and turns to see how the till opens.'],
-  drunk: ['{n} hugs you. It is a long hug, and not entirely stable.', '{n} agrees at once, and orders another.'],
-  secretive: ['{n} asks how long you have had the ship, and this time wants the answer.', '{n} asks how long you have had the ship, and the rest of the glass is polite.'],
-  kind: ['{n} takes your hand for a moment and does not say anything.', '{n} says it is all right, and finds something to fix.'],
-  brave: ['{n} claps you on the shoulder, hard. You will have a bruise.', '{n} looks at you, and then at the door, and finishes the drink.'],
-  homesick: ['{n} goes quiet, and then smiles, the first of the night.', '{n} looks at the photograph, not at you.'],
+  talkative: ['{n} is off again, and tells it to the next table too, tug pilots and all, and you are in it.', '{n} talks over the answer and goes back to the story about the tug.'],
+  nervous: ['{n} lets out a breath, and for the first time since the lock sits back.', '{n} flinches, and checks the seal on the nearest hatch.'],
+  generous: ['{n} says to have the rest, and means a ration case and a bottle at the next port.', '{n} waves it away, and asks whether you ate at the watch change.'],
+  greedy: ['{n} counts it against the next run\'s margin, tells you the total, and decides you are worth a cut of the manifest.', '{n} asks what it would fetch at the next port, per ton, less the pilotage, and does not like the figure.'],
+  pious: ['{n} says a short word over you, as at the turn of the watch, and means it.', '{n} touches the cord at their wrist, once for each leg of the trip, and says nothing.'],
+  rude: ['{n} says the coffee here is almost as bad as the recycler\'s.', '{n} says what they think of that, in order, the way they read out a fuel invoice, and does not raise their voice.'],
+  curious: ['{n} asks the next question, and then the one after it, about the burn profile.', '{n} says "Ah," and turns to see how the pressure door seals.'],
+  drunk: ['{n} hugs you, a long hug, and holds the grab rail with the other hand, as if under thrust.', '{n} agrees at once, and orders another round for the whole watch.'],
+  secretive: ['{n} asks which port you cleared last, and this time wants the answer.', '{n} asks which port you cleared last, and the rest of the glass is polite.'],
+  kind: ['{n} takes your hand for a moment, the way you would steady a line, and does not say anything.', '{n} says it is all right, and finds something on the booth to fix.'],
+  brave: ['{n} claps you on the shoulder, hard, like a hand after a docking. You will have a bruise.', '{n} looks at you, and then at the pressure door, and finishes the drink.'],
+  homesick: ['{n} goes quiet, and then smiles, the first since the last burn.', '{n} looks at the photograph taped inside their locker door, not at you.'],
 };
 const barHas = (p, ...ts) => ts.some(t => p.traits.includes(t));
 function barReact(p, loves = [], hates = []) {
@@ -48,7 +48,7 @@ const GOAL_HELP = {
       'watching to see how you take it.'), gift: 'Put something toward the first month (60 cr)', advice: 'Tell them what to do first in a new port', listen: 'Say it is all right not to say' },
   research: { ask: 'Ask about the posting', text: ('{n} has a research posting, and the instruments for it in a case under the table that they have ' +
       'not let go of since you sat down.'), gift: 'Pay the case\'s berth fee (60 cr)', advice: 'Tell them what to watch for on the lane', listen: 'Ask what they are going to measure' },
-  pilgrim: { ask: 'Ask about the pilgrimage', text: '{n} is bound for somewhere holy, a long way off, and says it more quietly than anything else tonight.', gift: 'Pay a leg of the trip (60 cr)', advice: 'Tell them how to find a berth on the long haul', listen: 'Ask what the place means to them' },
+  pilgrim: { ask: 'Ask about the pilgrimage', text: '{n} is bound for somewhere holy, a long way off, and has booked the cheapest berth on every leg to get there.', gift: 'Pay a leg of the trip (60 cr)', advice: 'Tell them how to find a berth on the long haul', listen: 'Ask what the place means to them' },
   medical: { ask: 'Ask what is wrong', text: '{n} presses a hand to their side, and says it is the reason for the trip: a specialist, a long way out.', gift: 'Pay toward the specialist (60 cr)', advice: 'Tell them where the medics are on the way', listen: 'Ask them to tell you about it' },
 };
 function helpScene(p, pat, ctx) {

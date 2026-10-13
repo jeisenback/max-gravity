@@ -72,12 +72,12 @@ const LIFE_LINES = {
     medic: ['{n} is checking the sleeping faces in the berths.', '{n} stops at each bunk and listens for breathing.', '{n} is writing up the day\'s notes in their bunk, the pad on their knees.', '{n} is asleep in their boots with the kit bag under their head.', '{n} sets a cup of water on the shelf by a sleeper, and goes out.'],
     passenger: ['{n} is writing letters in their bunk.', '{n} is asleep, or pretending to be.', '{n} is looking through a pile of photographs, and putting them back, one at a time.', '{n} is sitting on the edge of their bunk, looking at the wall.'],
     any: ['{n} is catching a few hours in their bunk.', '{n} is asleep with an arm thrown over their eyes and a book open on their chest.', '{n} is reading, by the light of a small lamp, with their lips moving.', '{n} is lying awake, counting the rivets in the ceiling plate.', '{n} is mending a sock by the light of a handlamp.', '{n} is asleep with their boots still on.'] },
-  galley: { cat: ['{n} is sitting by the food locker, staring at it.', '{n} is licking a drop of milk from the galley floor.', '{n} has taken a seat at the table. Nobody moves it.', '{n} is sitting under the table, watching feet.', '{n} is following whoever carries the tray.', '{n} has found the one warm patch on the galley deck, next to the oven vent.'],
+  galley: { cat: ['{n} is sitting by the food locker, staring at it.', '{n} is licking a drop of milk from the galley floor.', '{n} has taken a seat at the table. Nobody moves it.', '{n} is sitting under the table, watching feet.', '{n} walks at the heel of whoever carries the tray, hot plate to table, and sits under it.', '{n} has found the one warm patch on the galley deck, next to the oven vent.'],
     any: [
       '{n} is making coffee that could strip paint.',
       '{n} and {m} are playing cards in the galley, badly.',
       '{n} is telling {m} a story that is only partly true.',
-      '{n} and {m} are washing up together without talking, passing each other cups.',
+      '{n} and {m} are washing up at the galley tap, drawing the water ration cup by cup, and not talking.',
       '{n} is trying to teach {m} a card trick, and the deck is on the floor.',
       '{n} is cooking something unlabeled in a pan.',
       '{n} is leaning on the counter with a mug, watching {m} argue with the recycler.'

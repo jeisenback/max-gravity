@@ -27,7 +27,7 @@ const HOPES = [
 // are of a side in it, how they get on with the others, what you did last time. Each is its own short scene, with its own choices.
 const TALK_IDLE = {
   talkative: 'is already telling you about something that happened at the last port, and by the second mug has told you about two more',
-  nervous: 'keeps glancing at the corridor, and relaxes a little when you stay',
+  nervous: 'listens for the pump to change its note, and relaxes a little when you stay',
   generous: 'has saved you the good end of the loaf, and does not mention it',
   greedy: 'is working out, aloud and not quite to you, what the next run should clear',
   pious: 'sits with a hand around the cord at their wrist and says nothing for a long time, comfortably',
