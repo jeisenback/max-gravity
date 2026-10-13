@@ -25,11 +25,11 @@
  },
  {
   "key": "cards:talkative:3",
-  "text": "Sam talks about the pilotage fee on Mars, you talk back, and somewhere in it 200 cr leaves your pocket. You could not say which hand it was. By the end of the glass you are laughing.|"
+  "text": "Sam talks about the pilotage fee on Mars, you talk back, and somewhere in it 200 cr leaves your pocket. You could not say which hand it was. You finish the glass.|"
  },
  {
   "key": "cards:talkative:4",
-  "text": "Sam talks about the pilotage fee on Mars, you talk back, and somewhere in it 200 cr leaves your pocket. You could not say which hand it was. By the end of the glass you are laughing.|"
+  "text": "Sam talks about the pilotage fee on Mars, you talk back, and somewhere in it 200 cr leaves your pocket. You could not say which hand it was. You finish the glass.|"
  },
  {
   "key": "quiet:talkative:1",
@@ -145,7 +145,7 @@
  },
  {
   "key": "cards:generous:1",
-  "text": "Sam wins 200 cr and tries to press half of it back into your hand. You refuse. They put it on your berth fee at the dock office, in your name, before you can stop them. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr and tries to press half of it back into your hand. You refuse. They put it on your berth fee at the dock office, in your name, before you can stop them. You finish the glass.|"
  },
  {
   "key": "cards:generous:2",
@@ -153,7 +153,7 @@
  },
  {
   "key": "cards:generous:3",
-  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. Fair is fair. By the end of the glass you are laughing.|"
+  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
  },
  {
   "key": "cards:generous:4",
@@ -201,7 +201,7 @@
  },
  {
   "key": "drink:greedy:3",
-  "text": "Sam spends the whole drink on a long story about a boss they hated and a ship they loved, and how the two are the same person. It is very funny. It teaches you nothing. Sam counts it against the next run's margin, tells you the total, and decides you are worth a cut of the manifest.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam spends the whole drink on a long story about a boss they hated and a ship they loved, and how the two are the same person. The bar laughs at the end of it, twice. Nothing in it is a job, a price or a name. Sam counts it against the next run's margin, tells you the total, and decides you are worth a cut of the manifest.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:greedy:4",
@@ -213,11 +213,11 @@
  },
  {
   "key": "cards:greedy:2",
-  "text": "Sam takes the 200 cr, checks it against a coin they keep for the purpose. \"A pleasure,\" Sam says, and writes the figure on the back of a freight slip. By the end of the glass you are laughing.|"
+  "text": "Sam takes the 200 cr, checks it against a coin they keep for the purpose. \"A pleasure,\" Sam says, and writes the figure on the back of a freight slip. You finish the glass.|"
  },
  {
   "key": "cards:greedy:3",
-  "text": "Sam plays like someone who learned on a long watch: patient, quiet, unrattled. 200 cr, and you cannot find the mistake you made. By the end of the glass you are laughing.|"
+  "text": "Sam plays like someone who learned on a long watch: patient, quiet, unrattled. 200 cr, and you cannot find the mistake you made. You finish the glass.|"
  },
  {
   "key": "cards:greedy:4",
@@ -229,7 +229,7 @@
  },
  {
   "key": "quiet:greedy:2",
-  "text": "You share the table. Sam reads something on a terminal, you watch the room, and it is the quietest twenty minutes you have had in a week.|9 Jul 2214: The captain sat with me and did not make me talk."
+  "text": "You share the table. Sam reads something on a terminal and you watch the room. Twenty minutes go by without a word.|9 Jul 2214: The captain sat with me and did not make me talk."
  },
  {
   "key": "quiet:greedy:3",
@@ -257,7 +257,7 @@
  },
  {
   "key": "drink:pious:1",
-  "text": "Sam complains for an hour about the price of everything, with such precision and love that you leave feeling you have been to a very good concert. Sam touches the cord at their wrist, once for each leg of the trip, and says nothing.|"
+  "text": "Sam complains for an hour about the price of everything: water by the liter, a berth by the night, the pilotage fee by the kilometer. Every figure is exact. Sam touches the cord at their wrist, once for each leg of the trip, and says nothing.|"
  },
  {
   "key": "drink:pious:2",
@@ -273,11 +273,11 @@
  },
  {
   "key": "cards:pious:1",
-  "text": "You have the better hand for most of the evening and none of it at the end. Sam says sorry and means about half of it. 200 cr. By the end of the glass you are laughing.|"
+  "text": "You have the better hand for most of the evening and none of it at the end. Sam says sorry. 200 cr. You finish the glass.|"
  },
  {
   "key": "cards:pious:2",
-  "text": "Sam says a word over each card. You lose 200 cr, and Sam touches the cord at their wrist and says it was not their doing. By the end of the glass you are laughing.|"
+  "text": "Sam says a word over each card. You lose 200 cr, and Sam touches the cord at their wrist and says it was not their doing. You finish the glass.|"
  },
  {
   "key": "cards:pious:3",
@@ -345,11 +345,11 @@
  },
  {
   "key": "cards:rude:3",
-  "text": "Sam wins 200 cr, and says it was not even close, and that the tug pilots at this dock play better. You do not argue. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr, and says it was not even close, and that the tug pilots at this dock play better. You do not argue. You finish the glass.|"
  },
  {
   "key": "cards:rude:4",
-  "text": "Sam wins 200 cr, and says it was not even close, and that the tug pilots at this dock play better. You do not argue. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr, and says it was not even close, and that the tug pilots at this dock play better. You do not argue. You finish the glass.|"
  },
  {
   "key": "quiet:rude:1",
@@ -389,7 +389,7 @@
  },
  {
   "key": "drink:curious:2",
-  "text": "Sam talks about the one trip that went right: the cargo that sold, the weather that held, the pilot who sang. It is a nice story. It has no use at all.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam talks about the one trip that went right: the cargo that sold, the weather that held, the pilot who sang. They tell it from start to end, and there is no tip in it.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:curious:3",
@@ -405,11 +405,11 @@
  },
  {
   "key": "cards:curious:2",
-  "text": "Sam fans the last cards with a flourish you have seen before, in a port you do not name. 200 cr, and a lesson. By the end of the glass you are laughing.|"
+  "text": "Sam fans the last cards with a flourish you have seen before, in another port. 200 cr. You finish the glass.|"
  },
  {
   "key": "cards:curious:3",
-  "text": "Sam plays a hand and then spends ten minutes asking how you lost it, and whether you would have flown it the same way on a flip burn, and you are never sure whether it is a joke. 200 cr. By the end of the glass you are laughing.|"
+  "text": "Sam plays a hand and then spends ten minutes asking how you lost it, and whether you would have flown it the same way on a flip burn, and you are never sure whether it is a joke. 200 cr. You finish the glass.|"
  },
  {
   "key": "cards:curious:4",
@@ -465,7 +465,7 @@
  },
  {
   "key": "cards:drunk:1",
-  "text": "Sam wins 200 cr and looks astonished, and wants it understood that it was skill, the same skill that once brought a tug in blind, and then asks what game it was. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr and looks astonished, and wants it understood that it was skill, the same skill that once brought a tug in blind, and then asks what game it was. You finish the glass.|"
  },
  {
   "key": "cards:drunk:2",
@@ -477,11 +477,11 @@
  },
  {
   "key": "cards:drunk:4",
-  "text": "Sam wins 200 cr and looks astonished, and wants it understood that it was skill, the same skill that once brought a tug in blind, and then asks what game it was. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr and looks astonished, and wants it understood that it was skill, the same skill that once brought a tug in blind, and then asks what game it was. You finish the glass.|"
  },
  {
   "key": "quiet:drunk:1",
-  "text": "You share the table. Sam reads something on a terminal, you watch the room, and it is the quietest twenty minutes you have had in a week. Sam agrees at once, and orders another round for the whole watch.|"
+  "text": "You share the table. Sam reads something on a terminal and you watch the room. Twenty minutes go by without a word. Sam agrees at once, and orders another round for the whole watch.|"
  },
  {
   "key": "quiet:drunk:2",
@@ -493,7 +493,7 @@
  },
  {
   "key": "quiet:drunk:4",
-  "text": "You share the table. Sam reads something on a terminal, you watch the room, and it is the quietest twenty minutes you have had in a week. Sam agrees at once, and orders another round for the whole watch.|"
+  "text": "You share the table. Sam reads something on a terminal and you watch the room. Twenty minutes go by without a word. Sam agrees at once, and orders another round for the whole watch.|"
  },
  {
   "key": "place:drunk:1",
@@ -537,11 +537,11 @@
  },
  {
   "key": "cards:secretive:3",
-  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. Fair is fair. By the end of the glass you are laughing.|"
+  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
  },
  {
   "key": "cards:secretive:4",
-  "text": "Sam wins 200 cr without a word, counts it without looking, and asks what your ship carries, and for whom. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr without a word, counts it without looking, and asks what your ship carries, and for whom. You finish the glass.|"
  },
  {
   "key": "quiet:secretive:1",
@@ -577,7 +577,7 @@
  },
  {
   "key": "drink:kind:1",
-  "text": "Sam complains for an hour about the price of everything, with such precision and love that you leave feeling you have been to a very good concert. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam complains for an hour about the price of everything: water by the liter, a berth by the night, the pilotage fee by the kilometer. Every figure is exact. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "drink:kind:2",
@@ -593,7 +593,7 @@
  },
  {
   "key": "cards:kind:1",
-  "text": "You have the better hand for most of the evening and none of it at the end. Sam says sorry and means about half of it. 200 cr. By the end of the glass you are laughing.|"
+  "text": "You have the better hand for most of the evening and none of it at the end. Sam says sorry. 200 cr. You finish the glass.|"
  },
  {
   "key": "cards:kind:2",
@@ -605,7 +605,7 @@
  },
  {
   "key": "cards:kind:4",
-  "text": "Sam wins 200 cr, looks at how thin your coat is, and spends some of it on your soup, and says it is nothing. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr, looks at how thin your coat is, and spends some of it on your soup, and says it is nothing. You finish the glass.|"
  },
  {
   "key": "quiet:kind:1",
@@ -661,15 +661,15 @@
  },
  {
   "key": "cards:brave:2",
-  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish, like a pilot showing a close pass. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish, like a pilot showing a close pass. You finish the glass.|"
  },
  {
   "key": "cards:brave:3",
-  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish, like a pilot showing a close pass. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish, like a pilot showing a close pass. You finish the glass.|"
  },
  {
   "key": "cards:brave:4",
-  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish, like a pilot showing a close pass. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish, like a pilot showing a close pass. You finish the glass.|"
  },
  {
   "key": "quiet:brave:1",
@@ -721,7 +721,7 @@
  },
  {
   "key": "cards:homesick:1",
-  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. Fair is fair. By the end of the glass you are laughing.|"
+  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
  },
  {
   "key": "cards:homesick:2",
@@ -729,11 +729,11 @@
  },
  {
   "key": "cards:homesick:3",
-  "text": "Sam plays well, for someone whose mind is on Mars. 200 cr, and a smile that is not about the game. By the end of the glass you are laughing.|"
+  "text": "Sam plays well, for someone whose mind is on Mars. 200 cr, and a smile that is not about the game. You finish the glass.|"
  },
  {
   "key": "cards:homesick:4",
-  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. Fair is fair. By the end of the glass you are laughing.|"
+  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
  },
  {
   "key": "quiet:homesick:1",
@@ -1041,11 +1041,11 @@
  },
  {
   "key": "work:welder:2",
-  "text": "Sam has opinions on three kinds of failure and a favorite, and tells you which. It is a boring one.|9 Jul 2214: The captain asked about my work and listened."
+  "text": "Sam has opinions on three kinds of failure and a favorite, and tells you which. The favorite is the slow leak.|9 Jul 2214: The captain asked about my work and listened."
  },
  {
   "key": "work:welder:3",
-  "text": "Sam has opinions on three kinds of failure and a favorite, and tells you which. It is a boring one.|9 Jul 2214: The captain asked about my work and listened."
+  "text": "Sam has opinions on three kinds of failure and a favorite, and tells you which. The favorite is the slow leak.|9 Jul 2214: The captain asked about my work and listened."
  },
  {
   "key": "work:navy pilot:1",
@@ -2493,11 +2493,11 @@
  },
  {
   "key": "cards2:rude:3",
-  "text": "Sam wins 200 cr, and says it was not even close, and that the tug pilots at this dock play better. You do not argue. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr, and says it was not even close, and that the tug pilots at this dock play better. You do not argue. You finish the glass.|"
  },
  {
   "key": "cards2:kind:3",
-  "text": "Sam wins 200 cr, looks at how thin your coat is, and spends some of it on your soup, and says it is nothing. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr, looks at how thin your coat is, and spends some of it on your soup, and says it is nothing. You finish the glass.|"
  },
  {
   "key": "drink2:4",
@@ -2549,15 +2549,15 @@
  },
  {
   "key": "drink2:8",
-  "text": "Sam asks about you, and listens, and says nothing useful, and the drink is gone before you notice. It is the most relaxing hour of the week. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
+  "text": "Sam asks about you, and listens. They offer no tip and no advice, and the drink is gone before the hour is. Sam takes your hand for a moment, the way you would steady a line, and does not say anything.|9 Jul 2214: The captain bought me a drink at The Anchor."
  },
  {
   "key": "cards2:rude:8",
-  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish, like a pilot showing a close pass. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish, like a pilot showing a close pass. You finish the glass.|"
  },
  {
   "key": "cards2:kind:8",
-  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish, like a pilot showing a close pass. By the end of the glass you are laughing.|"
+  "text": "Sam wins 200 cr on a bluff that should not have worked, and shows you the hand afterwards, with relish, like a pilot showing a close pass. You finish the glass.|"
  },
  {
   "key": "drink2:9",
@@ -2577,11 +2577,11 @@
  },
  {
   "key": "cards2:rude:10",
-  "text": "Sam plays like someone who learned on a long watch: patient, quiet, unrattled. 200 cr, and you cannot find the mistake you made. By the end of the glass you are laughing.|"
+  "text": "Sam plays like someone who learned on a long watch: patient, quiet, unrattled. 200 cr, and you cannot find the mistake you made. You finish the glass.|"
  },
  {
   "key": "cards2:kind:10",
-  "text": "Sam plays like someone who learned on a long watch: patient, quiet, unrattled. 200 cr, and you cannot find the mistake you made. By the end of the glass you are laughing.|"
+  "text": "Sam plays like someone who learned on a long watch: patient, quiet, unrattled. 200 cr, and you cannot find the mistake you made. You finish the glass.|"
  },
  {
   "key": "drink2:11",
@@ -2589,11 +2589,11 @@
  },
  {
   "key": "cards2:rude:11",
-  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. Fair is fair. By the end of the glass you are laughing.|"
+  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
  },
  {
   "key": "cards2:kind:11",
-  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. Fair is fair. By the end of the glass you are laughing.|"
+  "text": "It goes the other way. Sam takes 200 cr off you, and buys you a drink with it, and sets it in front of you. You finish the glass.|"
  },
  {
   "key": "drink2:12",

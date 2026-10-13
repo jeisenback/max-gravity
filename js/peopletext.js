@@ -671,7 +671,7 @@ const PEOPLE_LINES = {
     'win.end.0': '{first} buys you a drink with your own money.',
     'win.end.1': '{first} shakes your hand and means it.',
     'win.end.2': '{first} tells the story of it to the next table, with you as the villain.',
-    'lose.end': 'By the end of the glass you are laughing.',
+    'lose.end': 'You finish the glass.',
     'memory': 'The captain took my money at cards.',
   },
   'bar:work': {

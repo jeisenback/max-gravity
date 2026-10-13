@@ -153,7 +153,7 @@ const BAR_WORK = {
       '{n} shows you a hand with two fingers that do not close. It was a clamp, and a shift supervisor who did not check it. They do not give ' +
       'the supervisor\'s name.')],
   tech: [('{n} explains, with a coaster and a fork, why a thing you have always assumed works a certain way does not.'), ('"Nobody thanks you when it works," {n} says. "They thank you when it breaks and then you ' +
-          'fix it." They drink to that.'), '{n} has opinions on three kinds of failure and a favorite, and tells you which. It is a boring one.'],
+          'fix it." They drink to that.'), '{n} has opinions on three kinds of failure and a favorite, and tells you which. The favorite is the slow leak.'],
   service: [('{n} sits very straight for a person with a drink in their hand. They talk about the service the way people talk about a family they ' +
       'have left.'), ('"They taught me to count exits," {n} says. "I still do it. There ' +
           'are three." They glance at each one, in order, without moving their head.'), '{n} will not tell you where they served. They will tell you what the food was like, and that is a long story.'],
@@ -163,8 +163,8 @@ const BAR_WORK = {
       'everyone\'s surprise, accepting.')],
 };
 const BAR_SILENCE = [('You sit with {n} and neither of you says anything. The room talks around you. After a while {n} pushes the bowl of beans an ' +
-    'inch toward you, and that is all.'), ('You share the table. {n} reads something on a terminal, you watch the room, and it is the quietest twenty ' +
-        'minutes you have had in a week.'), ('{n} turns the glass a quarter turn on the bar, and again, and you do not ask. The drink ' +
+    'inch toward you, and that is all.'), ('You share the table. {n} reads something on a terminal and you watch the room. Twenty ' +
+        'minutes go by without a word.'), ('{n} turns the glass a quarter turn on the bar, and again, and you do not ask. The drink ' +
             'goes down slowly.'), (
             'Neither of you has anywhere to be. The light over the bar changes with the hour. When you stand to go, {n} lifts a hand without looking ' +
             'up.')];
@@ -181,10 +181,10 @@ const BAR_CARD_WIN = [
   'The cards run for you all night. {n} tries a different seat, a different deck, a different luck charm. {cr} cr to you in the end.'
 ];
 const BAR_CARD_LOSE = [
-  'It goes the other way. {n} takes {cr} cr off you, and buys you a drink with it, and sets it in front of you. Fair is fair.',
+  'It goes the other way. {n} takes {cr} cr off you, and buys you a drink with it, and sets it in front of you.',
   '{n} plays like someone who learned on a long watch: patient, quiet, unrattled. {cr} cr, and you cannot find the mistake you made.',
-  'You have the better hand for most of the evening and none of it at the end. {n} says sorry and means about half of it. {cr} cr.',
-  '{n} fans the last cards with a flourish you have seen before, in a port you do not name. {cr} cr, and a lesson.'
+  'You have the better hand for most of the evening and none of it at the end. {n} says sorry. {cr} cr.',
+  '{n} fans the last cards with a flourish you have seen before, in another port. {cr} cr.'
 ];
 const BAR_HOME_TALK = [('{n} talks about the view from the ring where the light comes in at dusk, the smell of the market, the man who sold fried ' +
     'dough on the corner, and a sister who writes every week. They talk until the bar is nearly empty.'), (
@@ -207,12 +207,12 @@ const BAR_LEAVE = [
 ];
 const BAR_DRINK_TALK = [('{n} tells you about {home}: the streets, the smell of the market, why they left, and why they might go back. There is no ' +
     'rumor in it, and no secret, and no angle. It takes an hour.'), (
-    '{n} spends the whole drink on a long story about a boss they hated and a ship they loved, and how the two are the same person. It is very funny. ' +
-    'It teaches you nothing.'), '{n} asks about you, and listens, and says nothing useful, and the drink is gone before you notice. It is the most relaxing hour of the week.', (
-    '{n} complains for an hour about the price of everything, with such precision and love that you leave feeling you have been to a very good ' +
-    'concert.'), (
-    '{n} talks about the one trip that went right: the cargo that sold, the weather that held, the pilot who sang. It is a nice story. It has no use ' +
-    'at all.')];
+    '{n} spends the whole drink on a long story about a boss they hated and a ship they loved, and how the two are the same person. The bar laughs at ' +
+    'the end of it, twice. Nothing in it is a job, a price or a name.'), '{n} asks about you, and listens. They offer no tip and no advice, and the drink is gone before the hour is.', (
+    '{n} complains for an hour about the price of everything: water by the liter, a berth by the night, the pilotage fee by the kilometer. Every ' +
+    'figure is exact.'), (
+    '{n} talks about the one trip that went right: the cargo that sold, the weather that held, the pilot who sang. They tell it from start to end, ' +
+    'and there is no tip in it.')];
 
 // What the person is like colors what they say: a line for each of their first two traits (70% of the time, else the shared pool),
 // for the kinds of thing that used to be the same for everyone.
