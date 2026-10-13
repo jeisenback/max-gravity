@@ -334,9 +334,9 @@ const SCENE_LINES = {
   },
   'scene:hand-death': {
     title: 'The Last Run',
-    'text.hurt': 'The first hurt was not mended when the second one came. You are on the deck, with the cold of it against your cheek, and the crew are saying your name. Captain {last} says it from the hatch, and then asks for the medic.',
-    'text.bridge': 'You are laid up in the corridor, where the first hit left you, when they come through the last hatch. You do not get up. Captain {last} gives them the code to the strongbox, and the crew carry you below before the lock cycles.',
-    log: 'Captain {last} writes it in the log: the day, the place, your name. The ship goes on without you.',
+    'text.hurt': 'The first hurt was not mended when the second one came. You die on the deck, with the cold of it against your cheek, while the crew say your name. Captain {last} says it from the hatch, and then asks for the medic, who is too late.',
+    'text.bridge': 'You are laid up in the corridor, where the first hit left you, when they come through the last hatch. You do not get up, and you are dead before the lock cycles. Captain {last} gives them the code to the strongbox, and the crew carry you below.',
+    log: 'Captain {last} writes it in the log: the day, the place, your name, and that you died on a run. The captain is sorry to write it.',
     'c0.label': 'Begin again',
   },
   'scene:captain-lost': {

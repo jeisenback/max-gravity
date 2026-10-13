@@ -3184,7 +3184,7 @@
   "id": "cast:cato:late:closed",
   "i": 0,
   "label": "Say it can wait",
-  "result": "\"It can,\" he says, and puts the pencil back behind his ear. \"Thank you for not asking what it was.\"",
+  "result": "\"It can,\" he says, and puts the pencil back behind his ear. \"Thank you. I would not have known how to start.\"",
   "changes": [],
   "next": null,
   "gate": {

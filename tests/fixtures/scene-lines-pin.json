@@ -69,7 +69,7 @@
   "id": "scene:hand-death:hurt",
   "plays": [],
   "title": "The Last Run",
-  "text": "The first hurt was not mended when the second one came. You are on the deck, with the cold of it against your cheek, and the crew are saying your name. Captain Vance says it from the hatch, and then asks for the medic.</p><p>Captain Vance writes it in the log: the day, the place, your name. The ship goes on without you.</p><p>30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet.",
+  "text": "The first hurt was not mended when the second one came. You die on the deck, with the cold of it against your cheek, while the crew say your name. Captain Vance says it from the hatch, and then asks for the medic, who is too late.</p><p>Captain Vance writes it in the log: the day, the place, your name, and that you died on a run. The captain is sorry to write it.</p><p>30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet.",
   "labels": [
    "Begin again"
   ]
@@ -78,7 +78,7 @@
   "id": "scene:hand-death:bridge",
   "plays": [],
   "title": "The Last Run",
-  "text": "You are laid up in the corridor, where the first hit left you, when they come through the last hatch. You do not get up. Captain Vance gives them the code to the strongbox, and the crew carry you below before the lock cycles.</p><p>Captain Vance writes it in the log: the day, the place, your name. The ship goes on without you.</p><p>30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet.",
+  "text": "You are laid up in the corridor, where the first hit left you, when they come through the last hatch. You do not get up, and you are dead before the lock cycles. Captain Vance gives them the code to the strongbox, and the crew carry you below.</p><p>Captain Vance writes it in the log: the day, the place, your name, and that you died on a run. The captain is sorry to write it.</p><p>30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet.",
   "labels": [
    "Begin again"
   ]
