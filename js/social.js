@@ -433,7 +433,7 @@ function coverWatchScene(p) {
   const post = postOfRole(p.role), n = p.first;
   relMark('cover');
   return {
-    title: say('title'), text: say('text', { n, post: POSTS[post].name.toLowerCase() }),
+    title: say('title'), text: say(`text.${Math.abs(hash(`${p.id}|${G.state.day}`)) % 4}`, { n, post: POSTS[post].name.toLowerCase() }),  // by who and which day, and not by a draw, so the dice of the pinned plays are the ones they were
     choices: [
       { label: say('c0.label', { n }), run() { like(p, 2, say('c0.memory')); p.owes = G.state.day; return say('c0.result', { n, post: POSTS[post].name.toLowerCase(), learn: learnAt(post, 3) }); } },
       { label: say('c1.label'), run() { return say('c1.result', { n }); } },
@@ -471,9 +471,9 @@ function galleyDuty(a, b, ta, tb) {
 }
 
 function wordScene(a, b, n) {
-  const say = socialSay('word');
+  const say = socialSay('word'), vars = { A: a.p.first, B: b.p.first, mood: say(n > 0 ? 'mood.warm' : 'mood.tight') };
   return {
-    title: say(hired() ? 'title.hired' : 'title'), text: say(hired() ? 'text.hired' : 'text', { A: a.p.first, B: b.p.first, mood: say(n > 0 ? 'mood.warm' : 'mood.tight') }),
+    title: say(hired() ? 'title.hired' : 'title'), text: hired() ? say(`text.hired.${Math.abs(hash(`${a.p.id}|${b.p.id}|${G.state.day}`)) % 4}`, vars) : say('text', vars),  // by who and which day, not by a draw (as in coverWatchScene)
     choices: [
       { label: say('c0.label', { B: b.p.first }), run() { addBond(a, b, n > 0 ? 2 : 1.5); return say(n > 0 ? 'c0.warm' : 'c0.tight', { A: a.p.first }); } },
       hired() ? { label: say('c1.hired.label'), run() { like(a.p, -1, null); return say('c1.hired.result', { A: a.p.first }); } }
