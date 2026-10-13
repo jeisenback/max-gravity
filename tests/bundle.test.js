@@ -8,7 +8,8 @@ const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const { open, closeBrowser, bundleOf } = require('./helpers');
+const { open, closeBrowser } = require('./helpers');
+const { bundleOf, writeDist } = require('../tools/bundle');
 
 after(closeBrowser);
 
@@ -56,4 +57,26 @@ test('a test page is bundled unless it asks not to be, and both start the game',
   const b = await plain.ev(() => ({ scripts: document.scripts.length, started: typeof G !== 'undefined' && !!G.state }));
   assert.ok(b.scripts > 50, `not bundled: ${b.scripts} script elements`); assert.equal(b.started, true);
   await plain.done();  // and the page, loaded script by script as shipped, raised no error
+});
+
+test('tools/bundle.js writes a hosted copy that starts the game from one script (#577)', async () => {
+  const out = fs.mkdtempSync(path.join(require('node:os').tmpdir(), 'mg-dist-'));
+  try {
+    writeDist(out);
+    for (const f of ['index.html', 'js/__bundle.js', 'style.css', 'sw.js', 'manifest.webmanifest', 'icons/icon-192.png', 'mods/example-vesta.js']) assert.ok(fs.existsSync(path.join(out, f)), `${f} is written`);
+    assert.equal(scriptsOf(fs.readFileSync(path.join(out, 'index.html'), 'utf8')).length, 1, 'the page lists one script');
+    const { chromium } = require('playwright');
+    const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH || undefined });
+    try {
+      const page = await browser.newPage();
+      const errors = [], scripts = [];
+      page.on('pageerror', e => errors.push(String(e)));
+      page.on('request', r => { if (r.url().endsWith('.js')) scripts.push(r.url()); });
+      await page.route(/fonts\.(googleapis|gstatic)\.com/, route => route.fulfill({ status: 200, contentType: 'text/css', body: '' }));
+      await page.goto('file://' + path.join(out, 'index.html'));
+      await page.waitForFunction(() => typeof G !== 'undefined' && (G.state || G.mode === 'title'));
+      assert.deepEqual(errors, [], 'no page errors');
+      assert.equal(scripts.length, 1, 'one script was fetched');
+    } finally { await browser.close(); }
+  } finally { fs.rmSync(out, { recursive: true, force: true }); }
 });
