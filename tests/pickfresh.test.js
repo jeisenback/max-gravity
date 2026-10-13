@@ -64,3 +64,12 @@ test('the last lines are kept in the save, thirty at most, and a game from befor
   assert.equal(r.kept, 30);
   assert.deepEqual(r.migrated, []);
 });
+
+test('the quartermaster opens a burn with one of several lines, each naming the speaker', async () => {
+  const g = await open();
+  const r = await g.ev(() => ({ n: RUMORS.lead.length, distinct: new Set(RUMORS.lead).size, named: RUMORS.lead.every(l => l.startsWith('{first}: "') && l.endsWith('"')) }));
+  await g.done();
+  assert.ok(r.n >= 8);
+  assert.equal(r.distinct, r.n);
+  assert.ok(r.named);
+});

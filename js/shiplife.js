@@ -56,23 +56,23 @@ const isAsleep = p => isDark() && p.room === 'berths' && p.tx === null && p.dk =
 
 // What someone is seen doing, by room and (optionally) role. {n} is their name, {m} someone else here.
 const LIFE_LINES = {
-  engine: { cat: ['{n} is asleep on the reactor housing, where it is warm.', '{n} is stretched full length along a warm pipe, purring in a key that matches the drive.', '{n} is watching a dripping valve without blinking.'],
+  engine: { cat: ['{n} is asleep on the reactor housing, where it is warm.', '{n} is stretched full length along a warm pipe, purring in a key that matches the drive.', '{n} is watching a dripping valve without blinking.', '{n} is wedged behind the coolant manifold, where the pipes are warmest.', '{n} bats a loose cable tie across the deck and loses it under the housing.', '{n} is sitting in the middle of the walkway. Anyone who comes through steps over.'],
     engineer: [
       '{n} is elbow-deep in the reactor housing again.',
       '{n} is rerunning the injector timing. It was fine. It is finer now.',
       '{n} is lying on their back under the coolant manifold, telling a gasket a joke.',
       '{n} is tapping a pipe with a wrench, listening to the note it makes, and frowning.'
     ],
-    any: ['{n} is watching the reactor telltales like they owe money.', '{n} is leaning on the engine room hatch, feeling the drive hum through the deck.', '{n} is warming their hands on the coolant housing.'] },
-  hold: { cat: ['{n} is stalking something between the crates.', '{n} has found a box and is asleep in it.', '{n} sits on the highest crate in the hold, upright, watching the hatch.'],
+    any: ['{n} is watching the reactor telltales like they owe money.', '{n} is leaning on the engine room hatch, feeling the drive hum through the deck.', '{n} is warming their hands on the coolant housing.', '{n} is reading the reactor log on the wall slate, line by line.', '{n} has a hand flat on the bulkhead, counting the pulses of the drive.', '{n} is wiping coolant off a fitting with the hem of their shirt.'] },
+  hold: { cat: ['{n} is stalking something between the crates.', '{n} has found a box and is asleep in it.', '{n} sits on the highest crate in the hold, upright, watching the hatch.', '{n} is squeezed into the gap between two crates, tail out.', '{n} is pushing a loose bolt across the deck with one paw.', '{n} is asleep on a coil of mooring line.'],
     quartermaster: ['{n} re-straps the cargo and counts it twice.', '{n} is arguing with the manifest.', '{n} is walking the rows with a clipboard, tapping each crate in turn.', '{n} is sniffing a crate of food and writing something down.'],
-    gunner: ['{n} is dry-firing at shadows in the hold.', '{n} is cleaning a gun by feel in the half-dark.', '{n} has set up a target on a crate and is losing to it.'],
-    any: ['{n} is checking the cargo straps.', '{n} is standing among the crates with a hand on a lashing.', '{n} is reading the labels on the cargo, one by one.'] },
-  berths: { cat: ['{n} has claimed somebody\'s pillow. Nobody moves it.', '{n} is curled in the center of a freshly made bunk and watches whoever comes near.', '{n} is asleep on a pair of boots in a shaft of dim light, twitching.'],
-    medic: ['{n} is checking the sleeping faces in the berths.', '{n} stops at each bunk and listens for breathing.'],
+    gunner: ['{n} is dry-firing at shadows in the hold.', '{n} is cleaning a gun by feel in the half-dark.', '{n} has set up a target on a crate and is losing to it.', '{n} is oiling the bolt of a rifle laid across two crates.', '{n} is pacing the hold and counting the steps to each hatch.', '{n} is checking the lock on the small-arms locker, and then checking it again.'],
+    any: ['{n} is checking the cargo straps.', '{n} is standing among the crates with a hand on a lashing.', '{n} is reading the labels on the cargo, one by one.', '{n} is sitting on a crate with a mug, looking at the lashings.', '{n} is reading the stencil on a drum of reaction mass: tonnage, date, the yard.', '{n} is shifting a crate a hand\'s width to clear the walkway.'] },
+  berths: { cat: ['{n} has claimed somebody\'s pillow. Nobody moves it.', '{n} is curled in the center of a freshly made bunk and watches whoever comes near.', '{n} is asleep on a pair of boots in a shaft of dim light, twitching.', '{n} is asleep in the laundry bag, where the bag is still warm.', '{n} is sitting at the end of a bunk, watching the one who is awake.', '{n} is kneading a blanket with both paws.'],
+    medic: ['{n} is checking the sleeping faces in the berths.', '{n} stops at each bunk and listens for breathing.', '{n} is writing up the day\'s notes in their bunk, the pad on their knees.', '{n} is asleep in their boots with the kit bag under their head.', '{n} sets a cup of water on the shelf by a sleeper, and goes out.'],
     passenger: ['{n} is writing letters in their bunk.', '{n} is asleep, or pretending to be.', '{n} is looking through a pile of photographs, and putting them back, one at a time.', '{n} is sitting on the edge of their bunk, looking at the wall.'],
-    any: ['{n} is catching a few hours in their bunk.', '{n} is asleep with an arm thrown over their eyes and a book open on their chest.', '{n} is reading, by the light of a small lamp, with their lips moving.'] },
-  galley: { cat: ['{n} is sitting by the food locker, staring at it.', '{n} is licking a drop of milk from the galley floor.', '{n} has taken a seat at the table. Nobody moves it.'],
+    any: ['{n} is catching a few hours in their bunk.', '{n} is asleep with an arm thrown over their eyes and a book open on their chest.', '{n} is reading, by the light of a small lamp, with their lips moving.', '{n} is lying awake, counting the rivets in the ceiling plate.', '{n} is mending a sock by the light of a handlamp.', '{n} is asleep with their boots still on.'] },
+  galley: { cat: ['{n} is sitting by the food locker, staring at it.', '{n} is licking a drop of milk from the galley floor.', '{n} has taken a seat at the table. Nobody moves it.', '{n} is sitting under the table, watching feet.', '{n} is following whoever carries the tray.', '{n} has found the one warm patch on the galley deck, next to the oven vent.'],
     any: [
       '{n} is making coffee that could strip paint.',
       '{n} and {m} are playing cards in the galley, badly.',
@@ -82,21 +82,21 @@ const LIFE_LINES = {
       '{n} is cooking something unlabeled in a pan.',
       '{n} is leaning on the counter with a mug, watching {m} argue with the recycler.'
     ] },
-  gunnery: { cat: ['{n} is asleep on the warm side of the fire-control cabinet.', '{n} is sitting in the gunner\'s seat with the harness hanging off it.'],
+  gunnery: { cat: ['{n} is asleep on the warm side of the fire-control cabinet.', '{n} is sitting in the gunner\'s seat with the harness hanging off it.', '{n} is lying across the targeting console with its tail over the display.', '{n} has curled up in an empty bay of the magazine rack.', '{n} is washing a paw on the gunner\'s seat.'],
     gunner: [
       '{n} is running the fire-control checks. Each one goes in the log.',
       '{n} is wiping down the feed tray of the close-defense turret.',
       '{n} is counting rounds in the magazine rack and writing the number on the rack.',
       '{n} has a drill up on the targeting display and is tracking a dot across it.'
     ],
-    any: ['{n} is reading the range tables taped above the console.', '{n} is checking the latch on the weapons locker.', '{n} is watching the tracking screen. It shows the sun and nothing else.'] },
-  medbay: { cat: ['{n} is asleep on the exam bed, on a folded blanket.', '{n} is sitting in front of the cabinet, looking at the lock.'],
+    any: ['{n} is reading the range tables taped above the console.', '{n} is checking the latch on the weapons locker.', '{n} is watching the tracking screen. It shows the sun and nothing else.', '{n} is looking at the range tables and moving their lips.', '{n} is sitting in the gunner\'s seat with the harness off and their hands in their lap.', '{n} is wiping dust off the targeting screen with a sleeve.'] },
+  medbay: { cat: ['{n} is asleep on the exam bed, on a folded blanket.', '{n} is sitting in front of the cabinet, looking at the lock.', '{n} is sitting on the supply scale, which reads four kilos.', '{n} is asleep in the sink, which is dry.', '{n} is washing in the middle of the floor, in the light of the exam lamp.'],
     medic: ['{n} is counting the ampoules in the cabinet and writing the count on the door.', '{n} is labeling vials in small, even handwriting.', '{n} is wiping down the exam bed in long strokes.', '{n} is reading the date stamped on each sterile pack.'],
-    any: ['{n} is sitting on the edge of the exam bed with a cup of tea.', '{n} is reading the dosage chart on the wall.', '{n} is standing at the sink, running the water over their hands.'] },
-  bridge: { cat: ['{n} is sitting on the nav console again.', '{n} has settled directly on the flight controls, and looks at you.', '{n} is watching the stars through the forward window, ears up.'],
-    pilot: ['{n} is double-checking the flip solution.', '{n} is tracing a line on the nav chart with one finger, and nodding.', '{n} is flying with their hands off the controls and their eyes on every readout.'],
-    slicer: ['{n} is combing through the comms traffic.', '{n} is reading a long stream of code, and smiling.', '{n} is listening to a dozen channels at once with their eyes closed, fingers moving.'],
-    any: ['{n} is staring out the forward window.', '{n} is standing at the viewport, watching the plume.', '{n} is leaning on the nav console, chin on their hands, watching the little green line crawl.'] },
+    any: ['{n} is sitting on the edge of the exam bed with a cup of tea.', '{n} is reading the dosage chart on the wall.', '{n} is standing at the sink, running the water over their hands.', '{n} is reading the label on a bottle and putting it back.', '{n} is on the stool with a bandage rolled around one hand.', '{n} is waiting on the exam bed for someone to find the tape.'] },
+  bridge: { cat: ['{n} is sitting on the nav console again.', '{n} has settled directly on the flight controls, and looks at you.', '{n} is watching the stars through the forward window, ears up.', '{n} is asleep on the top of the comms rack, where the fans blow warm.', '{n} is watching the pilot\'s hands move on the controls.', '{n} is sitting in the copilot\'s seat with the harness slack around it.'],
+    pilot: ['{n} is double-checking the flip solution.', '{n} is tracing a line on the nav chart with one finger, and nodding.', '{n} is flying with their hands off the controls and their eyes on every readout.', '{n} is flying with one hand and eating with the other.', '{n} is checking the burn clock against the nav chart, and again against the wall.', '{n} has the flip solution up on the display and is working it by hand to see if it agrees.'],
+    slicer: ['{n} is combing through the comms traffic.', '{n} is reading a long stream of code, and smiling.', '{n} is listening to a dozen channels at once with their eyes closed, fingers moving.', '{n} has the comms log scrolling past on two screens and is reading both.', '{n} is writing a filter for the dock chatter and arguing with it aloud.', '{n} is listening to the carrier hiss between two stations.'],
+    any: ['{n} is staring out the forward window.', '{n} is standing at the viewport, watching the plume.', '{n} is leaning on the nav console, chin on their hands, watching the little green line crawl.', '{n} is reading the burn clock and working out the sum for arrival.', '{n} is in the jump seat with their feet up on a locker.', '{n} is watching the pilot\'s hands and not saying anything.'] },
 };
 
 // The lights going down and coming up, a line each, in the ship's log of the burn.
