@@ -6,6 +6,7 @@
 //   npm run prose                 the report
 //   npm run prose -- --write      write docs/prose-baseline.json
 //   npm run prose -- --compare    the difference from the baseline
+// It also lists the choices written as data that cost something (a cost tag, credits taken, a gate on credits) and whose label shows no figure (#601, aim 1).
 // The string scan is a character walk, not a parser: a regex literal that holds a quote mark would confuse it.
 // It does not read js/overrides.js: words changed in the scene editor (#336) live there and not in the narrative files below, so the report does not see
 // them until they are written back into those files. The file is empty in the shipped game, and its strings are mostly ids and keys, not prose.
@@ -94,17 +95,63 @@ function readLiteral(src, i) {
   }
 }
 
-// The strings in a script's source that have four or more words, in order. Comments and regex literals are skipped.
-function extractProse(src) {
-  const out = [], keep = text => { if (wordCount(text) >= 4) out.push(text); };
+// One pass over a script's source. `lits` are its string and template literals in order, each { start, end, text }, with literals joined by `+`
+// read as one passage; `code` is the source with every literal, comment and regex blanked to spaces (same length), so a search of it sees
+// only code. Comments and regex literals are skipped.
+function scanSource(src) {
+  const lits = [], blank = [];
   let i = 0, prev = '';
   while (i < src.length) {
     const c = src[i], end = c === '/' ? regexEnd(src, i, prev) : -1;
-    if (c === '/' && src[i + 1] === '/') { while (i < src.length && src[i] !== '\n') i++; }
-    else if (c === '/' && src[i + 1] === '*') { const close = src.indexOf('*/', i + 2); i = close < 0 ? src.length : close + 2; }
-    else if (c === "'" || c === '"' || c === '`') { const [text, next] = readLiteral(src, i); keep(text); i = next; prev = c; }
-    else if (end > 0) { i = end; prev = ')'; }
+    if (c === '/' && src[i + 1] === '/') { const from = i; while (i < src.length && src[i] !== '\n') i++; blank.push([from, i]); }
+    else if (c === '/' && src[i + 1] === '*') { const from = i, close = src.indexOf('*/', i + 2); i = close < 0 ? src.length : close + 2; blank.push([from, i]); }
+    else if (c === "'" || c === '"' || c === '`') { const [text, next] = readLiteral(src, i); lits.push({ start: i, end: next, text }); blank.push([i, next]); i = next; prev = c; }
+    else if (end > 0) { blank.push([i, end]); i = end; prev = ')'; }
     else { if (!/\s/.test(c)) prev = c; i++; }
+  }
+  const code = src.split('');
+  for (const [from, to] of blank) for (let k = from; k < Math.min(to, code.length); k++) if (code[k] !== '\n') code[k] = ' ';
+  return { lits, code: code.join('') };
+}
+
+// The strings in a script's source that have four or more words, in order.
+const extractProse = src => scanSource(src).lits.map(l => l.text).filter(text => wordCount(text) >= 4);
+
+// ---------- choices that cost something and say so ----------
+
+// What makes a choice cost: a `cost` tag (the one the captain reads, hired.js), credits taken off in its effects, a gate on credits, or code
+// that takes credits or the ship's fund. `fight` and `self` are tags too, but they stake no number the label could show, so they are not counted.
+const STAKES = [
+  ['tag', /\bcost\s*:\s*(?:true|[1-9])/],
+  ['effect', /\b(?:credits|fund)\s*:\s*-/],
+  ['gate', /\bneedCr\(|\bwhen\s*:\s*\{[^{}]*\bcredits\s*:/],
+  ['code', /\b(?:credits|fund)\s*-=/],
+];
+const NUMBER_WORD = /\b(?:one|two|three|four|five|six|seven|eight|nine|ten|twelve|twenty|fifty|hundred|thousand|half|quarter|tenth)\b/i;
+
+// A label shows its cost when it holds a figure (a digit or a number word), or is built from an expression that will hold one.
+const showsCost = (label, raw) => /\d/.test(label) || NUMBER_WORD.test(label) || raw.includes('${');
+
+// The choices written as data in a script (an object with a literal `label`) that cost something and whose label shows no figure, as
+// { id, label, why } where id is the scene's last `id` before it. A choice built by a function is not found, and is left to a reader.
+function unpricedChoices(src) {
+  const { lits, code } = scanSource(src), at = new Map(lits.map(l => [l.start, l])), out = [], stack = [];
+  let sceneId = '';
+  for (let i = 0; i < code.length; i++) {
+    const c = code[i], lit = at.get(i);
+    if (lit) {
+      const key = /\b(\w+)\s*:\s*$/.exec(code.slice(Math.max(0, i - 24), i));
+      if (key && (key[1] === 'id' || key[1] === 'title')) sceneId = lit.text;
+      else if (key && key[1] === 'label' && stack.length) stack[stack.length - 1].label = lit;
+      i = lit.end - 1;
+    } else if (c === '{') stack.push({ start: i, label: null });
+    else if (c === '}') {
+      const frame = stack.pop();
+      if (!frame || !frame.label) continue;
+      const slice = code.slice(frame.start, i + 1), why = STAKES.filter(([, re]) => re.test(slice)).map(([name]) => name);
+      const raw = src.slice(frame.label.start, frame.label.end);
+      if (why.length && !showsCost(frame.label.text, raw)) out.push({ id: sceneId, label: frame.label.text, why: why.join('+') });
+    }
   }
   return out;
 }
@@ -147,12 +194,17 @@ function speech(strings) {
 // ---------- the report ----------
 
 const lintStrings = strings => ({ strings: strings.length, tics: countTics(strings.join('\n')), shape: shape(strings), speech: speech(strings) });
+const choiceKey = (file, c) => `${file}  ${c.id}: ${c.label} [${c.why}]`;
 
 // files: { path: source }. Returns each file's figures, and the total over all their strings together.
 function lint(files) {
-  const per = {}, all = [];
-  for (const [file, src] of Object.entries(files)) { const strings = extractProse(src); per[file] = lintStrings(strings); all.push(...strings); }
-  return { files: per, total: lintStrings(all) };
+  const per = {}, all = [], unpriced = [];
+  for (const [file, src] of Object.entries(files)) {
+    const strings = extractProse(src), choices = unpricedChoices(src);
+    per[file] = { ...lintStrings(strings), unpriced: choices };
+    all.push(...strings); unpriced.push(...choices.map(c => choiceKey(file, c)));
+  }
+  return { files: per, total: { ...lintStrings(all), unpriced } };
 }
 
 const row = (name, r) => `${name.padEnd(32)} ${String(r.strings).padStart(5)} strings  tics ${String(Object.values(r.tics).reduce((a, b) => a + b, 0)).padStart(4)}  ` +
@@ -160,7 +212,10 @@ const row = (name, r) => `${name.padEnd(32)} ${String(r.strings).padStart(5)} st
 
 function report(result) {
   const ticLine = Object.entries(result.total.tics).map(([id, n]) => `${id} ${n}`).join(', ');
-  return [row('total', result.total), `  tics: ${ticLine}`, ...Object.entries(result.files).map(([file, r]) => row(file, r))].join('\n');
+  const choiceLines = Object.entries(result.files).filter(([, r]) => r.unpriced.length)
+    .flatMap(([file, r]) => [`  ${file}: ${r.unpriced.length}`, ...r.unpriced.map(c => `    ${c.id}: ${c.label} [${c.why}]`)]);
+  return [row('total', result.total), `  tics: ${ticLine}`, ...Object.entries(result.files).map(([file, r]) => row(file, r)),
+    `choices that cost something and show no figure in the label: ${result.total.unpriced.length}`, ...choiceLines].join('\n');
 }
 
 // A figure missing from an older baseline counts as zero.
@@ -173,7 +228,11 @@ function compare(base, now) {
     ...TICS.map(({ id }) => diff(id, a.tics[id], b.tics[id])),
     diff('mean', a.shape.mean, b.shape.mean), diff('sd', a.shape.sd, b.shape.sd), diff('shortShare', a.shape.shortShare, b.shape.shortShare), diff('shortRuns', a.shape.shortRuns, b.shape.shortRuns),
     diff('quoted', a.speech.quoted, b.speech.quoted), diff('reported', a.speech.reported, b.speech.reported),
+    diff('unpriced', (a.unpriced || []).length, b.unpriced.length),
   ].filter(Boolean);
+  const before = new Set(a.unpriced || []), after = new Set(b.unpriced);
+  for (const k of after) if (!before.has(k)) lines.push(`  new: ${k}`);
+  for (const k of before) if (!after.has(k)) lines.push(`  gone: ${k}`);
   return lines.length ? lines.join('\n') : 'no change';
 }
 
@@ -218,4 +277,4 @@ function main(args, { root, out }) {
 
 if (require.main === module) process.exitCode = main(process.argv.slice(2), { root: path.resolve(__dirname, '..'), out: console.log });
 
-module.exports = { TICS, extractProse, countTics, shape, speech, lint, report, compare, narrativeFiles, main };
+module.exports = { TICS, extractProse, unpricedChoices, countTics, shape, speech, lint, report, compare, narrativeFiles, main };

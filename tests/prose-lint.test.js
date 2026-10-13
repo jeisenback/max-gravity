@@ -8,7 +8,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
-const { extractProse, countTics, shape, speech, lint, report, compare, narrativeFiles, main } = require('../tools/prose-lint');
+const { extractProse, unpricedChoices, countTics, shape, speech, lint, report, compare, narrativeFiles, main } = require('../tools/prose-lint');
 
 const tmp = files => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'prose-'));
@@ -126,4 +126,38 @@ test('compare shows the spread, and reads an older baseline that lacks a tic id'
   assert.ok(/^sd: /m.test(compare(base, now)), compare(base, now));
   const old = JSON.parse(JSON.stringify(base)); delete old.total.tics.aside;
   assert.ok(!/NaN|undefined/.test(compare(old, now)), compare(old, now));
+});
+
+test('unpricedChoices finds a choice that costs something and shows no figure in its label', () => {
+  const src = [
+    "scene({ id: 'a', title: 'Pickpocket', choices: [",
+    "  { label: 'Let it go', effects: { credits: -250 }, result: 'You cancel the chit; they spent 250 cr of it.' },",
+    "  { label: 'Pay the fine (250 cr)', effects: { credits: -250 }, result: 'Paid.' },",
+    "  { label: 'Pay them off', cost: true, run() {} },",
+    "  { label: `Pay ${fine} cr`, cost: true },",
+    "  { label: 'Offer to put something in', when: { credits: 200 }, effects: {} },",
+    "  { label: 'Walk past', result: 'You lose 250 credits in the telling.' },",
+    "  { label: 'Battle stations', fight: true },",
+    "  { label: 'Give two tons', cost: 2 },",
+    "] });",
+  ].join('\n');
+  assert.deepEqual(unpricedChoices(src), [
+    { id: 'Pickpocket', label: 'Let it go', why: 'effect' },
+    { id: 'Pickpocket', label: 'Pay them off', why: 'tag' },
+    { id: 'Pickpocket', label: 'Offer to put something in', why: 'gate' },
+  ]);
+});
+
+test('unpricedChoices reads code only: a comment or a result that says cost: true is not a stake', () => {
+  const src = "// cost: true\nscene({ id: 'b', choices: [{ label: 'Stay out of it', result: 'It cost: 5 credits: -3 to watch.' }] });";
+  assert.deepEqual(unpricedChoices(src), []);
+});
+
+test('the report lists unpriced choices per file, and compare names the ones that come and go', () => {
+  const costly = "scene({ id: 'x', choices: [{ label: 'Let it go', effects: { credits: -250 } }] });";
+  const priced = "scene({ id: 'x', choices: [{ label: 'Let it go (250 cr)', effects: { credits: -250 } }] });";
+  const base = lint({ 'a.js': costly }), now = lint({ 'a.js': priced });
+  assert.ok(report(base).includes('show no figure in the label: 1') && report(base).includes('a.js: 1') && report(base).includes('x: Let it go [effect]'));
+  assert.ok(compare(base, now).includes('unpriced: 1 -> 0 (-1)') && compare(base, now).includes('gone: a.js  x: Let it go [effect]'));
+  assert.equal(compare({ total: { ...base.total, unpriced: undefined } , }, base).includes('unpriced: 0 -> 1'), true, 'an older baseline has none');
 });
