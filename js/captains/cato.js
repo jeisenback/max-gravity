@@ -150,13 +150,13 @@ CAST.cato = {
       // Below friendly he keeps it to himself, and the favour he would have asked (the `told` flag, read in the ice hold) is not asked.
       closed: {
         title: 'What Cato Knows',
-        text: ('Cato has the watch bill open on the galley table, and he closes it when you come in. "I was going to say something," he says. "I have ' +
-            'thought better of it." He turns the pencil over in his fingers. "It is not that you have done anything. I have not known you long enough, ' +
-            'and what I would say is a lot to put on somebody I do not know yet. Ask me again some day."'),
+        text: ('Cato has the watch bill open on the galley table, and he closes it when you come in. "I was going to tell you about the ship\'s books," ' +
+            'he says. "I have thought better of it." He turns the pencil over in his fingers. "It is not that you have done anything. I have not known ' +
+            'you long enough, and I am afraid of putting it on somebody I do not know yet. Ask me again some day."'),
         choices: [
           {
             label: 'Say it can wait',
-            result: '"It can," he says, and puts the pencil back behind his ear. "Thank you for not asking what it was."',
+            result: '"It can," he says, and puts the pencil back behind his ear. "Thank you. I would not have known how to start."',
           },
         ],
       },

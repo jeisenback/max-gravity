@@ -10,7 +10,7 @@ Status: the stated purpose of the game's text, approved by the owner. `docs/pros
 2. **People are told apart.** With the tags hidden, two speakers are not interchangeable. Each talks in the idiom of their trade and their card.
 3. **The place is believed.** The detail comes from this ship, this work and this custom. A passage that could happen in any kitchen is not finished. The world is its own, with no names, terms or plot shapes from the Expanse.
 4. **It survives repetition.** A scene or line that plays often has enough versions that the player meets the same moment more than once without meeting the same words.
-5. **The big moments land.** Loss, partings and turning points get their facts and their room, and a feeling may be named plainly, once, by the person who has it or by the narration, when the scene is about it. This is not a book of things left unsaid. What stays out is the narrator's wry reading, a feeling that the player is told to share, and a feeling named on every beat.
+5. **The big moments land.** Loss, partings and turning points get their facts and their room, and a feeling may be named plainly, once, by the person who has it or by the narration when it is someone else's, when the scene is about it. The player's own feeling is never named; it is theirs to decide. This is not a book of things left unsaid. What stays out is the narrator's wry reading, a feeling that the player is told to share, and a feeling named on every beat.
 6. **It reads where it is read.** Labels and messages are short and plain. A scene fits a screen or two on a phone.
 
 ## How each is judged
@@ -24,7 +24,7 @@ By a reader, on a sample, not by a count. Draw 40 strings from each layer below 
 | 2, pool lines | Does the line fit the trait, post, room or goal it is drawn for, so that a line written for another one would be out of place here? Break a card's "never says" and it fails. Not scored (null) when the table does not pick by one of those (a general pool such as news or a rumor), or the string is a bare label or fragment. The rater is given the table and key the line comes from. |
 | 3 | Is there a detail only this ship or this work would have? Does it contradict `docs/world/`? |
 | 4 | For a line that plays often: are there at least three versions of the moment? |
-| 5 | At a beat that matters: where a feeling is named, is it named once and plainly, with no narrator's reading of it and no verdict that tells the player how to feel? Not scored (null) when no feeling is named. |
+| 5 | At a beat that matters: where a feeling is named, is it named once and plainly, by the person who has it or about someone other than the player, with no narrator's reading of it, no verdict, and none assigned to the player? Not scored (null) when no feeling is named. |
 | 6 | Is it as short as it can be and still say the thing? |
 
 Q2 on pool lines was reworded after the first sample (#600): the old wording gave kappa 0.21 between two raters on the 40 pool lines, and the new gave 0.65 (96 percent agreement on the 25 lines both rated). It now passes nearly every line it applies to, so it finds only a line that fits any trait equally; "any kitchen" lines are Q3's.
@@ -49,7 +49,7 @@ The tic report and the other counts stay as a smoke alarm. They find known habit
 
 ## Decisions
 
-1. **Restraint at the big beats.** Decided: too much restraint is wrong. A feeling may be stated plainly where the scene is about it (deaths, departures, farewells, #356 and #357). The style doc follows (below).
+1. **Restraint at the big beats.** Decided: too much restraint is wrong. A feeling may be stated plainly where the scene is about it (deaths, departures, farewells, #356 and #357). The style doc follows (below). Narrowed after the big-beat scoring (#610): the narration names other people's feelings and not the player's own, since raters split on a narrator saying "you are glad".
 2. **Repetition.** Decided: the work is in this pass, in three parts. A no-repeat memory for the busy line pools (`pickFresh`, #596), more lines for the pools the player meets most (#597), and more than one text for the few most-played scenes (done: Galley Duty, Sit With Someone and Bad News already had four or five openings, and Cover My Watch and A Word now have four; an opening is chosen by who and which day, not by a draw, so the dice of the pinned plays are unchanged). A full variant model in the scene engine and editor is not built, since the most-played scene comes up about three times a chapter.
 3. **Status.** Decided: this is the stated purpose of the game's text, with the style doc as the means.
 

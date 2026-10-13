@@ -1131,7 +1131,7 @@ const PEOPLE_LINES = {
     title: 'A Favor',
     text: '{n} comes to find you in the cockpit, and stands in the hatch, twisting the hem of their sleeve, which is not like them. "Could we put in at {home} sometime?" they ask. "I want to see my {missed} while I still can. It has been too long. I would work the whole trip for nothing, captain, I swear, I would work double, just to see them one time." They stop. Their voice has gone thin. "I have never asked for anything before."',
     'c0.label': '"We\'ll go."',
-    'c0.result': '{n} does not say anything. For a moment, you are afraid they will cry. Instead, they put a hand on the back of your seat, and squeeze, once, hard, and go out. That night the whole ship smells of something baking, and nobody says why. (It\'s on your missions list.)',
+    'c0.result': '{n} does not say anything. For a moment they seem about to cry. Instead, they put a hand on the back of your seat, and squeeze, once, hard, and go out. That night the whole ship smells of something baking, and nobody says why. (It\'s on your missions list.)',
     'c1.label': '"Not yet. But soon."',
     'c1.result': '{n} nods. "Soon, then," they say. "I can wait. I have gotten good at it." They do not bring it up again.',
     'c0.memory': 'The captain promised to take me home.',

@@ -69,7 +69,7 @@
   "id": "scene:hand-death:hurt",
   "plays": [],
   "title": "The Last Run",
-  "text": "The first hurt was not mended when the second one came. You are on the deck, with the cold of it against your cheek, and the crew are saying your name. Captain Vance says it from the hatch, and then asks for the medic.</p><p>Captain Vance writes it in the log: the day, the place, your name. The ship goes on without you.</p><p>30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet.",
+  "text": "The first hurt was not mended when the second one came. You die on the deck, with the cold of it against your cheek, while the crew say your name. Captain Vance says it from the hatch, and then asks for the medic, who is too late.</p><p>Captain Vance writes it in the log: the day, the place, your name, and that you died on a run. The captain is sorry to write it.</p><p>30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet.",
   "labels": [
    "Begin again"
   ]
@@ -78,7 +78,7 @@
   "id": "scene:hand-death:bridge",
   "plays": [],
   "title": "The Last Run",
-  "text": "You are laid up in the corridor, where the first hit left you, when they come through the last hatch. You do not get up. Captain Vance gives them the code to the strongbox, and the crew carry you below before the lock cycles.</p><p>Captain Vance writes it in the log: the day, the place, your name. The ship goes on without you.</p><p>30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet.",
+  "text": "You are laid up in the corridor, where the first hit left you, when they come through the last hatch. You do not get up, and you are dead before the lock cycles. Captain Vance gives them the code to the strongbox, and the crew carry you below.</p><p>Captain Vance writes it in the log: the day, the place, your name, and that you died on a run. The captain is sorry to write it.</p><p>30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet.",
   "labels": [
    "Begin again"
   ]
@@ -4645,7 +4645,7 @@
    }
   ],
   "title": "The Memorial Wall",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Beside the hatch you put up a strip of tape and write the names on it in marker, one under another: Mara Quill and Joss Ode. They died on the way. You are sorry for each of them, and the tape is what you have to say it with. Nobody is waiting at the foot of the ramp. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Beside the hatch you put up a strip of tape and write the names on it in marker, one under another: Mara Quill and Joss Ode. They died on the way, and the tape is what you have to remember them by. Nobody is waiting at the foot of the ramp. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4661,7 +4661,7 @@
    }
   ],
   "title": "The Memorial Wall",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Beside the hatch you put up a strip of tape and write the names on it in marker, one under another: Mara Quill and Joss Ode. They died on the way. You are sorry for each of them, and the tape is what you have to say it with. Ana Vale waits at the foot of the ramp until you have finished. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Beside the hatch you put up a strip of tape and write the names on it in marker, one under another: Mara Quill and Joss Ode. They died on the way, and the tape is what you have to remember them by. Ana Vale waits at the foot of the ramp until you have finished. They are sorry too. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4677,7 +4677,7 @@
    }
   ],
   "title": "The Memorial Wall",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Beside the hatch you put up a strip of tape and write the names on it in marker, one under another: Mara Quill, Joss Ode and Teo Ruiz. They died on the way. You are sorry for each of them, and the tape is what you have to say it with. Ana Vale and Ben Vale wait at the foot of the ramp until you have finished. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Beside the hatch you put up a strip of tape and write the names on it in marker, one under another: Mara Quill, Joss Ode and Teo Ruiz. They died on the way, and the tape is what you have to remember them by. Ana Vale and Ben Vale wait at the foot of the ramp until you have finished. They are sorry too. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4693,7 +4693,7 @@
    }
   ],
   "title": "The Empty Berths",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once, and you are lonely. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4709,7 +4709,7 @@
    }
   ],
   "title": "The Empty Berths",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once, and you are lonely. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. Mara Quill is not here to see it. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. Mara Quill is not here to see it. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4725,7 +4725,7 @@
    }
   ],
   "title": "The Empty Berths",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once, and you are lonely. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. Mara Quill and Joss Ode are not here to see it. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. Mara Quill and Joss Ode are not here to see it. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4741,7 +4741,7 @@
    }
   ],
   "title": "Ten Years, One Ship",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Ana Vale goes up the ramp ahead of you with a bag. Ana stops at the hatch and waits for you. You promised a place aboard when you had a ship, and here it is. You count the berths. The first bag goes in the first, and the next in the second, and you are glad, and you leave the other hatches open. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Ana Vale goes up the ramp ahead of you with a bag. Ana stops at the hatch and waits for you. You promised a place aboard when you had a ship, and here it is. They are glad to see it. You count the berths. The first bag goes in the first, and the next in the second, and you leave the other hatches open. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4757,7 +4757,7 @@
    }
   ],
   "title": "Ten Years, One Ship",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Ana Vale and Ben Vale go up the ramp ahead of you with their bags. Ana and Ben stop at the hatch and wait for you. You promised a place aboard when you had a ship, and here it is. You count the berths. The first bag goes in the first, and the next in the second, and you are glad, and you leave the other hatches open. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Ana Vale and Ben Vale go up the ramp ahead of you with their bags. Ana and Ben stop at the hatch and wait for you. You promised a place aboard when you had a ship, and here it is. They are glad to see it. You count the berths. The first bag goes in the first, and the next in the second, and you leave the other hatches open. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4773,7 +4773,7 @@
    }
   ],
   "title": "Ten Years, One Ship",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Ana Vale and Ben Vale and Cy Vale go up the ramp ahead of you with their bags. Ana, Ben and Cy stop at the hatch and wait for you. You promised a place aboard when you had a ship, and here it is. You count the berths. The first bag goes in the first, and the next in the second, and you are glad, and you leave the other hatches open. Mara Quill is not here to see it. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Ana Vale and Ben Vale and Cy Vale go up the ramp ahead of you with their bags. Ana, Ben and Cy stop at the hatch and wait for you. You promised a place aboard when you had a ship, and here it is. They are glad to see it. You count the berths. The first bag goes in the first, and the next in the second, and you leave the other hatches open. Mara Quill is not here to see it. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4789,7 +4789,7 @@
    }
   ],
   "title": "The Empty Berths",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once, and you are lonely. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4805,7 +4805,7 @@
    }
   ],
   "title": "The Quiet Fortune",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. The yard clerk reads the balance twice: the ship paid for, and 20,000 cr still in the account. Ana Vale is already aboard, stowing a bag. No one aboard carries a mark, and no name is on a wall. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn, and you leave with nobody lost. You take the ramp at a walk, glad of it. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. The yard clerk reads the balance twice: the ship paid for, and 20,000 cr still in the account. Ana Vale is already aboard, stowing a bag. No one aboard carries a mark, and no name is on a wall. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn, and you leave with nobody lost. You take the ramp at a walk. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4821,7 +4821,7 @@
    }
   ],
   "title": "The Quiet Fortune",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. The yard clerk reads the balance twice: the ship paid for, and 20,000 cr still in the account. Ana Vale and Ben Vale are already aboard, stowing a bag. No one aboard carries a mark, and no name is on a wall. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn, and you leave with nobody lost. You take the ramp at a walk, glad of it. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. The yard clerk reads the balance twice: the ship paid for, and 20,000 cr still in the account. Ana Vale and Ben Vale are already aboard, stowing a bag. No one aboard carries a mark, and no name is on a wall. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn, and you leave with nobody lost. You take the ramp at a walk. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4869,7 +4869,7 @@
    }
   ],
   "title": "The Empty Berths",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once, and you are lonely. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4885,7 +4885,7 @@
    }
   ],
   "title": "The Memorial Wall",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Beside the hatch you put up a strip of tape and write the names on it in marker, one under another: Mara Quill and Joss Ode. They died on the way. You are sorry for each of them, and the tape is what you have to say it with. Nobody is waiting at the foot of the ramp. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Beside the hatch you put up a strip of tape and write the names on it in marker, one under another: Mara Quill and Joss Ode. They died on the way, and the tape is what you have to remember them by. Nobody is waiting at the foot of the ramp. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4901,7 +4901,7 @@
    }
   ],
   "title": "The Memorial Wall",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Beside the hatch you put up a strip of tape and write the names on it in marker, one under another: Mara Quill and Joss Ode. They died on the way. You are sorry for each of them, and the tape is what you have to say it with. Ana Vale waits at the foot of the ramp until you have finished. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Beside the hatch you put up a strip of tape and write the names on it in marker, one under another: Mara Quill and Joss Ode. They died on the way, and the tape is what you have to remember them by. Ana Vale waits at the foot of the ramp until you have finished. They are sorry too. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4917,7 +4917,7 @@
    }
   ],
   "title": "The Memorial Wall",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Beside the hatch you put up a strip of tape and write the names on it in marker, one under another: Mara Quill, Joss Ode and Teo Ruiz. They died on the way. You are sorry for each of them, and the tape is what you have to say it with. Ana Vale and Ben Vale wait at the foot of the ramp until you have finished. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Beside the hatch you put up a strip of tape and write the names on it in marker, one under another: Mara Quill, Joss Ode and Teo Ruiz. They died on the way, and the tape is what you have to remember them by. Ana Vale and Ben Vale wait at the foot of the ramp until you have finished. They are sorry too. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4933,7 +4933,7 @@
    }
   ],
   "title": "The Empty Berths",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once, and you are lonely. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4949,7 +4949,7 @@
    }
   ],
   "title": "The Empty Berths",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once, and you are lonely. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. Mara Quill is not here to see it. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. Mara Quill is not here to see it. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4965,7 +4965,7 @@
    }
   ],
   "title": "The Empty Berths",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once, and you are lonely. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. Mara Quill and Joss Ode are not here to see it. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. Mara Quill and Joss Ode are not here to see it. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4981,7 +4981,7 @@
    }
   ],
   "title": "Ten Years, One Ship",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Ana Vale goes up the ramp ahead of you with a bag. Ana stops at the hatch and waits for you. You promised a place aboard when you had a ship, and here it is. You count the berths. The first bag goes in the first, and the next in the second, and you are glad, and you leave the other hatches open. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Ana Vale goes up the ramp ahead of you with a bag. Ana stops at the hatch and waits for you. You promised a place aboard when you had a ship, and here it is. They are glad to see it. You count the berths. The first bag goes in the first, and the next in the second, and you leave the other hatches open. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -4997,7 +4997,7 @@
    }
   ],
   "title": "Ten Years, One Ship",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Ana Vale and Ben Vale go up the ramp ahead of you with their bags. Ana and Ben stop at the hatch and wait for you. You promised a place aboard when you had a ship, and here it is. You count the berths. The first bag goes in the first, and the next in the second, and you are glad, and you leave the other hatches open. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Ana Vale and Ben Vale go up the ramp ahead of you with their bags. Ana and Ben stop at the hatch and wait for you. You promised a place aboard when you had a ship, and here it is. They are glad to see it. You count the berths. The first bag goes in the first, and the next in the second, and you leave the other hatches open. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -5013,7 +5013,7 @@
    }
   ],
   "title": "Ten Years, One Ship",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Ana Vale and Ben Vale and Cy Vale go up the ramp ahead of you with their bags. Ana, Ben and Cy stop at the hatch and wait for you. You promised a place aboard when you had a ship, and here it is. You count the berths. The first bag goes in the first, and the next in the second, and you are glad, and you leave the other hatches open. Mara Quill is not here to see it. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Ana Vale and Ben Vale and Cy Vale go up the ramp ahead of you with their bags. Ana, Ben and Cy stop at the hatch and wait for you. You promised a place aboard when you had a ship, and here it is. They are glad to see it. You count the berths. The first bag goes in the first, and the next in the second, and you leave the other hatches open. Mara Quill is not here to see it. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -5029,7 +5029,7 @@
    }
   ],
   "title": "The Empty Berths",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once, and you are lonely. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -5045,7 +5045,7 @@
    }
   ],
   "title": "The Quiet Fortune",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. The yard clerk reads the balance twice: the ship paid for, and 20,000 cr still in the account. Ana Vale is already aboard, stowing a bag. No one aboard carries a mark, and no name is on a wall. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn, and you leave with nobody lost. You take the ramp at a walk, glad of it. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. The yard clerk reads the balance twice: the ship paid for, and 20,000 cr still in the account. Ana Vale is already aboard, stowing a bag. No one aboard carries a mark, and no name is on a wall. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn, and you leave with nobody lost. You take the ramp at a walk. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -5061,7 +5061,7 @@
    }
   ],
   "title": "The Quiet Fortune",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. The yard clerk reads the balance twice: the ship paid for, and 20,000 cr still in the account. Ana Vale and Ben Vale are already aboard, stowing a bag. No one aboard carries a mark, and no name is on a wall. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn, and you leave with nobody lost. You take the ramp at a walk, glad of it. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. The yard clerk reads the balance twice: the ship paid for, and 20,000 cr still in the account. Ana Vale and Ben Vale are already aboard, stowing a bag. No one aboard carries a mark, and no name is on a wall. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn, and you leave with nobody lost. You take the ramp at a walk. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
@@ -5109,7 +5109,7 @@
    }
   ],
   "title": "The Empty Berths",
-  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once, and you are lonely. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
+  "text": "The Needle courier is on the apron at Earth with her ramp down and the hold empty. The papers have your name on them. Nobody comes up the ramp behind you, and nobody is waiting at the foot of it. The ship has 6 berths and no one to put in them. You walk the length of the passage once. You came aboard the Iron Anvil 77 days ago with 300 cr and a post to learn. The exchange, the yard and the contracts are yours now. This is where the hired-hand chapter ends.",
   "labels": [
    "Keep flying"
   ]
