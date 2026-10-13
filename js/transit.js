@@ -110,7 +110,7 @@ function addRumor() {
     ({ sid, p } = pick(markets));
     cid = pick(Object.keys(p.prices));
     up = Math.random() < 0.6;
-    text = pick(linedText('lines:market-rumors', RUMORS)[up ? 'up' : 'down'])
+    text = pickFresh(linedText('lines:market-rumors', RUMORS)[up ? 'up' : 'down'])
       .replace('{p}', p.name)
       .replace('{c}', COMMODITIES.find(c => c.id === cid).name);
   }
@@ -356,7 +356,7 @@ function updateTransit(dt) {
       ...crewMembers().flatMap(c => c.chatter || c.traits.map(t => fill(pick(traitChatter(t)), c))),
       ...paxAboard().filter(m => m.pid).map(m => G.state.people[m.pid]).flatMap(p => p.traits.map(t => `(passenger) ${fill(pick(traitChatter(t)), p)}`)),
     ];
-    const line = pick(Mods.filter('chatter', aboard.length && Math.random() < 0.6 ? aboard : linedText('lines:comms-chatter', CHATTER)));
+    const line = pickFresh(Mods.filter('chatter', aboard.length && Math.random() < 0.6 ? aboard : linedText('lines:comms-chatter', CHATTER)));
     if (!Settings.quiet.chatter) comm(line);
   }
   if (t.times.length && t.total - t.left >= t.times[0]) {

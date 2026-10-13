@@ -61,6 +61,16 @@ const G = {
 const rand = (a, b) => a + Math.random() * (b - a);
 const randInt = (a, b) => Math.floor(rand(a, b + 1));
 const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+// A line from a pool the player meets often (the chatter, the news, the bar): one draw, as pick makes it, from the lines but those drawn last from this pool (up to three, and never the
+// whole pool). The last lines are kept in the save (st.recentLines) so a reload does not forget them.
+function pickFresh(lines) {
+  const recent = G.state ? (G.state.recentLines = G.state.recentLines || []) : [];
+  const keep = Math.min(3, lines.length - 1), avoid = keep > 0 ? recent.filter(l => lines.includes(l)).slice(-keep) : [];  // not slice(-0), which is the whole list
+  const left = avoid.length ? lines.filter(l => !avoid.includes(l)) : lines;
+  const line = left[Math.floor(Math.random() * left.length)];
+  if (typeof line === 'string') { recent.push(line); if (recent.length > 30) recent.shift(); }
+  return line;
+}
 const system = (id = G.state.systemId) => SYSTEMS[id];
 const ship = () => shipStats(G.state.shipId);  // the player's ship, outfits included
 const statsOf = o => (o === G.player ? ship() : SHIPS[o.shipId]);
@@ -109,6 +119,7 @@ function stateDefaults(shipId) {
     cargo: {}, paid: {}, market: {}, rumors: [], missions: [], dest: null, nextId: 1,
     crew: [], flags: {}, people: {}, nextPid: 1, rep: {}, outfits: {},
     story: { stage: 0, next: STORY_START_DAY, log: [] }, tutorial: null, tips: null, carried: null,
+    recentLines: [],  // the last lines drawn from the pools the player meets often (pickFresh)
   };
 }
 const newState = () => ({ ...stateDefaults(), tutorial: 0 });

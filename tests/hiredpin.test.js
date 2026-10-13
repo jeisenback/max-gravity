@@ -12,6 +12,7 @@ const { pinTests } = require('./pin');
 // Runs in the page. Returns [{ id, i, label, result, changes, next, error }].
 const pinAll = () => {
   const flat = (v, p, out) => {
+    if (p === 's.recentLines') return out;  // the last lines drawn (pickFresh) are bookkeeping, not what a choice does
     if (v && typeof v === 'object') { for (const k of Object.keys(v)) flat(v[k], `${p}.${k}`, out); if (!Object.keys(v).length) out[p] = Array.isArray(v) ? '[]' : '{}'; }
     else if (typeof v !== 'function' && v !== undefined) out[p] = v;
     return out;
