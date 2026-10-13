@@ -66,7 +66,7 @@ function worldTick() {
     const w = worldOf(sid);
     if (sys.pirates > 0 && Math.random() < FLARE_CHANCE) {
       w.unrest = Math.min(1, w.unrest + FLARE_SIZE);
-      worldNews(pick(linedText('lines:world-flares', FLARE_NEWS)).replace('{system}', sys.name));
+      worldNews(pickFresh(linedText('lines:world-flares', FLARE_NEWS)).replace('{system}', sys.name));
     }
     w.unrest += (sys.pirates - w.unrest) * UNREST_DRIFT;
     const raid = excessUnrest(sid) * SHORTAGE_RATE;
@@ -220,7 +220,7 @@ function factionTick() {
       if (!fs.war && Math.random() < 0.016) {
         t += 0.25;
         const [x, y] = Math.random() < 0.5 ? [a, b] : [b, a];
-        worldNews(pick(linedText('lines:world-incidents', INCIDENTS)).replace(/\{a\}/g, x).replace(/\{b\}/g, y).replace('{s}', SYSTEMS[pick(systemsOf(y))].name));
+        worldNews(pickFresh(linedText('lines:world-incidents', INCIDENTS)).replace(/\{a\}/g, x).replace(/\{b\}/g, y).replace('{s}', SYSTEMS[pick(systemsOf(y))].name));
       }
       fs.tension[k] = t;
       if (!fs.war && t >= 1) {

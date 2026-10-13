@@ -7,4 +7,4 @@
 const { pinTests } = require('./pin');
 const { playTrade } = require('./tradeplay');
 
-pinTests({ name: 'the prices, the markets, the missions and the jobs', fixture: 'trade-pin.json', play: playTrade, min: 150 });
+pinTests({ name: 'the prices, the markets, the missions and the jobs', fixture: 'trade-pin.json', play: playTrade, min: 150, words: ['news', 'rumor'] });

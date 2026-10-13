@@ -107,7 +107,7 @@ function lifeLine(p, crowd) {
   const room = linedText('lines:ship-life', LIFE_LINES)[p.room], pool = room[p.role] || room.any;
   if (!pool) return null;
   const others = crowd.filter(o => o !== p && o.room === p.room && o.role !== 'you' && o.role !== 'cat');
-  const line = pick(pool.filter(l => !l.includes('{m}') || others.length));
+  const line = pickFresh(pool.filter(l => !l.includes('{m}') || others.length));
   return line && line.replace('{n}', p.name).replace('{m}', others.length ? pick(others).name : '');
 }
 

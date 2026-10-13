@@ -345,7 +345,7 @@ function roomLines(planet) {
   ]));
   for (const cm of crewMembers()) {
     const lines = barLines('crew')[cm.role];
-    if (lines && Math.random() < 0.6) out.push(pick(lines).replace(/\{n\}/g, `<button class="link" data-action="person" data-arg="${esc(cm.id)}">${esc(cm.first)}</button>`));  // the name opens their page
+    if (lines && Math.random() < 0.6) out.push(pickFresh(lines).replace(/\{n\}/g, `<button class="link" data-action="person" data-arg="${esc(cm.id)}">${esc(cm.first)}</button>`));  // the name opens their page
   }
   return out;
 }

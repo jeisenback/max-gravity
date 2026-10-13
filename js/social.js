@@ -147,7 +147,7 @@ function feedLine() {
   const c = culture(), st = G.state, day = cultureToday(), show = pick(airing(day)), book = pick(newBooks(day)), g = GENRES[show.genre], [s1, s2] = c.stars;
   const lines = [
     say('most-watched', { title: show.title, genre: g }),
-    say('critics', { title: show.title, verdict: pick(socialTable('critics')) }),
+    say('critics', { title: show.title, verdict: pickFresh(socialTable('critics')) }),
     say('cliffhanger', { ep: show.ep, title: show.title }),
     say('book-tops', { book: book.title, author: book.author }),
     say('book-denies', { author: book.author, book: book.title }),
