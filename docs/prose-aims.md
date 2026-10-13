@@ -50,7 +50,7 @@ The tic report and the other counts stay as a smoke alarm. They find known habit
 
 ## What the first decision changes in the style doc
 
-Not yet done; for the owner to approve with this page.
+Done in `docs/prose-style.md` (rules 3, 4, 8 and 9, the checking list and a note under the worked example) and `docs/voices/dialogue.md` (rule 5).
 
 - **Rule 8 (report, do not color)** keeps its target, the narrator's wry aside and the simile that carries a feeling, and stops forbidding a stated feeling or a sentence about what someone knows.
 - **Rule 9 (do not tell the player how to feel)** keeps its target, a verdict on the moment ("Good.", "the most honest thing anyone has said to you"), and does not forbid naming what a character feels.

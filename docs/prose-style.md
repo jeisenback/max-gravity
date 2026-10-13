@@ -1,6 +1,6 @@
 # Prose style
 
-How the text in Max Gravity should read. It applies to every scene, line of chatter and message, authored or generated. It builds on the prose pass (#136), which says to show the gesture, and adds what the best passages in the game already do. Draft for the owner to judge.
+How the text in Max Gravity should read. It applies to every scene, line of chatter and message, authored or generated. It builds on the prose pass (#136), which says to show the gesture, and adds what the best passages in the game already do. Draft for the owner to judge. What the text is for, and how a pass is judged, is in `docs/prose-aims.md`.
 
 ## The voice
 
@@ -15,13 +15,13 @@ The reference passages are in `docs/voices/reference.md`, the dialogue rules in 
 
 1. **Make it about this ship.** A passage that could happen in any kitchen is not finished. Use the air handler, the closer on a door, the eleven-foot galley, the water ration, a deck you sit on. The detail comes from the place and the work.
 2. **Let people talk like people.** They interrupt, repeat themselves, say "Tuesday, ask anyone". A scene has at least one line of real speech where it can. Each person talks in their own trade: Hester in sums ("Nine percent. Not ten."), Tomas to engines.
-3. **State the custom, not the feeling.** "On a ship you cannot slam a door, so the quiet is made some other way." Say what is done and why; do not say what anyone feels about it.
-4. **Show the object or the act, and cut the narrator's reading of it.** "She initials the page and says nothing, and the nothing has a figure in it." Not: "which is how you learn that he is moved."
+3. **State the custom, and what it costs.** "On a ship you cannot slam a door, so the quiet is made some other way." Say what is done and why. The narrator does not rate the custom or comment on it; what people feel about it comes from them, in what they say and do (rule 8).
+4. **Show the object or the act first, and cut the narrator's reading of it.** "She initials the page and says nothing, and the nothing has a figure in it." Not: "which is how you learn that he is moved." A feeling may follow the act, plainly, where the scene is about it; what goes is the line that explains the gesture to the reader.
 5. **Put a number, a day or a credit on the cost.** "Two days of fuel." "Sixty. It is in the column already."
 6. **Vary the sentences.** Mix lengths and constructions: coordinate and subordinate, open on something other than the subject, put a hard fact in a short sentence. No run of four short declaratives in a row. A long sentence earns its place by carrying a custom or a sequence of actions, never by chaining "and, X, and, Y" with commas around the conjunction.
 7. **Be rough.** Real scenes are untidy. Do not give every beat a small perfect gesture or end every outcome on a neat, symmetrical image. One good odd detail beats three tidy ones.
-8. **Report; do not color.** Narrate only what someone in the room could see or hear. No wry asides ("which is worse", "before anyone could say anything sensible", "Nobody wants to be asked"), no similes that carry a feeling ("like something coming loose"), no evaluative adverbs, and no sentences about what someone knows or is sure of. This is free indirect discourse, where the narrator takes on a character's judgment, and it is the main way the text reads as written by a model. If a line is the narrator's opinion, cut it or turn it into something said or done.
-9. **Do not tell the player how to feel.** No "Good." and no "It is, you realize, the most honest thing anyone has said to you all week."
+8. **Report; do not color.** Narrate what someone in the room could see or hear. Where the scene is about a feeling or something a character knows, say it plainly, once, by the person who has it or by the narration: "Ines is angry." "Cato knows the pump is gone." Do not do it on every beat. What stays out is the narrator's opinion: wry asides ("which is worse", "before anyone could say anything sensible", "Nobody wants to be asked"), similes that carry a feeling ("like something coming loose"), evaluative adverbs, and free indirect discourse, where the narrator takes on a character's judgment. That is the main way the text reads as written by a model. If a line is the narrator's opinion, cut it or turn it into something said or done.
+9. **Do not give the player a verdict.** No "Good." and no "It is, you realize, the most honest thing anyone has said to you all week." Naming what a character feels is not telling the player how to feel: the player is told what happened and decides what it was worth.
 
 ## Tics to cut
 
@@ -60,11 +60,14 @@ After:
 
 And for "Side with Mara": the old door slams "with a noise like a small explosion" and one of them looks "a little bit ashamed". Now Ines looks at the captain, then at Mara, and leaves. The bunk door is on a pneumatic closer and does not slam; it hisses shut. Mara says "Thanks, Captain" to the table. Nobody answers. Nothing in it is the narrator's opinion.
 
+The closing "Nobody answers" is the example's, and it is used once per scene (`docs/voices/dialogue.md`, rule 7). It already ends several scenes in the game; do not copy it.
+
 ## Checking a passage
 
 - Could this happen in any kitchen? Add the ship.
 - Is there a line of speech, and does it sound like the person?
-- Is a feeling named by the narrator, or an aside added? Replace it with what is said or done.
+- Is there the narrator's opinion in it (an aside, a wry simile, a verdict on the moment)? Replace it with what is said or done.
+- If a feeling is named, is the scene about it, and is it named once? A feeling named on every beat is a tic.
 - Does the cost have a number?
 - Does it end on a tidy image? Try ending one line earlier, or on something untidy.
 - Does the speech follow `docs/voices/dialogue.md`, and does each speaker sound like their card?
