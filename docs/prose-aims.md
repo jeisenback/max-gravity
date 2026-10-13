@@ -20,11 +20,14 @@ By a reader, on a sample, not by a count. Draw 40 strings from each layer below 
 | Aim | Question |
 |---|---|
 | 1 | Does the choice name its cost or risk, and the result what changed? |
-| 2 | Cover the speaker's name: could it be anyone? Does it break the card's "never says"? |
+| 2, scenes | Cover the speaker's name: could it be anyone? Does it break the card's "never says"? |
+| 2, pool lines | Does the line fit the trait, post, room or goal it is drawn for, so that a line written for another one would be out of place here? Break a card's "never says" and it fails. Not scored (null) when the table does not pick by one of those (a general pool such as news or a rumor), or the string is a bare label or fragment. The rater is given the table and key the line comes from. |
 | 3 | Is there a detail only this ship or this work would have? Does it contradict `docs/world/`? |
 | 4 | For a line that plays often: are there at least three versions of the moment? |
 | 5 | At a beat that matters: does it state the fact, and leave room? |
 | 6 | Is it as short as it can be and still say the thing? |
+
+Q2 on pool lines was reworded after the first sample (#600): the old wording gave kappa 0.21 between two raters on the 40 pool lines, and the new gave 0.65 (96 percent agreement on the 25 lines both rated). It now passes nearly every line it applies to, so it finds only a line that fits any trait equally; "any kitchen" lines are Q3's.
 
 The tic report and the other counts stay as a smoke alarm. They find known habits; they do not show quality, and a pass is not done because a count fell.
 
