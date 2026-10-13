@@ -1,6 +1,6 @@
 # Writing a scene
 
-How to write or rewrite a scene so it sounds like the same book as the rest. The prose report in step 6 only measures: it never fails a build.
+How to write or rewrite a scene so it sounds like the same book as the rest. What the text is for, and how a pass is judged, is in `docs/prose-aims.md`; these steps are the means. The prose report in step 6 only measures: it never fails a build.
 
 1. **Pick the register.** Choose one in `docs/voices/narrator.md` (plain, dry, tense or quiet) for the scene, or for each beat if the scene changes mood. Read its sample.
 2. **Read the card of each speaker** in `docs/voices/` (Hester, Cato, Ines, Tomas, and the gunner for the hand's own choices). Note the syntax in speech and the lines each never says.

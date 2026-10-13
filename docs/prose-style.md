@@ -1,6 +1,6 @@
 # Prose style
 
-How the text in Max Gravity should read. It applies to every scene, line of chatter and message, authored or generated. It builds on the prose pass (#136), which says to show the gesture, and adds what the best passages in the game already do. Draft for the owner to judge. What the text is for, and how a pass is judged, is in `docs/prose-aims.md`.
+How the text in Max Gravity should read. It applies to every scene, line of chatter and message, authored or generated. It builds on the prose pass (#136), which says to show the gesture, and adds what the best passages in the game already do. What the text is for, and how a pass is judged, is in `docs/prose-aims.md`; this is the means, and where they disagree that page wins.
 
 ## The voice
 

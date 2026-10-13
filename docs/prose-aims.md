@@ -1,6 +1,6 @@
 # What the text is for
 
-Status: draft for the owner to approve. Nothing in the repo points to this yet.
+Status: the stated purpose of the game's text, approved by the owner. `docs/prose-style.md` (how it should read), `docs/writing-a-scene.md` (how to write a scene) and the voice cards in `docs/voices/` are the means. When they disagree with this, this wins.
 
 `docs/prose-style.md` says how the text should read. This says what it is for, so a pass over all of it can be judged by what the player gets and not by what a count finds. When the two disagree, this wins.
 
@@ -42,13 +42,13 @@ The tic report and the other counts stay as a smoke alarm. They find known habit
 - **Not imitating named authors.** Corey, Le Guin and the other north stars are guides to take from, not a target. The reference passages are the bar.
 - **Not changing behavior.** A text pass changes words only; the effects pins must pass unchanged (`docs/pins.md`).
 
-## Open decisions for the owner
+## Decisions
 
-1. **Restraint at the big beats.** Decided by the owner: too much restraint is wrong. A feeling may be stated plainly where the scene is about it (deaths, departures, farewells, #356 and #357). `docs/prose-style.md` rules 3, 4, 8 and 9 were written for the opposite and need to be rewritten to match, as described below.
-2. **Repetition.** Aim 4 needs several versions of a moment that plays often. The engine already has pools: 39 line tables (`js/linetables.js`) hold 661 lines, drawn uniformly at random with no memory of the last pick. A scene's own text is one string. In 8 soak chapters (`node tools/soak.js --scenes`) the most-played scene came up about 3 times a chapter, out of about 110 scene plays, so the repeat that matters is in the line pools, not the scenes. Is the work in this pass (grow the small pools, add a no-repeat memory, and give the few most-played scenes more than one text) or is some of it a separate engine task?
-3. **Status.** Does this replace "draft" on `docs/prose-style.md` as the stated purpose, with the style doc as the means?
+1. **Restraint at the big beats.** Decided: too much restraint is wrong. A feeling may be stated plainly where the scene is about it (deaths, departures, farewells, #356 and #357). The style doc follows (below).
+2. **Repetition.** Decided: the work is in this pass, in three parts. A no-repeat memory for the busy line pools (`pickFresh`, #596), more lines for the pools the player meets most (#597), and more than one text for the few most-played scenes (not yet done). A full variant model in the scene engine and editor is not built, since the most-played scene comes up about three times a chapter.
+3. **Status.** Decided: this is the stated purpose of the game's text, with the style doc as the means.
 
-## What the first decision changes in the style doc
+## What the first decision changed in the style doc
 
 Done in `docs/prose-style.md` (rules 3, 4, 8 and 9, the checking list and a note under the worked example) and `docs/voices/dialogue.md` (rule 5).
 
