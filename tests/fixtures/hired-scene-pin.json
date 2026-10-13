@@ -6051,7 +6051,7 @@
   "id": "captain:dov:goodbye",
   "i": 0,
   "label": "Thank him for the work",
-  "result": "You thank him. He says it was nothing, and then, because he cannot help it, tells you what it was.",
+  "result": "You thank him. He says it was nothing, and then tells you what it was.",
   "changes": [
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
@@ -6086,7 +6086,7 @@
   "id": "captain:dov:goodbye",
   "i": 1,
   "label": "Tell him to ask Ilsa for help",
-  "result": "He takes out a card and begins to write. \"I will,\" he says. \"I will ask her to dinner. That is a start.\" He does not tell the story of it.",
+  "result": "He takes out a card and begins to write. \"I will,\" he says. \"I will ask her to dinner. That is a start.\"",
   "changes": [
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
@@ -6121,7 +6121,7 @@
   "id": "captain:dov:goodbye",
   "i": 2,
   "label": "Take the bread and go",
-  "result": "You take the bread and go. You look back from the end of the dock, and he is still at the foot of the ramp, waving, alone on the lit dock.",
+  "result": "You take the bread and go. You look back from the end of the dock, and he is still at the foot of the ramp, waving.",
   "changes": [
    "s.people.p1.memories: [] -> undefined",
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the bread and went."
@@ -6731,7 +6731,7 @@
   "id": "captain:zoya:goodbye",
   "i": 1,
   "label": "Tell her to stop",
-  "result": "She laughs, and does not. \"I will think about it,\" she says. \"On a Tuesday.\" She does not say which one.",
+  "result": "She laughs, and does not. \"I will think about it,\" she says. \"On a Tuesday.\"",
   "changes": [
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
@@ -6766,7 +6766,7 @@
   "id": "captain:zoya:goodbye",
   "i": 2,
   "label": "Take the papers and go",
-  "result": "You take the papers and go. When you look back from the dock, she is on the ramp with a coin on her thumb, and she tosses it, and you do not stay to see how it lands.",
+  "result": "You take the papers and go. When you look back from the dock, she is on the ramp with a coin on her thumb.",
   "changes": [
    "s.people.p1.memories: [] -> undefined",
    "s.people.p1.memories.0: undefined -> 9 Jun 2214: You took the papers and went."
