@@ -172,7 +172,10 @@ const TRAITS = {
       '{first} is telling a long story in the galley, and, from the sound of it, has reached the good part for the third time.',
       '{first}: "And that, I always say, is the whole trouble with {home}. Oh, but that reminds me..."',
       '{first} has been talking for an hour, and the coffee maker, in a corner, has given up in sympathy.',
-      '{first} is explaining, to nobody in particular, what they would do with a ship of their own.'
+      '{first} is explaining, to nobody in particular, what they would do with a ship of their own.',
+      '{first}: "Do not let me start on the docking fees on {home}. Too late. Where was I."',
+      '{first} has told the same story to three people, and each of them has been given a different ending.',
+      '{first} is narrating the flip to the empty bridge as it happens.'
     ]
   },
   nervous: {
@@ -182,7 +185,10 @@ const TRAITS = {
       '{first} jumps at a clank from the engine room, and pretends they did not.',
       '{first} has, for the fifth time this watch, tested the seal on the nearest hatch.',
       '{first} is counting the emergency suits, quietly, under their breath, in a low, steady mutter.',
-      '{first} sleeps with a hand on the bulkhead.'
+      '{first} sleeps with a hand on the bulkhead.',
+      '{first} has put the survival kit within reach of the bunk, and moved it twice.',
+      '{first} listens to the hull ticking as it cools, and counts the gaps.',
+      '{first} asked the pilot for the burn time, and then asked again to be sure.'
     ]
   },
   generous: {
@@ -192,7 +198,10 @@ const TRAITS = {
       '{first} has left a plate of something sweet outside the engine room, without a note.',
       '{first} is giving away, one piece at a time, the contents of their sock drawer.',
       '{first} covered someone\'s shift, and will not hear a word about it.',
-      '{first} has a knack for turning up, unasked, with exactly what you need.'
+      '{first} has a knack for turning up, unasked, with exactly what you need.',
+      '{first} split the last ration bar in four and kept the smallest piece.',
+      '{first} has lent out three pairs of gloves and is down to one.',
+      '{first} is mending a boot that belongs to someone else.'
     ]
   },
   greedy: {
@@ -202,7 +211,10 @@ const TRAITS = {
       '{first} has worked out what every ton of cargo on the ship is worth, and tells you, twice.',
       '{first} is running the numbers on a trade route, and, from the muttering, it is not going to be enough.',
       '{first} watches the fuel gauge, and does not blink.',
-      '{first} has started a betting pool on the arrival date, and holds all the odds.'
+      '{first} has started a betting pool on the arrival date, and holds all the odds.',
+      '{first} keeps a column in a notebook for what each meal costs, and is adding it up.',
+      '{first} asks what the cargo insurance pays on a total loss, and who decides.',
+      '{first} is weighing a spare part in one hand and pricing it.'
     ]
   },
   pious: {
@@ -212,7 +224,10 @@ const TRAITS = {
       '{first} has tied a ribbon to a bulkhead, and blessed it.',
       '{first} murmurs a short blessing over the drive before each flip.',
       '{first} is reading, aloud and softly, from a worn book.',
-      '{first} is lighting a very small, very safe candle in a jar, and shielding it from the draught with a hand.'
+      '{first} is lighting a very small, very safe candle in a jar, and shielding it from the draught with a hand.',
+      '{first} touches the hatch frame before going through.',
+      '{first} keeps a cord and a coin on a shelf behind the bunk curtain, and does not explain them.',
+      '{first} says grace over the ration pack, in a language nobody else on board speaks.'
     ]
   },
   rude: {
@@ -222,7 +237,10 @@ const TRAITS = {
       '{first} is complaining about the coffee.',
       '{first}: "In my last ship, we had a proper bunk. With a door."',
       '{first} has an opinion about the way you are flying, and shares it, generously, at every turn.',
-      '{first} is glaring at the thermostat.'
+      '{first} is glaring at the thermostat.',
+      '{first}: "That is not how you stow a crate. That is how you lose a crate."',
+      '{first} is reading the maintenance log aloud and ranking the people in it.',
+      '{first} turned the vent fan off because of the noise. Somebody turned it back on.'
     ]
   },
   curious: {
@@ -232,7 +250,10 @@ const TRAITS = {
       '{first} has taken the panel off the galley clock to see what makes it tick.',
       '{first} is following the plume readout with a notebook, and has filled four pages.',
       '{first}: "But why does it hum at that particular note? Has anybody ever asked?"',
-      '{first} is pressing an ear to the bulkhead, listening to something nobody else can hear.'
+      '{first} is pressing an ear to the bulkhead, listening to something nobody else can hear.',
+      '{first} has asked the engineer what the third gauge is for, and is writing down the answer.',
+      '{first} is timing how long a dropped spoon takes to reach the deck under thrust, and has a number.',
+      '{first} reads the label on every cabinet and asks about the ones in another language.'
     ]
   },
   drunk: {
@@ -242,7 +263,10 @@ const TRAITS = {
       '{first} is humming, loudly, an old song from {home}, and has forgotten the second verse.',
       '{first} is sitting very carefully upright, with a mug that smells like anything but coffee.',
       '{first} has made a toast to the ship, and is now, tenderly, toasting the coffee maker.',
-      '{first} is cheerfully explaining something to a coaster.'
+      '{first} is cheerfully explaining something to a coaster.',
+      '{first} has found a bottle nobody remembers stowing, and is being generous with it.',
+      '{first} is walking the corridor with a hand on each wall, sure that it is straight.',
+      '{first} is singing the one verse of a song from {home} that they know, off key, twice.'
     ]
   },
   secretive: {
@@ -252,7 +276,10 @@ const TRAITS = {
       '{first} answers every question with a question, and does it very gracefully.',
       '{first} has a locked case, and a way of standing between it and everyone else.',
       '{first} is very quiet, and very watchful, and always knows where everyone is.',
-      '{first} deletes a message, and looks up, and smiles at you.'
+      '{first} deletes a message, and looks up, and smiles at you.',
+      '{first} reads a message on the hand terminal and turns the screen to the wall.',
+      '{first} has moved the locked case twice since breakfast.',
+      '{first} gives the date of arrival when asked where they were born.'
     ]
   },
   kind: {
@@ -262,7 +289,10 @@ const TRAITS = {
       '{first} noticed someone was tired, and quietly took the rest of their watch.',
       '{first} is sewing a torn sleeve, by a lamp, for someone who is not going to ask.',
       '{first} has left a note on the galley wall: "Ask me if you need anything. Anything at all."',
-      '{first} is humming, softly, at the sink, while washing everyone else\'s cups.'
+      '{first} is humming, softly, at the sink, while washing everyone else\'s cups.',
+      '{first} stays at the table until the one who is late for supper has eaten.',
+      '{first} has put a second blanket on whoever sleeps nearest the vent.',
+      '{first} wrote everyone\'s birthday in the galley log, and has marked the next one.'
     ]
   },
   brave: {
@@ -272,7 +302,10 @@ const TRAITS = {
       '{first} is calmly checking the emergency hatches, one by one, whistling.',
       '{first} has a plain scar, and a plain refusal to talk about it.',
       '{first}: "Hatch four is good. Hatch five is good. Hatch six is stiff, and I have oiled it."',
-      '{first} is smiling, in the face of a very small, very real problem with the coolant.'
+      '{first} is smiling, in the face of a very small, very real problem with the coolant.',
+      '{first} went out to check the antenna mount and came back in with a bolt.',
+      '{first} says the drive sounds fine, and lays a hand flat on the deck to be sure.',
+      '{first}: "If it breaks, tell me where. I will go and look."'
     ]
   },
   homesick: {
@@ -282,7 +315,10 @@ const TRAITS = {
       '{first} has gone very quiet, and is watching the viewport.',
       '{first} is making a dish from {home}, out of not-quite-right ingredients, and eating it with great seriousness.',
       '{first} is humming something from {home}, low and soft, and does not seem to know.',
-      '{first} keeps a stone from {home}, worn smooth, and turns it over, and over, and over.'
+      '{first} keeps a stone from {home}, worn smooth, and turns it over, and over, and over.',
+      '{first} has set a clock to the time on {home} and checks it at every watch change.',
+      '{first} asks what the weather is on {home}, and has asked everyone who has been there.',
+      '{first} is making tea the way they make it on {home}. It does not taste right, and they are drinking it anyway.'
     ]
   }
 };

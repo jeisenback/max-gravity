@@ -71,6 +71,17 @@ const RUMORS = {
     'A rumor that {c} on {p} is contaminated has, for the moment, cratered the price, though everyone knows it is nonsense.',
     'A company on {p} has folded, and its whole stock of {c} is being sold off at auction.',
   ],
+  // What the quartermaster says before the rumor, as the burn begins.
+  lead: [
+    '{first}: "Heard something at the last port."',
+    '{first}: "I had a word with the dock clerk before we cast off. Here is what he let slip."',
+    '{first}: "Overheard on the apron. Take it for what it is worth."',
+    '{first}: "A man at the counter was certain of this. I am less certain."',
+    '{first}: "Not confirmed, but the person who told me runs a warehouse."',
+    '{first}: "The loaders were swapping stories on the way out. One of them was worth hearing."',
+    '{first}: "I paid for a coffee and got this for free."',
+    '{first}: "Another captain mentioned this at the berth. She had no reason to lie."',
+  ],
 };
 
 // ---------- effect helpers used by events ----------
@@ -323,7 +334,8 @@ function enterTransit() {
   comm(`Burn plotted for ${SYSTEMS[to].name}: ${days} days. Crash couches ready.`);
   const qm = roleHolder('quartermaster');
   if (qm) {
-    comm(`${qm.first}: "Heard something at the last port."`);
+    const lead = linedText('lines:market-rumors', RUMORS).lead;
+    comm(lead[G.state.day % lead.length].replace('{first}', qm.first));  // by the day, and not by a draw, so the dice of the burn are the ones they were
     addRumor();
   }
 }

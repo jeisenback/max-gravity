@@ -140,7 +140,7 @@ function bondDay() {
 
 // ---------- the feeds ----------
 // A critic's verdict on a show, in quotes as it is quoted (the feed line about the critics).
-const CRITICS = ['"a triumph"', '"two hours I want back"', '"overlong but gorgeous"', '"a crime against drama"', '"the best thing since the Belt Wars series"'];
+const CRITICS = ['"a triumph"', '"two hours I want back"', '"overlong but gorgeous"', '"a crime against drama"', '"the best thing since the Belt Wars series"', '"a lot of ship for one plot"', '"fine, and then it kept going"', '"longer than the voyage it shows"', '"the only honest thing on the band this year"'];
 const sportName = l => `${l.sport[0].toUpperCase()}${l.sport.slice(1)}`;
 function feedLine() {
   const say = socialSay('feed');

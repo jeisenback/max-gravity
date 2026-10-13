@@ -85,7 +85,7 @@
  },
  {
   "key": "feed:600:35",
-  "text": "[Feed] Critics on Luna call \"Cold Harbor Blues\" \"two hours I want back\"."
+  "text": "[Feed] Critics on Luna call \"Cold Harbor Blues\" \"overlong but gorgeous\"."
  },
  {
   "key": "feed:600:39",
@@ -269,7 +269,7 @@
  },
  {
   "key": "feed:612:5",
-  "text": "[Feed] Critics on Luna call \"Hellas Station\" \"overlong but gorgeous\"."
+  "text": "[Feed] Critics on Luna call \"Hellas Station\" \"the best thing since the Belt Wars series\"."
  },
  {
   "key": "feed:612:8",
@@ -290,6 +290,10 @@
  {
   "key": "feed:612:18",
   "text": "[Feed] Red Tide Brass play a surprise show at a smelter on Pallas, and the crowd sings every word back. The refinery has the footage."
+ },
+ {
+  "key": "feed:612:21",
+  "text": "[Feed] Critics on Luna call \"Cold Harbor Blues\" \"a crime against drama\"."
  },
  {
   "key": "feed:612:22",
@@ -313,7 +317,7 @@
  },
  {
   "key": "feed:612:29",
-  "text": "[Feed] Critics on Luna call \"Hellas Station\" \"a crime against drama\"."
+  "text": "[Feed] Critics on Luna call \"Hellas Station\" \"a lot of ship for one plot\"."
  },
  {
   "key": "feed:612:30",
@@ -425,7 +429,7 @@
  },
  {
   "key": "feed:624:12",
-  "text": "[Feed] Critics on Luna call \"Hellas Station\" \"two hours I want back\"."
+  "text": "[Feed] Critics on Luna call \"Hellas Station\" \"overlong but gorgeous\"."
  },
  {
   "key": "feed:624:17",
@@ -521,7 +525,7 @@
  },
  {
   "key": "feed:636:29",
-  "text": "[Feed] Critics on Luna call \"Cold Harbor Blues\" \"the best thing since the Belt Wars series\"."
+  "text": "[Feed] Critics on Luna call \"Cold Harbor Blues\" \"longer than the voyage it shows\"."
  },
  {
   "key": "feed:636:30",
@@ -590,6 +594,10 @@
  {
   "key": "feed:648:15",
   "text": "[Feed] A leaked script says Amara Okonjo's character dies in the \"The Long Burn\" finale."
+ },
+ {
+  "key": "feed:648:16",
+  "text": "[Feed] Critics on Luna call \"Hellas Station\" \"longer than the voyage it shows\"."
  },
  {
   "key": "feed:648:17",
@@ -685,7 +693,7 @@
  },
  {
   "key": "feed:660:7",
-  "text": "[Feed] Critics on Luna call \"The Long Burn\" \"a crime against drama\"."
+  "text": "[Feed] Critics on Luna call \"The Long Burn\" \"fine, and then it kept going\"."
  },
  {
   "key": "feed:660:9",
@@ -718,6 +726,10 @@
  {
   "key": "feed:660:36",
   "text": "[Feed] A bootleg cut of \"The Long Burn\" is doing the rounds on the Belt stations, with a much better ending and a much worse soundtrack."
+ },
+ {
+  "key": "feed:660:40",
+  "text": "[Feed] Critics on Luna call \"Hellas Station\" \"fine, and then it kept going\"."
  },
  {
   "key": "headlines:660",
@@ -993,7 +1005,7 @@
  },
  {
   "key": "feed:684:7",
-  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"two hours I want back\"."
+  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"a crime against drama\"."
  },
  {
   "key": "feed:684:8",
@@ -1125,7 +1137,7 @@
  },
  {
   "key": "feed:696:35",
-  "text": "[Feed] Critics on Luna call \"Thin Air\" \"two hours I want back\"."
+  "text": "[Feed] Critics on Luna call \"Thin Air\" \"overlong but gorgeous\"."
  },
  {
   "key": "feed:696:37",
@@ -1369,7 +1381,7 @@
  },
  {
   "key": "feed:732:31",
-  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"overlong but gorgeous\"."
+  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"a lot of ship for one plot\"."
  },
  {
   "key": "feed:732:32",
@@ -1416,6 +1428,10 @@
   "text": "[Feed] Dalia Holloway and Nadia Ferreira are feuding on the feeds again. It is the best thing on."
  },
  {
+  "key": "feed:744:6",
+  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"two hours I want back\"."
+ },
+ {
   "key": "feed:744:8",
   "text": "[Feed] The Hygiea Ghosts lead the Ring-ball League with 15 wins."
  },
@@ -1433,7 +1449,7 @@
  },
  {
   "key": "feed:744:27",
-  "text": "[Feed] Critics on Luna call \"Thin Air\" \"the best thing since the Belt Wars series\"."
+  "text": "[Feed] Critics on Luna call \"Thin Air\" \"longer than the voyage it shows\"."
  },
  {
   "key": "feed:744:29",
@@ -1597,7 +1613,7 @@
  },
  {
   "key": "feed:756:6",
-  "text": "[Feed] Critics on Luna call \"Seven Decks\" \"two hours I want back\"."
+  "text": "[Feed] Critics on Luna call \"Seven Decks\" \"overlong but gorgeous\"."
  },
  {
   "key": "feed:756:8",
@@ -1653,7 +1669,7 @@
  },
  {
   "key": "feed:756:37",
-  "text": "[Feed] Critics on Luna call \"Seven Decks\" \"overlong but gorgeous\"."
+  "text": "[Feed] Critics on Luna call \"Seven Decks\" \"the best thing since the Belt Wars series\"."
  },
  {
   "key": "headlines:756",
@@ -1761,7 +1777,7 @@
  },
  {
   "key": "feed:768:36",
-  "text": "[Feed] Critics on Luna call \"Ice Hauler Diaries\" \"the best thing since the Belt Wars series\"."
+  "text": "[Feed] Critics on Luna call \"Ice Hauler Diaries\" \"the only honest thing on the band this year\"."
  },
  {
   "key": "headlines:768",
@@ -2057,7 +2073,7 @@
  },
  {
   "key": "feed:816:2",
-  "text": "[Feed] Critics on Luna call \"Tharsis Heights\" \"a crime against drama\"."
+  "text": "[Feed] Critics on Luna call \"Tharsis Heights\" \"fine, and then it kept going\"."
  },
  {
   "key": "feed:816:3",
@@ -2069,7 +2085,7 @@
  },
  {
   "key": "feed:816:6",
-  "text": "[Feed] Critics on Luna call \"Tharsis Heights\" \"two hours I want back\"."
+  "text": "[Feed] Critics on Luna call \"Tharsis Heights\" \"a crime against drama\"."
  },
  {
   "key": "feed:816:8",
@@ -2297,11 +2313,11 @@
  },
  {
   "key": "feed:828:16",
-  "text": "[Feed] Critics on Luna call \"Tharsis Heights\" \"the best thing since the Belt Wars series\"."
+  "text": "[Feed] Critics on Luna call \"Tharsis Heights\" \"longer than the voyage it shows\"."
  },
  {
   "key": "feed:828:19",
-  "text": "[Feed] Critics on Luna call \"Lagrange\" \"the best thing since the Belt Wars series\"."
+  "text": "[Feed] Critics on Luna call \"Lagrange\" \"longer than the voyage it shows\"."
  },
  {
   "key": "feed:828:20",
@@ -2489,7 +2505,7 @@
  },
  {
   "key": "feed:852:20",
-  "text": "[Feed] Critics on Luna call \"Dust Marshals\" \"a triumph\"."
+  "text": "[Feed] Critics on Luna call \"Dust Marshals\" \"two hours I want back\"."
  },
  {
   "key": "feed:852:25",
@@ -2509,7 +2525,7 @@
  },
  {
   "key": "feed:852:35",
-  "text": "[Feed] Critics on Luna call \"Tharsis Heights\" \"overlong but gorgeous\"."
+  "text": "[Feed] Critics on Luna call \"Tharsis Heights\" \"the best thing since the Belt Wars series\"."
  },
  {
   "key": "feed:852:38",
@@ -2608,10 +2624,6 @@
   "text": "[Feed] The Vesta Hammers are still celebrating their Ring-ball League title, and the other fans are sick of it."
  },
  {
-  "key": "feed:864:15",
-  "text": "[Feed] Critics on Luna call \"Lagrange\" \"a crime against drama\"."
- },
- {
   "key": "feed:864:19",
   "text": "[Feed] Dru Oyelaran walked off the set of \"Lagrange\" after a fight about the lighting."
  },
@@ -2641,7 +2653,7 @@
  },
  {
   "key": "feed:864:36",
-  "text": "[Feed] Critics on Luna call \"Dust Marshals\" \"the best thing since the Belt Wars series\"."
+  "text": "[Feed] Critics on Luna call \"Dust Marshals\" \"longer than the voyage it shows\"."
  },
  {
   "key": "feed:864:37",
@@ -2653,7 +2665,7 @@
  },
  {
   "key": "feed:864:39",
-  "text": "[Feed] Critics on Luna call \"Lagrange\" \"a triumph\"."
+  "text": "[Feed] Critics on Luna call \"Lagrange\" \"two hours I want back\"."
  },
  {
   "key": "headlines:864",
@@ -2685,7 +2697,7 @@
  },
  {
   "key": "feed:876:3",
-  "text": "[Feed] Critics on Luna call \"Lagrange\" \"overlong but gorgeous\"."
+  "text": "[Feed] Critics on Luna call \"Lagrange\" \"the best thing since the Belt Wars series\"."
  },
  {
   "key": "feed:876:4",
@@ -2710,6 +2722,10 @@
  {
   "key": "feed:876:17",
   "text": "[Feed] Episode 5 of \"Dust Marshals\" ends on a cliffhanger. Half the Belt is furious."
+ },
+ {
+  "key": "feed:876:18",
+  "text": "[Feed] Critics on Luna call \"Dust Marshals\" \"a triumph\"."
  },
  {
   "key": "feed:876:19",
@@ -3033,7 +3049,7 @@
  },
  {
   "key": "feed:900:31",
-  "text": "[Feed] Critics on Luna call \"Night Shift on Ceres\" \"a triumph\"."
+  "text": "[Feed] Critics on Luna call \"Night Shift on Ceres\" \"two hours I want back\"."
  },
  {
   "key": "feed:900:33",
@@ -3065,7 +3081,7 @@
  },
  {
   "key": "feed:912:11",
-  "text": "[Feed] Critics on Luna call \"Night Shift on Ceres\" \"a crime against drama\"."
+  "text": "[Feed] Critics on Luna call \"Night Shift on Ceres\" \"a lot of ship for one plot\"."
  },
  {
   "key": "feed:912:16",
@@ -3077,7 +3093,7 @@
  },
  {
   "key": "feed:912:21",
-  "text": "[Feed] Critics on Luna call \"Night Shift on Ceres\" \"two hours I want back\"."
+  "text": "[Feed] Critics on Luna call \"Night Shift on Ceres\" \"overlong but gorgeous\"."
  },
  {
   "key": "feed:912:28",
@@ -3121,7 +3137,7 @@
  },
  {
   "key": "feed:924:11",
-  "text": "[Feed] Critics on Luna call \"Night Shift on Ceres\" \"overlong but gorgeous\"."
+  "text": "[Feed] Critics on Luna call \"Night Shift on Ceres\" \"the best thing since the Belt Wars series\"."
  },
  {
   "key": "feed:924:16",
@@ -3180,6 +3196,10 @@
   "text": "[Feed] Tiko Dagny, star of \"Letters from Luna\", was spotted on Hygiea with Kwame Kaur. Nobody is confirming anything."
  },
  {
+  "key": "feed:936:7",
+  "text": "[Feed] Critics on Luna call \"Night Shift on Ceres\" \"a triumph\"."
+ },
+ {
   "key": "feed:936:10",
   "text": "[Feed] A leaked script says Tiko Dagny's character dies in the \"Letters from Luna\" finale."
  },
@@ -3229,7 +3249,7 @@
  },
  {
   "key": "feed:948:16",
-  "text": "[Feed] Critics on Luna call \"Night Shift on Ceres\" \"the best thing since the Belt Wars series\"."
+  "text": "[Feed] Critics on Luna call \"Night Shift on Ceres\" \"longer than the voyage it shows\"."
  },
  {
   "key": "feed:948:19",
@@ -3237,11 +3257,15 @@
  },
  {
   "key": "feed:948:20",
-  "text": "[Feed] Critics on Luna call \"Letters from Luna\" \"two hours I want back\"."
+  "text": "[Feed] Critics on Luna call \"Letters from Luna\" \"a crime against drama\"."
  },
  {
   "key": "feed:948:26",
   "text": "[Feed] Jo Esteban-Li and Jo Pike are feuding on the feeds again. It is the best thing on."
+ },
+ {
+  "key": "feed:948:28",
+  "text": "[Feed] Critics on Luna call \"Night Shift on Ceres\" \"the only honest thing on the band this year\"."
  },
  {
   "key": "feed:948:31",
@@ -3249,7 +3273,7 @@
  },
  {
   "key": "feed:948:32",
-  "text": "[Feed] Critics on Luna call \"Letters from Luna\" \"a triumph\"."
+  "text": "[Feed] Critics on Luna call \"Letters from Luna\" \"two hours I want back\"."
  },
  {
   "key": "feed:948:33",
@@ -3361,7 +3385,7 @@
  },
  {
   "key": "feed:960:39",
-  "text": "[Feed] Critics on Luna call \"Letters from Luna\" \"a crime against drama\"."
+  "text": "[Feed] Critics on Luna call \"Letters from Luna\" \"fine, and then it kept going\"."
  },
  {
   "key": "headlines:960",
@@ -3733,7 +3757,7 @@
  },
  {
   "key": "feed:697:11",
-  "text": "[Feed] Critics on Luna call \"The Long Burn\" \"two hours I want back\"."
+  "text": "[Feed] Critics on Luna call \"The Long Burn\" \"overlong but gorgeous\"."
  },
  {
   "key": "feed:697:13",
@@ -4036,6 +4060,14 @@
   "text": "[Feed] Dru Iwu gives a two-hour interview about \"Lagrange\" and does not mention Ama Ghosh once. The comments are on fire."
  },
  {
+  "key": "feed:833:3",
+  "text": "[Feed] Critics on Luna call \"Tharsis Heights\" \"a lot of ship for one plot\"."
+ },
+ {
+  "key": "feed:833:11",
+  "text": "[Feed] Critics on Luna call \"Lagrange\" \"a lot of ship for one plot\"."
+ },
+ {
   "key": "feed:833:31",
   "text": "[Feed] The Lunar Cup is back in a few weeks, and the Luna Grays have signed a new striker, or so they say."
  },
@@ -4216,6 +4248,10 @@
   "text": "[Feed] \"The Burning Dust\" by Luna Static is on every station playlist from Mercury to Titan."
  },
  {
+  "key": "feed:954:34",
+  "text": "[Feed] Critics on Luna call \"Letters from Luna\" \"overlong but gorgeous\"."
+ },
+ {
   "key": "headlines:954",
   "text": "Watching: \"Cold Harbor Blues\", a Warren noir, episode 2 of 10. | Watching: \"Night Shift on Ceres\", a Warren noir, episode 11 of 12. | Watching: \"Letters from Luna\", a romance, episode 7 of 10. | Reading: \"The Salt Orbit\" by Imre Vallis. | Reading: \"Borrowed Water\" by Dunya Okafor. | Listening: \"The Burning Dust\" by Luna Static. | Ring-ball League: preseason. | Dome League: the Olympus Climbers are champions. | Lunar Cup: Titan Frost 4, Lagos Orbitals 3. The Titan Frost lead with 12 wins."
  },
@@ -4309,7 +4345,7 @@
  },
  {
   "key": "feed:707:5",
-  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"the best thing since the Belt Wars series\"."
+  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"the only honest thing on the band this year\"."
  },
  {
   "key": "feed:707:10",
@@ -4496,6 +4532,10 @@
   "text": "[Feed] A leaked script says Imi Iwu's character dies in the \"Lagrange\" finale."
  },
  {
+  "key": "feed:836:34",
+  "text": "[Feed] Critics on Luna call \"Lagrange\" \"the only honest thing on the band this year\"."
+ },
+ {
   "key": "feed:836:36",
   "text": "[Feed] Jo Rourke gives a two-hour interview about \"Lagrange\" and does not mention Oliver Tanaka once. The comments are on fire."
  },
@@ -4525,7 +4565,7 @@
  },
  {
   "key": "feed:968:3",
-  "text": "[Feed] Critics on Luna call \"Letters from Luna\" \"the best thing since the Belt Wars series\"."
+  "text": "[Feed] Critics on Luna call \"Letters from Luna\" \"longer than the voyage it shows\"."
  },
  {
   "key": "feed:968:6",
@@ -4593,7 +4633,7 @@
  },
  {
   "key": "feed:722:13",
-  "text": "[Feed] Critics on Luna call \"Thin Air\" \"overlong but gorgeous\"."
+  "text": "[Feed] Critics on Luna call \"Thin Air\" \"the best thing since the Belt Wars series\"."
  },
  {
   "key": "feed:722:14",
@@ -4860,6 +4900,10 @@
   "text": "The lagged stream from Ceres comes in: Lagos Orbitals against Titan Frost, low-g football. Final score 1 to 5. Dev is unbearable for the rest of the day. Ana, Fan1, Fan7 and Fan8 take it with some grace."
  },
  {
+  "key": "feed:711:10",
+  "text": "[Feed] Critics on Luna call \"Thin Air\" \"a crime against drama\"."
+ },
+ {
   "key": "feed:711:16",
   "text": "[Feed] Yuri Rourke and Dru Quesada are feuding on the feeds again. It is the best thing on."
  },
@@ -4909,7 +4953,7 @@
  },
  {
   "key": "feed:842:2",
-  "text": "[Feed] Critics on Luna call \"Lagrange\" \"two hours I want back\"."
+  "text": "[Feed] Critics on Luna call \"Lagrange\" \"overlong but gorgeous\"."
  },
  {
   "key": "feed:842:3",
@@ -4946,6 +4990,10 @@
  {
   "key": "feed:842:24",
   "text": "[Feed] A cover of \"Quiet Rations\" sung by a hauler crew in the ice lanes is quietly going around, and it is, by any measure, better than the original."
+ },
+ {
+  "key": "feed:842:25",
+  "text": "[Feed] Critics on Luna call \"Lagrange\" \"a triumph\"."
  },
  {
   "key": "feed:842:28",
@@ -5025,7 +5073,7 @@
  },
  {
   "key": "feed:war:10",
-  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"a crime against drama\"."
+  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"a lot of ship for one plot\"."
  },
  {
   "key": "feed:war:12",
@@ -5041,7 +5089,7 @@
  },
  {
   "key": "feed:war:16",
-  "text": "[Feed] Critics on Luna call \"Thin Air\" \"a triumph\"."
+  "text": "[Feed] Critics on Luna call \"Thin Air\" \"two hours I want back\"."
  },
  {
   "key": "feed:war:19",
@@ -5133,7 +5181,7 @@
  },
  {
   "key": "feed:war:62",
-  "text": "[Feed] Critics on Luna call \"Thin Air\" \"two hours I want back\"."
+  "text": "[Feed] Critics on Luna call \"Thin Air\" \"overlong but gorgeous\"."
  },
  {
   "key": "feed:war:64",
@@ -5141,7 +5189,7 @@
  },
  {
   "key": "feed:war:66",
-  "text": "[Feed] Critics on Luna call \"The Long Burn\" \"overlong but gorgeous\"."
+  "text": "[Feed] Critics on Luna call \"The Long Burn\" \"a crime against drama\"."
  },
  {
   "key": "feed:war:67",
@@ -5228,6 +5276,10 @@
   "text": "[Feed] The finale of \"The Long Burn\" is on this week. Half the system has cleared its schedule."
  },
  {
+  "key": "feed:war:151",
+  "text": "[Feed] Critics on Luna call \"The Long Burn\" \"a lot of ship for one plot\"."
+ },
+ {
   "key": "feed:war:160",
   "text": "[Feed] Dru Marsh, star of \"Belt Wars\", was spotted on Pallas with Priya Singh. Nobody is confirming anything."
  },
@@ -5241,7 +5293,7 @@
  },
  {
   "key": "feed:war:173",
-  "text": "[Feed] Critics on Luna call \"The Long Burn\" \"a triumph\"."
+  "text": "[Feed] Critics on Luna call \"The Long Burn\" \"two hours I want back\"."
  },
  {
   "key": "feed:war:177",
@@ -5249,7 +5301,7 @@
  },
  {
   "key": "feed:gossip:1",
-  "text": "[Feed] Critics on Luna call \"Thin Air\" \"two hours I want back\"."
+  "text": "[Feed] Critics on Luna call \"Thin Air\" \"a crime against drama\"."
  },
  {
   "key": "feed:gossip:2",
@@ -5281,7 +5333,7 @@
  },
  {
   "key": "feed:gossip:10",
-  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"a crime against drama\"."
+  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"a lot of ship for one plot\"."
  },
  {
   "key": "feed:gossip:11",
@@ -5409,11 +5461,11 @@
  },
  {
   "key": "feed:gossip:78",
-  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"overlong but gorgeous\"."
+  "text": "[Feed] Critics on Luna call \"Belt Wars\" \"a crime against drama\"."
  },
  {
   "key": "feed:gossip:84",
-  "text": "[Feed] Critics on Luna call \"The Long Burn\" \"overlong but gorgeous\"."
+  "text": "[Feed] Critics on Luna call \"The Long Burn\" \"the best thing since the Belt Wars series\"."
  },
  {
   "key": "feed:gossip:85",
@@ -5470,6 +5522,10 @@
  {
   "key": "feed:gossip:149",
   "text": "[Feed] Dock gossip from Mars: Pia Rowe is still telling anyone who listens, \"You lent me a coat.\""
+ },
+ {
+  "key": "feed:gossip:151",
+  "text": "[Feed] Critics on Luna call \"The Long Burn\" \"a lot of ship for one plot\"."
  },
  {
   "key": "feed:gossip:155",

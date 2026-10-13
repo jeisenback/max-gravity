@@ -39,6 +39,12 @@ const FLARE_NEWS = [
   'A string of pirate attacks near {system} has haulers taking the long way round.',
   'Insurance rates around {system} have doubled after a run of raids, and some captains are refusing the lane.',
   'Pirate raiders are reported at {system}: two freighters missing, and the navy is "looking into it".',
+  'Two haulers out of {system} have missed their call-in, and the harbor master has stopped saying "late".',
+  'Traffic control at {system} is routing ships around a stretch of lane that has lost three this month.',
+  'Freight rates out of {system} are up by a quarter. The carriers blame the pirates.',
+  'A tanker crew came into {system} short two people and a cargo, and will say only that the other ship had a good transponder.',
+  'The navy has posted a notice at {system}: runs there are advised to travel in pairs.',
+  'Salvage crews at {system} report a drive section with no ship around it, cut clean.',
 ];
 
 // Unrest beyond what is normal there, which is what drives NPC shipping away.
