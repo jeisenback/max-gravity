@@ -45,7 +45,7 @@ The tic report and the other counts stay as a smoke alarm. They find known habit
 ## Open decisions for the owner
 
 1. **Restraint at the big beats.** Decided by the owner: too much restraint is wrong. A feeling may be stated plainly where the scene is about it (deaths, departures, farewells, #356 and #357). `docs/prose-style.md` rules 3, 4, 8 and 9 were written for the opposite and need to be rewritten to match, as described below.
-2. **Repetition.** Aim 4 needs several versions of a scene or line that plays often. The engine has no variant pool yet. Is that in this pass (writing the versions) or a separate engine task first?
+2. **Repetition.** Aim 4 needs several versions of a moment that plays often. The engine already has pools: 39 line tables (`js/linetables.js`) hold 661 lines, drawn uniformly at random with no memory of the last pick. A scene's own text is one string. In 8 soak chapters (`node tools/soak.js --scenes`) the most-played scene came up about 3 times a chapter, out of about 110 scene plays, so the repeat that matters is in the line pools, not the scenes. Is the work in this pass (grow the small pools, add a no-repeat memory, and give the few most-played scenes more than one text) or is some of it a separate engine task?
 3. **Status.** Does this replace "draft" on `docs/prose-style.md` as the stated purpose, with the style doc as the means?
 
 ## What the first decision changes in the style doc
