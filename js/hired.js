@@ -248,7 +248,7 @@ function sail() {
     h.fund -= cost;
   }
   h.run = { ...plan, cost, day: st.day, from: st.planet };
-  if (plan.ice) { h.run.ice = { edge: 0 }; h.iceAt = st.day; }  // the ice is cut on the way, not bought
+  if (plan.ice) { h.run.ice = { edge: 0 }; h.iceAt = st.day; h.iceRuns = (h.iceRuns || 0) + 1; }  // the ice is cut on the way, not bought
   h.plan = null;
   st.dest = plan.sid;
   st.route = { dock: plan.planet, go: true };
