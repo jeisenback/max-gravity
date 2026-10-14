@@ -46,7 +46,7 @@ function treatInjuries(planet) {
     UI.notes.push(`${medic.first} patches up ${hurt.map(id => person(id).first).join(' and ')}.`);
   } else {
     const st = G.state, afford = hurt.slice(0, Math.floor(st.credits / CLINIC_FEE));
-    for (const id of afford) delete injured()[id];
+    for (const id of afford) { delete injured()[id]; like(person(id), 1, sceneSay('scene:memories', 'clinic.memory')); }  // the fee is the ship's, and they remember who paid
     st.credits -= afford.length * CLINIC_FEE;
     if (afford.length) UI.notes.push(`The clinic on ${planet.name} treats ${afford.map(id => person(id).first).join(' and ')} for ${fmt(afford.length * CLINIC_FEE)} cr. A medic aboard would have done it for free.`);
     if (afford.length < hurt.length) UI.notes.push(`You can't afford the clinic for everyone; ${hurt.length - afford.length} crew stay injured.`);

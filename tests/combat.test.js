@@ -288,3 +288,20 @@ test('a destroyed pirate sometimes leaves an escape pod, never twice in forty da
   assert.equal(r.unlucky, null); assert.equal(r.trader, null); assert.equal(r.bounty, null);
   await done();
 });
+
+test('a hurt crew member treated at the clinic remembers who paid, and one treated by the ship\'s medic has nothing to remember', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    const out = {}, st = G.state;
+    const mk = () => { const c = makeCrewCandidate('earth'); c.role = 'gunner'; registerPerson(c); st.crew.push(c.id); st.injured = { [c.id]: true }; return c; };
+    st.credits = 5000;
+    const a = mk(); treatInjuries(currentPlanet());
+    out.clinic = person(a.id).memories.filter(m => /paid the clinic/.test(m)).length; out.healedA = !st.injured[a.id];
+    const m = makeCrewCandidate('earth'); m.role = 'medic'; m.skill = 1; registerPerson(m); st.crew.push(m.id);
+    const b = mk(); treatInjuries(currentPlanet());
+    out.medic = person(b.id).memories.filter(x => /paid the clinic/.test(x)).length; out.healedB = !st.injured[b.id];
+    return out;
+  });
+  assert.deepEqual(r, { clinic: 1, healedA: true, medic: 0, healedB: true });
+  await done();
+});
