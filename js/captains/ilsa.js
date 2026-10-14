@@ -160,7 +160,7 @@ CAST.ilsa = {
             'shows the pile heating faster than the pumps can carry it. Ilsa is already at the shielded door, pulling on gloves. "There is a manual ' +
             'scram at the back of the housing," she says. "I know where it is. Nobody else does. Give me three minutes." She says it to the bridge, ' +
             'item by item.')
-          + (worn ? ' The drive has been run hard, and a worn plant is a bad plant to go into.' : ' The plant is in good order, which is something.')
+          + (worn ? ' The drive has been run hard, and a worn plant is a bad plant to go into.' : ' The plant is in good order.')
           + (medic ? ` ${medic.first} has the med kit open at the door.` : ' There is nobody aboard who can do more than a field dressing, and she knows it.')
           + (roleHolder('engineer') ? ' The engineer is suiting up behind her.' : ' There is nobody who knows the housing but her.')
           + ' She waits for your answer, and has already started on the second glove.';

@@ -168,7 +168,7 @@ CAST.cato = {
         return ('The alarm is a flat two-tone from the hold, and the board shows the number two ice pod with a seal gone and the load moving. Cato is ' +
             'already at the hatch with a lashing strap over one shoulder. "I know where the load goes," he says. "It is my hold. Give me ten minutes." ' +
             'Ice does not move quickly, but it does not stop, either, and the pod it is leaning on is not rated for it.')
-          + (low ? ' The hull has taken a beating, and a bad hull is a bad place for a load to shift.' : ' The hull is sound, which is something.')
+          + (low ? ' The hull has taken a beating, and a bad hull is a bad place for a load to shift.' : ' The hull is sound.')
           + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There is nobody aboard who can do more than a field dressing, and he knows it.')
           + (hands >= 2 ? ' Both ice hands are suited and waiting.' : ' There are not enough hands on the ice for a load like this.')
           + ' He waits for your answer, and has already started on the strap.';
