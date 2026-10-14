@@ -39,7 +39,7 @@ const pinAll = () => {
     G.dialog = null; G.nextEvent = null;
     hiredCaptain().opinion = st.op;
     for (const f of st.flags || []) captainFlag(f);
-    if (st.mate) { const p = castPerson(CAST_PAIRS.earth[0]); p.role = CAST[p.cast].role; G.state.crew.push(p.id); p.opinion = 99; }
+    if (st.mate) { const p = castPerson(CAST_PAIRS.earth[0]); p.role = CAST[p.cast].role; if (!G.state.crew.includes(p.id)) G.state.crew.push(p.id); p.opinion = 99; }  // the cast pair is aboard already; a second push made the crew line name them twice
     if (st.xoDead) castRec(CAPTAINS[key].xo).status = 'dead';
   };
   for (const key of Object.keys(CAPTAINS).filter(k => CAPTAINS[k].goodbye)) {
