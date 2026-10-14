@@ -152,7 +152,7 @@ async function sceneRows() {
   const page = await ctx.newPage();
   await page.goto(url.replace(/index\.html$/, 'editor.html'));
   await page.waitForFunction(() => window.SceneIndex && SceneIndex.rows, null, { timeout: 60000 });
-  const rows = await page.evaluate(() => SceneIndex.rows.filter(r => r.title).map(r => ({ id: r.id, title: r.title, off: !!r.off, storylet: r.kind === 'data' && !r.registry })));
+  const rows = await page.evaluate(() => SceneIndex.rows.filter(r => r.title).map(r => ({ id: r.id, title: r.title, off: !!r.off, storylet: r.kind === 'data' && !r.registry, table: !!r.table })));
   await ctx.close();
   return rows;
 }
@@ -162,13 +162,16 @@ async function sceneRows() {
 function scenesReport(runs, rows, legs, top = 10) {
   const played = new Map(), add = (key, label, n) => { const p = played.get(key) || { label, plays: 0, seeds: 0 }; p.plays += n; p.seeds++; played.set(key, p); };
   for (const r of runs) { for (const [id, n] of Object.entries(r.byId)) add(`id:${id}`, id, n); for (const [title, n] of Object.entries(r.byTitle)) add(`title:${title}`, title, n); }
-  const total = [...played.values()].reduce((t, p) => t + p.plays, 0), kept = rows.filter(r => !r.off), shared = new Map(), none = { plays: 0, seeds: 0 };
+  // A row the plays cannot be matched to is not judged: a table of words (scene:, lines:, beats:), a label of a family of scenes (social, family, bar) and a title with a {word} in it (the plays carry the filled one).
+  const unmatched = r => !r.storylet && (r.table || /^(scene|lines|beats|social|family|bar):/.test(r.id) || /\{\w+\}/.test(r.title));
+  const total = [...played.values()].reduce((t, p) => t + p.plays, 0), all = rows.filter(r => !r.off), kept = all.filter(r => !unmatched(r)), shared = new Map(), none = { plays: 0, seeds: 0 };
   const keyOf = r => (r.storylet ? `id:${r.id}` : `title:${r.title}`);
   for (const r of kept.filter(r => !r.storylet)) shared.set(r.title, (shared.get(r.title) || 0) + 1);
   const line = r => { const p = played.get(keyOf(r)) || none; return `  ${r.id}  ${r.title}${shared.get(r.title) > 1 && !r.storylet ? ' (title shared)' : ''}: ${p.plays} plays, ${p.seeds} of ${runs.length} seeds`; };
   const dead = kept.filter(r => !played.has(keyOf(r)));
   const out = [`scenes: ${total} plays over ${runs.length} seeds (${runs.map(r => r.seed).join(', ')}), up to ${legs} legs each; a storylet is found by its id, any other scene by its title`];
-  out.push(`${kept.length} scenes in the narrow build (${rows.length - kept.length} left out of it are not counted):`, ...kept.map(line));
+  out.push(`${kept.length} scenes in the narrow build (${rows.length - all.length} left out of it are not counted):`, ...kept.map(line));
+  out.push(`not judged, since the plays cannot be matched to them (words tables, labels of scene families, titles with a {word}): ${all.length - kept.length}`);
   out.push(`never played in this sample: ${dead.length} of ${kept.length}`, ...dead.map(r => `  ${r.id}  ${r.title}`));
   const label = ([key, p]) => (key.startsWith('id:') ? `${(rows.find(r => r.id === p.label) || {}).title || p.label} (${p.label})` : p.label);
   out.push(`largest share of all plays:`, ...[...played].sort((a, b) => b[1].plays - a[1].plays || (a[0] < b[0] ? -1 : 1)).slice(0, top).map(e => `  ${label(e)}: ${e[1].plays} plays, ${Math.round(1000 * e[1].plays / Math.max(1, total)) / 10} percent, ${e[1].seeds} of ${runs.length} seeds`));

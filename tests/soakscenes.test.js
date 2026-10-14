@@ -14,6 +14,10 @@ const rows = [
   { id: 'cast:x:intro', title: 'Intro', off: false, storylet: false },
   { id: 'cast:y:intro', title: 'Intro', off: false, storylet: false },
   { id: 'cast:z:late', title: 'Late', off: false, storylet: false },
+  { id: 'lines:x', title: 'A table', off: false, storylet: false, table: true },
+  { id: 'scene:flight-notes', title: 'Notes of flight', off: false, storylet: false },
+  { id: 'social:feed', title: 'Social: feed', off: false, storylet: false },
+  { id: 'away:package', title: 'A Package for {dest}', off: false, storylet: false },
 ];
 const runs = [
   { seed: 1, byId: { 'port-a': 3 }, byTitle: { Intro: 1, 'Drawn Title': 2 } },
@@ -26,6 +30,8 @@ test('the report lists each scene the narrow build keeps with its plays, the one
   assert.ok(out.includes('5 scenes in the narrow build (1 left out of it are not counted):'));
   assert.ok(out.includes('  port-a  Alpha: 4 plays, 2 of 2 seeds'));
   assert.ok(out.includes('  port-b  Beta: 0 plays, 0 of 2 seeds'));
+  assert.ok(out.includes('not judged, since the plays cannot be matched to them (words tables, labels of scene families, titles with a {word}): 4'), 'a table, a family label and a templated title are not judged');
+  assert.ok(!out.some(l => l.includes('lines:x') && l.includes('plays')), 'and are not listed as unplayed');
   assert.ok(out.includes('  cast:x:intro  Intro (title shared): 2 plays, 2 of 2 seeds'), 'a scene that is not a storylet is matched by its title, and says so when others share it');
   assert.ok(!out.some(l => l.includes('port-c')), 'a scene the narrow build leaves out is not listed');
   assert.ok(out.includes('never played in this sample: 2 of 5'));
