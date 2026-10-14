@@ -505,12 +505,13 @@ function chapterRecap() {
     {}).trusted).map(k => castPerson(k).first), favor = crew.filter(c => c.story && c.story.beat >= 4).map(c => c.first), loyal = crew.filter(c => c.loyal).map(c => c.first);
   const people = [near.length ? lookSay('near', { list: near.map(x => lookSay('near.item', { name: x.name, word: opinionWord(x.c.opinion) })).join(', ') }) : lookSay('nobody'),
     told.length ? lookSay('told', { list: list(told) }) : '', favor.length ? lookSay('favor', { list: list(favor) }) : '', loyal.length ? lookSay('loyal', { list: list(loyal) }) : '', trusted.length ? lookSay('trusted', { list: list(trusted) }) : ''].filter(Boolean).join(' ');
+  const closest = near.find(x => x.c.memories.length), kept = closest ? lookSay('kept', { name: closest.name, line: esc(closest.c.memories[closest.c.memories.length - 1].replace(/^(Day \d+|\d+ \w+ \d+): /, '')) }) : '';  // the closest one's latest memory, in their words
   const lived = goodbyeFacts(h.flags || {}).map(f => f.recap).join(' ');  // what the hand went through (captains.js)
   const lost = (st.memorial || []).length ? lookSay('lost', { list: list((st.memorial || []).map(m => memorialName(m))) }) : '';
   const ties = webTies(folk()).slice(0, 2).map(x => lookSay('ties', { a: x.a.p.first, b: x.b.p.first, word: bondWord(x.n) })).join(' ');
   const marks = [cap, ...crew].flatMap(c => (c ? marksOf(c) : [])).sort((a, b) => b.day - a.day).slice(0, 3).map(m => `${dateOf(m.day)}: ${m.text}`).join(' ');
   return {
-    title: lookSay('title'), personal: true, text: [work, why, lived, people, lost, ties, marks].filter(Boolean).join('</p><p>'),
+    title: lookSay('title'), personal: true, text: [work, why, lived, people, kept, lost, ties, marks].filter(Boolean).join('</p><p>'),
     choices: [{ label: lookSay('label'), run: () => lookSay('result') }],
   };
 }

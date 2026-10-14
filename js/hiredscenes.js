@@ -248,7 +248,7 @@ const SCENE_LINES = {
     'why.away': 'You signed on to be somewhere else. It is {days} days and {runs} from the dock you left.',
     'near': 'Closest to you: {list}.', 'near.item': '{name} ({word})', 'near.captain': 'Captain {last}', 'nobody': 'Nobody aboard was a friend yet.',
     'told': 'Told you what they want: {list}.', 'favor': 'You took on a favor for {list}.', 'loyal': 'Loyal to the ship: {list}.', 'trusted': 'Let you do their work: {list}.',
-    'lost': 'Lost on the way: {list}.', 'ties': '{a} and {b}: {word}.',
+    'kept': '{name} kept this: "{line}"', 'lost': 'Lost on the way: {list}.', 'ties': '{a} and {b}: {word}.',
   },
   'scene:world-news': {  // the news of the world (js/world.js, js/outpost.js, js/social.js), kept in the journal and the inbox as plain text
     'hauler': 'The hauler {ship}, carrying {tons}t of {good} to {to}, never arrived.',
