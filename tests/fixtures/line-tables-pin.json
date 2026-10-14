@@ -2945,19 +2945,35 @@
  },
  {
   "key": "life:engine:any:2",
-  "text": "Cass is reading the reactor log on the wall slate, line by line."
- },
- {
-  "key": "life:engine:any:3",
   "text": "Cass has a hand flat on the bulkhead, counting the pulses of the drive."
  },
  {
-  "key": "life:engine:any:4",
+  "key": "life:engine:any:3",
   "text": "Cass is wiping coolant off a fitting with the hem of their shirt."
  },
  {
+  "key": "life:engine:any:4",
+  "text": "Cass is checking the engine room temperature gauge and tapping it."
+ },
+ {
   "key": "life:engine:any:5",
-  "text": "Cass is warming their hands on the coolant housing."
+  "text": "Cass is reading the reactor log on the wall slate, line by line."
+ },
+ {
+  "key": "life:engine:any:6",
+  "text": "Cass is reading the coolant pressure off the wall slate."
+ },
+ {
+  "key": "life:engine:any:7",
+  "text": "Cass is standing in the passage outside the engine room, listening to the pumps cycle."
+ },
+ {
+  "key": "life:engine:any:8",
+  "text": "Cass is checking the engine room temperature gauge and tapping it."
+ },
+ {
+  "key": "life:engine:any:9",
+  "text": "Cass is holding a rag and a wrench for the engineer."
  },
  {
   "key": "life:hold:cat:0",
@@ -3033,19 +3049,35 @@
  },
  {
   "key": "life:hold:gunner:2",
-  "text": "Cass is oiling the bolt of a rifle laid across two crates."
- },
- {
-  "key": "life:hold:gunner:3",
   "text": "Cass is pacing the hold and counting the steps to each hatch."
  },
  {
-  "key": "life:hold:gunner:4",
+  "key": "life:hold:gunner:3",
   "text": "Cass is checking the lock on the small-arms locker, and then checking it again."
  },
  {
+  "key": "life:hold:gunner:4",
+  "text": "Cass is checking the straps on the ammunition crates."
+ },
+ {
   "key": "life:hold:gunner:5",
-  "text": "Cass has set up a target on a crate and is losing to it."
+  "text": "Cass is oiling the bolt of a rifle laid across two crates."
+ },
+ {
+  "key": "life:hold:gunner:6",
+  "text": "Cass is counting spare barrels in the rack against the list."
+ },
+ {
+  "key": "life:hold:gunner:7",
+  "text": "Cass is sitting on a crate, stripping a pistol onto a cloth."
+ },
+ {
+  "key": "life:hold:gunner:8",
+  "text": "Cass is checking the straps on the ammunition crates."
+ },
+ {
+  "key": "life:hold:gunner:9",
+  "text": "Cass is marking the exits on a card with a pencil."
  },
  {
   "key": "life:hold:any:0",
@@ -3165,11 +3197,39 @@
  },
  {
   "key": "life:berths:passenger:2",
-  "text": "Cass is sitting on the edge of their bunk, looking at the wall."
+  "text": "Cass is sitting on the bunk with a boarding pass held in both hands."
  },
  {
   "key": "life:berths:passenger:3",
-  "text": "Cass is asleep, or pretending to be."
+  "text": "Cass is counting the days to the port on their fingers."
+ },
+ {
+  "key": "life:berths:passenger:4",
+  "text": "Cass is reading the berth rules card bolted to the wall."
+ },
+ {
+  "key": "life:berths:passenger:5",
+  "text": "Cass is repacking a bag that was packed an hour ago."
+ },
+ {
+  "key": "life:berths:passenger:6",
+  "text": "Cass is sitting on the bunk with a boarding pass held in both hands."
+ },
+ {
+  "key": "life:berths:passenger:7",
+  "text": "Cass is lying with their face to the wall and their shoes on."
+ },
+ {
+  "key": "life:berths:passenger:8",
+  "text": "Cass is writing the arrival date at the top of a page, and nothing below it."
+ },
+ {
+  "key": "life:berths:passenger:9",
+  "text": "Cass is repacking a bag that was packed an hour ago."
+ },
+ {
+  "key": "life:berths:passenger:10",
+  "text": "Cass is asking the nearest crew member which way the galley is."
  },
  {
   "key": "life:berths:any:0",
@@ -3369,11 +3429,43 @@
  },
  {
   "key": "life:gunnery:gunner:2",
-  "text": "Cass has a drill up on the targeting display and is tracking a dot across it."
+  "text": "Cass is running the turret through its full arc, slowly, and listening to the motor."
  },
  {
   "key": "life:gunnery:gunner:3",
-  "text": "Cass is wiping down the feed tray of the close-defense turret."
+  "text": "Cass is seating a belt of rounds in the feed and closing the cover."
+ },
+ {
+  "key": "life:gunnery:gunner:4",
+  "text": "Cass is reading the firing log from the last contact, line by line."
+ },
+ {
+  "key": "life:gunnery:gunner:5",
+  "text": "Cass is sighting along the barrel at the mark on the far bulkhead."
+ },
+ {
+  "key": "life:gunnery:gunner:6",
+  "text": "Cass is running the turret through its full arc, slowly, and listening to the motor."
+ },
+ {
+  "key": "life:gunnery:gunner:7",
+  "text": "Cass is writing the ammunition count in the log and initialing it."
+ },
+ {
+  "key": "life:gunnery:gunner:8",
+  "text": "Cass is cleaning the turret optics with a lens cloth."
+ },
+ {
+  "key": "life:gunnery:gunner:9",
+  "text": "Cass is running a dry drill on the fire-control board, calling each step aloud."
+ },
+ {
+  "key": "life:gunnery:gunner:10",
+  "text": "Cass is sighting along the barrel at the mark on the far bulkhead."
+ },
+ {
+  "key": "life:gunnery:gunner:11",
+  "text": "Cass is checking the safety pin on the torpedo rack."
  },
  {
   "key": "life:gunnery:any:0",
@@ -3385,19 +3477,35 @@
  },
  {
   "key": "life:gunnery:any:2",
-  "text": "Cass is looking at the range tables and moving their lips."
- },
- {
-  "key": "life:gunnery:any:3",
   "text": "Cass is sitting in the gunner's seat with the harness off and their hands in their lap."
  },
  {
-  "key": "life:gunnery:any:4",
+  "key": "life:gunnery:any:3",
   "text": "Cass is wiping dust off the targeting screen with a sleeve."
  },
  {
+  "key": "life:gunnery:any:4",
+  "text": "Cass is reading the weapons log on the console, from the bottom up."
+ },
+ {
   "key": "life:gunnery:any:5",
-  "text": "Cass is watching the tracking screen. It shows the sun and nothing else."
+  "text": "Cass is looking at the range tables and moving their lips."
+ },
+ {
+  "key": "life:gunnery:any:6",
+  "text": "Cass is tapping the glass of the range finder."
+ },
+ {
+  "key": "life:gunnery:any:7",
+  "text": "Cass is checking that the turret lock pin is in."
+ },
+ {
+  "key": "life:gunnery:any:8",
+  "text": "Cass is reading the weapons log on the console, from the bottom up."
+ },
+ {
+  "key": "life:gunnery:any:9",
+  "text": "Cass is running a thumb along the seam of the ammunition locker."
  },
  {
   "key": "life:medbay:cat:0",
@@ -3465,19 +3573,35 @@
  },
  {
   "key": "life:medbay:any:2",
-  "text": "Cass is reading the label on a bottle and putting it back."
- },
- {
-  "key": "life:medbay:any:3",
   "text": "Cass is on the stool with a bandage rolled around one hand."
  },
  {
-  "key": "life:medbay:any:4",
+  "key": "life:medbay:any:3",
   "text": "Cass is waiting on the exam bed for someone to find the tape."
  },
  {
+  "key": "life:medbay:any:4",
+  "text": "Cass is reading the first aid card on the wall."
+ },
+ {
   "key": "life:medbay:any:5",
-  "text": "Cass is standing at the sink, running the water over their hands."
+  "text": "Cass is reading the label on a bottle and putting it back."
+ },
+ {
+  "key": "life:medbay:any:6",
+  "text": "Cass is looking for the tape in the third drawer."
+ },
+ {
+  "key": "life:medbay:any:7",
+  "text": "Cass is rinsing a cup at the sink and setting it upside down on the rack."
+ },
+ {
+  "key": "life:medbay:any:8",
+  "text": "Cass is reading the first aid card on the wall."
+ },
+ {
+  "key": "life:medbay:any:9",
+  "text": "Cass is waiting by the cabinet for the medic to come back."
  },
  {
   "key": "life:bridge:cat:0",
@@ -3553,19 +3677,35 @@
  },
  {
   "key": "life:bridge:slicer:2",
-  "text": "Cass has the comms log scrolling past on two screens and is reading both."
- },
- {
-  "key": "life:bridge:slicer:3",
   "text": "Cass is writing a filter for the dock chatter and arguing with it aloud."
  },
  {
-  "key": "life:bridge:slicer:4",
+  "key": "life:bridge:slicer:3",
   "text": "Cass is listening to the carrier hiss between two stations."
  },
  {
+  "key": "life:bridge:slicer:4",
+  "text": "Cass is sorting the comms log by sender and reading the top of each pile."
+ },
+ {
   "key": "life:bridge:slicer:5",
-  "text": "Cass is listening to a dozen channels at once with their eyes closed, fingers moving."
+  "text": "Cass has the comms log scrolling past on two screens and is reading both."
+ },
+ {
+  "key": "life:bridge:slicer:6",
+  "text": "Cass is checking a packet header against the station list."
+ },
+ {
+  "key": "life:bridge:slicer:7",
+  "text": "Cass is tracing a dropped signal back to the antenna mount on the display."
+ },
+ {
+  "key": "life:bridge:slicer:8",
+  "text": "Cass is sorting the comms log by sender and reading the top of each pile."
+ },
+ {
+  "key": "life:bridge:slicer:9",
+  "text": "Cass is transcribing a weather report off the port beacon."
  },
  {
   "key": "life:bridge:any:0",
