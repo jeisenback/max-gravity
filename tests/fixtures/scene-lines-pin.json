@@ -387,6 +387,44 @@
   ]
  },
  {
+  "id": "scene:used-ship-offer:lapse-tomas",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "He does not say anything more about her. After a while he starts back toward the ramp, and the yard's other hulls are still on the list.",
+    "mem": [
+     "9 Jul 2214: The captain stood on the apron with me when she was gone."
+    ],
+    "fx": {
+     "c:tomas": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "The Empty Cradle",
+  "text": "The Ore Runner's cradle on the apron is bare, with its clamps open and a ring of dust where her struts stood. Tomas is at the edge of it with his rag in both hands. A yard hand says she went last week, to a man from the Belt who paid the whole price at the counter. Tomas folds the rag and puts it in his pocket. \"She will be a good ship for him,\" he says. \"I did the coolant line right.\"",
+  "labels": [
+   "Stand with him a while"
+  ]
+ },
+ {
+  "id": "scene:used-ship-offer:lapse-broker",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "The list is short and the figures are the yard's. The broker goes back to the board.",
+    "next": null
+   }
+  ],
+  "title": "Gone From the Apron",
+  "text": "The broker at the yard office looks up from the board when you come in. \"The Ore Runner is gone,\" the broker says. \"A man from the Belt paid the whole price last week. I did say a few weeks.\" The broker slides a printed list of the yard's other hulls across the desk.",
+  "labels": [
+   "Take the list"
+  ]
+ },
+ {
   "id": "scene:pitch:greedy",
   "plays": [
    {

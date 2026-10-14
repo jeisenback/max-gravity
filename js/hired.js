@@ -411,11 +411,22 @@ function hullNote() {
   captainFlag('sawHull');
   M_NOTE('On the apron a long Ore Runner sits on her struts with her name painted over in grey. Tomas stops at the foot of the ramp and looks at her. Then he walks on.');
 }
+// The used Ore Runner is sold to someone else: said once, by Tomas if he is aboard, by the broker if not.
+function lapseScene() {
+  const tomas = tomasAboard(), say = key => sceneSay('scene:used-ship-offer', key);
+  return tomas ? {
+    title: say('lapse.tomas.title'), personal: true, text: say('lapse.tomas.text'),
+    choices: [{ label: say('lapse.tomas.c0.label'), run() { like(tomas, 1, say('lapse.tomas.c0.memory')); return say('lapse.tomas.c0.result'); } }],
+  } : {
+    title: say('lapse.broker.title'), personal: true, text: say('lapse.broker.text'),
+    choices: [{ label: say('lapse.broker.c0.label'), run: () => say('lapse.broker.c0.result') }],
+  };
+}
 // Offered once, at a yard, when the savings are about 55% of her middle price and the captain's two scenes have played (captains.js). A lapsed deal is noted once.
 function dealCheck(planet) {
   const st = G.state, h = hired();
   if (!h) return;
-  if (h.deal && !dealOpen() && !h.deal.lapsed) { h.deal.lapsed = true; M_NOTE('The used Ore Runner is gone. Somebody else bought her.'); return; }
+  if (h.deal && !dealOpen() && !h.deal.lapsed) { if (!G.dialog) { h.deal.lapsed = true; openEvent(lapseScene()); } return; }  // it waits for a landing with nothing else open
   if (h.deal || !planet.services.includes('shipyard') || st.credits < USED_OFFER_AT || !captainBeatsDone(h) || G.dialog) return;
   openEvent(dealScene(planet));
 }

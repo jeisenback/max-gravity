@@ -81,6 +81,10 @@ const playScenes = () => {
     hired().debt = debt; return dealScene(currentPlanet());
   });
   deal('scene:used-ship-offer:friend', true, 0, OPINION.FRIEND); deal('scene:used-ship-offer:plain-debt', true, 1500, 1); deal('scene:used-ship-offer:cold', true, 0, -1); deal('scene:used-ship-offer:broker', false, 0, 0);
+  for (const [id, tomas] of [['scene:used-ship-offer:lapse-tomas', true], ['scene:used-ship-offer:lapse-broker', false]]) run(id, { credits: 20000 }, () => {
+    G.state.crew = G.state.crew.filter(c => c !== 'c:tomas'); if (tomas) castJoin('tomas', '');
+    return lapseScene();
+  });
   // ---------- putting work further away to the captain ----------
   // a captain who loves, hates or shrugs at each way of putting it (by trait), for each of the four pitches, on a good roll and a bad one
   for (const trait of ['greedy', 'pious', 'brave', 'generous', 'rude', 'nervous', 'kind']) run(`scene:pitch:${trait}`, {}, () => {

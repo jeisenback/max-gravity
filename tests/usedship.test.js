@@ -47,15 +47,26 @@ test('the deal lasts a few weeks, and then the ship is gone and the ordinary yar
     out.open = dealOpen(); out.listed = /used/i.test(buyInHtml());
     st.day = h.deal.until;  out.lastDay = dealOpen();
     st.day = h.deal.until + 1; out.lapsed = dealOpen(); out.listedAfter = /used/i.test(buyInHtml());
-    UI.notes.length = 0; dock(12000); out.note = UI.notes.join(' ');
+    const gone = dock(12000); out.note = gone ? gone.title + ' ' + gone.text : ''; out.once = dock(12000);
     st.credits = 50000; out.hopper = canBuyIn('shuttle', currentPlanet()); out.usedBuyable = canBuyIn(USED_ID, currentPlanet());
     out.days = h.deal.until - h.deal.day;
     return out;
   });
   assert.equal(r.open, true); assert.equal(r.listed, true); assert.equal(r.lastDay, true);
   assert.equal(r.lapsed, false); assert.equal(r.listedAfter, false); assert.equal(r.usedBuyable, false);
-  assert.match(r.note, /gone/i); assert.equal(r.hopper, true, 'the Dust Skiff stays buyable');
+  assert.match(r.note, /Empty Cradle/); assert.match(r.note, /Tomas/); assert.equal(r.once, null, 'said once'); assert.equal(r.hopper, true, 'the Dust Skiff stays buyable');
   assert.ok(r.days >= 14 && r.days <= 90);
+  await done();
+});
+
+test('a lapsed deal without Tomas is told by the broker', async () => {
+  const { r, done } = await run(() => {
+    const st = start(); st.crew = st.crew.filter(id => !person(id).cast);
+    dock(10500); st.day = hired().deal.until + 1;
+    const scene = dock(12000);
+    return { title: scene && scene.title, text: scene && scene.text };
+  });
+  assert.equal(r.title, 'Gone From the Apron'); assert.match(r.text, /broker/i); assert.doesNotMatch(r.text, /Tomas/);
   await done();
 });
 
