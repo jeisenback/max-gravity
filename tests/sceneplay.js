@@ -221,6 +221,7 @@ const playScenes = () => {
     recap('fresh', () => {});
     for (const reason of ['money', 'learn', 'away']) for (const runs of [1, 3]) recap(`why:${reason}:${runs}`, (st, h) => { h.reason = reason; h.runsDone = runs; h.earnedTotal = 1234; });
     recap('near:one', (st, h, [a]) => { a.opinion = OPINION.FRIEND; });
+    recap('kept', (st, h, [a]) => { a.opinion = OPINION.FRIEND; like(a, 0, 'You brought the ice in.'); });
     recap('near:three', (st, h, [a, b]) => { a.opinion = OPINION.ALLY; b.opinion = OPINION.FRIEND; st.people[h.captain].opinion = OPINION.FRIEND; });
     recap('told:one', (st, h, [a]) => { a.story = { ...(a.story || {}), beat: 3 }; });
     recap('told:two', (st, h, [a, b]) => { a.story = { ...(a.story || {}), beat: 4 }; b.story = { ...(b.story || {}), beat: 3 }; });

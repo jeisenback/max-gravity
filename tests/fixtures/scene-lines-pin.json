@@ -5266,6 +5266,22 @@
   ]
  },
  {
+  "id": "recap:kept",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "You close the ledger.",
+    "next": null
+   }
+  ],
+  "title": "Looking Back",
+  "text": "30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Closest to you: Mateo (friendly).</p><p>Mateo kept this: \"You brought the ice in.\"",
+  "labels": [
+   "Go on"
+  ]
+ },
+ {
   "id": "recap:near:three",
   "plays": [
    {

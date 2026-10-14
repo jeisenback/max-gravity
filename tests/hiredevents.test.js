@@ -422,3 +422,20 @@ test('the used Ore Runner is offered by Tomas or by a broker, and the choice say
   for (const x of r) for (const t of x.text) assert.ok(t.length > 40 && !/undefined|NaN|\[object|\{[a-z]+\}/.test(t));
   await done();
 });
+
+test('the look back quotes the closest crew member\'s latest memory in their words, and says nothing of one when no friend has any', async () => {
+  const { ev, done } = await open();
+  await ev(hiredHelpers);
+  const r = await ev(() => {
+    startHired('gunner'); G.state.tutorial = null;
+    const out = {}, c = G.state.crew.map(person).find(Boolean);
+    c.opinion = OPINION.FRIEND + 1; c.memories.length = 0;
+    out.none = chapterRecap().text;
+    like(c, 0, 'You carried my bag <up>.');
+    out.some = chapterRecap().text; out.first = c.first;
+    return out;
+  });
+  assert.ok(!/kept this/.test(r.none));
+  assert.ok(r.some.includes(`${r.first} kept this: "You carried my bag &lt;up&gt;."`), r.some);
+  await done();
+});
