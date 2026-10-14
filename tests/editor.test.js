@@ -96,6 +96,8 @@ test('scenes the narrow build leaves out are listed and marked off', () => {
   assert.equal(row('hired:gunner-jam').off, false, 'the one post');
   assert.equal(row('hired:pilot-drift').off, true, 'another post');
   assert.equal(row('ice:2').off, false);
+  assert.equal(row('people:pax:debt').off, true, 'a passenger comes from an errand, which the narrow build has not');
+  assert.equal(row('people:crew:greedy').off, false, 'a shipmate\'s event stays');
 });
 
 test('search finds an id, a word in the title, and a word in the text or a result', async () => {
