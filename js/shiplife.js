@@ -195,6 +195,14 @@ const LIFE_LINES = {
 // The lights going down and coming up, a line each, in the ship's log of the burn.
 const LIFE_NOTES = { dusk: 'The lights go down for the night.', dawn: 'The lights come up.' };
 
+// Idle talk waits while the ship is hurt: someone aboard is injured, the hand is laid up, someone was lost in the last ten days, or the ice went badly this run.
+const LIFE_HUSH_DAYS = 10;
+const lifeHushed = ({ injured, handHurt, lostDay, day, iceEdge }) => injured > 0 || handHurt || (lostDay !== null && day - lostDay <= LIFE_HUSH_DAYS) || iceEdge <= -2;
+function lifeState() {
+  const st = G.state, h = hired(), lost = (st.memorial || []).map(m => m.day);
+  return { injured: st.crew.filter(id => (st.injured || {})[id]).length, handHurt: handHurt(), lostDay: lost.length ? Math.max(...lost) : null, day: st.day, iceEdge: h && h.run && h.run.ice ? h.run.ice.edge : 0 };
+}
+
 // The pools are read through the editor's words (lines:ship-life, lines:ship-lights; js/linetables.js).
 function lifeLine(p, crowd) {
   const room = linedText('lines:ship-life', LIFE_LINES)[p.room], pool = room[p.role] || room.any;
@@ -276,7 +284,7 @@ function lifeTick(dt) {
       p.x += Math.max(-step, Math.min(step, p.tx - p.x));
       if (Math.abs(p.tx - p.x) < 0.002) {
         p.tx = null; p.wait = rand(5, 12);
-        if (p.role !== 'you' && Math.random() < 0.18) {
+        if (p.role !== 'you' && Math.random() < 0.18 && !lifeHushed(lifeState())) {
           const line = lifeLine(p, people);
           if (line) comm(`[Ship] ${line}`);
         }

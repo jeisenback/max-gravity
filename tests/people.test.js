@@ -313,3 +313,20 @@ test('Good News and Bad News open and resolve in many ways, and every one fills 
   assert.ok(r.goodRes >= 5 && r.badRes >= 9, `and several results for each choice (${r.goodRes}, ${r.badRes})`);
   await done();
 });
+
+test('idle talk aboard waits while the ship is hurt: someone injured, the hand laid up, a loss in the last ten days, or the ice gone badly', async () => {
+  const { ev, done } = await open();
+  const r = await ev(() => {
+    startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner', captainKey: 'hester' }); while (G.dialog) finishEvent();
+    const st = G.state, h = hired(), out = {};
+    out.calm = lifeHushed(lifeState());
+    st.injured = { [st.crew[0]]: true }; out.injured = lifeHushed(lifeState()); st.injured = {};
+    h.hurtUntil = st.day + 5; out.handHurt = lifeHushed(lifeState()); h.hurtUntil = 0;
+    st.memorial = [{ key: 'x', name: 'A B', day: st.day - 3 }]; out.lost = lifeHushed(lifeState());
+    st.memorial = [{ key: 'x', name: 'A B', day: st.day - 30 }]; out.longAgo = lifeHushed(lifeState()); st.memorial = [];
+    h.run = { ice: { edge: -2 } }; out.badIce = lifeHushed(lifeState()); h.run.ice.edge = 1; out.goodIce = lifeHushed(lifeState()); h.run = null;
+    return out;
+  });
+  assert.deepEqual(r, { calm: false, injured: true, handHurt: true, lost: true, longAgo: false, badIce: true, goodIce: false });
+  await done();
+});
