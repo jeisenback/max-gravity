@@ -3770,6 +3770,29 @@
   ]
  },
  {
+  "id": "memory:clinic",
+  "plays": [
+   {
+    "i": 0,
+    "roll": 0.5,
+    "text": "",
+    "mem": [
+     "9 Jul 2214: You paid the clinic when I was hurt."
+    ],
+    "fx": {
+     "credits": -1000,
+     "p10": 1
+    },
+    "next": null
+   }
+  ],
+  "title": "x",
+  "text": "",
+  "labels": [
+   "x"
+  ]
+ },
+ {
   "id": "castbar:ines:0",
   "plays": [
    {

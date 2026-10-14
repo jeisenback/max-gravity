@@ -294,11 +294,12 @@ const SCENE_LINES = {
     'practise.engineer': 'You go through the plant one system at a time, with the manual open and a meter in your teeth, and find three things nobody had written down.',
     'practise.comms': 'You sit on the bands for a watch, learning the rhythm of a dozen stations, and which of them are lying about their transponders.',
   },
-  'scene:memories': {  // the memories that play leaves with people, for the places that have no scene of their own (engage.js, game.js, icerun.js, losses.js, repairs.js, stations.js)
+  'scene:memories': {  // the memories that play leaves with people, for the places that have no scene of their own (engage.js, game.js, icerun.js, losses.js, repairs.js, stations.js, boarding.js)
     'patrol-fine.memory': 'We were stopped by a patrol and it cost the fund.',
     'landing.memory': 'You got me to {planet}.', 'lapsed.memory': 'You never got me where I was going.',
     'ice.clean.memory': 'You brought the ice in.', 'ice.bad.memory': 'You made a mess of the ice.',
     'mourn.honored.memory': 'The captain marked {first}\'s death the way {first} deserved.', 'mourn.slighted.memory': 'The captain did not give {first} their due.', 'mourn.wrote.memory': 'You wrote to {first}\'s family.',
+    'clinic.memory': 'You paid the clinic when I was hurt.',
     'repair.memory': 'You pitched in on the hull.', 'strain.memory': 'The captain keeps taking my controls.',
     'ansel.lost.memory': 'We lost Ansel at the lock.', 'ansel.lived.memory': 'You let me go to the lock, and I came back.', 'ansel.backed.memory': 'You backed me when I picked the fight.',
     'cato.lost.memory': 'We lost Cato in the ice hold.', 'cato.lived.memory': 'You let me go into the hold, and I came out.',

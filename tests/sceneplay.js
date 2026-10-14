@@ -175,6 +175,7 @@ const playScenes = () => {
   for (const post of ['gunner', 'engineer']) run(`memory:repair:${post}`, { post }, () => { const ev = repairScene(currentPlanet()); return { ...ev, choices: ev.choices.filter(c => c.label === 'Help with the repair') }; }, { prep() { G.state.armor = Math.max(1, ship().armor - 40); } });
   run('memory:mourn', {}, () => mournScene({ first: 'Mara', last: 'Quill', role: 'engineer' }), { prep() { G.state.crew = []; crewOf(8); G.state.credits = 5000; } });
   run('memory:strain', { mode: undefined }, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { for (let i = 0; i < 3; i++) { takeControl('pilot'); handBack('pilot'); } return ''; } }] }), { prep() { G.state.crew = []; crewOf(4); G.state.crew.map(person).forEach(c => { c.role = 'pilot'; }); } });
+  run('memory:clinic', {}, () => ({ title: 'x', text: '', choices: [{ label: 'x', run() { treatInjuries(currentPlanet()); return ''; } }] }), { prep() { G.state.crew = []; crewOf(2); G.state.injured = { [G.state.crew[0]]: true }; G.state.credits = 5000; } });
   // ---------- the talks with the main characters at a bar ----------
   for (const [key, list] of Object.entries(CAST_BAR)) list.forEach((bar, n) => {
     run(`castbar:${key}:${n}`, {}, () => {
