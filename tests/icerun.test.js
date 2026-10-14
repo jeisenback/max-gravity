@@ -98,3 +98,22 @@ test('a burn that skips the scenes comes home with a thin hold, and still pays',
   assert.ok(r.paid > 0); assert.equal(r.ledger.tons, 20, 'two-fifths of a hold'); assert.match(r.text, /sold 20t of Water/);
   await done();
 });
+
+test('a later ice run opens each scene with its own words, and its first scene names how the last haul went', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = setup(), h = hired(), planet = currentPlanet(), out = {};
+    h.run = { ice: { edge: 0 }, good: 'water', tons: 40, cost: 0, planet: planet.name, sid: st.systemId, day: st.day - 12, from: 'X' };
+    const opens = n => iceStageScene(n).text.split('</p>')[0];
+    h.iceRuns = 1; out.first = [0, 1, 2].map(opens);
+    h.iceRuns = 2;
+    for (const [k, flags] of [['clean', { iceClean: 1 }], ['bad', { iceBad: 1 }], ['even', {}]]) { h.flags = flags; out[k] = opens(0); }
+    out.second = [0, 1, 2].map(opens);
+    return out;
+  });
+  r.second.forEach((t, i) => assert.notEqual(t, r.first[i], `stage ${i} differs on the second run`));
+  assert.match(r.clean, /one word in it: clean/); assert.match(r.bad, /not in the log/); assert.match(r.even, /no remark/);
+  assert.ok(!/last haul/.test(r.first[0]) && !/last haul/.test(r.second[1]), 'only the second run\'s first scene speaks of the last haul');
+  await done();
+});

@@ -35,6 +35,7 @@ function iceOption(here, from, reach, free) {
 // (odds are a half plus a tenth for each level).
 const ICE_STAGES = [
   { title: 'The Rock',
+    again: 'This rock is a long grey slab, end over end every four minutes, with a crust of dust over the ice. The captain reads the spin off the board twice and says it is faster than the last one. Nobody on the deck argues.',
     open: [('She is a dark lump on the board for three days, and then she is a mountain. A comet that lost its way, or a piece of one: black, pitted, ' +
         'with a white seam through it where the ice shows. There is no beacon, no berth, and nobody to ask. The captain brings the ship in to three ' +
         'kilometers and says that you cannot dock with something that is tumbling.'),
@@ -59,6 +60,7 @@ const ICE_STAGES = [
           'rest. The ship goes in there, and the anchors set at once.')], lose: [-1, 0.03, 'The scan reads a quiet face that is a loose one. The anchors take, and then let go, and you start again.'] },
     } },
   { title: 'Cutting Ice',
+    again: 'The seam here is shallow and runs crooked, and the ice under the dust is gray, not blue. The crew work it in two-hour shifts, and the radio clicks every time a cutter binds. The captain walks the line twice and says nothing.',
     open: [('The cutters are out, six of them, and the white seam runs forty meters along the rock. The work is slow and cold and loud in the helmet: ' +
         'a saw to cut a block, a lift to carry it, the hold doors to put it in. It is the kind of work that goes right for an hour and wrong for a ' +
         'second. The captain has the ship on the radio and everyone else on the ice.'),
@@ -81,6 +83,7 @@ const ICE_STAGES = [
           'into the hold. The count at the end is exact, and the captain checks it twice.')], lose: [-1, 0.03, 'You lose a shift in the schedule and two people on the ice at once. It is sorted out in forty minutes.'] },
     } },
   { title: 'Home With the Ice',
+    again: "The rock is a smear of dust astern. The hold is cold and heavy, and the tanks tick as they settle. The captain has the buyer's window on the board, with a number beside it that does not move.",
     open: [('The hold is full, and the ship is heavy, and she burns like it. Every maneuver is slower, and every vibration matters, because there is ' +
         'a hundred tons of ice in the hold that is the only cargo you are being paid for. The captain has set a course for the buyer and a limit on ' +
         'the thrust, and has asked everyone to keep it in mind.'),
@@ -125,11 +128,20 @@ function iceStageScene(n) {
   const choices = stage.general.map((c0, i) => { const c = worded(c0, i); return { label: `${c.label}${iceCostNote(c)}`, run: () => iceStep(n, c, null) }; });
   const spec = worded(stage.post[post], stage.general.length + Object.keys(stage.post).indexOf(post)), level = skillLevel(post);
   choices.push({ label: `[${POSTS[post].name}] ${spec.label}${iceCostNote(spec)}`, run: () => iceStep(n, { odds: Math.min(0.85, 0.5 + 0.1 * level), win: spec.win, lose: spec.lose }, post) });
-  const opening = [line(o.text, stage.open[0]), line(o.text2, stage.open[1])];
-  return { title: o.title || stage.title, personal: true, via: 'crew', owner: 'you', text: `${opening[ice.round % 2 || 0]}</p><p>The haul so far: ${iceHaulWord(ice.edge)}. Armor ${st.armor}/${ship().armor}.`, choices };
+  const runNo = h.iceRuns || 1, opening = runNo < 2 ? [line(o.text, stage.open[0]), line(o.text2, stage.open[1])] : null;  // the editor's openings are the first run's
+  return { title: o.title || stage.title, personal: true, via: 'crew', owner: 'you', text: `${opening ? opening[ice.round % 2 || 0] : iceOpening(stage, n, ice.round, runNo, h.flags || {})}</p><p>The haul so far: ${iceHaulWord(ice.edge)}. Armor ${st.armor}/${ship().armor}.`, choices };
 }
 // What a choice can cost, from what it declares: a lost roll's hull cost (and the casualty that can come with it), and a bold call the captain marks.
 const iceCostNote = c => costNote({ hull: (c.lose || c.win)[1] > 0, marks: !!c.bold });
+// What the first scene of a later run says of the last haul (the captain's flags, set by iceHome); the first run says nothing.
+const ICE_LAST = { clean: 'The log from the last haul is still open on the captain\'s console, with one word in it: clean.',
+  bad: 'The last haul is not in the log, and the captain has not brought it up.', even: 'The last haul went into the log with no remark.' };
+const iceLastHaul = flags => (flags.iceClean ? 'clean' : flags.iceBad ? 'bad' : 'even');
+// The opening of a stage: the first run of the hire alternates its two, a later run has its own, and its first scene names the last haul.
+function iceOpening(stage, n, round, runNo, flags) {
+  if (runNo < 2) return stage.open[round % 2 || 0];
+  return n === 0 ? `${ICE_LAST[iceLastHaul(flags)]} ${stage.again}` : stage.again;
+}
 const iceHaulWord = e => (e >= 3 ? 'a good one' : e >= 1 ? 'going well' : e <= -2 ? 'going badly' : 'even');
 
 function iceStep(n, c, post) {
