@@ -153,7 +153,7 @@ CAST.ansel = {
             'at the guns, laughing, with a figure in her head. "We can take her," she says. "We could take her." Ansel is at the boarding lock with ' +
             'his coat on and the sheet in one hand. "I would like to speak to them," he says. "Give me ten minutes, and the lock, and do not fire." He ' +
             'says it flat.')
-          + (low ? ' Your hull has taken a beating, and a bad hull is a bad place to be, in either case.' : ' Your hull is sound, which is something.')
+          + (low ? ' Your hull has taken a beating, and a bad hull is a bad place to be, in either case.' : ' Your hull is sound.')
           + (medic ? ` ${medic.first} has the med kit open at the lock.` : ' There is nobody aboard who can do more than a field dressing, and he knows it.')
           + (roleHolder('gunner') ? ' The guns are manned, which, as he well knows, cuts both ways.' : ' Nobody else is on the guns.')
           + ' He waits for your answer, and has already put a hand on the lock.';

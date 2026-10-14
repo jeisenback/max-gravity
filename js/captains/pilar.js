@@ -150,7 +150,7 @@ CAST.pilar = {
         return ('The gate\'s tractor beam fails twenty seconds out, and the ship is carrying forty tonnes of ice at a closing speed the berth was ' +
             'never meant for. The nav display is lagging. Captain Sato, on the bridge, has the checklist open. Pilar has the stick. "I can bring her ' +
             'in by hand," she says, "if you let me, and if you do not put anything on the display." She says it item by item.')
-          + (low ? ' The hull has taken a beating, and a bad hull is a bad thing to put against a berth wall.' : ' The hull is sound, which is something.')
+          + (low ? ' The hull has taken a beating, and a bad hull is a bad thing to put against a berth wall.' : ' The hull is sound.')
           + (worn ? ' The drive has been run hard, and the thrusters take what it has left.' : ' The drive is in good order.')
           + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There is nobody aboard who can do more than a field dressing, and she knows it.')
           + ' She waits for your answer, and her hands are already light on the stick.';

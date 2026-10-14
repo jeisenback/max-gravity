@@ -458,9 +458,9 @@ const CAST = {
         get text() {
           const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6;
           return 'A ship is drifting across your path with her drive dark: disabled, and armed, going by the way she is not answering. Yelena is already at the hatch with her helmet under one arm. "I go first," she says. "I have always gone first. That is what a striker is for."'
-            + (low ? ' Your own hull has taken a beating, and a bad hull is a bad place to fall back to.' : ' Your hull is sound, which is something.')
+            + (low ? ' Your own hull has taken a beating, and a bad hull is a bad place to fall back to.' : ' Your hull is sound.')
             + (medic ? ` ${medic.first} has the med kit open at the airlock.` : ' There is nobody aboard who can do more than a field dressing, and she knows it.')
-            + ' She waits with her helmet under her arm and one boot over the hatch lip.';
+            + ' Yelena waits with one boot over the hatch lip.';
         },
         choices: [
           { label: 'Let her lead', run: () => overTheHull(false) },
@@ -1069,7 +1069,7 @@ function overTheHull(backup) {
 // The hull and the medic, as the pivot scenes state them (Yelena's, Ines's, Tomas's), so the player sees what will count.
 function castRiskLines() {
   const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6;
-  return (low ? ' Your own hull has taken a beating, and a bad hull is a bad place to fall back to.' : ' Your hull is sound, which is something.')
+  return (low ? ' Your own hull has taken a beating, and a bad hull is a bad place to fall back to.' : ' Your hull is sound.')
     + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There is nobody aboard who can do more than a field dressing.');
 }
 const castRiskPoints = () => (roleHolder('medic') ? 1 : 0) + (G.state.armor > ship().armor * 0.6 ? 1 : 0);
