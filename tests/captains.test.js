@@ -780,7 +780,7 @@ test('Cato\'s "What Cato Knows" opens at friendly or better, and below it he kee
     open.e.choices[0].run(); out.openTold = !!castRec('cato').flags.told;
     return out;
   });
-  assert.deepEqual(r.closed, ['Say it can wait']); assert.match(r.closedText, /I have not known you long enough/); assert.equal(r.closedTold, false, 'the favour is not asked');
+  assert.deepEqual(r.closed, ['Say it can wait']); assert.match(r.closedText, /I do not know you well enough/); assert.equal(r.closedTold, false, 'the favour is not asked');
   assert.deepEqual(r.open, ['Ask him to tell you if it goes badly', 'Tell him it is not yours to carry']); assert.match(r.openText, /I have known about the bank since the spring/);
   assert.equal(r.openTold, true); assert.match(r.result, /I would not have known how to start/);
 });

@@ -16,8 +16,8 @@ function inTheIceHold(backup) {
   if (outcome === 'die') {
     like(cap, -1, sceneSay('scene:memories', 'cato.lost.memory')); cap.mood = { kind: 'low', until: G.state.day + 30 };
     return lead + ('He goes in first, as he said he would. The strap holds, and the pod does not, and for a moment the board shows nothing you can ' +
-        'read. You get the hatch open from your side. By then the hold is quiet. Captain Vance is at the hatch before you have finished. She looks for ' +
-        'a while, and then she closes the notebook. "Take him out," she says, in a voice you have not heard her use.')
+        'read. You get the hatch open from your side. By then the hold is quiet. Captain Vance is at the hatch before you have finished. She watches the ' +
+        'board until the last line stops, and then she closes the notebook. "Take him out," she says.')
       + (told ? ' He asked you to find him if it went badly. It is the other way round now.' : '');
   }
   castLike('cato', 2, sceneSay('scene:memories', 'cato.lived.memory'));
@@ -25,7 +25,7 @@ function inTheIceHold(backup) {
     cap.mood = { kind: 'low', until: G.state.day + 15 };
     return lead + ('He goes in first, and it goes wrong at the number two strap, and for a long minute the hold is nothing but ice and shouting. He ' +
         'comes out carried, and the hand that held the strap does not close properly, and will not. The med kit is already open. He says, from the ' +
-        'deck, "It is in the right place now."');
+        'deck, "Number two is lashed. So that is done."');
   }
   return lead + ('He goes in, and the pod is lashed, and the load stops. He comes out with ice in his beard and a cut across one knuckle, and sits ' +
       'down on the hatch coaming to get his breath. "That is where it goes," he says. Captain Vance looks at the hold, and at him, and says nothing, ' +
@@ -52,9 +52,9 @@ CAST.cato = {
     'Cato is walking the hold with a mug, checking lashings that are fine.',
     'Cato has taken the cold watch again. Nobody asked him to.',
     'Cato is teaching one of the ice hands to read a manifest, slowly, one line at a time.',
-    'Cato: "She is not a bad captain. She is a captain who has been counted against. It is different."',
+    'Cato: "She is counting, that is all. Somebody has to count, and it is her."',
     'Cato has written someone\'s mother\'s name on the back of the watch bill so that he remembers to ask.',
-    'Cato is humming something with no tune. It is the sound of the hold gang he came up with.',
+    'Cato hums a few bars with no tune while he checks the lashings, and stops when he sees you.',
   ],
   // What he leaves behind when he walks off or dies (fate.js farewellFacts): a flag and its line, in priority order, two at most.
   farewell: {
@@ -68,31 +68,31 @@ CAST.cato = {
   scenes: {
     intro: {
       title: 'The Watch Bill',
-      text: ('Cato Rahman finds you at the end of your first watch with a mug in each hand. He is a big man, and he moves slowly in the passages. "I ' +
-          'do the watch bill," he says. "I know who has a child at home and who is waiting on a letter, and I try to put the bad hours where they hurt ' +
-          'least. I will do the same for you, if you tell me what you need. The captain does not like it when I do. She is right to count it. I do it ' +
-          'anyway." He holds out one of the mugs.'),
+      text: ('Cato Rahman finds you at the end of your first watch with a mug in each hand. He is a big man, and he moves slowly in the passages. ' +
+          '"Sit," he says. "I do the watch bill. The one with a child at home gets the evenings, and the one waiting on a letter gets the hour the ' +
+          'post comes in, and the rest of us split what is left. If there is an hour that sits badly with you, say so, and I will see what I can move. ' +
+          'The captain counts every hour I move. She is right to; somebody has to count." He holds out one of the mugs.'),
       choices: [
         {
           label: 'Tell him what you need',
           effects: { castLike: { who: 'cato', n: 2, memory: 'You told me what you needed, and I put it on the bill.' } },
           result: ('You tell him you would rather have the middle watch than the cold one, and that you sleep badly after a hard burn. He writes it on ' +
-              'the back of his hand with a stub of pencil. "Done," he says. It takes you a moment to find the rest of your coffee.'),
+              'the back of his hand with a stub of pencil. "Done," he says. "Hard burns, middle watch. Nobody has to know why."'),
         },
         {
           label: 'Say you are fine',
           effects: { castLike: { who: 'cato', n: 1, memory: 'You said you were fine, and I left it there.' } },
-          result: 'You say you are fine. "Good," he says. He leaves the mug on the rail beside you, and the offer with it, and goes aft to see about somebody else\'s watch.',
+          result: 'You say you are fine. "All right," he says. He leaves the mug on the rail beside you, and the offer with it, and goes aft to see about somebody else\'s watch.',
         },
       ],
     },
     mid1: {
       days: 25, title: 'A Share of a Ship',
       text: ('Cato is sitting on a cargo lashing with a notebook the size of a hand, the kind that goes in a shirt pocket. It is not the captain\'s; it has no ' +
-          'columns. "Twelve years," he says, "and a bit over nine thousand in the jar. A share of a ship costs more than that, a lot more. I do the ' +
-          'sum when I cannot sleep." He turns it round so you can see: a ship\'s name crossed out, and another, and a third with a question mark. "I ' +
-          'do not want to own her. I want a share, and a deck, and the same hold gang on it at the end. That is all." He puts the notebook away. "Do ' +
-          'you think that is a stupid thing to want?"'),
+          'columns. "Twelve years in the hold," he says, "and the jar at home is not enough for a share of anything. I look anyway, when I cannot ' +
+          'sleep." He turns it round so you can see: a ship\'s name crossed out, and another, and a third with a question mark. "I ' +
+          'do not want to own her. I want a share, and a deck, and the same hold gang on it at the end. That is all." He puts the notebook away. "You ' +
+          'can tell me if it is stupid. The hold gang did, the first time I said it."'),
       choices: [
         {
           label: 'Ask which ship has the question mark',
@@ -111,7 +111,7 @@ CAST.cato = {
       days: 40, title: 'Two Orders',
       text: ('It is the middle of the cold watch, and you have two orders for it. Captain Vance\'s came first, on paper, in pencil: the watch holds ' +
           'the deck until the cargo has been counted twice, no relief. Cato\'s came a minute ago, aloud, in the passage: stand the cold watch down, he ' +
-          'will cover it, they have had four hours\' sleep in two days. Neither of them is wrong. Both are somewhere aft of you, not looking at each ' +
+          'will cover it, they have had four hours\' sleep in two days. Both are somewhere aft of you, not looking at each ' +
           'other, and neither will tell you what the other said.'),
       choices: [
         {
@@ -130,16 +130,16 @@ CAST.cato = {
     },
     late: {
       days: 55, title: 'What Cato Knows', flag: 'secretKnown',
-      text: ('Cato has the watch bill open on the galley table, and he is not looking at it. "I have to say something, and I do not want it to sound ' +
-          'like a favor," he says. "The captain keeps the books where I can see them. I have known about the bank since the spring. If she loses the ' +
-          'ship, the hold gang goes in three directions by the end of the month. I have seen that happen once. I will not see it twice." He rubs his ' +
-          'face. "I am not asking you for anything. I am telling you where I stand. If it goes badly, I would rather you were somewhere I could find ' +
-          'you."'),
+      text: ('Cato has the watch bill open on the galley table, and he is not reading it. "There is nothing on it past the twenty-eighth," he says. ' +
+          '"I have not filled it in, because I do not know that the same people will be aboard. The captain keeps the books where I can see them, and ' +
+          'I have known about the bank since the spring. If she loses the ship, the hold gang goes three ways before the month is out. I watched that ' +
+          'happen once, to a different gang." He rubs his face. "I am not asking you for anything. If it goes badly, I would like you somewhere I ' +
+          'could find you."'),
       choices: [
         {
           label: 'Ask him to tell you if it goes badly',
           effects: { castLike: { who: 'cato', n: 2, memory: 'You asked me to tell you if it went badly.' }, castFlag: { who: 'cato', flag: 'told' } },
-          result: 'He writes it on the back of his hand. "I will," he says. "I will put it on the bill. It is something, to have somebody to tell."',
+          result: 'He writes it in pencil at the foot of the bill, where the next person to read it will see. "I will," he says. "It is something, to have somebody to tell."',
         },
         {
           label: 'Tell him it is not yours to carry',
@@ -151,8 +151,8 @@ CAST.cato = {
       closed: {
         title: 'What Cato Knows',
         text: ('Cato has the watch bill open on the galley table, and he closes it when you come in. "I was going to tell you about the ship\'s books," ' +
-            'he says. "I have thought better of it." He turns the pencil over in his fingers. "It is not that you have done anything. I have not known ' +
-            'you long enough, and I am afraid of putting it on somebody I do not know yet. Ask me again some day."'),
+            'he says. "I have thought better of it." He turns the pencil over in his fingers. "It is nothing you have done. I do not know you well ' +
+            'enough to hand you a thing like that. Ask me again some day."'),
         choices: [
           {
             label: 'Say it can wait',
@@ -215,18 +215,18 @@ CAST.cato.round = () => {
         `rude. That is the job, and it is how you will know it has been looked at."`),
     `At a row of doors on the left he stops. "Third one is yours. It is on a closer, so it hisses, it does not slam. You will try to slam it once. Everyone does. It is all right."`,
     guns,
-    `He finishes the tea and looks into the empty mug. "That is everyone. You have the middle watch with ${pilot}, it is on the bill, and I wrote it on the back of my hand as well, in case the bill goes missing. It has, before."`,
+    `He takes the pencil from behind his ear and checks the bill. "That is everyone. You have the middle watch with ${pilot}, it is on the bill, and I wrote it on the back of my hand as well, in case the bill goes missing. It has, before."`,
   ].filter(Boolean);
   return {
     title: 'The Round', personal: true,
-    text: ('Cato Rahman finds you in the passage an hour after the burn starts. He has a mug in each hand, and he gives you one before you can say ' +
-        'anything. "I do this for everyone," he says. "The captain says I should do it on the dock, but on the dock nobody is listening, they are ' +
+    text: ('Cato Rahman finds you in the passage an hour after the burn starts, with the watch bill rolled under one arm and a stub of pencil behind his ' +
+        'ear. "I do this for everyone," he says. "The captain says I should do it on the dock, but on the dock nobody is listening, they are ' +
         'looking for their bunk. Walk with me. It is not far. It feels far, the first time."'),
     choices: [
       { label: 'Walk it with him', run: () => walk.join('</p><p>') },
       {
         label: 'Another time',
-        result: '"Fair enough," Cato says. "The watch bill is on the galley wall. Everything else you will find by walking into it, and I will be somewhere nearby when you do." He takes the mug back.',
+        result: '"Fair enough," Cato says. "The watch bill is on the galley wall. Everything else you will find by walking into it, and I will be somewhere nearby when you do." He tucks the watch bill back under his arm.',
       },
     ],
   };
