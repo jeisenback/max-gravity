@@ -2999,7 +2999,7 @@
   "id": "cast:cato:mid1",
   "i": 1,
   "label": "Say it is not stupid, but it is a long way off",
-  "result": "\"It is,\" he says. \"It is a long way off every day, and then it is one day nearer. That is how I came up through the hold.\" He puts a hand on the lashing.",
+  "result": "\"It is,\" he says. \"It is a long way off every day, and then it is one day nearer.\" He puts a hand on the lashing.",
   "changes": [
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",

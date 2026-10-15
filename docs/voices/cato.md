@@ -44,3 +44,4 @@ Patrick O'Brian. Take: the way talk wanders about the work before it arrives at 
 - Rule 2: he must not speak in sums; the watch bill is the only list he keeps, and it holds names.
 - Rule 3: his warmth is the sideways answer, to the worry under the question; do not let him answer the question as asked.
 - Rule 5: his objects are the mug, the pencil and the bill; one per exchange.
+- Rules 9 and 10: he names the cook or the medic and not "the one with a child", and he does not close on a verdict about the captain.
