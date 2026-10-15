@@ -1621,7 +1621,7 @@
   "id": "cast:ruben:mid1",
   "i": 0,
   "label": "Act on the tip",
-  "result": "He tells you, and he is right to be careful: A company on Ganymede has folded, and its whole stock of Luxury Goods is being sold off at auction. He watches your face while you take it in, fiddling with the lid of the thermos. \"Not a word,\" he says, delighted, \"about where you heard it. A good listener has no name.\"",
+  "result": "He tells you, and he is right to be careful: A company on Ganymede has folded, and its whole stock of Luxury Goods is being sold off at auction. He watches your face while you take it in, fiddling with the lid of the thermos. \"Not a word,\" he says, delighted, \"about where you heard it.\"",
   "changes": [
    "s.inbox.0.n: 1 -> 2",
    "s.inbox.0.pid: c:ruben -> undefined",
@@ -2283,7 +2283,7 @@
   "id": "cast:bexa:late",
   "i": 1,
   "label": "Make no promises",
-  "result": "\"I cannot promise that,\" you say, \"but I heard you.\" Her mouth goes crooked. \"That is the right answer,\" she says. \"A promise is a tow rope. Do not put one on a ship you have not looked at.\"",
+  "result": "\"I cannot promise that,\" you say, \"but I heard you.\" Her mouth goes crooked. \"That is the right answer,\" she says. \"Do not promise a tow to a ship you have not looked at. I did, once, and she had a hole in her.\"",
   "changes": [
    "s.people.c:bexa.liftedAt: undefined -> 1",
    "s.people.c:bexa.memories: [] -> undefined",
@@ -4680,7 +4680,7 @@
   "id": "cast:ines:bar1",
   "i": 1,
   "label": "Ask about Lisbon",
-  "result": "She turns from the screen. \"The ferry ran every forty minutes,\" she says. \"Nine years. I knew the regulars by their shoes. There was an old man who rode the 6:40 every morning to feed the pigeons on the Luna side. I never spoke to him once. I would give a great deal to know if he still does.\" She drinks. \"That is a route. You get fond of people you have only ever seen from the front.\"",
+  "result": "She turns from the screen. \"The ferry ran every forty minutes,\" she says. \"Nine years. I knew the regulars by their shoes. There was an old man who rode the 6:40 every morning to feed the pigeons on the Luna side. I never spoke to him once. I would give a great deal to know if he still does.\" She drinks. \"I only ever saw the back of his head.\"",
   "changes": [
    "s.cast.ines.flags: {} -> undefined",
    "s.cast.ines.flags.lisbon: undefined -> true",

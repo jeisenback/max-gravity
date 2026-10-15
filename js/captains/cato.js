@@ -52,7 +52,7 @@ CAST.cato = {
     'Cato is walking the hold with a mug, checking lashings that are fine.',
     'Cato has taken the cold watch again. Nobody asked him to.',
     'Cato is teaching one of the ice hands to read a manifest, slowly, one line at a time.',
-    'Cato: "She is counting, that is all. Somebody has to count, and it is her."',
+    'Cato: "She is counting, that is all. Leave her to it."',
     'Cato has written someone\'s mother\'s name on the back of the watch bill so that he remembers to ask.',
     'Cato hums a few bars with no tune while he checks the lashings, and stops when he sees you.',
   ],
@@ -212,7 +212,7 @@ CAST.cato.round = () => {
         `everything has a tag. If ${eng} hands you a spanner, though, you can take that how you like. I have been aboard four years and I have had it ` +
         `twice." Up forward he points at the helm without going in. "${pilot} flies her. Talks to the board the whole time. Do not answer. It is not ` +
         `for you." Beside it, ${comms} has the bands. "Anything that comes in for you comes through there, and ${comms} reads it first. It is not ` +
-        `rude. That is the job, and it is how you will know it has been looked at."`),
+        `rude. It is how you will know it has been looked at."`),
     `At a row of doors on the left he stops. "Third one is yours. It is on a closer, so it hisses, it does not slam. You will try to slam it once. Everyone does. It is all right."`,
     guns,
     `He takes the pencil from behind his ear and checks the bill. "That is everyone. You have the middle watch with ${pilot}, it is on the bill, and I wrote it on the back of my hand as well, in case the bill goes missing. It has, before."`,

@@ -148,7 +148,7 @@ CAPTAINS.hester = {
     repay: 410,
     repaid: 'She counts four hundred and ten onto the rail, the day you leave, as she said she would. You count it after her. It is correct.',
     xoDead: 'She does not look at the empty place on the watch bill. "I have taken Cato out of the book," she says. "I had to. It is the first time I did not want to."',
-    xo: 'Cato is at the hatch, because the captain would not go and say it. "Take care of your people," he says. "They will take care of you. That is the whole job. I have been trying to tell her for years."',
+    xo: 'Cato is at the hatch, because the captain would not go and say it. "Take care of your people," he says. "They will take care of you. I have been trying to tell her for years."',
     parting: 'She holds out her hand at last. It is dry and brief. "Fair winds," she says. "And keep your own books."',
     choices: [
       {
