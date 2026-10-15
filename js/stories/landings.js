@@ -117,7 +117,7 @@ Mods.register({
         },
         { label: 'Stand aside with your head bowed', result: 'You step back against the bulkhead and wait, hands folded, as the procession goes by. It takes a long time. When the last of them has passed the dock stays hushed a moment more, and then the noise comes back, one voice at a time.' },
       ],
-    });
+    }, 0.3);
 
     scene({
       id: 'land-stowaway', when: { planet: BELT },
