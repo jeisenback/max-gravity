@@ -37,8 +37,9 @@ function pickHappening(where, planet) {
 // A storylet as a candidate; `story` picks the main-story ones, otherwise the color ones.
 function storyletCandidate(where, story) {
   const keep = s => isStory(s) === story;
-  if (!pickStorylet(where, keep)) return [];
-  return [{ tier: story ? 0 : 2, weight: 2, via: where === 'port' ? 'station' : 'ship', make() { const s = pickStorylet(where, keep); return s && storyletEvent(s); } }];
+  const s = pickStorylet(where, keep);  // the one roll of its chance: the scene offered is the scene played
+  if (!s) return [];
+  return [{ tier: story ? 0 : 2, weight: 2, via: where === 'port' ? 'station' : 'ship', make: () => storyletEvent(s) }];
 }
 
 Mods.register({

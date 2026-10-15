@@ -227,7 +227,7 @@ test('every tradition has its lines, the dock says whose ship you were put off, 
     const offered = [];
     for (const where of ['port', 'transit']) {
       if (where === 'transit') uatBurn('Ceres Station', 'pallas');
-      for (const c of Mods.filter('happenings', [], where, currentPlanet())) { if (typeof c.make !== 'function') continue; st.customs = {}; const e = c.make(); offered.push(`${where}:${e ? e.title : null}`); if (e) playEvent(e, `${where}`); }
+      for (const c of Mods.filter('happenings', [], where, currentPlanet())) { if (typeof c.make !== 'function') continue; st.customs = {}; if (where === 'transit' && !G.transit) uatBurn('Ceres Station', 'pallas'); /* an earlier scene's choice can end the burn */ const e = c.make(); offered.push(`${where}:${e ? e.title : null}`); if (e) playEvent(e, `${where}`); }
     }
     return { bad, traditions: Object.keys(TRADITIONS).length, carried: carried.length, offered, report };
   });

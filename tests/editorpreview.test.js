@@ -135,7 +135,7 @@ test('a scene whose conditions do not hold is played anyway, and the report says
   assert.match(await report(), /do not hold in this state/);
   assert.match(await report(), /day: 3/, 'day 1 is before the scene\'s day 3');
   assert.match(await report(), /It is played anyway/);
-  assert.match(await report(), /chance of 0\.25/);
+  assert.match(await report(), /chance of 0\.125/);
   assert.ok(await frame().evaluate(() => G.dialog.event.title === 'What Color the Sky Will Be'), 'it opened');
   await page.fill('[data-pv=day]', '10');
   await play();
