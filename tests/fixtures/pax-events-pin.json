@@ -612,7 +612,7 @@
     "i": 0,
     "roll": 0,
     "text": "Sam opens their mouth and nothing comes out. Then they say, low, \"Fifteen hundred. Every credit, with interest, if it takes the rest of my life.\" They do not sit down until you have.",
-    "mem": "9 Jun 2214: You paid off my debt. I will pay you back.",
+    "mem": "9 Jun 2214: You paid off my debt. I'll pay you back.",
     "d": {
      "credits": -1500,
      "fuel": 0,
@@ -628,7 +628,7 @@
     "i": 0,
     "roll": 0.999,
     "text": "Sam opens their mouth and nothing comes out. Then they say, low, \"Fifteen hundred. Every credit, with interest, if it takes the rest of my life.\" They do not sit down until you have.",
-    "mem": "9 Jun 2214: You paid off my debt. I will pay you back.",
+    "mem": "9 Jun 2214: You paid off my debt. I'll pay you back.",
     "d": {
      "credits": -1500,
      "fuel": 0,
@@ -751,7 +751,7 @@
     "i": 2,
     "roll": 0,
     "text": "They say all right and go back to their bunk. For the rest of the trip you can hear them through the bulkhead, running their answers again and again. You never learn whether they made the interview.",
-    "mem": "9 Jun 2214: You would not hurry for my interview.",
+    "mem": "9 Jun 2214: You wouldn't hurry for my interview.",
     "d": {
      "credits": 0,
      "fuel": 0,
@@ -767,7 +767,7 @@
     "i": 2,
     "roll": 0.999,
     "text": "They say all right and go back to their bunk. For the rest of the trip you can hear them through the bulkhead, running their answers again and again. You never learn whether they made the interview.",
-    "mem": "9 Jun 2214: You would not hurry for my interview.",
+    "mem": "9 Jun 2214: You wouldn't hurry for my interview.",
     "d": {
      "credits": 0,
      "fuel": 0,
@@ -827,7 +827,7 @@
     "i": 1,
     "roll": 0,
     "text": "They watch it slide past the window, a pale point in the dark, and stay at the glass until it is gone. Later you see them write something in the notebook: the date, and a line you cannot read. They are polite for the rest of the trip. When they disembark they leave a folded drawing on the galley table, of a rock, and a ship, and a long distance.",
-    "mem": "9 Jun 2214: You would not stop for my research.",
+    "mem": "9 Jun 2214: You wouldn't stop for my research.",
     "d": {
      "credits": 0,
      "fuel": 0,
@@ -843,7 +843,7 @@
     "i": 1,
     "roll": 0.999,
     "text": "They watch it slide past the window, a pale point in the dark, and stay at the glass until it is gone. Later you see them write something in the notebook: the date, and a line you cannot read. They are polite for the rest of the trip. When they disembark they leave a folded drawing on the galley table, of a rock, and a ship, and a long distance.",
-    "mem": "9 Jun 2214: You would not stop for my research.",
+    "mem": "9 Jun 2214: You wouldn't stop for my research.",
     "d": {
      "credits": 0,
      "fuel": 0,
@@ -1385,7 +1385,7 @@
     "i": 1,
     "roll": 0,
     "text": "Sam cannot speak for a moment. They take your hand in both of theirs, and then they write out the recipe on a napkin, every step, with a sketch of the pot. You will cook it, badly, for years.",
-    "mem": "9 Jun 2214: You would not take my money.",
+    "mem": "9 Jun 2214: You wouldn't take my money.",
     "d": {
      "credits": 0,
      "fuel": 0,
@@ -1401,7 +1401,7 @@
     "i": 1,
     "roll": 0.999,
     "text": "Sam cannot speak for a moment. They take your hand in both of theirs, and then they write out the recipe on a napkin, every step, with a sketch of the pot. You will cook it, badly, for years.",
-    "mem": "9 Jun 2214: You would not take my money.",
+    "mem": "9 Jun 2214: You wouldn't take my money.",
     "d": {
      "credits": 0,
      "fuel": 0,

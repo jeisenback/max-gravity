@@ -185,7 +185,7 @@ const CAST_BAR = {
             'You say, "Take it," and Pax does, with the stranger a hand\'s width away and a crowd gathering. The first dart goes dead center. The ' +
             'second goes into the first. The stranger whistles low. Pax\'s hands have not shaken, and Pax looks at them. "That," Pax says to you on ' +
             'the walk back, "wasn\'t as bad as I thought."'); } },
-        { label: 'Take the stranger\'s challenge yourself', memory: 'You played the stranger so that I did not have to.', run() { castLike('pax', 1, this.memory); return (
+        { label: 'Take the stranger\'s challenge yourself', memory: 'You played the stranger so that I didn\'t have to.', run() { castLike('pax', 1, this.memory); return (
             'You step up and play badly and lose and pay. Pax watches from a stool, grinning. At the end Pax says, solemnly, "Your stance is wrong," ' +
             'and corrects it, standing very close, without a flinch. The stranger gives a slow nod. Pax does not see it. You do.'); } },
       ],

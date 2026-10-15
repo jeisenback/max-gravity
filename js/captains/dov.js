@@ -96,7 +96,7 @@ CAPTAINS.dov = {
           },
           {
             label: 'Say you will say nothing',
-            effects: { captainLike: { n: 2, memory: 'You said you would say nothing about the book.' }, captainFlag: 'secretKnown' },
+            effects: { captainLike: { n: 2, memory: 'You said you\'d say nothing about the book.' }, captainFlag: 'secretKnown' },
             result: 'You say you will. He closes the box and holds it in both hands. "Thank you," he says. For once he does not follow it with a story.',
           },
         ],

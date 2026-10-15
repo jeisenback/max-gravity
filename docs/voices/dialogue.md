@@ -24,6 +24,6 @@ The rules for narration in `docs/prose-style.md` do not protect speech. A narrat
 10. **Do not end on a moral or a verdict about someone who is not there.** "She's right to; somebody has to count" explains a person to a listener who did not ask, and a stranger would not say it. End on what was said or done.
 11. **Do not announce the job or the point.** "I do the watch bill" says what the scene is about. The speaker does the job in front of the listener, or says what the job led to.
 12. **Keep the detail possible here.** Mail comes in at a dock, not at an hour of the watch. A custom or an object must be one this ship has.
-13. **Speech uses contractions.** "I don't", "it's", "we'll". Narration does not contract. A character keeps the full form for stress ("I do not want that") or because they are formal on purpose. `npm run prose` counts the quoted spans that still say it in full.
+13. **Speech uses contractions.** "I don't", "it's", "we'll". The remembered lines kept for people ("You said you'd keep it to yourself.") are their speech too. Narration does not contract. A character keeps the full form for stress ("I do not want that") or because they are formal on purpose. `npm run prose` counts the quoted spans that still say it in full.
 
 Test: say the line aloud as the speaker would, to someone they met an hour ago. If it needs a semicolon, rewrite it.

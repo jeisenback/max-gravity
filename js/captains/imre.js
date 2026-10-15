@@ -75,7 +75,7 @@ CAPTAINS.imre = {
       choices: [
         {
           label: 'Say you took the form to the wrong office',
-          effects: { captainLike: { n: -1, memory: 'You said you filed the renewal at the wrong office, and I do not think you did.' }, castLike: { who: 'pilar', n: 3, memory: 'You took the blame for my renewal.' }, captainFlag: 'covered' },
+          effects: { captainLike: { n: -1, memory: 'You said you filed the renewal at the wrong office, and I don\'t think you did.' }, castLike: { who: 'pilar', n: 3, memory: 'You took the blame for my renewal.' }, captainFlag: 'covered' },
           result: 'You say it. Captain Sato looks at you, and then at the form, and enters it, because it is what has been said. The correction order ' +
               'is yours. Pilar says nothing until the inspector has gone, and then says, "I won\'t forget that." Captain Sato says nothing ' +
               'at all.',
@@ -122,7 +122,7 @@ CAPTAINS.imre = {
           },
           {
             label: 'Say you will not mention it',
-            effects: { captainLike: { n: 0, memory: 'You said you would not mention the record.' }, captainFlag: ['secretKnown', 'secretAngry'] },
+            effects: { captainLike: { n: 0, memory: 'You said you wouldn\'t mention the record.' }, captainFlag: ['secretKnown', 'secretAngry'] },
             result: 'Captain Sato does not move. "It\'s not a secret," they say. "It\'s a record. It\'s accurate." They close the drawer. "Noted that you won\'t mention it."',
           },
         ],

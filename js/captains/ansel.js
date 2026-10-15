@@ -83,7 +83,7 @@ CAST.ansel = {
       choices: [
         {
           label: 'Tell him it is not a modest ambition',
-          effects: { castLike: { who: 'ansel', n: 2, memory: 'You said my ambition was not small.' }, castFlag: { who: 'ansel', flag: 'annuity' } },
+          effects: { castLike: { who: 'ansel', n: 2, memory: 'You said my ambition wasn\'t small.' }, castFlag: { who: 'ansel', flag: 'annuity' } },
           result: '"It\'s the largest there is," he says. "Everyone else wants the number to go up. I want it to stay." He folds the letter and puts it in the inside pocket, over the heart.',
         },
         {
@@ -127,7 +127,7 @@ CAST.ansel = {
         },
         {
           label: 'Tell him you will stop her if you can',
-          effects: { castLike: { who: 'ansel', n: 2, memory: 'You said you would stop her if you could.' }, castFlag: { who: 'ansel', flag: 'told' } },
+          effects: { castLike: { who: 'ansel', n: 2, memory: 'You said you\'d stop her if you could.' }, castFlag: { who: 'ansel', flag: 'told' } },
           result: 'He looks at you across the sheet. "You can\'t," he says. "But thank you for saying it. That\'s more than I\'ve had in six years." He turns the sheet over, face down, for the first time since you have known him.',
         },
       ],

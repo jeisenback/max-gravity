@@ -75,7 +75,7 @@ const CAST = {
         choices: [
           {
             label: 'Ask about the landing anyway',
-            effects: { castLike: { who: 'ines', n: 1, memory: 'I told you about the landing, and you did not look at me differently.' } },
+            effects: { castLike: { who: 'ines', n: 1, memory: 'I told you about the landing, and you didn\'t look at me differently.' } },
             result: 'She is silent for most of a minute. Then she tells it flat and fast: the dark pad, the tower saying ditch, the forty-one faces she ' +
               'could see on the cabin feed, and the thing she decided. When she finishes she lets out a breath. "There," she says. "That\'s the whole ' +
               'thing. It\'s much shorter than I thought."',
@@ -134,7 +134,7 @@ const CAST = {
           },
           {
             label: '"It\'s not my place."',
-            effects: { castLike: { who: 'ines', n: -1, memory: 'You said a reference was not your place.' } },
+            effects: { castLike: { who: 'ines', n: -1, memory: 'You said a reference wasn\'t your place.' } },
             result: 'Her face does not change. "No," she says, "of course not." She folds the message and puts it away. For the rest of the day she says good morning, good evening and thank you, and nothing in between.',
           },
         ],
@@ -154,7 +154,7 @@ const CAST = {
           },
           {
             label: 'Make no promises',
-            effects: { castLike: { who: 'ines', n: 1, memory: 'You would not promise a command, but you listened.' } },
+            effects: { castLike: { who: 'ines', n: 1, memory: 'You wouldn\'t promise a command, but you listened.' } },
             result: '"I can\'t promise that," you say, "but I heard you." She smiles at the glass, crooked. "That\'s the honest answer," she says. "I\'ll take the honest one."',
           },
         ],
@@ -268,7 +268,7 @@ const CAST = {
           },
           {
             label: '"I can\'t spare it."',
-            effects: { castLike: { who: 'tomas', n: -1, memory: 'You could not spare two hundred credits.' } },
+            effects: { castLike: { who: 'tomas', n: -1, memory: 'You couldn\'t spare two hundred credits.' } },
             result: 'He straightens his shoulders. "Of course," he says. "I shouldn\'t have asked." He does not ask anyone else, and in the evening you ' +
               'hear him in the engine room, low and steady, working out a month of arithmetic on his fingers. The next day he has taken two extra ' +
               'shifts.',
@@ -283,14 +283,14 @@ const CAST = {
         choices: [
           {
             label: 'Ask him to teach you',
-            effects: { castFlag: { who: 'tomas', flag: 'plan' }, castLike: { who: 'tomas', n: 2, memory: 'You asked me how I would rebuild her, and listened.' }, castXp: { who: 'tomas', role: 'engineer', n: 2 }, gainSkill: { post: 'engineer', n: 3 } },
+            effects: { castFlag: { who: 'tomas', flag: 'plan' }, castLike: { who: 'tomas', n: 2, memory: 'You asked me how I\'d rebuild her, and listened.' }, castXp: { who: 'tomas', role: 'engineer', n: 2 }, gainSkill: { post: 'engineer', n: 3 } },
             result: 'It takes the whole of the quiet watch and half the next one. He draws it on the deck in chalk, a plant you would not know from a ' +
               'diagram, and then he rubs out the first pipe and makes you put it back from memory, and the second, and the third, until the deck is bare and the whole of her is laid out in your head. "There," he says. "Now you know her. Don\'t tell the owners."',
           },
           {
             label: 'Ask him to write it down, so it does not go with the hull',
             when: { opinion: { who: 'tomas', min: OPINION.TRUSTED } },
-            effects: { castFlag: { who: 'tomas', flag: 'plan' }, castLike: { who: 'tomas', n: 2, memory: 'You asked me to write the plan down, so it would last.' } },
+            effects: { castFlag: { who: 'tomas', flag: 'plan' }, castLike: { who: 'tomas', n: 2, memory: 'You asked me to write the plan down, so it\'d last.' } },
             result: 'He looks at the flask. "Nobody has asked me that," he says. He goes below and comes back with a notebook with a stained ' +
               'cover, and spends the quiet watch filling eleven pages in small square capitals, a diagram on each. He tears them out along the fold, ' +
               'carefully, and puts them in your hand. "If she\'s sold again," he says, "somebody will need to know where the cracks are. Not the ' +
@@ -311,7 +311,7 @@ const CAST = {
         choices: [
           {
             label: 'Say you would try',
-            effects: { castLike: { who: 'tomas', n: 2, memory: 'You said you would try to keep the crew together.' }, castFlag: { who: 'tomas', flag: 'promised' } },
+            effects: { castLike: { who: 'tomas', n: 2, memory: 'You said you\'d try to keep the crew together.' }, castFlag: { who: 'tomas', flag: 'promised' } },
             result: '"I\'d try," you say, and he lets out a breath. "That\'s enough," he says. "Nobody has ever said that. They say yes, or no. Nobody ' +
               'says try." He claps your shoulder, once, hard, and goes below. You can hear him telling the engines the news.',
           },
@@ -447,7 +447,7 @@ const CAST = {
           },
           {
             label: 'Make no promises',
-            effects: { castLike: { who: 'yelena', n: 1, memory: 'You would not promise a ship, but you listened.' } },
+            effects: { castLike: { who: 'yelena', n: 1, memory: 'You wouldn\'t promise a ship, but you listened.' } },
             result: '"I can\'t promise that," you say, "but I heard you." She raises one flat hand, like a referee, and the cloth goes back to the housing. ' +
               '"Fair," she says. "I\'ll take fair. Fair is more than most of the bench ever got."',
           },
@@ -559,7 +559,7 @@ const CAST = {
         choices: [
           {
             label: 'Ask him to keep an ear on it',
-            effects: { castLike: { who: 'ruben', n: 2, memory: 'You asked me to keep an ear on what is said about the ship.' }, castXp: { who: 'ruben', role: 'slicer', n: 2 } },
+            effects: { castLike: { who: 'ruben', n: 2, memory: 'You asked me to keep an ear on what\'s said about the ship.' }, castXp: { who: 'ruben', role: 'slicer', n: 2 } },
             result: '"Of course. Of course." He is glowing. For the rest of the burn there is a notebook next to the comms console, titled, in his ' +
               'careful hand, WHAT IS SAID, and each page is a name, a time, and a verdict. By the end, you could write the ship\'s biography from it.',
           },
@@ -584,7 +584,7 @@ const CAST = {
           },
           {
             label: 'Make no promises',
-            effects: { castLike: { who: 'ruben', n: 1, memory: 'You would not promise, but you listened.' } },
+            effects: { castLike: { who: 'ruben', n: 1, memory: 'You wouldn\'t promise, but you listened.' } },
             result: '"I can\'t promise that," you say, "but I heard you." He smiles. "That\'s what the open band is for," he says. ' +
               '"Not promises. Being heard." He turns the volume up on the quiet band, and the two of you sit and listen.',
           },
@@ -681,7 +681,7 @@ const CAST = {
           },
           {
             label: 'Stay on course',
-            effects: { castLike: { who: 'bexa', n: -1, memory: 'You would not let me look at the wreck.' } },
+            effects: { castLike: { who: 'bexa', n: -1, memory: 'You wouldn\'t let me look at the wreck.' } },
             result: '"No," she says. "Of course. It\'s not my ship." She takes her hand off the console slowly, and the transponder\'s faint call fades ' +
               'behind you, four seconds at a time, until you cannot hear it. She flies on, correct and silent, and later you see her write something ' +
               'small on the inside of the console cover.',
@@ -725,7 +725,7 @@ const CAST = {
           },
           {
             label: 'Make no promises',
-            effects: { castLike: { who: 'bexa', n: 1, memory: 'You would not promise, but you listened.' } },
+            effects: { castLike: { who: 'bexa', n: 1, memory: 'You wouldn\'t promise, but you listened.' } },
             result: '"I can\'t promise that," you say, "but I heard you." Her mouth goes crooked. "That\'s the ' +
               'right answer," she says. "Don\'t promise a tow to a ship you haven\'t looked at. I did, once, and she had a hole in her."',
           },
@@ -794,7 +794,7 @@ const CAST = {
         choices: [
           {
             label: 'Tell them honestly that it is different',
-            effects: { castLike: { who: 'pax', n: 2, memory: 'You told me the truth about what it is like when it is real.' }, castXp: { who: 'pax', role: 'gunner', n: 2 } },
+            effects: { castLike: { who: 'pax', n: 2, memory: 'You told me the truth about what it\'s like when it\'s real.' }, castXp: { who: 'pax', role: 'gunner', n: 2 } },
             result: '"Yes," you say. "It\'s different. It\'s louder, and everything you do matters, and your hands shake. Everybody\'s do. You do it ' +
               'anyway, and it gets quieter." Pax lets out a breath, slowly. "Thank you," they say. "Everybody else says it\'s the same. It\'s a relief ' +
               'to be told it\'s not." They go back to the scores.',
@@ -866,7 +866,7 @@ const CAST = {
           },
           {
             label: 'Make no promises',
-            effects: { castLike: { who: 'pax', n: 1, memory: 'You would not promise a ship, but you listened.' } },
+            effects: { castLike: { who: 'pax', n: 1, memory: 'You wouldn\'t promise a ship, but you listened.' } },
             result: '"I can\'t promise that," you say, "but I heard you." "That\'s fair," Pax says. "It\'d be strange to be promised. I\'m not ' +
               'used to it." They smile, a crooked one. To your surprise, they say, "Nine days is already a good thing, though. I\'ll ' +
               'take that."',

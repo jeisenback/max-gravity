@@ -67,7 +67,7 @@ CAST.pilar = {
         },
         {
           label: 'Say you will keep it to yourself',
-          effects: { castLike: { who: 'pilar', n: 1, memory: 'You said you would keep my approach to yourself.' } },
+          effects: { castLike: { who: 'pilar', n: 1, memory: 'You said you\'d keep my approach to yourself.' } },
           result: '"Good," she says. "It\'s not a secret. It\'s a courtesy. The captain will find out, and when they do I\'d rather it was from the log." She goes back to the stick.',
         },
       ],

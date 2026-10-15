@@ -7,7 +7,7 @@
     "roll": 0.5,
     "text": "\"Then do,\" the captain says, and goes down the ramp.",
     "mem": [
-     "9 Jul 2214: You said you would do better, and said it plainly."
+     "9 Jul 2214: You said you'd do better, and said it plainly."
     ],
     "fx": {
      "p1": 1
@@ -100,8 +100,8 @@
     "roll": 0.5,
     "text": "Mateo takes a bag and goes down the ramp without looking round. Hana watches the ramp until it is clear. By the next watch bell a new slicer, Grace, has signed on for the berth.",
     "mem": [
-     "9 Jul 2214: Hana and I could not share a ship, and you let me go.",
-     "9 Jul 2214: You kept me aboard when Mateo and I could not share a ship."
+     "9 Jul 2214: Hana and I couldn't share a ship, and you let me go.",
+     "9 Jul 2214: You kept me aboard when Mateo and I couldn't share a ship."
     ],
     "fx": {
      "p2": -3,
@@ -121,8 +121,8 @@
     "roll": 0.5,
     "text": "Hana takes a bag and goes down the ramp without looking round. Mateo watches the ramp until it is clear. By the next watch bell a new quartermaster, Fatima, has signed on for the berth.",
     "mem": [
-     "9 Jul 2214: You kept me aboard when Hana and I could not share a ship.",
-     "9 Jul 2214: Mateo and I could not share a ship, and you let me go."
+     "9 Jul 2214: You kept me aboard when Hana and I couldn't share a ship.",
+     "9 Jul 2214: Mateo and I couldn't share a ship, and you let me go."
     ],
     "fx": {
      "p2": 2,
@@ -438,7 +438,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester counts it against the next run's margin, tells you the total, and asks if you want a cut of the manifest. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -453,7 +453,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester does not like being reminded of what they owe. Hester asks what it would fetch at the next port, per ton, less the pilotage, and does not like the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "fx": {
      "p1": -1
@@ -471,7 +471,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester says the ship is not a charity. Hester asks what it would fetch at the next port, per ton, less the pilotage, and does not like the figure. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "fx": {
      "p1": -1
@@ -489,7 +489,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -530,7 +530,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester does not look at the figure. Hester touches the cord at their wrist, once for each leg of the trip, and says nothing. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "fx": {
      "p1": -1
@@ -548,7 +548,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -563,7 +563,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester says a short word over you, as at the turn of the watch. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -578,7 +578,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester does not take the bait. Hester touches the cord at their wrist, once for each leg of the trip, and says nothing. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "fx": {
      "p1": -1
@@ -622,7 +622,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -637,7 +637,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester claps you on the shoulder, hard. You will have a bruise. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -652,7 +652,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester claps you on the shoulder, hard. You will have a bruise. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -667,7 +667,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester claps you on the shoulder, hard. You will have a bruise. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -708,7 +708,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester does not look at the figure. Hester waves it away, and asks whether you ate at the watch change. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "fx": {
      "p1": -1
@@ -726,7 +726,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester says to have the rest, and means a ration case and a bottle at the next port. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -741,7 +741,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -756,7 +756,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -797,7 +797,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -812,7 +812,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester does not like being reminded of what they owe. Hester says what they think of that, in order, the way they read out a fuel invoice, and does not raise their voice. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "fx": {
      "p1": -1
@@ -830,7 +830,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester says the ship is not a charity. Hester says what they think of that, in order, the way they read out a fuel invoice, and does not raise their voice. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "fx": {
      "p1": -1
@@ -848,7 +848,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -889,7 +889,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -904,7 +904,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -919,7 +919,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -934,7 +934,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester does not take the bait. Hester flinches, and checks the seal on the nearest hatch. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "fx": {
      "p1": -1
@@ -978,7 +978,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -993,7 +993,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester takes your hand for a moment and does not say anything. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -1008,7 +1008,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head Hester takes your hand for a moment and does not say anything. \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -1023,7 +1023,7 @@
     "roll": 0.999,
     "text": "You put it to Captain Vance, and Hester listens, and shakes their head \"Not this run,\" Hester says. \"Ask me again at the next stop, if it's still worth asking.\"",
     "mem": [
-     "9 Jul 2214: You pushed me to fly somewhere I did not want to go."
+     "9 Jul 2214: You pushed me to fly somewhere I didn't want to go."
     ],
     "next": null
    },
@@ -1831,7 +1831,7 @@
     "roll": 0,
     "text": "You pay the full rate. Sam says nothing.",
     "mem": [
-     "9 Jul 2214: You would not use my old unit's name."
+     "9 Jul 2214: You wouldn't use my old unit's name."
     ],
     "fx": {
      "p10": 1
@@ -1843,7 +1843,7 @@
     "roll": 0.999,
     "text": "You pay the full rate. Sam says nothing.",
     "mem": [
-     "9 Jul 2214: You would not use my old unit's name."
+     "9 Jul 2214: You wouldn't use my old unit's name."
     ],
     "fx": {
      "p10": 1
@@ -1898,7 +1898,7 @@
     "roll": 0,
     "text": "Sam reads the recall order twice and puts it away. Sam does not leave. The liaison logs the ship as having obstructed a recall, and Sam does not speak to you for the rest of the watch.",
     "mem": [
-     "9 Jul 2214: You would not release me when I was recalled.",
+     "9 Jul 2214: You wouldn't release me when I was recalled.",
      "9 Jul 2214: You set yourself against the Compact.",
      "9 Jul 2214: You set yourself against the Compact."
     ],
@@ -1913,7 +1913,7 @@
     "roll": 0.999,
     "text": "Sam reads the recall order twice and puts it away. Sam does not leave. The liaison logs the ship as having obstructed a recall, and Sam does not speak to you for the rest of the watch.",
     "mem": [
-     "9 Jul 2214: You would not release me when I was recalled.",
+     "9 Jul 2214: You wouldn't release me when I was recalled.",
      "9 Jul 2214: You set yourself against the Compact.",
      "9 Jul 2214: You set yourself against the Compact."
     ],
@@ -2125,7 +2125,7 @@
     "roll": 0.1,
     "text": "You spend the watch re-seating Mate0's suit seals and re-soldering a handlamp, and Mate0 pays you 60 cr and says it is the best job anyone has done on the ship.",
     "mem": [
-     "9 Jul 2214: You mended my gear and would not take too much."
+     "9 Jul 2214: You mended my gear and wouldn't take too much."
     ],
     "fx": {
      "credits": 60,
@@ -2138,7 +2138,7 @@
     "roll": 0.9,
     "text": "You spend the watch re-seating Mate3's suit seals and re-soldering a handlamp, and Mate3 pays you 40 cr and says it is the best job anyone has done on the ship.",
     "mem": [
-     "9 Jul 2214: You mended my gear and would not take too much."
+     "9 Jul 2214: You mended my gear and wouldn't take too much."
     ],
     "fx": {
      "credits": 40,
@@ -3699,10 +3699,10 @@
     "mem": [
      "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
      "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
-     "9 Jul 2214: The captain did not give Mara their due.",
+     "9 Jul 2214: The captain didn't give Mara their due.",
      "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
-     "9 Jul 2214: The captain did not give Mara their due.",
-     "9 Jul 2214: The captain did not give Mara their due."
+     "9 Jul 2214: The captain didn't give Mara their due.",
+     "9 Jul 2214: The captain didn't give Mara their due."
     ],
     "fx": {
      "p10": 1,
@@ -3722,9 +3722,9 @@
      "9 Jul 2214: You wrote to Mara's family.",
      "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
      "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
-     "9 Jul 2214: The captain did not give Mara their due.",
+     "9 Jul 2214: The captain didn't give Mara their due.",
      "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
-     "9 Jul 2214: The captain did not give Mara their due."
+     "9 Jul 2214: The captain didn't give Mara their due."
     ],
     "fx": {
      "credits": -100,
@@ -3758,10 +3758,10 @@
     "roll": 0.5,
     "text": "There is a run to make and a clock on it. You do not mention it, and neither does anyone else for a while, which is its own kind of mention. Mate0 looks at the photograph taped inside their locker door, not at you. Mate2 says it is all right, and finds something on the booth to fix.",
     "mem": [
-     "9 Jul 2214: The captain did not give Mara their due.",
-     "9 Jul 2214: The captain did not give Mara their due.",
-     "9 Jul 2214: The captain did not give Mara their due.",
-     "9 Jul 2214: The captain did not give Mara their due.",
+     "9 Jul 2214: The captain didn't give Mara their due.",
+     "9 Jul 2214: The captain didn't give Mara their due.",
+     "9 Jul 2214: The captain didn't give Mara their due.",
+     "9 Jul 2214: The captain didn't give Mara their due.",
      "9 Jul 2214: The captain marked Mara's death the way Mara deserved.",
      "9 Jul 2214: The captain marked Mara's death the way Mara deserved."
     ],
@@ -4302,7 +4302,7 @@
     "roll": 0.5,
     "text": "You step up and play badly and lose and pay. Pax watches from a stool, grinning. At the end Pax says, solemnly, \"Your stance is wrong,\" and corrects it, standing very close, without a flinch. The stranger gives a slow nod. Pax does not see it. You do.",
     "mem": [
-     "25 Dec 2214: You played the stranger so that I did not have to."
+     "25 Dec 2214: You played the stranger so that I didn't have to."
     ],
     "fx": {
      "c:pax": 1
@@ -6767,7 +6767,7 @@
     "roll": 0,
     "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
     "mem": [
-     "9 Jul 2214: You would not stand an extra watch."
+     "9 Jul 2214: You wouldn't stand an extra watch."
     ],
     "fx": {
      "p1": -1
@@ -6782,7 +6782,7 @@
     "roll": 0.999,
     "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
     "mem": [
-     "9 Jul 2214: You would not stand an extra watch."
+     "9 Jul 2214: You wouldn't stand an extra watch."
     ],
     "fx": {
      "p1": -1
@@ -7123,7 +7123,7 @@
     "roll": 0,
     "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
-     "9 Jul 2214: You would not lend me anything."
+     "9 Jul 2214: You wouldn't lend me anything."
     ],
     "fx": {
      "c:ines": -1
@@ -7135,7 +7135,7 @@
     "roll": 0.999,
     "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
-     "9 Jul 2214: You would not lend me anything."
+     "9 Jul 2214: You wouldn't lend me anything."
     ],
     "fx": {
      "c:ines": -1
@@ -7277,7 +7277,7 @@
       "roll": 0,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -7288,7 +7288,7 @@
       "roll": 0.999,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -7333,7 +7333,7 @@
       "roll": 0,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -7344,7 +7344,7 @@
       "roll": 0.999,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -7435,7 +7435,7 @@
     "roll": 0,
     "text": "The return has a drive bloom that is wrong for the hull on its transponder: too small, and too clean. You write down the figure and give it to the captain. \"A smaller ship using a bigger ship's name,\" the captain says, and changes the burn. (+2 experience at the gunner post.)",
     "mem": [
-     "9 Jul 2214: You read a drive signature that did not match its hull."
+     "9 Jul 2214: You read a drive signature that didn't match its hull."
     ],
     "fx": {
      "p1": 1
@@ -7450,7 +7450,7 @@
     "roll": 0.999,
     "text": "The return has a drive bloom that is wrong for the hull on its transponder: too small, and too clean. You write down the figure and give it to the captain. \"A smaller ship using a bigger ship's name,\" the captain says, and changes the burn. (+2 experience at the gunner post.)",
     "mem": [
-     "9 Jul 2214: You read a drive signature that did not match its hull."
+     "9 Jul 2214: You read a drive signature that didn't match its hull."
     ],
     "fx": {
      "p1": 1
@@ -7954,7 +7954,7 @@
     "roll": 0,
     "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
     "mem": [
-     "9 Jul 2214: You would not stand an extra watch."
+     "9 Jul 2214: You wouldn't stand an extra watch."
     ],
     "fx": {
      "p1": -1
@@ -7969,7 +7969,7 @@
     "roll": 0.999,
     "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
     "mem": [
-     "9 Jul 2214: You would not stand an extra watch."
+     "9 Jul 2214: You wouldn't stand an extra watch."
     ],
     "fx": {
      "p1": -1
@@ -8310,7 +8310,7 @@
     "roll": 0,
     "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
-     "9 Jul 2214: You would not lend me anything."
+     "9 Jul 2214: You wouldn't lend me anything."
     ],
     "fx": {
      "c:ines": -1
@@ -8322,7 +8322,7 @@
     "roll": 0.999,
     "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
-     "9 Jul 2214: You would not lend me anything."
+     "9 Jul 2214: You wouldn't lend me anything."
     ],
     "fx": {
      "c:ines": -1
@@ -8464,7 +8464,7 @@
       "roll": 0,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the pilot post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -8475,7 +8475,7 @@
       "roll": 0.999,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the pilot post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -8520,7 +8520,7 @@
       "roll": 0,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the pilot post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -8531,7 +8531,7 @@
       "roll": 0.999,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the pilot post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -8622,7 +8622,7 @@
     "roll": 0,
     "text": "The return has a drive bloom that is wrong for the hull on its transponder: too small, and too clean. You write down the figure and give it to the captain. \"A smaller ship using a bigger ship's name,\" the captain says, and changes the burn. (+2 experience at the pilot post.)",
     "mem": [
-     "9 Jul 2214: You read a drive signature that did not match its hull."
+     "9 Jul 2214: You read a drive signature that didn't match its hull."
     ],
     "fx": {
      "p1": 1
@@ -8637,7 +8637,7 @@
     "roll": 0.999,
     "text": "The return has a drive bloom that is wrong for the hull on its transponder: too small, and too clean. You write down the figure and give it to the captain. \"A smaller ship using a bigger ship's name,\" the captain says, and changes the burn. (+2 experience at the pilot post.)",
     "mem": [
-     "9 Jul 2214: You read a drive signature that did not match its hull."
+     "9 Jul 2214: You read a drive signature that didn't match its hull."
     ],
     "fx": {
      "p1": 1
@@ -9141,7 +9141,7 @@
     "roll": 0,
     "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
     "mem": [
-     "9 Jul 2214: You would not stand an extra watch."
+     "9 Jul 2214: You wouldn't stand an extra watch."
     ],
     "fx": {
      "p1": -1
@@ -9156,7 +9156,7 @@
     "roll": 0.999,
     "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
     "mem": [
-     "9 Jul 2214: You would not stand an extra watch."
+     "9 Jul 2214: You wouldn't stand an extra watch."
     ],
     "fx": {
      "p1": -1
@@ -9497,7 +9497,7 @@
     "roll": 0,
     "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
-     "9 Jul 2214: You would not lend me anything."
+     "9 Jul 2214: You wouldn't lend me anything."
     ],
     "fx": {
      "c:ines": -1
@@ -9509,7 +9509,7 @@
     "roll": 0.999,
     "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
-     "9 Jul 2214: You would not lend me anything."
+     "9 Jul 2214: You wouldn't lend me anything."
     ],
     "fx": {
      "c:ines": -1
@@ -9651,7 +9651,7 @@
       "roll": 0,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the engineer post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -9662,7 +9662,7 @@
       "roll": 0.999,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the engineer post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -9707,7 +9707,7 @@
       "roll": 0,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the engineer post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -9718,7 +9718,7 @@
       "roll": 0.999,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the engineer post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -9809,7 +9809,7 @@
     "roll": 0,
     "text": "The return has a drive bloom that is wrong for the hull on its transponder: too small, and too clean. You write down the figure and give it to the captain. \"A smaller ship using a bigger ship's name,\" the captain says, and changes the burn. (+2 experience at the engineer post.)",
     "mem": [
-     "9 Jul 2214: You read a drive signature that did not match its hull."
+     "9 Jul 2214: You read a drive signature that didn't match its hull."
     ],
     "fx": {
      "p1": 1
@@ -9824,7 +9824,7 @@
     "roll": 0.999,
     "text": "The return has a drive bloom that is wrong for the hull on its transponder: too small, and too clean. You write down the figure and give it to the captain. \"A smaller ship using a bigger ship's name,\" the captain says, and changes the burn. (+2 experience at the engineer post.)",
     "mem": [
-     "9 Jul 2214: You read a drive signature that did not match its hull."
+     "9 Jul 2214: You read a drive signature that didn't match its hull."
     ],
     "fx": {
      "p1": 1
@@ -10328,7 +10328,7 @@
     "roll": 0,
     "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
     "mem": [
-     "9 Jul 2214: You would not stand an extra watch."
+     "9 Jul 2214: You wouldn't stand an extra watch."
     ],
     "fx": {
      "p1": -1
@@ -10343,7 +10343,7 @@
     "roll": 0.999,
     "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
     "mem": [
-     "9 Jul 2214: You would not stand an extra watch."
+     "9 Jul 2214: You wouldn't stand an extra watch."
     ],
     "fx": {
      "p1": -1
@@ -10684,7 +10684,7 @@
     "roll": 0,
     "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
-     "9 Jul 2214: You would not lend me anything."
+     "9 Jul 2214: You wouldn't lend me anything."
     ],
     "fx": {
      "c:ines": -1
@@ -10696,7 +10696,7 @@
     "roll": 0.999,
     "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
-     "9 Jul 2214: You would not lend me anything."
+     "9 Jul 2214: You wouldn't lend me anything."
     ],
     "fx": {
      "c:ines": -1
@@ -10838,7 +10838,7 @@
       "roll": 0,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the comms post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -10849,7 +10849,7 @@
       "roll": 0.999,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the comms post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -10894,7 +10894,7 @@
       "roll": 0,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the comms post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -10905,7 +10905,7 @@
       "roll": 0.999,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the comms post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -10996,7 +10996,7 @@
     "roll": 0,
     "text": "The return has a drive bloom that is wrong for the hull on its transponder: too small, and too clean. You write down the figure and give it to the captain. \"A smaller ship using a bigger ship's name,\" the captain says, and changes the burn. (+2 experience at the comms post.)",
     "mem": [
-     "9 Jul 2214: You read a drive signature that did not match its hull."
+     "9 Jul 2214: You read a drive signature that didn't match its hull."
     ],
     "fx": {
      "p1": 1
@@ -11011,7 +11011,7 @@
     "roll": 0.999,
     "text": "The return has a drive bloom that is wrong for the hull on its transponder: too small, and too clean. You write down the figure and give it to the captain. \"A smaller ship using a bigger ship's name,\" the captain says, and changes the burn. (+2 experience at the comms post.)",
     "mem": [
-     "9 Jul 2214: You read a drive signature that did not match its hull."
+     "9 Jul 2214: You read a drive signature that didn't match its hull."
     ],
     "fx": {
      "p1": 1
@@ -11515,7 +11515,7 @@
     "roll": 0,
     "text": "\"Of course,\" he says at once, brightly. \"Of course. No, no.\" He goes to ask somebody else. It takes him longer than it should to find them.",
     "mem": [
-     "9 Jul 2214: You would not stand an extra watch."
+     "9 Jul 2214: You wouldn't stand an extra watch."
     ],
     "fx": {
      "p1": -1
@@ -11530,7 +11530,7 @@
     "roll": 0.999,
     "text": "\"Of course,\" he says at once, brightly. \"Of course. No, no.\" He goes to ask somebody else. It takes him longer than it should to find them.",
     "mem": [
-     "9 Jul 2214: You would not stand an extra watch."
+     "9 Jul 2214: You wouldn't stand an extra watch."
     ],
     "fx": {
      "p1": -1
@@ -11871,7 +11871,7 @@
     "roll": 0,
     "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
-     "9 Jul 2214: You would not lend me anything."
+     "9 Jul 2214: You wouldn't lend me anything."
     ],
     "fx": {
      "c:ines": -1
@@ -11883,7 +11883,7 @@
     "roll": 0.999,
     "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
-     "9 Jul 2214: You would not lend me anything."
+     "9 Jul 2214: You wouldn't lend me anything."
     ],
     "fx": {
      "c:ines": -1
@@ -12025,7 +12025,7 @@
       "roll": 0,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -12036,7 +12036,7 @@
       "roll": 0.999,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -12081,7 +12081,7 @@
       "roll": 0,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -12092,7 +12092,7 @@
       "roll": 0.999,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -12183,7 +12183,7 @@
     "roll": 0,
     "text": "The return has a drive bloom that is wrong for the hull on its transponder: too small, and too clean. You write down the figure and give it to the captain. \"A smaller ship using a bigger ship's name,\" the captain says, and changes the burn. (+2 experience at the gunner post.)",
     "mem": [
-     "9 Jul 2214: You read a drive signature that did not match its hull."
+     "9 Jul 2214: You read a drive signature that didn't match its hull."
     ],
     "fx": {
      "p1": 1
@@ -12198,7 +12198,7 @@
     "roll": 0.999,
     "text": "The return has a drive bloom that is wrong for the hull on its transponder: too small, and too clean. You write down the figure and give it to the captain. \"A smaller ship using a bigger ship's name,\" the captain says, and changes the burn. (+2 experience at the gunner post.)",
     "mem": [
-     "9 Jul 2214: You read a drive signature that did not match its hull."
+     "9 Jul 2214: You read a drive signature that didn't match its hull."
     ],
     "fx": {
      "p1": 1
@@ -12702,7 +12702,7 @@
     "roll": 0,
     "text": "\"Entered,\" Captain Sato says, and puts the paper away. It was a request, and you refused, and nothing is held against you.",
     "mem": [
-     "9 Jul 2214: You would not stand an extra watch."
+     "9 Jul 2214: You wouldn't stand an extra watch."
     ],
     "fx": {
      "p1": -1
@@ -12717,7 +12717,7 @@
     "roll": 0.999,
     "text": "\"Entered,\" Captain Sato says, and puts the paper away. It was a request, and you refused, and nothing is held against you.",
     "mem": [
-     "9 Jul 2214: You would not stand an extra watch."
+     "9 Jul 2214: You wouldn't stand an extra watch."
     ],
     "fx": {
      "p1": -1
@@ -13058,7 +13058,7 @@
     "roll": 0,
     "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
-     "9 Jul 2214: You would not lend me anything."
+     "9 Jul 2214: You wouldn't lend me anything."
     ],
     "fx": {
      "c:ines": -1
@@ -13070,7 +13070,7 @@
     "roll": 0.999,
     "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
-     "9 Jul 2214: You would not lend me anything."
+     "9 Jul 2214: You wouldn't lend me anything."
     ],
     "fx": {
      "c:ines": -1
@@ -13212,7 +13212,7 @@
       "roll": 0,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -13223,7 +13223,7 @@
       "roll": 0.999,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -13268,7 +13268,7 @@
       "roll": 0,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -13279,7 +13279,7 @@
       "roll": 0.999,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -13370,7 +13370,7 @@
     "roll": 0,
     "text": "The return has a drive bloom that is wrong for the hull on its transponder: too small, and too clean. You write down the figure and give it to the captain. \"A smaller ship using a bigger ship's name,\" the captain says, and changes the burn. (+2 experience at the gunner post.)",
     "mem": [
-     "9 Jul 2214: You read a drive signature that did not match its hull."
+     "9 Jul 2214: You read a drive signature that didn't match its hull."
     ],
     "fx": {
      "p1": 1
@@ -13385,7 +13385,7 @@
     "roll": 0.999,
     "text": "The return has a drive bloom that is wrong for the hull on its transponder: too small, and too clean. You write down the figure and give it to the captain. \"A smaller ship using a bigger ship's name,\" the captain says, and changes the burn. (+2 experience at the gunner post.)",
     "mem": [
-     "9 Jul 2214: You read a drive signature that did not match its hull."
+     "9 Jul 2214: You read a drive signature that didn't match its hull."
     ],
     "fx": {
      "p1": 1
@@ -13889,7 +13889,7 @@
     "roll": 0,
     "text": "\"Fair,\" she says, easily, and spins a coin off her thumb. \"Fair. I'll find someone.\" She does, and it takes longer than it should, and she is whistling the whole time.",
     "mem": [
-     "9 Jul 2214: You would not stand an extra watch."
+     "9 Jul 2214: You wouldn't stand an extra watch."
     ],
     "fx": {
      "p1": -1
@@ -13904,7 +13904,7 @@
     "roll": 0.999,
     "text": "\"Fair,\" she says, easily, and spins a coin off her thumb. \"Fair. I'll find someone.\" She does, and it takes longer than it should, and she is whistling the whole time.",
     "mem": [
-     "9 Jul 2214: You would not stand an extra watch."
+     "9 Jul 2214: You wouldn't stand an extra watch."
     ],
     "fx": {
      "p1": -1
@@ -14245,7 +14245,7 @@
     "roll": 0,
     "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
-     "9 Jul 2214: You would not lend me anything."
+     "9 Jul 2214: You wouldn't lend me anything."
     ],
     "fx": {
      "c:ines": -1
@@ -14257,7 +14257,7 @@
     "roll": 0.999,
     "text": "You say you cannot, and it is true, or true enough. Ines does not ask again.",
     "mem": [
-     "9 Jul 2214: You would not lend me anything."
+     "9 Jul 2214: You wouldn't lend me anything."
     ],
     "fx": {
      "c:ines": -1
@@ -14399,7 +14399,7 @@
       "roll": 0,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -14410,7 +14410,7 @@
       "roll": 0.999,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -14455,7 +14455,7 @@
       "roll": 0,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -14466,7 +14466,7 @@
       "roll": 0.999,
       "text": "You say you are not sure, and the captain puts the pencil down. \"Not being sure is allowed,\" the captain says. \"Next time I'd rather you were, one way or the other.\" (+1 experience at the gunner post.)",
       "mem": [
-       "9 Jul 2214: You were not sure what you saw."
+       "9 Jul 2214: You weren't sure what you saw."
       ],
       "x": [
        "Reported something off the lane, but was not sure of it."
@@ -14557,7 +14557,7 @@
     "roll": 0,
     "text": "The return has a drive bloom that is wrong for the hull on its transponder: too small, and too clean. You write down the figure and give it to the captain. \"A smaller ship using a bigger ship's name,\" the captain says, and changes the burn. (+2 experience at the gunner post.)",
     "mem": [
-     "9 Jul 2214: You read a drive signature that did not match its hull."
+     "9 Jul 2214: You read a drive signature that didn't match its hull."
     ],
     "fx": {
      "p1": 1
@@ -14572,7 +14572,7 @@
     "roll": 0.999,
     "text": "The return has a drive bloom that is wrong for the hull on its transponder: too small, and too clean. You write down the figure and give it to the captain. \"A smaller ship using a bigger ship's name,\" the captain says, and changes the burn. (+2 experience at the gunner post.)",
     "mem": [
-     "9 Jul 2214: You read a drive signature that did not match its hull."
+     "9 Jul 2214: You read a drive signature that didn't match its hull."
     ],
     "fx": {
      "p1": 1
