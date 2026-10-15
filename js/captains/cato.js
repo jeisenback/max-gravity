@@ -193,7 +193,7 @@ CAST.cato.round = () => {
   const [cook, medic, qm, eng, pilot, comms] = ['cook', 'medic', 'quartermaster', 'engineer', 'pilot', 'slicer'].map(crewNamed);
   const iceA = ice[0] || 'one ice hand', iceB = ice[1] || 'the other';
   const guns = hired().post === 'gunner'
-    ? ('The last stop is at the foot of the guns. "And these are yours, which I should say plainly, since I\'ve been talking about everyone else. ' +
+    ? ('The last stop is at the foot of the guns. "And these are yours. ' +
         'When something closes on us, the captain tells you who and how far, and you play it: what they\'re threatening, what we answer. You\'ll get ' +
         'one wrong. I did, and I\'m still here, and so is the ship."') : '';
   const walk = [
@@ -202,8 +202,8 @@ CAST.cato.round = () => {
         `you could rub out. And tell ${cook} what you won't eat. Once, early. ${cook} is fine about it if you say it the first week. After that it's ` +
         `a complaint, and then there's a conversation."`),
     (`Two doors down, he knocks on the frame of the medical bay without going in. "${medic}. This is the one I said. ${medic} keeps the kit and the ` +
-        `log, and I'll tell you what I tell everybody, which is come in when you're hurt, not when it's bad. By the time it's bad it's a ` +
-        `different conversation." ${medic} says something to him that you do not catch, and he laughs.`),
+        `log, and I'll tell you what I tell everybody, which is come in when you're hurt, not when it's bad. I once knew a man who ` +
+        `walked on a cracked rib for a week to save the fuss." ${medic} says something to him that you do not catch, and he laughs.`),
     (`In the hold he slows down, and his voice drops, the way it does when he talks about the place he came up. "${qm} has the count. ` +
         `Everything aboard, twice. If a number looks off to you, ask ${qm} before you go to the captain, because it has already been found and it's ` +
         `sitting on a list somewhere. And these two," he says, nodding at ${iceA} and ${iceB}, who are lashing something that does not look loose, ` +
@@ -211,8 +211,8 @@ CAST.cato.round = () => {
     (`The engine room is warm and the passage floor hums under your boots. "${eng}'s plant. I wouldn't touch anything with a tag on it, and ` +
         `everything has a tag. If ${eng} hands you a spanner, though, you can take that how you like. I've been aboard four years and I've had it ` +
         `twice." Up forward he points at the helm without going in. "${pilot} flies her. Talks to the board the whole time. Don't answer. It's not ` +
-        `for you." Beside it, ${comms} has the bands. "Anything that comes in for you comes through there, and ${comms} reads it first. It's not ` +
-        `rude. It's how you'll know it has been looked at."`),
+        `for you." Beside it, ${comms} has the bands. "Anything that comes in for you comes through there, and ${comms} reads it first. It's ` +
+        `nothing personal. ${comms} reads mine."`),
     `At a row of doors on the left he stops. "Third one is yours. It's on a closer, so it hisses, it doesn't slam. You'll try to slam it once. Everyone does. It's all right."`,
     guns,
     `He takes the pencil from behind his ear and checks the bill. "That's everyone. You have the middle watch with ${pilot}, it's on the bill, and I wrote it on the back of my hand as well, in case the bill goes missing. It has, before."`,
@@ -220,7 +220,7 @@ CAST.cato.round = () => {
   return {
     title: 'The Round', personal: true,
     text: ('Cato Rahman finds you in the passage an hour after the burn starts, with the watch bill rolled under one arm and a stub of pencil behind his ' +
-        'ear. "I do this for everyone," he says. "The captain says I should do it on the dock, but on the dock nobody\'s listening, they\'re ' +
+        'ear. "The captain says I should do this on the dock," he says. "But on the dock nobody\'s listening, they\'re ' +
         'looking for their bunk. Walk with me. It\'s not far. It feels far, the first time."'),
     choices: [
       { label: 'Walk it with him', run: () => walk.join('</p><p>') },
@@ -243,12 +243,12 @@ CAST.cato.arrival = {
 // The first raid (captains.js raidExplanation): Cato at the guns hatch, before the first scene.
 CAST.cato.firstRaid = {
   title: 'The Guns Hatch',
-  text: ('Cato is at the guns hatch before you have your boots on. He has the ledger under his arm, which he has never left behind in a fight. "The ' +
-      'line at the bottom of each scene says Position," he says. "Ahead, even, behind. It\'s a count, nothing more, and everything you choose moves ' +
-      'it. Ahead at the end and she breaks off. Even, and she stands off and throws one last round at us. Behind, and she comes alongside, and then it ' +
-      'goes to the lock."</p><p>He points at the screen. "One choice has your post in front of it, in brackets. That one is yours. It\'s the thing you ' +
-      'can do and nobody else aboard can. It\'s also the one that can go wrong on you. You\'re hurt, and your work counts a level lower for some days. ' +
-      'I had it once, in the hold. I wore a glove for eleven days."'),
+  text: ('Cato is at the guns hatch before you have your boots on. He has the ledger under his arm, which he has never left behind in a fight. "Look at ' +
+      'the bottom of the scene," he says. "Where it says Position. Ahead, even, behind. It\'s only a count, but everything you choose moves it. ' +
+      'Finish ahead and she breaks off. Even, and she stands off and throws one last round at us. Behind, and she comes alongside, and then it\'s the ' +
+      'lock."</p><p>He points at the screen. "One choice has your post in front of it, in brackets. That one\'s yours, and nobody else aboard can do it. ' +
+      'Mind, it\'s the one that can go wrong on you. You\'re hurt, and your work counts a level lower for some days. I had it in the hold. I wore a ' +
+      'glove for eleven days."'),
   choices: [{
     label: 'Take your post',
     result: 'He lets go of the hatch frame. "Choose what you\'d choose," he says. "I\'ll be behind you."',
