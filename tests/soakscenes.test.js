@@ -5,7 +5,7 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { scenesReport } = require('../tools/soak');
+const { scenesReport, report } = require('../tools/soak');
 
 const rows = [
   { id: 'port-a', title: 'Alpha', off: false, storylet: true },
@@ -40,4 +40,16 @@ test('the report lists each scene the narrow build keeps with its plays, the one
   assert.deepEqual(share, ['  Alpha (port-a): 4 plays, 50 percent, 2 of 2 seeds', '  Drawn Title: 2 plays, 25 percent, 1 of 2 seeds'], 'a tie is broken by the key, so the order is the same each time');
   assert.equal(out.at(-1), 'played but not listed in the index: 1 (Drawn Title)');
   assert.deepEqual(scenesReport(runs, rows, 40, 2), out, 'the same plays give the same report');
+});
+
+test('with the landings and the hand counted the report gives the plays by kind, the mix of scenes at a landing, and the hand\'s hurts', () => {
+  const night = [{ seed: 1, byId: { 'land-a': 2, 'port-a': 3, 'road-x': 4, 'road-night-watch': 1 }, byTitle: {}, landings: { 0: 5, 1: 3, 2: 1 }, hand: { hurt: 2, again: 1 } },
+    { seed: 2, byId: { 'port-a': 1 }, byTitle: {}, landings: { 0: 2, 1: 2, 3: 1 }, hand: { hurt: 1, again: 0 } }];
+  const out = scenesReport(night, rows, 40, 2);
+  assert.ok(out.includes('storylet plays by kind: landing 2, port 4, road 5 (of which at night 1)'));
+  assert.ok(out.includes('landings: 14, with no scene 7, one 5, two or more 2'), 'three scenes count with two');
+  assert.match(out.at(-1), /^played but not listed in the index: 3 /, 'the new lines come before the last one');
+  const lines = [], log = console.log; console.log = x => lines.push(x);
+  try { report(night.map(r => ({ ...r, losses: [] }))); } finally { console.log = log; }
+  assert.match(lines.at(-1), /; the hand was hurt 3 times \(1 while still hurt\) and died in 0$/);
 });
