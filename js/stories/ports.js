@@ -127,7 +127,7 @@ Mods.register({
         { label: 'Buy one tomato and eat it standing there (5 cr)', when: { credits: 5 }, effects: { credits: -5 }, result: 'It is warm from the sun, in a dome, under Jupiter. The woman nods.' },
         { label: 'Haggle', effects: { learn: 1 }, result: 'You haggle for twenty minutes, with a great deal of noise on both sides and no purchase at the end. The woman gives you a tomato anyway, for entertainment.' },
       ],
-    }, 0.2);
+    }, 0.5);
 
     // ---------- Hermes Foundry: heat, shifts and ice that costs more than the liquor ----------
     scene({
@@ -172,7 +172,7 @@ Mods.register({
         },
         { label: 'Ask the clerk what the usual rate is', effects: { learn: 1 }, result: 'She tells you, quietly, off the record, and the usual rate is less than the bill. You get it knocked down a third for asking.' },
       ],
-    });
+    }, 0.5);
     scene({
       id: 'port-hermes-glass', when: { planet: 'Hermes Foundry' }, title: 'Slag Glass',
       personal: true,
@@ -292,6 +292,6 @@ Mods.register({
         { label: 'Haggle him down', effects: { learn: 1 }, result: 'You haggle, and he gives way faster than a man with that much on his hands should. You come away with a sack for almost nothing.' },
         { label: 'Walk on', result: 'The price is still falling when you reach the gate, and you hear it fall again behind you.' },
       ],
-    }, 0.2);
+    }, 0.5);
   },
 });
