@@ -69,9 +69,9 @@ CAST.cato = {
     intro: {
       title: 'The Watch Bill',
       text: ('Cato Rahman finds you at the end of your first watch with a mug in each hand. He is a big man, and he moves slowly in the passages. ' +
-          '"Sit," he says. "I do the watch bill. The one with a child at home gets the evenings, and the one waiting on a letter gets the hour the ' +
-          'post comes in, and the rest of us split what is left. If there is an hour that sits badly with you, say so, and I will see what I can move. ' +
-          'The captain counts every hour I move. She is right to; somebody has to count." He holds out one of the mugs.'),
+          '"Sit," he says. "You got the cold watch, and that was me, so if you hate it, say so. The cook has a boy at home, so the cook has the ' +
+          'evenings. The medic is waiting on a letter, and I try to have the medic on when we dock. The rest of you get what is left. Tell me what ' +
+          'you cannot stand and I will see what I can move. The captain counts every hour I move, mind. I move them anyway." He holds out one of the mugs.'),
       choices: [
         {
           label: 'Tell him what you need',
@@ -103,7 +103,7 @@ CAST.cato = {
         {
           label: 'Say it is not stupid, but it is a long way off',
           effects: { castLike: { who: 'cato', n: 1, memory: 'You said it was not stupid, but a long way off.' } },
-          result: '"It is," he says. "It is a long way off every day, and then it is one day nearer. That is how I came up through the hold." He puts a hand on the lashing.',
+          result: '"It is," he says. "It is a long way off every day, and then it is one day nearer." He puts a hand on the lashing.',
         },
       ],
     },
