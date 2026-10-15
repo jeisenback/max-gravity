@@ -8,7 +8,7 @@ Mods.register({
   id: 'landings', name: 'Landing scenes', builtin: true,
   init(M) {
     const BELT = ['Ceres Station', 'Ring Nine', 'Pallas Refinery', 'The Hollows', 'Juno Commons', 'Ironheart', 'Boneyard', 'Eros Old Town'];
-    const scene = (def, chance = 0.08) => M.addStorylet({ where: 'port', priority: -1, once: false, ...def, when: { day: 3, ...def.when, chance } });
+    const scene = (def, chance = 0.035) => M.addStorylet({ where: 'port', priority: -1, once: false, ...def, when: { day: 3, ...def.when, chance } });
 
     // A gamble: pay `cost`, then with `odds` apply the `win` effects, otherwise `lose`.
     M.addAction('gamble', (cost, odds, win, winText, loseText, lose) => {
@@ -117,7 +117,7 @@ Mods.register({
         },
         { label: 'Stand aside with your head bowed', result: 'You step back against the bulkhead and wait, hands folded, as the procession goes by. It takes a long time. When the last of them has passed the dock stays hushed a moment more, and then the noise comes back, one voice at a time.' },
       ],
-    }, 0.3);
+    }, 0.125);
 
     scene({
       id: 'land-stowaway', when: { planet: BELT },
@@ -245,7 +245,7 @@ Mods.register({
               'at you, and looks away, and does not say anything.')
         },
       ],
-    }, 0.06);
+    }, 0.025);
 
     scene({
       id: 'land-raid-aftermath', when: { raid: true, cargo: { medical: 2 } },
@@ -300,7 +300,7 @@ Mods.register({
               'twice, opens his mouth, closes it, and waives the fee. "Nobody reads the fine print anymore," he says.')
         },
       ],
-    }, 0.12);
+    }, 0.05);
 
     scene({
       id: 'land-festival', when: { boom: 'Charter League', planet: BELT },
@@ -325,7 +325,7 @@ Mods.register({
           result: 'Everyone is buying, and for once nobody haggles. You set up a folding table at the mouth of the concourse and sell odds and ends from your stores for 400 cr, in twenty minutes, to a stream of cheerful, slightly drunk strangers.'
         },
       ],
-    }, 0.15);
+    }, 0.065);
 
     scene({
       id: 'land-ringball-kids', when: { planet: ['The Hollows', 'Juno Commons', 'Ring Nine'] },
@@ -387,7 +387,7 @@ Mods.register({
               'and the man with the cigar, after a stunned pause, starts laughing, too, until he has to sit down.')
         },
       ],
-    }, 0.25);
+    }, 0.105);
 
     scene({
       id: 'land-dock-tax', when: { planet: 'The Rook', standingBelow: { Pirate: 15 } },
@@ -419,7 +419,7 @@ Mods.register({
               '{crew} on the shoulder, hard, and steps aside. You do not get a receipt, but you get a wave from the whole bar.')
         },
       ],
-    }, 0.2);
+    }, 0.085);
 
     scene({
       id: 'land-journalist', when: { planet: ['Earth', 'Luna'] },
@@ -508,7 +508,7 @@ Mods.register({
               'tune, and a child, unbidden, brings you a cup of cold, sweet tea.')
         },
       ],
-    }, 0.12);
+    }, 0.05);
 
     scene({
       id: 'land-long-night', when: { planet: ['Triton Outpost', 'Enceladus'] },
@@ -538,7 +538,7 @@ Mods.register({
               'else. A little girl sits on the crate and eats chocolate with her eyes closed.')
         },
       ],
-    }, 0.2);
+    }, 0.085);
 
     scene({
       id: 'land-noodle-letter', when: { planet: 'Ring Nine' },
@@ -562,7 +562,7 @@ Mods.register({
         },
         { label: '"I\'m not going that way."', result: '"Everyone goes that way eventually," she says, and tucks the envelope back in her apron. "The letter will keep. My son won\'t, but the letter will." She goes back to the broth.' },
       ],
-    }, 0.15);
+    }, 0.065);
 
     scene({
       id: 'land-coop-vote', when: { planet: 'Ironheart' },
@@ -593,7 +593,7 @@ Mods.register({
               'the same tavern together, arguing happily.')
         },
       ],
-    }, 0.2);
+    }, 0.085);
 
     scene({
       id: 'land-old-timer', when: { planet: 'Eros Old Town' },
@@ -622,6 +622,6 @@ Mods.register({
           result: 'He shrugs, without offense, and turns back to the rail. By the time you have reached the end of the dock, he has found the next captain, and his voice, low and warm, has begun again: "I was nineteen." It follows you a long way, softer and softer, like a tune.'
         },
       ],
-    }, 0.2);
+    }, 0.085);
   },
 });
