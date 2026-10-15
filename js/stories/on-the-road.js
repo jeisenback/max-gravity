@@ -48,7 +48,7 @@ Mods.register({
     road({
       id: 'road-ice-convoy', when: { gov: 'Charter League' },
       title: 'Ice Convoy',
-      text: 'Six haulers are burning in a tight line ahead of you, nose to tail, sharing one long plume of heat. The lead ship hails. "Small ship. You can draft in our wake if you keep your distance and your hands to yourself. Costs nothing, saves your mass. We just like to know who is out here."',
+      text: 'Six haulers are burning in a tight line ahead of you, nose to tail, sharing one long plume of heat. The lead ship hails. "Small ship. You can draft in our wake if you keep your distance and your hands to yourself. Costs nothing, saves your mass. We just like to know who\'s out here."',
       choices: [
         {
           label: 'Slip in behind them',
@@ -112,7 +112,7 @@ Mods.register({
         ],
           rep: { 'Charter League': 2 }
         },
-          result: 'They fill their tank from your line with the grave care of people handling something breakable. The oldest presses a lump of ore into your hand. "It is not much. It is what we have. Tell them at Ceres that Tamsin\'s crew is alive."'
+          result: 'They fill their tank from your line with the grave care of people handling something breakable. The oldest presses a lump of ore into your hand. "It\'s not much. It\'s what we have. Tell them at Ceres that Tamsin\'s crew is alive."'
         },
         {
           label: 'Take them aboard, tow the tug',
@@ -162,7 +162,7 @@ Mods.register({
           label: '[{crew}] Have {crew} read their traffic',
           when: { crew: 'slicer' },
           effects: { news: 'Navy patrols are stretched thin along the inner lanes.' },
-          result: '{crew} lists it off in a low voice: supply requests, a medical evacuation, a man asking after a woman on another ship. "They are as scared as we are," {crew} says. "They just get better food."'
+          result: '{crew} lists it off in a low voice: supply requests, a medical evacuation, a man asking after a woman on another ship. "They\'re as scared as we are," {crew} says. "They just get better food."'
         },
       ],
     }, 0.6, 45);
@@ -179,7 +179,7 @@ Mods.register({
           { when: { crew: 'pilot' }, text: '{crew:pilot} takes notes, then admits, grudgingly, that a few of them are useful.' },
           'When he finally signs off he says, to no one, "Good burning." You find you would like to have known him.',
         ] },
-        { label: 'Tell him a joke', result: 'There is a pause on the channel so long you think he has gone. Then a dry wheeze, and: "Well. That is a terrible joke." He tells you a worse one back, and you trade them all the way to the flip.' },
+        { label: 'Tell him a joke', result: 'There is a pause on the channel so long you think he has gone. Then a dry wheeze, and: "Well. That\'s a terrible joke." He tells you a worse one back, and you trade them all the way to the flip.' },
         { label: 'Mute the channel', result: 'You do, with a single tap. The old pilot\'s voice cuts off in the middle of a sentence. That night, in the dark, you turn it back on, low, and listen to the gravel and the jokes until you fall asleep.' },
       ],
     }, 0.3, 90);
@@ -232,7 +232,7 @@ Mods.register({
         },
           result: 'He thanks you four times, his voice breaking on the third, and is still thanking you when you drop out of range, thin and tinny, on a channel that is turning to static. You are gripping the console harder than you need to.'
         },
-        { label: 'Give him what you can spare (2t of water)', when: { cargo: { water: 2 } }, effects: { cargo: { water: -2 }, rep: { 'Charter League': 1 } }, result: 'It is not half a share, and he knows it. There is a pause before he speaks. "That is very kind," he says. "I will remember it."' },
+        { label: 'Give him what you can spare (2t of water)', when: { cargo: { water: 2 } }, effects: { cargo: { water: -2 }, rep: { 'Charter League': 1 } }, result: 'It is not half a share, and he knows it. There is a pause before he speaks. "That\'s very kind," he says. "I\'ll remember it."' },
         { label: 'Wish him luck', result: 'He wishes you the same in a voice that has stopped trying so hard. You keep the channel open a while after, just in case. He does not use it.' },
       ],
     }, 0.4, 90);
@@ -240,7 +240,7 @@ Mods.register({
     road({
       id: 'road-rival-trader',
       title: 'A Fellow Trader',
-      text: 'A freighter about your size pulls alongside and hails on a private band. The captain\'s voice is wary and friendly. "Nobody is watching us and I am tired of guessing. I will tell you what the market is doing where I have been. You tell me where you have been. No cash."',
+      text: 'A freighter about your size pulls alongside and hails on a private band. The captain\'s voice is wary and friendly. "Nobody\'s watching us and I\'m tired of guessing. I\'ll tell you what the market is doing where I\'ve been. You tell me where you\'ve been. No cash."',
       choices: [
         { label: 'Trade honest information', effects: { rep: { 'Independent': 1 } }, result: [
           'You trade half an hour of prices, shortages, and gossip. It is more than either of you expected. When you break off, the other captain says, "Fair winds," and means it.',
@@ -262,7 +262,7 @@ Mods.register({
         { when: { crew: 'kit' }, text: 'Kit is on watch with their boots up, whistling something off-key.' },
       ],
       choices: [
-        { label: 'Walk the ship', result: 'You go compartment to compartment, slowly. A cup left half-full. A handwritten note taped to the coolant panel: "Please do not touch, ask Rosa." A pair of socks drying on a pipe. The ship is not just a machine. It is a house, and people are happy in it.' },
+        { label: 'Walk the ship', result: 'You go compartment to compartment, slowly. A cup left half-full. A handwritten note taped to the coolant panel: "Please don\'t touch, ask Rosa." A pair of socks drying on a pipe. The ship is not just a machine. It is a house, and people are happy in it.' },
         { label: 'Sit with the stars', result: 'You take a mug of something hot to the observation blister and watch the black. A long time later you realize you have been thinking about nothing at all.' },
         { label: 'Check the books', result: 'You go through the accounts line by line, with a cup of tea gone cold at your elbow: a column of small hopes and larger bills. When you close the book, the numbers are the same. You sleep that night.' },
       ],

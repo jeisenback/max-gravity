@@ -74,35 +74,35 @@ function helpScene(p, pat, ctx) {
 // of the text layer (lines:bar-secret-help, linetables.js).
 const SECRET_HELP = {
   debt: {
-    text: '{n} turns the glass in a ring on the bar. "Six hundred and twelve," they say. "It is not even a lot. It is just more than I have, and the people it is owed to do not do arithmetic."',
+    text: '{n} turns the glass in a ring on the bar. "Six hundred and twelve," they say. "It\'s not even a lot. It\'s just more than I have, and the people it\'s owed to don\'t do arithmetic."',
     opts: [
       { label: 'Cover part of it (200 cr)', cost: 200, n: 3, line: 'You count out the credits. {n} turns them over, and then takes them, and does not say anything for a long time.' },
-      { label: 'Say you will keep an ear out for who is asking', cost: 0, n: 1, line: '"That would help," {n} says.' },
+      { label: 'Say you will keep an ear out for who is asking', cost: 0, n: 1, line: '"That\'d help," {n} says.' },
     ],
   },
   ill: {
-    text: '{n} puts the glass down. "Six months and the recyclers on that last ship," they say. "The clinic wants more than I have. I tell people it is the dust."',
+    text: '{n} puts the glass down. "Six months and the recyclers on that last ship," they say. "The clinic wants more than I have. I tell people it\'s the dust."',
     opts: [
       { label: 'Pay for the clinic (100 cr)', cost: 100, n: 3, line: '{n} does not argue. The next time you see them, they say, they will be breathing better.' },
       { label: 'Tell them where the nearest medic is', cost: 0, n: 1, line: 'You give the name and the street. {n} writes it on a napkin and puts it carefully in a pocket.' },
     ],
   },
   wanted: {
-    text: '{n} has taken the seat with its back to the wall. "There is a warrant," they say, "and it is not for what they say it is. I would rather not be at a table by the door."',
+    text: '{n} has taken the seat with its back to the wall. "There\'s a warrant," they say, "and it\'s not for what they say it is. I\'d rather not be at a table by the door."',
     opts: [
       { label: 'Say you have seen nothing', cost: 0, n: 2, line: '"Good," {n} says. "Thank you." They leave by the back a few minutes later, without hurry.' },
       { label: 'Tell them to give themselves up', cost: 0, n: -1, line: '{n} looks at you and does not answer. They finish their drink and leave, and do not look back.' },
     ],
   },
   contraband: {
-    text: '{n} makes a gesture at the room, and lowers their voice to nothing. "I move things," they say, "the kind that do not go on a manifest. I do not tell everyone."',
+    text: '{n} makes a gesture at the room, and lowers their voice to nothing. "I move things," they say, "the kind that don\'t go on a manifest. I don\'t tell everyone."',
     opts: [
       { label: 'Ask who they know', cost: 0, n: 1, line: '{n} names a name, and a port, and a time of day, and then says you never heard it. It is a door, and you now know where.' },
-      { label: 'Say you do not want to know', cost: 0, n: 1, line: '{n} relaxes. "Good," they say. "Then we have never talked."' },
+      { label: 'Say you do not want to know', cost: 0, n: 1, line: '{n} relaxes. "Good," they say. "Then we\'ve never talked."' },
     ],
   },
   spy: {
-    text: '{n} stops asking questions. "I am paid to ask them," they say. "I am not paid to like it."',
+    text: '{n} stops asking questions. "I\'m paid to ask them," they say. "I\'m not paid to like it."',
     opts: [
       { label: 'Tell them what you know of the lanes', cost: 0, n: 0, line: '{n} writes nothing down, and does not need to.' },
       { label: 'Say you will not be asked again', cost: 0, n: 0, line: '"Fair," {n} says, and orders you another.' },

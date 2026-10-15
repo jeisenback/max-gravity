@@ -32,9 +32,9 @@ Patrick O'Brian. Take: the shop talk that wanders about the work and arrives lat
 
 ## Sample lines
 
-- "No, I know, you have been running on a seal I should have changed at Mars, and I am not going to pretend it was the budget, it was me, and I am going to change it now and you are going to run quiet for it."
+- "No, I know, you've been running on a seal I should have changed at Mars, and I'm not going to pretend it was the budget, it was me, and I'm going to change it now and you're going to run quiet for it."
 - "Handle first. There."
-- "That sound is the bearing, not the pump. The pump only gets blamed because it is louder."
+- "That sound is the bearing, not the pump. The pump only gets blamed because it's louder."
 - "Sit. Drink this. Then tell me what it was doing when you heard it."
 - "Third bolt from the left is the one that has been lying to you since Mars."
 

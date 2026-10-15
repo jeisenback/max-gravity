@@ -18,14 +18,14 @@ Mods.register({
       title: 'Picket Line on the Band',
       text: ('The comms catch a broadcast on a pirate band, but it is not pirates: it is the Ice Haulers\' Guild. A woman\'s voice, tired and ' +
           'precise, is reading a list of names into the static, crews who have walked off their ships over tariffs, cut shifts, and a pay cap that has ' +
-          'not moved in eleven years. Behind her you can hear people cheering. "This is Dana Oyelaran, for the Guild. We are asking independent ' +
-          'captains to stay off Compact water contracts, and to chip in to the strike fund. We cannot do this without you. Water does not haul ' +
+          'not moved in eleven years. Behind her you can hear people cheering. "This is Dana Oyelaran, for the Guild. We\'re asking independent ' +
+          'captains to stay off Compact water contracts, and to chip in to the strike fund. We can\'t do this without you. Water doesn\'t haul ' +
           'itself."'),
       choices: [
         { label: 'Send 2,000 cr to the strike fund', when: { credits: 2000 },
           effects: { credits: -2000, q: { strike: 2 }, rep: { 'Charter League': 3, 'Arcology Compact': -2 }, log: "Gave 2,000 cr to the Ice Haulers' strike fund." },
           result: ('The transfer goes through in a moment, and a reply comes back within the hour, in the same tired, precise voice: "We won\'t ' +
-              'forget it. Every credit is a shift somebody does not have to work hungry. Look me up on Ceres, captain. I would like to shake your ' +
+              'forget it. Every credit is a shift somebody doesn\'t have to work hungry. Look me up on Ceres, captain. I\'d like to shake your ' +
               'hand." Later that evening, a second message, unsigned, just a single drop of water in ASCII, and nothing else.') },
         { label: 'Note the frequency and stay out of it', effects: { q: { strike: 1 } },
           result: ('You note the frequency in the log, and the position, and the exact wording of the appeal. You are not sure why. The broadcast ' +
@@ -46,8 +46,8 @@ Mods.register({
       text: ('A woman in a Guild jacket finds you in the docking ring, weaving through the crowd with the practiced ease of someone who has learned ' +
           'to be unremarkable: Dana Oyelaran, shorter than her voice, with ink on her fingers and dark, patient eyes. She waits until the corridor ' +
           'thins. "Strikers\' families on Pallas are short of medicine. Insulin, antibiotics, a few things for the babies. Compact customs holds ' +
-          'anything flagged for the Guild, and has for a month. I need a ship nobody is watching to carry eight tons of medical crates to Pallas ' +
-          'Refinery. I cannot pay you what it is worth."'),
+          'anything flagged for the Guild, and has for a month. I need a ship nobody\'s watching to carry eight tons of medical crates to Pallas ' +
+          'Refinery. I can\'t pay you what it\'s worth."'),
       choices: [
         { label: 'Carry them (8t, pays 3,000 cr)', when: { space: 8 },
           effects: { set: { crates: 1 }, log: 'Agreed to carry medical crates to Pallas for the Guild.',
@@ -63,7 +63,7 @@ Mods.register({
               onDone: { q: { strike: 3 }, set: { crates: 0 }, rep: { 'Charter League': 5 }, log: "Delivered the Guild's medical crates to Pallas, free of charge." },
               onFail: { q: { strike: -5 }, set: { crates: 0 }, rep: { 'Charter League': -5 }, log: 'The Guild crates never reached Pallas.' } } },
           result: ('Dana looks at you for a long moment, and something in her hard, tired face shifts. Then she shakes your hand, slowly, in both of ' +
-              'hers. "Word gets around," she says quietly. "Pallas is terrible at forgetting a kindness, captain. You are going to find that out." ' +
+              'hers. "Word gets around," she says quietly. "Pallas is terrible at forgetting a kindness, captain. You\'re going to find that out." ' +
               'Behind her, the loaders have stopped and are watching. One of them, an old man with a gaunt face, touches two fingers to his forehead.') },
         { label: 'Not my fight', effects: { set: { strikeDone: 1 } },
           result: '"Fair," she says, and means the opposite. She does not argue, and she does not plead: she nods once, like a woman ticking off a name, and turns away into the crowd. You watch her go until she is a jacket among jackets. You finish your drink slowly. It tastes of metal.' },
@@ -83,7 +83,7 @@ Mods.register({
           effects: { q: { strike: 1 } },
           result: ('Your manifest now lists eight tons of hydroponics substrate, with a full chain of custody, a stamp from a very real Ganymede ' +
               'farm, and a small joke about compost that you would have missed if you were not looking. The inspector skims it, yawns, and waves you ' +
-              'on, bored. As the cutter falls away, {crew} lets out a breath and says, quietly, "I have always wanted to write a lie that boring."') },
+              'on, bored. As the cutter falls away, {crew} lets out a breath and says, quietly, "I\'ve always wanted to write a lie that boring."') },
         { label: 'Pay them to look elsewhere (1,500 cr)', when: { credits: 1500 },
           effects: { credits: -1500 },
           result: ('The transfer goes through with a small, discreet chime. The inspector reads the manifest for exactly as long as it takes to look ' +
@@ -109,7 +109,7 @@ Mods.register({
       text: ('The war has swallowed the strike. The Guild voted to go back to work hauling for the League\'s navy, on the Guild\'s terms, and the ' +
           'picket line at Pallas is coming down, banner by banner. Dana Oyelaran is on the ladder one last time, unpinning a hand-lettered sign that ' +
           'says NO WATER WITHOUT JUSTICE. The paint has faded. She climbs down slowly, like a woman much older than she is. "We didn\'t win," she ' +
-          'says. "We just stopped losing. I will take it."'),
+          'says. "We just stopped losing. I\'ll take it."'),
       choices: [{ label: 'Help take down the line', effects: { ...done, rep: { 'Charter League': 8 }, credits: 5000, log: 'The Ice Haulers\' strike ended in the war effort.', news: 'The Ice Haulers\' Guild ends its strike to haul for the Charter League\'s war effort.' },
         result: ('You hold the ladder, and fold the banners, and carry the folding tables out to the trucks, and nobody says much. When it is done, ' +
             'the Guild pays you a share of the strike fund you helped fill: 5,000 cr, in a battered envelope, and a handful of the old, tired haulers ' +

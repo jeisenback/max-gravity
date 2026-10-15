@@ -14,14 +14,15 @@
       },
       "shape": {
         "count": 116,
-        "mean": 12.24,
+        "mean": 12.12,
         "sd": 7.52,
         "shortShare": 0.17,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 18,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": [
         {
@@ -37,7 +38,7 @@
         "hedge": 0,
         "nods": 0,
         "andThen": 0,
-        "asIf": 1,
+        "asIf": 0,
         "forAWhile": 0,
         "longMoment": 0,
         "adverb": 0,
@@ -45,14 +46,15 @@
       },
       "shape": {
         "count": 110,
-        "mean": 10.26,
-        "sd": 5.45,
-        "shortShare": 0.21,
+        "mean": 9.95,
+        "sd": 5.31,
+        "shortShare": 0.22,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 19,
-        "reported": 1
+        "reported": 2,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -77,7 +79,8 @@
       },
       "speech": {
         "quoted": 2,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -102,7 +105,8 @@
       },
       "speech": {
         "quoted": 2,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -120,14 +124,15 @@
       },
       "shape": {
         "count": 177,
-        "mean": 10.66,
-        "sd": 6.7,
-        "shortShare": 0.19,
+        "mean": 10.32,
+        "sd": 6.71,
+        "shortShare": 0.24,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 47,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -138,21 +143,22 @@
         "nods": 0,
         "andThen": 0,
         "asIf": 0,
-        "forAWhile": 1,
+        "forAWhile": 0,
         "longMoment": 0,
         "adverb": 0,
         "aside": 0
       },
       "shape": {
-        "count": 265,
-        "mean": 10.57,
-        "sd": 6.37,
-        "shortShare": 0.24,
+        "count": 262,
+        "mean": 10.35,
+        "sd": 6.46,
+        "shortShare": 0.28,
         "shortRuns": 0
       },
       "speech": {
-        "quoted": 60,
-        "reported": 0
+        "quoted": 61,
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -161,7 +167,7 @@
       "tics": {
         "hedge": 0,
         "nods": 0,
-        "andThen": 1,
+        "andThen": 0,
         "asIf": 0,
         "forAWhile": 0,
         "longMoment": 0,
@@ -169,15 +175,16 @@
         "aside": 0
       },
       "shape": {
-        "count": 214,
-        "mean": 8.64,
-        "sd": 7.06,
-        "shortShare": 0.41,
-        "shortRuns": 5
+        "count": 210,
+        "mean": 8.41,
+        "sd": 6.99,
+        "shortShare": 0.42,
+        "shortRuns": 4
       },
       "speech": {
         "quoted": 60,
-        "reported": 2
+        "reported": 2,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -194,15 +201,16 @@
         "aside": 0
       },
       "shape": {
-        "count": 208,
-        "mean": 9.72,
-        "sd": 5.71,
-        "shortShare": 0.25,
+        "count": 207,
+        "mean": 9.49,
+        "sd": 5.68,
+        "shortShare": 0.28,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 62,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -220,14 +228,15 @@
       },
       "shape": {
         "count": 179,
-        "mean": 9.94,
-        "sd": 6.13,
-        "shortShare": 0.23,
+        "mean": 9.68,
+        "sd": 6.15,
+        "shortShare": 0.26,
         "shortRuns": 1
       },
       "speech": {
         "quoted": 43,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": [
         {
@@ -251,14 +260,15 @@
       },
       "shape": {
         "count": 209,
-        "mean": 9.25,
-        "sd": 5.7,
-        "shortShare": 0.33,
-        "shortRuns": 1
+        "mean": 9.04,
+        "sd": 5.72,
+        "shortShare": 0.36,
+        "shortRuns": 2
       },
       "speech": {
         "quoted": 64,
-        "reported": 2
+        "reported": 2,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -276,14 +286,15 @@
       },
       "shape": {
         "count": 166,
-        "mean": 10.58,
-        "sd": 6.16,
-        "shortShare": 0.19,
+        "mean": 10.34,
+        "sd": 6.19,
+        "shortShare": 0.22,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 41,
-        "reported": 1
+        "reported": 1,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -300,20 +311,21 @@
         "aside": 0
       },
       "shape": {
-        "count": 236,
-        "mean": 8.87,
-        "sd": 6.39,
-        "shortShare": 0.4,
+        "count": 232,
+        "mean": 8.64,
+        "sd": 6.22,
+        "shortShare": 0.41,
         "shortRuns": 3
       },
       "speech": {
         "quoted": 79,
-        "reported": 2
+        "reported": 2,
+        "uncontracted": 0
       },
       "unpriced": []
     },
     "js/cast.js": {
-      "strings": 376,
+      "strings": 375,
       "tics": {
         "hedge": 1,
         "nods": 0,
@@ -325,15 +337,16 @@
         "aside": 0
       },
       "shape": {
-        "count": 973,
-        "mean": 10.73,
-        "sd": 7.56,
-        "shortShare": 0.28,
-        "shortRuns": 3
+        "count": 970,
+        "mean": 10.53,
+        "sd": 7.59,
+        "shortShare": 0.31,
+        "shortRuns": 5
       },
       "speech": {
-        "quoted": 271,
-        "reported": 3
+        "quoted": 269,
+        "reported": 3,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -350,15 +363,16 @@
         "aside": 0
       },
       "shape": {
-        "count": 272,
-        "mean": 9.69,
-        "sd": 6.52,
-        "shortShare": 0.31,
-        "shortRuns": 2
+        "count": 271,
+        "mean": 9.55,
+        "sd": 6.5,
+        "shortShare": 0.32,
+        "shortRuns": 3
       },
       "speech": {
         "quoted": 69,
-        "reported": 1
+        "reported": 1,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -383,7 +397,8 @@
       },
       "speech": {
         "quoted": 22,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -401,14 +416,15 @@
       },
       "shape": {
         "count": 400,
-        "mean": 12.02,
-        "sd": 8.75,
-        "shortShare": 0.26,
-        "shortRuns": 2
+        "mean": 11.88,
+        "sd": 8.79,
+        "shortShare": 0.28,
+        "shortRuns": 3
       },
       "speech": {
         "quoted": 80,
-        "reported": 1
+        "reported": 1,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -433,7 +449,8 @@
       },
       "speech": {
         "quoted": 1,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -458,7 +475,8 @@
       },
       "speech": {
         "quoted": 0,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -476,14 +494,15 @@
       },
       "shape": {
         "count": 133,
-        "mean": 13.29,
-        "sd": 7.66,
+        "mean": 13.26,
+        "sd": 7.67,
         "shortShare": 0.11,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 6,
-        "reported": 3
+        "reported": 3,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -508,7 +527,8 @@
       },
       "speech": {
         "quoted": 1,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -533,7 +553,8 @@
       },
       "speech": {
         "quoted": 14,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -551,19 +572,20 @@
       },
       "shape": {
         "count": 266,
-        "mean": 7.8,
-        "sd": 6.47,
+        "mean": 7.79,
+        "sd": 6.48,
         "shortShare": 0.47,
         "shortRuns": 3
       },
       "speech": {
         "quoted": 25,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
     "js/hired.js": {
-      "strings": 32,
+      "strings": 31,
       "tics": {
         "hedge": 0,
         "nods": 0,
@@ -575,15 +597,16 @@
         "aside": 0
       },
       "shape": {
-        "count": 49,
-        "mean": 9.86,
+        "count": 47,
+        "mean": 10.02,
         "sd": 5.17,
-        "shortShare": 0.27,
+        "shortShare": 0.26,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 16,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -601,14 +624,15 @@
       },
       "shape": {
         "count": 151,
-        "mean": 10.72,
-        "sd": 6.98,
-        "shortShare": 0.27,
+        "mean": 10.63,
+        "sd": 7.01,
+        "shortShare": 0.28,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 28,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -633,12 +657,13 @@
       },
       "speech": {
         "quoted": 2,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
     "js/hiredscenes.js": {
-      "strings": 563,
+      "strings": 572,
       "tics": {
         "hedge": 3,
         "nods": 0,
@@ -650,20 +675,21 @@
         "aside": 0
       },
       "shape": {
-        "count": 859,
-        "mean": 10.45,
-        "sd": 7.42,
+        "count": 886,
+        "mean": 10.33,
+        "sd": 7.28,
         "shortShare": 0.25,
         "shortRuns": 0
       },
       "speech": {
-        "quoted": 78,
-        "reported": 2
+        "quoted": 83,
+        "reported": 2,
+        "uncontracted": 0
       },
       "unpriced": []
     },
     "js/icerun.js": {
-      "strings": 74,
+      "strings": 80,
       "tics": {
         "hedge": 0,
         "nods": 0,
@@ -675,15 +701,16 @@
         "aside": 0
       },
       "shape": {
-        "count": 130,
-        "mean": 11.57,
-        "sd": 5.7,
+        "count": 142,
+        "mean": 11.8,
+        "sd": 5.69,
         "shortShare": 0.08,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 1,
-        "reported": 1
+        "reported": 1,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -701,14 +728,15 @@
       },
       "shape": {
         "count": 124,
-        "mean": 13.35,
-        "sd": 7.66,
-        "shortShare": 0.17,
+        "mean": 13.21,
+        "sd": 7.59,
+        "shortShare": 0.19,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 22,
-        "reported": 1
+        "reported": 1,
+        "uncontracted": 0
       },
       "unpriced": [
         {
@@ -744,7 +772,8 @@
       },
       "speech": {
         "quoted": 16,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -769,12 +798,13 @@
       },
       "speech": {
         "quoted": 0,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
     "js/peopletext.js": {
-      "strings": 697,
+      "strings": 702,
       "tics": {
         "hedge": 18,
         "nods": 14,
@@ -786,20 +816,21 @@
         "aside": 0
       },
       "shape": {
-        "count": 1473,
-        "mean": 10.37,
-        "sd": 6.55,
-        "shortShare": 0.25,
-        "shortRuns": 7
+        "count": 1497,
+        "mean": 10.28,
+        "sd": 6.53,
+        "shortShare": 0.26,
+        "shortRuns": 8
       },
       "speech": {
-        "quoted": 270,
-        "reported": 5
+        "quoted": 278,
+        "reported": 5,
+        "uncontracted": 0
       },
       "unpriced": []
     },
     "js/shiplife.js": {
-      "strings": 132,
+      "strings": 225,
       "tics": {
         "hedge": 1,
         "nods": 0,
@@ -811,15 +842,16 @@
         "aside": 0
       },
       "shape": {
-        "count": 139,
-        "mean": 11,
-        "sd": 3.7,
-        "shortShare": 0.07,
+        "count": 232,
+        "mean": 11.86,
+        "sd": 3.37,
+        "shortShare": 0.04,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 2,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -844,7 +876,8 @@
       },
       "speech": {
         "quoted": 0,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -869,7 +902,8 @@
       },
       "speech": {
         "quoted": 8,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -894,7 +928,8 @@
       },
       "speech": {
         "quoted": 0,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -912,14 +947,15 @@
       },
       "shape": {
         "count": 281,
-        "mean": 11.17,
-        "sd": 8.04,
-        "shortShare": 0.29,
+        "mean": 11.09,
+        "sd": 8.05,
+        "shortShare": 0.3,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 38,
-        "reported": 1
+        "reported": 1,
+        "uncontracted": 0
       },
       "unpriced": [
         {
@@ -943,14 +979,15 @@
       },
       "shape": {
         "count": 461,
-        "mean": 11.84,
-        "sd": 8.66,
-        "shortShare": 0.25,
+        "mean": 11.69,
+        "sd": 8.7,
+        "shortShare": 0.26,
         "shortRuns": 1
       },
       "speech": {
         "quoted": 101,
-        "reported": 1
+        "reported": 1,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -968,14 +1005,15 @@
       },
       "shape": {
         "count": 206,
-        "mean": 11.57,
-        "sd": 7.06,
-        "shortShare": 0.21,
+        "mean": 11.48,
+        "sd": 7.08,
+        "shortShare": 0.22,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 34,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -993,14 +1031,15 @@
       },
       "shape": {
         "count": 127,
-        "mean": 13,
-        "sd": 9.2,
+        "mean": 12.93,
+        "sd": 9.22,
         "shortShare": 0.2,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 20,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -1018,14 +1057,15 @@
       },
       "shape": {
         "count": 365,
-        "mean": 13.43,
-        "sd": 8.96,
+        "mean": 13.4,
+        "sd": 8.97,
         "shortShare": 0.21,
         "shortRuns": 1
       },
       "speech": {
         "quoted": 50,
-        "reported": 1
+        "reported": 1,
+        "uncontracted": 0
       },
       "unpriced": [
         {
@@ -1054,14 +1094,15 @@
       },
       "shape": {
         "count": 161,
-        "mean": 11.65,
-        "sd": 8.12,
-        "shortShare": 0.24,
+        "mean": 11.43,
+        "sd": 8.17,
+        "shortShare": 0.25,
         "shortRuns": 1
       },
       "speech": {
         "quoted": 37,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -1079,14 +1120,15 @@
       },
       "shape": {
         "count": 203,
-        "mean": 10.46,
-        "sd": 6.82,
+        "mean": 10.4,
+        "sd": 6.85,
         "shortShare": 0.27,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 26,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -1104,14 +1146,15 @@
       },
       "shape": {
         "count": 204,
-        "mean": 13.72,
-        "sd": 9.22,
+        "mean": 13.71,
+        "sd": 9.23,
         "shortShare": 0.2,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 16,
-        "reported": 3
+        "reported": 3,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -1129,14 +1172,15 @@
       },
       "shape": {
         "count": 144,
-        "mean": 12.16,
-        "sd": 8.34,
+        "mean": 12.07,
+        "sd": 8.37,
         "shortShare": 0.24,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 27,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -1154,14 +1198,15 @@
       },
       "shape": {
         "count": 137,
-        "mean": 11.94,
-        "sd": 7.88,
-        "shortShare": 0.2,
+        "mean": 11.83,
+        "sd": 7.91,
+        "shortShare": 0.22,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 29,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -1179,14 +1224,15 @@
       },
       "shape": {
         "count": 174,
-        "mean": 7.44,
+        "mean": 7.43,
         "sd": 5.02,
         "shortShare": 0.4,
         "shortRuns": 1
       },
       "speech": {
         "quoted": 18,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     },
@@ -1204,14 +1250,15 @@
       },
       "shape": {
         "count": 234,
-        "mean": 11.38,
-        "sd": 7.95,
-        "shortShare": 0.26,
+        "mean": 11.3,
+        "sd": 7.96,
+        "shortShare": 0.27,
         "shortRuns": 0
       },
       "speech": {
         "quoted": 53,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 1
       },
       "unpriced": []
     },
@@ -1236,33 +1283,35 @@
       },
       "speech": {
         "quoted": 3,
-        "reported": 0
+        "reported": 0,
+        "uncontracted": 0
       },
       "unpriced": []
     }
   },
   "total": {
-    "strings": 4814,
+    "strings": 4925,
     "tics": {
       "hedge": 107,
       "nods": 25,
-      "andThen": 13,
-      "asIf": 19,
-      "forAWhile": 15,
+      "andThen": 12,
+      "asIf": 18,
+      "forAWhile": 14,
       "longMoment": 8,
       "adverb": 6,
       "aside": 5
     },
     "shape": {
-      "count": 10428,
-      "mean": 10.72,
-      "sd": 7.25,
+      "count": 10566,
+      "mean": 10.63,
+      "sd": 7.22,
       "shortShare": 0.26,
-      "shortRuns": 31
+      "shortRuns": 36
     },
     "speech": {
-      "quoted": 1881,
-      "reported": 31
+      "quoted": 1893,
+      "reported": 32,
+      "uncontracted": 1
     },
     "unpriced": [
       "js/awayjobs.js  A Hauler Down on {dest}: Tow her to the yard and argue the price down [tag]",

@@ -25,10 +25,10 @@ function inTheIceHold(backup) {
     cap.mood = { kind: 'low', until: G.state.day + 15 };
     return lead + ('He goes in first, and it goes wrong at the number two strap, and for a long minute the hold is nothing but ice and shouting. He ' +
         'comes out carried, and the hand that held the strap does not close properly, and will not. The med kit is already open. He says, from the ' +
-        'deck, "Number two is lashed. So that is done."');
+        'deck, "Number two is lashed. So that\'s done."');
   }
   return lead + ('He goes in, and the pod is lashed, and the load stops. He comes out with ice in his beard and a cut across one knuckle, and sits ' +
-      'down on the hatch coaming to get his breath. "That is where it goes," he says. Captain Vance looks at the hold, and at him, and says nothing, ' +
+      'down on the hatch coaming to get his breath. "That\'s where it goes," he says. Captain Vance looks at the hold, and at him, and says nothing, ' +
       'and writes it down.');
 }
 
@@ -52,7 +52,7 @@ CAST.cato = {
     'Cato is walking the hold with a mug, checking lashings that are fine.',
     'Cato has taken the cold watch again. Nobody asked him to.',
     'Cato is teaching one of the ice hands to read a manifest, slowly, one line at a time.',
-    'Cato: "She is counting, that is all. Leave her to it."',
+    'Cato: "She\'s counting, that\'s all. Leave her to it."',
     'Cato has written someone\'s mother\'s name on the back of the watch bill so that he remembers to ask.',
     'Cato hums a few bars with no tune while he checks the lashings, and stops when he sees you.',
   ],
@@ -70,8 +70,8 @@ CAST.cato = {
       title: 'The Watch Bill',
       text: ('Cato Rahman finds you at the end of your first watch with a mug in each hand. He is a big man, and he moves slowly in the passages. ' +
           '"Sit," he says. "You got the cold watch, and that was me, so if you hate it, say so. The cook has a boy at home, so the cook has the ' +
-          'evenings. The medic is waiting on a letter, and I try to have the medic on when we dock. The rest of you get what is left. Tell me what ' +
-          'you cannot stand and I will see what I can move. The captain counts every hour I move, mind. I move them anyway." He holds out one of the mugs.'),
+          'evenings. The medic is waiting on a letter, and I try to have the medic on when we dock. The rest of you get what\'s left. Tell me what ' +
+          'you can\'t stand and I\'ll see what I can move. The captain counts every hour I move, mind. I move them anyway." He holds out one of the mugs.'),
       choices: [
         {
           label: 'Tell him what you need',
@@ -89,21 +89,21 @@ CAST.cato = {
     mid1: {
       days: 25, title: 'A Share of a Ship',
       text: ('Cato is sitting on a cargo lashing with a notebook the size of a hand, the kind that goes in a shirt pocket. It is not the captain\'s; it has no ' +
-          'columns. "Twelve years in the hold," he says, "and the jar at home is not enough for a share of anything. I look anyway, when I cannot ' +
+          'columns. "Twelve years in the hold," he says, "and the jar at home isn\'t enough for a share of anything. I look anyway, when I can\'t ' +
           'sleep." He turns it round so you can see: a ship\'s name crossed out, and another, and a third with a question mark. "I ' +
-          'do not want to own her. I want a share, and a deck, and the same hold gang on it at the end. That is all." He puts the notebook away. "You ' +
-          'can tell me if it is stupid. The hold gang did, the first time I said it."'),
+          'don\'t want to own her. I want a share, and a deck, and the same hold gang on it at the end. That\'s all." He puts the notebook away. "You ' +
+          'can tell me if it\'s stupid. The hold gang did, the first time I said it."'),
       choices: [
         {
           label: 'Ask which ship has the question mark',
           effects: { castLike: { who: 'cato', n: 2, memory: 'You asked about the ship with the question mark.' }, castFlag: { who: 'cato', flag: 'share' } },
-          result: ('He tells you, and it is a hull you have seen on the lanes: old, slow, honest. "Her owner wants out in two years," he says. "I have ' +
+          result: ('He tells you, and it is a hull you have seen on the lanes: old, slow, honest. "Her owner wants out in two years," he says. "I\'ve ' +
               'been watching her price like the weather." He talks about her for ten minutes without stopping, and when he is done the mug in his hand has gone cold.'),
         },
         {
           label: 'Say it is not stupid, but it is a long way off',
           effects: { castLike: { who: 'cato', n: 1, memory: 'You said it was not stupid, but a long way off.' } },
-          result: '"It is," he says. "It is a long way off every day, and then it is one day nearer." He puts a hand on the lashing.',
+          result: '"It is," he says. "It\'s a long way off every day, and then it\'s one day nearer." He puts a hand on the lashing.',
         },
       ],
     },
@@ -130,33 +130,33 @@ CAST.cato = {
     },
     late: {
       days: 55, title: 'What Cato Knows', flag: 'secretKnown',
-      text: ('Cato has the watch bill open on the galley table, and he is not reading it. "There is nothing on it past the twenty-eighth," he says. ' +
-          '"I have not filled it in, because I do not know that the same people will be aboard. The captain keeps the books where I can see them, and ' +
-          'I have known about the bank since the spring. If she loses the ship, the hold gang goes three ways before the month is out. I watched that ' +
-          'happen once, to a different gang." He rubs his face. "I am not asking you for anything. If it goes badly, I would like you somewhere I ' +
+      text: ('Cato has the watch bill open on the galley table, and he is not reading it. "There\'s nothing on it past the twenty-eighth," he says. ' +
+          '"I haven\'t filled it in, because I don\'t know that the same people will be aboard. The captain keeps the books where I can see them, and ' +
+          'I\'ve known about the bank since the spring. If she loses the ship, the hold gang goes three ways before the month is out. I watched that ' +
+          'happen once, to a different gang." He rubs his face. "I\'m not asking you for anything. If it goes badly, I\'d like you somewhere I ' +
           'could find you."'),
       choices: [
         {
           label: 'Ask him to tell you if it goes badly',
           effects: { castLike: { who: 'cato', n: 2, memory: 'You asked me to tell you if it went badly.' }, castFlag: { who: 'cato', flag: 'told' } },
-          result: 'He writes it in pencil at the foot of the bill, where the next person to read it will see. "I will," he says. "It is something, to have somebody to tell."',
+          result: 'He writes it in pencil at the foot of the bill, where the next person to read it will see. "I will," he says. "It\'s something, to have somebody to tell."',
         },
         {
           label: 'Tell him it is not yours to carry',
           effects: { castLike: { who: 'cato', n: 1, memory: 'You said it was not yours to carry.' } },
-          result: '"No," he says. "It is not." He squares the watch bill on the table. "I wanted somebody to hear it said, that is all. It is a lot to carry in the hold."',
+          result: '"No," he says. "It\'s not." He squares the watch bill on the table. "I wanted somebody to hear it said, that\'s all. It\'s a lot to carry in the hold."',
         },
       ],
       // Below friendly he keeps it to himself, and the favour he would have asked (the `told` flag, read in the ice hold) is not asked.
       closed: {
         title: 'What Cato Knows',
         text: ('Cato has the watch bill open on the galley table, and he closes it when you come in. "I was going to tell you about the ship\'s books," ' +
-            'he says. "I have thought better of it." He turns the pencil over in his fingers. "It is nothing you have done. I do not know you well ' +
+            'he says. "I\'ve thought better of it." He turns the pencil over in his fingers. "It\'s nothing you\'ve done. I don\'t know you well ' +
             'enough to hand you a thing like that. Ask me again some day."'),
         choices: [
           {
             label: 'Say it can wait',
-            result: '"It can," he says, and puts the pencil back behind his ear. "Thank you. I would not have known how to start."',
+            result: '"It can," he says, and puts the pencil back behind his ear. "Thank you. I wouldn\'t have known how to start."',
           },
         ],
       },
@@ -166,7 +166,7 @@ CAST.cato = {
       get text() {
         const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6, hands = iceHands();
         return ('The alarm is a flat two-tone from the hold, and the board shows the number two ice pod with a seal gone and the load moving. Cato is ' +
-            'already at the hatch with a lashing strap over one shoulder. "I know where the load goes," he says. "It is my hold. Give me ten minutes." ' +
+            'already at the hatch with a lashing strap over one shoulder. "I know where the load goes," he says. "It\'s my hold. Give me ten minutes." ' +
             'Ice does not move quickly, but it does not stop, either, and the pod it is leaning on is not rated for it.')
           + (low ? ' The hull has taken a beating, and a bad hull is a bad place for a load to shift.' : ' The hull is sound.')
           + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There is nobody aboard who can do more than a field dressing, and he knows it.')
@@ -179,7 +179,7 @@ CAST.cato = {
         {
           label: 'Seal the hold and let the ice go',
           effects: { castFlag: { who: 'cato', flag: 'benched' }, castLike: { who: 'cato', n: -3, memory: 'You sealed the hold on me.' } },
-          result: 'You tell him no, and shut the hatch. The ice goes where ice goes, and the pod will not be the same. Cato stands at the hatch with the strap in his hands and says nothing until the lock indicator goes green. "It is your call," he says.',
+          result: 'You tell him no, and shut the hatch. The ice goes where ice goes, and the pod will not be the same. Cato stands at the hatch with the strap in his hands and says nothing until the lock indicator goes green. "It\'s your call," he says.',
         },
       ],
     },
@@ -193,40 +193,40 @@ CAST.cato.round = () => {
   const [cook, medic, qm, eng, pilot, comms] = ['cook', 'medic', 'quartermaster', 'engineer', 'pilot', 'slicer'].map(crewNamed);
   const iceA = ice[0] || 'one ice hand', iceB = ice[1] || 'the other';
   const guns = hired().post === 'gunner'
-    ? ('The last stop is at the foot of the guns. "And these are yours, which I should say plainly, since I have been talking about everyone else. ' +
-        'When something closes on us, the captain tells you who and how far, and you play it: what they are threatening, what we answer. You will get ' +
-        'one wrong. I did, and I am still here, and so is the ship."') : '';
+    ? ('The last stop is at the foot of the guns. "And these are yours, which I should say plainly, since I\'ve been talking about everyone else. ' +
+        'When something closes on us, the captain tells you who and how far, and you play it: what they\'re threatening, what we answer. You\'ll get ' +
+        'one wrong. I did, and I\'m still here, and so is the ship."') : '';
   const walk = [
-    (`He starts at the galley, because he says everyone should. "It is eleven feet across, I measured it once, and that is where we eat and where we ` +
-        `argue, mostly at the same time. ${cook} runs it. The water ration is on the wall in chalk. Do not rub it out, I know it looks like something ` +
-        `you could rub out. And tell ${cook} what you will not eat. Once, early. ${cook} is fine about it if you say it the first week. After that it ` +
-        `is a complaint, and then there is a conversation."`),
+    (`He starts at the galley, because he says everyone should. "It's eleven feet across, I measured it once, and that's where we eat and where we ` +
+        `argue, mostly at the same time. ${cook} runs it. The water ration is on the wall in chalk. Don't rub it out, I know it looks like something ` +
+        `you could rub out. And tell ${cook} what you won't eat. Once, early. ${cook} is fine about it if you say it the first week. After that it's ` +
+        `a complaint, and then there's a conversation."`),
     (`Two doors down, he knocks on the frame of the medical bay without going in. "${medic}. This is the one I said. ${medic} keeps the kit and the ` +
-        `log, and I will tell you what I tell everybody, which is come in when you are hurt, not when it is bad. By the time it is bad it is a ` +
+        `log, and I'll tell you what I tell everybody, which is come in when you're hurt, not when it's bad. By the time it's bad it's a ` +
         `different conversation." ${medic} says something to him that you do not catch, and he laughs.`),
     (`In the hold he slows down, and his voice drops, the way it does when he talks about the place he came up. "${qm} has the count. ` +
-        `Everything aboard, twice. If a number looks off to you, ask ${qm} before you go to the captain, because it has already been found and it is ` +
+        `Everything aboard, twice. If a number looks off to you, ask ${qm} before you go to the captain, because it has already been found and it's ` +
         `sitting on a list somewhere. And these two," he says, nodding at ${iceA} and ${iceB}, who are lashing something that does not look loose, ` +
-        `"they will ask you to hold a strap. Just hold it. It is not a test. I mean, it is a bit."`),
-    (`The engine room is warm and the passage floor hums under your boots. "${eng}'s plant. I would not touch anything with a tag on it, and ` +
-        `everything has a tag. If ${eng} hands you a spanner, though, you can take that how you like. I have been aboard four years and I have had it ` +
-        `twice." Up forward he points at the helm without going in. "${pilot} flies her. Talks to the board the whole time. Do not answer. It is not ` +
-        `for you." Beside it, ${comms} has the bands. "Anything that comes in for you comes through there, and ${comms} reads it first. It is not ` +
-        `rude. It is how you will know it has been looked at."`),
-    `At a row of doors on the left he stops. "Third one is yours. It is on a closer, so it hisses, it does not slam. You will try to slam it once. Everyone does. It is all right."`,
+        `"they'll ask you to hold a strap. Just hold it. It's not a test. I mean, it's a bit."`),
+    (`The engine room is warm and the passage floor hums under your boots. "${eng}'s plant. I wouldn't touch anything with a tag on it, and ` +
+        `everything has a tag. If ${eng} hands you a spanner, though, you can take that how you like. I've been aboard four years and I've had it ` +
+        `twice." Up forward he points at the helm without going in. "${pilot} flies her. Talks to the board the whole time. Don't answer. It's not ` +
+        `for you." Beside it, ${comms} has the bands. "Anything that comes in for you comes through there, and ${comms} reads it first. It's not ` +
+        `rude. It's how you'll know it has been looked at."`),
+    `At a row of doors on the left he stops. "Third one is yours. It's on a closer, so it hisses, it doesn't slam. You'll try to slam it once. Everyone does. It's all right."`,
     guns,
-    `He takes the pencil from behind his ear and checks the bill. "That is everyone. You have the middle watch with ${pilot}, it is on the bill, and I wrote it on the back of my hand as well, in case the bill goes missing. It has, before."`,
+    `He takes the pencil from behind his ear and checks the bill. "That's everyone. You have the middle watch with ${pilot}, it's on the bill, and I wrote it on the back of my hand as well, in case the bill goes missing. It has, before."`,
   ].filter(Boolean);
   return {
     title: 'The Round', personal: true,
     text: ('Cato Rahman finds you in the passage an hour after the burn starts, with the watch bill rolled under one arm and a stub of pencil behind his ' +
-        'ear. "I do this for everyone," he says. "The captain says I should do it on the dock, but on the dock nobody is listening, they are ' +
-        'looking for their bunk. Walk with me. It is not far. It feels far, the first time."'),
+        'ear. "I do this for everyone," he says. "The captain says I should do it on the dock, but on the dock nobody\'s listening, they\'re ' +
+        'looking for their bunk. Walk with me. It\'s not far. It feels far, the first time."'),
     choices: [
       { label: 'Walk it with him', run: () => walk.join('</p><p>') },
       {
         label: 'Another time',
-        result: '"Fair enough," Cato says. "The watch bill is on the galley wall. Everything else you will find by walking into it, and I will be somewhere nearby when you do." He tucks the watch bill back under his arm.',
+        result: '"Fair enough," Cato says. "The watch bill is on the galley wall. Everything else you\'ll find by walking into it, and I\'ll be somewhere nearby when you do." He tucks the watch bill back under his arm.',
       },
     ],
   };
@@ -244,13 +244,13 @@ CAST.cato.arrival = {
 CAST.cato.firstRaid = {
   title: 'The Guns Hatch',
   text: ('Cato is at the guns hatch before you have your boots on. He has the ledger under his arm, which he has never left behind in a fight. "The ' +
-      'line at the bottom of each scene says Position," he says. "Ahead, even, behind. It is a count, nothing more, and everything you choose moves ' +
+      'line at the bottom of each scene says Position," he says. "Ahead, even, behind. It\'s a count, nothing more, and everything you choose moves ' +
       'it. Ahead at the end and she breaks off. Even, and she stands off and throws one last round at us. Behind, and she comes alongside, and then it ' +
-      'goes to the lock."</p><p>He points at the screen. "One choice has your post in front of it, in brackets. That one is yours. It is the thing you ' +
-      'can do and nobody else aboard can. It is also the one that can go wrong on you. You are hurt, and your work counts a level lower for some days. ' +
+      'goes to the lock."</p><p>He points at the screen. "One choice has your post in front of it, in brackets. That one is yours. It\'s the thing you ' +
+      'can do and nobody else aboard can. It\'s also the one that can go wrong on you. You\'re hurt, and your work counts a level lower for some days. ' +
       'I had it once, in the hold. I wore a glove for eleven days."'),
   choices: [{
     label: 'Take your post',
-    result: 'He lets go of the hatch frame. "Choose what you would choose," he says. "I will be behind you."',
+    result: 'He lets go of the hatch frame. "Choose what you\'d choose," he says. "I\'ll be behind you."',
   }],
 };

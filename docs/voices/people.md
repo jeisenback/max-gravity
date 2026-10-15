@@ -27,8 +27,8 @@ Syntax: Long and additive, with a story inside the story. A question is answered
 Habit: They stop when someone puts a cup in front of them, and start again when it is empty.
 Never says: A short answer where a long one will do. "To cut a long story short."
 Samples:
-- "My uncle ran that lane for nine years, and he used to say the pilotage was the only honest fee on it, because at least the tug turned up, which is more than you can say for the inspector, and he was not wrong about that."
-- "Third bolt, you said? That was the one on the sink in the flat, the one the landlord swore he'd fixed, and I'll tell you, I have never trusted a landlord since."
+- "My uncle ran that lane for nine years, and he used to say the pilotage was the only honest fee on it, because at least the tug turned up, which is more than you can say for the inspector, and he wasn't wrong about that."
+- "Third bolt, you said? That was the one on the sink in the flat, the one the landlord swore he'd fixed, and I'll tell you, I've never trusted a landlord since."
 - "No, go on, I'm listening. Where was I."
 
 ### nervous
@@ -49,8 +49,8 @@ Syntax: Plain and warm, with the offer in the first clause and the reason, if an
 Habit: Counts out of their own pocket and says the number last, as a small thing.
 Never says: What it cost them. "You owe me."
 Samples:
-- "Have the rest. I have eaten, and it will not keep."
-- "There is a second cup, there, take it before it goes cold."
+- "Have the rest. I have eaten, and it won't keep."
+- "There's a second cup, there, take it before it goes cold."
 - "Forty, it was, I think. Put it toward the tug."
 
 ### greedy
@@ -58,11 +58,11 @@ Samples:
 Diction: Prices, margins and rates, in whole figures. Calls everything by what it would fetch.
 Syntax: Brisk and complete. A proposal, then the terms, then "just to make it interesting." Never hurries to the point, and never leaves it.
 Habit: Does sums on a hand terminal under the table and tells you the answer before you ask.
-Never says: "It does not matter what it costs." "Keep the change." Anything that gives a figure away.
+Never says: "It doesn't matter what it costs." "Keep the change." Anything that gives a figure away.
 Samples:
 - "A friendly game, with a little money on it. Five hundred is friendly. A thousand is a conversation."
-- "I make it eleven percent on the run, not nine, and I would like to know who told you nine."
-- "That is a fair price. I am sure it is fair, and I would like to see it written down."
+- "I make it eleven percent on the run, not nine, and I'd like to know who told you nine."
+- "That's a fair price. I'm sure it's fair, and I'd like to see it written down."
 
 ### pious
 
@@ -72,8 +72,8 @@ Habit: Touches a charm, a bulkhead or the corner of a book before they answer a 
 Never says: A threat. "Luck." An argument for what they believe.
 Samples:
 - "I say it at the turn of the watch. It takes a few minutes. You may stay silent."
-- "Thanks be that the weld held. I will not say it twice."
-- "No, you did right to ask. I would have asked."
+- "Thanks be that the weld held. I won't say it twice."
+- "No, you did right to ask. I'd have asked."
 
 ### rude
 
@@ -83,18 +83,18 @@ Habit: Keeps a list, and reads from it. Turns a page before the worst one.
 Never says: "Please." "I am sorry." A joke, unless it is one aimed at someone else.
 Samples:
 - "The bunk is too hard. The food is a crime. The coffee tastes of pipe."
-- "I said it was flat. I did not say it was your fault. I said it was flat."
-- "Who designed this galley, and were they drunk? I would like a name."
+- "I said it was flat. I didn't say it was your fault. I said it was flat."
+- "Who designed this galley, and were they drunk? I'd like a name."
 
 ### curious
 
 Diction: The part's name and then "how does it". Asks for the manual, not the explanation.
 Syntax: Questions in a row, each one built on the last answer. Stops mid-sentence when something moves.
 Habit: Has something in pieces on a flat surface, laid out in a row, with the manual open beside it.
-Never says: "I do not need to know." "Whatever you think."
+Never says: "I don't need to know." "Whatever you think."
 Samples:
 - "If the loop is closed, where does the heat go? And then where does it go from there?"
-- "Just a quick look. I will not touch anything. I have a rule about that, and I keep it until I do not."
+- "Just a quick look. I won't touch anything. I have a rule about that, and I keep it until I don't."
 - "Ah."
 
 ### drunk
@@ -102,11 +102,11 @@ Samples:
 Diction: Cheerful and too close: first names, "my friend", a song from home. Loses a word and goes around it.
 Syntax: Starts well, trails, and picks up on a different subject. Agrees too quickly.
 Habit: Holds an object upright and carefully: a spoon, a cup, a bottle with the label turned out.
-Never says: "I have had enough." Their own number.
+Never says: "I've had enough." Their own number.
 Samples:
-- "No, no, I am fine, I am wonderful. Has anybody seen my other sock. It was here."
-- "It is a very good bottle. You would like it. It was somebody's."
-- "It was a small fix. I would call it a small fix."
+- "No, no, I'm fine, I'm wonderful. Has anybody seen my other sock. It was here."
+- "It's a very good bottle. You'd like it. It was somebody's."
+- "It was a small fix. I'd call it a small fix."
 
 ### secretive
 
@@ -115,9 +115,9 @@ Syntax: Answers a question with a question, gracefully, and turns the talk back 
 Habit: Closes a message window when someone passes. Takes meals in the bunk and locks the door to sleep.
 Never says: A name, a date or a figure that could be checked.
 Samples:
-- "Family business. I would rather not, if you do not mind."
+- "Family business. I'd rather not, if you don't mind."
 - "And you? How long have you had this ship?"
-- "I would like to keep that one to myself, captain. It is no worse than most."
+- "I'd like to keep that one to myself, captain. It's no worse than most."
 
 ### kind
 
@@ -126,8 +126,8 @@ Syntax: Short and gentle, with a question that is really an offer. Makes a joke 
 Habit: Does the thing and mentions it afterward, if at all.
 Never says: That they did it for you. "You should have asked."
 Samples:
-- "The light over your bunk was flickering. I changed the tube. It is nothing."
-- "Sit a minute. I will take the rest of your watch. I was awake anyway."
+- "The light over your bunk was flickering. I changed the tube. It's nothing."
+- "Sit a minute. I'll take the rest of your watch. I was awake anyway."
 - "Oh, that? I burn everything. The pot is fine."
 
 ### brave
@@ -135,11 +135,11 @@ Samples:
 Diction: The job, in its own words, with the time it takes. "A ten-minute job."
 Syntax: Level and brief. Speaks after they have started, not before.
 Habit: Whistles while checking hatches. Buckles the strap before they finish the sentence.
-Never says: "I am not afraid." "Somebody has to." A claim about themselves.
+Never says: "I'm not afraid." "Somebody has to." A claim about themselves.
 Samples:
-- "I will go, captain. It is a ten-minute job. I have done worse."
-- "Hatch four is good. Hatch five is good. Hatch six is stiff, and I have oiled it."
-- "You stay inside. It is a short walk."
+- "I'll go, captain. It's a ten-minute job. I've done worse."
+- "Hatch four is good. Hatch five is good. Hatch six is stiff, and I've oiled it."
+- "You stay inside. It's a short walk."
 
 ### homesick
 
@@ -148,9 +148,9 @@ Syntax: Quiet, with the sentence trailing off at the name of someone. Short answ
 Habit: Looks at one fixed point of light. Holds a photograph, and puts it away before it is seen.
 Never says: "I want to go home." What is wrong. Whether they will go back.
 Samples:
-- "There is a bakery on the corner. It opens at five. That is all."
-- "I am fine. I am only looking."
-- "At home it would be evening now. The pipes start to knock."
+- "There's a bakery on the corner. It opens at five. That's all."
+- "I'm fine. I'm only looking."
+- "At home it'd be evening now. The pipes start to knock."
 
 ## Cultures
 
@@ -160,13 +160,13 @@ A culture colors what the person counts, compares things to, and asks a stranger
 
 Counts shifts owed and watches stood. Compares to the wall, the tide and the rota. Asks "which tier", not "which city". Dry about authority, and exact about time: "I owe the wall four." The sea wall is a rota that every household serves, so a favor is a shift and is remembered as one. (`bg.earth` in `backgrounds.md`.)
 
-Sample: "I owe the wall four, and I am not going to be the one who tells them I did not turn up."
+Sample: "I owe the wall four, and I'm not going to be the one who tells them I didn't turn up."
 
 ### mars
 
 Counts shares (air, water) and votes. Compares to a rule of the dome and the council's accounts. Asks how many shares your household held. Argues the other side because it was taught to, and quotes the rule at an authority. (`bg.mars` in `backgrounds.md`.)
 
-Sample: "The dome rule is plain, and I would like it read into the record before anyone decides."
+Sample: "The dome rule is plain, and I'd like it read into the record before anyone decides."
 
 ### belt
 

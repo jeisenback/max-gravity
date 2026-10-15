@@ -34,17 +34,17 @@ const JOBS = [
               'dockmaster takes it from there. It is the right call for someone who does not know locks, and nobody thanks you for it, which is also ' +
               'right.'), pay: 30 } },
         ] },
-      { text: 'The foreman of the loader crew finds you afterwards, still shaking, with his helmet under his arm. "I owe you," he says. "I do not have much. I have this, or I have a word with the dockmaster, and that is worth more than you think on this pad."',
+      { text: 'The foreman of the loader crew finds you afterwards, still shaking, with his helmet under his arm. "I owe you," he says. "I don\'t have much. I have this, or I have a word with the dockmaster, and that\'s worth more than you think on this pad."',
         choices: [
-          { label: 'Take the credits (200 cr)', win: { text: 'He counts it out of a pocket on his suit, in coins and chits, and does not look at the number. "It is not enough," he says. It is more than enough, and you both know it.', pay: 200 } },
+          { label: 'Take the credits (200 cr)', win: { text: 'He counts it out of a pocket on his suit, in coins and chits, and does not look at the number. "It\'s not enough," he says. It is more than enough, and you both know it.', pay: 200 } },
           { label: 'Take the word with the dockmaster', win: { text: 'The dockmaster writes your ship\'s name in a book behind the counter. "Berth discount," she says, "and a second look when you want to lift in a hurry." It is not cash, and it will be worth something.', rep: 4 } },
         ] },
     ] },
   { id: 'message', title: 'A Message That Has to Go Quietly', blurb: 'A clerk needs a sealed message out over the long bands without traffic control reading it first.',
     stages: [
-      { text: ('The clerk finds you at the back of the comms office, twisting a ring on a finger. "It is not illegal," she says. "It is just that if ' +
-          'it goes through the port\'s relay, it will be read by somebody who has a reason not to like it." She slides a chip across the counter. "I ' +
-          'need it on the long bands to a ship that is six days out, and I need nobody to know I asked."'),
+      { text: ('The clerk finds you at the back of the comms office, twisting a ring on a finger. "It\'s not illegal," she says. "It\'s just that if ' +
+          'it goes through the port\'s relay, it\'ll be read by somebody who has a reason not to like it." She slides a chip across the counter. "I ' +
+          'need it on the long bands to a ship that\'s six days out, and I need nobody to know I asked."'),
         choices: [
           { label: 'Put it on a ship\'s relay under a cargo header', check: { post: 'comms' },
             win: { text: 'You put it in a manifest packet, in the part of the header that nobody reads, and send it with the evening cargo burst. A relay six days out opens it and sends back a receipt. The clerk reads the receipt twice and puts it in her mouth.', pay: 220, xp: 'comms' },
@@ -57,8 +57,8 @@ const JOBS = [
     ] },
   { id: 'escort', title: 'Escort on the Lower Decks', blurb: 'A debt courier is carrying a case through the lower decks tonight and wants somebody who can use a gun and a straight face.',
     stages: [
-      { text: ('The courier is a thin man in a good coat who keeps both hands on a case. "It is not far," he says. "Three decks down, a lock, and a ' +
-          'door with a lamp over it. There are people who would like what is in this case, and I would like them not to have it." He looks at your ' +
+      { text: ('The courier is a thin man in a good coat who keeps both hands on a case. "It\'s not far," he says. "Three decks down, a lock, and a ' +
+          'door with a lamp over it. There are people who\'d like what\'s in this case, and I\'d like them not to have it." He looks at your ' +
           'boots. "I pay for people who walk quietly."'),
         choices: [
           { label: 'Walk the lower decks ahead of him', check: { post: 'gunner' },
@@ -70,7 +70,7 @@ const JOBS = [
             lose: { text: 'The service route is blocked by a pallet somebody has left across it, and the detour puts you in the open on the wrong deck. You get him out, but not unseen, and the pay is smaller for it.', pay: 90, rep: -2 } },
           { label: 'Tell him you will not go down there tonight', win: { text: '"I understand," the courier says, and goes down alone. You hear on the dock the next day that he made it. You hear on the dock a few days later that he did not make the way back.' } },
         ] },
-      { text: 'At the door with the lamp the courier turns. "There is a second case," he says. "It is not mine, and I do not know what is in it, and I would be grateful if somebody took it off the deck before tonight is over."',
+      { text: 'At the door with the lamp the courier turns. "There\'s a second case," he says. "It\'s not mine, and I don\'t know what\'s in it, and I\'d be grateful if somebody took it off the deck before tonight is over."',
         choices: [
           { label: 'Take it (and a half day more of your time)', win: { text: 'You carry it up through the passages and leave it with a woman at the top who does not ask who you are. The courier\'s thanks arrives that night in the form of a chit. You never learn what was in it.', pay: 180 } },
           { label: 'Leave it, and say you did not see it', win: { text: 'You say you did not see it, and the courier says that is what he thought. You go back up with the pay he owes, and the second case stays in the dark with the lamp.' } },
@@ -79,8 +79,8 @@ const JOBS = [
   { id: 'ration', title: 'Trouble in the Ration Line', blurb: 'A ration line is about to turn into a fight, and the warden wants someone who is not on either side.',
     stages: [
       { text: ('The line for the day\'s water runs around the corner and back, and at the head of it two families are shouting at the clerk, and at ' +
-          'each other, over a ration chit that was issued twice. The warden catches your sleeve. "You are not from here," she says, "which is what I ' +
-          'need. Somebody they both will not mind listening to."'),
+          'each other, over a ration chit that was issued twice. The warden catches your sleeve. "You\'re not from here," she says, "which is what I ' +
+          'need. Somebody they both won\'t mind listening to."'),
         choices: [
           { label: 'Talk them down', check: { post: 'comms' },
             win: { text: 'You find out whose chit it is by asking whose child is whose, and the thing falls apart into a conversation about names. By the end both families are sharing a bench and the clerk is stamping new chits as fast as she can.', pay: 160, xp: 'comms', rep: 3 },

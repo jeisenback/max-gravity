@@ -397,7 +397,7 @@
  },
  {
   "key": "news:good:0",
-  "text": "[\"Good News\",\"Over the intercom, Sam: \\\"Captain, can you come aft? It is not an emergency.\\\" You find Sam at the engine room hatch with the terminal. The message: their best fr\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"Over the intercom, Sam: \\\"Captain, can you come aft? It's not an emergency.\\\" You find Sam at the engine room hatch with the terminal. The message: their best fri\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:1",
@@ -453,7 +453,7 @@
  },
  {
   "key": "news:good:7",
-  "text": "[\"Good News\",\"Over the intercom, Sam: \\\"Captain, can you come aft? It is not an emergency.\\\" You find Sam at the engine room hatch with the terminal. The message: their father \",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
+  "text": "[\"Good News\",\"Over the intercom, Sam: \\\"Captain, can you come aft? It's not an emergency.\\\" You find Sam at the engine room hatch with the terminal. The message: their father J\",[\"Break out something to celebrate\",\"\\\"That's wonderful.\\\"\"]]"
  },
  {
   "key": "letter:good:8",
@@ -465,7 +465,7 @@
  },
  {
   "key": "letter:good:9",
-  "text": "[[\"A message for Sam at Ceres Station: their daughter Tiko sent a letter that said only \\\"I am proud of you,\\\" and nothing else.\"],\"their daughter Tiko sent a letter that said only \\\"I am proud of you,\\\" and nothing else\",{\"good\":true,\"text\":\"their daughter Tiko sent a letter that said only \\\"I am proud of you,\\\" and nothing else\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their daughter Tiko sent a letter that said only \\\"I'm proud of you,\\\" and nothing else.\"],\"their daughter Tiko sent a letter that said only \\\"I'm proud of you,\\\" and nothing else\",{\"good\":true,\"text\":\"their daughter Tiko sent a letter that said only \\\"I'm proud of you,\\\" and nothing else\"}]"
  },
  {
   "key": "news:good:9",
@@ -665,7 +665,7 @@
  },
  {
   "key": "holiday:4",
-  "text": "[\"The Long Night\",\"Sam tells you that, back on Earth, it is the longest night of the year, and that, where they grew up, the old people stayed up all through it, with candles, telling stories to keep the dark at bay. They have set out a single candle, real wax, saved for the purpose, in a jar in the middle of the galley table. \\\"It is silly out here,\\\" they say, \\\"where every night is the longest. But I would like to keep it.\\\"\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"You sit, all of you, in a ring around the candle, and, one by one, tell a story. Some are funny. Some are sad. Some are not stories at all, just a few careful sentences about a place or a person. The candle burns down, and nobody moves. It gutters.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they are cheerful, and nobody asks.\",\"9 Jun 2214: We kept The Long Night aboard the Second Chance.\",[\"Kept The Long Night aboard.\",\"Kept Year's End aboard.\",\"Kept First Water aboard.\",\"Kept Tranquility Night aboard.\",\"Kept Landing Day aboard.\"]]"
+  "text": "[\"The Long Night\",\"Sam tells you that, back on Earth, it is the longest night of the year, and that, where they grew up, the old people stayed up all through it, with candles, telling stories to keep the dark at bay. They have set out a single candle, real wax, saved for the purpose, in a jar in the middle of the galley table. \\\"It's silly out here,\\\" they say, \\\"where every night is the longest. But I'd like to keep it.\\\"\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"You sit, all of you, in a ring around the candle, and, one by one, tell a story. Some are funny. Some are sad. Some are not stories at all, just a few careful sentences about a place or a person. The candle burns down, and nobody moves. It gutters.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they are cheerful, and nobody asks.\",\"9 Jun 2214: We kept The Long Night aboard the Second Chance.\",[\"Kept The Long Night aboard.\",\"Kept Year's End aboard.\",\"Kept First Water aboard.\",\"Kept Tranquility Night aboard.\",\"Kept Landing Day aboard.\"]]"
  },
  {
   "key": "holiday:5",

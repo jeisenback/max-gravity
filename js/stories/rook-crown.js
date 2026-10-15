@@ -24,12 +24,12 @@ Mods.register({
           'suit older than you, patched at the elbows and the knees, with a cracked leather cap and a soft, raspy voice. He does not seem to be in a ' +
           'hurry. He watches you top off your tanks with the flat, patient gaze of a man who has been reading captains for sixty years. "Captains who ' +
           'dock here more than twice get asked the question," he says. "Do you want to fly under the Rook\'s colors? The Compact and Mars will hate ' +
-          'you for it. We will not. That is not a small thing, in these lanes."'),
+          'you for it. We won\'t. That\'s not a small thing, in these lanes."'),
       choices: [
         { label: 'Fly under the Rook\'s colors', effects: { q: { crown: 1 }, set: { pirateSworn: 1 }, rep: { Pirate: 8, 'Arcology Compact': -4, 'Dome Concord': -4 }, log: 'Swore to fly under the Rook\'s colors.' },
           result: ('Hollis climbs the ladder to your airlock, slowly, wheezing a little, with a small pot of black paint and a brush older than you ' +
               'are, and paints a tower on the frame with his own hand, dot by dot, in silence. It takes ten minutes. He steps back to look at it, head ' +
-              'cocked, and nods. "There. Now every pirate in the Belt knows whose you are. Do not make me regret the paint."') },
+              'cocked, and nods. "There. Now every pirate in the Belt knows whose you are. Don\'t make me regret the paint."') },
         {
           label: 'Not yet',
           result: ('"The question keeps," Hollis says, with a small dry smile, and taps the side of your hull twice, gently, like a man patting a ' +
@@ -39,8 +39,8 @@ Mods.register({
         {
           label: 'Never',
           effects: { set: { crownDone: 1 } },
-          result: ('Hollis shrugs, with no anger at all, only an old man\'s tiredness. "Then dock, trade, and leave. We\'re not proud, and we are not ' +
-              'fools. Not everyone is meant for our colors." He turns, and, over his shoulder, adds, "But do not tell them where we are. That I would ' +
+          result: ('Hollis shrugs, with no anger at all, only an old man\'s tiredness. "Then dock, trade, and leave. We\'re not proud, and we\'re not ' +
+              'fools. Not everyone\'s meant for our colors." He turns, and, over his shoulder, adds, "But don\'t tell them where we are. That I\'d ' +
               'take personally."')
         },
       ],
@@ -52,7 +52,7 @@ Mods.register({
       title: 'Unmarked Crates',
       text: ('Hollis walks you past a stack of crates in a dim side bay of the Rook, ten tons of them, stenciled MEDICAL in official red paint that ' +
           'has not quite dried. He rests one hand on the top of the pile, affectionately, as if it were a horse. "Reactor parts, from a Compact ' +
-          'depot that is missing some reactor parts. Ceres will pay for them and not ask. League customs might. That\'s what you\'re for." He ' +
+          'depot that\'s missing some reactor parts. Ceres will pay for them and not ask. League customs might. That\'s what you\'re for." He ' +
           'smiles, thinly. "Nobody has ever inspected a captain who looks this honest."'),
       choices: [
         { label: 'Run the crates to Ceres (10t, 7,000 cr)', when: { space: 10 },
@@ -65,7 +65,7 @@ Mods.register({
               'you look at it, it looks like a small red cross.') },
         {
           label: 'Not this run',
-          result: ('"There will be others," he says, and takes his hand off the crates, and looks at you a moment longer than is comfortable. "There ' +
+          result: ('"There\'ll be others," he says, and takes his hand off the crates, and looks at you a moment longer than is comfortable. "There ' +
               'are always crates. And there are always captains who say yes the first time." He does not say it unkindly. He says it like a man ' +
               'reading a weather report.')
         },
@@ -104,7 +104,7 @@ Mods.register({
       title: 'Dagger Quartey',
       text: ('"Ines Quartey," Hollis says, as if the name tastes bad, and spits, neatly, into a cup. He is sitting in a battered old chair at the ' +
           'back of the bar, with a blanket over his knees, and his hands are trembling slightly on the armrests. "Calls herself Dagger. She wants my ' +
-          'chair, and she has been telling the council you are a Compact plant. She runs out of the Saturn moons, in a ship called the Knife in the ' +
+          'chair, and she has been telling the council you\'re a Compact plant. She runs out of the Saturn moons, in a ship called the Knife in the ' +
           'Dark, which tells you everything you need to know. Settle it." His voice, for a moment, is very old.'),
       choices: [
         { label: 'Hunt her down', effects: { set: { rookTask: 1 }, log: 'Went hunting for Dagger Quartey around Saturn.',
@@ -112,7 +112,7 @@ Mods.register({
             onDone: { q: { crown: 1 }, set: { ...taskOver, rivalDead: 1 }, rep: { Pirate: 5 }, log: 'Killed Dagger Quartey near Saturn.' },
             onFail: { set: taskOver, rep: { Pirate: -5 }, log: 'Dagger Quartey is still out there, telling stories about you.' } } },
           result: ('"Fifty days," Hollis says. "After that, she comes looking for you." He looks out over the bar for a moment, at the young faces in ' +
-              'the corners, and something in his expression softens. "She is not a bad pilot, you know. That is the pity of it. It would have been a ' +
+              'the corners, and something in his expression softens. "She\'s not a bad pilot, you know. That\'s the pity of it. It\'d have been a ' +
               'good thing, to have someone that good on our side."') },
         { label: 'Buy her off (6,000 cr)', when: { credits: 6000 },
           effects: { credits: -6000, q: { crown: 1 }, log: 'Paid Dagger Quartey to stop spreading stories.' },

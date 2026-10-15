@@ -47,7 +47,7 @@ test('someone who had a letter that hurt, or is hurt, is talked to about that', 
     const op2 = p.opinion; take(hurt, /Ask how it is/); out.hurtLiked = p.opinion - op2;
     return out;
   });
-  assert.ok(r.low); assert.deepEqual(r.lowLabels, ['Let them talk', 'Offer to take a watch off them', '"It will pass."']); assert.equal(r.lowLiked, 1); assert.equal(r.lifted, 3);
+  assert.ok(r.low); assert.deepEqual(r.lowLabels, ['Let them talk', 'Offer to take a watch off them', '"It\'ll pass."']); assert.equal(r.lowLiked, 1); assert.equal(r.lifted, 3);
   assert.ok(r.hurt); assert.equal(r.hurtLiked, 1);
   await done();
 });

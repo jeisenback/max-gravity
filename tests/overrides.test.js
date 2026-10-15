@@ -497,7 +497,7 @@ test('a meeting scene joins or puts off the person as its closures did, with the
     // Put off: the offer comes round again after eight days, and nobody joins.
     const day = st.day, before = st.crew.length;
     const later = meet('tomas')[1].run();
-    out.later = { next: castRec('tomas').next - day, crew: st.crew.length - before, text: /That is all right/.test(later) };
+    out.later = { next: castRec('tomas').next - day, crew: st.crew.length - before, text: /That's all right/.test(later) };
     // The file changes the check for the one choice: it asks for a berth more than is free.
     useOverrides({ 'cast:yelena:meet': { choices: { 0: { when: { berths: berthsFree() + 1 } } } } });
     out.edited = meet('yelena')[0].can();

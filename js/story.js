@@ -308,7 +308,7 @@ function blockadeHail(n) {
   return {
     title: n.name,
     text: n.enemy
-      ? `Capt. ${c.first} ${c.last}: "Ceres is closed. Turn back now, or we will open fire."`
+      ? `Capt. ${c.first} ${c.last}: "Ceres is closed. Turn back now, or we'll open fire."`
       : `Capt. ${c.first} ${c.last}: "We have your back, captain. Get that water to the station."`,
     choices: [{ label: 'Cut the channel', run: () => 'You cut the channel.' }],
   };

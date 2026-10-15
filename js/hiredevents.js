@@ -159,7 +159,7 @@ const HAND_EVENTS = [
     id: 'crew-ines', group: 'crew', when: () => castKeys().includes('ines'),
     data: {
       title: 'Ines Calls the Numbers',
-      text: 'Ines is flying a hard approach by hand, a tight, ugly one, and asks you over her shoulder, without looking round, whether you would read her the numbers. "Slowly," she says. "And do not be clever."',
+      text: 'Ines is flying a hard approach by hand, a tight, ugly one, and asks you over her shoulder, without looking round, whether you would read her the numbers. "Slowly," she says. "And don\'t be clever."',
       choices: [
         {
           label: 'Read her the numbers',
@@ -181,7 +181,7 @@ const HAND_EVENTS = [
           skill: 3,
           effects: { castFlag: { who: 'ines', flag: 'trusted' }, castLike: { who: 'ines', n: 3, memory: 'You flew the last leg of a hard approach with me beside you, and I did not touch the controls.' }, learn: 3 },
           result: '"Your line," Ines says, and takes her hands off. You fly the last leg with her reading the sheet beside you and saying nothing. The ship ' +
-            'comes onto the pad. She signs the log under your name. "Do not tell the captain," she says. "Tell everyone else."',
+            'comes onto the pad. She signs the log under your name. "Don\'t tell the captain," she says. "Tell everyone else."',
         },
         {
           label: 'Say you would rather watch',
@@ -196,7 +196,7 @@ const HAND_EVENTS = [
     id: 'crew-tomas', group: 'crew', when: () => castKeys().includes('tomas'),
     data: {
       title: 'Tomas in the Engine Room',
-      text: 'Tomas has a flask, two tin cups and the whole of a quiet watch, and he pours you one without asking. "Sit," he says. "She is running well, and I would like to tell somebody why."',
+      text: 'Tomas has a flask, two tin cups and the whole of a quiet watch, and he pours you one without asking. "Sit," he says. "She\'s running well, and I\'d like to tell somebody why."',
       choices: [
         {
           label: 'Sit and listen',
@@ -218,7 +218,7 @@ const HAND_EVENTS = [
           skill: 3,
           effects: { castFlag: { who: 'tomas', flag: 'trusted' }, castLike: { who: 'tomas', n: 3, memory: 'You took the other end of the loop with me and did not need to be told.' }, learn: 3 },
           result: 'Tomas hands you the wrench. You take the second pump out of the loop while he holds the light, and put it back, and he checks nothing. ' +
-            '"Twenty years," he says, "and I have never let anyone take the second pump." He pours the second cup.',
+            '"Twenty years," he says, "and I\'ve never let anyone take the second pump." He pours the second cup.',
         },
         {
           label: 'Say you have work to do',
@@ -261,7 +261,7 @@ const HAND_EVENTS = [
         {
           label: 'Say your knee is bad too',
           effects: { castLike: { who: 'yelena', n: 0, memory: 'You said you would sit out the range.' } },
-          result: '"You do not have a bad knee," Yelena says. "You have a bench." But she lets it go, with a snort, and sets the sim back to something kinder for whoever comes next.',
+          result: '"You don\'t have a bad knee," Yelena says. "You have a bench." But she lets it go, with a snort, and sets the sim back to something kinder for whoever comes next.',
         },
       ],
     },
@@ -271,7 +271,7 @@ const HAND_EVENTS = [
     id: 'crew-ruben', group: 'crew', when: () => castKeys().includes('ruben'),
     data: {
       title: 'Ruben and the Thermos',
-      text: 'Ruben has a thermos of something hot and a stack of intercepts in piles, and he offers you a cup, as he offers everyone, and a pile, as he does not. "Help me sort," he says. "Slowly. I will tell you what is true and what is only lovely."',
+      text: 'Ruben has a thermos of something hot and a stack of intercepts in piles, and he offers you a cup, as he offers everyone, and a pile, as he does not. "Help me sort," he says. "Slowly. I\'ll tell you what\'s true and what\'s only lovely."',
       choices: [
         {
           label: 'Help him sort',
@@ -309,13 +309,13 @@ const HAND_EVENTS = [
     id: 'crew-bexa', group: 'crew', when: () => castKeys().includes('bexa'),
     data: {
       title: 'Bexa\'s List',
-      text: 'Bexa has a small brass tag on a string above the helm, and a notebook she keeps open on the console and does not like being looked at. Tonight she catches you looking, and turns it round instead of closing it. "It is a list," she says. "Ask me properly."',
+      text: 'Bexa has a small brass tag on a string above the helm, and a notebook she keeps open on the console and does not like being looked at. Tonight she catches you looking, and turns it round instead of closing it. "It\'s a list," she says. "Ask me properly."',
       choices: [
         {
           label: 'Ask about the first name',
           effects: { castLike: { who: 'bexa', n: 2, memory: 'You asked about the list the right way, and listened.' }, learn: 2 },
           result: 'You ask about the first name, and she tells you: a ship, a year, a crew of six, and what was left. She talks for a long time. ' +
-            'When she stops, she closes the book and points it at the helm. "Sit. I will show you how I would have brought them in."',
+            'When she stops, she closes the book and points it at the helm. "Sit. I\'ll show you how I\'d have brought them in."',
         },
         {
           label: 'Look away',
@@ -357,7 +357,7 @@ const HAND_EVENTS = [
         {
           label: 'Tell them it is fine',
           effects: { castLike: { who: 'pax', n: 0, memory: 'You told me the coupling was fine.' } },
-          result: '"I know it is fine," says Pax. "That is not the point." They go back to it, and you leave them to it.',
+          result: '"I know it\'s fine," says Pax. "That\'s not the point." They go back to it, and you leave them to it.',
         },
       ],
     },

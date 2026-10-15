@@ -69,7 +69,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Ben? Kind, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That is what Ben is like.\"",
+    "text": "\"Ben? Kind, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
     "d": {
      "credits": 0,
      "armor": 0,
@@ -83,7 +83,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Ben? Kind, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That is what Ben is like.\"",
+    "text": "\"Ben? Kind, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
     "d": {
      "credits": 0,
      "armor": 0,
@@ -301,7 +301,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Ben? Kind, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That is what Ben is like.\"",
+    "text": "\"Ben? Kind, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
     "d": {
      "credits": 0,
      "armor": 0,
@@ -315,7 +315,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Ben? Kind, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That is what Ben is like.\"",
+    "text": "\"Ben? Kind, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
     "d": {
      "credits": 0,
      "armor": 0,
@@ -468,7 +468,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Ben? Nervous, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That is what Ben is like.\"",
+    "text": "\"Ben? Nervous, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
     "d": {
      "credits": 0,
      "armor": 0,
@@ -482,7 +482,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Ben? Nervous, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That is what Ben is like.\"",
+    "text": "\"Ben? Nervous, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
     "d": {
      "credits": 0,
      "armor": 0,
@@ -1064,7 +1064,7 @@
   "id": "feud",
   "seed": 11,
   "title": "The Handover",
-  "text": "Ana is at the engine room hatch with the watch log open, and Ben is on the other side of the panel with their coat already on. \"You wrote 'not done',\" Ben says. \"It was not done,\" Ana says. \"It was done at four.\" Somebody coming off watch turns round in the corridor and goes the long way.",
+  "text": "Ana is at the engine room hatch with the watch log open, and Ben is on the other side of the panel with their coat already on. \"You wrote 'not done',\" Ben says. \"It wasn't done,\" Ana says. \"It was done at four.\" Somebody coming off watch turns round in the corridor and goes the long way.",
   "labels": [
    "Read the log and rule on it",
    "Split their watches so they do not meet",
@@ -2099,7 +2099,7 @@
   "id": "feud",
   "seed": 40,
   "title": "A Small Ship",
-  "text": "Ana has Ben backed against the coffee dispenser. They are arguing about the way somebody chews. \"Do not tell me it's the principle,\" Ben says. \"It is the principle,\" Ana says. Someone at the table has a spoon halfway to their mouth and has not moved it.",
+  "text": "Ana has Ben backed against the coffee dispenser. They are arguing about the way somebody chews. \"Don't tell me it's the principle,\" Ben says. \"It's the principle,\" Ana says. Someone at the table has a spoon halfway to their mouth and has not moved it.",
   "labels": [
    "Side with Ana",
    "Side with Ben",
@@ -2253,7 +2253,7 @@
   "id": "feud",
   "seed": 48,
   "title": "A Small Ship",
-  "text": "Ana has Ben backed against the coffee dispenser. They are arguing about the last of the coffee. \"Do not tell me it's the principle,\" Ben says. \"It is the principle,\" Ana says. Someone at the table has a spoon halfway to their mouth and has not moved it.",
+  "text": "Ana has Ben backed against the coffee dispenser. They are arguing about the last of the coffee. \"Don't tell me it's the principle,\" Ben says. \"It's the principle,\" Ana says. Someone at the table has a spoon halfway to their mouth and has not moved it.",
   "labels": [
    "Side with Ana",
    "Side with Ben",
@@ -2561,7 +2561,7 @@
   "id": "feud",
   "seed": 54,
   "title": "A Small Ship",
-  "text": "Ana has Ben backed against the coffee dispenser. They are arguing about who left the galley light on. \"Do not tell me it's the principle,\" Ben says. \"It is the principle,\" Ana says. Someone at the table has a spoon halfway to their mouth and has not moved it.",
+  "text": "Ana has Ben backed against the coffee dispenser. They are arguing about who left the galley light on. \"Don't tell me it's the principle,\" Ben says. \"It's the principle,\" Ana says. Someone at the table has a spoon halfway to their mouth and has not moved it.",
   "labels": [
    "Side with Ana",
    "Side with Ben",
@@ -2869,7 +2869,7 @@
   "id": "cook",
   "seed": 1,
   "title": "The Handover",
-  "text": "Ana is at the engine room hatch with the watch log open, and Cora is on the other side of the panel with their coat already on. \"You wrote 'not done',\" Cora says. \"It was not done,\" Ana says. \"It was done at four.\" Somebody coming off watch turns round in the corridor and goes the long way.",
+  "text": "Ana is at the engine room hatch with the watch log open, and Cora is on the other side of the panel with their coat already on. \"You wrote 'not done',\" Cora says. \"It wasn't done,\" Ana says. \"It was done at four.\" Somebody coming off watch turns round in the corridor and goes the long way.",
   "labels": [
    "Read the log and rule on it",
    "Split their watches so they do not meet",
@@ -3648,7 +3648,7 @@
   "id": "cook",
   "seed": 21,
   "title": "A Small Ship",
-  "text": "Ana has Cora backed against the coffee dispenser. They are arguing about the thermostat. \"Do not tell me it's the principle,\" Cora says. \"It is the principle,\" Ana says. Someone at the table has a spoon halfway to their mouth and has not moved it.",
+  "text": "Ana has Cora backed against the coffee dispenser. They are arguing about the thermostat. \"Don't tell me it's the principle,\" Cora says. \"It's the principle,\" Ana says. Someone at the table has a spoon halfway to their mouth and has not moved it.",
   "labels": [
    "Side with Ana",
    "Side with Cora",
@@ -3802,7 +3802,7 @@
   "id": "cook",
   "seed": 22,
   "title": "A Small Ship",
-  "text": "Ana has Cora backed against the coffee dispenser. They are arguing about a ring-ball bet. \"Do not tell me it's the principle,\" Cora says. \"It is the principle,\" Ana says. Someone at the table has a spoon halfway to their mouth and has not moved it.",
+  "text": "Ana has Cora backed against the coffee dispenser. They are arguing about a ring-ball bet. \"Don't tell me it's the principle,\" Cora says. \"It's the principle,\" Ana says. Someone at the table has a spoon halfway to their mouth and has not moved it.",
   "labels": [
    "Side with Ana",
    "Side with Cora",
@@ -4880,7 +4880,7 @@
   "id": "cook",
   "seed": 57,
   "title": "A Small Ship",
-  "text": "Ana has Cora backed against the coffee dispenser. They are arguing about a book that was never returned. \"Do not tell me it's the principle,\" Cora says. \"It is the principle,\" Ana says. Someone at the table has a spoon halfway to their mouth and has not moved it.",
+  "text": "Ana has Cora backed against the coffee dispenser. They are arguing about a book that was never returned. \"Don't tell me it's the principle,\" Cora says. \"It's the principle,\" Ana says. Someone at the table has a spoon halfway to their mouth and has not moved it.",
   "labels": [
    "Side with Ana",
    "Side with Cora",
@@ -6183,7 +6183,7 @@
   "id": "rootsHome",
   "seed": 10,
   "title": "Small System",
-  "text": "Ana hears Ben humming in the corridor. It is a tune from Ceres Station, a bad one, from a bar Ana knows. \"That is a Ceres Station tune,\" Ana says. Ben puts the filter down. \"Where were you?\" By the end of the watch they have named three people they both know and one they both owe money.",
+  "text": "Ana hears Ben humming in the corridor. It is a tune from Ceres Station, a bad one, from a bar Ana knows. \"That's a Ceres Station tune,\" Ana says. Ben puts the filter down. \"Where were you?\" By the end of the watch they have named three people they both know and one they both owe money.",
   "labels": [
    "Break out something to toast with (200 cr)",
    "Leave them to it"
@@ -11911,7 +11911,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Ben? Kind, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That is what Ben is like.\"",
+    "text": "\"Ben? Kind, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
     "d": {
      "credits": 0,
      "armor": 0,
@@ -11925,7 +11925,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Ben? Kind, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That is what Ben is like.\"",
+    "text": "\"Ben? Kind, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
     "d": {
      "credits": 0,
      "armor": 0,
@@ -12008,7 +12008,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Ben? Kind, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That is what Ben is like.\"",
+    "text": "\"Ben? Kind, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
     "d": {
      "credits": 0,
      "armor": 0,
@@ -12022,7 +12022,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Ben? Kind, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That is what Ben is like.\"",
+    "text": "\"Ben? Kind, mostly. Watches too much romance. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
     "d": {
      "credits": 0,
      "armor": 0,
@@ -12042,7 +12042,7 @@
   "text": "Ana catches you alone, by the lockers while you are stowing your kit, one shoulder against the bulkhead. \"Hey. Can I ask you something about Ben?\" Their voice is casual, and their ears have gone pink. They wait, and watch your face, and their hands, at their sides, are very still.",
   "labels": [
    "\"Talk to Ben, not me.\"",
-   "\"That is between the two of you.\"",
+   "\"That's between the two of you.\"",
    "\"What's Ben really like?\""
   ],
   "plays": [
@@ -12105,7 +12105,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Ben? Kind, mostly. Watches too much action serial. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That is what Ben is like.\"",
+    "text": "\"Ben? Kind, mostly. Watches too much action serial. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
     "d": {
      "credits": 0,
      "armor": 0,
@@ -12119,7 +12119,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Ben? Kind, mostly. Watches too much action serial. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That is what Ben is like.\"",
+    "text": "\"Ben? Kind, mostly. Watches too much action serial. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
     "d": {
      "credits": 0,
      "armor": 0,
@@ -12139,7 +12139,7 @@
   "text": "Ana catches you alone, by the lockers while you are stowing your kit, one shoulder against the bulkhead. \"Hey. Can I ask you something about Ben?\" Their voice is level, and tight at the edges. They wait, and watch your face, and their hands, at their sides, are very still.",
   "labels": [
    "\"Talk to Ben, not me.\"",
-   "\"That is between the two of you.\"",
+   "\"That's between the two of you.\"",
    "\"What's Ben really like?\""
   ],
   "plays": [
@@ -12202,7 +12202,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Ben? Kind, mostly. Watches too much action serial. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That is what Ben is like.\"",
+    "text": "\"Ben? Kind, mostly. Watches too much action serial. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
     "d": {
      "credits": 0,
      "armor": 0,
@@ -12216,7 +12216,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Ben? Kind, mostly. Watches too much action serial. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That is what Ben is like.\"",
+    "text": "\"Ben? Kind, mostly. Watches too much action serial. Would go down with the ship for you, though.\" Ana stops, and blinks, and looks at the deck. \"Anyway,\" they say. \"That's what Ben is like.\"",
     "d": {
      "credits": 0,
      "armor": 0,
@@ -12233,7 +12233,7 @@
   "id": "hiredCover",
   "seed": 1,
   "title": "Cover My Watch",
-  "text": "Ana catches you at the end of your shift, a little too casually. \"I have got the pilot watch tonight,\" Ana says, \"and there is somebody I would like to talk to on the long link while it is still early where they are. Could you take it? I will show you what to do. It is not hard. I would owe you one.\"",
+  "text": "Ana catches you at the end of your shift, a little too casually. \"I've got the pilot watch tonight,\" Ana says, \"and there's somebody I'd like to talk to on the long link while it's still early where they are. Could you take it? I'll show you what to do. It's not hard. I'd owe you one.\"",
   "labels": [
    "Take Ana's watch",
    "Say you have your own watch to keep"

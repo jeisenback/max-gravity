@@ -23,7 +23,7 @@ function atTheHelm(backup) {
   castLike('pilar', 2, sceneSay('scene:memories', 'pilar.lived.memory'));
   if (outcome === 'mark') {
     cap.mood = { kind: 'low', until: G.state.day + 15 };
-    return lead + 'She brings her in by hand, and the crosswind catches the ship at the last four meters, and the stick kicks. She lands her by main strength and nothing else, and the hand that held the stick does not close properly, and will not. "It is in the berth," she says. "Enter that."';
+    return lead + 'She brings her in by hand, and the crosswind catches the ship at the last four meters, and the stick kicks. She lands her by main strength and nothing else, and the hand that held the stick does not close properly, and will not. "It\'s in the berth," she says. "Enter that."';
   }
   return lead + 'She brings her in by hand, and the ship settles into the berth like a coin into a slot. Pilar lets go of the stick and flexes her fingers. "Four minutes," she says. "Enter that." Captain Sato enters it, word for word, and under it, in their own hand, writes: Correct.';
 }
@@ -49,35 +49,35 @@ CAST.pilar = {
     'Pilar has a spanner in her back pocket that is not on the tool list.',
     'Pilar: "The manual says do it this way. The manual has never docked at this port."',
     'Pilar has been fixing something that is not broken yet, which she says is the only way to fix it.',
-    'Pilar, reading a new standing order: "I will note it. I will note it with a very good pen."',
+    'Pilar, reading a new standing order: "I\'ll note it. I\'ll note it with a very good pen."',
     'Pilar has left the captain\'s coffee on the rail, hot, with no comment. She does that.',
   ],
   scenes: {
     intro: {
       title: 'The Approach',
-      text: ('Pilar Quesada has the helm for the approach, with the nav display off and her hands light on the stick. "Do not tell the captain," she ' +
+      text: ('Pilar Quesada has the helm for the approach, with the nav display off and her hands light on the stick. "Don\'t tell the captain," she ' +
           'says, not turning. "The manual says the display stays on. The manual has never docked at this port. The crosswind at the gate is a ' +
           'fifteen-second window, and the display lags by twelve." She brings the ship in without a tremor, and then looks at you for the first time. ' +
-          '"You can tell them. I would rather you knew than guessed."'),
+          '"You can tell them. I\'d rather you knew than guessed."'),
       choices: [
         {
           label: 'Ask her to show you the window',
           effects: { castLike: { who: 'pilar', n: 2, memory: 'You asked me to show you the crosswind window.' } },
-          result: 'She makes you count it with her, out loud, on the next approach, with the display off. You get it wrong twice. The third time you feel it, a thing in the stick rather than the numbers. "That is it," she says, and does not say anything else, and her shoulders drop an inch.',
+          result: 'She makes you count it with her, out loud, on the next approach, with the display off. You get it wrong twice. The third time you feel it, a thing in the stick rather than the numbers. "That\'s it," she says, and does not say anything else, and her shoulders drop an inch.',
         },
         {
           label: 'Say you will keep it to yourself',
           effects: { castLike: { who: 'pilar', n: 1, memory: 'You said you would keep my approach to yourself.' } },
-          result: '"Good," she says. "It is not a secret. It is a courtesy. The captain will find out, and when they do I would rather it was from the log." She goes back to the stick.',
+          result: '"Good," she says. "It\'s not a secret. It\'s a courtesy. The captain will find out, and when they do I\'d rather it was from the log." She goes back to the stick.',
         },
       ],
     },
     mid1: {
       days: 25, title: 'No Certificate',
       text: ('Pilar has a folder of thirty-one reference letters, and no certificate. "Ten years on hauler berths, and every one of them signed off ' +
-          'by someone who was sacked or retired or dead before the inspector came," she says. "The paper says I am not a pilot. The ship says ' +
-          'otherwise. I would like, once, for the paper to agree." She taps the folder. "The captain says I am the best helm on any ship they have ' +
-          'served on. They put it in the log. The log is not a certificate."'),
+          'by someone who was sacked or retired or dead before the inspector came," she says. "The paper says I\'m not a pilot. The ship says ' +
+          'otherwise. I\'d like, once, for the paper to agree." She taps the folder. "The captain says I\'m the best helm on any ship they\'ve ' +
+          'served on. They put it in the log. The log isn\'t a certificate."'),
       choices: [
         {
           label: 'Offer to write a reference',
@@ -87,7 +87,7 @@ CAST.pilar = {
         {
           label: 'Tell her the helm matters more than the paper',
           effects: { castLike: { who: 'pilar', n: 1, memory: 'You said the helm mattered more than the paper.' } },
-          result: '"It does," she says. "It matters more to everybody but the ones who issue the paper. That is not a complaint. That is the whole of the trade."',
+          result: '"It does," she says. "It matters more to everybody but the ones who issue the paper. That\'s not a complaint. That\'s the whole of the trade."',
         },
       ],
     },
@@ -113,27 +113,27 @@ CAST.pilar = {
     late: {
       days: 55, title: 'The Rules Turned',
       text: ('Pilar has a standing order in her hand, the one Captain Sato wrote last week, and a flat look. "It says that a helm without a ' +
-          'certificate may not take the approach unless the captain is on the bridge," she says. "It is a good rule. It is a fair rule. It is the rule ' +
-          'I have been waiting for them to write. It is the day, you understand, that the rules get used against me." She folds it small. "I do not ' +
-          'think they meant it so. That is the part I cannot say to them."'),
+          'certificate may not take the approach unless the captain is on the bridge," she says. "It\'s a good rule. It\'s a fair rule. It\'s the rule ' +
+          'I\'ve been waiting for them to write. It\'s the day, you understand, that the rules get used against me." She folds it small. "I don\'t ' +
+          'think they meant it so. That\'s the part I can\'t say to them."'),
       choices: [
         {
           label: 'Offer to speak to the captain',
           effects: { castLike: { who: 'pilar', n: 2, memory: 'You offered to speak to the captain about the rule.' }, castFlag: { who: 'pilar', flag: 'spoke' } },
-          result: '"Do," she says. "Not about me. About the rule. They will hear it better from somebody with a certificate." She holds your eye on the last word.',
+          result: '"Do," she says. "Not about me. About the rule. They\'ll hear it better from somebody with a certificate." She holds your eye on the last word.',
         },
         {
           label: 'Tell her to keep flying, and let the rule wait',
           effects: { castLike: { who: 'pilar', n: 1, memory: 'You told me to keep flying and let the rule wait.' } },
-          result: '"It will not wait," she says. "But I will. That is the difference between a rule and a person." She takes the order, and flattens it, and puts it in her pocket with the spanner.',
+          result: '"It won\'t wait," she says. "But I will. That\'s the difference between a rule and a person." She takes the order, and flattens it, and puts it in her pocket with the spanner.',
         },
       ],
       // Below friendly she keeps her view to herself, and the errand she would have asked (the `spoke` flag) is not asked.
       closed: {
         title: 'The Rules Turned',
         text: ('Pilar has a standing order in her hand, and she folds it small when you come into the galley. "Captain Sato wrote a rule last week," she ' +
-            'says. "I have a view on it. I am going to keep the view." She puts the order in her pocket with the spanner. "It is not that I do not trust ' +
-            'you. A view is a thing you give to someone who has already shown they will carry it carefully, and you have not had the chance. Ask me again ' +
+            'says. "I have a view on it. I\'m going to keep the view." She puts the order in her pocket with the spanner. "It\'s not that I don\'t trust ' +
+            'you. A view is a thing you give to someone who has already shown they\'ll carry it carefully, and you haven\'t had the chance. Ask me again ' +
             'when the weather has changed."'),
         choices: [
           {
@@ -149,7 +149,7 @@ CAST.pilar = {
         const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6, worn = condition().drive < 60;
         return ('The gate\'s tractor beam fails twenty seconds out, and the ship is carrying forty tonnes of ice at a closing speed the berth was ' +
             'never meant for. The nav display is lagging. Captain Sato, on the bridge, has the checklist open. Pilar has the stick. "I can bring her ' +
-            'in by hand," she says, "if you let me, and if you do not put anything on the display." She says it item by item.')
+            'in by hand," she says, "if you let me, and if you don\'t put anything on the display." She says it item by item.')
           + (low ? ' The hull has taken a beating, and a bad hull is a bad thing to put against a berth wall.' : ' The hull is sound.')
           + (worn ? ' The drive has been run hard, and the thrusters take what it has left.' : ' The drive is in good order.')
           + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There is nobody aboard who can do more than a field dressing, and she knows it.')
@@ -160,7 +160,7 @@ CAST.pilar = {
         { label: 'Put a second hand on the console with her', ...gated(needCrew(2)), run: () => atTheHelm(true) },
         { label: 'Take the ship off the approach and go round', memory: 'You took the ship off the approach on me.', run() {
           castFlag('pilar', 'benched'); castLike('pilar', -3, this.memory); G.state.fuel = Math.round(G.state.fuel * 0.8);
-          return 'You tell her no, and call the go-round. The ship stands off from the gate, and the ice sits in the hold, and the cells burn for the second pass. Pilar takes her hands off the stick one at a time. "It is your call," she says. "It was always going to be somebody\'s."';
+          return 'You tell her no, and call the go-round. The ship stands off from the gate, and the ice sits in the hold, and the cells burn for the second pass. Pilar takes her hands off the stick one at a time. "It\'s your call," she says. "It was always going to be somebody\'s."';
         } },
       ],
     },
@@ -170,7 +170,7 @@ CAST.pilar = {
 // The first arrival (captains.js arrivalScene): Pilar settles up at the foot of the ramp.
 CAST.pilar.arrival = {
   open: 'Pilar comes down the ramp last, with the ledger in one hand and a spanner in the other, and puts both on the nearest crate. She opens the book with the spanner.',
-  memory: '"First pay I ever drew on a hauler," Pilar says, "the purser counted it into my hand and told me I would not see that much again. I saw it again in March." She taps the page. "Yours has gone to your account. Look at the header."',
-  column: '"That column is {cap}\'s," Pilar says. "I have never been in it."',
-  pace: '"A season of good runs," Pilar says. "Most seasons do not have that many."',
+  memory: '"First pay I ever drew on a hauler," Pilar says, "the purser counted it into my hand and told me I wouldn\'t see that much again. I saw it again in March." She taps the page. "Yours has gone to your account. Look at the header."',
+  column: '"That column is {cap}\'s," Pilar says. "I\'ve never been in it."',
+  pace: '"A season of good runs," Pilar says. "Most seasons don\'t have that many."',
 };

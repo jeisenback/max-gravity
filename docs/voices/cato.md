@@ -12,7 +12,7 @@ Hold words and people's names: the strap, the load, the lashing, the watch bill,
 
 ## Syntax in speech
 
-Medium-length sentences that add clauses as they go, and often end on a small concession or a correction ("It is not a test. I mean, it is a bit."). He says what he is about to do before he does it. When he reassures, it is one short sentence. His sentences end on a person or a small admission, where Hester's end on a figure.
+Medium-length sentences that add clauses as they go, and often end on a small concession or a correction ("It's not a test. I mean, it's a bit."). He says what he is about to do before he does it. When he reassures, it is one short sentence. His sentences end on a person or a small admission, where Hester's end on a figure.
 
 ## Habits
 
@@ -33,10 +33,10 @@ Patrick O'Brian. Take: the way talk wanders about the work before it arrives at 
 ## Sample lines
 
 - "You have the middle watch with the pilot, and if the hatch on the lower berths sticks, hit it with the heel of your hand; everyone does that first, and it works about half the time."
-- "Sit. You are not in anyone's way."
-- "I put the hold gang's anniversary on the bill, so if I am not at the galley table on the fourth, come and find me, and do not let me say I was busy."
-- "She is counting, that is all. Leave her to it."
-- "Hold the end and I will do the rest."
+- "Sit. You're not in anyone's way."
+- "I put the hold gang's anniversary on the bill, so if I'm not at the galley table on the fourth, come and find me, and don't let me say I was busy."
+- "She's counting, that's all. Leave her to it."
+- "Hold the end and I'll do the rest."
 
 ## Dialogue risks
 

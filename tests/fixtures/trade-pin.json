@@ -8666,7 +8666,7 @@
   "key": "job:lock:1",
   "v": {
    "title": "A Jammed Freight Lock",
-   "text": "The foreman of the loader crew finds you afterwards, still shaking, with his helmet under his arm. \"I owe you,\" he says. \"I do not have much. I have this, or I have a word with the dockmaster, and that is worth more than you think on this pad.\"",
+   "text": "The foreman of the loader crew finds you afterwards, still shaking, with his helmet under his arm. \"I owe you,\" he says. \"I don't have much. I have this, or I have a word with the dockmaster, and that's worth more than you think on this pad.\"",
    "labels": [
     "Take the credits (200 cr)",
     "Take the word with the dockmaster"
@@ -8676,7 +8676,7 @@
  {
   "key": "job:lock:1:0:0",
   "v": {
-   "text": "He counts it out of a pocket on his suit, in coins and chits, and does not look at the number. \"It is not enough,\" he says. It is more than enough, and you both know it. (+240 cr)",
+   "text": "He counts it out of a pocket on his suit, in coins and chits, and does not look at the number. \"It's not enough,\" he says. It is more than enough, and you both know it. (+240 cr)",
    "credits": 240,
    "rep": {},
    "xp": false,
@@ -8687,7 +8687,7 @@
  {
   "key": "job:lock:1:0:0.999",
   "v": {
-   "text": "He counts it out of a pocket on his suit, in coins and chits, and does not look at the number. \"It is not enough,\" he says. It is more than enough, and you both know it. (+240 cr)",
+   "text": "He counts it out of a pocket on his suit, in coins and chits, and does not look at the number. \"It's not enough,\" he says. It is more than enough, and you both know it. (+240 cr)",
    "credits": 240,
    "rep": {},
    "xp": false,
@@ -8725,7 +8725,7 @@
   "key": "job:message:0",
   "v": {
    "title": "A Message That Has to Go Quietly",
-   "text": "The clerk finds you at the back of the comms office, twisting a ring on a finger. \"It is not illegal,\" she says. \"It is just that if it goes through the port's relay, it will be read by somebody who has a reason not to like it.\" She slides a chip across the counter. \"I need it on the long bands to a ship that is six days out, and I need nobody to know I asked.\"",
+   "text": "The clerk finds you at the back of the comms office, twisting a ring on a finger. \"It's not illegal,\" she says. \"It's just that if it goes through the port's relay, it'll be read by somebody who has a reason not to like it.\" She slides a chip across the counter. \"I need it on the long bands to a ship that's six days out, and I need nobody to know I asked.\"",
    "labels": [
     "Put it on a ship's relay under a cargo header [Comms, long odds]",
     "Carry it to a ship that is about to sail [Pilot, even odds]",
@@ -8805,7 +8805,7 @@
   "key": "job:escort:0",
   "v": {
    "title": "Escort on the Lower Decks",
-   "text": "The courier is a thin man in a good coat who keeps both hands on a case. \"It is not far,\" he says. \"Three decks down, a lock, and a door with a lamp over it. There are people who would like what is in this case, and I would like them not to have it.\" He looks at your boots. \"I pay for people who walk quietly.\"",
+   "text": "The courier is a thin man in a good coat who keeps both hands on a case. \"It's not far,\" he says. \"Three decks down, a lock, and a door with a lamp over it. There are people who'd like what's in this case, and I'd like them not to have it.\" He looks at your boots. \"I pay for people who walk quietly.\"",
    "labels": [
     "Walk the lower decks ahead of him [Gunner, long odds]",
     "Take him down a service route [Pilot, long odds]",
@@ -8823,7 +8823,7 @@
    "mem": [],
    "next": [
     "Escort on the Lower Decks",
-    "At the door with the lamp the courier turns. \"There is a second case,\" he says. "
+    "At the door with the lamp the courier turns. \"There's a second case,\" he says. \""
    ]
   }
  },
@@ -8848,7 +8848,7 @@
    "mem": [],
    "next": [
     "Escort on the Lower Decks",
-    "At the door with the lamp the courier turns. \"There is a second case,\" he says. "
+    "At the door with the lamp the courier turns. \"There's a second case,\" he says. \""
    ]
   }
  },
@@ -8891,7 +8891,7 @@
   "key": "job:escort:1",
   "v": {
    "title": "Escort on the Lower Decks",
-   "text": "At the door with the lamp the courier turns. \"There is a second case,\" he says. \"It is not mine, and I do not know what is in it, and I would be grateful if somebody took it off the deck before tonight is over.\"",
+   "text": "At the door with the lamp the courier turns. \"There's a second case,\" he says. \"It's not mine, and I don't know what's in it, and I'd be grateful if somebody took it off the deck before tonight is over.\"",
    "labels": [
     "Take it (and a half day more of your time)",
     "Leave it, and say you did not see it"
@@ -8946,7 +8946,7 @@
   "key": "job:ration:0",
   "v": {
    "title": "Trouble in the Ration Line",
-   "text": "The line for the day's water runs around the corner and back, and at the head of it two families are shouting at the clerk, and at each other, over a ration chit that was issued twice. The warden catches your sleeve. \"You are not from here,\" she says, \"which is what I need. Somebody they both will not mind listening to.\"",
+   "text": "The line for the day's water runs around the corner and back, and at the head of it two families are shouting at the clerk, and at each other, over a ration chit that was issued twice. The warden catches your sleeve. \"You're not from here,\" she says, \"which is what I need. Somebody they both won't mind listening to.\"",
    "labels": [
     "Talk them down [Comms, long odds]",
     "Step between them [Gunner, long odds]",
@@ -9028,7 +9028,7 @@
   "key": "awayjob:package:0",
   "v": {
    "title": "A Package for Ironheart",
-   "text": "The contact is waiting at the dock gate on Ironheart, a man in a long coat who looks at your ship before he looks at you. He is not the one Mrs. Adeyemi described. He is too easy, too well dressed, and he knows your name. \"I will take that off your hands,\" he says, and holds out both of them.",
+   "text": "The contact is waiting at the dock gate on Ironheart, a man in a long coat who looks at your ship before he looks at you. He is not the one Mrs. Adeyemi described. He is too easy, too well dressed, and he knows your name. \"I'll take that off your hands,\" he says, and holds out both of them.",
    "labels": [
     "Ask him what Mrs. Adeyemi said to say [Comms, long odds]",
     "Walk him to a crowded place before you hand it over [Gunner, long odds]",
@@ -9115,7 +9115,7 @@
   "key": "awayjob:package:1",
   "v": {
    "title": "A Package for Ironheart",
-   "text": "The woman at the grocery stall wraps the package in a cloth. \"Mrs. Adeyemi said you would be careful,\" she says. \"I would like to say thank you in a way that costs something.\"",
+   "text": "The woman at the grocery stall wraps the package in a cloth. \"Mrs. Adeyemi said you'd be careful,\" she says. \"I'd like to say thank you in a way that costs something.\"",
    "labels": [
     "Take the extra credits ",
     "Take a name for the next time"
@@ -9174,7 +9174,7 @@
   "key": "awayjob:stranded:0",
   "v": {
    "title": "A Hauler Down on Ironheart",
-   "text": "The hauler sits at the far end of the apron on Ironheart, listing a degree to port, with her drive housing open to the sky and a man underneath it who has not slept in a day. He climbs out when you hail. \"Mrs. Adeyemi sent you,\" he says. \"I have been telling the yard it is the injector, and the yard has been telling me it is three thousand credits.\"",
+   "text": "The hauler sits at the far end of the apron on Ironheart, listing a degree to port, with her drive housing open to the sky and a man underneath it who has not slept in a day. He climbs out when you hail. \"Mrs. Adeyemi sent you,\" he says. \"I've been telling the yard it's the injector, and the yard has been telling me it's three thousand credits.\"",
    "labels": [
     "Rebuild the injector [Engineer, long odds]",
     "Tow her to the yard and argue the price down [Pilot, long odds]",
@@ -9193,7 +9193,7 @@
    "mem": [],
    "next": [
     "A Hauler Down on Ironheart",
-    "When the drive is running he walks you to the ramp. \"I cannot pay you what it wa"
+    "When the drive is running he walks you to the ramp. \"I can't pay you what it was"
    ]
   }
  },
@@ -9218,7 +9218,7 @@
    "mem": [],
    "next": [
     "A Hauler Down on Ironheart",
-    "When the drive is running he walks you to the ramp. \"I cannot pay you what it wa"
+    "When the drive is running he walks you to the ramp. \"I can't pay you what it was"
    ]
   }
  },
@@ -9259,7 +9259,7 @@
   "key": "awayjob:stranded:1",
   "v": {
    "title": "A Hauler Down on Ironheart",
-   "text": "When the drive is running he walks you to the ramp. \"I cannot pay you what it was worth,\" he says. \"I can give you a berth on her any time you want one, if she is still flying. Or I can give you this.\"",
+   "text": "When the drive is running he walks you to the ramp. \"I can't pay you what it was worth,\" he says. \"I can give you a berth on her any time you want one, if she's still flying. Or I can give you this.\"",
    "labels": [
     "Take the credits ",
     "Take the offer of a berth"
@@ -9269,7 +9269,7 @@
  {
   "key": "awayjob:stranded:1:0:0",
   "v": {
-   "text": "He puts it into your hand and closes your fingers over it. \"It is what I have,\" he says. It is enough. (+430 cr)",
+   "text": "He puts it into your hand and closes your fingers over it. \"It's what I have,\" he says. It is enough. (+430 cr)",
    "credits": 430,
    "rep": {},
    "xp": false,
@@ -9280,7 +9280,7 @@
  {
   "key": "awayjob:stranded:1:0:0.999",
   "v": {
-   "text": "He puts it into your hand and closes your fingers over it. \"It is what I have,\" he says. It is enough. (+430 cr)",
+   "text": "He puts it into your hand and closes your fingers over it. \"It's what I have,\" he says. It is enough. (+430 cr)",
    "credits": 430,
    "rep": {},
    "xp": false,
@@ -9318,7 +9318,7 @@
   "key": "awayjob:witness:0",
   "v": {
    "title": "A Witness on Ironheart",
-   "text": "The dockworker is waiting in the back room of a noodle stall on Ironheart, a small woman with her coat buttoned to the neck and her hands flat on the table. \"Mrs. Adeyemi said you would come,\" she says. \"The office is four streets away. I have been told, twice, that I would not make it there.\" She looks at you. \"I would like to make it there.\"",
+   "text": "The dockworker is waiting in the back room of a noodle stall on Ironheart, a small woman with her coat buttoned to the neck and her hands flat on the table. \"Mrs. Adeyemi said you'd come,\" she says. \"The office is four streets away. I've been told, twice, that I wouldn't make it there.\" She looks at you. \"I'd like to make it there.\"",
    "labels": [
     "Walk her through the streets [Gunner, long odds]",
     "Arrange a quiet meeting by relay instead [Comms, long odds]",
@@ -9405,7 +9405,7 @@
   "key": "awayjob:witness:1",
   "v": {
    "title": "A Witness on Ironheart",
-   "text": "Before you go, the dockworker presses something into your hand: a key on a loop of string. \"It is the locker at the back of the stall,\" she says. \"Mrs. Adeyemi knows. It is for whoever comes.\"",
+   "text": "Before you go, the dockworker presses something into your hand: a key on a loop of string. \"It's the locker at the back of the stall,\" she says. \"Mrs. Adeyemi knows. It's for whoever comes.\"",
    "labels": [
     "Open the locker (150 cr in a tin)",
     "Leave the locker for the next one"

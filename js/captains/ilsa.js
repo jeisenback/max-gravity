@@ -24,7 +24,7 @@ function atTheReactor(backup) {
     cap.mood = { kind: 'low', until: G.state.day + 15 };
     return lead + ('She goes in first, and the housing is hotter than the board said, and for three minutes the only sound on the bridge is the ' +
         'alarm. She comes out held up between two crew, and the hand that found the scram does not close properly, and will not. She sits down on the ' +
-        'deck by the door. "It is off," she says. "Tell him the plant is off. He will want to know it is all right."');
+        'deck by the door. "It\'s off," she says. "Tell him the plant is off. He\'ll want to know it\'s all right."');
   }
   return lead + ('She goes in, and the scram goes home, and the alarm winds down through its notes into silence. She comes out with her sleeves burnt ' +
       'through and her hands steady, and sits on the deck for a minute. "Routine," she says, and writes it in the log. Captain Adair has come down the ' +
@@ -50,17 +50,17 @@ CAST.ilsa = {
   chatter: [
     'Ilsa is going through the maintenance board with a pencil. Every line she crosses off was somebody else\'s.',
     'Ilsa has fixed the recycler again, and put it down in the log as routine.',
-    'Ilsa: "The captain is in the galley. The captain is always in the galley. That is how the ship is happy."',
+    'Ilsa: "The captain is in the galley. The captain is always in the galley. That\'s how the ship is happy."',
     'Ilsa is asleep standing up against the bulkhead, mug still in hand, and has been for a minute and a half.',
     'Ilsa is correcting a fuel order the captain placed, in the margin of the form.',
-    'Ilsa: "I do not mind. I want that on the record. I do not mind."',
+    'Ilsa: "I don\'t mind. I want that on the record. I don\'t mind."',
   ],
   scenes: {
     intro: {
       title: 'The Night Watch',
       text: ('Ilsa Brandt is on the bridge at the hour the captain is asleep, with a mug and a pencil and the maintenance board open. She does not ' +
           'look round. "I do the night watch," she says. "And the maintenance, and the fuel orders, and, when the captain is in the galley, which is ' +
-          'always, the rest. You will find the ship runs. Nobody will tell you why. I am telling you, so that you know whom to ask." She turns a page. ' +
+          'always, the rest. You\'ll find the ship runs. Nobody will tell you why. I\'m telling you, so that you know whom to ask." She turns a page. ' +
           '"Ask me anything. Ask it quietly."'),
       choices: [
         {
@@ -71,26 +71,26 @@ CAST.ilsa = {
         {
           label: 'Offer to take an hour of it',
           effects: { castLike: { who: 'ilsa', n: 1, memory: 'You offered to take an hour of the night watch.' } },
-          result: '"No," she says, and then, at once, "Yes. The second hour. Do not touch the board."',
+          result: '"No," she says, and then, at once, "Yes. The second hour. Don\'t touch the board."',
         },
       ],
     },
     mid1: {
       days: 25, title: 'Command',
       text: ('Ilsa is at the chart table with a form in front of her. It is a command certificate application, filled in everywhere except the last ' +
-          'line. "I have had this for two years," she says. "I could sign it. He would not stop me. That is the problem. He would say it was ' +
-          'wonderful, and tell the galley, and then he would sit on the bridge by himself at night, and I would have taken it from him. I do not take ' +
-          'things. I keep them." She lays a pencil across the form. "Tell me I am being a fool."'),
+          'line. "I\'ve had this for two years," she says. "I could sign it. He wouldn\'t stop me. That\'s the problem. He\'d say it was ' +
+          'wonderful, and tell the galley, and then he\'d sit on the bridge by himself at night, and I\'d have taken it from him. I don\'t take ' +
+          'things. I keep them." She lays a pencil across the form. "Tell me I\'m being a fool."'),
       choices: [
         {
           label: 'Tell her she is being a fool',
           effects: { castLike: { who: 'ilsa', n: 1, memory: 'You told me I was being a fool.' } },
-          result: '"Good," she says, and does not smile, and does not sign. "Everyone else tells me I am being noble. I find that harder to bear."',
+          result: '"Good," she says, and does not smile, and does not sign. "Everyone else tells me I\'m being noble. I find that harder to bear."',
         },
         {
           label: 'Tell her it is hers to decide, and can wait',
           effects: { castLike: { who: 'ilsa', n: 2, memory: 'You said it was mine to decide, and could wait.' }, castFlag: { who: 'ilsa', flag: 'command' } },
-          result: '"It can wait," she says. "It has been waiting. It is rather good at it." She puts the form back in the drawer, not far back.',
+          result: '"It can wait," she says. "It has been waiting. It\'s rather good at it." She puts the form back in the drawer, not far back.',
         },
       ],
     },
@@ -119,30 +119,30 @@ CAST.ilsa = {
     },
     late: {
       days: 55, title: 'What Ilsa Knows', flag: 'secretKnown',
-      text: ('Ilsa has the fund book open, and she holds it with both hands. "I will say this ' +
-          'once," she says. "The fund has been short every quarter for two years. He takes it out for people. He is not a thief. He is a man who ' +
-          'cannot say no. I put it back, from my pay, a day before the audit. He knows the books balance and has never asked how. If he asked, I would ' +
-          'stop. If he does not, I cannot." She closes it. "I am not asking you to do anything. I am telling you, because somebody ought to know who ' +
-          'is holding it up."'),
+      text: ('Ilsa has the fund book open, and she holds it with both hands. "I\'ll say this ' +
+          'once," she says. "The fund has been short every quarter for two years. He takes it out for people. He\'s not a thief. He\'s a man who ' +
+          'can\'t say no. I put it back, from my pay, a day before the audit. He knows the books balance and has never asked how. If he asked, I\'d ' +
+          'stop. If he doesn\'t, I can\'t." She closes it. "I\'m not asking you to do anything. I\'m telling you, because somebody ought to know who\'s ' +
+          'holding it up."'),
       choices: [
         {
           label: 'Offer to put something in',
           when: { credits: 200 },
           effects: { credits: -200, castLike: { who: 'ilsa', n: 2, memory: 'You offered to put something into the fund.' } },
-          result: 'She counts the two hundred. "No," she says. Then: "Yes. Not for him. For me. So that it is not only me." She writes it in the book, in a column of its own.',
+          result: 'She counts the two hundred. "No," she says. Then: "Yes. Not for him. For me. So that it\'s not only me." She writes it in the book, in a column of its own.',
         },
         {
           label: 'Ask what she needs',
           effects: { castLike: { who: 'ilsa', n: 2, memory: 'You asked me what I needed.' }, castFlag: { who: 'ilsa', flag: 'asked' } },
-          result: '"Nobody has asked me that in four years," she says. "I do not know. I will tell you when I do."',
+          result: '"Nobody has asked me that in four years," she says. "I don\'t know. I\'ll tell you when I do."',
         },
       ],
       // Below friendly she keeps it to herself, and the confidence (the `asked` flag) is not offered.
       closed: {
         title: 'What Ilsa Knows',
         text: ('Ilsa has the fund book open on the galley table, and she closes it when you come in and lays her hand flat on the cover. "I was going to ' +
-            'tell you something about the books," she says. "I have decided it is not mine to tell, and it is not yet yours to hear." She squares the ' +
-            'book with the edge of the table. "It is nothing you have done. I do not know you well enough to hand you a thing like that. If you are still ' +
+            'tell you something about the books," she says. "I\'ve decided it\'s not mine to tell, and it\'s not yet yours to hear." She squares the ' +
+            'book with the edge of the table. "It\'s nothing you\'ve done. I don\'t know you well enough to hand you a thing like that. If you\'re still ' +
             'aboard in a month, ask me."'),
         choices: [
           {
@@ -157,7 +157,7 @@ CAST.ilsa = {
       get text() {
         const medic = roleHolder('medic'), worn = condition().drive < 60;
         return ('The reactor alarm is a rising note that you feel in the deck before you hear it. The coolant loop has lost pressure, and the board ' +
-            'shows the pile heating faster than the pumps can carry it. Ilsa is already at the shielded door, pulling on gloves. "There is a manual ' +
+            'shows the pile heating faster than the pumps can carry it. Ilsa is already at the shielded door, pulling on gloves. "There\'s a manual ' +
             'scram at the back of the housing," she says. "I know where it is. Nobody else does. Give me three minutes." She says it to the bridge, ' +
             'item by item.')
           + (worn ? ' The drive has been run hard, and a worn plant is a bad plant to go into.' : ' The plant is in good order.')
@@ -170,7 +170,7 @@ CAST.ilsa = {
         { label: 'Send the engineer in with her', ...gated([() => !!roleHolder('engineer'), () => 'There is no engineer aboard.']), run: () => atTheReactor(true) },
         { label: 'Vent the plant and let the ship coast', memory: 'You vented the plant on me.', run() {
           castFlag('ilsa', 'benched'); castLike('ilsa', -3, this.memory); G.state.fuel = Math.round(G.state.fuel * 0.8);
-          return 'You tell her no, and hit the vent. The pile cools, and the ship coasts for two days on what is left of the cells. Ilsa stands at the shielded door with the gloves on and does not say a word. "It is your call," she says at last, and takes the gloves off one finger at a time.';
+          return 'You tell her no, and hit the vent. The pile cools, and the ship coasts for two days on what is left of the cells. Ilsa stands at the shielded door with the gloves on and does not say a word. "It\'s your call," she says at last, and takes the gloves off one finger at a time.';
         } },
       ],
     },
@@ -180,7 +180,7 @@ CAST.ilsa = {
 // The first arrival (captains.js arrivalScene): Ilsa settles up at the foot of the ramp.
 CAST.ilsa.arrival = {
   open: 'Ilsa is at the foot of the ramp with the maintenance board under one arm and the ledger on top of it. She has the page open before you reach her.',
-  memory: '"I have checked it twice, in two pencils," Ilsa says. "I do that with anything I am going to hand to somebody." She slides the page an inch toward you. "It is in your account. The header will say so."',
-  column: '"That column is {cap}\'s," Ilsa says. "I do not touch it, and I do not read it either."',
+  memory: '"I\'ve checked it twice, in two pencils," Ilsa says. "I do that with anything I\'m going to hand to somebody." She slides the page an inch toward you. "It\'s in your account. The header will say so."',
+  column: '"That column is {cap}\'s," Ilsa says. "I don\'t touch it, and I don\'t read it either."',
   pace: '"A season of runs," Ilsa says. "More if the fuel goes up. I keep that in pencil."',
 };

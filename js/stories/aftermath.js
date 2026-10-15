@@ -16,7 +16,7 @@ Mods.register({
     // ---- Distress Call ----
     beat({
       id: 'dc-owner', title: 'The Owner',
-      text: 'The owner, Halden Voss, has recovered enough to be embarrassed. He runs a shipping house out of Luna, he says, and the yacht was a present to himself. "Name your price," he says. "I would rather it were a fair one. I am told I am a poor judge of my own life."',
+      text: 'The owner, Halden Voss, has recovered enough to be embarrassed. He runs a shipping house out of Luna, he says, and the yacht was a present to himself. "Name your price," he says. "I\'d rather it were a fair one. I\'m told I\'m a poor judge of my own life."',
       choices: [
         {
           label: 'Take payment now (3,000 cr)',
@@ -32,7 +32,7 @@ Mods.register({
           later: { 'dc-voss': 14 },
           log: 'Halden Voss owes me a letter. It should be worth more than the cash.'
         },
-          result: 'He writes it on the back of his own business card, in a shaky hand, with a pen borrowed from your galley: "Bearer saved my life. Treat accordingly." He seals it with a thumbprint. "Do not lose it. I will make sure the right people know."'
+          result: 'He writes it on the back of his own business card, in a shaky hand, with a pen borrowed from your galley: "Bearer saved my life. Treat accordingly." He seals it with a thumbprint. "Don\'t lose it. I\'ll make sure the right people know."'
         },
         {
           label: 'Ask for nothing',
@@ -41,7 +41,7 @@ Mods.register({
           later: { 'dc-gift': 10 },
           log: 'Told Halden Voss I wanted nothing. He said he owed me something worse than money.'
         },
-          result: '"Nothing," you say. "Go home." He looks at you and does not answer at once. "Then I owe you something worse than money," he says. "I will think of something."'
+          result: '"Nothing," you say. "Go home." He looks at you and does not answer at once. "Then I owe you something worse than money," he says. "I\'ll think of something."'
         },
       ],
     });
@@ -88,7 +88,7 @@ Mods.register({
         },
           result: 'You accept, and the first payment is in your account before the end of the watch. The second message is just a photograph of the yacht, back on its pad, with a hand-lettered sign on the bow: "Thanks to the ship that stopped."'
         },
-        { label: 'Decline with thanks', effects: { rep: { 'Arcology Compact': 2 } }, result: '"Too kind," you write, "but I did not stop for a contract." His reply is one line, and warm, and by the end of the week it has been passed round the Luna houses.' },
+        { label: 'Decline with thanks', effects: { rep: { 'Arcology Compact': 2 } }, result: '"Too kind," you write, "but I didn\'t stop for a contract." His reply is one line, and warm, and by the end of the week it has been passed round the Luna houses.' },
       ],
     });
     after({
@@ -160,7 +160,7 @@ Mods.register({
     });
     after({
       id: 'pi-gratitude', title: 'A Message from the Pod',
-      text: 'A message arrives, a single line from a stranger: "I am out. I am clean. I am sorry. There is a cache on the rock at the coordinates below, my crew\'s, and nobody left to claim it. Take it." The coordinates are a day off your course. A second line, smaller: "You did not have to."',
+      text: 'A message arrives, a single line from a stranger: "I\'m out. I\'m clean. I\'m sorry. There\'s a cache on the rock at the coordinates below, my crew\'s, and nobody left to claim it. Take it." The coordinates are a day off your course. A second line, smaller: "You didn\'t have to."',
       choices: [
         { label: 'Detour for the cache (costs time)', effects: { delay: 8, credits: 1800, log: 'The pirate kid sent a cache. Took it. Did not feel good, quite.' }, result: 'It is where they said, under a tarp, and it is more than you expected.' },
         { label: 'Let it lie', effects: { rep: { 'Charter League': 1 } }, result: 'You leave it where it is. The kid will hear about it, eventually, the way these things get around the Belt, and it will count for something.' },
@@ -168,7 +168,7 @@ Mods.register({
     });
     after({
       id: 'pi-vendetta', title: 'Blood Money',
-      text: 'A hail, level and quiet, from a ship that is not close enough to shoot. "You left Dari in the dark. Dari was my cousin." A pause. "I am not asking for anything you cannot afford. I am asking you to think about it."',
+      text: 'A hail, level and quiet, from a ship that is not close enough to shoot. "You left Dari in the dark. Dari was my cousin." A pause. "I\'m not asking for anything you can\'t afford. I\'m asking you to think about it."',
       choices: [
         {
           label: 'Send them 1,000 cr',
@@ -178,14 +178,14 @@ Mods.register({
           rep: { 'Charter League': 1 },
           log: 'Paid blood money for a pirate I left in a pod.'
         },
-          result: 'You send it, and the line goes quiet, and then it says, "That is not forgiveness." "No," you say. "I know." It is enough, and the ship turns away.'
+          result: 'You send it, and the line goes quiet, and then it says, "That\'s not forgiveness." "No," you say. "I know." It is enough, and the ship turns away.'
         },
         { label: 'Tell them to try it', effects: { do: ['hull', 0.2] }, result: '"Noted," says the voice, and a few hours later a ship you did not see lights its drive, and rakes your hull in one clean pass.' },
       ],
     });
     after({
       id: 'pi-subscription', title: 'The Subscription',
-      text: 'A hail from a ship you know. "Hoser. We have been thinking about you, and how much it must worry you out here, alone. We have a service. Protection. Five hundred credits, and nobody in this stretch of the lane will trouble you for forty days. Cheap, for what it covers."',
+      text: 'A hail from a ship you know. "Hoser. We\'ve been thinking about you, and how much it must worry you out here, alone. We have a service. Protection. Five hundred credits, and nobody in this stretch of the lane will trouble you for forty days. Cheap, for what it covers."',
       choices: [
         {
           label: 'Pay (500 cr)',
@@ -202,7 +202,7 @@ Mods.register({
     });
     after({
       id: 'pi-brother', title: 'Brother',
-      text: 'A hail, warm and amused, from the crew whose transponder you faked. "Brother!" says the voice. "We have been looking for you. Nobody told us we had a new cousin. We need a hand with a parcel, nothing dirty, just heavy, and we pay in cash."',
+      text: 'A hail, warm and amused, from the crew whose transponder you faked. "Brother!" says the voice. "We\'ve been looking for you. Nobody told us we had a new cousin. We need a hand with a parcel, nothing dirty, just heavy, and we pay in cash."',
       choices: [
         {
           label: 'Run the parcel (900 cr)',
@@ -279,7 +279,7 @@ Mods.register({
     // ---- Stowaway ----
     beat({
       id: 'st-where', title: 'Where To?', via: 'crew',
-      text: 'The kid has eaten two bowls of stew and is sitting very straight at the galley table. "I should tell you where I am going," they say. "I have an aunt on Ceres, in the Warren, with a laundry. She does not know I am coming. She will be furious. She will be glad."',
+      text: 'The kid has eaten two bowls of stew and is sitting very straight at the galley table. "I should tell you where I\'m going," they say. "I have an aunt on Ceres, in the Warren, with a laundry. She doesn\'t know I\'m coming. She\'ll be furious. She\'ll be glad."',
       choices: [
         { label: 'Drop them at the next port', result: 'They say all right, quickly. They shake your hand, hard, and are gone at the first dock, with the rucksack, into the crowd.' },
         {
@@ -295,7 +295,7 @@ Mods.register({
     });
     after({
       id: 'st-thanks', title: 'A Laundry Parcel', via: 'crew',
-      text: 'A parcel arrives by the next courier: a shirt, ironed so sharply it could cut, and a note in two handwritings: "From the aunt, who says you are an idiot, and from me, who says thank you." Folded in the shirt is a roll of notes, rather more than the passage ever was.',
+      text: 'A parcel arrives by the next courier: a shirt, ironed so sharply it could cut, and a note in two handwritings: "From the aunt, who says you\'re an idiot, and from me, who says thank you." Folded in the shirt is a roll of notes, rather more than the passage ever was.',
       choices: [{
         label: 'Keep the shirt, and the notes',
         effects: {
@@ -308,7 +308,7 @@ Mods.register({
     });
     after({
       id: 'st-tip', title: 'What the Broom Heard', via: 'crew',
-      text: 'A message from the kid, scrawled and enthusiastic: "I told you I know things. There is something going on at the port office, a price, a ship, a thing that is going to be worth money. Go early." It is vague.',
+      text: 'A message from the kid, scrawled and enthusiastic: "I told you I know things. There\'s something going on at the port office, a price, a ship, a thing that\'s going to be worth money. Go early." It is vague.',
       choices: [
         { label: 'Act on it', effects: { credits: 600, news: 'A rich cargo run is quietly about to be posted at the port office.' }, result: 'You are early, and the right person is late, and a short conversation in a corridor does, in the end, pay for itself.' },
         { label: 'Ignore it', result: 'You ignore it. A week later somebody else does not, and, at the dock, someone mentions, in passing, what they made. You do not look at the galley.' },
