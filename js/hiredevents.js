@@ -125,7 +125,7 @@ const HAND_EVENTS = [
         },
         {
           label: 'Not tonight',
-          effects: { remember: 'cover', later: { 'h-cover-cold': 5 }, log: 'Would not cover for {thread:cover}.', mateLike: { n: -1, memory: 'You would not cover an hour of my watch.' } },
+          effects: { remember: 'cover', later: { 'h-cover-cold': 5 }, log: 'Would not cover for {thread:cover}.', mateLike: { n: -1, memory: 'You wouldn\'t cover an hour of my watch.' } },
           result: '{mate} says it is fine. For a day or two {mate} takes the other end of the galley table.',
         },
       ],
@@ -163,7 +163,7 @@ const HAND_EVENTS = [
       choices: [
         {
           label: 'Read her the numbers',
-          effects: { castLike: { who: 'ines', n: 1, memory: 'You read me the numbers on a hard approach and did not try to be clever.' }, learn: 3 },
+          effects: { castLike: { who: 'ines', n: 1, memory: 'You read me the numbers on a hard approach and didn\'t try to be clever.' }, learn: 3 },
           result: 'You read her the numbers one by one, plainly, and she flies them, and the ship settles onto the line. "Good," says Ines.',
         },
         {
@@ -179,7 +179,7 @@ const HAND_EVENTS = [
           label: '[Pilot 3] Ask to fly the last leg',
           post: 'pilot',
           skill: 3,
-          effects: { castFlag: { who: 'ines', flag: 'trusted' }, castLike: { who: 'ines', n: 3, memory: 'You flew the last leg of a hard approach with me beside you, and I did not touch the controls.' }, learn: 3 },
+          effects: { castFlag: { who: 'ines', flag: 'trusted' }, castLike: { who: 'ines', n: 3, memory: 'You flew the last leg of a hard approach with me beside you, and I didn\'t touch the controls.' }, learn: 3 },
           result: '"Your line," Ines says, and takes her hands off. You fly the last leg with her reading the sheet beside you and saying nothing. The ship ' +
             'comes onto the pad. She signs the log under your name. "Don\'t tell the captain," she says. "Tell everyone else."',
         },
@@ -216,13 +216,13 @@ const HAND_EVENTS = [
           label: '[Engineer 3] Ask to take the other end of the loop',
           post: 'engineer',
           skill: 3,
-          effects: { castFlag: { who: 'tomas', flag: 'trusted' }, castLike: { who: 'tomas', n: 3, memory: 'You took the other end of the loop with me and did not need to be told.' }, learn: 3 },
+          effects: { castFlag: { who: 'tomas', flag: 'trusted' }, castLike: { who: 'tomas', n: 3, memory: 'You took the other end of the loop with me and didn\'t need to be told.' }, learn: 3 },
           result: 'Tomas hands you the wrench. You take the second pump out of the loop while he holds the light, and put it back, and he checks nothing. ' +
             '"Twenty years," he says, "and I\'ve never let anyone take the second pump." He pours the second cup.',
         },
         {
           label: 'Say you have work to do',
-          effects: { castLike: { who: 'tomas', n: 0, memory: 'You had work to do and did not stay.' } },
+          effects: { castLike: { who: 'tomas', n: 0, memory: 'You had work to do and didn\'t stay.' } },
           result: '"Of course," he says, and caps the flask, and turns back to the loop.',
         },
       ],
@@ -237,7 +237,7 @@ const HAND_EVENTS = [
       choices: [
         {
           label: 'Take the other console',
-          effects: { castLike: { who: 'yelena', n: 1, memory: 'You took the other console on the range and did not sulk about losing.' }, learn: 3 },
+          effects: { castLike: { who: 'yelena', n: 1, memory: 'You took the other console on the range and didn\'t sulk about losing.' }, learn: 3 },
           result: 'You take the other console, and she beats you soundly, and then shows you how: where to look, and when. You lose four rounds in a row. By ' +
             'the fifth you are less bad.',
         },
@@ -260,7 +260,7 @@ const HAND_EVENTS = [
         },
         {
           label: 'Say your knee is bad too',
-          effects: { castLike: { who: 'yelena', n: 0, memory: 'You said you would sit out the range.' } },
+          effects: { castLike: { who: 'yelena', n: 0, memory: 'You said you\'d sit out the range.' } },
           result: '"You don\'t have a bad knee," Yelena says. "You have a bench." But she lets it go, with a snort, and sets the sim back to something kinder for whoever comes next.',
         },
       ],
@@ -275,7 +275,7 @@ const HAND_EVENTS = [
       choices: [
         {
           label: 'Help him sort',
-          effects: { castLike: { who: 'ruben', n: 1, memory: 'You helped me sort the intercepts and did not mind the stories.' }, learn: 2 },
+          effects: { castLike: { who: 'ruben', n: 1, memory: 'You helped me sort the intercepts and didn\'t mind the stories.' }, learn: 2 },
           result: 'You sort, and he talks, and by the end of the stack you have learned which dome is short of what, who is lying about it, and a good deal ' +
             'about how to listen to a lane.',
         },

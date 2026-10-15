@@ -432,7 +432,7 @@ const PEOPLE_LINES = {
     'c0.result': '{first} opens their mouth and nothing comes out. Then they say, low, "Fifteen hundred. Every credit, with interest, if it takes the rest of my life." They do not sit down until you have.',
     'c1.label': 'Tell the collectors to get lost',
     'c1.result': 'They threaten legal action at length and cut the channel. Nothing comes of it. {first} looks at you across the galley. Later there is a cup of tea at your elbow that you did not ask for.',
-    'c0.result.memory': 'You paid off my debt. I will pay you back.',
+    'c0.result.memory': 'You paid off my debt. I\'ll pay you back.',
     'c1.result.memory': 'You stood up to my collectors.',
   },
   'people:pax:job': {
@@ -446,7 +446,7 @@ const PEOPLE_LINES = {
     'c2.result': 'They say all right and go back to their bunk. For the rest of the trip you can hear them through the bulkhead, running their answers again and again. You never learn whether they made the interview.',
     'c0.result.memory': 'You got me to my interview on time.',
     'c1.result.memory': 'You got me to my interview on time.',
-    'c2.result.memory': 'You would not hurry for my interview.',
+    'c2.result.memory': 'You wouldn\'t hurry for my interview.',
   },
   'people:pax:research': {
     title: 'Sample Opportunity',
@@ -456,7 +456,7 @@ const PEOPLE_LINES = {
     'c1.label': 'Stay on course',
     'c1.result': 'They watch it slide past the window, a pale point in the dark, and stay at the glass until it is gone. Later you see them write something in the notebook: the date, and a line you cannot read. They are polite for the rest of the trip. When they disembark they leave a folded drawing on the galley table, of a rock, and a ship, and a long distance.',
     'c0.result.memory': 'You made a detour for my research.',
-    'c1.result.memory': 'You would not stop for my research.',
+    'c1.result.memory': 'You wouldn\'t stop for my research.',
   },
   'people:pax:pilgrim': {
     title: 'A Request for Stillness',
@@ -525,7 +525,7 @@ const PEOPLE_LINES = {
     'c0.result': 'You take the notes, and sit at the long table with the crew, elbow to elbow, passing dishes. It is the best meal the ship has had in months, and for an hour nobody talks about anything else. Somebody starts to sing, and the table joins in.',
     'c1.label': 'Refuse the money, keep the dinner',
     'c1.result': '{first} cannot speak for a moment. They take your hand in both of theirs, and then they write out the recipe on a napkin, every step, with a sketch of the pot. You will cook it, badly, for years.',
-    'c1.result.memory': 'You would not take my money.',
+    'c1.result.memory': 'You wouldn\'t take my money.',
   },
   'people:pax:rude': {
     title: 'Complaints',
@@ -689,7 +689,7 @@ const PEOPLE_LINES = {
   'bar:quiet': {
     label: 'Sit with {first} and say nothing',
     gate: 'You have done that already tonight.',
-    'memory': 'The captain sat with me and did not make me talk.',
+    'memory': 'The captain sat with me and didn\'t make me talk.',
   },
   'bar:goal': {
     gate: 'You have done that already tonight.',

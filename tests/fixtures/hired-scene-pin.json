@@ -78,7 +78,7 @@
   "changes": [
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
-   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: I told you about the landing, and you did not look at me differently.",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: I told you about the landing, and you didn't look at me differently.",
    "s.people.c:ines.opinion: 0 -> 1"
   ],
   "next": null,
@@ -296,7 +296,7 @@
   "changes": [
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
-   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You said a reference was not your place.",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You said a reference wasn't your place.",
    "s.people.c:ines.opinion: 0 -> -1"
   ],
   "next": null,
@@ -368,7 +368,7 @@
   "changes": [
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
-   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You would not promise a command, but you listened.",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You wouldn't promise a command, but you listened.",
    "s.people.c:ines.opinion: 0 -> 1"
   ],
   "next": null,
@@ -691,7 +691,7 @@
   "changes": [
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
-   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You could not spare two hundred credits.",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You couldn't spare two hundred credits.",
    "s.people.c:tomas.opinion: 0 -> -1"
   ],
   "next": null,
@@ -729,7 +729,7 @@
    "s.hired.skill.engineer: undefined -> 3",
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
-   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You asked me how I would rebuild her, and listened.",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You asked me how I'd rebuild her, and listened.",
    "s.people.c:tomas.opinion: 0 -> 2",
    "s.people.c:tomas.xp.engineer: 110 -> 112"
   ],
@@ -767,7 +767,7 @@
    "s.cast.tomas.flags.plan: undefined -> true",
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
-   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You asked me to write the plan down, so it would last.",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You asked me to write the plan down, so it'd last.",
    "s.people.c:tomas.opinion: 0 -> 2"
   ],
   "next": null,
@@ -839,7 +839,7 @@
    "s.cast.tomas.flags.promised: undefined -> true",
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
-   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You said you would try to keep the crew together.",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You said you'd try to keep the crew together.",
    "s.people.c:tomas.opinion: 0 -> 2"
   ],
   "next": null,
@@ -1341,7 +1341,7 @@
   "changes": [
    "s.people.c:yelena.liftedAt: undefined -> 1",
    "s.people.c:yelena.memories: [] -> undefined",
-   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You would not promise a ship, but you listened.",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You wouldn't promise a ship, but you listened.",
    "s.people.c:yelena.opinion: 0 -> 1"
   ],
   "next": null,
@@ -1713,7 +1713,7 @@
   "changes": [
    "s.people.c:ruben.liftedAt: undefined -> 1",
    "s.people.c:ruben.memories: [] -> undefined",
-   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You asked me to keep an ear on what is said about the ship.",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You asked me to keep an ear on what's said about the ship.",
    "s.people.c:ruben.opinion: 0 -> 2",
    "s.people.c:ruben.xp.slicer: 110 -> 112"
   ],
@@ -1819,7 +1819,7 @@
   "changes": [
    "s.people.c:ruben.liftedAt: undefined -> 1",
    "s.people.c:ruben.memories: [] -> undefined",
-   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You would not promise, but you listened.",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You wouldn't promise, but you listened.",
    "s.people.c:ruben.opinion: 0 -> 1"
   ],
   "next": null,
@@ -2144,7 +2144,7 @@
   "changes": [
    "s.people.c:bexa.liftedAt: undefined -> 1",
    "s.people.c:bexa.memories: [] -> undefined",
-   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You would not let me look at the wreck.",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You wouldn't let me look at the wreck.",
    "s.people.c:bexa.opinion: 0 -> -1"
   ],
   "next": null,
@@ -2287,7 +2287,7 @@
   "changes": [
    "s.people.c:bexa.liftedAt: undefined -> 1",
    "s.people.c:bexa.memories: [] -> undefined",
-   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You would not promise, but you listened.",
+   "s.people.c:bexa.memories.0: undefined -> 9 Jun 2214: You wouldn't promise, but you listened.",
    "s.people.c:bexa.opinion: 0 -> 1"
   ],
   "next": null,
@@ -2502,7 +2502,7 @@
   "changes": [
    "s.people.c:pax.liftedAt: undefined -> 1",
    "s.people.c:pax.memories: [] -> undefined",
-   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You told me the truth about what it is like when it is real.",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You told me the truth about what it's like when it's real.",
    "s.people.c:pax.opinion: 0 -> 2",
    "s.people.c:pax.xp.gunner: 110 -> 112"
   ],
@@ -2750,7 +2750,7 @@
   "changes": [
    "s.people.c:pax.liftedAt: undefined -> 1",
    "s.people.c:pax.memories: [] -> undefined",
-   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You would not promise a ship, but you listened.",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You wouldn't promise a ship, but you listened.",
    "s.people.c:pax.opinion: 0 -> 1"
   ],
   "next": null,
@@ -3003,7 +3003,7 @@
   "changes": [
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
-   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You said it was not stupid, but a long way off.",
+   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You said it wasn't stupid, but a long way off.",
    "s.people.c:cato.opinion: 0 -> 1"
   ],
   "next": null,
@@ -3153,7 +3153,7 @@
   "changes": [
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
-   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You said it was not yours to carry.",
+   "s.people.c:cato.memories.0: undefined -> 9 Jun 2214: You said it wasn't yours to carry.",
    "s.people.c:cato.opinion: 0 -> 1"
   ],
   "next": null,
@@ -3801,7 +3801,7 @@
   "changes": [
    "s.people.c:pilar.liftedAt: undefined -> 1",
    "s.people.c:pilar.memories: [] -> undefined",
-   "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You said you would keep my approach to yourself.",
+   "s.people.c:pilar.memories.0: undefined -> 9 Jun 2214: You said you'd keep my approach to yourself.",
    "s.people.c:pilar.opinion: 0 -> 1"
   ],
   "next": null,
@@ -4278,7 +4278,7 @@
    "s.cast.ansel.flags.annuity: undefined -> true",
    "s.people.c:ansel.liftedAt: undefined -> 1",
    "s.people.c:ansel.memories: [] -> undefined",
-   "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You said my ambition was not small.",
+   "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You said my ambition wasn't small.",
    "s.people.c:ansel.opinion: 0 -> 2"
   ],
   "next": null,
@@ -4463,7 +4463,7 @@
    "s.cast.ansel.flags.told: undefined -> true",
    "s.people.c:ansel.liftedAt: undefined -> 1",
    "s.people.c:ansel.memories: [] -> undefined",
-   "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You said you would stop her if you could.",
+   "s.people.c:ansel.memories.0: undefined -> 9 Jun 2214: You said you'd stop her if you could.",
    "s.people.c:ansel.opinion: 0 -> 2"
   ],
   "next": null,
@@ -5417,7 +5417,7 @@
   "changes": [
    "s.people.c:pax.liftedAt: undefined -> 1",
    "s.people.c:pax.memories: [] -> undefined",
-   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You played the stranger so that I did not have to.",
+   "s.people.c:pax.memories.0: undefined -> 9 Jun 2214: You played the stranger so that I didn't have to.",
    "s.people.c:pax.opinion: 0 -> 1"
   ],
   "next": null,
@@ -5560,7 +5560,7 @@
   "result": "\"It's not,\" she says. \"Thank you for knowing it.\" She turns the notebook round and goes on with the figures, and you go back to your watch. The payment is made on the first. You never learn how.",
   "changes": [
    "s.people.p1.memories: [] -> undefined",
-   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said it was not your place to lend."
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said it wasn't your place to lend."
   ],
   "next": null,
   "gate": {
@@ -5595,7 +5595,7 @@
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
-   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you would keep the bank to yourself.",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you'd keep the bank to yourself.",
    "s.people.p1.opinion: 0 -> 2"
   ],
   "next": null,
@@ -5631,7 +5631,7 @@
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
-   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You asked how much I owed, and did not flinch.",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You asked how much I owed, and didn't flinch.",
    "s.people.p1.opinion: 0 -> 1"
   ],
   "next": null,
@@ -5668,7 +5668,7 @@
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
-   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you had not read the bank's letter, and you had.",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you hadn't read the bank's letter, and you had.",
    "s.people.p1.opinion: 0 -> -2"
   ],
   "next": null,
@@ -5950,7 +5950,7 @@
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
-   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you would say nothing about the book.",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you'd say nothing about the book.",
    "s.people.p1.opinion: 0 -> 2"
   ],
   "next": null,
@@ -6163,7 +6163,7 @@
    "s.people.c:pilar.opinion: 0 -> 3",
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
-   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you filed the renewal at the wrong office, and I do not think you did.",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you filed the renewal at the wrong office, and I don't think you did.",
    "s.people.p1.opinion: 0 -> -1"
   ],
   "next": null,
@@ -6347,7 +6347,7 @@
    "s.hired.flags.secretAngry: undefined -> true",
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.memories: [] -> undefined",
-   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you would not mention the record."
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you wouldn't mention the record."
   ],
   "next": null,
   "gate": {
@@ -6593,7 +6593,7 @@
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
-   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you would stay till the debts were done.",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You said you'd stay till the debts were done.",
    "s.people.p1.opinion: 0 -> 3"
   ],
   "next": null,
@@ -7255,7 +7255,7 @@
    "s.journal.0.text: undefined -> Would not stand an extra watch for Captain Vance.",
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
-   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You would not stand an extra watch.",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You wouldn't stand an extra watch.",
    "s.people.p1.opinion: 0 -> -1",
    "s.qualities.due:h-favour-cold: undefined -> 6"
   ],
@@ -7333,7 +7333,7 @@
    "s.journal.0.text: undefined -> Would not cover for Priya.",
    "s.people.p7.liftedAt: undefined -> 1",
    "s.people.p7.memories: [] -> undefined",
-   "s.people.p7.memories.0: undefined -> 9 Jun 2214: You would not cover an hour of my watch.",
+   "s.people.p7.memories.0: undefined -> 9 Jun 2214: You wouldn't cover an hour of my watch.",
    "s.people.p7.opinion: 0 -> -1",
    "s.qualities.due:h-cover-cold: undefined -> 6",
    "s.threads.cover: undefined -> p7"
@@ -7554,7 +7554,7 @@
    "s.hired.skill.gunner: 12 -> 15",
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
-   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You read me the numbers on a hard approach and did not try to be clever.",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You read me the numbers on a hard approach and didn't try to be clever.",
    "s.people.c:ines.opinion: 0 -> 1"
   ],
   "next": null,
@@ -7628,7 +7628,7 @@
    "s.hired.skill.gunner: 12 -> 15",
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
-   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You flew the last leg of a hard approach with me beside you, and I did not touch the controls.",
+   "s.people.c:ines.memories.0: undefined -> 9 Jun 2214: You flew the last leg of a hard approach with me beside you, and I didn't touch the controls.",
    "s.people.c:ines.opinion: 0 -> 3"
   ],
   "next": null,
@@ -7771,7 +7771,7 @@
    "s.hired.skill.gunner: 12 -> 15",
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
-   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You took the other end of the loop with me and did not need to be told.",
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You took the other end of the loop with me and didn't need to be told.",
    "s.people.c:tomas.opinion: 0 -> 3"
   ],
   "next": null,
@@ -7805,7 +7805,7 @@
   "result": "\"Of course,\" he says, and caps the flask, and turns back to the loop.",
   "changes": [
    "s.people.c:tomas.memories: [] -> undefined",
-   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You had work to do and did not stay."
+   "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You had work to do and didn't stay."
   ],
   "next": null,
   "gate": {
@@ -7840,7 +7840,7 @@
    "s.hired.skill.gunner: 12 -> 15",
    "s.people.c:yelena.liftedAt: undefined -> 1",
    "s.people.c:yelena.memories: [] -> undefined",
-   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You took the other console on the range and did not sulk about losing.",
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You took the other console on the range and didn't sulk about losing.",
    "s.people.c:yelena.opinion: 0 -> 1"
   ],
   "next": null,
@@ -7948,7 +7948,7 @@
   "result": "\"You don't have a bad knee,\" Yelena says. \"You have a bench.\" But she lets it go, with a snort, and sets the sim back to something kinder for whoever comes next.",
   "changes": [
    "s.people.c:yelena.memories: [] -> undefined",
-   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You said you would sit out the range."
+   "s.people.c:yelena.memories.0: undefined -> 9 Jun 2214: You said you'd sit out the range."
   ],
   "next": null,
   "gate": {
@@ -7983,7 +7983,7 @@
    "s.hired.skill.gunner: 12 -> 14",
    "s.people.c:ruben.liftedAt: undefined -> 1",
    "s.people.c:ruben.memories: [] -> undefined",
-   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You helped me sort the intercepts and did not mind the stories.",
+   "s.people.c:ruben.memories.0: undefined -> 9 Jun 2214: You helped me sort the intercepts and didn't mind the stories.",
    "s.people.c:ruben.opinion: 0 -> 1"
   ],
   "next": null,
@@ -8477,7 +8477,7 @@
   "changes": [
    "s.people.p7.liftedAt: undefined -> 1",
    "s.people.p7.memories: [] -> undefined",
-   "s.people.p7.memories.0: undefined -> 9 Jun 2214: You would not lend me anything.",
+   "s.people.p7.memories.0: undefined -> 9 Jun 2214: You wouldn't lend me anything.",
    "s.people.p7.opinion: 0 -> -1"
   ],
   "next": null,
@@ -8768,7 +8768,7 @@
    "s.journal.0.text: undefined -> Read a drive signature off something on the lane.",
    "s.people.p1.liftedAt: undefined -> 1",
    "s.people.p1.memories: [] -> undefined",
-   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You read a drive signature that did not match its hull.",
+   "s.people.p1.memories.0: undefined -> 9 Jun 2214: You read a drive signature that didn't match its hull.",
    "s.people.p1.opinion: 0 -> 2",
    "s.qualities.due:h-lane-again: undefined -> 10"
   ],

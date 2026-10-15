@@ -102,7 +102,7 @@ CAST.cato = {
         },
         {
           label: 'Say it is not stupid, but it is a long way off',
-          effects: { castLike: { who: 'cato', n: 1, memory: 'You said it was not stupid, but a long way off.' } },
+          effects: { castLike: { who: 'cato', n: 1, memory: 'You said it wasn\'t stupid, but a long way off.' } },
           result: '"It is," he says. "It\'s a long way off every day, and then it\'s one day nearer." He puts a hand on the lashing.',
         },
       ],
@@ -143,7 +143,7 @@ CAST.cato = {
         },
         {
           label: 'Tell him it is not yours to carry',
-          effects: { castLike: { who: 'cato', n: 1, memory: 'You said it was not yours to carry.' } },
+          effects: { castLike: { who: 'cato', n: 1, memory: 'You said it wasn\'t yours to carry.' } },
           result: '"No," he says. "It\'s not." He squares the watch bill on the table. "I wanted somebody to hear it said, that\'s all. It\'s a lot to carry in the hold."',
         },
       ],

@@ -84,7 +84,7 @@ CAPTAINS.hester = {
         },
         {
           label: 'Tell her it is not your place',
-          effects: { captainLike: { n: 0, memory: 'You said it was not your place to lend.' } },
+          effects: { captainLike: { n: 0, memory: 'You said it wasn\'t your place to lend.' } },
           result: '"It\'s not," she says. "Thank you for knowing it." She turns the notebook round and goes on with the figures, and you go back to your watch. The payment is made on the first. You never learn how.',
         },
       ],
@@ -102,12 +102,12 @@ CAPTAINS.hester = {
         choices: [
           {
             label: 'Say you will keep it to yourself',
-            effects: { captainLike: { n: 2, memory: 'You said you would keep the bank to yourself.' }, captainFlag: 'secretKnown' },
+            effects: { captainLike: { n: 2, memory: 'You said you\'d keep the bank to yourself.' }, captainFlag: 'secretKnown' },
             result: 'You say you will. She nods, and closes the notebook, and holds it a moment with both hands. "Thank you," she says. It is the first time you have heard her say it without a number after it.',
           },
           {
             label: 'Ask how much she still owes',
-            effects: { captainLike: { n: 1, memory: 'You asked how much I owed, and did not flinch.' }, captainFlag: 'secretKnown' },
+            effects: { captainLike: { n: 1, memory: 'You asked how much I owed, and didn\'t flinch.' }, captainFlag: 'secretKnown' },
             result: '"Thirty-eight thousand, and some of it\'s interest," she says, and does not hesitate. "Eleven good runs, if the market holds. I\'ve counted it a good many times."',
           },
         ],
@@ -123,7 +123,7 @@ CAPTAINS.hester = {
         choices: [
           {
             label: 'Say you did not read it',
-            effects: { captainLike: { n: -2, memory: 'You said you had not read the bank\'s letter, and you had.' }, captainFlag: ['secretKnown', 'secretAngry'] },
+            effects: { captainLike: { n: -2, memory: 'You said you hadn\'t read the bank\'s letter, and you had.' }, captainFlag: ['secretKnown', 'secretAngry'] },
             result: '"The tin was open and the letter was face up," she says. "You read it, and you\'ve told me you didn\'t, and I\'ll remember both." She takes the letter, and puts it in her breast pocket, and goes out.',
           },
           {

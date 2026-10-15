@@ -103,7 +103,7 @@ CAPTAINS.zoya = {
           },
           {
             label: 'Say you will stay till it is done',
-            effects: { captainLike: { n: 3, memory: 'You said you would stay till the debts were done.' }, captainFlag: 'secretKnown' },
+            effects: { captainLike: { n: 3, memory: 'You said you\'d stay till the debts were done.' }, captainFlag: 'secretKnown' },
             result: '"Till it\'s done," she says, and for once she is not whistling, and not smiling. "That\'s a promise with no end date. I\'ll hold you to it, and I\'ll let you off it, both. Don\'t tell me which."',
           },
         ],
