@@ -35,7 +35,7 @@ function worldOf(sid) {
 const danger = sid => worldOf(sid).unrest;
 // What is reported when pirates flare up around a system, one line drawn at random ('lines:world-flares').
 const FLARE_NEWS = [
-  'Pirate raids reported around {system}. Shipping there is thinning out.',
+  'Pirate raids reported around {system}. Shipping there\'s thinning out.',
   'A string of pirate attacks near {system} has haulers taking the long way round.',
   'Insurance rates around {system} have doubled after a run of raids, and some captains are refusing the lane.',
   'Pirate raiders are reported at {system}: two freighters missing, and the navy is "looking into it".',

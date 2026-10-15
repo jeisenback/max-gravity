@@ -21,17 +21,17 @@ const TREAT = {
 const sideWorkDone = () => !!(G.barState && G.barState.worked);
 
 const SIDE_WORK = {
-  odd: { label: 'Odd jobs for the bartender (about 50 cr)', ...gated(notYet(sideWorkDone, 'You have done a side job tonight already.')),
+  odd: { label: 'Odd jobs for the bartender (about 50 cr)', ...gated(notYet(sideWorkDone, 'You\'ve done a side job tonight already.')),
     run() { G.barState.worked = true; const n = randInt(4, 6) * 10; G.state.credits += n; return `You haul crates, change a keg and mop the back, and the bartender counts ${fmt(n)} cr into your hand without looking up.`; } },
-  dock: { label: () => `A dock gig at your post (${60 + 40 * skillLevel(hired().post)} cr, and you learn a little)`, ...gated(notYet(sideWorkDone, 'You have done a side job tonight already.')),
+  dock: { label: () => `A dock gig at your post (${60 + 40 * skillLevel(hired().post)} cr, and you learn a little)`, ...gated(notYet(sideWorkDone, 'You\'ve done a side job tonight already.')),
     run() { const h = hired(), n = 60 + 40 * skillLevel(h.post); G.barState.worked = true; G.state.credits += n; gainSkill(h.post, 2); return (
-        `A dock boss who needs a ${POSTS[h.post].name.toLowerCase()} for a shift finds you at the bar. It is dull and well paid: ${fmt(n)} cr, and ` +
+        `A dock boss who needs a ${POSTS[h.post].name.toLowerCase()} for a shift finds you at the bar. It's dull and well paid: ${fmt(n)} cr, and ` +
         `two more points of experience at the ${POSTS[h.post].name.toLowerCase()} post.`); } },
-  cards: { label: `Sit in on a card game (${CARD_STAKE} cr stake)`, ...gated(needCr(CARD_STAKE), notYet(() => G.barState.played, 'You have played already tonight.')),
+  cards: { label: `Sit in on a card game (${CARD_STAKE} cr stake)`, ...gated(needCr(CARD_STAKE), notYet(() => G.barState.played, 'You\'ve played already tonight.')),
     run() {
       const st = G.state; G.barState.played = true;
       if (Math.random() < 0.5) { st.credits += CARD_STAKE; return `The cards fall your way, three hands out of five, and you leave the table ${fmt(CARD_STAKE)} cr up and not entirely sure how.`; }
-      st.credits -= CARD_STAKE; return `The cards do not fall your way. You lose ${fmt(CARD_STAKE)} cr in four hands, and an older player tells you, kindly, that it is a cheap lesson.`;
+      st.credits -= CARD_STAKE; return `The cards don't fall your way. You lose ${fmt(CARD_STAKE)} cr in four hands, and an older player tells you, kindly, that it's a cheap lesson.`;
     } },
 };
 const sideLabel = k => typeof SIDE_WORK[k].label === 'function' ? SIDE_WORK[k].label() : SIDE_WORK[k].label;

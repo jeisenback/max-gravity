@@ -9,36 +9,36 @@
 const HAIL_RANGE = 3000;
 
 const GREETINGS = {
-  talkative: ['Well, hello there! Always nice to hear a new voice out here.', 'Oh, a visitor! Do you know, you are the first ship I have talked to in three days, and I have so much to tell you.', 'Ah, company! Hold on, let me put the kettle on. No, go ahead, I can hear you.'],
-  nervous: ['Uh, this is {ship}. We are just passing through. Please.', 'Oh. Oh, hello. We were not, um, expecting anyone. We are not carrying anything. Anything valuable.', 'This is {ship}. We mean no harm. Please do not, um. We mean no harm.'],
-  rude: ['What do you want?', 'This is a working channel. Say what you need, and be brief about it.', 'You are cutting into my burn. Talk, or get off the band.'],
-  kind: ['Good to hear from you, friend. Safe burns.', 'Hello, hello! It is a lonely lane, and a friendly voice is a gift. How can we help?', 'This is {ship}. We are glad to see you. Are you all right out there?'],
-  greedy: ['Time is money, captain. Make it quick.', 'Every minute on this channel costs me something. State your business, and name your price.', 'This is {ship}. I am always open to a profitable conversation. Is this one?'],
+  talkative: ['Well, hello there! Always nice to hear a new voice out here.', 'Oh, a visitor! Do you know, you\'re the first ship I\'ve talked to in three days, and I have so much to tell you.', 'Ah, company! Hold on, let me put the kettle on. No, go ahead, I can hear you.'],
+  nervous: ['Uh, this is {ship}. We\'re just passing through. Please.', 'Oh. Oh, hello. We weren\'t, um, expecting anyone. We\'re not carrying anything. Anything valuable.', 'This is {ship}. We mean no harm. Please don\'t, um. We mean no harm.'],
+  rude: ['What do you want?', 'This is a working channel. Say what you need, and be brief about it.', 'You\'re cutting into my burn. Talk, or get off the band.'],
+  kind: ['Good to hear from you, friend. Safe burns.', 'Hello, hello! It\'s a lonely lane, and a friendly voice is a gift. How can we help?', 'This is {ship}. We\'re glad to see you. Are you all right out there?'],
+  greedy: ['Time is money, captain. Make it quick.', 'Every minute on this channel costs me something. State your business, and name your price.', 'This is {ship}. I\'m always open to a profitable conversation. Is this one?'],
   pious: ['Peace on your burn, traveler.', 'Blessings on your ship and all who fly in her. What brings you to our band?', 'May the long dark be kind to you, friend. How may we serve?'],
-  curious: ['Oh, a {yours}! What are you hauling?', 'Hello! Is that a {yours}? I have always wondered how they handle. Tell me everything!', 'This is {ship}, and I have a hundred questions. Do you have a minute?'],
-  drunk: ['Heyyy. Who is this? Who is anybody?', 'Hello, hello, who is this, hold on, hold on, I know this one.', 'This is, uh, this is the good ship {ship}. I think. Say again?'],
-  secretive: ['...This is {ship}. State your business.', 'Go ahead. And, before you ask, no.', 'You have reached {ship}. Keep it short, and keep it vague.'],
-  generous: ['Hello there! Need anything?', 'Well, hello! There is always room on the band for a friend. What can we do for you?', 'This is {ship}. If you are in any trouble at all, say so, and we will see what we can do.'],
-  brave: ['This is {ship}. Go ahead.', 'This is {ship}. Whatever it is, we are listening, and we are not afraid.', 'Go ahead, stranger. We are all ears, and our guns are all business.'],
-  homesick: ['This is {ship}, out of {home}. Go ahead.', 'Hello. This is {ship}. We have not heard a friendly voice from {home} in a long while. Are you from around there?', 'This is {ship}, out of {home}, a long way from it. It is good to hear someone.'],
+  curious: ['Oh, a {yours}! What are you hauling?', 'Hello! Is that a {yours}? I\'ve always wondered how they handle. Tell me everything!', 'This is {ship}, and I have a hundred questions. Do you have a minute?'],
+  drunk: ['Heyyy. Who\'s this? Who\'s anybody?', 'Hello, hello, who\'s this, hold on, hold on, I know this one.', 'This is, uh, this is the good ship {ship}. I think. Say again?'],
+  secretive: ['...This is {ship}. State your business.', 'Go ahead. And, before you ask, no.', 'You\'ve reached {ship}. Keep it short, and keep it vague.'],
+  generous: ['Hello there! Need anything?', 'Well, hello! There\'s always room on the band for a friend. What can we do for you?', 'This is {ship}. If you\'re in any trouble at all, say so, and we\'ll see what we can do.'],
+  brave: ['This is {ship}. Go ahead.', 'This is {ship}. Whatever it is, we\'re listening, and we\'re not afraid.', 'Go ahead, stranger. We\'re all ears, and our guns are all business.'],
+  homesick: ['This is {ship}, out of {home}. Go ahead.', 'Hello. This is {ship}. We haven\'t heard a friendly voice from {home} in a long while. Are you from around there?', 'This is {ship}, out of {home}, a long way from it. It\'s good to hear someone.'],
 };
 
 const PIRATE_DEMANDS = {
   rude: ['Cargo. Now. Or we cut it out of your hull.', 'You have exactly ten seconds to make me not want to shoot you. Start counting.', 'Your cargo, your credits, and your attitude, in that order. Move.'],
-  greedy: ['Everything has a price, including your ship. Let us negotiate.', 'I am prepared to be very reasonable. Everything you have, for the privilege of continuing to breathe.', 'Consider this a tax. A large one. Payable now.'],
-  nervous: ['We, uh, we are pirates! Cut your drive and hand over your cargo!', 'Stand and, um, deliver! We have guns! Real ones! Please do not make us use them.', 'This is a robbery! It is, um, a serious one! Please cooperate!'],
-  talkative: ['Now, I know what you are thinking, and the answer is yes, we really are going to rob you.', ('Good day to you, captain! I hate to be a ' +
-      'bother, but we are, as it happens, pirates, and, well, you know how it goes.'), 'Lovely burn you are having. Shame if anything were to happen to it. Which is where we come in.'],
-  drunk: ['Stand and deliver! Wait, no. Cut your drive! That is the one.', 'Hold it right there! Or, well, not right there. Just, um. Nearby. Give us money.', 'We are, hic, pirates. Hand over the, the, the stuff.'],
-  brave: ['This is a boarding action. Cut your drive, and I promise we will be quick, and, mostly, gentle.', 'We are going to take what we came for. You can fight, but I would not.'],
-  kind: ['I really do hate to do this. Cargo, please, and nobody has to get hurt.', 'I am sorry, truly, but times are hard. Your cargo, and we will leave your crew alone.'],
-  secretive: ['You know what this is. You know what we want. Do not make it complicated.', 'Cut your drive. We will take what we need, and you will never see us again.'],
-  pious: ['The dark provides, and tonight it provides through us. Give up your cargo, and go in peace.', 'Forgive us, for we are doing what we must. Your cargo, and your blessing.'],
-  curious: ['Before we rob you, I have to ask: what is that drive? That is a fascinating configuration. Now, cargo, please.', 'This is a robbery, but, while we are here, I have got to know how you got that hull finish.'],
-  generous: ['We will take your cargo, but we will leave you enough to get home. That is the pirate\'s code.', 'Cut your drive. We are taking a share, not everything. We are not animals.'],
-  homesick: ['We are not doing this for fun. There are people back home who need to eat. Cargo, please.', 'I am sorry. I have a family. Give us your cargo, and I will pretend this never happened.'],
+  greedy: ['Everything has a price, including your ship. Let\'s negotiate.', 'I\'m prepared to be very reasonable. Everything you have, for the privilege of continuing to breathe.', 'Consider this a tax. A large one. Payable now.'],
+  nervous: ['We, uh, we\'re pirates! Cut your drive and hand over your cargo!', 'Stand and, um, deliver! We have guns! Real ones! Please don\'t make us use them.', 'This is a robbery! It is, um, a serious one! Please cooperate!'],
+  talkative: ['Now, I know what you\'re thinking, and the answer is yes, we really are going to rob you.', ('Good day to you, captain! I hate to be a ' +
+      'bother, but we are, as it happens, pirates, and, well, you know how it goes.'), 'Lovely burn you\'re having. Shame if anything were to happen to it. Which is where we come in.'],
+  drunk: ['Stand and deliver! Wait, no. Cut your drive! That\'s the one.', 'Hold it right there! Or, well, not right there. Just, um. Nearby. Give us money.', 'We are, hic, pirates. Hand over the, the, the stuff.'],
+  brave: ['This is a boarding action. Cut your drive, and I promise we\'ll be quick, and, mostly, gentle.', 'We\'re going to take what we came for. You can fight, but I wouldn\'t.'],
+  kind: ['I really do hate to do this. Cargo, please, and nobody has to get hurt.', 'I\'m sorry, truly, but times are hard. Your cargo, and we\'ll leave your crew alone.'],
+  secretive: ['You know what this is. You know what we want. Don\'t make it complicated.', 'Cut your drive. We\'ll take what we need, and you\'ll never see us again.'],
+  pious: ['The dark provides, and tonight it provides through us. Give up your cargo, and go in peace.', 'Forgive us, for we\'re doing what we must. Your cargo, and your blessing.'],
+  curious: ['Before we rob you, I have to ask: what\'s that drive? That\'s a fascinating configuration. Now, cargo, please.', 'This is a robbery, but, while we\'re here, I\'ve got to know how you got that hull finish.'],
+  generous: ['We\'ll take your cargo, but we\'ll leave you enough to get home. That\'s the pirate\'s code.', 'Cut your drive. We\'re taking a share, not everything. We\'re not animals.'],
+  homesick: ['We\'re not doing this for fun. There are people back home who need to eat. Cargo, please.', 'I\'m sorry. I have a family. Give us your cargo, and I\'ll pretend this never happened.'],
 };
-const PIRATE_DEMAND = ['This is {ship}. Cut your drive and prepare to be boarded.', 'This is {ship}. You are in our space. Cut your drive, and this will go easily.', 'Attention, freighter. This is {ship}. Heave to and prepare to be boarded.'];
+const PIRATE_DEMAND = ['This is {ship}. Cut your drive and prepare to be boarded.', 'This is {ship}. You\'re in our space. Cut your drive, and this will go easily.', 'Attention, freighter. This is {ship}. Heave to and prepare to be boarded.'];
 
 function voice(n, table, fallback) {
   const c = n.persona, line = pick([].concat(table[c.traits[0]] || fallback));
@@ -135,14 +135,14 @@ function hailEvent(n) {
       title, text: `${n.name} answers with a laugh, a long, easy, unafraid laugh, that carries clearly over the band. "Come and collect, bounty hunter," says a voice like warm gravel. "I've been collected by better than you."`,
       choices: [
         { label: 'Offer them a chance to surrender', run() {
-          if (!damaged(n) || Math.random() < 0.3) return '"Surrender? To you?" More laughter, longer and richer, and, at the end of it, a single click. The channel goes dead, and, on your scope, the ship\'s drive flares, and does not falter.';
+          if (!damaged(n) || Math.random() < 0.3) return '"Surrender? To you?" More laughter, longer and richer, and, at the end of it, a single click. The channel goes dead, and, on your scope, the ship\'s drive flares, and doesn\'t falter.';
           n.dead = true;
           if (m) {
             st.credits += m.pay;
             st.missions = st.missions.filter(x => x !== m);
           }
-          return (`There is a long silence on the channel. Then a tired voice says, "All right. All right, that's enough." ${n.name} powers down, ` +
-              `drive by drive, until she is a dark hull in the dark, and a patrol cutter, called in, takes custody. ` +
+          return (`There's a long silence on the channel. Then a tired voice says, "All right. All right, that's enough." ${n.name} powers down, ` +
+              `drive by drive, until she's a dark hull in the dark, and a patrol cutter, called in, takes custody. ` +
               `The ${m ? `${fmt(m.pay)} cr ` : ''}bounty is yours without firing another shot, and you feel, oddly, not triumphant but tired.`);
         } },
         signOff,
@@ -160,8 +160,8 @@ function hailEvent(n) {
         st.credits -= price;
         feel(n, 4, 'You paid to settle things between us.');
         leave(n);
-        return (`A long silence on the band, so long you think the channel has dropped. Then, low and flat: "...Fine. We're square." It is not ` +
-            `forgiveness, but it is an end to it. ${n.name} breaks off, slowly, and her drive dwindles into the dark, and the tightness, in your ` +
+        return (`A long silence on the band, so long you think the channel has dropped. Then, low and flat: "...Fine. We're square." It's not ` +
+            `forgiveness, but it's an end to it. ${n.name} breaks off, slowly, and her drive dwindles into the dark, and the tightness, in your ` +
             `chest, and in your shoulders, comes down, one notch at a time.`);
       } });
     } else if (hired) {
@@ -169,7 +169,7 @@ function hailEvent(n) {
         st.credits -= 3000;
         leave(n);
         return (`${captain} considers it, for a long moment, with a faint, ironic hum. "Your money spends the same as ${n.payer}'s," they say at ` +
-            `last, and there is even a little respect in it. "Honor among thieves, and so on." They break off, and, as they go, a last, dry joke: ` +
+            `last, and there's even a little respect in it. "Honor among thieves, and so on." They break off, and, as they go, a last, dry joke: ` +
             `"Tell ${n.payer} I said hello."`);
       } });
     } else {
@@ -187,7 +187,7 @@ function hailEvent(n) {
         const text = loseCargo(0.5);
         feel(n, 1, 'You dumped cargo for me.');
         leave(n);
-        return `${text} The crates tumble away in a glinting, expensive spread, and ${n.name} goes after them, whooping, on a great, greedy curve. You are forgotten in about four seconds, and you burn on, in a very quiet cockpit, counting what it cost.`;
+        return `${text} The crates tumble away in a glinting, expensive spread, and ${n.name} goes after them, whooping, on a great, greedy curve. You're forgotten in about four seconds, and you burn on, in a very quiet cockpit, counting what it cost.`;
       } });
     }
     if (damaged(n) && !hired) {
@@ -196,28 +196,28 @@ function hailEvent(n) {
         feel(n, -3, 'You robbed my ship.');
         changeRep('Pirate', -2);
         leave(n);
-        if (free <= 0) return `They offer their hold, in a shaking, hasty voice, but you have no room. You let them limp away, trailing vapor, and, as they go, you find you are not proud of it, only tired.`;
+        if (free <= 0) return `They offer their hold, in a shaking, hasty voice, but you have no room. You let them limp away, trailing vapor, and, as they go, you find you're not proud of it, only tired.`;
         const good = pick(COMMODITIES), tons = Math.min(free, randInt(4, 10));
         st.cargo[good.id] = (st.cargo[good.id] || 0) + tons;
-        return `"All right, all right!" a cracked, terrified voice shouts, and, with a flurry of thruster bursts, they jettison ${tons}t of ${good.name} and run. You scoop it up, in a long, careful arc, and the crates knock softly against your hull. It is a good haul, and it is not a good feeling.`;
+        return `"All right, all right!" a cracked, terrified voice shouts, and, with a flurry of thruster bursts, they jettison ${tons}t of ${good.name} and run. You scoop it up, in a long, careful arc, and the crates knock softly against your hull. It's a good haul, and it's not a good feeling.`;
       } });
     }
     choices.push({ label: 'Threaten them', run() {
       if (Math.random() < threatOdds(n) - (grudge ? 0.2 : 0)) {
         feel(n, -1, 'You scared me off.');
         leave(n);
-        return (`There is a long pause, and you can almost hear ${captain} looking at your guns, then at theirs, and doing the sum. "Not worth it," ` +
+        return (`There's a long pause, and you can almost hear ${captain} looking at your guns, then at theirs, and doing the sum. "Not worth it," ` +
             `they say at last, in a voice like a shrug. They break off, and the sudden, enormous quiet, in your cockpit, is the sound of a very long ` +
             `breath being let out.`);
       }
       return `${captain} laughs at you, low and warm and entirely unimpressed. "Brave words." They keep coming, closing steadily, and your instruments, one by one, light up with targeting lock.`;
     } });
-    choices.push({ label: '[{crew}] Claim you are one of theirs', role: 'slicer', run() {
+    choices.push({ label: '[{crew}] Claim you\'re one of theirs', role: 'slicer', run() {
       if (Math.random() < slicerOdds()) {
         leave(n);
-        return '{crew} spoofs a pirate transponder and some convincing gang chatter, in a low, gravelly, wholly ridiculous accent that you will make fun of for weeks. They wave you off, with a burst of raucous laughter, and one of them calls you "cousin".';
+        return '{crew} spoofs a pirate transponder and some convincing gang chatter, in a low, gravelly, wholly ridiculous accent that you\'ll make fun of for weeks. They wave you off, with a burst of raucous laughter, and one of them calls you "cousin".';
       }
-      return `{crew}'s spoof does not fool them, not for a second. "Nice try," says the voice, in a tone of almost professional appreciation, and, behind it, the sound of weapons arming.`;
+      return `{crew}'s spoof doesn't fool them, not for a second. "Nice try," says the voice, in a tone of almost professional appreciation, and, behind it, the sound of weapons arming.`;
     } });
     choices.push(signOff);
     return { title, text: `${captain}: "${demandLine(n)}"`, choices };
@@ -227,7 +227,7 @@ function hailEvent(n) {
     return {
       title, text: `${captain} ${c.id && c.opinion >= OPINION.TRUSTED ? 'recognizes you. "Our favorite customer.' : 'reads your transponder and relaxes. "One of ours.'} What do you need?"`,
       choices: [
-        { label: 'Any news?', ...gated(notYet(() => n.gossiped, 'They have told you what they know.')), run() { n.gossiped = true; return `"${addRumor()}"`; } },
+        { label: 'Any news?', ...gated(notYet(() => n.gossiped, 'They\'ve told you what they know.')), run() { n.gossiped = true; return `"${addRumor()}"`; } },
         { label: 'Buy stolen luxury goods (5t at 250 cr/t)', ...gated(notYet(() => n.fenced, 'They have sold you what they had.'), [() => cargoFree() >= 5, () => 'This needs 5t of room in the hold.'], needCr(1250)), run() {
           n.fenced = true;
           feel(n, 1, 'You bought our goods.');
@@ -236,7 +236,7 @@ function hailEvent(n) {
           st.cargo.luxury = (st.cargo.luxury || 0) + 5;
           st.paid.luxury = (st.paid.luxury || 0) + 1250;
           return ('Five tons of "slightly used" luxury goods drift across on a tether, in a line of dented, glittering crates, stamped with the marks ' +
-              'of at least three different owners, none of them a pirate. No questions asked. There is a faint smell of spilled perfume in the airlock ' +
+              'of at least three different owners, none of them a pirate. No questions asked. There\'s a faint smell of spilled perfume in the airlock ' +
               'for days, and, somewhere in the stack, an unopened bottle of very good wine.');
         } },
         signOff,
@@ -274,7 +274,7 @@ function hailEvent(n) {
   return {
     title, text: `${captain}: "${friend ? 'Captain! Good to see you again. ' : ''}${voice(n, GREETINGS, 'This is {ship}. Go ahead.')}${hauling}"`,
     choices: [
-      { label: 'Any news?', ...gated(notYet(() => n.gossiped, 'They have told you what they know.')), run() {
+      { label: 'Any news?', ...gated(notYet(() => n.gossiped, 'They\'ve told you what they know.')), run() {
         n.gossiped = true;
         return c.traits.includes('secretive') ? '"Nothing I care to share." Fair enough.' : `"${addRumor()}"`;
       } },
@@ -285,9 +285,9 @@ function hailEvent(n) {
           feel(n, 1, free ? 'We helped you out with reaction mass.' : 'You bought reaction mass from us.');
           if (free) return (`"Of course. We all need help out here," ${captain} says, warmly, without a moment's hesitation. They pass it over on a ` +
               `hose, free, in a long, low, gurgling stream, and, when the tank is full, they wave you off with a hand that you can see through the ` +
-              `cockpit glass. It is a small kindness, and it sits in your chest for a long time.`);
+              `cockpit glass. It's a small kindness, and it sits in your chest for a long time.`);
           st.credits -= spare * 4;
-          return 'You match velocity, in a long, careful dance, and they pump it across, in a steady, humming stream, with a brisk professional silence on the channel. Not cheap, but you are not stuck, and you tip your hand to the cockpit glass as they peel away.';
+          return 'You match velocity, in a long, careful dance, and they pump it across, in a steady, humming stream, with a brisk professional silence on the channel. Not cheap, but you\'re not stuck, and you tip your hand to the cockpit glass as they peel away.';
         } }] : []),
       ...(good ? [{ label: `Sell them ${qty}t of ${good.name} (${fmt(offer)} cr/t)`, ...gated(notYet(() => n.bought, 'They have bought from you already.')), run() {
         n.bought = true;
@@ -297,11 +297,11 @@ function hailEvent(n) {
         st.cargo[cid] -= qty;
         st.credits += qty * offer;
         return (`A cargo tender flits across, small and quick as a dragonfly, and the crates go over in three neat trips. ${captain} ` +
-            `pays ${fmt(qty * offer)} cr for the lot, over the open band, in a clipped, cheerful tone, and signs off with a friendly "Pleasure." It is ` +
+            `pays ${fmt(qty * offer)} cr for the lot, over the open band, in a clipped, cheerful tone, and signs off with a friendly "Pleasure." It's ` +
             `a good, clean, ordinary deal, the kind that keeps the lanes turning.`);
       } }] : []),
       { label: 'Sign off', run: () => c.traits.includes('rude') ? '"Finally," says the voice, and the channel closes with a small, sharp click.' : (
-          '"Safe burns, captain," says the voice, warmly, and, for a moment, the channel hums, open and companionable, before it closes, and you are ' +
+          '"Safe burns, captain," says the voice, warmly, and, for a moment, the channel hums, open and companionable, before it closes, and you\'re ' +
           'alone again, in the long dark, with your own small light.') },
     ],
   };

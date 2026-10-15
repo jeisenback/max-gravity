@@ -9,50 +9,50 @@
 const AWAY_MAX = 2, AWAY_CHANCE = 0.5, PITCH_BASE = 0.35, AWAY_NEAR_DAYS = 6;  // work is offered at ports a few days out, when there are any
 
 const AWAY = [
-  { id: 'package', title: 'A Package for {dest}', blurb: '{who} has a sealed package for a contact on {dest}, and does not trust the post.',
+  { id: 'package', title: 'A Package for {dest}', blurb: '{who} has a sealed package for a contact on {dest}, and doesn\'t trust the post.',
     stages: [
-      { text: 'The contact is waiting at the dock gate on {dest}, a man in a long coat who looks at your ship before he looks at you. He is not the one {who} described. He is too easy, too well dressed, and he knows your name. "I\'ll take that off your hands," he says, and holds out both of them.',
+      { text: 'The contact is waiting at the dock gate on {dest}, a man in a long coat who looks at your ship before he looks at you. He\'s not the one {who} described. He\'s too easy, too well dressed, and he knows your name. "I\'ll take that off your hands," he says, and holds out both of them.',
         choices: [
           { label: 'Ask him what {who} said to say', check: { post: 'comms' },
-            win: { text: ('You ask the question {who} made you carry, the one with no right answer for a stranger. He does not have it. He smiles, ' +
-                'and does not try, and is gone into the crowd before you have finished putting the package away. You find the real contact an hour ' +
+            win: { text: ('You ask the question {who} made you carry, the one with no right answer for a stranger. He doesn\'t have it. He smiles, ' +
+                'and doesn\'t try, and is gone into the crowd before you\'ve finished putting the package away. You find the real contact an hour ' +
                 'later, a woman in a grocery stall, and the pay with her.'), pay: 660, xp: 'comms', next: 1 },
-            lose: { text: 'You ask, and he answers well enough, and you hand it over. It is not until the evening, when the real contact asks where it is, that you know the answer was a good guess. You are paid a fee for the trip, and nothing for the package.', pay: 130, rep: -2 } },
+            lose: { text: 'You ask, and he answers well enough, and you hand it over. It\'s not until the evening, when the real contact asks where it is, that you know the answer was a good guess. You\'re paid a fee for the trip, and nothing for the package.', pay: 130, rep: -2 } },
           { label: 'Walk him to a crowded place before you hand it over', check: { post: 'gunner' },
             win: { text: ('You steer him to the market square, one hand on the package and the other on the rail. In the open he changes his mind ' +
                 'about what he wanted, and walks away with his hands in his coat. The real contact finds you at the next stall, laughing, and paying.'), pay: 620, xp: 'gunner', next: 1 },
-            lose: { text: 'The market square is not as crowded as you thought. He steps close and the case leaves your hands in a movement you do not quite see, and the elbow that comes with it leaves you with a cracked rib. The fee is the fee, at least.', hurt: true, pay: 180 } },
-          { label: 'Hand it over and take the fee', win: { text: 'You hand it over, and he thanks you in a voice you will not remember, and the fee is exactly what {who} promised. It is not until you are back on the ship that you think about his hands.', pay: 260 } },
+            lose: { text: 'The market square isn\'t as crowded as you thought. He steps close and the case leaves your hands in a movement you don\'t quite see, and the elbow that comes with it leaves you with a cracked rib. The fee is the fee, at least.', hurt: true, pay: 180 } },
+          { label: 'Hand it over and take the fee', win: { text: 'You hand it over, and he thanks you in a voice you won\'t remember, and the fee is exactly what {who} promised. It\'s not until you\'re back on the ship that you think about his hands.', pay: 260 } },
         ] },
       { text: 'The woman at the grocery stall wraps the package in a cloth. "{who} said you\'d be careful," she says. "I\'d like to say thank you in a way that costs something."',
         choices: [
-          { label: 'Take the extra credits ', win: { text: 'She counts it out into your palm from a tin of coins. You take it. It is a small, honest pleasure.', pay: 220 } },
-          { label: 'Take a name for the next time', win: { text: 'She writes it on a scrap, and a street, and a time of day. "Tell them I sent you," she says. It is not cash, but you will not forget where it leads.', rep: 3 } },
+          { label: 'Take the extra credits ', win: { text: 'She counts it out into your palm from a tin of coins. You take it. It\'s a small, honest pleasure.', pay: 220 } },
+          { label: 'Take a name for the next time', win: { text: 'She writes it on a scrap, and a street, and a time of day. "Tell them I sent you," she says. It\'s not cash, but you won\'t forget where it leads.', rep: 3 } },
         ] },
     ] },
-  { id: 'stranded', title: 'A Hauler Down on {dest}', blurb: '{who}\'s brother is stuck on {dest} with a failed drive and no money for the yard. {who} cannot go. You could.',
+  { id: 'stranded', title: 'A Hauler Down on {dest}', blurb: '{who}\'s brother is stuck on {dest} with a failed drive and no money for the yard. {who} can\'t go. You could.',
     stages: [
       { text: ('The hauler sits at the far end of the apron on {dest}, listing a degree to port, with her drive housing open to the sky and a man ' +
-          'underneath it who has not slept in a day. He climbs out when you hail. "{who} sent you," he says. "I\'ve been telling the yard it\'s the ' +
+          'underneath it who hasn\'t slept in a day. He climbs out when you hail. "{who} sent you," he says. "I\'ve been telling the yard it\'s the ' +
           'injector, and the yard has been telling me it\'s three thousand credits."'),
         choices: [
           { label: 'Rebuild the injector', check: { post: 'engineer' },
-            win: { text: ('It is the injector, and a cracked housing behind it that the yard did not mention. You spend a long afternoon in the ' +
-                'housing with a torch in your teeth, and at dusk the drive lights on the first try. He does not say anything for a long time, and then ' +
+            win: { text: ('It\'s the injector, and a cracked housing behind it that the yard didn\'t mention. You spend a long afternoon in the ' +
+                'housing with a torch in your teeth, and at dusk the drive lights on the first try. He doesn\'t say anything for a long time, and then ' +
                 'he gives you what he has.'), pay: 750, xp: 'engineer', next: 1 },
-            lose: { text: 'You get it half rebuilt before a feed line lets go and sprays you with hot coolant. He gets you out and wraps your arm in a wet cloth. The drive is no better, and you are in worse shape than it is. He gives you what he can for the effort.', hurt: true, pay: 180 } },
+            lose: { text: 'You get it half rebuilt before a feed line lets go and sprays you with hot coolant. He gets you out and wraps your arm in a wet cloth. The drive is no better, and you\'re in worse shape than it is. He gives you what he can for the effort.', hurt: true, pay: 180 } },
           { label: 'Tow her to the yard and argue the price down', check: { post: 'pilot' },
-            win: { text: 'You take her in tow with a line you do not entirely trust, and drag her the length of the apron at a crawl. At the yard you argue, in her captain\'s name, for a price he can pay, and win. He pays you from what is left.', pay: 570, xp: 'pilot', next: 1 },
-            lose: { text: 'The line parts a hundred meters from the yard, and the hauler\'s bow swings into a post. It is nobody\'s fault, and everybody says so. He pays for the post. You get a bill for the line.', cost: 60, opinion: 0 } },
-          { label: 'Give him what you can spare and wish him luck (50 cr)', win: { text: 'You count fifty credits onto the hatch cover and wish him luck. He takes it the way a man takes a handhold, and does not say what he is thinking.', cost: 50 } },
+            win: { text: 'You take her in tow with a line you don\'t entirely trust, and drag her the length of the apron at a crawl. At the yard you argue, in her captain\'s name, for a price he can pay, and win. He pays you from what\'s left.', pay: 570, xp: 'pilot', next: 1 },
+            lose: { text: 'The line parts a hundred meters from the yard, and the hauler\'s bow swings into a post. It\'s nobody\'s fault, and everybody says so. He pays for the post. You get a bill for the line.', cost: 60, opinion: 0 } },
+          { label: 'Give him what you can spare and wish him luck (50 cr)', win: { text: 'You count fifty credits onto the hatch cover and wish him luck. He takes it the way a man takes a handhold, and doesn\'t say what he\'s thinking.', cost: 50 } },
         ] },
       { text: 'When the drive is running he walks you to the ramp. "I can\'t pay you what it was worth," he says. "I can give you a berth on her any time you want one, if she\'s still flying. Or I can give you this."',
         choices: [
-          { label: 'Take the credits ', win: { text: 'He puts it into your hand and closes your fingers over it. "It\'s what I have," he says. It is enough.', pay: 330 } },
-          { label: 'Take the offer of a berth', win: { text: 'He shakes your hand on it. You cannot spend it, and you do not need to. A hauler\'s captain with a standing offer is worth more on the lanes than the credits would have been.', rep: 4 } },
+          { label: 'Take the credits ', win: { text: 'He puts it into your hand and closes your fingers over it. "It\'s what I have," he says. It\'s enough.', pay: 330 } },
+          { label: 'Take the offer of a berth', win: { text: 'He shakes your hand on it. You can\'t spend it, and you don\'t need to. A hauler\'s captain with a standing offer is worth more on the lanes than the credits would have been.', rep: 4 } },
         ] },
     ] },
-  { id: 'witness', title: 'A Witness on {dest}', blurb: '{who} knows a dockworker on {dest} who saw something and needs an escort to give a statement. Nobody there will do it.',
+  { id: 'witness', title: 'A Witness on {dest}', blurb: '{who} knows a dockworker on {dest} who saw something and needs an escort to give a statement. Nobody there\'ll do it.',
     stages: [
       { text: ('The dockworker is waiting in the back room of a noodle stall on {dest}, a small woman with her coat buttoned to the neck and her ' +
           'hands flat on the table. "{who} said you\'d come," she says. "The office is four streets away. I\'ve been told, twice, that I wouldn\'t ' +
@@ -62,15 +62,15 @@ const AWAY = [
             win: { text: ('You take the middle of the street and keep her on the inside. A man steps out of a doorway ahead of you, and sees your ' +
                 'face, and steps back into it. At the office she gives her statement for an hour, and when she comes out she takes your hand in both ' +
                 'of hers.'), pay: 700, xp: 'gunner', next: 1 },
-            lose: { text: 'They are waiting at the third corner, two of them, and it is short and ugly. You get her into a doorway and keep her there, and you get a broken tooth and a cut on the scalp for it. The office gets her statement after dark.', hurt: true, pay: 260 } },
+            lose: { text: 'They\'re waiting at the third corner, two of them, and it\'s short and ugly. You get her into a doorway and keep her there, and you get a broken tooth and a cut on the scalp for it. The office gets her statement after dark.', hurt: true, pay: 260 } },
           { label: 'Arrange a quiet meeting by relay instead', check: { post: 'comms' },
-            win: { text: ('You make a call you should not be able to make, in a voice that sounds like an authorized one, and an officer from the ' +
+            win: { text: ('You make a call you shouldn\'t be able to make, in a voice that sounds like an authorized one, and an officer from the ' +
                 'office comes to the noodle stall in plain clothes and takes the statement over the counter. Nobody who was watching the street sees ' +
                 'anything.'), pay: 620, xp: 'comms', next: 1 },
-            lose: { text: ('The call goes through somebody else\'s relay. By the time the officer arrives, there is a man across the street with a ' +
-                'good view of the stall, and the dockworker has gone out the back and has not come back. You get a fee for the trouble, and a lasting ' +
+            lose: { text: ('The call goes through somebody else\'s relay. By the time the officer arrives, there\'s a man across the street with a ' +
+                'good view of the stall, and the dockworker has gone out the back and hasn\'t come back. You get a fee for the trouble, and a lasting ' +
                 'dislike of relays.'), rep: -3, pay: 130 } },
-          { label: 'Tell her you cannot do this', win: { text: '"I understand," she says. She does not look surprised, and that is somehow the worst of it. You leave her at the table with her tea.' } },
+          { label: 'Tell her you can\'t do this', win: { text: '"I understand," she says. She doesn\'t look surprised, and that\'s somehow the worst of it. You leave her at the table with her tea.' } },
         ] },
       { text: 'Before you go, the dockworker presses something into your hand: a key on a loop of string. "It\'s the locker at the back of the stall," she says. "{who} knows. It\'s for whoever comes."',
         choices: [
@@ -141,7 +141,7 @@ const pitchedNow = a => a.pitched === `${G.state.day}@${G.state.planet}`;
 function awayHtml() {
   const h = hired(), list = h.away || [];
   if (!list.length) return '';
-  return `<div class="post"><div class="eyebrow">Work elsewhere &middot; you would need the captain to fly you there</div>
+  return `<div class="post"><div class="eyebrow">Work elsewhere &middot; you'd need the captain to fly you there</div>
     ${list.map((a, i) => `<div class="row"><span><b>${esc(fill2(jobTitle(awayJob(a)), a.ctx))}</b> <span class="hint">${esc(fill2(jobBlurb(awayJob(a)), a.ctx))} ${esc(a.ctx.dest)}, ${esc(a.ctx.system)}, ${a.days} days. Until day ${a.until}.</span></span>
       ${a.booked ? '<span class="tag good">the captain is flying you there</span>' : `<button data-action="pitchJob" data-arg="${i}" ${pitchedNow(a) ? 'disabled' : ''}>Put it to the captain</button>`}</div>`).join('')}
     <p class="hint">Once a stop for each. The captain decides, by who they are and how they feel about you.</p></div>`;
@@ -170,7 +170,7 @@ Mods.register({
         return;
       }
       // a contact offers something, now and then, at a port with a board
-      if (planet.services.includes('missions') && h.away.length < AWAY_MAX && Math.random() < AWAY_CHANCE) { const o = awayOffer(); if (o) { h.away.push(o); UI.notes.push(`${o.ctx.who} has work for someone who is going to ${o.planet}. It is on the Missions page.`); } }
+      if (planet.services.includes('missions') && h.away.length < AWAY_MAX && Math.random() < AWAY_CHANCE) { const o = awayOffer(); if (o) { h.away.push(o); UI.notes.push(`${o.ctx.who} has work for someone who's going to ${o.planet}. It's on the Missions page.`); } }
     });
   },
 });

@@ -8554,7 +8554,7 @@
   "key": "job:lock:0",
   "v": {
    "title": "A Jammed Freight Lock",
-   "text": "A crowd has gathered at Lock Six, and a woman in a dockmaster's vest is shouting into a handset. The outer door has jammed half open, the inner door will not cycle, and somewhere in the gap four loaders are sealed in with an hour of air in their suits. \"Anyone,\" the dockmaster says, to the crowd and to you. \"Anyone who knows a lock.\"",
+   "text": "A crowd has gathered at Lock Six, and a woman in a dockmaster's vest is shouting into a handset. The outer door has jammed half open, the inner door won't cycle, and somewhere in the gap four loaders are sealed in with an hour of air in their suits. \"Anyone,\" the dockmaster says, to the crowd and to you. \"Anyone who knows a lock.\"",
    "labels": [
     "Cut the manual release [Engineer, long odds]",
     "Talk the controller into an override [Comms, long odds]",
@@ -8580,7 +8580,7 @@
  {
   "key": "job:lock:0:0:0.999",
   "v": {
-   "text": "The pin is harder than it looked. You are still cutting when the inner door cycles on its own, and the edge of it catches you across the shoulder. The loaders get out by the other lock. You get a medic and a bandage. (+50 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "The pin is harder than it looked. You're still cutting when the inner door cycles on its own, and the edge of it catches you across the shoulder. The loaders get out by the other lock. You get a medic and a bandage. (+50 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
    "credits": 50,
    "rep": {},
    "xp": false,
@@ -8591,7 +8591,7 @@
  {
   "key": "job:lock:0:1:0",
   "v": {
-   "text": "The lock controller is a tired man in a booth who has been told no by every system on the board. You give him the override sequence he did not know he had, and a reason to try it. The lock shudders and cycles, and the loaders come out coughing. (+300 cr)",
+   "text": "The lock controller is a tired man in a booth who has been told no by every system on the board. You give him the override sequence he didn't know he had, and a reason to try it. The lock shudders and cycles, and the loaders come out coughing. (+300 cr)",
    "credits": 300,
    "rep": {},
    "xp": false,
@@ -8605,7 +8605,7 @@
  {
   "key": "job:lock:0:1:0.999",
   "v": {
-   "text": "The controller will not hear you, or cannot, and by the time somebody senior arrives the loaders are out and the dockmaster has already written down who was in the way. It was you.",
+   "text": "The controller won't hear you, or can't, and by the time somebody senior arrives the loaders are out and the dockmaster has already written down who was in the way. It was you.",
    "credits": 0,
    "rep": {},
    "xp": false,
@@ -8618,7 +8618,7 @@
  {
   "key": "job:lock:0:2:0",
   "v": {
-   "text": "Six of you on the wheel, and the seized door gives a hand at a time. It is not clever and it is not quick, but it opens, and the dockmaster remembers the hand at the end of the bar. (+180 cr)",
+   "text": "Six of you on the wheel, and the seized door gives a hand at a time. It's not clever and it's not quick, but it opens, and the dockmaster remembers the hand at the end of the bar. (+180 cr)",
    "credits": 180,
    "rep": {},
    "xp": false,
@@ -8643,7 +8643,7 @@
  {
   "key": "job:lock:0:3:0",
   "v": {
-   "text": "You run for the crew chief and bring her back, and the dockmaster takes it from there. It is the right call for someone who does not know locks, and nobody thanks you for it, which is also right. (+40 cr)",
+   "text": "You run for the crew chief and bring her back, and the dockmaster takes it from there. It's the right call for someone who doesn't know locks, and nobody thanks you for it, which is also right. (+40 cr)",
    "credits": 40,
    "rep": {},
    "xp": false,
@@ -8654,7 +8654,7 @@
  {
   "key": "job:lock:0:3:0.999",
   "v": {
-   "text": "You run for the crew chief and bring her back, and the dockmaster takes it from there. It is the right call for someone who does not know locks, and nobody thanks you for it, which is also right. (+40 cr)",
+   "text": "You run for the crew chief and bring her back, and the dockmaster takes it from there. It's the right call for someone who doesn't know locks, and nobody thanks you for it, which is also right. (+40 cr)",
    "credits": 40,
    "rep": {},
    "xp": false,
@@ -8676,7 +8676,7 @@
  {
   "key": "job:lock:1:0:0",
   "v": {
-   "text": "He counts it out of a pocket on his suit, in coins and chits, and does not look at the number. \"It's not enough,\" he says. It is more than enough, and you both know it. (+240 cr)",
+   "text": "He counts it out of a pocket on his suit, in coins and chits, and doesn't look at the number. \"It's not enough,\" he says. It's more than enough, and you both know it. (+240 cr)",
    "credits": 240,
    "rep": {},
    "xp": false,
@@ -8687,7 +8687,7 @@
  {
   "key": "job:lock:1:0:0.999",
   "v": {
-   "text": "He counts it out of a pocket on his suit, in coins and chits, and does not look at the number. \"It's not enough,\" he says. It is more than enough, and you both know it. (+240 cr)",
+   "text": "He counts it out of a pocket on his suit, in coins and chits, and doesn't look at the number. \"It's not enough,\" he says. It's more than enough, and you both know it. (+240 cr)",
    "credits": 240,
    "rep": {},
    "xp": false,
@@ -8698,7 +8698,7 @@
  {
   "key": "job:lock:1:1:0",
   "v": {
-   "text": "The dockmaster writes your ship's name in a book behind the counter. \"Berth discount,\" she says, \"and a second look when you want to lift in a hurry.\" It is not cash, and it will be worth something.",
+   "text": "The dockmaster writes your ship's name in a book behind the counter. \"Berth discount,\" she says, \"and a second look when you want to lift in a hurry.\" It's not cash, and it'll be worth something.",
    "credits": 0,
    "rep": {
     "Charter League": 4
@@ -8711,7 +8711,7 @@
  {
   "key": "job:lock:1:1:0.999",
   "v": {
-   "text": "The dockmaster writes your ship's name in a book behind the counter. \"Berth discount,\" she says, \"and a second look when you want to lift in a hurry.\" It is not cash, and it will be worth something.",
+   "text": "The dockmaster writes your ship's name in a book behind the counter. \"Berth discount,\" she says, \"and a second look when you want to lift in a hurry.\" It's not cash, and it'll be worth something.",
    "credits": 0,
    "rep": {
     "Charter League": 4
@@ -8728,7 +8728,7 @@
    "text": "The clerk finds you at the back of the comms office, twisting a ring on a finger. \"It's not illegal,\" she says. \"It's just that if it goes through the port's relay, it'll be read by somebody who has a reason not to like it.\" She slides a chip across the counter. \"I need it on the long bands to a ship that's six days out, and I need nobody to know I asked.\"",
    "labels": [
     "Put it on a ship's relay under a cargo header [Comms, long odds]",
-    "Carry it to a ship that is about to sail [Pilot, even odds]",
+    "Carry it to a ship that's about to sail [Pilot, even odds]",
     "Refuse, politely"
    ]
   }
@@ -8747,7 +8747,7 @@
  {
   "key": "job:message:0:0:0.999",
   "v": {
-   "text": "The packet is flagged at the relay for a malformed header. A customs clerk reads it before you can pull it back, and there is a visit to your ship the next morning, polite and thorough. Nothing is found, and nothing is forgotten. (-60 cr)",
+   "text": "The packet is flagged at the relay for a malformed header. A customs clerk reads it before you can pull it back, and there's a visit to your ship the next morning, polite and thorough. Nothing's found, and nothing's forgotten. (-60 cr)",
    "credits": -60,
    "rep": {
     "Charter League": -4
@@ -8760,7 +8760,7 @@
  {
   "key": "job:message:0:1:0",
   "v": {
-   "text": "You know a hauler in the next berth that is lifting within the hour, with a captain who owes nobody anything. She takes the chip and the fee without a question. The clerk gets a name in return, and no more. (+220 cr)",
+   "text": "You know a hauler in the next berth that's lifting within the hour, with a captain who owes nobody anything. She takes the chip and the fee without a question. The clerk gets a name in return, and no more. (+220 cr)",
    "credits": 220,
    "rep": {},
    "xp": false,
@@ -8771,7 +8771,7 @@
  {
   "key": "job:message:0:1:0.999",
   "v": {
-   "text": "The hauler lifts early, and you are left holding the chip on an empty berth, with the clerk watching from the gallery. She does not say anything. She does not pay either. (-20 cr)",
+   "text": "The hauler lifts early, and you're left holding the chip on an empty berth, with the clerk watching from the gallery. She doesn't say anything. She doesn't pay either. (-20 cr)",
    "credits": -20,
    "rep": {},
    "xp": false,
@@ -8782,7 +8782,7 @@
  {
   "key": "job:message:0:2:0",
   "v": {
-   "text": "You hand the chip back. \"I understand,\" the clerk says, and she does, and goes to find somebody less careful. You do not find out who.",
+   "text": "You hand the chip back. \"I understand,\" the clerk says, and she does, and goes to find somebody less careful. You don't find out who.",
    "credits": 0,
    "rep": {},
    "xp": false,
@@ -8793,7 +8793,7 @@
  {
   "key": "job:message:0:2:0.999",
   "v": {
-   "text": "You hand the chip back. \"I understand,\" the clerk says, and she does, and goes to find somebody less careful. You do not find out who.",
+   "text": "You hand the chip back. \"I understand,\" the clerk says, and she does, and goes to find somebody less careful. You don't find out who.",
    "credits": 0,
    "rep": {},
    "xp": false,
@@ -8809,7 +8809,7 @@
    "labels": [
     "Walk the lower decks ahead of him [Gunner, long odds]",
     "Take him down a service route [Pilot, long odds]",
-    "Tell him you will not go down there tonight"
+    "Tell him you won't go down there tonight"
    ]
   }
  },
@@ -8830,7 +8830,7 @@
  {
   "key": "job:escort:0:0:0.999",
   "v": {
-   "text": "They are three, not two, and the third has a length of pipe. It is short and ugly in a narrow passage. The courier gets through to the lamp; you get through to a medic, with a split lip and a broken finger, and a handful of what he left you. (+140 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "They're three, not two, and the third has a length of pipe. It's short and ugly in a narrow passage. The courier gets through to the lamp; you get through to a medic, with a split lip and a broken finger, and a handful of what he left you. (+140 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
    "credits": 140,
    "rep": {},
    "xp": false,
@@ -8841,7 +8841,7 @@
  {
   "key": "job:escort:0:1:0",
   "v": {
-   "text": "You know the service crawls better than the people who watch the main passages, and you take him through the ducts with a flashlight in your teeth. He is covered in dust at the other end and says nothing, and pays well for it. (+310 cr)",
+   "text": "You know the service crawls better than the people who watch the main passages, and you take him through the ducts with a flashlight in your teeth. He's covered in dust at the other end and says nothing, and pays well for it. (+310 cr)",
    "credits": 310,
    "rep": {},
    "xp": false,
@@ -8868,7 +8868,7 @@
  {
   "key": "job:escort:0:2:0",
   "v": {
-   "text": "\"I understand,\" the courier says, and goes down alone. You hear on the dock the next day that he made it. You hear on the dock a few days later that he did not make the way back.",
+   "text": "\"I understand,\" the courier says, and goes down alone. You hear on the dock the next day that he made it. You hear on the dock a few days later that he didn't make the way back.",
    "credits": 0,
    "rep": {},
    "xp": false,
@@ -8879,7 +8879,7 @@
  {
   "key": "job:escort:0:2:0.999",
   "v": {
-   "text": "\"I understand,\" the courier says, and goes down alone. You hear on the dock the next day that he made it. You hear on the dock a few days later that he did not make the way back.",
+   "text": "\"I understand,\" the courier says, and goes down alone. You hear on the dock the next day that he made it. You hear on the dock a few days later that he didn't make the way back.",
    "credits": 0,
    "rep": {},
    "xp": false,
@@ -8894,14 +8894,14 @@
    "text": "At the door with the lamp the courier turns. \"There's a second case,\" he says. \"It's not mine, and I don't know what's in it, and I'd be grateful if somebody took it off the deck before tonight is over.\"",
    "labels": [
     "Take it (and a half day more of your time)",
-    "Leave it, and say you did not see it"
+    "Leave it, and say you didn't see it"
    ]
   }
  },
  {
   "key": "job:escort:1:0:0",
   "v": {
-   "text": "You carry it up through the passages and leave it with a woman at the top who does not ask who you are. The courier's thanks arrives that night in the form of a chit. You never learn what was in it. (+220 cr)",
+   "text": "You carry it up through the passages and leave it with a woman at the top who doesn't ask who you are. The courier's thanks arrives that night in the form of a chit. You never learn what was in it. (+220 cr)",
    "credits": 220,
    "rep": {},
    "xp": false,
@@ -8912,7 +8912,7 @@
  {
   "key": "job:escort:1:0:0.999",
   "v": {
-   "text": "You carry it up through the passages and leave it with a woman at the top who does not ask who you are. The courier's thanks arrives that night in the form of a chit. You never learn what was in it. (+220 cr)",
+   "text": "You carry it up through the passages and leave it with a woman at the top who doesn't ask who you are. The courier's thanks arrives that night in the form of a chit. You never learn what was in it. (+220 cr)",
    "credits": 220,
    "rep": {},
    "xp": false,
@@ -8923,7 +8923,7 @@
  {
   "key": "job:escort:1:1:0",
   "v": {
-   "text": "You say you did not see it, and the courier says that is what he thought. You go back up with the pay he owes, and the second case stays in the dark with the lamp.",
+   "text": "You say you didn't see it, and the courier says that's what he thought. You go back up with the pay he owes, and the second case stays in the dark with the lamp.",
    "credits": 0,
    "rep": {},
    "xp": false,
@@ -8934,7 +8934,7 @@
  {
   "key": "job:escort:1:1:0.999",
   "v": {
-   "text": "You say you did not see it, and the courier says that is what he thought. You go back up with the pay he owes, and the second case stays in the dark with the lamp.",
+   "text": "You say you didn't see it, and the courier says that's what he thought. You go back up with the pay he owes, and the second case stays in the dark with the lamp.",
    "credits": 0,
    "rep": {},
    "xp": false,
@@ -8957,7 +8957,7 @@
  {
   "key": "job:ration:0:0:0",
   "v": {
-   "text": "You find out whose chit it is by asking whose child is whose, and the thing falls apart into a conversation about names. By the end both families are sharing a bench and the clerk is stamping new chits as fast as she can. (+190 cr)",
+   "text": "You find out whose chit it's by asking whose child is whose, and the thing falls apart into a conversation about names. By the end both families are sharing a bench and the clerk is stamping new chits as fast as she can. (+190 cr)",
    "credits": 190,
    "rep": {
     "Charter League": 3
@@ -8970,7 +8970,7 @@
  {
   "key": "job:ration:0:0:0.999",
   "v": {
-   "text": "You make it worse. Somebody says you are taking a side, and somebody else says which, and the shouting turns to shoving. You get out before the first real blow, with a cuff in the ear and the warden's eyes on your back. You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "You make it worse. Somebody says you're taking a side, and somebody else says which, and the shouting turns to shoving. You get out before the first real blow, with a cuff in the ear and the warden's eyes on your back. You are hurt. Your work counts a level lower until the clinic clears you.",
    "credits": 0,
    "rep": {},
    "xp": false,
@@ -8981,7 +8981,7 @@
  {
   "key": "job:ration:0:1:0",
   "v": {
-   "text": "You put yourself in the gap with your hands open and do not move. For a while nobody does. Then the louder of the two men looks at you, and at the child on his hip, and steps back, and the line breathes out. (+170 cr)",
+   "text": "You put yourself in the gap with your hands open and don't move. For a while nobody does. Then the louder of the two men looks at you, and at the child on his hip, and steps back, and the line breathes out. (+170 cr)",
    "credits": 170,
    "rep": {
     "Charter League": 2
@@ -8994,7 +8994,7 @@
  {
   "key": "job:ration:0:1:0.999",
   "v": {
-   "text": "Somebody does not step back. It is a short, shapeless scuffle, and you come out of it with a cut over the eye and a ration chit nobody will own. You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "Somebody doesn't step back. It's a short, shapeless scuffle, and you come out of it with a cut over the eye and a ration chit nobody will own. You are hurt. Your work counts a level lower until the clinic clears you.",
    "credits": 0,
    "rep": {},
    "xp": false,
@@ -9028,19 +9028,19 @@
   "key": "awayjob:package:0",
   "v": {
    "title": "A Package for Ironheart",
-   "text": "The contact is waiting at the dock gate on Ironheart, a man in a long coat who looks at your ship before he looks at you. He is not the one Mrs. Adeyemi described. He is too easy, too well dressed, and he knows your name. \"I'll take that off your hands,\" he says, and holds out both of them.",
+   "text": "The contact is waiting at the dock gate on Ironheart, a man in a long coat who looks at your ship before he looks at you. He's not the one Mrs. Adeyemi described. He's too easy, too well dressed, and he knows your name. \"I'll take that off your hands,\" he says, and holds out both of them.",
    "labels": [
     "Ask him what Mrs. Adeyemi said to say [Comms, long odds]",
     "Walk him to a crowded place before you hand it over [Gunner, long odds]",
     "Hand it over and take the fee"
    ],
-   "blurb": "{who} has a sealed package for a contact on {dest}, and does not trust the post."
+   "blurb": "{who} has a sealed package for a contact on {dest}, and doesn't trust the post."
   }
  },
  {
   "key": "awayjob:package:0:0:0",
   "v": {
-   "text": "You ask the question Mrs. Adeyemi made you carry, the one with no right answer for a stranger. He does not have it. He smiles, and does not try, and is gone into the crowd before you have finished putting the package away. You find the real contact an hour later, a woman in a grocery stall, and the pay with her. (+860 cr)",
+   "text": "You ask the question Mrs. Adeyemi made you carry, the one with no right answer for a stranger. He doesn't have it. He smiles, and doesn't try, and is gone into the crowd before you've finished putting the package away. You find the real contact an hour later, a woman in a grocery stall, and the pay with her. (+860 cr)",
    "credits": 860,
    "rep": {},
    "xp": false,
@@ -9054,7 +9054,7 @@
  {
   "key": "awayjob:package:0:0:0.999",
   "v": {
-   "text": "You ask, and he answers well enough, and you hand it over. It is not until the evening, when the real contact asks where it is, that you know the answer was a good guess. You are paid a fee for the trip, and nothing for the package. (+170 cr)",
+   "text": "You ask, and he answers well enough, and you hand it over. It's not until the evening, when the real contact asks where it is, that you know the answer was a good guess. You're paid a fee for the trip, and nothing for the package. (+170 cr)",
    "credits": 170,
    "rep": {
     "Charter League": -2
@@ -9081,7 +9081,7 @@
  {
   "key": "awayjob:package:0:1:0.999",
   "v": {
-   "text": "The market square is not as crowded as you thought. He steps close and the case leaves your hands in a movement you do not quite see, and the elbow that comes with it leaves you with a cracked rib. The fee is the fee, at least. (+230 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "The market square isn't as crowded as you thought. He steps close and the case leaves your hands in a movement you don't quite see, and the elbow that comes with it leaves you with a cracked rib. The fee is the fee, at least. (+230 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
    "credits": 230,
    "rep": {},
    "xp": false,
@@ -9092,7 +9092,7 @@
  {
   "key": "awayjob:package:0:2:0",
   "v": {
-   "text": "You hand it over, and he thanks you in a voice you will not remember, and the fee is exactly what Mrs. Adeyemi promised. It is not until you are back on the ship that you think about his hands. (+340 cr)",
+   "text": "You hand it over, and he thanks you in a voice you won't remember, and the fee is exactly what Mrs. Adeyemi promised. It's not until you're back on the ship that you think about his hands. (+340 cr)",
    "credits": 340,
    "rep": {},
    "xp": false,
@@ -9103,7 +9103,7 @@
  {
   "key": "awayjob:package:0:2:0.999",
   "v": {
-   "text": "You hand it over, and he thanks you in a voice you will not remember, and the fee is exactly what Mrs. Adeyemi promised. It is not until you are back on the ship that you think about his hands. (+340 cr)",
+   "text": "You hand it over, and he thanks you in a voice you won't remember, and the fee is exactly what Mrs. Adeyemi promised. It's not until you're back on the ship that you think about his hands. (+340 cr)",
    "credits": 340,
    "rep": {},
    "xp": false,
@@ -9125,7 +9125,7 @@
  {
   "key": "awayjob:package:1:0:0",
   "v": {
-   "text": "She counts it out into your palm from a tin of coins. You take it. It is a small, honest pleasure. (+290 cr)",
+   "text": "She counts it out into your palm from a tin of coins. You take it. It's a small, honest pleasure. (+290 cr)",
    "credits": 290,
    "rep": {},
    "xp": false,
@@ -9136,7 +9136,7 @@
  {
   "key": "awayjob:package:1:0:0.999",
   "v": {
-   "text": "She counts it out into your palm from a tin of coins. You take it. It is a small, honest pleasure. (+290 cr)",
+   "text": "She counts it out into your palm from a tin of coins. You take it. It's a small, honest pleasure. (+290 cr)",
    "credits": 290,
    "rep": {},
    "xp": false,
@@ -9147,7 +9147,7 @@
  {
   "key": "awayjob:package:1:1:0",
   "v": {
-   "text": "She writes it on a scrap, and a street, and a time of day. \"Tell them I sent you,\" she says. It is not cash, but you will not forget where it leads.",
+   "text": "She writes it on a scrap, and a street, and a time of day. \"Tell them I sent you,\" she says. It's not cash, but you won't forget where it leads.",
    "credits": 0,
    "rep": {
     "Charter League": 3
@@ -9160,7 +9160,7 @@
  {
   "key": "awayjob:package:1:1:0.999",
   "v": {
-   "text": "She writes it on a scrap, and a street, and a time of day. \"Tell them I sent you,\" she says. It is not cash, but you will not forget where it leads.",
+   "text": "She writes it on a scrap, and a street, and a time of day. \"Tell them I sent you,\" she says. It's not cash, but you won't forget where it leads.",
    "credits": 0,
    "rep": {
     "Charter League": 3
@@ -9174,19 +9174,19 @@
   "key": "awayjob:stranded:0",
   "v": {
    "title": "A Hauler Down on Ironheart",
-   "text": "The hauler sits at the far end of the apron on Ironheart, listing a degree to port, with her drive housing open to the sky and a man underneath it who has not slept in a day. He climbs out when you hail. \"Mrs. Adeyemi sent you,\" he says. \"I've been telling the yard it's the injector, and the yard has been telling me it's three thousand credits.\"",
+   "text": "The hauler sits at the far end of the apron on Ironheart, listing a degree to port, with her drive housing open to the sky and a man underneath it who hasn't slept in a day. He climbs out when you hail. \"Mrs. Adeyemi sent you,\" he says. \"I've been telling the yard it's the injector, and the yard has been telling me it's three thousand credits.\"",
    "labels": [
     "Rebuild the injector [Engineer, long odds]",
     "Tow her to the yard and argue the price down [Pilot, long odds]",
     "Give him what you can spare and wish him luck (50 cr)"
    ],
-   "blurb": "{who}'s brother is stuck on {dest} with a failed drive and no money for the yard. {who} cannot go. You could."
+   "blurb": "{who}'s brother is stuck on {dest} with a failed drive and no money for the yard. {who} can't go. You could."
   }
  },
  {
   "key": "awayjob:stranded:0:0:0",
   "v": {
-   "text": "It is the injector, and a cracked housing behind it that the yard did not mention. You spend a long afternoon in the housing with a torch in your teeth, and at dusk the drive lights on the first try. He does not say anything for a long time, and then he gives you what he has. (+980 cr)",
+   "text": "It's the injector, and a cracked housing behind it that the yard didn't mention. You spend a long afternoon in the housing with a torch in your teeth, and at dusk the drive lights on the first try. He doesn't say anything for a long time, and then he gives you what he has. (+980 cr)",
    "credits": 980,
    "rep": {},
    "xp": false,
@@ -9200,7 +9200,7 @@
  {
   "key": "awayjob:stranded:0:0:0.999",
   "v": {
-   "text": "You get it half rebuilt before a feed line lets go and sprays you with hot coolant. He gets you out and wraps your arm in a wet cloth. The drive is no better, and you are in worse shape than it is. He gives you what he can for the effort. (+230 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "You get it half rebuilt before a feed line lets go and sprays you with hot coolant. He gets you out and wraps your arm in a wet cloth. The drive is no better, and you're in worse shape than it is. He gives you what he can for the effort. (+230 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
    "credits": 230,
    "rep": {},
    "xp": false,
@@ -9211,7 +9211,7 @@
  {
   "key": "awayjob:stranded:0:1:0",
   "v": {
-   "text": "You take her in tow with a line you do not entirely trust, and drag her the length of the apron at a crawl. At the yard you argue, in her captain's name, for a price he can pay, and win. He pays you from what is left. (+740 cr)",
+   "text": "You take her in tow with a line you don't entirely trust, and drag her the length of the apron at a crawl. At the yard you argue, in her captain's name, for a price he can pay, and win. He pays you from what's left. (+740 cr)",
    "credits": 740,
    "rep": {},
    "xp": false,
@@ -9225,7 +9225,7 @@
  {
   "key": "awayjob:stranded:0:1:0.999",
   "v": {
-   "text": "The line parts a hundred meters from the yard, and the hauler's bow swings into a post. It is nobody's fault, and everybody says so. He pays for the post. You get a bill for the line. (-60 cr)",
+   "text": "The line parts a hundred meters from the yard, and the hauler's bow swings into a post. It's nobody's fault, and everybody says so. He pays for the post. You get a bill for the line. (-60 cr)",
    "credits": -60,
    "rep": {},
    "xp": false,
@@ -9236,7 +9236,7 @@
  {
   "key": "awayjob:stranded:0:2:0",
   "v": {
-   "text": "You count fifty credits onto the hatch cover and wish him luck. He takes it the way a man takes a handhold, and does not say what he is thinking. (-50 cr)",
+   "text": "You count fifty credits onto the hatch cover and wish him luck. He takes it the way a man takes a handhold, and doesn't say what he's thinking. (-50 cr)",
    "credits": -50,
    "rep": {},
    "xp": false,
@@ -9247,7 +9247,7 @@
  {
   "key": "awayjob:stranded:0:2:0.999",
   "v": {
-   "text": "You count fifty credits onto the hatch cover and wish him luck. He takes it the way a man takes a handhold, and does not say what he is thinking. (-50 cr)",
+   "text": "You count fifty credits onto the hatch cover and wish him luck. He takes it the way a man takes a handhold, and doesn't say what he's thinking. (-50 cr)",
    "credits": -50,
    "rep": {},
    "xp": false,
@@ -9269,7 +9269,7 @@
  {
   "key": "awayjob:stranded:1:0:0",
   "v": {
-   "text": "He puts it into your hand and closes your fingers over it. \"It's what I have,\" he says. It is enough. (+430 cr)",
+   "text": "He puts it into your hand and closes your fingers over it. \"It's what I have,\" he says. It's enough. (+430 cr)",
    "credits": 430,
    "rep": {},
    "xp": false,
@@ -9280,7 +9280,7 @@
  {
   "key": "awayjob:stranded:1:0:0.999",
   "v": {
-   "text": "He puts it into your hand and closes your fingers over it. \"It's what I have,\" he says. It is enough. (+430 cr)",
+   "text": "He puts it into your hand and closes your fingers over it. \"It's what I have,\" he says. It's enough. (+430 cr)",
    "credits": 430,
    "rep": {},
    "xp": false,
@@ -9291,7 +9291,7 @@
  {
   "key": "awayjob:stranded:1:1:0",
   "v": {
-   "text": "He shakes your hand on it. You cannot spend it, and you do not need to. A hauler's captain with a standing offer is worth more on the lanes than the credits would have been.",
+   "text": "He shakes your hand on it. You can't spend it, and you don't need to. A hauler's captain with a standing offer is worth more on the lanes than the credits would have been.",
    "credits": 0,
    "rep": {
     "Charter League": 4
@@ -9304,7 +9304,7 @@
  {
   "key": "awayjob:stranded:1:1:0.999",
   "v": {
-   "text": "He shakes your hand on it. You cannot spend it, and you do not need to. A hauler's captain with a standing offer is worth more on the lanes than the credits would have been.",
+   "text": "He shakes your hand on it. You can't spend it, and you don't need to. A hauler's captain with a standing offer is worth more on the lanes than the credits would have been.",
    "credits": 0,
    "rep": {
     "Charter League": 4
@@ -9322,9 +9322,9 @@
    "labels": [
     "Walk her through the streets [Gunner, long odds]",
     "Arrange a quiet meeting by relay instead [Comms, long odds]",
-    "Tell her you cannot do this"
+    "Tell her you can't do this"
    ],
-   "blurb": "{who} knows a dockworker on {dest} who saw something and needs an escort to give a statement. Nobody there will do it."
+   "blurb": "{who} knows a dockworker on {dest} who saw something and needs an escort to give a statement. Nobody there'll do it."
   }
  },
  {
@@ -9344,7 +9344,7 @@
  {
   "key": "awayjob:witness:0:0:0.999",
   "v": {
-   "text": "They are waiting at the third corner, two of them, and it is short and ugly. You get her into a doorway and keep her there, and you get a broken tooth and a cut on the scalp for it. The office gets her statement after dark. (+340 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
+   "text": "They're waiting at the third corner, two of them, and it's short and ugly. You get her into a doorway and keep her there, and you get a broken tooth and a cut on the scalp for it. The office gets her statement after dark. (+340 cr) You are hurt. Your work counts a level lower until the clinic clears you.",
    "credits": 340,
    "rep": {},
    "xp": false,
@@ -9355,7 +9355,7 @@
  {
   "key": "awayjob:witness:0:1:0",
   "v": {
-   "text": "You make a call you should not be able to make, in a voice that sounds like an authorized one, and an officer from the office comes to the noodle stall in plain clothes and takes the statement over the counter. Nobody who was watching the street sees anything. (+810 cr)",
+   "text": "You make a call you shouldn't be able to make, in a voice that sounds like an authorized one, and an officer from the office comes to the noodle stall in plain clothes and takes the statement over the counter. Nobody who was watching the street sees anything. (+810 cr)",
    "credits": 810,
    "rep": {},
    "xp": false,
@@ -9369,7 +9369,7 @@
  {
   "key": "awayjob:witness:0:1:0.999",
   "v": {
-   "text": "The call goes through somebody else's relay. By the time the officer arrives, there is a man across the street with a good view of the stall, and the dockworker has gone out the back and has not come back. You get a fee for the trouble, and a lasting dislike of relays. (+170 cr)",
+   "text": "The call goes through somebody else's relay. By the time the officer arrives, there's a man across the street with a good view of the stall, and the dockworker has gone out the back and hasn't come back. You get a fee for the trouble, and a lasting dislike of relays. (+170 cr)",
    "credits": 170,
    "rep": {
     "Charter League": -3
@@ -9382,7 +9382,7 @@
  {
   "key": "awayjob:witness:0:2:0",
   "v": {
-   "text": "\"I understand,\" she says. She does not look surprised, and that is somehow the worst of it. You leave her at the table with her tea.",
+   "text": "\"I understand,\" she says. She doesn't look surprised, and that's somehow the worst of it. You leave her at the table with her tea.",
    "credits": 0,
    "rep": {},
    "xp": false,
@@ -9393,7 +9393,7 @@
  {
   "key": "awayjob:witness:0:2:0.999",
   "v": {
-   "text": "\"I understand,\" she says. She does not look surprised, and that is somehow the worst of it. You leave her at the table with her tea.",
+   "text": "\"I understand,\" she says. She doesn't look surprised, and that's somehow the worst of it. You leave her at the table with her tea.",
    "credits": 0,
    "rep": {},
    "xp": false,
@@ -9462,7 +9462,7 @@
  },
  {
   "key": "jobsHtml:Hermes Foundry",
-  "v": "<div class=\"post\"><div class=\"eyebrow\">Jobs on the station &middot; for your own savings</div>\n    <div class=\"row\"><span><b>Escort on the Lower Decks</b> <span class=\"hint\">A debt courier is carrying a case through the lower decks tonight and wants somebody who can use a gun and a straight face.</span></span>\n      <button data-action=\"takeJob\" data-arg=\"escort\" >Take it</button></div><div class=\"row\"><span><b>Trouble in the Ration Line</b> <span class=\"hint\">A ration line is about to turn into a fight, and the warden wants someone who is not on either side.</span></span>\n      <button data-action=\"takeJob\" data-arg=\"ration\" >Take it</button></div>\n    <p class=\"hint\">One job a visit. It takes the day, and the pay is yours.</p></div>"
+  "v": "<div class=\"post\"><div class=\"eyebrow\">Jobs on the station &middot; for your own savings</div>\n    <div class=\"row\"><span><b>Escort on the Lower Decks</b> <span class=\"hint\">A debt courier is carrying a case through the lower decks tonight and wants somebody who can use a gun and a straight face.</span></span>\n      <button data-action=\"takeJob\" data-arg=\"escort\" >Take it</button></div><div class=\"row\"><span><b>Trouble in the Ration Line</b> <span class=\"hint\">A ration line is about to turn into a fight, and the warden wants someone who's not on either side.</span></span>\n      <button data-action=\"takeJob\" data-arg=\"ration\" >Take it</button></div>\n    <p class=\"hint\">One job a visit. It takes the day, and the pay is yours.</p></div>"
  },
  {
   "key": "jobsHtml:Pallas Refinery",
@@ -9474,7 +9474,7 @@
  },
  {
   "key": "awayHtml",
-  "v": "<div class=\"post\"><div class=\"eyebrow\">Work elsewhere &middot; you would need the captain to fly you there</div>\n    <div class=\"row\"><span><b>A Package for Juno Commons</b> <span class=\"hint\">The woman at the pump has a sealed package for a contact on Juno Commons, and does not trust the post. Juno Commons, Juno, 11 days. Until day 56.</span></span>\n      <button data-action=\"pitchJob\" data-arg=\"0\" >Put it to the captain</button></div><div class=\"row\"><span><b>A Witness on Hermes Foundry</b> <span class=\"hint\">Janek at the noodle counter knows a dockworker on Hermes Foundry who saw something and needs an escort to give a statement. Nobody there will do it. Hermes Foundry, Mercury, 13 days. Until day 60.</span></span>\n      <button data-action=\"pitchJob\" data-arg=\"1\" >Put it to the captain</button></div>\n    <p class=\"hint\">Once a stop for each. The captain decides, by who they are and how they feel about you.</p></div>"
+  "v": "<div class=\"post\"><div class=\"eyebrow\">Work elsewhere &middot; you'd need the captain to fly you there</div>\n    <div class=\"row\"><span><b>A Package for Juno Commons</b> <span class=\"hint\">The woman at the pump has a sealed package for a contact on Juno Commons, and doesn't trust the post. Juno Commons, Juno, 11 days. Until day 56.</span></span>\n      <button data-action=\"pitchJob\" data-arg=\"0\" >Put it to the captain</button></div><div class=\"row\"><span><b>A Witness on Hermes Foundry</b> <span class=\"hint\">Janek at the noodle counter knows a dockworker on Hermes Foundry who saw something and needs an escort to give a statement. Nobody there'll do it. Hermes Foundry, Mercury, 13 days. Until day 60.</span></span>\n      <button data-action=\"pitchJob\" data-arg=\"1\" >Put it to the captain</button></div>\n    <p class=\"hint\">Once a stop for each. The captain decides, by who they are and how they feel about you.</p></div>"
  },
  {
   "key": "away:Hermes Foundry:1",

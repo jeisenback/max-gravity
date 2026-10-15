@@ -11,23 +11,23 @@
 
 const REPEL_TITLES = ['The Lock', 'The Corridor', 'The Bridge'];
 const REPEL_OPENINGS = [
-  [`The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here is here, behind the closer, and the captain's voice on the intercom says to hold it.`,
+  [`The outer lock is cycling from the outside. The inner door has a thin bright seam in it where a cutter is working. Everyone who can be here's here, behind the closer, and the captain's voice on the intercom says to hold it.`,
     `Something hits the hull aft and the deck rings. The lock indicator goes amber, then red. Through the inner window there are three suits in the lock and a fourth coming.`],
-  [`They are through the lock. It is eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.`,
-    `The lock door is down and the corridor is theirs as far as the first berth door. Somebody is firing from the bay. The deck smells of cut metal.`],
-  [`The last hatch before the bridge is the one the captain closed by hand. They are working at it from the other side. The pilot has the helm and has not looked round.`,
-    `There is one door left, and the closer on it is hissing. Behind it, the bridge. In front of it, everyone still standing.`],
+  [`They're through the lock. It's eleven meters from there to the galley hatch, with the berth doors on one side and the cargo bay on the other. The air handler is running flat out and the lights are off at the lock end.`,
+    `The lock door is down and the corridor is theirs as far as the first berth door. Somebody's firing from the bay. The deck smells of cut metal.`],
+  [`The last hatch before the bridge is the one the captain closed by hand. They're working at it from the other side. The pilot has the helm and hasn't looked round.`,
+    `There's one door left, and the closer on it's hissing. Behind it, the bridge. In front of it, everyone still standing.`],
 ];
 const REPEL_TACTICS = {
   hold: { label: 'Hold the line', beats: 'flank',
-    win: 'You hold the line. The first one through takes the closer in the face and goes back out, and the others do not come again for a minute.',
-    lose: 'The line does not hold. They come through two at a time, and you are pushed back a section.' },
+    win: 'You hold the line. The first one through takes the closer in the face and goes back out, and the others don\'t come again for a minute.',
+    lose: 'The line doesn\'t hold. They come through two at a time, and you\'re pushed back a section.' },
   rush: { label: 'Rush them', beats: 'hold',
     win: 'You go in low, all together, before they have set themselves. They break at the first contact and go back the way they came.',
-    lose: 'You rush and they are ready. A gun goes off in the corridor, too close, and you fall back with fewer than you went in with.' },
+    lose: 'You rush and they\'re ready. A gun goes off in the corridor, too close, and you fall back with fewer than you went in with.' },
   flank: { label: 'Go round them', beats: 'rush',
     win: 'You go through the cargo bay and come out on their side. They turn too late, and the line goes back.',
-    lose: 'You go round and find nobody there. When you come back they are two meters further in.' },
+    lose: 'You go round and find nobody there. When you come back they\'re two meters further in.' },
 };
 // What the captain and the crew remember of a boarding, as lines of the beat: `memory.<name>` (hiredscenes.js repelLines).
 const REPEL_MEMORY = { held: 'You held the ship when boarders came.', together: 'We held the ship together.', taken: 'The bridge was taken on your watch.' };
@@ -36,38 +36,38 @@ const REPEL_TIE = 'Neither side gives. The air handler runs, somebody coughs, an
 const REPEL_POST = {
   gunner: { label: 'Fire down the line', win: ('You put three rounds down the line at the seam, one at a time, and the ones in front go down across ' +
       'the ones behind. They go back toward the lock.'), lose: 'You fire, and the round goes through a berth door. They use the noise and come a section deeper.' },
-  engineer: { label: 'Seal the bulkhead behind them', win: 'You close the section bulkhead by hand, behind the front of them, and run the lock cutter to overload. The hull groans. They are on the wrong side of the ship.', lose: 'The bulkhead jams a hand short of shut. They use the gap.' },
-  pilot: { label: 'Roll the ship', win: 'You roll the ship thirty degrees, hard. The boarders, in their suits, go into the corridor wall. The crew were braced, and go the other way.', lose: 'You roll, and your own people are not braced either. The boarders come up first.' },
-  comms: { label: 'Lock the doors from the console', win: 'You lock every door between them and the bridge from the console, then open the one that leads back to the lock. They follow the open door.', lose: 'You lock the wrong door. It is the one behind you.' },
+  engineer: { label: 'Seal the bulkhead behind them', win: 'You close the section bulkhead by hand, behind the front of them, and run the lock cutter to overload. The hull groans. They\'re on the wrong side of the ship.', lose: 'The bulkhead jams a hand short of shut. They use the gap.' },
+  pilot: { label: 'Roll the ship', win: 'You roll the ship thirty degrees, hard. The boarders, in their suits, go into the corridor wall. The crew were braced, and go the other way.', lose: 'You roll, and your own people aren\'t braced either. The boarders come up first.' },
+  comms: { label: 'Lock the doors from the console', win: 'You lock every door between them and the bridge from the console, then open the one that leads back to the lock. They follow the open door.', lose: 'You lock the wrong door. It\'s the one behind you.' },
 };
 // Boarding her: the same three places from the other side, so a win here is a place gained. The post lines are the job of your
 // post in the assault.
 const ASSAULT_TITLES = ['Her Bridge', 'Her Corridor', 'Her Lock'];
 const ASSAULT_OPENINGS = [
   [`The last hatch before her bridge has a wheel on it, and somebody on the other side is holding the wheel. Her pilot is a name on a transponder. Behind you the air handler is running, and the captain's voice on the intercom says to go.`,
-    `There is one door left. It is thin, and the light under it moves. Whatever is on her bridge has heard you coming for some time.`],
-  [`You are in through her lock. It is a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody is behind a crate at the far end, and somebody else is calling to them.`,
-    `Her corridor is dark and the deck is tilted a few degrees, because her gravity plates are out. They are at the galley hatch. You can hear a gun being checked.`],
-  [`The cutter has bitten through her outer lock and the inner door is open a hand's width. It is dark inside. A light comes on, and something small and metal skips across the deck toward you.`,
-    `Her lock is wide open and empty, and nobody has fired. Beyond the inner door there is a corridor, and in the corridor somebody is waiting.`],
+    `There's one door left. It's thin, and the light under it moves. Whatever is on her bridge has heard you coming for some time.`],
+  [`You're in through her lock. It's a corridor like yours, with the berth doors the wrong way round and a smell of fried oil and old smoke. Somebody's behind a crate at the far end, and somebody else is calling to them.`,
+    `Her corridor is dark and the deck is tilted a few degrees, because her gravity plates are out. They're at the galley hatch. You can hear a gun being checked.`],
+  [`The cutter has bitten through her outer lock and the inner door is open a hand's width. It's dark inside. A light comes on, and something small and metal skips across the deck toward you.`,
+    `Her lock is wide open and empty, and nobody has fired. Beyond the inner door there's a corridor, and in the corridor somebody's waiting.`],
 ];
 const ASSAULT_TACTICS = {
   hold: { label: 'Cover and advance', beats: 'flank',
-    win: 'You go along the wall in pairs, one covering and one moving. They cannot find a gap in it, and you are a section further in.',
+    win: 'You go along the wall in pairs, one covering and one moving. They can\'t find a gap in it, and you\'re a section further in.',
     lose: 'You go along the wall and they have it covered from two sides. You come back to where you started, with fewer than you went with.' },
   rush: { label: 'Rush them', beats: 'hold',
-    win: 'You go in low and fast, all together. They are not set, and the first of them breaks and the rest follow.',
-    lose: 'You rush and they are set. A gun goes off in the corridor, too close, and you fall back a section.' },
+    win: 'You go in low and fast, all together. They\'re not set, and the first of them breaks and the rest follow.',
+    lose: 'You rush and they\'re set. A gun goes off in the corridor, too close, and you fall back a section.' },
   flank: { label: 'Go round them', beats: 'rush',
     win: 'You go through her cargo bay and come out behind them. They turn too late, and you take the section.',
-    lose: 'You go round and find a bulkhead where her plan said there was a door. When you come back they have moved up.' },
+    lose: 'You go round and find a bulkhead where her plan said there was a door. When you come back they\'ve moved up.' },
 };
 const ASSAULT_POST = {
   gunner: { label: 'Put fire down the corridor', win: 'You put three rounds down the corridor at the crate, one at a time. The one behind it stops firing and the others pull back.', lose: 'You fire, and the rounds go into the deck. They use the noise to move up.' },
-  engineer: { label: 'Cut her power', win: 'You find her breaker panel by the lock and pull it. Every light in the section goes out, and you have your helmet lamps and they do not.', lose: 'You pull the wrong breaker and her emergency lights come on instead, all of them, in your eyes.' },
+  engineer: { label: 'Cut her power', win: 'You find her breaker panel by the lock and pull it. Every light in the section goes out, and you have your helmet lamps and they don\'t.', lose: 'You pull the wrong breaker and her emergency lights come on instead, all of them, in your eyes.' },
   pilot: { label: 'Bring the ship round to her hatch', win: ('You take the cutter along her side to the hatch by the bridge. The crew go out of the ' +
       'second lock behind them and the corridor is a pincer.'), lose: 'You bring her round and misjudge it by a meter. The hull scrapes and the crew in the lock go over.' },
-  comms: { label: 'Take her intercom', win: 'You find her intercom and put the captain on it. "Your ship is lost," the captain says, "and the lock is open." Some of them go.', lose: 'You find her intercom and it is a recording, which says something unrepeatable about your mother.' },
+  comms: { label: 'Take her intercom', win: 'You find her intercom and put the captain on it. "Your ship is lost," the captain says, "and the lock is open." Some of them go.', lose: 'You find her intercom and it\'s a recording, which says something unrepeatable about your mother.' },
 };
 
 const REPEL_LEAN = { pirate: { rush: 0.38, hold: 0.3, flank: 0.32 }, patrol: { hold: 0.38, rush: 0.3, flank: 0.32 } };
@@ -85,12 +85,12 @@ const handHurt = () => !!(hired() && hired().hurtUntil > G.state.day);
 // A crew member close to you covers you: the first hit that would have been yours is theirs.
 function repelCrew() {
   const st = G.state, ids = st.crew.filter(id => !(st.injured || {})[id]), held = new Map(), fighters = ids.map(id => ({ id, p: person(id) })).filter(f => f.p);
-  for (const f of fighters) if (f.p.opinion <= OPINION.ENEMY) held.set(f.id, `${f.p.first} will not fight for you.`);
+  for (const f of fighters) if (f.p.opinion <= OPINION.ENEMY) held.set(f.id, `${f.p.first} won't fight for you.`);
   const live = fighters.filter(f => !held.has(f.id));
   for (const [a, b] of pairs(live)) {
     if (held.has(a.id) || held.has(b.id) || bond(a, b) > SPLIT_BOND) continue;
     const [out, stays] = a.p.opinion <= b.p.opinion ? [a, b] : [b, a];
-    held.set(out.id, `${out.p.first} will not stand in the same section as ${stays.p.first}.`);
+    held.set(out.id, `${out.p.first} won't stand in the same section as ${stays.p.first}.`);
   }
   return { fight: fighters.filter(f => !held.has(f.id)).map(f => f.id), held: [...held.values()] };
 }
@@ -176,7 +176,7 @@ function hurtHand(s) {
   h.hurtUntil = st.day + (again ? 18 : 12);
   s.youHurt = true;
   captainFlag('hurt');  // kept for the goodbye (captains.js)
-  if (Math.random() < handDeathOdds(again)) { handDies(s, again ? 'hurt' : 'first'); return again ? 'You are hurt again, and you stay down.' : 'You are hit.'; }
+  if (Math.random() < handDeathOdds(again)) { handDies(s, again ? 'hurt' : 'first'); return again ? 'You\'re hurt again, and you stay down.' : 'You\'re hit.'; }
   const bill = roleHolder('medic') ? 0 : Math.min(st.credits, HAND_CLINIC);
   st.credits -= bill;
   const pay = bill ? ` The clinic is ${fmt(bill)} cr of your own, with no medic aboard.` : '';
@@ -197,14 +197,14 @@ function repelCasualty(s) {
   if (s.hurt.has(who) || secondStrike(c)) {  // hurt twice in a fight, or marked before and hit again: the second strike
     if (loseCrew(c, `Killed repelling boarders near ${system().name}.`) === 'marked') {  // a floor held them (the full build)
       s.marked.push(c);
-      return `${c.first} is hit again and does not get up. ${c.first} is alive, and ${c.first} is not fit to work.`;
+      return `${c.first} is hit again and doesn't get up. ${c.first} is alive, and ${c.first} isn't fit to work.`;
     }
     s.dead.push(c);
-    return `${c.first} is hit again and does not get up.`;
+    return `${c.first} is hit again and doesn't get up.`;
   }
   if (Math.random() < lossOdds(c, true)) {  // a hard hit that does not stop at hurt (losses.js)
-    if (loseCrew(c, `Killed repelling boarders near ${system().name}.`) === 'dead') { s.dead.push(c); return `${cover}${c.first} is hit, and does not get up, and will not.`; }
-    s.marked.push(c); return `${cover}${c.first} is hit, and carried below, and is alive, and is not fit to work.`;
+    if (loseCrew(c, `Killed repelling boarders near ${system().name}.`) === 'dead') { s.dead.push(c); return `${cover}${c.first} is hit, and doesn't get up, and won't.`; }
+    s.marked.push(c); return `${cover}${c.first} is hit, and carried below, and is alive, and isn't fit to work.`;
   }
   (st.injured = st.injured || {})[who] = true;
   s.hurt.add(who);
@@ -243,10 +243,10 @@ function repelSettle(s) {
   if (d.foe.kind !== 'patrol' && !s.handDied && Math.random() < CAPTAIN_LOST) {
     h.captainLost = { day: st.day, how: 'bridge' };
     G.nextEvent = captainLostScene();
-    return `They are on the bridge. Captain ${cap.last} is at the console and does not give them the code, so they take it. They take ${fmt(taken)} cr of the ship's fund and go. The ship still flies. Captain ${cap.last} does not get up.${lost}`;
+    return `They're on the bridge. Captain ${cap.last} is at the console and doesn't give them the code, so they take it. They take ${fmt(taken)} cr of the ship's fund and go. The ship still flies. Captain ${cap.last} doesn't get up.${lost}`;
   }
-  if (d.foe.kind === 'patrol') return `They are on the bridge. Captain ${cap.last} surrenders the ship to the ${d.foe.gov} Navy, and the boarding officer writes a levy of ${fmt(taken)} cr against the ship's fund, which is collected on the spot. The cutter lets you go, with a citation.${lost}`;
-  return `They are on the bridge. Captain ${cap.last} gives them the code to the strongbox because there is no choice, and they take ${fmt(taken)} cr of the ship's fund and go. The ship still flies.${lost}`;
+  if (d.foe.kind === 'patrol') return `They're on the bridge. Captain ${cap.last} surrenders the ship to the ${d.foe.gov} Navy, and the boarding officer writes a levy of ${fmt(taken)} cr against the ship's fund, which is collected on the spot. The cutter lets you go, with a citation.${lost}`;
+  return `They're on the bridge. Captain ${cap.last} gives them the code to the strongbox because there's no choice, and they take ${fmt(taken)} cr of the ship's fund and go. The ship still flies.${lost}`;
 }
 
 // Boarding her ends with her bridge taken (her strongbox goes into the ship's fund) or you driven back to your own lock.
@@ -264,7 +264,7 @@ function assaultSettle(s, won, lost) {
   }
   like(cap, -1, repelWords(s, 'memory.left', ASSAULT_MEMORY.left));
   st.armor = Math.max(1, st.armor - Math.round(ship().armor * 0.05));
-  return `You are driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she is still drifting. Armor -${Math.round(ship().armor * 0.05)}.${lost}`;
+  return `You're driven back to the lock, and the cutter pulls away with the door half closed. Her drive is dead and she's still drifting. Armor -${Math.round(ship().armor * 0.05)}.${lost}`;
 }
 
 const listNames = names => (names.length > 1 ? `${names.slice(0, -1).join(', ')} and ${names[names.length - 1]}` : names[0]);

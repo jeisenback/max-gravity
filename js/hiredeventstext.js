@@ -39,15 +39,15 @@ const WORK_EVENTS = [
     id: 'pilot-sim',
     post: 'pilot',
     title: 'The Docking Sim',
-    text: 'The captain has left the approach for the next port on the sim, and said nothing about it. It is a hard one: a tight berth, a crosswind of station spin, and a score at the bottom of the screen with someone else\'s initials.',
+    text: 'The captain has left the approach for the next port on the sim, and said nothing about it. It\'s a hard one: a tight berth, a crosswind of station spin, and a score at the bottom of the screen with someone else\'s initials.',
     careful: [
-      'Fly it slowly, until it is clean',
+      'Fly it slowly, until it\'s clean',
       'You fly it five times, slowly, with the numbers up on the second screen, until the approach is clean in your hands. The fifth run is four-tenths of a second off the initials at the bottom.'
     ],
     quick: [
       'Fly it at speed and see what happens',
-      'You fly it hot, and it works. The score is not the best, but it is close.',
-      'You fly it hot and hit the berth wall, and the sim sounds a rude tone. You reset it and do not look at the score.'
+      'You fly it hot, and it works. The score isn\'t the best, but it\'s close.',
+      'You fly it hot and hit the berth wall, and the sim sounds a rude tone. You reset it and don\'t look at the score.'
     ]
   },
   {
@@ -72,19 +72,19 @@ const WORK_EVENTS = [
     text: 'A faint return has been showing on the plot for an hour, small and slow, two degrees to port of the line. It could be a rock. It could be a ship running dark. Nobody else has mentioned it.',
     careful: [
       'Track it for another hour before you say anything',
-      'You track it for an hour, logging bearing and range every five minutes. It is a rock, tumbling, and it passes well clear. You write down the figures anyway.'
+      'You track it for an hour, logging bearing and range every five minutes. It\'s a rock, tumbling, and it passes well clear. You write down the figures anyway.'
     ],
     quick: [
       'Call it a rock and let the plot go',
-      'You call it a rock and let it go, and it is a rock. You do not look at it again until it is behind you.',
-      'You call it a rock and stop watching. Forty minutes later it changes course. It is a small hauler running dark, and it passes close enough to read the paint. The captain finds out from the log.'
+      'You call it a rock and let it go, and it\'s a rock. You don\'t look at it again until it\'s behind you.',
+      'You call it a rock and stop watching. Forty minutes later it changes course. It\'s a small hauler running dark, and it passes close enough to read the paint. The captain finds out from the log.'
     ]
   },
   {
     id: 'gunner-jam',
     post: 'gunner',
     title: 'A Jammed Feed',
-    text: 'The ready rack has jammed, a round half in and half out, and the fire-control board is showing a fault in a color you have not seen. It will have to be cleared before anyone needs to shoot.',
+    text: 'The ready rack has jammed, a round half in and half out, and the fire-control board is showing a fault in a color you haven\'t seen. It\'ll have to be cleared before anyone needs to shoot.',
     careful: [
       'Strip the feed and clear it by the book',
       'You safe the rack, strip the feed, and find a bent follower worn thin. You straighten it, oil the rest, and cycle the rack twenty times until it runs like a clock.'
@@ -106,7 +106,7 @@ const WORK_EVENTS = [
     ],
     quick: [
       'Apply a correction in the fire control',
-      'You dial in a correction by eye, and the next ten shots on the sim cluster neatly. It is not perfect, but it is close.',
+      'You dial in a correction by eye, and the next ten shots on the sim cluster neatly. It\'s not perfect, but it\'s close.',
       'You dial in the correction the wrong way and it doubles the error. It takes an hour to find and undo.'
     ]
   },
@@ -117,7 +117,7 @@ const WORK_EVENTS = [
     text: 'The captain wants the guns run through their paces before the next port, and has left the range sim set to something unkind: fast targets, a lot of them, and a clock.',
     careful: [
       'Work the targets one at a time',
-      'You take them one at a time, in order, ignoring the clock, and by the third pass the order has become instinct. The clock is still ahead of you, but you have stopped fighting it.'
+      'You take them one at a time, in order, ignoring the clock, and by the third pass the order has become instinct. The clock is still ahead of you, but you\'ve stopped fighting it.'
     ],
     quick: [
       'Race the clock and take them as they come',
@@ -132,7 +132,7 @@ const WORK_EVENTS = [
     text: 'The magazine count on the board says four hundred rounds. The count you made by hand says three hundred and ninety. Someone has been in the rack, or the sensor has been lying, and either way the captain signs for the number on the board.',
     careful: [
       'Count the rack by hand, twice',
-      'You count the rack round by round, and then again. It is three hundred and ninety. You find a loose sensor lead on the rack and reseat it. The board and the rack agree.'
+      'You count the rack round by round, and then again. It\'s three hundred and ninety. You find a loose sensor lead on the rack and reseat it. The board and the rack agree.'
     ],
     quick: [
       'Trust your count and correct the board',
@@ -144,13 +144,13 @@ const WORK_EVENTS = [
     id: 'gunner-drone',
     post: 'gunner',
     title: 'Target Drone',
-    text: 'The captain has launched a target drone, a battered orange canister, the only thing on the range worth shooting. It has been hit before. It is not meant to be hit twice in a burn. You have twenty minutes of range time.',
+    text: 'The captain has launched a target drone, a battered orange canister, the only thing on the range worth shooting. It has been hit before. It\'s not meant to be hit twice in a burn. You have twenty minutes of range time.',
     careful: [
       'Take three shots and score each',
       'You take three shots with a full minute between them and score each against the telemetry. Two hit. You write down what the third missed by, and why.'
     ],
     quick: [
-      'Burst it and see what is left',
+      'Burst it and see what\'s left',
       'You burst it, and the drone tumbles apart in a spray of orange. The captain gets the bill in the log.',
       'You burst it and miss with every round. The drone coasts on, unharmed, and the range clock runs out.'
     ]
@@ -159,7 +159,7 @@ const WORK_EVENTS = [
     id: 'engineer-vibe',
     post: 'engineer',
     title: 'A Shudder in the Drive',
-    text: 'There is a new sound in the drive room, a low, regular shudder at the edge of hearing that you feel in your back teeth. It comes and goes with the burn. Something is out of balance, and you are the one with the tools.',
+    text: 'There\'s a new sound in the drive room, a low, regular shudder at the edge of hearing that you feel in your back teeth. It comes and goes with the burn. Something\'s out of balance, and you\'re the one with the tools.',
     careful: [
       'Trace it through the mounts, one by one',
       'You work down the mounts with a torque wrench and a hand on each, until you find the one that has crept loose. You reseat it, and the shudder stops.'
@@ -174,7 +174,7 @@ const WORK_EVENTS = [
     id: 'engineer-recycler',
     post: 'engineer',
     title: 'The Recycler Sulks',
-    text: 'The air recycler has started to smell of hot dust, and its read-out has been stuck on one number for an hour. Nobody has said anything, but you have seen a few people breathing through their sleeves.',
+    text: 'The air recycler has started to smell of hot dust, and its read-out has been stuck on one number for an hour. Nobody has said anything, but you\'ve seen a few people breathing through their sleeves.',
     careful: [
       'Pull the cartridges and clean the whole stack',
       'You pull the cartridges, one at a time, and clean the stack down to bare metal. It takes the afternoon, and the air afterward is, noticeably, just air.'
@@ -182,14 +182,14 @@ const WORK_EVENTS = [
     quick: [
       'Swap in the spare cartridge',
       'You swap in the spare, and the smell clears at once. The old one goes in the bin with a tag that says "check later".',
-      'The spare is the wrong size and takes a gasket to seat it. By the time it runs, you have lost the afternoon.'
+      'The spare is the wrong size and takes a gasket to seat it. By the time it runs, you\'ve lost the afternoon.'
     ]
   },
   {
     id: 'engineer-coolant',
     post: 'engineer',
     title: 'Warm Coolant',
-    text: 'The coolant loop is running a few degrees warm. It is nowhere near a limit, but the trend is wrong, and a trend like that is a leak, or a pump, or a thing nobody has thought of yet.',
+    text: 'The coolant loop is running a few degrees warm. It\'s nowhere near a limit, but the trend is wrong, and a trend like that\'s a leak, or a pump, or a thing nobody has thought of yet.',
     careful: [
       'Chase it from the pump to the radiator',
       'You walk the loop from the pump to the radiator with a meter, and find a partly closed valve that someone, some time, nudged. You open it, and the loop settles.'
@@ -204,14 +204,14 @@ const WORK_EVENTS = [
     id: 'engineer-seal',
     post: 'engineer',
     title: 'A Weep at the Hatch',
-    text: 'There is a dark bead at the foot of the number two hatch seal, and a damp ring on the deck under it. It is coolant, or water, or something worse, and it was not there at the last port.',
+    text: 'There\'s a dark bead at the foot of the number two hatch seal, and a damp ring on the deck under it. It\'s coolant, or water, or something worse, and it wasn\'t there at the last port.',
     careful: [
       'Pull the seal and check the gasket',
       'You pull the seal and find the gasket flattened on one side, with a hair of grit under it. You clean the groove and fit a new gasket, and the deck stays dry.'
     ],
     quick: [
       'Wipe it and watch it',
-      'You wipe it and watch it for a watch. It does not come back. You log the time and the place.',
+      'You wipe it and watch it for a watch. It doesn\'t come back. You log the time and the place.',
       'You wipe it and watch it. It comes back at the change of watch, and the bead is a trickle. You pull the seal after all, with the deck wet.'
     ]
   },
@@ -219,7 +219,7 @@ const WORK_EVENTS = [
     id: 'engineer-breaker',
     post: 'engineer',
     title: 'The Tripping Breaker',
-    text: 'The breaker on the galley circuit has tripped three times since the flip. Each time it resets, and each time someone says it must be the kettle. It is not the kettle.',
+    text: 'The breaker on the galley circuit has tripped three times since the flip. Each time it resets, and each time someone says it must be the kettle. It\'s not the kettle.',
     careful: [
       'Walk the circuit and test each load',
       'You walk the circuit with a meter and find a pinched cable behind the galley panel, shining where the insulation has rubbed through. You wrap it and reroute it, and the breaker holds.'
@@ -234,7 +234,7 @@ const WORK_EVENTS = [
     id: 'comms-noise',
     post: 'comms',
     title: 'Noise on the Band',
-    text: 'There is a hiss on the band that was not there at the last port, rising and falling as the ship turns. It is stealing your range, and, if it is the antenna, it will only get worse.',
+    text: 'There\'s a hiss on the band that wasn\'t there at the last port, rising and falling as the ship turns. It\'s stealing your range, and, if it\'s the antenna, it\'ll only get worse.',
     careful: [
       'Walk the antenna run and check every join',
       'You walk the whole run with a meter, join by join, and find a connector with a green crust on it. You clean it and re-seat it, and the band comes up clear and wide.'
@@ -252,7 +252,7 @@ const WORK_EVENTS = [
     text: 'A hail comes in, at the very edge of range, stuttering and thick with static. A name, a transponder number and what could be a warning, or could be a tender asking for a berth. The captain would like to know which.',
     careful: [
       'Clean it up and read it properly',
-      'You run the hail through every filter you have, a pass at a time, until a word comes out, and then a sentence. It is a tender asking for a berth. You log it and send the captain a note.'
+      'You run the hail through every filter you have, a pass at a time, until a word comes out, and then a sentence. It\'s a tender asking for a berth. You log it and send the captain a note.'
     ],
     quick: [
       'Guess at the gaps and answer',
@@ -279,14 +279,14 @@ const WORK_EVENTS = [
     id: 'comms-clock',
     post: 'comms',
     title: 'Two Clocks',
-    text: 'The station you are calling stamps its messages with a time that disagrees with the ship\'s clock by eleven minutes. One of them is wrong, and the log is full of messages stamped with whichever it is.',
+    text: 'The station you\'re calling stamps its messages with a time that disagrees with the ship\'s clock by eleven minutes. One of them is wrong, and the log is full of messages stamped with whichever it is.',
     careful: [
       'Sync to three beacons and see which is wrong',
       'You sync to three lane beacons. The ship\'s clock is the one that has drifted, by eleven minutes. You reset it and annotate every message since the last port.'
     ],
     quick: [
       'Trust the station and adjust the offset',
-      'You apply the station\'s offset, and the log lines up. You note that you did not check.',
+      'You apply the station\'s offset, and the log lines up. You note that you didn\'t check.',
       'You apply the station\'s offset. The station was wrong. A message to the captain\'s broker goes out stamped eleven minutes in the future, and an answer comes back asking if it was a joke.'
     ]
   },
@@ -294,7 +294,7 @@ const WORK_EVENTS = [
     id: 'comms-relay',
     post: 'comms',
     title: 'A Relay Wants the Ship\'s Name',
-    text: 'A relay buoy wants your transponder, your registry and your captain\'s name before it will pass your traffic. It is the right procedure. It is also more than the last three buoys asked.',
+    text: 'A relay buoy wants your transponder, your registry and your captain\'s name before it\'ll pass your traffic. It\'s the right procedure. It\'s also more than the last three buoys asked.',
     careful: [
       'Ask the captain before you answer',
       'You take it to the captain, who reads the request twice and tells you what to send and what not to. The buoy passes your traffic. The captain adds a line to the book.'

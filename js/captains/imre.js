@@ -16,14 +16,14 @@ CAPTAINS.imre = {
       `everyone, including me. Noted that you're aboard."`),
 
   chatter: [
-    'Captain Sato is entering something in the log. It is the same size and shape as everything else in the log.',
+    'Captain Sato is entering something in the log. It\'s the same size and shape as everything else in the log.',
     'Captain Sato: "Noted."',
     'Captain Sato has hung the standing orders on the galley wall, squared to the edge of the panel, and is straightening them again.',
-    'Pilar has propped the galley hatch with a spanner, against standing order nine. Captain Sato has written it down and has not moved the spanner.',
-    'Captain Sato is polishing a button on the jacket that is already bright.',
+    'Pilar has propped the galley hatch with a spanner, against standing order nine. Captain Sato has written it down and hasn\'t moved the spanner.',
+    'Captain Sato is polishing a button on the jacket that\'s already bright.',
     'Captain Sato checks every transponder return against the log, and then checks the log against the returns.',
     'Captain Sato: "If it\'s not in the log, it didn\'t happen. If it\'s in the log, I\'ll see to it that it did."',
-    'Captain Sato eats lunch at noon, and not a minute before, with a book that is a manual.',
+    'Captain Sato eats lunch at noon, and not a minute before, with a book that\'s a manual.',
   ],
 
   // How they take a hand's suggestion of a different run (suggest.js): `ok` by their style, and a line for each answer.
@@ -41,14 +41,14 @@ CAPTAINS.imre = {
       notHeard: '"Noted," Captain Sato says, in the tone of someone closing a file. You run it as written, and it works, and the log records that it did.',
     },
     'cap-praise': {
-      text: 'Captain Sato hands you a slip with your name on it and a line in their own handwriting: No faults, this run. That is the whole of it. It has been filed.',
-      take: 'You thank them. "Noted," they say, and file it. You find, an hour later, that you are still holding the slip.',
+      text: 'Captain Sato hands you a slip with your name on it and a line in their own handwriting: No faults, this run. That\'s the whole of it. It has been filed.',
+      take: 'You thank them. "Noted," they say, and file it. You find, an hour later, that you\'re still holding the slip.',
       bonusYes: '"Provision seven allows a discretionary award," they say. "Sixty." They fill in a form for it, and have you sign for it.',
       bonusNo: '"Provision seven requires that an award follow a standing," Captain Sato says. "You haven\'t the standing yet. It\'s noted that you asked."',
     },
     'cap-dressing': {
-      text: 'There is a watch with no entry in the log, and Captain Sato has marked it with a red tag. They do not raise their voice. They read the date, the hour and the standing order aloud, and then the rule the gap breaks, and then they stop.',
-      own: '"That was mine," you say. "Noted," they say, and then, because it is you: "Thank you for saying so. The tag stays on until it\'s corrected."',
+      text: 'There\'s a watch with no entry in the log, and Captain Sato has marked it with a red tag. They don\'t raise their voice. They read the date, the hour and the standing order aloud, and then the rule the gap breaks, and then they stop.',
+      own: '"That was mine," you say. "Noted," they say, and then, because it\'s you: "Thank you for saying so. The tag stays on until it\'s corrected."',
       blame: 'You mention the terminal. "The terminal is checked on the first of the month," Captain Sato says. "It was checked on the first. We\'ll check it again."',
       terminal: '"We\'ll check it," Captain Sato says, and has the terminal\'s own audit log up before you have drawn breath. The two of you read it together.',
       showWin: 'There, in the audit log, is a dropped entry, timestamped inside your gap. Captain Sato reads it twice. "Noted," they say. "The entry is struck. The terminal is to be replaced. The record is amended." They hold out a form. "Sign here. This is an apology."',
@@ -56,12 +56,12 @@ CAPTAINS.imre = {
       admit: 'You say it late. "The gap is yours," Captain Sato says. "It\'s entered. You came to it second, and it\'s noted that you came."',
     },
     'cap-favour': {
-      text: ('Captain Sato asks whether you would stand an extra watch so a crew member can sleep. They have written the request out, with the ' +
+      text: ('Captain Sato asks whether you\'d stand an extra watch so a crew member can sleep. They\'ve written the request out, with the ' +
           'reason, the hours, and a line for your name. "It\'s outside the articles," they say. "So it\'s a request, and a request can be refused. I\'ve ' +
           'written that down too."'),
       stand: 'You sign. The hours go slowly. In the morning the log has a line in Captain Sato\'s hand: Extra watch, volunteered.',
       fee: 'They pay it from the ship\'s contingency, forty, and enter it under the heading for it. The watch passes like any other.',
-      beg: '"Entered," Captain Sato says, and puts the paper away. It was a request, and you refused, and nothing is held against you.',
+      beg: '"Entered," Captain Sato says, and puts the paper away. It was a request, and you refused, and nothing\'s held against you.',
     },
   },
 
@@ -71,12 +71,12 @@ CAPTAINS.imre = {
       text: ('A port inspector is aboard, in a clean uniform, with a tablet. Captain Sato has been up since four with every log, certificate and ' +
           'manifest laid out in order, and is perfectly calm. One certificate has lapsed by two days: a berth renewal, ' +
           'signed at the wrong office. The inspector is polite and writes it down. "A four hundred fine, or a correction order," the inspector says. ' +
-          'Captain Sato looks at the form, and at Pilar, who is not looking at them. The renewal was hers to file. Nobody has said so.'),
+          'Captain Sato looks at the form, and at Pilar, who\'s not looking at them. The renewal was hers to file. Nobody has said so.'),
       choices: [
         {
           label: 'Say you took the form to the wrong office',
           effects: { captainLike: { n: -1, memory: 'You said you filed the renewal at the wrong office, and I don\'t think you did.' }, castLike: { who: 'pilar', n: 3, memory: 'You took the blame for my renewal.' }, captainFlag: 'covered' },
-          result: 'You say it. Captain Sato looks at you, and then at the form, and enters it, because it is what has been said. The correction order ' +
+          result: 'You say it. Captain Sato looks at you, and then at the form, and enters it, because it\'s what has been said. The correction order ' +
               'is yours. Pilar says nothing until the inspector has gone, and then says, "I won\'t forget that." Captain Sato says nothing ' +
               'at all.',
         },
@@ -92,38 +92,38 @@ CAPTAINS.imre = {
     secret: {
       confide: {
         title: 'The Same Jacket',
-        text: ('Captain Sato has the jacket on the back of the galley chair, and not on. It is the first time you have seen it off. The shirt under ' +
+        text: ('Captain Sato has the jacket on the back of the galley chair, and not on. It\'s the first time you\'ve seen it off. The shirt under ' +
             'it has the left sleeve cut away at the shoulder: a stripe\'s width of cloth, gone. "I left the navy with an other-than-honourable ' +
             'discharge," they say. "Eleven years ago. For an order I didn\'t give and a report I didn\'t write. I\'ve kept every log since, in case ' +
             'anyone asks." They look at the jacket. "Pilar knows. You\'re the second. I\'d like it noted that I told you."'),
         choices: [
           {
-            label: 'Say it is noted',
+            label: 'Say it\'s noted',
             effects: { captainLike: { n: 2, memory: 'You said it was noted.' }, captainFlag: 'secretKnown' },
             result: '"Noted," you say. Captain Sato looks at you, and the corner of their mouth moves once. They put the jacket back on.',
           },
           {
             label: 'Ask what the order was',
             effects: { captainLike: { n: 1, memory: 'You asked what the order was.' }, captainFlag: 'secretKnown' },
-            result: 'They tell you, in order, with the date and the hour and the name of the officer who gave it. It takes four minutes. It is the longest you have heard them speak. At the end of it they say, "That\'s the whole of it."',
+            result: 'They tell you, in order, with the date and the hour and the name of the officer who gave it. It takes four minutes. It\'s the longest you\'ve heard them speak. At the end of it they say, "That\'s the whole of it."',
           },
         ],
       },
       found: {
         title: 'The Stripe',
-        text: ('You are looking for a manual in the captain\'s locker and find a navy service record in a drawer, under a clean set of logs. It is ' +
-            'stamped in red at the foot of the second page: OTHER THAN HONORABLE. Captain Sato\'s name is on every line. You have read the stamp ' +
-            'before you understand it is not yours to read. The locker door closes behind you. "That\'s not on the manifest," Captain Sato says.'),
+        text: ('You\'re looking for a manual in the captain\'s locker and find a navy service record in a drawer, under a clean set of logs. It\'s ' +
+            'stamped in red at the foot of the second page: OTHER THAN HONORABLE. Captain Sato\'s name is on every line. You\'ve read the stamp ' +
+            'before you understand it\'s not yours to read. The locker door closes behind you. "That\'s not on the manifest," Captain Sato says.'),
         choices: [
           {
             label: 'Say you were looking for the manual',
             effects: { captainLike: { n: -1, memory: 'You said you were looking for a manual, and you had read the record.' }, captainFlag: ['secretKnown', 'secretAngry'] },
-            result: '"The manual is on the second shelf," Captain Sato says, and holds the door. "The record isn\'t a manual. You read it. It\'s noted that you did, and that you said otherwise." The door closes on the drawer. It will be a long time before you are given another key.',
+            result: '"The manual is on the second shelf," Captain Sato says, and holds the door. "The record isn\'t a manual. You read it. It\'s noted that you did, and that you said otherwise." The door closes on the drawer. It\'ll be a long time before you\'re given another key.',
           },
           {
-            label: 'Say you will not mention it',
+            label: 'Say you won\'t mention it',
             effects: { captainLike: { n: 0, memory: 'You said you wouldn\'t mention the record.' }, captainFlag: ['secretKnown', 'secretAngry'] },
-            result: 'Captain Sato does not move. "It\'s not a secret," they say. "It\'s a record. It\'s accurate." They close the drawer. "Noted that you won\'t mention it."',
+            result: 'Captain Sato doesn\'t move. "It\'s not a secret," they say. "It\'s a record. It\'s accurate." They close the drawer. "Noted that you won\'t mention it."',
           },
         ],
       },
@@ -132,25 +132,25 @@ CAPTAINS.imre = {
 
   goodbye: {
     title: 'The Foot of the Ramp',
-    warm: 'Captain Sato is at the foot of the ramp in the same jacket, with a paper folded in four. It is your reference, in their own hand, entered and stamped. "You\'ll want this," they say. "It\'s accurate."',
-    neutral: 'Captain Sato meets you at the foot of the ramp with the final pay slip, countersigned, and the log page for your last watch. It is in order.',
+    warm: 'Captain Sato is at the foot of the ramp in the same jacket, with a paper folded in four. It\'s your reference, in their own hand, entered and stamped. "You\'ll want this," they say. "It\'s accurate."',
+    neutral: 'Captain Sato meets you at the foot of the ramp with the final pay slip, countersigned, and the log page for your last watch. It\'s in order.',
     cold: 'Captain Sato is at the foot of the ramp with the papers, and the log, and the red tag from the gap you left in it. "The record is complete," they say. "It won\'t be amended."',
     crew: '{names} will go with you. Captain Sato enters it. "It\'s noted," they say. A beat later: "It\'s regretted."',
-    secret: 'They do not mention the discharge, and neither do you. Their hand goes, once, to the left sleeve of the jacket. "I keep a clean record," they say. "I intend to go on."',
-    xoDead: 'There is a line struck through in the watch bill, in Captain Sato\'s hand, and next to it, in a different ink, a date. "I amended the record," they say. "I\'ve entered her as a casualty of the service. She\'d have found that very funny."',
+    secret: 'They don\'t mention the discharge, and neither do you. Their hand goes, once, to the left sleeve of the jacket. "I keep a clean record," they say. "I intend to go on."',
+    xoDead: 'There\'s a line struck through in the watch bill, in Captain Sato\'s hand, and next to it, in a different ink, a date. "I amended the record," they say. "I\'ve entered her as a casualty of the service. She\'d have found that very funny."',
     xo: 'Pilar is at the hatch with her arms folded and a spanner in one hand. "Don\'t let anybody tell you the book is the ship," she says. "And don\'t tell them I said so. I need them to go on writing it."',
-    parting: 'They offer a hand. It is a single, formal handshake, firm and exactly as long as it should be. "Fair winds," they say. "Noted."',
+    parting: 'They offer a hand. It\'s a single, formal handshake, firm and exactly as long as it should be. "Fair winds," they say. "Noted."',
     choices: [
       {
         label: 'Thank them for the work',
         effects: { captainLike: { n: 2, memory: 'You thanked me for the work.' } },
-        result: 'You thank them. "Entered," they say, and, after a moment, "Appreciated." It is the only time you hear the second word.',
+        result: 'You thank them. "Entered," they say, and, after a moment, "Appreciated." It\'s the only time you hear the second word.',
       },
       {
         label: 'Wish them a clean record',
         when: { captainFlag: 'secretKnown' },
         effects: { captainLike: { n: 3, memory: 'You wished me a clean record.' } },
-        result: 'Captain Sato is silent. "Thank you," they say, which is not in any standing order, and is not entered anywhere.',
+        result: 'Captain Sato is silent. "Thank you," they say, which isn\'t in any standing order, and isn\'t entered anywhere.',
       },
       {
         label: 'Take the papers and go',

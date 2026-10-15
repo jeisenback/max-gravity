@@ -15,7 +15,7 @@ const OUTPOST_SITES = {
   Callisto: { sid: 'jupiter', from: 'Ganymede', x: 520, y: 380, r: 58, color: '#6d6258', pay: 1,
     desc: 'A dark, cratered moon outside Jupiter\'s radiation belts, with Ganymede\'s farms a short hop away.' },
   Nereid: { sid: 'neptune', from: 'Triton Outpost', x: 520, y: -420, r: 34, color: '#8a8f9a', pay: 1.5,
-    desc: 'A lonely rock on a long, lopsided orbit. The Triton crowd says it is bad luck. The ore says otherwise.' },
+    desc: 'A lonely rock on a long, lopsided orbit. The Triton crowd says it\'s bad luck. The ore says otherwise.' },
 };
 const NEEDS = { food: 1.5, water: 1.5, medical: 0.3, equipment: 0.2 };  // tons per 100 settlers per day
 const BUILDINGS = {
@@ -95,17 +95,17 @@ const MOMENTS = [
     choices: ['Hope', cleanName(captain().name).split(' ')[0], o.site, 'Nova'].map(n => ({ label: `"${n}"`, run() { o.log = o.log || []; outpostLog(`${n}, the first child born on ${outpostName(o)}.`); return `${n} it is. The whole outpost turns out to meet ${n}, who sleeps through it.`; } })) }) },
   { at: 100, make: o => ({ title: 'Shift Dispute', text: `The ice crews and the hydroponics crews are at each other's throats over who gets the day shift. Both sides want you to settle it.`,
     choices: [
-      { label: 'Rotate everyone', run() { outpostLog('Settled the shift dispute with a rotation.'); return 'Nobody is happy, which means it is fair.'; } },
+      { label: 'Rotate everyone', run() { outpostLog('Settled the shift dispute with a rotation.'); return 'Nobody\'s happy, which means it\'s fair.'; } },
       { label: 'Let them vote', run() { outpostLog('The settlers voted on their shifts.'); return 'The vote is close, loud, and binding. They seem prouder of that than of the result.'; } },
     ] }) },
-  { at: 150, make: o => ({ title: 'Founders\' Day', text: `A year's worth of settlers have planned a Founders' Day on ${outpostName(o)}, and you are the founder. There will be a speech. Yours.`,
+  { at: 150, make: o => ({ title: 'Founders\' Day', text: `A year's worth of settlers have planned a Founders' Day on ${outpostName(o)}, and you're the founder. There'll be a speech. Yours.`,
     choices: [
       { label: 'Give the speech', run() { outpostLog('Gave the Founders\' Day speech.'); return 'You keep it short. They cheer anyway, and someone has painted your ship on the habitat wall.'; } },
-      { label: 'Let the settlers speak instead', run() { outpostLog('The settlers spoke on Founders\' Day.'); return 'An old ice miner tells the story of the first week, and there is not a dry eye in the ring.'; } },
+      { label: 'Let the settlers speak instead', run() { outpostLog('The settlers spoke on Founders\' Day.'); return 'An old ice miner tells the story of the first week, and there\'s not a dry eye in the ring.'; } },
     ] }) },
-  { at: 250, make: o => ({ title: 'A Council', text: `${outpostName(o)} has outgrown a founder making every call. The settlers want to elect a council. They are asking for your blessing, not your permission.`,
+  { at: 250, make: o => ({ title: 'A Council', text: `${outpostName(o)} has outgrown a founder making every call. The settlers want to elect a council. They're asking for your blessing, not your permission.`,
     choices: [
-      { label: 'Give it gladly', run() { o.council = true; outpostLog('The settlers elected their first council.'); return `${outpostName(o)} holds its first election. You are invited to every meeting, and expected at none.`; } },
+      { label: 'Give it gladly', run() { o.council = true; outpostLog('The settlers elected their first council.'); return `${outpostName(o)} holds its first election. You're invited to every meeting, and expected at none.`; } },
       { label: 'Keep a seat for yourself', run() { o.council = true; outpostLog('The first council kept a seat for the founder.'); return 'They agree, and put your chair at the end of the table.'; } },
     ] }) },
 ];

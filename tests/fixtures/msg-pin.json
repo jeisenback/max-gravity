@@ -16,7 +16,7 @@
  {
   "key": "kill:story",
   "text": [
-   "Voight destroyed. Aquilon will not be happy."
+   "Voight destroyed. Aquilon won't be happy."
   ],
   "credits": 0
  },
@@ -79,7 +79,7 @@
  {
   "key": "land:denied",
   "text": [
-   "Docking denied. The Arcology Compact will not let your ship land."
+   "Docking denied. The Arcology Compact won't let your ship land."
   ],
   "credits": 0
  },
@@ -224,49 +224,49 @@
  {
   "key": "hail:demand:kind:1",
   "text": [
-   "Rook: \"I am sorry, truly, but times are hard. Your cargo, and we will leave your crew alone.\" (H to answer)"
+   "Rook: \"I'm sorry, truly, but times are hard. Your cargo, and we'll leave your crew alone.\" (H to answer)"
   ],
   "credits": 0
  },
  {
   "key": "hail:demand:kind:2",
   "text": [
-   "Rook: \"I am sorry, truly, but times are hard. Your cargo, and we will leave your crew alone.\" (H to answer)"
+   "Rook: \"I'm sorry, truly, but times are hard. Your cargo, and we'll leave your crew alone.\" (H to answer)"
   ],
   "credits": 0
  },
  {
   "key": "hail:demand:brave:0",
   "text": [
-   "Rook: \"This is a boarding action. Cut your drive, and I promise we will be quick, and, mostly, gentle.\" (H to answer)"
+   "Rook: \"This is a boarding action. Cut your drive, and I promise we'll be quick, and, mostly, gentle.\" (H to answer)"
   ],
   "credits": 0
  },
  {
   "key": "hail:demand:brave:1",
   "text": [
-   "Rook: \"We are going to take what we came for. You can fight, but I would not.\" (H to answer)"
+   "Rook: \"We're going to take what we came for. You can fight, but I wouldn't.\" (H to answer)"
   ],
   "credits": 0
  },
  {
   "key": "hail:demand:brave:2",
   "text": [
-   "Rook: \"We are going to take what we came for. You can fight, but I would not.\" (H to answer)"
+   "Rook: \"We're going to take what we came for. You can fight, but I wouldn't.\" (H to answer)"
   ],
   "credits": 0
  },
  {
   "key": "hail:demand:greedy:0",
   "text": [
-   "Rook: \"Everything has a price, including your ship. Let us negotiate.\" (H to answer)"
+   "Rook: \"Everything has a price, including your ship. Let's negotiate.\" (H to answer)"
   ],
   "credits": 0
  },
  {
   "key": "hail:demand:greedy:1",
   "text": [
-   "Rook: \"I am prepared to be very reasonable. Everything you have, for the privilege of continuing to breathe.\" (H to answer)"
+   "Rook: \"I'm prepared to be very reasonable. Everything you have, for the privilege of continuing to breathe.\" (H to answer)"
   ],
   "credits": 0
  },
@@ -287,7 +287,7 @@
  {
   "key": "hail:demand:cold:1",
   "text": [
-   "Rook: \"This is Rook. You are in our space. Cut your drive, and this will go easily.\" (H to answer)"
+   "Rook: \"This is Rook. You're in our space. Cut your drive, and this will go easily.\" (H to answer)"
   ],
   "credits": 0
  },
@@ -327,7 +327,7 @@
  {
   "key": "story:fight:recovery:won",
   "text": [
-   "Aquilon recovery ship \"Quiet Ledger\" breaks up. Aquilon will not be happy."
+   "Aquilon recovery ship \"Quiet Ledger\" breaks up. Aquilon won't be happy."
   ],
   "credits": 0
  },
@@ -341,7 +341,7 @@
  {
   "key": "story:fight:ambush:won",
   "text": [
-   "Aquilon security \"Due Diligence\" and \"Hostile Takeover\" breaks up. Aquilon will not be happy."
+   "Aquilon security \"Due Diligence\" and \"Hostile Takeover\" breaks up. Aquilon won't be happy."
   ],
   "credits": 0
  },
@@ -355,7 +355,7 @@
  {
   "key": "story:blockade:belt:holds",
   "text": [
-   "The blockade holds. Fall back, or try again when you are ready."
+   "The blockade holds. Fall back, or try again when you're ready."
   ],
   "credits": 0
  },
@@ -376,7 +376,7 @@
  {
   "key": "story:blockade:aquilon:holds",
   "text": [
-   "The blockade holds. Fall back, or try again when you are ready."
+   "The blockade holds. Fall back, or try again when you're ready."
   ],
   "credits": 0
  },
@@ -426,21 +426,21 @@
  {
   "key": "boarding:hurt:crew",
   "text": [
-   "Mara Quill is hurt. Their gunner work will suffer until they are treated."
+   "Mara Quill is hurt. Their gunner work will suffer until they're treated."
   ],
   "credits": 0
  },
  {
   "key": "boarding:hurt:cast",
   "text": [
-   "Tomas Achebe is hurt. Their engineer work will suffer until they are treated. Another hit like that could kill Tomas."
+   "Tomas Achebe is hurt. Their engineer work will suffer until they're treated. Another hit like that could kill Tomas."
   ],
   "credits": 0
  },
  {
   "key": "boarding:marked",
   "text": [
-   "Tomas Achebe is hurt. Their engineer work will suffer until they are treated. Another hit like that could kill Tomas."
+   "Tomas Achebe is hurt. Their engineer work will suffer until they're treated. Another hit like that could kill Tomas."
   ],
   "credits": 0,
   "x": {}
@@ -527,7 +527,7 @@
  {
   "key": "hail:wanted",
   "text": [
-   "Cutter: \"You are wanted in Arcology Compact space. Cut your drive and pay your fine.\" (H to answer)"
+   "Cutter: \"You're wanted in Arcology Compact space. Cut your drive and pay your fine.\" (H to answer)"
   ],
   "credits": 0
  },
@@ -541,7 +541,7 @@
  {
   "key": "auto:contact",
   "text": [
-   "Mara: Contact, and they are not friendly. She's yours, captain."
+   "Mara: Contact, and they're not friendly. She's yours, captain."
   ],
   "credits": 0
  },
@@ -562,14 +562,14 @@
  {
   "key": "escort:fuel",
   "text": [
-   "The \"Lucky Promise\" can't fuel up for that burn; it will wait for you at Earth."
+   "The \"Lucky Promise\" can't fuel up for that burn; it'll wait for you at Earth."
   ],
   "credits": 0
  },
  {
   "key": "escort:range",
   "text": [
-   "The \"Lucky Promise\" can't make that burn on one tank; it will wait for you at Earth."
+   "The \"Lucky Promise\" can't make that burn on one tank; it'll wait for you at Earth."
   ],
   "credits": 0
  },
@@ -855,9 +855,9 @@
   "text": [],
   "credits": 0,
   "x": {
-   "rumor": "A fire in a warehouse on Hermes Foundry took most of the local stock of Machine Parts, and nobody is saying how it started. (Mercury)",
-   "comm": "[Market] A fire in a warehouse on Hermes Foundry took most of the local stock of Machine Parts, and nobody is saying how it started. (Mercury, for about 21 days)",
-   "inbox": "A fire in a warehouse on Hermes Foundry took most of the local stock of Machine Parts, and nobody is saying how it started. (Mercury)"
+   "rumor": "A fire in a warehouse on Hermes Foundry took most of the local stock of Machine Parts, and nobody's saying how it started. (Mercury)",
+   "comm": "[Market] A fire in a warehouse on Hermes Foundry took most of the local stock of Machine Parts, and nobody's saying how it started. (Mercury, for about 21 days)",
+   "inbox": "A fire in a warehouse on Hermes Foundry took most of the local stock of Machine Parts, and nobody's saying how it started. (Mercury)"
   }
  },
  {
@@ -995,9 +995,9 @@
   "text": [],
   "credits": 0,
   "x": {
-   "rumor": "A rumor that Machine Parts on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it is nonsense. (Mercury)",
-   "comm": "[Market] A rumor that Machine Parts on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it is nonsense. (Mercury, for about 21 days)",
-   "inbox": "A rumor that Machine Parts on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it is nonsense. (Mercury)"
+   "rumor": "A rumor that Machine Parts on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense. (Mercury)",
+   "comm": "[Market] A rumor that Machine Parts on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense. (Mercury, for about 21 days)",
+   "inbox": "A rumor that Machine Parts on Hermes Foundry is contaminated has, for the moment, cratered the price, though everyone knows it's nonsense. (Mercury)"
   }
  },
  {
@@ -1055,7 +1055,7 @@
    {
     "type": "errand",
     "title": "Errand: carry a message on a chip to Mars",
-    "blurb": "A hand-written note on a data chip: somebody does not trust the public bands with it. The captain keeps 40 cr of the fee.",
+    "blurb": "A hand-written note on a data chip: somebody doesn't trust the public bands with it. The captain keeps 40 cr of the fee.",
     "destSystem": "mars",
     "destPlanet": "Mars",
     "pay": 160,
@@ -1072,7 +1072,7 @@
    {
     "type": "errand",
     "title": "Errand: carry a set of spare keys to Mars",
-    "blurb": "A ring of keys for a flat somebody has not seen in years. They want them back before the lease runs out. The captain keeps 40 cr of the fee.",
+    "blurb": "A ring of keys for a flat somebody hasn't seen in years. They want them back before the lease runs out. The captain keeps 40 cr of the fee.",
     "destSystem": "mars",
     "destPlanet": "Mars",
     "pay": 160,
@@ -1121,8 +1121,8 @@
   "credits": 0,
   "x": {
    "notes": [
-    "Mara has a job for someone they trust. It is on the mission board.",
-    "Mara says Red Mag Varga has been seen near Mars, and that someone is paying for it. That is on the board too."
+    "Mara has a job for someone they trust. It's on the mission board.",
+    "Mara says Red Mag Varga has been seen near Mars, and that someone's paying for it. That's on the board too."
    ],
    "offers": [
     [
@@ -1158,7 +1158,7 @@
   "credits": 0,
   "x": {
    "notes": [
-    "Mara has a job for someone they trust. It is on the mission board."
+    "Mara has a job for someone they trust. It's on the mission board."
    ],
    "offers": [
     [
@@ -1190,7 +1190,7 @@
   "credits": 0,
   "x": {
    "notes": [
-    "Mara Quill has a job for someone they trust. It is on the mission board."
+    "Mara Quill has a job for someone they trust. It's on the mission board."
    ],
    "offers": [
     [
@@ -1262,7 +1262,7 @@
   "credits": 0,
   "x": {
    "notes": [
-    "Mara knows of a ship that is hiring: the Stubborn Horizon."
+    "Mara knows of a ship that's hiring: the Stubborn Horizon."
    ]
   }
  },
@@ -1277,7 +1277,7 @@
     "Nav: trajectory nominal, drift within tolerance.",
     "Ice hauler \"Mule's Promise\" to all ships: anyone got a spare coolant pump?",
     "Compact Navy picket: routine sweep, no contacts.",
-    "Somebody is broadcasting polka on the emergency band again.",
+    "Somebody's broadcasting polka on the emergency band again.",
     "Crash couch: anti-g drip reservoir at 80 percent.",
     "\"...and that's why you never play cards with a Pallas refinery crew.\" [laughter]",
     "Automated beacon: Ceres Station reports all docking bays open. Water ration unchanged.",
@@ -1290,7 +1290,7 @@
     "Freighter \"Second Wind\" to nobody in particular: \"Forty days out and I've run out of things to say to the cat.\"",
     "An old recorded voice, on an old beacon: \"This lane is maintained by the Ceres Water Authority. Please burn responsibly.\"",
     "Hauler \"Long Odds\": \"Anybody running to Titan? I've got a spare berth and a very bad sense of direction.\"",
-    "Compact traffic control: reminder that lane fees are due on the first, and that \"I forgot\" is not a payment method.",
+    "Compact traffic control: reminder that lane fees are due on the first, and that \"I forgot\" isn't a payment method.",
     "A child, on an open band: \"This is Captain Pip of the good ship Blanket Fort. Do you copy?\"",
     "Ceres Water Authority relay: \"Reminder to all vessels, water isn't a right, but it's a courtesy. Thank you for your understanding.\"",
     "Belt trader on the band: \"Fresh onions! Real onions! Meet me at the flip, and bring your own bags!\"",
@@ -1309,7 +1309,7 @@
     "The ship's hull creaks, once, softly, as it cools in the long shadow. Nothing follows.",
     "A hauler crew, in unison, on the open band, singing \"Happy Birthday\" to a captain who is, from the sound of it, deeply embarrassed.",
     "Eros beacon: \"Welcome to the Old Town. Half of us are still here, and the other half will be, shortly.\"",
-    "Crew mess: somebody is arguing that soup counts as a beverage. The argument has been going for ninety minutes.",
+    "Crew mess: somebody's arguing that soup counts as a beverage. The argument has been going for ninety minutes.",
     "Static, followed by a woman's voice, low and warm, reading the names of every ship that has ever left Ceres, one by one."
    ]
   }

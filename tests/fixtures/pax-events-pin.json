@@ -5,7 +5,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "\"Inspection, the hold scanner has a fault,\" you say, and then you have the fault's maintenance log, and three forms in the wrong order that she has to send back. \"That's your problem, captain,\" the officer says. \"It'll be mine when I log it,\" you say. It takes forty-one minutes. Her intercept window closes at forty-two, and the cutter peels away with a burst of static. Sam sits down on a crate. At the airlock Sam puts a folded note in your hand and does not say what it is for.",
+    "text": "\"Inspection, the hold scanner has a fault,\" you say, and then you have the fault's maintenance log, and three forms in the wrong order that she has to send back. \"That's your problem, captain,\" the officer says. \"It'll be mine when I log it,\" you say. It takes forty-one minutes. Her intercept window closes at forty-two, and the cutter peels away with a burst of static. Sam sits down on a crate. At the airlock Sam puts a folded note in your hand and doesn't say what it's for.",
     "mem": "9 Jun 2214: You covered for me with customs.",
     "d": {
      "credits": 0,
@@ -69,7 +69,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Sam Vale,\" the officer says, once, to be sure, and customs takes Sam off in cuffs with one hand on their shoulder. Sam does not look back. The airlock cycles. At the galley table a cup is left half full, and nobody clears it.",
+    "text": "\"Sam Vale,\" the officer says, once, to be sure, and customs takes Sam off in cuffs with one hand on their shoulder. Sam doesn't look back. The airlock cycles. At the galley table a cup is left half full, and nobody clears it.",
     "mem": "9 Jun 2214: You turned me in to customs.",
     "d": {
      "credits": 1500,
@@ -85,7 +85,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Sam Vale,\" the officer says, once, to be sure, and customs takes Sam off in cuffs with one hand on their shoulder. Sam does not look back. The airlock cycles. At the galley table a cup is left half full, and nobody clears it.",
+    "text": "\"Sam Vale,\" the officer says, once, to be sure, and customs takes Sam off in cuffs with one hand on their shoulder. Sam doesn't look back. The airlock cycles. At the galley table a cup is left half full, and nobody clears it.",
     "mem": "9 Jun 2214: You turned me in to customs.",
     "d": {
      "credits": 1500,
@@ -221,7 +221,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "{crew} works through the night with a lamp and a case of instruments and does not leave the bunk. By morning Sam is sitting up, pale, asking for coffee in a cracked voice. {crew} is asleep in the corridor with a blanket over their shoulders, and nobody steps over them.",
+    "text": "{crew} works through the night with a lamp and a case of instruments and doesn't leave the bunk. By morning Sam is sitting up, pale, asking for coffee in a cracked voice. {crew} is asleep in the corridor with a blanket over their shoulders, and nobody steps over them.",
     "mem": "9 Jun 2214: Your medic saved my life.",
     "d": {
      "credits": 0,
@@ -237,7 +237,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "{crew} works through the night with a lamp and a case of instruments and does not leave the bunk. By morning Sam is sitting up, pale, asking for coffee in a cracked voice. {crew} is asleep in the corridor with a blanket over their shoulders, and nobody steps over them.",
+    "text": "{crew} works through the night with a lamp and a case of instruments and doesn't leave the bunk. By morning Sam is sitting up, pale, asking for coffee in a cracked voice. {crew} is asleep in the corridor with a blanket over their shoulders, and nobody steps over them.",
     "mem": "9 Jun 2214: Your medic saved my life.",
     "d": {
      "credits": 0,
@@ -285,7 +285,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You push the drive until the frame ticks. Sam lies pinned to a bunk with a wet cloth on their forehead and asks, every hour, how many hours you have saved. When the doctors take them at the dock, they say something you do not catch. It might be thanks.",
+    "text": "You push the drive until the frame ticks. Sam lies pinned to a bunk with a wet cloth on their forehead and asks, every hour, how many hours you've saved. When the doctors take them at the dock, they say something you don't catch. It might be thanks.",
     "mem": "9 Jun 2214: You burned hard to get me to a doctor.",
     "d": {
      "credits": 0,
@@ -301,7 +301,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You push the drive until the frame ticks. Sam lies pinned to a bunk with a wet cloth on their forehead and asks, every hour, how many hours you have saved. When the doctors take them at the dock, they say something you do not catch. It might be thanks.",
+    "text": "You push the drive until the frame ticks. Sam lies pinned to a bunk with a wet cloth on their forehead and asks, every hour, how many hours you've saved. When the doctors take them at the dock, they say something you don't catch. It might be thanks.",
     "mem": "9 Jun 2214: You burned hard to get me to a doctor.",
     "d": {
      "credits": 0,
@@ -317,7 +317,7 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "Sam recovers over three days, on their own, in a cold bunk. They ask you for nothing, and they do not speak to you for the rest of the trip. At the dock they go down the ramp without turning round.",
+    "text": "Sam recovers over three days, on their own, in a cold bunk. They ask you for nothing, and they don't speak to you for the rest of the trip. At the dock they go down the ramp without turning round.",
     "mem": "9 Jun 2214: You left me to suffer.",
     "d": {
      "credits": 0,
@@ -333,7 +333,7 @@
    {
     "i": 3,
     "roll": 0.999,
-    "text": "Sam recovers over three days, on their own, in a cold bunk. They ask you for nothing, and they do not speak to you for the rest of the trip. At the dock they go down the ramp without turning round.",
+    "text": "Sam recovers over three days, on their own, in a cold bunk. They ask you for nothing, and they don't speak to you for the rest of the trip. At the dock they go down the ramp without turning round.",
     "mem": "9 Jun 2214: You left me to suffer.",
     "d": {
      "credits": 0,
@@ -348,12 +348,12 @@
    }
   ],
   "title": "Medical Emergency",
-  "text": "Sam goes down in the galley, dropping a cup, and slides to the deck with their back against a cabinet. Their breathing is shallow and fast. Between breaths they say they have hidden an illness for weeks and did not want to be a burden. Everyone in the room has stopped moving. They look at you.",
+  "text": "Sam goes down in the galley, dropping a cup, and slides to the deck with their back against a cabinet. Their breathing is shallow and fast. Between breaths they say they have hidden an illness for weeks and didn't want to be a burden. Everyone in the room has stopped moving. They look at you.",
   "labels": [
    "[{crew}] Treat them",
    "Use the ship's medkit (500 cr of supplies)",
    "Burn harder to get them help (40 reaction mass)",
-   "There is nothing you can do"
+   "There's nothing you can do"
   ]
  },
  {
@@ -362,7 +362,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "{crew} works through the night with a lamp and a case of instruments and does not leave the bunk. By morning Sam is sitting up, pale, asking for coffee in a cracked voice. {crew} is asleep in the corridor with a blanket over their shoulders, and nobody steps over them.",
+    "text": "{crew} works through the night with a lamp and a case of instruments and doesn't leave the bunk. By morning Sam is sitting up, pale, asking for coffee in a cracked voice. {crew} is asleep in the corridor with a blanket over their shoulders, and nobody steps over them.",
     "mem": "9 Jun 2214: Your medic saved my life.",
     "d": {
      "credits": 0,
@@ -378,7 +378,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "{crew} works through the night with a lamp and a case of instruments and does not leave the bunk. By morning Sam is sitting up, pale, asking for coffee in a cracked voice. {crew} is asleep in the corridor with a blanket over their shoulders, and nobody steps over them.",
+    "text": "{crew} works through the night with a lamp and a case of instruments and doesn't leave the bunk. By morning Sam is sitting up, pale, asking for coffee in a cracked voice. {crew} is asleep in the corridor with a blanket over their shoulders, and nobody steps over them.",
     "mem": "9 Jun 2214: Your medic saved my life.",
     "d": {
      "credits": 0,
@@ -426,7 +426,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You push the drive until the frame ticks. Sam lies pinned to a bunk with a wet cloth on their forehead and asks, every hour, how many hours you have saved. When the doctors take them at the dock, they say something you do not catch. It might be thanks.",
+    "text": "You push the drive until the frame ticks. Sam lies pinned to a bunk with a wet cloth on their forehead and asks, every hour, how many hours you've saved. When the doctors take them at the dock, they say something you don't catch. It might be thanks.",
     "mem": "9 Jun 2214: You burned hard to get me to a doctor.",
     "d": {
      "credits": 0,
@@ -442,7 +442,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "You push the drive until the frame ticks. Sam lies pinned to a bunk with a wet cloth on their forehead and asks, every hour, how many hours you have saved. When the doctors take them at the dock, they say something you do not catch. It might be thanks.",
+    "text": "You push the drive until the frame ticks. Sam lies pinned to a bunk with a wet cloth on their forehead and asks, every hour, how many hours you've saved. When the doctors take them at the dock, they say something you don't catch. It might be thanks.",
     "mem": "9 Jun 2214: You burned hard to get me to a doctor.",
     "d": {
      "credits": 0,
@@ -458,7 +458,7 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "Sam recovers over three days, on their own, in a cold bunk. They ask you for nothing, and they do not speak to you for the rest of the trip. At the dock they go down the ramp without turning round.",
+    "text": "Sam recovers over three days, on their own, in a cold bunk. They ask you for nothing, and they don't speak to you for the rest of the trip. At the dock they go down the ramp without turning round.",
     "mem": "9 Jun 2214: You left me to suffer.",
     "d": {
      "credits": 0,
@@ -474,7 +474,7 @@
    {
     "i": 3,
     "roll": 0.999,
-    "text": "Sam recovers over three days, on their own, in a cold bunk. They ask you for nothing, and they do not speak to you for the rest of the trip. At the dock they go down the ramp without turning round.",
+    "text": "Sam recovers over three days, on their own, in a cold bunk. They ask you for nothing, and they don't speak to you for the rest of the trip. At the dock they go down the ramp without turning round.",
     "mem": "9 Jun 2214: You left me to suffer.",
     "d": {
      "credits": 0,
@@ -494,7 +494,7 @@
    "[{crew}] Treat them",
    "Use the ship's medkit (500 cr of supplies)",
    "Burn harder to get them help (40 reaction mass)",
-   "There is nothing you can do"
+   "There's nothing you can do"
   ]
  },
  {
@@ -519,7 +519,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "Sam tells you that it is none of your business. They do not raise their voice and they do not threaten you. They stand there until you leave.",
+    "text": "Sam tells you that it's none of your business. They don't raise their voice and they don't threaten you. They stand there until you leave.",
     "mem": "9 Jun 2214: You pried into my business.",
     "d": {
      "credits": 0,
@@ -535,7 +535,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "{crew} cracks it over a long evening. Someone is paying for market numbers from every port you touch, in tidy weekly reports. Nothing dangerous: a patient stranger who wants to know what everything costs. Among the bursts is one line you can use: \"Word is that the governor of Juno Commons is stockpiling Food for a party, and will pay well over the odds.\"",
+    "text": "{crew} cracks it over a long evening. Someone's paying for market numbers from every port you touch, in tidy weekly reports. Nothing dangerous: a patient stranger who wants to know what everything costs. Among the bursts is one line you can use: \"Word is that the governor of Juno Commons is stockpiling Food for a party, and will pay well over the odds.\"",
     "mem": null,
     "d": {
      "credits": 0,
@@ -551,7 +551,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "{crew} cracks it over a long evening. Someone is paying for market numbers from every port you touch, in tidy weekly reports. Nothing dangerous: a patient stranger who wants to know what everything costs. Among the bursts is one line you can use: \"A strike ended on Ring Nine, and every dock in town is suddenly flooded with Food.\"",
+    "text": "{crew} cracks it over a long evening. Someone's paying for market numbers from every port you touch, in tidy weekly reports. Nothing dangerous: a patient stranger who wants to know what everything costs. Among the bursts is one line you can use: \"A strike ended on Ring Nine, and every dock in town is suddenly flooded with Food.\"",
     "mem": null,
     "d": {
      "credits": 0,
@@ -598,7 +598,7 @@
    }
   ],
   "title": "Encrypted Bursts",
-  "text": "Your comms log shows Sam sending tight-beam bursts between the second and third watch, short pulses aimed at no port you know. They send them from the observation blister, alone, with the lights off. You have started to count how many times a shift Sam looks at the door.",
+  "text": "Your comms log shows Sam sending tight-beam bursts between the second and third watch, short pulses aimed at no port you know. They send them from the observation blister, alone, with the lights off. You've started to count how many times a shift Sam looks at the door.",
   "labels": [
    "Confront them",
    "[{crew}] Quietly decrypt the traffic",
@@ -611,7 +611,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Sam opens their mouth and nothing comes out. Then they say, low, \"Fifteen hundred. Every credit, with interest, if it takes the rest of my life.\" They do not sit down until you have.",
+    "text": "Sam opens their mouth and nothing comes out. Then they say, low, \"Fifteen hundred. Every credit, with interest, if it takes the rest of my life.\" They don't sit down until you have.",
     "mem": "9 Jun 2214: You paid off my debt. I'll pay you back.",
     "d": {
      "credits": -1500,
@@ -627,7 +627,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "Sam opens their mouth and nothing comes out. Then they say, low, \"Fifteen hundred. Every credit, with interest, if it takes the rest of my life.\" They do not sit down until you have.",
+    "text": "Sam opens their mouth and nothing comes out. Then they say, low, \"Fifteen hundred. Every credit, with interest, if it takes the rest of my life.\" They don't sit down until you have.",
     "mem": "9 Jun 2214: You paid off my debt. I'll pay you back.",
     "d": {
      "credits": -1500,
@@ -643,7 +643,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "They threaten legal action at length and cut the channel. Nothing comes of it. Sam looks at you across the galley. Later there is a cup of tea at your elbow that you did not ask for.",
+    "text": "They threaten legal action at length and cut the channel. Nothing comes of it. Sam looks at you across the galley. Later there's a cup of tea at your elbow that you didn't ask for.",
     "mem": "9 Jun 2214: You stood up to my collectors.",
     "d": {
      "credits": 0,
@@ -659,7 +659,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "They threaten legal action at length and cut the channel. Nothing comes of it. Sam looks at you across the galley. Later there is a cup of tea at your elbow that you did not ask for.",
+    "text": "They threaten legal action at length and cut the channel. Nothing comes of it. Sam looks at you across the galley. Later there's a cup of tea at your elbow that you didn't ask for.",
     "mem": "9 Jun 2214: You stood up to my collectors.",
     "d": {
      "credits": 0,
@@ -781,7 +781,7 @@
    }
   ],
   "title": "Running Late",
-  "text": "Sam has a job interview on Olympus Dome, and the schedule is tighter than they thought. They have ironed their good shirt three times in the galley and run their answers at the mirror. Now they stand at the cockpit hatch, twisting their hands. \"Captain, I hate to ask. Is there any way to go faster?\"",
+  "text": "Sam has a job interview on Olympus Dome, and the schedule is tighter than they thought. They've ironed their good shirt three times in the galley and run their answers at the mirror. Now they stand at the cockpit hatch, twisting their hands. \"Captain, I hate to ask. Is there any way to go faster?\"",
   "labels": [
    "[{crew}] Find a faster line",
    "Hard burn (40 reaction mass)",
@@ -826,7 +826,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "They watch it slide past the window, a pale point in the dark, and stay at the glass until it is gone. Later you see them write something in the notebook: the date, and a line you cannot read. They are polite for the rest of the trip. When they disembark they leave a folded drawing on the galley table, of a rock, and a ship, and a long distance.",
+    "text": "They watch it slide past the window, a pale point in the dark, and stay at the glass until it's gone. Later you see them write something in the notebook: the date, and a line you can't read. They're polite for the rest of the trip. When they disembark they leave a folded drawing on the galley table, of a rock, and a ship, and a long distance.",
     "mem": "9 Jun 2214: You wouldn't stop for my research.",
     "d": {
      "credits": 0,
@@ -842,7 +842,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "They watch it slide past the window, a pale point in the dark, and stay at the glass until it is gone. Later you see them write something in the notebook: the date, and a line you cannot read. They are polite for the rest of the trip. When they disembark they leave a folded drawing on the galley table, of a rock, and a ship, and a long distance.",
+    "text": "They watch it slide past the window, a pale point in the dark, and stay at the glass until it's gone. Later you see them write something in the notebook: the date, and a line you can't read. They're polite for the rest of the trip. When they disembark they leave a folded drawing on the galley table, of a rock, and a ship, and a long distance.",
     "mem": "9 Jun 2214: You wouldn't stop for my research.",
     "d": {
      "credits": 0,
@@ -857,7 +857,7 @@
    }
   ],
   "title": "Sample Opportunity",
-  "text": "Sam has been at the observation blister for hours with a battered notebook and a pair of binoculars. Now they appear at the cockpit hatch, out of breath, hair on end. They have spotted a rock a few hours off your trajectory, pale, with a bright glint in the sun. \"A sample from that could make my career,\" they say. \"I'll pay for the detour. Please. I've waited my whole life for something like this.\"",
+  "text": "Sam has been at the observation blister for hours with a battered notebook and a pair of binoculars. Now they appear at the cockpit hatch, out of breath, hair on end. They've spotted a rock a few hours off your trajectory, pale, with a bright glint in the sun. \"A sample from that could make my career,\" they say. \"I'll pay for the detour. Please. I've waited my whole life for something like this.\"",
   "labels": [
    "Match orbits and take a sample (costs time)",
    "Stay on course"
@@ -869,7 +869,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "The drive falls silent. They drift through the cargo bay in a slow circle, singing in a language older than any port, and one by one other passengers and crew drift in to listen. When it is over they press a donation on you, in small folded notes, and touch the bulkhead once.",
+    "text": "The drive falls silent. They drift through the cargo bay in a slow circle, singing in a language older than any port, and one by one other passengers and crew drift in to listen. When it's over they press a donation on you, in small folded notes, and touch the bulkhead once.",
     "mem": "9 Jun 2214: You stilled your ship for our prayers.",
     "d": {
      "credits": 0,
@@ -885,7 +885,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "The drive falls silent. They drift through the cargo bay in a slow circle, singing in a language older than any port, and one by one other passengers and crew drift in to listen. When it is over they press a donation on you, in small folded notes, and touch the bulkhead once.",
+    "text": "The drive falls silent. They drift through the cargo bay in a slow circle, singing in a language older than any port, and one by one other passengers and crew drift in to listen. When it's over they press a donation on you, in small folded notes, and touch the bulkhead once.",
     "mem": "9 Jun 2214: You stilled your ship for our prayers.",
     "d": {
      "credits": 0,
@@ -932,7 +932,7 @@
    }
   ],
   "title": "A Request for Stillness",
-  "text": "Sam comes to the cockpit hatch holding a worn book. They ask whether you might cut the drive for a few hours, so that they can hold a prayer service in zero g. It is a holy day for them, and the old prayers say that in weightlessness a person is closest to whatever is out there. They do not press. They wait with their hands folded, and the book shakes in their grip.",
+  "text": "Sam comes to the cockpit hatch holding a worn book. They ask whether you might cut the drive for a few hours, so that they can hold a prayer service in zero g. It's a holy day for them, and the old prayers say that in weightlessness a person is closest to whatever is out there. They don't press. They wait with their hands folded, and the book shakes in their grip.",
   "labels": [
    "Cut thrust for them (costs time)",
    "Decline politely"
@@ -944,7 +944,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You listen for an hour, and then another. Near the end, between the bakery and the bees, is something you can use: \"A fire in a warehouse on The Rook took most of the local stock of Medical Supplies, and nobody is saying how it started.\" Sam gives you a shy smile.",
+    "text": "You listen for an hour, and then another. Near the end, between the bakery and the bees, is something you can use: \"A fire in a warehouse on The Rook took most of the local stock of Medical Supplies, and nobody's saying how it started.\" Sam gives you a shy smile.",
     "mem": "9 Jun 2214: You listened to my stories.",
     "d": {
      "credits": 0,
@@ -960,7 +960,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You listen for an hour, and then another. Near the end, between the bakery and the bees, is something you can use: \"A fire in a warehouse on Mars took most of the local stock of Medical Supplies, and nobody is saying how it started.\" Sam gives you a shy smile.",
+    "text": "You listen for an hour, and then another. Near the end, between the bakery and the bees, is something you can use: \"A fire in a warehouse on Mars took most of the local stock of Medical Supplies, and nobody's saying how it started.\" Sam gives you a shy smile.",
     "mem": "9 Jun 2214: You listened to my stories.",
     "d": {
      "credits": 0,
@@ -1019,7 +1019,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You sit beside them and explain flip-and-burn three times, slowly, with a hand on their shoulder and a cup of water. The third time you draw it on the bulkhead with a finger. The trembling slows, and they laugh once, wetly. Sam apologizes. You tell them there is nothing to apologize for.",
+    "text": "You sit beside them and explain flip-and-burn three times, slowly, with a hand on their shoulder and a cup of water. The third time you draw it on the bulkhead with a finger. The trembling slows, and they laugh once, wetly. Sam apologizes. You tell them there's nothing to apologize for.",
     "mem": "9 Jun 2214: You talked me through a panic attack.",
     "d": {
      "credits": 0,
@@ -1035,7 +1035,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You sit beside them and explain flip-and-burn three times, slowly, with a hand on their shoulder and a cup of water. The third time you draw it on the bulkhead with a finger. The trembling slows, and they laugh once, wetly. Sam apologizes. You tell them there is nothing to apologize for.",
+    "text": "You sit beside them and explain flip-and-burn three times, slowly, with a hand on their shoulder and a cup of water. The third time you draw it on the bulkhead with a finger. The trembling slows, and they laugh once, wetly. Sam apologizes. You tell them there's nothing to apologize for.",
     "mem": "9 Jun 2214: You talked me through a panic attack.",
     "d": {
      "credits": 0,
@@ -1051,7 +1051,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Sam takes the sedative with a shaking hand and lies back on the bunk. Within minutes they are breathing slow. They sleep through the rest of the burn and wake at the dock with no memory of what frightened them.",
+    "text": "Sam takes the sedative with a shaking hand and lies back on the bunk. Within minutes they're breathing slow. They sleep through the rest of the burn and wake at the dock with no memory of what frightened them.",
     "mem": null,
     "d": {
      "credits": -200,
@@ -1067,7 +1067,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Sam takes the sedative with a shaking hand and lies back on the bunk. Within minutes they are breathing slow. They sleep through the rest of the burn and wake at the dock with no memory of what frightened them.",
+    "text": "Sam takes the sedative with a shaking hand and lies back on the bunk. Within minutes they're breathing slow. They sleep through the rest of the burn and wake at the dock with no memory of what frightened them.",
     "mem": null,
     "d": {
      "credits": -200,
@@ -1114,7 +1114,7 @@
    }
   ],
   "title": "Panic at the Flip",
-  "text": "Sam panics when the drive cuts for the flip. The silence and the sudden lightness come at once, and they are sure the reactor has failed. They grip the edge of the bunk, breathing in short gasps, and a low moan starts in their throat. The others look at you.",
+  "text": "Sam panics when the drive cuts for the flip. The silence and the sudden lightness come at once, and they're sure the reactor has failed. They grip the edge of the bunk, breathing in short gasps, and a low moan starts in their throat. The others look at you.",
   "labels": [
    "Talk them through it",
    "Give them a sedative (200 cr)",
@@ -1127,7 +1127,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Sam touches something. A hiss goes up, and a valve you did not know existed blows its seal. You vent 20 units of reaction mass into the black before you can shut it. Sam apologizes for the next hour, fast and stammering, until you laugh.",
+    "text": "Sam touches something. A hiss goes up, and a valve you didn't know existed blows its seal. You vent 20 units of reaction mass into the black before you can shut it. Sam apologizes for the next hour, fast and stammering, until you laugh.",
     "mem": "9 Jun 2214: You showed me the drive room.",
     "d": {
      "credits": 0,
@@ -1143,7 +1143,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "Sam asks questions for an hour, about coolant loops and injector timing and why the drive hums at that note. You find yourself explaining, and enjoying it. By the end you are both leaning on a pipe with the drive humming around you.",
+    "text": "Sam asks questions for an hour, about coolant loops and injector timing and why the drive hums at that note. You find yourself explaining, and enjoying it. By the end you're both leaning on a pipe with the drive humming around you.",
     "mem": "9 Jun 2214: You showed me the drive room.",
     "d": {
      "credits": 0,
@@ -1234,7 +1234,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Sam goes deep red. They clean the galley themselves, top to bottom, all night, with a toothbrush, and in the morning it is the cleanest room on the ship. There is a note on the door in pencil: \"Sorry. Thank you. Never again.\"",
+    "text": "Sam goes deep red. They clean the galley themselves, top to bottom, all night, with a toothbrush, and in the morning it's the cleanest room on the ship. There's a note on the door in pencil: \"Sorry. Thank you. Never again.\"",
     "mem": "9 Jun 2214: You let the recycler thing slide.",
     "d": {
      "credits": -400,
@@ -1250,7 +1250,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Sam goes deep red. They clean the galley themselves, top to bottom, all night, with a toothbrush, and in the morning it is the cleanest room on the ship. There is a note on the door in pencil: \"Sorry. Thank you. Never again.\"",
+    "text": "Sam goes deep red. They clean the galley themselves, top to bottom, all night, with a toothbrush, and in the morning it's the cleanest room on the ship. There's a note on the door in pencil: \"Sorry. Thank you. Never again.\"",
     "mem": "9 Jun 2214: You let the recycler thing slide.",
     "d": {
      "credits": -400,
@@ -1265,7 +1265,7 @@
    }
   ],
   "title": "Galley Incident",
-  "text": "Sam got into the good whiskey, the bottle you were saving, and somewhere around the third glass decided to give the galley water recycler \"a bit of a fix\", with a spoon and a fork. There is a gap in the wall and a fine mist in the air. Sam is sitting in the middle of the galley, wet through, holding the spoon upright. Repairs will run about 400 credits.",
+  "text": "Sam got into the good whiskey, the bottle you were saving, and somewhere around the third glass decided to give the galley water recycler \"a bit of a fix\", with a spoon and a fork. There's a gap in the wall and a fine mist in the air. Sam is sitting in the middle of the galley, wet through, holding the spoon upright. Repairs will run about 400 credits.",
   "labels": [
    "Add it to their fare",
    "Let it slide (400 cr)"
@@ -1340,7 +1340,7 @@
    }
   ],
   "title": "Card Game",
-  "text": "Sam produces a deck worn soft at the corners and shuffles it with a flourish. \"A friendly game, captain,\" Sam says. \"With a little money on it, just to make things interesting. It's a long burn, and a man gets bored.\" The deck is not yet square, and Sam is already smiling.",
+  "text": "Sam produces a deck worn soft at the corners and shuffles it with a flourish. \"A friendly game, captain,\" Sam says. \"With a little money on it, just to make things interesting. It's a long burn, and a man gets bored.\" The deck isn't yet square, and Sam is already smiling.",
   "labels": [
    "Play (500 cr stake)",
    "Decline"
@@ -1352,7 +1352,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You take the notes, and sit at the long table with the crew, elbow to elbow, passing dishes. It is the best meal the ship has had in months, and for an hour nobody talks about anything else. Somebody starts to sing, and the table joins in.",
+    "text": "You take the notes, and sit at the long table with the crew, elbow to elbow, passing dishes. It's the best meal the ship has had in months, and for an hour nobody talks about anything else. Somebody starts to sing, and the table joins in.",
     "mem": null,
     "d": {
      "credits": 0,
@@ -1368,7 +1368,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You take the notes, and sit at the long table with the crew, elbow to elbow, passing dishes. It is the best meal the ship has had in months, and for an hour nobody talks about anything else. Somebody starts to sing, and the table joins in.",
+    "text": "You take the notes, and sit at the long table with the crew, elbow to elbow, passing dishes. It's the best meal the ship has had in months, and for an hour nobody talks about anything else. Somebody starts to sing, and the table joins in.",
     "mem": null,
     "d": {
      "credits": 0,
@@ -1384,7 +1384,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Sam cannot speak for a moment. They take your hand in both of theirs, and then they write out the recipe on a napkin, every step, with a sketch of the pot. You will cook it, badly, for years.",
+    "text": "Sam can't speak for a moment. They take your hand in both of theirs, and then they write out the recipe on a napkin, every step, with a sketch of the pot. You'll cook it, badly, for years.",
     "mem": "9 Jun 2214: You wouldn't take my money.",
     "d": {
      "credits": 0,
@@ -1400,7 +1400,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Sam cannot speak for a moment. They take your hand in both of theirs, and then they write out the recipe on a napkin, every step, with a sketch of the pot. You will cook it, badly, for years.",
+    "text": "Sam can't speak for a moment. They take your hand in both of theirs, and then they write out the recipe on a napkin, every step, with a sketch of the pot. You'll cook it, badly, for years.",
     "mem": "9 Jun 2214: You wouldn't take my money.",
     "d": {
      "credits": 0,

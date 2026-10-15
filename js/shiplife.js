@@ -56,10 +56,10 @@ const isAsleep = p => isDark() && p.room === 'berths' && p.tx === null && p.dk =
 
 // What someone is seen doing, by room and (optionally) role. {n} is their name, {m} someone else here.
 const LIFE_LINES = {
-  engine: { cat: ['{n} is asleep on the reactor housing, where it is warm.', '{n} is stretched full length along a warm pipe, purring in a key that matches the drive.', '{n} is watching a dripping valve without blinking.', '{n} is wedged behind the coolant manifold, where the pipes are warmest.', '{n} bats a loose cable tie across the deck and loses it under the housing.', '{n} is sitting in the middle of the walkway. Anyone who comes through steps over.'],
+  engine: { cat: ['{n} is asleep on the reactor housing, where it\'s warm.', '{n} is stretched full length along a warm pipe, purring in a key that matches the drive.', '{n} is watching a dripping valve without blinking.', '{n} is wedged behind the coolant manifold, where the pipes are warmest.', '{n} bats a loose cable tie across the deck and loses it under the housing.', '{n} is sitting in the middle of the walkway. Anyone who comes through steps over.'],
     engineer: [
       '{n} is elbow-deep in the reactor housing again.',
-      '{n} is rerunning the injector timing. It was fine. It is finer now.',
+      '{n} is rerunning the injector timing. It was fine. It\'s finer now.',
       '{n} is lying on their back under the coolant manifold, telling a gasket a joke.',
       '{n} is tapping a pipe with a wrench, listening to the note it makes, and frowning.',
       '{n} is reading the coolant pressure off a gauge and writing it on the back of their hand.',
@@ -94,7 +94,7 @@ const LIFE_LINES = {
       '{n} is reading a seal tag aloud: the number, the yard, the date.',
       '{n} is wiping frost from the inside of the hold hatch.',
       '{n} is leaning on a crate with an ear against the hull.'] },
-  berths: { cat: ['{n} has claimed somebody\'s pillow. Nobody moves it.', '{n} is curled in the center of a freshly made bunk and watches whoever comes near.', '{n} is asleep on a pair of boots in a shaft of dim light, twitching.', '{n} is asleep in the laundry bag, where the bag is still warm.', '{n} is sitting at the end of a bunk, watching the one who is awake.', '{n} is kneading a blanket with both paws.'],
+  berths: { cat: ['{n} has claimed somebody\'s pillow. Nobody moves it.', '{n} is curled in the center of a freshly made bunk and watches whoever comes near.', '{n} is asleep on a pair of boots in a shaft of dim light, twitching.', '{n} is asleep in the laundry bag, where the bag is still warm.', '{n} is sitting at the end of a bunk, watching the one who\'s awake.', '{n} is kneading a blanket with both paws.'],
     medic: ['{n} is checking the sleeping faces in the berths.', '{n} stops at each bunk and listens for breathing.', '{n} is writing up the day\'s notes in their bunk, the pad on their knees.', '{n} is asleep in their boots with the kit bag under their head.', '{n} sets a cup of water on the shelf by a sleeper, and goes out.',
       '{n} is replacing a sleeper\'s blanket and drawing the curtain across.',
       '{n} is checking a sleeper\'s pulse at the wrist without waking them.',
@@ -125,7 +125,7 @@ const LIFE_LINES = {
     any: [
       '{n} is making coffee that could strip paint.',
       '{n} and {m} are playing cards in the galley, badly.',
-      '{n} is telling {m} a story that is only partly true.',
+      '{n} is telling {m} a story that\'s only partly true.',
       '{n} and {m} are washing up at the galley tap, drawing the water ration cup by cup, and not talking.',
       '{n} is trying to teach {m} a card trick, and the deck is on the floor.',
       '{n} is cooking something unlabeled in a pan.',

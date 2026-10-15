@@ -65,7 +65,7 @@ test('losing twice gives them the bridge: a third of the ship\'s fund goes, and 
     const s = repelStart(d, 'full');
     rolls([0.99, 0.99, 0.99, 0.99]);  // the post action fails, nobody is hurt; twice
     repelStep(s, 'post'); const text = repelStep(s, 'post');
-    return { taken: /They are on the bridge/.test(text), fund: h.fund / fund, opinion: cap.opinion - op, duel: G.duel, next: G.nextEvent, armor: st.armor < armor };
+    return { taken: /They're on the bridge/.test(text), fund: h.fund / fund, opinion: cap.opinion - op, duel: G.duel, next: G.nextEvent, armor: st.armor < armor };
   });
   assert.ok(r.taken); assert.ok(Math.abs(r.fund - 0.7) < 0.02); assert.equal(r.opinion, -1); assert.equal(r.duel, null); assert.equal(r.next, null); assert.ok(r.armor);
   await done();
@@ -162,7 +162,7 @@ test('a crew member who cannot stand you keeps to their berth, and the fight is 
     const s = repelStart(d, 'full');
     return { all: all.base, held: s.base, line: s.held, text: repelScene(s).text, none: all.held.length };
   });
-  assert.equal(r.held, r.all - 1); assert.equal(r.none, 0); assert.equal(r.line.length, 1); assert.match(r.line[0], /will not fight for you/); assert.match(r.text, /will not fight for you/);
+  assert.equal(r.held, r.all - 1); assert.equal(r.none, 0); assert.equal(r.line.length, 1); assert.match(r.line[0], /won't fight for you/); assert.match(r.text, /won't fight for you/);
   await done();
 });
 
@@ -213,7 +213,7 @@ test('a hired hand boards a ship that resists as the authored assault, and a shi
     // A win carries her bridge: her strongbox goes into the ship's fund.
     const a = assaultStart(foe); a.pos = -1; const fund = h.fund, rep = person(h.captain).opinion;
     out.won = repelSettle(a); out.fundUp = h.fund > fund; out.foeDead = !!foe.dead; out.liked = person(h.captain).opinion > rep;
-    // A loss drives you back to your lock, and she is still drifting.
+    // A loss drives you back to your lock, and she's still drifting.
     const foe2 = { ...foe, dead: false }, b = assaultStart(foe2); b.pos = 3; const armor = st.armor;
     out.lost = repelSettle(b); out.armorDown = st.armor < armor; out.stillDrifting = !foe2.dead;
     // A trader that has given up: no fight, and no prize for a hand.
@@ -268,7 +268,7 @@ test('the hand dies on a second hurt or a lost bridge while laid up, one in four
     return out;
   });
   assert.deepEqual([r.first.died, r.first.next], [false, null], 'a first hurt is over one in twelve');
-  assert.deepEqual(r.firstDies, { died: true, title: 'The Last Run', how: 'first', said: 'You are hit.' }); assert.ok(r.firstMedic, 'a medic halves it');
+  assert.deepEqual(r.firstDies, { died: true, title: 'The Last Run', how: 'first', said: "You're hit." }); assert.ok(r.firstMedic, 'a medic halves it');
   assert.deepEqual(r.again, { died: true, title: 'The Last Run', how: 'hurt' });
   assert.deepEqual([r.miss.died, r.miss.next], [false, null]);
   assert.ok(r.medicSaves, 'a medic halves it'); assert.ok(r.medicStillRolls);
@@ -295,15 +295,15 @@ test('a pirate bridge taken can cost the captain, one in three, and the hand goe
     out.fresh = G.state !== st; out.credits = G.state.credits; out.debt = hired().debt; out.skill = hired().skill.gunner; out.carried = G.state.carried; out.putOff = G.state.putOff || 0; out.notes = UI.notes.join(' ');
     return out;
   });
-  assert.equal(r.hit.title, 'Without a Captain'); assert.ok(r.hit.lost); assert.ok(r.hit.text.includes(`Captain ${r.last} does not get up`));
+  assert.equal(r.hit.title, 'Without a Captain'); assert.ok(r.hit.lost); assert.ok(r.hit.text.includes(`Captain ${r.last} doesn't get up`));
   assert.deepEqual([r.miss.title, r.miss.lost], [null, false], 'over one in three: the captain lives');
   assert.deepEqual([r.patrol.title, r.patrol.lost], [null, false], 'a patrol surrenders the ship and kills nobody');
   assert.deepEqual(r.handFirst, { title: 'The Last Run', lost: false });
   assert.deepEqual(r.choices, ['Take the bag']); assert.ok(r.text.includes(`The articles were Captain ${r.last}'s`));
   assert.ok(r.fresh); assert.equal(r.credits, 777); assert.equal(r.debt, 1234); assert.equal(r.skill, 60);
-  assert.equal(r.carried, `On the dock they say Captain ${r.last} did not come back from the bridge.`);
+  assert.equal(r.carried, `On the dock they say Captain ${r.last} didn't come back from the bridge.`);
   assert.equal(r.putOff, 0, 'nobody put the hand off');
-  assert.match(r.notes, /did not come back from the bridge\. You carry your savings/);
+  assert.match(r.notes, /didn't come back from the bridge\. You carry your savings/);
   await done();
 });
 
@@ -327,7 +327,7 @@ test('a lock fight ends on the hand\'s death, and the ending reads the record an
   assert.equal(r.title, 'The Last Run'); assert.ok(r.fight); assert.deepEqual(r.choices, ['Begin again']);
   assert.ok(r.text.includes(`Captain ${r.last} says it from the hatch`), 'what happened'); assert.ok(r.text.includes(`Captain ${r.last} writes it in the log`));
   assert.match(r.text, /days aboard/, 'the look back follows');
-  assert.ok(r.fresh && r.credits !== 777 && r.credits > 0, 'a new hand with fresh savings'); assert.equal(r.carried, `On the dock they say the hand on Captain ${r.last}'s ship did not come back.`);
+  assert.ok(r.fresh && r.credits !== 777 && r.credits > 0, 'a new hand with fresh savings'); assert.equal(r.carried, `On the dock they say the hand on Captain ${r.last}'s ship didn't come back.`);
   assert.equal(r.name, 'Sam Rowe');
   await done();
 });

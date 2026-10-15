@@ -218,11 +218,11 @@ test('a good read shows you the trap, and you can hit them first or turn away', 
     const t = chooseEvent(e.choices.findIndex(c => /Scan her hull/.test(c.label)));
     out.read = /gun housing/.test(t); finishEvent();
     out.labels = G.dialog.event.choices.map(c => c.label);
-    const hit = chooseEvent(out.labels.indexOf('Hit them before they are ready')); out.hit = /not ready/.test(hit); finishEvent();
+    const hit = chooseEvent(out.labels.indexOf("Hit them before they're ready")); out.hit = /not ready/.test(hit); finishEvent();
     out.ahead = /Position: ahead/.test(G.dialog.event.text);
     return out;
   });
-  assert.ok(r.read); assert.deepEqual(r.labels, ['Hit them before they are ready', 'Turn away and leave it']); assert.ok(r.hit && r.ahead);
+  assert.ok(r.read); assert.deepEqual(r.labels, ["Hit them before they're ready", 'Turn away and leave it']); assert.ok(r.hit && r.ahead);
   await done();
 });
 
@@ -239,7 +239,7 @@ test('turning away from a trap you read earns the captain\'s regard and some exp
     st.ambushAt = -1000; h.fund = 1000; op = cap.opinion;
     rolls([0.99]);  // a real freighter, answered blind
     e = ambushScene(); G.dialog = { event: e, choices: e.choices };
-    const real = chooseEvent(e.choices.findIndex(c => c.label === 'Go to her')); out.real = /She is real/.test(real); out.fund = h.fund; out.realOp = cap.opinion - op;
+    const real = chooseEvent(e.choices.findIndex(c => c.label === 'Go to her')); out.real = /She's real/.test(real); out.fund = h.fund; out.realOp = cap.opinion - op;
     st.ambushAt = -1000; op = cap.opinion; rolls([0.99, 0.01]);  // real, and the read shows it
     e = ambushScene(); G.dialog = { event: e, choices: e.choices }; chooseEvent(e.choices.findIndex(c => /Scan her hull/.test(c.label))); finishEvent();
     chooseEvent(G.dialog.choices.findIndex(c => c.label === 'Leave her')); out.leftOp = cap.opinion - op;

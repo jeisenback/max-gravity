@@ -1198,7 +1198,7 @@ function drawMap(W, H) {
   ctx.font = narrow ? '12px "IBM Plex Mono", monospace' : '13px "IBM Plex Mono", monospace';
   ctx.fillStyle = '#9ab';
   const zoom = `True scale, ${span} AU to the rim${Touch.on ? '' : ' (scroll or +/- to zoom)'}.`, close = Touch.on ? '' : ' M or Esc to close.';
-  const help = hired() ? `${zoom} The captain picks where she goes. Look around; you cannot plot a burn.${close} White ring: you. Green ring: where she is going. Orange: mission. Red: pirate raids.`
+  const help = hired() ? `${zoom} The captain picks where she goes. Look around; you can't plot a burn.${close} White ring: you. Green ring: where she's going. Orange: mission. Red: pirate raids.`
     : `${zoom} ${Touch.on ? 'Tap' : 'Click'} a destination to plot a burn.${close} White ring: you. Orange: mission. Red: pirate raids. Dim: beyond a full tank.`;
   let y = 42;
   for (const l of wrapText(help, W - 150)) ctx.fillText(l, 16, y += 16);  // clear of the Close and zoom buttons

@@ -621,7 +621,7 @@ test('a main character who walks off is a scene with their leaving line and what
     return out;
   });
   assert.equal(r.title, 'Gone Ashore'); assert.deepEqual(r.choices, ['Close the hatch']);
-  assert.ok(r.text.startsWith(`Ines does not ask for leave. At the foot of the ramp on ${r.planet}`));
+  assert.ok(r.text.startsWith(`Ines doesn't ask for leave. At the foot of the ramp on ${r.planet}`));
   assert.ok(r.text.includes('the word someday'), 'what you did with her');
   assert.deepEqual(r.gone, [true, true, true], 'Ines and the crew member go, loyal Tomas stays');
   assert.equal(r.departed.length, 1); assert.equal(r.departed[0].key, 'ines'); assert.equal(r.departed[0].why, 'opinion');
@@ -933,7 +933,7 @@ test('the chapter\'s closing scene reads the record: two losses close on The Mem
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
-    start({ mode: 'hired', post: 'gunner' }); person('c:ines').opinion = OPINION.CLOSE;  // someone comes with you, so it is not the empty ship
+    start({ mode: 'hired', post: 'gunner' }); person('c:ines').opinion = OPINION.CLOSE;  // someone comes with you, so it's not the empty ship
     const none = chapterEnd('shuttle'), grave = (key, day) => ({ key, day, place: 'Ceres', cause: 'Lost on the way.' });
     G.state.memorial = [grave('ines', 5)]; const one = chapterEnd('shuttle');
     G.state.memorial = [grave('ines', 5), grave('tomas', 9)]; const two = chapterEnd('shuttle');
@@ -993,8 +993,8 @@ test('the chapter endings agree with how many came: one friend, two friends, and
   assert.match(r.promisedOne, /Ines Ferreira goes up the ramp ahead of you with a bag/); assert.match(r.promisedOne, /Ines stops at the hatch and waits for you/);
   assert.match(r.promisedTwo, /Ines Ferreira and Tomas Achebe go up the ramp ahead of you with their bags/); assert.match(r.promisedTwo, /Ines and Tomas stop at the hatch and wait for you/);
   assert.match(r.richOne, /Ines Ferreira is already aboard/); assert.match(r.richTwo, /Ines Ferreira and Tomas Achebe are already aboard/);
-  assert.match(r.wallNobody, /Nobody is waiting at the foot of the ramp/);
-  assert.match(r.wallOne, /Tomas Achebe waits at the foot of the ramp until you have finished/);
+  assert.match(r.wallNobody, /Nobody's waiting at the foot of the ramp/);
+  assert.match(r.wallOne, /Tomas Achebe waits at the foot of the ramp until you've finished/);
   assert.match(r.berthsLoss, /Ines Ferreira is not here/, 'a loss shows in the empty berths');
   assert.doesNotMatch(r.berthsPlain, /is not here/, 'and no loss, no line');
   await done();

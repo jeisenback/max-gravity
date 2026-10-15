@@ -152,7 +152,7 @@ test('the placeholders the check knows are the ones the game replaces', async ()
     const replaced = t => fill(t) !== t;
     return {
       knownFlagged: known.filter(t => unknownPlaceholders(t).length), unknownMissed: unknown.filter(t => !unknownPlaceholders(t).length),
-      // fill() leaves {crew} for the dialog, so it is the one known token fill does not replace here.
+      // fill() leaves {crew} for the dialog, so it's the one known token fill does not replace here.
       knownNotReplaced: known.filter(t => t !== '{crew}' && !replaced(t)), unknownReplaced: unknown.filter(replaced),
       typo: unknownPlaceholders('{crew:pilott}'),  // fill() would replace it with a made-up name; the check flags it
       mixed: unknownPlaceholders('Go to {planet} and ask {pilot} or {crew:cook}, and {nope}.'),
@@ -448,7 +448,7 @@ test('a hired scene\'s data choice is shut by its conditions as the code gates w
   const r = await g.ev(() => {
     startGame({ mode: 'hired', background: 'earth', post: 'gunner', captainKey: 'hester', credits: 5000 }); G.dialog = null; G.nextEvent = null;
     const find = (key, label) => { for (const [name, sc] of Object.entries(CAST[key].scenes)) { const i = sc.choices.findIndex(c => c.label === label); if (i >= 0) return { id: `cast:${key}:${name}`, name, i, sc }; } };
-    const lend = find('tomas', 'Lend him 200 cr'), write = find('tomas', 'Ask him to write it down, so it does not go with the hull');
+    const lend = find('tomas', 'Lend him 200 cr'), write = find('tomas', "Ask him to write it down, so it doesn't go with the hull");
     const shown = (f, key) => castScene(key, CAST[key].scenes[f.name]).choices[f.i];
     const out = {};
     G.state.credits = 100;
@@ -512,7 +512,7 @@ test('a meeting scene joins or puts off the person as its closures did, with the
   assert.equal(r.open, true);
   assert.deepEqual(r.joined, { crew: 1, aboard: true, since: true, opinion: 2, text: true, role: 'pilot' });
   assert.deepEqual(r.later, { next: 8, crew: 0, text: true });
-  assert.deepEqual(r.full, { open: false, why: 'There is no free berth aboard.', other: true });
+  assert.deepEqual(r.full, { open: false, why: "There's no free berth aboard.", other: true });
   assert.equal(r.edited, false);
 });
 

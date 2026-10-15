@@ -15,9 +15,9 @@ North star: Patrick O'Brian. Take: the long balanced sentence that carries shop 
 
 Sample:
 
-> "If you had said something," Ines says, "I would have moved it. I am not going to stand here and be told I did it on purpose, when I did not know it was a problem until Pax mentioned it at the watch change."
+> "If you had said something," Ines says, "I'd have moved it. I'm not going to stand here and be told I did it on purpose, when I didn't know it was a problem until Pax mentioned it at the watch change."
 >
-> "I said something." Mara puts the spoon down on the counter, bowl up. "Tuesday, at the watch change, in front of Pax, and you said you would look at it when you had a minute, and it has been six days, and the minute has not come."
+> "I said something." Mara puts the spoon down on the counter, bowl up. "Tuesday, at the watch change, in front of Pax, and you said you'd look at it when you had a minute, and it has been six days, and the minute hasn't come."
 >
 > "Then I forgot."
 >
@@ -36,7 +36,7 @@ North star: Lois McMaster Bujold. Take: the dry line a character says, and the b
 
 Sample:
 
-> The galley has one thermostat, set into the bulkhead beside the coffee maker, with a strip of tape across its dial and INES written on the tape in marker. Tonight Ines has moved it, and Mara is standing in front of it with her arms crossed. "If you had said something," Ines says, "I would have moved it back." "I said something." Mara puts the spoon on the counter, bowl up. "Tuesday, at the watch change, in front of Pax." Pax, three seats down with a tray of rice, goes on eating the rice. The display reads eighteen degrees. "Then I forgot," Ines says, and Mara asks the table whether anyone heard her say it, and the table passes the salt.
+> The galley has one thermostat, set into the bulkhead beside the coffee maker, with a strip of tape across its dial and INES written on the tape in marker. Tonight Ines has moved it, and Mara is standing in front of it with her arms crossed. "If you had said something," Ines says, "I'd have moved it back." "I said something." Mara puts the spoon on the counter, bowl up. "Tuesday, at the watch change, in front of Pax." Pax, three seats down with a tray of rice, goes on eating the rice. The display reads eighteen degrees. "Then I forgot," Ines says, and Mara asks the table whether anyone heard her say it, and the table passes the salt.
 
 ## tense
 
@@ -49,7 +49,7 @@ North star: None supplemental; the primary model is Corey, as in reference passa
 
 Sample:
 
-> Mara is standing with the spoon in her fist and Ines has her back to the bulkhead, and the only way out of the galley is the strip of deck between them. "Say it again," Mara says. "I said I forgot," Ines says, "I did not do it to you, I forgot," and the second time she says it she is looking at the door. Pax comes in for water, sees the two of them, and stops with the cup half filled. At the end of the corridor the hatch seal cycles. The watch is coming off, and in a minute there will be four more people in the galley than there are now.
+> Mara is standing with the spoon in her fist and Ines has her back to the bulkhead, and the only way out of the galley is the strip of deck between them. "Say it again," Mara says. "I said I forgot," Ines says, "I didn't do it to you, I forgot," and the second time she says it she's looking at the door. Pax comes in for water, sees the two of them, and stops with the cup half filled. At the end of the corridor the hatch seal cycles. The watch is coming off, and in a minute there'll be four more people in the galley than there are now.
 
 ## quiet
 
@@ -62,4 +62,4 @@ North star: Kazuo Ishiguro. Take: the restraint, and the formal long syntax. Lea
 
 Sample:
 
-> It is understood aboard that a quarrel in the galley is finished when the person who began it picks up a tray, and that nobody comments on whether the tray is full. Ines says, "If you had spoken, I would have moved the thermostat," and Mara, who has put her spoon down on the counter with the bowl turned up, says, "I did speak. Tuesday, at the watch change, with Pax standing there, and you said you would look at it when you had a minute." "Then I forgot," Ines says. Mara asks the table, "Did anyone hear me say it?" Nobody answers, and Ines takes a tray from the rack and fills it with what is left of the rice.
+> It's understood aboard that a quarrel in the galley is finished when the person who began it picks up a tray, and that nobody comments on whether the tray is full. Ines says, "If you had spoken, I'd have moved the thermostat," and Mara, who has put her spoon down on the counter with the bowl turned up, says, "I did speak. Tuesday, at the watch change, with Pax standing there, and you said you'd look at it when you had a minute." "Then I forgot," Ines says. Mara asks the table, "Did anyone hear me say it?" Nobody answers, and Ines takes a tray from the rack and fills it with what's left of the rice.

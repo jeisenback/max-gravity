@@ -18,7 +18,7 @@ Mods.register({
       id: 'road-toll-beacon', when: { gov: 'Dome Concord' },
       title: 'Toll Beacon',
       text: ('An automated beacon hangs in the lane with a Dome Concord seal on its casing. It has been pinging you politely for an hour: lane ' +
-          'maintenance, a hundred and fifty credits, receipt provided. It is a real toll. It has also been collected, by the look of the paint, by at ' +
+          'maintenance, a hundred and fifty credits, receipt provided. It\'s a real toll. It has also been collected, by the look of the paint, by at ' +
           'least three different people.'),
       choices: [
         {
@@ -40,7 +40,7 @@ Mods.register({
         {
           label: 'Ignore it',
           effects: { rep: { 'Dome Concord': -1 } },
-          result: 'It logs your transponder and asks you, politely, to reconsider. Twice. Then a third time. You do not. The beacon falls behind, still murmuring its reminders, until the signal fades. Somewhere in a Tharsis office a file gets thicker.'
+          result: 'It logs your transponder and asks you, politely, to reconsider. Twice. Then a third time. You don\'t. The beacon falls behind, still murmuring its reminders, until the signal fades. Somewhere in a Tharsis office a file gets thicker.'
         },
       ],
     });
@@ -59,17 +59,17 @@ Mods.register({
         ],
           rep: { 'Charter League': 1 }
         },
-          result: 'For a day you ride in their shadow, sipping at the drive. At the shift change the lead hauler sends a single line: "Seals tight." It is not a greeting exactly. It is what haulers say instead.'
+          result: 'For a day you ride in their shadow, sipping at the drive. At the shift change the lead hauler sends a single line: "Seals tight." It\'s not a greeting exactly. It\'s what haulers say instead.'
         },
         {
           label: 'Thank them and keep your own line',
           result: 'They understand at once: nobody drafts behind a stranger without checking the stranger out. "Fair enough," says the lead hauler, and the convoy\'s running lights blink together, once, along the line, before it pulls ahead. You watch them go, six lights in a row.'
         },
         {
-          label: 'Ask what they are carrying',
+          label: 'Ask what they\'re carrying',
           when: { standing: { 'Charter League': 10 } },
           effects: { news: 'A convoy of ice haulers bound for the inner system is running short on medical stock.' },
-          result: 'A pause. "Ice. Mostly. And a lot of people who want their families to hear from them." The lead ship shares the channel for an hour. You listen to other people\'s good news until you notice you are smiling.'
+          result: 'A pause. "Ice. Mostly. And a lot of people who want their families to hear from them." The lead ship shares the channel for an hour. You listen to other people\'s good news until you notice you\'re smiling.'
         },
       ],
     });
@@ -82,14 +82,14 @@ Mods.register({
         { when: { crew: 'engineer' }, text: '{crew:engineer} is already at the reactor shielding, sleeves rolled.' },
       ],
       choices: [
-        { label: 'Everyone into the shielded core', effects: { delay: 8 }, result: 'Four hours pressed together in the one compartment with the good lead lining. Someone hums. Someone else tells the story of the worst flare they ever lived through, and it gets worse each time it is corrected.' },
+        { label: 'Everyone into the shielded core', effects: { delay: 8 }, result: 'Four hours pressed together in the one compartment with the good lead lining. Someone hums. Someone else tells the story of the worst flare they ever lived through, and it gets worse each time it\'s corrected.' },
         {
           label: 'Keep burning and trust the hull',
           effects: { do: [
           'hull',
           0.1
         ] },
-          result: ('The counter climbs, slowly, from green to yellow to something you do not want to think about, and the whole ship, for two long ' +
+          result: ('The counter climbs, slowly, from green to yellow to something you don\'t want to think about, and the whole ship, for two long ' +
               'hours, listens to it tick. The hull takes it. Your hair stands on end in the galley, and a spoon, for no reason at all, rises an inch ' +
               'off the table and drops again, and nobody says a word about it. When the counter finally falls, someone, at last, lets out a long, ' +
               'shaky laugh, and the whole crew joins in.')
@@ -101,7 +101,7 @@ Mods.register({
     road({
       id: 'road-stranded-tug', when: { raid: true },
       title: 'Empty Tank',
-      text: 'A mining tug is drifting well off any lane, its drive cold. Three people are waving from a hatch. They have been waving for hours. Pirates scared them off their claim two weeks ago, and they burned everything they had getting clear.',
+      text: 'A mining tug is drifting well off any lane, its drive cold. Three people are waving from a hatch. They\'ve been waving for hours. Pirates scared them off their claim two weeks ago, and they burned everything they had getting clear.',
       choices: [
         {
           label: 'Share reaction mass (40 units)',
@@ -134,7 +134,7 @@ Mods.register({
     road({
       id: 'road-wedding', when: { gov: 'Charter League', standing: { 'Charter League': 0 } },
       title: 'Open Channel',
-      text: 'An old habit of the Belt: when two people marry between ships, they do it on the open band, and anyone in range is a guest. You are in range. A small voice is reading vows off a paper that is clearly shaking, and the whole channel is quiet to listen.',
+      text: 'An old habit of the Belt: when two people marry between ships, they do it on the open band, and anyone in range is a guest. You\'re in range. A small voice is reading vows off a paper that\'s clearly shaking, and the whole channel is quiet to listen.',
       choices: [
         { label: 'Answer with the ship\'s horn', result: 'Every ship in range answers. It sounds like a herd of enormous animals. The couple laughs on the band, and the channel breaks into cheering.' },
         { label: 'Listen quietly', result: 'You listen to the whole thing: the vows, the shaky laughter, the silence at the end, the ragged cheer. You never learn their names. Days later, in a dull moment, you find yourself smiling at nothing.' },
@@ -154,10 +154,10 @@ Mods.register({
     road({
       id: 'road-pace-cutter', when: { war: true },
       title: 'A Cutter at Your Shoulder',
-      text: 'A navy cutter has spent the last six hours matching your speed, two hundred kilometers off your beam, saying nothing at all. It is doing what warships do in a war: being visible, being patient, and letting your imagination fill in the rest.',
+      text: 'A navy cutter has spent the last six hours matching your speed, two hundred kilometers off your beam, saying nothing at all. It\'s doing what warships do in a war: being visible, being patient, and letting your imagination fill in the rest.',
       choices: [
-        { label: 'Hail them first', result: 'A tired voice: "Routine, freighter. Everyone gets a pacer this month." A pause. "Watch the lanes near the front. Bad luck for small ships." That is all you get, and it is more than you asked for.' },
-        { label: 'Say nothing and hold your course', result: 'Six hours. Then, as suddenly as it came, the cutter turns its nose and drops away into the dark. You do not realize how tight your shoulders were until they let go.' },
+        { label: 'Hail them first', result: 'A tired voice: "Routine, freighter. Everyone gets a pacer this month." A pause. "Watch the lanes near the front. Bad luck for small ships." That\'s all you get, and it\'s more than you asked for.' },
+        { label: 'Say nothing and hold your course', result: 'Six hours. Then, as suddenly as it came, the cutter turns its nose and drops away into the dark. You don\'t realize how tight your shoulders were until they let go.' },
         {
           label: '[{crew}] Have {crew} read their traffic',
           when: { crew: 'slicer' },
@@ -171,15 +171,15 @@ Mods.register({
       id: 'road-old-radio',
       title: 'The Old Pilot',
       text: ('On a lane channel nobody listens to, a man with a voice like gravel in a tin cup is talking to no one in particular. He flew freight ' +
-          'for forty years and retired to a habitat with a good radio. He is describing this exact stretch of lane as he remembers it, one hazard and ' +
+          'for forty years and retired to a habitat with a good radio. He\'s describing this exact stretch of lane as he remembers it, one hazard and ' +
           'one good joke at a time.'),
       choices: [
         { label: 'Listen for an hour', result: [
           'He knows things: which stretch of lane runs slow in a cold year, which stations water their coffee, which relay to trust when the main one dies.',
           { when: { crew: 'pilot' }, text: '{crew:pilot} takes notes, then admits, grudgingly, that a few of them are useful.' },
-          'When he finally signs off he says, to no one, "Good burning." You find you would like to have known him.',
+          'When he finally signs off he says, to no one, "Good burning." You find you\'d like to have known him.',
         ] },
-        { label: 'Tell him a joke', result: 'There is a pause on the channel so long you think he has gone. Then a dry wheeze, and: "Well. That\'s a terrible joke." He tells you a worse one back, and you trade them all the way to the flip.' },
+        { label: 'Tell him a joke', result: 'There\'s a pause on the channel so long you think he has gone. Then a dry wheeze, and: "Well. That\'s a terrible joke." He tells you a worse one back, and you trade them all the way to the flip.' },
         { label: 'Mute the channel', result: 'You do, with a single tap. The old pilot\'s voice cuts off in the middle of a sentence. That night, in the dark, you turn it back on, low, and listen to the gravel and the jokes until you fall asleep.' },
       ],
     }, 0.3, 90);
@@ -203,7 +203,7 @@ Mods.register({
       id: 'road-prospector', when: { gov: ['Charter League', 'Independent'] },
       title: 'The Prospector',
       text: ('A single ship on a lonely rock, hailing on every band it has. The voice is a man working hard at being cheerful. He has a claim. He has ' +
-          'assay results that make his voice crack when he reads them. What he does not have is water or food to last until the survey ship arrives. ' +
+          'assay results that make his voice crack when he reads them. What he doesn\'t have is water or food to last until the survey ship arrives. ' +
           '"Half a share," he says. "Just get me through the month."'),
       choices: [
         {
@@ -230,10 +230,10 @@ Mods.register({
           {}
         ]
         },
-          result: 'He thanks you four times, his voice breaking on the third, and is still thanking you when you drop out of range, thin and tinny, on a channel that is turning to static. You are gripping the console harder than you need to.'
+          result: 'He thanks you four times, his voice breaking on the third, and is still thanking you when you drop out of range, thin and tinny, on a channel that\'s turning to static. You\'re gripping the console harder than you need to.'
         },
-        { label: 'Give him what you can spare (2t of water)', when: { cargo: { water: 2 } }, effects: { cargo: { water: -2 }, rep: { 'Charter League': 1 } }, result: 'It is not half a share, and he knows it. There is a pause before he speaks. "That\'s very kind," he says. "I\'ll remember it."' },
-        { label: 'Wish him luck', result: 'He wishes you the same in a voice that has stopped trying so hard. You keep the channel open a while after, just in case. He does not use it.' },
+        { label: 'Give him what you can spare (2t of water)', when: { cargo: { water: 2 } }, effects: { cargo: { water: -2 }, rep: { 'Charter League': 1 } }, result: 'It\'s not half a share, and he knows it. There\'s a pause before he speaks. "That\'s very kind," he says. "I\'ll remember it."' },
+        { label: 'Wish him luck', result: 'He wishes you the same in a voice that has stopped trying so hard. You keep the channel open a while after, just in case. He doesn\'t use it.' },
       ],
     }, 0.4, 90);
 
@@ -243,12 +243,12 @@ Mods.register({
       text: 'A freighter about your size pulls alongside and hails on a private band. The captain\'s voice is wary and friendly. "Nobody\'s watching us and I\'m tired of guessing. I\'ll tell you what the market is doing where I\'ve been. You tell me where you\'ve been. No cash."',
       choices: [
         { label: 'Trade honest information', effects: { rep: { 'Independent': 1 } }, result: [
-          'You trade half an hour of prices, shortages, and gossip. It is more than either of you expected. When you break off, the other captain says, "Fair winds," and means it.',
+          'You trade half an hour of prices, shortages, and gossip. It\'s more than either of you expected. When you break off, the other captain says, "Fair winds," and means it.',
           { when: { boom: 'Arcology Compact' }, text: 'They laugh at the news from Earth. "Boom times. Everybody\'s hiring."' },
         ] },
         {
           label: 'Tell them the least you can',
-          result: 'You get a little back and give a little back: a shortage here, a rumor there, a name or two you would rather not have shared. When it is done the other captain says, "Safe burns." You answer in kind. Behind you the freighter\'s lights dim, one by one.'
+          result: 'You get a little back and give a little back: a shortage here, a rumor there, a name or two you\'d rather not have shared. When it\'s done the other captain says, "Safe burns." You answer in kind. Behind you the freighter\'s lights dim, one by one.'
         },
         { label: 'Decline and burn on', result: 'They wave it off with a light laugh. "Suit yourself," they say. Behind you the channel closes with a click.' },
       ],
@@ -258,12 +258,12 @@ Mods.register({
       id: 'road-long-quiet', when: { day: 20 },
       title: 'The Long Quiet',
       text: [
-        'Four days out, and nothing has happened. Nothing is going to happen. The plume is steady, the air is stale in the good way, and the ship has settled into the rhythm of a place where people live.',
+        'Four days out, and nothing has happened. Nothing\'s going to happen. The plume is steady, the air is stale in the good way, and the ship has settled into the rhythm of a place where people live.',
         { when: { crew: 'kit' }, text: 'Kit is on watch with their boots up, whistling something off-key.' },
       ],
       choices: [
-        { label: 'Walk the ship', result: 'You go compartment to compartment, slowly. A cup left half-full. A handwritten note taped to the coolant panel: "Please don\'t touch, ask Rosa." A pair of socks drying on a pipe. The ship is not just a machine. It is a house, and people are happy in it.' },
-        { label: 'Sit with the stars', result: 'You take a mug of something hot to the observation blister and watch the black. A long time later you realize you have been thinking about nothing at all.' },
+        { label: 'Walk the ship', result: 'You go compartment to compartment, slowly. A cup left half-full. A handwritten note taped to the coolant panel: "Please don\'t touch, ask Rosa." A pair of socks drying on a pipe. The ship isn\'t just a machine. It\'s a house, and people are happy in it.' },
+        { label: 'Sit with the stars', result: 'You take a mug of something hot to the observation blister and watch the black. A long time later you realize you\'ve been thinking about nothing at all.' },
         { label: 'Check the books', result: 'You go through the accounts line by line, with a cup of tea gone cold at your elbow: a column of small hopes and larger bills. When you close the book, the numbers are the same. You sleep that night.' },
       ],
     }, 0.2, 40);

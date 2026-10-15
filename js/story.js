@@ -31,13 +31,13 @@ function storyObjective() {
   const s = story();
   return {
     1: 'You have the Persephone\'s tally book. Someone will come asking about it.',
-    2: 'You refused to hand over the book. Aquilon Hydrologics will not take no for an answer. Watch your back on the next takeoff.',
-    3: 'A Ceres water engineer named Mira Castellane is looking for you. She will find you at your next port.',
+    2: 'You refused to hand over the book. Aquilon Hydrologics won\'t take no for an answer. Watch your back on the next takeoff.',
+    3: 'A Ceres water engineer named Mira Castellane is looking for you. She\'ll find you at your next port.',
     4: 'Take Mira Castellane to Europa, at Jupiter, so a Water Authority clerk can open the book.',
     5: 'Decide who gets the proof. Take it to Councillor Tembo of the Charter League on Ceres Station, Commander Ueda, fleet auditor of the Dome Concord Fleet, on Mars (needs Trusted standing), Director Achebe of Compact intelligence on Luna, or Anselm Voight at Hermes Foundry on Mercury.',
     sold: 'Anselm Voight wants to see you at Hermes Foundry, on Mercury. Aquilon has work for people it can trust.',
     belt1: 'Bring 20t of Water to Ceres Station, so the League council can show people the ration is breaking.',
-    belt2: 'Aquilon knows you are working with the League. Get to Pallas Refinery and rally the refinery crews.',
+    belt2: 'Aquilon knows you\'re working with the League. Get to Pallas Refinery and rally the refinery crews.',
     mars1: 'Land at Hermes Foundry, on Mercury, and plant Commander Ueda\'s tracer in its comm net.',
     mars2: 'Report back to Commander Ueda at Phobos Yards, at Mars.',
     earth1: 'Pick up Mira Castellane on Europa and bring her to Director Achebe on Luna.',
@@ -324,7 +324,7 @@ const ENDINGS = {
   earth: { credits: 25000, rep: { 'Arcology Compact': 15, 'Charter League': -20 },
     text: 'Compact relief comes ashore, the riots end, and the proof stays buried. Aquilon quietly sells its claims to an Earth consortium. Ceres has water again, rationed under Compact supervision.' },
   aquilon: { credits: 20000, rep: { 'Charter League': -30 },
-    text: 'You sell twenty tons of water at a thousand credits a ton to people who have been thirsty for months. Aquilon\'s share price doubles. Ceres survives, barely, and the Belt never forgets the name of your ship.' },
+    text: 'You sell twenty tons of water at a thousand credits a ton to people who\'ve been thirsty for months. Aquilon\'s share price doubles. Ceres survives, barely, and the Belt never forgets the name of your ship.' },
   truth: { credits: 5000, rep: { 'Charter League': 20, 'Arcology Compact': -10, 'Dome Concord': -10 },
     text: 'You tell them everything: the pumps, the ice claims, the water futures, and everyone who looked away. The broadcast reaches every station in a day. Aquilon\'s executives are arrested on Mercury, three Compact officials resign, and even Mars has questions to answer. Ceres drinks.' },
 };
@@ -360,13 +360,13 @@ function epilogueEvent() {
       : 'Mira Castellane runs the Ceres Water Authority now. She keeps a picture of your ship on her office wall.',
     mars: 'Mira Castellane testified before the Martian parliament, then went home to Ceres to fix pumps.',
     earth: 'Nobody has heard from Mira Castellane since Luna.',
-    aquilon: 'Mira Castellane vanished from Europa. Some say she is still out there, gathering proof. Some say Aquilon found her first.',
+    aquilon: 'Mira Castellane vanished from Europa. Some say she\'s still out there, gathering proof. Some say Aquilon found her first.',
   }[e];
   const fates = {
-    rosa: ['belt', 'truth'].includes(e) ? 'Rosa Okafor went home to Ceres a hero, then came right back. "Somebody has to keep your drive alive."' : 'Rosa Okafor keeps the drive alive and does not talk about Ceres.',
-    dima: 'Dima Sokolov still flies like someone is shooting at him. Lately, someone usually is.',
+    rosa: ['belt', 'truth'].includes(e) ? 'Rosa Okafor went home to Ceres a hero, then came right back. "Somebody has to keep your drive alive."' : 'Rosa Okafor keeps the drive alive and doesn\'t talk about Ceres.',
+    dima: 'Dima Sokolov still flies like someone\'s shooting at him. Lately, someone usually is.',
     kit: 'Kit Halloran sleeps through the night now, most nights.',
-    josef: 'Josef Brandt has started a ledger of everything Aquilon owes. It is a long ledger.',
+    josef: 'Josef Brandt has started a ledger of everything Aquilon owes. It\'s a long ledger.',
     wren: 'Wren says she has been inside the Aquilon servers. She says nothing else.',
   };
   const crew = st.crew.map(id => (CREW[id] ? fates[id]
@@ -379,7 +379,7 @@ function epilogueEvent() {
     homeLine(),
     mira,
     crew.length ? crew.join(' ') : 'You fly alone, the way you started.',
-    `Across the solar system, ${friends} ${friends === 1 ? 'person' : 'people'} would cross a burn for you, and ${enemies} would not.`,
+    `Across the solar system, ${friends} ${friends === 1 ? 'person' : 'people'} would cross a burn for you, and ${enemies} wouldn't.`,
     `${dateOf(st.day)}. ${fmt(st.credits)} cr. Your ship: the ${ship().name}. ${standing}.`,
   ];
   return {
@@ -415,7 +415,7 @@ Mods.register({
         return 'You find an unguarded junction behind a coolant stack and plug it in. Nobody sees a thing.';
       }
       changeRep('Arcology Compact', -10);
-      return 'A security patrol turns the corner just as you open the panel. You talk your way out of it, barely, and your record with the Compact takes a hit. You will have to try again.';
+      return 'A security patrol turns the corner just as you open the panel. You talk your way out of it, barely, and your record with the Compact takes a hit. You\'ll have to try again.';
     });
     M.addAction('aquilonPumps', () => {
       G.state.rumors.push({ planet: 'Ceres Station', cid: 'water', mult: 1.8, until: G.state.day + 40, text: 'Three more pumps failed on Ceres Station. Water is worth more than fuel there now. (Ceres)' });

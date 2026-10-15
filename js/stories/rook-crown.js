@@ -21,7 +21,7 @@ Mods.register({
       when: { planet: rook, day: 20, qBelow: { crown: 1, crownDone: 1, mcrn: 1, corpSworn: 1 }, chance: 0.5 },
       title: 'Hollis Mbeki',
       text: ('Nobody rules the Rook, which is why everyone on it answers to Hollis Mbeki. He finds you at the refuel collar, an old man in a flight ' +
-          'suit older than you, patched at the elbows and the knees, with a cracked leather cap and a soft, raspy voice. He does not seem to be in a ' +
+          'suit older than you, patched at the elbows and the knees, with a cracked leather cap and a soft, raspy voice. He doesn\'t seem to be in a ' +
           'hurry. He watches you top off your tanks with the flat, patient gaze of a man who has been reading captains for sixty years. "Captains who ' +
           'dock here more than twice get asked the question," he says. "Do you want to fly under the Rook\'s colors? The Compact and Mars will hate ' +
           'you for it. We won\'t. That\'s not a small thing, in these lanes."'),
@@ -51,7 +51,7 @@ Mods.register({
       when: { planet: rook, q: { crown: 1 }, ...free },
       title: 'Unmarked Crates',
       text: ('Hollis walks you past a stack of crates in a dim side bay of the Rook, ten tons of them, stenciled MEDICAL in official red paint that ' +
-          'has not quite dried. He rests one hand on the top of the pile, affectionately, as if it were a horse. "Reactor parts, from a Compact ' +
+          'hasn\'t quite dried. He rests one hand on the top of the pile, affectionately, as if it were a horse. "Reactor parts, from a Compact ' +
           'depot that\'s missing some reactor parts. Ceres will pay for them and not ask. League customs might. That\'s what you\'re for." He ' +
           'smiles, thinly. "Nobody has ever inspected a captain who looks this honest."'),
       choices: [
@@ -61,12 +61,12 @@ Mods.register({
               onDone: { q: { crown: 1 }, set: { ...taskOver, contraband: 0 }, rep: { Pirate: 3 }, log: 'Delivered the Rook\'s crates to Ceres.' },
               onFail: { set: { ...taskOver, contraband: 0 }, rep: { Pirate: -4 }, log: 'The Rook\'s crates never reached Ceres. Hollis will remember.' } } },
           result: ('"Thirty days," Hollis says. "Longer than that, and they become your crates." Two silent dockhands load them, with the exaggerated ' +
-              'care of people who know exactly what is inside. The stencil paint smears on your palms, and you cannot get it off for a day. Every time ' +
+              'care of people who know exactly what\'s inside. The stencil paint smears on your palms, and you can\'t get it off for a day. Every time ' +
               'you look at it, it looks like a small red cross.') },
         {
           label: 'Not this run',
           result: ('"There\'ll be others," he says, and takes his hand off the crates, and looks at you a moment longer than is comfortable. "There ' +
-              'are always crates. And there are always captains who say yes the first time." He does not say it unkindly. He says it like a man ' +
+              'are always crates. And there are always captains who say yes the first time." He doesn\'t say it unkindly. He says it like a man ' +
               'reading a weather report.')
         },
       ],
@@ -83,18 +83,18 @@ Mods.register({
         { label: '{crew} rewrites the manifest', when: { crew: 'slicer' },
           effects: { q: { crown: 1 } },
           result: ('By the time the militia boards, your manifest and your crates agree completely: hydroponics substrate, ten tons, packed in the ' +
-              'customary way. The sergeant in charge inspects the crates, prods a corner, and finds, to his visible sorrow, that they are exactly what ' +
+              'customary way. The sergeant in charge inspects the crates, prods a corner, and finds, to his visible sorrow, that they\'re exactly what ' +
               'they say. The militia leaves disappointed. Hollis will hear about this, and, you suspect, will be very pleased.') },
         { label: 'Bribe the inspector (2,000 cr)', when: { credits: 2000 }, effects: { credits: -2000 },
           result: ('The inspector counts the transfer twice, very slowly, like a man in prayer. Then he counts your crates, and, with a small, sad ' +
               'shake of the head, records them as medical supplies, nothing else, perfectly in order. "A pleasure doing business with you, captain," ' +
-              'he says, and does not look at your face.') },
+              'he says, and doesn\'t look at your face.') },
         { label: 'Dump the crates before they board', effects: { cancelMission: 'unmarked crates' },
           result: ('The crates go out the lock one after another, and tumble away in slow, dark rotation toward the Belt, each one a small red cross ' +
               'falling into the black. It takes eleven minutes. The militia boards and finds an empty hold and a very innocent captain, and a faint, ' +
-              'guilty smell of stencil paint. Hollis is not going to be pleased, and you know it.') },
+              'guilty smell of stencil paint. Hollis isn\'t going to be pleased, and you know it.') },
         { label: 'Run for it', effects: { rep: { 'Charter League': -6 }, q: { crown: 1 } },
-          result: 'You light the drive and dive headlong into the Ceres traffic, between lumbering ice haulers and a tangle of tugs, with the militia\'s voice ringing on every band. They don\'t follow. But they have your transponder now, and, on Ceres, that is a long memory.' },
+          result: 'You light the drive and dive headlong into the Ceres traffic, between lumbering ice haulers and a tangle of tugs, with the militia\'s voice ringing on every band. They don\'t follow. But they have your transponder now, and, on Ceres, that\'s a long memory.' },
       ],
     });
 
@@ -102,7 +102,7 @@ Mods.register({
       id: 'rook-rival', where: 'port', priority: 2,
       when: { planet: rook, q: { crown: 2 }, ...free },
       title: 'Dagger Quartey',
-      text: ('"Ines Quartey," Hollis says, as if the name tastes bad, and spits, neatly, into a cup. He is sitting in a battered old chair at the ' +
+      text: ('"Ines Quartey," Hollis says, as if the name tastes bad, and spits, neatly, into a cup. He\'s sitting in a battered old chair at the ' +
           'back of the bar, with a blanket over his knees, and his hands are trembling slightly on the armrests. "Calls herself Dagger. She wants my ' +
           'chair, and she has been telling the council you\'re a Compact plant. She runs out of the Saturn moons, in a ship called the Knife in the ' +
           'Dark, which tells you everything you need to know. Settle it." His voice, for a moment, is very old.'),
@@ -117,9 +117,9 @@ Mods.register({
         { label: 'Buy her off (6,000 cr)', when: { credits: 6000 },
           effects: { credits: -6000, q: { crown: 1 }, log: 'Paid Dagger Quartey to stop spreading stories.' },
           result: ('You meet her in a neutral bar on Titan, over a table with a sticky surface. She counts the money twice, with her long fingers, ' +
-              'and takes it with a smile you will think about later, and a look at you that is very nearly friendly. The stories stop. The look stays ' +
-              'with you. You will never quite be sure what she bought.') },
-        { label: 'Leave it for now', result: '"She won\'t," Hollis says, very quietly. He does not add anything. He does not have to. In the silence, you can hear the old fan in the ceiling turning, and someone, far down the corridor, playing a slow, sad tune on a battered guitar.' },
+              'and takes it with a smile you\'ll think about later, and a look at you that\'s very nearly friendly. The stories stop. The look stays ' +
+              'with you. You\'ll never quite be sure what she bought.') },
+        { label: 'Leave it for now', result: '"She won\'t," Hollis says, very quietly. He doesn\'t add anything. He doesn\'t have to. In the silence, you can hear the old fan in the ceiling turning, and someone, far down the corridor, playing a slow, sad tune on a battered guitar.' },
       ],
     });
 
@@ -128,8 +128,8 @@ Mods.register({
       effects: { q: { crown: 1 }, credits: 12000, unrest: { [sid]: 0.45 }, rep: { [gov]: -12, Pirate: 5 },
         log: `Led the Rook's raid on the ${lanes} shipping lanes.`, news: `Pirates flying the Rook's colors raid shipping around ${SYSTEMS[sid].name}.` },
       result: (`Three ships, one plan, and a week of ${lanes} freighters wishing they had stayed in port. You watch the plumes go dark on the scope, ` +
-          `one after another, and you do not let yourself count the crews. Your share is 12,000 cr, counted out on the table at the Rook, in used ` +
-          `notes that smell of engine oil. Prices around ${SYSTEMS[sid].name} will feel it for weeks, and every merchant there will remember the black ` +
+          `one after another, and you don't let yourself count the crews. Your share is 12,000 cr, counted out on the table at the Rook, in used ` +
+          `notes that smell of engine oil. Prices around ${SYSTEMS[sid].name} will feel it for weeks, and every merchant there'll remember the black ` +
           `tower on your airlock.`),
     });
 
@@ -139,8 +139,8 @@ Mods.register({
       title: 'The Council\'s Raid',
       text: ('The Rook\'s council meets in a disused smelter, thirteen chairs around a table made of an old cargo hatch, the air thick with the smell ' +
           'of cold metal and cheap cigars. Faces, some hard and some frightened, turn to look as you come in. They want shipping thinned somewhere ' +
-          'that will hurt, prices driven up, and the inner planets reminded who owns the dark between the rocks. They want you to lead it. Nobody in ' +
-          'the room is smiling. Everybody is watching to see what you will do.'),
+          'that\'ll hurt, prices driven up, and the inner planets reminded who owns the dark between the rocks. They want you to lead it. Nobody in ' +
+          'the room is smiling. Everybody\'s watching to see what you\'ll do.'),
       choices: [
         raid('Martian', 'mars', 'Dome Concord'),
         raid('Compact', 'earth', 'Arcology Compact'),
@@ -166,9 +166,9 @@ Mods.register({
       choices: [{
         label: 'Take the chair',
         effects: crowned,
-        result: ('Hollis does not live to see the morning, but he sees you sit. He nods, once, and closes his eyes, and the council lets out a long ' +
+        result: ('Hollis doesn\'t live to see the morning, but he sees you sit. He nods, once, and closes his eyes, and the council lets out a long ' +
             'collective breath. The council\'s share of the Rook\'s take is yours now, and every pirate between Mars and Jupiter knows your ' +
-            'transponder. Some of them will even leave you alone. The black tower on your airlock, you realize, is no longer paint. It is a promise.')
+            'transponder. Some of them will even leave you alone. The black tower on your airlock, you realize, is no longer paint. It\'s a promise.')
       }],
     });
     M.addStorylet({
@@ -176,14 +176,14 @@ Mods.register({
       when: { planet: rook, q: { crown: 4, 'seen:rook-raid': 1 }, qBelow: { rivalDead: 1, crownDone: 1, rookTask: 1 } },
       text: ('Hollis Mbeki is dying, slowly and on his own terms, in a converted galley with a single lamp and a bowl of cold tea. The council crowds ' +
           'around his bed, and he points at you, one thin finger trembling. "This one bought peace when blood was cheaper," he whispers. "That\'s a ' +
-          'lord, not a thug." At the back of the room, Dagger Quartey, elegant, alive, and smiling, raises her glass to you. You will be watching her ' +
+          'lord, not a thug." At the back of the room, Dagger Quartey, elegant, alive, and smiling, raises her glass to you. You\'ll be watching her ' +
           'for the rest of your life.'),
       choices: [{
         label: 'Take the chair',
         effects: crowned,
-        result: ('Hollis does not live to see the morning, but he sees you sit, and closes his eyes with something like relief. The council\'s share ' +
+        result: ('Hollis doesn\'t live to see the morning, but he sees you sit, and closes his eyes with something like relief. The council\'s share ' +
             'of the Rook\'s take is yours now. Dagger was the first to congratulate you, pressing your hand in both of hers, warm and dry and utterly ' +
-            'sincere, which is exactly what worries you. That night you sleep with your back to a bulkhead, and you do not sleep well.')
+            'sincere, which is exactly what worries you. That night you sleep with your back to a bulkhead, and you don\'t sleep well.')
       }],
     });
   },

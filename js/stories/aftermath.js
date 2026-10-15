@@ -41,14 +41,14 @@ Mods.register({
           later: { 'dc-gift': 10 },
           log: 'Told Halden Voss I wanted nothing. He said he owed me something worse than money.'
         },
-          result: '"Nothing," you say. "Go home." He looks at you and does not answer at once. "Then I owe you something worse than money," he says. "I\'ll think of something."'
+          result: '"Nothing," you say. "Go home." He looks at you and doesn\'t answer at once. "Then I owe you something worse than money," he says. "I\'ll think of something."'
         },
       ],
     });
     beat({
       id: 'dc-raiders', title: 'They Follow You',
-      text: ('The raiders are not done. Two dark shapes keep pace off your quarter, closing, and the yacht behind them has gone from a distress call ' +
-          'to a decoy to a joke. On the open band a voice you have not heard before says: "Cargo or hull, friend." There is a pause.'),
+      text: ('The raiders aren\'t done. Two dark shapes keep pace off your quarter, closing, and the yacht behind them has gone from a distress call ' +
+          'to a decoy to a joke. On the open band a voice you haven\'t heard before says: "Cargo or hull, friend." There\'s a pause.'),
       choices: [
         {
           label: 'Burn hard to break away (30 reaction mass)',
@@ -70,13 +70,13 @@ Mods.register({
         },
           result: 'You turn, and fire, and so do they, and the exchange is short and loud and ugly. You come out of it with the hull scarred and both raiders limping for the dark. The yacht\'s decoy transponder is still pinging from a lost position. You write it down.'
         },
-        { label: 'Pay them to leave (800 cr)', cost: true, when: { credits: 800 }, effects: { credits: -800 }, result: 'You send the credits, and they take them, with a mock bow on the channel, and a "pleasure." They do not follow.' },
+        { label: 'Pay them to leave (800 cr)', cost: true, when: { credits: 800 }, effects: { credits: -800 }, result: 'You send the credits, and they take them, with a mock bow on the channel, and a "pleasure." They don\'t follow.' },
       ],
     });
     after({
       id: 'dc-voss', title: 'A Letter from Voss',
       text: ('A message arrives from Luna, formal and slightly unsteady, in the handwriting of a man who rarely writes anything himself. Halden Voss ' +
-          'has shown your card to his board. They would like to do business: a standing contract, which he describes as "modest", and which is, by the ' +
+          'has shown your card to his board. They\'d like to do business: a standing contract, which he describes as "modest", and which is, by the ' +
           'figure attached, nothing of the sort.'),
       choices: [
         {
@@ -105,8 +105,8 @@ Mods.register({
     });
     after({
       id: 'dc-lure', title: 'The Same Trick',
-      text: ('A message from the patrol: the decoy transponder you wrote down turns up again, on a tanker this time, and the tanker\'s crew did not ' +
-          'walk away. They would be grateful for anything you can add. They say it is "entirely voluntary."'),
+      text: ('A message from the patrol: the decoy transponder you wrote down turns up again, on a tanker this time, and the tanker\'s crew didn\'t ' +
+          'walk away. They\'d be grateful for anything you can add. They say it is "entirely voluntary."'),
       choices: [
         {
           label: 'Send them your sensor logs',
@@ -115,7 +115,7 @@ Mods.register({
           credits: 600,
           log: 'Sent the patrol my logs on the yacht decoy. They paid a finder\'s fee.'
         },
-          result: 'You send everything, down to the timestamps. A day later there is a short reply, a finder\'s fee, and one line: "We have them."'
+          result: 'You send everything, down to the timestamps. A day later there\'s a short reply, a finder\'s fee, and one line: "We have them."'
         },
         { label: 'Leave it', result: 'You close the message and go back to the plot.' },
       ],
@@ -123,7 +123,7 @@ Mods.register({
     after({
       id: 'dc-silence', title: 'The Yacht',
       text: ('A news item crosses the comms, between a price list and a sports result: a private yacht has been found drifting off the lanes. Two of ' +
-          'the three aboard are alive, and one of them says that a freighter passed within a day and never answered. It is not said to be yours. It ' +
+          'the three aboard are alive, and one of them says that a freighter passed within a day and never answered. It\'s not said to be yours. It ' +
           'could have been.'),
       choices: [
         {
@@ -132,43 +132,43 @@ Mods.register({
           effects: {
           credits: -200,
           rep: { 'Arcology Compact': 1 },
-          log: 'Sent 200 cr to the rescue fund for a yacht I did not stop for.'
+          log: 'Sent 200 cr to the rescue fund for a yacht I didn\'t stop for.'
         },
-          result: 'You send it, and nobody will ever know what it is for.'
+          result: 'You send it, and nobody will ever know what it\'s for.'
         },
-        { label: 'Switch it off', effects: { rep: { 'Arcology Compact': -1 }, log: 'A yacht I did not stop for lost one of its crew.' }, result: 'You switch it off. You tell yourself it was a trap, and it probably was. It was not, this time.' },
+        { label: 'Switch it off', effects: { rep: { 'Arcology Compact': -1 }, log: 'A yacht I didn\'t stop for lost one of its crew.' }, result: 'You switch it off. You tell yourself it was a trap, and it probably was. It wasn\'t, this time.' },
       ],
     });
 
     // ---- Pirates Matching Course ----
     beat({
       id: 'pi-survivors', title: 'The Escape Pod', every: 40,
-      text: 'Three hours after the fight, your sensors catch a battered escape pod, tumbling, its beacon stuttering. Somebody got out. Whoever it is will not last another day out here, and, an hour ago, they were shooting at you.',
+      text: 'Three hours after the fight, your sensors catch a battered escape pod, tumbling, its beacon stuttering. Somebody got out. Whoever it\'s won\'t last another day out here, and, an hour ago, they were shooting at you.',
       choices: [
         {
           label: 'Take them aboard (costs time)',
           effects: {
           delay: 6,
           later: { 'pi-gratitude': 10 },
-          log: 'Took a pirate survivor out of an escape pod. Did not hand them over. Not yet.'
+          log: 'Took a pirate survivor out of an escape pod. Didn\'t hand them over. Not yet.'
         },
-          result: 'You haul the pod in on a line, and crack it on the deck, and a thin, furious teenager glares up at you through a cracked visor. They are fed, and watched, and, after a day of silence, begin, bit by bit, to talk. You do not hand them over to anyone. Not yet.'
+          result: 'You haul the pod in on a line, and crack it on the deck, and a thin, furious teenager glares up at you through a cracked visor. They\'re fed, and watched, and, after a day of silence, begin, bit by bit, to talk. You don\'t hand them over to anyone. Not yet.'
         },
         { label: 'Report it and keep burning', effects: { rep: { 'Arcology Compact': 1 } }, result: 'You log the pod\'s position and pass it to the nearest patrol, and burn on.' },
-        { label: 'Leave it', effects: { later: { 'pi-vendetta': 18 }, log: 'Left a pirate escape pod to drift. Somebody will want to know.' }, result: 'The pod falls behind, its beacon flickering. Nobody speaks. Somewhere, a family will not get the news from you.' },
+        { label: 'Leave it', effects: { later: { 'pi-vendetta': 18 }, log: 'Left a pirate escape pod to drift. Somebody will want to know.' }, result: 'The pod falls behind, its beacon flickering. Nobody speaks. Somewhere, a family won\'t get the news from you.' },
       ],
     });
     after({
       id: 'pi-gratitude', title: 'A Message from the Pod',
       text: 'A message arrives, a single line from a stranger: "I\'m out. I\'m clean. I\'m sorry. There\'s a cache on the rock at the coordinates below, my crew\'s, and nobody left to claim it. Take it." The coordinates are a day off your course. A second line, smaller: "You didn\'t have to."',
       choices: [
-        { label: 'Detour for the cache (costs time)', effects: { delay: 8, credits: 1800, log: 'The pirate kid sent a cache. Took it. Did not feel good, quite.' }, result: 'It is where they said, under a tarp, and it is more than you expected.' },
-        { label: 'Let it lie', effects: { rep: { 'Charter League': 1 } }, result: 'You leave it where it is. The kid will hear about it, eventually, the way these things get around the Belt, and it will count for something.' },
+        { label: 'Detour for the cache (costs time)', effects: { delay: 8, credits: 1800, log: 'The pirate kid sent a cache. Took it. Didn\'t feel good, quite.' }, result: 'It\'s where they said, under a tarp, and it\'s more than you expected.' },
+        { label: 'Let it lie', effects: { rep: { 'Charter League': 1 } }, result: 'You leave it where it is. The kid will hear about it, eventually, the way these things get around the Belt, and it\'ll count for something.' },
       ],
     });
     after({
       id: 'pi-vendetta', title: 'Blood Money',
-      text: 'A hail, level and quiet, from a ship that is not close enough to shoot. "You left Dari in the dark. Dari was my cousin." A pause. "I\'m not asking for anything you can\'t afford. I\'m asking you to think about it."',
+      text: 'A hail, level and quiet, from a ship that\'s not close enough to shoot. "You left Dari in the dark. Dari was my cousin." A pause. "I\'m not asking for anything you can\'t afford. I\'m asking you to think about it."',
       choices: [
         {
           label: 'Send them 1,000 cr',
@@ -178,9 +178,9 @@ Mods.register({
           rep: { 'Charter League': 1 },
           log: 'Paid blood money for a pirate I left in a pod.'
         },
-          result: 'You send it, and the line goes quiet, and then it says, "That\'s not forgiveness." "No," you say. "I know." It is enough, and the ship turns away.'
+          result: 'You send it, and the line goes quiet, and then it says, "That\'s not forgiveness." "No," you say. "I know." It\'s enough, and the ship turns away.'
         },
-        { label: 'Tell them to try it', effects: { do: ['hull', 0.2] }, result: '"Noted," says the voice, and a few hours later a ship you did not see lights its drive, and rakes your hull in one clean pass.' },
+        { label: 'Tell them to try it', effects: { do: ['hull', 0.2] }, result: '"Noted," says the voice, and a few hours later a ship you didn\'t see lights its drive, and rakes your hull in one clean pass.' },
       ],
     });
     after({
@@ -193,11 +193,11 @@ Mods.register({
           effects: {
           credits: -500,
           later: { 'pi-safe': 40 },
-          log: 'Bought forty days of pirate protection for 500 cr. It is a real service.'
+          log: 'Bought forty days of pirate protection for 500 cr. It\'s a real service.'
         },
           result: 'They send a receipt, an actual receipt, with a skull on it, and a promise, which they keep.'
         },
-        { label: 'Refuse', effects: { do: ['hull', 0.1] }, result: 'There is a long silence, and then a single pass, a warning burst across your bow, close enough to feel in the hull. "Last chance," says the voice, and goes.' },
+        { label: 'Refuse', effects: { do: ['hull', 0.1] }, result: 'There\'s a long silence, and then a single pass, a warning burst across your bow, close enough to feel in the hull. "Last chance," says the voice, and goes.' },
       ],
     });
     after({
@@ -209,9 +209,9 @@ Mods.register({
           effects: {
           credits: 900,
           rep: { 'Charter League': -1 },
-          log: 'Ran a parcel for pirates who think I am their cousin. It was only heavy.'
+          log: 'Ran a parcel for pirates who think I\'m their cousin. It was only heavy.'
         },
-          result: 'It is a crate, and it is heavy, and it asks nothing of you but a detour and a short silence. They pay in clean notes. "Family," says the voice, with real warmth. You do not correct it.'
+          result: 'It\'s a crate, and it\'s heavy, and it asks nothing of you but a detour and a short silence. They pay in clean notes. "Family," says the voice, with real warmth. You don\'t correct it.'
         },
         {
           label: 'Tell them it was a spoof',
@@ -219,7 +219,7 @@ Mods.register({
           'hull',
           0.15
         ] },
-          result: 'The line is silent for exactly as long as it takes them to understand. Then it goes cold, and a pass from a ship you cannot see leaves a groove along your hull. "Brother," says the voice, just once, with no warmth at all.'
+          result: 'The line is silent for exactly as long as it takes them to understand. Then it goes cold, and a pass from a ship you can\'t see leaves a groove along your hull. "Brother," says the voice, just once, with no warmth at all.'
         },
         { label: 'Cut the channel', result: 'You cut it. They hail twice more, then stop. ' },
       ],
@@ -229,8 +229,8 @@ Mods.register({
     beat({
       id: 'co-contents', title: 'The Sealed Case',
       text: ('Under the cargo, strapped to the frame, is a gray case with a customs seal that has been broken and badly re-glued. Whatever is ' +
-          'in it, it was the reason somebody wanted this container to disappear. Someone in the galley says, quietly, that it is probably illegal, ' +
-          'and, in the same voice, that it is probably valuable.'),
+          'in it, it was the reason somebody wanted this container to disappear. Someone in the galley says, quietly, that it\'s probably illegal, ' +
+          'and, in the same voice, that it\'s probably valuable.'),
       choices: [
         {
           label: 'Sell it quietly at the next port',
@@ -239,7 +239,7 @@ Mods.register({
           later: { 'co-customs': 10 },
           log: 'Sold a sealed case from a drifting container, no questions. Customs may ask some.'
         },
-          result: 'You find a buyer who does not want your name, and do not offer it, and the credits arrive in your account in small, tidy pieces. It is easy.'
+          result: 'You find a buyer who doesn\'t want your name, and don\'t offer it, and the credits arrive in your account in small, tidy pieces. It\'s easy.'
         },
         {
           label: 'Hand it to the authorities',
@@ -248,16 +248,16 @@ Mods.register({
           later: { 'co-reward': 8 },
           log: 'Handed a sealed case from a drifting container to customs.'
         },
-          result: 'You pass it up the chain, with a short form and a long wait, and a customs officer with kind, tired eyes tells you it will be looked at.'
+          result: 'You pass it up the chain, with a short form and a long wait, and a customs officer with kind, tired eyes tells you it\'ll be looked at.'
         },
         { label: 'Put it out of the airlock', result: 'You put it out of the airlock, unopened, and watch it go. It tumbles into the dark. Somebody says you did the sensible thing.' },
       ],
     });
     after({
       id: 'co-customs', title: 'A Customs Inquiry',
-      text: 'A courteous notice from customs: a sealed case of a certain description was lost from a container in this part of the lane, and they would like to ask whoever found the container a few questions, in person, at the next port. The notice is polite.',
+      text: 'A courteous notice from customs: a sealed case of a certain description was lost from a container in this part of the lane, and they\'d like to ask whoever found the container a few questions, in person, at the next port. The notice is polite.',
       choices: [
-        { label: 'Pay a facilitation fee (900 cr)', when: { credits: 900 }, effects: { credits: -900 }, result: 'You pay it, through a lawyer who bills like a surgeon, and the inquiry goes quiet. It costs half of what you made, and you do not discuss it.' },
+        { label: 'Pay a facilitation fee (900 cr)', when: { credits: 900 }, effects: { credits: -900 }, result: 'You pay it, through a lawyer who bills like a surgeon, and the inquiry goes quiet. It costs half of what you made, and you don\'t discuss it.' },
         {
           label: 'Answer the questions',
           effects: {
@@ -265,15 +265,15 @@ Mods.register({
           rep: { 'Arcology Compact': -2 },
           log: 'Customs asked about the case. It cost me.'
         },
-          result: 'You answer them, all of them, and they are polite, and they take 400 cr and a good deal of your standing. When you leave, a junior officer holds the door and does not meet your eye.'
+          result: 'You answer them, all of them, and they\'re polite, and they take 400 cr and a good deal of your standing. When you leave, a junior officer holds the door and doesn\'t meet your eye.'
         },
-        { label: 'Ignore it', effects: { rep: { 'Arcology Compact': -1 } }, result: 'You ignore it, and it is ignored back. It will be remembered at the next port with a customs office.' },
+        { label: 'Ignore it', effects: { rep: { 'Arcology Compact': -1 } }, result: 'You ignore it, and it\'s ignored back. It\'ll be remembered at the next port with a customs office.' },
       ],
     });
     after({
       id: 'co-reward', title: 'A Reward',
-      text: 'A letter from the customs office, on proper paper. The case you handed in held records in a smuggling case that has run for six years. There is a reward, a thank-you, and a line at the bottom, handwritten, that says: "Few people hand these in."',
-      choices: [{ label: 'Accept the reward', effects: { credits: 1000, rep: { 'Arcology Compact': 1 }, log: 'Customs paid a 1,000 cr reward for the case I handed in.' }, result: 'It is less than you would have got from the buyer.' }],
+      text: 'A letter from the customs office, on proper paper. The case you handed in held records in a smuggling case that has run for six years. There\'s a reward, a thank-you, and a line at the bottom, handwritten, that says: "Few people hand these in."',
+      choices: [{ label: 'Accept the reward', effects: { credits: 1000, rep: { 'Arcology Compact': 1 }, log: 'Customs paid a 1,000 cr reward for the case I handed in.' }, result: 'It\'s less than you\'d have got from the buyer.' }],
     });
 
     // ---- Stowaway ----
@@ -289,7 +289,7 @@ Mods.register({
           later: { 'st-thanks': 12 },
           log: 'Took the stowaway kid to their aunt on Ceres.'
         },
-          result: 'It is a detour, and a long one, and the kid says nothing for most of it, and then, at the last, takes your sleeve and does not let go. The aunt is furious. The aunt is glad. You are given a cup of tea, and a look.'
+          result: 'It\'s a detour, and a long one, and the kid says nothing for most of it, and then, at the last, takes your sleeve and doesn\'t let go. The aunt is furious. The aunt is glad. You\'re given a cup of tea, and a look.'
         },
       ],
     });
@@ -308,17 +308,17 @@ Mods.register({
     });
     after({
       id: 'st-tip', title: 'What the Broom Heard', via: 'crew',
-      text: 'A message from the kid, scrawled and enthusiastic: "I told you I know things. There\'s something going on at the port office, a price, a ship, a thing that\'s going to be worth money. Go early." It is vague.',
+      text: 'A message from the kid, scrawled and enthusiastic: "I told you I know things. There\'s something going on at the port office, a price, a ship, a thing that\'s going to be worth money. Go early." It\'s vague.',
       choices: [
-        { label: 'Act on it', effects: { credits: 600, news: 'A rich cargo run is quietly about to be posted at the port office.' }, result: 'You are early, and the right person is late, and a short conversation in a corridor does, in the end, pay for itself.' },
-        { label: 'Ignore it', result: 'You ignore it. A week later somebody else does not, and, at the dock, someone mentions, in passing, what they made. You do not look at the galley.' },
+        { label: 'Act on it', effects: { credits: 600, news: 'A rich cargo run is quietly about to be posted at the port office.' }, result: 'You\'re early, and the right person is late, and a short conversation in a corridor does, in the end, pay for itself.' },
+        { label: 'Ignore it', result: 'You ignore it. A week later somebody else doesn\'t, and, at the dock, someone mentions, in passing, what they made. You don\'t look at the galley.' },
       ],
     });
 
     // ---- Derelict Ship ----
     beat({
       id: 'de-drawing', title: 'The Drawing',
-      text: 'On the way out, the child\'s drawing comes with you, pinned to your sleeve by a bit of tape. Under the crayon, in careful adult handwriting, there is a ship name and a registry number.',
+      text: 'On the way out, the child\'s drawing comes with you, pinned to your sleeve by a bit of tape. Under the crayon, in careful adult handwriting, there\'s a ship name and a registry number.',
       choices: [
         {
           label: 'Look up the registry (costs time)',
@@ -344,9 +344,9 @@ Mods.register({
           rep: { 'Charter League': -1 },
           log: 'Sold a widow her husband\'s nav core for 2,000 cr.'
         },
-          result: 'She pays it, without arguing, and the receipt comes back, signed, in a very steady hand. It is what the thing was worth.'
+          result: 'She pays it, without arguing, and the receipt comes back, signed, in a very steady hand. It\'s what the thing was worth.'
         },
-        { label: 'Say you do not have it', result: 'You say you do not, and she thanks you for your time, with great courtesy, and the channel closes. The nav core is in a locker. The locker has not been opened since.' },
+        { label: 'Say you don\'t have it', result: 'You say you don\'t, and she thanks you for your time, with great courtesy, and the channel closes. The nav core is in a locker. The locker hasn\'t been opened since.' },
       ],
     });
     after({
@@ -363,13 +363,13 @@ Mods.register({
     // ---- Coolant Leak ----
     beat({
       id: 'cl-aftermath', title: 'The Patch', via: 'crew',
-      text: 'The patch holds, but it is ugly: a lump of sealant the size of a fist, bulging over a section of pipe that is thinner than it should be. The drive is happy. The pipe is not. A patch on a pipe like that does not last.',
+      text: 'The patch holds, but it\'s ugly: a lump of sealant the size of a fist, bulging over a section of pipe that\'s thinner than it should be. The drive is happy. The pipe isn\'t. A patch on a pipe like that doesn\'t last.',
       choices: [
         {
           label: 'Pay a yard to replace the section at the next port (400 cr)',
           when: { credits: 400 },
           effects: { credits: -400 },
-          result: 'You book it, and it is dull, and it works. The old section comes out in a yard worker\'s gloves, with the patch still on it, and the worker holds it up and says, with real admiration, "Whoever did this was brave."'
+          result: 'You book it, and it\'s dull, and it works. The old section comes out in a yard worker\'s gloves, with the patch still on it, and the worker holds it up and says, with real admiration, "Whoever did this was brave."'
         },
         { label: 'Run on the patch', effects: { later: { 'cl-fail': 9 } }, result: 'You leave it, and it holds, day after day. Every watch someone puts a hand on the pipe.' },
       ],
@@ -383,7 +383,7 @@ Mods.register({
         'mass',
         -40
       ] },
-        result: 'You shut down, and seal the section, and run on one loop for an hour, losing forty units of reaction mass to the vent before it is done. The drive holds. Afterward, someone writes "REPLACE THE PIPE" on the galley wall, in marker, in capitals, and underlines it twice.'
+        result: 'You shut down, and seal the section, and run on one loop for an hour, losing forty units of reaction mass to the vent before it\'s done. The drive holds. Afterward, someone writes "REPLACE THE PIPE" on the galley wall, in marker, in capitals, and underlines it twice.'
       }],
     });
 
@@ -394,17 +394,17 @@ Mods.register({
       choices: [{ label: 'Press the advantage', effects: { credits: 1500, log: 'The merchant\'s tip paid off: 1,500 cr.' }, result: 'You move before the market does, and the margin is the best of the month.' }],
     });
     after({
-      id: 'me-bad', title: 'The Tip Does Not',
+      id: 'me-bad', title: 'The Tip Doesn\'t',
       text: 'The tip was nonsense. You find out at the dock, when the price moves, solidly, the other way, and a trader nearby tells you, with a look of real sympathy, that the merchant sells the same tip to everyone, in both directions.',
       choices: [{ label: 'Learn the lesson', effects: { log: 'The merchant sold me a bad tip. Never again.' }, result: 'You learn it. The five hundred is already gone.' }],
     });
     after({
       id: 'me-regret', title: 'What You Turned Down',
-      text: 'News from the market: a tip of the kind a passing freighter was selling, five hundred a head, turned out to be sound, and a number of ships made a great deal of money on it. You are not among them. Somebody on the crew finds it funnier than you do.',
+      text: 'News from the market: a tip of the kind a passing freighter was selling, five hundred a head, turned out to be sound, and a number of ships made a great deal of money on it. You\'re not among them. Somebody on the crew finds it funnier than you do.',
       choices: [{
         label: 'Shrug',
         effects: { log: 'Turned down a merchant\'s tip that turned out to be good.' },
-        result: 'You shrug. It was five hundred credits, and a gamble, and you did not take it. For the next day or two you are insufferable about it.'
+        result: 'You shrug. It was five hundred credits, and a gamble, and you didn\'t take it. For the next day or two you\'re insufferable about it.'
       }],
     });
   },

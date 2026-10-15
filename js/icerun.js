@@ -35,65 +35,65 @@ function iceOption(here, from, reach, free) {
 // (odds are a half plus a tenth for each level).
 const ICE_STAGES = [
   { title: 'The Rock',
-    again: 'This rock is a long grey slab, end over end every four minutes, with a crust of dust over the ice. The captain reads the spin off the board twice and says it is faster than the last one. Nobody on the deck argues.',
-    open: [('She is a dark lump on the board for three days, and then she is a mountain. A comet that lost its way, or a piece of one: black, pitted, ' +
-        'with a white seam through it where the ice shows. There is no beacon, no berth, and nobody to ask. The captain brings the ship in to three ' +
-        'kilometers and says that you cannot dock with something that is tumbling.'),
-      ('The rock is bigger than the charts said, and it is turning, a long slow roll that takes eleven minutes. The ice is on the shadow side, a pale ' +
+    again: 'This rock is a long grey slab, end over end every four minutes, with a crust of dust over the ice. The captain reads the spin off the board twice and says it\'s faster than the last one. Nobody on the deck argues.',
+    open: [('She\'s a dark lump on the board for three days, and then she\'s a mountain. A comet that lost its way, or a piece of one: black, pitted, ' +
+        'with a white seam through it where the ice shows. There\'s no beacon, no berth, and nobody to ask. The captain brings the ship in to three ' +
+        'kilometers and says that you can\'t dock with something that\'s tumbling.'),
+      ('The rock is bigger than the charts said, and it\'s turning, a long slow roll that takes eleven minutes. The ice is on the shadow side, a pale ' +
           'band between slabs of dust and rock. The captain has the ship stationed and the crew are at their suits. "Somebody tell me how we get ' +
           'close," the captain says.')],
     general: [
       { label: 'Match the roll and go in slow', odds: 0.6, win: [1, 0, ('You match the roll over the course of an hour and come alongside at walking ' +
           'pace. The anchors bite on the first try.')], lose: [-1, 0.06, 'The roll catches you out by a few degrees and a spur of rock clips the hull. The anchors hold, in the end.'] },
       { label: 'Go in fast, and brake hard', bold: true, odds: 0.4, win: [3, 0, ('You go in faster than anyone likes and brake at the last moment. ' +
-          'You are on the ice with an hour in hand.')], lose: [-1, 0.12, 'You come in too fast, and brake too late, and the hull takes a hit from the rock that rings every deck.'] },
+          'You\'re on the ice with an hour in hand.')], lose: [-1, 0.12, 'You come in too fast, and brake too late, and the hull takes a hit from the rock that rings every deck.'] },
       { label: 'Send a line across first', odds: 0.7, win: [1, 0, 'The line goes across and holds. You haul the ship in on it, a meter at a time, and no one has to be clever.'], lose: [0, 0, 'The line parts on the first haul. You spend two hours getting it across again.'] },
     ],
     post: {
       pilot: { label: 'Fly the approach by hand', win: [2, 0, ('You fly it by hand, with the drive cold, on the thrusters alone, in the shadow of the ' +
-          'rock. The ship settles against the ice.')], lose: [-1, 0.06, 'The thrusters are not enough, and the rock turns into the ship. The paint is gone along the port side.'] },
+          'rock. The ship settles against the ice.')], lose: [-1, 0.06, 'The thrusters aren\'t enough, and the rock turns into the ship. The paint is gone along the port side.'] },
       engineer: { label: 'Set the anchors yourself', win: [2, 0, ('You set the anchors in a pattern you worked out on the way: two forward, one aft, ' +
-          'and a line for luck. The ship does not move.')], lose: [-1, 0.06, 'An anchor fouls on a vein of rock and has to be cut away. You lose it and a morning.'] },
+          'and a line for luck. The ship doesn\'t move.')], lose: [-1, 0.06, 'An anchor fouls on a vein of rock and has to be cut away. You lose it and a morning.'] },
       gunner: { label: 'Blast a ledge to land on', win: [2, 0, ('You put three shots into the dust at the rim, and the rock gives up a flat ledge ' +
           'with room for the ship. The captain writes the ledge\'s position in the log.')], lose: [-1, 0.06, 'The shots bring down a slab that grazes the hull and spins away. You get a ledge, and a long list of things to fix.'] },
-      comms: { label: 'Scan for the stable face', win: [2, 0, ('You scan the rock for an hour and find the face that is not moving as much as the ' +
-          'rest. The ship goes in there, and the anchors set at once.')], lose: [-1, 0.03, 'The scan reads a quiet face that is a loose one. The anchors take, and then let go, and you start again.'] },
+      comms: { label: 'Scan for the stable face', win: [2, 0, ('You scan the rock for an hour and find the face that\'s not moving as much as the ' +
+          'rest. The ship goes in there, and the anchors set at once.')], lose: [-1, 0.03, 'The scan reads a quiet face that\'s a loose one. The anchors take, and then let go, and you start again.'] },
     } },
   { title: 'Cutting Ice',
-    again: 'The seam here is shallow and runs crooked, and the ice under the dust is gray, not blue. The crew work it in two-hour shifts, and the radio clicks every time a cutter binds. The captain walks the line twice and says nothing.',
+    again: 'The seam here\'s shallow and runs crooked, and the ice under the dust is gray, not blue. The crew work it in two-hour shifts, and the radio clicks every time a cutter binds. The captain walks the line twice and says nothing.',
     open: [('The cutters are out, six of them, and the white seam runs forty meters along the rock. The work is slow and cold and loud in the helmet: ' +
-        'a saw to cut a block, a lift to carry it, the hold doors to put it in. It is the kind of work that goes right for an hour and wrong for a ' +
+        'a saw to cut a block, a lift to carry it, the hold doors to put it in. It\'s the kind of work that goes right for an hour and wrong for a ' +
         'second. The captain has the ship on the radio and everyone else on the ice.'),
-      'You are on the ice at the second shift, and the ship hangs above like a big dull star. The blocks are the size of a bunk, blue-white and very clean, and each one is worth more than a month of your wage. Someone on the radio says to watch the seam. It cracks while they are saying it.'],
+      'You\'re on the ice at the second shift, and the ship hangs above like a big dull star. The blocks are the size of a bunk, blue-white and very clean, and each one is worth more than a month of your wage. Someone on the radio says to watch the seam. It cracks while they\'re saying it.'],
     general: [
       { label: 'Cut small, and carry every block', odds: 0.75, win: [1, 0, ('You cut the blocks small and carry each one, and the hold fills ' +
-          'steadily, with nothing lost and nothing hurt.')], lose: [0, 0, 'You cut small and carry everything, and the work is so slow that the light changes twice. The hold is not as full as it should be.'] },
-      { label: 'Cut big, and use the lift', bold: true, odds: 0.55, win: [2, 0, 'The big blocks come out clean and the lift takes them. The hold is full an hour early.'], lose: [-1, 0.08, 'A big block shifts on the lift and takes the edge off the hold door. Nobody is under it.'] },
-      { label: 'Work in pairs, and rotate every hour', odds: 0.65, win: [1, 0, ('You work in pairs and rotate every hour. It is slower on paper, and ' +
+          'steadily, with nothing lost and nothing hurt.')], lose: [0, 0, 'You cut small and carry everything, and the work is so slow that the light changes twice. The hold isn\'t as full as it should be.'] },
+      { label: 'Cut big, and use the lift', bold: true, odds: 0.55, win: [2, 0, 'The big blocks come out clean and the lift takes them. The hold is full an hour early.'], lose: [-1, 0.08, 'A big block shifts on the lift and takes the edge off the hold door. Nobody\'s under it.'] },
+      { label: 'Work in pairs, and rotate every hour', odds: 0.65, win: [1, 0, ('You work in pairs and rotate every hour. It\'s slower on paper, and ' +
           'nobody makes a mistake from tiredness.')], lose: [0, 0, 'The rotation is a good idea and the radio is bad. The pairs lose each other twice, and both times it ends well.'] },
     ],
     post: {
       pilot: { label: 'Hold the ship steady over the seam', win: [2, 0, ('You hold the ship steady over the seam with the thrusters, in tiny pulses, ' +
-          'so the lift can work from it. You do not blink for nine hours.')], lose: [-1, 0.05, 'The ship drifts at the wrong moment, and the lift line goes taut. You catch it, but the hold door takes the strain.'] },
-      engineer: { label: 'Run the heaters off the drive', win: [2, 0, ('You run a heat line from the drive to the cutters, so the blades do not ' +
-          'freeze and the seam does not stick. The cutters sing.')], lose: [-1, 0.06, 'The heat line takes more than you thought and the drive complains. You cut the power and lose an hour.'] },
+          'so the lift can work from it. You don\'t blink for nine hours.')], lose: [-1, 0.05, 'The ship drifts at the wrong moment, and the lift line goes taut. You catch it, but the hold door takes the strain.'] },
+      engineer: { label: 'Run the heaters off the drive', win: [2, 0, ('You run a heat line from the drive to the cutters, so the blades don\'t ' +
+          'freeze and the seam doesn\'t stick. The cutters sing.')], lose: [-1, 0.06, 'The heat line takes more than you thought and the drive complains. You cut the power and lose an hour.'] },
       gunner: { label: 'Use the guns to split the big slabs', win: [2, 0, ('You split the big slabs with the guns, one shot at a time, along the ' +
-          'seam. The blocks come away in clean pieces.')], lose: [-1, 0.06, 'A shot goes into the wrong plane and the whole face shatters. It is a lot of ice, and not much of it is useful.'] },
+          'seam. The blocks come away in clean pieces.')], lose: [-1, 0.06, 'A shot goes into the wrong plane and the whole face shatters. It\'s a lot of ice, and not much of it\'s useful.'] },
       comms: { label: 'Keep the shifts on a schedule', win: [2, 0, ('You keep every shift on the clock, call each handover, and track every block ' +
-          'into the hold. The count at the end is exact, and the captain checks it twice.')], lose: [-1, 0.03, 'You lose a shift in the schedule and two people on the ice at once. It is sorted out in forty minutes.'] },
+          'into the hold. The count at the end is exact, and the captain checks it twice.')], lose: [-1, 0.03, 'You lose a shift in the schedule and two people on the ice at once. It\'s sorted out in forty minutes.'] },
     } },
   { title: 'Home With the Ice',
-    again: "The rock is a smear of dust astern. The hold is cold and heavy, and the tanks tick as they settle. The captain has the buyer's window on the board, with a number beside it that does not move.",
-    open: [('The hold is full, and the ship is heavy, and she burns like it. Every maneuver is slower, and every vibration matters, because there is ' +
-        'a hundred tons of ice in the hold that is the only cargo you are being paid for. The captain has set a course for the buyer and a limit on ' +
+    again: "The rock is a smear of dust astern. The hold is cold and heavy, and the tanks tick as they settle. The captain has the buyer's window on the board, with a number beside it that doesn't move.",
+    open: [('The hold is full, and the ship is heavy, and she burns like it. Every maneuver is slower, and every vibration matters, because there\'s ' +
+        'a hundred tons of ice in the hold that\'s the only cargo you\'re being paid for. The captain has set a course for the buyer and a limit on ' +
         'the thrust, and has asked everyone to keep it in mind.'),
-      'The rock is a pale dot astern, and then it is not. The hold is full of water that will keep a dome alive for a month. The burn is limited, and it is a long way home.'],
+      'The rock is a pale dot astern, and then it\'s not. The hold is full of water that\'ll keep a dome alive for a month. The burn is limited, and it\'s a long way home.'],
     general: [
       { label: 'Keep the burn gentle and the hold cold', odds: 0.8, win: [1, 0, ('You keep the burn gentle and the hold cold, and the ice comes home ' +
           'as it left, in blocks, not in pools.')], lose: [0, 0, 'A gentle burn is a long one. The ice softens at the edges, and you lose a ton to the drains.'] },
       { label: 'Burn hard, and trust the insulation', bold: true, odds: 0.58, win: [2, 0, ('You burn hard, and the insulation holds. You gain two ' +
-          'days, and the buyer is not asking where the time went.')], lose: [-1, 0.06, 'The hard burn heats the hold wall, and a seam goes. You pump the water to the tanks, and lose some on the way.'] },
-      { label: 'Stand watches on the hold', odds: 0.7, win: [1, 0, 'You stand a watch on the hold all the way. Nothing goes wrong, because someone is looking at it.'], lose: [0, 0, 'Nobody wants the hold watch, and everyone takes it. It is a long, cold trip, and a quiet one.'] },
+          'days, and the buyer isn\'t asking where the time went.')], lose: [-1, 0.06, 'The hard burn heats the hold wall, and a seam goes. You pump the water to the tanks, and lose some on the way.'] },
+      { label: 'Stand watches on the hold', odds: 0.7, win: [1, 0, 'You stand a watch on the hold all the way. Nothing goes wrong, because someone\'s looking at it.'], lose: [0, 0, 'Nobody wants the hold watch, and everyone takes it. It\'s a long, cold trip, and a quiet one.'] },
     ],
     post: {
       pilot: {
@@ -101,7 +101,7 @@ const ICE_STAGES = [
         win: [
         2,
         0,
-        'You fly the long way, off the lanes, in the dark. Nobody finds you, and nobody is looking.'
+        'You fly the long way, off the lanes, in the dark. Nobody finds you, and nobody\'s looking.'
       ],
         lose: [
         -1,
@@ -112,8 +112,8 @@ const ICE_STAGES = [
       engineer: { label: 'Recycle the melt into the tanks', win: [2, 0, 'You catch every drop of melt from the hold and put it in the tanks. The ship delivers more water than she took on.'], lose: [-1, 0.05, 'A valve sticks and a tank overfills. You mop up with everything you have.'] },
       gunner: { label: 'Keep the guns warm and watch the dark', win: [2, 0, ('You keep the guns warm and watch the dark for two days. Nothing comes, ' +
           'and the crew sleep through both nights.')], lose: [-1, 0.05, 'A contact on the board is a rock, and then a rock, and then a ship, and then a rock. You wake the crew twice for nothing.'] },
-      comms: { label: 'Sell the water ahead on the long link', win: [2, 0, ('You work the long link, port after port, and find a buyer who will pay ' +
-          'for the water before it docks. The price is better than the board.')], lose: [-1, 0.02, 'The buyer you find backs out at the last moment. You are back to the board price, and the captain does not say anything.'] },
+      comms: { label: 'Sell the water ahead on the long link', win: [2, 0, ('You work the long link, port after port, and find a buyer who\'ll pay ' +
+          'for the water before it docks. The price is better than the board.')], lose: [-1, 0.02, 'The buyer you find backs out at the last moment. You\'re back to the board price, and the captain doesn\'t say anything.'] },
     } },
 ];
 
@@ -135,7 +135,7 @@ function iceStageScene(n) {
 const iceCostNote = c => costNote({ hull: (c.lose || c.win)[1] > 0, marks: !!c.bold });
 // What the first scene of a later run says of the last haul (the captain's flags, set by iceHome); the first run says nothing.
 const ICE_LAST = { clean: 'The log from the last haul is still open on the captain\'s console, with one word in it: clean.',
-  bad: 'The last haul is not in the log, and the captain has not brought it up.', even: 'The last haul went into the log with no remark.' };
+  bad: 'The last haul isn\'t in the log, and the captain hasn\'t brought it up.', even: 'The last haul went into the log with no remark.' };
 const iceLastHaul = flags => (flags.iceClean ? 'clean' : flags.iceBad ? 'bad' : 'even');
 // The opening of a stage: the first run of the hire alternates its two, a later run has its own, and its first scene names the last haul.
 function iceOpening(stage, n, round, runNo, flags) {
@@ -173,7 +173,7 @@ function iceLoad(thin) {
 function iceHome(edge) {
   const h = hired(), cap = person(h.captain);
   if (edge >= 3) { like(cap, 1, sceneSay('scene:memories', 'ice.clean.memory')); captainFlag('iceClean'); delete h.flags.iceBad; return ' The captain writes it in the log: a clean haul.'; }
-  if (edge <= -2) { like(cap, -1, sceneSay('scene:memories', 'ice.bad.memory')); captainFlag('iceBad'); delete h.flags.iceClean; return ' The captain does not write anything in the log.'; }
+  if (edge <= -2) { like(cap, -1, sceneSay('scene:memories', 'ice.bad.memory')); captainFlag('iceBad'); delete h.flags.iceClean; return ' The captain doesn\'t write anything in the log.'; }
   return '';
 }
 

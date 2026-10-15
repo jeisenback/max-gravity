@@ -11,19 +11,19 @@
 const dockingPoints = backup => (roleHolder('medic') ? 1 : 0) + (G.state.armor > ship().armor * 0.6 ? 1 : 0) + (condition().drive >= 60 ? 1 : 0) + (backup ? 1 : 0);
 function atTheHelm(backup) {
   const points = dockingPoints(backup), spoke = castRec('pilar').flags.spoke, cap = hiredCaptain();
-  const outcome = castFate('pilar', points >= 3 ? 'live' : points === 2 ? 'mark' : 'die', `Lost at the helm near ${system().name}.`, 'Right hand does not close properly.', 'xo');
+  const outcome = castFate('pilar', points >= 3 ? 'live' : points === 2 ? 'mark' : 'die', `Lost at the helm near ${system().name}.`, 'Right hand doesn\'t close properly.', 'xo');
   const lead = backup ? 'You put a second hand on the console beside her. ' : '';
   if (outcome === 'die') {
     like(cap, -1, sceneSay('scene:memories', 'pilar.lost.memory')); cap.mood = { kind: 'low', until: G.state.day + 30 };
     return lead + ('She brings her in by hand. The crosswind takes the ship at the last moment, and for a long second the bridge is the sound of the ' +
         'stick in her hands. The gate crew say afterwards it was the cleanest approach they had seen, until the last four meters. Captain Sato enters ' +
         'it in the log, in the same hand as every other entry, and then sits for a long time with the pen over the next line.')
-      + (spoke ? ' You spoke to the captain about the rule. It was not in time.' : '');
+      + (spoke ? ' You spoke to the captain about the rule. It wasn\'t in time.' : '');
   }
   castLike('pilar', 2, sceneSay('scene:memories', 'pilar.lived.memory'));
   if (outcome === 'mark') {
     cap.mood = { kind: 'low', until: G.state.day + 15 };
-    return lead + 'She brings her in by hand, and the crosswind catches the ship at the last four meters, and the stick kicks. She lands her by main strength and nothing else, and the hand that held the stick does not close properly, and will not. "It\'s in the berth," she says. "Enter that."';
+    return lead + 'She brings her in by hand, and the crosswind catches the ship at the last four meters, and the stick kicks. She lands her by main strength and nothing else, and the hand that held the stick doesn\'t close properly, and won\'t. "It\'s in the berth," she says. "Enter that."';
   }
   return lead + 'She brings her in by hand, and the ship settles into the berth like a coin into a slot. Pilar lets go of the stick and flexes her fingers. "Four minutes," she says. "Enter that." Captain Sato enters it, word for word, and under it, in their own hand, writes: Correct.';
 }
@@ -41,14 +41,14 @@ CAST.pilar = {
     favor: null,
     news: {
       good: ['{who} passed the pilot\'s theory exam at the first sitting', '{who} sent a photo of the harbor wall at dusk, with someone\'s feet in it', '{who} has a new job at the port authority, and a desk by a window'],
-      bad: ['{who} failed the practical by one point, and is not speaking about it', '{who} says the balcony upstairs has been condemned', '{who} is ill, and the port clinic has a month\'s queue'],
+      bad: ['{who} failed the practical by one point, and isn\'t speaking about it', '{who} says the balcony upstairs has been condemned', '{who} is ill, and the port clinic has a month\'s queue'],
     },
   },
   chatter: [
     'Pilar is flying the approach by feel, with the nav display turned off, and getting it exactly right.',
-    'Pilar has a spanner in her back pocket that is not on the tool list.',
+    'Pilar has a spanner in her back pocket that\'s not on the tool list.',
     'Pilar: "The manual says do it this way. The manual has never docked at this port."',
-    'Pilar has been fixing something that is not broken yet, which she says is the only way to fix it.',
+    'Pilar has been fixing something that\'s not broken yet, which she says is the only way to fix it.',
     'Pilar, reading a new standing order: "I\'ll note it. I\'ll note it with a very good pen."',
     'Pilar has left the captain\'s coffee on the rail, hot, with no comment. She does that.',
   ],
@@ -63,10 +63,10 @@ CAST.pilar = {
         {
           label: 'Ask her to show you the window',
           effects: { castLike: { who: 'pilar', n: 2, memory: 'You asked me to show you the crosswind window.' } },
-          result: 'She makes you count it with her, out loud, on the next approach, with the display off. You get it wrong twice. The third time you feel it, a thing in the stick rather than the numbers. "That\'s it," she says, and does not say anything else, and her shoulders drop an inch.',
+          result: 'She makes you count it with her, out loud, on the next approach, with the display off. You get it wrong twice. The third time you feel it, a thing in the stick rather than the numbers. "That\'s it," she says, and doesn\'t say anything else, and her shoulders drop an inch.',
         },
         {
-          label: 'Say you will keep it to yourself',
+          label: 'Say you\'ll keep it to yourself',
           effects: { castLike: { who: 'pilar', n: 1, memory: 'You said you\'d keep my approach to yourself.' } },
           result: '"Good," she says. "It\'s not a secret. It\'s a courtesy. The captain will find out, and when they do I\'d rather it was from the log." She goes back to the stick.',
         },
@@ -82,7 +82,7 @@ CAST.pilar = {
         {
           label: 'Offer to write a reference',
           effects: { castLike: { who: 'pilar', n: 2, memory: 'You wrote me a reference.' }, castFlag: { who: 'pilar', flag: 'reference' } },
-          result: 'You write it that night, and it says what you have seen: the window, the approach, the four meters. She reads it standing up, twice. "Thirty-two," she says, and puts it at the front of the folder, where the best ones go.',
+          result: 'You write it that night, and it says what you\'ve seen: the window, the approach, the four meters. She reads it standing up, twice. "Thirty-two," she says, and puts it at the front of the folder, where the best ones go.',
         },
         {
           label: 'Tell her the helm matters more than the paper',
@@ -93,9 +93,9 @@ CAST.pilar = {
     },
     mid2: {
       days: 40, title: 'Two Orders',
-      text: ('You are ten minutes from the gate, and you have two orders for the approach. Captain Sato\'s is written on a card: the posted rate, the ' +
+      text: ('You\'re ten minutes from the gate, and you have two orders for the approach. Captain Sato\'s is written on a card: the posted rate, the ' +
           'display on, the full checklist before the gate. Pilar\'s came aloud, from the helm: skip the checklist, come in on the crosswind window, ' +
-          'and run the checklist in the berth. She says it will make the gate by four minutes. Neither will tell you what the other said, and both are ' +
+          'and run the checklist in the berth. She says it\'ll make the gate by four minutes. Neither will tell you what the other said, and both are ' +
           'looking at the gate.'),
       choices: [
         {
@@ -106,7 +106,7 @@ CAST.pilar = {
         {
           label: 'Come in on the window, as Pilar said',
           effects: { castLike: { who: 'pilar', n: 2, memory: 'You came in on my window.' }, captainLike: { n: -1, memory: 'You came in on the window against the posted rate.' } },
-          result: 'You come in on the crosswind window. It works, by four minutes, and the gate crew applaud the approach. Captain Sato reads the log entry, which you have written accurately, and writes no comment under it. For the first time there is a blank where there should be a line.',
+          result: 'You come in on the crosswind window. It works, by four minutes, and the gate crew applaud the approach. Captain Sato reads the log entry, which you have written accurately, and writes no comment under it. For the first time there\'s a blank where there should be a line.',
         },
       ],
     },
@@ -152,7 +152,7 @@ CAST.pilar = {
             'in by hand," she says, "if you let me, and if you don\'t put anything on the display." She says it item by item.')
           + (low ? ' The hull has taken a beating, and a bad hull is a bad thing to put against a berth wall.' : ' The hull is sound.')
           + (worn ? ' The drive has been run hard, and the thrusters take what it has left.' : ' The drive is in good order.')
-          + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There is nobody aboard who can do more than a field dressing, and she knows it.')
+          + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There\'s nobody aboard who can do more than a field dressing, and she knows it.')
           + ' She waits for your answer, and her hands are already light on the stick.';
       },
       choices: [

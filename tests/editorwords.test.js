@@ -166,7 +166,7 @@ test('the function-built scenes and the code-written hired events are edited lin
     };
   });
   assert.ok(r.rows.every(x => x[0] === 'data' && x[1] === true && x[2] === true), JSON.stringify(r.rows));
-  assert.equal(r.title, 'An Order You Do Not Like');
+  assert.equal(r.title, "An Order You Don't Like");
   assert.deepEqual(r.out, { parts: { text: 'A new warning.' } }, 'only what differs');
   assert.deepEqual(r.back, { 'part.text': 'A new warning.' });
   assert.deepEqual(r.bad, [['{nobody}'], ['{last}']], 'a {word} the line has is kept as typed; one it has not is flagged');
