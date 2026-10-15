@@ -72,7 +72,7 @@ test('Cold Water act 1: derelict, Voight, the agent, Mira, Europa', async () => 
     S.burn('mars'); startHappening(); o.early = G.dialog && G.dialog.event.title; S.arrive('Mars');
     G.state.day = 12; S.burn('earth'); startHappening(); o.derelict = G.dialog && G.dialog.event.title;
     S.choose(G.dialog.choices[0].label); o.s1 = story().stage;
-    o.voight = S.arrive('Earth'); S.choose('"It is not for sale'); o.s2 = story().stage;
+    o.voight = S.arrive('Earth'); S.choose('"It\'s not for sale'); o.s2 = story().stage;
     takeOff(); Mods.emit('frame', 0.1); o.recovery = G.dialog && G.dialog.event.title;
     const rep = JSON.stringify(G.state.rep);
     S.choose('Battle stations');

@@ -89,7 +89,7 @@ const HOLIDAYS = [
     culture: 'earth',
     text: ('{n} tells you that, back on Earth, it is the longest night of the year, and that, where they grew up, the old people stayed up all ' +
         'through it, with candles, telling stories to keep the dark at bay. They have set out a single candle, real wax, saved for the purpose, in a ' +
-        'jar in the middle of the galley table. "It is silly out here," they say, "where every night is the longest. But I would like to keep it."'),
+        'jar in the middle of the galley table. "It\'s silly out here," they say, "where every night is the longest. But I\'d like to keep it."'),
     join: 'You sit, all of you, in a ring around the candle, and, one by one, tell a story. Some are funny. Some are sad. Some are not stories at all, just a few careful sentences about a place or a person. The candle burns down, and nobody moves. It gutters.'
   },
   {
@@ -114,7 +114,7 @@ const GOOD_NEWS = [
   '{who} got a berth on a ship bound for the outer moons, and is thrilled',
   '{who} recovered from a long illness, and is walking again',
   '{who} won a little money on the ring-ball pool, and is buying everyone a round',
-  '{who} sent a letter that said only "I am proud of you," and nothing else',
+  '{who} sent a letter that said only "I\'m proud of you," and nothing else',
   '{who} passed the pilot exam on the third try',
   '{who} moved into a bigger section, with a window',
   '{who} got the loan for the shop, and the sign goes up on Monday',

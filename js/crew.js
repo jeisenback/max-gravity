@@ -55,19 +55,19 @@ const CREW = {
     bio: ('Ceres-born drive tech who can fix anything with sealant, a spanner, and enough swearing. She learned the trade under a dockyard crane ' +
         'before she was tall enough to reach the controls, and she treats every ship she works on as a patient with a long history of neglect. She ' +
         'left Ceres in a hurry three years ago, and she does not talk about why.'),
-    chatter: [('Rosa: "If you hear a clank, that is normal. If you hear two clanks, wake me. If you hear three, it is already too late and we should ' +
+    chatter: [('Rosa: "If you hear a clank, that\'s normal. If you hear two clanks, wake me. If you hear three, it\'s already too late and we should ' +
         'have a nice dinner."'), 'Rosa is humming in the engine room again, something slow from the Warren, with her whole arm inside a coolant housing.', (
-        'Rosa: "You know what the difference is between a good engineer and a great one? A great one is never quite sure it is going to hold. That is ' +
+        'Rosa: "You know what the difference is between a good engineer and a great one? A great one is never quite sure it\'s going to hold. That\'s ' +
         'what keeps her checking."'), 'Rosa is asleep upright against the reactor housing, one hand still on a torque wrench. Nobody wakes her.', (
-        'Rosa: "Ceres taught me the first rule. You do not waste water, you do not waste air, and you do not waste a good weld. Everything else is ' +
+        'Rosa: "Ceres taught me the first rule. You don\'t waste water, you don\'t waste air, and you don\'t waste a good weld. Everything else is ' +
         'optional."'), 'Rosa has named the drive. She will not tell you what it is called, but she pats it every morning and apologizes when it groans.', (
-        'Rosa: "Somebody rebuilt this coolant loop with a bicycle pump and a prayer. I would like to shake their hand and then take away their ' +
+        'Rosa: "Somebody rebuilt this coolant loop with a bicycle pump and a prayer. I\'d like to shake their hand and then take away their ' +
         'tools."'), 'Rosa is swearing in three languages at a stuck valve, and, one by one, in every language, it gives in.'],
     events: [
       { title: "Rosa's Proposal",
         text: ('Rosa corners you in the galley, grease to the elbows and a fresh burn on one wrist she has clearly not noticed. "Captain. I need to ' +
             'talk to you about the drive." She lays a sheet of scratched paper on the table: a hand-drawn diagram, with numbers in the margins. "Give ' +
-            'me 2,500 credits for parts and I will squeeze another ten percent out of it. Permanently. I have been designing it for a year." She does ' +
+            'me 2,500 credits for parts and I\'ll squeeze another ten percent out of it. Permanently. I\'ve been designing it for a year." She does ' +
             'not say who she was designing it for before you.'),
         choices: [
           { label: 'Fund it (2,500 cr)', ...gated(needCr(2500)), run() {
@@ -75,7 +75,7 @@ const CREW = {
             G.state.flags.rosaTuned = true;
             return ('Two days of swearing, one small fire, and one nearly-lost finger later, the drive runs cooler and leaner than it ever did. Rosa ' +
                 'comes out of the engine room smelling of scorched flux and looking, for the first time since she came aboard, wholly satisfied. ' +
-                '"There," she says, wiping her hands. "That is how she was meant to sound." Burns now use 10% less reaction mass.');
+                '"There," she says, wiping her hands. "That\'s how she was meant to sound." Burns now use 10% less reaction mass.');
           } },
           { label: 'Not right now', run: () => ('She folds the paper very carefully and puts it back in her pocket. "Your ship, captain." It is said ' +
               'evenly, without reproach, and it lands harder than an argument would have. She goes back to work, and for a few days the engine room is ' +
@@ -83,7 +83,7 @@ const CREW = {
         ] },
       { title: 'Old Debts',
         text: ('The comm chirps with a Ceres dock boss, a heavy man with a heavier voice, sitting in a booth with a glass of something amber. ' +
-            '"Captain, I do not want to trouble you. But your engineer owes me three thousand credits, and she has been a long time paying. Settle it, ' +
+            '"Captain, I don\'t want to trouble you. But your engineer owes me three thousand credits, and she has been a long time paying. Settle it, ' +
             'or everyone on Ceres will hear why she really left." Behind you, Rosa has stopped moving. She is standing very still in the hatchway, ' +
             'with her hands at her sides, looking at the floor.'),
         choices: [
@@ -91,7 +91,7 @@ const CREW = {
             G.state.credits -= 3000;
             G.state.flags.rosaHalfWage = true;
             return ('The channel closes. Rosa says nothing for an hour, then finds you in the galley with a mug of the good coffee she has been ' +
-                'saving. "I was not going to ask," she says. "I will work at half wages until it is square. And, captain, I never got to say thank you ' +
+                'saving. "I wasn\'t going to ask," she says. "I\'ll work at half wages until it\'s square. And, captain, I never got to say thank you ' +
                 'to anyone for anything, so. This is me, being bad at it." You do not argue. (Rosa\'s wage is halved.)');
           } },
           { label: 'Tell him to get lost', run: () => ('You say what you think of him, in some detail, and cut the channel before he can answer. Rosa ' +
@@ -106,15 +106,15 @@ const CREW = {
     bio: ('Ex-Dome Concord Navy pilot, discharged for "creative interpretation of orders". Flies like he is still being shot at, and talks like it ' +
         'is a joke. He kept his flight jacket, his call sign, and a small framed photograph of a squadron that no longer exists, and he will tell you ' +
         'the story of how he lost the rest of it if you buy the drinks.'),
-    chatter: ['Dima: "Smooth as glass. You are welcome."', 'Dima is arguing with the nav computer again. He is winning.', 'Dima: "Everyone says the good pilots are the ones who never get scared. That is a lie. The good ones get scared very precisely."', (
+    chatter: ['Dima: "Smooth as glass. You\'re welcome."', 'Dima is arguing with the nav computer again. He is winning.', 'Dima: "Everyone says the good pilots are the ones who never get scared. That\'s a lie. The good ones get scared very precisely."', (
         'Dima is tapping out a rhythm on the console with two fingers, in time to a song only he can hear. The ship, oddly, seems to be flying in ' +
         'time with it.'), (
-        'Dima: "I once flew under the ring of Saturn with a busted stabilizer and a full load of live torpedoes. I will tell you about it when you ' +
-        'are older."'), ('Dima has stuck a tiny paper flag of Mars on the edge of the nav display. It is slightly crooked, and he will not let anyone ' +
-            'straighten it.'), 'Dima: "You do not fly a ship. You persuade it. It knows when you are lying."', 'Dima is whistling the Martian anthem, very slowly, very badly, and clearly on purpose.'],
+        'Dima: "I once flew under the ring of Saturn with a busted stabilizer and a full load of live torpedoes. I\'ll tell you about it when you\'re ' +
+        'older."'), ('Dima has stuck a tiny paper flag of Mars on the edge of the nav display. It is slightly crooked, and he will not let anyone ' +
+            'straighten it.'), 'Dima: "You don\'t fly a ship. You persuade it. It knows when you\'re lying."', 'Dima is whistling the Martian anthem, very slowly, very badly, and clearly on purpose.'],
     events: [
       { title: 'Slingshot',
-        text: ('Dima leans back from the nav display with a grin you have learned to be wary of. "Captain. There is a moon on our way. Small, ugly, ' +
+        text: ('Dima leans back from the nav display with a grin you have learned to be wary of. "Captain. There\'s a moon on our way. Small, ugly, ' +
             'and the gravity well is just the right shape. We swing around it, we save a day. Probably." He has already plotted it. The line on the ' +
             'display curves close to the surface, closer than you would like, and the gap between the words "probably" and "definitely" seems to keep ' +
             'opening in your mind.'),
@@ -138,13 +138,13 @@ const CREW = {
       { title: 'Mars Calling',
         text: ('A priority message comes in on a Navy band, sealed and formal, and Dima goes still when he reads it. The Dome Concord Navy is ' +
             'offering him his commission back: a cutter of his own, a squadron, an official apology. He does not say anything for a long time. Then he ' +
-            'says, very carefully, not looking at you, "I did not think they would ever ask. What do you think, captain?"'),
+            'says, very carefully, not looking at you, "I didn\'t think they\'d ever ask. What do you think, captain?"'),
         choices: [
           { label: 'Tell him to take it', run() {
             leaveCrew('dima');
             G.state.credits += 3000;
-            return ('He hugs you hard enough to crack a rib, then holds you at arm\'s length and does not quite meet your eye. "You are a good ' +
-                'captain," he says, and then, because he is Dima, "The best I have had. The others were sad and boring." The Navy pays you a 3,000 cr ' +
+            return ('He hugs you hard enough to crack a rib, then holds you at arm\'s length and does not quite meet your eye. "You\'re a good ' +
+                'captain," he says, and then, because he is Dima, "The best I\'ve had. The others were sad and boring." The Navy pays you a 3,000 cr ' +
                 'transfer fee, and a cutter matches your course within the hour. He shakes every hand aboard, and salutes the ship, and goes.');
           } },
           { label: 'Ask him to stay', run: () => ('He looks at the message for a long moment. Then he deletes it, without replying, and turns back to ' +
@@ -161,17 +161,17 @@ const CREW = {
         'bake you a cake with a real candle if you look sad.'),
     chatter: ['Kit: "Guns are clean. Guns are always clean."',
     'Kit is running targeting drills against passing ice.',
-    'Kit: "Everybody thinks a gunner\'s job is to shoot. It is not. It is to know when not to, and then to be very good at the rest."',
+    'Kit: "Everybody thinks a gunner\'s job is to shoot. It\'s not. It\'s to know when not to, and then to be very good at the rest."',
     'Kit is speaking softly to the port gun mount. You catch the words "good girl" and decide you did not hear them.', (
-        'Kit: "The Navy taught me to count things: rounds, seconds, exits, and the number of people I would rather have beside me. It is a short ' +
+        'Kit: "The Navy taught me to count things: rounds, seconds, exits, and the number of people I\'d rather have beside me. It\'s a short ' +
         'list."'), 'Kit has a battered tin of tea by the gun bay and has offered you a cup three times without ever once asking you to say yes.',
-        'Kit: "You do not get better at fighting. You get better at leaving. That is the whole skill."',
+        'Kit: "You don\'t get better at fighting. You get better at leaving. That\'s the whole skill."',
         'Kit is oiling a firing pin and humming a Luna lullaby, which is faintly terrifying and utterly sweet.'],
     events: [
       { title: 'Target Practice',
-        text: ('Kit appears at the hatch with a shipping crate under one arm. "Captain. There is a rock coming up, a good big one, drifting slow. I ' +
-            'would like to put a few hundred rounds into it. Keeps me sharp. Ammo is about 300 credits." She sets the crate down. "I am not asking for ' +
-            'me. I am asking because the day I am not sharp, someone on this ship is going to get hurt."'),
+        text: ('Kit appears at the hatch with a shipping crate under one arm. "Captain. There\'s a rock coming up, a good big one, drifting slow. I\'d ' +
+            'like to put a few hundred rounds into it. Keeps me sharp. Ammo is about 300 credits." She sets the crate down. "I\'m not asking for ' +
+            'me. I\'m asking because the day I\'m not sharp, someone on this ship is going to get hurt."'),
         choices: [
           { label: 'Let her (300 cr)', ...gated(needCr(300)), run() {
             G.state.credits -= 300;
@@ -186,8 +186,8 @@ const CREW = {
         ] },
       { title: 'A Name She Knows',
         text: ('Kit is reading a Compact bounty list in the galley, the way you might read a menu, and then she is not reading at all. The color ' +
-            'has gone from her face. "Harlan Voss," she says. "Ex-Compact. He walked out on a firefight and left my squad in it. Eleven people. He ' +
-            'is on the list, now, for something else. I know where he hides: Hygiea." She looks up, and there is no anger in her face at all, which is ' +
+            'has gone from her face. "Harlan Voss," she says. "Ex-Compact. He walked out on a firefight and left my squad in it. Eleven people. He\'s ' +
+            'on the list, now, for something else. I know where he hides: Hygiea." She looks up, and there is no anger in her face at all, which is ' +
             'worse than anger.'),
         choices: [
           { label: 'We hunt him down', run() {
@@ -196,7 +196,7 @@ const CREW = {
               title: 'Bounty: destroy Harlan Voss near Hygiea', pay: 20000, deadline: st.day + 60 });
             return 'Kit does not say thank you. She does not have to. She stands, and nods once, and goes to the gun bay, and cleans her guns all night. In the morning the tin of tea has two cups out. (New mission: destroy Harlan Voss near Hygiea, 20,000 cr.)';
           } },
-          { label: '"Revenge is not our business"', run: () => ('Kit does not argue. She folds the list and puts it away in her breast pocket. She ' +
+          { label: '"Revenge isn\'t our business"', run: () => ('Kit does not argue. She folds the list and puts it away in her breast pocket. She ' +
               'does not talk much for the rest of the trip, and the guns stay very clean. It is not resentment. It is the quiet of someone deciding, ' +
               'privately, what she owes to people who are not in the room.') },
         ] },
@@ -210,24 +210,24 @@ const CREW = {
         '"synergy", and is quietly saving for a plot of land on Ganymede.'),
     chatter: ['Josef: "The price of water on Ceres tells you everything about the Belt."',
     'Josef is reorganizing the cargo manifest. Again.',
-    'Josef: "A man who will not haggle is either rich or lying. In neither case do you want to sell him a used pump."',
+    'Josef: "A man who won\'t haggle is either rich or lying. In neither case do you want to sell him a used pump."',
     'Josef is mumbling numbers to himself in a low, soothing voice, like a man praying in a very specific language.', (
         'Josef: "Everything moves eventually. Prices, people, mountains. The trick is knowing which way, and having a little something to sell when ' +
         'it does."'), 'Josef has pinned a hand-drawn chart of Titan pharmaceuticals to the cargo bay wall. It is, by any standard, a work of art.',
-        'Josef: "Never trust a dock that smells of lavender. It is hiding something."',
+        'Josef: "Never trust a dock that smells of lavender. It\'s hiding something."',
         'Josef is peeling an orange, very slowly, as if it were rare. It is: the last one this side of Ganymede.'],
     events: [
       { title: 'The Ledger',
-        text: ('Josef comes to find you with the ledger open under his arm and a thin, dangerous smile. "Captain. I have gone over the last three ' +
+        text: ('Josef comes to find you with the ledger open under his arm and a thin, dangerous smile. "Captain. I\'ve gone over the last three ' +
             'trades. At the last port, somebody shorted you. Not badly. Just enough that nobody would notice. Nobody but me." He taps a column of ' +
-            'figures with a blunt finger. "I know the man. I know his mother. Let me make a call. It will be very civilized."'),
+            'figures with a blunt finger. "I know the man. I know his mother. Let me make a call. It\'ll be very civilized."'),
         choices: [
           { label: 'Make the call', run() {
             const c = randInt(8, 20) * 100;
             G.state.credits += c;
             return (`Josef speaks softly into the channel for five minutes, never once raising his voice, and using the name of the man\'s mother ` +
                 `twice. When he hangs up, ${fmt(c)} cr has already arrived in your account, with a very polite apology and a small gift of dried figs. ` +
-                `"He is a good man, in the end," says Josef mildly. "He just needed reminding."`);
+                `"He's a good man, in the end," says Josef mildly. "He just needed reminding."`);
           } },
           { label: 'Let it go', run: () => ('"Generous," says Josef, in a tone that means "foolish". He closes the ledger with great care and puts it ' +
               'away. Later you hear him in the galley, quietly adding the man\'s name to the small black notebook, and you cannot quite bring yourself ' +
@@ -251,9 +251,9 @@ const CREW = {
     bio: ('Slicer out of the Rook who talks mostly to machines. Nobody knows her real name, possibly including Wren. She works in the dark, with three screens ' +
         'and a mug of cold tea, and she is far kinder than she lets on: the ship\'s smaller machines, the thermostat and the coffee maker among them, ' +
         'all seem to have been quietly fixed in her first week aboard.'),
-    chatter: ['Wren: "Your ship\'s firmware is a crime. I am fixing it."',
+    chatter: ['Wren: "Your ship\'s firmware is a crime. I\'m fixing it."',
     'Wren is listening to pirate channels. She laughs at something.',
-    'Wren: "People think secrets are the valuable thing. They are wrong. Habits are. Everyone is predictable, and everyone thinks they are not."',
+    'Wren: "People think secrets are the valuable thing. They\'re wrong. Habits are. Everyone\'s predictable, and everyone thinks they\'re not."',
     'Wren has taped a sticky note to her console. It reads, in tiny neat capitals: "TRUST NOTHING, EAT SOMETHING."', (
         'Wren: "I once spent a month in a hostile network. Nobody noticed. I read their mail, and I left a small kind message in their logs. They ' +
         'never found it."'), 'Wren is talking, very softly, to the coffee maker. It is making a noise like it is very sorry.',
@@ -262,8 +262,8 @@ const CREW = {
     events: [
       { title: 'Ghost Transponder',
         text: ('Wren emerges from behind her screens at an odd hour, with dark circles under her eyes and a small smile that makes you want to check ' +
-            'your pockets. "Captain. I have an idea. It is a little illegal, and a great deal smart. I can rewrite your transponder history: your ' +
-            'ship, its papers, its past. Half the pirates out here will read you as one of theirs. It will take three thousand credits in parts, and ' +
+            'your pockets. "Captain. I have an idea. It\'s a little illegal, and a great deal smart. I can rewrite your transponder history: your ' +
+            'ship, its papers, its past. Half the pirates out here will read you as one of theirs. It\'ll take three thousand credits in parts, and ' +
             'one very long night."'),
         choices: [
           { label: 'Do it (3,000 cr)', ...gated(needCr(3000)), run() {
@@ -275,7 +275,7 @@ const CREW = {
                 'ignore you.)');
           } },
           { label: 'Too shady', run: () => ('Wren shrugs, without offense, and returns to her screens. "Your funeral," she says, with a small dry ' +
-              'smile, and then, as an afterthought, "But it would have been a nice funeral." She does not mention it again. That night she fixes your ' +
+              'smile, and then, as an afterthought, "But it\'d have been a nice funeral." She does not mention it again. That night she fixes your ' +
               'cabin lock without being asked, and leaves no note.') },
         ] },
       { title: 'Old Crew',
@@ -295,7 +295,7 @@ const CREW = {
           { label: 'Pay them off (2,000 cr)', ...gated(needCr(2000)), run() {
             G.state.credits -= 2000;
             return ('They take the money, and the channel closes with a soft, satisfied click. Wren stares at the dark screen for a long time ' +
-                'afterward, her hands quite still. When she finally speaks it is to nobody in particular: "I have never had anyone pay for me before." ' +
+                'afterward, her hands quite still. When she finally speaks it is to nobody in particular: "I\'ve never had anyone pay for me before." ' +
                 'She does not say more, but that night, on your console, there is a small unexplained folder titled "for the captain", and inside it ' +
                 'are all your passwords, every one of them, unchanged and safe.');
           } },
@@ -320,7 +320,7 @@ const PASSENGERS = {
         return ('You spend the good antibiotics without a second thought, and sit by the little girl\'s bunk with a bulb of water and a very bad ' +
             'story about a talking wrench. The fever breaks in the small hours, with a long sigh, and she is asking for breakfast by morning. The ' +
             'family insists on paying you extra when you arrive, and Mrs. Adeyemi presses a paper bird into your hand. "She made it for the captain," ' +
-            'she says. "It is a ship."');
+            'she says. "It\'s a ship."');
       } },
       { label: 'Burn harder to get there sooner (40 reaction mass)', ...gated(needMass(40)), run() {
         G.state.fuel -= 40;
@@ -330,7 +330,7 @@ const PASSENGERS = {
             'She is miserable but stable when you arrive, and the family is grateful for every hour saved. Mr. Adeyemi shakes your hand for a long ' +
             'time, without a word, and you feel the tremor in his fingers all the way down the corridor.');
       } },
-      { label: '"Keep them hydrated. There is nothing else to do."', run() {
+      { label: '"Keep them hydrated. There\'s nothing else to do."', run() {
         m.bonus -= 500;
         return 'The child recovers, slowly, over three long days, and the family hovers over her bunk without ever looking up. Nobody says anything to you. The galley is silent, and when they disembark, the little girl does not wave. You tell yourself you were being practical. It does not help.';
       } },
@@ -339,8 +339,8 @@ const PASSENGERS = {
     title: 'Comet Sample',
     text: ('Dr. Varn has been at the observation blister for six hours, hunched over a notebook of cramped calculations, and now she is standing in ' +
         'front of you with her hair coming out of its clip and her eyes very bright. She has spotted a long-period comet a few hours off your ' +
-        'trajectory, on its first pass in some ten thousand years. "A sample from that would make my career. I know it is a bother. I will pay for the ' +
-        'detour. Please. It will not come this way again in any of our lifetimes."'),
+        'trajectory, on its first pass in some ten thousand years. "A sample from that\'d make my career. I know it\'s a bother. I\'ll pay for the ' +
+        'detour. Please. It won\'t come this way again in any of our lifetimes."'),
     choices: [
       { label: 'Match orbits and grab a sample (costs time)', run() {
         delay(20);
@@ -395,7 +395,7 @@ const PASSENGERS = {
         m.bonus += 1000;
         return ('{crew} bends to the console with a soft, private smile. A second later, on every scope in range, you are a Compact Navy frigate, ' +
             'with a full crew and an ugly reputation. The unmarked ship scatters like startled pigeons. Sable laughs, for the first time since she ' +
-            'came aboard, a short startled bark, then a longer, warmer sound. "Oh," she says, wiping her eyes. "Oh, that is very good."');
+            'came aboard, a short startled bark, then a longer, warmer sound. "Oh," she says, wiping her eyes. "Oh, that\'s very good."');
       } },
       { label: '[{crew}] Answer them with the guns', role: 'gunner', run() {
         m.bonus += 3000;

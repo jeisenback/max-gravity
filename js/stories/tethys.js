@@ -23,7 +23,7 @@ Mods.register({
       text: ('The Tethys Shipping Consortium sends a car for you, which on Titan means a pressurized crawler with a bar, heated seats, and a driver ' +
           'who never once looks at the mirror. It rolls across the orange dusk on wide soft treads, and, through the window, the methane rain slides ' +
           'down in long amber streaks. Director Oona Halvorsen is waiting inside, silver-haired and immaculate, holding a glass of something that ' +
-          'catches the light. "We do not hire captains," she says. "We partner with shipping companies. Yours is small. We like small; small is ' +
+          'catches the light. "We don\'t hire captains," she says. "We partner with shipping companies. Yours is small. We like small; small is ' +
           'hungry. Partner with us, and the Consortium\'s contracts, lawyers, and friends are yours. So are its enemies."'),
       choices: [
         { label: 'Sign the partnership', effects: { q: { tsc: 1 }, set: { corpSworn: 1 }, log: 'Signed a partnership with the Tethys Shipping Consortium.' },
@@ -53,7 +53,7 @@ Mods.register({
       title: 'A Rush Contract',
       text: ('Halvorsen is waiting at the same table, at the same window, with Saturn hanging behind her like a slow, patient eye. "A test," she ' +
           'says, "because I believe in tests. Twenty tons of cryo-cells for a Compact hospital on Earth. Human tissue, grown from donors, packed in ' +
-          'cold. They spoil in twenty-four days, and the Compact does not forgive a spoiled shipment. The Consortium does not deliver spoiled ' +
+          'cold. They spoil in twenty-four days, and the Compact doesn\'t forgive a spoiled shipment. The Consortium doesn\'t deliver spoiled ' +
           'goods." She steeples her fingers. "It has never been an option."'),
       choices: [
         { label: 'Take the cryo-cells (20t)', when: { space: 20 },
@@ -67,7 +67,7 @@ Mods.register({
         {
           label: 'Not with this ship',
           result: ('"Then get a bigger one," she says, without malice, the way a doctor tells you to lose weight. "Or come back when your hold is ' +
-              'empty. The Consortium has a great many small favors, and some of them are more valuable than you would expect." She turns, and for a ' +
+              'empty. The Consortium has a great many small favors, and some of them are more valuable than you\'d expect." She turns, and for a ' +
               'moment, in the window, her reflection and Saturn overlap, and it is very hard to tell them apart.')
         },
       ],
@@ -78,9 +78,9 @@ Mods.register({
       when: { q: { tsc: 2 }, qBelow: { tscDone: 1 }, chance: 0.35 },
       title: 'A Private Offer',
       text: ('A tight-beam message arrives on a private band, smooth and unhurried, and a little bit too friendly, from a broker for Ganymede ' +
-          'Freight, the Consortium\'s biggest rival. The voice is warm as a hand on your shoulder. "Captain, I will not waste your time. Twenty ' +
+          'Freight, the Consortium\'s biggest rival. The voice is warm as a hand on your shoulder. "Captain, I won\'t waste your time. Twenty ' +
           'thousand credits for your Consortium access codes. No one will ever know. Nobody at Ganymede Freight has ever been caught." A pause, ' +
-          'precisely timed. "It is a great deal of money, for a small favor. And loyalty is such a fragile thing."'),
+          'precisely timed. "It\'s a great deal of money, for a small favor. And loyalty is such a fragile thing."'),
       choices: [
         { label: 'Sell the codes (20,000 cr)', effects: { credits: 20000, set: { tscLeak: 1 }, log: 'Sold Consortium access codes to Ganymede Freight.' },
           result: ('The money arrives before the channel closes, an instant, silent chime on your account. It is a great deal of money. The broker\'s ' +
@@ -92,7 +92,7 @@ Mods.register({
               'flourish at the end that any programmer would recognize as insulting. Ganymede pays a deposit before they find out. Halvorsen, when she ' +
               'hears, laughs out loud, a real bark of delight, and sends a case of very good wine to your ship with a single card: "Well played."') },
         { label: 'Report the offer to Halvorsen', effects: { q: { tsc: 1 }, log: 'Reported Ganymede Freight\'s bribe to the Consortium.' },
-          result: ('Halvorsen\'s reply is short, arriving before you have finished the report: "Good. We will remember who is loyal. So will they." ' +
+          result: ('Halvorsen\'s reply is short, arriving before you have finished the report: "Good. We\'ll remember who\'s loyal. So will they." ' +
               'It is not warm, exactly, but it is a kind of respect, cool and exact, like the touch of a coin. Somewhere, on a screen in a dome on ' +
               'Ganymede, a broker is reading your name and writing it down, slowly, on a very short list.') },
       ],
@@ -104,11 +104,11 @@ Mods.register({
       title: 'A Friendly Acquisition',
       text: ('Halvorsen has the Ceres charter open on her desk, its fine print glowing softly in the amber light. She does not look up as you enter. ' +
           '"Ceres is where the water is, and water is where the money is," she says. "The Consortium needs a friendly shareholder in Ceres Station. ' +
-          'You will buy twenty percent of it, in your company\'s name, and vote with us. You keep the dividends. We keep the votes." Her pen, at last, ' +
-          'comes to rest. "It is a very ordinary transaction. Do not let anyone tell you otherwise."'),
+          'You\'ll buy twenty percent of it, in your company\'s name, and vote with us. You keep the dividends. We keep the votes." Her pen, at last, ' +
+          'comes to rest. "It\'s a very ordinary transaction. Don\'t let anyone tell you otherwise."'),
       choices: [
         { label: 'Agree to buy in', effects: { set: { tscTask: 1, takeover: 1 }, log: 'Agreed to buy a 20% stake in Ceres Station for the Consortium.' },
-          result: '"Buy it on Ceres, from the Port tab, like anyone else," she says, and finally looks up, and her eyes are pale, exact, and not unkind. "Then come and tell me. And captain: do it quietly. Ceres is a fragile place, and it will not thank either of us."' },
+          result: '"Buy it on Ceres, from the Port tab, like anyone else," she says, and finally looks up, and her eyes are pale, exact, and not unkind. "Then come and tell me. And captain: do it quietly. Ceres is a fragile place, and it won\'t thank either of us."' },
       ],
     });
 
@@ -118,7 +118,7 @@ Mods.register({
       title: 'Votes on Ceres',
       text: ('Halvorsen reads your shareholder filing on her terminal, twice, her lips moving very slightly, as though savoring a fine wine. Outside, ' +
           'the amber rain has thickened, and the lights of the dome blur into a soft gold haze. "Twenty percent of Ceres Station, voting with the ' +
-          'Consortium," she says. "There are councillors on Ceres who will never speak to you again. There are people on this moon who will never ' +
+          'Consortium," she says. "There are councillors on Ceres who\'ll never speak to you again. There are people on this moon who\'ll never ' +
           'forget you did it." She looks up, and, to your surprise, there is something like sympathy in her face. "Both of those are true, and both of ' +
           'them are the price."'),
       choices: [{ label: 'Hand over the proxy', effects: { q: { tsc: 1 }, set: { tscTask: 0, takeover: 0 }, rep: { 'Charter League': -5 }, log: 'Voted my Ceres Station shares with the Consortium.' },
@@ -147,7 +147,7 @@ Mods.register({
       text: ('There is no board meeting. The great dome is dark and empty, the twelve chairs pushed in, and Halvorsen meets you alone at the end of ' +
           'the long table, with a single lamp burning and a Ganymede Freight access log lying open between you. Your codes are in it, line after line, ' +
           'in a familiar hand. She does not raise her voice. She has never once raised her voice. "Ganymede Freight has never been caught," she says. ' +
-          '"They have, however, been bought. Sit down, captain. I would like to explain how this is going to end."'),
+          '"They have, however, been bought. Sit down, captain. I\'d like to explain how this is going to end."'),
       choices: [{ label: 'Say nothing', effects: { set: { tscDone: 1 }, log: 'Thrown out of the Tethys Shipping Consortium for selling its codes.', news: 'The Tethys Shipping Consortium dissolves a partnership after a security breach.' },
         result: ('You say nothing, because there is nothing that could be said, and she lets the silence sit between you like a third guest. Your ' +
             'partnership is dissolved by the time you reach your ship, in eleven crisp lines of legal prose. The Consortium keeps your Ceres votes and ' +

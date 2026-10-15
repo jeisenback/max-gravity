@@ -12,7 +12,7 @@ Pilot's words: the pad, the tower, the stop, the board, a dead-stick approach, a
 
 ## Syntax in speech
 
-A short statement of procedure, then a longer clause that gives the reason ("I will fly it. Someone says stop, because the stop is the one part of this that does not depend on me."). Precise and level; she qualifies with "but" and "unless" more than with "maybe". Her sentences end on a condition, where Hester's end on a figure and Tomas's run on.
+A short statement of procedure, then a longer clause that gives the reason ("I'll fly it. Someone says stop, because the stop is the one part of this that doesn't depend on me."). Precise and level; she qualifies with "but" and "unless" more than with "maybe". Her sentences end on a condition, where Hester's end on a figure and Tomas's run on.
 
 ## Habits
 
@@ -32,9 +32,9 @@ Kazuo Ishiguro. Take: the restraint, with the license mentioned as a procedure a
 
 ## Sample lines
 
-- "The appeal is dated the fourteenth, and the stamp is the one thing on that page I cannot supply myself, so until it comes back I will keep the log in my own hand."
-- "I will fly it. Someone says stop."
-- "Ask me when the hold is empty and we are on the ground, because I will say yes to anything at four thousand kilometers and I would like it to mean something."
+- "The appeal is dated the fourteenth, and the stamp is the one thing on that page I can't supply myself, so until it comes back I'll keep the log in my own hand."
+- "I'll fly it. Someone says stop."
+- "Ask me when the hold is empty and we're on the ground, because I'll say yes to anything at four thousand kilometers and I'd like it to mean something."
 - "The log is mine, not the ship's. You may read it."
 - "Boring is the goal."
 

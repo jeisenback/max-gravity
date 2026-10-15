@@ -8,7 +8,7 @@ Captain of the ship the hand signs onto in the narrow build. Card format: see `n
 
 ## Diction
 
-Ledger words: the column, the line, the book, the sum, the ink, owe, clear, burn. Plain words, no slang. She says "I would like" where others say "I want". She names the cost of a thing before she names the thing, and she gives figures exactly, not rounded to be kind.
+Ledger words: the column, the line, the book, the sum, the ink, owe, clear, burn. Plain words, no slang. She says "I'd like" where others say "I want". She names the cost of a thing before she names the thing, and she gives figures exactly, not rounded to be kind.
 
 ## Syntax in speech
 
@@ -32,11 +32,11 @@ Elmore Leonard. Take: the sideways answer, where she answers the sum under the q
 
 ## Sample lines
 
-- "That is four hundred and twelve for the week, which is sixty more than the week before, and I would like to know what you did on Thursday that cost sixty."
+- "That's four hundred and twelve for the week, which is sixty more than the week before, and I'd like to know what you did on Thursday that cost sixty."
 - "Show me the line."
-- "Fair is not a column. If it costs something, it goes in one of the ones I have."
+- "Fair isn't a column. If it costs something, it goes in one of the ones I have."
 - "You may have the chair. The coffee is eight credits."
-- "We clear two thousand six hundred on this run and the bank takes eleven hundred of it before I have said good morning to anyone, so when you ask me for a bonus you are asking for it out of what is left."
+- "We clear two thousand six hundred on this run and the bank takes eleven hundred of it before I've said good morning to anyone, so when you ask me for a bonus you're asking for it out of what's left."
 
 ## Dialogue risks
 

@@ -54,7 +54,7 @@ Mods.register({
       choices: [
         { label: 'Side with the veteran', effects: { like: { crew: 1 }, rep: { 'Dome Concord': 1 } }, result: '"There," says the veteran, and pays for your drink. The modeler says that is not how evidence works, and then says he hopes you are right, and means it.' },
         { label: 'Side with the modeler', effects: { learn: 2 }, result: 'The modeler sits you down and shows you the numbers on a napkin: the pressure, the water, the long slow sums. By the end you understand why nobody is sure, and the veteran, grudgingly, buys the next round.' },
-        { label: 'Say the sky is a good color already', effects: { rep: { 'Dome Concord': 2 } }, result: 'They both stop. "Butterscotch," says the veteran, slowly. "It is the color of home," says the modeler. They agree on something for the first time in forty years, and the bar applauds.' },
+        { label: 'Say the sky is a good color already', effects: { rep: { 'Dome Concord': 2 } }, result: 'They both stop. "Butterscotch," says the veteran, slowly. "It\'s the color of home," says the modeler. They agree on something for the first time in forty years, and the bar applauds.' },
       ],
     });
     scene({
@@ -65,7 +65,7 @@ Mods.register({
       choices: [
         { label: 'Take the leaflet and say you will think about it', effects: { rep: { 'Dome Concord': 2 } }, result: 'You take the leaflet. She seems to expect that, and writes your name down anyway, in case. It is a good leaflet, and you keep it.' },
         { label: 'Ask what the pay is', effects: { learn: 1 }, result: 'She tells you, and you do the sums, and then she tells you what the navy pays for a hand who is good at their post. It is more than your share, and it is a hundred times the risk. You understand each other.' },
-        { label: 'Tell her you have a berth', result: '"Everyone has a berth," she says, not unkindly. "Until they do not." She hands you a card anyway, for the day the berth stops being yours.' },
+        { label: 'Tell her you have a berth', result: '"Everyone has a berth," she says, not unkindly. "Until they don\'t." She hands you a card anyway, for the day the berth stops being yours.' },
       ],
     });
 
@@ -177,7 +177,7 @@ Mods.register({
       id: 'port-hermes-glass', when: { planet: 'Hermes Foundry' }, title: 'Slag Glass',
       personal: true,
       text: ('A kid is selling pieces of slag glass on a cloth by the dock gate: the smelter\'s leavings, poured into a mold and cooled fast, every ' +
-          'one a different swirl of green and amber and black. He holds one up to the red light from the furnaces. "It is not worth anything," he says. ' +
+          'one a different swirl of green and amber and black. He holds one up to the red light from the furnaces. "It\'s not worth anything," he says. ' +
           '"But look."'),
       choices: [
         { label: 'Buy one for the ship (20 cr)', when: { credits: 20 }, effects: { credits: -20, like: { crew: 1 } }, result: 'It goes on the sill of the galley hatch, where it catches the light on every burn. By the end of the month everyone has named it.' },

@@ -19,7 +19,7 @@ Mods.register({
     // ---- An Order You Do Not Like ----
     after({
       id: 'h-hot-good', title: 'The Window Made',
-      text: '{captain} finds you at the end of the watch. The hot burn made the berth window with eleven minutes to spare, and the next ship in the queue is idling, hull to hull, at the dock where you would have been. "I will say this once," the captain says, "and not twice."',
+      text: '{captain} finds you at the end of the watch. The hot burn made the berth window with eleven minutes to spare, and the next ship in the queue is idling, hull to hull, at the dock where you would have been. "I\'ll say this once," the captain says, "and not twice."',
       choices: [{
         label: 'Accept the thanks',
         effects: {
@@ -72,7 +72,7 @@ Mods.register({
     after({
       id: 'h-owed', title: 'What You Asked For',
       text: ('The captain has remembered the bonus you asked for before you had earned one. "You wanted something for a speech," {captain} says. ' +
-          '"Here is a job instead." It is the inventory: every part in the hold, counted, listed, and checked against the book, a day of dull work.'),
+          '"Here\'s a job instead." It is the inventory: every part in the hold, counted, listed, and checked against the book, a day of dull work.'),
       choices: [
         {
           label: 'Do the inventory',
@@ -91,16 +91,16 @@ Mods.register({
     // ---- A Dressing-Down ----
     after({
       id: 'h-log-trust', title: 'The Log Is Yours',
-      text: ('{captain} has been reading your log entries, which you did not know. "They are clean," the captain says. "Short, true, and dated. I ' +
-          'would like you to keep the ship\'s log for the run, not just your watch." There is a pause. "The last person who did the job did it for six ' +
-          'years and I still have not found a gap."'),
+      text: ('{captain} has been reading your log entries, which you did not know. "They\'re clean," the captain says. "Short, true, and dated. I\'d ' +
+          'like you to keep the ship\'s log for the run, not just your watch." There is a pause. "The last person who did the job did it for six ' +
+          'years and I still haven\'t found a gap."'),
       choices: [{ label: 'Take the log', effects: { like: { captain: 1 }, learn: 2, log: '{captain} asked me to keep the ship\'s log for the run, after I owned the gap.' }, result: 'You take it and keep it. It is dull, and exact. At the end of the run the captain signs every page.' }],
     });
 
     // ---- A Favor ----
     after({
       id: 'h-favour-back', title: 'The Favor Returned',
-      text: 'A week ago you stood a watch for {captain} and said nothing. Today the captain comes to find you. "I have signed you off the next port\'s duties," the captain says. "And, because it is customary, the docking fee for your berth."',
+      text: 'A week ago you stood a watch for {captain} and said nothing. Today the captain comes to find you. "I\'ve signed you off the next port\'s duties," the captain says. "And, because it\'s customary, the docking fee for your berth."',
       choices: [{ label: 'Take the free day', effects: { like: { captain: 1 }, credits: 80, log: '{captain} paid back the extra watch: no duties at the next port, and my berth fee.' }, result: 'It is a quiet day ashore, and a free one. You walk the dock with your hands in your pockets.' }],
     });
     after({
@@ -114,7 +114,7 @@ Mods.register({
           like: { captain: 1 },
           log: 'Asked {captain} why I was being passed over. It cleared some of the air.'
         },
-          result: '"I asked for one thing," the captain says, after a long moment, "and you said no. That is allowed. It is also information." The captain pours two mugs and leaves one on your side of the table.'
+          result: '"I asked for one thing," the captain says, after a long moment, "and you said no. That\'s allowed. It\'s also information." The captain pours two mugs and leaves one on your side of the table.'
         },
         { label: 'Let it be', result: 'You let it be, and for the rest of the run the captain says good morning to you and nothing after it.' },
       ],
@@ -123,7 +123,7 @@ Mods.register({
     // ---- Cover for a Shipmate ----
     after({
       id: 'h-cover-back', title: 'Owed an Hour',
-      text: '{thread:cover} catches you before the watch change, and puts a mug of tea in your hand without asking. "You covered an hour for me," they say. "I have been thinking about how to say thank you. I am no good at it. So: I have taken your first hour tonight. Go and sleep."',
+      text: '{thread:cover} catches you before the watch change, and puts a mug of tea in your hand without asking. "You covered an hour for me," they say. "I\'ve been thinking about how to say thank you. I\'m no good at it. So: I\'ve taken your first hour tonight. Go and sleep."',
       choices: [{ label: 'Take the hour', effects: { like: { 'thread:cover': 1 }, learn: 1, log: '{thread:cover} took an hour of my watch to pay back the one I covered.' }, result: 'You go and sleep. In the morning there is tea on the shelf, still warm, and nobody mentions it.' }],
     });
     after({
@@ -138,7 +138,7 @@ Mods.register({
     // ---- Words in the Galley ----
     after({
       id: 'h-needle-ally', title: 'Show Me',
-      text: '{thread:needle} finds you in the corridor, and does not meet your eye, and says, quickly: "Could you show me how the post works? Properly. I was wrong, and I would rather be wrong in private than in front of everybody again."',
+      text: '{thread:needle} finds you in the corridor, and does not meet your eye, and says, quickly: "Could you show me how the post works? Properly. I was wrong, and I\'d rather be wrong in private than in front of everybody again."',
       choices: [{
         label: 'Show them',
         effects: {
@@ -169,7 +169,7 @@ Mods.register({
     // ---- Card Night ----
     after({
       id: 'h-cards-rematch', title: 'The Rematch',
-      text: '{thread:cards} has been keeping the deck warm. "Same table, same stakes, but I want to see you again," they say. "A hundred a hand. I am not a man who loses twice in a row." The deck is soft at the corners.',
+      text: '{thread:cards} has been keeping the deck warm. "Same table, same stakes, but I want to see you again," they say. "A hundred a hand. I\'m not a man who loses twice in a row." The deck is soft at the corners.',
       choices: [
         { label: 'Play the rematch (100 cr)', when: { credits: 100 }, effects: { do: ['gamble', 100], like: { 'thread:cards': 1 } }, result: 'The cards come out, and the room goes quiet. The hand takes less than a minute. When it is over, everybody has something to say about it.' },
         { label: 'Decline', effects: { like: { 'thread:cards': -1 } }, result: '"Of course," they say, and square the deck against the table twice before putting it away.' },
@@ -203,7 +203,7 @@ Mods.register({
     });
     after({
       id: 'h-side-found', title: 'The Captain Knows',
-      text: '{captain} has the whole story, and not from you. It came from the customs office, in a letter, in the dry paragraphs of an official who does not enjoy writing them. The captain says nothing. Then: "I am not angry that you took the work. I am angry that you did not tell me."',
+      text: '{captain} has the whole story, and not from you. It came from the customs office, in a letter, in the dry paragraphs of an official who does not enjoy writing them. The captain says nothing. Then: "I\'m not angry that you took the work. I\'m angry that you didn\'t tell me."',
       choices: [{
         label: 'Take it',
         effects: {
@@ -217,7 +217,7 @@ Mods.register({
     // ---- A Loan ----
     after({
       id: 'h-loan-repaid', title: 'Paid Back',
-      text: '{thread:loan} is waiting for you at the end of the watch with an envelope. "A hundred and ten," they say. "The ten is for the worry. I would have paid it sooner, but I wanted to pay it right."',
+      text: '{thread:loan} is waiting for you at the end of the watch with an envelope. "A hundred and ten," they say. "The ten is for the worry. I\'d have paid it sooner, but I wanted to pay it right."',
       choices: [{ label: 'Take it, and shake their hand', effects: { credits: 110, like: { 'thread:loan': 1 }, log: '{thread:loan} paid back the hundred I lent them, with ten over.' }, result: 'You take it and shake their hand, which is warm and slightly damp.' }],
     });
     after({
@@ -287,7 +287,7 @@ Mods.register({
     // ---- Something Off the Lane ----
     after({
       id: 'h-lane-again', title: 'The Same Ship',
-      text: 'The transponder you reported turns up again, ahead of you this time, and the cutter that {captain} brought into the conversation is a spark behind it, closing. "That is your ship," the captain says, to nobody in particular.',
+      text: 'The transponder you reported turns up again, ahead of you this time, and the cutter that {captain} brought into the conversation is a spark behind it, closing. "That\'s your ship," the captain says, to nobody in particular.',
       choices: [
         {
           label: 'Call it in at once',

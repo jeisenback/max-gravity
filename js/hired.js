@@ -571,7 +571,7 @@ const CAPTAIN_CHATTER = [
   '{cap} is in the galley with the ledger open, lips moving over the sums.',
   '{cap}: "Fuel comes out of the share. Remember that when somebody wants to go faster."',
   '{cap} is checking the manifest against the hold, line by line, for the second time.',
-  '{cap}: "I was a hand once. I remember what it was like when the captain did not know my name."',
+  '{cap}: "I was a hand once. I remember what it was like when the captain didn\'t know my name."',
   '{cap} is asleep in the captain\'s chair with the log open on the captain\'s chest.',
   '{cap}: "We make port on the day, or I owe somebody an explanation. I hate owing explanations."',
 ];

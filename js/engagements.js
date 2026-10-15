@@ -102,7 +102,7 @@ const RAID_POST = {
 const RAID_MEMORY = { wrong: 'You made a call in a raid and it went wrong.', turned: 'You made the call that turned a raid.', stood: 'You stood us up to a raid and she broke off.' };
 const RAID_CLOSE = {
   off: { gun: ('She breaks off. Her turret goes cold and her plume swings away, and on the open band a voice says, "Your registry has been logged. ' +
-      'The next stop will not be a conversation."'), grapple: (
+      'The next stop won\'t be a conversation."'), grapple: (
       'She breaks off. Her grapple arms fold, her plume swings away and goes up the scale, and the range opens. On the board she is a dot, then she ' +
       'is not.'), torpedo: 'She does not fire the third torpedo. The bay doors close and she turns away, and the range opens.' },
   crippled: { gun: ('Your last burst takes her drive, and the cutter yaws and goes quiet. She will have a tow in a day. A beacon on her hull is ' +

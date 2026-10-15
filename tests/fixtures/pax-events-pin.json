@@ -5,7 +5,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "\"Inspection, the hold scanner has a fault,\" you say, and then you have the fault's maintenance log, and three forms in the wrong order that she has to send back. \"That is your problem, captain,\" the officer says. \"It will be mine when I log it,\" you say. It takes forty-one minutes. Her intercept window closes at forty-two, and the cutter peels away with a burst of static. Sam sits down on a crate. At the airlock Sam puts a folded note in your hand and does not say what it is for.",
+    "text": "\"Inspection, the hold scanner has a fault,\" you say, and then you have the fault's maintenance log, and three forms in the wrong order that she has to send back. \"That's your problem, captain,\" the officer says. \"It'll be mine when I log it,\" you say. It takes forty-one minutes. Her intercept window closes at forty-two, and the cutter peels away with a burst of static. Sam sits down on a crate. At the airlock Sam puts a folded note in your hand and does not say what it is for.",
     "mem": "9 Jun 2214: You covered for me with customs.",
     "d": {
      "credits": 0,
@@ -21,7 +21,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "\"That is the second form I have asked for,\" the officer says. \"For the third I come aboard.\" She comes aboard. They find Sam's stash behind a false panel in the second bay, in under ten minutes. \"Negligent inspection,\" she says, writing it, \"two thousand credits.\" You pay it. At supper the only sound in the galley is cutlery.",
+    "text": "\"That's the second form I've asked for,\" the officer says. \"For the third I come aboard.\" She comes aboard. They find Sam's stash behind a false panel in the second bay, in under ten minutes. \"Negligent inspection,\" she says, writing it, \"two thousand credits.\" You pay it. At supper the only sound in the galley is cutlery.",
     "mem": "9 Jun 2214: You tried to cover for me with customs.",
     "d": {
      "credits": -2000,
@@ -37,7 +37,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "{crew} sits down at the console. \"Ninety seconds,\" {crew} says, \"and do not talk to me.\" In ninety seconds the manifest, the cargo record and the ship's last six ports are rewritten. The scan crosses the hold and reads tidy crates and honest paperwork. Sam watches from the hatch, looks at you, and then at {crew}.",
+    "text": "{crew} sits down at the console. \"Ninety seconds,\" {crew} says, \"and don't talk to me.\" In ninety seconds the manifest, the cargo record and the ship's last six ports are rewritten. The scan crosses the hold and reads tidy crates and honest paperwork. Sam watches from the hatch, looks at you, and then at {crew}.",
     "mem": "9 Jun 2214: Your slicer hid me from customs.",
     "d": {
      "credits": 0,
@@ -100,7 +100,7 @@
    }
   ],
   "title": "Customs Inspection",
-  "text": "The customs cutter's searchlight comes across the hull plate by plate. \"Ship, this is Inspection,\" says the voice on the open band. \"Hold your burn and open the hold to a scan. It takes a quarter hour, and we do it twice if there is a reason to.\" Sam is at the hold hatch with one hand on the frame. \"Captain.\" Sam says it low. \"Whatever you can do. Stall them. I will explain at the next port, and you will not like it, but I will explain.\"",
+  "text": "The customs cutter's searchlight comes across the hull plate by plate. \"Ship, this is Inspection,\" says the voice on the open band. \"Hold your burn and open the hold to a scan. It takes a quarter hour, and we do it twice if there's a reason to.\" Sam is at the hold hatch with one hand on the frame. \"Captain.\" Sam says it low. \"Whatever you can do. Stall them. I'll explain at the next port, and you won't like it, but I'll explain.\"",
   "labels": [
    "Stall them",
    "[{crew}] Spoof the cargo manifest",
@@ -177,7 +177,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "It takes a long, ugly exchange to drive the hunter off, and it costs you 52 points of armor and an antenna. That night in the galley, over a bulb of something strong, Sam tells you their side of it. \"A bad partner and a worse lawyer,\" Sam says, \"and I did not do half of what is on the sheet.\" The bulb is empty before the other half.",
+    "text": "It takes a long, ugly exchange to drive the hunter off, and it costs you 52 points of armor and an antenna. That night in the galley, over a bulb of something strong, Sam tells you their side of it. \"A bad partner and a worse lawyer,\" Sam says, \"and I didn't do half of what's on the sheet.\" The bulb is empty before the other half.",
     "mem": "9 Jun 2214: You fought off a bounty hunter for me.",
     "d": {
      "credits": 0,
@@ -208,7 +208,7 @@
    }
   ],
   "title": "Bounty Hunter",
-  "text": "A bounty hunter matches your burn, dark, with one running light that winks on and off. \"You are carrying Sam Vale,\" says the voice on the channel, low and unhurried. \"Wanted on Mars for fraud. Five thousand for the handover. Or I come and take them, and that costs everyone aboard.\" In the galley Sam sets a cup on the table and turns it a quarter turn, so that the handle faces away.",
+  "text": "A bounty hunter matches your burn, dark, with one running light that winks on and off. \"You're carrying Sam Vale,\" says the voice on the channel, low and unhurried. \"Wanted on Mars for fraud. Five thousand for the handover. Or I come and take them, and that costs everyone aboard.\" In the galley Sam sets a cup on the table and turns it a quarter turn, so that the handle faces away.",
   "labels": [
    "Hand them over (+5,000 cr)",
    "[{crew}] Make them reconsider",
@@ -503,7 +503,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Sam sighs, looks at you, and transfers 2,500 cr \"for your discretion\". \"I like you, captain,\" they say. \"I would rather not have to like you less.\"",
+    "text": "Sam sighs, looks at you, and transfers 2,500 cr \"for your discretion\". \"I like you, captain,\" they say. \"I'd rather not have to like you less.\"",
     "mem": "9 Jun 2214: You caught me, and took money to keep quiet.",
     "d": {
      "credits": 0,
@@ -785,7 +785,7 @@
   "labels": [
    "[{crew}] Find a faster line",
    "Hard burn (40 reaction mass)",
-   "\"Physics does not negotiate.\""
+   "\"Physics doesn't negotiate.\""
   ]
  },
  {
@@ -857,7 +857,7 @@
    }
   ],
   "title": "Sample Opportunity",
-  "text": "Sam has been at the observation blister for hours with a battered notebook and a pair of binoculars. Now they appear at the cockpit hatch, out of breath, hair on end. They have spotted a rock a few hours off your trajectory, pale, with a bright glint in the sun. \"A sample from that could make my career,\" they say. \"I will pay for the detour. Please. I have waited my whole life for something like this.\"",
+  "text": "Sam has been at the observation blister for hours with a battered notebook and a pair of binoculars. Now they appear at the cockpit hatch, out of breath, hair on end. They have spotted a rock a few hours off your trajectory, pale, with a bright glint in the sun. \"A sample from that could make my career,\" they say. \"I'll pay for the detour. Please. I've waited my whole life for something like this.\"",
   "labels": [
    "Match orbits and take a sample (costs time)",
    "Stay on course"
@@ -1190,7 +1190,7 @@
    }
   ],
   "title": "Engine Room Tour",
-  "text": "Sam has been hovering near the engine room hatch for two days, with an ear pressed to the bulkhead. Now they come to you. \"Captain, I would love to see the drive room. Just a quick look. I will not touch anything. I promise. I have always wanted to know how it works.\"",
+  "text": "Sam has been hovering near the engine room hatch for two days, with an ear pressed to the bulkhead. Now they come to you. \"Captain, I'd love to see the drive room. Just a quick look. I won't touch anything. I promise. I've always wanted to know how it works.\"",
   "labels": [
    "Show them around",
    "Crew only, sorry"
@@ -1340,7 +1340,7 @@
    }
   ],
   "title": "Card Game",
-  "text": "Sam produces a deck worn soft at the corners and shuffles it with a flourish. \"A friendly game, captain,\" Sam says. \"With a little money on it, just to make things interesting. It is a long burn, and a man gets bored.\" The deck is not yet square, and Sam is already smiling.",
+  "text": "Sam produces a deck worn soft at the corners and shuffles it with a flourish. \"A friendly game, captain,\" Sam says. \"With a little money on it, just to make things interesting. It's a long burn, and a man gets bored.\" The deck is not yet square, and Sam is already smiling.",
   "labels": [
    "Play (500 cr stake)",
    "Decline"
@@ -1459,7 +1459,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "\"I have read your list,\" you say, in a level voice, \"and here is what I think of it.\" You go item by item: the bunk is the bunk you were given, the food is the food you eat, and the gravity is the only gravity the drive makes. Sam goes pale, then red, then still. A formal complaint arrives that evening, in triplicate, and the fee comes out of your fare. The rest of the trip is quiet, and at night you can hear the drive again.",
+    "text": "\"I've read your list,\" you say, in a level voice, \"and here's what I think of it.\" You go item by item: the bunk is the bunk you were given, the food is the food you eat, and the gravity is the only gravity the drive makes. Sam goes pale, then red, then still. A formal complaint arrives that evening, in triplicate, and the fee comes out of your fare. The rest of the trip is quiet, and at night you can hear the drive again.",
     "mem": "9 Jun 2214: You put me in my place.",
     "d": {
      "credits": 0,
@@ -1475,7 +1475,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "\"I have read your list,\" you say, in a level voice, \"and here is what I think of it.\" You go item by item: the bunk is the bunk you were given, the food is the food you eat, and the gravity is the only gravity the drive makes. Sam goes pale, then red, then still. A formal complaint arrives that evening, in triplicate, and the fee comes out of your fare. The rest of the trip is quiet, and at night you can hear the drive again.",
+    "text": "\"I've read your list,\" you say, in a level voice, \"and here's what I think of it.\" You go item by item: the bunk is the bunk you were given, the food is the food you eat, and the gravity is the only gravity the drive makes. Sam goes pale, then red, then still. A formal complaint arrives that evening, in triplicate, and the fee comes out of your fare. The rest of the trip is quiet, and at night you can hear the drive again.",
     "mem": "9 Jun 2214: You put me in my place.",
     "d": {
      "credits": 0,
@@ -1490,7 +1490,7 @@
    }
   ],
   "title": "Complaints",
-  "text": "Sam has a list in a neat notebook, and reads it to you at the cockpit hatch, in order. \"The bunk is too hard. The food is a crime. The gravity is insufficiently serious. The coffee tastes of pipe.\" Sam turns a page. \"And frankly, captain, your face is not one I would choose to look at for so long.\"",
+  "text": "Sam has a list in a neat notebook, and reads it to you at the cockpit hatch, in order. \"The bunk is too hard. The food is a crime. The gravity is insufficiently serious. The coffee tastes of pipe.\" Sam turns a page. \"And frankly, captain, your face isn't one I'd choose to look at for so long.\"",
   "labels": [
    "Humor them",
    "Put them in their place"

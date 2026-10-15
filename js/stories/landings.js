@@ -137,7 +137,7 @@ Mods.register({
           label: 'Give them 200 cr and some advice',
           when: { credits: 200 },
           effects: { credits: -200 },
-          result: '"Find a ship with a good captain," you say, low, "and learn a trade first. Do not go with anyone who is in a hurry." They take the money in both hands, staring at it, and look up at you, once. Then they are gone into the crowd.'
+          result: '"Find a ship with a good captain," you say, low, "and learn a trade first. Don\'t go with anyone who\'s in a hurry." They take the money in both hands, staring at it, and look up at you, once. Then they are gone into the crowd.'
         },
         { label: 'Hand them to dock security', result: 'Security is not gentle about it. The kid does not fight, does not cry, does not say a word. They look back once over their shoulder as they are led away, and their eyes find yours. You keep your hands in your pockets all the way back to the ship.' },
       ],
@@ -173,7 +173,7 @@ Mods.register({
       text: ('An old prospector catches your sleeve at the dock, with a hand like a bundle of twigs, and pulls you into the shadow of a fuel tank. ' +
           'His coat is patched at every seam, and his eyes are wet. "Survey data," he whispers. "A rock nobody has claimed, thick with platinum. I ' +
           'found it thirty years ago and never had the ship. I\'m too old to go." He presses a battered data slate into your palm. "Five hundred and ' +
-          'it\'s yours. I would rather it went to someone who might use it."'),
+          'it\'s yours. I\'d rather it went to someone who might use it."'),
       choices: [
         {
           label: 'Buy the map (500 cr)',
@@ -341,7 +341,7 @@ Mods.register({
               'other half stand in silence, and then someone calls you a Compact spy, and the chant spreads. For the next hour you cannot walk the ' +
               'corridor without a delegation of children explaining your mistake.')
         },
-        { label: '"No goal."', result: 'You say it firmly, and the other half of the kids erupt, and the cheer echoes down the corridor. The half that lost stare at you. One of them, a girl with a missing front tooth, says clearly, "You are a traitor," and stalks off.' },
+        { label: '"No goal."', result: 'You say it firmly, and the other half of the kids erupt, and the cheer echoes down the corridor. The half that lost stare at you. One of them, a girl with a missing front tooth, says clearly, "You\'re a traitor," and stalks off.' },
         {
           label: 'Buy them a new ball (50 cr)',
           when: { credits: 50 },
@@ -395,14 +395,14 @@ Mods.register({
       text: ('A woman with a pistol on each hip and a clipboard steps out from behind a stack of crates as you leave the airlock, blocking the ' +
           'corridor, one boot against the door frame. She has a shaved head, a scar through one eyebrow, and a friendly smile. "Welcome to the Rook," ' +
           'she says. "Ten minutes, and a short list of rules. First: the Rook charges a dock tax, payable to me, now." She taps the clipboard with a ' +
-          'pen. "It is a fair tax."'),
+          'pen. "It\'s a fair tax."'),
       choices: [
         {
           label: 'Pay (300 cr)',
           when: { credits: 300 },
           effects: { credits: -300 },
           result: ('She writes you a receipt in a looping hand, tears it off the pad, and gives it to you with a flourish. It is a real receipt, ' +
-              'stamped and numbered, with a black tower embossed at the top. "Keep it," she says. "If anyone stops you, show them. It will save ' +
+              'stamped and numbered, with a black tower embossed at the top. "Keep it," she says. "If anyone stops you, show them. It\'ll save ' +
               'you trouble." She steps aside to let you pass.')
         },
         {
@@ -426,8 +426,8 @@ Mods.register({
       title: 'Human Interest',
       text: ('A feed journalist with a camera drone waylays you at the dock, well dressed, with a microphone the size of a child\'s fist. The drone ' +
           'hovers at your shoulder, humming, with a red light. "Excuse me! Excuse me, captain! You look like a real Belt captain." She flashes a ' +
-          'good smile. "I am doing a segment on life in the outer system, and, honestly, nobody here has any idea what it is like out there. Two ' +
-          'minutes? It would mean the world."'),
+          'good smile. "I\'m doing a segment on life in the outer system, and, honestly, nobody here has any idea what it\'s like out there. Two ' +
+          'minutes? It\'d mean the world."'),
       choices: [
         {
           label: 'Tell them how it really is out there',
@@ -515,7 +515,7 @@ Mods.register({
       title: 'News From Inside',
       text: ('Your ship is the first in weeks. Half the outpost comes down to the dock as you arrive, in heavy quilted coats and patched suits, in ' +
           'silent clusters, not to trade, but to ask what is happening in the inner system. They stand at the edge of the light with their ' +
-          'breath steaming, and do not crowd you. An old man in a knitted cap steps forward. "Sorry, captain," he says. "It is just that, out here, it ' +
+          'breath steaming, and do not crowd you. An old man in a knitted cap steps forward. "Sorry, captain," he says. "It\'s just that, out here, it ' +
           'gets very quiet. Would you tell us something? Anything?"'),
       choices: [
         {
@@ -545,7 +545,7 @@ Mods.register({
       title: 'A Letter',
       text: ('Auntie Oyelaran from the noodle counter presses a sealed envelope into your hand, wiping her other hand on her apron, with steam from ' +
           'the broth still curling around her face. The envelope is real paper, thick and creamy, addressed in a careful, old-fashioned hand. "For my ' +
-          'son, on Ceres Station," she says. "He never answers his messages. He will answer a letter. A mother knows these things." She looks at you ' +
+          'son, on Ceres Station," she says. "He never answers his messages. He\'ll answer a letter. A mother knows these things." She looks at you ' +
           'and waits.'),
       choices: [
         {
@@ -560,7 +560,7 @@ Mods.register({
               'oil, and a soft-boiled egg on top, which is worth more than the fee. "Tell him I said to eat properly," she calls, as you go, and half ' +
               'the counter turns to watch you leave.')
         },
-        { label: '"I\'m not going that way."', result: '"Everyone goes that way eventually," she says, and tucks the envelope back in her apron. "The letter will keep. My son will not, but the letter will." She goes back to the broth.' },
+        { label: '"I\'m not going that way."', result: '"Everyone goes that way eventually," she says, and tucks the envelope back in her apron. "The letter will keep. My son won\'t, but the letter will." She goes back to the broth.' },
       ],
     }, 0.15);
 
@@ -601,7 +601,7 @@ Mods.register({
       text: ('An old miner at the dock rail tells you, unprompted, about the boom: forty thousand people, money in the air, dance halls open all ' +
           'night, and a ship leaving for somewhere new every hour. He leans on the rail with both forearms, looking out at the empty berths, and his ' +
           'voice grows quieter and rounder as he goes, the way a man\'s voice does when he is telling something for the thousandth time and still ' +
-          'means it. "I was nineteen," he says. "Nineteen, and I thought it would last forever."'),
+          'means it. "I was nineteen," he says. "Nineteen, and I thought it\'d last forever."'),
       choices: [
         {
           label: 'Listen to the whole thing',

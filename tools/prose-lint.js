@@ -185,10 +185,15 @@ const REPORTED = /\b(?:says|said|answers|answered|replies|replied|asks|asked|(?:
 const QUOTED = /"[^"]{2,}"|“[^”]{2,}”/g;
 
 // Quoted spans against reported speech, over all the strings.
+// A quoted span that says "I do not" or "it is" in full: speech uses contractions (docs/voices/dialogue.md, rule 13). "I have" is not counted, since it is also the plain verb.
+const UNCONTRACTED = /\b(?:I (?:am|will|would) [a-z]|(?:you|we|they) (?:are|will|would) [a-z]|(?:he|she|it|that|there|who) (?:will|would) [a-z]|(?:he|she|it|that|there|who|what) is [a-z]|(?:do|does|did|is|are|was|were|has|have|had|would|could|should|will) not\b|cannot\b|let us\b)/i;
 function speech(strings) {
-  let quoted = 0, reported = 0;
-  for (const s of strings) { quoted += (s.match(QUOTED) || []).length; reported += (s.match(REPORTED) || []).length; }
-  return { quoted, reported };
+  let quoted = 0, reported = 0, uncontracted = 0;
+  for (const s of strings) {
+    const spans = s.match(QUOTED) || [];
+    quoted += spans.length; reported += (s.match(REPORTED) || []).length; uncontracted += spans.filter(q => UNCONTRACTED.test(q)).length;
+  }
+  return { quoted, reported, uncontracted };
 }
 
 // ---------- the report ----------
@@ -208,7 +213,7 @@ function lint(files) {
 }
 
 const row = (name, r) => `${name.padEnd(32)} ${String(r.strings).padStart(5)} strings  tics ${String(Object.values(r.tics).reduce((a, b) => a + b, 0)).padStart(4)}  ` +
-  `mean ${r.shape.mean}  sd ${r.shape.sd}  short ${Math.round(r.shape.shortShare * 100)}%  runs ${r.shape.shortRuns}  quoted ${r.speech.quoted}  reported ${r.speech.reported}`;
+  `mean ${r.shape.mean}  sd ${r.shape.sd}  short ${Math.round(r.shape.shortShare * 100)}%  runs ${r.shape.shortRuns}  quoted ${r.speech.quoted}  reported ${r.speech.reported}  uncontracted ${r.speech.uncontracted}`;
 
 function report(result) {
   const ticLine = Object.entries(result.total.tics).map(([id, n]) => `${id} ${n}`).join(', ');
@@ -227,7 +232,7 @@ function compare(base, now) {
   const lines = [
     ...TICS.map(({ id }) => diff(id, a.tics[id], b.tics[id])),
     diff('mean', a.shape.mean, b.shape.mean), diff('sd', a.shape.sd, b.shape.sd), diff('shortShare', a.shape.shortShare, b.shape.shortShare), diff('shortRuns', a.shape.shortRuns, b.shape.shortRuns),
-    diff('quoted', a.speech.quoted, b.speech.quoted), diff('reported', a.speech.reported, b.speech.reported),
+    diff('quoted', a.speech.quoted, b.speech.quoted), diff('reported', a.speech.reported, b.speech.reported), diff('uncontracted', a.speech.uncontracted || 0, b.speech.uncontracted),
     diff('unpriced', (a.unpriced || []).length, b.unpriced.length),
   ].filter(Boolean);
   const before = new Set(a.unpriced || []), after = new Set(b.unpriced);

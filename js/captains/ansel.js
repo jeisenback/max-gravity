@@ -24,10 +24,10 @@ function atTheLock(backup) {
     cap.mood = { kind: 'low', until: G.state.day + 15 };
     return lead + ('He goes to the lock with the sheet, and it goes wrong at the second sentence, and for a minute the only sound is shouting through ' +
         'a hatch. He comes back carried, with a cut over one eye, and the hand that held the sheet is closed round it and will not open properly. ' +
-        '"They have agreed to wait," he says. "I told them the odds."');
+        '"They\'ve agreed to wait," he says. "I told them the odds."');
   }
   return lead + ('He goes to the lock with the sheet in his hand, and talks for eleven minutes, in a level voice, about the odds. The long ship backs ' +
-      'off. He comes back with his coat buttoned wrong and says, "They have agreed to wait," and sits down on the lock coaming and does not say ' +
+      'off. He comes back with his coat buttoned wrong and says, "They\'ve agreed to wait," and sits down on the lock coaming and does not say ' +
       'anything else for a while. Captain Pell does not make a joke. She puts a hand on his shoulder, and takes it off again.');
 }
 
@@ -50,46 +50,46 @@ CAST.ansel = {
   chatter: [
     'Ansel is going through the manifest with a pencil. He has circled the line that says "assorted".',
     'Ansel has written the probability of everything on a card, and the card is in his pocket, and he does not take it out.',
-    'Ansel: "I do not say it will go wrong. I say that if it does, here is the sheet."',
+    'Ansel: "I don\'t say it\'ll go wrong. I say that if it does, here\'s the sheet."',
     'Ansel eats his lunch at the same table, in the same chair, from the same tin.',
     'Ansel has put a second set of fuel orders in the drawer, the cautious ones, in case.',
-    'Ansel: "She has never lost on a Tuesday. I do not know what that means. I am watching it."',
+    'Ansel: "She has never lost on a Tuesday. I don\'t know what that means. I\'m watching it."',
   ],
   scenes: {
     intro: {
       title: 'The Sheet',
       text: ('Ansel Whitcombe is at the galley table with a pencil, a ruled sheet, and a cup of tea he has forgotten. He is old for the work and neat ' +
-          'for the ship, and he writes in small numbers. "I am the first officer," he says, not looking up. "I am also, though nobody asked me to be, ' +
+          'for the ship, and he writes in small numbers. "I\'m the first officer," he says, not looking up. "I\'m also, though nobody asked me to be, ' +
           'the person who tells the captain the probability. I tell her. She says, Good, and does it anyway." He turns the sheet round so you can see: ' +
-          'columns, and a figure at the bottom. "I am not a pessimist. I was an actuary. It is the same thing, with better pay, and then it was not."'),
+          'columns, and a figure at the bottom. "I\'m not a pessimist. I was an actuary. It\'s the same thing, with better pay, and then it wasn\'t."'),
       choices: [
         {
           label: 'Ask him what the figure means',
           effects: { castLike: { who: 'ansel', n: 2, memory: 'You asked what the figure meant.' } },
-          result: '"It is the chance she gets all the way home," he says. "From where we are, with what she owes. It is not a bad figure. It is not a good one." He takes the sheet back and folds it, once. "I do not show it to the captain. She would bet on it."',
+          result: '"It\'s the chance she gets all the way home," he says. "From where we are, with what she owes. It\'s not a bad figure. It\'s not a good one." He takes the sheet back and folds it, once. "I don\'t show it to the captain. She\'d bet on it."',
         },
         {
           label: 'Ask him why he stays',
           effects: { castLike: { who: 'ansel', n: 1, memory: 'You asked why I stay.' } },
-          result: '"Habit, or loyalty," he says, after a moment. "I have not decided which, and I have been deciding for six years. I would say it was the pay, but I have seen the pay."',
+          result: '"Habit, or loyalty," he says, after a moment. "I haven\'t decided which, and I\'ve been deciding for six years. I\'d say it was the pay, but I\'ve seen the pay."',
         },
       ],
     },
     mid1: {
       days: 25, title: 'The Annuity',
       text: ('Ansel has a letter from an annuity company, and has read it several times. "A guaranteed income, for life, with no clauses," he says. ' +
-          '"It costs eleven thousand, which I do not have, and I am sixty-three, and the price goes up every year I am not sixty-three. This is the ' +
-          'whole of my ambition. It is not a large one. I have never wanted to be rich. I would like to be sure."'),
+          '"It costs eleven thousand, which I don\'t have, and I\'m sixty-three, and the price goes up every year I\'m not sixty-three. This is the ' +
+          'whole of my ambition. It\'s not a large one. I\'ve never wanted to be rich. I\'d like to be sure."'),
       choices: [
         {
           label: 'Tell him it is not a modest ambition',
           effects: { castLike: { who: 'ansel', n: 2, memory: 'You said my ambition was not small.' }, castFlag: { who: 'ansel', flag: 'annuity' } },
-          result: '"It is the largest there is," he says. "Everyone else wants the number to go up. I want it to stay." He folds the letter and puts it in the inside pocket, over the heart.',
+          result: '"It\'s the largest there is," he says. "Everyone else wants the number to go up. I want it to stay." He folds the letter and puts it in the inside pocket, over the heart.',
         },
         {
           label: 'Ask how close he is',
           effects: { castLike: { who: 'ansel', n: 1, memory: 'You asked how close I was.' } },
-          result: 'He tells you, to the credit, and it is less than half of eleven thousand. "That is the nice thing about a number," he says. "It does not pretend."',
+          result: 'He tells you, to the credit, and it is less than half of eleven thousand. "That\'s the nice thing about a number," he says. "It doesn\'t pretend."',
         },
       ],
     },
@@ -115,32 +115,32 @@ CAST.ansel = {
     },
     late: {
       days: 55, title: 'What Ansel Knows', flag: 'secretKnown',
-      text: ('Ansel has the sheet on the galley table, and he has not written on it. "I am going to say a number," he says. "It is what she owes, and ' +
-          'what she has, and what she would need to win on a single run, and the odds of her winning it. I worked it out in a week, years ago. I have ' +
-          'kept it up since. It comes out the same every time." He looks at you. "I do not want to be a person who knew. If the last big run comes, I ' +
-          'would like somebody else to have known."'),
+      text: ('Ansel has the sheet on the galley table, and he has not written on it. "I\'m going to say a number," he says. "It\'s what she owes, and ' +
+          'what she has, and what she\'d need to win on a single run, and the odds of her winning it. I worked it out in a week, years ago. I\'ve ' +
+          'kept it up since. It comes out the same every time." He looks at you. "I don\'t want to be a person who knew. If the last big run comes, I\'d ' +
+          'like somebody else to have known."'),
       choices: [
         {
           label: 'Ask him what the odds are',
           effects: { castLike: { who: 'ansel', n: 1, memory: 'You asked me what the odds were.' } },
-          result: 'He tells you: one in four. "You could stand to lose at one in four, if it were only you," he says. "That is the part I cannot do anything with. It is never only you."',
+          result: 'He tells you: one in four. "You could stand to lose at one in four, if it were only you," he says. "That\'s the part I can\'t do anything with. It\'s never only you."',
         },
         {
           label: 'Tell him you will stop her if you can',
           effects: { castLike: { who: 'ansel', n: 2, memory: 'You said you would stop her if you could.' }, castFlag: { who: 'ansel', flag: 'told' } },
-          result: 'He looks at you across the sheet. "You cannot," he says. "But thank you for saying it. That is more than I have had in six years." He turns the sheet over, face down, for the first time since you have known him.',
+          result: 'He looks at you across the sheet. "You can\'t," he says. "But thank you for saying it. That\'s more than I\'ve had in six years." He turns the sheet over, face down, for the first time since you have known him.',
         },
       ],
       // Below friendly he keeps the number to himself, and the promise he would have drawn out (the `told` flag) is not asked for.
       closed: {
         title: 'What Ansel Knows',
         text: ('Ansel has the sheet on the galley table, and when you come in he turns it face down and keeps two fingers on it. "I had a number to ' +
-            'tell you," he says. "I have decided to keep it. It is not a number you can do anything with, and I do not know you well enough to ask you ' +
-            'to carry it." He takes his fingers off the sheet. "It does not change. It will be the same number when you have been here longer."'),
+            'tell you," he says. "I\'ve decided to keep it. It\'s not a number you can do anything with, and I don\'t know you well enough to ask you ' +
+            'to carry it." He takes his fingers off the sheet. "It doesn\'t change. It\'ll be the same number when you\'ve been here longer."'),
         choices: [
           {
             label: 'Say it can wait',
-            result: '"It can," he says. "It always could. That is the trouble with it." He picks up a pencil and puts it down again without writing.',
+            result: '"It can," he says. "It always could. That\'s the trouble with it." He picks up a pencil and puts it down again without writing.',
           },
         ],
       },
@@ -151,7 +151,7 @@ CAST.ansel = {
         const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6;
         return ('A ship has come up on your stern, long and dark, and it is one of Dobrescu\'s. Captain Pell has seen it on the board and is already ' +
             'at the guns, laughing, with a figure in her head. "We can take her," she says. "We could take her." Ansel is at the boarding lock with ' +
-            'his coat on and the sheet in one hand. "I would like to speak to them," he says. "Give me ten minutes, and the lock, and do not fire." He ' +
+            'his coat on and the sheet in one hand. "I\'d like to speak to them," he says. "Give me ten minutes, and the lock, and don\'t fire." He ' +
             'says it flat.')
           + (low ? ' Your hull has taken a beating, and a bad hull is a bad place to be, in either case.' : ' Your hull is sound.')
           + (medic ? ` ${medic.first} has the med kit open at the lock.` : ' There is nobody aboard who can do more than a field dressing, and he knows it.')
@@ -176,8 +176,8 @@ CAST.ansel = {
 CAST.ansel.arrival = {
   open: 'Ansel is waiting at the foot of the ramp in his coat, with the ledger held flat against his chest like a tray. He opens it at the right page and holds it out.',
   memory: ('"There are three numbers," Ansel says. "The forecast, the result, and a third that I keep for myself, which is what the run would have ' +
-      'paid if something had gone wrong. It is smaller than people like. I will not show you that one." He turns the book toward you. "Yours is in your ' +
+      'paid if something had gone wrong. It\'s smaller than people like. I won\'t show you that one." He turns the book toward you. "Yours is in your ' +
       'account. Look at the header."'),
-  column: '"That column is {cap}\'s," Ansel says. "I have advised against it, and it is hers to keep."',
-  pace: '"A season, if the runs hold," Ansel says. "I have written down what happens if they do not. It is a longer number."',
+  column: '"That column is {cap}\'s," Ansel says. "I\'ve advised against it, and it\'s hers to keep."',
+  pace: '"A season, if the runs hold," Ansel says. "I\'ve written down what happens if they don\'t. It\'s a longer number."',
 };

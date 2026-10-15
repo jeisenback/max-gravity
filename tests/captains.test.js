@@ -221,7 +221,7 @@ test('a captain\'s wording for a shared event is used, and anything missing fall
     out.praise = captainEntry().events['cap-praise'].text.replace('{post}', POSTS[st.hired.post].name.toLowerCase());
     return out;
   });
-  assert.equal(r['cap-order'], r.own); assert.match(r['cap-dressing'], /pencil across the gap/); assert.match(r['cap-favour'], /I will owe you the hours/);
+  assert.equal(r['cap-order'], r.own); assert.match(r['cap-dressing'], /pencil across the gap/); assert.match(r['cap-favour'], /I'll owe you the hours/);
   assert.equal(r['cap-praise'], r.praise, 'the {post} is filled in');
   assert.match(r.heard, /Nine percent/);
   assert.match(r.fallback, /wants the drive run hotter than you would, to make a berth window/); assert.match(r.fallbackHeard, /Run it at ninety/);
@@ -373,7 +373,7 @@ test('Dov: his introduction, his wording, and his trouble and secret', async () 
     return out;
   });
   assert.match(r.intro, /Captain Dov Adair is shaking your hand/); assert.ok(r.intro.includes(`${r.wage} a day and ${r.share} percent`));
-  assert.match(r.order, /woman at the last port/); assert.match(r.heardAtMinusOne, /Ninety/); assert.match(r.notHeard, /I did not ask/);
+  assert.match(r.order, /woman at the last port/); assert.match(r.heardAtMinusOne, /Ninety/); assert.match(r.notHeard, /I didn't ask/);
   assert.ok(r.bonus > 0, 'a bonus at once'); assert.equal(r.poor, false); assert.deepEqual(r.after, { credits: 700, lent: true }); assert.equal(r.flag, true); assert.equal(r.repaid, 430);
 });
 
@@ -478,7 +478,7 @@ test('Zoya: her introduction, her wording, and her trouble and secret', async ()
     return out;
   });
   assert.match(r.intro, /Captain Zoya Pell signs your papers/); assert.ok(r.intro.includes(`${r.wage} a day and ${r.share} percent`));
-  assert.match(r.order, /worth more if it arrives a day early/); assert.match(r.notHeard, /I did not ask/); assert.match(r.heard, /Ninety/);
+  assert.match(r.order, /worth more if it arrives a day early/); assert.match(r.notHeard, /I didn't ask/); assert.match(r.heard, /Ninety/);
   assert.equal(r.noBonus, 0); assert.ok(r.bonus > 0); assert.equal(r.poor, false); assert.deepEqual(r.after, { credits: 900, lent: true }); assert.equal(r.flag, true); assert.equal(r.repaid, 225);
   assert.deepEqual(r.style, { trade: 4, nerve: 5, thrift: 1 });
 });
@@ -780,9 +780,9 @@ test('Cato\'s "What Cato Knows" opens at friendly or better, and below it he kee
     open.e.choices[0].run(); out.openTold = !!castRec('cato').flags.told;
     return out;
   });
-  assert.deepEqual(r.closed, ['Say it can wait']); assert.match(r.closedText, /I do not know you well enough/); assert.equal(r.closedTold, false, 'the favour is not asked');
-  assert.deepEqual(r.open, ['Ask him to tell you if it goes badly', 'Tell him it is not yours to carry']); assert.match(r.openText, /I have known about the bank since the spring/);
-  assert.equal(r.openTold, true); assert.match(r.result, /I would not have known how to start/);
+  assert.deepEqual(r.closed, ['Say it can wait']); assert.match(r.closedText, /I don't know you well enough/); assert.equal(r.closedTold, false, 'the favour is not asked');
+  assert.deepEqual(r.open, ['Ask him to tell you if it goes badly', 'Tell him it is not yours to carry']); assert.match(r.openText, /I've known about the bank since the spring/);
+  assert.equal(r.openTold, true); assert.match(r.result, /I wouldn't have known how to start/);
 });
 
 test('Ilsa\'s, Pilar\'s and Ansel\'s "what they know" scenes open at friendly or better, and below it they keep it to themselves (#346)', async () => {
@@ -815,7 +815,7 @@ test('Ilsa\'s, Pilar\'s and Ansel\'s "what they know" scenes open at friendly or
   }
   assert.match(r.ilsa.closedText, /not yet yours to hear/); assert.match(r.ilsa.openText, /short every quarter for two years/);
   assert.match(r.pilar.closedText, /keep the view/); assert.match(r.pilar.openText, /a good rule/);
-  assert.match(r.ansel.closedText, /keep it/); assert.match(r.ansel.openText, /I am going to say a number/);
+  assert.match(r.ansel.closedText, /keep it/); assert.match(r.ansel.openText, /I'm going to say a number/);
 });
 
 test('the first officer\'s open reading tells the captain\'s secret and the goodbye reads it; the closed reading does not (#283)', async () => {
@@ -963,7 +963,7 @@ test('the captain\'s secret tells the bank holds the Ore Runner too, in both rea
     h.flags = {}; cap.opinion = SECRET_TRUST - 1; const found = captainScene('secret'); out.found = found.text; out.foundFlag = !!h.flags.ownersDebt;
     return out;
   });
-  assert.match(r.confide, /There is an Ore Runner on the yard list at the next port with her name painted over\. Same bank\. Three owners, and each of them missed one payment\. One\./);
+  assert.match(r.confide, /There's an Ore Runner on the yard list at the next port with her name painted over\. Same bank\. Three owners, and each of them missed one payment\. One\./);
   assert.match(r.found, /schedule of ships the bank has taken since the spring, and the Ore Runner is the third line/);
   assert.equal(r.confideFlag, true); assert.equal(r.foundFlag, true);
 });

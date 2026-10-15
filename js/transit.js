@@ -12,7 +12,7 @@ const CHATTER = [
   'Compact Navy picket: routine sweep, no contacts.',
   'Somebody is broadcasting polka on the emergency band again.',
   'Crash couch: anti-g drip reservoir at 80 percent.',
-  '"...and that is why you never play cards with a Pallas refinery crew." [laughter]',
+  '"...and that\'s why you never play cards with a Pallas refinery crew." [laughter]',
   'Automated beacon: Ceres Station reports all docking bays open. Water ration unchanged.',
   'Courier "Swift Dispatch": running a hard burn, clear the approach please.',
   'Life support: CO2 scrubbers cycling.',
@@ -20,24 +20,24 @@ const CHATTER = [
   'Dome Concord Navy: all vessels, maintain transponders in Martian space.',
   'Belt pirate radio: static, then a laugh, then static again.',
   'Reactor: output steady. Drive plume stable.',
-  'Freighter "Second Wind" to nobody in particular: "Forty days out and I have run out of things to say to the cat."',
+  'Freighter "Second Wind" to nobody in particular: "Forty days out and I\'ve run out of things to say to the cat."',
   'An old recorded voice, on an old beacon: "This lane is maintained by the Ceres Water Authority. Please burn responsibly."',
-  'Hauler "Long Odds": "Anybody running to Titan? I have got a spare berth and a very bad sense of direction."',
+  'Hauler "Long Odds": "Anybody running to Titan? I\'ve got a spare berth and a very bad sense of direction."',
   'Compact traffic control: reminder that lane fees are due on the first, and that "I forgot" is not a payment method.',
   'A child, on an open band: "This is Captain Pip of the good ship Blanket Fort. Do you copy?"',
-  'Ceres Water Authority relay: "Reminder to all vessels, water is not a right, but it is a courtesy. Thank you for your understanding."',
+  'Ceres Water Authority relay: "Reminder to all vessels, water isn\'t a right, but it\'s a courtesy. Thank you for your understanding."',
   'Belt trader on the band: "Fresh onions! Real onions! Meet me at the flip, and bring your own bags!"',
   'Tug "Old Bess": "Anybody know a good doctor on Ganymede? Asking for a friend. The friend is my knee."',
   'Static, then faintly someone singing an old work song, and the tail of a chorus.',
   'Mars traffic: "All ships in the Phobos approach corridor, welcome, and please note that, yes, the coffee really is that good."',
-  'Someone on the emergency band, in a small voice: "Testing. Testing. Is this thing on? Mom, it is on."',
+  'Someone on the emergency band, in a small voice: "Testing. Testing. Is this thing on? Mom, it\'s on."',
   'Drive plume harmonics: a low, steady, contented hum. All quiet.',
   'A distant hauler broadcasts a recipe for fried dough. In the middle it apologizes and carries on.',
-  'Luna control: "Please remember that the Copernicus Lounge is not, in fact, an official navigation aid."',
+  'Luna control: "Please remember that the Copernicus Lounge isn\'t, in fact, an official navigation aid."',
   'Ring-ball commentary, faint and crackling, from a ship somewhere in the dark: "...and he SHOOTS, and he SCORES..."',
   'Nav: micrometeoroid flux low. Hull integrity nominal. Optimism, unofficially, high.',
   'A salvager on the band, cheerfully: "Anybody lose a left boot? Somebody lost a left boot. I have a hundred of them."',
-  'Enceladus relay: "All ships, geyser activity is up today. Please enjoy responsibly, and do not fly through the plume."',
+  'Enceladus relay: "All ships, geyser activity is up today. Please enjoy responsibly, and don\'t fly through the plume."',
   'A young voice, on an open channel, awed: "I can see the whole ring from here. Is it always like this?"',
   'The ship\'s hull creaks, once, softly, as it cools in the long shadow. Nothing follows.',
   'A hauler crew, in unison, on the open band, singing "Happy Birthday" to a captain who is, from the sound of it, deeply embarrassed.',
@@ -74,9 +74,9 @@ const RUMORS = {
   // What the quartermaster says before the rumor, as the burn begins.
   lead: [
     '{first}: "Heard something at the last port."',
-    '{first}: "I had a word with the dock clerk before we cast off. Here is what he let slip."',
-    '{first}: "Overheard on the apron. Take it for what it is worth."',
-    '{first}: "A man at the counter was certain of this. I am less certain."',
+    '{first}: "I had a word with the dock clerk before we cast off. Here\'s what he let slip."',
+    '{first}: "Overheard on the apron. Take it for what it\'s worth."',
+    '{first}: "A man at the counter was certain of this. I\'m less certain."',
     '{first}: "Not confirmed, but the person who told me runs a warehouse."',
     '{first}: "The loaders were swapping stories on the way out. One of them was worth hearing."',
     '{first}: "I paid for a coffee and got this for free."',
@@ -149,7 +149,7 @@ const TRANSIT_EVENTS = [
           chainTo('dc-owner');
           return ('You match velocity, and cross in suits, and find three people in the yacht\'s galley, gray-faced, wrapped in blankets, breathing ' +
               'in shallow sips. You patch their air recyclers with a borrowed part, and share some rations, and stay until the color returns to their ' +
-              'cheeks. The owner, a rich man in a torn silk shirt, grips your hand so hard it hurts. "I will not forget this," he says.');
+              'cheeks. The owner, a rich man in a torn silk shirt, grips your hand so hard it hurts. "I won\'t forget this," he says.');
         }
         chainTo('dc-raiders');
         return (`It was bait. Two raiders light their drives the moment you match velocity, dark shapes swinging out from behind the yacht\'s hull, ` +
@@ -196,7 +196,7 @@ const TRANSIT_EVENTS = [
         'thinking.'),
     choices: [
       { label: 'Grab it', ...gated(needRoom), run() {
-        if (Math.random() < 0.2) return `Booby-trapped. The container detonates against your hull, a flat white flash and a slam that throws everything in the cockpit to the deck, for ${hurt(0.2)} points of armor damage. When the ringing stops, someone says, "Well. That is why they call it free."`;
+        if (Math.random() < 0.2) return `Booby-trapped. The container detonates against your hull, a flat white flash and a slam that throws everything in the cockpit to the deck, for ${hurt(0.2)} points of armor damage. When the ringing stops, someone says, "Well. That's why they call it free."`;
         const c = pick(COMMODITIES), tons = Math.min(cargoFree(), randInt(2, 8));
         G.state.cargo[c.id] = (G.state.cargo[c.id] || 0) + tons;
         chainTo('co-contents');
@@ -225,7 +225,7 @@ const TRANSIT_EVENTS = [
             `Someone puts a blanket over them.`);
       } },
       { label: '"What do you know?"', run: () => (applyEffects({ later: { 'st-tip': 10 } }), chainTo('st-where'), (
-          `The kid grins, a quick lopsided grin, and drops their voice. "I sweep floors at the port office," they say. "You would be amazed what ` +
+          `The kid grins, a quick lopsided grin, and drops their voice. "I sweep floors at the port office," they say. "You'd be amazed what ` +
           `people say around a broom." Then, with great importance: "${addRumor()}" You give the kid a bunk and a meal. In the morning you find they ` +
           `have cleaned the entire galley.`)) },
     ],
@@ -289,13 +289,13 @@ const TRANSIT_EVENTS = [
     title: 'Merchant Hail',
     via: 'ship',
     text: ('A freighter on a parallel trajectory hails you, close enough that you can see her crew in the cockpit windows, and a cheerful, weathered ' +
-        'face, and a cup raised in greeting. "Market tip, friend?" the captain says, in a voice like a well-worn saddle. "I have been up and down ' +
-        'these lanes forty years, and I hear things. Five hundred credits and it is yours. I promise you will not regret it. Usually."'),
+        'face, and a cup raised in greeting. "Market tip, friend?" the captain says, in a voice like a well-worn saddle. "I\'ve been up and down ' +
+        'these lanes forty years, and I hear things. Five hundred credits and it\'s yours. I promise you won\'t regret it. Usually."'),
     choices: [
       { label: 'Buy the tip (500 cr)', cost: true, ...gated(needCr(500)), run() {
         G.state.credits -= 500;
         applyEffects({ later: { [Math.random() < 0.6 ? 'me-good' : 'me-bad']: 10 } });
-        return `The captain clears their throat and says, solemnly: "${addRumor()}" There is a pause. "That is the good stuff," they add. "I would not sell it to just anyone." They sign off with a wink and a two-fingered salute, and in a few minutes their lights are a distant spark.`;
+        return `The captain clears their throat and says, solemnly: "${addRumor()}" There is a pause. "That's the good stuff," they add. "I wouldn't sell it to just anyone." They sign off with a wink and a two-fingered salute, and in a few minutes their lights are a distant spark.`;
       } },
       { label: 'No thanks', run: () => (applyEffects({ later: { 'me-regret': 12 } }), '"Your loss," they laugh, not unkindly, and drop off the channel with a click. A few minutes later their running lights wink twice, and dwindle away.') },
     ],

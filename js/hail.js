@@ -132,7 +132,7 @@ function hailEvent(n) {
   if (n.bountyId) {
     const m = st.missions.find(x => x.id === n.bountyId);
     return {
-      title, text: `${n.name} answers with a laugh, a long, easy, unafraid laugh, that carries clearly over the band. "Come and collect, bounty hunter," says a voice like warm gravel. "I have been collected by better than you."`,
+      title, text: `${n.name} answers with a laugh, a long, easy, unafraid laugh, that carries clearly over the band. "Come and collect, bounty hunter," says a voice like warm gravel. "I've been collected by better than you."`,
       choices: [
         { label: 'Offer them a chance to surrender', run() {
           if (!damaged(n) || Math.random() < 0.3) return '"Surrender? To you?" More laughter, longer and richer, and, at the end of it, a single click. The channel goes dead, and, on your scope, the ship\'s drive flares, and does not falter.';
@@ -141,7 +141,7 @@ function hailEvent(n) {
             st.credits += m.pay;
             st.missions = st.missions.filter(x => x !== m);
           }
-          return (`There is a long silence on the channel. Then a tired voice says, "All right. All right, that is enough." ${n.name} powers down, ` +
+          return (`There is a long silence on the channel. Then a tired voice says, "All right. All right, that's enough." ${n.name} powers down, ` +
               `drive by drive, until she is a dark hull in the dark, and a patrol cutter, called in, takes custody. ` +
               `The ${m ? `${fmt(m.pay)} cr ` : ''}bounty is yours without firing another shot, and you feel, oddly, not triumphant but tired.`);
         } },
@@ -160,7 +160,7 @@ function hailEvent(n) {
         st.credits -= price;
         feel(n, 4, 'You paid to settle things between us.');
         leave(n);
-        return (`A long silence on the band, so long you think the channel has dropped. Then, low and flat: "...Fine. We are square." It is not ` +
+        return (`A long silence on the band, so long you think the channel has dropped. Then, low and flat: "...Fine. We're square." It is not ` +
             `forgiveness, but it is an end to it. ${n.name} breaks off, slowly, and her drive dwindles into the dark, and the tightness, in your ` +
             `chest, and in your shoulders, comes down, one notch at a time.`);
       } });
@@ -255,7 +255,7 @@ function hailEvent(n) {
           n.hostile = false;
           feel(n, 3, 'You apologized and paid for the damage.');
           return (`${captain} grumbles, in a long, aggrieved mutter, but takes the money, and, after a while, the aggrieved mutter turns into a sort ` +
-              `of grudging thanks. "Well," they say, "I have had worse days." They stand down, and, as they fall behind, you hear, very faintly, a ` +
+              `of grudging thanks. "Well," they say, "I've had worse days." They stand down, and, as they fall behind, you hear, very faintly, a ` +
               `small, weary laugh.`);
         } },
         signOff,

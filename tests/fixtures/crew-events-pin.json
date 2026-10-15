@@ -56,7 +56,7 @@
    }
   ],
   "title": "Sam Wants a Raise",
-  "text": "Sam finds you at the end of a long shift with a printed sheet and folded arms. The sheet lists what crew with their skills earn on other ships, what a ship of your size can afford, and what Sam has done for you lately. The last line says: \"I am worth it.\"",
+  "text": "Sam finds you at the end of a long shift with a printed sheet and folded arms. The sheet lists what crew with their skills earn on other ships, what a ship of your size can afford, and what Sam has done for you lately. The last line says: \"I'm worth it.\"",
   "labels": [
    "Give them 25% more (125 cr/day)",
    "No"
@@ -509,7 +509,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You step between them. \"Sit,\" you say. \"Both of you.\" The room goes still. \"You do not talk about a shipmate's humming at my table,\" you say to Sam, \"or anywhere I can hear it.\" Sam goes red, then pale, and leaves. For days Sam eats alone.",
+    "text": "You step between them. \"Sit,\" you say. \"Both of you.\" The room goes still. \"You don't talk about a shipmate's humming at my table,\" you say to Sam, \"or anywhere I can hear it.\" Sam goes red, then pale, and leaves. For days Sam eats alone.",
     "mem": "9 Jun 2214: You reprimanded me in front of everyone.",
     "d": {
      "credits": 0,
@@ -522,7 +522,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You step between them. \"Sit,\" you say. \"Both of you.\" The room goes still. \"You do not talk about a shipmate's humming at my table,\" you say to Sam, \"or anywhere I can hear it.\" Sam goes red, then pale, and leaves. For days Sam eats alone.",
+    "text": "You step between them. \"Sit,\" you say. \"Both of you.\" The room goes still. \"You don't talk about a shipmate's humming at my table,\" you say to Sam, \"or anywhere I can hear it.\" Sam goes red, then pale, and leaves. For days Sam eats alone.",
     "mem": "9 Jun 2214: You reprimanded me in front of everyone.",
     "d": {
      "credits": 0,
@@ -560,7 +560,7 @@
    }
   ],
   "title": "Friction",
-  "text": "Sam has been needling the rest of the crew for days: a jab at breakfast, a remark in the corridor, a sneer at how someone hums. Tonight in the galley it is the humming again. A chair scrapes. \"Say that again,\" says a level voice. \"I said it was flat,\" Sam says. \"I did not say it was your fault. I said it was flat.\" \"Say that again.\" There is going to be a fight.",
+  "text": "Sam has been needling the rest of the crew for days: a jab at breakfast, a remark in the corridor, a sneer at how someone hums. Tonight in the galley it is the humming again. A chair scrapes. \"Say that again,\" says a level voice. \"I said it was flat,\" Sam says. \"I didn't say it was your fault. I said it was flat.\" \"Say that again.\" There is going to be a fight.",
   "labels": [
    "Reprimand them",
    "Let them sort it out"
@@ -633,7 +633,7 @@
    }
   ],
   "title": "Shared Bottle",
-  "text": "Sam comes into the galley at the end of a long shift with a dusty bottle wrapped in a shirt. They have carried it in the bottom of their bag since they left Mars. They set it on the table and take down every cup in the cupboard. \"I was saving it for a special occasion,\" they say. \"But I think we are the occasion.\"",
+  "text": "Sam comes into the galley at the end of a long shift with a dusty bottle wrapped in a shirt. They have carried it in the bottom of their bag since they left Mars. They set it on the table and take down every cup in the cupboard. \"I was saving it for a special occasion,\" they say. \"But I think we're the occasion.\"",
   "labels": [
    "Raise a glass"
   ]
@@ -695,7 +695,7 @@
    }
   ],
   "title": "Volunteer",
-  "text": "A sensor mast has come loose in the burn and hangs by one strut, banging against the hull with every pulse of the drive. It will tear free sooner or later and take plating with it. Before you can speak, Sam has the suit half on. \"I will go, captain,\" they say, buckling a strap. \"It is a ten-minute job. I have done worse.\"",
+  "text": "A sensor mast has come loose in the burn and hangs by one strut, banging against the hull with every pulse of the drive. It will tear free sooner or later and take plating with it. Before you can speak, Sam has the suit half on. \"I'll go, captain,\" they say, buckling a strap. \"It's a ten-minute job. I've done worse.\"",
   "labels": [
    "Let them go",
    "Go yourself"

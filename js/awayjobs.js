@@ -11,7 +11,7 @@ const AWAY_MAX = 2, AWAY_CHANCE = 0.5, PITCH_BASE = 0.35, AWAY_NEAR_DAYS = 6;  /
 const AWAY = [
   { id: 'package', title: 'A Package for {dest}', blurb: '{who} has a sealed package for a contact on {dest}, and does not trust the post.',
     stages: [
-      { text: 'The contact is waiting at the dock gate on {dest}, a man in a long coat who looks at your ship before he looks at you. He is not the one {who} described. He is too easy, too well dressed, and he knows your name. "I will take that off your hands," he says, and holds out both of them.',
+      { text: 'The contact is waiting at the dock gate on {dest}, a man in a long coat who looks at your ship before he looks at you. He is not the one {who} described. He is too easy, too well dressed, and he knows your name. "I\'ll take that off your hands," he says, and holds out both of them.',
         choices: [
           { label: 'Ask him what {who} said to say', check: { post: 'comms' },
             win: { text: ('You ask the question {who} made you carry, the one with no right answer for a stranger. He does not have it. He smiles, ' +
@@ -24,7 +24,7 @@ const AWAY = [
             lose: { text: 'The market square is not as crowded as you thought. He steps close and the case leaves your hands in a movement you do not quite see, and the elbow that comes with it leaves you with a cracked rib. The fee is the fee, at least.', hurt: true, pay: 180 } },
           { label: 'Hand it over and take the fee', win: { text: 'You hand it over, and he thanks you in a voice you will not remember, and the fee is exactly what {who} promised. It is not until you are back on the ship that you think about his hands.', pay: 260 } },
         ] },
-      { text: 'The woman at the grocery stall wraps the package in a cloth. "{who} said you would be careful," she says. "I would like to say thank you in a way that costs something."',
+      { text: 'The woman at the grocery stall wraps the package in a cloth. "{who} said you\'d be careful," she says. "I\'d like to say thank you in a way that costs something."',
         choices: [
           { label: 'Take the extra credits ', win: { text: 'She counts it out into your palm from a tin of coins. You take it. It is a small, honest pleasure.', pay: 220 } },
           { label: 'Take a name for the next time', win: { text: 'She writes it on a scrap, and a street, and a time of day. "Tell them I sent you," she says. It is not cash, but you will not forget where it leads.', rep: 3 } },
@@ -33,8 +33,8 @@ const AWAY = [
   { id: 'stranded', title: 'A Hauler Down on {dest}', blurb: '{who}\'s brother is stuck on {dest} with a failed drive and no money for the yard. {who} cannot go. You could.',
     stages: [
       { text: ('The hauler sits at the far end of the apron on {dest}, listing a degree to port, with her drive housing open to the sky and a man ' +
-          'underneath it who has not slept in a day. He climbs out when you hail. "{who} sent you," he says. "I have been telling the yard it is the ' +
-          'injector, and the yard has been telling me it is three thousand credits."'),
+          'underneath it who has not slept in a day. He climbs out when you hail. "{who} sent you," he says. "I\'ve been telling the yard it\'s the ' +
+          'injector, and the yard has been telling me it\'s three thousand credits."'),
         choices: [
           { label: 'Rebuild the injector', check: { post: 'engineer' },
             win: { text: ('It is the injector, and a cracked housing behind it that the yard did not mention. You spend a long afternoon in the ' +
@@ -46,17 +46,17 @@ const AWAY = [
             lose: { text: 'The line parts a hundred meters from the yard, and the hauler\'s bow swings into a post. It is nobody\'s fault, and everybody says so. He pays for the post. You get a bill for the line.', cost: 60, opinion: 0 } },
           { label: 'Give him what you can spare and wish him luck (50 cr)', win: { text: 'You count fifty credits onto the hatch cover and wish him luck. He takes it the way a man takes a handhold, and does not say what he is thinking.', cost: 50 } },
         ] },
-      { text: 'When the drive is running he walks you to the ramp. "I cannot pay you what it was worth," he says. "I can give you a berth on her any time you want one, if she is still flying. Or I can give you this."',
+      { text: 'When the drive is running he walks you to the ramp. "I can\'t pay you what it was worth," he says. "I can give you a berth on her any time you want one, if she\'s still flying. Or I can give you this."',
         choices: [
-          { label: 'Take the credits ', win: { text: 'He puts it into your hand and closes your fingers over it. "It is what I have," he says. It is enough.', pay: 330 } },
+          { label: 'Take the credits ', win: { text: 'He puts it into your hand and closes your fingers over it. "It\'s what I have," he says. It is enough.', pay: 330 } },
           { label: 'Take the offer of a berth', win: { text: 'He shakes your hand on it. You cannot spend it, and you do not need to. A hauler\'s captain with a standing offer is worth more on the lanes than the credits would have been.', rep: 4 } },
         ] },
     ] },
   { id: 'witness', title: 'A Witness on {dest}', blurb: '{who} knows a dockworker on {dest} who saw something and needs an escort to give a statement. Nobody there will do it.',
     stages: [
       { text: ('The dockworker is waiting in the back room of a noodle stall on {dest}, a small woman with her coat buttoned to the neck and her ' +
-          'hands flat on the table. "{who} said you would come," she says. "The office is four streets away. I have been told, twice, that I would not ' +
-          'make it there." She looks at you. "I would like to make it there."'),
+          'hands flat on the table. "{who} said you\'d come," she says. "The office is four streets away. I\'ve been told, twice, that I wouldn\'t ' +
+          'make it there." She looks at you. "I\'d like to make it there."'),
         choices: [
           { label: 'Walk her through the streets', check: { post: 'gunner' },
             win: { text: ('You take the middle of the street and keep her on the inside. A man steps out of a doorway ahead of you, and sees your ' +
@@ -72,7 +72,7 @@ const AWAY = [
                 'dislike of relays.'), rep: -3, pay: 130 } },
           { label: 'Tell her you cannot do this', win: { text: '"I understand," she says. She does not look surprised, and that is somehow the worst of it. You leave her at the table with her tea.' } },
         ] },
-      { text: 'Before you go, the dockworker presses something into your hand: a key on a loop of string. "It is the locker at the back of the stall," she says. "{who} knows. It is for whoever comes."',
+      { text: 'Before you go, the dockworker presses something into your hand: a key on a loop of string. "It\'s the locker at the back of the stall," she says. "{who} knows. It\'s for whoever comes."',
         choices: [
           { label: 'Open the locker (150 cr in a tin)', win: { text: 'The locker has a tin of credits and a folded note that says thank you in three languages. You take the credits and leave the note.', pay: 330 } },
           { label: 'Leave the locker for the next one', win: { text: 'You give her back the key and say it should stay for whoever comes. She puts it in her pocket with the look of someone who was going to say the same.', rep: 3 } },
