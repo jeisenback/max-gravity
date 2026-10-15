@@ -199,6 +199,39 @@ Mods.register({
       ],
     }, 0.35, 75);
 
+    // The ship's night (shiplife.js): scenes for the hours when the lights are down and only the pilot and engineer are up. `night` holds only then.
+    road({
+      id: 'road-night-watch', when: { night: true, crew: 'pilot' },
+      title: 'The Middle Watch',
+      text: 'It\'s the third hour of the night, and the bridge is lit by the board alone. {crew:pilot} has the helm with one boot up on the rail and is talking to the nav screen in a low voice, as {crew:pilot} does. The drift numbers haven\'t changed in forty minutes. "Come in," {crew:pilot} says, without turning. "Don\'t touch the cup on the left. It\'s been there since the flip, and it\'s mine."',
+      choices: [
+        { label: 'Sit the rest of the watch', effects: { learn: 1 }, result: 'You take the second seat. {crew:pilot} tells you which star the board is flying on, and something about the plume\'s color that you can\'t check. Near the end of the hour the numbers move one digit, and {crew:pilot} writes it on the back of a hand.' },
+        { label: 'Take the cup down and wash it', result: 'It takes you twenty minutes to find where it lives. When you come back, {crew:pilot} has moved the other cup to the left.' },
+        { label: 'Leave them to it', result: 'The hatch hisses behind you. The talking starts again before it\'s closed.' },
+      ],
+    }, 0.35, 90);
+
+    road({
+      id: 'road-night-pump', when: { night: true, crew: 'engineer' },
+      title: 'The Number Two Pump',
+      text: 'The cover is off the number two coolant pump, and {crew:engineer} has a flashlight in their teeth. "It\'s ticking," {crew:engineer} says around it. "Has been for six hours. Nobody who isn\'t me can hear it."',
+      choices: [
+        { label: 'Hold the light', effects: { learn: 1 }, result: 'It\'s a worn bearing, and there\'s a spare in the locker. You hold the flashlight for an hour and a half, and {crew:engineer} names every part before touching it.' },
+        { label: 'Listen at the housing', result: 'You press your ear to it. It ticks, and you can\'t tell it from your pulse. {crew:engineer} watches you do it and doesn\'t say anything.' },
+        { label: 'Tell them to log it and sleep', result: '"I\'ll log it after I\'ve found it," {crew:engineer} says, and puts the flashlight back in their mouth.' },
+      ],
+    }, 0.35, 90);
+
+    road({
+      id: 'road-night-bread', when: { night: true, crew: 'cook' },
+      title: 'Bread',
+      text: 'The galley light is on, and {crew:cook} is up to the elbows in dough. "Third hour\'s the only time it rises right," {crew:cook} says. "The drive\'s quiet, and nobody\'s opening the hatch. Sit. You\'re in the light."',
+      choices: [
+        { label: 'Sit and watch', result: '{crew:cook} gives you a corner of the dough to work. It\'s cold and heavier than you expected, and when you\'ve done it badly {crew:cook} takes it back and does it again.' },
+        { label: 'Take a mug and go back to bed', result: 'You carry it down the passage with both hands. It\'s still warm when you reach your door.' },
+      ],
+    }, 0.35, 90);
+
     road({
       id: 'road-prospector', when: { gov: ['Charter League', 'Independent'] },
       title: 'The Prospector',

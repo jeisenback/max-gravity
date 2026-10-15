@@ -44,6 +44,7 @@ const CONDITIONS = {
   storyDay: v => all(v, (k, n) => G.state.day >= (story()[k] || 0) + n),
   // A story passenger aboard, by role in the story (older saves' Mira has none).
   aboard: v => paxAboard().some(m => m.story && (m.storyWho || 'mira-europa') === v),
+  night: v => !!G.transit && isDark() === !!v,  // the ship's night (shiplife.js): the lights are down on a burn
   chance: v => Math.random() < v,
   post: v => !!hired() && [].concat(v).includes(hired().post),  // a hired hand's own post
   skill: v => !!hired() && skillLevel(hired().post) >= v,  // and the level they have there
