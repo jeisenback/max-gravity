@@ -64,7 +64,7 @@ test('the blockade call and the epilogue count people at the same cutoffs', asyn
   const r = await ev(() => {
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: 'gunner' }); while (G.dialog) finishEvent();
     story().ending = Object.keys(ENDINGS)[0];
-    const p = registerPerson(makePerson('earth')), counts = () => ({ allies: blockadeForces().allies, text: epilogueEvent().text.match(/Across the solar system, (\d+) .*? and (\d+) would not/).slice(1).map(Number) });
+    const p = registerPerson(makePerson('earth')), counts = () => ({ allies: blockadeForces().allies, text: epilogueEvent().text.match(/Across the solar system, (\d+) .*? and (\d+) wouldn't/).slice(1).map(Number) });
     const at = n => { p.opinion = n; return counts(); }, base = at(0), out = {};
     for (const n of [5, 4, 2, 1, -1, -2]) { const c = at(n); out[n] = { allies: c.allies - base.allies, friends: c.text[0] - base.text[0], enemies: c.text[1] - base.text[1] }; }
     return out;

@@ -115,18 +115,18 @@ const HAND_EVENTS = [
     id: 'crew-cover', mate: true, group: 'crew',
     data: {
       title: 'Cover for a Shipmate',
-      text: '{mate} finds you before the watch change, looking at the deck. They have a thing to do, a message to send, a call home that cannot wait, and could you take the first hour of their watch, and not say anything about it?',
+      text: '{mate} finds you before the watch change, looking at the deck. They have a thing to do, a message to send, a call home that can\'t wait, and could you take the first hour of their watch, and not say anything about it?',
       choices: [
         {
           label: 'Cover for them',
           effects: { remember: 'cover', later: { 'h-cover-back': 10 }, log: 'Covered an hour of {thread:cover}\'s watch.', mateLike: { n: 2, memory: 'You covered an hour of my watch and said nothing.' }, learn: 1 },
-          result: 'You cover it, and it is a quiet hour. When they come back, {mate} looks at you across the galley, and does not mention ' +
+          result: 'You cover it, and it\'s a quiet hour. When they come back, {mate} looks at you across the galley, and doesn\'t mention ' +
             'it.',
         },
         {
           label: 'Not tonight',
-          effects: { remember: 'cover', later: { 'h-cover-cold': 5 }, log: 'Would not cover for {thread:cover}.', mateLike: { n: -1, memory: 'You wouldn\'t cover an hour of my watch.' } },
-          result: '{mate} says it is fine. For a day or two {mate} takes the other end of the galley table.',
+          effects: { remember: 'cover', later: { 'h-cover-cold': 5 }, log: 'Wouldn\'t cover for {thread:cover}.', mateLike: { n: -1, memory: 'You wouldn\'t cover an hour of my watch.' } },
+          result: '{mate} says it\'s fine. For a day or two {mate} takes the other end of the galley table.',
         },
       ],
     },
@@ -159,7 +159,7 @@ const HAND_EVENTS = [
     id: 'crew-ines', group: 'crew', when: () => castKeys().includes('ines'),
     data: {
       title: 'Ines Calls the Numbers',
-      text: 'Ines is flying a hard approach by hand, a tight, ugly one, and asks you over her shoulder, without looking round, whether you would read her the numbers. "Slowly," she says. "And don\'t be clever."',
+      text: 'Ines is flying a hard approach by hand, a tight, ugly one, and asks you over her shoulder, without looking round, whether you\'d read her the numbers. "Slowly," she says. "And don\'t be clever."',
       choices: [
         {
           label: 'Read her the numbers',
@@ -171,7 +171,7 @@ const HAND_EVENTS = [
           post: 'pilot',
           skill: 2,
           effects: { castLike: { who: 'ines', n: 2, memory: 'You caught a wrong figure on my approach and said it plainly.' }, learn: 2 },
-          result: 'You have the approach on your own plot, half a second behind hers. On the last leg one of your figures does not match. "Say again," Ines ' +
+          result: 'You have the approach on your own plot, half a second behind hers. On the last leg one of your figures doesn\'t match. "Say again," Ines ' +
             'says. You say it again. She finds the transposed digit on her sheet, corrects it without a word, and flies the corrected line. Afterward ' +
             'she writes the figure in her notebook.',
         },
@@ -184,9 +184,9 @@ const HAND_EVENTS = [
             'comes onto the pad. She signs the log under your name. "Don\'t tell the captain," she says. "Tell everyone else."',
         },
         {
-          label: 'Say you would rather watch',
+          label: 'Say you\'d rather watch',
           effects: { castLike: { who: 'ines', n: 0, memory: 'You watched from the back and let me fly.' } },
-          result: 'You stand behind her and watch her hands, and she does not say a word, and the approach is flawless. You do not learn much, but you do not break anything.',
+          result: 'You stand behind her and watch her hands, and she doesn\'t say a word, and the approach is flawless. You don\'t learn much, but you don\'t break anything.',
         },
       ],
     },
@@ -209,7 +209,7 @@ const HAND_EVENTS = [
           post: 'engineer',
           skill: 2,
           effects: { castLike: { who: 'tomas', n: 2, memory: 'You heard a tick in the loop that I had stopped hearing.' }, learn: 2 },
-          result: 'You say there is a tick on the third pump at the top of each cycle, a hair late. Tomas puts a hand flat on the housing and waits for it to ' +
+          result: 'You say there\'s a tick on the third pump at the top of each cycle, a hair late. Tomas puts a hand flat on the housing and waits for it to ' +
             'come round. "Third pump," he says. He writes the number on the back of his hand and pours you a second cup.',
         },
         {
@@ -239,7 +239,7 @@ const HAND_EVENTS = [
           label: 'Take the other console',
           effects: { castLike: { who: 'yelena', n: 1, memory: 'You took the other console on the range and didn\'t sulk about losing.' }, learn: 3 },
           result: 'You take the other console, and she beats you soundly, and then shows you how: where to look, and when. You lose four rounds in a row. By ' +
-            'the fifth you are less bad.',
+            'the fifth you\'re less bad.',
         },
         {
           label: '[Gunner 2] Take the hard setting and hold the lead',
@@ -271,12 +271,12 @@ const HAND_EVENTS = [
     id: 'crew-ruben', group: 'crew', when: () => castKeys().includes('ruben'),
     data: {
       title: 'Ruben and the Thermos',
-      text: 'Ruben has a thermos of something hot and a stack of intercepts in piles, and he offers you a cup, as he offers everyone, and a pile, as he does not. "Help me sort," he says. "Slowly. I\'ll tell you what\'s true and what\'s only lovely."',
+      text: 'Ruben has a thermos of something hot and a stack of intercepts in piles, and he offers you a cup, as he offers everyone, and a pile, as he doesn\'t. "Help me sort," he says. "Slowly. I\'ll tell you what\'s true and what\'s only lovely."',
       choices: [
         {
           label: 'Help him sort',
           effects: { castLike: { who: 'ruben', n: 1, memory: 'You helped me sort the intercepts and didn\'t mind the stories.' }, learn: 2 },
-          result: 'You sort, and he talks, and by the end of the stack you have learned which dome is short of what, who is lying about it, and a good deal ' +
+          result: 'You sort, and he talks, and by the end of the stack you\'ve learned which dome is short of what, who\'s lying about it, and a good deal ' +
             'about how to listen to a lane.',
         },
         {
@@ -288,18 +288,18 @@ const HAND_EVENTS = [
             'and finds all three right. He moves the thermos from his pile to yours.',
         },
         {
-          label: '[Comms 3] Find the signal that is neither',
+          label: '[Comms 3] Find the signal that\'s neither',
           post: 'comms',
           skill: 3,
           effects: { castFlag: { who: 'ruben', flag: 'trusted' }, castLike: { who: 'ruben', n: 3, memory: 'You found the one in my stack that was neither lovely nor true.' }, learn: 3 },
-          result: 'Near the bottom of the stack there is a signal that is neither a rumor nor a story: a burst, repeated, with a pattern in the gaps. You ' +
+          result: 'Near the bottom of the stack there\'s a signal that\'s neither a rumor nor a story: a burst, repeated, with a pattern in the gaps. You ' +
             'hold it up. Ruben stops talking. He takes a key from his collar and unlocks the box under the console, and puts the originals in front of ' +
             'you.',
         },
         {
           label: 'Take the tea and go',
           effects: { castLike: { who: 'ruben', n: 0, memory: 'You took the tea and went.' } },
-          result: 'You take the cup, and thank him, and go. "Another time," Ruben says, cheerfully, and returns to his piles, humming. He is not the kind to hold it against you.',
+          result: 'You take the cup, and thank him, and go. "Another time," Ruben says, cheerfully, and returns to his piles, humming. He\'s not the kind to hold it against you.',
         },
       ],
     },
@@ -309,7 +309,7 @@ const HAND_EVENTS = [
     id: 'crew-bexa', group: 'crew', when: () => castKeys().includes('bexa'),
     data: {
       title: 'Bexa\'s List',
-      text: 'Bexa has a small brass tag on a string above the helm, and a notebook she keeps open on the console and does not like being looked at. Tonight she catches you looking, and turns it round instead of closing it. "It\'s a list," she says. "Ask me properly."',
+      text: 'Bexa has a small brass tag on a string above the helm, and a notebook she keeps open on the console and doesn\'t like being looked at. Tonight she catches you looking, and turns it round instead of closing it. "It\'s a list," she says. "Ask me properly."',
       choices: [
         {
           label: 'Ask about the first name',
@@ -330,7 +330,7 @@ const HAND_EVENTS = [
     id: 'crew-pax', group: 'crew', when: () => castKeys().includes('pax'),
     data: {
       title: 'Pax Checks the Coupling',
-      text: 'Pax is checking the coupling on the gun mount for the fifth time this watch. It is perfect. Pax knows it is perfect, and checks it anyway, jaw tight, and glances at you when the check is done.',
+      text: 'Pax is checking the coupling on the gun mount for the fifth time this watch. It\'s perfect. Pax knows it\'s perfect, and checks it anyway, jaw tight, and glances at you when the check is done.',
       choices: [
         {
           label: 'Check it with them',
@@ -343,7 +343,7 @@ const HAND_EVENTS = [
           skill: 2,
           effects: { castLike: { who: 'pax', n: 2, memory: 'You showed me the torque log, and it was the same every time.' }, learn: 2 },
           result: 'You pull the mount\'s torque log for the last six watches and put it in front of Pax. The coupling has read the same figure every time. Pax ' +
-            'reads the column down twice and closes the panel. They do not check it again that watch.',
+            'reads the column down twice and closes the panel. They don\'t check it again that watch.',
         },
         {
           label: '[Gunner 3] Ask them to check your mount',
@@ -351,11 +351,11 @@ const HAND_EVENTS = [
           skill: 3,
           effects: { castFlag: { who: 'pax', flag: 'trusted' }, castLike: { who: 'pax', n: 3, memory: 'You asked me to check your mount, and listened to what I found.' }, learn: 3 },
           result: 'You ask Pax to go over your own mount. Pax does it torque by torque, with the log open, and finds one fitting a quarter turn under. You ' +
-            'fix it together. Pax signs the log next to your initials. "Yours now," Pax says, and does not check the coupling again that ' +
+            'fix it together. Pax signs the log next to your initials. "Yours now," Pax says, and doesn\'t check the coupling again that ' +
             'watch.',
         },
         {
-          label: 'Tell them it is fine',
+          label: 'Tell them it\'s fine',
           effects: { castLike: { who: 'pax', n: 0, memory: 'You told me the coupling was fine.' } },
           result: '"I know it\'s fine," says Pax. "That\'s not the point." They go back to it, and you leave them to it.',
         },

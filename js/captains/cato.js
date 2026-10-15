@@ -11,20 +11,20 @@ const iceHands = () => G.state.crew.map(person).filter(c => c && c.role === 'ice
 const catoHoldPoints = backup => (roleHolder('medic') ? 1 : 0) + (G.state.armor > ship().armor * 0.6 ? 1 : 0) + (iceHands() >= 2 ? 1 : 0) + (backup ? 1 : 0);
 function inTheIceHold(backup) {
   const points = catoHoldPoints(backup), told = castRec('cato').flags.told, cap = hiredCaptain();
-  const outcome = castFate('cato', points >= 3 ? 'live' : points === 2 ? 'mark' : 'die', `Lost in the ice hold near ${system().name}.`, 'Left hand does not close properly.', 'xo');
+  const outcome = castFate('cato', points >= 3 ? 'live' : points === 2 ? 'mark' : 'die', `Lost in the ice hold near ${system().name}.`, 'Left hand doesn\'t close properly.', 'xo');
   const lead = backup ? 'You send an ice hand in with him. ' : '';
   if (outcome === 'die') {
     like(cap, -1, sceneSay('scene:memories', 'cato.lost.memory')); cap.mood = { kind: 'low', until: G.state.day + 30 };
-    return lead + ('He goes in first, as he said he would. The strap holds, and the pod does not, and for a moment the board shows nothing you can ' +
-        'read. You get the hatch open from your side. By then the hold is quiet. Captain Vance is at the hatch before you have finished. She watches the ' +
+    return lead + ('He goes in first, as he said he would. The strap holds, and the pod doesn\'t, and for a moment the board shows nothing you can ' +
+        'read. You get the hatch open from your side. By then the hold is quiet. Captain Vance is at the hatch before you\'ve finished. She watches the ' +
         'board until the last line stops, and then she closes the notebook. "Take him out," she says.')
-      + (told ? ' He asked you to find him if it went badly. It is the other way round now.' : '');
+      + (told ? ' He asked you to find him if it went badly. It\'s the other way round now.' : '');
   }
   castLike('cato', 2, sceneSay('scene:memories', 'cato.lived.memory'));
   if (outcome === 'mark') {
     cap.mood = { kind: 'low', until: G.state.day + 15 };
     return lead + ('He goes in first, and it goes wrong at the number two strap, and for a long minute the hold is nothing but ice and shouting. He ' +
-        'comes out carried, and the hand that held the strap does not close properly, and will not. The med kit is already open. He says, from the ' +
+        'comes out carried, and the hand that held the strap doesn\'t close properly, and won\'t. The med kit is already open. He says, from the ' +
         'deck, "Number two is lashed. So that\'s done."');
   }
   return lead + ('He goes in, and the pod is lashed, and the load stops. He comes out with ice in his beard and a cut across one knuckle, and sits ' +
@@ -37,7 +37,7 @@ CAST.cato = {
   traits: ['kind', 'generous'], wage: 65, xo: true, fragile: true,
   skills: { xo: 2, engineer: 1, pilot: 0, gunner: 1, slicer: 0 }, captain: { trade: 3, nerve: 3, thrift: 2 },
   ambition: 'Wants a share of a ship, someday, so the crew he came up with could work one deck again.',
-  bio: 'He came up through the hold, and he knows every crew member by name and by family. He keeps the watch bill, and covers for the crew where the captain\'s rules would not.',
+  bio: 'He came up through the hold, and he knows every crew member by name and by family. He keeps the watch bill, and covers for the crew where the captain\'s rules wouldn\'t.',
   story: {
     left: 'a ship sold out from under her crew, and a hold gang scattered across three ports', rel: 'mother', name: 'Samira',
     hope: 'a share of a ship, so the hold gang he came up with could work one deck again',
@@ -68,7 +68,7 @@ CAST.cato = {
   scenes: {
     intro: {
       title: 'The Watch Bill',
-      text: ('Cato Rahman finds you at the end of your first watch with a mug in each hand. He is a big man, and he moves slowly in the passages. ' +
+      text: ('Cato Rahman finds you at the end of your first watch with a mug in each hand. He\'s a big man, and he moves slowly in the passages. ' +
           '"Sit," he says. "You got the cold watch, and that was me, so if you hate it, say so. The cook has a boy at home, so the cook has the ' +
           'evenings. The medic is waiting on a letter, and I try to have the medic on when we dock. The rest of you get what\'s left. Tell me what ' +
           'you can\'t stand and I\'ll see what I can move. The captain counts every hour I move, mind. I move them anyway." He holds out one of the mugs.'),
@@ -76,19 +76,19 @@ CAST.cato = {
         {
           label: 'Tell him what you need',
           effects: { castLike: { who: 'cato', n: 2, memory: 'You told me what you needed, and I put it on the bill.' } },
-          result: ('You tell him you would rather have the middle watch than the cold one, and that you sleep badly after a hard burn. He writes it on ' +
+          result: ('You tell him you\'d rather have the middle watch than the cold one, and that you sleep badly after a hard burn. He writes it on ' +
               'the back of his hand with a stub of pencil. "Done," he says. "Hard burns, middle watch. Nobody has to know why."'),
         },
         {
-          label: 'Say you are fine',
+          label: 'Say you\'re fine',
           effects: { castLike: { who: 'cato', n: 1, memory: 'You said you were fine, and I left it there.' } },
-          result: 'You say you are fine. "All right," he says. He leaves the mug on the rail beside you, and the offer with it, and goes aft to see about somebody else\'s watch.',
+          result: 'You say you\'re fine. "All right," he says. He leaves the mug on the rail beside you, and the offer with it, and goes aft to see about somebody else\'s watch.',
         },
       ],
     },
     mid1: {
       days: 25, title: 'A Share of a Ship',
-      text: ('Cato is sitting on a cargo lashing with a notebook the size of a hand, the kind that goes in a shirt pocket. It is not the captain\'s; it has no ' +
+      text: ('Cato is sitting on a cargo lashing with a notebook the size of a hand, the kind that goes in a shirt pocket. It\'s not the captain\'s; it has no ' +
           'columns. "Twelve years in the hold," he says, "and the jar at home isn\'t enough for a share of anything. I look anyway, when I can\'t ' +
           'sleep." He turns it round so you can see: a ship\'s name crossed out, and another, and a third with a question mark. "I ' +
           'don\'t want to own her. I want a share, and a deck, and the same hold gang on it at the end. That\'s all." He puts the notebook away. "You ' +
@@ -97,11 +97,11 @@ CAST.cato = {
         {
           label: 'Ask which ship has the question mark',
           effects: { castLike: { who: 'cato', n: 2, memory: 'You asked about the ship with the question mark.' }, castFlag: { who: 'cato', flag: 'share' } },
-          result: ('He tells you, and it is a hull you have seen on the lanes: old, slow, honest. "Her owner wants out in two years," he says. "I\'ve ' +
-              'been watching her price like the weather." He talks about her for ten minutes without stopping, and when he is done the mug in his hand has gone cold.'),
+          result: ('He tells you, and it\'s a hull you\'ve seen on the lanes: old, slow, honest. "Her owner wants out in two years," he says. "I\'ve ' +
+              'been watching her price like the weather." He talks about her for ten minutes without stopping, and when he\'s done the mug in his hand has gone cold.'),
         },
         {
-          label: 'Say it is not stupid, but it is a long way off',
+          label: 'Say it\'s not stupid, but it\'s a long way off',
           effects: { castLike: { who: 'cato', n: 1, memory: 'You said it wasn\'t stupid, but a long way off.' } },
           result: '"It is," he says. "It\'s a long way off every day, and then it\'s one day nearer." He puts a hand on the lashing.',
         },
@@ -109,28 +109,28 @@ CAST.cato = {
     },
     mid2: {
       days: 40, title: 'Two Orders',
-      text: ('It is the middle of the cold watch, and you have two orders for it. Captain Vance\'s came first, on paper, in pencil: the watch holds ' +
-          'the deck until the cargo has been counted twice, no relief. Cato\'s came a minute ago, aloud, in the passage: stand the cold watch down, he ' +
-          'will cover it, they have had four hours\' sleep in two days. Both are somewhere aft of you, not looking at each ' +
+      text: ('It\'s the middle of the cold watch, and you have two orders for it. Captain Vance\'s came first, on paper, in pencil: the watch holds ' +
+          'the deck until the cargo has been counted twice, no relief. Cato\'s came a minute ago, aloud, in the passage: stand the cold watch down, he\'ll ' +
+          'cover it, they\'ve had four hours\' sleep in two days. Both are somewhere aft of you, not looking at each ' +
           'other, and neither will tell you what the other said.'),
       choices: [
         {
           label: 'Hold the deck, as the captain wrote it',
           effects: { castLike: { who: 'cato', n: -1, memory: 'You held the deck against my order.' }, captainLike: { n: 2, memory: 'You held the deck as I wrote it.' } },
-          result: 'You hold the deck. The count comes out right the second time and wrong by one crate the first. Captain Vance writes it in the notebook and does not look up. Cato says nothing at all, and takes the cold watch himself the next night, without being asked.',
+          result: 'You hold the deck. The count comes out right the second time and wrong by one crate the first. Captain Vance writes it in the notebook and doesn\'t look up. Cato says nothing at all, and takes the cold watch himself the next night, without being asked.',
         },
         {
           label: 'Stand the watch down, as Cato said',
           effects: { castLike: { who: 'cato', n: 2, memory: 'You stood the watch down on my word.' }, captainLike: { n: -1, memory: 'You stood the watch down against my order.' } },
-          result: ('You stand them down. Cato covers the watch. The count is not done until morning, and Captain Vance finds the gap in it, and finds ' +
-              'you. "Whose order?" she says. You tell her. "I see," she says, and writes something down. Cato, passing in the passage, does not look ' +
+          result: ('You stand them down. Cato covers the watch. The count isn\'t done until morning, and Captain Vance finds the gap in it, and finds ' +
+              'you. "Whose order?" she says. You tell her. "I see," she says, and writes something down. Cato, passing in the passage, doesn\'t look ' +
               'at either of you, and puts a hand on the bulkhead for a moment as he goes.'),
         },
       ],
     },
     late: {
       days: 55, title: 'What Cato Knows', flag: 'secretKnown',
-      text: ('Cato has the watch bill open on the galley table, and he is not reading it. "There\'s nothing on it past the twenty-eighth," he says. ' +
+      text: ('Cato has the watch bill open on the galley table, and he\'s not reading it. "There\'s nothing on it past the twenty-eighth," he says. ' +
           '"I haven\'t filled it in, because I don\'t know that the same people will be aboard. The captain keeps the books where I can see them, and ' +
           'I\'ve known about the bank since the spring. If she loses the ship, the hold gang goes three ways before the month is out. I watched that ' +
           'happen once, to a different gang." He rubs his face. "I\'m not asking you for anything. If it goes badly, I\'d like you somewhere I ' +
@@ -139,10 +139,10 @@ CAST.cato = {
         {
           label: 'Ask him to tell you if it goes badly',
           effects: { castLike: { who: 'cato', n: 2, memory: 'You asked me to tell you if it went badly.' }, castFlag: { who: 'cato', flag: 'told' } },
-          result: 'He writes it in pencil at the foot of the bill, where the next person to read it will see. "I will," he says. "It\'s something, to have somebody to tell."',
+          result: 'He writes it in pencil at the foot of the bill, where the next person to read it\'ll see. "I will," he says. "It\'s something, to have somebody to tell."',
         },
         {
-          label: 'Tell him it is not yours to carry',
+          label: 'Tell him it\'s not yours to carry',
           effects: { castLike: { who: 'cato', n: 1, memory: 'You said it wasn\'t yours to carry.' } },
           result: '"No," he says. "It\'s not." He squares the watch bill on the table. "I wanted somebody to hear it said, that\'s all. It\'s a lot to carry in the hold."',
         },
@@ -167,19 +167,19 @@ CAST.cato = {
         const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6, hands = iceHands();
         return ('The alarm is a flat two-tone from the hold, and the board shows the number two ice pod with a seal gone and the load moving. Cato is ' +
             'already at the hatch with a lashing strap over one shoulder. "I know where the load goes," he says. "It\'s my hold. Give me ten minutes." ' +
-            'Ice does not move quickly, but it does not stop, either, and the pod it is leaning on is not rated for it.')
+            'Ice doesn\'t move quickly, but it doesn\'t stop, either, and the pod it\'s leaning on isn\'t rated for it.')
           + (low ? ' The hull has taken a beating, and a bad hull is a bad place for a load to shift.' : ' The hull is sound.')
-          + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There is nobody aboard who can do more than a field dressing, and he knows it.')
-          + (hands >= 2 ? ' Both ice hands are suited and waiting.' : ' There are not enough hands on the ice for a load like this.')
+          + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There\'s nobody aboard who can do more than a field dressing, and he knows it.')
+          + (hands >= 2 ? ' Both ice hands are suited and waiting.' : ' There aren\'t enough hands on the ice for a load like this.')
           + ' He waits for your answer, and has already started on the strap.';
       },
       choices: [
         { label: 'Let him go in', run: () => inTheIceHold(false) },
-        { label: 'Send an ice hand in with him', ...gated([() => iceHands() >= 1, () => 'There is no ice hand to send.']), run: () => inTheIceHold(true) },
+        { label: 'Send an ice hand in with him', ...gated([() => iceHands() >= 1, () => 'There\'s no ice hand to send.']), run: () => inTheIceHold(true) },
         {
           label: 'Seal the hold and let the ice go',
           effects: { castFlag: { who: 'cato', flag: 'benched' }, castLike: { who: 'cato', n: -3, memory: 'You sealed the hold on me.' } },
-          result: 'You tell him no, and shut the hatch. The ice goes where ice goes, and the pod will not be the same. Cato stands at the hatch with the strap in his hands and says nothing until the lock indicator goes green. "It\'s your call," he says.',
+          result: 'You tell him no, and shut the hatch. The ice goes where ice goes, and the pod won\'t be the same. Cato stands at the hatch with the strap in his hands and says nothing until the lock indicator goes green. "It\'s your call," he says.',
         },
       ],
     },
@@ -203,10 +203,10 @@ CAST.cato.round = () => {
         `a complaint, and then there's a conversation."`),
     (`Two doors down, he knocks on the frame of the medical bay without going in. "${medic}. This is the one I said. ${medic} keeps the kit and the ` +
         `log, and I'll tell you what I tell everybody, which is come in when you're hurt, not when it's bad. I once knew a man who ` +
-        `walked on a cracked rib for a week to save the fuss." ${medic} says something to him that you do not catch, and he laughs.`),
+        `walked on a cracked rib for a week to save the fuss." ${medic} says something to him that you don't catch, and he laughs.`),
     (`In the hold he slows down, and his voice drops, the way it does when he talks about the place he came up. "${qm} has the count. ` +
         `Everything aboard, twice. If a number looks off to you, ask ${qm} before you go to the captain, because it has already been found and it's ` +
-        `sitting on a list somewhere. And these two," he says, nodding at ${iceA} and ${iceB}, who are lashing something that does not look loose, ` +
+        `sitting on a list somewhere. And these two," he says, nodding at ${iceA} and ${iceB}, who are lashing something that doesn't look loose, ` +
         `"they'll ask you to hold a strap. Just hold it. It's not a test. I mean, it's a bit."`),
     (`The engine room is warm and the passage floor hums under your boots. "${eng}'s plant. I wouldn't touch anything with a tag on it, and ` +
         `everything has a tag. If ${eng} hands you a spanner, though, you can take that how you like. I've been aboard four years and I've had it ` +

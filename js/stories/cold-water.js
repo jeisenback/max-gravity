@@ -31,7 +31,7 @@ Mods.register({
           effects: { delay: 10, story: { stage: 1 }, storyLog: "Took a sealed tally book from the surveyed hulk Persephone's Due." },
           result: ('You match velocity and go across in suits, through the ruin of her cargo locks, past a crew mess with a half-eaten meal frozen to ' +
               'the table. The book comes out of the locker without a fight, light and cold, and heavier in the hand than it ought to be. Back ' +
-              'aboard you turn it over under the lamp. It is a pump ledger, with the Ceres Water Authority stamp on the spine, and the seal across ' +
+              'aboard you turn it over under the lamp. It\'s a pump ledger, with the Ceres Water Authority stamp on the spine, and the seal across ' +
               'the cover is a corporate one, from a firm called Aquilon Hydrologics. Someone will want this back.') },
         { label: '[{crew}] Read the seal on the spot', when: { crew: 'slicer' },
           effects: { delay: 15, story: { stage: 1, peeked: true }, storyLog: "Took a sealed tally book from the surveyed hulk Persephone's Due." },
@@ -48,8 +48,8 @@ Mods.register({
     scene({
       id: 'cw-voight', where: 'port', when: at(1),
       title: 'A Man From Aquilon',
-      text: ('A man in an immaculate gray suit is waiting at your berth, which should not be possible: it is a private dock, and the door was locked. ' +
-          'He is tall and unhurried, with a silver pin of a water drop in his lapel. He holds out a hand, and, when you do not take ' +
+      text: ('A man in an immaculate gray suit is waiting at your berth, which shouldn\'t be possible: it\'s a private dock, and the door was locked. ' +
+          'He\'s tall and unhurried, with a silver pin of a water drop in his lapel. He holds out a hand, and, when you don\'t take ' +
           'it, lowers it. "Anselm Voight, Aquilon Hydrologics, asset recovery. You\'ve recovered some company property, ' +
           'captain: a tally book from the Persephone\'s Due. The audit board has no claim on it, having tagged the hull as surveyed and left it to rot, ' +
           'and we\'d like it back. We\'re happy to pay a generous finder\'s fee. Eight thousand credits, and no questions." He smiles before he says ' +
@@ -65,9 +65,9 @@ Mods.register({
               'Voight pays, smiles, and leaves, and the dock is very quiet after he goes. "He\'ll check it," {crew} says at last, sliding ' +
               'the copy into a pocket. "And he\'ll know. Men like that always know." Neither of you says anything more.') },
         { label: '"It\'s not for sale."', effects: { story: { stage: 2 }, storyLog: 'Refused to hand the tally book to Anselm Voight of Aquilon Hydrologics.' },
-          result: ('Voight\'s smile does not move. "Everything\'s for sale, captain," ' +
+          result: ('Voight\'s smile doesn\'t move. "Everything\'s for sale, captain," ' +
               'he says. "We\'ll talk again." He leaves, without hurry, and without another word. Your dock handler, who ' +
-              'watched the whole thing from the corner, will not meet your eyes for the rest of the day, and, that night, someone slips a note under ' +
+              'watched the whole thing from the corner, won\'t meet your eyes for the rest of the day, and, that night, someone slips a note under ' +
               'your hatch that says only: BE CAREFUL.') },
       ],
     });
@@ -76,7 +76,7 @@ Mods.register({
       id: 'cw-mira-contact', where: 'port', when: at(3),
       title: 'Mira Castellane',
       text: ('A wiry woman in a faded Ceres Water Authority jacket is waiting in the shadow of your airlock, with a battered duffel at her ' +
-          'feet and the wary, watchful stillness of someone who has not slept properly in weeks. Her hands are cracked and stained blue at the ' +
+          'feet and the wary, watchful stillness of someone who hasn\'t slept properly in weeks. Her hands are cracked and stained blue at the ' +
           'fingertips, the way pump engineers\' hands get. "You have the Persephone\'s book," she says, low and fast. "Aquilon has people on every ' +
           'dock looking for you. The seal is a corporate lock, and the only one who can open it without ruining the leaves is a Water Authority ' +
           'clerk, on Europa. I can get you to her. Take me there and I\'ll show you why Ceres is running dry." Her eyes flick to the corridor ' +
@@ -84,14 +84,14 @@ Mods.register({
       choices: [
         { label: 'Take her to Europa (needs a free berth)', when: { berths: 1 },
           effects: { story: { stage: 4 }, do: ['storyPassenger', 'Mira Castellane', 1, 'jupiter', 'Europa', 3000, 'mira-europa'], storyLog: 'Agreed to carry Mira Castellane, a former Ceres water engineer, to Europa.' },
-          result: ('She drops her battered duffel in your spare berth and does not unpack. It sits there, zipped, like a bag ready to run. "Europa. ' +
+          result: ('She drops her battered duffel in your spare berth and doesn\'t unpack. It sits there, zipped, like a bag ready to run. "Europa. ' +
               'Jupiter. As fast as you like," she says, and then, awkwardly, as though the word were a little rusty from lack of use: "Thank you." She ' +
-              'spends the first hour at the viewport, watching the dock fall away, and only when it is gone does she let her shoulders down.') },
+              'spends the first hour at the viewport, watching the dock fall away, and only when it\'s gone does she let her shoulders down.') },
         {
           label: '"Not yet."',
           result: ('She nods, as if she had expected it, and presses a contact chip into your hand, warm from her pocket. "Don\'t wait too long. They ' +
-              'won\'t." She is gone before you can answer, with a swift, silent grace, into the crowd of the dock, and, for a moment, you can still ' +
-              'see the faded blue of her jacket. She will find you again at your next port.')
+              'won\'t." She\'s gone before you can answer, with a swift, silent grace, into the crowd of the dock, and, for a moment, you can still ' +
+              'see the faded blue of her jacket. She\'ll find you again at your next port.')
         },
       ],
     });
@@ -100,7 +100,7 @@ Mods.register({
       id: 'cw-mira-talk', where: 'transit', priority: 10, when: { aboard: 'mira-europa' },
       title: "Mira's Story",
       text: ('Somewhere past the flip, in the long dead hours when the ship hums to itself, Mira finally talks. She sits on a crate in the galley ' +
-          'with a cold mug between her palms, and does not look up. Twelve years a cistern engineer on Ceres, she says. She knew every valve in Sector ' +
+          'with a cold mug between her palms, and doesn\'t look up. Twelve years a cistern engineer on Ceres, she says. She knew every valve in Sector ' +
           'Nine by touch. Three months ago the pumps in her sector started failing, one after another, always right after an Aquilon Hydrologics ' +
           'maintenance visit. When she filed a report, she lost her job. When she kept asking questions, someone tried to space her. She says it all ' +
           'in a flat, even voice, like a woman reading aloud from someone else\'s file.'),
@@ -120,7 +120,7 @@ Mods.register({
               'Mira stares back, and the mug slips slightly in her hands. "Okafor. You fixed the Nine-B recycler the year it froze." For a moment ' +
               'neither of them moves. Then they sit, side by side on the crates, and they talk late into the night about pumps, and people they both ' +
               'knew, and a bakery on Ring Three that burned down. You hear Mira laugh, once, a rusty, startled sound. When Rosa comes back to the ' +
-              'cockpit, at last, she is quiet, and her eyes are red. "Everything she says is true, captain," she says. "I was there when the pumps ' +
+              'cockpit, at last, she\'s quiet, and her eyes are red. "Everything she says is true, captain," she says. "I was there when the pumps ' +
               'started failing. I just never knew why."') },
       ],
     });
@@ -129,10 +129,10 @@ Mods.register({
       id: 'cw-europa', where: 'port', when: at(4, 'Europa'),
       title: 'What the Book Says',
       text: ('In a rented room above the Europa ice docks, with the ice groaning beneath the floor and the smell of cold metal in the air, ' +
-          'a Water Authority clerk lifts the seal off the tally book with a warm blade, and Mira turns the first leaf. It is all there, in a dozen ' +
+          'a Water Authority clerk lifts the seal off the tally book with a warm blade, and Mira turns the first leaf. It\'s all there, in a dozen ' +
           'hands, ruled in columns. Aquilon crews disabling Ceres recyclers on a schedule. Shell companies buying up ice claims on Europa and ' +
-          'Enceladus at rock-bottom prices. Water futures bought in Hermes Foundry\'s name the day before every "failure". Mira reads, and does ' +
-          'not speak, and her lips go white. "Someone\'s starving Ceres of water to get rich," Mira says. "And it\'s in your hands."'),
+          'Enceladus at rock-bottom prices. Water futures bought in Hermes Foundry\'s name the day before every "failure". Mira reads, and doesn\'t' +
+          ' speak, and her lips go white. "Someone\'s starving Ceres of water to get rich," Mira says. "And it\'s in your hands."'),
       choices: [
         { label: '"What happens now?"', effects: { story: { stage: 5 }, storyLog: 'On Europa, Mira opened the tally book: Aquilon Hydrologics and Hermes Foundry are sabotaging Ceres\'s water supply.' },
           result: ('Mira sits down on the edge of the bed. "Now ' +
@@ -148,18 +148,18 @@ Mods.register({
     scene({
       id: 'cw-contact-ceres', where: 'port', when: at(5, 'Ceres Station'),
       title: 'The League Council',
-      text: ('Councillor Ama Tembo meets you in a pump room, because it is the only room on Ceres the council trusts: every wall a dripping tangle of ' +
-          'pipe, every surface cold and damp, and the low steady thrum of the pumps in the floor. She is a broad, weathered woman in a League ' +
+      text: ('Councillor Ama Tembo meets you in a pump room, because it\'s the only room on Ceres the council trusts: every wall a dripping tangle of ' +
+          'pipe, every surface cold and damp, and the low steady thrum of the pumps in the floor. She\'s a broad, weathered woman in a League ' +
           'jacket, with gray braids and a voice that carries. She reads the book in silence, one finger moving down the screen. When she reaches the ' +
           'end, she sits down heavily on a crate. "Three months of rationing," she says. "Children on half water. Old people who didn\'t make it. And ' +
           'it was a business plan." She looks up, and her eyes are terrible. "Give this to the League and we\'ll fight with it. But we need ' +
           'people to believe the ration is breaking first."'),
       choices: [
-        { label: ['Give the proof to the League', { when: { standingBelow: { 'Charter League': -14 } }, text: '(the League does not trust you)' }],
+        { label: ['Give the proof to the League', { when: { standingBelow: { 'Charter League': -14 } }, text: '(the League doesn\'t trust you)' }],
           when: { standing: { 'Charter League': -14 } },
           effects: { story: { stage: 'belt1' }, storyLog: 'Gave the proof to Councillor Ama Tembo of the Charter League.' },
           result: ('"Then bring us water," Tembo says. "Twenty tons, and let the whole station watch it come in. After that, we move." She puts her ' +
-              'hand flat on the pump housing, as though on the shoulder of a friend, and for a while she does not speak. When she does, it is quieter. ' +
+              'hand flat on the pump housing, as though on the shoulder of a friend, and for a while she doesn\'t speak. When she does, it\'s quieter. ' +
               '"My daughter is on the rationing list. She\'s eight. I\'m going to make sure this matters."') },
         { label: 'Not yet', result: '"Don\'t wait too long, captain," Tembo says, and closes her hand slowly around the edge of the pump housing. "Ceres can\'t." The pumps thrum on beneath your feet, steady, patient, and every drop that passes through them is counted.' },
       ],
@@ -169,8 +169,8 @@ Mods.register({
       id: 'cw-contact-mars', where: 'port', when: at(5, 'Mars'),
       title: 'The Fleet Auditor',
       text: [{ when: { standing: { 'Dome Concord': 15 } },
-        text: ('Commander Yelena Ueda, fleet auditor of the Dome Concord Fleet, meets you in a room with no windows, no clock, and one chair too few. She is ' +
-            'short, precise, and impeccably groomed, with the flat, attentive gaze of someone who has spent her life listening for what people do not ' +
+        text: ('Commander Yelena Ueda, fleet auditor of the Dome Concord Fleet, meets you in a room with no windows, no clock, and one chair too few. She\'s ' +
+            'short, precise, and impeccably groomed, with the flat, attentive gaze of someone who has spent her life listening for what people don\'t ' +
             'say. A single lamp burns on the desk. She reads the book without any visible reaction at all. "Headlines fade," she says at last. ' +
             '"Leverage lasts. Give Mars this, and we\'ll make Earth pay for every ton of water it let Aquilon steal. But first I want to know who ' +
             'else is on Aquilon\'s payroll. That\'s the difference between a scandal and a weapon."'),
@@ -180,7 +180,7 @@ Mods.register({
           effects: { story: { stage: 'mars1' }, storyLog: 'Gave the proof to Commander Yelena Ueda, fleet auditor of the Dome Concord Fleet.' },
           result: ('Ueda slides a sliver of hardware across the table, no bigger than a thumbnail, and cold as a coin. "A tracer. Get it into Hermes ' +
               'Foundry\'s comm net, on Mercury. It\'ll listen for a week. Then come to Phobos Yards and we\'ll see who has been paying whom." She ' +
-              'does not smile. But as you turn to go, she says, to the wall, in a voice so soft you almost miss it: "Thank you. It matters more than ' +
+              'doesn\'t smile. But as you turn to go, she says, to the wall, in a voice so soft you almost miss it: "Thank you. It matters more than ' +
               'you know."') },
         { label: 'Not yet', result: '"The offer stands, captain," Ueda says, without looking up from her desk, and her pen resumes its slow, exact scratching. "For now. But evidence has a shelf life, and so, I\'m afraid, does patience."' },
       ],
@@ -190,20 +190,20 @@ Mods.register({
       id: 'cw-contact-luna', where: 'port', when: at(5, 'Luna'),
       title: 'Compact Intelligence',
       text: ('Director Samuel Achebe of Compact intelligence receives you in an office overlooking the Luna shipyards, with the gray plain spread ' +
-          'below in the harsh, clean light, and a slow parade of hulls in the drydocks. He is a tall, courtly man in his sixties, with a soft, warm ' +
+          'below in the harsh, clean light, and a slow parade of hulls in the drydocks. He\'s a tall, courtly man in his sixties, with a soft, warm ' +
           'baritone and a way of looking at you as though you were the only person in the room. He reads the book with evident distress. "You\'ve ' +
           'done Earth a great service, captain," he says. "This needs careful handling. A panic on Ceres helps no one." He folds his hands. "We\'ll ' +
           'also need Ms. Castellane. For her own protection, of course. You understand."'),
       choices: [
-        { label: ['Give the proof to the Compact', { when: { standingBelow: { 'Arcology Compact': -14 } }, text: '(the Compact does not trust you)' }],
+        { label: ['Give the proof to the Compact', { when: { standingBelow: { 'Arcology Compact': -14 } }, text: '(the Compact doesn\'t trust you)' }],
           when: { standing: { 'Arcology Compact': -14 } },
           effects: { story: { stage: 'earth1' }, storyLog: 'Gave the proof to Director Samuel Achebe of Compact intelligence.' },
           result: ('"Bring her from Europa," Achebe says, warmly, without looking up. "Discreetly. She has been through a great deal, and we shouldn\'t' +
-              ' add to it." He is already reading the book, scrolling down through the damning lines with a small, thoughtful frown. You get the ' +
+              ' add to it." He\'s already reading the book, scrolling down through the damning lines with a small, thoughtful frown. You get the ' +
               'odd feeling of being politely dismissed by a man who has already forgotten you were there.') },
         {
           label: 'Not yet',
-          result: '"Of course," Achebe says, with grace. "Take your time, captain. Within reason." He walks you to the door, one hand light on your shoulder, and the warmth of his smile does not quite reach his eyes. "But I wouldn\'t wait long. Rumors have a way of outrunning the truth."'
+          result: '"Of course," Achebe says, with grace. "Take your time, captain. Within reason." He walks you to the door, one hand light on your shoulder, and the warmth of his smile doesn\'t quite reach his eyes. "But I wouldn\'t wait long. Rumors have a way of outrunning the truth."'
         },
       ],
     });
@@ -214,12 +214,12 @@ Mods.register({
       title: 'Anselm Voight',
       text: hasProof
         ? ('Voight receives you in an office at Hermes Foundry with a view of the solar furnaces, which glow like the inside of a forge through ' +
-            'tinted glass. He is as immaculate as ever, without a hair out of place, and his desk holds a single glass of water, untouched, that ' +
+            'tinted glass. He\'s as immaculate as ever, without a hair out of place, and his desk holds a single glass of water, untouched, that ' +
             'catches the light. "You came to me," he says, and smiles. "Sensible. Twenty-five thousand credits for the book and every copy, and I can ' +
             'offer steady work besides. Aquilon rewards discretion."')
         : ('Voight receives you in an office at Hermes Foundry with a view of the solar furnaces, which glow like the inside of a forge through ' +
-            'tinted glass. He is as immaculate as ever, and his desk holds a single glass of water, untouched, that catches the light. "Captain," he ' +
-            'says, and there is real warmth in it. "You made the right choice about that book. Now I have a job for someone discreet."'),
+            'tinted glass. He\'s as immaculate as ever, and his desk holds a single glass of water, untouched, that catches the light. "Captain," he ' +
+            'says, and there\'s real warmth in it. "You made the right choice about that book. Now I have a job for someone discreet."'),
       choices: [
         { label: hasProof ? 'Sell the proof and take the job (+25,000 cr; needs 2 free berths)' : 'Take the job (needs 2 free berths)', when: { berths: 2 },
           effects: { credits: hasProof ? 25000 : 0, story: { stage: 'aq1' }, do: ['storyPassenger', 'two Aquilon technicians', 2, 'ceres', 'Ceres Station', 2000, 'techs'],
@@ -227,7 +227,7 @@ Mods.register({
           result: ('"Two of our maintenance technicians need passage to Ceres Station. Quietly." Voight smiles, and slides a slim folder across the ' +
               'desk. "They\'ll pay their own fare. They\'re very professional. You\'ll hardly notice they\'re there." He raises the glass of water, ' +
               'looks at it for a moment, and, very slowly, drinks. "Safe journey, captain."') },
-        { label: 'Not yet', result: '"Aquilon is patient, captain," Voight says, setting down the glass. "Up to a point." He says it warmly, like a man wishing you a good evening, and you are halfway down the corridor before you understand what he meant.' },
+        { label: 'Not yet', result: '"Aquilon is patient, captain," Voight says, setting down the glass. "Up to a point." He says it warmly, like a man wishing you a good evening, and you\'re halfway down the corridor before you understand what he meant.' },
       ],
     });
     voightJob('cw-voight-proof', 5, true);
@@ -245,8 +245,8 @@ Mods.register({
       choices: [{ label: 'Unload the water',
         effects: { cargo: { water: -20 }, credits: 6000, rep: { 'Charter League': 10 }, story: { stage: 'belt2' }, storyLog: 'Delivered 20t of water to Ceres Station for the League.' },
         result: ('The last drum rolls down the ramp, and the whole concourse erupts. The council pays 6,000 cr, and the crowd cheers your ship\'s ' +
-            'name, again and again, until it is a wave. A small girl presses a paper cup into your hand, half full, and looks at you with grave, wide ' +
-            'eyes. Tembo does not smile. "Aquilon will have seen that too," she says, low. "Get to Pallas Refinery. The refinery crews listen to ' +
+            'name, again and again, until it\'s a wave. A small girl presses a paper cup into your hand, half full, and looks at you with grave, wide ' +
+            'eyes. Tembo doesn\'t smile. "Aquilon will have seen that too," she says, low. "Get to Pallas Refinery. The refinery crews listen to ' +
             'people who deliver."') }],
     });
 
@@ -259,7 +259,7 @@ Mods.register({
         {
           when: { crew: 'rosa' },
           text: 'Before you can start, Rosa steps up beside you, wiping her hands on a rag. Half of them seem to know her, and a murmur goes through the crowd like wind through a field.',
-          else: 'They look tired, thirsty, and in no mood for speeches. A few of them have brought their children. Nobody is smiling.'
+          else: 'They look tired, thirsty, and in no mood for speeches. A few of them have brought their children. Nobody\'s smiling.'
         }],
       choices: [{ label: 'Tell them what the book says',
         effects: { rep: { 'Charter League': 10 }, credits: 4000, do: ['endAct2', 'belt', 'Rallied the Pallas refinery crews. The Belt went on strike and the League voided Aquilon\'s ice claims.'] },
@@ -276,7 +276,7 @@ Mods.register({
     scene({
       id: 'cw-tracer', where: 'port', when: at('mars1', 'Hermes Foundry'),
       title: 'The Tracer',
-      text: ('Hermes Foundry\'s comm hub sits behind two security checkpoints and a very bored dock technician, who is eating noodles out of a foam ' +
+      text: ('Hermes Foundry\'s comm hub sits behind two security checkpoints and a very bored dock technician, who\'s eating noodles out of a foam ' +
           'cup and has, by the look of him, been on shift for eleven hours. The hub itself is a squat gray building at the base of a radiator fin, ' +
           'ringed with warning signs, its antennae glowing faintly in the furnace light. In your pocket, Ueda\'s tracer feels heavier than it should.'),
       choices: [
@@ -289,8 +289,8 @@ Mods.register({
         { label: 'Bribe the dock technician (3,000 cr)', when: { credits: 3000 },
           effects: { credits: -3000, story: { stage: 'mars2' }, storyLog: 'Bribed a Hermes Foundry technician to plant Commander Ueda\'s tracer.' },
           result: ('The technician looks at the credits, and at the tracer, and at you, and you watch him decide, very slowly, not to care. He ' +
-              'pockets both, and goes back to his noodles. "I didn\'t see you," he says. "I\'ve never seen anyone." By the time you are back aboard, ' +
-              'Ueda\'s channel blinks: "Signal confirmed." It is the shortest message she has ever sent, and the most relieved.') },
+              'pockets both, and goes back to his noodles. "I didn\'t see you," he says. "I\'ve never seen anyone." By the time you\'re back aboard, ' +
+              'Ueda\'s channel blinks: "Signal confirmed." It\'s the shortest message she has ever sent, and the most relieved.') },
         { label: 'Do it yourself', effects: { do: 'tracerAttempt' } },
       ],
     });
@@ -300,8 +300,8 @@ Mods.register({
       title: 'Leverage',
       text: [('Commander Ueda spreads the tracer\'s take across a table at Phobos Yards, sheet after sheet, in a room lit only by a single low lamp. ' +
           'Hermes Foundry executives bankrolling Aquilon. Three Arcology Compact trade officials on the payroll. Wire transfers with Martian banks, in ' +
-          'the names of dead men. She reads aloud, and her voice, for once, is not entirely flat. "Now," she says, "Earth will listen."'),
-        { when: { crew: 'dima' }, text: 'She glances at Dima, who is leaning in the doorway with his arms folded. "Sokolov. I heard you were flying freighters now. Good." Dima grins, for a moment looking twenty years younger, and says nothing, which, for Dima, is a kind of speech.' }],
+          'the names of dead men. She reads aloud, and her voice, for once, isn\'t entirely flat. "Now," she says, "Earth will listen."'),
+        { when: { crew: 'dima' }, text: 'She glances at Dima, who\'s leaning in the doorway with his arms folded. "Sokolov. I heard you were flying freighters now. Good." Dima grins, for a moment looking twenty years younger, and says nothing, which, for Dima, is a kind of speech.' }],
       choices: [{ label: 'Take the Navy\'s thanks',
         effects: { credits: 15000, rep: { 'Dome Concord': 15 }, do: ['endAct2', 'mars', 'The Dome Concord Fleet auditor used the proof as leverage over Earth.'] },
         result: ('The Navy pays 15,000 cr and quietly marks your record, in a small, careful hand that you never see. Mars leaks just enough to make ' +
@@ -316,18 +316,18 @@ Mods.register({
       id: 'cw-mira-doubt', where: 'port', when: at('earth1', 'Europa'),
       title: 'Mira Castellane',
       text: ('Mira is waiting at the Europa ice docks, in the same faded jacket, hands deep in her pockets, with the cold breath of the ice hanging ' +
-          'in the air between you. Her face is very still. "Achebe sent you," she says. It is not a question. She looks past you at the long white ' +
+          'in the air between you. Her face is very still. "Achebe sent you," she says. It\'s not a question. She looks past you at the long white ' +
           'hoses lining the dock, frozen into glittering fringes. "You know Compact intelligence buries things for a living. I\'d like very much ' +
           'for you to tell me I\'m wrong."'),
       choices: [
         { label: '"Come to Luna. You\'ll be safe." (needs a free berth)', when: { berths: 1 },
           effects: { story: { stage: 'earth2' }, do: ['storyPassenger', 'Mira Castellane', 1, 'earth', 'Luna', 0, 'mira-luna'] },
-          result: 'She looks at you for a long time, and something in her face slowly closes, like a hand. Then she picks up her duffel, without a word, and follows you up the ramp. She does not look back at the ice. You cannot tell if what you feel is trust, or its opposite.' },
+          result: 'She looks at you for a long time, and something in her face slowly closes, like a hand. Then she picks up her duffel, without a word, and follows you up the ramp. She doesn\'t look back at the ice. You can\'t tell if what you feel is trust, or its opposite.' },
         { label: '"Then let\'s take it to Ceres instead." (needs a free berth)', when: { berths: 1 },
           effects: { story: { stage: 'belt1' }, rep: { 'Arcology Compact': -10 }, do: ['storyPassenger', 'Mira Castellane', 1, 'ceres', 'Ceres Station', 0, 'mira-ceres'],
             storyLog: 'Turned away from Compact intelligence and took Mira to the Charter League instead.' },
           result: ('"Now you\'re talking," Mira says, and, to your surprise, laughs, a sudden bright startled sound, and scrubs her eyes with the ' +
-              'heel of her hand. Achebe will not be pleased. Councillor Tembo will want water on Ceres: 20 tons of it. Mira picks up her duffel with a ' +
+              'heel of her hand. Achebe won\'t be pleased. Councillor Tembo will want water on Ceres: 20 tons of it. Mira picks up her duffel with a ' +
               'little more spring than before. "I\'ve been waiting for someone to say that for three months."') },
       ],
     });
@@ -335,21 +335,21 @@ Mods.register({
     M.addStorylet({
       id: 'cw-second-thoughts', where: 'transit', priority: 10, when: { aboard: 'mira-luna' },
       title: 'Second Thoughts',
-      text: ('Mira watches Luna grow in the forward screen, gray and enormous, ringed with the pinpricks of a thousand drydock lights. She has not ' +
+      text: ('Mira watches Luna grow in the forward screen, gray and enormous, ringed with the pinpricks of a thousand drydock lights. She hasn\'t ' +
           'said a word in hours, and when she speaks, at last, her voice is dry and quiet. "You know what they\'ll do with it. Achebe will lock the ' +
           'proof in a vault and me in a nice quiet room, and Ceres will keep running dry. I\'ve seen it before, in a different coat." She turns to ' +
-          'you, and, for the first time, she is pleading. "Drop me at Ceres Station instead. Let the League have it. Please."'),
+          'you, and, for the first time, she\'s pleading. "Drop me at Ceres Station instead. Let the League have it. Please."'),
       choices: [
         {
           label: '"Trust me. Achebe gave his word."',
           effects: { storyAdd: { miraTrust: -1 } },
-          result: 'She says nothing for the rest of the burn. She sits at the viewport with her arms wrapped around herself, watching Luna grow, and every so often she touches the small metal capsule at her throat, as if to make sure it is still there. When you look at her, she does not look back.'
+          result: 'She says nothing for the rest of the burn. She sits at the viewport with her arms wrapped around herself, watching Luna grow, and every so often she touches the small metal capsule at her throat, as if to make sure it\'s still there. When you look at her, she doesn\'t look back.'
         },
         { label: '"All right. Ceres it is."',
           effects: { passenger: { who: 'mira-luna', set: { destSystem: 'ceres', destPlanet: 'Ceres Station', title: 'Carry Mira Castellane (1) to Ceres Station' } },
             story: { stage: 'belt1' }, storyAdd: { miraTrust: 2 }, rep: { 'Arcology Compact': -10 }, storyLog: 'Turned away from Compact intelligence and took Mira to the Charter League instead.' },
           result: ('She closes her eyes, and a single tear slides down her cheek and is gone. "Thank you," she whispers. You replot for Ceres, and ' +
-              'the ship swings around with a long, low groan of the frame. Achebe will not be pleased. (Your burn continues to its current ' +
+              'the ship swings around with a long, low groan of the frame. Achebe won\'t be pleased. (Your burn continues to its current ' +
               'destination; take Mira on to Ceres Station from there.)') },
       ],
     });
@@ -359,7 +359,7 @@ Mods.register({
       title: 'Protective Custody',
       text: [('Two quiet people in Compact gray are waiting at the airlock, with soft shoes and flat, kind faces, and a wheelchair no one will ' +
           'need. "Ms. Castellane will be well looked after," Achebe says, warmly, at your shoulder. Mira steps out of the airlock with her duffel in ' +
-          'her hand and does not look back. Not once. Her back is very straight, and the metal capsule is gone from her throat.'),
+          'her hand and doesn\'t look back. Not once. Her back is very straight, and the metal capsule is gone from her throat.'),
         { when: { crew: 'kit' }, text: 'Kit watches them go, arms folded, jaw set. "Protective custody," she mutters. "I\'ve seen that before. Nobody comes back from it."' }],
       choices: [{ label: 'Collect your reward',
         effects: { credits: 20000, rep: { 'Arcology Compact': 15 }, do: ['endAct2', 'earth', 'Handed the proof and Mira Castellane to Compact intelligence.'] },
@@ -375,7 +375,7 @@ Mods.register({
       id: 'cw-techs', where: 'transit', priority: 10, when: { aboard: 'techs' },
       title: 'Quiet Passengers',
       text: ('The two Aquilon "maintenance technicians" keep to their bunks, and they keep their tool cases locked and within reach, even to eat, ' +
-          'even to sleep. They are polite, pale, and utterly forgettable, with the flat, careful faces of people trained not to leave an impression. ' +
+          'even to sleep. They\'re polite, pale, and utterly forgettable, with the flat, careful faces of people trained not to leave an impression. ' +
           'They speak in low voices, rarely, and never when anyone else is in the room. One of them, a young man, has the beginning of a tremor in his ' +
           'left hand that he hides in his pocket.'),
       choices: [
@@ -385,7 +385,7 @@ Mods.register({
               'Six days. Your hands are cold when you close the cases. In the next bunk, the young man\'s eyes are open, watching you in the dark.') },
         {
           label: 'Mind your own business',
-          result: 'You leave them to it. Aquilon is paying well, and it is not your job to look inside other people\'s luggage. You tell yourself this over dinner, and again before sleep. The cases sit in the corner of the berth, small and black and quiet, and nobody eats near them.'
+          result: 'You leave them to it. Aquilon is paying well, and it\'s not your job to look inside other people\'s luggage. You tell yourself this over dinner, and again before sleep. The cases sit in the corner of the berth, small and black and quiet, and nobody eats near them.'
         },
       ],
     });
@@ -394,18 +394,18 @@ Mods.register({
       id: 'cw-techs-reveal', where: 'port', when: at('aq1', 'Ceres Station'),
       title: 'Maintenance',
       text: ['Your two passengers head straight for the Sector Nine pump rooms with their locked cases, past a line of children carrying empty jugs, past a wall of hand-lettered ration notices, past a shrine to a water spirit that someone has decorated with paper drops.',
-        { when: { story: { techsKnown: true } }, text: 'You know exactly what is in those cases, and they know that you know.', else: 'A Water Authority engineer watching them pass goes pale, and takes a quiet step backward, as though from a snake.' },
-        'Once they are through that door, three more pumps will fail, and a great many people you will never meet will go thirsty.'],
+        { when: { story: { techsKnown: true } }, text: 'You know exactly what\'s in those cases, and they know that you know.', else: 'A Water Authority engineer watching them pass goes pale, and takes a quiet step backward, as though from a snake.' },
+        'Once they\'re through that door, three more pumps will fail, and a great many people you\'ll never meet will go thirsty.'],
       choices: [
         { label: 'Look the other way', effects: { credits: 12000, rep: { 'Charter League': -30 }, do: 'aquilonPumps' },
           result: ('An Aquilon account pays you 12,000 cr, quietly, with no note. You watch the door swing shut behind the technicians, and you turn ' +
               'away, and keep walking. Three more pumps fail on Ceres that week, and water there sells for more than reaction mass. In the ration ' +
-              'lines, people who have been calm for months begin to shout. The League blames Earth, Earth blames Mars, and the fleets start to ' +
+              'lines, people who\'ve been calm for months begin to shout. The League blames Earth, Earth blames Mars, and the fleets start to ' +
               'gather. (Act 2 complete. In a few days the fleets will reach Ceres, and your objective will be on the Port tab.)') },
         { label: 'Turn them in to the League', effects: { rep: { 'Charter League': 20 }, story: { stage: 'belt2' }, storyLog: 'Turned Aquilon\'s saboteurs over to the Charter League on Ceres.' },
           result: ('You tip off the League, and the militia are waiting at the pump-room door, six of them, very quiet. They take the technicians ' +
-              'and their cases without a shot. The young man does not resist; he looks, if anything, relieved, and, as they lead him away, he gives ' +
-              'you one wide, frightened look you will never forget. Councillor Tembo shakes your hand, hard, with both of hers. "Aquilon will come for ' +
+              'and their cases without a shot. The young man doesn\'t resist; he looks, if anything, relieved, and, as they lead him away, he gives ' +
+              'you one wide, frightened look you\'ll never forget. Councillor Tembo shakes your hand, hard, with both of hers. "Aquilon will come for ' +
               'you now," she says. "Get to Pallas Refinery. The refinery crews need to hear this from someone who was there."') },
       ],
     });
@@ -451,7 +451,7 @@ Mods.register({
       text: ('You made it through the blockade, but your hold has no water in it. The people crowding the docking ring watch your cargo lock open on ' +
           'nothing, on an empty dark hold with a single loose strap swinging. Nobody says a word. A child in the front row, holding an empty jug, ' +
           'lowers it slowly to her side, and nobody tells her to pick it up. Come back with at least 20 tons.'),
-      choices: [{ label: 'Understood', result: 'You will be back. You say it aloud, once, to nobody, and the words come out smaller than you meant. The crowd parts to let you through, without a sound, and you feel their eyes on you all the way to the airlock.' }],
+      choices: [{ label: 'Understood', result: 'You\'ll be back. You say it aloud, once, to nobody, and the words come out smaller than you meant. The crowd parts to let you through, without a sound, and you feel their eyes on you all the way to the airlock.' }],
     });
 
     // The last choice: what you do with the water depends on whose side you took.

@@ -113,7 +113,7 @@ test('a later ice run opens each scene with its own words, and its first scene n
     return out;
   });
   r.second.forEach((t, i) => assert.notEqual(t, r.first[i], `stage ${i} differs on the second run`));
-  assert.match(r.clean, /one word in it: clean/); assert.match(r.bad, /not in the log/); assert.match(r.even, /no remark/);
+  assert.match(r.clean, /one word in it: clean/); assert.match(r.bad, /isn't in the log/); assert.match(r.even, /no remark/);
   assert.ok(!/last haul/.test(r.first[0]) && !/last haul/.test(r.second[1]), 'only the second run\'s first scene speaks of the last haul');
   await done();
 });

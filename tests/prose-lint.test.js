@@ -55,12 +55,13 @@ test('shape splits after a closing quote, and gives zeros for no text', () => {
 
 test('speech counts quoted spans and reported speech', () => {
   const r = speech(['"I said something," Mara says. She says that she did.', 'Ines asks if it is on. He told her that it was.']);
-  assert.deepEqual(r, { quoted: 1, reported: 3, uncontracted: 0 });
+  assert.deepEqual(r, { quoted: 1, reported: 3, uncontracted: 0, narrated: 1 });
 });
 
 test('speech counts a quoted span that is not contracted, and not narration or a possessive "have"', () => {
   const r = speech(['"I do not know," she says. "It\'s fine."', '"I will see," he says, and he does not smile.', '"I have a column for each."', '"We cannot go back."']);
   assert.equal(r.uncontracted, 3, '"I do not", "I will see" and "We cannot" count; "It\'s fine", the narration and "I have a column" do not');
+  assert.equal(r.narrated, 1, '"he does not smile" is narration that is not contracted');
 });
 
 test('lint totals the tics, strings and shape across files', () => {

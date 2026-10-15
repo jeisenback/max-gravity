@@ -345,7 +345,7 @@
  },
  {
   "key": "idle:generous",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam has saved you the good end of the loaf, and does not mention it. The drive hums. A pipe ticks.\"]"
+  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam has saved you the good end of the loaf, and doesn't mention it. The drive hums. A pipe ticks.\"]"
  },
  {
   "key": "idle:greedy",
@@ -361,11 +361,11 @@
  },
  {
   "key": "idle:curious",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam wants to know how the drive works, what you do on watch, and whether you have ever been to Titan. The drive hums. A pipe ticks.\"]"
+  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam wants to know how the drive works, what you do on watch, and whether you've ever been to Titan. The drive hums. A pipe ticks.\"]"
  },
  {
   "key": "idle:drunk",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam is on water tonight, and says so with an effort that is its own kind of story. The drive hums. A pipe ticks.\"]"
+  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam is on water tonight, and says so with an effort that's its own kind of story. The drive hums. A pipe ticks.\"]"
  },
  {
   "key": "idle:secretive",
@@ -373,11 +373,11 @@
  },
  {
   "key": "idle:kind",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam asks if you have slept, and does not take \\\"fine\\\" for an answer. The drive hums. A pipe ticks.\"]"
+  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam asks if you have slept, and doesn't take \\\"fine\\\" for an answer. The drive hums. A pipe ticks.\"]"
  },
  {
   "key": "idle:brave",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam tells you about the worst day they have had on a ship, quietly, as if it were a recipe. The drive hums. A pipe ticks.\"]"
+  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam tells you about the worst day they've had on a ship, quietly, as if it were a recipe. The drive hums. A pipe ticks.\"]"
  },
  {
   "key": "idle:homesick",
@@ -385,7 +385,7 @@
  },
  {
   "key": "idle:two",
-  "text": "You sit with Sam in the galley, over two mugs. Sam asks if you have slept, and does not take \"fine\" for an answer. The drive hums. A pipe ticks."
+  "text": "You sit with Sam in the galley, over two mugs. Sam asks if you have slept, and doesn't take \"fine\" for an answer. The drive hums. A pipe ticks."
  },
  {
   "key": "idle:none",
@@ -553,15 +553,15 @@
  },
  {
   "key": "letter:bad:4",
-  "text": "[[\"A message for Sam at Ceres Station: their mother Jo was hurt in an accident at work, and it is not clear how badly.\"],\"their mother Jo was hurt in an accident at work, and it is not clear how badly\",{\"good\":false,\"text\":\"their mother Jo was hurt in an accident at work, and it is not clear how badly\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their mother Jo was hurt in an accident at work, and it's not clear how badly.\"],\"their mother Jo was hurt in an accident at work, and it's not clear how badly\",{\"good\":false,\"text\":\"their mother Jo was hurt in an accident at work, and it's not clear how badly\"}]"
  },
  {
   "key": "news:bad:4",
-  "text": "[\"Bad News\",\"Sam has not touched their plate. Nobody at the galley table has said anything. The message is on the terminal by Sam's elbow: their mother Jo was hurt in an acc\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam hasn't touched their plate. Nobody at the galley table has said anything. The message is on the terminal by Sam's elbow: their mother Jo was hurt in an acci\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:5",
-  "text": "[[\"A message for Sam at Ceres Station: the family's cabin was flooded when a pipe burst, and everything is gone.\"],\"the family's cabin was flooded when a pipe burst, and everything is gone\",{\"good\":false,\"text\":\"the family's cabin was flooded when a pipe burst, and everything is gone\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: the family's cabin was flooded when a pipe burst, and everything's gone.\"],\"the family's cabin was flooded when a pipe burst, and everything's gone\",{\"good\":false,\"text\":\"the family's cabin was flooded when a pipe burst, and everything's gone\"}]"
  },
  {
   "key": "news:bad:5",
@@ -605,11 +605,11 @@
  },
  {
   "key": "news:bad:10",
-  "text": "[\"Bad News\",\"Sam has not touched their plate. Nobody at the galley table has said anything. The message is on the terminal by Sam's elbow: the clinic on Mars is closing, and\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"Sam hasn't touched their plate. Nobody at the galley table has said anything. The message is on the terminal by Sam's elbow: the clinic on Mars is closing, and \",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:11",
-  "text": "[[\"A message for Sam at Ceres Station: their mother Wim broke a leg in the market and cannot work for six weeks.\"],\"their mother Wim broke a leg in the market and cannot work for six weeks\",{\"good\":false,\"text\":\"their mother Wim broke a leg in the market and cannot work for six weeks\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their mother Wim broke a leg in the market and can't work for six weeks.\"],\"their mother Wim broke a leg in the market and can't work for six weeks\",{\"good\":false,\"text\":\"their mother Wim broke a leg in the market and can't work for six weeks\"}]"
  },
  {
   "key": "news:bad:11",
@@ -617,15 +617,15 @@
  },
  {
   "key": "letter:bad:12",
-  "text": "[[\"A message for Sam at Ceres Station: there was a fire in the section where their son Dru lives, and they are in a shelter.\"],\"there was a fire in the section where their son Dru lives, and they are in a shelter\",{\"good\":false,\"text\":\"there was a fire in the section where their son Dru lives, and they are in a shelter\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: there was a fire in the section where their son Dru lives, and they're in a shelter.\"],\"there was a fire in the section where their son Dru lives, and they're in a shelter\",{\"good\":false,\"text\":\"there was a fire in the section where their son Dru lives, and they're in a shelter\"}]"
  },
  {
   "key": "news:bad:12",
-  "text": "[\"Bad News\",\"The terminal pings in the galley and Sam reads it standing, then sits down. The message: there was a fire in the section where their son Dru lives, and they are\",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
+  "text": "[\"Bad News\",\"The terminal pings in the galley and Sam reads it standing, then sits down. The message: there was a fire in the section where their son Dru lives, and they're \",[\"Sit with them\",\"Advance them 500 cr to send home\",\"Give them space\"]]"
  },
  {
   "key": "letter:bad:13",
-  "text": "[[\"A message for Sam at Ceres Station: their best friend Tiko has been laid off, and the severance has not come.\"],\"their best friend Tiko has been laid off, and the severance has not come\",{\"good\":false,\"text\":\"their best friend Tiko has been laid off, and the severance has not come\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their best friend Tiko has been laid off, and the severance hasn't come.\"],\"their best friend Tiko has been laid off, and the severance hasn't come\",{\"good\":false,\"text\":\"their best friend Tiko has been laid off, and the severance hasn't come\"}]"
  },
  {
   "key": "news:bad:13",
@@ -641,7 +641,7 @@
  },
  {
   "key": "letter:bad:15",
-  "text": "[[\"A message for Sam at Ceres Station: their son Yuri left a message that says only \\\"call when you can,\\\" and the line does not connect.\"],\"their son Yuri left a message that says only \\\"call when you can,\\\" and the line does not connect\",{\"good\":false,\"text\":\"their son Yuri left a message that says only \\\"call when you can,\\\" and the line does not connect\"}]"
+  "text": "[[\"A message for Sam at Ceres Station: their son Yuri left a message that says only \\\"call when you can,\\\" and the line doesn't connect.\"],\"their son Yuri left a message that says only \\\"call when you can,\\\" and the line doesn't connect\",{\"good\":false,\"text\":\"their son Yuri left a message that says only \\\"call when you can,\\\" and the line doesn't connect\"}]"
  },
  {
   "key": "news:bad:15",
@@ -649,26 +649,26 @@
  },
  {
   "key": "holiday:0",
-  "text": "[\"Landing Day\",\"Sam is up before the watch change, kneading dough with a fierce, focused joy, and the galley smells of hot, spiced, red-tinted bread. It is Landing Day, when the first colonists set down on Mars, and Sam has been baking for it every year of their life, from a recipe that came from a grandmother they can barely remember. They are already arguing with nobody in particular about the terraforming schedule, jabbing a floury finger at the air.\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"The bread is dense and far too spicy, and everyone eats it anyway, with tears in their eyes and hands out for more. The argument about the terraforming schedule lasts until the flip, with three factions and one point of order, and everyone has a side, and nobody, in the end, wins.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they are cheerful, and nobody asks.\",\"9 Jun 2214: We kept Landing Day aboard the Second Chance.\",[\"Kept Landing Day aboard.\"]]"
+  "text": "[\"Landing Day\",\"Sam is up before the watch change, kneading dough with a fierce, focused joy, and the galley smells of hot, spiced, red-tinted bread. It's Landing Day, when the first colonists set down on Mars, and Sam has been baking for it every year of their life, from a recipe that came from a grandmother they can barely remember. They're already arguing with nobody in particular about the terraforming schedule, jabbing a floury finger at the air.\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"The bread is dense and far too spicy, and everyone eats it anyway, with tears in their eyes and hands out for more. The argument about the terraforming schedule lasts until the flip, with three factions and one point of order, and everyone has a side, and nobody, in the end, wins.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they're cheerful, and nobody asks.\",\"9 Jun 2214: We kept Landing Day aboard the Second Chance.\",[\"Kept Landing Day aboard.\"]]"
  },
  {
   "key": "holiday:1",
-  "text": "[\"Tranquility Night\",\"Sam has the old footage of the first Moon landing queued up on the galley screen, the grainy black-and-white version, with the crackle of the old radio. On Earth and Luna everyone watches it tonight, all together, at the same hour, even though they have all seen it a hundred times. Sam sets out cups of something warm, dims the lights, and says that it is not the same without company.\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"Two people in bulky suits bounce across gray dust, centuries ago, and a voice, tiny and tinny and calm, says the words. Nobody on the ship says anything for a while. When the picture fades, Sam wipes their eyes. In the dark someone begins to hum.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they are cheerful, and nobody asks.\",\"9 Jun 2214: We kept Tranquility Night aboard the Second Chance.\",[\"Kept Tranquility Night aboard.\",\"Kept Landing Day aboard.\"]]"
+  "text": "[\"Tranquility Night\",\"Sam has the old footage of the first Moon landing queued up on the galley screen, the grainy black-and-white version, with the crackle of the old radio. On Earth and Luna everyone watches it tonight, all together, at the same hour, even though they have all seen it a hundred times. Sam sets out cups of something warm, dims the lights, and says that it's not the same without company.\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"Two people in bulky suits bounce across gray dust, centuries ago, and a voice, tiny and tinny and calm, says the words. Nobody on the ship says anything for a while. When the picture fades, Sam wipes their eyes. In the dark someone begins to hum.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they're cheerful, and nobody asks.\",\"9 Jun 2214: We kept Tranquility Night aboard the Second Chance.\",[\"Kept Tranquility Night aboard.\",\"Kept Landing Day aboard.\"]]"
  },
  {
   "key": "holiday:2",
-  "text": "[\"First Water\",\"It is First Water, the day the first ice reached Ceres, and the oldest, quietest holiday in the Belt. Sam fills a cup from the ship's tank, slowly, without spilling a drop, and sets it on the galley table, and passes it around: each person drinks, and says the name of someone they have lost. It is not a happy day. It is not meant to be. It is the day that a people remember what they nearly did not survive.\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"The cup goes around twice, in silence, warm from many hands. Some of the names you know. Most you don't. When it is your turn, you find you have a name, too, after all, and you say it aloud, and the room, which was waiting, lets out a breath.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they are cheerful, and nobody asks.\",\"9 Jun 2214: We kept First Water aboard the Second Chance.\",[\"Kept First Water aboard.\",\"Kept Tranquility Night aboard.\",\"Kept Landing Day aboard.\"]]"
+  "text": "[\"First Water\",\"It's First Water, the day the first ice reached Ceres, and the oldest, quietest holiday in the Belt. Sam fills a cup from the ship's tank, slowly, without spilling a drop, and sets it on the galley table, and passes it around: each person drinks, and says the name of someone they've lost. It's not a happy day. It's not meant to be. It's the day that a people remember what they nearly didn't survive.\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"The cup goes around twice, in silence, warm from many hands. Some of the names you know. Most you don't. When it's your turn, you find you have a name, too, after all, and you say it aloud, and the room, which was waiting, lets out a breath.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they're cheerful, and nobody asks.\",\"9 Jun 2214: We kept First Water aboard the Second Chance.\",[\"Kept First Water aboard.\",\"Kept Tranquility Night aboard.\",\"Kept Landing Day aboard.\"]]"
  },
  {
   "key": "holiday:3",
-  "text": "[\"Year's End\",\"It is the last night of 2214. Sam has strung lights across the galley, and cobbled together a table out of crates, and set out every bottle on the ship, and, in the middle, a single cake made of ration bars and hope. They are counting down to a midnight that means nothing out here, where there is no sunrise and no season, and everything, in the way that small bright rituals do.\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"Everyone counts down together, in a ragged, cheerful roar, with the last ten seconds shouted in unison. At zero, somebody cries, somebody laughs, somebody kisses somebody, and the ship hums on, warm and steady, into the new year, carrying you all.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they are cheerful, and nobody asks.\",\"9 Jun 2214: We kept Year's End aboard the Second Chance.\",[\"Kept Year's End aboard.\",\"Kept First Water aboard.\",\"Kept Tranquility Night aboard.\",\"Kept Landing Day aboard.\"]]"
+  "text": "[\"Year's End\",\"It's the last night of 2214. Sam has strung lights across the galley, and cobbled together a table out of crates, and set out every bottle on the ship, and, in the middle, a single cake made of ration bars and hope. They're counting down to a midnight that means nothing out here, where there's no sunrise and no season, and everything, in the way that small bright rituals do.\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"Everyone counts down together, in a ragged, cheerful roar, with the last ten seconds shouted in unison. At zero, somebody cries, somebody laughs, somebody kisses somebody, and the ship hums on, warm and steady, into the new year, carrying you all.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they're cheerful, and nobody asks.\",\"9 Jun 2214: We kept Year's End aboard the Second Chance.\",[\"Kept Year's End aboard.\",\"Kept First Water aboard.\",\"Kept Tranquility Night aboard.\",\"Kept Landing Day aboard.\"]]"
  },
  {
   "key": "holiday:4",
-  "text": "[\"The Long Night\",\"Sam tells you that, back on Earth, it is the longest night of the year, and that, where they grew up, the old people stayed up all through it, with candles, telling stories to keep the dark at bay. They have set out a single candle, real wax, saved for the purpose, in a jar in the middle of the galley table. \\\"It's silly out here,\\\" they say, \\\"where every night is the longest. But I'd like to keep it.\\\"\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"You sit, all of you, in a ring around the candle, and, one by one, tell a story. Some are funny. Some are sad. Some are not stories at all, just a few careful sentences about a place or a person. The candle burns down, and nobody moves. It gutters.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they are cheerful, and nobody asks.\",\"9 Jun 2214: We kept The Long Night aboard the Second Chance.\",[\"Kept The Long Night aboard.\",\"Kept Year's End aboard.\",\"Kept First Water aboard.\",\"Kept Tranquility Night aboard.\",\"Kept Landing Day aboard.\"]]"
+  "text": "[\"The Long Night\",\"Sam tells you that, back on Earth, it's the longest night of the year, and that, where they grew up, the old people stayed up all through it, with candles, telling stories to keep the dark at bay. They've set out a single candle, real wax, saved for the purpose, in a jar in the middle of the galley table. \\\"It's silly out here,\\\" they say, \\\"where every night is the longest. But I'd like to keep it.\\\"\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"You sit, all of you, in a ring around the candle, and, one by one, tell a story. Some are funny. Some are sad. Some aren't stories at all, just a few careful sentences about a place or a person. The candle burns down, and nobody moves. It gutters.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they're cheerful, and nobody asks.\",\"9 Jun 2214: We kept The Long Night aboard the Second Chance.\",[\"Kept The Long Night aboard.\",\"Kept Year's End aboard.\",\"Kept First Water aboard.\",\"Kept Tranquility Night aboard.\",\"Kept Landing Day aboard.\"]]"
  },
  {
   "key": "holiday:5",
-  "text": "[\"Dome Day\",\"Sam is polishing a small brass plaque, worn smooth at the edges, that was, they say, cut from the first dome on Mars, three hundred years ago. It is Dome Day, and They have hung a strip of red-dyed cloth over the galley hatch, and there is, for some reason, a small potted fern on the table.\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"You raise a glass to the domes, and to the people who built them, and to the fools who thought a dead world could be made to breathe. Sam makes a short, awkward, moving speech, and forgets the end of it, and everyone claps anyway. The fern is declared the ship's mascot.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they are cheerful, and nobody asks.\",\"9 Jun 2214: We kept Dome Day aboard the Second Chance.\",[\"Kept Dome Day aboard.\",\"Kept The Long Night aboard.\",\"Kept Year's End aboard.\",\"Kept First Water aboard.\",\"Kept Tranquility Night aboard.\",\"Kept Landing Day aboard.\"]]"
+  "text": "[\"Dome Day\",\"Sam is polishing a small brass plaque, worn smooth at the edges, that was, they say, cut from the first dome on Mars, three hundred years ago. It's Dome Day, and They have hung a strip of red-dyed cloth over the galley hatch, and there is, for some reason, a small potted fern on the table.\",[\"Everyone joins in\",\"Let Sam mark it their own way\"],\"You raise a glass to the domes, and to the people who built them, and to the fools who thought a dead world could be made to breathe. Sam makes a short, awkward, moving speech, and forgets the end of it, and everyone claps anyway. The fern is declared the ship's mascot.\",\"Sam nods, and thanks you, and marks it alone in their bunk, with the curtain drawn. You hear music through the bulkhead, something old, from home, and, once, a laugh. In the morning they're cheerful, and nobody asks.\",\"9 Jun 2214: We kept Dome Day aboard the Second Chance.\",[\"Kept Dome Day aboard.\",\"Kept The Long Night aboard.\",\"Kept Year's End aboard.\",\"Kept First Water aboard.\",\"Kept Tranquility Night aboard.\",\"Kept Landing Day aboard.\"]]"
  }
 ]

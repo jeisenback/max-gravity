@@ -104,7 +104,7 @@ test('a hired hand\'s map says what it is for and shows the captain\'s plan; an 
     out.none = drawIt();
     return out;
   });
-  assert.match(r.port.said, /The captain picks where she goes\. Look around; you cannot plot a burn\./);
+  assert.match(r.port.said, /The captain picks where she goes\. Look around; you can't plot a burn\./);
   assert.doesNotMatch(r.port.said, /to plot a burn\.|full tank|No burn plotted/);
   assert.match(r.port.said, /The captain's run: Earth to Mars, 5 days\./); assert.equal(r.port.rings, 1, 'the destination is ringed');
   assert.match(r.none.said, /waiting for a market/); assert.equal(r.none.rings, 0);

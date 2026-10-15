@@ -31,7 +31,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Sam goes back to work. For the next few days they do exactly what is asked and nothing more, and their tools are always where they were left. They have stopped smiling.",
+    "text": "Sam goes back to work. For the next few days they do exactly what's asked and nothing more, and their tools are always where they were left. They've stopped smiling.",
     "mem": "9 Jun 2214: You refused me a raise.",
     "d": {
      "credits": 0,
@@ -44,7 +44,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Sam goes back to work. For the next few days they do exactly what is asked and nothing more, and their tools are always where they were left. They have stopped smiling.",
+    "text": "Sam goes back to work. For the next few days they do exactly what's asked and nothing more, and their tools are always where they were left. They've stopped smiling.",
     "mem": "9 Jun 2214: You refused me a raise.",
     "d": {
      "credits": 0,
@@ -94,7 +94,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Sam stares at the floor, then swears off drink. For now. They take the next three galley shifts. You find them scrubbing the bulkhead, and they do not look up. The dent is polished.",
+    "text": "Sam stares at the floor, then swears off drink. For now. They take the next three galley shifts. You find them scrubbing the bulkhead, and they don't look up. The dent is polished.",
     "mem": "9 Jun 2214: You let the brawl go.",
     "d": {
      "credits": -300,
@@ -107,7 +107,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Sam stares at the floor, then swears off drink. For now. They take the next three galley shifts. You find them scrubbing the bulkhead, and they do not look up. The dent is polished.",
+    "text": "Sam stares at the floor, then swears off drink. For now. They take the next three galley shifts. You find them scrubbing the bulkhead, and they don't look up. The dent is polished.",
     "mem": "9 Jun 2214: You let the brawl go.",
     "d": {
      "credits": -300,
@@ -119,7 +119,7 @@
    }
   ],
   "title": "Galley Brawl",
-  "text": "Sam got drunk on something they had been keeping in a pipe, and had an argument with the galley bulkhead. The bulkhead won. There is a dent the size of a fist in the wall, blood on the deck, and Sam on the floor with a cloth pressed to their forehead. The medical supplies cost 300 cr.",
+  "text": "Sam got drunk on something they had been keeping in a pipe, and had an argument with the galley bulkhead. The bulkhead won. There's a dent the size of a fist in the wall, blood on the deck, and Sam on the floor with a cloth pressed to their forehead. The medical supplies cost 300 cr.",
   "labels": [
    "Dock their pay",
    "Pay for it and let it go (300 cr)"
@@ -131,7 +131,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Sam takes an hour on a lagged call home, in a quiet corner of the ship, with a hand over their mouth. They come back with red eyes and laugh once. They do not say what was said. For the rest of the week they hum in the corridors, and nobody mentions it.",
+    "text": "Sam takes an hour on a lagged call home, in a quiet corner of the ship, with a hand over their mouth. They come back with red eyes and laugh once. They don't say what was said. For the rest of the week they hum in the corridors, and nobody mentions it.",
     "mem": "9 Jun 2214: You paid for my call home.",
     "d": {
      "credits": -500,
@@ -144,7 +144,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "Sam takes an hour on a lagged call home, in a quiet corner of the ship, with a hand over their mouth. They come back with red eyes and laugh once. They do not say what was said. For the rest of the week they hum in the corridors, and nobody mentions it.",
+    "text": "Sam takes an hour on a lagged call home, in a quiet corner of the ship, with a hand over their mouth. They come back with red eyes and laugh once. They don't say what was said. For the rest of the week they hum in the corridors, and nobody mentions it.",
     "mem": "9 Jun 2214: You paid for my call home.",
     "d": {
      "credits": -500,
@@ -208,7 +208,7 @@
    }
   ],
   "title": "Homesick",
-  "text": "Sam has been quiet for days. At mealtimes they push their food around. At night you have seen them at the viewport, looking at a point of light. They have not said they miss Mars.",
+  "text": "Sam has been quiet for days. At mealtimes they push their food around. At night you've seen them at the viewport, looking at a point of light. They haven't said they miss Mars.",
   "labels": [
    "Give them a 500 cr bonus to call home",
    "Share a drink and listen",
@@ -272,7 +272,7 @@
    }
   ],
   "title": "Bad Dreams",
-  "text": "Sam has not been sleeping. There are shadows under their eyes, they drop small tools, and they jump at every clank of the hull. When you ask, they tell you in a flat voice: nightmares about hull breaches, the same one every night. The thin bright line of a crack, spreading. The sudden silence. The cold.",
+  "text": "Sam hasn't been sleeping. There are shadows under their eyes, they drop small tools, and they jump at every clank of the hull. When you ask, they tell you in a flat voice: nightmares about hull breaches, the same one every night. The thin bright line of a crack, spreading. The sudden silence. The cold.",
   "labels": [
    "Talk them through it",
    "Tell them to toughen up"
@@ -284,7 +284,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Sam sits down and gives you an hour of gossip: names, debts, who left whom at which port. In the middle of it is one thing you can use: \"Word is that the governor of Juno Commons is stockpiling Food for a party, and will pay well over the odds.\" Then Sam moves on to the next thing.",
+    "text": "Sam sits down and gives you an hour of gossip: names, debts, who left whom at which port. In the middle of it's one thing you can use: \"Word is that the governor of Juno Commons is stockpiling Food for a party, and will pay well over the odds.\" Then Sam moves on to the next thing.",
     "mem": null,
     "d": {
      "credits": 0,
@@ -297,7 +297,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "Sam sits down and gives you an hour of gossip: names, debts, who left whom at which port. In the middle of it is one thing you can use: \"A strike ended on Ring Nine, and every dock in town is suddenly flooded with Food.\" Then Sam moves on to the next thing.",
+    "text": "Sam sits down and gives you an hour of gossip: names, debts, who left whom at which port. In the middle of it's one thing you can use: \"A strike ended on Ring Nine, and every dock in town is suddenly flooded with Food.\" Then Sam moves on to the next thing.",
     "mem": null,
     "d": {
      "credits": 0,
@@ -309,7 +309,7 @@
    }
   ],
   "title": "Gossip",
-  "text": "Sam has been on the open band with half the ships in comm range, chatting. They know the name of the freighter captain's dog. They know who is feuding with whom at the next port. They lean in at your cabin door with news.",
+  "text": "Sam has been on the open band with half the ships in comm range, chatting. They know the name of the freighter captain's dog. They know who's feuding with whom at the next port. They lean in at your cabin door with news.",
   "labels": [
    "What have you heard?"
   ]
@@ -320,7 +320,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Sam looks at you. \"Family business,\" Sam says. That is all you get. Afterward Sam takes meals in the bunk and locks the door to sleep.",
+    "text": "Sam looks at you. \"Family business,\" Sam says. That's all you get. Afterward Sam takes meals in the bunk and locks the door to sleep.",
     "mem": "9 Jun 2214: You pried into my locker.",
     "d": {
      "credits": 0,
@@ -333,7 +333,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "Sam looks at you. \"Family business,\" Sam says. That is all you get. Afterward Sam takes meals in the bunk and locks the door to sleep.",
+    "text": "Sam looks at you. \"Family business,\" Sam says. That's all you get. Afterward Sam takes meals in the bunk and locks the door to sleep.",
     "mem": "9 Jun 2214: You pried into my locker.",
     "d": {
      "credits": 0,
@@ -346,7 +346,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You say nothing and turn to go. Behind you their shoulders come down. That evening Sam brings you a cup of tea you did not ask for, stands in the doorway, and goes.",
+    "text": "You say nothing and turn to go. Behind you their shoulders come down. That evening Sam brings you a cup of tea you didn't ask for, stands in the doorway, and goes.",
     "mem": "9 Jun 2214: You respected my privacy.",
     "d": {
      "credits": 0,
@@ -359,7 +359,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You say nothing and turn to go. Behind you their shoulders come down. That evening Sam brings you a cup of tea you did not ask for, stands in the doorway, and goes.",
+    "text": "You say nothing and turn to go. Behind you their shoulders come down. That evening Sam brings you a cup of tea you didn't ask for, stands in the doorway, and goes.",
     "mem": "9 Jun 2214: You respected my privacy.",
     "d": {
      "credits": 0,
@@ -371,7 +371,7 @@
    }
   ],
   "title": "Locked Locker",
-  "text": "Sam's locker has two locks, one you do not recognize and a cheap padlock over it. They have been receiving messages with no sender ID, short ones, at odd hours. They read them, delete them, and read them again. When you come into the room, they flinch.",
+  "text": "Sam's locker has two locks, one you don't recognize and a cheap padlock over it. They've been receiving messages with no sender ID, short ones, at odd hours. They read them, delete them, and read them again. When you come into the room, they flinch.",
   "labels": [
    "Ask about it",
    "Respect their privacy"
@@ -434,7 +434,7 @@
    }
   ],
   "title": "Tinkering",
-  "text": "Sam has the reaction mass pumps in pieces on newspaper in the middle of the engine room, \"to see how they work\". Every bolt is in a row. Three manuals are open, and there is a cup of cold tea. Nobody asked them to.",
+  "text": "Sam has the reaction mass pumps in pieces on newspaper in the middle of the engine room, \"to see how they work\". Every bolt is in a row. Three manuals are open, and there's a cup of cold tea. Nobody asked them to.",
   "labels": [
    "Let them experiment",
    "Put it back together. Now."
@@ -497,7 +497,7 @@
    }
   ],
   "title": "Quiet Prayer",
-  "text": "Sam finds you in the galley at the turn of the watch with a worn charm in one hand and asks you to join a short prayer for safe passage. They say it every burn, alone, in a corner, but tonight they wanted company. It will take a few minutes. They say you may stay silent.",
+  "text": "Sam finds you in the galley at the turn of the watch with a worn charm in one hand and asks you to join a short prayer for safe passage. They say it every burn, alone, in a corner, but tonight they wanted company. It'll take a few minutes. They say you may stay silent.",
   "labels": [
    "Join them",
    "Politely decline"
@@ -535,7 +535,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You lean in the doorway with your arms folded and let them. It is short, loud and untidy, and involves a soup pot. 8 points of hull damage later they are sitting side by side on the deck, breathing hard, sharing a cloth for a bloody lip. \"It was flat,\" Sam says. \"It was flat,\" says the other, and they both laugh.",
+    "text": "You lean in the doorway with your arms folded and let them. It's short, loud and untidy, and involves a soup pot. 8 points of hull damage later they're sitting side by side on the deck, breathing hard, sharing a cloth for a bloody lip. \"It was flat,\" Sam says. \"It was flat,\" says the other, and they both laugh.",
     "mem": null,
     "d": {
      "credits": 0,
@@ -548,7 +548,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You lean in the doorway with your arms folded and let them. It is short, loud and untidy, and involves a soup pot. 8 points of hull damage later they are sitting side by side on the deck, breathing hard, sharing a cloth for a bloody lip. \"It was flat,\" Sam says. \"It was flat,\" says the other, and they both laugh.",
+    "text": "You lean in the doorway with your arms folded and let them. It's short, loud and untidy, and involves a soup pot. 8 points of hull damage later they're sitting side by side on the deck, breathing hard, sharing a cloth for a bloody lip. \"It was flat,\" Sam says. \"It was flat,\" says the other, and they both laugh.",
     "mem": null,
     "d": {
      "credits": 0,
@@ -560,7 +560,7 @@
    }
   ],
   "title": "Friction",
-  "text": "Sam has been needling the rest of the crew for days: a jab at breakfast, a remark in the corridor, a sneer at how someone hums. Tonight in the galley it is the humming again. A chair scrapes. \"Say that again,\" says a level voice. \"I said it was flat,\" Sam says. \"I didn't say it was your fault. I said it was flat.\" \"Say that again.\" There is going to be a fight.",
+  "text": "Sam has been needling the rest of the crew for days: a jab at breakfast, a remark in the corridor, a sneer at how someone hums. Tonight in the galley it's the humming again. A chair scrapes. \"Say that again,\" says a level voice. \"I said it was flat,\" Sam says. \"I didn't say it was your fault. I said it was flat.\" \"Say that again.\" There's going to be a fight.",
   "labels": [
    "Reprimand them",
    "Let them sort it out"
@@ -608,7 +608,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You raise a glass, and so does everyone else, in a ring around the table. The bottle tastes of Mars: sweet, smoky, with something bitter under it. To the ship. To the crew. To not dying. Somebody laughs, then everyone does, and the bottle goes round twice before it is empty.",
+    "text": "You raise a glass, and so does everyone else, in a ring around the table. The bottle tastes of Mars: sweet, smoky, with something bitter under it. To the ship. To the crew. To not dying. Somebody laughs, then everyone does, and the bottle goes round twice before it's empty.",
     "mem": "9 Jun 2214: We shared a bottle.",
     "d": {
      "credits": 0,
@@ -621,7 +621,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You raise a glass, and so does everyone else, in a ring around the table. The bottle tastes of Mars: sweet, smoky, with something bitter under it. To the ship. To the crew. To not dying. Somebody laughs, then everyone does, and the bottle goes round twice before it is empty.",
+    "text": "You raise a glass, and so does everyone else, in a ring around the table. The bottle tastes of Mars: sweet, smoky, with something bitter under it. To the ship. To the crew. To not dying. Somebody laughs, then everyone does, and the bottle goes round twice before it's empty.",
     "mem": "9 Jun 2214: We shared a bottle.",
     "d": {
      "credits": 0,
@@ -633,7 +633,7 @@
    }
   ],
   "title": "Shared Bottle",
-  "text": "Sam comes into the galley at the end of a long shift with a dusty bottle wrapped in a shirt. They have carried it in the bottom of their bag since they left Mars. They set it on the table and take down every cup in the cupboard. \"I was saving it for a special occasion,\" they say. \"But I think we're the occasion.\"",
+  "text": "Sam comes into the galley at the end of a long shift with a dusty bottle wrapped in a shirt. They've carried it in the bottom of their bag since they left Mars. They set it on the table and take down every cup in the cupboard. \"I was saving it for a special occasion,\" they say. \"But I think we're the occasion.\"",
   "labels": [
    "Raise a glass"
   ]
@@ -644,7 +644,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Sam goes out through the lock with a tether and a bag of tools. For twenty minutes they are a bright shape against the stars, working along the hull. Then they are back inside, helmet off, sweating, grinning, holding the bent strut.",
+    "text": "Sam goes out through the lock with a tether and a bag of tools. For twenty minutes they're a bright shape against the stars, working along the hull. Then they're back inside, helmet off, sweating, grinning, holding the bent strut.",
     "mem": null,
     "d": {
      "credits": 0,
@@ -695,7 +695,7 @@
    }
   ],
   "title": "Volunteer",
-  "text": "A sensor mast has come loose in the burn and hangs by one strut, banging against the hull with every pulse of the drive. It will tear free sooner or later and take plating with it. Before you can speak, Sam has the suit half on. \"I'll go, captain,\" they say, buckling a strap. \"It's a ten-minute job. I've done worse.\"",
+  "text": "A sensor mast has come loose in the burn and hangs by one strut, banging against the hull with every pulse of the drive. It'll tear free sooner or later and take plating with it. Before you can speak, Sam has the suit half on. \"I'll go, captain,\" they say, buckling a strap. \"It's a ten-minute job. I've done worse.\"",
   "labels": [
    "Let them go",
    "Go yourself"

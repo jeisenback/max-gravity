@@ -35,7 +35,7 @@ function putAshoreScene() {
 
 // What the dock says of the ship you were put off: the first true fact, else the plain one.
 const CARRIED = [
-  ['iceBad', n => `On the dock they are still talking about the ice run on Captain ${n}'s ship.`],
+  ['iceBad', n => `On the dock they're still talking about the ice run on Captain ${n}'s ship.`],
   ['iceClean', n => `On the dock they say Captain ${n}'s ship brought the ice in clean.`],
   ['hurt', n => `On the dock they say Captain ${n}'s hand was hurt on duty.`],
   ['raided', n => `On the dock they say Captain ${n}'s ship fought off a raid.`],
@@ -64,7 +64,7 @@ function beginAgain() {
     mode: 'hired',
     post: h.post,
     captainKey: others.length ? pick(others) : undefined,
-    carried: `On the dock they say the hand on Captain ${cap.last}'s ship did not come back.`,
+    carried: `On the dock they say the hand on Captain ${cap.last}'s ship didn't come back.`,
   });
   return null;
 }
@@ -95,7 +95,7 @@ function putAshore(lost) {
     debt: keep.debt,
     skill: keep.skill,
     [lost ? 'captainLost' : 'putOffBy']: `Captain ${cap.last}`,
-    carried: lost ? `On the dock they say Captain ${cap.last} did not come back from the bridge.` : carriedLine(h.flags || {}, cap.last)
+    carried: lost ? `On the dock they say Captain ${cap.last} didn't come back from the bridge.` : carriedLine(h.flags || {}, cap.last)
   });
   G.state.putOff = keep.times;
   return null;

@@ -274,7 +274,7 @@ test('the goodbye has an opening by warmth and a line for each thing that happen
     castFate('cato', 'die', 'x', 'x'); out.xoDead = bye();
     return out;
   });
-  assert.match(r.warm, /waiting at the foot of the ramp/); assert.match(r.neutral, /counts your last pay twice/); assert.match(r.cold, /does not offer her hand/);
+  assert.match(r.warm, /waiting at the foot of the ramp/); assert.match(r.neutral, /counts your last pay twice/); assert.match(r.cold, /doesn't offer her hand/);
   assert.doesNotMatch(r.alone, /will go with you/); assert.match(r.crew, /Ines Ferreira will go with you/);
   assert.equal(r.noSecret, false); assert.match(r.secret, /The first of the month/); assert.match(r.lent, /four hundred and ten/);
   assert.match(r.xo, /Cato is at the hatch/); assert.match(r.xoDead, /taken Cato out of the book/); assert.doesNotMatch(r.xoDead, /Cato is at the hatch/);
@@ -781,7 +781,7 @@ test('Cato\'s "What Cato Knows" opens at friendly or better, and below it he kee
     return out;
   });
   assert.deepEqual(r.closed, ['Say it can wait']); assert.match(r.closedText, /I don't know you well enough/); assert.equal(r.closedTold, false, 'the favour is not asked');
-  assert.deepEqual(r.open, ['Ask him to tell you if it goes badly', 'Tell him it is not yours to carry']); assert.match(r.openText, /I've known about the bank since the spring/);
+  assert.deepEqual(r.open, ['Ask him to tell you if it goes badly', "Tell him it's not yours to carry"]); assert.match(r.openText, /I've known about the bank since the spring/);
   assert.equal(r.openTold, true); assert.match(r.result, /I wouldn't have known how to start/);
 });
 
@@ -981,6 +981,6 @@ test('Tomas gives the reason when she is offered, which waits for the hull to ha
   }, { debt: true });
   assert.equal(r.waits, false, 'the offer waits for the hull to have been seen'); assert.equal(r.opens, true); assert.equal(r.broker, true, 'without Tomas, nothing to wait for');
   assert.match(r.owed, /Three owners, and every one of them sold her, and none for bad luck\. Each ran one payment short, and the coolant line is what they skipped\./);
-  assert.match(r.owed, /You owe the hall 1,500 still\. I looked at its book\. Clear it, and you will be the first owner she has had who owes nobody\./);
+  assert.match(r.owed, /You owe the hall 1,500 still\. I looked at its book\. Clear it, and you'll be the first owner she has had who owes nobody\./);
   assert.match(r.clear, /You owe nobody now\. I looked at the hall's book\. She has only ever had owners who owed everybody\./); assert.equal(r.tomasFlag, true);
 });

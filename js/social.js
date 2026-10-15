@@ -339,7 +339,7 @@ const CAUSES = [
   'the last of the coffee',
   'music in the berths at all hours',
   'a ring-ball bet',
-  'whose turn it is to scrub the recycler',
+  'whose turn it\'s to scrub the recycler',
   'a borrowed jacket that came back torn',
   'the thermostat',
   'who left the galley light on',

@@ -10,17 +10,17 @@ const BAR_MENU = 3, BAR_REPEAT = 45;  // topics offered at a table; days before 
 
 // What they feel about it: a line for each trait that loves it, or hates it.
 const BAR_REACT = {
-  talkative: ['{n} is off again, and tells it to the next table too, tug pilots and all, and you are in it.', '{n} talks over the answer and goes back to the story about the tug.'],
+  talkative: ['{n} is off again, and tells it to the next table too, tug pilots and all, and you\'re in it.', '{n} talks over the answer and goes back to the story about the tug.'],
   nervous: ['{n} lets out a breath, and for the first time since the lock sits back.', '{n} flinches, and checks the seal on the nearest hatch.'],
   generous: ['{n} says to have the rest, and means a ration case and a bottle at the next port.', '{n} waves it away, and asks whether you ate at the watch change.'],
-  greedy: ['{n} counts it against the next run\'s margin, tells you the total, and asks if you want a cut of the manifest.', '{n} asks what it would fetch at the next port, per ton, less the pilotage, and does not like the figure.'],
+  greedy: ['{n} counts it against the next run\'s margin, tells you the total, and asks if you want a cut of the manifest.', '{n} asks what it\'d fetch at the next port, per ton, less the pilotage, and doesn\'t like the figure.'],
   pious: ['{n} says a short word over you, as at the turn of the watch.', '{n} touches the cord at their wrist, once for each leg of the trip, and says nothing.'],
-  rude: ['{n} says the coffee here is almost as bad as the recycler\'s.', '{n} says what they think of that, in order, the way they read out a fuel invoice, and does not raise their voice.'],
+  rude: ['{n} says the coffee here\'s almost as bad as the recycler\'s.', '{n} says what they think of that, in order, the way they read out a fuel invoice, and doesn\'t raise their voice.'],
   curious: ['{n} asks the next question, and then the one after it, about the burn profile.', '{n} says "Ah," and turns to see how the pressure door seals.'],
   drunk: ['{n} hugs you, a long hug, and holds the grab rail with the other hand.', '{n} agrees at once, and orders another round for the whole watch.'],
   secretive: ['{n} asks which port you cleared last, and this time wants the answer.', '{n} asks which port you cleared last, and the rest of the glass is polite.'],
-  kind: ['{n} takes your hand for a moment and does not say anything.', '{n} says it is all right, and finds something on the booth to fix.'],
-  brave: ['{n} claps you on the shoulder, hard. You will have a bruise.', '{n} looks at you, and then at the pressure door, and finishes the drink.'],
+  kind: ['{n} takes your hand for a moment and doesn\'t say anything.', '{n} says it\'s all right, and finds something on the booth to fix.'],
+  brave: ['{n} claps you on the shoulder, hard. You\'ll have a bruise.', '{n} looks at you, and then at the pressure door, and finishes the drink.'],
   homesick: ['{n} goes quiet, and then smiles, the first since the last burn.', '{n} looks at the photograph taped inside their locker door, not at you.'],
 };
 const barHas = (p, ...ts) => ts.some(t => p.traits.includes(t));
@@ -40,16 +40,16 @@ const HELP_TASTE = {
   listen: { loves: ['homesick', 'kind', 'talkative', 'nervous'], hates: ['greedy', 'rude', 'drunk'] },
 };
 const GOAL_HELP = {
-  home: { ask: 'Ask about the way home', text: ('{n} has not been home in years, and has the route on a card in a pocket, worn to cloth. "Three more ' +
-      'ports," they say. "Maybe four, if the money holds."'), gift: 'Pay part of the fare (60 cr)', advice: 'Tell them which lanes are quick right now', listen: 'Ask them what they will do first, when they get there' },
-  family: { ask: 'Ask about the family', text: '{n} is going to see family, and has been trying all evening to think what to bring.', gift: 'Press a few credits into their hand for a present (60 cr)', advice: 'Suggest something from the market here', listen: 'Ask who they are going to see' },
+  home: { ask: 'Ask about the way home', text: ('{n} hasn\'t been home in years, and has the route on a card in a pocket, worn to cloth. "Three more ' +
+      'ports," they say. "Maybe four, if the money holds."'), gift: 'Pay part of the fare (60 cr)', advice: 'Tell them which lanes are quick right now', listen: 'Ask them what they\'ll do first, when they get there' },
+  family: { ask: 'Ask about the family', text: '{n} is going to see family, and has been trying all evening to think what to bring.', gift: 'Press a few credits into their hand for a present (60 cr)', advice: 'Suggest something from the market here', listen: 'Ask who they\'re going to see' },
   job: { ask: 'Ask about the interview', text: '{n} has an interview at the other end, and says the questions over under their breath.', gift: 'Stand them the clothes for it (60 cr)', advice: 'Play the interviewer for a few questions', listen: 'Let them talk it through' },
-  fresh: { ask: 'Ask about starting again', text: ('{n} says only that it is a fresh start, and that they would rather not say from what. They are ' +
-      'watching to see how you take it.'), gift: 'Put something toward the first month (60 cr)', advice: 'Tell them what to do first in a new port', listen: 'Say it is all right not to say' },
-  research: { ask: 'Ask about the posting', text: ('{n} has a research posting, and the instruments for it in a case under the table that they have ' +
-      'not let go of since you sat down.'), gift: 'Pay the case\'s berth fee (60 cr)', advice: 'Tell them what to watch for on the lane', listen: 'Ask what they are going to measure' },
+  fresh: { ask: 'Ask about starting again', text: ('{n} says only that it\'s a fresh start, and that they\'d rather not say from what. They\'re ' +
+      'watching to see how you take it.'), gift: 'Put something toward the first month (60 cr)', advice: 'Tell them what to do first in a new port', listen: 'Say it\'s all right not to say' },
+  research: { ask: 'Ask about the posting', text: ('{n} has a research posting, and the instruments for it in a case under the table that they haven\'t' +
+      ' let go of since you sat down.'), gift: 'Pay the case\'s berth fee (60 cr)', advice: 'Tell them what to watch for on the lane', listen: 'Ask what they\'re going to measure' },
   pilgrim: { ask: 'Ask about the pilgrimage', text: '{n} is bound for somewhere holy, a long way off, and has booked the cheapest berth on every leg to get there.', gift: 'Pay a leg of the trip (60 cr)', advice: 'Tell them how to find a berth on the long haul', listen: 'Ask what the place means to them' },
-  medical: { ask: 'Ask what is wrong', text: '{n} presses a hand to their side, and says it is the reason for the trip: a specialist, a long way out.', gift: 'Pay toward the specialist (60 cr)', advice: 'Tell them where the medics are on the way', listen: 'Ask them to tell you about it' },
+  medical: { ask: 'Ask what\'s wrong', text: '{n} presses a hand to their side, and says it\'s the reason for the trip: a specialist, a long way out.', gift: 'Pay toward the specialist (60 cr)', advice: 'Tell them where the medics are on the way', listen: 'Ask them to tell you about it' },
 };
 function helpScene(p, pat, ctx) {
   const g = barLines('goal-help')[p.goal], say = barSay('goal-help', p);
@@ -76,36 +76,36 @@ const SECRET_HELP = {
   debt: {
     text: '{n} turns the glass in a ring on the bar. "Six hundred and twelve," they say. "It\'s not even a lot. It\'s just more than I have, and the people it\'s owed to don\'t do arithmetic."',
     opts: [
-      { label: 'Cover part of it (200 cr)', cost: 200, n: 3, line: 'You count out the credits. {n} turns them over, and then takes them, and does not say anything for a long time.' },
-      { label: 'Say you will keep an ear out for who is asking', cost: 0, n: 1, line: '"That\'d help," {n} says.' },
+      { label: 'Cover part of it (200 cr)', cost: 200, n: 3, line: 'You count out the credits. {n} turns them over, and then takes them, and doesn\'t say anything for a long time.' },
+      { label: 'Say you\'ll keep an ear out for who\'s asking', cost: 0, n: 1, line: '"That\'d help," {n} says.' },
     ],
   },
   ill: {
     text: '{n} puts the glass down. "Six months and the recyclers on that last ship," they say. "The clinic wants more than I have. I tell people it\'s the dust."',
     opts: [
-      { label: 'Pay for the clinic (100 cr)', cost: 100, n: 3, line: '{n} does not argue. The next time you see them, they say, they will be breathing better.' },
+      { label: 'Pay for the clinic (100 cr)', cost: 100, n: 3, line: '{n} doesn\'t argue. The next time you see them, they say, they\'ll be breathing better.' },
       { label: 'Tell them where the nearest medic is', cost: 0, n: 1, line: 'You give the name and the street. {n} writes it on a napkin and puts it carefully in a pocket.' },
     ],
   },
   wanted: {
     text: '{n} has taken the seat with its back to the wall. "There\'s a warrant," they say, "and it\'s not for what they say it is. I\'d rather not be at a table by the door."',
     opts: [
-      { label: 'Say you have seen nothing', cost: 0, n: 2, line: '"Good," {n} says. "Thank you." They leave by the back a few minutes later, without hurry.' },
-      { label: 'Tell them to give themselves up', cost: 0, n: -1, line: '{n} looks at you and does not answer. They finish their drink and leave, and do not look back.' },
+      { label: 'Say you\'ve seen nothing', cost: 0, n: 2, line: '"Good," {n} says. "Thank you." They leave by the back a few minutes later, without hurry.' },
+      { label: 'Tell them to give themselves up', cost: 0, n: -1, line: '{n} looks at you and doesn\'t answer. They finish their drink and leave, and don\'t look back.' },
     ],
   },
   contraband: {
     text: '{n} makes a gesture at the room, and lowers their voice to nothing. "I move things," they say, "the kind that don\'t go on a manifest. I don\'t tell everyone."',
     opts: [
-      { label: 'Ask who they know', cost: 0, n: 1, line: '{n} names a name, and a port, and a time of day, and then says you never heard it. It is a door, and you now know where.' },
-      { label: 'Say you do not want to know', cost: 0, n: 1, line: '{n} relaxes. "Good," they say. "Then we\'ve never talked."' },
+      { label: 'Ask who they know', cost: 0, n: 1, line: '{n} names a name, and a port, and a time of day, and then says you never heard it. It\'s a door, and you now know where.' },
+      { label: 'Say you don\'t want to know', cost: 0, n: 1, line: '{n} relaxes. "Good," they say. "Then we\'ve never talked."' },
     ],
   },
   spy: {
     text: '{n} stops asking questions. "I\'m paid to ask them," they say. "I\'m not paid to like it."',
     opts: [
-      { label: 'Tell them what you know of the lanes', cost: 0, n: 0, line: '{n} writes nothing down, and does not need to.' },
-      { label: 'Say you will not be asked again', cost: 0, n: 0, line: '"Fair," {n} says, and orders you another.' },
+      { label: 'Tell them what you know of the lanes', cost: 0, n: 0, line: '{n} writes nothing down, and doesn\'t need to.' },
+      { label: 'Say you won\'t be asked again', cost: 0, n: 0, line: '"Fair," {n} says, and orders you another.' },
     ],
   },
 };

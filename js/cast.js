@@ -17,7 +17,7 @@ const CAST = {
     first: 'Ines', last: 'Ferreira', culture: 'earth', home: 'Lisbon Arcology', job: 'ferry pilot', age: 34, role: 'pilot',
     traits: ['curious', 'brave'], wage: 70,
     skills: { pilot: 3, gunner: 1, engineer: 1, slicer: 0 }, captain: { trade: 3, nerve: 4, thrift: 2 },
-    ambition: 'Wants a ship she does not have to ask permission to land.',
+    ambition: 'Wants a ship she doesn\'t have to ask permission to land.',
     bio: 'She flew the Lisbon to Luna ferry for nine years, until the night she put a failing shuttle down on an unlit pad instead of ditching it as the tower ordered. Forty-one people walked off. She lost her license for the way she did it, and she kept the logbook.',
     // The story you learn sitting with her (family.js uses it in place of an invented one): the same slots, her own life.
     story: {
@@ -31,7 +31,7 @@ const CAST = {
       },
     },
     chatter: [
-      'Ines is flying with one hand and writing in a logbook that is not the ship\'s with the other.',
+      'Ines is flying with one hand and writing in a logbook that\'s not the ship\'s with the other.',
       'Ines: "A good landing is boring. People forget that. I\'m very proud of my boring landings."',
       'Ines has taped a card to the nav display with a single word on it: ASK.',
       'Ines is running a dead-stick approach on the sim, humming, with her eyes shut.',
@@ -39,7 +39,7 @@ const CAST = {
     ],
     // What they leave behind when they walk off or die (fate.js farewellFacts): a flag and its line, in priority order, two at most.
     farewell: {
-      walk: 'Ines does not ask for leave. At the foot of the ramp on {planet} she writes the landing in the logbook, the pad and the time, and then she is gone.',
+      walk: 'Ines doesn\'t ask for leave. At the foot of the ramp on {planet} she writes the landing in the logbook, the pad and the time, and then she\'s gone.',
       facts: [
         ['reference', 'Your reference for the Lisbon board is folded into the back of her logbook, with the date of the hearing written on the fold.'],
         ['practiced', 'Her logbook has the dead-stick flip on a page of its own: ten seconds, cold thrusters, your hand on the cutoff.'],
@@ -71,12 +71,12 @@ const CAST = {
       },
       intro: {
         title: 'The Woman at the Helm',
-        text: 'Ines Ferreira has the helm, and has been flying with one hand for an hour, the other holding a logbook that is not the ship\'s. "Don\'t," she says, without turning round, "ask about the landing. Everybody asks about the landing." Nobody has, on this ship.',
+        text: 'Ines Ferreira has the helm, and has been flying with one hand for an hour, the other holding a logbook that\'s not the ship\'s. "Don\'t," she says, without turning round, "ask about the landing. Everybody asks about the landing." Nobody has, on this ship.',
         choices: [
           {
             label: 'Ask about the landing anyway',
             effects: { castLike: { who: 'ines', n: 1, memory: 'I told you about the landing, and you didn\'t look at me differently.' } },
-            result: 'She is silent for most of a minute. Then she tells it flat and fast: the dark pad, the tower saying ditch, the forty-one faces she ' +
+            result: 'She\'s silent for most of a minute. Then she tells it flat and fast: the dark pad, the tower saying ditch, the forty-one faces she ' +
               'could see on the cabin feed, and the thing she decided. When she finishes she lets out a breath. "There," she says. "That\'s the whole ' +
               'thing. It\'s much shorter than I thought."',
           },
@@ -99,8 +99,8 @@ const CAST = {
             label: 'Stand by the cutoff while she does it',
             effects: { castLike: { who: 'ines', n: 2, memory: 'You stood by the cutoff while I flew it dead.' }, castFlag: { who: 'ines', flag: 'practiced' }, castXp: { who: 'ines', role: 'pilot', n: 4 } },
             result: 'You put your hand on the cutoff and she cuts the drive. The ship drifts in a silence you feel in your teeth. Ines turns her on cold ' +
-              'thrusters, a long clean arc, and when she brings the drive back up she is grinning so widely that she has to look away. "Ten seconds," ' +
-              'she says. "I didn\'t touch the stop." You did not say it.',
+              'thrusters, a long clean arc, and when she brings the drive back up she\'s grinning so widely that she has to look away. "Ten seconds," ' +
+              'she says. "I didn\'t touch the stop." You didn\'t say it.',
           },
           {
             label: 'Not on a loaded burn',
@@ -114,13 +114,13 @@ const CAST = {
         days: 25, title: 'The Board',
         text: ('A message from the Lisbon licensing board comes in on a slow channel. Ines reads it twice, standing still, and then hands you the ' +
             'terminal without a word. A reinstatement hearing, in forty days, for anyone with a license who can find a reference: "a person of ' +
-            'standing who has flown with the applicant, and will say so." She does not ask. She is watching the wall.'),
+            'standing who has flown with the applicant, and will say so." She doesn\'t ask. She\'s watching the wall.'),
         choices: [
           {
             label: 'Write the reference',
             effects: { castLike: { who: 'ines', n: 3, memory: 'You wrote my reference for the Lisbon board.' }, castFlag: { who: 'ines', flag: 'reference' } },
-            result: 'You write it that night, plainly, and it takes four tries because the first three sound like a eulogy. You say what you have seen: the ' +
-              'care, the nerve, the logbook. When you send it, Ines is standing in the hatch and does not say anything at all. In the morning there is ' +
+            result: 'You write it that night, plainly, and it takes four tries because the first three sound like a eulogy. You say what you\'ve seen: the ' +
+              'care, the nerve, the logbook. When you send it, Ines is standing in the hatch and doesn\'t say anything at all. In the morning there\'s ' +
               'a mug of coffee on your console, and the bunk across from yours has been made with corners.',
           },
           {
@@ -135,21 +135,21 @@ const CAST = {
           {
             label: '"It\'s not my place."',
             effects: { castLike: { who: 'ines', n: -1, memory: 'You said a reference wasn\'t your place.' } },
-            result: 'Her face does not change. "No," she says, "of course not." She folds the message and puts it away. For the rest of the day she says good morning, good evening and thank you, and nothing in between.',
+            result: 'Her face doesn\'t change. "No," she says, "of course not." She folds the message and puts it away. For the rest of the day she says good morning, good evening and thank you, and nothing in between.',
           },
         ],
       },
       late: {
         days: 45, title: 'Permission to Land',
-        text: ('It is late in the watch, and Ines is at the helm with the lights low. "May I say something that\'s not about flying?" she says. "I ' +
+        text: ('It\'s late in the watch, and Ines is at the helm with the lights low. "May I say something that\'s not about flying?" she says. "I ' +
             'want a command. Not now. Someday, a ship with my name on her papers, where I don\'t have to ask anyone for leave to put her down. I haven\'t' +
-            ' said it to anybody since Lisbon." She does not look round. "If you ever have ships and need somebody to put in the chair, I\'d ' +
+            ' said it to anybody since Lisbon." She doesn\'t look round. "If you ever have ships and need somebody to put in the chair, I\'d ' +
             'like to be asked."'),
         choices: [
           {
             label: 'Promise her a ship, someday',
             effects: { castLike: { who: 'ines', n: 2, memory: 'I told you I wanted a command, and you promised.' }, castFlag: { who: 'ines', flag: 'promised' } },
-            result: '"Someday," you say, "and you\'ll be asked." She does not answer. Then, to the windscreen: "That\'s all I wanted," she ' +
+            result: '"Someday," you say, "and you\'ll be asked." She doesn\'t answer. Then, to the windscreen: "That\'s all I wanted," she ' +
               'says. "A date would have been a lie. This is better."',
           },
           {
@@ -162,7 +162,7 @@ const CAST = {
       pivot: {
         days: 60, title: 'Cold Thrusters',
         get text() {
-          return 'The drive trips out on the approach and will not relight. The dock is closing, and there is no thrust to slow the ship, only the cold thrusters. Ines has both hands on the helm and the logbook shut beside her. "I can bring her in on these," she says. "It\'s the dead-stick flip again, with a dock at the end of it. I\'d like somebody at the cutoff."'
+          return 'The drive trips out on the approach and won\'t relight. The dock is closing, and there\'s no thrust to slow the ship, only the cold thrusters. Ines has both hands on the helm and the logbook shut beside her. "I can bring her in on these," she says. "It\'s the dead-stick flip again, with a dock at the end of it. I\'d like somebody at the cutoff."'
             + castRiskLines();
         },
         choices: [
@@ -170,7 +170,7 @@ const CAST = {
           { label: 'Put a second hand at the cutoff', ...gated(needCrew(2)), run: () => coldThrusters(true) },
           { label: 'Order her to ditch', memory: 'You ordered me to ditch the ship, as the tower did.', run() {
             castLike('ines', -3, this.memory);
-            return 'You order the ditch. She does it by the book, and the book is correct, and neither of you says that she would have made the pad.';
+            return 'You order the ditch. She does it by the book, and the book is correct, and neither of you says that she\'d have made the pad.';
           } },
         ],
       },
@@ -203,13 +203,13 @@ const CAST = {
       facts: [
         ['loan', 'The ring of braided wire he sent back with your two hundred credits is on the hook by the engine room door.'],
         ['plan', 'You can still say the plant back from memory, every valve of it, in his order.'],
-        ['promised', 'He asked whether you would try to keep the crew together, and you said you would try.'],
+        ['promised', 'He asked whether you\'d try to keep the crew together, and you said you\'d try.'],
       ],
     },
     scenes: {
       meet: {
         title: 'The Man with the Torque Wrench',
-        text: ('It is three in the morning, and in the yard a heavyset man is rebuilding a coolant loop on somebody else\'s ship for no pay. "Tomas ' +
+        text: ('It\'s three in the morning, and in the yard a heavyset man is rebuilding a coolant loop on somebody else\'s ship for no pay. "Tomas ' +
             'Achebe," he says, not looking up. "Welder. Engineer. Whatever you call a man who has rebuilt the same hull three times for three owners ' +
             'who sold her out from under him." He holds out the spanner handle-first. "Does your ship have a plant I could look after? Properly. For ' +
             'ten years."'),
@@ -246,15 +246,15 @@ const CAST = {
             label: 'Leave him to it',
             effects: { castLike: { who: 'tomas', n: 0, memory: 'You left me to my service.' } },
             result: '"It\'s all right," he says. "Most ' +
-              'people do. She\'ll thank you anyway." He goes back to the loop, and you hear him, softly, as you leave, telling the pipes that nobody ' +
-              'is angry at them.',
+              'people do. She\'ll thank you anyway." He goes back to the loop, and you hear him, softly, as you leave, telling the pipes that nobody\'s ' +
+              'angry at them.',
           },
         ],
       },
       mid1: {
         days: 10, title: 'Money Home',
         text: ('Tomas catches you in the galley with his jaw set. "I have a favor. Not a favor, a loan. My sister\'s transfer from the ring bounced, ' +
-            'and I haven\'t got the wage yet, and the rent on her flat is due." He says the number carefully, and does not meet your eye: two hundred ' +
+            'and I haven\'t got the wage yet, and the rent on her flat is due." He says the number carefully, and doesn\'t meet your eye: two hundred ' +
             'credits. "I\'ll pay it back from the first two pay days. I always pay it back."'),
         personal: true,
         choices: [
@@ -262,14 +262,14 @@ const CAST = {
             label: 'Lend him 200 cr',
             when: { credits: 200 },
             effects: { credits: -200, castLike: { who: 'tomas', n: 3, memory: 'You lent me two hundred credits for my sister\'s rent.' }, castFlag: { who: 'tomas', flag: 'loan' } },
-            result: 'He takes it with both hands. "Thank you," he says. It is not enough, and he says it again in Igbo. By the second pay day ' +
+            result: 'He takes it with both hands. "Thank you," he says. It\'s not enough, and he says it again in Igbo. By the second pay day ' +
               'the two hundred is in your account, with an extra: a ring of braided wire, on a note that says "for luck, from a man who understands ' +
               'machines".',
           },
           {
             label: '"I can\'t spare it."',
             effects: { castLike: { who: 'tomas', n: -1, memory: 'You couldn\'t spare two hundred credits.' } },
-            result: 'He straightens his shoulders. "Of course," he says. "I shouldn\'t have asked." He does not ask anyone else, and in the evening you ' +
+            result: 'He straightens his shoulders. "Of course," he says. "I shouldn\'t have asked." He doesn\'t ask anyone else, and in the evening you ' +
               'hear him in the engine room, low and steady, working out a month of arithmetic on his fingers. The next day he has taken two extra ' +
               'shifts.',
           },
@@ -284,17 +284,17 @@ const CAST = {
           {
             label: 'Ask him to teach you',
             effects: { castFlag: { who: 'tomas', flag: 'plan' }, castLike: { who: 'tomas', n: 2, memory: 'You asked me how I\'d rebuild her, and listened.' }, castXp: { who: 'tomas', role: 'engineer', n: 2 }, gainSkill: { post: 'engineer', n: 3 } },
-            result: 'It takes the whole of the quiet watch and half the next one. He draws it on the deck in chalk, a plant you would not know from a ' +
+            result: 'It takes the whole of the quiet watch and half the next one. He draws it on the deck in chalk, a plant you wouldn\'t know from a ' +
               'diagram, and then he rubs out the first pipe and makes you put it back from memory, and the second, and the third, until the deck is bare and the whole of her is laid out in your head. "There," he says. "Now you know her. Don\'t tell the owners."',
           },
           {
-            label: 'Ask him to write it down, so it does not go with the hull',
+            label: 'Ask him to write it down, so it doesn\'t go with the hull',
             when: { opinion: { who: 'tomas', min: OPINION.TRUSTED } },
             effects: { castFlag: { who: 'tomas', flag: 'plan' }, castLike: { who: 'tomas', n: 2, memory: 'You asked me to write the plan down, so it\'d last.' } },
             result: 'He looks at the flask. "Nobody has asked me that," he says. He goes below and comes back with a notebook with a stained ' +
               'cover, and spends the quiet watch filling eleven pages in small square capitals, a diagram on each. He tears them out along the fold, ' +
               'carefully, and puts them in your hand. "If she\'s sold again," he says, "somebody will need to know where the cracks are. Not the ' +
-              'owners. Somebody." You fold the pages into your jacket, and he goes back to the plant and tells it, quietly, that it will be all right.',
+              'owners. Somebody." You fold the pages into your jacket, and he goes back to the plant and tells it, quietly, that it\'ll be all right.',
           },
           {
             label: '"Stick to your shifts."',
@@ -310,13 +310,13 @@ const CAST = {
             'promise. I\'m asking whether you\'d try."'),
         choices: [
           {
-            label: 'Say you would try',
+            label: 'Say you\'d try',
             effects: { castLike: { who: 'tomas', n: 2, memory: 'You said you\'d try to keep the crew together.' }, castFlag: { who: 'tomas', flag: 'promised' } },
             result: '"I\'d try," you say, and he lets out a breath. "That\'s enough," he says. "Nobody has ever said that. They say yes, or no. Nobody ' +
               'says try." He claps your shoulder, once, hard, and goes below. You can hear him telling the engines the news.',
           },
           {
-            label: 'Say you cannot promise that',
+            label: 'Say you can\'t promise that',
             effects: { castLike: { who: 'tomas', n: 1, memory: 'You were honest about what you could promise.' } },
             result: '"No," he says, "no, of course. Nobody can." He smiles. "Thank you for not being kind," he says. "It\'s a rare thing." He goes back to ' +
               'the engines, and, on the way, pats the bulkhead twice.',
@@ -334,7 +334,7 @@ const CAST = {
           { label: 'Send a second person in with him', ...gated(needCrew(2)), run: () => thePlant(true) },
           { label: 'Tell him to vent the plant', memory: 'You told me to vent the plant.', run() {
             castLike('tomas', -3, this.memory);
-            return 'You tell him to vent her. He stands at the door for a moment, and then he does it, and the plant dies with a sound like a long breath. He does not look at you. He goes below to tell her he is sorry.';
+            return 'You tell him to vent her. He stands at the door for a moment, and then he does it, and the plant dies with a sound like a long breath. He doesn\'t look at you. He goes below to tell her he\'s sorry.';
           } },
         ],
       },
@@ -345,10 +345,10 @@ const CAST = {
     traits: ['brave', 'rude'], wage: 60,
     skills: { gunner: 3, pilot: 1, engineer: 0, slicer: 1 }, captain: { trade: 2, nerve: 5, thrift: 2 },
     ambition: 'Wants to captain a ship the way she captained her ring-ball side: loud, and nobody left on the bench.',
-    bio: 'Striker and captain of the Olympus Dome Ravens until a dislocated knee ended her ring-ball career at twenty-six. She took the only other job where you put something exactly where you meant to, and she is still in a bad mood about it.',
+    bio: 'Striker and captain of the Olympus Dome Ravens until a dislocated knee ended her ring-ball career at twenty-six. She took the only other job where you put something exactly where you meant to, and she\'s still in a bad mood about it.',
     chatter: ['Yelena is arguing with the ring-ball feed. The feed is losing.', ('Yelena: "A gun is just a very serious ball. Same principle. You don\'t' +
         ' look at the thing, you look at where it\'s going to be."'), ('Yelena is doing knee exercises in the corridor with the grim cheer of a ' +
-            'woman who has been told to.'), 'Yelena: "Every ship I\'ve been on has had a bench. Somebody sitting out, waiting to be asked. I hate it."', 'Yelena has painted a black raven the size of a hand on the fire control housing, and dares anyone to say it is not regulation.'],
+            'woman who has been told to.'), 'Yelena: "Every ship I\'ve been on has had a bench. Somebody sitting out, waiting to be asked. I hate it."', 'Yelena has painted a black raven the size of a hand on the fire control housing, and dares anyone to say it\'s not regulation.'],
     scenes: {
       meet: {
         title: 'The Striker at the Rail',
@@ -363,8 +363,8 @@ const CAST = {
             when: { berths: 1 },
             effects: { castJoin: 'yelena' },
             result: 'She puts the ice down and gets up so fast the ' +
-              'stool falls over, and does not pick it up. "Do you know," she says, "you\'re the first person to ask me that and wait for the answer." ' +
-              'She is already walking. Over her shoulder, to the screen: "Don\'t think I\'ve forgotten the foul."',
+              'stool falls over, and doesn\'t pick it up. "Do you know," she says, "you\'re the first person to ask me that and wait for the answer." ' +
+              'She\'s already walking. Over her shoulder, to the screen: "Don\'t think I\'ve forgotten the foul."',
           },
           {
             label: '"Not this time."',
@@ -381,7 +381,7 @@ const CAST = {
           {
             label: 'Take the ref\'s side',
             effects: { castLike: { who: 'yelena', n: 2, memory: 'You took the ref\'s side, and I enjoyed it very much.' }, castXp: { who: 'yelena', role: 'gunner', n: 2 } },
-            result: 'You say the elbow was clean, and for ten minutes she is the happiest you have seen her, taking you through the replay frame by frame ' +
+            result: 'You say the elbow was clean, and for ten minutes she\'s the happiest you\'ve seen her, taking you through the replay frame by frame ' +
               'with a fork for a pointer. By the end she has you pointing too. "You\'re wrong," she says, delighted, "and you know exactly where, and ' +
               'that\'s the whole game." She goes back to her post with a spring in her step, favoring the good knee.',
           },
@@ -395,54 +395,54 @@ const CAST = {
       },
       mid1: {
         days: 10, title: 'Pickup Game',
-        text: ('Yelena finds you with a ball under one arm. It is a proper ring-ball, scuffed gray, and it has clearly traveled a long way in the ' +
+        text: ('Yelena finds you with a ball under one arm. It\'s a proper ring-ball, scuffed gray, and it has clearly traveled a long way in the ' +
             'bottom of a bag. "The hold is empty," she says. "Twenty tonnes of empty. I\'m going to put a ring at each end and play, and every person ' +
-            'aboard is going to play, and you\'re going to be on my side." She does not make it a question.'),
+            'aboard is going to play, and you\'re going to be on my side." She doesn\'t make it a question.'),
         choices: [
           {
             label: 'Clear the hold and play',
             effects: { castLike: { who: 'yelena', n: 2, memory: 'You played, and you were on my side.' }, castXp: { who: 'yelena', role: 'gunner', n: 3 } },
-            result: 'It is the worst ring-ball ever played. Low gravity, no lines, a ring made of tied cable. You are on her side, and she captains you loudly and unfairly, calling every foul against her own side and none for it, and when the cable ring finally drops through on the last throw she is the one who shouts. You lose by two. ' +
-              'She does not mention the score once, but at the evening meal she asks everybody, by name, how they feel about next week.',
+            result: 'It\'s the worst ring-ball ever played. Low gravity, no lines, a ring made of tied cable. You\'re on her side, and she captains you loudly and unfairly, calling every foul against her own side and none for it, and when the cable ring finally drops through on the last throw she\'s the one who shouts. You lose by two. ' +
+              'She doesn\'t mention the score once, but at the evening meal she asks everybody, by name, how they feel about next week.',
           },
           {
             label: 'Not in the hold',
             effects: { castLike: { who: 'yelena', n: -1, memory: 'You said no to the game in the hold.' } },
-            result: '"Sure," she says, and puts the ball back in her bag, carefully. She is professional for the rest of the burn. It is the quietest the galley has been.',
+            result: '"Sure," she says, and puts the ball back in her bag, carefully. She\'s professional for the rest of the burn. It\'s the quietest the galley has been.',
           },
         ],
       },
       mid2: {
         days: 25, title: 'The Final',
-        text: ('It is the night of the ring-ball final, and the Ravens\' old rivals from Hellas are playing in it. Yelena has spent two days ' +
-            'pretending she does not care. She has the watch. "It\'s nothing," she says, at the hatch, with a bright, flat voice. "It\'s only a final. ' +
+        text: ('It\'s the night of the ring-ball final, and the Ravens\' old rivals from Hellas are playing in it. Yelena has spent two days ' +
+            'pretending she doesn\'t care. She has the watch. "It\'s nothing," she says, at the hatch, with a bright, flat voice. "It\'s only a final. ' +
             'I\'ll listen to the radio. Radio is fine."'),
         choices: [
           {
             label: 'Take her watch',
             effects: { castLike: { who: 'yelena', n: 3, memory: 'You took my watch on the night of the final.' } },
-            result: 'You tell her to go. She does not argue. You hear the roar from the galley, through the deck, from the second quarter on: shouted ' +
-              'refereeing, a long agonized groan, and, near the end, a silence so complete you think the feed has gone. In the morning there is a ' +
-              'small black raven drawn on the back of your hand, in marker, and she does not mention it.',
+            result: 'You tell her to go. She doesn\'t argue. You hear the roar from the galley, through the deck, from the second quarter on: shouted ' +
+              'refereeing, a long agonized groan, and, near the end, a silence so complete you think the feed has gone. In the morning there\'s a ' +
+              'small black raven drawn on the back of your hand, in marker, and she doesn\'t mention it.',
           },
           {
             label: '"It\'s your watch."',
             effects: { castLike: { who: 'yelena', n: -1, memory: 'You said it was my watch on the night of the final.' } },
             result: '"Of course," she says. She stands the watch perfectly, to the minute, with the radio turned low, and says nothing at all, then or ' +
-              'after. When you come to relieve her she is at the guns with her chin up.',
+              'after. When you come to relieve her she\'s at the guns with her chin up.',
           },
         ],
       },
       late: {
         days: 45, title: 'Nobody on the Bench',
         text: ('Yelena is cleaning the fire control housing when you find her, one slow pass of the cloth for each sentence. "I want to run a ship," she says. "Not now. Someday. A whole crew, and nobody on the bench, nobody who\'s only a name on a ' +
-            'list. Every ship I\'ve been on has a bench. I\'d put everyone on the pitch." She does not look up. "If you ever have ships, I\'d ' +
+            'list. Every ship I\'ve been on has a bench. I\'d put everyone on the pitch." She doesn\'t look up. "If you ever have ships, I\'d ' +
             'like to be asked."'),
         choices: [
           {
             label: 'Promise her a ship, someday',
             effects: { castLike: { who: 'yelena', n: 2, memory: 'I told you I wanted a ship with no bench, and you promised.' }, castFlag: { who: 'yelena', flag: 'promised' } },
-            result: '"Someday," you say, "and you\'ll be asked." She puts the cloth down on the housing and, for once, does not pick anything up in its place. She says ' +
+            result: '"Someday," you say, "and you\'ll be asked." She puts the cloth down on the housing and, for once, doesn\'t pick anything up in its place. She says ' +
               '"Good" to the fire control, in a low voice. Then, louder, to the whole housing: "Did you hear that?"',
           },
           {
@@ -457,9 +457,9 @@ const CAST = {
         days: 60, title: 'Over the Hull',
         get text() {
           const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6;
-          return 'A ship is drifting across your path with her drive dark: disabled, and armed, going by the way she is not answering. Yelena is already at the hatch with her helmet under one arm. "I go first," she says. "I\'ve always gone first. That\'s what a striker is for."'
+          return 'A ship is drifting across your path with her drive dark: disabled, and armed, going by the way she\'s not answering. Yelena is already at the hatch with her helmet under one arm. "I go first," she says. "I\'ve always gone first. That\'s what a striker is for."'
             + (low ? ' Your own hull has taken a beating, and a bad hull is a bad place to fall back to.' : ' Your hull is sound.')
-            + (medic ? ` ${medic.first} has the med kit open at the airlock.` : ' There is nobody aboard who can do more than a field dressing, and she knows it.')
+            + (medic ? ` ${medic.first} has the med kit open at the airlock.` : ' There\'s nobody aboard who can do more than a field dressing, and she knows it.')
             + ' Yelena waits with one boot over the hatch lip.';
         },
         choices: [
@@ -468,7 +468,7 @@ const CAST = {
           { label: 'Call it off', memory: 'You called off the boarding and put me on the bench.', run() {
             castFlag('yelena', 'benched'); castLike('yelena', -3, this.memory);
             return ('You tell her no, and cut the channel, and the drifting ship goes on drifting. Yelena stands at the hatch with her ' +
-                'helmet in her hand until the drifting ship is a point of light. "Fine," she says. She sits down on the bench by the airlock, straight, and does not say another word to you for ' +
+                'helmet in her hand until the drifting ship is a point of light. "Fine," she says. She sits down on the bench by the airlock, straight, and doesn\'t say another word to you for ' +
                 'the rest of the burn.');
           } },
         ],
@@ -480,8 +480,8 @@ const CAST = {
     traits: ['talkative', 'generous'], wage: 80,
     skills: { slicer: 3, engineer: 1, gunner: 1, pilot: 0 }, captain: { trade: 5, nerve: 1, thrift: 3 },
     ambition: 'Wants every dome on Mars on one open band before he retires.',
-    bio: ('He ran the Valles dome network for twenty-five years, and knows what every dome is short of this week, who is lying about it, and what ' +
-        'they would pay. When the Concord closed the open band to break a strike, he kept a relay running in his own kitchen for eleven days, and was ' +
+    bio: ('He ran the Valles dome network for twenty-five years, and knows what every dome is short of this week, who\'s lying about it, and what ' +
+        'they\'d pay. When the Concord closed the open band to break a strike, he kept a relay running in his own kitchen for eleven days, and was ' +
         'let go for it.'),
     chatter: [
       'Ruben: "Mars isn\'t quiet. It\'s listening. You can hear the difference if you hold still."',
@@ -494,7 +494,7 @@ const CAST = {
       meet: {
         title: 'The Man with the Relay',
         text: ('At the edge of the yard, among the stalls, a man in a cardigan far too warm for the hall is sitting behind a tangle of antennae with ' +
-            'a thermos. "Ruben Castellanos," he says, and pours you a cup before you have said yes. "I know what every dome on Mars is short of this ' +
+            'a thermos. "Ruben Castellanos," he says, and pours you a cup before you\'ve said yes. "I know what every dome on Mars is short of this ' +
             'week, who\'s lying about it, and what they\'ll pay. Twenty-five years on the Valles network. They let me go for keeping a relay running ' +
             'in my kitchen." He beams. "Does your ship have an ear?"'),
         choices: [
@@ -504,13 +504,13 @@ const CAST = {
             effects: { castJoin: 'ruben' },
             result: 'He packs the whole stall into one battered ' +
               'case in what seems like a single motion, and presses the thermos into your hands. "Hold this," he says, "it\'s still hot, that\'s ' +
-              'important." He talks the whole way to the ship: about the band, about your ship, about three domes you have never heard of, and about ' +
+              'important." He talks the whole way to the ship: about the band, about your ship, about three domes you\'ve never heard of, and about ' +
               'how glad he is. Nobody has the heart to interrupt.',
           },
           {
             label: '"Not this time."',
             effects: { castLater: 'ruben' },
-            result: '"Of course," he says, and, because it is his nature, he pours you another cup. "Take it for the road. If you hear anything good on the bands, you know where my stall is. I\'ll hear it first, mind."',
+            result: '"Of course," he says, and, because it\'s his nature, he pours you another cup. "Take it for the road. If you hear anything good on the bands, you know where my stall is. I\'ll hear it first, mind."',
           },
         ],
       },
@@ -528,7 +528,7 @@ const CAST = {
               'answer. You see? You\'re very good at this. You have the ear."',
           },
           {
-            label: 'Ask what he is listening for',
+            label: 'Ask what he\'s listening for',
             effects: { castLike: { who: 'ruben', n: 1, memory: 'You asked what I was listening for.' } },
             result: '"Ah," he says, and holds up the thermos, as one raises a glass. "What they need. People never say it outright, but they tell you in ' +
               'ways they don\'t notice. Too fast, too polite. That\'s when you know you\'re about to be useful." He turns the band ' +
@@ -543,7 +543,7 @@ const CAST = {
             'strictly, asked for." He lowers his voice. "It\'s worth money. The way a favor is worth money."'),
         choices: [
           { label: 'Act on the tip', memory: 'You acted on what I heard.', run() { castLike('ruben', 2, this.memory); castXp('ruben', 'slicer', 2); const tip = addRumor(); return (
-              `He tells you, and he is right to be careful: ${tip} He watches your face while you take it in, fiddling with the lid of the thermos. ` +
+              `He tells you, and he's right to be careful: ${tip} He watches your face while you take it in, fiddling with the lid of the thermos. ` +
               `"Not a word," he says, delighted, "about where you heard it."`); } },
           {
             label: 'Leave it',
@@ -560,8 +560,8 @@ const CAST = {
           {
             label: 'Ask him to keep an ear on it',
             effects: { castLike: { who: 'ruben', n: 2, memory: 'You asked me to keep an ear on what\'s said about the ship.' }, castXp: { who: 'ruben', role: 'slicer', n: 2 } },
-            result: '"Of course. Of course." He is glowing. For the rest of the burn there is a notebook next to the comms console, titled, in his ' +
-              'careful hand, WHAT IS SAID, and each page is a name, a time, and a verdict. By the end, you could write the ship\'s biography from it.',
+            result: '"Of course. Of course." He\'s glowing. For the rest of the burn there\'s a notebook next to the comms console, titled, in his ' +
+              'careful hand, WHAT\'s SAID, and each page is a name, a time, and a verdict. By the end, you could write the ship\'s biography from it.',
           },
           {
             label: 'Tell him not to bother with gossip',
@@ -572,7 +572,7 @@ const CAST = {
       },
       late: {
         days: 45, title: 'One Band',
-        text: ('It is late, and Ruben is sitting alone at the comms post with the lights down and the thermos untouched. "Captain, I want to say ' +
+        text: ('It\'s late, and Ruben is sitting alone at the comms post with the lights down and the thermos untouched. "Captain, I want to say ' +
             'something I\'ve said to no one since the kitchen." He turns his chair. "I want every dome on Mars on one open band. Not for money. I ' +
             'want anyone, anywhere under the glass, to be able to ask for help and be heard. If you ever have a ship with room for a relay, I\'d ' +
             'like to be the one who carries it."'),
@@ -580,7 +580,7 @@ const CAST = {
           {
             label: 'Promise him a ship, someday',
             effects: { castLike: { who: 'ruben', n: 2, memory: 'I told you about the open band, and you promised.' }, castFlag: { who: 'ruben', flag: 'promised' } },
-            result: '"Someday," you say, "and there\'ll be room for a relay." He does not say anything for some time. Then he picks up the thermos, pours a cup with both hands, and sets it in front of you. For once he does not tell you what is in it.',
+            result: '"Someday," you say, "and there\'ll be room for a relay." He doesn\'t say anything for some time. Then he picks up the thermos, pours a cup with both hands, and sets it in front of you. For once he doesn\'t tell you what\'s in it.',
           },
           {
             label: 'Make no promises',
@@ -594,7 +594,7 @@ const CAST = {
         days: 60, title: 'The Last Relay',
         get text() {
           const named = !!castRec('ruben').flags.councillor;
-          return 'A flare has been building on the sun-side sensors for an hour, and Ruben has been watching it with his thermos going cold. Now the Hellas relay drops off the open band mid-sentence, and a voice that is not the dome\'s comes up on the channel asking whether anyone can hear. "That\'s the north mast," Ruben says. "It won\'t take a realign from the console, the motor is fouled. It needs a hand on the third bolt, from outside, and the flare will be on us in forty minutes." He has one arm in the suit already. "I know which bolt. I\'ve known which bolt since the kitchen. Nobody else here does."'
+          return 'A flare has been building on the sun-side sensors for an hour, and Ruben has been watching it with his thermos going cold. Now the Hellas relay drops off the open band mid-sentence, and a voice that\'s not the dome\'s comes up on the channel asking whether anyone can hear. "That\'s the north mast," Ruben says. "It won\'t take a realign from the console, the motor is fouled. It needs a hand on the third bolt, from outside, and the flare will be on us in forty minutes." He has one arm in the suit already. "I know which bolt. I\'ve known which bolt since the kitchen. Nobody else here does."'
             + castRiskLines()
             + (named ? ' Councillor Reyes\'s name is on the relay\'s access list, and the dome will take the signal on her word.' : ' No councillor on Hellas has your name, and the dome will take a stranger\'s signal slowly.');
         },
@@ -614,11 +614,11 @@ const CAST = {
     traits: ['secretive', 'kind'], wage: 70,
     skills: { pilot: 3, engineer: 1, slicer: 1, gunner: 0 }, captain: { trade: 3, nerve: 3, thrift: 4 },
     ambition: 'Wants to bring one ship home that everybody else had given up on, and see her fly again.',
-    bio: 'She pulled dead ships into Ceres on a tug for twenty years. She keeps a list of every crew she found aboard them, the living and the others, and she does not talk about the list unless you ask the right way.',
+    bio: 'She pulled dead ships into Ceres on a tug for twenty years. She keeps a list of every crew she found aboard them, the living and the others, and she doesn\'t talk about the list unless you ask the right way.',
     chatter: [
       'Bexa: "I\'ve never been aboard a dead one. Cold, yes. The lights on a timer, and the log waiting for somebody to read it."',
       'Bexa is flying with both hands on the stick and her thumbs tucked under, the way you hold something that might slip.',
-      'Bexa has a brass tag on a string above the console. She will not say whose it was.',
+      'Bexa has a brass tag on a string above the console. She won\'t say whose it was.',
       'Bexa: "In the Belt we don\'t leave a ship. Not for money. Not for orders. You tow her home."',
       'Bexa is humming a tug-pilot lullaby, low, to the transponder.'
     ],
@@ -645,9 +645,9 @@ const CAST = {
       },
       intro: {
         title: 'The List',
-        text: ('Bexa Oyelaran has the helm, and, taped inside the console cover where only the pilot can see it, a list. It is written in small, even ' +
+        text: ('Bexa Oyelaran has the helm, and, taped inside the console cover where only the pilot can see it, a list. It\'s written in small, even ' +
             'handwriting, in a dozen colors of ink: names, and beside each name a date and a hull number. She sees you looking. "The crews," she says, ' +
-            'evenly. "The ones I found. All of them. Living, and otherwise." She does not close the cover. "Most people ask me not to say."'),
+            'evenly. "The ones I found. All of them. Living, and otherwise." She doesn\'t close the cover. "Most people ask me not to say."'),
         choices: [
           {
             label: 'Ask about the living ones',
@@ -659,8 +659,8 @@ const CAST = {
           {
             label: 'Ask about the others',
             effects: { castLike: { who: 'bexa', n: 1, memory: 'You asked about the others, and listened.' } },
-            result: 'She is silent for a long time. "Thirty-one," she says. "I make sure I say their names once a year, out loud, on the day I found them. ' +
-              'Somebody should." She closes the cover, finally, gently, as you would a door on someone sleeping. "Thank you for asking. It\'s not what ' +
+            result: 'She\'s silent for a long time. "Thirty-one," she says. "I make sure I say their names once a year, out loud, on the day I found them. ' +
+              'Somebody should." She closes the cover, finally, gently, as you\'d a door on someone sleeping. "Thank you for asking. It\'s not what ' +
               'most people ask."',
           },
         ],
@@ -676,14 +676,14 @@ const CAST = {
             effects: { castLike: { who: 'bexa', n: 2, memory: 'You took the detour to look at the wreck.' }, castXp: { who: 'bexa', role: 'pilot', n: 3 }, delay: 6 },
             result: 'She brings the ship in slow and gentle, the way you approach a frightened animal. The wreck is a hauler, dark and cold, her ' +
               'hatches sealed, her beacon the only living thing on her. Nobody aboard. Bexa stays on the scope until the beacon is a speck. ' +
-              'Quietly, she writes a name on a list you cannot see. "She was called the Patient Wren," she says. "I\'ll tell the registry. She\'ll be ' +
+              'Quietly, she writes a name on a list you can\'t see. "She was called the Patient Wren," she says. "I\'ll tell the registry. She\'ll be ' +
               'towed home." She flies the rest of the shift with two fingers on the stick.',
           },
           {
             label: 'Stay on course',
             effects: { castLike: { who: 'bexa', n: -1, memory: 'You wouldn\'t let me look at the wreck.' } },
             result: '"No," she says. "Of course. It\'s not my ship." She takes her hand off the console slowly, and the transponder\'s faint call fades ' +
-              'behind you, four seconds at a time, until you cannot hear it. She flies on, correct and silent, and later you see her write something ' +
+              'behind you, four seconds at a time, until you can\'t hear it. She flies on, correct and silent, and later you see her write something ' +
               'small on the inside of the console cover.',
           },
         ],
@@ -691,35 +691,35 @@ const CAST = {
       mid2: {
         days: 25, title: 'The Ghost on the Scope',
         text: ('The scope paints a ship at forty thousand kilometers, closing. Bexa looks at it for exactly four seconds. "Ghost," she says. Then, ' +
-            'because you have not moved: "In the Belt, a ghost is mostly a real ship. But this one has a ghost\'s manners: it\'s too tidy, the heading ' +
+            'because you haven\'t moved: "In the Belt, a ghost is mostly a real ship. But this one has a ghost\'s manners: it\'s too tidy, the heading ' +
             'is a slightly wrong shade of straight. Sensor echo off the ice. I\'ve seen it forty times." She waits. "I\'d like to ignore it."'),
         choices: [
           {
             label: 'Trust her',
             effects: { castLike: { who: 'bexa', n: 2, memory: 'You trusted me about the ghost on the scope.' }, castXp: { who: 'bexa', role: 'pilot', n: 2 } },
             result: 'You tell her to carry on. She carries on, and for the next twenty minutes the whole ship waits with her, listening to the ' +
-              'thing she is certain is not there. At the end, the contact goes pale, and thins, and is gone, like breath on a pane. Bexa lets out a ' +
-              'long, slow exhale. "Echo," she says. "Forty-one." She does not say thank you. She puts a tick on the inside of the console ' +
+              'thing she\'s certain isn\'t there. At the end, the contact goes pale, and thins, and is gone, like breath on a pane. Bexa lets out a ' +
+              'long, slow exhale. "Echo," she says. "Forty-one." She doesn\'t say thank you. She puts a tick on the inside of the console ' +
               'cover.',
           },
           {
             label: 'Raise the alarm anyway',
             effects: { castLike: { who: 'bexa', n: -1, memory: 'You raised the alarm about a ghost I had called.' } },
             result: 'The alarm goes, and the crew goes to stations, and in twenty minutes the contact fades to nothing, as she said it would. Bexa takes ' +
-              'the ship off alert herself, calmly, without a word, and flies on. "Better safe," she says at last. For a day she answers in single words, and after that she reports a contact only once she is sure of it.',
+              'the ship off alert herself, calmly, without a word, and flies on. "Better safe," she says at last. For a day she answers in single words, and after that she reports a contact only once she\'s sure of it.',
           },
         ],
       },
       late: {
         days: 45, title: 'The Ship Nobody Wanted',
-        text: ('Bexa is at the helm with the lights low and the console cover open, and she is not looking at the list. She ' +
+        text: ('Bexa is at the helm with the lights low and the console cover open, and she\'s not looking at the list. She ' +
             'turns. "I want a ship. Not to tow. A wreck that everyone else has given up on, that I bring home, and put ' +
             'right, and fly. A ship nobody wanted, and that wants to go." She looks at her hands. "If you ever have ships, I\'d like to be asked."'),
         choices: [
           {
             label: 'Promise her a ship, someday',
             effects: { castLike: { who: 'bexa', n: 2, memory: 'I told you about the ship nobody wanted, and you promised.' }, castFlag: { who: 'bexa', flag: 'promised' } },
-            result: '"Someday," you say, "and you\'ll be asked." She does not answer for a moment. Then she takes the brass tag from above the ' +
+            result: '"Someday," you say, "and you\'ll be asked." She doesn\'t answer for a moment. Then she takes the brass tag from above the ' +
               'console, on its string, and holds it in her palm. "He\'d have liked you," she says, to nobody in particular, and puts it carefully ' +
               'back.',
           },
@@ -735,7 +735,7 @@ const CAST = {
         days: 60, title: 'The Tow',
         get text() {
           const lowMass = G.state.fuel <= ship().fuel * 0.5;
-          return 'The hulk on your line has begun to turn. It is a slow roll at first, and the line takes it up, and then the roll gets into the line and you feel it in the stick. The hulk\'s beacon is still calling, every four seconds. Bexa has both hands on the controls and her eyes on the scope. "She\'ll tear the cleat out of her bow in an hour," she says, "or she\'ll tear it out of us. I could cut her loose. I\'m not going to cut her loose. Somebody has to go out on the line and take the spin out of her, and I\'m the one who has done it." She reaches for the tether. "Put somebody on the stick."'
+          return 'The hulk on your line has begun to turn. It\'s a slow roll at first, and the line takes it up, and then the roll gets into the line and you feel it in the stick. The hulk\'s beacon is still calling, every four seconds. Bexa has both hands on the controls and her eyes on the scope. "She\'ll tear the cleat out of her bow in an hour," she says, "or she\'ll tear it out of us. I could cut her loose. I\'m not going to cut her loose. Somebody has to go out on the line and take the spin out of her, and I\'m the one who has done it." She reaches for the tether. "Put somebody on the stick."'
             + castRiskLines()
             + (lowMass ? ' The tanks are low, and a hard burn to take up slack is more than the ship can spare.' : ' The tanks are over half, enough for a hard burn if the line comes back on her.');
         },
@@ -744,7 +744,7 @@ const CAST = {
           { label: 'Send a second hand out with her', ...gated(needCrew(2)), run: () => theTow(true) },
           { label: 'Cut the line and let the hulk go', memory: 'You cut the tow on me.', run() {
             castFlag('bexa', 'benched'); castLike('bexa', -3, this.memory);
-            return 'You tell her to cut the line, and she does, with her own hand on the release. The hulk goes on turning, slowly, its beacon calling every four seconds until it is too faint to hear. Bexa sits at the stick for a long while with the tag in her fist. "It\'s your call," she says at last. "I\'ll put her on the list as lost."';
+            return 'You tell her to cut the line, and she does, with her own hand on the release. The hulk goes on turning, slowly, its beacon calling every four seconds until it\'s too faint to hear. Bexa sits at the stick for a long while with the tag in her fist. "It\'s your call," she says at last. "I\'ll put her on the list as lost."';
           } },
         ],
       },
@@ -766,8 +766,8 @@ const CAST = {
     scenes: {
       meet: {
         title: 'The Kid at the Range',
-        text: ('In the dock bar there is a dart-laser board, and a young person at it with a perfect, unnerving score, who flinches at every cheer. ' +
-            'Nobody is cheering for long. "Pax Iwu," says the kid, when you sit. "Ice-drill operator. Was." The hand with the dart goes still. "I\'m ' +
+        text: ('In the dock bar there\'s a dart-laser board, and a young person at it with a perfect, unnerving score, who flinches at every cheer. ' +
+            'Nobody\'s cheering for long. "Pax Iwu," says the kid, when you sit. "Ice-drill operator. Was." The hand with the dart goes still. "I\'m ' +
             'good with a laser. I\'m the best in the Warren. I want a job where nobody\'s standing next to the thing when it fires." They look up. "That\'s ' +
             'a bad thing to say, I know."'),
         choices: [
@@ -793,14 +793,14 @@ const CAST = {
             '"Is it different? When it\'s real?"'),
         choices: [
           {
-            label: 'Tell them honestly that it is different',
+            label: 'Tell them honestly that it\'s different',
             effects: { castLike: { who: 'pax', n: 2, memory: 'You told me the truth about what it\'s like when it\'s real.' }, castXp: { who: 'pax', role: 'gunner', n: 2 } },
             result: '"Yes," you say. "It\'s different. It\'s louder, and everything you do matters, and your hands shake. Everybody\'s do. You do it ' +
               'anyway, and it gets quieter." Pax lets out a breath, slowly. "Thank you," they say. "Everybody else says it\'s the same. It\'s a relief ' +
               'to be told it\'s not." They go back to the scores.',
           },
           {
-            label: 'Say it is the same: aim, breathe',
+            label: 'Say it\'s the same: aim, breathe',
             effects: { castLike: { who: 'pax', n: 1, memory: 'You told me to aim and breathe.' } },
             result: '"Aim, breathe," Pax repeats, and writes it, in small letters, on the inside of the handheld case. "Aim. Breathe." They say it twice more under their breath, and the second time only their lips move.',
           },
@@ -808,7 +808,7 @@ const CAST = {
       },
       mid1: {
         days: 10, title: 'The Coupling',
-        text: ('The gun mount needs its coupling checked, a ten-minute job that Pax has done many times, and which they are standing in front of ' +
+        text: ('The gun mount needs its coupling checked, a ten-minute job that Pax has done many times, and which they\'re standing in front of ' +
             'without moving. The wrench is in their hand, and has been for some time. "I can do it," Pax says, quietly, to the coupling. "I know I can do ' +
             'it. It\'s only a coupling." They stand there, and their knuckles are pale around the tool.'),
         choices: [
@@ -816,7 +816,7 @@ const CAST = {
             label: 'Check it together',
             effects: { castLike: { who: 'pax', n: 2, memory: 'You checked the coupling with me.' }, castXp: { who: 'pax', role: 'gunner', n: 3 } },
             result: 'You stand beside them, not helping, just present, and, after a minute, Pax puts the wrench to the coupling. It takes twelve minutes, ' +
-              'not ten. When it is done, Pax breathes out for what must be the first time in a quarter hour, and tests it, twice. "Good," ' +
+              'not ten. When it\'s done, Pax breathes out for what must be the first time in a quarter hour, and tests it, twice. "Good," ' +
               'they say. "It\'s good." They put the wrench back in its clip and square it with the rack, and the two of you stand a while longer with the hum of the mount coming up through your boots.',
           },
           {
@@ -824,27 +824,27 @@ const CAST = {
             effects: { castLike: { who: 'pax', n: 0, memory: 'You did the coupling for me.' } },
             result: 'You take the wrench, and do it in nine ' +
               'minutes. Pax says "Thank you" and watches your hands the whole time. Pax tests the coupling after you, quietly, when ' +
-              'they think no one is looking, and finds it perfect, and does not look any happier about it.',
+              'they think no one is looking, and finds it perfect, and doesn\'t look any happier about it.',
           },
         ],
       },
       mid2: {
         days: 25, title: 'The Foreman\'s Message',
-        text: ('A message from Ceres has been sitting unopened in Pax\'s queue for three days, with a sender name Pax will not say aloud. You know ' +
-            'what it is when you see their face. "It\'s from Foreman Dagny," Pax says, finally. "I don\'t know what it says. I know what I think it ' +
-            'says. I\'ve thought it so many times that I don\'t need to read it." They are holding the handheld at arm\'s length, like something ' +
+        text: ('A message from Ceres has been sitting unopened in Pax\'s queue for three days, with a sender name Pax won\'t say aloud. You know ' +
+            'what it\'s when you see their face. "It\'s from Foreman Dagny," Pax says, finally. "I don\'t know what it says. I know what I think it ' +
+            'says. I\'ve thought it so many times that I don\'t need to read it." They\'re holding the handheld at arm\'s length, like something ' +
             'hot.'),
         choices: [
           {
             label: 'Offer to sit with them while they read it',
             effects: { castLike: { who: 'pax', n: 3, memory: 'You sat with me while I read the foreman\'s message.' }, castXp: { who: 'pax', role: 'gunner', n: 2 }, castFlag: { who: 'pax', flag: 'foreman' } },
-            result: 'You sit on the deck beside them, with your back to the bulkhead, saying nothing, and Pax opens it. It is short. The foreman is walking ' +
-              'again, with a stick, and does not blame anybody, and would like to see the kid some day. Pax reads it twice, and puts the handheld ' +
+            result: 'You sit on the deck beside them, with your back to the bulkhead, saying nothing, and Pax opens it. It\'s short. The foreman is walking ' +
+              'again, with a stick, and doesn\'t blame anybody, and would like to see the kid some day. Pax reads it twice, and puts the handheld ' +
               'face-down on their knee, and cries, quietly, for about a minute. Then Pax wipes their face on a sleeve and says, "He says to practice. ' +
               'He says I have the best hands in the Warren." They laugh, a damp, astonished sound.',
           },
           {
-            label: 'Tell them to read it when they are ready',
+            label: 'Tell them to read it when they\'re ready',
             effects: { castLike: { who: 'pax', n: 0, memory: 'You told me to read it when I was ready.' } },
             result: '"Yes," Pax says. "When I\'m ready." It sounds like the right thing, and they put the handheld away. It stays unopened for the rest of ' +
               'the burn. When you pass the weapons bay, Pax has taken it out, and is holding it, and looking at the sender\'s name, and putting it ' +
@@ -877,7 +877,7 @@ const CAST = {
         days: 60, title: 'The Coupling Again',
         get text() {
           const read = !!castRec('pax').flags.foreman;
-          return 'A coupling on the gun mount works loose in the middle of a drill, with a hand at the rack beside it, and the mount begins to swing. Pax has the controls, a wrench and about ten seconds. "It\'s the same kind," Pax says, to the screen, in a voice that is trying to be level. "If I cut the power it drops on the rack. If I hold it, I have to hold it with someone standing right there." They have not moved their hand from the wrench.'
+          return 'A coupling on the gun mount works loose in the middle of a drill, with a hand at the rack beside it, and the mount begins to swing. Pax has the controls, a wrench and about ten seconds. "It\'s the same kind," Pax says, to the screen, in a voice that\'s trying to be level. "If I cut the power it drops on the rack. If I hold it, I have to hold it with someone standing right there." They haven\'t moved their hand from the wrench.'
             + castRiskLines()
             + (read ? ' The foreman\'s message from Ceres is still open on the handheld by the controls, the last line showing: practice.' : ' The foreman\'s message from Ceres is still unopened in the queue.');
         },
@@ -886,7 +886,7 @@ const CAST = {
           { label: 'Put a second hand at the rack beside Pax', ...gated(needCrew(2)), run: () => theCoupling(true) },
           { label: 'Tell Pax to cut the power and let the mount drop', memory: 'You told me to cut the power on the mount.', run() {
             castFlag('pax', 'benched'); castLike('pax', -3, this.memory);
-            return 'You tell Pax to cut the power, and Pax does, at once, with a hand on the switch. The mount drops onto the rack with a sound you feel in the deck, and the hand beside it is unhurt. Pax stands at the controls with the wrench held out in front of them like something hot. "I could have held it," Pax says. "I think I could have." The coupling is the only thing in the bay that does not move.';
+            return 'You tell Pax to cut the power, and Pax does, at once, with a hand on the switch. The mount drops onto the rack with a sound you feel in the deck, and the hand beside it\'s unhurt. Pax stands at the controls with the wrench held out in front of them like something hot. "I could have held it," Pax says. "I think I could have." The coupling is the only thing in the bay that doesn\'t move.';
           } },
         ],
       },
@@ -1050,18 +1050,18 @@ function overTheHull(backup) {
   const outcome = castFate('yelena', points >= 3 ? 'live' : points === 2 ? 'mark' : 'die', `Went over the hull first near ${system().name}.`, 'Left hand never closes properly.', 'gunner');
   const lead = backup ? 'You send a second hand over with her. ' : '';
   if (outcome === 'die') {
-    return lead + ('She goes over first, as she said she would. The channel carries the first shot, and then something that is not a voice, and then ' +
-        'the party, shouting her name. You bring the ship alongside, and you are too late, and everyone knows it. When the others come back across the ' +
+    return lead + ('She goes over first, as she said she would. The channel carries the first shot, and then something that\'s not a voice, and then ' +
+        'the party, shouting her name. You bring the ship alongside, and you\'re too late, and everyone knows it. When the others come back across the ' +
         'gap they carry the ring-ball from her bag, and nobody says anything about the foul.')
       + (promised ? ' You remember the ship you promised her, and that nobody will ask for it now.' : '');
   }
-  castLike('yelena', 2, outcome === 'mark' ? 'You let me go first, and I came back with a hand that does not close.' : 'You let me go first, and I came back.');
+  castLike('yelena', 2, outcome === 'mark' ? 'You let me go first, and I came back with a hand that doesn\'t close.' : 'You let me go first, and I came back.');
   if (outcome === 'mark') {
     return lead + ('She goes over first, and it goes wrong at the inner lock, and for a long minute the channel is nothing but breath and shouting. ' +
-        'She comes back across the gap carried, and the hand she led with does not close the way it did. "Don\'t," she says, to your face, "say it was ' +
+        'She comes back across the gap carried, and the hand she led with doesn\'t close the way it did. "Don\'t," she says, to your face, "say it was ' +
         'worth it. Just say I was there."');
   }
-  return lead + 'She goes over the hull first, as she said she would, and the party follows. It is loud and fast and over before you have finished counting. She comes back across the gap with a split lip and a stranger\'s cap in her fist. "Nobody on the bench," she says.'
+  return lead + 'She goes over the hull first, as she said she would, and the party follows. It\'s loud and fast and over before you\'ve finished counting. She comes back across the gap with a split lip and a stranger\'s cap in her fist. "Nobody on the bench," she says.'
     + (promised ? ' "You said someday," she adds.' : '');
 }
 
@@ -1069,7 +1069,7 @@ function overTheHull(backup) {
 function castRiskLines() {
   const medic = roleHolder('medic'), low = G.state.armor <= ship().armor * 0.6;
   return (low ? ' Your own hull has taken a beating, and a bad hull is a bad place to fall back to.' : ' Your hull is sound.')
-    + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There is nobody aboard who can do more than a field dressing.');
+    + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There\'s nobody aboard who can do more than a field dressing.');
 }
 const castRiskPoints = () => (roleHolder('medic') ? 1 : 0) + (G.state.armor > ship().armor * 0.6 ? 1 : 0);
 const castPoints = n => (n >= 3 ? 'live' : n === 2 ? 'mark' : 'die');
@@ -1085,9 +1085,9 @@ function coldThrusters(backup) {
   }
   castLike('ines', 2, outcome === 'mark' ? 'You let me fly it in dead, and I came down with a hand that shakes.' : 'You let me fly it in dead, and I came down.');
   if (outcome === 'mark') {
-    return lead + 'She holds the ship, and the ship comes down hard, and the helm throws her against the harness. She walks off on her own. Later you see her in the pilot\'s chair, holding her left hand in her right until it stops shaking. It does not quite stop.';
+    return lead + 'She holds the ship, and the ship comes down hard, and the helm throws her against the harness. She walks off on her own. Later you see her in the pilot\'s chair, holding her left hand in her right until it stops shaking. It doesn\'t quite stop.';
   }
-  return lead + 'She flies it the way she wrote it in the log: the long clean arc on the cold thrusters, the flip, the last slow roll toward the pad. The ship touches down so softly that the cup on the console does not move. Ines sits with her hands in her lap. "Boring," she says. "Very boring."'
+  return lead + 'She flies it the way she wrote it in the log: the long clean arc on the cold thrusters, the flip, the last slow roll toward the pad. The ship touches down so softly that the cup on the console doesn\'t move. Ines sits with her hands in her lap. "Boring," she says. "Very boring."'
     + (practiced ? ' "You stood by the cutoff once," she adds. "It was enough to know it was there."' : '');
 }
 
@@ -1097,14 +1097,14 @@ function thePlant(backup) {
   const outcome = castFate('tomas', castPoints(castRiskPoints() + (plan ? 1 : 0) + (backup ? 1 : 0)), `Went into the plant to close the valves near ${system().name}.`, 'His hands ache in the cold.', 'engineer');
   const lead = backup ? 'You send a second person in after him. ' : '';
   if (outcome === 'die') {
-    return lead + 'The whine drops. The plant holds. Nobody comes out. When the compartment has cooled you open the hatch, and he is at the last valve with the wrench in his hand and the rag still over his face. He had closed them all. The plant runs perfectly for the rest of the burn.'
+    return lead + 'The whine drops. The plant holds. Nobody comes out. When the compartment has cooled you open the hatch, and he\'s at the last valve with the wrench in his hand and the rag still over his face. He had closed them all. The plant runs perfectly for the rest of the burn.'
       + (promised ? ' You remember what you said about trying to keep the crew together.' : '');
   }
   castLike('tomas', 2, outcome === 'mark' ? 'You let me go into the plant, and I came out scalded.' : 'You let me go into the plant, and I came out.');
   if (outcome === 'mark') {
-    return lead + 'He comes out carried, both forearms scalded, and the plant holds behind him. He will weld again. He does not take the flask in his left hand after that, and he does not complain.';
+    return lead + 'He comes out carried, both forearms scalded, and the plant holds behind him. He\'ll weld again. He doesn\'t take the flask in his left hand after that, and he doesn\'t complain.';
   }
-  return lead + 'He goes in, and comes out in four minutes with no eyebrows, which he does not mention. The plant settles. He sits on a crate with the flask and tells her, quietly, that she did well.';
+  return lead + 'He goes in, and comes out in four minutes with no eyebrows, which he doesn\'t mention. The plant settles. He sits on a crate with the flask and tells her, quietly, that she did well.';
 }
 
 // Pax's pivot: a point each for a medic, a hull above 60 percent, the foreman's message read, and a second hand at the rack beside them.
@@ -1116,11 +1116,11 @@ function theCoupling(backup) {
     return lead + 'Pax gets the wrench onto the coupling and the mount drops anyway, and Pax is between it and the rack, which is where Pax put themself. The hand at the rack is untouched. The mount comes to rest on the deck with the wrench still turning in the coupling, a quarter turn, and another.'
       + (promised ? ' You remember the ship you promised them, and that nobody will ask for it now.' : '');
   }
-  castLike('pax', 2, outcome === 'mark' ? 'You let me hold the mount, and I came out with a hand that does not close.' : 'You let me hold the mount, and I came out.');
+  castLike('pax', 2, outcome === 'mark' ? 'You let me hold the mount, and I came out with a hand that doesn\'t close.' : 'You let me hold the mount, and I came out.');
   if (outcome === 'mark') {
     return lead + 'Pax gets the wrench on and the coupling seats, and the mount takes two fingers of Pax\'s right hand on the way down. Pax walks to the med bay on their own, and says on the way that the hand at the rack is fine. After that, at the range, Pax stands with the hand in a pocket between runs, and flinches again at the clank of the mount.';
   }
-  return lead + 'Pax puts the wrench on the coupling with the mount still swinging, and the hand at the rack puts a shoulder to the arm, and the two of them hold it for eleven seconds, side by side, until the coupling seats. Pax does not flinch. They check it twice, as they always do, and then sit down on the deck beside the hand who stood there, and neither says anything.'
+  return lead + 'Pax puts the wrench on the coupling with the mount still swinging, and the hand at the rack puts a shoulder to the arm, and the two of them hold it for eleven seconds, side by side, until the coupling seats. Pax doesn\'t flinch. They check it twice, as they always do, and then sit down on the deck beside the hand who stood there, and neither says anything.'
     + (read ? ' "The foreman said practice," Pax says, to the coupling. "I practiced."' : '');
 }
 
@@ -1131,11 +1131,11 @@ function theMast(backup) {
   const lead = backup ? 'You send a second person out to the mast with him. ' : '';
   if (outcome === 'die') {
     return lead + 'He goes out the lock with the tool roll on his belt and the dish tilting above him, and for eleven minutes the open band is his voice, calling the bolts as he turns them, one, two, three, and a dome somewhere answering each. The flare arrives on the fourth. The band fills with noise, and then with a number, which is the last thing he says, and then with the dome, saying it back.'
-      + (promised ? ' You remember the room for a relay you told him there would be.' : '');
+      + (promised ? ' You remember the room for a relay you told him there\'d be.' : '');
   }
   castLike('ruben', 2, outcome === 'mark' ? 'You let me go out to the north mast, and I came back with one good ear.' : 'You let me go out to the north mast, and I came back.');
   if (outcome === 'mark') {
-    return lead + 'He gets the third bolt turned and the mast swings true, and the flare comes in before he is through the lock. When you reach him he is on the airlock deck with both hands over his left ear. The dome is already answering. "I can hear it," he says, loudly, about the dome. "Mostly." After that he turns the volume up on the quiet band, and sits closer to the speaker.';
+    return lead + 'He gets the third bolt turned and the mast swings true, and the flare comes in before he\'s through the lock. When you reach him he\'s on the airlock deck with both hands over his left ear. The dome is already answering. "I can hear it," he says, loudly, about the dome. "Mostly." After that he turns the volume up on the quiet band, and sits closer to the speaker.';
   }
   return lead + 'He goes out with the thermos clipped to his belt, which nobody argues with, and calls the bolts as he turns them so the dome can follow along. The mast swings true in nine minutes. The flare comes in as the lock cycles, and the open band fills with a dome council all talking at once, which is the best noise he knows. "There," Ruben says, pink with cold. "Heard."'
     + (promised ? ' "You said there\'d be room," he adds, and pours you a cup.' : '');
@@ -1147,12 +1147,12 @@ function theTow(backup) {
   const outcome = castFate('bexa', castPoints(castRiskPoints() + (mass ? 1 : 0) + (backup ? 1 : 0)), `Went out on the tow line near ${system().name}.`, 'Her left hand is numb from the cold, and she flies with the right.', 'pilot');
   const lead = backup ? 'You send a second hand out on the line with her. ' : '';
   if (outcome === 'die') {
-    return lead + 'She goes out hand over hand along the line, and the hulk\'s roll slows, and slows, and then the line lets go. It does not part with a bang. It goes all at once, like a breath, and the tug jumps forward a hundred meters before anyone has a hand on the stick. Her suit beacon comes up on the board beside the hulk\'s, and the two of them call in turn, four seconds apart, until the second one stops.'
+    return lead + 'She goes out hand over hand along the line, and the hulk\'s roll slows, and slows, and then the line lets go. It doesn\'t part with a bang. It goes all at once, like a breath, and the tug jumps forward a hundred meters before anyone has a hand on the stick. Her suit beacon comes up on the board beside the hulk\'s, and the two of them call in turn, four seconds apart, until the second one stops.'
       + (promised ? ' You remember the ship you promised her, and that nobody will ask for it now.' : '');
   }
-  castLike('bexa', 2, outcome === 'mark' ? 'You let me go out on the line, and I came back with a hand that is numb.' : 'You let me go out on the line, and I came back.');
+  castLike('bexa', 2, outcome === 'mark' ? 'You let me go out on the line, and I came back with a hand that\'s numb.' : 'You let me go out on the line, and I came back.');
   if (outcome === 'mark') {
-    return lead + 'She takes the spin out of the hulk, and the line comes slack, and the cold gets into her left hand on the way back to the lock. She flies the rest of the run with the right, the left held in her lap with the glove still on. "It\'ll come back," she says, about the hand, and does not take the glove off to show you.';
+    return lead + 'She takes the spin out of the hulk, and the line comes slack, and the cold gets into her left hand on the way back to the lock. She flies the rest of the run with the right, the left held in her lap with the glove still on. "It\'ll come back," she says, about the hand, and doesn\'t take the glove off to show you.';
   }
   return lead + 'She takes the spin out of the hulk in eleven minutes by the clock, hand over hand along the line, and the hulk comes round to follow the tug like a dog that has been told. She comes back through the lock with frost in her eyebrows. At the next port she adds a line to the list, in the column with the others: a name, a date, a hull number.'
     + (promised ? ' "You said someday," she adds, and hangs the brass tag back above the console.' : '');
@@ -1168,7 +1168,7 @@ function theTow(backup) {
 function choiceGate(when) {
   const { credits, berths, opinion, ...rest } = when, checks = [];
   if (credits !== undefined) checks.push(needCr(credits));
-  if (berths !== undefined) checks.push([() => berthsFree() >= berths, () => 'There is no free berth aboard.']);
+  if (berths !== undefined) checks.push([() => berthsFree() >= berths, () => 'There\'s no free berth aboard.']);
   if (Object.keys(rest).length) checks.push([() => meets(rest), () => '']);
   return { ...(checks.length ? gated(...checks) : {}), ...(opinion ? { opinion } : {}) };
 }

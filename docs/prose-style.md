@@ -45,12 +45,12 @@ Also watch for the machine's own habits: lists of three, a quiet gesture on ever
 A Small Ship (`js/social.js`) is rewritten to these rules.
 
 Before:
-> Mara and Ines are shouting at each other in the galley about the thermostat. It started with a raised eyebrow and a pointed remark, and ten minutes later both of them are standing, and one of them is waving a spoon. It is not really about the thermostat. It never is. The rest of the crew has gone very quiet, and is looking at their food.
+> Mara and Ines are shouting at each other in the galley about the thermostat. It started with a raised eyebrow and a pointed remark, and ten minutes later both of them are standing, and one of them is waving a spoon. It's not really about the thermostat. It never is. The rest of the crew has gone very quiet, and is looking at their food.
 
 After:
-> "If you had said something," Ines says, "I would have moved it. I am not going to stand here and be told I did it on purpose, when I did not know it was a problem until Pax mentioned it at the watch change."
+> "If you had said something," Ines says, "I'd have moved it. I'm not going to stand here and be told I did it on purpose, when I didn't know it was a problem until Pax mentioned it at the watch change."
 >
-> "I said something." Mara puts the spoon down on the counter, bowl up. "Tuesday, at the watch change, in front of Pax, and you said you would look at it when you had a minute, and it has been six days, and the minute has not come."
+> "I said something." Mara puts the spoon down on the counter, bowl up. "Tuesday, at the watch change, in front of Pax, and you said you'd look at it when you had a minute, and it has been six days, and the minute hasn't come."
 >
 > "Then I forgot."
 >

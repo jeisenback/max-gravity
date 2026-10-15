@@ -48,9 +48,9 @@
  {
   "id": "hired:pilot-sim",
   "title": "The Docking Sim",
-  "text": "The captain has left the approach for the next port on the sim, and said nothing about it. It is a hard one: a tight berth, a crosswind of station spin, and a score at the bottom of the screen with someone else's initials.",
+  "text": "The captain has left the approach for the next port on the sim, and said nothing about it. It's a hard one: a tight berth, a crosswind of station spin, and a score at the bottom of the screen with someone else's initials.",
   "labels": [
-   "Fly it slowly, until it is clean",
+   "Fly it slowly, until it's clean",
    "Fly it at speed and see what happens [if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
@@ -59,11 +59,11 @@
     "xp": 3
    },
    {
-    "text": "You fly it hot, and it works. The score is not the best, but it is close. (+4 experience at the pilot post.)",
+    "text": "You fly it hot, and it works. The score isn't the best, but it's close. (+4 experience at the pilot post.)",
     "xp": 4
    },
    {
-    "text": "You fly it hot and hit the berth wall, and the sim sounds a rude tone. You reset it and do not look at the score. (+1 experience at the pilot post.)",
+    "text": "You fly it hot and hit the berth wall, and the sim sounds a rude tone. You reset it and don't look at the score. (+1 experience at the pilot post.)",
     "xp": 1
    }
   ]
@@ -101,15 +101,15 @@
   ],
   "plays": [
    {
-    "text": "You track it for an hour, logging bearing and range every five minutes. It is a rock, tumbling, and it passes well clear. You write down the figures anyway. (+3 experience at the pilot post.)",
+    "text": "You track it for an hour, logging bearing and range every five minutes. It's a rock, tumbling, and it passes well clear. You write down the figures anyway. (+3 experience at the pilot post.)",
     "xp": 3
    },
    {
-    "text": "You call it a rock and let it go, and it is a rock. You do not look at it again until it is behind you. (+4 experience at the pilot post.)",
+    "text": "You call it a rock and let it go, and it's a rock. You don't look at it again until it's behind you. (+4 experience at the pilot post.)",
     "xp": 4
    },
    {
-    "text": "You call it a rock and stop watching. Forty minutes later it changes course. It is a small hauler running dark, and it passes close enough to read the paint. The captain finds out from the log. (+1 experience at the pilot post.)",
+    "text": "You call it a rock and stop watching. Forty minutes later it changes course. It's a small hauler running dark, and it passes close enough to read the paint. The captain finds out from the log. (+1 experience at the pilot post.)",
     "xp": 1
    }
   ]
@@ -117,7 +117,7 @@
  {
   "id": "hired:gunner-jam",
   "title": "A Jammed Feed",
-  "text": "The ready rack has jammed, a round half in and half out, and the fire-control board is showing a fault in a color you have not seen. It will have to be cleared before anyone needs to shoot.",
+  "text": "The ready rack has jammed, a round half in and half out, and the fire-control board is showing a fault in a color you haven't seen. It'll have to be cleared before anyone needs to shoot.",
   "labels": [
    "Strip the feed and clear it by the book",
    "Clear it with the manual override [if it fails: you learn less, and the captain marks it]"
@@ -151,7 +151,7 @@
     "xp": 3
    },
    {
-    "text": "You dial in a correction by eye, and the next ten shots on the sim cluster neatly. It is not perfect, but it is close. (+4 experience at the gunner post.)",
+    "text": "You dial in a correction by eye, and the next ten shots on the sim cluster neatly. It's not perfect, but it's close. (+4 experience at the gunner post.)",
     "xp": 4
    },
    {
@@ -170,7 +170,7 @@
   ],
   "plays": [
    {
-    "text": "You take them one at a time, in order, ignoring the clock, and by the third pass the order has become instinct. The clock is still ahead of you, but you have stopped fighting it. (+3 experience at the gunner post.)",
+    "text": "You take them one at a time, in order, ignoring the clock, and by the third pass the order has become instinct. The clock is still ahead of you, but you've stopped fighting it. (+3 experience at the gunner post.)",
     "xp": 3
    },
    {
@@ -193,7 +193,7 @@
   ],
   "plays": [
    {
-    "text": "You count the rack round by round, and then again. It is three hundred and ninety. You find a loose sensor lead on the rack and reseat it. The board and the rack agree. (+3 experience at the gunner post.)",
+    "text": "You count the rack round by round, and then again. It's three hundred and ninety. You find a loose sensor lead on the rack and reseat it. The board and the rack agree. (+3 experience at the gunner post.)",
     "xp": 3
    },
    {
@@ -209,10 +209,10 @@
  {
   "id": "hired:gunner-drone",
   "title": "Target Drone",
-  "text": "The captain has launched a target drone, a battered orange canister, the only thing on the range worth shooting. It has been hit before. It is not meant to be hit twice in a burn. You have twenty minutes of range time.",
+  "text": "The captain has launched a target drone, a battered orange canister, the only thing on the range worth shooting. It has been hit before. It's not meant to be hit twice in a burn. You have twenty minutes of range time.",
   "labels": [
    "Take three shots and score each",
-   "Burst it and see what is left [if it fails: you learn less, and the captain marks it]"
+   "Burst it and see what's left [if it fails: you learn less, and the captain marks it]"
   ],
   "plays": [
    {
@@ -232,7 +232,7 @@
  {
   "id": "hired:engineer-vibe",
   "title": "A Shudder in the Drive",
-  "text": "There is a new sound in the drive room, a low, regular shudder at the edge of hearing that you feel in your back teeth. It comes and goes with the burn. Something is out of balance, and you are the one with the tools.",
+  "text": "There's a new sound in the drive room, a low, regular shudder at the edge of hearing that you feel in your back teeth. It comes and goes with the burn. Something's out of balance, and you're the one with the tools.",
   "labels": [
    "Trace it through the mounts, one by one",
    "Tighten what looks loose and listen [if it fails: you learn less, and the captain marks it]"
@@ -255,7 +255,7 @@
  {
   "id": "hired:engineer-recycler",
   "title": "The Recycler Sulks",
-  "text": "The air recycler has started to smell of hot dust, and its read-out has been stuck on one number for an hour. Nobody has said anything, but you have seen a few people breathing through their sleeves.",
+  "text": "The air recycler has started to smell of hot dust, and its read-out has been stuck on one number for an hour. Nobody has said anything, but you've seen a few people breathing through their sleeves.",
   "labels": [
    "Pull the cartridges and clean the whole stack",
    "Swap in the spare cartridge [if it fails: you learn less, and the captain marks it]"
@@ -270,7 +270,7 @@
     "xp": 4
    },
    {
-    "text": "The spare is the wrong size and takes a gasket to seat it. By the time it runs, you have lost the afternoon. (+1 experience at the engineer post.)",
+    "text": "The spare is the wrong size and takes a gasket to seat it. By the time it runs, you've lost the afternoon. (+1 experience at the engineer post.)",
     "xp": 1
    }
   ]
@@ -278,7 +278,7 @@
  {
   "id": "hired:engineer-coolant",
   "title": "Warm Coolant",
-  "text": "The coolant loop is running a few degrees warm. It is nowhere near a limit, but the trend is wrong, and a trend like that is a leak, or a pump, or a thing nobody has thought of yet.",
+  "text": "The coolant loop is running a few degrees warm. It's nowhere near a limit, but the trend is wrong, and a trend like that's a leak, or a pump, or a thing nobody has thought of yet.",
   "labels": [
    "Chase it from the pump to the radiator",
    "Bleed the loop and hope [if it fails: you learn less, and the captain marks it]"
@@ -301,7 +301,7 @@
  {
   "id": "hired:engineer-seal",
   "title": "A Weep at the Hatch",
-  "text": "There is a dark bead at the foot of the number two hatch seal, and a damp ring on the deck under it. It is coolant, or water, or something worse, and it was not there at the last port.",
+  "text": "There's a dark bead at the foot of the number two hatch seal, and a damp ring on the deck under it. It's coolant, or water, or something worse, and it wasn't there at the last port.",
   "labels": [
    "Pull the seal and check the gasket",
    "Wipe it and watch it [if it fails: you learn less, and the captain marks it]"
@@ -312,7 +312,7 @@
     "xp": 3
    },
    {
-    "text": "You wipe it and watch it for a watch. It does not come back. You log the time and the place. (+4 experience at the engineer post.)",
+    "text": "You wipe it and watch it for a watch. It doesn't come back. You log the time and the place. (+4 experience at the engineer post.)",
     "xp": 4
    },
    {
@@ -324,7 +324,7 @@
  {
   "id": "hired:engineer-breaker",
   "title": "The Tripping Breaker",
-  "text": "The breaker on the galley circuit has tripped three times since the flip. Each time it resets, and each time someone says it must be the kettle. It is not the kettle.",
+  "text": "The breaker on the galley circuit has tripped three times since the flip. Each time it resets, and each time someone says it must be the kettle. It's not the kettle.",
   "labels": [
    "Walk the circuit and test each load",
    "Swap the breaker and see [if it fails: you learn less, and the captain marks it]"
@@ -347,7 +347,7 @@
  {
   "id": "hired:comms-noise",
   "title": "Noise on the Band",
-  "text": "There is a hiss on the band that was not there at the last port, rising and falling as the ship turns. It is stealing your range, and, if it is the antenna, it will only get worse.",
+  "text": "There's a hiss on the band that wasn't there at the last port, rising and falling as the ship turns. It's stealing your range, and, if it's the antenna, it'll only get worse.",
   "labels": [
    "Walk the antenna run and check every join",
    "Re-tune the filters and see [if it fails: you learn less, and the captain marks it]"
@@ -377,7 +377,7 @@
   ],
   "plays": [
    {
-    "text": "You run the hail through every filter you have, a pass at a time, until a word comes out, and then a sentence. It is a tender asking for a berth. You log it and send the captain a note. (+3 experience at the comms post.)",
+    "text": "You run the hail through every filter you have, a pass at a time, until a word comes out, and then a sentence. It's a tender asking for a berth. You log it and send the captain a note. (+3 experience at the comms post.)",
     "xp": 3
    },
    {
@@ -416,7 +416,7 @@
  {
   "id": "hired:comms-clock",
   "title": "Two Clocks",
-  "text": "The station you are calling stamps its messages with a time that disagrees with the ship's clock by eleven minutes. One of them is wrong, and the log is full of messages stamped with whichever it is.",
+  "text": "The station you're calling stamps its messages with a time that disagrees with the ship's clock by eleven minutes. One of them is wrong, and the log is full of messages stamped with whichever it is.",
   "labels": [
    "Sync to three beacons and see which is wrong",
    "Trust the station and adjust the offset [if it fails: you learn less, and the captain marks it]"
@@ -427,7 +427,7 @@
     "xp": 3
    },
    {
-    "text": "You apply the station's offset, and the log lines up. You note that you did not check. (+4 experience at the comms post.)",
+    "text": "You apply the station's offset, and the log lines up. You note that you didn't check. (+4 experience at the comms post.)",
     "xp": 4
    },
    {
@@ -439,7 +439,7 @@
  {
   "id": "hired:comms-relay",
   "title": "A Relay Wants the Ship's Name",
-  "text": "A relay buoy wants your transponder, your registry and your captain's name before it will pass your traffic. It is the right procedure. It is also more than the last three buoys asked.",
+  "text": "A relay buoy wants your transponder, your registry and your captain's name before it'll pass your traffic. It's the right procedure. It's also more than the last three buoys asked.",
   "labels": [
    "Ask the captain before you answer",
    "Send what the last buoy got [if it fails: you learn less, and the captain marks it]"
@@ -464,8 +464,8 @@
   "post": "pilot",
   "title": "The Rock",
   "text": [
-   "She is a dark lump on the board for three days, and then she is a mountain. A comet that lost its way, or a piece of one: black, pitted, with a white seam through it where the ice shows. There is no beacon, no berth, and nobody to ask. The captain brings the ship in to three kilometers and says that you cannot dock with something that is tumbling.</p><p>The haul so far: even. Armor 260/260.",
-   "The rock is bigger than the charts said, and it is turning, a long slow roll that takes eleven minutes. The ice is on the shadow side, a pale band between slabs of dust and rock. The captain has the ship stationed and the crew are at their suits. \"Somebody tell me how we get close,\" the captain says.</p><p>The haul so far: even. Armor 260/260."
+   "She's a dark lump on the board for three days, and then she's a mountain. A comet that lost its way, or a piece of one: black, pitted, with a white seam through it where the ice shows. There's no beacon, no berth, and nobody to ask. The captain brings the ship in to three kilometers and says that you can't dock with something that's tumbling.</p><p>The haul so far: even. Armor 260/260.",
+   "The rock is bigger than the charts said, and it's turning, a long slow roll that takes eleven minutes. The ice is on the shadow side, a pale band between slabs of dust and rock. The captain has the ship stationed and the crew are at their suits. \"Somebody tell me how we get close,\" the captain says.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
    "Match the roll and go in slow [if it fails: hull damage, a crew casualty]",
@@ -489,7 +489,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You go in faster than anyone likes and brake at the last moment. You are on the ice with an hour in hand.",
+    "text": "You go in faster than anyone likes and brake at the last moment. You're on the ice with an hour in hand.",
     "xp": 1
    },
    {
@@ -519,7 +519,7 @@
    {
     "i": 3,
     "roll": 0.999,
-    "text": "The thrusters are not enough, and the rock turns into the ship. The paint is gone along the port side. Armor -16.",
+    "text": "The thrusters aren't enough, and the rock turns into the ship. The paint is gone along the port side. Armor -16.",
     "xp": 1
    }
   ]
@@ -529,8 +529,8 @@
   "post": "engineer",
   "title": "The Rock",
   "text": [
-   "She is a dark lump on the board for three days, and then she is a mountain. A comet that lost its way, or a piece of one: black, pitted, with a white seam through it where the ice shows. There is no beacon, no berth, and nobody to ask. The captain brings the ship in to three kilometers and says that you cannot dock with something that is tumbling.</p><p>The haul so far: even. Armor 260/260.",
-   "The rock is bigger than the charts said, and it is turning, a long slow roll that takes eleven minutes. The ice is on the shadow side, a pale band between slabs of dust and rock. The captain has the ship stationed and the crew are at their suits. \"Somebody tell me how we get close,\" the captain says.</p><p>The haul so far: even. Armor 260/260."
+   "She's a dark lump on the board for three days, and then she's a mountain. A comet that lost its way, or a piece of one: black, pitted, with a white seam through it where the ice shows. There's no beacon, no berth, and nobody to ask. The captain brings the ship in to three kilometers and says that you can't dock with something that's tumbling.</p><p>The haul so far: even. Armor 260/260.",
+   "The rock is bigger than the charts said, and it's turning, a long slow roll that takes eleven minutes. The ice is on the shadow side, a pale band between slabs of dust and rock. The captain has the ship stationed and the crew are at their suits. \"Somebody tell me how we get close,\" the captain says.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
    "Match the roll and go in slow [if it fails: hull damage, a crew casualty]",
@@ -542,7 +542,7 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "You set the anchors in a pattern you worked out on the way: two forward, one aft, and a line for luck. The ship does not move.",
+    "text": "You set the anchors in a pattern you worked out on the way: two forward, one aft, and a line for luck. The ship doesn't move.",
     "xp": 4
    },
    {
@@ -558,8 +558,8 @@
   "post": "gunner",
   "title": "The Rock",
   "text": [
-   "She is a dark lump on the board for three days, and then she is a mountain. A comet that lost its way, or a piece of one: black, pitted, with a white seam through it where the ice shows. There is no beacon, no berth, and nobody to ask. The captain brings the ship in to three kilometers and says that you cannot dock with something that is tumbling.</p><p>The haul so far: even. Armor 260/260.",
-   "The rock is bigger than the charts said, and it is turning, a long slow roll that takes eleven minutes. The ice is on the shadow side, a pale band between slabs of dust and rock. The captain has the ship stationed and the crew are at their suits. \"Somebody tell me how we get close,\" the captain says.</p><p>The haul so far: even. Armor 260/260."
+   "She's a dark lump on the board for three days, and then she's a mountain. A comet that lost its way, or a piece of one: black, pitted, with a white seam through it where the ice shows. There's no beacon, no berth, and nobody to ask. The captain brings the ship in to three kilometers and says that you can't dock with something that's tumbling.</p><p>The haul so far: even. Armor 260/260.",
+   "The rock is bigger than the charts said, and it's turning, a long slow roll that takes eleven minutes. The ice is on the shadow side, a pale band between slabs of dust and rock. The captain has the ship stationed and the crew are at their suits. \"Somebody tell me how we get close,\" the captain says.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
    "Match the roll and go in slow [if it fails: hull damage, a crew casualty]",
@@ -587,8 +587,8 @@
   "post": "comms",
   "title": "The Rock",
   "text": [
-   "She is a dark lump on the board for three days, and then she is a mountain. A comet that lost its way, or a piece of one: black, pitted, with a white seam through it where the ice shows. There is no beacon, no berth, and nobody to ask. The captain brings the ship in to three kilometers and says that you cannot dock with something that is tumbling.</p><p>The haul so far: even. Armor 260/260.",
-   "The rock is bigger than the charts said, and it is turning, a long slow roll that takes eleven minutes. The ice is on the shadow side, a pale band between slabs of dust and rock. The captain has the ship stationed and the crew are at their suits. \"Somebody tell me how we get close,\" the captain says.</p><p>The haul so far: even. Armor 260/260."
+   "She's a dark lump on the board for three days, and then she's a mountain. A comet that lost its way, or a piece of one: black, pitted, with a white seam through it where the ice shows. There's no beacon, no berth, and nobody to ask. The captain brings the ship in to three kilometers and says that you can't dock with something that's tumbling.</p><p>The haul so far: even. Armor 260/260.",
+   "The rock is bigger than the charts said, and it's turning, a long slow roll that takes eleven minutes. The ice is on the shadow side, a pale band between slabs of dust and rock. The captain has the ship stationed and the crew are at their suits. \"Somebody tell me how we get close,\" the captain says.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
    "Match the roll and go in slow [if it fails: hull damage, a crew casualty]",
@@ -600,13 +600,13 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "You scan the rock for an hour and find the face that is not moving as much as the rest. The ship goes in there, and the anchors set at once.",
+    "text": "You scan the rock for an hour and find the face that's not moving as much as the rest. The ship goes in there, and the anchors set at once.",
     "xp": 4
    },
    {
     "i": 3,
     "roll": 0.999,
-    "text": "The scan reads a quiet face that is a loose one. The anchors take, and then let go, and you start again. Armor -8.",
+    "text": "The scan reads a quiet face that's a loose one. The anchors take, and then let go, and you start again. Armor -8.",
     "xp": 1
    }
   ]
@@ -616,8 +616,8 @@
   "post": "pilot",
   "title": "Cutting Ice",
   "text": [
-   "The cutters are out, six of them, and the white seam runs forty meters along the rock. The work is slow and cold and loud in the helmet: a saw to cut a block, a lift to carry it, the hold doors to put it in. It is the kind of work that goes right for an hour and wrong for a second. The captain has the ship on the radio and everyone else on the ice.</p><p>The haul so far: even. Armor 260/260.",
-   "You are on the ice at the second shift, and the ship hangs above like a big dull star. The blocks are the size of a bunk, blue-white and very clean, and each one is worth more than a month of your wage. Someone on the radio says to watch the seam. It cracks while they are saying it.</p><p>The haul so far: even. Armor 260/260."
+   "The cutters are out, six of them, and the white seam runs forty meters along the rock. The work is slow and cold and loud in the helmet: a saw to cut a block, a lift to carry it, the hold doors to put it in. It's the kind of work that goes right for an hour and wrong for a second. The captain has the ship on the radio and everyone else on the ice.</p><p>The haul so far: even. Armor 260/260.",
+   "You're on the ice at the second shift, and the ship hangs above like a big dull star. The blocks are the size of a bunk, blue-white and very clean, and each one is worth more than a month of your wage. Someone on the radio says to watch the seam. It cracks while they're saying it.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
    "Cut small, and carry every block",
@@ -635,7 +635,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You cut small and carry everything, and the work is so slow that the light changes twice. The hold is not as full as it should be. The hold takes 22 tons of ice.",
+    "text": "You cut small and carry everything, and the work is so slow that the light changes twice. The hold isn't as full as it should be. The hold takes 22 tons of ice.",
     "xp": 1
    },
    {
@@ -647,13 +647,13 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "A big block shifts on the lift and takes the edge off the hold door. Nobody is under it. Armor -21. The hold takes 18 tons of ice.",
+    "text": "A big block shifts on the lift and takes the edge off the hold door. Nobody's under it. Armor -21. The hold takes 18 tons of ice.",
     "xp": 1
    },
    {
     "i": 2,
     "roll": 0,
-    "text": "You work in pairs and rotate every hour. It is slower on paper, and nobody makes a mistake from tiredness. The hold takes 26 tons of ice.",
+    "text": "You work in pairs and rotate every hour. It's slower on paper, and nobody makes a mistake from tiredness. The hold takes 26 tons of ice.",
     "xp": 1
    },
    {
@@ -665,7 +665,7 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "You hold the ship steady over the seam with the thrusters, in tiny pulses, so the lift can work from it. You do not blink for nine hours. The hold takes 30 tons of ice.",
+    "text": "You hold the ship steady over the seam with the thrusters, in tiny pulses, so the lift can work from it. You don't blink for nine hours. The hold takes 30 tons of ice.",
     "xp": 4
    },
    {
@@ -681,8 +681,8 @@
   "post": "engineer",
   "title": "Cutting Ice",
   "text": [
-   "The cutters are out, six of them, and the white seam runs forty meters along the rock. The work is slow and cold and loud in the helmet: a saw to cut a block, a lift to carry it, the hold doors to put it in. It is the kind of work that goes right for an hour and wrong for a second. The captain has the ship on the radio and everyone else on the ice.</p><p>The haul so far: even. Armor 260/260.",
-   "You are on the ice at the second shift, and the ship hangs above like a big dull star. The blocks are the size of a bunk, blue-white and very clean, and each one is worth more than a month of your wage. Someone on the radio says to watch the seam. It cracks while they are saying it.</p><p>The haul so far: even. Armor 260/260."
+   "The cutters are out, six of them, and the white seam runs forty meters along the rock. The work is slow and cold and loud in the helmet: a saw to cut a block, a lift to carry it, the hold doors to put it in. It's the kind of work that goes right for an hour and wrong for a second. The captain has the ship on the radio and everyone else on the ice.</p><p>The haul so far: even. Armor 260/260.",
+   "You're on the ice at the second shift, and the ship hangs above like a big dull star. The blocks are the size of a bunk, blue-white and very clean, and each one is worth more than a month of your wage. Someone on the radio says to watch the seam. It cracks while they're saying it.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
    "Cut small, and carry every block",
@@ -694,7 +694,7 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "You run a heat line from the drive to the cutters, so the blades do not freeze and the seam does not stick. The cutters sing. The hold takes 30 tons of ice.",
+    "text": "You run a heat line from the drive to the cutters, so the blades don't freeze and the seam doesn't stick. The cutters sing. The hold takes 30 tons of ice.",
     "xp": 4
    },
    {
@@ -710,8 +710,8 @@
   "post": "gunner",
   "title": "Cutting Ice",
   "text": [
-   "The cutters are out, six of them, and the white seam runs forty meters along the rock. The work is slow and cold and loud in the helmet: a saw to cut a block, a lift to carry it, the hold doors to put it in. It is the kind of work that goes right for an hour and wrong for a second. The captain has the ship on the radio and everyone else on the ice.</p><p>The haul so far: even. Armor 260/260.",
-   "You are on the ice at the second shift, and the ship hangs above like a big dull star. The blocks are the size of a bunk, blue-white and very clean, and each one is worth more than a month of your wage. Someone on the radio says to watch the seam. It cracks while they are saying it.</p><p>The haul so far: even. Armor 260/260."
+   "The cutters are out, six of them, and the white seam runs forty meters along the rock. The work is slow and cold and loud in the helmet: a saw to cut a block, a lift to carry it, the hold doors to put it in. It's the kind of work that goes right for an hour and wrong for a second. The captain has the ship on the radio and everyone else on the ice.</p><p>The haul so far: even. Armor 260/260.",
+   "You're on the ice at the second shift, and the ship hangs above like a big dull star. The blocks are the size of a bunk, blue-white and very clean, and each one is worth more than a month of your wage. Someone on the radio says to watch the seam. It cracks while they're saying it.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
    "Cut small, and carry every block",
@@ -729,7 +729,7 @@
    {
     "i": 3,
     "roll": 0.999,
-    "text": "A shot goes into the wrong plane and the whole face shatters. It is a lot of ice, and not much of it is useful. Armor -16. The hold takes 18 tons of ice.",
+    "text": "A shot goes into the wrong plane and the whole face shatters. It's a lot of ice, and not much of it's useful. Armor -16. The hold takes 18 tons of ice.",
     "xp": 1
    }
   ]
@@ -739,8 +739,8 @@
   "post": "comms",
   "title": "Cutting Ice",
   "text": [
-   "The cutters are out, six of them, and the white seam runs forty meters along the rock. The work is slow and cold and loud in the helmet: a saw to cut a block, a lift to carry it, the hold doors to put it in. It is the kind of work that goes right for an hour and wrong for a second. The captain has the ship on the radio and everyone else on the ice.</p><p>The haul so far: even. Armor 260/260.",
-   "You are on the ice at the second shift, and the ship hangs above like a big dull star. The blocks are the size of a bunk, blue-white and very clean, and each one is worth more than a month of your wage. Someone on the radio says to watch the seam. It cracks while they are saying it.</p><p>The haul so far: even. Armor 260/260."
+   "The cutters are out, six of them, and the white seam runs forty meters along the rock. The work is slow and cold and loud in the helmet: a saw to cut a block, a lift to carry it, the hold doors to put it in. It's the kind of work that goes right for an hour and wrong for a second. The captain has the ship on the radio and everyone else on the ice.</p><p>The haul so far: even. Armor 260/260.",
+   "You're on the ice at the second shift, and the ship hangs above like a big dull star. The blocks are the size of a bunk, blue-white and very clean, and each one is worth more than a month of your wage. Someone on the radio says to watch the seam. It cracks while they're saying it.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
    "Cut small, and carry every block",
@@ -758,7 +758,7 @@
    {
     "i": 3,
     "roll": 0.999,
-    "text": "You lose a shift in the schedule and two people on the ice at once. It is sorted out in forty minutes. Armor -8. The hold takes 18 tons of ice.",
+    "text": "You lose a shift in the schedule and two people on the ice at once. It's sorted out in forty minutes. Armor -8. The hold takes 18 tons of ice.",
     "xp": 1
    }
   ]
@@ -768,8 +768,8 @@
   "post": "pilot",
   "title": "Home With the Ice",
   "text": [
-   "The hold is full, and the ship is heavy, and she burns like it. Every maneuver is slower, and every vibration matters, because there is a hundred tons of ice in the hold that is the only cargo you are being paid for. The captain has set a course for the buyer and a limit on the thrust, and has asked everyone to keep it in mind.</p><p>The haul so far: even. Armor 260/260.",
-   "The rock is a pale dot astern, and then it is not. The hold is full of water that will keep a dome alive for a month. The burn is limited, and it is a long way home.</p><p>The haul so far: even. Armor 260/260."
+   "The hold is full, and the ship is heavy, and she burns like it. Every maneuver is slower, and every vibration matters, because there's a hundred tons of ice in the hold that's the only cargo you're being paid for. The captain has set a course for the buyer and a limit on the thrust, and has asked everyone to keep it in mind.</p><p>The haul so far: even. Armor 260/260.",
+   "The rock is a pale dot astern, and then it's not. The hold is full of water that'll keep a dome alive for a month. The burn is limited, and it's a long way home.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
    "Keep the burn gentle and the hold cold",
@@ -793,7 +793,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You burn hard, and the insulation holds. You gain two days, and the buyer is not asking where the time went.",
+    "text": "You burn hard, and the insulation holds. You gain two days, and the buyer isn't asking where the time went.",
     "xp": 1
    },
    {
@@ -805,19 +805,19 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "You stand a watch on the hold all the way. Nothing goes wrong, because someone is looking at it.",
+    "text": "You stand a watch on the hold all the way. Nothing goes wrong, because someone's looking at it.",
     "xp": 1
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "Nobody wants the hold watch, and everyone takes it. It is a long, cold trip, and a quiet one.",
+    "text": "Nobody wants the hold watch, and everyone takes it. It's a long, cold trip, and a quiet one.",
     "xp": 1
    },
    {
     "i": 3,
     "roll": 0,
-    "text": "You fly the long way, off the lanes, in the dark. Nobody finds you, and nobody is looking.",
+    "text": "You fly the long way, off the lanes, in the dark. Nobody finds you, and nobody's looking.",
     "xp": 4
    },
    {
@@ -833,8 +833,8 @@
   "post": "engineer",
   "title": "Home With the Ice",
   "text": [
-   "The hold is full, and the ship is heavy, and she burns like it. Every maneuver is slower, and every vibration matters, because there is a hundred tons of ice in the hold that is the only cargo you are being paid for. The captain has set a course for the buyer and a limit on the thrust, and has asked everyone to keep it in mind.</p><p>The haul so far: even. Armor 260/260.",
-   "The rock is a pale dot astern, and then it is not. The hold is full of water that will keep a dome alive for a month. The burn is limited, and it is a long way home.</p><p>The haul so far: even. Armor 260/260."
+   "The hold is full, and the ship is heavy, and she burns like it. Every maneuver is slower, and every vibration matters, because there's a hundred tons of ice in the hold that's the only cargo you're being paid for. The captain has set a course for the buyer and a limit on the thrust, and has asked everyone to keep it in mind.</p><p>The haul so far: even. Armor 260/260.",
+   "The rock is a pale dot astern, and then it's not. The hold is full of water that'll keep a dome alive for a month. The burn is limited, and it's a long way home.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
    "Keep the burn gentle and the hold cold",
@@ -862,8 +862,8 @@
   "post": "gunner",
   "title": "Home With the Ice",
   "text": [
-   "The hold is full, and the ship is heavy, and she burns like it. Every maneuver is slower, and every vibration matters, because there is a hundred tons of ice in the hold that is the only cargo you are being paid for. The captain has set a course for the buyer and a limit on the thrust, and has asked everyone to keep it in mind.</p><p>The haul so far: even. Armor 260/260.",
-   "The rock is a pale dot astern, and then it is not. The hold is full of water that will keep a dome alive for a month. The burn is limited, and it is a long way home.</p><p>The haul so far: even. Armor 260/260."
+   "The hold is full, and the ship is heavy, and she burns like it. Every maneuver is slower, and every vibration matters, because there's a hundred tons of ice in the hold that's the only cargo you're being paid for. The captain has set a course for the buyer and a limit on the thrust, and has asked everyone to keep it in mind.</p><p>The haul so far: even. Armor 260/260.",
+   "The rock is a pale dot astern, and then it's not. The hold is full of water that'll keep a dome alive for a month. The burn is limited, and it's a long way home.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
    "Keep the burn gentle and the hold cold",
@@ -891,8 +891,8 @@
   "post": "comms",
   "title": "Home With the Ice",
   "text": [
-   "The hold is full, and the ship is heavy, and she burns like it. Every maneuver is slower, and every vibration matters, because there is a hundred tons of ice in the hold that is the only cargo you are being paid for. The captain has set a course for the buyer and a limit on the thrust, and has asked everyone to keep it in mind.</p><p>The haul so far: even. Armor 260/260.",
-   "The rock is a pale dot astern, and then it is not. The hold is full of water that will keep a dome alive for a month. The burn is limited, and it is a long way home.</p><p>The haul so far: even. Armor 260/260."
+   "The hold is full, and the ship is heavy, and she burns like it. Every maneuver is slower, and every vibration matters, because there's a hundred tons of ice in the hold that's the only cargo you're being paid for. The captain has set a course for the buyer and a limit on the thrust, and has asked everyone to keep it in mind.</p><p>The haul so far: even. Armor 260/260.",
+   "The rock is a pale dot astern, and then it's not. The hold is full of water that'll keep a dome alive for a month. The burn is limited, and it's a long way home.</p><p>The haul so far: even. Armor 260/260."
   ],
   "labels": [
    "Keep the burn gentle and the hold cold",
@@ -904,13 +904,13 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "You work the long link, port after port, and find a buyer who will pay for the water before it docks. The price is better than the board.",
+    "text": "You work the long link, port after port, and find a buyer who'll pay for the water before it docks. The price is better than the board.",
     "xp": 4
    },
    {
     "i": 3,
     "roll": 0.999,
-    "text": "The buyer you find backs out at the last moment. You are back to the board price, and the captain does not say anything. Armor -5.",
+    "text": "The buyer you find backs out at the last moment. You're back to the board price, and the captain doesn't say anything. Armor -5.",
     "xp": 1
    }
   ]

@@ -116,7 +116,7 @@ function setupHired(o) {
   };  // o.debt: a hand put ashore carries what is left (stakes.js)
   // The port screen says only what Signing On (signon.js) does not: who put a hand ashore, or that the captain was lost. The ship, the captain, the post and
   // the savings are said there, once.
-  if (o.captainLost) return [`${o.captainLost} did not come back from the bridge. You carry your savings and what you learned.`];
+  if (o.captainLost) return [`${o.captainLost} didn't come back from the bridge. You carry your savings and what you learned.`];
   return o.putOffBy ? [`${o.putOffBy} put you ashore. You carry your savings and what you learned.`] : [];
 }
 
@@ -301,8 +301,8 @@ function settleRun(planet) {
 const ERRAND_CUT = 0.2;
 const ERRANDS = [
   ['a sealed parcel', 'A courier bag with a wax seal, and a receipt to bring back signed. It weighs about as much as a lunch.'],
-  ['a message on a chip', 'A hand-written note on a data chip: somebody does not trust the public bands with it.'],
-  ['a set of spare keys', 'A ring of keys for a flat somebody has not seen in years. They want them back before the lease runs out.'],
+  ['a message on a chip', 'A hand-written note on a data chip: somebody doesn\'t trust the public bands with it.'],
+  ['a set of spare keys', 'A ring of keys for a flat somebody hasn\'t seen in years. They want them back before the lease runs out.'],
   ['a box of medicine', 'An insulated box with a cold-chain tag. The label says to keep it upright and out of the sun.'],
   ['a crate of seedlings', 'A tray of green shoots under a grow light that has to stay on. You carry it in your bunk.'],
 ];
