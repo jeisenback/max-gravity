@@ -484,7 +484,7 @@ const CAST = {
         'they would pay. When the Concord closed the open band to break a strike, he kept a relay running in his own kitchen for eleven days, and was ' +
         'let go for it.'),
     chatter: [
-      'Ruben: "Mars is not quiet. It is listening. There is a difference, and the difference is the whole business."',
+      'Ruben: "Mars is not quiet. It is listening. You can hear the difference if you hold still."',
       'Ruben is sorting a stack of intercepts into piles marked TRUE, FALSE, and LOVELY.',
       'Ruben has a thermos of something hot, and, as always, he offers it to everyone who passes.',
       'Ruben: "The dome at Hellas is short of pumps, and it is telling everyone it is short of morale. Remember that."',
@@ -518,7 +518,7 @@ const CAST = {
         title: 'The Quiet Band',
         text: ('The comms post is crowded. Ruben Castellanos has turned the whole station to a single narrow band, and has the volume up so that the ' +
             'galley can hear: a dome council arguing about a pump, in the flat courteous voices of people who have each been awake for two days. ' +
-            '"Listen," he says, softly. "Listen to what they are not saying. That is the real message."'),
+            '"Listen," he says, softly. "Nobody has mentioned the pump in four minutes. They are all being very careful not to."'),
         choices: [
           {
             label: 'Listen with him',
@@ -544,7 +544,7 @@ const CAST = {
         choices: [
           { label: 'Act on the tip', memory: 'You acted on what I heard.', run() { castLike('ruben', 2, this.memory); castXp('ruben', 'slicer', 2); const tip = addRumor(); return (
               `He tells you, and he is right to be careful: ${tip} He watches your face while you take it in, fiddling with the lid of the thermos. ` +
-              `"Not a word," he says, delighted, "about where you heard it. A good listener has no name."`); } },
+              `"Not a word," he says, delighted, "about where you heard it."`); } },
           {
             label: 'Leave it',
             effects: { castLike: { who: 'ruben', n: 1, memory: 'You left the dispatcher\'s secret alone.' } },
@@ -616,7 +616,7 @@ const CAST = {
     ambition: 'Wants to bring one ship home that everybody else had given up on, and see her fly again.',
     bio: 'She pulled dead ships into Ceres on a tug for twenty years. She keeps a list of every crew she found aboard them, the living and the others, and she does not talk about the list unless you ask the right way.',
     chatter: [
-      'Bexa: "A derelict is not dead. It is waiting. You just have to be patient enough to find out what for."',
+      'Bexa: "I have never been aboard a dead one. Cold, yes. The lights on a timer, and the log waiting for somebody to read it."',
       'Bexa is flying with both hands on the stick and her thumbs tucked under, the way you hold something that might slip.',
       'Bexa has a brass tag on a string above the console. She will not say whose it was.',
       'Bexa: "In the Belt we do not leave a ship. Not for money. Not for orders. You tow her home."',
@@ -626,7 +626,7 @@ const CAST = {
       meet: {
         title: 'The Tug Pilot',
         text: ('Down on the Ceres docks, a woman in a patched tug jacket is signing a salvage chit with a pen on a chain, the chit pinned flat to the rail under two fingers against the draft off the vents. "Bexa Oyelaran," she says, when you ask. "Twenty years towing dead ' +
-            'ships home. You learn what a ship wants. Mostly, to be found." She caps the pen. "The blockade killed the work. Nobody sells a wreck any ' +
+            'ships home. I could tell a hull\'s whole history from the airlock." She caps the pen. "The blockade killed the work. Nobody sells a wreck any ' +
             'more, they keep them. I would like a ship I can fly instead of tow."'),
         choices: [
           {
@@ -712,8 +712,8 @@ const CAST = {
       },
       late: {
         days: 45, title: 'The Ship Nobody Wanted',
-        text: ('Bexa is at the helm with the lights low and the console cover open, and she is not looking at the list. "I have a thing to say, and I ' +
-            'would like to say it once." She turns. "I want a ship. Not to tow. A wreck that everyone else has given up on, that I bring home, and put ' +
+        text: ('Bexa is at the helm with the lights low and the console cover open, and she is not looking at the list. She ' +
+            'turns. "I want a ship. Not to tow. A wreck that everyone else has given up on, that I bring home, and put ' +
             'right, and fly. A ship nobody wanted, and that wants to go." She looks at her hands. "If you ever have ships, I would like to be asked."'),
         choices: [
           {
@@ -727,7 +727,7 @@ const CAST = {
             label: 'Make no promises',
             effects: { castLike: { who: 'bexa', n: 1, memory: 'You would not promise, but you listened.' } },
             result: '"I cannot promise that," you say, "but I heard you." Her mouth goes crooked. "That is the ' +
-              'right answer," she says. "A promise is a tow rope. Do not put one on a ship you have not looked at."',
+              'right answer," she says. "Do not promise a tow to a ship you have not looked at. I did, once, and she had a hole in her."',
           },
         ],
       },
@@ -855,8 +855,7 @@ const CAST = {
       late: {
         days: 45, title: 'Without Flinching',
         text: ('Pax finds you outside the weapons bay, with hands that have stopped shaking, and an alarmed look. "I have not flinched in nine days," ' +
-            'they say. "I counted." They take a breath. "I want to run a ship one day. A ship where nobody gets hurt on my watch. I know that is not a ' +
-            'thing you can promise, that is exactly why I want it." They look at the deck. "If you ever have ships, I would like to be asked."'),
+            'they say. "I counted." They take a breath. "I want to run a ship one day. One where nobody gets hurt on my watch. I know you cannot promise that. I would still like to try." They look at the deck. "If you ever get a ship, ask me before you ask anyone else."'),
         choices: [
           {
             label: 'Promise them a ship, someday',

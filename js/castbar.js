@@ -21,7 +21,7 @@ const CAST_BAR = {
         { label: 'Ask about Lisbon', memory: 'You asked about Lisbon, and I told you.', run() { castLike('ines', 2, this.memory); castFlag('ines', 'lisbon'); return (
             'She turns from the screen. "The ferry ran every forty minutes," she says. "Nine years. I knew the regulars by their shoes. There was an ' +
             'old man who rode the 6:40 every morning to feed the pigeons on the Luna side. I never spoke to him once. I would give a great deal to ' +
-            'know if he still does." She drinks. "That is a route. You get fond of people you have only ever seen from the front."'); } },
+            'know if he still does." She drinks. "I only ever saw the back of his head."'); } },
       ],
     },
     {

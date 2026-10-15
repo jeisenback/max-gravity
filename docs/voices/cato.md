@@ -35,7 +35,7 @@ Patrick O'Brian. Take: the way talk wanders about the work before it arrives at 
 - "You have the middle watch with the pilot, and if the hatch on the lower berths sticks, hit it with the heel of your hand; everyone does that first, and it works about half the time."
 - "Sit. You are not in anyone's way."
 - "I put the hold gang's anniversary on the bill, so if I am not at the galley table on the fourth, come and find me, and do not let me say I was busy."
-- "She is counting, that is all. Somebody has to count, and it is her."
+- "She is counting, that is all. Leave her to it."
 - "Hold the end and I will do the rest."
 
 ## Dialogue risks

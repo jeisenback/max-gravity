@@ -569,7 +569,7 @@ const CAPTAIN_CHATTER = [
   '{cap} is going over the run again, with a pencil, in the margin of a chart nobody else is allowed to touch.',
   '{cap} stops at the hatch of the {post}, looks in, and leaves without saying a word.',
   '{cap} is in the galley with the ledger open, lips moving over the sums.',
-  '{cap}: "Fuel is money, and money is fuel. Remember that when somebody wants to go faster."',
+  '{cap}: "Fuel comes out of the share. Remember that when somebody wants to go faster."',
   '{cap} is checking the manifest against the hold, line by line, for the second time.',
   '{cap}: "I was a hand once. I remember what it was like when the captain did not know my name."',
   '{cap} is asleep in the captain\'s chair with the log open on the captain\'s chest.',

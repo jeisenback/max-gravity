@@ -1138,7 +1138,7 @@ const PEOPLE_LINES = {
   },
   'family:favor-debt': {
     title: 'A Favor',
-    text: '{n} finds you alone, at the end of the watch, and sits down without being asked, hands flat on the table. "I owe {debt} cr to people on {home}," they say, all in one breath. "It is the real reason I left. They send messages. I do not open them anymore. I just watch the little number go up." They look at you, at last, and do not look away. "I am not asking. I just wanted you to know, before you decide whether I am worth what you pay me."',
+    text: '{n} finds you alone, at the end of the watch, and sits down without being asked, hands flat on the table. "I owe {debt} cr to people on {home}," they say, all in one breath. "It is the real reason I left. They send messages. I do not open them anymore. I just watch the little number go up." They look at you, at last, and do not look away. "I am not asking."',
     'c0.label': 'Pay it off ({debt} cr)',
     'c0.result': '{n} reads the confirmation three times, with their lips moving, and puts the screen face-down on the table, and goes to their bunk. After a while you hear them crying through the bulkhead, and, after a longer while, laughing. In the morning they are making everyone breakfast. They will not look you in the eye, and they will not stop smiling.',
     'c1.label': '"I can\'t, not now."',
