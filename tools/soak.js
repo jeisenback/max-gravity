@@ -5,7 +5,9 @@
 //   node tools/soak.js --seeds 1,2,3 --legs 40 [--captain hester] [--real-draw] [--post engineer] [--frames] [--engineer favor-drive] [--scenes]
 // --scenes adds a report of which scenes played over the seeds (#512): each scene of the editor's index that the narrow build keeps, with its plays and the seeds it
 // played in; the ones that never played; and the titles with the largest share of all plays. A scene is matched to a play by its title, so scenes that share a title
-// share a count. It reports and sets no threshold.
+// share a count. It reports and sets no threshold. It also counts the storylet plays by kind (landing, port, road, and the road scenes of the ship's night) and how many
+// scenes each landing opened or queued. Each draw of a burn's events is made at the second of the burn it would fall on, so the ship's night is in the sample.
+// The totals line also gives how often the hand was hurt, and hurt again while still hurt.
 // --frames plays each burn's seconds (the drive's speed, the reactor's heat and the reaction mass, engineering.js) and the burn's contact, which the
 // per-frame loop raises in play, and reports raids, scrams, hull lost and extra reaction mass; without it a burn is one jump, as before.
 // --engineer ORDER gives the Engineer post that order (a key of POWER_PRESETS) before every sail (#292); it needs --post engineer and --frames to show.
@@ -24,6 +26,10 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     const byId = {}, byTitle = {};  // the plays of a storylet by its id, and of every other scene by its title (the report of --scenes)
     { const real = window.storyletEvent; window.storyletEvent = s => { const e = real(s); e.soakId = s.id; return e; }; }
     const odd = t => /undefined|NaN|\[object|\{[a-z]+\}/.test(String(t));
+    const hand = { hurt: 0, again: 0 }, landed = { on: false, opened: 0, mix: {} };  // the hand's hurts, and how many scenes each landing opened or queued
+    { const rh = window.hurtHand; window.hurtHand = function (s) { hand.hurt++; if ((s && s.youHurt) || handHurt()) hand.again++; return rh.apply(this, arguments); };
+      const oe = window.openEvent; window.openEvent = function (e) { if (landed.on) landed.opened++; return oe.apply(this, arguments); };
+      const em = Mods.emit; Mods.emit = function (name) { if (name !== 'landed') return em.apply(this, arguments); const had = !!G.nextEvent; landed.on = true; landed.opened = 0; try { return em.apply(this, arguments); } finally { landed.on = false; const n = landed.opened + (G.nextEvent && !had ? 1 : 0); landed.mix[n] = (landed.mix[n] || 0) + 1; } }; }
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: postKey, captainKey: key });
     const st = G.state;
     const fr = { raids: 0, scrams: 0, hull: 0, fuel: 0, planned: 0, seen: 0 };
@@ -67,7 +73,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         if (!sail()) { stuck++; st.day += 1; continue; }
         const to = hired().run.sid, runPlanet = hired().run.planet, creditsBefore = st.credits;
         answer();
-        tryBurn(); enterTransit(); const draws = G.transit.times.length; G.transit.times = [];  // as many draws as the burn would make
+        tryBurn(); enterTransit(); const drawAt = G.transit.times.slice(), draws = drawAt.length; G.transit.times = [];  // as many draws as the burn would make
         planOccasions();
         if (play) {  // the burn's own contact, planned and seen only if the drive is hot enough (engage.js), then answered at random
           G.transit.interceptPlanned = false; G.transit.event = null; planIntercept();
@@ -78,7 +84,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         }
         for (const o of G.transit.occasions) { openEvent(occasionEvent(o)); answer(); }
         const due = captainBeat(); if (due) dueBurns[due] = (dueBurns[due] || 0) + 1;  // a burn sailed with the scene due
-        for (let h = 0; h < draws; h++) { startHappening(); answer(); }
+        for (let h = 0; h < draws; h++) { G.transit.elapsed = drawAt[h] / burnSpeed(); startHappening(); answer(); }  // each draw at the second of the burn it would fall on, so the ship's night (shiplife.js) can come into it
         for (const c of castAboard()) if ((castRec(c.cast).arc || 0) >= 1 && !(c.cast in introRun)) introRun[c.cast] = runs + 1;
         while (beatDays.length < (hired().beats || 0)) {  // read on the day she left, before the burn's days pass
           const name = CAPTAIN_BEATS[beatDays.length];
@@ -114,7 +120,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     }
     const avg = (a, n) => Math.round(a / Math.max(1, n));
     if (!ending.v) tally();
-    return { frames: fr, losses, ending: ending.v, runs, days: st.day, credits: st.credits, reached, stuck, scenes, byId, byTitle, bad, beatDays, xoDays, waits, burns, introRun, firstOfficers: Object.keys(CAST).filter(k => CAST[k].xo), offerDay,
+    return { frames: fr, hand, landings: landed.mix, losses, ending: ending.v, runs, days: st.day, credits: st.credits, reached, stuck, scenes, byId, byTitle, bad, beatDays, xoDays, waits, burns, introRun, firstOfficers: Object.keys(CAST).filter(k => CAST[k].xo), offerDay,
       avgPayPerRun: avg(paid.reduce((a, b) => a + b, 0), paid.length), avgDaysPerRun: Math.round(10 * st.day / Math.max(1, runs)) / 10 };
   }, [legs, captainKey, realDraw, post, frames, engineer]);
   await ctx.close();
@@ -143,7 +149,8 @@ function report(runs) {
     for (const l of r.losses) { const k = `${l.what} ${/^(Ines|Tomas|Cato)/.test(l.who) ? l.who.split(' ')[0] : l.who.endsWith('named') ? 'a main character' : 'crew'}`; if (!seen.has(k)) { seen.add(k); total[k] = (total[k] || 0) + 1; } }
     if (r.ending) total[r.ending.title] = (total[r.ending.title] || 0) + 1;
   }
-  console.log(`${runs.length} chapters, chapters with: ${Object.entries(total).sort().map(([k, v]) => `${k} ${v}`).join(', ') || 'no losses'}`);
+  const hurt = runs.reduce((n, r) => n + (r.hand ? r.hand.hurt : 0), 0), again = runs.reduce((n, r) => n + (r.hand ? r.hand.again : 0), 0), died = runs.filter(r => r.ending && r.ending.title === 'The Last Run').length;
+  console.log(`${runs.length} chapters, chapters with: ${Object.entries(total).sort().map(([k, v]) => `${k} ${v}`).join(', ') || 'no losses'}${runs.some(r => r.hand) ? `; the hand was hurt ${hurt} times (${again} while still hurt) and died in ${died}` : ''}`);
 }
 
 // The scene index the editor shows (editor.html), as { id, title, off, storylet } for each scene with a title; off is a scene the narrow build leaves out, storylet one that is data outside the hired chapter's registry.
@@ -175,6 +182,12 @@ function scenesReport(runs, rows, legs, top = 10) {
   out.push(`never played in this sample: ${dead.length} of ${kept.length}`, ...dead.map(r => `  ${r.id}  ${r.title}`));
   const label = ([key, p]) => (key.startsWith('id:') ? `${(rows.find(r => r.id === p.label) || {}).title || p.label} (${p.label})` : p.label);
   out.push(`largest share of all plays:`, ...[...played].sort((a, b) => b[1].plays - a[1].plays || (a[0] < b[0] ? -1 : 1)).slice(0, top).map(e => `  ${label(e)}: ${e[1].plays} plays, ${Math.round(1000 * e[1].plays / Math.max(1, total)) / 10} percent, ${e[1].seeds} of ${runs.length} seeds`));
+  const kinds = { landing: /^land-/, port: /^port-/, road: /^road-/ }, plays = re => [...played].filter(([k]) => k.startsWith('id:') && re.test(k.slice(3))).reduce((t, [, p]) => t + p.plays, 0);
+  if (runs.some(r => r.landings)) {
+    const mix = [0, 1, 2].map(n => runs.reduce((t, r) => t + Object.entries(r.landings || {}).filter(([k]) => (n === 2 ? Number(k) >= 2 : Number(k) === n)).reduce((s, [, c]) => s + c, 0), 0)), landings = mix[0] + mix[1] + mix[2];
+    out.push(`storylet plays by kind: ${Object.entries(kinds).map(([k, re]) => `${k} ${plays(re)}`).join(', ')} (of which at night ${plays(/^road-night-/)})`,
+      `landings: ${landings}, with no scene ${mix[0]}, one ${mix[1]}, two or more ${mix[2]}`);
+  }
   const listed = new Set(rows.map(r => (r.storylet ? `id:${r.id}` : `title:${r.title}`))), unknown = [...played].filter(([key]) => !listed.has(key)).map(e => label(e));
   out.push(`played but not listed in the index: ${unknown.length}${unknown.length ? ` (${unknown.sort().slice(0, 8).join('; ')}${unknown.length > 8 ? '; ...' : ''})` : ''}`);
   return out;
