@@ -56,6 +56,7 @@ const playScenes = () => {
   run('scene:put-ashore:plain', {}, () => putAshoreScene(), { skip: [0] });
   run('scene:put-ashore:facts', {}, () => { hired().flags = { iceBad: true, hurt: true, raided: true }; return putAshoreScene(); }, { skip: [0] });
   run('scene:hand-death:hurt', {}, () => handDeathScene('hurt'), { skip: [0] });
+  run('scene:hand-death:first', {}, () => handDeathScene('first'), { skip: [0] });
   run('scene:hand-death:bridge', {}, () => handDeathScene('bridge'), { skip: [0] });
   run('scene:captain-lost', {}, () => captainLostScene(), { skip: [0] });
   run('scene:split', {}, () => {

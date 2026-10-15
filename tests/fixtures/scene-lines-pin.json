@@ -75,6 +75,15 @@
   ]
  },
  {
+  "id": "scene:hand-death:first",
+  "plays": [],
+  "title": "The Last Run",
+  "text": "You do not see what hits you. It comes from the side, and then you are sitting against the closer with one hand pressed to your ribs and the hand coming away wet. Captain Vance is at the hatch saying your name. The crew are on you before the lock has cycled, and somebody who knows how works on you while the lights go from amber to white. Nobody speaks. The captain takes your other hand off the deck and holds it, and you are dead before the lights are done.</p><p>Captain Vance writes it in the log: the day, the place, your name, and that you died on a run. The captain is sorry to write it.</p><p>30 days aboard the Iron Anvil. 0 runs with Captain Vance, and 0 cr earned in wage and share. You worked the gunner and reached level 1.</p><p>Nobody aboard was a friend yet.",
+  "labels": [
+   "Begin again"
+  ]
+ },
+ {
   "id": "scene:hand-death:bridge",
   "plays": [],
   "title": "The Last Run",
