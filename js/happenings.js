@@ -39,7 +39,7 @@ function storyletCandidate(where, story) {
   const keep = s => isStory(s) === story;
   const s = pickStorylet(where, keep);  // the one roll of its chance: the scene offered is the scene played
   if (!s) return [];
-  return [{ tier: story ? 0 : 2, weight: 2, via: where === 'port' ? 'station' : 'ship', make: () => storyletEvent(s) }];
+  return [{ tier: story ? 0 : 2, weight: story ? BURN_WEIGHTS.story : BURN_WEIGHTS.color, via: where === 'port' ? 'station' : 'ship', make: () => storyletEvent(s) }];
 }
 
 Mods.register({
@@ -51,34 +51,34 @@ Mods.register({
       if (where === 'transit') {
         const t = G.transit, progress = 1 - t.left / t.total;
         const told = procedural().find(f => f.p.news);
-        if (told) out.push({ tier: 1, weight: 1, via: 'message', make: () => newsEvent(told.p) });
+        if (told) out.push({ tier: 1, weight: BURN_WEIGHTS.news, via: 'message', make: () => newsEvent(told.p) });
         const o = (t.occasions || []).find(x => !x.done && x.at <= progress);
-        if (o) out.push({ tier: 1, weight: o.kind === 'ice' ? 8 : 1, via: 'crew', make() { o.done = true; return occasionEvent(o); } });
-        out.push({ tier: 1, weight: 1, via: 'crew', make: welcomeBack });
+        if (o) out.push({ tier: 1, weight: o.kind === 'ice' ? BURN_WEIGHTS.iceOccasion : BURN_WEIGHTS.occasion, via: 'crew', make() { o.done = true; return occasionEvent(o); } });
+        out.push({ tier: 1, weight: BURN_WEIGHTS.welcomeBack, via: 'crew', make: welcomeBack });
         const weak = worstPart();
-        if (condition()[weak] < BREAKDOWN_BELOW) out.push({ tier: 1, weight: 1, via: 'crew', make: () => Math.random() < 0.5 ? breakdownEvent(weak) : null });
-        if ((Mods.hooks.transitEvent || []).length) out.push({ tier: 1, weight: 1, via: 'ship', make: () => Mods.filter('transitEvent', null) });
+        if (condition()[weak] < BREAKDOWN_BELOW) out.push({ tier: 1, weight: BURN_WEIGHTS.breakdown, via: 'crew', make: () => Math.random() < 0.5 ? breakdownEvent(weak) : null });
+        if ((Mods.hooks.transitEvent || []).length) out.push({ tier: 1, weight: BURN_WEIGHTS.transitHook, via: 'ship', make: () => Mods.filter('transitEvent', null) });
         const pax = paxAboard().find(m => !m.story && !m.eventDone && (m.pid || PASSENGERS[m.passenger]));
-        if (pax) out.push({ tier: 2, weight: 4, via: 'crew', make() { pax.eventDone = true; return pax.pid ? passengerEvent(pax) : PASSENGERS[pax.passenger].event(pax); } });
+        if (pax) out.push({ tier: 2, weight: BURN_WEIGHTS.passenger, via: 'crew', make() { pax.eventDone = true; return pax.pid ? passengerEvent(pax) : PASSENGERS[pax.passenger].event(pax); } });
         const arcs = st.crew.filter(id => CREW[id] && CREW[id].events[flags[`${id}Arc`] || 0]);
-        if (arcs.length) out.push({ tier: 2, weight: 2, via: 'crew', make() { const id = pick(arcs), step = flags[`${id}Arc`] || 0; flags[`${id}Arc`] = step + 1; return CREW[id].events[step]; } });
-        out.push({ tier: 2, weight: 1, via: 'crew', make: crewTraitEvent });
-        out.push({ tier: 2, weight: 2, via: 'crew', make: relationshipScene });
-        if (home().burns >= 2) out.push({ tier: 2, weight: 1, via: 'crew', make: traditionEvent });
+        if (arcs.length) out.push({ tier: 2, weight: BURN_WEIGHTS.crewArc, via: 'crew', make() { const id = pick(arcs), step = flags[`${id}Arc`] || 0; flags[`${id}Arc`] = step + 1; return CREW[id].events[step]; } });
+        out.push({ tier: 2, weight: BURN_WEIGHTS.trait, via: 'crew', make: crewTraitEvent });
+        out.push({ tier: 2, weight: BURN_WEIGHTS.relationship, via: 'crew', make: relationshipScene });
+        if (home().burns >= 2) out.push({ tier: 2, weight: BURN_WEIGHTS.tradition, via: 'crew', make: traditionEvent });
         out.push(...storyletCandidate(where, false));
         // Not one seen in the last 45 days, on this burn or an earlier one.
         const met = st.eventSeen = st.eventSeen || {};
         const hand = hired(), fresh = TRANSIT_EVENTS.filter(e => !t.seen.includes(e) && !(met[e.title] > st.day - 45) && !(hand && OWNER_ONLY_EVENTS.includes(e.title)) && !(e.title === 'Pirates Matching Course' && quality('due:pi-safe') > st.day));
         if (hand) for (const g of HIRED_GROUPS) out.push({ tier: 2, weight: captainWeight(g), via: 'crew', make: () => hiredEvent(g) });
-        if (fresh.length) out.push({ tier: 2, weight: hand ? HIRED_WEIGHTS.ship * (1 + HAND_LANE_WEIGHT * Math.max(danger(t.to), danger(st.systemId))) : 1, via: 'ship', make() { const ev = pick(fresh); t.seen.push(ev); met[ev.title] = st.day; return ev; } });
-        out.push({ tier: 2, weight: 3, quiet: true });
+        if (fresh.length) out.push({ tier: 2, weight: hand ? HIRED_WEIGHTS.ship * (1 + HAND_LANE_WEIGHT * Math.max(danger(t.to), danger(st.systemId))) : BURN_WEIGHTS.ship, via: 'ship', make() { const ev = pick(fresh); t.seen.push(ev); met[ev.title] = st.day; return ev; } });
+        out.push({ tier: 2, weight: BURN_WEIGHTS.quiet, quiet: true });
       } else {
-        if (G.joinOffer) out.push({ tier: 1, weight: 1, via: 'crew', make() { const p = G.joinOffer; G.joinOffer = null; return joinEvent(p); } });
+        if (G.joinOffer) out.push({ tier: 1, weight: BURN_WEIGHTS.join, via: 'crew', make() { const p = G.joinOffer; G.joinOffer = null; return joinEvent(p); } });
         const o = outpost();
         const m = o && planet.name === o.site && MOMENTS.find((x, i) => o.pop >= x.at && !o.moments.includes(i));
-        if (m) out.push({ tier: 1, weight: 1, via: 'message', make() { o.moments.push(MOMENTS.indexOf(m)); return m.make(o); } });
+        if (m) out.push({ tier: 1, weight: BURN_WEIGHTS.moment, via: 'message', make() { o.moments.push(MOMENTS.indexOf(m)); return m.make(o); } });
         out.push(...storyletCandidate(where, false));
-        if (!home().cat && st.day >= 5 && CAT_PORTS.includes(planet.name)) out.push({ tier: 2, weight: 1, via: 'crew', make: () => Math.random() < 0.1 ? catEvent() : null });
+        if (!home().cat && st.day >= 5 && CAT_PORTS.includes(planet.name)) out.push({ tier: 2, weight: BURN_WEIGHTS.cat, via: 'crew', make: () => Math.random() < 0.1 ? catEvent() : null });
       }
       return list.concat(out);
     });

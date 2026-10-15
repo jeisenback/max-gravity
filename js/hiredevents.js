@@ -10,6 +10,12 @@
 
 const HIRED_GROUPS = ['work', 'captain', 'crew', 'money', 'road'];
 const HIRED_WEIGHTS = { work: 3, captain: 1, crew: 1, money: 1, road: 1, ship: 1 };  // against the rest of the burn's tier-2 weights
+// The other weights of the draw, one per kind of scene (happenings.js, which owns the tiers). A higher weight is drawn that many times as often against the rest of its tier.
+const BURN_WEIGHTS = {
+  story: 2,  // tier 0: a main-story storylet
+  news: 1, iceOccasion: 8, occasion: 1, welcomeBack: 1, breakdown: 1, transitHook: 1, join: 1, moment: 1,  // tier 1: what the burn or the landing owes the player
+  passenger: 4, crewArc: 2, trait: 1, relationship: 2, tradition: 1, color: 2, ship: 1, cat: 1, quiet: 3,  // tier 2: the rest ('ship' is the stock incident of an owner's burn; a hand's is HIRED_WEIGHTS.ship)
+};
 const OWNER_ONLY_EVENTS = ['Stowaway', 'Merchant Hail', 'Drifting Cargo Container'];
 const WORK_SEEN_DAYS = 30;  // a problem does not come round again for this long
 
