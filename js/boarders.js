@@ -158,11 +158,12 @@ const pickWeighted = table => { let r = Math.random() * Object.values(table).red
 // The hand is hurt: laid up for a while (a level worse, light duty), longer if already hurt, and with no medic aboard the clinic is on
 // their own savings. Used when a crew member is hit (below) and when the hand's own call in a raid goes wrong (engagements.js).
 const HAND_CLINIC = 150;
-// The hand can die (#357): hurt a second time while still hurt, or with the bridge taken while laid up, is a roll of one in four, halved with a
-// medic aboard (the factor crew deaths use, losses.js). A first hurt never rolls. The next scene is the ending (stakes.js), so a caller that
-// queues a scene after this one checks `s.handDied` first.
-const HAND_DEATH = 0.25;
-const handDeathOdds = () => HAND_DEATH * (roleHolder('medic') ? LOSS_MEDIC : 1);
+// The hand can die (#357): hurt a second time while still hurt, or with the bridge taken while laid up, is a roll of one in four, and a first hurt
+// is a roll of one in twelve; each is halved with a medic aboard (the factor crew deaths use, losses.js). The hand is hurt about 0.4 times a chapter
+// and rarely twice inside the 12 days it takes to mend, so the first-hurt roll is what puts a death near 3 in 100 chapters (as the captain's loss is).
+// The next scene is the ending (stakes.js), so a caller that queues a scene after this one checks `s.handDied` first.
+const HAND_DEATH = 0.25, HAND_DEATH_FIRST = 1 / 12;
+const handDeathOdds = (again = true) => (again ? HAND_DEATH : HAND_DEATH_FIRST) * (roleHolder('medic') ? LOSS_MEDIC : 1);
 // The captain can be lost (#357): a pirate bridge taken is a roll of one in three. The next scene is the captain's loss (stakes.js).
 const CAPTAIN_LOST = 1 / 3;
 function handDies(s, how) {
@@ -175,10 +176,10 @@ function hurtHand(s) {
   h.hurtUntil = st.day + (again ? 18 : 12);
   s.youHurt = true;
   captainFlag('hurt');  // kept for the goodbye (captains.js)
+  if (Math.random() < handDeathOdds(again)) { handDies(s, again ? 'hurt' : 'first'); return again ? 'You are hurt again, and you stay down.' : 'You are hit.'; }
   const bill = roleHolder('medic') ? 0 : Math.min(st.credits, HAND_CLINIC);
   st.credits -= bill;
   const pay = bill ? ` The clinic is ${fmt(bill)} cr of your own, with no medic aboard.` : '';
-  if (again && Math.random() < handDeathOdds()) handDies(s, 'hurt');
   return `${again ? 'You are hurt again, and you stay down.' : 'You are hurt. Your work counts a level lower until the clinic clears you.'}${pay}`;
 }
 
