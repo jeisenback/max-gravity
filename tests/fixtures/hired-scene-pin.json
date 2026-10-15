@@ -2892,7 +2892,7 @@
   "id": "cast:cato:intro",
   "i": 0,
   "label": "Tell him what you need",
-  "result": "You tell him you would rather have the middle watch than the cold one, and that you sleep badly after a hard burn. He writes it on the back of his hand with a stub of pencil. \"Done,\" he says. It takes you a moment to find the rest of your coffee.",
+  "result": "You tell him you would rather have the middle watch than the cold one, and that you sleep badly after a hard burn. He writes it on the back of his hand with a stub of pencil. \"Done,\" he says. \"Hard burns, middle watch. Nobody has to know why.\"",
   "changes": [
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
@@ -2927,7 +2927,7 @@
   "id": "cast:cato:intro",
   "i": 1,
   "label": "Say you are fine",
-  "result": "You say you are fine. \"Good,\" he says. He leaves the mug on the rail beside you, and the offer with it, and goes aft to see about somebody else's watch.",
+  "result": "You say you are fine. \"All right,\" he says. He leaves the mug on the rail beside you, and the offer with it, and goes aft to see about somebody else's watch.",
   "changes": [
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
@@ -3112,7 +3112,7 @@
   "id": "cast:cato:late",
   "i": 0,
   "label": "Ask him to tell you if it goes badly",
-  "result": "He writes it on the back of his hand. \"I will,\" he says. \"I will put it on the bill. It is something, to have somebody to tell.\"",
+  "result": "He writes it in pencil at the foot of the bill, where the next person to read it will see. \"I will,\" he says. \"It is something, to have somebody to tell.\"",
   "changes": [
    "s.cast.cato.flags: {} -> undefined",
    "s.cast.cato.flags.told: undefined -> true",
