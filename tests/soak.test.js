@@ -5,7 +5,7 @@
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { closeBrowser } = require('./helpers');
-const { soak, report, framesReport, jobsReport } = require('../tools/soak');
+const { soak, report, framesReport, jobsReport, barReport } = require('../tools/soak');
 
 test('the soak sails the captain\'s runs and reports them', async () => {
   const r = await soak({ seed: 1, legs: 6 });
@@ -15,6 +15,12 @@ test('the soak sails the captain\'s runs and reports them', async () => {
   assert.ok(Number.isFinite(r.avgPayPerRun) && r.avgPayPerRun > 0);
   assert.ok(Number.isFinite(r.avgDaysPerRun));
   assert.ok(Object.keys(r.scenes).length > 0);
+  // the bar: a choice at a table on most landings, counted by topic, with what the talks moved
+  const b = r.bar;
+  assert.ok(b.talks > 0 && b.talks <= r.runs * 3, `talks ${b.talks} over ${r.runs} runs`);
+  assert.equal(Object.values(b.topics).reduce((t, c) => t + c, 0), b.talks);
+  for (const k of ['credits', 'xp', 'opinion', 'rumors', 'cast']) assert.ok(Number.isFinite(b[k]), k);
+  assert.match(barReport([r]), /^bar, a chapter's mean over 1 seeds: \d+ choices at a table and \d+ scenes with a main character; the talks moved -?\d+ cr, \d+ points at the post, -?\d+ of opinion over everyone known, \d+ rumors heard; by topic: /);
 });
 
 test('with --jobs the soak works the station jobs and puts the jobs elsewhere to the captain, and reports what they paid', async () => {

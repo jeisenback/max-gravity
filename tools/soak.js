@@ -11,6 +11,8 @@
 // share a count. It reports and sets no threshold. It also counts the storylet plays by kind (landing, port, road, and the road scenes of the ship's night) and how many
 // scenes each landing opened or queued. Each draw of a burn's events is made at the second of the burn it would fall on, so the ship's night is in the sample.
 // The totals line also gives how often the hand was hurt, and hurt again while still hurt.
+// The bar is played at every landing as before (one patron, one choice at random), and every run reports what it gave and cost: the talks by topic, the credits
+// spent or won, the points learned at the post, how much the people there came to think of the hand, and the rumors heard.
 // --frames plays each burn's seconds (the drive's speed, the reactor's heat and the reaction mass, engineering.js) and the burn's contact, which the
 // per-frame loop raises in play, and reports raids, scrams, hull lost and extra reaction mass; without it a burn is one jump, as before. It also plays 20 seconds of the
 // live flight loop in each system on arrival (update(), as the frame does), with the autopilot docking her, so what that loop says is in the message report (#656).
@@ -51,6 +53,12 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     { const rj = window.jobStage; window.jobStage = function (job, i) { work.current = AWAY.includes(job) ? 'away' : 'station'; if (i === 0) work[work.current]++; return rj.apply(this, arguments); };
       const ra = window.applyJob; window.applyJob = function () { const c0 = G.state.credits, h0 = hand.hurt; const out = ra.apply(this, arguments); work.pay[work.current] += G.state.credits - c0; work.hurt += hand.hurt - h0; return out; };
       const ro = window.awayOffer; window.awayOffer = function () { const o = ro.apply(this, arguments); if (o) work.offered++; return o; }; }
+    // The bar: each choice made in a talk at a table (a topic by its id, a follow-up scene's choice, or leaving them), and what the talks moved: credits, points at the post,
+    // the sum of what the people in the registry think of the hand, and rumors heard. A main character's bar scene is its own scene, counted apart.
+    const bar = { talks: 0, cast: 0, topics: {}, credits: 0, xp: 0, opinion: 0, rumors: 0, in: false };
+    for (const t of BAR_TOPICS) { const m = t.make; t.make = function () { const o = m.apply(this, arguments); o.soakId = t.id; return o; }; }
+    { const rr = window.addRumor; window.addRumor = function () { if (bar.in) bar.rumors++; return rr.apply(this, arguments); }; }
+    const opinions = () => Object.values(G.state.people).reduce((t, p) => t + (p.opinion || 0), 0);
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: postKey, captainKey: key });
     const st = G.state;
     const LIVE_SECONDS = 20, LIVE_STEP = 0.05;  // the live flight played in each system with --frames (#656): the frame step is the game's own cap
@@ -65,7 +73,14 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         if (d.event.soakId) byId[d.event.soakId] = (byId[d.event.soakId] || 0) + 1; else byTitle[d.event.title] = (byTitle[d.event.title] || 0) + 1;
         if (odd(d.event.title + d.event.text)) bad.push('text: ' + d.event.title);
         const ok = d.choices.map((c, i) => i).filter(i => !d.choices[i].can || d.choices[i].can());
-        if (ok.length) { const res = chooseEvent(pick(ok)); if (odd(res)) bad.push('result: ' + String(res).slice(0, 80)); }
+        if (ok.length) {
+          const i = pick(ok), c = d.choices[i], atBar = !!(G.barState && d.event.title.startsWith(`${G.barState.name}: `));
+          const c0 = G.state.credits, x0 = skillXp(postKey), o0 = atBar ? opinions() : 0;
+          bar.in = atBar;
+          const res = chooseEvent(i); if (odd(res)) bad.push('result: ' + String(res).slice(0, 80));
+          bar.in = false;
+          if (atBar) { const id = c.soakId || (/^Leave/.test(c.label) ? 'leave' : 'follow-up'); bar.talks++; bar.topics[id] = (bar.topics[id] || 0) + 1; bar.credits += G.state.credits - c0; bar.xp += skillXp(postKey) - x0; bar.opinion += opinions() - o0; }
+        }
         finishEvent();
       }
       while (G.dialog) finishEvent();
@@ -89,7 +104,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     while (runs < maxLegs && stuck < 5 && !reached && !ending.v) {
       try {
         UI.tab = 'bar'; UI.render();
-        if (G.patrons && G.patrons.length) { openEvent(talkEvent(pick(G.patrons))); answer(); }
+        if (G.patrons && G.patrons.length) { const pat = pick(G.patrons); if (pat.cast) bar.cast++; openEvent(talkEvent(pat)); answer(); }
         if (order) Object.assign(power(), POWER_PRESETS[order].to);  // the order, before every sail
         const armor0 = st.armor;
         if (!sail()) { stuck++; st.day += 1; continue; }
@@ -150,8 +165,8 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     }
     const avg = (a, n) => Math.round(a / Math.max(1, n));
     if (!ending.v) tally();
-    delete work.current;
-    return { messages, frames: fr, hand, work, landings: landed.mix, losses, ending: ending.v, runs, days: st.day, credits: st.credits, reached, stuck, scenes, byId, byTitle, bad, beatDays, xoDays, waits, burns, introRun, firstOfficers: Object.keys(CAST).filter(k => CAST[k].xo), offerDay,
+    delete work.current; delete bar.in;
+    return { messages, frames: fr, hand, work, bar, landings: landed.mix, losses, ending: ending.v, runs, days: st.day, credits: st.credits, reached, stuck, scenes, byId, byTitle, bad, beatDays, xoDays, waits, burns, introRun, firstOfficers: Object.keys(CAST).filter(k => CAST[k].xo), offerDay,
       avgPayPerRun: avg(paid.reduce((a, b) => a + b, 0), paid.length), avgDaysPerRun: Math.round(10 * st.day / Math.max(1, runs)) / 10 };
   }, [legs, captainKey, realDraw, post, frames, engineer, jobs]);
   await ctx.close();
@@ -185,6 +200,15 @@ function jobsReport(runs) {
   const pay = runs.reduce((t, r) => t + r.work.pay.station + r.work.pay.away, 0), credits = runs.reduce((t, r) => t + r.credits, 0);
   return `jobs, a chapter's mean over ${runs.length} seeds: station ${mean(w => w.station)} worked for ${mean(w => w.pay.station)} cr, elsewhere ${mean(w => w.away)} played for ${mean(w => w.pay.away)} cr ` +
     `(offered ${mean(w => w.offered)}, put to the captain ${mean(w => w.pitched)}, agreed ${mean(w => w.booked)}); job pay ${Math.round(100 * pay / Math.max(1, credits))} percent of the credits in hand at the end; hurt by a job ${mean(w => w.hurt)} times`;
+}
+
+// The bar over the chapters, the means across the seeds: the talks and what they moved, and the choices by topic, most often first.
+function barReport(runs) {
+  const n = Math.max(1, runs.length), one = x => Math.round(x * 10) / 10, mean = f => one(runs.reduce((t, r) => t + f(r.bar), 0) / n), topics = {};
+  for (const r of runs) for (const [k, c] of Object.entries(r.bar.topics)) topics[k] = (topics[k] || 0) + c;
+  return `bar, a chapter's mean over ${runs.length} seeds: ${mean(b => b.talks)} choices at a table and ${mean(b => b.cast)} scenes with a main character; the talks moved ${mean(b => b.credits)} cr, ` +
+    `${mean(b => b.xp)} points at the post, ${mean(b => b.opinion)} of opinion over everyone known, ${mean(b => b.rumors)} rumors heard; by topic: ` +
+    Object.entries(topics).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1)).map(([k, c]) => `${k} ${one(c / n)}`).join(', ');
 }
 
 // The ship messages and port notes a chapter writes (the `messages` of each soak result): the means across the seeds, then the lines that come most often, as lines to print.
@@ -253,7 +277,7 @@ function scenesReport(runs, rows, legs, top = 10) {
   return out;
 }
 
-module.exports = { soak, soaks, report, framesReport, messagesReport, jobsReport, sceneRows, scenesReport };
+module.exports = { soak, soaks, report, framesReport, messagesReport, jobsReport, sceneRows, scenesReport, barReport };
 
 if (require.main === module) {
   const arg = n => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : null; };
@@ -266,6 +290,7 @@ if (require.main === module) {
       console.log(`seed ${seed} runs ${r.runs} days ${r.days} credits ${r.credits} reached ${JSON.stringify(r.reached)} pay/run ${r.avgPayPerRun} days/run ${r.avgDaysPerRun} stuck ${r.stuck} trouble ${r.beatDays[0] ?? '-'} secret ${r.beatDays[1] ?? '-'} (due ${r.waits.join(',') || '-'} days, ${r.burns.join(',') || '-'} burns) offer ${r.offerDay ?? '-'} intros ${Object.entries(r.introRun).map(([k, v]) => `${k}:${v}`).join(',') || '-'} xo [${r.xoDays.join(',')}] (days since sign-on)${jobs ? ` jobs station ${r.work.station} (${r.work.pay.station} cr) away ${r.work.away} (${r.work.pay.away} cr) hurt ${r.work.hurt}` : ''} bad ${r.bad.length} errors ${r.errors.length}`);
     }
     report(all);
+    console.log(barReport(all));
     if (jobs) console.log(jobsReport(all));
     if (frames) framesReport(all, engineer ? `${post} with ${engineer}: ` : `${post}: `);
     if (process.argv.includes('--messages')) console.log(messagesReport(all).join('\n'));
