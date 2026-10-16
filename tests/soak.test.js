@@ -5,7 +5,7 @@
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { closeBrowser } = require('./helpers');
-const { soak, report, framesReport } = require('../tools/soak');
+const { soak, report, framesReport, jobsReport } = require('../tools/soak');
 
 test('the soak sails the captain\'s runs and reports them', async () => {
   const r = await soak({ seed: 1, legs: 6 });
@@ -15,6 +15,17 @@ test('the soak sails the captain\'s runs and reports them', async () => {
   assert.ok(Number.isFinite(r.avgPayPerRun) && r.avgPayPerRun > 0);
   assert.ok(Number.isFinite(r.avgDaysPerRun));
   assert.ok(Object.keys(r.scenes).length > 0);
+});
+
+test('with --jobs the soak works the station jobs and puts the jobs elsewhere to the captain, and reports what they paid', async () => {
+  const r = await soak({ seed: 1, legs: 10, jobs: true }), w = r.work;
+  assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []);
+  assert.ok(w.station > 0 && w.station <= r.runs + 1, `a station job at a landing with a board: ${w.station}`);
+  assert.ok(Number.isFinite(w.pay.station) && Number.isFinite(w.pay.away) && w.pay.station !== 0, `the jobs moved the hand's credits: ${JSON.stringify(w.pay)}`);
+  assert.ok(w.pitched >= w.booked && w.offered >= w.pitched / 4, `offered ${w.offered}, pitched ${w.pitched}, booked ${w.booked}`);
+  assert.match(jobsReport([r]), /^jobs, a chapter's mean over 1 seeds: station \d+ worked for -?\d+ cr, elsewhere \d+ played for -?\d+ cr \(offered \d+, put to the captain \d+, agreed \d+\); job pay -?\d+ percent/);
+  const plain = await soak({ seed: 1, legs: 10 });
+  assert.equal(plain.work.station + plain.work.away, 0, 'without the flag no job is taken');
 });
 
 test('for every captain the trouble, then the secret, then the used-ship offer', async () => {
