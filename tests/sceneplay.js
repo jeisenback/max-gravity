@@ -114,6 +114,13 @@ const playScenes = () => {
       if (extra === 'papers') window.youTies = () => ({ aff: GOV, status: { [GOV]: 'member' }, regard: {} });
     }, () => customsScene(GOV, currentPlanet(), patrol));
   }
+  // the lieutenant on a patrol cutter: a first stop and a later one after each way of answering, for each faction
+  for (const gov of STATE_FACTIONS) for (const last of [null, 'straight', 'gap', 'asking.win', 'asking.lose']) {
+    tiesCase(`scene:lieutenant:${gov}:${last || 'first'}`, () => {
+      mateOf('Sam'); stubTies({ Sam: { aff: gov, status: { [gov]: 'wanted' } } });
+      if (last) G.state.customs.met = { [gov]: { q: PATROL_LT[gov].asks[0], answer: last, day: 0 } };
+    }, () => lieutenantScene(gov, currentPlanet()));
+  }
   tiesCase('scene:dock-friend', () => { mateOf('Sam'); stubTies({ Sam: { aff: GOV, status: { [GOV]: 'officer' } } }); }, () => dockFriendScene(GOV, currentPlanet()));
   for (const [name, status, opinion] of [['officer', 'officer', 0], ['member:close', 'member', OPINION.CLOSE], ['member:far', 'member', 0]]) {
     tiesCase(`scene:war-call:${name}`, () => {

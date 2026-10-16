@@ -12,7 +12,7 @@ const { execFileSync } = require('node:child_process');
 const { QUOTED, scanSource, wordCount, narrativeFiles } = require('./prose-lint');
 
 const CONTEXT = 300;  // characters of scene text kept either side of a line
-const CARDS = ['hester', 'cato', 'ines', 'tomas', 'gunner'];
+const CARDS = ['hester', 'cato', 'ines', 'tomas', 'gunner', 'patrol-officers'];
 
 // The quoted lines in a script's source that are not in `known` (a set of passage texts), as { line, quote, before, after }: the passage is a whole string or a run of
 // strings joined by `+`, and the line is where it starts in the file.

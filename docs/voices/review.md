@@ -1,6 +1,6 @@
 # Voice review
 
-The rubric for the review that `npm run voices` prepares (#646). It checks the lines a prose pass changed against the voice cards (Hester, Cato, Ines, Tomas, and the gunner for the hand's choices) and against the dialogue rules in `dialogue.md`. The code cannot say who speaks, so the rater does. Nothing here fails a build: the table goes in the pull request for a person to read.
+The rubric for the review that `npm run voices` prepares (#646). It checks the lines a prose pass changed against the voice cards (Hester, Cato, Ines, Tomas, the gunner for the hand's choices, and the patrol lieutenants) and against the dialogue rules in `dialogue.md`. The code cannot say who speaks, so the rater does. Nothing here fails a build: the table goes in the pull request for a person to read.
 
 ## Run it
 
@@ -10,8 +10,8 @@ The rubric for the review that `npm run voices` prepares (#646). It checks the l
 
 ## For each numbered line
 
-1. **Speaker.** Say who speaks, from the scene text around the line: `hester`, `cato`, `ines`, `tomas`, `hand` (a choice label the player picks), or `other` with the name. If the text does not say, write `unclear`.
-2. **The card.** For the five with a card, does the line break any of these? Quote the card's words for the one it breaks.
+1. **Speaker.** Say who speaks, from the scene text around the line: `hester`, `cato`, `ines`, `tomas`, `patrol-officers` (Teague, Varga or Osei), `hand` (a choice label the player picks), or `other` with the name. If the text does not say, write `unclear`.
+2. **The card.** For a speaker with a card, does the line break any of these? Quote the card's words for the one it breaks.
    - **Never says** (the gunner card: Never does).
    - **Syntax in speech**: the usual length, how the sentences are built and end.
    - **Steers toward**: what the speaker talks about, and what they do not.
