@@ -54,7 +54,7 @@ test('the soak reports who was lost or left, when and why, and the totals', asyn
   const lines = [], log = console.log; console.log = x => lines.push(x);
   try { report(runs); } finally { console.log = log; }
   assert.equal(lines.length, 3, 'a line per chapter and the totals');
-  assert.match(lines[2], /^2 chapters, chapters with: /);
+  assert.match(lines[2], /^2 chapters, chapters with: .*; nights in port \d+(\.\d)? a chapter$/);
 });
 
 test('with --frames the soak plays the burn, and an order for the drive costs reaction mass and shortens it (#292)', async () => {

@@ -26,10 +26,11 @@ test('a hand sees two jobs, the same two all visit, and works one a visit', asyn
     out.n = jobBoard().ids.length; out.stable = a === b; out.html = /Jobs on the station/.test(jobsHtml());
     Mods.act('takeJob', jobBoard().ids[0]); out.opened = !!G.dialog; G.dialog = null; G.nextEvent = null;
     Mods.act('takeJob', jobBoard().ids[1]); out.second = !!G.dialog;
-    st.day += 3; out.next = jobBoard().done === false;
+    st.day += 3; out.sameVisit = jobBoard().done === true;  // a day passing in port (a job's own day, a night of a stay) is no second board
+    G.dialog = null; G.nextEvent = null; Mods.emit('landed', currentPlanet()); while (G.dialog) finishEvent(); out.next = jobBoard().done === false;
     return out;
   });
-  assert.equal(r.n, 2); assert.ok(r.stable); assert.ok(r.html); assert.ok(r.opened); assert.equal(r.second, false, 'one a visit'); assert.ok(r.next, 'a new board another day');
+  assert.equal(r.n, 2); assert.ok(r.stable); assert.ok(r.html); assert.ok(r.opened); assert.equal(r.second, false, 'one a visit'); assert.ok(r.sameVisit, 'the board is the visit\'s'); assert.ok(r.next, 'a new board at a new landing');
   await done();
 });
 

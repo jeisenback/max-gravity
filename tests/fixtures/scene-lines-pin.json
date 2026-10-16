@@ -9177,7 +9177,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You carry plate and hold the light, and the work goes faster for it. 2 days in the yard, and the hull is whole. Parts and labor came to 786 cr from the ship's fund, and will come out of the next run before the share is cut. Captain Vance paid you 35 cr standby.",
+    "text": "You carry plate and hold the light, and the work goes faster for it. The yard wants 2 days before she sails, and the hull will be whole. Parts and labor came to 786 cr from the ship's fund, and will come out of the next run before the share is cut. Captain Vance paid you 35 cr standby.",
     "mem": [
      "9 Jul 2214: You pitched in on the hull."
     ],
@@ -9200,7 +9200,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You work the plate beside the yard crew, and learn from them. (Experience gained.) 2 days in the yard, and the hull is whole. Parts and labor came to 786 cr from the ship's fund, and will come out of the next run before the share is cut. Captain Vance paid you 35 cr standby.",
+    "text": "You work the plate beside the yard crew, and learn from them. (Experience gained.) The yard wants 2 days before she sails, and the hull will be whole. Parts and labor came to 786 cr from the ship's fund, and will come out of the next run before the share is cut. Captain Vance paid you 35 cr standby.",
     "fx": {
      "credits": 35
     },
@@ -9631,7 +9631,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: A disease scare on Boneyard has everyone hoarding Medical Supplies. Ruben puts the pencil behind his ear. \"A good listener has no name,\" he says. \"A good bartender has a hundred.\"",
+    "text": "A round loosens the bartender in about a minute, and Ruben is leaning forward with a pencil before the glasses are down. By the end of the night you have the news of three docks, and one item worth money: A trade fair on Juno Commons has brought in a great many merchants, and Luxury Goods is going for a song. Ruben puts the pencil behind his ear. \"A good listener has no name,\" he says. \"A good bartender has a hundred.\"",
     "mem": [
      "25 Dec 2214: You bought a round, and the bartender talked."
     ],

@@ -19,7 +19,7 @@ function repairPlan(planet) {
   return { lost, yard, days, tons, held, stocked, parts, wait, labor, total: parts + labor };
 }
 
-// The days go by here, with the same new-day events as a burn.
+// Days that pass in port at once, with the same new-day events as a burn (a job ashore, jobs.js). The yard's own days pass as nights (stay.js).
 function repairDays(n) { const st = G.state; for (let i = 0; i < n; i++) { st.day++; Mods.emit('newDay', st.day); } }
 
 function repairScene(planet) {
@@ -34,9 +34,9 @@ function repairScene(planet) {
     else if (plan.stocked) recordTrade(planet, 'metal', plan.tons, 1);
     h.fund = Math.max(0, h.fund - total); h.bill = (h.bill || 0) + total;
     st.armor = ship().armor;
-    repairDays(days);
+    beginStay(h, days, 'yard');  // the days pass as nights on the pad (stay.js)
     const pay = Math.round(h.wage * STANDBY_PAY * days); st.credits += pay;
-    return `${text} ${days} day${days === 1 ? '' : 's'} in the yard, and the hull is whole. Parts and labor came to ${fmt(total)} cr from the ship's fund, and will come out of the next run before the share is cut. Captain ${cap.last} paid you ${fmt(pay)} cr standby.`;
+    return `${text} The yard wants ${days} day${days === 1 ? '' : 's'} before she sails, and the hull will be whole. Parts and labor came to ${fmt(total)} cr from the ship's fund, and will come out of the next run before the share is cut. Captain ${cap.last} paid you ${fmt(pay)} cr standby.`;
   };
   const days = plan.days + plan.wait, choices = [];
   choices.push({ label: 'Stand by while the work is done', run: finish(days, 'You stand by, and the work gets done around you.') });

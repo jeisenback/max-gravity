@@ -42,6 +42,8 @@ test('the yard takes days, spends the fund, uses the hold or the market, and the
     const choose = label => { const d = G.dialog; chooseEvent(d.choices.findIndex(c => c.label.includes(label))); G.dialog = null; G.nextEvent = null; };
     const day0 = st.day, fund0 = h.fund, cred0 = st.credits;
     choose('Stand by');
+    out.stay = h.stay && h.stay.why === 'yard' ? h.stay.left : 0; out.dayNow = st.day - day0; out.sails = sail();  // the yard's days pass as nights on the pad (stay.js)
+    while (stayOf(h)) { passNight(); G.dialog = null; G.nextEvent = null; }
     out.days = st.day - day0; out.fund = fund0 - h.fund; out.bill = h.bill; out.armor = st.armor === max; out.standby = st.credits - cred0;
     // a longer wait where there is no yard and no metals on sale: the same damage takes longer
     const withYard = repairPlan(currentPlanet()), noYard = repairPlan({ ...currentPlanet(), services: ['refuel'] });
@@ -53,7 +55,8 @@ test('the yard takes days, spends the fund, uses the hold or the market, and the
     const bill0 = h.bill, text = settleRun(currentPlanet()); out.billLeft = h.bill; out.text = text;
     return out;
   });
-  assert.ok(r.days >= 1); assert.ok(r.fund > 0 && r.bill === r.fund); assert.ok(r.armor); assert.ok(r.standby > 0);
+  assert.ok(r.stay >= 1 && r.dayNow === 0 && r.sails === false, 'the yard sets a stay, and she does not sail until it has passed');
+  assert.equal(r.days, r.stay); assert.ok(r.fund > 0 && r.bill === r.fund); assert.ok(r.armor); assert.ok(r.standby > 0);
   assert.ok(r.noYardSlower); assert.ok(r.heldFree);
   assert.equal(r.billLeft, 400, 'a run with no profit leaves the bill for the next');
   await done();
@@ -68,8 +71,8 @@ test('the choices of the yard scene all work, and helping is faster, and rest me
       dock(Math.floor(max * 0.4)); h.hurtUntil = st.day + 12; st.injured = { x: true };
       const d = G.dialog, i = d.choices.findIndex(c => c.label.includes(label));
       if (i < 0) { out.bad.push(`missing ${label}`); continue; }
-      const day0 = st.day, text = chooseEvent(i); G.dialog = null; G.nextEvent = null;
-      out[label] = { days: st.day - day0, hurt: !!h.hurtUntil, text };
+      const text = chooseEvent(i); G.dialog = null; G.nextEvent = null;
+      out[label] = { days: h.stay ? h.stay.left : 0, hurt: !!h.hurtUntil, text }; delete h.stay;
       if (!text || /undefined|NaN|\{[a-z]/.test(text)) out.bad.push(label);
     }
     return out;

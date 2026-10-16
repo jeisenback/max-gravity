@@ -93,9 +93,9 @@ const JOBS = [
 ];
 
 // ---------- the board ----------
-// Two jobs a landing, the same two for a given port and day (so the tab does not change under you), and one worked a visit.
+// Two jobs a landing, the same two for the visit (so the tab does not change under you, and a night in port or a job's own day is no second board), and one worked a visit.
 const jobBoard = () => {
-  const h = hired(), st = G.state, key = `${st.planet}@${st.day}`;
+  const h = hired(), st = G.state, key = visitKey(st);
   if (!h.board || h.board.key !== key) {
     const list = JOBS.filter(j => !j.where || j.where(currentPlanet())), start = Math.abs(hash(key)) % list.length;
     h.board = { key, ids: Array.from({ length: Math.min(JOB_BOARD, list.length) }, (_, i) => list[(start + i) % list.length].id), done: false };

@@ -99,16 +99,20 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
       if (marks > marksSeen) losses.push({ day, who: `${marks - marksSeen} named`, what: 'marked', why: 'a skill point lost' });
       marksSeen = marks;
     };
-    let runs = 0, stuck = 0, reached = null, offerDay = null;
+    let runs = 0, stuck = 0, reached = null, offerDay = null, nights = 0;
+    const plans = [];  // what the captain's plan at each landing pays the ship a day (0 for a light run; an ice run is marked), for tuning the wait for the market (stay.js)
     const beatDays = [], xoDays = [], waits = [], burns = [], dueBurns = {}, introRun = {};  // introRun: the run in which each main character's first scene played  // waits: days from a captain scene becoming due to its playing; burns: burns sailed with it due, the playing one included  // the day each of the captain's scenes played, and when the used ship was offered
     while (runs < maxLegs && stuck < 5 && !reached && !ending.v) {
       try {
         UI.tab = 'bar'; UI.render();
-        if (G.patrons && G.patrons.length) { const pat = pick(G.patrons); if (pat.cast) bar.cast++; openEvent(talkEvent(pat)); answer(); }
+        const talk = () => { if (G.patrons && G.patrons.length) { const pat = pick(G.patrons); if (pat.cast) bar.cast++; openEvent(talkEvent(pat)); answer(); } };
+        talk();
+        while (stayOf(hired()) && !ending.v) { if (!passNight()) break; nights++; answer(); talk(); }  // a stay in port (the yard, a wait for the market): each night, the bar again and what the dock brings
         if (order) Object.assign(power(), POWER_PRESETS[order].to);  // the order, before every sail
         const armor0 = st.armor;
         if (!sail()) { stuck++; st.day += 1; continue; }
         const to = hired().run.sid, runPlanet = hired().run.planet, creditsBefore = st.credits;
+        plans.push({ perDay: Math.round(hired().run.profit / Math.max(1, hired().run.days)), ice: !!hired().run.ice, light: !!hired().run.ballast });
         answer();
         G.player.x = BURN_DIST + 40; G.player.y = 0;  // clear of local traffic, as the autopilot leaves her (autopilot.js)
         tryBurn(); enterTransit(); const drawAt = G.transit.times.slice(), draws = drawAt.length; G.transit.times = [];  // as many draws as the burn would make
@@ -166,7 +170,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     const avg = (a, n) => Math.round(a / Math.max(1, n));
     if (!ending.v) tally();
     delete work.current; delete bar.in;
-    return { messages, frames: fr, hand, work, bar, landings: landed.mix, losses, ending: ending.v, runs, days: st.day, credits: st.credits, reached, stuck, scenes, byId, byTitle, bad, beatDays, xoDays, waits, burns, introRun, firstOfficers: Object.keys(CAST).filter(k => CAST[k].xo), offerDay,
+    return { messages, frames: fr, hand, work, bar, nights, plans, landings: landed.mix, losses, ending: ending.v, runs, days: st.day, credits: st.credits, reached, stuck, scenes, byId, byTitle, bad, beatDays, xoDays, waits, burns, introRun, firstOfficers: Object.keys(CAST).filter(k => CAST[k].xo), offerDay,
       avgPayPerRun: avg(paid.reduce((a, b) => a + b, 0), paid.length), avgDaysPerRun: Math.round(10 * st.day / Math.max(1, runs)) / 10 };
   }, [legs, captainKey, realDraw, post, frames, engineer, jobs]);
   await ctx.close();
@@ -234,7 +238,8 @@ function report(runs) {
     if (r.ending) total[r.ending.title] = (total[r.ending.title] || 0) + 1;
   }
   const hurt = runs.reduce((n, r) => n + (r.hand ? r.hand.hurt : 0), 0), again = runs.reduce((n, r) => n + (r.hand ? r.hand.again : 0), 0), died = runs.filter(r => r.ending && r.ending.title === 'The Last Run').length;
-  console.log(`${runs.length} chapters, chapters with: ${Object.entries(total).sort().map(([k, v]) => `${k} ${v}`).join(', ') || 'no losses'}${runs.some(r => r.hand) ? `; the hand was hurt ${hurt} times (${again} while still hurt) and died in ${died}` : ''}`);
+  const nights = runs.reduce((n, r) => n + (r.nights || 0), 0);
+  console.log(`${runs.length} chapters, chapters with: ${Object.entries(total).sort().map(([k, v]) => `${k} ${v}`).join(', ') || 'no losses'}${runs.some(r => r.hand) ? `; the hand was hurt ${hurt} times (${again} while still hurt) and died in ${died}` : ''}; nights in port ${Math.round(10 * nights / Math.max(1, runs.length)) / 10} a chapter`);
 }
 
 // The scene index the editor shows (editor.html), as { id, title, off, storylet } for each scene with a title; off is a scene the narrow build leaves out, storylet one that is data outside the hired chapter's registry.

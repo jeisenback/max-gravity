@@ -240,7 +240,7 @@ const currentPlan = () => { const h = G.state.hired; if (planStale(h)) { const r
 // Buys the cargo, sets the course, and sails: a crewed pilot flies her out, otherwise the pilot is you.
 function sail() {
   const st = G.state, h = st.hired, plan = currentPlan(), here = currentPlanet();
-  if (!plan || G.mode !== 'landed' || G.dialog) return false;
+  if (!plan || G.mode !== 'landed' || G.dialog || stayOf(h)) return false;  // a stay in port passes as nights first (stay.js)
   let cost = plan.cost;
   if (plan.good && !plan.loaded && !plan.ice) {
     cost = Math.round(tradeTotal(here, plan.good, plan.tons, 1));
