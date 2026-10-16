@@ -56,22 +56,22 @@ const missed = p => `${storyOf(p).rel} ${storyOf(p).name}`;
 const liftBy = (p, x, memory, text) => ({ run() { like(p, x, memory); if (moodLow(p)) p.mood.until -= x * 3; return text; } });
 const moodTopic = p => {
   const say = familySay('mood'), n = p.first;
-  return { pressing: true, title: say('title', { n }), open: p.mood.text ? say('open.news', { n, news: p.mood.text }) : say('open.plain', { n }), choices: [
-    { label: say('c0.label'), ...liftBy(p, 1, say('c0.memory'), say('c0.result', { n, missed: missed(p) })) },
-    { label: say('c1.label'), ...liftBy(p, 2, say('c1.memory'), say('c1.result', { n })) },
-    { label: say('c2.label'), ...liftBy(p, 0, null, say('c2.result', { n })) },
+  return { pressing: true, title: say('title', { n }), open: p.mood.text ? say(`open.news.${pick([0, 1])}`, { n, news: p.mood.text }) : say(`open.plain.${pick([0, 1])}`, { n }), choices: [
+    { label: say('c0.label'), ...liftBy(p, 1, say('c0.memory'), say(`c0.result.${pick([0, 1])}`, { n, missed: missed(p) })) },
+    { label: say('c1.label'), ...liftBy(p, 2, say('c1.memory'), say(`c1.result.${pick([0, 1])}`, { n })) },
+    { label: say('c2.label'), ...liftBy(p, 0, null, say(`c2.result.${pick([0, 1])}`, { n })) },
   ] };
 };
 const hurtTopic = p => {
   const say = familySay('hurt'), n = p.first;
-  return { pressing: true, title: say('title', { n }), open: say('open', { n }), choices: [
+  return { pressing: true, title: say('title', { n }), open: say(`open.${pick([0, 1])}`, { n }), choices: [
     { label: say('c0.label'), ...liftBy(p, 1, say('c0.memory'), say('c0.result', { n })) },
     { label: say('c1.label'), ...liftBy(p, 1, say('c1.memory'), say('c1.result', { n })) },
   ] };
 };
 const warTopic = (p, aff, foe) => {
   const say = familySay('war'), n = p.first;
-  return { title: say('title', { n }), open: say('open', { n, aff, foe }), choices: [
+  return { title: say('title', { n }), open: say(`open.${pick([0, 1])}`, { n, aff, foe }), choices: [
     { label: say('c0.label'), ...liftBy(p, 1, say('c0.memory'), say('c0.result', { n })) },
     { label: say('c1.label'), ...liftBy(p, 1, say('c1.memory'), say('c1.result', { n })) },
     { label: say('c2.label'), ...liftBy(p, 0, null, say('c2.result', { n })) },
@@ -79,23 +79,23 @@ const warTopic = (p, aff, foe) => {
 };
 const riftTopic = (p, other) => {
   const say = familySay('rift'), n = p.first;
-  return { title: say('title', { n }), open: say('open', { n, other: other.first }), choices: [
-    { label: say('c0.label'), ...liftBy(p, 1, say('c0.memory', { other: other.first }), say('c0.result', { n })) },
-    { label: say('c1.label'), ...liftBy(p, 0, null, say('c1.result', { n })) },
+  return { title: say('title', { n }), open: say(`open.${pick([0, 1])}`, { n, other: other.first }), choices: [
+    { label: say('c0.label'), ...liftBy(p, 1, say('c0.memory', { other: other.first }), say('c0.result', { n, other: other.first })) },
+    { label: say('c1.label'), ...liftBy(p, 0, null, say('c1.result', { n, other: other.first })) },
   ] };
 };
 const friendTopic = (p, other) => {
   const say = familySay('friend'), n = p.first;
-  return { title: say('title', { n }), open: say('open', { n, other: other.first }), choices: [
+  return { title: say('title', { n }), open: say(`open.${pick([0, 1])}`, { n, other: other.first }), choices: [
     { label: say('c0.label', { other: other.first }), ...liftBy(p, 1, say('c0.memory', { other: other.first }), say('c0.result', { n, other: other.first })) },
-    { label: say('c1.label'), ...liftBy(p, 1, null, say('c1.result', { n })) },
+    { label: say('c1.label'), ...liftBy(p, 1, null, say('c1.result', { n, other: other.first })) },
   ] };
 };
 const memoryTopic = (p, mem) => {
   const say = familySay('memory'), n = p.first;
-  return { title: say('title', { n }), open: say('open', { n, mem }), choices: [
-    { label: say('c0.label'), ...liftBy(p, 1, say('c0.memory'), say('c0.result', { n })) },
-    { label: say('c1.label'), ...liftBy(p, 0, null, say('c1.result', { n })) },
+  return { title: say('title', { n }), open: say(`open.${pick([0, 1])}`, { n, mem }), choices: [
+    { label: say('c0.label'), ...liftBy(p, 1, say('c0.memory'), say(`c0.result.${pick([0, 1])}`, { n })) },
+    { label: say('c1.label'), ...liftBy(p, 0, null, say(`c1.result.${pick([0, 1])}`, { n })) },
   ] };
 };
 function talkTopics(p) {
@@ -118,10 +118,10 @@ function ordinaryTalk(p) {
 }
 function idleTalk(p) {
   const say = familySay('idle'), n = p.first, idle = (p.traits || []).map(t => familyLines('idle')[t]).filter(Boolean);
-  return { title: say('title', { n }), text: say('text', { n, idle: idle.length ? pick(idle) : say('easy') }),
+  return { title: say('title', { n }), text: say(`text.${pick([0, 1, 2, 3])}`, { n, idle: idle.length ? pick(idle) : say('easy') }),
     choices: [
-      { label: say('c0.label'), run() { like(p, 1, null); if (moodLow(p)) p.mood.until -= 5; return pick([say('c0.result.0', { n }), say('c0.result.1', { n }), say('c0.result.2', { n })]); } },
-      { label: say('c1.label', { n, home: p.home }), run() { like(p, 1, null); return say('c1.result', { n, home: p.home }); } },
+      { label: say('c0.label'), run() { like(p, 1, null); if (moodLow(p)) p.mood.until -= 5; return say(`c0.result.${pick([0, 1, 2, 3])}`, { n }); } },
+      { label: say('c1.label', { n, home: p.home }), run() { like(p, 1, null); return say(`c1.result.${pick([0, 1, 2])}`, { n, home: p.home }); } },
     ] };
 }
 
@@ -133,22 +133,22 @@ const storyTalk = (p, s) => (label, likeBy, result, extra) => ({ label, run() {
 } });
 const politeScene = p => {
   const say = familySay('polite'), n = p.first;
-  return { title: say('title', { n }), text: say('text', { n }), choices: [{ label: say('c0.label'), run() { like(p, 1, null); return say('c0.result', { n }); } }] };
+  return { title: say('title', { n }), text: say(`text.${pick([0, 1, 2])}`, { n }), choices: [{ label: say('c0.label'), run() { like(p, 1, null); return say(`c0.result.${pick([0, 1])}`, { n }); } }] };
 };
 const homeScene = (p, s) => {
   const say = familySay('story-home'), n = p.first, talk = storyTalk(p, s);
-  return { title: say('title', { n }), text: say('text', { n, home: p.home, detail: s.homeDetail || familyLines('home')[cultureOfPerson(p)], left: s.left }),
-    choices: [talk(say('c0.label'), 1, [say('c0.result.0', { n }), say('c0.result.1', { n })]), talk(say('c1.label'), 2, say('c1.result', { n }))] };
+  return { title: say('title', { n }), text: say(`text.${pick([0, 1, 2])}`, { n, home: p.home, detail: s.homeDetail || familyLines('home')[cultureOfPerson(p)], left: s.left }),
+    choices: [talk(say('c0.label'), 1, [say('c0.result.0', { n }), say('c0.result.1', { n }), say('c0.result.2', { n })]), talk(say('c1.label'), 2, [say('c1.result.0', { n }), say('c1.result.1', { n })])] };
 };
 const pictureScene = (p, s) => {
   const say = familySay('story-picture'), n = p.first, talk = storyTalk(p, s);
-  return { title: say('title', { n }), text: say('text', { n, missed: missed(p) }),
-    choices: [talk(say('c0.label'), 1, say('c0.result', { n, rel: s.rel })), talk(say('c1.label'), 1, say('c1.result', { n }))] };
+  return { title: say('title', { n }), text: say(`text.${pick([0, 1, 2])}`, { n, missed: missed(p) }),
+    choices: [talk(say('c0.label'), 1, [say('c0.result.0', { n, rel: s.rel }), say('c0.result.1', { n, rel: s.rel })]), talk(say('c1.label'), 1, [say('c1.result.0', { n }), say('c1.result.1', { n })])] };
 };
 const hopeScene = (p, s) => {
   const say = familySay('story-hope'), n = p.first, talk = storyTalk(p, s);
-  return { title: say('title', { n }), text: say('text', { n, hope: s.hope }),
-    choices: [talk(say('c0.label'), 1, say('c0.result', { n })), talk(say('c1.label'), 2, say('c1.result', { n }), () => { s.promised = true; })] };
+  return { title: say('title', { n }), text: say(`text.${pick([0, 1, 2])}`, { n, hope: s.hope }),
+    choices: [talk(say('c0.label'), 1, [say('c0.result.0', { n }), say('c0.result.1', { n })]), talk(say('c1.label'), 2, [say('c1.result.0', { n }), say('c1.result.1', { n })], () => { s.promised = true; })] };
 };
 // The favor at the end of it, for crew: to see their family (a mission home), or a debt to pay.
 const visitFavor = (p, s) => {

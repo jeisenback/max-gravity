@@ -321,75 +321,75 @@
  },
  {
   "key": "beat0:belt",
-  "text": "[\"With Sam\",\"Sam tells you about Mars: the hum of the recyclers, the tunnel markets, spin gravity you could argue with. They turn their mug a quarter turn on the table as they say it. Then, unprompted, they say they left because of a scholarship that fell through at the last minute, and stop, and drink, and look at you.\",[\"Listen\",\"Tell them about where you came from\"]]"
+  "text": "[\"With Sam\",\"It's the slack end of the watch and Sam has drawn the last of the day's water and is making it last. You ask about Mars, which you haven't before, and Sam tells you: the hum of the recyclers, the tunnel markets, spin gravity you could argue with. The telling gets specific, down to a street and the name of a shop on it. Then Sam sets the cup down. \\\"I left because of a scholarship that fell through at the last minute,\\\" Sam says. \\\"Since you didn't ask.\\\"\",[\"Listen\",\"Tell them about where you came from\"]]"
  },
  {
   "key": "beat0:mars",
-  "text": "[\"With Sam\",\"Sam tells you about Mars: dust storms that last a month, dome lights at dusk, everyone arguing about the future. They turn their mug a quarter turn on the table as they say it. Then, unprompted, they say they left because of a mine closure that emptied half the town, and stop, and drink, and look at you.\",[\"Listen\",\"Tell them about where you came from\"]]"
+  "text": "[\"With Sam\",\"Sam tells you about Mars: dust storms that last a month, dome lights at dusk, everyone arguing about the future. They turn their mug a quarter turn on the table as they say it, and again. \\\"You'd think I'd miss the big things,\\\" Sam says. \\\"I miss the stairs.\\\" Then, unprompted, they say they left because of a mine closure that emptied half the town, and stop, and drink, and look at you across the mug.\",[\"Listen\",\"Tell them about where you came from\"]]"
  },
  {
   "key": "beat0:earth",
-  "text": "[\"With Sam\",\"Sam tells you about Mars: too many people, real rain, and an ocean you could hear from the arcology at night. They turn their mug a quarter turn on the table as they say it. Then, unprompted, they say they left because of wanting to see a sky that wasn't painted on a dome, and stop, and drink, and look at you.\",[\"Listen\",\"Tell them about where you came from\"]]"
+  "text": "[\"With Sam\",\"Sam is in the galley with the lights down to a third, in their socks, and when you sit down they push the second mug across without asking whether you want it. You ask about Mars. \\\"Mars,\\\" Sam says. \\\"You want the postcard, it's too many people, real rain, and an ocean you could hear from the arcology at night. That's the postcard.\\\" They drink. \\\"What I actually left over was wanting to see a sky that wasn't painted on a dome. I don't tell people that part.\\\"\",[\"Listen\",\"Tell them about where you came from\"]]"
  },
  {
   "key": "beat0:detail",
-  "text": "Sam tells you about Mars: a hand-picked detail. They turn their mug a quarter turn on the table as they say it. Then, unprompted, they say they left because of a debt to the wrong people, and stop, and drink, and look at you."
+  "text": "It's the slack end of the watch and Sam has drawn the last of the day's water and is making it last. You ask about Mars, which you haven't before, and Sam tells you: a hand-picked detail. The telling gets specific, down to a street and the name of a shop on it. Then Sam sets the cup down. \"I left because of a debt to the wrong people,\" Sam says. \"Since you didn't ask.\""
  },
  {
   "key": "idle:talkative",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam is already telling you about something that happened at the last port, and by the second mug has told you about two more. The drive hums. A pipe ticks.\"]"
+  "text": "[\"With Sam\",\"The observation blister holds two if neither minds the other's elbows, and Sam doesn't. The ship is dark behind you and the stars don't move. Sam is already telling you about something that happened at the last port, and by the second mug has told you about two more. Every few minutes the hull ticks as the sun side warms.\"]"
  },
  {
   "key": "idle:nervous",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam listens for the pump to change its note, and relaxes a little when you stay. The drive hums. A pipe ticks.\"]"
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam listens for the pump to change its note, and relaxes a little when you stay. Somewhere aft the recycler changes its note and changes back.\"]"
  },
  {
   "key": "idle:generous",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam has saved you the good end of the loaf, and doesn't mention it. The drive hums. A pipe ticks.\"]"
+  "text": "[\"With Sam\",\"Sam is on the crate by the hold hatch, where the hull carries the drive noise and the light is bad, and moves over when you come down the ladder. You sit on the deck plate with your back to the hatch. Sam has saved you the good end of the loaf, and doesn't mention it. A hatch number is stenciled on the frame above their head.\"]"
  },
  {
   "key": "idle:greedy",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam is working out, aloud and not quite to you, what the next run should clear. The drive hums. A pipe ticks.\"]"
+  "text": "[\"With Sam\",\"The observation blister holds two if neither minds the other's elbows, and Sam doesn't. The ship is dark behind you and the stars don't move. Sam is working out, aloud and not quite to you, what the next run should clear. Every few minutes the hull ticks as the sun side warms.\"]"
  },
  {
   "key": "idle:pious",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam sits with a hand around the cord at their wrist and says nothing for a long time, comfortably. The drive hums. A pipe ticks.\"]"
+  "text": "[\"With Sam\",\"The observation blister holds two if neither minds the other's elbows, and Sam doesn't. The ship is dark behind you and the stars don't move. Sam sits with a hand around the cord at their wrist and says nothing for a long time, comfortably. Every few minutes the hull ticks as the sun side warms.\"]"
  },
  {
   "key": "idle:rude",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam has a view on the galley, the rota, and the way you hold a mug, and shares them. The drive hums. A pipe ticks.\"]"
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam has a view on the galley, the rota, and the way you hold a mug, and shares them. Somewhere aft the recycler changes its note and changes back.\"]"
  },
  {
   "key": "idle:curious",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam wants to know how the drive works, what you do on watch, and whether you've ever been to Titan. The drive hums. A pipe ticks.\"]"
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam wants to know how the drive works, what you do on watch, and whether you've ever been to Titan. Somewhere aft the recycler changes its note and changes back.\"]"
  },
  {
   "key": "idle:drunk",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam is on water tonight, and says so with an effort that's its own kind of story. The drive hums. A pipe ticks.\"]"
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam is on water tonight, and says so with an effort that's its own kind of story. Somewhere aft the recycler changes its note and changes back.\"]"
  },
  {
   "key": "idle:secretive",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam answers a question about the weather with a question about you. The drive hums. A pipe ticks.\"]"
+  "text": "[\"With Sam\",\"You find Sam on the bench in the engine room, where it's warm and loud and nobody sits unless they have to, with a mug balanced on the pump housing. They make room. Sam answers a question about the weather with a question about you. The drive runs up a hair on a correction and settles.\"]"
  },
  {
   "key": "idle:kind",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam asks if you have slept, and doesn't take \\\"fine\\\" for an answer. The drive hums. A pipe ticks.\"]"
+  "text": "[\"With Sam\",\"You find Sam on the bench in the engine room, where it's warm and loud and nobody sits unless they have to, with a mug balanced on the pump housing. They make room. Sam asks if you have slept, and doesn't take \\\"fine\\\" for an answer. The drive runs up a hair on a correction and settles.\"]"
  },
  {
   "key": "idle:brave",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam tells you about the worst day they've had on a ship, quietly, as if it were a recipe. The drive hums. A pipe ticks.\"]"
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam tells you about the worst day they've had on a ship, quietly, as if it were a recipe. Somewhere aft the recycler changes its note and changes back.\"]"
  },
  {
   "key": "idle:homesick",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley, over two mugs. Sam has a photograph out, and puts it away when you come in, and then takes it out again. The drive hums. A pipe ticks.\"]"
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam has a photograph out, and puts it away when you come in, and then takes it out again. Somewhere aft the recycler changes its note and changes back.\"]"
  },
  {
   "key": "idle:two",
-  "text": "You sit with Sam in the galley, over two mugs. Sam asks if you have slept, and doesn't take \"fine\" for an answer. The drive hums. A pipe ticks."
+  "text": "Sam is on the crate by the hold hatch, where the hull carries the drive noise and the light is bad, and moves over when you come down the ladder. You sit on the deck plate with your back to the hatch. Sam tells you about the worst day they've had on a ship, quietly, as if it were a recipe. A hatch number is stenciled on the frame above their head."
  },
  {
   "key": "idle:none",
-  "text": "You sit with Sam in the galley, over two mugs. Sam is easy company. The drive hums. A pipe ticks."
+  "text": "The observation blister holds two if neither minds the other's elbows, and Sam doesn't. The ship is dark behind you and the stars don't move. Sam is easy company. Every few minutes the hull ticks as the sun side warms."
  },
  {
   "key": "letter:good:0",

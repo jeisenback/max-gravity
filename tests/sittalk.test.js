@@ -40,10 +40,10 @@ test('someone who had a letter that hurt, or is hurt, is talked to about that', 
   const r = await ev(() => {
     const { st, p } = setup(), out = {};
     p.mood = { kind: 'low', until: st.day + 20, text: 'their sister is ill' };
-    const sc = sitBeat(p, true); out.low = /the news: their sister is ill/.test(sc.text); out.lowLabels = sc.choices.map(c => c.label);
+    const sc = sitBeat(p, true); out.low = /their sister is ill/.test(sc.text); out.lowLabels = sc.choices.map(c => c.label);
     const until = p.mood.until, op = p.opinion; take(sc, /Let them talk/); out.lowLiked = p.opinion - op; out.lifted = until - p.mood.until;
     p.mood = null; p.memories = []; (st.injured = st.injured || {})[p.id] = true;
-    const hurt = sitBeat(p, true); out.hurt = /favoring one side/.test(hurt.text);
+    const hurt = sitBeat(p, true); out.hurt = hurt.choices[0].label === 'Ask how it is';
     const op2 = p.opinion; take(hurt, /Ask how it is/); out.hurtLiked = p.opinion - op2;
     return out;
   });
@@ -58,18 +58,18 @@ test('a war, a grudge, a close friend, or something you did last time each give 
   const r = await ev(() => {
     const { st, p } = setup(), out = {}, f = x => ({ id: x.id, p: x }), other = person(st.crew.find(id => id !== p.id));
     // a grudge, then a close friend
-    addBond(f(p), f(other), -3); out.grudge = talkTopics(p).some(t => /short with/.test(t.open));
-    st.bonds = {}; addBond(f(p), f(other), 7); out.close = talkTopics(p).some(t => /been through a lot/.test(t.open));
+    addBond(f(p), f(other), -3); out.grudge = talkTopics(p).some(t => t.choices[0].label === 'Ask what happened');
+    st.bonds = {}; addBond(f(p), f(other), 7); out.close = talkTopics(p).some(t => t.choices[1].label === 'Say you can tell');
     st.bonds = {};
     // a war between the two states, for someone of one of them
     let q = null; for (let i = 0; i < 400 && !(q && tiesOf(q).aff === 'Arcology Compact'); i++) { q = makePerson('earth'); q.memories = []; }
     registerPerson(q); st.crew.push(q.id);
-    out.noWar = talkTopics(q).some(t => /war on the galley screen/.test(t.open));
+    out.noWar = talkTopics(q).some(t => t.choices[2] && t.choices[2].label === 'Change the subject');
     factionState().war = { a: 'Arcology Compact', b: 'Dome Concord', start: st.day, until: st.day + 40, score: { 'Arcology Compact': 0, 'Dome Concord': 0 } };
-    out.war = talkTopics(q).some(t => /war on the galley screen/.test(t.open));
+    out.war = talkTopics(q).some(t => t.choices[2] && t.choices[2].label === 'Change the subject');
     // what you did last time
     p.memories.push('Day 3: You bought me a drink.');
-    const topics = talkTopics(p), mem = topics.find(t => /been thinking about something/.test(t.open)); out.mem = !!mem && /You bought me a drink/.test(mem.open);
+    const topics = talkTopics(p), mem = topics.find(t => t.choices[0].label === 'Bring it up'); out.mem = !!mem && /You bought me a drink/.test(mem.open);
     const op = p.opinion; G.dialog = { event: { choices: mem.choices }, choices: mem.choices }; chooseEvent(0); out.memLiked = p.opinion - op;
     return out;
   });
@@ -84,16 +84,16 @@ test('someone in a bad way is talked to about it first, once, and then their sto
     const { st, p } = setup(), out = {}, s = storyOf(p);
     s.beat = 0;  // the first stage of the story is due
     p.mood = { kind: 'low', until: st.day + 30, text: 'their brother lost the flat' };
-    const first = sitBeat(p, true); out.first = /the news: their brother lost the flat/.test(first.text); out.beat1 = s.beat;
-    const second = sitBeat(p, true); out.second = /tells you about/.test(second.text);  // the arc, not the same talk again
+    const first = sitBeat(p, true); out.first = /their brother lost the flat/.test(first.text); out.beat1 = s.beat;
+    const second = sitBeat(p, true); out.second = second.choices[1].label === 'Tell them about where you came from';  // the arc, not the same talk again
     out.keyed = p.pressed;
     p.mood = { kind: 'low', until: st.day + 30, text: 'their mother is ill' };  // a new letter, a new talk
     out.again = /their mother is ill/.test(sitBeat(p, true).text);
     p.mood = null; p.pressed = 'x'; sitBeat(p, true); out.cleared = p.pressed === null;
     // an injury, likewise
     p.memories = []; s.beat = 1; (st.injured = st.injured || {})[p.id] = true;
-    out.hurtFirst = /favoring one side/.test(sitBeat(p, true).text);
-    out.hurtThen = /small worn picture/.test(sitBeat(p, true).text);  // beat 1, the photograph
+    out.hurtFirst = sitBeat(p, true).choices[0].label === 'Ask how it is';
+    out.hurtThen = sitBeat(p, true).choices[0].label === '"Tell me about them."';  // beat 1, the photograph
     return out;
   });
   assert.ok(r.first); assert.equal(r.beat1, 0, 'the story did not move'); assert.ok(r.second); assert.equal(r.keyed, 'mood:their brother lost the flat');

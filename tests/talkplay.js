@@ -5,6 +5,7 @@
 // for each choice, the line it gives and what it changed (regard, memory, mood, the story's place, credits, the missions), over several dice.
 const playTalk = () => {
   const out = [];
+  const seq = list => { const l = [...list], real = Math.random; Math.random = () => (l.length ? l.shift() : real()); };  // force the next draws, then the seeded dice
   __seed(1);
   startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe' });
   while (G.dialog) finishEvent();
@@ -18,11 +19,12 @@ const playTalk = () => {
   const play = (key, setup, build, dice = 4) => {
     const fresh = () => { G.state = JSON.parse(snap); st = G.state; const p = st.people[PID]; setup(p, st); return p; };
     __seed(7); const p0 = fresh(), ev0 = build(p0);
-    const rec = { title: ev0.title, text: ev0.text, labels: ev0.choices.map(c => String(c.label)), runs: [] };
+    const rec = { title: ev0.title, text: ev0.text, labels: ev0.choices.map(c => String(c.label)), opens: new Set(), runs: [] };  // opens: the other openings the dice play
     for (let i = 0; i < ev0.choices.length; i++) for (let d = 1; d <= dice; d++) {
-      __seed(d * 31 + i); const p = fresh(), ev = build(p); st.credits = 20000; st.cargo = st.cargo || {}; st.cargo.luxury = 3;
-      const line = ev.choices[i].run(); rec.runs.push([i, d, String(line), seen(p, st)]);
+      __seed(d * 31 + i); const p = fresh(); seq(Array(8).fill((d - 0.5) / dice)); const ev = build(p); st.credits = 20000; st.cargo = st.cargo || {}; st.cargo.luxury = 3;  // the d-th die picks the d-th of n openings and results, so every variant is played
+      const line = ev.choices[i].run(); rec.runs.push([i, d, String(line), seen(p, st)]); if (ev.text !== ev0.text) rec.opens.add(ev.text);
     }
+    rec.opens = [...rec.opens].sort();
     out.push({ key, text: JSON.stringify(rec) });
   };
   const thisWar = (aff, foe) => { window.tiesOf = () => ({ aff }); window.factionState = () => ({ war: { a: aff, b: foe } }); };
