@@ -29,7 +29,7 @@ function signOnEvent() {
     title: say('title'),
     text: [say(`text.${bg}`, ctx), ...(st.carried ? [st.carried] : []), `${say(`post.${h.post}`, ctx)}${beside}`, `${week} ${say('why')}`].join('</p><p>'),
     choices: [
-      { label: say('c0.label'), run() { h.share = +(h.share + SIGN_SHARE_UP).toFixed(3); h.reason = 'money'; return say(`money.${bg}`); } },
+      { label: say('c0.label'), run() { h.share = +(h.share + SIGN_SHARE_UP).toFixed(3); h.reason = 'money'; return say(`money.${bg}`, { wage: h.wage, share: Math.round(h.share * 100) }); } },
       { label: say('c1.label'), run() { gainSkill(h.post, SIGN_LEARN_XP); h.reason = 'learn'; return say(`learn.${bg}`); } },
       { label: say('c2.label'), run() { like(cap, 1, say('c2.memory')); for (const c of pair) like(c, 1, say('c2.memory')); h.reason = 'away'; return say(`away.${bg}`); } },
     ],

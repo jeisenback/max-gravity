@@ -204,9 +204,9 @@ CAST.cato.round = () => {
     (`Two doors down, he knocks on the frame of the medical bay without going in. "${medic}. This is the one I said. ${medic} keeps the kit and the ` +
         `log, and I'll tell you what I tell everybody, which is come in when you're hurt, not when it's bad. I once knew a man who ` +
         `walked on a cracked rib for a week to save the fuss." ${medic} says something to him that you don't catch, and he laughs.`),
-    (`In the hold he slows down, and his voice drops, the way it does when he talks about the place he came up. "${qm} has the count. ` +
+    (`In the hold he slows down and his voice drops. "${qm} has the count. ` +
         `Everything aboard, twice. If a number looks off to you, ask ${qm} before you go to the captain, because it has already been found and it's ` +
-        `sitting on a list somewhere. And these two," he says, nodding at ${iceA} and ${iceB}, who are lashing something that doesn't look loose, ` +
+        `sitting on a list somewhere. And these two," he says, nodding at ${iceA} and ${iceB}, who are lashing a drum of reaction mass, ` +
         `"they'll ask you to hold a strap. Just hold it. It's not a test. I mean, it's a bit."`),
     (`The engine room is warm and the passage floor hums under your boots. "${eng}'s plant. I wouldn't touch anything with a tag on it, and ` +
         `everything has a tag. If ${eng} hands you a spanner, though, you can take that how you like. I've been aboard four years and I've had it ` +
@@ -234,17 +234,17 @@ CAST.cato.round = () => {
 
 // The first arrival (captains.js arrivalScene): Cato settles up at the foot of the ramp.
 CAST.cato.arrival = {
-  open: 'The ramp is down. Cato has the ledger open on a crate on the apron, and he turns it round so you can read it.',
+  open: 'The ramp is down. Cato has the captain\'s notebook open on a crate on the apron, and he turns it round so you can read it. "She\'s at the harbor office. I\'m to show you the page and bring it back."',
   memory: '"My first share was ninety," he says. "I bought boots with it. They were the wrong boots, and I wore them for six years." He taps the page. "Yours is in your account. Look at the header."',
-  column: '"That column is {cap}\'s," Cato says. "I only keep the money."',
+  column: '"That column\'s {cap}\'s," Cato says. The pencil stays behind his ear.',
   pace: '"A season," Cato says. "{cap} was a hand on this ship before she owned it. It took her three."',
 };
 
 // The first raid (captains.js raidExplanation): Cato at the guns hatch, before the first scene.
 CAST.cato.firstRaid = {
   title: 'The Guns Hatch',
-  text: ('Cato is at the guns hatch before you have your boots on. He has the ledger under his arm, which he has never left behind in a fight. "Look at ' +
-      'the bottom of the scene," he says. "Where it says Position. Ahead, even, behind. It\'s only a count, but everything you choose moves it. ' +
+  text: ('Cato is at the guns hatch before you have your boots on. He has the watch bill under his arm. "Look at ' +
+      'the bottom," he says. "Where it says Position. Ahead, even, behind. It\'s only a count, but everything you choose moves it. ' +
       'Finish ahead and she breaks off. Even, and she stands off and throws one last round at us. Behind, and she comes alongside, and then it\'s the ' +
       'lock."</p><p>He points at the screen. "One choice has your post in front of it, in brackets. That one\'s yours, and nobody else aboard can do it. ' +
       'Mind, it\'s the one that can go wrong on you. You\'re hurt, and your work counts a level lower for some days. I had it in the hold. I wore a ' +
