@@ -23,6 +23,42 @@ const helpers = () => {
   window.generated = n => { const st = G.state; st.crew = []; for (let i = 0; i < n; i++) { const p = makePerson('earth'); p.role = ['pilot', 'engineer', 'cook'][i % 3]; p.skill = 1; registerPerson(p); st.crew.push(p.id); } return st.crew.map(person); };
 };
 
+test('a tactic says the odds it wins the exchange, the same odds the fight rolls: their lean and counter, the triangle, the ship\'s layout', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    __seed(7);
+    fight(); G.duel = null;
+    const make = grade => { const s = repelStart({ foe: makeEnemy({ kind: 'pirate' }), foeHp: 0, init: 'foe' }, 'full'); s.grade = grade; s.pos = 1; return s; };
+    const shownOn = s => Object.fromEntries(repelScene(s).choices.slice(0, 3).map((c, i) => [['hold', 'rush', 'flank'][i], +c.label.match(/\[(\d+)%/)[1]]));
+    const realCasualty = repelCasualty; repelCasualty = () => '';  // nobody is hurt in the count, so the standing holds
+    const out = { size: SHIPS[G.state.shipId].size };
+    for (const grade of [0, 2]) {
+      const s = make(grade), played = {}, n = 2000;
+      for (const k of ['hold', 'rush', 'flank']) {
+        let wins = 0;
+        for (let i = 0; i < n; i++) { const t = { ...s, hurt: new Set(), dead: [], marked: [], lines: [] }; repelStep(t, k); if (t.pos < s.pos) wins++; }
+        played[k] = Math.round(100 * wins / n);
+      }
+      G.nextEvent = null;
+      out[grade] = { shown: shownOn(s), played, standing: repelStanding(s), boarders: s.boarders };
+    }
+    const few = make(0); few.boarders = 10;  // outnumbered: the same tactic as theirs loses, so holding wins only when they go round (their lean, 0.32)
+    out.outnumbered = shownOn(few).hold;
+    repelCasualty = realCasualty;
+    return out;
+  });
+  assert.ok(r.size >= 16, 'an Ice Hauler is long: going round is helped and a rush is not');
+  for (const grade of [0, 2]) {
+    const { shown, played } = r[grade];
+    for (const k of ['hold', 'rush', 'flank']) assert.ok(Math.abs(shown[k] - played[k]) <= 4, `grade ${grade}, ${k}: shown ${shown[k]}, played ${played[k]} of 2000`);
+  }
+  assert.equal(new Set(Object.values(r[0].shown)).size, 3, `the three tactics say different odds: ${JSON.stringify(r[0].shown)}`);
+  for (const k of ['hold', 'rush', 'flank']) assert.ok(r[2].shown[k] < r[0].shown[k], `${k}: a veteran crew counters, and the odds fall`);
+  assert.equal(r.outnumbered, 32);
+  await done();
+});
+
 test('a boarding run that lands starts the fight at the lock or the corridor, and a stopped one does not', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);

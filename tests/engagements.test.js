@@ -534,11 +534,7 @@ test('the ice run, the work events and the lock fights say what an option can co
   }
   assert.ok(r.ice.some(x => !x.hull && !x.bold) && r.ice.some(x => x.hull && !x.bold) && r.ice.some(x => x.hull && x.bold), 'the run has each kind');
   for (const [careful, quick] of r.work) { assert.ok(!careful.includes('['), careful); assert.match(quick, /\[\d+%; if it fails: you learn less, and the captain marks it\]$/, quick); }
-  for (const labels of r.lock) {  // a tactic is a guess at theirs and shows no odds; the post's own move is a roll
-    assert.equal(labels.length, 4);
-    for (const l of labels.slice(0, 3)) assert.ok(l.endsWith(' [if it fails: a crew casualty, you may be hurt]'), l);
-    assert.match(labels[3], /^\[Gunner\] .* \[\d+%; if it fails: a crew casualty, you may be hurt\]$/, labels[3]);
-  }
+  for (const labels of r.lock) { assert.equal(labels.length, 4); for (const l of labels) assert.match(l, /\[\d+%; if it fails: a crew casualty, you may be hurt\]$/, l); }
   await done();
 });
 
