@@ -10,6 +10,7 @@
     "soak": "node --test --test-concurrency=4 \"tests/distribution/*.test.js\"",
     "fights": "node tools/fights.js --seeds 1,2,3,4,5 --n 200",
     "prose": "node tools/prose-lint.js",
+    "voices": "node tools/voices.js",
     "scopes": "node tools/scopes.js",
     "pin:from": "node tools/pin-from.js"
   },
