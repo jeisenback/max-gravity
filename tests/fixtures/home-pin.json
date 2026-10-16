@@ -232,12 +232,16 @@
   "text": "[[\"Sam goes ashore to see their daughter Noor, and comes back the next morning with red eyes and a bag of home cooking for everyone.\"],true,[\"Sam Vale will follow the Second Chance anywhere now.\"],\"9 Jun 2214: The captain took me home to see my daughter.\"]"
  },
  {
+  "key": "favor:lapsed",
+  "text": "[1,\"9 Jun 2214: The captain said we'd go home, and the time ran out.\"]"
+ },
+ {
   "key": "rename",
   "text": "[\"Nimbus\",[\"Named the ship the Nimbus.\"]]"
  },
  {
   "key": "letter:note",
-  "text": "[\"A message for Sam at Ceres Station: their sister Tariq won a little money on the ring-ball pool, and is buying everyone a round.\"]"
+  "text": "[\"A message for Sam at Ceres Station: their daughter Ingrid won a little money on the ring-ball pool, and is buying everyone a round.\"]"
  },
  {
   "key": "birthday:gate",

@@ -75,3 +75,48 @@ test('the run panel lists the next runs for a captain with a style, and the butt
   assert.equal(await ev(() => hired().plan.run.profit), 400);
   await done();
 });
+
+test('a promise to take a shipmate home is a run the hand can put to the captain, light if nothing pays there', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = setup('dov'), out = {}, from = st.systemId;
+    hired().plan = null; const run0 = currentPlan(); out.none = !hired().plan.alts.some(a => a.favor);
+    const sid = Object.keys(SYSTEMS).find(s => s !== from && s !== run0.sid && inRange(from, s) && SYSTEMS[s].planets.some(p => p.services.includes('trade')));
+    const planet = SYSTEMS[sid].planets.find(p => p.services.includes('trade')).name;
+    const p = makePerson('earth'); p.home = planet; registerPerson(p); st.crew.push(p.id);
+    st.missions.push({ id: st.nextId++, type: 'favor', favorPid: p.id, good: 'a promise', tons: 0, destSystem: sid, destPlanet: planet, title: `Take ${p.first} home to ${planet}`, pay: 0, deadline: st.day + 150 });
+    hired().plan = null; currentPlan();
+    const alt = hired().plan.alts[0];
+    out.first = !!alt && alt.favor === `Take ${p.first} home to ${planet}`; out.port = !!alt && alt.sid === sid && alt.planet === planet;
+    out.shape = !!alt && (alt.ballast ? alt.good === null && alt.tons === 0 && alt.profit === 0 : alt.tons > 0 && alt.profit > 0) && alt.days >= 1;
+    out.count = hired().plan.alts.length; out.once = hired().plan.alts.filter(a => a.favor).length;
+    const dock = document.createElement('div'); dock.innerHTML = swayHtml(); out.row = dock.querySelector('.suggest-row .hint').textContent;
+    out.yes = suggestRun(0); const run = hired().plan.run;
+    out.went = run.sid === sid && run.planet === planet && run.ballast === alt.ballast && run.good === alt.good;
+    return out;
+  });
+  assert.ok(r.none, 'no promise, no row'); assert.ok(r.first, 'the promise is the first alternative'); assert.ok(r.port); assert.ok(r.shape, 'a trade run there, or a light one');
+  assert.ok(r.count <= 3); assert.equal(r.once, 1);
+  assert.match(r.row, /^Take \w+ home to .*\((no cargo|\d+t \w)/); assert.match(r.row, /cr wage/);
+  assert.ok(r.yes && r.went, 'Dov takes it, and the run keeps its cargo state');
+  await done();
+});
+
+test('Hester weighs a promise like any run: a light run loses to a paying one and matches an empty plan; a promise that runs out is remembered', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = setup('hester'), out = {}, promise = { favor: 'Take Ana home to Mars', good: null, tons: 0, cost: 0, profit: 0, days: 9, ballast: true };
+    stage({ profit: 1000, days: 5 }, promise); out.no = suggestRun(0); out.kept = hired().plan.run.profit === 1000 && hired().plan.run.ballast === false;
+    stage({ profit: 0, days: 5, good: null, tons: 0, ballast: true }, promise); out.yes = suggestRun(0); out.light = hired().plan.run.ballast === true && hired().plan.run.good === null && hired().plan.run.favor === promise.favor;
+    const p = makePerson('earth'); p.memories = []; p.opinion = 3; registerPerson(p); st.crew.push(p.id);
+    st.missions.push({ id: st.nextId++, type: 'favor', favorPid: p.id, good: 'a promise', tons: 0, destSystem: 'mars', destPlanet: 'Mars', title: 'Take Ana home to Mars', pay: 0, deadline: st.day - 1 });
+    expireMissions();
+    out.gone = !st.missions.some(m => m.type === 'favor'); out.opinion = p.opinion; out.memory = p.memories.slice(-1)[0];
+    return out;
+  });
+  assert.ok(r.no && r.kept, 'turned down against a paying run'); assert.ok(r.yes && r.light, 'taken against an empty plan, and sails light');
+  assert.ok(r.gone); assert.equal(r.opinion, 1); assert.match(r.memory, /the time ran out\.$/);
+  await done();
+});

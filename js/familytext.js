@@ -199,6 +199,7 @@ const SHIP_LINES = {
   loyal: '{first} {last} will follow {ship} anywhere now.',
   rename: 'Named the ship {ship}.',
   returned: 'The captain took me home to see my {rel}.',
+  broken: 'The captain said we\'d go home, and the time ran out.',
   // the port page (family.js homeHtml): what is said of a shipmate, the traditions and the cat
   'page.loyal': 'loyal',
   'page.low': 'having a hard time',

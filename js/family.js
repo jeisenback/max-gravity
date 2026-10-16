@@ -527,6 +527,7 @@ Mods.register({
       if (p && m.type === 'passenger' && p.opinion >= OPINION.WELCOME && !st.crew.includes(p.id) && Math.random() < 0.6) G.joinOffer = p;
     });
     M.on('landed', planet => { for (const n of letters(planet)) M.note(n); });
+    M.on('missionFailed', m => { const f = m.favorPid && G.state.people[m.favorPid]; if (f) like(f, -2, familyLines('ship').broken); });  // a promise to take someone home, run out (expireMissions)
     M.action('renameShip', () => {
       if (hired()) return;  // her name is the captain's
       // An in-page field: browser prompt() dialogs are blocked in some embeds.

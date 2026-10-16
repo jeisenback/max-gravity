@@ -59,6 +59,7 @@ const playHome = () => {
   { reset(); note('homeLine:bare', homeLine()); home().cat = 'Rivet'; home().traditions = ['flip-toast', 'first-meal']; note('homeLine:full', homeLine()); }
   // the favor's return: a shipmate goes ashore to see their family
   { const p = reset(); storyOf(p); G.messages = []; Mods.emit('missionDone', { favorPid: p.id }); note('favor:done', [G.messages.map(m => m.text), p.loyal, home().log.map(l => l.text), p.memories.slice(-1)[0]]); }
+  { const p = reset(); storyOf(p); p.opinion = 3; Mods.emit('missionFailed', { type: 'favor', favorPid: p.id }); note('favor:lapsed', [p.opinion, p.memories.slice(-1)[0]]); }  // the promise run out
   // naming the ship, from the port page
   { reset(); const el = document.createElement('input'); el.id = 'shipName'; el.value = 'the Nimbus'; document.body.appendChild(el); Mods.actions.renameShip.fn(); el.remove(); note('rename', [home().name, home().log.map(l => l.text)]); }
   // a letter, what it says to the player in the note and in the log of the port

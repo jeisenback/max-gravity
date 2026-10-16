@@ -183,7 +183,7 @@ const hiredMay = (id, a) => a.hiredOnly ? !!hired() : !hired() || (!['drills', '
 // ---------- the captain's runs ----------
 
 // Every port outside this system that buys something we can carry, scored by profit per day.
-let planAlts = [];  // the runs that came next, for the hand to suggest (suggest.js)
+let planAlts = [], planRanked = [];  // the runs that came next, for the hand to suggest (suggest.js), and the whole ranking, for a promise's port
 function planRun() {
   planAlts = [];
   const st = G.state, h = st.hired, here = currentPlanet(), free = cargoFree(), from = st.systemId;
@@ -214,7 +214,7 @@ function planRun() {
   if (ice) return ice;
   const score = o => (o.profit / o.days) * (wantYard && o.yard ? 4 : 1) * laneRisk(o.sid);
   const ranked = options.sort((a, b) => score(b) - score(a)).filter(o => o.profit > 0);
-  planAlts = ranked.slice(0, 4);
+  planAlts = ranked.slice(0, 4); planRanked = ranked;
   const top = ranked.slice(0, captainEntry() ? TRADE_PICKS[captainEntry().captain.trade] : 1);
   const best = top.length > 1 ? pick(top) : top[0];
   if (best) return { ...best, ballast: false };
@@ -222,6 +222,16 @@ function planRun() {
   const dest = reach.flatMap(([sid, sys]) => sys.planets.filter(x => x.services.includes('trade')).map(pl => ({ sid, planet: pl.name, yard: pl.services.includes('shipyard'), days: Math.max(1, travelDays(from, sid)) })))
     .sort((a, b) => (wantYard ? (b.yard - a.yard) : 0) || a.days - b.days)[0];
   return dest ? { ...dest, good: null, tons: 0, cost: 0, profit: 0, ballast: true } : null;
+}
+
+// A promise to take a shipmate home (family.js) is a run the hand can put to the captain: the best trade run to that port if the
+// planner found one, else a light run there. One per promise, for a port in reach that the plan is not already bound for.
+function favorAlts(run) {
+  const st = G.state, from = st.systemId;
+  return st.missions.filter(m => m.type === 'favor' && m.destSystem !== from && inRange(from, m.destSystem) && !(run && run.sid === m.destSystem && run.planet === m.destPlanet)).map(m => {
+    const trade = planRanked.find(o => o.sid === m.destSystem && o.planet === m.destPlanet), pl = SYSTEMS[m.destSystem].planets.find(p => p.name === m.destPlanet);
+    return { ...(trade ? { ...trade, ballast: false } : { sid: m.destSystem, planet: m.destPlanet, yard: !!pl && pl.services.includes('shipyard'), good: null, tons: 0, cost: 0, profit: 0, days: Math.max(1, travelDays(from, m.destSystem)), ballast: true }), favor: m.title };
+  });
 }
 
 // The plan is made once per stop and kept, unless the hold has changed since (a plan to sell cargo that is gone).
@@ -232,7 +242,7 @@ const currentPlan = () => { const h = G.state.hired; if (planStale(h)) { const r
   at: G.state.planet,
   cargo: JSON.stringify(G.state.cargo),
   run,
-  alts: planAlts.filter(o => !run || o.sid !== run.sid || o.planet !== run.planet || o.good !== run.good).slice(0, 3)
+  alts: (favors => [...favors, ...planAlts.filter(o => (!run || o.sid !== run.sid || o.planet !== run.planet || o.good !== run.good) && !favors.some(f => f.sid === o.sid && f.planet === o.planet && f.good === o.good))].slice(0, 3))(favorAlts(run))
 }; } return h.plan.run; };
 
 // Buys the cargo, sets the course, and sails: a crewed pilot flies her out, otherwise the pilot is you.
