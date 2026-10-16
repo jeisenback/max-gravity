@@ -43,7 +43,7 @@ const G = {
   viewPerson: null,   // whose sheet is open: a person id, or 'bar:<n>' for someone at the bar, see character.js
   retireAsk: false,   // the retire dialog is showing, see legacy.js
   shifts: null,       // opinion shifts gathered while a choice runs, shown with its result, see ui.js
-  auto: null,         // the autopilot's move in progress ({ kind: 'out' | 'dock', ... }), see autopilot.js
+  auto: null,         // the autopilot's move in progress ({ kind: 'out' | 'dock', say, ... }; `say` is the pilot's word with the arrival line), see autopilot.js
   duel: null,         // the console fight in progress, see duel.js
   torps: [],          // torpedoes in flight, see torpedoes.js
   bridgeOpen: null,   // which sheet of the burn view is open ('person', a station), see bridge.js
@@ -602,6 +602,9 @@ function updateDeparture(dt) {
   if (G.departTimer <= 0) enterTransit();
 }
 
+// One line for an arrival: where and when, and the autopilot's word on how the pilot brings her in, if it is docking her (autopilot.js).
+const arriveLine = () => [flySay('arrive', { system: system().name, gov: system().gov, date: dateOf() }), G.auto && G.auto.say].filter(Boolean).join(' ');
+
 function arrive() {
   const st = G.state, p = G.player, s = ship(), a = G.burnAngle;
   st.systemId = G.transit.to;
@@ -619,8 +622,7 @@ function arrive() {
   G.flash = 1;
   Mods.emit('arrive', st.systemId);
   G.navPlanet = null;
-  const sys = system();
-  msg(flySay('arrive', { system: sys.name, gov: sys.gov, date: dateOf() }));
+  msg(arriveLine());
   expireMissions();
   populateSystem();
 }

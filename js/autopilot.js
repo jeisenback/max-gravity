@@ -87,8 +87,7 @@ Mods.register({
     M.action('routeDock', name => { G.state.route = { ...G.state.route, dock: name }; });
     M.on('arrive', () => {
       if (postMode('pilot') !== 'crewed' || !(G.state.route && G.state.route.go)) return;
-      G.auto = { kind: 'dock', t: 0, care: pilotCare() };
-      msg(sceneSay('scene:systems-notes', 'auto.dock', { pilot: pilotName(), planet: dockTarget(G.state.systemId).name }));
+      G.auto = { kind: 'dock', t: 0, care: pilotCare(), say: sceneSay('scene:systems-notes', 'auto.dock', { pilot: pilotName(), planet: dockTarget(G.state.systemId).name }) };  // said with the arrival line (arriveLine, game.js)
     });
     for (const e of ['landed', 'stateReady']) M.on(e, () => { G.auto = null; if (G.state.route) G.state.route.go = false; });
     M.on('drawOverlay', W => {
