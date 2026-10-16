@@ -456,16 +456,18 @@ test('each hand makes the call in a pirate contact, rolled on their own skill, a
   await done();
 });
 
-test('each raid option says what it can cost, from what it declares, and a sure option says nothing', async () => {
+test('each raid option says its odds and what it can cost, from what it declares and the roll it will make, and a sure option says nothing', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
     const out = [];
     const text = html => { const b = document.createElement('div'); b.innerHTML = html; return b.textContent; };
+    raid('gunner');
     for (const style of ['grapple', 'torpedo', 'gun']) {
+      const s = { style, foe: makeEnemy({ kind: 'pirate' }), grade: 0 };
       for (const c of [...RAID_CLOSING, ...RAID_EXCHANGE]) {
         const lose = c.lose || c.win, line = Array.isArray(lose) ? lose : (lose[style] || lose.grapple), risk = HAND_RISK[c.id] || 0;
-        out.push({ id: c.id, style, sure: c.odds(style) >= 1, hull: line[1] > 0, risk, note: text(raidCostNote(c, style)).trim() });
+        out.push({ id: c.id, style, sure: c.odds(style) >= 1, hull: line[1] > 0, risk, odds: shipOdds(s, c.id, null, c.odds(style)), note: text(raidCostNote(c, s, null)).trim() });
       }
     }
     return out;
@@ -474,23 +476,31 @@ test('each raid option says what it can cost, from what it declares, and a sure 
   for (const x of r) {
     const name = `${x.id} (${x.style})`;
     if (x.sure) { assert.equal(x.note, '', `${name}: a sure option says nothing`); continue; }
+    assert.ok(x.note.startsWith(`[${Math.round(x.odds * 100)}%`), `${name}: the odds the roll uses, first: ${x.note}`);
     assert.equal(/hull damage/.test(x.note), x.hull, `${name}: hull`); assert.equal(/a crew casualty/.test(x.note), x.hull, `${name}: casualty`);
     assert.equal(/you may be hurt/.test(x.note), x.risk > 0, `${name}: hurt`); assert.equal(/the captain marks it/.test(x.note), x.risk >= 0.35, `${name}: the captain`);
-    assert.equal(x.note === '', !x.hull && !x.risk, `${name}: nothing at stake, no note`);
+    assert.equal(/if it fails/.test(x.note), !!(x.hull || x.risk), `${name}: nothing at stake, no cost`);
   }
-  const turn = r.find(x => x.id === 'turn'); assert.equal(turn.note, '[if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]');
-  assert.equal(r.find(x => x.id === 'fire').note, '[if it fails: you may be hurt, and the captain marks it]');
+  const turn = r.find(x => x.id === 'turn'); assert.match(turn.note, /^\[\d+%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it\]$/);
+  assert.match(r.find(x => x.id === 'fire').note, /^\[\d+%; if it fails: you may be hurt, and the captain marks it\]$/);
   assert.equal(r.find(x => x.id === 'hold').note, '');
   await done();
 });
 
-test('the note is part of the option in the scene, and the Gunner\'s own move carries one', async () => {
+test('the note is part of the option in the scene, and the Gunner\'s own move carries one, with odds that rise with the level', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
-  const r = await ev(() => { raid('gunner'); startDuel({ kind: 'pirate' }, false); begin(); return G.dialog.choices.map(c => c.label); });
-  assert.ok(r[0].startsWith('Hold course') && !r[0].includes('[if it fails'), 'hold course has none');
-  assert.ok(r.slice(1).every(l => l.includes('[if it fails:')), 'every other option has one');
-  assert.ok(r.some(l => l.startsWith('[Gunner] Get a lock on her drive') && l.includes('you may be hurt, and the captain marks it')));
+  const r = await ev(() => {
+    const labels = () => { startDuel({ kind: 'pirate' }, false); begin(); const l = G.dialog.choices.map(c => c.label); G.dialog = null; G.nextEvent = null; return l; };
+    raid('gunner'); hired().skill.gunner = 0; const low = labels();
+    hired().skill.gunner = 1e6; const high = labels();  // level 3
+    return { low, high };
+  });
+  assert.ok(r.low[0].startsWith('Hold course') && !r.low[0].includes('['), 'hold course has none');
+  assert.ok(r.low.slice(1).every(l => /\[\d+%; if it fails:/.test(l)), 'every other option has its odds and its cost');
+  const own = labels => labels.find(l => l.startsWith('[Gunner] Get a lock on her drive')), pct = l => +l.match(/\[(\d+)%/)[1];
+  assert.ok(own(r.low) && own(r.low).includes('you may be hurt, and the captain marks it'));
+  assert.ok(pct(own(r.high)) > pct(own(r.low)), `the odds rise with the level: ${own(r.low)} / ${own(r.high)}`);
   await done();
 });
 
@@ -519,11 +529,12 @@ test('the ice run, the work events and the lock fights say what an option can co
   for (const x of r.ice) {
     assert.equal(x.label.includes('hull damage, a crew casualty'), x.hull, `${x.label}: hull cost matches`);
     assert.equal(x.label.includes('the captain marks it'), x.bold, `${x.label}: a bold call is marked`);
-    assert.equal(x.label.includes('[if it fails:'), x.hull || x.bold, `${x.label}: nothing at stake, no note`);
+    assert.equal(x.label.includes('if it fails:'), x.hull || x.bold, `${x.label}: nothing at stake, no cost`);
+    assert.match(x.label, /\[\d+%/, `${x.label}: every ice choice is a roll, and says its odds`);
   }
   assert.ok(r.ice.some(x => !x.hull && !x.bold) && r.ice.some(x => x.hull && !x.bold) && r.ice.some(x => x.hull && x.bold), 'the run has each kind');
-  for (const [careful, quick] of r.work) { assert.ok(!careful.includes('[if it fails'), careful); assert.ok(quick.endsWith('[if it fails: you learn less, and the captain marks it]'), quick); }
-  for (const labels of r.lock) { assert.equal(labels.length, 4); for (const l of labels) assert.ok(l.endsWith('[if it fails: a crew casualty, you may be hurt]'), l); }
+  for (const [careful, quick] of r.work) { assert.ok(!careful.includes('['), careful); assert.match(quick, /\[\d+%; if it fails: you learn less, and the captain marks it\]$/, quick); }
+  for (const labels of r.lock) { assert.equal(labels.length, 4); for (const l of labels) assert.match(l, /\[\d+%; if it fails: a crew casualty, you may be hurt\]$/, l); }
   await done();
 });
 
@@ -544,7 +555,7 @@ test('the cost note shows on the rendered button as text, with no markup, in a r
     };
   });
   for (const [name, labels] of Object.entries(r)) {
-    assert.ok(labels.some(l => l.includes('[if it fails:')), `${name}: a button carries the note`);
+    assert.ok(labels.some(l => /\[\d+%; if it fails:/.test(l)), `${name}: a button carries the note`);
     for (const l of labels) assert.doesNotMatch(l, /[<>]|class=/, `${name}: ${l}`);
   }
   await done();

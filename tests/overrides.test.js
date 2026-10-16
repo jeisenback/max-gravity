@@ -526,7 +526,7 @@ test('an override changes the words a work event and an ice scene play, and noth
     const d = WORK_EVENTS.find(x => x.id === 'pilot-drift'), shipped = { careful: play(workEvent(d), 0, 0), win: play(workEvent(d), 1, 0), lose: play(workEvent(d), 1, 0.999) };
     useOverrides({ 'hired:pilot-drift': { title: 'Edited <b>Title</b>', text: 'Edited text & more.', choices: { 0: { label: 'Careful', result: 'Careful <i>line</i>.' }, 1: { label: 'Quick', win: 'Won line.', lose: 'Lost line.' } } } });
     const ev = workEvent(d), edited = { careful: play(workEvent(d), 0, 0), win: play(workEvent(d), 1, 0), lose: play(workEvent(d), 1, 0.999) };
-    const out = { title: ev.title, text: ev.text, labels: ev.choices[0].label + '|' + ev.choices[1].label.split(' [if it fails')[0], lines: [edited.careful.text, edited.win.text, edited.lose.text], xp: [edited.careful.xp, edited.win.xp, edited.lose.xp], shippedXp: [shipped.careful.xp, shipped.win.xp, shipped.lose.xp] };
+    const out = { title: ev.title, text: ev.text, labels: ev.choices[0].label + '|' + ev.choices[1].label.split(' [')[0], lines: [edited.careful.text, edited.win.text, edited.lose.text], xp: [edited.careful.xp, edited.win.xp, edited.lose.xp], shippedXp: [shipped.careful.xp, shipped.win.xp, shipped.lose.xp] };
     useOverrides({});
     // The ice scene: the openings, the general choices, and a post's own, by their place in the list.
     const stage = ICE_STAGES[0], mine = Object.keys(stage.post).indexOf('pilot'), own = stage.general.length + mine;
@@ -534,7 +534,7 @@ test('an override changes the words a work event and an ice scene play, and noth
     const was = { open0: ice(0).text.split('</p>')[0] === stage.open[0], open1: ice(1).text.split('</p>')[0] === stage.open[1], lines: [1, 2].map(i => play(ice(0), i, 0.999).text) };
     useOverrides({ 'ice:1': { title: 'Ice, edited', text: 'First <b>opening</b>.', text2: 'Second opening.', choices: { 0: { label: 'Go slow', win: 'Slow win.', lose: 'Slow lose.' }, [own]: { label: 'By hand', lose: 'Hand lose.' } } } });
     const e0 = ice(0), e1 = ice(1);
-    out.ice = { title: e0.title, open0: e0.text.split('</p>')[0], open1: e1.text.split('</p>')[0], label0: e0.choices[0].label.split(' [if it fails')[0], labelPost: e0.choices[stage.general.length].label.split(' [if it fails')[0],
+    out.ice = { title: e0.title, open0: e0.text.split('</p>')[0], open1: e1.text.split('</p>')[0], label0: e0.choices[0].label.split(' [')[0], labelPost: e0.choices[stage.general.length].label.split(' [')[0],
       slowWin: play(ice(0), 0, 0).text, slowLose: play(ice(0), 0, 0.999).text.split(' Armor')[0], handLose: play(ice(0), stage.general.length, 0.999).text.split(' Armor')[0],
       untouched: [1, 2].map(i => play(ice(0), i, 0.999).text === was.lines[i - 1]) };
     out.was = { open0: was.open0, open1: was.open1 };

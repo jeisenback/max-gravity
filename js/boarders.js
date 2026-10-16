@@ -113,9 +113,9 @@ function assaultStart(foe, rate = {}) {
 
 function repelScene(s) {
   const h = hired(), post = h.post, set = repelSet(s), spec = set.post[post];
-  const note = costNote({ casualty: true, hand: true });  // any exchange can cost someone, and the hand is among them
-  const choices = Object.entries(set.tactics).map(([k, t]) => ({ label: `${repelWords(s, `tactic.${k}.label`, t.label)}${note}`, run: () => repelStep(s, k) }));
-  choices.push({ label: `[${POSTS[post].name}] ${repelWords(s, `post.${post}.label`, spec.label)}${note}`, run: () => repelStep(s, 'post') });
+  const stake = { casualty: true, hand: true };  // any exchange can cost someone, and the hand is among them
+  const choices = Object.entries(set.tactics).map(([k, t]) => ({ label: `${repelWords(s, `tactic.${k}.label`, t.label)}${costNote(stake, tacticOdds(s, k))}`, run: () => repelStep(s, k) }));
+  choices.push({ label: `[${POSTS[post].name}] ${repelWords(s, `post.${post}.label`, spec.label)}${costNote(stake, postOdds(post))}`, run: () => repelStep(s, 'post') });
   return {
     title: repelWords(s, `title.${s.pos}`, set.titles[s.pos]), personal: true, via: 'crew',
     text: `${repelWords(s, `open.${s.pos}.${s.round % 2}`, set.openings[s.pos][s.round % 2])}</p><p>${s.assault ? 'Defenders' : 'Boarders'}: ${s.boarders}. With you: ${repelStanding(s) - 1}.${(s.held || []).length ? ` ${s.held.join(' ')}` : ''} ${layoutHint()}`.trim(),
@@ -123,20 +123,32 @@ function repelScene(s) {
   };
 }
 
+// What a tactic does against theirs: the triangle, or the numbers when both chose the same.
+function tacticResult(s, set, kind, theirs) {
+  if (kind !== theirs) return set.tactics[kind].beats === theirs ? 'win' : 'lose';
+  const mine = repelStanding(s);
+  return mine > s.boarders ? 'win' : mine < s.boarders ? 'lose' : 'tie';
+}
+// The chance a tactic wins the exchange, the way repelStep rolls it: their lean and a veteran's counter decide theirs, the triangle or the
+// numbers decide the exchange, and the ship's layout can turn it. Shown on the tactic's button (repelScene).
+function tacticOdds(s, kind) {
+  const set = repelSet(s), cun = Math.min(1, CUNNING * (s.grade || 0)), lean = foeLean(s), sum = Object.values(lean).reduce((a, b) => a + b, 0);
+  const p = { win: 0, lose: 0, tie: 0 }, counter = counterOf(set.tactics, kind);
+  for (const t of Object.keys(set.tactics)) p[tacticResult(s, set, kind, t)] += cun * (t === counter ? 1 : 0) + (1 - cun) * (lean[t] || 0) / sum;
+  const edge = layoutEdge(kind);
+  return p.win * (edge < 0 ? 1 + edge : 1) + p.lose * (edge > 0 ? edge : 0);
+}
+
 // One exchange. Returns what happened; sets the next scene, or settles the fight and goes back to the duel.
 function repelStep(s, kind) {
   const h = hired(), post = h.post, set = repelSet(s), theirs = kind === 'post' ? null : (CUNNING * (s.grade || 0) > 0 && Math.random() < CUNNING * s.grade ? counterOf(set.tactics, kind) : pickWeighted(foeLean(s)));
   let result, text;  // 'win', 'lose' or 'tie'
   if (kind === 'post') {
-    result = Math.random() < Math.min(0.85, 0.5 + 0.1 * skillLevel(post)) ? 'win' : 'lose';
+    result = Math.random() < postOdds(post) ? 'win' : 'lose';
     text = repelWords(s, `post.${post}.${result}`, set.post[post][result]);
-  } else if (kind === theirs) {
-    const mine = repelStanding(s);
-    result = mine > s.boarders ? 'win' : mine < s.boarders ? 'lose' : 'tie';
-    text = result === 'tie' ? repelWords(s, 'tie', REPEL_TIE) : repelWords(s, `tactic.${kind}.${result}`, set.tactics[kind][result]);
   } else {
-    result = set.tactics[kind].beats === theirs ? 'win' : 'lose';
-    text = repelWords(s, `tactic.${kind}.${result}`, set.tactics[kind][result]);
+    result = tacticResult(s, set, kind, theirs);
+    text = result === 'tie' ? repelWords(s, 'tie', REPEL_TIE) : repelWords(s, `tactic.${kind}.${result}`, set.tactics[kind][result]);
   }
   const edge = kind === 'post' ? 0 : layoutEdge(kind);  // the ship you fight in (shipcombat.js)
   if (edge && result !== 'tie' && Math.random() < Math.abs(edge)) {

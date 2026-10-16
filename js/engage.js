@@ -82,8 +82,8 @@ function contactEvent(spec) {
   }
   // A hired hand whose post fits one of the options makes the call (hiredCall, hired.js): the option is theirs, rolled on their skill.
   const post = hired() && hired().post, hand = HAND_CONTACT[post];
-  if (spec.kind === 'pirate' && hand) choices.push({ label: `[{crew}] ${hand.label}${costNote({ hull: hand.hull })}`, role: POSTS[post].role, run() {
-    const won = Math.random() < Math.min(0.85, 0.5 + 0.1 * skillLevel(post));
+  if (spec.kind === 'pirate' && hand) choices.push({ label: `[{crew}] ${hand.label}${costNote({ hull: hand.hull }, postOdds(post))}`, role: POSTS[post].role, run() {
+    const won = Math.random() < postOdds(post);
     if (won) return startRaid(spec, false, { edge: 2, text: hand.win });
     const pts = hand.hull ? Math.round(ship().armor * 0.08) : 0;
     st.armor = Math.max(1, st.armor - pts);
@@ -92,7 +92,7 @@ function contactEvent(spec) {
   const mine = post && choices.find(c => c.role === POSTS[post].role);
   if (mine) {
     mine.label = mine.label.replace('{crew}', POSTS[post].name); mine.own = true;  // shown with no crew member in the role (transit.js)
-    if (!hand) mine.run = () => Math.random() < Math.min(0.85, 0.5 + 0.1 * skillLevel(post))  // Comms: the spoof
+    if (!hand) mine.run = () => Math.random() < postOdds(post)  // Comms: the spoof
       ? 'Your fake transponder reads as one of their own. The plume swings away.'
       : `They see through it. ${startDuel(spec, false)}`;
   }

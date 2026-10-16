@@ -207,7 +207,7 @@ test('a patrol stop weighs on the faction: a hand-over helps, being caught or po
     return out;
   });
   assert.ok(!r.low && !r.dock, 'the lock is a gunner at level 2, and only at a patrol');
-  assert.ok(r.offered); assert.match(r.label, /\[if it fails: a fine, and the patrol takes them\]$/);
+  assert.ok(r.offered); assert.match(r.label, /\[\d+%; if it fails: a fine, and the patrol takes them\]$/);
   assert.match(r.win, /lock tone/); assert.equal(r.winRep, -1); assert.ok(r.winStays && r.winFund === 0 && r.winLiked === 1);
   assert.match(r.lose, /launch/); assert.equal(r.loseRep, -2); assert.ok(r.loseGone && r.loseFine > 0);
   assert.equal(r.handRep, 2); assert.equal(r.caughtRep, -2); assert.equal(r.clearRep, 0); assert.equal(r.payRep, 0);

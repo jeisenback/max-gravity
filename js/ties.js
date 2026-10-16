@@ -126,7 +126,7 @@ function lieutenantScene(gov, planet) {
     choices: [
       { label: say('ask.straight.label'), run() { asked('straight'); changeRep(gov, 1); goOn(0); return say(`${key}.straight`); } },
       { label: say('ask.gap.label'), run() { asked('gap'); goOn(0.2); return say(`${key}.gap`); } },
-      { label: `${say('ask.asking.label')} [if it fails: the stop goes worse, and the captain marks it]`, bold: true, run() {
+      { label: `${say('ask.asking.label')} [${oddsWord(soloOdds(hired().post))}; if it fails: the stop goes worse, and the captain marks it]`, bold: true, run() {
         const won = Math.random() < soloOdds(hired().post);
         boldWithCaptain(won);  // the captain's nerve (captains.js)
         if (won) { asked('asking.win'); markStop(p, gov, true); return say(`${key}.asking.win`); }
@@ -157,7 +157,7 @@ function customsScene(gov, planet, patrol, shade = 0) {
     return k('silent.gone', { fine: fmt(fine) }) + gone();
   } });
   if (patrol && h.post === 'gunner' && skillLevel('gunner') >= 2) choices.push({  // the guns answer the hail: a lock on the cutter, and a fine if it does not back down
-    label: `${say('gunner.label')} [if it fails: a fine${p.cast ? '' : ', and the patrol takes them'}]`, bold: true,
+    label: `${say('gunner.label')} [${oddsWord(soloOdds('gunner'))}; if it fails: a fine${p.cast ? '' : ', and the patrol takes them'}]`, bold: true,
     run() {
       const won = Math.random() < soloOdds('gunner');
       boldWithCaptain(won);  // the captain's nerve (captains.js)
