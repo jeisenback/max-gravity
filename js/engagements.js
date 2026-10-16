@@ -185,13 +185,16 @@ function startRaid(spec, flee, o = {}) {
 // What a choice can cost, said before it is picked (#293, #364): its odds, and its worst outcome in a few words, built from what the choice declares.
 // `odds` is the chance it goes your way, the same number the roll uses (a post's choice improves with your level), shown as a percentage; a sure
 // choice (1 or more) shows none. `hull`: a lost roll costs hull, and with it a crew casualty; `casualty`: a lost exchange can cost one without hull;
-// `hand`: you may be hurt; `xp`: you learn less; `marks`: the captain marks the call (a bold or risky one). A sure choice with nothing at stake
-// carries no note. The raids, the boarding scenes, the ice run and the work events all say it through this. Plain text: a label is escaped where the button is drawn (views.js).
+// `hand`: you may be hurt; `cost`: a lost roll costs this many credits of your own; `rep`: your standing here; `xp`: you learn less; `marks`: the captain
+// marks the call (a bold or risky one); `who`: the post the roll is on, named before the odds where a choice is not simply yours (a job ashore). A sure
+// choice with nothing at stake carries no note. The raids, the boarding scenes, the ice run, the work events, the jobs ashore and the bar say it through this.
+// Plain text: a label is escaped where the button is drawn (views.js).
 const oddsWord = odds => `${Math.round(odds * 100)}%`;
 function costNote(c, odds) {
-  const costs = [...(c.hull || c.casualty ? [...(c.hull ? ['hull damage'] : []), 'a crew casualty'] : []), ...(c.hand ? ['you may be hurt'] : []), ...(c.xp ? ['you learn less'] : [])];
+  const costs = [...(c.hull || c.casualty ? [...(c.hull ? ['hull damage'] : []), 'a crew casualty'] : []), ...(c.hand ? ['you may be hurt'] : []), ...(c.cost ? [`${fmt(c.cost)} cr of your own`] : []),
+    ...(c.rep ? ['your standing here'] : []), ...(c.xp ? ['you learn less'] : [])];
   const text = c.marks ? [...(costs.length ? [`${costs.join(', ')}, and`] : []), 'the captain marks it'].join(' ') : costs.join(', ');
-  const parts = [...(odds !== undefined && odds < 1 ? [oddsWord(odds)] : []), ...(text ? [`if it fails: ${text}`] : [])];
+  const parts = [...(odds !== undefined && odds < 1 ? [`${c.who ? `${c.who}, ` : ''}${oddsWord(odds)}`] : []), ...(text ? [`if it fails: ${text}`] : [])];
   return parts.length ? ` [${parts.join('; ')}]` : '';
 }
 // A raid choice's note carries the odds the beat will roll (shipOdds: the ships, her crew's grade, and for a post's move your level).

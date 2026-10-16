@@ -9,7 +9,6 @@
 
 const JOB_DAYS = 1, JOB_BOARD = 2;
 const jobOdds = ck => { const h = hired(), own = h.post === ck.post; return Math.min(0.9, 0.35 + (own ? 0.12 : 0.03) * skillLevel(h.post) + (roleSkill(POSTS[ck.post].role) ? 0.1 : 0) + (ck.bonus || 0)); };
-const jobOddsWord = p => (p >= 0.7 ? 'good odds' : p >= 0.5 ? 'even odds' : 'long odds');
 
 const JOBS = [
   { id: 'lock', title: 'A Jammed Freight Lock', blurb: 'A cargo lock has stuck half open with a loader crew behind it. The dockmaster will pay for hands that know a lock.',
@@ -126,7 +125,8 @@ function jobStage(job, i, ctx = {}) {
   const so = sceneOverride(`${jobId(job)}:${i}`), co = k => (so.choices || {})[k] || {};
   return { title: fill(so.title || jobTitle(job)), text: fill(so.text ? esc(so.text) : stage.text), personal: true, via: 'station', owner: 'you',
     choices: stage.choices.map((c, k) => ({ c, k })).filter(({ c }) => !c.when || h.post === c.when.post).map(({ c, k }) => {
-      const odds = c.check ? jobOdds(c.check) : 1, tag = c.check ? ` [${POSTS[c.check.post].name}, ${jobOddsWord(odds)}]` : '';
+      const odds = c.check ? jobOdds(c.check) : 1, lose = c.lose || {};  // the post the check is on, its odds, and what a lost one costs (costNote, engagements.js)
+      const tag = c.check ? costNote({ who: POSTS[c.check.post].name, hand: !!lose.hurt, cost: lose.cost || 0, rep: lose.rep < 0, marks: lose.opinion < 0 }, odds) : '';
       return { label: fill(`${co(k).label || c.label}${tag}`), run() {
         const won = !c.check || Math.random() < odds, base = won ? c.win : (c.lose || c.win), mine = won || !c.lose ? co(k).win : co(k).lose, o = mine ? { ...base, text: esc(mine) } : base;
         const text = fill(applyJob(o, ctx.scale || 1));

@@ -2789,7 +2789,7 @@
  },
  {
   "key": "label:cards",
-  "text": "Play Sam at cards (200 cr)"
+  "text": "Play Sam at cards (200 cr) [50%]"
  },
  {
   "key": "gate:cards",
@@ -2853,7 +2853,7 @@
  },
  {
   "key": "label:fight",
-  "text": "Tell them what you think of their manners"
+  "text": "Tell them what you think of their manners [40%; if it fails: 150 cr of your own]"
  },
  {
   "key": "gate:fight",

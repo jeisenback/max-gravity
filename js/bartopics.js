@@ -147,7 +147,7 @@ const BAR_TOPICS = [
     G.offers.unshift(o);
     return say('set', { dest: o.destPlanet });
   } }); } },
-  { id: 'cards', sample: { traits: ['greedy', 'brave'] }, w: p => (barHas(p, 'greedy', 'brave') ? 4 : barHas(p, 'pious') ? 1 : 2), make: (p, pat, c) => { const say = barSay('cards', p, c); return ({ label: say('label', { cr: CARDS }), ...gated(needCr(CARDS), notYet(() => pat.played, say('gate'))), run() {
+  { id: 'cards', sample: { traits: ['greedy', 'brave'] }, w: p => (barHas(p, 'greedy', 'brave') ? 4 : barHas(p, 'pious') ? 1 : 2), make: (p, pat, c) => { const say = barSay('cards', p, c); return ({ label: `${say('label', { cr: CARDS })}${costNote({}, 0.5)}`, ...gated(needCr(CARDS), notYet(() => pat.played, say('gate'))), run() {
     pat.played = true; met(pat);
     if (Math.random() < 0.5) {
       c.st.credits += CARDS;
@@ -191,9 +191,9 @@ const BAR_TOPICS = [
     ...gated(notYet(() => pat.blessed, say('gate'))),
     run() { pat.blessed = true; met(pat); like(p, 1, say('memory')); return barSays(pick(barLines('bless')), p); }
   }); } },
-  { id: 'fight', sample: { traits: ['rude', 'kind'] }, w: (p, pat) => (barHas(p, 'rude') && !pat.known ? 3 : 0), make: (p, pat, c) => { const say = barSay('fight', p, c); return ({ label: say('label'), ...gated(notYet(() => pat.fought, say('gate'))), run() {
+  { id: 'fight', sample: { traits: ['rude', 'kind'] }, w: (p, pat) => (barHas(p, 'rude') && !pat.known ? 3 : 0), make: (p, pat, c) => { const say = barSay('fight', p, c), odds = roleSkill('gunner') ? 1 : 0.4; return ({ label: `${say('label')}${costNote({ cost: 150 }, odds)}`, ...gated(notYet(() => pat.fought, say('gate'))), run() {
     pat.fought = true; met(pat); like(p, -2, say('memory'));
-    if (roleSkill('gunner') || Math.random() < 0.4) return say('win', { step: roleSkill('gunner') ? `${say('win.step', { gunner: roleName('gunner') })} ` : '' });
+    if (odds >= 1 || Math.random() < odds) return say('win', { step: roleSkill('gunner') ? `${say('win.step', { gunner: roleName('gunner') })} ` : '' });
     c.st.credits = Math.max(0, c.st.credits - 150);
     return say('lose');
   } }); } },
