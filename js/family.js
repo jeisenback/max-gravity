@@ -91,11 +91,21 @@ const friendTopic = (p, other) => {
     { label: say('c1.label'), ...liftBy(p, 1, null, say('c1.result', { n, other: other.first })) },
   ] };
 };
-const memoryTopic = (p, mem) => {
-  const say = familySay('memory'), n = p.first;
-  return { title: say('title', { n }), open: say(`open.${pick([0, 1])}`, { n, mem }), choices: [
-    { label: say('c0.label'), ...liftBy(p, 1, say('c0.memory'), say(`c0.result.${pick([0, 1])}`, { n })) },
-    { label: say('c1.label'), ...liftBy(p, 0, null, say(`c1.result.${pick([0, 1])}`, { n })) },
+// What they bring up is one line of the record: a memory of theirs (`Day 3: You bought me a drink.`) or a line of the ship's log. The one brought up is
+// kept on them (p.recalled), so the next sitting draws another.
+const recalled = (p, text) => choice => ({ ...choice, run() { p.recalled = text; return choice.run(); } });
+const memoryTopic = (p, raw) => {
+  const say = familySay('memory'), n = p.first, m = /^(Day \d+|\d+ \w+ \d+): /.exec(raw), when = m ? m[1] : dateOf(), mem = m ? raw.slice(m[0].length) : raw, mark = recalled(p, raw);
+  return { title: say('title', { n }), open: say(`open.${pick([0, 1])}`, { n, mem, when }), choices: [
+    mark({ label: say('c0.label'), ...liftBy(p, 1, say('c0.memory'), say(`c0.result.${pick([0, 1])}`, { n })) }),
+    mark({ label: say('c1.label'), ...liftBy(p, 0, null, say(`c1.result.${pick([0, 1])}`, { n })) }),
+  ] };
+};
+const logTopic = (p, entry) => {
+  const say = familySay('log'), n = p.first, when = dateOf(entry.day), mark = recalled(p, entry.text);
+  return { title: say('title', { n }), open: say(`open.${pick([0, 1])}`, { n, log: entry.text, when }), choices: [
+    mark({ label: say('c0.label'), ...liftBy(p, 1, say('c0.memory'), say(`c0.result.${pick([0, 1])}`, { n, when })) }),
+    mark({ label: say('c1.label'), ...liftBy(p, 0, null, say('c1.result', { n })) }),
   ] };
 };
 function talkTopics(p) {
@@ -108,8 +118,9 @@ function talkTopics(p) {
   const worst = others.map(f => ({ f, b: bond(me, f) })).sort((x, y) => x.b - y.b)[0], best = others.map(f => ({ f, b: bond(me, f) })).sort((x, y) => y.b - x.b)[0];
   if (worst && worst.b <= -2) out.push(riftTopic(p, worst.f.p));
   if (best && best.b >= 6) out.push(friendTopic(p, best.f.p));
-  const mem = p.memories && p.memories.length ? p.memories[p.memories.length - 1].replace(/^(Day \d+|\d+ \w+ \d+): /, '') : null;
-  if (mem) out.push(memoryTopic(p, mem));
+  const mems = (p.memories || []).filter(m => m !== p.recalled), log = home().log.filter(e => e.text !== p.recalled);
+  if (mems.length) out.push(memoryTopic(p, pick(mems)));
+  if (log.length) out.push(logTopic(p, pick(log)));
   return out;
 }
 function ordinaryTalk(p) {
@@ -221,7 +232,8 @@ const FAMILY_SCENES = {
   war: p => asTalk(warTopic(p, 'Mars Republic', 'Arcology Compact')),
   rift: p => asTalk(riftTopic(p, { first: 'Ana' })),
   friend: p => asTalk(friendTopic(p, { first: 'Ben' })),
-  memory: p => asTalk(memoryTopic(p, 'You sat with me when it was hard.')),
+  memory: p => asTalk(memoryTopic(p, `${dateOf()}: You sat with me when it was hard.`)),
+  log: p => { const e = { day: G.state.day - 12, text: 'A birthday party for Ana.' }; home().log.unshift(e); return asTalk(logTopic(p, e)); },
   idle: p => idleTalk(p),
   polite: p => politeScene(p),
   'story-home': p => homeScene(p, storyOf(p)),

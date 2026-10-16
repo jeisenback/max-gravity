@@ -45,6 +45,9 @@ const playTalk = () => {
   play('talk:friend', (p, s) => { const o = mk('Ben'); s.crew.push(o.id); for (let i = 0; i < 12; i++) addBond({ id: p.id, p }, { id: o.id, p: o }, 4); }, first);
   play('talk:memory', p => { p.memories = ['Day 3: You sat with me when it was hard.']; }, first);
   play('talk:memory:dated', p => { p.memories = ['12 Mar 2214: You asked how I was.']; }, first);
+  // the record: with the latest one brought up last time, an older memory is drawn; a line of the ship's log is its own talk
+  play('talk:memory:older', p => { p.memories = ['Day 3: You bought me a drink.', '12 Mar 2214: You asked how I was.']; p.recalled = '12 Mar 2214: You asked how I was.'; }, first);
+  play('talk:log', (p, s) => { p.memories = []; home().log.unshift({ day: s.day - 12, text: 'A birthday party for Ana.' }); }, first);
   // nothing on their mind: the idle talk, for a few traits, and for none
   play('idle:none', p => { p.traits = []; }, p => ordinaryTalk(p), 6);
   play('idle:two', p => { p.traits = ['pious', 'curious']; }, p => ordinaryTalk(p), 6);

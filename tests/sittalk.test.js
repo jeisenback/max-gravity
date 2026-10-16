@@ -77,6 +77,32 @@ test('a war, a grudge, a close friend, or something you did last time each give 
   await done();
 });
 
+test('the tail draws on the whole record: a memory is not brought up twice running, and a line of the ship\'s log is a talk of its own', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const { st, p } = setup(), out = {};
+    st.home.log = [];
+    p.memories = ['Day 3: You bought me a drink.', 'Day 9: You asked how I was.'];
+    const pickMem = () => { const t = talkTopics(p).find(x => x.choices[0].label === 'Bring it up'); G.dialog = { event: { choices: t.choices }, choices: t.choices }; chooseEvent(1); return p.recalled; };
+    const a = pickMem(), b = pickMem(), c = pickMem();
+    out.twoMemories = new Set([a, b]).size === 2 && a !== b && b !== c;  // never the same one twice running
+    out.when = /Day 9|Day 3/.test(talkTopics(p).find(x => x.choices[0].label === 'Bring it up').open);  // the opening says when it was
+    p.memories = []; p.recalled = null;
+    out.noLog = !talkTopics(p).some(x => x.choices[0].label === 'Remember it with them');
+    st.home.log.unshift({ day: st.day - 12, text: 'A birthday party for Ana.' });
+    const t = talkTopics(p).find(x => x.choices[0].label === 'Remember it with them');
+    out.log = !!t && /A birthday party for Ana\./.test(t.open) && / \d+ \w+ \d+/.test(t.open);
+    const op = p.opinion; G.dialog = { event: { choices: t.choices }, choices: t.choices }; chooseEvent(0);
+    out.logLiked = p.opinion - op; out.logMemory = p.memories.slice(-1)[0]; out.logRecalled = p.recalled;
+    out.logOnce = !talkTopics(p).some(x => x.choices[0].label === 'Remember it with them');  // brought up, so not again next time
+    return out;
+  });
+  assert.ok(r.twoMemories); assert.ok(r.when); assert.ok(r.noLog); assert.ok(r.log); assert.equal(r.logLiked, 1);
+  assert.match(r.logMemory, /You remembered a day of the ship's with me\./); assert.equal(r.logRecalled, 'A birthday party for Ana.'); assert.ok(r.logOnce);
+  await done();
+});
+
 test('someone in a bad way is talked to about it first, once, and then their story goes on where it was', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);

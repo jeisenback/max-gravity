@@ -1087,8 +1087,8 @@ const PEOPLE_LINES = {
   },
   'family:memory': {
     title: 'With {n}',
-    'open.0': '{n} says, without quite looking at you, over the end of the meal, that they\'ve been thinking about something. They wait for the table to clear before they say what. "{mem}"',
-    'open.1': 'You\'re at the tap drawing your water when {n} comes in and reads the number off the board and doesn\'t go. "{mem}" {n} says it to the board, the way you\'d read out a log entry, and waits.',
+    'open.0': '{n} says, without quite looking at you, over the end of the meal, that they\'ve been thinking about something from {when}. They wait for the table to clear before they say what. "{mem}"',
+    'open.1': 'You\'re at the tap drawing your water when {n} comes in and reads the number off the board and doesn\'t go. "{when}," {n} says, to the board. "{mem}" They say it the way you\'d read out a log entry, and wait.',
     'c0.label': 'Bring it up',
     'c0.result.0': 'You say you remember it too, and what day it was. {n} looks up. "I didn\'t think you would," {n} says. "People don\'t, usually. It goes in the log and that\'s the end of it." It\'s quiet for a moment, and after that the talk is easy, and goes on past the change.',
     'c0.result.1': 'You say you remember, and tell it back to them, and get one detail wrong. {n} corrects it. "It was the second cup, not the first." They\'re smiling when they say it. The incoming watch comes in to eat and {n} moves up the bench to make room and keeps talking.',
@@ -1096,6 +1096,17 @@ const PEOPLE_LINES = {
     'c1.result.0': 'You let it lie. {n} racks the mug and after a minute asks about the next port, and you talk about the next port, and that\'s what the rest of the sitting is about.',
     'c1.result.1': 'You don\'t pick it up. {n} looks at the table, and says, "Right," and asks whether the pump has been looked at, and you talk about the pump until the lights go down to a third.',
     'c0.memory': 'You brought it up, and I was glad.',
+  },
+  'family:log': {
+    title: 'With {n}',
+    'open.0': '{n} has the ship\'s log open on the galley terminal, scrolled back to {when}, and turns it so you can read the line. "{log}" {n} taps it with a knuckle. "I was thinking about that."',
+    'open.1': '"Do you remember {when}?" {n} says, across the two mugs. You don\'t, at first, and {n} doesn\'t help. The log has it, when you look: {log}',
+    'c0.label': 'Remember it with them',
+    'c0.result.0': 'You go back over it together, and the telling gets longer than the day was: who said what at the table, what the cook did with the pan, who was on watch and missed it. {n} fills in a part you had wrong. "I was there," {n} says. "I\'d know."',
+    'c0.result.1': '"You remember," {n} says. "Good. I thought it was only me keeping it." They scroll the log down to today, and up again to {when}, and leave it there while you both finish.',
+    'c1.label': '"That was a long time ago."',
+    'c1.result': '"It was," {n} says, and closes the log. They finish their coffee and take yours to the tap with it. "It\'s still in there, though. I checked."',
+    'c0.memory': 'You remembered a day of the ship\'s with me.',
   },
   'family:idle': {
     title: 'With {n}',
