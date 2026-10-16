@@ -74,7 +74,7 @@
   "id": "cast:ines:intro",
   "i": 0,
   "label": "Ask about the landing anyway",
-  "result": "She's silent for most of a minute. Then she tells it flat and fast: the dark pad, the tower saying ditch, the forty-one faces she could see on the cabin feed, and the thing she decided. When she finishes she lets out a breath. \"There,\" she says. \"That's the whole thing. It's much shorter than I thought.\"",
+  "result": "She's silent for most of a minute. Then she tells it flat and fast. \"The tower said ditch. The pad was unlit, with forty-one on the cabin feed and a hull good for one approach and not for a swim. I put her down. The stop was mine, because nobody on the tower could see the pad.\" She lets out a breath. \"There,\" she says. \"That's the whole thing. It's much shorter than I thought.\"",
   "changes": [
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
@@ -218,7 +218,7 @@
   "id": "cast:ines:mid2",
   "i": 0,
   "label": "Write the reference",
-  "result": "You write it that night, plainly, and it takes four tries because the first three sound like a eulogy. You say what you've seen: the care, the nerve, the logbook. When you send it, Ines is standing in the hatch and doesn't say anything at all. In the morning there's a mug of coffee on your console, and the bunk across from yours has been made with corners.",
+  "result": "You write it that night, plainly: nine years of landings in a log she keeps in her own hand, the one you've watched her fly, and that you'd stand in front of the board and say so. When you send it, Ines is standing in the hatch and doesn't say anything at all. In the morning there's a mug of coffee on your console.",
   "changes": [
    "s.cast.ines.flags: {} -> undefined",
    "s.cast.ines.flags.reference: undefined -> true",
@@ -255,7 +255,7 @@
   "id": "cast:ines:mid2",
   "i": 1,
   "label": "Offer to say it to the board in person",
-  "result": "You say it before she can fold the message away. \"I'll come to Lisbon. I'll stand up and say it myself.\" Ines turns from the wall. \"It's forty days,\" she says. \"You'd be away from the ship for a week.\" \"Then I'll ask the captain for the week.\" She looks at you for some time. Then she takes the pencil from behind her ear and writes the date of the hearing on the inside of her wrist, the way she writes a landing slot, and holds it up for you to read. \"In ten years,\" she says, \"nobody has offered me a week.\"",
+  "result": "You say it before she can fold the message away. \"I'll come to Lisbon. I'll stand up and say it myself.\" Ines turns from the wall. \"It's forty days,\" she says. \"You'd be away from the ship for a week.\" \"Then I'll ask the captain for the week.\" She takes the pencil from behind her ear and writes the date of the hearing on the inside of her wrist, the way she writes a landing slot, and holds it up for you to read. \"In ten years,\" she says, \"nobody has offered me a week.\"",
   "changes": [
    "s.cast.ines.flags: {} -> undefined",
    "s.cast.ines.flags.reference: undefined -> true",
@@ -474,7 +474,7 @@
   "id": "cast:ines:pivot",
   "i": 2,
   "label": "Order her to ditch",
-  "result": "You order the ditch. She does it by the book, and the book is correct, and neither of you says that she'd have made the pad.",
+  "result": "You order the ditch. She does it by the book. Afterward she writes the ditch in the logbook, the time, the order and who gave it, and turns the page.",
   "changes": [
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
@@ -580,7 +580,7 @@
   "id": "cast:tomas:intro",
   "i": 0,
   "label": "Offer to help with the service",
-  "result": "He gives you a rag, a torque wrench and a short, kind lecture on what not to touch, and then you spend two hours on your back under a coolant loop. When you come out, black to the elbows, he looks at you. \"Next time,\" he says, \"you're holding the light. You're better at that.\"",
+  "result": "He gives you a rag and a torque wrench, and names the three things not to touch, and you spend two hours on your back under a coolant loop. When you come out, black to the elbows, he looks at you. \"Next time,\" he says, \"you're holding the light. You're better at that.\"",
   "changes": [
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
@@ -616,7 +616,7 @@
   "id": "cast:tomas:intro",
   "i": 1,
   "label": "Leave him to it",
-  "result": "\"It's all right,\" he says. \"Most people do. She'll thank you anyway.\" He goes back to the loop, and you hear him, softly, as you leave, telling the pipes that nobody's angry at them.",
+  "result": "\"It's all right,\" he says. \"Most people do. She'll thank you anyway.\" He goes back to the loop, and you hear him, softly, as you leave: \"Nobody's angry at you. Nobody's angry.\"",
   "changes": [
    "s.people.c:tomas.memories: [] -> undefined",
    "s.people.c:tomas.memories.0: undefined -> 9 Jun 2214: You left me to my service."
@@ -649,7 +649,7 @@
   "id": "cast:tomas:mid1",
   "i": 0,
   "label": "Lend him 200 cr",
-  "result": "He takes it with both hands. \"Thank you,\" he says. It's not enough, and he says it again in Igbo. By the second pay day the two hundred is in your account, with an extra: a ring of braided wire, on a note that says \"for luck, from a man who understands machines\".",
+  "result": "He takes it with both hands. \"Thank you,\" he says, and says it again in Igbo. By the second pay day the two hundred is in your account, with an extra: a ring of braided wire, on a note that says \"for luck\".",
   "changes": [
    "s.cast.tomas.flags: {} -> undefined",
    "s.cast.tomas.flags.loan: undefined -> true",
@@ -687,7 +687,7 @@
   "id": "cast:tomas:mid1",
   "i": 1,
   "label": "\"I can't spare it.\"",
-  "result": "He straightens his shoulders. \"Of course,\" he says. \"I shouldn't have asked.\" He doesn't ask anyone else, and in the evening you hear him in the engine room, low and steady, working out a month of arithmetic on his fingers. The next day he has taken two extra shifts.",
+  "result": "He straightens his shoulders. \"Of course,\" he says. \"I shouldn't have asked.\" He doesn't ask anyone else. In the evening he's in the engine room with the door open, counting a month on his fingers, and the next day his name is on the bill for two extra shifts.",
   "changes": [
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
@@ -722,7 +722,7 @@
   "id": "cast:tomas:mid2",
   "i": 0,
   "label": "Ask him to teach you",
-  "result": "It takes the whole of the quiet watch and half the next one. He draws it on the deck in chalk, a plant you wouldn't know from a diagram, and then he rubs out the first pipe and makes you put it back from memory, and the second, and the third, until the deck is bare and the whole of her is laid out in your head. \"There,\" he says. \"Now you know her. Don't tell the owners.\"",
+  "result": "It takes the whole of the quiet watch and half the next one. He draws it on the deck in chalk, every valve of her in his order. Then he rubs out the first pipe and makes you put it back from memory, and the second, and the third, until the deck is bare and the whole of her is laid out in your head. \"There,\" he says. \"Now you know her. Don't tell the owners.\"",
   "changes": [
    "s.cast.tomas.flags: {} -> undefined",
    "s.cast.tomas.flags.plan: undefined -> true",
@@ -761,7 +761,7 @@
   "id": "cast:tomas:mid2",
   "i": 1,
   "label": "Ask him to write it down, so it doesn't go with the hull",
-  "result": "He looks at the flask. \"Nobody has asked me that,\" he says. He goes below and comes back with a notebook with a stained cover, and spends the quiet watch filling eleven pages in small square capitals, a diagram on each. He tears them out along the fold, carefully, and puts them in your hand. \"If she's sold again,\" he says, \"somebody will need to know where the cracks are. Not the owners. Somebody.\" You fold the pages into your jacket, and he goes back to the plant and tells it, quietly, that it'll be all right.",
+  "result": "He looks at the flask. \"Nobody has asked me that,\" he says. He goes below and comes back with a notebook with a stained cover, and spends the quiet watch filling eleven pages in small square capitals, a diagram on each. He tears them out along the fold, carefully, and puts them in your hand. \"If she's sold again,\" he says, \"somebody will need to know where the cracks are. Not the owners. Somebody.\" You fold the pages into your jacket. He puts the notebook back in his pocket with the stubs still in it.",
   "changes": [
    "s.cast.tomas.flags: {} -> undefined",
    "s.cast.tomas.flags.plan: undefined -> true",
@@ -833,7 +833,7 @@
   "id": "cast:tomas:late",
   "i": 0,
   "label": "Say you'd try",
-  "result": "\"I'd try,\" you say, and he lets out a breath. \"That's enough,\" he says. \"Nobody has ever said that. They say yes, or no. Nobody says try.\" He claps your shoulder, once, hard, and goes below. You can hear him telling the engines the news.",
+  "result": "\"I'd try,\" you say, and he lets out a breath. \"That's enough,\" he says. \"Nobody has ever said that.\" He claps your shoulder, once, hard, and goes below.",
   "changes": [
    "s.cast.tomas.flags: {} -> undefined",
    "s.cast.tomas.flags.promised: undefined -> true",
@@ -980,7 +980,7 @@
   "id": "cast:tomas:pivot",
   "i": 2,
   "label": "Tell him to vent the plant",
-  "result": "You tell him to vent her. He stands at the door for a moment, and then he does it, and the plant dies with a sound like a long breath. He doesn't look at you. He goes below to tell her he's sorry.",
+  "result": "You tell him to vent her. He stands at the door with the rag in his hand. Then he opens the valve, and the whine runs down and stops. He doesn't look at you. He goes below.",
   "changes": [
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
@@ -4644,7 +4644,7 @@
   "id": "cast:ines:bar1",
   "i": 0,
   "label": "Watch the approach with her",
-  "result": "She talks you through it like a commentator: the flare a second too late, the crosswind he hasn't read, the thrust he'll wish he had saved. He clips the gantry, gently, as she said he would, and she raises her glass to the screen. \"Eleven out of ten for effort,\" she says. By the end of the hour you know more about landing than you did.",
+  "result": "She talks you through it like a commentator: the flare a second too late, the crosswind he hasn't read, the thrust he'll wish he had saved. He clips the gantry, gently, as she said he would, and she raises her glass to the screen. \"Eleven out of ten for effort,\" she says.",
   "changes": [
    "s.people.c:ines.liftedAt: undefined -> 1",
    "s.people.c:ines.memories: [] -> undefined",
@@ -4717,7 +4717,7 @@
   "id": "cast:ines:bar2",
   "i": 0,
   "label": "Go over to them together",
-  "result": "You go together, and it takes her three tries to say her name. The controller hears all of it: the pad, the order, the forty-one. Then the controller says that they were on the desk that night, that it wasn't their call, and that everyone on the desk knew who had put that shuttle down. \"It was the best landing I've seen,\" they say. Ines says nothing. She shakes the controller's hand, and keeps hold of it.",
+  "result": "You go together, and it takes her three tries to say her name. The controller hears all of it: the pad, the order, the forty-one. \"I was on the desk that night,\" the controller says. \"It wasn't my call. Everyone on the desk knew who'd put that shuttle down. It was the best landing I've seen.\" Ines says nothing. She shakes the controller's hand, and keeps hold of it.",
   "changes": [
    "s.cast.ines.flags: {} -> undefined",
    "s.cast.ines.flags.tower: undefined -> true",
@@ -4826,7 +4826,7 @@
   "id": "cast:tomas:bar1",
   "i": 1,
   "label": "Let him have his shop talk",
-  "result": "You take a stool at the other end of the bar and leave them to it. Every so often a burst of technical argument comes down the bar, with hand gestures. When Tomas finds you, hours later, he's hoarse and cheerful. \"Thank you,\" he says. \"I didn't know how much I missed being a stranger among people who understood me.\"",
+  "result": "You take a stool at the other end of the bar and leave them to it. Every so often a burst of technical argument comes down the bar, with hand gestures. When Tomas finds you, hours later, he's hoarse, and holds up a hand with a new burn across the knuckle. \"Thank you,\" he says. \"He let me try the jig.\"",
   "changes": [
    "s.people.c:tomas.liftedAt: undefined -> 1",
    "s.people.c:tomas.memories: [] -> undefined",
@@ -4861,7 +4861,7 @@
   "id": "cast:tomas:bar2",
   "i": 0,
   "label": "Say hello to his sister",
-  "result": "The delay is eleven seconds. You say your name and wait. A small voice says, in a rush, that she's glad he has people, that he never says, and that she hopes you're feeding him. Tomas looks at the floor. \"Eleven seconds,\" he says afterwards, quietly, \"and she heard every word.\"",
+  "result": "The delay is eleven seconds. You say your name and wait. A small voice says, in a rush: \"He never says he has people. I'm glad. Are you feeding him?\" Tomas looks at the floor. \"Eleven seconds,\" he says afterwards, \"and she heard every word.\"",
   "changes": [
    "s.cast.tomas.flags: {} -> undefined",
    "s.cast.tomas.flags.sister: undefined -> true",

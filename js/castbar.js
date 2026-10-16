@@ -17,7 +17,7 @@ const CAST_BAR = {
         { label: 'Watch the approach with her', memory: 'You watched a bad landing with me, and I enjoyed the company.', run() { castLike('ines', 1, this.memory); castXp('ines', 'pilot', 3); return (
             'She talks you through it like a commentator: the flare a second too late, the crosswind he hasn\'t read, the thrust he\'ll wish he had ' +
             'saved. He clips the gantry, gently, as she said he would, and she raises her glass to the screen. "Eleven out of ten for effort," she ' +
-            'says. By the end of the hour you know more about landing than you did.'); } },
+            'says.'); } },
         { label: 'Ask about Lisbon', memory: 'You asked about Lisbon, and I told you.', run() { castLike('ines', 2, this.memory); castFlag('ines', 'lisbon'); return (
             'She turns from the screen. "The ferry ran every forty minutes," she says. "Nine years. I knew the regulars by their shoes. There was an ' +
             'old man who rode the 6:40 every morning to feed the pigeons on the Luna side. I never spoke to him once. I\'d give a great deal to ' +
@@ -31,10 +31,9 @@ const CAST_BAR = {
           'looked round. Her hand is flat on the bar, and the knuckles are white.'),
       choices: [
         { label: 'Go over to them together', memory: 'You went over to the controller with me.', run() { castLike('ines', 3, this.memory); castFlag('ines', 'tower'); return (
-            'You go together, and it takes her three tries to say her name. The controller hears all of it: the pad, the order, the forty-one. Then ' +
-            'the controller says that they were on the desk that night, that it wasn\'t their call, and that everyone on the desk knew who had put ' +
-            'that shuttle down. "It was the best landing I\'ve seen," they say. Ines says nothing. She shakes the controller\'s hand, and keeps hold ' +
-            'of it.'); } },
+            'You go together, and it takes her three tries to say her name. The controller hears all of it: the pad, the order, the forty-one. "I was ' +
+            'on the desk that night," the controller says. "It wasn\'t my call. Everyone on the desk knew who\'d put that shuttle down. It was the ' +
+            'best landing I\'ve seen." Ines says nothing. She shakes the controller\'s hand, and keeps hold of it.'); } },
         { label: 'Let her decide', memory: 'You let me decide about the controller.', run() { castLike('ines', 1, this.memory); return (
             'You say nothing, and she doesn\'t go over. She finishes her drink and puts the glass down with a click. "Not tonight," she says. On the ' +
             'way out she looks back once at the badge, and then straight ahead.'); } },
@@ -45,8 +44,8 @@ const CAST_BAR = {
     {
       days: 5, title: 'Shop Talk',
       text: ('Tomas Achebe has found a welder at the bar: a working one, in dock coveralls, with burn scars on both wrists and a nervous laugh. They\'ve ' +
-          'been talking for an hour. The whole of the bar rail, you see now, was welded by somebody very good. "Look at the bead," Tomas says to ' +
-          'you, low. "Look at that. Nobody does that for a bar."'),
+          'been talking for an hour. "Look at the bead," Tomas says to you, low, with a hand on the bar rail. "Look at that. Somebody welded this ' +
+          'properly. Nobody does that for a bar."'),
       choices: [
         { label: 'Buy a round for the dock crew (40 cr)', ...gated(needCr(40)), memory: 'You bought a round for the dock crew, and let me talk shop.', run() { G.state.credits -= 40; castLike('tomas', 2, this.memory); castXp('tomas', 'engineer', 2); return (
             'A round for the dock crew turns into three hours. Tomas is shown the jig they use for the rail, and a trick for a seam that has given ' +
@@ -54,8 +53,8 @@ const CAST_BAR = {
             'the work," he says. "The same as me."'); } },
         { label: 'Let him have his shop talk', memory: 'You let me talk shop with a welder.', run() { castLike('tomas', 1, this.memory); return (
             'You take a stool at the other end of the bar and leave them to it. Every so often a burst of technical argument comes down the bar, with ' +
-            'hand gestures. When Tomas finds you, hours later, he\'s hoarse and cheerful. "Thank you," he says. "I didn\'t know how much I missed ' +
-            'being a stranger among people who understood me."'); } },
+            'hand gestures. When Tomas finds you, hours later, he\'s hoarse, and holds up a hand with a new burn across the knuckle. "Thank you," he ' +
+            'says. "He let me try the jig."'); } },
       ],
     },
     {
@@ -65,9 +64,8 @@ const CAST_BAR = {
           'sees you, covers the handset, and beckons. "Would you say hello? She doesn\'t believe I have a crew."'),
       choices: [
         { label: 'Say hello to his sister', memory: 'You said hello to my sister.', run() { castLike('tomas', 3, this.memory); castFlag('tomas', 'sister'); return (
-            'The delay is eleven seconds. You say your name and wait. A small voice says, in a rush, that she\'s glad he has people, that he never ' +
-            'says, and that she hopes you\'re feeding him. Tomas looks at the floor. "Eleven seconds," he says afterwards, quietly, "and she heard ' +
-            'every word."'); } },
+            'The delay is eleven seconds. You say your name and wait. A small voice says, in a rush: "He never says he has people. I\'m glad. Are ' +
+            'you feeding him?" Tomas looks at the floor. "Eleven seconds," he says afterwards, "and she heard every word."'); } },
         { label: 'Wave from across the room', memory: 'You waved to my sister from across the room.', run() { castLike('tomas', 1, this.memory); return (
             'You wave. He grins, holds the handset up to the glass, and says something to her in Igbo. When he comes out of the booth he doesn\'t ' +
             'talk for the rest of the evening, and you leave him to it.'); } },

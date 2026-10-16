@@ -9360,7 +9360,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "She talks you through it like a commentator: the flare a second too late, the crosswind he hasn't read, the thrust he'll wish he had saved. He clips the gantry, gently, as she said he would, and she raises her glass to the screen. \"Eleven out of ten for effort,\" she says. By the end of the hour you know more about landing than you did.",
+    "text": "She talks you through it like a commentator: the flare a second too late, the crosswind he hasn't read, the thrust he'll wish he had saved. He clips the gantry, gently, as she said he would, and she raises her glass to the screen. \"Eleven out of ten for effort,\" she says.",
     "mem": [
      "25 Dec 2214: You watched a bad landing with me, and I enjoyed the company."
     ],
@@ -9415,7 +9415,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You go together, and it takes her three tries to say her name. The controller hears all of it: the pad, the order, the forty-one. Then the controller says that they were on the desk that night, that it wasn't their call, and that everyone on the desk knew who had put that shuttle down. \"It was the best landing I've seen,\" they say. Ines says nothing. She shakes the controller's hand, and keeps hold of it.",
+    "text": "You go together, and it takes her three tries to say her name. The controller hears all of it: the pad, the order, the forty-one. \"I was on the desk that night,\" the controller says. \"It wasn't my call. Everyone on the desk knew who'd put that shuttle down. It was the best landing I've seen.\" Ines says nothing. She shakes the controller's hand, and keeps hold of it.",
     "mem": [
      "25 Dec 2214: You went over to the controller with me."
     ],
@@ -9483,7 +9483,7 @@
    {
     "i": 1,
     "roll": 0.5,
-    "text": "You take a stool at the other end of the bar and leave them to it. Every so often a burst of technical argument comes down the bar, with hand gestures. When Tomas finds you, hours later, he's hoarse and cheerful. \"Thank you,\" he says. \"I didn't know how much I missed being a stranger among people who understood me.\"",
+    "text": "You take a stool at the other end of the bar and leave them to it. Every so often a burst of technical argument comes down the bar, with hand gestures. When Tomas finds you, hours later, he's hoarse, and holds up a hand with a new burn across the knuckle. \"Thank you,\" he says. \"He let me try the jig.\"",
     "mem": [
      "25 Dec 2214: You let me talk shop with a welder."
     ],
@@ -9494,7 +9494,7 @@
    }
   ],
   "title": "Shop Talk",
-  "text": "Tomas Achebe has found a welder at the bar: a working one, in dock coveralls, with burn scars on both wrists and a nervous laugh. They've been talking for an hour. The whole of the bar rail, you see now, was welded by somebody very good. \"Look at the bead,\" Tomas says to you, low. \"Look at that. Nobody does that for a bar.\"",
+  "text": "Tomas Achebe has found a welder at the bar: a working one, in dock coveralls, with burn scars on both wrists and a nervous laugh. They've been talking for an hour. \"Look at the bead,\" Tomas says to you, low, with a hand on the bar rail. \"Look at that. Somebody welded this properly. Nobody does that for a bar.\"",
   "labels": [
    "Buy a round for the dock crew (40 cr)",
    "Let him have his shop talk"
@@ -9506,7 +9506,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "The delay is eleven seconds. You say your name and wait. A small voice says, in a rush, that she's glad he has people, that he never says, and that she hopes you're feeding him. Tomas looks at the floor. \"Eleven seconds,\" he says afterwards, quietly, \"and she heard every word.\"",
+    "text": "The delay is eleven seconds. You say your name and wait. A small voice says, in a rush: \"He never says he has people. I'm glad. Are you feeding him?\" Tomas looks at the floor. \"Eleven seconds,\" he says afterwards, \"and she heard every word.\"",
     "mem": [
      "25 Dec 2214: You said hello to my sister."
     ],
