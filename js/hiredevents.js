@@ -9,7 +9,7 @@
 // so they can be tuned in one place. Loaded after hired.js; happenings.js reads it at runtime.
 
 const HIRED_GROUPS = ['work', 'captain', 'crew', 'money', 'road'];
-const HIRED_WEIGHTS = { work: 3, captain: 1, crew: 1, money: 1, road: 1, ship: 1 };  // against the rest of the burn's tier-2 weights
+const HIRED_WEIGHTS = { work: 3, captain: 1, crew: 1, money: 1, road: 3, ship: 1 };  // against the rest of the burn's tier-2 weights
 // The other weights of the draw, one per kind of scene (happenings.js, which owns the tiers). A higher weight is drawn that many times as often against the rest of its tier.
 const BURN_WEIGHTS = {
   story: 2,  // tier 0: a main-story storylet
@@ -422,6 +422,88 @@ const HAND_EVENTS = [
         { label: say('c6.label'), run() { setLater('h-lane-trouble', 7, say('c6.log')); return say('c6.result'); } },
       ]);
   } },
+
+  // Five more incidents on the road, the hand's to decide (data, like crew-cover). The ship's own incidents (transit.js) are the captain's call and there
+  // are only four; these share the draw with them (HIRED_WEIGHTS.road) so a hundred-chapter sim stops showing the same four again and again.
+  dataEvent({
+    id: 'road-dust', group: 'road',
+    data: {
+      title: 'Dust on the Lane',
+      text: 'The first grain hits the hull at the start of the second hour, a bright tick on the aft plate. By the third there\'s one every few seconds. The lane runs through the tail of an old comet, and the chart has it as a note in small type.',
+      choices: [
+        { label: 'Tell the captain to slow the burn', effects: { like: { captain: 1 } },
+          result: 'The captain takes the burn down a notch and adds an hour. The ticks thin out. The hour goes in the log with the reason beside it.' },
+        { label: 'Hold course and log the strikes', effects: { do: ['hull', 0.04] },
+          result: 'Forty-one strikes by the flip, and the plate is pitted along a hand\'s width.' },
+        { label: '[Gunner 2] Run the point defense on the big grains', post: 'gunner', skill: 2, effects: { like: { captain: 2 }, learn: 2 },
+          result: 'You set the guns to ignore anything under a fingernail. They take eleven grains out of the air, and the plate stays clean. The captain reads the count off your board.' },
+      ],
+    },
+  }),
+
+  dataEvent({
+    id: 'road-tender', group: 'road',
+    data: {
+      title: 'The Fuel Tender',
+      text: 'A depot tender holds station off the lane with her boom out and a price on the band: reaction mass at double the posted rate, "for the convenience." The captain has the number on the board and isn\'t saying anything.',
+      choices: [
+        { label: 'Tell the captain the posted rate is at the next port', effects: { like: { captain: 1 } },
+          result: 'The captain looks at the number again, then at you. "It is," the captain says. The burn goes on.' },
+        { label: 'Say nothing',
+          result: 'You say nothing. The captain pays, in a voice with no color in it, and the mass comes aboard through a boom that drips.' },
+        { label: '[Gunner 2] Check her on the scope', post: 'gunner', skill: 2, effects: { like: { captain: 2 }, learn: 2 },
+          result: 'Her transponder says depot. Her drive bloom says a chaser with a boom welded on. You give the captain the numbers, and the tender is a long way astern within the hour.' },
+      ],
+    },
+  }),
+
+  dataEvent({
+    id: 'road-beacon', group: 'road',
+    data: {
+      title: 'A Beacon Out of Date',
+      text: 'The lane beacon on the chart is a kilometer to starboard of where the scope says it is, and then two. Somebody moved it, or the chart is old. Either way, the burn was set against the wrong marker.',
+      choices: [
+        { label: 'Tell the captain', effects: { like: { captain: 1 } },
+          result: 'The captain re-fixes on two stars and corrects the burn by a degree. It costs forty minutes.' },
+        { label: 'Log it and keep the burn',
+          result: 'You log it and keep the burn. The error is under a degree, and nobody notices at the other end. The note in the log is short.' },
+        { label: '[Gunner 2] Range the beacon against two stars with the fire-control array', post: 'gunner', skill: 2, effects: { like: { captain: 2 }, learn: 2 },
+          result: 'The array gives you the beacon to the meter. It has drifted nine hundred meters since the chart. You give the captain the position and the burn is re-set to it.' },
+      ],
+    },
+  }),
+
+  dataEvent({
+    id: 'road-frost', group: 'road',
+    data: {
+      title: 'Frost on the Lock',
+      text: 'The outer lock cycles slowly, and then it doesn\'t. There\'s frost on the seal, the thick gray kind that comes from a leak you haven\'t found. Nobody has the right tool for it in the right place.',
+      choices: [
+        { label: 'Chip it with the lock hammer', effects: { learn: 1 },
+          result: 'It takes forty minutes and two bruised knuckles, and the frost is back by the flip.' },
+        { label: 'Tell the captain; the yard can find the leak',
+          result: 'The captain puts it on the list for the yard. The lock stays shut until then.' },
+        { label: '[Gunner 2] Bring the thermal lance from the gun bay', post: 'gunner', skill: 2, effects: { like: { captain: 2 }, learn: 2 },
+          result: 'The lance is for the barrel seals, and it clears the lock in six minutes. The captain watches you put it back on its rack, then adds the lance to the lock\'s checklist.' },
+      ],
+    },
+  }),
+
+  dataEvent({
+    id: 'road-hail', group: 'road',
+    data: {
+      title: 'A Hail in the Dark',
+      text: 'A hauler a long way off asks for a relay and nothing else. It sends its name, a hull number and a plain request: someone to pass a message to a station it can\'t reach. The band is open, and nobody else answers.',
+      choices: [
+        { label: 'Pass it on', effects: { like: { captain: 1 } },
+          result: 'You relay it. The station\'s answer comes back eleven minutes later, one word, and you pass that back too. The hauler doesn\'t say thank you. It sends its name again.' },
+        { label: 'Leave it',
+          result: 'You let it go. The band stays open on the board for an hour with nothing on it.' },
+        { label: '[Gunner 2] Offer the fire-control array to boost the relay', post: 'gunner', skill: 2, effects: { like: { captain: 2 }, learn: 2 },
+          result: 'The array carries it the rest of the way in one step. The captain asks what the guns were looking at in the meantime. "Nothing," you say. "That\'s why," the captain says.' },
+      ],
+    },
+  }),
 ];
 
 // Who is about on this burn: the captain, and a shipmate (the main characters are shipmates when aboard).

@@ -166,7 +166,7 @@ test('every choice of every hired event lands its effects and no others, and pla
   });
   assert.deepEqual(r.bad, []);
   assert.deepEqual(r.groups, ['captain', 'crew', 'money', 'road', 'work']);
-  assert.equal(r.played, 536, 'choices played over both rolls and every post (a new choice moves this)');
+  assert.equal(r.played, 656, 'choices played over both rolls and every post (a new choice moves this)');
   assert.equal(r.followed, 48, 'choices played in the scenes they lead into');
   await done();
 });

@@ -8868,5 +8868,489 @@
     "why": ""
    }
   }
+ },
+ {
+  "id": "hired:road-dust",
+  "i": 0,
+  "label": "Tell the captain to slow the burn",
+  "result": "The captain takes the burn down a notch and adds an hour. The ticks thin out. The hour goes in the log with the reason beside it.",
+  "changes": [
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.opinion: 0 -> 1"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell the captain to slow the burn",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell the captain to slow the burn",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell the captain to slow the burn",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Tell the captain to slow the burn",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "hired:road-dust",
+  "i": 1,
+  "label": "Hold course and log the strikes",
+  "result": "Forty-one strikes by the flip, and the plate is pitted along a hand's width.",
+  "changes": [],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Hold course and log the strikes",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Hold course and log the strikes",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Hold course and log the strikes",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Hold course and log the strikes",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "hired:road-dust",
+  "i": 2,
+  "label": "[Gunner 2] Run the point defense on the big grains",
+  "result": "You set the guns to ignore anything under a fingernail. They take eleven grains out of the air, and the plate stays clean. The captain reads the count off your board. (+2 experience at the gunner post.)",
+  "changes": [
+   "s.hired.skill.gunner: 12 -> 14",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Gunner 2] Run the point defense on the big grains",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Gunner 2] Run the point defense on the big grains",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Gunner 2] Run the point defense on the big grains",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "[Gunner 2] Run the point defense on the big grains",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "hired:road-tender",
+  "i": 0,
+  "label": "Tell the captain the posted rate is at the next port",
+  "result": "The captain looks at the number again, then at you. \"It is,\" the captain says. The burn goes on.",
+  "changes": [
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.opinion: 0 -> 1"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell the captain the posted rate is at the next port",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell the captain the posted rate is at the next port",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell the captain the posted rate is at the next port",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Tell the captain the posted rate is at the next port",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "hired:road-tender",
+  "i": 1,
+  "label": "Say nothing",
+  "result": "You say nothing. The captain pays, in a voice with no color in it, and the mass comes aboard through a boom that drips.",
+  "changes": [],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Say nothing",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Say nothing",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Say nothing",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Say nothing",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "hired:road-tender",
+  "i": 2,
+  "label": "[Gunner 2] Check her on the scope",
+  "result": "Her transponder says depot. Her drive bloom says a chaser with a boom welded on. You give the captain the numbers, and the tender is a long way astern within the hour. (+2 experience at the gunner post.)",
+  "changes": [
+   "s.hired.skill.gunner: 12 -> 14",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Gunner 2] Check her on the scope",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Gunner 2] Check her on the scope",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Gunner 2] Check her on the scope",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "[Gunner 2] Check her on the scope",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "hired:road-beacon",
+  "i": 0,
+  "label": "Tell the captain",
+  "result": "The captain re-fixes on two stars and corrects the burn by a degree. It costs forty minutes.",
+  "changes": [
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.opinion: 0 -> 1"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell the captain",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell the captain",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell the captain",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Tell the captain",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "hired:road-beacon",
+  "i": 1,
+  "label": "Log it and keep the burn",
+  "result": "You log it and keep the burn. The error is under a degree, and nobody notices at the other end. The note in the log is short.",
+  "changes": [],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Log it and keep the burn",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Log it and keep the burn",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Log it and keep the burn",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Log it and keep the burn",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "hired:road-beacon",
+  "i": 2,
+  "label": "[Gunner 2] Range the beacon against two stars with the fire-control array",
+  "result": "The array gives you the beacon to the meter. It has drifted nine hundred meters since the chart. You give the captain the position and the burn is re-set to it. (+2 experience at the gunner post.)",
+  "changes": [
+   "s.hired.skill.gunner: 12 -> 14",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Gunner 2] Range the beacon against two stars with the fire-control array",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Gunner 2] Range the beacon against two stars with the fire-control array",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Gunner 2] Range the beacon against two stars with the fire-control array",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "[Gunner 2] Range the beacon against two stars with the fire-control array",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "hired:road-frost",
+  "i": 0,
+  "label": "Chip it with the lock hammer",
+  "result": "It takes forty minutes and two bruised knuckles, and the frost is back by the flip. (+1 experience at the gunner post.)",
+  "changes": [
+   "s.hired.skill.gunner: 12 -> 13"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Chip it with the lock hammer",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Chip it with the lock hammer",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Chip it with the lock hammer",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Chip it with the lock hammer",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "hired:road-frost",
+  "i": 1,
+  "label": "Tell the captain; the yard can find the leak",
+  "result": "The captain puts it on the list for the yard. The lock stays shut until then.",
+  "changes": [],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Tell the captain; the yard can find the leak",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Tell the captain; the yard can find the leak",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Tell the captain; the yard can find the leak",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Tell the captain; the yard can find the leak",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "hired:road-frost",
+  "i": 2,
+  "label": "[Gunner 2] Bring the thermal lance from the gun bay",
+  "result": "The lance is for the barrel seals, and it clears the lock in six minutes. The captain watches you put it back on its rack, then adds the lance to the lock's checklist. (+2 experience at the gunner post.)",
+  "changes": [
+   "s.hired.skill.gunner: 12 -> 14",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Gunner 2] Bring the thermal lance from the gun bay",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Gunner 2] Bring the thermal lance from the gun bay",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Gunner 2] Bring the thermal lance from the gun bay",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "[Gunner 2] Bring the thermal lance from the gun bay",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "hired:road-hail",
+  "i": 0,
+  "label": "Pass it on",
+  "result": "You relay it. The station's answer comes back eleven minutes later, one word, and you pass that back too. The hauler doesn't say thank you. It sends its name again.",
+  "changes": [
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.opinion: 0 -> 1"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Pass it on",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Pass it on",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Pass it on",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Pass it on",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "hired:road-hail",
+  "i": 1,
+  "label": "Leave it",
+  "result": "You let it go. The band stays open on the board for an hour with nothing on it.",
+  "changes": [],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "Leave it",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "Leave it",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "Leave it",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "Leave it",
+    "open": true,
+    "why": ""
+   }
+  }
+ },
+ {
+  "id": "hired:road-hail",
+  "i": 2,
+  "label": "[Gunner 2] Offer the fire-control array to boost the relay",
+  "result": "The array carries it the rest of the way in one step. The captain asks what the guns were looking at in the meantime. \"Nothing,\" you say. \"That's why,\" the captain says. (+2 experience at the gunner post.)",
+  "changes": [
+   "s.hired.skill.gunner: 12 -> 14",
+   "s.people.p1.liftedAt: undefined -> 1",
+   "s.people.p1.opinion: 0 -> 2"
+  ],
+  "next": null,
+  "gate": {
+   "rich": {
+    "label": "[Gunner 2] Offer the fire-control array to boost the relay",
+    "open": true,
+    "why": ""
+   },
+   "poor": {
+    "label": "[Gunner 2] Offer the fire-control array to boost the relay",
+    "open": true,
+    "why": ""
+   },
+   "liked": {
+    "label": "[Gunner 2] Offer the fire-control array to boost the relay",
+    "open": true,
+    "why": ""
+   },
+   "full": {
+    "label": "[Gunner 2] Offer the fire-control array to boost the relay",
+    "open": true,
+    "why": ""
+   }
+  }
  }
 ]
