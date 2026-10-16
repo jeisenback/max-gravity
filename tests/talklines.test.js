@@ -28,7 +28,7 @@ test('every talk scene has an id and lines, and every line is read: an override 
     return { base, changed, ids, have, warned, registry: peopleEventRegistry().map(e => e.id).filter(id => id.startsWith('family:')), keys: Object.fromEntries(ids.map(id => [id, Object.keys(PEOPLE_LINES[id])])) };
   }, { src: playTalk.toString(), home: playHome.toString(), family: playFamily.toString() });
   await g.done();
-  assert.equal(r.ids.length, 21, 'the talk scenes, the picker, the birthday and holidays, the news, the traditions, the cat and the offer to stay');
+  assert.equal(r.ids.length, 22, 'the talk scenes, the talk going on, the picker, the birthday and holidays, the news, the traditions, the cat and the offer to stay');
   assert.deepEqual([...r.have].sort(), [...r.ids].sort(), 'lines for every one, and for nothing else');
   assert.deepEqual(r.registry, r.ids, 'the registry lists them, in the order they are listed in');
   assert.deepEqual(r.warned, [], 'the game keeps every line');

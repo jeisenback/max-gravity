@@ -343,7 +343,9 @@ const UI = {
     switch (action) {
       case 'tab': this.tab = arg; this.tradeNote = null; break;
       case 'choose': { const title = G.dialog.event.title, before = G.state; G.shifts = []; const text = chooseEvent(Number(arg)), shifts = G.shifts;
-        G.shifts = null; if (G.state !== before) return;  /* a new game began (stakes.js): its first scene is up */ this.showEventResult(title, text, shifts); return; }
+        G.shifts = null; if (G.state !== before) return;  /* a new game began (stakes.js): its first scene is up */
+        if (text == null && G.nextEvent) { finishEvent(); return; }  // nothing to show, and a scene to go on to: it opens at once (the picker of Sit with someone)
+        this.showEventResult(title, text, shifts); return; }
       case 'continue': finishEvent(); return;
       case 'epilogue': openEvent(epilogueEvent()); return;
       case 'takeoff': takeOff(); return;
