@@ -118,7 +118,7 @@ function ordinaryTalk(p) {
 }
 function idleTalk(p) {
   const say = familySay('idle'), n = p.first, idle = (p.traits || []).map(t => familyLines('idle')[t]).filter(Boolean);
-  return { title: say('title', { n }), text: say(`text.${pick([0, 1, 2, 3])}`, { n, idle: idle.length ? pick(idle) : say('easy') }),
+  return { title: say('title', { n }), text: say(`text.${pick([0, 1, 2, 3])}`, { n, idle: idle.length ? pick(pick(idle)) : say('easy') }),
     choices: [
       { label: say('c0.label'), run() { like(p, 1, null); if (moodLow(p)) p.mood.until -= 5; return say(`c0.result.${pick([0, 1, 2, 3])}`, { n }); } },
       { label: say('c1.label', { n, home: p.home }), run() { like(p, 1, null); return say(`c1.result.${pick([0, 1, 2])}`, { n, home: p.home }); } },

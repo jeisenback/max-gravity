@@ -28,7 +28,7 @@ test('with nothing on their mind, the talk is about who they are, and never the 
     p.traits = ['pious'];
     const sc = sitBeat(p, true);
     const before = p.opinion, res = take(sc, /Stay a while/);
-    return { distinct: texts.size, pious: /cord at their wrist/.test(sc.text), title: sc.title, labels: sc.choices.map(c => c.label), liked: p.opinion - before, res: res.length > 20 };
+    return { distinct: texts.size, pious: TALK_IDLE.pious.some(l => sc.text.includes(l)), title: sc.title, labels: sc.choices.map(c => c.label), liked: p.opinion - before, res: res.length > 20 };
   });
   assert.equal(r.distinct, 3); assert.ok(r.pious); assert.equal(r.title.startsWith('With '), true); assert.ok(r.labels.includes('Stay a while')); assert.equal(r.liked, 1); assert.ok(r.res);
   await done();

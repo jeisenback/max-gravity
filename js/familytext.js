@@ -25,19 +25,43 @@ const HOPES = [
 
 // When there is no arc to move on, the talk is about what is on their mind now: how they are (a letter, an injury), the war if they
 // are of a side in it, how they get on with the others, what you did last time. Each is its own short scene, with its own choices.
-const TALK_IDLE = {
-  talkative: 'is already telling you about something that happened at the last port, and by the second mug has told you about two more',
-  nervous: 'listens for the pump to change its note, and relaxes a little when you stay',
-  generous: 'has saved you the good end of the loaf, and doesn\'t mention it',
-  greedy: 'is working out, aloud and not quite to you, what the next run should clear',
-  pious: 'sits with a hand around the cord at their wrist and says nothing for a long time, comfortably',
-  rude: 'has a view on the galley, the rota, and the way you hold a mug, and shares them',
-  curious: 'wants to know how the drive works, what you do on watch, and whether you\'ve ever been to Titan',
-  drunk: 'is on water tonight, and says so with an effort that\'s its own kind of story',
-  secretive: 'answers a question about the weather with a question about you',
-  kind: 'asks if you have slept, and doesn\'t take "fine" for an answer',
-  brave: 'tells you about the worst day they\'ve had on a ship, quietly, as if it were a recipe',
-  homesick: 'has a photograph out, and puts it away when you come in, and then takes it out again'
+const TALK_IDLE = {  // three per trait: the first trait's syntax, the card's habit, and what they never say (docs/voices/people.md)
+  talkative: ['is already telling you about something that happened at the last port, and by the second mug has told you about two more',
+    'is halfway through a story about their uncle\'s tug when you sit down, and starts it again from the beginning for your benefit, with the names',
+    'stops talking when you put the mug in front of them, drinks, and picks the story up at the word they left it on'],
+  nervous: ['listens for the pump to change its note, and relaxes when you stay',
+    'counts the hatches between here and the suit locker, aloud, and gets the same number twice, and counts again',
+    'asks how long to the next port, and when you give the plan asks again, in days'],
+  generous: ['has saved you the good end of the loaf, and doesn\'t mention it',
+    'pushes the second cup across before you\'ve sat down, and says it was going cold anyway',
+    'has drawn your water for you as well as their own, and talks about the food when you notice'],
+  greedy: ['is working out, aloud and not quite to you, what the next run should clear',
+    'has the port prices up on a hand terminal under the table, and tells you the margin on ice before you ask',
+    'wants to know what the captain pays for the berth at the next port, and doesn\'t believe the figure'],
+  pious: ['sits with a hand around the cord at their wrist and says nothing for a long time, comfortably',
+    'says a short thing at the turn of the watch, under their breath, and goes on with the talk where it was',
+    'touches the bulkhead before answering anything hard, and answers it'],
+  rude: ['has a view on the galley, the rota, and the way you hold a mug, and shares them',
+    'reads you three things wrong with the coffee, in order, and would like to know who made it',
+    'says the seat is too low, and says it again in the same words when you shift over'],
+  curious: ['wants to know how the drive works, what you do on watch, and whether you\'ve ever been to Titan',
+    'has a valve in pieces beside them, laid out in a row with the manual open, and asks where the heat goes when the loop is closed',
+    'asks what the hull noise is, and stops mid-sentence when it changes, and waits for it to come back'],
+  drunk: ['is on water tonight, and says so with an effort that\'s its own kind of story',
+    'holds the mug upright with both hands, carefully, and calls you "my friend" twice in the first minute',
+    'starts a song from home, loses the second line, and goes around it'],
+  secretive: ['answers a question about the weather with a question about you',
+    'closes the message window when you sit down, without hurry, and asks how long you\'ve been aboard',
+    'says "a family matter" once, early, and the rest of the hour is about the ship'],
+  kind: ['asks if you have slept, and doesn\'t take "fine" for an answer',
+    'has changed the tube over your bunk, and mentions it only when you ask why the light is steady',
+    'notices your cup is empty before you do, and fills it, and says it\'s nothing'],
+  brave: ['tells you about the worst day they\'ve had on a ship, quietly, in the order it happened',
+    'has just come in from checking the hatches, and gives you the list: four good, five good, six stiff and oiled',
+    'buckles the strap on their tool roll before they finish the sentence, and finishes it'],
+  homesick: ['has a photograph out, and puts it away when you come in, and takes it out again',
+    'says it\'d be evening at home now, with the pipes starting to knock',
+    'is looking at one point of light past the glass and says, when you ask, "I\'m only looking"']
 };
 
 const HOLIDAYS = [

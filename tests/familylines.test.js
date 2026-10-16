@@ -63,7 +63,7 @@ test('the family tables show in the editor, one row each, with no play', async (
   await g.done();
   assert.equal(r.length, 11);
   assert.deepEqual(r.find(x => x[0] === 'lines:family-holidays'), ['lines:family-holidays', 'lines', 'transit', 12]);
-  assert.deepEqual(r.find(x => x[0] === 'lines:family-idle').slice(3), [12]);
+  assert.deepEqual(r.find(x => x[0] === 'lines:family-idle').slice(3), [36]);
 });
 
 test('the names of the cat are drawn from the table, and the memories and the log take their words from the lines as text', async () => {

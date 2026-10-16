@@ -336,56 +336,152 @@
   "text": "It's the slack end of the watch and Sam has drawn the last of the day's water and is making it last. You ask about Mars, which you haven't before, and Sam tells you: a hand-picked detail. The telling gets specific, down to a street and the name of a shop on it. Then Sam sets the cup down. \"I left because of a debt to the wrong people,\" Sam says. \"Since you didn't ask.\""
  },
  {
-  "key": "idle:talkative",
-  "text": "[\"With Sam\",\"The observation blister holds two if neither minds the other's elbows, and Sam doesn't. The ship is dark behind you and the stars don't move. Sam is already telling you about something that happened at the last port, and by the second mug has told you about two more. Every few minutes the hull ticks as the sun side warms.\"]"
+  "key": "idle:talkative:0",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam is already telling you about something that happened at the last port, and by the second mug has told you about two more. Somewhere aft the recycler changes its note and changes back.\"]"
  },
  {
-  "key": "idle:nervous",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam listens for the pump to change its note, and relaxes a little when you stay. Somewhere aft the recycler changes its note and changes back.\"]"
+  "key": "idle:talkative:1",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam is halfway through a story about their uncle's tug when you sit down, and starts it again from the beginning for your benefit, with the names. Somewhere aft the recycler changes its note and changes back.\"]"
  },
  {
-  "key": "idle:generous",
-  "text": "[\"With Sam\",\"Sam is on the crate by the hold hatch, where the hull carries the drive noise and the light is bad, and moves over when you come down the ladder. You sit on the deck plate with your back to the hatch. Sam has saved you the good end of the loaf, and doesn't mention it. A hatch number is stenciled on the frame above their head.\"]"
+  "key": "idle:talkative:2",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam stops talking when you put the mug in front of them, drinks, and picks the story up at the word they left it on. Somewhere aft the recycler changes its note and changes back.\"]"
  },
  {
-  "key": "idle:greedy",
-  "text": "[\"With Sam\",\"The observation blister holds two if neither minds the other's elbows, and Sam doesn't. The ship is dark behind you and the stars don't move. Sam is working out, aloud and not quite to you, what the next run should clear. Every few minutes the hull ticks as the sun side warms.\"]"
+  "key": "idle:nervous:0",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam listens for the pump to change its note, and relaxes when you stay. Somewhere aft the recycler changes its note and changes back.\"]"
  },
  {
-  "key": "idle:pious",
-  "text": "[\"With Sam\",\"The observation blister holds two if neither minds the other's elbows, and Sam doesn't. The ship is dark behind you and the stars don't move. Sam sits with a hand around the cord at their wrist and says nothing for a long time, comfortably. Every few minutes the hull ticks as the sun side warms.\"]"
+  "key": "idle:nervous:1",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam counts the hatches between here and the suit locker, aloud, and gets the same number twice, and counts again. Somewhere aft the recycler changes its note and changes back.\"]"
  },
  {
-  "key": "idle:rude",
+  "key": "idle:nervous:2",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam asks how long to the next port, and when you give the plan asks again, in days. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:generous:0",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam has saved you the good end of the loaf, and doesn't mention it. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:generous:1",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam pushes the second cup across before you've sat down, and says it was going cold anyway. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:generous:2",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam has drawn your water for you as well as their own, and talks about the food when you notice. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:greedy:0",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam is working out, aloud and not quite to you, what the next run should clear. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:greedy:1",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam has the port prices up on a hand terminal under the table, and tells you the margin on ice before you ask. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:greedy:2",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam wants to know what the captain pays for the berth at the next port, and doesn't believe the figure. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:pious:0",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam sits with a hand around the cord at their wrist and says nothing for a long time, comfortably. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:pious:1",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam says a short thing at the turn of the watch, under their breath, and goes on with the talk where it was. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:pious:2",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam touches the bulkhead before answering anything hard, and answers it. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:rude:0",
   "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam has a view on the galley, the rota, and the way you hold a mug, and shares them. Somewhere aft the recycler changes its note and changes back.\"]"
  },
  {
-  "key": "idle:curious",
+  "key": "idle:rude:1",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam reads you three things wrong with the coffee, in order, and would like to know who made it. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:rude:2",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam says the seat is too low, and says it again in the same words when you shift over. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:curious:0",
   "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam wants to know how the drive works, what you do on watch, and whether you've ever been to Titan. Somewhere aft the recycler changes its note and changes back.\"]"
  },
  {
-  "key": "idle:drunk",
+  "key": "idle:curious:1",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam has a valve in pieces beside them, laid out in a row with the manual open, and asks where the heat goes when the loop is closed. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:curious:2",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam asks what the hull noise is, and stops mid-sentence when it changes, and waits for it to come back. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:drunk:0",
   "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam is on water tonight, and says so with an effort that's its own kind of story. Somewhere aft the recycler changes its note and changes back.\"]"
  },
  {
-  "key": "idle:secretive",
-  "text": "[\"With Sam\",\"You find Sam on the bench in the engine room, where it's warm and loud and nobody sits unless they have to, with a mug balanced on the pump housing. They make room. Sam answers a question about the weather with a question about you. The drive runs up a hair on a correction and settles.\"]"
+  "key": "idle:drunk:1",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam holds the mug upright with both hands, carefully, and calls you \\\"my friend\\\" twice in the first minute. Somewhere aft the recycler changes its note and changes back.\"]"
  },
  {
-  "key": "idle:kind",
-  "text": "[\"With Sam\",\"You find Sam on the bench in the engine room, where it's warm and loud and nobody sits unless they have to, with a mug balanced on the pump housing. They make room. Sam asks if you have slept, and doesn't take \\\"fine\\\" for an answer. The drive runs up a hair on a correction and settles.\"]"
+  "key": "idle:drunk:2",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam starts a song from home, loses the second line, and goes around it. Somewhere aft the recycler changes its note and changes back.\"]"
  },
  {
-  "key": "idle:brave",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam tells you about the worst day they've had on a ship, quietly, as if it were a recipe. Somewhere aft the recycler changes its note and changes back.\"]"
+  "key": "idle:secretive:0",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam answers a question about the weather with a question about you. Somewhere aft the recycler changes its note and changes back.\"]"
  },
  {
-  "key": "idle:homesick",
-  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam has a photograph out, and puts it away when you come in, and then takes it out again. Somewhere aft the recycler changes its note and changes back.\"]"
+  "key": "idle:secretive:1",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam closes the message window when you sit down, without hurry, and asks how long you've been aboard. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:secretive:2",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam says \\\"a family matter\\\" once, early, and the rest of the hour is about the ship. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:kind:0",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam asks if you have slept, and doesn't take \\\"fine\\\" for an answer. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:kind:1",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam has changed the tube over your bunk, and mentions it only when you ask why the light is steady. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:kind:2",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam notices your cup is empty before you do, and fills it, and says it's nothing. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:brave:0",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam tells you about the worst day they've had on a ship, quietly, in the order it happened. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:brave:1",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam has just come in from checking the hatches, and gives you the list: four good, five good, six stiff and oiled. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:brave:2",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam buckles the strap on their tool roll before they finish the sentence, and finishes it. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:homesick:0",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam has a photograph out, and puts it away when you come in, and takes it out again. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:homesick:1",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam says it'd be evening at home now, with the pipes starting to knock. Somewhere aft the recycler changes its note and changes back.\"]"
+ },
+ {
+  "key": "idle:homesick:2",
+  "text": "[\"With Sam\",\"You sit with Sam in the galley at the slack end of the watch, over two mugs, with the hot plate ticking as it cools. Sam is looking at one point of light past the glass and says, when you ask, \\\"I'm only looking\\\". Somewhere aft the recycler changes its note and changes back.\"]"
  },
  {
   "key": "idle:two",
-  "text": "Sam is on the crate by the hold hatch, where the hull carries the drive noise and the light is bad, and moves over when you come down the ladder. You sit on the deck plate with your back to the hatch. Sam tells you about the worst day they've had on a ship, quietly, as if it were a recipe. A hatch number is stenciled on the frame above their head."
+  "text": "Sam is on the crate by the hold hatch, where the hull carries the drive noise and the light is bad, and moves over when you come down the ladder. You sit on the deck plate with your back to the hatch. Sam tells you about the worst day they've had on a ship, quietly, in the order it happened. A hatch number is stenciled on the frame above their head."
  },
  {
   "key": "idle:none",

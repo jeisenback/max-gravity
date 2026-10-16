@@ -21,7 +21,7 @@ const playFamily = () => {
   ['belt', 'mars', 'earth'].forEach((c, i) => { reset(); __seed(200 + i); const p = mk(c); const e = sitBeat(p, true); note(`beat0:${c}`, [e.title, e.text, e.choices.map(x => String(x.label))]); });
   { reset(); __seed(210); const p = mk('belt'); storyOf(p).homeDetail = 'a hand-picked detail'; note('beat0:detail', sitBeat(p, true).text); }
   // what they say when there is nothing on their mind, for each trait (and for two together, and for none)
-  Object.keys(TALK_IDLE).forEach((t, i) => { reset(); __seed(300 + i); const p = mk('earth', { traits: [t] }); const e = ordinaryTalk(p); note(`idle:${t}`, [e.title, e.text]); });
+  Object.keys(TALK_IDLE).forEach((t, i) => { for (let k = 0; k < 3; k++) { reset(); __seed(300 + i); const p = mk('earth', { traits: [t] }); seq([0.1, 0.1, (k + 0.5) / 3]); const e = ordinaryTalk(p); note(`idle:${t}:${k}`, [e.title, e.text]); } });  // the frame, the trait, then each of its three lines
   { reset(); __seed(330); note('idle:two', ordinaryTalk(mk('earth', { traits: ['kind', 'brave'] })).text); }
   { reset(); __seed(331); note('idle:none', ordinaryTalk(mk('earth', { traits: [] })).text); }
   // the letters from home: each of the sixteen good and sixteen bad, by the dice that pick them
