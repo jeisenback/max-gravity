@@ -107,6 +107,7 @@ const playScenes = () => {
   for (const [name, patrol, status, extra] of [['customs:wanted', false, 'wanted'], ['customs:exile', false, 'exile'], ['patrol:wanted', true, 'wanted'], ['patrol:officer', true, 'wanted', 'officer'], ['customs:papers', false, 'wanted', 'papers'], ['customs:cast', false, 'wanted', 'cast'], ['patrol:cast', true, 'exile', 'cast']]) {
     tiesCase(`scene:${name}`, () => {
       mateOf('Sam', extra === 'cast' ? { cast: 'ines' } : {}); mateOf('Cora');
+      if (patrol) hired().skill.gunner = SKILL_STEPS[2];  // the gunner's lock on the cutter
       const map = { Sam: { aff: GOV, status: { [GOV]: status } }, Cora: { aff: GOV, status: {} } };
       if (extra === 'officer') { mateOf('Ben'); map.Ben = { aff: GOV, status: { [GOV]: 'officer' } }; }
       stubTies(map);

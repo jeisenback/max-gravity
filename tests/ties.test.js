@@ -78,7 +78,7 @@ test('a crew member the port\'s faction wants is a customs matter, and your own 
     st.day += 121; out.later = !!customsScene('Arcology Compact', planet); st.day -= 121;
     const op = p.opinion; G.dialog = { event: e, choices: e.choices };
     const i = e.choices.findIndex(c => /papers/.test(c.label)); const text = chooseEvent(i);
-    out.papers = /stamps the manifest/.test(text); out.opinion = p.opinion - op; out.stays = st.crew.includes(p.id);
+    out.papers = /manifest is stamped/.test(text); out.opinion = p.opinion - op; out.stays = st.crew.includes(p.id);
     return out;
   });
   assert.equal(r.gov, 'Arcology Compact'); assert.equal(r.title, 'The Customs Officer'); assert.ok(r.offered, 'offered at the port');
@@ -114,7 +114,7 @@ test('a main character is not put ashore at customs: the choice is not offered, 
     const labels = e.choices.map(c => c.label), i = e.choices.findIndex(c => /Say nothing/.test(c.label)), fund = h.fund;
     G.dialog = { event: e, choices: e.choices };
     const text = (() => { const real = Math.random; Math.random = () => 0.99; try { return chooseEvent(i); } finally { Math.random = real; } })();
-    return { title: e.title, ashore: labels.some(l => /ashore/.test(l)), text: /walks back up it/.test(text), here: st.crew.includes(ines.id), fine: fund - h.fund };
+    return { title: e.title, ashore: labels.some(l => /ashore/.test(l)), text: /walks back up the ramp/.test(text), here: st.crew.includes(ines.id), fine: fund - h.fund };
   });
   assert.equal(r.title, 'The Customs Officer'); assert.ok(!r.ashore); assert.ok(r.text && r.here); assert.ok(r.fine > 0);
   await done();
@@ -174,6 +174,44 @@ test('a patrol stops a burn for the crew it wants, an officer of theirs can answ
   assert.ok(r.portStillDue && r.patrolSpent, 'the sea stop and the port stop are counted apart');
   assert.ok(r.answered && r.liked === 1 && r.stays);
   assert.ok(r.hand >= 0 && r.left && r.sameCrew, 'handed over: gone, and a replacement signs on');
+  await done();
+});
+
+test('a patrol stop weighs on the faction: a hand-over helps, being caught or pointing the guns costs, and the gunner may lock on the cutter', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = start(), h = hired(), gov = system().gov, out = {}, withRandom = (v, f) => { const real = Math.random; let first = true; Math.random = () => { if (!first) return real(); first = false; return v; }; try { return f(); } finally { Math.random = real; } };  // the first roll is the stop's; the replacement who signs on draws freely
+    const scene = (patrol = true) => {  // a fresh stop with a wanted hand aboard, and nobody else the faction wants
+      st.crew = st.crew.filter(id => { const t = tiesOf(person(id)).status[gov]; return t !== 'wanted' && t !== 'exile' && t !== 'officer'; });
+      const p = find(t => t.status[gov] === 'wanted' || t.status[gov] === 'exile'); st.customs = {}; st.rep[gov] = 0;
+      const e = customsScene(gov, system(), patrol); G.dialog = { event: e, choices: e.choices };
+      return { p, e, pick: re => e.choices.findIndex(c => re.test(c.label)) };
+    };
+    h.skill.gunner = 0;
+    out.low = scene().e.choices.some(c => /Gunner 2/.test(c.label));
+    h.skill.gunner = SKILL_STEPS[2];
+    out.dock = scene(false).e.choices.some(c => /Gunner 2/.test(c.label));
+    let s = scene(); out.offered = s.pick(/Gunner 2/) >= 0; out.label = s.e.choices[s.pick(/Gunner 2/)].label;
+    let fund = h.fund, op = s.p.opinion;
+    out.win = withRandom(0, () => chooseEvent(s.pick(/Gunner 2/))); out.winRep = st.rep[gov]; out.winStays = st.crew.includes(s.p.id); out.winFund = fund - h.fund; out.winLiked = s.p.opinion - op;
+    s = scene(); h.fund = 1000; fund = h.fund;
+    out.lose = withRandom(0.999, () => chooseEvent(s.pick(/Gunner 2/))); out.loseRep = st.rep[gov]; out.loseGone = !st.crew.includes(s.p.id); out.loseFine = fund - h.fund;
+    s = scene(); withRandom(0, () => chooseEvent(s.pick(/Hand .* over/))); out.handRep = st.rep[gov];
+    s = scene(); withRandom(0.999, () => chooseEvent(s.pick(/Say nothing/))); out.caughtRep = st.rep[gov];
+    s = scene(); withRandom(0, () => chooseEvent(s.pick(/Say nothing/))); out.clearRep = st.rep[gov];
+    s = scene(); h.fund = 1000; withRandom(0, () => chooseEvent(s.pick(/Pay the officer/))); out.payRep = st.rep[gov];
+    const ines = castPerson('ines'); st.crew = st.crew.filter(id => id !== ines.id && tiesOf(person(id)).status['Arcology Compact'] !== 'wanted' && tiesOf(person(id)).status['Arcology Compact'] !== 'exile'); st.crew.push(ines.id); st.customs = {}; st.rep['Arcology Compact'] = 0;
+    const e = customsScene('Arcology Compact', system(), true); G.dialog = { event: e, choices: e.choices };
+    out.cast = withRandom(0.999, () => chooseEvent(e.choices.findIndex(c => /Gunner 2/.test(c.label)))); out.castHere = st.crew.includes(ines.id);
+    return out;
+  });
+  assert.ok(!r.low && !r.dock, 'the lock is a gunner at level 2, and only at a patrol');
+  assert.ok(r.offered); assert.match(r.label, /\[if it fails: a fine, and the patrol takes them\]$/);
+  assert.match(r.win, /lock tone/); assert.equal(r.winRep, -1); assert.ok(r.winStays && r.winFund === 0 && r.winLiked === 1);
+  assert.match(r.lose, /launch/); assert.equal(r.loseRep, -2); assert.ok(r.loseGone && r.loseFine > 0);
+  assert.equal(r.handRep, 2); assert.equal(r.caughtRep, -2); assert.equal(r.clearRep, 0); assert.equal(r.payRep, 0);
+  assert.match(r.cast, /let go at the lock/); assert.ok(r.castHere, 'a main character is not taken');
   await done();
 });
 

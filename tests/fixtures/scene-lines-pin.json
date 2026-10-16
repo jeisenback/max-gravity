@@ -1065,7 +1065,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You give the officer your papers and say Sam is signed on the ship's articles. The officer reads the date, stamps the manifest, and doesn't look at Sam.",
+    "text": "You put your Arcology Compact papers on the counter and say Sam is signed on the ship's articles, in your own hand, on a date you give. The officer reads the date, then reads your name, then reads the date again. The stylus comes out from behind the ear. The officer doesn't look at Sam, who is standing eight feet away, or at the register, which is still glowing on the slate. The manifest is stamped, torn along its perforation, and slid back. \"Safe flying,\" the officer says to the next window, not to you. The thing you've just done, you notice, took less time than the three ships behind you have been waiting.",
     "mem": [
      "9 Jul 2214: You vouched for me at customs on Earth."
     ],
@@ -1077,7 +1077,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You give the officer your papers and say Sam is signed on the ship's articles. The officer reads the date, stamps the manifest, and doesn't look at Sam.",
+    "text": "You put your Arcology Compact papers on the counter and say Sam is signed on the ship's articles, in your own hand, on a date you give. The officer reads the date, then reads your name, then reads the date again. The stylus comes out from behind the ear. The officer doesn't look at Sam, who is standing eight feet away, or at the register, which is still glowing on the slate. The manifest is stamped, torn along its perforation, and slid back. \"Safe flying,\" the officer says to the next window, not to you. The thing you've just done, you notice, took less time than the three ships behind you have been waiting.",
     "mem": [
      "9 Jul 2214: You vouched for me at customs on Earth."
     ],
@@ -1089,7 +1089,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "The envelope goes across the counter. The officer takes the manifest into the back and brings it out stamped, and the number on it's not the number it was.",
+    "text": "You fold the envelope once, the way you've seen it done, and push it across the counter with the manifest on top. The officer doesn't touch it. The officer looks at the clock, at the queue, and then at the envelope, and the envelope goes into a drawer that must have been open already. The manifest goes into the back room. When it comes out, it's stamped, and the line that read Sam Vale has a different line under it, in a hand that isn't the officer's. The fee column isn't the number it was. You sign for it. 400 cr leaves the ship's fund, and the captain will see the line.",
     "mem": [
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
@@ -1101,7 +1101,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "The envelope goes across the counter. The officer takes the manifest into the back and brings it out stamped, and the number on it's not the number it was.",
+    "text": "You fold the envelope once, the way you've seen it done, and push it across the counter with the manifest on top. The officer doesn't touch it. The officer looks at the clock, at the queue, and then at the envelope, and the envelope goes into a drawer that must have been open already. The manifest goes into the back room. When it comes out, it's stamped, and the line that read Sam Vale has a different line under it, in a hand that isn't the officer's. The fee column isn't the number it was. You sign for it. 400 cr leaves the ship's fund, and the captain will see the line.",
     "mem": [
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
@@ -1113,13 +1113,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "The officer checks the crew list against the register for ten minutes. The ship is cleared, and Sam is in the engine room the whole time.",
+    "text": "You say nothing and keep Sam below, in the engine room, with the hatch dogged. The officer goes through the crew list against the register for ten minutes, name by name, and your mouth is dry for all of them. Twice the officer stops and looks at the ship, at the hull, at the open ramp, as if the hull might say something. It doesn't. The officer sighs, stamps the manifest, and waves a loader into the next slot. Sam stays in the engine room for another hour after you've cleared the dock, and when Sam comes up, it's without a word, and with grease on both hands.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "They search the ship and find Sam. The fine is 800 cr from the ship's fund, and Sam goes ashore under escort. Grace signs on for the berth.",
+    "text": "You say nothing and keep Sam below, and they find Sam anyway, in under four minutes, in the crawlway under the galley deck. The fine is 800 cr from the ship's fund, and the officer counts it out loud as it goes. Sam goes down the ramp between two of the officer's people, not in restraints, but not free to stop either. At the foot of the ramp Sam looks back at the ship once, and not at you, and then the crowd closes up. Your crew stands along the rail and watches the whole way. Nobody tells you what they think, and nobody needs to. Grace signs on for the berth.",
     "mem": [
      "9 Jul 2214: A wanted crew member was found aboard.",
      "9 Jul 2214: You kept me aboard and I was found."
@@ -1134,7 +1134,7 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "Sam takes a bag down the ramp. They don't say anything, and the officer clears the ship. Fatima signs on for the berth.",
+    "text": "Sam packs a bag in about the time it takes to say the decision aloud. There isn't much in it. Sam walks down the ramp past the officer, who has stopped counting the queue to watch, and past you, and doesn't say anything, though there are things in Sam's face that would have taken a sentence apiece. At the bottom of the ramp Sam turns and looks at the ship, all of it, as if memorizing it. The officer clears the manifest, stamps it, and says the ship is free to lift. The ramp is a long way up, and your crew is already on it, not looking at each other. Fatima signs on for the berth.",
     "mem": [
      "9 Jul 2214: You put me ashore at customs on Earth.",
      "9 Jul 2214: You put Sam ashore at customs."
@@ -1149,7 +1149,7 @@
    {
     "i": 3,
     "roll": 0.999,
-    "text": "Sam takes a bag down the ramp. They don't say anything, and the officer clears the ship. Noor signs on for the berth.",
+    "text": "Sam packs a bag in about the time it takes to say the decision aloud. There isn't much in it. Sam walks down the ramp past the officer, who has stopped counting the queue to watch, and past you, and doesn't say anything, though there are things in Sam's face that would have taken a sentence apiece. At the bottom of the ramp Sam turns and looks at the ship, all of it, as if memorizing it. The officer clears the manifest, stamps it, and says the ship is free to lift. The ramp is a long way up, and your crew is already on it, not looking at each other. Noor signs on for the berth.",
     "mem": [
      "9 Jul 2214: You put me ashore at customs on Earth.",
      "9 Jul 2214: You put Sam ashore at customs."
@@ -1163,7 +1163,7 @@
    }
   ],
   "title": "The Customs Officer",
-  "text": "The customs officer at Earth runs the crew list against the Arcology Compact register and stops at Sam Vale. \"This one is wanted by the Compact,\" the officer says, and waits.",
+  "text": "The customs officer at Earth has a stylus behind one ear and three ships queued behind yours. The officer takes the crew list, lays it against the Arcology Compact register on a slate, and runs a thumbnail down the names. The thumbnail stops at Sam Vale and stays there long enough that the clerk at the next window looks over. \"This one is wanted by the Compact,\" the officer says, not loudly, and doesn't look up. The slate hums. Somewhere on the dock a loader is backing up with its alarm going. The officer waits the way people wait who have all day and have done this before, and the stamp sits open on the counter between you, inked and ready.",
   "labels": [
    "[Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (400 cr from the ship's fund)",
@@ -1177,7 +1177,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You give the officer your papers and say Sam is signed on the ship's articles. The officer reads the date, stamps the manifest, and doesn't look at Sam.",
+    "text": "You put your Arcology Compact papers on the counter and say Sam is signed on the ship's articles, in your own hand, on a date you give. The officer reads the date, then reads your name, then reads the date again. The stylus comes out from behind the ear. The officer doesn't look at Sam, who is standing eight feet away, or at the register, which is still glowing on the slate. The manifest is stamped, torn along its perforation, and slid back. \"Safe flying,\" the officer says to the next window, not to you. The thing you've just done, you notice, took less time than the three ships behind you have been waiting.",
     "mem": [
      "9 Jul 2214: You vouched for me at customs on Earth."
     ],
@@ -1189,7 +1189,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You give the officer your papers and say Sam is signed on the ship's articles. The officer reads the date, stamps the manifest, and doesn't look at Sam.",
+    "text": "You put your Arcology Compact papers on the counter and say Sam is signed on the ship's articles, in your own hand, on a date you give. The officer reads the date, then reads your name, then reads the date again. The stylus comes out from behind the ear. The officer doesn't look at Sam, who is standing eight feet away, or at the register, which is still glowing on the slate. The manifest is stamped, torn along its perforation, and slid back. \"Safe flying,\" the officer says to the next window, not to you. The thing you've just done, you notice, took less time than the three ships behind you have been waiting.",
     "mem": [
      "9 Jul 2214: You vouched for me at customs on Earth."
     ],
@@ -1201,7 +1201,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "The envelope goes across the counter. The officer takes the manifest into the back and brings it out stamped, and the number on it's not the number it was.",
+    "text": "You fold the envelope once, the way you've seen it done, and push it across the counter with the manifest on top. The officer doesn't touch it. The officer looks at the clock, at the queue, and then at the envelope, and the envelope goes into a drawer that must have been open already. The manifest goes into the back room. When it comes out, it's stamped, and the line that read Sam Vale has a different line under it, in a hand that isn't the officer's. The fee column isn't the number it was. You sign for it. 400 cr leaves the ship's fund, and the captain will see the line.",
     "mem": [
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
@@ -1213,7 +1213,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "The envelope goes across the counter. The officer takes the manifest into the back and brings it out stamped, and the number on it's not the number it was.",
+    "text": "You fold the envelope once, the way you've seen it done, and push it across the counter with the manifest on top. The officer doesn't touch it. The officer looks at the clock, at the queue, and then at the envelope, and the envelope goes into a drawer that must have been open already. The manifest goes into the back room. When it comes out, it's stamped, and the line that read Sam Vale has a different line under it, in a hand that isn't the officer's. The fee column isn't the number it was. You sign for it. 400 cr leaves the ship's fund, and the captain will see the line.",
     "mem": [
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
@@ -1225,13 +1225,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "The officer checks the crew list against the register for ten minutes. The ship is cleared, and Sam is in the engine room the whole time.",
+    "text": "You say nothing and keep Sam below, in the engine room, with the hatch dogged. The officer goes through the crew list against the register for ten minutes, name by name, and your mouth is dry for all of them. Twice the officer stops and looks at the ship, at the hull, at the open ramp, as if the hull might say something. It doesn't. The officer sighs, stamps the manifest, and waves a loader into the next slot. Sam stays in the engine room for another hour after you've cleared the dock, and when Sam comes up, it's without a word, and with grease on both hands.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "They search the ship and find Sam. The fine is 800 cr from the ship's fund, and Sam goes ashore under escort. Yuri signs on for the berth.",
+    "text": "You say nothing and keep Sam below, and they find Sam anyway, in under four minutes, in the crawlway under the galley deck. The fine is 800 cr from the ship's fund, and the officer counts it out loud as it goes. Sam goes down the ramp between two of the officer's people, not in restraints, but not free to stop either. At the foot of the ramp Sam looks back at the ship once, and not at you, and then the crowd closes up. Your crew stands along the rail and watches the whole way. Nobody tells you what they think, and nobody needs to. Yuri signs on for the berth.",
     "mem": [
      "9 Jul 2214: A wanted crew member was found aboard.",
      "9 Jul 2214: You kept me aboard and I was found."
@@ -1246,7 +1246,7 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "Sam takes a bag down the ramp. They don't say anything, and the officer clears the ship. Fatima signs on for the berth.",
+    "text": "Sam packs a bag in about the time it takes to say the decision aloud. There isn't much in it. Sam walks down the ramp past the officer, who has stopped counting the queue to watch, and past you, and doesn't say anything, though there are things in Sam's face that would have taken a sentence apiece. At the bottom of the ramp Sam turns and looks at the ship, all of it, as if memorizing it. The officer clears the manifest, stamps it, and says the ship is free to lift. The ramp is a long way up, and your crew is already on it, not looking at each other. Fatima signs on for the berth.",
     "mem": [
      "9 Jul 2214: You put me ashore at customs on Earth.",
      "9 Jul 2214: You put Sam ashore at customs."
@@ -1261,7 +1261,7 @@
    {
     "i": 3,
     "roll": 0.999,
-    "text": "Sam takes a bag down the ramp. They don't say anything, and the officer clears the ship. Diego signs on for the berth.",
+    "text": "Sam packs a bag in about the time it takes to say the decision aloud. There isn't much in it. Sam walks down the ramp past the officer, who has stopped counting the queue to watch, and past you, and doesn't say anything, though there are things in Sam's face that would have taken a sentence apiece. At the bottom of the ramp Sam turns and looks at the ship, all of it, as if memorizing it. The officer clears the manifest, stamps it, and says the ship is free to lift. The ramp is a long way up, and your crew is already on it, not looking at each other. Diego signs on for the berth.",
     "mem": [
      "9 Jul 2214: You put me ashore at customs on Earth.",
      "9 Jul 2214: You put Sam ashore at customs."
@@ -1275,7 +1275,7 @@
    }
   ],
   "title": "The Customs Officer",
-  "text": "The customs officer at Earth runs the crew list against the Arcology Compact register and stops at Sam Vale. \"This one left the Compact with a mark against them,\" the officer says, and waits.",
+  "text": "The customs officer at Earth has a stylus behind one ear and three ships queued behind yours. The officer takes the crew list, lays it against the Arcology Compact register on a slate, and runs a thumbnail down the names. The thumbnail stops at Sam Vale and stays there long enough that the clerk at the next window looks over. \"This one left the Compact with a mark against them,\" the officer says, not loudly, and doesn't look up. The slate hums. Somewhere on the dock a loader is backing up with its alarm going. The officer waits the way people wait who have all day and have done this before, and the stamp sits open on the counter between you, inked and ready.",
   "labels": [
    "[Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (400 cr from the ship's fund)",
@@ -1289,7 +1289,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You give the officer your papers and say Sam is signed on the ship's articles. The officer reads the date, stamps the manifest, and doesn't look at Sam.",
+    "text": "You send your Arcology Compact papers across on the open band, a scan of the articles with your name and the date, and say Sam is signed on the ship's articles. The cutter's captain takes a long minute with it. You can hear a clerk on the cutter asking if the date is right, and the captain saying it's right. Nothing on your own bridge moves. Then the captain says the articles are in order, notes the stamp, and doesn't ask to see Sam, who is standing eight feet behind you and hasn't breathed in some time. The cutter drops astern, and after a while the feeling comes back into your hands.",
     "mem": [
      "9 Jul 2214: You vouched for me to a patrol."
     ],
@@ -1301,7 +1301,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You give the officer your papers and say Sam is signed on the ship's articles. The officer reads the date, stamps the manifest, and doesn't look at Sam.",
+    "text": "You send your Arcology Compact papers across on the open band, a scan of the articles with your name and the date, and say Sam is signed on the ship's articles. The cutter's captain takes a long minute with it. You can hear a clerk on the cutter asking if the date is right, and the captain saying it's right. Nothing on your own bridge moves. Then the captain says the articles are in order, notes the stamp, and doesn't ask to see Sam, who is standing eight feet behind you and hasn't breathed in some time. The cutter drops astern, and after a while the feeling comes back into your hands.",
     "mem": [
      "9 Jul 2214: You vouched for me to a patrol."
     ],
@@ -1313,7 +1313,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "The envelope goes across the counter. The officer takes the manifest into the back and brings it out stamped, and the number on it's not the number it was.",
+    "text": "You send the amount across on the open band as a docking fee, which is not what it is and not what anyone calls it. The cutter's captain is silent for a long time. Then a transfer receipt appears on your board, 400 cr from the ship's fund, marked as a fine for a course deviation you never made. The captain says the crew list has been corrected, and that a patrol has to be careful about its records. The corrected list arrives a moment later, and the line that read Sam Vale is gone from it. The cutter peels off without another word. Your captain will see the number on the fund.",
     "mem": [
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
@@ -1325,7 +1325,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "The envelope goes across the counter. The officer takes the manifest into the back and brings it out stamped, and the number on it's not the number it was.",
+    "text": "You send the amount across on the open band as a docking fee, which is not what it is and not what anyone calls it. The cutter's captain is silent for a long time. Then a transfer receipt appears on your board, 400 cr from the ship's fund, marked as a fine for a course deviation you never made. The captain says the crew list has been corrected, and that a patrol has to be careful about its records. The corrected list arrives a moment later, and the line that read Sam Vale is gone from it. The cutter peels off without another word. Your captain will see the number on the fund.",
     "mem": [
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
@@ -1337,13 +1337,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "The officer checks the crew list against the register for ten minutes. The ship is cleared, and Sam is in the engine room the whole time.",
+    "text": "You say nothing and keep Sam below, in the engine room, with the hatch dogged. The cutter's captain reads the rest of the crew list and then asks you, evenly, to confirm that everyone on it is aboard. You confirm it. There's a pause long enough that you check whether the band is still open. Then the captain says the list is accepted, and wishes you a clear passage. The cutter holds on your quarter for another three minutes, close enough to read its hull number, before it falls away. Sam comes up from the engine room an hour later with grease on both hands, and doesn't ask anything.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "They search the ship and find Sam. The fine is 800 cr from the ship's fund, and Sam goes ashore under escort. Oliver signs on for the berth.",
+    "text": "You say nothing and keep Sam below, and the cutter's boarding party finds Sam anyway, in under four minutes, in the crawlway under the galley deck. The fine is 800 cr from the ship's fund, read out over the band. Sam goes across in the cutter's launch between two of the patrol's people, not in restraints, but not free to stop either. At the lock Sam looks back once, and not at you. Your crew crowds the viewport and watches the launch the whole way. Nobody tells you what they think, and nobody needs to. Oliver signs on for the berth.",
     "mem": [
      "9 Jul 2214: A wanted crew member was found aboard.",
      "9 Jul 2214: You kept me aboard and I was found."
@@ -1358,7 +1358,33 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "Sam goes across in the cutter's launch without a word. The cutter's captain thanks you for your cooperation and breaks off. Grace signs on for the berth.",
+    "text": "You key the fire control and let the cutter hear the lock tone. It's a small sound, a rising chirp, and everyone on both bridges knows what it means. You ask the cutter's captain, evenly, what this is. The captain says it's a routine check. You say it doesn't feel routine from here. You have the cutter's drive section centered, and your hand on the trigger is steady. Silence on the band for eleven seconds. Then the captain says the crew list is in order, after all, that a clerical matter was misread, and that the Compact regrets the delay. The cutter falls astern. You let out a breath, and notice it's the first one in a while.",
+    "mem": [
+     "9 Jul 2214: You held a patrol off me with the guns."
+    ],
+    "fx": {
+     "p10": 1
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "You key the fire control and let the cutter hear the lock tone. The cutter's captain doesn't answer at all. A second lock tone comes back, from the cutter, and it's steadier than yours. Your board shows its guns coming out of stow, and you read the numbers off in the tone of someone reading a gauge. The captain comes on the band then, quiet, and says that pointing weapons at a patrol is a separate matter from the crew list, and the fine for it is 800 cr. They hold the lock until the fine is paid. Then they send the launch. Sam goes across in it, with a look at you that isn't forgiveness. Fatima signs on for the berth.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You pointed the guns at a patrol and it cost the ship."
+    ],
+    "fx": {
+     "p1": -2,
+     "p12": 0
+    },
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0,
+    "text": "Sam goes across in the cutter's launch without a word, because Sam understands that there's nothing to say that would do any good now. The launch is small and grey and has a number on it. Sam sits in the stern with both hands on the thwart and looks at the deck, not at you. When the launch is clear the cutter's captain comes on the band and thanks you for your cooperation, and says it will be noted. You don't ask where. The cutter breaks off and falls astern. Nobody on your deck moves for a long moment, and the one who moves first is the one who goes to check that the airlock is still sealed. Oliver signs on for the berth.",
     "mem": [
      "9 Jul 2214: You handed me to a patrol of the Compact.",
      "9 Jul 2214: You handed Sam over to a patrol."
@@ -1371,9 +1397,9 @@
     "next": null
    },
    {
-    "i": 3,
+    "i": 4,
     "roll": 0.999,
-    "text": "Sam goes across in the cutter's launch without a word. The cutter's captain thanks you for your cooperation and breaks off. Sofia signs on for the berth.",
+    "text": "Sam goes across in the cutter's launch without a word, because Sam understands that there's nothing to say that would do any good now. The launch is small and grey and has a number on it. Sam sits in the stern with both hands on the thwart and looks at the deck, not at you. When the launch is clear the cutter's captain comes on the band and thanks you for your cooperation, and says it will be noted. You don't ask where. The cutter breaks off and falls astern. Nobody on your deck moves for a long moment, and the one who moves first is the one who goes to check that the airlock is still sealed. Ingrid signs on for the berth.",
     "mem": [
      "9 Jul 2214: You handed me to a patrol of the Compact.",
      "9 Jul 2214: You handed Sam over to a patrol."
@@ -1387,11 +1413,12 @@
    }
   ],
   "title": "A Patrol Cutter",
-  "text": "A patrol cutter of the Compact matches your course and asks for the crew list. Its captain reads it aloud, slowly, and stops at Sam Vale. \"This one is wanted by the Compact,\" the captain says, and waits.",
+  "text": "A patrol cutter of the Compact comes up on your quarter and matches your course so cleanly that you check the plot twice. Its captain asks for the crew list over the open band, and you send it. Then there's the silence of someone reading, slowly, aloud, so that your own bridge can hear every name. The captain stops at Sam Vale. \"This one is wanted by the Compact,\" the captain says. Behind the cutter's captain you can hear a second voice repeating the name to someone else. The cutter's guns are stowed, but its lock is already open, and the nearest hand on your deck has stopped what they were doing and is looking at you.",
   "labels": [
    "[Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (400 cr from the ship's fund)",
    "Say nothing and keep Sam below",
+   "[Gunner 2] Lock fire control on her and ask what this is [if it fails: a fine, and the patrol takes them]",
    "Hand Sam over to the cutter"
   ]
  },
@@ -1401,7 +1428,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Ben takes the open band and gives a rank and a unit. The cutter's captain asks one question, gets the right answer, and doesn't ask for the crew list.",
+    "text": "Ben takes the open band without being asked and gives a rank and a unit, in the flat voice of someone who learned to say it before they learned to say anything else. The cutter's captain asks one question, about a posting two years back, and Ben answers it with a name and a deck number. There's a pause. The captain says the crew list is in order, apologizes for the delay, and means about half of it. The cutter peels off on the same clean arc it came in on. Nobody on your deck says anything until it's a dot on the plot. Then Ben takes a long breath, says that was a lucky question, and goes below.",
     "mem": [
      "9 Jul 2214: You let me answer a patrol of the Compact."
     ],
@@ -1413,7 +1440,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "Ben takes the open band and gives a rank and a unit. The cutter's captain asks one question, gets the right answer, and doesn't ask for the crew list.",
+    "text": "Ben takes the open band without being asked and gives a rank and a unit, in the flat voice of someone who learned to say it before they learned to say anything else. The cutter's captain asks one question, about a posting two years back, and Ben answers it with a name and a deck number. There's a pause. The captain says the crew list is in order, apologizes for the delay, and means about half of it. The cutter peels off on the same clean arc it came in on. Nobody on your deck says anything until it's a dot on the plot. Then Ben takes a long breath, says that was a lucky question, and goes below.",
     "mem": [
      "9 Jul 2214: You let me answer a patrol of the Compact."
     ],
@@ -1425,7 +1452,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "You give the officer your papers and say Sam is signed on the ship's articles. The officer reads the date, stamps the manifest, and doesn't look at Sam.",
+    "text": "You send your Arcology Compact papers across on the open band, a scan of the articles with your name and the date, and say Sam is signed on the ship's articles. The cutter's captain takes a long minute with it. You can hear a clerk on the cutter asking if the date is right, and the captain saying it's right. Nothing on your own bridge moves. Then the captain says the articles are in order, notes the stamp, and doesn't ask to see Sam, who is standing eight feet behind you and hasn't breathed in some time. The cutter drops astern, and after a while the feeling comes back into your hands.",
     "mem": [
      "9 Jul 2214: You vouched for me to a patrol."
     ],
@@ -1437,7 +1464,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "You give the officer your papers and say Sam is signed on the ship's articles. The officer reads the date, stamps the manifest, and doesn't look at Sam.",
+    "text": "You send your Arcology Compact papers across on the open band, a scan of the articles with your name and the date, and say Sam is signed on the ship's articles. The cutter's captain takes a long minute with it. You can hear a clerk on the cutter asking if the date is right, and the captain saying it's right. Nothing on your own bridge moves. Then the captain says the articles are in order, notes the stamp, and doesn't ask to see Sam, who is standing eight feet behind you and hasn't breathed in some time. The cutter drops astern, and after a while the feeling comes back into your hands.",
     "mem": [
      "9 Jul 2214: You vouched for me to a patrol."
     ],
@@ -1449,7 +1476,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "The envelope goes across the counter. The officer takes the manifest into the back and brings it out stamped, and the number on it's not the number it was.",
+    "text": "You send the amount across on the open band as a docking fee, which is not what it is and not what anyone calls it. The cutter's captain is silent for a long time. Then a transfer receipt appears on your board, 400 cr from the ship's fund, marked as a fine for a course deviation you never made. The captain says the crew list has been corrected, and that a patrol has to be careful about its records. The corrected list arrives a moment later, and the line that read Sam Vale is gone from it. The cutter peels off without another word. Your captain will see the number on the fund.",
     "mem": [
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
@@ -1461,7 +1488,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "The envelope goes across the counter. The officer takes the manifest into the back and brings it out stamped, and the number on it's not the number it was.",
+    "text": "You send the amount across on the open band as a docking fee, which is not what it is and not what anyone calls it. The cutter's captain is silent for a long time. Then a transfer receipt appears on your board, 400 cr from the ship's fund, marked as a fine for a course deviation you never made. The captain says the crew list has been corrected, and that a patrol has to be careful about its records. The corrected list arrives a moment later, and the line that read Sam Vale is gone from it. The cutter peels off without another word. Your captain will see the number on the fund.",
     "mem": [
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
@@ -1473,13 +1500,13 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "The officer checks the crew list against the register for ten minutes. The ship is cleared, and Sam is in the engine room the whole time.",
+    "text": "You say nothing and keep Sam below, in the engine room, with the hatch dogged. The cutter's captain reads the rest of the crew list and then asks you, evenly, to confirm that everyone on it is aboard. You confirm it. There's a pause long enough that you check whether the band is still open. Then the captain says the list is accepted, and wishes you a clear passage. The cutter holds on your quarter for another three minutes, close enough to read its hull number, before it falls away. Sam comes up from the engine room an hour later with grease on both hands, and doesn't ask anything.",
     "next": null
    },
    {
     "i": 3,
     "roll": 0.999,
-    "text": "They search the ship and find Sam. The fine is 800 cr from the ship's fund, and Sam goes ashore under escort. Samuel signs on for the berth.",
+    "text": "You say nothing and keep Sam below, and the cutter's boarding party finds Sam anyway, in under four minutes, in the crawlway under the galley deck. The fine is 800 cr from the ship's fund, read out over the band. Sam goes across in the cutter's launch between two of the patrol's people, not in restraints, but not free to stop either. At the lock Sam looks back once, and not at you. Your crew crowds the viewport and watches the launch the whole way. Nobody tells you what they think, and nobody needs to. Aiko signs on for the berth.",
     "mem": [
      "9 Jul 2214: A wanted crew member was found aboard.",
      "9 Jul 2214: You kept me aboard and I was found."
@@ -1494,7 +1521,33 @@
    {
     "i": 4,
     "roll": 0,
-    "text": "Sam goes across in the cutter's launch without a word. The cutter's captain thanks you for your cooperation and breaks off. Nadia signs on for the berth.",
+    "text": "You key the fire control and let the cutter hear the lock tone. It's a small sound, a rising chirp, and everyone on both bridges knows what it means. You ask the cutter's captain, evenly, what this is. The captain says it's a routine check. You say it doesn't feel routine from here. You have the cutter's drive section centered, and your hand on the trigger is steady. Silence on the band for eleven seconds. Then the captain says the crew list is in order, after all, that a clerical matter was misread, and that the Compact regrets the delay. The cutter falls astern. You let out a breath, and notice it's the first one in a while.",
+    "mem": [
+     "9 Jul 2214: You held a patrol off me with the guns."
+    ],
+    "fx": {
+     "p10": 1
+    },
+    "next": null
+   },
+   {
+    "i": 4,
+    "roll": 0.999,
+    "text": "You key the fire control and let the cutter hear the lock tone. The cutter's captain doesn't answer at all. A second lock tone comes back, from the cutter, and it's steadier than yours. Your board shows its guns coming out of stow, and you read the numbers off in the tone of someone reading a gauge. The captain comes on the band then, quiet, and says that pointing weapons at a patrol is a separate matter from the crew list, and the fine for it is 800 cr. They hold the lock until the fine is paid. Then they send the launch. Sam goes across in it, with a look at you that isn't forgiveness. Diego signs on for the berth.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You pointed the guns at a patrol and it cost the ship."
+    ],
+    "fx": {
+     "p1": -2,
+     "p13": 0
+    },
+    "next": null
+   },
+   {
+    "i": 5,
+    "roll": 0,
+    "text": "Sam goes across in the cutter's launch without a word, because Sam understands that there's nothing to say that would do any good now. The launch is small and grey and has a number on it. Sam sits in the stern with both hands on the thwart and looks at the deck, not at you. When the launch is clear the cutter's captain comes on the band and thanks you for your cooperation, and says it will be noted. You don't ask where. The cutter breaks off and falls astern. Nobody on your deck moves for a long moment, and the one who moves first is the one who goes to check that the airlock is still sealed. Daniel signs on for the berth.",
     "mem": [
      "9 Jul 2214: You handed me to a patrol of the Compact.",
      "9 Jul 2214: You handed Sam over to a patrol.",
@@ -1509,9 +1562,9 @@
     "next": null
    },
    {
-    "i": 4,
+    "i": 5,
     "roll": 0.999,
-    "text": "Sam goes across in the cutter's launch without a word. The cutter's captain thanks you for your cooperation and breaks off. Diego signs on for the berth.",
+    "text": "Sam goes across in the cutter's launch without a word, because Sam understands that there's nothing to say that would do any good now. The launch is small and grey and has a number on it. Sam sits in the stern with both hands on the thwart and looks at the deck, not at you. When the launch is clear the cutter's captain comes on the band and thanks you for your cooperation, and says it will be noted. You don't ask where. The cutter breaks off and falls astern. Nobody on your deck moves for a long moment, and the one who moves first is the one who goes to check that the airlock is still sealed. Yuri signs on for the berth.",
     "mem": [
      "9 Jul 2214: You handed me to a patrol of the Compact.",
      "9 Jul 2214: You handed Sam over to a patrol.",
@@ -1527,12 +1580,13 @@
    }
   ],
   "title": "A Patrol Cutter",
-  "text": "A patrol cutter of the Compact matches your course and asks for the crew list. Its captain reads it aloud, slowly, and stops at Sam Vale. \"This one is wanted by the Compact,\" the captain says, and waits.",
+  "text": "A patrol cutter of the Compact comes up on your quarter and matches your course so cleanly that you check the plot twice. Its captain asks for the crew list over the open band, and you send it. Then there's the silence of someone reading, slowly, aloud, so that your own bridge can hear every name. The captain stops at Sam Vale. \"This one is wanted by the Compact,\" the captain says. Behind the cutter's captain you can hear a second voice repeating the name to someone else. The cutter's guns are stowed, but its lock is already open, and the nearest hand on your deck has stopped what they were doing and is looking at you.",
   "labels": [
    "[Ben, an officer of the Compact] Let Ben answer the hail",
    "[Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (400 cr from the ship's fund)",
    "Say nothing and keep Sam below",
+   "[Gunner 2] Lock fire control on her and ask what this is [if it fails: a fine, and the patrol takes them]",
    "Hand Sam over to the cutter"
   ]
  },
@@ -1542,7 +1596,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You give the officer your papers and say Sam is signed on the ship's articles. The officer reads the date, stamps the manifest, and doesn't look at Sam.",
+    "text": "You put your Arcology Compact papers on the counter and say Sam is signed on the ship's articles, in your own hand, on a date you give. The officer reads the date, then reads your name, then reads the date again. The stylus comes out from behind the ear. The officer doesn't look at Sam, who is standing eight feet away, or at the register, which is still glowing on the slate. The manifest is stamped, torn along its perforation, and slid back. \"Safe flying,\" the officer says to the next window, not to you. The thing you've just done, you notice, took less time than the three ships behind you have been waiting.",
     "mem": [
      "9 Jul 2214: You vouched for me at customs on Earth."
     ],
@@ -1554,7 +1608,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You give the officer your papers and say Sam is signed on the ship's articles. The officer reads the date, stamps the manifest, and doesn't look at Sam.",
+    "text": "You put your Arcology Compact papers on the counter and say Sam is signed on the ship's articles, in your own hand, on a date you give. The officer reads the date, then reads your name, then reads the date again. The stylus comes out from behind the ear. The officer doesn't look at Sam, who is standing eight feet away, or at the register, which is still glowing on the slate. The manifest is stamped, torn along its perforation, and slid back. \"Safe flying,\" the officer says to the next window, not to you. The thing you've just done, you notice, took less time than the three ships behind you have been waiting.",
     "mem": [
      "9 Jul 2214: You vouched for me at customs on Earth."
     ],
@@ -1566,7 +1620,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "The envelope goes across the counter. The officer takes the manifest into the back and brings it out stamped, and the number on it's not the number it was.",
+    "text": "You fold the envelope once, the way you've seen it done, and push it across the counter with the manifest on top. The officer doesn't touch it. The officer looks at the clock, at the queue, and then at the envelope, and the envelope goes into a drawer that must have been open already. The manifest goes into the back room. When it comes out, it's stamped, and the line that read Sam Vale has a different line under it, in a hand that isn't the officer's. The fee column isn't the number it was. You sign for it. 400 cr leaves the ship's fund, and the captain will see the line.",
     "mem": [
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
@@ -1578,7 +1632,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "The envelope goes across the counter. The officer takes the manifest into the back and brings it out stamped, and the number on it's not the number it was.",
+    "text": "You fold the envelope once, the way you've seen it done, and push it across the counter with the manifest on top. The officer doesn't touch it. The officer looks at the clock, at the queue, and then at the envelope, and the envelope goes into a drawer that must have been open already. The manifest goes into the back room. When it comes out, it's stamped, and the line that read Sam Vale has a different line under it, in a hand that isn't the officer's. The fee column isn't the number it was. You sign for it. 400 cr leaves the ship's fund, and the captain will see the line.",
     "mem": [
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
@@ -1590,13 +1644,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "The officer checks the crew list against the register for ten minutes. The ship is cleared, and Sam is in the engine room the whole time.",
+    "text": "You say nothing and keep Sam below, in the engine room, with the hatch dogged. The officer goes through the crew list against the register for ten minutes, name by name, and your mouth is dry for all of them. Twice the officer stops and looks at the ship, at the hull, at the open ramp, as if the hull might say something. It doesn't. The officer sighs, stamps the manifest, and waves a loader into the next slot. Sam stays in the engine room for another hour after you've cleared the dock, and when Sam comes up, it's without a word, and with grease on both hands.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "They search the ship and find Sam. The fine is 800 cr from the ship's fund, and Sam goes ashore under escort. Fatima signs on for the berth.",
+    "text": "You say nothing and keep Sam below, and they find Sam anyway, in under four minutes, in the crawlway under the galley deck. The fine is 800 cr from the ship's fund, and the officer counts it out loud as it goes. Sam goes down the ramp between two of the officer's people, not in restraints, but not free to stop either. At the foot of the ramp Sam looks back at the ship once, and not at you, and then the crowd closes up. Your crew stands along the rail and watches the whole way. Nobody tells you what they think, and nobody needs to. Diego signs on for the berth.",
     "mem": [
      "9 Jul 2214: A wanted crew member was found aboard.",
      "9 Jul 2214: You kept me aboard and I was found."
@@ -1611,7 +1665,7 @@
    {
     "i": 3,
     "roll": 0,
-    "text": "Sam takes a bag down the ramp. They don't say anything, and the officer clears the ship. Fatima signs on for the berth.",
+    "text": "Sam packs a bag in about the time it takes to say the decision aloud. There isn't much in it. Sam walks down the ramp past the officer, who has stopped counting the queue to watch, and past you, and doesn't say anything, though there are things in Sam's face that would have taken a sentence apiece. At the bottom of the ramp Sam turns and looks at the ship, all of it, as if memorizing it. The officer clears the manifest, stamps it, and says the ship is free to lift. The ramp is a long way up, and your crew is already on it, not looking at each other. Grace signs on for the berth.",
     "mem": [
      "9 Jul 2214: You put me ashore at customs on Earth.",
      "9 Jul 2214: You put Sam ashore at customs."
@@ -1626,7 +1680,7 @@
    {
     "i": 3,
     "roll": 0.999,
-    "text": "Sam takes a bag down the ramp. They don't say anything, and the officer clears the ship. Diego signs on for the berth.",
+    "text": "Sam packs a bag in about the time it takes to say the decision aloud. There isn't much in it. Sam walks down the ramp past the officer, who has stopped counting the queue to watch, and past you, and doesn't say anything, though there are things in Sam's face that would have taken a sentence apiece. At the bottom of the ramp Sam turns and looks at the ship, all of it, as if memorizing it. The officer clears the manifest, stamps it, and says the ship is free to lift. The ramp is a long way up, and your crew is already on it, not looking at each other. Anton signs on for the berth.",
     "mem": [
      "9 Jul 2214: You put me ashore at customs on Earth.",
      "9 Jul 2214: You put Sam ashore at customs."
@@ -1640,7 +1694,7 @@
    }
   ],
   "title": "The Customs Officer",
-  "text": "The customs officer at Earth runs the crew list against the Arcology Compact register and stops at Sam Vale. \"This one is wanted by the Compact,\" the officer says, and waits.",
+  "text": "The customs officer at Earth has a stylus behind one ear and three ships queued behind yours. The officer takes the crew list, lays it against the Arcology Compact register on a slate, and runs a thumbnail down the names. The thumbnail stops at Sam Vale and stays there long enough that the clerk at the next window looks over. \"This one is wanted by the Compact,\" the officer says, not loudly, and doesn't look up. The slate hums. Somewhere on the dock a loader is backing up with its alarm going. The officer waits the way people wait who have all day and have done this before, and the stamp sits open on the counter between you, inked and ready.",
   "labels": [
    "[Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (400 cr from the ship's fund)",
@@ -1654,7 +1708,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You give the officer your papers and say Sam is signed on the ship's articles. The officer reads the date, stamps the manifest, and doesn't look at Sam.",
+    "text": "You put your Arcology Compact papers on the counter and say Sam is signed on the ship's articles, in your own hand, on a date you give. The officer reads the date, then reads your name, then reads the date again. The stylus comes out from behind the ear. The officer doesn't look at Sam, who is standing eight feet away, or at the register, which is still glowing on the slate. The manifest is stamped, torn along its perforation, and slid back. \"Safe flying,\" the officer says to the next window, not to you. The thing you've just done, you notice, took less time than the three ships behind you have been waiting.",
     "mem": [
      "9 Jul 2214: You vouched for me at customs on Earth."
     ],
@@ -1666,7 +1720,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You give the officer your papers and say Sam is signed on the ship's articles. The officer reads the date, stamps the manifest, and doesn't look at Sam.",
+    "text": "You put your Arcology Compact papers on the counter and say Sam is signed on the ship's articles, in your own hand, on a date you give. The officer reads the date, then reads your name, then reads the date again. The stylus comes out from behind the ear. The officer doesn't look at Sam, who is standing eight feet away, or at the register, which is still glowing on the slate. The manifest is stamped, torn along its perforation, and slid back. \"Safe flying,\" the officer says to the next window, not to you. The thing you've just done, you notice, took less time than the three ships behind you have been waiting.",
     "mem": [
      "9 Jul 2214: You vouched for me at customs on Earth."
     ],
@@ -1678,7 +1732,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "The envelope goes across the counter. The officer takes the manifest into the back and brings it out stamped, and the number on it's not the number it was.",
+    "text": "You fold the envelope once, the way you've seen it done, and push it across the counter with the manifest on top. The officer doesn't touch it. The officer looks at the clock, at the queue, and then at the envelope, and the envelope goes into a drawer that must have been open already. The manifest goes into the back room. When it comes out, it's stamped, and the line that read Sam Vale has a different line under it, in a hand that isn't the officer's. The fee column isn't the number it was. You sign for it. 400 cr leaves the ship's fund, and the captain will see the line.",
     "mem": [
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
@@ -1690,7 +1744,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "The envelope goes across the counter. The officer takes the manifest into the back and brings it out stamped, and the number on it's not the number it was.",
+    "text": "You fold the envelope once, the way you've seen it done, and push it across the counter with the manifest on top. The officer doesn't touch it. The officer looks at the clock, at the queue, and then at the envelope, and the envelope goes into a drawer that must have been open already. The manifest goes into the back room. When it comes out, it's stamped, and the line that read Sam Vale has a different line under it, in a hand that isn't the officer's. The fee column isn't the number it was. You sign for it. 400 cr leaves the ship's fund, and the captain will see the line.",
     "mem": [
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
@@ -1702,13 +1756,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "The officer checks the crew list against the register for ten minutes. The ship is cleared, and Sam is in the engine room the whole time.",
+    "text": "You say nothing and keep Sam below, in the engine room, with the hatch dogged. The officer goes through the crew list against the register for ten minutes, name by name, and your mouth is dry for all of them. Twice the officer stops and looks at the ship, at the hull, at the open ramp, as if the hull might say something. It doesn't. The officer sighs, stamps the manifest, and waves a loader into the next slot. Sam stays in the engine room for another hour after you've cleared the dock, and when Sam comes up, it's without a word, and with grease on both hands.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "They search the ship and find Sam. The fine is 800 cr from the ship's fund. Sam is released at the foot of the ramp, and walks back up it.",
+    "text": "You say nothing and keep Sam below, and it's not enough. They search the ship in pairs, fast, with the practice of people who've found hidden things in worse places, and they find Sam in the cargo bay, folded into a gap between two sealed crates. The fine is 800 cr from the ship's fund, and the officer counts it out loud as it goes. They take Sam to the foot of the ramp, hold a long conversation over a slate, and then, for reasons nobody explains to you, let Sam go. Sam walks back up the ramp past you with a face like a shut door, and doesn't look at the person who put them there.",
     "mem": [
      "9 Jul 2214: A wanted crew member was found aboard.",
      "9 Jul 2214: You kept me aboard and I was found."
@@ -1721,7 +1775,7 @@
    }
   ],
   "title": "The Customs Officer",
-  "text": "The customs officer at Earth runs the crew list against the Arcology Compact register and stops at Sam Vale. \"This one is wanted by the Compact,\" the officer says, and waits.",
+  "text": "The customs officer at Earth has a stylus behind one ear and three ships queued behind yours. The officer takes the crew list, lays it against the Arcology Compact register on a slate, and runs a thumbnail down the names. The thumbnail stops at Sam Vale and stays there long enough that the clerk at the next window looks over. \"This one is wanted by the Compact,\" the officer says, not loudly, and doesn't look up. The slate hums. Somewhere on the dock a loader is backing up with its alarm going. The officer waits the way people wait who have all day and have done this before, and the stamp sits open on the counter between you, inked and ready.",
   "labels": [
    "[Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (400 cr from the ship's fund)",
@@ -1734,7 +1788,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "You give the officer your papers and say Sam is signed on the ship's articles. The officer reads the date, stamps the manifest, and doesn't look at Sam.",
+    "text": "You send your Arcology Compact papers across on the open band, a scan of the articles with your name and the date, and say Sam is signed on the ship's articles. The cutter's captain takes a long minute with it. You can hear a clerk on the cutter asking if the date is right, and the captain saying it's right. Nothing on your own bridge moves. Then the captain says the articles are in order, notes the stamp, and doesn't ask to see Sam, who is standing eight feet behind you and hasn't breathed in some time. The cutter drops astern, and after a while the feeling comes back into your hands.",
     "mem": [
      "9 Jul 2214: You vouched for me to a patrol."
     ],
@@ -1746,7 +1800,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "You give the officer your papers and say Sam is signed on the ship's articles. The officer reads the date, stamps the manifest, and doesn't look at Sam.",
+    "text": "You send your Arcology Compact papers across on the open band, a scan of the articles with your name and the date, and say Sam is signed on the ship's articles. The cutter's captain takes a long minute with it. You can hear a clerk on the cutter asking if the date is right, and the captain saying it's right. Nothing on your own bridge moves. Then the captain says the articles are in order, notes the stamp, and doesn't ask to see Sam, who is standing eight feet behind you and hasn't breathed in some time. The cutter drops astern, and after a while the feeling comes back into your hands.",
     "mem": [
      "9 Jul 2214: You vouched for me to a patrol."
     ],
@@ -1758,7 +1812,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "The envelope goes across the counter. The officer takes the manifest into the back and brings it out stamped, and the number on it's not the number it was.",
+    "text": "You send the amount across on the open band as a docking fee, which is not what it is and not what anyone calls it. The cutter's captain is silent for a long time. Then a transfer receipt appears on your board, 400 cr from the ship's fund, marked as a fine for a course deviation you never made. The captain says the crew list has been corrected, and that a patrol has to be careful about its records. The corrected list arrives a moment later, and the line that read Sam Vale is gone from it. The cutter peels off without another word. Your captain will see the number on the fund.",
     "mem": [
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
@@ -1770,7 +1824,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "The envelope goes across the counter. The officer takes the manifest into the back and brings it out stamped, and the number on it's not the number it was.",
+    "text": "You send the amount across on the open band as a docking fee, which is not what it is and not what anyone calls it. The cutter's captain is silent for a long time. Then a transfer receipt appears on your board, 400 cr from the ship's fund, marked as a fine for a course deviation you never made. The captain says the crew list has been corrected, and that a patrol has to be careful about its records. The corrected list arrives a moment later, and the line that read Sam Vale is gone from it. The cutter peels off without another word. Your captain will see the number on the fund.",
     "mem": [
      "9 Jul 2214: You paid a customs officer from the fund."
     ],
@@ -1782,13 +1836,13 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "The officer checks the crew list against the register for ten minutes. The ship is cleared, and Sam is in the engine room the whole time.",
+    "text": "You say nothing and keep Sam below, in the engine room, with the hatch dogged. The cutter's captain reads the rest of the crew list and then asks you, evenly, to confirm that everyone on it is aboard. You confirm it. There's a pause long enough that you check whether the band is still open. Then the captain says the list is accepted, and wishes you a clear passage. The cutter holds on your quarter for another three minutes, close enough to read its hull number, before it falls away. Sam comes up from the engine room an hour later with grease on both hands, and doesn't ask anything.",
     "next": null
    },
    {
     "i": 2,
     "roll": 0.999,
-    "text": "They search the ship and find Sam. The fine is 800 cr from the ship's fund. Sam is released at the foot of the ramp, and walks back up it.",
+    "text": "You say nothing and keep Sam below, and it isn't enough. The cutter sends a boarding party across, four of them, fast, with the practice of people who've found hidden things in worse places, and they find Sam in the cargo bay, folded into a gap between two sealed crates. The fine is 800 cr from the ship's fund, read out over the band. They take Sam as far as the lock, hold a long conversation over a slate, and then, for reasons nobody explains to you, let Sam go. Sam walks back through the lock past you with a face like a shut door, and doesn't look at the person who put them there.",
     "mem": [
      "9 Jul 2214: A wanted crew member was found aboard.",
      "9 Jul 2214: You kept me aboard and I was found."
@@ -1798,14 +1852,40 @@
      "p10": -1
     },
     "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0,
+    "text": "You key the fire control and let the cutter hear the lock tone. It's a small sound, a rising chirp, and everyone on both bridges knows what it means. You ask the cutter's captain, evenly, what this is. The captain says it's a routine check. You say it doesn't feel routine from here. You have the cutter's drive section centered, and your hand on the trigger is steady. Silence on the band for eleven seconds. Then the captain says the crew list is in order, after all, that a clerical matter was misread, and that the Compact regrets the delay. The cutter falls astern. You let out a breath, and notice it's the first one in a while.",
+    "mem": [
+     "9 Jul 2214: You held a patrol off me with the guns."
+    ],
+    "fx": {
+     "p10": 1
+    },
+    "next": null
+   },
+   {
+    "i": 3,
+    "roll": 0.999,
+    "text": "You key the fire control and let the cutter hear the lock tone. The cutter's captain doesn't answer at all. A second lock tone comes back, from the cutter, and it's steadier than yours. Your board shows its guns coming out of stow, and you read the numbers off in the tone of someone reading a gauge. The captain comes on the band then, quiet, and says that pointing weapons at a patrol is a separate matter from the crew list, and the fine for it is 800 cr. They hold the lock until the fine is paid. Then they send the launch for Sam and hold a long conversation over a slate at the lock. Sam is let go at the lock, and walks back through it.",
+    "mem": [
+     "9 Jul 2214: You took the bold line and it did not.",
+     "9 Jul 2214: You pointed the guns at a patrol and it cost the ship."
+    ],
+    "fx": {
+     "p1": -2
+    },
+    "next": null
    }
   ],
   "title": "A Patrol Cutter",
-  "text": "A patrol cutter of the Compact matches your course and asks for the crew list. Its captain reads it aloud, slowly, and stops at Sam Vale. \"This one left the Compact with a mark against them,\" the captain says, and waits.",
+  "text": "A patrol cutter of the Compact comes up on your quarter and matches your course so cleanly that you check the plot twice. Its captain asks for the crew list over the open band, and you send it. Then there's the silence of someone reading, slowly, aloud, so that your own bridge can hear every name. The captain stops at Sam Vale. \"This one left the Compact with a mark against them,\" the captain says. Behind the cutter's captain you can hear a second voice repeating the name to someone else. The cutter's guns are stowed, but its lock is already open, and the nearest hand on your deck has stopped what they were doing and is looking at you.",
   "labels": [
    "[Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (400 cr from the ship's fund)",
-   "Say nothing and keep Sam below"
+   "Say nothing and keep Sam below",
+   "[Gunner 2] Lock fire control on her and ask what this is [if it fails: a fine]"
   ]
  },
  {
@@ -1873,7 +1953,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Sam shakes every hand aboard and takes a bag down the ramp. A liaison of the Compact is waiting at the foot of it with orders. Grace signs on for the berth.",
+    "text": "Sam shakes every hand aboard and takes a bag down the ramp. A liaison of the Compact is waiting at the foot of it with orders. Nadia signs on for the berth.",
     "mem": [
      "9 Jul 2214: You let me go when the Compact went to war.",
      "9 Jul 2214: You stood with the Compact.",
@@ -1889,7 +1969,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "Sam shakes every hand aboard and takes a bag down the ramp. A liaison of the Compact is waiting at the foot of it with orders. Anton signs on for the berth.",
+    "text": "Sam shakes every hand aboard and takes a bag down the ramp. A liaison of the Compact is waiting at the foot of it with orders. Tariq signs on for the berth.",
     "mem": [
      "9 Jul 2214: You let me go when the Compact went to war.",
      "9 Jul 2214: You stood with the Compact.",
@@ -1946,7 +2026,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "Sam shakes every hand aboard and takes a bag down the ramp. Nadia signs on for the berth.",
+    "text": "Sam shakes every hand aboard and takes a bag down the ramp. Diego signs on for the berth.",
     "mem": [
      "9 Jul 2214: You let me go when the Compact went to war."
     ],
@@ -1959,7 +2039,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "Sam shakes every hand aboard and takes a bag down the ramp. Tariq signs on for the berth.",
+    "text": "Sam shakes every hand aboard and takes a bag down the ramp. Ruo signs on for the berth.",
     "mem": [
      "9 Jul 2214: You let me go when the Compact went to war."
     ],
@@ -2020,7 +2100,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "Sam shakes every hand aboard and takes a bag down the ramp. Ruo signs on for the berth.",
+    "text": "Sam shakes every hand aboard and takes a bag down the ramp. Oliver signs on for the berth.",
     "mem": [
      "9 Jul 2214: You let me go when the Compact went to war."
     ],
@@ -2033,7 +2113,7 @@
    {
     "i": 1,
     "roll": 0,
-    "text": "Sam hears you out and goes anyway, because it's not the sort of thing a person can be talked out of. Diego signs on for the berth.",
+    "text": "Sam hears you out and goes anyway, because it's not the sort of thing a person can be talked out of. Sofia signs on for the berth.",
     "mem": [
      "9 Jul 2214: You asked me to stay when my people were at war."
     ],
@@ -2046,7 +2126,7 @@
    {
     "i": 1,
     "roll": 0.999,
-    "text": "Sam hears you out and goes anyway, because it's not the sort of thing a person can be talked out of. Oliver signs on for the berth.",
+    "text": "Sam hears you out and goes anyway, because it's not the sort of thing a person can be talked out of. Felix signs on for the berth.",
     "mem": [
      "9 Jul 2214: You asked me to stay when my people were at war."
     ],
@@ -2145,12 +2225,12 @@
    {
     "i": 2,
     "roll": 0.9,
-    "text": "You spend the watch re-seating Mate3's suit seals and re-soldering a handlamp, and Mate3 pays you 40 cr and says it's the best job anyone has done on the ship.",
+    "text": "You spend the watch re-seating Mate3's suit seals and re-soldering a handlamp, and Mate3 pays you 50 cr and says it's the best job anyone has done on the ship.",
     "mem": [
      "9 Jul 2214: You mended my gear and wouldn't take too much."
     ],
     "fx": {
-     "credits": 40,
+     "credits": 50,
      "p13": 1
     },
     "next": null
@@ -2821,7 +2901,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You cook something real for once, out of the good stores, with garlic and a little stolen butter, and everyone crowds into the galley, elbow to elbow, passing bowls. Somebody produces a bottle. Somebody else tells a story. When the last bowl is scraped clean, nobody's the first to leave.",
+    "text": "You cook, badly, and it works. The whole ship crowds around the table. The steam fogs the lamp. There's a toast, and a second, and an unplanned song.",
     "mem": [
      "9 Jul 2214: We shared a meal on a long burn.",
      "9 Jul 2214: We shared a meal on a long burn.",
@@ -2915,7 +2995,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "You cook, badly, and it works. The whole ship crowds around the table. The steam fogs the lamp. There's a toast, and a second, and an unplanned song.",
+    "text": "You cook something real for once, out of the good stores, with garlic and a little stolen butter, and everyone crowds into the galley, elbow to elbow, passing bowls. Somebody produces a bottle. Somebody else tells a story. When the last bowl is scraped clean, nobody's the first to leave.",
     "mem": [
      "9 Jul 2214: The captain shared a meal with us."
     ],
@@ -2973,7 +3053,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "Buy a round for the house (250 cr) | You buy a round for the house. The room raises a glass to your ship, and someone at the bar tells you: \"A cold snap on Europa has made Machine Parts the only thing anyone wants to talk about.\" | You bought a round",
+    "text": "Buy a round for the house (250 cr) | You buy a round for the house. The room raises a glass to your ship, and someone at the bar tells you: \"Word is that the governor of Eros Old Town is stockpiling Electronics for a party, and will pay well over the odds.\" | You bought a round",
     "mem": [
      "9 Jul 2214: The captain bought a round at The Warren.",
      "9 Jul 2214: The captain bought a round at The Warren.",
@@ -3154,8 +3234,7 @@
     "roll": 0.5,
     "text": "",
     "fx": {
-     "credits": -1500,
-     "p10": 0
+     "credits": -1500
     },
     "x": [
      {
