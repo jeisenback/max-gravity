@@ -5,6 +5,7 @@
 // it at runtime.
 
 const TRANSIT_MIN = 60, TRANSIT_MAX = 120;  // real seconds per burn, scaled by travel days
+const CHATTER_PER_BURN = 3;  // lines of the crew's chatter in one burn, spread over it; the plotted and midpoint lines are not counted
 
 const CHATTER = [
   'Nav: trajectory nominal, drift within tolerance.',
@@ -326,7 +327,7 @@ function enterTransit() {
   G.transit = {
     to, days, total, fuelCost, left: total, event: null, comms: [], seen: [], flipped: false, angle: -Math.PI / 2,
     times: Array.from({ length: count }, (_, i) => total * (i + rand(0.3, 0.8)) / count),
-    chatter: rand(5, 10),
+    chatter: rand(5, 10), chattered: 0,
   };
   G.mode = 'transit';
   G.npcs = []; G.shots = []; G.target = null;
@@ -361,8 +362,9 @@ function updateTransit(dt) {
     t.flipped = true;
     comm('Midpoint. Flip and burn: cutting the drive, rotating, and decelerating.');
   }
-  if ((t.chatter -= dt) <= 0) {
-    t.chatter = rand(12, 20);
+  if (t.chattered < CHATTER_PER_BURN && (t.chatter -= dt) <= 0) {
+    t.chattered++;
+    t.chatter = rand(0.7, 1.3) * (t.left / burnSpeed()) / (CHATTER_PER_BURN - t.chattered + 2);  // the next one, a share of what is left of the burn
     const fill = (line, c) => line.replace('{first}', c.first).replace('{home}', c.home);
     const aboard = [
       ...crewMembers().flatMap(c => c.chatter || c.traits.map(t => fill(pick(traitChatter(t)), c))),

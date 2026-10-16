@@ -160,7 +160,7 @@ const playMessages = () => {
       const n = CHATTER.length, filter = Mods.filter;
       let k = 0;
       Mods.filter = (key, list) => (key === 'chatter' ? [list[k]] : filter.call(Mods, key, list));  // the k-th line of the pool, without what the family mod adds to it
-      try { for (k = 0; k < n; k++) { G.transit.chatter = 0; G.transit.comms = []; updateTransit(0.01); got.push(G.transit.comms.slice(-1)[0]); } } finally { Mods.filter = filter; }
+      try { for (k = 0; k < n; k++) { G.transit.chatter = 0; G.transit.chattered = 0; G.transit.comms = []; updateTransit(0.01); got.push(G.transit.comms.slice(-1)[0]); } } finally { Mods.filter = filter; }
     }, false, () => ({ lines: got }));
     for (let i = 1; i <= 4; i++) says(`jobs:board:${i}`, 31 * i, st => { st.rep[localGov()] = 40; }, () => { got = generateMissions(currentPlanet()); }, false, () => got.map(o => [o.type, o.title, o.good || null]));  // a captain a government trusts, whose delivery is a contract
     says('jobs:story-passenger', 1, null, () => storyPassenger('Mira Castellane', 1, 'jupiter', 'Europa', 3000, 'mira-europa'), false, st => st.missions.map(m => m.title)); }

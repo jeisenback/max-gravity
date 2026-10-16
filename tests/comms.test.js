@@ -152,6 +152,23 @@ test('muting market tips hides them from the burn feed and the inbox, but they s
   await done();
 });
 
+test('a burn has at most three lines of crew chatter, spread over it, and the plotted and midpoint lines besides', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = [];
+    for (let i = 0; i < 8; i++) {
+      hand(); uatBurn('Earth', 'mars'); const t = G.transit, said = []; t.times = [];
+      const c0 = window.comm; window.comm = x => { said.push(x); c0(x); };
+      try { for (let k = 0; G.transit === t && k < 100000; k++) updateTransit(0.25); } finally { window.comm = c0; }
+      out.push({ chattered: t.chattered, midpoint: said.filter(x => /^Midpoint/.test(x)).length, other: said.length });
+    }
+    return out;
+  });
+  for (const b of r) { assert.ok(b.chattered >= 2 && b.chattered <= 3, `${b.chattered} chatter lines`); assert.equal(b.midpoint, 1); assert.ok(b.other <= b.chattered + 1, 'the chatter and the midpoint are all a burn says after it is plotted'); }
+  await done();
+});
+
 test('muting crew chatter hides the tagged and the plain chatter lines from the burn feed', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
