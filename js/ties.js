@@ -101,19 +101,30 @@ function customsScene(gov, planet, patrol) {
   const weight = status === 'wanted' ? 0.55 : 0.8;  // an exile is turned back less often than a wanted one is held
   const gone = () => signReplacement(p, planet);
   const faction = shortFaction(gov), say = (key, vars) => sceneSay('scene:customs', key, { n, faction, gov, planet: planet.name, first: p.first, last: p.last, ...vars });
-  const choices = [];
+  const choices = [], k = (key, vars) => say(patrol ? key.replace('.', '.patrol.') : key, vars);  // the patrol's own words for a key that names the dock
   if (officer) choices.push({ label: say('officer.label', { officer: officer.first }), run() { like(officer, 1, say('officer.memory')); return say('officer.result', { officer: officer.first }); } });
-  if (papers) choices.push({ label: say('papers.label'), run() { like(p, 2, say(patrol ? 'papers.patrol.memory' : 'papers.memory')); return say('papers.result'); } });
-  choices.push({ label: say('pay.label'), ...gated(needFunds(400)), run() { h.fund -= 400; like(cap, -1, say('pay.memory')); return say('pay.result'); } });
+  if (papers) choices.push({ label: say('papers.label'), run() { like(p, 2, say(patrol ? 'papers.patrol.memory' : 'papers.memory')); return k('papers.result'); } });
+  choices.push({ label: say('pay.label'), ...gated(needFunds(400)), run() { h.fund -= 400; like(cap, -1, say('pay.memory')); return k('pay.result'); } });
   choices.push({ label: say('silent.label'), run() {
-    if (Math.random() < weight) return say('silent.clear');
-    const fine = Math.min(h.fund, 800); h.fund -= fine; like(cap, -1, say('silent.captain.memory')); like(p, -1, say('silent.memory'));
-    if (p.cast) return say('silent.stay', { fine: fmt(fine) });  // a main character does not leave
-    return say('silent.gone', { fine: fmt(fine) }) + gone();
+    if (Math.random() < weight) return k('silent.clear');
+    const fine = Math.min(h.fund, 800); h.fund -= fine; like(cap, -1, say('silent.captain.memory')); like(p, -1, say('silent.memory')); changeRep(gov, -2);
+    if (p.cast) return k('silent.stay', { fine: fmt(fine) });  // a main character does not leave
+    return k('silent.gone', { fine: fmt(fine) }) + gone();
   } });
+  if (patrol && h.post === 'gunner' && skillLevel('gunner') >= 2) choices.push({  // the guns answer the hail: a lock on the cutter, and a fine if it does not back down
+    label: `${say('gunner.label')} [if it fails: a fine${p.cast ? '' : ', and the patrol takes them'}]`, bold: true,
+    run() {
+      const won = Math.random() < soloOdds('gunner');
+      boldWithCaptain(won);  // the captain's nerve (captains.js)
+      if (won) { like(p, 1, say('gunner.memory')); changeRep(gov, -1); return say('gunner.win'); }
+      const fine = Math.min(h.fund, 800); h.fund -= fine; like(cap, -1, say('gunner.lose.memory')); changeRep(gov, -2);
+      const lost = say('gunner.lose', { fine: fmt(fine) });
+      return p.cast ? lost + say('gunner.lose.stay') : lost + say('gunner.lose.gone') + gone();
+    },
+  });
   if (!p.cast) choices.push({
     label: say(patrol ? 'hand.label' : 'ashore.label'),
-    run() { like(p, -3, say(patrol ? 'hand.memory' : 'ashore.memory'));
+    run() { like(p, -3, say(patrol ? 'hand.memory' : 'ashore.memory')); changeRep(gov, patrol ? 2 : 1);
       for (const id of st.crew) { const q = person(id); if (q && q !== p && q.memories && tiesOf(q).aff === tiesOf(p).aff) like(q, -1, say(patrol ? 'hand.others.memory' : 'ashore.others.memory')); }
       return say(patrol ? 'hand.result' : 'ashore.result') + gone(); }
   });
