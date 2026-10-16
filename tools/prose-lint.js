@@ -283,4 +283,4 @@ function main(args, { root, out }) {
 
 if (require.main === module) process.exitCode = main(process.argv.slice(2), { root: path.resolve(__dirname, '..'), out: console.log });
 
-module.exports = { TICS, extractProse, unpricedChoices, countTics, shape, speech, lint, report, compare, narrativeFiles, main };
+module.exports = { QUOTED, scanSource, wordCount, TICS, extractProse, unpricedChoices, countTics, shape, speech, lint, report, compare, narrativeFiles, main };
