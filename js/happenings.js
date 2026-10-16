@@ -11,6 +11,7 @@
 
 const CAT_PORTS = ['Ring Nine', 'Boneyard', 'The Hollows', 'Juno Commons', 'Ceres Station', 'Eros Old Town'];
 const isStory = s => s.priority > 0;
+const SHIP_INCIDENT_WAIT = 90;  // days before the ship's own incident (transit.js) comes round again: there are only a few, and 45 let each play two or three times in a chapter (a 100-chapter sim)
 
 function pickHappening(where, planet) {
   let pool = Mods.filter('happenings', [], where, planet);
@@ -66,9 +67,9 @@ Mods.register({
         out.push({ tier: 2, weight: BURN_WEIGHTS.relationship, via: 'crew', make: relationshipScene });
         if (home().burns >= 2) out.push({ tier: 2, weight: BURN_WEIGHTS.tradition, via: 'crew', make: traditionEvent });
         out.push(...storyletCandidate(where, false));
-        // Not one seen in the last 45 days, on this burn or an earlier one.
+        // Not one seen in the last SHIP_INCIDENT_WAIT days, on this burn or an earlier one.
         const met = st.eventSeen = st.eventSeen || {};
-        const hand = hired(), fresh = TRANSIT_EVENTS.filter(e => !t.seen.includes(e) && !(met[e.title] > st.day - 45) && !(hand && OWNER_ONLY_EVENTS.includes(e.title)) && !(e.title === 'Pirates Matching Course' && quality('due:pi-safe') > st.day));
+        const hand = hired(), fresh = TRANSIT_EVENTS.filter(e => !t.seen.includes(e) && !(met[e.title] > st.day - SHIP_INCIDENT_WAIT) && !(hand && OWNER_ONLY_EVENTS.includes(e.title)) && !(e.title === 'Pirates Matching Course' && quality('due:pi-safe') > st.day));
         if (hand) for (const g of HIRED_GROUPS) out.push({ tier: 2, weight: captainWeight(g), via: 'crew', make: () => hiredEvent(g) });
         if (fresh.length) out.push({ tier: 2, weight: hand ? HIRED_WEIGHTS.ship * (1 + HAND_LANE_WEIGHT * Math.max(danger(t.to), danger(st.systemId))) : BURN_WEIGHTS.ship, via: 'ship', make() { const ev = pick(fresh); t.seen.push(ev); met[ev.title] = st.day; return ev; } });
         out.push({ tier: 2, weight: BURN_WEIGHTS.quiet, quiet: true });
