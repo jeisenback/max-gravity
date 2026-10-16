@@ -13,7 +13,8 @@
 // live flight loop in each system on arrival (update(), as the frame does), with the autopilot docking her, so what that loop says is in the message report (#656).
 // --engineer ORDER gives the Engineer post that order (a key of POWER_PRESETS) before every sail (#292); it needs --post engineer and --frames to show.
 // --messages reports the ship messages (the flight log) and the port notes a chapter writes, the means across the seeds and the lines that come most often (the arrival
-// is the game's own, arrive() in game.js; with --frames the live flight loop is played too, so the traffic's sensors, kills and hails are counted).
+// is the game's own, arrive() in game.js; with --frames the whole burn runs in the game's transit update, so the comms chatter of a burn is counted, and the live flight loop
+// is played in each system too, so the traffic's sensors, kills and hails are).
 // With no captain named, the narrow build's captain (Hester, with Cato) sails every seed, as a gunner.
 // Each chapter also reports who was lost or left, when (days since sign-on) and why, and how it ended if it ended early (#357):
 // the hand's death (The Last Run) or the captain's loss (Without a Captain). The totals follow the last seed. Not part of `npm test`.
@@ -27,10 +28,11 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     if (real) window.drawCastPair = realDrawCastPair;
     const scenes = {}, bad = [], paid = [], losses = [], ending = { v: null };
     // Every ship message (the flight log, msg) and port note (UI.notes) the chapter writes, by its text with the numbers and the names taken out.
-    const messages = { log: 0, note: 0, lines: {} };
+    const messages = { log: 0, note: 0, comm: 0, lines: {} };
     { const places = new RegExp(`\\b(${Object.values(SYSTEMS).flatMap(y => [y.name, ...y.planets.map(p => p.name)]).join('|')})\\b`, 'g');
       const tally = (kind, t) => { messages[kind]++; const k = `${kind}: ${String(t).replace(/[0-9][0-9,.]*/g, '#').replace(places, 'X').replace(/\([^)]*\)/g, '(g)').replace(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b/g, 'M').replace(/\b[A-Z][a-z]+(?: [A-Z][a-z]+)+\b/g, 'N').slice(0, 80)}`; messages.lines[k] = (messages.lines[k] || 0) + 1; };
       const m0 = window.msg; window.msg = function (t) { tally('log', t); return m0.apply(this, arguments); };
+      const c0 = window.comm; window.comm = function (t) { if (G.transit && !isQuiet(t)) tally('comm', t); return c0.apply(this, arguments); };  // the comms feed of a burn (transit.js)
       const np = UI.notes.push.bind(UI.notes); UI.notes.push = function (...x) { for (const t of x) tally('note', t); return np(...x); }; }
     const byId = {}, byTitle = {};  // the plays of a storylet by its id, and of every other scene by its title (the report of --scenes)
     { const real = window.storyletEvent; window.storyletEvent = s => { const e = real(s); e.soakId = s.id; return e; }; }
@@ -104,16 +106,14 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         const acts = Object.values(ACTIVITIES).filter(a => a.can());
         if (acts.length) pick(acts).run();
         const rs = relationshipScene(); if (rs) { openEvent(rs); answer(); }
-        let days = G.transit.days;
-        if (play) {  // the burn's seconds: speed, heat and reaction mass tick as the frame loop would, until she arrives
+        if (play) {  // the whole burn, in the game's own transit update: speed, heat and reaction mass tick as the frame loop would, the comms talk, and she arrives when the burn is done
           const t = G.transit, fuel0 = st.fuel, dt = 0.25;
           G.mode = 'transit'; G.dialog = null; t.event = null; t.elapsed = 0;
-          for (let k = 0; t.left > 0 && k < 100000; k++) { engineeringTick(dt); t.left -= dt * burnSpeed(); t.elapsed += dt; }
+          for (let k = 0; G.transit === t && k < 100000; k++) { engineeringTick(dt); updateTransit(dt); }
           fr.fuel += fuel0 - st.fuel;
-          days = transitDays(t);
         }
         fr.hull += Math.max(0, armor0 - st.armor);  // before the ship is made whole again for the next run
-        arrive();  // the game's own arrival: the days, the crew's pay, the arrival line (game.js)
+        if (G.transit) arrive();  // the game's own arrival: the days, the crew's pay, the arrival line (game.js); a played burn has arrived already
         if (play) {  // a few seconds of the live flight loop in the system: its traffic speaks, the autopilot docks her, a contact may open (#656)
           for (let t = 0; t < LIVE_SECONDS && G.mode === 'flight'; t += LIVE_STEP) { update(LIVE_STEP); fr.live += LIVE_STEP; if (G.dialog) answer(); }
         }
@@ -159,7 +159,7 @@ function messagesReport(runs, top = 12) {
   const n = runs.length, one = x => Math.round(x * 10) / 10, sum = f => runs.reduce((t, r) => t + f(r.messages), 0);
   const days = runs.reduce((t, r) => t + (r.days || 0), 0), lines = {};
   for (const r of runs) for (const [k, c] of Object.entries(r.messages.lines)) lines[k] = (lines[k] || 0) + c;
-  const out = [`messages: ${one(sum(m => m.log) / n)} flight-log lines and ${one(sum(m => m.note) / n)} port notes a chapter over ${n} seeds${days ? `, ${one(100 * sum(m => m.log + m.note) / days)} every 100 days` : ''}`, `the most often, a chapter's mean:`];
+  const out = [`messages: ${one(sum(m => m.log) / n)} flight-log lines, ${one(sum(m => m.comm || 0) / n)} comms lines of a burn and ${one(sum(m => m.note) / n)} port notes a chapter over ${n} seeds${days ? `, ${one(100 * sum(m => m.log + (m.comm || 0) + m.note) / days)} every 100 days` : ''}`, `the most often, a chapter's mean:`];
   for (const [k, c] of Object.entries(lines).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1)).slice(0, top)) out.push(`  ${one(c / n)}  ${k}`);
   return out;
 }
