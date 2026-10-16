@@ -215,6 +215,48 @@ test('a patrol stop weighs on the faction: a hand-over helps, being caught or po
   await done();
 });
 
+test('a patrol cutter\'s lieutenant asks one question first, remembers how it was answered, and asks the other question next time', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const st = start(), h = hired(), out = {}, GOVS = ['Arcology Compact', 'Dome Concord', 'Charter League'];
+    const withRandom = (v, f) => { const real = Math.random; let first = true; Math.random = () => { if (!first) return real(); first = false; return v; }; try { return f(); } finally { Math.random = real; } };
+    const begin = (gov, again) => {  // a wanted hand for the faction, and a stop that is due; `again` keeps what the journal holds
+      st.crew = st.crew.filter(id => GOVS.every(g => !['wanted', 'exile', 'officer'].includes(tiesOf(person(id)).status[g])));
+      const met = again ? st.customs.met : undefined; st.customs = {}; if (met) st.customs.met = met; st.rep[gov] = 0; G.nextEvent = null;
+      const p = find(t => t.status[gov] === 'wanted'); return { p, e: lieutenantScene(gov, system()) };
+    };
+    const play = (e, i) => { G.dialog = { event: e, choices: e.choices }; return chooseEvent(i); };
+    out.first = {}; out.second = {}; out.pure = [lieutenantQuestion(null, 'Charter League'), lieutenantQuestion({ q: 'A' }, 'Charter League'), lieutenantQuestion({ q: 'S' }, 'Charter League'), lieutenantQuestion({ q: 'W' }, 'Dome Concord')];
+    for (const gov of GOVS) {
+      let s = begin(gov); out.first[gov] = s.e.text; out.labels = s.e.choices.length;
+      play(s.e, 0); out.straightRep = st.rep[gov]; out.stop = G.nextEvent && G.nextEvent.title; out.stopChoices = G.nextEvent && G.nextEvent.choices.length; out.met = st.customs.met[gov].answer;
+      s = begin(gov, true); out.second[gov] = s.e.text;
+    }
+    // the gap makes saying nothing clear less often: the same roll clears after a straight answer and not after a gap
+    const silent = (answer) => { const s = begin('Charter League'); play(s.e, answer); const stop = G.nextEvent; G.dialog = { event: stop, choices: stop.choices }; return withRandom(0.5, () => chooseEvent(stop.choices.findIndex(c => /Say nothing/.test(c.label)))); };
+    out.afterStraight = /comes up from the engine room/.test(silent(0)); out.afterGap = /comes up from the engine room/.test(silent(1));
+    // "Who's asking?": a win ends the stop with the list unread; a loss costs regard and goes on
+    let s = begin('Dome Concord'); const fund = h.fund;
+    out.win = withRandom(0, () => play(s.e, 2)); out.winNext = G.nextEvent; out.winDue = customsDue(true); out.winStays = st.crew.includes(s.p.id); out.winRep = st.rep['Dome Concord'];
+    s = begin('Dome Concord'); out.lose = withRandom(0.999, () => play(s.e, 2)); out.loseNext = !!G.nextEvent; out.loseRep = st.rep['Dome Concord']; out.loseDue = customsDue(true);
+    s = begin('Arcology Compact', true); out.againText = s.e.text; out.metLoss = st.customs.met;
+    return out;
+  });
+  assert.match(r.first['Charter League'], /TEAGUE/); assert.match(r.first['Charter League'], /Ship's articles/);
+  assert.match(r.first['Dome Concord'], /Varga/); assert.match(r.first['Dome Concord'], /Who signed/);
+  assert.match(r.first['Arcology Compact'], /Osei/); assert.match(r.first['Arcology Compact'], /seals/);
+  assert.deepEqual(r.pure, ['A', 'S', 'A', 'A']);
+  assert.equal(r.labels, 3); assert.equal(r.straightRep, 1); assert.equal(r.stop, 'A Patrol Cutter'); assert.ok(r.stopChoices >= 3); assert.equal(r.met, 'straight');
+  assert.match(r.second['Charter League'], /We've met/); assert.match(r.second['Charter League'], /Cargo seals/);
+  assert.match(r.second['Dome Concord'], /remembers you/); assert.match(r.second['Dome Concord'], /articles, please/);
+  assert.match(r.second['Arcology Compact'], /hello again/); assert.match(r.second['Arcology Compact'], /Who signed/);
+  assert.ok(r.afterStraight && !r.afterGap, 'a gap makes saying nothing clear less often');
+  assert.match(r.win, /Varga does not ask for the crew list/); assert.equal(r.winNext, null); assert.ok(!r.winDue && r.winStays && r.winRep === 0);
+  assert.match(r.lose, /transcript/); assert.ok(r.loseNext); assert.equal(r.loseRep, -1); assert.equal(r.loseDue, false, 'the stop that follows is counted');
+  await done();
+});
+
 test('a war puts the two sides at odds and each side together, once, and the call home is a scene at the next port', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);

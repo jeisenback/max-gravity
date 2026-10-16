@@ -91,16 +91,61 @@ function signReplacement(p, planet) {
   return ` ${sceneSay('scene:customs', 'signs', { first: rep.first })}`;
 }
 
-function customsScene(gov, planet, patrol) {
-  const st = G.state, h = hired(), cap = person(h.captain), p = customsDue(patrol) ? dockPeople(gov, 'wanted')[0] || dockPeople(gov, 'exile')[0] : null;
-  if (!p) return null;
+// The crew member a faction wants, if any: a wanted one before an exile.
+const wantedAboard = gov => dockPeople(gov, 'wanted')[0] || dockPeople(gov, 'exile')[0] || null;
+// A stop is counted when it plays: the ship is not stopped again for 120 days, nor this person for 60.
+function markStop(p, gov, patrol) {
+  const st = G.state;
   st.customs[patrol ? 'patrolLast' : 'last'] = st.day;
+  st.customs[`${p.id}:${gov}:${tiesOf(p).status[gov]}`] = st.day;
+}
+
+// The lieutenant of a patrol cutter asks one question before the crew list is read (#653). Each faction has two to ask (A: the articles and the date of the last
+// landing, S: the cargo seals, W: who signed the person on and where), the first on a first stop and then whichever it did not ask last. `met` is what the journal
+// (st.customs.met) holds of the last stop with that faction: { q, answer, day }. The words are the `key` lines of scene:customs (hiredscenes.js).
+const PATROL_LT = {
+  'Arcology Compact': { key: 'compact', asks: ['S', 'W'] },
+  'Dome Concord': { key: 'concord', asks: ['W', 'A'] },
+  'Charter League': { key: 'charter', asks: ['A', 'S'] },
+};
+const lieutenantQuestion = (met, gov) => met ? PATROL_LT[gov].asks.find(q => q !== met.q) : PATROL_LT[gov].asks[0];
+const lieutenantName = gov => PATROL_LT[gov] ? sceneSay('scene:customs', `${PATROL_LT[gov].key}.name`) : '';
+
+// The question, and three answers. Straight lifts the faction's regard, a gap makes saying nothing clear less often, and "Who's asking?" is a bold call at the
+// hand's post: it ends the stop, or goes the way a gap does and costs a little regard. Every answer but the win goes on to the stop itself (customsScene).
+function lieutenantScene(gov, planet) {
+  const st = G.state, lt = PATROL_LT[gov], p = lt && customsDue(true) ? wantedAboard(gov) : null;
+  if (!p) return null;
+  const met = (st.customs.met || {})[gov], q = lieutenantQuestion(met, gov), key = lt.key;
+  const say = (k, vars) => sceneSay('scene:customs', k, { n: p.first, faction: shortFaction(gov), lt: lieutenantName(gov), ...vars });
+  const asked = answer => { (st.customs.met = st.customs.met || {})[gov] = { q, answer, day: st.day }; };
+  const goOn = shade => { G.nextEvent = customsScene(gov, planet, true, shade); };
+  return {
+    title: say('title.patrol'), personal: true, via: 'ship', owner: 'you',
+    text: `${met ? say(`${key}.again`, { recall: say(`${key}.recall.${met.answer}`) }) : say(`${key}.intro`)} ${say(`${key}.q.${q}`)}`,
+    choices: [
+      { label: say('ask.straight.label'), run() { asked('straight'); changeRep(gov, 1); goOn(0); return say(`${key}.straight`); } },
+      { label: say('ask.gap.label'), run() { asked('gap'); goOn(0.2); return say(`${key}.gap`); } },
+      { label: `${say('ask.asking.label')} [if it fails: the stop goes worse, and the captain marks it]`, bold: true, run() {
+        const won = Math.random() < soloOdds(hired().post);
+        boldWithCaptain(won);  // the captain's nerve (captains.js)
+        if (won) { asked('asking.win'); markStop(p, gov, true); return say(`${key}.asking.win`); }
+        asked('asking.lose'); changeRep(gov, -1); goOn(0.2); return say(`${key}.asking.lose`);
+      } },
+    ],
+  };
+}
+
+// `shade` is how much a gap in the lieutenant's question takes off the chance that saying nothing clears.
+function customsScene(gov, planet, patrol, shade = 0) {
+  const st = G.state, h = hired(), cap = person(h.captain), p = customsDue(patrol) ? wantedAboard(gov) : null;
+  if (!p) return null;
+  markStop(p, gov, patrol);
   const officer = patrol && st.crew.map(person).find(q => q && q !== p && tiesOf(q).status[gov] === 'officer');
   const status = tiesOf(p).status[gov], n = p.first, mine = youTies(), papers = mine.aff === gov && ['member', 'officer'].includes(mine.status[gov]);
-  (st.customs[`${p.id}:${gov}:${status}`] = st.day);
-  const weight = status === 'wanted' ? 0.55 : 0.8;  // an exile is turned back less often than a wanted one is held
+  const weight = (status === 'wanted' ? 0.55 : 0.8) - shade;  // an exile is turned back less often than a wanted one is held
   const gone = () => signReplacement(p, planet);
-  const faction = shortFaction(gov), say = (key, vars) => sceneSay('scene:customs', key, { n, faction, gov, planet: planet.name, first: p.first, last: p.last, ...vars });
+  const faction = shortFaction(gov), say = (key, vars) => sceneSay('scene:customs', key, { n, faction, gov, planet: planet.name, first: p.first, last: p.last, lt: lieutenantName(gov), ...vars });
   const choices = [], k = (key, vars) => say(patrol ? key.replace('.', '.patrol.') : key, vars);  // the patrol's own words for a key that names the dock
   if (officer) choices.push({ label: say('officer.label', { officer: officer.first }), run() { like(officer, 1, say('officer.memory')); return say('officer.result', { officer: officer.first }); } });
   if (papers) choices.push({ label: say('papers.label'), run() { like(p, 2, say(patrol ? 'papers.patrol.memory' : 'papers.memory')); return k('papers.result'); } });
@@ -203,7 +248,7 @@ Mods.register({
       if (where === 'port' && planet && warCallable().length) list = list.concat({ tier: 1, weight: 4, via: 'crew', make: () => warCallScene(planet) });
       if (where === 'transit' && G.transit) {  // a patrol stops a burn in or out of a faction's space
         const to = SYSTEMS[G.transit.to], gov = [to.gov, system().gov].find(g => isFaction(g) && g !== 'Pirate' && dockPeople(g, 'wanted').concat(dockPeople(g, 'exile')).length);
-        if (gov && customsDue(true)) list = list.concat({ tier: 1, weight: 3, via: 'ship', make: () => customsScene(gov, to, true) });
+        if (gov && customsDue(true)) list = list.concat({ tier: 1, weight: 3, via: 'ship', make: () => lieutenantScene(gov, to) });
         return list;
       }
       if (where !== 'port' || !planet) return list;

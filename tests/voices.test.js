@@ -51,7 +51,7 @@ test('main reads the named files, or the narrative files that differ from the re
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'voices-'));
   const put = (f, src) => { fs.mkdirSync(path.dirname(path.join(root, f)), { recursive: true }); fs.writeFileSync(path.join(root, f), src); };
   put('js/cast.js', SRC); put('js/stories/x.js', SRC); put('js/other.js', SRC); put('docs/voices/review.md', 'RUBRIC');
-  for (const c of ['hester', 'cato', 'ines', 'tomas', 'gunner']) put(`docs/voices/${c}.md`, `${c} card`);
+  for (const c of ['hester', 'cato', 'ines', 'tomas', 'gunner', 'patrol-officers']) put(`docs/voices/${c}.md`, `${c} card`);
   const run = (args, git) => { const lines = []; const code = main(args, { root, out: x => lines.push(x), git }); return { code, text: lines.join('\n') }; };
   const named = run(['js/other.js'], () => { throw new Error('no git for named files'); });
   assert.equal(named.code, 0); assert.match(named.text, /## Lines \(2\)/); assert.match(named.text, /\[1\] js\/other\.js:1/);
