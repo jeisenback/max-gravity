@@ -100,3 +100,51 @@ test('someone in a bad way is talked to about it first, once, and then their sto
   assert.ok(r.again); assert.ok(r.cleared); assert.ok(r.hurtFirst); assert.ok(r.hurtThen);
   await done();
 });
+
+test('after the first exchange the talk goes on to a second subject, never the same one twice running, and the favor ends a sitting on its own', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const { st, p } = setup(), out = {}, subjects = new Set();
+    p.traits = ['kind'];
+    for (let i = 0; i < 12; i++) {
+      G.nextEvent = null; const prev = p.turn; take(sitBeat(p, true), /Stay a while/);
+      const on = G.nextEvent; if (!on || !on.title.startsWith('With ') || on.choices.length !== 2 || on.text.length < 80) { out.bad = on && [on.title, on.text]; break; }
+      if (p.turn === prev) out.repeated = true;
+      subjects.add(p.turn);
+      const op = p.opinion; G.nextEvent = null; const res = take(on, /./); out.plain = out.plain || res.length > 80; out.unmoved = p.opinion === op && !G.nextEvent;  // the second beat is talk, not regard, and ends the sitting
+    }
+    out.subjects = [...subjects].sort();
+    // the favor at the end of a story ends the sitting on its own
+    const s = storyOf(p); s.beat = 3; s.favor = 'debt'; s.debt = 100; p.opinion = 5; st.credits = 10000;
+    G.nextEvent = null; take(sitBeat(p, true), /./); out.favorEnds = G.nextEvent === null;
+    return out;
+  });
+  assert.equal(r.bad, undefined, `each sitting leads on to a second beat (${JSON.stringify(r.bad)})`);
+  assert.equal(r.repeated, undefined, 'not the same subject twice running');
+  assert.deepEqual(r.subjects, ['captain', 'last', 'port', 'ship', 'work'], 'the next port, the captain, the ship, their post and their last ship');
+  assert.ok(r.plain && r.unmoved); assert.ok(r.favorEnds);
+  await done();
+});
+
+test('from the downtime menu, Sit with someone opens the picker at once, and picking a person opens the sitting at once', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const { p } = setup(), out = {};
+    uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
+    openEvent(downtimeEvent(true));
+    const i = G.dialog.choices.findIndex(c => c.label === 'Sit with someone');
+    UI.act('choose', i);
+    out.picker = G.dialog && G.dialog.event.title; out.pickerButtons = [...UI.el.querySelectorAll('.choices button')].map(b => b.textContent);
+    const j = G.dialog.choices.findIndex(c => c.label.startsWith(p.first));
+    UI.act('choose', j);
+    out.sitting = G.dialog && G.dialog.event.title === `With ${p.first}`; out.sittingButtons = [...UI.el.querySelectorAll('.choices button')].map(b => b.textContent);
+    out.used = !!(G.transit.lifeUsed || {}).before;
+    return out;
+  });
+  assert.equal(r.picker, 'Sit With Someone'); assert.ok(!r.pickerButtons.includes('Continue'), `the picker, not a screen before it (${r.pickerButtons})`);
+  assert.ok(r.sitting, 'the sitting is with them'); assert.ok(!r.sittingButtons.includes('Continue'), `the sitting, not a screen before it (${r.sittingButtons})`);
+  assert.ok(r.used);
+  await done();
+});

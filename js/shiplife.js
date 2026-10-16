@@ -623,7 +623,7 @@ function downtimeEvent(all) {
           t.lifeUsed[lifeHalf()] = true;
           if (hired()) hired().did = { ...hired().did, downtime: true };  // the first run's steps (tutorial.js)
           const text = a.run();
-          comm(`[Ship] ${text}`);
+          if (text) comm(`[Ship] ${text}`);  // one that leads straight into a scene (Sit with someone) has nothing to say yet
           return text;
         },
       })),

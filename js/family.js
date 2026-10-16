@@ -125,6 +125,22 @@ function idleTalk(p) {
     ] };
 }
 
+// A sitting is two exchanges: the first is what is on their mind or where their story is, and then the talk goes on to one of the
+// subjects the ship gives (the next port, the captain for a hand, the ship herself, their post, their last ship), not the same one
+// twice running (p.turn). It changes no regard: it is talk. `key` names the subject, for the editor and the pin; else it is drawn.
+const goesOn = (p, key) => {
+  const say = familySay('goeson'), n = p.first, st = G.state;
+  const subjects = ['port', 'ship', 'last', ...(hired() ? ['captain'] : []), ...(ROLE_NAMES[p.role] ? ['work'] : [])];  // the captain is a hand's subject; a post is a crew member's
+  const k = key || pick(subjects.filter(s => s !== p.turn));
+  p.turn = k;
+  const cap = hiredCaptain(), vars = { n, port: G.transit ? SYSTEMS[G.transit.to].name : st.planet, cap: cap ? cap.last : '', ship: shipTitle(), post: (ROLE_NAMES[p.role] || '').toLowerCase() };
+  const result = c => () => say(`${k}.${c}.result.${pick([0, 1])}`, vars);
+  return { title: say('title', { n }), text: say(`${k}.${pick([0, 1])}`, vars),
+    choices: [{ label: say(`${k}.c0.label`, vars), run: result('c0') }, { label: say(`${k}.c1.label`, vars), run: result('c1') }] };
+};
+// The first exchange of a sitting leads on to the second: each choice queues it (G.nextEvent, read when the result closes).
+const leadOn = (p, ev) => ({ ...ev, choices: ev.choices.map(c => ({ ...c, run() { const r = c.run(); G.nextEvent = goesOn(p); return r; } })) });
+
 // The sittings of a story. `result` is what happens after: a line, or a list to pick from.
 const storyTalk = (p, s) => (label, likeBy, result, extra) => ({ label, run() {
   like(p, likeBy, null); s.beat++; if (extra) extra();
@@ -186,14 +202,14 @@ function sitBeat(p, isCrew) {
   if (!pressKey) p.pressed = null;
   else if (p.pressed !== pressKey) {
     const t = talkTopics(p).find(x => x.pressing);
-    if (t) { p.pressed = pressKey; return { title: t.title, text: t.open, choices: t.choices }; }
+    if (t) { p.pressed = pressKey; return leadOn(p, { title: t.title, text: t.open, choices: t.choices }); }
   }
-  if (s.beat > (p.opinion + 1) && s.beat < 4) return politeScene(p);
-  if (s.beat === 0) return homeScene(p, s);
-  if (s.beat === 1) return pictureScene(p, s);
-  if (s.beat === 2) return hopeScene(p, s);
-  if (s.beat === 3 && isCrew && s.favor) return s.favor === 'visit' ? visitFavor(p, s) : debtFavor(p, s);
-  return ordinaryTalk(p);
+  if (s.beat > (p.opinion + 1) && s.beat < 4) return leadOn(p, politeScene(p));
+  if (s.beat === 0) return leadOn(p, homeScene(p, s));
+  if (s.beat === 1) return leadOn(p, pictureScene(p, s));
+  if (s.beat === 2) return leadOn(p, hopeScene(p, s));
+  if (s.beat === 3 && isCrew && s.favor) return s.favor === 'visit' ? visitFavor(p, s) : debtFavor(p, s);  // the favor ends a sitting on its own
+  return leadOn(p, ordinaryTalk(p));
 }
 
 function becomeLoyal(p, memory) {
@@ -208,7 +224,7 @@ function sitPicker() {
     title: say('title'), text: say(`text.${pick([0, 1, 2, 3, 4])}`),
     choices: aboard.map(f => ({
       label: say('label', { first: f.p.first, kind: f.pax ? say('label.passenger') : ROLE_NAMES[f.p.role].toLowerCase(), state: moodLow(f.p) ? say('label.low') : (G.state.injured || {})[f.p.id] ? say('label.hurt') : '' }),
-      run() { G.nextEvent = sitBeat(f.p, !f.pax); return say('go', { first: f.p.first }); },
+      run() { G.nextEvent = sitBeat(f.p, !f.pax); return null; },  // the sitting opens at once
     })),
   };
 }
@@ -223,6 +239,7 @@ const FAMILY_SCENES = {
   friend: p => asTalk(friendTopic(p, { first: 'Ben' })),
   memory: p => asTalk(memoryTopic(p, 'You sat with me when it was hard.')),
   idle: p => idleTalk(p),
+  goeson: p => goesOn(p),
   polite: p => politeScene(p),
   'story-home': p => homeScene(p, storyOf(p)),
   'story-picture': p => pictureScene(p, storyOf(p)),
@@ -472,7 +489,7 @@ Mods.register({
   init(M) {
     ACTIVITIES.sit = {
       label: 'Sit with someone', can: () => procedural().length > 0 || paxAboard().some(m => m.pid),
-      run() { G.nextEvent = sitPicker(); return 'You make two mugs of coffee.'; },
+      run() { G.nextEvent = sitPicker(); return null; },  // the picker opens at once
     };
     M.on('newDay', day => {  // a high opinion fades when you do nothing for them (people.js)
       for (const id of [...G.state.crew, (hired() || {}).captain].filter(Boolean)) {

@@ -22,7 +22,7 @@ const playTalk = () => {
     const rec = { title: ev0.title, text: ev0.text, labels: ev0.choices.map(c => String(c.label)), opens: new Set(), runs: [] };  // opens: the other openings the dice play
     for (let i = 0; i < ev0.choices.length; i++) for (let d = 1; d <= dice; d++) {
       __seed(d * 31 + i); const p = fresh(); seq(Array(8).fill((d - 0.5) / dice)); const ev = build(p); st.credits = 20000; st.cargo = st.cargo || {}; st.cargo.luxury = 3;  // the d-th die picks the d-th of n openings and results, so every variant is played
-      const line = ev.choices[i].run(); rec.runs.push([i, d, String(line), seen(p, st)]); if (ev.text !== ev0.text) rec.opens.add(ev.text);
+      const line = ev.choices[i].run(); G.nextEvent = null; rec.runs.push([i, d, String(line), seen(p, st)]); if (ev.text !== ev0.text) rec.opens.add(ev.text);  // the second beat a sitting queues is played below, by subject
     }
     rec.opens = [...rec.opens].sort();
     out.push({ key, text: JSON.stringify(rec) });
@@ -48,6 +48,12 @@ const playTalk = () => {
   // nothing on their mind: the idle talk, for a few traits, and for none
   play('idle:none', p => { p.traits = []; }, p => ordinaryTalk(p), 6);
   play('idle:two', p => { p.traits = ['pious', 'curious']; }, p => ordinaryTalk(p), 6);
+  // the talk going on, by subject: the next port, the ship, their last ship, their post (crew) and the captain (a hand's ship, played as one here)
+  for (const k of ['port', 'ship', 'last', 'work']) play(`goeson:${k}`, () => {}, p => goesOn(p, k));
+  { const realHired = window.hired, realCap = window.hiredCaptain; window.hired = () => ({ captain: 'cap' }); window.hiredCaptain = () => ({ last: 'Vance' });
+    play('goeson:captain', () => {}, p => goesOn(p, 'captain')); window.hired = realHired; window.hiredCaptain = realCap; }
+  play('goeson:drawn', p => { p.turn = 'ship'; }, p => goesOn(p), 6);  // drawn: never the subject of the last sitting
+  { G.state = JSON.parse(snap); st = G.state; const p = st.people[PID]; p.traits = []; __seed(5); const e = sitBeat(p, true); G.nextEvent = null; e.choices[0].run(); out.push({ key: 'leadon', text: JSON.stringify([G.nextEvent && G.nextEvent.title, G.nextEvent && G.nextEvent.choices.length, p.turn]) }); G.nextEvent = null; }
   // the story: the pressing topic first (once), the polite sitting, the three sittings, and the favor
   play('sit:pressed', (p, s) => { p.mood = { kind: 'low', until: s.day + 40, text: 'the rent is due' }; }, p => sitBeat(p, true));
   play('sit:pressed:again', (p, s) => { p.mood = { kind: 'low', until: s.day + 40, text: 'the rent is due' }; p.pressed = 'mood:the rent is due'; storyOf(p); }, p => sitBeat(p, true));
@@ -62,7 +68,7 @@ const playTalk = () => {
   play('picker', (p, s) => { const o = mk('Ana', { role: 'pilot' }); s.crew.push(o.id); s.injured = { [o.id]: true }; p.mood = { kind: 'low', until: s.day + 40, text: 'x' }; }, p => sitPicker(), 1);
   play('picker:pax', (p, s) => { const o = mk('Pia'); s.missions.push({ type: 'passenger', id: s.nextId++, pid: o.id, who: 'Pia Vale', pax: 1, bonus: 0, destSystem: 'mars', destPlanet: 'Olympus Dome', title: 'Carry', pay: 100, deadline: s.day + 99 }); }, p => sitPicker(), 1);
   { __seed(3); const seenText = new Set(); for (let d = 0; d < 40; d++) { __seed(d); G.state = JSON.parse(snap); seenText.add(sitPicker().text); } out.push({ key: 'picker:texts', text: JSON.stringify([...seenText].sort()) }); }
-  { G.state = JSON.parse(snap); st = G.state; const e = sitPicker(); const c = e.choices[0]; G.nextEvent = null; out.push({ key: 'picker:go', text: JSON.stringify([c.run(), G.nextEvent && G.nextEvent.title]) }); G.nextEvent = null; }
+  { G.state = JSON.parse(snap); st = G.state; const e = sitPicker(); const c = e.choices[0]; G.nextEvent = null; out.push({ key: 'picker:go', text: JSON.stringify([c.run(), G.nextEvent && G.nextEvent.title]) }); G.nextEvent = null; }  // nothing to show: the sitting opens at once
   return out;
 };
 
