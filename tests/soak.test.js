@@ -49,6 +49,7 @@ test('with --frames the soak plays the burn, and an order for the drive costs re
   }
   for (const r of [base, fast]) { assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []); assert.equal(r.runs, 6); for (const k of ['raids', 'scrams', 'hull', 'fuel', 'planned', 'seen']) assert.ok(Number.isFinite(r.frames[k]), k); }
   assert.ok(fast.frames.fuel > base.frames.fuel, 'a hotter drive burns more reaction mass');
+  assert.ok(base.frames.live > 0, 'the live flight loop is played in each system with --frames');
   assert.ok(fast.days / fast.runs < base.days / base.runs, 'and the burns are shorter');
   const lines = [], log = console.log; console.log = x => lines.push(x);
   try { framesReport([base, fast], 'x: '); } finally { console.log = log; }

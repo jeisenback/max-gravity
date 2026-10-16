@@ -9,10 +9,11 @@
 // scenes each landing opened or queued. Each draw of a burn's events is made at the second of the burn it would fall on, so the ship's night is in the sample.
 // The totals line also gives how often the hand was hurt, and hurt again while still hurt.
 // --frames plays each burn's seconds (the drive's speed, the reactor's heat and the reaction mass, engineering.js) and the burn's contact, which the
-// per-frame loop raises in play, and reports raids, scrams, hull lost and extra reaction mass; without it a burn is one jump, as before.
+// per-frame loop raises in play, and reports raids, scrams, hull lost and extra reaction mass; without it a burn is one jump, as before. It also plays 20 seconds of the
+// live flight loop in each system on arrival (update(), as the frame does), with the autopilot docking her, so what that loop says is in the message report (#656).
 // --engineer ORDER gives the Engineer post that order (a key of POWER_PRESETS) before every sail (#292); it needs --post engineer and --frames to show.
 // --messages reports the ship messages (the flight log) and the port notes a chapter writes, the means across the seeds and the lines that come most often (the arrival
-// is the game's own, arrive() in game.js; the live flight loop, where sensors, kills and hails speak, is not played).
+// is the game's own, arrive() in game.js; with --frames the live flight loop is played too, so the traffic's sensors, kills and hails are counted).
 // With no captain named, the narrow build's captain (Hester, with Cato) sails every seed, as a gunner.
 // Each chapter also reports who was lost or left, when (days since sign-on) and why, and how it ended if it ended early (#357):
 // the hand's death (The Last Run) or the captain's loss (Without a Captain). The totals follow the last seed. Not part of `npm test`.
@@ -40,7 +41,8 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
       const em = Mods.emit; Mods.emit = function (name) { if (name !== 'landed') return em.apply(this, arguments); const had = !!G.nextEvent; landed.on = true; landed.opened = 0; try { return em.apply(this, arguments); } finally { landed.on = false; const n = landed.opened + (G.nextEvent && !had ? 1 : 0); landed.mix[n] = (landed.mix[n] || 0) + 1; } }; }
     startGame({ slot: 1, background: 'earth', captain: 'Sam Rowe', mode: 'hired', post: postKey, captainKey: key });
     const st = G.state;
-    const fr = { raids: 0, scrams: 0, hull: 0, fuel: 0, planned: 0, seen: 0 };
+    const LIVE_SECONDS = 20, LIVE_STEP = 0.05;  // the live flight played in each system with --frames (#656): the frame step is the game's own cap
+    const fr = { raids: 0, scrams: 0, hull: 0, fuel: 0, planned: 0, seen: 0, live: 0 };
     if (play) for (const name of ['startRaid', 'overload']) { const real = window[name]; window[name] = function (...a) { fr[name === 'startRaid' ? 'raids' : 'scrams']++; return real.apply(this, a); }; }
     const target = typeof HIRED_TARGET === 'undefined' ? 19000 : HIRED_TARGET;
     const answer = () => {
@@ -112,8 +114,13 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         }
         fr.hull += Math.max(0, armor0 - st.armor);  // before the ship is made whole again for the next run
         arrive();  // the game's own arrival: the days, the crew's pay, the arrival line (game.js)
-        G.player = makeShip(st.shipId, 0, 0, 0); G.npcs = [];
-        land(system().planets.find(p => p.name === runPlanet) || pick(system().planets));
+        if (play) {  // a few seconds of the live flight loop in the system: its traffic speaks, the autopilot docks her, a contact may open (#656)
+          for (let t = 0; t < LIVE_SECONDS && G.mode === 'flight'; t += LIVE_STEP) { update(LIVE_STEP); fr.live += LIVE_STEP; if (G.dialog) answer(); }
+        }
+        if (G.mode !== 'landed') {  // the autopilot may have docked her already
+          G.player = makeShip(st.shipId, 0, 0, 0); G.npcs = [];
+          land(system().planets.find(p => p.name === runPlanet) || pick(system().planets));
+        }
         answer();
         tally();
         runs++;
