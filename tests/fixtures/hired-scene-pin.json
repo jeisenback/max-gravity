@@ -3073,7 +3073,7 @@
   "id": "cast:cato:mid2",
   "i": 1,
   "label": "Stand the watch down, as Cato said",
-  "result": "You stand them down. Cato covers the watch. The count isn't done until morning, and Captain Vance finds the gap in it, and finds you. \"Whose order?\" she says. You tell her. \"I see,\" she says, and writes something down. Cato, passing in the passage, doesn't look at either of you, and puts a hand on the bulkhead for a moment as he goes.",
+  "result": "You stand them down. Cato covers the watch. The count isn't done until morning, and Captain Vance finds the gap in it, and finds you. \"Whose order?\" she says. You tell her. \"I see,\" she says, and writes something down. Cato, passing in the passage, doesn't look at either of you, and puts a hand flat on the bulkhead as he goes.",
   "changes": [
    "s.people.c:cato.liftedAt: undefined -> 1",
    "s.people.c:cato.memories: [] -> undefined",
@@ -5590,7 +5590,7 @@
   "id": "captain:hester:secret:confide",
   "i": 0,
   "label": "Say you'll keep it to yourself",
-  "result": "You say you will. She nods, and closes the notebook, and holds it a moment with both hands. \"Thank you,\" she says. It's the first time you've heard her say it without a number after it.",
+  "result": "You say you will. She closes the notebook and holds it shut with both hands. \"Thank you,\" she says. It's the first time you've heard her say it without a number after it.",
   "changes": [
    "s.hired.flags.secretKnown: undefined -> true",
    "s.people.p1.liftedAt: undefined -> 1",
@@ -5699,7 +5699,7 @@
   "id": "captain:hester:secret:found",
   "i": 1,
   "label": "Say you read it, and will say nothing",
-  "result": "She's angry, and she says so. \"It wasn't for you,\" she says again. Then, more quietly: \"But you told me. I'll put that in the other column.\" She takes the letter, and goes.",
+  "result": "She's angry, and she says so. \"It wasn't for you,\" she says again. Then: \"But you told me. I'll put that in the other column.\" She takes the letter, and goes.",
   "changes": [
    "s.hired.flags.secretAngry: undefined -> true",
    "s.hired.flags.secretKnown: undefined -> true",
@@ -6993,7 +6993,7 @@
   "id": "hired:cap-praise",
   "i": 0,
   "label": "Take it modestly",
-  "result": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the gunner post.)",
+  "result": "\"The crew make it easy,\" you say. She turns a page. (+1 experience at the gunner post.)",
   "changes": [
    "s.hired.skill.gunner: 12 -> 13",
    "s.journal.0.day: undefined -> 1",
@@ -7107,7 +7107,7 @@
   "id": "hired:cap-dressing",
   "i": 0,
   "label": "Own it",
-  "result": "\"That was mine,\" you say. \"I'll fix it tonight.\" She looks at you a moment longer, and takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the gunner post.)",
+  "result": "\"That was mine,\" you say. \"I'll fix it tonight.\" She takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the gunner post.)",
   "changes": [
    "s.hired.skill.gunner: 12 -> 14",
    "s.journal.0.day: undefined -> 1",
@@ -7249,7 +7249,7 @@
   "id": "hired:cap-favour",
   "i": 2,
   "label": "Beg off",
-  "result": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
+  "result": "\"Of course,\" she says, and goes to ask somebody else. The hours go into the book anyway.",
   "changes": [
    "s.journal.0.day: undefined -> 1",
    "s.journal.0.text: undefined -> Wouldn't stand an extra watch for Captain Vance.",

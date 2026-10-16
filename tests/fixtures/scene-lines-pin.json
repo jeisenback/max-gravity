@@ -10113,7 +10113,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "He goes in first, and it goes wrong at the number two strap, and for a long minute the hold is nothing but ice and shouting. He comes out carried, and the hand that held the strap doesn't close properly, and won't. The med kit is already open. He says, from the deck, \"Number two is lashed. So that's done.\"",
+    "text": "He goes in first, and it goes wrong at the number two strap, and the hold is nothing but ice and shouting. He comes out carried, and the hand that held the strap doesn't close properly, and won't. The med kit is already open. He says, from the deck, \"Number two is lashed. So that's done.\"",
     "mem": [
      "9 Jul 2214: You let me go into the hold, and I came out."
     ],
@@ -10135,7 +10135,7 @@
    {
     "i": 0,
     "roll": 0.5,
-    "text": "He goes in first, as he said he would. The strap holds, and the pod doesn't, and for a moment the board shows nothing you can read. You get the hatch open from your side. By then the hold is quiet. Captain Vance is at the hatch before you've finished. She watches the board until the last line stops, and then she closes the notebook. \"Take him out,\" she says.",
+    "text": "He goes in first, as he said he would. The strap holds, and the pod doesn't, and the board shows nothing you can read. You get the hatch open from your side. By then the hold is quiet. Captain Vance is at the hatch before you've finished. She watches the board until the last line stops, and then she closes the notebook. \"Take him out,\" she says.",
     "mem": [
      "9 Jul 2214: We lost Cato in the ice hold."
     ],
@@ -12022,7 +12022,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the gunner post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
     ],
@@ -12034,7 +12034,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the gunner post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
     ],
@@ -12093,7 +12093,7 @@
    }
   ],
   "title": "A Word of Praise",
-  "text": "Captain Vance finds you at the end of a watch with the notebook open. She says the gunner hasn't cost her a repair or a worry in a week, and that she has written it down. It is, from her, a speech.",
+  "text": "Captain Vance finds you at the end of a watch with the notebook open. \"The gunner hasn't cost me a repair or a worry in a week,\" she says. \"I've written it down.\"",
   "labels": [
    "Take it modestly",
    "Ask if it's worth a bonus",
@@ -12106,7 +12106,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "\"That was mine,\" you say. \"I'll fix it tonight.\" She looks at you a moment longer, and takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the gunner post.)",
+    "text": "\"That was mine,\" you say. \"I'll fix it tonight.\" She takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
     ],
@@ -12118,7 +12118,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "\"That was mine,\" you say. \"I'll fix it tonight.\" She looks at you a moment longer, and takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the gunner post.)",
+    "text": "\"That was mine,\" you say. \"I'll fix it tonight.\" She takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
     ],
@@ -12133,7 +12133,7 @@
     "text": "You mention the terminal, which does lose entries, now and then. \"Then we'll see,\" she says.",
     "next": {
      "title": "The Terminal",
-     "text": "\"Then we'll see,\" Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a long minute while it does nothing at all.",
+     "text": "\"Then we'll see,\" Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a minute while it does nothing at all.",
      "labels": [
       "Show how it drops entries",
       "Admit it was you"
@@ -12159,7 +12159,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She doesn't forgive it. She records it.",
+      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -12167,7 +12167,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She doesn't forgive it. She records it.",
+      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -12180,7 +12180,7 @@
     "text": "You mention the terminal, which does lose entries, now and then. \"Then we'll see,\" she says.",
     "next": {
      "title": "The Terminal",
-     "text": "\"Then we'll see,\" Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a long minute while it does nothing at all.",
+     "text": "\"Then we'll see,\" Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a minute while it does nothing at all.",
      "labels": [
       "Show how it drops entries",
       "Admit it was you"
@@ -12206,7 +12206,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She doesn't forgive it. She records it.",
+      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -12214,7 +12214,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She doesn't forgive it. She records it.",
+      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -12289,7 +12289,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else. The hours go into the book anyway.",
     "mem": [
      "9 Jul 2214: You wouldn't stand an extra watch."
     ],
@@ -12304,7 +12304,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else. The hours go into the book anyway.",
     "mem": [
      "9 Jul 2214: You wouldn't stand an extra watch."
     ],
@@ -12318,7 +12318,7 @@
    }
   ],
   "title": "A Favor",
-  "text": "Captain Vance asks, in the careful way of someone who doesn't ask, whether you'd stand an extra watch so a crew member can sleep, and say nothing about it. It's not in the articles. She says so herself. \"I'll owe you the hours,\" she says.",
+  "text": "Captain Vance asks whether you'd stand an extra watch so a crew member can sleep, and say nothing about it. It's not in the articles, and she says so. \"I'll owe you the hours,\" she says.",
   "labels": [
    "Stand the watch",
    "Stand it for forty credits",
@@ -13209,7 +13209,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the pilot post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. (+1 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
     ],
@@ -13221,7 +13221,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the pilot post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. (+1 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
     ],
@@ -13280,7 +13280,7 @@
    }
   ],
   "title": "A Word of Praise",
-  "text": "Captain Vance finds you at the end of a watch with the notebook open. She says the pilot hasn't cost her a repair or a worry in a week, and that she has written it down. It is, from her, a speech.",
+  "text": "Captain Vance finds you at the end of a watch with the notebook open. \"The pilot hasn't cost me a repair or a worry in a week,\" she says. \"I've written it down.\"",
   "labels": [
    "Take it modestly",
    "Ask if it's worth a bonus",
@@ -13293,7 +13293,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "\"That was mine,\" you say. \"I'll fix it tonight.\" She looks at you a moment longer, and takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the pilot post.)",
+    "text": "\"That was mine,\" you say. \"I'll fix it tonight.\" She takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
     ],
@@ -13305,7 +13305,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "\"That was mine,\" you say. \"I'll fix it tonight.\" She looks at you a moment longer, and takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the pilot post.)",
+    "text": "\"That was mine,\" you say. \"I'll fix it tonight.\" She takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the pilot post.)",
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
     ],
@@ -13320,7 +13320,7 @@
     "text": "You mention the terminal, which does lose entries, now and then. \"Then we'll see,\" she says.",
     "next": {
      "title": "The Terminal",
-     "text": "\"Then we'll see,\" Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a long minute while it does nothing at all.",
+     "text": "\"Then we'll see,\" Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a minute while it does nothing at all.",
      "labels": [
       "Show how it drops entries",
       "Admit it was you"
@@ -13346,7 +13346,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She doesn't forgive it. She records it.",
+      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -13354,7 +13354,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She doesn't forgive it. She records it.",
+      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -13367,7 +13367,7 @@
     "text": "You mention the terminal, which does lose entries, now and then. \"Then we'll see,\" she says.",
     "next": {
      "title": "The Terminal",
-     "text": "\"Then we'll see,\" Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a long minute while it does nothing at all.",
+     "text": "\"Then we'll see,\" Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a minute while it does nothing at all.",
      "labels": [
       "Show how it drops entries",
       "Admit it was you"
@@ -13393,7 +13393,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She doesn't forgive it. She records it.",
+      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -13401,7 +13401,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She doesn't forgive it. She records it.",
+      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -13476,7 +13476,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else. The hours go into the book anyway.",
     "mem": [
      "9 Jul 2214: You wouldn't stand an extra watch."
     ],
@@ -13491,7 +13491,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else. The hours go into the book anyway.",
     "mem": [
      "9 Jul 2214: You wouldn't stand an extra watch."
     ],
@@ -13505,7 +13505,7 @@
    }
   ],
   "title": "A Favor",
-  "text": "Captain Vance asks, in the careful way of someone who doesn't ask, whether you'd stand an extra watch so a crew member can sleep, and say nothing about it. It's not in the articles. She says so herself. \"I'll owe you the hours,\" she says.",
+  "text": "Captain Vance asks whether you'd stand an extra watch so a crew member can sleep, and say nothing about it. It's not in the articles, and she says so. \"I'll owe you the hours,\" she says.",
   "labels": [
    "Stand the watch",
    "Stand it for forty credits",
@@ -14396,7 +14396,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the engineer post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. (+1 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
     ],
@@ -14408,7 +14408,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the engineer post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. (+1 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
     ],
@@ -14467,7 +14467,7 @@
    }
   ],
   "title": "A Word of Praise",
-  "text": "Captain Vance finds you at the end of a watch with the notebook open. She says the engineer hasn't cost her a repair or a worry in a week, and that she has written it down. It is, from her, a speech.",
+  "text": "Captain Vance finds you at the end of a watch with the notebook open. \"The engineer hasn't cost me a repair or a worry in a week,\" she says. \"I've written it down.\"",
   "labels": [
    "Take it modestly",
    "Ask if it's worth a bonus",
@@ -14480,7 +14480,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "\"That was mine,\" you say. \"I'll fix it tonight.\" She looks at you a moment longer, and takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the engineer post.)",
+    "text": "\"That was mine,\" you say. \"I'll fix it tonight.\" She takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
     ],
@@ -14492,7 +14492,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "\"That was mine,\" you say. \"I'll fix it tonight.\" She looks at you a moment longer, and takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the engineer post.)",
+    "text": "\"That was mine,\" you say. \"I'll fix it tonight.\" She takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the engineer post.)",
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
     ],
@@ -14507,7 +14507,7 @@
     "text": "You mention the terminal, which does lose entries, now and then. \"Then we'll see,\" she says.",
     "next": {
      "title": "The Terminal",
-     "text": "\"Then we'll see,\" Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a long minute while it does nothing at all.",
+     "text": "\"Then we'll see,\" Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a minute while it does nothing at all.",
      "labels": [
       "Show how it drops entries",
       "Admit it was you"
@@ -14533,7 +14533,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She doesn't forgive it. She records it.",
+      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -14541,7 +14541,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She doesn't forgive it. She records it.",
+      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -14554,7 +14554,7 @@
     "text": "You mention the terminal, which does lose entries, now and then. \"Then we'll see,\" she says.",
     "next": {
      "title": "The Terminal",
-     "text": "\"Then we'll see,\" Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a long minute while it does nothing at all.",
+     "text": "\"Then we'll see,\" Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a minute while it does nothing at all.",
      "labels": [
       "Show how it drops entries",
       "Admit it was you"
@@ -14580,7 +14580,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She doesn't forgive it. She records it.",
+      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -14588,7 +14588,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She doesn't forgive it. She records it.",
+      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -14663,7 +14663,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else. The hours go into the book anyway.",
     "mem": [
      "9 Jul 2214: You wouldn't stand an extra watch."
     ],
@@ -14678,7 +14678,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else. The hours go into the book anyway.",
     "mem": [
      "9 Jul 2214: You wouldn't stand an extra watch."
     ],
@@ -14692,7 +14692,7 @@
    }
   ],
   "title": "A Favor",
-  "text": "Captain Vance asks, in the careful way of someone who doesn't ask, whether you'd stand an extra watch so a crew member can sleep, and say nothing about it. It's not in the articles. She says so herself. \"I'll owe you the hours,\" she says.",
+  "text": "Captain Vance asks whether you'd stand an extra watch so a crew member can sleep, and say nothing about it. It's not in the articles, and she says so. \"I'll owe you the hours,\" she says.",
   "labels": [
    "Stand the watch",
    "Stand it for forty credits",
@@ -15583,7 +15583,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the comms post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. (+1 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
     ],
@@ -15595,7 +15595,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the comms post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. (+1 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
     ],
@@ -15654,7 +15654,7 @@
    }
   ],
   "title": "A Word of Praise",
-  "text": "Captain Vance finds you at the end of a watch with the notebook open. She says the comms hasn't cost her a repair or a worry in a week, and that she has written it down. It is, from her, a speech.",
+  "text": "Captain Vance finds you at the end of a watch with the notebook open. \"The comms hasn't cost me a repair or a worry in a week,\" she says. \"I've written it down.\"",
   "labels": [
    "Take it modestly",
    "Ask if it's worth a bonus",
@@ -15667,7 +15667,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "\"That was mine,\" you say. \"I'll fix it tonight.\" She looks at you a moment longer, and takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the comms post.)",
+    "text": "\"That was mine,\" you say. \"I'll fix it tonight.\" She takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
     ],
@@ -15679,7 +15679,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "\"That was mine,\" you say. \"I'll fix it tonight.\" She looks at you a moment longer, and takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the comms post.)",
+    "text": "\"That was mine,\" you say. \"I'll fix it tonight.\" She takes the pencil back. \"Tonight,\" she says, and writes the word in the margin. (+2 experience at the comms post.)",
     "mem": [
      "9 Jul 2214: You owned a mistake in the log without being made to."
     ],
@@ -15694,7 +15694,7 @@
     "text": "You mention the terminal, which does lose entries, now and then. \"Then we'll see,\" she says.",
     "next": {
      "title": "The Terminal",
-     "text": "\"Then we'll see,\" Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a long minute while it does nothing at all.",
+     "text": "\"Then we'll see,\" Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a minute while it does nothing at all.",
      "labels": [
       "Show how it drops entries",
       "Admit it was you"
@@ -15720,7 +15720,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She doesn't forgive it. She records it.",
+      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -15728,7 +15728,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She doesn't forgive it. She records it.",
+      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -15741,7 +15741,7 @@
     "text": "You mention the terminal, which does lose entries, now and then. \"Then we'll see,\" she says.",
     "next": {
      "title": "The Terminal",
-     "text": "\"Then we'll see,\" Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a long minute while it does nothing at all.",
+     "text": "\"Then we'll see,\" Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a minute while it does nothing at all.",
      "labels": [
       "Show how it drops entries",
       "Admit it was you"
@@ -15767,7 +15767,7 @@
      {
       "j": 1,
       "roll": 0,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She doesn't forgive it. She records it.",
+      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -15775,7 +15775,7 @@
      {
       "j": 1,
       "roll": 0.999,
-      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She doesn't forgive it. She records it.",
+      "text": "You say it late, with your eyes on the table. \"That's the second true thing you've told me tonight,\" she says. \"The first one cost you more.\" She writes it down, with the date.",
       "mem": [
        "9 Jul 2214: You admitted the gap in the log after blaming the terminal."
       ]
@@ -15850,7 +15850,7 @@
    {
     "i": 2,
     "roll": 0,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else. The hours go into the book anyway.",
     "mem": [
      "9 Jul 2214: You wouldn't stand an extra watch."
     ],
@@ -15865,7 +15865,7 @@
    {
     "i": 2,
     "roll": 0.999,
-    "text": "\"Of course,\" she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.",
+    "text": "\"Of course,\" she says, and goes to ask somebody else. The hours go into the book anyway.",
     "mem": [
      "9 Jul 2214: You wouldn't stand an extra watch."
     ],
@@ -15879,7 +15879,7 @@
    }
   ],
   "title": "A Favor",
-  "text": "Captain Vance asks, in the careful way of someone who doesn't ask, whether you'd stand an extra watch so a crew member can sleep, and say nothing about it. It's not in the articles. She says so herself. \"I'll owe you the hours,\" she says.",
+  "text": "Captain Vance asks whether you'd stand an extra watch so a crew member can sleep, and say nothing about it. It's not in the articles, and she says so. \"I'll owe you the hours,\" she says.",
   "labels": [
    "Stand the watch",
    "Stand it for forty credits",
@@ -20337,7 +20337,7 @@
    {
     "i": 0,
     "roll": 0,
-    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the gunner post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
     ],
@@ -20352,7 +20352,7 @@
    {
     "i": 0,
     "roll": 0.999,
-    "text": "\"The crew make it easy,\" you say. She turns a page. You stand straighter for the rest of the watch. (+1 experience at the gunner post.)",
+    "text": "\"The crew make it easy,\" you say. She turns a page. (+1 experience at the gunner post.)",
     "mem": [
      "9 Jul 2214: You took my thanks without making a thing of it."
     ],
@@ -20422,7 +20422,7 @@
    }
   ],
   "title": "A Word of Praise",
-  "text": "Captain Vance finds you at the end of a watch with the notebook open. She says the gunner hasn't cost her a repair or a worry in a week, and that she has written it down. It is, from her, a speech.",
+  "text": "Captain Vance finds you at the end of a watch with the notebook open. \"The gunner hasn't cost me a repair or a worry in a week,\" she says. \"I've written it down.\"",
   "labels": [
    "Take it modestly",
    "Ask if it's worth a bonus",
