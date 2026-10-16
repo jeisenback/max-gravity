@@ -113,9 +113,10 @@ function assaultStart(foe, rate = {}) {
 
 function repelScene(s) {
   const h = hired(), post = h.post, set = repelSet(s), spec = set.post[post];
-  const note = costNote({ casualty: true, hand: true });  // any exchange can cost someone, and the hand is among them
-  const choices = Object.entries(set.tactics).map(([k, t]) => ({ label: `${repelWords(s, `tactic.${k}.label`, t.label)}${note}`, run: () => repelStep(s, k) }));
-  choices.push({ label: `[${POSTS[post].name}] ${repelWords(s, `post.${post}.label`, spec.label)}${note}`, run: () => repelStep(s, 'post') });
+  const stake = { casualty: true, hand: true };  // any exchange can cost someone, and the hand is among them
+  // A tactic is a guess at theirs, so it shows no odds; the post's own move is a roll, and shows its.
+  const choices = Object.entries(set.tactics).map(([k, t]) => ({ label: `${repelWords(s, `tactic.${k}.label`, t.label)}${costNote(stake)}`, run: () => repelStep(s, k) }));
+  choices.push({ label: `[${POSTS[post].name}] ${repelWords(s, `post.${post}.label`, spec.label)}${costNote(stake, postOdds(post))}`, run: () => repelStep(s, 'post') });
   return {
     title: repelWords(s, `title.${s.pos}`, set.titles[s.pos]), personal: true, via: 'crew',
     text: `${repelWords(s, `open.${s.pos}.${s.round % 2}`, set.openings[s.pos][s.round % 2])}</p><p>${s.assault ? 'Defenders' : 'Boarders'}: ${s.boarders}. With you: ${repelStanding(s) - 1}.${(s.held || []).length ? ` ${s.held.join(' ')}` : ''} ${layoutHint()}`.trim(),
@@ -128,7 +129,7 @@ function repelStep(s, kind) {
   const h = hired(), post = h.post, set = repelSet(s), theirs = kind === 'post' ? null : (CUNNING * (s.grade || 0) > 0 && Math.random() < CUNNING * s.grade ? counterOf(set.tactics, kind) : pickWeighted(foeLean(s)));
   let result, text;  // 'win', 'lose' or 'tie'
   if (kind === 'post') {
-    result = Math.random() < Math.min(0.85, 0.5 + 0.1 * skillLevel(post)) ? 'win' : 'lose';
+    result = Math.random() < postOdds(post) ? 'win' : 'lose';
     text = repelWords(s, `post.${post}.${result}`, set.post[post][result]);
   } else if (kind === theirs) {
     const mine = repelStanding(s);

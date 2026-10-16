@@ -8,9 +8,9 @@
     "text": "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Gunner] Get a lock on her drive [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [40%; if it fails: you may be hurt]",
+     "Turn into her [30%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Gunner] Get a lock on her drive [50%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -19,9 +19,9 @@
     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Gunner] Get a lock on her drive [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [40%; if it fails: you may be hurt]",
+     "Turn into her [30%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Gunner] Get a lock on her drive [50%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -29,10 +29,10 @@
     "round": 0,
     "text": "She comes in for a gun run across the bow, close enough to count the weld seams on her hull, with her grapple arms out.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Gunner] Walk a burst along her line [if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [72%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [50%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [35%; if it fails: you may be hurt, and the captain marks it]",
+     "[Gunner] Walk a burst along her line [50%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -40,10 +40,10 @@
     "round": 0,
     "text": "She makes a second pass, closer than the first, and the grapple arms are open.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Gunner] Walk a burst along her line [if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [72%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [50%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [35%; if it fails: you may be hurt, and the captain marks it]",
+     "[Gunner] Walk a burst along her line [50%; if it fails: you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -463,9 +463,9 @@
     "text": "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Pilot] Put the sun behind us [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [40%; if it fails: you may be hurt]",
+     "Turn into her [22%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Pilot] Put the sun behind us [32%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -474,9 +474,9 @@
     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Pilot] Put the sun behind us [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [40%; if it fails: you may be hurt]",
+     "Turn into her [22%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Pilot] Put the sun behind us [32%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -484,10 +484,10 @@
     "round": 0,
     "text": "She comes in for a gun run across the bow, close enough to count the weld seams on her hull, with her grapple arms out.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Pilot] Flip and burn across her path [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [63%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [42%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [35%; if it fails: you may be hurt, and the captain marks it]",
+     "[Pilot] Flip and burn across her path [32%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -495,10 +495,10 @@
     "round": 0,
     "text": "She makes a second pass, closer than the first, and the grapple arms are open.</p><p>She is a good deal faster than you, and turns better. You can take a good deal more than she can. Position: even. Armor 226/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Pilot] Flip and burn across her path [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [63%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [42%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [35%; if it fails: you may be hurt, and the captain marks it]",
+     "[Pilot] Flip and burn across her path [32%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -918,9 +918,9 @@
     "text": "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Engineer] Run the drive hot and open the range [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
+     "Turn into her [30%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Engineer] Run the drive hot and open the range [72%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -929,9 +929,9 @@
     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Engineer] Run the drive hot and open the range [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
+     "Turn into her [30%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Engineer] Run the drive hot and open the range [72%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -939,10 +939,10 @@
     "round": 0,
     "text": "She comes in for a gun run across the bow, close enough to count the weld seams on her hull, with her grapple arms out.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Engineer] Put the power into the screens [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [72%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [50%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
+     "[Engineer] Put the power into the screens [72%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -950,10 +950,10 @@
     "round": 0,
     "text": "She makes a second pass, closer than the first, and the grapple arms are open.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 227/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Engineer] Put the power into the screens [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [72%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [50%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
+     "[Engineer] Put the power into the screens [72%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -1373,9 +1373,9 @@
     "text": "She's at forty kilometers and closing, no transponder, her drive running hot. A raider, small and fast, built to come alongside. The captain has said battle stations. The deck is quiet except for the air handler and somebody's boots.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Comms] Hail her on her own band [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
+     "Turn into her [30%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Comms] Hail her on her own band [60%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -1384,9 +1384,9 @@
     "text": "The plume is a raider's: short, white, hot. She's matching your course and closing on the quarter, the way they do when they mean to board. Battle stations. The crew are at their posts.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Comms] Hail her on her own band [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
+     "Turn into her [30%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Comms] Hail her on her own band [60%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -1394,10 +1394,10 @@
     "round": 0,
     "text": "She comes in for a gun run across the bow, close enough to count the weld seams on her hull, with her grapple arms out.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Comms] Jam her fire control [if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [72%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [50%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
+     "[Comms] Jam her fire control [60%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -1405,10 +1405,10 @@
     "round": 0,
     "text": "She makes a second pass, closer than the first, and the grapple arms are open.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Comms] Jam her fire control [if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [72%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [50%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
+     "[Comms] Jam her fire control [60%; if it fails: you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -1828,9 +1828,9 @@
     "text": "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Gunner] Get a lock on her drive [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [40%; if it fails: you may be hurt]",
+     "Turn into her [30%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Gunner] Get a lock on her drive [50%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -1839,9 +1839,9 @@
     "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Gunner] Get a lock on her drive [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [40%; if it fails: you may be hurt]",
+     "Turn into her [30%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Gunner] Get a lock on her drive [50%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -1849,10 +1849,10 @@
     "round": 0,
     "text": "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Gunner] Walk a burst along her line [if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [78%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [30%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [35%; if it fails: you may be hurt, and the captain marks it]",
+     "[Gunner] Walk a burst along her line [50%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -1860,10 +1860,10 @@
     "round": 0,
     "text": "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Gunner] Walk a burst along her line [if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [78%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [30%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [35%; if it fails: you may be hurt, and the captain marks it]",
+     "[Gunner] Walk a burst along her line [50%; if it fails: you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -2283,9 +2283,9 @@
     "text": "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Pilot] Put the sun behind us [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [30%; if it fails: you may be hurt]",
+     "Turn into her [22%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Pilot] Put the sun behind us [32%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -2294,9 +2294,9 @@
     "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Pilot] Put the sun behind us [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [30%; if it fails: you may be hurt]",
+     "Turn into her [22%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Pilot] Put the sun behind us [32%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -2304,10 +2304,10 @@
     "round": 0,
     "text": "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Position: even. Armor 260/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Pilot] Flip and burn across her path [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [63%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [22%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [25%; if it fails: you may be hurt, and the captain marks it]",
+     "[Pilot] Flip and burn across her path [32%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -2315,10 +2315,10 @@
     "round": 0,
     "text": "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Position: even. Armor 219/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Pilot] Flip and burn across her path [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [63%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [22%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [25%; if it fails: you may be hurt, and the captain marks it]",
+     "[Pilot] Flip and burn across her path [32%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -2738,9 +2738,9 @@
     "text": "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Engineer] Run the drive hot and open the range [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
+     "Turn into her [30%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Engineer] Run the drive hot and open the range [68%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -2749,9 +2749,9 @@
     "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Engineer] Run the drive hot and open the range [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
+     "Turn into her [30%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Engineer] Run the drive hot and open the range [68%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -2759,10 +2759,10 @@
     "round": 0,
     "text": "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Engineer] Put the power into the screens [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [78%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [30%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
+     "[Engineer] Put the power into the screens [68%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -2770,10 +2770,10 @@
     "round": 0,
     "text": "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 229/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Engineer] Put the power into the screens [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [78%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [30%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
+     "[Engineer] Put the power into the screens [68%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -3193,9 +3193,9 @@
     "text": "She's a corsair, heavier than the plume looked. Her tubes are open, and the sensors show the warm bloom of loaded torpedoes. She has forty kilometers to cover and doesn't hurry.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Comms] Hail her on her own band [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
+     "Turn into her [30%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Comms] Hail her on her own band [60%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -3204,9 +3204,9 @@
     "text": "A corsair, closing slowly from astern with her nose on you. The torpedo bay doors are open. Nobody aboard says anything about it.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Comms] Hail her on her own band [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
+     "Turn into her [30%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Comms] Hail her on her own band [60%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -3214,10 +3214,10 @@
     "round": 0,
     "text": "A torpedo leaves her bay, a bright dot on the board that grows.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Comms] Jam her fire control [if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [78%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [30%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
+     "[Comms] Jam her fire control [60%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -3225,10 +3225,10 @@
     "round": 0,
     "text": "She has a second one in the tube. On the sensors the loader arm is moving.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Comms] Jam her fire control [if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [78%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [30%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
+     "[Comms] Jam her fire control [60%; if it fails: you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -3648,9 +3648,9 @@
     "text": "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Gunner] Get a lock on her drive [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [40%; if it fails: you may be hurt]",
+     "Turn into her [30%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Gunner] Get a lock on her drive [50%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -3659,9 +3659,9 @@
     "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Gunner] Get a lock on her drive [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [40%; if it fails: you may be hurt]",
+     "Turn into her [30%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Gunner] Get a lock on her drive [50%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -3669,10 +3669,10 @@
     "round": 0,
     "text": "She crosses your bow at two kilometers and her turret tracks you the whole way, and then she comes about and does it again with the guns hot.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Gunner] Walk a burst along her line [if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [66%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [50%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [35%; if it fails: you may be hurt, and the captain marks it]",
+     "[Gunner] Walk a burst along her line [50%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -3680,10 +3680,10 @@
     "round": 0,
     "text": "She comes round for a second pass, and this time she doesn't bother with the transponder challenge. Her turret is already laid.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Gunner] Walk a burst along her line [if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [66%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [50%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [35%; if it fails: you may be hurt, and the captain marks it]",
+     "[Gunner] Walk a burst along her line [50%; if it fails: you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -4103,9 +4103,9 @@
     "text": "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Pilot] Put the sun behind us [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [30%; if it fails: you may be hurt]",
+     "Turn into her [22%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Pilot] Put the sun behind us [32%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -4114,9 +4114,9 @@
     "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Pilot] Put the sun behind us [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [30%; if it fails: you may be hurt]",
+     "Turn into her [22%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Pilot] Put the sun behind us [32%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -4124,10 +4124,10 @@
     "round": 0,
     "text": "She crosses your bow at two kilometers and her turret tracks you the whole way, and then she comes about and does it again with the guns hot.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Position: even. Armor 260/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Pilot] Flip and burn across her path [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [51%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [42%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [25%; if it fails: you may be hurt, and the captain marks it]",
+     "[Pilot] Flip and burn across her path [32%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -4135,10 +4135,10 @@
     "round": 0,
     "text": "She comes round for a second pass, and this time she doesn't bother with the transponder challenge. Her turret is already laid.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. Position: even. Armor 219/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Pilot] Flip and burn across her path [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [51%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [42%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [25%; if it fails: you may be hurt, and the captain marks it]",
+     "[Pilot] Flip and burn across her path [32%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -4558,9 +4558,9 @@
     "text": "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Engineer] Run the drive hot and open the range [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
+     "Turn into her [30%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Engineer] Run the drive hot and open the range [66%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -4569,9 +4569,9 @@
     "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Engineer] Run the drive hot and open the range [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
+     "Turn into her [30%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Engineer] Run the drive hot and open the range [66%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -4579,10 +4579,10 @@
     "round": 0,
     "text": "She crosses your bow at two kilometers and her turret tracks you the whole way, and then she comes about and does it again with the guns hot.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Engineer] Put the power into the screens [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [66%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [50%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
+     "[Engineer] Put the power into the screens [66%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -4590,10 +4590,10 @@
     "round": 0,
     "text": "She comes round for a second pass, and this time she doesn't bother with the transponder challenge. Her turret is already laid.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 229/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Engineer] Put the power into the screens [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
+     "Fire the point defense [66%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [50%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
+     "[Engineer] Put the power into the screens [66%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -5013,9 +5013,9 @@
     "text": "The cutter is at thirty kilometers and her transponder says patrol. She has hailed twice, and the second time the voice said there wouldn't be a third. She's on an intercept course with the guns warm. Battle stations. Nobody aboard talks about the fine.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Comms] Hail her on her own band [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
+     "Turn into her [30%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Comms] Hail her on her own band [60%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -5024,9 +5024,9 @@
     "text": "A patrol destroyer, or a cutter that thinks it's one, matching your course from astern. She has the legal right to stop you and the guns to do it. The captain has called battle stations and is looking at the helm and not at you.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
      "Hold course and arm the point defense",
-     "Put a warning round across her bow [if it fails: you may be hurt]",
-     "Turn into her [if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
-     "[Comms] Hail her on her own band [if it fails: you may be hurt, and the captain marks it]"
+     "Put a warning round across her bow [43%; if it fails: you may be hurt]",
+     "Turn into her [30%; if it fails: hull damage, a crew casualty, you may be hurt, and the captain marks it]",
+     "[Comms] Hail her on her own band [60%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -5034,10 +5034,10 @@
     "round": 0,
     "text": "She crosses your bow at two kilometers and her turret tracks you the whole way, and then she comes about and does it again with the guns hot.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Comms] Jam her fire control [if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [66%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [50%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
+     "[Comms] Jam her fire control [60%; if it fails: you may be hurt, and the captain marks it]"
     ]
    },
    {
@@ -5045,10 +5045,10 @@
     "round": 0,
     "text": "She comes round for a second pass, and this time she doesn't bother with the transponder challenge. Her turret is already laid.</p><p>She is a good deal faster than you, and turns better. She has the guns on you. You can take a good deal more than she can. Position: even. Armor 260/260.",
     "labels": [
-     "Fire the point defense [if it fails: hull damage, a crew casualty]",
-     "Burn evasive [if it fails: hull damage, a crew casualty, you may be hurt]",
-     "Return fire [if it fails: you may be hurt, and the captain marks it]",
-     "[Comms] Jam her fire control [if it fails: you may be hurt, and the captain marks it]"
+     "Fire the point defense [66%; if it fails: hull damage, a crew casualty]",
+     "Burn evasive [50%; if it fails: hull damage, a crew casualty, you may be hurt]",
+     "Return fire [38%; if it fails: you may be hurt, and the captain marks it]",
+     "[Comms] Jam her fire control [60%; if it fails: you may be hurt, and the captain marks it]"
     ]
    }
   ],
@@ -7391,7 +7391,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Fire down the line [if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Fire down the line [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7403,7 +7403,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Fire down the line [if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Fire down the line [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7415,7 +7415,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Fire down the line [if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Fire down the line [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7427,7 +7427,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Fire down the line [if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Fire down the line [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7439,7 +7439,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Fire down the line [if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Fire down the line [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7451,7 +7451,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Fire down the line [if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Fire down the line [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    }
   ],
@@ -7644,7 +7644,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Roll the ship [if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Roll the ship [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7656,7 +7656,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Roll the ship [if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Roll the ship [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7668,7 +7668,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Roll the ship [if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Roll the ship [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7680,7 +7680,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Roll the ship [if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Roll the ship [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7692,7 +7692,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Roll the ship [if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Roll the ship [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7704,7 +7704,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Roll the ship [if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Roll the ship [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    }
   ],
@@ -7897,7 +7897,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Seal the bulkhead behind them [if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Seal the bulkhead behind them [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7909,7 +7909,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Seal the bulkhead behind them [if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Seal the bulkhead behind them [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7921,7 +7921,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Seal the bulkhead behind them [if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Seal the bulkhead behind them [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7933,7 +7933,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Seal the bulkhead behind them [if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Seal the bulkhead behind them [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7945,7 +7945,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Seal the bulkhead behind them [if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Seal the bulkhead behind them [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7957,7 +7957,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Seal the bulkhead behind them [if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Seal the bulkhead behind them [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    }
   ],
@@ -8150,7 +8150,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Lock the doors from the console [if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Lock the doors from the console [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8162,7 +8162,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Lock the doors from the console [if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Lock the doors from the console [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8174,7 +8174,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Lock the doors from the console [if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Lock the doors from the console [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8186,7 +8186,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Lock the doors from the console [if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Lock the doors from the console [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8198,7 +8198,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Lock the doors from the console [if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Lock the doors from the console [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8210,7 +8210,7 @@
      "Hold the line [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Lock the doors from the console [if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Lock the doors from the console [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    }
   ],
@@ -8403,7 +8403,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Put fire down the corridor [if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Put fire down the corridor [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8415,7 +8415,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Put fire down the corridor [if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Put fire down the corridor [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8427,7 +8427,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Put fire down the corridor [if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Put fire down the corridor [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8439,7 +8439,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Put fire down the corridor [if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Put fire down the corridor [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8451,7 +8451,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Put fire down the corridor [if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Put fire down the corridor [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8463,7 +8463,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Put fire down the corridor [if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Put fire down the corridor [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    }
   ],
@@ -8656,7 +8656,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Bring the ship round to her hatch [if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Bring the ship round to her hatch [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8668,7 +8668,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Bring the ship round to her hatch [if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Bring the ship round to her hatch [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8680,7 +8680,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Bring the ship round to her hatch [if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Bring the ship round to her hatch [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8692,7 +8692,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Bring the ship round to her hatch [if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Bring the ship round to her hatch [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8704,7 +8704,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Bring the ship round to her hatch [if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Bring the ship round to her hatch [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8716,7 +8716,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Bring the ship round to her hatch [if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Bring the ship round to her hatch [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    }
   ],
@@ -8909,7 +8909,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Cut her power [if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Cut her power [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8921,7 +8921,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Cut her power [if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Cut her power [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8933,7 +8933,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Cut her power [if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Cut her power [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8945,7 +8945,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Cut her power [if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Cut her power [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8957,7 +8957,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Cut her power [if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Cut her power [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8969,7 +8969,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Cut her power [if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Cut her power [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    }
   ],
@@ -9162,7 +9162,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Take her intercom [if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Take her intercom [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -9174,7 +9174,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Take her intercom [if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Take her intercom [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -9186,7 +9186,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Take her intercom [if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Take her intercom [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -9198,7 +9198,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Take her intercom [if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Take her intercom [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -9210,7 +9210,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Take her intercom [if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Take her intercom [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -9222,7 +9222,7 @@
      "Cover and advance [if it fails: a crew casualty, you may be hurt]",
      "Rush them [if it fails: a crew casualty, you may be hurt]",
      "Go round them [if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Take her intercom [if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Take her intercom [60%; if it fails: a crew casualty, you may be hurt]"
     ]
    }
   ],

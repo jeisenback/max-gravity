@@ -1418,7 +1418,7 @@
    "[Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (400 cr from the ship's fund)",
    "Say nothing and keep Sam below",
-   "[Gunner 2] Lock fire control on her and ask what this is [if it fails: a fine, and the patrol takes them]",
+   "[Gunner 2] Lock fire control on her and ask what this is [65%; if it fails: a fine, and the patrol takes them]",
    "Hand Sam over to the cutter"
   ]
  },
@@ -1586,7 +1586,7 @@
    "[Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (400 cr from the ship's fund)",
    "Say nothing and keep Sam below",
-   "[Gunner 2] Lock fire control on her and ask what this is [if it fails: a fine, and the patrol takes them]",
+   "[Gunner 2] Lock fire control on her and ask what this is [65%; if it fails: a fine, and the patrol takes them]",
    "Hand Sam over to the cutter"
   ]
  },
@@ -1885,7 +1885,7 @@
    "[Arcology Compact papers] Vouch for Sam as a member",
    "Pay the officer (400 cr from the ship's fund)",
    "Say nothing and keep Sam below",
-   "[Gunner 2] Lock fire control on her and ask what this is [if it fails: a fine]"
+   "[Gunner 2] Lock fire control on her and ask what this is [65%; if it fails: a fine]"
   ]
  },
  {
@@ -2304,7 +2304,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -2723,7 +2723,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -3142,7 +3142,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -3561,7 +3561,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -3980,7 +3980,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -4314,7 +4314,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -4648,7 +4648,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -4982,7 +4982,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -5316,7 +5316,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -5650,7 +5650,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -5984,7 +5984,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -6318,7 +6318,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -6652,7 +6652,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -6986,7 +6986,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {
@@ -7320,7 +7320,7 @@
   "labels": [
    "Answer it straight",
    "Answer it, and shade one detail (saying nothing clears less often afterwards)",
-   "Answer with \"Who's asking?\" [if it fails: the stop goes worse, and the captain marks it]"
+   "Answer with \"Who's asking?\" [55%; if it fails: the stop goes worse, and the captain marks it]"
   ]
  },
  {

@@ -28,7 +28,7 @@ function workEvent(d) {
     title: o.title || d.title, text: line(o.text, d.text), via: 'crew', owner: post, workId: d.id, personal: true,
     choices: [
       { label: careful[0], run() { gainSkill(post, 3); return careful[1] + note(3); } },
-      { label: `${quick[0]}${costNote({ xp: true, marks: true })}`, bold: true, run() {
+      { label: `${quick[0]}${costNote({ xp: true, marks: true }, soloOdds(post))}`, bold: true, run() {
         const won = Math.random() < soloOdds(post);
         boldWithCaptain(won);  // the captain's nerve (captains.js)
         if (won) { gainSkill(post, 4); return quick[1] + note(4); }

@@ -58,6 +58,8 @@ function levelNote(post, level) {
 }
 // Doing a job yourself: the odds are worse than a crew member's, and get better as you learn the post.
 const soloOdds = post => 0.45 + 0.1 * skillLevel(post);
+// The job of your own post in a fight, an ice run or a contact: half a chance, a tenth better for each level, never above 0.85.
+const postOdds = post => Math.min(0.85, 0.5 + 0.1 * skillLevel(post));
 // What stays the captain's to do: the cargo, the contracts, the ship itself, the company.
 const OWNER_TABS = ['trade', 'company'];  // contracts are the captain's too, but the board still has errands
 const OWNER_ACTIONS = ['takeoff', 'buy', 'buymax', 'sell', 'sellall', 'buyship', 'cbuy', 'refuel', 'repair', 'overhaul', 'buyout', 'sellout', 'torpbuy', 'hire', 'interviewHire', 'dismiss'];
@@ -169,7 +171,7 @@ function hiredCall(ev) {
   const usable = ev.choices.filter(c => hiredFunds(() => !c.can || c.can()) && (!c.role || roleSkill(c.role)) && !c.self);
   if (!usable.length) return ev;
   const c = captainPick(usable);
-  const said = c.label.replace(/\s*<span class="hint">.*?<\/span>/g, '').replace(/\s*\[if it fails:[^\]]*\]/g, '').replace(/\s*\(.*?\)/g, '').replace(/\[\{crew\}\]\s*/, '').replace(/\{crew\}/g, 'the crew').replace(/\s+/g, ' ').trim();
+  const said = c.label.replace(/\s*<span class="hint">.*?<\/span>/g, '').replace(/\s*\[(?:\d+%(?:; if it fails:[^\]]*)?|if it fails:[^\]]*)\]/g, '').replace(/\s*\(.*?\)/g, '').replace(/\[\{crew\}\]\s*/, '').replace(/\{crew\}/g, 'the crew').replace(/\s+/g, ' ').trim();
   return { ...ev, decided: true, text: `${ev.text} ${bossName(cap)} takes the call: "${said}."`,
     choices: [{ label: 'See how it goes', run: () => { const r = c.run(); return c.role ? r.replace(/\{crew\}/g, roleName(c.role)) : r; } }] };
 }

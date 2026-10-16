@@ -126,13 +126,14 @@ function iceStageScene(n) {
   const o = sceneOverride(`ice:${n + 1}`), co = i => (o.choices || {})[i] || {}, line = (mine, shipped) => (mine ? esc(mine) : shipped);
   const worded = (c, i) => ({ ...c, label: co(i).label || c.label, win: [c.win[0], c.win[1], line(co(i).win, c.win[2])], ...(c.lose ? { lose: [c.lose[0], c.lose[1], line(co(i).lose, c.lose[2])] } : {}) });
   const choices = stage.general.map((c0, i) => { const c = worded(c0, i); return { label: `${c.label}${iceCostNote(c)}`, run: () => iceStep(n, c, null) }; });
-  const spec = worded(stage.post[post], stage.general.length + Object.keys(stage.post).indexOf(post)), level = skillLevel(post);
-  choices.push({ label: `[${POSTS[post].name}] ${spec.label}${iceCostNote(spec)}`, run: () => iceStep(n, { odds: Math.min(0.85, 0.5 + 0.1 * level), win: spec.win, lose: spec.lose }, post) });
+  const spec = worded(stage.post[post], stage.general.length + Object.keys(stage.post).indexOf(post));
+  const own = { odds: postOdds(post), win: spec.win, lose: spec.lose };
+  choices.push({ label: `[${POSTS[post].name}] ${spec.label}${iceCostNote(own)}`, run: () => iceStep(n, own, post) });
   const runNo = h.iceRuns || 1, opening = runNo < 2 ? [line(o.text, stage.open[0]), line(o.text2, stage.open[1])] : null;  // the editor's openings are the first run's
   return { title: o.title || stage.title, personal: true, via: 'crew', owner: 'you', text: `${opening ? opening[ice.round % 2 || 0] : iceOpening(stage, n, ice.round, runNo, h.flags || {})}</p><p>The haul so far: ${iceHaulWord(ice.edge)}. Armor ${st.armor}/${ship().armor}.`, choices };
 }
-// What a choice can cost, from what it declares: a lost roll's hull cost (and the casualty that can come with it), and a bold call the captain marks.
-const iceCostNote = c => costNote({ hull: (c.lose || c.win)[1] > 0, marks: !!c.bold });
+// What a choice can cost, from what it declares: its odds, a lost roll's hull cost (and the casualty that can come with it), and a bold call the captain marks.
+const iceCostNote = c => costNote({ hull: (c.lose || c.win)[1] > 0, marks: !!c.bold }, c.odds);
 // What the first scene of a later run says of the last haul (the captain's flags, set by iceHome); the first run says nothing.
 const ICE_LAST = { clean: 'The log from the last haul is still open on the captain\'s console, with one word in it: clean.',
   bad: 'The last haul isn\'t in the log, and the captain hasn\'t brought it up.', even: 'The last haul went into the log with no remark.' };
