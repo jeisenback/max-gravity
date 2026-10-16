@@ -2,7 +2,7 @@
 
 // Sails the hired hand's captain for N runs with random answers and reports runs, days and pay: the tuning tool for the
 // chapter's economy (HIRED_FUND, HIRED_WAGE, HIRED_SHARE, HIRED_TARGET in js/hired.js).
-//   node tools/soak.js --seeds 1,2,3 --legs 40 [--captain hester] [--real-draw] [--post engineer] [--frames] [--engineer favor-drive] [--scenes]
+//   node tools/soak.js --seeds 1,2,3 --legs 40 [--captain hester] [--real-draw] [--post engineer] [--frames] [--engineer favor-drive] [--scenes] [--messages]
 // --scenes adds a report of which scenes played over the seeds (#512): each scene of the editor's index that the narrow build keeps, with its plays and the seeds it
 // played in; the ones that never played; and the titles with the largest share of all plays. A scene is matched to a play by its title, so scenes that share a title
 // share a count. It reports and sets no threshold. It also counts the storylet plays by kind (landing, port, road, and the road scenes of the ship's night) and how many
@@ -11,6 +11,8 @@
 // --frames plays each burn's seconds (the drive's speed, the reactor's heat and the reaction mass, engineering.js) and the burn's contact, which the
 // per-frame loop raises in play, and reports raids, scrams, hull lost and extra reaction mass; without it a burn is one jump, as before.
 // --engineer ORDER gives the Engineer post that order (a key of POWER_PRESETS) before every sail (#292); it needs --post engineer and --frames to show.
+// --messages reports the ship messages (the flight log) and the port notes a chapter writes, the means across the seeds and the lines that come most often (the arrival
+// is the game's own, arrive() in game.js; the live flight loop, where sensors, kills and hails speak, is not played).
 // With no captain named, the narrow build's captain (Hester, with Cato) sails every seed, as a gunner.
 // Each chapter also reports who was lost or left, when (days since sign-on) and why, and how it ended if it ended early (#357):
 // the hand's death (The Last Run) or the captain's loss (Without a Captain). The totals follow the last seed. Not part of `npm test`.
@@ -23,6 +25,12 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
   const r = await ev(([maxLegs, key, real, postKey, play, order]) => {
     if (real) window.drawCastPair = realDrawCastPair;
     const scenes = {}, bad = [], paid = [], losses = [], ending = { v: null };
+    // Every ship message (the flight log, msg) and port note (UI.notes) the chapter writes, by its text with the numbers and the names taken out.
+    const messages = { log: 0, note: 0, lines: {} };
+    { const places = new RegExp(`\\b(${Object.values(SYSTEMS).flatMap(y => [y.name, ...y.planets.map(p => p.name)]).join('|')})\\b`, 'g');
+      const tally = (kind, t) => { messages[kind]++; const k = `${kind}: ${String(t).replace(/[0-9][0-9,.]*/g, '#').replace(places, 'X').replace(/\([^)]*\)/g, '(g)').replace(/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\b/g, 'M').replace(/\b[A-Z][a-z]+(?: [A-Z][a-z]+)+\b/g, 'N').slice(0, 80)}`; messages.lines[k] = (messages.lines[k] || 0) + 1; };
+      const m0 = window.msg; window.msg = function (t) { tally('log', t); return m0.apply(this, arguments); };
+      const np = UI.notes.push.bind(UI.notes); UI.notes.push = function (...x) { for (const t of x) tally('note', t); return np(...x); }; }
     const byId = {}, byTitle = {};  // the plays of a storylet by its id, and of every other scene by its title (the report of --scenes)
     { const real = window.storyletEvent; window.storyletEvent = s => { const e = real(s); e.soakId = s.id; return e; }; }
     const odd = t => /undefined|NaN|\[object|\{[a-z]+\}/.test(String(t));
@@ -73,6 +81,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         if (!sail()) { stuck++; st.day += 1; continue; }
         const to = hired().run.sid, runPlanet = hired().run.planet, creditsBefore = st.credits;
         answer();
+        G.player.x = BURN_DIST + 40; G.player.y = 0;  // clear of local traffic, as the autopilot leaves her (autopilot.js)
         tryBurn(); enterTransit(); const drawAt = G.transit.times.slice(), draws = drawAt.length; G.transit.times = [];  // as many draws as the burn would make
         planOccasions();
         if (play) {  // the burn's own contact, planned and seen only if the drive is hot enough (engage.js), then answered at random
@@ -101,10 +110,9 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
           fr.fuel += fuel0 - st.fuel;
           days = transitDays(t);
         }
-        G.transit = null;
-        for (let d = 0; d < days; d++) { st.day++; Mods.emit('newDay', st.day); }
         fr.hull += Math.max(0, armor0 - st.armor);  // before the ship is made whole again for the next run
-        st.systemId = to; G.player = makeShip(st.shipId, 0, 0, 0); G.mode = 'flight'; G.npcs = [];
+        arrive();  // the game's own arrival: the days, the crew's pay, the arrival line (game.js)
+        G.player = makeShip(st.shipId, 0, 0, 0); G.npcs = [];
         land(system().planets.find(p => p.name === runPlanet) || pick(system().planets));
         answer();
         tally();
@@ -120,7 +128,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     }
     const avg = (a, n) => Math.round(a / Math.max(1, n));
     if (!ending.v) tally();
-    return { frames: fr, hand, landings: landed.mix, losses, ending: ending.v, runs, days: st.day, credits: st.credits, reached, stuck, scenes, byId, byTitle, bad, beatDays, xoDays, waits, burns, introRun, firstOfficers: Object.keys(CAST).filter(k => CAST[k].xo), offerDay,
+    return { messages, frames: fr, hand, landings: landed.mix, losses, ending: ending.v, runs, days: st.day, credits: st.credits, reached, stuck, scenes, byId, byTitle, bad, beatDays, xoDays, waits, burns, introRun, firstOfficers: Object.keys(CAST).filter(k => CAST[k].xo), offerDay,
       avgPayPerRun: avg(paid.reduce((a, b) => a + b, 0), paid.length), avgDaysPerRun: Math.round(10 * st.day / Math.max(1, runs)) / 10 };
   }, [legs, captainKey, realDraw, post, frames, engineer]);
   await ctx.close();
@@ -136,6 +144,17 @@ function framesReport(runs, label = '') {
     `pay/run ${Math.round(mean(whole, r => r.avgPayPerRun))}, pay/day ${one(mean(whole, r => r.credits / r.days))}, days to the price ${one(mean(reached, r => r.reached.days))} ` +
     `| per chapter: raids ${one(mean(runs, r => r.frames.raids))}, scrams ${one(mean(runs, r => r.frames.scrams))}, hull lost ${one(mean(runs, r => r.frames.hull))}, ` +
     `extra reaction mass ${one(mean(runs, r => r.frames.fuel))}, contacts seen ${one(mean(runs, r => r.frames.seen))} of ${one(mean(runs, r => r.frames.planned))}`);
+}
+
+// The ship messages and port notes a chapter writes (the `messages` of each soak result): the means across the seeds, then the lines that come most often, as lines to print.
+// `top` is how many lines are listed; a line is counted by its text with the numbers and the names taken out.
+function messagesReport(runs, top = 12) {
+  const n = runs.length, one = x => Math.round(x * 10) / 10, sum = f => runs.reduce((t, r) => t + f(r.messages), 0);
+  const days = runs.reduce((t, r) => t + (r.days || 0), 0), lines = {};
+  for (const r of runs) for (const [k, c] of Object.entries(r.messages.lines)) lines[k] = (lines[k] || 0) + c;
+  const out = [`messages: ${one(sum(m => m.log) / n)} flight-log lines and ${one(sum(m => m.note) / n)} port notes a chapter over ${n} seeds${days ? `, ${one(100 * sum(m => m.log + m.note) / days)} every 100 days` : ''}`, `the most often, a chapter's mean:`];
+  for (const [k, c] of Object.entries(lines).sort((a, b) => b[1] - a[1] || (a[0] < b[0] ? -1 : 1)).slice(0, top)) out.push(`  ${one(c / n)}  ${k}`);
+  return out;
 }
 
 // Who was lost, left or marked, per chapter, and the totals across the seeds.
@@ -193,7 +212,7 @@ function scenesReport(runs, rows, legs, top = 10) {
   return out;
 }
 
-module.exports = { soak, report, framesReport, sceneRows, scenesReport };
+module.exports = { soak, report, framesReport, messagesReport, sceneRows, scenesReport };
 
 if (require.main === module) {
   const arg = n => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : null; };
@@ -207,6 +226,7 @@ if (require.main === module) {
     }
     report(all);
     if (frames) framesReport(all, engineer ? `${post} with ${engineer}: ` : `${post}: `);
+    if (process.argv.includes('--messages')) console.log(messagesReport(all).join('\n'));
     if (process.argv.includes('--scenes')) console.log(scenesReport(all, await sceneRows(), legs).join('\n'));
     await closeBrowser();
   })();

@@ -5,7 +5,7 @@
 
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const { scenesReport, report } = require('../tools/soak');
+const { scenesReport, report, messagesReport } = require('../tools/soak');
 
 const rows = [
   { id: 'port-a', title: 'Alpha', off: false, storylet: true },
@@ -52,4 +52,14 @@ test('with the landings and the hand counted the report gives the plays by kind,
   const lines = [], log = console.log; console.log = x => lines.push(x);
   try { report(night.map(r => ({ ...r, losses: [] }))); } finally { console.log = log; }
   assert.match(lines.at(-1), /; the hand was hurt 3 times \(1 while still hurt\) and died in 0$/);
+});
+
+test('the message report gives the lines and notes a chapter writes, and the lines that come most often', () => {
+  const runs = [
+    { seed: 1, days: 100, messages: { log: 5, note: 1, lines: { 'log: Burning for N.': 3, 'log: Arrived at N (#).': 2, 'note: Wages #.': 1 } } },
+    { seed: 2, days: 100, messages: { log: 3, note: 1, lines: { 'log: Burning for N.': 3, 'note: Wages #.': 1 } } },
+  ];
+  const out = messagesReport(runs, 2);
+  assert.equal(out[0], 'messages: 4 flight-log lines and 1 port notes a chapter over 2 seeds, 5 every 100 days');
+  assert.deepEqual(out.slice(1), ['the most often, a chapter\'s mean:', '  3  log: Burning for N.', '  1  log: Arrived at N (#).']);
 });

@@ -41,8 +41,12 @@ test('the soak reports who was lost or left, when and why, and the totals', asyn
 });
 
 test('with --frames the soak plays the burn, and an order for the drive costs reaction mass and shortens it (#292)', async () => {
-  const base = await soak({ seed: 1, legs: 6, post: 'engineer', frames: true });
-  const fast = await soak({ seed: 1, legs: 6, post: 'engineer', frames: true, engineer: 'favor-drive' });
+  let base, fast;
+  for (const seed of [1, 2, 3, 4]) {  // a seed whose hand dies ends the chapter early (js/boarders.js), so the first seed where neither does
+    base = await soak({ seed, legs: 6, post: 'engineer', frames: true });
+    fast = await soak({ seed, legs: 6, post: 'engineer', frames: true, engineer: 'favor-drive' });
+    if (!base.ending && !fast.ending) break;
+  }
   for (const r of [base, fast]) { assert.deepEqual(r.bad, []); assert.deepEqual(r.errors, []); assert.equal(r.runs, 6); for (const k of ['raids', 'scrams', 'hull', 'fuel', 'planned', 'seen']) assert.ok(Number.isFinite(r.frames[k]), k); }
   assert.ok(fast.frames.fuel > base.frames.fuel, 'a hotter drive burns more reaction mass');
   assert.ok(fast.days / fast.runs < base.days / base.runs, 'and the burns are shorter');
