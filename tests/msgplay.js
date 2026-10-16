@@ -109,7 +109,7 @@ const playMessages = () => {
   says('auto:control', 1, st => { pilot(st); G.keys.left = true; }, () => { updateAutopilot(0.016); G.keys.left = false; });
   says('auto:contact', 1, st => { pilot(st); foeNear(); }, () => updateAutopilot(0.016));
   says('auto:stuck', 1, st => { pilot(st); G.auto.t = 1e3; }, () => updateAutopilot(0.016));
-  says('auto:dock', 1, st => { crewman(st, 'pilot'); st.route = { go: true }; }, st => Mods.emit('arrive', st.systemId));
+  says('auto:dock', 1, st => { crewman(st, 'pilot'); st.route = { go: true }; }, st => { Mods.emit('arrive', st.systemId); msg(arriveLine()); });
   const escort = (st, credits) => { buyCompanyShip('courier'); fleet()[0].escort = true; st.credits = credits; };
   const farthest = () => Object.keys(SYSTEMS).filter(id => id !== G.state.systemId).sort((a, b) => burnFuel(G.state.systemId, b) - burnFuel(G.state.systemId, a))[0];
   says('escort:fuel', 1, st => escort(st, 0), st => escortBurn(farthest()));
