@@ -76,9 +76,9 @@ const CAST = {
           {
             label: 'Ask about the landing anyway',
             effects: { castLike: { who: 'ines', n: 1, memory: 'I told you about the landing, and you didn\'t look at me differently.' } },
-            result: 'She\'s silent for most of a minute. Then she tells it flat and fast: the dark pad, the tower saying ditch, the forty-one faces she ' +
-              'could see on the cabin feed, and the thing she decided. When she finishes she lets out a breath. "There," she says. "That\'s the whole ' +
-              'thing. It\'s much shorter than I thought."',
+            result: 'She\'s silent for most of a minute. Then she tells it flat and fast. "The tower said ditch. The pad was unlit, with forty-one on ' +
+              'the cabin feed and a hull good for one approach and not for a swim. I put her down. The stop was mine, because nobody on the ' +
+              'tower could see the pad." She lets out a breath. "There," she says. "That\'s the whole thing. It\'s much shorter than I thought."',
           },
           {
             label: 'Ask about the book instead',
@@ -119,9 +119,9 @@ const CAST = {
           {
             label: 'Write the reference',
             effects: { castLike: { who: 'ines', n: 3, memory: 'You wrote my reference for the Lisbon board.' }, castFlag: { who: 'ines', flag: 'reference' } },
-            result: 'You write it that night, plainly, and it takes four tries because the first three sound like a eulogy. You say what you\'ve seen: the ' +
-              'care, the nerve, the logbook. When you send it, Ines is standing in the hatch and doesn\'t say anything at all. In the morning there\'s ' +
-              'a mug of coffee on your console, and the bunk across from yours has been made with corners.',
+            result: 'You write it that night, plainly: nine years of landings in a log she keeps in her own hand, the one you\'ve watched her fly, and ' +
+              'that you\'d stand in front of the board and say so. When you send it, Ines is standing in the hatch and doesn\'t say anything at all. In ' +
+              'the morning there\'s a mug of coffee on your console.',
           },
           {
             label: 'Offer to say it to the board in person',
@@ -129,7 +129,7 @@ const CAST = {
             effects: { castLike: { who: 'ines', n: 3, memory: 'You offered to stand before the Lisbon board for me.' }, castFlag: { who: 'ines', flag: 'reference' } },
             result: 'You say it before she can fold the message away. "I\'ll come to Lisbon. I\'ll stand up and say it myself." Ines turns from the ' +
               'wall. "It\'s forty days," she says. "You\'d be away from the ship for a week." "Then I\'ll ask the captain for the week." She ' +
-              'looks at you for some time. Then she takes the pencil from behind her ear and writes the date of the hearing on the inside of her ' +
+              'takes the pencil from behind her ear and writes the date of the hearing on the inside of her ' +
               'wrist, the way she writes a landing slot, and holds it up for you to read. "In ten years," she says, "nobody has offered me a week."',
           },
           {
@@ -170,7 +170,7 @@ const CAST = {
           { label: 'Put a second hand at the cutoff', ...gated(needCrew(2)), run: () => coldThrusters(true) },
           { label: 'Order her to ditch', memory: 'You ordered me to ditch the ship, as the tower did.', run() {
             castLike('ines', -3, this.memory);
-            return 'You order the ditch. She does it by the book, and the book is correct, and neither of you says that she\'d have made the pad.';
+            return 'You order the ditch. She does it by the book. Afterward she writes the ditch in the logbook, the time, the order and who gave it, and turns the page.';
           } },
         ],
       },
@@ -238,7 +238,7 @@ const CAST = {
           {
             label: 'Offer to help with the service',
             effects: { castLike: { who: 'tomas', n: 1, memory: 'You helped me with the service on my own time.' }, castXp: { who: 'tomas', role: 'engineer', n: 2 } },
-            result: 'He gives you a rag, a torque wrench and a short, kind lecture on what not to touch, and then you spend two hours on your back under a ' +
+            result: 'He gives you a rag and a torque wrench, and names the three things not to touch, and you spend two hours on your back under a ' +
               'coolant loop. When you come out, black to the elbows, he looks at you. "Next time," he says, "you\'re holding the light. ' +
               'You\'re better at that."',
           },
@@ -246,8 +246,8 @@ const CAST = {
             label: 'Leave him to it',
             effects: { castLike: { who: 'tomas', n: 0, memory: 'You left me to my service.' } },
             result: '"It\'s all right," he says. "Most ' +
-              'people do. She\'ll thank you anyway." He goes back to the loop, and you hear him, softly, as you leave, telling the pipes that nobody\'s ' +
-              'angry at them.',
+              'people do. She\'ll thank you anyway." He goes back to the loop, and you hear him, softly, as you leave: "Nobody\'s angry at you. ' +
+              'Nobody\'s angry."',
           },
         ],
       },
@@ -262,15 +262,14 @@ const CAST = {
             label: 'Lend him 200 cr',
             when: { credits: 200 },
             effects: { credits: -200, castLike: { who: 'tomas', n: 3, memory: 'You lent me two hundred credits for my sister\'s rent.' }, castFlag: { who: 'tomas', flag: 'loan' } },
-            result: 'He takes it with both hands. "Thank you," he says. It\'s not enough, and he says it again in Igbo. By the second pay day ' +
-              'the two hundred is in your account, with an extra: a ring of braided wire, on a note that says "for luck, from a man who understands ' +
-              'machines".',
+            result: 'He takes it with both hands. "Thank you," he says, and says it again in Igbo. By the second pay day ' +
+              'the two hundred is in your account, with an extra: a ring of braided wire, on a note that says "for luck".',
           },
           {
             label: '"I can\'t spare it."',
             effects: { castLike: { who: 'tomas', n: -1, memory: 'You couldn\'t spare two hundred credits.' } },
-            result: 'He straightens his shoulders. "Of course," he says. "I shouldn\'t have asked." He doesn\'t ask anyone else, and in the evening you ' +
-              'hear him in the engine room, low and steady, working out a month of arithmetic on his fingers. The next day he has taken two extra ' +
+            result: 'He straightens his shoulders. "Of course," he says. "I shouldn\'t have asked." He doesn\'t ask anyone else. In the evening he\'s ' +
+              'in the engine room with the door open, counting a month on his fingers, and the next day his name is on the bill for two extra ' +
               'shifts.',
           },
         ],
@@ -284,8 +283,8 @@ const CAST = {
           {
             label: 'Ask him to teach you',
             effects: { castFlag: { who: 'tomas', flag: 'plan' }, castLike: { who: 'tomas', n: 2, memory: 'You asked me how I\'d rebuild her, and listened.' }, castXp: { who: 'tomas', role: 'engineer', n: 2 }, gainSkill: { post: 'engineer', n: 3 } },
-            result: 'It takes the whole of the quiet watch and half the next one. He draws it on the deck in chalk, a plant you wouldn\'t know from a ' +
-              'diagram, and then he rubs out the first pipe and makes you put it back from memory, and the second, and the third, until the deck is bare and the whole of her is laid out in your head. "There," he says. "Now you know her. Don\'t tell the owners."',
+            result: 'It takes the whole of the quiet watch and half the next one. He draws it on the deck in chalk, every valve of her in his order. ' +
+              'Then he rubs out the first pipe and makes you put it back from memory, and the second, and the third, until the deck is bare and the whole of her is laid out in your head. "There," he says. "Now you know her. Don\'t tell the owners."',
           },
           {
             label: 'Ask him to write it down, so it doesn\'t go with the hull',
@@ -294,7 +293,7 @@ const CAST = {
             result: 'He looks at the flask. "Nobody has asked me that," he says. He goes below and comes back with a notebook with a stained ' +
               'cover, and spends the quiet watch filling eleven pages in small square capitals, a diagram on each. He tears them out along the fold, ' +
               'carefully, and puts them in your hand. "If she\'s sold again," he says, "somebody will need to know where the cracks are. Not the ' +
-              'owners. Somebody." You fold the pages into your jacket, and he goes back to the plant and tells it, quietly, that it\'ll be all right.',
+              'owners. Somebody." You fold the pages into your jacket. He puts the notebook back in his pocket with the stubs still in it.',
           },
           {
             label: '"Stick to your shifts."',
@@ -312,8 +311,7 @@ const CAST = {
           {
             label: 'Say you\'d try',
             effects: { castLike: { who: 'tomas', n: 2, memory: 'You said you\'d try to keep the crew together.' }, castFlag: { who: 'tomas', flag: 'promised' } },
-            result: '"I\'d try," you say, and he lets out a breath. "That\'s enough," he says. "Nobody has ever said that. They say yes, or no. Nobody ' +
-              'says try." He claps your shoulder, once, hard, and goes below. You can hear him telling the engines the news.',
+            result: '"I\'d try," you say, and he lets out a breath. "That\'s enough," he says. "Nobody has ever said that." He claps your shoulder, once, hard, and goes below.',
           },
           {
             label: 'Say you can\'t promise that',
@@ -334,7 +332,7 @@ const CAST = {
           { label: 'Send a second person in with him', ...gated(needCrew(2)), run: () => thePlant(true) },
           { label: 'Tell him to vent the plant', memory: 'You told me to vent the plant.', run() {
             castLike('tomas', -3, this.memory);
-            return 'You tell him to vent her. He stands at the door for a moment, and then he does it, and the plant dies with a sound like a long breath. He doesn\'t look at you. He goes below to tell her he\'s sorry.';
+            return 'You tell him to vent her. He stands at the door with the rag in his hand. Then he opens the valve, and the whine runs down and stops. He doesn\'t look at you. He goes below.';
           } },
         ],
       },
@@ -1080,8 +1078,8 @@ function coldThrusters(backup) {
   const outcome = castFate('ines', castPoints(castRiskPoints() + (practiced ? 1 : 0) + (backup ? 1 : 0)), `Flew the ship in dead stick near ${system().name}.`, 'Her left hand shakes on the stick.', 'pilot');
   const lead = backup ? 'You put a second hand at the cutoff. ' : '';
   if (outcome === 'die') {
-    return lead + 'The flip is a half second late. You hear the tower, and then the cutoff, and then the pad. When the crew reach the helm the logbook is open on the chair, and the last entry is half written.'
-      + (promised ? ' You remember the ship you promised her, and that nobody will ask for it now.' : '');
+    return lead + 'The flip is a half second late. The hull meets the pad before the thrusters have finished the turn. When the crew reach the helm the logbook is open on the chair, and the last entry is half written.'
+      + (promised ? ' The ship you promised her is on the last page of the logbook, the word someday and no date.' : '');
   }
   castLike('ines', 2, outcome === 'mark' ? 'You let me fly it in dead, and I came down with a hand that shakes.' : 'You let me fly it in dead, and I came down.');
   if (outcome === 'mark') {
@@ -1098,7 +1096,7 @@ function thePlant(backup) {
   const lead = backup ? 'You send a second person in after him. ' : '';
   if (outcome === 'die') {
     return lead + 'The whine drops. The plant holds. Nobody comes out. When the compartment has cooled you open the hatch, and he\'s at the last valve with the wrench in his hand and the rag still over his face. He had closed them all. The plant runs perfectly for the rest of the burn.'
-      + (promised ? ' You remember what you said about trying to keep the crew together.' : '');
+      + (promised ? ' He asked you once whether you\'d try to keep the crew together, and you said you\'d try.' : '');
   }
   castLike('tomas', 2, outcome === 'mark' ? 'You let me go into the plant, and I came out scalded.' : 'You let me go into the plant, and I came out.');
   if (outcome === 'mark') {

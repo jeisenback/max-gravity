@@ -33,7 +33,7 @@ CAPTAINS.hester = {
   sway: {
     ok: (o, cur) => o.profit >= 0.9 * (cur.profit || 0),
     yes: 'Captain Vance looks at your figure, and then at hers. It\'s within a tenth, and she draws a line through hers. "Your way," she says. "Don\'t make me regret the notebook."',
-    no: 'Captain Vance puts her figure beside yours without a word. It\'s better by more than a tenth, and she doesn\'t need to say so. "We go as planned," she says, and turns the page.'
+    no: 'Captain Vance puts her figure beside yours without a word. It\'s better by more than a tenth. "We go as planned," she says, and turns the page.'
   },
 
   events: {
@@ -46,25 +46,25 @@ CAPTAINS.hester = {
       notHeard: '"I didn\'t ask what you thought of the sum," she says. "I asked for the burn." You run it hot, and it works.',
     },
     'cap-praise': {
-      text: 'Captain Vance finds you at the end of a watch with the notebook open. She says the {post} hasn\'t cost her a repair or a worry in a week, and that she has written it down. It is, from her, a speech.',
-      take: '"The crew make it easy," you say. She turns a page. You stand straighter for the rest of the watch.',
+      text: 'Captain Vance finds you at the end of a watch with the notebook open. "The {post} hasn\'t cost me a repair or a worry in a week," she says. "I\'ve written it down."',
+      take: '"The crew make it easy," you say. She turns a page.',
       bonusYes: 'She looks at you, and at the notebook, and laughs. "Sixty," she says. "It\'s in the column already." It reaches your account before the end of the watch.',
       bonusNo: '"When it\'s a word, it\'s free," she says. "When it\'s a bonus, it has to be earned. I have a column for each."',
     },
     'cap-dressing': {
       text: 'There\'s a watch with no entry in the log, and Captain Vance has found it. She doesn\'t shout. She puts the log on the galley table, turns it so it faces you, and lays a pencil across the gap. Then she waits.',
-      own: '"That was mine," you say. "I\'ll fix it tonight." She looks at you a moment longer, and takes the pencil back. "Tonight," she says, and writes the word in the margin.',
+      own: '"That was mine," you say. "I\'ll fix it tonight." She takes the pencil back. "Tonight," she says, and writes the word in the margin.',
       blame: 'You mention the terminal, which does lose entries, now and then. "Then we\'ll see," she says.',
-      terminal: '"Then we\'ll see," Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a long minute while it does nothing at all.',
+      terminal: '"Then we\'ll see," Captain Vance says, and pulls the terminal across the table. The two of you watch the log for a minute while it does nothing at all.',
       showWin: 'Just as you open your mouth, it does it: one line blinks out and back. She reads the line twice. "I\'ll have it replaced," she says. "And I was wrong, which I\'ll put in the book in the ink I keep for that."',
       showLose: 'It does nothing. The log sits there, clean and obedient. She looks at it, and at you, and says, "Well." She writes something small in the notebook, and doesn\'t show you what.',
-      admit: 'You say it late, with your eyes on the table. "That\'s the second true thing you\'ve told me tonight," she says. "The first one cost you more." She doesn\'t forgive it. She records it.',
+      admit: 'You say it late, with your eyes on the table. "That\'s the second true thing you\'ve told me tonight," she says. "The first one cost you more." She writes it down, with the date.',
     },
     'cap-favour': {
-      text: 'Captain Vance asks, in the careful way of someone who doesn\'t ask, whether you\'d stand an extra watch so a crew member can sleep, and say nothing about it. It\'s not in the articles. She says so herself. "I\'ll owe you the hours," she says.',
+      text: 'Captain Vance asks whether you\'d stand an extra watch so a crew member can sleep, and say nothing about it. It\'s not in the articles, and she says so. "I\'ll owe you the hours," she says.',
       stand: 'You take it, and the long hours go slowly, with a flask of the galley\'s worst coffee. Nobody mentions it. She mentions it once, at the next port, in a sentence with a number in it.',
       fee: 'She pays it out of her own pocket, without comment, and writes it down. The watch passes like any other.',
-      beg: '"Of course," she says, and goes to ask somebody else. You were entitled to say no. The hours go into the book anyway.',
+      beg: '"Of course," she says, and goes to ask somebody else. The hours go into the book anyway.',
     },
   },
 
@@ -95,15 +95,14 @@ CAPTAINS.hester = {
         title: 'What the Notebook Is For',
         text: ('Late in the watch Captain Vance asks you to sit. She turns the notebook round so you can read the last page, and lays a pencil across ' +
             'it. "The ship isn\'t mine," she says. "She\'s the bank\'s until the end of the year, and mine after that, if I miss nothing. One more ' +
-            'missed payment and the bank takes her, and I\'m a hand again, on somebody else\'s articles." "There\'s an Ore Runner ' +
-            'on the yard list at the next port with her name painted over. Same bank. Three owners, and each of them missed one payment. One. I\'ve ' +
-            'counted what I\'m from it." She turns a page. "Cato knows. You\'re the second. I\'m telling you because you\'ve kept the books straight, ' +
-            'and because I\'d rather you heard it from me."'),
+            'missed payment and the bank takes her. There\'s an Ore Runner ' +
+            'on the yard list at the next port with her name painted over. Same bank. Three owners, and each of them missed one payment. One. I\'m ' +
+            'one from it. I\'ve counted." She turns a page. "Cato knows. You\'re the second."'),
         choices: [
           {
             label: 'Say you\'ll keep it to yourself',
             effects: { captainLike: { n: 2, memory: 'You said you\'d keep the bank to yourself.' }, captainFlag: 'secretKnown' },
-            result: 'You say you will. She nods, and closes the notebook, and holds it a moment with both hands. "Thank you," she says. It\'s the first time you\'ve heard her say it without a number after it.',
+            result: 'You say you will. She closes the notebook and holds it shut with both hands. "Thank you," she says. It\'s the first time you\'ve heard her say it without a number after it.',
           },
           {
             label: 'Ask how much she still owes',
@@ -129,7 +128,7 @@ CAPTAINS.hester = {
           {
             label: 'Say you read it, and will say nothing',
             effects: { captainLike: { n: 0, memory: 'You said you had read the bank\'s letter, and would say nothing.' }, captainFlag: ['secretKnown', 'secretAngry'] },
-            result: 'She\'s angry, and she says so. "It wasn\'t for you," she says again. Then, more quietly: "But you told me. I\'ll put that in the other column." She takes the letter, and goes.',
+            result: 'She\'s angry, and she says so. "It wasn\'t for you," she says again. Then: "But you told me. I\'ll put that in the other column." She takes the letter, and goes.',
           },
         ],
       },
@@ -140,16 +139,16 @@ CAPTAINS.hester = {
   // a line for crew who go with you, one for the secret, one for Cato (dead or alive), a parting line, and how you leave.
   goodbye: {
     title: 'The Foot of the Ramp',
-    warm: 'Captain Vance is waiting at the foot of the ramp when you come down, which isn\'t like her. She has the notebook under one arm. "I have your account," she says. "It\'s correct. I\'d like you to check it anyway."',
+    warm: 'Captain Vance is waiting at the foot of the ramp when you come down, with the notebook under one arm. "I have your account," she says. "It\'s correct. I\'d like you to check it anyway."',
     neutral: 'Captain Vance meets you at the foot of the ramp with the papers and the notebook. She counts your last pay twice, into your hand, and has you sign for it.',
     cold: 'Captain Vance is at the foot of the ramp, and she has the papers ready. She doesn\'t offer her hand. "Your account is correct," she says. "Sign here, and here."',
     crew: '{names} will go with you. She runs a finger down the crew list. "That\'s a column I\'ll have to fill again," she says.',
-    secret: 'She doesn\'t mention the bank. She doesn\'t need to. "The first of the month," she says, "and the first after that. I\'ll be there for them."',
+    secret: 'She doesn\'t mention the bank. "The first of the month," she says, "and the first after that. I\'ll be there for them."',
     repay: 410,
     repaid: 'She counts four hundred and ten onto the rail, the day you leave, as she said she would. You count it after her. It\'s correct.',
     xoDead: 'She doesn\'t look at the empty place on the watch bill. "I\'ve taken Cato out of the book," she says. "I had to. It\'s the first time I didn\'t want to."',
-    xo: 'Cato is at the hatch, because the captain wouldn\'t go and say it. "Take care of your people," he says. "They\'ll take care of you. I\'ve been trying to tell her for years."',
-    parting: 'She holds out her hand at last. It\'s dry and brief. "Fair winds," she says. "And keep your own books."',
+    xo: 'Cato is at the hatch, because the captain wouldn\'t go and say it. "Take care of your people," he says. "They\'ll take care of you. I\'ve put your name on the back of the bill, so I remember to ask after you."',
+    parting: 'She holds out her hand at last. It\'s dry and brief. "That\'s the account closed," she says. "Keep your own books."',
     choices: [
       {
         label: 'Thank her for the work',

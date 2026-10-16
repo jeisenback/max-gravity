@@ -3,7 +3,7 @@
   "captain": "hester",
   "state": "cold",
   "title": "The Foot of the Ramp",
-  "text": "Captain Vance is at the foot of the ramp, and she has the papers ready. She doesn't offer her hand. \"Your account is correct,\" she says. \"Sign here, and here.\"</p><p>Cato is at the hatch, because the captain wouldn't go and say it. \"Take care of your people,\" he says. \"They'll take care of you. I've been trying to tell her for years.\"</p><p>She holds out her hand at last. It's dry and brief. \"Fair winds,\" she says. \"And keep your own books.\"",
+  "text": "Captain Vance is at the foot of the ramp, and she has the papers ready. She doesn't offer her hand. \"Your account is correct,\" she says. \"Sign here, and here.\"</p><p>Cato is at the hatch, because the captain wouldn't go and say it. \"Take care of your people,\" he says. \"They'll take care of you. I've put your name on the back of the bill, so I remember to ask after you.\"</p><p>She holds out her hand at last. It's dry and brief. \"That's the account closed,\" she says. \"Keep your own books.\"",
   "labels": [
    "Thank her for the work",
    "Take the papers and go"
@@ -13,7 +13,7 @@
   "captain": "hester",
   "state": "plain",
   "title": "The Foot of the Ramp",
-  "text": "Captain Vance meets you at the foot of the ramp with the papers and the notebook. She counts your last pay twice, into your hand, and has you sign for it.</p><p>Cato is at the hatch, because the captain wouldn't go and say it. \"Take care of your people,\" he says. \"They'll take care of you. I've been trying to tell her for years.\"</p><p>She holds out her hand at last. It's dry and brief. \"Fair winds,\" she says. \"And keep your own books.\"",
+  "text": "Captain Vance meets you at the foot of the ramp with the papers and the notebook. She counts your last pay twice, into your hand, and has you sign for it.</p><p>Cato is at the hatch, because the captain wouldn't go and say it. \"Take care of your people,\" he says. \"They'll take care of you. I've put your name on the back of the bill, so I remember to ask after you.\"</p><p>She holds out her hand at last. It's dry and brief. \"That's the account closed,\" she says. \"Keep your own books.\"",
   "labels": [
    "Thank her for the work",
    "Take the papers and go"
@@ -23,7 +23,7 @@
   "captain": "hester",
   "state": "warm",
   "title": "The Foot of the Ramp",
-  "text": "Captain Vance is waiting at the foot of the ramp when you come down, which isn't like her. She has the notebook under one arm. \"I have your account,\" she says. \"It's correct. I'd like you to check it anyway.\"</p><p>Cato is at the hatch, because the captain wouldn't go and say it. \"Take care of your people,\" he says. \"They'll take care of you. I've been trying to tell her for years.\"</p><p>She holds out her hand at last. It's dry and brief. \"Fair winds,\" she says. \"And keep your own books.\"",
+  "text": "Captain Vance is waiting at the foot of the ramp when you come down, with the notebook under one arm. \"I have your account,\" she says. \"It's correct. I'd like you to check it anyway.\"</p><p>Cato is at the hatch, because the captain wouldn't go and say it. \"Take care of your people,\" he says. \"They'll take care of you. I've put your name on the back of the bill, so I remember to ask after you.\"</p><p>She holds out her hand at last. It's dry and brief. \"That's the account closed,\" she says. \"Keep your own books.\"",
   "labels": [
    "Thank her for the work",
    "Take the papers and go"
@@ -33,7 +33,7 @@
   "captain": "hester",
   "state": "secret",
   "title": "The Foot of the Ramp",
-  "text": "Captain Vance meets you at the foot of the ramp with the papers and the notebook. She counts your last pay twice, into your hand, and has you sign for it.</p><p>She doesn't mention the bank. She doesn't need to. \"The first of the month,\" she says, \"and the first after that. I'll be there for them.\"</p><p>Cato is at the hatch, because the captain wouldn't go and say it. \"Take care of your people,\" he says. \"They'll take care of you. I've been trying to tell her for years.\"</p><p>She holds out her hand at last. It's dry and brief. \"Fair winds,\" she says. \"And keep your own books.\"",
+  "text": "Captain Vance meets you at the foot of the ramp with the papers and the notebook. She counts your last pay twice, into your hand, and has you sign for it.</p><p>She doesn't mention the bank. \"The first of the month,\" she says, \"and the first after that. I'll be there for them.\"</p><p>Cato is at the hatch, because the captain wouldn't go and say it. \"Take care of your people,\" he says. \"They'll take care of you. I've put your name on the back of the bill, so I remember to ask after you.\"</p><p>She holds out her hand at last. It's dry and brief. \"That's the account closed,\" she says. \"Keep your own books.\"",
   "labels": [
    "Thank her for the work",
    "Wish her the ship",
@@ -74,7 +74,7 @@
   "captain": "hester",
   "state": "full",
   "title": "The Foot of the Ramp",
-  "text": "Captain Vance is waiting at the foot of the ramp when you come down, which isn't like her. She has the notebook under one arm. \"I have your account,\" she says. \"It's correct. I'd like you to check it anyway.\"</p><p>Ines Ferreira will go with you. She runs a finger down the crew list. \"That's a column I'll have to fill again,\" she says.</p><p>She doesn't mention the bank. She doesn't need to. \"The first of the month,\" she says, \"and the first after that. I'll be there for them.\"</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>She counts four hundred and ten onto the rail, the day you leave, as she said she would. You count it after her. It's correct.</p><p>Cato is at the hatch, because the captain wouldn't go and say it. \"Take care of your people,\" he says. \"They'll take care of you. I've been trying to tell her for years.\"</p><p>She holds out her hand at last. It's dry and brief. \"Fair winds,\" she says. \"And keep your own books.\"",
+  "text": "Captain Vance is waiting at the foot of the ramp when you come down, with the notebook under one arm. \"I have your account,\" she says. \"It's correct. I'd like you to check it anyway.\"</p><p>Ines Ferreira will go with you. She runs a finger down the crew list. \"That's a column I'll have to fill again,\" she says.</p><p>She doesn't mention the bank. \"The first of the month,\" she says, \"and the first after that. I'll be there for them.\"</p><p>The ice run is in the log as a clean haul, and nothing is written beside it. Your name is in the medical log, with a date.</p><p>She counts four hundred and ten onto the rail, the day you leave, as she said she would. You count it after her. It's correct.</p><p>Cato is at the hatch, because the captain wouldn't go and say it. \"Take care of your people,\" he says. \"They'll take care of you. I've put your name on the back of the bill, so I remember to ask after you.\"</p><p>She holds out her hand at last. It's dry and brief. \"That's the account closed,\" she says. \"Keep your own books.\"",
   "labels": [
    "Thank her for the work",
    "Wish her the ship",
@@ -114,7 +114,7 @@
   "captain": "hester",
   "state": "xoDead",
   "title": "The Foot of the Ramp",
-  "text": "Captain Vance meets you at the foot of the ramp with the papers and the notebook. She counts your last pay twice, into your hand, and has you sign for it.</p><p>She doesn't mention the bank. She doesn't need to. \"The first of the month,\" she says, \"and the first after that. I'll be there for them.\"</p><p>She doesn't look at the empty place on the watch bill. \"I've taken Cato out of the book,\" she says. \"I had to. It's the first time I didn't want to.\"</p><p>She holds out her hand at last. It's dry and brief. \"Fair winds,\" she says. \"And keep your own books.\"",
+  "text": "Captain Vance meets you at the foot of the ramp with the papers and the notebook. She counts your last pay twice, into your hand, and has you sign for it.</p><p>She doesn't mention the bank. \"The first of the month,\" she says, \"and the first after that. I'll be there for them.\"</p><p>She doesn't look at the empty place on the watch bill. \"I've taken Cato out of the book,\" she says. \"I had to. It's the first time I didn't want to.\"</p><p>She holds out her hand at last. It's dry and brief. \"That's the account closed,\" she says. \"Keep your own books.\"",
   "labels": [
    "Thank her for the work",
    "Wish her the ship",

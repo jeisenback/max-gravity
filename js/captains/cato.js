@@ -15,7 +15,7 @@ function inTheIceHold(backup) {
   const lead = backup ? 'You send an ice hand in with him. ' : '';
   if (outcome === 'die') {
     like(cap, -1, sceneSay('scene:memories', 'cato.lost.memory')); cap.mood = { kind: 'low', until: G.state.day + 30 };
-    return lead + ('He goes in first, as he said he would. The strap holds, and the pod doesn\'t, and for a moment the board shows nothing you can ' +
+    return lead + ('He goes in first, as he said he would. The strap holds, and the pod doesn\'t, and the board shows nothing you can ' +
         'read. You get the hatch open from your side. By then the hold is quiet. Captain Vance is at the hatch before you\'ve finished. She watches the ' +
         'board until the last line stops, and then she closes the notebook. "Take him out," she says.')
       + (told ? ' He asked you to find him if it went badly. It\'s the other way round now.' : '');
@@ -23,7 +23,7 @@ function inTheIceHold(backup) {
   castLike('cato', 2, sceneSay('scene:memories', 'cato.lived.memory'));
   if (outcome === 'mark') {
     cap.mood = { kind: 'low', until: G.state.day + 15 };
-    return lead + ('He goes in first, and it goes wrong at the number two strap, and for a long minute the hold is nothing but ice and shouting. He ' +
+    return lead + ('He goes in first, and it goes wrong at the number two strap, and the hold is nothing but ice and shouting. He ' +
         'comes out carried, and the hand that held the strap doesn\'t close properly, and won\'t. The med kit is already open. He says, from the ' +
         'deck, "Number two is lashed. So that\'s done."');
   }
@@ -124,7 +124,7 @@ CAST.cato = {
           effects: { castLike: { who: 'cato', n: 2, memory: 'You stood the watch down on my word.' }, captainLike: { n: -1, memory: 'You stood the watch down against my order.' } },
           result: ('You stand them down. Cato covers the watch. The count isn\'t done until morning, and Captain Vance finds the gap in it, and finds ' +
               'you. "Whose order?" she says. You tell her. "I see," she says, and writes something down. Cato, passing in the passage, doesn\'t look ' +
-              'at either of you, and puts a hand on the bulkhead for a moment as he goes.'),
+              'at either of you, and puts a hand flat on the bulkhead as he goes.'),
         },
       ],
     },
@@ -169,7 +169,7 @@ CAST.cato = {
             'already at the hatch with a lashing strap over one shoulder. "I know where the load goes," he says. "It\'s my hold. Give me ten minutes." ' +
             'Ice doesn\'t move quickly, but it doesn\'t stop, either, and the pod it\'s leaning on isn\'t rated for it.')
           + (low ? ' The hull has taken a beating, and a bad hull is a bad place for a load to shift.' : ' The hull is sound.')
-          + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There\'s nobody aboard who can do more than a field dressing, and he knows it.')
+          + (medic ? ` ${medic.first} has the med kit open at the hatch.` : ' There\'s nobody aboard who can do more than a field dressing.')
           + (hands >= 2 ? ' Both ice hands are suited and waiting.' : ' There aren\'t enough hands on the ice for a load like this.')
           + ' He waits for your answer, and has already started on the strap.';
       },

@@ -278,7 +278,7 @@ test('the goodbye has an opening by warmth and a line for each thing that happen
   assert.doesNotMatch(r.alone, /will go with you/); assert.match(r.crew, /Ines Ferreira will go with you/);
   assert.equal(r.noSecret, false); assert.match(r.secret, /The first of the month/); assert.match(r.lent, /four hundred and ten/);
   assert.match(r.xo, /Cato is at the hatch/); assert.match(r.xoDead, /taken Cato out of the book/); assert.doesNotMatch(r.xoDead, /Cato is at the hatch/);
-  for (const k of ['warm', 'neutral', 'cold']) assert.match(r[k], /Fair winds/);
+  for (const k of ['warm', 'neutral', 'cold']) assert.match(r[k], /account closed/);
 });
 
 test('a loan is repaid when you leave, and the choices set the captain\'s last opinion', async () => {
