@@ -553,7 +553,7 @@ test('the ice run, the work events and the lock fights say what an option can co
   }
   assert.ok(r.ice.some(x => !x.hull && !x.bold) && r.ice.some(x => x.hull && !x.bold) && r.ice.some(x => x.hull && x.bold), 'the run has each kind');
   for (const [careful, quick] of r.work) { assert.ok(!careful.includes('['), careful); assert.match(quick, /\[\d+%; if it fails: you learn less, and the captain marks it\]$/, quick); }
-  for (const labels of r.lock) { assert.equal(labels.length, 4); for (const l of labels) assert.match(l, /\[\d+%; if it fails: a crew casualty, you may be hurt\]$/, l); }
+  for (const labels of r.lock) { assert.equal(labels.length, 6); for (const l of labels) assert.match(l, /\[\d+%; if it fails: a crew casualty, you may be hurt\]$/, l); }
   await done();
 });
 

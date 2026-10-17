@@ -18,6 +18,7 @@ const helpers = () => {
   // The rolls: every die in the bottom tenth, then the top one, but varying, so a draw that retries for a new value ends. (A draw that picks
   // two different things from a short list needs the whole range: span 1.)
   window.rolled = (base, fn, span = 0.099, seed = 12345) => { const real = Math.random; Math.random = () => base + span * ((seed = (seed * 16807) % 2147483647) / 2147483647); try { return fn(); } finally { Math.random = real; } };
+  window.ONCE = 'Once a fight.';
   window.report = { bad: [], played: 0, shut: [] };
   const clean = (at, e, ch, text) => {
     if (typeof text !== 'string' || text.length < 20 || /undefined|NaN|\[object|\{[a-z]+\}/.test(e.title + e.text + ch.label.replace(/\{crew\}/g, '') + text)) report.bad.push(`${at} (${e.title}): ${String(text).slice(0, 80)}`);
@@ -25,7 +26,7 @@ const helpers = () => {
   // Play every choice of an event on the state as it stands, and the scenes they lead into.
   window.playEvent = (e, at, depth = 0) => {
     e.choices.forEach((ch, j) => {
-      if (ch.can && !ch.can()) { report.shut.push(`${at}.${j}`); return; }
+      if (ch.can && !ch.can()) { if (ch.why !== ONCE) report.shut.push(`${at}.${j}`); return; }  // an ability used once in a fight (handtohand.js) is shut by design on the scenes after it
       G.state.credits = Math.max(G.state.credits, 5000); G.dialog = { event: e, choices: e.choices }; G.nextEvent = null; const before = G.state;
       let text;
       try { text = chooseEvent(j); } catch (err) { report.bad.push(`${at}.${j}: threw ${err}`); return; }
@@ -43,7 +44,7 @@ const helpers = () => {
       for (let j = 0; j < n; j++) rolled(base, () => {
         const e = build(); if (!e || !e.choices[j]) return;
         const ch = e.choices[j];
-        if (ch.can && !ch.can()) { report.shut.push(`${at}.${j}`); return; }
+        if (ch.can && !ch.can()) { if (ch.why !== ONCE) report.shut.push(`${at}.${j}`); return; }  // an ability used once in a fight (handtohand.js) is shut by design on the scenes after it
         G.state.credits = Math.max(G.state.credits, 5000); G.dialog = { event: e, choices: e.choices }; G.nextEvent = null;
         const before = G.state; let text;
         try { text = chooseEvent(j); } catch (err) { report.bad.push(`${at}.${j}: threw ${err}`); return; }

@@ -7391,7 +7391,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7403,7 +7405,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7415,7 +7419,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7427,7 +7433,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7439,7 +7447,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7451,7 +7461,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Fire down the line [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    }
   ],
@@ -7629,6 +7641,30 @@
     "roll": 0.99,
     "delta": 0,
     "text": "You fire, and the round goes through a berth door. They use the noise and come a section deeper."
+   },
+   {
+    "kind": "steady",
+    "roll": 0.01,
+    "delta": 0,
+    "text": "You wait for the one who breaks from cover and put a single round through him. The others see it, and the line slows."
+   },
+   {
+    "kind": "steady",
+    "roll": 0.99,
+    "delta": 0,
+    "text": "You wait for a runner and none runs. The round goes high, and they use the noise to put fire down the line."
+   },
+   {
+    "kind": "cover",
+    "roll": 0.01,
+    "delta": 0,
+    "text": "You lay a long burst along the wall at head height. Nobody comes through it, and the crew get behind the closer with their heads down."
+   },
+   {
+    "kind": "cover",
+    "roll": 0.99,
+    "delta": 0,
+    "text": "You open up and the burst goes where the wall is, not where they are. It does nothing but tell them where you stand."
    }
   ]
  },
@@ -7644,7 +7680,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Roll the ship [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Roll the ship [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7656,7 +7694,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Roll the ship [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Roll the ship [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7668,7 +7708,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Roll the ship [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Roll the ship [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7680,7 +7722,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Roll the ship [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Roll the ship [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7692,7 +7736,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Roll the ship [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Roll the ship [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7704,7 +7750,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Roll the ship [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Roll the ship [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    }
   ],
@@ -7882,6 +7930,30 @@
     "roll": 0.99,
     "delta": 0,
     "text": "You roll, and your own people aren't braced either. The boarders come up first."
+   },
+   {
+    "kind": "steady",
+    "roll": 0.01,
+    "delta": 0,
+    "text": "You cycle the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back, and the next waits."
+   },
+   {
+    "kind": "steady",
+    "roll": 0.99,
+    "delta": 0,
+    "text": "You cycle the hatch a beat late, and it closes on nothing, and they fire through the gap before it opens again."
+   },
+   {
+    "kind": "cover",
+    "roll": 0.01,
+    "delta": 0,
+    "text": "You cut the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not, and they stop."
+   },
+   {
+    "kind": "cover",
+    "roll": 0.99,
+    "delta": 0,
+    "text": "You cut the lights, and your own people cannot see the closer either. The boarders have lamps."
    }
   ]
  },
@@ -7897,7 +7969,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Seal the bulkhead behind them [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Seal the bulkhead behind them [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7909,7 +7983,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Seal the bulkhead behind them [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Seal the bulkhead behind them [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7921,7 +7997,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Seal the bulkhead behind them [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Seal the bulkhead behind them [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7933,7 +8011,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Seal the bulkhead behind them [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Seal the bulkhead behind them [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7945,7 +8025,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Seal the bulkhead behind them [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Seal the bulkhead behind them [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -7957,7 +8039,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Seal the bulkhead behind them [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Seal the bulkhead behind them [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    }
   ],
@@ -8135,6 +8219,30 @@
     "roll": 0.99,
     "delta": 0,
     "text": "The bulkhead jams a hand short of shut. They use the gap."
+   },
+   {
+    "kind": "steady",
+    "roll": 0.01,
+    "delta": 0,
+    "text": "You open the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
+   },
+   {
+    "kind": "steady",
+    "roll": 0.99,
+    "delta": 0,
+    "text": "You open the wrong coolant line. It vents into the section you are standing in."
+   },
+   {
+    "kind": "cover",
+    "roll": 0.01,
+    "delta": 0,
+    "text": "You drop the pressure door half across the corridor. It is a wall to stand behind, with a gap to shoot through."
+   },
+   {
+    "kind": "cover",
+    "roll": 0.99,
+    "delta": 0,
+    "text": "The pressure door sticks a hand short of the deck, and a shot comes through the gap before the crew are behind it."
    }
   ]
  },
@@ -8150,7 +8258,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Lock the doors from the console [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Lock the doors from the console [70%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8162,7 +8272,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Lock the doors from the console [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Lock the doors from the console [70%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8174,7 +8286,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Lock the doors from the console [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Lock the doors from the console [70%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8186,7 +8300,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Lock the doors from the console [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Lock the doors from the console [70%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8198,7 +8314,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Lock the doors from the console [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Lock the doors from the console [70%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8210,7 +8328,9 @@
      "Hold the line [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Lock the doors from the console [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Lock the doors from the console [70%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
     ]
    }
   ],
@@ -8388,6 +8508,30 @@
     "roll": 0.99,
     "delta": 0,
     "text": "You lock the wrong door. It's the one behind you."
+   },
+   {
+    "kind": "steady",
+    "roll": 0.01,
+    "delta": 0,
+    "text": "You put a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
+   },
+   {
+    "kind": "steady",
+    "roll": 0.99,
+    "delta": 0,
+    "text": "You put a voice on their band and the voice is wrong. Somebody laughs, and a burst comes down the line."
+   },
+   {
+    "kind": "cover",
+    "roll": 0.01,
+    "delta": 0,
+    "text": "You put the jammer on their channel. They cannot call the next in, and cannot hear who is ahead, and they fight where they stand while the crew take the cover."
+   },
+   {
+    "kind": "cover",
+    "roll": 0.99,
+    "delta": 0,
+    "text": "You jam their band and your own with it, and nobody can tell the crew which hatch to hold."
    }
   ]
  },
@@ -8403,7 +8547,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Put fire down the corridor [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Put fire down the corridor [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8415,7 +8561,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Put fire down the corridor [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Put fire down the corridor [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8427,7 +8575,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Put fire down the corridor [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Put fire down the corridor [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8439,7 +8589,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Put fire down the corridor [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Put fire down the corridor [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8451,7 +8603,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Put fire down the corridor [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Put fire down the corridor [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8463,7 +8617,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Gunner] Put fire down the corridor [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Gunner] Put fire down the corridor [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Pick off a runner (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Gunner] Covering burst (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    }
   ],
@@ -8641,6 +8797,30 @@
     "roll": 0.99,
     "delta": 0,
     "text": "You fire, and the rounds go into the deck. They use the noise to move up."
+   },
+   {
+    "kind": "steady",
+    "roll": 0.01,
+    "delta": 0,
+    "text": "You wait for the one who breaks from cover and put a single round through him. The others see it, and the line slows."
+   },
+   {
+    "kind": "steady",
+    "roll": 0.99,
+    "delta": 0,
+    "text": "You wait for a runner and none runs. The round goes high, and they use the noise to put fire down the line."
+   },
+   {
+    "kind": "cover",
+    "roll": 0.01,
+    "delta": 0,
+    "text": "You lay a long burst along the wall at head height. Nobody comes through it, and the crew get behind the closer with their heads down."
+   },
+   {
+    "kind": "cover",
+    "roll": 0.99,
+    "delta": 0,
+    "text": "You open up and the burst goes where the wall is, not where they are. It does nothing but tell them where you stand."
    }
   ]
  },
@@ -8656,7 +8836,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Bring the ship round to her hatch [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Bring the ship round to her hatch [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8668,7 +8850,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Bring the ship round to her hatch [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Bring the ship round to her hatch [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8680,7 +8864,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Bring the ship round to her hatch [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Bring the ship round to her hatch [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8692,7 +8878,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Bring the ship round to her hatch [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Bring the ship round to her hatch [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8704,7 +8892,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Bring the ship round to her hatch [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Bring the ship round to her hatch [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8716,7 +8906,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Pilot] Bring the ship round to her hatch [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Pilot] Bring the ship round to her hatch [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cycle a hatch on them (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Pilot] Cut the lights (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    }
   ],
@@ -8894,6 +9086,30 @@
     "roll": 0.99,
     "delta": 0,
     "text": "You bring her round and misjudge it by a meter. The hull scrapes and the crew in the lock go over."
+   },
+   {
+    "kind": "steady",
+    "roll": 0.01,
+    "delta": 0,
+    "text": "You cycle the section hatch as the first of them steps into it. It takes him in the shoulder and he goes back, and the next waits."
+   },
+   {
+    "kind": "steady",
+    "roll": 0.99,
+    "delta": 0,
+    "text": "You cycle the hatch a beat late, and it closes on nothing, and they fire through the gap before it opens again."
+   },
+   {
+    "kind": "cover",
+    "roll": 0.01,
+    "delta": 0,
+    "text": "You cut the lights in the section from the helm. The crew know the corridor in the dark and the boarders do not, and they stop."
+   },
+   {
+    "kind": "cover",
+    "roll": 0.99,
+    "delta": 0,
+    "text": "You cut the lights, and your own people cannot see the closer either. The boarders have lamps."
    }
   ]
  },
@@ -8909,7 +9125,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Cut her power [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Cut her power [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8921,7 +9139,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Cut her power [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Cut her power [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8933,7 +9153,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Cut her power [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Cut her power [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8945,7 +9167,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Cut her power [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Cut her power [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8957,7 +9181,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Cut her power [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Cut her power [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -8969,7 +9195,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Engineer] Cut her power [65%; if it fails: a crew casualty, you may be hurt]"
+     "[Engineer] Cut her power [65%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Vent a coolant line (one fewer of them, no ground) [75%; if it fails: a crew casualty, you may be hurt]",
+     "[Engineer] Drop the pressure door (cover here, once) [70%; if it fails: a crew casualty, you may be hurt]"
     ]
    }
   ],
@@ -9147,6 +9375,30 @@
     "roll": 0.99,
     "delta": 0,
     "text": "You pull the wrong breaker and her emergency lights come on instead, all of them, in your eyes."
+   },
+   {
+    "kind": "steady",
+    "roll": 0.01,
+    "delta": 0,
+    "text": "You open the coolant line behind the front of them. The corridor fills with white, and the ones in it back out coughing."
+   },
+   {
+    "kind": "steady",
+    "roll": 0.99,
+    "delta": 0,
+    "text": "You open the wrong coolant line. It vents into the section you are standing in."
+   },
+   {
+    "kind": "cover",
+    "roll": 0.01,
+    "delta": 0,
+    "text": "You drop the pressure door half across the corridor. It is a wall to stand behind, with a gap to shoot through."
+   },
+   {
+    "kind": "cover",
+    "roll": 0.99,
+    "delta": 0,
+    "text": "The pressure door sticks a hand short of the deck, and a shot comes through the gap before the crew are behind it."
    }
   ]
  },
@@ -9162,7 +9414,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Take her intercom [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Take her intercom [70%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -9174,7 +9428,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Take her intercom [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Take her intercom [70%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -9186,7 +9442,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Take her intercom [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Take her intercom [70%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -9198,7 +9456,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Take her intercom [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Take her intercom [70%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -9210,7 +9470,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Take her intercom [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Take her intercom [70%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
     ]
    },
    {
@@ -9222,7 +9484,9 @@
      "Cover and advance [62%; if it fails: a crew casualty, you may be hurt]",
      "Rush them [61%; if it fails: a crew casualty, you may be hurt]",
      "Go round them [75%; if it fails: a crew casualty, you may be hurt]",
-     "[Comms] Take her intercom [70%; if it fails: a crew casualty, you may be hurt]"
+     "[Comms] Take her intercom [70%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] A false order on their band (one fewer of them, no ground) [80%; if it fails: a crew casualty, you may be hurt]",
+     "[Comms] Jam their band (cover here, once) [75%; if it fails: a crew casualty, you may be hurt]"
     ]
    }
   ],
@@ -9400,6 +9664,30 @@
     "roll": 0.99,
     "delta": 0,
     "text": "You find her intercom and it's a recording, which says something unrepeatable about your mother."
+   },
+   {
+    "kind": "steady",
+    "roll": 0.01,
+    "delta": 0,
+    "text": "You put a voice on their band: \"Fall back to the lock.\" One of them does, and the rest hear it too late."
+   },
+   {
+    "kind": "steady",
+    "roll": 0.99,
+    "delta": 0,
+    "text": "You put a voice on their band and the voice is wrong. Somebody laughs, and a burst comes down the line."
+   },
+   {
+    "kind": "cover",
+    "roll": 0.01,
+    "delta": 0,
+    "text": "You put the jammer on their channel. They cannot call the next in, and cannot hear who is ahead, and they fight where they stand while the crew take the cover."
+   },
+   {
+    "kind": "cover",
+    "roll": 0.99,
+    "delta": 0,
+    "text": "You jam their band and your own with it, and nobody can tell the crew which hatch to hold."
    }
   ]
  }

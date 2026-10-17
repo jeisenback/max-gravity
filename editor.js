@@ -16,7 +16,7 @@
   'js/duel.js', 'js/console.js', 'js/stations.js', 'js/autopilot.js', 'js/engineering.js', 'js/comms.js', 'js/journal.js',
   'js/web.js', 'js/wear.js', 'js/projects.js', 'js/programs.js', 'js/hired.js', 'js/readouts.js', 'js/shippers.js', 'js/arcs.js', 'js/suggest.js', 'js/repairs.js', 'js/jobs.js',
   'js/awayjobs.js', 'js/stay.js', 'js/losses.js', 'js/hiredeventstext.js', 'js/hiredevents.js', 'js/bridge.js', 'js/shell.js',
-  'js/character.js', 'js/interview.js', 'js/cast.js', 'js/captains.js', 'js/stakes.js', 'js/boarders.js', 'js/engagements.js',
+  'js/character.js', 'js/interview.js', 'js/cast.js', 'js/captains.js', 'js/stakes.js', 'js/handtohand.js', 'js/boarders.js', 'js/engagements.js',
   'js/shipcombat.js', 'js/yardoffice.js', 'js/icerun.js', 'js/ties.js', 'js/captains/hester.js', 'js/captains/cato.js',
   'js/captains/dov.js', 'js/captains/ilsa.js', 'js/captains/imre.js', 'js/captains/pilar.js', 'js/captains/zoya.js',
   'js/captains/ansel.js', 'js/hiredscenes.js', 'js/linetables.js', 'js/fate.js', 'js/signon.js', 'js/castbar.js', 'js/regulars.js', 'js/revisit.js', 'js/ashore.js', 'js/official.js', 'js/barwork.js', 'js/overrides.js', 'js/storylets.js',

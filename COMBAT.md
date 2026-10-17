@@ -239,7 +239,7 @@ In the hired-hand chapter a pirate contact is not the card duel. It plays as an 
 (`js/engagements.js`): the closing, two passes, and the close. At each beat you choose how to meet her or do the
 job of your own post, and each choice is a chance of going your way (+1 or +2) or hers (-1 or -2) on a running
 position. At the close she breaks off, stands off and throws a last round, or comes alongside, and then the fight goes
-to the lock (`js/boarders.js`): hold, rush, go round, or your post's job, with casualties. Measured over random-choice
+to the lock (`js/boarders.js`): hold, rush, go round, your post's job, or one of the post's two other abilities (below), with casualties. Measured over random-choice
 play (`npm run fights`, below), about a quarter of raids end with her breaking off, 4 in 10 stand off, and 3 in 10 go to the lock, for 11% of the hull.
 A decisive win (ahead by four or more) cripples her instead: she drifts, and you can board her. That is the same
 lock fight run the other way (her lock, her corridor, her bridge, with the same tactics and your post's job), and a win
@@ -289,6 +289,18 @@ trials. It is run by hand and is not part of `npm test`. Figures from the run th
   to go round (`layoutEdge`, +0.15 for going round and -0.1 for a rush). Before the lean was flattened (50%, 20%, 30%) always going round won 97% and always holding 49%, which left one dominant tactic.
 
 The tool is how to check a change to the casualty odds, the lean or the layout bonus.
+
+### Abilities and cover in the lock fight (`js/handtohand.js`, #684)
+
+Each post has two abilities after its own move, each a check on the post's stat and skill through the sheet (`handCheck`, kind `post`, so the kit's edge counts) that costs the exchange and wins no ground:
+a **steady** one (the gunner picks off a runner, the pilot cycles a hatch on them, the engineer vents a coolant line, comms puts a false order on their band; edge +0.10) that leaves one of them fewer, which
+settles a same-tactic tie by the numbers, and a **cover** one (a covering burst, the lights cut, the pressure door, the jammer; edge +0.05; once a fight) that makes two points of cover in the section the fight is in.
+A miss holds the ground, but they get a shot at someone: a casualty is rolled at the lost-exchange rate. The label says what the ability wins and the odds, and that a miss can cost a crew casualty.
+Cover is by section, drawn above the text as a strip of the three sections (who holds each hatch, the cover as pips, how many are at the front). The ship has a point in each section, the corridor one more in a long ship
+and one less in a cramped one, and the kit adds (the valve keys open the service crawl: a point in the corridor). A point over the ship's own takes a fifth off the chance of a casualty in the section the exchange was fought in,
+a point under puts a fifth on, to two fifths at the lowest. The triangle, the head count, the layout bonus on the tactics and the casualty rules are as they were.
+Over 3 seeds of 100 (level 2, five standing with you, grade 0): the post's move won 90% (89 before), unchanged within noise; the post's move after a cover ability won 90% with 0.27 hurt against 0.31 and someone hurt in 43% of fights against 49%; a hand who thins them
+when outnumbered and otherwise uses the post's move won 90%, with 0.26 hurt; an ability used every round never wins (the steady one costs a shot each time it misses: 0.9 hurt a fight). Random tactics and the raid are as they were.
 
 ## Open questions
 
