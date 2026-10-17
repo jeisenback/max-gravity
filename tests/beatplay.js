@@ -120,9 +120,10 @@ const playBeats = () => {
         const ev = repelScene(s);
         rec.scenes.push({ pos, round, title: ev.title, text: ev.text, labels: labelsOf(ev) });
       }
-      for (const kind of ['hold', 'rush', 'flank', 'post']) {
-        for (const roll of kind === 'post' ? [0.01, 0.99] : [0.01, 0.5, 0.99]) {
-          for (const delta of kind === 'post' ? [0] : [-1, 0, 1]) {
+      for (const kind of ['hold', 'rush', 'flank', 'post', 'steady', 'cover']) {
+        const single = !['hold', 'rush', 'flank'].includes(kind);  // the post's move and its abilities do not face their tactic
+        for (const roll of single ? [0.01, 0.99] : [0.01, 0.5, 0.99]) {
+          for (const delta of single ? [0] : [-1, 0, 1]) {
             const s = start(); s.pos = 1; s.round = 0; s.boarders = repelStanding(s) + delta;
             seq([roll]); const b0 = stand();
             const text = repelStep(s, kind);

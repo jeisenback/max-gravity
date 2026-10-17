@@ -26,10 +26,15 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider' } = 
       return st;
     };
     const foeOf = () => Object.assign(makeEnemy({ kind: 'pirate' }), { shipId });
-    // The policies: which choice to make in a scene. The last choice is always the post's own move.
+    // The policies: which choice to make in a scene. In a lock fight the choices are the three tactics, the post's own move (index 3), and the post's other abilities (4 and 5, the
+    // second shut once used); the raid's last choice is the post's own move. 'random' draws from the choices the fights had before the abilities, so its figures read as they did.
     const POLICY = {
-      random: d => Math.floor(Math.random() * d.choices.length),
-      post: d => d.choices.length - 1,
+      random: d => Math.floor(Math.random() * (d.choices.length === 6 ? 4 : d.choices.length)),
+      post: d => (d.choices.length === 6 ? 3 : d.choices.length - 1),
+      steady: d => (d.choices.length === 6 ? 4 : d.choices.length - 1),
+      cover: d => (d.choices.length === 6 ? (d.choices[5].can && !d.choices[5].can() ? 3 : 5) : d.choices.length - 1),
+      count: d => (d.choices.length === 6 && window.__fight && repelStanding(window.__fight) < window.__fight.boarders ? 4 : d.choices.length === 6 ? 3 : d.choices.length - 1),
+      all: d => { const open = d.choices.map((c, i) => i).filter(i => !(d.choices[i].can && !d.choices[i].can())); return open[Math.floor(Math.random() * open.length)]; },
       first: () => 0,
       hold: () => 0, rush: () => 1, flank: () => 2,
     };
@@ -71,6 +76,7 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider' } = 
       for (let i = 0; i < trials; i++) {
         const st = restore(crewN, level), foe = foeOf();
         const s = kind === 'repel' ? repelStart({ foe, foeHp: 0, init: 'foe', grade }, 'full') : assaultStart(foe, { grade });
+        window.__fight = s;
         openEvent(repelScene(s));
         drive(policy, []);
         const c = lost(st);
@@ -83,7 +89,8 @@ async function fights({ seed = 1, n = 100, post = 'gunner', ship = 'raider' } = 
     const cells = [
       ['crew', [1, 3, 5].map(c => [c, 2, 'random', 0])],
       ['level', [1, 2, 3].map(l => [5, l, 'post', 0])],
-      ['tactic', ['random', 'hold', 'rush', 'flank', 'post'].map(p => [5, 2, p, 0])],
+      ['tactic', ['random', 'hold', 'rush', 'flank', 'post', 'steady', 'cover', 'count', 'all'].map(p => [5, 2, p, 0])],
+      ['small crew', ['post', 'cover', 'count'].map(p => [2, 2, p, 0])],
       ['grade', [0, 1, 2].map(g => [5, 2, 'random', g])],
     ];
     for (const kind of ['repel', 'assault']) {

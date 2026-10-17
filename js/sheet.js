@@ -32,10 +32,12 @@ const check = (stat, skill, difficulty, edge = 0) => Math.max(CHECK_MIN, Math.mi
 // The kit (#683): things the hand carries, each adding to a kind of check (the keys of DIFFICULTY). They come from arcs and scenes (arcs.js), never from a shop; the
 // hand's save keeps their ids (st.hired.kit) and this table says what each is and does. kitEdge is the edge the kit gives a kind of roll, for check's last argument.
 const KIT_ITEMS = {
-  'valve-keys': { name: 'a roll of valve keys', adds: { job: 0.05 } },  // the Hollows' pump crew, from the water dispute (stories/arc-league.js)
+  'valve-keys': { name: 'a roll of valve keys', adds: { job: 0.05 }, cover: [0, 1, 0] },  // the Hollows' pump crew, from the water dispute (stories/arc-league.js); they open the service crawl, so the corridor has a point more cover in a lock fight
   'audit-seal': { name: 'a Fleet audit seal', adds: { word: 0.05 } },  // the auditor's, from the air audit (stories/arc-concord.js)
   'carrier-license': { name: 'a Compact carrier license', adds: { solo: 0.05 } },  // the licensing officer's, from the license inspection (stories/arc-compact.js)
 };
+// The cover the kit gives a section of the ship in a lock fight (handtohand.js): the sum over the items, by the section's place (0 to 2).
+const kitCover = (kit, pos) => (kit || []).reduce((n, id) => n + (((KIT_ITEMS[id] || {}).cover || [])[pos] || 0), 0);
 const kitEdge = (kit, kind) => (kit || []).reduce((n, id) => n + (((KIT_ITEMS[id] || {}).adds || {})[kind] || 0), 0);
 
 // The sheet as rows for the sheet console (#687): each stat with its value, and the posts that sit on it; the kit with what each item adds, in

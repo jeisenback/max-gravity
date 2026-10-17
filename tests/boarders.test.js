@@ -367,3 +367,76 @@ test('a lock fight ends on the hand\'s death, and the ending reads the record an
   assert.equal(r.name, 'Sam Rowe');
   await done();
 });
+
+test('the lock fight offers the post\'s abilities after its own move, with the odds and what each wins on the label, and the cover ability shuts once used', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const out = {};
+    for (const post of ['gunner', 'pilot', 'engineer', 'comms']) {
+      fight(post); const s = repelStart(G.duel, 'full'), e = repelScene(s); out[post] = e.choices.slice(3).map(c => c.label); G.duel = null;
+    }
+    fight(); const s = repelStart(G.duel, 'full'), e = repelScene(s), foe = makeEnemy({ kind: 'pirate' });  // the foe is made before the dice are set (people are generated from them)
+    out.shut0 = e.choices.map(c => !!c.can && !c.can()); rolls([0.01]); e.choices[5].run(); G.nextEvent = null;
+    out.shut1 = repelScene(s).choices.map(c => !!c.can && !c.can()); out.why = repelScene(s).choices[5].why;
+    out.board = e.board; out.assault = repelScene(assaultStart(foe, {})).choices.length;
+    return out;
+  });
+  assert.match(r.gunner[0], /^\[Gunner\] .*\[\d+%; if it fails: a crew casualty, you may be hurt\]$/);
+  assert.match(r.gunner[1], /^\[Gunner\] Pick off a runner \(one fewer of them, no ground\) \[\d+%; if it fails: a crew casualty, you may be hurt\]$/);
+  assert.match(r.gunner[2], /^\[Gunner\] Covering burst \(cover here, once\) \[\d+%; if it fails: a crew casualty, you may be hurt\]$/);
+  assert.deepEqual([r.pilot[1], r.engineer[2], r.comms[1]].map(l => l.replace(/ \[.*$/, '')), ['[Pilot] Cycle a hatch on them (one fewer of them, no ground)', '[Engineer] Drop the pressure door (cover here, once)', '[Comms] A false order on their band (one fewer of them, no ground)']);
+  assert.ok(+r.gunner[1].match(/\[(\d+)%/)[1] > +r.gunner[2].match(/\[(\d+)%/)[1], 'the steady ability is the easier gamble');
+  assert.deepEqual(r.shut0, [false, false, false, false, false, false]); assert.deepEqual(r.shut1, [false, false, false, false, false, true]); assert.equal(r.why, 'Once a fight.');
+  assert.match(r.board, /aria-label="The ship in three sections\. The Lock: theirs, cover 1\. The Corridor: the front, \d+ of them, cover 2\. The Bridge: yours, cover 1\./); assert.equal(r.assault, 6, 'the assault has them too');
+  await done();
+});
+
+test('the steady ability thins them and holds the ground; a miss holds the ground too, but they get a shot at someone', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    fight(); const real = repelCasualty; let hits = 0; repelCasualty = () => { hits++; return 'Someone is hurt.'; };
+    const s = repelStart(G.duel, 'full'); s.boarders = 4; const pos = s.pos;
+    rolls([0.01]); const worked = repelStep(s, 'steady'); const w = { pos: s.pos, boarders: s.boarders, round: s.round, hits, text: worked };
+    rolls([0.99, 0.01]); const missed = repelStep(s, 'steady'); const m = { pos: s.pos, boarders: s.boarders, hits, text: missed };
+    repelCasualty = real; return { w, m, start: pos };
+  });
+  assert.equal(r.w.pos, r.start); assert.equal(r.w.boarders, 3); assert.equal(r.w.round, 1); assert.equal(r.w.hits, 0); assert.match(r.w.text, /^You wait for the one who breaks from cover/);
+  assert.equal(r.m.pos, r.start, 'the ground holds'); assert.equal(r.m.boarders, 3); assert.equal(r.m.hits, 1, 'a casualty was rolled and it came'); assert.match(r.m.text, /^You wait for a runner and none runs\. .* Someone is hurt\.$/);
+  await done();
+});
+
+test('the cover ability makes two points of cover where the fight is, once; a miss holds the ground and costs a shot, and the kit\'s cover adds to the section\'s', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    fight(); const real = repelCasualty; repelCasualty = () => '';
+    const s = repelStart(G.duel, 'full'), out = { size: SHIPS[G.state.shipId].size };
+    out.base = [...repelCover(s)]; rolls([0.01]); const text = repelStep(s, 'cover'); out.text = text; out.made = [...repelCover(s)]; out.used = s.used.cover; out.pos = s.pos; G.nextEvent = null;
+    const t = repelStart(G.duel, 'full'); rolls([0.99, 0.99]); repelStep(t, 'cover'); out.missPos = t.pos; out.missUsed = t.used.cover; out.missCover = [...repelCover(t)]; G.nextEvent = null;
+    hired().kit = ['valve-keys']; out.keys = [...repelCover(repelStart(G.duel, 'full'))];
+    repelCasualty = real; return out;
+  });
+  assert.ok(r.size >= 16); assert.deepEqual(r.base, [1, 2, 1], 'the long ship has berth doors in the corridor');
+  assert.deepEqual(r.made, [1, 3, 1], 'two points in the corridor, where the fight is, up to three'); assert.equal(r.used, true); assert.equal(r.pos, 1, 'the exchange stands'); assert.match(r.text, /^You lay a long burst along the wall/);
+  assert.equal(r.missPos, 1, 'a miss holds the ground'); assert.equal(r.missUsed, true); assert.deepEqual(r.missCover, [1, 2, 1]);
+  assert.deepEqual(r.keys, [1, 3, 1], 'the valve keys open the service crawl, a point more in the corridor');
+  await done();
+});
+
+test('cover turns the chance of a casualty in the section the exchange was fought in', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    fight(); const real = repelCasualty; let hits = 0; repelCasualty = () => { hits++; return ''; };
+    const out = {}, post = (pos, extra) => { const s = repelStart(G.duel, 'full'); s.pos = pos; s.grade = 0; if (extra) s.extra = extra; hits = 0; rolls([0.99, 0.40]); repelStep(s, 'post'); G.nextEvent = null; return hits; };
+    out.lock = post(0); out.corridor = post(1); out.corridorKeys = (hired().kit = ['valve-keys'], post(1)); hired().kit = [];
+    out.lockMade = post(0, [2, 0, 0]);
+    repelCasualty = real; return out;
+  });
+  assert.equal(r.lock, 1, 'a lost exchange at the lock (a point of cover) is hit at 0.45, and a roll of 0.40 hits');
+  assert.equal(r.corridor, 0, 'the corridor of a long ship (two points) is hit at 0.36, and the same roll misses');
+  assert.equal(r.corridorKeys, 0); assert.equal(r.lockMade, 0, 'cover made at the lock turns it down too');
+  await done();
+});
