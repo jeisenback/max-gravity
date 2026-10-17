@@ -703,6 +703,6 @@ test('the hand\'s sheet shows the four stats with the posts on them and the kit,
   });
   assert.deepEqual(r.stats, ['Hands3 / 5', 'Eye4 / 5', 'Nerve3 / 5', 'Wit4 / 5'], 'the earth gunner: eye for the post, wit for the background');
   assert.deepEqual(r.posts, ['Engineer', 'Gunner', 'Pilot', 'Comms']); assert.match(r.kit0, /Nothing yet/);
-  assert.match(r.said, /valve keys/); assert.deepEqual(r.kit1, ['a roll of valve keysjobs ashore +5%']); assert.ok(r.crewHasNone, 'a crew member has skills and traits, not stats: their sheet is as it was');
+  assert.match(r.said, /valve keys/); assert.deepEqual(r.kit1, ['a roll of valve keysjobs ashore +5%, +1 cover in the corridor']); assert.ok(r.crewHasNone, 'a crew member has skills and traits, not stats: their sheet is as it was');
   await done();
 });
