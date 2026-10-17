@@ -43,10 +43,11 @@ const kitEdge = (kit, kind) => (kit || []).reduce((n, id) => n + (((KIT_ITEMS[id
 // The sheet as rows for the sheet console (#687): each stat with its value, and the posts that sit on it; the kit with what each item adds, in
 // words. Pure: the caller passes the hand's sheet and kit. A hand from before the sheet was kept has every stat at the base.
 const KIND_WORDS = { post: 'your own move in a fight', solo: 'a bold call of your own', job: 'jobs ashore', word: 'a word with the captain', brawl: 'a bar fight' };
+const COVER_WORDS = ['the lock', 'the corridor', 'the bridge'];  // the sections of the ship a kit item's cover is indexed by (handtohand.js)
 function sheetRows(sheet, kit) {
   return {
     stats: STATS.map(stat => ({ stat, value: sheet && sheet[stat] !== undefined ? sheet[stat] : STAT_BASE, posts: Object.keys(POST_STAT).filter(p => POST_STAT[p] === stat) })),
-    kit: (kit || []).filter(id => KIT_ITEMS[id]).map(id => ({ id, name: KIT_ITEMS[id].name, adds: Object.entries(KIT_ITEMS[id].adds).map(([kind, n]) => `${KIND_WORDS[kind] || kind} +${Math.round(n * 100)}%`).join(', ') })),
+    kit: (kit || []).filter(id => KIT_ITEMS[id]).map(id => ({ id, name: KIT_ITEMS[id].name, adds: [...Object.entries(KIT_ITEMS[id].adds || {}).map(([kind, n]) => `${KIND_WORDS[kind] || kind} +${Math.round(n * 100)}%`), ...(KIT_ITEMS[id].cover || []).map((n, i) => (n ? `+${n} cover in ${COVER_WORDS[i]}` : '')).filter(Boolean)].join(', ') })),
   };
 }
 

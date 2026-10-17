@@ -49,7 +49,7 @@ test('the sheet as rows: each stat with the posts on it, and the kit with what e
   assert.deepEqual(rows.stats, [
     { stat: 'hands', value: 3, posts: ['engineer'] }, { stat: 'eye', value: 4, posts: ['gunner'] }, { stat: 'nerve', value: 3, posts: ['pilot'] }, { stat: 'wit', value: 5, posts: ['comms'] },
   ]);
-  assert.deepEqual(rows.kit, [{ id: 'valve-keys', name: 'a roll of valve keys', adds: 'jobs ashore +5%' }, { id: 'audit-seal', name: 'a Fleet audit seal', adds: 'a word with the captain +5%' }], 'an id the table does not know is left out');
+  assert.deepEqual(rows.kit, [{ id: 'valve-keys', name: 'a roll of valve keys', adds: 'jobs ashore +5%, +1 cover in the corridor' }, { id: 'audit-seal', name: 'a Fleet audit seal', adds: 'a word with the captain +5%' }], 'an id the table does not know is left out');
   const old = JSON.parse(JSON.stringify(sheetRows(undefined, undefined)));
   assert.deepEqual(old.stats.map(r => r.value), [3, 3, 3, 3], 'a hand from before the sheet has every stat at the base'); assert.deepEqual(old.kit, []);
 });
