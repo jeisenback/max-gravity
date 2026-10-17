@@ -628,6 +628,9 @@ test('day one: the journal keeps the feeds to a line, the bonds legend is swatch
   await done();
 });
 
+// What a frame draws as text, for the tests of what the HUD and the overlays say: start it, draw, and call the returned function for the lines.
+const drawnText = () => { const drawn = [], fill = CanvasRenderingContext2D.prototype.fillText; CanvasRenderingContext2D.prototype.fillText = function (t, ...a) { drawn.push(String(t)); return fill.call(this, t, ...a); }; return () => { CanvasRenderingContext2D.prototype.fillText = fill; return drawn; }; };
+
 // #692: while the crewed pilot flies her out, a hand is shown no flight controls and a key does not strand the ship.
 test('a hand whose pilot flies her out sees no autopilot banner, key list or touch controls, and a key does not take the stick', async () => {
   const { ev, page, done } = await open({ scope: 'earth-hired', viewport: { width: 1280, height: 800 } });
