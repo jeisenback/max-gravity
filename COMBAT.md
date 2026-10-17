@@ -14,7 +14,11 @@ decides, and the crew flies.
 - **One combat system.** The card duel is the only fight, in burns and in classic
   flight. With no crewed gunner, the captain plays it with their own skill. The
   real-time fight is retired: in burns (#52, done), in local space (#55), and in the
-  story set pieces (#56).
+  story set pieces (#56). Since then the hired hand's fights are the raid in beats and
+  the lock fight (the section at the end), and the next chapters' design
+  (`docs/superpowers/specs/2026-10-17-next-chapters-design.md`, #680) puts the raid on
+  a sensor board with ranges and turns and folds the duel into it after, so one system
+  again, the other way round.
 - **Automated flight.** Departing, docking, landing and closing on a disabled ship are
   choices, and the autopilot flies them. The flight screen stays as a backdrop but is
   never steered (#53).
