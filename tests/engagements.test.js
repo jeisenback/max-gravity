@@ -451,7 +451,7 @@ test('each hand makes the call in a pirate contact, rolled on their own skill, a
       const st = raid(post); hired().skill[post] = SKILL_STEPS[level]; G.dialog = null; openEvent(contactEvent({ kind: 'pirate' }));
       const i = G.dialog.choices.findIndex(c => c.label.startsWith(`[${POSTS[post].name}]`)), armor = st.armor;
       G.nextEvent = null; rolls([roll]); const text = chooseEvent(i), scene = G.nextEvent;
-      return { text, position: scene && /Position: (\w+)/.exec(scene.board)[1], hit: armor - st.armor, title: scene && scene.title };
+      return { text, position: scene && /Position: (\w+)/.exec(scene.board)[1], range: scene && +/RANGE ([\d.]+) km/.exec(scene.board)[1], moved: scene && /The move (bought|cost) you room\. She is at [\d.]+ kilometers/.exec(scene.text)[1], hit: armor - st.armor, title: scene && scene.title };
     };
     for (const post of ['pilot', 'gunner', 'engineer']) out[`${post}Level1`] = { low: move(post, 1, 0.7), high: move(post, 3, 0.7), win: move(post, 3, 0.01) };
     return out;
@@ -467,6 +467,9 @@ test('each hand makes the call in a pirate contact, rolled on their own skill, a
     const m = r[`${post}Level1`];
     assert.equal(m.low.position, 'behind', `${post}: level 1 is 0.6, so 0.7 loses`); assert.equal(m.high.position, 'ahead', `${post}: level 3 is 0.8, so 0.7 wins`); assert.equal(m.win.position, 'ahead');
     assert.equal(m.low.title, 'The Closing', 'the raid goes on either way'); assert.match(m.low.text, /Battle stations/);
+    const open = { pilot: 50, gunner: 50, engineer: 60 }[post];  // the move opens the range the raid starts at (40 km for a pirate), and a loss closes it by ten (#710)
+    assert.deepEqual([m.win.range, m.win.moved, m.low.range, m.low.moved], [open, 'bought', 30, 'cost'], `${post}: the range the raid starts at`);
+    assert.match(r[post].labels.find(l => l.startsWith(`[${Name}]`)), /opens the range/);
     const hull = post !== 'gunner';
     assert.equal(m.low.hit > 0, hull, `${post}: a loss ${hull ? 'costs' : 'does not cost'} hull`); assert.equal(m.high.hit, 0, 'a win costs none');
   }
