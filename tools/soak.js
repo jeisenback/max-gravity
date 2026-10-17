@@ -176,6 +176,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     const avg = (a, n) => Math.round(a / Math.max(1, n));
     if (!ending.v) tally();
     delete work.current; delete bar.in;
+    if (hired()) freight.standing = { ...(hired().standing || {}) };  // each shipper's regard for the ship at the chapter's end (shippers.js)
     return { messages, frames: fr, hand, work, bar, nights, plans, freight, landings: landed.mix, losses, ending: ending.v, runs, days: st.day, credits: st.credits, reached, stuck, scenes, byId, byTitle, bad, beatDays, xoDays, waits, burns, introRun, firstOfficers: Object.keys(CAST).filter(k => CAST[k].xo), offerDay,
       avgPayPerRun: avg(paid.reduce((a, b) => a + b, 0), paid.length), avgDaysPerRun: Math.round(10 * st.day / Math.max(1, runs)) / 10 };
   }, [legs, captainKey, realDraw, post, frames, engineer, jobs]);
@@ -215,7 +216,12 @@ function jobsReport(runs) {
 // The freight over the chapters, the means across the seeds: boards drawn and empty, contracts offered, taken, late and lost.
 function freightReport(runs) {
   const n = Math.max(1, runs.length), one = x => Math.round(x * 10) / 10, mean = f => one(runs.reduce((t, r) => t + f(r.freight || {}), 0) / n);
-  return `freight, a chapter's mean over ${runs.length} seeds: ${mean(f => f.boards)} boards drawn, ${mean(f => f.empty)} empty, ${mean(f => f.offered)} contracts offered, ${mean(f => f.taken)} delivered, ${mean(f => f.late)} late, ${mean(f => f.lost)} lost`;
+  return `freight, a chapter's mean over ${runs.length} seeds: ${mean(f => f.boards)} boards drawn, ${mean(f => f.empty)} empty, ${mean(f => f.offered)} contracts offered, ${mean(f => f.taken)} delivered, ${mean(f => f.late)} late, ${mean(f => f.lost)} lost; at the end ${standingsLine(runs)}`;
+}
+// The shippers' regard for the ship at the chapter's end, the means across the seeds: how many had moved, and the best and the worst.
+function standingsLine(runs) {
+  const n = Math.max(1, runs.length), one = x => Math.round(x * 10) / 10, vals = r => Object.values((r.freight || {}).standing || {});
+  return `${one(runs.reduce((t, r) => t + vals(r).filter(v => v !== 0).length, 0) / n)} shippers moved, best ${one(runs.reduce((t, r) => t + Math.max(0, ...vals(r)), 0) / n)}, worst ${one(runs.reduce((t, r) => t + Math.min(0, ...vals(r)), 0) / n)}`;
 }
 
 // The captain's runs over the chapters: what she planned on and what they cleared (the plans of each soak result), for tuning what she sails for (WORTH_THE_FUEL, stay.js).

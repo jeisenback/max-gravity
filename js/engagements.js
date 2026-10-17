@@ -192,7 +192,7 @@ function startRaid(spec, flee, o = {}) {
 const oddsWord = odds => `${Math.round(odds * 100)}%`;
 function costNote(c, odds) {
   const costs = [...(c.hull || c.casualty ? [...(c.hull ? ['hull damage'] : []), 'a crew casualty'] : []), ...(c.hand ? ['you may be hurt'] : []), ...(c.cost ? [`${fmt(c.cost)} cr of your own`] : []),
-    ...(c.rep ? ['your standing here'] : []), ...(c.xp ? ['you learn less'] : [])];
+    ...(c.rep ? ['your standing here'] : []), ...(c.standing ? ["the shipper's regard"] : []), ...(c.xp ? ['you learn less'] : [])];
   const text = c.marks ? [...(costs.length ? [`${costs.join(', ')}, and`] : []), 'the captain marks it'].join(' ') : costs.join(', ');
   const parts = [...(odds !== undefined && odds < 1 ? [`${c.who ? `${c.who}, ` : ''}${oddsWord(odds)}`] : []), ...(text ? [`if it fails: ${text}`] : [])];
   return parts.length ? ` [${parts.join('; ')}]` : '';

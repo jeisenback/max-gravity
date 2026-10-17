@@ -14,7 +14,8 @@ const CONTRACT_LEVEL = { L: 1, M: 0.5, H: 0 };  // what ships from a port: all o
 const RUMOR_PREMIUM = 0.5, HAZARD_PREMIUM = 0.3, HAZARD_AT = 0.25;  // word of a shortage at the far end; a lane with raids on it
 const LONG_HAUL = 0.02, LONG_HAUL_FLOOR = 0.5;  // the rate falls two percent a day of the burn, to half at most: a long haul pays less a day than a short one, so the chapter keeps its runs
 const LATE_DOCK = 0.1, LATE_FLOOR = 0.5;  // a tenth of the pay a day late, never below half
-const BOARD_ODDS = { big: [0.15, 0.45], small: [0.35] };  // how many a day: the chance of none, then of one (the rest is two); a big port has a yard or a mission board
+const BOARD_ODDS = { big: [0.15, 0.45], small: [0.35], trusted: [0.1, 0.4] };  // how many a day: the chance of none, then of one (the rest is two); a big port has a yard or a mission board; a shipper that trusts the ship offers the most
+const STANDING_MAX = 3, STANDING_GOOD = 2, STANDING_BAD = -2, TRUSTED_PAY = 0.1;  // a shipper's regard for the ship, -3 to 3 (st.hired.standing): from 2 it offers more and pays a tenth better, at -2 it stops offering
 
 // Who puts freight on the board: the port's own people where it has them, else the government's freight office, else a broker.
 const SHIPPERS = {
@@ -47,8 +48,9 @@ const weightedLane = (list, rnd) => { let r = rnd() * list.reduce((t, x) => t + 
 const boardDice = key => { let a = hash(key) >>> 0; return () => { a = (a + 0x6D2B79F5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; };
 
 // The day's board at a port: none, one or two contracts, each on a lane of its own. `reach` is [sid, system] pairs in range, `hold` the ship's whole hold, `rnd` the dice.
-function drawContracts(st, here, from, reach, hold, day, rnd) {
-  const odds = BOARD_ODDS[here.services.includes('shipyard') || here.services.includes('missions') ? 'big' : 'small'], r = rnd();
+function drawContracts(st, here, from, reach, hold, day, rnd, standing = 0) {
+  if (standing <= STANDING_BAD) return [];  // a shipper that has lost faith in the ship puts nothing on its board
+  const trusted = standing >= STANDING_GOOD, odds = trusted ? BOARD_ODDS.trusted : BOARD_ODDS[here.services.includes('shipyard') || here.services.includes('missions') ? 'big' : 'small'], r = rnd();
   const n = r < odds[0] ? 0 : odds.length < 2 || r < odds[0] + odds[1] ? 1 : 2;
   let lanes = freightLanes(here, from, reach);
   const out = [];
@@ -57,7 +59,7 @@ function drawContracts(st, here, from, reach, hold, day, rnd) {
     lanes = lanes.filter(x => x.cid !== lane.cid || x.pl !== lane.pl);
     const days = lane.days, tons = 10 * (4 + Math.floor(rnd() * (Math.max(4, Math.floor(hold / 10)) - 3)));
     const rumor = st.rumors.some(x => x.planet === lane.pl.name && x.cid === lane.cid && x.until >= day && x.mult > 1), hazard = danger(lane.sid) >= HAZARD_AT;
-    const premium = 1 + (rumor ? RUMOR_PREMIUM : 0) + (hazard ? HAZARD_PREMIUM : 0);
+    const premium = 1 + (rumor ? RUMOR_PREMIUM : 0) + (hazard ? HAZARD_PREMIUM : 0) + (trusted ? TRUSTED_PAY : 0);
     out.push({ shipper: shipperOf(here, SYSTEMS[from].gov), good: lane.cid, tons, from: here.name, sid: lane.sid, planet: lane.pl.name, yard: lane.pl.services.includes('shipyard'), days,
       pay: Math.round((CONTRACT_FEE + tons * days * CONTRACT_RATE * haulRate(days)) * premium), due: day + Math.ceil(days * 1.5) + 2 + Math.floor(rnd() * 5), hazard, rumor });
   }
@@ -69,7 +71,7 @@ function contractBoard(st, here) {
   const h = st.hired, key = `${here.name}@${st.day}`;
   if (!h.freight || h.freight.key !== key) {
     const from = st.systemId, reach = Object.entries(SYSTEMS).filter(([sid]) => sid !== from && inRange(from, sid));
-    h.freight = { key, list: drawContracts(st, here, from, reach, ship().cargo, st.day, boardDice(`${key}|${h.since}|${h.captain}`)) };
+    h.freight = { key, list: drawContracts(st, here, from, reach, ship().cargo, st.day, boardDice(`${key}|${h.since}|${h.captain}`), standingOf(h, shipperOf(here, SYSTEMS[from].gov))) };
   }
   return h.freight.list;
 }
@@ -81,6 +83,18 @@ function pickContract(list, { free, wantYard, risk, picks }) {
   const ranked = list.filter(c => c.tons <= free).sort((a, b) => score(b) - score(a));
   const top = ranked.slice(0, Math.max(1, picks));
   return { best: top.length > 1 ? pick(top) : top[0] || null, ranked };
+}
+
+// A shipper's regard for the ship (st.hired.standing, by the shipper's name; older saves have none, which is 0). A delivery moves it: on the day and whole, up one;
+// each day-late fault down one, a short load down one and a lost load down two. The word is for the run panel; the shipper is named before it, so it takes no verb.
+const standingOf = (h, shipper) => (h.standing || {})[shipper] || 0;
+const standingDelta = (run, sold, day) => { const late = day > run.due, lost = sold <= 0, short = sold < run.tons; return !late && !short ? 1 : -((late ? 1 : 0) + (lost ? 2 : short ? 1 : 0)); };
+const nextStanding = (n, d) => Math.max(-STANDING_MAX, Math.min(STANDING_MAX, n + d));
+const shipperWord = n => (n >= STANDING_GOOD ? 'a shipper that trusts the ship' : n >= 1 ? 'a shipper that knows the ship' : n <= -1 ? 'a shipper that is wary of the ship' : '');
+// What was off with a delivery, for the agent at the far end: the worst of it (a lost load, a short one, a late one), or null when it came in whole and on the day.
+function deliveryOff(run, sold, day) {
+  const late = Math.max(0, day - run.due), lost = sold <= 0, short = sold < run.tons;
+  return !late && !short ? null : { kind: lost ? 'lost' : short ? 'short' : 'late', shipper: run.shipper, good: run.good, tons: run.tons, got: sold, late, due: run.due };
 }
 
 // What a late delivery pays: docked a tenth a day, never below half.

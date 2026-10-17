@@ -7,6 +7,7 @@
 // An id is never reused for another scene; tests/hiredscenes.test.js pins the whole list.
 
 const HIRED_FUNCTION_SCENES = [
+  { id: 'scene:freight-agent', fn: 'agentScene', file: 'js/shippers.js', title: 'Late at the Lock', where: 'port', when: 'When a delivery was late, short or lost: the freight agent at the far end meets the ship at the ramp (the three cases are titled Late at the Lock, Short at the Lock and Nothing to Sign For), and the hand owns it, makes the case or says nothing.' },
   { id: 'scene:sign-on', fn: 'signOnEvent', file: 'js/signon.js', title: 'Signing On', where: 'port', when: 'Opens a hired game: why you signed on.' },
   { id: 'scene:warning', fn: 'warningScene', file: 'js/stakes.js', title: 'A Warning', where: 'transit', when: 'Once, when the captain\'s opinion of you falls to -2.' },
   { id: 'scene:pitch', fn: 'pitchScene', file: 'js/awayjobs.js', title: 'Putting It to the Captain', where: 'port', when: 'When you put work further away to the captain, from the Missions page.' },
@@ -440,6 +441,22 @@ const SCENE_LINES = {
     'lose.memory': 'You pushed me to fly somewhere I didn\'t want to go.',
     'never.label': 'Never mind',
     'never.result': 'You let it lie. The job will keep.',
+  },
+  'scene:freight-agent': {  // the agent at the far end, when a delivery was late, short or lost (js/shippers.js)
+    'title.late': 'Late at the Lock', 'title.short': 'Short at the Lock', 'title.lost': 'Nothing to Sign For',
+    'text.late': '{agent} has been at the foot of the ramp since the day on the paper, with a slate and a folding stool. The paper said {due}. The ship is {late} past it. "I sign for the day it comes in," {agent} says. "{shipper} docks a tenth of the pay for every day, and I don\'t set the tenth. I read it out."',
+    'text.short': '{agent} counts the lock twice, a stroke on the slate for every ten tons. The paper says {tons}t of {good}. {agent} makes it {got}t. "I sign for what I count," {agent} says. "{shipper} pays for {got}. If the rest is in a hold somewhere, tell me where, and I\'ll write that instead."',
+    'text.lost': '{agent} walks the lock from the outer door to the inner and comes back to the ramp with nothing on the slate. The paper says {tons}t of {good} for {shipper}. The hold is empty. "Nothing to sign for," {agent} says. "I send that as it stands, and they ask me where it went. I\'d like to have an answer."',
+    'c0.label': 'Own it',
+    'c0.result': 'You say it was the ship\'s, and not the lane\'s or the dock\'s. {agent} writes it as you say it. "That\'s a short note," {agent} says. "Most of them run longer."',
+    'c0.memory': 'You owned the delivery to me at the lock.',
+    'c1.label': 'Make the case',
+    'c1.win': 'You give {agent} the burn as it went, the day and the hour and what came aboard and what didn\'t. {agent} checks it against the notices on the slate, one line at a time, and each line holds. "That I can send," {agent} says.',
+    'c1.win.memory': 'You gave me the facts and they checked out.',
+    'c1.lose': '{agent} listens to all of it and writes down the part with a number on it, which is about half. "I can\'t send the rest," {agent} says. "Nobody can check it."',
+    'c1.lose.memory': 'You gave me a long story and I could use half of it.',
+    'c2.label': 'Say nothing',
+    'c2.result': 'You say nothing. {agent} waits through it, then writes the figures down as they stand.',
   },
   'scene:used-ship-offer': {
     'tomas.title': 'A Hull on the Apron',
