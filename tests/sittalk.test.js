@@ -112,7 +112,7 @@ test('after the first exchange the talk goes on to a second subject, never the s
       const on = G.nextEvent; if (!on || !on.title.startsWith('With ') || on.choices.length !== 2 || on.text.length < 80) { out.bad = on && [on.title, on.text]; break; }
       if (p.turn === prev) out.repeated = true;
       subjects.add(p.turn);
-      const op = p.opinion; G.nextEvent = null; const res = take(on, /./); out.plain = out.plain || res.length > 80; out.unmoved = p.opinion === op && !G.nextEvent;  // the second beat is talk, not regard, and ends the sitting
+      const op = p.opinion; G.nextEvent = null; const res = take(on, new RegExp(`^${on.choices[1].label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`)); out.plain = out.plain || res.length > 80; out.unmoved = p.opinion === op && !G.nextEvent;  // the second choice is talk, not regard, and ends the sitting
     }
     out.subjects = [...subjects].sort();
     // the favor at the end of a story ends the sitting on its own
@@ -146,5 +146,32 @@ test('from the downtime menu, Sit with someone opens the picker at once, and pic
   assert.equal(r.picker, 'Sit With Someone'); assert.ok(!r.pickerButtons.includes('Continue'), `the picker, not a screen before it (${r.pickerButtons})`);
   assert.ok(r.sitting, 'the sitting is with them'); assert.ok(!r.sittingButtons.includes('Continue'), `the sitting, not a screen before it (${r.sittingButtons})`);
   assert.ok(r.used);
+  await done();
+});
+
+test('the first choice of the second beat costs a watch or the captain\'s regard, and is remembered; the second costs nothing', async () => {
+  const { ev, done } = await open({ scope: 'earth-hired' });
+  await ev(helpers);
+  const r = await ev(() => {
+    const { st, p } = setup(), out = {}, cap = hiredCaptain(), take0 = e => take(e, new RegExp(`^${e.choices[0].label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`));
+    uatBurn('Ceres Station', 'pallas'); G.transit.times = []; G.transit.event = null; G.dialog = null;
+    // before the flip: the downtime after it is spent, two points and a memory
+    let e = goesOn(p, 'ship'); out.label = e.choices[0].label; const op = p.opinion; take0(e);
+    out.after = !!G.transit.lifeUsed.after; out.before = !!G.transit.lifeUsed.before; out.liked = p.opinion - op; out.mem = p.memories.slice(-1)[0];
+    out.comesBack = talkTopics(p).some(t => t.choices[0].label === 'Bring it up' && /galley light/.test(t.open));
+    // after the flip: the watch is owed, and stood when the next burn begins
+    G.transit.flipped = true; G.transit.lifeUsed = {}; e = goesOn(p, 'work'); out.owedLabel = e.choices[0].label; take0(e);
+    out.owed = st.watchOwed && st.watchOwed.n === p.first; out.notSpentNow = !G.transit.lifeUsed.after;
+    const t2 = { lifeUsed: {} }; out.stood = standOwedWatch(st, t2); out.stoodUsed = !!t2.lifeUsed.before; out.cleared = st.watchOwed === null; out.again = standOwedWatch(st, t2);
+    // the captain: a point of the captain's regard
+    const capOp = cap.opinion; e = goesOn(p, 'captain'); take0(e); out.capLiked = cap.opinion - capOp; out.capLabel = e.choices[0].label;
+    // the second choice: talk, and nothing kept
+    const op2 = p.opinion, n = p.memories.length; e = goesOn(p, 'port'); take(e, /Ask about the dock/); out.free = p.opinion === op2 && p.memories.length === n && !st.watchOwed;
+    return out;
+  });
+  assert.match(r.label, /galley light.*\(your downtime after the flip\)$/); assert.ok(r.after && !r.before, 'the downtime after the flip is spent'); assert.equal(r.liked, 2); assert.match(r.mem, /You fixed the galley light with me\.$/); assert.ok(r.comesBack, 'a later sitting brings it up');
+  assert.match(r.owedLabel, /\(your first downtime next burn\)$/); assert.ok(r.owed && r.notSpentNow); assert.match(r.stood, new RegExp(`^You stand .*'s watch before the flip, as you said\\.$`)); assert.ok(r.stoodUsed && r.cleared); assert.equal(r.again, null);
+  assert.equal(r.capLiked, -1); assert.match(r.capLabel, /\(a point with the captain\)$/);
+  assert.ok(r.free);
   await done();
 });

@@ -127,16 +127,29 @@ function idleTalk(p) {
 
 // A sitting is two exchanges: the first is what is on their mind or where their story is, and then the talk goes on to one of the
 // subjects the ship gives (the next port, the captain for a hand, the ship herself, their post, their last ship), not the same one
-// twice running (p.turn). It changes no regard: it is talk. `key` names the subject, for the editor and the pin; else it is drawn.
+// twice running (p.turn). `key` names the subject, for the editor and the pin; else it is drawn.
+// The first choice is an offer that costs the hand something real and is remembered (two points of regard and a memory, which a later
+// sitting brings back): a watch, which is the downtime after the flip, or the first of the next burn when the sitting is after the flip
+// (st.watchOwed, stood by standOwedWatch); on the captain, a point of the captain's regard. The second choice is talk and leaves nothing.
 const goesOn = (p, key) => {
-  const say = familySay('goeson'), n = p.first, st = G.state;
+  const say = familySay('goeson'), n = p.first, st = G.state, t = G.transit;
   const subjects = ['port', 'ship', 'last', ...(hired() ? ['captain'] : []), ...(ROLE_NAMES[p.role] ? ['work'] : [])];  // the captain is a hand's subject; a post is a crew member's
   const k = key || pick(subjects.filter(s => s !== p.turn));
   p.turn = k;
-  const cap = hiredCaptain(), vars = { n, port: G.transit ? SYSTEMS[G.transit.to].name : st.planet, cap: cap ? cap.last : '', ship: shipTitle(), post: (ROLE_NAMES[p.role] || '').toLowerCase() };
+  const cap = hiredCaptain(), vars = { n, port: t ? SYSTEMS[t.to].name : st.planet, cap: cap ? cap.last : '', ship: shipTitle(), post: (ROLE_NAMES[p.role] || '').toLowerCase() };
+  const owed = !t || t.flipped, offer = say(`${k}.c0.label${k !== 'captain' && owed ? '.owed' : ''}`, vars);
+  const spend = () => { if (k === 'captain') like(cap, -1, null); else if (owed) st.watchOwed = { n }; else (t.lifeUsed = t.lifeUsed || {}).after = true; };
   const result = c => () => say(`${k}.${c}.result.${pick([0, 1])}`, vars);
   return { title: say('title', { n }), text: say(`${k}.${pick([0, 1])}`, vars),
-    choices: [{ label: say(`${k}.c0.label`, vars), run: result('c0') }, { label: say(`${k}.c1.label`, vars), run: result('c1') }] };
+    choices: [{ label: offer, run() { spend(); like(p, 2, say(`${k}.c0.memory`, vars)); return result('c0')(); } }, { label: say(`${k}.c1.label`, vars), run: result('c1') }] };
+};
+// The watch owed from a sitting after the flip is stood when the next burn begins: its downtime before the flip is spent, and the ship says so (the line, for comm).
+const standOwedWatch = (st, t) => {
+  const owed = st.watchOwed;
+  if (!owed) return null;
+  st.watchOwed = null;
+  (t.lifeUsed = t.lifeUsed || {}).before = true;
+  return familySay('goeson')('owed.stood', { n: owed.n });
 };
 // The first exchange of a sitting leads on to the second: each choice queues it (G.nextEvent, read when the result closes).
 const leadOn = (p, ev) => ({ ...ev, choices: ev.choices.map(c => ({ ...c, run() { const r = c.run(); G.nextEvent = goesOn(p); return r; } })) });
@@ -506,6 +519,8 @@ Mods.register({
         planOccasions();
         addTouches();
         traditionMoment('start');
+        const stood = standOwedWatch(G.state, t);
+        if (stood) comm(`[Ship] ${stood}`);
       }
       if (t.flipped && !t.homeFlip) { t.homeFlip = true; traditionMoment('flip'); }
       if (t.left < t.total * 0.08 && !t.homeEnd) { t.homeEnd = true; traditionMoment('end'); }
