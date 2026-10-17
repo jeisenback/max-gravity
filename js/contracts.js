@@ -81,7 +81,7 @@ function contractBoard(st, here) {
   const h = career(), key = `${here.name}@${st.day}`;  // the hand's record, or the career after the buy: the same board for the player to pick from (ownerboard.js)
   if (!h.freight || h.freight.key !== key) {
     const from = st.systemId, reach = Object.entries(SYSTEMS).filter(([sid]) => sid !== from && inRange(from, sid));
-    h.freight = { key, list: drawContracts(st, here, from, reach, ship().cargo, st.day, boardDice(`${key}|${h.since}|${h.captain}`), standingOf(h, shipperOf(here, SYSTEMS[from].gov))) };
+    h.freight = { key, list: drawContracts(st, here, from, reach, ship().cargo, st.day, boardDice(`${key}|${h.since}|${h.captain}`), boardStanding(standingOf(h, shipperOf(here, SYSTEMS[from].gov)), shipperOf(here, SYSTEMS[from].gov), h.kit)) };
   }
   return h.freight.list;
 }
@@ -94,6 +94,9 @@ function pickContract(list, { free, wantYard, risk, picks }) {
   const top = ranked.slice(0, Math.max(1, picks));
   return { best: top.length > 1 ? pick(top) : top[0] || null, ranked };
 }
+
+// A shipper that reads an item in the kit (sheet.js kitBoards: the Compact's carrier license) draws its board for a ship it already knows (regard 1) as for one it trusts: more on the board, and a tenth more pay.
+const boardStanding = (standing, shipper, kit) => (standing >= 1 && kitBoards(kit, shipper) ? Math.max(standing, STANDING_GOOD) : standing);
 
 // A shipper's regard for the ship (st.hired.standing, and st.career.standing after the buy; by the shipper's name; older saves have none, which is 0). A delivery moves it: on the day and whole, up one;
 // each day-late fault down one, a short load down one and a lost load down two. The word is for the run panel; the shipper is named before it, so it takes no verb.

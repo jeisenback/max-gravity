@@ -241,6 +241,7 @@ const OUTFITS = {
   pod:     { name: 'Cargo pod', price: 2500, space: 0, max: 2, desc: '+15t cargo, at 5% less top speed.', mod: s => { s.cargo += 15; s.maxSpeed *= 0.95; } },
   drive:   { name: 'Drive tuning', price: 8000, space: 1, max: 1, desc: '+15% acceleration and top speed.', mod: s => { s.accel *= 1.15; s.maxSpeed *= 1.15; } },
   berth:   { name: 'Passenger berth', price: 3000, space: 3, max: 2, desc: '+1 berth for crew or passengers.', mod: s => { s.berths += 1; } },
+  pump:    { name: 'Pump-crew coolant bypass', price: 1500, space: 0, max: 1, kit: 'valve-keys', desc: 'The Hollows\' pump crew\'s bypass, fitted to the drive so the reaction mass runs through it twice. +60 reaction mass capacity, and no cargo space. Offered to a ship that carries the valve keys.', mod: s => { s.fuel += 60; } },
   spoofer: { name: 'Transponder spoofer', price: 9000, space: 1, max: 1, req: 15, pirate: true, desc: 'Fakes transponders like a skill-1 slicer when you have none aboard.', mod: s => { s.spoofer = true; } },
 };
 
