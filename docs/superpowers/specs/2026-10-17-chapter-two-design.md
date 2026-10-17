@@ -24,7 +24,7 @@ The sheet, the kit and the shippers' regard are copied at the buy into `st.caree
 
 ### 3. The board is the player's
 
-In chapter one the captain's planner picks a run from the board (`planRun`, `currentPlan`). In chapter two the player picks: the board is the contracts page as it is (`js/contracts.js`, the sheet and standing already read), each contract with a Take button, the planner gone. The run itself (`settleRun`, the late and short paper, the shipper's agent, the side scene) is unchanged; the pay goes to the player's credits, not to the ship's fund, and the skim is the dock broker's as before. This is the "contracts stay the economy" line of the issue, and it is the part that proves the role object.
+Step 3 is two pieces, each its own PR. **3a, the board** (`js/ownerboard.js`): in chapter one the captain's planner picks a run from the board (`planRun`, `currentPlan`); in chapter two the board is a section of the Port page, the same day's draw (`contractBoard` reads `career()`, so it is the one the hand's captain would see), with a Take button on each contract. Taking one loads the shipper's cargo at no cost, sets the course, and has the pilot take the ship out if one is crewed (the existing autopilot order). The run is kept on the career. On the landing at its port the shipper pays the player's credits, docked for lateness and short or lost loads and less a dock broker's skim, and its regard for the ship moves (`moveStanding`, the career's). The late-delivery agent scene and the ledger are the hand's for now; the owner gets a note. **3b, the post:** the player keeps a post (settled by the owner), so the post and its skill join the career and the fights and jobs that read `hired().post` read the career's, with the crew filling the other posts.
 
 ### 4. Two arc items change the ship and the board
 
@@ -39,9 +39,9 @@ No new scene. The closing scene already reads who came (`CHAPTER_ENDINGS`). Chap
 
 ## Order, one PR each
 
-1. The role object, and `OWNER_TABS`, `OWNER_ACTIONS` and `hiredCall` moved onto it. No change in what plays.
-2. The career record: the move off `st.hired`, the old-save shim, the pins kept.
-3. Chapter two opens: the owner role in the shipped build, the board the player's, pay to credits. Tests at scope `earth-hired` where the chapter now continues.
+1. The role object, and `OWNER_TABS`, `OWNER_ACTIONS` and `hiredCall` moved onto it. No change in what plays. (Done, #706.)
+2. The career record: the sheet, kit and standing carried across the buy. (Done, #708.)
+3a. The board the player picks from, pay to credits. 3b. The player's post carried across the buy.
 4. The two arc items: the retrofit and the Compact tier.
 
 Each is measured: the soak (`npm run soak`) for chapter two's pay against chapter one's, the fights tool for the retrofit if it touches combat, pins written again with the reason in the commit.
@@ -49,4 +49,4 @@ Each is measured: the soak (`npm run soak`) for chapter two's pay against chapte
 ## Open
 
 1. **What ends chapter two.** Chapter one ends when the ship is bought (a number: 19000). The spine is the crew who came along, so the end is about them. A proposal: it ends at the day the last of them has been paid a full share and stayed (a fixed number of days, with a share set from the crew's regard), and it reads the record the way chapter one's ending does. Or by a credit target as before. Needs a decision, and can wait: PRs 1 to 3 do not depend on it.
-2. **Does the player keep a post?** As a captain they no longer work one. The proposal: the player's post becomes the one the player may work in a fight or on a job ashore (the hand's moves stay), and the crew fill the rest. Needs a look at `roleSkill` and the boarding fights before it is set.
+2. ~~Does the player keep a post?~~ Settled by the owner (2026-10-17): yes. The player's post is the one they may work in a fight or on a job ashore (the hand's moves stay), and the crew fill the rest. Built in 3b.

@@ -78,7 +78,7 @@ function drawContracts(st, here, from, reach, hold, day, rnd, standing = 0) {
 
 // The board as it stands today, drawn once a day at a port and kept (so the page does not change under you).
 function contractBoard(st, here) {
-  const h = st.hired, key = `${here.name}@${st.day}`;
+  const h = career(), key = `${here.name}@${st.day}`;  // the hand's record, or the career after the buy: the same board for the player to pick from (ownerboard.js)
   if (!h.freight || h.freight.key !== key) {
     const from = st.systemId, reach = Object.entries(SYSTEMS).filter(([sid]) => sid !== from && inRange(from, sid));
     h.freight = { key, list: drawContracts(st, here, from, reach, ship().cargo, st.day, boardDice(`${key}|${h.since}|${h.captain}`), standingOf(h, shipperOf(here, SYSTEMS[from].gov))) };

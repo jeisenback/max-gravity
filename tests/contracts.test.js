@@ -14,7 +14,7 @@ const dice = (rolls = []) => { const seq = [...rolls]; return () => (seq.length 
 function setup({ day = 10, rumors = [], danger = {}, rolls = [], hold = 120 } = {}) {
   const G = { state: { day, flags: {}, systemId: 'earth', planet: 'Earth', market: {}, rumors, missions: [], cargo: {}, hired: { since: 1, captain: 'cap1' } } };
   const api = load(['js/data.js', 'js/util.js', 'js/orbits.js', 'js/market.js', 'js/contracts.js'],
-    { G, Mods: { filter: (n, v) => v, emit() {} }, roleSkill: () => 0, ship: () => ({ fuel: 450, cargo: hold }), danger: sid => danger[sid] || 0, pick: l => l[Math.floor(Math.random() * l.length)] }, NAMES);
+    { G, Mods: { filter: (n, v) => v, emit() {} }, career: () => G.state.hired, roleSkill: () => 0, ship: () => ({ fuel: 450, cargo: hold }), danger: sid => danger[sid] || 0, pick: l => l[Math.floor(Math.random() * l.length)] }, NAMES);
   const earth = api.SYSTEMS.earth.planets.find(p => p.name === 'Earth');
   const reach = Object.entries(api.SYSTEMS).filter(([sid]) => sid !== 'earth' && api.inRange('earth', sid));
   return { G, st: G.state, earth, reach, rnd: dice(rolls), ...api };
