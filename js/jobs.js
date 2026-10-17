@@ -93,9 +93,10 @@ const JOBS = [
 ];
 
 // ---------- the board ----------
-// Two jobs a landing, the same two for the visit (so the tab does not change under you, and a night in port or a job's own day is no second board), and one worked a visit.
+// Two jobs a day, the same two for the port and the day (so the tab does not change under you), and one worked a day: a night in port (stay.js) brings a new board,
+// since the days ashore are the hand's (docs/superpowers/specs/2026-10-17-contracts-design.md).
 const jobBoard = () => {
-  const h = hired(), st = G.state, key = visitKey(st);
+  const h = hired(), st = G.state, key = `${st.planet}@${st.day}`;
   if (!h.board || h.board.key !== key) {
     const list = JOBS.filter(j => !j.where || j.where(currentPlanet())), start = Math.abs(hash(key)) % list.length;
     h.board = { key, ids: Array.from({ length: Math.min(JOB_BOARD, list.length) }, (_, i) => list[(start + i) % list.length].id), done: false };
@@ -112,7 +113,7 @@ function applyJob(o, scale = 1) {
   if (o.xp) gainSkill(o.xp, 2);
   if (o.rep) changeRep(localGov(), o.rep);
   if (o.opinion) like(cap, o.opinion, o.opinion > 0 ? 'You did good work ashore.' : 'You made a mess ashore.');
-  const hurt = o.hurt ? hurtHand({}) : '';
+  const hurt = o.hurt ? hurtHand({ ashore: true }) : '';  // the clinic and the days, never the death roll (boarders.js)
   return `${o.text}${bits.length ? ` (${bits.join(', ')})` : ''}${hurt ? ` ${hurt}` : ''}`;
 }
 // The editor's words for a job (#457): the job itself, `job:lock` or `away:package`, has its title and its blurb on the board (the override's `title` and `text`); each stage,
@@ -142,7 +143,7 @@ function jobsHtml() {
   return `<div class="post"><div class="eyebrow">Jobs on the station &middot; for your own savings</div>
     ${board.ids.map(id => { const j = JOBS.find(x => x.id === id); return `<div class="row"><span><b>${esc(jobTitle(j))}</b> <span class="hint">${esc(jobBlurb(j))}</span></span>
       <button data-action="takeJob" data-arg="${id}" ${board.done ? 'disabled' : ''}>Take it</button></div>`; }).join('')}
-    <p class="hint">${board.done ? 'You have worked a job here already this visit.' : 'One job a visit. It takes the day, and the pay is yours.'}</p></div>`;
+    <p class="hint">${board.done ? 'You have worked a job here today.' : 'One job a day. It takes the day, and the pay is yours.'}</p></div>`;
 }
 
 const jobsMissionsView = UI.views.missions;

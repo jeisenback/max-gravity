@@ -50,6 +50,9 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     // The jobs (--jobs): how many were worked at the station and played at the far end of a job elsewhere, what each kind paid the hand (applyJob moves the credits, and a
     // hurt's clinic bill comes out inside it), the hurts, and the jobs elsewhere offered, put to the captain and agreed to.
     const work = { station: 0, away: 0, pay: { station: 0, away: 0 }, hurt: 0, offered: 0, pitched: 0, booked: 0, current: 'station' };
+    // The freight (contracts.js): boards drawn, how many were empty, contracts offered, and from the ledger how many runs were contracts, delivered late, or lost the load.
+    const freight = { boards: 0, empty: 0, offered: 0, taken: 0, late: 0, lost: 0 };
+    { const rd = window.drawContracts; window.drawContracts = function () { const list = rd.apply(this, arguments); freight.boards++; if (!list.length) freight.empty++; freight.offered += list.length; return list; }; }
     { const rj = window.jobStage; window.jobStage = function (job, i) { work.current = AWAY.includes(job) ? 'away' : 'station'; if (i === 0) work[work.current]++; return rj.apply(this, arguments); };
       const ra = window.applyJob; window.applyJob = function () { const c0 = G.state.credits, h0 = hand.hurt; const out = ra.apply(this, arguments); work.pay[work.current] += G.state.credits - c0; work.hurt += hand.hurt - h0; return out; };
       const ro = window.awayOffer; window.awayOffer = function () { const o = ro.apply(this, arguments); if (o) work.offered++; return o; }; }
@@ -160,7 +163,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
         tally();
         runs++;
         paid.push(st.credits - creditsBefore);
-        { const led = hired().ledger[0]; if (led && plans.length && led.day === st.day) plans[plans.length - 1].realized = led.profit; }  // what the run cleared against what she planned on
+        { const led = hired().ledger[0]; if (led && plans.length && led.day === st.day) { plans[plans.length - 1].realized = led.profit; if (led.shipper) { freight.taken++; if (led.late) freight.late++; if (!led.tons) freight.lost++; } } }  // what the run cleared against what she planned on
         if (plans.length) plans[plans.length - 1].sailed = st.day - dayOut;  // the burn's days as sailed, against the days planned (shorter with a hot drive, --frames)
         if (hired().deal && offerDay === null) offerDay = hired().deal.day - hired().since;
         const xoKey = CAPTAINS[hired().captainKey] && CAPTAINS[hired().captainKey].xo;
@@ -173,7 +176,7 @@ async function soak({ seed = 1, legs = 40, scope = 'earth-hired', captainKey = n
     const avg = (a, n) => Math.round(a / Math.max(1, n));
     if (!ending.v) tally();
     delete work.current; delete bar.in;
-    return { messages, frames: fr, hand, work, bar, nights, plans, landings: landed.mix, losses, ending: ending.v, runs, days: st.day, credits: st.credits, reached, stuck, scenes, byId, byTitle, bad, beatDays, xoDays, waits, burns, introRun, firstOfficers: Object.keys(CAST).filter(k => CAST[k].xo), offerDay,
+    return { messages, frames: fr, hand, work, bar, nights, plans, freight, landings: landed.mix, losses, ending: ending.v, runs, days: st.day, credits: st.credits, reached, stuck, scenes, byId, byTitle, bad, beatDays, xoDays, waits, burns, introRun, firstOfficers: Object.keys(CAST).filter(k => CAST[k].xo), offerDay,
       avgPayPerRun: avg(paid.reduce((a, b) => a + b, 0), paid.length), avgDaysPerRun: Math.round(10 * st.day / Math.max(1, runs)) / 10 };
   }, [legs, captainKey, realDraw, post, frames, engineer, jobs]);
   await ctx.close();
@@ -207,6 +210,12 @@ function jobsReport(runs) {
   const pay = runs.reduce((t, r) => t + r.work.pay.station + r.work.pay.away, 0), credits = runs.reduce((t, r) => t + r.credits, 0);
   return `jobs, a chapter's mean over ${runs.length} seeds: station ${mean(w => w.station)} worked for ${mean(w => w.pay.station)} cr, elsewhere ${mean(w => w.away)} played for ${mean(w => w.pay.away)} cr ` +
     `(offered ${mean(w => w.offered)}, put to the captain ${mean(w => w.pitched)}, agreed ${mean(w => w.booked)}); job pay ${Math.round(100 * pay / Math.max(1, credits))} percent of the credits in hand at the end; hurt by a job ${mean(w => w.hurt)} times`;
+}
+
+// The freight over the chapters, the means across the seeds: boards drawn and empty, contracts offered, taken, late and lost.
+function freightReport(runs) {
+  const n = Math.max(1, runs.length), one = x => Math.round(x * 10) / 10, mean = f => one(runs.reduce((t, r) => t + f(r.freight || {}), 0) / n);
+  return `freight, a chapter's mean over ${runs.length} seeds: ${mean(f => f.boards)} boards drawn, ${mean(f => f.empty)} empty, ${mean(f => f.offered)} contracts offered, ${mean(f => f.taken)} delivered, ${mean(f => f.late)} late, ${mean(f => f.lost)} lost`;
 }
 
 // The captain's runs over the chapters: what she planned on and what they cleared (the plans of each soak result), for tuning what she sails for (WORTH_THE_FUEL, stay.js).
@@ -294,7 +303,7 @@ function scenesReport(runs, rows, legs, top = 10) {
   return out;
 }
 
-module.exports = { soak, soaks, report, framesReport, messagesReport, jobsReport, sceneRows, scenesReport, barReport, plansReport };
+module.exports = { soak, soaks, report, framesReport, messagesReport, jobsReport, sceneRows, scenesReport, barReport, plansReport, freightReport };
 
 if (require.main === module) {
   const arg = n => { const i = process.argv.indexOf('--' + n); return i > 0 ? process.argv[i + 1] : null; };
@@ -309,6 +318,7 @@ if (require.main === module) {
     report(all);
     console.log(barReport(all));
     console.log(plansReport(all));
+    console.log(freightReport(all));
     if (jobs) console.log(jobsReport(all));
     if (frames) framesReport(all, engineer ? `${post} with ${engineer}: ` : `${post}: `);
     if (process.argv.includes('--messages')) console.log(messagesReport(all).join('\n'));

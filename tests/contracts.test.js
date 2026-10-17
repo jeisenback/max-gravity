@@ -7,7 +7,7 @@ const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const { load } = require('./nodecontext');
 
-const NAMES = ['SYSTEMS', 'PRICE_MULT', 'CONTRACT_RATE', 'CONTRACT_FEE', 'RUMOR_PREMIUM', 'HAZARD_PREMIUM', 'HAZARD_AT', 'LATE_DOCK', 'LATE_FLOOR', 'SHIPPERS', 'shipperOf', 'freightLanes', 'drawContracts', 'contractBoard', 'pickContract', 'latePay', 'travelDays', 'inRange'];
+const NAMES = ['SYSTEMS', 'PRICE_MULT', 'CONTRACT_RATE', 'CONTRACT_FEE', 'haulRate', 'LONG_HAUL', 'LONG_HAUL_FLOOR', 'RUMOR_PREMIUM', 'HAZARD_PREMIUM', 'HAZARD_AT', 'LATE_DOCK', 'LATE_FLOOR', 'SHIPPERS', 'shipperOf', 'freightLanes', 'drawContracts', 'contractBoard', 'pickContract', 'latePay', 'travelDays', 'inRange'];
 
 // A game state at Earth on day 10. `danger` is the world's unrest by system; `dice` gives the rolls in order, then 0.5.
 const dice = (rolls = []) => { const seq = [...rolls]; return () => (seq.length ? seq.shift() : 0.5); };
@@ -27,8 +27,15 @@ test('freight goes from a port that prices a good low or middling to one in reac
   for (const l of lanes) {
     assert.ok(earth.prices[l.cid] !== 'H', `${l.cid}: nothing ships from where it is dear`);
     assert.ok(PRICE_MULT[l.pl.prices[l.cid]] > PRICE_MULT[earth.prices[l.cid]], `${l.cid} to ${l.pl.name}: priced higher there`);
-    assert.ok(reach.some(([sid]) => sid === l.sid) && l.w > 0);
+    assert.ok(reach.some(([sid]) => sid === l.sid) && l.w > 0 && l.days >= 1);
   }
+  const same = (a, b) => a.cid === b.cid && a.pl.prices[a.cid] === b.pl.prices[b.cid] && earth.prices[a.cid] === earth.prices[b.cid];
+  for (const a of lanes) for (const b of lanes) if (same(a, b) && a.days < b.days) assert.ok(a.w > b.w, `${a.cid}: the nearer port (${a.pl.name}, ${a.days} days) comes up more than the farther (${b.pl.name}, ${b.days})`);
+});
+
+test('a long haul pays less a day than a short one: the rate falls two percent a day of the burn, to half at most', () => {
+  const { haulRate, LONG_HAUL, LONG_HAUL_FLOOR } = setup();
+  assert.equal(haulRate(1), 1 - LONG_HAUL); assert.equal(haulRate(10), 1 - 10 * LONG_HAUL); assert.equal(haulRate(40), LONG_HAUL_FLOOR); assert.equal(haulRate(25), LONG_HAUL_FLOOR);
 });
 
 test('a big port draws none, one or two a day by its odds, a small one none or one, each on a lane of its own', () => {
@@ -47,17 +54,17 @@ test('a big port draws none, one or two a day by its odds, a small one none or o
 });
 
 test('a contract names its shipper, pays a fee and tons by days by the rate, more on word of a shortage and on a dangerous lane, and is due after the burn', () => {
-  const { st, earth, reach, drawContracts, CONTRACT_RATE, CONTRACT_FEE, RUMOR_PREMIUM, HAZARD_PREMIUM, travelDays, SHIPPERS } = setup();
+  const { st, earth, reach, drawContracts, CONTRACT_RATE, CONTRACT_FEE, RUMOR_PREMIUM, HAZARD_PREMIUM, haulRate, travelDays, SHIPPERS } = setup();
   const [c] = drawContracts(st, earth, 'earth', reach, 120, 10, dice([0.9]));
   assert.equal(c.shipper, SHIPPERS.gov['Arcology Compact']); assert.equal(c.from, 'Earth');
   assert.equal(c.days, Math.max(1, travelDays('earth', c.sid))); assert.ok(c.tons >= 40 && c.tons <= 120 && c.tons % 10 === 0);
-  assert.equal(c.pay, Math.round(CONTRACT_FEE + c.tons * c.days * CONTRACT_RATE)); assert.ok(!c.rumor && !c.hazard);
+  assert.equal(c.pay, Math.round(CONTRACT_FEE + c.tons * c.days * CONTRACT_RATE * haulRate(c.days))); assert.ok(!c.rumor && !c.hazard);
   assert.ok(c.due >= 10 + Math.ceil(c.days * 1.5) + 2 && c.due <= 10 + Math.ceil(c.days * 1.5) + 6);
   // the same draw with word of a shortage at the far end and raids on the lane
   const dear = setup({ rumors: [{ planet: c.planet, cid: c.good, mult: 1.5, until: 30 }], danger: { [c.sid]: 0.3 } });
   const [d] = dear.drawContracts(dear.st, dear.earth, 'earth', dear.reach, 120, 10, dice([0.9]));
   assert.deepEqual([d.good, d.planet, d.tons, d.due], [c.good, c.planet, c.tons, c.due], 'the same lane, the dice being the same');
-  assert.ok(d.rumor && d.hazard); assert.equal(d.pay, Math.round((CONTRACT_FEE + d.tons * d.days * CONTRACT_RATE) * (1 + RUMOR_PREMIUM + HAZARD_PREMIUM)));
+  assert.ok(d.rumor && d.hazard); assert.equal(d.pay, Math.round((CONTRACT_FEE + d.tons * d.days * CONTRACT_RATE * haulRate(d.days)) * (1 + RUMOR_PREMIUM + HAZARD_PREMIUM)));
   const stale = setup({ rumors: [{ planet: c.planet, cid: c.good, mult: 1.5, until: 9 }] });
   assert.ok(!stale.drawContracts(stale.st, stale.earth, 'earth', stale.reach, 120, 10, dice([0.9]))[0].rumor, 'an expired rumor is no premium');
 });

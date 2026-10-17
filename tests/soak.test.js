@@ -5,7 +5,7 @@
 const { test, after } = require('node:test');
 const assert = require('node:assert/strict');
 const { closeBrowser } = require('./helpers');
-const { soak, report, framesReport, jobsReport, barReport } = require('../tools/soak');
+const { soak, report, framesReport, jobsReport, barReport, freightReport } = require('../tools/soak');
 
 test('the soak sails the captain\'s runs and reports them', async () => {
   const r = await soak({ seed: 1, legs: 6 });
@@ -20,6 +20,8 @@ test('the soak sails the captain\'s runs and reports them', async () => {
   assert.ok(b.talks > 0 && b.talks <= (r.runs + r.nights + 1) * 3, `talks ${b.talks} over ${r.runs} runs and ${r.nights} nights`);
   assert.equal(Object.values(b.topics).reduce((t, c) => t + c, 0), b.talks);
   for (const k of ['credits', 'xp', 'opinion', 'rumors', 'cast']) assert.ok(Number.isFinite(b[k]), k);
+  assert.match(freightReport([r]), /^freight, a chapter's mean over 1 seeds: \d+ boards drawn, \d+ empty, \d+ contracts offered, \d+ delivered, \d+ late, \d+ lost$/);
+  assert.ok(r.freight.boards > 0 && r.freight.taken > 0, JSON.stringify(r.freight));
   assert.match(barReport([r]), /^bar, a chapter's mean over 1 seeds: \d+ choices at a table and \d+ scenes with a main character; the talks moved -?\d+ cr, \d+ points at the post, -?\d+ of opinion over everyone known, \d+ rumors heard; by topic: /);
 });
 

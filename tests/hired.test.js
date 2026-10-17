@@ -359,12 +359,12 @@ test('a second run loads a new contract: a plan made before the last cargo was d
     G.offers = []; const fund0 = h.fund; delete h.stay; sail(); out.bought = skip || (Object.values(st.cargo)[0] || 0) > 0;  // the wait in port is stay.js's own test
     out.paid = skip || fund0 - h.fund === h.run.cost;
     fly(); out.second = h.ledger[0];
-    out.honest = skip || (out.second.cost === 0 && out.second.revenue > 0);
+    out.honest = skip || (out.second.cost === 0 && !!out.second.shipper && (out.second.revenue > 0 || out.second.tons === 0));  // paid for what arrived; a load wholly lost on the way (an event took it) is no pay
     return out;
   });
   assert.equal(r.cargo, 0); assert.equal(r.loaded, false);
   assert.ok(r.bought && r.paid, 'the shipper\'s cargo was loaded, at no cost to the ship');
-  assert.ok(r.honest && r.second.revenue > 0, 'and delivered, so the shipper paid');
+  assert.ok(r.honest, `and delivered, so the shipper paid for what arrived: ${JSON.stringify(r.second)}`);
   await done();
 });
 

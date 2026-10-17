@@ -237,9 +237,10 @@ function settleRun(planet) {
   if (!run || planet.name !== run.planet || st.systemId !== run.sid) return;
   if (run.ice) iceFinish();  // a burn that skipped the scenes comes home thin
   let revenue = 0, sold = 0;
-  if (run.contract) {  // the shipper pays on delivery, docked for lateness; short of the load there is no pay (contracts.js)
-    const have = st.cargo[run.good] || 0;
-    if (have >= run.tons) { sold = run.tons; revenue = latePay(run.pay, run.due, st.day); } else captainFlag('contractLost');
+  if (run.contract) {  // the shipper pays on delivery for what arrives, docked for lateness; a load lost on the way is pay lost (contracts.js)
+    const have = Math.min(run.tons, st.cargo[run.good] || 0);
+    sold = have; revenue = latePay(Math.round(run.pay * have / run.tons), run.due, st.day);
+    if (have < run.tons) captainFlag(have ? 'contractShort' : 'contractLost');
     if (st.day > run.due) captainFlag('late');
     if (have - run.tons > 0) st.cargo[run.good] = have - run.tons; else { delete st.cargo[run.good]; delete st.paid[run.good]; }
     h.fund += revenue;
@@ -258,7 +259,7 @@ function settleRun(planet) {
   st.credits += wage + share - toHall;
   const total = runTotals(h);
   h.runsDone = total.runs + 1; h.earnedTotal = total.earned + wage + share;  // the ledger keeps the last 20; these keep the whole chapter
-  h.ledger.unshift({ day: st.day, from: run.from, to: planet.name, good: run.good, tons: sold, cost: run.cost, revenue, profit, wage, share, hall: toHall, days, ice: !!run.ice, shipper: run.shipper, late: run.contract ? Math.max(0, st.day - run.due) : 0 });
+  h.ledger.unshift({ day: st.day, from: run.from, to: planet.name, good: run.good, tons: sold, cost: run.cost, revenue, profit, wage, share, hall: toHall, days, ice: !!run.ice, shipper: run.shipper, late: run.contract ? Math.max(0, st.day - run.due) : 0, short: !!run.contract && sold < run.tons });
   h.ledger.length = Math.min(h.ledger.length, 20);
   // The first officer settles up on the first arrival (captains.js): keep the figures, and leave the one-line note for later arrivals.
   const settling = total.runs === 0 && arrivalWanted();
@@ -540,7 +541,7 @@ const runHtml = () => {
       : plan.contract ? h`The captain has a contract from ${plan.shipper}: ${plan.tons}t of ${name(plan.good)} to ${plan.planet}, ${SYSTEMS[plan.sid].name}, due by ${dateOf(plan.due)}: ${runTerms(plan)}.${plan.hazard ? ' The lane has raids on it.' : ''}`
       : h`The captain will take the ${plan.tons}t of ${name(plan.good)} aboard to ${plan.planet}, ${SYSTEMS[plan.sid].name}: ${runTerms(plan)}.`}</p>
     ${raw(swayHtml())}
-    ${led.length ? h`<div class="eyebrow">Recent runs</div>${listHtml(led, l => h`<div class="hint">${dateOf(l.day)}: ${l.from} to ${l.to}${l.good ? `, ${l.tons}t ${name(l.good)}, profit ${fmt(l.profit)} cr` : ', light'}. You earned ${fmt(l.wage + l.share)} cr.</div>`)}` : ''}
+    ${led.length ? h`<div class="eyebrow">Recent runs</div>${listHtml(led, l => h`<div class="hint">${dateOf(l.day)}: ${l.from} to ${l.to}${l.shipper && !l.tons ? `, the load for ${l.shipper} lost, no pay` : l.good ? `, ${l.tons}t ${name(l.good)}${l.shipper ? ` for ${l.shipper}` : ''}, ${l.shipper ? 'paid' : 'profit'} ${fmt(l.shipper ? l.revenue : l.profit)} cr${l.short ? ', part of the load lost' : ''}${l.late ? `, ${l.late} day${l.late === 1 ? '' : 's'} late` : ''}` : ', light'}. You earned ${fmt(l.wage + l.share)} cr.</div>`)}` : ''}
   </div>`);
 };
 

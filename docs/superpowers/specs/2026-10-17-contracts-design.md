@@ -30,7 +30,7 @@ An empty board, or one with nothing worth the fuel (`WORTH_THE_FUEL`, `js/stay.j
 
 ## Settlement
 
-On arrival at the contract's port the shipper pays. Late is docked a tenth of the pay a day, never below half, and costs the captain's regard for the hand once if the hand's call cost the days (a bold call in a raid, an ice stage). Cargo lost to boarders is the contract lost: no pay, and the shipper remembers. The hand's share is of the pay (`HIRED_SHARE`), the wage as now, the hall's cut as now.
+On arrival at the contract's port the shipper pays for what arrives: the pay in proportion to the tons delivered (a crowd at the dock or a boarding can take some of the load on the way), docked a tenth a day late, never below half. The ledger says what was short or late. The captain's regard for a late delivery the hand caused is left for later, with the shippers as people (step 6). The hand's share is of the pay (`HIRED_SHARE`), the wage as now, the hall's cut as now.
 
 ## The hand's port days
 

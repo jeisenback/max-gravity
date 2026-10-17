@@ -19,7 +19,7 @@ const helpers = () => {
   window.landHere = () => { G.dialog = null; G.nextEvent = null; Mods.emit('landed', currentPlanet()); while (G.dialog) finishEvent(); };
 };
 
-test('a yard stay passes a night at a time: the day turns, the bar fills again, the board is the visit\'s, and she sails after', async () => {
+test('a yard stay passes a night at a time: the day turns, the bar fills again, the job board is new, and she sails after', async () => {
   const { ev, done } = await open({ scope: 'earth-hired' });
   await ev(helpers);
   const r = await ev(() => {
@@ -30,7 +30,7 @@ test('a yard stay passes a night at a time: the day turns, the bar fills again, 
     const left = h.stay.left, day0 = st.day, patrons0 = G.patrons, board0 = jobBoard(); board0.done = true;
     out.stay = { left, why: h.stay.why, dayHeld: st.day === day0, noSail: sail() === false, button: UI.dockHtml() };
     out.night = passNight(); G.dialog = null; G.nextEvent = null;
-    out.after = { day: st.day - day0, left: h.stay ? h.stay.left : 0, newPatrons: G.patrons !== patrons0, boardKey: jobBoard().key === board0.key, boardDone: jobBoard().done, button: UI.dockHtml() };
+    out.after = { day: st.day - day0, left: h.stay ? h.stay.left : 0, newPatrons: G.patrons !== patrons0, newBoard: jobBoard().key !== board0.key && !jobBoard().done, button: UI.dockHtml() };
     while (stayOf(h)) { passNight(); G.dialog = null; G.nextEvent = null; }
     out.end = { stay: !!h.stay, days: st.day - day0, button: UI.dockHtml(), idle: passNight() };
     return out;
@@ -38,7 +38,7 @@ test('a yard stay passes a night at a time: the day turns, the bar fills again, 
   assert.ok(r.stay.left >= 1 && r.stay.why === 'yard' && r.stay.dayHeld && r.stay.noSail, JSON.stringify(r.stay));
   assert.match(r.stay.button, /data-action="night"[^>]*>Pass the night \(the hull is in the yard, \d+ more days?\)/); assert.doesNotMatch(r.stay.button, /data-action="sail"/);
   assert.ok(r.night); assert.equal(r.after.day, 1); assert.equal(r.after.left, r.stay.left - 1);
-  assert.ok(r.after.newPatrons, 'the bar fills again'); assert.ok(r.after.boardKey && r.after.boardDone, 'the job board is the visit\'s, and the job worked stays worked');
+  assert.ok(r.after.newPatrons, 'the bar fills again'); assert.ok(r.after.newBoard, 'the job board is the day\'s: a night brings a new one');
   assert.equal(r.end.days, r.stay.left); assert.ok(!r.end.stay); assert.match(r.end.button, /Sail with the captain/); assert.equal(r.end.idle, false, 'no stay, no night');
   await done();
 });
@@ -52,7 +52,11 @@ test('when nothing here is worth the fuel the captain waits three days for the m
     out.ballast = !!(currentPlan() && currentPlan().ballast);
     UI.notes.length = 0; landHere();
     out.wait = h.stay ? { ...h.stay } : null; out.note = UI.notes.find(n => /waiting 3 days for a shipper/.test(n)) || '';
-    out.visit = h.visit && h.visit.planet === st.planet && h.visit.day === st.day;
+    // a shipper comes overnight: the morning's board has a contract worth the fuel, and the wait ends
+    const here = currentPlanet(), reach = Object.entries(SYSTEMS).filter(([sid]) => sid !== st.systemId && inRange(st.systemId, sid)), lane = freightLanes(here, st.systemId, reach)[0];
+    h.freight = { key: `${here.name}@${st.day + 1}`, list: [{ shipper: 'a broker', good: lane.cid, tons: 40, from: here.name, sid: lane.sid, planet: lane.pl.name, yard: false, days: 4, pay: 20000, due: st.day + 30, hazard: false, rumor: false }] };
+    UI.notes.length = 0; passNight(); G.dialog = null; G.nextEvent = null;
+    out.came = { stay: !!h.stay, note: UI.notes.find(n => /A shipper came/.test(n)) || '', plan: !!(currentPlan() && currentPlan().contract) };
     while (stayOf(h)) { passNight(); G.dialog = null; G.nextEvent = null; }
     out.planned = !!currentPlan();
     // a longer stay takes over, a shorter one never shortens
@@ -65,7 +69,8 @@ test('when nothing here is worth the fuel the captain waits three days for the m
     return out;
   });
   assert.ok(r.ballast, 'the test starts from a light run');
-  assert.deepEqual(r.wait, { left: 3, why: 'market' }); assert.ok(r.note, 'the port page says so'); assert.ok(r.visit);
+  assert.deepEqual(r.wait, { left: 3, why: 'market' }); assert.ok(r.note, 'the port page says so');
+  assert.ok(!r.came.stay && r.came.note && r.came.plan, `a shipper overnight ends the wait: ${JSON.stringify(r.came)}`);
   assert.ok(r.planned, 'after the stay the captain plans again');
   assert.deepEqual(r.longer, { left: 5, why: 'yard' }); assert.equal(r.kept, 5);
   assert.equal(r.yardBound, null); assert.equal(r.noTrade, null);

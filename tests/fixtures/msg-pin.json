@@ -1037,13 +1037,13 @@
   "x": [
    {
     "type": "errand",
-    "title": "Errand: carry a sealed parcel to Eros Old Town",
-    "blurb": "A courier bag with a wax seal, and a receipt to bring back signed. It weighs about as much as a lunch. The captain keeps 60 cr of the fee.",
-    "destSystem": "eros",
-    "destPlanet": "Eros Old Town",
-    "pay": 240,
-    "cut": 60,
-    "deadline": 19
+    "title": "Errand: carry a sealed parcel to Ironheart",
+    "blurb": "A courier bag with a wax seal, and a receipt to bring back signed. It weighs about as much as a lunch. The captain keeps 80 cr of the fee.",
+    "destSystem": "psyche",
+    "destPlanet": "Ironheart",
+    "pay": 320,
+    "cut": 80,
+    "deadline": 23
    }
   ]
  },
@@ -1054,13 +1054,13 @@
   "x": [
    {
     "type": "errand",
-    "title": "Errand: carry a message on a chip to Eros Old Town",
-    "blurb": "A hand-written note on a data chip: somebody doesn't trust the public bands with it. The captain keeps 60 cr of the fee.",
-    "destSystem": "eros",
-    "destPlanet": "Eros Old Town",
-    "pay": 240,
-    "cut": 60,
-    "deadline": 19
+    "title": "Errand: carry a message on a chip to Ironheart",
+    "blurb": "A hand-written note on a data chip: somebody doesn't trust the public bands with it. The captain keeps 80 cr of the fee.",
+    "destSystem": "psyche",
+    "destPlanet": "Ironheart",
+    "pay": 320,
+    "cut": 80,
+    "deadline": 23
    }
   ]
  },
@@ -1071,13 +1071,13 @@
   "x": [
    {
     "type": "errand",
-    "title": "Errand: carry a set of spare keys to Eros Old Town",
-    "blurb": "A ring of keys for a flat somebody hasn't seen in years. They want them back before the lease runs out. The captain keeps 60 cr of the fee.",
-    "destSystem": "eros",
-    "destPlanet": "Eros Old Town",
-    "pay": 240,
-    "cut": 60,
-    "deadline": 19
+    "title": "Errand: carry a set of spare keys to Ironheart",
+    "blurb": "A ring of keys for a flat somebody hasn't seen in years. They want them back before the lease runs out. The captain keeps 80 cr of the fee.",
+    "destSystem": "psyche",
+    "destPlanet": "Ironheart",
+    "pay": 320,
+    "cut": 80,
+    "deadline": 23
    }
   ]
  },
@@ -1088,13 +1088,13 @@
   "x": [
    {
     "type": "errand",
-    "title": "Errand: carry a box of medicine to Eros Old Town",
-    "blurb": "An insulated box with a cold-chain tag. The label says to keep it upright and out of the sun. The captain keeps 60 cr of the fee.",
-    "destSystem": "eros",
-    "destPlanet": "Eros Old Town",
-    "pay": 240,
-    "cut": 60,
-    "deadline": 19
+    "title": "Errand: carry a box of medicine to Ironheart",
+    "blurb": "An insulated box with a cold-chain tag. The label says to keep it upright and out of the sun. The captain keeps 80 cr of the fee.",
+    "destSystem": "psyche",
+    "destPlanet": "Ironheart",
+    "pay": 320,
+    "cut": 80,
+    "deadline": 23
    }
   ]
  },
@@ -1105,13 +1105,13 @@
   "x": [
    {
     "type": "errand",
-    "title": "Errand: carry a crate of seedlings to Eros Old Town",
-    "blurb": "A tray of green shoots under a grow light that has to stay on. You carry it in your bunk. The captain keeps 60 cr of the fee.",
-    "destSystem": "eros",
-    "destPlanet": "Eros Old Town",
-    "pay": 240,
-    "cut": 60,
-    "deadline": 19
+    "title": "Errand: carry a crate of seedlings to Ironheart",
+    "blurb": "A tray of green shoots under a grow light that has to stay on. You carry it in your bunk. The captain keeps 80 cr of the fee.",
+    "destSystem": "psyche",
+    "destPlanet": "Ironheart",
+    "pay": 320,
+    "cut": 80,
+    "deadline": 23
    }
   ]
  },
