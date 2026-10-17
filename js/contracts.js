@@ -25,6 +25,16 @@ const SHIPPERS = {
   other: 'a dock broker',
 };
 const shipperOf = (planet, gov) => SHIPPERS.port[planet.name] || SHIPPERS.gov[gov] || SHIPPERS.other;
+// The state whose freight office this shipper is (the Rook is a port, not an office), or null.
+const officeOf = shipper => Object.keys(SHIPPERS.gov).find(g => g !== 'Pirate' && SHIPPERS.gov[g] === shipper) || null;
+// One shipper sometimes pays less than the paper: the dock broker takes handling off a delivery, a share of the pay, in a quarter of deliveries to a shipper that does not know
+// the ship, half as often to one that does, and never to one that trusts it. The roll is the delivery's own, from its port and day, so no other draw in the game moves.
+const SKIMMER = SHIPPERS.other, SKIM_CHANCE = 0.25, SKIM_CUT = 0.15;
+const skimOf = (run, pay, standing) => {
+  if (run.shipper !== SKIMMER) return 0;
+  const chance = Math.max(0, SKIM_CHANCE * (1 - Math.max(0, standing) / STANDING_GOOD));
+  return Math.abs(hash(`${run.shipper}|${run.planet}|${run.day}`)) % 100 < chance * 100 ? Math.round(pay * SKIM_CUT) : 0;
+};
 
 // The lanes freight can go from here: a good this port ships, to a port in reach that prices it higher, weighted by how much higher and
 // toward the near ports (most freight is short-haul).
@@ -92,9 +102,10 @@ const standingDelta = (run, sold, day) => { const late = day > run.due, lost = s
 const nextStanding = (n, d) => Math.max(-STANDING_MAX, Math.min(STANDING_MAX, n + d));
 const shipperWord = n => (n >= STANDING_GOOD ? 'a shipper that trusts the ship' : n >= 1 ? 'a shipper that knows the ship' : n <= -1 ? 'a shipper that is wary of the ship' : '');
 // What was off with a delivery, for the agent at the far end: the worst of it (a lost load, a short one, a late one), or null when it came in whole and on the day.
-function deliveryOff(run, sold, day) {
+// A pay cut by the shipper (`cut`, of `owed`, the pay the paper gave) is the worst of it after a lost or short load: the money is the thing the agent has to explain.
+function deliveryOff(run, sold, day, cut = 0, owed = 0) {
   const late = Math.max(0, day - run.due), lost = sold <= 0, short = sold < run.tons;
-  return !late && !short ? null : { kind: lost ? 'lost' : short ? 'short' : 'late', shipper: run.shipper, good: run.good, tons: run.tons, got: sold, late, due: run.due };
+  return !late && !short && !cut ? null : { kind: lost ? 'lost' : short ? 'short' : cut ? 'skim' : 'late', shipper: run.shipper, good: run.good, tons: run.tons, got: sold, late, due: run.due, cut, owed };
 }
 
 // What a late delivery pays: docked a tenth a day, never below half.

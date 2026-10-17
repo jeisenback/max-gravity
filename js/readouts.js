@@ -38,4 +38,4 @@ function contractPaperHtml(c, day) {
 
 // The captain's log: the ledger's runs as rows, the pay to you on the right and the run's own figures under it.
 const logRowsHtml = (ledger, n) => String(listHtml(ledger.slice(0, n), l => h`<div class="con-read"><span>${l.from} to ${l.to}</span><b>+${fmt(l.wage + l.share)} cr</b></div><div class="hint">${dateOf(l.day)}, ${l.shipper && !l.tons ? `the load for ${l.shipper} lost, no pay`
-  : l.good ? `${l.tons}t ${goodName(l.good)}${l.shipper ? ` for ${l.shipper}, paid ${fmt(l.revenue)} cr` : `, profit ${fmt(l.profit)} cr`}` : 'no cargo'}${l.late ? `, ${dayWord(l.late)} late` : ''}${l.short && l.tons ? ', short' : ''}</div>`));
+  : l.good ? `${l.tons}t ${goodName(l.good)}${l.shipper ? ` for ${l.shipper}, paid ${fmt(l.revenue)} cr` : `, profit ${fmt(l.profit)} cr`}` : 'no cargo'}${l.late ? `, ${dayWord(l.late)} late` : ''}${l.short && l.tons ? ', short' : ''}${l.skim ? `, ${fmt(l.skim)} cr held back` : ''}</div>`));
