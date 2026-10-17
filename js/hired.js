@@ -24,6 +24,9 @@ const HIRED_TARGET = 19000;  // the used Ore Runner Tomas finds (the chapter's g
 // her price, and at the middle price again if the deal lapses.
 const wantsYard = () => { const h = hired(); return G.state.credits >= (!h.deal ? (captainBeatsDone(h) ? USED_OFFER_AT : HIRED_TARGET) : dealOpen() ? h.deal.price : HIRED_TARGET); };
 const hired = () => (G.state && G.state.hired) || null;
+// The hand's sheet, kit and standing, which outlive the buy (#685): the hand's own record while there is one, else the career it left (st.career, made at the buy by careerOf, sheet.js).
+// The same field names as the hand's record, so a reader of a sheet, a kit or a shipper's regard asks this and not hired().
+const career = () => hired() || (G.state && G.state.career) || null;
 // A hired hand works one post. The others are the crew's, and the captain's to command.
 const hiredCaptain = () => (hired() ? G.state.people[hired().captain] : null);
 const notYours = post => !!hired() && hired().post !== post;
@@ -57,10 +60,10 @@ function levelNote(post, level) {
   if (!G.dialog) UI.render();
 }
 // A stat of the hand's sheet (sheet.js): the base for an owner, and for a hand from before the sheet was kept.
-const handStat = stat => { const h = hired(); return h && h.sheet ? h.sheet[stat] : STAT_BASE; };
+const handStat = stat => { const c = career(); return c && c.sheet ? c.sheet[stat] : STAT_BASE; };
 // Doing a job yourself: the odds are worse than a crew member's, and get better as you learn the post.
 // A roll of the hand's: the sheet's rule (sheet.js) with the stat named, the level, the kind of roll (DIFFICULTY's keys) and an edge, and what the kit adds to that kind.
-const handCheck = (stat, skill, kind, edge = 0) => check(handStat(stat), skill, DIFFICULTY[kind], edge + kitEdge(hired() && hired().kit, kind));
+const handCheck = (stat, skill, kind, edge = 0) => check(handStat(stat), skill, DIFFICULTY[kind], edge + kitEdge(career() && career().kit, kind));
 const soloOdds = post => handCheck(POST_STAT[post], skillLevel(post), 'solo');
 // The job of your own post in a fight, an ice run or a contact: half a chance at the base, a tenth better for each level.
 const postOdds = post => handCheck(POST_STAT[post], skillLevel(post), 'post');
@@ -442,6 +445,7 @@ function buyIn(id) {
   for (const k of ['condition', 'refits', 'projects', 'power', 'heat', 'tuned', 'route']) delete st[k];
   if (id === USED_ID) st.condition = { ...USED_CONDITION };  // but the used Ore Runner comes as she is
   home().name = shipName(false);
+  st.career = careerOf(h);  // the sheet, the kit and the shippers' regard go on into the next chapter
   st.hired = null;
   G.offers = generateMissions(planet);
   return sceneSay('scene:screens', 'buyin.result', { ship: bought.name, price: fmt(price), old: oldName, first: cap.first, last: cap.last, company: ` ${friends.length ? sceneSay('scene:screens', 'buyin.with', { names: namesOf(friends) }) : sceneSay('scene:screens', 'buyin.alone')}` });

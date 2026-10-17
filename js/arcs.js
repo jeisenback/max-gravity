@@ -32,9 +32,9 @@ function arcBeginning(a) { const s = STORYLETS.find(x => x.id === MISSION_ARCS[a
 
 // The hand takes an item into the kit (once); the line says so, for the choice's result.
 function addKit(id) {
-  const h = hired();
-  if (!h || !KIT_ITEMS[id] || (h.kit || []).includes(id)) return '';
-  h.kit = [...(h.kit || []), id];
+  const c = career();
+  if (!c || !KIT_ITEMS[id] || (c.kit || []).includes(id)) return '';
+  c.kit = [...(c.kit || []), id];
   return `You carry ${KIT_ITEMS[id].name} now.`;
 }
 

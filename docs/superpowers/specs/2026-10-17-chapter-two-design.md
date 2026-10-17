@@ -20,7 +20,7 @@ No fork is added to the hand's code. The forks that exist and belong to the ques
 
 ### 2. The career outlives the buy
 
-The sheet, the kit, the standings, the post and its skill move from `st.hired` to `st.career`, a record both roles read. An old save without it is built from its `st.hired` on load (the same shim as the sheet's own, `handStat`). The hand's code reads `career`; the fields only the hand has (the captain, the fund, the plan, the ledger, the pitch) stay on `st.hired` and go with it.
+The sheet, the kit and the shippers' regard are copied at the buy into `st.career` (`careerOf`, `js/sheet.js`), with the hand's own field names. `career()` (`js/hired.js`) returns the hand's record while there is one and the career after it, so what reads a sheet, a kit or a shipper's regard asks `career()` and not `hired()`: `handStat`, `handCheck`, `addKit`, `moveStanding`, the lock fight's cover. Nothing moves off `st.hired` in chapter one, so no save is rewritten and no old-save shim is needed; a save with no career has none, which reads as a sheet at the base, no kit and no regard. The post and its skill are not in the career: whether the player keeps a post is open question 2 below, and they join it when that is answered.
 
 ### 3. The board is the player's
 

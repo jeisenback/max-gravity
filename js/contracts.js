@@ -95,7 +95,7 @@ function pickContract(list, { free, wantYard, risk, picks }) {
   return { best: top.length > 1 ? pick(top) : top[0] || null, ranked };
 }
 
-// A shipper's regard for the ship (st.hired.standing, by the shipper's name; older saves have none, which is 0). A delivery moves it: on the day and whole, up one;
+// A shipper's regard for the ship (st.hired.standing, and st.career.standing after the buy; by the shipper's name; older saves have none, which is 0). A delivery moves it: on the day and whole, up one;
 // each day-late fault down one, a short load down one and a lost load down two. The word is for the run panel; the shipper is named before it, so it takes no verb.
 const standingOf = (h, shipper) => (h.standing || {})[shipper] || 0;
 const standingDelta = (run, sold, day) => { const late = day > run.due, lost = sold <= 0, short = sold < run.tons; return !late && !short ? 1 : -((late ? 1 : 0) + (lost ? 2 : short ? 1 : 0)); };
